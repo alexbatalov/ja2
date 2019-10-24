@@ -2,10 +2,10 @@
 let gubWorldRoomInfo: UINT8[] /* [WORLD_MAX] */;
 let gubWorldRoomHidden: UINT8[] /* [MAX_ROOMS] */;
 
-function InitRoomDatabase(): BOOLEAN {
+function InitRoomDatabase(): boolean {
   memset(gubWorldRoomInfo, NO_ROOM, sizeof(gubWorldRoomInfo));
-  memset(gubWorldRoomHidden, TRUE, sizeof(gubWorldRoomHidden));
-  return TRUE;
+  memset(gubWorldRoomHidden, true, sizeof(gubWorldRoomHidden));
+  return true;
 }
 
 function ShutdownRoomDatabase(): void {
@@ -27,26 +27,26 @@ function SetTileRangeRoomNum(pSelectRegion: Pointer<SGPRect>, ubRoomNum: UINT8):
   }
 }
 
-function InARoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): BOOLEAN {
+function InARoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if (pubRoomNo) {
       pubRoomNo.value = gubWorldRoomInfo[sGridNo];
     }
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function InAHiddenRoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): BOOLEAN {
+function InAHiddenRoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if ((gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]])) {
       pubRoomNo.value = gubWorldRoomInfo[sGridNo];
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 // @@ATECLIP TO WORLD!
@@ -122,7 +122,7 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
     pStructure = pStructure.value.pNext;
   }
 
-  gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]] = FALSE;
+  gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]] = false;
 }
 
 function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
@@ -133,7 +133,7 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
   let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
   let sGridNo: INT16;
   let usIndex: UINT16;
-  let fChanged: BOOLEAN = FALSE;
+  let fChanged: boolean = false;
 
   // CHECK FOR A SLANTED ROOF HERE....
   pStructure = FindStructure(sCheckGridNo, STRUCTURE_SLANTED_ROOF);
@@ -161,7 +161,7 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
         if (!TypeExistsInRoofLayer(sGridNo, Enum313.SLANTROOFCEILING, addressof(usIndex))) {
           // Add
           AddRoofToHead(sGridNo, Enum312.SLANTROOFCEILING1);
-          fChanged = TRUE;
+          fChanged = true;
         }
       }
 
@@ -170,7 +170,7 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
         /// Remove any slant roof items if they exist
         if (TypeExistsInRoofLayer(sGridNo, Enum313.SLANTROOFCEILING, addressof(usIndex))) {
           RemoveRoof(sGridNo, usIndex);
-          fChanged = TRUE;
+          fChanged = true;
         }
       }
     }
@@ -189,7 +189,7 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
   let sX: INT16;
   let sY: INT16;
   let pNode: Pointer<LEVELNODE> = null;
-  let fSaidItemSeenQuote: BOOLEAN = FALSE;
+  let fSaidItemSeenQuote: boolean = false;
 
   //	STRUCTURE					*pStructure;//, *pBase;
 
@@ -203,9 +203,9 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
       // Reveal any items if here!
       if (GetItemPool(cnt, addressof(pItemPool), 0)) {
         // Set visible! ( only if invisible... )
-        if (SetItemPoolVisibilityOn(pItemPool, INVISIBLE, TRUE)) {
+        if (SetItemPoolVisibilityOn(pItemPool, INVISIBLE, true)) {
           if (!fSaidItemSeenQuote) {
-            fSaidItemSeenQuote = TRUE;
+            fSaidItemSeenQuote = true;
 
             if (pSoldier != null) {
               TacticalCharacterDialogue(pSoldier, (Enum202.QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
@@ -233,10 +233,10 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
   InvalidateWorldRedundency();
   SetRenderFlags(RENDER_FLAG_FULL);
 
-  CalculateWorldWireFrameTiles(FALSE);
+  CalculateWorldWireFrameTiles(false);
 }
 
-function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
+function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
 
@@ -246,10 +246,10 @@ function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
+function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
 
@@ -259,5 +259,5 @@ function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }

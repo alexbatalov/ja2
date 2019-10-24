@@ -400,13 +400,13 @@ function ReplaceObsoleteRoads(): void {
   let i: INT32;
   let iMacro: INT32;
   let pObject: Pointer<LEVELNODE>;
-  let fRoadExistsAtGridNo: BOOLEAN;
+  let fRoadExistsAtGridNo: boolean;
   for (i = 0; i < WORLD_MAX; i++) {
     pObject = gpWorldLevelData[i].pObjectHead;
-    fRoadExistsAtGridNo = FALSE;
+    fRoadExistsAtGridNo = false;
     while (pObject) {
       if (pObject.value.usIndex >= Enum312.FIRSTROAD1 && pObject.value.usIndex <= Enum312.FIRSTROAD32) {
-        fRoadExistsAtGridNo = TRUE;
+        fRoadExistsAtGridNo = true;
         iMacro = pObject.value.usIndex - Enum312.FIRSTROAD1;
         PlaceRoadMacroAtGridNo(i, iMacro);
       }

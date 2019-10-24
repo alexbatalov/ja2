@@ -713,7 +713,7 @@ let gAnimStructureDatabase: AnimationStructureType[][] /* [TOTALBODYTYPES][NUM_S
   ],
 ];
 
-function InitAnimationSystem(): BOOLEAN {
+function InitAnimationSystem(): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
   let sFilename: CHAR8[] /* [50] */;
@@ -742,10 +742,10 @@ function InitAnimationSystem(): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function DeInitAnimationSystem(): BOOLEAN {
+function DeInitAnimationSystem(): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
 
@@ -769,10 +769,10 @@ function DeInitAnimationSystem(): BOOLEAN {
 
   DeleteAnimationProfiles();
 
-  return TRUE;
+  return true;
 }
 
-function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16, fUseAbsolute: BOOLEAN): Pointer<STRUCTURE_FILE_REF> {
+function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16, fUseAbsolute: boolean): Pointer<STRUCTURE_FILE_REF> {
   let bStructDataType: INT8;
 
   if (usSurfaceIndex == INVALID_ANIMATION_SURFACE) {
@@ -796,7 +796,7 @@ function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: U
 }
 
 function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): Pointer<STRUCTURE_FILE_REF> {
-  return InternalGetAnimationStructureRef(usSoldierID, usSurfaceIndex, usAnimState, FALSE);
+  return InternalGetAnimationStructureRef(usSoldierID, usSurfaceIndex, usAnimState, false);
 }
 
 function GetDefaultStructureRef(usSoldierID: UINT16): Pointer<STRUCTURE_FILE_REF> {
@@ -804,7 +804,7 @@ function GetDefaultStructureRef(usSoldierID: UINT16): Pointer<STRUCTURE_FILE_REF
 }
 
 // Surface mamagement functions
-function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): BOOLEAN {
+function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): boolean {
   let pAuxData: Pointer<AuxObjectData>;
 
   // Check for valid surface
@@ -844,7 +844,7 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
       SET_ERROR("Could not load animation file: %s", gAnimSurfaceDatabase[usSurfaceIndex].Filename);
       // Video Object will set error conition.]
       DestroyImage(hImage);
-      return FALSE;
+      return false;
     }
 
     // Get aux data
@@ -857,11 +857,11 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
       // Report error
       SET_ERROR("Invalid # of animations given");
       DestroyImage(hImage);
-      return FALSE;
+      return false;
     }
 
     // get structure data if any
-    pStructureFileRef = InternalGetAnimationStructureRef(usSoldierID, usSurfaceIndex, usAnimState, TRUE);
+    pStructureFileRef = InternalGetAnimationStructureRef(usSoldierID, usSurfaceIndex, usAnimState, true);
 
     if (pStructureFileRef != null) {
       let sStartFrame: INT16 = 0;
@@ -872,11 +872,11 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
         sStartFrame = -1;
       }
 
-      if (AddZStripInfoToVObject(hVObject, pStructureFileRef, TRUE, sStartFrame) == FALSE) {
+      if (AddZStripInfoToVObject(hVObject, pStructureFileRef, true, sStartFrame) == false) {
         DestroyImage(hImage);
         DeleteVideoObject(hVObject);
         SET_ERROR("Animation structure ZStrip creation error: %s", sFilename);
-        return FALSE;
+        return false;
       }
     }
 
@@ -901,10 +901,10 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
     gbAnimUsageHistory[usSurfaceIndex][usSoldierID]++;
   }
 
-  return TRUE;
+  return true;
 }
 
-function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16): BOOLEAN {
+function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16): boolean {
   // Decrement usage flag, only if this soldier has it currently tagged
   if (gbAnimUsageHistory[usSurfaceIndex][usSoldierID] > 0) {
     // Decrement usage count
@@ -915,7 +915,7 @@ function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16): BO
   } else {
     // Return warning that we have not actually loaded the surface previously
     AnimDebugMsg(String("Surface Database: WARNING!!! Soldier has tried to unlock surface that he has not locked."));
-    return FALSE;
+    return false;
   }
 
   AnimDebugMsg(String("Surface Database: MercUsage: %d, Global Uasage: %d", gbAnimUsageHistory[usSurfaceIndex][usSoldierID], gAnimSurfaceDatabase[usSurfaceIndex].bUsageCount));
@@ -935,7 +935,7 @@ function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16): BO
     gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject = null;
   }
 
-  return TRUE;
+  return true;
 }
 
 function ClearAnimationSurfacesUsageHistory(usSoldierID: UINT16): void {
@@ -946,7 +946,7 @@ function ClearAnimationSurfacesUsageHistory(usSoldierID: UINT16): void {
   }
 }
 
-function LoadAnimationProfiles(): BOOLEAN {
+function LoadAnimationProfiles(): boolean {
   //	FILE *			pInput;
   let pInput: HWFILE;
   let iProfileCount: INT32;
@@ -957,16 +957,16 @@ function LoadAnimationProfiles(): BOOLEAN {
   let uiBytesRead: UINT32;
 
   //	pInput = fopen( ANIMPROFILEFILENAME, "rb" );
-  pInput = FileOpen(ANIMPROFILEFILENAME, FILE_ACCESS_READ, FALSE);
+  pInput = FileOpen(ANIMPROFILEFILENAME, FILE_ACCESS_READ, false);
 
   if (!pInput) {
-    return FALSE;
+    return false;
   }
 
   // Writeout profile data!
   //	if ( fread( &gubNumAnimProfiles, sizeof( gubNumAnimProfiles ), 1, pInput ) != 1 )
   if (FileRead(pInput, addressof(gubNumAnimProfiles), sizeof(gubNumAnimProfiles), addressof(uiBytesRead)) != 1) {
-    return FALSE;
+    return false;
   }
 
   // Malloc profile data!
@@ -985,7 +985,7 @@ function LoadAnimationProfiles(): BOOLEAN {
       // Read # tiles
       //			if ( fread( &pProfileDirs->ubNumTiles, sizeof( UINT8 ), 1, pInput ) != 1 )
       if (FileRead(pInput, addressof(pProfileDirs.value.ubNumTiles), sizeof(UINT8), addressof(uiBytesRead)) != 1) {
-        return FALSE;
+        return false;
       }
 
       // Malloc space for tiles!
@@ -995,17 +995,17 @@ function LoadAnimationProfiles(): BOOLEAN {
       for (iTileCount = 0; iTileCount < pProfileDirs.value.ubNumTiles; iTileCount++) {
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].usTileFlags, sizeof( UINT16 ), 1, pInput ) != 1 )
         if (FileRead(pInput, addressof(pProfileDirs.value.pTiles[iTileCount].usTileFlags), sizeof(UINT16), addressof(uiBytesRead)) != 1) {
-          return FALSE;
+          return false;
         }
 
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].bTileX, sizeof( INT8 ), 1, pInput ) != 1 )
         if (FileRead(pInput, addressof(pProfileDirs.value.pTiles[iTileCount].bTileX), sizeof(INT8), addressof(uiBytesRead)) != 1) {
-          return FALSE;
+          return false;
         }
 
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].bTileY, sizeof( INT8 ), 1, pInput ) != 1 )
         if (FileRead(pInput, addressof(pProfileDirs.value.pTiles[iTileCount].bTileY), sizeof(INT8), addressof(uiBytesRead)) != 1) {
-          return FALSE;
+          return false;
         }
       }
     }
@@ -1014,7 +1014,7 @@ function LoadAnimationProfiles(): BOOLEAN {
   //	fclose( pInput );
   FileClose(pInput);
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAnimationProfiles(): void {

@@ -42,23 +42,23 @@ const enum Enum143 {
 // GLOBALS
 
 // the dirty state of the mapscreen interface bottom
-let fMapScreenBottomDirty: BOOLEAN = TRUE;
+let fMapScreenBottomDirty: boolean = true;
 
-let fMapBottomDirtied: BOOLEAN = FALSE;
+let fMapBottomDirtied: boolean = false;
 
 // Used to flag the transition animation from mapscreen to laptop.
-let gfStartMapScreenToLaptopTransition: BOOLEAN = FALSE;
+let gfStartMapScreenToLaptopTransition: boolean = false;
 
 // leaving map screen
-let fLeavingMapScreen: BOOLEAN = FALSE;
+let fLeavingMapScreen: boolean = false;
 
 // don't start transition from laptop to tactical stuff
-let gfDontStartTransitionFromLaptop: BOOLEAN = FALSE;
+let gfDontStartTransitionFromLaptop: boolean = false;
 
 // exiting to laptop?
-let fLapTop: BOOLEAN = FALSE;
+let fLapTop: boolean = false;
 
-let gfOneFramePauseOnExit: BOOLEAN = FALSE;
+let gfOneFramePauseOnExit: boolean = false;
 
 // we've just scrolled to a new message (for autoscrolling only)
 // BOOLEAN gfNewScrollMessage = FALSE;
@@ -114,14 +114,14 @@ function HandleLoadOfMapBottomGraphics(): void {
   return;
 }
 
-function LoadMapScreenInterfaceBottom(): BOOLEAN {
+function LoadMapScreenInterfaceBottom(): boolean {
   CreateButtonsForMapScreenInterfaceBottom();
   CreateMapScreenBottomMessageScrollBarRegion();
 
   // create pause region
   CreateCompressModePause();
 
-  return TRUE;
+  return true;
 }
 
 function DeleteMapBottomGraphics(): void {
@@ -151,13 +151,13 @@ function RenderMapScreenInterfaceBottom(): void {
   let bFilename: CHAR8[] /* [32] */;
 
   // render whole panel
-  if (fMapScreenBottomDirty == TRUE) {
+  if (fMapScreenBottomDirty == true) {
     // get and blt panel
     GetVideoObject(addressof(hHandle), guiMAPBOTTOMPANEL);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BOTTOM_X, MAP_BOTTOM_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-    if (GetSectorFlagStatus(sSelMapX, sSelMapY, iCurrentMapSectorZ, SF_ALREADY_VISITED) == TRUE) {
-      GetMapFileName(sSelMapX, sSelMapY, iCurrentMapSectorZ, bFilename, TRUE, TRUE);
+    if (GetSectorFlagStatus(sSelMapX, sSelMapY, iCurrentMapSectorZ, SF_ALREADY_VISITED) == true) {
+      GetMapFileName(sSelMapX, sSelMapY, iCurrentMapSectorZ, bFilename, true, true);
       LoadRadarScreenBitmap(bFilename);
     } else {
       ClearOutRadarMapImage();
@@ -178,8 +178,8 @@ function RenderMapScreenInterfaceBottom(): void {
     RenderRadarScreen();
 
     // reset dirty flag
-    fMapScreenBottomDirty = FALSE;
-    fMapBottomDirtied = TRUE;
+    fMapScreenBottomDirty = false;
+    fMapBottomDirtied = true;
   }
 
   DisplayCompressMode();
@@ -203,11 +203,11 @@ function RenderMapScreenInterfaceBottom(): void {
 
   EnableDisableBottomButtonsAndRegions();
 
-  fMapBottomDirtied = FALSE;
+  fMapBottomDirtied = false;
   return;
 }
 
-function CreateButtonsForMapScreenInterfaceBottom(): BOOLEAN {
+function CreateButtonsForMapScreenInterfaceBottom(): boolean {
   // laptop
   guiMapBottomExitButtonsImage[Enum144.MAP_EXIT_TO_LAPTOP] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 6, -1, 15, -1);
   guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP] = QuickCreateButton(guiMapBottomExitButtonsImage[Enum144.MAP_EXIT_TO_LAPTOP], 456, 410, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnLaptopCallback);
@@ -255,7 +255,7 @@ function CreateButtonsForMapScreenInterfaceBottom(): BOOLEAN {
   SetButtonCursor(guiMapMessageScrollButtons[0], MSYS_NO_CURSOR);
   SetButtonCursor(guiMapMessageScrollButtons[1], MSYS_NO_CURSOR);
 
-  return TRUE;
+  return true;
 }
 
 function DestroyButtonsForMapScreenInterfaceBottom(): void {
@@ -278,7 +278,7 @@ function DestroyButtonsForMapScreenInterfaceBottom(): void {
   UnloadButtonImage(guiMapBottomTimeButtonsImage[1]);
 
   // reset dirty flag
-  fMapScreenBottomDirty = TRUE;
+  fMapScreenBottomDirty = true;
 
   return;
 }
@@ -292,7 +292,7 @@ function BtnLaptopCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     // redraw region
     if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
     }
 
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
@@ -326,7 +326,7 @@ function BtnTacticalCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     // redraw region
     if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
     }
 
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
@@ -355,14 +355,14 @@ function BtnOptionsFromMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 
     // redraw region
     if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
     }
 
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
 
       RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_OPTIONS);
     }
@@ -380,13 +380,13 @@ function DrawNameOfLoadedSector(): void {
   let sFontX: INT16;
   let sFontY: INT16;
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   SetFont(COMPFONT());
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
-  GetSectorIDString(sSelMapX, sSelMapY, (iCurrentMapSectorZ), sString, TRUE);
+  GetSectorIDString(sSelMapX, sSelMapY, (iCurrentMapSectorZ), sString, true);
   ReduceStringLength(sString, 80, COMPFONT());
 
   VarFindFontCenterCoordinates(548, 426, 80, 16, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
@@ -395,7 +395,7 @@ function DrawNameOfLoadedSector(): void {
 
 function CompressModeClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & (MSYS_CALLBACK_REASON_RBUTTON_UP | MSYS_CALLBACK_REASON_LBUTTON_UP)) {
-    if (CommonTimeCompressionChecks() == TRUE)
+    if (CommonTimeCompressionChecks() == true)
       return;
 
     RequestToggleTimeCompression();
@@ -404,48 +404,48 @@ function CompressModeClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
 function BtnTimeCompressMoreMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (CommonTimeCompressionChecks() == TRUE)
+    if (CommonTimeCompressionChecks() == true)
       return;
 
     // redraw region
     if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
     }
 
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
 
       RequestIncreaseInTimeCompression();
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    if (CommonTimeCompressionChecks() == TRUE)
+    if (CommonTimeCompressionChecks() == true)
       return;
   }
 }
 
 function BtnTimeCompressLessMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (CommonTimeCompressionChecks() == TRUE)
+    if (CommonTimeCompressionChecks() == true)
       return;
 
     // redraw region
     if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
     }
 
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
 
       RequestDecreaseInTimeCompression();
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    if (CommonTimeCompressionChecks() == TRUE)
+    if (CommonTimeCompressionChecks() == true)
       return;
   }
 }
@@ -462,7 +462,7 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 
     // redraw region
     if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
     }
 
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
@@ -474,7 +474,7 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 
       // redraw region
       if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-        fMapScreenBottomDirty = TRUE;
+        fMapScreenBottomDirty = true;
       }
 
       // down a line
@@ -496,7 +496,7 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 
     // redraw region
     if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
     }
 
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
@@ -508,7 +508,7 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 
       // redraw region
       if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-        fMapScreenBottomDirty = TRUE;
+        fMapScreenBottomDirty = true;
       }
 
       // down a page
@@ -538,7 +538,7 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
     // redraw region
     if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
     }
 
     iLastRepeatScrollTime = 0;
@@ -550,7 +550,7 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
       // redraw region
       if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-        fMapScreenBottomDirty = TRUE;
+        fMapScreenBottomDirty = true;
       }
 
       // up a line
@@ -572,7 +572,7 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
     // redraw region
     if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-      fMapScreenBottomDirty = TRUE;
+      fMapScreenBottomDirty = true;
     }
 
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
@@ -584,7 +584,7 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
       // redraw region
       if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
-        fMapScreenBottomDirty = TRUE;
+        fMapScreenBottomDirty = true;
       }
 
       // up a page
@@ -644,7 +644,7 @@ function DisplayCompressMode(): void {
   }
 
   RestoreExternBackgroundRect(489, 456, 522 - 489, 467 - 454);
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   SetFont(COMPFONT());
 
   if (GetJA2Clock() - guiCompressionStringBaseTime >= PAUSE_GAME_TIMER) {
@@ -657,7 +657,7 @@ function DisplayCompressMode(): void {
     guiCompressionStringBaseTime = GetJA2Clock();
   }
 
-  if ((giTimeCompressMode != 0) && (GamePaused() == FALSE)) {
+  if ((giTimeCompressMode != 0) && (GamePaused() == false)) {
     usColor = FONT_LTGREEN;
   }
 
@@ -856,7 +856,7 @@ function EnableDisableBottomButtonsAndRegions(): void {
   // if in merc inventory panel
   if (fShowInventoryFlag) {
     // and an item is in the cursor
-    if ((gMPanelRegion.Cursor == EXTERN_CURSOR) || (InKeyRingPopup() == TRUE) || InItemStackPopup()) {
+    if ((gMPanelRegion.Cursor == EXTERN_CURSOR) || (InKeyRingPopup() == true) || InItemStackPopup()) {
       DisableButton(giMapInvDoneButton);
     } else {
       EnableButton(giMapInvDoneButton);
@@ -869,7 +869,7 @@ function EnableDisableBottomButtonsAndRegions(): void {
 }
 
 function EnableDisableTimeCompressButtons(): void {
-  if (AllowedToTimeCompress() == FALSE) {
+  if (AllowedToTimeCompress() == false) {
     DisableButton(guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_MORE]);
     DisableButton(guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_LESS]);
   } else {
@@ -890,7 +890,7 @@ function EnableDisableTimeCompressButtons(): void {
   }
 }
 
-function EnableDisAbleMapScreenOptionsButton(fEnable: BOOLEAN): void {
+function EnableDisAbleMapScreenOptionsButton(fEnable: boolean): void {
   if (fEnable) {
     EnableButton(guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_OPTIONS]);
   } else {
@@ -898,69 +898,69 @@ function EnableDisAbleMapScreenOptionsButton(fEnable: BOOLEAN): void {
   }
 }
 
-function AllowedToTimeCompress(): BOOLEAN {
+function AllowedToTimeCompress(): boolean {
   // if already leaving, disallow any other attempts to exit
   if (fLeavingMapScreen) {
-    return FALSE;
+    return false;
   }
 
   // if already going someplace
   if (gbExitingMapScreenToWhere != -1) {
-    return FALSE;
+    return false;
   }
 
   // if we're locked into paused time compression by some event that enforces that
   if (PauseStateLocked()) {
-    return FALSE;
+    return false;
   }
 
   // meanwhile coming up
   if (gfMeanwhileTryingToStart) {
-    return FALSE;
+    return false;
   }
 
   // someone has something to say
   if (!DialogueQueueIsEmpty()) {
-    return FALSE;
+    return false;
   }
 
   // moving / confirming movement
   if ((bSelectedDestChar != -1) || fPlotForHelicopter || gfInConfirmMapMoveMode || fShowMapScreenMovementList) {
-    return FALSE;
+    return false;
   }
 
   if (fShowAssignmentMenu || fShowTrainingMenu || fShowAttributeMenu || fShowSquadMenu || fShowContractMenu || fShowRemoveMenu) {
-    return FALSE;
+    return false;
   }
 
   if (fShowUpdateBox || fShowTownInfo || (sSelectedMilitiaTown != 0)) {
-    return FALSE;
+    return false;
   }
 
   // renewing contracts
   if (gfContractRenewalSquenceOn) {
-    return FALSE;
+    return false;
   }
 
   // disabled due to battle?
   if ((fDisableMapInterfaceDueToBattle) || (fDisableDueToBattleRoster)) {
-    return FALSE;
+    return false;
   }
 
   // if holding an inventory item
   if (fMapInventoryItem) {
-    return FALSE;
+    return false;
   }
 
   // show the inventory pool?
   if (fShowMapInventoryPool) {
     // prevent time compress (items get stolen over time, etc.)
-    return FALSE;
+    return false;
   }
 
   // no mercs have ever been hired
-  if (gfAtLeastOneMercWasHired == FALSE) {
-    return FALSE;
+  if (gfAtLeastOneMercWasHired == false) {
+    return false;
   }
 
   /*
@@ -973,24 +973,24 @@ function AllowedToTimeCompress(): BOOLEAN {
 
   // no usable mercs on team!
   if (!AnyUsableRealMercenariesOnTeam()) {
-    return FALSE;
+    return false;
   }
 
   // must wait till bombs go off
   if (ActiveTimedBombExists()) {
-    return FALSE;
+    return false;
   }
 
   // hostile sector / in battle
   if ((gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.fEnemyInSector)) {
-    return FALSE;
+    return false;
   }
 
   if (PlayerGroupIsInACreatureInfestedMine()) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function DisplayCurrentBalanceTitleForMapBottom(): void {
@@ -999,7 +999,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   let sFontY: INT16;
 
   // ste the font buffer
-  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   SetFont(COMPFONT());
   SetFontForeground(MAP_BOTTOM_FONT_COLOR);
@@ -1022,7 +1022,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   mprintf(sFontX, sFontY, "%s", sString);
 
   // ste the font buffer
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   return;
 }
 
@@ -1033,7 +1033,7 @@ function DisplayCurrentBalanceForMapBottom(): void {
   let sFontY: INT16;
 
   // ste the font buffer
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   // set up the font
   SetFont(COMPFONT());
@@ -1057,21 +1057,21 @@ function DisplayCurrentBalanceForMapBottom(): void {
 }
 
 function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
-  let fDisabled: BOOLEAN = FALSE;
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  let fDisabled: boolean = false;
+  /* static */ let fCreated: boolean = false;
 
   // allowed to time compress?
-  if (AllowedToTimeCompress() == FALSE) {
+  if (AllowedToTimeCompress() == false) {
     // no, disable buttons
-    fDisabled = TRUE;
+    fDisabled = true;
   }
 
-  if (fInMapMode == FALSE) {
-    fDisabled = FALSE;
+  if (fInMapMode == false) {
+    fDisabled = false;
   }
 
   // check if disabled and not created, create
-  if ((fDisabled) && (fCreated == FALSE)) {
+  if ((fDisabled) && (fCreated == false)) {
     // mask over compress more button
     MSYS_DefineRegion(addressof(gTimeCompressionMask[0]), 528, 456, 528 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
@@ -1081,13 +1081,13 @@ function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
     // mask over pause game button
     MSYS_DefineRegion(addressof(gTimeCompressionMask[2]), 487, 456, 522, 467, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
-    fCreated = TRUE;
-  } else if ((fDisabled == FALSE) && (fCreated)) {
+    fCreated = true;
+  } else if ((fDisabled == false) && (fCreated)) {
     // created and no longer need to disable
     MSYS_RemoveRegion(addressof(gTimeCompressionMask[0]));
     MSYS_RemoveRegion(addressof(gTimeCompressionMask[1]));
     MSYS_RemoveRegion(addressof(gTimeCompressionMask[2]));
-    fCreated = FALSE;
+    fCreated = false;
   }
 }
 
@@ -1109,15 +1109,15 @@ function DisplayProjectedDailyMineIncome(): void {
 
   if (iRate != iOldRate) {
     iOldRate = iRate;
-    fMapScreenBottomDirty = TRUE;
+    fMapScreenBottomDirty = true;
 
     // if screen was not dirtied, leave
-    if (fMapBottomDirtied == FALSE) {
+    if (fMapBottomDirtied == false) {
       return;
     }
   }
   // ste the font buffer
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   // set up the font
   SetFont(COMPFONT());
@@ -1139,23 +1139,23 @@ function DisplayProjectedDailyMineIncome(): void {
   return;
 }
 
-function CommonTimeCompressionChecks(): BOOLEAN {
+function CommonTimeCompressionChecks(): boolean {
   if (IsMapScreenHelpTextUp()) {
     // stop mapscreen text
     StopMapScreenHelpText();
-    return TRUE;
+    return true;
   }
 
-  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
+  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == true)) {
     // abort plotting movement
     AbortMovementPlottingMode();
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function AnyUsableRealMercenariesOnTeam(): BOOLEAN {
+function AnyUsableRealMercenariesOnTeam(): boolean {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
   let iNumberOnTeam: INT32 = 0;
@@ -1168,11 +1168,11 @@ function AnyUsableRealMercenariesOnTeam(): BOOLEAN {
     pSoldier = addressof(Menptr[iCounter]);
 
     if ((pSoldier.value.bActive) && (pSoldier.value.bLife > 0) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD) && (pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__EPC)) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function RequestTriggerExitFromMapscreen(bExitToWhere: INT8): void {
@@ -1194,55 +1194,55 @@ function RequestTriggerExitFromMapscreen(bExitToWhere: INT8): void {
     gbExitingMapScreenToWhere = bExitToWhere;
 
     // delay until mapscreen has had a chance to render at least one full frame
-    gfOneFramePauseOnExit = TRUE;
+    gfOneFramePauseOnExit = true;
   }
 }
 
-function AllowedToExitFromMapscreenTo(bExitToWhere: INT8): BOOLEAN {
+function AllowedToExitFromMapscreenTo(bExitToWhere: INT8): boolean {
   Assert((bExitToWhere >= Enum144.MAP_EXIT_TO_LAPTOP) && (bExitToWhere <= Enum144.MAP_EXIT_TO_SAVE));
 
   // if already leaving, disallow any other attempts to exit
   if (fLeavingMapScreen) {
-    return FALSE;
+    return false;
   }
 
   // if already going someplace else
   if ((gbExitingMapScreenToWhere != -1) && (gbExitingMapScreenToWhere != bExitToWhere)) {
-    return FALSE;
+    return false;
   }
 
   // someone has something to say
   if (!DialogueQueueIsEmpty()) {
-    return FALSE;
+    return false;
   }
 
   // meanwhile coming up
   if (gfMeanwhileTryingToStart) {
-    return FALSE;
+    return false;
   }
 
   // if we're locked into paused time compression by some event that enforces that
   if (PauseStateLocked()) {
-    return FALSE;
+    return false;
   }
 
   // if holding an inventory item
   if (fMapInventoryItem || (gMPanelRegion.Cursor == EXTERN_CURSOR)) {
-    return FALSE;
+    return false;
   }
 
   if (fShowUpdateBox || fShowTownInfo || (sSelectedMilitiaTown != 0)) {
-    return FALSE;
+    return false;
   }
 
   // renewing contracts
   if (gfContractRenewalSquenceOn) {
-    return FALSE;
+    return false;
   }
 
   // battle about to occur?
   if ((fDisableDueToBattleRoster) || (fDisableMapInterfaceDueToBattle)) {
-    return FALSE;
+    return false;
   }
 
   /*
@@ -1258,31 +1258,31 @@ function AllowedToExitFromMapscreenTo(bExitToWhere: INT8): BOOLEAN {
   if (bExitToWhere == Enum144.MAP_EXIT_TO_TACTICAL) {
     // if in battle or air raid, the ONLY sector we can go tactical in is the one that's loaded
     if (((gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.fEnemyInSector) /*|| InAirRaid( )*/) && ((sSelMapX != gWorldSectorX) || (sSelMapY != gWorldSectorY) || (iCurrentMapSectorZ) != gbWorldSectorZ)) {
-      return FALSE;
+      return false;
     }
 
     // must have some mercs there
     if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, iCurrentMapSectorZ)) {
-      return FALSE;
+      return false;
     }
   }
 
   // if we are map screen sector inventory
   if (fShowMapInventoryPool) {
     // dont allow it
-    return FALSE;
+    return false;
   }
 
   // OK to go there, passed all the checks
-  return TRUE;
+  return true;
 }
 
 function HandleExitsFromMapScreen(): void {
   // if going somewhere
   if (gbExitingMapScreenToWhere != -1) {
     // delay all exits by one frame...
-    if (gfOneFramePauseOnExit == TRUE) {
-      gfOneFramePauseOnExit = FALSE;
+    if (gfOneFramePauseOnExit == true) {
+      gfOneFramePauseOnExit = false;
       return;
     }
 
@@ -1291,13 +1291,13 @@ function HandleExitsFromMapScreen(): void {
       // see where we're trying to go
       switch (gbExitingMapScreenToWhere) {
         case Enum144.MAP_EXIT_TO_LAPTOP:
-          fLapTop = TRUE;
+          fLapTop = true;
           SetPendingNewScreen(Enum26.LAPTOP_SCREEN);
 
           if (gfExtraBuffer) {
             // Then initiate the transition animation from the mapscreen to laptop...
             BlitBufferToBuffer(FRAME_BUFFER, guiEXTRABUFFER, 0, 0, 640, 480);
-            gfStartMapScreenToLaptopTransition = TRUE;
+            gfStartMapScreenToLaptopTransition = true;
           }
           break;
 
@@ -1313,21 +1313,21 @@ function HandleExitsFromMapScreen(): void {
 
         case Enum144.MAP_EXIT_TO_SAVE:
         case Enum144.MAP_EXIT_TO_LOAD:
-          gfCameDirectlyFromGame = TRUE;
+          gfCameDirectlyFromGame = true;
           guiPreviousOptionScreen = guiCurrentScreen;
           SetPendingNewScreen(Enum26.SAVE_LOAD_SCREEN);
           break;
 
         default:
           // invalid exit type
-          Assert(FALSE);
+          Assert(false);
       }
 
       // time compression during mapscreen exit doesn't seem to cause any problems, but turn it off as early as we can
       StopTimeCompression();
 
       // now leaving mapscreen
-      fLeavingMapScreen = TRUE;
+      fLeavingMapScreen = true;
     }
 
     // cancel exit, either we're on our way, or we're not allowed to go
@@ -1385,5 +1385,5 @@ function ChangeCurrentMapscreenMessageIndex(ubNewMessageIndex: UINT8): void {
   //	gfNewScrollMessage = TRUE;
 
   // refresh screen
-  fMapScreenBottomDirty = TRUE;
+  fMapScreenBottomDirty = true;
 }

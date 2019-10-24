@@ -66,7 +66,7 @@ interface STRATEGIC_STATUS {
   ubHighestProgress: UINT8; // the highest level of progress player has attained thus far in the game (0-100)
 
   ubStandardArmyGunIndex: UINT8[] /* [ARMY_GUN_LEVELS] */; // type of gun in each group that Queen's army is using this game
-  fWeaponDroppedAlready: BOOLEAN[] /* [MAX_WEAPONS] */; // flag that tracks whether this weapon type has been dropped before
+  fWeaponDroppedAlready: boolean[] /* [MAX_WEAPONS] */; // flag that tracks whether this weapon type has been dropped before
 
   ubMercDeaths: UINT8; // how many soldiers have bit it while in the player's employ (0-100)
   uiManDaysPlayed: UINT32; // once per day, # living mercs on player's team is added to this running total

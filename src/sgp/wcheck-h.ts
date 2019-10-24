@@ -1,6 +1,6 @@
 const CHECKF = (exp) => {
   if (!(exp)) {
-    return (FALSE);
+    return (false);
   }
 };
 const CHECKV = (exp) => {
@@ -22,7 +22,7 @@ const CHECKBI = (exp) => {
 const CHECKASSERTF = (exp) => {
   if (!(exp)) {
     ASSERT(0);
-    return (FALSE);
+    return (false);
   }
 };
 const CHECKASSERTV = (exp) => {

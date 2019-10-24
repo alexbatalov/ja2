@@ -8,7 +8,7 @@ interface PROGRESSBAR {
   usBarRight: UINT16;
   usBarBottom: UINT16;
 
-  fPanel: BOOLEAN;
+  fPanel: boolean;
 
   usPanelLeft: UINT16;
   usPanelTop: UINT16;
@@ -40,7 +40,7 @@ interface PROGRESSBAR {
   rStart: double;
   rEnd: double;
 
-  fDisplayText: BOOLEAN;
-  fUseSaveBuffer: BOOLEAN; // use the save buffer when display the text
+  fDisplayText: boolean;
+  fUseSaveBuffer: boolean; // use the save buffer when display the text
   rLastActual: double;
 }

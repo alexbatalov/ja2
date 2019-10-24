@@ -95,7 +95,7 @@ function MakeClosestEnemyChosenOne(): void {
     // FindAdjacentGrid set HandGrid for us.  If we aren't at that spot already
     if (pSoldier.value.sGridNo != sPanicTriggerGridNo) {
       // get the AP cost for this enemy to go to target position
-      sPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, FALSE, FALSE, FALSE, Enum193.WALKING, FALSE, FALSE, 0);
+      sPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, false, false, false, Enum193.WALKING, false, false, 0);
     } else {
       sPathCost = 0;
     }
@@ -165,7 +165,7 @@ function PossiblyMakeThisEnemyChosenOne(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if he can't get to a spot where he could get at the panic trigger
   iAPCost = AP_PULL_TRIGGER;
   if (pSoldier.value.sGridNo != sPanicTriggerGridNo) {
-    iPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, FALSE, FALSE, FALSE, Enum193.RUNNING, FALSE, FALSE, 0);
+    iPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, false, false, false, Enum193.RUNNING, false, false, 0);
     if (iPathCost == 0) {
       // pSoldier->bHasKeys = bOldKeys;
       pSoldier.value.bHasKeys = (pSoldier.value.bHasKeys >> 1);
@@ -185,7 +185,7 @@ function PossiblyMakeThisEnemyChosenOne(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
-  let fFoundRoute: BOOLEAN = FALSE;
+  let fFoundRoute: boolean = false;
   let bSlot: INT8;
   let iPathCost: INT32;
   let bPanicTrigger: INT8;
@@ -228,12 +228,12 @@ function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
       // if not standing on the panic trigger
       if (pSoldier.value.sGridNo != sPanicTriggerGridNo) {
         // determine whether we can still get there
-        iPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, FALSE, FALSE, FALSE, Enum193.RUNNING, FALSE, FALSE, 0);
+        iPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, false, false, false, Enum193.RUNNING, false, false, 0);
         if (iPathCost != 0) {
-          fFoundRoute = TRUE;
+          fFoundRoute = true;
         }
       } else {
-        fFoundRoute = TRUE;
+        fFoundRoute = true;
       }
 
       // if we managed to find an adjacent spot
@@ -278,7 +278,7 @@ function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
             // animations don't allow trigger-pulling from water, so we won't!
             if (LegalNPCDestination(pSoldier, sPanicTriggerGridNo, ENSURE_PATH, NOWATER, 0)) {
               pSoldier.value.usActionData = sPanicTriggerGridNo;
-              pSoldier.value.bPathStored = TRUE;
+              pSoldier.value.bPathStored = true;
 
               return Enum289.AI_ACTION_GET_CLOSER;
             } else // Oh oh, the chosen one can't get to the trigger!
@@ -350,24 +350,24 @@ function ClosestPanicTrigger(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return bClosestTrigger;
 }
 
-function NeedToRadioAboutPanicTrigger(): BOOLEAN {
+function NeedToRadioAboutPanicTrigger(): boolean {
   let uiPercentEnemiesKilled: UINT32;
   let bLoop: INT8;
 
   if (!(gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE) || gTacticalStatus.ubTheChosenOne != NOBODY) {
     // already done!
-    return FALSE;
+    return false;
   }
 
   if (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector == 0) {
-    return FALSE;
+    return false;
   }
 
   if (gWorldSectorX == TIXA_SECTOR_X && gWorldSectorY == TIXA_SECTOR_Y) {
     let pSoldier: Pointer<SOLDIERTYPE>;
-    pSoldier = FindSoldierByProfileID(Enum268.WARDEN, FALSE);
+    pSoldier = FindSoldierByProfileID(Enum268.WARDEN, false);
     if (!pSoldier || pSoldier.value.ubID == gTacticalStatus.ubTheChosenOne) {
-      return FALSE;
+      return false;
     }
   }
 
@@ -376,11 +376,11 @@ function NeedToRadioAboutPanicTrigger(): BOOLEAN {
   for (bLoop = 0; bLoop < NUM_PANIC_TRIGGERS; bLoop++) {
     // if the bomb exists and its tolerance has been exceeded
     if ((gTacticalStatus.sPanicTriggerGridNo[bLoop] != NOWHERE) && (uiPercentEnemiesKilled >= gTacticalStatus.ubPanicTolerance[bLoop])) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 const STAIRCASE_GRIDNO = 12067;

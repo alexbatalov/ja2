@@ -89,7 +89,7 @@ let guiLONGLINE: UINT32;
 let guiLISTCOLUMNS: UINT32;
 
 // are in the financial system right now?
-let fInFinancialMode: BOOLEAN = FALSE;
+let fInFinancialMode: boolean = false;
 
 // the last page loaded
 let guiLastPageLoaded: UINT32 = 0;
@@ -146,10 +146,10 @@ function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, uiDate:
     SetFinanceButtonStates();
 
     // force update
-    fPausedReDrawScreenFlag = TRUE;
+    fPausedReDrawScreenFlag = true;
   }
 
-  fMapScreenBottomDirty = TRUE;
+  fMapScreenBottomDirty = true;
 
   // return unique id of this transaction
   return uiId;
@@ -323,7 +323,7 @@ function EnterFinances(): void {
   // entry into finanacial system, load graphics, set variables..draw screen once
   // set the fact we are in the financial display system
 
-  fInFinancialMode = TRUE;
+  fInFinancialMode = true;
   // build finances list
   // OpenAndReadFinancesFile( );
 
@@ -337,7 +337,7 @@ function EnterFinances(): void {
   ClearFinanceList();
 
   // force redraw of the entire screen
-  fReDrawScreenFlag = TRUE;
+  fReDrawScreenFlag = true;
 
   // set number of pages
   SetLastPageInRecords();
@@ -367,7 +367,7 @@ function ExitFinances(): void {
   LaptopSaveInfo.iCurrentFinancesPage = iCurrentPage;
 
   // not in finance system anymore
-  fInFinancialMode = FALSE;
+  fInFinancialMode = false;
 
   // destroy buttons
   DestroyFinanceButtons();
@@ -411,7 +411,7 @@ function RenderFinances(): void {
   return;
 }
 
-function LoadFinances(): BOOLEAN {
+function LoadFinances(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   // load Finance video objects into memory
 
@@ -440,7 +440,7 @@ function LoadFinances(): BOOLEAN {
   FilenameForBPP("LAPTOP\\divisionline.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLINE)));
 
-  return TRUE;
+  return true;
 }
 
 function RemoveFinances(): void {
@@ -922,7 +922,7 @@ function OpenAndReadFinancesFile(): void {
     return;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1078,7 +1078,7 @@ function BtnFinanceDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
 
     // set button state
     SetFinanceButtonStates();
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 }
 
@@ -1094,7 +1094,7 @@ function BtnFinanceDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
 
     pCurrentFinance = pFinanceListHead;
     // redraw screen
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 }
 
@@ -1122,14 +1122,14 @@ function BtnFinanceFirstLastPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32
 
     pCurrentFinance = pFinanceListHead;
     // redraw screen
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 }
 
 function IncrementCurrentPageFinancialDisplay(): void {
   // run through list, from pCurrentFinance, to NUM_RECORDS_PER_PAGE +1 FinancialUnits
   let pTempFinance: FinanceUnitPtr = pCurrentFinance;
-  let fOkToIncrementPage: BOOLEAN = FALSE;
+  let fOkToIncrementPage: boolean = false;
   let iCounter: INT32 = 0;
 
   // on the overview page, simply set iCurrent to head of list, and page to 1
@@ -1150,7 +1150,7 @@ function IncrementCurrentPageFinancialDisplay(): void {
   while ((pTempFinance) && (!fOkToIncrementPage)) {
     // found the next page,  first record thereof
     if (iCounter == NUM_RECORDS_PER_PAGE + 1) {
-      fOkToIncrementPage = TRUE;
+      fOkToIncrementPage = true;
       pCurrentFinance = pTempFinance.value.Next;
     }
 
@@ -1269,7 +1269,7 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       let ubSectorY: UINT8;
       ubSectorX = SECTORX(pFinance.value.ubSecondCode);
       ubSectorY = SECTORY(pFinance.value.ubSecondCode);
-      GetSectorIDString(ubSectorX, ubSectorY, 0, str, TRUE);
+      GetSectorIDString(ubSectorX, ubSectorY, 0, str, true);
       swprintf(pString, pTransactionText[Enum80.TRAIN_TOWN_MILITIA], str);
     } break;
 
@@ -1323,14 +1323,14 @@ function DisplayFinancePageNumberAndDateRange(): void {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-function WriteBalanceToDisk(): BOOLEAN {
+function WriteBalanceToDisk(): boolean {
   // will write the current balance to disk
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
   let pFinanceList: FinanceUnitPtr = pFinanceListHead;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
 
   // write balance to disk
   FileWrite(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), null);
@@ -1338,7 +1338,7 @@ function WriteBalanceToDisk(): BOOLEAN {
   // close file
   FileClose(hFileHandle);
 
-  return TRUE;
+  return true;
 }
 
 function GetBalanceFromDisk(): void {
@@ -1349,7 +1349,7 @@ function GetBalanceFromDisk(): void {
   let iBytesRead: INT32 = 0;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1373,28 +1373,28 @@ function GetBalanceFromDisk(): void {
   return;
 }
 
-function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): BOOLEAN {
+function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): boolean {
   // will write the current finance to disk
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
   let pFinanceList: FinanceUnitPtr = pFinanceListHead;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
 
   // if no file exits, do nothing
   if (!hFileHandle) {
     // close file
     FileClose(hFileHandle);
 
-    return FALSE;
+    return false;
   }
 
   // go to the end
-  if (FileSeek(hFileHandle, 0, FILE_SEEK_FROM_END) == FALSE) {
+  if (FileSeek(hFileHandle, 0, FILE_SEEK_FROM_END) == false) {
     // error
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   }
 
   // write finance to disk
@@ -1408,7 +1408,7 @@ function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): BOOLEAN {
   // close file
   FileClose(hFileHandle);
 
-  return TRUE;
+  return true;
 }
 
 function ReadInLastElementOfFinanceListAndReturnIdNumber(): UINT32 {
@@ -1423,7 +1423,7 @@ function ReadInLastElementOfFinanceListAndReturnIdNumber(): UINT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1459,7 +1459,7 @@ function SetLastPageInRecords(): void {
     return;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1483,44 +1483,44 @@ function SetLastPageInRecords(): void {
   return;
 }
 
-function LoadPreviousPage(): BOOLEAN {
+function LoadPreviousPage(): boolean {
   // clear out old list of records, and load in previous page worth of records
   ClearFinanceList();
 
   // load previous page
   if ((iCurrentPage == 1) || (iCurrentPage == 0)) {
     iCurrentPage = 0;
-    return FALSE;
+    return false;
   }
 
   // now load in previous page's records, if we can
   if (LoadInRecords(iCurrentPage - 1)) {
     iCurrentPage--;
-    return TRUE;
+    return true;
   } else {
     LoadInRecords(iCurrentPage);
-    return FALSE;
+    return false;
   }
 }
 
-function LoadNextPage(): BOOLEAN {
+function LoadNextPage(): boolean {
   // clear out old list of records, and load in previous page worth of records
   ClearFinanceList();
 
   // now load in previous page's records, if we can
   if (LoadInRecords(iCurrentPage + 1)) {
     iCurrentPage++;
-    return TRUE;
+    return true;
   } else {
     LoadInRecords(iCurrentPage);
-    return FALSE;
+    return false;
   }
 }
 
-function LoadInRecords(uiPage: UINT32): BOOLEAN {
+function LoadInRecords(uiPage: UINT32): boolean {
   // loads in records belogning, to page uiPage
   // no file, return
-  let fOkToContinue: BOOLEAN = TRUE;
+  let fOkToContinue: boolean = true;
   let iCount: INT32 = 0;
   let hFileHandle: HWFILE;
   let ubCode: UINT8;
@@ -1533,34 +1533,34 @@ function LoadInRecords(uiPage: UINT32): BOOLEAN {
 
   // check if bad page
   if (uiPage == 0) {
-    return FALSE;
+    return false;
   }
 
   if (!(FileExists(FINANCES_DATA_FILE)))
-    return FALSE;
+    return false;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
     // close file
     FileClose(hFileHandle);
 
-    return FALSE;
+    return false;
   }
 
   // make sure file is more than 0 length
   if (FileGetSize(hFileHandle) == 0) {
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   }
 
   // is the file long enough?
   if ((FileGetSize(hFileHandle) - sizeof(INT32) - 1) / (NUM_RECORDS_PER_PAGE * (sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32))) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   }
 
   FileSeek(hFileHandle, sizeof(INT32) + (uiPage - 1) * NUM_RECORDS_PER_PAGE * (sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32)), FILE_SEEK_FROM_START);
@@ -1586,7 +1586,7 @@ function LoadInRecords(uiPage: UINT32): BOOLEAN {
     // we've overextended our welcome, and bypassed end of file, get out
     if (uiByteCount >= FileGetSize(hFileHandle)) {
       // not ok to continue
-      fOkToContinue = FALSE;
+      fOkToContinue = false;
     }
 
     iCount++;
@@ -1598,13 +1598,13 @@ function LoadInRecords(uiPage: UINT32): BOOLEAN {
   // check to see if we in fact have a list to display
   if (pFinanceListHead == null) {
     // got no records, return false
-    return FALSE;
+    return false;
   }
 
   // set up current finance
   pCurrentFinance = pFinanceListHead;
 
-  return TRUE;
+  return true;
 }
 
 function InsertCommasForDollarFigure(pString: STR16): void {
@@ -1695,7 +1695,7 @@ function GetPreviousBalanceToDate(): INT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1726,7 +1726,7 @@ function GetPreviousDaysBalance(): INT32 {
   let hFileHandle: HWFILE;
   let iBytesRead: INT32 = 0;
   let iDateInMinutes: UINT32 = 0;
-  let fOkToContinue: BOOLEAN = FALSE;
+  let fOkToContinue: boolean = false;
   let iByteCount: UINT32 = 0;
   let iCounter: INT32 = 1;
   let ubCode: UINT8;
@@ -1734,7 +1734,7 @@ function GetPreviousDaysBalance(): INT32 {
   let uiDate: UINT32;
   let iAmount: INT32;
   let iBalanceToDate: INT32;
-  let fGoneTooFar: BOOLEAN = FALSE;
+  let fGoneTooFar: boolean = false;
   let iFileSize: INT32 = 0;
 
   // what day is it?
@@ -1746,7 +1746,7 @@ function GetPreviousDaysBalance(): INT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1773,21 +1773,21 @@ function GetPreviousDaysBalance(): INT32 {
 
     // check to see if we are far enough
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 2) {
-      fOkToContinue = TRUE;
+      fOkToContinue = true;
     }
 
     if (iDateInMinutes / (24 * 60) >= 2) {
       // there are no entries for the previous day
       if ((uiDate / (24 * 60)) < (iDateInMinutes / (24 * 60)) - 2) {
-        fGoneTooFar = TRUE;
+        fGoneTooFar = true;
       }
     } else {
-      fGoneTooFar = TRUE;
+      fGoneTooFar = true;
     }
     iCounter++;
   }
 
-  if (fOkToContinue == FALSE) {
+  if (fOkToContinue == false) {
     // reached beginning of file, nothing found, return 0
     // close file
     FileClose(hFileHandle);
@@ -1806,7 +1806,7 @@ function GetTodaysBalance(): INT32 {
   let hFileHandle: HWFILE;
   let iBytesRead: INT32 = 0;
   let iDateInMinutes: UINT32 = 0;
-  let fOkToContinue: BOOLEAN = FALSE;
+  let fOkToContinue: boolean = false;
   let iByteCount: UINT32 = 0;
   let iCounter: INT32 = 1;
   let ubCode: UINT8;
@@ -1814,7 +1814,7 @@ function GetTodaysBalance(): INT32 {
   let uiDate: UINT32;
   let iAmount: INT32;
   let iBalanceToDate: INT32;
-  let fGoneTooFar: BOOLEAN = FALSE;
+  let fGoneTooFar: boolean = false;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -1825,7 +1825,7 @@ function GetTodaysBalance(): INT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1854,7 +1854,7 @@ function GetTodaysBalance(): INT32 {
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
-      fOkToContinue = TRUE;
+      fOkToContinue = true;
     }
 
     iCounter++;
@@ -1863,7 +1863,7 @@ function GetTodaysBalance(): INT32 {
   FileClose(hFileHandle);
 
   // not found ?
-  if (fOkToContinue == FALSE) {
+  if (fOkToContinue == false) {
     iBalanceToDate = 0;
   }
 
@@ -1878,8 +1878,8 @@ function GetPreviousDaysIncome(): INT32 {
   let hFileHandle: HWFILE;
   let iBytesRead: INT32 = 0;
   let iDateInMinutes: UINT32 = 0;
-  let fOkToContinue: BOOLEAN = FALSE;
-  let fOkToIncrement: BOOLEAN = FALSE;
+  let fOkToContinue: boolean = false;
+  let fOkToIncrement: boolean = false;
   let iByteCount: UINT32 = 0;
   let iCounter: INT32 = 1;
   let ubCode: UINT8;
@@ -1887,7 +1887,7 @@ function GetPreviousDaysIncome(): INT32 {
   let uiDate: UINT32;
   let iAmount: INT32;
   let iBalanceToDate: INT32;
-  let fGoneTooFar: BOOLEAN = FALSE;
+  let fGoneTooFar: boolean = false;
   let iTotalPreviousIncome: INT32 = 0;
 
   // what day is it?
@@ -1899,7 +1899,7 @@ function GetPreviousDaysIncome(): INT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1932,17 +1932,17 @@ function GetPreviousDaysIncome(): INT32 {
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 2) {
-      fOkToContinue = TRUE;
+      fOkToContinue = true;
     }
 
     // there are no entries for the previous day
     if ((uiDate / (24 * 60)) < (iDateInMinutes / (24 * 60)) - 2) {
-      fGoneTooFar = TRUE;
+      fGoneTooFar = true;
     }
 
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
       // now ok to increment amount
-      fOkToIncrement = TRUE;
+      fOkToIncrement = true;
     }
 
     if ((fOkToIncrement) && ((ubCode == Enum80.DEPOSIT_FROM_GOLD_MINE) || (ubCode == Enum80.DEPOSIT_FROM_SILVER_MINE))) {
@@ -1968,8 +1968,8 @@ function GetTodaysDaysIncome(): INT32 {
   let hFileHandle: HWFILE;
   let iBytesRead: INT32 = 0;
   let iDateInMinutes: UINT32 = 0;
-  let fOkToContinue: BOOLEAN = FALSE;
-  let fOkToIncrement: BOOLEAN = FALSE;
+  let fOkToContinue: boolean = false;
+  let fOkToIncrement: boolean = false;
   let iByteCount: UINT32 = 0;
   let iCounter: INT32 = 1;
   let ubCode: UINT8;
@@ -1977,7 +1977,7 @@ function GetTodaysDaysIncome(): INT32 {
   let uiDate: UINT32;
   let iAmount: INT32;
   let iBalanceToDate: INT32;
-  let fGoneTooFar: BOOLEAN = FALSE;
+  let fGoneTooFar: boolean = false;
   let iTotalIncome: INT32 = 0;
 
   // what day is it?
@@ -1989,7 +1989,7 @@ function GetTodaysDaysIncome(): INT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -2018,25 +2018,25 @@ function GetTodaysDaysIncome(): INT32 {
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
-      fOkToContinue = TRUE;
+      fOkToContinue = true;
     }
 
     if ((uiDate / (24 * 60)) > (iDateInMinutes / (24 * 60)) - 1) {
       // now ok to increment amount
-      fOkToIncrement = TRUE;
+      fOkToIncrement = true;
     }
 
     if ((fOkToIncrement) && ((ubCode == Enum80.DEPOSIT_FROM_GOLD_MINE) || (ubCode == Enum80.DEPOSIT_FROM_SILVER_MINE))) {
       // increment total
       iTotalIncome += iAmount;
-      fOkToIncrement = FALSE;
+      fOkToIncrement = false;
     }
 
     iCounter++;
   }
 
   // no entries, return nothing - no income for the day
-  if (fGoneTooFar == TRUE) {
+  if (fGoneTooFar == true) {
     FileClose(hFileHandle);
     return 0;
   }
@@ -2082,8 +2082,8 @@ function GetTodaysOtherDeposits(): INT32 {
   let hFileHandle: HWFILE;
   let iBytesRead: INT32 = 0;
   let iDateInMinutes: UINT32 = 0;
-  let fOkToContinue: BOOLEAN = FALSE;
-  let fOkToIncrement: BOOLEAN = FALSE;
+  let fOkToContinue: boolean = false;
+  let fOkToIncrement: boolean = false;
   let iByteCount: UINT32 = 0;
   let iCounter: INT32 = 1;
   let ubCode: UINT8;
@@ -2091,7 +2091,7 @@ function GetTodaysOtherDeposits(): INT32 {
   let uiDate: UINT32;
   let iAmount: INT32;
   let iBalanceToDate: INT32;
-  let fGoneTooFar: BOOLEAN = FALSE;
+  let fGoneTooFar: boolean = false;
   let iTotalIncome: INT32 = 0;
 
   // what day is it?
@@ -2103,7 +2103,7 @@ function GetTodaysOtherDeposits(): INT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -2132,19 +2132,19 @@ function GetTodaysOtherDeposits(): INT32 {
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
-      fOkToContinue = TRUE;
+      fOkToContinue = true;
     }
 
     if ((uiDate / (24 * 60)) > (iDateInMinutes / (24 * 60)) - 1) {
       // now ok to increment amount
-      fOkToIncrement = TRUE;
+      fOkToIncrement = true;
     }
 
     if ((fOkToIncrement) && ((ubCode != Enum80.DEPOSIT_FROM_GOLD_MINE) && (ubCode != Enum80.DEPOSIT_FROM_SILVER_MINE))) {
       if (iAmount > 0) {
         // increment total
         iTotalIncome += iAmount;
-        fOkToIncrement = FALSE;
+        fOkToIncrement = false;
       }
     }
 
@@ -2152,7 +2152,7 @@ function GetTodaysOtherDeposits(): INT32 {
   }
 
   // no entries, return nothing - no income for the day
-  if (fGoneTooFar == TRUE) {
+  if (fGoneTooFar == true) {
     FileClose(hFileHandle);
     return 0;
   }
@@ -2170,8 +2170,8 @@ function GetYesterdaysOtherDeposits(): INT32 {
   let hFileHandle: HWFILE;
   let iBytesRead: INT32 = 0;
   let iDateInMinutes: UINT32 = 0;
-  let fOkToContinue: BOOLEAN = FALSE;
-  let fOkToIncrement: BOOLEAN = FALSE;
+  let fOkToContinue: boolean = false;
+  let fOkToIncrement: boolean = false;
   let iByteCount: UINT32 = 0;
   let iCounter: INT32 = 1;
   let ubCode: UINT8;
@@ -2179,7 +2179,7 @@ function GetYesterdaysOtherDeposits(): INT32 {
   let uiDate: UINT32;
   let iAmount: INT32;
   let iBalanceToDate: INT32;
-  let fGoneTooFar: BOOLEAN = FALSE;
+  let fGoneTooFar: boolean = false;
   let iTotalPreviousIncome: INT32 = 0;
 
   // what day is it?
@@ -2191,7 +2191,7 @@ function GetYesterdaysOtherDeposits(): INT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -2220,17 +2220,17 @@ function GetYesterdaysOtherDeposits(): INT32 {
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 2) {
-      fOkToContinue = TRUE;
+      fOkToContinue = true;
     }
 
     // there are no entries for the previous day
     if ((uiDate / (24 * 60)) < (iDateInMinutes / (24 * 60)) - 2) {
-      fGoneTooFar = TRUE;
+      fGoneTooFar = true;
     }
 
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
       // now ok to increment amount
-      fOkToIncrement = TRUE;
+      fOkToIncrement = true;
     }
 
     if ((fOkToIncrement) && ((ubCode != Enum80.DEPOSIT_FROM_GOLD_MINE) && (ubCode != Enum80.DEPOSIT_FROM_SILVER_MINE))) {
@@ -2277,7 +2277,7 @@ function LoadCurrentBalance(): void {
   }
 
   // open file
-  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {

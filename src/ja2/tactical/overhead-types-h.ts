@@ -307,4 +307,4 @@ interface PaletteReplacementType {
 // This will set an animation ID
 const SET_PALETTEREP_ID = (a, b) => (strcpy(a, b));
 // strcmp returns 0 if true!
-const COMPARE_PALETTEREP_ID = (a, b) => (strcmp(a, b) ? FALSE : TRUE);
+const COMPARE_PALETTEREP_ID = (a, b) => (strcmp(a, b) ? false : true);

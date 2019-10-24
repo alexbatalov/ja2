@@ -45,25 +45,25 @@ interface AudioGapList {
   pHead: Pointer<AUDIO_GAP>;
   pCurrent: Pointer<AUDIO_GAP>;
 
-  audio_gap_active: BOOLEAN;
+  audio_gap_active: boolean;
 }
 
 interface FACETYPE {
   uiFlags: UINT32; // Basic flags
   iID: INT32;
-  fAllocated: BOOLEAN; // Allocated or not
-  fTalking: BOOLEAN; // Set to true if face is talking ( can be sitting for user input to esc )
-  fAnimatingTalking: BOOLEAN; // Set if the face is animating right now
-  fDisabled: BOOLEAN; // Not active
-  fValidSpeech: BOOLEAN;
-  fStartFrame: BOOLEAN; // Flag for the first start frame
-  fInvalidAnim: BOOLEAN;
+  fAllocated: boolean; // Allocated or not
+  fTalking: boolean; // Set to true if face is talking ( can be sitting for user input to esc )
+  fAnimatingTalking: boolean; // Set if the face is animating right now
+  fDisabled: boolean; // Not active
+  fValidSpeech: boolean;
+  fStartFrame: boolean; // Flag for the first start frame
+  fInvalidAnim: boolean;
 
   uiTalkingDuration: UINT32; // A delay based on text length for how long to talk if no speech
   uiTalkingTimer: UINT32; // A timer to handle delay when no speech file
   uiTalkingFromVeryBeginningTimer: UINT32; // Timer from very beginning of talking...
 
-  fFinishTalking: BOOLEAN; // A flag to indicate we want to delay after speech done
+  fFinishTalking: boolean; // A flag to indicate we want to delay after speech done
 
   iVideoOverlay: INT32; // Value for video overlay ( not used too much )
 
@@ -77,11 +77,11 @@ interface FACETYPE {
   usFaceHeight: UINT16;
   uiAutoDisplayBuffer: UINT32; // Display buffer for face
   uiAutoRestoreBuffer: UINT32; // Restore buffer
-  fAutoRestoreBuffer: BOOLEAN; // Flag to indicate our own restorebuffer or not
-  fAutoDisplayBuffer: BOOLEAN; // Flag to indicate our own display buffer or not
-  fDisplayTextOver: BOOLEAN; // Boolean indicating to display text on face
-  fOldDisplayTextOver: BOOLEAN; // OLD Boolean indicating to display text on face
-  fCanHandleInactiveNow: BOOLEAN;
+  fAutoRestoreBuffer: boolean; // Flag to indicate our own restorebuffer or not
+  fAutoDisplayBuffer: boolean; // Flag to indicate our own display buffer or not
+  fDisplayTextOver: boolean; // Boolean indicating to display text on face
+  fOldDisplayTextOver: boolean; // OLD Boolean indicating to display text on face
+  fCanHandleInactiveNow: boolean;
   zDisplayText: INT16[] /* [30] */; // String of text that can be displayed
 
   usEyesX: UINT16;
@@ -111,12 +111,12 @@ interface FACETYPE {
 
   bOldSoldierLife: INT8;
   bOldActionPoints: INT8;
-  fOldHandleUIHatch: BOOLEAN;
-  fOldShowHighlight: BOOLEAN;
+  fOldHandleUIHatch: boolean;
+  fOldShowHighlight: boolean;
   bOldAssignment: INT8;
   ubOldServiceCount: INT8;
   ubOldServicePartner: UINT8;
-  fOldShowMoveHilight: BOOLEAN;
+  fOldShowMoveHilight: boolean;
 
   sMouthFrame: UINT16;
   uiMouthlast: UINT32;
@@ -130,9 +130,9 @@ interface FACETYPE {
   uiUserData1: UINT32;
   uiUserData2: UINT32;
 
-  fCompatibleItems: BOOLEAN;
-  fOldCompatibleItems: BOOLEAN;
-  bOldStealthMode: BOOLEAN;
+  fCompatibleItems: boolean;
+  fOldCompatibleItems: boolean;
+  bOldStealthMode: boolean;
   bOldOppCnt: INT8;
 
   GapList: AudioGapList;

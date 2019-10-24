@@ -14,10 +14,10 @@ interface POPUPSTRING {
   ubShade: UINT8;
   ubSecondaryShade: UINT8;
   uiFont: UINT32;
-  fColorFlag: BOOLEAN;
-  fHighLightFlag: BOOLEAN;
-  fShadeFlag: BOOLEAN;
-  fSecondaryShadeFlag: BOOLEAN;
+  fColorFlag: boolean;
+  fHighLightFlag: boolean;
+  fShadeFlag: boolean;
+  fSecondaryShadeFlag: boolean;
 }
 
 type POPUPSTRINGPTR = Pointer<POPUPSTRING>;
@@ -37,8 +37,8 @@ interface PopUpBo {
   uiSecondColumnMinimunOffset: UINT32;
   uiSecondColumnCurrentOffset: UINT32;
   uiBoxMinWidth: UINT32;
-  fUpdated: BOOLEAN;
-  fShowBox: BOOLEAN;
+  fUpdated: boolean;
+  fShowBox: boolean;
 
   Text: POPUPSTRINGPTR[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
   pSecondColumnString: POPUPSTRINGPTR[] /* [MAX_POPUP_BOX_STRING_COUNT] */;

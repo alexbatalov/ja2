@@ -8,7 +8,7 @@ interface CIV_QUOTE {
   ubUnusedCurrentEntry: UINT8;
 }
 
-let gfSurrendered: BOOLEAN = FALSE;
+let gfSurrendered: boolean = false;
 
 let gCivQuotes: CIV_QUOTE[] /* [NUM_CIV_QUOTES] */;
 
@@ -70,7 +70,7 @@ let gubNumEntries: UINT8[] /* [NUM_CIV_QUOTES] */ = [
 ];
 
 interface QUOTE_SYSTEM_STRUCT {
-  bActive: BOOLEAN;
+  bActive: boolean;
   MouseRegion: MOUSE_REGION;
   iVideoOverlay: INT32;
   iDialogueBox: INT32;
@@ -93,7 +93,7 @@ function CopyNumEntriesIntoQuoteStruct(): void {
   }
 }
 
-function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<INT16>): BOOLEAN {
+function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<INT16>): boolean {
   let zFileName: UINT8[] /* [164] */;
 
   // Build filename....
@@ -114,10 +114,10 @@ function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<
   LoadEncryptedDataFromFile(zFileName, zQuote, ubEntryID * 320, 320);
 
   if (zQuote[0] == 0) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function SurrenderMessageBoxCallBack(ubExitValue: UINT8): void {
@@ -137,15 +137,15 @@ function SurrenderMessageBoxCallBack(ubExitValue: UINT8): void {
         if (pTeamSoldier.value.bLife != 0) {
           EnemyCapturesPlayerSoldier(pTeamSoldier);
 
-          RemoveSoldierFromTacticalSector(pTeamSoldier, TRUE);
+          RemoveSoldierFromTacticalSector(pTeamSoldier, true);
         }
       }
     }
 
     EndCaptureSequence();
 
-    gfSurrendered = TRUE;
-    SetCustomizableTimerCallbackAndDelay(3000, CaptureTimerCallback, FALSE);
+    gfSurrendered = true;
+    SetCustomizableTimerCallbackAndDelay(3000, CaptureTimerCallback, false);
 
     ActionDone(gCivQuoteData.pCiv);
   } else {
@@ -153,7 +153,7 @@ function SurrenderMessageBoxCallBack(ubExitValue: UINT8): void {
   }
 }
 
-function ShutDownQuoteBox(fForce: BOOLEAN): void {
+function ShutDownQuoteBox(fForce: boolean): void {
   if (!gCivQuoteData.bActive) {
     return;
   }
@@ -168,7 +168,7 @@ function ShutDownQuoteBox(fForce: BOOLEAN): void {
     RemoveMercPopupBoxFromIndex(gCivQuoteData.iDialogueBox);
     gCivQuoteData.iDialogueBox = -1;
 
-    gCivQuoteData.bActive = FALSE;
+    gCivQuoteData.bActive = false;
 
     // do we need to do anything at the end of the civ quote?
     if (gCivQuoteData.pCiv && gCivQuoteData.pCiv.value.bAction == Enum289.AI_ACTION_OFFER_SURRENDER) {
@@ -177,14 +177,14 @@ function ShutDownQuoteBox(fForce: BOOLEAN): void {
   }
 }
 
-function ShutDownQuoteBoxIfActive(): BOOLEAN {
+function ShutDownQuoteBoxIfActive(): boolean {
   if (gCivQuoteData.bActive) {
-    ShutDownQuoteBox(TRUE);
+    ShutDownQuoteBox(true);
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
@@ -257,17 +257,17 @@ function RenderCivQuoteBoxOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 }
 
 function QuoteOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP && fLButtonDown) {
     // Shutdown quote box....
-    ShutDownQuoteBox(FALSE);
+    ShutDownQuoteBox(false);
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 
@@ -278,7 +278,7 @@ function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryI
   // OK, do we have another on?
   if (gCivQuoteData.bActive) {
     // Delete?
-    ShutDownQuoteBox(TRUE);
+    ShutDownQuoteBox(true);
   }
 
   // get text
@@ -296,10 +296,10 @@ function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryI
   memset(addressof(VideoOverlayDesc), 0, sizeof(VIDEO_OVERLAY_DESC));
 
   // Prepare text box
-  SET_USE_WINFONTS(TRUE);
+  SET_USE_WINFONTS(true);
   SET_WINFONT(giSubTitleWinFont);
   gCivQuoteData.iDialogueBox = PrepareMercPopupBox(gCivQuoteData.iDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gzCivQuote, DIALOGUE_DEFAULT_WIDTH, 0, 0, 0, addressof(gusCivQuoteBoxWidth), addressof(gusCivQuoteBoxHeight));
-  SET_USE_WINFONTS(FALSE);
+  SET_USE_WINFONTS(false);
 
   // OK, find center for box......
   sX = sX - (gusCivQuoteBoxWidth / 2);
@@ -342,7 +342,7 @@ function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryI
   // Add region
   MSYS_AddRegion(addressof(gCivQuoteData.MouseRegion));
 
-  gCivQuoteData.bActive = TRUE;
+  gCivQuoteData.bActive = true;
 
   gCivQuoteData.uiTimeOfCreation = GetJA2Clock();
 
@@ -351,14 +351,14 @@ function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryI
   gCivQuoteData.pCiv = pCiv;
 }
 
-function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Pointer<UINT8>, fCanUseHints: BOOLEAN): UINT8 {
+function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Pointer<UINT8>, fCanUseHints: boolean): UINT8 {
   let ubCivType: UINT8;
   let bTownId: INT8;
-  let bCivLowLoyalty: BOOLEAN = FALSE;
-  let bCivHighLoyalty: BOOLEAN = FALSE;
+  let bCivLowLoyalty: boolean = false;
+  let bCivHighLoyalty: boolean = false;
   let bCivHint: INT8;
   let bMineId: INT8;
-  let bMiners: BOOLEAN = FALSE;
+  let bMiners: boolean = false;
 
   (pubCivHintToUse.value) = 0;
 
@@ -487,25 +487,25 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
     // Check loyalty special quotes.....
     // EXTREMELY LOW TOWN LOYALTY...
     if (gTownLoyalty[bTownId].ubRating < EXTREAMLY_LOW_TOWN_LOYALTY) {
-      bCivLowLoyalty = TRUE;
+      bCivLowLoyalty = true;
     }
 
     // HIGH TOWN LOYALTY...
     if (gTownLoyalty[bTownId].ubRating >= HIGH_TOWN_LOYALTY) {
-      bCivHighLoyalty = TRUE;
+      bCivHighLoyalty = true;
     }
   }
 
   // ATE: OK, check if we should look for a civ hint....
   if (fCanUseHints) {
-    bCivHint = ConsiderCivilianQuotes(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, FALSE);
+    bCivHint = ConsiderCivilianQuotes(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, false);
   } else {
     bCivHint = -1;
   }
 
   // ATE: check miners......
   if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_MINER) {
-    bMiners = TRUE;
+    bMiners = true;
 
     // If not a civ hint available...
     if (bCivHint == -1) {
@@ -540,7 +540,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
       (pubCivHintToUse.value) = bCivHint;
 
       // Set quote as used...
-      ConsiderCivilianQuotes(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, TRUE);
+      ConsiderCivilianQuotes(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, true);
 
       // retrun value....
       return CIV_QUOTE_HINT;
@@ -576,7 +576,7 @@ function HandleCivQuote(): void {
     // Check for min time....
     if ((GetJA2Clock() - gCivQuoteData.uiTimeOfCreation) > gCivQuoteData.uiDelayTime) {
       // Stop!
-      ShutDownQuoteBox(TRUE);
+      ShutDownQuoteBox(true);
     }
   }
 }
@@ -597,10 +597,10 @@ function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
     // CAN'T USE HINTS, since we just did one...
     pCiv.value.bCurrentCivQuote = -1;
     pCiv.value.bCurrentCivQuoteDelta = 0;
-    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, addressof(ubCivHintToUse), FALSE);
+    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, addressof(ubCivHintToUse), false);
   } else {
     // Determine which quote to say.....
-    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, addressof(ubCivHintToUse), TRUE);
+    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, addressof(ubCivHintToUse), true);
   }
 
   // Determine entry id
@@ -645,31 +645,31 @@ function InitCivQuoteSystem(): void {
   CopyNumEntriesIntoQuoteStruct();
 
   memset(addressof(gCivQuoteData), 0, sizeof(gCivQuoteData));
-  gCivQuoteData.bActive = FALSE;
+  gCivQuoteData.bActive = false;
   gCivQuoteData.iVideoOverlay = -1;
   gCivQuoteData.iDialogueBox = -1;
 }
 
-function SaveCivQuotesToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveCivQuotesToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   FileWrite(hFile, addressof(gCivQuotes), sizeof(gCivQuotes), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(gCivQuotes)) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadCivQuotesFromLoadGameFile(hFile: HWFILE): BOOLEAN {
+function LoadCivQuotesFromLoadGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   FileRead(hFile, addressof(gCivQuotes), sizeof(gCivQuotes), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(gCivQuotes)) {
-    return FALSE;
+    return false;
   }
 
   CopyNumEntriesIntoQuoteStruct();
 
-  return TRUE;
+  return true;
 }

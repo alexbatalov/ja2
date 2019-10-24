@@ -9,16 +9,16 @@ const MOVE_Y = 5;
 const STRAFE_DIST = 80;
 const BOMB_DIST = 150;
 
-let gfInAirRaid: BOOLEAN = FALSE;
-let gfAirRaidScheduled: BOOLEAN = FALSE;
+let gfInAirRaid: boolean = false;
+let gfAirRaidScheduled: boolean = false;
 let gubAirRaidMode: UINT8;
 let guiSoundSample: UINT32;
 let guiRaidLastUpdate: UINT32;
-let gfFadingRaidIn: BOOLEAN = FALSE;
-let gfQuoteSaid: BOOLEAN = FALSE;
+let gfFadingRaidIn: boolean = false;
+let gfQuoteSaid: boolean = false;
 let gbNumDives: INT8 = 0;
 let gbMaxDives: INT8 = 0;
-let gfFadingRaidOut: BOOLEAN = FALSE;
+let gfFadingRaidOut: boolean = false;
 let gsDiveX: INT16;
 let gsDiveY: INT16;
 let gsDiveTargetLocation: INT16;
@@ -27,25 +27,25 @@ let gsNumGridNosMoved: INT16;
 let giNumTurnsSinceLastDive: INT32;
 let giNumTurnsSinceDiveStarted: INT32;
 let giNumGridNosMovedThisTurn: INT32;
-let gfAirRaidHasHadTurn: BOOLEAN = FALSE;
+let gfAirRaidHasHadTurn: boolean = false;
 let gubBeginTeamTurn: UINT8 = 0;
-let gfHaveTBBatton: BOOLEAN = FALSE;
-let gsNotLocatedYet: INT16 = FALSE;
+let gfHaveTBBatton: boolean = false;
+let gsNotLocatedYet: INT16 = false;
 let giNumFrames: INT32;
 
 let gAirRaidDef: AIR_RAID_DEFINITION;
 
 interface AIR_RAID_SAVE_STRUCT {
-  fInAirRaid: BOOLEAN;
-  fAirRaidScheduled: BOOLEAN;
+  fInAirRaid: boolean;
+  fAirRaidScheduled: boolean;
   ubAirRaidMode: UINT8;
   uiSoundSample: UINT32;
   uiRaidLastUpdate: UINT32;
-  fFadingRaidIn: BOOLEAN;
-  fQuoteSaid: BOOLEAN;
+  fFadingRaidIn: boolean;
+  fQuoteSaid: boolean;
   bNumDives: INT8;
   bMaxDives: INT8;
-  fFadingRaidOut: BOOLEAN;
+  fFadingRaidOut: boolean;
   sDiveX: INT16;
   sDiveY: INT16;
   sDiveTargetLocation: INT16;
@@ -54,9 +54,9 @@ interface AIR_RAID_SAVE_STRUCT {
   iNumTurnsSinceLastDive: INT32;
   iNumTurnsSinceDiveStarted: INT32;
   iNumGridNosMovedThisTurn: INT32;
-  fAirRaidHasHadTurn: BOOLEAN;
+  fAirRaidHasHadTurn: boolean;
   ubBeginTeamTurn: UINT8;
-  fHaveTBBatton: BOOLEAN;
+  fHaveTBBatton: boolean;
   AirRaidDef: AIR_RAID_DEFINITION;
   sRaidSoldierID: INT16;
 
@@ -123,18 +123,18 @@ function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
 
   AddSameDayStrategicEvent(Enum132.EVENT_BEGIN_AIR_RAID, (GetWorldMinutesInDay() + pAirRaidDef.value.ubNumMinsFromCurrentTime), 0);
 
-  gfAirRaidScheduled = TRUE;
+  gfAirRaidScheduled = true;
 }
 
-function BeginAirRaid(): BOOLEAN {
+function BeginAirRaid(): boolean {
   let cnt: INT32;
-  let fOK: BOOLEAN = FALSE;
+  let fOK: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // OK, we have been told to start.....
 
   // First remove scheduled flag...
-  gfAirRaidScheduled = FALSE;
+  gfAirRaidScheduled = false;
 
   /*
           if( WillAirRaidBeStopped( gAirRaidDef.sSectorX, gAirRaidDef.sSectorY ) )
@@ -152,18 +152,18 @@ function BeginAirRaid(): BOOLEAN {
   for (cnt = 0, pSoldier = MercPtrs[cnt]; cnt < 20; cnt++, pSoldier++) {
     if (pSoldier.value.bActive) {
       if (pSoldier.value.sSectorX == gAirRaidDef.sSectorX && pSoldier.value.sSectorY == gAirRaidDef.sSectorY && pSoldier.value.bSectorZ == gAirRaidDef.sSectorZ && !pSoldier.value.fBetweenSectors && pSoldier.value.bLife && pSoldier.value.bAssignment != Enum117.IN_TRANSIT) {
-        fOK = TRUE;
+        fOK = true;
       }
     }
   }
 
   if (!fOK) {
-    return FALSE;
+    return false;
   }
 
   // ( unless we are in prebattle interface, then ignore... )
   if (gfPreBattleInterfaceActive) {
-    return FALSE;
+    return false;
   }
 
   ChangeSelectedMapSector(gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ);
@@ -172,22 +172,22 @@ function BeginAirRaid(): BOOLEAN {
     // sector not loaded
     // Set flag for handling raid....
     gubAirRaidMode = Enum192.AIR_RAID_TRYING_TO_START;
-    gfQuoteSaid = TRUE;
+    gfQuoteSaid = true;
     SayQuoteFromAnyBodyInThisSector(gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ, Enum202.QUOTE_AIR_RAID);
     SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_EXIT_MAP_SCREEN, gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ, 0, 0);
   } else {
     gubAirRaidMode = Enum192.AIR_RAID_TRYING_TO_START;
-    gfQuoteSaid = FALSE;
+    gfQuoteSaid = false;
   }
 
   // Set flag for handling raid....
-  gfInAirRaid = TRUE;
+  gfInAirRaid = true;
   giNumFrames = 0;
 
   guiRaidLastUpdate = GetJA2Clock();
 
   gbNumDives = 0;
-  gfAirRaidHasHadTurn = FALSE;
+  gfAirRaidHasHadTurn = false;
 
   gpRaidSoldier = MercPtrs[MAX_NUM_SOLDIERS - 1];
   memset(gpRaidSoldier, 0, sizeof(SOLDIERTYPE));
@@ -204,7 +204,7 @@ function BeginAirRaid(): BOOLEAN {
 
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Begin Air Raid.");
 
-  return TRUE;
+  return true;
 }
 
 function PickLocationNearAnyMercInSector(): INT16 {
@@ -300,7 +300,7 @@ function AirRaidStart(): void {
   // Begin ambient sound....
   guiSoundSample = PlayJA2Sample(Enum330.S_RAID_AMBIENT, RATE_11025, 0, 10000, MIDDLEPAN);
 
-  gfFadingRaidIn = TRUE;
+  gfFadingRaidIn = true;
 
   // Setup start time....
   RESETTIMECOUNTER(giTimerAirRaidQuote, AIR_RAID_SAY_QUOTE_TIME);
@@ -314,24 +314,24 @@ function AirRaidStart(): void {
 }
 
 function AirRaidLookForDive(): void {
-  let fDoDive: BOOLEAN = FALSE;
-  let fDoQuote: BOOLEAN = FALSE;
+  let fDoDive: boolean = false;
+  let fDoQuote: boolean = false;
 
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
     if (!gfQuoteSaid) {
       if (TIMECOUNTERDONE(giTimerAirRaidQuote, AIR_RAID_SAY_QUOTE_TIME)) {
-        fDoQuote = TRUE;
+        fDoQuote = true;
       }
     }
   } else {
     if (giNumTurnsSinceLastDive > 1 && !gfQuoteSaid) {
-      fDoQuote = TRUE;
+      fDoQuote = true;
     }
   }
 
   // OK, check if we should say something....
   if (fDoQuote) {
-    gfQuoteSaid = TRUE;
+    gfQuoteSaid = true;
 
     // Someone in group say quote...
     SayQuoteFromAnyBodyInSector(Enum202.QUOTE_AIR_RAID);
@@ -352,14 +352,14 @@ function AirRaidLookForDive(): void {
       if (TIMECOUNTERDONE(giTimerAirRaidDiveStarted, AIR_RAID_DIVE_INTERVAL)) {
         // IN realtime, give a bit more leeway for time....
         if (Random(2)) {
-          fDoDive = TRUE;
+          fDoDive = true;
         }
       }
     }
   } else {
     // How many turns have gone by?
     if (giNumTurnsSinceLastDive > (Random(2) + 1)) {
-      fDoDive = TRUE;
+      fDoDive = true;
     }
   }
 
@@ -402,7 +402,7 @@ function AirRaidLookForDive(): void {
 
 function AirRaidStartEnding(): void {
   // Fade out sound.....
-  gfFadingRaidOut = TRUE;
+  gfFadingRaidOut = true;
 }
 
 function BeginBombing(): void {
@@ -445,7 +445,7 @@ function BeginBombing(): void {
   gubDiveDirection = GetDirectionToGridNoFromGridNo(sGridNo, gsDiveTargetLocation);
 
   gsNumGridNosMoved = 0;
-  gsNotLocatedYet = TRUE;
+  gsNotLocatedYet = true;
 }
 
 function BeginDive(): void {
@@ -489,7 +489,7 @@ function BeginDive(): void {
   gubDiveDirection = GetDirectionToGridNoFromGridNo(sGridNo, gsDiveTargetLocation);
 
   gsNumGridNosMoved = 0;
-  gsNotLocatedYet = TRUE;
+  gsNotLocatedYet = true;
 }
 
 function MoveDiveAirplane(dAngle: FLOAT): void {
@@ -537,7 +537,7 @@ function DoDive(): void {
     }
 
     if (gsNotLocatedYet && !(gTacticalStatus.uiFlags & INCOMBAT)) {
-      gsNotLocatedYet = FALSE;
+      gsNotLocatedYet = false;
       LocateGridNo(gsDiveTargetLocation);
     }
 
@@ -618,7 +618,7 @@ function DoDive(): void {
           // For now use first position....
 
           gpRaidSoldier.value.ubTargetID = NOBODY;
-          FireBulletGivenTarget(gpRaidSoldier, sStrafeX, sStrafeY, 0, gpRaidSoldier.value.usAttackingWeapon, 10, FALSE, FALSE);
+          FireBulletGivenTarget(gpRaidSoldier, sStrafeX, sStrafeY, 0, gpRaidSoldier.value.usAttackingWeapon, 10, false, false);
         }
 
         // Do second one.... ( ll )
@@ -649,7 +649,7 @@ function DoDive(): void {
           }
 
           // For now use first position....
-          FireBulletGivenTarget(gpRaidSoldier, sStrafeX, sStrafeY, 0, gpRaidSoldier.value.usAttackingWeapon, 10, FALSE, FALSE);
+          FireBulletGivenTarget(gpRaidSoldier, sStrafeX, sStrafeY, 0, gpRaidSoldier.value.usAttackingWeapon, 10, false, false);
         }
       }
 
@@ -680,7 +680,7 @@ function DoBombing(): void {
   let dAngle: FLOAT;
   let dDeltaXPos: FLOAT;
   let dDeltaYPos: FLOAT;
-  let fLocate: BOOLEAN = FALSE;
+  let fLocate: boolean = false;
 
   // Delay for a specific perion of time to allow sound to Q up...
   if (TIMECOUNTERDONE(giTimerAirRaidDiveStarted, 0)) {
@@ -694,7 +694,7 @@ function DoBombing(): void {
     }
 
     if (gsNotLocatedYet && !(gTacticalStatus.uiFlags & INCOMBAT)) {
-      gsNotLocatedYet = FALSE;
+      gsNotLocatedYet = false;
       LocateGridNo(gsDiveTargetLocation);
     }
 
@@ -767,7 +767,7 @@ function DoBombing(): void {
             sBombGridNo = PickRandomLocationAtMinSpacesAway((GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)), 40, 40);
 
             if ((gTacticalStatus.uiFlags & INCOMBAT)) {
-              fLocate = TRUE;
+              fLocate = true;
               // Increase attacker busy...
               gTacticalStatus.ubAttackBusyCount++;
               DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Starting attack AIR RAID ( bombs away ), attack count now %d", gTacticalStatus.ubAttackBusyCount));
@@ -819,10 +819,10 @@ function HandleAirRaid(): void {
             iVol = __min(HIGHVOLUME, iVol + 1);
             SoundSetVolume(guiSoundSample, iVol);
             if (iVol == HIGHVOLUME)
-              gfFadingRaidIn = FALSE;
+              gfFadingRaidIn = false;
           }
         } else {
-          gfFadingRaidIn = FALSE;
+          gfFadingRaidIn = false;
         }
       } else if (gfFadingRaidOut) {
         if (guiSoundSample != NO_SAMPLE) {
@@ -833,13 +833,13 @@ function HandleAirRaid(): void {
 
             SoundSetVolume(guiSoundSample, iVol);
             if (iVol == 0) {
-              gfFadingRaidOut = FALSE;
+              gfFadingRaidOut = false;
 
               gubAirRaidMode = Enum192.AIR_RAID_END;
             }
           }
         } else {
-          gfFadingRaidOut = FALSE;
+          gfFadingRaidOut = false;
           gubAirRaidMode = Enum192.AIR_RAID_END;
         }
       }
@@ -931,8 +931,8 @@ function HandleAirRaid(): void {
         // Are we through with attacker busy count?
         if (gTacticalStatus.ubAttackBusyCount == 0) {
           // Relinquish control....
-          gfAirRaidHasHadTurn = TRUE;
-          gfHaveTBBatton = FALSE;
+          gfAirRaidHasHadTurn = true;
+          gfHaveTBBatton = false;
           BeginTeamTurn(gubBeginTeamTurn);
         }
       }
@@ -940,25 +940,25 @@ function HandleAirRaid(): void {
   }
 }
 
-function InAirRaid(): BOOLEAN {
+function InAirRaid(): boolean {
   return gfInAirRaid;
 }
 
-function HandleAirRaidEndTurn(ubTeam: UINT8): BOOLEAN {
+function HandleAirRaidEndTurn(ubTeam: UINT8): boolean {
   if (!gfInAirRaid) {
-    return TRUE;
+    return true;
   }
 
   if (gfAirRaidHasHadTurn) {
-    gfAirRaidHasHadTurn = FALSE;
-    return TRUE;
+    gfAirRaidHasHadTurn = false;
+    return true;
   }
 
   giNumTurnsSinceLastDive++;
   giNumTurnsSinceDiveStarted++;
   giNumGridNosMovedThisTurn = 0;
   gubBeginTeamTurn = ubTeam;
-  gfHaveTBBatton = TRUE;
+  gfHaveTBBatton = true;
 
   // ATE: Even if we have an attacker busy problem.. init to 0 now
   // gTacticalStatus.ubAttackBusyCount = 0;
@@ -985,10 +985,10 @@ function HandleAirRaidEndTurn(ubTeam: UINT8): BOOLEAN {
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT;
 
@@ -1040,20 +1040,20 @@ function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): BOOLEAN {
   // Save the Air Raid Save Struct
   FileWrite(hFile, addressof(sAirRaidSaveStruct), sizeof(AIR_RAID_SAVE_STRUCT), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(AIR_RAID_SAVE_STRUCT)) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): BOOLEAN {
+function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): boolean {
   let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT;
   let uiNumBytesRead: UINT32;
 
   // Load the number of REAL_OBJECTs in the array
   FileRead(hFile, addressof(sAirRaidSaveStruct), sizeof(AIR_RAID_SAVE_STRUCT), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(AIR_RAID_SAVE_STRUCT)) {
-    return FALSE;
+    return false;
   }
 
   // Put all the globals into the save struct
@@ -1100,11 +1100,11 @@ function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): BOOLEAN {
 
   memcpy(addressof(gAirRaidDef), addressof(sAirRaidSaveStruct.AirRaidDef), sizeof(AIR_RAID_DEFINITION));
 
-  return TRUE;
+  return true;
 }
 
 function EndAirRaid(): void {
-  gfInAirRaid = FALSE;
+  gfInAirRaid = false;
 
   // Stop sound
   SoundStop(guiSoundSample);
@@ -1124,7 +1124,7 @@ function EndAirRaid(): void {
           pTeamSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
         }
       }
-      gTacticalStatus.Team[MILITIA_TEAM].bAwareOfOpposition = FALSE;
+      gTacticalStatus.Team[MILITIA_TEAM].bAwareOfOpposition = false;
 
       cnt = gTacticalStatus.Team[CIV_TEAM].bFirstID;
       // Loop through all civs and restore them to peaceful status
@@ -1133,7 +1133,7 @@ function EndAirRaid(): void {
           pTeamSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
         }
       }
-      gTacticalStatus.Team[CIV_TEAM].bAwareOfOpposition = FALSE;
+      gTacticalStatus.Team[CIV_TEAM].bAwareOfOpposition = false;
     }
   }
 

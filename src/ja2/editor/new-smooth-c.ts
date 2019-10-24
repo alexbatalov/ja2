@@ -1,12 +1,12 @@
-function CaveAtGridNo(iMapIndex: INT32): BOOLEAN {
+function CaveAtGridNo(iMapIndex: INT32): boolean {
   let pStruct: Pointer<STRUCTURE>;
   let pLevel: Pointer<LEVELNODE>;
   if (iMapIndex < 0 || iMapIndex >= NOWHERE)
-    return TRUE;
+    return true;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
     if (pStruct.value.fFlags & STRUCTURE_CAVEWALL) {
-      return TRUE;
+      return true;
     }
     pStruct = pStruct.value.pNext;
   }
@@ -14,11 +14,11 @@ function CaveAtGridNo(iMapIndex: INT32): BOOLEAN {
   pLevel = gpWorldLevelData[iMapIndex].pStructHead;
   while (pLevel) {
     if (pLevel.value.uiFlags & LEVELNODE_CAVE) {
-      return TRUE;
+      return true;
     }
     pLevel = pLevel.value.pNext;
   }
-  return FALSE;
+  return false;
 }
 
 function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
@@ -428,7 +428,7 @@ function AddCave(iMapIndex: INT32, usIndex: UINT16): void {
   // First toast any existing wall (caves)
   RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
   // Now, add this piece
-  if (!AddWallToStructLayer(iMapIndex, usIndex, TRUE))
+  if (!AddWallToStructLayer(iMapIndex, usIndex, true))
     return;
   // Set the cave flag
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
@@ -494,7 +494,7 @@ const FLOOR_VARIANTS = 8;
 // BEGIN IMPLEMENTATION OF PRIVATE FUNCTIONS
 //----------------------------------------------------------------------------------------------------
 
-function BuildSlantRoof(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32, usWallType: UINT16, usRoofType: UINT16, fVertical: BOOLEAN): void {
+function BuildSlantRoof(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32, usWallType: UINT16, usRoofType: UINT16, fVertical: boolean): void {
   let i: INT32;
   let usTileIndex: UINT16;
   let iMapIndex: INT32;
@@ -724,16 +724,16 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
   sIndex = PickAWallPiece(ubWallClass);
   GetTileIndexFromTypeSubIndex(usWallType, sIndex, addressof(usTileIndex));
   AddToUndoList(iMapIndex);
-  AddWallToStructLayer(iMapIndex, usTileIndex, FALSE);
+  AddWallToStructLayer(iMapIndex, usTileIndex, false);
 }
 
 function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16): void {
   let usRoofIndex: UINT16;
   let usTileIndex: UINT16;
-  let fTop: BOOLEAN = FALSE;
-  let fBottom: BOOLEAN = FALSE;
-  let fLeft: BOOLEAN = FALSE;
-  let fRight: BOOLEAN = FALSE;
+  let fTop: boolean = false;
+  let fBottom: boolean = false;
+  let fLeft: boolean = false;
+  let fRight: boolean = false;
   if (!usRoofType) {
     usRoofType = SearchForRoofType(iMapIndex);
   }
@@ -744,10 +744,10 @@ function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16): void {
   AddToUndoList(iMapIndex);
   EraseRoof(iMapIndex);
 
-  fTop = FloorAtGridNo(iMapIndex - WORLD_COLS) ? FALSE : TRUE;
-  fLeft = FloorAtGridNo(iMapIndex - 1) ? FALSE : TRUE;
-  fBottom = FloorAtGridNo(iMapIndex + WORLD_COLS) ? FALSE : TRUE;
-  fRight = FloorAtGridNo(iMapIndex + 1) ? FALSE : TRUE;
+  fTop = FloorAtGridNo(iMapIndex - WORLD_COLS) ? false : true;
+  fLeft = FloorAtGridNo(iMapIndex - 1) ? false : true;
+  fBottom = FloorAtGridNo(iMapIndex + WORLD_COLS) ? false : true;
+  fRight = FloorAtGridNo(iMapIndex + 1) ? false : true;
   if (fTop && fLeft)
     usRoofIndex = TOPLEFT_ROOF_INDEX;
   else if (fTop && fRight)
@@ -770,7 +770,7 @@ function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16): void {
   AddRoofToHead(iMapIndex, usTileIndex);
   // if the editor view roofs is off, then the new roofs need to be hidden.
   if (!fBuildingShowRoofs) {
-    HideStructOfGivenType(iMapIndex, usRoofType, TRUE);
+    HideStructOfGivenType(iMapIndex, usRoofType, true);
   }
 }
 
@@ -781,10 +781,10 @@ function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16): void {
 function RebuildRoof(iMapIndex: UINT32, usRoofType: UINT16): void {
   let usRoofIndex: UINT16;
   let usTileIndex: UINT16;
-  let fTop: BOOLEAN;
-  let fBottom: BOOLEAN;
-  let fLeft: BOOLEAN;
-  let fRight: BOOLEAN;
+  let fTop: boolean;
+  let fBottom: boolean;
+  let fLeft: boolean;
+  let fRight: boolean;
   if (!usRoofType) {
     usRoofType = SearchForRoofType(iMapIndex);
   }
@@ -795,10 +795,10 @@ function RebuildRoof(iMapIndex: UINT32, usRoofType: UINT16): void {
   AddToUndoList(iMapIndex);
   EraseRoof(iMapIndex);
 
-  fTop = GetHorizontalWall(iMapIndex - WORLD_COLS) ? TRUE : FALSE;
-  fLeft = GetVerticalWall(iMapIndex - 1) ? TRUE : FALSE;
-  fBottom = GetHorizontalWall(iMapIndex) ? TRUE : FALSE;
-  fRight = GetVerticalWall(iMapIndex) ? TRUE : FALSE;
+  fTop = GetHorizontalWall(iMapIndex - WORLD_COLS) ? true : false;
+  fLeft = GetVerticalWall(iMapIndex - 1) ? true : false;
+  fBottom = GetHorizontalWall(iMapIndex) ? true : false;
+  fRight = GetVerticalWall(iMapIndex) ? true : false;
   if (fTop && fLeft)
     usRoofIndex = TOPLEFT_ROOF_INDEX;
   else if (fTop && fRight)
@@ -821,7 +821,7 @@ function RebuildRoof(iMapIndex: UINT32, usRoofType: UINT16): void {
   AddRoofToHead(iMapIndex, usTileIndex);
   // if the editor view roofs is off, then the new roofs need to be hidden.
   if (!fBuildingShowRoofs) {
-    HideStructOfGivenType(iMapIndex, usRoofType, TRUE);
+    HideStructOfGivenType(iMapIndex, usRoofType, true);
   }
 }
 
@@ -1026,7 +1026,7 @@ function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
   let iMapIndex: UINT32;
   let usTileIndex: UINT16;
   let usFloorType: UINT16;
-  let fFloor: BOOLEAN;
+  let fFloor: boolean;
 
   top = pSelectRegion.value.iTop;
   left = pSelectRegion.value.iLeft;
@@ -1100,10 +1100,10 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
   let usWallType: UINT16;
   let usRoofType: UINT16;
   let usTileIndex: UINT16;
-  let fNewBuilding: BOOLEAN;
-  let fSlantRoof: BOOLEAN = FALSE;
-  let fVertical: BOOLEAN;
-  let fFloor: BOOLEAN;
+  let fNewBuilding: boolean;
+  let fSlantRoof: boolean = false;
+  let fVertical: boolean;
+  let fFloor: boolean;
   top = pSelectRegion.value.iTop;
   left = pSelectRegion.value.iLeft;
   right = pSelectRegion.value.iRight;
@@ -1131,7 +1131,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
   //  that signifies that we are concantenating this building to an existing one.  Otherwise,
   //  we are just drawing an individual building.  If we find a floor, extract the type so
   //  we know how to draw it later.
-  fNewBuilding = TRUE;
+  fNewBuilding = true;
   for (y = top; y <= bottom; y++)
     for (x = left; x <= right; x++) {
       iMapIndex = y * WORLD_COLS + x;
@@ -1139,7 +1139,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
         let pFloor: Pointer<LEVELNODE>;
         let uiTileType: UINT32;
         // If a floor is found, then we are adding to an existing structure.
-        fNewBuilding = FALSE;
+        fNewBuilding = false;
         // Extract the floor type.  We already checked if there was a floor here, so it is assumed.
         pFloor = gpWorldLevelData[iMapIndex].pLandHead;
         while (pFloor) {
@@ -1170,7 +1170,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
       usRoofType = GetRandomIndexByRange(Enum313.FIRSTSLANTROOF, LASTSLANTROOF);
       if (usRoofType != 0xffff) {
         if (!gfBasement)
-          fSlantRoof = TRUE;
+          fSlantRoof = true;
         else
           usRoofType = Enum313.FIRSTROOF;
       }
@@ -1246,7 +1246,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
   // If we are dealing with slant roofs then build the whole thing now.
   // Slant roofs always have a width or height of 8 tiles.
   if (fSlantRoof) {
-    fVertical = (bottom - top == 7) ? FALSE : TRUE;
+    fVertical = (bottom - top == 7) ? false : true;
     BuildSlantRoof(left, top, right, bottom, usWallType, usRoofType, fVertical);
   }
 

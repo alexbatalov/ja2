@@ -2,7 +2,7 @@ let gbDefaultLightType: INT8 = Enum39.PRIMETIME_LIGHT;
 
 let gEditorLightColor: SGPPaletteEntry;
 
-let gfEditorForceShadeTableRebuild: BOOLEAN = FALSE;
+let gfEditorForceShadeTableRebuild: boolean = false;
 
 function SetupTextInputForMapInfo(): void {
   let str: UINT16[] /* [10] */;
@@ -111,27 +111,27 @@ function UpdateMapInfoFields(): void {
 function ExtractAndUpdateMapInfo(): void {
   let str: UINT16[] /* [10] */;
   let temp: INT32;
-  let fUpdateLight1: BOOLEAN = FALSE;
+  let fUpdateLight1: boolean = false;
   // extract light1 colors
   temp = min(GetNumericStrictValueFromField(1), 255);
   if (temp != -1 && temp != gEditorLightColor.peRed) {
-    fUpdateLight1 = TRUE;
+    fUpdateLight1 = true;
     gEditorLightColor.peRed = temp;
   }
   temp = min(GetNumericStrictValueFromField(2), 255);
   if (temp != -1 && temp != gEditorLightColor.peGreen) {
-    fUpdateLight1 = TRUE;
+    fUpdateLight1 = true;
     gEditorLightColor.peGreen = temp;
   }
   temp = min(GetNumericStrictValueFromField(3), 255);
   if (temp != -1 && temp != gEditorLightColor.peBlue) {
-    fUpdateLight1 = TRUE;
+    fUpdateLight1 = true;
     gEditorLightColor.peBlue = temp;
   }
   if (fUpdateLight1) {
-    gfEditorForceShadeTableRebuild = TRUE;
+    gfEditorForceShadeTableRebuild = true;
     LightSetColors(addressof(gEditorLightColor), 1);
-    gfEditorForceShadeTableRebuild = FALSE;
+    gfEditorForceShadeTableRebuild = false;
   }
 
   // extract radius
@@ -141,7 +141,7 @@ function ExtractAndUpdateMapInfo(): void {
   temp = max(min(GetNumericStrictValueFromField(5), 15), 1);
   if (temp != -1 && temp != gusLightLevel) {
     gusLightLevel = temp;
-    gfRenderWorld = TRUE;
+    gfRenderWorld = true;
     ubAmbientLightLevel = (EDITOR_LIGHT_MAX - gusLightLevel);
     LightSetBaseLevel(ubAmbientLightLevel);
     LightSpriteRenderAll();
@@ -172,11 +172,11 @@ function ExtractAndUpdateMapInfo(): void {
   UpdateMapInfoFields();
 }
 
-function ApplyNewExitGridValuesToTextFields(): BOOLEAN {
+function ApplyNewExitGridValuesToTextFields(): boolean {
   let str: UINT16[] /* [10] */;
   // exit grid input fields
   if (iCurrentTaskbar != Enum36.TASK_MAPINFO)
-    return FALSE;
+    return false;
   swprintf(str, "%c%d", gExitGrid.ubGotoSectorY + 'A' - 1, gExitGrid.ubGotoSectorX);
   SetInputFieldStringWith16BitString(7, str);
   swprintf(str, "%d", gExitGrid.ubGotoSectorZ);
@@ -184,7 +184,7 @@ function ApplyNewExitGridValuesToTextFields(): BOOLEAN {
   swprintf(str, "%d", gExitGrid.usGridNo);
   SetInputFieldStringWith16BitString(9, str);
   SetActiveField(0);
-  return TRUE;
+  return true;
 }
 
 let usCurrentExitGridNo: UINT16 = 0;

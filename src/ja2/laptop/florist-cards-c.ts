@@ -32,7 +32,7 @@ let guiFlowerCardsBackButton: UINT32;
 function GameInitFloristCards(): void {
 }
 
-function EnterFloristCards(): BOOLEAN {
+function EnterFloristCards(): boolean {
   let i: UINT16;
   let j: UINT16;
   let usPosX: UINT16;
@@ -70,7 +70,7 @@ function EnterFloristCards(): BOOLEAN {
   gbCurrentlySelectedCard = -1;
 
   RenderFloristCards();
-  return TRUE;
+  return true;
 }
 
 function ExitFloristCards(): void {
@@ -103,7 +103,7 @@ function RenderFloristCards(): void {
 
   DisplayFloristDefaults();
 
-  DrawTextToScreen(sFloristCards[Enum348.FLORIST_CARDS_CLICK_SELECTION], FLORIST_CARD_TITLE_SENTENCE_X, FLORIST_CARD_TITLE_SENTENCE_Y, FLORIST_CARD_TITLE_SENTENCE_WIDTH, FONT10ARIAL(), FLORIST_CARDS_SENTENCE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(sFloristCards[Enum348.FLORIST_CARDS_CLICK_SELECTION], FLORIST_CARD_TITLE_SENTENCE_X, FLORIST_CARD_TITLE_SENTENCE_Y, FLORIST_CARD_TITLE_SENTENCE_WIDTH, FONT10ARIAL(), FLORIST_CARDS_SENTENCE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   GetVideoObject(addressof(hPixHandle), guiCardBackground);
   usPosY = FLORIST_CARD_FIRST_POS_Y;
@@ -119,11 +119,11 @@ function RenderFloristCards(): void {
       LoadEncryptedDataFromFile(FLOR_CARD_TEXT_FILE, sTemp, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
 
       //			DisplayWrappedString((UINT16)(usPosX+7), (UINT16)(usPosY+15), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT, FLORIST_CARDS_SENTENCE_COLOR,  sTemp, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-      usHeightOffset = IanWrappedStringHeight((usPosX + 7), (usPosY), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT(), FLORIST_CARDS_SENTENCE_COLOR, sTemp, 0, FALSE, 0);
+      usHeightOffset = IanWrappedStringHeight((usPosX + 7), (usPosY), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT(), FLORIST_CARDS_SENTENCE_COLOR, sTemp, 0, false, 0);
 
       usHeightOffset = (FLORIST_CARD_TEXT_HEIGHT - usHeightOffset) / 2;
 
-      IanDisplayWrappedString((usPosX + 7), (usPosY + 10 + usHeightOffset), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT(), FLORIST_CARDS_SENTENCE_COLOR, sTemp, 0, FALSE, 0);
+      IanDisplayWrappedString((usPosX + 7), (usPosY + 10 + usHeightOffset), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT(), FLORIST_CARDS_SENTENCE_COLOR, sTemp, 0, false, 0);
 
       ubCount++;
       usPosX += FLORIST_CARD_FIRST_OFFSET_X;

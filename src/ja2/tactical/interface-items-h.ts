@@ -12,7 +12,7 @@ const HEAD_INV_SLOT_HEIGHT = 24;
 
 // A STRUCT USED INTERNALLY FOR INV SLOT REGIONS
 interface INV_REGIONS {
-  fBigPocket: BOOLEAN;
+  fBigPocket: boolean;
   sBarDx: INT16;
   sBarDy: INT16;
   sWidth: INT16;

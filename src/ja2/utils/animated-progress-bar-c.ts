@@ -6,24 +6,24 @@ const MAX_PROGRESSBARS = 4;
 
 let pBar: Pointer<PROGRESSBAR>[] /* [MAX_PROGRESSBARS] */;
 
-let gfUseLoadScreenProgressBar: BOOLEAN = FALSE;
+let gfUseLoadScreenProgressBar: boolean = false;
 let gusLeftmostShaded: UINT16 = 0;
 
 function CreateLoadingScreenProgressBar(): void {
   gusLeftmostShaded = 162;
-  gfUseLoadScreenProgressBar = TRUE;
+  gfUseLoadScreenProgressBar = true;
   CreateProgressBar(0, 162, 427, 480, 443);
 }
 
 function RemoveLoadingScreenProgressBar(): void {
-  gfUseLoadScreenProgressBar = FALSE;
+  gfUseLoadScreenProgressBar = false;
   RemoveProgressBar(0);
   SetFontShadow(DEFAULT_SHADOW);
 }
 
 // This creates a single progress bar given the coordinates without a panel (containing a title and background).
 // A panel is automatically created if you specify a title using SetProgressBarTitle
-function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): BOOLEAN {
+function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): boolean {
   let pNew: Pointer<PROGRESSBAR>;
   // Allocate new progress bar
   pNew = MemAlloc(sizeof(PROGRESSBAR));
@@ -42,7 +42,7 @@ function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16
   pNew.value.usBarRight = usRight;
   pNew.value.usBarBottom = usBottom;
   // Init default data
-  pNew.value.fPanel = FALSE;
+  pNew.value.fPanel = false;
   pNew.value.usMsgFont = FONT12POINT1();
   pNew.value.ubMsgFontForeColor = FONT_BLACK;
   pNew.value.ubMsgFontShadowColor = 0;
@@ -54,9 +54,9 @@ function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16
   pNew.value.ubColorFillGreen = 0;
   pNew.value.ubColorFillBlue = 0;
 
-  pNew.value.fDisplayText = FALSE;
+  pNew.value.fDisplayText = false;
 
-  return TRUE;
+  return true;
 }
 
 // You may also define a panel to go in behind the progress bar.  You can now assign a title to go with
@@ -68,7 +68,7 @@ function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLe
   if (!pCurr)
     return;
 
-  pCurr.value.fPanel = TRUE;
+  pCurr.value.fPanel = true;
   pCurr.value.usPanelLeft = usLeft;
   pCurr.value.usPanelTop = usTop;
   pCurr.value.usPanelRight = usRight;
@@ -237,7 +237,7 @@ function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
 
   // update music here
   if (uiCurTime > (uiLastTime + 200)) {
-    MusicPoll(TRUE);
+    MusicPoll(true);
     uiLastTime = GetJA2Clock();
   }
 }
@@ -256,7 +256,7 @@ function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGree
   pCurr.value.ubColorFillBlue = ubColorFillBlue;
 }
 
-function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: BOOLEAN, fUseSaveBuffer: BOOLEAN, fSaveScreenToFrameBuffer: BOOLEAN): void {
+function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: boolean, fUseSaveBuffer: boolean, fSaveScreenToFrameBuffer: boolean): void {
   let pCurr: Pointer<PROGRESSBAR> = null;
 
   Assert(ubID < MAX_PROGRESSBARS);

@@ -3,7 +3,7 @@ interface MERCPLACEMENT {
   uiVObjectID: UINT32;
   region: MOUSE_REGION;
   ubStrategicInsertionCode: UINT8;
-  fPlaced: BOOLEAN;
+  fPlaced: boolean;
 }
 
 let gMercPlacement: Pointer<MERCPLACEMENT> = null;
@@ -18,19 +18,19 @@ const enum Enum310 {
 let iTPButtons: UINT32[] /* [NUM_TP_BUTTONS] */;
 
 let gubDefaultButton: UINT8 = Enum310.CLEAR_BUTTON;
-let gfTacticalPlacementGUIActive: BOOLEAN = FALSE;
-let gfTacticalPlacementFirstTime: BOOLEAN = FALSE;
-let gfEnterTacticalPlacementGUI: BOOLEAN = FALSE;
-let gfKillTacticalGUI: BOOLEAN = FALSE;
+let gfTacticalPlacementGUIActive: boolean = false;
+let gfTacticalPlacementFirstTime: boolean = false;
+let gfEnterTacticalPlacementGUI: boolean = false;
+let gfKillTacticalGUI: boolean = false;
 let giOverheadPanelImage: INT32 = 0;
 let giOverheadButtonImages: INT32[] /* [NUM_TP_BUTTONS] */;
 let giMercPanelImage: INT32 = 0;
 let giPlacements: INT32 = 0;
-let gfTacticalPlacementGUIDirty: BOOLEAN = FALSE;
-let gfValidLocationsChanged: BOOLEAN = FALSE;
+let gfTacticalPlacementGUIDirty: boolean = false;
+let gfValidLocationsChanged: boolean = false;
 let gTPClipRect: SGPRect = [ 0, 0, 0, 0 ];
-let gfValidCursor: BOOLEAN = FALSE;
-let gfEveryonePlaced: BOOLEAN = FALSE;
+let gfValidCursor: boolean = false;
+let gfEveryonePlaced: boolean = false;
 
 let gubSelectedGroupID: UINT8 = 0;
 let gubHilightedGroupID: UINT8 = 0;
@@ -41,10 +41,10 @@ let gbCursorMercID: INT8 = -1;
 let gpTacticalPlacementSelectedSoldier: Pointer<SOLDIERTYPE> = null;
 let gpTacticalPlacementHilightedSoldier: Pointer<SOLDIERTYPE> = null;
 
-let gfNorth: BOOLEAN;
-let gfEast: BOOLEAN;
-let gfSouth: BOOLEAN;
-let gfWest: BOOLEAN;
+let gfNorth: boolean;
+let gfEast: boolean;
+let gfSouth: boolean;
+let gfWest: boolean;
 
 function InitTacticalPlacementGUI(): void {
   let VObjectDesc: VOBJECT_DESC;
@@ -52,11 +52,11 @@ function InitTacticalPlacementGUI(): void {
   let xp: INT32;
   let yp: INT32;
   let ubFaceIndex: UINT8;
-  gfTacticalPlacementGUIActive = TRUE;
-  gfTacticalPlacementGUIDirty = TRUE;
-  gfValidLocationsChanged = TRUE;
-  gfTacticalPlacementFirstTime = TRUE;
-  gfNorth = gfEast = gfSouth = gfWest = FALSE;
+  gfTacticalPlacementGUIActive = true;
+  gfTacticalPlacementGUIDirty = true;
+  gfValidLocationsChanged = true;
+  gfTacticalPlacementFirstTime = true;
+  gfNorth = gfEast = gfSouth = gfWest = false;
 
   // Enter overhead map
   GoIntoOverheadMap();
@@ -97,7 +97,7 @@ function InitTacticalPlacementGUI(): void {
   SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DONE], BLOCKFONT(), FONT_BEIGE, 141);
   SetButtonFastHelpText(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DONEHELP]);
   SetBtnHelpEndCallback(iTPButtons[Enum310.DONE_BUTTON], FastHelpRemovedCallback);
-  AllowDisabledButtonFastHelp(iTPButtons[Enum310.DONE_BUTTON], TRUE);
+  AllowDisabledButtonFastHelp(iTPButtons[Enum310.DONE_BUTTON], true);
 
   SpecifyButtonHilitedTextColors(iTPButtons[Enum310.CLEAR_BUTTON], FONT_WHITE, FONT_NEARBLACK);
   SpecifyButtonHilitedTextColors(iTPButtons[Enum310.SPREAD_BUTTON], FONT_WHITE, FONT_NEARBLACK);
@@ -132,19 +132,19 @@ function InitTacticalPlacementGUI(): void {
       }
       gMercPlacement[giPlacements].pSoldier = MercPtrs[i];
       gMercPlacement[giPlacements].ubStrategicInsertionCode = MercPtrs[i].value.ubStrategicInsertionCode;
-      gMercPlacement[giPlacements].fPlaced = FALSE;
+      gMercPlacement[giPlacements].fPlaced = false;
       switch (MercPtrs[i].value.ubStrategicInsertionCode) {
         case Enum175.INSERTION_CODE_NORTH:
-          gfNorth = TRUE;
+          gfNorth = true;
           break;
         case Enum175.INSERTION_CODE_EAST:
-          gfEast = TRUE;
+          gfEast = true;
           break;
         case Enum175.INSERTION_CODE_SOUTH:
-          gfSouth = TRUE;
+          gfSouth = true;
           break;
         case Enum175.INSERTION_CODE_WEST:
-          gfWest = TRUE;
+          gfWest = true;
           break;
       }
       giPlacements++;
@@ -185,7 +185,7 @@ function InitTacticalPlacementGUI(): void {
         gbSelectedMercID = i;
         if (gubDefaultButton == Enum310.GROUP_BUTTON)
           gubSelectedGroupID = gMercPlacement[i].pSoldier.value.ubGroupID;
-        gfTacticalPlacementGUIDirty = TRUE;
+        gfTacticalPlacementGUIDirty = true;
         SetCursorMerc(i);
         gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
         break;
@@ -208,7 +208,7 @@ function RenderTacticalPlacementGUI(): void {
   let pDestBuf: Pointer<UINT8>;
   let ubColor: UINT8;
   if (gfTacticalPlacementFirstTime) {
-    gfTacticalPlacementFirstTime = FALSE;
+    gfTacticalPlacementFirstTime = false;
     DisableScrollMessages();
   }
   // Check to make sure that if we have a hilighted merc (not selected) and the mouse has moved out
@@ -227,7 +227,7 @@ function RenderTacticalPlacementGUI(): void {
   if (gfTacticalPlacementGUIDirty) {
     BltVideoObjectFromIndex(FRAME_BUFFER, giOverheadPanelImage, 0, 0, 320, VO_BLT_SRCTRANSPARENCY, 0);
     InvalidateRegion(0, 0, 320, 480);
-    gfTacticalPlacementGUIDirty = FALSE;
+    gfTacticalPlacementGUIDirty = false;
     MarkButtonsDirty();
     // DisableHilightsAndHelpText();
     // RenderButtons();
@@ -268,7 +268,7 @@ function RenderTacticalPlacementGUI(): void {
     SetFontForeground(FONT_BEIGE);
     SetFontShadow(141);
 
-    GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, str, TRUE);
+    GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, str, true);
 
     mprintf(120, 335, "%s %s -- %s...", gpStrategicString[Enum365.STR_TP_SECTOR], str, gpStrategicString[Enum365.STR_TP_CHOOSEENTRYPOSITIONS]);
 
@@ -314,7 +314,7 @@ function RenderTacticalPlacementGUI(): void {
     pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
     Blt16BPPBufferLooseHatchRectWithColor(pDestBuf, uiDestPitchBYTES, addressof(gTPClipRect), usHatchColor);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-    RectangleDraw(TRUE, gTPClipRect.iLeft, gTPClipRect.iTop, gTPClipRect.iRight, gTPClipRect.iBottom, usHatchColor, pDestBuf);
+    RectangleDraw(true, gTPClipRect.iLeft, gTPClipRect.iTop, gTPClipRect.iRight, gTPClipRect.iBottom, usHatchColor, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
   }
   for (i = 0; i < giPlacements; i++) {
@@ -408,24 +408,24 @@ function TacticalPlacementHandle(): void {
       }
     }
   }
-  gfValidCursor = FALSE;
+  gfValidCursor = false;
   if (gbSelectedMercID != -1 && gusMouseYPos < 320) {
     switch (gMercPlacement[gbCursorMercID].ubStrategicInsertionCode) {
       case Enum175.INSERTION_CODE_NORTH:
         if (gusMouseYPos <= 40)
-          gfValidCursor = TRUE;
+          gfValidCursor = true;
         break;
       case Enum175.INSERTION_CODE_EAST:
         if (gusMouseXPos >= 600)
-          gfValidCursor = TRUE;
+          gfValidCursor = true;
         break;
       case Enum175.INSERTION_CODE_SOUTH:
         if (gusMouseYPos >= 280)
-          gfValidCursor = TRUE;
+          gfValidCursor = true;
         break;
       case Enum175.INSERTION_CODE_WEST:
         if (gusMouseXPos <= 40)
-          gfValidCursor = TRUE;
+          gfValidCursor = true;
         break;
     }
     if (gubDefaultButton == Enum310.GROUP_BUTTON) {
@@ -463,9 +463,9 @@ function KillTacticalPlacementGUI(): void {
   gpTacticalPlacementSelectedSoldier = null;
 
   // Destroy the tactical placement gui.
-  gfEnterTacticalPlacementGUI = FALSE;
-  gfTacticalPlacementGUIActive = FALSE;
-  gfKillTacticalGUI = FALSE;
+  gfEnterTacticalPlacementGUI = false;
+  gfTacticalPlacementGUIActive = false;
+  gfKillTacticalGUI = false;
   // Delete video objects
   DeleteVideoObjectFromIndex(giOverheadPanelImage);
   DeleteVideoObjectFromIndex(giMercPanelImage);
@@ -517,7 +517,7 @@ function ChooseRandomEdgepoints(): void {
 
     PutDownMercPiece(i);
   }
-  gfEveryonePlaced = TRUE;
+  gfEveryonePlaced = true;
 }
 
 function PlaceMercs(): void {
@@ -533,12 +533,12 @@ function PlaceMercs(): void {
       gubSelectedGroupID = 0;
       gbSelectedMercID = 0;
       SetCursorMerc(0);
-      gfEveryonePlaced = FALSE;
+      gfEveryonePlaced = false;
       break;
     default:
       return;
   }
-  gfTacticalPlacementGUIDirty = TRUE;
+  gfTacticalPlacementGUIDirty = true;
 }
 
 function DoneOverheadPlacementClickCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -632,7 +632,7 @@ function SelectNextUnplacedUnit(): void {
       gbSelectedMercID = i;
       if (gubDefaultButton == Enum310.GROUP_BUTTON)
         gubSelectedGroupID = gMercPlacement[i].pSoldier.value.ubGroupID;
-      gfTacticalPlacementGUIDirty = TRUE;
+      gfTacticalPlacementGUIDirty = true;
       SetCursorMerc(i);
       gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
       return;
@@ -645,7 +645,7 @@ function SelectNextUnplacedUnit(): void {
       gbSelectedMercID = i;
       if (gubDefaultButton == Enum310.GROUP_BUTTON)
         gubSelectedGroupID = gMercPlacement[i].pSoldier.value.ubGroupID;
-      gfTacticalPlacementGUIDirty = TRUE;
+      gfTacticalPlacementGUIDirty = true;
       SetCursorMerc(i);
       gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
       return;
@@ -653,12 +653,12 @@ function SelectNextUnplacedUnit(): void {
   }
   // checked the whole array, and everybody has been placed.  Select nobody.
   if (!gfEveryonePlaced) {
-    gfEveryonePlaced = TRUE;
+    gfEveryonePlaced = true;
     SetCursorMerc(-1);
     gbSelectedMercID = -1;
     gubSelectedGroupID = 0;
-    gfTacticalPlacementGUIDirty = TRUE;
-    gfValidLocationsChanged = TRUE;
+    gfTacticalPlacementGUIDirty = true;
+    gfValidLocationsChanged = true;
     gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
   }
 }
@@ -666,7 +666,7 @@ function SelectNextUnplacedUnit(): void {
 function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   let i: INT32;
   let sGridNo: INT16;
-  let fInvalidArea: BOOLEAN = FALSE;
+  let fInvalidArea: boolean = false;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // if we have a selected merc, move him to the new closest map edgepoint of his side.
     if (gfValidCursor) {
@@ -684,7 +684,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
               if (gMercPlacement[i].pSoldier.value.ubGroupID == gubSelectedGroupID) {
                 gMercPlacement[i].pSoldier.value.usStrategicInsertionData = SearchForClosestPrimaryMapEdgepoint(sGridNo, gMercPlacement[i].ubStrategicInsertionCode);
                 if (gMercPlacement[i].pSoldier.value.usStrategicInsertionData == NOWHERE) {
-                  fInvalidArea = TRUE;
+                  fInvalidArea = true;
                   break;
                 }
               }
@@ -706,14 +706,14 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
               gMercPlacement[gbSelectedMercID].pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
               PutDownMercPiece(gbSelectedMercID);
             } else {
-              fInvalidArea = TRUE;
+              fInvalidArea = true;
             }
 
             // gbSelectedMercID++;
             // if( gbSelectedMercID == giPlacements )
             //	gbSelectedMercID = 0;
             // gpTacticalPlacementSelectedSoldier = gMercPlacement[ gbSelectedMercID ].pSoldier;
-            gfTacticalPlacementGUIDirty = TRUE;
+            gfTacticalPlacementGUIDirty = true;
             // SetCursorMerc( gbSelectedMercID );
           }
           EndMapEdgepointSearch();
@@ -741,7 +741,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
 function SetCursorMerc(bPlacementID: INT8): void {
   if (gbCursorMercID != bPlacementID) {
     if (gbCursorMercID == -1 || bPlacementID == -1 || gMercPlacement[gbCursorMercID].ubStrategicInsertionCode != gMercPlacement[bPlacementID].ubStrategicInsertionCode)
-      gfValidLocationsChanged = TRUE;
+      gfValidLocationsChanged = true;
     gbCursorMercID = bPlacementID;
   }
 }
@@ -782,27 +782,27 @@ function PutDownMercPiece(iPlacement: INT32): void {
     EVENT_SetSoldierPosition(pSoldier, sCellX, sCellY);
     EVENT_SetSoldierDirection(pSoldier, ubDirection);
     pSoldier.value.ubInsertionDirection = pSoldier.value.bDirection;
-    gMercPlacement[iPlacement].fPlaced = TRUE;
-    gMercPlacement[iPlacement].pSoldier.value.bInSector = TRUE;
+    gMercPlacement[iPlacement].fPlaced = true;
+    gMercPlacement[iPlacement].pSoldier.value.bInSector = true;
   }
 }
 
 function PickUpMercPiece(iPlacement: INT32): void {
   RemoveSoldierFromGridNo(gMercPlacement[iPlacement].pSoldier);
-  gMercPlacement[iPlacement].fPlaced = FALSE;
-  gMercPlacement[iPlacement].pSoldier.value.bInSector = FALSE;
+  gMercPlacement[iPlacement].fPlaced = false;
+  gMercPlacement[iPlacement].pSoldier.value.bInSector = false;
 }
 
 function FastHelpRemovedCallback(): void {
-  gfTacticalPlacementGUIDirty = TRUE;
+  gfTacticalPlacementGUIDirty = true;
 }
 
 function FastHelpRemoved2Callback(): void {
-  gfTacticalPlacementGUIDirty = TRUE;
+  gfTacticalPlacementGUIDirty = true;
   gfValidLocationsChanged = 2; // because fast help text covers it.
 }
 
 function DialogRemoved(ubResult: UINT8): void {
-  gfTacticalPlacementGUIDirty = TRUE;
-  gfValidLocationsChanged = TRUE;
+  gfTacticalPlacementGUIDirty = true;
+  gfValidLocationsChanged = true;
 }

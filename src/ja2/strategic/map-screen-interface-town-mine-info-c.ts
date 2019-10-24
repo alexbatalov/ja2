@@ -2,7 +2,7 @@ const BOX_BUTTON_WIDTH = 100;
 const BOX_BUTTON_HEIGHT = 20;
 
 // flag to say if we are showing town/mine box at all
-let fShowTownInfo: BOOLEAN = FALSE;
+let fShowTownInfo: boolean = false;
 
 let ghTownMineBox: INT32 = -1;
 let TownMinePosition: SGPPoint = [ 300, 150 ];
@@ -36,14 +36,14 @@ function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
 
 function CreateDestroyTownInfoBox(): void {
   // create destroy pop up box for town/mine info
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let pDimensions: SGPRect;
   let pPosition: SGPPoint;
   let sButtonX: INT16 = 0;
   let sButtonY: INT16 = 0;
   let bTownId: INT8 = 0;
 
-  if ((fCreated == FALSE) && (fShowTownInfo == TRUE)) {
+  if ((fCreated == false) && (fShowTownInfo == true)) {
     // create pop up box
     CreateTownInfoBox();
 
@@ -51,7 +51,7 @@ function CreateDestroyTownInfoBox(): void {
 
     if (bCurrentTownMineSectorZ == 0) {
       // only show the mine info when mines button is selected, otherwise we need to see the sector's regular town info
-      if ((IsThereAMineInThisSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY) == TRUE) && fShowMineFlag) {
+      if ((IsThereAMineInThisSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY) == true) && fShowMineFlag) {
         AddTextToMineBox();
       } else {
         bTownId = GetTownIdForSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
@@ -128,8 +128,8 @@ function CreateDestroyTownInfoBox(): void {
     // now position box
     PositionTownMineInfoBox();
 
-    fCreated = TRUE;
-  } else if ((fCreated == TRUE) && (fShowTownInfo == FALSE)) {
+    fCreated = true;
+  } else if ((fCreated == true) && (fShowTownInfo == false)) {
     // get box size
     GetBoxSize(ghTownMineBox, addressof(pDimensions));
 
@@ -146,7 +146,7 @@ function CreateDestroyTownInfoBox(): void {
     // restore background
     RestoreExternBackgroundRect(pPosition.iX, pPosition.iY, (pDimensions.iRight - pDimensions.iLeft), (pDimensions.iBottom - pDimensions.iTop + 3));
 
-    fCreated = FALSE;
+    fCreated = false;
   }
 
   return;
@@ -431,22 +431,22 @@ function AddSectorToBox(): void {
 function AddCommonInfoToBox(): void {
   let wString: CHAR16[] /* [64] */;
   let hStringHandle: UINT32 = 0;
-  let fUnknownSAMSite: BOOLEAN = FALSE;
+  let fUnknownSAMSite: boolean = false;
   let ubMilitiaTotal: UINT8 = 0;
   let ubNumEnemies: UINT8;
 
   switch (SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY)) {
     case Enum123.SEC_D2: // Chitzena SAM
       if (!fSamSiteFound[Enum138.SAM_SITE_ONE])
-        fUnknownSAMSite = TRUE;
+        fUnknownSAMSite = true;
       break;
     case Enum123.SEC_D15: // Drassen SAM
       if (!fSamSiteFound[Enum138.SAM_SITE_TWO])
-        fUnknownSAMSite = TRUE;
+        fUnknownSAMSite = true;
       break;
     case Enum123.SEC_I8: // Cambria SAM
       if (!fSamSiteFound[Enum138.SAM_SITE_THREE])
-        fUnknownSAMSite = TRUE;
+        fUnknownSAMSite = true;
       break;
     // SAM Site 4 in Meduna is within town limits, so it's always controllable
     default:
@@ -665,15 +665,15 @@ function MapTownMineInventoryButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: IN
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // done
-      fShowMapInventoryPool = TRUE;
-      fMapPanelDirty = TRUE;
-      fMapScreenBottomDirty = TRUE;
-      fShowTownInfo = FALSE;
+      fShowMapInventoryPool = true;
+      fMapPanelDirty = true;
+      fMapScreenBottomDirty = true;
+      fShowTownInfo = false;
 
       // since we are bring up the sector inventory, check to see if the help screen should come up
-      if (ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY, FALSE)) {
+      if (ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY, false)) {
         // normally this is handled in the screen handler, we have to set up a little different this time around
-        ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY, TRUE);
+        ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY, true);
       }
     }
   }
@@ -687,9 +687,9 @@ function MapTownMineExitButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32):
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // done
-      fMapPanelDirty = TRUE;
-      fMapScreenBottomDirty = TRUE;
-      fShowTownInfo = FALSE;
+      fMapPanelDirty = true;
+      fMapScreenBottomDirty = true;
+      fShowTownInfo = false;
     }
   }
 }

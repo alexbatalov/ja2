@@ -27,21 +27,15 @@ type FLAGS8 = unsigned_char;
 type FLAGS16 = unsigned_short;
 type FLAGS32 = unsigned_long;
 // other
-type BOOLEAN = unsigned_char;
 type PTR = Pointer<void>;
 type HNDL = unsigned_short;
 type BYTE = UINT8;
 type STRING512 = CHAR8[] /* [512] */;
 type HWFILE = UINT32;
-
 const SGPFILENAME_LEN = 100;
 type SGPFILENAME = CHAR8[] /* [SGPFILENAME_LEN] */;
 
 // *** SIR-TECH TYPE DEFINITIONS ***
-
-const TRUE = 1;
-
-const FALSE = 0;
 
 const BAD_INDEX = -1;
 

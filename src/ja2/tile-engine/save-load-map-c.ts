@@ -1,6 +1,6 @@
 const NUM_REVEALED_BYTES = 3200;
 
-let gfApplyChangesToTempFile: BOOLEAN = FALSE;
+let gfApplyChangesToTempFile: boolean = false;
 
 //  There are 3200 bytes, and each bit represents the revelaed status.
 //	3200 bytes * 8 bits = 25600 map elements
@@ -8,11 +8,11 @@ let gpRevealedMap: Pointer<UINT8>;
 
 // ppp
 
-function ApplyMapChangesToMapTempFile(fAddToMap: BOOLEAN): void {
+function ApplyMapChangesToMapTempFile(fAddToMap: boolean): void {
   gfApplyChangesToTempFile = fAddToMap;
 }
 
-function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
+function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
@@ -26,10 +26,10 @@ function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX:
   GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
 
   // Open the file for writing, Create it if it doesnt exist
-  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
   if (hFile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   // Move to the end of the file
@@ -39,17 +39,17 @@ function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX:
   if (uiNumBytesWritten != sizeof(MODIFY_MAP)) {
     // Error Writing size of array to disk
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   FileClose(hFile);
 
   SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS);
 
-  return TRUE;
+  return true;
 }
 
-function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
+function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
@@ -72,14 +72,14 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
     // If the file doesnt exists, its no problem.
-    return TRUE;
+    return true;
   }
 
   // Open the file for reading
-  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hFile == 0) {
     // Error opening map modification file,
-    return FALSE;
+    return false;
   }
 
   // Get the size of the file
@@ -89,14 +89,14 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
   pTempArrayOfMaps = MemAlloc(uiFileSize);
   if (pTempArrayOfMaps == null) {
     Assert(0);
-    return TRUE;
+    return true;
   }
 
   // Read the map temp file into a buffer
   FileRead(hFile, pTempArrayOfMaps, uiFileSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiFileSize) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // Close the file
@@ -194,14 +194,14 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
 
       case Enum307.SLM_EXIT_GRIDS: {
         let ExitGrid: EXITGRID;
-        gfLoadingExitGrids = TRUE;
+        gfLoadingExitGrids = true;
         ExitGrid.usGridNo = pMap.value.usSubImageIndex;
         ExitGrid.ubGotoSectorX = pMap.value.usImageType;
         ExitGrid.ubGotoSectorY = (pMap.value.usImageType >> 8);
         ExitGrid.ubGotoSectorZ = pMap.value.ubExtra;
 
         AddExitGridToWorld(pMap.value.usGridNo, addressof(ExitGrid));
-        gfLoadingExitGrids = FALSE;
+        gfLoadingExitGrids = false;
 
         // Save this struct back to the temp file
         SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
@@ -241,7 +241,7 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
   MemFree(pTempArrayOfMaps);
   pTempArrayOfMaps = null;
 
-  return TRUE;
+  return true;
 }
 
 function AddStructToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
@@ -271,7 +271,7 @@ function AddStructToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
 }
 
 function AddStructFromMapTempFileToMap(uiMapIndex: UINT32, usIndex: UINT16): void {
-  AddStructToTailCommon(uiMapIndex, usIndex, TRUE);
+  AddStructToTailCommon(uiMapIndex, usIndex, true);
 }
 
 function AddObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
@@ -436,7 +436,7 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
     if (pStructure) {
       // if the current structure has an openable structure in it, and it is NOT a door
       if (!(pStructure.value.fFlags & STRUCTURE_ANYDOOR)) {
-        let fStatusOnTheMap: BOOLEAN;
+        let fStatusOnTheMap: boolean;
 
         fStatusOnTheMap = ((pStructure.value.fFlags & STRUCTURE_OPEN) != 0);
 
@@ -462,7 +462,7 @@ function AddBloodOrSmellFromMapTempFileToMap(pMap: Pointer<MODIFY_MAP>): void {
   gpWorldLevelData[pMap.value.usGridNo].ubSmellInfo = pMap.value.usSubImageIndex;
 }
 
-function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
+function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
@@ -478,10 +478,10 @@ function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: IN
   GetMapTempFileName(SF_REVEALED_STATUS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
 
   // Open the file for writing, Create it if it doesnt exist
-  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
   if (hFile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   // Write the revealed array to the Revealed temp file
@@ -489,7 +489,7 @@ function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: IN
   if (uiNumBytesWritten != NUM_REVEALED_BYTES) {
     // Error Writing size of array to disk
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   FileClose(hFile);
@@ -499,10 +499,10 @@ function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: IN
   MemFree(gpRevealedMap);
   gpRevealedMap = null;
 
-  return TRUE;
+  return true;
 }
 
-function LoadRevealedStatusArrayFromRevealedTempFile(): BOOLEAN {
+function LoadRevealedStatusArrayFromRevealedTempFile(): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
@@ -518,14 +518,14 @@ function LoadRevealedStatusArrayFromRevealedTempFile(): BOOLEAN {
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
     // If the file doesnt exists, its no problem.
-    return TRUE;
+    return true;
   }
 
   // Open the file for reading
-  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hFile == 0) {
     // Error opening map modification file,
-    return FALSE;
+    return false;
   }
 
   // Allocate memory
@@ -538,7 +538,7 @@ function LoadRevealedStatusArrayFromRevealedTempFile(): BOOLEAN {
   // Load the Reveal map array structure
   FileRead(hFile, gpRevealedMap, NUM_REVEALED_BYTES, addressof(uiNumBytesRead));
   if (uiNumBytesRead != NUM_REVEALED_BYTES) {
-    return FALSE;
+    return false;
   }
 
   FileClose(hFile);
@@ -549,7 +549,7 @@ function LoadRevealedStatusArrayFromRevealedTempFile(): BOOLEAN {
   MemFree(gpRevealedMap);
   gpRevealedMap = null;
 
-  return TRUE;
+  return true;
 }
 
 function SetSectorsRevealedBit(usMapIndex: UINT16): void {
@@ -738,7 +738,7 @@ function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>
   SaveModifiedMapStructToMapTempFile(addressof(Map), sSectorX, sSectorY, ubSectorZ);
 }
 
-function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): BOOLEAN {
+function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
@@ -746,7 +746,7 @@ function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX
   let pMap: Pointer<MODIFY_MAP>;
   let uiFileSize: UINT32;
   let uiNumberOfElements: UINT32;
-  let fRetVal: BOOLEAN = FALSE;
+  let fRetVal: boolean = false;
   let uiType: UINT32;
   let usSubIndex: UINT16;
   let cnt: UINT32;
@@ -762,14 +762,14 @@ function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
     // If the file doesnt exists,
-    return FALSE;
+    return false;
   }
 
   // Open the file for writing, Create it if it doesnt exist
-  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hFile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   // Get the size of the temp file
@@ -779,14 +779,14 @@ function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX
   pTempArrayOfMaps = MemAlloc(uiFileSize);
   if (pTempArrayOfMaps == null) {
     Assert(0);
-    return FALSE;
+    return false;
   }
 
   // Read the map temp file into a buffer
   FileRead(hFile, pTempArrayOfMaps, uiFileSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiFileSize) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // Close the file
@@ -808,7 +808,7 @@ function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX
     // if this is the peice we are looking for
     if (pMap.value.usGridNo == uiMapIndex && pMap.value.usImageType == uiType && pMap.value.usSubImageIndex == usSubIndex) {
       // Do nothin
-      fRetVal = TRUE;
+      fRetVal = true;
     } else {
       // save the struct back to the temp file
       SaveModifiedMapStructToMapTempFile(pMap, sSectorX, sSectorY, ubSectorZ);
@@ -818,7 +818,7 @@ function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX
   return fRetVal;
 }
 
-function AddOpenableStructStatusToMapTempFile(uiMapIndex: UINT32, fOpened: BOOLEAN): void {
+function AddOpenableStructStatusToMapTempFile(uiMapIndex: UINT32, fOpened: boolean): void {
   let Map: MODIFY_MAP;
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
@@ -842,22 +842,22 @@ function AddWindowHitToMapTempFile(uiMapIndex: UINT32): void {
   SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
 
-function ModifyWindowStatus(uiMapIndex: UINT32): BOOLEAN {
+function ModifyWindowStatus(uiMapIndex: UINT32): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(uiMapIndex, STRUCTURE_WALLNWINDOW);
   if (pStructure) {
     SwapStructureForPartner(uiMapIndex, pStructure);
-    return TRUE;
+    return true;
   }
   // else forget it, window could be destroyed
-  return FALSE;
+  return false;
 }
 
-function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOOLEAN): void {
+function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: boolean): void {
   let pStructure: Pointer<STRUCTURE>;
   let pBase: Pointer<STRUCTURE>;
-  let fStatusOnTheMap: BOOLEAN;
+  let fStatusOnTheMap: boolean;
   let pItemPool: Pointer<ITEM_POOL>;
   let sBaseGridNo: INT16 = uiMapIndex;
 
@@ -889,7 +889,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOO
     if (GetItemPool(sBaseGridNo, addressof(pItemPool), 0)) {
       if (fOpened) {
         // We are open, make un-hidden if so....
-        SetItemPoolVisibilityOn(pItemPool, ANY_VISIBILITY_VALUE, FALSE);
+        SetItemPoolVisibilityOn(pItemPool, ANY_VISIBILITY_VALUE, false);
       } else {
         // Make sure items are hidden...
         SetItemPoolVisibilityHidden(pItemPool);
@@ -898,7 +898,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOO
   }
 }
 
-function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSectorY: UINT16, bSectorZ: INT8, usGridNo: UINT16, fChangeToOpen: BOOLEAN): BOOLEAN {
+function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSectorY: UINT16, bSectorZ: INT8, usGridNo: UINT16, fChangeToOpen: boolean): boolean {
   //	STRUCTURE * pStructure;
   //	MODIFY_MAP Map;
   let zMapName: CHAR8[] /* [128] */;
@@ -924,14 +924,14 @@ function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSecto
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
     // If the file doesnt exists, its no problem.
-    return TRUE;
+    return true;
   }
 
   // Open the file for reading
-  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hFile == 0) {
     // Error opening map modification file,
-    return FALSE;
+    return false;
   }
 
   // Get the size of the file
@@ -941,14 +941,14 @@ function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSecto
   pTempArrayOfMaps = MemAlloc(uiFileSize);
   if (pTempArrayOfMaps == null) {
     Assert(0);
-    return TRUE;
+    return true;
   }
 
   // Read the map temp file into a buffer
   FileRead(hFile, pTempArrayOfMaps, uiFileSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiFileSize) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // Close the file
@@ -976,20 +976,20 @@ function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSecto
   }
 
   // Open the file for writing
-  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
   if (hFile == 0) {
     // Error opening map modification file,
-    return FALSE;
+    return false;
   }
 
   // Write the map temp file into a buffer
   FileWrite(hFile, pTempArrayOfMaps, uiFileSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiFileSize) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   FileClose(hFile);
 
-  return TRUE;
+  return true;
 }

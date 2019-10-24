@@ -19,15 +19,15 @@ interface NPC_DIALOGUE_TYPE {
   NameRegion: MOUSE_REGION;
   ScreenRegion: MOUSE_REGION;
   TextRegion: MOUSE_REGION;
-  fTextRegionOn: BOOLEAN;
-  fOnName: BOOLEAN;
-  fDirtyLevel: BOOLEAN;
+  fTextRegionOn: boolean;
+  fOnName: boolean;
+  fDirtyLevel: boolean;
   uiSaveBuffer: UINT32;
-  fHandled: BOOLEAN;
-  fHandledTalkingVal: BOOLEAN;
-  fHandledCanDeleteVal: BOOLEAN;
-  fRenderSubTitlesNow: BOOLEAN;
-  fSetupSubTitles: BOOLEAN;
+  fHandled: boolean;
+  fHandledTalkingVal: boolean;
+  fHandledCanDeleteVal: boolean;
+  fRenderSubTitlesNow: boolean;
+  fSetupSubTitles: boolean;
   zQuoteStr: INT16[] /* [480] */; // QIALOGUE_SIZE is in dialog control which includes this file...
 }
 

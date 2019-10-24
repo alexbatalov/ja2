@@ -10,7 +10,7 @@ let gubCheckForFreeSpaceOnHardDriveCount: UINT8 = DONT_CHECK_FOR_FREE_SPACE;
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
 
-function InitializeGame(): BOOLEAN {
+function InitializeGame(): boolean {
   let uiIndex: UINT32;
 
   giStartingMemValue = MemGetFree();
@@ -32,13 +32,13 @@ function InitializeGame(): BOOLEAN {
   }
 
   // Deletes all the Temp files in the Maps\Temp directory
-  InitTacticalSave(TRUE);
+  InitTacticalSave(true);
 
   // Initialize Game Screens.
   for (uiIndex = 0; uiIndex < Enum26.MAX_SCREENS; uiIndex++) {
-    if (((GameScreens[uiIndex].InitializeScreen).value)() == FALSE) {
+    if (((GameScreens[uiIndex].InitializeScreen).value)() == false) {
       // Failed to initialize one of the screens.
-      return FALSE;
+      return false;
     }
   }
 
@@ -56,7 +56,7 @@ function InitializeGame(): BOOLEAN {
 
   guiCurrentScreen = Enum26.INIT_SCREEN;
 
-  return TRUE;
+  return true;
 }
 
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
@@ -75,7 +75,7 @@ function ShutdownGame(): void {
   ShutDownFileDatabase();
 
   // Deletes all the Temp files in the Maps\Temp directory
-  InitTacticalSave(FALSE);
+  InitTacticalSave(false);
 }
 
 // This is the main Gameloop. This should eventually by one big switch statement which represents
@@ -90,9 +90,9 @@ function GameLoop(): void {
   GetCursorPos(addressof(MousePos));
   // Hook into mouse stuff for MOVEMENT MESSAGES
   MouseSystemHook(MOUSE_POS, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
-  MusicPoll(FALSE);
+  MusicPoll(false);
 
-  while (DequeueSpecificEvent(addressof(InputEvent), LEFT_BUTTON_REPEAT | RIGHT_BUTTON_REPEAT | LEFT_BUTTON_DOWN | LEFT_BUTTON_UP | RIGHT_BUTTON_DOWN | RIGHT_BUTTON_UP) == TRUE) {
+  while (DequeueSpecificEvent(addressof(InputEvent), LEFT_BUTTON_REPEAT | RIGHT_BUTTON_REPEAT | LEFT_BUTTON_DOWN | LEFT_BUTTON_UP | RIGHT_BUTTON_DOWN | RIGHT_BUTTON_UP) == true) {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
@@ -164,7 +164,7 @@ function GameLoop(): void {
       switch (guiCurrentScreen) {
         case Enum26.MAP_SCREEN:
           if (guiPendingScreen != Enum26.MSG_BOX_SCREEN) {
-            EndMapScreen(FALSE);
+            EndMapScreen(false);
           }
           break;
         case Enum26.LAPTOP_SCREEN:
@@ -225,7 +225,7 @@ function HandleShortCutExitState(): void {
 
   if (guiCurrentScreen == Enum26.ERROR_SCREEN) {
     // an assert failure, don't bring up the box!
-    gfProgramIsRunning = FALSE;
+    gfProgramIsRunning = false;
     return;
   }
 
@@ -248,7 +248,7 @@ function HandleShortCutExitState(): void {
 
     if ((guiCurrentScreen == Enum26.ERROR_SCREEN) || (guiCurrentScreen == Enum26.EDIT_SCREEN) || (guiCurrentScreen == Enum26.DEBUG_SCREEN)) {
       // then don't prompt
-      gfProgramIsRunning = FALSE;
+      gfProgramIsRunning = false;
       return;
     }
 
@@ -260,13 +260,13 @@ function HandleShortCutExitState(): void {
 function EndGameMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
-    gfProgramIsRunning = FALSE;
+    gfProgramIsRunning = false;
   }
 
   // If we are in the tactical placement gui, we need this flag set so the interface is updated.
   if (gfTacticalPlacementGUIActive) {
-    gfTacticalPlacementGUIDirty = TRUE;
-    gfValidLocationsChanged = TRUE;
+    gfTacticalPlacementGUIDirty = true;
+    gfValidLocationsChanged = true;
   }
 
   return;

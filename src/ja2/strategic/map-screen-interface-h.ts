@@ -185,7 +185,7 @@ interface MERC_LEAVE_ITEM {
 // The character data structure
 interface MapScreenCharacterSt {
   usSolID: UINT16; // soldier ID in MenPtrs
-  fValid: BOOLEAN; // is the current soldier a valid soldier
+  fValid: boolean; // is the current soldier a valid soldier
 }
 
 /*

@@ -13,7 +13,7 @@ let gPopup: CurrentPopupMenuInformation;
 let popupRegion: MOUSE_REGION;
 
 let gusEntryHeight: UINT16;
-let fWaitingForLButtonRelease: BOOLEAN = FALSE;
+let fWaitingForLButtonRelease: boolean = false;
 
 // Finds the string for any popup menu in JA2 -- the strings are stored
 // in different ways in each instance.
@@ -120,9 +120,9 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
   gPopup.ubPopupMenuID = ubPopupMenuID;
   gPopup.ubSelectedIndex = 0;
   gPopup.ubActiveType = POPUP_ACTIVETYPE_NOT_YET_DETERMINED;
-  gPopup.fActive = TRUE;
-  fWaitingForLButtonRelease = FALSE;
-  gPopup.fUseKeyboardInfoUntilMouseMoves = FALSE;
+  gPopup.fActive = true;
+  fWaitingForLButtonRelease = false;
+  gPopup.fUseKeyboardInfoUntilMouseMoves = false;
   // Initialize the last mouse position to be out of bounds.
   gPopup.usLastMouseX = 1000;
   gPopup.usLastMouseY = 1000;
@@ -209,12 +209,12 @@ function RenderPopupMenu(): void {
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   usLineColor = Get16BPPColor(FROMRGB(64, 64, 64));
-  RectangleDraw(TRUE, gPopup.usLeft, gPopup.usTop, gPopup.usRight, gPopup.usBottom, usLineColor, pDestBuf);
+  RectangleDraw(true, gPopup.usLeft, gPopup.usTop, gPopup.usRight, gPopup.usBottom, usLineColor, pDestBuf);
   if (gPopup.ubColumns > 1) {
     // draw a vertical line between each column
     usStart = gPopup.usLeft + gPopup.ubColumnWidth[0];
     for (ubColumn = 1; ubColumn < gPopup.ubColumns; ubColumn++) {
-      LineDraw(TRUE, usStart, gPopup.usTop, usStart, gPopup.usBottom, usLineColor, pDestBuf);
+      LineDraw(true, usStart, gPopup.usTop, usStart, gPopup.usBottom, usLineColor, pDestBuf);
     }
     usStart += gPopup.ubColumnWidth[ubColumn];
   }
@@ -312,12 +312,12 @@ function PopupMenuHandle(): void {
   } else if (gusMouseXPos != gPopup.usLastMouseX || gusMouseYPos != gPopup.usLastMouseY) {
     // The keyboard determined the last entry, but the mouse has moved,
     // so use the mouse to determine the new entry.
-    gPopup.fUseKeyboardInfoUntilMouseMoves = FALSE;
+    gPopup.fUseKeyboardInfoUntilMouseMoves = false;
     gPopup.ubSelectedIndex = GetPopupIndexFromMousePosition();
   }
   // Check terminating conditions for persistant states.
   if (gfLeftButtonState && gPopup.ubActiveType == POPUP_ACTIVETYPE_PERSISTANT)
-    fWaitingForLButtonRelease = TRUE;
+    fWaitingForLButtonRelease = true;
   if (gfLeftButtonState && gPopup.ubActiveType == POPUP_ACTIVETYPE_PERSISTANT || !gfLeftButtonState && gPopup.ubActiveType == POPUP_ACTIVETYPE_NONPERSISTANT) {
     // Selection conditions via mouse have been met whether the mouse is in the
     // menu region or not.
@@ -325,10 +325,10 @@ function PopupMenuHandle(): void {
     if (gPopup.ubSelectedIndex) {
       ProcessPopupMenuSelection();
     }
-    gPopup.fActive = FALSE;
+    gPopup.fActive = false;
     MSYS_RemoveRegion(addressof(popupRegion));
-    gfRenderWorld = TRUE;
-    gfRenderTaskbar = TRUE;
+    gfRenderWorld = true;
+    gfRenderTaskbar = true;
     return;
   }
   // Use keyboard input as well.
@@ -337,7 +337,7 @@ function PopupMenuHandle(): void {
       case KEY_DOWN:
         switch (InputEvent.usParam) {
           case DNARROW:
-            gPopup.fUseKeyboardInfoUntilMouseMoves = TRUE;
+            gPopup.fUseKeyboardInfoUntilMouseMoves = true;
             gPopup.usLastMouseX = gusMouseXPos;
             gPopup.usLastMouseY = gusMouseYPos;
             gPopup.ubSelectedIndex++;
@@ -346,7 +346,7 @@ function PopupMenuHandle(): void {
             }
             break;
           case UPARROW:
-            gPopup.fUseKeyboardInfoUntilMouseMoves = TRUE;
+            gPopup.fUseKeyboardInfoUntilMouseMoves = true;
             gPopup.usLastMouseX = gusMouseXPos;
             gPopup.usLastMouseY = gusMouseYPos;
             if (gPopup.ubSelectedIndex < 2) {
@@ -356,17 +356,17 @@ function PopupMenuHandle(): void {
             }
             break;
           case ESC:
-            gPopup.fActive = FALSE;
+            gPopup.fActive = false;
             MSYS_RemoveRegion(addressof(popupRegion));
-            gfRenderWorld = TRUE;
-            gfRenderTaskbar = TRUE;
+            gfRenderWorld = true;
+            gfRenderTaskbar = true;
             break;
           case ENTER:
             ProcessPopupMenuSelection();
-            gPopup.fActive = FALSE;
+            gPopup.fActive = false;
             MSYS_RemoveRegion(addressof(popupRegion));
-            gfRenderWorld = TRUE;
-            gfRenderTaskbar = TRUE;
+            gfRenderWorld = true;
+            gfRenderTaskbar = true;
             break;
         }
         break;
@@ -396,20 +396,20 @@ function ProcessPopupMenuSelection(): void {
   }
 }
 
-function ProcessPopupMenuIfActive(): BOOLEAN {
+function ProcessPopupMenuIfActive(): boolean {
   if (!gPopup.fActive && !fWaitingForLButtonRelease)
-    return FALSE;
+    return false;
   if (fWaitingForLButtonRelease) {
     if (!gfLeftButtonState) {
-      fWaitingForLButtonRelease = FALSE;
-      return FALSE;
+      fWaitingForLButtonRelease = false;
+      return false;
     }
-    return TRUE;
+    return true;
   }
   PopupMenuHandle();
   RenderPopupMenu();
   InvalidateRegion(gPopup.usLeft, gPopup.usTop, gPopup.usRight, gPopup.usBottom);
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  return TRUE;
+  return true;
 }

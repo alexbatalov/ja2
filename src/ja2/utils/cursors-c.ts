@@ -6,79 +6,79 @@ let gsMouseGlobalYOffsets: INT16[] /* [NUM_MOUSE_LEVELS] */ = [
 ];
 
 let CursorFileDatabase: CursorFileData[] /* [] */ = [
-  [ "CURSORS\\cursor.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_targ.sti", FALSE, 0, ANIMATED_CURSOR, 7, null ],
-  [ "CURSORS\\cur_tagr.sti", FALSE, 0, ANIMATED_CURSOR, 7, null ],
-  [ "CURSORS\\targblak.sti", FALSE, 0, ANIMATED_CURSOR, 7, null ],
-  [ "CURSORS\\cur_bst.sti", FALSE, 0, ANIMATED_CURSOR, 7, null ],
-  [ "CURSORS\\cur_rbst.sti", FALSE, 0, ANIMATED_CURSOR, 7, null ],
-  [ "CURSORS\\burstblk.sti", FALSE, 0, ANIMATED_CURSOR, 7, null ],
-  [ "CURSORS\\cur_tr.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_trw.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_tb.sti", FALSE, 0, ANIMATED_CURSOR, 7, null ],
+  [ "CURSORS\\cursor.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_targ.sti", false, 0, ANIMATED_CURSOR, 7, null ],
+  [ "CURSORS\\cur_tagr.sti", false, 0, ANIMATED_CURSOR, 7, null ],
+  [ "CURSORS\\targblak.sti", false, 0, ANIMATED_CURSOR, 7, null ],
+  [ "CURSORS\\cur_bst.sti", false, 0, ANIMATED_CURSOR, 7, null ],
+  [ "CURSORS\\cur_rbst.sti", false, 0, ANIMATED_CURSOR, 7, null ],
+  [ "CURSORS\\burstblk.sti", false, 0, ANIMATED_CURSOR, 7, null ],
+  [ "CURSORS\\cur_tr.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_trw.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_tb.sti", false, 0, ANIMATED_CURSOR, 7, null ],
 
-  [ "CURSORS\\punch.sti", FALSE, 0, ANIMATED_CURSOR, 6, null ],
-  [ "CURSORS\\punchr.sti", FALSE, 0, ANIMATED_CURSOR, 6, null ],
-  [ "CURSORS\\cur_run.sti", FALSE, 0, ANIMATED_CURSOR, 10, null ],
-  [ "CURSORS\\cur_walk.sti", FALSE, 0, ANIMATED_CURSOR, 10, null ],
-  [ "CURSORS\\cur_swat.sti", FALSE, 0, ANIMATED_CURSOR, 10, null ],
-  [ "CURSORS\\cur_pron.sti", FALSE, 0, ANIMATED_CURSOR, 10, null ],
-  [ "CURSORS\\grabsr.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\grabs.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\stab.sti", FALSE, 0, ANIMATED_CURSOR, 6, null ],
-  [ "CURSORS\\stabr.sti", FALSE, 0, ANIMATED_CURSOR, 6, null ],
+  [ "CURSORS\\punch.sti", false, 0, ANIMATED_CURSOR, 6, null ],
+  [ "CURSORS\\punchr.sti", false, 0, ANIMATED_CURSOR, 6, null ],
+  [ "CURSORS\\cur_run.sti", false, 0, ANIMATED_CURSOR, 10, null ],
+  [ "CURSORS\\cur_walk.sti", false, 0, ANIMATED_CURSOR, 10, null ],
+  [ "CURSORS\\cur_swat.sti", false, 0, ANIMATED_CURSOR, 10, null ],
+  [ "CURSORS\\cur_pron.sti", false, 0, ANIMATED_CURSOR, 10, null ],
+  [ "CURSORS\\grabsr.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\grabs.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\stab.sti", false, 0, ANIMATED_CURSOR, 6, null ],
+  [ "CURSORS\\stabr.sti", false, 0, ANIMATED_CURSOR, 6, null ],
 
-  [ "CURSORS\\cross1.sti", FALSE, 0, ANIMATED_CURSOR, 6, null ],
-  [ "CURSORS\\cross2.sti", FALSE, 0, ANIMATED_CURSOR, 6, null ],
-  [ "LAPTOP\\FingerCursor.sti", FALSE, 0, 0, 0, null ],
-  [ "LAPTOP\\LapTopCursor.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\ibeam.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_look.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_talk.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_talkb.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_talkr.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_exit.sti", FALSE, 0, 0, 0, null ],
+  [ "CURSORS\\cross1.sti", false, 0, ANIMATED_CURSOR, 6, null ],
+  [ "CURSORS\\cross2.sti", false, 0, ANIMATED_CURSOR, 6, null ],
+  [ "LAPTOP\\FingerCursor.sti", false, 0, 0, 0, null ],
+  [ "LAPTOP\\LapTopCursor.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\ibeam.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_look.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_talk.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_talkb.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_talkr.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_exit.sti", false, 0, 0, 0, null ],
 
-  [ "CURSORS\\VehicleCursor.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\WalkingCursor.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\que.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\chopper.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\check.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_try.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\wirecut.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\wirecutr.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\bullet_g.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\bullet_d.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\ibeamWhite.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\throwg.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\throwb.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\throwr.sti", FALSE, 0, 0, 0, null ],
-  [ "", FALSE, 0, USE_EXTERN_VO_CURSOR | USE_OUTLINE_BLITTER, 0, null ],
-  [ "CURSORS\\bombg.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\bombr.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\remoteg.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\remoter.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\steering.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_car.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_wait.sti", FALSE, 0, 0, 0, null ],
+  [ "CURSORS\\VehicleCursor.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\WalkingCursor.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\que.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\chopper.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\check.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_try.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\wirecut.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\wirecutr.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\bullet_g.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\bullet_d.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\ibeamWhite.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\throwg.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\throwb.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\throwr.sti", false, 0, 0, 0, null ],
+  [ "", false, 0, USE_EXTERN_VO_CURSOR | USE_OUTLINE_BLITTER, 0, null ],
+  [ "CURSORS\\bombg.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\bombr.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\remoteg.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\remoter.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\steering.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_car.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_wait.sti", false, 0, 0, 0, null ],
 
   // Tactical GUI cursors
-  [ "CURSORS\\singlecursor.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\groupcursor.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\singledcursor.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\groupdcursor.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\repair.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\repairr.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\jar_cur.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\jar_cur_red.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_x.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\can_01.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\can_02.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\cur_swit.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\bullseye.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\deadleap.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\can_01.sti", FALSE, 0, 0, 0, null ],
-  [ "CURSORS\\can_02.sti", FALSE, 0, 0, 0, null ],
+  [ "CURSORS\\singlecursor.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\groupcursor.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\singledcursor.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\groupdcursor.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\repair.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\repairr.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\jar_cur.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\jar_cur_red.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_x.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\can_01.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\can_02.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\cur_swit.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\bullseye.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\deadleap.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\can_01.sti", false, 0, 0, 0, null ],
+  [ "CURSORS\\can_02.sti", false, 0, 0, 0, null ],
 ];
 
 function RaiseMouseToLevel(bLevel: INT8): void {
@@ -420,14 +420,14 @@ function DrawMouseText(): void {
   let pStr: INT16[] /* [512] */;
   let sX: INT16;
   let sY: INT16;
-  /* static */ let fShow: BOOLEAN = FALSE;
-  /* static */ let fHoldInvalid: BOOLEAN = TRUE;
+  /* static */ let fShow: boolean = false;
+  /* static */ let fHoldInvalid: boolean = true;
 
   // EnterMutex(MOUSE_BUFFER_MUTEX, __LINE__, __FILE__);
 
   if (gfUIBodyHitLocation) {
     // Set dest for gprintf to be different
-    SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
+    SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, false);
 
     FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzLocation, TINYFONT1(), addressof(sX), addressof(sY));
     SetFont(TINYFONT1());
@@ -437,12 +437,12 @@ function DrawMouseText(): void {
 
     mprintf(sX, sY + 12, gzLocation);
     // reset
-    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   }
 
   if (gfUIIntTileLocation) {
     // Set dest for gprintf to be different
-    SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
+    SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, false);
 
     FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation, TINYFONT1(), addressof(sX), addressof(sY));
     SetFont(TINYFONT1());
@@ -452,12 +452,12 @@ function DrawMouseText(): void {
 
     mprintf(sX, sY + 6, gzIntTileLocation);
     // reset
-    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   }
 
   if (gfUIIntTileLocation2) {
     // Set dest for gprintf to be different
-    SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
+    SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, false);
 
     FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation2, TINYFONT1(), addressof(sX), addressof(sY));
     SetFont(TINYFONT1());
@@ -467,7 +467,7 @@ function DrawMouseText(): void {
 
     mprintf(sX, sY - 2, gzIntTileLocation2);
     // reset
-    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   }
 
   // if ( ( ( gTacticalStatus.uiFlags & TURNBASED ) && ( gTacticalStatus.uiFlags & INCOMBAT ) ) )
@@ -492,12 +492,12 @@ function DrawMouseText(): void {
           }
         }
       } else {
-        fShow = TRUE;
-        fHoldInvalid = FALSE;
+        fShow = true;
+        fHoldInvalid = false;
       }
 
       // Set dest for gprintf to be different
-      SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
+      SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, false);
 
       swprintf(pStr, "%d", gsCurrentActionPoints);
 
@@ -521,7 +521,7 @@ function DrawMouseText(): void {
           SetFontShadow(DEFAULT_SHADOW);
         }
       } else {
-        gfUIDisplayActionPointsBlack = TRUE;
+        gfUIDisplayActionPointsBlack = true;
       }
 
       if (gfUIDisplayActionPointsBlack) {
@@ -537,7 +537,7 @@ function DrawMouseText(): void {
       SetFontShadow(DEFAULT_SHADOW);
 
       // reset
-      SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+      SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
     }
   }
 }

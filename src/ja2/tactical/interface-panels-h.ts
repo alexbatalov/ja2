@@ -35,7 +35,7 @@ const SHOW_LOCATOR_FAST = 2;
 
 interface TEAM_PANEL_SLOTS_TYPE {
   ubID: UINT8;
-  fOccupied: BOOLEAN;
+  fOccupied: boolean;
 }
 
 // void DisableSMPpanelButtonsWhenInShopKeeperInterface( );

@@ -13,8 +13,8 @@
 //
 //**************************************************************************
 
-let gfRecordToFile: BOOLEAN = FALSE;
-let gfRecordToDebugger: BOOLEAN = TRUE;
+let gfRecordToFile: boolean = false;
+let gfRecordToDebugger: boolean = true;
 
 // moved from header file: 24mar98:HJH
 let guiProfileStart: UINT32;

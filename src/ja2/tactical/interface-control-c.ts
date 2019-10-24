@@ -9,12 +9,12 @@ let gusUICurIntTileEffectIndex: UINT16;
 let gsUICurIntTileEffectGridNo: INT16;
 let gsUICurIntTileOldShade: UINT8;
 
-let gfRerenderInterfaceFromHelpText: BOOLEAN = FALSE;
+let gfRerenderInterfaceFromHelpText: boolean = false;
 
 let gLockPanelOverlayRegion: MOUSE_REGION;
 
-let gfPausedTacticalRenderInterfaceFlags: BOOLEAN = FALSE;
-let gfPausedTacticalRenderFlags: BOOLEAN = FALSE;
+let gfPausedTacticalRenderInterfaceFlags: boolean = false;
+let gfPausedTacticalRenderFlags: boolean = false;
 
 function SetTacticalInterfaceFlags(uiFlags: UINT32): void {
   guiTacticalInterfaceFlags = uiFlags;
@@ -24,7 +24,7 @@ function HandleTacticalPanelSwitch(): void {
   if (gfSwitchPanel) {
     SetCurrentInterfacePanel(gbNewPanel);
     SetCurrentTacticalPanelCurrentMerc(gubNewPanelParam);
-    gfSwitchPanel = FALSE;
+    gfSwitchPanel = false;
 
     if ((!guiTacticalInterfaceFlags & INTERFACE_NORENDERBUTTONS) && !(guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE)) {
       RenderButtons();
@@ -64,12 +64,12 @@ function HandlePausedTacticalRender(): void {
   // for a one frame paused render of tactical
   if (gfPausedTacticalRenderFlags) {
     gRenderFlags |= gfPausedTacticalRenderFlags;
-    gfPausedTacticalRenderFlags = FALSE;
+    gfPausedTacticalRenderFlags = false;
   }
 
   if (gfPausedTacticalRenderInterfaceFlags) {
     fInterfacePanelDirty = gfPausedTacticalRenderInterfaceFlags;
-    gfPausedTacticalRenderInterfaceFlags = FALSE;
+    gfPausedTacticalRenderInterfaceFlags = false;
   }
 
   return;
@@ -242,7 +242,7 @@ function ResetInterface(): void {
   }
 
   if (fInterfacePanelDirty) {
-    fInterfacePanelDirty = FALSE;
+    fInterfacePanelDirty = false;
   }
 
   // Reset int tile cursor stuff
@@ -319,10 +319,10 @@ function RenderRubberBanding(): void {
   usLineColor = Get16BPPColor(guiColors[iFlashColor]);
 
   if ((iRight - iLeft) > 0) {
-    LineDraw(TRUE, iLeft, iTop, iRight, iTop, usLineColor, pDestBuf);
+    LineDraw(true, iLeft, iTop, iRight, iTop, usLineColor, pDestBuf);
     iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iLeft, iTop, (iRight + 1), (iTop + 1));
   } else if ((iRight - iLeft) < 0) {
-    LineDraw(TRUE, iLeft, iTop, iRight, iTop, usLineColor, pDestBuf);
+    LineDraw(true, iLeft, iTop, iRight, iTop, usLineColor, pDestBuf);
     iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iRight, iTop, (iLeft + 1), (iTop + 1));
   }
 
@@ -333,10 +333,10 @@ function RenderRubberBanding(): void {
   iBack = -1;
 
   if ((iRight - iLeft) > 0) {
-    LineDraw(TRUE, iLeft, iBottom, iRight, iBottom, usLineColor, pDestBuf);
+    LineDraw(true, iLeft, iBottom, iRight, iBottom, usLineColor, pDestBuf);
     iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iLeft, iBottom, (iRight + 1), (iBottom + 1));
   } else if ((iRight - iLeft) < 0) {
-    LineDraw(TRUE, iLeft, iBottom, iRight, iBottom, usLineColor, pDestBuf);
+    LineDraw(true, iLeft, iBottom, iRight, iBottom, usLineColor, pDestBuf);
     iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iRight, iBottom, (iLeft + 1), (iBottom + 1));
   }
 
@@ -347,10 +347,10 @@ function RenderRubberBanding(): void {
   iBack = -1;
 
   if ((iBottom - iTop) > 0) {
-    LineDraw(TRUE, iLeft, iTop, iLeft, iBottom, usLineColor, pDestBuf);
+    LineDraw(true, iLeft, iTop, iLeft, iBottom, usLineColor, pDestBuf);
     iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iLeft, iTop, (iLeft + 1), iBottom);
   } else if ((iBottom - iTop) < 0) {
-    LineDraw(TRUE, iLeft, iTop, iLeft, iBottom, usLineColor, pDestBuf);
+    LineDraw(true, iLeft, iTop, iLeft, iBottom, usLineColor, pDestBuf);
     iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iLeft, iBottom, (iLeft + 1), iTop);
   }
 
@@ -361,10 +361,10 @@ function RenderRubberBanding(): void {
   iBack = -1;
 
   if ((iBottom - iTop) > 0) {
-    LineDraw(TRUE, iRight, iTop, iRight, iBottom, usLineColor, pDestBuf);
+    LineDraw(true, iRight, iTop, iRight, iBottom, usLineColor, pDestBuf);
     iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iRight, iTop, (iRight + 1), iBottom);
   } else if ((iBottom - iTop) < 0) {
-    LineDraw(TRUE, iRight, iTop, iRight, iBottom, usLineColor, pDestBuf);
+    LineDraw(true, iRight, iTop, iRight, iBottom, usLineColor, pDestBuf);
     iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iRight, iBottom, (iRight + 1), iTop);
   }
 
@@ -389,7 +389,7 @@ function RenderTopmostTacticalInterface(): void {
   let usMapPos: UINT16;
   let pItemPool: Pointer<ITEM_POOL>;
 
-  if (gfRerenderInterfaceFromHelpText == TRUE) {
+  if (gfRerenderInterfaceFromHelpText == true) {
     fInterfacePanelDirty = DIRTYLEVEL2;
 
     switch (gsCurInterfacePanel) {
@@ -401,7 +401,7 @@ function RenderTopmostTacticalInterface(): void {
         RenderTEAMPanel(fInterfacePanelDirty);
         break;
     }
-    gfRerenderInterfaceFromHelpText = FALSE;
+    gfRerenderInterfaceFromHelpText = false;
   }
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
@@ -419,9 +419,9 @@ function RenderTopmostTacticalInterface(): void {
 
   if (InItemStackPopup()) {
     if (fInterfacePanelDirty == DIRTYLEVEL2) {
-      RenderItemStackPopup(TRUE);
+      RenderItemStackPopup(true);
     } else {
-      RenderItemStackPopup(FALSE);
+      RenderItemStackPopup(false);
     }
   }
 
@@ -566,7 +566,7 @@ function RenderTopmostTacticalInterface(): void {
   RenderRubberBanding();
 
   if (!gfInItemPickupMenu && gpItemPointer == null) {
-    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
+    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, true);
   }
 
   // CHECK IF OUR CURSOR IS OVER AN INV POOL
@@ -581,7 +581,7 @@ function RenderTopmostTacticalInterface(): void {
           let sActionGridNo: INT16 = usMapPos;
 
           // Get interactive tile...
-          if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), FALSE)) {
+          if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), false)) {
             sActionGridNo = sIntTileGridNo;
           }
 
@@ -611,7 +611,7 @@ function RenderTopmostTacticalInterface(): void {
             let sActionGridNo: INT16 = usMapPos;
 
             // Get interactive tile...
-            if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), FALSE)) {
+            if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), false)) {
               sActionGridNo = sIntTileGridNo;
             }
 
@@ -651,7 +651,7 @@ function RenderTopmostTacticalInterface(): void {
     RenderSectorExitMenu();
   }
 
-  if (fRenderRadarScreen == TRUE) {
+  if (fRenderRadarScreen == true) {
     // Render clock
     RenderClock(CLOCK_X, CLOCK_Y);
     RenderTownIDString();
@@ -700,7 +700,7 @@ function StartViewportOverlays(): void {
   gDirtyClipRect.iBottom = gsVIEWPORT_WINDOW_END_Y;
 
   SaveFontSettings();
-  SetFontDestBuffer(FRAME_BUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, false);
 }
 
 function EndViewportOverlays(): void {
@@ -732,7 +732,7 @@ function UnLockTacticalInterface(): void {
   }
 }
 
-function EraseInterfaceMenus(fIgnoreUIUnLock: BOOLEAN): void {
+function EraseInterfaceMenus(fIgnoreUIUnLock: boolean): void {
   // ATE: If we are currently talking, setup this flag so that the
   // automatic handler in handledialogue doesn't adjust the UI setting
   if ((gTacticalStatus.uiFlags & ENGAGED_IN_CONV) && fIgnoreUIUnLock) {
@@ -748,17 +748,17 @@ function EraseInterfaceMenus(fIgnoreUIUnLock: BOOLEAN): void {
   DeleteTalkingMenu();
 }
 
-function AreWeInAUIMenu(): BOOLEAN {
+function AreWeInAUIMenu(): boolean {
   if (gfInMovementMenu || gfInOpenDoorMenu || gfInItemPickupMenu || gfInSectorExitMenu || gfInTalkPanel) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
 function ResetInterfaceAndUI(): void {
   // Erase menus
-  EraseInterfaceMenus(FALSE);
+  EraseInterfaceMenus(false);
 
   EraseRenderArrows();
 
@@ -776,10 +776,10 @@ function ResetInterfaceAndUI(): void {
   HandleTacticalUI();
 }
 
-function InterfaceOKForMeanwhilePopup(): BOOLEAN {
+function InterfaceOKForMeanwhilePopup(): boolean {
   if (gfSwitchPanel) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }

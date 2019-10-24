@@ -4,7 +4,7 @@
 let gusPlottedPath: UINT16[] /* [256] */;
 let gusMapPathingData: UINT16[] /* [256] */;
 let gusPathDataSize: UINT16;
-let gfPlotToAvoidPlayerInfuencedSectors: BOOLEAN = FALSE;
+let gfPlotToAvoidPlayerInfuencedSectors: boolean = false;
 
 // UINT16 gusEndPlotGridNo;
 
@@ -133,7 +133,7 @@ let diStratDelta: INT16[] /* [8] */ = [
 
 // this will find if a shortest strategic path
 
-function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: BOOLEAN): INT32 {
+function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: boolean): INT32 {
   let iCnt: INT32;
   let ndx: INT32;
   let insertNdx: INT32;
@@ -153,8 +153,8 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
   let nextCost: TRAILCELLTYPE;
   let sOrigination: INT16;
   let iCounter: INT16 = 0;
-  let fPlotDirectPath: BOOLEAN = FALSE;
-  /* static */ let fPreviousPlotDirectPath: BOOLEAN = FALSE; // don't save
+  let fPlotDirectPath: boolean = false;
+  /* static */ let fPreviousPlotDirectPath: boolean = false; // don't save
   let pGroup: Pointer<GROUP>;
 
   // ******** Fudge by Bret (for now), curAPcost is never initialized in this function, but should be!
@@ -165,12 +165,12 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
   if (pGroup.value.fPlayer) {
     // if player is holding down SHIFT key, find the shortest route instead of the quickest route!
     if (_KeyDown(SHIFT)) {
-      fPlotDirectPath = TRUE;
+      fPlotDirectPath = true;
     }
 
     if (fPlotDirectPath != fPreviousPlotDirectPath) {
       // must redraw map to erase the previous path...
-      fMapPanelDirty = TRUE;
+      fMapPanelDirty = true;
       fPreviousPlotDirectPath = fPlotDirectPath;
     }
   }
@@ -263,7 +263,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
           if (nextCost != 0xffffffff && sMvtGroupNumber == pVehicleList[iHelicopterVehicleId].ubMovementGroup) {
             // is a heli, its pathing is determined not by time (it's always the same) but by total cost
             // Skyrider will avoid uncontrolled airspace as much as possible...
-            if (StrategicMap[curLoc].fEnemyAirControlled == TRUE) {
+            if (StrategicMap[curLoc].fEnemyAirControlled == true) {
               nextCost = COST_AIRSPACE_UNSAFE;
             } else {
               nextCost = COST_AIRSPACE_SAFE;
@@ -379,7 +379,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
   return 0;
 }
 
-function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSectorNum: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: BOOLEAN): PathStPtr {
+function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSectorNum: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: boolean): PathStPtr {
   let iCurrentSectorNum: INT32;
   let iDelta: INT32 = 0;
   let iPathLength: INT32;
@@ -387,7 +387,7 @@ function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSecto
   let pNode: PathStPtr = null;
   let pNewNode: PathStPtr = null;
   let pDeleteNode: PathStPtr = null;
-  let fFlag: BOOLEAN = FALSE;
+  let fFlag: boolean = false;
   let pHeadOfPathList: PathStPtr = pPath;
   let iOldDelta: INT32 = 0;
   iCurrentSectorNum = iStartSectorNum;
@@ -485,7 +485,7 @@ function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSecto
     MemFree(pNode);
     pHeadOfPathList = null;
     pPath = pHeadOfPathList;
-    return FALSE;
+    return false;
   }
 
   /*
@@ -501,14 +501,14 @@ function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSecto
   return pPath;
 }
 
-function AddSectorToPathList(pPath: PathStPtr, uiSectorNum: UINT16): BOOLEAN {
+function AddSectorToPathList(pPath: PathStPtr, uiSectorNum: UINT16): boolean {
   let pNode: PathStPtr = null;
   let pTempNode: PathStPtr = null;
   let pHeadOfList: PathStPtr = pPath;
   pNode = pPath;
 
   if (uiSectorNum < MAP_WORLD_X - 1)
-    return FALSE;
+    return false;
 
   if (pNode == null) {
     pNode = MemAlloc(sizeof(PathSt));
@@ -526,7 +526,7 @@ function AddSectorToPathList(pPath: PathStPtr, uiSectorNum: UINT16): BOOLEAN {
     */
     pNode.value.fSpeed = NORMAL_MVT;
 
-    return TRUE;
+    return true;
   } else {
     // if (pNode->uiSectorId==uiSectorNum)
     //	  return FALSE;
@@ -551,7 +551,7 @@ function AddSectorToPathList(pPath: PathStPtr, uiSectorNum: UINT16): BOOLEAN {
     pNode = pTempNode;
   }
   pPath = pHeadOfList;
-  return TRUE;
+  return true;
 }
 
 /*
@@ -1014,7 +1014,7 @@ function GetLastSectorIdInVehiclePath(iId: INT32): INT16 {
     return sLastSector;
   }
   // now check if vehicle is valid
-  if (pVehicleList[iId].fValid == FALSE) {
+  if (pVehicleList[iId].fValid == false) {
     return sLastSector;
   }
 
@@ -1310,7 +1310,7 @@ UINT32 GetEtaGivenRoute( PathStPtr pPath )
 function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16): void {
   let iDelta: INT32 = 0;
   let iOldDelta: INT32 = 0;
-  let fFirstNode: BOOLEAN = TRUE;
+  let fFirstNode: boolean = true;
   let pNode: PathStPtr = pHeadOfPath;
   let pGroup: Pointer<GROUP> = null;
   let wp: Pointer<WAYPOINT> = null;
@@ -1330,14 +1330,14 @@ function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16):
 
   if (pGroup.value.fPlayer) {
     // update the destination(s) in the team list
-    fTeamPanelDirty = TRUE;
+    fTeamPanelDirty = true;
 
     // update the ETA in character info
-    fCharacterInfoPanelDirty = TRUE;
+    fCharacterInfoPanelDirty = true;
 
     // allows assignments to flash right away if their subject moves away/returns (robot/vehicle being repaired), or
     // patient/doctor/student/trainer being automatically put on a squad via the movement menu.
-    gfReEvaluateEveryonesNothingToDo = TRUE;
+    gfReEvaluateEveryonesNothingToDo = true;
   }
 
   // if group has no path planned at all
@@ -1346,7 +1346,7 @@ function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16):
     // NOTE: AI groups never reverse direction between sectors, Kris cheats & teleports them back to their current sector!
     if (pGroup.value.fPlayer && pGroup.value.fBetweenSectors) {
       // send the group right back to its current sector by reversing directions
-      GroupReversingDirectionsBetweenSectors(pGroup, pGroup.value.ubSectorX, pGroup.value.ubSectorY, FALSE);
+      GroupReversingDirectionsBetweenSectors(pGroup, pGroup.value.ubSectorX, pGroup.value.ubSectorY, false);
     }
 
     return;
@@ -1375,7 +1375,7 @@ function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16):
     iOldDelta = iDelta;
 
     pNode = pNode.value.pNext;
-    fFirstNode = FALSE;
+    fFirstNode = false;
   }
 
   // there must have been at least one next node, or we would have bailed out on "no path" earlier
@@ -1392,7 +1392,7 @@ function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16):
   // see if we've already reached the first sector in the path (we never actually left the sector and reversed back to it)
   if (pGroup.value.uiArrivalTime == GetWorldTotalMin()) {
     // never really left.  Must set check for battle TRUE in order for HandleNonCombatGroupArrival() to run!
-    GroupArrivedAtSector(pGroup.value.ubGroupID, TRUE, TRUE);
+    GroupArrivedAtSector(pGroup.value.ubGroupID, true, true);
   }
 }
 
@@ -1410,14 +1410,14 @@ function ClearMvtForThisSoldierAndGang(pSoldier: Pointer<SOLDIERTYPE>): void {
   ClearMercPathsAndWaypointsForAllInGroup(pGroup);
 }
 
-function MoveGroupFromSectorToSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): BOOLEAN {
+function MoveGroupFromSectorToSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
   let pNode: PathStPtr = null;
 
   // build the path
-  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE */);
+  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, false /*, FALSE */);
 
   if (pNode == null) {
-    return FALSE;
+    return false;
   }
 
   pNode = MoveToBeginningOfPathList(pNode);
@@ -1428,17 +1428,17 @@ function MoveGroupFromSectorToSector(ubGroupID: UINT8, sStartX: INT16, sStartY: 
   // now clear out the mess
   pNode = ClearStrategicPathList(pNode, -1);
 
-  return TRUE;
+  return true;
 }
 
-function MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): BOOLEAN {
+function MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
   let pNode: PathStPtr = null;
 
   // build the path
-  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE*/);
+  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, false /*, FALSE*/);
 
   if (pNode == null) {
-    return FALSE;
+    return false;
   }
 
   // remove tail from path
@@ -1452,10 +1452,10 @@ function MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID: UINT8, sStartX
   // now clear out the mess
   pNode = ClearStrategicPathList(pNode, -1);
 
-  return TRUE;
+  return true;
 }
 
-function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): BOOLEAN {
+function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
   let pNode: PathStPtr = null;
 
   // init sectors with soldiers in them
@@ -1465,19 +1465,19 @@ function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: U
   BuildSectorsWithSoldiersList();
 
   // turn on the avoid flag
-  gfPlotToAvoidPlayerInfuencedSectors = TRUE;
+  gfPlotToAvoidPlayerInfuencedSectors = true;
 
   // build the path
-  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE */);
+  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, false /*, FALSE */);
 
   // turn off the avoid flag
-  gfPlotToAvoidPlayerInfuencedSectors = FALSE;
+  gfPlotToAvoidPlayerInfuencedSectors = false;
 
   if (pNode == null) {
-    if (MoveGroupFromSectorToSector(ubGroupID, sStartX, sStartY, sDestX, sDestY) == FALSE) {
-      return FALSE;
+    if (MoveGroupFromSectorToSector(ubGroupID, sStartX, sStartY, sDestX, sDestY) == false) {
+      return false;
     } else {
-      return TRUE;
+      return true;
     }
   }
 
@@ -1489,10 +1489,10 @@ function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: U
   // now clear out the mess
   pNode = ClearStrategicPathList(pNode, -1);
 
-  return TRUE;
+  return true;
 }
 
-function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): BOOLEAN {
+function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
   let pNode: PathStPtr = null;
 
   // init sectors with soldiers in them
@@ -1502,19 +1502,19 @@ function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSec
   BuildSectorsWithSoldiersList();
 
   // turn on the avoid flag
-  gfPlotToAvoidPlayerInfuencedSectors = TRUE;
+  gfPlotToAvoidPlayerInfuencedSectors = true;
 
   // build the path
-  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE */);
+  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, false /*, FALSE */);
 
   // turn off the avoid flag
-  gfPlotToAvoidPlayerInfuencedSectors = FALSE;
+  gfPlotToAvoidPlayerInfuencedSectors = false;
 
   if (pNode == null) {
-    if (MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID, sStartX, sStartY, sDestX, sDestY) == FALSE) {
-      return FALSE;
+    if (MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID, sStartX, sStartY, sDestX, sDestY) == false) {
+      return false;
     } else {
-      return TRUE;
+      return true;
     }
   }
 
@@ -1529,7 +1529,7 @@ function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSec
   // now clear out the mess
   pNode = ClearStrategicPathList(pNode, -1);
 
-  return TRUE;
+  return true;
 }
 
 /*
@@ -1567,18 +1567,18 @@ function GetLengthOfMercPath(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return iLength;
 }
 
-function CheckIfPathIsEmpty(pHeadPath: PathStPtr): BOOLEAN {
+function CheckIfPathIsEmpty(pHeadPath: PathStPtr): boolean {
   // no path
   if (pHeadPath == null) {
-    return TRUE;
+    return true;
   }
 
   // nothing next either
   if (pHeadPath.value.pNext == null) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function GetSoldierMercPathPtr(pSoldier: Pointer<SOLDIERTYPE>): PathStPtr {

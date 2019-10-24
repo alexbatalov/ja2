@@ -410,11 +410,11 @@ interface SECTORINFO {
   ubGarrisonID: UINT8; // IF the sector has an ID for this (non 255), then the queen values this sector and it
                        // indexes the garrison group.
   ubPendingReinforcements: INT8; // when the enemy owns this sector, this value will keep track of HIGH priority reinforcements -- not regular.
-  fMilitiaTrainingPaid: BOOLEAN;
+  fMilitiaTrainingPaid: boolean;
   ubMilitiaTrainingPercentDone: UINT8;
   ubMilitiaTrainingHundredths: UINT8;
   // enemy military presence
-  fPlayer: BOOLEAN[] /* [4] */; // whether the player THINKS the sector is unde his control or not. array is for sublevels
+  fPlayer: boolean[] /* [4] */; // whether the player THINKS the sector is unde his control or not. array is for sublevels
   // enemy only info
   ubNumTroops: UINT8; // the actual number of troops here.
   ubNumElites: UINT8; // the actual number of elites here.
@@ -451,7 +451,7 @@ interface SECTORINFO {
   ubUNUSEDNumberOfEnemiesThoughtToBeHere: UINT8; // using bLastKnownEnemies instead
   uiTimeLastPlayerLiberated: UINT32; // in game seconds (used to prevent the queen from attacking for awhile)
 
-  fSurfaceWasEverPlayerControlled: BOOLEAN;
+  fSurfaceWasEverPlayerControlled: boolean;
 
   bFiller1: UINT8;
   bFiller2: UINT8;

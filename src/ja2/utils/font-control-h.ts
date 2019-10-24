@@ -1,7 +1,7 @@
 // ATE: Use this define to enable winfonts in JA2
 // #define     WINFONTS
 
-const USE_WINFONTS = () => (FALSE);
+const USE_WINFONTS = () => (false);
 
 const GET_WINFONT = () => (giCurWinFont);
 const SET_USE_WINFONTS = (fSet) => (gfUseWinFonts = fSet);

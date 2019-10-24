@@ -1,16 +1,16 @@
-let fBuildingShowRoofs: BOOLEAN;
-let fBuildingShowWalls: BOOLEAN;
-let fBuildingShowRoomInfo: BOOLEAN;
+let fBuildingShowRoofs: boolean;
+let fBuildingShowWalls: boolean;
+let fBuildingShowRoomInfo: boolean;
 let usCurrentMode: UINT16;
 let gubCurrRoomNumber: UINT8;
 let gubMaxRoomNumber: UINT8;
-let gfEditingDoor: BOOLEAN;
+let gfEditingDoor: boolean;
 
 // BEGINNNING OF BUILDING INITIALIZATION FUNCTIONS
 function GameInitEditorBuildingInfo(): void {
-  fBuildingShowRoofs = TRUE;
-  fBuildingShowWalls = TRUE;
-  fBuildingShowRoomInfo = FALSE;
+  fBuildingShowRoofs = true;
+  fBuildingShowWalls = true;
+  fBuildingShowRoomInfo = false;
   usCurrentMode = Enum32.BUILDING_PLACE_WALLS;
   gubCurrRoomNumber = gubMaxRoomNumber = 1;
 }
@@ -24,7 +24,7 @@ function UpdateRoofsView(): void {
       HideStructOfGivenType(x, usType, (!fBuildingShowRoofs));
     }
   }
-  gfRenderWorld = TRUE;
+  gfRenderWorld = true;
 }
 
 function UpdateWallsView(): void {
@@ -36,7 +36,7 @@ function UpdateWallsView(): void {
       SetWallLevelnodeFlags(cnt, LEVELNODE_HIDDEN);
     }
   }
-  gfRenderWorld = TRUE;
+  gfRenderWorld = true;
 }
 
 function UpdateBuildingsInfo(): void {
@@ -64,7 +64,7 @@ function UpdateBuildingsInfo(): void {
 // 5) KillBuilding at x+1, y.
 // 6) KillBuilding at x  , y+1.
 function KillBuilding(iMapIndex: UINT32): void {
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
 
   if (!gfBasement)
     fFound |= RemoveAllRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
@@ -429,7 +429,7 @@ function InitDoorEditing(iMapIndex: INT32): void {
   let pDoor: Pointer<DOOR>;
   if (!DoorAtGridNo(iMapIndex) && !OpenableAtGridNo(iMapIndex))
     return;
-  gfEditingDoor = TRUE;
+  gfEditingDoor = true;
   iDoorMapIndex = iMapIndex;
   DisableEditorTaskbar();
   MSYS_DefineRegion(addressof(DoorRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 2, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
@@ -461,8 +461,8 @@ function ExtractAndUpdateDoorInfo(): void {
   let pNode: Pointer<LEVELNODE>;
   let num: INT32;
   let door: DOOR;
-  let fCursor: BOOLEAN = FALSE;
-  let fCursorExists: BOOLEAN = FALSE;
+  let fCursor: boolean = false;
+  let fCursorExists: boolean = false;
 
   memset(addressof(door), 0, sizeof(DOOR));
 
@@ -472,13 +472,13 @@ function ExtractAndUpdateDoorInfo(): void {
   door.ubLockID = num;
   SetInputFieldStringWithNumericStrictValue(0, num);
   if (num >= 0)
-    fCursor = TRUE;
+    fCursor = true;
 
   num = min(max(GetNumericStrictValueFromField(1), 0), 10);
   door.ubTrapID = num;
   SetInputFieldStringWithNumericStrictValue(1, num);
   if (num)
-    fCursor = TRUE;
+    fCursor = true;
 
   num = min(max(GetNumericStrictValueFromField(2), 0), 20);
   if (door.ubTrapID && !num)
@@ -486,19 +486,19 @@ function ExtractAndUpdateDoorInfo(): void {
   door.ubTrapLevel = num;
   SetInputFieldStringWithNumericStrictValue(2, num);
   if (num)
-    fCursor = TRUE;
+    fCursor = true;
 
   if (ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].value.uiFlags & BUTTON_CLICKED_ON) {
-    door.fLocked = TRUE;
+    door.fLocked = true;
   } else {
-    door.fLocked = FALSE;
+    door.fLocked = false;
   }
 
   // Find out if we have a rotating key cursor (we will either add one or remove one)
   pNode = gpWorldLevelData[iDoorMapIndex].pTopmostHead;
   while (pNode) {
     if (pNode.value.usIndex == Enum312.ROTATINGKEY1) {
-      fCursorExists = TRUE;
+      fCursorExists = true;
       break;
     }
     pNode = pNode.value.pNext;
@@ -559,7 +559,7 @@ function KillDoorEditing(): void {
   MSYS_RemoveRegion(addressof(DoorRegion));
   for (i = 0; i < Enum34.NUM_DOOR_BUTTONS; i++)
     RemoveButton(iDoorButton[i]);
-  gfEditingDoor = FALSE;
+  gfEditingDoor = false;
   KillTextInputMode();
 }
 

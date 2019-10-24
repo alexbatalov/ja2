@@ -30,7 +30,7 @@ let iStringPos: INT32 = 0;
 let uiCursorPosition: UINT16 = IMP_PLAYER_ACTIVATION_STRING_X;
 
 // has a new char been added or deleted?
-let fNewCharInActivationString: BOOLEAN = FALSE;
+let fNewCharInActivationString: boolean = false;
 
 function EnterImpHomePage(): void {
   // upon entry to Imp home page
@@ -46,7 +46,7 @@ function EnterImpHomePage(): void {
   CreateIMPHomePageButtons();
 
   // we have now vsisited IMP, reset fact we haven't
-  fNotVistedImpYet = FALSE;
+  fNotVistedImpYet = false;
 
   // render screen once
   RenderImpHomePage();
@@ -122,8 +122,8 @@ function DisplayPlayerActivationString(): void {
   SetFontShadow(DEFAULT_SHADOW);
   mprintf(IMP_PLAYER_ACTIVATION_STRING_X, IMP_PLAYER_ACTIVATION_STRING_Y, pPlayerActivationString);
 
-  fNewCharInActivationString = FALSE;
-  fReDrawScreenFlag = TRUE;
+  fNewCharInActivationString = false;
+  fReDrawScreenFlag = true;
   return;
 }
 
@@ -134,7 +134,7 @@ function DisplayActivationStringCursor(): void {
   let uiDeltaTime: UINT32 = 0;
   let pDestBuf: Pointer<UINT8>;
   /* static */ let iCurrentState: UINT32 = 0;
-  /* static */ let fIncrement: BOOLEAN = TRUE;
+  /* static */ let fIncrement: boolean = true;
 
   if (uiBaseTime == 0) {
     uiBaseTime = GetJA2Clock();
@@ -147,11 +147,11 @@ function DisplayActivationStringCursor(): void {
   if (uiDeltaTime > MIN_GLOW_DELTA) {
     if (iCurrentState == 10) {
       // start rotating downward
-      fIncrement = FALSE;
+      fIncrement = false;
     }
     if (iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = TRUE;
+      fIncrement = true;
     }
     // if increment upward, increment iCurrentState
     if (fIncrement) {
@@ -168,7 +168,7 @@ function DisplayActivationStringCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(TRUE, uiCursorPosition, CURSOR_Y, uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(true, uiCursorPosition, CURSOR_Y, uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -184,7 +184,7 @@ function GetPlayerKeyBoardInputForIMPHomePage(): void {
 
   GetCursorPos(addressof(MousePos));
 
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     // HOOK INTO MOUSE HOOKS
     /*
     switch(InputEvent.usEvent)
@@ -210,7 +210,7 @@ function GetPlayerKeyBoardInputForIMPHomePage(): void {
             // return hit, check to see if current player activation string is a valid one
             ProcessPlayerInputActivationString();
 
-            fNewCharInActivationString = TRUE;
+            fNewCharInActivationString = true;
           }
           break;
         case ((ESC)):
@@ -248,7 +248,7 @@ function HandleTextEvent(uiKey: UINT32): void {
         uiCursorPosition = StringPixLength(pPlayerActivationString, FONT14ARIAL()) + IMP_PLAYER_ACTIVATION_STRING_X;
 
         // string has been altered, redisplay
-        fNewCharInActivationString = TRUE;
+        fNewCharInActivationString = true;
       }
 
       break;
@@ -275,7 +275,7 @@ function HandleTextEvent(uiKey: UINT32): void {
           iStringPos += 1;
 
           // string has been altered, redisplay
-          fNewCharInActivationString = TRUE;
+          fNewCharInActivationString = true;
         }
       }
 
@@ -287,7 +287,7 @@ function HandleTextEvent(uiKey: UINT32): void {
 
 function ProcessPlayerInputActivationString(): void {
   // prcess string to see if it matches activation string
-  if (((wcscmp(pPlayerActivationString, "XEP624") == 0) || (wcscmp(pPlayerActivationString, "xep624") == 0)) && (LaptopSaveInfo.fIMPCompletedFlag == FALSE) && (LaptopSaveInfo.gfNewGameLaptop < 2)) {
+  if (((wcscmp(pPlayerActivationString, "XEP624") == 0) || (wcscmp(pPlayerActivationString, "xep624") == 0)) && (LaptopSaveInfo.fIMPCompletedFlag == false) && (LaptopSaveInfo.gfNewGameLaptop < 2)) {
     iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
   }
   /*
@@ -299,7 +299,7 @@ function ProcessPlayerInputActivationString(): void {
   else {
     if (((wcscmp(pPlayerActivationString, "XEP624") != 0) && (wcscmp(pPlayerActivationString, "xep624") != 0))) {
       DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[0], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
-    } else if (LaptopSaveInfo.fIMPCompletedFlag == TRUE) {
+    } else if (LaptopSaveInfo.fIMPCompletedFlag == true) {
       DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[6], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
     }
   }
@@ -344,7 +344,7 @@ function BtnIMPAboutUsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_ABOUT_US;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }

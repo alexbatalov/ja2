@@ -4,13 +4,13 @@ let guiRENDERBUFFER: UINT32 = 0;
 let guiSAVEBUFFER: UINT32 = 0;
 let guiEXTRABUFFER: UINT32 = 0;
 
-let gfExtraBuffer: BOOLEAN = FALSE;
+let gfExtraBuffer: boolean = false;
 
-function InitializeSystemVideoObjects(): BOOLEAN {
-  return TRUE;
+function InitializeSystemVideoObjects(): boolean {
+  return true;
 }
 
-function InitializeGameVideoObjects(): BOOLEAN {
+function InitializeGameVideoObjects(): boolean {
   let vs_desc: VSURFACE_DESC;
   let usWidth: UINT16;
   let usHeight: UINT16;
@@ -26,9 +26,9 @@ function InitializeGameVideoObjects(): BOOLEAN {
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiSAVEBUFFER)));
 
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiEXTRABUFFER)));
-  gfExtraBuffer = TRUE;
+  gfExtraBuffer = true;
 
   guiRENDERBUFFER = FRAME_BUFFER;
 
-  return TRUE;
+  return true;
 }

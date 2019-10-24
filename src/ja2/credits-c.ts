@@ -20,7 +20,7 @@ interface CRDT_NODE {
 
   sHeightOfString: INT16; // The height of the displayed string
 
-  fDelete: BOOLEAN; // Delete this loop
+  fDelete: boolean; // Delete this loop
 
   uiLastTime: UINT32; // The last time the node was udated
 
@@ -235,8 +235,8 @@ let gCrdtMouseRegions: MOUSE_REGION[] /* [NUM_PEOPLE_IN_CREDITS] */;
 
 let guiCreditBackGroundImage: UINT32;
 let guiCreditFaces: UINT32;
-let gfCreditsScreenEntry: BOOLEAN = TRUE;
-let gfCreditsScreenExit: BOOLEAN = FALSE;
+let gfCreditsScreenEntry: boolean = true;
+let gfCreditsScreenExit: boolean = false;
 let guiCreditsExitScreen: UINT32;
 
 let gubCreditScreenRenderFlags: UINT8 = Enum1.CRDT_RENDER_ALL;
@@ -244,7 +244,7 @@ let gubCreditScreenRenderFlags: UINT8 = Enum1.CRDT_RENDER_ALL;
 let gCrdtRootNode: Pointer<CRDT_NODE> = null;
 let gCrdtLastAddedNode: Pointer<CRDT_NODE> = null;
 
-let gfCrdtHaveRenderedFirstFrameToSaveBuffer: BOOLEAN; // need to render background image to save buffer once
+let gfCrdtHaveRenderedFirstFrameToSaveBuffer: boolean; // need to render background image to save buffer once
 
 let giCurrentlySelectedFace: INT32 = -1;
 
@@ -270,7 +270,7 @@ let guiGapBetweenCreditNodes: UINT32 = CRDT_SPACE_BN_NODES;
 let guiGapTillReadNextCredit: UINT32 = CRDT_SPACE_BN_NODES;
 
 let guiCurrentCreditRecord: UINT32 = 0;
-let gfPauseCreditScreen: BOOLEAN = FALSE;
+let gfPauseCreditScreen: boolean = false;
 
 let ghFile: HWFILE;
 
@@ -284,7 +284,7 @@ let ghFile: HWFILE;
 //	HVSURFACE hVSurface;
 
 function CreditScreenInit(): UINT32 {
-  gfCreditsScreenEntry = TRUE;
+  gfCreditsScreenEntry = true;
   return 1;
 }
 
@@ -293,11 +293,11 @@ function CreditScreenHandle(): UINT32 {
 
   if (gfCreditsScreenEntry) {
     if (!EnterCreditsScreen()) {
-      gfCreditsScreenEntry = FALSE;
-      gfCreditsScreenExit = TRUE;
+      gfCreditsScreenEntry = false;
+      gfCreditsScreenExit = true;
     } else {
-      gfCreditsScreenEntry = FALSE;
-      gfCreditsScreenExit = FALSE;
+      gfCreditsScreenEntry = false;
+      gfCreditsScreenExit = false;
     }
     gubCreditScreenRenderFlags = Enum1.CRDT_RENDER_ALL;
   }
@@ -319,8 +319,8 @@ function CreditScreenHandle(): UINT32 {
 
   if (gfCreditsScreenExit) {
     ExitCreditScreen();
-    gfCreditsScreenEntry = TRUE;
-    gfCreditsScreenExit = FALSE;
+    gfCreditsScreenEntry = true;
+    gfCreditsScreenExit = false;
   }
 
   return guiCreditsExitScreen;
@@ -331,7 +331,7 @@ function CreditScreenShutdown(): UINT32 {
 }
 
 // eee
-function EnterCreditsScreen(): BOOLEAN {
+function EnterCreditsScreen(): boolean {
   let uiCnt: UINT32;
   let VObjectDesc: VOBJECT_DESC;
   /*
@@ -360,7 +360,7 @@ function EnterCreditsScreen(): BOOLEAN {
   InitCreditNode();
 
   guiCreditsExitScreen = Enum26.CREDIT_SCREEN;
-  gfCrdtHaveRenderedFirstFrameToSaveBuffer = FALSE;
+  gfCrdtHaveRenderedFirstFrameToSaveBuffer = false;
 
   guiCreditScreenActiveFont = FONT12ARIAL();
   gubCreditScreenActiveColor = FONT_MCOLOR_DKWHITE;
@@ -406,14 +406,14 @@ function EnterCreditsScreen(): BOOLEAN {
   */
 
   giCurrentlySelectedFace = -1;
-  gfPauseCreditScreen = FALSE;
+  gfPauseCreditScreen = false;
 
   InitCreditEyeBlinking();
 
-  return TRUE;
+  return true;
 }
 
-function ExitCreditScreen(): BOOLEAN {
+function ExitCreditScreen(): boolean {
   let uiCnt: UINT32;
 
   // Blit the background image
@@ -435,7 +435,7 @@ function ExitCreditScreen(): BOOLEAN {
           ghFile = 0;
   */
 
-  return TRUE;
+  return true;
 }
 
 // hhh
@@ -464,14 +464,14 @@ function HandleCreditScreen(): void {
   RestoreExternBackgroundRect(CRDT_NAME_LOC_X, CRDT_NAME_LOC_Y, CRDT_NAME_LOC_WIDTH, CRDT_NAME_LOC_HEIGHT());
 
   if (giCurrentlySelectedFace != -1) {
-    DrawTextToScreen(gzCreditNames[giCurrentlySelectedFace], CRDT_NAME_LOC_X, CRDT_NAME_LOC_Y, CRDT_NAME_LOC_WIDTH, CRDT_NAME_FONT(), FONT_MCOLOR_WHITE, 0, FALSE, INVALIDATE_TEXT | CENTER_JUSTIFIED);
-    DrawTextToScreen(gzCreditNameTitle[giCurrentlySelectedFace], CRDT_NAME_LOC_X, CRDT_NAME_TITLE_LOC_Y, CRDT_NAME_LOC_WIDTH, CRDT_NAME_FONT(), FONT_MCOLOR_WHITE, 0, FALSE, INVALIDATE_TEXT | CENTER_JUSTIFIED);
-    DrawTextToScreen(gzCreditNameFunny[giCurrentlySelectedFace], CRDT_NAME_LOC_X, CRDT_NAME_FUNNY_LOC_Y, CRDT_NAME_LOC_WIDTH, CRDT_NAME_FONT(), FONT_MCOLOR_WHITE, 0, FALSE, INVALIDATE_TEXT | CENTER_JUSTIFIED);
+    DrawTextToScreen(gzCreditNames[giCurrentlySelectedFace], CRDT_NAME_LOC_X, CRDT_NAME_LOC_Y, CRDT_NAME_LOC_WIDTH, CRDT_NAME_FONT(), FONT_MCOLOR_WHITE, 0, false, INVALIDATE_TEXT | CENTER_JUSTIFIED);
+    DrawTextToScreen(gzCreditNameTitle[giCurrentlySelectedFace], CRDT_NAME_LOC_X, CRDT_NAME_TITLE_LOC_Y, CRDT_NAME_LOC_WIDTH, CRDT_NAME_FONT(), FONT_MCOLOR_WHITE, 0, false, INVALIDATE_TEXT | CENTER_JUSTIFIED);
+    DrawTextToScreen(gzCreditNameFunny[giCurrentlySelectedFace], CRDT_NAME_LOC_X, CRDT_NAME_FUNNY_LOC_Y, CRDT_NAME_LOC_WIDTH, CRDT_NAME_FONT(), FONT_MCOLOR_WHITE, 0, false, INVALIDATE_TEXT | CENTER_JUSTIFIED);
   }
 }
 
 // rrr
-function RenderCreditScreen(): BOOLEAN {
+function RenderCreditScreen(): boolean {
   let hPixHandle: HVOBJECT;
 
   GetVideoObject(addressof(hPixHandle), guiCreditBackGroundImage);
@@ -483,7 +483,7 @@ function RenderCreditScreen(): BOOLEAN {
           BltVideoSurfaceToVideoSurface( ghFrameBuffer, hVSurface, 0, 0, 0, 0, NULL );
   */
   if (!gfCrdtHaveRenderedFirstFrameToSaveBuffer) {
-    gfCrdtHaveRenderedFirstFrameToSaveBuffer = TRUE;
+    gfCrdtHaveRenderedFirstFrameToSaveBuffer = true;
 
     // blit everything to the save buffer ( cause the save buffer can bleed through )
     BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
@@ -492,7 +492,7 @@ function RenderCreditScreen(): BOOLEAN {
   }
 
   InvalidateScreen();
-  return TRUE;
+  return true;
 }
 
 function GetCreditScreenUserInput(): void {
@@ -511,21 +511,21 @@ function GetCreditScreenUserInput(): void {
 }
 
 function SetCreditsExitScreen(uiScreenToGoTo: UINT32): void {
-  gfCreditsScreenExit = TRUE;
+  gfCreditsScreenExit = true;
 
   guiCreditsExitScreen = uiScreenToGoTo;
 }
 
-function InitCreditNode(): BOOLEAN {
+function InitCreditNode(): boolean {
   if (gCrdtRootNode != null)
     Assert(0);
 
   gCrdtRootNode = null;
 
-  return TRUE;
+  return true;
 }
 
-function ShutDownCreditList(): BOOLEAN {
+function ShutDownCreditList(): boolean {
   let pNodeToDelete: Pointer<CRDT_NODE> = null;
   let pTemp: Pointer<CRDT_NODE> = null;
 
@@ -540,10 +540,10 @@ function ShutDownCreditList(): BOOLEAN {
     DeleteNode(pTemp);
   }
 
-  return TRUE;
+  return true;
 }
 
-function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): BOOLEAN {
+function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): boolean {
   let pTempNode: Pointer<CRDT_NODE>;
 
   pTempNode = pNodeToDelete;
@@ -586,11 +586,11 @@ function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): BOOLEAN {
   MemFree(pTempNode);
   pTempNode = null;
 
-  return TRUE;
+  return true;
 }
 
 // aaa
-function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN {
+function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): boolean {
   let pNodeToAdd: Pointer<CRDT_NODE> = null;
   let pTemp: Pointer<CRDT_NODE> = null;
   let uiSizeOfString: UINT32 = (wcslen(pString) + 2) * 2;
@@ -600,12 +600,12 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
   // if
   if (uiType == Enum2.CRDT_NODE_NONE) {
     // Assert( 0 );
-    return TRUE;
+    return true;
   }
 
   pNodeToAdd = MemAlloc(sizeof(CRDT_NODE));
   if (pNodeToAdd == null) {
-    return FALSE;
+    return false;
   }
   memset(pNodeToAdd, 0, sizeof(CRDT_NODE));
 
@@ -647,13 +647,13 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
   // Allocate memory for the string
   pNodeToAdd.value.pString = MemAlloc(uiSizeOfString);
   if (pNodeToAdd.value.pString == null)
-    return FALSE;
+    return false;
 
   // copy the string into the node
   wcscpy(pNodeToAdd.value.pString, pString);
 
   // Calculate the height of the string
-  pNodeToAdd.value.sHeightOfString = DisplayWrappedString(0, 0, CRDT_WIDTH_OF_TEXT_AREA, 2, uiFontToUse, uiColorToUse, pNodeToAdd.value.pString, 0, FALSE, DONT_DISPLAY_TEXT) + 1;
+  pNodeToAdd.value.sHeightOfString = DisplayWrappedString(0, 0, CRDT_WIDTH_OF_TEXT_AREA, 2, uiFontToUse, uiColorToUse, pNodeToAdd.value.pString, 0, false, DONT_DISPLAY_TEXT) + 1;
 
   // starting y position on the screen
   pNodeToAdd.value.sPosY = CRDT_START_POS_Y;
@@ -671,7 +671,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
     vs_desc.ubBitDepth = 16;
 
     if (AddVideoSurface(addressof(vs_desc), addressof(pNodeToAdd.value.uiVideoSurfaceImage)) == 0) {
-      return FALSE;
+      return false;
     }
 
     // Set transparency
@@ -681,13 +681,13 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
     ColorFillVideoSurfaceArea(pNodeToAdd.value.uiVideoSurfaceImage, 0, 0, CRDT_WIDTH_OF_TEXT_AREA, pNodeToAdd.value.sHeightOfString, 0);
 
     // set the font dest buffer to be the surface
-    SetFontDestBuffer(pNodeToAdd.value.uiVideoSurfaceImage, 0, 0, CRDT_WIDTH_OF_TEXT_AREA, pNodeToAdd.value.sHeightOfString, FALSE);
+    SetFontDestBuffer(pNodeToAdd.value.uiVideoSurfaceImage, 0, 0, CRDT_WIDTH_OF_TEXT_AREA, pNodeToAdd.value.sHeightOfString, false);
 
     // write the string onto the surface
-    DisplayWrappedString(0, 1, CRDT_WIDTH_OF_TEXT_AREA, 2, uiFontToUse, uiColorToUse, pNodeToAdd.value.pString, 0, FALSE, gubCrdtJustification);
+    DisplayWrappedString(0, 1, CRDT_WIDTH_OF_TEXT_AREA, 2, uiFontToUse, uiColorToUse, pNodeToAdd.value.pString, 0, false, gubCrdtJustification);
 
     // reset the font dest buffer
-    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   }
 
   //
@@ -717,7 +717,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
 
   gCrdtLastAddedNode = pNodeToAdd;
 
-  return TRUE;
+  return true;
 }
 
 function HandleCreditNodes(): void {
@@ -791,7 +791,7 @@ function HandleNode_Default(pCurrent: Pointer<CRDT_NODE>): void {
     // if the node is entirely off the screen
     if ((pCurrent.value.sPosY + pCurrent.value.sHeightOfString) < CRDT_LINE_NODE_DISAPPEARS_AT) {
       // mark the node to be deleted this frame
-      pCurrent.value.fDelete = TRUE;
+      pCurrent.value.fDelete = true;
     }
 
     // Update the last time to be the current time
@@ -803,12 +803,12 @@ function HandleNode_Default(pCurrent: Pointer<CRDT_NODE>): void {
   }
 }
 
-function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
+function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): boolean {
   let hVSurface: HVSURFACE;
 
   // Currently, we have no need to display a node that doesnt have a string
   if (pCurrent.value.pString == null)
-    return FALSE;
+    return false;
 
   // if the node is new and we havent displayed it yet
   if (pCurrent.value.uiLastTime == 0) {
@@ -840,12 +840,12 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
 
   BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, pCurrent.value.sPosX, pCurrent.value.sPosY, VS_BLT_CLIPPED | VS_BLT_USECOLORKEY, null);
 
-  return TRUE;
+  return true;
 }
 
 // return false from this function when there are no more items in the text file
-function GetNextCreditFromTextFile(): BOOLEAN {
-  let fDone: BOOLEAN = FALSE;
+function GetNextCreditFromTextFile(): boolean {
+  let fDone: boolean = false;
   let uiStringWidth: UINT32 = 20;
   let zOriginalString: CHAR16[] /* [512] */;
   let zString: CHAR16[] /* [512] */;
@@ -860,7 +860,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
   uiStartLoc = CREDITS_LINESIZE * guiCurrentCreditRecord;
   if (!LoadEncryptedDataFromFile(CRDT_NAME_OF_CREDIT_FILE, zOriginalString, uiStartLoc, CREDITS_LINESIZE)) {
     // there are no more credits
-    return FALSE;
+    return false;
   }
 
   // Increment to the next crdit record
@@ -938,7 +938,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
   // if any processing of the flags need to be done
   HandleCreditFlags(uiFlags);
 
-  return TRUE;
+  return true;
 }
 
 // return any flags that need to be set in the node

@@ -7,15 +7,15 @@
 // SetCivilianDestination - C.O. stuff for if we don't control the civ
 
 function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubPathMode: UINT8, ubWaterOK: UINT8, fFlags: UINT8): int {
-  let fSkipTilesWithMercs: BOOLEAN;
+  let fSkipTilesWithMercs: boolean;
 
   if ((sGridno < 0) || (sGridno >= GRIDSIZE)) {
-    return FALSE;
+    return false;
   }
 
   // return false if gridno on different level from merc
   if (GridNoOnVisibleWorldTile(pSoldier.value.sGridNo) && gpWorldLevelData[pSoldier.value.sGridNo].sHeight != gpWorldLevelData[sGridno].sHeight) {
-    return FALSE;
+    return false;
   }
 
   // skip mercs if turnbased and adjacent AND not doing an IGNORE_PATH check (which is used almost exclusively by GoAsFarAsPossibleTowards)
@@ -43,51 +43,51 @@ function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubP
   {
     // if water's a problem, and gridno is in a water tile (bridges are OK)
     if (!ubWaterOK && Water(sGridno))
-      return FALSE;
+      return false;
 
     // passed all checks, now try to make sure we can get there!
     switch (ubPathMode) {
       // if finding a path wasn't asked for (could have already been done,
       // for example), don't bother
       case IGNORE_PATH:
-        return TRUE;
+        return true;
 
       case ENSURE_PATH:
         if (FindBestPath(pSoldier, sGridno, pSoldier.value.bLevel, Enum193.WALKING, COPYROUTE, fFlags)) {
-          return (TRUE); // legal destination
+          return (true); // legal destination
         } else // got this far, but found no clear path,
         {
           // so test fails
-          return FALSE;
+          return false;
         }
         // *** NOTE: movement mode hardcoded to WALKING !!!!!
       case ENSURE_PATH_COST:
-        return PlotPath(pSoldier, sGridno, FALSE, FALSE, FALSE, Enum193.WALKING, FALSE, FALSE, 0);
+        return PlotPath(pSoldier, sGridno, false, false, false, Enum193.WALKING, false, false, 0);
 
       default:
-        return FALSE;
+        return false;
     }
   } else // something failed - didn't even have to test path
-    return (FALSE); // illegal destination
+    return (false); // illegal destination
 }
 
 function TryToResumeMovement(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): int {
-  let ubGottaCancel: UINT8 = FALSE;
-  let ubSuccess: UINT8 = FALSE;
+  let ubGottaCancel: UINT8 = false;
+  let ubSuccess: UINT8 = false;
 
   // have to make sure the old destination is still legal (somebody may
   // have occupied the destination gridno in the meantime!)
   if (LegalNPCDestination(pSoldier, sGridno, ENSURE_PATH, WATEROK, 0)) {
-    pSoldier.value.bPathStored = TRUE; // optimization - Ian
+    pSoldier.value.bPathStored = true; // optimization - Ian
 
     // make him go to it (needed to continue movement across multiple turns)
     NewDest(pSoldier, sGridno);
 
-    ubSuccess = TRUE;
+    ubSuccess = true;
 
     // make sure that it worked (check that pSoldier->sDestination == pSoldier->sGridNo)
     if (pSoldier.value.sDestination == sGridno) {
-      ubSuccess = TRUE;
+      ubSuccess = true;
     } else {
       // must work even for escorted civs, can't just set the flag
       CancelAIAction(pSoldier, FORCE);
@@ -105,7 +105,7 @@ function TryToResumeMovement(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): in
 
       // if it's not possible to get any closer
       if (pSoldier.value.usActionData == NOWHERE) {
-        ubGottaCancel = TRUE;
+        ubGottaCancel = true;
       } else {
         // change his desired destination to this new one
         sGridno = pSoldier.value.usActionData;
@@ -117,9 +117,9 @@ function TryToResumeMovement(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): in
 
         // make sure that it worked (check that pSoldier->sDestination == pSoldier->sGridNo)
         if (pSoldier.value.sDestination == sGridno)
-          ubSuccess = TRUE;
+          ubSuccess = true;
         else
-          ubGottaCancel = TRUE;
+          ubGottaCancel = true;
       }
 
       if (ubGottaCancel) {
@@ -174,13 +174,13 @@ function PointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (sPatrolPoint == NOWHERE) {
     // over-ride orders to something safer
     pSoldier.value.bOrders = Enum241.FARPATROL;
-    return FALSE;
+    return false;
   }
 
   // make sure we can get there from here at this time, if we can't get all
   // the way there, at least do our best to get close
   if (LegalNPCDestination(pSoldier, sPatrolPoint, ENSURE_PATH, WATEROK, 0)) {
-    pSoldier.value.bPathStored = TRUE; // optimization - Ian
+    pSoldier.value.bPathStored = true; // optimization - Ian
     pSoldier.value.usActionData = sPatrolPoint;
   } else {
     // temporarily extend roaming range to infinity by changing orders, else
@@ -194,12 +194,12 @@ function PointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
     // if it's not possible to get any closer, that's OK, but fail this call
     if (pSoldier.value.usActionData == NOWHERE)
-      return FALSE;
+      return false;
   }
 
   // passed all tests - start moving towards next patrol point
 
-  return TRUE;
+  return true;
 }
 
 function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -233,7 +233,7 @@ function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
     // do nothing this time around
     if (pSoldier.value.sGridNo == sPatrolPoint) {
-      return FALSE;
+      return false;
     }
   }
 
@@ -241,13 +241,13 @@ function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (sPatrolPoint == NOWHERE) {
     // over-ride orders to something safer
     pSoldier.value.bOrders = Enum241.FARPATROL;
-    return FALSE;
+    return false;
   }
 
   // make sure we can get there from here at this time, if we can't get all
   // the way there, at least do our best to get close
   if (LegalNPCDestination(pSoldier, sPatrolPoint, ENSURE_PATH, WATEROK, 0)) {
-    pSoldier.value.bPathStored = TRUE; // optimization - Ian
+    pSoldier.value.bPathStored = true; // optimization - Ian
     pSoldier.value.usActionData = sPatrolPoint;
   } else {
     // temporarily extend roaming range to infinity by changing orders, else
@@ -261,12 +261,12 @@ function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
     // if it's not possible to get any closer, that's OK, but fail this call
     if (pSoldier.value.usActionData == NOWHERE)
-      return FALSE;
+      return false;
   }
 
   // passed all tests - start moving towards next patrol point
 
-  return TRUE;
+  return true;
 }
 
 function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGrid: INT16, bReserveAPs: INT8, bAction: INT8, fFlags: INT8): INT16 {
@@ -279,7 +279,7 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
   let ubDirection: UINT8;
   let ubDirsLeft: UINT8;
   let ubDirChecked: UINT8[] /* [8] */;
-  let fFound: UINT8 = FALSE;
+  let fFound: UINT8 = false;
   let bAPsLeft: INT8;
   let fPathFlags: INT8;
   let ubRoomRequired: UINT8 = 0;
@@ -359,7 +359,7 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
 
       // clear ubDirChecked flag for all 8 directions
       for (ubDirection = 0; ubDirection < 8; ubDirection++)
-        ubDirChecked[ubDirection] = FALSE;
+        ubDirChecked[ubDirection] = false;
 
       ubDirsLeft = 8;
 
@@ -374,7 +374,7 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
           ubDirection = Random(8);
         } while (ubDirChecked[ubDirection]);
 
-        ubDirChecked[ubDirection] = TRUE;
+        ubDirChecked[ubDirection] = true;
 
         // determine the gridno 1 tile away from current friend in this direction
         sTempDest = NewGridNo(sDesGrid, DirectionInc((ubDirection + 1)));
@@ -384,7 +384,7 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
           continue;
 
         if (LegalNPCDestination(pSoldier, sTempDest, ENSURE_PATH, NOWATER, 0)) {
-          fFound = TRUE; // found a spot
+          fFound = true; // found a spot
 
           break; // stop checking in other directions
         }
@@ -506,11 +506,11 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
   } else {
     // possible optimization - stored path IS good if we're going all the way
     if (sGoToGrid == sDesGrid) {
-      pSoldier.value.bPathStored = TRUE;
+      pSoldier.value.bPathStored = true;
       pSoldier.value.sFinalDestination = sGoToGrid;
     } else if (pSoldier.value.usPathIndex == 0) {
       // we can hack this surely! -- CJC
-      pSoldier.value.bPathStored = TRUE;
+      pSoldier.value.bPathStored = true;
       pSoldier.value.sFinalDestination = sGoToGrid;
       pSoldier.value.usPathDataSize = sLoop + 1;
     }
@@ -541,13 +541,13 @@ function SoldierTriesToContinueAlongPath(pSoldier: Pointer<SOLDIERTYPE>): void {
     return;
   }
 
-  if (!NewOKDestination(pSoldier, pSoldier.value.usActionData, TRUE, pSoldier.value.bLevel)) {
+  if (!NewOKDestination(pSoldier, pSoldier.value.usActionData, true, pSoldier.value.bLevel)) {
     CancelAIAction(pSoldier, DONTFORCE);
     return;
   }
 
   if (IsActionAffordable(pSoldier)) {
-    if (pSoldier.value.bActionInProgress == FALSE) {
+    if (pSoldier.value.bActionInProgress == false) {
       // start a move that didn't even get started before...
       // hope this works...
       NPCDoesAct(pSoldier);
@@ -570,7 +570,7 @@ function SoldierTriesToContinueAlongPath(pSoldier: Pointer<SOLDIERTYPE>): void {
     // seems to have enough points...
     NewDest(pSoldier, usNewGridNo);
     // maybe we didn't actually start the action last turn...
-    pSoldier.value.bActionInProgress = TRUE;
+    pSoldier.value.bActionInProgress = true;
   } else {
     CancelAIAction(pSoldier, DONTFORCE);
   }
@@ -583,7 +583,7 @@ function HaltMoveForSoldierOutOfPoints(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // record that this merc can no longer animate and why...
-  AdjustNoAPToFinishMove(pSoldier, TRUE);
+  AdjustNoAPToFinishMove(pSoldier, true);
 
   // We'll keep his action intact though...
   DebugAI(String("NO AP TO FINISH MOVE for %d (%d APs left)", pSoldier.value.ubID, pSoldier.value.bActionPoints));
@@ -611,7 +611,7 @@ function SetCivilianDestination(ubWho: UINT8, sGridno: INT16): void {
 
     // and cancel any movement in progress that he was still engaged in
     pSoldier.value.bAction = Enum289.AI_ACTION_NONE;
-    pSoldier.value.bActionInProgress = FALSE;
+    pSoldier.value.bActionInProgress = false;
   }
 
   // only set the underEscort flag once you give him a destination
@@ -620,7 +620,7 @@ function SetCivilianDestination(ubWho: UINT8, sGridno: INT16): void {
   //
   // Either way, once set, it should stay that way, preventing AI from
   // doing anything other than advance him towards destination.
-  pSoldier.value.bUnderEscort = TRUE;
+  pSoldier.value.bUnderEscort = true;
 
   // change orders to maximize roaming range so he can Go As Far As Possible
   pSoldier.value.bOrders = Enum241.ONCALL;

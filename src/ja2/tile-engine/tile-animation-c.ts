@@ -309,7 +309,7 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
 
           // Freeup attacker from explosion
           DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count..., EXPLOSION effect gone off"));
-          ReduceAttackBusyCount(pAniNode.value.ubUserData2, FALSE);
+          ReduceAttackBusyCount(pAniNode.value.ubUserData2, false);
         }
 
         if (pAniNode.value.uiFlags & ANITILE_RELEASE_ATTACKER_WHEN_DONE) {
@@ -441,7 +441,7 @@ function UpdateAniTiles(): void {
                   // PlayJA2Sample( AIR_ESCAPING_1, RATE_11025, SoundVolume( HIGHVOLUME, pNode->sGridNo ), 1, SoundDir( pNode->sGridNo ) );
                   NewSmokeEffect(pNode.value.sGridNo, pNode.value.uiUserData, gExplosionData[pNode.value.uiUserData3].Params.bLevel, pNode.value.ubUserData2);
                 } else {
-                  SpreadEffect(pNode.value.sGridNo, Explosive[Item[pNode.value.uiUserData].ubClassIndex].ubRadius, pNode.value.uiUserData, pNode.value.ubUserData2, FALSE, gExplosionData[pNode.value.uiUserData3].Params.bLevel, -1);
+                  SpreadEffect(pNode.value.sGridNo, Explosive[Item[pNode.value.uiUserData].ubClassIndex].ubRadius, pNode.value.uiUserData, pNode.value.ubUserData2, false, gExplosionData[pNode.value.uiUserData3].Params.bLevel, -1);
                 }
                 // Forfait any other animations this frame....
                 return;
@@ -653,7 +653,7 @@ function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT3
   return null;
 }
 
-function HideAniTile(pAniTile: Pointer<ANITILE>, fHide: BOOLEAN): void {
+function HideAniTile(pAniTile: Pointer<ANITILE>, fHide: boolean): void {
   if (fHide) {
     pAniTile.value.pLevelNode.value.uiFlags |= LEVELNODE_HIDDEN;
   } else {
@@ -661,7 +661,7 @@ function HideAniTile(pAniTile: Pointer<ANITILE>, fHide: BOOLEAN): void {
   }
 }
 
-function PauseAniTile(pAniTile: Pointer<ANITILE>, fPause: BOOLEAN): void {
+function PauseAniTile(pAniTile: Pointer<ANITILE>, fPause: boolean): void {
   if (fPause) {
     pAniTile.value.uiFlags |= ANITILE_PAUSED;
   } else {
@@ -669,7 +669,7 @@ function PauseAniTile(pAniTile: Pointer<ANITILE>, fPause: BOOLEAN): void {
   }
 }
 
-function PauseAllAniTilesOfType(uiType: UINT32, fPause: BOOLEAN): void {
+function PauseAllAniTilesOfType(uiType: UINT32, fPause: boolean): void {
   let pAniNode: Pointer<ANITILE> = null;
   let pNode: Pointer<ANITILE> = null;
 

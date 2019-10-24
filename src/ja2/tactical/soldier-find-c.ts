@@ -17,39 +17,39 @@ interface SOLDIER_STACK_TYPE {
   bNum: INT8;
   ubIDs: UINT8[] /* [MAX_STACKED_MERCS] */;
   bCur: INT8;
-  fUseGridNo: BOOLEAN;
+  fUseGridNo: boolean;
   sUseGridNoGridNo: UINT16;
 }
 
 let gSoldierStack: SOLDIER_STACK_TYPE;
-let gfHandleStack: BOOLEAN = FALSE;
+let gfHandleStack: boolean = false;
 
-function FindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): BOOLEAN {
+function FindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): boolean {
   let sMapPos: INT16;
 
   pMercFlags.value = 0;
 
   if (GetMouseMapPos(addressof(sMapPos))) {
     if (FindSoldier(sMapPos, pusSoldierIndex, pMercFlags, FINDSOLDIERSAMELEVEL(gsInterfaceLevel))) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function SelectiveFindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): BOOLEAN {
+function SelectiveFindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): boolean {
   let sMapPos: INT16;
 
   pMercFlags.value = 0;
 
   if (GetMouseMapPos(addressof(sMapPos))) {
     if (FindSoldier(sMapPos, pusSoldierIndex, pMercFlags, FINDSOLDIERSAMELEVEL(gsInterfaceLevel))) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function GetSoldierFindFlags(ubID: UINT16): UINT32 {
@@ -106,24 +106,24 @@ function GetSoldierFindFlags(ubID: UINT16): UINT32 {
 }
 
 // THIS FUNCTION IS CALLED FAIRLY REGULARLY
-function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>, uiFlags: UINT32): BOOLEAN {
+function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>, uiFlags: UINT32): boolean {
   let cnt: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let aRect: SGPRect;
-  let fSoldierFound: BOOLEAN = FALSE;
+  let fSoldierFound: boolean = false;
   let sXMapPos: INT16;
   let sYMapPos: INT16;
   let sScreenX: INT16;
   let sScreenY: INT16;
   let sMaxScreenMercY: INT16;
   let sHeighestMercScreenY: INT16 = -32000;
-  let fDoFull: BOOLEAN;
+  let fDoFull: boolean;
   let ubBestMerc: UINT8 = NOBODY;
   let usAnimSurface: UINT16;
   let iMercScreenX: INT32;
   let iMercScreenY: INT32;
-  let fInScreenRect: BOOLEAN = FALSE;
-  let fInGridNo: BOOLEAN = FALSE;
+  let fInScreenRect: boolean = false;
+  let fInGridNo: boolean = false;
 
   pusSoldierIndex.value = NOBODY;
   pMercFlags.value = 0;
@@ -135,14 +135,14 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
   // Set some values
   if (uiFlags & FIND_SOLDIER_BEGINSTACK) {
     gSoldierStack.bNum = 0;
-    gSoldierStack.fUseGridNo = FALSE;
+    gSoldierStack.fUseGridNo = false;
   }
 
   // Loop through all mercs and make go
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
     pSoldier = MercSlots[cnt];
-    fInScreenRect = FALSE;
-    fInGridNo = FALSE;
+    fInScreenRect = false;
+    fInGridNo = false;
 
     if (pSoldier != null) {
       if (pSoldier.value.bActive && !(pSoldier.value.uiStatusFlags & SOLDIER_DEAD) && (pSoldier.value.bVisible != -1 || (gTacticalStatus.uiFlags & SHOW_ALL_MERCS))) {
@@ -161,15 +161,15 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
         // If we are selective.... do our own guys FULL and other with gridno!
         // First look for owned soldiers, by way of the full method
         if (uiFlags & FIND_SOLDIER_GRIDNO) {
-          fDoFull = FALSE;
+          fDoFull = false;
         } else if (uiFlags & FIND_SOLDIER_SELECTIVE) {
           if (pSoldier.value.ubID >= gTacticalStatus.Team[gbPlayerNum].bFirstID && pSoldier.value.ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
-            fDoFull = TRUE;
+            fDoFull = true;
           } else {
-            fDoFull = FALSE;
+            fDoFull = false;
           }
         } else {
-          fDoFull = TRUE;
+          fDoFull = true;
         }
 
         if (fDoFull) {
@@ -188,11 +188,11 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
           sScreenY = gusMouseYPos;
 
           if (IsPointInScreenRect(sScreenX, sScreenY, addressof(aRect))) {
-            fInScreenRect = TRUE;
+            fInScreenRect = true;
           }
 
           if (pSoldier.value.sGridNo == sGridNo) {
-            fInGridNo = TRUE;
+            fInGridNo = true;
           }
 
           // ATE: If we are an enemy....
@@ -200,7 +200,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
             if (pSoldier.value.ubID >= gTacticalStatus.Team[gbPlayerNum].bFirstID && pSoldier.value.ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
               // ATE: NOT if we are in action or comfirm action mode
               if (gCurrentUIMode != Enum206.ACTION_MODE && gCurrentUIMode != Enum206.CONFIRM_ACTION_MODE || gUIActionModeChangeDueToMouseOver) {
-                fInScreenRect = FALSE;
+                fInScreenRect = false;
               }
             }
           }
@@ -212,8 +212,8 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
             if (gCurrentUIMode == Enum206.ACTION_MODE || gCurrentUIMode == Enum206.CONFIRM_ACTION_MODE) {
               // Are we in medic mode?
               if (GetActionModeCursor(pSoldier) != AIDCURS) {
-                fInScreenRect = FALSE;
-                fInGridNo = FALSE;
+                fInScreenRect = false;
+                fInGridNo = false;
               }
             }
           }
@@ -240,7 +240,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
 
             // Only break here if we're not creating a stack of these fellas
             if (uiFlags & FIND_SOLDIER_BEGINSTACK) {
-              gfHandleStack = TRUE;
+              gfHandleStack = true;
 
               // Add this one!
               gSoldierStack.ubIDs[gSoldierStack.bNum] = pSoldier.value.ubID;
@@ -258,13 +258,13 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
             else if (gfHandleStack) {
               // Are we the selected stack?
               if (gSoldierStack.fUseGridNo) {
-                fSoldierFound = FALSE;
+                fSoldierFound = false;
                 break;
               } else if (gSoldierStack.ubIDs[gSoldierStack.bCur] == pSoldier.value.ubID) {
                 // Set it!
                 ubBestMerc = pSoldier.value.ubID;
 
-                fSoldierFound = TRUE;
+                fSoldierFound = true;
                 break;
               }
             } else {
@@ -277,7 +277,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
                 ubBestMerc = pSoldier.value.ubID;
               }
 
-              fSoldierFound = TRUE;
+              fSoldierFound = true;
               // Don't break here, find the rest!
             }
           }
@@ -286,11 +286,11 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
           // Selective means don't give out enemy mercs if they are not visible
 
           ///&& !NewOKDestination( pSoldier, sGridNo, TRUE, (INT8)gsInterfaceLevel )
-          if (pSoldier.value.sGridNo == sGridNo && !NewOKDestination(pSoldier, sGridNo, TRUE, gsInterfaceLevel)) {
+          if (pSoldier.value.sGridNo == sGridNo && !NewOKDestination(pSoldier, sGridNo, true, gsInterfaceLevel)) {
             // Set it!
             ubBestMerc = pSoldier.value.ubID;
 
-            fSoldierFound = TRUE;
+            fSoldierFound = true;
             break;
           }
         }
@@ -303,30 +303,30 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
 
     (pMercFlags.value) = GetSoldierFindFlags(ubBestMerc);
 
-    return TRUE;
+    return true;
   } else {
     // If we were handling a stack, and we have not found anybody, end
     if (gfHandleStack && !(uiFlags & (FIND_SOLDIER_BEGINSTACK | FIND_SOLDIER_SELECTIVE))) {
       if (gSoldierStack.fUseGridNo) {
         if (gSoldierStack.sUseGridNoGridNo != sGridNo) {
-          gfHandleStack = FALSE;
+          gfHandleStack = false;
         }
       } else {
-        gfHandleStack = FALSE;
+        gfHandleStack = false;
       }
     }
   }
-  return FALSE;
+  return false;
 }
 
-function CycleSoldierFindStack(usMapPos: UINT16): BOOLEAN {
+function CycleSoldierFindStack(usMapPos: UINT16): boolean {
   let usSoldierIndex: UINT16;
   let uiMercFlags: UINT32;
 
   // Have we initalized for this yet?
   if (!gfHandleStack) {
     if (FindSoldier(usMapPos, addressof(usSoldierIndex), addressof(uiMercFlags), FINDSOLDIERSAMELEVEL(gsInterfaceLevel) | FIND_SOLDIER_BEGINSTACK)) {
-      gfHandleStack = TRUE;
+      gfHandleStack = true;
     }
   }
 
@@ -336,16 +336,16 @@ function CycleSoldierFindStack(usMapPos: UINT16): BOOLEAN {
       gSoldierStack.bCur++;
     }
 
-    gfUIForceReExamineCursorData = TRUE;
+    gfUIForceReExamineCursorData = true;
 
     if (gSoldierStack.bCur == gSoldierStack.bNum) {
       if (!gSoldierStack.fUseGridNo) {
-        gSoldierStack.fUseGridNo = TRUE;
-        gUIActionModeChangeDueToMouseOver = FALSE;
+        gSoldierStack.fUseGridNo = true;
+        gUIActionModeChangeDueToMouseOver = false;
         gSoldierStack.sUseGridNoGridNo = usMapPos;
       } else {
         gSoldierStack.bCur = 0;
-        gSoldierStack.fUseGridNo = FALSE;
+        gSoldierStack.fUseGridNo = false;
       }
     }
 
@@ -353,9 +353,9 @@ function CycleSoldierFindStack(usMapPos: UINT16): BOOLEAN {
       gusUIFullTargetID = gSoldierStack.ubIDs[gSoldierStack.bCur];
       guiUIFullTargetFlags = GetSoldierFindFlags(gusUIFullTargetID);
       guiUITargetSoldierId = gusUIFullTargetID;
-      gfUIFullTargetFound = TRUE;
+      gfUIFullTargetFound = true;
     } else {
-      gfUIFullTargetFound = FALSE;
+      gfUIFullTargetFound = false;
     }
   }
 
@@ -374,12 +374,12 @@ function SimpleFindSoldier(sGridNo: INT16, bLevel: INT8): Pointer<SOLDIERTYPE> {
   }
 }
 
-function IsValidTargetMerc(ubSoldierID: UINT8): BOOLEAN {
+function IsValidTargetMerc(ubSoldierID: UINT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubSoldierID];
 
   // CHECK IF ACTIVE!
   if (!pSoldier.value.bActive) {
-    return FALSE;
+    return false;
   }
 
   // CHECK IF DEAD
@@ -390,14 +390,14 @@ function IsValidTargetMerc(ubSoldierID: UINT8): BOOLEAN {
   // IF BAD GUY - CHECK VISIVILITY
   if (pSoldier.value.bTeam != gbPlayerNum) {
     if (pSoldier.value.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): BOOLEAN {
+function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): boolean {
   let iXTrav: INT32;
   let iYTrav: INT32;
   let sMapPos: INT16;
@@ -411,7 +411,7 @@ function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): BOOLEAN 
       GetScreenXYGridNo(iXTrav, iYTrav, addressof(sMapPos));
 
       if (sMapPos == sGridNo) {
-        return TRUE;
+        return true;
       }
 
       iXTrav += WORLD_TILE_X;
@@ -421,7 +421,7 @@ function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): BOOLEAN 
     iXTrav = pRect.value.iLeft;
   } while (iYTrav < pRect.value.iBottom);
 
-  return FALSE;
+  return false;
 }
 
 function GetSoldierScreenRect(pSoldier: Pointer<SOLDIERTYPE>, pRect: Pointer<SGPRect>): void {
@@ -583,7 +583,7 @@ function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Poin
   psScreenY.value = sMercScreenY;
 }
 
-function GridNoOnScreen(sGridNo: INT16): BOOLEAN {
+function GridNoOnScreen(sGridNo: INT16): boolean {
   let sNewCenterWorldX: INT16;
   let sNewCenterWorldY: INT16;
   let sWorldX: INT16;
@@ -601,12 +601,12 @@ function GridNoOnScreen(sGridNo: INT16): BOOLEAN {
 
   // ATE: OK, here, adjust the top value so that it's a tile and a bit over, because of our mercs!
   if (sWorldX >= gsTopLeftWorldX && sWorldX <= gsBottomRightWorldX && sWorldY >= (gsTopLeftWorldY + sAllowance) && sWorldY <= (gsBottomRightWorldY + 20)) {
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function SoldierOnScreen(usID: UINT16): BOOLEAN {
+function SoldierOnScreen(usID: UINT16): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Get pointer of soldier
@@ -615,16 +615,16 @@ function SoldierOnScreen(usID: UINT16): BOOLEAN {
   return GridNoOnScreen(pSoldier.value.sGridNo);
 }
 
-function SoldierOnVisibleWorldTile(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function SoldierOnVisibleWorldTile(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return GridNoOnVisibleWorldTile(pSoldier.value.sGridNo);
 }
 
-function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbDirection: Pointer<INT8>, puiScrollFlags: Pointer<UINT32>): BOOLEAN {
+function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbDirection: Pointer<INT8>, puiScrollFlags: Pointer<UINT32>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sY: INT16;
   let sX: INT16;
-  /* static */ let fCountdown: BOOLEAN = 0;
+  /* static */ let fCountdown: boolean = 0;
   let sScreenCenterX: INT16;
   let sScreenCenterY: INT16;
   let sDistToCenterY: INT16;
@@ -676,29 +676,29 @@ function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbD
     // CHECK IF WE ARE DONE...
     if (fCountdown > gScrollSlideInertiaDirection[pbDirection.value]) {
       fCountdown = 0;
-      return FALSE;
+      return false;
     } else {
       fCountdown++;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function IsPointInSoldierBoundingBox(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): BOOLEAN {
+function IsPointInSoldierBoundingBox(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): boolean {
   let aRect: SGPRect;
 
   // Get Rect contained in the soldier
   GetSoldierScreenRect(pSoldier, addressof(aRect));
 
   if (IsPointInScreenRect(sX, sY, addressof(aRect))) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Pointer<UINT16>, sX: INT16, sY: INT16): BOOLEAN {
+function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Pointer<UINT16>, sX: INT16, sY: INT16): boolean {
   let aRect: SGPRect;
   let sRelX: INT16;
   let sRelY: INT16;
@@ -716,13 +716,13 @@ function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Po
 
         if (dRelPer < .2) {
           (usFlags.value) = TILE_FLAG_HEAD;
-          return TRUE;
+          return true;
         } else if (dRelPer < .6) {
           (usFlags.value) = TILE_FLAG_MID;
-          return TRUE;
+          return true;
         } else {
           (usFlags.value) = TILE_FLAG_FEET;
-          return TRUE;
+          return true;
         }
         break;
 
@@ -730,19 +730,19 @@ function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Po
 
         if (dRelPer < .2) {
           (usFlags.value) = TILE_FLAG_HEAD;
-          return TRUE;
+          return true;
         } else if (dRelPer < .7) {
           (usFlags.value) = TILE_FLAG_MID;
-          return TRUE;
+          return true;
         } else {
           (usFlags.value) = TILE_FLAG_FEET;
-          return TRUE;
+          return true;
         }
         break;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 // VERY quickly finds a soldier at gridno , ( that is visible )

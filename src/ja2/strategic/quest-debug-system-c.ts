@@ -334,10 +334,10 @@ const enum Enum168 {
 // image identifiers
 let guiQdScrollArrowImage: UINT32;
 
-let gfQuestDebugEntry: BOOLEAN = TRUE;
-let gfQuestDebugExit: BOOLEAN = FALSE;
+let gfQuestDebugEntry: boolean = true;
+let gfQuestDebugExit: boolean = false;
 
-let gfRedrawQuestDebugSystem: BOOLEAN = TRUE;
+let gfRedrawQuestDebugSystem: boolean = true;
 
 let gusQuestDebugBlue: UINT16;
 let gusQuestDebugLtBlue: UINT16;
@@ -355,10 +355,10 @@ let gpActiveListBox: Pointer<SCROLL_BOX>; // Only 1 scroll box is active at a ti
 let gsQdsEnteringGridNo: INT16 = 0;
 
 let gubTextEntryAction: UINT8 = Enum166.QD_DROP_DOWN_NO_ACTION;
-let gfTextEntryActive: BOOLEAN = FALSE;
+let gfTextEntryActive: boolean = false;
 // wchar_t			gzTextEntryReturnString[ 16 ];
 
-let gfUseLocalNPCs: BOOLEAN = FALSE;
+let gfUseLocalNPCs: boolean = false;
 
 let gubNPCInventoryPopupAction: UINT8 = Enum166.QD_DROP_DOWN_NO_ACTION;
 
@@ -370,28 +370,28 @@ let gusCurFactSelected: UINT16;
 let gusFactAtTopOfList: UINT16;
 
 // INT16				gsCurrentNPCLog=-1;						//If this is set, the value will be set to the
-let gfNpcLogButton: BOOLEAN = FALSE;
+let gfNpcLogButton: boolean = false;
 
 let giHaveSelectedItem: INT32 = -1; // If it is not the first time in, dont reset the Selected ITem
 let giHaveSelectedNPC: INT32 = -1; // If it is not the first time in, dont reset the selected NPC
 
 let giSelectedMercCurrentQuote: INT32 = -1;
 let gTalkingMercSoldier: Pointer<SOLDIERTYPE> = null;
-let gfPauseTalkingMercPopup: BOOLEAN = FALSE;
-let gfAddNpcToTeam: BOOLEAN = FALSE;
-let gfRpcToSaySectorDesc: BOOLEAN = FALSE;
-let gfNpcPanelIsUsedForTalkingMerc: BOOLEAN = FALSE;
+let gfPauseTalkingMercPopup: boolean = false;
+let gfAddNpcToTeam: boolean = false;
+let gfRpcToSaySectorDesc: boolean = false;
+let gfNpcPanelIsUsedForTalkingMerc: boolean = false;
 
-let gfBackgroundMaskEnabled: BOOLEAN = FALSE;
+let gfBackgroundMaskEnabled: boolean = false;
 
-let gfExitQdsDueToMessageBox: BOOLEAN = FALSE;
+let gfExitQdsDueToMessageBox: boolean = false;
 let giQdsMessageBox: INT32 = -1; // Qds pop up messages index value
 
-let gfInDropDownBox: BOOLEAN = FALSE;
+let gfInDropDownBox: boolean = false;
 // BOOLEAN			gfExitOptionsAfterMessageBox = FALSE;
 
-let gfAddKeyNextPass: BOOLEAN = FALSE;
-let gfDropDamagedItems: BOOLEAN = FALSE;
+let gfAddKeyNextPass: boolean = false;
+let gfDropDamagedItems: boolean = false;
 
 //
 // Mouse Regions
@@ -475,7 +475,7 @@ function QuestDebugScreenInit(): UINT32 {
   let usListBoxFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT()) + 2;
 
   // Set so next time we come in, we can set up
-  gfQuestDebugEntry = TRUE;
+  gfQuestDebugEntry = true;
 
   gusQuestDebugBlue = Get16BPPColor(FROMRGB(65, 79, 94));
 
@@ -532,12 +532,12 @@ function QuestDebugScreenInit(): UINT32 {
 
   gItemListBox.ubCurScrollBoxAction = Enum166.QD_DROP_DOWN_NO_ACTION;
 
-  gfUseLocalNPCs = FALSE;
+  gfUseLocalNPCs = false;
 
   // Set up the global list box
   gpActiveListBox = addressof(gNpcListBox);
 
-  return TRUE;
+  return true;
 }
 
 function QuestDebugScreenHandle(): UINT32 {
@@ -547,8 +547,8 @@ function QuestDebugScreenHandle(): UINT32 {
     PauseGame();
 
     EnterQuestDebugSystem();
-    gfQuestDebugEntry = FALSE;
-    gfQuestDebugExit = FALSE;
+    gfQuestDebugEntry = false;
+    gfQuestDebugExit = false;
 
     RenderQuestDebugSystem();
 
@@ -575,7 +575,7 @@ function QuestDebugScreenHandle(): UINT32 {
   if (gfRedrawQuestDebugSystem) {
     RenderQuestDebugSystem();
 
-    gfRedrawQuestDebugSystem = FALSE;
+    gfRedrawQuestDebugSystem = false;
   }
 
   // if the merc is supposed to be talking
@@ -606,8 +606,8 @@ function QuestDebugScreenHandle(): UINT32 {
 
   if (gfQuestDebugExit) {
     ExitQuestDebugSystem();
-    gfQuestDebugExit = FALSE;
-    gfQuestDebugEntry = TRUE;
+    gfQuestDebugExit = false;
+    gfQuestDebugEntry = true;
 
     UnPauseGame();
     return Enum26.GAME_SCREEN;
@@ -617,10 +617,10 @@ function QuestDebugScreenHandle(): UINT32 {
 }
 
 function QuestDebugScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
-function EnterQuestDebugSystem(): BOOLEAN {
+function EnterQuestDebugSystem(): boolean {
   let i: UINT8;
   let usPosX: UINT16;
   let usPosY: UINT16;
@@ -634,9 +634,9 @@ function EnterQuestDebugSystem(): BOOLEAN {
   let VObjectDesc: VOBJECT_DESC;
 
   if (gfExitQdsDueToMessageBox) {
-    gfRedrawQuestDebugSystem = TRUE;
-    gfExitQdsDueToMessageBox = FALSE;
-    return TRUE;
+    gfRedrawQuestDebugSystem = true;
+    gfExitQdsDueToMessageBox = false;
+    return true;
   }
 
   QuestDebug_ExitTactical();
@@ -731,7 +731,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
   FilenameForBPP("INTERFACE\\Bars.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel)));
 
-  gfRedrawQuestDebugSystem = TRUE;
+  gfRedrawQuestDebugSystem = true;
 
   AddNPCsInSectorToArray();
 
@@ -775,7 +775,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
     EnableQDSButtons();
   }
 
-  return TRUE;
+  return true;
 }
 
 function ExitQuestDebugSystem(): void {
@@ -866,7 +866,7 @@ function HandleQuestDebugSystem(): void {
   if (gfAddKeyNextPass) {
     swprintf(zTemp, "  Please enter the Keys ID. ( 0 - %d )", NUM_KEYS);
     TextEntryBox(zTemp, AddKeyToGridNo);
-    gfAddKeyNextPass = FALSE;
+    gfAddKeyNextPass = false;
   }
 }
 
@@ -874,7 +874,7 @@ function RenderQuestDebugSystem(): void {
   ColorFillQuestDebugScreenScreen(0, 0, 640, 480);
 
   // display the title
-  DisplayWrappedString(0, 5, 640, 2, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_TITLE, QuestDebugText[Enum167.QUEST_DBS_TITLE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(0, 5, 640, 2, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_TITLE, QuestDebugText[Enum167.QUEST_DBS_TITLE], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display vertical lines b/n sections
   DisplaySectionLine();
@@ -895,13 +895,13 @@ function RenderQuestDebugSystem(): void {
   DisplayNPCInfo();
 
   // Display the text beside the NPC in current sector toggle box
-  DrawTextToScreen(QuestDebugText[Enum167.QUEST_DBS_VIEW_LOCAL_NPC], QUEST_DBS_NPC_CHCKBOX_TGL_X + 25, QUEST_DBS_NPC_CHCKBOX_TGL_Y + 1, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(QuestDebugText[Enum167.QUEST_DBS_VIEW_LOCAL_NPC], QUEST_DBS_NPC_CHCKBOX_TGL_X + 25, QUEST_DBS_NPC_CHCKBOX_TGL_Y + 1, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the text beside the add npc to team toggle box
-  DrawTextToScreen(QuestDebugText[Enum167.QUEST_DBS_ADD_NPC_TO_TEAM], QUEST_DBS_NPC_CHCKBOX_TGL_X + 25, QUEST_DBS_ADD_NPC_TO_TEAM_BTN_Y + 1, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(QuestDebugText[Enum167.QUEST_DBS_ADD_NPC_TO_TEAM], QUEST_DBS_NPC_CHCKBOX_TGL_X + 25, QUEST_DBS_ADD_NPC_TO_TEAM_BTN_Y + 1, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the text beside the rpc say sector desc quotes
-  DrawTextToScreen(QuestDebugText[Enum167.QUEST_DBS_RPC_SAY_SECTOR_DESC], QUEST_DBS_NPC_CHCKBOX_TGL_X + 25, QUEST_DBS_RPC_TO_SAY_SECTOR_DESC_BTN_Y, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(QuestDebugText[Enum167.QUEST_DBS_RPC_SAY_SECTOR_DESC], QUEST_DBS_NPC_CHCKBOX_TGL_X + 25, QUEST_DBS_RPC_TO_SAY_SECTOR_DESC_BTN_Y, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   DisplayCurrentGridNo();
   // rr
@@ -925,7 +925,7 @@ function DisplayCurrentGridNo(): void {
     let zTemp: CHAR16[] /* [512] */;
 
     swprintf(zTemp, "%s:  %d", QuestDebugText[Enum167.QUEST_DBS_CURRENT_GRIDNO], gsQdsEnteringGridNo);
-    DrawTextToScreen(zTemp, QUEST_DBS_NPC_CURRENT_GRIDNO_X, QUEST_DBS_NPC_CURRENT_GRIDNO_Y, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(zTemp, QUEST_DBS_NPC_CURRENT_GRIDNO_X, QUEST_DBS_NPC_CURRENT_GRIDNO_Y, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 }
 
@@ -945,7 +945,7 @@ function GetUserInput(): void {
           gpActiveListBox.value.ubCurScrollBoxAction = Enum166.QD_DROP_DOWN_DESTROY;
           CreateDestroyDisplaySelectNpcDropDownBox();
           gpActiveListBox.value.ubCurScrollBoxAction = Enum166.QD_DROP_DOWN_NO_ACTION;
-          gfAddKeyNextPass = FALSE;
+          gfAddKeyNextPass = false;
 
           EndMercTalking();
 
@@ -989,13 +989,13 @@ function GetUserInput(): void {
           break;
 
         case F11:
-          gfQuestDebugExit = TRUE;
+          gfQuestDebugExit = true;
           break;
 
         case 'x':
           if (Event.usKeyState & ALT_DOWN) {
-            gfQuestDebugExit = TRUE;
-            gfProgramIsRunning = FALSE;
+            gfQuestDebugExit = true;
+            gfProgramIsRunning = false;
           }
           break;
 
@@ -1129,17 +1129,17 @@ function DisplaySectionLine(): void {
 
   // draw the line in b/n the first and second section
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-  LineDraw(FALSE, usStartX, usStartY, usEndX, usEndY, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
+  LineDraw(false, usStartX, usStartY, usEndX, usEndY, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
 
   // draw the line in b/n the second and third section
   usStartX = usEndX = QUEST_DBS_FIRST_SECTION_WIDTH + QUEST_DBS_SECOND_SECTION_WIDTH;
-  LineDraw(FALSE, usStartX, usStartY, usEndX, usEndY, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
+  LineDraw(false, usStartX, usStartY, usEndX, usEndY, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
 
   // draw the horizopntal line under the title
   usStartX = 0;
   usEndX = 639;
   usStartY = usEndY = 75;
-  LineDraw(FALSE, usStartX, usStartY, usEndX, usEndY, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
+  LineDraw(false, usStartX, usStartY, usEndX, usEndY, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -1147,30 +1147,30 @@ function DisplaySectionLine(): void {
 
 function DisplayQuestInformation(): void {
   // Display Quests
-  DisplayWrappedString(0, QUEST_DBS_SECTION_TITLE_Y, QUEST_DBS_FIRST_SECTION_WIDTH, 2, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_QUESTS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(0, QUEST_DBS_SECTION_TITLE_Y, QUEST_DBS_FIRST_SECTION_WIDTH, 2, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_QUESTS], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display Quest Number text
-  DisplayWrappedString(QUEST_DBS_FIRST_COL_NUMBER_X, QUEST_DBS_FIRST_COL_NUMBER_Y, QUEST_DBS_NUMBER_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_QUEST_NUMBER], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(QUEST_DBS_FIRST_COL_NUMBER_X, QUEST_DBS_FIRST_COL_NUMBER_Y, QUEST_DBS_NUMBER_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_QUEST_NUMBER], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display Quest title text
-  DisplayWrappedString(QUEST_DBS_FIRST_COL_TITLE_X, QUEST_DBS_FIRST_COL_TITLE_Y, QUEST_DBS_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_QUEST_TITLE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(QUEST_DBS_FIRST_COL_TITLE_X, QUEST_DBS_FIRST_COL_TITLE_Y, QUEST_DBS_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_QUEST_TITLE], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display Quest status text
-  DisplayWrappedString(QUEST_DBS_FIRST_COL_STATUS_X, QUEST_DBS_FIRST_COL_STATUS_Y, QUEST_DBS_STATUS_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_STATUS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(QUEST_DBS_FIRST_COL_STATUS_X, QUEST_DBS_FIRST_COL_STATUS_Y, QUEST_DBS_STATUS_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_STATUS], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 }
 
 function DisplayFactInformation(): void {
   // Display Fact
-  DisplayWrappedString(QUEST_DBS_FIRST_SECTION_WIDTH, QUEST_DBS_SECTION_TITLE_Y, QUEST_DBS_SECOND_SECTION_WIDTH, 2, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_FACTS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(QUEST_DBS_FIRST_SECTION_WIDTH, QUEST_DBS_SECTION_TITLE_Y, QUEST_DBS_SECOND_SECTION_WIDTH, 2, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_FACTS], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display Fact Number text
-  DisplayWrappedString(QUEST_DBS_SECOND_COL_NUMBER_X, QUEST_DBS_SECOND_COL_NUMBER_Y, QUEST_DBS_NUMBER_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_FACT_NUMBER], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(QUEST_DBS_SECOND_COL_NUMBER_X, QUEST_DBS_SECOND_COL_NUMBER_Y, QUEST_DBS_NUMBER_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_FACT_NUMBER], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display Fact title text
-  DisplayWrappedString(QUEST_DBS_SECOND_COL_TITLE_X, QUEST_DBS_SECOND_COL_TITLE_Y, QUEST_DBS_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_DESC], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(QUEST_DBS_SECOND_COL_TITLE_X, QUEST_DBS_SECOND_COL_TITLE_Y, QUEST_DBS_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_DESC], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display Fact status text
-  DisplayWrappedString(QUEST_DBS_SECOND_COL_STATUS_X, QUEST_DBS_SECOND_COL_STATUS_Y, QUEST_DBS_STATUS_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_STATUS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(QUEST_DBS_SECOND_COL_STATUS_X, QUEST_DBS_SECOND_COL_STATUS_Y, QUEST_DBS_STATUS_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_STATUS], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 }
 
 function BtnQuestDebugExitButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -1180,7 +1180,7 @@ function BtnQuestDebugExitButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    gfQuestDebugExit = TRUE;
+    gfQuestDebugExit = true;
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -1200,13 +1200,13 @@ function DisplayQuestList(): void {
   for (usLoop1 = 0, usCount = 0; (usLoop1 < MAX_QUESTS); usLoop1++) {
     // Display Quest Number text
     swprintf(sTemp, "%02d", usLoop1);
-    DrawTextToScreen(sTemp, QUEST_DBS_FIRST_COL_NUMBER_X, usPosY, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTemp, QUEST_DBS_FIRST_COL_NUMBER_X, usPosY, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     // Display Quest title text
-    DisplayWrappedString(QUEST_DBS_FIRST_COL_TITLE_X, usPosY, QUEST_DBS_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, QuestDescText[usLoop1], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(QUEST_DBS_FIRST_COL_TITLE_X, usPosY, QUEST_DBS_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, QuestDescText[usLoop1], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
     // Display Quest status text
-    DisplayWrappedString(QUEST_DBS_FIRST_COL_STATUS_X, usPosY, QUEST_DBS_STATUS_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, QuestStates[gubQuest[usLoop1]], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(QUEST_DBS_FIRST_COL_STATUS_X, usPosY, QUEST_DBS_STATUS_COL_WIDTH, 2, QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, QuestStates[gubQuest[usLoop1]], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     //		swprintf( sTemp, L"%02d", gubQuest[ usLoop1 ] );
     //		DrawTextToScreen( sTemp, QUEST_DBS_FIRST_COL_STATUS_X, usPosY, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED	);
 
@@ -1230,12 +1230,12 @@ function DisplayFactList(): void {
   for (usLoop1 = gusFactAtTopOfList, usCount = 0; (usLoop1 < NUM_FACTS) && (usCount < QUEST_DBS_NUM_DISPLAYED_FACTS); usLoop1++) {
     // Display Quest Number text
     swprintf(sTemp, "%02d", usLoop1);
-    DrawTextToScreen(sTemp, QUEST_DBS_SECOND_COL_NUMBER_X, usPosY, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTemp, QUEST_DBS_SECOND_COL_NUMBER_X, usPosY, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     // Display Quest title text
     if (FactDescText[usLoop1][0] == '\0') {
       swprintf(sTemp, "No Fact %03d Yet", usLoop1);
-      DisplayWrappedString(QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, sTemp, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DisplayWrappedString(QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, sTemp, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     } else {
       wcscpy(sTemp, FactDescText[usLoop1]);
 
@@ -1244,10 +1244,10 @@ function DisplayFactList(): void {
       }
 
       //			DisplayWrappedString( QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, FactDescText[ usLoop1 ], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED	);
-      DrawTextToScreen(sTemp, QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(sTemp, QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     }
 
-    DrawTextToScreen(gubFact[usLoop1] ? "True" : "False", QUEST_DBS_SECOND_COL_STATUS_X, usPosY, QUEST_DBS_STATUS_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(gubFact[usLoop1] ? "True" : "False", QUEST_DBS_SECOND_COL_STATUS_X, usPosY, QUEST_DBS_STATUS_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
     usPosY += usTextHeight;
     usCount++;
@@ -1308,18 +1308,18 @@ function BtnQuestDebugCurItemButtonCallback(btn: Pointer<GUI_BUTTON>, reason: IN
 
 function DisplayNPCInfo(): void {
   // display section title
-  DisplayWrappedString(QUEST_DBS_THIRD_COL_TITLE_X, QUEST_DBS_SECTION_TITLE_Y, QUEST_DBS_THIRD_SECTION_WIDTH, 2, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_NPC_INFO], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(QUEST_DBS_THIRD_COL_TITLE_X, QUEST_DBS_SECTION_TITLE_Y, QUEST_DBS_THIRD_SECTION_WIDTH, 2, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, QuestDebugText[Enum167.QUEST_DBS_NPC_INFO], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 }
 
-function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
-  /* static */ let fMouseRegionsCreated: BOOLEAN = FALSE;
+function CreateDestroyDisplaySelectNpcDropDownBox(): boolean {
+  /* static */ let fMouseRegionsCreated: boolean = false;
   let i: UINT16;
   let usPosX: UINT16;
   let usPosY: UINT16;
 
   // if there are
   if (gpActiveListBox.value.usMaxArrayIndex == 0)
-    return FALSE;
+    return false;
 
   switch (gpActiveListBox.value.ubCurScrollBoxAction) {
     case Enum166.QD_DROP_DOWN_NO_ACTION: {
@@ -1353,7 +1353,7 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
         usPosY += usFontHeight;
       }
 
-      fMouseRegionsCreated = TRUE;
+      fMouseRegionsCreated = true;
       //			}
       //			else
       //				fMouseRegionsCreated = FALSE;
@@ -1387,10 +1387,10 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
       if (!gfBackgroundMaskEnabled) {
         MSYS_DefineRegion(addressof(gQuestTextEntryDebugDisableScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 15, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
         MSYS_AddRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
-        gfBackgroundMaskEnabled = TRUE;
+        gfBackgroundMaskEnabled = true;
       }
 
-      gfInDropDownBox = TRUE;
+      gfInDropDownBox = true;
 
       if (gpActiveListBox.value.sCurSelectedItem == -1) {
         gpActiveListBox.value.usItemDisplayedOnTopOfList = gpActiveListBox.value.usStartIndex;
@@ -1406,7 +1406,7 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
         for (i = 0; i < gpActiveListBox.value.usNumDisplayedItems; i++)
           MSYS_RemoveRegion(addressof(gSelectedNpcListRegion[i]));
 
-        fMouseRegionsCreated = FALSE;
+        fMouseRegionsCreated = false;
 
         // scroll arrows
         for (i = 0; i < 2; i++)
@@ -1419,13 +1419,13 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
         // remove the mask of the entire screen
         if (gfBackgroundMaskEnabled) {
           MSYS_RemoveRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
-          gfBackgroundMaskEnabled = FALSE;
+          gfBackgroundMaskEnabled = false;
         }
 
         EnableQDSButtons();
       }
-      gfRedrawQuestDebugSystem = TRUE;
-      gfInDropDownBox = FALSE;
+      gfRedrawQuestDebugSystem = true;
+      gfInDropDownBox = false;
     } break;
 
     case Enum166.QD_DROP_DOWN_DISPLAY: {
@@ -1434,7 +1434,7 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
       DisplaySelectedListBox();
     } break;
   }
-  return TRUE;
+  return true;
 }
 
 function DisplaySelectedListBox(): void {
@@ -1508,13 +1508,13 @@ function DisplaySelectedNPC(): void {
   // display the names of the NPC's
   for (i = gpActiveListBox.value.usItemDisplayedOnTopOfList; i < gpActiveListBox.value.usItemDisplayedOnTopOfList + gpActiveListBox.value.usNumDisplayedItems; i++) {
     if (gfUseLocalNPCs) {
-      DrawTextToScreen(gMercProfiles[gubCurrentNpcInSector[i]].zNickname, usPosX, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[gubCurrentNpcInSector[i]].zNickname, usPosX, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       GetDebugLocationString(gubCurrentNpcInSector[i], sTempString);
 
       // GetShortSectorString( gMercProfiles[ gubCurrentNpcInSector[ i ] ].sSectorX, gMercProfiles[ gubCurrentNpcInSector[ i ] ].sSectorY, sTempString );
     } else {
-      DrawTextToScreen(gMercProfiles[i].zNickname, usPosX, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[i].zNickname, usPosX, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       GetDebugLocationString(i, sTempString);
 
@@ -1524,7 +1524,7 @@ function DisplaySelectedNPC(): void {
     FindFontRightCoordinates(gpActiveListBox.value.usScrollPosX, usPosY, gpActiveListBox.value.usScrollWidth, 0, sTempString, QUEST_DBS_FONT_LISTBOX_TEXT(), addressof(usLocationX), addressof(usLocationY));
 
     // the location value
-    DrawTextToScreen(sTempString, (usLocationX - 2), usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTempString, (usLocationX - 2), usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     usPosY += usFontHeight;
   }
@@ -1543,12 +1543,12 @@ function DisplaySelectedNPC(): void {
 
     // the highlighted name
     if (gfUseLocalNPCs) {
-      DrawTextToScreen(gMercProfiles[gubCurrentNpcInSector[gpActiveListBox.value.sCurSelectedItem]].zNickname, gpActiveListBox.value.usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[gubCurrentNpcInSector[gpActiveListBox.value.sCurSelectedItem]].zNickname, gpActiveListBox.value.usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
       GetDebugLocationString(gubCurrentNpcInSector[gpActiveListBox.value.sCurSelectedItem], sTempString);
 
       //			GetShortSectorString( gMercProfiles[ gubCurrentNpcInSector[ gpActiveListBox->sCurSelectedItem ] ].sSectorX, gMercProfiles[ gubCurrentNpcInSector[ gpActiveListBox->sCurSelectedItem ] ].sSectorY, sTempString );
     } else {
-      DrawTextToScreen(gMercProfiles[gpActiveListBox.value.sCurSelectedItem].zNickname, gpActiveListBox.value.usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[gpActiveListBox.value.sCurSelectedItem].zNickname, gpActiveListBox.value.usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       GetDebugLocationString(gpActiveListBox.value.sCurSelectedItem, sTempString);
       //			GetShortSectorString( gMercProfiles[ gpActiveListBox->sCurSelectedItem ].sSectorX, gMercProfiles[ gpActiveListBox->sCurSelectedItem ].sSectorY, sTempString );
@@ -1557,7 +1557,7 @@ function DisplaySelectedNPC(): void {
     FindFontRightCoordinates(gpActiveListBox.value.usScrollPosX, (usPosY), gpActiveListBox.value.usScrollWidth, 0, sTempString, QUEST_DBS_FONT_LISTBOX_TEXT(), addressof(usLocationX), addressof(usLocationY));
 
     // the location value
-    DrawTextToScreen(sTempString, usLocationX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTempString, usLocationX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     SetFontShadow(DEFAULT_SHADOW);
 
@@ -1594,7 +1594,7 @@ function DisplaySelectedItem(): void {
     if (zItemName[0] == '\0')
       wcscpy(zItemName, QuestDebugText[Enum167.QUEST_DBS_NO_ITEM]);
 
-    DrawTextToScreen(zItemName, usPosX, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(zItemName, usPosX, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     usPosY += usFontHeight;
   }
 
@@ -1614,7 +1614,7 @@ function DisplaySelectedItem(): void {
     if (zItemName[0] == '\0')
       wcscpy(zItemName, QuestDebugText[Enum167.QUEST_DBS_NO_ITEM]);
 
-    DrawTextToScreen(zItemName, gpActiveListBox.value.usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(zItemName, gpActiveListBox.value.usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     SetFontShadow(DEFAULT_SHADOW);
 
     swprintf(zButtonName, "%d - %s", gpActiveListBox.value.sCurSelectedItem, zItemName);
@@ -1717,12 +1717,12 @@ function DrawQdsScrollRectangle(): void // INT16 sSelectedEntry, UINT16 usStartP
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw the gold highlite line on the top and left
-  LineDraw(FALSE, usPosX, usPosY, usPosX + usWidth - 1, usPosY, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
-  LineDraw(FALSE, usPosX, usPosY, usPosX, usPosY + usHeight, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
+  LineDraw(false, usPosX, usPosY, usPosX + usWidth - 1, usPosY, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
+  LineDraw(false, usPosX, usPosY, usPosX, usPosY + usHeight, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
 
   // draw the shadow line on the bottom and right
-  LineDraw(FALSE, usPosX, usPosY + usHeight, usPosX + usWidth - 1, usPosY + usHeight, Get16BPPColor(FROMRGB(112, 110, 112)), pDestBuf);
-  LineDraw(FALSE, usPosX + usWidth - 1, usPosY, usPosX + usWidth - 1, usPosY + usHeight, Get16BPPColor(FROMRGB(112, 110, 112)), pDestBuf);
+  LineDraw(false, usPosX, usPosY + usHeight, usPosX + usWidth - 1, usPosY + usHeight, Get16BPPColor(FROMRGB(112, 110, 112)), pDestBuf);
+  LineDraw(false, usPosX + usWidth - 1, usPosY, usPosX + usWidth - 1, usPosY + usHeight, Get16BPPColor(FROMRGB(112, 110, 112)), pDestBuf);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -1945,9 +1945,9 @@ function BtnQuestDebugGiveItemToNPCButtonCallback(btn: Pointer<GUI_BUTTON>, reas
 
     // if the selected merc is created
     if (gfUseLocalNPCs)
-      pSoldier = FindSoldierByProfileID(gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem], FALSE);
+      pSoldier = FindSoldierByProfileID(gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem], false);
     else
-      pSoldier = FindSoldierByProfileID(gNpcListBox.sCurSelectedItem, FALSE);
+      pSoldier = FindSoldierByProfileID(gNpcListBox.sCurSelectedItem, false);
 
     if (!pSoldier) {
       // Failed to get npc, put error message
@@ -1955,7 +1955,7 @@ function BtnQuestDebugGiveItemToNPCButtonCallback(btn: Pointer<GUI_BUTTON>, reas
     }
 
     // Give the selected item to the selected merc
-    if (!AutoPlaceObject(pSoldier, addressof(Object), TRUE)) {
+    if (!AutoPlaceObject(pSoldier, addressof(Object), true)) {
       // failed to add item, put error message to screen
     }
 
@@ -2037,10 +2037,10 @@ function BtnQuestDebugNPCLogButtonButtonCallback(btn: Pointer<GUI_BUTTON>, reaso
     //		btn->uiFlags &= (~BUTTON_CLICKED_ON );
 
     if (gfNpcLogButton) {
-      gfNpcLogButton = FALSE;
+      gfNpcLogButton = false;
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
     } else {
-      gfNpcLogButton = TRUE;
+      gfNpcLogButton = true;
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
     }
 
@@ -2060,7 +2060,7 @@ function BtnQuestDebugNPCRefreshButtonButtonCallback(btn: Pointer<GUI_BUTTON>, r
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    let fRetVal: BOOLEAN = FALSE;
+    let fRetVal: boolean = false;
     let zTemp: CHAR16[] /* [128] */;
     let ubMercID: UINT8 = 0;
 
@@ -2115,8 +2115,8 @@ function BtnQuestDebugStartMercTalkingButtonButtonCallback(btn: Pointer<GUI_BUTT
   }
 }
 
-function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, EntryCallBack: TEXT_ENTRY_CALLBACK): BOOLEAN {
-  /* static */ let fMouseRegionCreated: BOOLEAN = FALSE;
+function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, EntryCallBack: TEXT_ENTRY_CALLBACK): boolean {
+  /* static */ let fMouseRegionCreated: boolean = false;
   /* static */ let zString: wchar_t[] /* [256] */;
   /* static */ let TextEntryCallback: TEXT_ENTRY_CALLBACK;
 
@@ -2128,13 +2128,13 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, Entry
       if (fMouseRegionCreated)
         break;
 
-      fMouseRegionCreated = TRUE;
+      fMouseRegionCreated = true;
 
       // create a mask to block out the screen
       if (!gfBackgroundMaskEnabled) {
         MSYS_DefineRegion(addressof(gQuestTextEntryDebugDisableScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 40, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
         MSYS_AddRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
-        gfBackgroundMaskEnabled = TRUE;
+        gfBackgroundMaskEnabled = true;
       }
 
       // create the ok button
@@ -2143,7 +2143,7 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, Entry
 
       wcscpy(zString, pString);
 
-      gfTextEntryActive = TRUE;
+      gfTextEntryActive = true;
 
       InitQuestDebugTextInputBoxes();
 
@@ -2161,18 +2161,18 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, Entry
       // Remove the mouse region that disables the screen
       if (gfBackgroundMaskEnabled) {
         MSYS_RemoveRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
-        gfBackgroundMaskEnabled = FALSE;
+        gfBackgroundMaskEnabled = false;
       }
 
       // remove the 'ok' button on the text entry field
       RemoveButton(guiQuestDebugTextEntryOkBtn);
 
       // Mouse regions are removed
-      fMouseRegionCreated = FALSE;
-      gfTextEntryActive = FALSE;
+      fMouseRegionCreated = false;
+      gfTextEntryActive = false;
 
       // redraw the entire screen
-      gfRedrawQuestDebugSystem = TRUE;
+      gfRedrawQuestDebugSystem = true;
 
       // get the striong from the text field
       Get16BitStringFromField(0, zText);
@@ -2196,13 +2196,13 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, Entry
       ColorFillVideoSurfaceArea(FRAME_BUFFER, QUEST_DBS_TEB_X, QUEST_DBS_TEB_Y, QUEST_DBS_TEB_X + QUEST_DBS_TEB_WIDTH, QUEST_DBS_TEB_Y + QUEST_DBS_TEB_HEIGHT, Get16BPPColor(FROMRGB(45, 59, 74)));
 
       // Display the text box caption
-      DisplayWrappedString(QUEST_DBS_TEB_X + 10, QUEST_DBS_TEB_Y + 10, QUEST_DBS_TEB_WIDTH - 20, 2, QUEST_DBS_FONT_TEXT_ENTRY(), QUEST_DBS_COLOR_TEXT_ENTRY, zString, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DisplayWrappedString(QUEST_DBS_TEB_X + 10, QUEST_DBS_TEB_Y + 10, QUEST_DBS_TEB_WIDTH - 20, 2, QUEST_DBS_FONT_TEXT_ENTRY(), QUEST_DBS_COLOR_TEXT_ENTRY, zString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       InvalidateRegion(QUEST_DBS_TEB_X, QUEST_DBS_TEB_Y, QUEST_DBS_TEB_X + QUEST_DBS_TEB_WIDTH, QUEST_DBS_TEB_Y + QUEST_DBS_TEB_HEIGHT);
     } break;
   }
 
-  return TRUE;
+  return true;
 }
 
 function QuestDebugTextEntryDisableScreenRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -2342,7 +2342,7 @@ function AddItemToGridNo(iGridNo: INT32): void {
   gsQdsEnteringGridNo = iGridNo;
 
   if (Item[gItemListBox.sCurSelectedItem].usItemClass == IC_KEY) {
-    gfAddKeyNextPass = TRUE;
+    gfAddKeyNextPass = true;
     //		swprintf( zTemp, L"Please enter the Key ID" );
     //		TextEntryBox( zTemp, AddKeyToGridNo );
   } else {
@@ -2362,7 +2362,7 @@ function AddKeyToGridNo(iKeyID: INT32): void {
     // add the item to the world
     AddItemToPool(gsQdsEnteringGridNo, addressof(Object), -1, 0, 0, 0);
   } else
-    gfAddKeyNextPass = TRUE;
+    gfAddKeyNextPass = true;
 }
 
 function ChangeDayNumber(iDayToChangeTo: INT32): void {
@@ -2384,7 +2384,7 @@ function ChangeDayNumber(iDayToChangeTo: INT32): void {
 }
 
 function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
-  /* static */ let fMouseRegionCreated: BOOLEAN = FALSE;
+  /* static */ let fMouseRegionCreated: boolean = false;
   let usPosY: UINT16;
   let i: UINT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -2397,9 +2397,9 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
 
       // if the soldier is active
       if (gfUseLocalNPCs)
-        pSoldier = FindSoldierByProfileID(gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem], FALSE);
+        pSoldier = FindSoldierByProfileID(gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem], false);
       else
-        pSoldier = FindSoldierByProfileID(gNpcListBox.sCurSelectedItem, FALSE);
+        pSoldier = FindSoldierByProfileID(gNpcListBox.sCurSelectedItem, false);
 
       if (!pSoldier) {
         // qq Display error box
@@ -2411,13 +2411,13 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
       if (fMouseRegionCreated)
         break;
 
-      fMouseRegionCreated = TRUE;
+      fMouseRegionCreated = true;
 
       // create a mask to block out the screen
       if (!gfBackgroundMaskEnabled) {
         MSYS_DefineRegion(addressof(gQuestTextEntryDebugDisableScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 40, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
         MSYS_AddRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
-        gfBackgroundMaskEnabled = TRUE;
+        gfBackgroundMaskEnabled = true;
       }
 
       // create the ok button
@@ -2431,11 +2431,11 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
 
       if (gfBackgroundMaskEnabled)
         MSYS_RemoveRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
-      gfBackgroundMaskEnabled = FALSE;
+      gfBackgroundMaskEnabled = false;
 
-      gfRedrawQuestDebugSystem = TRUE;
+      gfRedrawQuestDebugSystem = true;
 
-      fMouseRegionCreated = FALSE;
+      fMouseRegionCreated = false;
 
       break;
 
@@ -2447,22 +2447,22 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
       // if the soldier is active
       // if the soldier is active
       if (gfUseLocalNPCs)
-        pSoldier = FindSoldierByProfileID(gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem], FALSE);
+        pSoldier = FindSoldierByProfileID(gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem], false);
       else
-        pSoldier = FindSoldierByProfileID(gNpcListBox.sCurSelectedItem, FALSE);
+        pSoldier = FindSoldierByProfileID(gNpcListBox.sCurSelectedItem, false);
 
       if (pSoldier) {
         // color the background of the popup
         ColorFillVideoSurfaceArea(FRAME_BUFFER, QUEST_DBS_NPC_INV_POPUP_X, QUEST_DBS_NPC_INV_POPUP_Y, QUEST_DBS_NPC_INV_POPUP_X + QUEST_DBS_NPC_INV_POPUP_WIDTH, QUEST_DBS_NPC_INV_POPUP_Y + QUEST_DBS_NPC_INV_POPUP_HEIGHT, Get16BPPColor(FROMRGB(45, 59, 74)));
 
         // Dispaly the NPC inve title
-        DrawTextToScreen(QuestDebugText[Enum167.QUEST_DBS_NPC_INVENTORY], QUEST_DBS_NPC_INV_POPUP_X, QUEST_DBS_NPC_INV_POPUP_Y + 5, QUEST_DBS_NPC_INV_POPUP_WIDTH, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_TITLE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DrawTextToScreen(QuestDebugText[Enum167.QUEST_DBS_NPC_INVENTORY], QUEST_DBS_NPC_INV_POPUP_X, QUEST_DBS_NPC_INV_POPUP_Y + 5, QUEST_DBS_NPC_INV_POPUP_WIDTH, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_TITLE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
         // Dispaly the current npc name
         if (gfUseLocalNPCs)
-          DrawTextToScreen(gMercProfiles[gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem]].zNickname, QUEST_DBS_NPC_INV_POPUP_X, QUEST_DBS_NPC_INV_POPUP_Y + 20, QUEST_DBS_NPC_INV_POPUP_WIDTH, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+          DrawTextToScreen(gMercProfiles[gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem]].zNickname, QUEST_DBS_NPC_INV_POPUP_X, QUEST_DBS_NPC_INV_POPUP_Y + 20, QUEST_DBS_NPC_INV_POPUP_WIDTH, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
         else
-          DrawTextToScreen(gMercProfiles[gNpcListBox.sCurSelectedItem].zNickname, QUEST_DBS_NPC_INV_POPUP_X, QUEST_DBS_NPC_INV_POPUP_Y + 20, QUEST_DBS_NPC_INV_POPUP_WIDTH, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+          DrawTextToScreen(gMercProfiles[gNpcListBox.sCurSelectedItem].zNickname, QUEST_DBS_NPC_INV_POPUP_X, QUEST_DBS_NPC_INV_POPUP_Y + 20, QUEST_DBS_NPC_INV_POPUP_WIDTH, QUEST_DBS_FONT_TITLE(), QUEST_DBS_COLOR_SUBTITLE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
         usPosY = QUEST_DBS_NPC_INV_POPUP_Y + 40;
         for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
@@ -2471,10 +2471,10 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
           wcscpy(zItemName, ShortItemNames[pSoldier.value.inv[i].usItem]);
 
           // Display Name of the pocket
-          DrawTextToScreen(PocketText[i], QUEST_DBS_NPC_INV_POPUP_X + 10, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+          DrawTextToScreen(PocketText[i], QUEST_DBS_NPC_INV_POPUP_X + 10, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
           // Display the contents of the pocket
-          DrawTextToScreen(zItemName, QUEST_DBS_NPC_INV_POPUP_X + 140, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+          DrawTextToScreen(zItemName, QUEST_DBS_NPC_INV_POPUP_X + 140, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
           usPosY += usFontHeight;
         }
       }
@@ -2505,7 +2505,7 @@ function BtnQuestDebugNPCInventOkBtnButtonCallback(btn: Pointer<GUI_BUTTON>, rea
 function BtnQuestDebugAllOrSectorNPCToggleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gfUseLocalNPCs) {
-      gfUseLocalNPCs = FALSE;
+      gfUseLocalNPCs = false;
 
       gNpcListBox.sCurSelectedItem = gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem];
       gNpcListBox.usItemDisplayedOnTopOfList = gNpcListBox.sCurSelectedItem;
@@ -2515,7 +2515,7 @@ function BtnQuestDebugAllOrSectorNPCToggleCallback(btn: Pointer<GUI_BUTTON>, rea
       gNpcListBox.usNumDisplayedItems = QUEST_DBS_MAX_DISPLAYED_ENTRIES;
       gNpcListBox.usMaxNumDisplayedItems = QUEST_DBS_MAX_DISPLAYED_ENTRIES;
     } else {
-      gfUseLocalNPCs = TRUE;
+      gfUseLocalNPCs = true;
 
       gNpcListBox.sCurSelectedItem = -1;
       gNpcListBox.usItemDisplayedOnTopOfList = 0;
@@ -2548,7 +2548,7 @@ function BtnQuestDebugAllOrSectorNPCToggleCallback(btn: Pointer<GUI_BUTTON>, rea
                     else
                             SpecifyButtonText( guiQuestDebugCurNPCButton, QuestDebugText[ QUEST_DBS_SELECTED_NPC ] );
     */
-    gfRedrawQuestDebugSystem = TRUE;
+    gfRedrawQuestDebugSystem = true;
   }
 }
 
@@ -2574,14 +2574,14 @@ function AddNPCsInSectorToArray(): void {
 function ChangeQuestState(iNumber: INT32): void {
   if ((iNumber >= 0) && (iNumber <= 2)) {
     gubQuest[gubCurQuestSelected] = iNumber;
-    gfRedrawQuestDebugSystem = TRUE;
+    gfRedrawQuestDebugSystem = true;
   }
 }
 
 function ChangeFactState(iNumber: INT32): void {
   if ((iNumber >= 0) && (iNumber <= 1)) {
     gubFact[gusCurFactSelected] = iNumber;
-    gfRedrawQuestDebugSystem = TRUE;
+    gfRedrawQuestDebugSystem = true;
   }
 }
 
@@ -2598,7 +2598,7 @@ function BtnQDPgUpButtonButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
     } else
       gusFactAtTopOfList = 0;
 
-    gfRedrawQuestDebugSystem = TRUE;
+    gfRedrawQuestDebugSystem = true;
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
@@ -2621,7 +2621,7 @@ function BtnQDPgDownButtonButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     } else
       gusFactAtTopOfList = NUM_FACTS - QUEST_DBS_NUM_DISPLAYED_FACTS;
 
-    gfRedrawQuestDebugSystem = TRUE;
+    gfRedrawQuestDebugSystem = true;
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
@@ -2632,7 +2632,7 @@ function BtnQDPgDownButtonButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 }
 
 function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8, ubApproach: UINT8): void {
-  /* static */ let fFirstTimeIn: BOOLEAN = TRUE;
+  /* static */ let fFirstTimeIn: boolean = true;
 
   let hFile: HWFILE;
   let uiByteWritten: UINT32;
@@ -2662,18 +2662,18 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
         return;
       }
     }
-    fFirstTimeIn = FALSE;
+    fFirstTimeIn = false;
   }
 
   // open the file
-  hFile = FileOpen(QUEST_DEBUG_FILE, FILE_OPEN_ALWAYS | FILE_ACCESS_WRITE, FALSE);
+  hFile = FileOpen(QUEST_DEBUG_FILE, FILE_OPEN_ALWAYS | FILE_ACCESS_WRITE, false);
   if (!hFile) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to open Quest Debug File %s", QUEST_DEBUG_FILE));
     return;
   }
 
-  if (FileSeek(hFile, 0, FILE_SEEK_FROM_END) == FALSE) {
+  if (FileSeek(hFile, 0, FILE_SEEK_FROM_END) == false) {
     // error
     FileClose(hFile);
     return;
@@ -2702,7 +2702,7 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
 }
 
 function NpcRecordLogging(ubApproach: UINT8, pStringA: STR, ...args: any[]): void {
-  /* static */ let fFirstTimeIn: BOOLEAN = TRUE;
+  /* static */ let fFirstTimeIn: boolean = true;
   //	static UINT32		uiLineNumber = 1;
   //	static UINT32		uiRecordNumber = 1;
   let hFile: HWFILE;
@@ -2727,14 +2727,14 @@ function NpcRecordLogging(ubApproach: UINT8, pStringA: STR, ...args: any[]): voi
   va_end(argptr);
 
   // open the file
-  hFile = FileOpen(QUEST_DEBUG_FILE, FILE_OPEN_ALWAYS | FILE_ACCESS_WRITE, FALSE);
+  hFile = FileOpen(QUEST_DEBUG_FILE, FILE_OPEN_ALWAYS | FILE_ACCESS_WRITE, false);
   if (!hFile) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to open Quest Debug File %s", QUEST_DEBUG_FILE));
     return;
   }
 
-  if (FileSeek(hFile, 0, FILE_SEEK_FROM_END) == FALSE) {
+  if (FileSeek(hFile, 0, FILE_SEEK_FROM_END) == false) {
     // error
     FileClose(hFile);
     return;
@@ -2806,12 +2806,12 @@ function EnableQDSButtons(): void {
   */
 }
 
-function DoQDSMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
+function DoQDSMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let pCenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // reset exit mode
-  gfExitQdsDueToMessageBox = TRUE;
-  gfQuestDebugEntry = TRUE;
+  gfExitQdsDueToMessageBox = true;
+  gfQuestDebugEntry = true;
 
   // do message box and return
   giQdsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (ubFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(pCenteringRect));
@@ -2862,7 +2862,7 @@ function IsMercInTheSector(usMercID: UINT16): INT16 {
   let ubCount: UINT8 = 0;
 
   if (usMercID == -1)
-    return FALSE;
+    return false;
 
   for (cnt = 0; cnt <= TOTAL_SOLDIERS; cnt++) {
     // if the merc is active
@@ -2914,7 +2914,7 @@ function StartMercTalkingFromQuoteNum(iQuoteToStartTalkingFrom: INT32): void {
   // make sure the current character is created
   SetQDSMercProfile();
 
-  SetTalkingMercPauseState(FALSE);
+  SetTalkingMercPauseState(false);
 
   // do some error checks
   if (iQuoteToStartTalkingFrom < 0 || iQuoteToStartTalkingFrom > uiMaxNumberOfQuotes) {
@@ -2929,7 +2929,7 @@ function StartMercTalkingFromQuoteNum(iQuoteToStartTalkingFrom: INT32): void {
   if (!gfBackgroundMaskEnabled) {
     MSYS_DefineRegion(addressof(gQuestTextEntryDebugDisableScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
     MSYS_AddRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
-    gfBackgroundMaskEnabled = TRUE;
+    gfBackgroundMaskEnabled = true;
   }
 
   DisableFactMouseRegions();
@@ -2939,12 +2939,12 @@ function EndMercTalking(): void {
   // remove the talking dialogue
   if (gfNpcPanelIsUsedForTalkingMerc)
     DeleteTalkingMenu();
-  gfNpcPanelIsUsedForTalkingMerc = FALSE;
+  gfNpcPanelIsUsedForTalkingMerc = false;
 
   // remove the mask of the entire screen
   if (gfBackgroundMaskEnabled) {
     MSYS_RemoveRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
-    gfBackgroundMaskEnabled = FALSE;
+    gfBackgroundMaskEnabled = false;
   }
 
   giSelectedMercCurrentQuote = -1;
@@ -2959,7 +2959,7 @@ function EndMercTalking(): void {
 
 function HandleQDSTalkingMerc(): void {
   //	static BOOLEAN	fWas
-  let fIsTheMercTalking: BOOLEAN = FALSE;
+  let fIsTheMercTalking: boolean = false;
   let ubPanelMercShouldUse: UINT8;
 
   if (giSelectedMercCurrentQuote != -1) {
@@ -2992,9 +2992,9 @@ function HandleQDSTalkingMerc(): void {
           TacticalCharacterDialogue(gTalkingMercSoldier, giSelectedMercCurrentQuote);
         else if (gfRpcToSaySectorDesc && gTalkingMercSoldier.value.ubProfile >= 57 && gTalkingMercSoldier.value.ubProfile <= 60) {
           // ATE: Trigger the sector desc here
-          CharacterDialogueWithSpecialEvent(gTalkingMercSoldier.value.ubProfile, giSelectedMercCurrentQuote, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, TRUE, FALSE, DIALOGUE_SPECIAL_EVENT_USE_ALTERNATE_FILES, FALSE, FALSE);
+          CharacterDialogueWithSpecialEvent(gTalkingMercSoldier.value.ubProfile, giSelectedMercCurrentQuote, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, true, false, DIALOGUE_SPECIAL_EVENT_USE_ALTERNATE_FILES, false, false);
         } else
-          CharacterDialogue(gTalkingMercSoldier.value.ubProfile, giSelectedMercCurrentQuote, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, FALSE, FALSE);
+          CharacterDialogue(gTalkingMercSoldier.value.ubProfile, giSelectedMercCurrentQuote, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, false, false);
 
         // Incremenet the current quote number
         giSelectedMercCurrentQuote++;
@@ -3007,7 +3007,7 @@ function HandleQDSTalkingMerc(): void {
     }
 
     // Redraw the screen
-    gfRedrawQuestDebugSystem = TRUE;
+    gfRedrawQuestDebugSystem = true;
   } else {
     /*
                     //as soon as the panel is no longer active, refresh the screen
@@ -3020,14 +3020,14 @@ function HandleQDSTalkingMerc(): void {
   }
 }
 
-function SetTalkingMercPauseState(fState: BOOLEAN): void {
+function SetTalkingMercPauseState(fState: boolean): void {
   if (fState) {
-    gfPauseTalkingMercPopup = TRUE;
+    gfPauseTalkingMercPopup = true;
 
     if (gTalkingMercSoldier)
       gFacesData[gTalkingMercSoldier.value.iFaceIndex].uiFlags |= FACE_POTENTIAL_KEYWAIT;
   } else {
-    gfPauseTalkingMercPopup = FALSE;
+    gfPauseTalkingMercPopup = false;
 
     if (gTalkingMercSoldier)
       gFacesData[gTalkingMercSoldier.value.iFaceIndex].uiFlags &= ~FACE_POTENTIAL_KEYWAIT;
@@ -3054,7 +3054,7 @@ function SetQDSMercProfile(): void {
       if (gfNpcPanelIsUsedForTalkingMerc)
         DeleteTalkingMenu();
 
-      gfNpcPanelIsUsedForTalkingMerc = TRUE;
+      gfNpcPanelIsUsedForTalkingMerc = true;
 
       InternalInitTalkingMenu(gTalkingMercSoldier.value.ubProfile, 10, 10);
       gpDestSoldier = addressof(Menptr[21]);
@@ -3074,23 +3074,23 @@ function DisplayQDSCurrentlyQuoteNum(): void {
 
   // Display the text box caption
   usPosY = QDS_CURRENT_QUOTE_NUM_BOX_Y + 4;
-  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, zTemp, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, zTemp, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the Pause speech text
   usPosY += usFontHeight + 4;
-  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, QuestDebugText[Enum167.QUEST_DBS_PAUSE_SPEECH], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, QuestDebugText[Enum167.QUEST_DBS_PAUSE_SPEECH], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the left arrow quote
   usPosY += usFontHeight;
-  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, QuestDebugText[Enum167.QUEST_DBS_LEFT_ARROW_PREVIOUS_QUOTE], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, QuestDebugText[Enum167.QUEST_DBS_LEFT_ARROW_PREVIOUS_QUOTE], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the right arrow quote
   usPosY += usFontHeight;
-  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, QuestDebugText[Enum167.QUEST_DBS_RIGHT_ARROW_NEXT_QUOTE], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, QuestDebugText[Enum167.QUEST_DBS_RIGHT_ARROW_NEXT_QUOTE], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the right arrow quote
   usPosY += usFontHeight;
-  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, QuestDebugText[Enum167.QUEST_DBS_ESC_TOP_STOP_TALKING], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(QDS_CURRENT_QUOTE_NUM_BOX_X + 5, usPosY, QDS_CURRENT_QUOTE_NUM_BOX_WIDTH - 10, 2, QUEST_DBS_FONT_TEXT_ENTRY(), FONT_MCOLOR_WHITE, QuestDebugText[Enum167.QUEST_DBS_ESC_TOP_STOP_TALKING], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   InvalidateRegion(QDS_CURRENT_QUOTE_NUM_BOX_X, QDS_CURRENT_QUOTE_NUM_BOX_Y, QDS_CURRENT_QUOTE_NUM_BOX_X + QDS_CURRENT_QUOTE_NUM_BOX_WIDTH, QDS_CURRENT_QUOTE_NUM_BOX_Y + QDS_CURRENT_QUOTE_NUM_BOX_HEIGHT);
 }
@@ -3098,18 +3098,18 @@ function DisplayQDSCurrentlyQuoteNum(): void {
 function BtnQuestDebugAddNpcToTeamToggleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gfAddNpcToTeam)
-      gfAddNpcToTeam = FALSE;
+      gfAddNpcToTeam = false;
     else
-      gfAddNpcToTeam = TRUE;
+      gfAddNpcToTeam = true;
   }
 }
 
 function BtnQuestDebugRPCSaySectorDescToggleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gfRpcToSaySectorDesc)
-      gfRpcToSaySectorDesc = FALSE;
+      gfRpcToSaySectorDesc = false;
     else
-      gfRpcToSaySectorDesc = TRUE;
+      gfRpcToSaySectorDesc = true;
   }
 }
 
@@ -3173,7 +3173,7 @@ function GetDebugLocationString(usProfileID: UINT16, pzText: STR16): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Get a soldier pointer
-  pSoldier = FindSoldierByProfileID(usProfileID, FALSE);
+  pSoldier = FindSoldierByProfileID(usProfileID, false);
 
   // if their is a soldier, the soldier is alive and the soldier is off the map
   if (pSoldier != null && pSoldier.value.bActive && pSoldier.value.uiStatusFlags & SOLDIER_OFF_MAP) {

@@ -1,4 +1,4 @@
-let gfOriginalList: BOOLEAN = TRUE;
+let gfOriginalList: boolean = true;
 
 let gSoldierInitHead: Pointer<SOLDIERINITNODE> = null;
 let gSoldierInitTail: Pointer<SOLDIERINITNODE> = null;
@@ -121,16 +121,16 @@ function RemoveSoldierNodeFromInitList(pNode: Pointer<SOLDIERINITNODE>): void {
 // These serialization functions are assuming the passing of a valid file
 // pointer to the beginning of the save/load area, which is not necessarily at
 // the beginning of the file.  This is just a part of the whole map serialization.
-function SaveSoldiersToMap(fp: HWFILE): BOOLEAN {
+function SaveSoldiersToMap(fp: HWFILE): boolean {
   let i: UINT32;
   let uiBytesWritten: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
 
   if (!fp)
-    return FALSE;
+    return false;
 
   if (gMapInformation.ubNumIndividuals > MAX_INDIVIDUALS)
-    return FALSE;
+    return false;
 
 // If we are perhaps in the alternate version of the editor, we don't want bad things to
 // happen.  This is probably the only place I know where the user gets punished now.  If the
@@ -145,27 +145,27 @@ function SaveSoldiersToMap(fp: HWFILE): BOOLEAN {
   curr = gSoldierInitHead;
   for (i = 0; i < gMapInformation.ubNumIndividuals; i++) {
     if (!curr)
-      return FALSE;
+      return false;
     curr.value.ubNodeID = i;
     FileWrite(fp, curr.value.pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT), addressof(uiBytesWritten));
 
     if (curr.value.pBasicPlacement.value.fDetailedPlacement) {
       if (!curr.value.pDetailedPlacement)
-        return FALSE;
+        return false;
       FileWrite(fp, curr.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), addressof(uiBytesWritten));
     }
     curr = curr.value.next;
   }
-  return TRUE;
+  return true;
 }
 
-function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
+function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
   let i: UINT32;
   let ubNumIndividuals: UINT8;
   let tempBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
   let pNode: Pointer<SOLDIERINITNODE>;
-  let fCowInSector: BOOLEAN = FALSE;
+  let fCowInSector: boolean = false;
 
   ubNumIndividuals = gMapInformation.ubNumIndividuals;
 
@@ -178,10 +178,10 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
 
   if (ubNumIndividuals > MAX_INDIVIDUALS) {
     AssertMsg(0, "Corrupt map check failed.  ubNumIndividuals is greater than MAX_INDIVIDUALS.");
-    return FALSE; // too many mercs
+    return false; // too many mercs
   }
   if (!ubNumIndividuals) {
-    return TRUE; // no mercs
+    return true; // no mercs
   }
 
   // Because we are loading the map, we needed to know how many
@@ -197,7 +197,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
     pNode.value.ubNodeID = i;
     if (!pNode) {
       AssertMsg(0, "Failed to allocate memory for new basic placement in LoadSoldiersFromMap.");
-      return FALSE;
+      return false;
     }
     if (tempBasicPlacement.fDetailedPlacement) {
       // Add the static detailed placement information in the same newly created node as the basic placement.
@@ -207,7 +207,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
       pNode.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
       if (!pNode.value.pDetailedPlacement) {
         AssertMsg(0, "Failed to allocate memory for new detailed placement in LoadSoldiersFromMap.");
-        return FALSE;
+        return false;
       }
       // copy the file information from temp var to node in list.
       memcpy(pNode.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
@@ -218,7 +218,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
       }
     }
     if (tempBasicPlacement.bBodyType == Enum194.COW) {
-      fCowInSector = TRUE;
+      fCowInSector = true;
     }
   }
   if (fCowInSector) {
@@ -226,7 +226,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
     sprintf(str, "Sounds\\\\cowmoo%d.wav", Random(3) + 1);
     PlayJA2SampleFromFile(str, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
   }
-  return TRUE;
+  return true;
 }
 
 // Because soldiers, creatures, etc., maybe added to the game at anytime theoretically, the
@@ -246,8 +246,8 @@ function SortSoldierInitList(): void {
   let temp: Pointer<SOLDIERINITNODE>;
   let curr: Pointer<SOLDIERINITNODE>;
 
-  let fFredoAtStart: BOOLEAN = FALSE;
-  let fFredoAtEnd: BOOLEAN = FALSE;
+  let fFredoAtStart: boolean = false;
+  let fFredoAtEnd: boolean = false;
 
   if (!gSoldierInitHead)
     return;
@@ -255,7 +255,7 @@ function SortSoldierInitList(): void {
   curr = gSoldierInitHead;
   while (curr) {
     if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == Enum268.FREDO) {
-      fFredoAtStart = TRUE;
+      fFredoAtStart = true;
       break;
     }
     curr = curr.value.next;
@@ -398,14 +398,14 @@ function SortSoldierInitList(): void {
   curr = gSoldierInitHead;
   while (curr) {
     if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == Enum268.FREDO) {
-      fFredoAtEnd = TRUE;
+      fFredoAtEnd = true;
       break;
     }
     curr = curr.value.next;
   }
 }
 
-function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
+function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): boolean {
   let ubProfile: UINT8;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -421,22 +421,22 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
       if (gMercProfiles[ubProfile].sSectorX != gWorldSectorX || gMercProfiles[ubProfile].sSectorY != gWorldSectorY || gMercProfiles[ubProfile].bSectorZ != gbWorldSectorZ || gMercProfiles[ubProfile].ubMiscFlags & (PROFILE_MISC_FLAG_RECRUITED | PROFILE_MISC_FLAG_EPCACTIVE) ||
           //				gMercProfiles[ ubProfile ].ubMiscFlags2 & PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR ||
           !gMercProfiles[ubProfile].bLife || gMercProfiles[ubProfile].fUseProfileInsertionInfo) {
-        return FALSE;
+        return false;
       }
     }
     // Special case code when adding icecream truck.
     if (!gfEditMode) {
       // CJC, August 18, 1999: don't do this code unless the ice cream truck is on our team
-      if (FindSoldierByProfileID(Enum194.ICECREAMTRUCK, TRUE) != null) {
+      if (FindSoldierByProfileID(Enum194.ICECREAMTRUCK, true) != null) {
         if (curr.value.pDetailedPlacement.value.bBodyType == Enum194.ICECREAMTRUCK) {
           // Check to see if Hamous is here and not recruited.  If so, add truck
           if (gMercProfiles[Enum268.HAMOUS].sSectorX != gWorldSectorX || gMercProfiles[Enum268.HAMOUS].sSectorY != gWorldSectorY || gMercProfiles[Enum268.HAMOUS].bSectorZ) {
             // not here, so don't add
-            return TRUE;
+            return true;
           }
           // Hamous is here.  Check to make sure he isn't recruited.
           if (gMercProfiles[Enum268.HAMOUS].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) {
-            return TRUE;
+            return true;
           }
         }
       }
@@ -475,10 +475,10 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
             tempDetailedPlacement.bOrders = Enum241.SEEKENEMY;
           } else if (tempDetailedPlacement.ubProfile == Enum268.MADAME) {
             // she shouldn't be here!
-            return TRUE;
+            return true;
           } else if (tempDetailedPlacement.ubProfile == NO_PROFILE && InARoom(tempDetailedPlacement.sInsertionGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom)) {
             // must be a hooker, shouldn't be there
-            return TRUE;
+            return true;
           }
         }
       } else if (!gfInMeanwhile && gWorldSectorX == 3 && gWorldSectorY == 16 && !gbWorldSectorZ) {
@@ -486,7 +486,7 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
         if (gubFact[Enum170.FACT_QUEEN_DEAD]) {
           if (tempDetailedPlacement.ubCivilianGroup == Enum246.QUEENS_CIV_GROUP) {
             // The queen's civs aren't added if queen is dead
-            return TRUE;
+            return true;
           }
         } else {
           if (gfUseAlternateQueenPosition && tempDetailedPlacement.ubProfile == Enum268.QUEEN) {
@@ -494,7 +494,7 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
           }
           if (tempDetailedPlacement.ubCivilianGroup != Enum246.QUEENS_CIV_GROUP) {
             // The free civilians aren't added if queen is alive
-            return TRUE;
+            return true;
           }
         }
       } else if (gWorldSectorX == TIXA_SECTOR_X && gWorldSectorY == TIXA_SECTOR_Y && gbWorldSectorZ == 0) {
@@ -502,13 +502,13 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
         // they are kids
         if (!StrategicMap[TIXA_SECTOR_X + TIXA_SECTOR_Y * MAP_WORLD_X].fEnemyControlled && tempDetailedPlacement.ubProfile == NO_PROFILE && tempDetailedPlacement.bBodyType != Enum194.HATKIDCIV && tempDetailedPlacement.bBodyType != Enum194.KIDCIV) {
           // not there
-          return TRUE;
+          return true;
         }
       } else if (gWorldSectorX == 13 && gWorldSectorY == MAP_ROW_C && gbWorldSectorZ == 0) {
         if (CheckFact(Enum170.FACT_KIDS_ARE_FREE, 0)) {
           if (tempDetailedPlacement.bBodyType == Enum194.HATKIDCIV || tempDetailedPlacement.bBodyType == Enum194.KIDCIV) {
             // not there any more!  kids have been freeeeed!
-            return TRUE;
+            return true;
           }
         }
       }
@@ -532,11 +532,11 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
       pSoldier = pSoldier;
     }
 
-    return TRUE;
+    return true;
   } else {
     LiveMessage("Failed to create soldier using TacticalCreateSoldier within AddPlacementToWorld");
   }
-  return FALSE;
+  return false;
 }
 
 function AddPlacementToWorldByProfileID(ubProfile: UINT8): void {
@@ -673,7 +673,7 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   ResetMortarsOnTeamCount();
 
   // Specs call for only one profiled enemy can be in a sector at a time due to flavor reasons.
-  gfProfiledEnemyAdded = FALSE;
+  gfProfiledEnemyAdded = false;
 
   // Because the enemy defence forces work differently than the regular map placements, the numbers
   // of each type of enemy may not be the same.  Elites will choose the best placements, then army, then
@@ -1012,7 +1012,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
   let curr: Pointer<SOLDIERINITNODE>;
   let iRandom: INT32;
   let ubMaxNum: UINT8;
-  let fDoPlacement: BOOLEAN;
+  let fDoPlacement: boolean;
   let bTeam: INT8 = ENEMY_TEAM;
   let ubEliteSlots: UINT8 = 0;
   let ubRegSlots: UINT8 = 0;
@@ -1034,7 +1034,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
 
   // First fill up only the priority existance slots (as long as the availability and class are okay)
   while (curr && curr.value.pBasicPlacement.value.fPriorityExistance && ubMaxNum) {
-    fDoPlacement = TRUE;
+    fDoPlacement = true;
 
     if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM) {
       // Matching team (kindof), now check the soldier class...
@@ -1048,7 +1048,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
         curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_GREEN_MILITIA;
         ubNumGreen--;
       } else
-        fDoPlacement = FALSE;
+        fDoPlacement = false;
 
       if (fDoPlacement) {
         curr.value.pBasicPlacement.value.bTeam = MILITIA_TEAM;
@@ -1058,7 +1058,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
           // delete the detailed placement information.
           MemFree(curr.value.pDetailedPlacement);
           curr.value.pDetailedPlacement = null;
-          curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
+          curr.value.pBasicPlacement.value.fDetailedPlacement = false;
           RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeAttributeLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
           RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeEquipmentLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
         }
@@ -1190,7 +1190,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
           // delete the detailed placement information.
           MemFree(curr.value.pDetailedPlacement);
           curr.value.pDetailedPlacement = null;
-          curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
+          curr.value.pBasicPlacement.value.fDetailedPlacement = false;
           RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeAttributeLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
           RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeEquipmentLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
         }
@@ -1207,11 +1207,11 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
   }
 }
 
-function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumInfants: UINT8, ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): void {
+function AddSoldierInitListCreatures(fQueen: boolean, ubNumLarvae: UINT8, ubNumInfants: UINT8, ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): void {
   let curr: Pointer<SOLDIERINITNODE>;
   let iRandom: INT32;
   let ubFreeSlots: UINT8;
-  let fDoPlacement: BOOLEAN;
+  let fDoPlacement: boolean;
   let ubNumCreatures: UINT8;
 
   SortSoldierInitList();
@@ -1224,7 +1224,7 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
     while (curr) {
       if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM && curr.value.pBasicPlacement.value.bBodyType == Enum194.QUEENMONSTER) {
         if (!AddPlacementToWorld(curr)) {
-          fQueen = FALSE;
+          fQueen = false;
           break;
         }
       }
@@ -1237,7 +1237,7 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
   // First fill up only the priority existance slots (as long as the availability and bodytypes match)
   curr = gSoldierInitHead;
   while (curr && curr.value.pBasicPlacement.value.fPriorityExistance && ubNumCreatures) {
-    fDoPlacement = TRUE;
+    fDoPlacement = true;
 
     if (curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM) {
       // Matching team, now check the soldier class...
@@ -1254,7 +1254,7 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
       else if (ubNumAdultFemales && curr.value.pBasicPlacement.value.bBodyType == Enum194.ADULTFEMALEMONSTER)
         ubNumAdultFemales--;
       else
-        fDoPlacement = FALSE;
+        fDoPlacement = false;
       if (fDoPlacement) {
         if (AddPlacementToWorld(curr)) {
           ubNumCreatures--;
@@ -1310,7 +1310,7 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
           // delete the detailed placement information.
           MemFree(curr.value.pDetailedPlacement);
           curr.value.pDetailedPlacement = null;
-          curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
+          curr.value.pBasicPlacement.value.fDetailedPlacement = false;
         }
         if (AddPlacementToWorld(curr)) {
           ubNumCreatures--;
@@ -1350,7 +1350,7 @@ function FindSoldierInitNodeWithID(usID: UINT16): Pointer<SOLDIERINITNODE> {
 
 function UseEditorOriginalList(): void {
   let curr: Pointer<SOLDIERINITNODE>;
-  gfOriginalList = TRUE;
+  gfOriginalList = true;
   gSoldierInitHead = gOriginalSoldierInitListHead;
   curr = gSoldierInitHead;
   if (curr) {
@@ -1363,7 +1363,7 @@ function UseEditorOriginalList(): void {
 
 function UseEditorAlternateList(): void {
   let curr: Pointer<SOLDIERINITNODE>;
-  gfOriginalList = FALSE;
+  gfOriginalList = false;
   gSoldierInitHead = gAlternateSoldierInitListHead;
   curr = gSoldierInitHead;
   if (curr) {
@@ -1422,7 +1422,7 @@ function RemoveDetailedPlacementInfo(ubNodeID: UINT8): void {
 // For the purpose of keeping track of which soldier belongs to which placement within the game,
 // the only way we can do this properly is to save the soldier ID from the list and reconnect the
 // soldier pointer whenever we load the game.
-function SaveSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
+function SaveSoldierInitListLinks(hfile: HWFILE): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let uiNumBytesWritten: UINT32;
   let ubSlots: UINT8 = 0;
@@ -1436,7 +1436,7 @@ function SaveSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
   //...and save it.
   FileWrite(hfile, addressof(ubSlots), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1) {
-    return FALSE;
+    return false;
   }
   // Now, go through each node, and save just the ubSoldierID, if that soldier is alive.
   curr = gSoldierInitHead;
@@ -1446,18 +1446,18 @@ function SaveSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
     }
     FileWrite(hfile, addressof(curr.value.ubNodeID), 1, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 1) {
-      return FALSE;
+      return false;
     }
     FileWrite(hfile, addressof(curr.value.ubSoldierID), 1, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 1) {
-      return FALSE;
+      return false;
     }
     curr = curr.value.next;
   }
-  return TRUE;
+  return true;
 }
 
-function LoadSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
+function LoadSoldierInitListLinks(hfile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
   let ubSlots: UINT8;
@@ -1466,16 +1466,16 @@ function LoadSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
 
   FileRead(hfile, addressof(ubSlots), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
-    return FALSE;
+    return false;
   }
   while (ubSlots--) {
     FileRead(hfile, addressof(ubNodeID), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
-      return FALSE;
+      return false;
     }
     FileRead(hfile, addressof(ubSoldierID), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
-      return FALSE;
+      return false;
     }
 
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
@@ -1492,7 +1492,7 @@ function LoadSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
 function AddSoldierInitListBloodcats(): void {
@@ -1645,7 +1645,7 @@ function AddProfilesUsingProfileInsertionData(): void {
           // Don't add, so skip to the next soldier.
       continue;
     }
-    pSoldier = FindSoldierByProfileID(i, FALSE);
+    pSoldier = FindSoldierByProfileID(i, false);
     if (!pSoldier) {
       // Create a new soldier, as this one doesn't exist
       let MercCreateStruct: SOLDIERCREATE_STRUCT;
@@ -1676,7 +1676,7 @@ function AddProfilesUsingProfileInsertionData(): void {
         pSoldier.value.ubQuoteActionID = gMercProfiles[i].ubQuoteActionID;
         if (pSoldier.value.ubQuoteActionID == Enum290.QUOTE_ACTION_ID_CHECKFORDEST) {
           // gridno will have been changed to destination... so we're there...
-          NPCReachedDestination(pSoldier, FALSE);
+          NPCReachedDestination(pSoldier, false);
         }
       }
 
@@ -1710,7 +1710,7 @@ function AddProfilesNotUsingProfileInsertionData(): void {
   }
 }
 
-function NewWayOfLoadingEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
+function NewWayOfLoadingEnemySoldierInitListLinks(hfile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
   let ubSlots: UINT8;
@@ -1719,16 +1719,16 @@ function NewWayOfLoadingEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
 
   FileRead(hfile, addressof(ubSlots), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
-    return FALSE;
+    return false;
   }
   while (ubSlots--) {
     FileRead(hfile, addressof(ubNodeID), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
-      return FALSE;
+      return false;
     }
     FileRead(hfile, addressof(ubSoldierID), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
-      return FALSE;
+      return false;
     }
 
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
@@ -1745,10 +1745,10 @@ function NewWayOfLoadingEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
-function NewWayOfLoadingCivilianInitListLinks(hfile: HWFILE): BOOLEAN {
+function NewWayOfLoadingCivilianInitListLinks(hfile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
   let ubSlots: UINT8;
@@ -1757,16 +1757,16 @@ function NewWayOfLoadingCivilianInitListLinks(hfile: HWFILE): BOOLEAN {
 
   FileRead(hfile, addressof(ubSlots), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
-    return FALSE;
+    return false;
   }
   while (ubSlots--) {
     FileRead(hfile, addressof(ubNodeID), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
-      return FALSE;
+      return false;
     }
     FileRead(hfile, addressof(ubSoldierID), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
-      return FALSE;
+      return false;
     }
 
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
@@ -1783,10 +1783,10 @@ function NewWayOfLoadingCivilianInitListLinks(hfile: HWFILE): BOOLEAN {
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
-function LookAtButDontProcessEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
+function LookAtButDontProcessEnemySoldierInitListLinks(hfile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
   let ubSlots: UINT8;
@@ -1795,16 +1795,16 @@ function LookAtButDontProcessEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
 
   FileRead(hfile, addressof(ubSlots), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
-    return FALSE;
+    return false;
   }
   while (ubSlots--) {
     FileRead(hfile, addressof(ubNodeID), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
-      return FALSE;
+      return false;
     }
     FileRead(hfile, addressof(ubSoldierID), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
-      return FALSE;
+      return false;
     }
 
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
@@ -1821,7 +1821,7 @@ function LookAtButDontProcessEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
 function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
@@ -1849,8 +1849,8 @@ function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
       if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
         MemFree(curr.value.pDetailedPlacement);
         curr.value.pDetailedPlacement = null;
-        curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
-        curr.value.pBasicPlacement.value.fPriorityExistance = FALSE;
+        curr.value.pBasicPlacement.value.fDetailedPlacement = false;
+        curr.value.pBasicPlacement.value.fPriorityExistance = false;
         curr.value.pBasicPlacement.value.bBodyType = -1;
         RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeAttributeLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
         RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeEquipmentLevel), curr.value.pBasicPlacement.value.ubSoldierClass);

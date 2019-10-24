@@ -203,29 +203,29 @@ function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT, pdCe
   pdCellY.value = dCellY;
 }
 
-function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN {
+function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
 
   if (!GetMouseWorldCoords(addressof(sWorldX), addressof(sWorldY))) {
     (psMouseX.value) = 0;
     (psMouseY.value) = 0;
-    return FALSE;
+    return false;
   }
 
   // Find start block
   (psMouseX.value) = (sWorldX / CELL_X_SIZE);
   (psMouseY.value) = (sWorldY / CELL_Y_SIZE);
 
-  return TRUE;
+  return true;
 }
 
-function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): BOOLEAN {
+function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
 
   if (!GetMouseWorldCoords(addressof(sWorldX), addressof(sWorldY))) {
-    return FALSE;
+    return false;
   }
 
   // Find start block
@@ -235,10 +235,10 @@ function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT
   (psCellX.value) = sWorldX - ((psMouseX.value) * CELL_X_SIZE);
   (psCellY.value) = sWorldY - ((psMouseY.value) * CELL_Y_SIZE);
 
-  return TRUE;
+  return true;
 }
 
-function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN {
+function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
   let sOffsetX: INT16;
   let sOffsetY: INT16;
   let sTempPosX_W: INT16;
@@ -250,7 +250,7 @@ function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>)
   if (!(gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA)) {
     psMouseX.value = 0;
     psMouseY.value = 0;
-    return FALSE;
+    return false;
   }
 
   sOffsetX = gViewportRegion.MouseXPos - ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2); // + gsRenderWorldOffsetX;
@@ -271,7 +271,7 @@ function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>)
   if (sStartPointX_W < 0 || sStartPointX_W >= WORLD_COORD_ROWS || sStartPointY_W < 0 || sStartPointY_W >= WORLD_COORD_COLS) {
     psMouseX.value = 0;
     psMouseY.value = 0;
-    return FALSE;
+    return false;
   }
 
   // Determine Start block and render offsets
@@ -280,26 +280,26 @@ function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>)
   (psMouseX.value) = sStartPointX_W;
   (psMouseY.value) = sStartPointY_W;
 
-  return TRUE;
+  return true;
 }
 
-function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN {
+function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
   let sMouseX: INT16;
   let sMouseY: INT16;
 
   // Get grid position
   if (!GetMouseXY(addressof(sMouseX), addressof(sMouseY))) {
-    return FALSE;
+    return false;
   }
 
   // Now adjust these cell coords into world coords
   psMouseX.value = ((sMouseX)*CELL_X_SIZE) + (CELL_X_SIZE / 2);
   psMouseY.value = ((sMouseY)*CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
 
-  return TRUE;
+  return true;
 }
 
-function GetMouseMapPos(psMapPos: Pointer<INT16>): BOOLEAN {
+function GetMouseMapPos(psMapPos: Pointer<INT16>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
   /* static */ let sSameCursorPos: INT16;
@@ -310,26 +310,26 @@ function GetMouseMapPos(psMapPos: Pointer<INT16>): BOOLEAN {
     (psMapPos.value) = sSameCursorPos;
 
     if (sSameCursorPos == 0) {
-      return FALSE;
+      return false;
     }
-    return TRUE;
+    return true;
   }
 
   uiOldFrameNumber = guiGameCycleCounter;
-  guiForceRefreshMousePositionCalculation = FALSE;
+  guiForceRefreshMousePositionCalculation = false;
 
   if (GetMouseXY(addressof(sWorldX), addressof(sWorldY))) {
     psMapPos.value = MAPROWCOLTOPOS(sWorldY, sWorldX);
     sSameCursorPos = (psMapPos.value);
-    return TRUE;
+    return true;
   } else {
     psMapPos.value = 0;
     sSameCursorPos = (psMapPos.value);
-    return FALSE;
+    return false;
   }
 }
 
-function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer<INT16>, psYPos: Pointer<INT16>): BOOLEAN {
+function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer<INT16>, psYPos: Pointer<INT16>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sCellX: INT16;
@@ -347,7 +347,7 @@ function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer<INT16>
   psXPos.value = sCellX + (CELL_X_SIZE / 2);
   psYPos.value = sCellY + (CELL_Y_SIZE / 2);
 
-  return TRUE;
+  return true;
 }
 
 function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16, psWorldX: Pointer<INT16>, psWorldY: Pointer<INT16>): void {
@@ -453,23 +453,23 @@ function OutOfBounds(sGridno: INT16, sProposedGridno: INT16): INT32 {
       if (sGridno < LASTROWSTART) // if we're above bottom row
         if (sGridno > MAXCOL) // if we're below top row
           // Everything's OK - we're not on the edge of the map
-          return FALSE;
+          return false;
 
   // if we've got this far, there's a potential problem - check it out!
 
   if (sProposedGridno < 0)
-    return TRUE;
+    return true;
 
   sPropMod = sProposedGridno % MAXCOL;
 
   if (sMod == 0 && sPropMod == RIGHTMOSTGRID)
-    return TRUE;
+    return true;
   else if (sMod == RIGHTMOSTGRID && sPropMod == 0)
-    return TRUE;
+    return true;
   else if (sGridno >= LASTROWSTART && sProposedGridno >= GRIDSIZE)
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }
 
 function NewGridNo(sGridno: INT16, sDirInc: INT16): INT16 {
@@ -496,7 +496,7 @@ function DirectionInc(sDirection: INT16): INT16 {
   return DirIncrementer[sDirection];
 }
 
-function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>, sScreenY: Pointer<INT16>): BOOLEAN {
+function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>, sScreenY: Pointer<INT16>): boolean {
   let sDeltaCellX: INT16;
   let sDeltaCellY: INT16;
   let sDeltaScreenX: INT16;
@@ -510,7 +510,7 @@ function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>
   sScreenX.value = (((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sDeltaScreenX);
   sScreenY.value = (((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sDeltaScreenY);
 
-  return TRUE;
+  return true;
 }
 
 function ConvertGridNoToXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
@@ -567,22 +567,22 @@ function GetRangeInCellCoordsFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): I
   return (sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos))) * CELL_X_SIZE;
 }
 
-function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>): BOOLEAN {
+function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>): boolean {
   if ((sXPos >= pRect.value.iLeft) && (sXPos <= pRect.value.iRight) && (sYPos >= pRect.value.iTop) && (sYPos <= pRect.value.iBottom)) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>, sXRel: Pointer<INT16>, sYRel: Pointer<INT16>): BOOLEAN {
+function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>, sXRel: Pointer<INT16>, sYRel: Pointer<INT16>): boolean {
   if ((sXPos >= pRect.value.iLeft) && (sXPos <= pRect.value.iRight) && (sYPos >= pRect.value.iTop) && (sYPos <= pRect.value.iBottom)) {
     (sXRel.value) = pRect.value.iLeft - sXPos;
     (sYRel.value) = sYPos - pRect.value.iTop;
 
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
@@ -651,15 +651,15 @@ function FindNumTurnsBetweenDirs(sDir1: INT8, sDir2: INT8): INT8 {
       sNumTurns = 0;
       break;
     }
-  } while (TRUE);
+  } while (true);
 
   return sNumTurns;
 }
 
-function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): BOOLEAN {
+function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let bMinNumTurns: UINT8 = 100;
   let bNumTurns: INT8;
   let bMinDirection: INT8 = 0;
@@ -667,17 +667,17 @@ function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStart
   // IF there is a roof over our heads, this is an ivalid....
   // return ( FALSE );l
   if (FindStructure(sGridNo, STRUCTURE_ROOF) != null) {
-    return FALSE;
+    return false;
   }
 
   // LOOP THROUGH ALL 8 DIRECTIONS
   for (cnt = 0; cnt < 8; cnt += 2) {
     sNewGridNo = NewGridNo(sGridNo, DirectionInc(cnt));
 
-    if (NewOKDestination(pSoldier, sNewGridNo, TRUE, 1)) {
+    if (NewOKDestination(pSoldier, sNewGridNo, true, 1)) {
       // Check if this tile has a higher level
       if (IsHeigherLevel(sNewGridNo)) {
-        fFound = TRUE;
+        fFound = true;
 
         // FInd how many turns we should go to get here
         bNumTurns = FindNumTurnsBetweenDirs(cnt, bStartingDir);
@@ -692,16 +692,16 @@ function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStart
 
   if (fFound) {
     pbDirection.value = bMinDirection;
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): BOOLEAN {
+function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let bMinNumTurns: UINT8 = 100;
   let bNumTurns: INT8;
   let bMinDirection: INT8 = 0;
@@ -712,10 +712,10 @@ function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartin
 
     // Make sure there is NOT a roof here...
     // Check OK destination
-    if (NewOKDestination(pSoldier, sNewGridNo, TRUE, 0)) {
+    if (NewOKDestination(pSoldier, sNewGridNo, true, 0)) {
       if (FindStructure(sNewGridNo, STRUCTURE_ROOF) == null) {
         {
-          fFound = TRUE;
+          fFound = true;
 
           // FInd how many turns we should go to get here
           bNumTurns = FindNumTurnsBetweenDirs(cnt, bStartingDir);
@@ -731,10 +731,10 @@ function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartin
 
   if (fFound) {
     pbDirection.value = bMinDirection;
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function QuickestDirection(origin: INT16, dest: INT16): INT16 {
@@ -831,7 +831,7 @@ function MapY(sGridNo: INT16): INT16 {
   return sYPos;
 }
 
-function GridNoOnVisibleWorldTile(sGridNo: INT16): BOOLEAN {
+function GridNoOnVisibleWorldTile(sGridNo: INT16): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sXMapPos: INT16;
@@ -844,16 +844,16 @@ function GridNoOnVisibleWorldTile(sGridNo: INT16): BOOLEAN {
   GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
 
   if (sWorldX > 0 && sWorldX < (gsTRX - gsTLX - 20) && sWorldY > 20 && sWorldY < (gsBLY - gsTLY - 20)) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // This function is used when we care about astetics with the top Y portion of the
 // gma eplay area
 // mostly due to UI bar that comes down....
-function GridNoOnVisibleWorldTileGivenYLimits(sGridNo: INT16): BOOLEAN {
+function GridNoOnVisibleWorldTileGivenYLimits(sGridNo: INT16): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sXMapPos: INT16;
@@ -866,13 +866,13 @@ function GridNoOnVisibleWorldTileGivenYLimits(sGridNo: INT16): BOOLEAN {
   GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
 
   if (sWorldX > 0 && sWorldX < (gsTRX - gsTLX - 20) && sWorldY > 40 && sWorldY < (gsBLY - gsTLY - 20)) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): BOOLEAN {
+function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): boolean {
   let bDir: INT8;
 
   // check NE, SE, SW, NW because of tilt of isometric display
@@ -882,24 +882,24 @@ function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): BOOLEAN 
     // if ( !GridNoOnVisibleWorldTile( (INT16) (sGridNo + DirectionInc( bDir ) ) ) )
     {
       pbDirection.value = bDir;
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): BOOLEAN {
+function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
   let sOtherSideOfFence: INT16;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let bMinNumTurns: UINT8 = 100;
   let bNumTurns: INT8;
   let bMinDirection: INT8 = 0;
 
   // IF there is a fence in this gridno, return false!
   if (IsJumpableFencePresentAtGridno(sGridNo)) {
-    return FALSE;
+    return false;
   }
 
   // LOOP THROUGH ALL 8 DIRECTIONS
@@ -908,12 +908,12 @@ function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
     sNewGridNo = NewGridNo(sGridNo, DirectionInc(cnt));
     sOtherSideOfFence = NewGridNo(sNewGridNo, DirectionInc(cnt));
 
-    if (NewOKDestination(pSoldier, sOtherSideOfFence, TRUE, 0)) {
+    if (NewOKDestination(pSoldier, sOtherSideOfFence, true, 0)) {
       // ATE: Check if there is somebody waiting here.....
 
       // Check if we have a fence here
       if (IsJumpableFencePresentAtGridno(sNewGridNo)) {
-        fFound = TRUE;
+        fFound = true;
 
         // FInd how many turns we should go to get here
         bNumTurns = FindNumTurnsBetweenDirs(cnt, bStartingDir);
@@ -928,10 +928,10 @@ function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
 
   if (fFound) {
     pbDirection.value = bMinDirection;
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // Simply chooses a random gridno within valid boundaries (for dropping things in unloaded sectors)

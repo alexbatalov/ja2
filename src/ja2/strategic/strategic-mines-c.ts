@@ -85,16 +85,16 @@ function InitializeMines(): void {
 
     pMineStatus.value.ubMineType = gubMineTypes[ubMineIndex];
     pMineStatus.value.uiMaxRemovalRate = guiMinimumMineProduction[ubMineIndex];
-    pMineStatus.value.fEmpty = (pMineStatus.value.uiMaxRemovalRate == 0) ? TRUE : FALSE;
-    pMineStatus.value.fRunningOut = FALSE;
-    pMineStatus.value.fWarnedOfRunningOut = FALSE;
+    pMineStatus.value.fEmpty = (pMineStatus.value.uiMaxRemovalRate == 0) ? true : false;
+    pMineStatus.value.fRunningOut = false;
+    pMineStatus.value.fWarnedOfRunningOut = false;
     //		pMineStatus->bMonsters = MINES_NO_MONSTERS;
-    pMineStatus.value.fShutDown = FALSE;
-    pMineStatus.value.fPrevInvadedByMonsters = FALSE;
-    pMineStatus.value.fSpokeToHeadMiner = FALSE;
-    pMineStatus.value.fMineHasProducedForPlayer = FALSE;
-    pMineStatus.value.fQueenRetookProducingMine = FALSE;
-    gMineStatus.value.fShutDownIsPermanent = FALSE;
+    pMineStatus.value.fShutDown = false;
+    pMineStatus.value.fPrevInvadedByMonsters = false;
+    pMineStatus.value.fSpokeToHeadMiner = false;
+    pMineStatus.value.fMineHasProducedForPlayer = false;
+    pMineStatus.value.fQueenRetookProducingMine = false;
+    gMineStatus.value.fShutDownIsPermanent = false;
   }
 
   // randomize the exact size each mine.  The total production is always the same and depends on the game difficulty,
@@ -204,7 +204,7 @@ function HourlyMinesUpdate(): void {
             ubQuoteType = Enum183.HEAD_MINER_STRATEGIC_QUOTE_CREATURES_AGAIN;
           } else {
             ubQuoteType = Enum183.HEAD_MINER_STRATEGIC_QUOTE_CREATURES_ATTACK;
-            pMineStatus.value.fPrevInvadedByMonsters = TRUE;
+            pMineStatus.value.fPrevInvadedByMonsters = true;
 
             if (gubQuest[Enum169.QUEST_CREATURES] == QUESTNOTSTARTED) {
               // start it now!
@@ -313,8 +313,8 @@ function ExtractOreFromMine(bMineIndex: INT8, uiAmount: UINT32): UINT32 {
     uiAmountExtracted = gMineStatus[bMineIndex].uiRemainingOreSupply;
     gMineStatus[bMineIndex].uiRemainingOreSupply = 0;
     gMineStatus[bMineIndex].uiMaxRemovalRate = 0;
-    gMineStatus[bMineIndex].fEmpty = TRUE;
-    gMineStatus[bMineIndex].fRunningOut = FALSE;
+    gMineStatus[bMineIndex].fEmpty = true;
+    gMineStatus[bMineIndex].fRunningOut = false;
 
     // tell the strategic AI about this, that mine's and town's value is greatly reduced
     GetMineSector(bMineIndex, addressof(sSectorX), addressof(sSectorY));
@@ -329,7 +329,7 @@ function ExtractOreFromMine(bMineIndex: INT8, uiAmount: UINT32): UINT32 {
 
     // one of the mines (randomly chosen) will start running out eventually, check if we're there yet
     if (gMineStatus[bMineIndex].uiRemainingOreSupply < gMineStatus[bMineIndex].uiOreRunningOutPoint) {
-      gMineStatus[bMineIndex].fRunningOut = TRUE;
+      gMineStatus[bMineIndex].fRunningOut = true;
 
       // round all fractions UP to the next REMOVAL_RATE_INCREMENT
       gMineStatus[bMineIndex].uiMaxRemovalRate = ((gMineStatus[bMineIndex].uiRemainingOreSupply / 10) / REMOVAL_RATE_INCREMENT + 0.9999) * REMOVAL_RATE_INCREMENT;
@@ -340,7 +340,7 @@ function ExtractOreFromMine(bMineIndex: INT8, uiAmount: UINT32): UINT32 {
         if (!gMineStatus[bMineIndex].fWarnedOfRunningOut) {
           // that mine's head miner tells player that the mine is running out
           IssueHeadMinerQuote(bMineIndex, Enum183.HEAD_MINER_STRATEGIC_QUOTE_RUNNING_OUT);
-          gMineStatus[bMineIndex].fWarnedOfRunningOut = TRUE;
+          gMineStatus[bMineIndex].fWarnedOfRunningOut = true;
           AddHistoryToPlayersLog(Enum83.HISTORY_MINE_RUNNING_OUT, gMineLocation[bMineIndex].bAssociatedTown, GetWorldTotalMin(), gMineLocation[bMineIndex].sSectorX, gMineLocation[bMineIndex].sSectorY);
         }
       }
@@ -476,7 +476,7 @@ function MineAMine(bMineIndex: INT8): INT32 {
       // if this is the first time this mine has produced income for the player in the game
       if (!gMineStatus[bMineIndex].fMineHasProducedForPlayer) {
         // remember that we've earned income from this mine during the game
-        gMineStatus[bMineIndex].fMineHasProducedForPlayer = TRUE;
+        gMineStatus[bMineIndex].fMineHasProducedForPlayer = true;
         // and when we started to do so...
         gMineStatus[bMineIndex].uiTimePlayerProductionStarted = GetWorldTotalMin();
       }
@@ -612,61 +612,61 @@ function GetMineSectorForTown(bTownId: INT8): INT16 {
   return sMineSector;
 }
 
-function IsThereAMineInThisSector(sX: INT16, sY: INT16): BOOLEAN {
+function IsThereAMineInThisSector(sX: INT16, sY: INT16): boolean {
   let ubMineIndex: UINT8;
 
   // run through the list...if a mine here, great
   for (ubMineIndex = 0; ubMineIndex < Enum179.MAX_NUMBER_OF_MINES; ubMineIndex++) {
     if ((gMineLocation[ubMineIndex].sSectorX == sX) && (gMineLocation[ubMineIndex].sSectorY == sY)) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function PlayerControlsMine(bMineIndex: INT8): BOOLEAN {
+function PlayerControlsMine(bMineIndex: INT8): boolean {
   // a value of TRUE is from the enemy's point of view
-  if (StrategicMap[(gMineLocation[bMineIndex].sSectorX) + (MAP_WORLD_X * (gMineLocation[bMineIndex].sSectorY))].fEnemyControlled == TRUE)
-    return FALSE;
+  if (StrategicMap[(gMineLocation[bMineIndex].sSectorX) + (MAP_WORLD_X * (gMineLocation[bMineIndex].sSectorY))].fEnemyControlled == true)
+    return false;
   else {
     // player only controls the actual mine after he has made arrangements to do so with the head miner there
     if (gMineStatus[bMineIndex].fSpokeToHeadMiner) {
-      return TRUE;
+      return true;
     } else {
-      return FALSE;
+      return false;
     }
   }
 }
 
-function SaveMineStatusToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveMineStatusToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // Save the MineStatus
   FileWrite(hFile, gMineStatus, sizeof(MINE_STATUS_TYPE) * Enum179.MAX_NUMBER_OF_MINES, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(MINE_STATUS_TYPE) * Enum179.MAX_NUMBER_OF_MINES) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadMineStatusFromSavedGameFile(hFile: HWFILE): BOOLEAN {
+function LoadMineStatusFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   // Load the MineStatus
   FileRead(hFile, gMineStatus, sizeof(MINE_STATUS_TYPE) * Enum179.MAX_NUMBER_OF_MINES, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(MINE_STATUS_TYPE) * Enum179.MAX_NUMBER_OF_MINES) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function ShutOffMineProduction(bMineIndex: INT8): void {
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   if (!gMineStatus[bMineIndex].fShutDown) {
-    gMineStatus[bMineIndex].fShutDown = TRUE;
+    gMineStatus[bMineIndex].fShutDown = true;
     AddHistoryToPlayersLog(Enum83.HISTORY_MINE_SHUTDOWN, gMineLocation[bMineIndex].bAssociatedTown, GetWorldTotalMin(), gMineLocation[bMineIndex].sSectorX, gMineLocation[bMineIndex].sSectorY);
   }
 }
@@ -676,7 +676,7 @@ function RestartMineProduction(bMineIndex: INT8): void {
 
   if (!gMineStatus[bMineIndex].fShutDownIsPermanent) {
     if (gMineStatus[bMineIndex].fShutDown) {
-      gMineStatus[bMineIndex].fShutDown = FALSE;
+      gMineStatus[bMineIndex].fShutDown = false;
       AddHistoryToPlayersLog(Enum83.HISTORY_MINE_REOPENED, gMineLocation[bMineIndex].bAssociatedTown, GetWorldTotalMin(), gMineLocation[bMineIndex].sSectorX, gMineLocation[bMineIndex].sSectorY);
     }
   }
@@ -685,10 +685,10 @@ function RestartMineProduction(bMineIndex: INT8): void {
 function MineShutdownIsPermanent(bMineIndex: INT8): void {
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
-  gMineStatus[bMineIndex].fShutDownIsPermanent = TRUE;
+  gMineStatus[bMineIndex].fShutDownIsPermanent = true;
 }
 
-function IsMineShutDown(bMineIndex: INT8): BOOLEAN {
+function IsMineShutDown(bMineIndex: INT8): boolean {
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   return gMineStatus[bMineIndex].fShutDown;
@@ -710,7 +710,7 @@ function GetHeadMinerIndexForMine(bMineIndex: INT8): UINT8 {
   }
 
   // not found - yack!
-  Assert(FALSE);
+  Assert(false);
   return 0;
 }
 
@@ -723,7 +723,7 @@ function IssueHeadMinerQuote(bMineIndex: INT8, ubQuoteType: UINT8): void {
   let usHeadMinerProfileId: UINT16 = 0;
   let bQuoteNum: INT8 = 0;
   let ubFaceIndex: UINT8 = 0;
-  let fForceMapscreen: BOOLEAN = FALSE;
+  let fForceMapscreen: boolean = false;
   let sXPos: INT16;
   let sYPos: INT16;
 
@@ -748,7 +748,7 @@ function IssueHeadMinerQuote(bMineIndex: INT8, ubQuoteType: UINT8): void {
 
   // transition to mapscreen is not necessary for "creatures gone" quote - player is IN that mine, so he'll know
   if (ubQuoteType != Enum183.HEAD_MINER_STRATEGIC_QUOTE_CREATURES_GONE) {
-    fForceMapscreen = TRUE;
+    fForceMapscreen = true;
   }
 
   // decide where the miner's face and text box should be positioned in order to not obscure the mine he's in as it flashes
@@ -772,7 +772,7 @@ function IssueHeadMinerQuote(bMineIndex: INT8, ubQuoteType: UINT8): void {
     // there's no head miner in San Mona, this is an error!
     case Enum179.MINE_SAN_MONA:
     default:
-      Assert(FALSE);
+      Assert(false);
       sXPos = DEFAULT_EXTERN_PANEL_X_POS, sYPos = DEFAULT_EXTERN_PANEL_Y_POS;
       break;
   }
@@ -797,7 +797,7 @@ function GetHeadMinersMineIndex(ubMinerProfileId: UINT8): UINT8 {
   }
 
   // not found!  Illegal profile id receieved or something is very wrong
-  Assert(FALSE);
+  Assert(false);
   return 0;
 }
 
@@ -807,56 +807,56 @@ function PlayerSpokeToHeadMiner(ubMinerProfileId: UINT8): void {
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
   // if this is our first time set a history fact
-  if (gMineStatus[ubMineIndex].fSpokeToHeadMiner == FALSE) {
+  if (gMineStatus[ubMineIndex].fSpokeToHeadMiner == false) {
     AddHistoryToPlayersLog(Enum83.HISTORY_TALKED_TO_MINER, gMineLocation[ubMineIndex].bAssociatedTown, GetWorldTotalMin(), gMineLocation[ubMineIndex].sSectorX, gMineLocation[ubMineIndex].sSectorY);
-    gMineStatus[ubMineIndex].fSpokeToHeadMiner = TRUE;
+    gMineStatus[ubMineIndex].fSpokeToHeadMiner = true;
   }
 }
 
-function IsHisMineRunningOut(ubMinerProfileId: UINT8): BOOLEAN {
+function IsHisMineRunningOut(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
   return gMineStatus[ubMineIndex].fRunningOut;
 }
 
-function IsHisMineEmpty(ubMinerProfileId: UINT8): BOOLEAN {
+function IsHisMineEmpty(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
   return gMineStatus[ubMineIndex].fEmpty;
 }
 
-function IsHisMineDisloyal(ubMinerProfileId: UINT8): BOOLEAN {
+function IsHisMineDisloyal(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
   if (gTownLoyalty[gMineLocation[ubMineIndex].bAssociatedTown].ubRating < LOW_MINE_LOYALTY_THRESHOLD) {
     // pretty disloyal
-    return TRUE;
+    return true;
   } else {
     // pretty loyal
-    return FALSE;
+    return false;
   }
 }
 
-function IsHisMineInfested(ubMinerProfileId: UINT8): BOOLEAN {
+function IsHisMineInfested(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
   return !MineClearOfMonsters(ubMineIndex);
 }
 
-function IsHisMineLostAndRegained(ubMinerProfileId: UINT8): BOOLEAN {
+function IsHisMineLostAndRegained(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
   if (PlayerControlsMine(ubMineIndex) && gMineStatus[ubMineIndex].fQueenRetookProducingMine) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
@@ -865,20 +865,20 @@ function ResetQueenRetookMine(ubMinerProfileId: UINT8): void {
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
-  gMineStatus[ubMineIndex].fQueenRetookProducingMine = FALSE;
+  gMineStatus[ubMineIndex].fQueenRetookProducingMine = false;
 }
 
-function IsHisMineAtMaxProduction(ubMinerProfileId: UINT8): BOOLEAN {
+function IsHisMineAtMaxProduction(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
   if (GetAvailableWorkForceForMineForPlayer(ubMineIndex) == 100) {
     // loyalty is 100% and control is 100%
-    return TRUE;
+    return true;
   } else {
     // something not quite perfect yet
-    return FALSE;
+    return false;
   }
 }
 
@@ -886,21 +886,21 @@ function QueenHasRegainedMineSector(bMineIndex: INT8): void {
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   if (gMineStatus[bMineIndex].fMineHasProducedForPlayer) {
-    gMineStatus[bMineIndex].fQueenRetookProducingMine = TRUE;
+    gMineStatus[bMineIndex].fQueenRetookProducingMine = true;
   }
 }
 
-function HasAnyMineBeenAttackedByMonsters(): BOOLEAN {
+function HasAnyMineBeenAttackedByMonsters(): boolean {
   let ubMineIndex: UINT8;
 
   // find which mine this guy represents
   for (ubMineIndex = 0; ubMineIndex < Enum179.MAX_NUMBER_OF_MINES; ubMineIndex++) {
     if (!MineClearOfMonsters(ubMineIndex) || gMineStatus[ubMineIndex].fPrevInvadedByMonsters) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function PlayerAttackedHeadMiner(ubMinerProfileId: UINT8): void {
@@ -911,7 +911,7 @@ function PlayerAttackedHeadMiner(ubMinerProfileId: UINT8): void {
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
   // if it's the first time he's been attacked
-  if (gMineStatus[ubMineIndex].fAttackedHeadMiner == FALSE) {
+  if (gMineStatus[ubMineIndex].fAttackedHeadMiner == false) {
     // shut off production at his mine (Permanently!)
     ShutOffMineProduction(ubMineIndex);
     MineShutdownIsPermanent(ubMineIndex);
@@ -922,20 +922,20 @@ function PlayerAttackedHeadMiner(ubMinerProfileId: UINT8): void {
     DecrementTownLoyalty(bTownId, LOYALTY_PENALTY_HEAD_MINER_ATTACKED);
 
     // don't allow this more than once
-    gMineStatus[ubMineIndex].fAttackedHeadMiner = TRUE;
+    gMineStatus[ubMineIndex].fAttackedHeadMiner = true;
   }
 }
 
-function HasHisMineBeenProducingForPlayerForSomeTime(ubMinerProfileId: UINT8): BOOLEAN {
+function HasHisMineBeenProducingForPlayerForSomeTime(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
   if (gMineStatus[ubMineIndex].fMineHasProducedForPlayer && ((GetWorldTotalMin() - gMineStatus[ubMineIndex].uiTimePlayerProductionStarted) >= (24 * 60))) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // gte the id of the mine for this sector x,y,z...-1 is invalid
@@ -1004,7 +1004,7 @@ function GetIdOfMineForSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8):
 }
 
 // use this for miner (civilian) quotes when *underground* in a mine
-function PlayerForgotToTakeOverMine(ubMineIndex: UINT8): BOOLEAN {
+function PlayerForgotToTakeOverMine(ubMineIndex: UINT8): boolean {
   let pMineStatus: Pointer<MINE_STATUS_TYPE>;
 
   Assert((ubMineIndex >= 0) && (ubMineIndex < Enum179.MAX_NUMBER_OF_MINES));
@@ -1015,15 +1015,15 @@ function PlayerForgotToTakeOverMine(ubMineIndex: UINT8): BOOLEAN {
   // mine not empty
   // player hasn't spoken to the head miner, but hasn't attacked him either
   // miner is alive
-  if ((StrategicMap[(gMineLocation[ubMineIndex].sSectorX) + (MAP_WORLD_X * (gMineLocation[ubMineIndex].sSectorY))].fEnemyControlled == FALSE) && (!pMineStatus.value.fEmpty) && (!pMineStatus.value.fSpokeToHeadMiner) && (!pMineStatus.value.fAttackedHeadMiner) && (gMercProfiles[GetHeadMinerProfileIdForMine(ubMineIndex)].bLife > 0)) {
-    return TRUE;
+  if ((StrategicMap[(gMineLocation[ubMineIndex].sSectorX) + (MAP_WORLD_X * (gMineLocation[ubMineIndex].sSectorY))].fEnemyControlled == false) && (!pMineStatus.value.fEmpty) && (!pMineStatus.value.fSpokeToHeadMiner) && (!pMineStatus.value.fAttackedHeadMiner) && (gMercProfiles[GetHeadMinerProfileIdForMine(ubMineIndex)].bLife > 0)) {
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // use this to determine whether or not to place miners into a underground mine level
-function AreThereMinersInsideThisMine(ubMineIndex: UINT8): BOOLEAN {
+function AreThereMinersInsideThisMine(ubMineIndex: UINT8): boolean {
   let pMineStatus: Pointer<MINE_STATUS_TYPE>;
 
   Assert((ubMineIndex >= 0) && (ubMineIndex < Enum179.MAX_NUMBER_OF_MINES));
@@ -1034,13 +1034,13 @@ function AreThereMinersInsideThisMine(ubMineIndex: UINT8): BOOLEAN {
   // mine clear of any monsters
   // the "shutdown permanently" flag is only used for the player never receiving the income - miners will keep mining
   if ((!pMineStatus.value.fEmpty) && MineClearOfMonsters(ubMineIndex)) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // returns whether or not we've spoken to the head miner of a particular mine
-function SpokenToHeadMiner(ubMineIndex: UINT8): BOOLEAN {
+function SpokenToHeadMiner(ubMineIndex: UINT8): boolean {
   return gMineStatus[ubMineIndex].fSpokeToHeadMiner;
 }

@@ -5,13 +5,13 @@ let bPersonalityEndState: UINT8 = 0;
 const PERSONALITY_CONFIRM_FINISH_DELAY = 2500;
 
 // flag set when player hits  YES/NO button
-let fConfirmHasBeenSelectedFlag: BOOLEAN = FALSE;
-let fConfirmIsYesFlag: BOOLEAN = FALSE;
-let fOkToReturnIMPMainPageFromPersonalityFlag: BOOLEAN = FALSE;
-let fCreatedOkIMPButton: BOOLEAN = FALSE;
-let fExitDueFrIMPPerFinToOkButton: BOOLEAN = FALSE;
-let fExitIMPPerFinAtOk: BOOLEAN = FALSE;
-let fCreateFinishOkButton: BOOLEAN = FALSE;
+let fConfirmHasBeenSelectedFlag: boolean = false;
+let fConfirmIsYesFlag: boolean = false;
+let fOkToReturnIMPMainPageFromPersonalityFlag: boolean = false;
+let fCreatedOkIMPButton: boolean = false;
+let fExitDueFrIMPPerFinToOkButton: boolean = false;
+let fExitIMPPerFinAtOk: boolean = false;
+let fCreateFinishOkButton: boolean = false;
 
 // buttons
 let giIMPPersonalityFinishButton: UINT32[] /* [2] */;
@@ -19,9 +19,9 @@ let giIMPPersonalityFinishButtonImage: UINT32[] /* [2] */;
 
 function EnterIMPPersonalityFinish(): void {
   // reset states
-  fCreateFinishOkButton = FALSE;
+  fCreateFinishOkButton = false;
   bPersonalityEndState = 0;
-  fConfirmIsYesFlag = FALSE;
+  fConfirmIsYesFlag = false;
 
   // create the buttons
   CreateIMPPersonalityFinishButtons();
@@ -39,7 +39,7 @@ function RenderIMPPersonalityFinish(): void {
   // check confirm flag to decide if we have to display appropriate response to button action
   if (fConfirmHasBeenSelectedFlag) {
     // confirm was yes, display yes string
-    if (fConfirmIsYesFlag == TRUE) {
+    if (fConfirmIsYesFlag == true) {
       // display yes string
       PrintImpText();
     } else {
@@ -57,15 +57,15 @@ function ExitIMPPersonalityFinish(): void {
     DestroyPersonalityFinishOkButton();
   }
 
-  if ((fExitDueFrIMPPerFinToOkButton == FALSE) && (fExitIMPPerFinAtOk == FALSE)) {
+  if ((fExitDueFrIMPPerFinToOkButton == false) && (fExitIMPPerFinAtOk == false)) {
     // exit due to cancel button, not ok or Yes/no button
     // get rid of yes no
     DestroyIMPersonalityFinishButtons();
   }
 
-  fCreatedOkIMPButton = FALSE;
-  fOkToReturnIMPMainPageFromPersonalityFlag = FALSE;
-  fConfirmHasBeenSelectedFlag = FALSE;
+  fCreatedOkIMPButton = false;
+  fOkToReturnIMPMainPageFromPersonalityFlag = false;
+  fConfirmHasBeenSelectedFlag = false;
   return;
 }
 
@@ -81,30 +81,30 @@ function CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed(): void {
   // read text has occurred
 
   // if not confirm selected, return
-  if (fConfirmHasBeenSelectedFlag == FALSE) {
+  if (fConfirmHasBeenSelectedFlag == false) {
     return;
   }
 
-  if (fCreateFinishOkButton == TRUE) {
-    fCreateFinishOkButton = FALSE;
+  if (fCreateFinishOkButton == true) {
+    fCreateFinishOkButton = false;
     CreatePersonalityFinishOkButton();
-    fCreatedOkIMPButton = TRUE;
+    fCreatedOkIMPButton = true;
   }
 
   // create ok button
-  if (fCreatedOkIMPButton == FALSE) {
+  if (fCreatedOkIMPButton == false) {
     DestroyIMPersonalityFinishButtons();
-    fCreateFinishOkButton = TRUE;
-    fExitIMPPerFinAtOk = TRUE;
+    fCreateFinishOkButton = true;
+    fExitIMPPerFinAtOk = true;
   }
 
   // ok to return
-  if (fOkToReturnIMPMainPageFromPersonalityFlag == TRUE) {
+  if (fOkToReturnIMPMainPageFromPersonalityFlag == true) {
     DestroyPersonalityFinishOkButton();
-    fCreatedOkIMPButton = FALSE;
-    fOkToReturnIMPMainPageFromPersonalityFlag = FALSE;
-    fConfirmHasBeenSelectedFlag = FALSE;
-    fExitDueFrIMPPerFinToOkButton = TRUE;
+    fCreatedOkIMPButton = false;
+    fOkToReturnIMPMainPageFromPersonalityFlag = false;
+    fConfirmHasBeenSelectedFlag = false;
+    fExitDueFrIMPPerFinToOkButton = true;
   }
 
   return;
@@ -170,14 +170,14 @@ function BtnIMPPersonalityFinishYesCallback(btn: Pointer<GUI_BUTTON>, reason: IN
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // set fact yes was selected
-      fConfirmIsYesFlag = TRUE;
+      fConfirmIsYesFlag = true;
 
       // set fact that confirmation has been done
-      fConfirmHasBeenSelectedFlag = TRUE;
+      fConfirmHasBeenSelectedFlag = true;
 
       // now make skill, personality and attitude
       CreatePlayersPersonalitySkillsAndAttitude();
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
       bPersonalityEndState = 1;
     }
   }
@@ -204,14 +204,14 @@ function BtnIMPPersonalityFinishNoCallback(btn: Pointer<GUI_BUTTON>, reason: INT
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // set fact yes was selected
-      fConfirmIsYesFlag = FALSE;
+      fConfirmIsYesFlag = false;
 
       // set fact that confirmation has been done
-      fConfirmHasBeenSelectedFlag = TRUE;
+      fConfirmHasBeenSelectedFlag = true;
       CreatePlayersPersonalitySkillsAndAttitude();
 
       bPersonalityEndState = 2;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }
@@ -249,7 +249,7 @@ function BtnIMPPersonalityFinishOkCallback(btn: Pointer<GUI_BUTTON>, reason: INT
       }
 
       // button pending, wait a frame
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
       iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
     }
   }

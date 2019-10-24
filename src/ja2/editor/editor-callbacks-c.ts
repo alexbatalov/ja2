@@ -328,7 +328,7 @@ function BuildingToggleInfoViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
     } else {
       UnclickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
     }
-    gfRenderWorld = TRUE;
+    gfRenderWorld = true;
   }
 }
 
@@ -430,24 +430,24 @@ function MapInfo24HourTimeRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 function BtnNewMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_NEW_MAP;
-    gfPendingBasement = FALSE;
-    gfPendingCaves = FALSE;
+    gfPendingBasement = false;
+    gfPendingCaves = false;
   }
 }
 
 function BtnNewBasementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_NEW_MAP;
-    gfPendingBasement = TRUE;
-    gfPendingCaves = FALSE;
+    gfPendingBasement = true;
+    gfPendingCaves = false;
   }
 }
 
 function BtnNewCavesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_NEW_MAP;
-    gfPendingBasement = FALSE;
-    gfPendingCaves = TRUE;
+    gfPendingBasement = false;
+    gfPendingCaves = true;
   }
 }
 
@@ -541,7 +541,7 @@ function ItemsKeysCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function ItemsLeftScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderTaskbar = TRUE;
+    gfRenderTaskbar = true;
     eInfo.sScrollIndex--;
     if (!eInfo.sScrollIndex)
       DisableButton(iEditorButton[Enum32.ITEMS_LEFTSCROLL]);
@@ -552,7 +552,7 @@ function ItemsLeftScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 function ItemsRightScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderTaskbar = TRUE;
+    gfRenderTaskbar = true;
     eInfo.sScrollIndex++;
     EnableButton(iEditorButton[Enum32.ITEMS_LEFTSCROLL]);
     if (eInfo.sScrollIndex == max(((eInfo.sNumItems + 1) / 2) - 6, 0))
@@ -563,35 +563,35 @@ function ItemsRightScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 // MERCS
 function MercsTogglePlayers(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowPlayers = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowPlayers = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(OUR_TEAM, gfShowCivilians);
   }
 }
 
 function MercsToggleEnemies(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowEnemies = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowEnemies = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(ENEMY_TEAM, gfShowEnemies);
   }
 }
 
 function MercsToggleCreatures(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowCreatures = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowCreatures = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(CREATURE_TEAM, gfShowCreatures);
   }
 }
 
 function MercsToggleRebels(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowRebels = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowRebels = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(MILITIA_TEAM, gfShowRebels);
   }
 }
 
 function MercsToggleCivilians(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowCivilians = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowCivilians = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(CIV_TEAM, gfShowCivilians);
   }
 }
@@ -682,9 +682,9 @@ function MercsInventorySlotCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     let uiSlot: INT32;
     uiSlot = MSYS_GetBtnUserData(btn, 0);
     if (btn.value.uiFlags & BUTTON_CLICKED_ON)
-      SetEnemyDroppableStatus(uiSlot, TRUE);
+      SetEnemyDroppableStatus(uiSlot, true);
     else
-      SetEnemyDroppableStatus(uiSlot, FALSE);
+      SetEnemyDroppableStatus(uiSlot, false);
   }
 }
 
@@ -771,7 +771,7 @@ function MercsScheduleData1ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 0;
     StartScheduleAction();
-    gfSingleAction = TRUE;
+    gfSingleAction = true;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     FindScheduleGridNo(0);
   }
@@ -780,7 +780,7 @@ function MercsScheduleData1ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 function MercsScheduleData1BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 0;
-    gfUseScheduleData2 = FALSE;
+    gfUseScheduleData2 = false;
     RegisterCurrentScheduleAction(gCurrSchedule.usData1[0]);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     FindScheduleGridNo(1);
@@ -791,7 +791,7 @@ function MercsScheduleData2ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 1;
     StartScheduleAction();
-    gfSingleAction = TRUE;
+    gfSingleAction = true;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     FindScheduleGridNo(2);
   }
@@ -800,7 +800,7 @@ function MercsScheduleData2ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 function MercsScheduleData2BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 1;
-    gfUseScheduleData2 = FALSE;
+    gfUseScheduleData2 = false;
     RegisterCurrentScheduleAction(gCurrSchedule.usData1[1]);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     FindScheduleGridNo(3);
@@ -811,7 +811,7 @@ function MercsScheduleData3ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 2;
     StartScheduleAction();
-    gfSingleAction = TRUE;
+    gfSingleAction = true;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     FindScheduleGridNo(4);
   }
@@ -820,7 +820,7 @@ function MercsScheduleData3ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 function MercsScheduleData3BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 2;
-    gfUseScheduleData2 = FALSE;
+    gfUseScheduleData2 = false;
     RegisterCurrentScheduleAction(gCurrSchedule.usData1[2]);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     FindScheduleGridNo(5);
@@ -831,7 +831,7 @@ function MercsScheduleData4ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 3;
     StartScheduleAction();
-    gfSingleAction = TRUE;
+    gfSingleAction = true;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     FindScheduleGridNo(6);
   }
@@ -840,7 +840,7 @@ function MercsScheduleData4ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 function MercsScheduleData4BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 3;
-    gfUseScheduleData2 = FALSE;
+    gfUseScheduleData2 = false;
     RegisterCurrentScheduleAction(gCurrSchedule.usData1[3]);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     FindScheduleGridNo(7);
@@ -873,10 +873,10 @@ function MercsPriorityExistanceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
     if (gpSelected) {
       if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
       {
-        gpSelected.value.pBasicPlacement.value.fPriorityExistance = TRUE;
+        gpSelected.value.pBasicPlacement.value.fPriorityExistance = true;
       } else // button is unchecked.
       {
-        gpSelected.value.pBasicPlacement.value.fPriorityExistance = FALSE;
+        gpSelected.value.pBasicPlacement.value.fPriorityExistance = false;
       }
     }
   }
@@ -887,10 +887,10 @@ function MercsHasKeysCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     if (gpSelected) {
       if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
       {
-        gpSelected.value.pBasicPlacement.value.fHasKeys = TRUE;
+        gpSelected.value.pBasicPlacement.value.fHasKeys = true;
       } else // button is unchecked.
       {
-        gpSelected.value.pBasicPlacement.value.fHasKeys = FALSE;
+        gpSelected.value.pBasicPlacement.value.fHasKeys = false;
       }
       if (gpSelected.value.pDetailedPlacement) {
         gpSelected.value.pDetailedPlacement.value.fHasKeys = gpSelected.value.pBasicPlacement.value.fHasKeys;

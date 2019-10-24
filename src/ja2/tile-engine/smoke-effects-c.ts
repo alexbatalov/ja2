@@ -8,7 +8,7 @@ function GetFreeSmokeEffect(): INT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumSmokeEffects; uiCount++) {
-    if ((gSmokeEffectData[uiCount].fAllocated == FALSE))
+    if ((gSmokeEffectData[uiCount].fAllocated == false))
       return uiCount;
   }
 
@@ -162,7 +162,7 @@ function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: U
   pSmoke.value.ubDuration = ubDuration;
   pSmoke.value.ubRadius = ubStartRadius;
   pSmoke.value.bAge = 0;
-  pSmoke.value.fAllocated = TRUE;
+  pSmoke.value.fAllocated = true;
   pSmoke.value.bType = bSmokeEffectType;
   pSmoke.value.ubOwner = ubOwner;
 
@@ -176,7 +176,7 @@ function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: U
   }
 
   // ATE: FALSE into subsequent-- it's the first one!
-  SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, FALSE, bLevel, iSmokeIndex);
+  SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, false, bLevel, iSmokeIndex);
 
   return iSmokeIndex;
 }
@@ -187,12 +187,12 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
   let AniParams: ANITILE_PARAMS;
   let pAniTile: Pointer<ANITILE>;
   let pSmoke: Pointer<SMOKEEFFECT>;
-  let fDissipating: BOOLEAN = FALSE;
+  let fDissipating: boolean = false;
 
   pSmoke = addressof(gSmokeEffectData[iSmokeEffectID]);
 
   if ((pSmoke.value.ubDuration - pSmoke.value.bAge) < 2) {
-    fDissipating = TRUE;
+    fDissipating = true;
     // Remove old one...
     RemoveSmokeEffectFromTile(sGridNo, bLevel);
   }
@@ -331,8 +331,8 @@ function DecaySmokeEffects(uiTime: UINT32): void {
   let pSmoke: Pointer<SMOKEEFFECT>;
   let cnt: UINT32;
   let cnt2: UINT32;
-  let fUpdate: BOOLEAN = FALSE;
-  let fSpreadEffect: BOOLEAN;
+  let fUpdate: boolean = false;
+  let fSpreadEffect: boolean;
   let bLevel: INT8;
   let usNumUpdates: UINT16 = 1;
 
@@ -348,7 +348,7 @@ function DecaySmokeEffects(uiTime: UINT32): void {
 
   // age all active tear gas clouds, deactivate those that are just dispersing
   for (cnt = 0; cnt < guiNumSmokeEffects; cnt++) {
-    fSpreadEffect = TRUE;
+    fSpreadEffect = true;
 
     pSmoke = addressof(gSmokeEffectData[cnt]);
 
@@ -362,11 +362,11 @@ function DecaySmokeEffects(uiTime: UINT32): void {
       // Do things differently for combat /vs realtime
       // always try to update during combat
       if (gTacticalStatus.uiFlags & INCOMBAT) {
-        fUpdate = TRUE;
+        fUpdate = true;
       } else {
         // ATE: Do this every so ofte, to acheive the effect we want...
         if ((uiTime - pSmoke.value.uiTimeOfLastUpdate) > 10) {
-          fUpdate = TRUE;
+          fUpdate = true;
 
           usNumUpdates = ((uiTime - pSmoke.value.uiTimeOfLastUpdate) / 10);
         }
@@ -381,9 +381,9 @@ function DecaySmokeEffects(uiTime: UINT32): void {
           if (pSmoke.value.bAge == 1) {
             // ATE: At least mark for update!
             pSmoke.value.bFlags |= SMOKE_EFFECT_MARK_FOR_UPDATE;
-            fSpreadEffect = FALSE;
+            fSpreadEffect = false;
           } else {
-            fSpreadEffect = TRUE;
+            fSpreadEffect = true;
           }
 
           if (fSpreadEffect) {
@@ -404,7 +404,7 @@ function DecaySmokeEffects(uiTime: UINT32): void {
             } else {
               // deactivate tear gas cloud (use last known radius)
               SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, ERASE_SPREAD_EFFECT, bLevel, cnt);
-              pSmoke.value.fAllocated = FALSE;
+              pSmoke.value.fAllocated = false;
               break;
             }
           }
@@ -428,16 +428,16 @@ function DecaySmokeEffects(uiTime: UINT32): void {
 
       // if this cloud remains effective (duration not reached)
       if (pSmoke.value.bFlags & SMOKE_EFFECT_MARK_FOR_UPDATE) {
-        SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, TRUE, bLevel, cnt);
+        SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, true, bLevel, cnt);
         pSmoke.value.bFlags &= (~SMOKE_EFFECT_MARK_FOR_UPDATE);
       }
     }
   }
 
-  AllTeamsLookForAll(TRUE);
+  AllTeamsLookForAll(true);
 }
 
-function SaveSmokeEffectsToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveSmokeEffectsToSaveGameFile(hFile: HWFILE): boolean {
   /*
           UINT32	uiNumBytesWritten;
           UINT32	uiCnt=0;
@@ -478,10 +478,10 @@ function SaveSmokeEffectsToSaveGameFile(hFile: HWFILE): BOOLEAN {
                   }
           }
   */
-  return TRUE;
+  return true;
 }
 
-function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
+function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
   let uiCnt: UINT32 = 0;
@@ -495,7 +495,7 @@ function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
     // Load the Number of Smoke Effects
     FileRead(hFile, addressof(guiNumSmokeEffects), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
-      return FALSE;
+      return false;
     }
 
     // This is a TEMP hack to allow us to use the saves
@@ -503,7 +503,7 @@ function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
       // Load the Smoke effect Data
       FileRead(hFile, gSmokeEffectData, sizeof(SMOKEEFFECT), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(SMOKEEFFECT)) {
-        return FALSE;
+        return false;
       }
     }
 
@@ -512,7 +512,7 @@ function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
       // Load the Smoke effect Data
       FileRead(hFile, addressof(gSmokeEffectData[uiCnt]), sizeof(SMOKEEFFECT), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(SMOKEEFFECT)) {
-        return FALSE;
+        return false;
       }
       // This is a TEMP hack to allow us to use the saves
       if (guiSaveGameVersion < 37)
@@ -529,15 +529,15 @@ function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
           bLevel = 0;
         }
 
-        SpreadEffect(gSmokeEffectData[uiCount].sGridNo, gSmokeEffectData[uiCount].ubRadius, gSmokeEffectData[uiCount].usItem, gSmokeEffectData[uiCount].ubOwner, TRUE, bLevel, uiCount);
+        SpreadEffect(gSmokeEffectData[uiCount].sGridNo, gSmokeEffectData[uiCount].ubRadius, gSmokeEffectData[uiCount].usItem, gSmokeEffectData[uiCount].ubOwner, true, bLevel, uiCount);
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
+function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let uiNumSmokeEffects: UINT32 = 0;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
@@ -561,14 +561,14 @@ function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
     // set the fact that there are no smoke effects for this sector
     ReSetSectorFlag(sMapX, sMapY, bMapZ, SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS);
 
-    return TRUE;
+    return true;
   }
 
   // Open the file for writing
-  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
   if (hFile == 0) {
     // Error opening file
-    return FALSE;
+    return false;
   }
 
   // Save the Number of Smoke Effects
@@ -577,7 +577,7 @@ function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
     // Close the file
     FileClose(hFile);
 
-    return FALSE;
+    return false;
   }
 
   // loop through and save the number of smoke effects
@@ -590,7 +590,7 @@ function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
         // Close the file
         FileClose(hFile);
 
-        return FALSE;
+        return false;
       }
     }
   }
@@ -600,10 +600,10 @@ function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
 
   SetSectorFlag(sMapX, sMapY, bMapZ, SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS);
 
-  return TRUE;
+  return true;
 }
 
-function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
+function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
   let uiCnt: UINT32 = 0;
@@ -615,10 +615,10 @@ function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 
   // Open the file for reading, Create it if it doesnt exist
-  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hFile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   // Clear out the old list
@@ -628,7 +628,7 @@ function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   FileRead(hFile, addressof(guiNumSmokeEffects), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // loop through and load the list
@@ -637,7 +637,7 @@ function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
     FileRead(hFile, addressof(gSmokeEffectData[uiCnt]), sizeof(SMOKEEFFECT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SMOKEEFFECT)) {
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
   }
 
@@ -651,13 +651,13 @@ function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
         bLevel = 0;
       }
 
-      SpreadEffect(gSmokeEffectData[uiCount].sGridNo, gSmokeEffectData[uiCount].ubRadius, gSmokeEffectData[uiCount].usItem, gSmokeEffectData[uiCount].ubOwner, TRUE, bLevel, uiCount);
+      SpreadEffect(gSmokeEffectData[uiCount].sGridNo, gSmokeEffectData[uiCount].ubRadius, gSmokeEffectData[uiCount].usItem, gSmokeEffectData[uiCount].ubOwner, true, bLevel, uiCount);
     }
   }
 
   FileClose(hFile);
 
-  return TRUE;
+  return true;
 }
 
 function ResetSmokeEffects(): void {
@@ -685,7 +685,7 @@ function UpdateSmokeEffectGraphics(): void {
 
       SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, ERASE_SPREAD_EFFECT, bLevel, uiCnt);
 
-      SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, TRUE, bLevel, uiCnt);
+      SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, true, bLevel, uiCnt);
     }
   }
 }

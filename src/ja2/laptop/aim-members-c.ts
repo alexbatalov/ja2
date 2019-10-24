@@ -320,43 +320,43 @@ let gbCurrentIndex: UINT8 = 0;
 
 let gubVideoConferencingMode: UINT8;
 let gubVideoConferencingPreviousMode: UINT8;
-let gfJustSwitchedVideoConferenceMode: BOOLEAN;
+let gfJustSwitchedVideoConferenceMode: boolean;
 
-let gfMercIsTalking: BOOLEAN = FALSE;
-let gfVideoFaceActive: BOOLEAN = FALSE;
+let gfMercIsTalking: boolean = false;
+let gfVideoFaceActive: boolean = false;
 
 let gubPopUpBoxAction: UINT8 = Enum66.AIM_POPUP_NOTHING;
-let gfRedrawScreen: BOOLEAN = FALSE;
+let gfRedrawScreen: boolean = false;
 let gubContractLength: UINT8;
-let gfBuyEquipment: BOOLEAN;
+let gfBuyEquipment: boolean;
 let giContractAmount: INT32 = 0;
 let giMercFaceIndex: INT32;
 let gsTalkingMercText: wchar_t[] /* [TEXT_POPUP_STRING_SIZE] */;
 let guiTimeThatMercStartedTalking: UINT32;
 let guiLastHandleMercTime: UINT32;
-let gfFirstTimeInContactScreen: BOOLEAN;
+let gfFirstTimeInContactScreen: boolean;
 
 let gubCurrentCount: UINT8;
 let gubCurrentStaticMode: UINT8;
 let guiMercAttitudeTime: UINT32; // retains the amount of time the user is in a screen, if over a certain time, the merc gets miffed
 let gubMercAttitudeLevel: UINT8; // retains the current level the merc is  P.O.'ed at the caller.
-let gfHangUpMerc: BOOLEAN; // if we have to cancel the video conferencing after the merc is finsihed talking
-let gfIsShutUpMouseRegionActive: BOOLEAN;
-let gfIsAnsweringMachineActive: BOOLEAN;
-let gfRenderTopLevel: BOOLEAN;
-let gfStopMercFromTalking: BOOLEAN;
+let gfHangUpMerc: boolean; // if we have to cancel the video conferencing after the merc is finsihed talking
+let gfIsShutUpMouseRegionActive: boolean;
+let gfIsAnsweringMachineActive: boolean;
+let gfRenderTopLevel: boolean;
+let gfStopMercFromTalking: boolean;
 
 let usAimMercSpeechDuration: UINT16 = 0;
 
-let gfIsNewMailFlagSet: BOOLEAN = FALSE;
+let gfIsNewMailFlagSet: boolean = false;
 
-let gfWaitingForMercToStopTalkingOrUserToClick: BOOLEAN = FALSE;
+let gfWaitingForMercToStopTalkingOrUserToClick: boolean = false;
 
 let giIdOfLastHiredMerc: INT32 = -1;
 
-let gfAimMemberDisplayFaceHelpText: BOOLEAN = FALSE;
+let gfAimMemberDisplayFaceHelpText: boolean = false;
 
-let gfAimMemberCanMercSayOpeningQuote: BOOLEAN = TRUE;
+let gfAimMemberCanMercSayOpeningQuote: boolean = true;
 
 ////////////////////////////////////////////////////////////////
 //
@@ -424,24 +424,24 @@ function GameInitAIMMembers(): void {
 function EnterInitAimMembers(): void {
   gubVideoConferencingMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
   gubVideoConferencingPreviousMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
-  gfVideoFaceActive = FALSE;
+  gfVideoFaceActive = false;
   // fShouldMercTalk = FALSE;
   gubPopUpBoxAction = Enum66.AIM_POPUP_NOTHING;
-  gfRedrawScreen = FALSE;
+  gfRedrawScreen = false;
   giContractAmount = 0;
   giMercFaceIndex = 0;
   guiLastHandleMercTime = GetJA2Clock();
   gubCurrentCount = 0;
-  gfFirstTimeInContactScreen = TRUE;
+  gfFirstTimeInContactScreen = true;
 
   // reset the variable so a pop up can be displyed this time in laptop
-  LaptopSaveInfo.sLastHiredMerc.fHaveDisplayedPopUpInLaptop = FALSE;
+  LaptopSaveInfo.sLastHiredMerc.fHaveDisplayedPopUpInLaptop = false;
 
   // reset the id of the last merc
   LaptopSaveInfo.sLastHiredMerc.iIdOfMerc = -1;
 }
 
-function EnterAIMMembers(): BOOLEAN {
+function EnterAIMMembers(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let vs_desc: VSURFACE_DESC;
 
@@ -536,11 +536,11 @@ function EnterAIMMembers(): BOOLEAN {
 
   gbCurrentSoldier = AimMercArray[gbCurrentIndex];
 
-  gfStopMercFromTalking = FALSE;
+  gfStopMercFromTalking = false;
   gubVideoConferencingMode = giCurrentSubPage;
   gubVideoConferencingPreviousMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
 
-  gfRenderTopLevel = FALSE;
+  gfRenderTopLevel = false;
 
   // if we are re-entering but the video conference should still be up
   if (gubVideoConferencingMode != 0) {
@@ -557,10 +557,10 @@ function EnterAIMMembers(): BOOLEAN {
   // LoadTextMercPopupImages( BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER);
 
   RenderAIMMembers();
-  gfIsNewMailFlagSet = FALSE;
-  gfAimMemberCanMercSayOpeningQuote = TRUE;
+  gfIsNewMailFlagSet = false;
+  gfAimMemberCanMercSayOpeningQuote = true;
 
-  return TRUE;
+  return true;
 }
 
 function ExitAIMMembers(): void {
@@ -608,17 +608,17 @@ function ExitAIMMembers(): void {
 
 function HandleAIMMembers(): void {
   // determine if the merc has a quote that is waiting to be said
-  DelayMercSpeech(0, 0, 0, FALSE, FALSE);
+  DelayMercSpeech(0, 0, 0, false, false);
 
   if (gfHangUpMerc && !gfMercIsTalking) {
     if (gubVideoConferencingMode != Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE)
       gubVideoConferencingMode = Enum65.AIM_VIDEO_POPDOWN_MODE;
-    gfHangUpMerc = FALSE;
+    gfHangUpMerc = false;
   }
 
   if (gfStopMercFromTalking) {
     StopMercTalking();
-    gfStopMercFromTalking = FALSE;
+    gfStopMercFromTalking = false;
     /*
                     //if we were waiting for the merc to stop talking
                     if( gfWaitingForMercToStopTalkingOrUserToClick )
@@ -635,7 +635,7 @@ function HandleAIMMembers(): void {
 
     // if we are exiting to display a popup box, dont rerender the display
     if (!fExitDueToMessageBox)
-      gfRedrawScreen = TRUE;
+      gfRedrawScreen = true;
   }
 
   // If we have to get rid of the popup box
@@ -644,7 +644,7 @@ function HandleAIMMembers(): void {
 
     // if we are exiting to display a popup box, dont rerender the display
     if (!fExitDueToMessageBox)
-      gfRedrawScreen = TRUE;
+      gfRedrawScreen = true;
   }
 
   // Handle the current video conference screen
@@ -669,28 +669,28 @@ function HandleAIMMembers(): void {
 
   // if we have to rerender the popup, set the flag to render the PostButtonRender function in laptop.c
   if (gubPopUpBoxAction == Enum66.AIM_POPUP_DISPLAY) {
-    fReDrawPostButtonRender = TRUE;
+    fReDrawPostButtonRender = true;
   }
 
   // Gets set in the InitDeleteVideoConferencePopUp() function
   if (gfJustSwitchedVideoConferenceMode)
-    gfJustSwitchedVideoConferenceMode = FALSE;
+    gfJustSwitchedVideoConferenceMode = false;
 
   if (gfRedrawScreen) {
     RenderAIMMembers();
-    gfRedrawScreen = FALSE;
+    gfRedrawScreen = false;
   }
 
   MarkButtonsDirty();
 }
 
-function RenderAIMMembersTopLevel(): BOOLEAN {
+function RenderAIMMembersTopLevel(): boolean {
   InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DISPLAY, null, null, 0, 0, 0);
 
-  return TRUE;
+  return true;
 }
 
-function RenderAIMMembers(): BOOLEAN {
+function RenderAIMMembers(): boolean {
   let hStatsHandle: HVOBJECT;
   let hPriceHandle: HVOBJECT;
   let hWeaponBoxHandle: HVOBJECT;
@@ -720,25 +720,25 @@ function RenderAIMMembers(): BOOLEAN {
   UpdateMercInfo();
 
   // Draw fee & contract
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_FEE], FEE_X, FEE_Y, 0, AIM_M_FONT_PREV_NEXT_CONTACT(), AIM_M_FEE_CONTRACT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_CONTRACT], AIM_CONTRACT_X, AIM_CONTRACT_Y, AIM_CONTRACT_WIDTH, AIM_M_FONT_PREV_NEXT_CONTACT(), AIM_M_FEE_CONTRACT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_FEE], FEE_X, FEE_Y, 0, AIM_M_FONT_PREV_NEXT_CONTACT(), AIM_M_FEE_CONTRACT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_CONTRACT], AIM_CONTRACT_X, AIM_CONTRACT_Y, AIM_CONTRACT_WIDTH, AIM_M_FONT_PREV_NEXT_CONTACT(), AIM_M_FEE_CONTRACT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   // Draw pay period (day, week, 2 week)
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_1_DAY], ONEDAY_X, EXPLEVEL_Y, AIM_CONTRACT_WIDTH, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_1_WEEK], ONEWEEK_X, MARKSMAN_Y, AIM_CONTRACT_WIDTH, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_2_WEEKS], TWOWEEK_X, MECHANAICAL_Y, AIM_CONTRACT_WIDTH, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_1_DAY], ONEDAY_X, EXPLEVEL_Y, AIM_CONTRACT_WIDTH, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_1_WEEK], ONEWEEK_X, MARKSMAN_Y, AIM_CONTRACT_WIDTH, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_2_WEEKS], TWOWEEK_X, MECHANAICAL_Y, AIM_CONTRACT_WIDTH, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   // Display AIM Member text
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_ACTIVE_MEMBERS], AIM_MEMBER_ACTIVE_TEXT_X, AIM_MEMBER_ACTIVE_TEXT_Y, AIM_MEMBER_ACTIVE_TEXT_WIDTH, AIM_MAINTITLE_FONT(), AIM_M_ACTIVE_MEMBER_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_ACTIVE_MEMBERS], AIM_MEMBER_ACTIVE_TEXT_X, AIM_MEMBER_ACTIVE_TEXT_Y, AIM_MEMBER_ACTIVE_TEXT_WIDTH, AIM_MAINTITLE_FONT(), AIM_M_ACTIVE_MEMBER_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display Option Gear Cost text
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_OPTIONAL_GEAR], AIM_MEMBER_OPTIONAL_GEAR_X, AIM_MEMBER_OPTIONAL_GEAR_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_OPTIONAL_GEAR], AIM_MEMBER_OPTIONAL_GEAR_X, AIM_MEMBER_OPTIONAL_GEAR_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   swprintf(wTemp, "%d", gMercProfiles[gbCurrentSoldier].usOptionalGearCost);
   InsertCommasForDollarFigure(wTemp);
   InsertDollarSignInToString(wTemp);
   uiPosX = AIM_MEMBER_OPTIONAL_GEAR_X + StringPixLength(CharacterInfo[Enum355.AIM_MEMBER_OPTIONAL_GEAR], AIM_M_FONT_STATIC_TEXT()) + 5;
-  DrawTextToScreen(wTemp, uiPosX, AIM_MEMBER_OPTIONAL_GEAR_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(wTemp, uiPosX, AIM_MEMBER_OPTIONAL_GEAR_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   DisableAimButton();
 
@@ -754,7 +754,7 @@ function RenderAIMMembers(): BOOLEAN {
     DisplayMercStats();
 
     gubMercAttitudeLevel = 0;
-    gfIsAnsweringMachineActive = FALSE;
+    gfIsAnsweringMachineActive = false;
   }
 
   //	InitCreateDeleteAimPopUpBox( AIM_POPUP_DISPLAY, NULL, NULL, 0, 0, 0);
@@ -772,23 +772,23 @@ function RenderAIMMembers(): BOOLEAN {
   }
 
   RenderWWWProgramTitleBar();
-  DisplayProgramBoundingBox(TRUE);
-  fReDrawScreenFlag = TRUE;
+  DisplayProgramBoundingBox(true);
+  fReDrawScreenFlag = true;
 
-  return TRUE;
+  return true;
 }
 
-function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): BOOLEAN {
+function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): boolean {
   let sStr: wchar_t[] /* [10] */;
 
   swprintf(sStr, "%d", iNumber);
 
-  DrawTextToScreen(sStr, usLocX, usLocY, bWidth, ulFont, ubColor, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(sStr, usLocX, usLocY, bWidth, ulFont, ubColor, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
-  return TRUE;
+  return true;
 }
 
-function DrawMoneyToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): BOOLEAN {
+function DrawMoneyToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): boolean {
   let sStr: wchar_t[] /* [10] */;
 
   swprintf(sStr, "%d", iNumber);
@@ -796,9 +796,9 @@ function DrawMoneyToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY:
   InsertDollarSignInToString(sStr);
 
   //	DrawTextToScreen(L"$", usLocX, usLocY, 0, ulFont, ubColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(sStr, usLocX, usLocY, bWidth, ulFont, ubColor, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(sStr, usLocX, usLocY, bWidth, ulFont, ubColor, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
-  return TRUE;
+  return true;
 }
 
 function SelectFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -809,23 +809,23 @@ function SelectFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
     // if the merc is not dead, video conference with the merc
     if (!IsMercDead(gbCurrentSoldier)) {
       gubVideoConferencingMode = Enum65.AIM_VIDEO_POPUP_MODE;
-      gfFirstTimeInContactScreen = TRUE;
+      gfFirstTimeInContactScreen = true;
     }
   }
 }
 
 function SelectFaceMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    gfAimMemberDisplayFaceHelpText = FALSE;
-    gfRedrawScreen = TRUE;
+    gfAimMemberDisplayFaceHelpText = false;
+    gfRedrawScreen = true;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    gfAimMemberDisplayFaceHelpText = TRUE;
-    gfRedrawScreen = TRUE;
+    gfAimMemberDisplayFaceHelpText = true;
+    gfRedrawScreen = true;
   } else if (iReason & MSYS_CALLBACK_REASON_MOVE) {
   }
 }
 
-function UpdateMercInfo(): BOOLEAN {
+function UpdateMercInfo(): boolean {
   let PosY: UINT16 = 300;
   let MercInfoString: wchar_t[] /* [SIZE_MERC_BIO_INFO] */;
   let AdditionalInfoString: wchar_t[] /* [SIZE_MERC_BIO_INFO] */;
@@ -848,44 +848,44 @@ function UpdateMercInfo(): BOOLEAN {
     swprintf(sMedicalString, "%s %s", zTemp, CharacterInfo[Enum355.AIM_MEMBER_MEDICAL_DEPOSIT_REQ]);
 
     // If the string will be displayed in more then 2 lines, recenter the string
-    if ((DisplayWrappedString(0, 0, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_FONT12ARIAL())) > 2) {
-      DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, (AIM_MEDICAL_DEPOSIT_Y - GetFontHeight(AIM_FONT12ARIAL())), AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    if ((DisplayWrappedString(0, 0, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_FONT12ARIAL())) > 2) {
+      DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, (AIM_MEDICAL_DEPOSIT_Y - GetFontHeight(AIM_FONT12ARIAL())), AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     } else
-      DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, AIM_MEDICAL_DEPOSIT_Y, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, AIM_MEDICAL_DEPOSIT_Y, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
   LoadMercBioInfo(gbCurrentSoldier, MercInfoString, AdditionalInfoString);
   if (MercInfoString[0] != 0) {
-    DisplayWrappedString(AIM_MERC_INFO_X, AIM_MERC_INFO_Y, AIM_MERC_INFO_WIDTH, 2, AIM_M_FONT_DYNAMIC_TEXT(), AIM_FONT_MCOLOR_WHITE, MercInfoString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(AIM_MERC_INFO_X, AIM_MERC_INFO_Y, AIM_MERC_INFO_WIDTH, 2, AIM_M_FONT_DYNAMIC_TEXT(), AIM_FONT_MCOLOR_WHITE, MercInfoString, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
   if (AdditionalInfoString[0] != 0) {
-    DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_ADDTNL_INFO], AIM_MERC_ADD_X, AIM_MERC_ADD_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-    DisplayWrappedString(AIM_MERC_ADD_INFO_X, AIM_MERC_ADD_INFO_Y, AIM_MERC_INFO_WIDTH, 2, AIM_M_FONT_DYNAMIC_TEXT(), AIM_FONT_MCOLOR_WHITE, AdditionalInfoString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_ADDTNL_INFO], AIM_MERC_ADD_X, AIM_MERC_ADD_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+    DisplayWrappedString(AIM_MERC_ADD_INFO_X, AIM_MERC_ADD_INFO_Y, AIM_MERC_INFO_WIDTH, 2, AIM_M_FONT_DYNAMIC_TEXT(), AIM_FONT_MCOLOR_WHITE, AdditionalInfoString, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadMercBioInfo(ubIndex: UINT8, pInfoString: STR16, pAddInfo: STR16): BOOLEAN {
+function LoadMercBioInfo(ubIndex: UINT8, pInfoString: STR16, pAddInfo: STR16): boolean {
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
   let i: UINT16;
   let uiStartSeekAmount: UINT32;
 
-  hFile = FileOpen(MERCBIOSFILENAME, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(MERCBIOSFILENAME, FILE_ACCESS_READ, false);
   if (!hFile) {
-    return FALSE;
+    return false;
   }
 
   // Get current mercs bio info
   uiStartSeekAmount = (SIZE_MERC_BIO_INFO + SIZE_MERC_ADDITIONAL_INFO) * ubIndex;
 
-  if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == FALSE) {
-    return FALSE;
+  if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
+    return false;
   }
 
   if (!FileRead(hFile, pInfoString, SIZE_MERC_BIO_INFO, addressof(uiBytesRead))) {
-    return FALSE;
+    return false;
   }
 
   // Decrement, by 1, any value > 32
@@ -957,12 +957,12 @@ function LoadMercBioInfo(ubIndex: UINT8, pInfoString: STR16, pAddInfo: STR16): B
 
   // Get the additional info
   uiStartSeekAmount = ((SIZE_MERC_BIO_INFO + SIZE_MERC_ADDITIONAL_INFO) * ubIndex) + SIZE_MERC_BIO_INFO;
-  if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == FALSE) {
-    return FALSE;
+  if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
+    return false;
   }
 
   if (!FileRead(hFile, pAddInfo, SIZE_MERC_ADDITIONAL_INFO, addressof(uiBytesRead))) {
-    return FALSE;
+    return false;
   }
 
   // Decrement, by 1, any value > 32
@@ -1033,10 +1033,10 @@ function LoadMercBioInfo(ubIndex: UINT8, pInfoString: STR16, pAddInfo: STR16): B
   }
 
   FileClose(hFile);
-  return TRUE;
+  return true;
 }
 
-function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
+function DisplayMercsInventory(ubMercID: UINT8): boolean {
   let i: UINT8;
   let PosX: INT16;
   let PosY: INT16;
@@ -1054,7 +1054,7 @@ function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
 
   // if the mercs inventory has already been purchased, dont display the inventory
   if (gMercProfiles[ubMercID].ubMiscFlags & PROFILE_MISC_FLAG_ALREADY_USED_ITEMS)
-    return TRUE;
+    return true;
 
   PosY = WEAPONBOX_Y;
   PosX = WEAPONBOX_X + 3; // + 3 ( 1 to take care of the shadow, +2 to get past the weapon box border )
@@ -1079,7 +1079,7 @@ function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
       // blt the shadow of the item
       BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX - 2, sCenY + 2);
       // blt the item
-      BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX, sCenY, 0, FALSE);
+      BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX, sCenY, 0, false);
 
       // if there are more then 1 piece of equipment in the current slot, display how many there are
       if (gMercProfiles[ubMercID].bInvNumber[i] > 1) {
@@ -1088,23 +1088,23 @@ function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
 
         swprintf(zTempStr, "x%d", gMercProfiles[ubMercID].bInvNumber[i]);
 
-        DrawTextToScreen(zTempStr, (PosX - 1), (PosY + 20), AIM_MEMBER_WEAPON_NAME_WIDTH, AIM_M_FONT_DYNAMIC_TEXT(), AIM_M_WEAPON_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+        DrawTextToScreen(zTempStr, (PosX - 1), (PosY + 20), AIM_MEMBER_WEAPON_NAME_WIDTH, AIM_M_FONT_DYNAMIC_TEXT(), AIM_M_WEAPON_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
       } else {
       }
 
       wcscpy(gzItemName, ShortItemNames[usItem]);
 
       // if this will only be a single line, center it in the box
-      if ((DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_M_WEAPON_TEXT_FONT())) == 1)
-        DisplayWrappedString((PosX - 1), (AIM_MEMBER_WEAPON_NAME_Y + GetFontHeight(AIM_M_WEAPON_TEXT_FONT()) / 2), AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      if ((DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_M_WEAPON_TEXT_FONT())) == 1)
+        DisplayWrappedString((PosX - 1), (AIM_MEMBER_WEAPON_NAME_Y + GetFontHeight(AIM_M_WEAPON_TEXT_FONT()) / 2), AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       else
-        DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       PosX += WEAPONBOX_SIZE_X;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function BtnPreviousButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -1123,7 +1123,7 @@ function BtnPreviousButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       else
         gbCurrentIndex = MAX_NUMBER_MERCS - 1;
 
-      gfRedrawScreen = TRUE;
+      gfRedrawScreen = true;
 
       gbCurrentSoldier = AimMercArray[gbCurrentIndex];
 
@@ -1148,7 +1148,7 @@ function BtnContactButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       if (!gubVideoConferencingMode) {
         gubVideoConferencingMode = Enum65.AIM_VIDEO_POPUP_MODE;
         //				gubVideoConferencingMode = AIM_VIDEO_INIT_MODE;
-        gfFirstTimeInContactScreen = TRUE;
+        gfFirstTimeInContactScreen = true;
       }
 
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
@@ -1181,7 +1181,7 @@ function BtnNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
       gbCurrentSoldier = AimMercArray[gbCurrentIndex];
 
-      gfRedrawScreen = TRUE;
+      gfRedrawScreen = true;
 
       gubVideoConferencingMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
 
@@ -1194,7 +1194,7 @@ function BtnNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function DisplayMercsFace(): BOOLEAN {
+function DisplayMercsFace(): boolean {
   let hFaceHandle: HVOBJECT;
   let hPortraitHandle: HVOBJECT;
   let sFaceLoc: STR = "FACES\\BIGFACES\\";
@@ -1203,7 +1203,7 @@ function DisplayMercsFace(): BOOLEAN {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // See if the merc is currently hired
-  pSoldier = FindSoldierByProfileID(gbCurrentSoldier, TRUE);
+  pSoldier = FindSoldierByProfileID(gbCurrentSoldier, true);
 
   // Portrait Frame
   GetVideoObject(addressof(hPortraitHandle), guiPortrait);
@@ -1222,7 +1222,7 @@ function DisplayMercsFace(): BOOLEAN {
   // if the merc is dead
   if (IsMercDead(gbCurrentSoldier)) {
     // shade the face red, (to signif that he is dead)
-    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
+    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // get the face object
     GetVideoObject(addressof(hFaceHandle), guiFace);
@@ -1234,30 +1234,30 @@ function DisplayMercsFace(): BOOLEAN {
     BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, FACE_X, FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     // if the merc is dead, display it
-    DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_DEAD], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_DEAD], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
   // else if the merc is currently a POW or, the merc was fired as a pow
   else if (gMercProfiles[gbCurrentSoldier].bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, FACE_X, FACE_Y, FACE_X + FACE_WIDTH, FACE_Y + FACE_HEIGHT);
-    DrawTextToScreen(pPOWStrings[0], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(pPOWStrings[0], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
   // else if the merc has already been hired
-  else if (FindSoldierByProfileID(gbCurrentSoldier, TRUE)) {
+  else if (FindSoldierByProfileID(gbCurrentSoldier, true)) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, FACE_X, FACE_Y, FACE_X + FACE_WIDTH, FACE_Y + FACE_HEIGHT);
-    DrawTextToScreen(MercInfo[Enum341.MERC_FILES_ALREADY_HIRED], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(MercInfo[Enum341.MERC_FILES_ALREADY_HIRED], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
   else if (!IsMercHireable(gbCurrentSoldier)) {
     // else if the merc has a text file and the merc is not away
     ShadowVideoSurfaceRect(FRAME_BUFFER, FACE_X, FACE_Y, FACE_X + FACE_WIDTH, FACE_Y + FACE_HEIGHT);
-    DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_ON_ASSIGNMENT], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_ON_ASSIGNMENT], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
   DeleteVideoObjectFromIndex(guiFace);
 
-  return TRUE;
+  return true;
 }
 
 function DisplayMercStats(): void {
@@ -1268,38 +1268,38 @@ function DisplayMercStats(): void {
   //
 
   // First column in stats box.  Health, Agility, dexterity, strength, leadership, wisdom
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_HEALTH], STATS_FIRST_COL, HEALTH_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_HEALTH], STATS_FIRST_COL, HEALTH_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_FIRST_COL, HEALTH_Y, FIRST_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_HEALTH]);
 
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_AGILITY], STATS_FIRST_COL, AGILITY_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_AGILITY], STATS_FIRST_COL, AGILITY_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_FIRST_COL, AGILITY_Y, FIRST_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_AGILITY]);
 
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_DEXTERITY], STATS_FIRST_COL, DEXTERITY_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_DEXTERITY], STATS_FIRST_COL, DEXTERITY_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_FIRST_COL, DEXTERITY_Y, FIRST_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_DEXTERITY]);
 
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_STRENGTH], STATS_FIRST_COL, STRENGTH_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_STRENGTH], STATS_FIRST_COL, STRENGTH_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_FIRST_COL, STRENGTH_Y, FIRST_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_STRENGTH]);
 
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_LEADERSHIP], STATS_FIRST_COL, LEADERSHIP_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_LEADERSHIP], STATS_FIRST_COL, LEADERSHIP_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_FIRST_COL, LEADERSHIP_Y, FIRST_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_LEADERSHIP]);
 
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_WISDOM], STATS_FIRST_COL, WISDOM_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_WISDOM], STATS_FIRST_COL, WISDOM_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_FIRST_COL, WISDOM_Y, FIRST_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_WISDOM]);
 
   // Second column in stats box.  Exp.Level, Markmanship, mechanical, explosive, medical
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_EXP_LEVEL], STATS_SECOND_COL, EXPLEVEL_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_EXP_LEVEL], STATS_SECOND_COL, EXPLEVEL_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_SECOND_COL, EXPLEVEL_Y, SECOND_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_EXP_LEVEL]);
 
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_MARKSMANSHIP], STATS_SECOND_COL, MARKSMAN_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_MARKSMANSHIP], STATS_SECOND_COL, MARKSMAN_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_SECOND_COL, MARKSMAN_Y, SECOND_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_MARKSMANSHIP]);
 
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_MECHANICAL], STATS_SECOND_COL, MECHANAICAL_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_MECHANICAL], STATS_SECOND_COL, MECHANAICAL_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_SECOND_COL, MECHANAICAL_Y, SECOND_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_MECHANICAL]);
 
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_EXPLOSIVE], STATS_SECOND_COL, EXPLOSIVE_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_EXPLOSIVE], STATS_SECOND_COL, EXPLOSIVE_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_SECOND_COL, EXPLOSIVE_Y, SECOND_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_EXPLOSIVE]);
 
-  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_MEDICAL], STATS_SECOND_COL, MEDICAL_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_MEDICAL], STATS_SECOND_COL, MEDICAL_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   DisplayDots(STATS_SECOND_COL, MEDICAL_Y, SECOND_COLUMN_DOT, CharacterInfo[Enum355.AIM_MEMBER_MEDICAL]);
 
   //
@@ -1307,7 +1307,7 @@ function DisplayMercStats(): void {
   //
 
   // Name
-  DrawTextToScreen(gMercProfiles[gbCurrentSoldier].zName, NAME_X, NAME_Y, 0, FONT14ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(gMercProfiles[gbCurrentSoldier].zName, NAME_X, NAME_Y, 0, FONT14ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Numbers for above.   Health, Agility, dexterity, strength, leadership, wisdom
 
@@ -1367,7 +1367,7 @@ function DisplayDots(usNameX: UINT16, usNameY: UINT16, usStatX: UINT16, pString:
 
   usPosX = usStatX;
   for (i = usNameX + usStringLength; i <= usPosX; usPosX -= 7) {
-    DrawTextToScreen(".", usPosX, usNameY, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(".", usPosX, usNameY, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 }
 
@@ -1381,13 +1381,13 @@ function BtnContractLengthButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
 
     gubContractLength = ubRetValue;
-    DisplaySelectLights(TRUE, FALSE);
+    DisplaySelectLights(true, false);
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    DisplaySelectLights(FALSE, FALSE);
+    DisplaySelectLights(false, false);
 
     guiMercAttitudeTime = GetJA2Clock();
 
@@ -1409,13 +1409,13 @@ function BtnBuyEquipmentButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
     gfBuyEquipment = MSYS_GetBtnUserData(btn, 0);
-    DisplaySelectLights(FALSE, TRUE);
+    DisplaySelectLights(false, true);
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    DisplaySelectLights(FALSE, FALSE);
+    DisplaySelectLights(false, false);
     DisplayMercChargeAmount();
 
     guiMercAttitudeTime = GetJA2Clock();
@@ -1443,7 +1443,7 @@ function BtnAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    gfStopMercFromTalking = TRUE;
+    gfStopMercFromTalking = true;
     gubMercAttitudeLevel = QUOTE_DELAY_NO_ACTION;
 
     // If we try to hire the merc
@@ -1457,10 +1457,10 @@ function BtnAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
         if (AimMemberHireMerc()) {
           // if merc was hired
           InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_CREATE, AimPopUpText[Enum357.AIM_MEMBER_FUNDS_TRANSFER_SUCCESFUL], null, AIM_POPUP_BOX_X, AIM_POPUP_BOX_Y, AIM_POPUP_BOX_SUCCESS);
-          DelayMercSpeech(gbCurrentSoldier, Enum202.QUOTE_CONTRACT_ACCEPTANCE, 750, TRUE, FALSE);
+          DelayMercSpeech(gbCurrentSoldier, Enum202.QUOTE_CONTRACT_ACCEPTANCE, 750, true, false);
 
           // Disable the buttons behind the message box
-          EnableDisableCurrentVideoConferenceButtons(TRUE);
+          EnableDisableCurrentVideoConferenceButtons(true);
 
           SpecifyDisabledButtonStyle(giBuyEquipmentButton[0], Enum29.DISABLED_STYLE_NONE);
           SpecifyDisabledButtonStyle(giBuyEquipmentButton[1], Enum29.DISABLED_STYLE_NONE);
@@ -1504,14 +1504,14 @@ function AimMemberHireMerc(): INT8 {
     InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_CREATE, AimPopUpText[Enum357.AIM_MEMBER_FUNDS_TRANSFER_FAILED], AimPopUpText[Enum357.AIM_MEMBER_NOT_ENOUGH_FUNDS], AIM_POPUP_BOX_X, AIM_POPUP_BOX_Y, AIM_POPUP_BOX_FAILURE);
 
     // Disable the buttons behind the message box
-    EnableDisableCurrentVideoConferenceButtons(TRUE);
+    EnableDisableCurrentVideoConferenceButtons(true);
 
     SpecifyDisabledButtonStyle(giBuyEquipmentButton[0], Enum29.DISABLED_STYLE_NONE);
     SpecifyDisabledButtonStyle(giBuyEquipmentButton[1], Enum29.DISABLED_STYLE_NONE);
 
-    DelayMercSpeech(gbCurrentSoldier, Enum202.QUOTE_REFUSAL_TO_JOIN_LACK_OF_FUNDS, 750, TRUE, FALSE);
+    DelayMercSpeech(gbCurrentSoldier, Enum202.QUOTE_REFUSAL_TO_JOIN_LACK_OF_FUNDS, 750, true, false);
 
-    return FALSE;
+    return false;
   }
 
   memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
@@ -1521,7 +1521,7 @@ function AimMemberHireMerc(): INT8 {
   // DEF: temp
   HireMercStruct.sSectorX = gsMercArriveSectorX;
   HireMercStruct.sSectorY = gsMercArriveSectorY;
-  HireMercStruct.fUseLandingZoneForArrival = TRUE;
+  HireMercStruct.fUseLandingZoneForArrival = true;
   HireMercStruct.ubInsertionCode = Enum175.INSERTION_CODE_ARRIVING_GAME;
 
   HireMercStruct.fCopyProfileItemsOver = gfBuyEquipment;
@@ -1554,15 +1554,15 @@ function AimMemberHireMerc(): INT8 {
   if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
     // display a warning saying u cant hire more then 20 mercs
     DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, AimPopUpText[Enum357.AIM_MEMBER_ALREADY_HAVE_20_MERCS], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
-    return FALSE;
+    return false;
   } else if (bReturnCode == MERC_HIRE_FAILED) {
-    return FALSE;
+    return false;
   }
 
   // Set the type of contract the merc is on
   sSoldierID = GetSoldierIDFromMercID(ubCurrentSoldier);
   if (sSoldierID == -1)
-    return FALSE;
+    return false;
   Menptr[sSoldierID].bTypeOfLastContract = bTypeOfContract;
 
   // add an entry in the finacial page for the hiring of the merc
@@ -1575,31 +1575,31 @@ function AimMemberHireMerc(): INT8 {
 
   // add an entry in the history page for the hiring of the merc
   AddHistoryToPlayersLog(Enum83.HISTORY_HIRED_MERC_FROM_AIM, ubCurrentSoldier, GetWorldTotalMin(), -1, -1);
-  return TRUE;
+  return true;
 }
 
-function DisplayVideoConferencingDisplay(): BOOLEAN {
+function DisplayVideoConferencingDisplay(): boolean {
   let sMercName: wchar_t[] /* [128] */;
 
   if ((gubVideoConferencingMode == Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE) || (gubVideoConferencingMode == Enum65.AIM_VIDEO_POPUP_MODE))
-    return FALSE;
+    return false;
 
   DisplayMercsVideoFace();
 
   // Title & Name
   if (gubVideoConferencingMode == Enum65.AIM_VIDEO_INIT_MODE) {
     swprintf(sMercName, "%s", VideoConfercingText[Enum356.AIM_MEMBER_CONNECTING]);
-    DrawTextToScreen(sMercName, AIM_MEMBER_VIDEO_NAME_X, AIM_MEMBER_VIDEO_NAME_Y, 0, FONT12ARIAL(), AIM_M_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sMercName, AIM_MEMBER_VIDEO_NAME_X, AIM_MEMBER_VIDEO_NAME_Y, 0, FONT12ARIAL(), AIM_M_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   } else {
     swprintf(sMercName, "%s %s", VideoConfercingText[Enum356.AIM_MEMBER_VIDEO_CONF_WITH], gMercProfiles[gbCurrentSoldier].zName);
-    DrawTextToScreen(sMercName, AIM_MEMBER_VIDEO_NAME_X, AIM_MEMBER_VIDEO_NAME_Y, 0, FONT12ARIAL(), AIM_M_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sMercName, AIM_MEMBER_VIDEO_NAME_X, AIM_MEMBER_VIDEO_NAME_Y, 0, FONT12ARIAL(), AIM_M_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
   // Display Contract charge text
   if (gubVideoConferencingMode == Enum65.AIM_VIDEO_HIRE_MERC_MODE) {
     // Display the contract charge
     SetFontShadow(AIM_M_VIDEO_NAME_SHADOWCOLOR);
-    DrawTextToScreen(VideoConfercingText[Enum356.AIM_MEMBER_CONTRACT_CHARGE], AIM_CONTRACT_CHARGE_X, AIM_CONTRACT_CHARGE_Y, 0, FONT12ARIAL(), AIM_M_VIDEO_NAME_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(VideoConfercingText[Enum356.AIM_MEMBER_CONTRACT_CHARGE], AIM_CONTRACT_CHARGE_X, AIM_CONTRACT_CHARGE_Y, 0, FONT12ARIAL(), AIM_M_VIDEO_NAME_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     SetFontShadow(DEFAULT_SHADOW);
   }
 
@@ -1611,10 +1611,10 @@ function DisplayVideoConferencingDisplay(): BOOLEAN {
     let usActualHeight: UINT16;
     let usPosX: UINT16;
 
-    SET_USE_WINFONTS(TRUE);
+    SET_USE_WINFONTS(true);
     SET_WINFONT(giSubTitleWinFont);
     iAimMembersBoxId = PrepareMercPopupBox(iAimMembersBoxId, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsTalkingMercText, 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
-    SET_USE_WINFONTS(FALSE);
+    SET_USE_WINFONTS(false);
 
     usPosX = (LAPTOP_SCREEN_LR_X - usActualWidth) / 2;
 
@@ -1627,10 +1627,10 @@ function DisplayVideoConferencingDisplay(): BOOLEAN {
 
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 
-  return TRUE;
+  return true;
 }
 
-function DisplayMercsVideoFace(): BOOLEAN {
+function DisplayMercsVideoFace(): boolean {
   let hTerminalHandle: HVOBJECT;
   let sFaceLoc: STR = "FACES\\";
 
@@ -1641,12 +1641,12 @@ function DisplayMercsVideoFace(): BOOLEAN {
 
   // Display the Select light on the merc
   if (gubVideoConferencingMode == Enum65.AIM_VIDEO_HIRE_MERC_MODE)
-    DisplaySelectLights(FALSE, FALSE);
+    DisplaySelectLights(false, false);
 
-  return TRUE;
+  return true;
 }
 
-function DisplaySelectLights(fContractDown: BOOLEAN, fBuyEquipDown: BOOLEAN): void {
+function DisplaySelectLights(fContractDown: boolean, fBuyEquipDown: boolean): void {
   let i: UINT16;
   let usPosY: UINT16;
   let usPosX: UINT16;
@@ -1702,7 +1702,7 @@ function DisplayMercChargeAmount(): UINT32 {
   GetVideoObject(addressof(hImageHandle), guiVideoContractCharge);
   BltVideoObject(FRAME_BUFFER, hImageHandle, 0, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_X, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-  if (FindSoldierByProfileID(gbCurrentSoldier, TRUE) == null) {
+  if (FindSoldierByProfileID(gbCurrentSoldier, true) == null) {
     giContractAmount = 0;
 
     // the contract charge amount
@@ -1740,26 +1740,26 @@ function DisplayMercChargeAmount(): UINT32 {
     else
       swprintf(wTemp, "%s", wDollarTemp);
 
-    DrawTextToScreen(wTemp, AIM_CONTRACT_CHARGE_AMOUNNT_X + 1, AIM_CONTRACT_CHARGE_AMOUNNT_Y + 3, 0, AIM_M_VIDEO_CONTRACT_AMOUNT_FONT(), AIM_M_VIDEO_CONTRACT_AMOUNT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(wTemp, AIM_CONTRACT_CHARGE_AMOUNNT_X + 1, AIM_CONTRACT_CHARGE_AMOUNNT_Y + 3, 0, AIM_M_VIDEO_CONTRACT_AMOUNT_FONT(), AIM_M_VIDEO_CONTRACT_AMOUNT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
   return giContractAmount;
 }
 
-function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: STR16, usPosX: UINT16, usPosY: UINT16, ubData: UINT8): BOOLEAN {
+function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: STR16, usPosX: UINT16, usPosY: UINT16, ubData: UINT8): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let hPopupBoxHandle: HVOBJECT;
   /* static */ let usPopUpBoxPosX: UINT16;
   /* static */ let usPopUpBoxPosY: UINT16;
   /* static */ let sPopUpString1: wchar_t[] /* [400] */;
   /* static */ let sPopUpString2: wchar_t[] /* [400] */;
-  /* static */ let fPopUpBoxActive: BOOLEAN = FALSE;
+  /* static */ let fPopUpBoxActive: boolean = false;
   ;
 
   switch (ubFlag) {
     case Enum66.AIM_POPUP_CREATE: {
       if (fPopUpBoxActive)
-        return FALSE;
+        return false;
 
       // Disable the 'X' to close the pop upi video
       DisableButton(giXToCloseVideoConfButton);
@@ -1791,20 +1791,20 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
       SetButtonCursor(guiPopUpOkButton, Enum317.CURSOR_LAPTOP_SCREEN);
       MSYS_SetBtnUserData(guiPopUpOkButton, 0, ubData);
 
-      fPopUpBoxActive = TRUE;
+      fPopUpBoxActive = true;
       gubPopUpBoxAction = Enum66.AIM_POPUP_DISPLAY;
 
       // Disable the current video conference buttons
       // EnableDisableCurrentVideoConferenceButtons(TRUE);
       if (gubVideoConferencingPreviousMode == Enum65.AIM_VIDEO_HIRE_MERC_MODE) {
         // Enable the current video conference buttons
-        EnableDisableCurrentVideoConferenceButtons(FALSE);
+        EnableDisableCurrentVideoConferenceButtons(false);
       }
 
       //
       //	Create a new flag for the PostButtonRendering function
       //
-      fReDrawPostButtonRender = TRUE;
+      fReDrawPostButtonRender = true;
     } break;
 
     case Enum66.AIM_POPUP_DISPLAY: {
@@ -1812,7 +1812,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
       let usTempPosY: UINT16 = usPopUpBoxPosY;
 
       if (gubPopUpBoxAction != Enum66.AIM_POPUP_DISPLAY)
-        return FALSE;
+        return false;
 
       // load and display the popup box graphic
       GetVideoObject(addressof(hPopupBoxHandle), guiPopUpBox);
@@ -1822,9 +1822,9 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
 
       usTempPosY += AIM_POPUP_BOX_STRING1_Y;
       if (sPopUpString1[0] != '\0')
-        usTempPosY += DisplayWrappedString(usPopUpBoxPosX, usTempPosY, AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, sPopUpString1, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        usTempPosY += DisplayWrappedString(usPopUpBoxPosX, usTempPosY, AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, sPopUpString1, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       if (sPopUpString2[0] != '\0')
-        DisplayWrappedString(usPopUpBoxPosX, (usTempPosY + 4), AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, sPopUpString2, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(usPopUpBoxPosX, (usTempPosY + 4), AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, sPopUpString2, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       SetFontShadow(DEFAULT_SHADOW);
 
@@ -1833,7 +1833,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
 
     case Enum66.AIM_POPUP_DELETE: {
       if (!fPopUpBoxActive)
-        return FALSE;
+        return false;
 
       // Disable the 'X' to close the pop upi video
       EnableButton(giXToCloseVideoConfButton);
@@ -1842,23 +1842,23 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
       RemoveButton(guiPopUpOkButton);
       DeleteVideoObjectFromIndex(guiPopUpBox);
 
-      fPopUpBoxActive = FALSE;
+      fPopUpBoxActive = false;
       gubPopUpBoxAction = Enum66.AIM_POPUP_NOTHING;
 
       if (gubVideoConferencingPreviousMode == Enum65.AIM_VIDEO_HIRE_MERC_MODE) {
         // Enable the current video conference buttons
-        EnableDisableCurrentVideoConferenceButtons(FALSE);
+        EnableDisableCurrentVideoConferenceButtons(false);
       } else if (gubVideoConferencingPreviousMode == Enum65.AIM_VIDEO_MERC_ANSWERING_MACHINE_MODE) {
         EnableButton(giAnsweringMachineButton[1]);
       }
     } break;
   }
 
-  return TRUE;
+  return true;
 }
 
 function BtnPopUpOkButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  /* static */ let fInCallback: BOOLEAN = TRUE;
+  /* static */ let fInCallback: boolean = true;
 
   if (fInCallback) {
     if (!(btn.value.uiFlags & BUTTON_ENABLED))
@@ -1872,7 +1872,7 @@ function BtnPopUpOkButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       let ubCurPageNum: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-      fInCallback = FALSE;
+      fInCallback = false;
 
       //			gfStopMercFromTalking = TRUE;
 
@@ -1888,7 +1888,7 @@ function BtnPopUpOkButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
           gubVideoConferencingMode = Enum65.AIM_VIDEO_HIRE_MERC_MODE;
       }
 
-      fInCallback = TRUE;
+      fInCallback = true;
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
@@ -1908,7 +1908,7 @@ function BtnFirstContactButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
       //			gfStopMercFromTalking = TRUE;
       StopMercTalking();
 
-      gfAimMemberCanMercSayOpeningQuote = FALSE;
+      gfAimMemberCanMercSayOpeningQuote = false;
 
       if (ubRetValue == 0) {
         if (CanMercBeHired()) {
@@ -1987,7 +1987,7 @@ function BtnHangUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 }
 
 // InitVideoFace() is called once to initialize things
-function InitVideoFace(ubMercID: UINT8): BOOLEAN {
+function InitVideoFace(ubMercID: UINT8): boolean {
   // Create the facial index
   giMercFaceIndex = InitFace(ubMercID, NOBODY, 0);
 
@@ -1997,32 +1997,32 @@ function InitVideoFace(ubMercID: UINT8): BOOLEAN {
 
   gubCurrentStaticMode = Enum67.VC_NO_STATIC;
 
-  gfVideoFaceActive = TRUE;
+  gfVideoFaceActive = true;
 
   guiMercAttitudeTime = GetJA2Clock();
 
-  return TRUE;
+  return true;
 }
 
 // InitVideoFaceTalking() is called to start a merc speaking a particular message
-function InitVideoFaceTalking(ubMercID: UINT8, usQuoteNum: UINT16): BOOLEAN {
+function InitVideoFaceTalking(ubMercID: UINT8, usQuoteNum: UINT16): boolean {
   // Starts the merc talking
-  if (!CharacterDialogue(ubMercID, usQuoteNum, giMercFaceIndex, DIALOGUE_CONTACTPAGE_UI, FALSE, FALSE)) {
-    return FALSE;
+  if (!CharacterDialogue(ubMercID, usQuoteNum, giMercFaceIndex, DIALOGUE_CONTACTPAGE_UI, false, false)) {
+    return false;
   }
 
   // Enables it so if a player clicks, he will shutup the merc
   MSYS_EnableRegion(addressof(gSelectedShutUpMercRegion));
 
-  gfIsShutUpMouseRegionActive = TRUE;
-  gfMercIsTalking = TRUE;
+  gfIsShutUpMouseRegionActive = true;
+  gfMercIsTalking = true;
   guiTimeThatMercStartedTalking = GetJA2Clock();
-  return TRUE;
+  return true;
 }
 
-function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): BOOLEAN {
-  /* static */ let fWasTheMercTalking: BOOLEAN = FALSE;
-  let fIsTheMercTalking: BOOLEAN;
+function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): boolean {
+  /* static */ let fWasTheMercTalking: boolean = false;
+  let fIsTheMercTalking: boolean;
   let SrcRect: SGPRect;
   let DestRect: SGPRect;
 
@@ -2039,7 +2039,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): BOOLEAN {
 
   // If the answering machine graphics is up, dont handle the faces
   if (gfIsAnsweringMachineActive) {
-    gFacesData[giMercFaceIndex].fInvalidAnim = TRUE;
+    gFacesData[giMercFaceIndex].fInvalidAnim = true;
   }
 
   HandleDialogue();
@@ -2051,7 +2051,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): BOOLEAN {
   {
     // Blt the face surface to the video background surface
     if (!BltStretchVideoSurface(FRAME_BUFFER, guiVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DestRect)))
-      return FALSE;
+      return false;
 
     // if the merc is not at home and the players is leaving a message, shade the players face
     if (gfIsAnsweringMachineActive)
@@ -2060,7 +2060,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): BOOLEAN {
     // If the answering machine graphics is up, place a message on the screen
     if (gfIsAnsweringMachineActive) {
       // display a message over the mercs face
-      DisplayWrappedString(AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y + 20, AIM_MEMBER_VIDEO_FACE_WIDTH, 2, FONT14ARIAL(), 145, AimPopUpText[Enum357.AIM_MEMBER_PRERECORDED_MESSAGE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DisplayWrappedString(AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y + 20, AIM_MEMBER_VIDEO_FACE_WIDTH, 2, FONT14ARIAL(), 145, AimPopUpText[Enum357.AIM_MEMBER_PRERECORDED_MESSAGE], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     }
 
     InvalidateRegion(AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH, AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT);
@@ -2078,9 +2078,9 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): BOOLEAN {
   if ((GetJA2Clock() - guiTimeThatMercStartedTalking) > usAimMercSpeechDuration) {
     // if the merc just stopped talking
     if (fWasTheMercTalking && !fIsTheMercTalking) {
-      fWasTheMercTalking = FALSE;
+      fWasTheMercTalking = false;
 
-      gfRedrawScreen = TRUE;
+      gfRedrawScreen = true;
       guiMercAttitudeTime = GetJA2Clock();
 
       StopMercTalking();
@@ -2101,21 +2101,21 @@ function DisplayTextForMercFaceVideoPopUp(pString: STR16): void {
   if (usAimMercSpeechDuration < MINIMUM_TALKING_TIME_FOR_MERC)
     usAimMercSpeechDuration = MINIMUM_TALKING_TIME_FOR_MERC;
 
-  gfRedrawScreen = TRUE;
+  gfRedrawScreen = true;
 }
 
 function SelectShutUpMercRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  let fInCallBack: BOOLEAN = TRUE;
+  let fInCallBack: boolean = true;
 
   if (fInCallBack) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
     } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-      gfStopMercFromTalking = TRUE;
+      gfStopMercFromTalking = true;
     } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      fInCallBack = FALSE;
+      fInCallBack = false;
 
-      gfStopMercFromTalking = TRUE;
-      fInCallBack = TRUE;
+      gfStopMercFromTalking = true;
+      fInCallBack = true;
     }
   }
 }
@@ -2138,12 +2138,12 @@ function WillMercAcceptCall(): UINT8 {
     return Enum65.AIM_VIDEO_MERC_ANSWERING_MACHINE_MODE;
 }
 
-function CanMercBeHired(): BOOLEAN {
+function CanMercBeHired(): boolean {
   let i: UINT8;
   let j: UINT8;
   let bMercID: INT8;
-  let fRetVal: BOOLEAN = FALSE;
-  let fBuddyOnTeam: BOOLEAN = FALSE;
+  let fRetVal: boolean = false;
+  let fBuddyOnTeam: boolean = false;
 
   StopMercTalking();
 
@@ -2152,7 +2152,7 @@ function CanMercBeHired(): BOOLEAN {
     // then he refuses with a lame excuse.  Buddy or no buddy.
     WaitForMercToFinishTalkingOrUserToClick();
     InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_LAME_REFUSAL);
-    return FALSE;
+    return false;
   }
 
   // loop through the list of people the merc hates
@@ -2187,7 +2187,7 @@ function CanMercBeHired(): BOOLEAN {
             InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_JOINING_CAUSE_LEARNED_TO_LIKE_BUDDY_ON_TEAM);
           }
 
-          return TRUE;
+          return true;
         }
       }
 
@@ -2197,25 +2197,25 @@ function CanMercBeHired(): BOOLEAN {
         if (gMercProfiles[gbCurrentSoldier].bHatedTime[i] < 24) {
           WaitForMercToFinishTalkingOrUserToClick();
           InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_HATE_MERC_1_ON_TEAM);
-          fRetVal = FALSE;
+          fRetVal = false;
         } else {
           InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_PERSONALITY_BIAS_WITH_MERC_1);
-          fRetVal = TRUE;
+          fRetVal = true;
         }
       } else if (i == 1) {
         if (gMercProfiles[gbCurrentSoldier].bHatedTime[i] < 24) {
           WaitForMercToFinishTalkingOrUserToClick();
           InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_HATE_MERC_2_ON_TEAM);
-          fRetVal = FALSE;
+          fRetVal = false;
         } else {
           InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_PERSONALITY_BIAS_WITH_MERC_2);
           //					DelayMercSpeech( gbCurrentSoldier, QUOTE_PERSONALITY_BIAS_WITH_MERC_2, 750, TRUE, FALSE );
-          fRetVal = TRUE;
+          fRetVal = true;
         }
       } else {
         WaitForMercToFinishTalkingOrUserToClick();
         InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_LEARNED_TO_HATE_MERC_ON_TEAM);
-        fRetVal = FALSE;
+        fRetVal = false;
       }
 
       return fRetVal;
@@ -2231,21 +2231,21 @@ function CanMercBeHired(): BOOLEAN {
     if (MercThinksDeathRateTooHigh(gbCurrentSoldier)) {
       WaitForMercToFinishTalkingOrUserToClick();
       InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_DEATH_RATE_REFUSAL);
-      return FALSE;
+      return false;
     }
 
     // Check the players Reputation
     if (MercThinksBadReputationTooHigh(gbCurrentSoldier)) {
       WaitForMercToFinishTalkingOrUserToClick();
       InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_REPUTATION_REFUSAL);
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function DisplaySnowBackground(): BOOLEAN {
+function DisplaySnowBackground(): boolean {
   let uiCurrentTime: UINT32 = 0;
   let hSnowHandle: HVOBJECT;
   let ubCount: UINT8;
@@ -2257,14 +2257,14 @@ function DisplaySnowBackground(): BOOLEAN {
   } else if (gubCurrentCount < VC_NUM_LINES_SNOW * 2) {
     ubCount = gubCurrentCount - VC_NUM_LINES_SNOW;
   } else {
-    gfFirstTimeInContactScreen = FALSE;
+    gfFirstTimeInContactScreen = false;
     gubCurrentCount = 0;
     ubCount = 0;
 
     if (gubVideoConferencingMode == Enum65.AIM_VIDEO_FIRST_CONTACT_MERC_MODE && gfAimMemberCanMercSayOpeningQuote)
       InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_GREETING);
 
-    return TRUE;
+    return true;
   }
 
   // if it is time to update the snow image
@@ -2278,10 +2278,10 @@ function DisplaySnowBackground(): BOOLEAN {
 
   InvalidateRegion(AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH, AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT);
 
-  return FALSE;
+  return false;
 }
 
-function DisplayBlackBackground(ubMaxNumOfLoops: UINT8): BOOLEAN {
+function DisplayBlackBackground(ubMaxNumOfLoops: UINT8): boolean {
   let uiCurrentTime: UINT32 = 0;
   let ubCount: UINT8;
 
@@ -2291,7 +2291,7 @@ function DisplayBlackBackground(ubMaxNumOfLoops: UINT8): BOOLEAN {
     ubCount = gubCurrentCount;
   } else {
     gubCurrentCount = 0;
-    return TRUE;
+    return true;
   }
 
   // if it is time to update the snow image
@@ -2303,7 +2303,7 @@ function DisplayBlackBackground(ubMaxNumOfLoops: UINT8): BOOLEAN {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH, AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT, Get16BPPColor(FROMRGB(0, 0, 0)));
   InvalidateRegion(AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH, AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT);
 
-  return FALSE;
+  return false;
 }
 
 function HandleVideoDistortion(): void {
@@ -2393,7 +2393,7 @@ function HandleVideoDistortion(): void {
         break;
 
       case Enum67.VC_TRANS_SNOW_OUT:
-        gubCurrentStaticMode = DisplayTransparentSnow(Enum67.VC_TRANS_SNOW_OUT, guiTransSnow, 7, FALSE);
+        gubCurrentStaticMode = DisplayTransparentSnow(Enum67.VC_TRANS_SNOW_OUT, guiTransSnow, 7, false);
 
         // if it is time to start playing another sound
         if (uiStaticNoiseSound == NO_SAMPLE) {
@@ -2402,7 +2402,7 @@ function HandleVideoDistortion(): void {
         break;
 
       case Enum67.VC_TRANS_SNOW_IN:
-        gubCurrentStaticMode = DisplayTransparentSnow(Enum67.VC_TRANS_SNOW_IN, guiTransSnow, 7, TRUE);
+        gubCurrentStaticMode = DisplayTransparentSnow(Enum67.VC_TRANS_SNOW_IN, guiTransSnow, 7, true);
 
         // if it is time to start playing another sound
         if (uiStaticNoiseSound == NO_SAMPLE) {
@@ -2418,7 +2418,7 @@ function HandleVideoDistortion(): void {
 }
 
 // returns true when done. else false
-function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxImages: UINT8, bForward: BOOLEAN): UINT8 {
+function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxImages: UINT8, bForward: boolean): UINT8 {
   let hFuzzLineHandle: HVOBJECT;
   /* static */ let bCount: INT8 = 0;
   let uiCurrentTime: UINT32 = 0;
@@ -2543,7 +2543,7 @@ function HandleMercAttitude(): void {
       //			EnableDisableCurrentVideoConferenceButtons( FALSE);
       if (gubVideoConferencingPreviousMode == Enum65.AIM_VIDEO_HIRE_MERC_MODE) {
         // Enable the current video conference buttons
-        EnableDisableCurrentVideoConferenceButtons(FALSE);
+        EnableDisableCurrentVideoConferenceButtons(false);
       }
 
       // increments the merc 'annoyance' at the player
@@ -2557,12 +2557,12 @@ function HandleMercAttitude(): void {
       uiResetTime += GetWorldTotalMin() + MERC_ANNOYED_WONT_CONTACT_TIME_MINUTES;
       AddStrategicEvent(Enum132.EVENT_AIM_RESET_MERC_ANNOYANCE, uiResetTime, gbCurrentSoldier);
 
-      gfHangUpMerc = TRUE;
+      gfHangUpMerc = true;
     }
 
     if (gubMercAttitudeLevel == QUOTE_MERC_BUSY) {
       InitVideoFaceTalking(gbCurrentSoldier, Enum202.QUOTE_LAME_REFUSAL);
-      gfHangUpMerc = TRUE;
+      gfHangUpMerc = true;
     } else if (gubMercAttitudeLevel != QUOTE_DELAY_NO_ACTION)
       gubMercAttitudeLevel++;
 
@@ -2575,10 +2575,10 @@ function StopMercTalking(): void {
     MSYS_DisableRegion(addressof(gSelectedShutUpMercRegion));
 
     ShutupaYoFace(giMercFaceIndex);
-    gfMercIsTalking = FALSE;
+    gfMercIsTalking = false;
     guiMercAttitudeTime = GetJA2Clock();
-    gfIsShutUpMouseRegionActive = FALSE;
-    gfRedrawScreen = TRUE;
+    gfIsShutUpMouseRegionActive = false;
+    gfRedrawScreen = true;
   }
 }
 
@@ -2597,9 +2597,9 @@ function BtnXToCloseVideoConfButtonCallback(btn: Pointer<GUI_BUTTON>, reason: IN
   }
 }
 
-function InitDeleteVideoConferencePopUp(): BOOLEAN {
-  /* static */ let fXRegionActive: BOOLEAN = FALSE;
-  /* static */ let fVideoConferenceCreated: BOOLEAN = FALSE;
+function InitDeleteVideoConferencePopUp(): boolean {
+  /* static */ let fXRegionActive: boolean = false;
+  /* static */ let fVideoConferenceCreated: boolean = false;
   let i: UINT8;
   let usPosX: UINT16;
   let usPosY: UINT16;
@@ -2607,16 +2607,16 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
   let vs_desc: VSURFACE_DESC;
 
   // remove the face help text
-  gfAimMemberDisplayFaceHelpText = FALSE;
+  gfAimMemberDisplayFaceHelpText = false;
 
   // Gets reset to FALSE in the HandleCurrentVideoConfMode() function
-  gfJustSwitchedVideoConferenceMode = TRUE;
+  gfJustSwitchedVideoConferenceMode = true;
 
   // remove old mode
   DeleteVideoConfPopUp();
 
   // reset ( in case merc was going to say something
-  DelayMercSpeech(0, 0, 0, FALSE, TRUE);
+  DelayMercSpeech(0, 0, 0, false, true);
 
   // if the video conferencing is currently displayed, put the 'x' to close it in the top right corner
   // and disable the ability to click on the BIG face to go to different screen
@@ -2625,7 +2625,7 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
       giXToCloseVideoConfButton = QuickCreateButton(giXToCloseVideoConfButtonImage, AIM_MEMBER_VIDEO_CONF_XCLOSE_X, AIM_MEMBER_VIDEO_CONF_XCLOSE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnXToCloseVideoConfButtonCallback);
       SetButtonCursor(giXToCloseVideoConfButton, Enum317.CURSOR_LAPTOP_SCREEN);
       SpecifyDisabledButtonStyle(giXToCloseVideoConfButton, Enum29.DISABLED_STYLE_NONE);
-      fXRegionActive = TRUE;
+      fXRegionActive = true;
 
       MSYS_DisableRegion(addressof(gSelectedFaceRegion));
     }
@@ -2634,7 +2634,7 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
   // The video conference is not displayed
   if (gubVideoConferencingMode == Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE) {
     gubVideoConferencingPreviousMode = gubVideoConferencingMode;
-    gfRedrawScreen = TRUE;
+    gfRedrawScreen = true;
 
     if (gfVideoFaceActive) {
       StopMercTalking();
@@ -2645,13 +2645,13 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
 
     // if the ansering machine is currently on, turn it off
     if (gfIsAnsweringMachineActive)
-      gfIsAnsweringMachineActive = FALSE;
+      gfIsAnsweringMachineActive = false;
 
-    gfVideoFaceActive = FALSE;
+    gfVideoFaceActive = false;
 
     if (fXRegionActive) {
       RemoveButton(giXToCloseVideoConfButton);
-      fXRegionActive = FALSE;
+      fXRegionActive = false;
     }
 
     MSYS_DisableRegion(addressof(gSelectedShutUpMercRegion));
@@ -2662,13 +2662,13 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
     //		EnableDisableCurrentVideoConferenceButtons(FALSE);
     if (gubVideoConferencingPreviousMode == Enum65.AIM_VIDEO_HIRE_MERC_MODE) {
       // Enable the current video conference buttons
-      EnableDisableCurrentVideoConferenceButtons(FALSE);
+      EnableDisableCurrentVideoConferenceButtons(false);
     }
 
-    fVideoConferenceCreated = FALSE;
+    fVideoConferenceCreated = false;
 
     fNewMailFlag = gfIsNewMailFlagSet;
-    gfIsNewMailFlagSet = FALSE;
+    gfIsNewMailFlagSet = false;
   }
 
   if (gubVideoConferencingMode == Enum65.AIM_VIDEO_POPUP_MODE) {
@@ -2690,7 +2690,7 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
       vs_desc.ubBitDepth = 16;
       CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar)));
 
-      gfAimMemberCanMercSayOpeningQuote = TRUE;
+      gfAimMemberCanMercSayOpeningQuote = true;
 
       GetVideoObject(addressof(hImageHandle), uiVideoBackgroundGraphic);
       BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
@@ -2706,16 +2706,16 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
     gubContractLength = AIM_CONTRACT_LENGTH_ONE_WEEK;
 
     if (gMercProfiles[gbCurrentSoldier].usOptionalGearCost == 0)
-      gfBuyEquipment = FALSE;
+      gfBuyEquipment = false;
     else
-      gfBuyEquipment = TRUE;
+      gfBuyEquipment = true;
 
-    gfMercIsTalking = FALSE;
-    gfVideoFaceActive = FALSE;
+    gfMercIsTalking = false;
+    gfVideoFaceActive = false;
     guiLastHandleMercTime = 0;
-    gfHangUpMerc = FALSE;
+    gfHangUpMerc = false;
 
-    fVideoConferenceCreated = TRUE;
+    fVideoConferenceCreated = true;
   }
 
   // The screen in which you first contact the merc, you have the option to hang up or goto hire merc screen
@@ -2744,7 +2744,7 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
 
     if (gfWaitingForMercToStopTalkingOrUserToClick) {
       DisableButton(giAuthorizeButton[0]);
-      gfWaitingForMercToStopTalkingOrUserToClick = FALSE;
+      gfWaitingForMercToStopTalkingOrUserToClick = false;
 
       // Display a popup msg box telling the user when and where the merc will arrive
       //			DisplayPopUpBoxExplainingMercArrivalLocationAndTime( giIdOfLastHiredMerc );
@@ -2794,14 +2794,14 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
     }
 
     //		InitVideoFaceTalking(gbCurrentSoldier, QUOTE_LENGTH_OF_CONTRACT);
-    DelayMercSpeech(gbCurrentSoldier, Enum202.QUOTE_LENGTH_OF_CONTRACT, 750, TRUE, FALSE);
+    DelayMercSpeech(gbCurrentSoldier, Enum202.QUOTE_LENGTH_OF_CONTRACT, 750, true, false);
   }
 
   // The merc is not home and the player gets the answering machine
   if (gubVideoConferencingMode == Enum65.AIM_VIDEO_MERC_ANSWERING_MACHINE_MODE) {
     gubVideoConferencingPreviousMode = gubVideoConferencingMode;
 
-    gfIsAnsweringMachineActive = TRUE;
+    gfIsAnsweringMachineActive = true;
 
     // Leave msg button
     usPosX = AIM_MEMBER_AUTHORIZE_PAY_X;
@@ -2862,12 +2862,12 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
     let hImageHandle: HVOBJECT;
 
     if (gubPopUpBoxAction == Enum66.AIM_POPUP_DISPLAY) {
-      return TRUE;
+      return true;
     }
 
     gubVideoConferencingPreviousMode = gubVideoConferencingMode;
 
-    gfIsAnsweringMachineActive = FALSE;
+    gfIsAnsweringMachineActive = false;
 
     // load the Video conference background graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -2891,14 +2891,14 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
 
   // reset the time in which the merc will get annoyed
   guiMercAttitudeTime = GetJA2Clock();
-  return TRUE;
+  return true;
 }
 
-function DeleteVideoConfPopUp(): BOOLEAN {
+function DeleteVideoConfPopUp(): boolean {
   let i: UINT16;
 
   // reset ( in case merc was going to say something
-  DelayMercSpeech(0, 0, 0, FALSE, TRUE);
+  DelayMercSpeech(0, 0, 0, false, true);
 
   switch (gubVideoConferencingPreviousMode) {
     // The video conference is not displayed
@@ -2973,39 +2973,39 @@ function DeleteVideoConfPopUp(): BOOLEAN {
 
     case Enum65.AIM_VIDEO_POPDOWN_MODE: {
       if (gubPopUpBoxAction == Enum66.AIM_POPUP_DISPLAY) {
-        return TRUE;
+        return true;
       }
 
       if (gfWaitingForMercToStopTalkingOrUserToClick) {
-        gfWaitingForMercToStopTalkingOrUserToClick = FALSE;
+        gfWaitingForMercToStopTalkingOrUserToClick = false;
 
         //				DisplayPopUpBoxExplainingMercArrivalLocationAndTime( giIdOfLastHiredMerc );
       }
 
-      gfWaitingForMercToStopTalkingOrUserToClick = FALSE;
+      gfWaitingForMercToStopTalkingOrUserToClick = false;
       DeleteVideoSurfaceFromIndex(guiVideoTitleBar);
       break;
     }
   }
-  return TRUE;
+  return true;
 }
 
-function HandleCurrentVideoConfMode(): BOOLEAN {
+function HandleCurrentVideoConfMode(): boolean {
   switch (gubVideoConferencingMode) {
     // The video conference is not displayed
     case Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE: {
-      gfWaitingForMercToStopTalkingOrUserToClick = FALSE;
+      gfWaitingForMercToStopTalkingOrUserToClick = false;
 
       break;
     }
 
     case Enum65.AIM_VIDEO_POPUP_MODE: {
-      let ubDone: BOOLEAN;
+      let ubDone: boolean;
 
       if (gfJustSwitchedVideoConferenceMode)
-        ubDone = DisplayMovingTitleBar(TRUE, TRUE);
+        ubDone = DisplayMovingTitleBar(true, true);
       else
-        ubDone = DisplayMovingTitleBar(TRUE, FALSE);
+        ubDone = DisplayMovingTitleBar(true, false);
 
       if (ubDone)
         gubVideoConferencingMode = Enum65.AIM_VIDEO_INIT_MODE;
@@ -3016,7 +3016,7 @@ function HandleCurrentVideoConfMode(): BOOLEAN {
     // The opening animation of the vc (fuzzy screen, then goes to black)
     case Enum65.AIM_VIDEO_INIT_MODE: {
       /* static */ let ubCurMode: UINT8 = 0;
-      let fDone: BOOLEAN;
+      let fDone: boolean;
 
       if (ubCurMode == 0) {
         fDone = DisplayBlackBackground(10);
@@ -3064,12 +3064,12 @@ function HandleCurrentVideoConfMode(): BOOLEAN {
     }
 
     case Enum65.AIM_VIDEO_POPDOWN_MODE: {
-      let ubDone: BOOLEAN;
+      let ubDone: boolean;
 
       if (gfJustSwitchedVideoConferenceMode)
-        ubDone = DisplayMovingTitleBar(FALSE, TRUE);
+        ubDone = DisplayMovingTitleBar(false, true);
       else
-        ubDone = DisplayMovingTitleBar(FALSE, FALSE);
+        ubDone = DisplayMovingTitleBar(false, false);
 
       if (ubDone) {
         gubVideoConferencingMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
@@ -3080,7 +3080,7 @@ function HandleCurrentVideoConfMode(): BOOLEAN {
         // render the screen immediately to get rid of the pop down stuff
         InitDeleteVideoConferencePopUp();
         RenderAIMMembers();
-        gfVideoFaceActive = FALSE;
+        gfVideoFaceActive = false;
       }
 
       break;
@@ -3090,12 +3090,12 @@ function HandleCurrentVideoConfMode(): BOOLEAN {
   // Gets set in the InitDeleteVideoConferencePopUp() function
   //	gfJustSwitchedVideoConferenceMode = FALSE;
 
-  return TRUE;
+  return true;
 }
 
-function EnableDisableCurrentVideoConferenceButtons(fEnable: BOOLEAN): BOOLEAN {
+function EnableDisableCurrentVideoConferenceButtons(fEnable: boolean): boolean {
   let i: INT8;
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   if (!fEnable) {
     if (fCreated) {
       // enable buttons behind the acknowlegde button
@@ -3109,7 +3109,7 @@ function EnableDisableCurrentVideoConferenceButtons(fEnable: BOOLEAN): BOOLEAN {
       for (i = 0; i < 2; i++)
         EnableButton(giAuthorizeButton[i]);
 
-      fCreated = FALSE;
+      fCreated = false;
     }
   } else {
     if (!fCreated) {
@@ -3123,10 +3123,10 @@ function EnableDisableCurrentVideoConferenceButtons(fEnable: BOOLEAN): BOOLEAN {
       for (i = 0; i < 2; i++)
         DisableButton(giAuthorizeButton[i]);
 
-      fCreated = TRUE;
+      fCreated = true;
     }
   }
-  return TRUE;
+  return true;
 }
 
 /*
@@ -3221,7 +3221,7 @@ function ResetMercAnnoyanceAtPlayer(ubMercID: UINT8): void {
       ubMercID = Enum268.LARRY_DRUNK;
     }
   } else if (ubMercID == Enum268.LARRY_DRUNK) {
-    if (CheckFact(Enum170.FACT_LARRY_CHANGED, 0) == FALSE) {
+    if (CheckFact(Enum170.FACT_LARRY_CHANGED, 0) == false) {
       ubMercID = Enum268.LARRY_NORMAL;
     }
   }
@@ -3229,18 +3229,18 @@ function ResetMercAnnoyanceAtPlayer(ubMercID: UINT8): void {
     gMercProfiles[ubMercID].bMercStatus = 0;
 }
 
-function DisableNewMailMessage(): BOOLEAN {
+function DisableNewMailMessage(): boolean {
   if (fNewMailFlag && gubVideoConferencingMode) {
-    gfIsNewMailFlagSet = TRUE;
-    fNewMailFlag = FALSE;
-    gfRedrawScreen = TRUE;
+    gfIsNewMailFlagSet = true;
+    fNewMailFlag = false;
+    gfRedrawScreen = true;
 
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function DisplayMovingTitleBar(fForward: BOOLEAN, fInit: BOOLEAN): BOOLEAN {
+function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
   /* static */ let ubCount: UINT8;
   let usPosX: UINT16;
   let usPosY: UINT16;
@@ -3333,31 +3333,31 @@ function DisplayMovingTitleBar(fForward: BOOLEAN, fInit: BOOLEAN): BOOLEAN {
   if (fForward) {
     ubCount++;
     if (ubCount == AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1)
-      return TRUE;
+      return true;
     else
-      return FALSE;
+      return false;
   } else {
     ubCount--;
     if (ubCount == 0)
-      return TRUE;
+      return true;
     else
-      return FALSE;
+      return false;
   }
 }
 
-function DelayMercSpeech(ubMercID: UINT8, usQuoteNum: UINT16, usDelay: UINT16, fNewQuote: BOOLEAN, fReset: BOOLEAN): void {
+function DelayMercSpeech(ubMercID: UINT8, usQuoteNum: UINT16, usDelay: UINT16, fNewQuote: boolean, fReset: boolean): void {
   /* static */ let uiLastTime: UINT32 = 0;
   let uiCurTime: UINT32;
   /* static */ let usCurQuoteNum: UINT16;
   /* static */ let usCurDelay: UINT16;
-  /* static */ let fQuoteWaiting: BOOLEAN = FALSE; // a quote is waiting to be said
+  /* static */ let fQuoteWaiting: boolean = false; // a quote is waiting to be said
   /* static */ let ubCurMercID: UINT8;
-  /* static */ let fHangUpAfter: BOOLEAN = FALSE;
+  /* static */ let fHangUpAfter: boolean = false;
 
   uiCurTime = GetJA2Clock();
 
   if (fReset)
-    fQuoteWaiting = FALSE;
+    fQuoteWaiting = false;
 
   if (fNewQuote) {
     // set up the counters
@@ -3368,21 +3368,21 @@ function DelayMercSpeech(ubMercID: UINT8, usQuoteNum: UINT16, usDelay: UINT16, f
     usCurDelay = usDelay;
 
     if (gfHangUpMerc) {
-      gfHangUpMerc = FALSE;
-      fHangUpAfter = TRUE;
+      gfHangUpMerc = false;
+      fHangUpAfter = true;
     }
 
-    fQuoteWaiting = TRUE;
+    fQuoteWaiting = true;
   }
 
   if (fQuoteWaiting) {
     if ((uiCurTime - uiLastTime) > usCurDelay) {
       InitVideoFaceTalking(ubCurMercID, usCurQuoteNum);
-      fQuoteWaiting = FALSE;
+      fQuoteWaiting = false;
 
       if (fHangUpAfter) {
-        gfHangUpMerc = TRUE;
-        fHangUpAfter = FALSE;
+        gfHangUpMerc = true;
+        fHangUpAfter = false;
       }
     }
   }
@@ -3393,7 +3393,7 @@ function WaitForMercToFinishTalkingOrUserToClick(): void {
   if (!gfIsShutUpMouseRegionActive) {
     // Enables it so if a player clicks, he will shutup the merc
     MSYS_EnableRegion(addressof(gSelectedShutUpMercRegion));
-    gfIsShutUpMouseRegionActive = TRUE;
+    gfIsShutUpMouseRegionActive = true;
   }
 
   if (gfIsAnsweringMachineActive)
@@ -3401,9 +3401,9 @@ function WaitForMercToFinishTalkingOrUserToClick(): void {
   else
     gubVideoConferencingMode = Enum65.AIM_VIDEO_FIRST_CONTACT_MERC_MODE;
 
-  gfWaitingForMercToStopTalkingOrUserToClick = TRUE;
-  gfHangUpMerc = TRUE;
-  gfStopMercFromTalking = FALSE;
+  gfWaitingForMercToStopTalkingOrUserToClick = true;
+  gfHangUpMerc = true;
+  gfStopMercFromTalking = false;
 }
 
 /*
@@ -3448,7 +3448,7 @@ function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   if (LaptopSaveInfo.sLastHiredMerc.fHaveDisplayedPopUpInLaptop)
     return;
 
-  pSoldier = FindSoldierByProfileID(LaptopSaveInfo.sLastHiredMerc.iIdOfMerc, TRUE);
+  pSoldier = FindSoldierByProfileID(LaptopSaveInfo.sLastHiredMerc.iIdOfMerc, true);
 
   if (pSoldier == null)
     return;
@@ -3460,7 +3460,7 @@ function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   swprintf(zTimeString, "%02d:%02d", uiHour, 0);
 
   // get the id string
-  GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, zSectorIDString, FALSE);
+  GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, zSectorIDString, false);
 
   // create the string to display to the user, looks like....
   //	L"%s should arrive at the designated drop-off point ( sector %d:%d %s ) on day %d, at approximately %s.",		//first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
@@ -3480,25 +3480,25 @@ function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   LaptopSaveInfo.sLastHiredMerc.iIdOfMerc = -1;
 
   // set the fact that the pop up has been displayed this time in laptop
-  LaptopSaveInfo.sLastHiredMerc.fHaveDisplayedPopUpInLaptop = TRUE;
+  LaptopSaveInfo.sLastHiredMerc.fHaveDisplayedPopUpInLaptop = true;
 }
 
 function DisplayPopUpBoxExplainingMercArrivalLocationAndTimeCallBack(bExitValue: UINT8): void {
   // unset the flag so the msgbox WONT dislay its save buffer
-  gfDontOverRideSaveBuffer = FALSE;
+  gfDontOverRideSaveBuffer = false;
 
   if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_AIM_MEMBERS) {
     // render the screen
-    gfRedrawScreen = TRUE;
+    gfRedrawScreen = true;
     RenderAIMMembers();
   }
 }
 
 function DisplayAimMemberClickOnFaceHelpText(): void {
   // display the 'left and right click' onscreen help msg
-  DrawTextToScreen(AimMemberText[0], AIM_FI_LEFT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_TITLE_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(AimMemberText[1], AIM_FI_LEFT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y + AIM_FI_CLICK_DESC_TEXT_Y_OFFSET, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimMemberText[0], AIM_FI_LEFT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_TITLE_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimMemberText[1], AIM_FI_LEFT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y + AIM_FI_CLICK_DESC_TEXT_Y_OFFSET, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
-  DrawTextToScreen(AimMemberText[2], AIM_FI_RIGHT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_TITLE_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(AimMemberText[3], AIM_FI_RIGHT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y + AIM_FI_CLICK_DESC_TEXT_Y_OFFSET, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimMemberText[2], AIM_FI_RIGHT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_TITLE_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimMemberText[3], AIM_FI_RIGHT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y + AIM_FI_CLICK_DESC_TEXT_Y_OFFSET, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 }

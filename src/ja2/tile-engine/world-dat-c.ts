@@ -14,7 +14,7 @@ function InitEngineTilesets(): void {
 
   // OPEN FILE
   //	hfile = fopen( "BINARYDATA\\JA2SET.DAT", "rb" );
-  hfile = FileOpen("BINARYDATA\\JA2SET.DAT", FILE_ACCESS_READ, FALSE);
+  hfile = FileOpen("BINARYDATA\\JA2SET.DAT", FILE_ACCESS_READ, false);
   if (!hfile) {
     SET_ERROR("Cannot open tileset data file");
     return;

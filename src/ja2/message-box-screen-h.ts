@@ -54,7 +54,7 @@ interface MESSAGE_BOX_STRUCT {
   uiButton: UINT32[] /* [4] */;
   /*   } */
   /* } */
-  fRenderBox: BOOLEAN;
+  fRenderBox: boolean;
   bHandled: INT8;
   iBoxId: INT32;
 }

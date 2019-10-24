@@ -91,15 +91,15 @@ let guiDoneButton: UINT32;
 
 let gubPageNum: UINT8;
 let gunAlumniButtonDown: UINT8 = 255;
-let gfExitingAimArchives: BOOLEAN;
+let gfExitingAimArchives: boolean;
 let gubDrawOldMerc: UINT8;
-let gfDrawPopUpBox: UINT8 = FALSE;
-let gfDestroyPopUpBox: BOOLEAN;
-let gfFaceMouseRegionsActive: BOOLEAN;
+let gfDrawPopUpBox: UINT8 = false;
+let gfDestroyPopUpBox: boolean;
+let gfFaceMouseRegionsActive: boolean;
 // BOOLEAN		gfDestroyDoneRegion;
-let gfReDrawScreen: BOOLEAN = FALSE;
+let gfReDrawScreen: boolean = false;
 
-let AimArchivesSubPagesVisitedFlag: BOOLEAN[] /* [3] */ = [
+let AimArchivesSubPagesVisitedFlag: boolean[] /* [3] */ = [
   0,
   0,
   0,
@@ -120,22 +120,22 @@ function GameInitAimArchives(): void {
 }
 
 function EnterInitAimArchives(): void {
-  gfDrawPopUpBox = FALSE;
-  gfDestroyPopUpBox = FALSE;
+  gfDrawPopUpBox = false;
+  gfDestroyPopUpBox = false;
 
   memset(addressof(AimArchivesSubPagesVisitedFlag), 0, 3);
-  AimArchivesSubPagesVisitedFlag[0] = TRUE;
+  AimArchivesSubPagesVisitedFlag[0] = true;
 }
 
-function EnterAimArchives(): BOOLEAN {
+function EnterAimArchives(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosX: UINT16;
   let i: UINT16;
 
-  gfExitingAimArchives = FALSE;
+  gfExitingAimArchives = false;
   //	gubDrawOldMerc = 255;
-  gfDrawPopUpBox = FALSE;
-  gfDestroyPopUpBox = FALSE;
+  gfDrawPopUpBox = false;
+  gfDestroyPopUpBox = false;
 
   InitAimDefaults();
   InitAimMenuBar();
@@ -188,13 +188,13 @@ function EnterAimArchives(): BOOLEAN {
 
   DisableAimArchiveButton();
   RenderAimArchives();
-  return TRUE;
+  return true;
 }
 
 function ExitAimArchives(): void {
   let i: UINT16;
 
-  gfExitingAimArchives = TRUE;
+  gfExitingAimArchives = true;
 
   DeleteVideoObjectFromIndex(guiAlumniFrame);
   DeleteVideoObjectFromIndex(guiOldAim);
@@ -213,23 +213,23 @@ function ExitAimArchives(): void {
   giCurrentSubPage = gubPageNum;
 
   CreateDestroyDoneMouseRegion(0);
-  gfDestroyPopUpBox = FALSE;
-  gfDrawPopUpBox = FALSE;
+  gfDestroyPopUpBox = false;
+  gfDrawPopUpBox = false;
 }
 
 function HandleAimArchives(): void {
   if (gfReDrawScreen) {
     //		RenderAimArchives();
-    fPausedReDrawScreenFlag = TRUE;
+    fPausedReDrawScreenFlag = true;
 
-    gfReDrawScreen = FALSE;
+    gfReDrawScreen = false;
   }
   if (gfDestroyPopUpBox) {
-    gfDestroyPopUpBox = FALSE;
+    gfDestroyPopUpBox = false;
 
     CreateDestroyDoneMouseRegion(0);
     InitAlumniFaceRegions();
-    gfDestroyPopUpBox = FALSE;
+    gfDestroyPopUpBox = false;
   }
 }
 
@@ -250,7 +250,7 @@ function RenderAimArchives(): void {
   DisableAimButton();
 
   // Draw Link Title
-  DrawTextToScreen(AimAlumniText[Enum361.AIM_ALUMNI_ALUMNI], AIM_ALUMNI_TITLE_X, AIM_ALUMNI_TITLE_Y, AIM_ALUMNI_TITLE_WIDTH, AIM_ALUMNI_TITLE_FONT(), AIM_ALUMNI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimAlumniText[Enum361.AIM_ALUMNI_ALUMNI], AIM_ALUMNI_TITLE_X, AIM_ALUMNI_TITLE_Y, AIM_ALUMNI_TITLE_WIDTH, AIM_ALUMNI_TITLE_FONT(), AIM_ALUMNI_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Draw the mug shot border and face
   GetVideoObject(addressof(hFrameHandle), guiAlumniFrame);
@@ -287,7 +287,7 @@ function RenderAimArchives(): void {
       // Display the merc's name
       uiStartLoc = AIM_ALUMNI_NAME_LINESIZE * i;
       LoadEncryptedDataFromFile(AIM_ALUMNI_NAME_FILE, sText, uiStartLoc, AIM_ALUMNI_NAME_SIZE);
-      DrawTextToScreen(sText, (usPosX + AIM_ALUMNI_NAME_OFFSET_X), (usPosY + AIM_ALUMNI_NAME_OFFSET_Y), AIM_ALUMNI_NAME_WIDTH, AIM_ALUMNI_NAME_FONT(), AIM_ALUMNI_NAME_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(sText, (usPosX + AIM_ALUMNI_NAME_OFFSET_X), (usPosY + AIM_ALUMNI_NAME_OFFSET_Y), AIM_ALUMNI_NAME_WIDTH, AIM_ALUMNI_NAME_FONT(), AIM_ALUMNI_NAME_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       usPosX += AIM_ALUMNI_GRID_OFFSET_X;
       i++;
@@ -307,7 +307,7 @@ function RenderAimArchives(): void {
     // Display the merc's name
     uiStartLoc = AIM_ALUMNI_NAME_LINESIZE * i;
     LoadEncryptedDataFromFile(AIM_ALUMNI_NAME_FILE, sText, uiStartLoc, AIM_ALUMNI_NAME_SIZE);
-    DrawTextToScreen(sText, (usPosX + AIM_ALUMNI_NAME_OFFSET_X), (usPosY + AIM_ALUMNI_NAME_OFFSET_Y), AIM_ALUMNI_NAME_WIDTH, AIM_ALUMNI_NAME_FONT(), AIM_ALUMNI_NAME_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(sText, (usPosX + AIM_ALUMNI_NAME_OFFSET_X), (usPosY + AIM_ALUMNI_NAME_OFFSET_Y), AIM_ALUMNI_NAME_WIDTH, AIM_ALUMNI_NAME_FONT(), AIM_ALUMNI_NAME_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
     usPosX += AIM_ALUMNI_GRID_OFFSET_X;
   }
@@ -330,8 +330,8 @@ function RenderAimArchives(): void {
 function SelectAlumniFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfDrawPopUpBox = TRUE;
-    gfReDrawScreen = TRUE;
+    gfDrawPopUpBox = true;
+    gfReDrawScreen = true;
 
     gubDrawOldMerc = MSYS_GetRegionUserData(pRegion, 0);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
@@ -357,14 +357,14 @@ function BtnAlumniPageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 
       gubPageNum = ubRetValue;
 
-      gfReDrawScreen = TRUE;
+      gfReDrawScreen = true;
 
-      gfDestroyPopUpBox = TRUE;
+      gfDestroyPopUpBox = true;
 
       gunAlumniButtonDown = 255;
       ResetAimArchiveButtons();
       DisableAimArchiveButton();
-      gfDrawPopUpBox = FALSE;
+      gfDrawPopUpBox = false;
 
       InvalidateRegion(AIM_ALUMNI_PAGE1_X, AIM_ALUMNI_PAGE1_Y, AIM_ALUMNI_PAGE_END_X, AIM_ALUMNI_PAGE_END_Y);
     }
@@ -386,7 +386,7 @@ function ResetAimArchiveButtons(): void {
 }
 
 function DisableAimArchiveButton(): void {
-  if (gfExitingAimArchives == TRUE)
+  if (gfExitingAimArchives == true)
     return;
 
   if ((gubPageNum == 0)) {
@@ -449,7 +449,7 @@ function DisplayAlumniOldMercPopUp(): void {
   ShadowVideoSurfaceRect(FRAME_BUFFER, AIM_POPUP_X + AIM_POPUP_SHADOW_GAP, usPosY + AIM_POPUP_SHADOW_GAP, AIM_POPUP_X + AIM_POPUP_WIDTH + AIM_POPUP_SHADOW_GAP, usPosY + AIM_POPUP_SECTION_HEIGHT + AIM_POPUP_SHADOW_GAP - 1);
   BltVideoObject(FRAME_BUFFER, hAlumniPopUpHandle, 2, AIM_POPUP_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
   BltVideoObject(FRAME_BUFFER, hDoneHandle, 0, AIM_ALUMNI_DONE_X, usPosY - AIM_ALUMNI_DONE_HEIGHT, VO_BLT_SRCTRANSPARENCY, null);
-  DrawTextToScreen(AimAlumniText[Enum361.AIM_ALUMNI_DONE], (AIM_ALUMNI_DONE_X + 1), (usPosY - AIM_ALUMNI_DONE_HEIGHT + 3), AIM_ALUMNI_DONE_WIDTH, AIM_ALUMNI_POPUP_NAME_FONT(), AIM_ALUMNI_POPUP_NAME_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimAlumniText[Enum361.AIM_ALUMNI_DONE], (AIM_ALUMNI_DONE_X + 1), (usPosY - AIM_ALUMNI_DONE_HEIGHT + 3), AIM_ALUMNI_DONE_WIDTH, AIM_ALUMNI_POPUP_NAME_FONT(), AIM_ALUMNI_POPUP_NAME_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   CreateDestroyDoneMouseRegion(usPosY);
 
@@ -463,16 +463,16 @@ function DisplayAlumniOldMercPopUp(): void {
   uiStartLoc = AIM_ALUMNI_FILE_RECORD_SIZE * gubDrawOldMerc;
   LoadEncryptedDataFromFile(AIM_ALUMNI_FILE, sName, uiStartLoc, AIM_ALUMNI_FULL_NAME_SIZE);
 
-  DrawTextToScreen(sName, AIM_ALUMNI_POPUP_NAME_X, AIM_ALUMNI_POPUP_NAME_Y, 0, AIM_ALUMNI_POPUP_NAME_FONT(), AIM_ALUMNI_POPUP_NAME_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sName, AIM_ALUMNI_POPUP_NAME_X, AIM_ALUMNI_POPUP_NAME_Y, 0, AIM_ALUMNI_POPUP_NAME_FONT(), AIM_ALUMNI_POPUP_NAME_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the description
-  DisplayWrappedString(AIM_ALUMNI_POPUP_DESC_X, AIM_ALUMNI_POPUP_DESC_Y, AIM_POPUP_TEXT_WIDTH, 2, AIM_ALUMNI_POPUP_FONT(), AIM_ALUMNI_POPUP_COLOR, sDesc, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(AIM_ALUMNI_POPUP_DESC_X, AIM_ALUMNI_POPUP_DESC_Y, AIM_POPUP_TEXT_WIDTH, 2, AIM_ALUMNI_POPUP_FONT(), AIM_ALUMNI_POPUP_COLOR, sDesc, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
 function DestroyPopUpBox(): void {
-  gfDestroyPopUpBox = FALSE;
+  gfDestroyPopUpBox = false;
   RenderAimArchives();
 }
 
@@ -517,7 +517,7 @@ function InitAlumniFaceRegions(): void {
     MSYS_SetRegionUserData(addressof(gMercAlumniFaceMouseRegions[i]), 0, i + (20 * gubPageNum));
   }
 
-  gfFaceMouseRegionsActive = TRUE;
+  gfFaceMouseRegionsActive = true;
 }
 
 function RemoveAimAlumniFaceRegion(): void {
@@ -544,23 +544,23 @@ function RemoveAimAlumniFaceRegion(): void {
   for (i = 0; i < usNumber; i++) {
     MSYS_RemoveRegion(addressof(gMercAlumniFaceMouseRegions[i]));
   }
-  gfFaceMouseRegionsActive = FALSE;
+  gfFaceMouseRegionsActive = false;
 }
 
 function CreateDestroyDoneMouseRegion(usPosY: UINT16): void {
-  /* static */ let DoneRegionCreated: BOOLEAN = FALSE;
+  /* static */ let DoneRegionCreated: boolean = false;
 
   if ((!DoneRegionCreated) && (usPosY != 0)) {
     usPosY -= AIM_ALUMNI_DONE_HEIGHT;
     MSYS_DefineRegion(addressof(gDoneRegion), AIM_ALUMNI_DONE_X - 2, usPosY, (AIM_ALUMNI_DONE_X - 2 + AIM_ALUMNI_DONE_WIDTH), (usPosY + AIM_ALUMNI_DONE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniDoneRegionCallBack);
     // Add region
     MSYS_AddRegion(addressof(gDoneRegion));
-    DoneRegionCreated = TRUE;
+    DoneRegionCreated = true;
   }
 
   if (DoneRegionCreated && usPosY == 0) {
     MSYS_RemoveRegion(addressof(gDoneRegion));
-    DoneRegionCreated = FALSE;
+    DoneRegionCreated = false;
     //		gfDestroyDoneRegion = FALSE;
   }
 }
@@ -568,23 +568,23 @@ function CreateDestroyDoneMouseRegion(usPosY: UINT16): void {
 function SelectAlumniDoneRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfDestroyPopUpBox = TRUE;
-    gfDrawPopUpBox = FALSE;
-    gfReDrawScreen = TRUE;
+    gfDestroyPopUpBox = true;
+    gfDrawPopUpBox = false;
+    gfReDrawScreen = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
 
 function ChangingAimArchiveSubPage(ubSubPageNumber: UINT8): void {
-  fLoadPendingFlag = TRUE;
+  fLoadPendingFlag = true;
 
-  if (AimArchivesSubPagesVisitedFlag[ubSubPageNumber] == FALSE) {
-    fConnectingToSubPage = TRUE;
-    fFastLoadFlag = FALSE;
+  if (AimArchivesSubPagesVisitedFlag[ubSubPageNumber] == false) {
+    fConnectingToSubPage = true;
+    fFastLoadFlag = false;
 
-    AimArchivesSubPagesVisitedFlag[ubSubPageNumber] = TRUE;
+    AimArchivesSubPagesVisitedFlag[ubSubPageNumber] = true;
   } else {
-    fConnectingToSubPage = TRUE;
-    fFastLoadFlag = TRUE;
+    fConnectingToSubPage = true;
+    fFastLoadFlag = true;
   }
 }

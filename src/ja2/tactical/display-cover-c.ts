@@ -15,7 +15,7 @@ interface BEST_COVER_STRUCT {
 interface VISIBLE_TO_SOLDIER_STRUCT {
   sGridNo: INT16;
   bVisibleToSoldier: INT8;
-  fRoof: BOOLEAN;
+  fRoof: boolean;
 }
 
 /*
@@ -96,7 +96,7 @@ function DisplayCoverOfSelectedGridNo(): void {
 function AddCoverTileToEachGridNo(): void {
   let uiCntX: UINT32;
   let uiCntY: UINT32;
-  let fRoof: BOOLEAN = (gsInterfaceLevel != Enum214.I_GROUND_LEVEL);
+  let fRoof: boolean = (gsInterfaceLevel != Enum214.I_GROUND_LEVEL);
 
   // loop through all the gridnos
   for (uiCntY = 0; uiCntY < DC_MAX_COVER_RANGE; uiCntY++) {
@@ -140,7 +140,7 @@ function AddCoverTileToEachGridNo(): void {
 function RemoveCoverOfSelectedGridNo(): void {
   let uiCntX: UINT32;
   let uiCntY: UINT32;
-  let fRoof: BOOLEAN = (gsInterfaceLevel != Enum214.I_GROUND_LEVEL);
+  let fRoof: boolean = (gsInterfaceLevel != Enum214.I_GROUND_LEVEL);
 
   if (gsLastCoverGridNo == NOWHERE) {
     return;
@@ -284,7 +284,7 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
         ubID = WhoIsThere2(sGridNo, 1);
       }
       // if someone is here, and they are an enemy, skip over them
-      if (ubID != NOBODY && Menptr[ubID].bVisible == TRUE && Menptr[ubID].bTeam != pSoldier.value.bTeam) {
+      if (ubID != NOBODY && Menptr[ubID].bVisible == true && Menptr[ubID].bTeam != pSoldier.value.bTeam) {
         continue;
       }
 
@@ -345,7 +345,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
     }
 
     // if actual LOS check fails, then chance to hit is 0, ignore this guy
-    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier.value.bLevel, bStance, usSightLimit, TRUE) == 0) {
+    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier.value.bLevel, bStance, usSightLimit, true) == 0) {
       continue;
     }
 
@@ -388,7 +388,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
   return bPercentCoverForGridno;
 }
 
-function AddCoverObjectToWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: BOOLEAN): void {
+function AddCoverObjectToWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: boolean): void {
   let pNode: Pointer<LEVELNODE>;
 
   if (fRoof) {
@@ -407,7 +407,7 @@ function AddCoverObjectToWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: BOOLEAN
   }
 }
 
-function RemoveCoverObjectFromWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: BOOLEAN): void {
+function RemoveCoverObjectFromWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: boolean): void {
   if (fRoof) {
     RemoveOnRoof(sGridNo, usGraphic);
   } else {
@@ -545,7 +545,7 @@ function CalculateVisibleToSoldierAroundGridno(sTargetGridNo: INT16, bSearchRang
   let sGridNo: INT16;
   let sCounterX: INT16;
   let sCounterY: INT16;
-  let fRoof: BOOLEAN = FALSE;
+  let fRoof: boolean = false;
 
   // clear out the struct
   memset(gVisibleToSoldierStruct, 0, sizeof(VISIBLE_TO_SOLDIER_STRUCT) * DC__SOLDIER_VISIBLE_RANGE * DC__SOLDIER_VISIBLE_RANGE);
@@ -571,7 +571,7 @@ function CalculateVisibleToSoldierAroundGridno(sTargetGridNo: INT16, bSearchRang
     sCounterX = 0;
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
       sGridNo = sTargetGridNo + sXOffset + (MAXCOL * sYOffset);
-      fRoof = FALSE;
+      fRoof = false;
 
       // record the gridno
       gVisibleToSoldierStruct[sCounterX][sCounterY].sGridNo = sGridNo;
@@ -584,7 +584,7 @@ function CalculateVisibleToSoldierAroundGridno(sTargetGridNo: INT16, bSearchRang
       // is there a roof above this gridno
       if (FlatRoofAboveGridNo(sGridNo)) {
         if (IsTheRoofVisible(sGridNo) && gbWorldSectorZ == 0) {
-          fRoof = TRUE;
+          fRoof = true;
         }
 
         // if wer havent explored the area yet and we are underground, dont show cover
@@ -631,7 +631,7 @@ function AddVisibleToSoldierToEachGridNo(): void {
   let uiCntX: UINT32;
   let uiCntY: UINT32;
   let bVisibleToSoldier: INT8 = 0;
-  let fRoof: BOOLEAN;
+  let fRoof: boolean;
   let sGridNo: INT16;
 
   // loop through all the gridnos
@@ -677,7 +677,7 @@ function RemoveVisibleGridNoAtSelectedGridNo(): void {
   let uiCntY: UINT32;
   let bVisibleToSoldier: INT8;
   let sGridNo: INT16;
-  let fRoof: BOOLEAN;
+  let fRoof: boolean;
 
   // make sure to only remove it when its right
   if (gsLastVisibleToSoldierGridNo == NOWHERE) {
@@ -724,14 +724,14 @@ function RemoveVisibleGridNoAtSelectedGridNo(): void {
   gsLastSoldierGridNo = NOWHERE;
 }
 
-function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fRoof: BOOLEAN): INT8 {
+function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fRoof: boolean): INT8 {
   let bRetVal: INT8 = 0;
   let iLosForGridNo: INT32 = 0;
   let usSightLimit: UINT16 = 0;
   let pPersOL: Pointer<INT8>;
   let pbPublOL: Pointer<INT8>;
   let ubID: UINT8;
-  let bAware: BOOLEAN = FALSE;
+  let bAware: boolean = false;
 
   if (fRoof) {
     ubID = WhoIsThere2(sTargetGridNo, 1);
@@ -745,7 +745,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
 
     // if soldier is known about (SEEN or HEARD within last few turns)
     if (pPersOL.value || pbPublOL.value) {
-      bAware = TRUE;
+      bAware = true;
     }
   }
 
@@ -778,21 +778,21 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
   return bRetVal;
 }
 
-function IsTheRoofVisible(sGridNo: INT16): BOOLEAN {
+function IsTheRoofVisible(sGridNo: INT16): boolean {
   let ubRoom: UINT8;
 
   if (InARoom(sGridNo, addressof(ubRoom))) {
     if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) {
       if (gTacticalStatus.uiFlags & SHOW_ALL_ROOFS)
-        return TRUE;
+        return true;
       else
-        return FALSE;
+        return false;
     } else {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function ChangeSizeOfDisplayCover(iNewSize: INT32): void {

@@ -51,12 +51,12 @@ const GetJA2Clock = () => guiBaseJA2Clock;
 
 const UPDATECOUNTER = (c) => ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) : (giTimerCounters[c] -= BASETIMESLICE);
 const RESETCOUNTER = (c) => (giTimerCounters[c] = giTimerIntervals[c]);
-const COUNTERDONE = (c) => (giTimerCounters[c] == 0) ? TRUE : FALSE;
+const COUNTERDONE = (c) => (giTimerCounters[c] == 0) ? true : false;
 
 const UPDATETIMECOUNTER = (c) => ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE);
 const RESETTIMECOUNTER = (c, d) => (c = d);
 
-const TIMECOUNTERDONE = (c, d) => (c == 0) ? TRUE : FALSE;
+const TIMECOUNTERDONE = (c, d) => (c == 0) ? true : false;
 
 const SYNCTIMECOUNTER = () => {};
 const ZEROTIMECOUNTER = (c) => (c = 0);

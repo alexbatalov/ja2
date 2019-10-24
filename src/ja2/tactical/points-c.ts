@@ -1,7 +1,7 @@
 function TerrainActionPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDir: INT8, bLevel: INT8): INT16 {
   let sAPCost: INT16 = 0;
   let sSwitchValue: INT16;
-  let fHiddenStructVisible: BOOLEAN; // Used for hidden struct visiblity
+  let fHiddenStructVisible: boolean; // Used for hidden struct visiblity
 
   if (pSoldier.value.bStealthMode)
     sAPCost += AP_STEALTH_MODIFIER;
@@ -384,17 +384,17 @@ function EstimateActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
   return sPoints;
 }
 
-function EnoughPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: INT16, fDisplayMsg: BOOLEAN): BOOLEAN {
+function EnoughPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: INT16, fDisplayMsg: boolean): boolean {
   let sNewAP: INT16 = 0;
 
   // If this guy is on a special move... don't care about APS, OR BPSs!
   if (pSoldier.value.ubWaitActionToDo) {
-    return TRUE;
+    return true;
   }
 
   if (pSoldier.value.ubQuoteActionID >= Enum290.QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= Enum290.QUOTE_ACTION_ID_TRAVERSE_NORTH) {
     // AI guy on special move off map
-    return TRUE;
+    return true;
   }
 
   // IN realtime.. only care about BPs
@@ -411,10 +411,10 @@ function EnoughPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: I
     if (pSoldier.value.bTeam == gbPlayerNum && fDisplayMsg) {
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NOT_ENOUGH_APS_STR]);
     }
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function DeductPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: INT16): void {
@@ -432,8 +432,8 @@ function DeductPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: I
 
   // If this is the first time with no action points, set UI flag
   if (sNewAP <= 0 && pSoldier.value.bActionPoints > 0) {
-    pSoldier.value.fUIFirstTimeNOAP = TRUE;
-    fInterfacePanelDirty = TRUE;
+    pSoldier.value.fUIFirstTimeNOAP = true;
+    fInterfacePanelDirty = true;
   }
 
   // If we cannot deduct points, return FALSE
@@ -557,7 +557,7 @@ function UnusedAPsToBreath(pSold: Pointer<SOLDIERTYPE>): void {
   let sBreathPerAP: INT16 = 0;
   let sBreathChange: INT16;
   let sRTBreathMod: INT16;
-  let fAnimTypeFound: BOOLEAN = FALSE;
+  let fAnimTypeFound: boolean = false;
 
   // Note to Andrew (or whomever else it may concern):
 
@@ -657,7 +657,7 @@ function UnusedAPsToBreath(pSold: Pointer<SOLDIERTYPE>): void {
 
 function GetBreathPerAP(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): INT16 {
   let sBreathPerAP: INT16 = 0;
-  let fAnimTypeFound: BOOLEAN = FALSE;
+  let fAnimTypeFound: boolean = false;
 
   if (gAnimControl[usAnimState].uiFlags & ANIM_VARIABLE_EFFORT) {
     // Default effort
@@ -689,27 +689,27 @@ function GetBreathPerAP(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): IN
           break;
       }
     }
-    fAnimTypeFound = TRUE;
+    fAnimTypeFound = true;
   }
 
   if (gAnimControl[usAnimState].uiFlags & ANIM_NO_EFFORT) {
     sBreathPerAP = BP_PER_AP_NO_EFFORT;
-    fAnimTypeFound = TRUE;
+    fAnimTypeFound = true;
   }
 
   if (gAnimControl[usAnimState].uiFlags & ANIM_MIN_EFFORT) {
     sBreathPerAP = BP_PER_AP_MIN_EFFORT;
-    fAnimTypeFound = TRUE;
+    fAnimTypeFound = true;
   }
 
   if (gAnimControl[usAnimState].uiFlags & ANIM_LIGHT_EFFORT) {
     sBreathPerAP = BP_PER_AP_LT_EFFORT;
-    fAnimTypeFound = TRUE;
+    fAnimTypeFound = true;
   }
 
   if (gAnimControl[usAnimState].uiFlags & ANIM_MODERATE_EFFORT) {
     sBreathPerAP = BP_PER_AP_MOD_EFFORT;
-    fAnimTypeFound = TRUE;
+    fAnimTypeFound = true;
   }
 
   if (!fAnimTypeFound) {
@@ -779,7 +779,7 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
         // INT16		sSpot;
         let ubGuyThere: UINT8;
         let sGotLocation: INT16 = NOWHERE;
-        let fGotAdjacent: BOOLEAN = FALSE;
+        let fGotAdjacent: boolean = false;
         let pTarget: Pointer<SOLDIERTYPE>;
 
         ubGuyThere = WhoIsThere2(sGridNo, pSoldier.value.bLevel);
@@ -788,7 +788,7 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
           pTarget = MercPtrs[ubGuyThere];
 
           if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
-            sGotLocation = FindNextToAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
+            sGotLocation = FindNextToAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
             if (sGotLocation == -1) {
               sGotLocation = NOWHERE;
             }
@@ -798,14 +798,14 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
         }
 
         if (sGotLocation == NOWHERE && pSoldier.value.ubBodyType != Enum194.BLOODCAT) {
-          sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
+          sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
 
           if (sActionGridNo == -1) {
             sGotLocation = NOWHERE;
           } else {
             sGotLocation = sActionGridNo;
           }
-          fGotAdjacent = TRUE;
+          fGotAdjacent = true;
         }
 
         if (sGotLocation != NOWHERE) {
@@ -919,12 +919,12 @@ function BaseAPsToShootOrStab(bAPs: INT8, bAimSkill: INT8, pObj: Pointer<OBJECTT
   return (((100 * sTop) / sBottom) + 1) / 2;
 }
 
-function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8, pfChargeTurning: Pointer<BOOLEAN>, pfChargeRaise: Pointer<BOOLEAN>): void {
+function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8, pfChargeTurning: Pointer<boolean>, pfChargeRaise: Pointer<boolean>): void {
   let ubDirection: UINT8;
   let uiMercFlags: UINT32;
   let usTargID: UINT16;
-  let fAddingTurningCost: BOOLEAN = FALSE;
-  let fAddingRaiseGunCost: BOOLEAN = FALSE;
+  let fAddingTurningCost: boolean = false;
+  let fAddingRaiseGunCost: boolean = false;
 
   if (sGridNo != NOWHERE) {
     // OK, get a direction and see if we need to turn...
@@ -938,13 +938,13 @@ function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, s
 
       // Is it the same as he's facing?
       if (ubDirection != pSoldier.value.bDirection) {
-        fAddingTurningCost = TRUE;
+        fAddingTurningCost = true;
       }
     }
   } else {
     if (ubAddTurningCost) {
       // Assume we need to add cost!
-      fAddingTurningCost = TRUE;
+      fAddingTurningCost = true;
     }
   }
 
@@ -952,7 +952,7 @@ function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, s
   } else {
     // Do we need to ready weapon?
     if (!(gAnimControl[pSoldier.value.usAnimState].uiFlags & (ANIM_FIREREADY | ANIM_FIRE))) {
-      fAddingRaiseGunCost = TRUE;
+      fAddingRaiseGunCost = true;
     }
   }
 
@@ -966,8 +966,8 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
   let bFullAPs: INT8;
   let bAimSkill: INT8;
   let bAPCost: UINT8 = AP_MIN_AIM_ATTACK;
-  let fAddingTurningCost: BOOLEAN = FALSE;
-  let fAddingRaiseGunCost: BOOLEAN = FALSE;
+  let fAddingTurningCost: boolean = false;
+  let fAddingRaiseGunCost: boolean = false;
   let usItem: UINT16;
 
   if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
@@ -987,17 +987,17 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
   if (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND) {
     // Don't charge turning if gun-ready...
     if (fAddingRaiseGunCost) {
-      fAddingTurningCost = FALSE;
+      fAddingTurningCost = false;
     }
   } else {
     // Just charge turning costs...
     if (fAddingTurningCost) {
-      fAddingRaiseGunCost = FALSE;
+      fAddingRaiseGunCost = false;
     }
   }
 
   if (AM_A_ROBOT(pSoldier)) {
-    fAddingRaiseGunCost = FALSE;
+    fAddingRaiseGunCost = false;
   }
 
   if (fAddingTurningCost) {
@@ -1010,7 +1010,7 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
 
   if (fAddingRaiseGunCost) {
     bAPCost += GetAPsToReadyWeapon(pSoldier, pSoldier.value.usAnimState);
-    pSoldier.value.fDontChargeReadyAPs = FALSE;
+    pSoldier.value.fDontChargeReadyAPs = false;
   }
 
   if (sGridNo != NOWHERE) {
@@ -1194,45 +1194,45 @@ function MinAPsToStartMovement(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: U
   return bAPs;
 }
 
-function EnoughAmmo(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: BOOLEAN, bInvPos: INT8): BOOLEAN {
+function EnoughAmmo(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: boolean, bInvPos: INT8): boolean {
   if (pSoldier.value.inv[bInvPos].usItem != NOTHING) {
     if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
-      return TRUE;
+      return true;
     } else {
       if (pSoldier.value.inv[bInvPos].usItem == Enum225.ROCKET_LAUNCHER) {
         // hack... they turn empty afterwards anyways
-        return TRUE;
+        return true;
       }
 
       if (Item[pSoldier.value.inv[bInvPos].usItem].usItemClass == IC_LAUNCHER || pSoldier.value.inv[bInvPos].usItem == Enum225.TANK_CANNON) {
         if (FindAttachmentByClass(addressof(pSoldier.value.inv[bInvPos]), IC_GRENADE) != ITEM_NOT_FOUND) {
-          return TRUE;
+          return true;
         }
 
         // ATE: Did an else if here...
         if (FindAttachmentByClass(addressof(pSoldier.value.inv[bInvPos]), IC_BOMB) != ITEM_NOT_FOUND) {
-          return TRUE;
+          return true;
         }
 
         if (fDisplay) {
           TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_OUT_OF_AMMO);
         }
 
-        return FALSE;
+        return false;
       } else if (Item[pSoldier.value.inv[bInvPos].usItem].usItemClass == IC_GUN) {
         if (pSoldier.value.inv[bInvPos].ubGunShotsLeft == 0) {
           if (fDisplay) {
             TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_OUT_OF_AMMO);
           }
-          return FALSE;
+          return false;
         }
       }
     }
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function DeductAmmo(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8): void {
@@ -1370,7 +1370,7 @@ function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       if (bSlot2 != NO_SLOT) {
         // we would reload using this ammo!
         bAPCost2 = GetAPsToReloadGunWithAmmo(pObj, addressof(pSoldier.value.inv[bSlot2]));
-        if (EnoughPoints(pSoldier, (bAPCost + bAPCost2), 0, FALSE)) {
+        if (EnoughPoints(pSoldier, (bAPCost + bAPCost2), 0, false)) {
           // we can afford to reload both guns; otherwise display just for 1 gun
           bAPCost += bAPCost2;
         }
@@ -1387,7 +1387,7 @@ function GetAPsToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pRobot: Pointer<SOL
   let ubDirection: UINT8;
   let sAdjustedGridNo: INT16;
 
-  sActionGridNo = FindAdjacentGridEx(pSoldier, pRobot.value.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, pRobot.value.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
 
   sAPCost = PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
 
@@ -1484,22 +1484,22 @@ function GetAPsToLook(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
 
     // no other values should be possible
     default:
-      Assert(FALSE);
+      Assert(false);
       return 0;
       break;
   }
 }
 
-function CheckForMercContMove(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CheckForMercContMove(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let sAPCost: INT16;
   let sGridNo: INT16;
 
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
-    return FALSE;
+    return false;
   }
 
   if (gpItemPointer != null) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bLife >= OKLIFE) {
@@ -1519,17 +1519,17 @@ function CheckForMercContMove(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           if (FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, pSoldier.value.usUIMovementMode, NO_COPYROUTE, 0)) {
             sAPCost = PtsToMoveDirection(pSoldier, guiPathingData[0]);
 
-            if (EnoughPoints(pSoldier, sAPCost, 0, FALSE)) {
-              return TRUE;
+            if (EnoughPoints(pSoldier, sAPCost, 0, false)) {
+              return true;
             }
           } else {
-            return FALSE;
+            return false;
           }
         }
       }
     }
   }
-  return FALSE;
+  return false;
 }
 
 function GetAPsToReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): INT16 {
@@ -1560,7 +1560,7 @@ function GetAPsToReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16
   return 0;
 }
 
-function GetAPsToClimbRoof(pSoldier: Pointer<SOLDIERTYPE>, fClimbDown: BOOLEAN): INT8 {
+function GetAPsToClimbRoof(pSoldier: Pointer<SOLDIERTYPE>, fClimbDown: boolean): INT8 {
   if (!fClimbDown) {
     // OK, add aps to goto stand stance...
     return (AP_CLIMBROOF + GetAPsToChangeStance(pSoldier, ANIM_STAND));
@@ -1570,7 +1570,7 @@ function GetAPsToClimbRoof(pSoldier: Pointer<SOLDIERTYPE>, fClimbDown: BOOLEAN):
   }
 }
 
-function GetBPsToClimbRoof(pSoldier: Pointer<SOLDIERTYPE>, fClimbDown: BOOLEAN): INT16 {
+function GetBPsToClimbRoof(pSoldier: Pointer<SOLDIERTYPE>, fClimbDown: boolean): INT16 {
   if (!fClimbDown) {
     return BP_CLIMBROOF;
   } else {

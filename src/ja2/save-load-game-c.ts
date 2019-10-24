@@ -6,9 +6,9 @@
 
 // Global variable used
 
-let gMusicModeToPlay: BOOLEAN = FALSE;
+let gMusicModeToPlay: boolean = false;
 
-let gfUseConsecutiveQuickSaveSlots: BOOLEAN = FALSE;
+let gfUseConsecutiveQuickSaveSlots: boolean = false;
 let guiCurrentQuickSaveNumber: UINT32 = 0;
 let guiLastSaveGameNum: UINT32;
 
@@ -24,7 +24,7 @@ interface GENERAL_SAVE_INFO {
   ubMusicMode: UINT8;
 
   // Flag indicating that we have purchased something from Tony
-  fHavePurchasedItemsFromTony: BOOLEAN;
+  fHavePurchasedItemsFromTony: boolean;
 
   // The selected soldier in tactical
   usSelectedSoldier: UINT16;
@@ -33,17 +33,17 @@ interface GENERAL_SAVE_INFO {
   sRenderCenterX: INT16;
   sRenderCenterY: INT16;
 
-  fAtLeastOneMercWasHired: BOOLEAN;
+  fAtLeastOneMercWasHired: boolean;
 
   // General Map screen state flags
-  fShowItemsFlag: BOOLEAN;
-  fShowTownFlag: BOOLEAN;
-  fShowTeamFlag: BOOLEAN;
-  fShowMineFlag: BOOLEAN;
-  fShowAircraftFlag: BOOLEAN;
+  fShowItemsFlag: boolean;
+  fShowTownFlag: boolean;
+  fShowTeamFlag: boolean;
+  fShowMineFlag: boolean;
+  fShowAircraftFlag: boolean;
 
   // is the helicopter available to player?
-  fHelicopterAvailable: BOOLEAN;
+  fHelicopterAvailable: boolean;
 
   // helicopter vehicle id
   iHelicopterVehicleId: INT32;
@@ -55,22 +55,22 @@ interface GENERAL_SAVE_INFO {
   iTotalAccumulatedCostByPlayer: INT32;
 
   // whether or not skyrider is alive and well? and on our side yet?
-  fSkyRiderAvailable: BOOLEAN;
+  fSkyRiderAvailable: boolean;
 
   // skyrider engaging in a monologue
-  UNUSEDfSkyriderMonologue: BOOLEAN;
+  UNUSEDfSkyriderMonologue: boolean;
 
   // list of sector locations
   UNUSED: INT16[][] /* [2][2] */;
 
   // is the heli in the air?
-  fHelicopterIsAirBorne: BOOLEAN;
+  fHelicopterIsAirBorne: boolean;
 
   // is the pilot returning straight to base?
-  fHeliReturnStraightToBase: BOOLEAN;
+  fHeliReturnStraightToBase: boolean;
 
   // heli hovering
-  fHoveringHelicopter: BOOLEAN;
+  fHoveringHelicopter: boolean;
 
   // time started hovering
   uiStartHoverTime: UINT32;
@@ -79,19 +79,19 @@ interface GENERAL_SAVE_INFO {
   uiHelicopterSkyriderTalkState: UINT32;
 
   // the flags for skyrider events
-  fShowEstoniRefuelHighLight: BOOLEAN;
-  fShowOtherSAMHighLight: BOOLEAN;
-  fShowDrassenSAMHighLight: BOOLEAN;
+  fShowEstoniRefuelHighLight: boolean;
+  fShowOtherSAMHighLight: boolean;
+  fShowDrassenSAMHighLight: boolean;
 
   uiEnvWeather: UINT32;
 
   ubDefaultButton: UINT8;
 
-  fSkyriderEmptyHelpGiven: BOOLEAN;
-  fEnterMapDueToContract: BOOLEAN;
+  fSkyriderEmptyHelpGiven: boolean;
+  fEnterMapDueToContract: boolean;
   ubHelicopterHitsTaken: UINT8;
   ubQuitType: UINT8;
-  fSkyriderSaidCongratsOnTakingSAM: BOOLEAN;
+  fSkyriderSaidCongratsOnTakingSAM: boolean;
   sContractRehireSoldierID: INT16;
 
   GameOptions: GAME_OPTIONS;
@@ -105,34 +105,34 @@ interface GENERAL_SAVE_INFO {
 
   ubSMCurrentMercID: UINT8;
 
-  fFirstTimeInMapScreen: BOOLEAN;
+  fFirstTimeInMapScreen: boolean;
 
-  fDisableDueToBattleRoster: BOOLEAN;
+  fDisableDueToBattleRoster: boolean;
 
-  fDisableMapInterfaceDueToBattle: BOOLEAN;
+  fDisableMapInterfaceDueToBattle: boolean;
 
   sBoxerGridNo: INT16[] /* [NUM_BOXERS] */;
   ubBoxerID: UINT8[] /* [NUM_BOXERS] */;
-  fBoxerFought: BOOLEAN[] /* [NUM_BOXERS] */;
+  fBoxerFought: boolean[] /* [NUM_BOXERS] */;
 
-  fHelicopterDestroyed: BOOLEAN; // if the chopper is destroyed
-  fShowMapScreenHelpText: BOOLEAN; // If true, displays help in mapscreen
+  fHelicopterDestroyed: boolean; // if the chopper is destroyed
+  fShowMapScreenHelpText: boolean; // If true, displays help in mapscreen
 
   iSortStateForMapScreenList: INT32;
-  fFoundTixa: BOOLEAN;
+  fFoundTixa: boolean;
 
   uiTimeOfLastSkyriderMonologue: UINT32;
-  fShowCambriaHospitalHighLight: BOOLEAN;
-  fSkyRiderSetUp: BOOLEAN;
-  fRefuelingSiteAvailable: BOOLEAN[] /* [NUMBER_OF_REFUEL_SITES] */;
+  fShowCambriaHospitalHighLight: boolean;
+  fSkyRiderSetUp: boolean;
+  fRefuelingSiteAvailable: boolean[] /* [NUMBER_OF_REFUEL_SITES] */;
 
   // Meanwhile stuff
   gCurrentMeanwhileDef: MEANWHILE_DEFINITION;
 
-  ubPlayerProgressSkyriderLastCommentedOn: BOOLEAN;
+  ubPlayerProgressSkyriderLastCommentedOn: boolean;
 
-  gfMeanwhileTryingToStart: BOOLEAN;
-  gfInMeanwhile: BOOLEAN;
+  gfMeanwhileTryingToStart: boolean;
+  gfInMeanwhile: boolean;
 
   // list of dead guys for squads...in id values -> -1 means no one home
   sDeadMercs: INT16[][] /* [NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD] */;
@@ -148,56 +148,56 @@ interface GENERAL_SAVE_INFO {
 
   sWorldSectorLocationOfFirstBattle: INT16;
 
-  fUnReadMailFlag: BOOLEAN;
-  fNewMailFlag: BOOLEAN;
-  fOldUnReadFlag: BOOLEAN;
-  fOldNewMailFlag: BOOLEAN;
+  fUnReadMailFlag: boolean;
+  fNewMailFlag: boolean;
+  fOldUnReadFlag: boolean;
+  fOldNewMailFlag: boolean;
 
-  fShowMilitia: BOOLEAN;
+  fShowMilitia: boolean;
 
-  fNewFilesInFileViewer: BOOLEAN;
+  fNewFilesInFileViewer: boolean;
 
-  fLastBoxingMatchWonByPlayer: BOOLEAN;
+  fLastBoxingMatchWonByPlayer: boolean;
 
   uiUNUSED: UINT32;
 
-  fSamSiteFound: BOOLEAN[] /* [NUMBER_OF_SAMS] */;
+  fSamSiteFound: boolean[] /* [NUMBER_OF_SAMS] */;
 
   ubNumTerrorists: UINT8;
   ubCambriaMedicalObjects: UINT8;
 
-  fDisableTacticalPanelButtons: BOOLEAN;
+  fDisableTacticalPanelButtons: boolean;
 
   sSelMapX: INT16;
   sSelMapY: INT16;
   iCurrentMapSectorZ: INT32;
 
   usHasPlayerSeenHelpScreenInCurrentScreen: UINT16;
-  fHideHelpInAllScreens: BOOLEAN;
+  fHideHelpInAllScreens: boolean;
   ubBoxingMatchesWon: UINT8;
 
   ubBoxersRests: UINT8;
-  fBoxersResting: BOOLEAN;
+  fBoxersResting: boolean;
   ubDesertTemperature: UINT8;
   ubGlobalTemperature: UINT8;
 
   sMercArriveSectorX: INT16;
   sMercArriveSectorY: INT16;
 
-  fCreatureMeanwhileScenePlayed: BOOLEAN;
+  fCreatureMeanwhileScenePlayed: boolean;
   ubPlayerNum: UINT8;
   // New stuff for the Prebattle interface / autoresolve
-  fPersistantPBI: BOOLEAN;
+  fPersistantPBI: boolean;
   ubEnemyEncounterCode: UINT8;
 
-  ubExplicitEnemyEncounterCode: BOOLEAN;
-  fBlitBattleSectorLocator: BOOLEAN;
+  ubExplicitEnemyEncounterCode: boolean;
+  fBlitBattleSectorLocator: boolean;
   ubPBSectorX: UINT8;
   ubPBSectorY: UINT8;
 
   ubPBSectorZ: UINT8;
-  fCantRetreatInPBI: BOOLEAN;
-  fExplosionQueueActive: BOOLEAN;
+  fCantRetreatInPBI: boolean;
+  fExplosionQueueActive: boolean;
   ubUnused: UINT8[] /* [1] */;
 
   uiMeanWhileFlags: UINT32;
@@ -246,32 +246,32 @@ let guiScreenToGotoAfterLoadingSavedGame: UINT32 = 0;
 //
 /////////////////////////////////////////////////////
 
-function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
+function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let hFile: HWFILE = 0;
   let SaveGameHeader: SAVED_GAME_HEADER;
   let zSaveGameName: CHAR8[] /* [512] */;
   let uiSizeOfGeneralInfo: UINT32 = sizeof(GENERAL_SAVE_INFO);
   let saveDir: UINT8[] /* [100] */;
-  let fPausedStateBeforeSaving: BOOLEAN = gfGamePaused;
-  let fLockPauseStateBeforeSaving: BOOLEAN = gfLockPauseState;
+  let fPausedStateBeforeSaving: boolean = gfGamePaused;
+  let fLockPauseStateBeforeSaving: boolean = gfLockPauseState;
   let iSaveLoadGameMessageBoxID: INT32 = -1;
   let usPosX: UINT16;
   let usActualWidth: UINT16;
   let usActualHeight: UINT16;
-  let fWePausedIt: BOOLEAN = FALSE;
+  let fWePausedIt: boolean = false;
 
   sprintf(saveDir, "%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY]);
 
   if (ubSaveGameID >= NUM_SAVE_GAMES && ubSaveGameID != SAVE__ERROR_NUM && ubSaveGameID != SAVE__END_TURN_NUM)
-    return (FALSE); // ddd
+    return (false); // ddd
 
   // clear out the save game header
   memset(addressof(SaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
 
   if (!GamePaused()) {
     PauseBeforeSaveGame();
-    fWePausedIt = TRUE;
+    fWePausedIt = true;
   }
 
   // Place a message on the screen telling the user that we are saving the game
@@ -300,13 +300,13 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   }
 
   else if (guiCurrentScreen == Enum26.MAP_SCREEN) {
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
   }
 
   else if (guiCurrentScreen == Enum26.SAVE_LOAD_SCREEN) {
-    gfRedrawSaveLoadScreen = TRUE;
+    gfRedrawSaveLoadScreen = true;
   }
 
   gubSaveGameLoc = ubSaveGameID;
@@ -348,7 +348,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   }
 
   // create the save game file
-  hFile = FileOpen(zSaveGameName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hFile = FileOpen(zSaveGameName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
   if (!hFile) {
     goto("FAILED_TO_SAVE");
   }
@@ -357,8 +357,8 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   // If there are no enemy or civilians to save, we have to check BEFORE savinf the sector info struct because
   // the NewWayOfSavingEnemyAndCivliansToTempFile will RESET the civ or enemy flag AFTER they have been saved.
   //
-  NewWayOfSavingEnemyAndCivliansToTempFile(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, TRUE, TRUE);
-  NewWayOfSavingEnemyAndCivliansToTempFile(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, FALSE, TRUE);
+  NewWayOfSavingEnemyAndCivliansToTempFile(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, true, true);
+  NewWayOfSavingEnemyAndCivliansToTempFile(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, false, true);
 
   //
   // Setup the save game header
@@ -443,10 +443,10 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   SaveGameHeader.fAlternateSector = GetSectorFlagStatus(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, SF_USE_ALTERNATE_MAP);
 
   if (gfWorldLoaded) {
-    SaveGameHeader.fWorldLoaded = TRUE;
+    SaveGameHeader.fWorldLoaded = true;
     SaveGameHeader.ubLoadScreenID = GetLoadScreenID(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
   } else {
-    SaveGameHeader.fWorldLoaded = FALSE;
+    SaveGameHeader.fWorldLoaded = false;
     SaveGameHeader.ubLoadScreenID = 0;
   }
 
@@ -717,7 +717,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   // Check for enough free hard drive space
   NextLoopCheckForEnoughFreeHardDriveSpace();
 
-  return TRUE;
+  return true;
 
   // if there is an error saving the game
 FAILED_TO_SAVE:
@@ -737,12 +737,12 @@ FAILED_TO_SAVE:
   // Check for enough free hard drive space
   NextLoopCheckForEnoughFreeHardDriveSpace();
 
-  return FALSE;
+  return false;
 }
 
 let guiBrokenSaveGameVersion: UINT32 = 0;
 
-function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
+function LoadSavedGame(ubSavedGameID: UINT8): boolean {
   let hFile: HWFILE;
   let SaveGameHeader: SAVED_GAME_HEADER;
   let uiNumBytesRead: UINT32 = 0;
@@ -773,12 +773,12 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   // is it a valid save number
   if (ubSavedGameID >= NUM_SAVE_GAMES) {
     if (ubSavedGameID != SAVE__END_TURN_NUM)
-      return FALSE;
+      return false;
   } else if (!gbSaveGameArray[ubSavedGameID])
-    return FALSE;
+    return false;
 
   // Used in mapescreen to disable the annoying 'swoosh' transitions
-  gfDontStartTransitionFromLaptop = TRUE;
+  gfDontStartTransitionFromLaptop = true;
 
   // Reset timer callbacks
   gpCustomizableTimerCallback = null;
@@ -794,7 +794,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   TrashWorld();
 
   // Deletes all the Temp files in the Maps\Temp directory
-  InitTacticalSave(TRUE);
+  InitTacticalSave(true);
 
   // ATE; Added to empry dialogue q
   EmptyDialogueQueue();
@@ -803,18 +803,18 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   CreateSavedGameFileNameFromNumber(ubSavedGameID, zSaveGameName);
 
   // open the save game file
-  hFile = FileOpen(zSaveGameName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hFile = FileOpen(zSaveGameName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (!hFile) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   // Load the Save Game header file
   FileRead(hFile, addressof(SaveGameHeader), sizeof(SAVED_GAME_HEADER), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(SAVED_GAME_HEADER)) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   guiJA2EncryptionSet = CalcJA2EncryptionSet(addressof(SaveGameHeader));
@@ -826,7 +826,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     // Fail loading the save
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   // Store the loading screenID that was saved
@@ -850,7 +850,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadTacticalStatusFromSavedGame(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   // This gets reset by the above function
@@ -860,13 +860,13 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadGameClock(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   // if we are suppose to use the alternate sector
   if (SaveGameHeader.fAlternateSector) {
     SetSectorFlag(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, SF_USE_ALTERNATE_MAP);
-    gfUseAlternateMap = TRUE;
+    gfUseAlternateMap = true;
   }
 
   // if the world was loaded when saved, reload it, otherwise dont
@@ -911,7 +911,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadStrategicEventsFromSavedGame(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 0;
@@ -922,7 +922,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadLaptopInfoFromSavedGame(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 0;
@@ -936,7 +936,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadSavedMercProfiles(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 30;
@@ -949,7 +949,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadSoldierStructure(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -963,7 +963,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadFilesFromSavedGame(FINANCES_DATA_FILE, hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -977,7 +977,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadFilesFromSavedGame(HISTORY_DATA_FILE, hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -991,7 +991,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadFilesFromSavedGame(FILES_DAT_FILE, hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1003,7 +1003,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadEmailFromSavedGame(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1015,7 +1015,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadStrategicInfoFromSavedFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1027,7 +1027,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadUnderGroundSectorInfoFromSavedGame(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1039,7 +1039,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadSquadInfoFromSavedGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1051,7 +1051,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadStrategicMovementGroupsFromSavedGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 30;
@@ -1062,7 +1062,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadMapTempFilesFromSavedGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1073,7 +1073,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadQuestInfoFromSavedGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1084,7 +1084,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadOppListInfoFromSavedGame(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1095,7 +1095,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadMapScreenMessagesFromSaveGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1106,7 +1106,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadNPCInfoFromSavedGameFile(hFile, SaveGameHeader.uiSavedGameVersion)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1117,7 +1117,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadKeyTableFromSaveedGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1128,7 +1128,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadTempNpcQuoteArrayToSaveGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 0;
@@ -1139,7 +1139,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadPreRandomNumbersFromSaveGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 0;
@@ -1150,7 +1150,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadSmokeEffectsFromLoadGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1161,7 +1161,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadArmsDealerInventoryFromSavedGameFile(hFile, (SaveGameHeader.uiSavedGameVersion >= 54), (SaveGameHeader.uiSavedGameVersion >= 55))) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 0;
@@ -1172,7 +1172,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadGeneralInfo(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 1;
@@ -1183,7 +1183,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   if (!LoadMineStatusFromSavedGameFile(hFile)) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
-    return FALSE;
+    return false;
   }
 
   uiRelEndPerc += 0;
@@ -1195,7 +1195,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadStrategicTownLoyaltyFromSavedGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1208,7 +1208,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadVehicleInformationFromSavedGameFile(hFile, SaveGameHeader.uiSavedGameVersion)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1221,7 +1221,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadBulletStructureFromSavedGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1234,7 +1234,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadPhysicsTableFromSavedGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1247,7 +1247,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadAirRaidInfoFromSaveGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1260,7 +1260,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadTeamTurnsFromTheSavedGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1273,7 +1273,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadExplosionTableFromSavedGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1286,7 +1286,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadCreatureDirectives(hFile, SaveGameHeader.uiSavedGameVersion)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1299,7 +1299,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadStrategicStatusFromSaveGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1312,7 +1312,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadStrategicAI(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1325,7 +1325,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadLightEffectsFromLoadGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1338,7 +1338,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadWatchedLocsFromSavedGame(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1351,7 +1351,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadItemCursorFromSavedGame(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1364,7 +1364,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadCivQuotesFromLoadGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1377,7 +1377,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadBackupNPCInfoFromSavedGameFile(hFile, SaveGameHeader.uiSavedGameVersion)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1390,7 +1390,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadMeanwhileDefsFromSaveGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   } else {
     memcpy(addressof(gMeanwhileDef[gCurrentMeanwhileDef.ubMeanwhileID]), addressof(gCurrentMeanwhileDef), sizeof(MEANWHILE_DEFINITION));
@@ -1407,7 +1407,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadSchedulesFromSave(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1421,13 +1421,13 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
       if (!LoadVehicleMovementInfoFromSavedGameFile(hFile)) {
         FileClose(hFile);
         guiSaveGameVersion = 0;
-        return FALSE;
+        return false;
       }
     } else {
       if (!NewLoadVehicleMovementInfoFromSavedGameFile(hFile)) {
         FileClose(hFile);
         guiSaveGameVersion = 0;
-        return FALSE;
+        return false;
       }
     }
   }
@@ -1439,14 +1439,14 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
 
   if (SaveGameHeader.uiSavedGameVersion < 62) {
     // the older games had a bug where this flag was never being set
-    gfResetAllPlayerKnowsEnemiesFlags = TRUE;
+    gfResetAllPlayerKnowsEnemiesFlags = true;
   }
 
   if (SaveGameHeader.uiSavedGameVersion >= 67) {
     if (!LoadContractRenewalDataFromSaveGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1454,7 +1454,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadLeaveItemList(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1467,7 +1467,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(hFile)) {
       FileClose(hFile);
       guiSaveGameVersion = 0;
-      return FALSE;
+      return false;
     }
   }
 
@@ -1504,7 +1504,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     if (!LoadCurrentSectorsInformationFromTempItemsFile()) {
       InitExitGameDialogBecauseFileHackDetected();
       guiSaveGameVersion = 0;
-      return TRUE;
+      return true;
     }
   }
 
@@ -1575,7 +1575,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     // Initialize the current panel
     InitializeCurrentPanel();
 
-    SelectSoldier(gusSelectedSoldier, FALSE, TRUE);
+    SelectSoldier(gusSelectedSoldier, false, true);
   }
 
   uiRelEndPerc += 1;
@@ -1612,7 +1612,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
 
     if (!fSkyRiderSetUp) {
       // see if we can find him and remove him if so....
-      pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, FALSE);
+      pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, false);
 
       if (pSoldier != null) {
         TacticalRemoveSoldier(pSoldier.value.ubID);
@@ -1675,7 +1675,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
     CalcAproximateAmountPaidToSpeck();
   }
 
-  gfLoadedGame = TRUE;
+  gfLoadedGame = true;
 
   uiRelEndPerc = 100;
   SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Done!");
@@ -1704,12 +1704,12 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
 
   // The above function LightSetBaseLevel adjusts ALL the level node light values including the merc node,
   // we must reset the values
-  HandlePlayerTogglingLightEffects(FALSE);
+  HandlePlayerTogglingLightEffects(false);
 
-  return TRUE;
+  return true;
 }
 
-function SaveMercProfiles(hFile: HWFILE): BOOLEAN {
+function SaveMercProfiles(hFile: HWFILE): boolean {
   let cnt: UINT16;
   let uiNumBytesWritten: UINT32 = 0;
   let uiSaveSize: UINT32 = sizeof(MERCPROFILESTRUCT);
@@ -1723,14 +1723,14 @@ function SaveMercProfiles(hFile: HWFILE): BOOLEAN {
       NewJA2EncryptedFileWrite(hFile, addressof(gMercProfiles[cnt]), uiSaveSize, addressof(uiNumBytesWritten));
     }
     if (uiNumBytesWritten != uiSaveSize) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadSavedMercProfiles(hFile: HWFILE): BOOLEAN {
+function LoadSavedMercProfiles(hFile: HWFILE): boolean {
   let cnt: UINT16;
   let uiNumBytesRead: UINT32 = 0;
 
@@ -1742,14 +1742,14 @@ function LoadSavedMercProfiles(hFile: HWFILE): BOOLEAN {
       NewJA2EncryptedFileRead(hFile, addressof(gMercProfiles[cnt]), sizeof(MERCPROFILESTRUCT), addressof(uiNumBytesRead));
     }
     if (uiNumBytesRead != sizeof(MERCPROFILESTRUCT)) {
-      return FALSE;
+      return false;
     }
     if (gMercProfiles[cnt].uiProfileChecksum != ProfileChecksum(addressof(gMercProfiles[cnt]))) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 // Not saving any of these in the soldier struct
@@ -1770,7 +1770,7 @@ function LoadSavedMercProfiles(hFile: HWFILE): BOOLEAN {
 //	SGPPaletteEntry							*p8BPPPalette
 //	OBJECTTYPE									*pTempObject;
 
-function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
+function SaveSoldierStructure(hFile: HWFILE): boolean {
   let cnt: UINT16;
   let uiNumBytesWritten: UINT32 = 0;
   let ubOne: UINT8 = 1;
@@ -1785,7 +1785,7 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
       // Save the byte specifing to NOT load the soldiers
       FileWrite(hFile, addressof(ubZero), 1, addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != 1) {
-        return FALSE;
+        return false;
       }
     }
 
@@ -1793,7 +1793,7 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
       // Save the byte specifing to load the soldiers
       FileWrite(hFile, addressof(ubOne), 1, addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != 1) {
-        return FALSE;
+        return false;
       }
 
       // calculate checksum for soldier
@@ -1805,7 +1805,7 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
         NewJA2EncryptedFileWrite(hFile, addressof(Menptr[cnt]), uiSaveSize, addressof(uiNumBytesWritten));
       }
       if (uiNumBytesWritten != uiSaveSize) {
-        return FALSE;
+        return false;
       }
 
       //
@@ -1814,7 +1814,7 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
 
       // Save the pMercPath
       if (!SaveMercPathFromSoldierStruct(hFile, cnt))
-        return FALSE;
+        return false;
 
       //
       // do we have a 	KEY_ON_RING									*pKeyRing;
@@ -1824,28 +1824,28 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
         // write to the file saying we have the ....
         FileWrite(hFile, addressof(ubOne), 1, addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != 1) {
-          return FALSE;
+          return false;
         }
 
         // Now save the ....
         FileWrite(hFile, Menptr[cnt].pKeyRing, NUM_KEYS * sizeof(KEY_ON_RING), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != NUM_KEYS * sizeof(KEY_ON_RING)) {
-          return FALSE;
+          return false;
         }
       } else {
         // write to the file saying we DO NOT have the Key ring
         FileWrite(hFile, addressof(ubZero), 1, addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != 1) {
-          return FALSE;
+          return false;
         }
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
+function LoadSoldierStructure(hFile: HWFILE): boolean {
   let cnt: UINT16;
   let uiNumBytesRead: UINT32 = 0;
   let SavedSoldierInfo: SOLDIERTYPE;
@@ -1872,7 +1872,7 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
     // Read in a byte to tell us whether or not there is a soldier loaded here.
     FileRead(hFile, addressof(ubActive), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
-      return FALSE;
+      return false;
     }
 
     // if the soldier is not active, continue
@@ -1889,11 +1889,11 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
         NewJA2EncryptedFileRead(hFile, addressof(SavedSoldierInfo), uiSaveSize, addressof(uiNumBytesRead));
       }
       if (uiNumBytesRead != uiSaveSize) {
-        return FALSE;
+        return false;
       }
       // check checksum
       if (MercChecksum(addressof(SavedSoldierInfo)) != SavedSoldierInfo.uiMercChecksum) {
-        return FALSE;
+        return false;
       }
 
       // Make sure all the pointer references are NULL'ed out.
@@ -1922,15 +1922,15 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       memset(addressof(CreateStruct), 0, sizeof(SOLDIERCREATE_STRUCT));
       CreateStruct.bTeam = SavedSoldierInfo.bTeam;
       CreateStruct.ubProfile = SavedSoldierInfo.ubProfile;
-      CreateStruct.fUseExistingSoldier = TRUE;
+      CreateStruct.fUseExistingSoldier = true;
       CreateStruct.pExistingSoldier = addressof(SavedSoldierInfo);
 
       if (!TacticalCreateSoldier(addressof(CreateStruct), addressof(ubId)))
-        return FALSE;
+        return false;
 
       // Load the pMercPath
       if (!LoadMercPathToSoldierStruct(hFile, ubId))
-        return FALSE;
+        return false;
 
       //
       // do we have a 	KEY_ON_RING									*pKeyRing;
@@ -1939,14 +1939,14 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       // Read the file to see if we have to load the keys
       FileRead(hFile, addressof(ubOne), 1, addressof(uiNumBytesRead));
       if (uiNumBytesRead != 1) {
-        return FALSE;
+        return false;
       }
 
       if (ubOne) {
         // Now Load the ....
         FileRead(hFile, Menptr[cnt].pKeyRing, NUM_KEYS * sizeof(KEY_ON_RING), addressof(uiNumBytesRead));
         if (uiNumBytesRead != NUM_KEYS * sizeof(KEY_ON_RING)) {
-          return FALSE;
+          return false;
         }
       } else {
         Assert(Menptr[cnt].pKeyRing == null);
@@ -1996,7 +1996,7 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       gMercProfiles[Enum268.ROBOT].inv[Enum261.HELMETPOS] = Enum225.SPECTRA_HELMET_18;
       gMercProfiles[Enum268.ROBOT].inv[Enum261.LEGPOS] = Enum225.SPECTRA_LEGGINGS_18;
       gMercProfiles[Enum268.ROBOT].bAgility = 50;
-      pSoldier = FindSoldierByProfileID(Enum268.ROBOT, FALSE);
+      pSoldier = FindSoldierByProfileID(Enum268.ROBOT, false);
       if (pSoldier) {
         pSoldier.value.inv[Enum261.VESTPOS].usItem = Enum225.SPECTRA_VEST_18;
         pSoldier.value.inv[Enum261.HELMETPOS].usItem = Enum225.SPECTRA_HELMET_18;
@@ -2006,7 +2006,7 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 /*
@@ -2097,7 +2097,7 @@ BOOLEAN LoadPtrInfo( PTR *pData, UINT32 uiSizeOfObject, HWFILE hFile )
 }
 */
 
-function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
+function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean {
   let uiFileSize: UINT32;
   let uiNumBytesWritten: UINT32 = 0;
   let hSrcFile: HWFILE;
@@ -2105,26 +2105,26 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   // open the file
-  hSrcFile = FileOpen(pSrcFileName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hSrcFile = FileOpen(pSrcFileName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (!hSrcFile) {
-    return FALSE;
+    return false;
   }
 
   // Get the file size of the source data file
   uiFileSize = FileGetSize(hSrcFile);
   if (uiFileSize == 0)
-    return FALSE;
+    return false;
 
   // Write the the size of the file to the saved game file
   FileWrite(hFile, addressof(uiFileSize), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   // Allocate a buffer to read the data into
   pData = MemAlloc(uiFileSize);
   if (pData == null)
-    return FALSE;
+    return false;
   memset(pData, 0, uiFileSize);
 
   // Read the saource file into the buffer
@@ -2133,7 +2133,7 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
     // Free the buffer
     MemFree(pData);
 
-    return FALSE;
+    return false;
   }
 
   // Write the buffer to the saved game file
@@ -2142,7 +2142,7 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
     // Free the buffer
     MemFree(pData);
 
-    return FALSE;
+    return false;
   }
 
   // Free the buffer
@@ -2151,10 +2151,10 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   // Clsoe the source data file
   FileClose(hSrcFile);
 
-  return TRUE;
+  return true;
 }
 
-function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
+function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean {
   let uiFileSize: UINT32;
   let uiNumBytesWritten: UINT32 = 0;
   let hSrcFile: HWFILE;
@@ -2165,15 +2165,15 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   if (FileExists(pSrcFileName)) {
     if (!FileDelete(pSrcFileName)) {
       // unable to delete the original file
-      return FALSE;
+      return false;
     }
   }
 
   // open the destination file to write to
-  hSrcFile = FileOpen(pSrcFileName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hSrcFile = FileOpen(pSrcFileName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
   if (!hSrcFile) {
     // error, we cant open the saved game file
-    return FALSE;
+    return false;
   }
 
   // Read the size of the data
@@ -2181,20 +2181,20 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   if (uiNumBytesRead != sizeof(UINT32)) {
     FileClose(hSrcFile);
 
-    return FALSE;
+    return false;
   }
 
   // if there is nothing in the file, return;
   if (uiFileSize == 0) {
     FileClose(hSrcFile);
-    return TRUE;
+    return true;
   }
 
   // Allocate a buffer to read the data into
   pData = MemAlloc(uiFileSize);
   if (pData == null) {
     FileClose(hSrcFile);
-    return FALSE;
+    return false;
   }
 
   // Read into the buffer
@@ -2205,7 +2205,7 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
     // Free the buffer
     MemFree(pData);
 
-    return FALSE;
+    return false;
   }
 
   // Write the buffer to the new file
@@ -2216,7 +2216,7 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
     // Free the buffer
     MemFree(pData);
 
-    return FALSE;
+    return false;
   }
 
   // Free the buffer
@@ -2225,10 +2225,10 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   // Close the source data file
   FileClose(hSrcFile);
 
-  return TRUE;
+  return true;
 }
 
-function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
+function SaveEmailToSavedGame(hFile: HWFILE): boolean {
   let uiNumOfEmails: UINT32 = 0;
   let uiSizeOfEmails: UINT32 = 0;
   let pEmail: EmailPtr = pEmailList;
@@ -2250,7 +2250,7 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
   // write the number of email messages
   FileWrite(hFile, addressof(uiNumOfEmails), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   // loop trhough all the emails, add each one individually
@@ -2262,13 +2262,13 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
     // write the length of the current emails subject to the saved game file
     FileWrite(hFile, addressof(uiStringLength), sizeof(UINT32), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(UINT32)) {
-      return FALSE;
+      return false;
     }
 
     // write the subject of the current email to the saved game file
     FileWrite(hFile, pEmail.value.pSubject, uiStringLength, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != uiStringLength) {
-      return FALSE;
+      return false;
     }
 
     // Get the current emails data and asign it to the 'Saved email' struct
@@ -2289,17 +2289,17 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
     // write the email header to the saved game file
     FileWrite(hFile, addressof(SavedEmail), sizeof(SavedEmailStruct), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(SavedEmailStruct)) {
-      return FALSE;
+      return false;
     }
 
     // advance to the next email
     pEmail = pEmail.value.Next;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
+function LoadEmailFromSavedGame(hFile: HWFILE): boolean {
   let uiNumOfEmails: UINT32 = 0;
   let uiSizeOfSubject: UINT32 = 0;
   let pEmail: EmailPtr = pEmailList;
@@ -2316,14 +2316,14 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
   // Allocate memory for the header node
   pEmailList = MemAlloc(sizeof(Email));
   if (pEmailList == null)
-    return FALSE;
+    return false;
 
   memset(pEmailList, 0, sizeof(Email));
 
   // read in the number of email messages
   FileRead(hFile, addressof(uiNumOfEmails), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   // loop through all the emails, add each one individually
@@ -2332,25 +2332,25 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
     // get the length of the email subject
     FileRead(hFile, addressof(uiSizeOfSubject), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
-      return FALSE;
+      return false;
     }
 
     // allocate space for the subject
     pData = MemAlloc(EMAIL_SUBJECT_LENGTH * sizeof(wchar_t));
     if (pData == null)
-      return FALSE;
+      return false;
     memset(pData, 0, EMAIL_SUBJECT_LENGTH * sizeof(wchar_t));
 
     // Get the subject
     FileRead(hFile, pData, uiSizeOfSubject, addressof(uiNumBytesRead));
     if (uiNumBytesRead != uiSizeOfSubject) {
-      return FALSE;
+      return false;
     }
 
     // get the rest of the data from the email
     FileRead(hFile, addressof(SavedEmail), sizeof(SavedEmailStruct), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SavedEmailStruct)) {
-      return FALSE;
+      return false;
     }
 
     //
@@ -2360,7 +2360,7 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
     // if we havent allocated space yet
     pTempEmail = MemAlloc(sizeof(Email));
     if (pTempEmail == null)
-      return FALSE;
+      return false;
     memset(pTempEmail, 0, sizeof(Email));
 
     pTempEmail.value.usOffset = SavedEmail.usOffset;
@@ -2400,16 +2400,16 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
     pEmailList = null;
   }
 
-  return TRUE;
+  return true;
 }
 
-function SaveTacticalStatusToSavedGame(hFile: HWFILE): BOOLEAN {
+function SaveTacticalStatusToSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // write the gTacticalStatus to the saved game file
   FileWrite(hFile, addressof(gTacticalStatus), sizeof(TacticalStatusType), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(TacticalStatusType)) {
-    return FALSE;
+    return false;
   }
 
   //
@@ -2419,31 +2419,31 @@ function SaveTacticalStatusToSavedGame(hFile: HWFILE): BOOLEAN {
   // save gWorldSectorX
   FileWrite(hFile, addressof(gWorldSectorX), sizeof(gWorldSectorX), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(gWorldSectorX)) {
-    return FALSE;
+    return false;
   }
 
   // save gWorldSectorY
   FileWrite(hFile, addressof(gWorldSectorY), sizeof(gWorldSectorY), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(gWorldSectorY)) {
-    return FALSE;
+    return false;
   }
 
   // save gbWorldSectorZ
   FileWrite(hFile, addressof(gbWorldSectorZ), sizeof(gbWorldSectorZ), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(gbWorldSectorZ)) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadTacticalStatusFromSavedGame(hFile: HWFILE): BOOLEAN {
+function LoadTacticalStatusFromSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   // Read the gTacticalStatus to the saved game file
   FileRead(hFile, addressof(gTacticalStatus), sizeof(TacticalStatusType), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(TacticalStatusType)) {
-    return FALSE;
+    return false;
   }
 
   //
@@ -2453,32 +2453,32 @@ function LoadTacticalStatusFromSavedGame(hFile: HWFILE): BOOLEAN {
   // Load gWorldSectorX
   FileRead(hFile, addressof(gWorldSectorX), sizeof(gWorldSectorX), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(gWorldSectorX)) {
-    return FALSE;
+    return false;
   }
 
   // Load gWorldSectorY
   FileRead(hFile, addressof(gWorldSectorY), sizeof(gWorldSectorY), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(gWorldSectorY)) {
-    return FALSE;
+    return false;
   }
 
   // Load gbWorldSectorZ
   FileRead(hFile, addressof(gbWorldSectorZ), sizeof(gbWorldSectorZ), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(gbWorldSectorZ)) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function CopySavedSoldierInfoToNewSoldier(pDestSourceInfo: Pointer<SOLDIERTYPE>, pSourceInfo: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CopySavedSoldierInfoToNewSoldier(pDestSourceInfo: Pointer<SOLDIERTYPE>, pSourceInfo: Pointer<SOLDIERTYPE>): boolean {
   // Copy the old soldier information over to the new structure
   memcpy(pDestSourceInfo, pSourceInfo, sizeof(SOLDIERTYPE));
 
-  return TRUE;
+  return true;
 }
 
-function SetMercsInsertionGridNo(): BOOLEAN {
+function SetMercsInsertionGridNo(): boolean {
   let cnt: UINT16 = 0;
 
   // loop through all the mercs
@@ -2498,10 +2498,10 @@ function SetMercsInsertionGridNo(): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function SaveOppListInfoToSavedGame(hFile: HWFILE): BOOLEAN {
+function SaveOppListInfoToSavedGame(hFile: HWFILE): boolean {
   let uiSaveSize: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
 
@@ -2509,62 +2509,62 @@ function SaveOppListInfoToSavedGame(hFile: HWFILE): BOOLEAN {
   uiSaveSize = MAXTEAMS * TOTAL_SOLDIERS;
   FileWrite(hFile, gbPublicOpplist, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // Save the Seen Oppenents
   uiSaveSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
   FileWrite(hFile, gbSeenOpponents, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // Save the Last Known Opp Locations
   uiSaveSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
   FileWrite(hFile, gsLastKnownOppLoc, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // Save the Last Known Opp Level
   uiSaveSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
   FileWrite(hFile, gbLastKnownOppLevel, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // Save the Public Last Known Opp Locations
   uiSaveSize = MAXTEAMS * TOTAL_SOLDIERS;
   FileWrite(hFile, gsPublicLastKnownOppLoc, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // Save the Public Last Known Opp Level
   uiSaveSize = MAXTEAMS * TOTAL_SOLDIERS;
   FileWrite(hFile, gbPublicLastKnownOppLevel, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // Save the Public Noise Volume
   uiSaveSize = MAXTEAMS;
   FileWrite(hFile, gubPublicNoiseVolume, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // Save the Public Last Noise Gridno
   uiSaveSize = MAXTEAMS;
   FileWrite(hFile, gsPublicNoiseGridno, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadOppListInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
+function LoadOppListInfoFromSavedGame(hFile: HWFILE): boolean {
   let uiLoadSize: UINT32 = 0;
   let uiNumBytesRead: UINT32 = 0;
 
@@ -2572,62 +2572,62 @@ function LoadOppListInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
   uiLoadSize = MAXTEAMS * TOTAL_SOLDIERS;
   FileRead(hFile, gbPublicOpplist, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   // Load the Seen Oppenents
   uiLoadSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
   FileRead(hFile, gbSeenOpponents, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   // Load the Last Known Opp Locations
   uiLoadSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
   FileRead(hFile, gsLastKnownOppLoc, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   // Load the Last Known Opp Level
   uiLoadSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
   FileRead(hFile, gbLastKnownOppLevel, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   // Load the Public Last Known Opp Locations
   uiLoadSize = MAXTEAMS * TOTAL_SOLDIERS;
   FileRead(hFile, gsPublicLastKnownOppLoc, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   // Load the Public Last Known Opp Level
   uiLoadSize = MAXTEAMS * TOTAL_SOLDIERS;
   FileRead(hFile, gbPublicLastKnownOppLevel, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   // Load the Public Noise Volume
   uiLoadSize = MAXTEAMS;
   FileRead(hFile, gubPublicNoiseVolume, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   // Load the Public Last Noise Gridno
   uiLoadSize = MAXTEAMS;
   FileRead(hFile, gsPublicNoiseGridno, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function SaveWatchedLocsToSavedGame(hFile: HWFILE): BOOLEAN {
+function SaveWatchedLocsToSavedGame(hFile: HWFILE): boolean {
   let uiArraySize: UINT32;
   let uiSaveSize: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
@@ -2638,30 +2638,30 @@ function SaveWatchedLocsToSavedGame(hFile: HWFILE): BOOLEAN {
   uiSaveSize = uiArraySize * sizeof(INT16);
   FileWrite(hFile, gsWatchedLoc, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   uiSaveSize = uiArraySize * sizeof(INT8);
 
   FileWrite(hFile, gbWatchedLocLevel, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   FileWrite(hFile, gubWatchedLocPoints, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   FileWrite(hFile, gfWatchedLocReset, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadWatchedLocsFromSavedGame(hFile: HWFILE): BOOLEAN {
+function LoadWatchedLocsFromSavedGame(hFile: HWFILE): boolean {
   let uiArraySize: UINT32;
   let uiLoadSize: UINT32 = 0;
   let uiNumBytesRead: UINT32 = 0;
@@ -2671,26 +2671,26 @@ function LoadWatchedLocsFromSavedGame(hFile: HWFILE): BOOLEAN {
   uiLoadSize = uiArraySize * sizeof(INT16);
   FileRead(hFile, gsWatchedLoc, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   uiLoadSize = uiArraySize * sizeof(INT8);
   FileRead(hFile, gbWatchedLocLevel, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   FileRead(hFile, gubWatchedLocPoints, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   FileRead(hFile, gfWatchedLocReset, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: STR): void {
@@ -2717,7 +2717,7 @@ function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: S
     sprintf(pzNewFileName, "%S\\%S%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_SAVE_NAME], ubSaveGameID, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 }
 
-function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
+function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): boolean {
   let uiNumOfNodes: UINT32 = 0;
   let pTempPath: PathStPtr = Menptr[ubID].pMercPath;
   let uiNumBytesWritten: UINT32 = 0;
@@ -2731,7 +2731,7 @@ function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   // Save the number of the nodes
   FileWrite(hFile, addressof(uiNumOfNodes), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   // loop through all the nodes and add them
@@ -2742,16 +2742,16 @@ function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
     // Save the number of the nodes
     FileWrite(hFile, pTempPath, sizeof(PathSt), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(PathSt)) {
-      return FALSE;
+      return false;
     }
 
     pTempPath = pTempPath.value.pNext;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
+function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): boolean {
   let uiNumOfNodes: UINT32 = 0;
   let pTempPath: PathStPtr = null;
   let pTemp: PathStPtr = null;
@@ -2780,7 +2780,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   // Load the number of the nodes
   FileRead(hFile, addressof(uiNumOfNodes), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   // load all the nodes
@@ -2788,13 +2788,13 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
     // Allocate memory for the new node
     pTemp = MemAlloc(sizeof(PathSt));
     if (pTemp == null)
-      return FALSE;
+      return false;
     memset(pTemp, 0, sizeof(PathSt));
 
     // Load the node
     FileRead(hFile, pTemp, sizeof(PathSt), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(PathSt)) {
-      return FALSE;
+      return false;
     }
 
     // Put the node into the list
@@ -2818,10 +2818,10 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   if (Menptr[ubID].pMercPath)
     Menptr[ubID].pMercPath.value.pPrev = null;
 
-  return TRUE;
+  return true;
 }
 
-function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
+function SaveGeneralInfo(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   let sGeneralInfo: GENERAL_SAVE_INFO;
@@ -3023,13 +3023,13 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   FileWrite(hFile, addressof(sGeneralInfo), sizeof(GENERAL_SAVE_INFO), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(GENERAL_SAVE_INFO)) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
+function LoadGeneralInfo(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   let sGeneralInfo: GENERAL_SAVE_INFO;
@@ -3039,7 +3039,7 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   FileRead(hFile, addressof(sGeneralInfo), sizeof(GENERAL_SAVE_INFO), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(GENERAL_SAVE_INFO)) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   gMusicModeToPlay = sGeneralInfo.ubMusicMode;
@@ -3261,53 +3261,53 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   gfPlayerTeamSawJoey = sGeneralInfo.fPlayerTeamSawJoey;
   gfMikeShouldSayHi = sGeneralInfo.fMikeShouldSayHi;
 
-  return TRUE;
+  return true;
 }
 
-function SavePreRandomNumbersToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SavePreRandomNumbersToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // Save the Prerandom number index
   FileWrite(hFile, addressof(guiPreRandomIndex), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   // Save the Prerandom number index
   FileWrite(hFile, guiPreRandomNums, sizeof(UINT32) * MAX_PREGENERATED_NUMS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32) * MAX_PREGENERATED_NUMS) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadPreRandomNumbersFromSaveGameFile(hFile: HWFILE): BOOLEAN {
+function LoadPreRandomNumbersFromSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   // Load the Prerandom number index
   FileRead(hFile, addressof(guiPreRandomIndex), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   // Load the Prerandom number index
   FileRead(hFile, guiPreRandomNums, sizeof(UINT32) * MAX_PREGENERATED_NUMS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32) * MAX_PREGENERATED_NUMS) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
+function LoadMeanwhileDefsFromSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   if (guiSaveGameVersion < 72) {
     // Load the array of meanwhile defs
     FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * (Enum160.NUM_MEANWHILES - 1), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(MEANWHILE_DEFINITION) * (Enum160.NUM_MEANWHILES - 1)) {
-      return FALSE;
+      return false;
     }
     // and set the last one
     memset(addressof(gMeanwhileDef[Enum160.NUM_MEANWHILES - 1]), 0, sizeof(MEANWHILE_DEFINITION));
@@ -3315,36 +3315,36 @@ function LoadMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
     // Load the array of meanwhile defs
     FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * Enum160.NUM_MEANWHILES, addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(MEANWHILE_DEFINITION) * Enum160.NUM_MEANWHILES) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function SaveMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveMeanwhileDefsFromSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // Save the array of meanwhile defs
   FileWrite(hFile, addressof(gMeanwhileDef), sizeof(MEANWHILE_DEFINITION) * Enum160.NUM_MEANWHILES, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(MEANWHILE_DEFINITION) * Enum160.NUM_MEANWHILES) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function DoesUserHaveEnoughHardDriveSpace(): BOOLEAN {
+function DoesUserHaveEnoughHardDriveSpace(): boolean {
   let uiBytesFree: UINT32 = 0;
 
   uiBytesFree = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
   // check to see if there is enough hard drive space
   if (uiBytesFree < REQUIRED_FREE_SPACE) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>): void {
@@ -3364,7 +3364,7 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
     let pSoldier: Pointer<SOLDIERTYPE>;
     let bLastTeamID: INT16;
     let bCount: INT8 = 0;
-    let fFoundAMerc: BOOLEAN = FALSE;
+    let fFoundAMerc: boolean = false;
 
     // Set locator to first merc
     sSoldierCnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -3378,7 +3378,7 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
           psSectorX.value = pSoldier.value.sSectorX;
           psSectorY.value = pSoldier.value.sSectorY;
           pbSectorZ.value = pSoldier.value.bSectorZ;
-          fFoundAMerc = TRUE;
+          fFoundAMerc = true;
           break;
         }
       }
@@ -3397,7 +3397,7 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
           psSectorX.value = pSoldier.value.sSectorX;
           psSectorY.value = pSoldier.value.sSectorY;
           pbSectorZ.value = pSoldier.value.bSectorZ;
-          fFoundAMerc = TRUE;
+          fFoundAMerc = true;
           break;
         }
       }
@@ -3550,7 +3550,7 @@ function UpdateMercMercContractInfo(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (ubCnt = Enum268.BIFF; ubCnt <= Enum268.BUBBA; ubCnt++) {
-    pSoldier = FindSoldierByProfileID(ubCnt, TRUE);
+    pSoldier = FindSoldierByProfileID(ubCnt, true);
 
     // if the merc is on the team
     if (pSoldier == null)
@@ -3562,12 +3562,12 @@ function UpdateMercMercContractInfo(): void {
   }
 }
 
-function GetNumberForAutoSave(fLatestAutoSave: BOOLEAN): INT8 {
+function GetNumberForAutoSave(fLatestAutoSave: boolean): INT8 {
   let zFileName1: CHAR[] /* [256] */;
   let zFileName2: CHAR[] /* [256] */;
   let hFile: HWFILE;
-  let fFile1Exist: BOOLEAN;
-  let fFile2Exist: BOOLEAN;
+  let fFile1Exist: boolean;
+  let fFile2Exist: boolean;
   let CreationTime1: SGP_FILETIME;
   let LastAccessedTime1: SGP_FILETIME;
   let LastWriteTime1: SGP_FILETIME;
@@ -3575,31 +3575,31 @@ function GetNumberForAutoSave(fLatestAutoSave: BOOLEAN): INT8 {
   let LastAccessedTime2: SGP_FILETIME;
   let LastWriteTime2: SGP_FILETIME;
 
-  fFile1Exist = FALSE;
-  fFile2Exist = FALSE;
+  fFile1Exist = false;
+  fFile2Exist = false;
 
   // The name of the file
   sprintf(zFileName1, "%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 0, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
   sprintf(zFileName2, "%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 1, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 
   if (FileExists(zFileName1)) {
-    hFile = FileOpen(zFileName1, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+    hFile = FileOpen(zFileName1, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
 
     GetFileManFileTime(hFile, addressof(CreationTime1), addressof(LastAccessedTime1), addressof(LastWriteTime1));
 
     FileClose(hFile);
 
-    fFile1Exist = TRUE;
+    fFile1Exist = true;
   }
 
   if (FileExists(zFileName2)) {
-    hFile = FileOpen(zFileName2, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+    hFile = FileOpen(zFileName2, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
 
     GetFileManFileTime(hFile, addressof(CreationTime2), addressof(LastAccessedTime2), addressof(LastWriteTime2));
 
     FileClose(hFile);
 
-    fFile2Exist = TRUE;
+    fFile2Exist = true;
   }
 
   if (!fFile1Exist && !fFile2Exist)
@@ -3643,13 +3643,13 @@ function HandleOldBobbyRMailOrders(): void {
         // copy over the purchase info
         memcpy(gpNewBobbyrShipments[iNewListCnt].BobbyRayPurchase, LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[iCnt].BobbyRayPurchase, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
 
-        gpNewBobbyrShipments[iNewListCnt].fActive = TRUE;
+        gpNewBobbyrShipments[iNewListCnt].fActive = true;
         gpNewBobbyrShipments[iNewListCnt].ubDeliveryLoc = Enum70.BR_DRASSEN;
         gpNewBobbyrShipments[iNewListCnt].ubDeliveryMethod = 0;
         gpNewBobbyrShipments[iNewListCnt].ubNumberPurchases = LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[iCnt].ubNumberPurchases;
         gpNewBobbyrShipments[iNewListCnt].uiPackageWeight = 1;
         gpNewBobbyrShipments[iNewListCnt].uiOrderedOnDayNum = GetWorldDay();
-        gpNewBobbyrShipments[iNewListCnt].fDisplayedInShipmentPage = TRUE;
+        gpNewBobbyrShipments[iNewListCnt].fDisplayedInShipmentPage = true;
 
         iNewListCnt++;
       }

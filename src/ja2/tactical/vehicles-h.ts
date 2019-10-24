@@ -46,7 +46,7 @@ interface VEHICLETYPE {
   sSectorX: INT16; // X position on the Stategic Map
   sSectorY: INT16; // Y position on the Stategic Map
   sSectorZ: INT16;
-  fBetweenSectors: BOOLEAN; // between sectors?
+  fBetweenSectors: boolean; // between sectors?
   sGridNo: INT16; // location in tactical
   pPassengers: Pointer<SOLDIERTYPE>[] /* [10] */;
   ubDriver: UINT8;
@@ -58,12 +58,12 @@ interface VEHICLETYPE {
   iOffSound: INT32;
   iMoveSound: INT32;
   iOutOfSound: INT32;
-  fFunctional: BOOLEAN;
-  fDestroyed: BOOLEAN;
+  fFunctional: boolean;
+  fDestroyed: boolean;
   iMovementSoundID: INT32;
   ubProfileID: UINT8;
 
-  fValid: BOOLEAN;
+  fValid: boolean;
 }
 
 // get orig armor values for vehicle in this location

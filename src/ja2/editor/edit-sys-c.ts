@@ -1,9 +1,9 @@
-let gfWarning: BOOLEAN = FALSE;
+let gfWarning: boolean = false;
 
-let gfDoFill: BOOLEAN = FALSE;
+let gfDoFill: boolean = false;
 let CurrentPaste: UINT16 = NO_TILE;
 let gDebrisPaste: UINT16 = NO_TILE;
-let gChangeElevation: UINT16 = FALSE;
+let gChangeElevation: UINT16 = false;
 let CurrentStruct: UINT16 = NO_TILE;
 let gDoBanks: UINT32 = NO_BANKS;
 let gDoCliffs: UINT32 = NO_CLIFFS;
@@ -86,7 +86,7 @@ function EraseMapTile(iMapIndex: UINT32): void {
       AddToUndoList(iMapIndex);
       GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex, addressof(uiCheckType));
       RemoveLand(iMapIndex, gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
-      SmoothTerrainRadius(iMapIndex, uiCheckType, 1, TRUE);
+      SmoothTerrainRadius(iMapIndex, uiCheckType, 1, true);
       break;
     case Enum38.DRAW_MODE_OSTRUCTS:
     case Enum38.DRAW_MODE_OSTRUCTS1:
@@ -324,13 +324,13 @@ function PasteSingleWallCommon(iMapIndex: UINT32): void {
           AddExclusiveShadow(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
       } else {
         // Slap down wall/window/door/decoration (no smoothing)
-        AddWallToStructLayer(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex), TRUE);
+        AddWallToStructLayer(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex), true);
       }
     }
     // Is it a door/window/decoration?
     else if (((usUseObjIndex >= Enum313.FIRSTDOOR) && (usUseObjIndex <= LASTDOOR)) || ((usUseObjIndex >= Enum313.FIRSTDECORATIONS) && (usUseObjIndex <= LASTDECORATIONS))) {
       // Slap down wall/window/door/decoration (no smoothing)
-      AddWallToStructLayer(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex), TRUE);
+      AddWallToStructLayer(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex), true);
     } else if (((usUseObjIndex >= Enum313.FIRSTROOF) && (usUseObjIndex <= LASTROOF)) || ((usUseObjIndex >= Enum313.FIRSTSLANTROOF) && (usUseObjIndex <= LASTSLANTROOF))) {
       // Put a roof on this tile (even if nothing else is here)
       RemoveAllRoofsOfTypeRange(iMapIndex, Enum313.FIRSTROOF, LASTROOF);
@@ -439,12 +439,12 @@ function PasteStructure2(iMapIndex: UINT32): void {
 //	each use different selection lists. Other than that, they are COMPLETELY identical.
 //
 function PasteStructureCommon(iMapIndex: UINT32): void {
-  let fDoPaste: BOOLEAN = FALSE;
+  let fDoPaste: boolean = false;
   let fHeadType: UINT32;
   let usUseIndex: UINT16;
   let usUseObjIndex: UINT16;
   let iRandSelIndex: INT32;
-  let fOkayToAdd: BOOLEAN;
+  let fOkayToAdd: boolean;
 
   if (iMapIndex < 0x8000) {
     /*
@@ -491,8 +491,8 @@ function PasteStructureCommon(iMapIndex: UINT32): void {
 //
 //	Places a river bank or cliff into the world
 //
-function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: BOOLEAN): void {
-  let fDoPaste: BOOLEAN = FALSE;
+function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: boolean): void {
+  let fDoPaste: boolean = false;
   let usUseIndex: UINT16;
   let usUseObjIndex: UINT16;
   let usIndex: UINT16;
@@ -504,16 +504,16 @@ function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: BOOLEAN)
   usUseObjIndex = pSelList[iCurBank].uiObject;
 
   if (iMapIndex < 0x8000) {
-    fDoPaste = TRUE;
+    fDoPaste = true;
 
     if (gpWorldLevelData[iMapIndex].pStructHead != null) {
       // CHECK IF THE SAME TILE IS HERE
       if (gpWorldLevelData[iMapIndex].pStructHead.value.usIndex == (gTileTypeStartIndex[usUseObjIndex] + usUseIndex)) {
-        fDoPaste = FALSE;
+        fDoPaste = false;
       }
     } else {
       // Nothing is here, paste
-      fDoPaste = TRUE;
+      fDoPaste = true;
     }
 
     if (fDoPaste) {
@@ -601,7 +601,7 @@ function PasteTextureCommon(iMapIndex: UINT32): void {
       PasteHigherTexture(iMapIndex, CurrentPaste);
     } else {
       PasteTextureEx(iMapIndex, CurrentPaste);
-      SmoothTerrainRadius(iMapIndex, CurrentPaste, 1, TRUE);
+      SmoothTerrainRadius(iMapIndex, CurrentPaste, 1, true);
     }
   }
 }
@@ -637,11 +637,11 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
     RemoveHigherLandLevels(iMapIndex, fNewType, addressof(puiDeletedTypes), addressof(ubNumTypes));
 
     // Set with a radius of 1 and smooth according to height difference
-    SetLowerLandIndexWithRadius(iMapIndex, fNewType, 1, TRUE);
+    SetLowerLandIndexWithRadius(iMapIndex, fNewType, 1, true);
 
     // Smooth all deleted levels
     for (cnt = 0; cnt < ubNumTypes; cnt++) {
-      SmoothTerrainRadius(iMapIndex, puiDeletedTypes[cnt], 1, TRUE);
+      SmoothTerrainRadius(iMapIndex, puiDeletedTypes[cnt], 1, true);
     }
 
     MemFree(puiDeletedTypes);
@@ -649,14 +649,14 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
     AddToUndoList(iMapIndex);
 
     GetTileIndexFromTypeSubIndex(fNewType, REQUIRES_SMOOTHING_TILE, addressof(NewTile));
-    SetLandIndex(iMapIndex, NewTile, fNewType, FALSE);
+    SetLandIndex(iMapIndex, NewTile, fNewType, false);
 
     // Smooth item then adding here
-    SmoothTerrain(iMapIndex, fNewType, addressof(NewTile), FALSE);
+    SmoothTerrain(iMapIndex, fNewType, addressof(NewTile), false);
 
     if (NewTile != NO_TILE) {
       // Change tile
-      SetLandIndex(iMapIndex, NewTile, fNewType, FALSE);
+      SetLandIndex(iMapIndex, NewTile, fNewType, false);
     }
   }
 }
@@ -666,7 +666,7 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
 //
 //	Like above function except it performs it's operation on a redial area.
 //
-function PasteHigherTextureFromRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadius: UINT8): BOOLEAN {
+function PasteHigherTextureFromRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadius: UINT8): boolean {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -699,7 +699,7 @@ function PasteHigherTextureFromRadius(iMapIndex: INT32, uiNewType: UINT32, ubRad
     sBottom = (-iYPos);
 
   if (iMapIndex >= 0x8000)
-    return FALSE;
+    return false;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
@@ -709,13 +709,13 @@ function PasteHigherTextureFromRadius(iMapIndex: INT32, uiNewType: UINT32, ubRad
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 //---------------------------------------------------------------------------------------------------------------
 //	PasteExistingTexture
 //
-function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
+function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): boolean {
   let uiNewType: UINT32;
   let usNewIndex: UINT16;
   // UINT16					Dummy;
@@ -727,7 +727,7 @@ function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // - re-adjust the world to reflect missing top-most peice
 
   if (iMapIndex >= 0x8000)
-    return FALSE;
+    return false;
 
   // if ( TypeRangeExistsInLandLayer( iMapIndex, FIRSTFLOOR, LASTFLOOR, &Dummy ) )
   //	return( FALSE );
@@ -747,12 +747,12 @@ function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Set land index
   AddLandToHead(iMapIndex, usNewIndex);
 
-  SetLandIndex(iMapIndex, usIndex, uiNewType, FALSE);
+  SetLandIndex(iMapIndex, usIndex, uiNewType, false);
 
   // ATE: Set this land peice to require smoothing again!
-  SmoothAllTerrainTypeRadius(iMapIndex, 2, TRUE);
+  SmoothAllTerrainTypeRadius(iMapIndex, 2, true);
 
-  return TRUE;
+  return true;
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -760,7 +760,7 @@ function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 //
 //	As above, but on a radial area
 //
-function PasteExistingTextureFromRadius(iMapIndex: INT32, usIndex: UINT16, ubRadius: UINT8): BOOLEAN {
+function PasteExistingTextureFromRadius(iMapIndex: INT32, usIndex: UINT16, ubRadius: UINT8): boolean {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -777,7 +777,7 @@ function PasteExistingTextureFromRadius(iMapIndex: INT32, usIndex: UINT16, ubRad
   sRight = ubRadius;
 
   if (iMapIndex >= 0x8000)
-    return FALSE;
+    return false;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
     leftmost = ((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
@@ -792,7 +792,7 @@ function PasteExistingTextureFromRadius(iMapIndex: INT32, usIndex: UINT16, ubRad
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -800,7 +800,7 @@ function PasteExistingTextureFromRadius(iMapIndex: INT32, usIndex: UINT16, ubRad
 //
 //	Puts a land index "under" an existing ground texture. Affects a radial area.
 //
-function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadius: UINT8, fReplace: BOOLEAN): BOOLEAN {
+function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadius: UINT8, fReplace: boolean): boolean {
   let usTempIndex: UINT16;
   let sTop: INT16;
   let sBottom: INT16;
@@ -809,7 +809,7 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
   let cnt1: INT16;
   let cnt2: INT16;
   let iNewIndex: INT32;
-  let fDoPaste: BOOLEAN = FALSE;
+  let fDoPaste: boolean = false;
   let leftmost: INT32;
   let ubLastHighLevel: UINT8;
   let puiSmoothTiles: Pointer<UINT32> = null;
@@ -824,7 +824,7 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
   sRight = ubRadius;
 
   if (iMapIndex >= 0x8000)
-    return FALSE;
+    return false;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
     leftmost = ((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
@@ -834,10 +834,10 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
 
       if (iNewIndex >= 0 && iNewIndex < WORLD_MAX && iNewIndex >= leftmost && iNewIndex < (leftmost + WORLD_COLS)) {
         if (fReplace) {
-          fDoPaste = TRUE;
+          fDoPaste = true;
         } else {
           if (TypeExistsInLandLayer(iNewIndex, uiNewType, addressof(usTempIndex))) {
-            fDoPaste = TRUE;
+            fDoPaste = true;
           }
         }
 
@@ -849,20 +849,20 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
             // Force middle one to NOT smooth, and set to random 'full' tile
             usTemp = (rand() % 10) + 1;
             GetTileIndexFromTypeSubIndex(uiNewType, usTemp, addressof(NewTile));
-            SetLandIndex(iNewIndex, NewTile, uiNewType, FALSE);
+            SetLandIndex(iNewIndex, NewTile, uiNewType, false);
           } else if (AnyHeigherLand(iNewIndex, uiNewType, addressof(ubLastHighLevel))) {
             AddToUndoList(iMapIndex);
 
             // Force middle one to NOT smooth, and set to random 'full' tile
             usTemp = (rand() % 10) + 1;
             GetTileIndexFromTypeSubIndex(uiNewType, usTemp, addressof(NewTile));
-            SetLandIndex(iNewIndex, NewTile, uiNewType, FALSE);
+            SetLandIndex(iNewIndex, NewTile, uiNewType, false);
           } else {
             AddToUndoList(iMapIndex);
 
             // Set tile to 'smooth target' tile
             GetTileIndexFromTypeSubIndex(uiNewType, REQUIRES_SMOOTHING_TILE, addressof(NewTile));
-            SetLandIndex(iNewIndex, NewTile, uiNewType, FALSE);
+            SetLandIndex(iNewIndex, NewTile, uiNewType, false);
 
             // If we are top-most, add to smooth list
             sNumSmoothTiles++;
@@ -877,12 +877,12 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
   // Once here, smooth any tiles that need it
   if (sNumSmoothTiles > 0) {
     for (cnt1 = 0; cnt1 < sNumSmoothTiles; cnt1++) {
-      SmoothTerrainRadius(puiSmoothTiles[cnt1], uiNewType, 10, FALSE);
+      SmoothTerrainRadius(puiSmoothTiles[cnt1], uiNewType, 10, false);
     }
     MemFree(puiSmoothTiles);
   }
 
-  return TRUE;
+  return true;
 }
 
 // ATE FIXES
@@ -903,7 +903,7 @@ function PasteTextureEx(sGridNo: INT16, usType: UINT16): void {
     // Fill with just first tile, smoothworld() will pick proper piece later
     GetTileIndexFromTypeSubIndex(usType, REQUIRES_SMOOTHING_TILE, addressof(NewTile));
 
-    SetLandIndex(sGridNo, NewTile, usType, FALSE);
+    SetLandIndex(sGridNo, NewTile, usType, false);
   }
 }
 
@@ -952,20 +952,20 @@ function RaiseWorldLand(): void {
   let sTempGridNo: UINT32;
   let pStruct: Pointer<LEVELNODE>;
   let pTileElement: Pointer<TILE_ELEMENT>;
-  let fRaise: BOOLEAN;
-  let fRaiseSet: BOOLEAN;
-  let fSomethingRaised: BOOLEAN = FALSE;
+  let fRaise: boolean;
+  let fRaiseSet: boolean;
+  let fSomethingRaised: boolean = false;
   let ubLoop: UINT8;
   let usIndex: UINT16;
-  let fStopRaise: BOOLEAN = FALSE;
+  let fStopRaise: boolean = false;
   let iCounterA: INT32 = 0;
   let iCounterB: INT32 = 0;
   let iStartNumberOfRaises: INT32 = 0;
   let iNumberOfRaises: INT32 = 0;
-  let fAboutToRaise: BOOLEAN = FALSE;
+  let fAboutToRaise: boolean = false;
 
-  fRaise = FALSE;
-  fRaiseSet = FALSE;
+  fRaise = false;
+  fRaiseSet = false;
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     gpWorldLevelData[cnt].uiFlags &= (~MAPELEMENT_RAISE_LAND_START);
@@ -980,7 +980,7 @@ function RaiseWorldLand(): void {
     while (pStruct) {
       pTileElement = addressof(gTileDatabase[pStruct.value.usIndex]);
       if (pTileElement.value.fType == Enum313.FIRSTCLIFF) {
-        fSomethingRaised = TRUE;
+        fSomethingRaised = true;
         // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff found at count=%d",cnt));
         if (pTileElement.value.ubNumberOfTiles > 1) {
           // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff has %d children", pTileElement->ubNumberOfTiles));
@@ -1033,7 +1033,7 @@ function RaiseWorldLand(): void {
     }
   }
 
-  if (fSomethingRaised == FALSE) {
+  if (fSomethingRaised == false) {
     // no cliffs
     return;
   }
@@ -1042,10 +1042,10 @@ function RaiseWorldLand(): void {
   for (cnt = WORLD_MAX - 1; cnt >= 0; cnt--) {
     if (cnt % WORLD_ROWS == WORLD_ROWS - 1) {
       // start of new row
-      fRaiseSet = FALSE;
+      fRaiseSet = false;
     }
     if (gpWorldLevelData[cnt].uiFlags & MAPELEMENT_RAISE_LAND_START) {
-      fRaiseSet = TRUE;
+      fRaiseSet = true;
     } else if ((gpWorldLevelData[cnt].uiFlags & MAPELEMENT_RAISE_LAND_END) && (!fRaiseSet)) {
       // there is a dropoff without a rise.
       // back up and set beginning to raiseland start
@@ -1055,25 +1055,25 @@ function RaiseWorldLand(): void {
         gpWorldLevelData[cnt + ((WORLD_ROWS - 1) - (cnt % WORLD_ROWS)) - WORLD_ROWS].uiFlags &= (~MAPELEMENT_RAISE_LAND_END);
         gpWorldLevelData[cnt + ((WORLD_ROWS - 1) - (cnt % WORLD_ROWS)) - WORLD_ROWS].uiFlags |= MAPELEMENT_RAISE_LAND_START;
       }
-      fRaiseSet = TRUE;
+      fRaiseSet = true;
     }
   }
-  fRaiseSet = FALSE;
+  fRaiseSet = false;
   // Look for a cliff face that is along either the lower edge or the right edge of the map, this is used for a special case fill
   // start at y=159, x= 80 and go to x=159, y=80
 
   // now check along x=159, y=80 to x=80, y=0
   for (cnt = ((WORLD_COLS * WORLD_ROWS) - (WORLD_ROWS / 2) * (WORLD_ROWS - 2) - 1); cnt > WORLD_ROWS - 1; cnt -= (WORLD_ROWS + 1)) {
-    if (fAboutToRaise == TRUE) {
-      fRaiseSet = TRUE;
-      fAboutToRaise = FALSE;
+    if (fAboutToRaise == true) {
+      fRaiseSet = true;
+      fAboutToRaise = false;
     }
 
     if ((gpWorldLevelData[cnt].uiFlags & MAPELEMENT_RAISE_LAND_START) || (gpWorldLevelData[cnt - 1].uiFlags & MAPELEMENT_RAISE_LAND_START) || (gpWorldLevelData[cnt + 1].uiFlags & MAPELEMENT_RAISE_LAND_START)) {
-      fAboutToRaise = TRUE;
-      fRaiseSet = FALSE;
+      fAboutToRaise = true;
+      fRaiseSet = false;
     } else if ((gpWorldLevelData[cnt].uiFlags & MAPELEMENT_RAISE_LAND_END) || (gpWorldLevelData[cnt - 1].uiFlags & MAPELEMENT_RAISE_LAND_END) || (gpWorldLevelData[cnt + 1].uiFlags & MAPELEMENT_RAISE_LAND_END)) {
-      fRaiseSet = FALSE;
+      fRaiseSet = false;
     }
     if (fRaiseSet) {
       gpWorldLevelData[cnt + ((WORLD_ROWS - 1) - (cnt % WORLD_ROWS))].uiFlags |= MAPELEMENT_RAISE_LAND_START;

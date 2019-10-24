@@ -78,7 +78,7 @@ function CreateACharacterFromPlayerEnteredStats(): void {
   wcscpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zNickname, pNickName);
 
   // gender
-  if (fCharacterIsMale == TRUE) {
+  if (fCharacterIsMale == true) {
     // male
     gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSex = Enum272.MALE;
   } else {
@@ -118,7 +118,7 @@ function CreateACharacterFromPlayerEnteredStats(): void {
   return;
 }
 
-function DoesCharacterHaveAnAttitude(): BOOLEAN {
+function DoesCharacterHaveAnAttitude(): boolean {
   // simply checks if caracter has an attitude other than normal
   switch (iAttitude) {
     case Enum271.ATT_LONER:
@@ -127,15 +127,15 @@ function DoesCharacterHaveAnAttitude(): BOOLEAN {
     case Enum271.ATT_BIG_SHOT:
     case Enum271.ATT_ASSHOLE:
     case Enum271.ATT_COWARD:
-      return TRUE;
+      return true;
     default:
-      return FALSE;
+      return false;
   }
 }
 
-function DoesCharacterHaveAPersoanlity(): BOOLEAN {
+function DoesCharacterHaveAPersoanlity(): boolean {
   // only one we can get is PSYCHO, and that is not much of a penalty
-  return FALSE;
+  return false;
   /*
   // simply checks if caracter has a personality other than normal
 if( iPersonality != NO_PERSONALITYTRAIT )
@@ -681,13 +681,13 @@ function HandleMercStatsForChangesInFace(): void {
   gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 = iSkillB;
 }
 
-function ShouldThisMercHaveABigBody(): BOOLEAN {
+function ShouldThisMercHaveABigBody(): boolean {
   // should this merc be a big body typ
   if ((iPortraitNumber == 0) || (iPortraitNumber == 6) || (iPortraitNumber == 7)) {
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bStrength >= 75) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }

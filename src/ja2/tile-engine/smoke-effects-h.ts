@@ -18,7 +18,7 @@ interface SMOKEEFFECT {
   ubRadius: UINT8; // the current radius of the cloud in map tiles
   bFlags: UINT8; // 0 - outdoors (fast spread), 1 - indoors (slow)
   bAge: INT8; // the number of turns gas has been around
-  fAllocated: BOOLEAN;
+  fAllocated: boolean;
   bType: INT8;
   usItem: UINT16;
   ubOwner: UINT8;

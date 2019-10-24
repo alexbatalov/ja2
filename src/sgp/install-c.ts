@@ -34,9 +34,9 @@
 //
 //**************************************************************************
 
-function InstallApplication(strAppname: STR, strPath: STR): BOOLEAN {
+function InstallApplication(strAppname: STR, strPath: STR): boolean {
   let hKey: HKEY;
-  let fRet: BOOL = TRUE;
+  let fRet: boolean = true;
 
   hKey = GetAppRegistryKey();
   RegCloseKey(hKey);

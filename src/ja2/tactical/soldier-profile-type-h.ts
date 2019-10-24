@@ -254,7 +254,7 @@ interface MERCPROFILESTRUCT {
   bMainGunAttractiveness: INT8;
   bAgility: INT8; // agility (speed) value
 
-  fUseProfileInsertionInfo: BOOLEAN; // Set to various flags, ( contained in TacticalSave.h )
+  fUseProfileInsertionInfo: boolean; // Set to various flags, ( contained in TacticalSave.h )
   sGridNo: INT16; // The Gridno the NPC was in before leaving the sector
   ubQuoteActionID: UINT8;
   bMechanical: INT8;

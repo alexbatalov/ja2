@@ -86,7 +86,7 @@ function GetFreeFace(): INT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumFaces; uiCount++) {
-    if ((gFacesData[uiCount].fAllocated == FALSE))
+    if ((gFacesData[uiCount].fAllocated == false))
       return uiCount;
   }
 
@@ -194,12 +194,12 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   }
 
   // Load
-  if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == FALSE) {
+  if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == false) {
     // If we are a big face, use placeholder...
     if (uiInitFlags & FACE_BIGFACE) {
       sprintf(VObjectDesc.ImageFile, "FACES\\placeholder.sti");
 
-      if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == FALSE) {
+      if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == false) {
         return -1;
       }
     } else {
@@ -215,10 +215,10 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   pFace.value.ubSoldierID = ubSoldierID;
 
   pFace.value.iID = iFaceIndex;
-  pFace.value.fAllocated = TRUE;
+  pFace.value.fAllocated = true;
 
   // Default to off!
-  pFace.value.fDisabled = TRUE;
+  pFace.value.fDisabled = true;
   pFace.value.iVideoOverlay = -1;
   // pFace->uiEyeDelay			=	gMercProfiles[ usMercProfileID ].uiEyeDelay;
   // pFace->uiMouthDelay		= gMercProfiles[ usMercProfileID ].uiMouthDelay;
@@ -242,22 +242,22 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
       Pal[uiCount].peBlue = 255;
     }
 
-    hVObject.value.pShades[FLASH_PORTRAIT_NOSHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, FALSE);
-    hVObject.value.pShades[FLASH_PORTRAIT_STARTSHADE] = Create16BPPPaletteShaded(Pal, 255, 255, 255, FALSE);
-    hVObject.value.pShades[FLASH_PORTRAIT_ENDSHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, TRUE);
-    hVObject.value.pShades[FLASH_PORTRAIT_DARKSHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, TRUE);
-    hVObject.value.pShades[FLASH_PORTRAIT_LITESHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, FALSE);
+    hVObject.value.pShades[FLASH_PORTRAIT_NOSHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
+    hVObject.value.pShades[FLASH_PORTRAIT_STARTSHADE] = Create16BPPPaletteShaded(Pal, 255, 255, 255, false);
+    hVObject.value.pShades[FLASH_PORTRAIT_ENDSHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, true);
+    hVObject.value.pShades[FLASH_PORTRAIT_DARKSHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, true);
+    hVObject.value.pShades[FLASH_PORTRAIT_LITESHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, false);
 
     for (uiCount = 0; uiCount < 256; uiCount++) {
       Pal[uiCount].peRed = (uiCount % 128) + 128;
       Pal[uiCount].peGreen = (uiCount % 128) + 128;
       Pal[uiCount].peBlue = (uiCount % 128) + 128;
     }
-    hVObject.value.pShades[FLASH_PORTRAIT_GRAYSHADE] = Create16BPPPaletteShaded(Pal, 255, 255, 255, FALSE);
+    hVObject.value.pShades[FLASH_PORTRAIT_GRAYSHADE] = Create16BPPPaletteShaded(Pal, 255, 255, 255, false);
   }
 
   // Get FACE height, width
-  if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, addressof(ETRLEObject), 0) == FALSE) {
+  if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, addressof(ETRLEObject), 0) == false) {
     return -1;
   }
   pFace.value.usFaceWidth = ETRLEObject.usWidth;
@@ -265,23 +265,23 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
 
   // OK, check # of items
   if (hVObject.value.usNumberOfObjects == 8) {
-    pFace.value.fInvalidAnim = FALSE;
+    pFace.value.fInvalidAnim = false;
 
     // Get EYE height, width
-    if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, addressof(ETRLEObject), 1) == FALSE) {
+    if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, addressof(ETRLEObject), 1) == false) {
       return -1;
     }
     pFace.value.usEyesWidth = ETRLEObject.usWidth;
     pFace.value.usEyesHeight = ETRLEObject.usHeight;
 
     // Get Mouth height, width
-    if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, addressof(ETRLEObject), 5) == FALSE) {
+    if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, addressof(ETRLEObject), 5) == false) {
       return -1;
     }
     pFace.value.usMouthWidth = ETRLEObject.usWidth;
     pFace.value.usMouthHeight = ETRLEObject.usHeight;
   } else {
-    pFace.value.fInvalidAnim = TRUE;
+    pFace.value.fInvalidAnim = true;
   }
 
   // Set id
@@ -305,9 +305,9 @@ function DeleteFace(iFaceIndex: INT32): void {
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
-  CHECKV(pFace.value.fAllocated != FALSE);
+  CHECKV(pFace.value.fAllocated != false);
 
-  pFace.value.fCanHandleInactiveNow = TRUE;
+  pFace.value.fCanHandleInactiveNow = true;
 
   if (!pFace.value.fDisabled) {
     SetAutoFaceInActive(iFaceIndex);
@@ -316,7 +316,7 @@ function DeleteFace(iFaceIndex: INT32): void {
   // If we are still talking, stop!
   if (pFace.value.fTalking) {
     // Call dialogue handler function
-    pFace.value.fTalking = FALSE;
+    pFace.value.fTalking = false;
 
     HandleDialogueEnd(pFace);
   }
@@ -325,7 +325,7 @@ function DeleteFace(iFaceIndex: INT32): void {
   DeleteVideoObjectFromIndex(pFace.value.uiVideoObject);
 
   // Set uncallocated
-  pFace.value.fAllocated = FALSE;
+  pFace.value.fAllocated = false;
 
   RecountFaces();
 }
@@ -428,11 +428,11 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
     vs_desc.usHeight = pFace.value.usFaceHeight;
     vs_desc.ubBitDepth = ubBitDepth;
 
-    pFace.value.fAutoRestoreBuffer = TRUE;
+    pFace.value.fAutoRestoreBuffer = true;
 
     CHECKV(AddVideoSurface(addressof(vs_desc), addressof(pFace.value.uiAutoRestoreBuffer)));
   } else {
-    pFace.value.fAutoRestoreBuffer = FALSE;
+    pFace.value.fAutoRestoreBuffer = false;
     pFace.value.uiAutoRestoreBuffer = uiRestoreBuffer;
   }
 
@@ -445,11 +445,11 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
     vs_desc.usHeight = pFace.value.usFaceHeight;
     vs_desc.ubBitDepth = ubBitDepth;
 
-    pFace.value.fAutoDisplayBuffer = TRUE;
+    pFace.value.fAutoDisplayBuffer = true;
 
     CHECKV(AddVideoSurface(addressof(vs_desc), addressof(pFace.value.uiAutoDisplayBuffer)));
   } else {
-    pFace.value.fAutoDisplayBuffer = FALSE;
+    pFace.value.fAutoDisplayBuffer = false;
     pFace.value.uiAutoDisplayBuffer = uiDisplayBuffer;
   }
 
@@ -457,7 +457,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
   pFace.value.usFaceX = usFaceX;
   pFace.value.usFaceY = usFaceY;
-  pFace.value.fCanHandleInactiveNow = FALSE;
+  pFace.value.fCanHandleInactiveNow = false;
 
   // Take eyes x,y from profile unless we are an RPC and we are small faced.....
   pFace.value.usEyesX = usEyesX + usFaceX;
@@ -472,14 +472,14 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
   pFace.value.usMouthOffsetX = usMouthX;
 
   if (pFace.value.usEyesY == usFaceY || pFace.value.usMouthY == usFaceY) {
-    pFace.value.fInvalidAnim = TRUE;
+    pFace.value.fInvalidAnim = true;
   }
 
-  pFace.value.fDisabled = FALSE;
+  pFace.value.fDisabled = false;
   pFace.value.uiLastBlink = GetJA2Clock();
   pFace.value.uiLastExpression = GetJA2Clock();
   pFace.value.uiEyelast = GetJA2Clock();
-  pFace.value.fStartFrame = TRUE;
+  pFace.value.fStartFrame = true;
 
   // Are we a soldier?
   if (pFace.value.ubSoldierID != NOBODY) {
@@ -504,7 +504,7 @@ function SetAutoFaceInActive(iFaceIndex: INT32): void {
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
-  CHECKV(pFace.value.fAllocated != FALSE);
+  CHECKV(pFace.value.fAllocated != false);
 
   // Turn off some flags
   if (pFace.value.uiFlags & FACE_INACTIVE_HANDLED_ELSEWHERE) {
@@ -522,7 +522,7 @@ function SetAutoFaceInActive(iFaceIndex: INT32): void {
       if (pSoldier.value.bAssignment == iCurrentTacticalSquad && guiCurrentScreen == Enum26.GAME_SCREEN) {
         // Make the interfac panel dirty..
         // This will dirty the panel next frame...
-        gfRerenderInterfaceFromHelpText = TRUE;
+        gfRerenderInterfaceFromHelpText = true;
       }
     }
   }
@@ -544,7 +544,7 @@ function SetAutoFaceInActive(iFaceIndex: INT32): void {
   pFace.value.uiFlags &= (~FACE_INACTIVE_HANDLED_ELSEWHERE);
 
   // Disable!
-  pFace.value.fDisabled = TRUE;
+  pFace.value.fDisabled = true;
 }
 
 function SetAllAutoFacesInactive(): void {
@@ -563,14 +563,14 @@ function SetAllAutoFacesInactive(): void {
 function BlinkAutoFace(iFaceIndex: INT32): void {
   let pFace: Pointer<FACETYPE>;
   let sFrame: INT16;
-  let fDoBlink: BOOLEAN = FALSE;
+  let fDoBlink: boolean = false;
 
   if (gFacesData[iFaceIndex].fAllocated && !gFacesData[iFaceIndex].fDisabled && !gFacesData[iFaceIndex].fInvalidAnim) {
     pFace = addressof(gFacesData[iFaceIndex]);
 
     // CHECK IF BUDDY IS DEAD, UNCONSCIOUS, ASLEEP, OR POW!
     if (pFace.value.ubSoldierID != NOBODY) {
-      if ((MercPtrs[pFace.value.ubSoldierID].value.bLife < OKLIFE) || (MercPtrs[pFace.value.ubSoldierID].value.fMercAsleep == TRUE) || (MercPtrs[pFace.value.ubSoldierID].value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+      if ((MercPtrs[pFace.value.ubSoldierID].value.bLife < OKLIFE) || (MercPtrs[pFace.value.ubSoldierID].value.fMercAsleep == true) || (MercPtrs[pFace.value.ubSoldierID].value.bAssignment == Enum117.ASSIGNMENT_POW)) {
         return;
       }
     }
@@ -600,12 +600,12 @@ function BlinkAutoFace(iFaceIndex: INT32): void {
       if (pFace.value.fStartFrame) {
         if ((GetJA2Clock() - pFace.value.uiEyelast) > pFace.value.uiEyeDelay) //> Random( 10000 ) )
         {
-          fDoBlink = TRUE;
-          pFace.value.fStartFrame = FALSE;
+          fDoBlink = true;
+          pFace.value.fStartFrame = false;
         }
       } else {
         if ((GetJA2Clock() - pFace.value.uiEyelast) > pFace.value.uiEyeDelay) {
-          fDoBlink = TRUE;
+          fDoBlink = true;
         }
       }
 
@@ -641,7 +641,7 @@ function BlinkAutoFace(iFaceIndex: INT32): void {
           }
         }
 
-        HandleRenderFaceAdjustments(pFace, TRUE, FALSE, 0, pFace.value.usFaceX, pFace.value.usFaceY, pFace.value.usEyesX, pFace.value.usEyesY);
+        HandleRenderFaceAdjustments(pFace, true, false, 0, pFace.value.usFaceX, pFace.value.usFaceY, pFace.value.usEyesX, pFace.value.usEyesY);
       }
     }
   }
@@ -664,7 +664,7 @@ function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: 
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, sFaceX - 2, sFaceY - 1, sFaceX + pFace.value.usFaceWidth + 4, sFaceY + pFace.value.usFaceHeight + 4);
 
         usLineColor = Get16BPPColor(FROMRGB(255, 255, 255));
-        RectangleDraw(TRUE, (sFaceX - 2), (sFaceY - 1), sFaceX + pFace.value.usFaceWidth + 1, sFaceY + pFace.value.usFaceHeight, usLineColor, pDestBuf);
+        RectangleDraw(true, (sFaceX - 2), (sFaceY - 1), sFaceX + pFace.value.usFaceWidth + 1, sFaceY + pFace.value.usFaceHeight, usLineColor, pDestBuf);
 
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
@@ -681,7 +681,7 @@ function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: 
             } else {
               usLineColor = Get16BPPColor(FROMRGB(8, 12, 118));
             }
-            RectangleDraw(TRUE, (sFaceX - 2), (sFaceY - 1), sFaceX + pFace.value.usFaceWidth + 1, sFaceY + pFace.value.usFaceHeight, usLineColor, pDestBuf);
+            RectangleDraw(true, (sFaceX - 2), (sFaceY - 1), sFaceX + pFace.value.usFaceWidth + 1, sFaceY + pFace.value.usFaceHeight, usLineColor, pDestBuf);
 
             SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
@@ -695,7 +695,7 @@ function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: 
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, pFace.value.usFaceX - 2, pFace.value.usFaceY - 1, pFace.value.usFaceX + pFace.value.usFaceWidth + 4, pFace.value.usFaceY + pFace.value.usFaceHeight + 4);
 
         usLineColor = Get16BPPColor(FROMRGB(0, 0, 0));
-        RectangleDraw(TRUE, (pFace.value.usFaceX - 2), (pFace.value.usFaceY - 1), pFace.value.usFaceX + pFace.value.usFaceWidth + 1, pFace.value.usFaceY + pFace.value.usFaceHeight, usLineColor, pDestBuf);
+        RectangleDraw(true, (pFace.value.usFaceX - 2), (pFace.value.usFaceY - 1), pFace.value.usFaceX + pFace.value.usFaceWidth + 1, pFace.value.usFaceY + pFace.value.usFaceHeight, usLineColor, pDestBuf);
 
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
@@ -710,7 +710,7 @@ function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: 
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, sFaceX - 2, sFaceY - 1, sFaceX + pFace.value.usFaceWidth + 4, sFaceY + pFace.value.usFaceHeight + 4);
 
     usLineColor = Get16BPPColor(FROMRGB(255, 0, 0));
-    RectangleDraw(TRUE, (sFaceX - 2), (sFaceY - 1), sFaceX + pFace.value.usFaceWidth + 1, sFaceY + pFace.value.usFaceHeight, usLineColor, pDestBuf);
+    RectangleDraw(true, (sFaceX - 2), (sFaceY - 1), sFaceX + pFace.value.usFaceWidth + 1, sFaceY + pFace.value.usFaceHeight, usLineColor, pDestBuf);
 
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
@@ -783,7 +783,7 @@ function MouthAutoFace(iFaceIndex: INT32): void {
                 }
               }
 
-              HandleRenderFaceAdjustments(pFace, TRUE, FALSE, 0, pFace.value.usFaceX, pFace.value.usFaceY, pFace.value.usEyesX, pFace.value.usEyesY);
+              HandleRenderFaceAdjustments(pFace, true, false, 0, pFace.value.usFaceX, pFace.value.usFaceY, pFace.value.usEyesX, pFace.value.usEyesY);
             }
           }
         }
@@ -822,8 +822,8 @@ function HandleTalkingAutoFace(iFaceIndex: INT32): void {
       // Now check for end of talking
       if (pFace.value.fFinishTalking) {
         if ((GetJA2Clock() - pFace.value.uiTalkingTimer) > pFace.value.uiTalkingDuration) {
-          pFace.value.fTalking = FALSE;
-          pFace.value.fAnimatingTalking = FALSE;
+          pFace.value.fTalking = false;
+          pFace.value.fAnimatingTalking = false;
 
           // Remove gap info
           AudioGapListDone(addressof(pFace.value.GapList));
@@ -845,7 +845,7 @@ function HandleTalkingAutoFace(iFaceIndex: INT32): void {
 }
 
 // Local function - uses these variables because they have already been validated
-function SetFaceShade(pSoldier: Pointer<SOLDIERTYPE>, pFace: Pointer<FACETYPE>, fExternBlit: BOOLEAN): void {
+function SetFaceShade(pSoldier: Pointer<SOLDIERTYPE>, pFace: Pointer<FACETYPE>, fExternBlit: boolean): void {
   // Set to default
   SetObjectHandleShade(pFace.value.uiVideoObject, FLASH_PORTRAIT_NOSHADE);
 
@@ -867,7 +867,7 @@ function SetFaceShade(pSoldier: Pointer<SOLDIERTYPE>, pFace: Pointer<FACETYPE>, 
   }
 }
 
-function RenderAutoFaceFromSoldier(ubSoldierID: UINT8): BOOLEAN {
+function RenderAutoFaceFromSoldier(ubSoldierID: UINT8): boolean {
   // Check for valid soldier
   CHECKF(ubSoldierID != NOBODY);
 
@@ -925,19 +925,19 @@ function DoRightIcon(uiRenderBuffer: UINT32, pFace: Pointer<FACETYPE>, sFaceX: I
   BltVideoObjectFromIndex(uiRenderBuffer, guiPORTRAITICONS, sIconIndex, sIconX, sIconY, VO_BLT_SRCTRANSPARENCY, null);
 }
 
-function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: BOOLEAN, fUseExternBuffer: BOOLEAN, uiBuffer: UINT32, sFaceX: INT16, sFaceY: INT16, usEyesX: UINT16, usEyesY: UINT16): void {
+function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: boolean, fUseExternBuffer: boolean, uiBuffer: UINT32, sFaceX: INT16, sFaceY: INT16, usEyesX: UINT16, usEyesY: UINT16): void {
   let sIconX: INT16;
   let sIconY: INT16;
   let sIconIndex: INT16 = -1;
-  let fDoIcon: BOOLEAN = FALSE;
+  let fDoIcon: boolean = false;
   let uiRenderBuffer: UINT32;
   let sPtsAvailable: INT16 = 0;
   let usMaximumPts: UINT16 = 0;
   let sString: CHAR16[] /* [32] */;
   let usTextWidth: UINT16;
-  let fAtGunRange: BOOLEAN = FALSE;
-  let fShowNumber: BOOLEAN = FALSE;
-  let fShowMaximum: BOOLEAN = FALSE;
+  let fAtGunRange: boolean = false;
+  let fShowNumber: boolean = false;
+  let fShowMaximum: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let sFontX: INT16;
   let sFontY: INT16;
@@ -977,7 +977,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
       BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
     }
 
-    if (MercPtrs[pFace.value.ubSoldierID].value.fMercAsleep == TRUE) {
+    if (MercPtrs[pFace.value.ubSoldierID].value.fMercAsleep == true) {
       // blit eyes closed
       BltVideoObjectFromIndex(uiRenderBuffer, pFace.value.uiVideoObject, 1, usEyesX, usEyesY, VO_BLT_SRCTRANSPARENCY, null);
     }
@@ -1006,7 +1006,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
       if (pSoldier.value.bOppCnt > 0)
       {
-        SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, FALSE);
+        SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, false);
 
         swprintf(sString, "%d", pSoldier.value.bOppCnt);
 
@@ -1021,14 +1021,14 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
         sY2 = sY1 + GetFontHeight(TINYFONT1()) - 1;
 
         mprintf((sX1 + 1), (sY1 - 1), sString);
-        SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+        SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
         // Draw box
         pDestBuf = LockVideoSurface(uiRenderBuffer, addressof(uiDestPitchBYTES));
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
         usLineColor = Get16BPPColor(FROMRGB(105, 8, 9));
-        RectangleDraw(TRUE, sX1, sY1, sX2, sY2, usLineColor, pDestBuf);
+        RectangleDraw(true, sX1, sY1, sX2, sY2, usLineColor, pDestBuf);
 
         UnLockVideoSurface(uiRenderBuffer);
       }
@@ -1045,7 +1045,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
           SetFontBackground(FONT_MCOLOR_BLACK);
           SetFontForeground(FONT_MCOLOR_WHITE);
 
-          SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, FALSE);
+          SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, false);
 
           VarFindFontCenterCoordinates(sFaceX, sFaceY, pFace.value.usFaceWidth, pFace.value.usFaceHeight, TINYFONT1(), addressof(sFontX), addressof(sFontY), pFace.value.zDisplayText);
 
@@ -1057,7 +1057,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
             pFace.value.fDisplayTextOver = FACE_NO_TEXT_OVER;
           }
 
-          SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+          SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
         }
       }
     }
@@ -1067,14 +1067,14 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
       if (!CanRobotBeControlled(MercPtrs[pFace.value.ubSoldierID])) {
         // Not controlled robot
         sIconIndex = 5;
-        fDoIcon = TRUE;
+        fDoIcon = true;
       }
     }
 
     if (ControllingRobot(MercPtrs[pFace.value.ubSoldierID])) {
       // controlling robot
       sIconIndex = 4;
-      fDoIcon = TRUE;
+      fDoIcon = true;
     }
 
     // If blind...
@@ -1097,10 +1097,10 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
       case Enum117.DOCTOR:
 
         sIconIndex = 1;
-        fDoIcon = TRUE;
-        sPtsAvailable = CalculateHealingPointsForDoctor(MercPtrs[pFace.value.ubSoldierID], addressof(usMaximumPts), FALSE);
-        fShowNumber = TRUE;
-        fShowMaximum = TRUE;
+        fDoIcon = true;
+        sPtsAvailable = CalculateHealingPointsForDoctor(MercPtrs[pFace.value.ubSoldierID], addressof(usMaximumPts), false);
+        fShowNumber = true;
+        fShowMaximum = true;
 
         // divide both amounts by 10 to make the displayed numbers a little more user-palatable (smaller)
         sPtsAvailable = (sPtsAvailable + 5) / 10;
@@ -1110,12 +1110,12 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
       case Enum117.PATIENT:
 
         sIconIndex = 2;
-        fDoIcon = TRUE;
+        fDoIcon = true;
         // show current health / maximum health
         sPtsAvailable = MercPtrs[pFace.value.ubSoldierID].value.bLife;
         usMaximumPts = MercPtrs[pFace.value.ubSoldierID].value.bLifeMax;
-        fShowNumber = TRUE;
-        fShowMaximum = TRUE;
+        fShowNumber = true;
+        fShowMaximum = true;
         break;
 
       case Enum117.TRAIN_SELF:
@@ -1123,12 +1123,12 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
       case Enum117.TRAIN_TEAMMATE:
       case Enum117.TRAIN_BY_OTHER:
         sIconIndex = 3;
-        fDoIcon = TRUE;
-        fShowNumber = TRUE;
-        fShowMaximum = TRUE;
+        fDoIcon = true;
+        fShowNumber = true;
+        fShowMaximum = true;
         // there could be bonus pts for training at gun range
         if ((MercPtrs[pFace.value.ubSoldierID].value.sSectorX == 13) && (MercPtrs[pFace.value.ubSoldierID].value.sSectorY == MAP_ROW_H) && (MercPtrs[pFace.value.ubSoldierID].value.bSectorZ == 0)) {
-          fAtGunRange = TRUE;
+          fAtGunRange = true;
         }
 
         switch (MercPtrs[pFace.value.ubSoldierID].value.bAssignment) {
@@ -1153,10 +1153,10 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
       case Enum117.REPAIR:
 
         sIconIndex = 0;
-        fDoIcon = TRUE;
-        sPtsAvailable = CalculateRepairPointsForRepairman(MercPtrs[pFace.value.ubSoldierID], addressof(usMaximumPts), FALSE);
-        fShowNumber = TRUE;
-        fShowMaximum = TRUE;
+        fDoIcon = true;
+        sPtsAvailable = CalculateRepairPointsForRepairman(MercPtrs[pFace.value.ubSoldierID], addressof(usMaximumPts), false);
+        fShowNumber = true;
+        fShowMaximum = true;
 
         // check if we are repairing a vehicle
         if (Menptr[pFace.value.ubSoldierID].bVehicleUnderRepairID != -1) {
@@ -1172,13 +1172,13 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
     if (MercPtrs[pFace.value.ubSoldierID].value.ubServicePartner != NOBODY) {
       // Doctor...
       sIconIndex = 1;
-      fDoIcon = TRUE;
+      fDoIcon = true;
     }
 
     if (MercPtrs[pFace.value.ubSoldierID].value.ubServiceCount != 0) {
       // Patient
       sIconIndex = 2;
-      fDoIcon = TRUE;
+      fDoIcon = true;
     }
 
     if (fDoIcon) {
@@ -1188,7 +1188,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
       // ATE: Show numbers only in mapscreen
       if (fShowNumber) {
-        SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, FALSE);
+        SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, false);
 
         if (fShowMaximum) {
           swprintf(sString, "%d/%d", sPtsAvailable, usMaximumPts);
@@ -1204,7 +1204,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
         SetFontBackground(FONT_BLACK);
 
         mprintf(sFaceX + pFace.value.usFaceWidth - usTextWidth, (sFaceY + 3), sString);
-        SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+        SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
       }
     }
   } else {
@@ -1216,7 +1216,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
   }
 }
 
-function RenderAutoFace(iFaceIndex: INT32): BOOLEAN {
+function RenderAutoFace(iFaceIndex: INT32): boolean {
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
@@ -1225,14 +1225,14 @@ function RenderAutoFace(iFaceIndex: INT32): BOOLEAN {
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
-  CHECKF(pFace.value.fAllocated != FALSE);
+  CHECKF(pFace.value.fAllocated != false);
 
   // Check for disabled guy!
-  CHECKF(pFace.value.fDisabled != TRUE);
+  CHECKF(pFace.value.fDisabled != true);
 
   // Set shade
   if (pFace.value.ubSoldierID != NOBODY) {
-    SetFaceShade(MercPtrs[pFace.value.ubSoldierID], pFace, FALSE);
+    SetFaceShade(MercPtrs[pFace.value.ubSoldierID], pFace, false);
   }
 
   // Blit face to save buffer!
@@ -1244,7 +1244,7 @@ function RenderAutoFace(iFaceIndex: INT32): BOOLEAN {
     }
   }
 
-  HandleRenderFaceAdjustments(pFace, FALSE, FALSE, 0, pFace.value.usFaceX, pFace.value.usFaceY, pFace.value.usEyesX, pFace.value.usEyesY);
+  HandleRenderFaceAdjustments(pFace, false, false, 0, pFace.value.usFaceX, pFace.value.usFaceY, pFace.value.usEyesX, pFace.value.usEyesY);
 
   // Restore extern rect
   if (pFace.value.uiAutoRestoreBuffer == guiSAVEBUFFER) {
@@ -1253,17 +1253,17 @@ function RenderAutoFace(iFaceIndex: INT32): BOOLEAN {
     FaceRestoreSavedBackgroundRect(iFaceIndex, pFace.value.usFaceX, pFace.value.usFaceY, 0, 0, pFace.value.usFaceWidth, pFace.value.usFaceHeight);
   }
 
-  return TRUE;
+  return true;
 }
 
-function ExternRenderFaceFromSoldier(uiBuffer: UINT32, ubSoldierID: UINT8, sX: INT16, sY: INT16): BOOLEAN {
+function ExternRenderFaceFromSoldier(uiBuffer: UINT32, ubSoldierID: UINT8, sX: INT16, sY: INT16): boolean {
   // Check for valid soldier
   CHECKF(ubSoldierID != NOBODY);
 
   return ExternRenderFace(uiBuffer, MercPtrs[ubSoldierID].value.iFaceIndex, sX, sY);
 }
 
-function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: INT16): BOOLEAN {
+function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: INT16): boolean {
   let usEyesX: UINT16;
   let usEyesY: UINT16;
   let usMouthX: UINT16;
@@ -1276,13 +1276,13 @@ function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: IN
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
-  CHECKF(pFace.value.fAllocated != FALSE);
+  CHECKF(pFace.value.fAllocated != false);
 
   // Here, any face can be rendered, even if disabled
 
   // Set shade
   if (pFace.value.ubSoldierID != NOBODY) {
-    SetFaceShade(MercPtrs[pFace.value.ubSoldierID], pFace, TRUE);
+    SetFaceShade(MercPtrs[pFace.value.ubSoldierID], pFace, true);
   }
 
   // Blit face to save buffer!
@@ -1290,14 +1290,14 @@ function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: IN
 
   GetFaceRelativeCoordinates(pFace, addressof(usEyesX), addressof(usEyesY), addressof(usMouthX), addressof(usMouthY));
 
-  HandleRenderFaceAdjustments(pFace, FALSE, TRUE, uiBuffer, sX, sY, (sX + usEyesX), (sY + usEyesY));
+  HandleRenderFaceAdjustments(pFace, false, true, uiBuffer, sX, sY, (sX + usEyesX), (sY + usEyesY));
 
   // Restore extern rect
   if (uiBuffer == guiSAVEBUFFER) {
     RestoreExternBackgroundRect(sX, sY, pFace.value.usFaceWidth, pFace.value.usFaceWidth);
   }
 
-  return TRUE;
+  return true;
 }
 
 function NewEye(pFace: Pointer<FACETYPE>): void {
@@ -1384,7 +1384,7 @@ function NewEye(pFace: Pointer<FACETYPE>): void {
 }
 
 function NewMouth(pFace: Pointer<FACETYPE>): void {
-  let OK: BOOLEAN = FALSE;
+  let OK: boolean = false;
   let sOld: UINT16 = pFace.value.sMouthFrame;
 
   // if (audio_gap_active == 1)
@@ -1405,19 +1405,19 @@ function NewMouth(pFace: Pointer<FACETYPE>): void {
     switch (sOld) {
       case 0:
         if (pFace.value.sMouthFrame != 0)
-          OK = TRUE;
+          OK = true;
         break;
       case 1:
         if (pFace.value.sMouthFrame != 1)
-          OK = TRUE;
+          OK = true;
         break;
       case 2:
         if (pFace.value.sMouthFrame != 2)
-          OK = TRUE;
+          OK = true;
         break;
       case 3:
         if (pFace.value.sMouthFrame != 3)
-          OK = TRUE;
+          OK = true;
         break;
     }
   } while (!OK);
@@ -1429,15 +1429,15 @@ function HandleAutoFaces(): void {
   let bLife: INT8;
   let bInSector: INT8;
   let bAPs: INT8;
-  let fRerender: BOOLEAN = FALSE;
-  let fHandleFace: BOOLEAN;
-  let fHandleUIHatch: BOOLEAN;
+  let fRerender: boolean = false;
+  let fHandleFace: boolean;
+  let fHandleUIHatch: boolean;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (uiCount = 0; uiCount < guiNumFaces; uiCount++) {
-    fRerender = FALSE;
-    fHandleFace = TRUE;
-    fHandleUIHatch = FALSE;
+    fRerender = false;
+    fHandleFace = true;
+    fHandleUIHatch = false;
 
     // OK, NOW, check if our bLife status has changed, re-render if so!
     if (gFacesData[uiCount].fAllocated) {
@@ -1464,74 +1464,74 @@ function HandleAutoFaces(): void {
         }
 
         if (pSoldier.value.bStealthMode != pFace.value.bOldStealthMode) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         // Check if we have fallen below OKLIFE...
         if (bLife < OKLIFE && pFace.value.bOldSoldierLife >= OKLIFE) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (bLife >= OKLIFE && pFace.value.bOldSoldierLife < OKLIFE) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         // Check if we have fallen below CONSCIOUSNESS
         if (bLife < CONSCIOUSNESS && pFace.value.bOldSoldierLife >= CONSCIOUSNESS) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (bLife >= CONSCIOUSNESS && pFace.value.bOldSoldierLife < CONSCIOUSNESS) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (pSoldier.value.bOppCnt != pFace.value.bOldOppCnt) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         // Check if assignment is idfferent....
         if (pSoldier.value.bAssignment != pFace.value.bOldAssignment) {
           pFace.value.bOldAssignment = pSoldier.value.bAssignment;
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         // Check if we have fallen below CONSCIOUSNESS
         if (bAPs == 0 && pFace.value.bOldActionPoints > 0) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (bAPs > 0 && pFace.value.bOldActionPoints == 0) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (!(pFace.value.uiFlags & FACE_SHOW_WHITE_HILIGHT) && pFace.value.fOldShowHighlight) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if ((pFace.value.uiFlags & FACE_SHOW_WHITE_HILIGHT) && !(pFace.value.fOldShowHighlight)) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (!(pFace.value.uiFlags & FACE_SHOW_MOVING_HILIGHT) && pFace.value.fOldShowMoveHilight) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if ((pFace.value.uiFlags & FACE_SHOW_MOVING_HILIGHT) && !(pFace.value.fOldShowMoveHilight)) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (pFace.value.ubOldServiceCount != pSoldier.value.ubServiceCount) {
-          fRerender = TRUE;
+          fRerender = true;
           pFace.value.ubOldServiceCount = pSoldier.value.ubServiceCount;
         }
 
         if (pFace.value.fOldCompatibleItems != pFace.value.fCompatibleItems || gfInItemPickupMenu || gpItemPointer != null) {
-          fRerender = TRUE;
+          fRerender = true;
           pFace.value.fOldCompatibleItems = pFace.value.fCompatibleItems;
         }
 
         if (pFace.value.ubOldServicePartner != pSoldier.value.ubServicePartner) {
-          fRerender = TRUE;
+          fRerender = true;
           pFace.value.ubOldServicePartner = pSoldier.value.ubServicePartner;
         }
 
@@ -1542,22 +1542,22 @@ function HandleAutoFaces(): void {
         pFace.value.bOldOppCnt = pSoldier.value.bOppCnt;
 
         if (pFace.value.uiFlags & FACE_SHOW_WHITE_HILIGHT) {
-          pFace.value.fOldShowHighlight = TRUE;
+          pFace.value.fOldShowHighlight = true;
         } else {
-          pFace.value.fOldShowHighlight = FALSE;
+          pFace.value.fOldShowHighlight = false;
         }
 
         if (pFace.value.uiFlags & FACE_SHOW_MOVING_HILIGHT) {
-          pFace.value.fOldShowMoveHilight = TRUE;
+          pFace.value.fOldShowMoveHilight = true;
         } else {
-          pFace.value.fOldShowMoveHilight = FALSE;
+          pFace.value.fOldShowMoveHilight = false;
         }
 
         if (pSoldier.value.fGettingHit && pSoldier.value.fFlashPortrait == FLASH_PORTRAIT_STOP) {
-          pSoldier.value.fFlashPortrait = TRUE;
+          pSoldier.value.fFlashPortrait = true;
           pSoldier.value.bFlashPortraitFrame = FLASH_PORTRAIT_STARTSHADE;
           RESETTIMECOUNTER(pSoldier.value.PortraitFlashCounter, FLASH_PORTRAIT_DELAY);
-          fRerender = TRUE;
+          fRerender = true;
         }
         if (pSoldier.value.fFlashPortrait == FLASH_PORTRAIT_START) {
           // Loop through flash values
@@ -1575,28 +1575,28 @@ function HandleAutoFaces(): void {
                 pSoldier.value.fFlashPortrait = FLASH_PORTRAIT_STOP;
               }
 
-              fRerender = TRUE;
+              fRerender = true;
             }
           }
         }
         // CHECK IF WE WERE WAITING FOR GETTING HIT TO FINISH!
         if (!pSoldier.value.fGettingHit && pSoldier.value.fFlashPortrait == FLASH_PORTRAIT_WAITING) {
-          pSoldier.value.fFlashPortrait = FALSE;
-          fRerender = TRUE;
+          pSoldier.value.fFlashPortrait = false;
+          fRerender = true;
         }
 
         if (pSoldier.value.fFlashPortrait == FLASH_PORTRAIT_START) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (pFace.value.uiFlags & FACE_REDRAW_WHOLE_FACE_NEXT_FRAME) {
           pFace.value.uiFlags &= ~FACE_REDRAW_WHOLE_FACE_NEXT_FRAME;
 
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (fInterfacePanelDirty == DIRTYLEVEL2 && guiCurrentScreen == Enum26.GAME_SCREEN) {
-          fRerender = TRUE;
+          fRerender = true;
         }
 
         if (fRerender) {
@@ -1604,7 +1604,7 @@ function HandleAutoFaces(): void {
         }
 
         if (bLife < CONSCIOUSNESS) {
-          fHandleFace = FALSE;
+          fHandleFace = false;
         }
       }
 
@@ -1631,7 +1631,7 @@ function HandleTalkingAutoFaces(): void {
   }
 }
 
-function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDestTop: INT16, sSrcLeft: INT16, sSrcTop: INT16, sWidth: INT16, sHeight: INT16): BOOLEAN {
+function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDestTop: INT16, sSrcLeft: INT16, sSrcTop: INT16, sWidth: INT16, sHeight: INT16): boolean {
   let pFace: Pointer<FACETYPE>;
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
@@ -1645,7 +1645,7 @@ function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDe
 
   // DOn't continue if we do not want the resotre to happen ( ei blitting entrie thing every frame...
   if (pFace.value.uiAutoRestoreBuffer == FACE_NO_RESTORE_BUFFER) {
-    return FALSE;
+    return false;
   }
 
   pDestBuf = LockVideoSurface(pFace.value.uiAutoDisplayBuffer, addressof(uiDestPitchBYTES));
@@ -1660,18 +1660,18 @@ function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDe
   if (pFace.value.uiAutoDisplayBuffer == FRAME_BUFFER) {
     InvalidateRegionEx(sDestLeft - 2, sDestTop - 2, (sDestLeft + sWidth + 3), (sDestTop + sHeight + 2), 0);
   }
-  return TRUE;
+  return true;
 }
 
-function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextString: STR16, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): BOOLEAN {
+function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextString: STR16, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): boolean {
   let pFace: Pointer<FACETYPE>;
 
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Set face to talking
-  pFace.value.fTalking = TRUE;
-  pFace.value.fAnimatingTalking = TRUE;
-  pFace.value.fFinishTalking = FALSE;
+  pFace.value.fTalking = true;
+  pFace.value.fAnimatingTalking = true;
+  pFace.value.fFinishTalking = false;
 
   if (!AreInMeanwhile()) {
     TurnOnSectorLocator(pFace.value.ubCharacterNum);
@@ -1684,11 +1684,11 @@ function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextStri
     pFace.value.uiSoundID = SOUND_ERROR;
 
   if (pFace.value.uiSoundID != SOUND_ERROR) {
-    pFace.value.fValidSpeech = TRUE;
+    pFace.value.fValidSpeech = true;
 
     pFace.value.uiTalkingFromVeryBeginningTimer = GetJA2Clock();
   } else {
-    pFace.value.fValidSpeech = FALSE;
+    pFace.value.fValidSpeech = false;
 
     // Set delay based on sound...
     pFace.value.uiTalkingTimer = pFace.value.uiTalkingFromVeryBeginningTimer = GetJA2Clock();
@@ -1696,26 +1696,26 @@ function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextStri
     pFace.value.uiTalkingDuration = FindDelayForString(zTextString);
   }
 
-  return TRUE;
+  return true;
 }
 
-function ExternSetFaceTalking(iFaceIndex: INT32, uiSoundID: UINT32): BOOLEAN {
+function ExternSetFaceTalking(iFaceIndex: INT32, uiSoundID: UINT32): boolean {
   let pFace: Pointer<FACETYPE>;
 
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Set face to talki	ng
-  pFace.value.fTalking = TRUE;
-  pFace.value.fAnimatingTalking = TRUE;
-  pFace.value.fFinishTalking = FALSE;
-  pFace.value.fValidSpeech = TRUE;
+  pFace.value.fTalking = true;
+  pFace.value.fAnimatingTalking = true;
+  pFace.value.fFinishTalking = false;
+  pFace.value.fValidSpeech = true;
 
   pFace.value.uiSoundID = uiSoundID;
 
-  return TRUE;
+  return true;
 }
 
-function InternalShutupaYoFace(iFaceIndex: INT32, fForce: BOOLEAN): void {
+function InternalShutupaYoFace(iFaceIndex: INT32, fForce: boolean): void {
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
@@ -1749,26 +1749,26 @@ function InternalShutupaYoFace(iFaceIndex: INT32, fForce: BOOLEAN): void {
     }
     // OK, smart guy, make sure this guy has finished talking,
     // before attempting to end dialogue UI.
-    pFace.value.fTalking = FALSE;
+    pFace.value.fTalking = false;
 
     // Call dialogue handler function
     HandleDialogueEnd(pFace);
 
-    pFace.value.fTalking = FALSE;
-    pFace.value.fAnimatingTalking = FALSE;
+    pFace.value.fTalking = false;
+    pFace.value.fAnimatingTalking = false;
 
-    gfUIWaitingForUserSpeechAdvance = FALSE;
+    gfUIWaitingForUserSpeechAdvance = false;
   }
 }
 
 function ShutupaYoFace(iFaceIndex: INT32): void {
-  InternalShutupaYoFace(iFaceIndex, TRUE);
+  InternalShutupaYoFace(iFaceIndex, true);
 }
 
 function SetupFinalTalkingDelay(pFace: Pointer<FACETYPE>): void {
-  pFace.value.fFinishTalking = TRUE;
+  pFace.value.fFinishTalking = true;
 
-  pFace.value.fAnimatingTalking = FALSE;
+  pFace.value.fAnimatingTalking = false;
 
   pFace.value.uiTalkingTimer = GetJA2Clock();
 
@@ -1795,12 +1795,12 @@ function SetupFinalTalkingDelay(pFace: Pointer<FACETYPE>): void {
     // Check if we have had valid speech!
     if (!pFace.value.fValidSpeech || gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES]) {
       // Set false!
-      pFace.value.fFinishTalking = FALSE;
+      pFace.value.fFinishTalking = false;
       // Set waiting for advance to true!
-      gfUIWaitingForUserSpeechAdvance = TRUE;
+      gfUIWaitingForUserSpeechAdvance = true;
     }
   }
 
   // Set final delay!
-  pFace.value.fValidSpeech = FALSE;
+  pFace.value.fValidSpeech = false;
 }

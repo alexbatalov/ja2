@@ -58,6 +58,6 @@ interface ITEM_POOL_LOCATOR {
   bRadioFrame: INT8;
   uiLastFrameUpdate: UINT32;
   Callback: ITEM_POOL_LOCATOR_HOOK;
-  fAllocated: BOOLEAN;
+  fAllocated: boolean;
   ubFlags: UINT8;
 }

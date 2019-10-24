@@ -69,9 +69,9 @@ interface SUMMARYFILE {
   // start version 10
   ExitGrid: EXITGRID[] /* [4] */; // 5*4 //	 20
   usExitGridSize: UINT16[] /* [4] */; // 2*4 //    8
-  fInvalidDest: BOOLEAN[] /* [4] */; //    4
+  fInvalidDest: boolean[] /* [4] */; //    4
   ubNumExitGridDests: UINT8; //		1
-  fTooManyExitGridDests: BOOLEAN; //		1
+  fTooManyExitGridDests: boolean; //		1
   //																//-----
   //																//	224
   // start version 11

@@ -5,7 +5,7 @@ interface FilesUnit {
   ubFormat: UINT8; // layout format
   uiIdNumber: UINT32; // unique id number
   uiDate: UINT32; // time in the world in global time (resolution, minutes)
-  fRead: BOOLEAN;
+  fRead: boolean;
   pPicFileNameList: STR8[] /* [2] */;
 
   Next: Pointer<FilesUnit>; // next unit in the list

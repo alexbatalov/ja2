@@ -1,5 +1,5 @@
 let giCurWinFont: INT32 = 0;
-let gfUseWinFonts: BOOLEAN = FALSE;
+let gfUseWinFonts: boolean = false;
 
 // Global variables for video objects
 let gpLargeFontType1: INT32;
@@ -73,9 +73,9 @@ let gvoHugeFont: HVOBJECT;
 
 let giSubTitleWinFont: INT32;
 
-let gfFontsInit: BOOLEAN = FALSE;
+let gfFontsInit: boolean = false;
 
-function InitializeFonts(): BOOLEAN {
+function InitializeFonts(): boolean {
   let zWinFontName: INT16[] /* [128] */;
   let Color: COLORVAL;
 
@@ -190,13 +190,13 @@ function InitializeFonts(): BOOLEAN {
 // #endif
 
   // Set default for font system
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
-  gfFontsInit = TRUE;
+  gfFontsInit = true;
 
   // ATE: Init WinFont System and any winfonts we wish...
 
-  return TRUE;
+  return true;
 }
 
 function ShutdownFonts(): void {
@@ -225,7 +225,7 @@ function ShutdownFonts(): void {
 }
 
 // Set shades for fonts
-function SetFontShade(uiFontID: UINT32, bColorID: INT8): BOOLEAN {
+function SetFontShade(uiFontID: UINT32, bColorID: INT8): boolean {
   let pFont: HVOBJECT;
 
   CHECKF(bColorID > 0);
@@ -235,7 +235,7 @@ function SetFontShade(uiFontID: UINT32, bColorID: INT8): BOOLEAN {
 
   pFont.value.pShadeCurrent = pFont.value.pShades[bColorID];
 
-  return TRUE;
+  return true;
 }
 
 function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
@@ -258,25 +258,25 @@ function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
     Pal[count].peBlue = 255;
   }
 
-  pObj.value.pShades[FONT_SHADE_RED] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 0, 0, TRUE);
-  pObj.value.pShades[FONT_SHADE_BLUE] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 255, TRUE);
-  pObj.value.pShades[FONT_SHADE_GREEN] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 255, 0, TRUE);
-  pObj.value.pShades[FONT_SHADE_YELLOW] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 0, TRUE);
-  pObj.value.pShades[FONT_SHADE_NEUTRAL] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 255, FALSE);
+  pObj.value.pShades[FONT_SHADE_RED] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 0, 0, true);
+  pObj.value.pShades[FONT_SHADE_BLUE] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 255, true);
+  pObj.value.pShades[FONT_SHADE_GREEN] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 255, 0, true);
+  pObj.value.pShades[FONT_SHADE_YELLOW] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 0, true);
+  pObj.value.pShades[FONT_SHADE_NEUTRAL] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 255, false);
 
-  pObj.value.pShades[FONT_SHADE_WHITE] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 255, TRUE);
+  pObj.value.pShades[FONT_SHADE_WHITE] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 255, true);
 
   // the rest are darkening tables, right down to all-black.
-  pObj.value.pShades[0] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 165, 165, 165, FALSE);
-  pObj.value.pShades[7] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 135, 135, 135, FALSE);
-  pObj.value.pShades[8] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 105, 105, 105, FALSE);
-  pObj.value.pShades[9] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 75, 75, 75, FALSE);
-  pObj.value.pShades[10] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 45, 45, 45, FALSE);
-  pObj.value.pShades[11] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 36, 36, 36, FALSE);
-  pObj.value.pShades[12] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 27, 27, 27, FALSE);
-  pObj.value.pShades[13] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 18, 18, 18, FALSE);
-  pObj.value.pShades[14] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 9, 9, 9, FALSE);
-  pObj.value.pShades[15] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 0, FALSE);
+  pObj.value.pShades[0] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 165, 165, 165, false);
+  pObj.value.pShades[7] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 135, 135, 135, false);
+  pObj.value.pShades[8] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 105, 105, 105, false);
+  pObj.value.pShades[9] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 75, 75, 75, false);
+  pObj.value.pShades[10] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 45, 45, 45, false);
+  pObj.value.pShades[11] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 36, 36, 36, false);
+  pObj.value.pShades[12] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 27, 27, 27, false);
+  pObj.value.pShades[13] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 18, 18, 18, false);
+  pObj.value.pShades[14] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 9, 9, 9, false);
+  pObj.value.pShades[15] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 0, false);
 
   // Set current shade table to neutral color
   pObj.value.pShadeCurrent = pObj.value.pShades[4];
@@ -286,7 +286,7 @@ function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
 
   // return the result of the check
   // return(count==HVOBJECT_SHADE_TABLES);
-  return TRUE;
+  return true;
 }
 
 function WFGetFontHeight(FontNum: INT32): UINT16 {

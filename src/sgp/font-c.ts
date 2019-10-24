@@ -32,7 +32,7 @@ let FontDestBuffer: UINT32 = BACKBUFFER;
 let FontDestPitch: UINT32 = 640 * 2;
 let FontDestBPP: UINT32 = 16;
 let FontDestRegion: SGPRect = [ 0, 0, 640, 480 ];
-let FontDestWrap: BOOLEAN = FALSE;
+let FontDestWrap: boolean = false;
 let FontForeground16: UINT16 = 0;
 let FontBackground16: UINT16 = 0;
 let FontShadow16: UINT16 = DEFAULT_SHADOW;
@@ -45,7 +45,7 @@ let SaveFontDestBuffer: UINT32 = BACKBUFFER;
 let SaveFontDestPitch: UINT32 = 640 * 2;
 let SaveFontDestBPP: UINT32 = 16;
 let SaveFontDestRegion: SGPRect = [ 0, 0, 640, 480 ];
-let SaveFontDestWrap: BOOLEAN = FALSE;
+let SaveFontDestWrap: boolean = false;
 let SaveFontForeground16: UINT16 = 0;
 let SaveFontShadow16: UINT16 = 0;
 let SaveFontBackground16: UINT16 = 0;
@@ -179,14 +179,14 @@ function SetRGBFontShadow(uiRed: UINT32, uiGreen: UINT32, uiBlue: UINT32): void 
 // the appropriate 16-bit palette, and assigned to the HVOBJECT).
 //
 //*****************************************************************************
-function ResetFontObjectPalette(iFont: INT32): BOOLEAN {
+function ResetFontObjectPalette(iFont: INT32): boolean {
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != null);
 
   SetFontObjectPalette8BPP(iFont, FontObjs[iFont].value.pPaletteEntry);
 
-  return TRUE;
+  return true;
 }
 
 //*****************************************************************************
@@ -592,13 +592,13 @@ function GetIndex(siChar: UINT16): INT16 {
 //	Sets the current font number.
 //
 //*****************************************************************************
-function SetFont(iFontIndex: INT32): BOOLEAN {
+function SetFont(iFontIndex: INT32): boolean {
   Assert(iFontIndex >= 0);
   Assert(iFontIndex <= MAX_FONTS);
   Assert(FontObjs[iFontIndex] != null);
 
   FontDefault = iFontIndex;
-  return TRUE;
+  return true;
 }
 
 //*****************************************************************************
@@ -608,7 +608,7 @@ function SetFont(iFontIndex: INT32): BOOLEAN {
 // sets the line wrap on/off. DestBuffer is a VOBJECT handle, not a pointer.
 //
 //*****************************************************************************
-function SetFontDestBuffer(DestBuffer: UINT32, x1: INT32, y1: INT32, x2: INT32, y2: INT32, wrap: BOOLEAN): BOOLEAN {
+function SetFontDestBuffer(DestBuffer: UINT32, x1: INT32, y1: INT32, x2: INT32, y2: INT32, wrap: boolean): boolean {
   Assert(x2 > x1);
   Assert(y2 > y1);
 
@@ -620,7 +620,7 @@ function SetFontDestBuffer(DestBuffer: UINT32, x1: INT32, y1: INT32, x2: INT32, 
   FontDestRegion.iBottom = y2;
   FontDestWrap = wrap;
 
-  return TRUE;
+  return true;
 }
 
 //*****************************************************************************
@@ -1030,7 +1030,7 @@ function mprintf_coded(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args
 //	Starts up the font manager system with the appropriate translation table.
 //
 //*****************************************************************************
-function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer<FontTranslationTable>): BOOLEAN {
+function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer<FontTranslationTable>): boolean {
   let pTransTab: Pointer<FontTranslationTable>;
   let count: int;
   let uiRight: UINT16;
@@ -1050,20 +1050,20 @@ function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer
   FontDestRegion.iBottom = uiBottom;
   FontDestBPP = uiPixelDepth;
 
-  FontDestWrap = FALSE;
+  FontDestWrap = false;
 
   // register the appropriate debug topics
   if (pTransTable == null) {
-    return FALSE;
+    return false;
   }
   RegisterDebugTopic(TOPIC_FONT_HANDLER, "Font Manager");
 
   if ((pFManager = MemAlloc(sizeof(FontManager))) == null) {
-    return FALSE;
+    return false;
   }
 
   if ((pTransTab = MemAlloc(sizeof(FontTranslationTable))) == null) {
-    return FALSE;
+    return false;
   }
 
   pFManager.value.pTranslationTable = pTransTab;
@@ -1075,7 +1075,7 @@ function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer
   for (count = 0; count < MAX_FONTS; count++)
     FontObjs[count] = null;
 
-  return TRUE;
+  return true;
 }
 
 //*****************************************************************************

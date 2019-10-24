@@ -16,14 +16,14 @@ interface EXPLOSION_PARAMS {
   sY: INT16; // World Y ( optional )
   sZ: INT16; // World Z ( optional )
   sGridNo: INT16; // World GridNo
-  fLocate: BOOLEAN;
+  fLocate: boolean;
   bLevel: INT8; // World level
   ubUnsed: UINT8[] /* [1] */;
 }
 
 interface EXPLOSIONTYPE {
   Params: EXPLOSION_PARAMS;
-  fAllocated: BOOLEAN;
+  fAllocated: boolean;
   sCurrentFrame: INT16;
   iID: INT32;
   iLightID: INT32;

@@ -90,9 +90,9 @@ function InitializeOneArmsDealer(ubArmsDealer: UINT8): void {
   // loop through all the item types
   for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     // Can the item be sold by the arms dealer
-    if (CanDealerTransactItem(ubArmsDealer, usItemIndex, FALSE)) {
+    if (CanDealerTransactItem(ubArmsDealer, usItemIndex, false)) {
       // Setup an initial amount for the items (treat items as new, how many are used isn't known yet)
-      ubNumItems = DetermineInitialInvItems(ubArmsDealer, usItemIndex, GetDealersMaxItemAmount(ubArmsDealer, usItemIndex), FALSE);
+      ubNumItems = DetermineInitialInvItems(ubArmsDealer, usItemIndex, GetDealersMaxItemAmount(ubArmsDealer, usItemIndex), false);
 
       // if there are any initial items
       if (ubNumItems > 0) {
@@ -117,19 +117,19 @@ function ShutDownArmsDealers(): void {
   }
 }
 
-function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let ubArmsDealer: UINT8;
   let usItemIndex: UINT16;
 
   // Save the arms dealers status
   if (!FileWrite(hFile, gArmsDealerStatus, sizeof(gArmsDealerStatus), addressof(uiNumBytesWritten))) {
-    return FALSE;
+    return false;
   }
 
   // save the dealers inventory item headers (all at once)
   if (!FileWrite(hFile, gArmsDealersInventory, sizeof(gArmsDealersInventory), addressof(uiNumBytesWritten))) {
-    return FALSE;
+    return false;
   }
 
   // loop through all the dealers inventories
@@ -139,16 +139,16 @@ function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): BOOLEAN {
       // if there are any special item elements allocated for this item, save them
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced > 0) {
         if (!FileWrite(hFile, addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[0]), sizeof(DEALER_SPECIAL_ITEM) * gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced, addressof(uiNumBytesWritten))) {
-          return FALSE;
+          return false;
         }
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin: BOOLEAN, fIncludesManny: BOOLEAN): BOOLEAN {
+function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin: boolean, fIncludesManny: boolean): boolean {
   let uiNumBytesRead: UINT32;
   let ubArmsDealer: UINT8;
   let usItemIndex: UINT16;
@@ -163,16 +163,16 @@ function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin:
 
     // Load the arms dealers status
     if (!FileRead(hFile, gArmsDealerStatus, sizeof(gArmsDealerStatus), addressof(uiNumBytesRead))) {
-      return FALSE;
+      return false;
     }
 
     // load the dealers inventory item headers (all at once)
     if (!FileRead(hFile, gArmsDealersInventory, sizeof(gArmsDealersInventory), addressof(uiNumBytesRead))) {
-      return FALSE;
+      return false;
     }
   } else {
     if (!LoadIncompleteArmsDealersStatus(hFile, fIncludesElgin, fIncludesManny)) {
-      return FALSE;
+      return false;
     }
   }
 
@@ -184,16 +184,16 @@ function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin:
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced > 0) {
         // Allocate memory for the inventory
         if (!AllocMemsetSpecialItemArray(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex]), gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced))
-          return FALSE;
+          return false;
 
         if (!FileRead(hFile, addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[0]), sizeof(DEALER_SPECIAL_ITEM) * gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced, addressof(uiNumBytesRead))) {
-          return FALSE;
+          return false;
         }
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function DailyUpdateOfArmsDealersInventory(): void {
@@ -234,9 +234,9 @@ function SimulateArmsDealerCustomer(): void {
         // first, try to sell all the new (perfect) ones
         if (usItemIndex == Enum225.JAR_ELIXIR) {
           // only allow selling of standard # of items so those converted from blood given by player will be available
-          ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, __min(3, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems), FALSE);
+          ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, __min(3, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems), false);
         } else {
-          ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems, FALSE);
+          ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems, false);
         }
         if (ubItemsSold > 0) {
           // create item info describing a perfect item
@@ -250,7 +250,7 @@ function SimulateArmsDealerCustomer(): void {
           // don't worry about negative condition, repairmen can't come this far, they don't sell!
           if (gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive) {
             // try selling just this one
-            if (HowManyItemsAreSold(ubArmsDealer, usItemIndex, 1, TRUE) > 0) {
+            if (HowManyItemsAreSold(ubArmsDealer, usItemIndex, 1, true) > 0) {
               // Sold, now remove that particular USED one!
               RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer, usItemIndex, ubElement);
             }
@@ -267,7 +267,7 @@ function DailyCheckOnItemQuantities(): void {
   let ubMaxSupply: UINT8;
   let ubNumItems: UINT8;
   let uiArrivalDay: UINT32;
-  let fPrevElig: BOOLEAN;
+  let fPrevElig: boolean;
   let ubReorderDays: UINT8;
 
   // loop through all the arms dealers
@@ -285,7 +285,7 @@ function DailyCheckOnItemQuantities(): void {
     // loop through all items of the same type
     for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
       // if the dealer can sell the item type
-      if (CanDealerTransactItem(ubArmsDealer, usItemIndex, FALSE)) {
+      if (CanDealerTransactItem(ubArmsDealer, usItemIndex, false)) {
         // if there are no items on order
         if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubQtyOnOrder == 0) {
           ubMaxSupply = GetDealersMaxItemAmount(ubArmsDealer, usItemIndex);
@@ -296,7 +296,7 @@ function DailyCheckOnItemQuantities(): void {
             fPrevElig = gArmsDealersInventory[ubArmsDealer][usItemIndex].fPreviouslyEligible;
 
             // determine if the item can be restocked (assume new, use items aren't checked for until the stuff arrives)
-            if (ItemTransactionOccurs(ubArmsDealer, usItemIndex, DEALER_BUYING, FALSE)) {
+            if (ItemTransactionOccurs(ubArmsDealer, usItemIndex, DEALER_BUYING, false)) {
               // figure out how many items to reorder (items are reordered an entire batch at a time)
               ubNumItems = HowManyItemsToReorder(ubMaxSupply, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems);
 
@@ -359,7 +359,7 @@ function ConvertCreatureBloodToElixir(): void {
   }
 }
 
-function AdjustCertainDealersInventory(): BOOLEAN {
+function AdjustCertainDealersInventory(): boolean {
   // Adjust Tony's items (this restocks *instantly* 1/day, doesn't use the reorder system)
   GuaranteeAtLeastOneItemOfType(Enum197.ARMS_DEALER_TONY, ARMS_DEALER_BIG_GUNS);
   LimitArmsDealersInventory(Enum197.ARMS_DEALER_TONY, ARMS_DEALER_BIG_GUNS, 2);
@@ -388,7 +388,7 @@ function AdjustCertainDealersInventory(): BOOLEAN {
     GuaranteeAtLeastXItemsOfIndex(Enum197.ARMS_DEALER_FRANZ, Enum225.VIDEO_CAMERA, 1);
   }
 
-  return TRUE;
+  return true;
 }
 
 function LimitArmsDealersInventory(ubArmsDealer: UINT8, uiDealerItemType: UINT32, ubMaxNumberOfItemType: UINT8): void {
@@ -513,9 +513,9 @@ function LimitArmsDealersInventory(ubArmsDealer: UINT8, uiDealerItemType: UINT32
 function GuaranteeAtLeastOneItemOfType(ubArmsDealer: UINT8, uiDealerItemType: UINT32): void {
   let usItemIndex: UINT16;
   let ubChance: UINT8;
-  let fFoundEligibleItemOfSameType: BOOLEAN = FALSE;
-  let fItemHasBeenAdded: BOOLEAN = FALSE;
-  let fFailedOnce: BOOLEAN = FALSE;
+  let fFoundEligibleItemOfSameType: boolean = false;
+  let fItemHasBeenAdded: boolean = false;
+  let fFailedOnce: boolean = false;
   let usAvailableItem: UINT16[] /* [MAXITEMS] */ = [ NOTHING ];
   let ubChanceForAvailableItem: UINT8[] /* [MAXITEMS] */ = [ 0 ];
   let uiTotalChances: UINT32 = 0;
@@ -542,7 +542,7 @@ function GuaranteeAtLeastOneItemOfType(ubArmsDealer: UINT8, uiDealerItemType: UI
       // if he can stock it (it appears in his inventory list)
       if (GetDealersMaxItemAmount(ubArmsDealer, usItemIndex) > 0) {
         // and the stage of the game gives him a chance to have it (assume new)
-        ubChance = ChanceOfItemTransaction(ubArmsDealer, usItemIndex, DEALER_BUYING, FALSE);
+        ubChance = ChanceOfItemTransaction(ubArmsDealer, usItemIndex, DEALER_BUYING, false);
         if (ubChance > 0) {
           usAvailableItem[uiNumAvailableItems] = usItemIndex;
           ubChanceForAvailableItem[uiNumAvailableItems] = ubChance;
@@ -742,26 +742,26 @@ function GetArmsDealerItemTypeFromItemNumber(usItem: UINT16): UINT32 {
       break;
 
     default:
-      AssertMsg(FALSE, String("GetArmsDealerItemTypeFromItemNumber(), invalid class %d for item %d.  DF 0.", Item[usItem].usItemClass, usItem));
+      AssertMsg(false, String("GetArmsDealerItemTypeFromItemNumber(), invalid class %d for item %d.  DF 0.", Item[usItem].usItemClass, usItem));
       break;
   }
   return 0;
 }
 
-function IsMercADealer(ubMercID: UINT8): BOOLEAN {
+function IsMercADealer(ubMercID: UINT8): boolean {
   let cnt: UINT8;
 
   // Manny is not actually a valid dealer unless a particular event sets that fact
   if ((ubMercID == Enum268.MANNY) && !CheckFact(Enum170.FACT_MANNY_IS_BARTENDER, 0)) {
-    return FALSE;
+    return false;
   }
 
   // loop through the list of arms dealers
   for (cnt = 0; cnt < Enum197.NUM_ARMS_DEALERS; cnt++) {
     if (ArmsDealerInfo[cnt].ubShopKeeperID == ubMercID)
-      return TRUE;
+      return true;
   }
-  return FALSE;
+  return false;
 }
 
 function GetArmsDealerIDFromMercID(ubMercID: UINT8): INT8 {
@@ -780,11 +780,11 @@ function GetTypeOfArmsDealer(ubDealerID: UINT8): UINT8 {
   return ArmsDealerInfo[ubDealerID].ubTypeOfArmsDealer;
 }
 
-function DoesDealerDoRepairs(ubArmsDealer: UINT8): BOOLEAN {
+function DoesDealerDoRepairs(ubArmsDealer: UINT8): boolean {
   if (ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS)
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }
 
 /*
@@ -809,19 +809,19 @@ INT16 GetSpecialItemFromArmsDealerInventory( UINT8 ubArmsDealer, UINT16 usItemIn
 }
 */
 
-function RepairmanIsFixingItemsButNoneAreDoneYet(ubProfileID: UINT8): BOOLEAN {
+function RepairmanIsFixingItemsButNoneAreDoneYet(ubProfileID: UINT8): boolean {
   let bArmsDealer: INT8;
-  let fHaveOnlyUnRepairedItems: BOOLEAN = FALSE;
+  let fHaveOnlyUnRepairedItems: boolean = false;
   let ubElement: UINT8;
   let usItemIndex: UINT16;
 
   bArmsDealer = GetArmsDealerIDFromMercID(ubProfileID);
   if (bArmsDealer == -1)
-    return FALSE;
+    return false;
 
   // if the dealer is not a repair dealer, return
   if (!DoesDealerDoRepairs(bArmsDealer))
-    return FALSE;
+    return false;
 
   // loop through the dealers inventory and check if there are only unrepaired items
   for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
@@ -835,9 +835,9 @@ function RepairmanIsFixingItemsButNoneAreDoneYet(ubProfileID: UINT8): BOOLEAN {
             // if the item has been repaired
             if (gArmsDealersInventory[bArmsDealer][usItemIndex].SpecialItem[ubElement].uiRepairDoneTime <= GetWorldTotalMin()) {
               // A repair item is ready, therefore, return false
-              return FALSE;
+              return false;
             } else {
-              fHaveOnlyUnRepairedItems = TRUE;
+              fHaveOnlyUnRepairedItems = true;
             }
           }
         }
@@ -866,19 +866,19 @@ function GetTimeToFixItemBeingRepaired(ubArmsDealer: UINT8, usItemIndex: UINT16,
   return gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].uiRepairDoneTime - GetWorldTotalMin();
 }
 
-function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: BOOLEAN): BOOLEAN {
+function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: boolean): boolean {
   switch (ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer) {
     case Enum198.ARMS_DEALER_SELLS_ONLY:
       if (fPurchaseFromPlayer) {
         // this dealer only sells stuff to player, so he can't buy anything from him
-        return FALSE;
+        return false;
       }
       break;
 
     case Enum198.ARMS_DEALER_BUYS_ONLY:
       if (!fPurchaseFromPlayer) {
         // this dealer only buys stuff from player, so he can't sell anything to him
-        return FALSE;
+        return false;
       }
       break;
 
@@ -889,7 +889,7 @@ function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurcha
         case Enum197.ARMS_DEALER_FRANZ:
           if (fPurchaseFromPlayer) {
             // these guys will buy nearly anything from the player, regardless of what they carry for sale!
-            return CalcValueOfItemToDealer(ubArmsDealer, usItemIndex, FALSE) > 0;
+            return CalcValueOfItemToDealer(ubArmsDealer, usItemIndex, false) > 0;
           }
           // else selling inventory uses their inventory list
           break;
@@ -906,21 +906,21 @@ function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurcha
       return CanDealerRepairItem(ubArmsDealer, usItemIndex);
 
     default:
-      AssertMsg(FALSE, String("CanDealerTransactItem(), type of dealer %d.  AM 0.", ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer));
-      return FALSE;
+      AssertMsg(false, String("CanDealerTransactItem(), type of dealer %d.  AM 0.", ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer));
+      return false;
   }
 
   return DoesItemAppearInDealerInventoryList(ubArmsDealer, usItemIndex, fPurchaseFromPlayer);
 }
 
-function CanDealerRepairItem(ubArmsDealer: UINT8, usItemIndex: UINT16): BOOLEAN {
+function CanDealerRepairItem(ubArmsDealer: UINT8, usItemIndex: UINT16): boolean {
   let uiFlags: UINT32;
 
   uiFlags = Item[usItemIndex].fFlags;
 
   // can't repair anything that's not repairable!
   if (!(uiFlags & ITEM_REPAIRABLE)) {
-    return FALSE;
+    return false;
   }
 
   switch (ubArmsDealer) {
@@ -928,33 +928,33 @@ function CanDealerRepairItem(ubArmsDealer: UINT8, usItemIndex: UINT16): BOOLEAN 
     case Enum197.ARMS_DEALER_PERKO:
       // repairs ANYTHING non-electronic
       if (!(uiFlags & ITEM_ELECTRONIC)) {
-        return TRUE;
+        return true;
       }
       break;
 
     case Enum197.ARMS_DEALER_FREDO:
       // repairs ONLY electronics
       if (uiFlags & ITEM_ELECTRONIC) {
-        return TRUE;
+        return true;
       }
       break;
 
     default:
-      AssertMsg(FALSE, String("CanDealerRepairItem(), Arms Dealer %d is not a recognized repairman!.  AM 1.", ubArmsDealer));
+      AssertMsg(false, String("CanDealerRepairItem(), Arms Dealer %d is not a recognized repairman!.  AM 1.", ubArmsDealer));
   }
 
   // can't repair this...
-  return FALSE;
+  return false;
 }
 
-function AllocMemsetSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElementsNeeded: UINT8): BOOLEAN {
+function AllocMemsetSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElementsNeeded: UINT8): boolean {
   Assert(pDealerItem);
   Assert(ubElementsNeeded > 0);
 
   pDealerItem.value.SpecialItem = MemAlloc(sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
   if (pDealerItem.value.SpecialItem == null) {
     Assert(0);
-    return FALSE;
+    return false;
   }
 
   // zero them out (they're inactive until an item is actually added)
@@ -962,24 +962,24 @@ function AllocMemsetSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, u
 
   pDealerItem.value.ubElementsAlloced = ubElementsNeeded;
 
-  return TRUE;
+  return true;
 }
 
-function ResizeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElementsNeeded: UINT8): BOOLEAN {
+function ResizeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElementsNeeded: UINT8): boolean {
   Assert(pDealerItem);
   // must already have a ptr allocated!
   Assert(pDealerItem.value.SpecialItem);
 
   if (ubElementsNeeded == pDealerItem.value.ubElementsAlloced) {
     // shouldn't have been called, but what they hey, it's not exactly a problem
-    return TRUE;
+    return true;
   }
 
   // already allocated, but change its size
   pDealerItem.value.SpecialItem = MemRealloc(pDealerItem.value.SpecialItem, sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
   if (pDealerItem.value.SpecialItem == null) {
     Assert(0);
-    return FALSE;
+    return false;
   }
 
   // if adding more elements
@@ -990,7 +990,7 @@ function ResizeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElem
 
   pDealerItem.value.ubElementsAlloced = ubElementsNeeded;
 
-  return TRUE;
+  return true;
 }
 
 function FreeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>): void {
@@ -1052,7 +1052,7 @@ function DetermineDealerItemCondition(ubArmsDealer: UINT8, usItemIndex: UINT16):
   return ubCondition;
 }
 
-function ItemContainsLiquid(usItemIndex: UINT16): BOOLEAN {
+function ItemContainsLiquid(usItemIndex: UINT16): boolean {
   switch (usItemIndex) {
     case Enum225.CANTEEN:
     case Enum225.BEER:
@@ -1062,10 +1062,10 @@ function ItemContainsLiquid(usItemIndex: UINT16): BOOLEAN {
     case Enum225.JAR_QUEEN_CREATURE_BLOOD:
     case Enum225.JAR_ELIXIR:
     case Enum225.GAS_CAN:
-      return TRUE;
+      return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 /*
@@ -1287,8 +1287,8 @@ function AddItemToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
   let ubRoomLeft: UINT8;
   let ubElement: UINT8;
   let ubElementsToAdd: UINT8;
-  let fFoundOne: BOOLEAN;
-  let fSuccess: BOOLEAN;
+  let fFoundOne: boolean;
+  let fSuccess: boolean;
 
   Assert(ubHowMany > 0);
 
@@ -1310,12 +1310,12 @@ function AddItemToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
 
     do {
       // search for an already allocated, empty element in the special item array
-      fFoundOne = FALSE;
+      fFoundOne = false;
       for (ubElement = 0; ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced; ubElement++) {
         if (!(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive)) {
           // Great!  Store it here, then.
           AddSpecialItemToArmsDealerInventoryAtElement(ubArmsDealer, usItemIndex, ubElement, pSpclItemInfo);
-          fFoundOne = TRUE;
+          fFoundOne = true;
           break;
         }
       }
@@ -1359,11 +1359,11 @@ function AddItemToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
 function AddSpecialItemToArmsDealerInventoryAtElement(ubArmsDealer: UINT8, usItemIndex: UINT16, ubElement: UINT8, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): void {
   Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems < 255);
   Assert(ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced);
-  Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive == FALSE);
+  Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive == false);
   Assert(IsItemInfoSpecial(pSpclItemInfo));
 
   // Store the special values in that element, and make it active
-  gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive = TRUE;
+  gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive = true;
 
   memcpy(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].Info), pSpclItemInfo, sizeof(SPECIAL_ITEM_INFO));
 
@@ -1418,7 +1418,7 @@ function RemoveItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UIN
 function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, ubHowMany: UINT8): void {
   let ubWhichOne: UINT8;
   let ubSkippedAlready: UINT8;
-  let fFoundIt: BOOLEAN;
+  let fFoundIt: boolean;
   let ubElement: UINT8;
   let SpclItemInfo: SPECIAL_ITEM_INFO;
 
@@ -1442,7 +1442,7 @@ function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemInde
       ubWhichOne -= gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems;
       ubSkippedAlready = 0;
 
-      fFoundIt = FALSE;
+      fFoundIt = false;
 
       for (ubElement = 0; ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced; ubElement++) {
         // if this is an active special item, not in repair
@@ -1453,7 +1453,7 @@ function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemInde
           if (ubSkippedAlready == ubWhichOne) {
             // then this one is it!  That's the one we're gonna remove
             RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer, usItemIndex, ubElement);
-            fFoundIt = TRUE;
+            fFoundIt = true;
             break;
           } else {
             // keep looking...
@@ -1473,7 +1473,7 @@ function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemInde
 function RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer: UINT8, usItemIndex: UINT16, ubElement: UINT8): void {
   Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems > 0);
   Assert(ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced);
-  Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive == TRUE);
+  Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive == true);
 
   // wipe it out (turning off fActive)
   memset(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement]), 0, sizeof(DEALER_SPECIAL_ITEM));
@@ -1482,7 +1482,7 @@ function RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer: UINT8, 
   gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems--;
 }
 
-function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
+function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): boolean {
   let bArmsDealer: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let usItemIndex: UINT16;
@@ -1498,19 +1498,19 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
   bArmsDealer = GetArmsDealerIDFromMercID(ubMercID);
   if (bArmsDealer == -1) {
     // not a dealer, that's ok, we get called for every dude that croaks.
-    return FALSE;
+    return false;
   }
 
   // mark the dealer as being out of business!
-  gArmsDealerStatus[bArmsDealer].fOutOfBusiness = TRUE;
+  gArmsDealerStatus[bArmsDealer].fOutOfBusiness = true;
 
   // Get a pointer to the dealer
-  pSoldier = FindSoldierByProfileID(ubMercID, FALSE);
+  pSoldier = FindSoldierByProfileID(ubMercID, false);
   if (pSoldier == null) {
     // This should never happen, a dealer getting knocked off without the sector being loaded, should it?
     // If it's possible, we should modify code below to dump his belongings into the sector without using pSoldier->sGridNo
     Assert(0);
-    return FALSE;
+    return false;
   }
 
   // loop through all the items in the dealer's inventory, and drop them all where the dealer was set up.
@@ -1571,7 +1571,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
     // Create the object
     memset(addressof(TempObject), 0, sizeof(OBJECTTYPE));
     if (!CreateMoney(gArmsDealerStatus[bArmsDealer].uiArmsDealersCash, addressof(TempObject))) {
-      return FALSE;
+      return false;
     }
 
     // add the money item to the dealers feet
@@ -1580,7 +1580,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
     gArmsDealerStatus[bArmsDealer].uiArmsDealersCash = 0;
   }
 
-  return TRUE;
+  return true;
 }
 
 function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>, ubHowMany: UINT8): void {
@@ -1930,31 +1930,31 @@ function SetSpecialItemInfoFromObject(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>,
   }
 }
 
-function IsItemInfoSpecial(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): BOOLEAN {
+function IsItemInfoSpecial(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): boolean {
   let ubCnt: UINT8;
 
   // being damaged / in repairs makes an item special
   if (pSpclItemInfo.value.bItemCondition != 100) {
-    return TRUE;
+    return true;
   }
 
   // being imprinted makes an item special
   if (pSpclItemInfo.value.ubImprintID != NO_PROFILE) {
-    return TRUE;
+    return true;
   }
 
   // having an attachment makes an item special
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
     if (pSpclItemInfo.value.usAttachment[ubCnt] != Enum225.NONE) {
-      return TRUE;
+      return true;
     }
   }
 
   // otherwise, it's just a "perfect" item, nothing special about it
-  return FALSE;
+  return false;
 }
 
-function DoesItemAppearInDealerInventoryList(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: BOOLEAN): BOOLEAN {
+function DoesItemAppearInDealerInventoryList(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: boolean): boolean {
   let pDealerInv: Pointer<DEALER_POSSIBLE_INV> = null;
   let usCnt: UINT16;
 
@@ -1969,17 +1969,17 @@ function DoesItemAppearInDealerInventoryList(ubArmsDealer: UINT8, usItemIndex: U
     if (pDealerInv[usCnt].sItemIndex == usItemIndex) {
       // if optimal quantity listed is 0, it means dealer won't sell it himself, but will buy it from the player!
       if ((pDealerInv[usCnt].ubOptimalNumber > 0) || fPurchaseFromPlayer) {
-        return TRUE;
+        return true;
       }
     }
 
     usCnt++;
   }
 
-  return FALSE;
+  return false;
 }
 
-function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDealerSelling: BOOLEAN): UINT16 {
+function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDealerSelling: boolean): UINT16 {
   let usBasePrice: UINT16;
   let ubItemPriceClass: UINT8;
   let ubDealerPriceClass: UINT8;
@@ -2006,7 +2006,7 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
 
     // other dealers don't use this system
     default:
-      if (DoesItemAppearInDealerInventoryList(ubArmsDealer, usItemIndex, TRUE)) {
+      if (DoesItemAppearInDealerInventoryList(ubArmsDealer, usItemIndex, true)) {
         return usBasePrice;
       } else {
         return 0;
@@ -2016,13 +2016,13 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
   // the rest of this function applies only to the "general" dealers ( Jake, Keith, and Franz )
 
   // Micky & Gabby specialize in creature parts & such, the others don't buy these at all (exception: jars)
-  if ((usItemIndex != Enum225.JAR) && (DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_MICKY, usItemIndex, TRUE) || DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_GABBY, usItemIndex, TRUE))) {
+  if ((usItemIndex != Enum225.JAR) && (DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_MICKY, usItemIndex, true) || DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_GABBY, usItemIndex, true))) {
     return 0;
   }
 
   if ((ubArmsDealer == Enum197.ARMS_DEALER_KEITH) && (Item[usItemIndex].usItemClass & (IC_GUN | IC_LAUNCHER))) {
     // Keith won't buy guns until the Hillbillies are vanquished
-    if (CheckFact(Enum170.FACT_HILLBILLIES_KILLED, Enum268.KEITH) == FALSE) {
+    if (CheckFact(Enum170.FACT_HILLBILLIES_KILLED, Enum268.KEITH) == false) {
       return 0;
     }
   }
@@ -2056,7 +2056,7 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
   }
 
   // Tony specializes in guns, weapons, and ammo, so make others pay much less for that kind of stuff
-  if (DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_TONY, usItemIndex, TRUE)) {
+  if (DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_TONY, usItemIndex, true)) {
     // others pay only 1/2 of that value!
     usValueToThisDealer /= 2;
   }
@@ -2070,7 +2070,7 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
 }
 
 // this only exists to support saves made with game versions < 54 or 55!
-function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: BOOLEAN, fIncludesManny: BOOLEAN): BOOLEAN {
+function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: boolean, fIncludesManny: boolean): boolean {
   let uiDealersSaved: UINT32;
   let uiNumBytesRead: UINT32;
 
@@ -2086,12 +2086,12 @@ function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: BOOLEAN,
 
   // read in all other dealer's status
   if (!FileRead(hFile, gArmsDealerStatus, uiDealersSaved * sizeof(ARMS_DEALER_STATUS), addressof(uiNumBytesRead))) {
-    return FALSE;
+    return false;
   }
 
   // read in all other dealer's inventory
   if (!FileRead(hFile, gArmsDealersInventory, uiDealersSaved * sizeof(DEALER_ITEM_HEADER) * Enum225.MAXITEMS, addressof(uiNumBytesRead))) {
-    return FALSE;
+    return false;
   }
 
   if (!fIncludesElgin) {
@@ -2104,15 +2104,15 @@ function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: BOOLEAN,
     InitializeOneArmsDealer(Enum197.ARMS_DEALER_MANNY);
   }
 
-  return TRUE;
+  return true;
 }
 
-function DealerItemIsSafeToStack(usItemIndex: UINT16): BOOLEAN {
+function DealerItemIsSafeToStack(usItemIndex: UINT16): boolean {
   // basically any item type with nothing unique about it besides its status can be stacked in dealer's inventory boxes...
   // NOTE: This test is only applied to items already KNOWN to be perfect - special items are obviously not-stackable
 
   if (Item[usItemIndex].usItemClass == IC_GUN) {
-    return FALSE;
+    return false;
   }
 
   /*
@@ -2122,7 +2122,7 @@ function DealerItemIsSafeToStack(usItemIndex: UINT16): BOOLEAN {
           }
   */
 
-  return TRUE;
+  return true;
 }
 
 function GuaranteeMinimumAlcohol(ubArmsDealer: UINT8): void {
@@ -2131,29 +2131,29 @@ function GuaranteeMinimumAlcohol(ubArmsDealer: UINT8): void {
   GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.ALCOHOL, (GetDealersMaxItemAmount(ubArmsDealer, Enum225.ALCOHOL) / 3));
 }
 
-function ItemIsARocketRifle(sItemIndex: INT16): BOOLEAN {
+function ItemIsARocketRifle(sItemIndex: INT16): boolean {
   if ((sItemIndex == Enum225.ROCKET_RIFLE) || (sItemIndex == Enum225.AUTO_ROCKET_RIFLE)) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function GetArmsDealerShopHours(ubArmsDealer: UINT8, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): BOOLEAN {
+function GetArmsDealerShopHours(ubArmsDealer: UINT8, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  pSoldier = FindSoldierByProfileID(ArmsDealerInfo[ubArmsDealer].ubShopKeeperID, FALSE);
+  pSoldier = FindSoldierByProfileID(ArmsDealerInfo[ubArmsDealer].ubShopKeeperID, false);
   if (pSoldier == null) {
-    return FALSE;
+    return false;
   }
 
-  if (ExtractScheduleDoorLockAndUnlockInfo(pSoldier, puiOpeningTime, puiClosingTime) == FALSE) {
-    return FALSE;
+  if (ExtractScheduleDoorLockAndUnlockInfo(pSoldier, puiOpeningTime, puiClosingTime) == false) {
+    return false;
   }
 
   Assert(puiOpeningTime.value < puiClosingTime.value);
 
-  return TRUE;
+  return true;
 }
 
 function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStartIt: UINT32, uiMinutesToFix: UINT32): UINT32 {
@@ -2168,7 +2168,7 @@ function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStar
   // convert world time into 24hr military time for the day he's gonna start on it
   uiTimeWhenFreeToStartIt = uiTimeWhenFreeToStartIt % NUM_MIN_IN_DAY;
 
-  if (GetArmsDealerShopHours(ubArmsDealer, addressof(uiOpeningTime), addressof(uiClosingTime)) == FALSE) {
+  if (GetArmsDealerShopHours(ubArmsDealer, addressof(uiOpeningTime), addressof(uiClosingTime)) == false) {
     return 0;
   }
 
@@ -2202,7 +2202,7 @@ function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: UINT32,
 
   Assert(uiStartTime <= uiEndTime);
 
-  if (GetArmsDealerShopHours(ubArmsDealer, addressof(uiOpeningTime), addressof(uiClosingTime)) == FALSE) {
+  if (GetArmsDealerShopHours(ubArmsDealer, addressof(uiOpeningTime), addressof(uiClosingTime)) == false) {
     return 0;
   }
 

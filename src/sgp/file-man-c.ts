@@ -29,7 +29,7 @@ const FILENAME_LENGTH = 600;
 
 const CHECKF = (exp) => {
   if (!(exp)) {
-    return (FALSE);
+    return (false);
   }
 };
 const CHECKV = (exp) => {
@@ -67,8 +67,8 @@ interface FMFileInfo {
 interface FileSystem {
   pFileInfo: Pointer<FMFileInfo>;
   uiNumHandles: UINT32;
-  fDebug: BOOLEAN;
-  fDBInitialized: BOOLEAN;
+  fDebug: boolean;
+  fDBInitialized: boolean;
 
   pcFileNames: Pointer<CHAR>;
   uiNumFilesInDirectory: UINT32;
@@ -86,27 +86,27 @@ let gFileDataBase: DatabaseManagerHeaderStruct;
 // FileSystem gfs;
 
 let Win32FindInfo: WIN32_FIND_DATA[] /* [20] */;
-let fFindInfoInUse: BOOLEAN[] /* [20] */ = [
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
-  FALSE,
+let fFindInfoInUse: boolean[] /* [20] */ = [
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
 ];
 let hFindInfoHandle: HANDLE[] /* [20] */ = [
   INVALID_HANDLE_VALUE,
@@ -157,9 +157,9 @@ let hFindInfoHandle: HANDLE[] /* [20] */ = [
 //
 //**************************************************************************
 
-function InitializeFileManager(strIndexFilename: STR): BOOLEAN {
+function InitializeFileManager(strIndexFilename: STR): boolean {
   RegisterDebugTopic(TOPIC_FILE_MANAGER, "File Manager");
-  return TRUE;
+  return true;
 }
 
 //**************************************************************************
@@ -196,7 +196,7 @@ function ShutdownFileManager(): void {
 //
 //**************************************************************************
 
-function FileDebug(f: BOOLEAN): void {
+function FileDebug(f: boolean): void {
   //	gfs.fDebug = f;
 }
 
@@ -223,8 +223,8 @@ function FileDebug(f: BOOLEAN): void {
 //
 //**************************************************************************
 
-function FileExists(strFilename: STR): BOOLEAN {
-  let fExists: BOOLEAN = FALSE;
+function FileExists(strFilename: STR): boolean {
+  let fExists: boolean = false;
   let file: Pointer<FILE>;
   // HANDLE	hRealFile;
 
@@ -235,13 +235,13 @@ function FileExists(strFilename: STR): BOOLEAN {
   if (file)
   // if ( hRealFile != INVALID_HANDLE_VALUE )
   {
-    fExists = TRUE;
+    fExists = true;
     fclose(file);
     // CloseHandle( hRealFile );
   }
 
   // if the file wasnt on disk, check to see if its in a library
-  if (fExists == FALSE) {
+  if (fExists == false) {
     // if the database is initialized
     if (gFileDataBase.fInitialized)
       fExists = CheckIfFileExistInLibrary(strFilename);
@@ -271,8 +271,8 @@ function FileExists(strFilename: STR): BOOLEAN {
 //
 //**************************************************************************
 
-function FileExistsNoDB(strFilename: STR): BOOLEAN {
-  let fExists: BOOLEAN = FALSE;
+function FileExistsNoDB(strFilename: STR): boolean {
+  let fExists: boolean = false;
   let file: Pointer<FILE>;
   // HANDLE	hRealFile;
 
@@ -283,7 +283,7 @@ function FileExistsNoDB(strFilename: STR): BOOLEAN {
   if (file)
   // if ( hRealFile != INVALID_HANDLE_VALUE )
   {
-    fExists = TRUE;
+    fExists = true;
     fclose(file);
     // CloseHandle( hRealFile );
   }
@@ -312,7 +312,7 @@ function FileExistsNoDB(strFilename: STR): BOOLEAN {
 //
 //**************************************************************************
 
-function FileDelete(strFilename: STR): BOOLEAN {
+function FileDelete(strFilename: STR): boolean {
   return DeleteFile(strFilename);
 }
 
@@ -340,13 +340,13 @@ function FileDelete(strFilename: STR): BOOLEAN {
 //
 //**************************************************************************
 
-function FileOpen(strFilename: STR, uiOptions: UINT32, fDeleteOnClose: BOOLEAN): HWFILE {
+function FileOpen(strFilename: STR, uiOptions: UINT32, fDeleteOnClose: boolean): HWFILE {
   let hFile: HWFILE;
   let hRealFile: HANDLE;
   let dwAccess: DWORD;
   let dwFlagsAndAttributes: DWORD;
   let hDBFile: HDBFILE;
-  let fExists: BOOLEAN;
+  let fExists: boolean;
   let dwCreationFlags: DWORD;
   let hLibFile: HWFILE;
 
@@ -516,11 +516,11 @@ function FileClose(hFile: HWFILE): void {
 //
 //**************************************************************************
 
-function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): BOOLEAN {
+function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): boolean {
   let hRealFile: HANDLE;
   let dwNumBytesToRead: DWORD;
   let dwNumBytesRead: DWORD;
-  let fRet: BOOLEAN = FALSE;
+  let fRet: boolean = false;
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
@@ -543,7 +543,7 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
         let zString: char[] /* [1024] */;
         FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
 
-        fRet = FALSE;
+        fRet = false;
       }
 
       if (puiBytesRead)
@@ -596,11 +596,11 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
 //
 //**************************************************************************
 
-function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWritten: Pointer<UINT32>): BOOLEAN {
+function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWritten: Pointer<UINT32>): boolean {
   let hRealFile: HANDLE;
   let dwNumBytesToWrite: DWORD;
   let dwNumBytesWritten: DWORD;
-  let fRet: BOOLEAN;
+  let fRet: boolean;
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
@@ -616,7 +616,7 @@ function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWr
     fRet = WriteFile(hRealFile, pDest, dwNumBytesToWrite, addressof(dwNumBytesWritten), null);
 
     if (dwNumBytesToWrite != dwNumBytesWritten)
-      fRet = FALSE;
+      fRet = false;
 
     if (puiBytesWritten)
       puiBytesWritten.value = dwNumBytesWritten;
@@ -624,7 +624,7 @@ function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWr
     // we cannot write to a library file
     if (puiBytesWritten)
       puiBytesWritten.value = 0;
-    return FALSE;
+    return false;
   }
 
   return fRet;
@@ -651,25 +651,25 @@ function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWr
 //
 //**************************************************************************
 
-function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): BOOLEAN {
+function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): boolean {
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
-  let fRet: BOOLEAN;
+  let fRet: boolean;
 
-  hFile = FileOpen(strFilename, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(strFilename, FILE_ACCESS_READ, false);
   if (hFile) {
     fRet = FileRead(hFile, pDest, uiBytesToRead, addressof(uiNumBytesRead));
     FileClose(hFile);
 
     if (uiBytesToRead != uiNumBytesRead)
-      fRet = FALSE;
+      fRet = false;
 
     if (puiBytesRead)
       puiBytesRead.value = uiNumBytesRead;
 
     CHECKF(uiNumBytesRead == uiBytesToRead);
   } else
-    fRet = FALSE;
+    fRet = false;
 
   return fRet;
 }
@@ -698,10 +698,10 @@ function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesR
 //
 //**************************************************************************
 
-function FilePrintf(hFile: HWFILE, strFormatted: Pointer<UINT8>, ...args: any[]): BOOLEAN {
+function FilePrintf(hFile: HWFILE, strFormatted: Pointer<UINT8>, ...args: any[]): boolean {
   let strToSend: UINT8[] /* [80] */;
   let argptr: va_list;
-  let fRetVal: BOOLEAN = FALSE;
+  let fRetVal: boolean = false;
 
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
@@ -717,7 +717,7 @@ function FilePrintf(hFile: HWFILE, strFormatted: Pointer<UINT8>, ...args: any[])
     fRetVal = FileWrite(hFile, strToSend, strlen(strToSend), null);
   } else {
     // its a library file, cant write to it so return an error
-    fRetVal = FALSE;
+    fRetVal = false;
   }
 
   return fRetVal;
@@ -748,7 +748,7 @@ function FilePrintf(hFile: HWFILE, strFormatted: Pointer<UINT8>, ...args: any[])
 //
 //**************************************************************************
 
-function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): BOOLEAN {
+function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): boolean {
   let hRealFile: HANDLE;
   let lDistanceToMove: LONG;
   let dwMoveMethod: DWORD;
@@ -778,14 +778,14 @@ function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): BOOLEAN {
     lDistanceToMove = uiDistance;
 
     if (SetFilePointer(hRealFile, iDistance, null, dwMoveMethod) == 0xFFFFFFFF)
-      return FALSE;
+      return false;
   } else {
     // if the database is initialized
     if (gFileDataBase.fInitialized)
       LibraryFileSeek(sLibraryID, uiFileNum, uiDistance, uiHow);
   }
 
-  return TRUE;
+  return true;
 }
 
 //**************************************************************************
@@ -927,7 +927,7 @@ function FileDebugPrint(): void {
 //
 //**************************************************************************
 
-function GetHandleToRealFile(hFile: HWFILE, pfDatabaseFile: Pointer<BOOLEAN>): HANDLE {
+function GetHandleToRealFile(hFile: HWFILE, pfDatabaseFile: Pointer<boolean>): HANDLE {
   let hRealFile: HANDLE;
 
   let sLibraryID: INT16;
@@ -939,9 +939,9 @@ function GetHandleToRealFile(hFile: HWFILE, pfDatabaseFile: Pointer<BOOLEAN>): H
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
     // Get the handle to the real file
     hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
-    pfDatabaseFile.value = FALSE;
+    pfDatabaseFile.value = false;
   } else {
-    pfDatabaseFile.value = TRUE;
+    pfDatabaseFile.value = true;
     hRealFile = hFile;
   }
 
@@ -1151,12 +1151,12 @@ function BuildFileDirectory(): void {
 function GetFilesInDirectory(hStack: HCONTAINER, pcDir: Pointer<CHAR>, hFile: HANDLE, pFind: Pointer<WIN32_FIND_DATA>): INT32 {
   let iNumFiles: INT32;
   let inFind: WIN32_FIND_DATA;
-  let fMore: BOOLEAN;
+  let fMore: boolean;
   let cName: CHAR[] /* [FILENAME_LENGTH] */;
   let cDir: CHAR[] /* [FILENAME_LENGTH] */;
   let hFileIn: HANDLE;
 
-  fMore = TRUE;
+  fMore = true;
   iNumFiles = 0;
 
   while (fMore) {
@@ -1186,18 +1186,18 @@ function GetFilesInDirectory(hStack: HCONTAINER, pcDir: Pointer<CHAR>, hFile: HA
   return iNumFiles;
 }
 
-function SetFileManCurrentDirectory(pcDirectory: STR): BOOLEAN {
+function SetFileManCurrentDirectory(pcDirectory: STR): boolean {
   return SetCurrentDirectory(pcDirectory);
 }
 
-function GetFileManCurrentDirectory(pcDirectory: STRING512): BOOLEAN {
+function GetFileManCurrentDirectory(pcDirectory: STRING512): boolean {
   if (GetCurrentDirectory(512, pcDirectory) == 0) {
-    return FALSE;
+    return false;
   }
-  return TRUE;
+  return true;
 }
 
-function DirectoryExists(pcDirectory: STRING512): BOOLEAN {
+function DirectoryExists(pcDirectory: STRING512): boolean {
   let uiAttribs: UINT32;
   let uiLastError: DWORD;
 
@@ -1213,15 +1213,15 @@ function DirectoryExists(pcDirectory: STRING512): BOOLEAN {
   } else {
     // something's there, make sure it's a directory
     if (uiAttribs & FILE_ATTRIBUTE_DIRECTORY) {
-      return TRUE;
+      return true;
     }
   }
 
   // this could also mean that the name given is that of a file, or that an error occurred
-  return FALSE;
+  return false;
 }
 
-function MakeFileManDirectory(pcDirectory: STRING512): BOOLEAN {
+function MakeFileManDirectory(pcDirectory: STRING512): boolean {
   return CreateDirectory(pcDirectory, null);
 }
 
@@ -1229,12 +1229,12 @@ function MakeFileManDirectory(pcDirectory: STRING512): BOOLEAN {
 // Removes ALL FILES in the specified directory (and all subdirectories with their files if fRecursive is TRUE)
 // Use EraseDirectory() to simply delete directory contents without deleting the directory itself
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BOOLEAN {
+function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: boolean): boolean {
   let sFindData: WIN32_FIND_DATA;
   let SearchHandle: HANDLE;
   const pFileSpec: Pointer<CHAR8> = "*.*";
-  let fDone: BOOLEAN = FALSE;
-  let fRetval: BOOLEAN = FALSE;
+  let fDone: boolean = false;
+  let fRetval: boolean = false;
   let zOldDir: CHAR8[] /* [512] */;
   let zSubdirectory: CHAR8[] /* [512] */;
 
@@ -1242,13 +1242,13 @@ function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BO
 
   if (!SetFileManCurrentDirectory(pcDirectory)) {
     FastDebugMsg(String("RemoveFileManDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));
-    return (FALSE); // Error going into directory
+    return (false); // Error going into directory
   }
 
   // If there are files in the directory, DELETE THEM
   SearchHandle = FindFirstFile(pFileSpec, addressof(sFindData));
   if (SearchHandle != INVALID_HANDLE_VALUE) {
-    fDone = FALSE;
+    fDone = false;
     do {
       // if the object is a directory
       if (GetFileAttributes(sFindData.cFileName) == FILE_ATTRIBUTE_DIRECTORY) {
@@ -1257,7 +1257,7 @@ function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BO
           sprintf(zSubdirectory, "%s\\%s", pcDirectory, sFindData.cFileName);
 
           if ((strcmp(sFindData.cFileName, ".") != 0) && (strcmp(sFindData.cFileName, "..") != 0)) {
-            if (!RemoveFileManDirectory(zSubdirectory, TRUE)) {
+            if (!RemoveFileManDirectory(zSubdirectory, true)) {
               FastDebugMsg(String("RemoveFileManDirectory: ERROR - Recursive call on %s failed", zSubdirectory));
               break;
             }
@@ -1272,7 +1272,7 @@ function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BO
       // find the next file in the directory
       fRetval = FindNextFile(SearchHandle, addressof(sFindData));
       if (fRetval == 0) {
-        fDone = TRUE;
+        fDone = true;
       }
     } while (!fDone);
 
@@ -1282,7 +1282,7 @@ function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BO
 
   if (!SetFileManCurrentDirectory(zOldDir)) {
     FastDebugMsg(String("RemoveFileManDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", zOldDir, GetLastError()));
-    return (FALSE); // Error returning from subdirectory
+    return (false); // Error returning from subdirectory
   }
 
   // The directory MUST be empty
@@ -1298,24 +1298,24 @@ function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BO
 // Removes ALL FILES in the specified directory but leaves the directory alone.  Does not affect any subdirectories!
 // Use RemoveFilemanDirectory() to also delete the directory itself, or to recursively delete subdirectories.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function EraseDirectory(pcDirectory: STRING512): BOOLEAN {
+function EraseDirectory(pcDirectory: STRING512): boolean {
   let sFindData: WIN32_FIND_DATA;
   let SearchHandle: HANDLE;
   const pFileSpec: Pointer<CHAR8> = "*.*";
-  let fDone: BOOLEAN = FALSE;
+  let fDone: boolean = false;
   let zOldDir: CHAR8[] /* [512] */;
 
   GetFileManCurrentDirectory(zOldDir);
 
   if (!SetFileManCurrentDirectory(pcDirectory)) {
     FastDebugMsg(String("EraseDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));
-    return (FALSE); // Error going into directory
+    return (false); // Error going into directory
   }
 
   // If there are files in the directory, DELETE THEM
   SearchHandle = FindFirstFile(pFileSpec, addressof(sFindData));
   if (SearchHandle != INVALID_HANDLE_VALUE) {
-    fDone = FALSE;
+    fDone = false;
     do {
       // if it's a file, not a directory
       if (GetFileAttributes(sFindData.cFileName) != FILE_ATTRIBUTES_DIRECTORY) {
@@ -1324,7 +1324,7 @@ function EraseDirectory(pcDirectory: STRING512): BOOLEAN {
 
       // find the next file in the directory
       if (!FindNextFile(SearchHandle, addressof(sFindData))) {
-        fDone = TRUE;
+        fDone = true;
       }
     } while (!fDone);
 
@@ -1334,18 +1334,18 @@ function EraseDirectory(pcDirectory: STRING512): BOOLEAN {
 
   if (!SetFileManCurrentDirectory(zOldDir)) {
     FastDebugMsg(String("EraseDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", zOldDir, GetLastError()));
-    return (FALSE); // Error returning from directory
+    return (false); // Error returning from directory
   }
 
-  return TRUE;
+  return true;
 }
 
-function GetExecutableDirectory(pcDirectory: STRING512): BOOLEAN {
+function GetExecutableDirectory(pcDirectory: STRING512): boolean {
   let ModuleFilename: SGPFILENAME;
   let cnt: UINT32;
 
   if (GetModuleFileName(null, ModuleFilename, sizeof(ModuleFilename)) == 0) {
-    return FALSE;
+    return false;
   }
 
   // Now get directory
@@ -1358,49 +1358,49 @@ function GetExecutableDirectory(pcDirectory: STRING512): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function GetFileFirst(pSpec: Pointer<CHAR8>, pGFStruct: Pointer<GETFILESTRUCT>): BOOLEAN {
+function GetFileFirst(pSpec: Pointer<CHAR8>, pGFStruct: Pointer<GETFILESTRUCT>): boolean {
   let x: INT32;
   let iWhich: INT32 = 0;
-  let fFound: BOOLEAN;
+  let fFound: boolean;
 
   CHECKF(pSpec != null);
   CHECKF(pGFStruct != null);
 
-  fFound = FALSE;
+  fFound = false;
   for (x = 0; x < 20 && !fFound; x++) {
     if (!fFindInfoInUse[x]) {
       iWhich = x;
-      fFound = TRUE;
+      fFound = true;
     }
   }
 
   if (!fFound)
-    return FALSE;
+    return false;
 
   pGFStruct.value.iFindHandle = iWhich;
 
   hFindInfoHandle[iWhich] = FindFirstFile(pSpec, addressof(Win32FindInfo[iWhich]));
 
   if (hFindInfoHandle[iWhich] == INVALID_HANDLE_VALUE)
-    return FALSE;
-  fFindInfoInUse[iWhich] = TRUE;
+    return false;
+  fFindInfoInUse[iWhich] = true;
 
   W32toSGPFileFind(pGFStruct, addressof(Win32FindInfo[iWhich]));
 
-  return TRUE;
+  return true;
 }
 
-function GetFileNext(pGFStruct: Pointer<GETFILESTRUCT>): BOOLEAN {
+function GetFileNext(pGFStruct: Pointer<GETFILESTRUCT>): boolean {
   CHECKF(pGFStruct != null);
 
   if (FindNextFile(hFindInfoHandle[pGFStruct.value.iFindHandle], addressof(Win32FindInfo[pGFStruct.value.iFindHandle]))) {
     W32toSGPFileFind(pGFStruct, addressof(Win32FindInfo[pGFStruct.value.iFindHandle]));
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 function GetFileClose(pGFStruct: Pointer<GETFILESTRUCT>): void {
@@ -1409,7 +1409,7 @@ function GetFileClose(pGFStruct: Pointer<GETFILESTRUCT>): void {
 
   FindClose(hFindInfoHandle[pGFStruct.value.iFindHandle]);
   hFindInfoHandle[pGFStruct.value.iFindHandle] = INVALID_HANDLE_VALUE;
-  fFindInfoInUse[pGFStruct.value.iFindHandle] = FALSE;
+  fFindInfoInUse[pGFStruct.value.iFindHandle] = false;
 
   return;
 }
@@ -1470,7 +1470,7 @@ function W32toSGPFileFind(pGFStruct: Pointer<GETFILESTRUCT>, pW32Struct: Pointer
   }
 }
 
-function FileCopy(strSrcFile: STR, strDstFile: STR, fFailIfExists: BOOLEAN): BOOLEAN {
+function FileCopy(strSrcFile: STR, strDstFile: STR, fFailIfExists: boolean): boolean {
   return CopyFile(strSrcFile, strDstFile, fFailIfExists);
 
   // Not needed, use Windows CopyFile
@@ -1545,13 +1545,13 @@ function FileCopy(strSrcFile: STR, strDstFile: STR, fFailIfExists: BOOLEAN): BOO
   */
 }
 
-function FileMove(strOldName: STR, strNewName: STR): BOOLEAN {
+function FileMove(strOldName: STR, strNewName: STR): boolean {
   // rename
   return MoveFile(strOldName, strNewName);
 }
 
 // Additions by Kris Morness
-function FileSetAttributes(strFilename: STR, uiNewAttribs: UINT32): BOOLEAN {
+function FileSetAttributes(strFilename: STR, uiNewAttribs: UINT32): boolean {
   let uiFileAttrib: UINT32 = 0;
 
   if (uiNewAttribs & FILE_ATTRIBUTES_ARCHIVE)
@@ -1614,12 +1614,12 @@ function FileGetAttributes(strFilename: STR): UINT32 {
   return uiFileAttrib;
 }
 
-function FileClearAttributes(strFilename: STR): BOOLEAN {
+function FileClearAttributes(strFilename: STR): boolean {
   return SetFileAttributes(strFilename, FILE_ATTRIBUTE_NORMAL);
 }
 
 // returns true if at end of file, else false
-function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
+function FileCheckEndOfFile(hFile: HWFILE): boolean {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
   let hRealFile: HANDLE;
@@ -1669,7 +1669,7 @@ function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
 
           // if we are trying to read more data then the size of the file, return an error
           if (uiCurPos >= uiLength) {
-            return TRUE;
+            return true;
           }
         }
       }
@@ -1680,7 +1680,7 @@ function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
   return 0;
 }
 
-function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FILETIME>, pLastAccessedTime: Pointer<SGP_FILETIME>, pLastWriteTime: Pointer<SGP_FILETIME>): BOOLEAN {
+function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FILETIME>, pLastAccessedTime: Pointer<SGP_FILETIME>, pLastWriteTime: Pointer<SGP_FILETIME>): boolean {
   let hRealFile: HANDLE;
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
@@ -1720,14 +1720,14 @@ function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FILETIME>,
         // if the file is opened
         if (gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFileID != 0) {
           if (!GetLibraryFileTime(sLibraryID, uiFileNum, pLastWriteTime)) {
-            return FALSE;
+            return false;
           }
         }
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function CompareSGPFileTimes(pFirstFileTime: Pointer<SGP_FILETIME>, pSecondFileTime: Pointer<SGP_FILETIME>): INT32 {
@@ -1738,7 +1738,7 @@ function FileSize(strFilename: STR): UINT32 {
   let hFile: HWFILE;
   let uiSize: UINT32;
 
-  if ((hFile = FileOpen(strFilename, FILE_OPEN_EXISTING | FILE_ACCESS_READ, FALSE)) == 0)
+  if ((hFile = FileOpen(strFilename, FILE_OPEN_EXISTING | FILE_ACCESS_READ, false)) == 0)
     return 0;
 
   uiSize = FileGetSize(hFile);
@@ -1782,27 +1782,27 @@ function GetRealFileHandleFromFileManFileHandle(hFile: HWFILE): HANDLE {
 //		10June98:DB		-> creation
 //
 //**************************************************************************
-function AddSubdirectoryToPath(pDirectory: Pointer<CHAR8>): BOOLEAN {
+function AddSubdirectoryToPath(pDirectory: Pointer<CHAR8>): boolean {
   let pSystemPath: Pointer<CHAR8>;
   let pPath: Pointer<CHAR8>;
   let uiPathLen: UINT32;
 
   // Check for NULL
   if (!pDirectory)
-    return FALSE;
+    return false;
 
   // Check for zero length string
   if (!strlen(pDirectory))
-    return FALSE;
+    return false;
 
   if ((pSystemPath = MemAlloc(_MAX_PATH)) == null)
-    return FALSE;
+    return false;
 
   memset(pSystemPath, 0, _MAX_PATH);
 
   if ((pPath = MemAlloc(_MAX_PATH)) == null) {
     MemFree(pSystemPath);
-    return FALSE;
+    return false;
   }
 
   memset(pPath, 0, _MAX_PATH);
@@ -1824,11 +1824,11 @@ function AddSubdirectoryToPath(pDirectory: Pointer<CHAR8>): BOOLEAN {
     SetEnvironmentVariable("PATH", pSystemPath);
     MemFree(pSystemPath);
     MemFree(pPath);
-    return TRUE;
+    return true;
   } else {
     MemFree(pSystemPath);
     MemFree(pPath);
-    return FALSE;
+    return false;
   }
 }
 
@@ -1866,7 +1866,7 @@ function GetFreeSpaceOnHardDrive(pzDriveLetter: STR): UINT32 {
     let zString: char[] /* [1024] */;
     FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
 
-    return TRUE;
+    return true;
   }
 
   uiBytesFree = uiBytesPerSector * uiNumberOfFreeClusters * uiSectorsPerCluster;

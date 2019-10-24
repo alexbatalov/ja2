@@ -1,6 +1,6 @@
-let fValidCursor: BOOLEAN = FALSE;
-let fAnchored: BOOLEAN = FALSE;
-let gfBrushEnabled: BOOLEAN = TRUE;
+let fValidCursor: boolean = false;
+let fAnchored: boolean = false;
+let gfBrushEnabled: boolean = true;
 let gusSelectionWidth: UINT16 = 1;
 let gusPreserveSelectionWidth: UINT16 = 1;
 let gusSelectionType: UINT16 = Enum33.SMALLSELECTION;
@@ -20,21 +20,21 @@ let wszSelType: Pointer<UINT16>[] /* [6] */ = [
   "Area",
 ];
 
-let gfAllowRightButtonSelections: BOOLEAN = FALSE;
-let gfCurrentSelectionWithRightButton: BOOLEAN = FALSE;
+let gfAllowRightButtonSelections: boolean = false;
+let gfCurrentSelectionWithRightButton: boolean = false;
 
 // Used for offseting cursor to show that it is on the roof rather than on the ground.
 // This can be conveniently executed by moving the cursor up and right 3 gridnos for a
 // total of -483  -(160*3)-(1*3)
 const ROOF_OFFSET = (-483);
-let gfUsingOffset: BOOLEAN;
+let gfUsingOffset: boolean;
 
 // Based on the density level setting and the selection type, this test will
 // randomly choose TRUE or FALSE to reflect the *odds*.
-function PerformDensityTest(): BOOLEAN {
+function PerformDensityTest(): boolean {
   if (Random(100) < gusSelectionDensity)
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
 function IncreaseSelectionDensity(): void {
@@ -84,8 +84,8 @@ function RemoveCursors(): void {
       }
     }
   }
-  fValidCursor = FALSE;
-  gfUsingOffset = FALSE;
+  fValidCursor = false;
+  gfUsingOffset = false;
 }
 
 function RemoveBadMarker(): void {
@@ -118,14 +118,14 @@ function UpdateCursorAreas(): void {
     if (gpBuildingLayoutList) {
       gSelectRegion.iLeft = gSelectRegion.iRight = sGridX;
       gSelectRegion.iTop = gSelectRegion.iBottom = sGridY;
-      fValidCursor = TRUE;
+      fValidCursor = true;
       DrawBuildingLayout(iMapIndex);
     } else
       switch (gusSelectionType) {
         case Enum33.SMALLSELECTION:
           gSelectRegion.iLeft = gSelectRegion.iRight = sGridX;
           gSelectRegion.iTop = gSelectRegion.iBottom = sGridY;
-          fValidCursor = TRUE;
+          fValidCursor = true;
           break;
         case Enum33.MEDIUMSELECTION:
         case Enum33.LARGESELECTION:
@@ -136,7 +136,7 @@ function UpdateCursorAreas(): void {
           gSelectRegion.iLeft = sGridX - gusSelectionType;
           gSelectRegion.iRight = sGridX + gusSelectionType;
           ValidateSelectionRegionBoundaries();
-          fValidCursor = TRUE;
+          fValidCursor = true;
           break;
         case Enum33.LINESELECTION:
           fValidCursor = HandleAreaSelection();
@@ -167,7 +167,7 @@ function UpdateCursorAreas(): void {
         RemoveBadMarker();
         if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
           AddTopmostToTail(iMapIndex + ROOF_OFFSET, Enum312.FIRSTPOINTERS5);
-          gfUsingOffset = TRUE;
+          gfUsingOffset = true;
         } else
           AddTopmostToTail(iMapIndex, Enum312.FIRSTPOINTERS1);
       }
@@ -217,29 +217,29 @@ function ForceAreaSelectionWidth(): void {
   }
 }
 
-function HandleAreaSelection(): BOOLEAN {
+function HandleAreaSelection(): boolean {
   // When the user releases the left button, then clear and process the area.
   if (fAnchored) {
     if (!gfLeftButtonState && !gfCurrentSelectionWithRightButton || !gfRightButtonState && gfCurrentSelectionWithRightButton) {
-      fAnchored = FALSE;
+      fAnchored = false;
       ProcessAreaSelection(!gfCurrentSelectionWithRightButton);
-      gfCurrentSelectionWithRightButton = FALSE;
-      return FALSE;
+      gfCurrentSelectionWithRightButton = false;
+      return false;
     }
   }
   // When the user first clicks, anchor the area.
   if (!fAnchored) {
     if (gfLeftButtonState || gfRightButtonState && gfAllowRightButtonSelections) {
       if (gfRightButtonState && !gfLeftButtonState)
-        gfCurrentSelectionWithRightButton = TRUE;
+        gfCurrentSelectionWithRightButton = true;
       else
-        gfCurrentSelectionWithRightButton = FALSE;
-      fAnchored = TRUE;
+        gfCurrentSelectionWithRightButton = false;
+      fAnchored = true;
       gSelectAnchor.iX = sGridX;
       gSelectAnchor.iY = sGridY;
       gSelectRegion.iLeft = gSelectRegion.iRight = sGridX;
       gSelectRegion.iTop = gSelectRegion.iBottom = sGridY;
-      return TRUE;
+      return true;
     }
   }
   // If no anchoring, then we are really dealing with a single cursor,
@@ -247,7 +247,7 @@ function HandleAreaSelection(): BOOLEAN {
   if (!fAnchored) {
     gSelectRegion.iLeft = gSelectRegion.iRight = sGridX;
     gSelectRegion.iTop = gSelectRegion.iBottom = sGridY;
-    return TRUE;
+    return true;
   }
   // Base the area from the anchor to the current mouse position.
   if (sGridX <= gSelectAnchor.iX) {
@@ -264,7 +264,7 @@ function HandleAreaSelection(): BOOLEAN {
     gSelectRegion.iBottom = sGridY;
     gSelectRegion.iTop = gSelectAnchor.iY;
   }
-  return TRUE;
+  return true;
 }
 
 function ValidateSelectionRegionBoundaries(): void {
@@ -275,7 +275,7 @@ function ValidateSelectionRegionBoundaries(): void {
 }
 
 function EnsureSelectionType(): void {
-  let fPrevBrushEnabledState: BOOLEAN = gfBrushEnabled;
+  let fPrevBrushEnabledState: boolean = gfBrushEnabled;
 
   // At time of writing, the only drawing mode supporting right mouse button
   // area selections is the cave drawing mode.
@@ -286,7 +286,7 @@ function EnsureSelectionType(): void {
     // erase modes supporting any cursor mode
     gusSavedSelectionType = gusSelectionType;
     gusSelectionWidth = gusPreserveSelectionWidth;
-    gfBrushEnabled = TRUE;
+    gfBrushEnabled = true;
   } else
     switch (iDrawMode) {
       // regular modes
@@ -295,12 +295,12 @@ function EnsureSelectionType(): void {
       case Enum38.DRAW_MODE_CAVES:
         gusSavedBuildingSelectionType = gusSelectionType;
         gusSelectionWidth = gusPreserveSelectionWidth;
-        gfBrushEnabled = TRUE;
+        gfBrushEnabled = true;
         break;
       case Enum38.DRAW_MODE_SLANTED_ROOF:
         gusSelectionType = Enum33.LINESELECTION;
         gusSelectionWidth = 8;
-        gfBrushEnabled = FALSE;
+        gfBrushEnabled = false;
         break;
       case Enum38.DRAW_MODE_EXITGRID:
       case Enum38.DRAW_MODE_ROOMNUM:
@@ -313,12 +313,12 @@ function EnsureSelectionType(): void {
         // supports all modes
         gusSavedSelectionType = gusSelectionType;
         gusSelectionWidth = gusPreserveSelectionWidth;
-        gfBrushEnabled = TRUE;
+        gfBrushEnabled = true;
         break;
       default:
         gusSelectionType = Enum33.SMALLSELECTION;
         gusSelectionWidth = gusPreserveSelectionWidth;
-        gfBrushEnabled = FALSE;
+        gfBrushEnabled = false;
         break;
     }
 
@@ -339,17 +339,17 @@ function DrawBuildingLayout(iMapIndex: INT32): void {
   let curr: Pointer<BUILDINGLAYOUTNODE>;
   let iOffset: INT32;
   let pNode: Pointer<LEVELNODE>;
-  let fAdd: BOOLEAN;
+  let fAdd: boolean;
   iOffset = iMapIndex - gsBuildingLayoutAnchorGridNo;
   curr = gpBuildingLayoutList;
   while (curr) {
     iMapIndex = curr.value.sGridNo + iOffset;
     if (iMapIndex > 0 && iMapIndex < WORLD_MAX) {
-      fAdd = TRUE;
+      fAdd = true;
       pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
       while (pNode) {
         if (pNode.value.usIndex == Enum312.FIRSTPOINTERS1) {
-          fAdd = FALSE;
+          fAdd = false;
           break;
         }
         pNode = pNode.value.pNext;

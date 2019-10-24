@@ -84,9 +84,9 @@ function CallEldinTo(sGridNo: INT16): void {
   // So long as he hasn't already heard a noise a sec ago...
   if (gTacticalStatus.Team[CIV_TEAM].bTeamActive) {
     // new situation for Eldin
-    pSoldier = FindSoldierByProfileID(Enum268.ELDIN, FALSE);
+    pSoldier = FindSoldierByProfileID(Enum268.ELDIN, false);
     if (pSoldier && pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && (pSoldier.value.bAlertStatus == Enum243.STATUS_GREEN || pSoldier.value.ubNoiseVolume < (MAX_MISC_NOISE_DURATION / 2))) {
-      if (SoldierToLocationLineOfSightTest(pSoldier, sGridNo, MaxDistanceVisible(), TRUE)) {
+      if (SoldierToLocationLineOfSightTest(pSoldier, sGridNo, MaxDistanceVisible(), true)) {
         // sees the player now!
         TriggerNPCWithIHateYouQuote(Enum268.ELDIN);
         SetNewSituation(pSoldier);
@@ -94,8 +94,8 @@ function CallEldinTo(sGridNo: INT16): void {
         pSoldier.value.sNoiseGridno = sGridNo;
         pSoldier.value.ubNoiseVolume = MAX_MISC_NOISE_DURATION;
         pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
-        if ((pSoldier.value.bAction != Enum289.AI_ACTION_GET_CLOSER) || CheckFact(Enum170.FACT_MUSEUM_ALARM_WENT_OFF, 0) == FALSE) {
-          CancelAIAction(pSoldier, TRUE);
+        if ((pSoldier.value.bAction != Enum289.AI_ACTION_GET_CLOSER) || CheckFact(Enum170.FACT_MUSEUM_ALARM_WENT_OFF, 0) == false) {
+          CancelAIAction(pSoldier, true);
           pSoldier.value.bNextAction = Enum289.AI_ACTION_GET_CLOSER;
           pSoldier.value.usNextActionData = sGridNo;
           RESETTIMECOUNTER(pSoldier.value.AICounter, 100);
@@ -109,7 +109,7 @@ function CallEldinTo(sGridNo: INT16): void {
   }
 }
 
-function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Pointer<INT32>, pfClimbingNecessary: Pointer<BOOLEAN>, pfReachable: Pointer<BOOLEAN>): INT16 {
+function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Pointer<INT32>, pfClimbingNecessary: Pointer<boolean>, pfReachable: Pointer<boolean>): INT16 {
   let uiLoop: UINT32;
   let pbPersOL: Pointer<INT8>;
   let pbPublOL: Pointer<INT8>;
@@ -124,7 +124,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
   let sBestGridNo: INT16 = NOWHERE;
   let bBestLevel: INT8 = 0;
   let sClimbingGridNo: INT16;
-  let fClimbingNecessary: BOOLEAN = FALSE;
+  let fClimbingNecessary: boolean = false;
   let pTemp: Pointer<SOLDIERTYPE>;
 
   pubNoiseVolume = addressof(gubPublicNoiseVolume[pSoldier.value.bTeam]);
@@ -183,7 +183,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
 
   // if any "misc. noise" was also heard recently
   if (pSoldier.value.sNoiseGridno != NOWHERE) {
-    if (pSoldier.value.bNoiseLevel != pSoldier.value.bLevel || PythSpacesAway(pSoldier.value.sGridNo, pSoldier.value.sNoiseGridno) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, pSoldier.value.sNoiseGridno, pSoldier.value.bNoiseLevel, 0, MaxDistanceVisible(), FALSE) == 0) {
+    if (pSoldier.value.bNoiseLevel != pSoldier.value.bLevel || PythSpacesAway(pSoldier.value.sGridNo, pSoldier.value.sNoiseGridno) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, pSoldier.value.sNoiseGridno, pSoldier.value.bNoiseLevel, 0, MaxDistanceVisible(), false) == 0) {
       // calculate how far this noise was, and its relative "importance"
       iDistAway = SpacesAway(pSoldier.value.sGridNo, pSoldier.value.sNoiseGridno);
       iNoiseValue = ((pSoldier.value.ubNoiseVolume / 2) - 6) * iDistAway;
@@ -204,7 +204,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
   if ((pSoldier.value.bTeam != CIV_TEAM) || (pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP)) {
     if (psNoiseGridNo.value != NOWHERE) {
       // if we are NOT there (at the noise gridno)
-      if (pbNoiseLevel.value != pSoldier.value.bLevel || PythSpacesAway(pSoldier.value.sGridNo, psNoiseGridNo.value) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, psNoiseGridNo.value, pbNoiseLevel.value, 0, MaxDistanceVisible(), FALSE) == 0) {
+      if (pbNoiseLevel.value != pSoldier.value.bLevel || PythSpacesAway(pSoldier.value.sGridNo, psNoiseGridNo.value) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, psNoiseGridNo.value, pbNoiseLevel.value, 0, MaxDistanceVisible(), false) == 0) {
         // calculate how far this noise was, and its relative "importance"
         iDistAway = SpacesAway(pSoldier.value.sGridNo, psNoiseGridNo.value);
         iNoiseValue = ((pubNoiseVolume.value / 2) - 6) * iDistAway;
@@ -219,7 +219,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
   }
 
   if (sBestGridNo != NOWHERE && pfReachable) {
-    pfReachable.value = TRUE;
+    pfReachable.value = true;
 
     // make civs not walk to noises outside their room if on close patrol/onguard
     if (pSoldier.value.bOrders <= Enum241.CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
@@ -229,7 +229,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
       // any other combo uses the default of ubRoom == 0, set above
       if (InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubRoom))) {
         if (!InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubNewRoom)) || ubRoom != ubNewRoom) {
-          pfReachable.value = FALSE;
+          pfReachable.value = false;
         }
       }
     }
@@ -241,13 +241,13 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
       if (fClimbingNecessary) {
         if (sClimbingGridNo == NOWHERE) {
           // can't investigate!
-          pfReachable.value = FALSE;
+          pfReachable.value = false;
         } else {
           sBestGridNo = sClimbingGridNo;
-          fClimbingNecessary = TRUE;
+          fClimbingNecessary = true;
         }
       } else {
-        fClimbingNecessary = FALSE;
+        fClimbingNecessary = false;
       }
     }
   }

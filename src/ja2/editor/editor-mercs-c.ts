@@ -65,8 +65,8 @@ const enum Enum40 {
   NUM_SCHEDULE_INSTRUCTIONS,
 }
 
-let gfSingleAction: BOOLEAN = FALSE;
-let gfUseScheduleData2: BOOLEAN = FALSE;
+let gfSingleAction: boolean = false;
+let gfUseScheduleData2: boolean = false;
 let gubCurrentScheduleActionIndex: UINT8 = 0;
 let gCurrSchedule: SCHEDULENODE;
 let gubScheduleInstructions: UINT8 = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
@@ -125,26 +125,26 @@ let gubSoldierClass: INT8 = Enum262.SOLDIER_CLASS_ARMY;
 let gubCivGroup: UINT8 = Enum246.NON_CIV_GROUP;
 
 let pTempSoldier: Pointer<SOLDIERTYPE>;
-let gfRoofPlacement: BOOLEAN;
+let gfRoofPlacement: boolean;
 
 // Below are all flags that have to do with editing detailed placement mercs:
 
 // Determines if the user is allowed to edit merc colors.  User must specifically
 // click on the checkbox by the colors to confirm that colors will be specified.  If
 // not, the colors will be randomly generated upon creation in the game.
-let gfCanEditMercColors: BOOLEAN = FALSE;
+let gfCanEditMercColors: boolean = false;
 // A rendering flag that is set whenever a full update of the merc editing information
 // needs to be done.
-let gfRenderMercInfo: BOOLEAN = FALSE;
+let gfRenderMercInfo: boolean = false;
 // When the user specifies a profile index for the merc, all editing is disabled.  This is
 // because the profile contains all of the information.  When this happens, all of the editing
 // buttons are disabled, but you are allowed to view stats, inventory, etc., as well as specify
 // orders, attitude, and direction.
-let gfCanEditMercs: BOOLEAN = TRUE;
+let gfCanEditMercs: boolean = true;
 // When in inventory mode, this flag is set when the user wishes to get an item, which requires hooking
 // into the item editing features.  This is processed during the editor update, which in turn, sets the
 // new mode.
-let gfMercGetItem: BOOLEAN = FALSE;
+let gfMercGetItem: boolean = false;
 // As soon as an item is selected, the items index is stored here, so the item can be copied into the
 // slot for editing and rendering purposes.  This is a temp store value only when leaving the editor items
 // mode.
@@ -167,11 +167,11 @@ let iEditMercFindButton: INT32 = -1;
 let iEditMercSlotNumber: INT32;
 let iEditColorStart: INT32[] /* [EDIT_NUM_COLORS] */;
 
-let gfShowPlayers: BOOLEAN = TRUE;
-let gfShowEnemies: BOOLEAN = TRUE;
-let gfShowCreatures: BOOLEAN = TRUE;
-let gfShowRebels: BOOLEAN = TRUE;
-let gfShowCivilians: BOOLEAN = TRUE;
+let gfShowPlayers: boolean = true;
+let gfShowEnemies: boolean = true;
+let gfShowCreatures: boolean = true;
+let gfShowRebels: boolean = true;
+let gfShowCivilians: boolean = true;
 
 const BASE_STAT_DEVIATION = 7;
 const BASE_EXPLVL_DEVIATION = 1;
@@ -180,7 +180,7 @@ const BASE_GUNTYPE_DEVIATION = 4;
 const DEFAULT_DIFF = 2;
 
 let sCurBaseDiff: INT16 = DEFAULT_DIFF;
-let fAskForBaseDifficulty: BOOLEAN = TRUE;
+let fAskForBaseDifficulty: boolean = true;
 let zDiffNames: Pointer<UINT16>[] /* [NUM_DIFF_LVLS] */ = [
   "Wimp",
   "Easy",
@@ -297,7 +297,7 @@ let bCivArray: INT8[] /* [MAX_CIVTYPES] */ = [
 ];
 let gbCurrCreature: INT8 = Enum194.BLOODCAT;
 
-let gfSaveBuffer: BOOLEAN = FALSE;
+let gfSaveBuffer: boolean = false;
 let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
 let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
 
@@ -332,7 +332,7 @@ function EntryInitEditorMercsInfo(): void {
   gsSelectedMercID = -1;
   gsSelectedMercGridNo = 0;
 
-  gfCanEditMercs = TRUE;
+  gfCanEditMercs = true;
 }
 
 const enum Enum41 {
@@ -504,8 +504,8 @@ function AddMercToWorld(iMapIndex: INT32): void {
     GetCurrentWorldSector(addressof(sSectorX), addressof(sSectorY));
 
     // Set up some general information.
-    gTempBasicPlacement.fDetailedPlacement = FALSE;
-    gTempBasicPlacement.fPriorityExistance = FALSE;
+    gTempBasicPlacement.fDetailedPlacement = false;
+    gTempBasicPlacement.fPriorityExistance = false;
     gTempBasicPlacement.usStartingGridNo = iMapIndex;
     gTempBasicPlacement.bOrders = gbDefaultOrders;
     gTempBasicPlacement.bAttitude = gbDefaultAttitude;
@@ -531,19 +531,19 @@ function AddMercToWorld(iMapIndex: INT32): void {
       pNode.value.pSoldier = pSoldier;
 
       // Add the soldier to physically appear on the map now.
-      InternalAddSoldierToSector(ubID, FALSE, FALSE, 0, 0);
+      InternalAddSoldierToSector(ubID, false, false, 0, 0);
       IndicateSelectedMerc(ubID);
 
       // Move him to the roof if intended and possible.
       if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
-        gpSelected.value.pBasicPlacement.value.fOnRoof = TRUE;
+        gpSelected.value.pBasicPlacement.value.fOnRoof = true;
         if (gpSelected.value.pDetailedPlacement)
-          gpSelected.value.pDetailedPlacement.value.fOnRoof = TRUE;
+          gpSelected.value.pDetailedPlacement.value.fOnRoof = true;
         SetSoldierHeight(gpSelected.value.pSoldier, 58.0);
       }
       UnclickEditorButtons(FIRST_MERCS_INVENTORY_BUTTON, LAST_MERCS_INVENTORY_BUTTON);
       for (i = FIRST_MERCS_INVENTORY_BUTTON; i <= LAST_MERCS_INVENTORY_BUTTON; i++) {
-        SetEnemyDroppableStatus(gbMercSlotTypes[i - FIRST_MERCS_INVENTORY_BUTTON], FALSE);
+        SetEnemyDroppableStatus(gbMercSlotTypes[i - FIRST_MERCS_INVENTORY_BUTTON], false);
       }
     }
   }
@@ -573,14 +573,14 @@ function HandleRightClickOnMerc(iMapIndex: INT32): void {
     RemoveAllObjectsOfTypeRange(gsSelectedMercGridNo, Enum313.CONFIRMMOVE, Enum313.CONFIRMMOVE);
     EVENT_SetSoldierPosition(gpSelected.value.pSoldier, (sCellX + 5), (sCellY + 5));
     if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
-      gpSelected.value.pBasicPlacement.value.fOnRoof = TRUE;
+      gpSelected.value.pBasicPlacement.value.fOnRoof = true;
       if (gpSelected.value.pDetailedPlacement)
-        gpSelected.value.pDetailedPlacement.value.fOnRoof = TRUE;
+        gpSelected.value.pDetailedPlacement.value.fOnRoof = true;
       SetSoldierHeight(gpSelected.value.pSoldier, 58.0);
     } else {
-      gpSelected.value.pBasicPlacement.value.fOnRoof = FALSE;
+      gpSelected.value.pBasicPlacement.value.fOnRoof = false;
       if (gpSelected.value.pDetailedPlacement)
-        gpSelected.value.pDetailedPlacement.value.fOnRoof = FALSE;
+        gpSelected.value.pDetailedPlacement.value.fOnRoof = false;
       SetSoldierHeight(gpSelected.value.pSoldier, 0.0);
     }
     gsSelectedMercGridNo = iMapIndex;
@@ -658,7 +658,7 @@ function AddMercWaypoint(iMapIndex: UINT32): void {
       gpSelected.value.pDetailedPlacement.value.sPatrolGrid[iActionParam] = iMapIndex;
     gpSelected.value.pSoldier.value.usPatrolGrid[iActionParam] = iMapIndex;
   }
-  gfRenderWorld = TRUE;
+  gfRenderWorld = true;
 }
 
 function EraseMercWaypoint(): void {
@@ -685,7 +685,7 @@ function EraseMercWaypoint(): void {
   if (gpSelected.value.pDetailedPlacement)
     gpSelected.value.pDetailedPlacement.value.bPatrolCnt--;
   gpSelected.value.pSoldier.value.bPatrolCnt--;
-  gfRenderWorld = TRUE;
+  gfRenderWorld = true;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -831,14 +831,14 @@ function IsMercHere(iMapIndex: INT32): INT32 {
   let IDNumber: INT32;
   let RetIDNumber: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fSoldierFound: BOOLEAN;
+  let fSoldierFound: boolean;
 
   RetIDNumber = -1;
-  fSoldierFound = FALSE;
+  fSoldierFound = false;
   for (IDNumber = 0; IDNumber < MAX_NUM_SOLDIERS && !fSoldierFound; IDNumber++) {
     if (GetSoldier(addressof(pSoldier), IDNumber)) {
       if (pSoldier.value.sGridNo == iMapIndex) {
-        fSoldierFound = TRUE;
+        fSoldierFound = true;
         RetIDNumber = IDNumber;
       }
     }
@@ -1011,7 +1011,7 @@ function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
     {
       EnableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
-      gpSelected.value.pDetailedPlacement.value.fVisible = TRUE;
+      gpSelected.value.pDetailedPlacement.value.fVisible = true;
       sprintf(gpSelected.value.pDetailedPlacement.value.HeadPal, gpSelected.value.pSoldier.value.HeadPal);
       sprintf(gpSelected.value.pDetailedPlacement.value.SkinPal, gpSelected.value.pSoldier.value.SkinPal);
       sprintf(gpSelected.value.pDetailedPlacement.value.VestPal, gpSelected.value.pSoldier.value.VestPal);
@@ -1019,10 +1019,10 @@ function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
     } else // button is unchecked.
     {
       DisableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
-      gpSelected.value.pDetailedPlacement.value.fVisible = FALSE;
+      gpSelected.value.pDetailedPlacement.value.fVisible = false;
     }
-    gfRenderMercInfo = TRUE;
-    gfRenderTaskbar = TRUE;
+    gfRenderMercInfo = true;
+    gfRenderTaskbar = true;
   }
 }
 
@@ -1035,7 +1035,7 @@ function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         iEditWhichStat = iBtn - FIRST_MERCS_COLOR_BUTTON;
         iEditStatTimer = 0;
         iEditMercMode = EDIT_MERC_NEXT_COLOR;
-        gfRenderMercInfo = TRUE;
+        gfRenderMercInfo = true;
         return;
       }
     }
@@ -1044,7 +1044,7 @@ function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function MercsSetBodyTypeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderMercInfo = TRUE;
+    gfRenderMercInfo = true;
     if (btn.value.IDNum == iEditorButton[Enum32.MERCS_BODYTYPE_DOWN])
       ChangeBodyType(1); // next
     else
@@ -1402,7 +1402,7 @@ function IndicateSelectedMerc(sID: INT16): void {
       }
       if (!gpSelected) // list is empty
       {
-        SetMercEditability(TRUE);
+        SetMercEditability(true);
         SetMercEditingMode(Enum42.MERC_TEAMMODE);
         return;
       }
@@ -1420,7 +1420,7 @@ function IndicateSelectedMerc(sID: INT16): void {
       // we have a valid merc now.
       break;
     case Enum43.SELECT_NO_MERC:
-      SetMercEditability(TRUE);
+      SetMercEditability(true);
       gpSelected = null;
       gsSelectedMercID = -1;
       gsSelectedGridNo = 0;
@@ -1444,7 +1444,7 @@ function IndicateSelectedMerc(sID: INT16): void {
       if (!gpSelected) {
         gsSelectedMercID = -1;
         gsSelectedGridNo = 0;
-        SetMercEditability(TRUE);
+        SetMercEditability(true);
         SetMercEditingMode(Enum42.MERC_TEAMMODE);
         return; // Invalid merc ID.
       }
@@ -1468,7 +1468,7 @@ function IndicateSelectedMerc(sID: INT16): void {
     }
     if (!gpSelected) // list is empty
     {
-      SetMercEditability(TRUE);
+      SetMercEditability(true);
       SetMercEditingMode(Enum42.MERC_TEAMMODE);
       return;
     }
@@ -1488,7 +1488,7 @@ function IndicateSelectedMerc(sID: INT16): void {
     if (gpSelected == prev) {
       // we have cycled through the list already, so choose the same guy (if he is on the desired team)...
       if (!gpSelected.value.pSoldier || gpSelected.value.pSoldier.value.bVisible != 1 || gpSelected.value.pSoldier.value.bTeam != bTeam) {
-        SetMercEditability(TRUE);
+        SetMercEditability(true);
         SetMercEditingMode(Enum42.MERC_TEAMMODE);
         return;
       }
@@ -1498,7 +1498,7 @@ function IndicateSelectedMerc(sID: INT16): void {
   if (gpSelected.value.pSoldier)
     gsSelectedMercGridNo = gpSelected.value.pSoldier.value.sGridNo;
   else {
-    SetMercEditability(TRUE);
+    SetMercEditability(true);
     SetMercEditingMode(Enum42.MERC_TEAMMODE);
     return;
   }
@@ -1509,13 +1509,13 @@ function IndicateSelectedMerc(sID: INT16): void {
   if (gpSelected.value.pDetailedPlacement)
     SetMercEditability((gpSelected.value.pDetailedPlacement.value.ubProfile == NO_PROFILE));
   else
-    SetMercEditability(TRUE);
+    SetMercEditability(true);
 
   if (sID < 0) {
     // We want to center the screen on the next merc, and update the interface.
     gsRenderCenterX = gpSelected.value.pSoldier.value.dXPos;
     gsRenderCenterY = gpSelected.value.pSoldier.value.dYPos;
-    gfRenderWorld = TRUE;
+    gfRenderWorld = true;
   }
 
   // update the merc item slots to reflect what the merc currently has.
@@ -1552,7 +1552,7 @@ function IndicateSelectedMerc(sID: INT16): void {
   else
     SetMercEditingMode(Enum42.MERC_BASICMODE);
   // Determine which team button to press.
-  gfRenderMercInfo = TRUE;
+  gfRenderMercInfo = true;
   // These calls will set the proper button states, even though it redundantly
   // assigns the soldier with the same orders/attitude.
   SetMercOrders(gpSelected.value.pSoldier.value.bOrders);
@@ -1581,7 +1581,7 @@ function DeleteSelectedMerc(): void {
     RemoveSoldierNodeFromInitList(gpSelected);
     gpSelected = null;
     gsSelectedMercID = -1;
-    gfRenderWorld = TRUE;
+    gfRenderWorld = true;
     if (TextInputMode())
       KillTextInputMode();
     IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
@@ -1704,14 +1704,14 @@ function ExtractAndUpdateMercProfile(): void {
   sNum = min(GetNumericStrictValueFromField(0), NUM_PROFILES);
   if (sNum == -1) {
     gpSelected.value.pDetailedPlacement.value.ubProfile = NO_PROFILE;
-    gpSelected.value.pDetailedPlacement.value.fCopyProfileItemsOver = FALSE;
-    SetMercEditability(TRUE);
+    gpSelected.value.pDetailedPlacement.value.fCopyProfileItemsOver = false;
+    SetMercEditability(true);
   } else if (sPrev != sNum) {
     gpSelected.value.pDetailedPlacement.value.ubProfile = sNum;
-    gpSelected.value.pDetailedPlacement.value.fCopyProfileItemsOver = TRUE;
-    gpSelected.value.pBasicPlacement.value.fPriorityExistance = TRUE;
+    gpSelected.value.pDetailedPlacement.value.fCopyProfileItemsOver = true;
+    gpSelected.value.pBasicPlacement.value.fPriorityExistance = true;
     ClickEditorButton(Enum32.MERCS_PRIORITYEXISTANCE_CHECKBOX);
-    SetMercEditability(FALSE);
+    SetMercEditability(false);
   } else
     return;
 
@@ -1736,8 +1736,8 @@ function SetupTextInputForMercSchedule(): void {
 
 function ExtractAndUpdateMercSchedule(): void {
   let i: INT32;
-  let fValidSchedule: BOOLEAN = FALSE;
-  let fScheduleNeedsUpdate: BOOLEAN = FALSE;
+  let fValidSchedule: boolean = false;
+  let fScheduleNeedsUpdate: boolean = false;
   let pNext: Pointer<SCHEDULENODE> = null;
   if (!gpSelected)
     return;
@@ -1747,7 +1747,7 @@ function ExtractAndUpdateMercSchedule(): void {
     gCurrSchedule.usTime[i] = GetExclusive24HourTimeValueFromField((i + 1));
     gCurrSchedule.ubAction[i] = MSYS_GetBtnUserData(ButtonList[iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + i]], 0);
     if (gCurrSchedule.ubAction[i])
-      fValidSchedule = TRUE;
+      fValidSchedule = true;
   }
 
   if (!gpSelected.value.pSoldier.value.ubScheduleID) {
@@ -1755,7 +1755,7 @@ function ExtractAndUpdateMercSchedule(): void {
     if (fValidSchedule) {
       // create a new schedule
       if (SortSchedule(addressof(gCurrSchedule)))
-        fScheduleNeedsUpdate = TRUE;
+        fScheduleNeedsUpdate = true;
       CopyScheduleToList(addressof(gCurrSchedule), gpSelected);
       ShowEditorButton(Enum32.MERCS_GLOWSCHEDULE);
       HideEditorButton(Enum32.MERCS_SCHEDULE);
@@ -1774,7 +1774,7 @@ function ExtractAndUpdateMercSchedule(): void {
       // overwrite the existing schedule with the new one.
       gCurrSchedule.ubScheduleID = gpSelected.value.pSoldier.value.ubScheduleID;
       if (SortSchedule(addressof(gCurrSchedule)))
-        fScheduleNeedsUpdate = TRUE;
+        fScheduleNeedsUpdate = true;
       pNext = pSchedule.value.next;
       memcpy(pSchedule, addressof(gCurrSchedule), sizeof(SCHEDULENODE));
       pSchedule.value.next = pNext;
@@ -1794,7 +1794,7 @@ function ExtractAndUpdateMercSchedule(): void {
   SetActiveField(0);
 }
 
-function ExtractCurrentMercModeInfo(fKillTextInputMode: BOOLEAN): void {
+function ExtractCurrentMercModeInfo(fKillTextInputMode: boolean): void {
   // This happens if we deleted a merc
   if (gsSelectedMercID == -1)
     return;
@@ -1810,7 +1810,7 @@ function ExtractCurrentMercModeInfo(fKillTextInputMode: BOOLEAN): void {
       ExtractAndUpdateMercSchedule();
       break;
     default:
-      fKillTextInputMode = FALSE;
+      fKillTextInputMode = false;
       break;
   }
   if (fKillTextInputMode)
@@ -1824,8 +1824,8 @@ function InitDetailedPlacementForMerc(): void {
 
   Assert(gpSelected.value.pDetailedPlacement);
 
-  gpSelected.value.pBasicPlacement.value.fDetailedPlacement = TRUE;
-  gpSelected.value.pBasicPlacement.value.fPriorityExistance = FALSE;
+  gpSelected.value.pBasicPlacement.value.fDetailedPlacement = true;
+  gpSelected.value.pBasicPlacement.value.fPriorityExistance = false;
   CreateStaticDetailedPlacementGivenBasicPlacementInfo(gpSelected.value.pDetailedPlacement, gpSelected.value.pBasicPlacement);
 
   ClearCurrentSchedule();
@@ -1838,8 +1838,8 @@ function KillDetailedPlacementForMerc(): void {
   Assert(gpSelected.value.pDetailedPlacement);
   MemFree(gpSelected.value.pDetailedPlacement);
   gpSelected.value.pDetailedPlacement = null;
-  gpSelected.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
-  SetMercEditability(TRUE);
+  gpSelected.value.pBasicPlacement.value.fDetailedPlacement = false;
+  SetMercEditability(true);
 }
 
 function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
@@ -1849,8 +1849,8 @@ function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
   let x: INT32;
   let iIndex: INT32;
 
-  gfRenderTaskbar = TRUE;
-  gfRenderMercInfo = TRUE;
+  gfRenderTaskbar = true;
+  gfRenderMercInfo = true;
   // verify that we have a proper offset ( only +-1 allowed )
   Assert(bOffset == -1 || bOffset == 1);
   // get access to information depending on the team
@@ -1932,8 +1932,8 @@ function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
   CreateSoldierPalettes(gpSelected.value.pSoldier);
 }
 
-function SetMercEditability(fEditable: BOOLEAN): void {
-  gfRenderMercInfo = TRUE;
+function SetMercEditability(fEditable: boolean): void {
+  gfRenderMercInfo = true;
   if (fEditable == gfCanEditMercs)
     return;
   gfCanEditMercs = fEditable;
@@ -1962,10 +1962,10 @@ function SetMercEditability(fEditable: BOOLEAN): void {
 // there isn't going to be any traversing to adjacent maps from that side.
 function SpecifyEntryPoint(iMapIndex: UINT32): void {
   let psEntryGridNo: Pointer<INT16>;
-  let fErasing: BOOLEAN = FALSE;
+  let fErasing: boolean = false;
   if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
     iDrawMode -= Enum38.DRAW_MODE_ERASE;
-    fErasing = TRUE;
+    fErasing = true;
   }
   switch (iDrawMode) {
     case Enum38.DRAW_MODE_NORTHPOINT:
@@ -2012,7 +2012,7 @@ function SpecifyEntryPoint(iMapIndex: UINT32): void {
 
 function SetMercEditingMode(ubNewMode: UINT8): void {
   // We need to update the taskbar for the buttons that were erased.
-  gfRenderTaskbar = TRUE;
+  gfRenderTaskbar = true;
 
   // set up the new mode values.
   if (gubCurrMercMode >= Enum42.MERC_GENERALMODE)
@@ -2020,7 +2020,7 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
 
   // Depending on the mode we were just in, we may want to extract and update the
   // merc first.  Then we change modes...
-  ExtractCurrentMercModeInfo(TRUE);
+  ExtractCurrentMercModeInfo(true);
 
   // Change modes now.
   gubPrevMercMode = gubCurrMercMode;
@@ -2033,7 +2033,7 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
     case Enum42.MERC_GETITEMMODE:
       EnableEditorButtons(Enum32.TAB_TERRAIN, Enum32.TAB_OPTIONS);
       HideEditorButtons(FIRST_MERCS_GETITEM_BUTTON, LAST_MERCS_GETITEM_BUTTON);
-      AddNewItemToSelectedMercsInventory(TRUE);
+      AddNewItemToSelectedMercsInventory(true);
       break;
     case Enum42.MERC_INVENTORYMODE:
       HideItemStatsPanel();
@@ -2300,7 +2300,7 @@ function UpdateMercsInfo(): void {
 
   // We are rendering it now, so signify that it has been done, so
   // it doesn't get rendered every frame.
-  gfRenderMercInfo = FALSE;
+  gfRenderMercInfo = false;
 
   switch (gubCurrMercMode) {
     case Enum42.MERC_GETITEMMODE:
@@ -2399,7 +2399,7 @@ function UpdateMercsInfo(): void {
         // scope trick
         let tempStr: UINT16[] /* [500] */;
         swprintf(tempStr, "%s%s%s%s%s%d.", "By specifying a profile index, all of the information will be extracted from the profile ", "and override any values that you have edited.  It will also disable the editing features ", "though, you will still be able to view stats, etc.  Pressing ENTER will automatically ", "extract the number you have typed.  A blank field will clear the profile.  The current ", "number of profiles range from 0 to ", NUM_PROFILES);
-        DisplayWrappedString(180, 370, 400, 2, FONT10ARIAL(), 146, tempStr, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+        DisplayWrappedString(180, 370, 400, 2, FONT10ARIAL(), 146, tempStr, FONT_BLACK, false, LEFT_JUSTIFIED);
         SetFont(FONT12POINT1());
         if (gpSelected.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
           SetFontForeground(FONT_GRAY3);
@@ -2485,7 +2485,7 @@ function UpdateMercsInfo(): void {
             return;
         }
         wcscat(str, "  Hit ESC to abort entering this line in the schedule.");
-        DisplayWrappedString(436, 392, 149, 2, FONT10ARIAL(), FONT_YELLOW, str, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+        DisplayWrappedString(436, 392, 149, 2, FONT10ARIAL(), FONT_YELLOW, str, FONT_BLACK, false, LEFT_JUSTIFIED);
       }
       break;
   }
@@ -2508,7 +2508,7 @@ let mercRects: SGPRect[] /* [9] */ = [
   [ 180, 75, 232, 94 ], // pack 4
 ];
 
-function PointInRect(pRect: Pointer<SGPRect>, x: INT32, y: INT32): BOOLEAN {
+function PointInRect(pRect: Pointer<SGPRect>, x: INT32, y: INT32): boolean {
   return x >= pRect.value.iLeft && x <= pRect.value.iRight && y >= pRect.value.iTop && y <= pRect.value.iBottom;
 }
 
@@ -2517,7 +2517,7 @@ function DrawRect(pRect: Pointer<SGPRect>, color: INT16): void {
   let pDestBuf: Pointer<UINT8>;
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-  RectangleDraw(TRUE, pRect.value.iLeft + MERCPANEL_X, pRect.value.iTop + MERCPANEL_Y, pRect.value.iRight + MERCPANEL_X, pRect.value.iBottom + MERCPANEL_Y, color, pDestBuf);
+  RectangleDraw(true, pRect.value.iLeft + MERCPANEL_X, pRect.value.iTop + MERCPANEL_Y, pRect.value.iRight + MERCPANEL_X, pRect.value.iBottom + MERCPANEL_Y, color, pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);
   // InvalidateRegion( pRect->iLeft+175, pRect->iTop+361, pRect->iRight+176, pRect->iBottom+362 );
 }
@@ -2573,7 +2573,7 @@ function RenderSelectedMercsInventory(): void {
         ubFontColor = FONT_YELLOW;
       else
         ubFontColor = FONT_WHITE;
-      DisplayWrappedString(xp, yp, 60, 2, SMALLCOMPFONT(), ubFontColor, pItemName, 0, FALSE, LEFT_JUSTIFIED);
+      DisplayWrappedString(xp, yp, 60, 2, SMALLCOMPFONT(), ubFontColor, pItemName, 0, false, LEFT_JUSTIFIED);
     }
   }
 }
@@ -2581,7 +2581,7 @@ function RenderSelectedMercsInventory(): void {
 function DeleteSelectedMercsItem(): void {
   if (gbCurrSelect != -1) {
     gusMercsNewItemIndex = 0;
-    AddNewItemToSelectedMercsInventory(TRUE);
+    AddNewItemToSelectedMercsInventory(true);
   }
 }
 
@@ -2591,7 +2591,7 @@ function DeleteSelectedMercsItem(): void {
 //		 in the editor are approximately 80% of that size.  This involves scaling calculations.  These
 //		 images are saved in individual slots are are blitted to the screen during rendering, not here.
 // NOTE:  Step one can be skipped (when selecting an existing merc).  By setting the
-function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
+function AddNewItemToSelectedMercsInventory(fCreate: boolean): void {
   let uiVideoObjectIndex: UINT32;
   let uiSrcID: UINT32;
   let uiDstID: UINT32;
@@ -2607,7 +2607,7 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
   let rScalar: float;
   let rWidthScalar: float;
   let rHeightScalar: float;
-  let fUnDroppable: BOOLEAN;
+  let fUnDroppable: boolean;
 
   if (fCreate) {
     /*
@@ -2622,7 +2622,7 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
       return;
     }
     // Create the item, and set up the slot.
-    fUnDroppable = gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]].fFlags & OBJECT_UNDROPPABLE ? TRUE : FALSE;
+    fUnDroppable = gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]].fFlags & OBJECT_UNDROPPABLE ? true : false;
 
     if (Item[gusMercsNewItemIndex].usItemClass == IC_KEY) {
       CreateKeyObject(addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]]), 1, eInfo.sSelItemIndex);
@@ -2685,7 +2685,7 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
   item = addressof(Item[gusMercsNewItemIndex]);
   uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
   GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
-  BltVideoObjectOutlineFromIndex(uiSrcID, uiVideoObjectIndex, item.value.ubGraphicNum, 0, 0, 0, FALSE);
+  BltVideoObjectOutlineFromIndex(uiSrcID, uiVideoObjectIndex, item.value.ubGraphicNum, 0, 0, 0, false);
 
   // crop the source image
   pObject = addressof(hVObject.value.pETRLEObject[item.value.ubGraphicNum]);
@@ -2782,7 +2782,7 @@ function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
       for (x = 0; x < 9; x++) {
         if (PointInRect(addressof(mercRects[x]), sX, sY)) {
           if (gbCurrHilite != x) // only render if the slot isn't the same one.
-            gfRenderMercInfo = TRUE;
+            gfRenderMercInfo = true;
           gbCurrHilite = x;
           return;
         }
@@ -2791,7 +2791,7 @@ function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
       if (gbCurrHilite != -1) {
         // only turn off if it isn't already off.  This avoids unecessary rendering.
         gbCurrHilite = -1;
-        gfRenderMercInfo = TRUE;
+        gfRenderMercInfo = true;
       }
       break;
     case Enum44.GUI_LCLICK_EVENT:
@@ -2803,12 +2803,12 @@ function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
         if (PointInRect(addressof(mercRects[x]), sX, sY)) {
           if (gbCurrSelect != x) // only if it isn't the same slot.
           {
-            gfRenderMercInfo = TRUE;
+            gfRenderMercInfo = true;
             if (bEvent == Enum44.GUI_LCLICK_EVENT)
               SpecifyItemToEdit(gpMercSlotItem[x], -1);
           }
           if (bEvent == Enum44.GUI_RCLICK_EVENT) // user r-clicked, so enable item choosing
-            gfMercGetItem = TRUE;
+            gfMercGetItem = true;
           gbCurrSelect = x;
           return;
         }
@@ -2831,7 +2831,7 @@ function UpdateMercItemSlots(): void {
       // Set the curr select and the addnewitem function will handle the rest, including rebuilding
       // the nine slot buffers, etc.
       gbCurrSelect = x;
-      AddNewItemToSelectedMercsInventory(FALSE);
+      AddNewItemToSelectedMercsInventory(false);
     }
   }
   SetDroppableCheckboxesBasedOnMercsInventory();
@@ -2905,7 +2905,7 @@ function SetEnemyColorCode(ubColorCode: UINT8): void {
   CreateSoldierPalettes(gpSelected.value.pSoldier);
 }
 
-function SetEnemyDroppableStatus(uiSlot: UINT32, fDroppable: BOOLEAN): void {
+function SetEnemyDroppableStatus(uiSlot: UINT32, fDroppable: boolean): void {
   if (gpSelected) {
     if (fDroppable) {
       if (gpSelected.value.pDetailedPlacement)
@@ -2955,7 +2955,7 @@ function RenderMercStrings(): void {
     if (curr.value.pSoldier && curr.value.pSoldier.value.bVisible == 1) {
       // Render the health text
       pSoldier = curr.value.pSoldier;
-      GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), FALSE);
+      GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), false);
       // Display name
       SetFont(TINYFONT1());
       SetFontBackground(FONT_BLACK);
@@ -3048,7 +3048,7 @@ function RenderMercStrings(): void {
   }
 }
 
-function SetMercTeamVisibility(bTeam: INT8, fVisible: BOOLEAN): void {
+function SetMercTeamVisibility(bTeam: INT8, fVisible: boolean): void {
   let curr: Pointer<SOLDIERINITNODE>;
   let bVisible: INT8;
   curr = gSoldierInitHead;
@@ -3128,8 +3128,8 @@ function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
     SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex], str);
     DetermineScheduleEditability();
     gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
-    gfRenderTaskbar = TRUE;
-    gfUseScheduleData2 = FALSE;
+    gfRenderTaskbar = true;
+    gfUseScheduleData2 = false;
   } else {
     switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
       case Enum171.SCHEDULE_ACTION_LOCKDOOR:
@@ -3137,18 +3137,18 @@ function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
       case Enum171.SCHEDULE_ACTION_OPENDOOR:
       case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
         if (gfSingleAction) {
-          gfSingleAction = FALSE;
+          gfSingleAction = false;
           gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
-          gfRenderTaskbar = TRUE;
+          gfRenderTaskbar = true;
           DetermineScheduleEditability();
           break;
         }
         DisableEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
         EnableEditorButton(Enum32.MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex);
-        gfUseScheduleData2 = TRUE;
+        gfUseScheduleData2 = true;
         iDrawMode = Enum38.DRAW_MODE_SCHEDULEACTION;
         gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_DOOR2;
-        gfRenderTaskbar = TRUE;
+        gfRenderTaskbar = true;
         break;
       case Enum171.SCHEDULE_ACTION_GRIDNO:
       case Enum171.SCHEDULE_ACTION_ENTERSECTOR:
@@ -3156,7 +3156,7 @@ function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
         iDrawMode = Enum38.DRAW_MODE_PLAYER + gpSelected.value.pBasicPlacement.value.bTeam;
         DetermineScheduleEditability();
         gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
-        gfRenderTaskbar = TRUE;
+        gfRenderTaskbar = true;
         break;
       case Enum171.SCHEDULE_ACTION_LEAVESECTOR:
       case Enum171.SCHEDULE_ACTION_STAYINSECTOR:
@@ -3174,7 +3174,7 @@ function StartScheduleAction(): void {
       EnableEditorButtons(Enum32.MERCS_SCHEDULE_ACTION1, Enum32.MERCS_SCHEDULE_DATA4B);
       EnableTextFields(1, 4);
       gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       gCurrSchedule.usData1[gubCurrentScheduleActionIndex] = 0xffff;
       gCurrSchedule.usData2[gubCurrentScheduleActionIndex] = 0xffff;
       break;
@@ -3188,10 +3188,10 @@ function StartScheduleAction(): void {
       DisableEditorButtons(Enum32.MERCS_SCHEDULE_ACTION1, Enum32.MERCS_SCHEDULE_DATA4B);
       DisableTextFields(1, 4);
       EnableEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
-      gfUseScheduleData2 = FALSE;
+      gfUseScheduleData2 = false;
       iDrawMode = Enum38.DRAW_MODE_SCHEDULEACTION;
       gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_DOOR1;
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       break;
     case Enum171.SCHEDULE_ACTION_GRIDNO:
     case Enum171.SCHEDULE_ACTION_ENTERSECTOR:
@@ -3201,16 +3201,16 @@ function StartScheduleAction(): void {
       DisableEditorButtons(Enum32.MERCS_SCHEDULE_ACTION1, Enum32.MERCS_SCHEDULE_DATA4B);
       DisableTextFields(1, 4);
       EnableEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
-      gfUseScheduleData2 = FALSE;
+      gfUseScheduleData2 = false;
       iDrawMode = Enum38.DRAW_MODE_SCHEDULEACTION;
       gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_GRIDNO;
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       gCurrSchedule.usData2[gubCurrentScheduleActionIndex] = 0xffff;
       break;
     case Enum171.SCHEDULE_ACTION_LEAVESECTOR:
     case Enum171.SCHEDULE_ACTION_STAYINSECTOR:
       gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       gCurrSchedule.usData1[gubCurrentScheduleActionIndex] = 0xffff;
       gCurrSchedule.usData2[gubCurrentScheduleActionIndex] = 0xffff;
       break;
@@ -3224,7 +3224,7 @@ function UpdateScheduleAction(ubNewAction: UINT8): void {
   MSYS_SetBtnUserData(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + gubCurrentScheduleActionIndex], 0, ubNewAction);
   // Now, based on this action, disable the other buttons
   StartScheduleAction();
-  gfSingleAction = FALSE;
+  gfSingleAction = false;
 }
 
 // 0:1A, 1:1B, 2:2A, 3:2B, ...
@@ -3282,7 +3282,7 @@ function ClearCurrentSchedule(): void {
 
   gubCurrentScheduleActionIndex = 0;
   DetermineScheduleEditability();
-  gfRenderTaskbar = TRUE;
+  gfRenderTaskbar = true;
   MarkWorldDirty();
 }
 
@@ -3391,7 +3391,7 @@ function CopyMercPlacement(iMapIndex: INT32): void {
     ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, "Placement not copied because no placement selected.");
     return;
   }
-  gfSaveBuffer = TRUE;
+  gfSaveBuffer = true;
   memcpy(addressof(gSaveBufferBasicPlacement), gpSelected.value.pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT));
   if (gSaveBufferBasicPlacement.fDetailedPlacement) {
     memcpy(addressof(gSaveBufferDetailedPlacement), gpSelected.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
@@ -3481,7 +3481,7 @@ function PasteMercPlacement(iMapIndex: INT32): void {
         // Add the static detailed placement information in the same newly created node as the basic placement.
         // read static detailed placement from file
         // allocate memory for new static detailed placement
-        gTempBasicPlacement.fDetailedPlacement = TRUE;
+        gTempBasicPlacement.fDetailedPlacement = true;
         gTempBasicPlacement.fPriorityExistance = gSaveBufferBasicPlacement.fPriorityExistance;
         pNode.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
         if (!pNode.value.pDetailedPlacement) {
@@ -3493,19 +3493,19 @@ function PasteMercPlacement(iMapIndex: INT32): void {
       }
 
       // Add the soldier to physically appear on the map now.
-      InternalAddSoldierToSector(ubID, FALSE, FALSE, 0, 0);
+      InternalAddSoldierToSector(ubID, false, false, 0, 0);
       IndicateSelectedMerc(ubID);
 
       // Move him to the roof if intended and possible.
       if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
-        gpSelected.value.pBasicPlacement.value.fOnRoof = TRUE;
+        gpSelected.value.pBasicPlacement.value.fOnRoof = true;
         if (gpSelected.value.pDetailedPlacement)
-          gpSelected.value.pDetailedPlacement.value.fOnRoof = TRUE;
+          gpSelected.value.pDetailedPlacement.value.fOnRoof = true;
         SetSoldierHeight(gpSelected.value.pSoldier, 58.0);
       }
       UnclickEditorButtons(FIRST_MERCS_INVENTORY_BUTTON, LAST_MERCS_INVENTORY_BUTTON);
       for (i = FIRST_MERCS_INVENTORY_BUTTON; i <= LAST_MERCS_INVENTORY_BUTTON; i++) {
-        SetEnemyDroppableStatus(gbMercSlotTypes[i - FIRST_MERCS_INVENTORY_BUTTON], FALSE);
+        SetEnemyDroppableStatus(gbMercSlotTypes[i - FIRST_MERCS_INVENTORY_BUTTON], false);
       }
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Placement pasted.");
     } else {

@@ -42,19 +42,19 @@ let pbCarPortraitFileNames: STR[] /* [] */ = [
 ];
 
 // load int he portraits for the car faces that will be use in mapscreen
-function LoadCarPortraitValues(): BOOLEAN {
+function LoadCarPortraitValues(): boolean {
   let iCounter: INT32 = 0;
   let VObjectDesc: VOBJECT_DESC;
 
   if (giCarPortraits[0] != -1) {
-    return FALSE;
+    return false;
   }
   for (iCounter = 0; iCounter < Enum222.NUMBER_CAR_PORTRAITS; iCounter++) {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     sprintf(VObjectDesc.ImageFile, pbCarPortraitFileNames[iCounter]);
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(giCarPortraits[iCounter])));
   }
-  return TRUE;
+  return true;
 }
 
 // get rid of the images we loaded for the mapscreen car portraits
@@ -72,7 +72,7 @@ function UnLoadCarPortraits(): void {
   return;
 }
 
-function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
+function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -102,13 +102,13 @@ function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
   dStart = sYPos;
 
   usLineColor = Get16BPPColor(LIFE_BAR_SHADOW());
-  RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(LIFE_BAR());
-  RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(LIFE_BAR_SHADOW());
-  RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
 
   // NOW DO BANDAGE
 
@@ -121,13 +121,13 @@ function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     dEnd = (dPercentage * sHeight);
 
     usLineColor = Get16BPPColor(BANDAGE_BAR_SHADOW());
-    RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BANDAGE_BAR());
-    RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BANDAGE_BAR_SHADOW());
-    RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
   }
 
   // NOW DO BLEEDING
@@ -137,19 +137,19 @@ function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     dEnd = (dPercentage * sHeight);
 
     usLineColor = Get16BPPColor(BLEEDING_BAR_SHADOW());
-    RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BLEEDING_BAR());
-    RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BLEEDING_BAR_SHADOW());
-    RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
   }
 
   UnLockVideoSurface(uiBuffer);
 }
 
-function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
+function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -202,13 +202,13 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
 
     // the old background colors for breath max diff
     usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK());
-    RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK());
-    RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK());
-    RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
   }
 
   dPercentage = pSoldier.value.bBreathMax / 100;
@@ -216,13 +216,13 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   dStart = sYPos;
 
   usLineColor = Get16BPPColor(CURR_MAX_BREATH_SHADOW());
-  RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(CURR_MAX_BREATH());
-  RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(CURR_MAX_BREATH_SHADOW());
-  RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
 
   // NOW DO BREATH
   dPercentage = pSoldier.value.bBreath / 100;
@@ -230,18 +230,18 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   dStart = sYPos;
 
   usLineColor = Get16BPPColor(CURR_BREATH_BAR_SHADOW());
-  RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(CURR_BREATH_BAR());
-  RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(CURR_BREATH_BAR_SHADOW());
-  RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
 
   UnLockVideoSurface(uiBuffer);
 }
 
-function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
+function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -270,18 +270,18 @@ function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   dStart = sYPos;
 
   usLineColor = Get16BPPColor(MORALE_BAR_SHADOW());
-  RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(MORALE_BAR());
-  RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(MORALE_BAR_SHADOW());
-  RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
 
   UnLockVideoSurface(uiBuffer);
 }
 
-function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, sColor1: INT16, sColor2: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
+function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, sColor1: INT16, sColor2: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -331,10 +331,10 @@ function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: I
 
   // usLineColor = Get16BPPColor( STATUS_BAR );
   usLineColor = sColor1;
-  RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = sColor2;
-  RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
   UnLockVideoSurface(uiBuffer);
 
@@ -345,8 +345,8 @@ function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: I
   }
 }
 
-function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY: INT16, fAutoFace: BOOLEAN): void {
-  let fDoFace: BOOLEAN = FALSE;
+function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY: INT16, fAutoFace: boolean): void {
+  let fDoFace: boolean = false;
   let iFaceIndex: INT32 = -1;
   let ubVehicleType: UINT8 = 0;
 
@@ -366,14 +366,14 @@ function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY
       // OK, check if this face actually went active...
       if (gFacesData[pSoldier.value.iFaceIndex].uiFlags & FACE_INACTIVE_HANDLED_ELSEWHERE) {
         // Render as an extern face...
-        fAutoFace = FALSE;
+        fAutoFace = false;
       } else {
         SetAutoFaceActiveFromSoldier(FRAME_BUFFER, guiSAVEBUFFER, pSoldier.value.ubID, sFaceX, sFaceY);
         //	SetAutoFaceActiveFromSoldier( FRAME_BUFFER, FACE_AUTO_RESTORE_BUFFER, pSoldier->ubID , sFaceX, sFaceY );
       }
     }
 
-    fDoFace = TRUE;
+    fDoFace = true;
 
     if (fDoFace) {
       if (fAutoFace) {

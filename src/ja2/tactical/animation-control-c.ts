@@ -2930,28 +2930,28 @@ function InitAnimationSurfacesPerBodytype(): void {
   gubAnimSurfaceIndex[Enum194.JEEP][Enum193.VEHICLE_DIE] = Enum195.HUMVEE_DIE;
 }
 
-function LoadAnimationStateInstructions(): BOOLEAN {
+function LoadAnimationStateInstructions(): boolean {
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
 
   // Open ani file
-  hFile = FileOpen(ANIMFILENAME, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(ANIMFILENAME, FILE_ACCESS_READ, false);
 
   if (!hFile) {
-    return FALSE;
+    return false;
   }
 
   // Read in block
   if (!FileRead(hFile, gusAnimInst, sizeof(gusAnimInst), addressof(uiBytesRead))) {
-    return FALSE;
+    return false;
   }
 
   FileClose(hFile);
 
-  return TRUE;
+  return true;
 }
 
-function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16): BOOLEAN {
+function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16): boolean {
   let usAnimSurface: UINT16;
 
   // From animation control, get surface
@@ -2960,14 +2960,14 @@ function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState:
   usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usNewState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState: UINT16, pusSubState: Pointer<UINT16>): BOOLEAN {
-  let fSubFound: BOOLEAN = FALSE;
+function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState: UINT16, pusSubState: Pointer<UINT16>): boolean {
+  let fSubFound: boolean = false;
 
   pusSubState.value = usTestState;
 
@@ -2978,7 +2978,7 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
       case Enum193.RUNNING:
 
         pusSubState.value = Enum193.QUEEN_MONSTER_BREATHING;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
     }
   }
@@ -2988,14 +2988,14 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
       case Enum193.STANDING:
 
         pusSubState.value = Enum193.LARVAE_BREATH;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
 
       case Enum193.WALKING:
       case Enum193.RUNNING:
 
         pusSubState.value = Enum193.LARVAE_WALK;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
     }
   }
@@ -3005,13 +3005,13 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
       case Enum193.WALKING:
 
         pusSubState.value = Enum193.CROW_WALK;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
 
       case Enum193.STANDING:
 
         pusSubState.value = Enum193.CROW_EAT;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
     }
   }
@@ -3020,7 +3020,7 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
     switch (usTestState) {
       case Enum193.RUNNING:
         pusSubState.value = Enum193.BLOODCAT_RUN;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
     }
   }
@@ -3029,12 +3029,12 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
     switch (usTestState) {
       case Enum193.WALKING:
         pusSubState.value = Enum193.ADULTMONSTER_WALKING;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
 
       case Enum193.RUNNING:
         pusSubState.value = Enum193.ADULTMONSTER_WALKING;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
     }
   }
@@ -3046,18 +3046,18 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
         // OK, if they are on the CIV_TEAM, sub for no camera moving
         if (pSoldier.value.bTeam == CIV_TEAM) {
           pusSubState.value = Enum193.ROBOT_CAMERA_NOT_MOVING;
-          fSubFound = TRUE;
+          fSubFound = true;
         }
         break;
 
       case Enum193.WALKING:
         pusSubState.value = Enum193.ROBOT_WALK;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
 
       case Enum193.RUNNING:
         pusSubState.value = Enum193.ROBOT_WALK;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
     }
   }
@@ -3066,18 +3066,18 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
     switch (usTestState) {
       case Enum193.KNEEL_UP:
         pusSubState.value = Enum193.END_COWER;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
       case Enum193.KNEEL_DOWN:
         pusSubState.value = Enum193.START_COWER;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
 
       case Enum193.WKAEUP_FROM_SLEEP:
       case Enum193.GOTO_SLEEP:
       case Enum193.SLEEPING:
         pusSubState.value = Enum193.STANDING;
-        fSubFound = TRUE;
+        fSubFound = true;
         break;
     }
   }
@@ -3144,7 +3144,7 @@ function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBo
   return -1;
 }
 
-function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): BOOLEAN {
+function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): boolean {
   let usAnimSurface: UINT16;
 
   // Delete any structure info!
@@ -3164,10 +3164,10 @@ function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState:
   pSoldier.value.usAnimSurface = usAnimSurface;
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function LoadSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
@@ -3177,7 +3177,7 @@ function LoadSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState
 
   if (usAnimSurface != INVALID_ANIMATION_SURFACE) {
     // Ensure that it's been loaded!
-    if (GetCachedAnimationSurface(pSoldier.value.ubID, addressof(pSoldier.value.AnimCache), usAnimSurface, pSoldier.value.usAnimState) == FALSE) {
+    if (GetCachedAnimationSurface(pSoldier.value.ubID, addressof(pSoldier.value.AnimCache), usAnimSurface, pSoldier.value.usAnimState) == false) {
       usAnimSurface = INVALID_ANIMATION_SURFACE;
     }
   }
@@ -3203,7 +3203,7 @@ function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnim
   let usItem: UINT16;
   let ubWaterHandIndex: UINT8 = 1;
   let cnt: INT32;
-  let fAdjustedForItem: BOOLEAN = FALSE;
+  let fAdjustedForItem: boolean = false;
   let usNewAnimState: UINT16;
 
   ubBodyType = pSoldier.value.ubBodyType;
@@ -3305,13 +3305,13 @@ function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnim
     if (!(Item[usItem].usItemClass == IC_GUN) && !(Item[usItem].usItemClass == IC_LAUNCHER) || usItem == Enum225.ROCKET_LAUNCHER) {
       if (usAnimState == Enum193.STANDING) {
         usAnimSurface = gusNothingBreath[pSoldier.value.ubBodyType];
-        fAdjustedForItem = TRUE;
+        fAdjustedForItem = true;
       } else {
         usAltAnimSurface = gubAnimSurfaceItemSubIndex[pSoldier.value.ubBodyType][usAnimState];
 
         if (usAltAnimSurface != INVALID_ANIMATION) {
           usAnimSurface = usAltAnimSurface;
-          fAdjustedForItem = TRUE;
+          fAdjustedForItem = true;
         }
       }
     } else {
@@ -3321,7 +3321,7 @@ function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnim
           usAltAnimSurface = gubAnimSurfaceItemSubIndex[pSoldier.value.ubBodyType][usAnimState];
           if (usAltAnimSurface != INVALID_ANIMATION) {
             usAnimSurface = usAltAnimSurface;
-            fAdjustedForItem = TRUE;
+            fAdjustedForItem = true;
           }
 
           // Look for good two pistols sub anim.....
@@ -3329,7 +3329,7 @@ function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnim
             // Do we carry two pistols...
             if (Item[pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem].usItemClass == IC_GUN) {
               usAnimSurface = gDoubleHandledSub.usAnimationSurfaces[pSoldier.value.ubBodyType];
-              fAdjustedForItem = TRUE;
+              fAdjustedForItem = true;
             }
           }
         }
@@ -3338,7 +3338,7 @@ function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnim
 
         if (usAltAnimSurface != INVALID_ANIMATION) {
           usAnimSurface = usAltAnimSurface;
-          fAdjustedForItem = TRUE;
+          fAdjustedForItem = true;
         }
       }
     }

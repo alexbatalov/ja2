@@ -15,14 +15,14 @@ const PCX_INVALIDFORMAT = 2;
 const PCX_INVALIDLEN = 4;
 const PCX_OUTOFMEMORY = 8;
 
-function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
+function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
   let pPcxObject: Pointer<PcxObject>;
 
   // First Load a PCX Image
   pPcxObject = LoadPcx(hImage.value.ImageFile);
 
   if (pPcxObject == null) {
-    return FALSE;
+    return false;
   }
 
   // Set some header information
@@ -36,9 +36,9 @@ function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
     // Allocate memory for buffer
     hImage.value.p8BPPData = MemAlloc(hImage.value.usWidth * hImage.value.usHeight);
 
-    if (!BlitPcxToBuffer(pPcxObject, hImage.value.p8BPPData, hImage.value.usWidth, hImage.value.usHeight, 0, 0, FALSE)) {
+    if (!BlitPcxToBuffer(pPcxObject, hImage.value.p8BPPData, hImage.value.usWidth, hImage.value.usHeight, 0, 0, false)) {
       MemFree(hImage.value.p8BPPData);
-      return FALSE;
+      return false;
     }
   }
 
@@ -53,7 +53,7 @@ function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   MemFree(pPcxObject.value.pPcxBuffer);
   MemFree(pPcxObject);
 
-  return TRUE;
+  return true;
 }
 
 function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
@@ -64,7 +64,7 @@ function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
   let pPcxBuffer: Pointer<UINT8>;
 
   // Open and read in the file
-  if ((hFileHandle = FileOpen(pFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE)) == 0) {
+  if ((hFileHandle = FileOpen(pFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false)) == 0) {
     // damn we failed to open the file
     return null;
   }
@@ -122,7 +122,7 @@ function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
   return pCurrentPcxObject;
 }
 
-function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer<UINT8>, usBufferWidth: UINT16, usBufferHeight: UINT16, usX: UINT16, usY: UINT16, fTransp: BOOLEAN): BOOLEAN {
+function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer<UINT8>, usBufferWidth: UINT16, usBufferHeight: UINT16, usX: UINT16, usY: UINT16, fTransp: boolean): boolean {
   let pPcxBuffer: Pointer<UINT8>;
   let ubRepCount: UINT8;
   let usMaxX: UINT16;
@@ -148,7 +148,7 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
     ubRepCount = 0;
 
     // Blit Pcx object. Two main cases, one for transparency (0's are skipped and for without transparency.
-    if (fTransp == TRUE) {
+    if (fTransp == true) {
       for (uiIndex = 0; uiIndex < uiImageSize; uiIndex++) {
         if (ubMode == PCX_NORMAL) {
           ubCurrentByte = (pPcxBuffer + uiOffset++).value;
@@ -212,7 +212,7 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
     usCurrentY = usY;
 
     // Blit Pcx object. Two main cases, one for transparency (0's are skipped and for without transparency.
-    if (fTransp == TRUE) {
+    if (fTransp == true) {
       for (uiIndex = 0; uiIndex < uiImageSize; uiIndex++) {
         if (ubMode == PCX_NORMAL) {
           ubCurrentByte = (pPcxBuffer + uiOffset++).value;
@@ -283,10 +283,10 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): BOOLEAN {
+function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): boolean {
   let Index: UINT16;
   let pubPalette: Pointer<UINT8>;
 
@@ -296,7 +296,7 @@ function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): B
   hImage.value.pPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
 
   if (hImage.value.pPalette == null) {
-    return FALSE;
+    return false;
   }
 
   // Initialize the proper palette entries
@@ -307,5 +307,5 @@ function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): B
     hImage.value.pPalette[Index].peFlags = 0;
   }
 
-  return TRUE;
+  return true;
 }

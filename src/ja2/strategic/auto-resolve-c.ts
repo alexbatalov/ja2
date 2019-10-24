@@ -2,7 +2,7 @@
 
 //#define INVULNERABILITY
 
-let gfTransferTacticalOppositionToAutoResolve: BOOLEAN = FALSE;
+let gfTransferTacticalOppositionToAutoResolve: boolean = false;
 
 // button images
 const enum Enum119 {
@@ -116,24 +116,24 @@ interface AUTORESOLVE_STRUCT {
 
   bVerticalOffset: INT8;
 
-  fRenderAutoResolve: BOOLEAN;
-  fExitAutoResolve: BOOLEAN;
-  fPaused: BOOLEAN;
-  fDebugInfo: BOOLEAN;
-  ubBattleStatus: BOOLEAN;
-  fUnlimitedAmmo: BOOLEAN;
-  fSound: BOOLEAN;
-  ubPlayerDefenceAdvantage: BOOLEAN;
-  ubEnemyDefenceAdvantage: BOOLEAN;
-  fInstantFinish: BOOLEAN;
-  fAllowCapture: BOOLEAN;
-  fPlayerRejectedSurrenderOffer: BOOLEAN;
-  fPendingSurrender: BOOLEAN;
-  fExpanding: BOOLEAN;
-  fShowInterface: BOOLEAN;
-  fEnteringAutoResolve: BOOLEAN;
-  fMoraleEventsHandled: BOOLEAN;
-  fCaptureNotPermittedDueToEPCs: BOOLEAN;
+  fRenderAutoResolve: boolean;
+  fExitAutoResolve: boolean;
+  fPaused: boolean;
+  fDebugInfo: boolean;
+  ubBattleStatus: boolean;
+  fUnlimitedAmmo: boolean;
+  fSound: boolean;
+  ubPlayerDefenceAdvantage: boolean;
+  ubEnemyDefenceAdvantage: boolean;
+  fInstantFinish: boolean;
+  fAllowCapture: boolean;
+  fPlayerRejectedSurrenderOffer: boolean;
+  fPendingSurrender: boolean;
+  fExpanding: boolean;
+  fShowInterface: boolean;
+  fEnteringAutoResolve: boolean;
+  fMoraleEventsHandled: boolean;
+  fCaptureNotPermittedDueToEPCs: boolean;
 
   AutoResolveRegion: MOUSE_REGION;
 }
@@ -294,7 +294,7 @@ function EliminateAllEnemies(ubSectorX: UINT8, ubSectorY: UINT8): void {
   let ubRankIndex: UINT8;
 
   // Clear any possible battle locator
-  gfBlitBattleSectorLocator = FALSE;
+  gfBlitBattleSectorLocator = false;
 
   pGroup = gpGroupList;
   pSector = addressof(SectorInfo[SECTOR(ubSectorX, ubSectorY)]);
@@ -337,11 +337,11 @@ function EliminateAllEnemies(ubSectorX: UINT8, ubSectorY: UINT8): void {
       CalculateNextMoveIntention(gpBattleGroup);
     }
     // set this sector as taken over
-    SetThisSectorAsPlayerControlled(ubSectorX, ubSectorY, 0, TRUE);
+    SetThisSectorAsPlayerControlled(ubSectorX, ubSectorY, 0, true);
     RecalculateSectorWeight(SECTOR(ubSectorX, ubSectorY));
 
     // dirty map panel
-    fMapPanelDirty = TRUE;
+    fMapPanelDirty = true;
   }
 
   if (gpAR) {
@@ -375,9 +375,9 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
   let iWidth: INT32;
   let iHeight: INT32;
 
-  PauseTime(FALSE);
+  PauseTime(false);
 
-  gpAR.value.fShowInterface = TRUE;
+  gpAR.value.fShowInterface = true;
 
   SrcRect.iLeft = gpAR.value.Rect.iLeft;
   SrcRect.iTop = gpAR.value.Rect.iTop;
@@ -465,14 +465,14 @@ function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
   memset(gpEnemies, 0, sizeof(SOLDIERCELL) * 32);
 
   // Set up autoresolve
-  gpAR.value.fEnteringAutoResolve = TRUE;
+  gpAR.value.fEnteringAutoResolve = true;
   gpAR.value.ubSectorX = ubSectorX;
   gpAR.value.ubSectorY = ubSectorY;
   gpAR.value.ubBattleStatus = Enum120.BATTLE_IN_PROGRESS;
   gpAR.value.uiTimeSlice = 1000;
   gpAR.value.uiTotalElapsedBattleTimeInMilliseconds = 0;
-  gpAR.value.fSound = TRUE;
-  gpAR.value.fMoraleEventsHandled = FALSE;
+  gpAR.value.fSound = true;
+  gpAR.value.fMoraleEventsHandled = false;
   gpAR.value.uiPreRandomIndex = guiPreRandomIndex;
 
   // Determine who gets the defensive advantage
@@ -493,26 +493,26 @@ function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
 }
 
 function AutoResolveScreenInit(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function AutoResolveScreenShutdown(): UINT32 {
   gpBattleGroup = null;
-  return TRUE;
+  return true;
 }
 
 function AutoResolveScreenHandle(): UINT32 {
   RestoreBackgroundRects();
 
   if (!gpAR) {
-    gfEnteringMapScreen = TRUE;
+    gfEnteringMapScreen = true;
     return Enum26.MAP_SCREEN;
   }
   if (gpAR.value.fEnteringAutoResolve) {
     let pDestBuf: Pointer<UINT8>;
     let uiDestPitchBYTES: UINT32;
     let ClipRect: SGPRect;
-    gpAR.value.fEnteringAutoResolve = FALSE;
+    gpAR.value.fEnteringAutoResolve = false;
     // Take the framebuffer, shade it, and save it to the SAVEBUFFER.
     ClipRect.iLeft = 0;
     ClipRect.iTop = 0;
@@ -524,20 +524,20 @@ function AutoResolveScreenHandle(): UINT32 {
     BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
     KillPreBattleInterface();
     CalculateAutoResolveInfo();
-    CalculateSoldierCells(FALSE);
+    CalculateSoldierCells(false);
     CreateAutoResolveInterface();
-    DetermineTeamLeader(TRUE); // friendly team
-    DetermineTeamLeader(FALSE); // enemy team
+    DetermineTeamLeader(true); // friendly team
+    DetermineTeamLeader(false); // enemy team
     CalculateAttackValues();
     if (gfExtraBuffer)
       DoTransitionFromPreBattleInterfaceToAutoResolve();
     else
-      gpAR.value.fExpanding = TRUE;
-    gpAR.value.fRenderAutoResolve = TRUE;
+      gpAR.value.fExpanding = true;
+    gpAR.value.fRenderAutoResolve = true;
   }
   if (gpAR.value.fExitAutoResolve) {
-    gfEnteringMapScreen = TRUE;
-    RemoveAutoResolveInterface(TRUE);
+    gfEnteringMapScreen = true;
+    RemoveAutoResolveInterface(true);
     return Enum26.MAP_SCREEN;
   }
   if (gpAR.value.fPendingSurrender) {
@@ -649,7 +649,7 @@ function AssociateEnemiesWithStrategicGroups(): void {
   }
 }
 
-function CalculateSoldierCells(fReset: BOOLEAN): void {
+function CalculateSoldierCells(fReset: boolean): void {
   let i: INT32;
   let x: INT32;
   let y: INT32;
@@ -1004,15 +1004,15 @@ function ExpandWindow(): void {
       gpAR.value.ExRect.iTop = gpAR.value.Rect.iTop;
       gpAR.value.ExRect.iRight = gpAR.value.Rect.iRight;
       gpAR.value.ExRect.iBottom = gpAR.value.Rect.iBottom;
-      gpAR.value.fExpanding = FALSE;
-      gpAR.value.fShowInterface = TRUE;
+      gpAR.value.fExpanding = false;
+      gpAR.value.fShowInterface = true;
     }
   }
 
   // The new rect now determines the state of the current rectangle.
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-  RectangleDraw(TRUE, gpAR.value.ExRect.iLeft, gpAR.value.ExRect.iTop, gpAR.value.ExRect.iRight, gpAR.value.ExRect.iBottom, Get16BPPColor(FROMRGB(200, 200, 100)), pDestBuf);
+  RectangleDraw(true, gpAR.value.ExRect.iLeft, gpAR.value.ExRect.iTop, gpAR.value.ExRect.iRight, gpAR.value.ExRect.iBottom, Get16BPPColor(FROMRGB(200, 200, 100)), pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);
   // left
   InvalidateRegion(gpAR.value.ExRect.iLeft, gpAR.value.ExRect.iTop, gpAR.value.ExRect.iLeft + 1, gpAR.value.ExRect.iBottom + 1);
@@ -1131,11 +1131,11 @@ function VirtualSoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Point
     // if this healing brought the patient out of the worst of it, cancel dying
     if (pVictim.value.bLife >= OKLIFE) {
       // turn off merc QUOTE flags
-      pVictim.value.fDyingComment = FALSE;
+      pVictim.value.fDyingComment = false;
     }
 
     if (pVictim.value.bBleeding <= MIN_BLEEDING_THRESHOLD) {
-      pVictim.value.fWarnedAboutBleeding = FALSE;
+      pVictim.value.fWarnedAboutBleeding = false;
     }
   }
 
@@ -1164,11 +1164,11 @@ function VirtualSoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Point
 
   if (uiActual / 2)
     // MEDICAL GAIN (actual / 2):  Helped someone by giving first aid
-    StatChange(pSoldier, MEDICALAMT, ((uiActual / 2)), FALSE);
+    StatChange(pSoldier, MEDICALAMT, ((uiActual / 2)), false);
 
   if (uiActual / 4)
     // DEXTERITY GAIN (actual / 4):  Helped someone by giving first aid
-    StatChange(pSoldier, DEXTAMT, ((uiActual / 4)), FALSE);
+    StatChange(pSoldier, DEXTAMT, ((uiActual / 4)), false);
 
   return uiMedcost;
 }
@@ -1194,17 +1194,17 @@ function AutoBandageMercs(): UINT32 {
   let uiParallelPointsUsed: UINT32;
   let usKitPts: UINT16;
   let pKit: Pointer<OBJECTTYPE> = null;
-  let fFound: BOOLEAN = FALSE;
-  let fComplete: BOOLEAN = TRUE;
+  let fFound: boolean = false;
+  let fComplete: boolean = true;
   let bSlot: INT8;
   let cnt: INT8;
 
   // Do we have any doctors?  If so, bandage selves first.
-  fFound = FALSE;
+  fFound = false;
   uiMaxPointsUsed = uiParallelPointsUsed = 0;
   for (i = 0; i < gpAR.value.ubMercs; i++) {
     if (gpMercs[i].pSoldier.value.bLife >= OKLIFE && !gpMercs[i].pSoldier.value.bCollapsed && gpMercs[i].pSoldier.value.bMedical > 0 && (bSlot = FindObjClass(gpMercs[i].pSoldier, IC_MEDKIT)) != NO_SLOT) {
-      fFound = TRUE;
+      fFound = true;
       // bandage self first!
       uiCurrPointsUsed = 0;
       cnt = 0;
@@ -1247,20 +1247,20 @@ function AutoBandageMercs(): UINT32 {
       if (!pKit) {
         pKit = FindMedicalKit();
         if (!pKit) {
-          fComplete = FALSE;
+          fComplete = false;
           break;
         }
       }
       usKitPts = TotalPoints(pKit);
       if (!usKitPts) {
         pKit = null;
-        fComplete = FALSE;
+        fComplete = false;
         continue;
       }
       uiPointsUsed = VirtualSoldierDressWound(gpMercs[iBest].pSoldier, gpMercs[i].pSoldier, pKit, usKitPts, usKitPts);
       UseKitPoints(pKit, uiPointsUsed, gpMercs[i].pSoldier);
       uiParallelPointsUsed += uiPointsUsed;
-      fComplete = TRUE;
+      fComplete = true;
     }
   }
   if (fComplete) {
@@ -1297,7 +1297,7 @@ function RenderAutoResolve(): void {
       HideButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
       HideButton(gpAR.value.iButton[Enum119.YES_BUTTON]);
       HideButton(gpAR.value.iButton[Enum119.NO_BUTTON]);
-      gpAR.value.fShowInterface = FALSE;
+      gpAR.value.fShowInterface = false;
     } else if (gpAR.value.ubBattleStatus == Enum120.BATTLE_VICTORY) {
       ShowButton(gpAR.value.iButton[Enum119.DONEWIN_BUTTON]);
       ShowButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
@@ -1325,7 +1325,7 @@ function RenderAutoResolve(): void {
     }
     return;
   }
-  gpAR.value.fRenderAutoResolve = FALSE;
+  gpAR.value.fRenderAutoResolve = false;
 
   GetVideoSurface(addressof(hVSurface), gpAR.value.iInterfaceBuffer);
   BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, gpAR.value.Rect.iLeft, gpAR.value.Rect.iTop, VO_BLT_SRCTRANSPARENCY, 0);
@@ -1363,7 +1363,7 @@ function RenderAutoResolve(): void {
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
 
-  GetSectorIDString(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, str, TRUE);
+  GetSectorIDString(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, str, true);
   xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL()) / 2;
   yp += 11;
   mprintf(xp, yp, str);
@@ -1387,22 +1387,22 @@ function RenderAutoResolve(): void {
   mprintf(xp, yp, str);
 
   if (gpAR.value.fPendingSurrender) {
-    DisplayWrappedString((gpAR.value.sCenterStartX + 16), (230 + gpAR.value.bVerticalOffset), 108, 2, FONT10ARIAL(), FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_SURRENDER_OFFER], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString((gpAR.value.sCenterStartX + 16), (230 + gpAR.value.bVerticalOffset), 108, 2, FONT10ARIAL(), FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_SURRENDER_OFFER], FONT_BLACK, false, LEFT_JUSTIFIED);
   }
 
   if (gpAR.value.ubBattleStatus != Enum120.BATTLE_IN_PROGRESS) {
     // Handle merc morale, Global loyalty, and change of sector control
     if (!gpAR.value.fMoraleEventsHandled) {
       gpAR.value.uiTotalElapsedBattleTimeInMilliseconds *= 3;
-      gpAR.value.fMoraleEventsHandled = TRUE;
-      if (CheckFact(Enum170.FACT_FIRST_BATTLE_FOUGHT, 0) == FALSE) {
+      gpAR.value.fMoraleEventsHandled = true;
+      if (CheckFact(Enum170.FACT_FIRST_BATTLE_FOUGHT, 0) == false) {
         // this was the first battle against the army
         SetFactTrue(Enum170.FACT_FIRST_BATTLE_FOUGHT);
         if (gpAR.value.ubBattleStatus == Enum120.BATTLE_VICTORY) {
           SetFactTrue(Enum170.FACT_FIRST_BATTLE_WON);
         }
         SetTheFirstBattleSector((gpAR.value.ubSectorX + gpAR.value.ubSectorY * MAP_WORLD_X));
-        HandleFirstBattleEndingWhileInTown(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, TRUE);
+        HandleFirstBattleEndingWhileInTown(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, true);
       }
 
       switch (gpAR.value.ubBattleStatus) {
@@ -1411,7 +1411,7 @@ function RenderAutoResolve(): void {
           HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_WON, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
 
           SectorInfo[SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY)].bLastKnownEnemies = 0;
-          SetThisSectorAsPlayerControlled(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, TRUE);
+          SetThisSectorAsPlayerControlled(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, true);
 
           SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
           LogBattleResults(Enum165.LOG_VICTORY);
@@ -1473,7 +1473,7 @@ function RenderAutoResolve(): void {
         if (gpAR.value.ubBattleStatus == Enum120.BATTLE_SURRENDERED) {
           swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_SURRENDERED]);
         } else {
-          DisplayWrappedString((gpAR.value.sCenterStartX + 16), 310, 108, 2, FONT10ARIAL(), FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_CAPTURED], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+          DisplayWrappedString((gpAR.value.sCenterStartX + 16), 310, 108, 2, FONT10ARIAL(), FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_CAPTURED], FONT_BLACK, false, LEFT_JUSTIFIED);
           swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_CAPTURED]);
         }
         SetFontForeground(FONT_RED);
@@ -1519,8 +1519,8 @@ function CreateAutoResolveInterface(): void {
   let ubEliteMilitia: UINT8;
   // Setup new autoresolve blanket interface.
   MSYS_DefineRegion(addressof(gpAR.value.AutoResolveRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-  gpAR.value.fRenderAutoResolve = TRUE;
-  gpAR.value.fExitAutoResolve = FALSE;
+  gpAR.value.fRenderAutoResolve = true;
+  gpAR.value.fExitAutoResolve = false;
 
   // Load the general panel image pieces, to be combined to make the dynamically sized window.
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -1568,8 +1568,8 @@ function CreateAutoResolveInterface(): void {
     AssertMsg(0, "Failed to load Interface\\SmFaces.sti");
   }
   if (GetVideoObject(addressof(hVObject), gpAR.value.iFaces)) {
-    hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, FALSE);
-    hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, TRUE);
+    hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
+    hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, true);
   }
 
   // Add the battle over panels
@@ -1591,8 +1591,8 @@ function CreateAutoResolveInterface(): void {
       }
     }
     if (GetVideoObject(addressof(hVObject), gpMercs[i].uiVObjectID)) {
-      hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, FALSE);
-      hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, TRUE);
+      hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
+      hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, true);
     }
   }
 
@@ -1716,7 +1716,7 @@ function CreateAutoResolveInterface(): void {
   if (gpAR.value.ubSectorX == gWorldSectorX && gpAR.value.ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
     CheckAndHandleUnloadingOfCurrentWorld();
   } else {
-    gfBlitBattleSectorLocator = FALSE;
+    gfBlitBattleSectorLocator = false;
   }
 
   // Build the interface buffer, and blit the "shaded" background.  This info won't
@@ -1757,11 +1757,11 @@ function CreateAutoResolveInterface(): void {
   ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
 }
 
-function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
+function RemoveAutoResolveInterface(fDeleteForGood: boolean): void {
   let i: INT32;
   let ubCurrentRank: UINT8;
   let ubCurrentGroupID: UINT8 = 0;
-  let fFirstGroup: BOOLEAN = TRUE;
+  let fFirstGroup: boolean = true;
 
   // VtResumeSampling();
 
@@ -1786,14 +1786,14 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
     }
 
     // ARM: Update assignment flashing: Doctors may now have new patients or lost them all, etc.
-    gfReEvaluateEveryonesNothingToDo = TRUE;
+    gfReEvaluateEveryonesNothingToDo = true;
 
     if (gpAR.value.pRobotCell) {
       UpdateRobotControllerGivenRobot(gpAR.value.pRobotCell.value.pSoldier);
     }
     for (i = 0; i < gpAR.value.iNumMercFaces; i++) {
       if (i >= gpAR.value.iActualMercFaces)
-        TacticalRemoveSoldierPointer(gpMercs[i].pSoldier, FALSE);
+        TacticalRemoveSoldierPointer(gpMercs[i].pSoldier, false);
       else {
         // Record finishing information for our mercs
         if (!gpMercs[i].pSoldier.value.bLife) {
@@ -1821,7 +1821,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
           // look for NPCs to stop for, anyone is too tired to keep going, if all OK rebuild waypoints & continue movement
           // NOTE: Only the first group found will stop for NPCs, it's just too much hassle to stop them all
           PlayerGroupArrivedSafelyInSector(GetGroup(gpMercs[i].pSoldier.value.ubGroupID), fFirstGroup);
-          fFirstGroup = FALSE;
+          fFirstGroup = false;
         }
       }
       gpMercs[i].pSoldier = null;
@@ -1887,7 +1887,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
           }
         }
       }
-      TacticalRemoveSoldierPointer(gpCivs[i].pSoldier, FALSE);
+      TacticalRemoveSoldierPointer(gpCivs[i].pSoldier, false);
       memset(addressof(gpCivs[i]), 0, sizeof(SOLDIERCELL));
     }
   }
@@ -1920,7 +1920,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
   // Physically delete the soldiers now.
   for (i = 0; i < 32; i++) {
     if (gpEnemies[i].pSoldier) {
-      TacticalRemoveSoldierPointer(gpEnemies[i].pSoldier, FALSE);
+      TacticalRemoveSoldierPointer(gpEnemies[i].pSoldier, false);
       memset(addressof(gpEnemies[i]), 0, sizeof(SOLDIERCELL));
     }
   }
@@ -1966,7 +1966,7 @@ function PauseButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    gpAR.value.fPaused = TRUE;
+    gpAR.value.fPaused = true;
   }
 }
 
@@ -1976,7 +1976,7 @@ function PlayButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.uiTimeSlice = 1000 * gpAR.value.ubTimeModifierPercentage / 100;
-    gpAR.value.fPaused = FALSE;
+    gpAR.value.fPaused = false;
   }
 }
 
@@ -1986,7 +1986,7 @@ function FastButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.uiTimeSlice = 4000;
-    gpAR.value.fPaused = FALSE;
+    gpAR.value.fPaused = false;
   }
 }
 
@@ -1996,8 +1996,8 @@ function FinishButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.uiTimeSlice = 0xffffffff;
-    gpAR.value.fSound = FALSE;
-    gpAR.value.fPaused = FALSE;
+    gpAR.value.fSound = false;
+    gpAR.value.fPaused = false;
     PlayJA2StreamingSample(Enum330.AUTORESOLVE_FINISHFX, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
   }
 }
@@ -2040,12 +2040,12 @@ function RetreatButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function DetermineBandageButtonState(): void {
   let i: INT32;
   let pKit: Pointer<OBJECTTYPE> = null;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
 
   // Does anyone need bandaging?
   for (i = 0; i < gpAR.value.ubMercs; i++) {
     if (gpMercs[i].pSoldier.value.bBleeding && gpMercs[i].pSoldier.value.bLife) {
-      fFound = TRUE;
+      fFound = true;
       break;
     }
   }
@@ -2056,10 +2056,10 @@ function DetermineBandageButtonState(): void {
   }
 
   // Do we have any doctors?
-  fFound = FALSE;
+  fFound = false;
   for (i = 0; i < gpAR.value.ubMercs; i++) {
     if (gpMercs[i].pSoldier.value.bLife >= OKLIFE && !gpMercs[i].pSoldier.value.bCollapsed && gpMercs[i].pSoldier.value.bMedical > 0) {
-      fFound = TRUE;
+      fFound = true;
     }
   }
   if (!fFound) {
@@ -2092,7 +2092,7 @@ function BandageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function DoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gpAR.value.fExitAutoResolve = TRUE;
+    gpAR.value.fExitAutoResolve = true;
   }
 }
 
@@ -2202,7 +2202,7 @@ function CalculateAutoResolveInfo(): void {
     }
     gpAR.value.ubEnemies = min(gpAR.value.ubYMCreatures + gpAR.value.ubYFCreatures + gpAR.value.ubAMCreatures + gpAR.value.ubAFCreatures, 32);
   }
-  gfTransferTacticalOppositionToAutoResolve = FALSE;
+  gfTransferTacticalOppositionToAutoResolve = false;
   gpAR.value.ubCivs = CountAllMilitiaInSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
   gpAR.value.ubMercs = 0;
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -2220,7 +2220,7 @@ function CalculateAutoResolveInfo(): void {
 
           gpAR.value.ubMercs++;
           if (AM_AN_EPC(pPlayer.value.pSoldier)) {
-            gpAR.value.fCaptureNotPermittedDueToEPCs = TRUE;
+            gpAR.value.fCaptureNotPermittedDueToEPCs = true;
           }
           if (AM_A_ROBOT(pPlayer.value.pSoldier)) {
             gpAR.value.pRobotCell = addressof(gpMercs[gpAR.value.ubMercs - 1]);
@@ -2241,7 +2241,7 @@ function CalculateAutoResolveInfo(): void {
 function ResetAutoResolveInterface(): void {
   guiPreRandomIndex = gpAR.value.uiPreRandomIndex;
 
-  RemoveAutoResolveInterface(FALSE);
+  RemoveAutoResolveInterface(false);
 
   gpAR.value.ubBattleStatus = Enum120.BATTLE_IN_PROGRESS;
 
@@ -2291,7 +2291,7 @@ function ResetAutoResolveInterface(): void {
   while (gpAR.value.iNumMercFaces > gpAR.value.ubMercs && gpAR.value.iNumMercFaces > gpAR.value.iActualMercFaces) {
     // Removing temp mercs
     gpAR.value.iNumMercFaces--;
-    TacticalRemoveSoldierPointer(gpMercs[gpAR.value.iNumMercFaces].pSoldier, FALSE);
+    TacticalRemoveSoldierPointer(gpMercs[gpAR.value.iNumMercFaces].pSoldier, false);
     gpMercs[gpAR.value.iNumMercFaces].pSoldier = null;
   }
   while (gpAR.value.iNumMercFaces < gpAR.value.ubMercs && gpAR.value.iNumMercFaces >= gpAR.value.iActualMercFaces) {
@@ -2299,18 +2299,18 @@ function ResetAutoResolveInterface(): void {
   }
 
   if (gpAR.value.uiTimeSlice == 0xffffffff) {
-    gpAR.value.fSound = TRUE;
+    gpAR.value.fSound = true;
   }
   gpAR.value.uiTimeSlice = 1000;
   gpAR.value.uiTotalElapsedBattleTimeInMilliseconds = 0;
   gpAR.value.uiCurrTime = 0;
-  gpAR.value.fPlayerRejectedSurrenderOffer = FALSE;
-  gpAR.value.fPendingSurrender = FALSE;
+  gpAR.value.fPlayerRejectedSurrenderOffer = false;
+  gpAR.value.fPendingSurrender = false;
   CalculateRowsAndColumns();
-  CalculateSoldierCells(TRUE);
+  CalculateSoldierCells(true);
   CreateAutoResolveInterface();
-  DetermineTeamLeader(TRUE); // friendly team
-  DetermineTeamLeader(FALSE); // enemy team
+  DetermineTeamLeader(true); // friendly team
+  DetermineTeamLeader(false); // enemy team
   CalculateAttackValues();
 }
 
@@ -2444,12 +2444,12 @@ function CalculateRowsAndColumns(): void {
 
 function HandleAutoResolveInput(): void {
   let InputEvent: InputAtom;
-  let fResetAutoResolve: BOOLEAN = FALSE;
+  let fResetAutoResolve: boolean = false;
   while (DequeueEvent(addressof(InputEvent))) {
     if (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT) {
       switch (InputEvent.usParam) {
         case SPACE:
-          gpAR.value.fPaused ^= TRUE;
+          gpAR.value.fPaused ^= true;
           if (gpAR.value.fPaused) {
             ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
             ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
@@ -2567,13 +2567,13 @@ function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
 function GetUnusedMercProfileID(): UINT8 {
   let ubRandom: UINT8 = 0;
   let i: INT32;
-  let fUnique: BOOLEAN = FALSE;
+  let fUnique: boolean = false;
   while (!fUnique) {
     ubRandom = PreRandom(40);
     for (i = 0; i < 19; i++) {
-      fUnique = TRUE;
+      fUnique = true;
       if (Menptr[i].ubProfile == ubRandom) {
-        fUnique = FALSE;
+        fUnique = false;
         break;
       }
     }
@@ -2593,8 +2593,8 @@ function CreateTempPlayerMerc(): void {
   MercCreateStruct.sSectorX = gpAR.value.ubSectorX;
   MercCreateStruct.sSectorY = gpAR.value.ubSectorY;
   MercCreateStruct.bSectorZ = 0;
-  MercCreateStruct.fPlayerMerc = TRUE;
-  MercCreateStruct.fCopyProfileItemsOver = TRUE;
+  MercCreateStruct.fPlayerMerc = true;
+  MercCreateStruct.fCopyProfileItemsOver = true;
 
   // Create the player soldier
 
@@ -2604,7 +2604,7 @@ function CreateTempPlayerMerc(): void {
   }
 }
 
-function DetermineTeamLeader(fFriendlyTeam: BOOLEAN): void {
+function DetermineTeamLeader(fFriendlyTeam: boolean): void {
   let i: INT32;
   let pBestLeaderCell: Pointer<SOLDIERCELL> = null;
   // For each team (civs and players count as same team), find the merc with the best
@@ -2896,7 +2896,7 @@ function ChooseTarget(pAttacker: Pointer<SOLDIERCELL>): Pointer<SOLDIERCELL> {
   return null;
 }
 
-function FireAShot(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
+function FireAShot(pAttacker: Pointer<SOLDIERCELL>): boolean {
   let pItem: Pointer<OBJECTTYPE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
@@ -2906,7 +2906,7 @@ function FireAShot(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
   if (pAttacker.value.uiFlags & CELL_MALECREATURE) {
     PlayAutoResolveSample(Enum330.ACR_SPIT, RATE_11025, 50, 1, MIDDLEPAN);
     pAttacker.value.bWeaponSlot = Enum261.SECONDHANDPOS;
-    return TRUE;
+    return true;
   }
   for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
     pItem = addressof(pSoldier.value.inv[i]);
@@ -2915,7 +2915,7 @@ function FireAShot(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
       pAttacker.value.bWeaponSlot = i;
       if (gpAR.value.fUnlimitedAmmo) {
         PlayAutoResolveSample(Weapon[pItem.value.usItem].sSound, RATE_11025, 50, 1, MIDDLEPAN);
-        return TRUE;
+        return true;
       }
       if (!pItem.value.ubGunShotsLeft) {
         AutoReload(pSoldier);
@@ -2929,44 +2929,44 @@ function FireAShot(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
           gMercProfiles[pAttacker.value.pSoldier.value.ubProfile].usShotsFired++;
           // MARKSMANSHIP GAIN: Attacker fires a shot
 
-          StatChange(pAttacker.value.pSoldier, MARKAMT, 3, FALSE);
+          StatChange(pAttacker.value.pSoldier, MARKAMT, 3, false);
         }
         pItem.value.ubGunShotsLeft--;
-        return TRUE;
+        return true;
       }
     }
   }
   pAttacker.value.bWeaponSlot = -1;
-  return FALSE;
+  return false;
 }
 
-function AttackerHasKnife(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
+function AttackerHasKnife(pAttacker: Pointer<SOLDIERCELL>): boolean {
   let i: INT32;
   for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
     if (Item[pAttacker.value.pSoldier.value.inv[i].usItem].usItemClass == IC_BLADE) {
       pAttacker.value.bWeaponSlot = i;
-      return TRUE;
+      return true;
     }
   }
   pAttacker.value.bWeaponSlot = -1;
-  return FALSE;
+  return false;
 }
 
-function TargetHasLoadedGun(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function TargetHasLoadedGun(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let i: INT32;
   let pItem: Pointer<OBJECTTYPE>;
   for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
     pItem = addressof(pSoldier.value.inv[i]);
     if (Item[pItem.value.usItem].usItemClass == IC_GUN) {
       if (gpAR.value.fUnlimitedAmmo) {
-        return TRUE;
+        return true;
       }
       if (pItem.value.ubGunShotsLeft) {
-        return TRUE;
+        return true;
       }
     }
   }
-  return FALSE;
+  return false;
 }
 
 function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERCELL>): void {
@@ -2978,9 +2978,9 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
   let iRandom: INT32;
   let iImpact: INT32;
   let iNewLife: INT32;
-  let fMelee: BOOLEAN = FALSE;
-  let fKnife: BOOLEAN = FALSE;
-  let fClaw: BOOLEAN = FALSE;
+  let fMelee: boolean = false;
+  let fKnife: boolean = false;
+  let fClaw: boolean = false;
   let bAttackIndex: INT8 = -1;
 
   pAttacker.value.uiFlags |= CELL_FIREDATTARGET | CELL_DIRTY;
@@ -2999,11 +2999,11 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
     usDefence = (950 + PreRandom(50));
   if (pAttacker.value.uiFlags & CELL_FEMALECREATURE) {
     pAttacker.value.bWeaponSlot = Enum261.HANDPOS;
-    fMelee = TRUE;
-    fClaw = TRUE;
+    fMelee = true;
+    fClaw = true;
   } else if (!FireAShot(pAttacker)) {
     // Maybe look for a weapon, such as a knife or grenade?
-    fMelee = TRUE;
+    fMelee = true;
     fKnife = AttackerHasKnife(pAttacker);
     if (TargetHasLoadedGun(pTarget.value.pSoldier)) {
       // Penalty to attack with melee weapons against target with loaded gun.
@@ -3047,7 +3047,7 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
           PlayAutoResolveSample(Enum330.SWOOSH_1 + PreRandom(6), RATE_11025, 50, 1, MIDDLEPAN);
         if (pTarget.value.uiFlags & CELL_MERC)
           // AGILITY GAIN: Target "dodged" an attack
-          StatChange(pTarget.value.pSoldier, AGILAMT, 5, FALSE);
+          StatChange(pTarget.value.pSoldier, AGILAMT, 5, false);
       }
       return;
     }
@@ -3107,13 +3107,13 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
       // Attacker is a player, so increment the number of shots that hit.
       gMercProfiles[pAttacker.value.pSoldier.value.ubProfile].usShotsHit++;
       // MARKSMANSHIP GAIN: Attacker's shot hits
-      StatChange(pAttacker.value.pSoldier, MARKAMT, 6, FALSE); // in addition to 3 for taking a shot
+      StatChange(pAttacker.value.pSoldier, MARKAMT, 6, false); // in addition to 3 for taking a shot
     }
     if (pTarget.value.uiFlags & CELL_MERC) {
       // Target is a player, so increment the times he has been wounded.
       gMercProfiles[pTarget.value.pSoldier.value.ubProfile].usTimesWounded++;
       // EXPERIENCE GAIN: Took some damage
-      StatChange(pTarget.value.pSoldier, EXPERAMT, (5 * (iImpact / 10)), FALSE);
+      StatChange(pTarget.value.pSoldier, EXPERAMT, (5 * (iImpact / 10)), false);
     }
     if (pTarget.value.pSoldier.value.bLife >= CONSCIOUSNESS || pTarget.value.uiFlags & CELL_CREATURE) {
       if (gpAR.value.fSound)
@@ -3150,7 +3150,7 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
         pTarget.value.pSoldier.value.bBleeding = (pTarget.value.pSoldier.value.bLifeMax - pTarget.value.pSoldier.value.bLife);
     }
     if (!pTarget.value.pSoldier.value.bLife) {
-      gpAR.value.fRenderAutoResolve = TRUE;
+      gpAR.value.fRenderAutoResolve = true;
           if (pTarget.value.uiFlags & CELL_MERC) {
         gpAR.value.usPlayerAttack -= pTarget.value.usAttack;
         gpAR.value.usPlayerDefence -= pTarget.value.usDefence;
@@ -3207,7 +3207,7 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
     // bullet missed -- play a ricochet sound.
     if (pTarget.value.uiFlags & CELL_MERC)
       // AGILITY GAIN: Target "dodged" an attack
-      StatChange(pTarget.value.pSoldier, AGILAMT, 5, FALSE);
+      StatChange(pTarget.value.pSoldier, AGILAMT, 5, false);
     PlayAutoResolveSample(Enum330.MISS_1 + PreRandom(8), RATE_11025, 50, 1, MIDDLEPAN);
     return;
   }
@@ -3216,13 +3216,13 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
     // Attacker is a player, so increment the number of shots that hit.
     gMercProfiles[pAttacker.value.pSoldier.value.ubProfile].usShotsHit++;
     // MARKSMANSHIP GAIN: Attacker's shot hits
-    StatChange(pAttacker.value.pSoldier, MARKAMT, 6, FALSE); // in addition to 3 for taking a shot
+    StatChange(pAttacker.value.pSoldier, MARKAMT, 6, false); // in addition to 3 for taking a shot
   }
   if (pTarget.value.uiFlags & CELL_MERC && pTarget.value.usHitDamage[index]) {
     // Target is a player, so increment the times he has been wounded.
     gMercProfiles[pTarget.value.pSoldier.value.ubProfile].usTimesWounded++;
     // EXPERIENCE GAIN: Took some damage
-    StatChange(pTarget.value.pSoldier, EXPERAMT, (5 * (pTarget.value.usHitDamage[index] / 10)), FALSE);
+    StatChange(pTarget.value.pSoldier, EXPERAMT, (5 * (pTarget.value.usHitDamage[index] / 10)), false);
   }
 
   // bullet hit -- play an impact sound and a merc hit sound
@@ -3258,7 +3258,7 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
           gMercProfiles[pKiller.value.pSoldier.value.ubProfile].usKills++;
           gStrategicStatus.usPlayerKills++;
           // EXPERIENCE CLASS GAIN:  Earned a kill
-          StatChange(pKiller.value.pSoldier, EXPERAMT, (10 * pTarget.value.pSoldier.value.bLevel), FALSE);
+          StatChange(pKiller.value.pSoldier, EXPERAMT, (10 * pTarget.value.pSoldier.value.bLevel), false);
           HandleMoraleEvent(pKiller.value.pSoldier, Enum234.MORALE_KILLED_ENEMY, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
         } else if (pKiller.value.uiFlags & CELL_MILITIA)
           pKiller.value.pSoldier.value.ubMilitiaKills += 2;
@@ -3267,14 +3267,14 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
         if (pAssister1.value.uiFlags & CELL_MERC) {
           gMercProfiles[pAssister1.value.pSoldier.value.ubProfile].usAssists++;
           // EXPERIENCE CLASS GAIN:  Earned an assist
-          StatChange(pAssister1.value.pSoldier, EXPERAMT, (5 * pTarget.value.pSoldier.value.bLevel), FALSE);
+          StatChange(pAssister1.value.pSoldier, EXPERAMT, (5 * pTarget.value.pSoldier.value.bLevel), false);
         } else if (pAssister1.value.uiFlags & CELL_MILITIA)
           pAssister1.value.pSoldier.value.ubMilitiaKills++;
       } else if (pAssister2) {
         if (pAssister2.value.uiFlags & CELL_MERC) {
           gMercProfiles[pAssister2.value.pSoldier.value.ubProfile].usAssists++;
           // EXPERIENCE CLASS GAIN:  Earned an assist
-          StatChange(pAssister2.value.pSoldier, EXPERAMT, (5 * pTarget.value.pSoldier.value.bLevel), FALSE);
+          StatChange(pAssister2.value.pSoldier, EXPERAMT, (5 * pTarget.value.pSoldier.value.bLevel), false);
         } else if (pAssister2.value.uiFlags & CELL_MILITIA)
           pAssister2.value.pSoldier.value.ubMilitiaKills++;
       }
@@ -3309,7 +3309,7 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
   else
     pTarget.value.pSoldier.value.bBleeding = (pTarget.value.pSoldier.value.bLifeMax - pTarget.value.pSoldier.value.bLife);
   if (!pTarget.value.pSoldier.value.bLife) {
-    gpAR.value.fRenderAutoResolve = TRUE;
+    gpAR.value.fRenderAutoResolve = true;
     if (pTarget.value.uiFlags & CELL_MERC) {
       gpAR.value.usPlayerAttack -= pTarget.value.usAttack;
       gpAR.value.usPlayerDefence -= pTarget.value.usDefence;
@@ -3340,17 +3340,17 @@ function Delay(uiMilliseconds: UINT32): void {
     ;
 }
 
-function IsBattleOver(): BOOLEAN {
+function IsBattleOver(): boolean {
   let i: INT32;
   let iNumInvolvedMercs: INT32 = 0;
   let iNumMercsRetreated: INT32 = 0;
-  let fOnlyEPCsLeft: BOOLEAN = TRUE;
+  let fOnlyEPCsLeft: boolean = true;
   if (gpAR.value.ubBattleStatus != Enum120.BATTLE_IN_PROGRESS)
-    return TRUE;
+    return true;
   for (i = 0; i < gpAR.value.ubMercs; i++) {
     if (!(gpMercs[i].uiFlags & CELL_RETREATED) && gpMercs[i].pSoldier.value.bLife) {
       if (!(gpMercs[i].uiFlags & CELL_EPC)) {
-        fOnlyEPCsLeft = FALSE;
+        fOnlyEPCsLeft = false;
         iNumInvolvedMercs++;
       }
     }
@@ -3410,40 +3410,40 @@ function IsBattleOver(): BOOLEAN {
     // VICTORY
     gpAR.value.ubBattleStatus = Enum120.BATTLE_VICTORY;
   } else {
-    return FALSE;
+    return false;
   }
   SetupDoneInterface();
-  return TRUE;
+  return true;
 }
 
 //#define TESTSURRENDER
 
-function AttemptPlayerCapture(): BOOLEAN {
+function AttemptPlayerCapture(): boolean {
   let i: INT32;
-  let fConcious: BOOLEAN;
+  let fConcious: boolean;
   let iConciousEnemies: INT32;
 
   // Only attempt capture if day is less than four.
   if (GetWorldDay() < STARTDAY_ALLOW_PLAYER_CAPTURE_FOR_RESCUE && !gpAR.value.fAllowCapture) {
-    return FALSE;
+    return false;
   }
   if (gpAR.value.fPlayerRejectedSurrenderOffer) {
-    return FALSE;
+    return false;
   }
   if (gStrategicStatus.uiFlags & STRATEGIC_PLAYER_CAPTURED_FOR_RESCUE) {
-    return FALSE;
+    return false;
   }
   if (gpAR.value.fCaptureNotPermittedDueToEPCs) {
     // EPCs make things much more difficult when considering capture.  Simply don't allow it.
-    return FALSE;
+    return false;
   }
   // Only attempt capture of mercs if there are 2 or 3 of them alive
   if (gpAR.value.ubAliveCivs || gpAR.value.ubAliveMercs < 2 || gpAR.value.ubAliveMercs > 3) {
-    return FALSE;
+    return false;
   }
   // if the number of alive enemies doesn't double the number of alive mercs, don't offer surrender.
   if (gpAR.value.ubAliveEnemies < gpAR.value.ubAliveMercs * 2) {
-    return FALSE;
+    return false;
   }
   // make sure that these enemies are actually concious!
   iConciousEnemies = 0;
@@ -3453,23 +3453,23 @@ function AttemptPlayerCapture(): BOOLEAN {
     }
   }
   if (iConciousEnemies < gpAR.value.ubAliveMercs * 2) {
-    return FALSE;
+    return false;
   }
 
   // So far, the conditions are right.  Now, we will determine if the the remaining players are
   // wounded and/or unconcious.  If any are concious, we will prompt for a surrender, otherwise,
   // it is automatic.
-  fConcious = FALSE;
+  fConcious = false;
   for (i = 0; i < gpAR.value.ubMercs; i++) {
     // if any of the 2 or 3 mercs has more than 60% life, then return.
     if (gpMercs[i].uiFlags & CELL_ROBOT) {
-      return FALSE;
+      return false;
     }
     if (gpMercs[i].pSoldier.value.bLife * 100 > gpMercs[i].pSoldier.value.bLifeMax * 60) {
-      return FALSE;
+      return false;
     }
     if (gpMercs[i].pSoldier.value.bLife >= OKLIFE) {
-      fConcious = TRUE;
+      fConcious = true;
     }
   }
   if (fConcious) {
@@ -3480,15 +3480,15 @@ function AttemptPlayerCapture(): BOOLEAN {
     BeginCaptureSquence();
 
     gpAR.value.ubBattleStatus = Enum120.BATTLE_CAPTURED;
-    gpAR.value.fRenderAutoResolve = TRUE;
+    gpAR.value.fRenderAutoResolve = true;
     SetupDoneInterface();
   }
-  return TRUE;
+  return true;
 }
 
 function SetupDoneInterface(): void {
   let i: INT32;
-  gpAR.value.fRenderAutoResolve = TRUE;
+  gpAR.value.fRenderAutoResolve = true;
 
   HideButton(gpAR.value.iButton[Enum119.PAUSE_BUTTON]);
   HideButton(gpAR.value.iButton[Enum119.PLAY_BUTTON]);
@@ -3521,8 +3521,8 @@ function SetupSurrenderInterface(): void {
   HideButton(gpAR.value.iButton[Enum119.DONELOSE_BUTTON]);
   ShowButton(gpAR.value.iButton[Enum119.YES_BUTTON]);
   ShowButton(gpAR.value.iButton[Enum119.NO_BUTTON]);
-  gpAR.value.fRenderAutoResolve = TRUE;
-  gpAR.value.fPendingSurrender = TRUE;
+  gpAR.value.fRenderAutoResolve = true;
+  gpAR.value.fPendingSurrender = true;
 }
 
 function HideSurrenderInterface(): void {
@@ -3536,8 +3536,8 @@ function HideSurrenderInterface(): void {
   HideButton(gpAR.value.iButton[Enum119.DONELOSE_BUTTON]);
   HideButton(gpAR.value.iButton[Enum119.YES_BUTTON]);
   HideButton(gpAR.value.iButton[Enum119.NO_BUTTON]);
-  gpAR.value.fPendingSurrender = FALSE;
-  gpAR.value.fRenderAutoResolve = TRUE;
+  gpAR.value.fPendingSurrender = false;
+  gpAR.value.fRenderAutoResolve = true;
 }
 
 function AcceptSurrenderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -3545,14 +3545,14 @@ function AcceptSurrenderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
     BeginCaptureSquence();
 
     gpAR.value.ubBattleStatus = Enum120.BATTLE_SURRENDERED;
-    gpAR.value.fPendingSurrender = FALSE;
+    gpAR.value.fPendingSurrender = false;
     SetupDoneInterface();
   }
 }
 
 function RejectSurrenderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gpAR.value.fPlayerRejectedSurrenderOffer = TRUE;
+    gpAR.value.fPlayerRejectedSurrenderOffer = true;
     HideSurrenderInterface();
   }
 }
@@ -3564,7 +3564,7 @@ function ProcessBattleFrame(): void {
   let pTarget: Pointer<SOLDIERCELL>;
   let uiDiff: UINT32;
   /* static */ let iTimeSlice: INT32 = 0;
-  /* static */ let fContinue: BOOLEAN = FALSE;
+  /* static */ let fContinue: boolean = false;
   /* static */ let uiSlice: UINT32 = 0;
   /* static */ let iTotal: INT32 = 0;
   /* static */ let iMercs: INT32 = 0;
@@ -3573,7 +3573,7 @@ function ProcessBattleFrame(): void {
   /* static */ let iMercsLeft: INT32 = 0;
   /* static */ let iCivsLeft: INT32 = 0;
   /* static */ let iEnemiesLeft: INT32 = 0;
-  let found: BOOLEAN = FALSE;
+  let found: boolean = false;
   let iTime: INT32;
   let iAttacksThisFrame: INT32;
 
@@ -3582,7 +3582,7 @@ function ProcessBattleFrame(): void {
 
   if (fContinue) {
     gpAR.value.uiCurrTime = GetJA2Clock();
-    fContinue = FALSE;
+    fContinue = false;
     goto("CONTINUE_BATTLE");
   }
   // determine how much real-time has passed since the last frame
@@ -3628,7 +3628,7 @@ function ProcessBattleFrame(): void {
         // and all of the necessary locals are saved via static variables.  It'll check
         // the fContinue flag, and goto the CONTINUE_BATTLE label the next time this function
         // is called.
-        fContinue = TRUE;
+        fContinue = true;
         return;
       }
     CONTINUE_BATTLE:
@@ -3636,7 +3636,7 @@ function ProcessBattleFrame(): void {
         return;
 
       iRandom = PreRandom(iTotal);
-      found = FALSE;
+      found = false;
       if (iMercs && iRandom < iMercsLeft) {
         iMercsLeft--;
         while (!found) {
@@ -3644,7 +3644,7 @@ function ProcessBattleFrame(): void {
           pAttacker = addressof(gpMercs[iRandom]);
           if (!(pAttacker.value.uiFlags & CELL_PROCESSED)) {
             pAttacker.value.uiFlags |= CELL_PROCESSED;
-            found = TRUE;
+            found = true;
           }
         }
       } else if (iCivs && iRandom < iMercsLeft + iCivsLeft) {
@@ -3654,7 +3654,7 @@ function ProcessBattleFrame(): void {
           pAttacker = addressof(gpCivs[iRandom]);
           if (!(pAttacker.value.uiFlags & CELL_PROCESSED)) {
             pAttacker.value.uiFlags |= CELL_PROCESSED;
-            found = TRUE;
+            found = true;
           }
         }
       } else if (iEnemies && iEnemiesLeft) {
@@ -3664,7 +3664,7 @@ function ProcessBattleFrame(): void {
           pAttacker = addressof(gpEnemies[iRandom]);
           if (!(pAttacker.value.uiFlags & CELL_PROCESSED)) {
             pAttacker.value.uiFlags |= CELL_PROCESSED;
-            found = TRUE;
+            found = true;
           }
         }
       } else
@@ -3731,12 +3731,12 @@ function ProcessBattleFrame(): void {
   }
 }
 
-function IsAutoResolveActive(): BOOLEAN {
+function IsAutoResolveActive(): boolean {
   // is the autoresolve up or not?
   if (gpAR) {
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 function GetAutoResolveSectorID(): UINT8 {
@@ -3747,55 +3747,55 @@ function GetAutoResolveSectorID(): UINT8 {
 }
 
 // Returns TRUE if a battle is happening or sector is loaded
-function GetCurrentBattleSectorXYZ(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): BOOLEAN {
+function GetCurrentBattleSectorXYZ(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): boolean {
   if (gpAR) {
     psSectorX.value = gpAR.value.ubSectorX;
     psSectorY.value = gpAR.value.ubSectorY;
     psSectorZ.value = 0;
-    return TRUE;
+    return true;
   } else if (gfPreBattleInterfaceActive) {
     psSectorX.value = gubPBSectorX;
     psSectorY.value = gubPBSectorY;
     psSectorZ.value = gubPBSectorZ;
-    return TRUE;
+    return true;
   } else if (gfWorldLoaded) {
     psSectorX.value = gWorldSectorX;
     psSectorY.value = gWorldSectorY;
     psSectorZ.value = gbWorldSectorZ;
-    return TRUE;
+    return true;
   } else {
     psSectorX.value = 0;
     psSectorY.value = 0;
     psSectorZ.value = -1;
-    return FALSE;
+    return false;
   }
 }
 
 // Returns TRUE if a battle is happening ONLY
-function GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): BOOLEAN {
+function GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): boolean {
   if (gpAR) {
     psSectorX.value = gpAR.value.ubSectorX;
     psSectorY.value = gpAR.value.ubSectorY;
     psSectorZ.value = 0;
-    return TRUE;
+    return true;
   } else if (gfPreBattleInterfaceActive) {
     psSectorX.value = gubPBSectorX;
     psSectorY.value = gubPBSectorY;
     psSectorZ.value = gubPBSectorZ;
-    return TRUE;
+    return true;
   } else if (gfWorldLoaded) {
     psSectorX.value = gWorldSectorX;
     psSectorY.value = gWorldSectorY;
     psSectorZ.value = gbWorldSectorZ;
     if (gTacticalStatus.fEnemyInSector) {
-      return TRUE;
+      return true;
     }
-    return FALSE;
+    return false;
   } else {
     psSectorX.value = 0;
     psSectorY.value = 0;
     psSectorZ.value = -1;
-    return FALSE;
+    return false;
   }
 }
 

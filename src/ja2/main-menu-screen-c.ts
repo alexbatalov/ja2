@@ -29,11 +29,11 @@ let guiJa2LogoImage: UINT32;
 
 let gBackRegion: MOUSE_REGION;
 let gbHandledMainMenu: INT8 = 0;
-let fInitialRender: BOOLEAN = FALSE;
+let fInitialRender: boolean = false;
 // BOOLEAN						gfDoHelpScreen = 0;
 
-let gfMainMenuScreenEntry: BOOLEAN = FALSE;
-let gfMainMenuScreenExit: BOOLEAN = FALSE;
+let gfMainMenuScreenEntry: boolean = false;
+let gfMainMenuScreenExit: boolean = false;
 
 let guiMainMenuExitScreen: UINT32 = Enum26.MAINMENU_SCREEN;
 
@@ -42,7 +42,7 @@ function MainMenuScreenInit(): UINT32 {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version #:     %s", czVersionNumber));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Tracking #:    %S", zTrackingNumber));
 
-  return TRUE;
+  return true;
 }
 
 function MainMenuScreenHandle(): UINT32 {
@@ -83,8 +83,8 @@ function MainMenuScreenHandle(): UINT32 {
 
   if (gfMainMenuScreenEntry) {
     InitMainMenu();
-    gfMainMenuScreenEntry = FALSE;
-    gfMainMenuScreenExit = FALSE;
+    gfMainMenuScreenEntry = false;
+    gfMainMenuScreenExit = false;
     guiMainMenuExitScreen = Enum26.MAINMENU_SCREEN;
     SetMusicMode(Enum328.MUSIC_MAIN_MENU);
   }
@@ -93,7 +93,7 @@ function MainMenuScreenHandle(): UINT32 {
     ClearMainMenu();
     RenderMainMenu();
 
-    fInitialRender = FALSE;
+    fInitialRender = false;
   }
 
   RestoreButtonBackGrounds();
@@ -116,18 +116,18 @@ function MainMenuScreenHandle(): UINT32 {
 
   if (gfMainMenuScreenExit) {
     ExitMainMenu();
-    gfMainMenuScreenExit = FALSE;
-    gfMainMenuScreenEntry = TRUE;
+    gfMainMenuScreenExit = false;
+    gfMainMenuScreenEntry = true;
   }
 
   if (guiMainMenuExitScreen != Enum26.MAINMENU_SCREEN)
-    gfMainMenuScreenEntry = TRUE;
+    gfMainMenuScreenEntry = true;
 
   return guiMainMenuExitScreen;
 }
 
 function MainMenuScreenShutdown(): UINT32 {
-  return FALSE;
+  return false;
 }
 
 function HandleMainMenuScreen(): void {
@@ -135,9 +135,9 @@ function HandleMainMenuScreen(): void {
     // Exit according to handled value!
     switch (gbHandledMainMenu) {
       case Enum23.QUIT:
-        gfMainMenuScreenExit = TRUE;
+        gfMainMenuScreenExit = true;
 
-        gfProgramIsRunning = FALSE;
+        gfProgramIsRunning = false;
         break;
 
       case Enum23.NEW_GAME:
@@ -153,8 +153,8 @@ function HandleMainMenuScreen(): void {
         guiPreviousOptionScreen = guiCurrentScreen;
         guiMainMenuExitScreen = Enum26.SAVE_LOAD_SCREEN;
         gbHandledMainMenu = 0;
-        gfSaveGame = FALSE;
-        gfMainMenuScreenExit = TRUE;
+        gfSaveGame = false;
+        gfMainMenuScreenExit = true;
 
         break;
 
@@ -162,19 +162,19 @@ function HandleMainMenuScreen(): void {
         guiPreviousOptionScreen = guiCurrentScreen;
         guiMainMenuExitScreen = Enum26.OPTIONS_SCREEN;
         gbHandledMainMenu = 0;
-        gfMainMenuScreenExit = TRUE;
+        gfMainMenuScreenExit = true;
         break;
 
       case Enum23.CREDITS:
         guiMainMenuExitScreen = Enum26.CREDIT_SCREEN;
         gbHandledMainMenu = 0;
-        gfMainMenuScreenExit = TRUE;
+        gfMainMenuScreenExit = true;
         break;
     }
   }
 }
 
-function InitMainMenu(): BOOLEAN {
+function InitMainMenu(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   //	gfDoHelpScreen = 0;
@@ -183,9 +183,9 @@ function InitMainMenu(): BOOLEAN {
   InitSaveGameArray();
 
   // Create the background mouse mask
-  CreateDestroyBackGroundMouseMask(TRUE);
+  CreateDestroyBackGroundMouseMask(true);
 
-  CreateDestroyMainMenuButtons(TRUE);
+  CreateDestroyMainMenuButtons(true);
 
   // load background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -217,7 +217,7 @@ function InitMainMenu(): BOOLEAN {
   //	DisableButton( iMenuButtons[ TITLE ] );
 
   gbHandledMainMenu = 0;
-  fInitialRender = TRUE;
+  fInitialRender = true;
 
   SetPendingNewScreen(Enum26.MAINMENU_SCREEN);
   guiMainMenuExitScreen = Enum26.MAINMENU_SCREEN;
@@ -226,7 +226,7 @@ function InitMainMenu(): BOOLEAN {
 
   DequeueAllKeyBoardEvents();
 
-  return TRUE;
+  return true;
 }
 
 function ExitMainMenu(): void {
@@ -234,9 +234,9 @@ function ExitMainMenu(): void {
   //	UINT8											 *pDestBuf;
 
   //	if( !gfDoHelpScreen )
-  { CreateDestroyBackGroundMouseMask(FALSE); }
+  { CreateDestroyBackGroundMouseMask(false); }
 
-  CreateDestroyMainMenuButtons(FALSE);
+  CreateDestroyMainMenuButtons(false);
 
   DeleteVideoObjectFromIndex(guiMainMenuBackGroundImage);
   DeleteVideoObjectFromIndex(guiJa2LogoImage);
@@ -268,7 +268,7 @@ function MenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       SetMainMenuExitScreen(Enum26.GAME_INIT_OPTIONS_SCREEN);
     } else if (gbHandledMainMenu == Enum23.LOAD_GAME) {
       if (gfKeyState[ALT])
-        gfLoadGameUponEntry = TRUE;
+        gfLoadGameUponEntry = true;
     }
 
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
@@ -296,7 +296,7 @@ function HandleMainMenuInput(): void {
   let InputEvent: InputAtom;
 
   // Check for esc
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     if (InputEvent.usEvent == KEY_UP) {
       switch (InputEvent.usParam) {
         /*
@@ -309,7 +309,7 @@ function HandleMainMenuInput(): void {
           gbHandledMainMenu = Enum23.LOAD_GAME;
 
           if (gfKeyState[ALT])
-            gfLoadGameUponEntry = TRUE;
+            gfLoadGameUponEntry = true;
 
           break;
 
@@ -329,7 +329,7 @@ function HandleHelpScreenInput(): void {
   let InputEvent: InputAtom;
 
   // Check for key
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     switch (InputEvent.usEvent) {
       case KEY_UP:
         SetMainMenuExitScreen(Enum26.INIT_SCREEN);
@@ -372,13 +372,13 @@ function SetMainMenuExitScreen(uiNewScreen: UINT32): void {
   guiMainMenuExitScreen = uiNewScreen;
 
   // REmove the background region
-  CreateDestroyBackGroundMouseMask(FALSE);
+  CreateDestroyBackGroundMouseMask(false);
 
-  gfMainMenuScreenExit = TRUE;
+  gfMainMenuScreenExit = true;
 }
 
-function CreateDestroyBackGroundMouseMask(fCreate: BOOLEAN): void {
-  /* static */ let fRegionCreated: BOOLEAN = FALSE;
+function CreateDestroyBackGroundMouseMask(fCreate: boolean): void {
+  /* static */ let fRegionCreated: boolean = false;
 
   if (fCreate) {
     if (fRegionCreated)
@@ -389,18 +389,18 @@ function CreateDestroyBackGroundMouseMask(fCreate: BOOLEAN): void {
     // Add region
     MSYS_AddRegion(addressof(gBackRegion));
 
-    fRegionCreated = TRUE;
+    fRegionCreated = true;
   } else {
     if (!fRegionCreated)
       return;
 
     MSYS_RemoveRegion(addressof(gBackRegion));
-    fRegionCreated = FALSE;
+    fRegionCreated = false;
   }
 }
 
-function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
-  /* static */ let fButtonsCreated: BOOLEAN = FALSE;
+function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
+  /* static */ let fButtonsCreated: boolean = false;
   let cnt: INT32;
   let filename: SGPFILENAME;
   let sSlot: INT16;
@@ -409,10 +409,10 @@ function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
 
   if (fCreate) {
     if (fButtonsCreated)
-      return TRUE;
+      return true;
 
     // reset the variable that allows the user to ALT click on the continue save btn to load the save instantly
-    gfLoadGameUponEntry = FALSE;
+    gfLoadGameUponEntry = false;
 
     // Load button images
     GetMLGFilename(filename, Enum326.MLG_TITLETEXT);
@@ -444,7 +444,7 @@ function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
       }
       iMenuButtons[cnt] = QuickCreateButton(iMenuImages[cnt], (320 - gusMainMenuButtonWidths[cnt] / 2), (MAINMENU_Y + (cnt * MAINMENU_Y_SPACE)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), MenuButtonCallback);
       if (iMenuButtons[cnt] == -1) {
-        return FALSE;
+        return false;
       }
       ButtonList[iMenuButtons[cnt]].value.UserData[0] = cnt;
 
@@ -455,27 +455,27 @@ function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
         // the file was not able to be loaded properly
         let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-        if (pSoldier.value.bActive != TRUE) {
+        if (pSoldier.value.bActive != true) {
           // something is very wrong
           pSoldier.value.bActive = pSoldier.value.bLife;
         }
       }
     }
 
-    fButtonsCreated = TRUE;
+    fButtonsCreated = true;
   } else {
     if (!fButtonsCreated)
-      return TRUE;
+      return true;
 
     // Delete images/buttons
     for (cnt = 0; cnt < Enum23.NUM_MENU_ITEMS; cnt++) {
       RemoveButton(iMenuButtons[cnt]);
       UnloadButtonImage(iMenuImages[cnt]);
     }
-    fButtonsCreated = FALSE;
+    fButtonsCreated = false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function RenderMainMenu(): void {
@@ -490,7 +490,7 @@ function RenderMainMenu(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, null);
   BltVideoObject(guiSAVEBUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, null);
 
-  DrawTextToScreen(gzCopyrightText[0], 0, 465, 640, FONT10ARIAL(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(gzCopyrightText[0], 0, 465, 640, FONT10ARIAL(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   InvalidateRegion(0, 0, 640, 480);
 }

@@ -44,8 +44,8 @@ interface StringInput {
   usCurrentStringLength: UINT16;
   usStringOffset: UINT16;
   usLastCharacter: UINT16;
-  fInsertMode: BOOLEAN;
-  fFocus: BOOLEAN;
+  fInsertMode: boolean;
+  fFocus: boolean;
   pPreviousString: Pointer<StringInput>;
   pNextString: Pointer<StringInput>;
 }

@@ -78,21 +78,21 @@ let gVehicleMenuRegion: MOUSE_REGION[] /* [20] */;
 
 let gAssignmentScreenMaskRegion: MOUSE_REGION;
 
-let fShownAssignmentMenu: BOOLEAN = FALSE;
-let fShowVehicleMenu: BOOLEAN = FALSE;
-let fShowRepairMenu: BOOLEAN = FALSE;
-let fShownContractMenu: BOOLEAN = FALSE;
+let fShownAssignmentMenu: boolean = false;
+let fShowVehicleMenu: boolean = false;
+let fShowRepairMenu: boolean = false;
+let fShownContractMenu: boolean = false;
 
-let fFirstClickInAssignmentScreenMask: BOOLEAN = FALSE;
+let fFirstClickInAssignmentScreenMask: boolean = false;
 
 // we are in fact training?..then who temmates, or self?
 let gbTrainingMode: INT8 = -1;
 
-let gfAddDisplayBoxToWaitingQueue: BOOLEAN = FALSE;
+let gfAddDisplayBoxToWaitingQueue: boolean = false;
 
 let gpDismissSoldier: Pointer<SOLDIERTYPE> = null;
 
-let gfReEvaluateEveryonesNothingToDo: BOOLEAN = FALSE;
+let gfReEvaluateEveryonesNothingToDo: boolean = false;
 
 // the amount time must be on assignment before it can have any effect
 const MINUTES_FOR_ASSIGNMENT_TO_COUNT = 45;
@@ -173,7 +173,7 @@ const HIGH_ACTIVITY_LEVEL = 12;
 */
 
 // a list of which sectors have characters
-let fSectorsWithSoldiers: BOOLEAN[][] /* [MAP_WORLD_X * MAP_WORLD_Y][4] */;
+let fSectorsWithSoldiers: boolean[][] /* [MAP_WORLD_X * MAP_WORLD_Y][4] */;
 
 /*
 // auto sleep mercs
@@ -181,7 +181,7 @@ BOOLEAN AutoSleepMerc( SOLDIERTYPE *pSoldier );
 */
 
 // glow area for contract region?
-let fGlowContractRegion: BOOLEAN = FALSE;
+let fGlowContractRegion: boolean = false;
 
 /*
 // get how fast the person regains sleep
@@ -216,7 +216,7 @@ function BuildSectorsWithSoldiersList(): void {
   // fills array with pressence of player controlled characters
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
     if (pTeamSoldier.value.bActive) {
-      fSectorsWithSoldiers[pTeamSoldier.value.sSectorX + pTeamSoldier.value.sSectorY * MAP_WORLD_X][pTeamSoldier.value.bSectorZ] = TRUE;
+      fSectorsWithSoldiers[pTeamSoldier.value.sSectorX + pTeamSoldier.value.sSectorY * MAP_WORLD_X][pTeamSoldier.value.bSectorZ] = true;
     }
   }
 }
@@ -229,8 +229,8 @@ function ChangeSoldiersAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: I
   pSoldier.value.bAssignment = bAssignment;
   /// don't kill iVehicleId, though, 'cause militia training tries to put guys back in their vehicles when it's done(!)
 
-  pSoldier.value.fFixingSAMSite = FALSE;
-  pSoldier.value.fFixingRobot = FALSE;
+  pSoldier.value.fFixingSAMSite = false;
+  pSoldier.value.fFixingRobot = false;
   pSoldier.value.bVehicleUnderRepairID = -1;
 
   if ((bAssignment == Enum117.DOCTOR) || (bAssignment == Enum117.PATIENT) || (bAssignment == Enum117.ASSIGNMENT_HOSPITAL)) {
@@ -238,24 +238,24 @@ function ChangeSoldiersAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: I
   }
 
   // update character info, and the team panel
-  fCharacterInfoPanelDirty = TRUE;
-  fTeamPanelDirty = TRUE;
+  fCharacterInfoPanelDirty = true;
+  fTeamPanelDirty = true;
 
   // merc may have come on/off duty, make sure map icons are updated
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
-function BasicCanCharacterAssignment(pSoldier: Pointer<SOLDIERTYPE>, fNotInCombat: BOOLEAN): BOOLEAN {
+function BasicCanCharacterAssignment(pSoldier: Pointer<SOLDIERTYPE>, fNotInCombat: boolean): boolean {
   // global conditions restricting all assignment changes
   if (SectorIsImpassable(SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY))) {
-    return FALSE;
+    return false;
   }
 
   if (fNotInCombat && pSoldier.value.bActive && pSoldier.value.bInSector && gTacticalStatus.fEnemyInSector) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 /*
@@ -294,36 +294,36 @@ BOOLEAN CanSoldierAssignment( SOLDIERTYPE *pSoldier, INT8 bAssignment )
 }
 */
 
-function CanCharacterDoctorButDoesntHaveMedKit(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
-    return FALSE;
+function CanCharacterDoctorButDoesntHaveMedKit(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+  if (!BasicCanCharacterAssignment(pSoldier, true)) {
+    return false;
   }
 
   // make sure character is alive and conscious
   if (pSoldier.value.bLife < OKLIFE) {
     // dead or unconscious...
-    return FALSE;
+    return false;
   }
 
   // has medical skill?
   if (pSoldier.value.bMedical <= 0) {
     // no skill whatsoever
-    return FALSE;
+    return false;
   }
 
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
-    return FALSE;
+  if (IsCharacterInTransit(pSoldier) == true) {
+    return false;
   }
 
   // character on the move?
   if (CharacterIsBetweenSectors(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
-    return FALSE;
+    return false;
   }
 
   // check in helicopter in hostile sector
@@ -331,68 +331,68 @@ function CanCharacterDoctorButDoesntHaveMedKit(pSoldier: Pointer<SOLDIERTYPE>): 
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
-        return FALSE;
+        return false;
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 // is character capable of 'playing' doctor?
 // check that character is alive, conscious, has medical skill and equipment
-function CanCharacterDoctor(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  let fFoundMedKit: BOOLEAN = FALSE;
+function CanCharacterDoctor(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+  let fFoundMedKit: boolean = false;
   let bPocket: INT8 = 0;
 
-  if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
-    return FALSE;
+  if (!BasicCanCharacterAssignment(pSoldier, true)) {
+    return false;
   }
 
-  if (CanCharacterDoctorButDoesntHaveMedKit(pSoldier) == FALSE) {
-    return FALSE;
+  if (CanCharacterDoctorButDoesntHaveMedKit(pSoldier) == false) {
+    return false;
   }
 
   // find med kit
   for (bPocket = Enum261.HANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
     // doctoring is allowed using either type of med kit (but first aid kit halves doctoring effectiveness)
     if (IsMedicalKitItem(addressof(pSoldier.value.inv[bPocket]))) {
-      fFoundMedKit = TRUE;
+      fFoundMedKit = true;
       break;
     }
   }
 
-  if (fFoundMedKit == FALSE) {
-    return FALSE;
+  if (fFoundMedKit == false) {
+    return false;
   }
 
   // all criteria fit, can doctor
-  return TRUE;
+  return true;
 }
 
-function IsAnythingAroundForSoldierToRepair(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function IsAnythingAroundForSoldierToRepair(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iCounter: INT32;
 
   // items?
   if (DoesCharacterHaveAnyItemsToRepair(pSoldier, FINAL_REPAIR_PASS)) {
-    return TRUE;
+    return true;
   }
 
   // robot?
   if (CanCharacterRepairRobot(pSoldier)) {
-    return TRUE;
+    return true;
   }
 
   // vehicles?
   if (pSoldier.value.bSectorZ == 0) {
     for (iCounter = 0; iCounter < ubNumberOfVehicles; iCounter++) {
-      if (pVehicleList[iCounter].fValid == TRUE) {
+      if (pVehicleList[iCounter].fValid == true) {
         // the helicopter, is NEVER repairable...
         if (iCounter != iHelicopterVehicleId) {
           if (IsThisVehicleAccessibleToSoldier(pSoldier, iCounter)) {
-            if (CanCharacterRepairVehicle(pSoldier, iCounter) == TRUE) {
+            if (CanCharacterRepairVehicle(pSoldier, iCounter) == true) {
               // there is a repairable vehicle here
-              return TRUE;
+              return true;
             }
           }
         }
@@ -400,11 +400,11 @@ function IsAnythingAroundForSoldierToRepair(pSoldier: Pointer<SOLDIERTYPE>): BOO
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function HasCharacterFinishedRepairing(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  let fCanStillRepair: BOOLEAN;
+function HasCharacterFinishedRepairing(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+  let fCanStillRepair: boolean;
 
   // NOTE: This must detect situations where the vehicle/robot has left the sector, in which case we want the
   // guy to say "assignment done", so we return that he can no longer repair
@@ -425,7 +425,7 @@ function HasCharacterFinishedRepairing(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
   return !fCanStillRepair;
 }
 
-function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHighestPass: INT8): BOOLEAN {
+function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHighestPass: INT8): boolean {
   let bPocket: INT8;
   let ubItemsInPocket: UINT8;
   let ubObjectInPocketCounter: UINT8;
@@ -442,7 +442,7 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
     for (ubObjectInPocketCounter = 0; ubObjectInPocketCounter < ubItemsInPocket; ubObjectInPocketCounter++) {
       // jammed gun?
       if ((Item[pSoldier.value.inv[bPocket].usItem].usItemClass == IC_GUN) && (pSoldier.value.inv[bPocket].bGunAmmoStatus < 0)) {
-        return TRUE;
+        return true;
       }
     }
   }
@@ -457,7 +457,7 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
     for (ubObjectInPocketCounter = 0; ubObjectInPocketCounter < ubItemsInPocket; ubObjectInPocketCounter++) {
       // if it's repairable and NEEDS repairing
       if (IsItemRepairable(pObj.value.usItem, pObj.value.bStatus[ubObjectInPocketCounter])) {
-        return TRUE;
+        return true;
       }
     }
 
@@ -466,7 +466,7 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
       if (pObj.value.usAttachItem[bLoop] != NOTHING) {
         // if it's repairable and NEEDS repairing
         if (IsItemRepairable(pObj.value.usAttachItem[bLoop], pObj.value.bAttachStatus[bLoop])) {
-          return TRUE;
+          return true;
         }
       }
     }
@@ -484,7 +484,7 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
         for (bPocket = Enum261.HANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
           // the object a weapon? and jammed?
           if ((Item[pOtherSoldier.value.inv[bPocket].usItem].usItemClass == IC_GUN) && (pOtherSoldier.value.inv[bPocket].bGunAmmoStatus < 0)) {
-            return TRUE;
+            return true;
           }
         }
 
@@ -492,46 +492,46 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
         for (ubPassType = Enum116.REPAIR_HANDS_AND_ARMOR; ubPassType <= bHighestPass; ubPassType++) {
           bPocket = FindRepairableItemOnOtherSoldier(pOtherSoldier, ubPassType);
           if (bPocket != NO_SLOT) {
-            return TRUE;
+            return true;
           }
         }
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function BasicCanCharacterRepair(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
-    return FALSE;
+function BasicCanCharacterRepair(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+  if (!BasicCanCharacterAssignment(pSoldier, true)) {
+    return false;
   }
 
   // make sure character is alive and oklife
   if (pSoldier.value.bLife < OKLIFE) {
     // dead or unconscious...
-    return FALSE;
+    return false;
   }
 
   // has repair skill?
   if (pSoldier.value.bMechanical <= 0) {
     // no skill whatsoever
-    return FALSE;
+    return false;
   }
 
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
-    return FALSE;
+  if (IsCharacterInTransit(pSoldier) == true) {
+    return false;
   }
 
   // character on the move?
   if (CharacterIsBetweenSectors(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
-    return FALSE;
+    return false;
   }
 
   // check in helicopter in hostile sector
@@ -539,87 +539,87 @@ function BasicCanCharacterRepair(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
-        return FALSE;
+        return false;
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function CanCharacterRepairButDoesntHaveARepairkit(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  if (BasicCanCharacterRepair(pSoldier) == FALSE) {
-    return FALSE;
+function CanCharacterRepairButDoesntHaveARepairkit(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+  if (BasicCanCharacterRepair(pSoldier) == false) {
+    return false;
   }
 
   // make sure he actually doesn't have a toolkit
   if (FindObj(pSoldier, Enum225.TOOLKIT) != NO_SLOT) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 // can character be assigned as repairman?
 // check that character is alive, oklife, has repair skill, and equipment, etc.
-function CanCharacterRepair(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CanCharacterRepair(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bPocket: INT8 = 0;
-  let fToolKitFound: BOOLEAN = FALSE;
+  let fToolKitFound: boolean = false;
 
-  if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
-    return FALSE;
+  if (!BasicCanCharacterAssignment(pSoldier, true)) {
+    return false;
   }
 
-  if (BasicCanCharacterRepair(pSoldier) == FALSE) {
-    return FALSE;
+  if (BasicCanCharacterRepair(pSoldier) == false) {
+    return false;
   }
 
   // make sure he has a toolkit
   if (FindObj(pSoldier, Enum225.TOOLKIT) == NO_SLOT) {
-    return FALSE;
+    return false;
   }
 
   // anything around to fix?
   if (!IsAnythingAroundForSoldierToRepair(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   // NOTE: This will not detect situations where character lacks the SKILL to repair the stuff that needs repairing...
   // So, in that situation, his assignment will NOT flash, but a message to that effect will be reported every hour.
 
   // all criteria fit, can repair
-  return TRUE;
+  return true;
 }
 
 // can character be set to patient?
-function CanCharacterPatient(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
-    return FALSE;
+function CanCharacterPatient(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+  if (!BasicCanCharacterAssignment(pSoldier, true)) {
+    return false;
   }
 
   // Robot must be REPAIRED to be "healed", not doctored
   if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
-    return FALSE;
+    return false;
   }
 
   // is character alive and not in perfect health?
   if ((pSoldier.value.bLife <= 0) || (pSoldier.value.bLife == pSoldier.value.bLifeMax)) {
     // dead or in perfect health
-    return FALSE;
+    return false;
   }
 
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
-    return FALSE;
+  if (IsCharacterInTransit(pSoldier) == true) {
+    return false;
   }
 
   // character on the move?
   if (CharacterIsBetweenSectors(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   // check in helicopter in hostile sector
@@ -627,33 +627,33 @@ function CanCharacterPatient(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
-        return FALSE;
+        return false;
       }
     }
   }
 
   // alive and can be healed
-  return TRUE;
+  return true;
 }
 
-function BasicCanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function BasicCanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // is the character capable of training a town?
   // they must be alive/conscious and in the sector with the town
-  let fSamSitePresent: BOOLEAN = FALSE;
+  let fSamSitePresent: boolean = false;
 
-  if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
-    return FALSE;
+  if (!BasicCanCharacterAssignment(pSoldier, true)) {
+    return false;
   }
 
   // make sure character is alive and conscious
   if (pSoldier.value.bLife < OKLIFE) {
     // dead or unconscious...
-    return FALSE;
+    return false;
   }
 
   // underground training is not allowed (code doesn't support and it's a reasonable enough limitation)
   if (pSoldier.value.bSectorZ != 0) {
-    return FALSE;
+    return false;
   }
 
   // is there a town in the character's current sector?
@@ -661,14 +661,14 @@ function BasicCanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
     fSamSitePresent = IsThisSectorASAMSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
 
     // check if sam site
-    if (fSamSitePresent == FALSE) {
+    if (fSamSitePresent == false) {
       // nope
-      return FALSE;
+      return false;
     }
   }
 
   if (NumEnemiesInAnySector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ)) {
-    return FALSE;
+    return false;
   }
 
   // check in helicopter in hostile sector
@@ -676,65 +676,65 @@ function BasicCanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
-        return FALSE;
+        return false;
       }
     }
   }
 
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
-    return FALSE;
+  if (IsCharacterInTransit(pSoldier) == true) {
+    return false;
   }
 
   // character on the move?
   if (CharacterIsBetweenSectors(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
-    return FALSE;
+    return false;
   }
 
   if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   // has leadership skill?
   if (pSoldier.value.bLeadership <= 0) {
     // no skill whatsoever
-    return FALSE;
+    return false;
   }
 
   // can train militia
-  return TRUE;
+  return true;
 }
 
-function CanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  if (BasicCanCharacterTrainMilitia(pSoldier) && MilitiaTrainingAllowedInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) && DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier) && (IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier) == FALSE) && (CountMilitiaTrainersInSoldiersSector(pSoldier) < MAX_MILITIA_TRAINERS_PER_SECTOR)) {
-    return TRUE;
+function CanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+  if (BasicCanCharacterTrainMilitia(pSoldier) && MilitiaTrainingAllowedInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) && DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier) && (IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier) == false) && (CountMilitiaTrainersInSoldiersSector(pSoldier) < MAX_MILITIA_TRAINERS_PER_SECTOR)) {
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function DoesTownHaveRatingToTrainMilitia(bTownId: INT8): BOOLEAN {
+function DoesTownHaveRatingToTrainMilitia(bTownId: INT8): boolean {
   // min loyalty rating?
   if ((gTownLoyalty[bTownId].ubRating < MIN_RATING_TO_TRAIN_TOWN)) {
     // nope
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bTownId: INT8 = 0;
-  let fSamSitePresent: BOOLEAN = FALSE;
+  let fSamSitePresent: boolean = false;
 
   // underground training is not allowed (code doesn't support and it's a reasonable enough limitation)
   if (pSoldier.value.bSectorZ != 0) {
-    return FALSE;
+    return false;
   }
 
   bTownId = GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
@@ -745,18 +745,18 @@ function DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier: Pointer
 
     // if there is a sam site here
     if (fSamSitePresent) {
-      return TRUE;
+      return true;
     }
 
-    return FALSE;
+    return false;
   }
 
   // does this town have sufficient loyalty to train militia
-  if (DoesTownHaveRatingToTrainMilitia(bTownId) == FALSE) {
-    return FALSE;
+  if (DoesTownHaveRatingToTrainMilitia(bTownId) == false) {
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function CountMilitiaTrainersInSoldiersSector(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -775,12 +775,12 @@ function CountMilitiaTrainersInSoldiersSector(pSoldier: Pointer<SOLDIERTYPE>): I
   return bCount;
 }
 
-function IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bTownId: INT8 = 0;
-  let fSamSitePresent: BOOLEAN = FALSE;
+  let fSamSitePresent: boolean = false;
 
   if (pSoldier.value.bSectorZ != 0) {
-    return TRUE;
+    return true;
   }
 
   bTownId = GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
@@ -792,39 +792,39 @@ function IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier: Pointer<SOLDIERTYPE
     // if there is a sam site here
     if (fSamSitePresent) {
       if (IsSAMSiteFullOfMilitia(pSoldier.value.sSectorX, pSoldier.value.sSectorY)) {
-        return TRUE;
+        return true;
       }
-      return FALSE;
+      return false;
     }
 
-    return FALSE;
+    return false;
   }
 
   // this considers *ALL* safe sectors of the town, not just the one soldier is in
   if (IsTownFullMilitia(bTownId)) {
     // town is full of militia
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTrainSelf: BOOLEAN, fTrainTeammate: BOOLEAN): BOOLEAN {
+function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTrainSelf: boolean, fTrainTeammate: boolean): boolean {
 // is the character capable of training this stat? either self or as trainer
 
-  if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
-    return FALSE;
+  if (!BasicCanCharacterAssignment(pSoldier, true)) {
+    return false;
   }
 
   // alive and conscious
   if (pSoldier.value.bLife < OKLIFE) {
     // dead or unconscious...
-    return FALSE;
+    return false;
   }
 
   // underground training is not allowed (code doesn't support and it's a reasonable enough limitation)
   if (pSoldier.value.bSectorZ != 0) {
-    return FALSE;
+    return false;
   }
 
   // check in helicopter in hostile sector
@@ -832,14 +832,14 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
-        return FALSE;
+        return false;
       }
     }
   }
 
   if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
-    return FALSE;
+    return false;
   }
 
   // check stat values, 0 means no chance in hell
@@ -847,107 +847,107 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
     case (Enum118.STRENGTH):
       // strength
       if ((pSoldier.value.bStrength == 0) || ((pSoldier.value.bStrength < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
-        return FALSE;
+        return false;
       } else if ((pSoldier.value.bStrength >= TRAINING_RATING_CAP) && (fTrainSelf)) {
-        return FALSE;
+        return false;
       }
       break;
     case (Enum118.DEXTERITY):
       // dexterity
       if ((pSoldier.value.bDexterity == 0) || ((pSoldier.value.bDexterity < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
-        return FALSE;
+        return false;
       } else if ((pSoldier.value.bDexterity >= TRAINING_RATING_CAP) && (fTrainSelf)) {
-        return FALSE;
+        return false;
       }
       break;
     case (Enum118.AGILITY):
       // agility
       if ((pSoldier.value.bAgility == 0) || ((pSoldier.value.bAgility < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
-        return FALSE;
+        return false;
       } else if ((pSoldier.value.bAgility >= TRAINING_RATING_CAP) && (fTrainSelf)) {
-        return FALSE;
+        return false;
       }
 
       break;
     case (Enum118.HEALTH):
       // wisdom
       if ((pSoldier.value.bLifeMax == 0) || ((pSoldier.value.bLifeMax < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
-        return FALSE;
+        return false;
       } else if ((pSoldier.value.bLifeMax >= TRAINING_RATING_CAP) && (fTrainSelf)) {
-        return FALSE;
+        return false;
       }
 
       break;
     case (Enum118.MARKSMANSHIP):
       // marksmanship
       if ((pSoldier.value.bMarksmanship == 0) || ((pSoldier.value.bMarksmanship < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
-        return FALSE;
+        return false;
       } else if ((pSoldier.value.bMarksmanship >= TRAINING_RATING_CAP) && (fTrainSelf)) {
-        return FALSE;
+        return false;
       }
 
       break;
     case (Enum118.MEDICAL):
       // medical
       if ((pSoldier.value.bMedical == 0) || ((pSoldier.value.bMedical < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
-        return FALSE;
+        return false;
       } else if ((pSoldier.value.bMedical >= TRAINING_RATING_CAP) && (fTrainSelf)) {
-        return FALSE;
+        return false;
       }
 
       break;
     case (Enum118.MECHANICAL):
       // mechanical
       if ((pSoldier.value.bMechanical == 0) || ((pSoldier.value.bMechanical < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
-        return FALSE;
+        return false;
       } else if ((pSoldier.value.bMechanical >= TRAINING_RATING_CAP) && (fTrainSelf)) {
-        return FALSE;
+        return false;
       }
       break;
     case (Enum118.LEADERSHIP):
       // leadership
       if ((pSoldier.value.bLeadership == 0) || ((pSoldier.value.bLeadership < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
-        return FALSE;
+        return false;
       } else if ((pSoldier.value.bLeadership >= TRAINING_RATING_CAP) && (fTrainSelf)) {
-        return FALSE;
+        return false;
       }
       break;
     case (Enum118.EXPLOSIVE_ASSIGN):
       // explosives
       if ((pSoldier.value.bExplosive == 0) || ((pSoldier.value.bExplosive < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
-        return FALSE;
+        return false;
       } else if ((pSoldier.value.bExplosive >= TRAINING_RATING_CAP) && (fTrainSelf)) {
-        return FALSE;
+        return false;
       }
       break;
   }
 
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
-    return FALSE;
+  if (IsCharacterInTransit(pSoldier) == true) {
+    return false;
   }
 
   // character on the move?
   if (CharacterIsBetweenSectors(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   // stat is ok and character alive and conscious
-  return TRUE;
+  return true;
 }
 
-function CanCharacterOnDuty(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CanCharacterOnDuty(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // can character commit themselves to on duty?
 
   // only need to be alive and well to do so right now
   // alive and conscious
   if (pSoldier.value.bLife < OKLIFE) {
     // dead or unconscious...
-    return FALSE;
+    return false;
   }
 
-  if (!BasicCanCharacterAssignment(pSoldier, FALSE)) {
-    return FALSE;
+  if (!BasicCanCharacterAssignment(pSoldier, false)) {
+    return false;
   }
 
   // check in helicopter in hostile sector
@@ -955,18 +955,18 @@ function CanCharacterOnDuty(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
-        return FALSE;
+        return false;
       }
     }
   }
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
-    return FALSE;
+  if (IsCharacterInTransit(pSoldier) == true) {
+    return false;
   }
 
   // ARM: New rule: can't change squads or exit vehicles between sectors!
   if (pSoldier.value.fBetweenSectors) {
-    return FALSE;
+    return false;
   }
 
   /*
@@ -983,35 +983,35 @@ function CanCharacterOnDuty(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           }
   */
 
-  return TRUE;
+  return true;
 }
 
-function CanCharacterPractise(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CanCharacterPractise(pSoldier: Pointer<SOLDIERTYPE>): boolean {
 // can character practise right now?
 
-  if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
-    return FALSE;
+  if (!BasicCanCharacterAssignment(pSoldier, true)) {
+    return false;
   }
 
   // only need to be alive and well to do so right now
   // alive and conscious
   if (pSoldier.value.bLife < OKLIFE) {
     // dead or unconscious...
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bSectorZ != 0) {
-    return FALSE;
+    return false;
   }
 
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
-    return FALSE;
+  if (IsCharacterInTransit(pSoldier) == true) {
+    return false;
   }
 
   // character on the move?
   if (CharacterIsBetweenSectors(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   // check in helicopter in hostile sector
@@ -1019,78 +1019,78 @@ function CanCharacterPractise(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
-        return FALSE;
+        return false;
       }
     }
   }
 
   if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
-    return FALSE;
+    return false;
   }
 
   // can practise
-  return TRUE;
+  return true;
 }
 
-function CanCharacterTrainTeammates(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CanCharacterTrainTeammates(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let cnt: INT32 = 0;
   let pTeamSoldier: Pointer<SOLDIERTYPE> = null;
 
   // can character train at all
-  if (CanCharacterPractise(pSoldier) == FALSE) {
+  if (CanCharacterPractise(pSoldier) == false) {
     // nope
-    return FALSE;
+    return false;
   }
 
   // if alone in sector, can't enter the attributes submenu at all
   if (PlayerMercsInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) == 0) {
-    return FALSE;
+    return false;
   }
 
   // ARM: we allow this even if there are no students assigned yet.  Flashing is warning enough.
-  return TRUE;
+  return true;
 }
 
-function CanCharacterBeTrainedByOther(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CanCharacterBeTrainedByOther(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iCounter: INT32 = 0;
 
   // can character train at all
-  if (CanCharacterPractise(pSoldier) == FALSE) {
-    return FALSE;
+  if (CanCharacterPractise(pSoldier) == false) {
+    return false;
   }
 
   // if alone in sector, can't enter the attributes submenu at all
   if (PlayerMercsInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) == 0) {
-    return FALSE;
+    return false;
   }
 
   // ARM: we now allow this even if there are no trainers assigned yet.  Flashing is warning enough.
-  return TRUE;
+  return true;
 }
 
 // can character sleep right now?
-function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLEAN): BOOLEAN {
+function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: boolean): boolean {
   let sString: CHAR16[] /* [128] */;
 
   // dead or dying?
   if (pSoldier.value.bLife < OKLIFE) {
-    return FALSE;
+    return false;
   }
 
   // vehicle or robot?
   if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
-    return FALSE;
+  if (IsCharacterInTransit(pSoldier) == true) {
+    return false;
   }
 
   // POW?
   if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
-    return FALSE;
+    return false;
   }
 
   // traveling?
@@ -1104,11 +1104,11 @@ function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLE
         DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
       }
 
-      return FALSE;
+      return false;
     } else // in a vehicle
     {
       // if this guy has to drive ('cause nobody else can)
-      if (SoldierMustDriveVehicle(pSoldier, pSoldier.value.iVehicleId, FALSE)) {
+      if (SoldierMustDriveVehicle(pSoldier, pSoldier.value.iVehicleId, false)) {
         // can't sleep while walking or driving a vehicle
         if (fExplainWhyNot) {
           // is driving, can't sleep
@@ -1116,7 +1116,7 @@ function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLE
           DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
         }
 
-        return FALSE;
+        return false;
       }
     }
   } else // in a sector
@@ -1129,7 +1129,7 @@ function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLE
           DoScreenIndependantMessageBox(Message[Enum334.STR_SECTOR_NOT_CLEARED], MSG_BOX_FLAG_OK, null);
         }
 
-        return FALSE;
+        return false;
       }
 
       // on surface, and enemies are in the sector
@@ -1138,7 +1138,7 @@ function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLE
           DoScreenIndependantMessageBox(Message[Enum334.STR_SECTOR_NOT_CLEARED], MSG_BOX_FLAG_OK, null);
         }
 
-        return FALSE;
+        return false;
       }
     }
   }
@@ -1150,63 +1150,63 @@ function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLE
       DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
     }
 
-    return FALSE;
+    return false;
   }
 
   // can sleep
-  return TRUE;
+  return true;
 }
 
-function CanCharacterBeAwakened(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLEAN): BOOLEAN {
+function CanCharacterBeAwakened(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: boolean): boolean {
   let sString: CHAR16[] /* [128] */;
 
   // if dead tired
   if ((pSoldier.value.bBreathMax <= BREATHMAX_ABSOLUTE_MINIMUM) && !pSoldier.value.fMercCollapsedFlag) {
     // should be collapsed, then!
-    pSoldier.value.fMercCollapsedFlag = TRUE;
+    pSoldier.value.fMercCollapsedFlag = true;
   }
 
   // merc collapsed due to being dead tired, you can't wake him up until he recovers substantially
-  if (pSoldier.value.fMercCollapsedFlag == TRUE) {
+  if (pSoldier.value.fMercCollapsedFlag == true) {
     if (fExplainWhyNot) {
       swprintf(sString, zMarksMapScreenText[6], pSoldier.value.name);
       DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
     }
 
-    return FALSE;
+    return false;
   }
 
   // can be awakened
-  return TRUE;
+  return true;
 }
 
-function CanCharacterVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CanCharacterVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
 // can character enter/leave vehicle?
 
-  if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
-    return FALSE;
+  if (!BasicCanCharacterAssignment(pSoldier, true)) {
+    return false;
   }
 
   // only need to be alive and well to do so right now
   // alive and conscious
   if (pSoldier.value.bLife < OKLIFE) {
     // dead or unconscious...
-    return FALSE;
+    return false;
   }
 
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
-    return FALSE;
+  if (IsCharacterInTransit(pSoldier) == true) {
+    return false;
   }
 
   // character on the move?
   if (CharacterIsBetweenSectors(pSoldier)) {
-    return FALSE;
+    return false;
   }
 
   // underground?
   if (pSoldier.value.bSectorZ != 0) {
-    return FALSE;
+    return false;
   }
 
   // check in helicopter in hostile sector
@@ -1214,29 +1214,29 @@ function CanCharacterVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
-        return FALSE;
+        return false;
       }
     }
   }
 
   // any accessible vehicles in soldier's sector (excludes those between sectors, etc.)
-  if (AnyAccessibleVehiclesInSoldiersSector(pSoldier) == FALSE) {
-    return FALSE;
+  if (AnyAccessibleVehiclesInSoldiersSector(pSoldier) == false) {
+    return false;
   }
 
   // have to be in mapscreen (strictly for visual reasons - we don't want them just vanishing if in tactical)
-  if (fInMapMode == FALSE) {
-    return FALSE;
+  if (fInMapMode == false) {
+    return false;
   }
 
   // if we're in BATTLE in the current sector, disallow
   if (gTacticalStatus.fEnemyInSector) {
     if ((pSoldier.value.sSectorX == gWorldSectorX) && (pSoldier.value.sSectorY == gWorldSectorY) && (pSoldier.value.bSectorZ == gbWorldSectorZ)) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function CanCharacterSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): INT8 {
@@ -1258,7 +1258,7 @@ function CanCharacterSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): I
   }
 
   // in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
+  if (IsCharacterInTransit(pSoldier) == true) {
     return CHARACTER_CANT_JOIN_SQUAD;
   }
 
@@ -1292,7 +1292,7 @@ function CanCharacterSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): I
     }
   }
 
-  if (IsThisSquadOnTheMove(bSquadValue) == TRUE) {
+  if (IsThisSquadOnTheMove(bSquadValue) == true) {
     // can't join while squad is moving
     return CHARACTER_CANT_JOIN_SQUAD_SQUAD_MOVING;
   }
@@ -1309,20 +1309,20 @@ function CanCharacterSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): I
   return CHARACTER_CAN_JOIN_SQUAD;
 }
 
-function IsCharacterInTransit(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function IsCharacterInTransit(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // valid character?
   if (pSoldier == null) {
-    return FALSE;
+    return false;
   }
 
   // check if character is currently in transit
   if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
     // yep
-    return TRUE;
+    return true;
   }
 
   // no
-  return FALSE;
+  return false;
 }
 
 function UpdateAssignments(): void {
@@ -1357,7 +1357,7 @@ function UpdateAssignments(): void {
     for (sY = 0; sY < MAP_WORLD_X; sY++) {
       for (bZ = 0; bZ < 4; bZ++) {
         // is there anyone in this sector?
-        if (fSectorsWithSoldiers[sX + sY * MAP_WORLD_X][bZ] == TRUE) {
+        if (fSectorsWithSoldiers[sX + sY * MAP_WORLD_X][bZ] == true) {
           // handle any doctors
           HandleDoctorsInSector(sX, sY, bZ);
 
@@ -1377,7 +1377,7 @@ function UpdateAssignments(): void {
   // check if we have anyone who just finished their assignment
   if (gfAddDisplayBoxToWaitingQueue) {
     AddDisplayBoxToWaitingQueue();
-    gfAddDisplayBoxToWaitingQueue = FALSE;
+    gfAddDisplayBoxToWaitingQueue = false;
   }
 
   HandleContinueOfTownTraining();
@@ -1386,9 +1386,9 @@ function UpdateAssignments(): void {
   ReEvaluateEveryonesNothingToDo();
 
   // update mapscreen
-  fCharacterInfoPanelDirty = TRUE;
-  fTeamPanelDirty = TRUE;
-  fMapScreenBottomDirty = TRUE;
+  fCharacterInfoPanelDirty = true;
+  fTeamPanelDirty = true;
+  fMapScreenBottomDirty = true;
 }
 
 function FindNumberInSectorWithAssignment(sX: INT16, sY: INT16, bAssignment: INT8): UINT8 {
@@ -1416,7 +1416,7 @@ function FindNumberInSectorWithAssignment(sX: INT16, sY: INT16, bAssignment: INT
   return bNumberOfPeople;
 }
 
-function GetNumberThatCanBeDoctored(pDoctor: Pointer<SOLDIERTYPE>, fThisHour: BOOLEAN, fSkipKitCheck: BOOLEAN, fSkipSkillCheck: BOOLEAN): UINT8 {
+function GetNumberThatCanBeDoctored(pDoctor: Pointer<SOLDIERTYPE>, fThisHour: boolean, fSkipKitCheck: boolean, fSkipSkillCheck: boolean): UINT8 {
   let cnt: int;
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
   let pTeamSoldier: Pointer<SOLDIERTYPE> = null;
@@ -1425,7 +1425,7 @@ function GetNumberThatCanBeDoctored(pDoctor: Pointer<SOLDIERTYPE>, fThisHour: BO
   // go through list of characters, find all who are patients/doctors healable by this doctor
   for (cnt = 0, pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
     if (pTeamSoldier.value.bActive) {
-      if (CanSoldierBeHealedByDoctor(pTeamSoldier, pDoctor, FALSE, fThisHour, fSkipKitCheck, fSkipSkillCheck) == TRUE) {
+      if (CanSoldierBeHealedByDoctor(pTeamSoldier, pDoctor, false, fThisHour, fSkipKitCheck, fSkipSkillCheck) == true) {
         // increment number of doctorable patients/doctors
         ubNumberOfPeople++;
       }
@@ -1435,7 +1435,7 @@ function GetNumberThatCanBeDoctored(pDoctor: Pointer<SOLDIERTYPE>, fThisHour: BO
   return ubNumberOfPeople;
 }
 
-function AnyDoctorWhoCanHealThisPatient(pPatient: Pointer<SOLDIERTYPE>, fThisHour: BOOLEAN): Pointer<SOLDIERTYPE> {
+function AnyDoctorWhoCanHealThisPatient(pPatient: Pointer<SOLDIERTYPE>, fThisHour: boolean): Pointer<SOLDIERTYPE> {
   let cnt: int;
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
   let pTeamSoldier: Pointer<SOLDIERTYPE> = null;
@@ -1444,7 +1444,7 @@ function AnyDoctorWhoCanHealThisPatient(pPatient: Pointer<SOLDIERTYPE>, fThisHou
   for (cnt = 0, pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
     // doctor?
     if ((pTeamSoldier.value.bActive) && (pTeamSoldier.value.bAssignment == Enum117.DOCTOR)) {
-      if (CanSoldierBeHealedByDoctor(pPatient, pTeamSoldier, FALSE, fThisHour, FALSE, FALSE) == TRUE) {
+      if (CanSoldierBeHealedByDoctor(pPatient, pTeamSoldier, false, fThisHour, false, false) == true) {
         // found one
         return pTeamSoldier;
       }
@@ -1455,7 +1455,7 @@ function AnyDoctorWhoCanHealThisPatient(pPatient: Pointer<SOLDIERTYPE>, fThisHou
   return null;
 }
 
-function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: BOOLEAN): UINT16 {
+function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT16 {
   let usHealPts: UINT16 = 0;
   let usKitPts: UINT16 = 0;
   let bMedFactor: INT8;
@@ -1501,7 +1501,7 @@ function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPt
   return usHealPts;
 }
 
-function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: BOOLEAN): UINT8 {
+function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT8 {
   let usRepairPts: UINT16;
   let usKitPts: UINT16;
   let ubKitEffectiveness: UINT8;
@@ -1592,7 +1592,7 @@ function HandleDoctorsInSector(sX: INT16, sY: INT16, bZ: INT8): void {
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
     if (pTeamSoldier.value.bActive) {
       if ((pTeamSoldier.value.sSectorX == sX) && (pTeamSoldier.value.sSectorY == sY) && (pTeamSoldier.value.bSectorZ == bZ)) {
-        if ((pTeamSoldier.value.bAssignment == Enum117.DOCTOR) && (pTeamSoldier.value.fMercAsleep == FALSE)) {
+        if ((pTeamSoldier.value.bAssignment == Enum117.DOCTOR) && (pTeamSoldier.value.fMercAsleep == false)) {
           MakeSureMedKitIsInHand(pTeamSoldier);
           // character is in sector, check if can doctor, if so...heal people
           if (CanCharacterDoctor(pTeamSoldier) && EnoughTimeOnAssignment(pTeamSoldier)) {
@@ -1632,7 +1632,7 @@ function UpdatePatientsWhoAreDoneHealing(): void {
     if (pTeamSoldier.value.bActive) {
       // patient who doesn't need healing
       if ((pTeamSoldier.value.bAssignment == Enum117.PATIENT) && (pTeamSoldier.value.bLife == pTeamSoldier.value.bLifeMax)) {
-        AssignmentDone(pTeamSoldier, TRUE, TRUE);
+        AssignmentDone(pTeamSoldier, true, true);
       }
     }
   }
@@ -1654,12 +1654,12 @@ function HealCharacters(pDoctor: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, bZ:
   let usOldLeftOvers: UINT16 = 0;
 
   // now find number of healable mercs in sector that are wounded
-  ubTotalNumberOfPatients = GetNumberThatCanBeDoctored(pDoctor, HEALABLE_THIS_HOUR, FALSE, FALSE);
+  ubTotalNumberOfPatients = GetNumberThatCanBeDoctored(pDoctor, HEALABLE_THIS_HOUR, false, false);
 
   // if there is anybody who can be healed right now
   if (ubTotalNumberOfPatients > 0) {
     // get available healing pts
-    usAvailableHealingPts = CalculateHealingPointsForDoctor(pDoctor, addressof(usMax), TRUE);
+    usAvailableHealingPts = CalculateHealingPointsForDoctor(pDoctor, addressof(usMax), true);
     usRemainingHealingPts = usAvailableHealingPts;
 
     // find how many healing points can be evenly distributed to each wounded, healable merc
@@ -1668,7 +1668,7 @@ function HealCharacters(pDoctor: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, bZ:
     // heal each of the healable mercs by this equal amount
     for (cnt = 0, pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
       if (pTeamSoldier.value.bActive) {
-        if (CanSoldierBeHealedByDoctor(pTeamSoldier, pDoctor, FALSE, HEALABLE_THIS_HOUR, FALSE, FALSE) == TRUE) {
+        if (CanSoldierBeHealedByDoctor(pTeamSoldier, pDoctor, false, HEALABLE_THIS_HOUR, false, false) == true) {
           // can heal and is patient, heal them
           usRemainingHealingPts -= HealPatient(pTeamSoldier, pDoctor, usEvenHealingAmount);
         }
@@ -1684,7 +1684,7 @@ function HealCharacters(pDoctor: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, bZ:
 
         for (cnt = 0, pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
           if (pTeamSoldier.value.bActive) {
-            if (CanSoldierBeHealedByDoctor(pTeamSoldier, pDoctor, FALSE, HEALABLE_THIS_HOUR, FALSE, FALSE) == TRUE) {
+            if (CanSoldierBeHealedByDoctor(pTeamSoldier, pDoctor, false, HEALABLE_THIS_HOUR, false, false) == true) {
               if (pWorstHurtSoldier == null) {
                 pWorstHurtSoldier = pTeamSoldier;
               } else {
@@ -1714,27 +1714,27 @@ function HealCharacters(pDoctor: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, bZ:
     usUsedHealingPts = usAvailableHealingPts - usRemainingHealingPts;
 
     // increment skills based on healing pts used
-    StatChange(pDoctor, MEDICALAMT, (usUsedHealingPts / 100), FALSE);
-    StatChange(pDoctor, DEXTAMT, (usUsedHealingPts / 200), FALSE);
-    StatChange(pDoctor, WISDOMAMT, (usUsedHealingPts / 200), FALSE);
+    StatChange(pDoctor, MEDICALAMT, (usUsedHealingPts / 100), false);
+    StatChange(pDoctor, DEXTAMT, (usUsedHealingPts / 200), false);
+    StatChange(pDoctor, WISDOMAMT, (usUsedHealingPts / 200), false);
   }
 
   // if there's nobody else here who can EVER be helped by this doctor (regardless of whether they got healing this hour)
-  if (GetNumberThatCanBeDoctored(pDoctor, HEALABLE_EVER, FALSE, FALSE) == 0) {
+  if (GetNumberThatCanBeDoctored(pDoctor, HEALABLE_EVER, false, false) == 0) {
     // then this doctor has done all that he can do, but let's find out why and tell player the reason
 
     // try again, but skip the med kit check!
-    if (GetNumberThatCanBeDoctored(pDoctor, HEALABLE_EVER, TRUE, FALSE) > 0) {
+    if (GetNumberThatCanBeDoctored(pDoctor, HEALABLE_EVER, true, false) > 0) {
       // he could doctor somebody, but can't because he doesn't have a med kit!
       AssignmentAborted(pDoctor, Enum113.NO_MORE_MED_KITS);
     }
     // try again, but skip the skill check!
-    else if (GetNumberThatCanBeDoctored(pDoctor, HEALABLE_EVER, FALSE, TRUE) > 0) {
+    else if (GetNumberThatCanBeDoctored(pDoctor, HEALABLE_EVER, false, true) > 0) {
       // he could doctor somebody, but can't because he doesn't have enough skill!
       AssignmentAborted(pDoctor, Enum113.INSUF_DOCTOR_SKILL);
     } else {
       // all patients should now be healed - truly DONE!
-      AssignmentDone(pDoctor, TRUE, TRUE);
+      AssignmentDone(pDoctor, true, true);
     }
   }
 }
@@ -1797,50 +1797,50 @@ BOOLEAN IsSoldierCloseEnoughToADoctor( SOLDIERTYPE *pPatient )
 }
 */
 
-function CanSoldierBeHealedByDoctor(pSoldier: Pointer<SOLDIERTYPE>, pDoctor: Pointer<SOLDIERTYPE>, fIgnoreAssignment: BOOLEAN, fThisHour: BOOLEAN, fSkipKitCheck: BOOLEAN, fSkipSkillCheck: BOOLEAN): BOOLEAN {
+function CanSoldierBeHealedByDoctor(pSoldier: Pointer<SOLDIERTYPE>, pDoctor: Pointer<SOLDIERTYPE>, fIgnoreAssignment: boolean, fThisHour: boolean, fSkipKitCheck: boolean, fSkipSkillCheck: boolean): boolean {
   let sDistance: INT16 = 0;
 
   // must be an active guy
-  if (pSoldier.value.bActive == FALSE) {
-    return FALSE;
+  if (pSoldier.value.bActive == false) {
+    return false;
   }
 
   // must be a patient or a doctor
-  if ((pSoldier.value.bAssignment != Enum117.PATIENT) && (pSoldier.value.bAssignment != Enum117.DOCTOR) && (fIgnoreAssignment == FALSE)) {
-    return FALSE;
+  if ((pSoldier.value.bAssignment != Enum117.PATIENT) && (pSoldier.value.bAssignment != Enum117.DOCTOR) && (fIgnoreAssignment == false)) {
+    return false;
   }
 
   // if dead or unhurt
   if ((pSoldier.value.bLife == 0) || (pSoldier.value.bLife == pSoldier.value.bLifeMax)) {
-    return FALSE;
+    return false;
   }
 
   // if we care about how long it's been, and he hasn't been on a healable assignment long enough
-  if (fThisHour && (EnoughTimeOnAssignment(pSoldier) == FALSE) && (fIgnoreAssignment == FALSE)) {
-    return FALSE;
+  if (fThisHour && (EnoughTimeOnAssignment(pSoldier) == false) && (fIgnoreAssignment == false)) {
+    return false;
   }
 
   // must be in the same sector
   if ((pSoldier.value.sSectorX != pDoctor.value.sSectorX) || (pSoldier.value.sSectorY != pDoctor.value.sSectorY) || (pSoldier.value.bSectorZ != pDoctor.value.bSectorZ)) {
-    return FALSE;
+    return false;
   }
 
   // can't be between sectors (possible to get here if ignoring assignment)
   if (pSoldier.value.fBetweenSectors) {
-    return FALSE;
+    return false;
   }
 
   // if doctor's skill is unsufficient to save this guy
   if (!fSkipSkillCheck && (pDoctor.value.bMedical < GetMinHealingSkillNeeded(pSoldier))) {
-    return FALSE;
+    return false;
   }
 
   if (!fSkipKitCheck && (FindObj(pDoctor, Enum225.MEDICKIT) == NO_SLOT)) {
     // no medical kit to use!
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function GetMinHealingSkillNeeded(pPatient: Pointer<SOLDIERTYPE>): UINT8 {
@@ -2017,7 +2017,7 @@ function CheckForAndHandleHospitalPatients(): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32 = 0;
 
-  if (fSectorsWithSoldiers[HOSPITAL_SECTOR_X + HOSPITAL_SECTOR_Y * MAP_WORLD_X][0] == FALSE) {
+  if (fSectorsWithSoldiers[HOSPITAL_SECTOR_X + HOSPITAL_SECTOR_Y * MAP_WORLD_X][0] == false) {
     // nobody in the hospital sector... leave
     return;
   }
@@ -2088,7 +2088,7 @@ function HealHospitalPatient(pPatient: Pointer<SOLDIERTYPE>, usHealingPtsLeft: U
 
   // if this patient is fully healed
   if (pPatient.value.bLife == pPatient.value.bLifeMax) {
-    AssignmentDone(pPatient, TRUE, TRUE);
+    AssignmentDone(pPatient, true, true);
   }
 }
 
@@ -2107,7 +2107,7 @@ function HandleRepairmenInSector(sX: INT16, sY: INT16, bZ: INT8): void {
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
     if (pTeamSoldier.value.bActive) {
       if ((pTeamSoldier.value.sSectorX == sX) && (pTeamSoldier.value.sSectorY == sY) && (pTeamSoldier.value.bSectorZ == bZ)) {
-        if ((pTeamSoldier.value.bAssignment == Enum117.REPAIR) && (pTeamSoldier.value.fMercAsleep == FALSE)) {
+        if ((pTeamSoldier.value.bAssignment == Enum117.REPAIR) && (pTeamSoldier.value.fMercAsleep == false)) {
           MakeSureToolKitIsInHand(pTeamSoldier);
           // character is in sector, check if can repair
           if (CanCharacterRepair(pTeamSoldier) && (EnoughTimeOnAssignment(pTeamSoldier))) {
@@ -2262,10 +2262,10 @@ function DoActualRepair(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, pbStatus
   }
 }
 
-function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pubRepairPtsLeft: Pointer<UINT8>): BOOLEAN {
+function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pubRepairPtsLeft: Pointer<UINT8>): boolean {
   let ubLoop: UINT8;
   let ubItemsInPocket: UINT8;
-  let fSomethingWasRepaired: BOOLEAN = FALSE;
+  let fSomethingWasRepaired: boolean = false;
 
   ubItemsInPocket = pObj.value.ubNumberOfObjects;
 
@@ -2277,7 +2277,7 @@ function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYP
       // void DoActualRepair( SOLDIERTYPE * pSoldier, UINT16 usItem, INT8 * pbStatus, UINT8 * pubRepairPtsLeft )
       DoActualRepair(pSoldier, pObj.value.usItem, addressof(pObj.value.bStatus[ubLoop]), pubRepairPtsLeft);
 
-      fSomethingWasRepaired = TRUE;
+      fSomethingWasRepaired = true;
 
       if (pObj.value.bStatus[ubLoop] == 100) {
         // report it as fixed
@@ -2304,7 +2304,7 @@ function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYP
 
         DoActualRepair(pSoldier, pObj.value.usAttachItem[ubLoop], addressof(pObj.value.bAttachStatus[ubLoop]), pubRepairPtsLeft);
 
-        fSomethingWasRepaired = TRUE;
+        fSomethingWasRepaired = true;
 
         if (pObj.value.bAttachStatus[ubLoop] == 100) {
           // report it as fixed
@@ -2335,19 +2335,19 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubInitialRepairPts: UINT8 = 0;
   let ubRepairPtsUsed: UINT8 = 0;
   let bPocket: INT8 = 0;
-  let fNothingLeftToRepair: BOOLEAN = FALSE;
+  let fNothingLeftToRepair: boolean = false;
   let bLoop: INT8;
   let bLoopStart: INT8;
   let bLoopEnd: INT8;
-  let fAnyOfSoldiersOwnItemsWereFixed: BOOLEAN = FALSE;
+  let fAnyOfSoldiersOwnItemsWereFixed: boolean = false;
   let pObj: Pointer<OBJECTTYPE>;
 
   // grab max number of repair pts open to this soldier
-  ubRepairPtsLeft = CalculateRepairPointsForRepairman(pSoldier, addressof(usMax), TRUE);
+  ubRepairPtsLeft = CalculateRepairPointsForRepairman(pSoldier, addressof(usMax), true);
 
   // no points
   if (ubRepairPtsLeft == 0) {
-    AssignmentDone(pSoldier, TRUE, TRUE);
+    AssignmentDone(pSoldier, true, true);
     return;
   }
 
@@ -2394,7 +2394,7 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
         pObj = addressof(pSoldier.value.inv[bPocket]);
 
         if (RepairObject(pSoldier, pSoldier, pObj, addressof(ubRepairPtsLeft))) {
-          fAnyOfSoldiersOwnItemsWereFixed = TRUE;
+          fAnyOfSoldiersOwnItemsWereFixed = true;
 
           // quit looking if we're already out
           if (ubRepairPtsLeft == 0)
@@ -2419,8 +2419,8 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   ubRepairPtsUsed = ubInitialRepairPts - ubRepairPtsLeft;
   if (ubRepairPtsUsed > 0) {
     // improve stats
-    StatChange(pSoldier, MECHANAMT, (ubRepairPtsUsed / 2), FALSE);
-    StatChange(pSoldier, DEXTAMT, (ubRepairPtsUsed / 2), FALSE);
+    StatChange(pSoldier, MECHANAMT, (ubRepairPtsUsed / 2), false);
+    StatChange(pSoldier, DEXTAMT, (ubRepairPtsUsed / 2), false);
 
     // check if kit damaged/depleted
     if ((Random(100)) < (ubRepairPtsUsed * 5)) // CJC: added a x5 as this wasn't going down anywhere fast enough
@@ -2433,7 +2433,7 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if he really done
   if (HasCharacterFinishedRepairing(pSoldier)) {
     // yup, that's all folks
-    AssignmentDone(pSoldier, TRUE, TRUE);
+    AssignmentDone(pSoldier, true, true);
   } else // still has stuff to repair
   {
     // if nothing got repaired, there's a problem
@@ -2452,15 +2452,15 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   return;
 }
 
-function IsItemRepairable(usItem: UINT16, bStatus: INT8): BOOLEAN {
+function IsItemRepairable(usItem: UINT16, bStatus: INT8): boolean {
   // check to see if item can/needs to be repaired
   if ((bStatus < 100) && (Item[usItem].fFlags & ITEM_REPAIRABLE)) {
     // yep
-    return TRUE;
+    return true;
   }
 
   // nope
-  return FALSE;
+  return false;
 }
 
 function HandleRestAndFatigueInSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
@@ -2524,7 +2524,7 @@ function RestCharacter(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bBreath = pSoldier.value.bBreathMax;
 
   if (pSoldier.value.bBreathMax >= BREATHMAX_CANCEL_TIRED) {
-    pSoldier.value.fComplainedThatTired = FALSE;
+    pSoldier.value.fComplainedThatTired = false;
   }
 
   return;
@@ -2543,7 +2543,7 @@ function FatigueCharacter(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // check if in transit, do not wear out
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
+  if (IsCharacterInTransit(pSoldier) == true) {
     return;
   }
 
@@ -2597,7 +2597,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
   let pTrainer: Pointer<SOLDIERTYPE>;
   let pStudent: Pointer<SOLDIERTYPE>;
   let ubStat: UINT8;
-  let fAtGunRange: BOOLEAN = FALSE;
+  let fAtGunRange: boolean = false;
   let uiCnt: UINT32 = 0;
   let sTotalTrainingPts: INT16 = 0;
   let sTrainingPtsDueToInstructor: INT16 = 0;
@@ -2607,8 +2607,8 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
   let TownTrainer: TOWN_TRAINER_TYPE[] /* [MAX_CHARACTER_COUNT] */;
   let ubTownTrainers: UINT8;
   let usMaxPts: UINT16;
-  let fSamSiteInSector: BOOLEAN = FALSE;
-  let fTrainingCompleted: BOOLEAN = FALSE;
+  let fSamSiteInSector: boolean = false;
+  let fTrainingCompleted: boolean = false;
 
   // find out if a sam site here
   fSamSiteInSector = IsThisSectorASAMSector(sMapX, sMapY, 0);
@@ -2627,7 +2627,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
 
   // are we training in the sector with gun range in Alma?
   if ((sMapX == GUN_RANGE_X) && (sMapY == GUN_RANGE_Y) && (bZ == GUN_RANGE_Z)) {
-    fAtGunRange = TRUE;
+    fAtGunRange = true;
   }
 
   // init trainer list
@@ -2646,7 +2646,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
     for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; uiCnt++, pTrainer++) {
       if (pTrainer.value.bActive && (pTrainer.value.sSectorX == sMapX) && (pTrainer.value.sSectorY == sMapY) && (pTrainer.value.bSectorZ == bZ)) {
         // if he's training teammates in this stat
-        if ((pTrainer.value.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == ubStat) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == FALSE)) {
+        if ((pTrainer.value.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == ubStat) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == false)) {
           sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, null, ubStat, fAtGunRange, addressof(usMaxPts));
 
           // if he's the best trainer so far for this stat
@@ -2666,7 +2666,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
     if ((pStudent.value.bActive) && (pStudent.value.sSectorX == sMapX) && (pStudent.value.sSectorY == sMapY) && (pStudent.value.bSectorZ == bZ)) {
       // if he's training himself (alone, or by others), then he's a student
       if ((pStudent.value.bAssignment == Enum117.TRAIN_SELF) || (pStudent.value.bAssignment == Enum117.TRAIN_BY_OTHER)) {
-        if (EnoughTimeOnAssignment(pStudent) && (pStudent.value.fMercAsleep == FALSE)) {
+        if (EnoughTimeOnAssignment(pStudent) && (pStudent.value.fMercAsleep == false)) {
           // figure out how much the grunt can learn in one training period
           sTotalTrainingPts = GetSoldierTrainingPts(pStudent, pStudent.value.bTrainStat, fAtGunRange, addressof(usMaxPts));
 
@@ -2702,7 +2702,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
   }
 
   // check if we're doing a sector where militia can be trained
-  if (((StrategicMap[sMapX + (sMapY * MAP_WORLD_X)].bNameId != Enum135.BLANK_SECTOR) || (fSamSiteInSector == TRUE)) && (bZ == 0)) {
+  if (((StrategicMap[sMapX + (sMapY * MAP_WORLD_X)].bNameId != Enum135.BLANK_SECTOR) || (fSamSiteInSector == true)) && (bZ == 0)) {
     // init town trainer list
     memset(TownTrainer, 0, sizeof(TownTrainer));
     ubTownTrainers = 0;
@@ -2710,7 +2710,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
     // build list of all the town trainers in this sector and their training pts
     for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; uiCnt++, pTrainer++) {
       if (pTrainer.value.bActive && (pTrainer.value.sSectorX == sMapX) && (pTrainer.value.sSectorY == sMapY) && (pTrainer.value.bSectorZ == bZ)) {
-        if ((pTrainer.value.bAssignment == Enum117.TRAIN_TOWN) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == FALSE)) {
+        if ((pTrainer.value.bAssignment == Enum117.TRAIN_TOWN) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == false)) {
           sTownTrainingPts = GetTownTrainPtsForCharacter(pTrainer, addressof(usMaxPts));
 
           // if he's actually worth anything
@@ -2759,7 +2759,7 @@ function TownTrainerQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): in
   }
 }
 
-function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, pStudent: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: BOOLEAN, pusMaxPts: Pointer<UINT16>): INT16 {
+function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, pStudent: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
   // return the bonus training pts of this instructor with this student,...if student null, simply assignment student skill of 0 and student wisdom of 100
   let sTrainingPts: INT16 = 0;
   let bTraineeEffWisdom: INT8 = 0;
@@ -2922,7 +2922,7 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
   return sTrainingPts;
 }
 
-function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: BOOLEAN, pusMaxPts: Pointer<UINT16>): INT16 {
+function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
   let sTrainingPts: INT16 = 0;
   let bTrainingBonus: INT8 = 0;
   let bSkill: INT8 = 0;
@@ -2989,7 +2989,7 @@ function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8,
   return sTrainingPts;
 }
 
-function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: BOOLEAN, pusMaxPts: Pointer<UINT16>): INT16 {
+function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
   let sTrainingPts: INT16 = 0;
   let bTrainingBonus: INT8 = 0;
   let bSkill: INT8 = 0;
@@ -3070,7 +3070,7 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
     if (pTrainer.value.bActive && (pTrainer.value.sSectorX == pSoldier.value.sSectorX) && (pTrainer.value.sSectorY == pSoldier.value.sSectorY) && (pTrainer.value.bSectorZ == pSoldier.value.bSectorZ)) {
       // if he's training teammates in this stat
       // NB skip the EnoughTime requirement to display what the value should be even if haven't been training long yet...
-      if ((pTrainer.value.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == bTrainStat) && (pTrainer.value.fMercAsleep == FALSE)) {
+      if ((pTrainer.value.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == bTrainStat) && (pTrainer.value.fMercAsleep == false)) {
         sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pSoldier, bTrainStat, fAtGunRange, addressof(usMaxTrainerPts));
 
         // if he's the best trainer so far for this stat
@@ -3138,24 +3138,24 @@ function TrainSoldierWithPts(pSoldier: Pointer<SOLDIERTYPE>, sTrainPts: INT16): 
 }
 
 // will train a town in sector by character
-function TrainTownInSector(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: INT16, sTrainingPts: INT16): BOOLEAN {
+function TrainTownInSector(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: INT16, sTrainingPts: INT16): boolean {
   let pSectorInfo: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(sMapX, sMapY)]);
   let ubTownId: UINT8 = 0;
   let sCnt: INT16 = 0;
   let bChance: INT8 = 0;
-  let fSamSiteInSector: BOOLEAN = FALSE;
+  let fSamSiteInSector: boolean = false;
 
   // find out if a sam site here
   fSamSiteInSector = IsThisSectorASAMSector(sMapX, sMapY, 0);
 
   // get town index
   ubTownId = StrategicMap[pTrainer.value.sSectorX + pTrainer.value.sSectorY * MAP_WORLD_X].bNameId;
-  if (fSamSiteInSector == FALSE) {
+  if (fSamSiteInSector == false) {
     Assert(ubTownId != Enum135.BLANK_SECTOR);
   }
 
   // trainer gains leadership - training argument is FALSE, because the trainer is not the one training!
-  StatChange(pTrainer, LDRAMT, (1 + (sTrainingPts / 200)), FALSE);
+  StatChange(pTrainer, LDRAMT, (1 + (sTrainingPts / 200)), false);
   //	StatChange( pTrainer, WISDOMAMT, (UINT16) ( 1 + ( sTrainingPts / 400 ) ), FALSE );
 
   // increase town's training completed percentage
@@ -3174,15 +3174,15 @@ function TrainTownInSector(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: 
     pSectorInfo.value.ubMilitiaTrainingHundredths = 0;
 
     // make the player pay again next time he wants to train here
-    pSectorInfo.value.fMilitiaTrainingPaid = FALSE;
+    pSectorInfo.value.fMilitiaTrainingPaid = false;
 
     TownMilitiaTrainingCompleted(pTrainer, sMapX, sMapY);
 
     // training done
-    return TRUE;
+    return true;
   } else {
     // not done
-    return FALSE;
+    return false;
   }
 }
 
@@ -3244,7 +3244,7 @@ function MakeSoldiersTacticalAnimationReflectAssignment(pSoldier: Pointer<SOLDIE
     } else {
       if (pSoldier.value.usAnimState != Enum193.WKAEUP_FROM_SLEEP && !(pSoldier.value.bOldAssignment < Enum117.ON_DUTY)) {
         // default: standing
-        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, true);
       }
     }
   }
@@ -3258,30 +3258,30 @@ function AssignmentAborted(pSoldier: Pointer<SOLDIERTYPE>, ubReason: UINT8): voi
   StopTimeCompression();
 
   // update mapscreen
-  fCharacterInfoPanelDirty = TRUE;
-  fTeamPanelDirty = TRUE;
-  fMapScreenBottomDirty = TRUE;
+  fCharacterInfoPanelDirty = true;
+  fTeamPanelDirty = true;
+  fMapScreenBottomDirty = true;
 }
 
-function AssignmentDone(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN, fMeToo: BOOLEAN): void {
+function AssignmentDone(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean, fMeToo: boolean): void {
   if ((pSoldier.value.bInSector) && (gfWorldLoaded)) {
     if (pSoldier.value.bAssignment == Enum117.DOCTOR) {
       if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-        ChangeSoldierState(pSoldier, Enum193.END_DOCTOR, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.END_DOCTOR, 1, true);
       } else {
-        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, true);
       }
     } else if (pSoldier.value.bAssignment == Enum117.REPAIR) {
       if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-        ChangeSoldierState(pSoldier, Enum193.END_REPAIRMAN, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.END_REPAIRMAN, 1, true);
       } else {
-        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, true);
       }
     } else if (pSoldier.value.bAssignment == Enum117.PATIENT) {
       if (guiCurrentScreen == Enum26.GAME_SCREEN) {
         ChangeSoldierStance(pSoldier, ANIM_CROUCH);
       } else {
-        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, true);
       }
     }
   }
@@ -3292,7 +3292,7 @@ function AssignmentDone(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN, fMeT
   }
 
   if (fSayQuote) {
-    if ((fMeToo == FALSE) && (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN)) {
+    if ((fMeToo == false) && (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN)) {
       TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_ASSIGNMENT_COMPLETE);
 
       if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
@@ -3315,19 +3315,19 @@ function AssignmentDone(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN, fMeT
     AddSoldierToWaitingListQueue(pSoldier);
 
     // trigger a single call AddDisplayBoxToWaitingQueue for assignments done
-    gfAddDisplayBoxToWaitingQueue = TRUE;
+    gfAddDisplayBoxToWaitingQueue = true;
   }
 
   // update mapscreen
-  fCharacterInfoPanelDirty = TRUE;
-  fTeamPanelDirty = TRUE;
-  fMapScreenBottomDirty = TRUE;
+  fCharacterInfoPanelDirty = true;
+  fTeamPanelDirty = true;
+  fMapScreenBottomDirty = true;
 }
 
-function CharacterIsBetweenSectors(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CharacterIsBetweenSectors(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // is the character on the move
   if (pSoldier == null) {
-    return FALSE;
+    return false;
   } else {
     return pSoldier.value.fBetweenSectors;
   }
@@ -3387,7 +3387,7 @@ function HandleHealingByNaturalCauses(pSoldier: Pointer<SOLDIERTYPE>): void {
     // use high activity level to simulate stress, torture, poor conditions for healing
     bActivityLevelDivisor = HIGH_ACTIVITY_LEVEL;
   }
-  if ((pSoldier.value.fMercAsleep == TRUE) || (pSoldier.value.bAssignment == Enum117.PATIENT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL)) {
+  if ((pSoldier.value.fMercAsleep == true) || (pSoldier.value.bAssignment == Enum117.PATIENT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL)) {
     bActivityLevelDivisor = LOW_ACTIVITY_LEVEL;
   } else if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
     // if time is being compressed, and the soldier is not moving strategically
@@ -3506,7 +3506,7 @@ function CheckIfSoldierUnassigned(pSoldier: Pointer<SOLDIERTYPE>): void {
     AddCharacterToAnySquad(pSoldier);
 
     if ((gfWorldLoaded) && (pSoldier.value.bInSector)) {
-      ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
+      ChangeSoldierState(pSoldier, Enum193.STANDING, 1, true);
     }
   }
 
@@ -3514,7 +3514,7 @@ function CheckIfSoldierUnassigned(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function CreateDestroyMouseRegionsForAssignmentMenu(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let iCounter: UINT32 = 0;
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
@@ -3523,12 +3523,12 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect;
-  /* static */ let fShowRemoveMenu: BOOLEAN = FALSE;
+  /* static */ let fShowRemoveMenu: boolean = false;
 
   // will create/destroy mouse regions for the map screen assignment main menu
   // check if we can only remove character from team..not assign
-  if ((bSelectedAssignChar != -1) || (fShowRemoveMenu == TRUE)) {
-    if (fShowRemoveMenu == TRUE) {
+  if ((bSelectedAssignChar != -1) || (fShowRemoveMenu == true)) {
+    if (fShowRemoveMenu == true) {
       // dead guy handle menu stuff
       fShowRemoveMenu = fShowAssignmentMenu | fShowContractMenu;
 
@@ -3546,14 +3546,14 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
     }
   }
 
-  if ((fShowAssignmentMenu == TRUE) && (fCreated == FALSE)) {
-    gfIgnoreScrolling = FALSE;
+  if ((fShowAssignmentMenu == true) && (fCreated == false)) {
+    gfIgnoreScrolling = false;
 
     if ((fShowAssignmentMenu) && (guiCurrentScreen == Enum26.MAP_SCREEN)) {
       SetBoxPosition(ghAssignmentBox, AssignmentPosition);
     }
 
-    pSoldier = GetSelectedAssignSoldier(FALSE);
+    pSoldier = GetSelectedAssignSoldier(false);
 
     if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       // grab height of font
@@ -3602,29 +3602,29 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
     }
 
     // created
-    fCreated = TRUE;
+    fCreated = true;
 
     // unhighlight all strings in box
     UnHighLightBox(ghAssignmentBox);
     CheckAndUpdateTacticalAssignmentPopUpPositions();
 
     PositionCursorForTacticalAssignmentBox();
-  } else if ((fShowAssignmentMenu == FALSE) && (fCreated == TRUE)) {
+  } else if ((fShowAssignmentMenu == false) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
       MSYS_RemoveRegion(addressof(gAssignmentMenuRegion[iCounter]));
     }
 
-    fShownAssignmentMenu = FALSE;
+    fShownAssignmentMenu = false;
 
     // not created
-    fCreated = FALSE;
+    fCreated = false;
     SetRenderFlags(RENDER_FLAG_FULL);
   }
 }
 
 function CreateDestroyMouseRegionForVehicleMenu(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
   let uiMenuLine: UINT32 = 0;
   let iVehicleId: INT32 = 0;
@@ -3649,7 +3649,7 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
     SetBoxPosition(ghVehicleBox, VehiclePosition);
   }
 
-  if ((fShowVehicleMenu == TRUE) && (fCreated == FALSE)) {
+  if ((fShowVehicleMenu == true) && (fCreated == false)) {
     // grab height of font
     iFontHeight = GetLineSpace(ghVehicleBox) + GetFontHeight(GetBoxFont(ghVehicleBox));
 
@@ -3669,11 +3669,11 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
 
     SetCurrentBox(ghVehicleBox);
 
-    pSoldier = GetSelectedAssignSoldier(FALSE);
+    pSoldier = GetSelectedAssignSoldier(false);
 
     // run through list of vehicles in sector
     for (iVehicleId = 0; iVehicleId < ubNumberOfVehicles; iVehicleId++) {
-      if (pVehicleList[iVehicleId].fValid == TRUE) {
+      if (pVehicleList[iVehicleId].fValid == true) {
         if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleId)) {
           // add mouse region for each accessible vehicle
           MSYS_DefineRegion(addressof(gVehicleMenuRegion[uiMenuLine]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
@@ -3692,7 +3692,7 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
     MSYS_SetRegionUserData(addressof(gVehicleMenuRegion[uiMenuLine]), 0, Enum115.VEHICLE_MENU_CANCEL);
 
     // created
-    fCreated = TRUE;
+    fCreated = true;
 
     // pause game
     PauseGame();
@@ -3700,18 +3700,18 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
     // unhighlight all strings in box
     UnHighLightBox(ghVehicleBox);
 
-    fCreated = TRUE;
+    fCreated = true;
 
     HandleShadingOfLinesForVehicleMenu();
-  } else if (((fShowVehicleMenu == FALSE) || (fShowAssignmentMenu == FALSE)) && (fCreated == TRUE)) {
-    fCreated = FALSE;
+  } else if (((fShowVehicleMenu == false) || (fShowAssignmentMenu == false)) && (fCreated == true)) {
+    fCreated = false;
 
     // remove these regions
     for (uiMenuLine = 0; uiMenuLine < GetNumberOfLinesOfTextInBox(ghVehicleBox); uiMenuLine++) {
       MSYS_RemoveRegion(addressof(gVehicleMenuRegion[uiMenuLine]));
     }
 
-    fShowVehicleMenu = FALSE;
+    fShowVehicleMenu = false;
 
     SetRenderFlags(RENDER_FLAG_FULL);
 
@@ -3731,15 +3731,15 @@ function HandleShadingOfLinesForVehicleMenu(): void {
   let iVehicleId: INT32;
   let uiMenuLine: UINT32 = 0;
 
-  if ((fShowVehicleMenu == FALSE) || (ghVehicleBox == -1)) {
+  if ((fShowVehicleMenu == false) || (ghVehicleBox == -1)) {
     return;
   }
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   // run through list of vehicles
   for (iVehicleId = 0; iVehicleId < ubNumberOfVehicles; iVehicleId++) {
-    if (pVehicleList[iVehicleId].fValid == TRUE) {
+    if (pVehicleList[iVehicleId].fValid == true) {
       // inaccessible vehicles aren't listed at all!
       if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleId)) {
         if (IsEnoughSpaceInVehicle(iVehicleId)) {
@@ -3767,15 +3767,15 @@ function VehicleMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (iValue == Enum115.VEHICLE_MENU_CANCEL) {
-      fShowVehicleMenu = FALSE;
+      fShowVehicleMenu = false;
       UnHighLightBox(ghAssignmentBox);
-      fTeamPanelDirty = TRUE;
-      fMapScreenBottomDirty = TRUE;
-      fCharacterInfoPanelDirty = TRUE;
+      fTeamPanelDirty = true;
+      fMapScreenBottomDirty = true;
+      fCharacterInfoPanelDirty = true;
       return;
     }
 
-    pSoldier = GetSelectedAssignSoldier(FALSE);
+    pSoldier = GetSelectedAssignSoldier(false);
     iVehicleID = MSYS_GetRegionUserData(pRegion, 1);
 
     // inaccessible vehicles shouldn't be listed in the menu!
@@ -3787,12 +3787,12 @@ function VehicleMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[18], zVehicleName[pVehicleList[iVehicleID].ubVehicleType]);
     }
 
-    fShowAssignmentMenu = FALSE;
+    fShowAssignmentMenu = false;
 
     // update mapscreen
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
+    fMapScreenBottomDirty = true;
 
     giAssignHighLine = -1;
 
@@ -3809,7 +3809,7 @@ function VehicleMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     if (iValue != Enum115.VEHICLE_MENU_CANCEL) {
       // no shaded(disabled) lines actually appear in vehicle menus
-      if (GetBoxShadeFlag(ghVehicleBox, iValue) == FALSE) {
+      if (GetBoxShadeFlag(ghVehicleBox, iValue) == false) {
         // highlight vehicle line
         HighLightBoxLine(ghVehicleBox, iValue);
       }
@@ -3825,7 +3825,7 @@ function VehicleMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   }
 }
 
-function DisplayRepairMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function DisplayRepairMenu(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iVehicleIndex: INT32 = 0;
   let hStringHandle: INT32 = 0;
 
@@ -3843,7 +3843,7 @@ function DisplayRepairMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier.value.bSectorZ == 0) {
     // run through list of vehicles and see if any in sector
     for (iVehicleIndex = 0; iVehicleIndex < ubNumberOfVehicles; iVehicleIndex++) {
-      if (pVehicleList[iVehicleIndex].fValid == TRUE) {
+      if (pVehicleList[iVehicleIndex].fValid == true) {
         // don't even list the helicopter, because it's NEVER repairable...
         if (iVehicleIndex != iHelicopterVehicleId) {
           if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleIndex)) {
@@ -3886,7 +3886,7 @@ function DisplayRepairMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
   CheckAndUpdateTacticalAssignmentPopUpPositions();
 
-  return TRUE;
+  return true;
 }
 
 function HandleShadingOfLinesForRepairMenu(): void {
@@ -3894,22 +3894,22 @@ function HandleShadingOfLinesForRepairMenu(): void {
   let iVehicleIndex: INT32 = 0;
   let iCount: INT32 = 0;
 
-  if ((fShowRepairMenu == FALSE) || (ghRepairBox == -1)) {
+  if ((fShowRepairMenu == false) || (ghRepairBox == -1)) {
     return;
   }
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   // PLEASE NOTE: make sure any changes you do here are reflected in all 3 routines which must remain in synch:
   // CreateDestroyMouseRegionForRepairMenu(), DisplayRepairMenu(), and HandleShadingOfLinesForRepairMenu().
 
   if (pSoldier.value.bSectorZ == 0) {
     for (iVehicleIndex = 0; iVehicleIndex < ubNumberOfVehicles; iVehicleIndex++) {
-      if (pVehicleList[iVehicleIndex].fValid == TRUE) {
+      if (pVehicleList[iVehicleIndex].fValid == true) {
         // don't even list the helicopter, because it's NEVER repairable...
         if (iVehicleIndex != iHelicopterVehicleId) {
           if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleIndex)) {
-            if (CanCharacterRepairVehicle(pSoldier, iVehicleIndex) == TRUE) {
+            if (CanCharacterRepairVehicle(pSoldier, iVehicleIndex) == true) {
               // unshade vehicle line
               UnShadeStringInBox(ghRepairBox, iCount);
             } else {
@@ -3970,7 +3970,7 @@ function HandleShadingOfLinesForRepairMenu(): void {
 }
 
 function CreateDestroyMouseRegionForRepairMenu(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
   let uiCounter: UINT32 = 0;
   let iCount: INT32 = 0;
@@ -3983,7 +3983,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iVehicleIndex: INT32 = 0;
 
-  if ((fShowRepairMenu == TRUE) && (fCreated == FALSE)) {
+  if ((fShowRepairMenu == true) && (fCreated == false)) {
     CheckAndUpdateTacticalAssignmentPopUpPositions();
 
     if ((fShowRepairMenu) && (guiCurrentScreen == Enum26.MAP_SCREEN)) {
@@ -4008,7 +4008,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
 
     SetCurrentBox(ghRepairBox);
 
-    pSoldier = GetSelectedAssignSoldier(FALSE);
+    pSoldier = GetSelectedAssignSoldier(false);
 
     // PLEASE NOTE: make sure any changes you do here are reflected in all 3 routines which must remain in synch:
     // CreateDestroyMouseRegionForRepairMenu(), DisplayRepairMenu(), and HandleShadingOfLinesForRepairMenu().
@@ -4016,7 +4016,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
     if (pSoldier.value.bSectorZ == 0) {
       // vehicles
       for (iVehicleIndex = 0; iVehicleIndex < ubNumberOfVehicles; iVehicleIndex++) {
-        if (pVehicleList[iVehicleIndex].fValid == TRUE) {
+        if (pVehicleList[iVehicleIndex].fValid == true) {
           // don't even list the helicopter, because it's NEVER repairable...
           if (iVehicleIndex != iHelicopterVehicleId) {
             // other vehicles *in the sector* are listed, but later shaded dark if they're not repairable
@@ -4073,16 +4073,16 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
     // unhighlight all strings in box
     UnHighLightBox(ghRepairBox);
 
-    fCreated = TRUE;
-  } else if (((fShowRepairMenu == FALSE) || (fShowAssignmentMenu == FALSE)) && (fCreated == TRUE)) {
-    fCreated = FALSE;
+    fCreated = true;
+  } else if (((fShowRepairMenu == false) || (fShowAssignmentMenu == false)) && (fCreated == true)) {
+    fCreated = false;
 
     // remove these regions
     for (uiCounter = 0; uiCounter < GetNumberOfLinesOfTextInBox(ghRepairBox); uiCounter++) {
       MSYS_RemoveRegion(addressof(gRepairMenuRegion[uiCounter]));
     }
 
-    fShowRepairMenu = FALSE;
+    fShowRepairMenu = false;
 
     SetRenderFlags(RENDER_FLAG_FULL);
 
@@ -4106,14 +4106,14 @@ function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
   // ignore clicks on disabled lines
-  if (GetBoxShadeFlag(ghRepairBox, iValue) == TRUE) {
+  if (GetBoxShadeFlag(ghRepairBox, iValue) == true) {
     return;
   }
 
   // WHAT is being repaired is stored in the second user data argument
   iRepairWhat = MSYS_GetRegionUserData(pRegion, 1);
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   if (pSoldier && pSoldier.value.bActive && (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     if ((iRepairWhat >= Enum114.REPAIR_MENU_VEHICLE1) && (iRepairWhat <= Enum114.REPAIR_MENU_VEHICLE3)) {
@@ -4144,7 +4144,7 @@ function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 
       // set assignment for group
       SetAssignmentForList(Enum117.REPAIR, 0);
-      fShowAssignmentMenu = FALSE;
+      fShowAssignmentMenu = false;
     }
     /* No point in allowing SAM site repair any more.  Jan/13/99.  ARM
                     else if( iRepairWhat == REPAIR_MENU_SAM_SITE )
@@ -4185,16 +4185,16 @@ function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
       RemoveCharacterFromSquads(pSoldier);
       MakeSureToolKitIsInHand(pSoldier);
 
-      if ((pSoldier.value.bAssignment != Enum117.REPAIR) || (pSoldier.value.fFixingRobot == FALSE)) {
+      if ((pSoldier.value.bAssignment != Enum117.REPAIR) || (pSoldier.value.fFixingRobot == false)) {
         SetTimeOfAssignmentChangeForMerc(pSoldier);
       }
 
       ChangeSoldiersAssignment(pSoldier, Enum117.REPAIR);
-      pSoldier.value.fFixingRobot = TRUE;
+      pSoldier.value.fFixingRobot = true;
 
       // the second argument is irrelevant here, function looks at pSoldier itself to know what's being repaired
       SetAssignmentForList(Enum117.REPAIR, 0);
-      fShowAssignmentMenu = FALSE;
+      fShowAssignmentMenu = false;
 
       MakeSureToolKitIsInHand(pSoldier);
 
@@ -4202,20 +4202,20 @@ function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
       AssignMercToAMovementGroup(pSoldier);
     } else if (iRepairWhat == Enum114.REPAIR_MENU_ITEMS) {
       // items
-      SetSoldierAssignment(pSoldier, Enum117.REPAIR, FALSE, FALSE, -1);
+      SetSoldierAssignment(pSoldier, Enum117.REPAIR, false, false, -1);
 
       // the second argument is irrelevant here, function looks at pSoldier itself to know what's being repaired
       SetAssignmentForList(Enum117.REPAIR, 0);
-      fShowAssignmentMenu = FALSE;
+      fShowAssignmentMenu = false;
     } else {
       // CANCEL
-      fShowRepairMenu = FALSE;
+      fShowRepairMenu = false;
     }
 
     // update mapscreen
-    fCharacterInfoPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fCharacterInfoPanelDirty = true;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
 
     giAssignHighLine = -1;
   }
@@ -4229,7 +4229,7 @@ function RepairMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     if (iValue < Enum114.REPAIR_MENU_CANCEL) {
-      if (GetBoxShadeFlag(ghRepairBox, iValue) == FALSE) {
+      if (GetBoxShadeFlag(ghRepairBox, iValue) == false) {
         // highlight choice
         HighLightBoxLine(ghRepairBox, iValue);
       }
@@ -4258,29 +4258,29 @@ function MakeSureToolKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function MakeSureMedKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function MakeSureMedKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bPocket: INT8 = 0;
-  let fFoundOne: BOOLEAN = FALSE;
+  let fFoundOne: boolean = false;
 
-  fTeamPanelDirty = TRUE;
+  fTeamPanelDirty = true;
 
   // if there is a MEDICAL BAG in his hand, we're set
   if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.MEDICKIT) {
-    return TRUE;
+    return true;
   }
 
   // run through rest of inventory looking 1st for MEDICAL BAGS, swap the first one into hand if found
   for (bPocket = Enum261.SECONDHANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
     if (pSoldier.value.inv[bPocket].usItem == Enum225.MEDICKIT) {
-      fCharacterInfoPanelDirty = TRUE;
+      fCharacterInfoPanelDirty = true;
       SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
-      return TRUE;
+      return true;
     }
   }
 
   // we didn't find a medical bag, so settle for a FIRST AID KIT
   if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.FIRSTAIDKIT) {
-    return TRUE;
+    return true;
   }
 
   // run through rest of inventory looking 1st for MEDICAL BAGS, swap the first one into hand if found
@@ -4291,18 +4291,18 @@ function MakeSureMedKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS]));
 
         // dirty mapscreen and squad panels
-        fCharacterInfoPanelDirty = TRUE;
+        fCharacterInfoPanelDirty = true;
         fInterfacePanelDirty = DIRTYLEVEL2;
       }
 
       SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
 
-      return TRUE;
+      return true;
     }
   }
 
   // no medkit items in possession!
-  return FALSE;
+  return false;
 }
 
 function HandleShadingOfLinesForAssignmentMenus(): void {
@@ -4310,11 +4310,11 @@ function HandleShadingOfLinesForAssignmentMenus(): void {
 
   // updates which menus are selectable based on character status
 
-  if ((fShowAssignmentMenu == FALSE) || (ghAssignmentBox == -1)) {
+  if ((fShowAssignmentMenu == false) || (ghAssignmentBox == -1)) {
     return;
   }
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   if (pSoldier && pSoldier.value.bActive) {
     if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
@@ -4427,17 +4427,17 @@ function HandleShadingOfLinesForAssignmentMenus(): void {
 }
 
 function DetermineWhichAssignmentMenusCanBeShown(): void {
-  let fCharacterNoLongerValid: BOOLEAN = FALSE;
+  let fCharacterNoLongerValid: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
-    if (fShowMapScreenMovementList == TRUE) {
+    if (fShowMapScreenMovementList == true) {
       if (bSelectedDestChar == -1) {
-        fCharacterNoLongerValid = TRUE;
+        fCharacterNoLongerValid = true;
         HandleShowingOfMovementBox();
       } else {
-        fShowMapScreenMovementList = FALSE;
-        fCharacterNoLongerValid = TRUE;
+        fShowMapScreenMovementList = false;
+        fCharacterNoLongerValid = true;
       }
     }
     /*
@@ -4448,7 +4448,7 @@ function DetermineWhichAssignmentMenusCanBeShown(): void {
                     }
     */
     else if (bSelectedAssignChar == -1) {
-      fCharacterNoLongerValid = TRUE;
+      fCharacterNoLongerValid = true;
     }
 
     // update the assignment positions
@@ -4456,11 +4456,11 @@ function DetermineWhichAssignmentMenusCanBeShown(): void {
   }
 
   // determine which assign menu needs to be shown
-  if (((fShowAssignmentMenu == FALSE)) || (fCharacterNoLongerValid == TRUE)) {
+  if (((fShowAssignmentMenu == false)) || (fCharacterNoLongerValid == true)) {
     // reset show assignment menus
-    fShowAssignmentMenu = FALSE;
-    fShowVehicleMenu = FALSE;
-    fShowRepairMenu = FALSE;
+    fShowAssignmentMenu = false;
+    fShowVehicleMenu = false;
+    fShowRepairMenu = false;
 
     // destroy mask, if needed
     CreateDestroyScreenMaskForAssignmentAndContractMenus();
@@ -4470,47 +4470,47 @@ function DetermineWhichAssignmentMenusCanBeShown(): void {
     CreateDestroyMouseRegionsForAssignmentMenu();
     CreateDestroyMouseRegionsForTrainingMenu();
     CreateDestroyMouseRegionsForAttributeMenu();
-    CreateDestroyMouseRegionsForSquadMenu(TRUE);
+    CreateDestroyMouseRegionsForSquadMenu(true);
     CreateDestroyMouseRegionForRepairMenu();
 
     // hide all boxes being shown
     if (IsBoxShown(ghEpcBox)) {
       HideBox(ghEpcBox);
-      fTeamPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      gfRenderPBInterface = true;
     }
     if (IsBoxShown(ghAssignmentBox)) {
       HideBox(ghAssignmentBox);
-      fTeamPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      gfRenderPBInterface = true;
     }
     if (IsBoxShown(ghTrainingBox)) {
       HideBox(ghTrainingBox);
-      fTeamPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      gfRenderPBInterface = true;
     }
     if (IsBoxShown(ghRepairBox)) {
       HideBox(ghRepairBox);
-      fTeamPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      gfRenderPBInterface = true;
     }
     if (IsBoxShown(ghAttributeBox)) {
       HideBox(ghAttributeBox);
-      fTeamPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      gfRenderPBInterface = true;
     }
     if (IsBoxShown(ghVehicleBox)) {
       HideBox(ghVehicleBox);
-      fTeamPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      gfRenderPBInterface = true;
     }
 
     // do we really want ot hide this box?
-    if (fShowContractMenu == FALSE) {
+    if (fShowContractMenu == false) {
       if (IsBoxShown(ghRemoveMercAssignBox)) {
         HideBox(ghRemoveMercAssignBox);
-        fTeamPanelDirty = TRUE;
-        gfRenderPBInterface = TRUE;
+        fTeamPanelDirty = true;
+        gfRenderPBInterface = true;
       }
     }
     // HideBox( ghSquadBox );
@@ -4531,14 +4531,14 @@ function DetermineWhichAssignmentMenusCanBeShown(): void {
   CreateDestroyMouseRegionsForAssignmentMenu();
   CreateDestroyMouseRegionsForTrainingMenu();
   CreateDestroyMouseRegionsForAttributeMenu();
-  CreateDestroyMouseRegionsForSquadMenu(TRUE);
+  CreateDestroyMouseRegionsForSquadMenu(true);
   CreateDestroyMouseRegionForRepairMenu();
 
   if (((Menptr[gCharactersList[bSelectedInfoChar].usSolID].bLife == 0) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bAssignment == Enum117.ASSIGNMENT_POW)) && ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN))) {
     // show basic assignment menu
     ShowBox(ghRemoveMercAssignBox);
   } else {
-    pSoldier = GetSelectedAssignSoldier(FALSE);
+    pSoldier = GetSelectedAssignSoldier(false);
 
     if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       ShowBox(ghEpcBox);
@@ -4550,57 +4550,57 @@ function DetermineWhichAssignmentMenusCanBeShown(): void {
   }
 
   // TRAINING menu
-  if (fShowTrainingMenu == TRUE) {
+  if (fShowTrainingMenu == true) {
     HandleShadingOfLinesForTrainingMenu();
     ShowBox(ghTrainingBox);
   } else {
     if (IsBoxShown(ghTrainingBox)) {
       HideBox(ghTrainingBox);
-      fTeamPanelDirty = TRUE;
-      fMapPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      fMapPanelDirty = true;
+      gfRenderPBInterface = true;
       //	SetRenderFlags(RENDER_FLAG_FULL);
     }
   }
 
   // REPAIR menu
-  if (fShowRepairMenu == TRUE) {
+  if (fShowRepairMenu == true) {
     HandleShadingOfLinesForRepairMenu();
     ShowBox(ghRepairBox);
   } else {
     // hide box
     if (IsBoxShown(ghRepairBox)) {
       HideBox(ghRepairBox);
-      fTeamPanelDirty = TRUE;
-      fMapPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      fMapPanelDirty = true;
+      gfRenderPBInterface = true;
       //	SetRenderFlags(RENDER_FLAG_FULL);
     }
   }
 
   // ATTRIBUTE menu
-  if (fShowAttributeMenu == TRUE) {
+  if (fShowAttributeMenu == true) {
     HandleShadingOfLinesForAttributeMenus();
     ShowBox(ghAttributeBox);
   } else {
     if (IsBoxShown(ghAttributeBox)) {
       HideBox(ghAttributeBox);
-      fTeamPanelDirty = TRUE;
-      fMapPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      fMapPanelDirty = true;
+      gfRenderPBInterface = true;
       //	SetRenderFlags(RENDER_FLAG_FULL);
     }
   }
 
   // VEHICLE menu
-  if (fShowVehicleMenu == TRUE) {
+  if (fShowVehicleMenu == true) {
     ShowBox(ghVehicleBox);
   } else {
     if (IsBoxShown(ghVehicleBox)) {
       HideBox(ghVehicleBox);
-      fTeamPanelDirty = TRUE;
-      fMapPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      fMapPanelDirty = true;
+      gfRenderPBInterface = true;
       //	SetRenderFlags(RENDER_FLAG_FULL);
     }
   }
@@ -4611,25 +4611,25 @@ function DetermineWhichAssignmentMenusCanBeShown(): void {
 }
 
 function CreateDestroyScreenMaskForAssignmentAndContractMenus(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   // will create a screen mask to catch mouse input to disable assignment menus
 
   // not created, create
-  if ((fCreated == FALSE) && ((fShowAssignmentMenu == TRUE) || (fShowContractMenu == TRUE) || (fShowTownInfo == TRUE))) {
+  if ((fCreated == false) && ((fShowAssignmentMenu == true) || (fShowContractMenu == true) || (fShowTownInfo == true))) {
     MSYS_DefineRegion(addressof(gAssignmentScreenMaskRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, AssignmentScreenMaskBtnCallback);
 
     // created
-    fCreated = TRUE;
+    fCreated = true;
 
     if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
       MSYS_ChangeRegionCursor(addressof(gAssignmentScreenMaskRegion), 0);
     }
-  } else if ((fCreated == TRUE) && (fShowAssignmentMenu == FALSE) && (fShowContractMenu == FALSE) && (fShowTownInfo == FALSE)) {
+  } else if ((fCreated == true) && (fShowAssignmentMenu == false) && (fShowContractMenu == false) && (fShowTownInfo == false)) {
     // created, get rid of it
     MSYS_RemoveRegion(addressof(gAssignmentScreenMaskRegion));
 
     // not created
-    fCreated = FALSE;
+    fCreated = false;
   }
 
   return;
@@ -4639,32 +4639,32 @@ function AssignmentScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason
   // btn callback handler for assignment screen mask region
 
   if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) || (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP)) {
-    if (fFirstClickInAssignmentScreenMask == TRUE) {
-      fFirstClickInAssignmentScreenMask = FALSE;
+    if (fFirstClickInAssignmentScreenMask == true) {
+      fFirstClickInAssignmentScreenMask = false;
       return;
     }
 
     // button event, stop showing menus
-    fShowAssignmentMenu = FALSE;
+    fShowAssignmentMenu = false;
 
-    fShowVehicleMenu = FALSE;
+    fShowVehicleMenu = false;
 
-    fShowContractMenu = FALSE;
+    fShowContractMenu = false;
 
     // stop showing town mine info
-    fShowTownInfo = FALSE;
+    fShowTownInfo = false;
 
     // reset contract character and contract highlight line
     giContractHighLine = -1;
     bSelectedContractChar = -1;
-    fGlowContractRegion = FALSE;
+    fGlowContractRegion = false;
 
     // update mapscreen
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
+    fMapScreenBottomDirty = true;
 
-    gfRenderPBInterface = TRUE;
+    gfRenderPBInterface = true;
     SetRenderFlags(RENDER_FLAG_FULL);
   }
   return;
@@ -4672,13 +4672,13 @@ function AssignmentScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason
 
 function ClearScreenMaskForMapScreenExit(): void {
   // reset show assignment menu
-  fShowAssignmentMenu = FALSE;
+  fShowAssignmentMenu = false;
 
   // update the assignment positions
   UpdateMapScreenAssignmentPositions();
 
   // stop showing town mine info too
-  fShowTownInfo = FALSE;
+  fShowTownInfo = false;
 
   // destroy mask, if needed
   CreateDestroyScreenMaskForAssignmentAndContractMenus();
@@ -4687,14 +4687,14 @@ function ClearScreenMaskForMapScreenExit(): void {
   CreateDestroyMouseRegionsForAssignmentMenu();
   CreateDestroyMouseRegionsForTrainingMenu();
   CreateDestroyMouseRegionsForAttributeMenu();
-  CreateDestroyMouseRegionsForSquadMenu(TRUE);
+  CreateDestroyMouseRegionsForSquadMenu(true);
   CreateDestroyMouseRegionForRepairMenu();
 
   return;
 }
 
 function CreateDestroyMouseRegions(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let iCounter: UINT32 = 0;
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
@@ -4711,7 +4711,7 @@ function CreateDestroyMouseRegions(): void {
     return;
   }
 
-  if ((fShowAssignmentMenu == TRUE) && (fCreated == FALSE)) {
+  if ((fShowAssignmentMenu == true) && (fCreated == false)) {
     // grab height of font
     iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 
@@ -4741,19 +4741,19 @@ function CreateDestroyMouseRegions(): void {
     }
 
     // created
-    fCreated = TRUE;
+    fCreated = true;
 
     // pause game
     PauseGame();
 
-    fMapPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fMapPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
 
     // unhighlight all strings in box
     UnHighLightBox(ghAssignmentBox);
-  } else if ((fShowAssignmentMenu == FALSE) && (fCreated == TRUE)) {
+  } else if ((fShowAssignmentMenu == false) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
       MSYS_RemoveRegion(addressof(gAssignmentMenuRegion[iCounter]));
@@ -4762,12 +4762,12 @@ function CreateDestroyMouseRegions(): void {
     RestorePopUpBoxes();
 
     // not created
-    fCreated = FALSE;
+    fCreated = false;
   }
 }
 
 function CreateDestroyMouseRegionsForContractMenu(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let iCounter: UINT32 = 0;
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
@@ -4775,13 +4775,13 @@ function CreateDestroyMouseRegionsForContractMenu(): void {
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect;
-  /* static */ let fShowRemoveMenu: BOOLEAN = FALSE;
+  /* static */ let fShowRemoveMenu: boolean = false;
 
   // will create/destroy mouse regions for the map screen Contract main menu
   // will create/destroy mouse regions for the map screen assignment main menu
   // check if we can only remove character from team..not assign
-  if ((bSelectedContractChar != -1) || (fShowRemoveMenu == TRUE)) {
-    if (fShowRemoveMenu == TRUE) {
+  if ((bSelectedContractChar != -1) || (fShowRemoveMenu == true)) {
+    if (fShowRemoveMenu == true) {
       // dead guy handle menu stuff
       fShowRemoveMenu = fShowContractMenu;
 
@@ -4807,7 +4807,7 @@ function CreateDestroyMouseRegionsForContractMenu(): void {
     }
   }
 
-  if ((fShowContractMenu == TRUE) && (fCreated == FALSE)) {
+  if ((fShowContractMenu == true) && (fCreated == false)) {
     if (bSelectedContractChar == -1) {
       return;
     }
@@ -4844,20 +4844,20 @@ function CreateDestroyMouseRegionsForContractMenu(): void {
     }
 
     // created
-    fCreated = TRUE;
+    fCreated = true;
 
     // pause game
     PauseGame();
 
     // unhighlight all strings in box
     UnHighLightBox(ghContractBox);
-  } else if ((fShowContractMenu == FALSE) && (fCreated == TRUE)) {
+  } else if ((fShowContractMenu == false) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghContractBox); iCounter++) {
       MSYS_RemoveRegion(addressof(gContractMenuRegion[iCounter]));
     }
 
-    fShownContractMenu = FALSE;
+    fShownContractMenu = false;
     // if( ( fProcessingAMerc ) && ( pProcessingSoldier ) )
     //{
     //	if( (UINT32)(pProcessingSoldier->iEndofContractTime) == GetWorldTotalMin() )
@@ -4868,20 +4868,20 @@ function CreateDestroyMouseRegionsForContractMenu(): void {
     //	}
     //}
 
-    fMapPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fMapPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
 
     RestorePopUpBoxes();
 
     // not created
-    fCreated = FALSE;
+    fCreated = false;
   }
 }
 
 function CreateDestroyMouseRegionsForTrainingMenu(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let iCounter: UINT32 = 0;
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
@@ -4892,7 +4892,7 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
 
   // will create/destroy mouse regions for the map screen assignment main menu
 
-  if ((fShowTrainingMenu == TRUE) && (fCreated == FALSE)) {
+  if ((fShowTrainingMenu == true) && (fCreated == false)) {
     if ((fShowTrainingMenu) && (guiCurrentScreen == Enum26.MAP_SCREEN)) {
       SetBoxPosition(ghTrainingBox, TrainPosition);
     }
@@ -4931,32 +4931,32 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
     }
 
     // created
-    fCreated = TRUE;
+    fCreated = true;
 
     // unhighlight all strings in box
     UnHighLightBox(ghTrainingBox);
-  } else if (((fShowAssignmentMenu == FALSE) || (fShowTrainingMenu == FALSE)) && (fCreated == TRUE)) {
+  } else if (((fShowAssignmentMenu == false) || (fShowTrainingMenu == false)) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghTrainingBox); iCounter++) {
       MSYS_RemoveRegion(addressof(gTrainingMenuRegion[iCounter]));
     }
 
     // stop showing training menu
-    if (fShowAssignmentMenu == FALSE) {
-      fShowTrainingMenu = FALSE;
+    if (fShowAssignmentMenu == false) {
+      fShowTrainingMenu = false;
     }
 
     RestorePopUpBoxes();
 
-    fMapPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fMapPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
     HideBox(ghTrainingBox);
     SetRenderFlags(RENDER_FLAG_FULL);
 
     // not created
-    fCreated = FALSE;
+    fCreated = false;
 
     if (fShowAssignmentMenu) {
       // remove highlight on the parent menu
@@ -4966,7 +4966,7 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
 }
 
 function CreateDestroyMouseRegionsForAttributeMenu(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let iCounter: UINT32 = 0;
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
@@ -4977,7 +4977,7 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
 
   // will create/destroy mouse regions for the map screen attribute  menu
 
-  if ((fShowAttributeMenu == TRUE) && (fCreated == FALSE)) {
+  if ((fShowAttributeMenu == true) && (fCreated == false)) {
     if ((fShowAssignmentMenu) && (guiCurrentScreen == Enum26.MAP_SCREEN)) {
       SetBoxPosition(ghAssignmentBox, AssignmentPosition);
     }
@@ -5014,33 +5014,33 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
     }
 
     // created
-    fCreated = TRUE;
+    fCreated = true;
 
     // unhighlight all strings in box
     UnHighLightBox(ghAttributeBox);
-  } else if (((fShowAssignmentMenu == FALSE) || (fShowTrainingMenu == FALSE) || (fShowAttributeMenu == FALSE)) && (fCreated == TRUE)) {
+  } else if (((fShowAssignmentMenu == false) || (fShowTrainingMenu == false) || (fShowAttributeMenu == false)) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAttributeBox); iCounter++) {
       MSYS_RemoveRegion(addressof(gAttributeMenuRegion[iCounter]));
     }
 
     // stop showing training menu
-    if ((fShowAssignmentMenu == FALSE) || (fShowTrainingMenu == FALSE) || (fShowAttributeMenu == FALSE)) {
-      fShowAttributeMenu = FALSE;
-      gfRenderPBInterface = TRUE;
+    if ((fShowAssignmentMenu == false) || (fShowTrainingMenu == false) || (fShowAttributeMenu == false)) {
+      fShowAttributeMenu = false;
+      gfRenderPBInterface = true;
     }
 
     RestorePopUpBoxes();
 
-    fMapPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fMapPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
     HideBox(ghAttributeBox);
     SetRenderFlags(RENDER_FLAG_FULL);
 
     // not created
-    fCreated = FALSE;
+    fCreated = false;
 
     if (fShowTrainingMenu) {
       // remove highlight on the parent menu
@@ -5050,7 +5050,7 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
 }
 
 function CreateDestroyMouseRegionsForRemoveMenu(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let iCounter: UINT32 = 0;
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
@@ -5060,7 +5060,7 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
   let pDimensions: SGPRect;
 
   // will create/destroy mouse regions for the map screen attribute  menu
-  if (((fShowAssignmentMenu == TRUE) || (fShowContractMenu == TRUE)) && (fCreated == FALSE)) {
+  if (((fShowAssignmentMenu == true) || (fShowContractMenu == true)) && (fCreated == false)) {
     if (fShowContractMenu) {
       SetBoxPosition(ghContractBox, ContractPosition);
     } else {
@@ -5106,44 +5106,44 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
     }
 
     // created
-    fCreated = TRUE;
+    fCreated = true;
 
     // unhighlight all strings in box
     UnHighLightBox(ghRemoveMercAssignBox);
-  } else if ((fShowAssignmentMenu == FALSE) && (fCreated == TRUE) && (fShowContractMenu == FALSE)) {
+  } else if ((fShowAssignmentMenu == false) && (fCreated == true) && (fShowContractMenu == false)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghRemoveMercAssignBox); iCounter++) {
       MSYS_RemoveRegion(addressof(gRemoveMercAssignRegion[iCounter]));
     }
 
-    fShownContractMenu = FALSE;
+    fShownContractMenu = false;
 
     // stop showing  menu
-    if (fShowRemoveMenu == FALSE) {
-      fShowAttributeMenu = FALSE;
-      fMapPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+    if (fShowRemoveMenu == false) {
+      fShowAttributeMenu = false;
+      fMapPanelDirty = true;
+      gfRenderPBInterface = true;
     }
 
     RestorePopUpBoxes();
 
-    fMapPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fMapPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
 
     // turn off the GLOBAL fShowRemoveMenu flag!!!
-    fShowRemoveMenu = FALSE;
+    fShowRemoveMenu = false;
     // and the assignment menu itself!!!
-    fShowAssignmentMenu = FALSE;
+    fShowAssignmentMenu = false;
 
     // not created
-    fCreated = FALSE;
+    fCreated = false;
   }
 }
 
-function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: boolean): void {
+  /* static */ let fCreated: boolean = false;
   let iCounter: UINT32 = 0;
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
@@ -5154,7 +5154,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
 
   // will create/destroy mouse regions for the map screen attribute  menu
 
-  if ((fShowSquadMenu == TRUE) && (fCreated == FALSE)) {
+  if ((fShowSquadMenu == true) && (fCreated == false)) {
     // create squad box
     CreateSquadBox();
     GetBoxSize(ghAssignmentBox, addressof(pDimensions));
@@ -5193,7 +5193,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
     MSYS_SetRegionUserData(addressof(gSquadMenuRegion[iCounter]), 0, Enum151.SQUAD_MENU_CANCEL);
 
     // created
-    fCreated = TRUE;
+    fCreated = true;
 
     // show the box
     ShowBox(ghSquadBox);
@@ -5203,13 +5203,13 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
 
     // update based on current squad
     HandleShadingOfLinesForSquadMenu();
-  } else if (((fShowAssignmentMenu == FALSE) || (fShowSquadMenu == FALSE)) && (fCreated == TRUE)) {
+  } else if (((fShowAssignmentMenu == false) || (fShowSquadMenu == false)) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghSquadBox); iCounter++) {
       MSYS_RemoveRegion(addressof(gSquadMenuRegion[iCounter]));
     }
 
-    fShowSquadMenu = FALSE;
+    fShowSquadMenu = false;
 
     // remove squad box
     RemoveBox(ghSquadBox);
@@ -5217,15 +5217,15 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
 
     RestorePopUpBoxes();
 
-    fMapPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fMapPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
     SetRenderFlags(RENDER_FLAG_FULL);
 
     // not created
-    fCreated = FALSE;
-    fMapPanelDirty = TRUE;
+    fCreated = false;
+    fMapPanelDirty = true;
 
     if (fShowAssignmentMenu) {
       // remove highlight on the parent menu
@@ -5241,20 +5241,20 @@ function AssignmentMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
-  if (HandleAssignmentExpansionAndHighLightForAssignMenu(pSoldier) == TRUE) {
+  if (HandleAssignmentExpansionAndHighLightForAssignMenu(pSoldier) == true) {
     return;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     // is the line shaded?..if so, don't highlight
     if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
-      if (GetBoxShadeFlag(ghEpcBox, iValue) == FALSE) {
+      if (GetBoxShadeFlag(ghEpcBox, iValue) == false) {
         HighLightBoxLine(ghEpcBox, iValue);
       }
     } else {
-      if (GetBoxShadeFlag(ghAssignmentBox, iValue) == FALSE) {
+      if (GetBoxShadeFlag(ghAssignmentBox, iValue) == false) {
         HighLightBoxLine(ghAssignmentBox, iValue);
       }
     }
@@ -5280,7 +5280,7 @@ function RemoveMercMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
     // get the string line handle
     // is the line shaded?..if so, don't highlight
-    if (GetBoxShadeFlag(ghRemoveMercAssignBox, iValue) == FALSE) {
+    if (GetBoxShadeFlag(ghRemoveMercAssignBox, iValue) == false) {
       HighLightBoxLine(ghRemoveMercAssignBox, iValue);
     }
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -5299,7 +5299,7 @@ function ContractMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
     // highlight string
 
     if (iValue != Enum152.CONTRACT_MENU_CURRENT_FUNDS) {
-      if (GetBoxShadeFlag(ghContractBox, iValue) == FALSE) {
+      if (GetBoxShadeFlag(ghContractBox, iValue) == false) {
         // get the string line handle
         HighLightBoxLine(ghContractBox, iValue);
       }
@@ -5320,7 +5320,7 @@ function SquadMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
     // highlight string
 
     if (iValue != Enum151.SQUAD_MENU_CANCEL) {
-      if (GetBoxShadeFlag(ghSquadBox, iValue) == FALSE) {
+      if (GetBoxShadeFlag(ghSquadBox, iValue) == false) {
         // get the string line handle
         HighLightBoxLine(ghSquadBox, iValue);
       }
@@ -5342,7 +5342,7 @@ function RemoveMercMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5351,8 +5351,8 @@ function RemoveMercMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       case (Enum150.REMOVE_MERC_CANCEL):
 
         // stop showing menus
-        fShowAssignmentMenu = FALSE;
-        fShowContractMenu = FALSE;
+        fShowAssignmentMenu = false;
+        fShowContractMenu = false;
 
         // reset characters
         bSelectedAssignChar = -1;
@@ -5360,13 +5360,13 @@ function RemoveMercMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
         giAssignHighLine = -1;
 
         // dirty regions
-        fCharacterInfoPanelDirty = TRUE;
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
-        gfRenderPBInterface = TRUE;
+        fCharacterInfoPanelDirty = true;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
+        gfRenderPBInterface = true;
 
         // stop contratc glow if we are
-        fGlowContractRegion = FALSE;
+        fGlowContractRegion = false;
         giContractHighLine = -1;
 
         break;
@@ -5374,13 +5374,13 @@ function RemoveMercMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
         StrategicRemoveMerc(pSoldier);
 
         // dirty region
-        fCharacterInfoPanelDirty = TRUE;
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
-        gfRenderPBInterface = TRUE;
+        fCharacterInfoPanelDirty = true;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
+        gfRenderPBInterface = true;
 
         // stop contratc glow if we are
-        fGlowContractRegion = FALSE;
+        fGlowContractRegion = false;
         giContractHighLine = -1;
 
         // reset selected characters
@@ -5389,16 +5389,16 @@ function RemoveMercMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
         giAssignHighLine = -1;
 
         // stop showing menus
-        fShowAssignmentMenu = FALSE;
-        fShowContractMenu = FALSE;
+        fShowAssignmentMenu = false;
+        fShowContractMenu = false;
 
         // Def: 10/13/99:  When a merc is either dead or a POW, the Remove Merc popup comes up instead of the
         // Assign menu popup.  When the the user removes the merc, we need to make sure the assignment menu
         // doesnt come up ( because the both assign menu and remove menu flags are needed for the remove pop up to appear
         // dont ask why?!! )
-        fShownContractMenu = FALSE;
-        fShownAssignmentMenu = FALSE;
-        fShowRemoveMenu = FALSE;
+        fShownContractMenu = false;
+        fShownAssignmentMenu = false;
+        fShowRemoveMenu = false;
 
         break;
     }
@@ -5419,7 +5419,7 @@ function BeginRemoveMercFromContract(pSoldier: Pointer<SOLDIERTYPE>): void {
       SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, Enum26.MAP_SCREEN, 0, 0, 0);
       if ((pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC)) {
         // Only do this if they want to renew.....
-        if (WillMercRenew(pSoldier, FALSE)) {
+        if (WillMercRenew(pSoldier, false)) {
           HandleImportantMercQuote(pSoldier, Enum202.QUOTE_DEPART_COMMET_CONTRACT_NOT_RENEWED_OR_TERMINATED_UNDER_48);
         }
       }
@@ -5430,7 +5430,7 @@ function BeginRemoveMercFromContract(pSoldier: Pointer<SOLDIERTYPE>): void {
       SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, Enum26.MAP_SCREEN, 0, 0, 0);
       if ((pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC)) {
         // Only do this if they want to renew.....
-        if (WillMercRenew(pSoldier, FALSE)) {
+        if (WillMercRenew(pSoldier, false)) {
           HandleImportantMercQuote(pSoldier, Enum202.QUOTE_DEPARTING_COMMENT_CONTRACT_NOT_RENEWED_OR_48_OR_MORE);
         }
       } else if ((pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) || (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__NPC)) {
@@ -5466,7 +5466,7 @@ function MercDismissConfirmCallBack(bExitValue: UINT8): void {
 function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // btn callback handler for contract region
   let iValue: INT32 = -1;
-  let fOkToClose: BOOLEAN = FALSE;
+  let fOkToClose: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
@@ -5480,11 +5480,11 @@ function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    fOkToClose = TRUE;
+    fOkToClose = true;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (GetBoxShadeFlag(ghContractBox, iValue) == TRUE) {
+    if (GetBoxShadeFlag(ghContractBox, iValue) == true) {
       // not valid
       return;
     }
@@ -5493,14 +5493,14 @@ function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
       // reset contract character and contract highlight line
       giContractHighLine = -1;
       bSelectedContractChar = -1;
-      fGlowContractRegion = FALSE;
+      fGlowContractRegion = false;
 
-      fShowContractMenu = FALSE;
+      fShowContractMenu = false;
       // dirty region
-      fTeamPanelDirty = TRUE;
-      fMapScreenBottomDirty = TRUE;
-      fCharacterInfoPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      fMapScreenBottomDirty = true;
+      fCharacterInfoPanelDirty = true;
+      gfRenderPBInterface = true;
 
       if (gfInContractMenuFromRenewSequence) {
         BeginRemoveMercFromContract(pSoldier);
@@ -5514,17 +5514,17 @@ function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
       case (Enum152.CONTRACT_MENU_DAY):
         MercContractHandling(pSoldier, Enum161.CONTRACT_EXTEND_1_DAY);
         PostContractMessage(pSoldier, Enum161.CONTRACT_EXTEND_1_DAY);
-        fOkToClose = TRUE;
+        fOkToClose = true;
         break;
       case (Enum152.CONTRACT_MENU_WEEK):
         MercContractHandling(pSoldier, Enum161.CONTRACT_EXTEND_1_WEEK);
         PostContractMessage(pSoldier, Enum161.CONTRACT_EXTEND_1_WEEK);
-        fOkToClose = TRUE;
+        fOkToClose = true;
         break;
       case (Enum152.CONTRACT_MENU_TWO_WEEKS):
         MercContractHandling(pSoldier, Enum161.CONTRACT_EXTEND_2_WEEK);
         PostContractMessage(pSoldier, Enum161.CONTRACT_EXTEND_2_WEEK);
-        fOkToClose = TRUE;
+        fOkToClose = true;
         break;
 
       case (Enum152.CONTRACT_MENU_TERMINATE):
@@ -5538,27 +5538,27 @@ function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
           DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[48], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, MercDismissConfirmCallBack);
         }
 
-        fOkToClose = TRUE;
+        fOkToClose = true;
 
         break;
     }
 
     pProcessingSoldier = null;
-    fProcessingAMerc = FALSE;
+    fProcessingAMerc = false;
   }
 
-  if (fOkToClose == TRUE) {
+  if (fOkToClose == true) {
     // reset contract character and contract highlight line
     giContractHighLine = -1;
     bSelectedContractChar = -1;
-    fGlowContractRegion = FALSE;
-    fShowContractMenu = FALSE;
+    fGlowContractRegion = false;
+    fShowContractMenu = false;
 
     // dirty region
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
-    gfRenderPBInterface = TRUE;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
+    fCharacterInfoPanelDirty = true;
+    gfRenderPBInterface = true;
   }
 
   return;
@@ -5570,7 +5570,7 @@ function TrainingMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
-  if (HandleAssignmentExpansionAndHighLightForTrainingMenu() == TRUE) {
+  if (HandleAssignmentExpansionAndHighLightForTrainingMenu() == true) {
     return;
   }
 
@@ -5578,7 +5578,7 @@ function TrainingMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
     // highlight string
 
     // do not highlight current balance
-    if (GetBoxShadeFlag(ghTrainingBox, iValue) == FALSE) {
+    if (GetBoxShadeFlag(ghTrainingBox, iValue) == false) {
       // get the string line handle
       HighLightBoxLine(ghTrainingBox, iValue);
     }
@@ -5596,7 +5596,7 @@ function AttributeMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
 
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     // highlight string
-    if (GetBoxShadeFlag(ghAttributeBox, iValue) == FALSE) {
+    if (GetBoxShadeFlag(ghAttributeBox, iValue) == false) {
       // get the string line handle
       HighLightBoxLine(ghAttributeBox, iValue);
     }
@@ -5619,23 +5619,23 @@ function SquadMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
           BOOLEAN fCharacterWasBetweenSectors = FALSE;
   */
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (iValue == Enum151.SQUAD_MENU_CANCEL) {
       // stop displaying, leave
-      fShowSquadMenu = FALSE;
+      fShowSquadMenu = false;
 
       // unhighlight the assignment box
       UnHighLightBox(ghAssignmentBox);
 
       // dirty region
-      fTeamPanelDirty = TRUE;
-      fMapScreenBottomDirty = TRUE;
-      fCharacterInfoPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      fMapScreenBottomDirty = true;
+      fCharacterInfoPanelDirty = true;
+      gfRenderPBInterface = true;
 
       return;
     }
@@ -5703,16 +5703,16 @@ function SquadMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
       }
 
       // stop displaying, leave
-      fShowAssignmentMenu = FALSE;
+      fShowAssignmentMenu = false;
       giAssignHighLine = -1;
 
       // dirty region
-      fTeamPanelDirty = TRUE;
-      fMapScreenBottomDirty = TRUE;
-      fCharacterInfoPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
+      fTeamPanelDirty = true;
+      fMapScreenBottomDirty = true;
+      fCharacterInfoPanelDirty = true;
+      gfRenderPBInterface = true;
     } else {
-      let fDisplayError: BOOLEAN = TRUE;
+      let fDisplayError: boolean = true;
 
       switch (bCanJoinSquad) {
         case CHARACTER_CANT_JOIN_SQUAD_SQUAD_MOVING:
@@ -5753,7 +5753,7 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   let sString: CHAR16[] /* [128] */;
   let sStringA: CHAR16[] /* [128] */;
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5766,9 +5766,9 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fShowAttributeMenu) {
       // cancel attribute submenu
-      fShowAttributeMenu = FALSE;
+      fShowAttributeMenu = false;
       // rerender tactical stuff
-      gfRenderPBInterface = TRUE;
+      gfRenderPBInterface = true;
 
       return;
     }
@@ -5780,7 +5780,7 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
         gbTrainingMode = Enum117.TRAIN_SELF;
 
         // show menu
-        fShowAttributeMenu = TRUE;
+        fShowAttributeMenu = true;
         DetermineBoxPositions();
 
         break;
@@ -5791,14 +5791,14 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
           // if it's a town sector (the following 2 errors can't happen at non-town SAM sites)
           if (bTownId != Enum135.BLANK_SECTOR) {
             // can we keep militia in this town?
-            if (MilitiaTrainingAllowedInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) == FALSE) {
+            if (MilitiaTrainingAllowedInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) == false) {
               swprintf(sString, pMapErrorString[31], pTownNames[bTownId]);
               DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
               break;
             }
 
             // is the current loyalty high enough to train some?
-            if (DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier) == FALSE) {
+            if (DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier) == false) {
               DoScreenIndependantMessageBox(zMarksMapScreenText[20], MSG_BOX_FLAG_OK, null);
               break;
             }
@@ -5835,7 +5835,7 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
           MakeSoldiersTacticalAnimationReflectAssignment(pSoldier);
 
           // stop showing menu
-          fShowAssignmentMenu = FALSE;
+          fShowAssignmentMenu = false;
           giAssignHighLine = -1;
 
           // remove from squad
@@ -5849,60 +5849,60 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
 
           // assign to a movement group
           AssignMercToAMovementGroup(pSoldier);
-          if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == FALSE) {
+          if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == false) {
             // show a message to confirm player wants to charge cost
             HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier);
           } else {
             SetAssignmentForList(Enum117.TRAIN_TOWN, 0);
           }
 
-          gfRenderPBInterface = TRUE;
+          gfRenderPBInterface = true;
         }
         break;
       case (Enum149.TRAIN_MENU_TEAMMATES):
 
-        if (CanCharacterTrainTeammates(pSoldier) == TRUE) {
+        if (CanCharacterTrainTeammates(pSoldier) == true) {
           // train teammates
           gbTrainingMode = Enum117.TRAIN_TEAMMATE;
 
           // show menu
-          fShowAttributeMenu = TRUE;
+          fShowAttributeMenu = true;
           DetermineBoxPositions();
         }
         break;
       case (Enum149.TRAIN_MENU_TRAIN_BY_OTHER):
 
-        if (CanCharacterBeTrainedByOther(pSoldier) == TRUE) {
+        if (CanCharacterBeTrainedByOther(pSoldier) == true) {
           // train teammates
           gbTrainingMode = Enum117.TRAIN_BY_OTHER;
 
           // show menu
-          fShowAttributeMenu = TRUE;
+          fShowAttributeMenu = true;
           DetermineBoxPositions();
         }
         break;
       case (Enum149.TRAIN_MENU_CANCEL):
         // stop showing menu
-        fShowTrainingMenu = FALSE;
+        fShowTrainingMenu = false;
 
         // unhighlight the assignment box
         UnHighLightBox(ghAssignmentBox);
 
         // reset list
         ResetSelectedListForMapScreen();
-        gfRenderPBInterface = TRUE;
+        gfRenderPBInterface = true;
 
         break;
     }
 
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (fShowAttributeMenu) {
       // cancel attribute submenu
-      fShowAttributeMenu = FALSE;
+      fShowAttributeMenu = false;
       // rerender tactical stuff
-      gfRenderPBInterface = TRUE;
+      gfRenderPBInterface = true;
 
       return;
     }
@@ -5914,7 +5914,7 @@ function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5923,7 +5923,7 @@ function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       // cancel, leave
 
       // stop showing menu
-      fShowAttributeMenu = FALSE;
+      fShowAttributeMenu = false;
 
       // unhighlight the training box
       UnHighLightBox(ghTrainingBox);
@@ -5940,7 +5940,7 @@ function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       MakeSoldiersTacticalAnimationReflectAssignment(pSoldier);
 
       // stop showing ALL menus
-      fShowAssignmentMenu = FALSE;
+      fShowAssignmentMenu = false;
       giAssignHighLine = -1;
 
       // remove from squad/vehicle
@@ -5960,10 +5960,10 @@ function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
     }
 
     // rerender tactical stuff
-    gfRenderPBInterface = TRUE;
+    gfRenderPBInterface = true;
 
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
   }
 };
 
@@ -5974,7 +5974,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5990,11 +5990,11 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
         case (Enum147.EPC_MENU_ON_DUTY):
           if (CanCharacterOnDuty(pSoldier)) {
             // put character on a team
-            fShowSquadMenu = TRUE;
-            fShowTrainingMenu = FALSE;
-            fShowVehicleMenu = FALSE;
-            fTeamPanelDirty = TRUE;
-            fMapScreenBottomDirty = TRUE;
+            fShowSquadMenu = true;
+            fShowTrainingMenu = false;
+            fShowVehicleMenu = false;
+            fTeamPanelDirty = true;
+            fMapScreenBottomDirty = true;
           }
           break;
         case (Enum147.EPC_MENU_PATIENT):
@@ -6014,14 +6014,14 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
             }
 
             // stop showing menu
-            fShowAssignmentMenu = FALSE;
+            fShowAssignmentMenu = false;
             giAssignHighLine = -1;
 
             MakeSoldiersTacticalAnimationReflectAssignment(pSoldier);
 
             // set dirty flag
-            fTeamPanelDirty = TRUE;
-            fMapScreenBottomDirty = TRUE;
+            fTeamPanelDirty = true;
+            fMapScreenBottomDirty = true;
 
             // remove from squad
 
@@ -6040,27 +6040,27 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
         case (Enum147.EPC_MENU_VEHICLE):
           if (CanCharacterVehicle(pSoldier)) {
             if (DisplayVehicleMenu(pSoldier)) {
-              fShowVehicleMenu = TRUE;
+              fShowVehicleMenu = true;
               ShowBox(ghVehicleBox);
             } else {
-              fShowVehicleMenu = FALSE;
+              fShowVehicleMenu = false;
             }
           }
           break;
 
         case (Enum147.EPC_MENU_REMOVE):
 
-          fShowAssignmentMenu = FALSE;
+          fShowAssignmentMenu = false;
           UnEscortEPC(pSoldier);
           break;
 
         case (Enum147.EPC_MENU_CANCEL):
-          fShowAssignmentMenu = FALSE;
+          fShowAssignmentMenu = false;
           giAssignHighLine = -1;
 
           // set dirty flag
-          fTeamPanelDirty = TRUE;
-          fMapScreenBottomDirty = TRUE;
+          fTeamPanelDirty = true;
+          fMapScreenBottomDirty = true;
 
           // reset list of characters
           ResetSelectedListForMapScreen();
@@ -6071,12 +6071,12 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
         case (Enum148.ASSIGN_MENU_ON_DUTY):
           if (CanCharacterOnDuty(pSoldier)) {
             // put character on a team
-            fShowSquadMenu = TRUE;
-            fShowTrainingMenu = FALSE;
-            fShowVehicleMenu = FALSE;
-            fTeamPanelDirty = TRUE;
-            fMapScreenBottomDirty = TRUE;
-            fShowRepairMenu = FALSE;
+            fShowSquadMenu = true;
+            fShowTrainingMenu = false;
+            fShowVehicleMenu = false;
+            fTeamPanelDirty = true;
+            fMapScreenBottomDirty = true;
+            fShowRepairMenu = false;
           }
           break;
         case (Enum148.ASSIGN_MENU_DOCTOR):
@@ -6084,7 +6084,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
           // can character doctor?
           if (CanCharacterDoctor(pSoldier)) {
             // stop showing menu
-            fShowAssignmentMenu = FALSE;
+            fShowAssignmentMenu = false;
             giAssignHighLine = -1;
 
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
@@ -6108,14 +6108,14 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
             MakeSoldiersTacticalAnimationReflectAssignment(pSoldier);
 
             // set dirty flag
-            fTeamPanelDirty = TRUE;
-            fMapScreenBottomDirty = TRUE;
+            fTeamPanelDirty = true;
+            fMapScreenBottomDirty = true;
 
             // set assignment for group
             SetAssignmentForList(Enum117.DOCTOR, 0);
           } else if (CanCharacterDoctorButDoesntHaveMedKit(pSoldier)) {
-            fTeamPanelDirty = TRUE;
-            fMapScreenBottomDirty = TRUE;
+            fTeamPanelDirty = true;
+            fMapScreenBottomDirty = true;
             swprintf(sString, zMarksMapScreenText[19], pSoldier.value.name);
 
             DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
@@ -6142,12 +6142,12 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
             MakeSoldiersTacticalAnimationReflectAssignment(pSoldier);
 
             // stop showing menu
-            fShowAssignmentMenu = FALSE;
+            fShowAssignmentMenu = false;
             giAssignHighLine = -1;
 
             // set dirty flag
-            fTeamPanelDirty = TRUE;
-            fMapScreenBottomDirty = TRUE;
+            fTeamPanelDirty = true;
+            fMapScreenBottomDirty = true;
 
             // remove from squad
 
@@ -6167,33 +6167,33 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
         case (Enum148.ASSIGN_MENU_VEHICLE):
           if (CanCharacterVehicle(pSoldier)) {
             if (DisplayVehicleMenu(pSoldier)) {
-              fShowVehicleMenu = TRUE;
+              fShowVehicleMenu = true;
               ShowBox(ghVehicleBox);
             } else {
-              fShowVehicleMenu = FALSE;
+              fShowVehicleMenu = false;
             }
           }
           break;
         case (Enum148.ASSIGN_MENU_REPAIR):
           if (CanCharacterRepair(pSoldier)) {
-            fShowSquadMenu = FALSE;
-            fShowTrainingMenu = FALSE;
-            fShowVehicleMenu = FALSE;
-            fTeamPanelDirty = TRUE;
-            fMapScreenBottomDirty = TRUE;
+            fShowSquadMenu = false;
+            fShowTrainingMenu = false;
+            fShowVehicleMenu = false;
+            fTeamPanelDirty = true;
+            fMapScreenBottomDirty = true;
 
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
             if (pSoldier.value.bSectorZ == 0) {
-              fShowRepairMenu = FALSE;
+              fShowRepairMenu = false;
 
               if (DisplayRepairMenu(pSoldier)) {
-                fShowRepairMenu = TRUE;
+                fShowRepairMenu = true;
               }
             }
           } else if (CanCharacterRepairButDoesntHaveARepairkit(pSoldier)) {
-            fTeamPanelDirty = TRUE;
-            fMapScreenBottomDirty = TRUE;
+            fTeamPanelDirty = true;
+            fMapScreenBottomDirty = true;
             swprintf(sString, zMarksMapScreenText[18], pSoldier.value.name);
 
             DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
@@ -6201,44 +6201,44 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
           break;
         case (Enum148.ASSIGN_MENU_TRAIN):
           if (CanCharacterPractise(pSoldier)) {
-            fShowTrainingMenu = TRUE;
+            fShowTrainingMenu = true;
             DetermineBoxPositions();
-            fShowSquadMenu = FALSE;
-            fShowVehicleMenu = FALSE;
-            fShowRepairMenu = FALSE;
+            fShowSquadMenu = false;
+            fShowVehicleMenu = false;
+            fShowRepairMenu = false;
 
-            fTeamPanelDirty = TRUE;
-            fMapScreenBottomDirty = TRUE;
+            fTeamPanelDirty = true;
+            fMapScreenBottomDirty = true;
           }
           break;
         case (Enum148.ASSIGN_MENU_CANCEL):
-          fShowAssignmentMenu = FALSE;
+          fShowAssignmentMenu = false;
           giAssignHighLine = -1;
 
           // set dirty flag
-          fTeamPanelDirty = TRUE;
-          fMapScreenBottomDirty = TRUE;
+          fTeamPanelDirty = true;
+          fMapScreenBottomDirty = true;
 
           // reset list of characters
           ResetSelectedListForMapScreen();
           break;
       }
     }
-    gfRenderPBInterface = TRUE;
+    gfRenderPBInterface = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if ((fShowAttributeMenu) || (fShowTrainingMenu) || (fShowRepairMenu) || (fShowVehicleMenu) || (fShowSquadMenu)) {
-      fShowAttributeMenu = FALSE;
-      fShowTrainingMenu = FALSE;
-      fShowRepairMenu = FALSE;
-      fShowVehicleMenu = FALSE;
-      fShowSquadMenu = FALSE;
+      fShowAttributeMenu = false;
+      fShowTrainingMenu = false;
+      fShowRepairMenu = false;
+      fShowVehicleMenu = false;
+      fShowSquadMenu = false;
 
       // rerender tactical stuff
-      gfRenderPBInterface = TRUE;
+      gfRenderPBInterface = true;
 
       // set dirty flag
-      fTeamPanelDirty = TRUE;
-      fMapScreenBottomDirty = TRUE;
+      fTeamPanelDirty = true;
+      fMapScreenBottomDirty = true;
 
       return;
     }
@@ -6402,11 +6402,11 @@ function HandleShadingOfLinesForSquadMenu(): void {
   let uiMaxSquad: UINT32;
   let bResult: INT8;
 
-  if ((fShowSquadMenu == FALSE) || (ghSquadBox == -1)) {
+  if ((fShowSquadMenu == false) || (ghSquadBox == -1)) {
     return;
   }
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   uiMaxSquad = GetLastSquadListedInSquadMenu();
 
@@ -6450,8 +6450,8 @@ function PostTerminateMessage(pCharacter: Pointer<SOLDIERTYPE>): void {
   // MapScreenMessage(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%s's contract has been terminated.", pCharacter -> name );
 }
 
-function DisplayVehicleMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  let fVehiclePresent: BOOLEAN = FALSE;
+function DisplayVehicleMenu(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+  let fVehiclePresent: boolean = false;
   let iCounter: INT32 = 0;
   let hStringHandle: INT32 = 0;
 
@@ -6464,10 +6464,10 @@ function DisplayVehicleMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
   // run through list of vehicles in sector and add them to pop up box
   for (iCounter = 0; iCounter < ubNumberOfVehicles; iCounter++) {
-    if (pVehicleList[iCounter].fValid == TRUE) {
+    if (pVehicleList[iCounter].fValid == true) {
       if (IsThisVehicleAccessibleToSoldier(pSoldier, iCounter)) {
         AddMonoString(addressof(hStringHandle), pVehicleStrings[pVehicleList[iCounter].ubVehicleType]);
-        fVehiclePresent = TRUE;
+        fVehiclePresent = true;
       }
     }
   }
@@ -6740,7 +6740,7 @@ function CreateAssignmentsBox(): void {
     AssignmentPosition.iY = giBoxY;
   }
 
-  pSoldier = GetSelectedAssignSoldier(TRUE);
+  pSoldier = GetSelectedAssignSoldier(true);
   // pSoldier NULL is legal here!  Gets called during every mapscreen initialization even when nobody is assign char
 
   // create basic box
@@ -6855,12 +6855,12 @@ function CreateMercRemoveAssignBox(): void {
   ResizeBoxToText(ghRemoveMercAssignBox);
 }
 
-function CreateDestroyAssignmentPopUpBoxes(): BOOLEAN {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+function CreateDestroyAssignmentPopUpBoxes(): boolean {
+  /* static */ let fCreated: boolean = false;
   let vs_desc: VSURFACE_DESC;
   let VObjectDesc: VOBJECT_DESC;
 
-  if ((fShowAssignmentMenu == TRUE) && (fCreated == FALSE)) {
+  if ((fShowAssignmentMenu == true) && (fCreated == false)) {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("INTERFACE\\popup.sti", VObjectDesc.ImageFile);
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPOPUPBORDERS)));
@@ -6879,8 +6879,8 @@ function CreateDestroyAssignmentPopUpBoxes(): BOOLEAN {
 
     UpdateMapScreenAssignmentPositions();
 
-    fCreated = TRUE;
-  } else if ((fShowAssignmentMenu == FALSE) && (fCreated == TRUE)) {
+    fCreated = true;
+  } else if ((fShowAssignmentMenu == false) && (fCreated == true)) {
     DeleteVideoObjectFromIndex(guiPOPUPBORDERS);
     DeleteVideoSurfaceFromIndex(guiPOPUPTEX);
 
@@ -6902,12 +6902,12 @@ function CreateDestroyAssignmentPopUpBoxes(): BOOLEAN {
     RemoveBox(ghTrainingBox);
     ghTrainingBox = -1;
 
-    fCreated = FALSE;
-    gfIgnoreScrolling = FALSE;
+    fCreated = false;
+    gfIgnoreScrolling = false;
     RebuildCurrentSquad();
   }
 
-  return TRUE;
+  return true;
 }
 
 function DetermineBoxPositions(): void {
@@ -6917,11 +6917,11 @@ function DetermineBoxPositions(): void {
   let pDimensions: SGPRect;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-  if ((fShowAssignmentMenu == FALSE) || (ghAssignmentBox == -1)) {
+  if ((fShowAssignmentMenu == false) || (ghAssignmentBox == -1)) {
     return;
   }
 
-  pSoldier = GetSelectedAssignSoldier(TRUE);
+  pSoldier = GetSelectedAssignSoldier(true);
   // pSoldier NULL is legal here!  Gets called during every mapscreen initialization even when nobody is assign char
   if (pSoldier == null) {
     return;
@@ -6948,18 +6948,18 @@ function DetermineBoxPositions(): void {
   pNewPoint.iX = pPoint.iX + pDimensions.iRight;
   pNewPoint.iY = pPoint.iY;
 
-  if ((fShowSquadMenu == TRUE) && (ghSquadBox != -1)) {
+  if ((fShowSquadMenu == true) && (ghSquadBox != -1)) {
     SetBoxPosition(ghSquadBox, pNewPoint);
   }
 
-  if ((fShowRepairMenu == TRUE) && (ghRepairBox != -1)) {
+  if ((fShowRepairMenu == true) && (ghRepairBox != -1)) {
     CreateDestroyMouseRegionForRepairMenu();
     pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_REPAIR);
 
     SetBoxPosition(ghRepairBox, pNewPoint);
   }
 
-  if ((fShowTrainingMenu == TRUE) && (ghTrainingBox != -1)) {
+  if ((fShowTrainingMenu == true) && (ghTrainingBox != -1)) {
     pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN);
     SetBoxPosition(ghTrainingBox, pNewPoint);
     TrainPosition.iX = pNewPoint.iX;
@@ -6970,7 +6970,7 @@ function DetermineBoxPositions(): void {
     GetBoxSize(ghTrainingBox, addressof(pDimensions));
     GetBoxPosition(ghTrainingBox, addressof(pPoint));
 
-    if ((fShowAttributeMenu == TRUE) && (ghAttributeBox != -1)) {
+    if ((fShowAttributeMenu == true) && (ghAttributeBox != -1)) {
       // hang it right beside the training box menu
       pNewPoint.iX = pPoint.iX + pDimensions.iRight;
       pNewPoint.iY = pPoint.iY;
@@ -6987,7 +6987,7 @@ function SetTacticalPopUpAssignmentBoxXY(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // get the soldier
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   // grab soldier's x,y screen position
   GetSoldierScreenPos(pSoldier, addressof(sX), addressof(sY));
@@ -7022,7 +7022,7 @@ function RepositionMouseRegions(): void {
   let sDeltaY: INT16;
   let iCounter: INT32 = 0;
 
-  if (fShowAssignmentMenu == TRUE) {
+  if (fShowAssignmentMenu == true) {
     sDeltaX = gsAssignmentBoxesX - gAssignmentMenuRegion[0].RegionTopLeftX;
     sDeltaY = (gsAssignmentBoxesY - gAssignmentMenuRegion[0].RegionTopLeftY + GetTopMarginSize(ghAssignmentBox));
 
@@ -7047,7 +7047,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
   let sLongest: INT16;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-  if (fShowAssignmentMenu == FALSE) {
+  if (fShowAssignmentMenu == false) {
     return;
   }
 
@@ -7056,7 +7056,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
   }
 
   // get the soldier
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     GetBoxSize(ghEpcBox, addressof(pDimensions2));
@@ -7064,7 +7064,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     GetBoxSize(ghAssignmentBox, addressof(pDimensions2));
   }
 
-  if (fShowRepairMenu == TRUE) {
+  if (fShowRepairMenu == true) {
     GetBoxSize(ghRepairBox, addressof(pDimensions));
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight >= 640) {
@@ -7087,7 +7087,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     pPoint.iY = gsAssignmentBoxesY + ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_REPAIR);
 
     SetBoxPosition(ghRepairBox, pPoint);
-  } else if (fShowSquadMenu == TRUE) {
+  } else if (fShowSquadMenu == true) {
     GetBoxSize(ghSquadBox, addressof(pDimensions));
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight >= 640) {
@@ -7110,7 +7110,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     pPoint.iY = gsAssignmentBoxesY;
 
     SetBoxPosition(ghSquadBox, pPoint);
-  } else if (fShowAttributeMenu == TRUE) {
+  } else if (fShowAttributeMenu == true) {
     GetBoxSize(ghTrainingBox, addressof(pDimensions));
     GetBoxSize(ghAttributeBox, addressof(pDimensions3));
 
@@ -7136,7 +7136,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN);
 
     SetBoxPosition(ghTrainingBox, pPoint);
-  } else if (fShowTrainingMenu == TRUE) {
+  } else if (fShowTrainingMenu == true) {
     GetBoxSize(ghTrainingBox, addressof(pDimensions));
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight >= 640) {
@@ -7193,7 +7193,7 @@ function PositionCursorForTacticalAssignmentBox(): void {
 
   iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 
-  if (gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] == FALSE) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] == false) {
     SimulateMouseMovement(pPosition.iX + pDimensions.iRight - 6, pPosition.iY + (iFontHeight / 2) + 2);
   }
 }
@@ -7202,9 +7202,9 @@ function HandleRestFatigueAndSleepStatus(): void {
   let iCounter: INT32 = 0;
   let iNumberOnTeam: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fReasonAdded: BOOLEAN = FALSE;
-  let fBoxSetUp: BOOLEAN = FALSE;
-  let fMeToo: BOOLEAN = FALSE;
+  let fReasonAdded: boolean = false;
+  let fBoxSetUp: boolean = false;
+  let fMeToo: boolean = false;
 
   iNumberOnTeam = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
@@ -7243,36 +7243,36 @@ function HandleRestFatigueAndSleepStatus(): void {
           }
 
           // he goes to sleep, provided it's at all possible (it still won't happen in a hostile sector, etc.)
-          if (SetMercAsleep(pSoldier, FALSE)) {
+          if (SetMercAsleep(pSoldier, false)) {
             if ((pSoldier.value.bAssignment < Enum117.ON_DUTY) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
               // on a squad/vehicle, complain, then drop
               TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_NEED_SLEEP);
               TacticalCharacterDialogueWithSpecialEvent(pSoldier, Enum202.QUOTE_NEED_SLEEP, DIALOGUE_SPECIAL_EVENT_SLEEP, 1, 0);
-              fMeToo = TRUE;
+              fMeToo = true;
             }
 
             // guy collapses
-            pSoldier.value.fMercCollapsedFlag = TRUE;
+            pSoldier.value.fMercCollapsedFlag = true;
           }
         }
         // if pretty tired, and not forced to stay awake
-        else if ((pSoldier.value.bBreathMax < BREATHMAX_PRETTY_TIRED) && (pSoldier.value.fForcedToStayAwake == FALSE)) {
+        else if ((pSoldier.value.bBreathMax < BREATHMAX_PRETTY_TIRED) && (pSoldier.value.fForcedToStayAwake == false)) {
           // if not on squad/ in vehicle
           if ((pSoldier.value.bAssignment >= Enum117.ON_DUTY) && (pSoldier.value.bAssignment != Enum117.VEHICLE)) {
             // try to go to sleep on your own
-            if (SetMercAsleep(pSoldier, FALSE)) {
+            if (SetMercAsleep(pSoldier, false)) {
               if (gGameSettings.fOptions[Enum8.TOPTION_SLEEPWAKE_NOTIFICATION]) {
                 // if the first one
-                if (fReasonAdded == FALSE) {
+                if (fReasonAdded == false) {
                   // tell player about it
                   AddReasonToWaitingListQueue(Enum154.ASLEEP_GOING_AUTO_FOR_UPDATE);
                   TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_SHOW_UPDATE_MENU, 0, 0);
 
-                  fReasonAdded = TRUE;
+                  fReasonAdded = true;
                 }
 
                 AddSoldierToWaitingListQueue(pSoldier);
-                fBoxSetUp = TRUE;
+                fBoxSetUp = true;
               }
 
               // seems unnecessary now?  ARM
@@ -7283,14 +7283,14 @@ function HandleRestFatigueAndSleepStatus(): void {
             // if he hasn't complained yet
             if (!pSoldier.value.fComplainedThatTired) {
               // say quote
-              if (fMeToo == FALSE) {
+              if (fMeToo == false) {
                 TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_NEED_SLEEP);
-                fMeToo = TRUE;
+                fMeToo = true;
               } else {
                 TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_ME_TOO);
               }
 
-              pSoldier.value.fComplainedThatTired = TRUE;
+              pSoldier.value.fComplainedThatTired = true;
             }
           }
         }
@@ -7301,10 +7301,10 @@ function HandleRestFatigueAndSleepStatus(): void {
   if (fBoxSetUp) {
     UnPauseGameDuringNextQuote();
     AddDisplayBoxToWaitingQueue();
-    fBoxSetUp = FALSE;
+    fBoxSetUp = false;
   }
 
-  fReasonAdded = FALSE;
+  fReasonAdded = false;
 
   // now handle waking (needs seperate list queue, that's why it has its own loop)
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
@@ -7325,7 +7325,7 @@ function HandleRestFatigueAndSleepStatus(): void {
 
       if (pSoldier.value.bBreathMax >= BREATHMAX_CANCEL_COLLAPSE) {
         // reset the collapsed flag well before reaching the wakeup state
-        pSoldier.value.fMercCollapsedFlag = FALSE;
+        pSoldier.value.fMercCollapsedFlag = false;
       }
 
       // if asleep
@@ -7333,17 +7333,17 @@ function HandleRestFatigueAndSleepStatus(): void {
         // but has had enough rest?
         if (pSoldier.value.bBreathMax >= BREATHMAX_FULLY_RESTED) {
           // try to wake merc up
-          if (SetMercAwake(pSoldier, FALSE, FALSE)) {
+          if (SetMercAwake(pSoldier, false, false)) {
             // if not on squad/ in vehicle, tell player about it
             if ((pSoldier.value.bAssignment >= Enum117.ON_DUTY) && (pSoldier.value.bAssignment != Enum117.VEHICLE)) {
               if (gGameSettings.fOptions[Enum8.TOPTION_SLEEPWAKE_NOTIFICATION]) {
-                if (fReasonAdded == FALSE) {
+                if (fReasonAdded == false) {
                   AddReasonToWaitingListQueue(Enum154.ASSIGNMENT_RETURNING_FOR_UPDATE);
-                  fReasonAdded = TRUE;
+                  fReasonAdded = true;
                 }
 
                 AddSoldierToWaitingListQueue(pSoldier);
-                fBoxSetUp = TRUE;
+                fBoxSetUp = true;
               }
             }
           }
@@ -7355,36 +7355,36 @@ function HandleRestFatigueAndSleepStatus(): void {
   if (fBoxSetUp) {
     UnPauseGameDuringNextQuote();
     AddDisplayBoxToWaitingQueue();
-    fBoxSetUp = FALSE;
+    fBoxSetUp = false;
   }
 
   return;
 }
 
-function CanCharacterRepairVehicle(pSoldier: Pointer<SOLDIERTYPE>, iVehicleId: INT32): BOOLEAN {
+function CanCharacterRepairVehicle(pSoldier: Pointer<SOLDIERTYPE>, iVehicleId: INT32): boolean {
   // is the vehicle valid?
-  if (VehicleIdIsValid(iVehicleId) == FALSE) {
-    return FALSE;
+  if (VehicleIdIsValid(iVehicleId) == false) {
+    return false;
   }
 
   // is vehicle destroyed?
   if (pVehicleList[iVehicleId].fDestroyed) {
-    return FALSE;
+    return false;
   }
 
   // is it damaged at all?
   if (!DoesVehicleNeedAnyRepairs(iVehicleId)) {
-    return FALSE;
+    return false;
   }
 
   // it's not Skyrider's helicopter (which isn't damagable/repairable)
   if (iVehicleId == iHelicopterVehicleId) {
-    return FALSE;
+    return false;
   }
 
   // same sector, neither is between sectors, and OK To Use (player owns it) ?
   if (!IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleId)) {
-    return FALSE;
+    return false;
   }
 
   /* Assignment distance limits removed.  Sep/11/98.  ARM
@@ -7398,21 +7398,21 @@ function CanCharacterRepairVehicle(pSoldier: Pointer<SOLDIERTYPE>, iVehicleId: I
           }
   */
 
-  return TRUE;
+  return true;
 }
 
-function IsRobotInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
+function IsRobotInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = GetRobotSoldier();
 
   if (pSoldier != null) {
-    if ((pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == bSectorZ) && (pSoldier.value.fBetweenSectors == FALSE)) {
-      return TRUE;
+    if ((pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == bSectorZ) && (pSoldier.value.fBetweenSectors == false)) {
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function GetRobotSoldier(): Pointer<SOLDIERTYPE> {
@@ -7435,23 +7435,23 @@ function GetRobotSoldier(): Pointer<SOLDIERTYPE> {
   return null;
 }
 
-function CanCharacterRepairRobot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CanCharacterRepairRobot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pRobot: Pointer<SOLDIERTYPE> = null;
 
   // do we in fact have the robot on the team?
   pRobot = GetRobotSoldier();
   if (pRobot == null) {
-    return FALSE;
+    return false;
   }
 
   // if robot isn't damaged at all
   if (pRobot.value.bLife == pRobot.value.bLifeMax) {
-    return FALSE;
+    return false;
   }
 
   // is the robot in the same sector
-  if (IsRobotInThisSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) == FALSE) {
-    return FALSE;
+  if (IsRobotInThisSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) == false) {
+    return false;
   }
 
   /* Assignment distance limits removed.  Sep/11/98.  ARM
@@ -7465,10 +7465,10 @@ function CanCharacterRepairRobot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           }
   */
 
-  return TRUE;
+  return true;
 }
 
-function HandleRepairOfRobotBySoldier(pSoldier: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothingLeftToRepair: Pointer<BOOLEAN>): UINT8 {
+function HandleRepairOfRobotBySoldier(pSoldier: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothingLeftToRepair: Pointer<boolean>): UINT8 {
   let pRobot: Pointer<SOLDIERTYPE> = null;
 
   pRobot = GetRobotSoldier();
@@ -7477,18 +7477,18 @@ function HandleRepairOfRobotBySoldier(pSoldier: Pointer<SOLDIERTYPE>, ubRepairPt
   return RepairRobot(pRobot, ubRepairPts, pfNothingLeftToRepair);
 }
 
-function RepairRobot(pRobot: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothingLeftToRepair: Pointer<BOOLEAN>): UINT8 {
+function RepairRobot(pRobot: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothingLeftToRepair: Pointer<boolean>): UINT8 {
   let ubPointsUsed: UINT8 = 0;
 
   // is it "dead" ?
   if (pRobot.value.bLife == 0) {
-    pfNothingLeftToRepair.value = TRUE;
+    pfNothingLeftToRepair.value = true;
     return ubPointsUsed;
   }
 
   // is it "unhurt" ?
   if (pRobot.value.bLife == pRobot.value.bLifeMax) {
-    pfNothingLeftToRepair.value = TRUE;
+    pfNothingLeftToRepair.value = true;
     return ubPointsUsed;
   }
 
@@ -7503,9 +7503,9 @@ function RepairRobot(pRobot: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothing
   }
 
   if (pRobot.value.bLife == pRobot.value.bLifeMax) {
-    pfNothingLeftToRepair.value = TRUE;
+    pfNothingLeftToRepair.value = true;
   } else {
-    pfNothingLeftToRepair.value = FALSE;
+    pfNothingLeftToRepair.value = false;
   }
 
   return ubPointsUsed;
@@ -7519,8 +7519,8 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         pSoldier.value.bBleeding = 0;
 
         // set dirty flag
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
 
         // remove from squad
 
@@ -7556,8 +7556,8 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
         // set dirty flag
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
 
         // remove from squad
         RemoveCharacterFromSquads(pSoldier);
@@ -7582,9 +7582,9 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
         // set dirty flag
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
-        gfRenderPBInterface = TRUE;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
+        gfRenderPBInterface = true;
 
         // remove from squad
         RemoveCharacterFromSquads(pSoldier);
@@ -7610,8 +7610,8 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
         // set dirty flag
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
 
         // remove from squad
         RemoveCharacterFromSquads(pSoldier);
@@ -7628,7 +7628,7 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         ChangeSoldiersAssignment(pSoldier, Enum117.TRAIN_TOWN);
 
         if (pMilitiaTrainerSoldier == null) {
-          if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == FALSE) {
+          if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == false) {
             // show a message to confirm player wants to charge cost
             HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier);
           }
@@ -7636,13 +7636,13 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
 
         AssignMercToAMovementGroup(pSoldier);
         // set dirty flag
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
-        gfRenderPBInterface = TRUE;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
+        gfRenderPBInterface = true;
       }
       break;
     case (Enum117.TRAIN_SELF):
-      if (CanCharacterTrainStat(pSoldier, iParam1, TRUE, FALSE)) {
+      if (CanCharacterTrainStat(pSoldier, iParam1, true, false)) {
         // train stat
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
@@ -7666,13 +7666,13 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         pSoldier.value.bTrainStat = iParam1;
 
         // set dirty flag
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
-        gfRenderPBInterface = TRUE;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
+        gfRenderPBInterface = true;
       }
       break;
     case (Enum117.TRAIN_TEAMMATE):
-      if (CanCharacterTrainStat(pSoldier, iParam1, FALSE, TRUE)) {
+      if (CanCharacterTrainStat(pSoldier, iParam1, false, true)) {
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
         // remove from squad
         RemoveCharacterFromSquads(pSoldier);
@@ -7693,13 +7693,13 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         pSoldier.value.bTrainStat = iParam1;
 
         // set dirty flag
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
-        gfRenderPBInterface = TRUE;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
+        gfRenderPBInterface = true;
       }
       break;
     case (Enum117.TRAIN_BY_OTHER):
-      if (CanCharacterTrainStat(pSoldier, iParam1, TRUE, FALSE)) {
+      if (CanCharacterTrainStat(pSoldier, iParam1, true, false)) {
         // train stat
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
@@ -7723,9 +7723,9 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         pSoldier.value.bTrainStat = iParam1;
 
         // set dirty flag
-        fTeamPanelDirty = TRUE;
-        fMapScreenBottomDirty = TRUE;
-        gfRenderPBInterface = TRUE;
+        fTeamPanelDirty = true;
+        fMapScreenBottomDirty = true;
+        gfRenderPBInterface = true;
       }
       break;
     case (Enum117.REPAIR):
@@ -7758,9 +7758,9 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
           pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
           // set dirty flag
-          fTeamPanelDirty = TRUE;
-          fMapScreenBottomDirty = TRUE;
-          gfRenderPBInterface = TRUE;
+          fTeamPanelDirty = true;
+          fMapScreenBottomDirty = true;
+          gfRenderPBInterface = true;
 
           if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
             TakeSoldierOutOfVehicle(pSoldier);
@@ -7769,7 +7769,7 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
           // remove from squad
           RemoveCharacterFromSquads(pSoldier);
 
-          if (PutSoldierInVehicle(pSoldier, (iParam1)) == FALSE) {
+          if (PutSoldierInVehicle(pSoldier, (iParam1)) == false) {
             AddCharacterToAnySquad(pSoldier);
           } else {
             if ((pSoldier.value.bAssignment != Enum117.VEHICLE) || (pSoldier.value.iVehicleId != iParam1)) {
@@ -7901,7 +7901,7 @@ BOOLEAN IsSoldierCloseEnoughToSAMControlPanel( SOLDIERTYPE *pSoldier )
 }
 */
 
-function HandleAssignmentExpansionAndHighLightForAssignMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function HandleAssignmentExpansionAndHighLightForAssignMenu(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (fShowSquadMenu) {
     // squad menu up?..if so, highlight squad line the previous menu
     if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
@@ -7910,44 +7910,44 @@ function HandleAssignmentExpansionAndHighLightForAssignMenu(pSoldier: Pointer<SO
       HighLightBoxLine(ghAssignmentBox, Enum148.ASSIGN_MENU_ON_DUTY);
     }
 
-    return TRUE;
+    return true;
   } else if (fShowTrainingMenu) {
     // highlight train line the previous menu
     HighLightBoxLine(ghAssignmentBox, Enum148.ASSIGN_MENU_TRAIN);
-    return TRUE;
+    return true;
   } else if (fShowRepairMenu) {
     // highlight repair line the previous menu
     HighLightBoxLine(ghAssignmentBox, Enum148.ASSIGN_MENU_REPAIR);
-    return TRUE;
+    return true;
   } else if (fShowVehicleMenu) {
     // highlight vehicle line the previous menu
     HighLightBoxLine(ghAssignmentBox, Enum148.ASSIGN_MENU_VEHICLE);
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function HandleAssignmentExpansionAndHighLightForTrainingMenu(): BOOLEAN {
+function HandleAssignmentExpansionAndHighLightForTrainingMenu(): boolean {
   if (fShowAttributeMenu) {
     switch (gbTrainingMode) {
       case Enum117.TRAIN_SELF:
         HighLightBoxLine(ghTrainingBox, Enum149.TRAIN_MENU_SELF);
-        return TRUE;
+        return true;
       case Enum117.TRAIN_TEAMMATE:
         HighLightBoxLine(ghTrainingBox, Enum149.TRAIN_MENU_TEAMMATES);
-        return TRUE;
+        return true;
       case Enum117.TRAIN_BY_OTHER:
         HighLightBoxLine(ghTrainingBox, Enum149.TRAIN_MENU_TRAIN_BY_OTHER);
-        return TRUE;
+        return true;
 
       default:
-        Assert(FALSE);
+        Assert(false);
         break;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 /*
@@ -7978,24 +7978,24 @@ BOOLEAN HandleShowingOfUpBox( void )
 }
 */
 
-function HandleShowingOfMovementBox(): BOOLEAN {
+function HandleShowingOfMovementBox(): boolean {
   // if the list is being shown, then show it
-  if (fShowMapScreenMovementList == TRUE) {
+  if (fShowMapScreenMovementList == true) {
     MarkAllBoxesAsAltered();
     ShowBox(ghMoveBox);
-    return TRUE;
+    return true;
   } else {
     if (IsBoxShown(ghMoveBox)) {
       HideBox(ghMoveBox);
-      fMapPanelDirty = TRUE;
-      gfRenderPBInterface = TRUE;
-      fTeamPanelDirty = TRUE;
-      fMapScreenBottomDirty = TRUE;
-      fCharacterInfoPanelDirty = TRUE;
+      fMapPanelDirty = true;
+      gfRenderPBInterface = true;
+      fTeamPanelDirty = true;
+      fMapScreenBottomDirty = true;
+      fCharacterInfoPanelDirty = true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function HandleShadingOfLinesForTrainingMenu(): void {
@@ -8003,14 +8003,14 @@ function HandleShadingOfLinesForTrainingMenu(): void {
   let iCounter: INT32 = 0;
 
   // check if valid
-  if ((fShowTrainingMenu == FALSE) || (ghTrainingBox == -1)) {
+  if ((fShowTrainingMenu == false) || (ghTrainingBox == -1)) {
     return;
   }
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   // can character practise?
-  if (CanCharacterPractise(pSoldier) == FALSE) {
+  if (CanCharacterPractise(pSoldier) == false) {
     ShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_SELF);
   } else {
     UnShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_SELF);
@@ -8032,14 +8032,14 @@ function HandleShadingOfLinesForTrainingMenu(): void {
   }
 
   // can character train teammates?
-  if (CanCharacterTrainTeammates(pSoldier) == FALSE) {
+  if (CanCharacterTrainTeammates(pSoldier) == false) {
     ShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TEAMMATES);
   } else {
     UnShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TEAMMATES);
   }
 
   // can character be trained by others?
-  if (CanCharacterBeTrainedByOther(pSoldier) == FALSE) {
+  if (CanCharacterBeTrainedByOther(pSoldier) == false) {
     ShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TRAIN_BY_OTHER);
   } else {
     UnShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TRAIN_BY_OTHER);
@@ -8052,34 +8052,34 @@ function HandleShadingOfLinesForAttributeMenus(): void {
   // will do the same as updateassignments...but with training pop up box strings
   let pSoldier: Pointer<SOLDIERTYPE>;
   let bAttrib: INT8 = 0;
-  let fStatTrainable: BOOLEAN;
+  let fStatTrainable: boolean;
 
-  if ((fShowTrainingMenu == FALSE) || (ghTrainingBox == -1)) {
+  if ((fShowTrainingMenu == false) || (ghTrainingBox == -1)) {
     return;
   }
 
-  if ((fShowAttributeMenu == FALSE) || (ghAttributeBox == -1)) {
+  if ((fShowAttributeMenu == false) || (ghAttributeBox == -1)) {
     return;
   }
 
-  pSoldier = GetSelectedAssignSoldier(FALSE);
+  pSoldier = GetSelectedAssignSoldier(false);
 
   for (bAttrib = 0; bAttrib < Enum146.ATTRIB_MENU_CANCEL; bAttrib++) {
     switch (gbTrainingMode) {
       case Enum117.TRAIN_SELF:
-        fStatTrainable = CanCharacterTrainStat(pSoldier, bAttrib, TRUE, FALSE);
+        fStatTrainable = CanCharacterTrainStat(pSoldier, bAttrib, true, false);
         break;
       case Enum117.TRAIN_TEAMMATE:
         // DO allow trainers to be assigned without any partners (students)
-        fStatTrainable = CanCharacterTrainStat(pSoldier, bAttrib, FALSE, TRUE);
+        fStatTrainable = CanCharacterTrainStat(pSoldier, bAttrib, false, true);
         break;
       case Enum117.TRAIN_BY_OTHER:
         // DO allow students to be assigned without any partners (trainers)
-        fStatTrainable = CanCharacterTrainStat(pSoldier, bAttrib, TRUE, FALSE);
+        fStatTrainable = CanCharacterTrainStat(pSoldier, bAttrib, true, false);
         break;
       default:
-        Assert(FALSE);
-        fStatTrainable = FALSE;
+        Assert(false);
+        fStatTrainable = false;
         break;
     }
 
@@ -8123,7 +8123,7 @@ function ReportTrainersTraineesWithoutPartners(): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
   let iNumberOnTeam: INT32 = 0;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
 
   iNumberOnTeam = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
@@ -8133,7 +8133,7 @@ function ReportTrainersTraineesWithoutPartners(): void {
 
     if ((pTeamSoldier.value.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTeamSoldier.value.bLife > 0)) {
       if (!ValidTrainingPartnerInSameSectorOnAssignmentFound(pTeamSoldier, Enum117.TRAIN_BY_OTHER, pTeamSoldier.value.bTrainStat)) {
-        AssignmentDone(pTeamSoldier, TRUE, TRUE);
+        AssignmentDone(pTeamSoldier, true, true);
       }
     }
   }
@@ -8144,7 +8144,7 @@ function ReportTrainersTraineesWithoutPartners(): void {
 
     if ((pTeamSoldier.value.bAssignment == Enum117.TRAIN_BY_OTHER) && (pTeamSoldier.value.bLife > 0)) {
       if (!ValidTrainingPartnerInSameSectorOnAssignmentFound(pTeamSoldier, Enum117.TRAIN_TEAMMATE, pTeamSoldier.value.bTrainStat)) {
-        AssignmentDone(pTeamSoldier, TRUE, TRUE);
+        AssignmentDone(pTeamSoldier, true, true);
       }
     }
   }
@@ -8152,86 +8152,86 @@ function ReportTrainersTraineesWithoutPartners(): void {
   return;
 }
 
-function SetMercAsleep(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: BOOLEAN): BOOLEAN {
+function SetMercAsleep(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: boolean): boolean {
   if (CanCharacterSleep(pSoldier, fGiveWarning)) {
     // put him to sleep
     PutMercInAsleepState(pSoldier);
 
     // successful
-    return TRUE;
+    return true;
   } else {
     // can't sleep for some other reason
-    return FALSE;
+    return false;
   }
 }
 
-function PutMercInAsleepState(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  if (pSoldier.value.fMercAsleep == FALSE) {
+function PutMercInAsleepState(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+  if (pSoldier.value.fMercAsleep == false) {
     if ((gfWorldLoaded) && (pSoldier.value.bInSector)) {
       if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-        ChangeSoldierState(pSoldier, Enum193.GOTO_SLEEP, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.GOTO_SLEEP, 1, true);
       } else {
-        ChangeSoldierState(pSoldier, Enum193.SLEEPING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.SLEEPING, 1, true);
       }
     }
 
     // set merc asleep
-    pSoldier.value.fMercAsleep = TRUE;
+    pSoldier.value.fMercAsleep = true;
 
     // refresh panels
-    fCharacterInfoPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
+    fCharacterInfoPanelDirty = true;
+    fTeamPanelDirty = true;
   }
 
-  return TRUE;
+  return true;
 }
 
-function SetMercAwake(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: BOOLEAN, fForceHim: BOOLEAN): BOOLEAN {
+function SetMercAwake(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: boolean, fForceHim: boolean): boolean {
   // forcing him skips all normal checks!
   if (!fForceHim) {
     if (!CanCharacterBeAwakened(pSoldier, fGiveWarning)) {
-      return FALSE;
+      return false;
     }
   }
 
   PutMercInAwakeState(pSoldier);
-  return TRUE;
+  return true;
 }
 
-function PutMercInAwakeState(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function PutMercInAwakeState(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (pSoldier.value.fMercAsleep) {
     if ((gfWorldLoaded) && (pSoldier.value.bInSector)) {
       if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-        ChangeSoldierState(pSoldier, Enum193.WKAEUP_FROM_SLEEP, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.WKAEUP_FROM_SLEEP, 1, true);
       } else {
-        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, true);
       }
     }
 
     // set merc awake
-    pSoldier.value.fMercAsleep = FALSE;
+    pSoldier.value.fMercAsleep = false;
 
     // refresh panels
-    fCharacterInfoPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
+    fCharacterInfoPanelDirty = true;
+    fTeamPanelDirty = true;
 
     // determine if merc is being forced to stay awake
     if (pSoldier.value.bBreathMax < BREATHMAX_PRETTY_TIRED) {
-      pSoldier.value.fForcedToStayAwake = TRUE;
+      pSoldier.value.fForcedToStayAwake = true;
     } else {
-      pSoldier.value.fForcedToStayAwake = FALSE;
+      pSoldier.value.fForcedToStayAwake = false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function IsThereASoldierInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
-  if (fSectorsWithSoldiers[sSectorX + sSectorY * MAP_WORLD_X][bSectorZ] == TRUE) {
-    return TRUE;
+function IsThereASoldierInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
+  if (fSectorsWithSoldiers[sSectorX + sSectorY * MAP_WORLD_X][bSectorZ] == true) {
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // set the time this soldier's assignment changed
@@ -8248,25 +8248,25 @@ function SetTimeOfAssignmentChangeForMerc(pSoldier: Pointer<SOLDIERTYPE>): void 
 
   // assigning new PATIENTs gives a DOCTOR something to do, etc., so set flag to recheck them all.
   // CAN'T DO IT RIGHT AWAY IN HERE 'CAUSE WE TYPICALLY GET CALLED *BEFORE* bAssignment GETS SET TO NEW VALUE!!
-  gfReEvaluateEveryonesNothingToDo = TRUE;
+  gfReEvaluateEveryonesNothingToDo = true;
 
   return;
 }
 
 // have we spent enough time on assignment for it to count?
-function EnoughTimeOnAssignment(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function EnoughTimeOnAssignment(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (GetWorldTotalMin() - pSoldier.value.uiLastAssignmentChangeMin >= MINUTES_FOR_ASSIGNMENT_TO_COUNT) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function AnyMercInGroupCantContinueMoving(pGroup: Pointer<GROUP>): BOOLEAN {
+function AnyMercInGroupCantContinueMoving(pGroup: Pointer<GROUP>): boolean {
   let pPlayer: Pointer<PLAYERGROUP>;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fMeToo: BOOLEAN = FALSE;
-  let fGroupMustStop: BOOLEAN = FALSE;
+  let fMeToo: boolean = false;
+  let fGroupMustStop: boolean = false;
 
   Assert(pGroup);
   Assert(pGroup.value.fPlayer);
@@ -8280,12 +8280,12 @@ function AnyMercInGroupCantContinueMoving(pGroup: Pointer<GROUP>): BOOLEAN {
 
       if (PlayerSoldierTooTiredToTravel(pSoldier)) {
         // NOTE: we only complain about it if it's gonna force the group to stop moving!
-        fGroupMustStop = TRUE;
+        fGroupMustStop = true;
 
         // say quote
-        if (fMeToo == FALSE) {
+        if (fMeToo == false) {
           HandleImportantMercQuote(pSoldier, Enum202.QUOTE_NEED_SLEEP);
-          fMeToo = TRUE;
+          fMeToo = true;
         } else {
           HandleImportantMercQuote(pSoldier, Enum202.QUOTE_ME_TOO);
         }
@@ -8294,7 +8294,7 @@ function AnyMercInGroupCantContinueMoving(pGroup: Pointer<GROUP>): BOOLEAN {
         PutMercInAsleepState(pSoldier);
 
         // player can't wake him up right away
-        pSoldier.value.fMercCollapsedFlag = TRUE;
+        pSoldier.value.fMercCollapsedFlag = true;
       }
     }
 
@@ -8304,50 +8304,50 @@ function AnyMercInGroupCantContinueMoving(pGroup: Pointer<GROUP>): BOOLEAN {
   return fGroupMustStop;
 }
 
-function PlayerSoldierTooTiredToTravel(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function PlayerSoldierTooTiredToTravel(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   Assert(pSoldier);
 
   // if this guy ever needs sleep at all
   if (CanChangeSleepStatusForSoldier(pSoldier)) {
     // if walking, or only remaining possible driver for a vehicle group
-    if ((pSoldier.value.bAssignment != Enum117.VEHICLE) || SoldierMustDriveVehicle(pSoldier, pSoldier.value.iVehicleId, TRUE)) {
+    if ((pSoldier.value.bAssignment != Enum117.VEHICLE) || SoldierMustDriveVehicle(pSoldier, pSoldier.value.iVehicleId, true)) {
       // if awake, but so tired they can't move/drive anymore
       if ((!pSoldier.value.fMercAsleep) && (pSoldier.value.bBreathMax < BREATHMAX_GOTTA_STOP_MOVING)) {
-        return TRUE;
+        return true;
       }
 
       // asleep, and can't be awakened?
-      if ((pSoldier.value.fMercAsleep) && !CanCharacterBeAwakened(pSoldier, FALSE)) {
-        return TRUE;
+      if ((pSoldier.value.fMercAsleep) && !CanCharacterBeAwakened(pSoldier, false)) {
+        return true;
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function AssignMercToAMovementGroup(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function AssignMercToAMovementGroup(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // if merc doesn't have a group or is in a vehicle or on a squad assign to group
   let bGroupId: INT8 = 0;
 
   // on a squad?
   if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
-    return FALSE;
+    return false;
   }
 
   // in a vehicle?
   if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
-    return FALSE;
+    return false;
   }
 
   // in transit
   if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
-    return FALSE;
+    return false;
   }
 
   // in a movement group?
   if (pSoldier.value.ubGroupID != 0) {
-    return FALSE;
+    return false;
   }
 
   // create group
@@ -8358,10 +8358,10 @@ function AssignMercToAMovementGroup(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     AddPlayerToGroup(bGroupId, pSoldier);
 
     // success
-    return TRUE;
+    return true;
   }
 
-  return TRUE;
+  return true;
 }
 
 function NotifyPlayerOfAssignmentAttemptFailure(bAssignment: INT8): void {
@@ -8378,8 +8378,8 @@ function NotifyPlayerOfAssignmentAttemptFailure(bAssignment: INT8): void {
   }
 }
 
-function HandleSelectedMercsBeingPutAsleep(fWakeUp: BOOLEAN, fDisplayWarning: BOOLEAN): BOOLEAN {
-  let fSuccess: BOOLEAN = TRUE;
+function HandleSelectedMercsBeingPutAsleep(fWakeUp: boolean, fDisplayWarning: boolean): boolean {
+  let fSuccess: boolean = true;
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let ubNumberOfSelectedSoldiers: UINT8 = 0;
@@ -8393,7 +8393,7 @@ function HandleSelectedMercsBeingPutAsleep(fWakeUp: BOOLEAN, fDisplayWarning: BO
       // get the soldier pointer
       pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
-      if (pSoldier.value.bActive == FALSE) {
+      if (pSoldier.value.bActive == false) {
         continue;
       }
 
@@ -8401,12 +8401,12 @@ function HandleSelectedMercsBeingPutAsleep(fWakeUp: BOOLEAN, fDisplayWarning: BO
         continue;
       }
 
-      if (IsEntryInSelectedListSet(iCounter) == FALSE) {
+      if (IsEntryInSelectedListSet(iCounter) == false) {
         continue;
       }
 
       // don't try to put vehicles, robots, to sleep if they're also selected
-      if (CanChangeSleepStatusForCharSlot(iCounter) == FALSE) {
+      if (CanChangeSleepStatusForCharSlot(iCounter) == false) {
         continue;
       }
 
@@ -8415,13 +8415,13 @@ function HandleSelectedMercsBeingPutAsleep(fWakeUp: BOOLEAN, fDisplayWarning: BO
 
       if (fWakeUp) {
         // try to wake merc up
-        if (SetMercAwake(pSoldier, FALSE, FALSE) == FALSE) {
-          fSuccess = FALSE;
+        if (SetMercAwake(pSoldier, false, false) == false) {
+          fSuccess = false;
         }
       } else {
         // set this soldier asleep
-        if (SetMercAsleep(pSoldier, FALSE) == FALSE) {
-          fSuccess = FALSE;
+        if (SetMercAsleep(pSoldier, false) == false) {
+          fSuccess = false;
         }
       }
     }
@@ -8429,7 +8429,7 @@ function HandleSelectedMercsBeingPutAsleep(fWakeUp: BOOLEAN, fDisplayWarning: BO
 
   // if there was anyone processed, check for success and inform player of failure
   if (ubNumberOfSelectedSoldiers) {
-    if (fSuccess == FALSE) {
+    if (fSuccess == false) {
       if (fWakeUp) {
         // inform player not everyone could be woke up
         swprintf(sString, pMapErrorString[27]);
@@ -8447,7 +8447,7 @@ function HandleSelectedMercsBeingPutAsleep(fWakeUp: BOOLEAN, fDisplayWarning: BO
   return fSuccess;
 }
 
-function IsAnyOneOnPlayersTeamOnThisAssignment(bAssignment: INT8): BOOLEAN {
+function IsAnyOneOnPlayersTeamOnThisAssignment(bAssignment: INT8): boolean {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -8456,16 +8456,16 @@ function IsAnyOneOnPlayersTeamOnThisAssignment(bAssignment: INT8): BOOLEAN {
     pSoldier = addressof(Menptr[iCounter]);
 
     // active?
-    if (pSoldier.value.bActive == FALSE) {
+    if (pSoldier.value.bActive == false) {
       continue;
     }
 
     if (pSoldier.value.bAssignment == bAssignment) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function RebuildAssignmentsBox(): void {
@@ -8486,14 +8486,14 @@ function BandageBleedingDyingPatientsBeingTreated(): void {
   let pKit: Pointer<OBJECTTYPE> = null;
   let usKitPts: UINT16;
   let uiKitPtsUsed: UINT32;
-  let fSomeoneStillBleedingDying: BOOLEAN = FALSE;
+  let fSomeoneStillBleedingDying: boolean = false;
 
   for (iCounter = gTacticalStatus.Team[OUR_TEAM].bFirstID; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
     // get the soldier
     pSoldier = addressof(Menptr[iCounter]);
 
     // check if the soldier is currently active?
-    if (pSoldier.value.bActive == FALSE) {
+    if (pSoldier.value.bActive == false) {
       continue;
     }
 
@@ -8527,7 +8527,7 @@ function BandageBleedingDyingPatientsBeingTreated(): void {
 
                 // if he is STILL bleeding or dying
                 if ((pSoldier.value.bBleeding) || (pSoldier.value.bLife < OKLIFE)) {
-                  fSomeoneStillBleedingDying = TRUE;
+                  fSomeoneStillBleedingDying = true;
                 }
               }
             }
@@ -8548,7 +8548,7 @@ function BandageBleedingDyingPatientsBeingTreated(): void {
 function ReEvaluateEveryonesNothingToDo(): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let fNothingToDo: BOOLEAN;
+  let fNothingToDo: boolean;
 
   for (iCounter = 0; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
     pSoldier = addressof(Menptr[iCounter]);
@@ -8556,7 +8556,7 @@ function ReEvaluateEveryonesNothingToDo(): void {
     if (pSoldier.value.bActive) {
       switch (pSoldier.value.bAssignment) {
         case Enum117.DOCTOR:
-          fNothingToDo = !CanCharacterDoctor(pSoldier) || (GetNumberThatCanBeDoctored(pSoldier, HEALABLE_EVER, FALSE, FALSE) == 0);
+          fNothingToDo = !CanCharacterDoctor(pSoldier) || (GetNumberThatCanBeDoctored(pSoldier, HEALABLE_EVER, false, false) == 0);
           break;
 
         case Enum117.PATIENT:
@@ -8576,20 +8576,20 @@ function ReEvaluateEveryonesNothingToDo(): void {
           break;
 
         case Enum117.TRAIN_SELF:
-          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, TRUE, FALSE);
+          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, true, false);
           break;
 
         case Enum117.TRAIN_TEAMMATE:
-          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, FALSE, TRUE) || !ValidTrainingPartnerInSameSectorOnAssignmentFound(pSoldier, Enum117.TRAIN_BY_OTHER, pSoldier.value.bTrainStat);
+          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, false, true) || !ValidTrainingPartnerInSameSectorOnAssignmentFound(pSoldier, Enum117.TRAIN_BY_OTHER, pSoldier.value.bTrainStat);
           break;
 
         case Enum117.TRAIN_BY_OTHER:
-          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, TRUE, FALSE) || !ValidTrainingPartnerInSameSectorOnAssignmentFound(pSoldier, Enum117.TRAIN_TEAMMATE, pSoldier.value.bTrainStat);
+          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, true, false) || !ValidTrainingPartnerInSameSectorOnAssignmentFound(pSoldier, Enum117.TRAIN_TEAMMATE, pSoldier.value.bTrainStat);
           break;
 
         case Enum117.VEHICLE:
         default: // squads
-          fNothingToDo = FALSE;
+          fNothingToDo = false;
           break;
       }
 
@@ -8599,7 +8599,7 @@ function ReEvaluateEveryonesNothingToDo(): void {
         pSoldier.value.fDoneAssignmentAndNothingToDoFlag = fNothingToDo;
 
         // update mapscreen's character list display
-        fDrawCharacterList = TRUE;
+        fDrawCharacterList = true;
       }
 
       // if he now has something to do, reset the quote flag
@@ -8610,19 +8610,19 @@ function ReEvaluateEveryonesNothingToDo(): void {
   }
 
   // re-evaluation completed
-  gfReEvaluateEveryonesNothingToDo = FALSE;
+  gfReEvaluateEveryonesNothingToDo = false;
 
   // redraw the map, in case we're showing teams, and someone just came on duty or off duty, their icon needs updating
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
   let iCounter: INT32 = 0;
   let pSelectedSoldier: Pointer<SOLDIERTYPE> = null;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let fItWorked: BOOLEAN;
-  let fRemoveFromSquad: BOOLEAN = TRUE;
-  let fNotifiedOfFailure: BOOLEAN = FALSE;
+  let fItWorked: boolean;
+  let fRemoveFromSquad: boolean = true;
+  let fNotifiedOfFailure: boolean = false;
   let bCanJoinSquad: INT8;
 
   // if not in mapscreen, there is no functionality available to change multiple assignments simultaneously!
@@ -8632,7 +8632,7 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
 
   // pSelectedSoldier is currently used only for REPAIR, and this block of code is copied from RepairMenuBtnCallback()
   if (bSelectedAssignChar != -1) {
-    if (gCharactersList[bSelectedAssignChar].fValid == TRUE) {
+    if (gCharactersList[bSelectedAssignChar].fValid == true) {
       pSelectedSoldier = addressof(Menptr[gCharactersList[bSelectedAssignChar].usSolID]);
     }
   }
@@ -8641,11 +8641,11 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
 
   // sets assignment for the list
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    if ((gCharactersList[iCounter].fValid) && (fSelectedListOfMercsForMapScreen[iCounter] == TRUE) && (iCounter != bSelectedAssignChar) && !(Menptr[gCharactersList[iCounter].usSolID].uiStatusFlags & SOLDIER_VEHICLE)) {
+    if ((gCharactersList[iCounter].fValid) && (fSelectedListOfMercsForMapScreen[iCounter] == true) && (iCounter != bSelectedAssignChar) && !(Menptr[gCharactersList[iCounter].usSolID].uiStatusFlags & SOLDIER_VEHICLE)) {
       pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
 
       // assume it's NOT gonna work
-      fItWorked = FALSE;
+      fItWorked = false;
 
       switch (bAssignment) {
         case (Enum117.DOCTOR):
@@ -8654,7 +8654,7 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
             // set as doctor
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
             SetSoldierAssignment(pSoldier, Enum117.DOCTOR, 0, 0, 0);
-            fItWorked = TRUE;
+            fItWorked = true;
           }
           break;
         case (Enum117.PATIENT):
@@ -8663,7 +8663,7 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
             // set as patient
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
             SetSoldierAssignment(pSoldier, Enum117.PATIENT, 0, 0, 0);
-            fItWorked = TRUE;
+            fItWorked = true;
           }
           break;
         case (Enum117.VEHICLE):
@@ -8673,13 +8673,13 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
               // if the vehicle is FULL, then this will return FALSE!
               fItWorked = PutSoldierInVehicle(pSoldier, bParam);
               // failure produces its own error popup
-              fNotifiedOfFailure = TRUE;
+              fNotifiedOfFailure = true;
             }
           }
           break;
         case (Enum117.REPAIR):
           if (CanCharacterRepair(pSoldier)) {
-            let fCanFixSpecificTarget: BOOLEAN = TRUE;
+            let fCanFixSpecificTarget: boolean = true;
 
             // make sure he can repair the SPECIFIC thing being repaired too (must be in its sector, for example)
 
@@ -8700,36 +8700,36 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
               // set as repair
               pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
               SetSoldierAssignment(pSoldier, Enum117.REPAIR, pSelectedSoldier.value.fFixingSAMSite, pSelectedSoldier.value.fFixingRobot, pSelectedSoldier.value.bVehicleUnderRepairID);
-              fItWorked = TRUE;
+              fItWorked = true;
             }
           }
           break;
         case (Enum117.TRAIN_SELF):
-          if (CanCharacterTrainStat(pSoldier, bParam, TRUE, FALSE)) {
+          if (CanCharacterTrainStat(pSoldier, bParam, true, false)) {
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
             SetSoldierAssignment(pSoldier, Enum117.TRAIN_SELF, bParam, 0, 0);
-            fItWorked = TRUE;
+            fItWorked = true;
           }
           break;
         case (Enum117.TRAIN_TOWN):
           if (CanCharacterTrainMilitia(pSoldier)) {
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
             SetSoldierAssignment(pSoldier, Enum117.TRAIN_TOWN, 0, 0, 0);
-            fItWorked = TRUE;
+            fItWorked = true;
           }
           break;
         case (Enum117.TRAIN_TEAMMATE):
-          if (CanCharacterTrainStat(pSoldier, bParam, FALSE, TRUE)) {
+          if (CanCharacterTrainStat(pSoldier, bParam, false, true)) {
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
             SetSoldierAssignment(pSoldier, Enum117.TRAIN_TEAMMATE, bParam, 0, 0);
-            fItWorked = TRUE;
+            fItWorked = true;
           }
           break;
         case Enum117.TRAIN_BY_OTHER:
-          if (CanCharacterTrainStat(pSoldier, bParam, TRUE, FALSE)) {
+          if (CanCharacterTrainStat(pSoldier, bParam, true, false)) {
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
             SetSoldierAssignment(pSoldier, Enum117.TRAIN_BY_OTHER, bParam, 0, 0);
-            fItWorked = TRUE;
+            fItWorked = true;
           }
           break;
 
@@ -8785,8 +8785,8 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
               AddCharacterToSquad(pSoldier, bAssignment);
             }
 
-            fItWorked = TRUE;
-            fRemoveFromSquad = FALSE; // already done, would screw it up!
+            fItWorked = true;
+            fRemoveFromSquad = false; // already done, would screw it up!
           }
           break;
 
@@ -8799,8 +8799,8 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
 
           AddCharacterToAnySquad(pSoldier);
 
-          fItWorked = TRUE;
-          fRemoveFromSquad = FALSE; // already done, would screw it up!
+          fItWorked = true;
+          fRemoveFromSquad = false; // already done, would screw it up!
           break;
       }
 
@@ -8814,7 +8814,7 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
       } else {
         // didn't work - report it once
         if (!fNotifiedOfFailure) {
-          fNotifiedOfFailure = TRUE;
+          fNotifiedOfFailure = true;
           NotifyPlayerOfAssignmentAttemptFailure(bAssignment);
         }
       }
@@ -8824,26 +8824,26 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
   //	ResetSelectedListForMapScreen( );
 
   // check if we should start/stop flashing any mercs' assignment strings after these changes
-  gfReEvaluateEveryonesNothingToDo = TRUE;
+  gfReEvaluateEveryonesNothingToDo = true;
 
   return;
 }
 
-function IsCharacterAliveAndConscious(pCharacter: Pointer<SOLDIERTYPE>): BOOLEAN {
+function IsCharacterAliveAndConscious(pCharacter: Pointer<SOLDIERTYPE>): boolean {
   // is the character alive and conscious?
   if (pCharacter.value.bLife < CONSCIOUSNESS) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: Pointer<SOLDIERTYPE>, bTargetAssignment: INT8, bTargetStat: INT8): BOOLEAN {
+function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: Pointer<SOLDIERTYPE>, bTargetAssignment: INT8, bTargetStat: INT8): boolean {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let sTrainingPts: INT16 = 0;
-  let fAtGunRange: BOOLEAN = FALSE;
+  let fAtGunRange: boolean = false;
   let usMaxPts: UINT16;
 
   // this function only makes sense for training teammates or by others, not for self training which doesn't require partners
@@ -8864,7 +8864,7 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: Point
 
         // are we training in the sector with gun range in Alma?
         if ((pSoldier.value.sSectorX == GUN_RANGE_X) && (pSoldier.value.sSectorY == GUN_RANGE_Y) && (pSoldier.value.bSectorZ == GUN_RANGE_Z)) {
-          fAtGunRange = TRUE;
+          fAtGunRange = true;
         }
 
         if (pSoldier.value.bAssignment == Enum117.TRAIN_TEAMMATE) {
@@ -8877,19 +8877,19 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: Point
 
         if (sTrainingPts > 0) {
           // yes, then he makes a valid training partner for us!
-          return TRUE;
+          return true;
         }
       }
     }
   }
 
   // no one found
-  return FALSE;
+  return false;
 }
 
 function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
-    let fGotInfo: BOOLEAN;
+    let fGotInfo: boolean;
     let usQuoteNum: UINT16;
     let usFactToSetToTrue: UINT16;
 
@@ -8912,7 +8912,7 @@ function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
       let pSoldier2: Pointer<SOLDIERTYPE>;
 
       // unrecruit Mary as well
-      pSoldier2 = FindSoldierByProfileID(Enum268.MARY, TRUE);
+      pSoldier2 = FindSoldierByProfileID(Enum268.MARY, true);
       if (pSoldier2) {
         SetupProfileInsertionDataForSoldier(pSoldier2);
         fGotInfo = GetInfoForAbandoningEPC(Enum268.MARY, addressof(usQuoteNum), addressof(usFactToSetToTrue));
@@ -8931,7 +8931,7 @@ function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
       let pSoldier2: Pointer<SOLDIERTYPE>;
 
       // unrecruit John as well
-      pSoldier2 = FindSoldierByProfileID(Enum268.JOHN, TRUE);
+      pSoldier2 = FindSoldierByProfileID(Enum268.JOHN, true);
       if (pSoldier2) {
         SetupProfileInsertionDataForSoldier(pSoldier2);
         fGotInfo = GetInfoForAbandoningEPC(Enum268.JOHN, addressof(usQuoteNum), addressof(usFactToSetToTrue));
@@ -8950,42 +8950,42 @@ function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
     giAssignHighLine = -1;
 
     // set dirty flag
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
+    fCharacterInfoPanelDirty = true;
   } else {
     // how do we handle this if it's the right sector?
-    TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_EPC_IN_WRONG_SECTOR, TRUE);
+    TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_EPC_IN_WRONG_SECTOR, true);
   }
 }
 
-function CharacterIsTakingItEasy(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CharacterIsTakingItEasy(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // actually asleep?
-  if (pSoldier.value.fMercAsleep == TRUE) {
-    return TRUE;
+  if (pSoldier.value.fMercAsleep == true) {
+    return true;
   }
 
   // if able to sleep
-  if (CanCharacterSleep(pSoldier, FALSE)) {
+  if (CanCharacterSleep(pSoldier, false)) {
     // on duty, but able to catch naps (either not traveling, or not the driver of the vehicle)
     // The actual checks for this are in the "can he sleep" check above
     if ((pSoldier.value.bAssignment < Enum117.ON_DUTY) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
-      return TRUE;
+      return true;
     }
 
     // and healing up?
     if ((pSoldier.value.bAssignment == Enum117.PATIENT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL)) {
-      return TRUE;
+      return true;
     }
 
     // on a real assignment, but done with it?
     if (pSoldier.value.fDoneAssignmentAndNothingToDoFlag) {
-      return TRUE;
+      return true;
     }
   }
 
   // on assignment, or walking/driving & unable to sleep
-  return FALSE;
+  return false;
 }
 
 function CalcSoldierNeedForSleep(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
@@ -9036,32 +9036,32 @@ function GetLastSquadListedInSquadMenu(): UINT32 {
   return uiMaxSquad;
 }
 
-function CanCharacterRepairAnotherSoldiersStuff(pSoldier: Pointer<SOLDIERTYPE>, pOtherSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CanCharacterRepairAnotherSoldiersStuff(pSoldier: Pointer<SOLDIERTYPE>, pOtherSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (pOtherSoldier == pSoldier) {
-    return FALSE;
+    return false;
   }
   if (!pOtherSoldier.value.bActive) {
-    return FALSE;
+    return false;
   }
   if (pOtherSoldier.value.bLife == 0) {
-    return FALSE;
+    return false;
   }
   if (pOtherSoldier.value.sSectorX != pSoldier.value.sSectorX || pOtherSoldier.value.sSectorY != pSoldier.value.sSectorY || pOtherSoldier.value.bSectorZ != pSoldier.value.bSectorZ) {
-    return FALSE;
+    return false;
   }
 
   if (pOtherSoldier.value.fBetweenSectors) {
-    return FALSE;
+    return false;
   }
 
   if ((pOtherSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (AM_A_ROBOT(pSoldier)) || (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) || (pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD)) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function GetSelectedAssignSoldier(fNullOK: BOOLEAN): Pointer<SOLDIERTYPE> {
+function GetSelectedAssignSoldier(fNullOK: boolean): Pointer<SOLDIERTYPE> {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
@@ -9088,12 +9088,12 @@ function GetSelectedAssignSoldier(fNullOK: BOOLEAN): Pointer<SOLDIERTYPE> {
 }
 
 function ResumeOldAssignment(pSoldier: Pointer<SOLDIERTYPE>): void {
-  let fOldAssignmentInvalid: BOOLEAN = FALSE;
+  let fOldAssignmentInvalid: boolean = false;
 
   // ARM: I don't think the whole "old assignment" idea is a very good one, and I doubt the code that maintains that
   // variable is very foolproof, plus what meaning does the old assignemnt have later, anyway?
   // so I'd rather just settle for putting him into any squad:
-  fOldAssignmentInvalid = TRUE;
+  fOldAssignmentInvalid = true;
 
   /*
           if ( pSoldier->bOldAssignment == pSoldier->bAssigment )
@@ -9132,9 +9132,9 @@ function ResumeOldAssignment(pSoldier: Pointer<SOLDIERTYPE>): void {
   StopTimeCompression();
 
   // assignment has changed, redraw left side as well as the map (to update on/off duty icons)
-  fTeamPanelDirty = TRUE;
-  fCharacterInfoPanelDirty = TRUE;
-  fMapPanelDirty = TRUE;
+  fTeamPanelDirty = true;
+  fCharacterInfoPanelDirty = true;
+  fMapPanelDirty = true;
 }
 
 function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: Pointer<UINT8>): void {
@@ -9145,11 +9145,11 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
   let pBestOtherSoldier: Pointer<SOLDIERTYPE>;
   let bPriority: INT8;
   let bBestPriority: INT8 = -1;
-  let fSomethingWasRepairedThisPass: BOOLEAN;
+  let fSomethingWasRepairedThisPass: boolean;
 
   // repair everyone's hands and armor slots first, then headgear, and pockets last
   for (ubPassType = Enum116.REPAIR_HANDS_AND_ARMOR; ubPassType <= FINAL_REPAIR_PASS; ubPassType++) {
-    fSomethingWasRepairedThisPass = FALSE;
+    fSomethingWasRepairedThisPass = false;
 
     // look for jammed guns on other soldiers in sector and unjam them
     for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; bLoop < gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++) {
@@ -9158,7 +9158,7 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
       // check character is valid, alive, same sector, not between, has inventory, etc.
       if (CanCharacterRepairAnotherSoldiersStuff(pSoldier, pOtherSoldier)) {
         if (UnjamGunsOnSoldier(pOtherSoldier, pSoldier, pubRepairPtsLeft)) {
-          fSomethingWasRepairedThisPass = TRUE;
+          fSomethingWasRepairedThisPass = true;
         }
       }
     }
@@ -9191,7 +9191,7 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
           bPocket = FindRepairableItemOnOtherSoldier(pBestOtherSoldier, ubPassType);
           if (bPocket != NO_SLOT) {
             if (RepairObject(pSoldier, pBestOtherSoldier, addressof(pBestOtherSoldier.value.inv[bPocket]), pubRepairPtsLeft)) {
-              fSomethingWasRepairedThisPass = TRUE;
+              fSomethingWasRepairedThisPass = true;
             }
           }
         } while (bPocket != NO_SLOT && pubRepairPtsLeft.value > 0);
@@ -9209,8 +9209,8 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
   }
 }
 
-function UnjamGunsOnSoldier(pOwnerSoldier: Pointer<SOLDIERTYPE>, pRepairSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: Pointer<UINT8>): BOOLEAN {
-  let fAnyGunsWereUnjammed: BOOLEAN = FALSE;
+function UnjamGunsOnSoldier(pOwnerSoldier: Pointer<SOLDIERTYPE>, pRepairSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: Pointer<UINT8>): boolean {
+  let fAnyGunsWereUnjammed: boolean = false;
   let bPocket: INT8;
 
   // try to unjam everything before beginning any actual repairs.. successful unjamming costs 2 points per weapon
@@ -9223,8 +9223,8 @@ function UnjamGunsOnSoldier(pOwnerSoldier: Pointer<SOLDIERTYPE>, pRepairSoldier:
         pOwnerSoldier.value.inv[bPocket].bGunAmmoStatus *= -1;
 
         // MECHANICAL/DEXTERITY GAIN: Unjammed a gun
-        StatChange(pRepairSoldier, MECHANAMT, 5, FALSE);
-        StatChange(pRepairSoldier, DEXTAMT, 5, FALSE);
+        StatChange(pRepairSoldier, MECHANAMT, 5, false);
+        StatChange(pRepairSoldier, DEXTAMT, 5, false);
 
         // report it as unjammed
         if (pRepairSoldier == pOwnerSoldier) {
@@ -9234,7 +9234,7 @@ function UnjamGunsOnSoldier(pOwnerSoldier: Pointer<SOLDIERTYPE>, pRepairSoldier:
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[54], pRepairSoldier.value.name, pOwnerSoldier.value.name, ItemNames[pOwnerSoldier.value.inv[bPocket].usItem]);
         }
 
-        fAnyGunsWereUnjammed = TRUE;
+        fAnyGunsWereUnjammed = true;
       } else {
         // out of points, we're done for now
         break;

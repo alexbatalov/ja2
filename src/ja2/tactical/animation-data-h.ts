@@ -18,7 +18,7 @@ const ANIM_DATA_FLAG_NOFRAMES = 0x01;
 // RGM = Regular Male
 // (RG) = Body desc ( Regular - RG, Short Stocky ( SS ), etc
 // (M) = Sex, Male, female
-const IS_MERC_BODY_TYPE = (p) => ((p.value.ubBodyType <= Enum194.REGFEMALE) ? (TRUE) : (FALSE));
+const IS_MERC_BODY_TYPE = (p) => ((p.value.ubBodyType <= Enum194.REGFEMALE) ? (true) : (false));
 const IS_CIV_BODY_TYPE = (p) => ((p.value.ubBodyType >= Enum194.FATCIV) && (p.value.ubBodyType <= Enum194.CRIPPLECIV));
 
 const NUMSOLDIERBODYTYPES = 4;

@@ -64,7 +64,7 @@ function BtnIMPAttributeBeginCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_ATTRIBUTE_PAGE;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }

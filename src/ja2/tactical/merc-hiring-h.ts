@@ -19,9 +19,9 @@ interface MERC_HIRE_STRUCT {
   sSectorY: INT16;
   bSectorZ: INT8;
   iTotalContractLength: INT16;
-  fCopyProfileItemsOver: BOOLEAN;
+  fCopyProfileItemsOver: boolean;
   uiTimeTillMercArrives: UINT32;
   ubInsertionCode: UINT8;
   usInsertionData: UINT16;
-  fUseLandingZoneForArrival: BOOLEAN;
+  fUseLandingZoneForArrival: boolean;
 }

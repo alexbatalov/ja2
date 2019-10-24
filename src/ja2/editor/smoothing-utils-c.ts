@@ -79,7 +79,7 @@ function SearchForRoofType(iMapIndex: UINT32): UINT16 {
   return 0xffff;
 }
 
-function RoofAtGridNo(iMapIndex: UINT32): BOOLEAN {
+function RoofAtGridNo(iMapIndex: UINT32): boolean {
   let pRoof: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   pRoof = gpWorldLevelData[iMapIndex].pRoofHead;
@@ -88,25 +88,25 @@ function RoofAtGridNo(iMapIndex: UINT32): BOOLEAN {
     if (pRoof.value.usIndex != NO_TILE) {
       GetTileType(pRoof.value.usIndex, addressof(uiTileType));
       if (uiTileType >= Enum313.FIRSTROOF && uiTileType <= Enum313.SECONDSLANTROOF)
-        return TRUE;
+        return true;
       pRoof = pRoof.value.pNext;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function BuildingAtGridNo(iMapIndex: UINT32): BOOLEAN {
+function BuildingAtGridNo(iMapIndex: UINT32): boolean {
   if (RoofAtGridNo(iMapIndex))
-    return TRUE;
+    return true;
   if (FloorAtGridNo(iMapIndex))
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
-function ValidDecalPlacement(iMapIndex: UINT32): BOOLEAN {
+function ValidDecalPlacement(iMapIndex: UINT32): boolean {
   if (GetVerticalWall(iMapIndex) || GetHorizontalWall(iMapIndex) || GetVerticalFence(iMapIndex) || GetHorizontalFence(iMapIndex))
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
 function GetVerticalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
@@ -277,7 +277,7 @@ function RestoreWalls(iMapIndex: UINT32): void {
   let usWallType: UINT16;
   let usWallOrientation: UINT16;
   let ubSaveWallUIValue: UINT8;
-  let fDone: BOOLEAN = FALSE;
+  let fDone: boolean = false;
 
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
@@ -297,7 +297,7 @@ function RestoreWalls(iMapIndex: UINT32): void {
         BuildWallPiece(iMapIndex, Enum61.EXTERIOR_BOTTOM, usWallType);
         break;
     }
-    fDone = TRUE;
+    fDone = true;
   }
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
@@ -317,7 +317,7 @@ function RestoreWalls(iMapIndex: UINT32): void {
         BuildWallPiece(iMapIndex, Enum61.EXTERIOR_RIGHT, usWallType);
         break;
     }
-    fDone = TRUE;
+    fDone = true;
   }
   if (fDone) {
     return;
@@ -325,15 +325,15 @@ function RestoreWalls(iMapIndex: UINT32): void {
   // we are in a special case here.  The user is attempting to restore a wall, though nothing
   // is here.  We will hook into the smart wall method by tricking it into using the local wall
   // type, but only if we have adjacent walls.
-  fDone = FALSE;
+  fDone = false;
   if (pWall = GetHorizontalWall(iMapIndex - 1))
-    fDone = TRUE;
+    fDone = true;
   if (!fDone && (pWall = GetHorizontalWall(iMapIndex + 1)))
-    fDone = TRUE;
+    fDone = true;
   if (!fDone && (pWall = GetVerticalWall(iMapIndex - WORLD_COLS)))
-    fDone = TRUE;
+    fDone = true;
   if (!fDone && (pWall = GetVerticalWall(iMapIndex + WORLD_COLS)))
-    fDone = TRUE;
+    fDone = true;
   if (!fDone)
     return;
   // found a wall.  Let's back up the current wall value, and restore it after pasting a smart wall.

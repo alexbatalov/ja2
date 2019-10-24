@@ -1,8 +1,8 @@
 // BOOLEAN fIMPCompletedFlag = FALSE;
-let fReDrawCharProfile: BOOLEAN = FALSE;
-let fButtonPendingFlag: BOOLEAN = FALSE;
-let fAddCreatedCharToPlayersTeam: BOOLEAN = FALSE;
-let fReEnterIMP: BOOLEAN = FALSE;
+let fReDrawCharProfile: boolean = false;
+let fButtonPendingFlag: boolean = false;
+let fAddCreatedCharToPlayersTeam: boolean = false;
+let fReEnterIMP: boolean = false;
 
 let iCurrentImpPage: INT32 = Enum71.IMP_HOME_PAGE;
 let iPreviousImpPage: INT32 = -1;
@@ -22,7 +22,7 @@ let iExplosives: INT32 = 55;
 let iMechanical: INT32 = 55;
 
 // gender
-let fCharacterIsMale: BOOLEAN = TRUE;
+let fCharacterIsMale: boolean = true;
 
 // name and nick name
 let pFullName: CHAR16[] /* [32] */;
@@ -56,7 +56,7 @@ let giIMPButton: INT32[] /* [1] */;
 let giIMPButtonImage: INT32[] /* [1] */;
 
 // visted subpages
-let fVisitedIMPSubPages: BOOLEAN[] /* [IMP_NUM_PAGES] */;
+let fVisitedIMPSubPages: boolean[] /* [IMP_NUM_PAGES] */;
 
 function GameInitCharProfile(): void {
   LaptopSaveInfo.iVoiceId = 0;
@@ -87,36 +87,36 @@ function HandleCharProfile(): void {
   if (fReDrawCharProfile) {
     // re draw
     RenderCharProfile();
-    fReDrawCharProfile = FALSE;
+    fReDrawCharProfile = false;
   }
 
   // button pending, but not changing mode, still need a rernder, but under different circumstances
-  if ((fButtonPendingFlag == TRUE) && (iCurrentImpPage == iPreviousImpPage)) {
+  if ((fButtonPendingFlag == true) && (iCurrentImpPage == iPreviousImpPage)) {
     RenderCharProfile();
   }
 
   // page has changed, handle the fact..get rid of old page, load up new, and re render
   if ((iCurrentImpPage != iPreviousImpPage)) {
-    if (fDoneLoadPending == FALSE) {
+    if (fDoneLoadPending == false) {
       // make sure we are not hosing memory
       Assert(iCurrentImpPage <= Enum71.IMP_NUM_PAGES);
 
       fFastLoadFlag = HasTheCurrentIMPPageBeenVisited();
-      fVisitedIMPSubPages[iCurrentImpPage] = TRUE;
-      fConnectingToSubPage = TRUE;
+      fVisitedIMPSubPages[iCurrentImpPage] = true;
+      fConnectingToSubPage = true;
 
       if (iPreviousImpPage != -1) {
-        fLoadPendingFlag = TRUE;
+        fLoadPendingFlag = true;
         MarkButtonsDirty();
         return;
       } else {
-        fDoneLoadPending = TRUE;
+        fDoneLoadPending = true;
       }
     }
 
-    fVisitedIMPSubPages[iCurrentImpPage] = TRUE;
+    fVisitedIMPSubPages[iCurrentImpPage] = true;
 
-    if (fButtonPendingFlag == TRUE) {
+    if (fButtonPendingFlag == true) {
       // render screen
       RenderCharProfile();
       return;
@@ -190,8 +190,8 @@ function RenderCharProfile(): void {
   // button is waiting to go up?...do nothing,
 
   if (fButtonPendingFlag) {
-    fPausedReDrawScreenFlag = TRUE;
-    fButtonPendingFlag = FALSE;
+    fPausedReDrawScreenFlag = true;
+    fButtonPendingFlag = false;
     return;
   }
 
@@ -248,7 +248,7 @@ function RenderCharProfile(): void {
 
   RenderWWWProgramTitleBar();
 
-  DisplayProgramBoundingBox(TRUE);
+  DisplayProgramBoundingBox(true);
 
   // InvalidateRegion( 0, 0, 640, 480 );
   return;
@@ -514,7 +514,7 @@ function CreateIMPButtons(): void {
   // cancel
   giIMPButton[0] = CreateIconAndTextButton(giIMPButtonImage[0], pImpButtonText[19], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 15, LAPTOP_SCREEN_WEB_UL_Y + (360), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPCancelCallback);
 
-  SpecifyButtonTextSubOffsets(giIMPButton[0], 0, -1, FALSE);
+  SpecifyButtonTextSubOffsets(giIMPButton[0], 0, -1, false);
 
   // set up generic www cursor
   SetButtonCursor(giIMPButton[0], Enum317.CURSOR_WWW);
@@ -546,15 +546,15 @@ function BtnIMPCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // back to the main page, otherwise, back to home page
       if (iCurrentImpPage == Enum71.IMP_MAIN_PAGE) {
         iCurrentImpPage = Enum71.IMP_HOME_PAGE;
-        fButtonPendingFlag = TRUE;
+        fButtonPendingFlag = true;
         iCurrentProfileMode = 0;
-        fFinishedCharGeneration = FALSE;
+        fFinishedCharGeneration = false;
         ResetCharacterStats();
       } else if (iCurrentImpPage == Enum71.IMP_FINISH) {
         iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
         iCurrentProfileMode = 4;
-        fFinishedCharGeneration = FALSE;
-        fButtonPendingFlag = TRUE;
+        fFinishedCharGeneration = false;
+        fButtonPendingFlag = true;
         // iCurrentProfileMode = 0;
         // fFinishedCharGeneration = FALSE;
         // ResetCharacterStats( );
@@ -562,10 +562,10 @@ function BtnIMPCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
       else if (iCurrentImpPage == Enum71.IMP_PERSONALITY_QUIZ || iCurrentImpPage == Enum71.IMP_PERSONALITY_FINISH) {
         giMaxPersonalityQuizQuestion = 0;
-        fStartOverFlag = TRUE;
+        fStartOverFlag = true;
         iCurrentAnswer = -1;
         iCurrentImpPage = Enum71.IMP_PERSONALITY;
-        fButtonPendingFlag = TRUE;
+        fButtonPendingFlag = true;
       }
 
       else {
@@ -585,13 +585,13 @@ function InitIMPSubPageList(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < Enum71.IMP_CONFIRM; iCounter++) {
-    fVisitedIMPSubPages[iCounter] = FALSE;
+    fVisitedIMPSubPages[iCounter] = false;
   }
 
   return;
 }
 
-function HasTheCurrentIMPPageBeenVisited(): BOOLEAN {
+function HasTheCurrentIMPPageBeenVisited(): boolean {
   // returns if we have vsisted the current IMP PageAlready
 
   // make sure we are not hosing memory

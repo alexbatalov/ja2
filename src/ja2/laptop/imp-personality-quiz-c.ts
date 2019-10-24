@@ -20,7 +20,7 @@ let giPreviousPersonalityQuizQuestion: INT32 = -1;
 let giMaxPersonalityQuizQuestion: INT32 = 0;
 
 // start over flag
-let fStartOverFlag: BOOLEAN = FALSE;
+let fStartOverFlag: boolean = false;
 
 const BTN_FIRST_COLUMN_X = 15;
 const BTN_SECOND_COLUMN_X = 256;
@@ -88,7 +88,7 @@ function ExitIMPPersonalityQuiz(): void {
   DestroyPersonalityQuizButtons();
 
   if (fStartOverFlag) {
-    fStartOverFlag = FALSE;
+    fStartOverFlag = false;
     giCurrentPersonalityQuizQuestion = 0;
   }
   return;
@@ -136,8 +136,8 @@ function CreateIMPPersonalityQuizButtons(): void {
   giNextQuestionButtonImage = LoadButtonImage("LAPTOP\\button_3.sti", -1, 0, -1, 1, -1);
   giNextQuestionButton = CreateIconAndTextButton(giNextQuestionButtonImage, pImpButtonText[13], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (417), LAPTOP_SCREEN_WEB_UL_Y + (361), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, NextQuestionButtonCallback);
 
-  SpecifyButtonTextSubOffsets(giNextQuestionButton, 0, -1, FALSE);
-  SpecifyButtonTextSubOffsets(giPreviousQuestionButton, 0, -1, FALSE);
+  SpecifyButtonTextSubOffsets(giNextQuestionButton, 0, -1, false);
+  SpecifyButtonTextSubOffsets(giPreviousQuestionButton, 0, -1, false);
 
   DisableButton(giPreviousQuestionButton);
   DisableButton(giNextQuestionButton);
@@ -336,7 +336,7 @@ function AddIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
     swprintf(sString, "%d", iCounter + 1);
     SpecifyButtonUpTextColors(giIMPPersonalityQuizAnswerButton[iCounter], FONT_WHITE, FONT_BLACK);
     SpecifyButtonDownTextColors(giIMPPersonalityQuizAnswerButton[iCounter], FONT_WHITE, FONT_BLACK);
-    SpecifyButtonTextOffsets(giIMPPersonalityQuizAnswerButton[iCounter], +23, +12, TRUE);
+    SpecifyButtonTextOffsets(giIMPPersonalityQuizAnswerButton[iCounter], +23, +12, true);
     SpecifyButtonFont(giIMPPersonalityQuizAnswerButton[iCounter], FONT12ARIAL());
     SpecifyButtonText(giIMPPersonalityQuizAnswerButton[iCounter], sString);
     SetButtonCursor(giIMPPersonalityQuizAnswerButton[iCounter], Enum317.CURSOR_WWW);
@@ -383,7 +383,7 @@ function BtnIMPPersonalityQuizAnswer0Callback(btn: Pointer<GUI_BUTTON>, reason: 
       // the current and last question numbers
       PrintQuizQuestionNumber();
 
-      fReDrawCharProfile = TRUE;
+      fReDrawCharProfile = true;
     }
   }
 }
@@ -414,7 +414,7 @@ function BtnIMPPersonalityQuizAnswer1Callback(btn: Pointer<GUI_BUTTON>, reason: 
       // the current and last question numbers
       PrintQuizQuestionNumber();
 
-      fReDrawCharProfile = TRUE;
+      fReDrawCharProfile = true;
     }
   }
 }
@@ -445,7 +445,7 @@ function BtnIMPPersonalityQuizAnswer2Callback(btn: Pointer<GUI_BUTTON>, reason: 
       // the current and last question numbers
       PrintQuizQuestionNumber();
 
-      fReDrawCharProfile = TRUE;
+      fReDrawCharProfile = true;
     }
   }
 }
@@ -476,7 +476,7 @@ function BtnIMPPersonalityQuizAnswer3Callback(btn: Pointer<GUI_BUTTON>, reason: 
       // the current and last question numbers
       PrintQuizQuestionNumber();
 
-      fReDrawCharProfile = TRUE;
+      fReDrawCharProfile = true;
     }
   }
 }
@@ -507,7 +507,7 @@ function BtnIMPPersonalityQuizAnswer4Callback(btn: Pointer<GUI_BUTTON>, reason: 
       // the current and last question numbers
       PrintQuizQuestionNumber();
 
-      fReDrawCharProfile = TRUE;
+      fReDrawCharProfile = true;
     }
   }
 }
@@ -538,7 +538,7 @@ function BtnIMPPersonalityQuizAnswer5Callback(btn: Pointer<GUI_BUTTON>, reason: 
       // the current and last question numbers
       PrintQuizQuestionNumber();
 
-      fReDrawCharProfile = TRUE;
+      fReDrawCharProfile = true;
     }
   }
 }
@@ -569,7 +569,7 @@ function BtnIMPPersonalityQuizAnswer6Callback(btn: Pointer<GUI_BUTTON>, reason: 
       // the current and last question numbers
       PrintQuizQuestionNumber();
 
-      fReDrawCharProfile = TRUE;
+      fReDrawCharProfile = true;
     }
   }
 }
@@ -600,7 +600,7 @@ function BtnIMPPersonalityQuizAnswer7Callback(btn: Pointer<GUI_BUTTON>, reason: 
       // the current and last question numbers
       PrintQuizQuestionNumber();
 
-      fReDrawCharProfile = TRUE;
+      fReDrawCharProfile = true;
     }
   }
 }
@@ -630,7 +630,7 @@ function BtnIMPPersonalityQuizAnswer8Callback(btn: Pointer<GUI_BUTTON>, reason: 
       // the current and last question numbers
       PrintQuizQuestionNumber();
 
-      fReDrawCharProfile = TRUE;
+      fReDrawCharProfile = true;
     }
   }
 }
@@ -716,10 +716,10 @@ function BtnIMPPersonalityQuizStartOverCallback(btn: Pointer<GUI_BUTTON>, reason
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       giPreviousPersonalityQuizQuestion = giCurrentPersonalityQuizQuestion;
       giMaxPersonalityQuizQuestion = 0;
-      fStartOverFlag = TRUE;
+      fStartOverFlag = true;
 
       iCurrentImpPage = Enum71.IMP_PERSONALITY;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
       iCurrentAnswer = -1;
     }
   }
@@ -1299,12 +1299,12 @@ function CheckStateOfTheConfirmButton(): void {
 function HandleIMPQuizKeyBoard(): void {
   let InputEvent: InputAtom;
   let MousePos: POINT;
-  let fSkipFrame: BOOLEAN = FALSE;
+  let fSkipFrame: boolean = false;
 
   GetCursorPos(addressof(MousePos));
 
-  while ((DequeueEvent(addressof(InputEvent)) == TRUE)) {
-    if (fSkipFrame == FALSE) {
+  while ((DequeueEvent(addressof(InputEvent)) == true)) {
+    if (fSkipFrame == false) {
       // HOOK INTO MOUSE HOOKS
 
       /*

@@ -4,7 +4,7 @@ interface ScrollStringSt {
   uiFont: UINT32;
   usColor: UINT16;
   uiFlags: UINT32;
-  fBeginningOfNewString: BOOLEAN;
+  fBeginningOfNewString: boolean;
   uiTimeOfLastUpdate: UINT32;
   uiPadding: UINT32[] /* [5] */;
   pNext: Pointer<ScrollStringSt>;

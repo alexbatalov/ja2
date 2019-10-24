@@ -1,5 +1,5 @@
-let gfRestoringEnemySoldiersFromTempFile: BOOLEAN = FALSE;
-let gfRestoringCiviliansFromTempFile: BOOLEAN = FALSE;
+let gfRestoringEnemySoldiersFromTempFile: boolean = false;
+let gfRestoringCiviliansFromTempFile: boolean = false;
 
 function RemoveEnemySoldierTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   let zMapName: CHAR8[] /* [128] */;
@@ -34,7 +34,7 @@ function RemoveCivilianTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8
 }
 
 // OLD SAVE METHOD:  This is the old way of loading the enemies and civilians
-function LoadEnemySoldiersFromTempFile(): BOOLEAN {
+function LoadEnemySoldiersFromTempFile(): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
   let i: INT32;
@@ -58,7 +58,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
   let ubStrategicAdmins: UINT8;
   let ubStrategicCreatures: UINT8;
 
-  gfRestoringEnemySoldiersFromTempFile = TRUE;
+  gfRestoringEnemySoldiersFromTempFile = true;
 
   // STEP ONE:  Set up the temp file to read from.
 
@@ -71,10 +71,10 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
   GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Open the file for reading
-  hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hfile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   // STEP TWO:  determine whether or not we should use this data.
@@ -119,8 +119,8 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
     // the file has aged.  Use the regular method for adding soldiers.
     FileClose(hfile);
     RemoveEnemySoldierTempFile(sSectorX, sSectorY, bSectorZ);
-    gfRestoringEnemySoldiersFromTempFile = FALSE;
-    return TRUE;
+    gfRestoringEnemySoldiersFromTempFile = false;
+    return true;
   }
 
   if (gbWorldSectorZ != bSectorZ) {
@@ -129,9 +129,9 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
 
   if (!slots) {
     // no need to restore the enemy's to the map.  This means we are restoring a saved game.
-    gfRestoringEnemySoldiersFromTempFile = FALSE;
+    gfRestoringEnemySoldiersFromTempFile = false;
     FileClose(hfile);
-    return TRUE;
+    return true;
   }
   if (slots < 0 || slots >= 64) {
     // bad IO!
@@ -144,7 +144,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
   while (curr) {
     if (curr.value.pBasicPlacement.value.fPriorityExistance) {
       if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM || curr.value.pBasicPlacement.value.bTeam == CIV_TEAM) {
-        curr.value.pBasicPlacement.value.fPriorityExistance = FALSE;
+        curr.value.pBasicPlacement.value.fPriorityExistance = false;
       }
     }
     curr = curr.value.next;
@@ -178,7 +178,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
       if (!curr.value.pBasicPlacement.value.fPriorityExistance) {
         if (!curr.value.pDetailedPlacement || curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
           if (curr.value.pBasicPlacement.value.bTeam == tempDetailedPlacement.bTeam) {
-            curr.value.pBasicPlacement.value.fPriorityExistance = TRUE;
+            curr.value.pBasicPlacement.value.fPriorityExistance = true;
             if (!curr.value.pDetailedPlacement) {
               // need to upgrade the placement to detailed placement
               curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
@@ -186,7 +186,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
             // now replace the map pristine placement info with the temp map file version..
             memcpy(curr.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
 
-            curr.value.pBasicPlacement.value.fPriorityExistance = TRUE;
+            curr.value.pBasicPlacement.value.fPriorityExistance = true;
             curr.value.pBasicPlacement.value.bDirection = curr.value.pDetailedPlacement.value.bDirection;
             curr.value.pBasicPlacement.value.bOrders = curr.value.pDetailedPlacement.value.bOrders;
             curr.value.pBasicPlacement.value.bAttitude = curr.value.pDetailedPlacement.value.bAttitude;
@@ -272,18 +272,18 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
 
   // successful
   FileClose(hfile);
-  return TRUE;
+  return true;
 
 FAIL_LOAD:
   // The temp file load failed either because of IO problems related to hacking/logic, or
   // various checks failed for hacker validation.  If we reach this point, the "error: exit game"
   // dialog would appear in a non-testversion.
   FileClose(hfile);
-  return FALSE;
+  return false;
 }
 
 // OLD SAVE METHOD:  This is the older way of saving the civilian and the enemies placement into a temp file
-function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubFirstIdTeam: UINT8, ubLastIdTeam: UINT8, fAppendToFile: BOOLEAN): BOOLEAN {
+function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubFirstIdTeam: UINT8, ubLastIdTeam: UINT8, fAppendToFile: boolean): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
@@ -315,7 +315,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
         if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
           if (!curr.value.pDetailedPlacement) {
             // need to upgrade the placement to detailed placement
-            curr.value.pBasicPlacement.value.fDetailedPlacement = TRUE;
+            curr.value.pBasicPlacement.value.fDetailedPlacement = true;
             curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
             memset(curr.value.pDetailedPlacement, 0, sizeof(SOLDIERCREATE_STRUCT));
           }
@@ -396,7 +396,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
   if (!slots) {
     // No need to save anything, so return successfully
     RemoveEnemySoldierTempFile(sSectorX, sSectorY, bSectorZ);
-    return TRUE;
+    return true;
   }
 
   // STEP TWO:  Set up the temp file to write to.
@@ -412,16 +412,16 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
   // if the file doesnt exist
   if (FileSize(zMapName) == 0) {
     // set it so we are not appending
-    fAppendToFile = FALSE;
+    fAppendToFile = false;
   }
 
   // if we are to append to the file
   if (fAppendToFile) {
     // Open the file for writing, Create it if it doesnt exist
-    hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_ALWAYS, FALSE);
+    hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_ALWAYS, false);
     if (hfile == 0) {
       // Error opening map modification file
-      return FALSE;
+      return false;
     }
 
     // advance for bytes and read the #of slots already used
@@ -435,10 +435,10 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
     FileClose(hfile);
 
     // Open the file for writing, Create it if it doesnt exist
-    hfile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+    hfile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
     if (hfile == 0) {
       // Error opening map modification file
-      return FALSE;
+      return false;
     }
 
     slots += iSlotsAlreadyInUse;
@@ -453,10 +453,10 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
     FileSeek(hfile, 0, FILE_SEEK_FROM_END);
   } else {
     // Open the file for writing, Create it if it doesnt exist
-    hfile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+    hfile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
     if (hfile == 0) {
       // Error opening map modification file
-      return FALSE;
+      return false;
     }
   }
 
@@ -505,7 +505,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
     slots = 0;
     FileClose(hfile);
     SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS);
-    return TRUE;
+    return true;
   }
 
   for (i = gTacticalStatus.Team[ubFirstIdTeam].bFirstID; i <= gTacticalStatus.Team[ubLastIdTeam].bLastID; i++) {
@@ -543,14 +543,14 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
 
   FileClose(hfile);
   SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS);
-  return TRUE;
+  return true;
 
 FAIL_SAVE:
   FileClose(hfile);
-  return FALSE;
+  return false;
 }
 
-function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
+function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
   let i: INT32;
@@ -574,7 +574,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
   let ubStrategicAdmins: UINT8;
   let ubStrategicCreatures: UINT8;
 
-  gfRestoringEnemySoldiersFromTempFile = TRUE;
+  gfRestoringEnemySoldiersFromTempFile = true;
 
   // STEP ONE:  Set up the temp file to read from.
 
@@ -612,7 +612,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
     if (ubStrategicElites != ubNumElites || ubStrategicTroops != ubNumTroops || ubStrategicAdmins != ubNumAdmins || ubStrategicCreatures != ubNumCreatures) {
       // remove the file
       RemoveEnemySoldierTempFile(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
-      return TRUE;
+      return true;
     }
   }
 
@@ -620,10 +620,10 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
   ubNumElites = ubNumTroops = ubNumAdmins = ubNumCreatures = 0;
 
   // Open the file for reading
-  hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hfile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   // STEP TWO:  determine whether or not we should use this data.
@@ -672,15 +672,15 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
     // the file has aged.  Use the regular method for adding soldiers.
     FileClose(hfile);
     RemoveEnemySoldierTempFile(sSectorX, sSectorY, bSectorZ);
-    gfRestoringEnemySoldiersFromTempFile = FALSE;
-    return TRUE;
+    gfRestoringEnemySoldiersFromTempFile = false;
+    return true;
   }
 
   if (!slots) {
     // no need to restore the enemy's to the map.  This means we are restoring a saved game.
-    gfRestoringEnemySoldiersFromTempFile = FALSE;
+    gfRestoringEnemySoldiersFromTempFile = false;
     FileClose(hfile);
-    return TRUE;
+    return true;
   }
 
   if (slots < 0 || slots >= 64) {
@@ -694,7 +694,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
   while (curr) {
     if (curr.value.pBasicPlacement.value.fPriorityExistance) {
       if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM) {
-        curr.value.pBasicPlacement.value.fPriorityExistance = FALSE;
+        curr.value.pBasicPlacement.value.fPriorityExistance = false;
       }
     }
     curr = curr.value.next;
@@ -727,7 +727,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
     while (curr) {
       if (!curr.value.pBasicPlacement.value.fPriorityExistance) {
         if (curr.value.pBasicPlacement.value.bTeam == tempDetailedPlacement.bTeam) {
-          curr.value.pBasicPlacement.value.fPriorityExistance = TRUE;
+          curr.value.pBasicPlacement.value.fPriorityExistance = true;
           if (!curr.value.pDetailedPlacement) {
             // need to upgrade the placement to detailed placement
             curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
@@ -735,7 +735,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
           // now replace the map pristine placement info with the temp map file version..
           memcpy(curr.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
 
-          curr.value.pBasicPlacement.value.fPriorityExistance = TRUE;
+          curr.value.pBasicPlacement.value.fPriorityExistance = true;
           curr.value.pBasicPlacement.value.bDirection = curr.value.pDetailedPlacement.value.bDirection;
           curr.value.pBasicPlacement.value.bOrders = curr.value.pDetailedPlacement.value.bOrders;
           curr.value.pBasicPlacement.value.bAttitude = curr.value.pDetailedPlacement.value.bAttitude;
@@ -842,17 +842,17 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
 
   // successful
   FileClose(hfile);
-  return TRUE;
+  return true;
 
 FAIL_LOAD:
   // The temp file load failed either because of IO problems related to hacking/logic, or
   // various checks failed for hacker validation.  If we reach this point, the "error: exit game"
   // dialog would appear in a non-testversion.
   FileClose(hfile);
-  return FALSE;
+  return false;
 }
 
-function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
+function NewWayOfLoadingCiviliansFromTempFile(): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let temp: Pointer<SOLDIERINITNODE>;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
@@ -874,10 +874,10 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
   let ubNumTroops: UINT8 = 0;
   let ubNumAdmins: UINT8 = 0;
   let ubNumCreatures: UINT8 = 0;
-  let fDeleted: BOOLEAN;
+  let fDeleted: boolean;
   //	UINT8 ubStrategicElites, ubStrategicTroops, ubStrategicAdmins, ubStrategicCreatures;
 
-  gfRestoringCiviliansFromTempFile = TRUE;
+  gfRestoringCiviliansFromTempFile = true;
 
   // STEP ONE:  Set up the temp file to read from.
 
@@ -889,10 +889,10 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
   GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Open the file for reading
-  hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hfile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   // STEP TWO:  determine whether or not we should use this data.
@@ -940,9 +940,9 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
 
   if (!slots) {
     // no need to restore the enemy's to the map.  This means we are restoring a saved game.
-    gfRestoringCiviliansFromTempFile = FALSE;
+    gfRestoringCiviliansFromTempFile = false;
     FileClose(hfile);
-    return TRUE;
+    return true;
   }
   if (slots < 0 || slots >= 64) {
 // bad IO!
@@ -955,7 +955,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
   while (curr) {
     if (curr.value.pBasicPlacement.value.fPriorityExistance) {
       if (curr.value.pBasicPlacement.value.bTeam == CIV_TEAM) {
-        curr.value.pBasicPlacement.value.fPriorityExistance = FALSE;
+        curr.value.pBasicPlacement.value.fPriorityExistance = false;
       }
     }
     curr = curr.value.next;
@@ -971,7 +971,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
       if (!curr.value.pBasicPlacement.value.fPriorityExistance) {
         if (!curr.value.pDetailedPlacement || curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
           if (curr.value.pBasicPlacement.value.bTeam == tempDetailedPlacement.bTeam) {
-            curr.value.pBasicPlacement.value.fPriorityExistance = TRUE;
+            curr.value.pBasicPlacement.value.fPriorityExistance = true;
 
             if (!curr.value.pDetailedPlacement) {
               // need to upgrade the placement to detailed placement
@@ -980,7 +980,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
             // now replace the map pristine placement info with the temp map file version..
             memcpy(curr.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
 
-            curr.value.pBasicPlacement.value.fPriorityExistance = TRUE;
+            curr.value.pBasicPlacement.value.fPriorityExistance = true;
             curr.value.pBasicPlacement.value.bDirection = curr.value.pDetailedPlacement.value.bDirection;
             curr.value.pBasicPlacement.value.bOrders = curr.value.pDetailedPlacement.value.bOrders;
             curr.value.pBasicPlacement.value.bAttitude = curr.value.pDetailedPlacement.value.bAttitude;
@@ -1026,7 +1026,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
 
   // now remove any non-priority placement which matches the conditions!
   curr = gSoldierInitHead;
-  fDeleted = FALSE;
+  fDeleted = false;
   while (curr) {
     if (!curr.value.pBasicPlacement.value.fPriorityExistance) {
       if (!curr.value.pDetailedPlacement || curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
@@ -1036,13 +1036,13 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
           temp = curr.value.next;
           RemoveSoldierNodeFromInitList(curr);
           curr = temp;
-          fDeleted = TRUE;
+          fDeleted = true;
         }
       }
     }
     if (fDeleted) {
       // we've already done our pointer update so don't advance the pointer
-      fDeleted = FALSE;
+      fDeleted = false;
     } else {
       curr = curr.value.next;
     }
@@ -1065,19 +1065,19 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
 
   // successful
   FileClose(hfile);
-  return TRUE;
+  return true;
 
 FAIL_LOAD:
   // The temp file load failed either because of IO problems related to hacking/logic, or
   // various checks failed for hacker validation.  If we reach this point, the "error: exit game"
   // dialog would appear in a non-testversion.
   FileClose(hfile);
-  return FALSE;
+  return false;
 }
 
 // If we are saving a game and we are in the sector, we will need to preserve the links between the
 // soldiers and the soldier init list.  Otherwise, the temp file will be deleted.
-function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fEnemy: BOOLEAN, fValidateOnly: BOOLEAN): BOOLEAN {
+function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fEnemy: boolean, fValidateOnly: boolean): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
@@ -1125,7 +1125,7 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
           if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
             if (!curr.value.pDetailedPlacement) {
               // need to upgrade the placement to detailed placement
-              curr.value.pBasicPlacement.value.fDetailedPlacement = TRUE;
+              curr.value.pBasicPlacement.value.fDetailedPlacement = true;
               curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
               memset(curr.value.pDetailedPlacement, 0, sizeof(SOLDIERCREATE_STRUCT));
             }
@@ -1199,16 +1199,16 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
     if (fEnemy) {
       // No need to save anything, so return successfully
       RemoveEnemySoldierTempFile(sSectorX, sSectorY, bSectorZ);
-      return TRUE;
+      return true;
     } else {
       // No need to save anything, so return successfully
       RemoveCivilianTempFile(sSectorX, sSectorY, bSectorZ);
-      return TRUE;
+      return true;
     }
   }
 
   if (fValidateOnly) {
-    return TRUE;
+    return true;
   }
 
   // STEP TWO:  Set up the temp file to write to.
@@ -1227,10 +1227,10 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
   }
 
   // Open the file for writing, Create it if it doesnt exist
-  hfile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+  hfile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
   if (hfile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   FileWrite(hfile, addressof(sSectorY), 2, addressof(uiNumBytesWritten));
@@ -1282,7 +1282,7 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
     } else {
       SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_CIV_PRESERVED_TEMP_FILE_EXISTS);
     }
-    return TRUE;
+    return true;
   }
 
   for (i = gTacticalStatus.Team[ubStartID].bFirstID; i <= gTacticalStatus.Team[ubEndID].bLastID; i++) {
@@ -1324,14 +1324,14 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
     SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_CIV_PRESERVED_TEMP_FILE_EXISTS);
   }
 
-  return TRUE;
+  return true;
 
 FAIL_SAVE:
   FileClose(hfile);
-  return FALSE;
+  return false;
 }
 
-function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(pubNumElites: Pointer<UINT8>, pubNumRegulars: Pointer<UINT8>, pubNumAdmins: Pointer<UINT8>, pubNumCreatures: Pointer<UINT8>): BOOLEAN {
+function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(pubNumElites: Pointer<UINT8>, pubNumRegulars: Pointer<UINT8>, pubNumAdmins: Pointer<UINT8>, pubNumCreatures: Pointer<UINT8>): boolean {
   //	SOLDIERINITNODE *curr;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
   let i: INT32;
@@ -1365,10 +1365,10 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
   GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Open the file for reading
-  hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hfile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   // STEP TWO:  determine whether or not we should use this data.
@@ -1417,7 +1417,7 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
   if (!slots) {
     // no need to restore the enemy's to the map.  This means we are restoring a saved game.
     FileClose(hfile);
-    return TRUE;
+    return true;
   }
 
   if (slots < 0 || slots >= 64) {
@@ -1600,12 +1600,12 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
 
   // successful
   FileClose(hfile);
-  return TRUE;
+  return true;
 
 FAIL_LOAD:
   // The temp file load failed either because of IO problems related to hacking/logic, or
   // various checks failed for hacker validation.  If we reach this point, the "error: exit game"
   // dialog would appear in a non-testversion.
   FileClose(hfile);
-  return FALSE;
+  return false;
 }

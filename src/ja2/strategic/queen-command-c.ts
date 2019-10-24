@@ -4,7 +4,7 @@
 // as well as intentions, etc.
 let SectorInfo: SECTORINFO[] /* [256] */;
 let gpUndergroundSectorInfoHead: Pointer<UNDERGROUND_SECTORINFO> = null;
-let gfPendingEnemies: BOOLEAN = FALSE;
+let gfPendingEnemies: boolean = false;
 
 let gsInterrogationGridNo: INT16[] /* [3] */ = [
   7756,
@@ -227,7 +227,7 @@ function EndTacticalBattleForEnemy(): void {
     return;
 
   // Clear this value so that profiled enemies can be added into battles in the future.
-  gfProfiledEnemyAdded = FALSE;
+  gfProfiledEnemyAdded = false;
 
   // Clear enemies in battle for all mobile groups in the sector.
   pGroup = gpGroupList;
@@ -274,7 +274,7 @@ function NumFreeEnemySlots(): UINT8 {
 // Called when entering a sector so the campaign AI can automatically insert the
 // correct number of troops of each type based on the current number in the sector
 // in global focus (gWorldSectorX/Y)
-function PrepareEnemyForSectorBattle(): BOOLEAN {
+function PrepareEnemyForSectorBattle(): boolean {
   let pSector: Pointer<SECTORINFO>;
   let pGroup: Pointer<GROUP>;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -289,7 +289,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
   let num: INT32;
   let sNumSlots: INT16;
 
-  gfPendingEnemies = FALSE;
+  gfPendingEnemies = false;
 
   if (gbWorldSectorZ > 0)
     return PrepareEnemyForUndergroundBattle();
@@ -312,7 +312,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
 
   if (!gbWorldSectorZ) {
     if (NumEnemiesInSector(gWorldSectorX, gWorldSectorY) > 32) {
-      gfPendingEnemies = TRUE;
+      gfPendingEnemies = true;
     }
   }
 
@@ -384,7 +384,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
           // adjust the value to zero
           ubNumAdmins += sNumSlots;
           sNumSlots = 0;
-          gfPendingEnemies = TRUE;
+          gfPendingEnemies = true;
         }
         pGroup.value.pEnemyGroup.value.ubAdminsInBattle += ubNumAdmins;
         ubTotalAdmins += ubNumAdmins;
@@ -397,7 +397,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
           // adjust the value to zero
           ubNumTroops += sNumSlots;
           sNumSlots = 0;
-          gfPendingEnemies = TRUE;
+          gfPendingEnemies = true;
         }
         pGroup.value.pEnemyGroup.value.ubTroopsInBattle += ubNumTroops;
         ubTotalTroops += ubNumTroops;
@@ -410,7 +410,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
           // adjust the value to zero
           ubNumElites += sNumSlots;
           sNumSlots = 0;
-          gfPendingEnemies = TRUE;
+          gfPendingEnemies = true;
         }
         pGroup.value.pEnemyGroup.value.ubElitesInBattle += ubNumElites;
         ubTotalElites += ubNumElites;
@@ -436,7 +436,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
 
   // if there are no troops in the current groups, then we're done.
   if (!ubTotalAdmins && !ubTotalTroops && !ubTotalElites) {
-    return FALSE;
+    return false;
   }
 
   AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmins, ubTotalTroops, ubTotalElites);
@@ -495,10 +495,10 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
 
   ValidateEnemiesHaveWeapons();
 
-  return TRUE;
+  return true;
 }
 
-function PrepareEnemyForUndergroundBattle(): BOOLEAN {
+function PrepareEnemyForUndergroundBattle(): boolean {
   let pUnderground: Pointer<UNDERGROUND_SECTORINFO>;
   let ubTotalAdmins: UINT8;
   let ubTotalTroops: UINT8;
@@ -523,8 +523,8 @@ function PrepareEnemyForUndergroundBattle(): BOOLEAN {
   }
 
   // underground sector not found in list
-  Assert(FALSE);
-  return FALSE;
+  Assert(false);
+  return false;
 }
 
 // The queen AI layer must process the event by subtracting forces, etc.
@@ -811,7 +811,7 @@ function AddPossiblePendingEnemiesToBattle(): void {
             ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
         }
         // Add the number of each type of troop and place them in the appropriate positions
-        AddEnemiesToBattle(pGroup, ubStrategicInsertionCode, ubNumAdmins, ubNumTroops, ubNumElites, FALSE);
+        AddEnemiesToBattle(pGroup, ubStrategicInsertionCode, ubNumAdmins, ubNumTroops, ubNumElites, false);
       }
     }
     pGroup = pGroup.value.next;
@@ -819,7 +819,7 @@ function AddPossiblePendingEnemiesToBattle(): void {
   if (ubSlots) {
     // After going through the process, we have finished with some free slots and no more enemies to add.
     // So, we can turn off the flag, as this check is no longer needed.
-    gfPendingEnemies = FALSE;
+    gfPendingEnemies = false;
   }
 }
 
@@ -828,7 +828,7 @@ function NotifyPlayersOfNewEnemies(): void {
   let iChosenSoldier: INT32;
   let i: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fIgnoreBreath: BOOLEAN = FALSE;
+  let fIgnoreBreath: boolean = false;
 
   iSoldiers = 0;
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
@@ -840,7 +840,7 @@ function NotifyPlayersOfNewEnemies(): void {
   }
   if (!iSoldiers) {
     // look for an out of breath merc.
-    fIgnoreBreath = TRUE;
+    fIgnoreBreath = true;
 
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
       // find a merc that is aware.
@@ -871,7 +871,7 @@ function NotifyPlayersOfNewEnemies(): void {
   }
 }
 
-function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UINT8, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8, fMagicallyAppeared: BOOLEAN): void {
+function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UINT8, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8, fMagicallyAppeared: boolean): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let MapEdgepointInfo: MAPEDGEPOINTINFO;
   let ubCurrSlot: UINT8;
@@ -986,7 +986,7 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
   }
 }
 
-function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
+function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let uiNumOfRecords: UINT32 = 0;
   let TempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
@@ -1000,7 +1000,7 @@ function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
   // Write how many nodes there are
   FileWrite(hFile, addressof(uiNumOfRecords), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   TempNode = gpUndergroundSectorInfoHead;
@@ -1009,16 +1009,16 @@ function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
   while (TempNode) {
     FileWrite(hFile, TempNode, sizeof(UNDERGROUND_SECTORINFO), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(UNDERGROUND_SECTORINFO)) {
-      return FALSE;
+      return false;
     }
 
     TempNode = TempNode.value.next;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
+function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let uiNumOfRecords: UINT32 = 0;
   let cnt: UINT32 = 0;
@@ -1031,19 +1031,19 @@ function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
   // Read in the number of nodes stored
   FileRead(hFile, addressof(uiNumOfRecords), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   for (cnt = 0; cnt < uiNumOfRecords; cnt++) {
     // Malloc space for the new node
     TempNode = MemAlloc(sizeof(UNDERGROUND_SECTORINFO));
     if (TempNode == null)
-      return FALSE;
+      return false;
 
     // read in the new node
     FileRead(hFile, TempNode, sizeof(UNDERGROUND_SECTORINFO), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UNDERGROUND_SECTORINFO)) {
-      return FALSE;
+      return false;
     }
 
     // If its the first time in, assign the node to the list
@@ -1062,7 +1062,7 @@ function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function FindUnderGroundSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8): Pointer<UNDERGROUND_SECTORINFO> {
@@ -1130,7 +1130,7 @@ function EndCaptureSequence(): void {
 function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let i: INT32;
   let WorldItem: WORLDITEM;
-  let fMadeCorpse: BOOLEAN;
+  let fMadeCorpse: boolean;
   let iNumEnemiesInSector: INT32;
 
   /* static */ let sAlmaCaptureGridNos: INT16[] /* [] */ = [
@@ -1180,8 +1180,8 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // IF there are no enemies, and we need to do alma, skip!
   if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED && iNumEnemiesInSector == 0) {
-    InternalStartQuest(Enum169.QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY, FALSE);
-    InternalEndQuest(Enum169.QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY, FALSE);
+    InternalStartQuest(Enum169.QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY, false);
+    InternalEndQuest(Enum169.QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY, false);
   }
 
   HandleMoraleEvent(pSoldier, Enum234.MORALE_MERC_CAPTURED, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
@@ -1195,7 +1195,7 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   ChangeSoldiersAssignment(pSoldier, Enum117.ASSIGNMENT_POW);
   // ATE: Make them neutral!
   if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED) {
-    pSoldier.value.bNeutral = TRUE;
+    pSoldier.value.bNeutral = true;
   }
 
   RemoveCharacterFromSquads(pSoldier);
@@ -1213,16 +1213,16 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     // OK, drop all items!
     for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
       if (pSoldier.value.inv[i].usItem != 0) {
-        WorldItem.fExists = TRUE;
+        WorldItem.fExists = true;
         WorldItem.sGridNo = sAlmaCaptureItemsGridNo[gStrategicStatus.ubNumCapturedForRescue];
         WorldItem.ubLevel = 0;
         WorldItem.usFlags = 0;
-        WorldItem.bVisible = FALSE;
+        WorldItem.bVisible = false;
         WorldItem.bRenderZHeightAboveLevel = 0;
 
         memcpy(addressof(WorldItem.o), addressof(pSoldier.value.inv[i]), sizeof(OBJECTTYPE));
 
-        AddWorldItemsToUnLoadedSector(13, 9, 0, sAlmaCaptureItemsGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, addressof(WorldItem), FALSE);
+        AddWorldItemsToUnLoadedSector(13, 9, 0, sAlmaCaptureItemsGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, addressof(WorldItem), false);
         DeleteObj(addressof(pSoldier.value.inv[i]));
       }
     }
@@ -1243,16 +1243,16 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     // OK, drop all items!
     for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
       if (pSoldier.value.inv[i].usItem != 0) {
-        WorldItem.fExists = TRUE;
+        WorldItem.fExists = true;
         WorldItem.sGridNo = sInterrogationItemGridNo[gStrategicStatus.ubNumCapturedForRescue];
         WorldItem.ubLevel = 0;
         WorldItem.usFlags = 0;
-        WorldItem.bVisible = FALSE;
+        WorldItem.bVisible = false;
         WorldItem.bRenderZHeightAboveLevel = 0;
 
         memcpy(addressof(WorldItem.o), addressof(pSoldier.value.inv[i]), sizeof(OBJECTTYPE));
 
-        AddWorldItemsToUnLoadedSector(7, 14, 0, sInterrogationItemGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, addressof(WorldItem), FALSE);
+        AddWorldItemsToUnLoadedSector(7, 14, 0, sInterrogationItemGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, addressof(WorldItem), false);
         DeleteObj(addressof(pSoldier.value.inv[i]));
       }
     }
@@ -1269,7 +1269,7 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   // wake him up
   if (pSoldier.value.fMercAsleep) {
     PutMercInAwakeState(pSoldier);
-    pSoldier.value.fForcedToStayAwake = FALSE;
+    pSoldier.value.fForcedToStayAwake = false;
   }
 
   // Set his life to 50% + or - 10 HP.
@@ -1283,12 +1283,12 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   // make him quite exhausted when found
   pSoldier.value.bBreath = pSoldier.value.bBreathMax = 50;
   pSoldier.value.sBreathRed = 0;
-  pSoldier.value.fMercCollapsedFlag = FALSE;
+  pSoldier.value.fMercCollapsedFlag = false;
 }
 
 function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
   let i: INT32;
-  let fMadeCorpse: BOOLEAN;
+  let fMadeCorpse: boolean;
   let bKilledEnemies: INT8 = 0;
   let bKilledCreatures: INT8 = 0;
   let bKilledRebels: INT8 = 0;
@@ -1357,46 +1357,46 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
   }
 }
 
-function PlayerSectorDefended(ubSectorID: UINT8): BOOLEAN {
+function PlayerSectorDefended(ubSectorID: UINT8): boolean {
   let pSector: Pointer<SECTORINFO>;
   pSector = addressof(SectorInfo[ubSectorID]);
   if (pSector.value.ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA]) {
     // militia in sector
-    return TRUE;
+    return true;
   }
-  if (FindMovementGroupInSector(SECTORX(ubSectorID), SECTORY(ubSectorID), TRUE)) {
+  if (FindMovementGroupInSector(SECTORX(ubSectorID), SECTORY(ubSectorID), true)) {
     // player in sector
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 // Assumes gTacticalStatus.fEnemyInSector
-function OnlyHostileCivsInSector(): BOOLEAN {
+function OnlyHostileCivsInSector(): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
-  let fHostileCivs: BOOLEAN = FALSE;
+  let fHostileCivs: boolean = false;
 
   // Look for any hostile civs.
   for (i = gTacticalStatus.Team[CIV_TEAM].bFirstID; i <= gTacticalStatus.Team[CIV_TEAM].bLastID; i++) {
     pSoldier = MercPtrs[i];
     if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
       if (!pSoldier.value.bNeutral) {
-        fHostileCivs = TRUE;
+        fHostileCivs = true;
         break;
       }
     }
   }
   if (!fHostileCivs) {
     // No hostile civs, so return FALSE
-    return FALSE;
+    return false;
   }
   // Look for anybody else hostile.  If found, return FALSE immediately.
   for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; i++) {
     pSoldier = MercPtrs[i];
     if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
       if (!pSoldier.value.bNeutral) {
-        return FALSE;
+        return false;
       }
     }
   }
@@ -1404,7 +1404,7 @@ function OnlyHostileCivsInSector(): BOOLEAN {
     pSoldier = MercPtrs[i];
     if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
       if (!pSoldier.value.bNeutral) {
-        return FALSE;
+        return false;
       }
     }
   }
@@ -1412,10 +1412,10 @@ function OnlyHostileCivsInSector(): BOOLEAN {
     pSoldier = MercPtrs[i];
     if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
       if (!pSoldier.value.bNeutral) {
-        return FALSE;
+        return false;
       }
     }
   }
   // We only have hostile civilians, don't allow time compression.
-  return TRUE;
+  return true;
 }

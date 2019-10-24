@@ -55,9 +55,9 @@ const enum Enum190 {
 interface TOWN_LOYALTY {
   ubRating: UINT8;
   sChange: INT16;
-  fStarted: BOOLEAN; // starting loyalty of each town is initialized only when player first enters that town
+  fStarted: boolean; // starting loyalty of each town is initialized only when player first enters that town
   UNUSEDubRebelSentiment: UINT8; // current rebel sentiment.  Events could change the starting value...
-  fLiberatedAlready: BOOLEAN;
+  fLiberatedAlready: boolean;
   filler: BYTE[] /* [19] */; // reserved for expansion
 }
 

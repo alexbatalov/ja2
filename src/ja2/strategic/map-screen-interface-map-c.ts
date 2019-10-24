@@ -295,7 +295,7 @@ let guiCHARBETWEENSECTORICONS: UINT32;
 let guiCHARBETWEENSECTORICONSCLOSE: UINT32;
 
 // tixa found
-let fFoundTixa: BOOLEAN = FALSE;
+let fFoundTixa: boolean = false;
 
 // selected sector
 let sSelMapX: UINT16 = 9;
@@ -321,7 +321,7 @@ let guiMapBorderEtaPopUp: UINT32;
 let guiMapBorderHeliSectors: UINT32;
 
 // list of map sectors that player isn't allowed to even highlight
-let sBadSectorsList: BOOLEAN[][] /* [WORLD_MAP_X][WORLD_MAP_X] */;
+let sBadSectorsList: boolean[][] /* [WORLD_MAP_X][WORLD_MAP_X] */;
 
 let sBaseSectorList: INT16[] /* [] */ = [
   // NOTE: These co-ordinates must match the top left corner of the 3x3 town tiles cutouts in Interface/MilitiaMaps.sti!
@@ -385,7 +385,7 @@ let pTempHelicopterPath: PathStPtr = null;
 let pTempCharacterPath: PathStPtr = null;
 
 // draw temp path?
-let fDrawTempHeliPath: BOOLEAN = FALSE;
+let fDrawTempHeliPath: boolean = false;
 
 // the map arrows graphics
 let guiMAPCURSORS: UINT32;
@@ -400,7 +400,7 @@ let bSelectedAssignChar: INT8 = -1;
 let bSelectedContractChar: INT8 = -1;
 
 // has the temp path for character or helicopter been already drawn?
-let fTempPathAlreadyDrawn: BOOLEAN = FALSE;
+let fTempPathAlreadyDrawn: boolean = false;
 
 // the regions for the mapscreen militia box
 let gMapScreenMilitiaBoxRegions: MOUSE_REGION[] /* [9] */;
@@ -417,15 +417,15 @@ let guiMilitiaSectorOutline: UINT32;
 
 // the sector that is highlighted on the militia map
 let sSectorMilitiaMapSector: INT16 = -1;
-let fMilitiaMapButtonsCreated: BOOLEAN = FALSE;
+let fMilitiaMapButtonsCreated: boolean = false;
 let sSectorMilitiaMapSectorOutline: INT16 = -1;
 
 // have any nodes in the current path list been deleted?
-let fDeletedNode: BOOLEAN = FALSE;
+let fDeletedNode: boolean = false;
 
 let gusUndergroundNearBlack: UINT16;
 
-let gfMilitiaPopupCreated: BOOLEAN = FALSE;
+let gfMilitiaPopupCreated: boolean = false;
 
 let giAnimateRouteBaseTime: INT32 = 0;
 let giPotHeliPathBaseTime: INT32 = 0;
@@ -434,14 +434,14 @@ let giClickHeliIconBaseTime: INT32 = 0;
 // UINT8 NumActiveCharactersInSector( INT16 sSectorX, INT16 sSectorY, INT16 bSectorZ );
 // UINT8 NumFriendlyInSector( INT16 sX, INT16 sY, INT8 bZ );
 
-function DrawMapIndexBigMap(fSelectedCursorIsYellow: BOOLEAN): void {
+function DrawMapIndexBigMap(fSelectedCursorIsYellow: boolean): void {
   // this procedure will draw the coord indexes on the zoomed out map
   let usX: INT16;
   let usY: INT16;
   let iCount: INT32 = 0;
-  let fDrawCursors: BOOLEAN;
+  let fDrawCursors: boolean;
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   // SetFontColors(FONT_FCOLOR_GREEN)
   SetFont(MAP_FONT());
   SetFontForeground(MAP_INDEX_COLOR);
@@ -451,7 +451,7 @@ function DrawMapIndexBigMap(fSelectedCursorIsYellow: BOOLEAN): void {
   fDrawCursors = CanDrawSectorCursor();
 
   for (iCount = 1; iCount <= MAX_VIEW_SECTORS; iCount++) {
-    if (fDrawCursors && (iCount == sSelMapX) && (bSelectedDestChar == -1) && (fPlotForHelicopter == FALSE))
+    if (fDrawCursors && (iCount == sSelMapX) && (bSelectedDestChar == -1) && (fPlotForHelicopter == false))
       SetFontForeground((fSelectedCursorIsYellow ? FONT_YELLOW : FONT_WHITE));
     else if (fDrawCursors && (iCount == gsHighlightSectorX))
       SetFontForeground(FONT_WHITE);
@@ -461,7 +461,7 @@ function DrawMapIndexBigMap(fSelectedCursorIsYellow: BOOLEAN): void {
     FindFontCenterCoordinates(((MAP_HORT_INDEX_X + (iCount - 1) * MAP_GRID_X)), MAP_HORT_INDEX_Y, MAP_GRID_X, MAP_HORT_HEIGHT(), pMapHortIndex[iCount], MAP_FONT(), addressof(usX), addressof(usY));
     mprintf(usX, usY, pMapHortIndex[iCount]);
 
-    if (fDrawCursors && (iCount == sSelMapY) && (bSelectedDestChar == -1) && (fPlotForHelicopter == FALSE))
+    if (fDrawCursors && (iCount == sSelMapY) && (bSelectedDestChar == -1) && (fPlotForHelicopter == false))
       SetFontForeground((fSelectedCursorIsYellow ? FONT_YELLOW : FONT_WHITE));
     else if (fDrawCursors && (iCount == gsHighlightSectorY))
       SetFontForeground(FONT_WHITE);
@@ -475,7 +475,7 @@ function DrawMapIndexBigMap(fSelectedCursorIsYellow: BOOLEAN): void {
   InvalidateRegion(MAP_VERT_INDEX_X, MAP_VERT_INDEX_Y, MAP_VERT_INDEX_X + MAP_HORT_HEIGHT(), MAP_VERT_INDEX_Y + (iCount - 1) * MAP_GRID_Y);
   InvalidateRegion(MAP_HORT_INDEX_X, MAP_HORT_INDEX_Y, MAP_HORT_INDEX_X + (iCount - 1) * MAP_GRID_X, MAP_HORT_INDEX_Y + MAP_HORT_HEIGHT());
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 }
 
 /*
@@ -610,7 +610,7 @@ function DrawMap(): UINT32 {
     for (cnt = 1; cnt < MAP_WORLD_X - 1; cnt++) {
       for (cnt2 = 1; cnt2 < MAP_WORLD_Y - 1; cnt2++) {
         // LATE DESIGN CHANGE: darken sectors not yet visited, instead of those under known enemy control
-        if (GetSectorFlagStatus(cnt, cnt2, iCurrentMapSectorZ, SF_ALREADY_VISITED) == FALSE)
+        if (GetSectorFlagStatus(cnt, cnt2, iCurrentMapSectorZ, SF_ALREADY_VISITED) == false)
         //				if ( IsTheSectorPerceivedToBeUnderEnemyControl( cnt, cnt2, ( INT8 )( iCurrentMapSectorZ ) ) )
         {
           if (fShowAircraftFlag && !iCurrentMapSectorZ) {
@@ -723,7 +723,7 @@ function DrawMap(): UINT32 {
 
   // RestoreClipRegionToFullScreen( );
 
-  return TRUE;
+  return true;
 }
 
 function GetScreenXYFromMapXY(sMapX: INT16, sMapY: INT16, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
@@ -752,7 +752,7 @@ function ShowTownText(): void {
   let bTown: INT8 = 0;
   let usX: UINT16;
   let usY: UINT16;
-  let fLoyaltyTooLowToTrainMilitia: BOOLEAN;
+  let fLoyaltyTooLowToTrainMilitia: boolean;
 
   // this procedure will display the town names on the screen
 
@@ -761,10 +761,10 @@ function ShowTownText(): void {
 
   for (bTown = FIRST_TOWN; bTown < Enum135.NUM_TOWNS; bTown++) {
     // skip Orta/Tixa until found
-    if (((fFoundOrta != FALSE) || (bTown != Enum135.ORTA)) && ((bTown != Enum135.TIXA) || (fFoundTixa != FALSE))) {
+    if (((fFoundOrta != false) || (bTown != Enum135.ORTA)) && ((bTown != Enum135.TIXA) || (fFoundTixa != false))) {
       swprintf(sString, "%s", pTownNames[bTown]);
 
-      fLoyaltyTooLowToTrainMilitia = FALSE;
+      fLoyaltyTooLowToTrainMilitia = false;
 
       // don't show loyalty string until loyalty tracking for that town has been started
       if (gTownLoyalty[bTown].fStarted && gfTownUsesLoyalty[bTown]) {
@@ -772,7 +772,7 @@ function ShowTownText(): void {
 
         // if loyalty is too low to train militia, and militia training is allowed here
         if ((gTownLoyalty[bTown].ubRating < MIN_RATING_TO_TRAIN_TOWN) && MilitiaTrainingAllowedInTown(bTown)) {
-          fLoyaltyTooLowToTrainMilitia = TRUE;
+          fLoyaltyTooLowToTrainMilitia = true;
         }
       } else {
         wcscpy(sStringA, "");
@@ -808,7 +808,7 @@ function DrawTownLabels(pString: STR16, pStringA: STR16, usFirstX: UINT16, usFir
     return;
   }
 
-  SetFontDestBuffer(guiSAVEBUFFER, MapScreenRect.iLeft + 2, MapScreenRect.iTop, MapScreenRect.iRight, MapScreenRect.iBottom, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, MapScreenRect.iLeft + 2, MapScreenRect.iTop, MapScreenRect.iRight, MapScreenRect.iBottom, false);
 
   // clip blits to mapscreen region
   ClipBlitsToMapViewRegion();
@@ -998,10 +998,10 @@ function ShowTeamAndVehicles(fShowFlags: INT32): void {
   let sMapX: INT16 = 0;
   let sMapY: INT16 = 0;
   let iIconOffset: INT32 = 0;
-  let fContemplatingRetreating: BOOLEAN = FALSE;
+  let fContemplatingRetreating: boolean = false;
 
   if (gfDisplayPotentialRetreatPaths && gpBattleGroup) {
-    fContemplatingRetreating = TRUE;
+    fContemplatingRetreating = true;
   }
 
   for (sMapX = 1; sMapX < MAP_WORLD_X - 1; sMapX++) {
@@ -1025,7 +1025,7 @@ function ShowTeamAndVehicles(fShowFlags: INT32): void {
   }
 }
 
-function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN {
+function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
   let sScreenX: INT16;
   let sScreenY: INT16;
   let hSrcVSurface: HVSURFACE;
@@ -1184,10 +1184,10 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN {
     // hSAMSurface->p16BPPPalette = pOriginalPallette;
   }
 
-  return TRUE;
+  return true;
 }
 
-function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN {
+function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
   let sScreenX: INT16;
   let sScreenY: INT16;
   let iX: INT32;
@@ -1256,7 +1256,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN 
     sScreenY += 1;
 
     if ((sScreenX > MapScreenRect.iRight) || (sScreenY > MapScreenRect.iBottom)) {
-      return FALSE;
+      return false;
     }
 
     switch (iColor) {
@@ -1350,10 +1350,10 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN 
   CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
   hSrcVSurface.value.p16BPPPalette = pOriginalPallette;
 
-  return TRUE;
+  return true;
 }
 
-function InitializePalettesForMap(): BOOLEAN {
+function InitializePalettesForMap(): boolean {
   // init palettes
   let hSrcVSurface: HVSURFACE;
   let pPalette: SGPPaletteEntry[] /* [256] */;
@@ -1370,15 +1370,15 @@ function InitializePalettesForMap(): BOOLEAN {
   GetVSurfacePaletteEntries(hSrcVSurface, pPalette);
 
   // set up various palettes
-  pMapLTRedPalette = Create16BPPPaletteShaded(pPalette, 400, 0, 0, TRUE);
-  pMapDKRedPalette = Create16BPPPaletteShaded(pPalette, 200, 0, 0, TRUE);
-  pMapLTGreenPalette = Create16BPPPaletteShaded(pPalette, 0, 400, 0, TRUE);
-  pMapDKGreenPalette = Create16BPPPaletteShaded(pPalette, 0, 200, 0, TRUE);
+  pMapLTRedPalette = Create16BPPPaletteShaded(pPalette, 400, 0, 0, true);
+  pMapDKRedPalette = Create16BPPPaletteShaded(pPalette, 200, 0, 0, true);
+  pMapLTGreenPalette = Create16BPPPaletteShaded(pPalette, 0, 400, 0, true);
+  pMapDKGreenPalette = Create16BPPPaletteShaded(pPalette, 0, 200, 0, true);
 
   // delete image
   DeleteVideoSurfaceFromIndex(uiTempMap);
 
-  return TRUE;
+  return true;
 }
 
 function ShutDownPalettesForMap(): void {
@@ -1395,7 +1395,7 @@ function ShutDownPalettesForMap(): void {
   return;
 }
 
-function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, fTacticalTraversal: BOOLEAN): void {
+function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, fTacticalTraversal: boolean): void {
   // will plot a path for this character
 
   // is cursor allowed here?..if not..don't build path
@@ -1455,7 +1455,7 @@ function PlotATemporaryPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: IN
   }
 
   // build path
-  pTempCharacterPath = BuildAStrategicPath(pTempCharacterPath, GetLastSectorIdInCharactersPath(pCharacter), (sX + sY * (MAP_WORLD_X)), GetSoldierGroupId(pCharacter), FALSE /*, TRUE */);
+  pTempCharacterPath = BuildAStrategicPath(pTempCharacterPath, GetLastSectorIdInCharactersPath(pCharacter), (sX + sY * (MAP_WORLD_X)), GetSoldierGroupId(pCharacter), false /*, TRUE */);
 
   return;
 }
@@ -1526,7 +1526,7 @@ function CancelPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
 
   // if he's in a vehicle, clear out the vehicle, too
   if (pCharacter.value.bAssignment == Enum117.VEHICLE) {
-    CancelPathForVehicle(addressof(pVehicleList[pCharacter.value.iVehicleId]), TRUE);
+    CancelPathForVehicle(addressof(pVehicleList[pCharacter.value.iVehicleId]), true);
   } else {
     // display "travel route canceled" message
     MapScreenMessage(FONT_MCOLOR_LTYELLOW, MSG_MAP_UI_POSITION_MIDDLE, pMapPlotStrings[3]);
@@ -1534,12 +1534,12 @@ function CancelPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
 
   CopyPathToCharactersSquadIfInOne(pCharacter);
 
-  fMapPanelDirty = TRUE;
-  fTeamPanelDirty = TRUE;
-  fCharacterInfoPanelDirty = TRUE; // to update ETA
+  fMapPanelDirty = true;
+  fTeamPanelDirty = true;
+  fCharacterInfoPanelDirty = true; // to update ETA
 }
 
-function CancelPathForVehicle(pVehicle: Pointer<VEHICLETYPE>, fAlreadyReversed: BOOLEAN): void {
+function CancelPathForVehicle(pVehicle: Pointer<VEHICLETYPE>, fAlreadyReversed: boolean): void {
   // we're clearing everything beyond the *current* sector, that's quite different.  Since we're basically cancelling
   // his movement completely, we must also make sure his next X,Y are changed and he officially "returns" to his sector
   pVehicle.value.pMercPath = ClearStrategicPathList(pVehicle.value.pMercPath, pVehicle.value.ubMovementGroup);
@@ -1558,25 +1558,25 @@ function CancelPathForVehicle(pVehicle: Pointer<VEHICLETYPE>, fAlreadyReversed: 
   MapScreenMessage(FONT_MCOLOR_LTYELLOW, MSG_MAP_UI_POSITION_MIDDLE, pMapPlotStrings[3]);
 
   // turn the helicopter flag off here, this prevents the "route aborted" msg from coming up
-  fPlotForHelicopter = FALSE;
+  fPlotForHelicopter = false;
 
-  fTeamPanelDirty = TRUE;
-  fMapPanelDirty = TRUE;
-  fCharacterInfoPanelDirty = TRUE; // to update ETA
+  fTeamPanelDirty = true;
+  fMapPanelDirty = true;
+  fCharacterInfoPanelDirty = true; // to update ETA
 }
 
 function CancelPathForGroup(pGroup: Pointer<GROUP>): void {
   let iVehicleId: INT32;
 
   // if it's the chopper, but player can't redirect it
-  if (pGroup.value.fPlayer && IsGroupTheHelicopterGroup(pGroup) && (CanHelicopterFly() == FALSE)) {
+  if (pGroup.value.fPlayer && IsGroupTheHelicopterGroup(pGroup) && (CanHelicopterFly() == false)) {
     // explain & ignore
     ExplainWhySkyriderCantFly();
     return;
   }
 
   // is it a non-vehicle group?
-  if ((pGroup.value.fPlayer) && (pGroup.value.fVehicle == FALSE)) {
+  if ((pGroup.value.fPlayer) && (pGroup.value.fVehicle == false)) {
     if (pGroup.value.pPlayerList) {
       if (pGroup.value.pPlayerList.value.pSoldier) {
         // clearing one merc should be enough, it copies changes to his squad on its own
@@ -1593,7 +1593,7 @@ function CancelPathForGroup(pGroup: Pointer<GROUP>): void {
     if (iVehicleId == -1)
       return;
 
-    CancelPathForVehicle(addressof(pVehicleList[iVehicleId]), FALSE);
+    CancelPathForVehicle(addressof(pVehicleList[iVehicleId]), false);
   }
 }
 
@@ -1627,7 +1627,7 @@ function DisplaySoldierPath(pCharacter: Pointer<SOLDIERTYPE>): void {
   pPath = GetSoldierMercPathPtr(pCharacter);
 
   // trace real route
-  TracePathRoute(FALSE, TRUE, pPath);
+  TracePathRoute(false, true, pPath);
   AnimateRoute(pPath);
 
   return;
@@ -1635,7 +1635,7 @@ function DisplaySoldierPath(pCharacter: Pointer<SOLDIERTYPE>): void {
 
 function DisplaySoldierTempPath(pCharacter: Pointer<SOLDIERTYPE>): void {
   // now render temp route
-  TracePathRoute(FALSE, TRUE, pTempCharacterPath);
+  TracePathRoute(false, true, pTempCharacterPath);
 
   return;
 }
@@ -1648,7 +1648,7 @@ function DisplayHelicopterPath(): void {
   ClipBlitsToMapViewRegion();
 
   // trace both lists..temp is conditional if cursor has sat in same sector grid long enough
-  TracePathRoute(TRUE, TRUE, pVehicleList[iHelicopterVehicleId].pMercPath);
+  TracePathRoute(true, true, pVehicleList[iHelicopterVehicleId].pMercPath);
   AnimateRoute(pVehicleList[iHelicopterVehicleId].pMercPath);
 
   // restore
@@ -1660,7 +1660,7 @@ function DisplayHelicopterPath(): void {
 function DisplayHelicopterTempPath(): void {
   // should we draw temp path?
   if (fDrawTempHeliPath) {
-    TracePathRoute(TRUE, TRUE, pTempHelicopterPath);
+    TracePathRoute(true, true, pTempHelicopterPath);
   }
 
   return;
@@ -1688,12 +1688,12 @@ function PlotPathForHelicopter(sX: INT16, sY: INT16): void {
 
   // will plot a path from current position to sX, sY
   // get last sector in helicopters list, build new path, remove tail section, move to beginning of list, and append onto old list
-  pVehicleList[iHelicopterVehicleId].pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(null, GetLastSectorOfHelicoptersPath(), (sX + sY * (MAP_WORLD_X)), pVehicleList[iHelicopterVehicleId].ubMovementGroup, FALSE /*, FALSE */)), pVehicleList[iHelicopterVehicleId].pMercPath);
+  pVehicleList[iHelicopterVehicleId].pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(null, GetLastSectorOfHelicoptersPath(), (sX + sY * (MAP_WORLD_X)), pVehicleList[iHelicopterVehicleId].ubMovementGroup, false /*, FALSE */)), pVehicleList[iHelicopterVehicleId].pMercPath);
 
   // move to beginning of list
   pVehicleList[iHelicopterVehicleId].pMercPath = MoveToBeginningOfPathList(pVehicleList[iHelicopterVehicleId].pMercPath);
 
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 
   return;
 }
@@ -1708,7 +1708,7 @@ function PlotATemporaryPathForHelicopter(sX: INT16, sY: INT16): void {
   }
 
   // build path
-  pTempHelicopterPath = BuildAStrategicPath(null, GetLastSectorOfHelicoptersPath(), (sX + sY * (MAP_WORLD_X)), pVehicleList[iHelicopterVehicleId].ubMovementGroup, FALSE /*, TRUE */);
+  pTempHelicopterPath = BuildAStrategicPath(null, GetLastSectorOfHelicoptersPath(), (sX + sY * (MAP_WORLD_X)), pVehicleList[iHelicopterVehicleId].ubMovementGroup, false /*, TRUE */);
 
   return;
 }
@@ -1737,7 +1737,7 @@ function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
     // if we're in confirm map move mode, cancel that (before new UI messages are issued)
     EndConfirmMapMoveMode();
 
-    CancelPathForVehicle(pVehicle, FALSE);
+    CancelPathForVehicle(pVehicle, false);
     return Enum158.PATH_CLEARED;
   } else // click not in the current sector
   {
@@ -1770,10 +1770,10 @@ function GetLastSectorOfHelicoptersPath(): INT16 {
   return sLastSector;
 }
 
-function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathStPtr): BOOLEAN {
+function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathStPtr): boolean {
   let pCurrentNode: PathStPtr = null;
-  let fSpeedFlag: BOOLEAN = FALSE;
-  let fUpDate: BOOLEAN = FALSE;
+  let fSpeedFlag: boolean = false;
+  let fUpDate: boolean = false;
   let iDifference: INT32 = 0;
   let iArrow: INT32 = -1;
   let iX: INT32;
@@ -1786,8 +1786,8 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
   let iDeltaB: INT32;
   let iDeltaB1: INT32;
   let iDirection: INT32 = 0;
-  let fUTurnFlag: BOOLEAN = FALSE;
-  let fNextNode: BOOLEAN = FALSE;
+  let fUTurnFlag: boolean = false;
+  let fNextNode: boolean = false;
   let pTempNode: PathStPtr = null;
   let pNode: PathStPtr = null;
   let pPastNode: PathStPtr = null;
@@ -1796,7 +1796,7 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
   let hMapHandle: HVOBJECT;
 
   if (pPath == null) {
-    return FALSE;
+    return false;
   }
 
   while (pPath.value.pPrev) {
@@ -1818,16 +1818,16 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
   GetVideoObject(addressof(hMapHandle), guiMAPCURSORS);
   // go through characters list and display arrows for path
   while (pNode) {
-    fUTurnFlag = FALSE;
+    fUTurnFlag = false;
     if ((pPastNode) && (pNextNode)) {
       iDeltaA = pNode.value.uiSectorId - pPastNode.value.uiSectorId;
       iDeltaB = pNode.value.uiSectorId - pNextNode.value.uiSectorId;
       if (iDeltaA == 0)
-        return FALSE;
+        return false;
       if (pNode.value.fSpeed)
-        fSpeedFlag = FALSE;
+        fSpeedFlag = false;
       else
-        fSpeedFlag = TRUE;
+        fSpeedFlag = true;
       if (!fZoomFlag) {
         iX = (pNode.value.uiSectorId % MAP_WORLD_X);
         iY = (pNode.value.uiSectorId / MAP_WORLD_X);
@@ -1841,36 +1841,36 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
       iArrowX = iX;
       iArrowY = iY;
       if ((pPastNode.value.pPrev) && (pNextNode.value.pNext)) {
-        fUTurnFlag = FALSE;
+        fUTurnFlag = false;
         // check to see if out-of sector U-turn
         // for placement of arrows
         iDeltaB1 = pNextNode.value.uiSectorId - pNextNode.value.pNext.value.uiSectorId;
         if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == -1)) {
-          fUTurnFlag = TRUE;
+          fUTurnFlag = true;
         } else if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == 1)) {
-          fUTurnFlag = TRUE;
+          fUTurnFlag = true;
         } else if ((iDeltaB1 == WORLD_MAP_X) && (iDeltaA == WORLD_MAP_X) && (iDeltaB == 1)) {
-          fUTurnFlag = TRUE;
+          fUTurnFlag = true;
         } else if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == 1)) {
-          fUTurnFlag = TRUE;
+          fUTurnFlag = true;
         } else if ((iDeltaB1 == -1) && (iDeltaA == -1) && (iDeltaB == -WORLD_MAP_X)) {
-          fUTurnFlag = TRUE;
+          fUTurnFlag = true;
         } else if ((iDeltaB1 == -1) && (iDeltaA == -1) && (iDeltaB == WORLD_MAP_X)) {
-          fUTurnFlag = TRUE;
+          fUTurnFlag = true;
         } else if ((iDeltaB1 == 1) && (iDeltaA == 1) && (iDeltaB == -WORLD_MAP_X)) {
-          fUTurnFlag = TRUE;
+          fUTurnFlag = true;
         } else if ((iDeltaB1 == 1) && (iDeltaA == 1) && (iDeltaB == WORLD_MAP_X)) {
-          fUTurnFlag = TRUE;
+          fUTurnFlag = true;
         } else
-          fUTurnFlag = FALSE;
+          fUTurnFlag = false;
       }
 
       if ((pPastNode.value.uiSectorId == pNextNode.value.uiSectorId)) {
         if (pPastNode.value.uiSectorId + WORLD_MAP_X == pNode.value.uiSectorId) {
           if (!(pNode.value.fSpeed))
-            fSpeedFlag = TRUE;
+            fSpeedFlag = true;
           else
-            fSpeedFlag = FALSE;
+            fSpeedFlag = false;
 
           if (fZoomFlag) {
             iDirection = S_TO_N_ZOOM_LINE;
@@ -2184,12 +2184,12 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
       iArrowX = iX;
       iArrowY = iY;
       if ((pNode.value.fSpeed))
-        fSpeedFlag = FALSE;
+        fSpeedFlag = false;
       else
-        fSpeedFlag = TRUE;
+        fSpeedFlag = true;
       // display enter and exit 'X's
       if (pPastNode) {
-        fUTurnFlag = TRUE;
+        fUTurnFlag = true;
         iDeltaA = pNode.value.uiSectorId - pPastNode.value.uiSectorId;
         if (iDeltaA == -1) {
           if (fZoomFlag) {
@@ -2220,12 +2220,12 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
         }
       }
       if (pNextNode) {
-        fUTurnFlag = FALSE;
+        fUTurnFlag = false;
         iDeltaB = pNode.value.uiSectorId - pNextNode.value.uiSectorId;
         if ((pNode.value.fSpeed))
-          fSpeedFlag = FALSE;
+          fSpeedFlag = false;
         else
-          fSpeedFlag = TRUE;
+          fSpeedFlag = true;
 
         if (iDeltaB == -1) {
           if (fZoomFlag) {
@@ -2321,7 +2321,7 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
 
         InvalidateRegion(iX, iY, iX + 2 * MAP_GRID_X, iY + 2 * MAP_GRID_Y);
 
-        fUTurnFlag = FALSE;
+        fUTurnFlag = false;
       }
     }
     // check to see if there is a turn
@@ -2329,29 +2329,29 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
     pPastNode = pNode;
     pNode = pNode.value.pNext;
     if (!pNode)
-      return FALSE;
+      return false;
     if (pNode.value.pNext)
       pNextNode = pNode.value.pNext;
     else
       pNextNode = null;
   }
 
-  return TRUE;
+  return true;
 }
 
 function AnimateRoute(pPath: PathStPtr): void {
   // set buffer
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   // the animated path
-  if (TraceCharAnimatedRoute(pPath, FALSE, FALSE)) {
+  if (TraceCharAnimatedRoute(pPath, false, false)) {
     // ARM? Huh?  Why the same thing twice more?
-    TraceCharAnimatedRoute(pPath, FALSE, TRUE);
-    TraceCharAnimatedRoute(pPath, FALSE, TRUE);
+    TraceCharAnimatedRoute(pPath, false, true);
+    TraceCharAnimatedRoute(pPath, false, true);
   }
 }
 
-function RestoreArrowBackgroundsForTrace(iArrow: INT32, iArrowX: INT32, iArrowY: INT32, fZoom: BOOLEAN): void {
+function RestoreArrowBackgroundsForTrace(iArrow: INT32, iArrowX: INT32, iArrowY: INT32, fZoom: boolean): void {
   let sArrow: INT16 = 0;
   let iX: INT32 = -1;
   let iY: INT32 = -1;
@@ -2399,16 +2399,16 @@ function RestoreArrowBackgroundsForTrace(iArrow: INT32, iArrowX: INT32, iArrowY:
   return;
 }
 
-function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN): BOOLEAN {
+function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpDate: boolean): boolean {
   /* static */ let pCurrentNode: PathStPtr = null;
   /* static */ let bCurrentChar: INT8 = -1;
-  /* static */ let fUpDateFlag: BOOLEAN = FALSE;
-  /* static */ let fPauseFlag: BOOLEAN = TRUE;
+  /* static */ let fUpDateFlag: boolean = false;
+  /* static */ let fPauseFlag: boolean = true;
   /* static */ let ubCounter: UINT8 = 1;
 
   let hMapHandle: HVOBJECT;
-  let fSpeedFlag: BOOLEAN = FALSE;
-  let fUpDate: BOOLEAN = FALSE;
+  let fSpeedFlag: boolean = false;
+  let fUpDate: boolean = false;
   let iDifference: INT32 = 0;
   let iArrow: INT32 = -1;
   let iX: INT32 = 0;
@@ -2423,27 +2423,27 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   let iDeltaB: INT32;
   let iDeltaB1: INT32;
   let iDirection: INT32 = -1;
-  let fUTurnFlag: BOOLEAN = FALSE;
-  let fNextNode: BOOLEAN = FALSE;
+  let fUTurnFlag: boolean = false;
+  let fNextNode: boolean = false;
   let pTempNode: PathStPtr = null;
   let pNode: PathStPtr = null;
   let pPastNode: PathStPtr = null;
   let pNextNode: PathStPtr = null;
 
   // must be plotting movement
-  if ((bSelectedDestChar == -1) && (fPlotForHelicopter == FALSE)) {
-    return FALSE;
+  if ((bSelectedDestChar == -1) && (fPlotForHelicopter == false)) {
+    return false;
   }
 
   // if any nodes have been deleted, reset current node to beginning of the list
   if (fDeletedNode) {
-    fDeletedNode = FALSE;
+    fDeletedNode = false;
     pCurrentNode = null;
   }
 
   // Valid path?
   if (pPath == null) {
-    return FALSE;
+    return false;
   } else {
     if (pCurrentNode == null) {
       pCurrentNode = pPath;
@@ -2453,7 +2453,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   // Check Timer
   if (giAnimateRouteBaseTime == 0) {
     giAnimateRouteBaseTime = GetJA2Clock();
-    return FALSE;
+    return false;
   }
 
   // check difference in time
@@ -2462,9 +2462,9 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   // if pause flag, check time, if time passed, reset, continue on, else return
   if (fPauseFlag) {
     if (iDifference < PAUSE_DELAY) {
-      return FALSE;
+      return false;
     } else {
-      fPauseFlag = FALSE;
+      fPauseFlag = false;
       giAnimateRouteBaseTime = GetJA2Clock();
     }
   }
@@ -2473,16 +2473,16 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   if (!fForceUpDate) {
     if (iDifference < ARROW_DELAY) {
       if (!fUpDateFlag)
-        return FALSE;
+        return false;
     } else {
       // sufficient time, update base time
       giAnimateRouteBaseTime = GetJA2Clock();
       fUpDateFlag = !fUpDateFlag;
 
       if (fCheckFlag)
-        return TRUE;
+        return true;
 
-      fNextNode = TRUE;
+      fNextNode = true;
     }
   }
 
@@ -2504,7 +2504,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
 
     // set pause flag
     if (!pCurrentNode)
-      return FALSE;
+      return false;
   }
 
   // Grab Video Objects
@@ -2514,7 +2514,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   pNode = pCurrentNode;
   if ((!pNode.value.pPrev) && (ubCounter == 1) && (fForceUpDate)) {
     ubCounter = 0;
-    return FALSE;
+    return false;
   } else if ((ubCounter == 1) && (fForceUpDate)) {
     pNode = pCurrentNode.value.pPrev;
   }
@@ -2529,16 +2529,16 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
     pPastNode = null;
 
   // go through characters list and display arrows for path
-  fUTurnFlag = FALSE;
+  fUTurnFlag = false;
   if ((pPastNode) && (pNextNode)) {
     iDeltaA = pNode.value.uiSectorId - pPastNode.value.uiSectorId;
     iDeltaB = pNode.value.uiSectorId - pNextNode.value.uiSectorId;
     if (!pNode.value.fSpeed)
-      fSpeedFlag = TRUE;
+      fSpeedFlag = true;
     else
-      fSpeedFlag = FALSE;
+      fSpeedFlag = false;
     if (iDeltaA == 0)
-      return FALSE;
+      return false;
     if (!fZoomFlag) {
       iX = (pNode.value.uiSectorId % MAP_WORLD_X);
       iY = (pNode.value.uiSectorId / MAP_WORLD_X);
@@ -2552,28 +2552,28 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
     iArrowX = iX;
     iArrowY = iY;
     if ((pPastNode.value.pPrev) && (pNextNode.value.pNext)) {
-      fUTurnFlag = FALSE;
+      fUTurnFlag = false;
       // check to see if out-of sector U-turn
       // for placement of arrows
       iDeltaB1 = pNextNode.value.uiSectorId - pNextNode.value.pNext.value.uiSectorId;
       if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == -1)) {
-        fUTurnFlag = TRUE;
+        fUTurnFlag = true;
       } else if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == 1)) {
-        fUTurnFlag = TRUE;
+        fUTurnFlag = true;
       } else if ((iDeltaB1 == WORLD_MAP_X) && (iDeltaA == WORLD_MAP_X) && (iDeltaB == 1)) {
-        fUTurnFlag = TRUE;
+        fUTurnFlag = true;
       } else if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == 1)) {
-        fUTurnFlag = TRUE;
+        fUTurnFlag = true;
       } else if ((iDeltaB1 == -1) && (iDeltaA == -1) && (iDeltaB == -WORLD_MAP_X)) {
-        fUTurnFlag = TRUE;
+        fUTurnFlag = true;
       } else if ((iDeltaB1 == -1) && (iDeltaA == -1) && (iDeltaB == WORLD_MAP_X)) {
-        fUTurnFlag = TRUE;
+        fUTurnFlag = true;
       } else if ((iDeltaB1 == 1) && (iDeltaA == 1) && (iDeltaB == -WORLD_MAP_X)) {
-        fUTurnFlag = TRUE;
+        fUTurnFlag = true;
       } else if ((iDeltaB1 == 1) && (iDeltaA == 1) && (iDeltaB == WORLD_MAP_X)) {
-        fUTurnFlag = TRUE;
+        fUTurnFlag = true;
       } else
-        fUTurnFlag = FALSE;
+        fUTurnFlag = false;
     }
 
     if ((pPastNode.value.uiSectorId == pNextNode.value.uiSectorId)) {
@@ -2966,15 +2966,15 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
       iPastY = (iPastY * MAP_GRID_Y) + MAP_VIEW_START_Y;
     }
     if (pNode.value.fSpeed)
-      fSpeedFlag = TRUE;
+      fSpeedFlag = true;
     else
-      fSpeedFlag = FALSE;
+      fSpeedFlag = false;
     iArrowX = iX;
     iArrowY = iY;
     // display enter and exit 'X's
     if (pPastNode) {
       // red 'X'
-      fUTurnFlag = TRUE;
+      fUTurnFlag = true;
       iDeltaA = pNode.value.uiSectorId - pPastNode.value.uiSectorId;
       if (iDeltaA == -1) {
         iDirection = RED_X_WEST;
@@ -2991,7 +2991,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
       }
     }
     if (pNextNode) {
-      fUTurnFlag = FALSE;
+      fUTurnFlag = false;
       iDeltaB = pNode.value.uiSectorId - pNextNode.value.uiSectorId;
       if (iDeltaB == -1) {
         iDirection = GREEN_X_EAST;
@@ -3047,7 +3047,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
     if (!ubCounter) {
       pCurrentNode = pCurrentNode.value.pNext;
       if (!pCurrentNode)
-        fPauseFlag = TRUE;
+        fPauseFlag = true;
     }
   }
   if ((iDirection != -1) && (iArrow != -1)) {
@@ -3066,7 +3066,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
         ubCounter = 0;
       else
         ubCounter = 1;
-      return TRUE;
+      return true;
     }
     if (ubCounter == 1)
       ubCounter = 0;
@@ -3076,12 +3076,12 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   // move to next arrow
 
   // ARM who knows what it should return here?
-  return FALSE;
+  return false;
 }
 
 function DisplayThePotentialPathForHelicopter(sMapX: INT16, sMapY: INT16): void {
   // simply check if we want to refresh the screen to display path
-  /* static */ let fOldShowAirCraft: BOOLEAN = FALSE;
+  /* static */ let fOldShowAirCraft: boolean = false;
   /* static */ let sOldMapX: INT16;
   /* static */ let sOldMapY: INT16;
   let iDifference: INT32 = 0;
@@ -3092,8 +3092,8 @@ function DisplayThePotentialPathForHelicopter(sMapX: INT16, sMapY: INT16): void 
 
     sOldMapX = sMapX;
     sOldMapY = sMapY;
-    fTempPathAlreadyDrawn = FALSE;
-    fDrawTempHeliPath = FALSE;
+    fTempPathAlreadyDrawn = false;
+    fDrawTempHeliPath = false;
   }
 
   if ((sMapX != sOldMapX) || (sMapY != sOldMapY)) {
@@ -3104,11 +3104,11 @@ function DisplayThePotentialPathForHelicopter(sMapX: INT16, sMapY: INT16): void 
 
     // path was plotted and we moved, re draw map..to clean up mess
     if (fTempPathAlreadyDrawn) {
-      fMapPanelDirty = TRUE;
+      fMapPanelDirty = true;
     }
 
-    fTempPathAlreadyDrawn = FALSE;
-    fDrawTempHeliPath = FALSE;
+    fTempPathAlreadyDrawn = false;
+    fDrawTempHeliPath = false;
   }
 
   iDifference = GetJA2Clock() - giPotHeliPathBaseTime;
@@ -3118,22 +3118,22 @@ function DisplayThePotentialPathForHelicopter(sMapX: INT16, sMapY: INT16): void 
   }
 
   if (iDifference > MIN_WAIT_TIME_FOR_TEMP_PATH) {
-    fDrawTempHeliPath = TRUE;
+    fDrawTempHeliPath = true;
     giPotHeliPathBaseTime = GetJA2Clock();
-    fTempPathAlreadyDrawn = TRUE;
+    fTempPathAlreadyDrawn = true;
   }
 
   return;
 }
 
-function IsTheCursorAllowedToHighLightThisSector(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
+function IsTheCursorAllowedToHighLightThisSector(sSectorX: INT16, sSectorY: INT16): boolean {
   // check to see if this sector is a blocked out sector?
 
   if (sBadSectorsList[sSectorX][sSectorY]) {
-    return FALSE;
+    return false;
   } else {
     // return cursor is allowed to highlight this sector
-    return TRUE;
+    return true;
   }
 }
 
@@ -3145,33 +3145,33 @@ function SetUpBadSectorsList(): void {
 
   // the border regions
   for (bY = 0; bY < WORLD_MAP_X; bY++) {
-    sBadSectorsList[0][bY] = sBadSectorsList[WORLD_MAP_X - 1][bY] = sBadSectorsList[bY][0] = sBadSectorsList[bY][WORLD_MAP_X - 1] = TRUE;
+    sBadSectorsList[0][bY] = sBadSectorsList[WORLD_MAP_X - 1][bY] = sBadSectorsList[bY][0] = sBadSectorsList[bY][WORLD_MAP_X - 1] = true;
   }
 
-  sBadSectorsList[4][1] = TRUE;
-  sBadSectorsList[5][1] = TRUE;
-  sBadSectorsList[16][1] = TRUE;
-  sBadSectorsList[16][5] = TRUE;
-  sBadSectorsList[16][6] = TRUE;
+  sBadSectorsList[4][1] = true;
+  sBadSectorsList[5][1] = true;
+  sBadSectorsList[16][1] = true;
+  sBadSectorsList[16][5] = true;
+  sBadSectorsList[16][6] = true;
 
-  sBadSectorsList[16][10] = TRUE;
-  sBadSectorsList[16][11] = TRUE;
-  sBadSectorsList[16][12] = TRUE;
-  sBadSectorsList[16][13] = TRUE;
-  sBadSectorsList[16][14] = TRUE;
-  sBadSectorsList[16][15] = TRUE;
-  sBadSectorsList[16][16] = TRUE;
+  sBadSectorsList[16][10] = true;
+  sBadSectorsList[16][11] = true;
+  sBadSectorsList[16][12] = true;
+  sBadSectorsList[16][13] = true;
+  sBadSectorsList[16][14] = true;
+  sBadSectorsList[16][15] = true;
+  sBadSectorsList[16][16] = true;
 
-  sBadSectorsList[15][13] = TRUE;
-  sBadSectorsList[15][14] = TRUE;
-  sBadSectorsList[15][15] = TRUE;
-  sBadSectorsList[15][16] = TRUE;
+  sBadSectorsList[15][13] = true;
+  sBadSectorsList[15][14] = true;
+  sBadSectorsList[15][15] = true;
+  sBadSectorsList[15][16] = true;
 
-  sBadSectorsList[14][14] = TRUE;
-  sBadSectorsList[14][15] = TRUE;
-  sBadSectorsList[14][16] = TRUE;
+  sBadSectorsList[14][14] = true;
+  sBadSectorsList[14][15] = true;
+  sBadSectorsList[14][16] = true;
 
-  sBadSectorsList[13][14] = TRUE;
+  sBadSectorsList[13][14] = true;
   return;
 }
 
@@ -3290,7 +3290,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
   let sYPosition: INT16 = 0;
   let iCounter: INT32 = 0;
   let hIconHandle: HVOBJECT;
-  let fAboutToEnter: BOOLEAN = FALSE;
+  let fAboutToEnter: boolean = false;
   let sString: CHAR16[] /* [32] */;
   let sTextXOffset: INT16 = 0;
   let sTextYOffset: INT16 = 0;
@@ -3317,7 +3317,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
     iY = sY;
 
     // reset fact about to enter
-    fAboutToEnter = FALSE;
+    fAboutToEnter = false;
 
     sDest = sSource;
 
@@ -3436,7 +3436,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
         }
 
         FindFontCenterCoordinates((iX + sTextXOffset), 0, ICON_WIDTH, 0, sString, MAP_FONT(), addressof(usX), addressof(usY));
-        SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+        SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
         mprintf(usX, iY + sTextYOffset, sString);
 
         switch (iCounter % 2) {
@@ -3473,7 +3473,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
   }
 
   // restore buffer
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 }
 
 function DisplayDistancesForHelicopter(): void {
@@ -3781,11 +3781,11 @@ function DisplayDestinationOfHelicopter(): void {
   }
 }
 
-function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClickedSectorY: INT16): BOOLEAN {
+function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClickedSectorY: INT16): boolean {
   let iDeltaTime: INT32 = 0;
-  let fIgnoreClick: BOOLEAN = FALSE;
+  let fIgnoreClick: boolean = false;
   let pGroup: Pointer<GROUP> = null;
-  let fHelicopterOverNextSector: BOOLEAN = FALSE;
+  let fHelicopterOverNextSector: boolean = false;
   let flRatio: FLOAT = 0.0;
   let sSectorX: INT16;
   let sSectorY: INT16;
@@ -3794,15 +3794,15 @@ function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClickedSectorY
   giClickHeliIconBaseTime = GetJA2Clock();
 
   if (iDeltaTime < 400) {
-    fIgnoreClick = TRUE;
+    fIgnoreClick = true;
   }
 
   if (!fHelicopterAvailable || !fShowAircraftFlag) {
-    return FALSE;
+    return false;
   }
 
   if (iHelicopterVehicleId == -1) {
-    return FALSE;
+    return false;
   }
 
   // figure out over which sector the helicopter APPEARS to be to the player (because we slide it smoothly across the
@@ -3821,7 +3821,7 @@ function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClickedSectorY
 
     // if more than halfway there, the chopper appears more over the next sector, not over its current one(!)
     if (flRatio > 0.5) {
-      fHelicopterOverNextSector = TRUE;
+      fHelicopterOverNextSector = true;
     }
   }
 
@@ -3837,10 +3837,10 @@ function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClickedSectorY
 
   // check if helicopter appears where he clicked
   if ((sSectorX != sClickedSectorX) || (sSectorY != sClickedSectorY)) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function BlitMineIcon(sMapX: INT16, sMapY: INT16): void {
@@ -3890,7 +3890,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
 
   // show detailed mine info (name, production rate, daily production)
 
-  SetFontDestBuffer(guiSAVEBUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, false);
 
   SetFont(MAP_FONT());
   SetFontForeground(FONT_LTGREEN);
@@ -3950,7 +3950,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
     ubLineCnt++;
   }
 
-  SetFontDestBuffer(FRAME_BUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, false);
 }
 
 function AdjustXForLeftMapEdge(wString: STR16, psX: Pointer<INT16>): void {
@@ -3990,7 +3990,7 @@ function BlitTownGridMarkers(): void {
   // go through list of towns and place on screen
   while (pTownNamesList[iCounter] != 0) {
     // skip Orta/Tixa until found
-    if (((fFoundOrta != FALSE) || (pTownNamesList[iCounter] != Enum135.ORTA)) && ((pTownNamesList[iCounter] != Enum135.TIXA) || (fFoundTixa != FALSE))) {
+    if (((fFoundOrta != false) || (pTownNamesList[iCounter] != Enum135.ORTA)) && ((pTownNamesList[iCounter] != Enum135.TIXA) || (fFoundTixa != false))) {
       if (fZoomFlag) {
         GetScreenXYFromMapXYStationary((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X), addressof(sScreenX), addressof(sScreenY));
         sScreenX -= MAP_GRID_X - 1;
@@ -4008,19 +4008,19 @@ function BlitTownGridMarkers(): void {
       }
 
       if (StrategicMap[pTownLocationsList[iCounter] - MAP_WORLD_X].bNameId == Enum135.BLANK_SECTOR) {
-        LineDraw(TRUE, sScreenX - 1, sScreenY - 1, sScreenX + sWidth - 1, sScreenY - 1, usColor, pDestBuf);
+        LineDraw(true, sScreenX - 1, sScreenY - 1, sScreenX + sWidth - 1, sScreenY - 1, usColor, pDestBuf);
       }
 
       if ((StrategicMap[pTownLocationsList[iCounter] + MAP_WORLD_X].bNameId == Enum135.BLANK_SECTOR) /* || ( StrategicMap[ pTownLocationsList[ iCounter ] + MAP_WORLD_X ].bNameId == PALACE ) */) {
-        LineDraw(TRUE, sScreenX - 1, sScreenY + sHeight - 1, sScreenX + sWidth - 1, sScreenY + sHeight - 1, usColor, pDestBuf);
+        LineDraw(true, sScreenX - 1, sScreenY + sHeight - 1, sScreenX + sWidth - 1, sScreenY + sHeight - 1, usColor, pDestBuf);
       }
 
       if (StrategicMap[pTownLocationsList[iCounter] - 1].bNameId == Enum135.BLANK_SECTOR) {
-        LineDraw(TRUE, sScreenX - 2, sScreenY - 1, sScreenX - 2, sScreenY + sHeight - 1, usColor, pDestBuf);
+        LineDraw(true, sScreenX - 2, sScreenY - 1, sScreenX - 2, sScreenY + sHeight - 1, usColor, pDestBuf);
       }
 
       if (StrategicMap[pTownLocationsList[iCounter] + 1].bNameId == Enum135.BLANK_SECTOR) {
-        LineDraw(TRUE, sScreenX + sWidth - 1, sScreenY - 1, sScreenX + sWidth - 1, sScreenY + sHeight - 1, usColor, pDestBuf);
+        LineDraw(true, sScreenX + sWidth - 1, sScreenY - 1, sScreenX + sWidth - 1, sScreenY + sHeight - 1, usColor, pDestBuf);
       }
     }
 
@@ -4071,7 +4071,7 @@ function BlitMineGridMarkers(): void {
     }
 
     // draw rectangle
-    RectangleDraw(TRUE, sScreenX, sScreenY - 1, sScreenX + sWidth, sScreenY + sHeight - 1, usColor, pDestBuf);
+    RectangleDraw(true, sScreenX, sScreenY - 1, sScreenX + sWidth, sScreenY + sHeight - 1, usColor, pDestBuf);
   }
 
   // restore clips
@@ -4137,7 +4137,7 @@ function DisplayLevelString(): void {
 
   // otherwise we will have to display the string with the level number
 
-  SetFontDestBuffer(guiSAVEBUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, false);
 
   SetFont(MAP_FONT());
   SetFontForeground(MAP_INDEX_COLOR);
@@ -4146,30 +4146,30 @@ function DisplayLevelString(): void {
 
   mprintf(MAP_LEVEL_STRING_X, MAP_LEVEL_STRING_Y, sString);
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   return;
 }
 
 // function to manipulate the number of towns people on the cursor
-function PickUpATownPersonFromSector(ubType: UINT8, sX: INT16, sY: INT16): BOOLEAN {
+function PickUpATownPersonFromSector(ubType: UINT8, sX: INT16, sY: INT16): boolean {
   // see if there are any militia of this type in this sector
   if (!SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[ubType]) {
     // failed, no one here
-    return FALSE;
+    return false;
   }
 
   // are they in the same town as they were pickedup from
   if (GetTownIdForSector(sX, sY) != sSelectedMilitiaTown) {
-    return FALSE;
+    return false;
   }
 
   if (!SectorOursAndPeaceful(sX, sY, 0)) {
-    return FALSE;
+    return false;
   }
 
   if (SECTOR(sX, sY) == SECTOR(gWorldSectorX, gWorldSectorY)) {
-    gfStrategicMilitiaChangesMade = TRUE;
+    gfStrategicMilitiaChangesMade = true;
   }
 
   // otherwise pick this guy up
@@ -4188,27 +4188,27 @@ function PickUpATownPersonFromSector(ubType: UINT8, sX: INT16, sY: INT16): BOOLE
   // reduce number in this sector
   SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[ubType]--;
 
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 
-  return TRUE;
+  return true;
 }
 
-function DropAPersonInASector(ubType: UINT8, sX: INT16, sY: INT16): BOOLEAN {
+function DropAPersonInASector(ubType: UINT8, sX: INT16, sY: INT16): boolean {
   // are they in the same town as they were pickedup from
   if (GetTownIdForSector(sX, sY) != sSelectedMilitiaTown) {
-    return FALSE;
+    return false;
   }
 
   if (SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] >= MAX_ALLOWABLE_MILITIA_PER_SECTOR) {
-    return FALSE;
+    return false;
   }
 
   if (!SectorOursAndPeaceful(sX, sY, 0)) {
-    return FALSE;
+    return false;
   }
 
   if (SECTOR(sX, sY) == SECTOR(gWorldSectorX, gWorldSectorY)) {
-    gfStrategicMilitiaChangesMade = TRUE;
+    gfStrategicMilitiaChangesMade = true;
   }
 
   // drop the guy into this sector
@@ -4216,20 +4216,20 @@ function DropAPersonInASector(ubType: UINT8, sX: INT16, sY: INT16): BOOLEAN {
     case (Enum126.GREEN_MILITIA):
 
       if (!sGreensOnCursor) {
-        return FALSE;
+        return false;
       }
 
       sGreensOnCursor--;
       break;
     case (Enum126.REGULAR_MILITIA):
       if (!sRegularsOnCursor) {
-        return FALSE;
+        return false;
       }
       sRegularsOnCursor--;
       break;
     case (Enum126.ELITE_MILITIA):
       if (!sElitesOnCursor) {
-        return FALSE;
+        return false;
       }
 
       sElitesOnCursor--;
@@ -4239,12 +4239,12 @@ function DropAPersonInASector(ubType: UINT8, sX: INT16, sY: INT16): BOOLEAN {
   // up the number in this sector of this type of militia
   SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[ubType]++;
 
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 
-  return TRUE;
+  return true;
 }
 
-function LoadMilitiaPopUpBox(): BOOLEAN {
+function LoadMilitiaPopUpBox(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the militia pop up box
@@ -4264,7 +4264,7 @@ function LoadMilitiaPopUpBox(): BOOLEAN {
   FilenameForBPP("INTERFACE\\MilitiamapsectorOutline.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaSectorOutline)));
 
-  return TRUE;
+  return true;
 }
 
 function RemoveMilitiaPopUpBox(): void {
@@ -4277,7 +4277,7 @@ function RemoveMilitiaPopUpBox(): void {
   return;
 }
 
-function DrawMilitiaPopUpBox(): BOOLEAN {
+function DrawMilitiaPopUpBox(): boolean {
   let hVObject: HVOBJECT;
   let pTrav: Pointer<ETRLEObject>;
 
@@ -4292,7 +4292,7 @@ function DrawMilitiaPopUpBox(): BOOLEAN {
   CreateDestroyMilitiaPopUPRegions();
 
   if (!sSelectedMilitiaTown) {
-    return FALSE;
+    return false;
   }
 
   // update states of militia selected sector buttons
@@ -4335,7 +4335,7 @@ function DrawMilitiaPopUpBox(): BOOLEAN {
   // render buttons
   MarkButtonsDirty();
 
-  return TRUE;
+  return true;
 }
 
 function CreateDestroyMilitiaPopUPRegions(): void {
@@ -4357,7 +4357,7 @@ function CreateDestroyMilitiaPopUPRegions(): void {
     // create militia panel buttons
     CreateMilitiaPanelBottomButton();
 
-    gfMilitiaPopupCreated = TRUE;
+    gfMilitiaPopupCreated = true;
   } else if (gfMilitiaPopupCreated && (!fShowMilitia || !sSelectedMilitiaTown)) {
     for (iCounter = 0; iCounter < 9; iCounter++) {
       // remove region
@@ -4369,7 +4369,7 @@ function CreateDestroyMilitiaPopUPRegions(): void {
 
     DeleteMilitiaPanelBottomButton();
 
-    gfMilitiaPopupCreated = FALSE;
+    gfMilitiaPopupCreated = false;
   }
 
   return;
@@ -4548,7 +4548,7 @@ function MilitiaRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 }
 
 function CreateDestroyMilitiaSectorButtons(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   /* static */ let sOldSectorValue: INT16 = -1;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
@@ -4557,7 +4557,7 @@ function CreateDestroyMilitiaSectorButtons(): void {
   let pTrav: Pointer<ETRLEObject>;
 
   if (sOldSectorValue == sSectorMilitiaMapSector && fShowMilitia && sSelectedMilitiaTown && !fCreated && sSectorMilitiaMapSector != -1) {
-    fCreated = TRUE;
+    fCreated = true;
 
     // given sector..place down the 3 buttons
 
@@ -4595,10 +4595,10 @@ function CreateDestroyMilitiaSectorButtons(): void {
     CreateScreenMaskForMoveBox();
 
     // ste the fact that the buttons were in fact created
-    fMilitiaMapButtonsCreated = TRUE;
+    fMilitiaMapButtonsCreated = true;
   } else if (fCreated && (sOldSectorValue != sSectorMilitiaMapSector || !fShowMilitia || !sSelectedMilitiaTown || sSectorMilitiaMapSector == -1)) {
     sOldSectorValue = sSectorMilitiaMapSector;
-    fCreated = FALSE;
+    fCreated = false;
 
     // the militia box left click region
     //	MSYS_RemoveRegion( &gMapScreenMilitiaRegion );
@@ -4617,7 +4617,7 @@ function CreateDestroyMilitiaSectorButtons(): void {
     RemoveScreenMaskForMoveBox();
 
     // set the fact that the buttons were destroyed
-    fMilitiaMapButtonsCreated = FALSE;
+    fMilitiaMapButtonsCreated = false;
   }
 
   sOldSectorValue = sSectorMilitiaMapSector;
@@ -4733,7 +4733,7 @@ function DisplayUnallocatedMilitia(): void {
   }
 }
 
-function IsThisMilitiaTownSectorAllowable(sSectorIndexValue: INT16): BOOLEAN {
+function IsThisMilitiaTownSectorAllowable(sSectorIndexValue: INT16): boolean {
   let sBaseSectorValue: INT16 = 0;
   let sGlobalMapSector: INT16 = 0;
   let sSectorX: INT16;
@@ -4748,15 +4748,15 @@ function IsThisMilitiaTownSectorAllowable(sSectorIndexValue: INT16): BOOLEAN {
 
   // is this in fact part of a town?
   if (StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].bNameId == Enum135.BLANK_SECTOR) {
-    return FALSE;
+    return false;
   }
 
   if (!SectorOursAndPeaceful(sSectorX, sSectorY, 0)) {
-    return FALSE;
+    return false;
   }
 
   // valid
-  return TRUE;
+  return true;
 }
 
 function DrawTownMilitiaName(): void {
@@ -4783,7 +4783,7 @@ function HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(sTownValue: INT16): voi
   let iNumberUnderControl: INT32 = 0;
   let iNumberThatCanFitInSector: INT32 = 0;
   let iCount: INT32 = 0;
-  let fLastOne: BOOLEAN = FALSE;
+  let fLastOne: boolean = false;
 
   // check if anyone still on the cursor
   if (!sGreensOnCursor && !sRegularsOnCursor && !sElitesOnCursor) {
@@ -4827,17 +4827,17 @@ function HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(sTownValue: INT16): voi
         }
 
         if (STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter]) == SECTOR(gWorldSectorX, gWorldSectorY)) {
-          gfStrategicMilitiaChangesMade = TRUE;
+          gfStrategicMilitiaChangesMade = true;
         }
       }
 
-      fLastOne = TRUE;
+      fLastOne = true;
 
       iCounterB = iCounter + 1;
 
       while (pTownNamesList[iCounterB] != 0) {
         if (pTownNamesList[iCounterB] == sTownValue) {
-          fLastOne = FALSE;
+          fLastOne = false;
         }
 
         iCounterB++;
@@ -4965,7 +4965,7 @@ function HandleEveningOutOfTroopsAmongstSectors(): void {
 
         // if this sector is currently loaded
         if (sSector == SECTOR(gWorldSectorX, gWorldSectorY) && gWorldSectorY != 0) {
-          gfStrategicMilitiaChangesMade = TRUE;
+          gfStrategicMilitiaChangesMade = true;
         }
       }
     }
@@ -5026,7 +5026,7 @@ function DeleteMilitiaPanelBottomButton(): void {
   }
 
   // redraw the map
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 function MilitiaAutoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -5038,7 +5038,7 @@ function MilitiaAutoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
       // distribute troops over all the sectors under control
       HandleEveningOutOfTroopsAmongstSectors();
-      fMapPanelDirty = TRUE;
+      fMapPanelDirty = true;
     }
   }
 
@@ -5054,7 +5054,7 @@ function MilitiaDoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
       // reset fact we are in the box
       sSelectedMilitiaTown = 0;
-      fMapPanelDirty = TRUE;
+      fMapPanelDirty = true;
     }
   }
 
@@ -5240,7 +5240,7 @@ function CheckAndUpdateStatesOfSelectedMilitiaSectorButtons(): void {
   return;
 }
 
-function ShadeUndergroundMapElem(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
+function ShadeUndergroundMapElem(sSectorX: INT16, sSectorY: INT16): boolean {
   let sScreenX: INT16;
   let sScreenY: INT16;
 
@@ -5250,7 +5250,7 @@ function ShadeUndergroundMapElem(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
 
   ShadowVideoSurfaceRect(guiSAVEBUFFER, sScreenX, sScreenY, sScreenX + MAP_GRID_X - 2, sScreenY + MAP_GRID_Y - 2);
 
-  return TRUE;
+  return true;
 }
 
 function ShadeSubLevelsNotVisited(): void {
@@ -5328,7 +5328,7 @@ function ClearAnySectorsFlashingNumberOfEnemies(): void {
   }
 
   // redraw map
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 function WhatPlayerKnowsAboutEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT32 {
@@ -5350,7 +5350,7 @@ function WhatPlayerKnowsAboutEnemiesInSector(sSectorX: INT16, sSectorY: INT16): 
   }
 
   // if the player has visited the sector during this game
-  if (GetSectorFlagStatus(sSectorX, sSectorY, 0, SF_ALREADY_VISITED) == TRUE) {
+  if (GetSectorFlagStatus(sSectorX, sSectorY, 0, SF_ALREADY_VISITED) == true) {
     // then he always knows about any enemy presence for the remainder of the game, but not exact numbers
     return Enum159.KNOWS_THEYRE_THERE;
   }
@@ -5371,7 +5371,7 @@ function WhatPlayerKnowsAboutEnemiesInSector(sSectorX: INT16, sSectorY: INT16): 
   return Enum159.KNOWS_NOTHING;
 }
 
-function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
+function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let iFirstId: INT32 = 0;
   let iLastId: INT32 = 0;
   let iCounter: INT32 = 0;
@@ -5386,7 +5386,7 @@ function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
     pSoldier = addressof(Menptr[iCounter]);
 
     // is the soldier active
-    if (pSoldier.value.bActive == FALSE) {
+    if (pSoldier.value.bActive == false) {
       continue;
     }
 
@@ -5396,7 +5396,7 @@ function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
     }
 
     // POWs, dead guys, guys in transit, sleeping, and really hurt guys can't scout!
-    if ((pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.value.fMercAsleep == TRUE) || (pSoldier.value.bLife < OKLIFE)) {
+    if ((pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.value.fMercAsleep == true) || (pSoldier.value.bLife < OKLIFE)) {
       continue;
     }
 
@@ -5412,12 +5412,12 @@ function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
 
     // is he here?
     if ((pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == bSectorZ)) {
-      return TRUE;
+      return true;
     }
   }
 
   // none here who can scout
-  return FALSE;
+  return false;
 }
 
 function HandleShowingOfEnemyForcesInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubIconPosition: UINT8): void {
@@ -5552,7 +5552,7 @@ function ShowSAMSitesOnStrategicMap(): void {
         continue;
       }
 
-      SetFontDestBuffer(guiSAVEBUFFER, MapScreenRect.iLeft + 2, MapScreenRect.iTop, MapScreenRect.iRight, MapScreenRect.iBottom, FALSE);
+      SetFontDestBuffer(guiSAVEBUFFER, MapScreenRect.iLeft + 2, MapScreenRect.iTop, MapScreenRect.iRight, MapScreenRect.iBottom, false);
 
       // clip blits to mapscreen region
       ClipBlitsToMapViewRegion();
@@ -5613,7 +5613,7 @@ function BlitSAMGridMarkers(): void {
     }
 
     // draw rectangle
-    RectangleDraw(TRUE, sScreenX, sScreenY - 1, sScreenX + sWidth, sScreenY + sHeight - 1, usColor, pDestBuf);
+    RectangleDraw(true, sScreenX, sScreenY - 1, sScreenX + sWidth, sScreenY + sHeight - 1, usColor, pDestBuf);
   }
 
   // restore clips
@@ -5625,7 +5625,7 @@ function BlitSAMGridMarkers(): void {
   return;
 }
 
-function CanMilitiaAutoDistribute(): BOOLEAN {
+function CanMilitiaAutoDistribute(): boolean {
   let iTotalTroopsOnCursor: INT32 = 0;
   let iCounter: INT32 = 0;
   let sBaseSectorValue: INT16 = 0;
@@ -5636,11 +5636,11 @@ function CanMilitiaAutoDistribute(): BOOLEAN {
 
   // can't auto-distribute if we don't have a town selected (this excludes SAM sites)
   if (sSelectedMilitiaTown == Enum135.BLANK_SECTOR)
-    return FALSE;
+    return false;
 
   // can't auto-distribute if we don't control any sectors in the the town
   if (!GetTownSectorsUnderControl(sSelectedMilitiaTown))
-    return FALSE;
+    return false;
 
   // get the sector value for the upper left corner
   sBaseSectorValue = GetBaseSectorForCurrentTown();
@@ -5668,10 +5668,10 @@ function CanMilitiaAutoDistribute(): BOOLEAN {
 
   // can't auto-distribute if we don't have any militia in the town
   if (!iTotalTroopsInTown)
-    return FALSE;
+    return false;
 
   // can auto-distribute
-  return TRUE;
+  return true;
 }
 
 function ShowItemsOnMap(): void {
@@ -5687,7 +5687,7 @@ function ShowItemsOnMap(): void {
   // clip blits to mapscreen region
   ClipBlitsToMapViewRegion();
 
-  SetFontDestBuffer(guiSAVEBUFFER, MapScreenRect.iLeft + 2, MapScreenRect.iTop, MapScreenRect.iRight, MapScreenRect.iBottom, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, MapScreenRect.iLeft + 2, MapScreenRect.iTop, MapScreenRect.iRight, MapScreenRect.iBottom, false);
 
   SetFont(MAP_FONT());
   SetFontForeground(FONT_MCOLOR_LTGREEN);
@@ -5847,15 +5847,15 @@ function HideExistenceOfUndergroundMapSector(ubSectorX: UINT8, ubSectorY: UINT8)
 function InitMapSecrets(): void {
   let ubSamIndex: UINT8;
 
-  fFoundTixa = FALSE;
-  fFoundOrta = FALSE;
+  fFoundTixa = false;
+  fFoundOrta = false;
 
   for (ubSamIndex = 0; ubSamIndex < NUMBER_OF_SAMS; ubSamIndex++) {
-    fSamSiteFound[ubSamIndex] = FALSE;
+    fSamSiteFound[ubSamIndex] = false;
   }
 }
 
-function CanRedistributeMilitiaInSector(sClickedSectorX: INT16, sClickedSectorY: INT16, bClickedTownId: INT8): BOOLEAN {
+function CanRedistributeMilitiaInSector(sClickedSectorX: INT16, sClickedSectorY: INT16, bClickedTownId: INT8): boolean {
   let iCounter: INT32 = 0;
   let sBaseSectorValue: INT16 = 0;
   let sCurrentSectorValue: INT16 = 0;
@@ -5866,19 +5866,19 @@ function CanRedistributeMilitiaInSector(sClickedSectorX: INT16, sClickedSectorY:
   // if no world is loaded, we can't be in combat (PBI/Auto-resolve locks out normal mapscreen interface for this)
   if (!gfWorldLoaded) {
     // ok to redistribute
-    return TRUE;
+    return true;
   }
 
   // if tactically not in combat, hostile sector, or air-raid
   if (!(gTacticalStatus.uiFlags & INCOMBAT) && !(gTacticalStatus.fEnemyInSector) && !InAirRaid()) {
     // ok to redistribute
-    return TRUE;
+    return true;
   }
 
   // if the fight is underground
   if (gbWorldSectorZ != 0) {
     // ok to redistribute
-    return TRUE;
+    return true;
   }
 
   // currently loaded surface sector IS hostile - so we must check if it's also one of the sectors in this "militia map"
@@ -5902,10 +5902,10 @@ function CanRedistributeMilitiaInSector(sClickedSectorX: INT16, sClickedSectorY:
     // if this is the loaded sector that is currently hostile
     if ((sSectorX == gWorldSectorX) && (sSectorY == gWorldSectorY)) {
       // the fight is within this town!  Can't redistribute.
-      return FALSE;
+      return false;
     }
   }
 
   // the fight is elsewhere - ok to redistribute
-  return TRUE;
+  return true;
 }

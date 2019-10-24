@@ -60,7 +60,7 @@ function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
       iFileLoader = STCI_FILE_READER;
       break;
     }
-  } while (FALSE);
+  } while (false);
 
   // Determine if resource exists before creating image structure
   if (!FileExists(ImageFile)) {
@@ -93,7 +93,7 @@ function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
   return hImage;
 }
 
-function DestroyImage(hImage: HIMAGE): BOOLEAN {
+function DestroyImage(hImage: HIMAGE): boolean {
   Assert(hImage != null);
 
   // First delete contents
@@ -102,10 +102,10 @@ function DestroyImage(hImage: HIMAGE): BOOLEAN {
   // Now free structure
   MemFree(hImage);
 
-  return TRUE;
+  return true;
 }
 
-function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
+function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): boolean {
   Assert(hImage != null);
 
   if ((fContents & IMAGE_PALETTE) && (hImage.value.fFlags & IMAGE_PALETTE)) {
@@ -144,11 +144,11 @@ function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
-  let fReturnVal: BOOLEAN = FALSE;
+function LoadImageData(hImage: HIMAGE, fContents: UINT16): boolean {
+  let fReturnVal: boolean = false;
 
   Assert(hImage != null);
 
@@ -180,7 +180,7 @@ function LoadImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   return fReturnVal;
 }
 
-function CopyImageToBuffer(hImage: HIMAGE, fBufferType: UINT32, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): BOOLEAN {
+function CopyImageToBuffer(hImage: HIMAGE, fBufferType: UINT32, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): boolean {
   // Use blitter based on type of image
   Assert(hImage != null);
 
@@ -201,10 +201,10 @@ function CopyImageToBuffer(hImage: HIMAGE, fBufferType: UINT32, pDestBuf: Pointe
     return Copy16BPPImageTo16BPPBuffer(hImage, pDestBuf, usDestWidth, usDestHeight, usX, usY, srcRect);
   }
 
-  return FALSE;
+  return false;
 }
 
-function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): BOOLEAN {
+function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): boolean {
   let uiSrcStart: UINT32;
   let uiDestStart: UINT32;
   let uiNumLines: UINT32;
@@ -246,10 +246,10 @@ function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDe
   // Do last line
   memcpy(pDest, pSrc, uiLineSize);
 
-  return TRUE;
+  return true;
 }
 
-function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): BOOLEAN {
+function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): boolean {
   let uiSrcStart: UINT32;
   let uiDestStart: UINT32;
   let uiNumLines: UINT32;
@@ -290,18 +290,18 @@ function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, us
   // Do last line
   memcpy(pDest, pSrc, uiLineSize * 2);
 
-  return TRUE;
+  return true;
 }
 
-function Extract8BPPCompressedImageToBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>): BOOLEAN {
-  return FALSE;
+function Extract8BPPCompressedImageToBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>): boolean {
+  return false;
 }
 
-function Extract16BPPCompressedImageToBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>): BOOLEAN {
-  return FALSE;
+function Extract16BPPCompressedImageToBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>): boolean {
+  return false;
 }
 
-function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): BOOLEAN {
+function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): boolean {
   let uiSrcStart: UINT32;
   let uiDestStart: UINT32;
   let uiNumLines: UINT32;
@@ -360,7 +360,7 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   // Do last line
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, String("End Copying at %p", pDest));
 
-  return TRUE;
+  return true;
 }
 
 function Create16BPPPalette(pPalette: Pointer<SGPPaletteEntry>): Pointer<UINT16> {
@@ -436,7 +436,7 @@ function Create16BPPPalette(pPalette: Pointer<SGPPaletteEntry>): Pointer<UINT16>
         4) For gamma correction, pass in weighted values for each color.
 
 **********************************************************************************************/
-function Create16BPPPaletteShaded(pPalette: Pointer<SGPPaletteEntry>, rscale: UINT32, gscale: UINT32, bscale: UINT32, mono: BOOLEAN): Pointer<UINT16> {
+function Create16BPPPaletteShaded(pPalette: Pointer<SGPPaletteEntry>, rscale: UINT32, gscale: UINT32, bscale: UINT32, mono: boolean): Pointer<UINT16> {
   let p16BPPPalette: Pointer<UINT16>;
   let r16: UINT16;
   let g16: UINT16;
@@ -613,7 +613,7 @@ function ConvertRGBToPaletteEntry(sbStart: UINT8, sbEnd: UINT8, pOldPalette: Poi
   return pInitEntry;
 }
 
-function GetETRLEImageData(hImage: HIMAGE, pBuffer: Pointer<ETRLEData>): BOOLEAN {
+function GetETRLEImageData(hImage: HIMAGE, pBuffer: Pointer<ETRLEData>): boolean {
   // Assertions
   Assert(hImage != null);
   Assert(pBuffer != null);
@@ -637,7 +637,7 @@ function GetETRLEImageData(hImage: HIMAGE, pBuffer: Pointer<ETRLEData>): BOOLEAN
   // Copy into buffer
   memcpy(pBuffer.value.pPixData, hImage.value.pPixData8, pBuffer.value.uiSizePixData);
 
-  return TRUE;
+  return true;
 }
 
 function ConvertRGBDistribution565To555(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {

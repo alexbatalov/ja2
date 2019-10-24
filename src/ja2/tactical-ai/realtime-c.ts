@@ -20,7 +20,7 @@ function RTDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   } else {
     // handle traversal
     if ((pSoldier.value.ubProfile != NO_PROFILE) && (gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_HANDLE_DONE_TRAVERSAL)) {
-      TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_TRAVERSAL, FALSE);
+      TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_TRAVERSAL, false);
       gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 &= (~PROFILE_MISC_FLAG3_HANDLE_DONE_TRAVERSAL);
       pSoldier.value.ubQuoteActionID = 0;
       // wait a tiny bit
@@ -63,7 +63,7 @@ function RTHandleAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.bAction == Enum289.AI_ACTION_NONE) {
     if (pSoldier.value.bNextAction == Enum289.AI_ACTION_NONE) {
       // make sure this flag is turned off (it already should be!)
-      pSoldier.value.bActionInProgress = FALSE;
+      pSoldier.value.bActionInProgress = false;
 
       // truly nothing to do!
       RefreshAI(pSoldier);
@@ -84,7 +84,7 @@ function RTHandleAI(pSoldier: Pointer<SOLDIERTYPE>): void {
     // The only reason we would NEED to reinitialize it here is if I've
     // incorrectly set pathStored to TRUE in a process that doesn't end up
     // calling NewDest()
-    pSoldier.value.bPathStored = FALSE;
+    pSoldier.value.bPathStored = false;
 
     // decide on the next action
     {

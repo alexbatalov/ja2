@@ -4,7 +4,7 @@ let guiArmourGrid: UINT32;
 function GameInitBobbyRArmour(): void {
 }
 
-function EnterBobbyRArmour(): BOOLEAN {
+function EnterBobbyRArmour(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
@@ -26,7 +26,7 @@ function EnterBobbyRArmour(): BOOLEAN {
 
   RenderBobbyRArmour();
 
-  return TRUE;
+  return true;
 }
 
 function ExitBobbyRArmour(): void {

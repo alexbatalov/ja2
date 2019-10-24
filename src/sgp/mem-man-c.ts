@@ -52,13 +52,13 @@ let gzJA2ScreenNames: STR16[] /* [] */ = [
   "CREDIT_SCREEN",
 ];
 
-/* static */ let gfMemDebug: BOOLEAN = TRUE;
+/* static */ let gfMemDebug: boolean = true;
 // debug variable for total memory currently allocated
 let guiMemTotal: UINT32 = 0;
 let guiMemAlloced: UINT32 = 0;
 let guiMemFreed: UINT32 = 0;
 let MemDebugCounter: UINT32 = 0;
-let fMemManagerInit: BOOLEAN = FALSE;
+let fMemManagerInit: boolean = false;
 
 //**************************************************************************
 //
@@ -86,16 +86,16 @@ let fMemManagerInit: BOOLEAN = FALSE;
 //
 //**************************************************************************
 
-function InitializeMemoryManager(): BOOLEAN {
+function InitializeMemoryManager(): boolean {
   // Register the memory manager with the debugger
   RegisterDebugTopic(TOPIC_MEMORY_MANAGER, "Memory Manager");
   MemDebugCounter = 0;
   guiMemTotal = 0;
   guiMemAlloced = 0;
   guiMemFreed = 0;
-  fMemManagerInit = TRUE;
+  fMemManagerInit = true;
 
-  return TRUE;
+  return true;
 }
 
 //**************************************************************************
@@ -112,7 +112,7 @@ function InitializeMemoryManager(): BOOLEAN {
 //
 //**************************************************************************
 
-function MemDebug(f: BOOLEAN): void {
+function MemDebug(f: boolean): void {
   gfMemDebug = f;
 }
 
@@ -152,7 +152,7 @@ function ShutdownMemoryManager(): void {
 
   UnRegisterDebugTopic(TOPIC_MEMORY_MANAGER, "Memory Manager Un-initialized");
 
-  fMemManagerInit = FALSE;
+  fMemManagerInit = false;
 }
 
 function MemAllocLocked(uiSize: UINT32): Pointer<PTR> {
@@ -256,8 +256,8 @@ function MemGetTotalSystem(): UINT32 {
 //
 //**************************************************************************
 
-function MemCheckPool(): BOOLEAN {
-  let fRet: BOOLEAN = TRUE;
+function MemCheckPool(): boolean {
+  let fRet: boolean = true;
 
   return fRet;
 }

@@ -20,7 +20,7 @@ const ARMS_INV_JUST_PURCHASED = 0x00000040; // The item was just purchased
 const ARMS_INV_PLAYERS_ITEM_HAS_BEEN_EVALUATED = 0x00000080; // The Players item has been evaluated
 
 interface INVENTORY_IN_SLOT {
-  fActive: BOOLEAN;
+  fActive: boolean;
   sItemIndex: INT16;
   uiFlags: UINT32;
   ItemObject: OBJECTTYPE;

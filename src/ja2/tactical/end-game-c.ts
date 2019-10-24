@@ -10,7 +10,7 @@ let gsGridNo: INT16;
 let gbLevel: INT8;
 
 // This function checks if our statue exists in the current sector at given gridno
-function DoesO3SectorStatueExistHere(sGridNo: INT16): BOOLEAN {
+function DoesO3SectorStatueExistHere(sGridNo: INT16): boolean {
   let cnt: INT32;
   let ExitGrid: EXITGRID;
 
@@ -21,24 +21,24 @@ function DoesO3SectorStatueExistHere(sGridNo: INT16): BOOLEAN {
     if (!GetExitGrid(13669, addressof(ExitGrid))) {
       for (cnt = 0; cnt < 4; cnt++) {
         if (sStatueGridNos[cnt] == sGridNo) {
-          return TRUE;
+          return true;
         }
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 // This function changes the graphic of the statue and adds the exit grid...
-function ChangeO3SectorStatue(fFromExplosion: BOOLEAN): void {
+function ChangeO3SectorStatue(fFromExplosion: boolean): void {
   let ExitGrid: EXITGRID;
   let usTileIndex: UINT16;
   let sX: INT16;
   let sY: INT16;
 
   // Remove old graphic
-  ApplyMapChangesToMapTempFile(TRUE);
+  ApplyMapChangesToMapTempFile(true);
   // Remove it!
   // Get index for it...
   GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (5), addressof(usTileIndex));
@@ -66,7 +66,7 @@ function ChangeO3SectorStatue(fFromExplosion: BOOLEAN): void {
   gpWorldLevelData[13669].uiFlags |= MAPELEMENT_REVEALED;
 
   // Turn off permenant changes....
-  ApplyMapChangesToMapTempFile(FALSE);
+  ApplyMapChangesToMapTempFile(false);
 
   // Re-render the world!
   gTacticalStatus.uiFlags |= NOHIDE_REDUNDENCY;
@@ -96,13 +96,13 @@ function BeginHandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo
 
   gTacticalStatus.uiFlags |= IN_DEIDRANNA_ENDGAME;
 
-  SetCustomizableTimerCallbackAndDelay(2000, DeidrannaTimerCallback, FALSE);
+  SetCustomizableTimerCallbackAndDelay(2000, DeidrannaTimerCallback, false);
 }
 
 function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
-  let sDistVisible: INT16 = FALSE;
+  let sDistVisible: INT16 = false;
   let ubKillerSoldierID: UINT8 = NOBODY;
 
   // Start victory music here...
@@ -125,7 +125,7 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
           // Can we see location?
           sDistVisible = DistanceVisible(pTeamSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
-          if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
+          if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, true)) {
             TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_KILLING_DEIDRANNA);
           }
         }
@@ -148,7 +148,7 @@ function DoneFadeInKilledQueen(): void {
   // Locate gridno.....
 
   // Run NPC script
-  pNPCSoldier = FindSoldierByProfileID(136, FALSE);
+  pNPCSoldier = FindSoldierByProfileID(136, false);
   if (!pNPCSoldier) {
     return;
   }
@@ -170,7 +170,7 @@ function DoneFadeOutKilledQueen(): void {
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     // Are we in this sector, On the current squad?
     if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bInSector && pSoldier.value.bAssignment == CurrentSquad()) {
-      gfTacticalTraversal = TRUE;
+      gfTacticalTraversal = true;
       SetGroupSectorValue(3, MAP_ROW_P, 0, pSoldier.value.ubGroupID);
 
       // Set next sectore
@@ -204,9 +204,9 @@ function DoneFadeOutKilledQueen(): void {
 
   // 'End' battle
   ExitCombatMode();
-  gTacticalStatus.fLastBattleWon = TRUE;
+  gTacticalStatus.fLastBattleWon = true;
   // Set enemy presence to false
-  gTacticalStatus.fEnemyInSector = FALSE;
+  gTacticalStatus.fEnemyInSector = false;
 
   SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
 
@@ -215,7 +215,7 @@ function DoneFadeOutKilledQueen(): void {
 
   SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
 
-  SetThisSectorAsPlayerControlled(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, TRUE);
+  SetThisSectorAsPlayerControlled(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, true);
 
   // ATE: Force change of level set z to 1
   gbWorldSectorZ = 1;
@@ -238,7 +238,7 @@ function DoneFadeOutKilledQueen(): void {
   SetCurrentWorldSector(3, MAP_ROW_P, 0);
 
   // OK, once down here, adjust the above map with crate info....
-  gfTacticalTraversal = FALSE;
+  gfTacticalTraversal = false;
   gpTacticalTraversalGroup = null;
   gpTacticalTraversalChosenSoldier = null;
 
@@ -327,7 +327,7 @@ function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridN
 
   // gTacticalStatus.uiFlags |= IN_DEIDRANNA_ENDGAME;
 
-  SetCustomizableTimerCallbackAndDelay(3000, QueenBitchTimerCallback, FALSE);
+  SetCustomizableTimerCallbackAndDelay(3000, QueenBitchTimerCallback, false);
 
   // Kill all enemies in creature team.....
   cnt = gTacticalStatus.Team[CREATURE_TEAM].bFirstID;
@@ -353,7 +353,7 @@ function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridN
 function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
-  let sDistVisible: INT16 = FALSE;
+  let sDistVisible: INT16 = false;
   let ubKillerSoldierID: UINT8 = NOBODY;
 
   // Start victory music here...
@@ -376,7 +376,7 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
           // Can we see location?
           sDistVisible = DistanceVisible(pTeamSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
-          if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
+          if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, true)) {
             TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_KILLING_QUEEN);
           }
         }

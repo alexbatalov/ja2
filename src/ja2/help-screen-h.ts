@@ -32,18 +32,18 @@ interface HELP_SCREEN_STRUCT {
   bNumberOfButtons: INT8;
 
   // used so if the user checked the box to show the help, it doesnt automatically come up every frame
-  fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen: BOOLEAN;
+  fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen: boolean;
 
   bDelayEnteringHelpScreenBy1FrameCount: INT8;
   usLeftMarginPosX: UINT16;
 
   usCursor: UINT16;
 
-  fWasTheGamePausedPriorToEnteringHelpScreen: BOOLEAN;
+  fWasTheGamePausedPriorToEnteringHelpScreen: boolean;
 
   // scroll variables
   usTotalNumberOfPixelsInBuffer: UINT16;
   iLineAtTopOfTextBuffer: INT32;
   usTotalNumberOfLinesInBuffer: UINT16;
-  fForceHelpScreenToComeUp: BOOLEAN;
+  fForceHelpScreenToComeUp: boolean;
 }

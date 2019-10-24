@@ -43,7 +43,7 @@ const REG_KEY_SIZE = 50;
 //
 //**************************************************************************
 
-function InitializeRegistryKeys(lpszAppName: STR, lpszRegistryKey: STR): BOOLEAN {
+function InitializeRegistryKeys(lpszAppName: STR, lpszRegistryKey: STR): boolean {
   CHECKF(lpszAppName != null);
   CHECKF(lpszRegistryKey != null);
   // CHECKF(gpszRegistryKey == NULL);
@@ -58,7 +58,7 @@ function InitializeRegistryKeys(lpszAppName: STR, lpszRegistryKey: STR): BOOLEAN
   strcpy(gszRegistryKey, lpszRegistryKey);
   strcpy(gszProfileName, gszAppName);
 
-  return TRUE;
+  return true;
 }
 
 // returns key for HKEY_CURRENT_USER\"Software"\RegistryKey\ProfileName
@@ -133,11 +133,11 @@ function GetProfileInteger(lpszSection: STR, lpszEntry: STR, nDefault: int): UIN
   }
 }
 
-function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpszValue: STR): BOOLEAN {
+function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpszValue: STR): boolean {
   let dwType: DWORD;
   let dwCount: DWORD;
   let lResult: LONG;
-  let fRet: BOOLEAN = TRUE;
+  let fRet: boolean = true;
   let strValue: CHAR[] /* [200] */;
 
   assert(lpszSection != null);
@@ -148,7 +148,7 @@ function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpsz
     let hSecKey: HKEY = GetSectionKey(lpszSection);
     if (hSecKey == null) {
       strcpy(lpszValue, lpszDefault);
-      return TRUE;
+      return true;
     }
     lResult = RegQueryValueEx(hSecKey, lpszEntry, null, addressof(dwType), null, addressof(dwCount));
     if (lResult == ERROR_SUCCESS) {
@@ -159,10 +159,10 @@ function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpsz
     if (lResult == ERROR_SUCCESS) {
       assert(dwType == REG_SZ);
       strcpy(lpszValue, strValue);
-      return TRUE;
+      return true;
     }
     strcpy(lpszValue, lpszDefault);
-    return TRUE;
+    return true;
   }
   //	else
   //	{
@@ -180,7 +180,7 @@ function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpsz
   return fRet;
 }
 
-function GetProfileBinary(lpszSection: STR, lpszEntry: STR, ppData: Pointer<Pointer<BYTE>>, pBytes: Pointer<UINT>): BOOL {
+function GetProfileBinary(lpszSection: STR, lpszEntry: STR, ppData: Pointer<Pointer<BYTE>>, pBytes: Pointer<UINT>): boolean {
   //	DWORD dwType, dwCount;
   //	LONG lResult;
   //
@@ -239,10 +239,10 @@ function GetProfileBinary(lpszSection: STR, lpszEntry: STR, ppData: Pointer<Poin
   //		//}
   //		return TRUE;
   //	}
-  return TRUE;
+  return true;
 }
 
-function WriteProfileInt(lpszSection: STR, lpszEntry: STR, nValue: int): BOOL {
+function WriteProfileInt(lpszSection: STR, lpszEntry: STR, nValue: int): boolean {
   //	LONG lResult;
   //	TCHAR szT[16];
   //
@@ -267,10 +267,10 @@ function WriteProfileInt(lpszSection: STR, lpszEntry: STR, nValue: int): BOOL {
   //		return ::WritePrivateProfileString(lpszSection, lpszEntry, szT,
   //			gpszProfileName);
   //	}
-  return TRUE;
+  return true;
 }
 
-function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): BOOL {
+function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): boolean {
   assert(lpszSection != null);
 
   if (gszRegistryKey[0] != '\0') {
@@ -279,20 +279,20 @@ function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): BOO
     {
       let hAppKey: HKEY = GetAppRegistryKey();
       if (hAppKey == null)
-        return FALSE;
+        return false;
       lResult = RegDeleteKey(hAppKey, lpszSection);
       RegCloseKey(hAppKey);
     } else if (lpszValue == null) {
       let hSecKey: HKEY = GetSectionKey(lpszSection);
       if (hSecKey == null)
-        return FALSE;
+        return false;
       // necessary to cast away const below
       lResult = RegDeleteValue(hSecKey, lpszEntry);
       RegCloseKey(hSecKey);
     } else {
       let hSecKey: HKEY = GetSectionKey(lpszSection);
       if (hSecKey == null)
-        return FALSE;
+        return false;
       lResult = RegSetValueEx(hSecKey, lpszEntry, 0, REG_SZ, lpszValue, (lstrlen(lpszValue) + 1) * sizeof(TCHAR));
       RegCloseKey(hSecKey);
     }
@@ -305,10 +305,10 @@ function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): BOO
   //		return ::WritePrivateProfileString(lpszSection, lpszEntry, lpszValue,
   //			gpszProfileName);
   //	}
-  return TRUE;
+  return true;
 }
 
-function WriteProfileBinary(lpszSection: STR, lpszEntry: STR, pData: LPBYTE, nBytes: UINT): BOOL {
+function WriteProfileBinary(lpszSection: STR, lpszEntry: STR, pData: LPBYTE, nBytes: UINT): boolean {
   //	assert(lpszSection != NULL);
   //
   //	if (gpszRegistryKey != NULL)
@@ -337,5 +337,5 @@ function WriteProfileBinary(lpszSection: STR, lpszEntry: STR, pData: LPBYTE, nBy
   //	BOOL bResult = WriteProfileString(lpszSection, lpszEntry, lpsz);
   //	delete[] lpsz;
   //	return bResult;
-  return TRUE;
+  return true;
 }

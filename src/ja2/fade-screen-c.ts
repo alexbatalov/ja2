@@ -1,21 +1,21 @@
 const SQUARE_STEP = 8;
 
 let guiExitScreen: UINT32;
-let gfFadeInitialized: BOOLEAN = FALSE;
+let gfFadeInitialized: boolean = false;
 let gbFadeValue: INT8;
 let gsFadeLimit: INT16;
 let guiTime: UINT32;
 let guiFadeDelay: UINT32;
-let gfFirstTimeInFade: BOOLEAN = FALSE;
+let gfFirstTimeInFade: boolean = false;
 let gsFadeCount: INT16;
 let gbFadeType: INT8;
-let gfFadeIn: BOOLEAN;
+let gfFadeIn: boolean;
 let giX1: INT32;
 let giX2: INT32;
 let giY1: INT32;
 let giY2: INT32;
 let gsFadeRealCount: INT16;
-let gfFadeInVideo: BOOLEAN;
+let gfFadeInVideo: boolean;
 
 let uiOldMusicMode: UINT32;
 
@@ -24,68 +24,68 @@ let gFadeFunction: FADE_FUNCTION = null;
 let gFadeInDoneCallback: FADE_HOOK = null;
 let gFadeOutDoneCallback: FADE_HOOK = null;
 
-let gfFadeIn: BOOLEAN = FALSE;
-let gfFadeOut: BOOLEAN = FALSE;
-let gfFadeOutDone: BOOLEAN = FALSE;
-let gfFadeInDone: BOOLEAN = FALSE;
+let gfFadeIn: boolean = false;
+let gfFadeOut: boolean = false;
+let gfFadeOutDone: boolean = false;
+let gfFadeInDone: boolean = false;
 
 function FadeInNextFrame(): void {
-  gfFadeIn = TRUE;
-  gfFadeInDone = FALSE;
+  gfFadeIn = true;
+  gfFadeInDone = false;
 }
 
 function FadeOutNextFrame(): void {
-  gfFadeOut = TRUE;
-  gfFadeOutDone = FALSE;
+  gfFadeOut = true;
+  gfFadeOutDone = false;
 }
 
-function HandleBeginFadeIn(uiScreenExit: UINT32): BOOLEAN {
+function HandleBeginFadeIn(uiScreenExit: UINT32): boolean {
   if (gfFadeIn) {
     BeginFade(uiScreenExit, 35, FADE_IN_REALFADE, 5);
 
-    gfFadeIn = FALSE;
+    gfFadeIn = false;
 
-    gfFadeInDone = TRUE;
+    gfFadeInDone = true;
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function HandleBeginFadeOut(uiScreenExit: UINT32): BOOLEAN {
+function HandleBeginFadeOut(uiScreenExit: UINT32): boolean {
   if (gfFadeOut) {
     BeginFade(uiScreenExit, 35, FADE_OUT_REALFADE, 5);
 
-    gfFadeOut = FALSE;
+    gfFadeOut = false;
 
-    gfFadeOutDone = TRUE;
+    gfFadeOutDone = true;
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function HandleFadeOutCallback(): BOOLEAN {
+function HandleFadeOutCallback(): boolean {
   if (gfFadeOutDone) {
-    gfFadeOutDone = FALSE;
+    gfFadeOutDone = false;
 
     if (gFadeOutDoneCallback != null) {
       gFadeOutDoneCallback();
 
       gFadeOutDoneCallback = null;
 
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function HandleFadeInCallback(): BOOLEAN {
+function HandleFadeInCallback(): boolean {
   if (gfFadeInDone) {
-    gfFadeInDone = FALSE;
+    gfFadeInDone = false;
 
     if (gFadeInDoneCallback != null) {
       gFadeInDoneCallback();
@@ -93,10 +93,10 @@ function HandleFadeInCallback(): BOOLEAN {
 
     gFadeInDoneCallback = null;
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay: UINT32): void {
@@ -104,8 +104,8 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
   guiExitScreen = uiExitScreen;
   gbFadeValue = bFadeValue;
   guiFadeDelay = uiDelay;
-  gfFadeIn = FALSE;
-  gfFadeInVideo = TRUE;
+  gfFadeIn = false;
+  gfFadeInVideo = true;
 
   uiOldMusicMode = uiMusicHandle;
 
@@ -116,7 +116,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
       gsFadeRealCount = -1;
       gsFadeLimit = 8;
       gFadeFunction = FadeInFrameBufferRealFade;
-      gfFadeInVideo = FALSE;
+      gfFadeInVideo = false;
 
       // Copy backbuffer to savebuffer
       UpdateSaveBufferWithBackbuffer();
@@ -130,7 +130,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
       gsFadeRealCount = -1;
       gsFadeLimit = 10;
       gFadeFunction = FadeFrameBufferRealFade;
-      gfFadeInVideo = FALSE;
+      gfFadeInVideo = false;
 
       // Clear framebuffer
       // ColorFillVideoSurfaceArea( FRAME_BUFFER, 0, 0, 640, 480, Get16BPPColor( FROMRGB( 0, 0, 0 ) ) );
@@ -171,7 +171,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
       giY1 = 240;
       giY2 = 240;
       gsFadeLimit = (640 / (SQUARE_STEP * 2));
-      gfFadeIn = TRUE;
+      gfFadeIn = true;
       break;
 
     case FADE_OUT_VERSION_FASTER:
@@ -192,8 +192,8 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
       break;
   }
 
-  gfFadeInitialized = TRUE;
-  gfFirstTimeInFade = TRUE;
+  gfFadeInitialized = true;
+  gfFirstTimeInFade = true;
   gsFadeCount = 0;
   gbFadeType = bType;
 
@@ -201,7 +201,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
 }
 
 function FadeScreenInit(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function FadeScreenHandle(): UINT32 {
@@ -216,7 +216,7 @@ function FadeScreenHandle(): UINT32 {
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
   if (gfFirstTimeInFade) {
-    gfFirstTimeInFade = FALSE;
+    gfFirstTimeInFade = false;
 
     // Calcuate delay
     guiTime = GetJA2Clock();
@@ -225,7 +225,7 @@ function FadeScreenHandle(): UINT32 {
   // Get time
   uiTime = GetJA2Clock();
 
-  MusicPoll(TRUE);
+  MusicPoll(true);
 
   if ((uiTime - guiTime) > guiFadeDelay) {
     // Fade!
@@ -251,8 +251,8 @@ function FadeScreenHandle(): UINT32 {
       }
 
       // End!
-      gfFadeInitialized = FALSE;
-      gfFadeIn = FALSE;
+      gfFadeInitialized = false;
+      gfFadeIn = false;
 
       return guiExitScreen;
     }
@@ -262,7 +262,7 @@ function FadeScreenHandle(): UINT32 {
 }
 
 function FadeScreenShutdown(): UINT32 {
-  return FALSE;
+  return false;
 }
 
 function FadeFrameBufferVersionOne(): void {
@@ -571,7 +571,7 @@ function FadeInFrameBufferRealFade(): void {
   }
 }
 
-function UpdateSaveBufferWithBackbuffer(): BOOLEAN {
+function UpdateSaveBufferWithBackbuffer(): boolean {
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
@@ -594,5 +594,5 @@ function UpdateSaveBufferWithBackbuffer(): BOOLEAN {
   UnLockVideoSurface(FRAME_BUFFER);
   UnLockVideoSurface(guiSAVEBUFFER);
 
-  return TRUE;
+  return true;
 }

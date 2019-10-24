@@ -10,7 +10,7 @@ let gGameOptions: GAME_OPTIONS;
 // Change this number when we want any who gets the new build to reset the options
 const GAME_SETTING_CURRENT_VERSION = 522;
 
-function LoadGameSettings(): BOOLEAN {
+function LoadGameSettings(): boolean {
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
 
@@ -22,18 +22,18 @@ function LoadGameSettings(): BOOLEAN {
     // delete the shade tables aswell
     DeleteShadeTableDir();
   } else {
-    hFile = FileOpen(GAME_SETTINGS_FILE, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+    hFile = FileOpen(GAME_SETTINGS_FILE, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
     if (!hFile) {
       FileClose(hFile);
       InitGameSettings();
-      return FALSE;
+      return false;
     }
 
     FileRead(hFile, addressof(gGameSettings), sizeof(GAME_SETTINGS), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(GAME_SETTINGS)) {
       FileClose(hFile);
       InitGameSettings();
-      return FALSE;
+      return false;
     }
 
     FileClose(hFile);
@@ -47,7 +47,7 @@ function LoadGameSettings(): BOOLEAN {
     // delete the shade tables aswell
     DeleteShadeTableDir();
 
-    return TRUE;
+    return true;
   }
 
   //
@@ -67,8 +67,8 @@ function LoadGameSettings(): BOOLEAN {
 
   // make sure that at least subtitles or speech is enabled
   if (!gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] && !gGameSettings.fOptions[Enum8.TOPTION_SPEECH]) {
-    gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] = TRUE;
-    gGameSettings.fOptions[Enum8.TOPTION_SPEECH] = TRUE;
+    gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] = true;
+    gGameSettings.fOptions[Enum8.TOPTION_SPEECH] = true;
   }
 
   //
@@ -87,18 +87,18 @@ function LoadGameSettings(): BOOLEAN {
     gHelpScreen.usHasPlayerSeenHelpScreenInCurrentScreen = 0xffff;
   }
 
-  return TRUE;
+  return true;
 }
 
-function SaveGameSettings(): BOOLEAN {
+function SaveGameSettings(): boolean {
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
 
   // create the file
-  hFile = FileOpen(GAME_SETTINGS_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hFile = FileOpen(GAME_SETTINGS_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
   if (!hFile) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // Record the current settings into the game settins structure
@@ -115,12 +115,12 @@ function SaveGameSettings(): BOOLEAN {
   FileWrite(hFile, addressof(gGameSettings), sizeof(GAME_SETTINGS), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(GAME_SETTINGS)) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   FileClose(hFile);
 
-  return TRUE;
+  return true;
 }
 
 function InitGameSettings(): void {
@@ -137,33 +137,33 @@ function InitGameSettings(): void {
   SetSpeechVolume(gGameSettings.ubSpeechVolume);
   MusicSetVolume(gGameSettings.ubMusicVolumeSetting);
 
-  gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] = TRUE;
-  gGameSettings.fOptions[Enum8.TOPTION_SPEECH] = TRUE;
-  gGameSettings.fOptions[Enum8.TOPTION_KEY_ADVANCE_SPEECH] = FALSE;
-  gGameSettings.fOptions[Enum8.TOPTION_RTCONFIRM] = FALSE;
-  gGameSettings.fOptions[Enum8.TOPTION_HIDE_BULLETS] = FALSE;
-  gGameSettings.fOptions[Enum8.TOPTION_TRACKING_MODE] = TRUE;
-  gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS] = FALSE;
-  gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE] = TRUE;
-  gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE] = TRUE;
-  gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] = FALSE;
-  gGameSettings.fOptions[Enum8.TOPTION_OLD_SELECTION_METHOD] = FALSE;
-  gGameSettings.fOptions[Enum8.TOPTION_ALWAYS_SHOW_MOVEMENT_PATH] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] = true;
+  gGameSettings.fOptions[Enum8.TOPTION_SPEECH] = true;
+  gGameSettings.fOptions[Enum8.TOPTION_KEY_ADVANCE_SPEECH] = false;
+  gGameSettings.fOptions[Enum8.TOPTION_RTCONFIRM] = false;
+  gGameSettings.fOptions[Enum8.TOPTION_HIDE_BULLETS] = false;
+  gGameSettings.fOptions[Enum8.TOPTION_TRACKING_MODE] = true;
+  gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS] = false;
+  gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE] = true;
+  gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE] = true;
+  gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] = false;
+  gGameSettings.fOptions[Enum8.TOPTION_OLD_SELECTION_METHOD] = false;
+  gGameSettings.fOptions[Enum8.TOPTION_ALWAYS_SHOW_MOVEMENT_PATH] = false;
 
-  gGameSettings.fOptions[Enum8.TOPTION_SLEEPWAKE_NOTIFICATION] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_SLEEPWAKE_NOTIFICATION] = true;
 
-  gGameSettings.fOptions[Enum8.TOPTION_USE_METRIC_SYSTEM] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_USE_METRIC_SYSTEM] = false;
 
-  gGameSettings.fOptions[Enum8.TOPTION_MERC_ALWAYS_LIGHT_UP] = FALSE;
-  gGameSettings.fOptions[Enum8.TOPTION_SMART_CURSOR] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_MERC_ALWAYS_LIGHT_UP] = false;
+  gGameSettings.fOptions[Enum8.TOPTION_SMART_CURSOR] = false;
 
-  gGameSettings.fOptions[Enum8.TOPTION_SNAP_CURSOR_TO_DOOR] = TRUE;
-  gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS] = TRUE;
-  gGameSettings.fOptions[Enum8.TOPTION_TOGGLE_TREE_TOPS] = TRUE;
-  gGameSettings.fOptions[Enum8.TOPTION_TOGGLE_WIREFRAME] = TRUE;
-  gGameSettings.fOptions[Enum8.TOPTION_3D_CURSOR] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_SNAP_CURSOR_TO_DOOR] = true;
+  gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS] = true;
+  gGameSettings.fOptions[Enum8.TOPTION_TOGGLE_TREE_TOPS] = true;
+  gGameSettings.fOptions[Enum8.TOPTION_TOGGLE_WIREFRAME] = true;
+  gGameSettings.fOptions[Enum8.TOPTION_3D_CURSOR] = false;
   // JA2Gold
-  gGameSettings.fOptions[Enum8.TOPTION_MERC_CASTS_LIGHT] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_MERC_CASTS_LIGHT] = true;
 
   gGameSettings.ubSizeOfDisplayCover = 4;
   gGameSettings.ubSizeOfLOS = 4;
@@ -176,14 +176,14 @@ function InitGameOptions(): void {
   memset(addressof(gGameOptions), 0, sizeof(GAME_OPTIONS));
 
   // Init the game options
-  gGameOptions.fGunNut = FALSE;
-  gGameOptions.fSciFi = TRUE;
+  gGameOptions.fGunNut = false;
+  gGameOptions.fSciFi = true;
   gGameOptions.ubDifficultyLevel = Enum9.DIF_LEVEL_EASY;
   // gGameOptions.fTurnTimeLimit		 = FALSE;
-  gGameOptions.fIronManMode = FALSE;
+  gGameOptions.fIronManMode = false;
 }
 
-function GetCDLocation(): BOOLEAN {
+function GetCDLocation(): boolean {
   let uiStrngLength: UINT32 = 0;
   let zCdLocation: CHAR8[] /* [SGPFILENAME_LEN] */;
   let uiDriveType: UINT32 = 0;
@@ -232,10 +232,10 @@ function GetCDLocation(): BOOLEAN {
     gzCdDirectory[0] = '.';
   }
 
-  return TRUE;
+  return true;
 }
 
-function GetCDromDriveLetter(pString: STR8): BOOLEAN {
+function GetCDromDriveLetter(pString: STR8): boolean {
   let uiSize: UINT32 = 0;
   let ubCnt: UINT8 = 0;
   let zDriveLetters: CHAR8[] /* [512] */;
@@ -264,7 +264,7 @@ function GetCDromDriveLetter(pString: STR8): BOOLEAN {
           strcpy(pString, zDriveLetter);
 
           if (DoJA2FilesExistsOnDrive(pString)) {
-            return TRUE;
+            return true;
           }
           break;
 
@@ -274,7 +274,7 @@ function GetCDromDriveLetter(pString: STR8): BOOLEAN {
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 /*
@@ -330,7 +330,7 @@ function GetCDromDriveLetter(pString: STR8): BOOLEAN {
 
 */
 
-function CheckIfGameCdromIsInCDromDrive(): BOOLEAN {
+function CheckIfGameCdromIsInCDromDrive(): boolean {
   let zVolumeNameBuffer: CHAR8[] /* [512] */;
   let uiVolumeSerialNumber: UINT32 = 0;
   let uiMaxComponentLength: UINT32 = 0;
@@ -340,12 +340,12 @@ function CheckIfGameCdromIsInCDromDrive(): BOOLEAN {
   let zCdFile: CHAR8[] /* [SGPFILENAME_LEN] */;
 
   let zCdromRootDrive: CHAR8[] /* [512] */;
-  let fFailed: BOOLEAN = FALSE;
+  let fFailed: boolean = false;
   let uiVolumeReturnValue: UINT32;
   let uiLastError: UINT32 = ERROR_SUCCESS;
 
   if (!GetCdromLocationFromIniFile(zCdromRootDrive))
-    return FALSE;
+    return false;
 
   uiVolumeReturnValue = GetVolumeInformation(zCdromRootDrive, zVolumeNameBuffer, 512, addressof(uiVolumeSerialNumber), addressof(uiMaxComponentLength), addressof(uiFileSystemFlags), zFileSystemNameBuffer, 512);
 
@@ -372,20 +372,20 @@ function CheckIfGameCdromIsInCDromDrive(): BOOLEAN {
     // ATE: These are ness. due to reference counting
     // in showcursor(). I'm not about to go digging in low level stuff at this
     // point in the game development, so keep these here, as this works...
-    ShowCursor(TRUE);
-    ShowCursor(TRUE);
+    ShowCursor(true);
+    ShowCursor(true);
     ShutdownWithErrorBox(sString);
 
     // DoTester( );
     // MessageBox(NULL, sString, "Error", MB_OK | MB_ICONERROR  );
 
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function GetCdromLocationFromIniFile(pRootOfCdromDrive: STR): BOOLEAN {
+function GetCdromLocationFromIniFile(pRootOfCdromDrive: STR): boolean {
   let uiRetVal: UINT32 = 0;
 
   // Do a crude check to make sure the Ja2.ini file is the right on
@@ -393,11 +393,11 @@ function GetCdromLocationFromIniFile(pRootOfCdromDrive: STR): BOOLEAN {
   uiRetVal = GetPrivateProfileString("Ja2 Settings", "CD", "", pRootOfCdromDrive, SGPFILENAME_LEN, GAME_INI_FILE);
   if (uiRetVal == 0) {
     pRootOfCdromDrive[0] = '\0';
-    return FALSE;
+    return false;
   } else {
     // add the :\ to the dir
     strcat(pRootOfCdromDrive, ":\\");
-    return TRUE;
+    return true;
   }
 }
 
@@ -411,11 +411,11 @@ function CDromEjectionErrorMessageBoxCallBack(bExitValue: UINT8): void {
     }
 
     // quit the game
-    gfProgramIsRunning = FALSE;
+    gfProgramIsRunning = false;
   }
 }
 
-function IsDriveLetterACDromDrive(pDriveLetter: STR): BOOLEAN {
+function IsDriveLetterACDromDrive(pDriveLetter: STR): boolean {
   let uiDriveType: UINT32;
   let zRootName: CHAR8[] /* [512] */;
 
@@ -426,11 +426,11 @@ function IsDriveLetterACDromDrive(pDriveLetter: STR): BOOLEAN {
   switch (uiDriveType) {
     // The drive is a CD-ROM drive.
     case DRIVE_CDROM:
-      return TRUE;
+      return true;
       break;
   }
 
-  return FALSE;
+  return false;
 }
 
 function DisplayGameSettings(): void {
@@ -461,52 +461,52 @@ function DisplayGameSettings(): void {
   }
 }
 
-function MeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
+function MeanwhileSceneSeen(ubMeanwhile: UINT8): boolean {
   let uiCheckFlag: UINT32;
 
   if (ubMeanwhile > 32 || ubMeanwhile > Enum160.NUM_MEANWHILES) {
-    return FALSE;
+    return false;
   }
 
   uiCheckFlag = 0x1 << ubMeanwhile;
 
   if (gGameSettings.uiMeanwhileScenesSeenFlags & uiCheckFlag) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function SetMeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
+function SetMeanwhileSceneSeen(ubMeanwhile: UINT8): boolean {
   let uiCheckFlag: UINT32;
 
   if (ubMeanwhile > 32 || ubMeanwhile > Enum160.NUM_MEANWHILES) {
     // can't set such a flag!
-    return FALSE;
+    return false;
   }
   uiCheckFlag = 0x1 << ubMeanwhile;
   gGameSettings.uiMeanwhileScenesSeenFlags |= uiCheckFlag;
-  return TRUE;
+  return true;
 }
 
-function CanGameBeSaved(): BOOLEAN {
+function CanGameBeSaved(): boolean {
   // if the iron man mode is on
   if (gGameOptions.fIronManMode) {
     // if we are in turn based combat
     if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT)) {
       // no save for you
-      return FALSE;
+      return false;
     }
 
     // if there are enemies in the current sector
     if (gWorldSectorX != -1 && gWorldSectorY != -1 && gWorldSectorX != 0 && gWorldSectorY != 0 && NumEnemiesInAnySector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ) > 0) {
       // no save for you
-      return FALSE;
+      return false;
     }
 
     // All checks failed, so we can save
-    return TRUE;
+    return true;
   } else {
-    return TRUE;
+    return true;
   }
 }

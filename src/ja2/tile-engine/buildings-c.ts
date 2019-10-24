@@ -28,8 +28,8 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   let sRightGridNo: INT16;
   let bDirection: INT8;
   let bTempDirection: INT8;
-  let fFoundDir: BOOLEAN;
-  let fFoundWall: BOOLEAN;
+  let fFoundDir: boolean;
+  let fFoundWall: boolean;
   let uiChanceIn: UINT32 = ROOF_LOCATION_CHANCE; // chance of a location being considered
   let sWallGridNo: INT16;
   let bDesiredOrientation: INT8;
@@ -100,12 +100,12 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
 
       // we KNOW that the spot in the original direction is blocked, so only loop 3 times
       bTempDirection = gTwoCDirection[bDirection];
-      fFoundDir = FALSE;
+      fFoundDir = false;
       for (uiLoop = 0; uiLoop < 3; uiLoop++) {
         sTempGridNo = NewGridNo(sCurrGridNo, DirectionInc(bTempDirection));
         if (!(gpWorldLevelData[sTempGridNo].uiFlags & MAPELEMENT_REACHABLE) && !(gpWorldLevelData[sTempGridNo].ubExtFlags[0] & MAPELEMENT_EXT_ROOFCODE_VISITED)) {
           // this is the way to go!
-          fFoundDir = TRUE;
+          fFoundDir = true;
           break;
         }
         bTempDirection = gTwoCDirection[bTempDirection];
@@ -113,12 +113,12 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
       if (!fFoundDir) {
         // now search for a spot that is just not part of the building
         bTempDirection = gTwoCDirection[bDirection];
-        fFoundDir = FALSE;
+        fFoundDir = false;
         for (uiLoop = 0; uiLoop < 3; uiLoop++) {
           sTempGridNo = NewGridNo(sCurrGridNo, DirectionInc(bTempDirection));
           if (!(gpWorldLevelData[sTempGridNo].uiFlags & MAPELEMENT_REACHABLE)) {
             // this is the way to go!
-            fFoundDir = TRUE;
+            fFoundDir = true;
             break;
           }
           bTempDirection = gTwoCDirection[bTempDirection];
@@ -152,7 +152,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
 
       // if the direction is east or north, the wall would be in our gridno;
       // if south or west, the wall would be in the gridno two clockwise
-      fFoundWall = FALSE;
+      fFoundWall = false;
 
       switch (bDirection) {
         case Enum245.NORTH:
@@ -178,11 +178,11 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
 
       if (bDesiredOrientation == Enum314.OUTSIDE_TOP_LEFT) {
         if (WallExistsOfTopLeftOrientation(sWallGridNo)) {
-          fFoundWall = TRUE;
+          fFoundWall = true;
         }
       } else {
         if (WallExistsOfTopRightOrientation(sWallGridNo)) {
-          fFoundWall = TRUE;
+          fFoundWall = true;
         }
       }
 
@@ -191,7 +191,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
           bSkipSpots--;
         } else if (Random(uiChanceIn) == 0) {
           // don't consider people as obstacles
-          if (NewOKDestination(addressof(FakeSoldier), sCurrGridNo, FALSE, 0)) {
+          if (NewOKDestination(addressof(FakeSoldier), sCurrGridNo, false, 0)) {
             pBuilding.value.sUpClimbSpots[pBuilding.value.ubNumClimbSpots] = sCurrGridNo;
             pBuilding.value.sDownClimbSpots[pBuilding.value.ubNumClimbSpots] = sRightGridNo;
             pBuilding.value.ubNumClimbSpots++;
@@ -283,11 +283,11 @@ function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
   return addressof(gBuildings[ubBuildingID]);
 }
 
-function InBuilding(sGridNo: INT16): BOOLEAN {
+function InBuilding(sGridNo: INT16): boolean {
   if (FindBuilding(sGridNo) == null) {
-    return FALSE;
+    return false;
   }
-  return TRUE;
+  return true;
 }
 
 function GenerateBuildings(): void {
@@ -320,7 +320,7 @@ function GenerateBuildings(): void {
   }
 }
 
-function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClimbUp: BOOLEAN): INT16 {
+function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClimbUp: boolean): INT16 {
   let pBuilding: Pointer<BUILDING>;
   let ubNumClimbSpots: UINT8;
   let psClimbSpots: Pointer<INT16>;
@@ -355,12 +355,12 @@ function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClim
   return sClosestSpot;
 }
 
-function SameBuilding(sGridNo1: INT16, sGridNo2: INT16): BOOLEAN {
+function SameBuilding(sGridNo1: INT16, sGridNo2: INT16): boolean {
   if (gubBuildingInfo[sGridNo1] == NO_BUILDING) {
-    return FALSE;
+    return false;
   }
   if (gubBuildingInfo[sGridNo2] == NO_BUILDING) {
-    return FALSE;
+    return false;
   }
   return (gubBuildingInfo[sGridNo1] == gubBuildingInfo[sGridNo2]);
 }

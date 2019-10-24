@@ -1,4 +1,4 @@
-let gfSchedulesHosed: BOOLEAN = FALSE;
+let gfSchedulesHosed: boolean = false;
 
 //////////////////////////////////////////////////////
 //
@@ -92,28 +92,28 @@ const enum Enum25 {
 //
 //////////////////////////////////////////////////////
 
-let gfSaveLoadScreenEntry: BOOLEAN = TRUE;
-let gfSaveLoadScreenExit: BOOLEAN = FALSE;
-let gfRedrawSaveLoadScreen: BOOLEAN = TRUE;
+let gfSaveLoadScreenEntry: boolean = true;
+let gfSaveLoadScreenExit: boolean = false;
+let gfRedrawSaveLoadScreen: boolean = true;
 
-let gfExitAfterMessageBox: BOOLEAN = FALSE;
+let gfExitAfterMessageBox: boolean = false;
 let giSaveLoadMessageBox: INT32 = -1; // SaveLoad pop up messages index value
 
 let guiSaveLoadExitScreen: UINT32 = Enum26.SAVE_LOAD_SCREEN;
 
 // Contains the array of valid save game locations
-let gbSaveGameArray: BOOLEAN[] /* [NUM_SAVE_GAMES] */;
+let gbSaveGameArray: boolean[] /* [NUM_SAVE_GAMES] */;
 
-let gfDoingQuickLoad: BOOLEAN = FALSE;
+let gfDoingQuickLoad: boolean = false;
 
-let gfFailedToSaveGameWhenInsideAMessageBox: BOOLEAN = FALSE;
+let gfFailedToSaveGameWhenInsideAMessageBox: boolean = false;
 
 // This flag is used to diferentiate between loading a game and saveing a game.
 // gfSaveGame=TRUE		For saving a game
 // gfSaveGame=FALSE		For loading a game
-let gfSaveGame: BOOLEAN = TRUE;
+let gfSaveGame: boolean = true;
 
-let gfSaveLoadScreenButtonsCreated: BOOLEAN = FALSE;
+let gfSaveLoadScreenButtonsCreated: boolean = false;
 
 let gbSaveGameSelectedLocation: INT8[] /* [NUM_SAVE_GAMES] */;
 let gbSelectedSaveLocation: INT8 = -1;
@@ -127,20 +127,20 @@ let guiBackGroundAddOns: UINT32;
 // The string that will contain the game desc text
 let gzGameDescTextField: wchar_t[] /* [SIZE_OF_SAVE_GAME_DESC] */ = [ 0 ];
 
-let gfUserInTextInputMode: BOOLEAN = FALSE;
+let gfUserInTextInputMode: boolean = false;
 let gubSaveGameNextPass: UINT8 = 0;
 
-let gfStartedFadingOut: BOOLEAN = FALSE;
+let gfStartedFadingOut: boolean = false;
 
-let gfCameDirectlyFromGame: BOOLEAN = FALSE;
+let gfCameDirectlyFromGame: boolean = false;
 
-let gfLoadedGame: BOOLEAN = FALSE; // Used to know when a game has been loaded, the flag in gtacticalstatus might have been reset already
+let gfLoadedGame: boolean = false; // Used to know when a game has been loaded, the flag in gtacticalstatus might have been reset already
 
-let gfLoadGameUponEntry: BOOLEAN = FALSE;
+let gfLoadGameUponEntry: boolean = false;
 
-let gfHadToMakeBasementLevels: BOOLEAN = FALSE;
+let gfHadToMakeBasementLevels: boolean = false;
 
-let gfGettingNameFromSaveLoadScreen: BOOLEAN = FALSE;
+let gfGettingNameFromSaveLoadScreen: boolean = false;
 
 // ggg
 
@@ -175,7 +175,7 @@ let gSLSEntireScreenRegion: MOUSE_REGION;
 
 function SaveLoadScreenInit(): UINT32 {
   // Set so next time we come in, we can set up
-  gfSaveLoadScreenEntry = TRUE;
+  gfSaveLoadScreenEntry = true;
 
   memset(gbSaveGameArray, -1, NUM_SAVE_GAMES);
 
@@ -183,7 +183,7 @@ function SaveLoadScreenInit(): UINT32 {
 
   gbHighLightedLocation = -1;
 
-  return TRUE;
+  return true;
 }
 
 function SaveLoadScreenHandle(): UINT32 {
@@ -191,8 +191,8 @@ function SaveLoadScreenHandle(): UINT32 {
 
   if (gfSaveLoadScreenEntry) {
     EnterSaveLoadScreen();
-    gfSaveLoadScreenEntry = FALSE;
-    gfSaveLoadScreenExit = FALSE;
+    gfSaveLoadScreenEntry = false;
+    gfSaveLoadScreenExit = false;
 
     PauseGame();
 
@@ -206,7 +206,7 @@ function SaveLoadScreenHandle(): UINT32 {
   if (!gfStartedFadingOut) {
     GetSaveLoadScreenUserInput();
   } else
-    gfRedrawSaveLoadScreen = FALSE;
+    gfRedrawSaveLoadScreen = false;
 
   // if we have exited the save load screen, exit
   if (!gfSaveLoadScreenButtonsCreated)
@@ -221,7 +221,7 @@ function SaveLoadScreenHandle(): UINT32 {
     MarkButtonsDirty();
     RenderButtons();
 
-    gfRedrawSaveLoadScreen = FALSE;
+    gfRedrawSaveLoadScreen = false;
   }
 
   if (gubSaveGameNextPass != 0) {
@@ -270,7 +270,7 @@ function SaveLoadScreenHandle(): UINT32 {
 }
 
 function SaveLoadScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function SetSaveLoadExitScreen(uiScreen: UINT32): void {
@@ -282,14 +282,14 @@ function SetSaveLoadExitScreen(uiScreen: UINT32): void {
   //	if( gfExitAfterMessageBox )
   //		ExitSaveLoadScreen();
 
-  gfSaveLoadScreenExit = TRUE;
+  gfSaveLoadScreenExit = true;
 
   guiSaveLoadExitScreen = uiScreen;
 
   SetPendingNewScreen(uiScreen);
 
   if (gfDoingQuickLoad) {
-    fFirstTimeInGameScreen = TRUE;
+    fFirstTimeInGameScreen = true;
     SetPendingNewScreen(uiScreen);
   }
 
@@ -298,7 +298,7 @@ function SetSaveLoadExitScreen(uiScreen: UINT32): void {
   DestroySaveLoadTextInputBoxes();
 }
 
-function EnterSaveLoadScreen(): BOOLEAN {
+function EnterSaveLoadScreen(): boolean {
   let i: INT8;
   let VObjectDesc: VOBJECT_DESC;
   let usPosX: UINT16 = SLG_FIRST_SAVED_SPOT_X;
@@ -310,9 +310,9 @@ function EnterSaveLoadScreen(): BOOLEAN {
   // This is a hack to get sector names , but... if the underground sector is NOT loaded
   if (!gpUndergroundSectorInfoHead) {
     BuildUndergroundSectorInfoList();
-    gfHadToMakeBasementLevels = TRUE;
+    gfHadToMakeBasementLevels = true;
   } else {
-    gfHadToMakeBasementLevels = FALSE;
+    gfHadToMakeBasementLevels = false;
   }
 
   guiSaveLoadExitScreen = Enum26.SAVE_LOAD_SCREEN;
@@ -332,7 +332,7 @@ function EnterSaveLoadScreen(): BOOLEAN {
       ConfirmLoadSavedGameMessageBoxCallBack(MSG_BOX_RETURN_YES);
     } else {
       // else the save isnt valid, so dont load it
-      gfLoadGameUponEntry = FALSE;
+      gfLoadGameUponEntry = false;
     }
   }
 
@@ -448,7 +448,7 @@ function EnterSaveLoadScreen(): BOOLEAN {
           if (!LoadSavedGameHeader(gbSelectedSaveLocation, addressof(SaveGameHeader))) {
             memset(addressof(SaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
             gbSaveGameSelectedLocation[gbSelectedSaveLocation] = SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER;
-            gbSaveGameArray[gbSelectedSaveLocation] = FALSE;
+            gbSaveGameArray[gbSelectedSaveLocation] = false;
             gbSelectedSaveLocation = gGameSettings.bLastSavedGameSlot = -1;
           }
 
@@ -478,16 +478,16 @@ function EnterSaveLoadScreen(): BOOLEAN {
   RenderSaveLoadScreen();
 
   // Save load buttons are created
-  gfSaveLoadScreenButtonsCreated = TRUE;
+  gfSaveLoadScreenButtonsCreated = true;
 
-  gfDoingQuickLoad = FALSE;
+  gfDoingQuickLoad = false;
 
   // reset
-  gfStartedFadingOut = FALSE;
+  gfStartedFadingOut = false;
 
   DisableScrollMessages();
 
-  gfLoadedGame = FALSE;
+  gfLoadedGame = false;
 
   if (gfLoadGameUponEntry) {
     let uiDestPitchBYTES: UINT32;
@@ -508,22 +508,22 @@ function EnterSaveLoadScreen(): BOOLEAN {
     UnLockVideoSurface(guiRENDERBUFFER);
   }
 
-  gfGettingNameFromSaveLoadScreen = FALSE;
+  gfGettingNameFromSaveLoadScreen = false;
 
-  return TRUE;
+  return true;
 }
 
 function ExitSaveLoadScreen(): void {
   let i: INT8;
 
-  gfLoadGameUponEntry = FALSE;
+  gfLoadGameUponEntry = false;
 
   if (!gfSaveLoadScreenButtonsCreated)
     return;
 
-  gfSaveLoadScreenExit = FALSE;
-  gfSaveLoadScreenEntry = TRUE;
-  gfExitAfterMessageBox = FALSE;
+  gfSaveLoadScreenExit = false;
+  gfSaveLoadScreenEntry = true;
+  gfExitAfterMessageBox = false;
 
   UnloadButtonImage(guiSlgButtonImage);
 
@@ -548,23 +548,23 @@ function ExitSaveLoadScreen(): void {
 
   MSYS_RemoveRegion(addressof(gSLSEntireScreenRegion));
 
-  gfSaveLoadScreenEntry = TRUE;
-  gfSaveLoadScreenExit = FALSE;
+  gfSaveLoadScreenEntry = true;
+  gfSaveLoadScreenExit = false;
 
   if (!gfLoadedGame) {
     UnLockPauseState();
     UnPauseGame();
   }
 
-  gfSaveLoadScreenButtonsCreated = FALSE;
+  gfSaveLoadScreenButtonsCreated = false;
 
-  gfCameDirectlyFromGame = FALSE;
+  gfCameDirectlyFromGame = false;
 
   // unload the basement sectors
   if (gfHadToMakeBasementLevels)
     TrashUndergroundSectorInfo();
 
-  gfGettingNameFromSaveLoadScreen = FALSE;
+  gfGettingNameFromSaveLoadScreen = false;
 }
 
 function RenderSaveLoadScreen(): void {
@@ -601,7 +601,7 @@ function RenderSaveLoadScreen(): void {
 function HandleSaveLoadScreen(): void {
   // If the game failed when in a message box, pop up a message box stating this
   if (gfFailedToSaveGameWhenInsideAMessageBox) {
-    gfFailedToSaveGameWhenInsideAMessageBox = FALSE;
+    gfFailedToSaveGameWhenInsideAMessageBox = false;
 
     DoSaveLoadMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.SAVE_LOAD_SCREEN, MSG_BOX_FLAG_OK, RedrawSaveLoadScreenAfterMessageBox);
 
@@ -618,7 +618,7 @@ function GetSaveLoadScreenUserInput(): void {
   let Event: InputAtom;
   let MousePos: POINT;
   let bActiveTextField: INT8;
-  /* static */ let fWasCtrlHeldDownLastFrame: BOOLEAN = FALSE;
+  /* static */ let fWasCtrlHeldDownLastFrame: boolean = false;
 
   GetCursorPos(addressof(MousePos));
 
@@ -628,9 +628,9 @@ function GetSaveLoadScreenUserInput(): void {
   }
 
   if (gfKeyState[ALT]) {
-    DisplayOnScreenNumber(FALSE);
+    DisplayOnScreenNumber(false);
   } else {
-    DisplayOnScreenNumber(TRUE);
+    DisplayOnScreenNumber(true);
   }
 
   if (gfKeyState[CTRL] || fWasCtrlHeldDownLastFrame) {
@@ -701,7 +701,7 @@ function GetSaveLoadScreenUserInput(): void {
       switch (Event.usParam) {
         case 'a':
           if (gfKeyState[ALT] && !gfSaveGame) {
-            let iFile: INT8 = GetNumberForAutoSave(TRUE);
+            let iFile: INT8 = GetNumberForAutoSave(true);
 
             if (iFile == -1)
               break;
@@ -715,7 +715,7 @@ function GetSaveLoadScreenUserInput(): void {
 
         case 'b':
           if (gfKeyState[ALT] && !gfSaveGame) {
-            let iFile: INT8 = GetNumberForAutoSave(FALSE);
+            let iFile: INT8 = GetNumberForAutoSave(false);
 
             if (iFile == -1)
               break;
@@ -730,11 +730,11 @@ function GetSaveLoadScreenUserInput(): void {
           break;
 
         case UPARROW:
-          MoveSelectionUpOrDown(TRUE);
+          MoveSelectionUpOrDown(true);
           break;
 
         case DNARROW:
-          MoveSelectionUpOrDown(FALSE);
+          MoveSelectionUpOrDown(false);
           break;
 
         case ESC:
@@ -752,7 +752,7 @@ function GetSaveLoadScreenUserInput(): void {
 
             // reset selected slot
             gbSelectedSaveLocation = -1;
-            gfRedrawSaveLoadScreen = TRUE;
+            gfRedrawSaveLoadScreen = true;
             DestroySaveLoadTextInputBoxes();
 
             //						if( !gfSaveGame )
@@ -783,7 +783,7 @@ function GetSaveLoadScreenUserInput(): void {
               if (!gfSaveGame)
                 EnableButton(guiSlgSaveLoadBtn);
 
-            gfRedrawSaveLoadScreen = TRUE;
+            gfRedrawSaveLoadScreen = true;
           } else
             SaveLoadGameNumber(gbSelectedSaveLocation);
 
@@ -848,7 +848,7 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
   }
 }
 
-function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): BOOLEAN {
+function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
   // do message box and return
   giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 
@@ -856,7 +856,7 @@ function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, u
   return giSaveLoadMessageBox != -1;
 }
 
-function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
+function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
@@ -866,7 +866,7 @@ function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScr
   return giSaveLoadMessageBox != -1;
 }
 
-function InitSaveGameArray(): BOOLEAN {
+function InitSaveGameArray(): boolean {
   let cnt: INT8;
   let zSaveGameName: CHAR8[] /* [512] */;
   let SaveGameHeader: SAVED_GAME_HEADER;
@@ -877,17 +877,17 @@ function InitSaveGameArray(): BOOLEAN {
     if (FileExists(zSaveGameName)) {
       // Get the header for the saved game
       if (!LoadSavedGameHeader(cnt, addressof(SaveGameHeader)))
-        gbSaveGameArray[cnt] = FALSE;
+        gbSaveGameArray[cnt] = false;
       else
-        gbSaveGameArray[cnt] = TRUE;
+        gbSaveGameArray[cnt] = true;
     } else
-      gbSaveGameArray[cnt] = FALSE;
+      gbSaveGameArray[cnt] = false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function DisplaySaveGameList(): BOOLEAN {
+function DisplaySaveGameList(): boolean {
   let bLoop1: INT8;
   //	UINT16 usPosX = SLG_FIRST_SAVED_SPOT_X;
   let usPosY: UINT16 = SLG_FIRST_SAVED_SPOT_Y;
@@ -899,10 +899,10 @@ function DisplaySaveGameList(): BOOLEAN {
     usPosY += SLG_GAP_BETWEEN_LOCATIONS;
   }
 
-  return TRUE;
+  return true;
 }
 
-function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
+function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
 {
   let zDateString: CHAR16[] /* [128] */;
   let zLocationString: CHAR16[] /* [128] */;
@@ -917,15 +917,15 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
 
   // if we are going to be instantly leaving the screen, dont draw the numbers
   if (gfLoadGameUponEntry) {
-    return TRUE;
+    return true;
   }
 
   if (bEntryID == -1)
-    return TRUE;
+    return true;
 
   // if we are currently fading out, leave
   if (gfStartedFadingOut)
-    return TRUE;
+    return true;
 
   // background
   GetVideoObject(addressof(hPixHandle), guiBackGroundAddOns);
@@ -1010,7 +1010,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
       // Get the header for the specified saved game
       if (!LoadSavedGameHeader(bEntryID, addressof(SaveGameHeader))) {
         memset(addressof(SaveGameHeader), 0, sizeof(SaveGameHeader));
-        return FALSE;
+        return false;
       }
     }
 
@@ -1039,7 +1039,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
                SaveGameHeader.sInitialGameOptions.fSciFi ? zSaveLoadText[Enum371.SLG_SCIFI] : zSaveLoadText[Enum371.SLG_REALISTIC]);
 
       // The date
-      DrawTextToScreen(zMouseHelpTextString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zMouseHelpTextString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     } else {
       // Create the string for the Data
       swprintf(zDateString, "%s %d, %02d:%02d", pMessageStrings[Enum333.MSG_DAY], SaveGameHeader.uiDay, SaveGameHeader.ubHour, SaveGameHeader.ubMin);
@@ -1051,11 +1051,11 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
         else
           swprintf(zLocationString, gzLateLocalizedString[14]);
       } else {
-        gfGettingNameFromSaveLoadScreen = TRUE;
+        gfGettingNameFromSaveLoadScreen = true;
 
-        GetSectorIDString(SaveGameHeader.sSectorX, SaveGameHeader.sSectorY, SaveGameHeader.bSectorZ, zLocationString, FALSE);
+        GetSectorIDString(SaveGameHeader.sSectorX, SaveGameHeader.sSectorY, SaveGameHeader.bSectorZ, zLocationString, false);
 
-        gfGettingNameFromSaveLoadScreen = FALSE;
+        gfGettingNameFromSaveLoadScreen = false;
       }
 
       //
@@ -1081,33 +1081,33 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
       //
 
       // The date
-      DrawTextToScreen(zDateString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zDateString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // if the sector string exceeds the width, and the ...
       ReduceStringLength(zLocationString, SLG_SECTOR_WIDTH, uiFont);
 
       // The Sector
-      DrawTextToScreen(zLocationString, (usPosX + SLG_SECTOR_OFFSET_X), (usPosY + SLG_SECTOR_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zLocationString, (usPosX + SLG_SECTOR_OFFSET_X), (usPosY + SLG_SECTOR_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // The Num of mercs
-      DrawTextToScreen(zNumMercsString, (usPosX + SLG_NUM_MERCS_OFFSET_X), (usPosY + SLG_NUM_MERCS_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zNumMercsString, (usPosX + SLG_NUM_MERCS_OFFSET_X), (usPosY + SLG_NUM_MERCS_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // The balance
-      DrawTextToScreen(zBalanceString, (usPosX + SLG_BALANCE_OFFSET_X), (usPosY + SLG_BALANCE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zBalanceString, (usPosX + SLG_BALANCE_OFFSET_X), (usPosY + SLG_BALANCE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       if (gbSaveGameArray[bEntryID] || (gfSaveGame && !gfUserInTextInputMode && (gbSelectedSaveLocation == bEntryID))) {
         // The Saved Game description
-        DrawTextToScreen(SaveGameHeader.sSavedGameDesc, (usPosX + SLG_SAVE_GAME_DESC_X), (usPosY + SLG_SAVE_GAME_DESC_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+        DrawTextToScreen(SaveGameHeader.sSavedGameDesc, (usPosX + SLG_SAVE_GAME_DESC_X), (usPosY + SLG_SAVE_GAME_DESC_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
       }
     }
   } else {
     // if this is the quick save slot
     if (bEntryID == 0) {
       // display the empty spot
-      DrawTextToScreen(pMessageStrings[Enum333.MSG_EMPTY_QUICK_SAVE_SLOT], usPosX, (usPosY + SLG_DATE_OFFSET_Y), 609, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(pMessageStrings[Enum333.MSG_EMPTY_QUICK_SAVE_SLOT], usPosX, (usPosY + SLG_DATE_OFFSET_Y), 609, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     } else {
       // display the empty spot
-      DrawTextToScreen(pMessageStrings[Enum333.MSG_EMPTYSLOT], usPosX, (usPosY + SLG_DATE_OFFSET_Y), 609, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(pMessageStrings[Enum333.MSG_EMPTYSLOT], usPosX, (usPosY + SLG_DATE_OFFSET_Y), 609, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     }
   }
 
@@ -1119,10 +1119,10 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
 
   InvalidateRegion(usPosX, usPosY, usPosX + SLG_SAVELOCATION_WIDTH, usPosY + SLG_SAVELOCATION_HEIGHT);
 
-  return TRUE;
+  return true;
 }
 
-function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): BOOLEAN {
+function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): boolean {
   let hFile: HWFILE;
   let zSavedGameName: CHAR8[] /* [512] */;
   let uiNumBytesRead: UINT32;
@@ -1130,7 +1130,7 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
   // make sure the entry is valid
   if (bEntry < 0 || bEntry > NUM_SAVE_GAMES) {
     memset(addressof(pSaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
-    return FALSE;
+    return false;
   }
 
   // Get the name of the file
@@ -1138,19 +1138,19 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
 
   if (FileExists(zSavedGameName)) {
     // create the save game file
-    hFile = FileOpen(zSavedGameName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+    hFile = FileOpen(zSavedGameName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
     if (!hFile) {
       FileClose(hFile);
-      gbSaveGameArray[bEntry] = FALSE;
-      return FALSE;
+      gbSaveGameArray[bEntry] = false;
+      return false;
     }
 
     // Load the Save Game header file
     FileRead(hFile, pSaveGameHeader, sizeof(SAVED_GAME_HEADER), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SAVED_GAME_HEADER)) {
       FileClose(hFile);
-      gbSaveGameArray[bEntry] = FALSE;
-      return FALSE;
+      gbSaveGameArray[bEntry] = false;
+      return false;
     }
 
     FileClose(hFile);
@@ -1162,21 +1162,21 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
     // Check to see if the desc field is bigger then it should be, ie no null char
     if (wcslen(pSaveGameHeader.value.sSavedGameDesc) >= SIZE_OF_SAVE_GAME_DESC) {
       memset(pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
-      gbSaveGameArray[bEntry] = FALSE;
-      return FALSE;
+      gbSaveGameArray[bEntry] = false;
+      return false;
     }
 
     // Check to see if the version # field is bigger then it should be, ie no null char
     if (strlen(pSaveGameHeader.value.zGameVersionNumber) >= GAME_VERSION_LENGTH) {
       memset(pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
-      gbSaveGameArray[bEntry] = FALSE;
-      return FALSE;
+      gbSaveGameArray[bEntry] = false;
+      return false;
     }
   } else {
     memset(addressof(pSaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
   }
 
-  return TRUE;
+  return true;
 }
 
 function BtnSlgCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -1312,7 +1312,7 @@ function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
       // Set the selected region to be highlighted
       gbSaveGameSelectedLocation[bSelected] = SLG_SELECTED_SLOT_GRAPHICS_NUMBER;
 
-      gfRedrawSaveLoadScreen = TRUE;
+      gfRedrawSaveLoadScreen = true;
 
       uiLastTime = GetJA2Clock();
     }
@@ -1337,7 +1337,7 @@ function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
           // Set the selected region to be highlighted
           gbSaveGameSelectedLocation[bSelected] = SLG_SELECTED_SLOT_GRAPHICS_NUMBER;
 
-          gfRedrawSaveLoadScreen = TRUE;
+          gfRedrawSaveLoadScreen = true;
         } else {
           bActiveTextField = GetActiveFieldID();
           if (bActiveTextField && bActiveTextField != -1) {
@@ -1352,7 +1352,7 @@ function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 
             DisplaySaveGameEntry(gbLastHighLightedLocation);
 
-            gfRedrawSaveLoadScreen = TRUE;
+            gfRedrawSaveLoadScreen = true;
 
             if ((uiCurTime - uiLastTime) < SLG_DOUBLE_CLICK_DELAY) {
               gubSaveGameNextPass = 1;
@@ -1456,11 +1456,11 @@ function InitSaveLoadScreenTextInputBoxes(): void {
 
   SetActiveField(1);
 
-  gfUserInTextInputMode = TRUE;
+  gfUserInTextInputMode = true;
 }
 
 function DestroySaveLoadTextInputBoxes(): void {
-  gfUserInTextInputMode = FALSE;
+  gfUserInTextInputMode = false;
   KillAllTextInputModes();
   SetTextInputCursor(Enum317.CURSOR_IBEAM);
 }
@@ -1483,7 +1483,7 @@ function SetSelection(ubNewSelection: UINT8): void {
     SetRegionFastHelpText(addressof(gSelectedSaveRegion[gbSelectedSaveLocation]), "\0");
   }
 
-  gfRedrawSaveLoadScreen = TRUE;
+  gfRedrawSaveLoadScreen = true;
   DestroySaveLoadTextInputBoxes();
 
   // if we are loading,
@@ -1592,10 +1592,10 @@ function LoadSavedGameDeleteAllSaveGameMessageBoxCallBack(bExitValue: UINT8): vo
   // yes, Delete all the save game files
   if (bExitValue == MSG_BOX_RETURN_YES) {
     DeleteAllSaveGameFile();
-    gfSaveLoadScreenExit = TRUE;
+    gfSaveLoadScreenExit = true;
   }
 
-  gfExitAfterMessageBox = TRUE;
+  gfExitAfterMessageBox = true;
 
   SetSaveLoadExitScreen(Enum26.OPTIONS_SCREEN);
 
@@ -1624,7 +1624,7 @@ function DeleteSaveGameNumber(ubSaveGameSlotID: UINT8): void {
   FileDelete(zSaveGameName);
 }
 
-function DisplayOnScreenNumber(fErase: BOOLEAN): void {
+function DisplayOnScreenNumber(fErase: boolean): void {
   let zTempString: wchar_t[] /* [16] */;
   let usPosX: UINT16 = 6;
   let usPosY: UINT16;
@@ -1651,7 +1651,7 @@ function DisplayOnScreenNumber(fErase: BOOLEAN): void {
     }
 
     if (!fErase)
-      DrawTextToScreen(zTempString, usPosX, (usPosY + SLG_DATE_OFFSET_Y), 0, SAVE_LOAD_NUMBER_FONT(), SAVE_LOAD_NUMBER_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zTempString, usPosX, (usPosY + SLG_DATE_OFFSET_Y), 0, SAVE_LOAD_NUMBER_FONT(), SAVE_LOAD_NUMBER_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     InvalidateRegion(usPosX, usPosY + SLG_DATE_OFFSET_Y, usPosX + 10, usPosY + SLG_DATE_OFFSET_Y + 10);
 
@@ -1661,20 +1661,20 @@ function DisplayOnScreenNumber(fErase: BOOLEAN): void {
 
 function DoneFadeOutForSaveLoadScreen(): void {
   // Make sure we DONT reset the levels if we are loading a game
-  gfHadToMakeBasementLevels = FALSE;
+  gfHadToMakeBasementLevels = false;
 
   if (!LoadSavedGame(gbSelectedSaveLocation)) {
     if (guiBrokenSaveGameVersion < 95 && !gfSchedulesHosed) {
       // Hack problem with schedules getting misaligned.
-      gfSchedulesHosed = TRUE;
+      gfSchedulesHosed = true;
       if (!LoadSavedGame(gbSelectedSaveLocation)) {
         DoSaveLoadMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_LOAD_GAME_ERROR], Enum26.SAVE_LOAD_SCREEN, MSG_BOX_FLAG_OK, FailedLoadingGameCallBack);
         NextLoopCheckForEnoughFreeHardDriveSpace();
       } else {
-        gfSchedulesHosed = FALSE;
+        gfSchedulesHosed = false;
         goto("SUCCESSFULLY_CORRECTED_SAVE");
       }
-      gfSchedulesHosed = FALSE;
+      gfSchedulesHosed = false;
     } else {
       DoSaveLoadMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_LOAD_GAME_ERROR], Enum26.SAVE_LOAD_SCREEN, MSG_BOX_FLAG_OK, FailedLoadingGameCallBack);
       NextLoopCheckForEnoughFreeHardDriveSpace();
@@ -1698,13 +1698,13 @@ function DoneFadeOutForSaveLoadScreen(): void {
 
         SetSaveLoadExitScreen(guiScreenToGotoAfterLoadingSavedGame);
 
-        PauseTime(FALSE);
+        PauseTime(false);
 
         //			EnterTacticalScreen( );
         FadeInGameScreen();
       }
   }
-  gfStartedFadingOut = FALSE;
+  gfStartedFadingOut = false;
 }
 
 function DoneFadeInForSaveLoadScreen(): void {
@@ -1742,7 +1742,7 @@ function SelectedSLSEntireRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason
 function DisableSelectedSlot(): void {
   // reset selected slot
   gbSelectedSaveLocation = -1;
-  gfRedrawSaveLoadScreen = TRUE;
+  gfRedrawSaveLoadScreen = true;
   DestroySaveLoadTextInputBoxes();
 
   if (!gfSaveGame)
@@ -1769,7 +1769,7 @@ function ConfirmLoadSavedGameMessageBoxCallBack(bExitValue: UINT8): void {
     // Setup up the fade routines
     StartFadeOutForSaveLoadScreen();
   } else {
-    gfExitAfterMessageBox = FALSE;
+    gfExitAfterMessageBox = false;
   }
 }
 
@@ -1790,7 +1790,7 @@ function FailedLoadingGameCallBack(bExitValue: UINT8): void {
   }
 }
 
-function DoQuickSave(): BOOLEAN {
+function DoQuickSave(): boolean {
   gzGameDescTextField[0] = '\0';
 
   /*
@@ -1830,36 +1830,36 @@ function DoQuickSave(): BOOLEAN {
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
   }
 
-  return TRUE;
+  return true;
 }
 
-function DoQuickLoad(): BOOLEAN {
+function DoQuickLoad(): boolean {
   // Build the save game array
   InitSaveGameArray();
 
   // if there is no save in the quick save slot
   if (!gbSaveGameArray[0])
-    return FALSE;
+    return false;
 
   // Set the selection to be the quick save slot
   gbSelectedSaveLocation = 0;
 
   // if the game is paused, and we are in tactical, unpause
   if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-    PauseTime(FALSE);
+    PauseTime(false);
   }
 
   // Do a fade out before we load the game
   gFadeOutDoneCallback = DoneFadeOutForSaveLoadScreen;
 
   FadeOutNextFrame();
-  gfStartedFadingOut = TRUE;
-  gfDoingQuickLoad = TRUE;
+  gfStartedFadingOut = true;
+  gfDoingQuickLoad = true;
 
-  return TRUE;
+  return true;
 }
 
-function IsThereAnySavedGameFiles(): BOOLEAN {
+function IsThereAnySavedGameFiles(): boolean {
   let cnt: INT8;
   let zSaveGameName: CHAR8[] /* [512] */;
 
@@ -1867,10 +1867,10 @@ function IsThereAnySavedGameFiles(): BOOLEAN {
     CreateSavedGameFileNameFromNumber(cnt, zSaveGameName);
 
     if (FileExists(zSaveGameName))
-      return TRUE;
+      return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function NotEnoughHardDriveSpaceForQuickSaveMessageBoxCallBack(bExitValue: UINT8): void {
@@ -1879,7 +1879,7 @@ function NotEnoughHardDriveSpaceForQuickSaveMessageBoxCallBack(bExitValue: UINT8
     gTacticalStatus.uiFlags &= ~LOADING_SAVED_GAME;
 
     // Set a flag indicating that the save failed ( cant initiate a message box from within a mb callback )
-    gfFailedToSaveGameWhenInsideAMessageBox = TRUE;
+    gfFailedToSaveGameWhenInsideAMessageBox = true;
   }
 }
 
@@ -1891,7 +1891,7 @@ function NotEnoughHardDriveSpaceForNormalSaveMessageBoxCallBack(bExitValue: UINT
       gTacticalStatus.uiFlags &= ~LOADING_SAVED_GAME;
 
       // Set a flag indicating that the save failed ( cant initiate a message box from within a mb callback )
-      gfFailedToSaveGameWhenInsideAMessageBox = TRUE;
+      gfFailedToSaveGameWhenInsideAMessageBox = true;
     } else {
       SetSaveLoadExitScreen(guiPreviousOptionScreen);
     }
@@ -1899,10 +1899,10 @@ function NotEnoughHardDriveSpaceForNormalSaveMessageBoxCallBack(bExitValue: UINT
 }
 
 function RedrawSaveLoadScreenAfterMessageBox(bExitValue: UINT8): void {
-  gfRedrawSaveLoadScreen = TRUE;
+  gfRedrawSaveLoadScreen = true;
 }
 
-function MoveSelectionUpOrDown(fUp: BOOLEAN): void {
+function MoveSelectionUpOrDown(fUp: boolean): void {
   let i: INT32;
 
   // if we are saving, any slot otgher then the quick save slot is valid
@@ -2013,12 +2013,12 @@ function SaveGameToSlotNum(): void {
 function StartFadeOutForSaveLoadScreen(): void {
   // if the game is paused, and we are in tactical, unpause
   if (guiPreviousOptionScreen == Enum26.GAME_SCREEN) {
-    PauseTime(FALSE);
+    PauseTime(false);
   }
 
   gFadeOutDoneCallback = DoneFadeOutForSaveLoadScreen;
 
   FadeOutNextFrame();
-  gfStartedFadingOut = TRUE;
-  gfExitAfterMessageBox = TRUE;
+  gfStartedFadingOut = true;
+  gfExitAfterMessageBox = true;
 }

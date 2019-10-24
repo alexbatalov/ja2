@@ -11,7 +11,7 @@ function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
   let cStructureFilename: SGPFILENAME;
   let cEndOfName: STR;
   let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
-  let fOk: BOOLEAN;
+  let fOk: boolean;
 
   hImage = CreateImage(cFilename, IMAGE_ALLDATA);
   if (hImage == null) {
@@ -55,8 +55,8 @@ function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
 
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, cStructureFilename);
 
-    fOk = AddZStripInfoToVObject(hVObject, pStructureFileRef, FALSE, 0);
-    if (fOk == FALSE) {
+    fOk = AddZStripInfoToVObject(hVObject, pStructureFileRef, false, 0);
+    if (fOk == false) {
       DestroyImage(hImage);
       DeleteVideoObject(hVObject);
       SET_ERROR("ZStrip creation error: %s", cStructureFilename);
@@ -135,7 +135,7 @@ function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer<TILE_I
     GetRootName(cRootFile, cFilename);
     while (ubRaisedObjectFiles[cnt][0] != '1') {
       if (stricmp(ubRaisedObjectFiles[cnt], cRootFile) == 0) {
-        pTileSurf.value.bRaisedObjectType = TRUE;
+        pTileSurf.value.bRaisedObjectType = true;
       }
 
       cnt++;

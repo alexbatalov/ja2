@@ -4,12 +4,12 @@ let gubLastLoadingScreenID: UINT8 = Enum22.LOADINGSCREEN_NOTHING;
 function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT8 {
   let pSector: Pointer<SECTORINFO>;
   let ubSectorID: UINT8;
-  let fNight: BOOLEAN = FALSE;
+  let fNight: boolean = false;
 
   ubSectorID = SECTOR(sSectorX, sSectorY);
   if (NightTime()) // before 5AM or after 9PM
   {
-    fNight = TRUE;
+    fNight = true;
   }
   switch (bSectorZ) {
     case 0:
@@ -159,7 +159,7 @@ function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT
       return Enum22.LOADINGSCREEN_CAVE;
     default:
       // shouldn't ever happen
-      Assert(FALSE);
+      Assert(false);
 
       if (fNight) {
         return Enum22.LOADINGSCREEN_NIGHTGENERIC;

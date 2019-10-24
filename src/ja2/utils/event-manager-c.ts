@@ -4,19 +4,19 @@ let hDemandEventQueue: HLIST = null;
 
 const QUEUE_RESIZE = 20;
 
-function InitializeEventManager(): BOOLEAN {
+function InitializeEventManager(): boolean {
   // Create Queue
   hEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
   if (hEventQueue == null) {
-    return FALSE;
+    return false;
   }
 
   // Create Delay Queue
   hDelayEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
   if (hDelayEventQueue == null) {
-    return FALSE;
+    return false;
   }
 
   // Create Demand Queue (events on this queue are only processed when specifically
@@ -24,13 +24,13 @@ function InitializeEventManager(): BOOLEAN {
   hDemandEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
   if (hDemandEventQueue == null) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function ShutdownEventManager(): BOOLEAN {
+function ShutdownEventManager(): boolean {
   if (hEventQueue != null) {
     DeleteList(hEventQueue);
   }
@@ -43,10 +43,10 @@ function ShutdownEventManager(): BOOLEAN {
     DeleteList(hDemandEventQueue);
   }
 
-  return TRUE;
+  return true;
 }
 
-function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize: UINT32, ubQueueID: UINT8): BOOLEAN {
+function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize: UINT32, ubQueueID: UINT8): boolean {
   let pEvent: Pointer<EVENT>;
   let uiEventSize: UINT32 = sizeof(EVENT);
   let hQueue: HLIST;
@@ -72,10 +72,10 @@ function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize:
   hQueue = AddtoList(hQueue, addressof(pEvent), ListSize(hQueue));
   SetQueue(ubQueueID, hQueue);
 
-  return TRUE;
+  return true;
 }
 
-function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): BOOLEAN {
+function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): boolean {
   let uiQueueSize: UINT32;
   let hQueue: HLIST;
 
@@ -89,15 +89,15 @@ function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueI
 
   if (uiQueueSize > 0) {
     // Get
-    CHECKF(RemfromList(hQueue, ppEvent, uiIndex) != FALSE);
+    CHECKF(RemfromList(hQueue, ppEvent, uiIndex) != false);
   } else {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): BOOLEAN {
+function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): boolean {
   let uiQueueSize: UINT32;
   let hQueue: HLIST;
 
@@ -111,21 +111,21 @@ function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID:
 
   if (uiQueueSize > 0) {
     // Get
-    CHECKF(PeekList(hQueue, ppEvent, uiIndex) != FALSE);
+    CHECKF(PeekList(hQueue, ppEvent, uiIndex) != false);
   } else {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function FreeEvent(pEvent: Pointer<EVENT>): BOOLEAN {
+function FreeEvent(pEvent: Pointer<EVENT>): boolean {
   CHECKF(pEvent != null);
 
   // Delete event
   MemFree(pEvent);
 
-  return TRUE;
+  return true;
 }
 
 function EventQueueSize(ubQueueID: UINT8): UINT32 {
@@ -158,7 +158,7 @@ function GetQueue(ubQueueID: UINT8): HLIST {
       break;
 
     default:
-      Assert(FALSE);
+      Assert(false);
       return 0;
       break;
   }
@@ -179,7 +179,7 @@ function SetQueue(ubQueueID: UINT8, hQueue: HQUEUE): void {
       break;
 
     default:
-      Assert(FALSE);
+      Assert(false);
       break;
   }
 }

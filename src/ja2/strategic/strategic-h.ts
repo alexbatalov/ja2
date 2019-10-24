@@ -4,9 +4,9 @@ interface StrategicMapElement {
   uiBadFootSector: UINT8[] /* [4] */; // blocking mvt for foot
   uiBadVehicleSector: UINT8[] /* [4] */; // blocking mvt from vehicles
   bNameId: INT8;
-  fEnemyControlled: BOOLEAN; // enemy controlled or not
-  fEnemyAirControlled: BOOLEAN;
-  UNUSEDfLostControlAtSomeTime: BOOLEAN;
+  fEnemyControlled: boolean; // enemy controlled or not
+  fEnemyAirControlled: boolean;
+  UNUSEDfLostControlAtSomeTime: boolean;
   bSAMCondition: INT8; // SAM Condition .. 0 - 100, just like an item's status
   bPadding: INT8[] /* [20] */;
 }

@@ -7,7 +7,7 @@ const DOWNARROW_Y_OFFSET = -10;
 const BUTTON_PANEL_WIDTH = 78;
 const BUTTON_PANEL_HEIGHT = 76;
 
-let gfInMovementMenu: BOOLEAN = FALSE;
+let gfInMovementMenu: boolean = false;
 let giMenuAnchorX: INT32;
 let giMenuAnchorY: INT32;
 
@@ -15,7 +15,7 @@ const PROG_BAR_START_X = 5;
 const PROG_BAR_START_Y = 2;
 const PROG_BAR_LENGTH = 627;
 
-let gfProgBarActive: BOOLEAN = FALSE;
+let gfProgBarActive: boolean = false;
 let gubProgNumEnemies: UINT8 = 0;
 let gubProgCurEnemy: UINT8 = 0;
 
@@ -26,13 +26,13 @@ interface TOP_MESSAGE {
   uiTimeSinceLastBeep: UINT32;
   bAnimate: INT8;
   bYPos: INT8;
-  fCreated: BOOLEAN;
+  fCreated: boolean;
   sWorldRenderX: INT16;
   sWorldRenderY: INT16;
 }
 
 let gTopMessage: TOP_MESSAGE;
-let gfTopMessageDirty: BOOLEAN = FALSE;
+let gfTopMessageDirty: boolean = false;
 
 let gMenuOverlayRegion: MOUSE_REGION;
 
@@ -52,9 +52,9 @@ let guiUIMessageTime: UINT32 = 0;
 let iOverlayMessageBox: INT32 = -1;
 let iUIMessageBox: INT32 = -1;
 let guiUIMessageTimeDelay: UINT32 = 0;
-let gfUseSkullIconMessage: BOOLEAN = FALSE;
+let gfUseSkullIconMessage: boolean = false;
 
-let gfPanelAllocated: BOOLEAN = FALSE;
+let gfPanelAllocated: boolean = false;
 
 const enum Enum208 {
   WALK_IMAGES = 0,
@@ -148,13 +148,13 @@ let gsDownArrowY: UINT16;
 let giUpArrowRect: UINT32;
 let giDownArrowRect: UINT32;
 
-let fFirstTimeInGameScreen: BOOLEAN = TRUE;
-let fInterfacePanelDirty: BOOLEAN = DIRTYLEVEL2;
+let fFirstTimeInGameScreen: boolean = true;
+let fInterfacePanelDirty: boolean = DIRTYLEVEL2;
 let gsInterfaceLevel: INT16 = Enum214.I_GROUND_LEVEL;
 let gsCurrentSoldierGridNo: INT16 = 0;
 let gsCurInterfacePanel: INT16 = Enum215.TEAM_PANEL;
 
-function InitializeTacticalInterface(): BOOLEAN {
+function InitializeTacticalInterface(): boolean {
   let vs_desc: VSURFACE_DESC;
   let VObjectDesc: VOBJECT_DESC;
 
@@ -322,17 +322,17 @@ function InitializeTacticalInterface(): BOOLEAN {
   // Init popup box images
   //	CHECKF( LoadTextMercPopupImages( BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER ) );
 
-  return TRUE;
+  return true;
 }
 
-function ShutdownTacticalInterface(): BOOLEAN {
+function ShutdownTacticalInterface(): boolean {
   ShutdownCurrentPanel();
 
-  return TRUE;
+  return true;
 }
 
-function InitializeCurrentPanel(): BOOLEAN {
-  let fOK: BOOLEAN = FALSE;
+function InitializeCurrentPanel(): boolean {
+  let fOK: boolean = false;
 
   MoveRadarScreen();
 
@@ -355,7 +355,7 @@ function InitializeCurrentPanel(): BOOLEAN {
   }
 
   //	RefreshMouseRegions( );
-  gfPanelAllocated = TRUE;
+  gfPanelAllocated = true;
 
   return fOK;
 }
@@ -372,7 +372,7 @@ function ShutdownCurrentPanel(): void {
         break;
     }
 
-    gfPanelAllocated = FALSE;
+    gfPanelAllocated = false;
   }
 }
 
@@ -425,7 +425,7 @@ function SetCurrentInterfacePanel(ubNewPanel: UINT8): void {
 }
 
 function ToggleTacticalPanels(): void {
-  gfSwitchPanel = TRUE;
+  gfSwitchPanel = true;
   gubNewPanelParam = gusSelectedSoldier;
 
   if (gsCurInterfacePanel == Enum215.SM_PANEL) {
@@ -447,18 +447,18 @@ function RemoveCurrentTacticalPanelButtons(): void {
   }
 }
 
-function IsMercPortraitVisible(ubSoldierID: UINT8): BOOLEAN {
+function IsMercPortraitVisible(ubSoldierID: UINT8): boolean {
   if (gsCurInterfacePanel == Enum215.TEAM_PANEL) {
-    return TRUE;
+    return true;
   }
 
   if (gsCurInterfacePanel == Enum215.SM_PANEL) {
     if (GetSMPanelCurrentMerc() == ubSoldierID) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function HandleInterfaceBackgrounds(): void {
@@ -480,10 +480,10 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   let iMenuAnchorY: INT32;
   let uiActionImages: UINT32;
   let zActionString: INT16[] /* [50] */;
-  let fDisableAction: BOOLEAN = FALSE;
+  let fDisableAction: boolean = false;
 
   // Erase other menus....
-  EraseInterfaceMenus(TRUE);
+  EraseInterfaceMenus(true);
 
   giMenuAnchorX = gusMouseXPos - 18;
   giMenuAnchorY = gusMouseYPos - 18;
@@ -605,7 +605,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     // Until we get mounted weapons...
     uiActionImages = Enum208.CANCEL_IMAGES;
     swprintf(zActionString, TacticalStr[Enum335.NOT_APPLICABLE_POPUPTEXT]);
-    fDisableAction = TRUE;
+    fDisableAction = true;
   } else {
     if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.TOOLKIT) {
       uiActionImages = Enum208.TOOLKITACTIONC_IMAGES;
@@ -651,14 +651,14 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
 
           uiActionImages = Enum208.CANCEL_IMAGES;
           swprintf(zActionString, TacticalStr[Enum335.NOT_APPLICABLE_POPUPTEXT]);
-          fDisableAction = TRUE;
+          fDisableAction = true;
           break;
       }
     }
   }
 
   if (AM_AN_EPC(pSoldier)) {
-    fDisableAction = TRUE;
+    fDisableAction = true;
   }
 
   iActionIcons[Enum209.ACTIONC_ICON] = QuickCreateButton(iIconImages[uiActionImages], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
@@ -711,10 +711,10 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
 
   // LockTacticalInterface( );
 
-  gfInMovementMenu = TRUE;
+  gfInMovementMenu = true;
 
   // Ignore scrolling
-  gfIgnoreScrolling = TRUE;
+  gfIgnoreScrolling = true;
 }
 
 function PopDownMovementMenu(): void {
@@ -730,7 +730,7 @@ function PopDownMovementMenu(): void {
     RemoveButton(iActionIcons[CANCEL_ICON]);
 
     // Turn off Ignore scrolling
-    gfIgnoreScrolling = FALSE;
+    gfIgnoreScrolling = false;
 
     // Rerender world
     SetRenderFlags(RENDER_FLAG_FULL);
@@ -741,7 +741,7 @@ function PopDownMovementMenu(): void {
     MSYS_RemoveRegion(addressof(gMenuOverlayRegion));
   }
 
-  gfInMovementMenu = FALSE;
+  gfInMovementMenu = false;
 }
 
 function RenderMovementMenu(): void {
@@ -799,7 +799,7 @@ function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     } else if (uiBtnID == iActionIcons[CANCEL_ICON]) {
       // Signal end of event
       EndMenuEvent(Enum207.U_MOVEMENT_MENU);
-      pUIEvent.value.uiParams[1] = FALSE;
+      pUIEvent.value.uiParams[1] = false;
       return;
     } else {
       return;
@@ -807,7 +807,7 @@ function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     // Signal end of event
     EndMenuEvent(Enum207.U_MOVEMENT_MENU);
-    pUIEvent.value.uiParams[1] = TRUE;
+    pUIEvent.value.uiParams[1] = true;
   }
 }
 
@@ -816,7 +816,7 @@ function HandleUpDownArrowBackgrounds(): void {
 
   // Check for change in mode
   if (guiShowUPDownArrows != uiOldShowUpDownArrows || gfUIRefreshArrows) {
-    gfUIRefreshArrows = FALSE;
+    gfUIRefreshArrows = false;
 
     // Hide position of new ones
     GetArrowsBackground();
@@ -1037,7 +1037,7 @@ function GetArrowsBackground(): void {
   }
 }
 
-function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX: Pointer<INT16>, psY: Pointer<INT16>, fRadio: BOOLEAN): void {
+function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX: Pointer<INT16>, psY: Pointer<INT16>, fRadio: boolean): void {
   let sMercScreenX: INT16;
   let sMercScreenY: INT16;
   let sOffsetX: INT16;
@@ -1134,8 +1134,8 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   let pStr: Pointer<UINT16>;
   let NameStr: UINT16[] /* [50] */;
   let usGraphicToUse: UINT16 = Enum312.THIRDPOINTERS1;
-  let fRaiseName: BOOLEAN = FALSE;
-  let fDoName: BOOLEAN = TRUE;
+  let fRaiseName: boolean = false;
+  let fDoName: boolean = true;
 
   GetSoldier(addressof(pSoldier), usSoldierID);
 
@@ -1149,14 +1149,14 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
   if (pSoldier.value.fFlashLocator) {
     if (pSoldier.value.bVisible == -1) {
-      pSoldier.value.fFlashLocator = FALSE;
+      pSoldier.value.fFlashLocator = false;
     } else {
       if (TIMECOUNTERDONE(pSoldier.value.BlinkSelCounter, 80)) {
         RESETTIMECOUNTER(pSoldier.value.BlinkSelCounter, 80);
 
         //	pSoldier->fShowLocator = !pSoldier->fShowLocator;
 
-        pSoldier.value.fShowLocator = TRUE;
+        pSoldier.value.fShowLocator = true;
 
         // Update frame
         pSoldier.value.sLocatorFrame++;
@@ -1177,14 +1177,14 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
       //}
       if (pSoldier.value.fFlashLocator == pSoldier.value.ubNumLocateCycles) {
-        pSoldier.value.fFlashLocator = FALSE;
-        pSoldier.value.fShowLocator = FALSE;
+        pSoldier.value.fFlashLocator = false;
+        pSoldier.value.fShowLocator = false;
       }
 
       // if ( pSoldier->fShowLocator )
       {
         // Render the beastie
-        GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), TRUE);
+        GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), true);
 
         // Adjust for bars!
         sXPos += 25;
@@ -1244,7 +1244,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     return;
   }
 
-  GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), FALSE);
+  GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), false);
 
   // Display name
   SetFont(TINYFONT1());
@@ -1257,32 +1257,32 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
-      fRaiseName = TRUE;
+      fRaiseName = true;
     } else if (gfUIMouseOnValidCatcher == 3 && pSoldier.value.ubID == gubUIValidCatcherID) {
       swprintf(NameStr, TacticalStr[Enum335.RELOAD_STR]);
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
-      fRaiseName = TRUE;
+      fRaiseName = true;
     } else if (gfUIMouseOnValidCatcher == 4 && pSoldier.value.ubID == gubUIValidCatcherID) {
       swprintf(NameStr, pMessageStrings[Enum333.MSG_PASS]);
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
-      fRaiseName = TRUE;
+      fRaiseName = true;
     } else if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
       SetFontForeground(FONT_YELLOW);
       swprintf(NameStr, "(%s)", pAssignmentStrings[pSoldier.value.bAssignment]);
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
-      fRaiseName = TRUE;
+      fRaiseName = true;
     } else if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment < Enum117.ON_DUTY && pSoldier.value.bAssignment != CurrentSquad() && !(pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED)) {
       swprintf(NameStr, gzLateLocalizedString[34], (pSoldier.value.bAssignment + 1));
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
-      fRaiseName = TRUE;
+      fRaiseName = true;
     }
 
     // If not in a squad....
@@ -1465,11 +1465,11 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     dWidth = dPercentage * sWidth;
     if (gbPixelDepth == 16) {
       usLineColor = Get16BPPColor(FROMRGB(240, 240, 20));
-      RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     } else if (gbPixelDepth == 8) {
       // DB Need to change this to a color from the 8-bit standard palette
       usLineColor = COLOR_RED;
-      RectangleDraw8(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw8(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     }
   }
 
@@ -1478,11 +1478,11 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     dWidth = dPercentage * sWidth;
     if (gbPixelDepth == 16) {
       usLineColor = Get16BPPColor(FROMRGB(222, 132, 132));
-      RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     } else if (gbPixelDepth == 8) {
       // DB Need to change this to a color from the 8-bit standard palette
       usLineColor = COLOR_RED;
-      RectangleDraw8(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw8(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     }
   }
 
@@ -1490,33 +1490,33 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(200, 0, 0));
-    RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
   } else if (gbPixelDepth == 8) {
     // DB Need to change this to a color from the 8-bit standard palette
     usLineColor = COLOR_RED;
-    RectangleDraw8(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+    RectangleDraw8(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
   }
 
   dPercentage = (pSoldier.value.bBreathMax) / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(20, 20, 150));
-    RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   } else if (gbPixelDepth == 8) {
     // DB Need to change this to a color from the 8-bit standard palette
     usLineColor = COLOR_BLUE;
-    RectangleDraw8(TRUE, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw8(true, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   }
 
   dPercentage = (pSoldier.value.bBreath) / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(100, 100, 220));
-    RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   } else if (gbPixelDepth == 8) {
     // DB Need to change this to a color from the 8-bit standard palette
     usLineColor = COLOR_BLUE;
-    RectangleDraw8(TRUE, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw8(true, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   }
 
   /*
@@ -1542,7 +1542,7 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
 
 function EndDeadlockMsg(): void {
   // Reset gridlock
-  gfUIInDeadlock = FALSE;
+  gfUIInDeadlock = false;
 }
 
 function ClearInterface(): void {
@@ -1580,7 +1580,7 @@ function ClearInterface(): void {
   ResetPhysicsTrajectoryUI();
 
   // Remove any paths, cursors
-  ErasePath(FALSE);
+  ErasePath(false);
 
   // gfPlotNewMovement = TRUE;
 
@@ -1601,10 +1601,10 @@ function ClearInterface(): void {
 
 function RestoreInterface(): void {
   // Once we are done, plot path again!
-  gfPlotNewMovement = TRUE;
+  gfPlotNewMovement = true;
 
   // OK, reset arrows too...
-  gfUIRefreshArrows = TRUE;
+  gfUIRefreshArrows = true;
 
   // SHow lock UI cursors...
   MSYS_ChangeRegionCursor(addressof(gDisableRegion), Enum317.CURSOR_WAIT);
@@ -1643,27 +1643,27 @@ interface OPENDOOR_MENU {
   ubDirection: UINT8;
   sX: INT16;
   sY: INT16;
-  fMenuHandled: BOOLEAN;
-  fClosingDoor: BOOLEAN;
+  fMenuHandled: boolean;
+  fClosingDoor: boolean;
 }
 
 let gOpenDoorMenu: OPENDOOR_MENU;
-let gfInOpenDoorMenu: BOOLEAN = FALSE;
+let gfInOpenDoorMenu: boolean = false;
 
-function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fClosingDoor: BOOLEAN): BOOLEAN {
+function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fClosingDoor: boolean): boolean {
   let sHeight: INT16;
   let sWidth: INT16;
   let sScreenX: INT16;
   let sScreenY: INT16;
 
   // Erase other menus....
-  EraseInterfaceMenus(TRUE);
+  EraseInterfaceMenus(true);
 
   InterruptTime();
   PauseGame();
   LockPauseState(19);
   // Pause timers as well....
-  PauseTime(TRUE);
+  PauseTime(true);
 
   gOpenDoorMenu.pSoldier = pSoldier;
   gOpenDoorMenu.pStructure = pStructure;
@@ -1673,7 +1673,7 @@ function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<ST
   // OK, Determine position...
   // Center on guy
   // Locate to guy first.....
-  LocateSoldier(pSoldier.value.ubID, FALSE);
+  LocateSoldier(pSoldier.value.ubID, false);
   GetSoldierAnimDims(pSoldier, addressof(sHeight), addressof(sWidth));
   GetSoldierScreenPos(pSoldier, addressof(sScreenX), addressof(sScreenY));
   gOpenDoorMenu.sX = sScreenX - ((BUTTON_PANEL_WIDTH - sWidth) / 2);
@@ -1696,17 +1696,17 @@ function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<ST
     gOpenDoorMenu.sY = 0;
   }
 
-  gOpenDoorMenu.fMenuHandled = FALSE;
+  gOpenDoorMenu.fMenuHandled = false;
 
   guiPendingOverrideEvent = Enum207.OP_OPENDOORMENU;
   HandleTacticalUI();
 
   PopupDoorOpenMenu(fClosingDoor);
 
-  return TRUE;
+  return true;
 }
 
-function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
+function PopupDoorOpenMenu(fClosingDoor: boolean): void {
   let iMenuAnchorX: INT32;
   let iMenuAnchorY: INT32;
   let zDisp: INT16[] /* [100] */;
@@ -1737,7 +1737,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.USE_KEYRING_ICON], zDisp);
 
-  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNLOCK_DOOR, BP_UNLOCK_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
+  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNLOCK_DOOR, BP_UNLOCK_DOOR, false) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
     DisableButton(iActionIcons[Enum209.USE_KEYRING_ICON]);
   }
 
@@ -1764,7 +1764,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[Enum209.USE_CROWBAR_ICON]);
   }
 
-  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_USE_CROWBAR, BP_USE_CROWBAR, FALSE)) {
+  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_USE_CROWBAR, BP_USE_CROWBAR, false)) {
     DisableButton(iActionIcons[Enum209.USE_CROWBAR_ICON]);
   }
 
@@ -1781,7 +1781,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.LOCKPICK_DOOR_ICON], zDisp);
 
-  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_PICKLOCK, BP_PICKLOCK, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
+  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_PICKLOCK, BP_PICKLOCK, false) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
     DisableButton(iActionIcons[Enum209.LOCKPICK_DOOR_ICON]);
   }
 
@@ -1803,7 +1803,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON], zDisp);
 
-  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXPLODE_DOOR, BP_EXPLODE_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
+  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXPLODE_DOOR, BP_EXPLODE_DOOR, false) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
     DisableButton(iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON]);
   }
 
@@ -1834,7 +1834,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.OPEN_DOOR_ICON], zDisp);
 
-  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_OPEN_DOOR, BP_OPEN_DOOR, FALSE)) {
+  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_OPEN_DOOR, BP_OPEN_DOOR, false)) {
     DisableButton(iActionIcons[Enum209.OPEN_DOOR_ICON]);
   }
 
@@ -1852,7 +1852,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.EXAMINE_DOOR_ICON], zDisp);
 
-  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXAMINE_DOOR, BP_EXAMINE_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
+  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXAMINE_DOOR, BP_EXAMINE_DOOR, false) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
     DisableButton(iActionIcons[Enum209.EXAMINE_DOOR_ICON]);
   }
 
@@ -1869,7 +1869,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.BOOT_DOOR_ICON], zDisp);
 
-  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_BOOT_DOOR, BP_BOOT_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
+  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_BOOT_DOOR, BP_BOOT_DOOR, false) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
     DisableButton(iActionIcons[Enum209.BOOT_DOOR_ICON]);
   }
 
@@ -1886,7 +1886,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.UNTRAP_DOOR_ICON], zDisp);
 
-  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNTRAP_DOOR, BP_UNTRAP_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
+  if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNTRAP_DOOR, BP_UNTRAP_DOOR, false) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
     DisableButton(iActionIcons[Enum209.UNTRAP_DOOR_ICON]);
   }
 
@@ -1899,10 +1899,10 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
 
   // LockTacticalInterface( );
 
-  gfInOpenDoorMenu = TRUE;
+  gfInOpenDoorMenu = true;
 
   // Ignore scrolling
-  gfIgnoreScrolling = TRUE;
+  gfIgnoreScrolling = true;
 }
 
 function PopDownOpenDoorMenu(): void {
@@ -1910,7 +1910,7 @@ function PopDownOpenDoorMenu(): void {
     UnLockPauseState();
     UnPauseGame();
     // UnPause timers as well....
-    PauseTime(FALSE);
+    PauseTime(false);
 
     RemoveButton(iActionIcons[Enum209.USE_KEYRING_ICON]);
     RemoveButton(iActionIcons[Enum209.USE_CROWBAR_ICON]);
@@ -1923,7 +1923,7 @@ function PopDownOpenDoorMenu(): void {
     RemoveButton(iActionIcons[CANCEL_ICON]);
 
     // Turn off Ignore scrolling
-    gfIgnoreScrolling = FALSE;
+    gfIgnoreScrolling = false;
 
     // Rerender world
     SetRenderFlags(RENDER_FLAG_FULL);
@@ -1934,7 +1934,7 @@ function PopDownOpenDoorMenu(): void {
     MSYS_RemoveRegion(addressof(gMenuOverlayRegion));
   }
 
-  gfInOpenDoorMenu = FALSE;
+  gfInOpenDoorMenu = false;
 }
 
 function RenderOpenDoorMenu(): void {
@@ -1975,7 +1975,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     uiBtnID = btn.value.IDNum;
 
     // Popdown menu
-    gOpenDoorMenu.fMenuHandled = TRUE;
+    gOpenDoorMenu.fMenuHandled = true;
 
     if (uiBtnID == iActionIcons[CANCEL_ICON]) {
       // OK, set cancle code!
@@ -1986,12 +1986,12 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     if (uiBtnID == iActionIcons[Enum209.OPEN_DOOR_ICON]) {
       // Open door normally...
       // Check APs
-      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_OPEN_DOOR, BP_OPEN_DOOR, FALSE)) {
+      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_OPEN_DOOR, BP_OPEN_DOOR, false)) {
         // Set UI
         SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
 
         if (gOpenDoorMenu.fClosingDoor) {
-          ChangeSoldierState(gOpenDoorMenu.pSoldier, GetAnimStateForInteraction(gOpenDoorMenu.pSoldier, TRUE, Enum193.CLOSE_DOOR), 0, FALSE);
+          ChangeSoldierState(gOpenDoorMenu.pSoldier, GetAnimStateForInteraction(gOpenDoorMenu.pSoldier, true, Enum193.CLOSE_DOOR), 0, false);
         } else {
           InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_OPEN);
         }
@@ -2003,7 +2003,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     if (uiBtnID == iActionIcons[Enum209.BOOT_DOOR_ICON]) {
       // Boot door
-      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_BOOT_DOOR, BP_BOOT_DOOR, FALSE)) {
+      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_BOOT_DOOR, BP_BOOT_DOOR, false)) {
         // Set UI
         SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
 
@@ -2016,7 +2016,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     if (uiBtnID == iActionIcons[Enum209.USE_KEYRING_ICON]) {
       // Unlock door
-      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNLOCK_DOOR, BP_UNLOCK_DOOR, FALSE)) {
+      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNLOCK_DOOR, BP_UNLOCK_DOOR, false)) {
         // Set UI
         SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
 
@@ -2029,7 +2029,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     if (uiBtnID == iActionIcons[Enum209.LOCKPICK_DOOR_ICON]) {
       // Lockpick
-      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_PICKLOCK, BP_PICKLOCK, FALSE)) {
+      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_PICKLOCK, BP_PICKLOCK, false)) {
         // Set UI
         SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
 
@@ -2042,7 +2042,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     if (uiBtnID == iActionIcons[Enum209.EXAMINE_DOOR_ICON]) {
       // Lockpick
-      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXAMINE_DOOR, BP_EXAMINE_DOOR, FALSE)) {
+      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXAMINE_DOOR, BP_EXAMINE_DOOR, false)) {
         // Set UI
         SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
 
@@ -2055,7 +2055,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     if (uiBtnID == iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON]) {
       // Explode
-      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXPLODE_DOOR, BP_EXPLODE_DOOR, FALSE)) {
+      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXPLODE_DOOR, BP_EXPLODE_DOOR, false)) {
         // Set UI
         SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
 
@@ -2068,7 +2068,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     if (uiBtnID == iActionIcons[Enum209.UNTRAP_DOOR_ICON]) {
       // Explode
-      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNTRAP_DOOR, BP_UNTRAP_DOOR, FALSE)) {
+      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNTRAP_DOOR, BP_UNTRAP_DOOR, false)) {
         // Set UI
         SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
 
@@ -2081,7 +2081,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     if (uiBtnID == iActionIcons[Enum209.USE_CROWBAR_ICON]) {
       // Explode
-      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_USE_CROWBAR, BP_USE_CROWBAR, FALSE)) {
+      if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_USE_CROWBAR, BP_USE_CROWBAR, false)) {
         // Set UI
         SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
 
@@ -2096,13 +2096,13 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function HandleOpenDoorMenu(): BOOLEAN {
+function HandleOpenDoorMenu(): boolean {
   if (gOpenDoorMenu.fMenuHandled) {
     PopDownOpenDoorMenu();
     return gOpenDoorMenu.fMenuHandled;
   }
 
-  return FALSE;
+  return false;
 }
 
 function RenderUIMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
@@ -2114,7 +2114,7 @@ function RenderUIMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   InvalidateRegion(pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.sX + gusUIMessageWidth, pBlitter.value.sY + gusUIMessageHeight);
 }
 
-function InternalBeginUIMessage(fUseSkullIcon: BOOLEAN, pFontString: Pointer<UINT16>, ...args: any[]): void {
+function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: Pointer<UINT16>, ...args: any[]): void {
   let argptr: va_list;
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
   let MsgString: wchar_t[] /* [512] */;
@@ -2175,7 +2175,7 @@ function BeginUIMessage(pFontString: Pointer<UINT16>, ...args: any[]): void {
   vswprintf(MsgString, pFontString, argptr); // process gprintf string (get output str)
   va_end(argptr);
 
-  InternalBeginUIMessage(FALSE, MsgString);
+  InternalBeginUIMessage(false, MsgString);
 }
 
 function BeginMapUIMessage(ubPosition: UINT8, pFontString: Pointer<UINT16>, ...args: any[]): void {
@@ -2259,9 +2259,9 @@ const PLAYER_TEAM_TIMER_TICKS_FROM_END_TO_START_BEEP = (5000 / PLAYER_TEAM_TIMER
 const PLAYER_TEAM_TIMER_TIME_BETWEEN_BEEPS = (500);
 const PLAYER_TEAM_TIMER_TICKS_PER_ENEMY = (2000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
-function AddTopMessage(ubType: UINT8, pzString: Pointer<UINT16>): BOOLEAN {
+function AddTopMessage(ubType: UINT8, pzString: Pointer<UINT16>): boolean {
   let cnt: UINT32;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
 
   // Set time of last update
   gTopMessage.uiTimeOfLastUpdate = GetJA2Clock();
@@ -2272,26 +2272,26 @@ function AddTopMessage(ubType: UINT8, pzString: Pointer<UINT16>): BOOLEAN {
 
   gTopMessage.bAnimate = 0;
   gTopMessage.bYPos = 20;
-  gTopMessage.fCreated = TRUE;
+  gTopMessage.fCreated = true;
 
-  fFound = TRUE;
+  fFound = true;
   cnt = 0;
 
   if (fFound) {
     gTopMessage.bCurrentMessage = cnt;
 
     gTacticalStatus.ubTopMessageType = ubType;
-    gTacticalStatus.fInTopMessage = TRUE;
+    gTacticalStatus.fInTopMessage = true;
 
     // Copy string
     wcscpy(gTacticalStatus.zTopMessageString, pzString);
 
     CreateTopMessage(gTopMessage.uiSurface, ubType, pzString);
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UINT16>): void {
@@ -2304,7 +2304,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
   let cnt2: INT32;
   let sBarX: INT16 = 0;
   let uiBarToUseInUpDate: UINT32 = 0;
-  let fDoLimitBar: BOOLEAN = FALSE;
+  let fDoLimitBar: boolean = false;
 
   let dNumStepsPerEnemy: FLOAT;
   let dLength: FLOAT;
@@ -2330,7 +2330,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
     AssertMsg(0, "Missing INTERFACE\\timebaryellow.sti");
 
   // Change dest buffer
-  SetFontDestBuffer(uiSurface, 0, 0, 640, 20, FALSE);
+  SetFontDestBuffer(uiSurface, 0, 0, 640, 20, false);
   SetFont(TINYFONT1());
 
   switch (ubType) {
@@ -2344,7 +2344,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
       SetFontBackground(FONT_MCOLOR_BLACK);
       SetFontForeground(FONT_MCOLOR_WHITE);
       uiBarToUseInUpDate = uiBAR;
-      fDoLimitBar = TRUE;
+      fDoLimitBar = true;
       break;
 
     case Enum216.PLAYER_INTERRUPT_MESSAGE:
@@ -2375,7 +2375,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
 
   if (gGameOptions.fTurnTimeLimit) {
     if (ubType == Enum216.PLAYER_TURN_MESSAGE || ubType == Enum216.PLAYER_INTERRUPT_MESSAGE) {
-      fDoLimitBar = TRUE;
+      fDoLimitBar = true;
     }
   }
 
@@ -2433,12 +2433,12 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
   mprintf(sX, sY, psString);
 
   // Change back...
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   // Done!
   SetFontShadow(DEFAULT_SHADOW);
 
-  gfTopMessageDirty = TRUE;
+  gfTopMessageDirty = true;
 }
 
 function TurnExpiredCallBack(bExitValue: UINT8): void {
@@ -2477,7 +2477,7 @@ function HandleTopMessages(): void {
     // initialized it yet...
     // This is mostly for loading saved games.....
     if (!gTopMessage.fCreated) {
-      gfTopMessageDirty = TRUE;
+      gfTopMessageDirty = true;
       AddTopMessage(gTacticalStatus.ubTopMessageType, gTacticalStatus.zTopMessageString);
     }
 
@@ -2519,7 +2519,7 @@ function HandleTopMessages(): void {
 
               // OK, have we gone past the time to
               if (!gTacticalStatus.fTactialTurnLimitStartedBeep && (gTacticalStatus.usTactialTurnLimitMax - gTacticalStatus.usTactialTurnLimitCounter) < PLAYER_TEAM_TIMER_TICKS_FROM_END_TO_START_BEEP) {
-                gTacticalStatus.fTactialTurnLimitStartedBeep = TRUE;
+                gTacticalStatus.fTactialTurnLimitStartedBeep = true;
 
                 gTopMessage.uiTimeSinceLastBeep = GetJA2Clock();
               }
@@ -2547,7 +2547,7 @@ function HandleTopMessages(): void {
 
     // Check if we have scrolled...
     if (gTopMessage.sWorldRenderX != gsRenderCenterX || gTopMessage.sWorldRenderY != gsRenderCenterY) {
-      gfTopMessageDirty = TRUE;
+      gfTopMessageDirty = true;
     }
 
     if (gfTopMessageDirty) {
@@ -2572,7 +2572,7 @@ function HandleTopMessages(): void {
 
       InvalidateRegion(0, 0, 640, 20);
 
-      gfTopMessageDirty = FALSE;
+      gfTopMessageDirty = false;
     }
   } else {
     // Set redner viewport value
@@ -2591,7 +2591,7 @@ function EndTopMessage(): void {
       // We are....
       // Re-render our strip and then copy to the save buffer...
       gsVIEWPORT_WINDOW_START_Y = 0;
-      gTacticalStatus.fInTopMessage = FALSE;
+      gTacticalStatus.fInTopMessage = false;
 
       SetRenderFlags(RENDER_FLAG_FULL);
       // RenderStaticWorldRect( 0, 0, 640, 20, TRUE );
@@ -2623,19 +2623,19 @@ function EndTopMessage(): void {
   }
 }
 
-function InTopMessageBarAnimation(): BOOLEAN {
+function InTopMessageBarAnimation(): boolean {
   if (gTacticalStatus.fInTopMessage) {
     if (gTopMessage.bAnimate != 0) {
       HandleTopMessages();
 
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function PauseRT(fPause: BOOLEAN): void {
+function PauseRT(fPause: boolean): void {
   // StopMercAnimation( fPause );
 
   if (fPause) {
@@ -2649,7 +2649,7 @@ function InitEnemyUIBar(ubNumEnemies: UINT8, ubDoneEnemies: UINT8): void {
   // OK, set value
   gubProgNumEnemies = ubNumEnemies + ubDoneEnemies;
   gubProgCurEnemy = ubDoneEnemies;
-  gfProgBarActive = TRUE;
+  gfProgBarActive = true;
 
   gTacticalStatus.usTactialTurnLimitCounter = ubDoneEnemies * PLAYER_TEAM_TIMER_TICKS_PER_ENEMY;
   gTacticalStatus.usTactialTurnLimitMax = ((ubNumEnemies + ubDoneEnemies) * PLAYER_TEAM_TIMER_TICKS_PER_ENEMY);
@@ -2673,14 +2673,14 @@ function UpdateEnemyUIBar(): void {
   }
 }
 
-function InitPlayerUIBar(fInterrupt: BOOLEAN): void {
+function InitPlayerUIBar(fInterrupt: boolean): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32 = 0;
   let bNumOK: INT8 = 0;
   let bNumNotOK: INT8 = 0;
 
   if (!gGameOptions.fTurnTimeLimit) {
-    if (fInterrupt == TRUE) {
+    if (fInterrupt == true) {
       AddTopMessage(Enum216.PLAYER_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
     } else {
       // EndTopMessage();
@@ -2716,13 +2716,13 @@ function InitPlayerUIBar(fInterrupt: BOOLEAN): void {
   }
 
   gTacticalStatus.uiTactialTurnLimitClock = 0;
-  gTacticalStatus.fTactialTurnLimitStartedBeep = FALSE;
+  gTacticalStatus.fTactialTurnLimitStartedBeep = false;
 
   // RESET COIUNTER...
   RESETTIMECOUNTER(giTimerTeamTurnUpdate, PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
   // OK, set value
-  if (fInterrupt != TRUE) {
+  if (fInterrupt != true) {
     AddTopMessage(Enum216.PLAYER_TURN_MESSAGE, TeamTurnString[0]);
   } else {
     AddTopMessage(Enum216.PLAYER_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
@@ -2764,11 +2764,11 @@ interface AIMCUBE_UI_DATA {
   sGridNo: INT16;
   ubLevel: UINT8;
   pSoldier: Pointer<SOLDIERTYPE>;
-  fShowHeight: BOOLEAN;
-  fShowPower: BOOLEAN;
-  fActiveHeightBar: BOOLEAN;
-  fActivePowerBar: BOOLEAN;
-  fAtEndHeight: BOOLEAN;
+  fShowHeight: boolean;
+  fShowPower: boolean;
+  fActiveHeightBar: boolean;
+  fActivePowerBar: boolean;
+  fAtEndHeight: boolean;
   sTargetGridNo: INT16;
   dInitialForce: FLOAT;
   dForce: FLOAT;
@@ -2777,7 +2777,7 @@ interface AIMCUBE_UI_DATA {
   ubPowerIndex: UINT8;
 }
 
-/* static */ let gfInAimCubeUI: BOOLEAN = FALSE;
+/* static */ let gfInAimCubeUI: boolean = false;
 /* static */ let gCubeUIData: AIMCUBE_UI_DATA;
 
 const GET_CUBES_HEIGHT_FROM_UIHEIGHT = (h) => (32 + (h * 64));
@@ -2809,40 +2809,40 @@ function GetInAimCubeUIGridNo(): INT16 {
   return gCubeUIData.sGridNo;
 }
 
-function InAimCubeUI(): BOOLEAN {
+function InAimCubeUI(): boolean {
   return gfInAimCubeUI;
 }
 
-function AimCubeUIClick(): BOOLEAN {
+function AimCubeUIClick(): boolean {
   if (!gfInAimCubeUI) {
-    return FALSE;
+    return false;
   }
 
   // If we have clicked, and we are only on height, continue with power
   if (gCubeUIData.fActiveHeightBar && gCubeUIData.bHeight != 0) {
-    gCubeUIData.fShowPower = TRUE;
-    gCubeUIData.fActiveHeightBar = FALSE;
-    gCubeUIData.fActivePowerBar = TRUE;
+    gCubeUIData.fShowPower = true;
+    gCubeUIData.fActiveHeightBar = false;
+    gCubeUIData.fActivePowerBar = true;
 
-    return FALSE;
+    return false;
   } else {
-    return TRUE;
+    return true;
   }
 }
 
 function BeginAimCubeUI(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: INT8, bStartPower: UINT8, bStartHeight: INT8): void {
-  gfInAimCubeUI = TRUE;
+  gfInAimCubeUI = true;
 
   gCubeUIData.sGridNo = sGridNo;
   gCubeUIData.ubLevel = ubLevel;
   gCubeUIData.pSoldier = pSoldier;
   gCubeUIData.bPower = bStartPower;
   gCubeUIData.bHeight = bStartHeight;
-  gCubeUIData.fShowHeight = TRUE;
-  gCubeUIData.fShowPower = FALSE;
-  gCubeUIData.fActivePowerBar = FALSE;
-  gCubeUIData.fActiveHeightBar = TRUE;
-  gCubeUIData.fAtEndHeight = FALSE;
+  gCubeUIData.fShowHeight = true;
+  gCubeUIData.fShowPower = false;
+  gCubeUIData.fActivePowerBar = false;
+  gCubeUIData.fActiveHeightBar = true;
+  gCubeUIData.fAtEndHeight = false;
   gCubeUIData.dDegrees = PI / 4;
 
   // Calculate Iniital force....
@@ -2850,7 +2850,7 @@ function BeginAimCubeUI(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel:
 }
 
 function EndAimCubeUI(): void {
-  gfInAimCubeUI = FALSE;
+  gfInAimCubeUI = false;
 }
 
 function IncrementAimCubeUI(): void {
@@ -2861,7 +2861,7 @@ function IncrementAimCubeUI(): void {
         gCubeUIData.bHeight = 0;
         gCubeUIData.fAtEndHeight = 0;
       } else {
-        gCubeUIData.fAtEndHeight = TRUE;
+        gCubeUIData.fAtEndHeight = true;
       }
     } else {
       gCubeUIData.bHeight++;
@@ -2967,20 +2967,20 @@ function RenderAimCubeUI(): void {
 function GetLaunchItemParamsFromUI(): void {
 }
 
-/* static */ let gfDisplayPhysicsUI: BOOLEAN = FALSE;
+/* static */ let gfDisplayPhysicsUI: boolean = false;
 /* static */ let gsPhysicsImpactPointGridNo: INT16;
 /* static */ let gbPhysicsImpactPointLevel: INT8;
-/* static */ let gfBadPhysicsCTGT: BOOLEAN = FALSE;
+/* static */ let gfBadPhysicsCTGT: boolean = false;
 
-function BeginPhysicsTrajectoryUI(sGridNo: INT16, bLevel: INT8, fBadCTGT: BOOLEAN): void {
-  gfDisplayPhysicsUI = TRUE;
+function BeginPhysicsTrajectoryUI(sGridNo: INT16, bLevel: INT8, fBadCTGT: boolean): void {
+  gfDisplayPhysicsUI = true;
   gsPhysicsImpactPointGridNo = sGridNo;
   gbPhysicsImpactPointLevel = bLevel;
   gfBadPhysicsCTGT = fBadCTGT;
 }
 
 function EndPhysicsTrajectoryUI(): void {
-  gfDisplayPhysicsUI = FALSE;
+  gfDisplayPhysicsUI = false;
 }
 
 function SetupPhysicsTrajectoryUI(): void {
@@ -3015,7 +3015,7 @@ function ResetPhysicsTrajectoryUI(): void {
 }
 
 function DirtyTopMessage(): void {
-  gTopMessage.fCreated = FALSE;
+  gTopMessage.fCreated = false;
 }
 
 function CalcUIMessageDuration(wString: STR16): UINT32 {
@@ -3023,18 +3023,18 @@ function CalcUIMessageDuration(wString: STR16): UINT32 {
   return 1000 + 50 * wcslen(wString);
 }
 
-let gfMultipurposeLocatorOn: BOOLEAN = FALSE;
+let gfMultipurposeLocatorOn: boolean = false;
 let guiMultiPurposeLocatorLastUpdate: UINT32;
 let gbMultiPurposeLocatorFrame: INT8;
 let gsMultiPurposeLocatorGridNo: INT16;
 let gbMultiPurposeLocatorLevel: INT8;
 let gbMultiPurposeLocatorCycles: INT8;
 
-function BeginMultiPurposeLocator(sGridNo: INT16, bLevel: INT8, fSlideTo: BOOLEAN): void {
+function BeginMultiPurposeLocator(sGridNo: INT16, bLevel: INT8, fSlideTo: boolean): void {
   guiMultiPurposeLocatorLastUpdate = 0;
   gbMultiPurposeLocatorCycles = 0;
   gbMultiPurposeLocatorFrame = 0;
-  gfMultipurposeLocatorOn = TRUE;
+  gfMultipurposeLocatorOn = true;
 
   gsMultiPurposeLocatorGridNo = sGridNo;
   gbMultiPurposeLocatorLevel = bLevel;
@@ -3050,7 +3050,7 @@ function BeginMultiPurposeLocator(sGridNo: INT16, bLevel: INT8, fSlideTo: BOOLEA
     gTacticalStatus.sSlideReason = NOBODY;
 
     // Plot new path!
-    gfPlotNewMovement = TRUE;
+    gfPlotNewMovement = true;
   }
 }
 
@@ -3077,7 +3077,7 @@ function HandleMultiPurposeLocator(): void {
     }
 
     if (gbMultiPurposeLocatorCycles == 8) {
-      gfMultipurposeLocatorOn = FALSE;
+      gfMultipurposeLocatorOn = false;
     }
   }
 }

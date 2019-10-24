@@ -142,7 +142,7 @@ let gusShadeLevels: UINT16[][] /* [16][3] */ = [
 ];
 
 // Set this true if you want the shadetables to be loaded from the text file.
-let gfLoadShadeTablesFromTextFile: BOOLEAN = FALSE;
+let gfLoadShadeTablesFromTextFile: boolean = false;
 
 function LoadShadeTablesFromTextFile(): void {
   let fp: Pointer<FILE>;
@@ -175,7 +175,7 @@ let gNodesAdded: UINT32 = 0;
         Initializes the lighting system.
 
 ***************************************************************************************/
-function InitLightingSystem(): BOOLEAN {
+function InitLightingSystem(): boolean {
   let uiCount: UINT32;
 
   LoadShadeTablesFromTextFile();
@@ -195,14 +195,14 @@ function InitLightingSystem(): BOOLEAN {
 
   if (LightLoad("TRANSLUC.LHT") != 0) {
     DebugMsg(TOPIC_GAME, DBG_LEVEL_0, String("Failed to load translucency template"));
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 // THIS MUST BE CALLED ONCE ALL SURFACE VIDEO OBJECTS HAVE BEEN LOADED!
-function SetDefaultWorldLightingColors(): BOOLEAN {
+function SetDefaultWorldLightingColors(): boolean {
   let pPal: SGPPaletteEntry[] /* [2] */;
 
   pPal[0].peRed = 0;
@@ -214,7 +214,7 @@ function SetDefaultWorldLightingColors(): BOOLEAN {
 
   LightSetColors(addressof(pPal[0]), 1);
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -224,7 +224,7 @@ function SetDefaultWorldLightingColors(): BOOLEAN {
         memory attached to them freed up.
 
 ***************************************************************************************/
-function ShutdownLightingSystem(): BOOLEAN {
+function ShutdownLightingSystem(): boolean {
   let uiCount: UINT32;
 
   // free up all allocated light nodes
@@ -232,7 +232,7 @@ function ShutdownLightingSystem(): BOOLEAN {
     if (pLightList[uiCount] != null)
       LightDelete(uiCount);
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -241,7 +241,7 @@ function ShutdownLightingSystem(): BOOLEAN {
         Removes all currently active lights, without undrawing them.
 
 ***************************************************************************************/
-function LightReset(): BOOLEAN {
+function LightReset(): boolean {
   let uiCount: UINT32;
 
   // reset all light lists
@@ -255,7 +255,7 @@ function LightReset(): BOOLEAN {
 
   if (LightLoad("TRANSLUC.LHT") != 0) {
     DebugMsg(TOPIC_GAME, DBG_LEVEL_0, String("Failed to load translucency template"));
-    return FALSE;
+    return false;
   }
 
   // Loop through mercs and reset light value
@@ -263,7 +263,7 @@ function LightReset(): BOOLEAN {
     MercPtrs[uiCount].value.iLight = -1;
   }
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -384,7 +384,7 @@ function LightInsertRayNode(iLight: INT32, usIndex: UINT16, iX: INT16, iY: INT16
         Returns TRUE/FALSE if the tile at the specified tile number can block light.
 
 ***************************************************************************************/
-function LightTileBlocked(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOOLEAN {
+function LightTileBlocked(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): boolean {
   let usTileNo: UINT16;
   let usSrcTileNo: UINT16;
 
@@ -394,15 +394,15 @@ function LightTileBlocked(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
   usSrcTileNo = MAPROWCOLTOPOS(iSrcY, iSrcX);
 
   if (usTileNo >= NOWHERE) {
-    return FALSE;
+    return false;
   }
 
   if (usSrcTileNo >= NOWHERE) {
-    return FALSE;
+    return false;
   }
 
   if (gpWorldLevelData[usTileNo].sHeight > gpWorldLevelData[usSrcTileNo].sHeight)
-    return TRUE;
+    return true;
   {
     let usTileNo: UINT16;
     let pStruct: Pointer<LEVELNODE>;
@@ -413,7 +413,7 @@ function LightTileBlocked(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
     if (pStruct != null) {
       // IF WE ARE A WINDOW, DO NOT BLOCK!
       if (FindStructure(usTileNo, STRUCTURE_WALLNWINDOW) != null) {
-        return FALSE;
+        return false;
       }
     }
   }
@@ -427,7 +427,7 @@ function LightTileBlocked(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
         Returns TRUE/FALSE if the tile at the specified coordinates contains a wall.
 
 ***************************************************************************************/
-function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOOLEAN {
+function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): boolean {
   // LEVELNODE *pStruct;
   // UINT32 uiType;
   let usTileNo: UINT16;
@@ -443,7 +443,7 @@ function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
   usSrcTileNo = MAPROWCOLTOPOS(iSrcY, iSrcX);
 
   if (usTileNo == usSrcTileNo) {
-    return FALSE;
+    return false;
   }
 
   // if ( usTileNo == 10125 || usTileNo == 10126 )
@@ -452,11 +452,11 @@ function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
   //}
 
   if (usTileNo >= NOWHERE) {
-    return FALSE;
+    return false;
   }
 
   if (usSrcTileNo >= NOWHERE) {
-    return FALSE;
+    return false;
   }
 
   // Get direction
@@ -470,18 +470,18 @@ function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
   ubTravelCost = gubWorldMovementCosts[usTileNo][bDirection][0];
 
   if (ubTravelCost == TRAVELCOST_WALL) {
-    return TRUE;
+    return true;
   }
 
   if (IS_TRAVELCOST_DOOR(ubTravelCost)) {
-    ubTravelCost = DoorTravelCost(null, usTileNo, ubTravelCost, TRUE, null);
+    ubTravelCost = DoorTravelCost(null, usTileNo, ubTravelCost, true, null);
 
     if (ubTravelCost == TRAVELCOST_OBSTACLE || ubTravelCost == TRAVELCOST_DOOR) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 /****************************************************************************************
@@ -490,7 +490,7 @@ function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
         Removes a light template from the list, and frees up the associated node memory.
 
 ***************************************************************************************/
-function LightDelete(iLight: INT32): BOOLEAN {
+function LightDelete(iLight: INT32): boolean {
   if (pLightList[iLight] != null) {
     if (pLightList[iLight] != null) {
       MemFree(pLightList[iLight]);
@@ -510,9 +510,9 @@ function LightDelete(iLight: INT32): BOOLEAN {
     usTemplateSize[iLight] = 0;
     usRaySize[iLight] = 0;
 
-    return TRUE;
+    return true;
   } else
-    return FALSE;
+    return false;
 }
 
 /****************************************************************************************
@@ -602,7 +602,7 @@ function LightTrueLevel(sGridNo: INT16, bLevel: INT8): UINT8 {
                 Does the addition of light values to individual LEVELNODEs in the world tile list.
 
 ***************************************************************************************/
-function LightAddTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeAdd: UINT8, fFake: BOOLEAN): void {
+function LightAddTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeAdd: UINT8, fFake: boolean): void {
   let sSum: INT16;
 
   pNode.value.ubSumLights += ubShadeAdd;
@@ -627,7 +627,7 @@ function LightAddTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShad
                 Does the subtraction of light values to individual LEVELNODEs in the world tile list.
 
 ***************************************************************************************/
-function LightSubtractTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeSubtract: UINT8, fFake: BOOLEAN): void {
+function LightSubtractTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeSubtract: UINT8, fFake: boolean): void {
   let sSum: INT16;
 
   if (ubShadeSubtract > pNode.value.ubSumLights) {
@@ -660,7 +660,7 @@ function LightSubtractTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, u
                 Adds a specified amount of light to all objects on a given tile.
 
 ***************************************************************************************/
-function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16, ubShade: UINT8, uiFlags: UINT32, fOnlyWalls: BOOLEAN): BOOLEAN {
+function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16, ubShade: UINT8, uiFlags: UINT32, fOnlyWalls: boolean): boolean {
   let pLand: Pointer<LEVELNODE>;
   let pStruct: Pointer<LEVELNODE>;
   let pObject: Pointer<LEVELNODE>;
@@ -669,15 +669,15 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
   let pOnRoof: Pointer<LEVELNODE>;
   let ubShadeAdd: UINT8;
   let uiTile: UINT32;
-  let fLitWall: BOOLEAN = FALSE;
-  let fFake: BOOLEAN;
+  let fLitWall: boolean = false;
+  let fFake: boolean;
 
   Assert(gpWorldLevelData != null);
 
   uiTile = MAPROWCOLTOPOS(iY, iX);
 
   if (uiTile >= NOWHERE) {
-    return FALSE;
+    return false;
   }
 
   gpWorldLevelData[uiTile].uiFlags |= MAPELEMENT_REDRAW;
@@ -688,9 +688,9 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
   ubShadeAdd = ubShade;
 
   if (uiFlags & LIGHT_FAKE) {
-    fFake = TRUE;
+    fFake = true;
   } else {
-    fFake = FALSE;
+    fFake = false;
   }
 
   if (!(uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
@@ -699,23 +699,23 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
       if (pStruct.value.usIndex < Enum312.NUMBEROFTILES) {
         if ((gTileDatabase[pStruct.value.usIndex].fType != Enum313.FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
           if ((uiFlags & LIGHT_IGNORE_WALLS) || gfCaves)
-            LightAddTileNode(pStruct, uiLightType, ubShadeAdd, FALSE);
+            LightAddTileNode(pStruct, uiLightType, ubShadeAdd, false);
           else if (LightIlluminateWall(iSrcX, iSrcY, iX, iY, pStruct)) {
             if (LightTileHasWall(iSrcX, iSrcY, iX, iY))
-              fLitWall = TRUE;
+              fLitWall = true;
 
             // ATE: Limit shade for walls if in caves
             if (fLitWall && gfCaves) {
-              LightAddTileNode(pStruct, uiLightType, __min(ubShadeAdd, (SHADE_MAX + 5)), FALSE);
+              LightAddTileNode(pStruct, uiLightType, __min(ubShadeAdd, (SHADE_MAX + 5)), false);
             } else if (fLitWall) {
-              LightAddTileNode(pStruct, uiLightType, ubShadeAdd, FALSE);
+              LightAddTileNode(pStruct, uiLightType, ubShadeAdd, false);
             } else if (!fOnlyWalls) {
-              LightAddTileNode(pStruct, uiLightType, ubShadeAdd, FALSE);
+              LightAddTileNode(pStruct, uiLightType, ubShadeAdd, false);
             }
           }
         }
       } else {
-        LightAddTileNode(pStruct, uiLightType, ubShadeAdd, FALSE);
+        LightAddTileNode(pStruct, uiLightType, ubShadeAdd, false);
       }
       pStruct = pStruct.value.pNext;
     }
@@ -735,7 +735,7 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
       pObject = gpWorldLevelData[uiTile].pObjectHead;
       while (pObject != null) {
         if (pObject.value.usIndex < Enum312.NUMBEROFTILES) {
-          LightAddTileNode(pObject, uiLightType, ubShadeAdd, FALSE);
+          LightAddTileNode(pObject, uiLightType, ubShadeAdd, false);
         }
         pObject = pObject.value.pNext;
       }
@@ -745,7 +745,7 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
 
       pMerc = gpWorldLevelData[uiTile].pMercHead;
       while (pMerc != null) {
-        LightAddTileNode(pMerc, uiLightType, ubShadeAdd, FALSE);
+        LightAddTileNode(pMerc, uiLightType, ubShadeAdd, false);
         pMerc = pMerc.value.pNext;
       }
     }
@@ -762,12 +762,12 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
 
     pOnRoof = gpWorldLevelData[uiTile].pOnRoofHead;
     while (pOnRoof != null) {
-      LightAddTileNode(pOnRoof, uiLightType, ubShadeAdd, FALSE);
+      LightAddTileNode(pOnRoof, uiLightType, ubShadeAdd, false);
 
       pOnRoof = pOnRoof.value.pNext;
     }
   }
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -776,7 +776,7 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
                 Subtracts a specified amount of light to a given tile.
 
 ***************************************************************************************/
-function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16, ubShade: UINT8, uiFlags: UINT32, fOnlyWalls: BOOLEAN): BOOLEAN {
+function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16, ubShade: UINT8, uiFlags: UINT32, fOnlyWalls: boolean): boolean {
   let pLand: Pointer<LEVELNODE>;
   let pStruct: Pointer<LEVELNODE>;
   let pObject: Pointer<LEVELNODE>;
@@ -785,15 +785,15 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
   let pOnRoof: Pointer<LEVELNODE>;
   let ubShadeSubtract: UINT8;
   let uiTile: UINT32;
-  let fLitWall: BOOLEAN = FALSE;
-  let fFake: BOOLEAN; // only passed in to land and roof layers; others get fed FALSE
+  let fLitWall: boolean = false;
+  let fFake: boolean; // only passed in to land and roof layers; others get fed FALSE
 
   Assert(gpWorldLevelData != null);
 
   uiTile = MAPROWCOLTOPOS(iY, iX);
 
   if (uiTile >= NOWHERE) {
-    return FALSE;
+    return false;
   }
 
   gpWorldLevelData[uiTile].uiFlags |= MAPELEMENT_REDRAW;
@@ -804,9 +804,9 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
   ubShadeSubtract = ubShade;
 
   if (uiFlags & LIGHT_FAKE) {
-    fFake = TRUE;
+    fFake = true;
   } else {
-    fFake = FALSE;
+    fFake = false;
   }
 
   if (!(uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
@@ -815,23 +815,23 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
       if (pStruct.value.usIndex < Enum312.NUMBEROFTILES) {
         if ((gTileDatabase[pStruct.value.usIndex].fType != Enum313.FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
           if ((uiFlags & LIGHT_IGNORE_WALLS) || gfCaves)
-            LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, FALSE);
+            LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, false);
           else if (LightIlluminateWall(iSrcX, iSrcY, iX, iY, pStruct)) {
             if (LightTileHasWall(iSrcX, iSrcY, iX, iY))
-              fLitWall = TRUE;
+              fLitWall = true;
 
             // ATE: Limit shade for walls if in caves
             if (fLitWall && gfCaves) {
-              LightSubtractTileNode(pStruct, uiLightType, __max((ubShadeSubtract - 5), 0), FALSE);
+              LightSubtractTileNode(pStruct, uiLightType, __max((ubShadeSubtract - 5), 0), false);
             } else if (fLitWall) {
-              LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, FALSE);
+              LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, false);
             } else if (!fOnlyWalls) {
-              LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, FALSE);
+              LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, false);
             }
           }
         }
       } else {
-        LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, FALSE);
+        LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, false);
       }
       pStruct = pStruct.value.pNext;
     }
@@ -851,7 +851,7 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
       pObject = gpWorldLevelData[uiTile].pObjectHead;
       while (pObject != null) {
         if (pObject.value.usIndex < Enum312.NUMBEROFTILES) {
-          LightSubtractTileNode(pObject, uiLightType, ubShadeSubtract, FALSE);
+          LightSubtractTileNode(pObject, uiLightType, ubShadeSubtract, false);
         }
         pObject = pObject.value.pNext;
       }
@@ -861,7 +861,7 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
 
       pMerc = gpWorldLevelData[uiTile].pMercHead;
       while (pMerc != null) {
-        LightSubtractTileNode(pMerc, uiLightType, ubShadeSubtract, FALSE);
+        LightSubtractTileNode(pMerc, uiLightType, ubShadeSubtract, false);
         pMerc = pMerc.value.pNext;
       }
     }
@@ -879,13 +879,13 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
     pOnRoof = gpWorldLevelData[uiTile].pOnRoofHead;
     while (pOnRoof != null) {
       if (pOnRoof.value.usIndex < Enum312.NUMBEROFTILES) {
-        LightSubtractTileNode(pOnRoof, uiLightType, ubShadeSubtract, FALSE);
+        LightSubtractTileNode(pOnRoof, uiLightType, ubShadeSubtract, false);
       }
       pOnRoof = pOnRoof.value.pNext;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -911,7 +911,7 @@ function LightSetNaturalTileNode(pNode: Pointer<LEVELNODE>, ubShade: UINT8): voi
         This is the light value a tile has with no artificial lighting affecting it.
 
 ***************************************************************************************/
-function LightSetNaturalTile(iX: INT16, iY: INT16, ubShade: UINT8): BOOLEAN {
+function LightSetNaturalTile(iX: INT16, iY: INT16, ubShade: UINT8): boolean {
   let pLand: Pointer<LEVELNODE>;
   let pStruct: Pointer<LEVELNODE>;
   let pObject: Pointer<LEVELNODE>;
@@ -973,7 +973,7 @@ function LightSetNaturalTile(iX: INT16, iY: INT16, ubShade: UINT8): BOOLEAN {
     LightSetNaturalTileNode(pMerc, ubShade);
     pMerc = pMerc.value.pNext;
   }
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -997,7 +997,7 @@ function LightResetTileNode(pNode: Pointer<LEVELNODE>): void {
         for that tile.
 
 ***************************************************************************************/
-function LightResetTile(iX: INT16, iY: INT16): BOOLEAN {
+function LightResetTile(iX: INT16, iY: INT16): boolean {
   let pLand: Pointer<LEVELNODE>;
   let pStruct: Pointer<LEVELNODE>;
   let pObject: Pointer<LEVELNODE>;
@@ -1057,7 +1057,7 @@ function LightResetTile(iX: INT16, iY: INT16): BOOLEAN {
     pMerc = pMerc.value.pNext;
   }
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1066,7 +1066,7 @@ function LightResetTile(iX: INT16, iY: INT16): BOOLEAN {
                 Resets all tiles on the map to their baseline values.
 
 ***************************************************************************************/
-function LightResetAllTiles(): BOOLEAN {
+function LightResetAllTiles(): boolean {
   let iCountY: INT16;
   let iCountX: INT16;
 
@@ -1074,7 +1074,7 @@ function LightResetAllTiles(): BOOLEAN {
     for (iCountX = 0; iCountX < WORLD_COLS; iCountX++)
       LightResetTile(iCountX, iCountY);
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1083,7 +1083,7 @@ function LightResetAllTiles(): BOOLEAN {
                 Sets the current light value of all objects on a given tile to the specified value.
 
 ***************************************************************************************/
-function LightSetTile(iX: INT16, iY: INT16, ubShade: UINT8, uiLightType: UINT32): BOOLEAN {
+function LightSetTile(iX: INT16, iY: INT16, ubShade: UINT8, uiLightType: UINT32): boolean {
   /*LEVELNODE *pLand, *pStruct, *pObject, *pRoof, *pOnRoof, *pTopmost, *pFog;
   UINT32 uiIndex;
 
@@ -1148,7 +1148,7 @@ function LightSetTile(iX: INT16, iY: INT16, ubShade: UINT8, uiLightType: UINT32)
                   pTopmost->ubShadeLevel = ubShade;
                   pTopmost=pTopmost->pNext;
           } */
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1168,8 +1168,8 @@ function LightGetLastNode(iLight: INT32): UINT16 {
                 Creates a new node, and adds it to the end of a light list.
 
 ***************************************************************************************/
-function LightAddNode(iLight: INT32, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT16, iY: INT16, ubIntensity: UINT8, uiFlags: UINT16): BOOLEAN {
-  let fDuplicate: BOOLEAN = FALSE;
+function LightAddNode(iLight: INT32, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT16, iY: INT16, ubIntensity: UINT8, uiFlags: UINT16): boolean {
+  let fDuplicate: boolean = false;
   let dDistance: DOUBLE;
   let ubShade: UINT8;
   let iLightDecay: INT32;
@@ -1188,7 +1188,7 @@ function LightAddNode(iLight: INT32, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT
   iY /= DISTANCE_SCALE;
 
   LightAddRayNode(iLight, iX, iY, ubShade, uiFlags);
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1197,7 +1197,7 @@ function LightAddNode(iLight: INT32, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT
                 Creates a new node, and inserts it after the specified node.
 
 ***************************************************************************************/
-function LightInsertNode(iLight: INT32, usLightIns: UINT16, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT16, iY: INT16, ubIntensity: UINT8, uiFlags: UINT16): BOOLEAN {
+function LightInsertNode(iLight: INT32, usLightIns: UINT16, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT16, iY: INT16, ubIntensity: UINT8, uiFlags: UINT16): boolean {
   let dDistance: DOUBLE;
   let ubShade: UINT8;
   let iLightDecay: INT32;
@@ -1217,7 +1217,7 @@ function LightInsertNode(iLight: INT32, usLightIns: UINT16, iHotSpotX: INT16, iH
 
   LightInsertRayNode(iLight, usLightIns, iX, iY, ubShade, uiFlags);
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1244,7 +1244,7 @@ function LightFindNextRay(iLight: INT32, usIndex: UINT16): UINT16 {
         light list.
 
 ***************************************************************************************/
-function LightCastRay(iLight: INT32, iStartX: INT16, iStartY: INT16, iEndPointX: INT16, iEndPointY: INT16, ubStartIntens: UINT8, ubEndIntens: UINT8): BOOLEAN {
+function LightCastRay(iLight: INT32, iStartX: INT16, iStartY: INT16, iEndPointX: INT16, iEndPointY: INT16, ubStartIntens: UINT8, ubEndIntens: UINT8): boolean {
   let AdjUp: INT16;
   let AdjDown: INT16;
   let ErrorTerm: INT16;
@@ -1263,7 +1263,7 @@ function LightCastRay(iLight: INT32, iStartX: INT16, iStartY: INT16, iEndPointX:
   let iEndX: INT16;
   let usCurNode: UINT16 = 0;
   let usFlags: UINT16 = 0;
-  let fInsertNodes: BOOLEAN = FALSE;
+  let fInsertNodes: boolean = false;
 
   if ((iEndPointX > 0) && (iEndPointY > 0))
     usFlags = LIGHT_BACKLIGHT;
@@ -1275,7 +1275,7 @@ function LightCastRay(iLight: INT32, iStartX: INT16, iStartY: INT16, iEndPointX:
     iEndX = iStartX;
     iYPos = iEndPointY;
     iEndY = iStartY;
-    fInsertNodes = TRUE;
+    fInsertNodes = true;
   } else {
     iXPos = iStartX;
     iEndX = iEndPointX;
@@ -1296,7 +1296,7 @@ going horizontally */
 
   // Check for 0 length ray
   if ((XDelta == 0) && (YDelta == 0))
-    return FALSE;
+    return false;
 
   // DebugMsg(TOPIC_GAME, DBG_LEVEL_0, String("Drawing (%d,%d) to (%d,%d)", iXPos, iYPos, iEndX, iEndY));
   LightAddNode(iLight, 32767, 32767, 32767, 32767, 0, LIGHT_NEW_RAY);
@@ -1318,7 +1318,7 @@ and to avoid nasty boundary conditions and division by 0 */
         iYPos++;
       }
     }
-    return TRUE;
+    return true;
   }
   if (YDelta == 0) {
     /* Horizontal line */
@@ -1333,7 +1333,7 @@ and to avoid nasty boundary conditions and division by 0 */
         iXPos += XAdvance;
       }
     }
-    return TRUE;
+    return true;
   }
   if (XDelta == YDelta) {
     /* Diagonal line */
@@ -1350,7 +1350,7 @@ and to avoid nasty boundary conditions and division by 0 */
         iYPos++;
       }
     }
-    return TRUE;
+    return true;
   }
 
   /* Determine whether the line is X or Y major, and handle accordingly */
@@ -1535,7 +1535,7 @@ and to avoid nasty boundary conditions and division by 0 */
     }
     iXPos += XAdvance;
   }
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1544,7 +1544,7 @@ and to avoid nasty boundary conditions and division by 0 */
                 Creates an elliptical light, taking two radii.
 
 ***************************************************************************************/
-function LightGenerateElliptical(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: INT16): BOOLEAN {
+function LightGenerateElliptical(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: INT16): boolean {
   let iX: INT16;
   let iY: INT16;
   let WorkingX: INT32;
@@ -1624,7 +1624,7 @@ function LightGenerateElliptical(iLight: INT32, iIntensity: UINT8, iA: INT16, iB
     LightCastRay(iLight, iX, iY, (iX - WorkingX), (iY + WorkingY), iIntensity, 1);
   }
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1633,7 +1633,7 @@ function LightGenerateElliptical(iLight: INT32, iIntensity: UINT8, iA: INT16, iB
                 Creates an square light, taking two radii.
 
 ***************************************************************************************/
-function LightGenerateSquare(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: INT16): BOOLEAN {
+function LightGenerateSquare(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: INT16): boolean {
   let iX: INT16;
   let iY: INT16;
 
@@ -1661,7 +1661,7 @@ function LightGenerateSquare(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: IN
   for(iX=0+iA; iX >= 0-iA; iX--)
           LightCastRay(iLight, iX, 0, iX, (INT16)(0-iB), iIntensity, 1); */
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1670,8 +1670,8 @@ function LightGenerateSquare(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: IN
                 Creates a directional light.
 
 ***************************************************************************************/
-function LightGenerateBeam(iLight: INT32, iIntensity: UINT8, iLength: INT16, iRadius: INT16, iDirection: INT16): BOOLEAN {
-  return FALSE;
+function LightGenerateBeam(iLight: INT32, iIntensity: UINT8, iLength: INT16, iRadius: INT16, iDirection: INT16): boolean {
+  return false;
 }
 
 /****************************************************************************************
@@ -1680,7 +1680,7 @@ function LightGenerateBeam(iLight: INT32, iIntensity: UINT8, iLength: INT16, iRa
                 Sets the current and natural light settings for all tiles in the world.
 
 ***************************************************************************************/
-function LightSetBaseLevel(iIntensity: UINT8): BOOLEAN {
+function LightSetBaseLevel(iIntensity: UINT8): boolean {
   let iCountY: INT16;
   let iCountX: INT16;
   let cnt: UINT32;
@@ -1709,11 +1709,11 @@ function LightSetBaseLevel(iIntensity: UINT8): BOOLEAN {
   LightSpriteRenderAll();
 
   if (iIntensity >= LIGHT_DUSK_CUTOFF)
-    RenderSetShadows(FALSE);
+    RenderSetShadows(false);
   else
-    RenderSetShadows(TRUE);
+    RenderSetShadows(true);
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1722,7 +1722,7 @@ function LightSetBaseLevel(iIntensity: UINT8): BOOLEAN {
                 Adds a light value to all the tiles in the world
 
 ***************************************************************************************/
-function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN {
+function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): boolean {
   let iCountY: INT16;
   let iCountX: INT16;
 
@@ -1730,14 +1730,14 @@ function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN {
 
   for (iCountY = 0; iCountY < WORLD_ROWS; iCountY++)
     for (iCountX = 0; iCountX < WORLD_COLS; iCountX++)
-      LightAddTile(uiLightType, iCountX, iCountY, iCountX, iCountY, iIntensity, LIGHT_IGNORE_WALLS | LIGHT_EVERYTHING, FALSE);
+      LightAddTile(uiLightType, iCountX, iCountY, iCountX, iCountY, iIntensity, LIGHT_IGNORE_WALLS | LIGHT_EVERYTHING, false);
 
   if (ubAmbientLightLevel >= LIGHT_DUSK_CUTOFF)
-    RenderSetShadows(FALSE);
+    RenderSetShadows(false);
   else
-    RenderSetShadows(TRUE);
+    RenderSetShadows(true);
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1746,7 +1746,7 @@ function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN {
                 Sets the current and natural light settings for all tiles in the world.
 
 ***************************************************************************************/
-function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN {
+function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): boolean {
   let iCountY: INT16;
   let iCountX: INT16;
 
@@ -1754,14 +1754,14 @@ function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN
 
   for (iCountY = 0; iCountY < WORLD_ROWS; iCountY++)
     for (iCountX = 0; iCountX < WORLD_COLS; iCountX++)
-      LightSubtractTile(uiLightType, iCountX, iCountY, iCountX, iCountY, iIntensity, LIGHT_IGNORE_WALLS | LIGHT_EVERYTHING, FALSE);
+      LightSubtractTile(uiLightType, iCountX, iCountY, iCountX, iCountY, iIntensity, LIGHT_IGNORE_WALLS | LIGHT_EVERYTHING, false);
 
   if (ubAmbientLightLevel >= LIGHT_DUSK_CUTOFF)
-    RenderSetShadows(FALSE);
+    RenderSetShadows(false);
   else
-    RenderSetShadows(TRUE);
+    RenderSetShadows(true);
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1835,10 +1835,10 @@ function LightCreateElliptical(ubIntensity: UINT8, iRadius1: INT16, iRadius2: IN
                 Renders a light template at the specified X,Y coordinates.
 
 ***************************************************************************************/
-function LightIlluminateWall(iSourceX: INT16, iSourceY: INT16, iTileX: INT16, iTileY: INT16, pStruct: Pointer<LEVELNODE>): BOOLEAN {
+function LightIlluminateWall(iSourceX: INT16, iSourceY: INT16, iTileX: INT16, iTileY: INT16, pStruct: Pointer<LEVELNODE>): boolean {
   //	return( LightTileHasWall( iSourceX, iSourceY, iTileX, iTileY ) );
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -1847,20 +1847,20 @@ function LightIlluminateWall(iSourceX: INT16, iSourceY: INT16, iTileX: INT16, iT
                 Renders a light template at the specified X,Y coordinates.
 
 ***************************************************************************************/
-function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): BOOLEAN {
+function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   let uiCount: UINT16;
   let usNodeIndex: UINT16;
   let uiFlags: UINT32;
   let iOldX: INT32;
   let iOldY: INT32;
-  let fBlocked: BOOLEAN = FALSE;
-  let fOnlyWalls: BOOLEAN;
+  let fBlocked: boolean = false;
+  let fOnlyWalls: boolean;
 
   // MAP_ELEMENT * pMapElement;
 
   if (pLightList[iLight] == null)
-    return FALSE;
+    return false;
 
   // clear out all the flags
   for (uiCount = 0; uiCount < usTemplateSize[iLight]; uiCount++) {
@@ -1899,8 +1899,8 @@ function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiS
     usNodeIndex = (pLightRayList[iLight] + uiCount).value;
 
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
-      fBlocked = FALSE;
-      fOnlyWalls = FALSE;
+      fBlocked = false;
+      fOnlyWalls = false;
 
       pLight = pLightList[iLight] + (usNodeIndex & (~LIGHT_BACKLIGHT));
 
@@ -1908,8 +1908,8 @@ function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiS
         if (LightTileBlocked(iOldX, iOldY, (iX + pLight.value.iDX), (iY + pLight.value.iDY))) {
           uiCount = LightFindNextRay(iLight, uiCount);
 
-          fOnlyWalls = TRUE;
-          fBlocked = TRUE;
+          fOnlyWalls = true;
+          fBlocked = true;
         }
       }
 
@@ -1938,16 +1938,16 @@ function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiS
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
+function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): boolean {
   let pStruct: Pointer<LEVELNODE>;
   let uiTile: UINT32;
-  let fRerender: BOOLEAN = FALSE;
-  let fHitWall: BOOLEAN = FALSE;
-  let fDoRightWalls: BOOLEAN = TRUE;
-  let fDoLeftWalls: BOOLEAN = TRUE;
+  let fRerender: boolean = false;
+  let fHitWall: boolean = false;
+  let fDoRightWalls: boolean = true;
+  let fDoLeftWalls: boolean = true;
   let TileElem: Pointer<TILE_ELEMENT>;
 
   Assert(gpWorldLevelData != null);
@@ -1955,14 +1955,14 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
   uiTile = MAPROWCOLTOPOS(sY, sX);
 
   if (sX < sSrcX)
-    fDoRightWalls = FALSE;
+    fDoRightWalls = false;
 
   if (sY < sSrcY)
-    fDoLeftWalls = FALSE;
+    fDoLeftWalls = false;
 
   // IF A FENCE, RETURN FALSE
   if (IsFencePresentAtGridno(uiTile)) {
-    return FALSE;
+    return false;
   }
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
@@ -1972,13 +1972,13 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
       case Enum314.INSIDE_TOP_RIGHT:
       case Enum314.OUTSIDE_TOP_RIGHT:
         if (!fDoRightWalls)
-          fDoLeftWalls = FALSE;
+          fDoLeftWalls = false;
         break;
 
       case Enum314.INSIDE_TOP_LEFT:
       case Enum314.OUTSIDE_TOP_LEFT:
         if (!fDoLeftWalls)
-          fDoRightWalls = FALSE;
+          fDoRightWalls = false;
         break;
     }
     pStruct = pStruct.value.pNext;
@@ -1993,19 +1993,19 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
 
       case Enum314.INSIDE_TOP_RIGHT:
       case Enum314.OUTSIDE_TOP_RIGHT:
-        fHitWall = TRUE;
+        fHitWall = true;
         if ((fDoRightWalls) && (sX >= sSrcX)) {
           pStruct.value.uiFlags |= LEVELNODE_REVEAL;
-          fRerender = TRUE;
+          fRerender = true;
         }
         break;
 
       case Enum314.INSIDE_TOP_LEFT:
       case Enum314.OUTSIDE_TOP_LEFT:
-        fHitWall = TRUE;
+        fHitWall = true;
         if ((fDoLeftWalls) && (sY >= sSrcY)) {
           pStruct.value.uiFlags |= LEVELNODE_REVEAL;
-          fRerender = TRUE;
+          fRerender = true;
         }
         break;
     }
@@ -2018,13 +2018,13 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
   return fHitWall;
 }
 
-function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
+function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): boolean {
   let pStruct: Pointer<LEVELNODE>;
   let uiTile: UINT32;
-  let fRerender: BOOLEAN = FALSE;
-  let fHitWall: BOOLEAN = FALSE;
-  let fDoRightWalls: BOOLEAN = TRUE;
-  let fDoLeftWalls: BOOLEAN = TRUE;
+  let fRerender: boolean = false;
+  let fHitWall: boolean = false;
+  let fDoRightWalls: boolean = true;
+  let fDoLeftWalls: boolean = true;
   let TileElem: Pointer<TILE_ELEMENT>;
 
   Assert(gpWorldLevelData != null);
@@ -2032,10 +2032,10 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
   uiTile = MAPROWCOLTOPOS(sY, sX);
 
   if (sX < sSrcX)
-    fDoRightWalls = FALSE;
+    fDoRightWalls = false;
 
   if (sY < sSrcY)
-    fDoLeftWalls = FALSE;
+    fDoLeftWalls = false;
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
   while (pStruct != null) {
@@ -2044,13 +2044,13 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
       case Enum314.INSIDE_TOP_RIGHT:
       case Enum314.OUTSIDE_TOP_RIGHT:
         if (!fDoRightWalls)
-          fDoLeftWalls = FALSE;
+          fDoLeftWalls = false;
         break;
 
       case Enum314.INSIDE_TOP_LEFT:
       case Enum314.OUTSIDE_TOP_LEFT:
         if (!fDoLeftWalls)
-          fDoRightWalls = FALSE;
+          fDoRightWalls = false;
         break;
     }
     pStruct = pStruct.value.pNext;
@@ -2065,19 +2065,19 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
 
       case Enum314.INSIDE_TOP_RIGHT:
       case Enum314.OUTSIDE_TOP_RIGHT:
-        fHitWall = TRUE;
+        fHitWall = true;
         if ((fDoRightWalls) && (sX >= sSrcX)) {
           pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
-          fRerender = TRUE;
+          fRerender = true;
         }
         break;
 
       case Enum314.INSIDE_TOP_LEFT:
       case Enum314.OUTSIDE_TOP_LEFT:
-        fHitWall = TRUE;
+        fHitWall = true;
         if ((fDoLeftWalls) && (sY >= sSrcY)) {
           pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
-          fRerender = TRUE;
+          fRerender = true;
         }
         break;
     }
@@ -2096,12 +2096,12 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
                 Tags walls as being translucent using a light template.
 
 ***************************************************************************************/
-function CalcTranslucentWalls(iX: INT16, iY: INT16): BOOLEAN {
+function CalcTranslucentWalls(iX: INT16, iY: INT16): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   let uiCount: UINT16;
   let usNodeIndex: UINT16;
   if (pLightList[0] == null)
-    return FALSE;
+    return false;
   for (uiCount = 0; uiCount < usRaySize[0]; uiCount++) {
     usNodeIndex = (pLightRayList[0] + uiCount).value;
 
@@ -2116,16 +2116,16 @@ function CalcTranslucentWalls(iX: INT16, iY: INT16): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
+function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): boolean {
   let pStruct: Pointer<LEVELNODE>;
   let pLand: Pointer<LEVELNODE>;
   let uiTile: UINT32;
-  let fRerender: BOOLEAN = FALSE;
-  let fHitWall: BOOLEAN = FALSE;
-  let fThroughWall: BOOLEAN = FALSE;
+  let fRerender: boolean = false;
+  let fHitWall: boolean = false;
+  let fThroughWall: boolean = false;
   let TileElem: Pointer<TILE_ELEMENT>;
 
   Assert(gpWorldLevelData != null);
@@ -2134,7 +2134,7 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
   pStruct = gpWorldLevelData[uiTile].pStructHead;
 
   if ((sX < sSrcX) || (sY < sSrcY))
-    fThroughWall = TRUE;
+    fThroughWall = true;
 
   while (pStruct != null) {
     TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
@@ -2144,19 +2144,19 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
 
       case Enum314.INSIDE_TOP_RIGHT:
       case Enum314.OUTSIDE_TOP_RIGHT:
-        fHitWall = TRUE;
+        fHitWall = true;
         if (sX >= sSrcX) {
           pStruct.value.uiFlags |= LEVELNODE_REVEAL;
-          fRerender = TRUE;
+          fRerender = true;
         }
         break;
 
       case Enum314.INSIDE_TOP_LEFT:
       case Enum314.OUTSIDE_TOP_LEFT:
-        fHitWall = TRUE;
+        fHitWall = true;
         if (sY >= sSrcY) {
           pStruct.value.uiFlags |= LEVELNODE_REVEAL;
-          fRerender = TRUE;
+          fRerender = true;
         }
         break;
     }
@@ -2185,7 +2185,7 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
 each tile drawn to facilitate animating the drawing process for debugging.
 
 ***************************************************************************************/
-function LightShowRays(iX: INT16, iY: INT16, fReset: BOOLEAN): BOOLEAN {
+function LightShowRays(iX: INT16, iY: INT16, fReset: boolean): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   /* static */ let uiCount: UINT16 = 0;
   let usNodeIndex: UINT16;
@@ -2194,7 +2194,7 @@ function LightShowRays(iX: INT16, iY: INT16, fReset: BOOLEAN): BOOLEAN {
     uiCount = 0;
 
   if (pLightList[0] == null)
-    return FALSE;
+    return false;
 
   if (uiCount < usRaySize[0]) {
     usNodeIndex = (pLightRayList[0] + uiCount).value;
@@ -2209,9 +2209,9 @@ function LightShowRays(iX: INT16, iY: INT16, fReset: BOOLEAN): BOOLEAN {
     }
 
     uiCount++;
-    return TRUE;
+    return true;
   } else
-    return FALSE;
+    return false;
 }
 
 /****************************************************************************************
@@ -2220,12 +2220,12 @@ function LightShowRays(iX: INT16, iY: INT16, fReset: BOOLEAN): BOOLEAN {
         Removes the green from the tiles that was drawn to show the path of the rays.
 
 ***************************************************************************************/
-function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
+function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): boolean {
   let pStruct: Pointer<LEVELNODE>;
   let pLand: Pointer<LEVELNODE>;
   let uiTile: UINT32;
-  let fRerender: BOOLEAN = FALSE;
-  let fHitWall: BOOLEAN = FALSE;
+  let fRerender: boolean = false;
+  let fHitWall: boolean = false;
   let TileElem: Pointer<TILE_ELEMENT>;
 
   Assert(gpWorldLevelData != null);
@@ -2241,19 +2241,19 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
 
       case Enum314.INSIDE_TOP_RIGHT:
       case Enum314.OUTSIDE_TOP_RIGHT:
-        fHitWall = TRUE;
+        fHitWall = true;
         if (sX >= sSrcX) {
           pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
-          fRerender = TRUE;
+          fRerender = true;
         }
         break;
 
       case Enum314.INSIDE_TOP_LEFT:
       case Enum314.OUTSIDE_TOP_LEFT:
-        fHitWall = TRUE;
+        fHitWall = true;
         if (sY >= sSrcY) {
           pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
-          fRerender = TRUE;
+          fRerender = true;
         }
         break;
     }
@@ -2281,13 +2281,13 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
                 Hides walls that were revealed by CalcTranslucentWalls.
 
 ***************************************************************************************/
-function LightHideRays(iX: INT16, iY: INT16): BOOLEAN {
+function LightHideRays(iX: INT16, iY: INT16): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   let uiCount: UINT16;
   let usNodeIndex: UINT16;
 
   if (pLightList[0] == null)
-    return FALSE;
+    return false;
 
   for (uiCount = 0; uiCount < usRaySize[0]; uiCount++) {
     usNodeIndex = (pLightRayList[0] + uiCount).value;
@@ -2302,7 +2302,7 @@ function LightHideRays(iX: INT16, iY: INT16): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -2311,13 +2311,13 @@ function LightHideRays(iX: INT16, iY: INT16): BOOLEAN {
                 Hides walls that were revealed by CalcTranslucentWalls.
 
 ***************************************************************************************/
-function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): BOOLEAN {
+function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   let uiCount: UINT16;
   let usNodeIndex: UINT16;
 
   if (pLightList[0] == null)
-    return FALSE;
+    return false;
 
   for (uiCount = 0; uiCount < usRaySize[0]; uiCount++) {
     usNodeIndex = (pLightRayList[0] + uiCount).value;
@@ -2332,7 +2332,7 @@ function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -2340,12 +2340,12 @@ function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): BOOLEAN {
 
                 Makes all the near-side trees around a given coordinate translucent.
 ***************************************************************************************/
-function LightTranslucentTrees(iX: INT16, iY: INT16): BOOLEAN {
+function LightTranslucentTrees(iX: INT16, iY: INT16): boolean {
   let iCountX: INT32;
   let iCountY: INT32;
   let uiTile: UINT32;
   let pNode: Pointer<LEVELNODE>;
-  let fRerender: BOOLEAN = FALSE;
+  let fRerender: boolean = false;
   let fTileFlags: UINT32;
 
   for (iCountY = iY; iCountY < (iY + LIGHT_TREE_REVEAL); iCountY++)
@@ -2362,7 +2362,7 @@ function LightTranslucentTrees(iX: INT16, iY: INT16): BOOLEAN {
             gpWorldLevelData[uiTile].uiFlags |= MAPELEMENT_REDRAW;
           }
 
-          fRerender = TRUE;
+          fRerender = true;
         }
         pNode = pNode.value.pNext;
       }
@@ -2371,9 +2371,9 @@ function LightTranslucentTrees(iX: INT16, iY: INT16): BOOLEAN {
   if (fRerender) {
     // SetRenderFlags(RENDER_FLAG_MARKED);
     SetRenderFlags(RENDER_FLAG_FULL);
-    return TRUE;
+    return true;
   } else
-    return FALSE;
+    return false;
 }
 
 /****************************************************************************************
@@ -2381,12 +2381,12 @@ function LightTranslucentTrees(iX: INT16, iY: INT16): BOOLEAN {
 
                 Removes the translucency from any trees in the area.
 ***************************************************************************************/
-function LightHideTrees(iX: INT16, iY: INT16): BOOLEAN {
+function LightHideTrees(iX: INT16, iY: INT16): boolean {
   let iCountX: INT32;
   let iCountY: INT32;
   let uiTile: UINT32;
   let pNode: Pointer<LEVELNODE>;
-  let fRerender: BOOLEAN = FALSE;
+  let fRerender: boolean = false;
   let fTileFlags: UINT32;
 
   // Kris:  added map boundary checking!!!
@@ -2404,7 +2404,7 @@ function LightHideTrees(iX: INT16, iY: INT16): BOOLEAN {
             gpWorldLevelData[uiTile].uiFlags |= MAPELEMENT_REDRAW;
           }
 
-          fRerender = TRUE;
+          fRerender = true;
         }
         pNode = pNode.value.pNext;
       }
@@ -2413,9 +2413,9 @@ function LightHideTrees(iX: INT16, iY: INT16): BOOLEAN {
   if (fRerender) {
     // SetRenderFlags(RENDER_FLAG_MARKED);
     SetRenderFlags(RENDER_FLAG_FULL);
-    return TRUE;
+    return true;
   } else
-    return FALSE;
+    return false;
 }
 
 /****************************************************************************************
@@ -2424,18 +2424,18 @@ function LightHideTrees(iX: INT16, iY: INT16): BOOLEAN {
                 Reverts all tiles a given light affects to their natural light levels.
 
 ***************************************************************************************/
-function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): BOOLEAN {
+function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   let uiCount: UINT16;
   let usNodeIndex: UINT16;
   let uiFlags: UINT32;
   let iOldX: INT32;
   let iOldY: INT32;
-  let fBlocked: BOOLEAN = FALSE;
-  let fOnlyWalls: BOOLEAN;
+  let fBlocked: boolean = false;
+  let fOnlyWalls: boolean;
 
   if (pLightList[iLight] == null)
-    return FALSE;
+    return false;
 
   // clear out all the flags
   for (uiCount = 0; uiCount < usTemplateSize[iLight]; uiCount++) {
@@ -2449,8 +2449,8 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
   for (uiCount = 0; uiCount < usRaySize[iLight]; uiCount++) {
     usNodeIndex = (pLightRayList[iLight] + uiCount).value;
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
-      fBlocked = FALSE;
-      fOnlyWalls = FALSE;
+      fBlocked = false;
+      fOnlyWalls = false;
 
       pLight = pLightList[iLight] + (usNodeIndex & (~LIGHT_BACKLIGHT));
 
@@ -2458,8 +2458,8 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
         if (LightTileBlocked(iOldX, iOldY, (iX + pLight.value.iDX), (iY + pLight.value.iDY))) {
           uiCount = LightFindNextRay(iLight, uiCount);
 
-          fOnlyWalls = TRUE;
-          fBlocked = TRUE;
+          fOnlyWalls = true;
+          fBlocked = true;
         }
       }
 
@@ -2487,7 +2487,7 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -2497,7 +2497,7 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
         a light.
 
 ***************************************************************************************/
-function LightCalcRect(iLight: INT32): BOOLEAN {
+function LightCalcRect(iLight: INT32): boolean {
   let MaxRect: SGPRect;
   let sXValue: INT16;
   let sYValue: INT16;
@@ -2506,7 +2506,7 @@ function LightCalcRect(iLight: INT32): BOOLEAN {
   let pLight: Pointer<LIGHT_NODE>;
 
   if (pLightList[iLight] == null)
-    return FALSE;
+    return false;
 
   pLight = pLightList[iLight];
 
@@ -2550,7 +2550,7 @@ function LightCalcRect(iLight: INT32): BOOLEAN {
   LightXOffset[iLight] -= WORLD_TILE_X * 2;
   LightYOffset[iLight] -= WORLD_TILE_Y * 2;
 
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -2560,19 +2560,19 @@ function LightCalcRect(iLight: INT32): BOOLEAN {
         filename forces the system to save the light with the internal filename (recommended).
 
 ***************************************************************************************/
-function LightSave(iLight: INT32, pFilename: STR): BOOLEAN {
+function LightSave(iLight: INT32, pFilename: STR): boolean {
   let hFile: HWFILE;
   let pName: STR;
 
   if (pLightList[iLight] == null)
-    return FALSE;
+    return false;
   else {
     if (pFilename == null)
       pName = pLightNames[iLight];
     else
       pName = pFilename;
 
-    if ((hFile = FileOpen(pName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE)) != 0) {
+    if ((hFile = FileOpen(pName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false)) != 0) {
       FileWrite(hFile, addressof(usTemplateSize[iLight]), sizeof(UINT16), null);
       FileWrite(hFile, pLightList[iLight], sizeof(LIGHT_NODE) * usTemplateSize[iLight], null);
       FileWrite(hFile, addressof(usRaySize[iLight]), sizeof(UINT16), null);
@@ -2580,9 +2580,9 @@ function LightSave(iLight: INT32, pFilename: STR): BOOLEAN {
 
       FileClose(hFile);
     } else
-      return FALSE;
+      return false;
   }
-  return TRUE;
+  return true;
 }
 
 /****************************************************************************************
@@ -2601,7 +2601,7 @@ function LightLoad(pFilename: STR): INT32 {
   if ((iLight = LightGetFree()) == (-1))
     return -1;
   else {
-    if ((hFile = FileOpen(pFilename, FILE_ACCESS_READ, FALSE)) != 0) {
+    if ((hFile = FileOpen(pFilename, FILE_ACCESS_READ, false)) != 0) {
       FileRead(hFile, addressof(usTemplateSize[iLight]), sizeof(UINT16), null);
       if ((pLightList[iLight] = MemAlloc(usTemplateSize[iLight] * sizeof(LIGHT_NODE))) == null) {
         usTemplateSize[iLight] = 0;
@@ -2660,9 +2660,9 @@ function LightGetColors(pPal: Pointer<SGPPaletteEntry>): UINT8 {
         Sets the number of light colors, and the RGB value for each.
 
 ***************************************************************************************/
-let gfEditorForceRebuildAllColors: BOOLEAN = FALSE;
+let gfEditorForceRebuildAllColors: boolean = false;
 
-function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): BOOLEAN {
+function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): boolean {
   let sRed: INT16;
   let sGreen: INT16;
   let sBlue: INT16;
@@ -2673,7 +2673,7 @@ function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): BOO
   if (pPal[0].peRed != gpLightColors[0].peRed || pPal[0].peGreen != gpLightColors[0].peGreen || pPal[0].peBlue != gpLightColors[0].peBlue) {
     // Set the entire tileset database so that it reloads everything.  It has to because the
     // colors have changed.
-    SetAllNewTileSurfacesLoaded(TRUE);
+    SetAllNewTileSurfacesLoaded(true);
   }
 
   // before doing anything, get rid of all the old palettes
@@ -2714,7 +2714,7 @@ function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): BOO
 
   SetRenderFlags(RENDER_FLAG_FULL);
 
-  return TRUE;
+  return true;
 }
 
 //---------------------------------------------------------------------------------------
@@ -2771,12 +2771,12 @@ function LightSpriteCreate(pName: STR, uiLightType: UINT32): INT32 {
  *		Sets the flag of a light sprite to "fake" (in game for merc navig purposes)
  *
  ********************************************************************************/
-function LightSpriteFake(iSprite: INT32): BOOLEAN {
+function LightSpriteFake(iSprite: INT32): boolean {
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     LightSprites[iSprite].uiFlags |= MERC_LIGHT;
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
@@ -2786,7 +2786,7 @@ function LightSpriteFake(iSprite: INT32): BOOLEAN {
  *		Removes an instance of a light. If it was on, it is erased from the scene.
  *
  ********************************************************************************/
-function LightSpriteDestroy(iSprite: INT32): BOOLEAN {
+function LightSpriteDestroy(iSprite: INT32): boolean {
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ERASE) {
       if ((LightSprites[iSprite].iX < WORLD_COLS) && (LightSprites[iSprite].iY < WORLD_ROWS)) {
@@ -2797,10 +2797,10 @@ function LightSpriteDestroy(iSprite: INT32): BOOLEAN {
     }
 
     LightSprites[iSprite].uiFlags &= (~LIGHT_SPR_ACTIVE);
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 /********************************************************************************
@@ -2809,11 +2809,11 @@ function LightSpriteDestroy(iSprite: INT32): BOOLEAN {
  *		Currently unused.
  *
  ********************************************************************************/
-function LightSpriteRender(): BOOLEAN {
+function LightSpriteRender(): boolean {
   // INT32 iCount;
   // BOOLEAN fRenderLights=FALSE;
 
-  return FALSE;
+  return false;
 
   /*	for(iCount=0; iCount < MAX_LIGHT_SPRITES; iCount++)
           {
@@ -2862,9 +2862,9 @@ function LightSpriteRender(): BOOLEAN {
  * active lights.
  *
  ********************************************************************************/
-function LightSpriteRenderAll(): BOOLEAN {
+function LightSpriteRenderAll(): boolean {
   let iCount: INT32;
-  let fRenderLights: BOOLEAN = FALSE;
+  let fRenderLights: boolean = false;
 
   LightResetAllTiles();
   for (iCount = 0; iCount < MAX_LIGHT_SPRITES; iCount++) {
@@ -2880,7 +2880,7 @@ function LightSpriteRenderAll(): BOOLEAN {
     LightSprites[iCount].iOldY = LightSprites[iCount].iY;
   }
 
-  return TRUE;
+  return true;
 }
 
 /********************************************************************************
@@ -2889,10 +2889,10 @@ function LightSpriteRenderAll(): BOOLEAN {
  *		Sets the X,Y position (IN TILES) of a light instance.
  *
  ********************************************************************************/
-function LightSpritePosition(iSprite: INT32, iX: INT16, iY: INT16): BOOLEAN {
+function LightSpritePosition(iSprite: INT32, iX: INT16, iY: INT16): boolean {
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     if ((LightSprites[iSprite].iX == iX) && (LightSprites[iSprite].iY == iY))
-      return TRUE;
+      return true;
 
     if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ERASE) {
       if ((LightSprites[iSprite].iX < WORLD_COLS) && (LightSprites[iSprite].iY < WORLD_ROWS)) {
@@ -2915,9 +2915,9 @@ function LightSpritePosition(iSprite: INT32, iX: INT16, iY: INT16): BOOLEAN {
       }
     }
   } else
-    return FALSE;
+    return false;
 
-  return TRUE;
+  return true;
 }
 
 /********************************************************************************
@@ -2926,12 +2926,12 @@ function LightSpritePosition(iSprite: INT32, iX: INT16, iY: INT16): BOOLEAN {
  *		Determines whether a light is on a roof or not.
  *
  ********************************************************************************/
-function LightSpriteRoofStatus(iSprite: INT32, fOnRoof: BOOLEAN): BOOLEAN {
+function LightSpriteRoofStatus(iSprite: INT32, fOnRoof: boolean): boolean {
   if (fOnRoof && (LightSprites[iSprite].uiFlags & LIGHT_SPR_ONROOF))
-    return FALSE;
+    return false;
 
   if (!fOnRoof && !(LightSprites[iSprite].uiFlags & LIGHT_SPR_ONROOF))
-    return FALSE;
+    return false;
 
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ERASE) {
@@ -2954,9 +2954,9 @@ function LightSpriteRoofStatus(iSprite: INT32, fOnRoof: BOOLEAN): BOOLEAN {
       }
     }
   } else
-    return FALSE;
+    return false;
 
-  return TRUE;
+  return true;
 }
 
 /********************************************************************************
@@ -2965,14 +2965,14 @@ function LightSpriteRoofStatus(iSprite: INT32, fOnRoof: BOOLEAN): BOOLEAN {
  *		Turns on or off a light, based on the BOOLEAN.
  *
  ********************************************************************************/
-function LightSpritePower(iSprite: INT32, fOn: BOOLEAN): BOOLEAN {
+function LightSpritePower(iSprite: INT32, fOn: boolean): boolean {
   if (fOn) {
     LightSprites[iSprite].uiFlags |= (LIGHT_SPR_ON | LIGHT_SPR_REDRAW);
     LightSprites[iSprite].iOldX = WORLD_COLS;
   } else
     LightSprites[iSprite].uiFlags &= (~LIGHT_SPR_ON);
 
-  return TRUE;
+  return true;
 }
 
 /********************************************************************************
@@ -2981,7 +2981,7 @@ function LightSpritePower(iSprite: INT32, fOn: BOOLEAN): BOOLEAN {
  *		Sets the flag for the renderer to draw all marked tiles.
  *
  ********************************************************************************/
-function LightSpriteDirty(iSprite: INT32): BOOLEAN {
+function LightSpriteDirty(iSprite: INT32): boolean {
   // INT16 iLeft_s, iTop_s;
   // INT16 iMapLeft, iMapTop, iMapRight, iMapBottom;
 
@@ -3005,31 +3005,31 @@ function LightSpriteDirty(iSprite: INT32): BOOLEAN {
 
   SetRenderFlags(RENDER_FLAG_MARKED);
 
-  return TRUE;
+  return true;
 }
 
-function CreateObjectPalette(pObj: HVOBJECT, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
+function CreateObjectPalette(pObj: HVOBJECT, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): boolean {
   let uiCount: UINT32;
 
-  pObj.value.pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
+  pObj.value.pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], true);
 
   for (uiCount = 1; uiCount < 16; uiCount++) {
-    pObj.value.pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], FALSE);
+    pObj.value.pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], false);
   }
 
-  return TRUE;
+  return true;
 }
 
-function CreateSoldierShadedPalette(pSoldier: Pointer<SOLDIERTYPE>, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
+function CreateSoldierShadedPalette(pSoldier: Pointer<SOLDIERTYPE>, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): boolean {
   let uiCount: UINT32;
 
-  pSoldier.value.pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
+  pSoldier.value.pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], true);
 
   for (uiCount = 1; uiCount < 16; uiCount++) {
-    pSoldier.value.pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], FALSE);
+    pSoldier.value.pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], false);
   }
 
-  return TRUE;
+  return true;
 }
 
 /**********************************************************************************************
@@ -3043,10 +3043,10 @@ function CreateSoldierShadedPalette(pSoldier: Pointer<SOLDIERTYPE>, uiBase: UINT
 
 **********************************************************************************************/
 
-function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: BOOLEAN): UINT16 {
+function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: boolean): UINT16 {
   let uiCount: UINT32;
   let LightPal: SGPPaletteEntry[] /* [256] */;
-  let fLoaded: BOOLEAN = FALSE;
+  let fLoaded: boolean = false;
 
   Assert(pObj != null);
 
@@ -3056,7 +3056,7 @@ function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: BO
     // are extremely time consuming to generate, so we will attempt to load them.  If we do, then
     // we skip the generation process altogether.
     if (LoadShadeTable(pObj, uiTileIndex)) {
-      fLoaded = TRUE;
+      fLoaded = true;
     }
   }
   if (!fLoaded) {
@@ -3101,7 +3101,7 @@ function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: BO
   pObj.value.pShadeCurrent = pObj.value.pShades[4];
   pObj.value.pGlow = pObj.value.pShades[0];
 
-  return TRUE;
+  return true;
 }
 
 function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiType: UINT32): UINT16 {
@@ -3142,5 +3142,5 @@ function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiType: UINT
   pSoldier.value.pCurrentShade = pSoldier.value.pShades[4];
   // pSoldier->pGlow=pSoldier->pShades[0];
 
-  return TRUE;
+  return true;
 }

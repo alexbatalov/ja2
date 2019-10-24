@@ -56,7 +56,7 @@ function InitEditorMercsToolbar(): void {
   iEditorButton[Enum32.MERCS_1] = CreateTextButton("DETAILED PLACEMENT", SMALLCOMPFONT(), FONT_ORANGE, 60, BUTTON_USE_DEFAULT, 100, 362, 68, 20, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iEditorButton[Enum32.MERCS_1]);
   SpecifyDisabledButtonStyle(iEditorButton[Enum32.MERCS_1], Enum29.DISABLED_STYLE_NONE);
-  SpecifyButtonTextOffsets(iEditorButton[Enum32.MERCS_1], 20, 4, FALSE);
+  SpecifyButtonTextOffsets(iEditorButton[Enum32.MERCS_1], 20, 4, false);
   SpecifyButtonTextWrappedWidth(iEditorButton[Enum32.MERCS_1], 46);
   iEditorButton[Enum32.MERCS_DETAILEDCHECKBOX] = CreateCheckBoxButton(103, 365, "EDITOR//checkbox.sti", MSYS_PRIORITY_NORMAL, MercsDetailedPlacementCallback);
 

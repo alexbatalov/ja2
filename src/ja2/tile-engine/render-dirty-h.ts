@@ -21,10 +21,10 @@ type OVERLAY_CALLBACK = (a: Pointer<VIDEO_OVERLAY>) => void;
 
 // Struct for backgrounds
 interface BACKGROUND_SAVE {
-  fAllocated: BOOLEAN;
-  fFilled: BOOLEAN;
-  fFreeMemory: BOOLEAN;
-  fZBuffer: BOOLEAN;
+  fAllocated: boolean;
+  fFilled: boolean;
+  fFreeMemory: boolean;
+  fZBuffer: boolean;
   uiFlags: UINT32;
   pSaveArea: Pointer<INT16>;
   pZSaveArea: Pointer<INT16>;
@@ -34,17 +34,17 @@ interface BACKGROUND_SAVE {
   sBottom: INT16;
   sWidth: INT16;
   sHeight: INT16;
-  fPendingDelete: BOOLEAN;
-  fDisabled: BOOLEAN;
+  fPendingDelete: boolean;
+  fDisabled: boolean;
 }
 
 // Struct for topmost blitters
 interface VIDEO_OVERLAY {
   uiFlags: UINT32;
-  fAllocated: BOOLEAN;
-  fDisabled: BOOLEAN;
-  fActivelySaving: BOOLEAN;
-  fDeletionPending: BOOLEAN;
+  fAllocated: boolean;
+  fDisabled: boolean;
+  fActivelySaving: boolean;
+  fDeletionPending: boolean;
   uiBackground: INT32;
   pBackground: Pointer<BACKGROUND_SAVE>;
   pSaveArea: Pointer<INT16>;
@@ -62,7 +62,7 @@ interface VIDEO_OVERLAY {
 // Struct for init topmost blitter
 interface VIDEO_OVERLAY_DESC {
   uiFlags: UINT32;
-  fDisabled: BOOLEAN;
+  fDisabled: boolean;
   sLeft: INT16;
   sTop: INT16;
   sRight: INT16;

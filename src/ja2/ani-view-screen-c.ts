@@ -1,9 +1,9 @@
-let gfAniEditMode: BOOLEAN = FALSE;
+let gfAniEditMode: boolean = false;
 /* static */ let usStartAnim: UINT16 = 0;
 /* static */ let ubStartHeight: UINT8 = 0;
 /* static */ let pSoldier: Pointer<SOLDIERTYPE>;
 
-/* static */ let fOKFiles: BOOLEAN = FALSE;
+/* static */ let fOKFiles: boolean = false;
 /* static */ let ubNumStates: UINT8 = 0;
 /* static */ let pusStates: Pointer<UINT16> = null;
 /* static */ let ubCurLoadedState: INT8 = 0;
@@ -15,52 +15,52 @@ function CycleAnimations(): void {
   for (cnt = usStartAnim + 1; cnt < Enum193.NUMANIMATIONSTATES; cnt++) {
     if (gAnimControl[cnt].ubHeight == ubStartHeight) {
       usStartAnim = cnt;
-      EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
+      EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, true);
       return;
     }
   }
 
   usStartAnim = 0;
-  EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
+  EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, true);
 }
 
 function AniEditScreenInit(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
 // It will also be responsible to making sure that all Gaming Engine tasks exit properly
 
 function AniEditScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function AniEditScreenHandle(): UINT32 {
   let InputEvent: InputAtom;
-  /* static */ let fFirstTime: BOOLEAN = TRUE;
+  /* static */ let fFirstTime: boolean = true;
   /* static */ let usOldState: UINT16;
-  /* static */ let fToggle: BOOLEAN = FALSE;
-  /* static */ let fToggle2: BOOLEAN = FALSE;
+  /* static */ let fToggle: boolean = false;
+  /* static */ let fToggle2: boolean = false;
 
   //	EV_S_SETPOSITION SSetPosition;
 
   // Make backups
   if (fFirstTime) {
-    gfAniEditMode = TRUE;
+    gfAniEditMode = true;
 
     usStartAnim = 0;
     ubStartHeight = ANIM_STAND;
 
-    fFirstTime = FALSE;
-    fToggle = FALSE;
-    fToggle2 = FALSE;
+    fFirstTime = false;
+    fToggle = false;
+    fToggle2 = false;
     ubCurLoadedState = 0;
 
     pSoldier = MercPtrs[gusSelectedSoldier];
 
     gTacticalStatus.uiFlags |= LOADING_SAVED_GAME;
 
-    EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
+    EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, true);
 
     BuildListFile();
   }
@@ -113,13 +113,13 @@ function AniEditScreenHandle(): UINT32 {
     gprintfdirty(0, 90, "LOADED ORDER : %S", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
   }
 
-  if (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  if (DequeueEvent(addressof(InputEvent)) == true) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == ESC)) {
-      fFirstTime = TRUE;
+      fFirstTime = true;
 
-      gfAniEditMode = FALSE;
+      gfAniEditMode = false;
 
-      fFirstTimeInGameScreen = TRUE;
+      fFirstTimeInGameScreen = true;
 
       gTacticalStatus.uiFlags &= (~LOADING_SAVED_GAME);
 
@@ -127,7 +127,7 @@ function AniEditScreenHandle(): UINT32 {
         MemFree(pusStates);
       }
 
-      fOKFiles = FALSE;
+      fOKFiles = false;
 
       return Enum26.GAME_SCREEN;
     }
@@ -160,9 +160,9 @@ function AniEditScreenHandle(): UINT32 {
             break;
         }
 
-        EVENT_InitNewSoldierAnim(pSoldier, usAnim, 0, TRUE);
+        EVENT_InitNewSoldierAnim(pSoldier, usAnim, 0, true);
       } else {
-        EVENT_InitNewSoldierAnim(pSoldier, usOldState, 0, TRUE);
+        EVENT_InitNewSoldierAnim(pSoldier, usOldState, 0, true);
       }
 
       fToggle = !fToggle;
@@ -172,9 +172,9 @@ function AniEditScreenHandle(): UINT32 {
       if (!fToggle2) {
         usOldState = usStartAnim;
 
-        EVENT_InitNewSoldierAnim(pSoldier, pusStates[ubCurLoadedState], 0, TRUE);
+        EVENT_InitNewSoldierAnim(pSoldier, pusStates[ubCurLoadedState], 0, true);
       } else {
-        EVENT_InitNewSoldierAnim(pSoldier, usOldState, 0, TRUE);
+        EVENT_InitNewSoldierAnim(pSoldier, usOldState, 0, true);
       }
 
       fToggle2 = !fToggle2;
@@ -188,7 +188,7 @@ function AniEditScreenHandle(): UINT32 {
           ubCurLoadedState = 0;
         }
 
-        EVENT_InitNewSoldierAnim(pSoldier, pusStates[ubCurLoadedState], 0, TRUE);
+        EVENT_InitNewSoldierAnim(pSoldier, pusStates[ubCurLoadedState], 0, true);
       }
     }
 
@@ -200,14 +200,14 @@ function AniEditScreenHandle(): UINT32 {
           ubCurLoadedState = ubNumStates;
         }
 
-        EVENT_InitNewSoldierAnim(pSoldier, pusStates[ubCurLoadedState], 0, TRUE);
+        EVENT_InitNewSoldierAnim(pSoldier, pusStates[ubCurLoadedState], 0, true);
       }
     }
 
     if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 'c')) {
       // CLEAR!
       usStartAnim = 0;
-      EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
+      EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, true);
     }
 
     if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == ENTER)) {
@@ -262,7 +262,7 @@ function BuildListFile(): void {
   // Allocate array
   pusStates = MemAlloc(sizeof(UINT16) * numEntries);
 
-  fOKFiles = TRUE;
+  fOKFiles = true;
 
   cnt = 0;
   while (!feof(infoFile)) {

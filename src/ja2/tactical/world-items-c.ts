@@ -11,7 +11,7 @@ function GetFreeWorldBombIndex(): INT32 {
   let uiOldNumWorldBombs: UINT32;
 
   for (uiCount = 0; uiCount < guiNumWorldBombs; uiCount++) {
-    if (gWorldBombs[uiCount].fExists == FALSE)
+    if (gWorldBombs[uiCount].fExists == false)
       return uiCount;
   }
 
@@ -55,7 +55,7 @@ function AddBombToWorld(iItemIndex: INT32): INT32 {
   iBombIndex = GetFreeWorldBombIndex();
 
   // Add the new world item to the table.
-  gWorldBombs[iBombIndex].fExists = TRUE;
+  gWorldBombs[iBombIndex].fExists = true;
   gWorldBombs[iBombIndex].iItemIndex = iItemIndex;
 
   return iBombIndex;
@@ -63,7 +63,7 @@ function AddBombToWorld(iItemIndex: INT32): INT32 {
 
 function RemoveBombFromWorld(iBombIndex: INT32): void {
   // Remove the world bomb from the table.
-  gWorldBombs[iBombIndex].fExists = FALSE;
+  gWorldBombs[iBombIndex].fExists = false;
 }
 
 function RemoveBombFromWorldByItemIndex(iItemIndex: INT32): void {
@@ -97,7 +97,7 @@ function FindPanicBombsAndTriggers(): void {
   let pObj: Pointer<OBJECTTYPE>;
   let pSwitch: Pointer<STRUCTURE>;
   let sGridNo: INT16 = NOWHERE;
-  let fPanicTriggerIsAlarm: BOOLEAN = FALSE;
+  let fPanicTriggerIsAlarm: boolean = false;
   let bPanicIndex: INT8;
 
   for (uiBombIndex = 0; uiBombIndex < guiNumWorldBombs; uiBombIndex++) {
@@ -143,7 +143,7 @@ function FindPanicBombsAndTriggers(): void {
           gTacticalStatus.sPanicTriggerGridNo[bPanicIndex] = sGridNo;
           gTacticalStatus.ubPanicTolerance[bPanicIndex] = pObj.value.ubTolerance;
           if (pObj.value.fFlags & OBJECT_ALARM_TRIGGER) {
-            gTacticalStatus.bPanicTriggerIsAlarm[bPanicIndex] = TRUE;
+            gTacticalStatus.bPanicTriggerIsAlarm[bPanicIndex] = true;
           }
           gTacticalStatus.fPanicFlags |= PANIC_TRIGGERS_HERE;
           bPanicIndex++;
@@ -164,7 +164,7 @@ function GetFreeWorldItemIndex(): INT32 {
   let uiOldNumWorldItems: UINT32;
 
   for (uiCount = 0; uiCount < guiNumWorldItems; uiCount++) {
-    if (gWorldItems[uiCount].fExists == FALSE)
+    if (gWorldItems[uiCount].fExists == false)
       return uiCount;
   }
 
@@ -215,7 +215,7 @@ function AddItemToWorld(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, ubLevel: U
   iItemIndex = GetFreeWorldItemIndex();
 
   // Add the new world item to the table.
-  gWorldItems[iItemIndex].fExists = TRUE;
+  gWorldItems[iItemIndex].fExists = true;
   gWorldItems[iItemIndex].sGridNo = sGridNo;
   gWorldItems[iItemIndex].ubLevel = ubLevel;
   gWorldItems[iItemIndex].usFlags = usFlags;
@@ -242,7 +242,7 @@ function RemoveItemFromWorld(iItemIndex: INT32): void {
     if (gWorldItems[iItemIndex].usFlags & WORLD_ITEM_ARMED_BOMB) {
       RemoveBombFromWorldByItemIndex(iItemIndex);
     }
-    gWorldItems[iItemIndex].fExists = FALSE;
+    gWorldItems[iItemIndex].fExists = false;
   }
 }
 

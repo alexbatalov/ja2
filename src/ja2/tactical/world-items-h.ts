@@ -7,7 +7,7 @@ const WORLD_ITEM_REACHABLE = 0x0200;
 const WORLD_ITEM_GRIDNO_NOT_SET_USE_ENTRY_POINT = 0x0400;
 
 interface WORLDITEM {
-  fExists: BOOLEAN;
+  fExists: boolean;
   sGridNo: INT16;
   ubLevel: UINT8;
   o: OBJECTTYPE;
@@ -25,6 +25,6 @@ interface WORLDITEM {
 }
 
 interface WORLDBOMB {
-  fExists: BOOLEAN;
+  fExists: boolean;
   iItemIndex: INT32;
 }

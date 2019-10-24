@@ -1,24 +1,24 @@
-function LoadEncryptedDataFromFile(pFileName: STR, pDestString: STR16, uiSeekFrom: UINT32, uiSeekAmount: UINT32): BOOLEAN {
+function LoadEncryptedDataFromFile(pFileName: STR, pDestString: STR16, uiSeekFrom: UINT32, uiSeekAmount: UINT32): boolean {
   let hFile: HWFILE;
   let i: UINT16;
   let uiBytesRead: UINT32;
 
-  hFile = FileOpen(pFileName, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(pFileName, FILE_ACCESS_READ, false);
   if (!hFile) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "LoadEncryptedDataFromFile: Failed to FileOpen");
-    return FALSE;
+    return false;
   }
 
-  if (FileSeek(hFile, uiSeekFrom, FILE_SEEK_FROM_START) == FALSE) {
+  if (FileSeek(hFile, uiSeekFrom, FILE_SEEK_FROM_START) == false) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "LoadEncryptedDataFromFile: Failed FileSeek");
-    return FALSE;
+    return false;
   }
 
   if (!FileRead(hFile, pDestString, uiSeekAmount, addressof(uiBytesRead))) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "LoadEncryptedDataFromFile: Failed FileRead");
-    return FALSE;
+    return false;
   }
 
   // Decrement, by 1, any value > 32
@@ -89,5 +89,5 @@ function LoadEncryptedDataFromFile(pFileName: STR, pDestString: STR16, uiSeekFro
   }
 
   FileClose(hFile);
-  return TRUE;
+  return true;
 }

@@ -10,7 +10,7 @@ function RemoveFogFromGridNo(uiGridNo: UINT32): void {
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].iX == x && LightSprites[i].iY == y) {
       if (!(LightSprites[i].uiFlags & LIGHT_SPR_ON)) {
-        LightSpritePower(i, TRUE);
+        LightSpritePower(i, true);
         LightDraw(LightSprites[i].uiLightType, LightSprites[i].iTemplate, LightSprites[i].iX, LightSprites[i].iY, i);
         MarkWorldDirty();
         return;

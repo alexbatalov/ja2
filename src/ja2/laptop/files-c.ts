@@ -43,15 +43,15 @@ let pFilesListHead: FilesUnitPtr = null;
 let pFileStringList: FileStringPtr = null;
 
 // are we in files mode
-let fInFilesMode: BOOLEAN = FALSE;
-let fOnLastFilesPageFlag: BOOLEAN = FALSE;
+let fInFilesMode: boolean = false;
+let fOnLastFilesPageFlag: boolean = false;
 
 //. did we enter due to new file icon?
-let fEnteredFileViewerFromNewFileIcon: BOOLEAN = FALSE;
-let fWaitAFrame: BOOLEAN = FALSE;
+let fEnteredFileViewerFromNewFileIcon: boolean = false;
+let fWaitAFrame: boolean = false;
 
 // are there any new files
-let fNewFilesInFileViewer: BOOLEAN = FALSE;
+let fNewFilesInFileViewer: boolean = false;
 
 // graphics handles
 let guiTITLE: UINT32;
@@ -119,7 +119,7 @@ function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pF
     OpenAndReadFilesFile();
 
   // process the actual data
-  uiId = ProcessAndEnterAFilesRecord(ubCode, uiDate, ubFormat, pFirstPicFile, pSecondPicFile, FALSE);
+  uiId = ProcessAndEnterAFilesRecord(ubCode, uiDate, ubFormat, pFirstPicFile, pSecondPicFile, false);
 
   // set unread flag, if nessacary
   CheckForUnreadFiles();
@@ -132,7 +132,7 @@ function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pF
   return uiId;
 }
 function GameInitFiles(): void {
-  if ((FileExists(FILES_DAT_FILE) == TRUE)) {
+  if ((FileExists(FILES_DAT_FILE) == true)) {
     FileClearAttributes(FILES_DAT_FILE);
     FileDelete(FILES_DAT_FILE);
   }
@@ -151,7 +151,7 @@ function EnterFiles(): void {
   // AddFilesToPlayersLog(0, 0, 3,"LAPTOP\\portrait.sti", "LAPTOP\\portrait.sti");
   // AddFilesToPlayersLog(2, 0, 1,"LAPTOP\\portrait.sti", "LAPTOP\\portrait.sti");
   // in files mode now, set the fact
-  fInFilesMode = TRUE;
+  fInFilesMode = true;
 
   // initialize mouse regions
   InitializeFilesMouseRegions();
@@ -169,9 +169,9 @@ function EnterFiles(): void {
   RenderFiles();
 
   // entered due to icon
-  if (fEnteredFileViewerFromNewFileIcon == TRUE) {
+  if (fEnteredFileViewerFromNewFileIcon == true) {
     OpenFirstUnreadFile();
-    fEnteredFileViewerFromNewFileIcon = FALSE;
+    fEnteredFileViewerFromNewFileIcon = false;
   }
 }
 
@@ -185,7 +185,7 @@ function ExitFiles(): void {
   // delete buttons
   DeleteButtonsForFilesPage();
 
-  fInFilesMode = FALSE;
+  fInFilesMode = false;
 
   // remove files
   RemoveFiles();
@@ -253,7 +253,7 @@ function DrawFilesTitleText(): void {
   return;
 }
 
-function LoadFiles(): BOOLEAN {
+function LoadFiles(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   // load files video objects into memory
 
@@ -277,7 +277,7 @@ function LoadFiles(): BOOLEAN {
   FilenameForBPP("LAPTOP\\fileviewerwhite.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFileBack)));
 
-  return TRUE;
+  return true;
 }
 
 function RemoveFiles(): void {
@@ -291,7 +291,7 @@ function RemoveFiles(): void {
   return;
 }
 
-function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: STR8, pSecondPicFile: STR8, fRead: BOOLEAN): UINT32 {
+function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: STR8, pSecondPicFile: STR8, fRead: boolean): UINT32 {
   let uiId: UINT32 = 0;
   let pFiles: FilesUnitPtr = pFilesListHead;
 
@@ -382,7 +382,7 @@ function OpenAndReadFilesFile(): void {
   let pFirstFilePath: CHAR8[] /* [128] */;
   let pSecondFilePath: CHAR8[] /* [128] */;
   let ubFormat: UINT8;
-  let fRead: BOOLEAN;
+  let fRead: boolean;
 
   // clear out the old list
   ClearFilesList();
@@ -392,7 +392,7 @@ function OpenAndReadFilesFile(): void {
     return;
 
   // open file
-  hFileHandle = FileOpen(FILES_DAT_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(FILES_DAT_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -432,7 +432,7 @@ function OpenAndReadFilesFile(): void {
   return;
 }
 
-function OpenAndWriteFilesFile(): BOOLEAN {
+function OpenAndWriteFilesFile(): boolean {
   // this procedure will open and write out data from the finance list
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
@@ -453,11 +453,11 @@ function OpenAndWriteFilesFile(): BOOLEAN {
   }
 
   // open file
-  hFileHandle = FileOpen(FILES_DAT_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hFileHandle = FileOpen(FILES_DAT_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
 
   // if no file exits, do nothing
   if (!hFileHandle) {
-    return FALSE;
+    return false;
   }
   // write info, while there are elements left in the list
   while (pFilesList) {
@@ -478,7 +478,7 @@ function OpenAndWriteFilesFile(): BOOLEAN {
   // clear out the old list
   ClearFilesList();
 
-  return TRUE;
+  return true;
 }
 
 function ClearFilesList(): void {
@@ -619,13 +619,13 @@ function FilesBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
       iCounter++;
     }
 
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
 
     return;
   }
 }
 
-function DisplayFormattedText(): BOOLEAN {
+function DisplayFormattedText(): boolean {
   let pFilesList: FilesUnitPtr = pFilesListHead;
 
   let usFirstWidth: UINT16 = 0;
@@ -646,7 +646,7 @@ function DisplayFormattedText(): BOOLEAN {
   let usFreeSpace: INT16 = 0;
   /* static */ let iOldMessageCode: INT32 = 0;
 
-  fWaitAFrame = FALSE;
+  fWaitAFrame = false;
 
   // get the file that was highlighted
   while (iCounter < iHighLightFileLine) {
@@ -659,7 +659,7 @@ function DisplayFormattedText(): BOOLEAN {
   iCounter = 0;
 
   // set file as read
-  pFilesList.value.fRead = TRUE;
+  pFilesList.value.fRead = true;
 
   // clear the file string structure list
   // get file background object
@@ -699,7 +699,7 @@ function DisplayFormattedText(): BOOLEAN {
         LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
-        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, FALSE, 0);
+        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, false, 0);
 
         // increment file record counter
         iCounter++;
@@ -730,7 +730,7 @@ function DisplayFormattedText(): BOOLEAN {
         LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
-        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, FALSE, 0);
+        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, false, 0);
 
         // increment file record counter
         iCounter++;
@@ -789,7 +789,7 @@ function DisplayFormattedText(): BOOLEAN {
         LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
-        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, FALSE, 0);
+        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, false, 0);
 
         // increment file record counter
         iCounter++;
@@ -810,10 +810,10 @@ function DisplayFormattedText(): BOOLEAN {
   HandleFileViewerButtonStates();
   SetFontShadow(DEFAULT_SHADOW);
 
-  return TRUE;
+  return true;
 }
 
-function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
+function HandleSpecialFiles(ubFormat: UINT8): boolean {
   let iCounter: INT32 = 0;
   let sString: wchar_t[] /* [2048] */;
   let pTempString: FileStringPtr = null;
@@ -824,7 +824,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
   let iFileStartX: INT32 = 0;
   let uiFlags: UINT32 = 0;
   let uiFont: UINT32 = 0;
-  let fGoingOffCurrentPage: BOOLEAN = FALSE;
+  let fGoingOffCurrentPage: boolean = false;
   let WidthList: FileRecordWidthPtr = null;
 
   let uiPicture: UINT32;
@@ -867,7 +867,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
 
         if (sString[0] == 0) {
           // on last page
-          fOnLastFilesPageFlag = TRUE;
+          fOnLastFilesPageFlag = true;
         }
 
         // set up font
@@ -921,25 +921,25 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
 
         if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, 0, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
           // now print it
-          iYPositionOnPage += IanDisplayWrappedString((iFileStartX), (FILE_VIEWER_Y + iYPositionOnPage), iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, FALSE, uiFlags);
+          iYPositionOnPage += IanDisplayWrappedString((iFileStartX), (FILE_VIEWER_Y + iYPositionOnPage), iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, false, uiFlags);
 
-          fGoingOffCurrentPage = FALSE;
+          fGoingOffCurrentPage = false;
         } else {
           // gonna get cut off...end now
-          fGoingOffCurrentPage = TRUE;
+          fGoingOffCurrentPage = true;
         }
 
         pTempString = pTempString.value.Next;
 
         if (pTempString == null) {
           // on last page
-          fOnLastFilesPageFlag = TRUE;
+          fOnLastFilesPageFlag = true;
         } else {
-          fOnLastFilesPageFlag = FALSE;
+          fOnLastFilesPageFlag = false;
         }
 
         // going over the edge, stop now
-        if (fGoingOffCurrentPage == TRUE) {
+        if (fGoingOffCurrentPage == true) {
           pTempString = null;
         }
         iCounter++;
@@ -992,7 +992,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
     DeleteVideoObjectFromIndex(uiPicture);
   }
 
-  return TRUE;
+  return true;
 }
 
 function AddStringToFilesList(pString: STR16): void {
@@ -1075,7 +1075,7 @@ function BtnPreviousFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (fWaitAFrame == TRUE) {
+    if (fWaitAFrame == true) {
       return;
     }
 
@@ -1083,17 +1083,17 @@ function BtnPreviousFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
       btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (fWaitAFrame == TRUE) {
+    if (fWaitAFrame == true) {
       return;
     }
 
     if ((btn.value.uiFlags & BUTTON_CLICKED_ON)) {
       if (giFilesPage > 0) {
         giFilesPage--;
-        fWaitAFrame = TRUE;
+        fWaitAFrame = true;
       }
 
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       MarkButtonsDirty();
     }
@@ -1107,7 +1107,7 @@ function BtnNextFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (fWaitAFrame == TRUE) {
+    if (fWaitAFrame == true) {
       return;
     }
 
@@ -1115,17 +1115,17 @@ function BtnNextFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (fWaitAFrame == TRUE) {
+    if (fWaitAFrame == true) {
       return;
     }
 
     if ((btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      if ((fOnLastFilesPageFlag) == FALSE) {
-        fWaitAFrame = TRUE;
+      if ((fOnLastFilesPageFlag) == false) {
+        fWaitAFrame = true;
         giFilesPage++;
       }
 
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       MarkButtonsDirty();
     }
@@ -1156,7 +1156,7 @@ function HandleFileViewerButtonStates(): void {
   }
 
   // turn off next page button
-  if (fOnLastFilesPageFlag == TRUE) {
+  if (fOnLastFilesPageFlag == true) {
     DisableButton(giFilesPageButtons[1]);
     ButtonList[giFilesPageButtons[1]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
@@ -1267,7 +1267,7 @@ function OpenFirstUnreadFile(): void {
   // make sure is a valid
   while (pFilesList) {
     // if iCounter = iFileId, is a valid file
-    if (pFilesList.value.fRead == FALSE) {
+    if (pFilesList.value.fRead == false) {
       iHighLightFileLine = iCounter;
     }
 
@@ -1282,17 +1282,17 @@ function OpenFirstUnreadFile(): void {
 }
 
 function CheckForUnreadFiles(): void {
-  let fStatusOfNewFileFlag: BOOLEAN = fNewFilesInFileViewer;
+  let fStatusOfNewFileFlag: boolean = fNewFilesInFileViewer;
 
   // willc heck for any unread files and set flag if any
   let pFilesList: FilesUnitPtr = pFilesListHead;
 
-  fNewFilesInFileViewer = FALSE;
+  fNewFilesInFileViewer = false;
 
   while (pFilesList) {
     // unread?...if so, set flag
-    if (pFilesList.value.fRead == FALSE) {
-      fNewFilesInFileViewer = TRUE;
+    if (pFilesList.value.fRead == false) {
+      fNewFilesInFileViewer = true;
     }
     // next element in list
     pFilesList = pFilesList.value.Next;
@@ -1304,7 +1304,7 @@ function CheckForUnreadFiles(): void {
   }
 }
 
-function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOLEAN {
+function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): boolean {
   let iCounter: INT32 = 0;
   let sString: wchar_t[] /* [2048] */;
   let pTempString: FileStringPtr = null;
@@ -1315,7 +1315,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
   let iFileStartX: INT32 = 0;
   let uiFlags: UINT32 = 0;
   let uiFont: UINT32 = 0;
-  let fGoingOffCurrentPage: BOOLEAN = FALSE;
+  let fGoingOffCurrentPage: boolean = false;
   let WidthList: FileRecordWidthPtr = null;
   let iOffset: INT32 = 0;
   let uiPicture: UINT32;
@@ -1356,7 +1356,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
 
     if (sString[0] == 0) {
       // on last page
-      fOnLastFilesPageFlag = TRUE;
+      fOnLastFilesPageFlag = true;
     }
 
     // set up font
@@ -1381,25 +1381,25 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
     // based on the record we are at, selected X start position and the width to wrap the line, to fit around pictures
     if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, 0, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
       // now print it
-      iYPositionOnPage += IanDisplayWrappedString((iFileStartX), (FILE_VIEWER_Y + iYPositionOnPage), iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, FALSE, uiFlags);
+      iYPositionOnPage += IanDisplayWrappedString((iFileStartX), (FILE_VIEWER_Y + iYPositionOnPage), iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, false, uiFlags);
 
-      fGoingOffCurrentPage = FALSE;
+      fGoingOffCurrentPage = false;
     } else {
       // gonna get cut off...end now
-      fGoingOffCurrentPage = TRUE;
+      fGoingOffCurrentPage = true;
     }
 
     pTempString = pTempString.value.Next;
 
-    if ((pTempString == null) && (fGoingOffCurrentPage == FALSE)) {
+    if ((pTempString == null) && (fGoingOffCurrentPage == false)) {
       // on last page
-      fOnLastFilesPageFlag = TRUE;
+      fOnLastFilesPageFlag = true;
     } else {
-      fOnLastFilesPageFlag = FALSE;
+      fOnLastFilesPageFlag = false;
     }
 
     // going over the edge, stop now
-    if (fGoingOffCurrentPage == TRUE) {
+    if (fGoingOffCurrentPage == true) {
       pTempString = null;
     }
 
@@ -1442,20 +1442,20 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
   ClearOutWidthRecordsList(WidthList);
   ClearFileStringList();
 
-  return TRUE;
+  return true;
 }
 
 // add a file about this terrorist
-function AddFileAboutTerrorist(iProfileId: INT32): BOOLEAN {
+function AddFileAboutTerrorist(iProfileId: INT32): boolean {
   let iCounter: INT32 = 0;
 
   for (iCounter = 1; iCounter < 7; iCounter++) {
     if (usProfileIdsForTerroristFiles[iCounter] == iProfileId) {
       // checked, and this file is there
       AddFilesToPlayersLog(iCounter, 0, 3, null, null);
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }

@@ -1,6 +1,6 @@
-let gfCorruptMap: BOOLEAN = FALSE;
-let gfCorruptSchedules: BOOLEAN = FALSE;
-let gfProfileDataLoaded: BOOLEAN = FALSE;
+let gfCorruptMap: boolean = false;
+let gfCorruptSchedules: boolean = false;
+let gfProfileDataLoaded: boolean = false;
 
 let gpPersistantButton: Pointer<GUI_BUTTON>;
 
@@ -8,21 +8,21 @@ let gpPersistantButton: Pointer<GUI_BUTTON>;
 
 let guiSaveTacticalStatusFlags: UINT32; // saves the tactical status flags when entering the editor.
 
-let gfAutoLoadA9: BOOLEAN = FALSE;
+let gfAutoLoadA9: boolean = false;
 // new vars added by Kris
-let gfRenderWorld: BOOLEAN = FALSE;
-let gfRenderTaskbar: BOOLEAN = FALSE;
-let gfRenderDrawingMode: BOOLEAN = FALSE;
-let gfFirstPlacement: BOOLEAN = TRUE;
-let gfPendingBasement: BOOLEAN = FALSE;
-let gfPendingCaves: BOOLEAN = FALSE;
-let gfNeedToInitGame: BOOLEAN = FALSE;
-let gfScheduleReversalPending: BOOLEAN = FALSE;
-let gfRemoveLightsPending: BOOLEAN = FALSE;
-let gfScheduleClearPending: BOOLEAN = FALSE;
-let gfConfirmExitFirst: BOOLEAN = TRUE;
-let gfConfirmExitPending: BOOLEAN = FALSE;
-let gfIntendOnEnteringEditor: BOOLEAN = FALSE;
+let gfRenderWorld: boolean = false;
+let gfRenderTaskbar: boolean = false;
+let gfRenderDrawingMode: boolean = false;
+let gfFirstPlacement: boolean = true;
+let gfPendingBasement: boolean = false;
+let gfPendingCaves: boolean = false;
+let gfNeedToInitGame: boolean = false;
+let gfScheduleReversalPending: boolean = false;
+let gfRemoveLightsPending: boolean = false;
+let gfScheduleClearPending: boolean = false;
+let gfConfirmExitFirst: boolean = true;
+let gfConfirmExitPending: boolean = false;
+let gfIntendOnEnteringEditor: boolean = false;
 
 // original
 let gubFilename: UINT8[] /* [200] */;
@@ -30,20 +30,20 @@ let gsBanksSubIndex: INT16 = 0;
 let gsOldBanksSubIndex: INT16 = 1;
 let gsCliffsSubIndex: INT16 = 0;
 let gsOldCliffsSubIndex: INT16 = 1;
-let gfSwitchScreen: BOOLEAN = FALSE;
-let gDoTest: BOOLEAN = FALSE;
-let gDoTest2: BOOLEAN = FALSE;
+let gfSwitchScreen: boolean = false;
+let gDoTest: boolean = false;
+let gDoTest2: boolean = false;
 let gShadePercent: FLOAT = 0.65;
 let gusCurrentRoofType: INT16 = ONELEVELTYPEONEROOF;
 
 let gusLightLevel: UINT16 = 0;
 let gusGameLightLevel: UINT16 = 0;
 let gusSavedLightLevel: UINT16 = 0;
-let gfFakeLights: BOOLEAN = FALSE;
+let gfFakeLights: boolean = false;
 
 let gsLightRadius: INT16 = 5;
 
-let gfOldDoVideoScroll: BOOLEAN; // Saved for returning to previous settings
+let gfOldDoVideoScroll: boolean; // Saved for returning to previous settings
 let gubOldCurScrollSpeedID: UINT8; // Saved for returning to previous settings
 
 let iOldTaskMode: INT32 = Enum36.TASK_OPTIONS;
@@ -52,11 +52,11 @@ let iTaskMode: INT32 = Enum36.TASK_NONE;
 
 let iEditorTBarButton: INT32[] /* [NUMBER_EDITOR_BUTTONS] */; // For Toolbars
 
-let gfMercResetUponEditorEntry: BOOLEAN;
+let gfMercResetUponEditorEntry: boolean;
 
-let fHelpScreen: BOOLEAN = FALSE;
+let fHelpScreen: boolean = false;
 
-let fDontUseRandom: BOOLEAN = FALSE;
+let fDontUseRandom: boolean = false;
 
 let TestButtons: INT32[] /* [10] */;
 
@@ -66,9 +66,9 @@ let gsCursorGridNo: INT16;
 
 let giMusicID: INT32 = 0;
 
-let gfEditorDirty: BOOLEAN = TRUE;
+let gfEditorDirty: boolean = true;
 
-let fRaiseHeight: BOOLEAN = FALSE;
+let fRaiseHeight: boolean = false;
 
 let iDrawMode: INT32 = Enum38.DRAW_MODE_NOTHING;
 let iCurrentAction: INT32;
@@ -84,16 +84,16 @@ let iCurrentTaskbar: INT32;
 let iCurBankMapIndex: UINT16;
 
 let EditorInputEvent: InputAtom;
-let fBeenWarned: BOOLEAN = FALSE;
-let fEditModeFirstTime: BOOLEAN = TRUE;
-let fFirstTimeInEditModeInit: BOOLEAN = TRUE;
-let fSelectionWindow: BOOLEAN = FALSE;
-let gfRealGunNut: BOOLEAN = TRUE;
+let fBeenWarned: boolean = false;
+let fEditModeFirstTime: boolean = true;
+let fFirstTimeInEditModeInit: boolean = true;
+let fSelectionWindow: boolean = false;
+let gfRealGunNut: boolean = true;
 
 let sGridX: INT16;
 let sGridY: INT16;
 let iMapIndex: UINT32;
-let fNewMap: BOOLEAN = FALSE;
+let fNewMap: boolean = false;
 
 let iPrevDrawMode: INT32 = Enum38.DRAW_MODE_NOTHING;
 let PrevCurrentPaste: UINT16 = Enum313.FIRSTTEXTURE;
@@ -105,7 +105,7 @@ let gusEditorTaskbarColor: UINT16;
 let gusEditorTaskbarHiColor: UINT16;
 let gusEditorTaskbarLoColor: UINT16;
 
-let gfGotoGridNoUI: BOOLEAN = FALSE;
+let gfGotoGridNoUI: boolean = false;
 let guiGotoGridNoUIButtonID: INT32;
 let GotoGridNoUIRegion: MOUSE_REGION;
 
@@ -115,9 +115,9 @@ let GotoGridNoUIRegion: MOUSE_REGION;
 //	This function is called once at SGP (and game) startup
 //
 function EditScreenInit(): UINT32 {
-  gfFakeLights = FALSE;
+  gfFakeLights = false;
 
-  eInfo.fGameInit = TRUE;
+  eInfo.fGameInit = true;
   GameInitEditorBuildingInfo();
   GameInitEditorMercsInfo();
 
@@ -137,7 +137,7 @@ function EditScreenInit(): UINT32 {
 
   InitArmyGunTypes();
 
-  return TRUE;
+  return true;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ function EditScreenShutdown(): UINT32 {
   GameShutdownEditorMercsInfo();
   RemoveAllFromUndoList();
   KillClipboard();
-  return TRUE;
+  return true;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -157,7 +157,7 @@ function EditScreenShutdown(): UINT32 {
 //
 //	Editor's Init code. Called each time we enter edit mode from the game.
 //
-function EditModeInit(): BOOLEAN {
+function EditModeInit(): boolean {
   let x: UINT32;
   let i: INT32;
   let LColors: SGPPaletteEntry[] /* [2] */;
@@ -165,7 +165,7 @@ function EditModeInit(): BOOLEAN {
   OutputDebugString("Entering editor mode...\n");
 
   gfRealGunNut = gGameOptions.fGunNut;
-  gGameOptions.fGunNut = TRUE;
+  gGameOptions.fGunNut = true;
 
   if (!gfProfileDataLoaded)
     LoadMercProfiles();
@@ -173,14 +173,14 @@ function EditModeInit(): BOOLEAN {
   ClearTacticalMessageQueue();
 
   PauseGame();
-  fEditModeFirstTime = FALSE;
+  fEditModeFirstTime = false;
 
   DisableButtonHelpTextRestore();
 
   if (fFirstTimeInEditModeInit) {
     if (gfWorldLoaded)
       InitJA2SelectionWindow();
-    fFirstTimeInEditModeInit = FALSE;
+    fFirstTimeInEditModeInit = false;
   }
 
   // Initialize editor specific stuff for each Taskbar.
@@ -198,7 +198,7 @@ function EditModeInit(): BOOLEAN {
   gTacticalStatus.uiFlags |= TURNBASED | SHOW_ALL_ITEMS;
   gTacticalStatus.uiTimeOfLastInput = GetJA2Clock();
   gTacticalStatus.uiTimeSinceDemoOn = gTacticalStatus.uiTimeOfLastInput;
-  gTacticalStatus.fGoingToEnterDemo = FALSE;
+  gTacticalStatus.fGoingToEnterDemo = false;
 
   // Remove the radar from the interface.
   RemoveCurrentTacticalPanelButtons();
@@ -221,18 +221,18 @@ function EditModeInit(): BOOLEAN {
 
   DoTaskbar();
 
-  fDontUseRandom = FALSE;
-  fSelectionWindow = FALSE;
+  fDontUseRandom = false;
+  fSelectionWindow = false;
 
   // Set renderer to ignore redundency
   gTacticalStatus.uiFlags |= NOHIDE_REDUNDENCY;
 
-  fHelpScreen = FALSE;
+  fHelpScreen = false;
 
-  gfEditMode = TRUE;
-  fNewMap = FALSE;
+  gfEditMode = true;
+  fNewMap = false;
 
-  gfEditingDoor = FALSE;
+  gfEditingDoor = false;
 
   gusGameLightLevel = LightGetAmbient();
   if (!gfBasement && !gfCaves)
@@ -246,25 +246,25 @@ function EditModeInit(): BOOLEAN {
     ClickEditorButton(Enum32.MAPINFO_TOGGLE_FAKE_LIGHTS);
   }
 
-  gfRenderWorld = TRUE;
-  gfRenderTaskbar = TRUE;
+  gfRenderWorld = true;
+  gfRenderTaskbar = true;
 
   // Reset the corruption detection flags.
-  gfCorruptMap = FALSE;
-  gfCorruptSchedules = FALSE;
+  gfCorruptMap = false;
+  gfCorruptSchedules = false;
 
   // save old scrolling mode, set renderer to not use video scroll
   gfOldDoVideoScroll = gfDoVideoScroll;
   gubOldCurScrollSpeedID = gubCurScrollSpeedID;
   /// set new ones
 
-  gfRoofPlacement = FALSE;
+  gfRoofPlacement = false;
 
   EnableUndo();
 
   RemoveMercsInSector();
   if (gfWorldLoaded) {
-    gfConfirmExitFirst = TRUE;
+    gfConfirmExitFirst = true;
     ShowEntryPoints();
     PrepareSchedulesForEditorEntry();
     if (gfMercResetUponEditorEntry) {
@@ -278,7 +278,7 @@ function EditModeInit(): BOOLEAN {
 
     for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
       if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && !(LightSprites[i].uiFlags & (LIGHT_SPR_ON | MERC_LIGHT))) {
-        LightSpritePower(i, TRUE);
+        LightSpritePower(i, true);
       }
     }
 
@@ -292,7 +292,7 @@ function EditModeInit(): BOOLEAN {
   } else {
     OutputDebugString("Creating summary window...\n");
     CreateSummaryWindow();
-    gfNeedToInitGame = TRUE;
+    gfNeedToInitGame = true;
   }
 
   SetMercTeamVisibility(ENEMY_TEAM, gfShowEnemies);
@@ -303,26 +303,26 @@ function EditModeInit(): BOOLEAN {
   // remove mouse region for pause of game
   RemoveMouseRegionForPauseOfClock();
 
-  gfIntendOnEnteringEditor = FALSE;
+  gfIntendOnEnteringEditor = false;
 
   OutputDebugString("Finished entering editor mode...\n");
 
-  return TRUE;
+  return true;
 }
 
 //----------------------------------------------------------------------------------------------
 //	EditModeShutdown
 //
 //	The above function's counterpart. Called when exiting the editor back to the game.
-function EditModeShutdown(): BOOLEAN {
+function EditModeShutdown(): boolean {
   if (gfConfirmExitFirst) {
-    gfConfirmExitPending = TRUE;
+    gfConfirmExitPending = true;
     CreateMessageBox("Exit editor?");
-    return FALSE;
+    return false;
   }
 
-  gfEditMode = FALSE;
-  fEditModeFirstTime = TRUE;
+  gfEditMode = false;
+  fEditModeFirstTime = true;
 
   UpdateLastActionBeforeLeaving();
 
@@ -340,7 +340,7 @@ function EditModeShutdown(): BOOLEAN {
 
   RemoveCursors();
 
-  fHelpScreen = FALSE;
+  fHelpScreen = false;
   // Set render back to normal mode
   gTacticalStatus.uiFlags &= ~(NOHIDE_REDUNDENCY | SHOW_ALL_ITEMS);
   UpdateRoofsView();
@@ -371,7 +371,7 @@ function EditModeShutdown(): BOOLEAN {
   // Make sure to turn off demo mode!
   gTacticalStatus.uiTimeOfLastInput = GetJA2Clock();
   gTacticalStatus.uiTimeSinceDemoOn = GetJA2Clock();
-  gTacticalStatus.fGoingToEnterDemo = FALSE;
+  gTacticalStatus.fGoingToEnterDemo = false;
 
   // RETURN TO PREVIOUS SCROLL MODE
   gfDoVideoScroll = gfOldDoVideoScroll;
@@ -400,7 +400,7 @@ function EditModeShutdown(): BOOLEAN {
   if (gfNeedToInitGame) {
     InitStrategicLayer();
     WarpGameTime(1, Enum131.WARPTIME_PROCESS_EVENTS_NORMALLY); // to avoid helicopter setup
-    gfNeedToInitGame = FALSE;
+    gfNeedToInitGame = false;
   } else {
     if (!gfBasement && !gfCaves)
       LightSetBaseLevel(gusGameLightLevel);
@@ -415,7 +415,7 @@ function EditModeShutdown(): BOOLEAN {
 
   UnPauseGame();
 
-  return TRUE;
+  return true;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -451,7 +451,7 @@ function SetBackgroundTexture(): void {
 //
 //	Displays the selection window and handles it's exit condition. Used by WaitForSelectionWindow
 //
-function DoWindowSelection(): BOOLEAN {
+function DoWindowSelection(): boolean {
   RenderSelectionWindow();
   RenderButtonsFastHelp();
   if (fAllDone) {
@@ -479,9 +479,9 @@ function DoWindowSelection(): BOOLEAN {
         break;
     }
     RemoveJA2SelectionWindow();
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 // Whenever the mouse attaches an object to the cursor, it has to be removed, so it doesn't stay
@@ -495,7 +495,7 @@ function RemoveTempMouseCursorObject(): void {
 
 // Whenever the editor wishes to show an object in the world, it will temporarily attach it to
 // the mouse cursor, to indicate what is about to be drawn.
-function DrawTempMouseCursorObject(): BOOLEAN {
+function DrawTempMouseCursorObject(): boolean {
   let sMouseX_M: INT16;
   let sMouseY_M: INT16;
   let usUseIndex: UINT16;
@@ -505,7 +505,7 @@ function DrawTempMouseCursorObject(): BOOLEAN {
     case Enum38.DRAW_MODE_ROOM:
       pSelList = SelRoom;
       pNumSelList = addressof(iNumRoomsSelected);
-      return FALSE; // a special case where we just want to get the info and not display a cursor.
+      return false; // a special case where we just want to get the info and not display a cursor.
     case Enum38.DRAW_MODE_NEWROOF:
       pSelList = SelSingleNewRoof;
       pNumSelList = addressof(iNumNewRoofsSelected);
@@ -577,22 +577,22 @@ function DrawTempMouseCursorObject(): BOOLEAN {
       // Hook into the smart methods to override the selection window methods.
       if (iDrawMode == Enum38.DRAW_MODE_SMART_WALLS) {
         if (!CalcWallInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
-          return FALSE;
+          return false;
         }
       } else if (iDrawMode == Enum38.DRAW_MODE_SMART_DOORS) {
         if (!CalcDoorInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
-          return FALSE;
+          return false;
         }
       } else if (iDrawMode == Enum38.DRAW_MODE_SMART_WINDOWS) {
         if (!CalcWindowInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
-          return FALSE;
+          return false;
         }
       } else if (iDrawMode == Enum38.DRAW_MODE_SMART_BROKEN_WALLS) {
         if (!CalcBrokenWallInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
-          return FALSE;
+          return false;
         }
         if (usUseObjIndex == 0xffff || usUseIndex == 0xffff) {
-          return FALSE;
+          return false;
         }
       } else {
         usUseIndex = pSelList[iCurBank].usIndex;
@@ -601,12 +601,12 @@ function DrawTempMouseCursorObject(): BOOLEAN {
       gCursorNode = ForceStructToTail(iCurBankMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
       // ATE: Set this levelnode as dynamic!
       gCursorNode.value.uiFlags |= LEVELNODE_DYNAMIC;
-      return TRUE;
+      return true;
     } else
-      return FALSE;
+      return false;
   }
 
-  return FALSE;
+  return false;
 }
 
 // Displays the current drawing object in the small, lower left window of the editor's toolbar.
@@ -836,9 +836,9 @@ function ShowCurrentDrawingMode(): void {
   usFillColor = GenericButtonFillColors[0];
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   if (gbPixelDepth == 16)
-    RectangleDraw(FALSE, 0, 400, 99, 458, usFillColor, pDestBuf);
+    RectangleDraw(false, 0, 400, 99, 458, usFillColor, pDestBuf);
   else if (gbPixelDepth == 8)
-    RectangleDraw8(FALSE, 0, 400, 99, 458, usFillColor, pDestBuf);
+    RectangleDraw8(false, 0, 400, 99, 458, usFillColor, pDestBuf);
 
   UnLockVideoSurface(FRAME_BUFFER);
 
@@ -852,10 +852,10 @@ function ShowCurrentDrawingMode(): void {
 //	Select action to be taken based on user's toolbar selection.
 //
 function HandleJA2ToolbarSelection(): void {
-  let fPrevState: BOOLEAN;
+  let fPrevState: boolean;
 
   fPrevState = gfRenderTaskbar;
-  gfRenderTaskbar = TRUE;
+  gfRenderTaskbar = true;
 
   switch (iEditorToolbarState) {
     case Enum35.TBAR_MODE_SET_BGRND:
@@ -889,7 +889,7 @@ function HandleJA2ToolbarSelection(): void {
       break;
 
     case Enum35.TBAR_MODE_FAKE_LIGHTING:
-      gfFakeLights ^= TRUE;
+      gfFakeLights ^= true;
       if (gfFakeLights) {
         gusSavedLightLevel = gusLightLevel;
         gusLightLevel = EDITOR_LIGHT_FAKE;
@@ -1116,7 +1116,7 @@ function HandleJA2ToolbarSelection(): void {
 
 function HandleKeyboardShortcuts(): void {
   /* static */ let iSavedMode: INT32;
-  /* static */ let fShowTrees: BOOLEAN = TRUE;
+  /* static */ let fShowTrees: boolean = true;
   while (DequeueEvent(addressof(EditorInputEvent))) {
     if (!HandleSummaryInput(addressof(EditorInputEvent)) && !HandleTextInput(addressof(EditorInputEvent)) && EditorInputEvent.usEvent == KEY_DOWN) {
       if (gfGotoGridNoUI) {
@@ -1139,7 +1139,7 @@ function HandleKeyboardShortcuts(): void {
       } else
         switch (EditorInputEvent.usParam) {
           case HOME:
-            gfFakeLights ^= TRUE;
+            gfFakeLights ^= true;
             if (gfFakeLights) {
               gusSavedLightLevel = gusLightLevel;
               gusLightLevel = EDITOR_LIGHT_FAKE;
@@ -1179,7 +1179,7 @@ function HandleKeyboardShortcuts(): void {
               ExtractAndUpdateDoorInfo();
               KillDoorEditing();
             } else if (iCurrentTaskbar == Enum36.TASK_MERCS && gsSelectedMercID != -1)
-              ExtractCurrentMercModeInfo(FALSE);
+              ExtractCurrentMercModeInfo(false);
             else if (iCurrentTaskbar == Enum36.TASK_MAPINFO)
               ExtractAndUpdateMapInfo();
             else if (iCurrentTaskbar == Enum36.TASK_BUILDINGS)
@@ -1199,7 +1199,7 @@ function HandleKeyboardShortcuts(): void {
               if (gubCurrMercMode == Enum42.MERC_INVENTORYMODE && gbCurrSelect != -1) {
                 DeleteSelectedMercsItem();
                 gbCurrSelect = -1;
-                gfRenderTaskbar = TRUE;
+                gfRenderTaskbar = true;
               } else
                 DeleteSelectedMerc();
             } else
@@ -1214,7 +1214,7 @@ function HandleKeyboardShortcuts(): void {
               CancelCurrentScheduleAction();
             } else if (gfMercGetItem) {
               // cancel getting an item for the merc.
-              gfMercGetItem = FALSE;
+              gfMercGetItem = false;
               gusMercsNewItemIndex = 0xffff;
               SetMercEditingMode(Enum42.MERC_INVENTORYMODE);
               ClearEditorItemsInfo();
@@ -1236,10 +1236,10 @@ function HandleKeyboardShortcuts(): void {
 
           case PGUP:
             if (iCurrentTaskbar == Enum36.TASK_MERCS && !fBuildingShowRoofs) {
-              gfRoofPlacement = TRUE;
-              fBuildingShowRoofs = TRUE;
+              gfRoofPlacement = true;
+              fBuildingShowRoofs = true;
               UpdateRoofsView();
-              gfRenderWorld = TRUE;
+              gfRenderWorld = true;
             } else
               switch (iDrawMode) {
                 case Enum38.DRAW_MODE_SMART_WALLS:
@@ -1261,14 +1261,14 @@ function HandleKeyboardShortcuts(): void {
                   iCurrentAction = Enum37.ACTION_SUB_INDEX_UP;
                   break;
               }
-            gfRenderDrawingMode = TRUE;
+            gfRenderDrawingMode = true;
             break;
           case PGDN:
             if (iCurrentTaskbar == Enum36.TASK_MERCS && fBuildingShowRoofs) {
-              gfRoofPlacement = FALSE;
-              fBuildingShowRoofs = FALSE;
+              gfRoofPlacement = false;
+              fBuildingShowRoofs = false;
               UpdateRoofsView();
-              gfRenderWorld = TRUE;
+              gfRenderWorld = true;
             } else
               switch (iDrawMode) {
                 case Enum38.DRAW_MODE_SMART_WALLS:
@@ -1290,12 +1290,12 @@ function HandleKeyboardShortcuts(): void {
                   iCurrentAction = Enum37.ACTION_SUB_INDEX_DWN;
                   break;
               }
-            gfRenderDrawingMode = TRUE;
+            gfRenderDrawingMode = true;
             break;
 
           case F1:
-            gfRenderWorld = TRUE;
-            gfRenderTaskbar = TRUE;
+            gfRenderWorld = true;
+            gfRenderTaskbar = true;
             break;
 
           case F2:
@@ -1361,15 +1361,15 @@ function HandleKeyboardShortcuts(): void {
             break;
           case F10:
             CreateMessageBox("Are you sure you wish to remove all lights?");
-            gfRemoveLightsPending = TRUE;
+            gfRemoveLightsPending = true;
             break;
           case F11:
             CreateMessageBox("Are you sure you wish to reverse the schedules?");
-            gfScheduleReversalPending = TRUE;
+            gfScheduleReversalPending = true;
             break;
           case F12:
             CreateMessageBox("Are you sure you wish to clear all of the schedules?");
-            gfScheduleClearPending = TRUE;
+            gfScheduleClearPending = true;
             break;
 
           case '[':
@@ -1623,14 +1623,14 @@ function HandleKeyboardShortcuts(): void {
             gusPreserveSelectionWidth--;
             if (!gusPreserveSelectionWidth)
               gusPreserveSelectionWidth = 8;
-            gfRenderTaskbar = TRUE;
+            gfRenderTaskbar = true;
             break;
           case '.':
             gusSelectionType = Enum33.LINESELECTION;
             gusPreserveSelectionWidth++;
             if (gusPreserveSelectionWidth > 8)
               gusPreserveSelectionWidth = 1;
-            gfRenderTaskbar = TRUE;
+            gfRenderTaskbar = true;
           default:
             iCurrentAction = Enum37.ACTION_NULL;
             break;
@@ -1672,8 +1672,8 @@ function PerformSelectedAction(): UINT32 {
 
     case Enum37.ACTION_HELPSCREEN:
       DisableEditorTaskbar();
-      fHelpScreen = TRUE;
-      fAllDone = FALSE;
+      fHelpScreen = true;
+      fAllDone = false;
       break;
 
     case Enum37.ACTION_QUICK_ERASE:
@@ -1687,14 +1687,14 @@ function PerformSelectedAction(): UINT32 {
       break;
 
     case Enum37.ACTION_QUIT_GAME:
-      gfProgramIsRunning = FALSE;
+      gfProgramIsRunning = false;
     case Enum37.ACTION_EXIT_EDITOR:
       if (EditModeShutdown()) {
         iPrevJA2ToolbarState = iEditorToolbarState;
         iPrevDrawMode = iDrawMode;
         PrevCurrentPaste = CurrentPaste;
         gPrevCurrentBackground = gCurrentBackground;
-        fFirstTimeInGameScreen = TRUE;
+        fFirstTimeInGameScreen = true;
         return Enum26.GAME_SCREEN;
       }
       return Enum26.EDIT_SCREEN;
@@ -1744,12 +1744,12 @@ function PerformSelectedAction(): UINT32 {
           CreateJA2SelectionWindow(Enum59.SELWIN_ROOM);
           break;
       }
-      fSelectionWindow = TRUE;
-      fAllDone = FALSE;
+      fSelectionWindow = true;
+      fAllDone = false;
       break;
 
     case Enum37.ACTION_NEW_MAP:
-      fNewMap = TRUE;
+      fNewMap = true;
       if (gfPendingBasement)
         CreateMessageBox("Delete current map and start a new basement level?");
       else if (gfPendingCaves)
@@ -1764,7 +1764,7 @@ function PerformSelectedAction(): UINT32 {
       else {
         gCurrentBackground = TerrainBackgroundTile;
         SetBackgroundTexture();
-        fBeenWarned = FALSE;
+        fBeenWarned = false;
       }
       break;
 
@@ -1820,25 +1820,25 @@ function PerformSelectedAction(): UINT32 {
             iCurBank = (iCurBank + 1) % iNumNewRoofsSelected;
           break;
         case Enum38.DRAW_MODE_OSTRUCTS:
-          fDontUseRandom = TRUE;
+          fDontUseRandom = true;
           if (iNumOStructsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumOStructsSelected;
           break;
 
         case Enum38.DRAW_MODE_OSTRUCTS1:
-          fDontUseRandom = TRUE;
+          fDontUseRandom = true;
           if (iNumOStructs1Selected > 0)
             iCurBank = (iCurBank + 1) % iNumOStructs1Selected;
           break;
 
         case Enum38.DRAW_MODE_OSTRUCTS2:
-          fDontUseRandom = TRUE;
+          fDontUseRandom = true;
           if (iNumOStructs2Selected > 0)
             iCurBank = (iCurBank + 1) % iNumOStructs2Selected;
           break;
 
         case Enum38.DRAW_MODE_DEBRIS:
-          fDontUseRandom = TRUE;
+          fDontUseRandom = true;
           if (iNumDebrisSelected > 0)
             iCurBank = (iCurBank + 1) % iNumDebrisSelected;
           break;
@@ -1897,25 +1897,25 @@ function PerformSelectedAction(): UINT32 {
             iCurBank = (iCurBank + (iNumNewRoofsSelected - 1)) % iNumNewRoofsSelected;
           break;
         case Enum38.DRAW_MODE_OSTRUCTS:
-          fDontUseRandom = TRUE;
+          fDontUseRandom = true;
           if (iNumOStructsSelected > 0)
             iCurBank = (iCurBank + (iNumOStructsSelected - 1)) % iNumOStructsSelected;
           break;
 
         case Enum38.DRAW_MODE_OSTRUCTS1:
-          fDontUseRandom = TRUE;
+          fDontUseRandom = true;
           if (iNumOStructs1Selected > 0)
             iCurBank = (iCurBank + (iNumOStructs1Selected - 1)) % iNumOStructs1Selected;
           break;
 
         case Enum38.DRAW_MODE_OSTRUCTS2:
-          fDontUseRandom = TRUE;
+          fDontUseRandom = true;
           if (iNumOStructs2Selected > 0)
             iCurBank = (iCurBank + (iNumOStructs2Selected - 1)) % iNumOStructs2Selected;
           break;
 
         case Enum38.DRAW_MODE_DEBRIS:
-          fDontUseRandom = TRUE;
+          fDontUseRandom = true;
           if (iNumDebrisSelected > 0)
             iCurBank = (iCurBank + (iNumDebrisSelected - 1)) % iNumDebrisSelected;
           break;
@@ -1926,21 +1926,21 @@ function PerformSelectedAction(): UINT32 {
 
     case Enum37.ACTION_NEXT_DEBRIS:
       CreateJA2SelectionWindow(Enum59.SELWIN_DEBRIS);
-      fSelectionWindow = TRUE;
-      fAllDone = FALSE;
+      fSelectionWindow = true;
+      fAllDone = false;
       break;
 
     case Enum37.ACTION_PREV_SELECTIONTYPE:
       gusSelectionType--;
       if (gusSelectionType > Enum33.AREASELECTION)
         gusSelectionType = Enum33.AREASELECTION;
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       break;
     case Enum37.ACTION_NEXT_SELECTIONTYPE:
       gusSelectionType++;
       if (gusSelectionType > Enum33.AREASELECTION)
         gusSelectionType = Enum33.SMALLSELECTION;
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       break;
 
     case Enum37.ACTION_COPY_MERC_PLACEMENT:
@@ -1964,19 +1964,19 @@ function PerformSelectedAction(): UINT32 {
 
     case Enum37.ACTION_UNDO:
       ExecuteUndoList();
-      gfRenderWorld = TRUE;
+      gfRenderWorld = true;
       break;
 
     case Enum37.ACTION_NEXT_BANK:
       CreateJA2SelectionWindow(Enum59.SELWIN_BANKS);
-      fSelectionWindow = TRUE;
-      fAllDone = FALSE;
+      fSelectionWindow = true;
+      fAllDone = false;
       break;
 
     case Enum37.ACTION_NEXT_ROAD:
       CreateJA2SelectionWindow(Enum59.SELWIN_ROADS);
-      fSelectionWindow = TRUE;
-      fAllDone = FALSE;
+      fSelectionWindow = true;
+      fAllDone = false;
       break;
 
     case Enum37.ACTION_SHADE_UP:
@@ -2009,32 +2009,32 @@ function PerformSelectedAction(): UINT32 {
       GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
-      AddWallToStructLayer(iMapIndex, Enum312.FIRSTWALL18, TRUE);
+      AddWallToStructLayer(iMapIndex, Enum312.FIRSTWALL18, true);
       break;
 
     case Enum37.ACTION_WALL_PASTE2: // Windows	//** Changes Needed
       GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
-      AddWallToStructLayer(iMapIndex, Enum312.FIRSTWALL19, TRUE);
+      AddWallToStructLayer(iMapIndex, Enum312.FIRSTWALL19, true);
       break;
 
     case Enum37.ACTION_NEXT_STRUCT:
       CreateJA2SelectionWindow(Enum59.SELWIN_OSTRUCTS);
-      fSelectionWindow = TRUE;
-      fAllDone = FALSE;
+      fSelectionWindow = true;
+      fAllDone = false;
       break;
 
     case Enum37.ACTION_NEXT_STRUCT1:
       CreateJA2SelectionWindow(Enum59.SELWIN_OSTRUCTS1);
-      fSelectionWindow = TRUE;
-      fAllDone = FALSE;
+      fSelectionWindow = true;
+      fAllDone = false;
       break;
 
     case Enum37.ACTION_NEXT_STRUCT2:
       CreateJA2SelectionWindow(Enum59.SELWIN_OSTRUCTS2);
-      fSelectionWindow = TRUE;
-      fAllDone = FALSE;
+      fSelectionWindow = true;
+      fAllDone = false;
       break;
 
     default:
@@ -2073,7 +2073,7 @@ function CreateNewMap(): void {
     SetEditorSmoothingMode(Enum231.SMOOTHING_CAVES);
   } else
     SetEditorSmoothingMode(Enum231.SMOOTHING_NORMAL);
-  fNewMap = FALSE;
+  fNewMap = false;
   RemoveAllFromUndoList();
   UseEditorAlternateList();
   KillSoldierInitList();
@@ -2088,11 +2088,11 @@ function CreateNewMap(): void {
 
 function ProcessEditscreenMessageBoxResponse(): UINT32 {
   RemoveMessageBox();
-  gfRenderWorld = TRUE;
+  gfRenderWorld = true;
   if (gfConfirmExitPending) {
-    gfConfirmExitPending = FALSE;
+    gfConfirmExitPending = false;
     if (gfMessageBoxResult) {
-      gfConfirmExitFirst = FALSE;
+      gfConfirmExitFirst = false;
       iEditorToolbarState = Enum35.TBAR_MODE_EXIT_EDIT;
     }
     return Enum26.EDIT_SCREEN;
@@ -2107,16 +2107,16 @@ function ProcessEditscreenMessageBoxResponse(): UINT32 {
     }
     MarkWorldDirty();
     LightSetBaseLevel((15 - ubAmbientLightLevel));
-    gfRemoveLightsPending = FALSE;
+    gfRemoveLightsPending = false;
   }
   if (gfScheduleReversalPending) {
     IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
     ReverseSchedules();
-    gfScheduleReversalPending = FALSE;
+    gfScheduleReversalPending = false;
   } else if (gfScheduleClearPending) {
     IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
     ClearAllSchedules();
-    gfScheduleClearPending = FALSE;
+    gfScheduleClearPending = false;
   }
   if (fNewMap) {
     CreateNewMap();
@@ -2137,7 +2137,7 @@ function ProcessEditscreenMessageBoxResponse(): UINT32 {
 //
 function WaitForHelpScreenResponse(): UINT32 {
   let DummyEvent: InputAtom;
-  let fLeaveScreen: BOOLEAN;
+  let fLeaveScreen: boolean;
 
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 50, 50, 590, 310, Get16BPPColor(FROMRGB(136, 138, 135)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 51, 51, 590, 310, Get16BPPColor(FROMRGB(24, 61, 81)));
@@ -2208,23 +2208,23 @@ function WaitForHelpScreenResponse(): UINT32 {
   gprintf(55, 295, "h");
   gprintf(205, 295, "Toggle roofs ON/OFF");
 
-  fLeaveScreen = FALSE;
+  fLeaveScreen = false;
 
-  while (DequeueEvent(addressof(DummyEvent)) == TRUE) {
+  while (DequeueEvent(addressof(DummyEvent)) == true) {
     if (DummyEvent.usEvent == KEY_DOWN) {
       switch (DummyEvent.usParam) {
         case SPACE:
         case ESC:
         case ENTER:
         case F1:
-          fLeaveScreen = TRUE;
+          fLeaveScreen = true;
           break;
       }
     }
   }
 
   if ((_LeftButtonDown()) || (_RightButtonDown()) || fLeaveScreen) {
-    fHelpScreen = FALSE;
+    fHelpScreen = false;
 
     while (DequeueEvent(addressof(DummyEvent)))
       continue;
@@ -2247,7 +2247,7 @@ function WaitForHelpScreenResponse(): UINT32 {
 function WaitForSelectionWindowResponse(): UINT32 {
   let DummyEvent: InputAtom;
 
-  while (DequeueEvent(addressof(DummyEvent)) == TRUE) {
+  while (DequeueEvent(addressof(DummyEvent)) == true) {
     if (DummyEvent.usEvent == KEY_DOWN) {
       switch (DummyEvent.usParam) {
         case SPACE:
@@ -2265,14 +2265,14 @@ function WaitForSelectionWindowResponse(): UINT32 {
         case ESC:
           RestoreSelectionList();
         case ENTER:
-          fAllDone = TRUE;
+          fAllDone = true;
           break;
       }
     }
   }
 
   if (DoWindowSelection()) {
-    fSelectionWindow = FALSE;
+    fSelectionWindow = false;
     ShutdownJA2SelectionWindow();
     // Quick hack to trash the mouse event queue.
     while (DequeueEvent(addressof(DummyEvent)))
@@ -2430,7 +2430,7 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
 //
 //	Creates and places a light of selected radius and color into the world.
 //
-function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): BOOLEAN {
+function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): boolean {
   let iLightHandle: INT32;
   let ubIntensity: UINT8;
   let Filename: STRING512;
@@ -2446,32 +2446,32 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): B
     if ((iLightHandle = LightCreateOmni(ubIntensity, sRadius)) == (-1)) {
       // Can't create light template
       DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't create light template for radius %d", sRadius));
-      return FALSE;
+      return false;
     }
 
     if (!LightSave(iLightHandle, Filename)) {
       // Can't save light template
       DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't save light template for radius %d", sRadius));
-      return FALSE;
+      return false;
     }
 
     if ((iLightHandle = LightSpriteCreate(Filename, sType)) == (-1)) {
       // Can't create sprite
       DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't create light sprite of radius %d", sRadius));
-      return FALSE;
+      return false;
     }
   }
 
-  if (!LightSpritePower(iLightHandle, TRUE)) {
+  if (!LightSpritePower(iLightHandle, true)) {
     // Can't turn this light on
     DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't turn on light %d", iLightHandle));
-    return FALSE;
+    return false;
   }
 
   if (!LightSpritePosition(iLightHandle, iMapX, iMapY)) {
     // Can't set light's position
     DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't set light position for light %d", iLightHandle));
-    return FALSE;
+    return false;
   }
 
   switch (gbDefaultLightType) {
@@ -2491,7 +2491,7 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): B
 
   AddLightToUndoList(iMapIndex, 0, 0);
 
-  return TRUE;
+  return true;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2503,28 +2503,28 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): B
 //	Returns TRUE if deleted the light, otherwise, returns FALSE.
 //	i.e. FALSE is not an error condition!
 //
-function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
+function RemoveLight(iMapX: INT16, iMapY: INT16): boolean {
   let iCount: INT32;
   let cnt: UINT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fSoldierLight: BOOLEAN;
-  let fRemovedLight: BOOLEAN;
+  let fSoldierLight: boolean;
+  let fRemovedLight: boolean;
   let iMapIndex: INT32;
   let uiLastLightType: UINT32;
   let pLastLightName: Pointer<UINT8>;
 
-  fRemovedLight = FALSE;
+  fRemovedLight = false;
 
   // Check all lights if any at this given position
   for (iCount = 0; iCount < MAX_LIGHT_SPRITES; iCount++) {
     if (LightSprites[iCount].uiFlags & LIGHT_SPR_ACTIVE) {
       if (LightSprites[iCount].iX == iMapX && LightSprites[iCount].iY == iMapY) {
         // Found a light, so let's see if it belong to a merc!
-        fSoldierLight = FALSE;
+        fSoldierLight = false;
         for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
           if (GetSoldier(addressof(pSoldier), cnt)) {
             if (pSoldier.value.iLight == iCount)
-              fSoldierLight = TRUE;
+              fSoldierLight = true;
           }
         }
 
@@ -2532,9 +2532,9 @@ function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
           // Ok, it's not a merc's light so kill it!
           pLastLightName = LightSpriteGetTypeName(iCount);
           uiLastLightType = LightSprites[iCount].uiLightType;
-          LightSpritePower(iCount, FALSE);
+          LightSpritePower(iCount, false);
           LightSpriteDestroy(iCount);
-          fRemovedLight = TRUE;
+          fRemovedLight = true;
           iMapIndex = (iMapY * WORLD_COLS) + iMapX;
           RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.GOODRING, Enum313.GOODRING);
         }
@@ -2565,17 +2565,17 @@ function ShowLightPositionHandles(): void {
   let cnt: UINT16;
   let usTmpIndex: UINT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fSoldierLight: BOOLEAN;
+  let fSoldierLight: boolean;
 
   // Check all lights and place a position handle there!
   for (iCount = 0; iCount < MAX_LIGHT_SPRITES; iCount++) {
     if (LightSprites[iCount].uiFlags & LIGHT_SPR_ACTIVE) {
       // Found a light, so let's see if it belong to a merc!
-      fSoldierLight = FALSE;
+      fSoldierLight = false;
       for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
         if (GetSoldier(addressof(pSoldier), cnt)) {
           if (pSoldier.value.iLight == iCount)
-            fSoldierLight = TRUE;
+            fSoldierLight = true;
         }
       }
 
@@ -2600,17 +2600,17 @@ function RemoveLightPositionHandles(): void {
   let iMapIndex: INT32;
   let cnt: UINT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fSoldierLight: BOOLEAN;
+  let fSoldierLight: boolean;
 
   // Check all lights and remove the position handle there!
   for (iCount = 0; iCount < MAX_LIGHT_SPRITES; iCount++) {
     if (LightSprites[iCount].uiFlags & LIGHT_SPR_ACTIVE) {
       // Found a light, so let's see if it belong to a merc!
-      fSoldierLight = FALSE;
+      fSoldierLight = false;
       for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
         if (GetSoldier(addressof(pSoldier), cnt)) {
           if (pSoldier.value.iLight == iCount)
-            fSoldierLight = TRUE;
+            fSoldierLight = true;
         }
       }
 
@@ -2637,7 +2637,7 @@ function RemoveLightPositionHandles(): void {
 //	This function is used to determine if we should force the area selection of rooms to handle
 //	slant roofs (which require at least one side to be exactly 8 tiles wide)
 //
-function CheckForSlantRoofs(): BOOLEAN {
+function CheckForSlantRoofs(): boolean {
   let usCheck: UINT16;
 
   pSelList = SelRoom;
@@ -2645,7 +2645,7 @@ function CheckForSlantRoofs(): BOOLEAN {
 
   usCheck = GetRandomIndexByRange(Enum313.FIRSTROOF, LASTROOF);
   if (usCheck != 0xffff)
-    return FALSE;
+    return false;
 
   usCheck = GetRandomIndexByRange(Enum313.FIRSTSLANTROOF, LASTSLANTROOF);
   return usCheck != 0xffff;
@@ -2675,22 +2675,22 @@ function MapOptimize(): void {
 //	if ANY piece other than a fence piece exists in the selection list, then we want to keep
 //	random selections.
 //
-function CheckForFences(): BOOLEAN {
+function CheckForFences(): boolean {
   let usCheck: UINT16;
-  let fFence: BOOLEAN;
+  let fFence: boolean;
   let T: Pointer<TILE_ELEMENT>;
 
   pSelList = SelOStructs2;
   pNumSelList = addressof(iNumOStructs2Selected);
 
-  fFence = TRUE;
+  fFence = true;
 
   for (usCheck = 0; usCheck < iNumOStructs2Selected; usCheck++) {
     T = addressof(gTileDatabase[gTileTypeStartIndex[pSelList[usCheck].uiObject]]);
     if (T.value.pDBStructureRef == null)
-      fFence = FALSE;
+      fFence = false;
     else if (!(T.value.pDBStructureRef.value.pDBStructure.value.fFlags & STRUCTURE_ANYFENCE))
-      fFence = FALSE;
+      fFence = false;
   }
 
   return fFence;
@@ -2730,7 +2730,7 @@ function HandleMouseClicksInGameScreen(): void {
   let dummy: EXITGRID = [ 0, 0, 0, 0 ];
   let sX: INT16;
   let sY: INT16;
-  let fPrevState: BOOLEAN;
+  let fPrevState: boolean;
   if (!GetMouseXY(addressof(sGridX), addressof(sGridY)))
     return;
   if (iCurrentTaskbar == Enum36.TASK_OPTIONS || iCurrentTaskbar == Enum36.TASK_NONE) {
@@ -2747,7 +2747,7 @@ function HandleMouseClicksInGameScreen(): void {
   fPrevState = gfRenderWorld;
 
   if (_LeftButtonDown()) {
-    gfRenderWorld = TRUE;
+    gfRenderWorld = true;
     // Are we trying to erase something?
     if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
       // Erasing can have a brush size larger than 1 tile
@@ -2767,9 +2767,9 @@ function HandleMouseClicksInGameScreen(): void {
 
     switch (iDrawMode) {
       case Enum38.DRAW_MODE_SCHEDULEACTION:
-        if (IsLocationSittableExcludingPeople(iMapIndex, FALSE)) {
+        if (IsLocationSittableExcludingPeople(iMapIndex, false)) {
           iDrawMode = Enum38.DRAW_MODE_SCHEDULECONFIRM;
-          gfFirstPlacement = FALSE;
+          gfFirstPlacement = false;
         }
         break;
       case Enum38.DRAW_MODE_NORTHPOINT:
@@ -2788,7 +2788,7 @@ function HandleMouseClicksInGameScreen(): void {
         // Handle adding mercs to the world
         if (gfFirstPlacement) {
           AddMercToWorld(iMapIndex);
-          gfFirstPlacement = FALSE;
+          gfFirstPlacement = false;
         }
         break;
 
@@ -2796,7 +2796,7 @@ function HandleMouseClicksInGameScreen(): void {
         // Add a normal light to the world
         if (gfFirstPlacement) {
           PlaceLight(gsLightRadius, sGridX, sGridY, 0);
-          gfFirstPlacement = FALSE;
+          gfFirstPlacement = false;
         }
         break;
 
@@ -2804,7 +2804,7 @@ function HandleMouseClicksInGameScreen(): void {
       case Enum38.DRAW_MODE_ROOM:
       case Enum38.DRAW_MODE_CAVES:
         if (gusSelectionType >= Enum33.SMALLSELECTION && gusSelectionType <= Enum33.XLARGESELECTION)
-          ProcessAreaSelection(TRUE);
+          ProcessAreaSelection(true);
         break;
       case Enum38.DRAW_MODE_NEWROOF:
         ReplaceBuildingWithNewRoof(iMapIndex);
@@ -2869,12 +2869,12 @@ function HandleMouseClicksInGameScreen(): void {
       case Enum38.DRAW_MODE_MOVE_BUILDING:
         if (gfFirstPlacement) {
           CopyBuilding(iMapIndex);
-          gfFirstPlacement = FALSE;
+          gfFirstPlacement = false;
         }
         gfRenderWorld = fPrevState;
         break;
       case Enum38.DRAW_MODE_BANKS:
-        PasteBanks(iMapIndex, gsBanksSubIndex, TRUE);
+        PasteBanks(iMapIndex, gsBanksSubIndex, true);
         break;
       case Enum38.DRAW_MODE_ROADS:
         PasteRoads(iMapIndex);
@@ -2886,7 +2886,7 @@ function HandleMouseClicksInGameScreen(): void {
       case Enum38.DRAW_MODE_PLACE_ITEM:
         if (gfFirstPlacement) {
           AddSelectedItemToWorld(iMapIndex);
-          gfFirstPlacement = FALSE;
+          gfFirstPlacement = false;
         }
         break;
       default:
@@ -2894,7 +2894,7 @@ function HandleMouseClicksInGameScreen(): void {
         break;
     }
   } else if (_RightButtonDown()) {
-    gfRenderWorld = TRUE;
+    gfRenderWorld = true;
     switch (iDrawMode) {
       // Handle right clicking on a merc (for editing/moving him)
       case Enum38.DRAW_MODE_ENEMY:
@@ -2966,7 +2966,7 @@ function HandleMouseClicksInGameScreen(): void {
 
       case Enum38.DRAW_MODE_CAVES:
         if (gusSelectionType >= Enum33.SMALLSELECTION && gusSelectionType <= Enum33.XLARGESELECTION)
-          ProcessAreaSelection(FALSE);
+          ProcessAreaSelection(false);
         break;
 
       case Enum38.DRAW_MODE_SMART_WALLS:
@@ -2988,7 +2988,7 @@ function HandleMouseClicksInGameScreen(): void {
   } else if (!_LeftButtonDown() && !gfFirstPlacement) {
     switch (iDrawMode) {
       case Enum38.DRAW_MODE_SCHEDULECONFIRM:
-        if (IsLocationSittableExcludingPeople(iMapIndex, FALSE)) {
+        if (IsLocationSittableExcludingPeople(iMapIndex, false)) {
           RegisterCurrentScheduleAction(iMapIndex);
         }
         break;
@@ -3002,7 +3002,7 @@ function HandleMouseClicksInGameScreen(): void {
   }
 }
 
-function DoIRenderASpecialMouseCursor(): BOOLEAN {
+function DoIRenderASpecialMouseCursor(): boolean {
   let sMouseX_M: INT16;
   let sMouseY_M: INT16;
 
@@ -3018,7 +3018,7 @@ function DoIRenderASpecialMouseCursor(): BOOLEAN {
     switch (iDrawMode) {
       case Enum38.DRAW_MODE_OSTRUCTS2:
         if (CheckForFences())
-          fDontUseRandom = TRUE;
+          fDontUseRandom = true;
       case Enum38.DRAW_MODE_DEBRIS: // These only show if you first hit PGUP/PGDOWN keys
       case Enum38.DRAW_MODE_OSTRUCTS:
       case Enum38.DRAW_MODE_OSTRUCTS1:
@@ -3048,7 +3048,7 @@ function DoIRenderASpecialMouseCursor(): BOOLEAN {
         break;
     }
   }
-  return FALSE;
+  return false;
 }
 
 function ShowEntryPoints(): void {
@@ -3111,9 +3111,9 @@ function TaskMapInfoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function ProcessAreaSelection(fWithLeftButton: BOOLEAN): void {
-  let fPrevState: BOOLEAN = gfRenderWorld;
-  gfRenderWorld = TRUE;
+function ProcessAreaSelection(fWithLeftButton: boolean): void {
+  let fPrevState: boolean = gfRenderWorld;
+  gfRenderWorld = true;
   switch (iDrawMode) {
     case Enum38.DRAW_MODE_ROOM:
     case Enum38.DRAW_MODE_SLANTED_ROOF:
@@ -3165,13 +3165,13 @@ function DrawObjectsBasedOnSelectionRegion(): void {
   let x: INT32;
   let y: INT32;
   let iMapIndex: INT32;
-  let fSkipTest: BOOLEAN;
+  let fSkipTest: boolean;
 
   // Certain drawing modes are placed with 100% density.  Those cases are checked here,
   // so the density test can be skipped.
-  fSkipTest = FALSE;
+  fSkipTest = false;
   if (gusSelectionType == Enum33.SMALLSELECTION || iDrawMode == Enum38.DRAW_MODE_GROUND || iDrawMode == Enum38.DRAW_MODE_FLOORS || iDrawMode == Enum38.DRAW_MODE_ROOMNUM || iDrawMode == Enum38.DRAW_MODE_EXITGRID)
-    fSkipTest = TRUE;
+    fSkipTest = true;
 
   // The reason why I process the region from top to bottom then to the right is
   // to even out the binary tree undo placements.  Otherwise, the placements within
@@ -3221,18 +3221,18 @@ function DrawObjectsBasedOnSelectionRegion(): void {
 // The main loop of the editor.
 function EditScreenHandle(): UINT32 {
   let uiRetVal: UINT32;
-  let fShowingCursor: BOOLEAN;
+  let fShowingCursor: boolean;
   StartFrameBufferRender();
 
   if (gfWorldLoaded && gMapInformation.ubMapVersion <= 7 && !gfCorruptMap) {
     ScreenMsg(FONT_MCOLOR_RED, MSG_ERROR, "Map data has just been corrupted.  Don't save, don't quit, get Kris!  If he's not here, save the map using a temp filename and document everything you just did, especially your last action!");
-    gfCorruptMap = TRUE;
+    gfCorruptMap = true;
   }
   if (gfWorldLoaded && gubScheduleID > 40 && !gfCorruptSchedules) {
     OptimizeSchedules();
     if (gubScheduleID > 32) {
       ScreenMsg(FONT_MCOLOR_RED, MSG_ERROR, "Schedule data has just been corrupted.  Don't save, don't quit, get Kris!  If he's not here, save the map using a temp filename and document everything you just did, especially your last action!");
-      gfCorruptSchedules = TRUE;
+      gfCorruptSchedules = true;
     }
   }
 
@@ -3253,7 +3253,7 @@ function EditScreenHandle(): UINT32 {
 
   DetermineUndoState();
 
-  fBeenWarned = FALSE;
+  fBeenWarned = false;
 
   uiRetVal = Enum26.EDIT_SCREEN;
 
@@ -3291,7 +3291,7 @@ function EditScreenHandle(): UINT32 {
   HandleMouseClicksInGameScreen();
 
   if (!gfFirstPlacement && !gfLeftButtonState)
-    gfFirstPlacement = TRUE;
+    gfFirstPlacement = true;
 
   // If we are copying or moving a building, we process, then delete the building layout immediately
   // after releasing the mouse button.  If released in the world, then the building would have been
@@ -3301,7 +3301,7 @@ function EditScreenHandle(): UINT32 {
 
   fShowingCursor = DoIRenderASpecialMouseCursor();
 
-  DequeAllGameEvents(TRUE);
+  DequeAllGameEvents(true);
 
   if (fBuildingShowRoomInfo) {
     SetRenderFlags(RENDER_FLAG_ROOMIDS);
@@ -3314,7 +3314,7 @@ function EditScreenHandle(): UINT32 {
     // This flag is the beast that makes the renderer do everything
     MarkWorldDirty();
 
-    gfRenderWorld = FALSE;
+    gfRenderWorld = false;
   }
 
   // The default here for the renderer is to just do dynamic stuff...
@@ -3357,13 +3357,13 @@ function EditScreenHandle(): UINT32 {
 }
 
 function CreateGotoGridNoUI(): void {
-  gfGotoGridNoUI = TRUE;
+  gfGotoGridNoUI = true;
   // Disable the rest of the editor
   DisableEditorTaskbar();
   // Create the background panel.
   guiGotoGridNoUIButtonID = CreateTextButton("Enter gridno:", FONT10ARIAL(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 290, 155, 60, 50, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), MSYS_NO_CALLBACK);
   SpecifyDisabledButtonStyle(guiGotoGridNoUIButtonID, Enum29.DISABLED_STYLE_NONE);
-  SpecifyButtonTextOffsets(guiGotoGridNoUIButtonID, 5, 5, FALSE);
+  SpecifyButtonTextOffsets(guiGotoGridNoUIButtonID, 5, 5, false);
   DisableButton(guiGotoGridNoUIButtonID);
   // Create a blanket region so nobody can use
   MSYS_DefineRegion(addressof(GotoGridNoUIRegion), 0, 0, 640, 480, MSYS_PRIORITY_NORMAL + 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
@@ -3374,7 +3374,7 @@ function CreateGotoGridNoUI(): void {
 
 function RemoveGotoGridNoUI(): void {
   let iMapIndex: INT32;
-  gfGotoGridNoUI = FALSE;
+  gfGotoGridNoUI = false;
   // Enable the rest of the editor
   EnableEditorTaskbar();
   RemoveButton(guiGotoGridNoUIButtonID);

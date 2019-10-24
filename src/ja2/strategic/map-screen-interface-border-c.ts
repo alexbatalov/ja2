@@ -15,14 +15,14 @@ let guiMapBorder: UINT32;
 let giScrollButtonState: INT32 = -1;
 
 // flags
-let fShowTownFlag: BOOLEAN = FALSE;
-let fShowMineFlag: BOOLEAN = FALSE;
-let fShowTeamFlag: BOOLEAN = FALSE;
-let fShowMilitia: BOOLEAN = FALSE;
-let fShowAircraftFlag: BOOLEAN = FALSE;
-let fShowItemsFlag: BOOLEAN = FALSE;
+let fShowTownFlag: boolean = false;
+let fShowMineFlag: boolean = false;
+let fShowTeamFlag: boolean = false;
+let fShowMilitia: boolean = false;
+let fShowAircraftFlag: boolean = false;
+let fShowItemsFlag: boolean = false;
 
-let fZoomFlag: BOOLEAN = FALSE;
+let fZoomFlag: boolean = false;
 // BOOLEAN fShowVehicleFlag = FALSE;
 
 // BOOLEAN fMapScrollDueToPanelButton = FALSE;
@@ -69,7 +69,7 @@ void BtnLowerLevelBtnCallback(GUI_BUTTON *btn,INT32 reason);
 void BtnRaiseLevelBtnCallback(GUI_BUTTON *btn,INT32 reason);
 */
 
-function LoadMapBorderGraphics(): BOOLEAN {
+function LoadMapBorderGraphics(): boolean {
   // this procedure will load the graphics needed for the map border
   let VObjectDesc: VOBJECT_DESC;
 
@@ -87,7 +87,7 @@ function LoadMapBorderGraphics(): BOOLEAN {
           fCursorIsOnMapScrollButtons = FALSE;
   */
 
-  return TRUE;
+  return true;
 }
 
 function DeleteMapBorderGraphics(): void {
@@ -168,7 +168,7 @@ function RenderMapBorderEtaPopUp(): void {
     return;
   }
 
-  if (fPlotForHelicopter == TRUE) {
+  if (fPlotForHelicopter == true) {
     DisplayDistancesForHelicopter();
     return;
   }
@@ -182,7 +182,7 @@ function RenderMapBorderEtaPopUp(): void {
   return;
 }
 
-function CreateButtonsForMapBorder(): BOOLEAN {
+function CreateButtonsForMapBorder(): boolean {
   // will create the buttons needed for the map screen border region
 
   /*
@@ -280,7 +280,7 @@ function CreateButtonsForMapBorder(): BOOLEAN {
 
   InitializeMapBorderButtonStates();
 
-  return TRUE;
+  return true;
 }
 
 function DeleteMapBorderButtons(): void {
@@ -493,71 +493,71 @@ void BtnZoomCallback(GUI_BUTTON *btn,INT32 reason)
 */
 
 function ToggleShowTownsMode(): void {
-  if (fShowTownFlag == TRUE) {
-    fShowTownFlag = FALSE;
+  if (fShowTownFlag == true) {
+    fShowTownFlag = false;
     MapBorderButtonOff(Enum141.MAP_BORDER_TOWN_BTN);
   } else {
-    fShowTownFlag = TRUE;
+    fShowTownFlag = true;
     MapBorderButtonOn(Enum141.MAP_BORDER_TOWN_BTN);
 
-    if (fShowMineFlag == TRUE) {
-      fShowMineFlag = FALSE;
+    if (fShowMineFlag == true) {
+      fShowMineFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_MINE_BTN);
     }
 
-    if (fShowAircraftFlag == TRUE) {
-      fShowAircraftFlag = FALSE;
+    if (fShowAircraftFlag == true) {
+      fShowAircraftFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_AIRSPACE_BTN);
     }
 
-    if (fShowItemsFlag == TRUE) {
-      fShowItemsFlag = FALSE;
+    if (fShowItemsFlag == true) {
+      fShowItemsFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_ITEM_BTN);
     }
   }
 
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 function ToggleShowMinesMode(): void {
-  if (fShowMineFlag == TRUE) {
-    fShowMineFlag = FALSE;
+  if (fShowMineFlag == true) {
+    fShowMineFlag = false;
     MapBorderButtonOff(Enum141.MAP_BORDER_MINE_BTN);
   } else {
-    fShowMineFlag = TRUE;
+    fShowMineFlag = true;
     MapBorderButtonOn(Enum141.MAP_BORDER_MINE_BTN);
 
-    if (fShowTownFlag == TRUE) {
-      fShowTownFlag = FALSE;
+    if (fShowTownFlag == true) {
+      fShowTownFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_TOWN_BTN);
     }
 
-    if (fShowAircraftFlag == TRUE) {
-      fShowAircraftFlag = FALSE;
+    if (fShowAircraftFlag == true) {
+      fShowAircraftFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_AIRSPACE_BTN);
     }
 
-    if (fShowItemsFlag == TRUE) {
-      fShowItemsFlag = FALSE;
+    if (fShowItemsFlag == true) {
+      fShowItemsFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_ITEM_BTN);
     }
   }
 
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 function ToggleShowMilitiaMode(): void {
-  if (fShowMilitia == TRUE) {
-    fShowMilitia = FALSE;
+  if (fShowMilitia == true) {
+    fShowMilitia = false;
     MapBorderButtonOff(Enum141.MAP_BORDER_MILITIA_BTN);
   } else {
     // toggle militia ON
-    fShowMilitia = TRUE;
+    fShowMilitia = true;
     MapBorderButtonOn(Enum141.MAP_BORDER_MILITIA_BTN);
 
     // if Team is ON, turn it OFF
-    if (fShowTeamFlag == TRUE) {
-      fShowTeamFlag = FALSE;
+    if (fShowTeamFlag == true) {
+      fShowTeamFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_TEAMS_BTN);
     }
 
@@ -570,13 +570,13 @@ function ToggleShowMilitiaMode(): void {
                     }
     */
 
-    if (fShowItemsFlag == TRUE) {
-      fShowItemsFlag = FALSE;
+    if (fShowItemsFlag == true) {
+      fShowItemsFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_ITEM_BTN);
     }
 
     // check if player has any militia
-    if (DoesPlayerHaveAnyMilitia() == FALSE) {
+    if (DoesPlayerHaveAnyMilitia() == false) {
       let pwString: STR16 = null;
 
       // no - so put up a message explaining how it works
@@ -594,19 +594,19 @@ function ToggleShowMilitiaMode(): void {
     }
   }
 
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 function ToggleShowTeamsMode(): void {
-  if (fShowTeamFlag == TRUE) {
+  if (fShowTeamFlag == true) {
     // turn show teams OFF
-    fShowTeamFlag = FALSE;
+    fShowTeamFlag = false;
     MapBorderButtonOff(Enum141.MAP_BORDER_TEAMS_BTN);
 
     // dirty regions
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
   } else {
     // turn show teams ON
     TurnOnShowTeamsMode();
@@ -614,19 +614,19 @@ function ToggleShowTeamsMode(): void {
 }
 
 function ToggleAirspaceMode(): void {
-  if (fShowAircraftFlag == TRUE) {
+  if (fShowAircraftFlag == true) {
     // turn airspace OFF
-    fShowAircraftFlag = FALSE;
+    fShowAircraftFlag = false;
     MapBorderButtonOff(Enum141.MAP_BORDER_AIRSPACE_BTN);
 
-    if (fPlotForHelicopter == TRUE) {
+    if (fPlotForHelicopter == true) {
       AbortMovementPlottingMode();
     }
 
     // dirty regions
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
   } else {
     // turn airspace ON
     TurnOnAirSpaceMode();
@@ -634,15 +634,15 @@ function ToggleAirspaceMode(): void {
 }
 
 function ToggleItemsFilter(): void {
-  if (fShowItemsFlag == TRUE) {
+  if (fShowItemsFlag == true) {
     // turn items OFF
-    fShowItemsFlag = FALSE;
+    fShowItemsFlag = false;
     MapBorderButtonOff(Enum141.MAP_BORDER_ITEM_BTN);
 
     // dirty regions
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
   } else {
     // turn items ON
     TurnOnItemFilterMode();
@@ -905,7 +905,7 @@ function BtnGenericMouseMoveButtonCallbackForMapBorder(btn: Pointer<GUI_BUTTON>,
     if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
       if (btn.value.Area.uiFlags & MSYS_FASTHELP) {
         // redraw area
-        fMapPanelDirty = TRUE;
+        fMapPanelDirty = true;
       }
     }
     return;
@@ -1029,12 +1029,12 @@ void EnableMapBorderRegion( void )
 function TurnOnShowTeamsMode(): void {
   // if mode already on, leave, else set and redraw
 
-  if (fShowTeamFlag == FALSE) {
-    fShowTeamFlag = TRUE;
+  if (fShowTeamFlag == false) {
+    fShowTeamFlag = true;
     MapBorderButtonOn(Enum141.MAP_BORDER_TEAMS_BTN);
 
-    if (fShowMilitia == TRUE) {
-      fShowMilitia = FALSE;
+    if (fShowMilitia == true) {
+      fShowMilitia = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_MILITIA_BTN);
     }
 
@@ -1046,33 +1046,33 @@ function TurnOnShowTeamsMode(): void {
                     }
     */
 
-    if (fShowItemsFlag == TRUE) {
-      fShowItemsFlag = FALSE;
+    if (fShowItemsFlag == true) {
+      fShowItemsFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_ITEM_BTN);
     }
 
     // dirty regions
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
   }
 }
 
 function TurnOnAirSpaceMode(): void {
   // if mode already on, leave, else set and redraw
 
-  if (fShowAircraftFlag == FALSE) {
-    fShowAircraftFlag = TRUE;
+  if (fShowAircraftFlag == false) {
+    fShowAircraftFlag = true;
     MapBorderButtonOn(Enum141.MAP_BORDER_AIRSPACE_BTN);
 
     // Turn off towns & mines (mostly because town/mine names overlap SAM site names)
-    if (fShowTownFlag == TRUE) {
-      fShowTownFlag = FALSE;
+    if (fShowTownFlag == true) {
+      fShowTownFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_TOWN_BTN);
     }
 
-    if (fShowMineFlag == TRUE) {
-      fShowMineFlag = FALSE;
+    if (fShowMineFlag == true) {
+      fShowMineFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_MINE_BTN);
     }
 
@@ -1092,8 +1092,8 @@ function TurnOnAirSpaceMode(): void {
     */
 
     // Turn off items
-    if (fShowItemsFlag == TRUE) {
-      fShowItemsFlag = FALSE;
+    if (fShowItemsFlag == true) {
+      fShowItemsFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_ITEM_BTN);
     }
 
@@ -1108,53 +1108,53 @@ function TurnOnAirSpaceMode(): void {
     }
 
     // dirty regions
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
   }
 }
 
 function TurnOnItemFilterMode(): void {
   // if mode already on, leave, else set and redraw
 
-  if (fShowItemsFlag == FALSE) {
-    fShowItemsFlag = TRUE;
+  if (fShowItemsFlag == false) {
+    fShowItemsFlag = true;
     MapBorderButtonOn(Enum141.MAP_BORDER_ITEM_BTN);
 
     // Turn off towns, mines, teams, militia & airspace if any are on
-    if (fShowTownFlag == TRUE) {
-      fShowTownFlag = FALSE;
+    if (fShowTownFlag == true) {
+      fShowTownFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_TOWN_BTN);
     }
 
-    if (fShowMineFlag == TRUE) {
-      fShowMineFlag = FALSE;
+    if (fShowMineFlag == true) {
+      fShowMineFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_MINE_BTN);
     }
 
-    if (fShowTeamFlag == TRUE) {
-      fShowTeamFlag = FALSE;
+    if (fShowTeamFlag == true) {
+      fShowTeamFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_TEAMS_BTN);
     }
 
-    if (fShowMilitia == TRUE) {
-      fShowMilitia = FALSE;
+    if (fShowMilitia == true) {
+      fShowMilitia = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_MILITIA_BTN);
     }
 
-    if (fShowAircraftFlag == TRUE) {
-      fShowAircraftFlag = FALSE;
+    if (fShowAircraftFlag == true) {
+      fShowAircraftFlag = false;
       MapBorderButtonOff(Enum141.MAP_BORDER_AIRSPACE_BTN);
     }
 
-    if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
+    if ((bSelectedDestChar != -1) || (fPlotForHelicopter == true)) {
       AbortMovementPlottingMode();
     }
 
     // dirty regions
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
   }
 }
 
@@ -1252,7 +1252,7 @@ function InitializeMapBorderButtonStates(): void {
   }
 }
 
-function DoesPlayerHaveAnyMilitia(): BOOLEAN {
+function DoesPlayerHaveAnyMilitia(): boolean {
   let sX: INT16;
   let sY: INT16;
 
@@ -1261,13 +1261,13 @@ function DoesPlayerHaveAnyMilitia(): BOOLEAN {
     for (sY = 1; sY < MAP_WORLD_Y - 1; sY++) {
       if ((SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA]) > 0) {
         // found at least one
-        return TRUE;
+        return true;
       }
     }
   }
 
   // no one found
-  return FALSE;
+  return false;
 }
 
 function CommonBtnCallbackBtnDownChecks(): void {
@@ -1283,14 +1283,14 @@ function CommonBtnCallbackBtnDownChecks(): void {
 }
 
 function InitMapScreenFlags(): void {
-  fShowTownFlag = TRUE;
-  fShowMineFlag = FALSE;
+  fShowTownFlag = true;
+  fShowMineFlag = false;
 
-  fShowTeamFlag = TRUE;
-  fShowMilitia = FALSE;
+  fShowTeamFlag = true;
+  fShowMilitia = false;
 
-  fShowAircraftFlag = FALSE;
-  fShowItemsFlag = FALSE;
+  fShowAircraftFlag = false;
+  fShowItemsFlag = false;
 }
 
 function MapBorderButtonOff(ubBorderButtonIndex: UINT8): void {

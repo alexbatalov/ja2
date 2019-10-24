@@ -3,7 +3,7 @@ interface STORE_INVENTORY {
   ubQtyOnHand: UINT8;
   ubQtyOnOrder: UINT8; // The number of items on order
   ubItemQuality: UINT8; // the % damaged listed from 0 to 100
-  fPreviouslyEligible: BOOLEAN; // whether or not dealer has been eligible to sell this item in days prior to today
+  fPreviouslyEligible: boolean; // whether or not dealer has been eligible to sell this item in days prior to today
 
   filler: UINT8;
 }

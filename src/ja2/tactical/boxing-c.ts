@@ -8,15 +8,15 @@ let gubBoxerID: UINT8[] /* [NUM_BOXERS] */ = [
   NOBODY,
   NOBODY,
 ];
-let gfBoxerFought: BOOLEAN[] /* [NUM_BOXERS] */ = [
-  FALSE,
-  FALSE,
-  FALSE,
+let gfBoxerFought: boolean[] /* [NUM_BOXERS] */ = [
+  false,
+  false,
+  false,
 ];
-let gfLastBoxingMatchWonByPlayer: BOOLEAN = FALSE;
+let gfLastBoxingMatchWonByPlayer: boolean = false;
 let gubBoxingMatchesWon: UINT8 = 0;
 let gubBoxersRests: UINT8 = 0;
-let gfBoxersResting: BOOLEAN = FALSE;
+let gfBoxersResting: boolean = false;
 
 function ExitBoxing(): void {
   let ubRoom: UINT8;
@@ -51,7 +51,7 @@ function ExitBoxing(): void {
             SetSoldierNeutral(pSoldier);
             RecalculateOppCntsDueToBecomingNeutral(pSoldier);
           }
-          CancelAIAction(pSoldier, TRUE);
+          CancelAIAction(pSoldier, true);
           pSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
           pSoldier.value.bUnderFire = 0;
 
@@ -73,7 +73,7 @@ function ExitBoxing(): void {
 
   EndAllAITurns();
 
-  if (CheckForEndOfCombatMode(FALSE)) {
+  if (CheckForEndOfCombatMode(false)) {
     EndTopMessage();
     SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
 
@@ -89,7 +89,7 @@ function EndBoxingMatch(pLoser: Pointer<SOLDIERTYPE>): void {
     SetBoxingState(Enum247.LOST_ROUND);
   } else {
     SetBoxingState(Enum247.WON_ROUND);
-    gfLastBoxingMatchWonByPlayer = TRUE;
+    gfLastBoxingMatchWonByPlayer = true;
     gubBoxingMatchesWon++;
   }
   TriggerNPCRecord(Enum268.DARREN, 22);
@@ -212,7 +212,7 @@ function CountPeopleInBoxingRingAndDoActions(): void {
       }
       // start match!
       SetBoxingState(Enum247.BOXING);
-      gfLastBoxingMatchWonByPlayer = FALSE;
+      gfLastBoxingMatchWonByPlayer = false;
 
       // give the first turn to a randomly chosen boxer
       EnterCombatMode(pInRing[Random(2)].value.bTeam);
@@ -232,7 +232,7 @@ function CountPeopleInBoxingRingAndDoActions(): void {
   */
 }
 
-function CheckOnBoxers(): BOOLEAN {
+function CheckOnBoxers(): boolean {
   let uiLoop: UINT32;
   let ubID: UINT8;
 
@@ -249,24 +249,24 @@ function CheckOnBoxers(): BOOLEAN {
   }
 
   if (gubBoxerID[0] == NOBODY && gubBoxerID[1] == NOBODY && gubBoxerID[2] == NOBODY) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function BoxerExists(): BOOLEAN {
+function BoxerExists(): boolean {
   let uiLoop: UINT32;
 
   for (uiLoop = 0; uiLoop < NUM_BOXERS; uiLoop++) {
     if (WhoIsThere2(gsBoxerGridNo[uiLoop], 0) != NOBODY) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function PickABoxer(): BOOLEAN {
+function PickABoxer(): boolean {
   let uiLoop: UINT32;
   let pBoxer: Pointer<SOLDIERTYPE>;
 
@@ -282,9 +282,9 @@ function PickABoxer(): BOOLEAN {
           pBoxer.value.uiStatusFlags |= SOLDIER_BOXER;
           SetSoldierNonNeutral(pBoxer);
           RecalculateOppCntsDueToNoLongerNeutral(pBoxer);
-          CancelAIAction(pBoxer, TRUE);
+          CancelAIAction(pBoxer, true);
           RESETTIMECOUNTER(pBoxer.value.AICounter, 0);
-          gfBoxerFought[uiLoop] = TRUE;
+          gfBoxerFought[uiLoop] = true;
           // improve stats based on the # of rests these guys have had
           pBoxer.value.bStrength = __min(100, pBoxer.value.bStrength += gubBoxersRests * 5);
           pBoxer.value.bDexterity = __min(100, pBoxer.value.bDexterity + gubBoxersRests * 5);
@@ -294,30 +294,30 @@ function PickABoxer(): BOOLEAN {
           if ((uiLoop == NUM_BOXERS - 1) && pBoxer.value.ubBodyType == Enum194.REGMALE) {
             pBoxer.value.ubSkillTrait1 = Enum269.MARTIALARTS;
           }
-          return TRUE;
+          return true;
         }
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function BoxerAvailable(): BOOLEAN {
+function BoxerAvailable(): boolean {
   let ubLoop: UINT8;
 
   // No way around this, BoxerAvailable will have to go find boxer IDs if they aren't set.
-  if (CheckOnBoxers() == FALSE) {
-    return FALSE;
+  if (CheckOnBoxers() == false) {
+    return false;
   }
 
   for (ubLoop = 0; ubLoop < NUM_BOXERS; ubLoop++) {
     if (gubBoxerID[ubLoop] != NOBODY && !gfBoxerFought[ubLoop]) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 // NOTE THIS IS NOW BROKEN BECAUSE NPC.C ASSUMES THAT BOXERSAVAILABLE < 3 IS A
@@ -335,7 +335,7 @@ function BoxersAvailable(): UINT8 {
   return ubCount;
 }
 
-function AnotherFightPossible(): BOOLEAN {
+function AnotherFightPossible(): boolean {
   // Check that and a boxer is still available and
   // a player has at least OKLIFE + 5 life
 
@@ -347,7 +347,7 @@ function AnotherFightPossible(): BOOLEAN {
   ubAvailable = BoxersAvailable();
 
   if (ubAvailable == NUM_BOXERS || ubAvailable == 0) {
-    return FALSE;
+    return false;
   }
 
   // Loop through all mercs on player team
@@ -355,11 +355,11 @@ function AnotherFightPossible(): BOOLEAN {
   pSoldier = MercPtrs[ubLoop];
   for (; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pSoldier++) {
     if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife > (OKLIFE + 5) && !pSoldier.value.bCollapsed) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function BoxingMovementCheck(pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -393,7 +393,7 @@ function SetBoxingState(bNewState: INT8): void {
       if (BoxersAvailable() == NUM_BOXERS) {
         // set one boxer to be set as boxed so that the game will allow another
         // fight to occur
-        gfBoxerFought[0] = TRUE;
+        gfBoxerFought[0] = true;
       }
     }
   }

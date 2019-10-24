@@ -96,18 +96,18 @@ let guiSoundEffectsSliderID: UINT32;
 let guiSpeechSliderID: UINT32;
 let guiMusicSliderID: UINT32;
 
-let gfOptionsScreenEntry: BOOLEAN = TRUE;
-let gfOptionsScreenExit: BOOLEAN = FALSE;
-let gfRedrawOptionsScreen: BOOLEAN = TRUE;
+let gfOptionsScreenEntry: boolean = true;
+let gfOptionsScreenExit: boolean = false;
+let gfRedrawOptionsScreen: boolean = true;
 
 let gzSavedGameName: CHAR8[] /* [128] */;
-let gfEnteredFromMapScreen: BOOLEAN = FALSE;
+let gfEnteredFromMapScreen: boolean = false;
 
 let guiOptionsScreen: UINT32 = Enum26.OPTIONS_SCREEN;
 let guiPreviousOptionScreen: UINT32 = Enum26.OPTIONS_SCREEN;
 
-let gfExitOptionsDueToMessageBox: BOOLEAN = FALSE;
-let gfExitOptionsAfterMessageBox: BOOLEAN = FALSE;
+let gfExitOptionsDueToMessageBox: boolean = false;
+let gfExitOptionsAfterMessageBox: boolean = false;
 
 let guiSoundFxSliderMoving: UINT32 = 0xffffffff;
 let guiSpeechSliderMoving: UINT32 = 0xffffffff;
@@ -116,12 +116,12 @@ let giOptionsMessageBox: INT32 = -1; // Options pop up messages index value
 
 let gbHighLightedOptionText: INT8 = -1;
 
-let gfHideBloodAndGoreOption: BOOLEAN = FALSE; // If a germany build we are to hide the blood and gore option
+let gfHideBloodAndGoreOption: boolean = false; // If a germany build we are to hide the blood and gore option
 let gubFirstColOfOptions: UINT8 = OPT_FIRST_COLUMN_TOGGLE_CUT_OFF;
 
-let gfSettingOfTreeTopStatusOnEnterOfOptionScreen: BOOLEAN;
-let gfSettingOfItemGlowStatusOnEnterOfOptionScreen: BOOLEAN;
-let gfSettingOfDontAnimateSmoke: BOOLEAN;
+let gfSettingOfTreeTopStatusOnEnterOfOptionScreen: boolean;
+let gfSettingOfItemGlowStatusOnEnterOfOptionScreen: boolean;
+let gfSettingOfDontAnimateSmoke: boolean;
 
 let guiOptGotoSaveGameBtn: UINT32;
 let giOptionsButtonImages: INT32;
@@ -160,9 +160,9 @@ let gSelectedToggleBoxAreaRegion: MOUSE_REGION;
 
 function OptionsScreenInit(): UINT32 {
   // Set so next time we come in, we can set up
-  gfOptionsScreenEntry = TRUE;
+  gfOptionsScreenEntry = true;
 
-  return TRUE;
+  return true;
 }
 
 function OptionsScreenHandle(): UINT32 {
@@ -171,9 +171,9 @@ function OptionsScreenHandle(): UINT32 {
   if (gfOptionsScreenEntry) {
     PauseGame();
     EnterOptionsScreen();
-    gfOptionsScreenEntry = FALSE;
-    gfOptionsScreenExit = FALSE;
-    gfRedrawOptionsScreen = TRUE;
+    gfOptionsScreenEntry = false;
+    gfOptionsScreenExit = false;
+    gfRedrawOptionsScreen = true;
     RenderOptionsScreen();
 
     // Blit the background to the save buffer
@@ -191,7 +191,7 @@ function OptionsScreenHandle(): UINT32 {
     RenderOptionsScreen();
     RenderButtons();
 
-    gfRedrawOptionsScreen = FALSE;
+    gfRedrawOptionsScreen = false;
   }
 
   // Render the active slider bars
@@ -210,8 +210,8 @@ function OptionsScreenHandle(): UINT32 {
 
   if (gfOptionsScreenExit) {
     ExitOptionsScreen();
-    gfOptionsScreenExit = FALSE;
-    gfOptionsScreenEntry = TRUE;
+    gfOptionsScreenExit = false;
+    gfOptionsScreenEntry = true;
 
     UnPauseGame();
   }
@@ -220,10 +220,10 @@ function OptionsScreenHandle(): UINT32 {
 }
 
 function OptionsScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
-function EnterOptionsScreen(): BOOLEAN {
+function EnterOptionsScreen(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosY: UINT16;
   let cnt: UINT8;
@@ -231,12 +231,12 @@ function EnterOptionsScreen(): BOOLEAN {
   let usTextHeight: UINT16;
 
   // Default this to off
-  gfHideBloodAndGoreOption = FALSE;
+  gfHideBloodAndGoreOption = false;
 
   // if we are coming from mapscreen
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
     guiTacticalInterfaceFlags &= ~INTERFACE_MAPSCREEN;
-    gfEnteredFromMapScreen = TRUE;
+    gfEnteredFromMapScreen = true;
   }
 
   // Stop ambients...
@@ -248,12 +248,12 @@ function EnterOptionsScreen(): BOOLEAN {
   InitSlider();
 
   if (gfExitOptionsDueToMessageBox) {
-    gfRedrawOptionsScreen = TRUE;
-    gfExitOptionsDueToMessageBox = FALSE;
-    return TRUE;
+    gfRedrawOptionsScreen = true;
+    gfExitOptionsDueToMessageBox = false;
+    return true;
   }
 
-  gfExitOptionsDueToMessageBox = FALSE;
+  gfExitOptionsDueToMessageBox = false;
 
   // load the options screen background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -313,7 +313,7 @@ function EnterOptionsScreen(): BOOLEAN {
 
     if (usTextWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       // Get how many lines will be used to display the string, without displaying the string
-      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT());
+      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, true, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT());
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
@@ -349,7 +349,7 @@ function EnterOptionsScreen(): BOOLEAN {
 
     if (usTextWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       // Get how many lines will be used to display the string, without displaying the string
-      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT());
+      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, true, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT());
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
@@ -394,7 +394,7 @@ function EnterOptionsScreen(): BOOLEAN {
   RemoveMouseRegionForPauseOfClock();
 
   // Draw the screen
-  gfRedrawOptionsScreen = TRUE;
+  gfRedrawOptionsScreen = true;
 
   // Set the option screen toggle boxes
   SetOptionsScreenToggleBoxes();
@@ -411,19 +411,19 @@ function EnterOptionsScreen(): BOOLEAN {
   gfSettingOfItemGlowStatusOnEnterOfOptionScreen = gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS];
 
   gfSettingOfDontAnimateSmoke = gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE];
-  return TRUE;
+  return true;
 }
 
 function ExitOptionsScreen(): void {
   let cnt: UINT8;
 
   if (gfExitOptionsDueToMessageBox) {
-    gfOptionsScreenExit = FALSE;
+    gfOptionsScreenExit = false;
 
     if (!gfExitOptionsAfterMessageBox)
       return;
-    gfExitOptionsAfterMessageBox = FALSE;
-    gfExitOptionsDueToMessageBox = FALSE;
+    gfExitOptionsAfterMessageBox = false;
+    gfExitOptionsDueToMessageBox = false;
   }
 
   // Get the current status of the toggle boxes
@@ -474,7 +474,7 @@ function ExitOptionsScreen(): void {
 
   // if we are coming from mapscreen
   if (gfEnteredFromMapScreen) {
-    gfEnteredFromMapScreen = FALSE;
+    gfEnteredFromMapScreen = false;
     guiTacticalInterfaceFlags |= INTERFACE_MAPSCREEN;
   }
 
@@ -496,7 +496,7 @@ function ExitOptionsScreen(): void {
 function HandleOptionsScreen(): void {
   HandleSliderBarMovementSounds();
 
-  HandleHighLightedText(TRUE);
+  HandleHighLightedText(true);
 }
 
 function RenderOptionsScreen(): void {
@@ -532,9 +532,9 @@ function RenderOptionsScreen(): void {
 
     // if the string is going to wrap, move the string up a bit
     if (usWidth > OPT_TOGGLE_BOX_TEXT_WIDTH)
-      DisplayWrappedString(OPT_TOGGLE_BOX_FIRST_COL_TEXT_X, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DisplayWrappedString(OPT_TOGGLE_BOX_FIRST_COL_TEXT_X, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     else
-      DrawTextToScreen(zOptionsToggleText[cnt], OPT_TOGGLE_BOX_FIRST_COL_TEXT_X, usPosY, 0, OPT_MAIN_FONT(), OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zOptionsToggleText[cnt], OPT_TOGGLE_BOX_FIRST_COL_TEXT_X, usPosY, 0, OPT_MAIN_FONT(), OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     usPosY += OPT_GAP_BETWEEN_TOGGLE_BOXES;
   }
@@ -546,9 +546,9 @@ function RenderOptionsScreen(): void {
 
     // if the string is going to wrap, move the string up a bit
     if (usWidth > OPT_TOGGLE_BOX_TEXT_WIDTH)
-      DisplayWrappedString(OPT_TOGGLE_BOX_SECOND_TEXT_X, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DisplayWrappedString(OPT_TOGGLE_BOX_SECOND_TEXT_X, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     else
-      DrawTextToScreen(zOptionsToggleText[cnt], OPT_TOGGLE_BOX_SECOND_TEXT_X, usPosY, 0, OPT_MAIN_FONT(), OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zOptionsToggleText[cnt], OPT_TOGGLE_BOX_SECOND_TEXT_X, usPosY, 0, OPT_MAIN_FONT(), OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     usPosY += OPT_GAP_BETWEEN_TOGGLE_BOXES;
   }
@@ -558,13 +558,13 @@ function RenderOptionsScreen(): void {
   //
 
   // Display the Sound Fx text
-  DisplayWrappedString(OPT_SOUND_FX_TEXT_X, OPT_SOUND_FX_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SOUND_FX], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(OPT_SOUND_FX_TEXT_X, OPT_SOUND_FX_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SOUND_FX], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the Speech text
-  DisplayWrappedString(OPT_SPEECH_TEXT_X, OPT_SPEECH_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SPEECH], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(OPT_SPEECH_TEXT_X, OPT_SPEECH_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SPEECH], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the Music text
-  DisplayWrappedString(OPT_MUSIC_TEXT_X, OPT_MUSIC_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_MUSIC], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(OPT_MUSIC_TEXT_X, OPT_MUSIC_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_MUSIC], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   InvalidateRegion(OPTIONS__TOP_LEFT_X, OPTIONS__TOP_LEFT_Y, OPTIONS__BOTTOM_RIGHT_X, OPTIONS__BOTTOM_RIGHT_Y);
 }
@@ -610,7 +610,7 @@ function GetOptionsScreenUserInput(): void {
           // if the save game button isnt disabled
           if (ButtonList[guiOptGotoSaveGameBtn].value.uiFlags & BUTTON_ENABLED) {
             SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
-            gfSaveGame = TRUE;
+            gfSaveGame = true;
           }
           break;
 
@@ -618,7 +618,7 @@ function GetOptionsScreenUserInput(): void {
         case 'l':
         case 'L':
           SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
-          gfSaveGame = FALSE;
+          gfSaveGame = false;
           break;
       }
     }
@@ -627,7 +627,7 @@ function GetOptionsScreenUserInput(): void {
 
 function SetOptionsExitScreen(uiExitScreen: UINT32): void {
   guiOptionsScreen = uiExitScreen;
-  gfOptionsScreenExit = TRUE;
+  gfOptionsScreenExit = true;
 }
 
 function BtnOptGotoSaveGameCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -639,7 +639,7 @@ function BtnOptGotoSaveGameCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
-    gfSaveGame = TRUE;
+    gfSaveGame = true;
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
@@ -658,7 +658,7 @@ function BtnOptGotoLoadGameCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
-    gfSaveGame = FALSE;
+    gfSaveGame = false;
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
@@ -712,42 +712,42 @@ function BtnOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      HandleOptionToggle(ubButton, TRUE, FALSE, FALSE);
+      HandleOptionToggle(ubButton, true, false, false);
 
       //			gGameSettings.fOptions[ ubButton ] = TRUE;
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
 
-      HandleOptionToggle(ubButton, FALSE, FALSE, FALSE);
+      HandleOptionToggle(ubButton, false, false, false);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      HandleOptionToggle(ubButton, TRUE, TRUE, FALSE);
+      HandleOptionToggle(ubButton, true, true, false);
 
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
 
-      HandleOptionToggle(ubButton, FALSE, TRUE, FALSE);
+      HandleOptionToggle(ubButton, false, true, false);
     }
   }
 }
 
-function HandleOptionToggle(ubButton: UINT8, fState: BOOLEAN, fDown: BOOLEAN, fPlaySound: BOOLEAN): void {
+function HandleOptionToggle(ubButton: UINT8, fState: boolean, fDown: boolean, fPlaySound: boolean): void {
   /* static */ let uiOptionToggleSound: UINT32 = NO_SAMPLE;
   let uiSideToPlaySoundOn: UINT32 = MIDDLEPAN;
   //	static	BOOLEAN	fCheckBoxDrawnDownLastTime = FALSE;
 
   if (fState) {
-    gGameSettings.fOptions[ubButton] = TRUE;
+    gGameSettings.fOptions[ubButton] = true;
 
     ButtonList[guiOptionsToggles[ubButton]].value.uiFlags |= BUTTON_CLICKED_ON;
 
     if (fDown)
       DrawCheckBoxButtonOn(guiOptionsToggles[ubButton]);
   } else {
-    gGameSettings.fOptions[ubButton] = FALSE;
+    gGameSettings.fOptions[ubButton] = false;
 
     ButtonList[guiOptionsToggles[ubButton]].value.uiFlags &= ~BUTTON_CLICKED_ON;
 
@@ -759,12 +759,12 @@ function HandleOptionToggle(ubButton: UINT8, fState: BOOLEAN, fDown: BOOLEAN, fP
       // make sure that at least of of the toggles is still enabled
       if (!(ButtonList[guiOptionsToggles[Enum8.TOPTION_SPEECH]].value.uiFlags & BUTTON_CLICKED_ON)) {
         if (!(ButtonList[guiOptionsToggles[Enum8.TOPTION_SUBTITLES]].value.uiFlags & BUTTON_CLICKED_ON)) {
-          gGameSettings.fOptions[ubButton] = TRUE;
+          gGameSettings.fOptions[ubButton] = true;
           ButtonList[guiOptionsToggles[ubButton]].value.uiFlags |= BUTTON_CLICKED_ON;
 
           // Confirm the Exit to the main menu screen
           DoOptionsMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zOptionsText[Enum372.OPT_NEED_AT_LEAST_SPEECH_OR_SUBTITLE_OPTION_ON], Enum26.OPTIONS_SCREEN, MSG_BOX_FLAG_OK, null);
-          gfExitOptionsDueToMessageBox = FALSE;
+          gfExitOptionsDueToMessageBox = false;
         }
       }
     }
@@ -801,9 +801,9 @@ function MusicSliderChangeCallBack(iNewValue: INT32): void {
   MusicSetVolume(iNewValue);
 }
 
-function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): BOOLEAN {
+function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
   // reset exit mode
-  gfExitOptionsDueToMessageBox = TRUE;
+  gfExitOptionsDueToMessageBox = true;
 
   // do message box and return
   giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
@@ -812,11 +812,11 @@ function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, ui
   return giOptionsMessageBox != -1;
 }
 
-function DoOptionsMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
+function DoOptionsMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // reset exit mode
-  gfExitOptionsDueToMessageBox = TRUE;
+  gfExitOptionsDueToMessageBox = true;
 
   // do message box and return
   giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
@@ -828,15 +828,15 @@ function DoOptionsMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScre
 function ConfirmQuitToMainMenuMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, Quit to main menu
   if (bExitValue == MSG_BOX_RETURN_YES) {
-    gfEnteredFromMapScreen = FALSE;
-    gfExitOptionsAfterMessageBox = TRUE;
+    gfEnteredFromMapScreen = false;
+    gfExitOptionsAfterMessageBox = true;
     SetOptionsExitScreen(Enum26.MAINMENU_SCREEN);
 
     // We want to reinitialize the game
     ReStartingGame();
   } else {
-    gfExitOptionsAfterMessageBox = FALSE;
-    gfExitOptionsDueToMessageBox = FALSE;
+    gfExitOptionsAfterMessageBox = false;
+    gfExitOptionsDueToMessageBox = false;
   }
 }
 
@@ -856,9 +856,9 @@ function GetOptionsScreenToggleBoxes(): void {
 
   for (cnt = 0; cnt < Enum8.NUM_GAME_OPTIONS; cnt++) {
     if (ButtonList[guiOptionsToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON)
-      gGameSettings.fOptions[cnt] = TRUE;
+      gGameSettings.fOptions[cnt] = true;
     else
-      gGameSettings.fOptions[cnt] = FALSE;
+      gGameSettings.fOptions[cnt] = false;
   }
 }
 
@@ -894,7 +894,7 @@ function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
   let ubButton: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    HandleOptionToggle(ubButton, (!gGameSettings.fOptions[ubButton]), FALSE, TRUE);
+    HandleOptionToggle(ubButton, (!gGameSettings.fOptions[ubButton]), false, true);
 
     InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   }
@@ -902,9 +902,9 @@ function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
   else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) // iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT ||
   {
     if (gGameSettings.fOptions[ubButton]) {
-      HandleOptionToggle(ubButton, TRUE, TRUE, TRUE);
+      HandleOptionToggle(ubButton, true, true, true);
     } else {
-      HandleOptionToggle(ubButton, FALSE, TRUE, TRUE);
+      HandleOptionToggle(ubButton, false, true, true);
     }
   }
 }
@@ -913,7 +913,7 @@ function SelectedOptionTextRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>
   let bButton: INT8 = MSYS_GetRegionUserData(pRegion, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    HandleHighLightedText(FALSE);
+    HandleHighLightedText(false);
 
     gbHighLightedOptionText = -1;
 
@@ -925,7 +925,7 @@ function SelectedOptionTextRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>
   }
 }
 
-function HandleHighLightedText(fHighLight: BOOLEAN): void {
+function HandleHighLightedText(fHighLight: boolean): void {
   let usPosX: UINT16 = 0;
   let usPosY: UINT16 = 0;
   let ubCnt: UINT8;
@@ -935,7 +935,7 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
   /* static */ let bLastRegion: INT8 = -1;
 
   if (gbHighLightedOptionText == -1)
-    fHighLight = FALSE;
+    fHighLight = false;
 
   // if the user has the mouse in one of the checkboxes
   for (ubCnt = 0; ubCnt < Enum8.NUM_GAME_OPTIONS; ubCnt++) {
@@ -946,7 +946,7 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
 
     if (ButtonList[guiOptionsToggles[ubCnt]].value.Area.uiFlags & MSYS_MOUSE_IN_AREA) {
       gbHighLightedOptionText = ubCnt;
-      fHighLight = TRUE;
+      fHighLight = true;
     }
   }
 
@@ -958,7 +958,7 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
   bHighLight = gbHighLightedOptionText;
 
   if (bLastRegion != -1 && gbHighLightedOptionText == -1) {
-    fHighLight = FALSE;
+    fHighLight = false;
     bHighLight = bLastRegion;
     bLastRegion = -1;
   }
@@ -989,16 +989,16 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
     // if the string is going to wrap, move the string up a bit
     if (usWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       if (fHighLight)
-        DisplayWrappedString(usPosX, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, zOptionsToggleText[bHighLight], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
+        DisplayWrappedString(usPosX, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, zOptionsToggleText[bHighLight], FONT_MCOLOR_BLACK, true, LEFT_JUSTIFIED);
       //				DrawTextToScreen( zOptionsToggleText[ bHighLight ], usPosX, usPosY, 0, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED	);
       else
-        DisplayWrappedString(usPosX, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsToggleText[bHighLight], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
+        DisplayWrappedString(usPosX, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsToggleText[bHighLight], FONT_MCOLOR_BLACK, true, LEFT_JUSTIFIED);
       //				DrawTextToScreen( zOptionsToggleText[ bHighLight ], usPosX, usPosY, 0, OPT_MAIN_FONT, OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED	);
     } else {
       if (fHighLight)
-        DrawTextToScreen(zOptionsToggleText[bHighLight], usPosX, usPosY, 0, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
+        DrawTextToScreen(zOptionsToggleText[bHighLight], usPosX, usPosY, 0, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, FONT_MCOLOR_BLACK, true, LEFT_JUSTIFIED);
       else
-        DrawTextToScreen(zOptionsToggleText[bHighLight], usPosX, usPosY, 0, OPT_MAIN_FONT(), OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
+        DrawTextToScreen(zOptionsToggleText[bHighLight], usPosX, usPosY, 0, OPT_MAIN_FONT(), OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, true, LEFT_JUSTIFIED);
     }
   }
 }

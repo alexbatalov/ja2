@@ -46,7 +46,7 @@ function GetDrugType(usItem: UINT16): UINT8 {
   return NO_DRUG;
 }
 
-function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>): BOOLEAN {
+function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>): boolean {
   let ubDrugType: UINT8;
   let ubKitPoints: UINT8;
   let bRegenPointsGained: INT8;
@@ -60,7 +60,7 @@ function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>
 
   // Determine what type of drug....
   if (ubDrugType == NO_DRUG) {
-    return FALSE;
+    return false;
   }
 
   // do switch for Larry!!
@@ -174,7 +174,7 @@ function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>
   // Dirty panel
   fInterfacePanelDirty = DIRTYLEVEL2;
 
-  return TRUE;
+  return true;
 }
 
 function HandleEndTurnDrugAdjustments(pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -355,17 +355,17 @@ function EffectStatForBeingDrunk(pSoldier: Pointer<SOLDIERTYPE>, iStat: INT32): 
   return iStat * giDrunkModifier[GetDrunkLevel(pSoldier)] / 100;
 }
 
-function MercUnderTheInfluence(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function MercUnderTheInfluence(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // Are we in a side effect or good effect?
   if (pSoldier.value.bDrugEffect[DRUG_TYPE_ADRENALINE]) {
-    return TRUE;
+    return true;
   } else if (pSoldier.value.bDrugSideEffect[DRUG_TYPE_ADRENALINE]) {
-    return TRUE;
+    return true;
   }
 
   if (GetDrunkLevel(pSoldier) != SOBER) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }

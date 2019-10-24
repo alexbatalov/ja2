@@ -1,32 +1,32 @@
 const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
 
-let fDirtyRectangleMode: BOOLEAN = FALSE;
+let fDirtyRectangleMode: boolean = false;
 let gpFPSBuffer: Pointer<UINT16> = null;
 // MarkNote
 // extern ScrollStringStPtr pStringS=NULL;
 let counter: UINT32 = 0;
 let count: UINT32 = 0;
-let gfTacticalDoHeliRun: BOOLEAN = FALSE;
-let gfPlayAttnAfterMapLoad: BOOLEAN = FALSE;
+let gfTacticalDoHeliRun: boolean = false;
+let gfPlayAttnAfterMapLoad: boolean = false;
 
 // VIDEO OVERLAYS
 let giFPSOverlay: INT32 = 0;
 let giCounterPeriodOverlay: INT32 = 0;
 
-let gfExitToNewSector: BOOLEAN = FALSE;
+let gfExitToNewSector: boolean = false;
 // UINT8		gubNewSectorExitDirection;
 
-let gfGameScreenLocateToSoldier: BOOLEAN = FALSE;
-let gfEnteringMapScreen: BOOLEAN = FALSE;
+let gfGameScreenLocateToSoldier: boolean = false;
+let gfEnteringMapScreen: boolean = false;
 let uiOldMouseCursor: UINT32;
 let gubPreferredInitialSelectedGuy: UINT8 = NOBODY;
 
-let gfTacticalIsModal: BOOLEAN = FALSE;
+let gfTacticalIsModal: boolean = false;
 let gTacticalDisableRegion: MOUSE_REGION;
-let gfTacticalDisableRegionActive: BOOLEAN = FALSE;
-let gbTacticalDisableMode: INT8 = FALSE;
+let gfTacticalDisableRegionActive: boolean = false;
+let gbTacticalDisableMode: INT8 = false;
 let gModalDoneCallback: MODAL_HOOK;
-let gfBeginEndTurn: BOOLEAN = FALSE;
+let gfBeginEndTurn: boolean = false;
 
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
@@ -37,7 +37,7 @@ const DEMOPLAY_DELAY = 40000;
 const RESTART_DELAY = 6000;
 
 let guiTacticalLeaveScreenID: UINT32;
-let guiTacticalLeaveScreen: BOOLEAN = FALSE;
+let guiTacticalLeaveScreen: boolean = false;
 
 function MainGameScreenInit(): UINT32 {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
@@ -75,7 +75,7 @@ function MainGameScreenInit(): UINT32 {
   RegisterJA2DebugTopic(TOPIC_JA2, "Reg JA2 Debug");
   // MarkNote
 
-  return TRUE;
+  return true;
 }
 
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
@@ -88,11 +88,11 @@ function MainGameScreenShutdown(): UINT32 {
   // Remove video Overlays
   RemoveVideoOverlay(giFPSOverlay);
 
-  return TRUE;
+  return true;
 }
 
 function FadeInGameScreen(): void {
-  fFirstTimeInGameScreen = TRUE;
+  fFirstTimeInGameScreen = true;
 
   FadeInNextFrame();
 }
@@ -102,7 +102,7 @@ function FadeOutGameScreen(): void {
 }
 
 function EnterTacticalScreen(): void {
-  guiTacticalLeaveScreen = FALSE;
+  guiTacticalLeaveScreen = false;
 
   SetPositionSndsActive();
 
@@ -155,10 +155,10 @@ function EnterTacticalScreen(): void {
   SetTacticalInterfaceFlags(0);
 
   // set default squad on sector entry
-  SetDefaultSquadOnSectorEntry(FALSE);
+  SetDefaultSquadOnSectorEntry(false);
   ExamineCurrentSquadLights();
 
-  fFirstTimeInGameScreen = FALSE;
+  fFirstTimeInGameScreen = false;
 
   // Make sure it gets re-created....
   DirtyTopMessage();
@@ -175,7 +175,7 @@ function EnterTacticalScreen(): void {
   }
 
   if (gTacticalStatus.uiFlags & IN_DEIDRANNA_ENDGAME) {
-    InternalLocateGridNo(4561, TRUE);
+    InternalLocateGridNo(4561, true);
   }
 
   // Clear tactical message q
@@ -187,7 +187,7 @@ function EnterTacticalScreen(): void {
 
 function LeaveTacticalScreen(uiNewScreen: UINT32): void {
   guiTacticalLeaveScreenID = uiNewScreen;
-  guiTacticalLeaveScreen = TRUE;
+  guiTacticalLeaveScreen = true;
 }
 
 function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
@@ -203,7 +203,7 @@ function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
   // Turn off active flag
   gTacticalStatus.uiFlags &= (~ACTIVE);
 
-  fFirstTimeInGameScreen = TRUE;
+  fFirstTimeInGameScreen = true;
 
   SetPendingNewScreen(uiNewScreen);
 
@@ -224,7 +224,7 @@ function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
   // MSYS_DisableRegion( &gViewportRegion );
 
   // We are leaving... turn off pedning autobadage...
-  SetAutoBandagePending(FALSE);
+  SetAutoBandagePending(false);
 
   // ATE: Disable messages....
   DisableScrollMessages();
@@ -249,12 +249,12 @@ function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
 
 function MainGameScreenHandle(): UINT32 {
   let uiNewScreen: UINT32 = Enum26.GAME_SCREEN;
-  let fEnterDemoMode: BOOLEAN = FALSE;
+  let fEnterDemoMode: boolean = false;
 
   // DO NOT MOVE THIS FUNCTION CALL!!!
   // This determines if the help screen should be active
   //	if( ( !gfTacticalDoHeliRun && !gfFirstHeliRun ) && ShouldTheHelpScreenComeUp( HELP_SCREEN_TACTICAL, FALSE ) )
-  if (!gfPreBattleInterfaceActive && ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_TACTICAL, FALSE)) {
+  if (!gfPreBattleInterfaceActive && ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_TACTICAL, false)) {
     // handle the help screen
     HelpScreenHandler();
     return Enum26.GAME_SCREEN;
@@ -266,7 +266,7 @@ function MainGameScreenHandle(): UINT32 {
 
   if (gfBeginEndTurn) {
     UIHandleEndTurn(null);
-    gfBeginEndTurn = FALSE;
+    gfBeginEndTurn = false;
   }
 
   /*
@@ -307,7 +307,7 @@ function MainGameScreenHandle(): UINT32 {
   // a quick save and when the game was already in a message box.
   // If the game failed to save when in a message box, pop up a message box stating an error occured
   if (gfFailedToSaveGameWhenInsideAMessageBox) {
-    gfFailedToSaveGameWhenInsideAMessageBox = FALSE;
+    gfFailedToSaveGameWhenInsideAMessageBox = false;
 
     DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
 
@@ -338,11 +338,11 @@ function MainGameScreenHandle(): UINT32 {
     if (gTacticalStatus.fEnemySightingOnTheirTurn) {
       if ((GetJA2Clock() - gTacticalStatus.uiTimeSinceDemoOn) > 3000) {
         if (gTacticalStatus.ubCurrentTeam != gbPlayerNum) {
-          AdjustNoAPToFinishMove(MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID], FALSE);
+          AdjustNoAPToFinishMove(MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID], false);
         }
-        MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID].value.fPauseAllAnimation = FALSE;
+        MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID].value.fPauseAllAnimation = false;
 
-        gTacticalStatus.fEnemySightingOnTheirTurn = FALSE;
+        gTacticalStatus.fEnemySightingOnTheirTurn = false;
       }
     }
   }
@@ -351,7 +351,7 @@ function MainGameScreenHandle(): UINT32 {
   InitHelicopterEntranceByMercs();
 
   // Handle Environment controller here
-  EnvironmentController(TRUE);
+  EnvironmentController(true);
 
   if (!ARE_IN_FADE_IN()) {
     HandleWaitTimerForNPCTrigger();
@@ -367,8 +367,8 @@ function MainGameScreenHandle(): UINT32 {
   }
 
   if (gfTacticalDoHeliRun) {
-    gfGameScreenLocateToSoldier = FALSE;
-    InternalLocateGridNo(gMapInformation.sNorthGridNo, TRUE);
+    gfGameScreenLocateToSoldier = false;
+    InternalLocateGridNo(gMapInformation.sNorthGridNo, true);
 
     // Start heli Run...
     StartHelicopterRun(gMapInformation.sNorthGridNo);
@@ -377,7 +377,7 @@ function MainGameScreenHandle(): UINT32 {
     SetGameTimeCompressionLevel(Enum130.TIME_COMPRESS_X1);
     // UpdateClock( 1 );
 
-    gfTacticalDoHeliRun = FALSE;
+    gfTacticalDoHeliRun = false;
     // SetMusicMode( MUSIC_TACTICAL_NOTHING );
   }
 
@@ -392,7 +392,7 @@ function MainGameScreenHandle(): UINT32 {
 
   if (gfGameScreenLocateToSoldier) {
     TacticalScreenLocateToSoldier();
-    gfGameScreenLocateToSoldier = FALSE;
+    gfGameScreenLocateToSoldier = false;
   }
 
   if (fFirstTimeInGameScreen) {
@@ -401,7 +401,7 @@ function MainGameScreenHandle(): UINT32 {
     // Select a guy if he hasn;'
     if (!gfTacticalPlacementGUIActive) {
       if (gusSelectedSoldier != NOBODY && OK_INTERRUPT_MERC(MercPtrs[gusSelectedSoldier])) {
-        SelectSoldier(gusSelectedSoldier, FALSE, TRUE);
+        SelectSoldier(gusSelectedSoldier, false, true);
       }
     }
   }
@@ -465,7 +465,7 @@ function MainGameScreenHandle(): UINT32 {
       return Enum26.EDIT_SCREEN;
     }
     else if (!gfEnteringMapScreen) {
-      gfEnteringMapScreen = TRUE;
+      gfEnteringMapScreen = true;
     }
 
     if (uiNewScreen != Enum26.GAME_SCREEN) {
@@ -474,7 +474,7 @@ function MainGameScreenHandle(): UINT32 {
 
     // Deque all game events
     if (!ARE_IN_FADE_IN()) {
-      DequeAllGameEvents(TRUE);
+      DequeAllGameEvents(true);
     }
   }
 
@@ -530,7 +530,7 @@ function MainGameScreenHandle(): UINT32 {
   // Handle dialogue queue system
   if (!ARE_IN_FADE_IN()) {
     if (gfPlayAttnAfterMapLoad) {
-      gfPlayAttnAfterMapLoad = FALSE;
+      gfPlayAttnAfterMapLoad = false;
 
       if (gusSelectedSoldier != NOBODY) {
         if (!gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS])
@@ -571,14 +571,14 @@ function MainGameScreenHandle(): UINT32 {
   }
 
   if (guiTacticalLeaveScreen) {
-    guiTacticalLeaveScreen = FALSE;
+    guiTacticalLeaveScreen = false;
 
     InternalLeaveTacticalScreen(guiTacticalLeaveScreenID);
   }
 
   // Check if we are to enter map screen
   if (gfEnteringMapScreen == 2) {
-    gfEnteringMapScreen = FALSE;
+    gfEnteringMapScreen = false;
     EnterMapScreen();
   }
 
@@ -594,7 +594,7 @@ function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
   gRenderOverride = pRenderOverride;
 }
 
-function DisableFPSOverlay(fEnable: BOOLEAN): void {
+function DisableFPSOverlay(fEnable: boolean): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
@@ -602,22 +602,22 @@ function DisableFPSOverlay(fEnable: BOOLEAN): void {
   VideoOverlayDesc.fDisabled = fEnable;
   VideoOverlayDesc.uiFlags = VOVERLAY_DESC_DISABLED;
 
-  UpdateVideoOverlay(addressof(VideoOverlayDesc), giFPSOverlay, FALSE);
-  UpdateVideoOverlay(addressof(VideoOverlayDesc), giCounterPeriodOverlay, FALSE);
+  UpdateVideoOverlay(addressof(VideoOverlayDesc), giFPSOverlay, false);
+  UpdateVideoOverlay(addressof(VideoOverlayDesc), giCounterPeriodOverlay, false);
 }
 
 function TacticalScreenLocateToSoldier(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let bLastTeamID: INT16;
-  let fPreferedGuyUsed: BOOLEAN = FALSE;
+  let fPreferedGuyUsed: boolean = false;
 
   if (gubPreferredInitialSelectedGuy != NOBODY) {
     // ATE: Put condition here...
     if (OK_CONTROLLABLE_MERC(MercPtrs[gubPreferredInitialSelectedGuy]) && OK_INTERRUPT_MERC(MercPtrs[gubPreferredInitialSelectedGuy])) {
       LocateSoldier(gubPreferredInitialSelectedGuy, 10);
-      SelectSoldier(gubPreferredInitialSelectedGuy, FALSE, TRUE);
-      fPreferedGuyUsed = TRUE;
+      SelectSoldier(gubPreferredInitialSelectedGuy, false, true);
+      fPreferedGuyUsed = true;
     }
     gubPreferredInitialSelectedGuy = NOBODY;
   }
@@ -629,7 +629,7 @@ function TacticalScreenLocateToSoldier(): void {
     for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
       if (OK_CONTROLLABLE_MERC(pSoldier) && OK_INTERRUPT_MERC(pSoldier)) {
         LocateSoldier(pSoldier.value.ubID, 10);
-        SelectSoldier(pSoldier.value.ubID, FALSE, TRUE);
+        SelectSoldier(pSoldier.value.ubID, false, true);
         break;
       }
     }
@@ -662,11 +662,11 @@ function UpdateTeamPanelAssignments(): void {
 
 function EnterModalTactical(bMode: INT8): void {
   gbTacticalDisableMode = bMode;
-  gfTacticalIsModal = TRUE;
+  gfTacticalIsModal = true;
 
   if (gbTacticalDisableMode == TACTICAL_MODAL_NOMOUSE) {
     if (!gfTacticalDisableRegionActive) {
-      gfTacticalDisableRegionActive = TRUE;
+      gfTacticalDisableRegionActive = true;
 
       MSYS_DefineRegion(addressof(gTacticalDisableRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
       // Add region
@@ -681,7 +681,7 @@ function EndModalTactical(): void {
   if (gfTacticalDisableRegionActive) {
     MSYS_RemoveRegion(addressof(gTacticalDisableRegion));
 
-    gfTacticalDisableRegionActive = FALSE;
+    gfTacticalDisableRegionActive = false;
   }
 
   if (gModalDoneCallback != null) {
@@ -690,7 +690,7 @@ function EndModalTactical(): void {
     gModalDoneCallback = null;
   }
 
-  gfTacticalIsModal = FALSE;
+  gfTacticalIsModal = false;
 
   SetRenderFlags(RENDER_FLAG_FULL);
 }
@@ -741,9 +741,9 @@ function InitHelicopterEntranceByMercs(): void {
 
     //	ScheduleAirRaid( &AirRaidDef );
 
-    gfTacticalDoHeliRun = TRUE;
-    gfFirstHeliRun = TRUE;
+    gfTacticalDoHeliRun = true;
+    gfFirstHeliRun = true;
 
-    gTacticalStatus.fDidGameJustStart = FALSE;
+    gTacticalStatus.fDidGameJustStart = false;
   }
 }

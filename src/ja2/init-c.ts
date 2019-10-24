@@ -4,7 +4,7 @@
 function InitializeJA2(): UINT32 {
   HandleJA2CDCheck();
 
-  gfWorldLoaded = FALSE;
+  gfWorldLoaded = false;
 
   // Load external text
   LoadAllExternalText();

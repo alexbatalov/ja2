@@ -43,7 +43,7 @@ let guiSHORT2HINDENT: UINT32;
 const CHAR_PROFILE_BACKGROUND_TILE_WIDTH = 125;
 const CHAR_PROFILE_BACKGROUND_TILE_HEIGHT = 100;
 
-function LoadProfileBackGround(): BOOLEAN {
+function LoadProfileBackGround(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // this procedure will load in the graphics for the generic background
@@ -52,7 +52,7 @@ function LoadProfileBackGround(): BOOLEAN {
   FilenameForBPP("LAPTOP\\MetalBackGround.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBACKGROUND)));
 
-  return TRUE;
+  return true;
 }
 
 function RemoveProfileBackGround(): void {
@@ -90,7 +90,7 @@ function RenderProfileBackGround(): void {
   return;
 }
 
-function LoadIMPSymbol(): BOOLEAN {
+function LoadIMPSymbol(): boolean {
   // this procedure will load the IMP main symbol into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -98,7 +98,7 @@ function LoadIMPSymbol(): BOOLEAN {
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_IMPSYMBOL);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiIMPSYMBOL)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteIMPSymbol(): void {
@@ -120,7 +120,7 @@ function RenderIMPSymbol(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadBeginIndent(): BOOLEAN {
+function LoadBeginIndent(): boolean {
   // this procedure will load the indent main symbol into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -128,7 +128,7 @@ function LoadBeginIndent(): BOOLEAN {
   FilenameForBPP("LAPTOP\\BeginScreenIndent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBEGININDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteBeginIndent(): void {
@@ -151,7 +151,7 @@ function RenderBeginIndent(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadActivationIndent(): BOOLEAN {
+function LoadActivationIndent(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -159,7 +159,7 @@ function LoadActivationIndent(): BOOLEAN {
   FilenameForBPP("LAPTOP\\ActivationIndent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiACTIVATIONINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteActivationIndent(): void {
@@ -181,7 +181,7 @@ function RenderActivationIndent(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadFrontPageIndent(): BOOLEAN {
+function LoadFrontPageIndent(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -189,7 +189,7 @@ function LoadFrontPageIndent(): BOOLEAN {
   FilenameForBPP("LAPTOP\\FrontPageIndent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFRONTPAGEINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteFrontPageIndent(): void {
@@ -211,7 +211,7 @@ function RenderFrontPageIndent(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadAnalyse(): BOOLEAN {
+function LoadAnalyse(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -219,7 +219,7 @@ function LoadAnalyse(): BOOLEAN {
   FilenameForBPP("LAPTOP\\Analyze.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiANALYSE)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAnalyse(): void {
@@ -241,7 +241,7 @@ function RenderAnalyse(sX: INT16, sY: INT16, bImageNumber: INT8): void {
   return;
 }
 
-function LoadAttributeGraph(): BOOLEAN {
+function LoadAttributeGraph(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -249,7 +249,7 @@ function LoadAttributeGraph(): BOOLEAN {
   FilenameForBPP("LAPTOP\\Attributegraph.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiATTRIBUTEGRAPH)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAttributeGraph(): void {
@@ -271,7 +271,7 @@ function RenderAttributeGraph(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadAttributeGraphBar(): BOOLEAN {
+function LoadAttributeGraphBar(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -279,7 +279,7 @@ function LoadAttributeGraphBar(): BOOLEAN {
   FilenameForBPP("LAPTOP\\AttributegraphBar.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiATTRIBUTEGRAPHBAR)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAttributeBarGraph(): void {
@@ -301,7 +301,7 @@ function RenderAttributeBarGraph(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadFullNameIndent(): BOOLEAN {
+function LoadFullNameIndent(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -309,7 +309,7 @@ function LoadFullNameIndent(): BOOLEAN {
   FilenameForBPP("LAPTOP\\FullNameIndent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFULLNAMEINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteFullNameIndent(): void {
@@ -331,7 +331,7 @@ function RenderFullNameIndent(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadNickNameIndent(): BOOLEAN {
+function LoadNickNameIndent(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -339,7 +339,7 @@ function LoadNickNameIndent(): BOOLEAN {
   FilenameForBPP("LAPTOP\\NickName.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiNICKNAMEINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteNickNameIndent(): void {
@@ -361,7 +361,7 @@ function RenderNickNameIndent(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadNameIndent(): BOOLEAN {
+function LoadNameIndent(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -369,7 +369,7 @@ function LoadNameIndent(): BOOLEAN {
   FilenameForBPP("LAPTOP\\NameIndent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiNAMEINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteNameIndent(): void {
@@ -391,7 +391,7 @@ function RenderNameIndent(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadGenderIndent(): BOOLEAN {
+function LoadGenderIndent(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -399,7 +399,7 @@ function LoadGenderIndent(): BOOLEAN {
   FilenameForBPP("LAPTOP\\GenderIndent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiGENDERINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteGenderIndent(): void {
@@ -421,7 +421,7 @@ function RenderGenderIndent(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadSmallFrame(): BOOLEAN {
+function LoadSmallFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -429,7 +429,7 @@ function LoadSmallFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\SmallFrame.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMALLFRAME)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteSmallFrame(): void {
@@ -451,7 +451,7 @@ function RenderSmallFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadSmallSilhouette(): BOOLEAN {
+function LoadSmallSilhouette(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -459,7 +459,7 @@ function LoadSmallSilhouette(): BOOLEAN {
   FilenameForBPP("LAPTOP\\SmallSilhouette.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMALLSILHOUETTE)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteSmallSilhouette(): void {
@@ -481,7 +481,7 @@ function RenderSmallSilhouette(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadLargeSilhouette(): BOOLEAN {
+function LoadLargeSilhouette(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -489,7 +489,7 @@ function LoadLargeSilhouette(): BOOLEAN {
   FilenameForBPP("LAPTOP\\largesilhouette.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLARGESILHOUETTE)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteLargeSilhouette(): void {
@@ -511,7 +511,7 @@ function RenderLargeSilhouette(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadAttributeFrame(): BOOLEAN {
+function LoadAttributeFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -519,7 +519,7 @@ function LoadAttributeFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\attributeframe.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiATTRIBUTEFRAME)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAttributeFrame(): void {
@@ -585,7 +585,7 @@ function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32): void
   return;
 }
 
-function LoadSliderBar(): BOOLEAN {
+function LoadSliderBar(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -593,7 +593,7 @@ function LoadSliderBar(): BOOLEAN {
   FilenameForBPP("LAPTOP\\attributeslider.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSLIDERBAR)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteSliderBar(): void {
@@ -615,7 +615,7 @@ function RenderSliderBar(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadButton2Image(): BOOLEAN {
+function LoadButton2Image(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -623,7 +623,7 @@ function LoadButton2Image(): BOOLEAN {
   FilenameForBPP("LAPTOP\\button_2.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTON2IMAGE)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteButton2Image(): void {
@@ -645,7 +645,7 @@ function RenderButton2Image(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadButton4Image(): BOOLEAN {
+function LoadButton4Image(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -653,7 +653,7 @@ function LoadButton4Image(): BOOLEAN {
   FilenameForBPP("LAPTOP\\button_4.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTON4IMAGE)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteButton4Image(): void {
@@ -675,7 +675,7 @@ function RenderButton4Image(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadButton1Image(): BOOLEAN {
+function LoadButton1Image(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -683,7 +683,7 @@ function LoadButton1Image(): BOOLEAN {
   FilenameForBPP("LAPTOP\\button_1.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTON1IMAGE)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteButton1Image(): void {
@@ -705,7 +705,7 @@ function RenderButton1Image(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadPortraitFrame(): BOOLEAN {
+function LoadPortraitFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -713,7 +713,7 @@ function LoadPortraitFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\Voice_PortraitFrame.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPORTRAITFRAME)));
 
-  return TRUE;
+  return true;
 }
 
 function DeletePortraitFrame(): void {
@@ -735,7 +735,7 @@ function RenderPortraitFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadMainIndentFrame(): BOOLEAN {
+function LoadMainIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -743,7 +743,7 @@ function LoadMainIndentFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\mainprofilepageindent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAININDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteMainIndentFrame(): void {
@@ -765,7 +765,7 @@ function RenderMainIndentFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadQtnLongIndentFrame(): BOOLEAN {
+function LoadQtnLongIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -773,7 +773,7 @@ function LoadQtnLongIndentFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\longindent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLONGINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteQtnLongIndentFrame(): void {
@@ -795,7 +795,7 @@ function RenderQtnLongIndentFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadQtnShortIndentFrame(): BOOLEAN {
+function LoadQtnShortIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -803,7 +803,7 @@ function LoadQtnShortIndentFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\shortindent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHORTINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteQtnShortIndentFrame(): void {
@@ -825,7 +825,7 @@ function RenderQtnShortIndentFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadQtnLongIndentHighFrame(): BOOLEAN {
+function LoadQtnLongIndentHighFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -833,7 +833,7 @@ function LoadQtnLongIndentHighFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\longindenthigh.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLONGHINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteQtnLongIndentHighFrame(): void {
@@ -855,7 +855,7 @@ function RenderQtnLongIndentHighFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadQtnShortIndentHighFrame(): BOOLEAN {
+function LoadQtnShortIndentHighFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -863,7 +863,7 @@ function LoadQtnShortIndentHighFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\shortindenthigh.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHORTHINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteQtnShortIndentHighFrame(): void {
@@ -885,7 +885,7 @@ function RenderQtnShortIndentHighFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadQtnIndentFrame(): BOOLEAN {
+function LoadQtnIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -893,7 +893,7 @@ function LoadQtnIndentFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\questionindent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiQINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteQtnIndentFrame(): void {
@@ -915,7 +915,7 @@ function RenderQtnIndentFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadAttrib1IndentFrame(): BOOLEAN {
+function LoadAttrib1IndentFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -923,7 +923,7 @@ function LoadAttrib1IndentFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\attributescreenindent_1.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiA1INDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAttrib1IndentFrame(): void {
@@ -945,7 +945,7 @@ function RenderAttrib1IndentFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadAttrib2IndentFrame(): BOOLEAN {
+function LoadAttrib2IndentFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -953,7 +953,7 @@ function LoadAttrib2IndentFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\attributescreenindent_2.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiA2INDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAttrib2IndentFrame(): void {
@@ -975,7 +975,7 @@ function RenderAttrib2IndentFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadAvgMercIndentFrame(): BOOLEAN {
+function LoadAvgMercIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -983,7 +983,7 @@ function LoadAvgMercIndentFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\anaveragemercindent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAVGMERCINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAvgMercIndentFrame(): void {
@@ -1005,7 +1005,7 @@ function RenderAvgMercIndentFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadAboutUsIndentFrame(): BOOLEAN {
+function LoadAboutUsIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -1013,7 +1013,7 @@ function LoadAboutUsIndentFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\aboutusindent.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiABOUTUSINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAboutUsIndentFrame(): void {
@@ -1035,7 +1035,7 @@ function RenderAboutUsIndentFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadQtnShort2IndentFrame(): BOOLEAN {
+function LoadQtnShort2IndentFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -1043,7 +1043,7 @@ function LoadQtnShort2IndentFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\shortindent2.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHORT2INDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteQtnShort2IndentFrame(): void {
@@ -1065,7 +1065,7 @@ function RenderQtnShort2IndentFrame(sX: INT16, sY: INT16): void {
   return;
 }
 
-function LoadQtnShort2IndentHighFrame(): BOOLEAN {
+function LoadQtnShort2IndentHighFrame(): boolean {
   // this procedure will load the activation indent into memory
   let VObjectDesc: VOBJECT_DESC;
 
@@ -1073,7 +1073,7 @@ function LoadQtnShort2IndentHighFrame(): BOOLEAN {
   FilenameForBPP("LAPTOP\\shortindent2High.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHORT2HINDENT)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteQtnShort2IndentHighFrame(): void {

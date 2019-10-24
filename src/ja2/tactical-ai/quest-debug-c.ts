@@ -57,7 +57,7 @@ function ToggleQuestDebugModes(ubType: UINT8): void {
 }
 
 function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: STR, ...args: any[]): void {
-  /* static */ let fFirstTimeIn: BOOLEAN = TRUE;
+  /* static */ let fFirstTimeIn: boolean = true;
   /* static */ let uiLineNumber: UINT32 = 1;
   let hFile: HWFILE;
   let uiByteWritten: UINT32;
@@ -99,11 +99,11 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: STR,
         return;
       }
     }
-    fFirstTimeIn = FALSE;
+    fFirstTimeIn = false;
   }
 
   // open the file
-  hFile = FileOpen(QUEST_DEBUG_FILE, FILE_ACCESS_WRITE, FALSE);
+  hFile = FileOpen(QUEST_DEBUG_FILE, FILE_ACCESS_WRITE, false);
   if (!hFile) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to open Quest Debug File %s", QUEST_DEBUG_FILE));

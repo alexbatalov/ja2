@@ -95,7 +95,7 @@ function BtnIMPAttributeFinishYesCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
 
       // SET ATTRIBUTES NOW
       SetGeneratedCharacterAttributes();
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }
@@ -112,8 +112,8 @@ function BtnIMPAttributeFinishNoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // if no, return to attribute
       iCurrentImpPage = Enum71.IMP_ATTRIBUTE_PAGE;
-      fReturnStatus = TRUE;
-      fButtonPendingFlag = TRUE;
+      fReturnStatus = true;
+      fButtonPendingFlag = true;
     }
   }
 }

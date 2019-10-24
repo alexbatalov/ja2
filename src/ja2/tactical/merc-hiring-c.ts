@@ -13,7 +13,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   let ubCurrentSoldier: UINT8 = pHireMerc.value.ubProfileID;
   let pMerc: Pointer<MERCPROFILESTRUCT>;
   let MercCreateStruct: SOLDIERCREATE_STRUCT;
-  let fReturn: BOOLEAN = FALSE;
+  let fReturn: boolean = false;
   pMerc = addressof(gMercProfiles[ubCurrentSoldier]);
 
 // If we are to disregard the ststus of the merc
@@ -35,7 +35,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   // BUILD STRUCTURES
   memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
   MercCreateStruct.ubProfile = ubCurrentSoldier;
-  MercCreateStruct.fPlayerMerc = TRUE;
+  MercCreateStruct.fPlayerMerc = true;
   MercCreateStruct.sSectorX = pHireMerc.value.sSectorX;
   MercCreateStruct.sSectorY = pHireMerc.value.sSectorY;
   MercCreateStruct.bSectorZ = pHireMerc.value.bSectorZ;
@@ -59,7 +59,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
       Object.ubNumberOfObjects = 1;
       Object.bStatus[0] = 100;
       // Give it
-      fReturn = AutoPlaceObject(MercPtrs[iNewIndex], addressof(Object), FALSE);
+      fReturn = AutoPlaceObject(MercPtrs[iNewIndex], addressof(Object), false);
       Assert(fReturn);
     }
 
@@ -177,7 +177,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   // remove the merc from the Personnel screens departed list ( if they have never been hired before, its ok to call it )
   RemoveNewlyHiredMercFromPersonnelDepartedList(pSoldier.value.ubProfile);
 
-  gfAtLeastOneMercWasHired = TRUE;
+  gfAtLeastOneMercWasHired = true;
   return MERC_HIRE_OK;
 }
 
@@ -221,7 +221,7 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
     // ( which means we are at beginning of game if so )
     // Setup chopper....
     if (pSoldier.value.ubStrategicInsertionCode != Enum175.INSERTION_CODE_CHOPPER && pSoldier.value.sSectorX == 9 && pSoldier.value.sSectorY == 1) {
-      gfTacticalDoHeliRun = TRUE;
+      gfTacticalDoHeliRun = true;
 
       // OK, If we are in mapscreen, get out...
       if (guiCurrentScreen == Enum26.MAP_SCREEN) {
@@ -244,8 +244,8 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
     ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[Enum335.MERC_HAS_ARRIVED_STR], pSoldier.value.name);
 
     // ATE: He's going to say something, now that they've arrived...
-    if (gTacticalStatus.bMercArrivingQuoteBeingUsed == FALSE && !gfFirstHeliRun) {
-      gTacticalStatus.bMercArrivingQuoteBeingUsed = TRUE;
+    if (gTacticalStatus.bMercArrivingQuoteBeingUsed == false && !gfFirstHeliRun) {
+      gTacticalStatus.bMercArrivingQuoteBeingUsed = true;
 
       // Setup the highlight sector value (note this isn't for mines but using same system)
       gsSectorLocatorX = pSoldier.value.sSectorX;
@@ -282,7 +282,7 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
 
   HandleMercArrivesQuotes(pSoldier);
 
-  fTeamPanelDirty = TRUE;
+  fTeamPanelDirty = true;
 
   // if the currently selected sector has no one in it, select this one instead
   if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, iCurrentMapSectorZ)) {
@@ -292,26 +292,26 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
   return;
 }
 
-function IsMercHireable(ubMercID: UINT8): BOOLEAN {
+function IsMercHireable(ubMercID: UINT8): boolean {
   // If the merc has an .EDT file, is not away on assignment, and isnt already hired (but not arrived yet), he is not DEAD and he isnt returning home
   if ((gMercProfiles[ubMercID].bMercStatus == MERC_HAS_NO_TEXT_FILE) || (gMercProfiles[ubMercID].bMercStatus > 0) || (gMercProfiles[ubMercID].bMercStatus == MERC_HIRED_BUT_NOT_ARRIVED_YET) || (gMercProfiles[ubMercID].bMercStatus == MERC_IS_DEAD) || (gMercProfiles[ubMercID].uiDayBecomesAvailable > 0) || (gMercProfiles[ubMercID].bMercStatus == MERC_WORKING_ELSEWHERE) || (gMercProfiles[ubMercID].bMercStatus == MERC_FIRED_AS_A_POW) || (gMercProfiles[ubMercID].bMercStatus == MERC_RETURNING_HOME))
-    return FALSE;
+    return false;
   else
-    return TRUE;
+    return true;
 }
 
-function IsMercDead(ubMercID: UINT8): BOOLEAN {
+function IsMercDead(ubMercID: UINT8): boolean {
   if (gMercProfiles[ubMercID].bMercStatus == MERC_IS_DEAD)
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }
 
-function IsTheSoldierAliveAndConcious(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function IsTheSoldierAliveAndConcious(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (pSoldier.value.bLife >= CONSCIOUSNESS)
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }
 
 function NumberOfMercsOnPlayerTeam(): UINT8 {
@@ -461,7 +461,7 @@ function CheckForValidArrivalSector(): void {
   let sSectorGridNo2: INT16;
   let uiRange: INT32;
   let uiLowestRange: INT32 = 999999;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let sString: CHAR16[] /* [1024] */;
   let zShortTownIDString1: CHAR16[] /* [50] */;
   let zShortTownIDString2: CHAR16[] /* [50] */;
@@ -495,7 +495,7 @@ function CheckForValidArrivalSector(): void {
             sGoodY = cnt1;
             sGoodX = cnt2;
             uiLowestRange = uiRange;
-            fFound = TRUE;
+            fFound = true;
           }
         }
       }

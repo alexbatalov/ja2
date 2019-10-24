@@ -43,7 +43,7 @@ let gSelectedLinkRegion: MOUSE_REGION[] /* [AIM_LINK_NUM_LINKS] */;
 function GameInitAimLinks(): void {
 }
 
-function EnterAimLinks(): BOOLEAN {
+function EnterAimLinks(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosY: UINT16;
   let i: INT16;
@@ -75,7 +75,7 @@ function EnterAimLinks(): BOOLEAN {
   }
 
   RenderAimLinks();
-  return TRUE;
+  return true;
 }
 
 function ExitAimLinks(): void {
@@ -114,7 +114,7 @@ function RenderAimLinks(): void {
   //	DrawTextToScreen(AimLinkText[AIM_LINK_LISTENING], AIM_LINK_BOBBY_LINK_X, AIM_LINK_LINK_TEXT_3_Y, AIM_LINK_LINK_WIDTH, AIM_LINK_FONT, AIM_LINK_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Draw Link Title
-  DrawTextToScreen(AimLinkText[Enum358.AIM_LINK_TITLE], AIM_LINK_TITLE_X, AIM_LINK_TITLE_Y, AIM_LINK_TITLE_WIDTH, AIM_LINK_TITLE_FONT(), AIM_LINK_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimLinkText[Enum358.AIM_LINK_TITLE], AIM_LINK_TITLE_X, AIM_LINK_TITLE_Y, AIM_LINK_TITLE_WIDTH, AIM_LINK_TITLE_FONT(), AIM_LINK_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   MarkButtonsDirty();
   RenderWWWProgramTitleBar();

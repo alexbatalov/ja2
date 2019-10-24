@@ -28,7 +28,7 @@ const CURSOR_TO_PLAY_SOUND = 0x10;
 
 interface CursorFileData {
   ubFilename: UINT8[] /* [MAX_FILENAME_LEN] */;
-  fLoaded: BOOLEAN;
+  fLoaded: boolean;
   uiIndex: UINT32;
   ubFlags: UINT8;
   ubNumberOfFrames: UINT8;

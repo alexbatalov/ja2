@@ -1,14 +1,14 @@
-let gfTacticalTraversal: BOOLEAN = FALSE;
+let gfTacticalTraversal: boolean = false;
 let gpTacticalTraversalGroup: Pointer<GROUP> = null;
 let gpTacticalTraversalChosenSoldier: Pointer<SOLDIERTYPE> = null;
 
-let gfAutomaticallyStartAutoResolve: BOOLEAN = FALSE;
-let gfAutoAmbush: BOOLEAN = FALSE;
-let gfHighPotentialForAmbush: BOOLEAN = FALSE;
-let gfGotoSectorTransition: BOOLEAN = FALSE;
-let gfEnterAutoResolveMode: BOOLEAN = FALSE;
-let gfEnteringMapScreenToEnterPreBattleInterface: BOOLEAN = FALSE;
-let gfIgnoreAllInput: BOOLEAN = TRUE;
+let gfAutomaticallyStartAutoResolve: boolean = false;
+let gfAutoAmbush: boolean = false;
+let gfHighPotentialForAmbush: boolean = false;
+let gfGotoSectorTransition: boolean = false;
+let gfEnterAutoResolveMode: boolean = false;
+let gfEnteringMapScreenToEnterPreBattleInterface: boolean = false;
+let gfIgnoreAllInput: boolean = true;
 
 // GraphicIDs for the panel
 const enum Enum162 {
@@ -30,7 +30,7 @@ const ACTUAL_HEIGHT = 34;
 // The height of each row
 const ROW_HEIGHT = 10;
 
-let gfDisplayPotentialRetreatPaths: BOOLEAN = FALSE;
+let gfDisplayPotentialRetreatPaths: boolean = false;
 let gusRetreatButtonLeft: UINT16;
 let gusRetreatButtonTop: UINT16;
 let gusRetreatButtonRight: UINT16;
@@ -49,15 +49,15 @@ SOLDIERTYPE* UninvolvedSoldier( INT32 index );
 */
 
 let PBInterfaceBlanket: MOUSE_REGION;
-let gfPreBattleInterfaceActive: BOOLEAN = FALSE;
+let gfPreBattleInterfaceActive: boolean = false;
 let iPBButton: UINT32[] /* [3] */;
 let iPBButtonImage: UINT32[] /* [3] */;
 let uiInterfaceImages: UINT32;
-let gfRenderPBInterface: BOOLEAN;
-let gfPBButtonsHidden: BOOLEAN;
-let fDisableMapInterfaceDueToBattle: BOOLEAN = FALSE;
+let gfRenderPBInterface: boolean;
+let gfPBButtonsHidden: boolean;
+let fDisableMapInterfaceDueToBattle: boolean = false;
 
-let gfBlinkHeader: BOOLEAN;
+let gfBlinkHeader: boolean;
 
 let guiNumInvolved: UINT32;
 let guiNumUninvolved: UINT32;
@@ -66,7 +66,7 @@ let guiNumUninvolved: UINT32;
 
 // Using the ESC key in the PBI will get rid of the PBI and go back to mapscreen, but
 // only if the PBI isn't persistant (!gfPersistantPBI).
-let gfPersistantPBI: BOOLEAN = FALSE;
+let gfPersistantPBI: boolean = false;
 
 // Contains general information about the type of encounter the player is faced with.  This
 // determines whether or not you can autoresolve the battle or even retreat.  This code
@@ -78,38 +78,38 @@ let gubEnemyEncounterCode: UINT8 = Enum164.NO_ENCOUNTER_CODE;
 // for reasons not normally used in the PBI.  For example, if we were fighting the enemy
 // in a normal situation, then shot at a civilian, the civilians associated with the victim
 // would turn hostile, which would disable the ability to autoresolve the battle.
-let gubExplicitEnemyEncounterCode: BOOLEAN = Enum164.NO_ENCOUNTER_CODE;
+let gubExplicitEnemyEncounterCode: boolean = Enum164.NO_ENCOUNTER_CODE;
 
 // Location of the current battle (determines where the animated icon is blitted) and if the
 // icon is to be blitted.
-let gfBlitBattleSectorLocator: BOOLEAN = FALSE;
+let gfBlitBattleSectorLocator: boolean = false;
 
 let gubPBSectorX: UINT8 = 0;
 let gubPBSectorY: UINT8 = 0;
 let gubPBSectorZ: UINT8 = 0;
 
-let gfCantRetreatInPBI: BOOLEAN = FALSE;
+let gfCantRetreatInPBI: boolean = false;
 // SAVE END
 
-let gfUsePersistantPBI: BOOLEAN;
+let gfUsePersistantPBI: boolean;
 
 let giHilitedInvolved: INT32;
 let giHilitedUninvolved: INT32;
 
-function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BOOLEAN): void {
+function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: boolean): void {
   let VObjectDesc: VOBJECT_DESC;
   let i: INT32;
   let ubGroupID: UINT8 = 0;
   let ubNumStationaryEnemies: UINT8 = 0;
   let ubNumMobileEnemies: UINT8 = 0;
   let ubNumMercs: UINT8;
-  let fUsePluralVersion: BOOLEAN = FALSE;
+  let fUsePluralVersion: boolean = false;
   let bBestExpLevel: INT8 = 0;
-  let fRetreatAnOption: BOOLEAN = TRUE;
+  let fRetreatAnOption: boolean = true;
   let pSector: Pointer<SECTORINFO>;
 
   // ARM: Feb01/98 - Cancel out of mapscreen movement plotting if PBI subscreen is coming up
-  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
+  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == true)) {
     AbortMovementPlottingMode();
   }
 
@@ -119,13 +119,13 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   gfPersistantPBI = fPersistantPBI;
 
   if (gfPersistantPBI) {
-    gfBlitBattleSectorLocator = TRUE;
-    gfBlinkHeader = FALSE;
+    gfBlitBattleSectorLocator = true;
+    gfBlinkHeader = false;
 
     //	InitializeTacticalStatusAtBattleStart();
     // CJC, Oct 5 98: this is all we should need from InitializeTacticalStatusAtBattleStart()
     if (gubEnemyEncounterCode != Enum164.BLOODCAT_AMBUSH_CODE && gubEnemyEncounterCode != Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
-      if (CheckFact(Enum170.FACT_FIRST_BATTLE_FOUGHT, 0) == FALSE) {
+      if (CheckFact(Enum170.FACT_FIRST_BATTLE_FOUGHT, 0) == false) {
         SetFactTrue(Enum170.FACT_FIRST_BATTLE_BEING_FOUGHT);
       }
     }
@@ -136,9 +136,9 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     // if( guiCurrentScreen == GAME_SCREEN && pBattleGroup )
     if (guiCurrentScreen == Enum26.GAME_SCREEN && (pBattleGroup || fPersistantPBI)) {
       gpBattleGroup = pBattleGroup;
-      gfEnteringMapScreen = TRUE;
-      gfEnteringMapScreenToEnterPreBattleInterface = TRUE;
-      gfUsePersistantPBI = TRUE;
+      gfEnteringMapScreen = true;
+      gfEnteringMapScreenToEnterPreBattleInterface = true;
+      gfUsePersistantPBI = true;
       return;
     }
 
@@ -150,7 +150,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     SetRegionFastHelpText(addressof(gCharInfoHandRegion), "");
     SetRegionFastHelpText(addressof(gMapStatusBarsRegion), "");
 
-    gfDisplayPotentialRetreatPaths = FALSE;
+    gfDisplayPotentialRetreatPaths = false;
 
     gpBattleGroup = pBattleGroup;
 
@@ -162,7 +162,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
 
       // get number of enemies thought to be here
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
-      fMapPanelDirty = TRUE;
+      fMapPanelDirty = true;
     } else {
       gubPBSectorX = SECTORX(gubSectorIDOfCreatureAttack);
       gubPBSectorY = SECTORY(gubSectorIDOfCreatureAttack);
@@ -170,7 +170,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     }
   } else {
     // calculate the non-persistant situation
-    gfBlinkHeader = TRUE;
+    gfBlinkHeader = true;
 
     if (HostileCiviliansPresent()) {
       // There are hostile civilians, so no autoresolve allowed.
@@ -190,18 +190,18 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
       // use same code
       gubExplicitEnemyEncounterCode = gubEnemyEncounterCode;
     } else {
-      gfBlitBattleSectorLocator = FALSE;
+      gfBlitBattleSectorLocator = false;
       return;
     }
   }
 
-  fMapScreenBottomDirty = TRUE;
+  fMapScreenBottomDirty = true;
   ChangeSelectedMapSector(gubPBSectorX, gubPBSectorY, gubPBSectorZ);
   RenderMapScreenInterfaceBottom();
 
   // If we are currently in tactical, then set the flag to automatically bring up the mapscreen.
   if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-    gfEnteringMapScreen = TRUE;
+    gfEnteringMapScreen = true;
   }
 
   if (!fShowTeamFlag) {
@@ -233,18 +233,18 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   SpecifyButtonHilitedTextColors(iPBButton[0], FONT_WHITE, FONT_NEARBLACK);
   SpecifyButtonHilitedTextColors(iPBButton[1], FONT_WHITE, FONT_NEARBLACK);
   SpecifyButtonHilitedTextColors(iPBButton[2], FONT_WHITE, FONT_NEARBLACK);
-  SpecifyButtonTextOffsets(iPBButton[0], 8, 7, TRUE);
-  SpecifyButtonTextOffsets(iPBButton[1], 8, 7, TRUE);
-  SpecifyButtonTextOffsets(iPBButton[2], 8, 7, TRUE);
+  SpecifyButtonTextOffsets(iPBButton[0], 8, 7, true);
+  SpecifyButtonTextOffsets(iPBButton[1], 8, 7, true);
+  SpecifyButtonTextOffsets(iPBButton[2], 8, 7, true);
   SpecifyButtonTextWrappedWidth(iPBButton[0], 51);
   SpecifyButtonTextWrappedWidth(iPBButton[1], 51);
   SpecifyButtonTextWrappedWidth(iPBButton[2], 51);
   SpecifyButtonTextJustification(iPBButton[0], BUTTON_TEXT_CENTER);
   SpecifyButtonTextJustification(iPBButton[1], BUTTON_TEXT_CENTER);
   SpecifyButtonTextJustification(iPBButton[2], BUTTON_TEXT_CENTER);
-  AllowDisabledButtonFastHelp(iPBButton[0], TRUE);
-  AllowDisabledButtonFastHelp(iPBButton[1], TRUE);
-  AllowDisabledButtonFastHelp(iPBButton[2], TRUE);
+  AllowDisabledButtonFastHelp(iPBButton[0], true);
+  AllowDisabledButtonFastHelp(iPBButton[1], true);
+  AllowDisabledButtonFastHelp(iPBButton[2], true);
 
   gusRetreatButtonLeft = ButtonList[iPBButton[2]].value.Area.RegionTopLeftX;
   gusRetreatButtonTop = ButtonList[iPBButton[2]].value.Area.RegionTopLeftY;
@@ -258,10 +258,10 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   HideButton(iPBButton[0]);
   HideButton(iPBButton[1]);
   HideButton(iPBButton[2]);
-  gfPBButtonsHidden = TRUE;
+  gfPBButtonsHidden = true;
 
   // ARM: this must now be set before any calls utilizing the GetCurrentBattleSectorXYZ() function
-  gfPreBattleInterfaceActive = TRUE;
+  gfPreBattleInterfaceActive = true;
 
   CheckForRobotAndIfItsControlled();
 
@@ -293,7 +293,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
             CalculateGroupRetreatSector(pTempGroup);
           }
         } else if (ubGroupID != MercPtrs[i].value.ubGroupID) {
-          fUsePluralVersion = TRUE;
+          fUsePluralVersion = true;
         }
         guiNumInvolved++;
       } else
@@ -364,22 +364,22 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     }
   }
 
-  gfHighPotentialForAmbush = FALSE;
+  gfHighPotentialForAmbush = false;
 
   if (gfAutomaticallyStartAutoResolve) {
     DisableButton(iPBButton[1]);
     DisableButton(iPBButton[2]);
   }
 
-  gfRenderPBInterface = TRUE;
+  gfRenderPBInterface = true;
   giHilitedInvolved = giHilitedUninvolved = -1;
   MSYS_SetCurrentCursor(Enum317.CURSOR_NORMAL);
   StopTimeCompression();
 
   // hide all visible boxes
   HideAllBoxes();
-  fShowAssignmentMenu = FALSE;
-  fShowContractMenu = FALSE;
+  fShowAssignmentMenu = false;
+  fShowContractMenu = false;
   DisableTeamInfoPanels();
   if (ButtonList[giMapContractButton]) {
     HideButton(giMapContractButton);
@@ -399,7 +399,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
 
     // ALWAYS use these 2 statements together, without setting the boolean, the flag will never be cleaned up!
     pSector.value.uiFlags |= SF_PLAYER_KNOWS_ENEMIES_ARE_HERE;
-    gfResetAllPlayerKnowsEnemiesFlags = TRUE;
+    gfResetAllPlayerKnowsEnemiesFlags = true;
   }
 
   // Set up fast help for buttons depending on the state of the button, and disable buttons
@@ -421,8 +421,8 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
       DisableButton(iPBButton[1]);
     }
     if (gfCantRetreatInPBI) {
-      gfCantRetreatInPBI = FALSE;
-      fRetreatAnOption = FALSE;
+      gfCantRetreatInPBI = false;
+      fRetreatAnOption = false;
     }
     if (gfAutomaticallyStartAutoResolve || !fRetreatAnOption || gubEnemyEncounterCode == Enum164.ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.CREATURE_ATTACK_CODE) {
       DisableButton(iPBButton[2]);
@@ -473,7 +473,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   }
 
   // Disable the options button when the auto resolve  screen comes up
-  EnableDisAbleMapScreenOptionsButton(FALSE);
+  EnableDisAbleMapScreenOptionsButton(false);
 
   SetMusicMode(Enum328.MUSIC_TACTICAL_ENEMYPRESENT);
 
@@ -496,12 +496,12 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
   let iTop: INT32;
   let iWidth: INT32;
   let iHeight: INT32;
-  let fEnterAutoResolveMode: BOOLEAN = FALSE;
+  let fEnterAutoResolveMode: boolean = false;
 
   if (!gfExtraBuffer)
     return;
 
-  PauseTime(FALSE);
+  PauseTime(false);
 
   PBIRect.iLeft = 0;
   PBIRect.iTop = 0;
@@ -527,23 +527,23 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
     // If we are intending on immediately entering autoresolve, change the global flag so that it will actually
     // render the interface once.  If gfEnterAutoResolveMode is clear, then RenderPreBattleInterface() won't do
     // anything.
-    fEnterAutoResolveMode = TRUE;
-    gfEnterAutoResolveMode = FALSE;
+    fEnterAutoResolveMode = true;
+    gfEnterAutoResolveMode = false;
   }
   // render the prebattle interface
   RenderPreBattleInterface();
 
-  gfIgnoreAllInput = TRUE;
+  gfIgnoreAllInput = true;
 
   if (fEnterAutoResolveMode) {
     // Change it back
-    gfEnterAutoResolveMode = TRUE;
+    gfEnterAutoResolveMode = true;
   }
 
   BlitBufferToBuffer(guiSAVEBUFFER, FRAME_BUFFER, 27, 54, 209, 32);
   RenderButtons();
   BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 27, 54, 209, 32);
-  gfRenderPBInterface = TRUE;
+  gfRenderPBInterface = true;
 
   // hide the prebattle interface
   BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, 0, 0, 261, 359);
@@ -590,7 +590,7 @@ function KillPreBattleInterface(): void {
   if (!gfPreBattleInterfaceActive)
     return;
 
-  fDisableMapInterfaceDueToBattle = FALSE;
+  fDisableMapInterfaceDueToBattle = false;
   MSYS_RemoveRegion(addressof(PBInterfaceBlanket));
 
   // The panel
@@ -610,19 +610,19 @@ function KillPreBattleInterface(): void {
           MSYS_RemoveRegion( &UninvolvedRegion );
   */
 
-  gfPreBattleInterfaceActive = FALSE;
+  gfPreBattleInterfaceActive = false;
 
   // UpdateCharRegionHelpText( );
 
   // re draw affected regions
-  fMapPanelDirty = TRUE;
-  fTeamPanelDirty = TRUE;
-  fMapScreenBottomDirty = TRUE;
-  fCharacterInfoPanelDirty = TRUE;
-  gfDisplayPotentialRetreatPaths = FALSE;
+  fMapPanelDirty = true;
+  fTeamPanelDirty = true;
+  fMapScreenBottomDirty = true;
+  fCharacterInfoPanelDirty = true;
+  gfDisplayPotentialRetreatPaths = false;
 
   // Enable the options button when the auto resolve  screen comes up
-  EnableDisAbleMapScreenOptionsButton(TRUE);
+  EnableDisAbleMapScreenOptionsButton(true);
 
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, 0, 0, 261, 359, 0);
 
@@ -665,18 +665,18 @@ function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
         break;
       case Enum164.ENEMY_AMBUSH_CODE:
         swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMYAMBUSH_HEADER]);
-        gfBlinkHeader = TRUE;
+        gfBlinkHeader = true;
         break;
       case Enum164.ENTERING_ENEMY_SECTOR_CODE:
         swprintf(str, gpStrategicString[Enum365.STR_PB_ENTERINGENEMYSECTOR_HEADER]);
         break;
       case Enum164.CREATURE_ATTACK_CODE:
         swprintf(str, gpStrategicString[Enum365.STR_PB_CREATUREATTACK_HEADER]);
-        gfBlinkHeader = TRUE;
+        gfBlinkHeader = true;
         break;
       case Enum164.BLOODCAT_AMBUSH_CODE:
         swprintf(str, gpStrategicString[Enum365.STR_PB_BLOODCATAMBUSH_HEADER]);
-        gfBlinkHeader = TRUE;
+        gfBlinkHeader = true;
         break;
       case Enum164.ENTERING_BLOODCAT_LAIR_CODE:
         swprintf(str, gpStrategicString[Enum365.STR_PB_ENTERINGBLOODCATLAIR_HEADER]);
@@ -702,7 +702,7 @@ function RenderPreBattleInterface(): void {
   let pSectorName: UINT16[] /* [128] */;
   let ubHPPercent: UINT8;
   let ubBPPercent: UINT8;
-  let fMouseInRetreatButtonArea: BOOLEAN;
+  let fMouseInRetreatButtonArea: boolean;
   let ubJunk: UINT8;
   // PLAYERGROUP *pPlayer;
 
@@ -711,31 +711,31 @@ function RenderPreBattleInterface(): void {
   // arrows get drawn in the mapscreen.
   if (ButtonList[iPBButton[2]].value.uiFlags & BUTTON_ENABLED) {
     if (gusMouseXPos < gusRetreatButtonLeft || gusMouseXPos > gusRetreatButtonRight || gusMouseYPos < gusRetreatButtonTop || gusMouseYPos > gusRetreatButtonBottom)
-      fMouseInRetreatButtonArea = FALSE;
+      fMouseInRetreatButtonArea = false;
     else
-      fMouseInRetreatButtonArea = TRUE;
+      fMouseInRetreatButtonArea = true;
     if (fMouseInRetreatButtonArea != gfDisplayPotentialRetreatPaths) {
       gfDisplayPotentialRetreatPaths = fMouseInRetreatButtonArea;
-      fMapPanelDirty = TRUE;
+      fMapPanelDirty = true;
     }
   }
 
   if (gfRenderPBInterface) {
     // set font destinanation buffer to the save buffer
-    SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+    SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
     if (gfPBButtonsHidden) {
       ShowButton(iPBButton[0]);
       ShowButton(iPBButton[1]);
       ShowButton(iPBButton[2]);
-      gfPBButtonsHidden = FALSE;
+      gfPBButtonsHidden = false;
     } else {
       MarkAButtonDirty(iPBButton[0]);
       MarkAButtonDirty(iPBButton[1]);
       MarkAButtonDirty(iPBButton[2]);
     }
 
-    gfRenderPBInterface = FALSE;
+    gfRenderPBInterface = false;
     GetVideoObject(addressof(hVObject), uiInterfaceImages);
     // main panel
     BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.MAINPANEL, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
@@ -812,7 +812,7 @@ function RenderPreBattleInterface(): void {
     SetFontForeground(FONT_YELLOW);
     SetFontShadow(FONT_NEARBLACK);
 
-    GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, pSectorName, TRUE);
+    GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, pSectorName, true);
     mprintf(70, 17, "%s %s", gpStrategicString[Enum365.STR_PB_SECTOR], pSectorName);
 
     // enemy
@@ -937,19 +937,19 @@ function RenderPreBattleInterface(): void {
     RestoreExternBackgroundRect(0, 0, 261, 359);
 
     // restore font destinanation buffer to the frame buffer
-    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+    SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   } else if (gfBlinkHeader) {
     RenderPBHeader(addressof(x), addressof(width)); // the text is important enough to blink.
   }
 
   // InvalidateRegion( 0, 0, 261, 359 );
   if (gfEnterAutoResolveMode) {
-    gfEnterAutoResolveMode = FALSE;
+    gfEnterAutoResolveMode = false;
     EnterAutoResolveMode(gubPBSectorX, gubPBSectorY);
     // return;
   }
 
-  gfIgnoreAllInput = FALSE;
+  gfIgnoreAllInput = false;
 }
 
 function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -975,7 +975,7 @@ function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
         SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
         return;
       }
-      gfEnterAutoResolveMode = TRUE;
+      gfEnterAutoResolveMode = true;
     }
   }
 }
@@ -1004,7 +1004,7 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         return;
       }
       if (gfPersistantPBI && gpBattleGroup && gpBattleGroup.value.fPlayer && gubEnemyEncounterCode != Enum164.ENEMY_AMBUSH_CODE && gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE && gubEnemyEncounterCode != Enum164.BLOODCAT_AMBUSH_CODE) {
-        gfEnterTacticalPlacementGUI = TRUE;
+        gfEnterTacticalPlacementGUI = true;
       }
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
       DrawButton(btn.value.IDNum);
@@ -1013,13 +1013,13 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       EndFrameBufferRender();
       RefreshScreen(null);
       if (gubPBSectorX == gWorldSectorX && gubPBSectorY == gWorldSectorY && !gbWorldSectorZ) {
-        gfGotoSectorTransition = TRUE;
+        gfGotoSectorTransition = true;
       }
 
       // first time going to the sector?
       if (gfPersistantPBI) {
         // put everyone on duty, and remove mercs from vehicles, too
-        PutNonSquadMercsInBattleSectorOnSquads(TRUE);
+        PutNonSquadMercsInBattleSectorOnSquads(true);
 
         // we nuke the groups existing route & destination in advance
         ClearMovementForAllInvolvedPlayerGroups();
@@ -1047,7 +1047,7 @@ function RetreatMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       HandleLoyaltyImplicationsOfMercRetreat(RETREAT_PBI, gubPBSectorX, gubPBSectorY, 0);
       if (CountAllMilitiaInSector(gubPBSectorX, gubPBSectorY)) {
         // Mercs retreat, but enemies still need to fight the militia
-        gfEnterAutoResolveMode = TRUE;
+        gfEnterAutoResolveMode = true;
         return;
       }
 
@@ -1064,7 +1064,7 @@ function RetreatMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       KillPreBattleInterface();
       StopTimeCompression();
       gpBattleGroup = null;
-      gfBlitBattleSectorLocator = FALSE;
+      gfBlitBattleSectorLocator = false;
 
       SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
     }
@@ -1275,7 +1275,7 @@ function ActivatePreBattleRetreatAction(): void {
 
 function ActivateAutomaticAutoResolveStart(): void {
   ButtonList[iPBButton[0]].value.uiFlags |= BUTTON_CLICKED_ON;
-  gfIgnoreAllInput = FALSE;
+  gfIgnoreAllInput = false;
   AutoResolveBattleCallback(ButtonList[iPBButton[0]], MSYS_CALLBACK_REASON_LBUTTON_UP);
 }
 
@@ -1317,16 +1317,16 @@ function CalculateNonPersistantPBIInfo(): void {
       gubPBSectorX = gWorldSectorX;
       gubPBSectorY = gWorldSectorY;
       gubPBSectorZ = gbWorldSectorZ;
-      gfBlitBattleSectorLocator = TRUE;
+      gfBlitBattleSectorLocator = true;
     }
   }
 }
 
 function ClearNonPersistantPBIInfo(): void {
-  gfBlitBattleSectorLocator = FALSE;
+  gfBlitBattleSectorLocator = false;
 }
 
-function PutNonSquadMercsInBattleSectorOnSquads(fExitVehicles: BOOLEAN): void {
+function PutNonSquadMercsInBattleSectorOnSquads(fExitVehicles: boolean): void {
   let pGroup: Pointer<GROUP>;
   let pNextGroup: Pointer<GROUP>;
 
@@ -1355,12 +1355,12 @@ function PutNonSquadMercsInBattleSectorOnSquads(fExitVehicles: BOOLEAN): void {
   }
 }
 
-function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehicles: BOOLEAN): void {
+function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehicles: boolean): void {
   let pPlayer: Pointer<PLAYERGROUP>;
   let pNextPlayer: Pointer<PLAYERGROUP>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let bUniqueVehicleSquad: INT8 = -1;
-  let fSuccess: BOOLEAN;
+  let fSuccess: boolean;
 
   if (pGroup.value.fVehicle) {
     // put these guys on their own squad (we need to return their group ID, and can only return one, so they need a unique one
@@ -1427,9 +1427,9 @@ function WakeUpAllMercsInSectorUnderAttack(): void {
 
     if (pSoldier.value.bActive && pSoldier.value.bLife && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
       // if involved, but asleep
-      if (PlayerMercInvolvedInThisCombat(pSoldier) && (pSoldier.value.fMercAsleep == TRUE)) {
+      if (PlayerMercInvolvedInThisCombat(pSoldier) && (pSoldier.value.fMercAsleep == true)) {
         // FORCE him wake him up
-        SetMercAwake(pSoldier, FALSE, TRUE);
+        SetMercAwake(pSoldier, false, true);
       }
     }
   }
@@ -1454,7 +1454,7 @@ function RetreatAllInvolvedPlayerGroups(): void {
 
   // make sure guys stop their off duty assignments, like militia training!
   // but don't exit vehicles - drive off in them!
-  PutNonSquadMercsInBattleSectorOnSquads(FALSE);
+  PutNonSquadMercsInBattleSectorOnSquads(false);
 
   pGroup = gpGroupList;
   while (pGroup) {
@@ -1469,7 +1469,7 @@ function RetreatAllInvolvedPlayerGroups(): void {
   }
 }
 
-function PlayerMercInvolvedInThisCombat(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function PlayerMercInvolvedInThisCombat(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   Assert(pSoldier);
   Assert(pSoldier.value.bActive);
 
@@ -1478,15 +1478,15 @@ function PlayerMercInvolvedInThisCombat(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
       (!AM_A_ROBOT(pSoldier) || (pSoldier.value.ubRobotRemoteHolderID != NOBODY)) && !SoldierAboardAirborneHeli(pSoldier)) {
     if (CurrentBattleSectorIs(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ)) {
       // involved
-      return TRUE;
+      return true;
     }
   }
 
   // not involved
-  return FALSE;
+  return false;
 }
 
-function PlayerGroupInvolvedInThisCombat(pGroup: Pointer<GROUP>): BOOLEAN {
+function PlayerGroupInvolvedInThisCombat(pGroup: Pointer<GROUP>): boolean {
   Assert(pGroup);
 
   // player group, non-empty, not between sectors, in the right sector, isn't a group of in transit, dead, or POW mercs,
@@ -1494,29 +1494,29 @@ function PlayerGroupInvolvedInThisCombat(pGroup: Pointer<GROUP>): BOOLEAN {
   if (pGroup.value.fPlayer && pGroup.value.ubGroupSize && !pGroup.value.fBetweenSectors && !GroupHasInTransitDeadOrPOWMercs(pGroup) && (!IsGroupTheHelicopterGroup(pGroup) || !fHelicopterIsAirBorne)) {
     if (CurrentBattleSectorIs(pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ)) {
       // involved
-      return TRUE;
+      return true;
     }
   }
 
   // not involved
-  return FALSE;
+  return false;
 }
 
-function CurrentBattleSectorIs(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): BOOLEAN {
+function CurrentBattleSectorIs(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): boolean {
   let sBattleSectorX: INT16;
   let sBattleSectorY: INT16;
   let sBattleSectorZ: INT16;
-  let fSuccess: BOOLEAN;
+  let fSuccess: boolean;
 
   fSuccess = GetCurrentBattleSectorXYZ(addressof(sBattleSectorX), addressof(sBattleSectorY), addressof(sBattleSectorZ));
   Assert(fSuccess);
 
   if ((sSectorX == sBattleSectorX) && (sSectorY == sBattleSectorY) && (sSectorZ == sBattleSectorZ)) {
     // yup!
-    return TRUE;
+    return true;
   } else {
     // wrong sector, no battle here
-    return FALSE;
+    return false;
   }
 }
 
@@ -1593,20 +1593,20 @@ function LogBattleResults(ubVictoryCode: UINT8): void {
 
 function HandlePreBattleInterfaceStates(): void {
   if (gfEnteringMapScreenToEnterPreBattleInterface && !gfEnteringMapScreen) {
-    gfEnteringMapScreenToEnterPreBattleInterface = FALSE;
+    gfEnteringMapScreenToEnterPreBattleInterface = false;
     if (!gfUsePersistantPBI) {
-      InitPreBattleInterface(null, FALSE);
-      gfUsePersistantPBI = TRUE;
+      InitPreBattleInterface(null, false);
+      gfUsePersistantPBI = true;
     } else {
-      InitPreBattleInterface(gpBattleGroup, TRUE);
+      InitPreBattleInterface(gpBattleGroup, true);
     }
   } else if (gfDelayAutoResolveStart && gfPreBattleInterfaceActive) {
-    gfDelayAutoResolveStart = FALSE;
-    gfAutomaticallyStartAutoResolve = TRUE;
+    gfDelayAutoResolveStart = false;
+    gfAutomaticallyStartAutoResolve = true;
   } else if (gfAutomaticallyStartAutoResolve) {
-    gfAutomaticallyStartAutoResolve = FALSE;
+    gfAutomaticallyStartAutoResolve = false;
     ActivateAutomaticAutoResolveStart();
   } else if (gfTransitionMapscreenToAutoResolve) {
-    gfTransitionMapscreenToAutoResolve = FALSE;
+    gfTransitionMapscreenToAutoResolve = false;
   }
 }

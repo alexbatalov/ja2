@@ -510,7 +510,7 @@ let WeaponROF: INT16[] /* [MAX_WEAPONS] */ = [
 ];
 
 // SetupStoreInventory sets up the initial quantity on hand for all of Bobby Ray's inventory items
-function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: BOOLEAN): void {
+function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: boolean): void {
   let i: UINT16;
   let usItemIndex: UINT16;
   let ubNumBought: UINT8;
@@ -540,14 +540,14 @@ function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: B
   }
 }
 
-function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT8): BOOLEAN {
+function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT8): boolean {
   let i: UINT16;
 
   let pInventoryArray: Pointer<STORE_INVENTORY>;
 
   pInventoryArray = GetPtrToStoreInventory(ubDealerID);
   if (pInventoryArray == null)
-    return FALSE;
+    return false;
 
   // go through all of the guns
   for (i = 0; i < Enum225.MAX_WEAPONS; i++) {
@@ -557,12 +557,12 @@ function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT
       if (Item[i].ubCoolness >= 4) {
         // if there is already a qty on hand, then we found a match
         if (pInventoryArray[i].ubQtyOnHand) {
-          return TRUE;
+          return true;
         }
       }
     }
   }
-  return FALSE;
+  return false;
 }
 
 ////////////////////////////////////////////////////

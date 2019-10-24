@@ -155,7 +155,7 @@ const DISPLAY_TIME_FOR_WEB_BOOKMARK_NOTIFY = 2000;
 const EXIT_LAPTOP_DELAY_TIME = 100;
 
 let guiTitleBarSurface: UINT32;
-let gfTitleBarSurfaceAlreadyActive: BOOLEAN = FALSE;
+let gfTitleBarSurfaceAlreadyActive: boolean = false;
 
 const LAPTOP__NEW_FILE_ICON_X = 83;
 const LAPTOP__NEW_FILE_ICON_Y = 412; //(405+19)
@@ -174,56 +174,56 @@ let guiCurrentSidePanel: UINT32; // the current navagation panel on the leftside
 let guiPreviousSidePanel: UINT32;
 
 let iHighLightBookLine: INT32 = -1;
-let fFastLoadFlag: BOOLEAN = FALSE;
-let gfSideBarFlag: BOOLEAN;
-let gfEnterLapTop: BOOLEAN = TRUE;
-let gfShowBookmarks: BOOLEAN = FALSE;
+let fFastLoadFlag: boolean = false;
+let gfSideBarFlag: boolean;
+let gfEnterLapTop: boolean = true;
+let gfShowBookmarks: boolean = false;
 
 // in progress of loading a page?
-let fLoadPendingFlag: BOOLEAN = FALSE;
-let fErrorFlag: BOOLEAN;
+let fLoadPendingFlag: boolean = false;
+let fErrorFlag: boolean;
 
 // mark buttons dirty?
-let fMarkButtonsDirtyFlag: BOOLEAN = TRUE;
+let fMarkButtonsDirtyFlag: boolean = true;
 
 // redraw afer rendering buttons?
-let fReDrawPostButtonRender: BOOLEAN = FALSE;
+let fReDrawPostButtonRender: boolean = false;
 
 // intermediate refresh flag
-let fIntermediateReDrawFlag: BOOLEAN = FALSE;
+let fIntermediateReDrawFlag: boolean = false;
 
 // in laptop right now?
-let fCurrentlyInLaptop: BOOLEAN = FALSE;
+let fCurrentlyInLaptop: boolean = false;
 
 // exit due to a message box pop up?..don't really leave LAPTOP
-let fExitDueToMessageBox: BOOLEAN = FALSE;
+let fExitDueToMessageBox: boolean = false;
 
 // have we visited IMP yety?
-let fNotVistedImpYet: BOOLEAN = TRUE;
+let fNotVistedImpYet: boolean = true;
 
 // exit laptop during a load?
-let fExitDuringLoad: BOOLEAN = FALSE;
+let fExitDuringLoad: boolean = false;
 
 // done loading?
-let fDoneLoadPending: BOOLEAN = FALSE;
+let fDoneLoadPending: boolean = false;
 
 // re connecting to a web page?
-let fReConnectingFlag: BOOLEAN = FALSE;
+let fReConnectingFlag: boolean = false;
 
 // going a subpage of a web page?..faster access time
-let fConnectingToSubPage: BOOLEAN = FALSE;
+let fConnectingToSubPage: boolean = false;
 
 // is this our first time in laptop?
-let fFirstTimeInLaptop: BOOLEAN = TRUE;
+let fFirstTimeInLaptop: boolean = true;
 
 // redraw the book mark info panel .. for blitting on top of animations
-let fReDrawBookMarkInfo: BOOLEAN = FALSE;
+let fReDrawBookMarkInfo: boolean = false;
 
 // show the 2 second info about bookmarks being accessed by clicking on web
-let fShowBookmarkInfo: BOOLEAN = FALSE;
+let fShowBookmarkInfo: boolean = false;
 
 // TEMP!	Disables the loadpending delay when switching b/n www pages
-let gfTemporaryDisablingOfLoadPendingFlag: BOOLEAN = FALSE;
+let gfTemporaryDisablingOfLoadPendingFlag: boolean = false;
 
 // GLOBAL FOR WHICH SCREEN TO EXIT TO FOR LAPTOP
 let guiExitScreen: UINT32 = Enum26.MAP_SCREEN;
@@ -231,9 +231,9 @@ let guiExitScreen: UINT32 = Enum26.MAP_SCREEN;
 let gLaptopRegion: MOUSE_REGION;
 // Laptop screen graphic handle
 let guiLAPTOP: UINT32;
-let fNewWWWDisplay: BOOLEAN = TRUE;
+let fNewWWWDisplay: boolean = true;
 
-/* static */ let fNewWWW: BOOLEAN = TRUE;
+/* static */ let fNewWWW: boolean = true;
 
 let giRainDelayInternetSite: INT32 = -1;
 
@@ -275,19 +275,19 @@ let guiLAPTOPSIDEPANEL: UINT32;
 // BOOLEAN		gfNewGameLaptop = TRUE;
 
 // enter new laptop mode due to sliding bars
-let fEnteredNewLapTopDueToHandleSlidingBars: BOOLEAN = FALSE;
+let fEnteredNewLapTopDueToHandleSlidingBars: boolean = false;
 
 // laptop pop up messages index value
 let iLaptopMessageBox: INT32 = -1;
 
 // whether or not we are initing the slide in title bar
-let fInitTitle: BOOLEAN = TRUE;
+let fInitTitle: boolean = true;
 
 // tab handled
-let fTabHandled: BOOLEAN = FALSE;
+let fTabHandled: boolean = false;
 
 // are we maxing or mining?
-let fForward: BOOLEAN = TRUE;
+let fForward: boolean = true;
 
 // BUTTON IMAGES
 let giLapTopButton: INT32[] /* [MAX_BUTTON_COUNT] */;
@@ -305,34 +305,34 @@ let gLaptopMinButtonImage: INT32[] /* [1] */;
 let gLaptopProgramStates: INT32[] /* [LAPTOP_PROGRAM_HISTORY + 1] */;
 
 // process of mazimizing
-let fMaximizingProgram: BOOLEAN = FALSE;
+let fMaximizingProgram: boolean = false;
 
 // program we are maximizing
 let bProgramBeingMaximized: INT8 = -1;
 
 // are we minimizing
-let fMinizingProgram: BOOLEAN = FALSE;
+let fMinizingProgram: boolean = false;
 
 // process openned queue
 let gLaptopProgramQueueList: INT32[] /* [6] */;
 
 // state of createion of minimize button
-let fCreateMinimizeButton: BOOLEAN = FALSE;
+let fCreateMinimizeButton: boolean = false;
 
-let fExitingLaptopFlag: BOOLEAN = FALSE;
+let fExitingLaptopFlag: boolean = false;
 
 // HD and power lights on
-let fPowerLightOn: BOOLEAN = TRUE;
-let fHardDriveLightOn: BOOLEAN = FALSE;
+let fPowerLightOn: boolean = true;
+let fHardDriveLightOn: boolean = false;
 
 // HD flicker
-let fFlickerHD: BOOLEAN = FALSE;
+let fFlickerHD: boolean = false;
 
 // the screens limiting rect
 let LaptopScreenRect: SGPRect = [ LAPTOP_UL_X, LAPTOP_UL_Y - 5, LAPTOP_SCREEN_LR_X + 2, LAPTOP_SCREEN_LR_Y + 5 + 19 ];
 
 // the sub pages vistsed or not status within the web browser
-let gfWWWaitSubSitesVisitedFlags: BOOLEAN[] /* [LAPTOP_MODE_SIRTECH - LAPTOP_MODE_WWW] */;
+let gfWWWaitSubSitesVisitedFlags: boolean[] /* [LAPTOP_MODE_SIRTECH - LAPTOP_MODE_WWW] */;
 
 // INT32 iBookMarkList[MAX_BOOKMARKS];
 
@@ -360,8 +360,8 @@ let giOldRegion: INT32 = Enum92.NO_REGION;
 // used for global variables that need to be saved
 let LaptopSaveInfo: LaptopSaveInfoStruct;
 
-let fReDrawScreenFlag: BOOLEAN = FALSE;
-let fPausedReDrawScreenFlag: BOOLEAN = FALSE; // used in the handler functions to redraw the screen, after the current frame
+let fReDrawScreenFlag: boolean = false;
+let fPausedReDrawScreenFlag: boolean = false; // used in the handler functions to redraw the screen, after the current frame
 
 // ppp
 
@@ -370,7 +370,7 @@ function SetLaptopExitScreen(uiExitScreen: UINT32): void {
 }
 
 function SetLaptopNewGameFlag(): void {
-  LaptopSaveInfo.gfNewGameLaptop = TRUE;
+  LaptopSaveInfo.gfNewGameLaptop = true;
 }
 
 function HandleLapTopCursorUpDate(): void {
@@ -395,9 +395,9 @@ function GetLaptopKeyboardInput(): void {
 
   GetCursorPos(addressof(MousePos));
 
-  fTabHandled = FALSE;
+  fTabHandled = false;
 
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
@@ -429,7 +429,7 @@ function LaptopScreenInit(): UINT32 {
   // Memset the whole structure, to make sure of no 'JUNK'
   memset(addressof(LaptopSaveInfo), 0, sizeof(LaptopSaveInfoStruct));
 
-  LaptopSaveInfo.gfNewGameLaptop = TRUE;
+  LaptopSaveInfo.gfNewGameLaptop = true;
 
   InitializeNumDaysMercArrive();
 
@@ -437,7 +437,7 @@ function LaptopScreenInit(): UINT32 {
   LaptopSaveInfo.sLastHiredMerc.iIdOfMerc = -1;
 
   // reset the flag that enables the 'just hired merc' popup
-  LaptopSaveInfo.sLastHiredMerc.fHaveDisplayedPopUpInLaptop = FALSE;
+  LaptopSaveInfo.sLastHiredMerc.fHaveDisplayedPopUpInLaptop = false;
 
   // Initialize all vars
   guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
@@ -446,8 +446,8 @@ function LaptopScreenInit(): UINT32 {
   guiCurrentSidePanel = Enum96.FIRST_SIDE_PANEL;
   guiPreviousSidePanel = Enum96.FIRST_SIDE_PANEL;
 
-  gfSideBarFlag = FALSE;
-  gfShowBookmarks = FALSE;
+  gfSideBarFlag = false;
+  gfShowBookmarks = false;
   InitBookMarkList();
   GameInitAIM();
   GameInitAIMMembers();
@@ -478,35 +478,35 @@ function LaptopScreenInit(): UINT32 {
   // init program states
   memset(addressof(gLaptopProgramStates), Enum94.LAPTOP_PROGRAM_MINIMIZED, sizeof(gLaptopProgramStates));
 
-  gfAtLeastOneMercWasHired = FALSE;
+  gfAtLeastOneMercWasHired = false;
 
   // No longer inits the laptop screens, now InitLaptopAndLaptopScreens() does
 
   return 1;
 }
 
-function InitLaptopAndLaptopScreens(): BOOLEAN {
+function InitLaptopAndLaptopScreens(): boolean {
   GameInitFinances();
   GameInitHistory();
 
   // Reset the flag so we can create a new IMP character
-  LaptopSaveInfo.fIMPCompletedFlag = FALSE;
+  LaptopSaveInfo.fIMPCompletedFlag = false;
 
   // Reset the flag so that BOBBYR's isnt available at the begining of the game
-  LaptopSaveInfo.fBobbyRSiteCanBeAccessed = FALSE;
+  LaptopSaveInfo.fBobbyRSiteCanBeAccessed = false;
 
-  return TRUE;
+  return true;
 }
 
 function DrawLapTopIcons(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function DrawLapTopText(): UINT32 {
   // show balance
   DisplayPlayersBalanceToDate();
 
-  return TRUE;
+  return true;
 }
 
 // This is only called once at game shutdown.
@@ -517,7 +517,7 @@ function LaptopScreenShutdown(): UINT32 {
 
   ClearHistoryList();
 
-  return TRUE;
+  return true;
 }
 
 function EnterLaptop(): INT32 {
@@ -526,10 +526,10 @@ function EnterLaptop(): INT32 {
   let VObjectDesc: VOBJECT_DESC;
   let iCounter: INT32 = 0;
 
-  /* static */ let fEnteredFromGameStartup: BOOLEAN = TRUE;
+  /* static */ let fEnteredFromGameStartup: boolean = true;
   // we are re entering due to message box, leave NOW!
-  if (fExitDueToMessageBox == TRUE) {
-    return TRUE;
+  if (fExitDueToMessageBox == true) {
+    return true;
   }
 
   // if the radar map mouse region is still active, disable it.
@@ -542,7 +542,7 @@ function EnterLaptop(): INT32 {
     */
   }
 
-  gfDontStartTransitionFromLaptop = FALSE;
+  gfDontStartTransitionFromLaptop = false;
 
   // Since we are coming in from MapScreen, uncheck the flag
   guiTacticalInterfaceFlags &= ~INTERFACE_MAPSCREEN;
@@ -575,15 +575,15 @@ function EnterLaptop(): INT32 {
   PauseGame();
 
   // set the fact we are currently in laptop, for rendering purposes
-  fCurrentlyInLaptop = TRUE;
+  fCurrentlyInLaptop = true;
 
   // clear guiSAVEBUFFER
   // ColorFillVideoSurfaceArea(guiSAVEBUFFER,	0, 0, 640, 480, Get16BPPColor(FROMRGB(0, 0, 0)) );
   // disable characters panel buttons
 
   // reset redraw flag and redraw new mail
-  fReDrawScreenFlag = FALSE;
-  fReDrawNewMailFlag = TRUE;
+  fReDrawScreenFlag = false;
+  fReDrawNewMailFlag = true;
 
   // setup basic cursors
   guiCurrentLapTopCursor = Enum97.LAPTOP_PANEL_CURSOR;
@@ -633,7 +633,7 @@ function EnterLaptop(): INT32 {
   guiCurrentWWWMode = Enum95.LAPTOP_MODE_NONE;
   guiCurrentSidePanel = Enum96.FIRST_SIDE_PANEL;
   guiPreviousSidePanel = Enum96.FIRST_SIDE_PANEL;
-  gfSideBarFlag = FALSE;
+  gfSideBarFlag = false;
   CreateLapTopMouseRegions();
   RenderLapTopImage();
   HighLightRegion(giCurrentRegion);
@@ -645,7 +645,7 @@ function EnterLaptop(): INT32 {
   // the laptop mouse region
 
   // reset bookmarks flags
-  fFirstTimeInLaptop = TRUE;
+  fFirstTimeInLaptop = true;
 
   // reset all bookmark visits
   memset(addressof(LaptopSaveInfo.fVisitedBookmarkAlready), 0, sizeof(LaptopSaveInfo.fVisitedBookmarkAlready));
@@ -654,22 +654,22 @@ function EnterLaptop(): INT32 {
   memset(addressof(gLaptopProgramStates), Enum94.LAPTOP_PROGRAM_MINIMIZED, sizeof(gLaptopProgramStates));
 
   // turn the power on
-  fPowerLightOn = TRUE;
+  fPowerLightOn = true;
 
   // we are not exiting laptop right now, we just got here
-  fExitingLaptopFlag = FALSE;
+  fExitingLaptopFlag = false;
 
   // reset program we are maximizing
   bProgramBeingMaximized = -1;
 
   // reset fact we are maximizing/ mining
-  fMaximizingProgram = FALSE;
-  fMinizingProgram = FALSE;
+  fMaximizingProgram = false;
+  fMinizingProgram = false;
 
   // initialize open queue
   InitLaptopOpenQueue();
 
-  gfShowBookmarks = FALSE;
+  gfShowBookmarks = false;
   LoadBookmark();
   SetBookMark(Enum98.AIM_BOOKMARK);
   LoadLoadPending();
@@ -683,17 +683,17 @@ function EnterLaptop(): INT32 {
   EnterLaptopInitLaptopPages();
   InitalizeSubSitesList();
 
-  fShowAtmPanelStartButton = TRUE;
+  fShowAtmPanelStartButton = true;
 
   InvalidateRegion(0, 0, 640, 480);
 
-  return TRUE;
+  return true;
 }
 
 function ExitLaptop(): void {
   // exit is called due to message box, leave
   if (fExitDueToMessageBox) {
-    fExitDueToMessageBox = FALSE;
+    fExitDueToMessageBox = false;
     return;
   }
 
@@ -717,17 +717,17 @@ function ExitLaptop(): void {
   FreeMouseCursor();
 
   // set the fact we are currently not in laptop, for rendering purposes
-  fCurrentlyInLaptop = FALSE;
+  fCurrentlyInLaptop = false;
 
   // Deallocate, save data -- leaving laptop.
   SetRenderFlags(RENDER_FLAG_FULL);
 
-  if (fExitDuringLoad == FALSE) {
+  if (fExitDuringLoad == false) {
     ExitLaptopMode(guiCurrentLaptopMode);
   }
 
-  fExitDuringLoad = FALSE;
-  fLoadPendingFlag = FALSE;
+  fExitDuringLoad = false;
+  fLoadPendingFlag = false;
 
   DeleteVideoObjectFromIndex(guiLAPTOP);
   DeleteVideoObjectFromIndex(guiLaptopBACKGROUND);
@@ -743,15 +743,15 @@ function ExitLaptop(): void {
   DeleteDesktopBackground();
 
   if (fErrorFlag) {
-    fErrorFlag = FALSE;
+    fErrorFlag = false;
     CreateDestroyErrorButton();
   }
   if (fDeleteMailFlag) {
-    fDeleteMailFlag = FALSE;
+    fDeleteMailFlag = false;
     CreateDestroyDeleteNoticeMailButton();
   }
   if (fNewMailFlag) {
-    fNewMailFlag = FALSE;
+    fNewMailFlag = false;
     CreateDestroyNewMailButton();
   }
 
@@ -759,20 +759,20 @@ function ExitLaptop(): void {
   CreateDestroyMinimizeButtonForCurrentMode();
 
   // MSYS_SetCurrentCursor(CURSOR_NORMAL);
-  gfEnterLapTop = TRUE;
+  gfEnterLapTop = true;
   DeleteLapTopButtons();
   DeleteLapTopMouseRegions();
   // restore tactical buttons
   // CreateCurrentTacticalPanelButtons();
-  gfShowBookmarks = FALSE;
+  gfShowBookmarks = false;
   CreateDestoryBookMarkRegions();
 
-  fNewWWW = TRUE;
+  fNewWWW = true;
   RemoveBookmark(-2);
   DeleteBookmark();
   // DeleteBookmarkRegions();
   DeleteLoadPending();
-  fReDrawNewMailFlag = FALSE;
+  fReDrawNewMailFlag = false;
 
   // Since we are going to MapScreen, check the flag
   guiTacticalInterfaceFlags |= INTERFACE_MAPSCREEN;
@@ -786,7 +786,7 @@ function ExitLaptop(): void {
 function RenderLapTopImage(): void {
   let hLapTopHandle: HVOBJECT;
 
-  if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
+  if ((fMaximizingProgram == true) || (fMinizingProgram == true)) {
     return;
   }
 
@@ -801,8 +801,8 @@ function RenderLapTopImage(): void {
 function RenderLaptop(): void {
   let uiTempMode: UINT32 = 0;
 
-  if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
-    gfShowBookmarks = FALSE;
+  if ((fMaximizingProgram == true) || (fMinizingProgram == true)) {
+    gfShowBookmarks = false;
     return;
   }
 
@@ -950,32 +950,32 @@ function RenderLaptop(): void {
     return;
   }
 
-  DisplayProgramBoundingBox(FALSE);
+  DisplayProgramBoundingBox(false);
 
   // mark the buttons dirty at this point
   MarkButtonsDirty();
 }
 
 function EnterNewLaptopMode(): void {
-  /* static */ let fOldLoadFlag: BOOLEAN = FALSE;
+  /* static */ let fOldLoadFlag: boolean = false;
 
   if (fExitingLaptopFlag) {
     return;
   }
   // cause flicker, as we are going to a new program/WEB page
-  fFlickerHD = TRUE;
+  fFlickerHD = true;
 
   // handle maximizing of programs
   switch (guiCurrentLaptopMode) {
     case (Enum95.LAPTOP_MODE_EMAIL):
       if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_MAILER] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
-        if (fMaximizingProgram == FALSE) {
-          fInitTitle = TRUE;
+        if (fMaximizingProgram == false) {
+          fInitTitle = true;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopTitles[0], guiTITLEBARICONS, 0);
           ExitLaptopMode(guiPreviousLaptopMode);
         }
-        fMaximizingProgram = TRUE;
+        fMaximizingProgram = true;
         bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_MAILER;
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_MAILER] = Enum94.LAPTOP_PROGRAM_OPEN;
 
@@ -985,14 +985,14 @@ function EnterNewLaptopMode(): void {
     case (Enum95.LAPTOP_MODE_FILES):
       if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FILES] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
-        if (fMaximizingProgram == FALSE) {
-          fInitTitle = TRUE;
+        if (fMaximizingProgram == false) {
+          fInitTitle = true;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopTitles[1], guiTITLEBARICONS, 2);
           ExitLaptopMode(guiPreviousLaptopMode);
         }
 
         // minized, maximized
-        fMaximizingProgram = TRUE;
+        fMaximizingProgram = true;
         bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_FILES;
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FILES] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
@@ -1001,14 +1001,14 @@ function EnterNewLaptopMode(): void {
     case (Enum95.LAPTOP_MODE_PERSONNEL):
       if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_PERSONNEL] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
-        if (fMaximizingProgram == FALSE) {
-          fInitTitle = TRUE;
+        if (fMaximizingProgram == false) {
+          fInitTitle = true;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopTitles[2], guiTITLEBARICONS, 3);
           ExitLaptopMode(guiPreviousLaptopMode);
         }
 
         // minized, maximized
-        fMaximizingProgram = TRUE;
+        fMaximizingProgram = true;
         bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_PERSONNEL;
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_PERSONNEL] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
@@ -1017,14 +1017,14 @@ function EnterNewLaptopMode(): void {
     case (Enum95.LAPTOP_MODE_FINANCES):
       if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FINANCES] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
-        if (fMaximizingProgram == FALSE) {
-          fInitTitle = TRUE;
+        if (fMaximizingProgram == false) {
+          fInitTitle = true;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopTitles[3], guiTITLEBARICONS, 5);
           ExitLaptopMode(guiPreviousLaptopMode);
         }
 
         // minized, maximized
-        fMaximizingProgram = TRUE;
+        fMaximizingProgram = true;
         bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_FINANCES;
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FINANCES] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
@@ -1033,13 +1033,13 @@ function EnterNewLaptopMode(): void {
     case (Enum95.LAPTOP_MODE_HISTORY):
       if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_HISTORY] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
-        if (fMaximizingProgram == FALSE) {
-          fInitTitle = TRUE;
+        if (fMaximizingProgram == false) {
+          fInitTitle = true;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopTitles[4], guiTITLEBARICONS, 4);
           ExitLaptopMode(guiPreviousLaptopMode);
         }
         // minized, maximized
-        fMaximizingProgram = TRUE;
+        fMaximizingProgram = true;
         bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_HISTORY;
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_HISTORY] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
@@ -1051,13 +1051,13 @@ function EnterNewLaptopMode(): void {
     default:
       if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
-        if (fMaximizingProgram == FALSE) {
-          fInitTitle = TRUE;
+        if (fMaximizingProgram == false) {
+          fInitTitle = true;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pWebTitle[0], guiTITLEBARICONS, 1);
           ExitLaptopMode(guiPreviousLaptopMode);
         }
         // minized, maximized
-        fMaximizingProgram = TRUE;
+        fMaximizingProgram = true;
         bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_WEB_BROWSER;
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
@@ -1065,21 +1065,21 @@ function EnterNewLaptopMode(): void {
       break;
   }
 
-  if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
+  if ((fMaximizingProgram == true) || (fMinizingProgram == true)) {
     return;
   }
 
   if ((fOldLoadFlag) && (!fLoadPendingFlag)) {
-    fOldLoadFlag = FALSE;
+    fOldLoadFlag = false;
   } else if ((fLoadPendingFlag) && (!fOldLoadFlag)) {
     ExitLaptopMode(guiPreviousLaptopMode);
-    fOldLoadFlag = TRUE;
+    fOldLoadFlag = true;
     return;
   } else if ((fOldLoadFlag) && (fLoadPendingFlag)) {
     return;
   } else {
     // do not exit previous mode if coming from sliding bar handler
-    if ((fEnteredNewLapTopDueToHandleSlidingBars == FALSE)) {
+    if ((fEnteredNewLapTopDueToHandleSlidingBars == false)) {
       ExitLaptopMode(guiPreviousLaptopMode);
     }
   }
@@ -1106,7 +1106,7 @@ function EnterNewLaptopMode(): void {
   }
 
   if ((guiCurrentLaptopMode >= Enum95.LAPTOP_MODE_WWW) && (guiPreviousLaptopMode >= Enum95.LAPTOP_MODE_WWW)) {
-    gfShowBookmarks = FALSE;
+    gfShowBookmarks = false;
   }
 
   // Initialize the new mode.
@@ -1231,12 +1231,12 @@ function EnterNewLaptopMode(): void {
   }
 
   // first time using webbrowser in this laptop session
-  if ((fFirstTimeInLaptop == TRUE) && (guiCurrentLaptopMode >= Enum95.LAPTOP_MODE_WWW)) {
+  if ((fFirstTimeInLaptop == true) && (guiCurrentLaptopMode >= Enum95.LAPTOP_MODE_WWW)) {
     // show bookmarks
-    gfShowBookmarks = TRUE;
+    gfShowBookmarks = true;
 
     // reset flag
-    fFirstTimeInLaptop = FALSE;
+    fFirstTimeInLaptop = false;
   }
 
   if ((!fLoadPendingFlag)) {
@@ -1245,7 +1245,7 @@ function EnterNewLaptopMode(): void {
     SetSubSiteAsVisted();
   }
 
-  DisplayProgramBoundingBox(TRUE);
+  DisplayProgramBoundingBox(true);
 
   // check to see if we need to go to there default web page of not
   // HandleDefaultWebpageForLaptop( );
@@ -1255,7 +1255,7 @@ function HandleLapTopHandles(): void {
   if (fLoadPendingFlag)
     return;
 
-  if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
+  if ((fMaximizingProgram == true) || (fMinizingProgram == true)) {
     return;
   }
 
@@ -1392,7 +1392,7 @@ function LaptopScreenHandle(): UINT32 {
   if (gfEnterLapTop) {
     EnterLaptop();
     CreateLaptopButtons();
-    gfEnterLapTop = FALSE;
+    gfEnterLapTop = false;
   }
 
   if (gfStartMapScreenToLaptopTransition) {
@@ -1415,7 +1415,7 @@ function LaptopScreenHandle(): UINT32 {
 
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
     // Step 1:  Build the laptop image into the save buffer.
-    gfStartMapScreenToLaptopTransition = FALSE;
+    gfStartMapScreenToLaptopTransition = false;
     RestoreBackgroundRects();
     RenderLapTopImage();
     HighLightRegion(giCurrentRegion);
@@ -1493,13 +1493,13 @@ function LaptopScreenHandle(): UINT32 {
       // gfPrintFrameBuffer = TRUE;
       RefreshScreen(null);
     }
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 
   // DO NOT MOVE THIS FUNCTION CALL!!!
 
   // This determines if the help screen should be active
-  if (ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_LAPTOP, FALSE)) {
+  if (ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_LAPTOP, false)) {
     // handle the help screen
     HelpScreenHandler();
     return Enum26.LAPTOP_SCREEN;
@@ -1513,7 +1513,7 @@ function LaptopScreenHandle(): UINT32 {
   // handle animated cursors
   HandleAnimatedCursors();
   // Deque all game events
-  DequeAllGameEvents(TRUE);
+  DequeAllGameEvents(true);
 
   // handle sub sites..like BR Guns, BR Ammo, Armour, Misc...for WW Wait..since they are not true sub pages
   // and are not individual sites
@@ -1525,13 +1525,13 @@ function LaptopScreenHandle(): UINT32 {
 
   if (guiCurrentLaptopMode != guiPreviousLaptopMode) {
     if (guiCurrentLaptopMode <= Enum95.LAPTOP_MODE_WWW) {
-      fLoadPendingFlag = FALSE;
+      fLoadPendingFlag = false;
     }
 
-    if ((fMaximizingProgram == FALSE) && (fMinizingProgram == FALSE)) {
+    if ((fMaximizingProgram == false) && (fMinizingProgram == false)) {
       if (guiCurrentLaptopMode <= Enum95.LAPTOP_MODE_WWW) {
         EnterNewLaptopMode();
-        if ((fMaximizingProgram == FALSE) && (fMinizingProgram == FALSE)) {
+        if ((fMaximizingProgram == false) && (fMinizingProgram == false)) {
           guiPreviousLaptopMode = guiCurrentLaptopMode;
         }
       } else {
@@ -1543,8 +1543,8 @@ function LaptopScreenHandle(): UINT32 {
     }
   }
   if (fPausedReDrawScreenFlag) {
-    fReDrawScreenFlag = TRUE;
-    fPausedReDrawScreenFlag = FALSE;
+    fReDrawScreenFlag = true;
+    fPausedReDrawScreenFlag = false;
   }
 
   if (fReDrawScreenFlag) {
@@ -1555,14 +1555,14 @@ function LaptopScreenHandle(): UINT32 {
 
   // are we about to leave laptop
   if (fExitingLaptopFlag) {
-    if (fLoadPendingFlag == TRUE) {
-      fLoadPendingFlag = FALSE;
-      fExitDuringLoad = TRUE;
+    if (fLoadPendingFlag == true) {
+      fLoadPendingFlag = false;
+      fExitDuringLoad = true;
     }
     LeaveLapTopScreen();
   }
 
-  if (fExitingLaptopFlag == FALSE) {
+  if (fExitingLaptopFlag == false) {
     // handle handles for laptop input stream
     HandleLapTopHandles();
   }
@@ -1599,7 +1599,7 @@ function LaptopScreenHandle(): UINT32 {
   // RenderButtons();
   // RenderButtonsFastHelp( );
 
-  if ((fLoadPendingFlag == FALSE) || (fNewMailFlag)) {
+  if ((fLoadPendingFlag == false) || (fNewMailFlag)) {
     // render buttons marked dirty
     RenderButtons();
 
@@ -1609,14 +1609,14 @@ function LaptopScreenHandle(): UINT32 {
   }
 
   // show text on top of buttons
-  if ((fMaximizingProgram == FALSE) && (fMinizingProgram == FALSE)) {
+  if ((fMaximizingProgram == false) && (fMinizingProgram == false)) {
     DrawButtonText();
   }
 
   // check to see if bookmarks need to be displayed
   if (gfShowBookmarks) {
     if (fExitingLaptopFlag)
-      gfShowBookmarks = FALSE;
+      gfShowBookmarks = false;
     else
       DisplayBookMarks();
   }
@@ -1629,7 +1629,7 @@ function LaptopScreenHandle(): UINT32 {
 
   if ((fIntermediateReDrawFlag) || (fReDrawPostButtonRender)) {
     // rendering AFTER buttons and button text
-    if ((fMaximizingProgram == FALSE) && (fMinizingProgram == FALSE)) {
+    if ((fMaximizingProgram == false) && (fMinizingProgram == false)) {
       PostButtonRendering();
     }
   }
@@ -1655,9 +1655,9 @@ function LaptopScreenHandle(): UINT32 {
   DisplayFrameRate();
 
   // invalidate screen if redrawn
-  if (fReDrawScreenFlag == TRUE) {
+  if (fReDrawScreenFlag == true) {
     InvalidateRegion(0, 0, 640, 480);
-    fReDrawScreenFlag = FALSE;
+    fReDrawScreenFlag = false;
   }
 
   ExecuteVideoOverlays();
@@ -1805,7 +1805,7 @@ function ExitLaptopMode(uiMode: UINT32): UINT32 {
   if ((uiMode != Enum95.LAPTOP_MODE_NONE) && (uiMode < Enum95.LAPTOP_MODE_WWW)) {
     CreateDestroyMinimizeButtonForCurrentMode();
   }
-  return TRUE;
+  return true;
 }
 
 function CreateLaptopButtons(): UINT32 {
@@ -1825,7 +1825,7 @@ function CreateLaptopButtons(): UINT32 {
 
   SpecifyButtonText(gLaptopButton[0], pLaptopIcons[0]);
   SpecifyButtonFont(gLaptopButton[0], FONT10ARIAL());
-  SpecifyButtonTextOffsets(gLaptopButton[0], 30, 11, TRUE);
+  SpecifyButtonTextOffsets(gLaptopButton[0], 30, 11, true);
   SpecifyButtonDownTextColors(gLaptopButton[0], 2, 0);
   SpecifyButtonUpTextColors(gLaptopButton[0], 2, 0);
 
@@ -1835,7 +1835,7 @@ function CreateLaptopButtons(): UINT32 {
 
   SpecifyButtonText(gLaptopButton[1], pLaptopIcons[1]);
   SpecifyButtonFont(gLaptopButton[1], FONT10ARIAL());
-  SpecifyButtonTextOffsets(gLaptopButton[1], 30, 11, TRUE);
+  SpecifyButtonTextOffsets(gLaptopButton[1], 30, 11, true);
   SpecifyButtonUpTextColors(gLaptopButton[1], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[1], 2, 0);
 
@@ -1845,7 +1845,7 @@ function CreateLaptopButtons(): UINT32 {
 
   SpecifyButtonText(gLaptopButton[2], pLaptopIcons[5]);
   SpecifyButtonFont(gLaptopButton[2], FONT10ARIAL());
-  SpecifyButtonTextOffsets(gLaptopButton[2], 30, 11, TRUE);
+  SpecifyButtonTextOffsets(gLaptopButton[2], 30, 11, true);
   SpecifyButtonUpTextColors(gLaptopButton[2], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[2], 2, 0);
 
@@ -1855,7 +1855,7 @@ function CreateLaptopButtons(): UINT32 {
 
   SpecifyButtonText(gLaptopButton[3], pLaptopIcons[3]);
   SpecifyButtonFont(gLaptopButton[3], FONT10ARIAL());
-  SpecifyButtonTextOffsets(gLaptopButton[3], 30, 11, TRUE);
+  SpecifyButtonTextOffsets(gLaptopButton[3], 30, 11, true);
   SpecifyButtonUpTextColors(gLaptopButton[3], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[3], 2, 0);
 
@@ -1865,7 +1865,7 @@ function CreateLaptopButtons(): UINT32 {
 
   SpecifyButtonText(gLaptopButton[4], pLaptopIcons[4]);
   SpecifyButtonFont(gLaptopButton[4], FONT10ARIAL());
-  SpecifyButtonTextOffsets(gLaptopButton[4], 30, 11, TRUE);
+  SpecifyButtonTextOffsets(gLaptopButton[4], 30, 11, true);
   SpecifyButtonUpTextColors(gLaptopButton[4], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[4], 2, 0);
 
@@ -1875,7 +1875,7 @@ function CreateLaptopButtons(): UINT32 {
 
   SpecifyButtonText(gLaptopButton[5], pLaptopIcons[2]);
   SpecifyButtonFont(gLaptopButton[5], FONT10ARIAL());
-  SpecifyButtonTextOffsets(gLaptopButton[5], 30, 11, TRUE);
+  SpecifyButtonTextOffsets(gLaptopButton[5], 30, 11, true);
   SpecifyButtonUpTextColors(gLaptopButton[5], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[5], 2, 0);
 
@@ -1886,7 +1886,7 @@ function CreateLaptopButtons(): UINT32 {
 
   SpecifyButtonText(gLaptopButton[6], pLaptopIcons[6]);
   SpecifyButtonFont(gLaptopButton[6], FONT10ARIAL());
-  SpecifyButtonTextOffsets(gLaptopButton[6], 25, 11, TRUE);
+  SpecifyButtonTextOffsets(gLaptopButton[6], 25, 11, true);
   SpecifyButtonUpTextColors(gLaptopButton[6], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[6], 2, 0);
 
@@ -1899,7 +1899,7 @@ function CreateLaptopButtons(): UINT32 {
   SetButtonCursor(gLaptopButton[5], Enum317.CURSOR_LAPTOP_SCREEN);
   SetButtonCursor(gLaptopButton[6], Enum317.CURSOR_LAPTOP_SCREEN);
 
-  return TRUE;
+  return true;
 }
 
 function DeleteLapTopButtons(): void {
@@ -1936,7 +1936,7 @@ function BtnOnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       if (HandleExit()) {
         //			 btn->uiFlags&=~(BUTTON_CLICKED_ON);
-        fExitingLaptopFlag = TRUE;
+        fExitingLaptopFlag = true;
         InvalidateRegion(0, 0, 640, 480);
       }
     }
@@ -1944,7 +1944,7 @@ function BtnOnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function LeaveLapTopScreen(): BOOLEAN {
+function LeaveLapTopScreen(): boolean {
   if (ExitLaptopDone()) {
     // exit screen is set
     // set new screen
@@ -1957,19 +1957,19 @@ function LeaveLapTopScreen(): BOOLEAN {
     //	SetLaptopExitScreen( GAME_SCREEN );
     //	}
 
-    if (gfAtLeastOneMercWasHired == TRUE) {
+    if (gfAtLeastOneMercWasHired == true) {
       if (LaptopSaveInfo.gfNewGameLaptop) {
-        LaptopSaveInfo.gfNewGameLaptop = FALSE;
-        fExitingLaptopFlag = TRUE;
+        LaptopSaveInfo.gfNewGameLaptop = false;
+        fExitingLaptopFlag = true;
         /*guiExitScreen = GAME_SCREEN; */
-        InitNewGame(FALSE);
-        gfDontStartTransitionFromLaptop = TRUE;
+        InitNewGame(false);
+        gfDontStartTransitionFromLaptop = true;
         /*InitHelicopterEntranceByMercs( );
         fFirstTimeInGameScreen = TRUE;*/
-        return TRUE;
+        return true;
       }
     } else {
-      gfDontStartTransitionFromLaptop = TRUE;
+      gfDontStartTransitionFromLaptop = true;
     }
 
     SetPendingNewScreen(guiExitScreen);
@@ -1990,7 +1990,7 @@ function LeaveLapTopScreen(): BOOLEAN {
       let iHeight: INT32;
       let iRealPercentage: INT32;
 
-      gfDontStartTransitionFromLaptop = TRUE;
+      gfDontStartTransitionFromLaptop = true;
       SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
       // Step 1:  Build the laptop image into the save buffer.
       RestoreBackgroundRects();
@@ -2074,10 +2074,10 @@ function LeaveLapTopScreen(): BOOLEAN {
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
-function HandleExit(): BOOLEAN {
+function HandleExit(): boolean {
   //	static BOOLEAN fSentImpWarningAlready = FALSE;
 
   // remind player about IMP
@@ -2092,7 +2092,7 @@ function HandleExit(): BOOLEAN {
   // new game, send email
   if (LaptopSaveInfo.gfNewGameLaptop != 0) {
     // Set an event to send this email ( day 2 8:00-12:00 )
-    if ((LaptopSaveInfo.fIMPCompletedFlag == FALSE) && (LaptopSaveInfo.fSentImpWarningAlready == FALSE)) {
+    if ((LaptopSaveInfo.fIMPCompletedFlag == false) && (LaptopSaveInfo.fSentImpWarningAlready == false)) {
       AddFutureDayStrategicEvent(Enum132.EVENT_HAVENT_MADE_IMP_CHARACTER_EMAIL, (8 + Random(4)) * 60, 0, 1);
 
       /*
@@ -2101,37 +2101,37 @@ function HandleExit(): BOOLEAN {
                               LaptopSaveInfo.fSentImpWarningAlready = TRUE;
                               AddEmail(IMP_EMAIL_AGAIN,IMP_EMAIL_AGAIN_LENGTH,1, GetWorldTotalMin( ) );
       */
-      fExitingLaptopFlag = TRUE;
+      fExitingLaptopFlag = true;
 
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function HaventMadeImpMercEmailCallBack(): void {
   // if the player STILL hasnt made an imp merc yet
-  if ((LaptopSaveInfo.fIMPCompletedFlag == FALSE) && (LaptopSaveInfo.fSentImpWarningAlready == FALSE)) {
-    LaptopSaveInfo.fSentImpWarningAlready = TRUE;
+  if ((LaptopSaveInfo.fIMPCompletedFlag == false) && (LaptopSaveInfo.fSentImpWarningAlready == false)) {
+    LaptopSaveInfo.fSentImpWarningAlready = true;
     AddEmail(IMP_EMAIL_AGAIN, IMP_EMAIL_AGAIN_LENGTH, 1, GetWorldTotalMin());
   }
 }
 
-function CreateLapTopMouseRegions(): BOOLEAN {
+function CreateLapTopMouseRegions(): boolean {
   // define regions
 
   // the entire laptop display region
   MSYS_DefineRegion(addressof(gLapTopScreenRegion), (LaptopScreenRect.iLeft), (LaptopScreenRect.iTop), (LaptopScreenRect.iRight), (LaptopScreenRect.iBottom), MSYS_PRIORITY_NORMAL + 1, Enum317.CURSOR_LAPTOP_SCREEN, ScreenRegionMvtCallback, LapTopScreenCallBack);
 
   // MSYS_AddRegion(&gLapTopScreenRegion);
-  return TRUE;
+  return true;
 }
 
-function DeleteLapTopMouseRegions(): BOOLEAN {
+function DeleteLapTopMouseRegions(): boolean {
   MSYS_RemoveRegion(addressof(gLapTopScreenRegion));
 
-  return TRUE;
+  return true;
 }
 
 function FinancialRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -2148,8 +2148,8 @@ function FinancialRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
         giOldRegion = giCurrentRegion;
       giCurrentRegion = Enum92.FINANCIAL_REGION;
       if (gfShowBookmarks) {
-        gfShowBookmarks = FALSE;
-        fReDrawScreenFlag = TRUE;
+        gfShowBookmarks = false;
+        fReDrawScreenFlag = true;
       }
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FINANCES;
 
@@ -2174,12 +2174,12 @@ function PersonnelRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
       giCurrentRegion = Enum92.PERSONNEL_REGION;
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_PERSONNEL;
       if (gfShowBookmarks) {
-        gfShowBookmarks = FALSE;
-        fReDrawScreenFlag = TRUE;
+        gfShowBookmarks = false;
+        fReDrawScreenFlag = true;
       }
       RestoreOldRegion(giOldRegion);
       HighLightRegion(giCurrentRegion);
-      gfShowBookmarks = FALSE;
+      gfShowBookmarks = false;
 
       UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_PERSONNEL);
     }
@@ -2202,7 +2202,7 @@ function EmailRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
       // stop showing WWW bookmarks
       if (gfShowBookmarks) {
-        gfShowBookmarks = FALSE;
+        gfShowBookmarks = false;
       }
 
       // set current highlight region
@@ -2220,7 +2220,7 @@ function EmailRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       HighLightRegion(giCurrentRegion);
 
       // redraw screen
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
   }
 }
@@ -2241,25 +2241,25 @@ function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       if (giCurrentRegion != Enum92.WWW_REGION)
         giOldRegion = giCurrentRegion;
       if (!fNewWWW)
-        fNewWWWDisplay = FALSE;
+        fNewWWWDisplay = false;
 
       // reset show bookmarks
       if (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW) {
-        gfShowBookmarks = FALSE;
-        fShowBookmarkInfo = TRUE;
+        gfShowBookmarks = false;
+        fShowBookmarkInfo = true;
       } else {
         gfShowBookmarks = !gfShowBookmarks;
       }
 
       if ((gfShowBookmarks) && (!fNewWWW)) {
-        fReDrawScreenFlag = TRUE;
-        fNewWWWDisplay = FALSE;
+        fReDrawScreenFlag = true;
+        fNewWWWDisplay = false;
       } else if (fNewWWW) {
         // no longer a new WWW mode
-        fNewWWW = FALSE;
+        fNewWWW = false;
 
         // new WWW to display
-        fNewWWWDisplay = TRUE;
+        fNewWWWDisplay = true;
 
         // make sure program is maximized
         if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] == Enum94.LAPTOP_PROGRAM_OPEN) {
@@ -2278,7 +2278,7 @@ function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
         guiCurrentLaptopMode = Enum95.LAPTOP_MODE_WWW;
       UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_WEB_BROWSER);
       HighLightRegion(giCurrentRegion);
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
@@ -2299,7 +2299,7 @@ function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
       HighLightRegion(giCurrentRegion);
 
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
   }
 }
@@ -2319,7 +2319,7 @@ function HistoryRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
         giOldRegion = giCurrentRegion;
       if (gfShowBookmarks) {
         // stop showing WWW bookmarks
-        gfShowBookmarks = FALSE;
+        gfShowBookmarks = false;
       }
 
       // current region is history
@@ -2336,10 +2336,10 @@ function HistoryRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 
       UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_HISTORY);
 
-      gfShowBookmarks = FALSE;
+      gfShowBookmarks = false;
 
       // redraw screen
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
   }
 }
@@ -2359,8 +2359,8 @@ function FilesRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
       // stop showing WWW bookmarks
       if (gfShowBookmarks) {
-        gfShowBookmarks = FALSE;
-        fReDrawScreenFlag = TRUE;
+        gfShowBookmarks = false;
+        fReDrawScreenFlag = true;
       }
 
       // set new region
@@ -2377,7 +2377,7 @@ function FilesRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_FILES);
 
       // redraw screen
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
   }
 }
@@ -2583,7 +2583,7 @@ function SetBookMark(iBookId: INT32): void {
   return;
 }
 
-function RemoveBookMark(iBookId: INT32): BOOLEAN {
+function RemoveBookMark(iBookId: INT32): boolean {
   let iCounter: INT32 = 0;
 
   // Loop through the bookmarks to get to the desired bookmark
@@ -2597,14 +2597,14 @@ function RemoveBookMark(iBookId: INT32): BOOLEAN {
     LaptopSaveInfo.iBookMarkList[iCounter] = -1;
 
     // return true signifing that we found it
-    return TRUE;
+    return true;
   }
 
   // nope, we didnt find it.
-  return FALSE;
+  return false;
 }
 
-function LoadBookmark(): BOOLEAN {
+function LoadBookmark(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // grab download bars too
@@ -2640,7 +2640,7 @@ function LoadBookmark(): BOOLEAN {
   FilenameForBPP("LAPTOP\\Bookmarkbottom.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBOOKBOT)));
 
-  return TRUE;
+  return true;
 }
 
 function DisplayBookMarks(): void {
@@ -2653,7 +2653,7 @@ function DisplayBookMarks(): void {
   let sY: INT16;
 
   // check if we are maximizing or minimizing.. if so, do not display
-  if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
+  if ((fMaximizingProgram == true) || (fMinizingProgram == true)) {
     return;
   }
 
@@ -2668,7 +2668,7 @@ function DisplayBookMarks(): void {
   //	mprintf(sX, sY,pBookmarkTitle[0] );
 
   // set buffer
-  SetFontDestBuffer(FRAME_BUFFER, BOOK_X, BOOK_TOP_Y, BOOK_X + BOOK_WIDTH - 10, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, BOOK_X, BOOK_TOP_Y, BOOK_X + BOOK_WIDTH - 10, 480, false);
 
   // blt in book mark background
   while (LaptopSaveInfo.iBookMarkList[iCounter - 1] != -1) {
@@ -2719,7 +2719,7 @@ function DisplayBookMarks(): void {
   mprintf(sX, sY, pBookMarkStrings[Enum98.CANCEL_STRING]);
   iCounter++;
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   // GetVideoObject(&hLapTopIconHandle, guiBOOKBOT);
   // BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, 0,BOOK_X, 6+BOOK_TOP_Y+(iCounter)*BOOK_HEIGHT, VO_BLT_SRCTRANSPARENCY,NULL);
@@ -2785,7 +2785,7 @@ function ScrollDisplayText(iY: INT32): void {
   }
 
   // font stuff
-  SetFontDestBuffer(FRAME_BUFFER, BOOK_X, 0, BOOK_X + BOOK_WIDTH, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, BOOK_X, 0, BOOK_X + BOOK_WIDTH, 480, false);
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
 
@@ -2793,7 +2793,7 @@ function ScrollDisplayText(iY: INT32): void {
   mprintf(sCurX, iY, pBookmarkTitle[1]);
 
   // reset buffer
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   // invalidate region
   InvalidateRegion(BOOK_X, iY, BOOK_X + BOOK_WIDTH, iY + BOOK_HEIGHT);
@@ -2834,16 +2834,16 @@ function DeleteBookmarkRegions(): void {
 
 function CreateDestoryBookMarkRegions(): void {
   // checks to see if a bookmark needs to be created or destroyed
-  /* static */ let fOldShowBookmarks: BOOLEAN = FALSE;
+  /* static */ let fOldShowBookmarks: boolean = false;
 
   if ((gfShowBookmarks) && (!fOldShowBookmarks)) {
     // create regions
     CreateBookMarkMouseRegions();
-    fOldShowBookmarks = TRUE;
+    fOldShowBookmarks = true;
   } else if ((!gfShowBookmarks) && (fOldShowBookmarks)) {
     // destroy bookmarks
     DeleteBookmarkRegions();
-    fOldShowBookmarks = FALSE;
+    fOldShowBookmarks = false;
   }
 }
 
@@ -2855,15 +2855,15 @@ function BookmarkCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
   }
 
   // we are in process of loading
-  if (fLoadPendingFlag == TRUE) {
+  if (fLoadPendingFlag == true) {
     return;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iCount = MSYS_GetRegionUserData(pRegion, 0);
     if (MSYS_GetRegionUserData(pRegion, 1) == Enum98.CANCEL_STRING) {
-      gfShowBookmarks = FALSE;
-      fReDrawScreenFlag = TRUE;
+      gfShowBookmarks = false;
+      fReDrawScreenFlag = true;
     }
     if (LaptopSaveInfo.iBookMarkList[iCount] != -1) {
       GoToWebPage(LaptopSaveInfo.iBookMarkList[iCount]);
@@ -2893,14 +2893,14 @@ function GoToWebPage(iPageId: INT32): void {
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.AIM_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.AIM_BOOKMARK] == false) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.AIM_BOOKMARK] = TRUE;
-        fLoadPendingFlag = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.AIM_BOOKMARK] = true;
+        fLoadPendingFlag = true;
       } else {
         // fast reload
-        fLoadPendingFlag = TRUE;
-        fFastLoadFlag = TRUE;
+        fLoadPendingFlag = true;
+        fFastLoadFlag = true;
       }
       break;
     case Enum98.BOBBYR_BOOKMARK:
@@ -2908,14 +2908,14 @@ function GoToWebPage(iPageId: INT32): void {
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.BOBBYR_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.BOBBYR_BOOKMARK] == false) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.BOBBYR_BOOKMARK] = TRUE;
-        fLoadPendingFlag = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.BOBBYR_BOOKMARK] = true;
+        fLoadPendingFlag = true;
       } else {
         // fast reload
-        fLoadPendingFlag = TRUE;
-        fFastLoadFlag = TRUE;
+        fLoadPendingFlag = true;
+        fFastLoadFlag = true;
       }
       break;
     case (Enum98.IMP_BOOKMARK):
@@ -2923,21 +2923,21 @@ function GoToWebPage(iPageId: INT32): void {
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_CHAR_PROFILE;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.IMP_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.IMP_BOOKMARK] == false) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.IMP_BOOKMARK] = TRUE;
-        fLoadPendingFlag = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.IMP_BOOKMARK] = true;
+        fLoadPendingFlag = true;
       } else {
         // fast reload
-        fLoadPendingFlag = TRUE;
-        fFastLoadFlag = TRUE;
+        fLoadPendingFlag = true;
+        fFastLoadFlag = true;
       }
       iCurrentImpPage = Enum71.IMP_HOME_PAGE;
       break;
     case (Enum98.MERC_BOOKMARK):
 
       // if the mercs server has gone down, but hasnt come up yet
-      if (LaptopSaveInfo.fMercSiteHasGoneDownYet == TRUE && LaptopSaveInfo.fFirstVisitSinceServerWentDown == FALSE) {
+      if (LaptopSaveInfo.fMercSiteHasGoneDownYet == true && LaptopSaveInfo.fFirstVisitSinceServerWentDown == false) {
         guiCurrentWWWMode = Enum95.LAPTOP_MODE_BROKEN_LINK;
         guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BROKEN_LINK;
       } else {
@@ -2946,14 +2946,14 @@ function GoToWebPage(iPageId: INT32): void {
       }
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.MERC_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.MERC_BOOKMARK] == false) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.MERC_BOOKMARK] = TRUE;
-        fLoadPendingFlag = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.MERC_BOOKMARK] = true;
+        fLoadPendingFlag = true;
       } else {
         // fast reload
-        fLoadPendingFlag = TRUE;
-        fFastLoadFlag = TRUE;
+        fLoadPendingFlag = true;
+        fFastLoadFlag = true;
       }
       break;
     case (Enum98.FUNERAL_BOOKMARK):
@@ -2961,14 +2961,14 @@ function GoToWebPage(iPageId: INT32): void {
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FUNERAL;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FUNERAL_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FUNERAL_BOOKMARK] == false) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FUNERAL_BOOKMARK] = TRUE;
-        fLoadPendingFlag = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FUNERAL_BOOKMARK] = true;
+        fLoadPendingFlag = true;
       } else {
         // fast reload
-        fLoadPendingFlag = TRUE;
-        fFastLoadFlag = TRUE;
+        fLoadPendingFlag = true;
+        fFastLoadFlag = true;
       }
       break;
     case (Enum98.FLORIST_BOOKMARK):
@@ -2976,14 +2976,14 @@ function GoToWebPage(iPageId: INT32): void {
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FLORIST_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FLORIST_BOOKMARK] == false) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FLORIST_BOOKMARK] = TRUE;
-        fLoadPendingFlag = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FLORIST_BOOKMARK] = true;
+        fLoadPendingFlag = true;
       } else {
         // fast reload
-        fLoadPendingFlag = TRUE;
-        fFastLoadFlag = TRUE;
+        fLoadPendingFlag = true;
+        fFastLoadFlag = true;
       }
       break;
 
@@ -2992,20 +2992,20 @@ function GoToWebPage(iPageId: INT32): void {
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.INSURANCE_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.INSURANCE_BOOKMARK] == false) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.INSURANCE_BOOKMARK] = TRUE;
-        fLoadPendingFlag = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.INSURANCE_BOOKMARK] = true;
+        fLoadPendingFlag = true;
       } else {
         // fast reload
-        fLoadPendingFlag = TRUE;
-        fFastLoadFlag = TRUE;
+        fLoadPendingFlag = true;
+        fFastLoadFlag = true;
       }
       break;
   }
 
-  gfShowBookmarks = FALSE;
-  fReDrawScreenFlag = TRUE;
+  gfShowBookmarks = false;
+  fReDrawScreenFlag = true;
   return;
 }
 
@@ -3018,7 +3018,7 @@ function BookmarkMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
   }
 }
 
-function LoadLoadPending(): BOOLEAN {
+function LoadLoadPending(): boolean {
   // function will load the load pending graphics
   // reuse bookmark
   // load graph window and bar
@@ -3031,10 +3031,10 @@ function LoadLoadPending(): BOOLEAN {
   FilenameForBPP("LAPTOP\\graphsegment.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiGRAPHBAR)));
 
-  return TRUE;
+  return true;
 }
 
-function DisplayLoadPending(): BOOLEAN {
+function DisplayLoadPending(): boolean {
   // this function will display the load pending and return if the load is done
   /* static */ let iBaseTime: INT32 = 0;
   /* static */ let iTotalTime: INT32 = 0;
@@ -3055,11 +3055,11 @@ function DisplayLoadPending(): BOOLEAN {
     iLoadTime = 1;
     iUnitTime = 1;
   } else {
-    if ((fFastLoadFlag == TRUE) && (fConnectingToSubPage == TRUE)) {
+    if ((fFastLoadFlag == true) && (fConnectingToSubPage == true)) {
       iUnitTime = FASTEST_UNIT_TIME;
-    } else if (fFastLoadFlag == TRUE) {
+    } else if (fFastLoadFlag == true) {
       iUnitTime = FAST_UNIT_TIME;
-    } else if (fConnectingToSubPage == TRUE) {
+    } else if (fConnectingToSubPage == true) {
       iUnitTime = ALMOST_FAST_UNIT_TIME;
     }
 
@@ -3077,12 +3077,12 @@ function DisplayLoadPending(): BOOLEAN {
 
   // we are now waiting on a web page to download, reset counter
   if (!fLoadPendingFlag) {
-    fDoneLoadPending = FALSE;
-    fFastLoadFlag = FALSE;
-    fConnectingToSubPage = FALSE;
+    fDoneLoadPending = false;
+    fFastLoadFlag = false;
+    fConnectingToSubPage = false;
     iBaseTime = 0;
     iTotalTime = 0;
-    return FALSE;
+    return false;
   }
   // if total time is exceeded, return (TRUE)
   if (iBaseTime == 0) {
@@ -3091,15 +3091,15 @@ function DisplayLoadPending(): BOOLEAN {
 
   if (iTotalTime >= iLoadTime) {
     // done loading, redraw screen
-    fLoadPendingFlag = FALSE;
-    fFastLoadFlag = FALSE;
+    fLoadPendingFlag = false;
+    fFastLoadFlag = false;
     iTotalTime = 0;
     iBaseTime = 0;
-    fDoneLoadPending = TRUE;
-    fConnectingToSubPage = FALSE;
-    fPausedReDrawScreenFlag = TRUE;
+    fDoneLoadPending = true;
+    fConnectingToSubPage = false;
+    fPausedReDrawScreenFlag = true;
 
-    return TRUE;
+    return true;
   }
 
   iDifference = GetJA2Clock() - iBaseTime;
@@ -3114,8 +3114,8 @@ function DisplayLoadPending(): BOOLEAN {
   }
 
   // new mail, don't redraw
-  if (fNewMailFlag == TRUE) {
-    return FALSE;
+  if (fNewMailFlag == true) {
+    return false;
   }
 
   RenderButtons();
@@ -3140,7 +3140,7 @@ function DisplayLoadPending(): BOOLEAN {
   SetFontShadow(NO_SHADOW);
 
   // reload or download?
-  if (fFastLoadFlag == TRUE) {
+  if (fFastLoadFlag == true) {
     FindFontCenterCoordinates(328, 0, 446 - 328, 0, pDownloadString[1], DOWNLOAD_FONT(), addressof(sXPosition), addressof(sYPosition));
 
     // display download string
@@ -3181,7 +3181,7 @@ function DisplayLoadPending(): BOOLEAN {
 
   DisableMercSiteButton();
 
-  return FALSE;
+  return false;
 }
 
 function DeleteLoadPending(): void {
@@ -3203,15 +3203,15 @@ function BtnErrorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fErrorFlag = FALSE;
+      fErrorFlag = false;
     }
   }
 }
 function CreateDestroyErrorButton(): void {
-  /* static */ let fOldErrorFlag: BOOLEAN = FALSE;
+  /* static */ let fOldErrorFlag: boolean = false;
   if ((fErrorFlag) && (!fOldErrorFlag)) {
     // create inventory button
-    fOldErrorFlag = TRUE;
+    fOldErrorFlag = true;
 
     // load image and create error confirm button
     giErrorButtonImage[0] = LoadButtonImage("LAPTOP\\errorbutton.sti", -1, 0, -1, 1, -1);
@@ -3227,7 +3227,7 @@ function CreateDestroyErrorButton(): void {
     MSYS_AddRegion(addressof(pScreenMask));
   } else if ((!fErrorFlag) && (fOldErrorFlag)) {
     // done dsiplaying, get rid of button and screen mask
-    fOldErrorFlag = FALSE;
+    fOldErrorFlag = false;
 
     RemoveButton(giErrorButton[0]);
     UnloadButtonImage(giErrorButtonImage[0]);
@@ -3235,7 +3235,7 @@ function CreateDestroyErrorButton(): void {
     MSYS_RemoveRegion(addressof(pScreenMask));
 
     // re draw screen
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
   return;
 }
@@ -3282,7 +3282,7 @@ function DisplayErrorBox(): void {
   SetFont(ERROR_FONT());
 
   // display error string
-  DisplayWrappedString(ERROR_X + ERROR_TEXT_X, (ERROR_Y + ERROR_TEXT_Y + DisplayWrappedString(ERROR_X + ERROR_TEXT_X, ERROR_Y + ERROR_TEXT_Y, BOOK_WIDTH, 2, ERROR_FONT(), FONT_BLACK, pErrorStrings[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED)), BOOK_WIDTH, 2, ERROR_FONT(), FONT_BLACK, pErrorStrings[2], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(ERROR_X + ERROR_TEXT_X, (ERROR_Y + ERROR_TEXT_Y + DisplayWrappedString(ERROR_X + ERROR_TEXT_X, ERROR_Y + ERROR_TEXT_Y, BOOK_WIDTH, 2, ERROR_FONT(), FONT_BLACK, pErrorStrings[1], FONT_BLACK, false, CENTER_JUSTIFIED)), BOOK_WIDTH, 2, ERROR_FONT(), FONT_BLACK, pErrorStrings[2], FONT_BLACK, false, CENTER_JUSTIFIED);
 
   SetFontShadow(DEFAULT_SHADOW);
 
@@ -3323,7 +3323,7 @@ function CheckMarkButtonsDirtyFlag(): void {
   if (fMarkButtonsDirtyFlag) {
     // flag set, mark buttons and reset
     MarkButtonsDirty();
-    fMarkButtonsDirtyFlag = FALSE;
+    fMarkButtonsDirtyFlag = false;
   }
 
   return;
@@ -3345,7 +3345,7 @@ function PostButtonRendering(): void {
 }
 
 function ShouldNewMailBeDisplayed(): void {
-  let fReDraw: BOOLEAN = FALSE;
+  let fReDraw: boolean = false;
   switch (guiCurrentLaptopMode) {
     case Enum95.LAPTOP_MODE_AIM_MEMBERS:
       fReDraw = DisableNewMailMessage();
@@ -3402,9 +3402,9 @@ function CheckIfNewWWWW(): void {
   // if no www mode, set new www flag..until new www mode that is not 0
 
   if (guiCurrentWWWMode == Enum95.LAPTOP_MODE_NONE) {
-    fNewWWW = TRUE;
+    fNewWWW = true;
   } else {
-    fNewWWW = FALSE;
+    fNewWWW = false;
   }
 
   return;
@@ -3415,41 +3415,41 @@ function HandleLapTopESCKey(): void {
 
   if (fNewMailFlag) {
     // get rid of new mail warning box
-    fNewMailFlag = FALSE;
+    fNewMailFlag = false;
     CreateDestroyNewMailButton();
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLaptop();
   } else if (fDeleteMailFlag) {
     // get rid of delete mail box
-    fDeleteMailFlag = FALSE;
+    fDeleteMailFlag = false;
     CreateDestroyDeleteNoticeMailButton();
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLaptop();
   } else if (fErrorFlag) {
     // get rid of error warning box
-    fErrorFlag = FALSE;
+    fErrorFlag = false;
     CreateDestroyErrorButton();
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLaptop();
   }
 
   else if (gfShowBookmarks) {
     // get rid of bookmarks
-    gfShowBookmarks = FALSE;
+    gfShowBookmarks = false;
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLapTopImage();
     RenderLaptop();
   } else {
     // leave
-    fExitingLaptopFlag = TRUE;
+    fExitingLaptopFlag = true;
     HandleExit();
   }
 
@@ -3460,47 +3460,47 @@ function HandleRightButtonUpEvent(): void {
   // will handle the right button up event
   if (fNewMailFlag) {
     // get rid of new mail warning box
-    fNewMailFlag = FALSE;
+    fNewMailFlag = false;
     CreateDestroyNewMailButton();
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLaptop();
   } else if (fDeleteMailFlag) {
     // get rid of delete mail box
-    fDeleteMailFlag = FALSE;
+    fDeleteMailFlag = false;
     CreateDestroyDeleteNoticeMailButton();
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLaptop();
   } else if (fErrorFlag) {
     // get rid of error warning box
-    fErrorFlag = FALSE;
+    fErrorFlag = false;
     CreateDestroyErrorButton();
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLaptop();
   }
 
   else if (gfShowBookmarks) {
     // get rid of bookmarks
-    gfShowBookmarks = FALSE;
+    gfShowBookmarks = false;
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLapTopImage();
     RenderLaptop();
   } else if (fDisplayMessageFlag) {
-    fDisplayMessageFlag = FALSE;
+    fDisplayMessageFlag = false;
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLapTopImage();
     RenderLaptop();
   } else if (fShowBookmarkInfo) {
-    fShowBookmarkInfo = FALSE;
+    fShowBookmarkInfo = false;
   }
 }
 
@@ -3509,14 +3509,14 @@ function HandleLeftButtonUpEvent(): void {
 
   if (gfShowBookmarks) {
     // get rid of bookmarks
-    gfShowBookmarks = FALSE;
+    gfShowBookmarks = false;
 
     // force redraw
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     RenderLapTopImage();
     RenderLaptop();
   } else if (fShowBookmarkInfo) {
-    fShowBookmarkInfo = FALSE;
+    fShowBookmarkInfo = false;
   }
 }
 
@@ -3537,11 +3537,11 @@ function LapTopScreenCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   return;
 }
 
-function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
+function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let pCenteringRect: SGPRect = [ LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y ];
 
   // reset exit mode
-  fExitDueToMessageBox = TRUE;
+  fExitDueToMessageBox = true;
 
   // do message box and return
   iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (ubFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(pCenteringRect));
@@ -3550,9 +3550,9 @@ function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScree
   return iLaptopMessageBox != -1;
 }
 
-function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): BOOLEAN {
+function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
   // reset exit mode
-  fExitDueToMessageBox = TRUE;
+  fExitDueToMessageBox = true;
 
   // do message box and return
   iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
@@ -3561,10 +3561,10 @@ function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16
   return iLaptopMessageBox != -1;
 }
 
-function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
+function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
   // reset exit mode
-  fExitDueToMessageBox = TRUE;
+  fExitDueToMessageBox = true;
 
   // do message box and return
   iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
@@ -3574,7 +3574,7 @@ function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExi
 }
 
 // places a tileable pattern down
-function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UINT16, usHeight: UINT16, uiBackgroundIdentifier: UINT32): BOOLEAN {
+function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UINT16, usHeight: UINT16, uiBackgroundIdentifier: UINT32): boolean {
   let hBackGroundHandle: HVOBJECT;
   let x: UINT16;
   let y: UINT16;
@@ -3593,10 +3593,10 @@ function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UINT16, us
     }
     uiPosY += usHeight;
   }
-  return TRUE;
+  return true;
 }
 
-function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: STR16, uiIconGraphic: UINT32, usIconGraphicIndex: UINT16): BOOLEAN {
+function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: STR16, uiIconGraphic: UINT32, usIconGraphicIndex: UINT16): boolean {
   let vs_desc: VSURFACE_DESC;
   let hImageHandle: HVOBJECT;
 
@@ -3617,14 +3617,14 @@ function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: STR16
   GetVideoObject(addressof(hImageHandle), uiIconGraphic);
   BltVideoObject(guiTitleBarSurface, hImageHandle, usIconGraphicIndex, LAPTOP_TITLE_BAR_ICON_OFFSET_X, LAPTOP_TITLE_BAR_ICON_OFFSET_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-  SetFontDestBuffer(guiTitleBarSurface, 0, 0, vs_desc.usWidth, vs_desc.usHeight, FALSE);
-  DrawTextToScreen(pTitle, LAPTOP_TITLE_BAR_TEXT_OFFSET_X, LAPTOP_TITLE_BAR_TEXT_OFFSET_Y, 0, FONT14ARIAL(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiTitleBarSurface, 0, 0, vs_desc.usWidth, vs_desc.usHeight, false);
+  DrawTextToScreen(pTitle, LAPTOP_TITLE_BAR_TEXT_OFFSET_X, LAPTOP_TITLE_BAR_TEXT_OFFSET_Y, 0, FONT14ARIAL(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
-  return TRUE;
+  return true;
 }
 
-function DisplayTitleBarMaximizeGraphic(fForward: BOOLEAN, fInit: BOOLEAN, usTopLeftX: UINT16, usTopLeftY: UINT16, usTopRightX: UINT16): BOOLEAN {
+function DisplayTitleBarMaximizeGraphic(fForward: boolean, fInit: boolean, usTopLeftX: UINT16, usTopLeftY: UINT16, usTopRightX: UINT16): boolean {
   /* static */ let ubCount: INT8;
   let sPosX: INT16;
   let sPosY: INT16;
@@ -3639,9 +3639,9 @@ function DisplayTitleBarMaximizeGraphic(fForward: BOOLEAN, fInit: BOOLEAN, usTop
 
   if (fInit) {
     if (gfTitleBarSurfaceAlreadyActive)
-      return FALSE;
+      return false;
 
-    gfTitleBarSurfaceAlreadyActive = TRUE;
+    gfTitleBarSurfaceAlreadyActive = true;
     if (fForward) {
       ubCount = 1;
     } else {
@@ -3717,23 +3717,23 @@ function DisplayTitleBarMaximizeGraphic(fForward: BOOLEAN, fInit: BOOLEAN, usTop
 
   if (fForward) {
     if (ubCount == NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS) {
-      gfTitleBarSurfaceAlreadyActive = FALSE;
-      return TRUE;
+      gfTitleBarSurfaceAlreadyActive = false;
+      return true;
     } else {
       ubCount++;
-      return FALSE;
+      return false;
     }
   } else {
     if (ubCount == 0) {
-      gfTitleBarSurfaceAlreadyActive = FALSE;
-      return TRUE;
+      gfTitleBarSurfaceAlreadyActive = false;
+      return true;
     } else {
       ubCount--;
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function RemoveTitleBarMaximizeGraphics(): void {
@@ -3741,7 +3741,7 @@ function RemoveTitleBarMaximizeGraphics(): void {
 }
 
 function HandleSlidingTitleBar(): void {
-  if ((fMaximizingProgram == FALSE) && (fMinizingProgram == FALSE)) {
+  if ((fMaximizingProgram == false) && (fMinizingProgram == false)) {
     return;
   }
 
@@ -3752,63 +3752,63 @@ function HandleSlidingTitleBar(): void {
   if (fMaximizingProgram) {
     switch (bProgramBeingMaximized) {
       case (Enum93.LAPTOP_PROGRAM_MAILER):
-        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 66, 29 + 20);
-        if (fMaximizingProgram == FALSE) {
+        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(true, fInitTitle, 29, 66, 29 + 20);
+        if (fMaximizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
-          fEnteredNewLapTopDueToHandleSlidingBars = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = true;
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_FILES):
-        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 120, 29 + 20);
-        if (fMaximizingProgram == FALSE) {
+        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(true, fInitTitle, 29, 120, 29 + 20);
+        if (fMaximizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
-          fEnteredNewLapTopDueToHandleSlidingBars = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = true;
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_FINANCES):
-        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 226, 29 + 20);
-        if (fMaximizingProgram == FALSE) {
+        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(true, fInitTitle, 29, 226, 29 + 20);
+        if (fMaximizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
-          fEnteredNewLapTopDueToHandleSlidingBars = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = true;
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_PERSONNEL):
-        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 194, 29 + 20);
-        if (fMaximizingProgram == FALSE) {
+        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(true, fInitTitle, 29, 194, 29 + 20);
+        if (fMaximizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
-          fEnteredNewLapTopDueToHandleSlidingBars = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = true;
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_HISTORY):
-        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 162, 29 + 20);
-        if (fMaximizingProgram == FALSE) {
+        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(true, fInitTitle, 29, 162, 29 + 20);
+        if (fMaximizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
-          fEnteredNewLapTopDueToHandleSlidingBars = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = true;
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_WEB_BROWSER):
-        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 99, 29 + 20);
-        if (fMaximizingProgram == FALSE) {
+        fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(true, fInitTitle, 29, 99, 29 + 20);
+        if (fMaximizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
-          fEnteredNewLapTopDueToHandleSlidingBars = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = true;
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
     }
@@ -3818,71 +3818,71 @@ function HandleSlidingTitleBar(): void {
     // minimizing
     switch (bProgramBeingMaximized) {
       case (Enum93.LAPTOP_PROGRAM_MAILER):
-        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 66, 29 + 20);
-        if (fMinizingProgram == FALSE) {
+        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(false, fInitTitle, 29, 66, 29 + 20);
+        if (fMinizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_FILES):
-        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 130, 29 + 20);
-        if (fMinizingProgram == FALSE) {
+        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(false, fInitTitle, 29, 130, 29 + 20);
+        if (fMinizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_FINANCES):
-        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 226, 29 + 20);
-        if (fMinizingProgram == FALSE) {
+        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(false, fInitTitle, 29, 226, 29 + 20);
+        if (fMinizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_PERSONNEL):
-        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 194, 29 + 20);
-        if (fMinizingProgram == FALSE) {
+        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(false, fInitTitle, 29, 194, 29 + 20);
+        if (fMinizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_HISTORY):
-        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 162, 29 + 20);
-        if (fMinizingProgram == FALSE) {
+        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(false, fInitTitle, 29, 162, 29 + 20);
+        if (fMinizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
       case (Enum93.LAPTOP_PROGRAM_WEB_BROWSER):
-        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 99, 29 + 20);
-        if (fMinizingProgram == FALSE) {
+        fMinizingProgram = !DisplayTitleBarMaximizeGraphic(false, fInitTitle, 29, 99, 29 + 20);
+        if (fMinizingProgram == false) {
           RemoveTitleBarMaximizeGraphics();
           EnterNewLaptopMode();
-          fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
-          fPausedReDrawScreenFlag = TRUE;
+          fEnteredNewLapTopDueToHandleSlidingBars = false;
+          fPausedReDrawScreenFlag = true;
         }
         break;
     }
   }
 
   // reset init
-  fInitTitle = FALSE;
+  fInitTitle = false;
 }
 
 function ShowLights(): void {
   // will show lights depending on state
   let hHandle: HVOBJECT;
 
-  if (fPowerLightOn == TRUE) {
+  if (fPowerLightOn == true) {
     GetVideoObject(addressof(hHandle), guiLIGHTS);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, 44, 466, VO_BLT_SRCTRANSPARENCY, null);
   } else {
@@ -3890,7 +3890,7 @@ function ShowLights(): void {
     BltVideoObject(FRAME_BUFFER, hHandle, 1, 44, 466, VO_BLT_SRCTRANSPARENCY, null);
   }
 
-  if (fHardDriveLightOn == TRUE) {
+  if (fHardDriveLightOn == true) {
     GetVideoObject(addressof(hHandle), guiLIGHTS);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, 88, 466, VO_BLT_SRCTRANSPARENCY, null);
   } else {
@@ -3904,11 +3904,11 @@ function FlickerHDLight(): void {
   /* static */ let iTotalDifference: INT32 = 0;
   let iDifference: INT32 = 0;
 
-  if (fLoadPendingFlag == TRUE) {
-    fFlickerHD = TRUE;
+  if (fLoadPendingFlag == true) {
+    fFlickerHD = true;
   }
 
-  if (fFlickerHD == FALSE) {
+  if (fFlickerHD == false) {
     return;
   }
 
@@ -3918,12 +3918,12 @@ function FlickerHDLight(): void {
 
   iDifference = GetJA2Clock() - iBaseTime;
 
-  if ((iTotalDifference > HD_FLICKER_TIME) && (fLoadPendingFlag == FALSE)) {
+  if ((iTotalDifference > HD_FLICKER_TIME) && (fLoadPendingFlag == false)) {
     iBaseTime = GetJA2Clock();
-    fHardDriveLightOn = FALSE;
+    fHardDriveLightOn = false;
     iBaseTime = 0;
     iTotalDifference = 0;
-    fFlickerHD = FALSE;
+    fFlickerHD = false;
     InvalidateRegion(88, 466, 102, 477);
     return;
   }
@@ -3931,14 +3931,14 @@ function FlickerHDLight(): void {
   if (iDifference > FLICKER_TIME) {
     iTotalDifference += iDifference;
 
-    if (fLoadPendingFlag == TRUE) {
+    if (fLoadPendingFlag == true) {
       iTotalDifference = 0;
     }
 
     if ((Random(2)) == 0) {
-      fHardDriveLightOn = TRUE;
+      fHardDriveLightOn = true;
     } else {
-      fHardDriveLightOn = FALSE;
+      fHardDriveLightOn = false;
     }
     InvalidateRegion(88, 466, 102, 477);
   }
@@ -3946,19 +3946,19 @@ function FlickerHDLight(): void {
   return;
 }
 
-function ExitLaptopDone(): BOOLEAN {
+function ExitLaptopDone(): boolean {
   // check if this is the first time, to reset counter
 
-  /* static */ let fOldLeaveLaptopState: BOOLEAN = FALSE;
+  /* static */ let fOldLeaveLaptopState: boolean = false;
   /* static */ let iBaseTime: INT32 = 0;
   let iDifference: INT32 = 0;
 
-  if (fOldLeaveLaptopState == FALSE) {
-    fOldLeaveLaptopState = TRUE;
+  if (fOldLeaveLaptopState == false) {
+    fOldLeaveLaptopState = true;
     iBaseTime = GetJA2Clock();
   }
 
-  fPowerLightOn = FALSE;
+  fPowerLightOn = false;
 
   InvalidateRegion(44, 466, 58, 477);
   // get the current difference
@@ -3967,41 +3967,41 @@ function ExitLaptopDone(): BOOLEAN {
   // did we wait long enough?
   if (iDifference > EXIT_LAPTOP_DELAY_TIME) {
     iBaseTime = 0;
-    fOldLeaveLaptopState = FALSE;
-    return TRUE;
+    fOldLeaveLaptopState = false;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
 function CreateDestroyMinimizeButtonForCurrentMode(): void {
   // will create the minimize button
 
-  /* static */ let fAlreadyCreated: BOOLEAN = FALSE;
+  /* static */ let fAlreadyCreated: boolean = false;
   // check to see if created, if so, do nothing
 
   // check current mode
   if ((guiCurrentLaptopMode == Enum95.LAPTOP_MODE_NONE) && (guiPreviousLaptopMode != Enum95.LAPTOP_MODE_NONE)) {
-    fCreateMinimizeButton = FALSE;
+    fCreateMinimizeButton = false;
   } else if ((guiCurrentLaptopMode != Enum95.LAPTOP_MODE_NONE)) {
-    fCreateMinimizeButton = TRUE;
+    fCreateMinimizeButton = true;
   } else if ((guiPreviousLaptopMode != Enum95.LAPTOP_MODE_NONE)) {
-    fCreateMinimizeButton = FALSE;
+    fCreateMinimizeButton = false;
   }
 
   // leaving laptop, get rid of the button
-  if (fExitingLaptopFlag == TRUE) {
-    fCreateMinimizeButton = FALSE;
+  if (fExitingLaptopFlag == true) {
+    fCreateMinimizeButton = false;
   }
 
-  if ((fAlreadyCreated == FALSE) && (fCreateMinimizeButton == TRUE)) {
+  if ((fAlreadyCreated == false) && (fCreateMinimizeButton == true)) {
     // not created, create
-    fAlreadyCreated = TRUE;
+    fAlreadyCreated = true;
     CreateMinimizeButtonForCurrentMode();
     CreateMinimizeRegionsForLaptopProgramIcons();
-  } else if ((fAlreadyCreated == TRUE) && (fCreateMinimizeButton == FALSE)) {
+  } else if ((fAlreadyCreated == true) && (fCreateMinimizeButton == false)) {
     // created and must be destroyed
-    fAlreadyCreated = FALSE;
+    fAlreadyCreated = false;
     DestroyMinimizeButtonForCurrentMode();
     DestroyMinimizeRegionsForLaptopProgramIcons();
   } else {
@@ -4042,36 +4042,36 @@ function LaptopMinimizeProgramButtonCallback(btn: Pointer<GUI_BUTTON>, reason: I
           gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_MAILER] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[0], guiTITLEBARICONS, 0);
           SetCurrentToLastProgramOpened();
-          fMinizingProgram = TRUE;
-          fInitTitle = TRUE;
+          fMinizingProgram = true;
+          fInitTitle = true;
           break;
         case (Enum95.LAPTOP_MODE_FILES):
           gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FILES] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[5], guiTITLEBARICONS, 2);
           SetCurrentToLastProgramOpened();
-          fMinizingProgram = TRUE;
-          fInitTitle = TRUE;
+          fMinizingProgram = true;
+          fInitTitle = true;
           break;
         case (Enum95.LAPTOP_MODE_FINANCES):
           gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FINANCES] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[2], guiTITLEBARICONS, 5);
           SetCurrentToLastProgramOpened();
-          fMinizingProgram = TRUE;
-          fInitTitle = TRUE;
+          fMinizingProgram = true;
+          fInitTitle = true;
           break;
         case (Enum95.LAPTOP_MODE_HISTORY):
           gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_HISTORY] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[4], guiTITLEBARICONS, 4);
           SetCurrentToLastProgramOpened();
-          fMinizingProgram = TRUE;
-          fInitTitle = TRUE;
+          fMinizingProgram = true;
+          fInitTitle = true;
           break;
         case (Enum95.LAPTOP_MODE_PERSONNEL):
           gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_PERSONNEL] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[3], guiTITLEBARICONS, 3);
           SetCurrentToLastProgramOpened();
-          fMinizingProgram = TRUE;
-          fInitTitle = TRUE;
+          fMinizingProgram = true;
+          fInitTitle = true;
           break;
         case (Enum95.LAPTOP_MODE_NONE):
           // nothing
@@ -4080,9 +4080,9 @@ function LaptopMinimizeProgramButtonCallback(btn: Pointer<GUI_BUTTON>, reason: I
           gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[7], guiTITLEBARICONS, 1);
           SetCurrentToLastProgramOpened();
-          gfShowBookmarks = FALSE;
-          fMinizingProgram = TRUE;
-          fInitTitle = TRUE;
+          gfShowBookmarks = false;
+          fMinizingProgram = true;
+          fInitTitle = true;
           break;
       }
     }
@@ -4161,7 +4161,7 @@ function SetCurrentToLastProgramOpened(): void {
         guiCurrentLaptopMode = Enum95.LAPTOP_MODE_WWW;
       }
       // gfShowBookmarks = TRUE;
-      fShowBookmarkInfo = TRUE;
+      fShowBookmarkInfo = true;
       break;
   }
 }
@@ -4201,7 +4201,7 @@ function BlitTitleBarIcons(): void {
   }
 }
 
-function DrawDeskTopBackground(): BOOLEAN {
+function DrawDeskTopBackground(): boolean {
   let hSrcVSurface: HVSURFACE;
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
@@ -4226,10 +4226,10 @@ function DrawDeskTopBackground(): BOOLEAN {
   UnLockVideoSurface(guiDESKTOP);
   UnLockVideoSurface(FRAME_BUFFER);
 
-  return TRUE;
+  return true;
 }
 
-function LoadDesktopBackground(): BOOLEAN {
+function LoadDesktopBackground(): boolean {
   // load desktop background
   let vs_desc: VSURFACE_DESC;
 
@@ -4237,7 +4237,7 @@ function LoadDesktopBackground(): BOOLEAN {
   GetMLGFilename(vs_desc.ImageFile, Enum326.MLG_DESKTOP);
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiDESKTOP)));
 
-  return TRUE;
+  return true;
 }
 
 function DeleteDesktopBackground(): void {
@@ -4381,7 +4381,7 @@ function DisplayTaskBarIcons(): void {
 function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKeyState: UINT16): void {
   // will handle keyboard shortcuts for the laptop ... to be added to later
 
-  if ((fExitingLaptopFlag == TRUE) || (fTabHandled)) {
+  if ((fExitingLaptopFlag == true) || (fTabHandled)) {
     return;
   }
 
@@ -4395,13 +4395,13 @@ function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKe
       HandleAltTabKeyInLaptop();
     }
 
-    fTabHandled = TRUE;
+    fTabHandled = true;
   }
 
   else if ((usEvent == KEY_DOWN) && (usParam == 'b')) {
     if (CHEATER_CHEAT_LEVEL()) {
       if ((usKeyState & ALT_DOWN))
-        LaptopSaveInfo.fBobbyRSiteCanBeAccessed = TRUE;
+        LaptopSaveInfo.fBobbyRSiteCanBeAccessed = true;
       else if (usKeyState & CTRL_DOWN) {
         guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BROKEN_LINK;
       }
@@ -4415,7 +4415,7 @@ function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKe
     // LeaveLapTopScreen( );
   }
       if ((usEvent == KEY_DOWN) && ((usParam == 'h') || (usParam == 'H'))) {
-    ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_LAPTOP, TRUE);
+    ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_LAPTOP, true);
   }
 
   // adding money
@@ -4437,7 +4437,7 @@ function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKe
   return;
 }
 
-function RenderWWWProgramTitleBar(): BOOLEAN {
+function RenderWWWProgramTitleBar(): boolean {
   // will render the title bar for the www program
   let uiTITLEFORWWW: UINT32;
   let hHandle: HVOBJECT;
@@ -4479,10 +4479,10 @@ function RenderWWWProgramTitleBar(): BOOLEAN {
 
   BlitTitleBarIcons();
 
-  DisplayProgramBoundingBox(FALSE);
+  DisplayProgramBoundingBox(false);
 
   // InvalidateRegion( 0, 0, 640, 480 );
-  return TRUE;
+  return true;
 }
 
 function HandleDefaultWebpageForLaptop(): void {
@@ -4522,36 +4522,36 @@ function LaptopProgramIconMinimizeCallback(pRegion: Pointer<MOUSE_REGION>, iReas
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_MAILER] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[0], guiTITLEBARICONS, 0);
         SetCurrentToLastProgramOpened();
-        fMinizingProgram = TRUE;
-        fInitTitle = TRUE;
+        fMinizingProgram = true;
+        fInitTitle = true;
         break;
       case (Enum95.LAPTOP_MODE_FILES):
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FILES] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[5], guiTITLEBARICONS, 2);
         SetCurrentToLastProgramOpened();
-        fMinizingProgram = TRUE;
-        fInitTitle = TRUE;
+        fMinizingProgram = true;
+        fInitTitle = true;
         break;
       case (Enum95.LAPTOP_MODE_FINANCES):
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FINANCES] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[2], guiTITLEBARICONS, 5);
         SetCurrentToLastProgramOpened();
-        fMinizingProgram = TRUE;
-        fInitTitle = TRUE;
+        fMinizingProgram = true;
+        fInitTitle = true;
         break;
       case (Enum95.LAPTOP_MODE_HISTORY):
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_HISTORY] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[4], guiTITLEBARICONS, 4);
         SetCurrentToLastProgramOpened();
-        fMinizingProgram = TRUE;
-        fInitTitle = TRUE;
+        fMinizingProgram = true;
+        fInitTitle = true;
         break;
       case (Enum95.LAPTOP_MODE_PERSONNEL):
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_PERSONNEL] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[3], guiTITLEBARICONS, 3);
         SetCurrentToLastProgramOpened();
-        fMinizingProgram = TRUE;
-        fInitTitle = TRUE;
+        fMinizingProgram = true;
+        fInitTitle = true;
         break;
       case (Enum95.LAPTOP_MODE_NONE):
         // nothing
@@ -4560,17 +4560,17 @@ function LaptopProgramIconMinimizeCallback(pRegion: Pointer<MOUSE_REGION>, iReas
         gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pWebTitle[0], guiTITLEBARICONS, 1);
         SetCurrentToLastProgramOpened();
-        gfShowBookmarks = FALSE;
-        fShowBookmarkInfo = FALSE;
-        fMinizingProgram = TRUE;
-        fInitTitle = TRUE;
+        gfShowBookmarks = false;
+        fShowBookmarkInfo = false;
+        fMinizingProgram = true;
+        fInitTitle = true;
         break;
     }
   }
   return;
 }
 
-function DisplayProgramBoundingBox(fMarkButtons: BOOLEAN): void {
+function DisplayProgramBoundingBox(fMarkButtons: boolean): void {
   // the border fot eh program
   let hHandle: HVOBJECT;
 
@@ -4603,19 +4603,19 @@ function DisplayProgramBoundingBox(fMarkButtons: BOOLEAN): void {
 }
 
 function CreateDestroyMouseRegionForNewMailIcon(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
   //. will toggle creation/destruction of the mouse regions used by the new mail icon
 
-  if (fCreated == FALSE) {
-    fCreated = TRUE;
+  if (fCreated == false) {
+    fCreated = true;
     MSYS_DefineRegion(addressof(gNewMailIconRegion), LAPTOP__NEW_EMAIL_ICON_X, LAPTOP__NEW_EMAIL_ICON_Y + 5, LAPTOP__NEW_EMAIL_ICON_X + 16, LAPTOP__NEW_EMAIL_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewEmailIconCallback);
     CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, (fUnReadMailFlag == 0));
 
     MSYS_DefineRegion(addressof(gNewFileIconRegion), LAPTOP__NEW_FILE_ICON_X, LAPTOP__NEW_FILE_ICON_Y + 5, LAPTOP__NEW_FILE_ICON_X + 16, LAPTOP__NEW_FILE_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewFileIconCallback);
     CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (fNewFilesInFileViewer == 0));
   } else {
-    fCreated = FALSE;
+    fCreated = false;
     MSYS_RemoveRegion(addressof(gNewMailIconRegion));
     MSYS_RemoveRegion(addressof(gNewFileIconRegion));
   }
@@ -4624,7 +4624,7 @@ function CreateDestroyMouseRegionForNewMailIcon(): void {
 function NewEmailIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fUnReadMailFlag) {
-      fOpenMostRecentUnReadFlag = TRUE;
+      fOpenMostRecentUnReadFlag = true;
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
     }
   }
@@ -4633,7 +4633,7 @@ function NewEmailIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
 function NewFileIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fNewFilesInFileViewer) {
-      fEnteredFileViewerFromNewFileIcon = TRUE;
+      fEnteredFileViewerFromNewFileIcon = true;
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FILES;
     }
   }
@@ -4642,30 +4642,30 @@ function NewFileIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
 function HandleWWWSubSites(): void {
   // check to see if WW Wait is needed for a sub site within the Web Browser
 
-  if ((guiCurrentLaptopMode == guiPreviousLaptopMode) || (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW) || (fLoadPendingFlag == TRUE) || (fDoneLoadPending == TRUE) || (guiPreviousLaptopMode < Enum95.LAPTOP_MODE_WWW)) {
+  if ((guiCurrentLaptopMode == guiPreviousLaptopMode) || (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW) || (fLoadPendingFlag == true) || (fDoneLoadPending == true) || (guiPreviousLaptopMode < Enum95.LAPTOP_MODE_WWW)) {
     // no go, leave
     return;
   }
 
-  fLoadPendingFlag = TRUE;
-  fConnectingToSubPage = TRUE;
+  fLoadPendingFlag = true;
+  fConnectingToSubPage = true;
 
   // fast or slow load?
-  if (gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (Enum95.LAPTOP_MODE_WWW + 1)] == TRUE) {
-    fFastLoadFlag = TRUE;
+  if (gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (Enum95.LAPTOP_MODE_WWW + 1)] == true) {
+    fFastLoadFlag = true;
   }
 
   // set fact we were here
-  gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (Enum95.LAPTOP_MODE_WWW + 1)] = TRUE;
+  gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (Enum95.LAPTOP_MODE_WWW + 1)] = true;
 
   // Dont show the dlownload screen when switching between these pages
   if ((guiCurrentLaptopMode == Enum95.LAPTOP_MODE_AIM_MEMBERS) && (guiPreviousLaptopMode == Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX) || (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX) && (guiPreviousLaptopMode == Enum95.LAPTOP_MODE_AIM_MEMBERS)) {
-    fFastLoadFlag = FALSE;
-    fLoadPendingFlag = FALSE;
+    fFastLoadFlag = false;
+    fLoadPendingFlag = false;
 
     // set fact we were here
-    gfWWWaitSubSitesVisitedFlags[Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX - (Enum95.LAPTOP_MODE_WWW + 1)] = TRUE;
-    gfWWWaitSubSitesVisitedFlags[Enum95.LAPTOP_MODE_AIM_MEMBERS - (Enum95.LAPTOP_MODE_WWW + 1)] = TRUE;
+    gfWWWaitSubSitesVisitedFlags[Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX - (Enum95.LAPTOP_MODE_WWW + 1)] = true;
+    gfWWWaitSubSitesVisitedFlags[Enum95.LAPTOP_MODE_AIM_MEMBERS - (Enum95.LAPTOP_MODE_WWW + 1)] = true;
   }
 
   return;
@@ -4673,8 +4673,8 @@ function HandleWWWSubSites(): void {
 
 function UpdateStatusOfDisplayingBookMarks(): void {
   // this function will disable showing of bookmarks if in process of download or if we miniming web browser
-  if ((fLoadPendingFlag == TRUE) || (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW)) {
-    gfShowBookmarks = FALSE;
+  if ((fLoadPendingFlag == true) || (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW)) {
+    gfShowBookmarks = false;
   }
 
   return;
@@ -4685,7 +4685,7 @@ function InitalizeSubSitesList(): void {
 
   // init all subsites list to not visited
   for (iCounter = Enum95.LAPTOP_MODE_WWW + 1; iCounter <= Enum95.LAPTOP_MODE_SIRTECH; iCounter++) {
-    gfWWWaitSubSitesVisitedFlags[iCounter - (Enum95.LAPTOP_MODE_WWW + 1)] = FALSE;
+    gfWWWaitSubSitesVisitedFlags[iCounter - (Enum95.LAPTOP_MODE_WWW + 1)] = false;
   }
   return;
 }
@@ -4695,7 +4695,7 @@ function SetSubSiteAsVisted(): void {
   if (guiCurrentLaptopMode <= Enum95.LAPTOP_MODE_WWW) {
     // not at a web page yet
   } else {
-    gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (Enum95.LAPTOP_MODE_WWW + 1)] = TRUE;
+    gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (Enum95.LAPTOP_MODE_WWW + 1)] = true;
   }
 }
 
@@ -4703,7 +4703,7 @@ function HandleShiftAltTabKeyInLaptop(): void {
   // will handle the alt tab keying in laptop
 
   // move to next program
-  if (fMaximizingProgram == TRUE) {
+  if (fMaximizingProgram == true) {
     return;
   }
 
@@ -4734,7 +4734,7 @@ function HandleShiftAltTabKeyInLaptop(): void {
       break;
   }
 
-  fPausedReDrawScreenFlag = TRUE;
+  fPausedReDrawScreenFlag = true;
 }
 
 function HandleAltTabKeyInLaptop(): void {
@@ -4742,7 +4742,7 @@ function HandleAltTabKeyInLaptop(): void {
 
   // move to next program
   // move to next program
-  if (fMaximizingProgram == TRUE) {
+  if (fMaximizingProgram == true) {
     return;
   }
 
@@ -4771,21 +4771,21 @@ function HandleAltTabKeyInLaptop(): void {
       break;
   }
 
-  fPausedReDrawScreenFlag = TRUE;
+  fPausedReDrawScreenFlag = true;
 }
 
 // display the 2 second book mark instruction
 function DisplayWebBookMarkNotify(): void {
-  /* static */ let fOldShow: BOOLEAN = FALSE;
+  /* static */ let fOldShow: boolean = false;
   let hLapTopIconHandle: HVOBJECT;
 
   // handle the timer for this thing
   HandleWebBookMarkNotifyTimer();
 
   // are we about to start showing box? or did we just stop?
-  if (((fOldShow == FALSE) || (fReDrawBookMarkInfo)) && (fShowBookmarkInfo == TRUE)) {
-    fOldShow = TRUE;
-    fReDrawBookMarkInfo = FALSE;
+  if (((fOldShow == false) || (fReDrawBookMarkInfo)) && (fShowBookmarkInfo == true)) {
+    fOldShow = true;
+    fReDrawBookMarkInfo = false;
 
     // show background objects
     GetVideoObject(addressof(hLapTopIconHandle), guiDOWNLOADTOP);
@@ -4815,14 +4815,14 @@ function DisplayWebBookMarkNotify(): void {
     SetFontShadow(NO_SHADOW);
 
     // now draw the message
-    DisplayWrappedString((DOWN_STRING_X - 42), (DOWN_STRING_Y + 20), BOOK_WIDTH + 45, 2, BOOK_FONT(), FONT_BLACK, pShowBookmarkString[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString((DOWN_STRING_X - 42), (DOWN_STRING_Y + 20), BOOK_WIDTH + 45, 2, BOOK_FONT(), FONT_BLACK, pShowBookmarkString[1], FONT_BLACK, false, CENTER_JUSTIFIED);
 
     // invalidate region
     InvalidateRegion(DOWNLOAD_X, DOWNLOAD_Y, DOWNLOAD_X + 150, DOWNLOAD_Y + 100);
-  } else if ((fOldShow == TRUE) && (fShowBookmarkInfo == FALSE)) {
+  } else if ((fOldShow == true) && (fShowBookmarkInfo == false)) {
     // MSYS_RemoveRegion( &gLapTopScreenRegion );
-    fOldShow = FALSE;
-    fPausedReDrawScreenFlag = TRUE;
+    fOldShow = false;
+    fPausedReDrawScreenFlag = true;
   }
 
   SetFontShadow(DEFAULT_SHADOW);
@@ -4833,12 +4833,12 @@ function DisplayWebBookMarkNotify(): void {
 function HandleWebBookMarkNotifyTimer(): void {
   /* static */ let iBaseTime: INT32 = 0;
   let iDifference: INT32 = 0;
-  /* static */ let fOldShowBookMarkInfo: BOOLEAN = FALSE;
+  /* static */ let fOldShowBookMarkInfo: boolean = false;
 
   // check if maxing or mining?
-  if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
+  if ((fMaximizingProgram == true) || (fMinizingProgram == true)) {
     fOldShowBookMarkInfo |= fShowBookmarkInfo;
-    fShowBookmarkInfo = FALSE;
+    fShowBookmarkInfo = false;
     return;
   }
 
@@ -4846,20 +4846,20 @@ function HandleWebBookMarkNotifyTimer(): void {
   fShowBookmarkInfo |= fOldShowBookMarkInfo;
 
   // reset old flag
-  fOldShowBookMarkInfo = FALSE;
+  fOldShowBookMarkInfo = false;
 
   // if current mode is too low, then reset
   if (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW) {
-    fShowBookmarkInfo = FALSE;
+    fShowBookmarkInfo = false;
   }
 
   // if showing bookmarks, don't show help
-  if (gfShowBookmarks == TRUE) {
-    fShowBookmarkInfo = FALSE;
+  if (gfShowBookmarks == true) {
+    fShowBookmarkInfo = false;
   }
 
   // check if flag false, is so, leave
-  if (fShowBookmarkInfo == FALSE) {
+  if (fShowBookmarkInfo == false) {
     iBaseTime = 0;
     return;
   }
@@ -4872,12 +4872,12 @@ function HandleWebBookMarkNotifyTimer(): void {
 
   iDifference = GetJA2Clock() - iBaseTime;
 
-  fReDrawBookMarkInfo = TRUE;
+  fReDrawBookMarkInfo = true;
 
   if (iDifference > DISPLAY_TIME_FOR_WEB_BOOKMARK_NOTIFY) {
     // waited long enough, stop showing
     iBaseTime = 0;
-    fShowBookmarkInfo = FALSE;
+    fShowBookmarkInfo = false;
   }
 
   return;
@@ -4887,38 +4887,38 @@ function ClearOutTempLaptopFiles(): void {
   // clear out all temp files from laptop
 
   // file file
-  if ((FileExists("files.dat") == TRUE)) {
+  if ((FileExists("files.dat") == true)) {
     FileClearAttributes("files.dat");
     FileDelete("files.dat");
   }
 
   // finances
-  if ((FileExists("finances.dat") == TRUE)) {
+  if ((FileExists("finances.dat") == true)) {
     FileClearAttributes("finances.dat");
     FileDelete("finances.dat");
   }
 
   // email
-  if ((FileExists("email.dat") == TRUE)) {
+  if ((FileExists("email.dat") == true)) {
     FileClearAttributes("email.dat");
     FileDelete("email.dat");
   }
 
   // history
-  if ((FileExists("history.dat") == TRUE)) {
+  if ((FileExists("history.dat") == true)) {
     FileClearAttributes("history.dat");
     FileDelete("history.dat");
   }
 }
 
-function SaveLaptopInfoToSavedGame(hFile: HWFILE): BOOLEAN {
+function SaveLaptopInfoToSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let uiSize: UINT32;
 
   // Save The laptop information
   FileWrite(hFile, addressof(LaptopSaveInfo), sizeof(LaptopSaveInfoStruct), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(LaptopSaveInfoStruct)) {
-    return FALSE;
+    return false;
   }
 
   // If there is anything in the Bobby Ray Orders on Delivery
@@ -4929,7 +4929,7 @@ function SaveLaptopInfoToSavedGame(hFile: HWFILE): BOOLEAN {
     // Load The laptop information
     FileWrite(hFile, LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray, uiSize, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != uiSize) {
-      return FALSE;
+      return false;
     }
   }
 
@@ -4941,14 +4941,14 @@ function SaveLaptopInfoToSavedGame(hFile: HWFILE): BOOLEAN {
     // Load The laptop information
     FileWrite(hFile, LaptopSaveInfo.pLifeInsurancePayouts, uiSize, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != uiSize) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadLaptopInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
+function LoadLaptopInfoFromSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let uiSize: UINT32;
 
@@ -4976,7 +4976,7 @@ function LoadLaptopInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
   // Load The laptop information
   FileRead(hFile, addressof(LaptopSaveInfo), sizeof(LaptopSaveInfoStruct), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(LaptopSaveInfoStruct)) {
-    return FALSE;
+    return false;
   }
 
   // If there is anything in the Bobby Ray Orders on Delivery
@@ -4990,7 +4990,7 @@ function LoadLaptopInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
     // Load The laptop information
     FileRead(hFile, LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray, uiSize, addressof(uiNumBytesRead));
     if (uiNumBytesRead != uiSize) {
-      return FALSE;
+      return false;
     }
   } else {
     LaptopSaveInfo.usNumberOfBobbyRayOrderItems = 0;
@@ -5008,14 +5008,14 @@ function LoadLaptopInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
     // Load The laptop information
     FileRead(hFile, LaptopSaveInfo.pLifeInsurancePayouts, uiSize, addressof(uiNumBytesRead));
     if (uiNumBytesRead != uiSize) {
-      return FALSE;
+      return false;
     }
   } else {
     LaptopSaveInfo.ubNumberLifeInsurancePayouts = 0;
     LaptopSaveInfo.pLifeInsurancePayouts = null;
   }
 
-  return TRUE;
+  return true;
 }
 
 function LaptopSaveVariablesInit(): void {
@@ -5033,11 +5033,11 @@ function WWaitDelayIncreasedIfRaining(iUnitTime: INT32): INT32 {
   return iRetVal;
 }
 
-function IsItRaining(): BOOLEAN {
+function IsItRaining(): boolean {
   if (guiEnvWeather & WEATHER_FORECAST_SHOWERS || guiEnvWeather & WEATHER_FORECAST_THUNDERSHOWERS)
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }
 
 function InternetRainDelayMessageBoxCallBack(bExitValue: UINT8): void {
@@ -5051,7 +5051,7 @@ function CreateBookMarkHelpText(pRegion: Pointer<MOUSE_REGION>, uiBookMarkID: UI
   SetRegionFastHelpText(pRegion, gzLaptopHelpText[Enum376.BOOKMARK_TEXT_ASSOCIATION_OF_INTERNATION_MERCENARIES + uiBookMarkID]);
 }
 
-function CreateFileAndNewEmailIconFastHelpText(uiHelpTextID: UINT32, fClearHelpText: BOOLEAN): void {
+function CreateFileAndNewEmailIconFastHelpText(uiHelpTextID: UINT32, fClearHelpText: boolean): void {
   let pRegion: Pointer<MOUSE_REGION>;
 
   switch (uiHelpTextID) {

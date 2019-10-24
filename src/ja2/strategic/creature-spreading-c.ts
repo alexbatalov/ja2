@@ -56,8 +56,8 @@ const HARD_QUEEN_REPRODUCTION_BONUS = 3;
 // When either in a cave level with blue lights or there is a creature presence, then
 // we override the normal music with the creature music.  The conditions are maintained
 // inside the function PrepareCreaturesForBattle() in this module.
-let gfUseCreatureMusic: BOOLEAN = FALSE;
-let gfCreatureMeanwhileScenePlayed: BOOLEAN = FALSE;
+let gfUseCreatureMusic: boolean = false;
+let gfCreatureMeanwhileScenePlayed: boolean = false;
 const enum Enum128 {
   QUEEN_LAIR, // where the queen lives.  Highly protected
   LAIR, // part of the queen's lair -- lots of babies and defending mothers
@@ -199,23 +199,23 @@ function InitLairGrumm(): void {
 
 function InitCreatureQuest(): void {
   let curr: Pointer<UNDERGROUND_SECTORINFO>;
-  let fPlayMeanwhile: BOOLEAN = FALSE;
+  let fPlayMeanwhile: boolean = false;
   let i: INT32 = -1;
   let iChosenMine: INT32;
   let iRandom: INT32;
   let iNumMinesInfectible: INT32;
-  let fMineInfectible: BOOLEAN[] /* [4] */;
+  let fMineInfectible: boolean[] /* [4] */;
 
   if (giLairID) {
     return; // already active!
   }
 
-  fPlayMeanwhile = TRUE;
+  fPlayMeanwhile = true;
 
   if (fPlayMeanwhile && !gfCreatureMeanwhileScenePlayed) {
     // Start the meanwhile scene for the queen ordering the release of the creatures.
     HandleCreatureRelease();
-    gfCreatureMeanwhileScenePlayed = TRUE;
+    gfCreatureMeanwhileScenePlayed = true;
   }
 
   giHabitatedDistance = 0;
@@ -240,19 +240,19 @@ function InitCreatureQuest(): void {
 
   if (gMineStatus[Enum174.DRASSEN_MINE].fAttackedHeadMiner || gMineStatus[Enum174.DRASSEN_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_D13)].fEnemyControlled) {
     // If head miner was attacked, ore will/has run out, or enemy controlled
-    fMineInfectible[0] = FALSE;
+    fMineInfectible[0] = false;
   }
   if (gMineStatus[Enum174.CAMBRIA_MINE].fAttackedHeadMiner || gMineStatus[Enum174.CAMBRIA_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_H8)].fEnemyControlled) {
     // If head miner was attacked, ore will/has run out, or enemy controlled
-    fMineInfectible[1] = FALSE;
+    fMineInfectible[1] = false;
   }
   if (gMineStatus[Enum174.ALMA_MINE].fAttackedHeadMiner || gMineStatus[Enum174.ALMA_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_I14)].fEnemyControlled) {
     // If head miner was attacked, ore will/has run out, or enemy controlled
-    fMineInfectible[2] = FALSE;
+    fMineInfectible[2] = false;
   }
   if (gMineStatus[Enum174.GRUMM_MINE].fAttackedHeadMiner || gMineStatus[Enum174.GRUMM_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_H3)].fEnemyControlled) {
     // If head miner was attacked, ore will/has run out, or enemy controlled
-    fMineInfectible[3] = FALSE;
+    fMineInfectible[3] = false;
   }
 
   iNumMinesInfectible = fMineInfectible[0] + fMineInfectible[1] + fMineInfectible[2] + fMineInfectible[3];
@@ -340,9 +340,9 @@ function AddCreatureToNode(node: Pointer<CREATURE_DIRECTIVE>): void {
   }
 }
 
-function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): BOOLEAN {
+function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): boolean {
   if (!node)
-    return FALSE;
+    return false;
   // check to see if the creatures are permitted to spread into certain areas.  There are 4 mines (human perspective), and
   // creatures won't spread to them until the player controls them.  Additionally, if the player has recently cleared the
   // mine, then temporarily prevent the spreading of creatures.
@@ -362,7 +362,7 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
       // x==6		 17%
       // x>=7		  0%
       AddCreatureToNode(node);
-      return TRUE;
+      return true;
     }
   } else if (giHabitatedDistance > iDistance) {
     // we are within the "safe" habitated area of the creature's area of influence.  The chance of
@@ -397,7 +397,7 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
           break;
         default:
           Assert(0);
-          return FALSE;
+          return false;
       }
 
       switch (gGameOptions.ubDifficultyLevel) {
@@ -425,18 +425,18 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
 
       if (!node.value.pLevel.value.ubNumCreatures || iChanceToPopulate > Random(100) && iMaxPopulation > node.value.pLevel.value.ubNumCreatures) {
         AddCreatureToNode(node);
-        return TRUE;
+        return true;
       }
     }
   } else {
     // we are in a new area, so we will populate it
     AddCreatureToNode(node);
     giHabitatedDistance++;
-    return TRUE;
+    return true;
   }
   if (PlaceNewCreature(node.value.next, iDistance + 1))
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
 function SpreadCreatures(): void {
@@ -527,7 +527,7 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
       gubAdultFemalesAttackingTown = 0;
       gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_NONE;
       gubSectorIDOfCreatureAttack = 0;
-      AllTeamsLookForAll(FALSE);
+      AllTeamsLookForAll(false);
 
       Assert(0);
       return;
@@ -535,7 +535,7 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
     pSoldier.value.ubInsertionDirection = bDesiredDirection;
     // Setup the position
     pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
-    pSoldier.value.bHunting = TRUE;
+    pSoldier.value.bHunting = true;
     if (gsCreatureInsertionCode != Enum175.INSERTION_CODE_GRIDNO) {
       if (ubCurrSlot < MapEdgepointInfo.ubNumPoints) {
         // using an edgepoint
@@ -558,10 +558,10 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
   gubAdultFemalesAttackingTown = 0;
   gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_NONE;
   gubSectorIDOfCreatureAttack = 0;
-  AllTeamsLookForAll(FALSE);
+  AllTeamsLookForAll(false);
 }
 
-function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
+function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: boolean): void {
   let iRandom: INT32;
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
@@ -680,7 +680,7 @@ function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: BOOLEAN): vo
   gubSectorIDOfCreatureAttack = ubSectorID;
 }
 
-function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
+function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: boolean): void {
   // This is the launching point of the creature attack.
   let pSector: Pointer<UNDERGROUND_SECTORINFO>;
   let ubSectorX: UINT8;
@@ -701,12 +701,12 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
     // Record the number of creatures in the sector.
     pSector = FindUnderGroundSector(ubSectorX, ubSectorY, 1);
     if (!pSector) {
-      CreatureAttackTown(ubSectorID, TRUE);
+      CreatureAttackTown(ubSectorID, true);
       return;
     }
     gubNumCreaturesAttackingTown = pSector.value.ubNumCreatures;
     if (!gubNumCreaturesAttackingTown) {
-      CreatureAttackTown(ubSectorID, TRUE);
+      CreatureAttackTown(ubSectorID, true);
       return;
     }
 
@@ -714,11 +714,11 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
 
     // Choose one of the town sectors to attack.  Sectors closer to
     // the mine entrance have a greater chance of being chosen.
-    ChooseTownSectorToAttack(ubSectorID, FALSE);
+    ChooseTownSectorToAttack(ubSectorID, false);
     ubSectorX = ((gubSectorIDOfCreatureAttack % 16) + 1);
     ubSectorY = ((gubSectorIDOfCreatureAttack / 16) + 1);
   } else {
-    ChooseTownSectorToAttack(ubSectorID, TRUE);
+    ChooseTownSectorToAttack(ubSectorID, true);
     gubNumCreaturesAttackingTown = 5;
   }
 
@@ -752,11 +752,11 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
   SectorInfo[ubSectorID].ubDayOfLastCreatureAttack = GetWorldDay();
   switch (gubCreatureBattleCode) {
     case Enum129.CREATURE_BATTLE_CODE_PREBATTLEINTERFACE:
-      InitPreBattleInterface(null, TRUE);
+      InitPreBattleInterface(null, true);
       break;
     case Enum129.CREATURE_BATTLE_CODE_AUTORESOLVE:
-      gfAutomaticallyStartAutoResolve = TRUE;
-      InitPreBattleInterface(null, TRUE);
+      gfAutomaticallyStartAutoResolve = true;
+      InitPreBattleInterface(null, true);
       break;
     case Enum129.CREATURE_BATTLE_CODE_TACTICALLYADD:
       PrepareCreaturesForBattle();
@@ -857,40 +857,40 @@ function CreaturesInUndergroundSector(ubSectorID: UINT8, ubSectorZ: UINT8): UINT
   return 0;
 }
 
-function MineClearOfMonsters(ubMineIndex: UINT8): BOOLEAN {
+function MineClearOfMonsters(ubMineIndex: UINT8): boolean {
   Assert((ubMineIndex >= 0) && (ubMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   if (!gMineStatus[ubMineIndex].fPrevInvadedByMonsters) {
     switch (ubMineIndex) {
       case Enum179.MINE_GRUMM:
         if (CreaturesInUndergroundSector(Enum123.SEC_H3, 1))
-          return FALSE;
+          return false;
         if (CreaturesInUndergroundSector(Enum123.SEC_I3, 1))
-          return FALSE;
+          return false;
         if (CreaturesInUndergroundSector(Enum123.SEC_I3, 2))
-          return FALSE;
+          return false;
         if (CreaturesInUndergroundSector(Enum123.SEC_H3, 2))
-          return FALSE;
+          return false;
         if (CreaturesInUndergroundSector(Enum123.SEC_H4, 2))
-          return FALSE;
+          return false;
         break;
       case Enum179.MINE_CAMBRIA:
         if (CreaturesInUndergroundSector(Enum123.SEC_H8, 1))
-          return FALSE;
+          return false;
         if (CreaturesInUndergroundSector(Enum123.SEC_H9, 1))
-          return FALSE;
+          return false;
         break;
       case Enum179.MINE_ALMA:
         if (CreaturesInUndergroundSector(Enum123.SEC_I14, 1))
-          return FALSE;
+          return false;
         if (CreaturesInUndergroundSector(Enum123.SEC_J14, 1))
-          return FALSE;
+          return false;
         break;
       case Enum179.MINE_DRASSEN:
         if (CreaturesInUndergroundSector(Enum123.SEC_D13, 1))
-          return FALSE;
+          return false;
         if (CreaturesInUndergroundSector(Enum123.SEC_E13, 1))
-          return FALSE;
+          return false;
         break;
       case Enum179.MINE_CHITZENA:
       case Enum179.MINE_SAN_MONA:
@@ -903,10 +903,10 @@ function MineClearOfMonsters(ubMineIndex: UINT8): BOOLEAN {
   } else {
     // mine was previously invaded by creatures.  Don't allow mine production until queen is dead.
     if (giLairID != -1) {
-      return FALSE;
+      return false;
     }
   }
-  return TRUE;
+  return true;
 }
 
 function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
@@ -973,13 +973,13 @@ function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatu
   }
 }
 
-function PrepareCreaturesForBattle(): BOOLEAN {
+function PrepareCreaturesForBattle(): boolean {
   let pSector: Pointer<UNDERGROUND_SECTORINFO>;
   let i: INT32;
   let iRandom: INT32;
   let LColors: SGPPaletteEntry[] /* [3] */;
   let ubNumColors: UINT8;
-  let fQueen: BOOLEAN;
+  let fQueen: boolean;
   let ubLarvaePercentage: UINT8;
   let ubInfantPercentage: UINT8;
   let ubYoungMalePercentage: UINT8;
@@ -1005,25 +1005,25 @@ function PrepareCreaturesForBattle(): BOOLEAN {
     // have blue lights while human occupied mines have red lights.  We always play creature music
     // when creatures are in the level.
     if (LColors.value.peBlue)
-      gfUseCreatureMusic = TRUE;
+      gfUseCreatureMusic = true;
     else
-      gfUseCreatureMusic = FALSE;
+      gfUseCreatureMusic = false;
 
     if (!gbWorldSectorZ)
-      return FALSE; // Creatures don't attack overworld with this battle code.
+      return false; // Creatures don't attack overworld with this battle code.
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector) {
-      return FALSE;
+      return false;
     }
     if (!pSector.value.ubNumCreatures) {
-      return FALSE;
+      return false;
     }
-    gfUseCreatureMusic = TRUE; // creatures are here, so play creature music
+    gfUseCreatureMusic = true; // creatures are here, so play creature music
     ubCreatureHabitat = pSector.value.ubCreatureHabitat;
     ubNumCreatures = pSector.value.ubNumCreatures;
   } else {
     // creatures are attacking a town sector
-    gfUseCreatureMusic = TRUE;
+    gfUseCreatureMusic = true;
     SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
     ubCreatureHabitat = Enum128.MINE_EXIT;
     ubNumCreatures = gubNumCreaturesAttackingTown;
@@ -1031,7 +1031,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
 
   switch (ubCreatureHabitat) {
     case Enum128.QUEEN_LAIR:
-      fQueen = TRUE;
+      fQueen = true;
       ubLarvaePercentage = 20;
       ubInfantPercentage = 40;
       ubYoungMalePercentage = 0;
@@ -1040,7 +1040,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       ubAdultFemalePercentage = 10;
       break;
     case Enum128.LAIR:
-      fQueen = FALSE;
+      fQueen = false;
       ubLarvaePercentage = 15;
       ubInfantPercentage = 35;
       ubYoungMalePercentage = 10;
@@ -1049,7 +1049,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       ubAdultFemalePercentage = 10;
       break;
     case Enum128.LAIR_ENTRANCE:
-      fQueen = FALSE;
+      fQueen = false;
       ubLarvaePercentage = 0;
       ubInfantPercentage = 15;
       ubYoungMalePercentage = 30;
@@ -1058,7 +1058,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       ubAdultFemalePercentage = 10;
       break;
     case Enum128.INNER_MINE:
-      fQueen = FALSE;
+      fQueen = false;
       ubLarvaePercentage = 0;
       ubInfantPercentage = 0;
       ubYoungMalePercentage = 20;
@@ -1068,7 +1068,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       break;
     case Enum128.OUTER_MINE:
     case Enum128.MINE_EXIT:
-      fQueen = FALSE;
+      fQueen = false;
       ubLarvaePercentage = 0;
       ubInfantPercentage = 0;
       ubYoungMalePercentage = 10;
@@ -1077,7 +1077,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       ubAdultFemalePercentage = 20;
       break;
     default:
-      return FALSE;
+      return false;
   }
 
   // First step is to convert the percentages into the numbers we will use.
@@ -1116,7 +1116,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
     if (!pUndergroundSector) {
       // No info?!!!!!
       AssertMsg(0, "Please report underground sector you are in or going to and send save if possible.  KM : 0");
-      return FALSE;
+      return false;
     }
     pUndergroundSector.value.ubCreaturesInBattle = pUndergroundSector.value.ubNumCreatures;
   } else {
@@ -1135,9 +1135,9 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       AddCreaturesToBattle(ubNumYoungMales, ubNumYoungFemales, ubNumAdultMales, ubNumAdultFemales);
       break;
     case Enum129.CREATURE_BATTLE_CODE_AUTORESOLVE:
-      return FALSE;
+      return false;
   }
-  return TRUE;
+  return true;
 }
 
 function CreatureNightPlanning(): void {
@@ -1191,59 +1191,59 @@ function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSectorY: IN
   }
 }
 
-function SaveCreatureDirectives(hFile: HWFILE): BOOLEAN {
+function SaveCreatureDirectives(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   FileWrite(hFile, addressof(giHabitatedDistance), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32)) {
-    return FALSE;
+    return false;
   }
 
   FileWrite(hFile, addressof(giPopulationModifier), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32)) {
-    return FALSE;
+    return false;
   }
   FileWrite(hFile, addressof(giLairID), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32)) {
-    return FALSE;
+    return false;
   }
   FileWrite(hFile, addressof(gfUseCreatureMusic), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN)) {
-    return FALSE;
+    return false;
   }
   FileWrite(hFile, addressof(giDestroyedLairID), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32)) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): BOOLEAN {
+function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): boolean {
   let uiNumBytesRead: UINT32;
   FileRead(hFile, addressof(giHabitatedDistance), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT32)) {
-    return FALSE;
+    return false;
   }
 
   FileRead(hFile, addressof(giPopulationModifier), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT32)) {
-    return FALSE;
+    return false;
   }
   FileRead(hFile, addressof(giLairID), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT32)) {
-    return FALSE;
+    return false;
   }
 
   FileRead(hFile, addressof(gfUseCreatureMusic), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN)) {
-    return FALSE;
+    return false;
   }
 
   if (uiSavedGameVersion >= 82) {
     FileRead(hFile, addressof(giDestroyedLairID), 4, addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(INT32)) {
-      return FALSE;
+      return false;
     }
   } else {
     giDestroyedLairID = 0;
@@ -1270,25 +1270,25 @@ function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): BOOL
       break;
   }
 
-  return TRUE;
+  return true;
 }
 
 function ForceCreaturesToAvoidMineTemporarily(ubMineIndex: UINT8): void {
   gMineStatus[Enum179.MINE_GRUMM].usValidDayCreaturesCanInfest = (GetWorldDay() + 2);
 }
 
-function PlayerGroupIsInACreatureInfestedMine(): BOOLEAN {
+function PlayerGroupIsInACreatureInfestedMine(): boolean {
   let curr: Pointer<CREATURE_DIRECTIVE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
   let sSectorX: INT16;
   let sSectorY: INT16;
   let bSectorZ: INT8;
-  let fPlayerInSector: BOOLEAN = FALSE;
+  let fPlayerInSector: boolean = false;
 
   if (giLairID <= 0) {
     // Creature quest inactive
-    return FALSE;
+    return false;
   }
 
   // Lair is active, so look for live soldier in any creature level
@@ -1302,26 +1302,26 @@ function PlayerGroupIsInACreatureInfestedMine(): BOOLEAN {
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
       pSoldier = MercPtrs[i];
       if (pSoldier.value.bActive && pSoldier.value.bLife && pSoldier.value.sSectorX == sSectorX && pSoldier.value.sSectorY == sSectorY && pSoldier.value.bSectorZ == bSectorZ && !pSoldier.value.fBetweenSectors) {
-        return TRUE;
+        return true;
       }
     }
     curr = curr.value.next;
   }
 
   // Lair is active, but no mercs are in these sectors
-  return FALSE;
+  return false;
 }
 
 // Returns TRUE if valid and creature quest over, FALSE if creature quest active or not yet started
-function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>, psInsertionGridNo: Pointer<INT16>): BOOLEAN {
+function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>, psInsertionGridNo: Pointer<INT16>): boolean {
   let iSwitchValue: INT32;
 
   if (!gfWorldLoaded) {
-    return FALSE;
+    return false;
   }
 
   if (gbWorldSectorZ == 0) {
-    return FALSE;
+    return false;
   }
 
   iSwitchValue = giLairID;
@@ -1331,7 +1331,7 @@ function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT
   }
 
   if (!iSwitchValue) {
-    return FALSE;
+    return false;
   }
 
   // Now make sure the mercs are in the previously infested mine
@@ -1342,7 +1342,7 @@ function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT
         psSectorY.value = 4;
         pbSectorZ.value = 0;
         psInsertionGridNo.value = 20700;
-        return TRUE;
+        return true;
       }
       break;
     case 3: // Cambria
@@ -1351,7 +1351,7 @@ function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT
         psSectorY.value = 8;
         pbSectorZ.value = 0;
         psInsertionGridNo.value = 13002;
-        return TRUE;
+        return true;
       }
       break;
     case 2: // Alma
@@ -1360,7 +1360,7 @@ function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT
         psSectorY.value = 9;
         pbSectorZ.value = 0;
         psInsertionGridNo.value = 9085;
-        return TRUE;
+        return true;
       }
       break;
     case 4: // Grumm
@@ -1369,9 +1369,9 @@ function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT
         psSectorY.value = 8;
         pbSectorZ.value = 0;
         psInsertionGridNo.value = 9822;
-        return TRUE;
+        return true;
       }
       break;
   }
-  return FALSE;
+  return false;
 }

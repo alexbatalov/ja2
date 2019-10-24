@@ -160,7 +160,7 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
   ],
 ];
 
-function LoadAmbientControlFile(ubAmbientID: UINT8): BOOLEAN {
+function LoadAmbientControlFile(ubAmbientID: UINT8): boolean {
   let zFilename: SGPFILENAME;
   let hFile: HWFILE;
   let cnt: INT32;
@@ -169,20 +169,20 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): BOOLEAN {
   sprintf(zFilename, "AMBIENT\\%d.bad", ubAmbientID);
 
   // OPEN, LOAD
-  hFile = FileOpen(zFilename, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(zFilename, FILE_ACCESS_READ, false);
   if (!hFile) {
-    return FALSE;
+    return false;
   }
 
   // READ #
   if (!FileRead(hFile, addressof(gsNumAmbData), sizeof(INT16), null)) {
-    return FALSE;
+    return false;
   }
 
   // LOOP FOR OTHERS
   for (cnt = 0; cnt < gsNumAmbData; cnt++) {
     if (!FileRead(hFile, addressof(gAmbData[cnt]), sizeof(AMBIENTDATA_STRUCT), null)) {
-      return FALSE;
+      return false;
     }
 
     sprintf(zFilename, "AMBIENT\\%s", gAmbData[cnt].zFilename);
@@ -191,7 +191,7 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): BOOLEAN {
 
   FileClose(hFile);
 
-  return TRUE;
+  return true;
 }
 
 function GetAmbientDataPtr(ppAmbData: Pointer<Pointer<AMBIENTDATA_STRUCT>>, pusNumData: Pointer<UINT16>): void {
@@ -251,8 +251,8 @@ function StartSteadyStateAmbient(ubVolume: UINT32, ubLoops: UINT32): UINT32 {
   return SoundPlay(gSteadyStateAmbientTable[gubCurrentSteadyStateAmbience].zSoundNames[gubCurrentSteadyStateSound], addressof(spParms));
 }
 
-function SetSteadyStateAmbience(ubAmbience: UINT8): BOOLEAN {
-  let fInNight: BOOLEAN = FALSE;
+function SetSteadyStateAmbience(ubAmbience: UINT8): boolean {
+  let fInNight: boolean = false;
   let cnt: INT32;
   let ubNumSounds: UINT8 = 0;
   let ubChosenSound: UINT8;
@@ -265,7 +265,7 @@ function SetSteadyStateAmbience(ubAmbience: UINT8): BOOLEAN {
 
   // Determine what time of day we are in ( day/night)
   if (gubEnvLightValue >= LIGHT_DUSK_CUTOFF) {
-    fInNight = TRUE;
+    fInNight = true;
   }
 
   // loop through listing to get num sounds...
@@ -278,7 +278,7 @@ function SetSteadyStateAmbience(ubAmbience: UINT8): BOOLEAN {
   }
 
   if (ubNumSounds == 0) {
-    return FALSE;
+    return false;
   }
 
   // Pick one
@@ -290,5 +290,5 @@ function SetSteadyStateAmbience(ubAmbience: UINT8): BOOLEAN {
 
   guiCurrentSteadyStateSoundHandle = StartSteadyStateAmbient(LOWVOLUME, 0);
 
-  return TRUE;
+  return true;
 }

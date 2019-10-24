@@ -107,11 +107,11 @@ function DecSmartBrokenWallUIValue(): void {
   gubBrokenWallUIValue -= gubBrokenWallUIValue > 0 ? 1 : -4;
 }
 
-function CalcWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
-  return FALSE;
+function CalcWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
+  return false;
 }
 
-function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
+function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
   let pWall: Pointer<LEVELNODE> = null;
   let usWallOrientation: UINT16;
   pWall = GetVerticalWall(iMapIndex);
@@ -119,19 +119,19 @@ function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UI
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
     pusIndex.value = CalcSmartDoorIndex(usWallOrientation) - 1;
     pusDoorType.value = CalcSmartDoorType();
-    return TRUE;
+    return true;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
     pusIndex.value = CalcSmartDoorIndex(usWallOrientation) - 1;
     pusDoorType.value = CalcSmartDoorType();
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
+function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
   let pWall: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
@@ -147,7 +147,7 @@ function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<
     }
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
     pusIndex.value = CalcSmartWindowIndex(usWallOrientation) - 1;
-    return TRUE;
+    return true;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
@@ -160,12 +160,12 @@ function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<
     }
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
     pusIndex.value = CalcSmartWindowIndex(usWallOrientation) - 1;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
+function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
   let pWall: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
@@ -174,7 +174,7 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
   {
     pusWallType.value = 0xffff;
     pusIndex.value = 0xffff; // but it won't draw it.
-    return TRUE;
+    return true;
   }
 
   pWall = GetVerticalWall(iMapIndex);
@@ -188,7 +188,7 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
     }
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
     pusIndex.value = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
-    return TRUE;
+    return true;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
@@ -201,9 +201,9 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
     }
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
     pusIndex.value = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 // This is a very difficult function to document properly.  The reason being is that it is sooo
@@ -227,7 +227,7 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
 //		the x+1 position.  If there are matching walls, there, then we draw two pieces to connect the current
 //		gridno with the respective position.
 function PasteSmartWall(iMapIndex: UINT32): void {
-  /* static */ let fWallAlone: BOOLEAN = FALSE;
+  /* static */ let fWallAlone: boolean = false;
   /* static */ let iAloneMapIndex: UINT32 = 0x8000;
   let usWallType: UINT16;
 

@@ -35,21 +35,21 @@ const ALTERNATE_LEVELS_MASK = 0xf0;
 
 let giCurrLevel: INT32;
 
-let gfOutdatedDenied: BOOLEAN;
+let gfOutdatedDenied: boolean;
 let gusNumEntriesWithOutdatedOrNoSummaryInfo: UINT16;
 
-let gfUpdatingNow: BOOLEAN;
+let gfUpdatingNow: boolean;
 let gusTotal: UINT16;
 let gusCurrent: UINT16;
 
-let gfMustForceUpdateAllMaps: BOOLEAN = FALSE;
+let gfMustForceUpdateAllMaps: boolean = false;
 let gusNumberOfMapsToBeForceUpdated: UINT16 = 0;
-let gfMajorUpdate: BOOLEAN = FALSE;
+let gfMajorUpdate: boolean = false;
 
 let giCurrentViewLevel: INT32 = ALL_LEVELS_MASK;
 
-let gbSectorLevels: BOOLEAN[][] /* [16][16] */;
-let gfGlobalSummaryLoaded: BOOLEAN = FALSE;
+let gbSectorLevels: boolean[][] /* [16][16] */;
+let gfGlobalSummaryLoaded: boolean = false;
 
 let gpSectorSummary: Pointer<SUMMARYFILE>[][][] /* [16][16][8] */;
 let gpCurrentSectorSummary: Pointer<SUMMARYFILE>;
@@ -58,41 +58,41 @@ let MapRegion: MOUSE_REGION;
 
 // Set if there is an existing global summary.  The first time this is run on your computer, it
 // will not exist, and will have to be generated before this will be set.
-let gfGlobalSummaryExists: BOOLEAN;
+let gfGlobalSummaryExists: boolean;
 // If you don't wish to create a global summary, you can deny it.  This safely locks the system
 // from generating one.
-let gfDeniedSummaryCreation: BOOLEAN;
+let gfDeniedSummaryCreation: boolean;
 // Set whenever the entire display is to be marked dirty.
-let gfRenderSummary: BOOLEAN;
+let gfRenderSummary: boolean;
 // Used externally to determine if the summary window is up or not.
-let gfSummaryWindowActive: BOOLEAN;
+let gfSummaryWindowActive: boolean;
 // When set, the summary window stays up until told otherwise.  When clear, the summary will disappear
 // when the assigned key (F5) is released.  The latter mode is initiated when F5 is held down for longer
 // than .4 seconds, and is useful for quickly looking at the information in the current map being edited.
-let gfPersistantSummary: BOOLEAN;
+let gfPersistantSummary: boolean;
 // When set, a grid is overlayed on top of the sector.  This grid defines each of the 256 sectors.  It is
 // on by default.
-let gfRenderGrid: BOOLEAN;
+let gfRenderGrid: boolean;
 // When set, parts of the map are darkened, showing that those sectors don't exist in the currently selected
 // layer.  When clear, the entire map is shown in full color.
-let gfRenderProgress: BOOLEAN;
+let gfRenderProgress: boolean;
 // When set, only the map section is rerendered.
-let gfRenderMap: BOOLEAN;
+let gfRenderMap: boolean;
 // Set whenever the ctrl key is held down.  This is used in conjunction with gfFileIO to determine whether the
 // selected sector is to be saved instead of loaded when clear.
-let gfCtrlPressed: BOOLEAN;
+let gfCtrlPressed: boolean;
 // When set, it is time to load or save the selected sector.  If gfCtrlPressed is set, the the map is saved,
 // instead of loaded.  It is impossible to load a map that doesn't exist.
-let gfFileIO: BOOLEAN;
+let gfFileIO: boolean;
 // When set, then we are overriding the ability to use normal methods for selecting sectors for saving and
 // loading.  Immediately upon entering the text input mode; for the temp file; then we are assuming that
 // the user will type in a name that doesn't follow standard naming conventions for the purposes of the
 // campaign editor.  This is useful for naming a temp file for saving or loading.
-let gfTempFile: BOOLEAN;
+let gfTempFile: boolean;
 // When set, only the alternate version of the maps will be displayed.  This is used for alternate maps in
 // particular sectors, such as the SkyRider quest which could be located at one of four maps randomly.  If
 // that particular map is chosen, then the alternate map will be used.
-let gfAlternateMaps: BOOLEAN = FALSE;
+let gfAlternateMaps: boolean = false;
 
 const enum Enum56 {
   ITEMMODE_SCIFI,
@@ -101,7 +101,7 @@ const enum Enum56 {
 }
 let gubSummaryItemMode: UINT8 = Enum56.ITEMMODE_SCIFI;
 
-let gfItemDetailsMode: BOOLEAN = FALSE;
+let gfItemDetailsMode: boolean = false;
 
 let gpWorldItemsSummaryArray: Pointer<WORLDITEM> = null;
 let gusWorldItemsSummaryArraySize: UINT16 = 0;
@@ -110,13 +110,13 @@ let gusPEnemyItemsSummaryArraySize: UINT16 = 0;
 let gpNEnemyItemsSummaryArray: Pointer<OBJECTTYPE> = null;
 let gusNEnemyItemsSummaryArraySize: UINT16 = 0;
 
-let gfSetupItemDetailsMode: BOOLEAN = TRUE;
+let gfSetupItemDetailsMode: boolean = true;
 
-let gfUpdateSummaryInfo: BOOLEAN;
+let gfUpdateSummaryInfo: boolean;
 
 let usNumSummaryFilesOutOfDate: UINT16;
 
-let gfMapFileDirty: BOOLEAN;
+let gfMapFileDirty: boolean;
 
 // Override status.  Hide is when there is nothing to override, readonly, when checked is to override a
 // readonly status file, so that you can write to it, and overwrite, when checked, allows you to save,
@@ -129,9 +129,9 @@ const enum Enum57 {
 }
 let gubOverrideStatus: UINT8;
 // Set when the a new sector/level is selected, forcing the user to reselect the override status.
-let gfOverrideDirty: BOOLEAN;
+let gfOverrideDirty: boolean;
 // The state of the override button, true if overriden intended.
-let gfOverride: BOOLEAN;
+let gfOverride: boolean;
 
 // The sector coordinates of the map currently loaded in memory (blue)
 let gsSectorX: INT16;
@@ -180,7 +180,7 @@ function CreateSummaryWindow(): void {
 
   if (!gfGlobalSummaryLoaded) {
     LoadGlobalSummary();
-    gfGlobalSummaryLoaded = TRUE;
+    gfGlobalSummaryLoaded = true;
   }
 
   if (gfSummaryWindowActive)
@@ -192,13 +192,13 @@ function CreateSummaryWindow(): void {
   GetCurrentWorldSector(addressof(gsSectorX), addressof(gsSectorY));
   gsSelSectorX = gsSectorX;
   gsSelSectorY = gsSectorY;
-  gfSummaryWindowActive = TRUE;
-  gfPersistantSummary = FALSE;
+  gfSummaryWindowActive = true;
+  gfPersistantSummary = false;
   giInitTimer = GetJA2Clock();
-  gfDeniedSummaryCreation = FALSE;
-  gfRenderSummary = TRUE;
+  gfDeniedSummaryCreation = false;
+  gfRenderSummary = true;
   if (gfWorldLoaded)
-    gfMapFileDirty = TRUE;
+    gfMapFileDirty = true;
   // Create all of the buttons here
   iSummaryButton[Enum58.SUMMARY_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 360, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iSummaryButton[Enum58.SUMMARY_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
@@ -209,11 +209,11 @@ function CreateSummaryWindow(): void {
 
   iSummaryButton[Enum58.SUMMARY_GRIDCHECKBOX] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleGridCallback);
   ButtonList[iSummaryButton[Enum58.SUMMARY_GRIDCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
-  gfRenderGrid = TRUE;
+  gfRenderGrid = true;
 
   iSummaryButton[Enum58.SUMMARY_PROGRESSCHECKBOX] = CreateCheckBoxButton((MAP_LEFT + 50), (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleProgressCallback);
   ButtonList[iSummaryButton[Enum58.SUMMARY_PROGRESSCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
-  gfRenderProgress = TRUE;
+  gfRenderProgress = true;
 
   iSummaryButton[Enum58.SUMMARY_ALL] = CreateTextButton("A", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 110, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == ALL_LEVELS_MASK || giCurrentViewLevel == ALTERNATE_LEVELS_MASK)
@@ -272,11 +272,11 @@ function CreateSummaryWindow(): void {
 
   // if( gfItemDetailsMode )
   //	{
-  gfItemDetailsMode = FALSE;
+  gfItemDetailsMode = false;
   //	gfSetupItemDetailsMode = TRUE;
   //}
   if (!gfWorldLoaded) {
-    gfConfirmExitFirst = FALSE;
+    gfConfirmExitFirst = false;
     ReleaseSummaryWindow();
     DisableButton(iSummaryButton[Enum58.SUMMARY_OKAY]);
     DisableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
@@ -294,8 +294,8 @@ function AutoLoadMap(): void {
   SummaryLoadMapCallback(ButtonList[iSummaryButton[Enum58.SUMMARY_LOAD]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   if (gfWorldLoaded)
     DestroySummaryWindow();
-  gfAutoLoadA9 = FALSE;
-  gfConfirmExitFirst = TRUE;
+  gfAutoLoadA9 = false;
+  gfConfirmExitFirst = true;
 }
 
 function ReleaseSummaryWindow(): void {
@@ -314,9 +314,9 @@ function ReleaseSummaryWindow(): void {
     HideButton(iSummaryButton[Enum58.SUMMARY_SCIFI]);
     HideButton(iSummaryButton[Enum58.SUMMARY_ENEMY]);
     MSYS_EnableRegion(addressof(MapRegion));
-    gfPersistantSummary = TRUE;
-    gfOverrideDirty = TRUE;
-    gfRenderSummary = TRUE;
+    gfPersistantSummary = true;
+    gfOverrideDirty = true;
+    gfRenderSummary = true;
   } else {
     DestroySummaryWindow();
   }
@@ -332,8 +332,8 @@ function DestroySummaryWindow(): void {
 
   MSYS_RemoveRegion(addressof(MapRegion));
 
-  gfSummaryWindowActive = FALSE;
-  gfPersistantSummary = FALSE;
+  gfSummaryWindowActive = false;
+  gfPersistantSummary = false;
   MarkWorldDirty();
   KillTextInputMode();
   EnableEditorTaskbar();
@@ -355,7 +355,7 @@ function DestroySummaryWindow(): void {
     gusNEnemyItemsSummaryArraySize = 0;
   }
   if (gfWorldLoaded) {
-    gfConfirmExitFirst = TRUE;
+    gfConfirmExitFirst = true;
   }
 }
 
@@ -801,13 +801,13 @@ function RenderSummaryWindow(): void {
   if ((GetActiveFieldID() == 1) != gfTempFile) {
     gfTempFile ^= 1;
     SetInputFieldStringWith16BitString(1, "");
-    gfRenderSummary = TRUE;
+    gfRenderSummary = true;
   }
   if (gfTempFile) // constantly extract the temp filename for updating purposes.
     ExtractTempFilename();
   if (gfRenderSummary) {
-    gfRenderSummary = FALSE;
-    gfRenderMap = TRUE;
+    gfRenderSummary = false;
+    gfRenderMap = true;
     for (i = 1; i < Enum58.NUM_SUMMARY_BUTTONS; i++) {
       MarkAButtonDirty(iSummaryButton[i]);
     }
@@ -833,7 +833,7 @@ function RenderSummaryWindow(): void {
     SetFontShadow(FONT_NEARBLACK);
     if (gfGlobalSummaryExists) {
       let str: UINT16[] /* [100] */;
-      let fSectorSummaryExists: BOOLEAN = FALSE;
+      let fSectorSummaryExists: boolean = false;
       if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
         DisableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
         SetFontForeground(FONT_YELLOW);
@@ -868,7 +868,7 @@ function RenderSummaryWindow(): void {
         switch (giCurrentViewLevel) {
           case ALL_LEVELS_MASK:
             // search for the highest level
-            fSectorSummaryExists = TRUE;
+            fSectorSummaryExists = true;
             if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK)
               giCurrLevel = GROUND_LEVEL_MASK;
             else if (gbSectorLevels[x][y] & BASEMENT1_LEVEL_MASK)
@@ -878,11 +878,11 @@ function RenderSummaryWindow(): void {
             else if (gbSectorLevels[x][y] & BASEMENT3_LEVEL_MASK)
               giCurrLevel = BASEMENT3_LEVEL_MASK;
             else
-              fSectorSummaryExists = FALSE;
+              fSectorSummaryExists = false;
             break;
           case ALTERNATE_LEVELS_MASK:
             // search for the highest alternate level
-            fSectorSummaryExists = TRUE;
+            fSectorSummaryExists = true;
             if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK)
               giCurrLevel = ALTERNATE_GROUND_MASK;
             else if (gbSectorLevels[x][y] & ALTERNATE_B1_MASK)
@@ -892,39 +892,39 @@ function RenderSummaryWindow(): void {
             else if (gbSectorLevels[x][y] & ALTERNATE_B3_MASK)
               giCurrLevel = ALTERNATE_B3_MASK;
             else
-              fSectorSummaryExists = FALSE;
+              fSectorSummaryExists = false;
             break;
           case GROUND_LEVEL_MASK:
             if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK)
-              fSectorSummaryExists = TRUE;
+              fSectorSummaryExists = true;
             break;
           case BASEMENT1_LEVEL_MASK:
             if (gbSectorLevels[x][y] & BASEMENT1_LEVEL_MASK)
-              fSectorSummaryExists = TRUE;
+              fSectorSummaryExists = true;
             break;
           case BASEMENT2_LEVEL_MASK:
             if (gbSectorLevels[x][y] & BASEMENT2_LEVEL_MASK)
-              fSectorSummaryExists = TRUE;
+              fSectorSummaryExists = true;
             break;
           case BASEMENT3_LEVEL_MASK:
             if (gbSectorLevels[x][y] & BASEMENT3_LEVEL_MASK)
-              fSectorSummaryExists = TRUE;
+              fSectorSummaryExists = true;
             break;
           case ALTERNATE_GROUND_MASK:
             if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK)
-              fSectorSummaryExists = TRUE;
+              fSectorSummaryExists = true;
             break;
           case ALTERNATE_B1_MASK:
             if (gbSectorLevels[x][y] & ALTERNATE_B1_MASK)
-              fSectorSummaryExists = TRUE;
+              fSectorSummaryExists = true;
             break;
           case ALTERNATE_B2_MASK:
             if (gbSectorLevels[x][y] & ALTERNATE_B2_MASK)
-              fSectorSummaryExists = TRUE;
+              fSectorSummaryExists = true;
             break;
           case ALTERNATE_B3_MASK:
             if (gbSectorLevels[x][y] & ALTERNATE_B3_MASK)
-              fSectorSummaryExists = TRUE;
+              fSectorSummaryExists = true;
             break;
         }
         if (gbSectorLevels[x][y]) {
@@ -1013,8 +1013,8 @@ function RenderSummaryWindow(): void {
               SetFontForeground(FONT_LTBLUE);
             if (gfItemDetailsMode) {
               if (gfSetupItemDetailsMode) {
-                SetupItemDetailsMode(TRUE);
-                gfSetupItemDetailsMode = FALSE;
+                SetupItemDetailsMode(true);
+                gfSetupItemDetailsMode = false;
               }
               mprintf(10, 5, "ITEM DETAILS -- sector %s", str);
               RenderItemDetails();
@@ -1130,7 +1130,7 @@ function RenderSummaryWindow(): void {
     mprintf(354, 18, "Summary");
     pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-    RectangleDraw(TRUE, 350, 15, 405, 28, 0, pDestBuf);
+    RectangleDraw(true, 350, 15, 405, 28, 0, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
     ShadowVideoSurfaceRectUsingLowPercentTable(FRAME_BUFFER, 351, 16, 404, 27);
     if (gpCurrentSectorSummary)
@@ -1145,7 +1145,7 @@ function RenderSummaryWindow(): void {
     mprintf(354, 33, "Items");
     pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-    RectangleDraw(TRUE, 350, 30, 405, 43, 0, pDestBuf);
+    RectangleDraw(true, 350, 30, 405, 43, 0, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
     if (gpCurrentSectorSummary)
     /*&& gpCurrentSectorSummary->usNumItems ||
@@ -1163,7 +1163,7 @@ function RenderSummaryWindow(): void {
   RenderButtons();
 
   if (gfRenderMap) {
-    gfRenderMap = FALSE;
+    gfRenderMap = false;
     BltVideoObjectFromIndex(FRAME_BUFFER, guiOmertaMap, 0, MAP_LEFT - 2, MAP_TOP - 2, VO_BLT_SRCTRANSPARENCY, null);
     InvalidateRegion(MAP_LEFT - 1, MAP_TOP - 1, MAP_RIGHT + 1, MAP_BOTTOM + 1);
     // Draw the coordinates
@@ -1184,10 +1184,10 @@ function RenderSummaryWindow(): void {
       for (i = 1; i <= 15; i++) {
         // draw vertical lines
         pos = (i * 13 + MAP_LEFT);
-        LineDraw(TRUE, pos, MAP_TOP, pos, MAP_BOTTOM - 1, 0, pDestBuf);
+        LineDraw(true, pos, MAP_TOP, pos, MAP_BOTTOM - 1, 0, pDestBuf);
         // draw horizontal lines
         pos = (i * 13 + MAP_TOP);
-        LineDraw(TRUE, MAP_LEFT, pos, MAP_RIGHT - 1, pos, 0, pDestBuf);
+        LineDraw(true, MAP_LEFT, pos, MAP_RIGHT - 1, pos, 0, pDestBuf);
       }
       UnLockVideoSurface(FRAME_BUFFER);
     }
@@ -1261,21 +1261,21 @@ function RenderSummaryWindow(): void {
     if (gfWorldLoaded && !gfTempFile && gsSectorX) {
       x = MAP_LEFT + (gsSectorX - 1) * 13 + 1;
       y = MAP_TOP + (gsSectorY - 1) * 13 + 1;
-      RectangleDraw(TRUE, x, y, x + 11, y + 11, Get16BPPColor(FROMRGB(50, 50, 200)), pDestBuf);
+      RectangleDraw(true, x, y, x + 11, y + 11, Get16BPPColor(FROMRGB(50, 50, 200)), pDestBuf);
     }
 
     // Render the grid for the sector currently in focus (red).
     if (gsSelSectorX > 0 && !gfTempFile) {
       x = MAP_LEFT + (gsSelSectorX - 1) * 13;
       y = MAP_TOP + (gsSelSectorY - 1) * 13;
-      RectangleDraw(TRUE, x, y, x + 13, y + 13, Get16BPPColor(FROMRGB(200, 50, 50)), pDestBuf);
+      RectangleDraw(true, x, y, x + 13, y + 13, Get16BPPColor(FROMRGB(200, 50, 50)), pDestBuf);
     }
 
     // Render the grid for the sector if the mouse is over it (yellow).
     if (gsHiSectorX > 0) {
       x = MAP_LEFT + (gsHiSectorX - 1) * 13 - 1;
       y = MAP_TOP + (gsHiSectorY - 1) * 13 - 1;
-      RectangleDraw(TRUE, x, y, x + 15, y + 15, Get16BPPColor(FROMRGB(200, 200, 50)), pDestBuf);
+      RectangleDraw(true, x, y, x + 15, y + 15, Get16BPPColor(FROMRGB(200, 200, 50)), pDestBuf);
     }
     UnLockVideoSurface(FRAME_BUFFER);
   }
@@ -1288,26 +1288,26 @@ function RenderSummaryWindow(): void {
               gpNEnemyItemsSummaryArray && gusNEnemyItemsSummaryArraySize )*/
       {
         if (gusMouseXPos >= 350 && gusMouseYPos >= 30 && gusMouseXPos <= 404 && gusMouseYPos <= 42) {
-          gfItemDetailsMode = TRUE;
-          gfSetupItemDetailsMode = TRUE;
-          gfRenderSummary = TRUE;
+          gfItemDetailsMode = true;
+          gfSetupItemDetailsMode = true;
+          gfRenderSummary = true;
         }
       }
     } else if (gfItemDetailsMode && gusMouseXPos >= 350 && gusMouseYPos >= 15 && gusMouseXPos <= 404 && gusMouseYPos <= 27) {
-      gfItemDetailsMode = FALSE;
-      gfRenderSummary = TRUE;
+      gfItemDetailsMode = false;
+      gfRenderSummary = true;
     }
   }
 }
 
-function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): void {
+function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: boolean): void {
   let str: UINT16[] /* [50] */;
   let szCoord: UINT8[] /* [40] */;
   let ptr: Pointer<UINT16>;
   let x: INT16;
   let y: INT16;
 
-  gfRenderSummary = TRUE;
+  gfRenderSummary = true;
   // Extract the sector
   if (gszFilename[2] < '0' || gszFilename[2] > '9')
     x = gszFilename[1] - '0';
@@ -1317,7 +1317,7 @@ function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): vo
     y = gszFilename[0] - 'a' + 1;
   else
     y = gszFilename[0] - 'A' + 1;
-  gfMapFileDirty = FALSE;
+  gfMapFileDirty = false;
 
   // Validate that the values extracted are in fact a sector
   if (x < 1 || x > 16 || y < 1 || y > 16)
@@ -1419,7 +1419,7 @@ function SummaryOkayCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function SummaryToggleGridCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderGrid = (btn.value.uiFlags & BUTTON_CLICKED_ON);
-    gfRenderMap = TRUE;
+    gfRenderMap = true;
   }
 }
 
@@ -1427,12 +1427,12 @@ function SummaryToggleAlternateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       giCurrentViewLevel <<= 4;
-      gfAlternateMaps = TRUE;
+      gfAlternateMaps = true;
     } else {
       giCurrentViewLevel >>= 4;
-      gfAlternateMaps = FALSE;
+      gfAlternateMaps = false;
     }
-    gfRenderSummary = TRUE;
+    gfRenderSummary = true;
   }
 }
 
@@ -1444,7 +1444,7 @@ function SummarySciFiCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
     gubSummaryItemMode = Enum56.ITEMMODE_SCIFI;
-    gfRenderSummary = TRUE;
+    gfRenderSummary = true;
   }
 }
 
@@ -1456,7 +1456,7 @@ function SummaryRealCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
     gubSummaryItemMode = Enum56.ITEMMODE_REAL;
-    gfRenderSummary = TRUE;
+    gfRenderSummary = true;
   }
 }
 
@@ -1468,23 +1468,23 @@ function SummaryEnemyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags |= BUTTON_DIRTY;
     ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
     gubSummaryItemMode = Enum56.ITEMMODE_ENEMY;
-    gfRenderSummary = TRUE;
+    gfRenderSummary = true;
   }
 }
 
 function SummaryToggleProgressCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderProgress = (btn.value.uiFlags & BUTTON_CLICKED_ON);
-    gfRenderMap = TRUE;
+    gfRenderMap = true;
   }
 }
 
 function PerformTest(): void {
 }
 
-function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
+function HandleSummaryInput(pEvent: Pointer<InputAtom>): boolean {
   if (!gfSummaryWindowActive)
-    return FALSE;
+    return false;
   gfCtrlPressed = pEvent.value.usKeyState & CTRL_DOWN;
   if (!HandleTextInput(pEvent) && pEvent.value.usEvent == KEY_DOWN || pEvent.value.usEvent == KEY_REPEAT) {
     let x: INT32;
@@ -1494,8 +1494,8 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
           DestroySummaryWindow();
           pEvent.value.usParam = 'x';
           pEvent.value.usKeyState |= ALT_DOWN;
-          gfOverheadMapDirty = TRUE;
-          return FALSE;
+          gfOverheadMapDirty = true;
+          return false;
         }
       case ENTER:
         if (GetActiveFieldID() == 1)
@@ -1517,34 +1517,34 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
       case 'y':
       case 'Y':
         if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
-          gfRenderSummary = TRUE;
+          gfRenderSummary = true;
           RegenerateSummaryInfoForAllOutdatedMaps();
         }
         if (!gfGlobalSummaryExists && !gfDeniedSummaryCreation) {
-          gfGlobalSummaryExists = TRUE;
+          gfGlobalSummaryExists = true;
           CreateGlobalSummary();
-          gfRenderSummary = TRUE;
+          gfRenderSummary = true;
         }
         break;
       case 'n':
       case 'N':
         if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
-          gfOutdatedDenied = TRUE;
-          gfRenderSummary = TRUE;
+          gfOutdatedDenied = true;
+          gfRenderSummary = true;
         }
         if (!gfGlobalSummaryExists && !gfDeniedSummaryCreation) {
-          gfDeniedSummaryCreation = TRUE;
-          gfRenderSummary = TRUE;
+          gfDeniedSummaryCreation = true;
+          gfRenderSummary = true;
         }
         break;
       case 'x':
         if (pEvent.value.usKeyState & ALT_DOWN) {
           DestroySummaryWindow();
-          return FALSE;
+          return false;
         }
         break;
       case RIGHTARROW:
-        gfRenderSummary = TRUE;
+        gfRenderSummary = true;
         if (!gsSelSectorY)
           gsSelSectorY = 1;
         gsSelSectorX++;
@@ -1552,7 +1552,7 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
           gsSelSectorX = 1;
         break;
       case LEFTARROW:
-        gfRenderSummary = TRUE;
+        gfRenderSummary = true;
         if (!gsSelSectorY)
           gsSelSectorY = 1;
         gsSelSectorX--;
@@ -1560,7 +1560,7 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
           gsSelSectorX = 16;
         break;
       case UPARROW:
-        gfRenderSummary = TRUE;
+        gfRenderSummary = true;
         if (!gsSelSectorX)
           gsSelSectorX = 1;
         gsSelSectorY--;
@@ -1568,7 +1568,7 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
           gsSelSectorY = 16;
         break;
       case DNARROW:
-        gfRenderSummary = TRUE;
+        gfRenderSummary = true;
         if (!gsSelSectorX)
           gsSelSectorX = 1;
         gsSelSectorY++;
@@ -1590,7 +1590,7 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
         break;
     }
   }
-  return TRUE;
+  return true;
 }
 
 function CreateGlobalSummary(): void {
@@ -1600,7 +1600,7 @@ function CreateGlobalSummary(): void {
 
   OutputDebugString("Generating GlobalSummary Information...\n");
 
-  gfGlobalSummaryExists = FALSE;
+  gfGlobalSummaryExists = false;
   // Set current directory to JA2\DevInfo which contains all of the summary data
   GetExecutableDirectory(ExecDir);
   sprintf(Dir, "%s\\DevInfo", ExecDir);
@@ -1621,7 +1621,7 @@ function CreateGlobalSummary(): void {
 
   LoadGlobalSummary();
   RegenerateSummaryInfoForAllOutdatedMaps();
-  gfRenderSummary = TRUE;
+  gfRenderSummary = true;
 
   OutputDebugString("GlobalSummary Information generated successfully.\n");
 }
@@ -1633,7 +1633,7 @@ function MapMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gsPrevX = gsHiSectorX = 0;
     gsPrevY = gsHiSectorY = 0;
-    gfRenderMap = TRUE;
+    gfRenderMap = true;
     return;
   }
   gsHiSectorX = min((reg.value.RelativeXPos / 13) + 1, 16);
@@ -1641,7 +1641,7 @@ function MapMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (gsPrevX != gsHiSectorX || gsPrevY != gsHiSectorY) {
     gsPrevX = gsHiSectorX;
     gsPrevY = gsHiSectorY;
-    gfRenderMap = TRUE;
+    gfRenderMap = true;
   }
 }
 
@@ -1659,7 +1659,7 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
     gsSelSectorY = min((reg.value.RelativeYPos / 13) + 1, 16);
     if (gsSelSectorX != sLastX || gsSelSectorY != sLastY) {
       // clicked in a new sector
-      gfOverrideDirty = TRUE;
+      gfOverrideDirty = true;
       sLastX = gsSelSectorX;
       sLastY = gsSelSectorY;
       iLastClickTime = GetJA2Clock();
@@ -1724,18 +1724,18 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
                 gpPEnemyItemsSummaryArray && gusPEnemyItemsSummaryArraySize ||
                 gpNEnemyItemsSummaryArray && gusNEnemyItemsSummaryArraySize )*/
         {
-          gfSetupItemDetailsMode = TRUE;
+          gfSetupItemDetailsMode = true;
         }
       }
     } else {
       // clicked in same sector, check for double click
       let iNewClickTime: INT32 = GetJA2Clock();
       if (iNewClickTime - iLastClickTime < 400) {
-        gfFileIO = TRUE;
+        gfFileIO = true;
       }
       iLastClickTime = iNewClickTime;
     }
-    gfRenderSummary = TRUE;
+    gfRenderSummary = true;
   }
 }
 
@@ -1744,7 +1744,7 @@ function SummaryToggleLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (GetActiveFieldID() == 1)
       SelectNextField();
-    gfRenderSummary = TRUE;
+    gfRenderSummary = true;
     for (i = Enum58.SUMMARY_ALL; i <= Enum58.SUMMARY_B3; i++) {
       if (btn.value.IDNum == iSummaryButton[i]) {
         switch (i) {
@@ -1777,7 +1777,7 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ptr: Pointer<UINT16>;
     let str: UINT16[] /* [50] */;
-    gfRenderSummary = TRUE;
+    gfRenderSummary = true;
 
     SetFont(FONT10ARIAL());
     SetFontForeground(FONT_LTKHAKI);
@@ -1798,8 +1798,8 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       EnableButton(iSummaryButton[Enum58.SUMMARY_OKAY]);
       gsSectorX = gsSelSectorX;
       gsSectorY = gsSelSectorY;
-      gfOverrideDirty = TRUE;
-      gfMapFileDirty = FALSE;
+      gfOverrideDirty = true;
+      gfMapFileDirty = false;
     }
     RemoveProgressBar(0);
     ptr = wcsstr(gszDisplayName, "_b");
@@ -1827,8 +1827,8 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function SummarySaveMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderSummary = TRUE;
-    if (gubOverrideStatus == Enum57.INACTIVE || gfOverride == TRUE) {
+    gfRenderSummary = true;
+    if (gubOverrideStatus == Enum57.INACTIVE || gfOverride == true) {
       if (gubOverrideStatus == Enum57.READONLY) {
         let filename: UINT8[] /* [40] */;
         sprintf(filename, "MAPS\\%S", gszDisplayName);
@@ -1838,8 +1838,8 @@ function SummarySaveMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         if (gsSelSectorX && gsSelSectorY) {
           gsSectorX = gsSelSectorX;
           gsSectorY = gsSelSectorY;
-          gfMapFileDirty = FALSE;
-          gfOverrideDirty = TRUE;
+          gfMapFileDirty = false;
+          gfOverrideDirty = true;
         }
       }
     }
@@ -1848,8 +1848,8 @@ function SummarySaveMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function SummaryOverrideCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfOverride ^= TRUE;
-    gfRenderSummary = TRUE;
+    gfOverride ^= true;
+    gfRenderSummary = true;
     if (gfOverride)
       EnableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
     else
@@ -1860,8 +1860,8 @@ function SummaryOverrideCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 function CalculateOverrideStatus(): void {
   let FileInfo: GETFILESTRUCT;
   let szFilename: UINT8[] /* [40] */;
-  gfOverrideDirty = FALSE;
-  gfOverride = FALSE;
+  gfOverrideDirty = false;
+  gfOverride = false;
   if (gfTempFile) {
     let ptr: Pointer<UINT8>;
     sprintf(szFilename, "MAPS\\%S", gszTempFilename);
@@ -1910,9 +1910,9 @@ function LoadGlobalSummary(): void {
 
   OutputDebugString("Executing LoadGlobalSummary()...\n");
 
-  gfMustForceUpdateAllMaps = FALSE;
+  gfMustForceUpdateAllMaps = false;
   gusNumberOfMapsToBeForceUpdated = 0;
-  gfGlobalSummaryExists = FALSE;
+  gfGlobalSummaryExists = false;
   // Set current directory to JA2\DevInfo which contains all of the summary data
   GetExecutableDirectory(ExecDir);
   sprintf(DevInfoDir, "%s\\DevInfo", ExecDir);
@@ -1927,7 +1927,7 @@ function LoadGlobalSummary(): void {
   // TEMP
   FileDelete("_global.sum");
 
-  gfGlobalSummaryExists = TRUE;
+  gfGlobalSummaryExists = true;
 
   // Analyse all sectors to see if matching maps exist.  For any maps found, the information
   // will be stored in the gbSectorLevels array.  Also, it attempts to load summaries for those
@@ -1941,7 +1941,7 @@ function LoadGlobalSummary(): void {
       // main ground level
       sprintf(szFilename, "%c%d.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
-      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= GROUND_LEVEL_MASK;
@@ -1955,7 +1955,7 @@ function LoadGlobalSummary(): void {
       // main B1 level
       sprintf(szFilename, "%c%d_b1.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
-      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= BASEMENT1_LEVEL_MASK;
@@ -1969,7 +1969,7 @@ function LoadGlobalSummary(): void {
       // main B2 level
       sprintf(szFilename, "%c%d_b2.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
-      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= BASEMENT2_LEVEL_MASK;
@@ -1983,7 +1983,7 @@ function LoadGlobalSummary(): void {
       // main B3 level
       sprintf(szFilename, "%c%d_b3.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
-      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= BASEMENT3_LEVEL_MASK;
@@ -1997,7 +1997,7 @@ function LoadGlobalSummary(): void {
       // alternate ground level
       sprintf(szFilename, "%c%d_a.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
-      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_GROUND_MASK;
@@ -2011,7 +2011,7 @@ function LoadGlobalSummary(): void {
       // alternate B1 level
       sprintf(szFilename, "%c%d_b1_a.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
-      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_B1_MASK;
@@ -2025,7 +2025,7 @@ function LoadGlobalSummary(): void {
       // alternate B2 level
       sprintf(szFilename, "%c%d_b2_a.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
-      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_B2_MASK;
@@ -2039,7 +2039,7 @@ function LoadGlobalSummary(): void {
       // alternate B3 level
       sprintf(szFilename, "%c%d_b3_a.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
-      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+      hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_B1_MASK;
@@ -2138,8 +2138,8 @@ function WriteSectorSummaryUpdate(puiFilename: Pointer<UINT8>, ubLevel: UINT8, p
 
 function SummaryNewGroundLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfPendingBasement = FALSE;
-    gfPendingCaves = FALSE;
+    gfPendingBasement = false;
+    gfPendingCaves = false;
     if (gfWorldLoaded) {
       iCurrentAction = Enum37.ACTION_NEW_MAP;
     } else {
@@ -2183,7 +2183,7 @@ function LoadSummary(pSector: Pointer<UINT8>, ubLevel: UINT8, dMajorMapVersion: 
   fread(addressof(temp), 1, sizeof(SUMMARYFILE), fp);
   if (temp.ubSummaryVersion < MINIMUMVERSION || dMajorMapVersion < gdMajorMapVersion) {
     gusNumberOfMapsToBeForceUpdated++;
-    gfMustForceUpdateAllMaps = TRUE;
+    gfMustForceUpdateAllMaps = true;
   }
   temp.dMajorMapVersion = dMajorMapVersion;
   UpdateSummaryInfo(addressof(temp));
@@ -2251,7 +2251,7 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
   DefineProgressBarPanel(0, 65, 79, 94, 10, 80, 310, 132);
   SetProgressBarTitle(0, "Generating map information", BLOCKFONT2(), FONT_RED, FONT_NEARBLACK);
   SetProgressBarMsgAttributes(0, SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK);
-  gfUpdatingNow = TRUE;
+  gfUpdatingNow = true;
 
   gusCurrent = 0;
   gusTotal = gusNumEntriesWithOutdatedOrNoSummaryInfo;
@@ -2311,7 +2311,7 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
     }
   RemoveProgressBar(0);
   RemoveProgressBar(1);
-  gfUpdatingNow = FALSE;
+  gfUpdatingNow = false;
 }
 
 function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -2332,7 +2332,7 @@ function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     gpSectorSummary[gsSelSectorX][gsSelSectorY][giCurrLevel] = gpCurrentSectorSummary;
 
-    gfRenderSummary = TRUE;
+    gfRenderSummary = true;
 
     RemoveProgressBar(0);
   }
@@ -2343,8 +2343,8 @@ function ExtractTempFilename(): void {
   Get16BitStringFromField(1, str);
   if (wcscmp(gszTempFilename, str)) {
     wcscpy(gszTempFilename, str);
-    gfRenderSummary = TRUE;
-    gfOverrideDirty = TRUE;
+    gfRenderSummary = true;
+    gfOverrideDirty = true;
   }
   if (!wcslen(str))
     swprintf(gszDisplayName, "test.dat");
@@ -2357,7 +2357,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
   let name: UINT8[] /* [50] */;
   let pSF: Pointer<SUMMARYFILE>;
   // Create one huge assed button
-  gfMajorUpdate = TRUE;
+  gfMajorUpdate = true;
   iSummaryButton[Enum58.SUMMARY_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 480, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iSummaryButton[Enum58.SUMMARY_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
   DisableButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
@@ -2381,7 +2381,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
 
   gusCurrent = 0;
   gusTotal = gusNumberOfMapsToBeForceUpdated;
-  gfUpdatingNow = TRUE;
+  gfUpdatingNow = true;
   UpdateMasterProgress();
 
   for (y = 0; y < 16; y++)
@@ -2456,16 +2456,16 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
   EvaluateWorld("p3_m.dat", 0);
 
   RemoveProgressBar(2);
-  gfUpdatingNow = FALSE;
+  gfUpdatingNow = false;
   InvalidateScreen();
 
   RemoveButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
-  gfMajorUpdate = FALSE;
-  gfMustForceUpdateAllMaps = FALSE;
+  gfMajorUpdate = false;
+  gfMustForceUpdateAllMaps = false;
   gusNumberOfMapsToBeForceUpdated = 0;
 }
 
-function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
+function SetupItemDetailsMode(fAllowRecursion: boolean): void {
   let hfile: HWFILE;
   let uiNumBytesRead: UINT32;
   let uiNumItems: UINT32;
@@ -2505,7 +2505,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
   }
   // Open the original map for the sector
   sprintf(szFilename, "MAPS\\%S", gszFilename);
-  hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (!hfile) {
     // The file couldn't be found!
     return;
@@ -2529,7 +2529,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
   if (uiNumItems != gpCurrentSectorSummary.value.usNumItems && fAllowRecursion) {
     FileClose(hfile);
     gpCurrentSectorSummary.value.uiNumItemsPosition = 0;
-    SetupItemDetailsMode(FALSE);
+    SetupItemDetailsMode(false);
     return;
   }
   // Passed the gauntlet, so now allocate memory for it, and load all the world items into this array.

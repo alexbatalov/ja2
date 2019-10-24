@@ -108,10 +108,10 @@ const enum Enum7 {
 //
 ///////////////////////////////////////////
 
-let gfGIOScreenEntry: BOOLEAN = TRUE;
-let gfGIOScreenExit: BOOLEAN = FALSE;
-let gfReRenderGIOScreen: BOOLEAN = TRUE;
-let gfGIOButtonsAllocated: BOOLEAN = FALSE;
+let gfGIOScreenEntry: boolean = true;
+let gfGIOScreenExit: boolean = false;
+let gfReRenderGIOScreen: boolean = true;
+let gfGIOButtonsAllocated: boolean = false;
 
 let gubGameOptionScreenHandler: UINT8 = Enum7.GIO_NOTHING;
 
@@ -172,8 +172,8 @@ function GameInitOptionsScreenHandle(): UINT32 {
     //		PauseGame();
 
     EnterGIOScreen();
-    gfGIOScreenEntry = FALSE;
-    gfGIOScreenExit = FALSE;
+    gfGIOScreenEntry = false;
+    gfGIOScreenExit = false;
     InvalidateRegion(0, 0, 640, 480);
   }
 
@@ -220,13 +220,13 @@ function GameInitOptionsScreenShutdown(): UINT32 {
   return 1;
 }
 
-function EnterGIOScreen(): BOOLEAN {
+function EnterGIOScreen(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let cnt: UINT16;
   let usPosY: UINT16;
 
   if (gfGIOButtonsAllocated)
-    return TRUE;
+    return true;
 
   SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
@@ -345,16 +345,16 @@ function EnterGIOScreen(): BOOLEAN {
 
   BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, 0, 0, 639, 439);
 
-  gfGIOButtonsAllocated = TRUE;
+  gfGIOButtonsAllocated = true;
 
-  return TRUE;
+  return true;
 }
 
-function ExitGIOScreen(): BOOLEAN {
+function ExitGIOScreen(): boolean {
   let cnt: UINT16;
 
   if (!gfGIOButtonsAllocated)
-    return TRUE;
+    return true;
 
   // Delete the main options screen background
   DeleteVideoObjectFromIndex(guiGIOMainBackGroundImage);
@@ -387,16 +387,16 @@ function ExitGIOScreen(): BOOLEAN {
   for (cnt = 0; cnt < Enum6.NUM_SAVE_OPTIONS; cnt++)
     RemoveButton(guiGameSaveToggles[cnt]);
 
-  gfGIOButtonsAllocated = FALSE;
+  gfGIOButtonsAllocated = false;
 
   // If we are starting the game stop playing the music
   if (gubGameOptionScreenHandler == Enum7.GIO_EXIT)
     SetMusicMode(Enum328.MUSIC_NONE);
 
-  gfGIOScreenExit = FALSE;
-  gfGIOScreenEntry = TRUE;
+  gfGIOScreenExit = false;
+  gfGIOScreenEntry = true;
 
-  return TRUE;
+  return true;
 }
 
 function HandleGIOScreen(): void {
@@ -404,7 +404,7 @@ function HandleGIOScreen(): void {
     switch (gubGameOptionScreenHandler) {
       case Enum7.GIO_CANCEL:
         gubGIOExitScreen = Enum26.MAINMENU_SCREEN;
-        gfGIOScreenExit = TRUE;
+        gfGIOScreenExit = true;
         break;
 
       case Enum7.GIO_EXIT: {
@@ -430,13 +430,13 @@ function HandleGIOScreen(): void {
 
   if (gfReRenderGIOScreen) {
     RenderGIOScreen();
-    gfReRenderGIOScreen = FALSE;
+    gfReRenderGIOScreen = false;
   }
 
   RestoreGIOButtonBackGrounds();
 }
 
-function RenderGIOScreen(): BOOLEAN {
+function RenderGIOScreen(): boolean {
   let hPixHandle: HVOBJECT;
   let usPosY: UINT16;
 
@@ -448,47 +448,47 @@ function RenderGIOScreen(): BOOLEAN {
   ShadowVideoSurfaceRect(FRAME_BUFFER, 48, 55, 592, 378); // 358
 
   // Display the title
-  DrawTextToScreen(gzGIOScreenText[Enum375.GIO_INITIAL_GAME_SETTINGS], GIO_MAIN_TITLE_X, GIO_MAIN_TITLE_Y, GIO_MAIN_TITLE_WIDTH, GIO_TITLE_FONT(), GIO_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(gzGIOScreenText[Enum375.GIO_INITIAL_GAME_SETTINGS], GIO_MAIN_TITLE_X, GIO_MAIN_TITLE_Y, GIO_MAIN_TITLE_WIDTH, GIO_TITLE_FONT(), GIO_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the Dif Settings Title Text
   // DrawTextToScreen( gzGIOScreenText[ GIO_DIF_LEVEL_TEXT ], GIO_DIF_SETTINGS_X, (UINT16)(GIO_DIF_SETTINGS_Y-GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString(GIO_DIF_SETTINGS_X, (GIO_DIF_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_DIF_LEVEL_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(GIO_DIF_SETTINGS_X, (GIO_DIF_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_DIF_LEVEL_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosY = GIO_DIF_SETTINGS_Y + 2;
   // DrawTextToScreen( gzGIOScreenText[ GIO_EASY_TEXT ], (UINT16)(GIO_DIF_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_EASY_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_EASY_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosY += GIO_GAP_BN_SETTINGS;
   // DrawTextToScreen( gzGIOScreenText[ GIO_MEDIUM_TEXT ], (UINT16)(GIO_DIF_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_MEDIUM_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_MEDIUM_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosY += GIO_GAP_BN_SETTINGS;
   // DrawTextToScreen( gzGIOScreenText[ GIO_HARD_TEXT ], (UINT16)(GIO_DIF_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_HARD_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_HARD_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the Game Settings Title Text
   //	DrawTextToScreen( gzGIOScreenText[ GIO_GAME_STYLE_TEXT ], GIO_GAME_SETTINGS_X, (UINT16)(GIO_GAME_SETTINGS_Y-GIO_GAP_BN_SETTINGS), GIO_GAME_SETTINGS_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString(GIO_GAME_SETTINGS_X, (GIO_GAME_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GAME_STYLE_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(GIO_GAME_SETTINGS_X, (GIO_GAME_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GAME_STYLE_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosY = GIO_GAME_SETTINGS_Y + 2;
   // DrawTextToScreen( gzGIOScreenText[ GIO_REALISTIC_TEXT ], (UINT16)(GIO_GAME_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_REALISTIC_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_REALISTIC_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosY += GIO_GAP_BN_SETTINGS;
   // DrawTextToScreen( gzGIOScreenText[ GIO_SCI_FI_TEXT ], (UINT16)(GIO_GAME_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_SCI_FI_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_SCI_FI_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the Gun Settings Title Text
   //	DrawTextToScreen( gzGIOScreenText[ GIO_GUN_OPTIONS_TEXT ], GIO_GUN_SETTINGS_X, (UINT16)(GIO_GUN_SETTINGS_Y-GIO_GAP_BN_SETTINGS), GIO_GUN_SETTINGS_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString(GIO_GUN_SETTINGS_X, (GIO_GUN_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GUN_OPTIONS_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(GIO_GUN_SETTINGS_X, (GIO_GUN_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GUN_OPTIONS_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosY = GIO_GUN_SETTINGS_Y + 2;
   // DrawTextToScreen( gzGIOScreenText[ GIO_REDUCED_GUNS_TEXT ], (UINT16)(GIO_GUN_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_REDUCED_GUNS_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_REDUCED_GUNS_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosY += GIO_GAP_BN_SETTINGS;
   // DrawTextToScreen( gzGIOScreenText[ GIO_GUN_NUT_TEXT ], (UINT16)(GIO_GUN_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GUN_NUT_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GUN_NUT_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // JA2Gold: no more timed turns setting
   /*
@@ -503,18 +503,18 @@ function RenderGIOScreen(): BOOLEAN {
   */
 
   // JA2Gold: Display the iron man Settings Title Text
-  DisplayWrappedString(GIO_IRON_MAN_SETTING_X, (GIO_IRON_MAN_SETTING_Y - GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GAME_SAVE_STYLE_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(GIO_IRON_MAN_SETTING_X, (GIO_IRON_MAN_SETTING_Y - GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GAME_SAVE_STYLE_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usPosY = GIO_IRON_MAN_SETTING_Y + 2;
 
-  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usPosY += GIO_GAP_BN_SETTINGS;
 
-  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_IRON_MAN_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT(), GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_IRON_MAN_TEXT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosY += 20;
-  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, 220, 2, FONT12ARIAL(), GIO_TOGGLE_TEXT_COLOR, zNewTacticalMessages[Enum320.TCTL_MSG__CANNOT_SAVE_DURING_COMBAT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, 220, 2, FONT12ARIAL(), GIO_TOGGLE_TEXT_COLOR, zNewTacticalMessages[Enum320.TCTL_MSG__CANNOT_SAVE_DURING_COMBAT], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  return TRUE;
+  return true;
 }
 
 function GetGIOScreenUserInput(): void {
@@ -554,12 +554,12 @@ function BtnDifficultyTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       let cnt: UINT8;
-      let fAnyChecked: BOOLEAN = FALSE;
+      let fAnyChecked: boolean = false;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
         if (ButtonList[guiDifficultySettingsToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
-          fAnyChecked = TRUE;
+          fAnyChecked = true;
         }
       }
       // if none are checked, re check this one
@@ -584,12 +584,12 @@ function BtnGameStyleTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       let cnt: UINT8;
-      let fAnyChecked: BOOLEAN = FALSE;
+      let fAnyChecked: boolean = false;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
         if (ButtonList[guiGameStyleToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
-          fAnyChecked = TRUE;
+          fAnyChecked = true;
         }
       }
       // if none are checked, re check this one
@@ -614,12 +614,12 @@ function BtnGameSaveTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       let cnt: UINT8;
-      let fAnyChecked: BOOLEAN = FALSE;
+      let fAnyChecked: boolean = false;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < Enum6.NUM_SAVE_OPTIONS; cnt++) {
         if (ButtonList[guiGameSaveToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
-          fAnyChecked = TRUE;
+          fAnyChecked = true;
         }
       }
       // if none are checked, re check this one
@@ -644,12 +644,12 @@ function BtnGunOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       let cnt: UINT8;
-      let fAnyChecked: BOOLEAN = FALSE;
+      let fAnyChecked: boolean = false;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
         if (ButtonList[guiGunOptionToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
-          fAnyChecked = TRUE;
+          fAnyChecked = true;
         }
       }
       // if none are checked, re check this one
@@ -867,7 +867,7 @@ function DoneFadeInForExitGameInitOptionScreen(): void {
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 }
 
-function DoGioMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
+function DoGioMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // reset exit mode
@@ -902,17 +902,17 @@ function ConfirmGioDifSettingMessageBoxCallBack(bExitValue: UINT8): void {
   }
 }
 
-function DisplayMessageToUserAboutIronManMode(): BOOLEAN {
+function DisplayMessageToUserAboutIronManMode(): boolean {
   let ubIronManMode: UINT8 = GetCurrentGameSaveButtonSetting();
 
   // if the user has selected IRON MAN mode
   if (ubIronManMode) {
     DoGioMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzIronManModeWarningText[Enum321.IMM__IRON_MAN_MODE_WARNING_TEXT], Enum26.GAME_INIT_OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmGioIronManMessageBoxCallBack);
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function ConfirmGioIronManMessageBoxCallBack(bExitValue: UINT8): void {

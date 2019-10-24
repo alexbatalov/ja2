@@ -158,7 +158,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
     }
 
     // calc next attack's minimum shooting cost (excludes readying & turning)
-    ubRawAPCost = MinAPsToShootOrStab(pSoldier, pOpponent.value.sGridNo, FALSE);
+    ubRawAPCost = MinAPsToShootOrStab(pSoldier, pOpponent.value.sGridNo, false);
 
     if (pOpponent.value.sGridNo != pSoldier.value.sLastTarget) {
       // raw AP cost calculation included cost of changing target!
@@ -219,11 +219,11 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
       continue; // next opponent
 
     // really limit knife throwing so it doesn't look wrong
-    if (Item[pSoldier.value.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE && (ubChanceToReallyHit < 30 || (PythSpacesAway(pSoldier.value.sGridNo, pOpponent.value.sGridNo) > CalcMaxTossRange(pSoldier, Enum225.THROWING_KNIFE, FALSE) / 2)))
+    if (Item[pSoldier.value.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE && (ubChanceToReallyHit < 30 || (PythSpacesAway(pSoldier.value.sGridNo, pOpponent.value.sGridNo) > CalcMaxTossRange(pSoldier, Enum225.THROWING_KNIFE, false) / 2)))
       continue; // don't bother... next opponent
 
     // calculate this opponent's threat value (factor in my cover from him)
-    iThreatValue = CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, TRUE, pSoldier);
+    iThreatValue = CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, true, pSoldier);
 
     // estimate the damage this shot would do to this opponent
     iEstDamage = EstimateShotDamage(pSoldier, pOpponent, ubBestChanceToHit);
@@ -264,7 +264,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
       }
 
       // OOOF!  That was a lot of work!  But we've got a new best target!
-      pBestShot.value.ubPossible = TRUE;
+      pBestShot.value.ubPossible = true;
       pBestShot.value.ubOpponent = pOpponent.value.ubID;
       pBestShot.value.ubAimTime = ubBestAimTime;
       pBestShot.value.ubChanceToReallyHit = ubChanceToReallyHit;
@@ -277,7 +277,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
 }
 
 // JA2Gold: added
-function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): BOOLEAN {
+function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): boolean {
   let sTempGridNo: INT16;
   let bDirection: INT8;
   let sXPos: INT16;
@@ -293,15 +293,15 @@ function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): BOOLEAN {
       sTempGridNo = NewGridNo(sGridNo, DirectionInc(bDirection));
       ubMovementCost = gubWorldMovementCosts[sTempGridNo][bDirection][0];
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(null, sTempGridNo, ubMovementCost, FALSE, null);
+        ubMovementCost = DoorTravelCost(null, sTempGridNo, ubMovementCost, false, null);
       }
       if (ubMovementCost >= TRAVELCOST_BLOCKED) {
-        return FALSE;
+        return false;
       }
     }
   } else {
     if (CardinalSpacesAway(sGridNo, sGridNo2) > 2) {
-      return FALSE;
+      return false;
     }
 
     // we are within 1 space diagonally or at most 2 horizontally or vertically,
@@ -321,15 +321,15 @@ function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): BOOLEAN {
       sTempGridNo = NewGridNo(sTempGridNo, DirectionInc(bDirection));
       ubMovementCost = gubWorldMovementCosts[sTempGridNo][bDirection][0];
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(null, sTempGridNo, ubMovementCost, FALSE, null);
+        ubMovementCost = DoorTravelCost(null, sTempGridNo, ubMovementCost, false, null);
       }
       if (ubMovementCost >= TRAVELCOST_BLOCKED) {
-        return FALSE;
+        return false;
       }
     } while (sTempGridNo != sGridNo2);
   }
 
-  return TRUE;
+  return true;
 }
 
 function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTACKTYPE>): void {
@@ -360,12 +360,12 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
   let uiPenalty: UINT32;
   let ubSearchRange: UINT8;
   let usOppDist: UINT16;
-  let fFriendsNearby: BOOLEAN;
+  let fFriendsNearby: boolean;
   let usInHand: UINT16;
   let usGrenade: UINT16;
   let ubOppsInRange: UINT8;
   let ubOppsAdjacent: UINT8;
-  let fSkipLocation: BOOLEAN;
+  let fSkipLocation: boolean;
   let bPayloadPocket: INT8;
   let bMaxLeft: INT8;
   let bMaxRight: INT8;
@@ -390,7 +390,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
   if (EXPLOSIVE_GUN(usInHand)) {
     iTossRange = Weapon[usInHand].usRange / CELL_X_SIZE;
   } else {
-    iTossRange = CalcMaxTossRange(pSoldier, usInHand, TRUE);
+    iTossRange = CalcMaxTossRange(pSoldier, usInHand, true);
   }
 
   // if he's got a MORTAR in his hand, make sure he has a MORTARSHELL avail.
@@ -580,7 +580,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
     ubOpponentID[ubOpponentCnt] = pOpponent.value.ubID;
 
     // remember how relatively dangerous this opponent is (ignore my cover)
-    iOppThreatValue[ubOpponentCnt] = CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, FALSE, pSoldier);
+    iOppThreatValue[ubOpponentCnt] = CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, false, pSoldier);
 
     ubOpponentCnt++;
   }
@@ -680,12 +680,12 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
           }
         }
 
-        fSkipLocation = FALSE;
+        fSkipLocation = false;
         // Check to see if we have considered this tile before:
         for (ubLoop2 = 0; ubLoop2 < ubNumExcludedTiles; ubLoop2++) {
           if (sExcludeTile[ubLoop2] == sGridNo) {
             // already checked!
-            fSkipLocation = TRUE;
+            fSkipLocation = true;
             break;
           }
         }
@@ -702,12 +702,12 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
           continue; // next gridno
 
         // check whether there are any friends standing near this gridno
-        fFriendsNearby = FALSE;
+        fFriendsNearby = false;
 
         for (ubLoop2 = 0; ubLoop2 < ubFriendCnt; ubLoop2++) {
           if ((bFriendLevel[ubLoop2] == bOpponentLevel[ubLoop]) && (PythSpacesAway(sFriendTile[ubLoop2], sGridNo) <= ubSafetyMargin)) {
             // NumMessage("Friend too close: at gridno",sFriendTile[ubLoop2]);
-            fFriendsNearby = TRUE;
+            fFriendsNearby = true;
             break; // don't bother checking any other friends
           }
         }
@@ -721,7 +721,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
         ubOppsAdjacent = 0;
         // skip this location unless it's right on top of an enemy or
         // adjacent to more than 1
-        fSkipLocation = TRUE;
+        fSkipLocation = true;
 
         for (ubLoop2 = 0; ubLoop2 < ubOpponentCnt; ubLoop2++) {
           usOppDist = PythSpacesAway(sOpponentTile[ubLoop2], sGridNo);
@@ -742,7 +742,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
               // NumMessage("THROW reduced usEstDamage = ",usEstDamage);
             } else {
               // throwing right on top of someone... always consider this
-              fSkipLocation = FALSE;
+              fSkipLocation = false;
             }
 
             // add the product of his threat value & damage caused to total
@@ -754,7 +754,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
               if (usOppDist < 2) {
                 ubOppsAdjacent++;
                 if (ubOppsAdjacent > 1 || usGrenade == Enum225.BREAK_LIGHT) {
-                  fSkipLocation = FALSE;
+                  fSkipLocation = false;
                   // add to exclusion list so we don't consider it again
                 }
               }
@@ -794,7 +794,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
             continue; // next gridno
           }
         } else {
-          ubChanceToGetThrough = 100 * CalculateLaunchItemChanceToGetThrough(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), sGridNo, bOpponentLevel[ubLoop], 0, addressof(sEndGridNo), TRUE, addressof(bEndLevel), FALSE); // NumMessage("Chance to get through = ",ubChanceToGetThrough);
+          ubChanceToGetThrough = 100 * CalculateLaunchItemChanceToGetThrough(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), sGridNo, bOpponentLevel[ubLoop], 0, addressof(sEndGridNo), true, addressof(bEndLevel), false); // NumMessage("Chance to get through = ",ubChanceToGetThrough);
           // if we can't possibly get through all the cover
           if (ubChanceToGetThrough == 0) {
             if (bEndLevel == bOpponentLevel[ubLoop] && ubSafetyMargin > 1) {
@@ -832,11 +832,11 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
         // aim for the longest time possible!
 
         if (EXPLOSIVE_GUN(usInHand)) {
-          ubRawAPCost = MinAPsToShootOrStab(pSoldier, sGridNo, FALSE);
+          ubRawAPCost = MinAPsToShootOrStab(pSoldier, sGridNo, false);
           ubChanceToHit = AICalcChanceToHitGun(pSoldier, sGridNo, ubMaxPossibleAimTime, AIM_SHOT_TORSO);
         } else {
           // NB grenade launcher is NOT a direct fire weapon!
-          ubRawAPCost = MinAPsToThrow(pSoldier, sGridNo, FALSE);
+          ubRawAPCost = MinAPsToThrow(pSoldier, sGridNo, false);
           ubChanceToHit = CalcThrownChanceToHit(pSoldier, sGridNo, ubMaxPossibleAimTime, AIM_SHOT_TORSO);
         }
 
@@ -872,7 +872,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
         // unlike SHOOTing and STABbing, find strictly the highest attackValue
         if (iAttackValue > pBestThrow.value.iAttackValue) {
           // OOOF!  That was a lot of work!  But we've got a new best target!
-          pBestThrow.value.ubPossible = TRUE;
+          pBestThrow.value.ubPossible = true;
           pBestThrow.value.ubOpponent = ubOpponentID[ubLoop];
           pBestThrow.value.ubAimTime = ubMaxPossibleAimTime;
           pBestThrow.value.ubChanceToReallyHit = ubChanceToReallyHit;
@@ -894,13 +894,13 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
     case 1:
       // don't use unless have a 70% chance to hit
       if (pBestThrow.value.ubChanceToReallyHit < 70) {
-        pBestThrow.value.ubPossible = FALSE;
+        pBestThrow.value.ubPossible = false;
       }
       break;
     case 2:
       // don't use unless have a 50% chance to hit
       if (pBestThrow.value.ubChanceToReallyHit < 50) {
-        pBestThrow.value.ubPossible = FALSE;
+        pBestThrow.value.ubPossible = false;
       }
       break;
     default:
@@ -908,7 +908,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
   }
 }
 
-function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>, fBladeAttack: BOOLEAN): void {
+function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>, fBladeAttack: boolean): void {
   let uiLoop: UINT32;
   let iAttackValue: INT32;
   let iThreatValue: INT32;
@@ -916,7 +916,7 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
   let iBestHitRate: INT32;
   let iPercentBetter: INT32;
   let iEstDamage: INT32;
-  let fSurpriseStab: BOOLEAN;
+  let fSurpriseStab: boolean;
   let ubRawAPCost: UINT8;
   let ubMinAPCost: UINT8;
   let ubMaxPossibleAimTime: UINT8;
@@ -992,19 +992,19 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
 
     // calc next attack's minimum stabbing cost (excludes movement & turning)
     // ubRawAPCost = MinAPsToShootOrStab(pSoldier,pOpponent->sGridNo, FALSE) - AP_CHANGE_TARGET;
-    ubRawAPCost = MinAPsToAttack(pSoldier, pOpponent.value.sGridNo, FALSE) - AP_CHANGE_TARGET;
+    ubRawAPCost = MinAPsToAttack(pSoldier, pOpponent.value.sGridNo, false) - AP_CHANGE_TARGET;
     // NumMessage("ubRawAPCost to stab this opponent = ",ubRawAPCost);
 
     // determine if this is a surprise stab (must be next to opponent & unseen)
-    fSurpriseStab = FALSE; // assume it is not a surprise stab
+    fSurpriseStab = false; // assume it is not a surprise stab
 
     // if opponent doesn't see the attacker
     if (pOpponent.value.bOppList[pSoldier.value.ubID] != SEEN_CURRENTLY) {
-      fSurpriseStab = TRUE;
+      fSurpriseStab = true;
 
       // and he's only one space away from attacker
       if (SpacesAway(pSoldier.value.sGridNo, pOpponent.value.sGridNo) == 1) {
-        fSurpriseStab = TRUE; // we got 'im lined up where we want 'im!
+        fSurpriseStab = true; // we got 'im lined up where we want 'im!
       }
     }
 
@@ -1053,7 +1053,7 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
 
     // calculate this opponent's threat value
     // NOTE: ignore my cover!  By the time I run beside him I won't have any!
-    iThreatValue = CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, FALSE, pSoldier);
+    iThreatValue = CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, false, pSoldier);
 
     // estimate the damage this stab would do to this opponent
     iEstDamage = EstimateStabDamage(pSoldier, pOpponent, ubBestChanceToHit, fBladeAttack);
@@ -1089,7 +1089,7 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
       }
 
       // OOOF!  That was a lot of work!  But we've got a new best target!
-      pBestStab.value.ubPossible = TRUE;
+      pBestStab.value.ubPossible = true;
       pBestStab.value.ubOpponent = pOpponent.value.ubID;
       pBestStab.value.ubAimTime = ubBestAimTime;
       pBestStab.value.ubChanceToReallyHit = ubChanceToReallyHit;
@@ -1110,7 +1110,7 @@ function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<A
   let iHitRate: INT32;
   let iBestHitRate: INT32;
   let iEstDamage: INT32;
-  let fSurpriseStab: BOOLEAN;
+  let fSurpriseStab: boolean;
   let ubRawAPCost: UINT8;
   let ubMinAPCost: UINT8;
   let ubMaxPossibleAimTime: UINT8;
@@ -1158,15 +1158,15 @@ function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<A
 
     // calc next attack's minimum stabbing cost (excludes movement & turning)
     // ubRawAPCost = MinAPsToShootOrStab(pSoldier,pOpponent->sGridNo, FALSE) - AP_CHANGE_TARGET;
-    ubRawAPCost = MinAPsToAttack(pSoldier, pOpponent.value.sGridNo, FALSE) - AP_CHANGE_TARGET;
+    ubRawAPCost = MinAPsToAttack(pSoldier, pOpponent.value.sGridNo, false) - AP_CHANGE_TARGET;
     // NumMessage("ubRawAPCost to stab this opponent = ",ubRawAPCost);
 
     // determine if this is a surprise stab (for tentacles, enemy must not see us, no dist limit)
-    fSurpriseStab = FALSE; // assume it is not a surprise stab
+    fSurpriseStab = false; // assume it is not a surprise stab
 
     // if opponent doesn't see the attacker
     if (pOpponent.value.bOppList[pSoldier.value.ubID] != SEEN_CURRENTLY) {
-      fSurpriseStab = TRUE; // we got 'im lined up where we want 'im!
+      fSurpriseStab = true; // we got 'im lined up where we want 'im!
     }
 
     iBestHitRate = 0; // reset best hit rate to minimum
@@ -1212,10 +1212,10 @@ function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<A
 
     // calculate this opponent's threat value
     // NOTE: ignore my cover!  By the time I run beside him I won't have any!
-    iThreatValue = CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, FALSE, pSoldier);
+    iThreatValue = CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, false, pSoldier);
 
     // estimate the damage this stab would do to this opponent
-    iEstDamage = EstimateStabDamage(pSoldier, pOpponent, ubBestChanceToHit, TRUE);
+    iEstDamage = EstimateStabDamage(pSoldier, pOpponent, ubBestChanceToHit, true);
     // NumMessage("STAB EstDamage = ", iEstDamage);
 
     // calculate the combined "attack value" for this opponent
@@ -1228,7 +1228,7 @@ function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<A
     // chance to actually hit him and maybe scare him, knock him down, etc.
     if (iAttackValue > 0) {
       // OOOF!  That was a lot of work!  But we've got a new best target!
-      pBestStab.value.ubPossible = TRUE;
+      pBestStab.value.ubPossible = true;
       pBestStab.value.ubOpponent = pOpponent.value.ubID;
       pBestStab.value.ubAimTime = ubBestAimTime;
       pBestStab.value.ubChanceToReallyHit = ubChanceToReallyHit;
@@ -1457,7 +1457,7 @@ function EstimateThrowDamage(pSoldier: Pointer<SOLDIERTYPE>, ubItemPos: UINT8, p
   return iDamage;
 }
 
-function EstimateStabDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>, ubChanceToHit: UINT8, fBladeAttack: BOOLEAN): INT32 {
+function EstimateStabDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>, ubChanceToHit: UINT8, fBladeAttack: boolean): INT32 {
   let iImpact: INT32;
   let iFluke: INT32;
   let iBonus: INT32;
@@ -1515,7 +1515,7 @@ function TryToReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   bSlot = FindAmmo(pSoldier, pWeapon.value.ubCalibre, pWeapon.value.ubMagSize, NO_SLOT);
   if (bSlot != NO_SLOT) {
     if (ReloadGun(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bSlot]))) {
-      return TRUE;
+      return true;
     }
   }
   return NOSHOOT_NOAMMO;
@@ -1552,7 +1552,7 @@ function CanNPCAttack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // NEUTRAL civilians are not allowed to attack, but those that are not
   // neutral (KILLNPC mission guynums, escorted guys) can, if they're armed
   if (PTR_CIVILIAN() && pSoldier.value.bNeutral) {
-    return FALSE;
+    return false;
   }
 
   // test if if we are able to attack (in general, not at any specific target)
@@ -1903,7 +1903,7 @@ function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bT
       }
     }
     AIPickBurstLocations(pSoldier, bTargets, pTargets);
-    pSoldier.value.fDoSpread = TRUE;
+    pSoldier.value.fDoSpread = true;
   }
   return sFirstTarget;
 }

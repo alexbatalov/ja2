@@ -8,7 +8,7 @@ function GetFreeLightEffect(): INT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumLightEffects; uiCount++) {
-    if ((gLightEffectData[uiCount].fAllocated == FALSE))
+    if ((gLightEffectData[uiCount].fAllocated == false))
       return uiCount;
   }
 
@@ -47,7 +47,7 @@ function UpdateLightingSprite(pLight: Pointer<LIGHTEFFECT>): void {
     return;
   }
 
-  LightSpritePower(pLight.value.iLight, TRUE);
+  LightSpritePower(pLight.value.iLight, true);
   //	LightSpriteFake( pLight->iLight );
   LightSpritePosition(pLight.value.iLight, (CenterX(pLight.value.sGridNo) / CELL_X_SIZE), (CenterY(pLight.value.sGridNo) / CELL_Y_SIZE));
 }
@@ -82,12 +82,12 @@ function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
   pLight.value.ubDuration = ubDuration;
   pLight.value.bRadius = ubStartRadius;
   pLight.value.bAge = 0;
-  pLight.value.fAllocated = TRUE;
+  pLight.value.fAllocated = true;
 
   UpdateLightingSprite(pLight);
 
   // Handle sight here....
-  AllTeamsLookForAll(FALSE);
+  AllTeamsLookForAll(false);
 
   return iLightIndex;
 }
@@ -102,7 +102,7 @@ function RemoveLightEffectFromTile(sGridNo: INT16): void {
 
     if (pLight.value.fAllocated) {
       if (pLight.value.sGridNo == sGridNo) {
-        pLight.value.fAllocated = FALSE;
+        pLight.value.fAllocated = false;
 
         // Remove light....
         if (pLight.value.iLight != (-1)) {
@@ -118,14 +118,14 @@ function DecayLightEffects(uiTime: UINT32): void {
   let pLight: Pointer<LIGHTEFFECT>;
   let cnt: UINT32;
   let cnt2: UINT32;
-  let fDelete: BOOLEAN = FALSE;
+  let fDelete: boolean = false;
   let usNumUpdates: UINT16 = 1;
 
   // age all active tear gas clouds, deactivate those that are just dispersing
   for (cnt = 0; cnt < guiNumLightEffects; cnt++) {
     pLight = addressof(gLightEffectData[cnt]);
 
-    fDelete = FALSE;
+    fDelete = false;
 
     if (pLight.value.fAllocated) {
       // ATE: Do this every so ofte, to acheive the effect we want...
@@ -147,19 +147,19 @@ function DecayLightEffects(uiTime: UINT32): void {
 
             if (pLight.value.bRadius == 0) {
               // Delete...
-              fDelete = TRUE;
+              fDelete = true;
               break;
             } else {
               UpdateLightingSprite(pLight);
             }
           } else {
-            fDelete = TRUE;
+            fDelete = true;
             break;
           }
         }
 
         if (fDelete) {
-          pLight.value.fAllocated = FALSE;
+          pLight.value.fAllocated = false;
 
           if (pLight.value.iLight != (-1)) {
             LightSpriteDestroy(pLight.value.iLight);
@@ -167,13 +167,13 @@ function DecayLightEffects(uiTime: UINT32): void {
         }
 
         // Handle sight here....
-        AllTeamsLookForAll(FALSE);
+        AllTeamsLookForAll(false);
       }
     }
   }
 }
 
-function SaveLightEffectsToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveLightEffectsToSaveGameFile(hFile: HWFILE): boolean {
   /*
   UINT32	uiNumBytesWritten;
   UINT32	uiNumberOfLights=0;
@@ -214,10 +214,10 @@ function SaveLightEffectsToSaveGameFile(hFile: HWFILE): BOOLEAN {
           }
   }
 */
-  return TRUE;
+  return true;
 }
 
-function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
+function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
 
@@ -228,7 +228,7 @@ function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
     // Load the Number of Light Effects
     FileRead(hFile, addressof(guiNumLightEffects), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
-      return FALSE;
+      return false;
     }
 
     // if there are lights saved.
@@ -238,7 +238,7 @@ function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
         // Load the Light effect Data
         FileRead(hFile, addressof(gLightEffectData[uiCount]), sizeof(LIGHTEFFECT), addressof(uiNumBytesRead));
         if (uiNumBytesRead != sizeof(LIGHTEFFECT)) {
-          return FALSE;
+          return false;
         }
       }
     }
@@ -250,10 +250,10 @@ function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
+function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let uiNumLightEffects: UINT32 = 0;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
@@ -277,14 +277,14 @@ function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
     // set the fact that there are no Light effects for this sector
     ReSetSectorFlag(sMapX, sMapY, bMapZ, SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS);
 
-    return TRUE;
+    return true;
   }
 
   // Open the file for writing
-  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
   if (hFile == 0) {
     // Error opening map modification file
-    return FALSE;
+    return false;
   }
 
   // Save the Number of Light Effects
@@ -293,7 +293,7 @@ function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
     // Close the file
     FileClose(hFile);
 
-    return FALSE;
+    return false;
   }
 
   // loop through and save the number of Light effects
@@ -306,7 +306,7 @@ function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
         // Close the file
         FileClose(hFile);
 
-        return FALSE;
+        return false;
       }
     }
   }
@@ -316,10 +316,10 @@ function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
 
   SetSectorFlag(sMapX, sMapY, bMapZ, SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS);
 
-  return TRUE;
+  return true;
 }
 
-function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
+function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
   let uiCnt: UINT32 = 0;
@@ -330,10 +330,10 @@ function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 
   // Open the file for reading, Create it if it doesnt exist
-  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hFile == 0) {
     // Error opening file
-    return FALSE;
+    return false;
   }
 
   // Clear out the old list
@@ -343,7 +343,7 @@ function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   FileRead(hFile, addressof(guiNumLightEffects), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // loop through and load the list
@@ -352,7 +352,7 @@ function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
     FileRead(hFile, addressof(gLightEffectData[uiCnt]), sizeof(LIGHTEFFECT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(LIGHTEFFECT)) {
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
   }
 
@@ -364,7 +364,7 @@ function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
 
   FileClose(hFile);
 
-  return TRUE;
+  return true;
 }
 
 function ResetLightEffects(): void {

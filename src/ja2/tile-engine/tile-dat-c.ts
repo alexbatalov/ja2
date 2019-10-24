@@ -680,7 +680,7 @@ let gTileTypeLogicalHeight: UINT8[] /* [NUMBEROFTILETYPES] */ = [
   10, // Second water
 ];
 
-function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileElement: Pointer<TILE_ELEMENT>, fUseRaisedObjectType: BOOLEAN): void {
+function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileElement: Pointer<TILE_ELEMENT>, fUseRaisedObjectType: boolean): void {
   let ubLoop: UINT8;
   let sIndexDiff: INT16;
   let cnt: UINT32;

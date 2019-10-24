@@ -177,7 +177,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
   let iLoop: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let bBuddyIndex: INT8;
-  let fForceDamnSound: BOOLEAN = FALSE;
+  let fForceDamnSound: boolean = false;
 
   iReportChance = -1;
 
@@ -185,7 +185,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
     case Enum255.LOCKPICKING_CHECK:
     case Enum255.ELECTRONIC_LOCKPICKING_CHECK:
 
-      fForceDamnSound = TRUE;
+      fForceDamnSound = true;
 
       iSkill = EffectiveMechanical(pSoldier);
       if (iSkill == 0) {
@@ -245,7 +245,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
 
     case Enum255.DISARM_TRAP_CHECK:
 
-      fForceDamnSound = TRUE;
+      fForceDamnSound = true;
 
       iSkill = EffectiveExplosive(pSoldier) * 7;
       if (iSkill == 0) {
@@ -260,7 +260,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
 
     case Enum255.DISARM_ELECTRONIC_TRAP_CHECK:
 
-      fForceDamnSound = TRUE;
+      fForceDamnSound = true;
 
       iSkill = __max(EffectiveMechanical(pSoldier), EffectiveExplosive(pSoldier)) * 7;
       if (iSkill == 0) {
@@ -280,7 +280,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
     case Enum255.OPEN_WITH_CROWBAR:
       // Add for crowbar...
       iSkill = EffectiveStrength(pSoldier) + 20;
-      fForceDamnSound = TRUE;
+      fForceDamnSound = true;
       break;
 
     case Enum255.SMASH_DOOR_CHECK:
@@ -419,7 +419,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
   return iMadeItBy;
 }
 
-function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: BOOLEAN): INT8 {
+function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: boolean): INT8 {
   // return the level of trap which the guy is able to detect
 
   let bDetectLevel: INT8;

@@ -1,7 +1,7 @@
 const SHADE_TABLE_DIR = "ShadeTables";
 
 let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
-let gfForceBuildShadeTables: BOOLEAN = FALSE;
+let gfForceBuildShadeTables: boolean = false;
 
 function DetermineRGBDistributionSettings(): void {
   let DataDir: STRING512;
@@ -15,9 +15,9 @@ function DetermineRGBDistributionSettings(): void {
   let uiPrevBBitMask: UINT32;
   let uiNumBytesRead: UINT32;
   let hfile: HWFILE;
-  let fSaveRGBDist: BOOLEAN = FALSE;
-  let fCleanShadeTable: BOOLEAN = FALSE;
-  let fLoadedPrevRGBDist: BOOLEAN = FALSE;
+  let fSaveRGBDist: boolean = false;
+  let fCleanShadeTable: boolean = false;
+  let fLoadedPrevRGBDist: boolean = false;
 
   // First, determine if we have a file saved.  If not, then this is the first time, and
   // all shade tables will have to be built and saved to disk.  This can be time consuming, adding up to
@@ -33,7 +33,7 @@ function DetermineRGBDistributionSettings(): void {
     if (!SetFileManCurrentDirectory(ShadeTableDir)) {
       AssertMsg(0, "Couldn't access the newly created ShadeTable directory.");
     }
-    fSaveRGBDist = TRUE;
+    fSaveRGBDist = true;
   }
 
   if (!fSaveRGBDist) {
@@ -41,17 +41,17 @@ function DetermineRGBDistributionSettings(): void {
     if (!FileExists("RGBDist.dat") || FileExists("ResetShadeTables.txt")) {
       // Can't find the RGBDist.dat file.  The directory exists, but the file doesn't, which
       // means the user deleted the file manually.  Now, set it up to create a new one.
-      fSaveRGBDist = TRUE;
-      fCleanShadeTable = TRUE;
+      fSaveRGBDist = true;
+      fCleanShadeTable = true;
     } else {
-      hfile = FileOpen("RGBDist.dat", FILE_ACCESS_READ, FALSE);
+      hfile = FileOpen("RGBDist.dat", FILE_ACCESS_READ, false);
       if (!hfile) {
         AssertMsg(0, "Couldn't open RGBDist.dat, even though it exists!");
       }
       FileRead(hfile, addressof(uiPrevRBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
       FileRead(hfile, addressof(uiPrevGBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
       FileRead(hfile, addressof(uiPrevBBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
-      fLoadedPrevRGBDist = TRUE;
+      fLoadedPrevRGBDist = true;
       FileClose(hfile);
     }
   }
@@ -66,8 +66,8 @@ function DetermineRGBDistributionSettings(): void {
       // 2)  Certain video cards have different RGB distributions in different operating systems such as
       //		the Millenium card using Windows NT or Windows 95
       // 3)  The user has physically modified the RGBDist.dat file.
-      fSaveRGBDist = TRUE;
-      fCleanShadeTable = TRUE;
+      fSaveRGBDist = true;
+      fCleanShadeTable = true;
     }
   }
   if (fCleanShadeTable) {
@@ -79,7 +79,7 @@ function DetermineRGBDistributionSettings(): void {
     // The RGB distribution is going to be saved in a tiny file for future reference.  As long as the
     // RGB distribution never changes, the shade table will grow until eventually, all tilesets are loaded,
     // shadetables generated and saved in this directory.
-    hfile = FileOpen("RGBDist.dat", FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+    hfile = FileOpen("RGBDist.dat", FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
     if (!hfile) {
       AssertMsg(0, "Couldn't create RGBDist.dat for writing!");
     }
@@ -94,7 +94,7 @@ function DetermineRGBDistributionSettings(): void {
   SetFileManCurrentDirectory(DataDir);
 }
 
-function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
+function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
   let hfile: HWFILE;
   let i: INT32;
   let uiNumBytesRead: UINT32;
@@ -107,16 +107,16 @@ function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
   strcpy(ShadeFileName, TileSurfaceFilenames[uiTileTypeIndex]);
   ptr = strstr(ShadeFileName, ".");
   if (!ptr) {
-    return FALSE;
+    return false;
   }
   ptr++;
   sprintf(ptr, "sha");
 
-  hfile = FileOpen(ShadeFileName, FILE_ACCESS_READ, FALSE);
+  hfile = FileOpen(ShadeFileName, FILE_ACCESS_READ, false);
   if (!hfile) {
     // File doesn't exist, so generate it
     FileClose(hfile);
-    return FALSE;
+    return false;
   }
 
   // MISSING:  Compare time stamps.
@@ -129,10 +129,10 @@ function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
 
   // The file exists, now make sure the
   FileClose(hfile);
-  return TRUE;
+  return true;
 }
 
-function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
+function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
   let hfile: HWFILE;
   let i: INT32;
   let uiNumBytesWritten: UINT32;
@@ -145,25 +145,25 @@ function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
   strcpy(ShadeFileName, TileSurfaceFilenames[uiTileTypeIndex]);
   ptr = strstr(ShadeFileName, ".");
   if (!ptr) {
-    return FALSE;
+    return false;
   }
   ptr++;
   sprintf(ptr, "sha");
 
-  hfile = FileOpen(ShadeFileName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hfile = FileOpen(ShadeFileName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
   if (!hfile) {
     FileClose(hfile);
     AssertMsg(0, String("Can't create %s", ShadeFileName));
-    return FALSE;
+    return false;
   }
   for (i = 0; i < 16; i++) {
     FileWrite(hfile, pObj.value.pShades[i], 512, addressof(uiNumBytesWritten));
   }
 
   FileClose(hfile);
-  return TRUE;
+  return true;
 }
 
-function DeleteShadeTableDir(): BOOLEAN {
-  return RemoveFileManDirectory(SHADE_TABLE_DIR, TRUE);
+function DeleteShadeTableDir(): boolean {
+  return RemoveFileManDirectory(SHADE_TABLE_DIR, true);
 }

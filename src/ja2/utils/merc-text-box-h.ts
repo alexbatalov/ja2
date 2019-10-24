@@ -11,8 +11,8 @@ interface MercPopUpBox {
   ubBorderIndex: UINT8;
   uiMercTextPopUpBackground: UINT32;
   uiMercTextPopUpBorder: UINT32;
-  fMercTextPopupInitialized: BOOLEAN;
-  fMercTextPopupSurfaceInitialized: BOOLEAN;
+  fMercTextPopupInitialized: boolean;
+  fMercTextPopupSurfaceInitialized: boolean;
   uiFlags: UINT32;
 }
 

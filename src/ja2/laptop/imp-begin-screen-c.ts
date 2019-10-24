@@ -47,7 +47,7 @@ let uiNickNameCursorPosition: UINT32 = 196 + LAPTOP_SCREEN_UL_X;
 let uiFullNameCursorPosition: UINT32 = 196 + LAPTOP_SCREEN_UL_X;
 
 // whther a new char has been entered ( to force redraw)
-let fNewCharInString: BOOLEAN = FALSE;
+let fNewCharInString: boolean = false;
 
 // mouse regions
 let gIMPBeginScreenMouseRegions: MOUSE_REGION[] /* [4] */;
@@ -80,7 +80,7 @@ function EnterIMPBeginScreen(): void {
   ubTextEnterMode = 0;
 
   // draw name if any
-  fNewCharInString = TRUE;
+  fNewCharInString = true;
 
   // render the screen on entry
   RenderIMPBeginScreen();
@@ -88,7 +88,7 @@ function EnterIMPBeginScreen(): void {
   if (fFinishedCharGeneration) {
     ubTextEnterMode = 5;
   } else {
-    fFirstIMPAttribTime = TRUE;
+    fFirstIMPAttribTime = true;
   }
 
   // create mouse regions
@@ -223,7 +223,7 @@ function RemoveIMPBeginScreenButtons(): void {
 
 function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // easter egg check
-  let fEggOnYouFace: BOOLEAN = FALSE;
+  let fEggOnYouFace: boolean = false;
 
   // btn callback for IMP Begin Screen done button
   if (!(btn.value.uiFlags & BUTTON_ENABLED))
@@ -238,11 +238,11 @@ function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
       if (fFinishedCharGeneration) {
         // simply reviewing name and gender, exit to finish page
         iCurrentImpPage = Enum71.IMP_FINISH;
-        fButtonPendingFlag = TRUE;
+        fButtonPendingFlag = true;
         return;
       } else {
         if (CheckCharacterInputForEgg()) {
-          fEggOnYouFace = TRUE;
+          fEggOnYouFace = true;
         }
       }
 
@@ -264,9 +264,9 @@ function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
         }
 
         // no easter egg?...then proceed along
-        if (fEggOnYouFace == FALSE) {
+        if (fEggOnYouFace == false) {
           iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
-          fButtonPendingFlag = TRUE;
+          fButtonPendingFlag = true;
         }
       } else {
         // invalid name, reset current mode
@@ -317,7 +317,7 @@ switch(InputEvent.usEvent)
 
           // increment to next selection box
           IncrementTextEnterMode();
-          fNewCharInString = TRUE;
+          fNewCharInString = true;
           break;
         case (SPACE):
           // handle space bar
@@ -330,7 +330,7 @@ switch(InputEvent.usEvent)
           } else {
             HandleBeginScreenTextEvent(InputEvent.usParam);
           }
-          fNewCharInString = TRUE;
+          fNewCharInString = true;
           break;
         case ((ESC)):
           LeaveLapTopScreen();
@@ -338,12 +338,12 @@ switch(InputEvent.usEvent)
         case ((TAB)):
           // tab hit, increment to next selection box
           IncrementTextEnterMode();
-          fNewCharInString = TRUE;
+          fNewCharInString = true;
           break;
         case (265):
           // tab and shift
           DecrementTextEnterMode();
-          fNewCharInString = TRUE;
+          fNewCharInString = true;
           break;
         default:
           HandleBeginScreenTextEvent(InputEvent.usParam);
@@ -376,7 +376,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
             uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL());
 
             // string has been altered, redisplay
-            fNewCharInString = TRUE;
+            fNewCharInString = true;
           }
           break;
         case (Enum87.NICK_NAME_MODE):
@@ -392,7 +392,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
             uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL());
 
             // string has been altered, redisplay
-            fNewCharInString = TRUE;
+            fNewCharInString = true;
           }
 
           break;
@@ -428,7 +428,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               uiFullNameCharacterPosition += 1;
 
               // string has been altered, redisplay
-              fNewCharInString = TRUE;
+              fNewCharInString = true;
             }
             break;
           case (Enum87.NICK_NAME_MODE):
@@ -458,7 +458,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               uiNickNameCharacterPosition += 1;
 
               // string has been altered, redisplay
-              fNewCharInString = TRUE;
+              fNewCharInString = true;
             }
 
             break;
@@ -476,7 +476,7 @@ function DisplayFullNameStringCursor(): void {
   let uiDeltaTime: UINT32 = 0;
   /* static */ let iCurrentState: UINT32 = 0;
   let pDestBuf: Pointer<UINT8>;
-  /* static */ let fIncrement: BOOLEAN = TRUE;
+  /* static */ let fIncrement: boolean = true;
 
   if (uiBaseTime == 0) {
     uiBaseTime = GetJA2Clock();
@@ -489,11 +489,11 @@ function DisplayFullNameStringCursor(): void {
   if (uiDeltaTime > MIN_GLOW_DELTA) {
     if (iCurrentState == 10) {
       // start rotating downward
-      fIncrement = FALSE;
+      fIncrement = false;
     }
     if (iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = TRUE;
+      fIncrement = true;
     }
     // if increment upward, increment iCurrentState
     if (fIncrement) {
@@ -510,7 +510,7 @@ function DisplayFullNameStringCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(TRUE, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT() - 2, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(true, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT() - 2, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
   InvalidateRegion(uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition + 1, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT() + 1 - 2);
 
@@ -526,7 +526,7 @@ function DisplayNickNameStringCursor(): void {
   let uiDeltaTime: UINT32 = 0;
   let pDestBuf: Pointer<UINT8>;
   /* static */ let iCurrentState: UINT32 = 0;
-  /* static */ let fIncrement: BOOLEAN = TRUE;
+  /* static */ let fIncrement: boolean = true;
 
   if (uiBaseTime == 0) {
     uiBaseTime = GetJA2Clock();
@@ -539,11 +539,11 @@ function DisplayNickNameStringCursor(): void {
   if (uiDeltaTime > MIN_GLOW_DELTA) {
     if (iCurrentState == 10) {
       // start rotating downward
-      fIncrement = FALSE;
+      fIncrement = false;
     }
     if (iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = TRUE;
+      fIncrement = true;
     }
     // if increment upward, increment iCurrentState
     if (fIncrement) {
@@ -560,7 +560,7 @@ function DisplayNickNameStringCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(TRUE, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(true, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
   InvalidateRegion(uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition + 1, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT() + 1);
 
@@ -590,8 +590,8 @@ function DisplayPlayerFullNameString(): void {
   SetFontShadow(DEFAULT_SHADOW);
   mprintf(LAPTOP_SCREEN_UL_X + 196, FULL_NAME_CURSOR_Y + 1, pFullNameString);
 
-  fNewCharInString = FALSE;
-  fReDrawScreenFlag = TRUE;
+  fNewCharInString = false;
+  fReDrawScreenFlag = true;
   return;
 }
 
@@ -616,8 +616,8 @@ function DisplayPlayerNickNameString(): void {
   SetFontShadow(DEFAULT_SHADOW);
   mprintf(LAPTOP_SCREEN_UL_X + 196, NICK_NAME_CURSOR_Y + 4, pNickNameString);
 
-  fNewCharInString = FALSE;
-  fReDrawScreenFlag = TRUE;
+  fNewCharInString = false;
+  fReDrawScreenFlag = true;
   return;
 }
 
@@ -627,7 +627,7 @@ function DisplayMaleGlowCursor(): void {
   /* static */ let uiBaseTime: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
   /* static */ let iCurrentState: UINT32 = 0;
-  /* static */ let fIncrement: BOOLEAN = TRUE;
+  /* static */ let fIncrement: boolean = true;
   let pDestBuf: Pointer<UINT8>;
 
   if (uiBaseTime == 0) {
@@ -641,11 +641,11 @@ function DisplayMaleGlowCursor(): void {
   if (uiDeltaTime > MIN_GLOW_DELTA) {
     if (iCurrentState == 10) {
       // start rotating downward
-      fIncrement = FALSE;
+      fIncrement = false;
     }
     if (iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = TRUE;
+      fIncrement = true;
     }
     // if increment upward, increment iCurrentState
     if (fIncrement) {
@@ -662,7 +662,7 @@ function DisplayMaleGlowCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw rectangle
-  RectangleDraw(TRUE, MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  RectangleDraw(true, MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
   InvalidateRegion(MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH + 1, MALE_BOX_Y + MALE_BOX_HEIGHT + 1);
 
@@ -677,7 +677,7 @@ function DisplayFemaleGlowCursor(): void {
   /* static */ let uiBaseTime: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
   /* static */ let iCurrentState: UINT32 = 0;
-  /* static */ let fIncrement: BOOLEAN = TRUE;
+  /* static */ let fIncrement: boolean = true;
   let pDestBuf: Pointer<UINT8>;
 
   if (uiBaseTime == 0) {
@@ -691,11 +691,11 @@ function DisplayFemaleGlowCursor(): void {
   if (uiDeltaTime > MIN_GLOW_DELTA) {
     if (iCurrentState == 10) {
       // start rotating downward
-      fIncrement = FALSE;
+      fIncrement = false;
     }
     if (iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = TRUE;
+      fIncrement = true;
     }
     // if increment upward, increment iCurrentState
     if (fIncrement) {
@@ -712,7 +712,7 @@ function DisplayFemaleGlowCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw rectangle
-  RectangleDraw(TRUE, FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  RectangleDraw(true, FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
   InvalidateRegion(FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH + 1, MALE_BOX_Y + MALE_BOX_HEIGHT + 1);
 
@@ -830,7 +830,7 @@ function SelectFullNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set current mode to full name type in mode
     ubTextEnterMode = Enum87.FULL_NAME_MODE;
-    fNewCharInString = TRUE;
+    fNewCharInString = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -840,7 +840,7 @@ function SelectNickNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
     ubTextEnterMode = Enum87.NICK_NAME_MODE;
-    fNewCharInString = TRUE;
+    fNewCharInString = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -850,7 +850,7 @@ function SelectMaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
     bGenderFlag = Enum86.IMP_MALE;
-    fNewCharInString = TRUE;
+    fNewCharInString = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -860,7 +860,7 @@ function SelectFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
     bGenderFlag = Enum86.IMP_FEMALE;
-    fNewCharInString = TRUE;
+    fNewCharInString = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -870,7 +870,7 @@ function MvtOnFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
     // fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     ubTextEnterMode = Enum87.FEMALE_GENDER_SELECT;
-    fNewCharInString = TRUE;
+    fNewCharInString = true;
   }
 }
 
@@ -879,7 +879,7 @@ function MvtOnMaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
     // fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     ubTextEnterMode = Enum87.MALE_GENDER_SELECT;
-    fNewCharInString = TRUE;
+    fNewCharInString = true;
   }
 }
 
@@ -915,10 +915,10 @@ function Print8CharacterOnlyString(): void {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-function CheckCharacterInputForEgg(): BOOLEAN {
+function CheckCharacterInputForEgg(): boolean {
   let HireMercStruct: MERC_HIRE_STRUCT;
 
-  return FALSE;
+  return false;
   if ((wcscmp(pFullNameString, "Test Female") == 0) && (wcscmp(pNickNameString, "Test") == 0)) {
     wcscpy(pFullNameString, "Test Female");
     wcscpy(pNickNameString, "Test");
@@ -943,7 +943,7 @@ function CheckCharacterInputForEgg(): BOOLEAN {
     iCurrentImpPage = Enum71.IMP_FINISH;
     LaptopSaveInfo.iVoiceId = 1;
     iPortraitNumber = 5;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }

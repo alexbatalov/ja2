@@ -1,4 +1,4 @@
-function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
+function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
   let hFile: HWFILE;
   let Header: STCIHeader;
   let uiBytesRead: UINT32;
@@ -12,13 +12,13 @@ function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   CHECKF(FileExists(TempImage.ImageFile));
 
   // Open the file and read the header
-  hFile = FileOpen(TempImage.ImageFile, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(TempImage.ImageFile, FILE_ACCESS_READ, false);
   CHECKF(hFile);
 
   if (!FileRead(hFile, addressof(Header), STCI_HEADER_SIZE, addressof(uiBytesRead)) || uiBytesRead != STCI_HEADER_SIZE || memcmp(Header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem reading STCI header.");
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // Determine from the header the data stored in the file. and run the appropriate loader
@@ -26,19 +26,19 @@ function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
     if (!STCILoadRGB(addressof(TempImage), fContents, hFile, addressof(Header))) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem loading RGB image.");
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
   } else if (Header.fFlags & STCI_INDEXED) {
     if (!STCILoadIndexed(addressof(TempImage), fContents, hFile, addressof(Header))) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem loading palettized image.");
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
   } else {
     // unsupported type of data, or the right flags weren't set!
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Unknown data organization in STCI file.");
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // Requested data loaded successfully.
@@ -54,25 +54,25 @@ function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   TempImage.ubBitDepth = Header.ubDepth;
   hImage.value = TempImage;
 
-  return TRUE;
+  return true;
 }
 
-function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: Pointer<STCIHeader>): BOOLEAN {
+function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: Pointer<STCIHeader>): boolean {
   let uiBytesRead: UINT32;
 
   if (fContents & IMAGE_PALETTE && !(fContents & IMAGE_ALLIMAGEDATA)) {
     // RGB doesn't have a palette!
-    return FALSE;
+    return false;
   }
 
   if (fContents & IMAGE_BITMAPDATA) {
     // Allocate memory for the image data and read it in
     hImage.value.pImageData = MemAlloc(pHeader.value.uiStoredSize);
     if (hImage.value.pImageData == null) {
-      return FALSE;
+      return false;
     } else if (!FileRead(hFile, hImage.value.pImageData, pHeader.value.uiStoredSize, addressof(uiBytesRead)) || uiBytesRead != pHeader.value.uiStoredSize) {
       MemFree(hImage.value.pImageData);
-      return FALSE;
+      return false;
     }
 
     hImage.value.fFlags |= IMAGE_BITMAPDATA;
@@ -89,30 +89,30 @@ function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: 
           if (gusRedMask == 0x7C00 && gusGreenMask == 0x03E0 && gusBlueMask == 0x001F) {
             // hardware is 555
             ConvertRGBDistribution565To555(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
-            return TRUE;
+            return true;
           } else if (gusRedMask == 0xFC00 && gusGreenMask == 0x03E0 && gusBlueMask == 0x001F) {
             ConvertRGBDistribution565To655(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
-            return TRUE;
+            return true;
           } else if (gusRedMask == 0xF800 && gusGreenMask == 0x07C0 && gusBlueMask == 0x003F) {
             ConvertRGBDistribution565To556(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
-            return TRUE;
+            return true;
           } else {
             // take the long route
             ConvertRGBDistribution565ToAny(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
-            return TRUE;
+            return true;
           }
         } else {
           // hardware distribution is not R-G-B so we have to take the long route!
           ConvertRGBDistribution565ToAny(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
-          return TRUE;
+          return true;
         }
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
-function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: Pointer<STCIHeader>): BOOLEAN {
+function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: Pointer<STCIHeader>): boolean {
   let uiFileSectionSize: UINT32;
   let uiBytesRead: UINT32;
   let pSTCIPalette: PTR;
@@ -121,14 +121,14 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
     // Allocate memory for reading in the palette
     if (pHeader.value.Indexed.uiNumberOfColours != 256) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Palettized image has bad palette size.");
-      return FALSE;
+      return false;
     }
     uiFileSectionSize = pHeader.value.Indexed.uiNumberOfColours * STCI_PALETTE_ELEMENT_SIZE;
     pSTCIPalette = MemAlloc(uiFileSectionSize);
     if (pSTCIPalette == null) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Out of memory!");
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
 
     // ATE: Memset: Jan 16/99
@@ -139,12 +139,12 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem loading palette!");
       FileClose(hFile);
       MemFree(pSTCIPalette);
-      return FALSE;
+      return false;
     } else if (!STCISetPalette(pSTCIPalette, hImage)) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem setting hImage-format palette!");
       FileClose(hFile);
       MemFree(pSTCIPalette);
-      return FALSE;
+      return false;
     }
     hImage.value.fFlags |= IMAGE_PALETTE;
     // Free the temporary buffer
@@ -152,10 +152,10 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
   } else if (fContents & (IMAGE_BITMAPDATA | IMAGE_APPDATA)) {
     // seek past the palette
     uiFileSectionSize = pHeader.value.Indexed.uiNumberOfColours * STCI_PALETTE_ELEMENT_SIZE;
-    if (FileSeek(hFile, uiFileSectionSize, FILE_SEEK_FROM_CURRENT) == FALSE) {
+    if (FileSeek(hFile, uiFileSectionSize, FILE_SEEK_FROM_CURRENT) == false) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem seeking past palette!");
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
   }
   if (fContents & IMAGE_BITMAPDATA) {
@@ -171,7 +171,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
         if (fContents & IMAGE_PALETTE) {
           MemFree(hImage.value.pPalette);
         }
-        return FALSE;
+        return false;
       }
       if (!FileRead(hFile, hImage.value.pETRLEObject, uiFileSectionSize, addressof(uiBytesRead)) || uiBytesRead != uiFileSectionSize) {
         DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Error loading subimage structures!");
@@ -180,7 +180,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
           MemFree(hImage.value.pPalette);
         }
         MemFree(hImage.value.pETRLEObject);
-        return FALSE;
+        return false;
       }
       hImage.value.uiSizePixData = pHeader.value.uiStoredSize;
       hImage.value.fFlags |= IMAGE_TRLECOMPRESSED;
@@ -196,7 +196,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
       if (hImage.value.usNumberOfObjects > 0) {
         MemFree(hImage.value.pETRLEObject);
       }
-      return FALSE;
+      return false;
     } else if (!FileRead(hFile, hImage.value.pImageData, pHeader.value.uiStoredSize, addressof(uiBytesRead)) || uiBytesRead != pHeader.value.uiStoredSize) {
       // Problem reading in the image data!
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Error loading image data!");
@@ -208,15 +208,15 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
       if (hImage.value.usNumberOfObjects > 0) {
         MemFree(hImage.value.pETRLEObject);
       }
-      return FALSE;
+      return false;
     }
     hImage.value.fFlags |= IMAGE_BITMAPDATA;
   } else if (fContents & IMAGE_APPDATA) // then there's a point in seeking ahead
   {
-    if (FileSeek(hFile, pHeader.value.uiStoredSize, FILE_SEEK_FROM_CURRENT) == FALSE) {
+    if (FileSeek(hFile, pHeader.value.uiStoredSize, FILE_SEEK_FROM_CURRENT) == false) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem seeking past image data!");
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
   }
 
@@ -236,7 +236,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
       if (hImage.value.usNumberOfObjects > 0) {
         MemFree(hImage.value.pETRLEObject);
       }
-      return FALSE;
+      return false;
     }
     if (!FileRead(hFile, hImage.value.pAppData, pHeader.value.uiAppDataSize, addressof(uiBytesRead)) || uiBytesRead != pHeader.value.uiAppDataSize) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Error loading application-specific data!");
@@ -251,7 +251,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
       if (hImage.value.usNumberOfObjects > 0) {
         MemFree(hImage.value.pETRLEObject);
       }
-      return FALSE;
+      return false;
     }
     hImage.value.uiAppDataSize = pHeader.value.uiAppDataSize;
     ;
@@ -260,10 +260,10 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
     hImage.value.pAppData = null;
     hImage.value.uiAppDataSize = 0;
   }
-  return TRUE;
+  return true;
 }
 
-function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): BOOLEAN {
+function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): boolean {
   let usIndex: UINT16;
   let pubPalette: Pointer<STCIPaletteElement>;
 
@@ -274,7 +274,7 @@ function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): BOOLEAN {
   memset(hImage.value.pPalette, 0, (sizeof(SGPPaletteEntry) * 256));
 
   if (hImage.value.pPalette == null) {
-    return FALSE;
+    return false;
   }
 
   // Initialize the proper palette entries
@@ -285,10 +285,10 @@ function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): BOOLEAN {
     hImage.value.pPalette[usIndex].peFlags = 0;
     pubPalette++;
   }
-  return TRUE;
+  return true;
 }
 
-function IsSTCIETRLEFile(ImageFile: Pointer<CHAR8>): BOOLEAN {
+function IsSTCIETRLEFile(ImageFile: Pointer<CHAR8>): boolean {
   let hFile: HWFILE;
   let Header: STCIHeader;
   let uiBytesRead: UINT32;
@@ -296,18 +296,18 @@ function IsSTCIETRLEFile(ImageFile: Pointer<CHAR8>): BOOLEAN {
   CHECKF(FileExists(ImageFile));
 
   // Open the file and read the header
-  hFile = FileOpen(ImageFile, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(ImageFile, FILE_ACCESS_READ, false);
   CHECKF(hFile);
 
   if (!FileRead(hFile, addressof(Header), STCI_HEADER_SIZE, addressof(uiBytesRead)) || uiBytesRead != STCI_HEADER_SIZE || memcmp(Header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem reading STCI header.");
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
   FileClose(hFile);
   if (Header.fFlags & STCI_ETRLE_COMPRESSED) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }

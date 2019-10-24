@@ -4,7 +4,7 @@ let guiMiscGrid: UINT32;
 function GameInitBobbyRMisc(): void {
 }
 
-function EnterBobbyRMisc(): BOOLEAN {
+function EnterBobbyRMisc(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
@@ -26,7 +26,7 @@ function EnterBobbyRMisc(): BOOLEAN {
 
   RenderBobbyRMisc();
 
-  return TRUE;
+  return true;
 }
 
 function ExitBobbyRMisc(): void {

@@ -20,7 +20,7 @@ const enum Enum70 {
 }
 
 interface NewBobbyRayOrderStruct {
-  fActive: BOOLEAN;
+  fActive: boolean;
   ubDeliveryLoc: UINT8; // the city the shipment is going to
   ubDeliveryMethod: UINT8; // type of delivery: next day, 2 days ...
   BobbyRayPurchase: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
@@ -29,7 +29,7 @@ interface NewBobbyRayOrderStruct {
   uiPackageWeight: UINT32;
   uiOrderedOnDayNum: UINT32;
 
-  fDisplayedInShipmentPage: BOOLEAN;
+  fDisplayedInShipmentPage: boolean;
 
   ubFiller: UINT8[] /* [7] */;
 }

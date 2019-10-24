@@ -74,10 +74,10 @@ const GROUPFLAG_HIGH_POTENTIAL_FOR_AMBUSH = 0x00000010;
 const GROUPFLAG_GROUP_ARRIVED_SIMULTANEOUSLY = 0x00000020;
 
 interface GROUP {
-  fDebugGroup: BOOLEAN; // for testing purposes -- handled differently in certain cases.
-  fPlayer: BOOLEAN; // set if this is a player controlled group.
-  fVehicle: BOOLEAN; // vehicle controlled group?
-  fPersistant: BOOLEAN; // This flag when set prevents the group from being automatically deleted when it becomes empty.
+  fDebugGroup: boolean; // for testing purposes -- handled differently in certain cases.
+  fPlayer: boolean; // set if this is a player controlled group.
+  fVehicle: boolean; // vehicle controlled group?
+  fPersistant: boolean; // This flag when set prevents the group from being automatically deleted when it becomes empty.
   ubGroupID: UINT8; // the unique ID of the group (used for hooking into events and SOLDIERTYPE)
   ubGroupSize: UINT8; // total number of individuals in the group.
 
@@ -96,7 +96,7 @@ interface GROUP {
   ubPrevY: UINT8;
 
   ubOriginalSector: UINT8; // sector where group was created.
-  fBetweenSectors: BOOLEAN; // set only if a group is between sector.
+  fBetweenSectors: boolean; // set only if a group is between sector.
   ubMoveType: UINT8; // determines the type of movement (ONE_WAY, CIRCULAR, ENDTOEND, etc.)
   ubNextWaypointID: UINT8; // the ID of the next waypoint
   ubFatigueLevel: UINT8; // the fatigue level of the weakest member in group
@@ -104,8 +104,8 @@ interface GROUP {
   ubRestToFatigueLevel: UINT8; // when resting, the group will rest until the fatigue level reaches this level.
   uiArrivalTime: UINT32; // the arrival time in world minutes that the group will arrive at the next sector.
   uiTraverseTime: UINT32; // the total traversal time from the previous sector to the next sector.
-  fRestAtNight: BOOLEAN; // set when the group is permitted to rest between 2200 and 0600 when moving
-  fWaypointsCancelled: BOOLEAN; // set when groups waypoints have been removed.
+  fRestAtNight: boolean; // set when the group is permitted to rest between 2200 and 0600 when moving
+  fWaypointsCancelled: boolean; // set when groups waypoints have been removed.
   pWaypoints: Pointer<WAYPOINT>; // a list of all of the waypoints in the groups movement.
   ubTransportationMask: UINT8; // the mask combining all of the groups transportation methods.
   uiFlags: UINT32; // various conditions that apply to the group

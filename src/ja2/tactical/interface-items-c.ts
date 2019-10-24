@@ -153,15 +153,15 @@ let gInvDesc: MOUSE_REGION;
 
 let gpItemPointer: Pointer<OBJECTTYPE> = null;
 let gItemPointer: OBJECTTYPE;
-let gfItemPointerDifferentThanDefault: BOOLEAN = FALSE;
+let gfItemPointerDifferentThanDefault: boolean = false;
 let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
 let gbItemPointerSrcSlot: INT8;
 let gusItemPointer: UINT16 = 255;
 let usItemSnapCursor: UINT16;
 let guiNewlyPlacedItemTimer: UINT32 = 0;
-let gfBadThrowItemCTGH: BOOLEAN;
-let gfDontChargeAPsToPickup: BOOLEAN = FALSE;
-let gbItemPointerLocateGood: BOOLEAN = FALSE;
+let gfBadThrowItemCTGH: boolean;
+let gfDontChargeAPsToPickup: boolean = false;
+let gbItemPointerLocateGood: boolean = false;
 
 // ITEM DESCRIPTION BOX STUFF
 let guiItemDescBox: UINT32;
@@ -169,10 +169,10 @@ let guiMapItemDescBox: UINT32;
 let guiItemGraphic: UINT32;
 let guiMoneyGraphicsForDescBox: UINT32;
 let guiBullet: UINT32;
-let gfInItemDescBox: BOOLEAN = FALSE;
+let gfInItemDescBox: boolean = false;
 let guiCurrentItemDescriptionScreen: UINT32 = 0;
 let gpItemDescObject: Pointer<OBJECTTYPE> = null;
-let gfItemDescObjectIsAttachment: BOOLEAN = FALSE;
+let gfItemDescObjectIsAttachment: boolean = false;
 let gzItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
 let gzItemDesc: UINT16[] /* [SIZE_ITEM_INFO] */;
 let gzItemPros: UINT16[] /* [SIZE_ITEM_PROS] */;
@@ -185,9 +185,9 @@ let gsInvDescY: INT16;
 let gubItemDescStatusIndex: UINT8;
 let giItemDescAmmoButtonImages: INT32;
 let giItemDescAmmoButton: INT32;
-let gfItemAmmoDown: BOOLEAN = FALSE;
+let gfItemAmmoDown: boolean = false;
 let gpItemDescSoldier: Pointer<SOLDIERTYPE>;
-let fItemDescDelete: BOOLEAN = FALSE;
+let fItemDescDelete: boolean = false;
 let gItemDescAttachmentRegions: MOUSE_REGION[] /* [4] */;
 let gProsAndConsRegions: MOUSE_REGION[] /* [2] */;
 
@@ -220,7 +220,7 @@ const KEY_RING_ROW_WIDTH = 7;
 const MAP_KEY_RING_ROW_WIDTH = 4;
 
 // ITEM STACK POPUP STUFF
-let gfInItemStackPopup: BOOLEAN = FALSE;
+let gfInItemStackPopup: boolean = false;
 let guiItemPopupBoxes: UINT32;
 let gpItemPopupObject: Pointer<OBJECTTYPE>;
 let gsItemPopupWidth: INT16;
@@ -229,7 +229,7 @@ let gsItemPopupX: INT16;
 let gsItemPopupY: INT16;
 let gItemPopupRegions: MOUSE_REGION[] /* [8] */;
 let gKeyRingRegions: MOUSE_REGION[] /* [NUMBER_KEYS_ON_KEYRING] */;
-let gfInKeyRingPopup: BOOLEAN = FALSE;
+let gfInKeyRingPopup: boolean = false;
 let gubNumItemPopups: UINT8 = 0;
 let gItemPopupRegion: MOUSE_REGION;
 let gsItemPopupInvX: INT16;
@@ -248,7 +248,7 @@ let gpItemPopupSoldier: Pointer<SOLDIERTYPE>;
 let giMapInvDescButtonImage: INT32;
 let giMapInvDescButton: INT32 = -1;
 
-let gfItemPopupRegionCallbackEndFix: BOOLEAN = FALSE;
+let gfItemPopupRegionCallbackEndFix: boolean = false;
 
 let ubRGBItemCyclePlacedItemColors: UINT8[] /* [] */ = [
   25, 25, 25,
@@ -372,29 +372,29 @@ let gItemDescHelpText: INV_HELPTEXT = [
   [ Message[Enum334.STR_ATTACHMENT_INVALID_HELP] ],
 ];
 
-let gfItemDescHelpTextOffset: BOOLEAN = FALSE;
+let gfItemDescHelpTextOffset: boolean = false;
 
 // ARRAY FOR INV PANEL INTERFACE ITEM POSITIONS (sX,sY get set via InitInvSlotInterface() )
 let gSMInvData: INV_REGIONS[] /* [] */ = [
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, HEAD_INV_SLOT_WIDTH, HEAD_INV_SLOT_HEIGHT, 0, 0 ], // HELMETPOS
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, VEST_INV_SLOT_WIDTH, VEST_INV_SLOT_HEIGHT, 0, 0 ], // VESTPOS
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, LEGS_INV_SLOT_WIDTH, LEGS_INV_SLOT_HEIGHT, 0, 0 ], // LEGPOS,
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // HEAD1POS
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // HEAD2POS
-  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // HANDPOS,
-  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // SECONDHANDPOS
-  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK1
-  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK2
-  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK3
-  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK4
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK1
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK2
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK3
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK4
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK5
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK6
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK7
-  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK8
+  [ false, INV_BAR_DX, INV_BAR_DY, HEAD_INV_SLOT_WIDTH, HEAD_INV_SLOT_HEIGHT, 0, 0 ], // HELMETPOS
+  [ false, INV_BAR_DX, INV_BAR_DY, VEST_INV_SLOT_WIDTH, VEST_INV_SLOT_HEIGHT, 0, 0 ], // VESTPOS
+  [ false, INV_BAR_DX, INV_BAR_DY, LEGS_INV_SLOT_WIDTH, LEGS_INV_SLOT_HEIGHT, 0, 0 ], // LEGPOS,
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // HEAD1POS
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // HEAD2POS
+  [ true, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // HANDPOS,
+  [ true, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // SECONDHANDPOS
+  [ true, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK1
+  [ true, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK2
+  [ true, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK3
+  [ true, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK4
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK1
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK2
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK3
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK4
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK5
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK6
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK7
+  [ false, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK8
 ];
 
 interface REMOVE_MONEY {
@@ -412,9 +412,9 @@ let gbInvalidPlacementSlot: INT8[] /* [NUM_INV_SLOTS] */;
 let us16BPPItemCyclePlacedItemColors: UINT16[] /* [20] */;
 let guiBodyInvVO: UINT32[][] /* [4][2] */;
 let guiGoldKeyVO: UINT32;
-let gbCompatibleApplyItem: INT8 = FALSE;
+let gbCompatibleApplyItem: INT8 = false;
 
-function AttemptToAddSubstring(zDest: STR16, zTemp: STR16, puiStringLength: Pointer<UINT32>, uiPixLimit: UINT32): BOOLEAN {
+function AttemptToAddSubstring(zDest: STR16, zTemp: STR16, puiStringLength: Pointer<UINT32>, uiPixLimit: UINT32): boolean {
   let uiRequiredStringLength: UINT32;
   let uiTempStringLength: UINT32;
 
@@ -429,10 +429,10 @@ function AttemptToAddSubstring(zDest: STR16, zTemp: STR16, puiStringLength: Poin
     }
     wcscat(zDest, zTemp);
     puiStringLength.value = uiRequiredStringLength;
-    return TRUE;
+    return true;
   } else {
     wcscat(zDest, DOTDOTDOT);
-    return FALSE;
+    return false;
   }
 }
 
@@ -599,7 +599,7 @@ function GenerateConsString(zItemCons: Pointer<UINT16>, pObject: Pointer<OBJECTT
   }
 }
 
-function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCamoRegion: Pointer<INV_REGION_DESC>, INVMoveCallback: MOUSE_CALLBACK, INVClickCallback: MOUSE_CALLBACK, INVMoveCammoCallback: MOUSE_CALLBACK, INVClickCammoCallback: MOUSE_CALLBACK, fSetHighestPrioity: BOOLEAN): BOOLEAN {
+function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCamoRegion: Pointer<INV_REGION_DESC>, INVMoveCallback: MOUSE_CALLBACK, INVClickCallback: MOUSE_CALLBACK, INVMoveCammoCallback: MOUSE_CALLBACK, INVClickCammoCallback: MOUSE_CALLBACK, fSetHighestPrioity: boolean): boolean {
   let cnt: INT32;
   let VObjectDesc: VOBJECT_DESC;
 
@@ -660,7 +660,7 @@ function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCamoRegion
 
   memset(gbCompatibleAmmo, 0, sizeof(gbCompatibleAmmo));
 
-  return TRUE;
+  return true;
 }
 
 function InitKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
@@ -675,7 +675,7 @@ function InitMapKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
   SetRegionFastHelpText(addressof(gKeyRingPanel), TacticalStr[Enum335.KEYRING_HELP_TEXT]);
 }
 
-function EnableKeyRing(fEnable: BOOLEAN): void {
+function EnableKeyRing(fEnable: boolean): void {
   if (fEnable) {
     MSYS_EnableRegion(addressof(gKeyRingPanel));
   } else {
@@ -688,7 +688,7 @@ function ShutdownKeyRingInterface(): void {
   return;
 }
 
-function DisableInvRegions(fDisable: BOOLEAN): void {
+function DisableInvRegions(fDisable: boolean): void {
   let cnt: INT32;
 
   for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
@@ -703,12 +703,12 @@ function DisableInvRegions(fDisable: BOOLEAN): void {
     MSYS_DisableRegion(addressof(gSMInvCamoRegion));
 
     MSYS_DisableRegion(addressof(gSM_SELMERCMoneyRegion));
-    EnableKeyRing(FALSE);
+    EnableKeyRing(false);
   } else {
     MSYS_EnableRegion(addressof(gSMInvCamoRegion));
 
     MSYS_EnableRegion(addressof(gSM_SELMERCMoneyRegion));
-    EnableKeyRing(TRUE);
+    EnableKeyRing(true);
   }
 }
 
@@ -780,10 +780,10 @@ function INVRenderINVPanelItem(pSoldier: Pointer<SOLDIERTYPE>, sPocket: INT16, f
   let sBarX: INT16;
   let sBarY: INT16;
   let pObject: Pointer<OBJECTTYPE>;
-  let fOutline: BOOLEAN = FALSE;
+  let fOutline: boolean = false;
   let sOutlineColor: INT16 = 0;
   let fRenderDirtyLevel: UINT8;
-  let fHatchItOut: BOOLEAN = FALSE;
+  let fHatchItOut: boolean = false;
 
   // Assign the screen
   guiCurrentItemDescriptionScreen = guiCurrentScreen;
@@ -828,7 +828,7 @@ function INVRenderINVPanelItem(pSoldier: Pointer<SOLDIERTYPE>, sPocket: INT16, f
     */
 
     if (gbCompatibleAmmo[sPocket]) {
-      fOutline = TRUE;
+      fOutline = true;
       sOutlineColor = Get16BPPColor(FROMRGB(255, 255, 255));
     }
 
@@ -861,7 +861,7 @@ function INVRenderINVPanelItem(pSoldier: Pointer<SOLDIERTYPE>, sPocket: INT16, f
     if (sPocket != Enum261.SECONDHANDPOS) {
       // If we are in inv panel and our guy is not = cursor guy...
       if (!gfSMDisableForItems) {
-        fHatchItOut = TRUE;
+        fHatchItOut = true;
       }
     }
   }
@@ -869,7 +869,7 @@ function INVRenderINVPanelItem(pSoldier: Pointer<SOLDIERTYPE>, sPocket: INT16, f
   // if we are in the shop keeper interface
   if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
     if (ShouldSoldierDisplayHatchOnItem(pSoldier.value.ubProfile, sPocket) && !gbInvalidPlacementSlot[sPocket]) {
-      fHatchItOut = TRUE;
+      fHatchItOut = true;
     }
   }
 
@@ -883,47 +883,47 @@ function INVRenderINVPanelItem(pSoldier: Pointer<SOLDIERTYPE>, sPocket: INT16, f
     // Add item status bar
     sBarX = sX - gSMInvData[sPocket].sBarDx;
     sBarY = sY + gSMInvData[sPocket].sBarDy;
-    DrawItemUIBarEx(pObject, 0, sBarX, sBarY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
+    DrawItemUIBarEx(pObject, 0, sBarX, sBarY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
   }
 }
 
-function CompatibleAmmoForGun(pTryObject: Pointer<OBJECTTYPE>, pTestObject: Pointer<OBJECTTYPE>): BOOLEAN {
+function CompatibleAmmoForGun(pTryObject: Pointer<OBJECTTYPE>, pTestObject: Pointer<OBJECTTYPE>): boolean {
   if ((Item[pTryObject.value.usItem].usItemClass & IC_AMMO)) {
     // CHECK
     if (Weapon[pTestObject.value.usItem].ubCalibre == Magazine[Item[pTryObject.value.usItem].ubClassIndex].ubCalibre) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function CompatibleGunForAmmo(pTryObject: Pointer<OBJECTTYPE>, pTestObject: Pointer<OBJECTTYPE>): BOOLEAN {
+function CompatibleGunForAmmo(pTryObject: Pointer<OBJECTTYPE>, pTestObject: Pointer<OBJECTTYPE>): boolean {
   if ((Item[pTryObject.value.usItem].usItemClass & IC_GUN)) {
     // CHECK
     if (Weapon[pTryObject.value.usItem].ubCalibre == Magazine[Item[pTestObject.value.usItem].ubClassIndex].ubCalibre) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function CompatibleItemForApplyingOnMerc(pTestObject: Pointer<OBJECTTYPE>): BOOLEAN {
+function CompatibleItemForApplyingOnMerc(pTestObject: Pointer<OBJECTTYPE>): boolean {
   let usItem: UINT16 = pTestObject.value.usItem;
 
   // ATE: If in mapscreen, return false always....
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
-    return FALSE;
+    return false;
   }
 
   // ATE: Would be nice to have flag here to check for these types....
   if (usItem == Enum225.CAMOUFLAGEKIT || usItem == Enum225.ADRENALINE_BOOSTER || usItem == Enum225.REGEN_BOOSTER || usItem == Enum225.SYRINGE_3 || usItem == Enum225.SYRINGE_4 || usItem == Enum225.SYRINGE_5 || usItem == Enum225.ALCOHOL || usItem == Enum225.WINE || usItem == Enum225.BEER || usItem == Enum225.CANTEEN || usItem == Enum225.JAR_ELIXIR) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function SoldierContainsAnyCompatibleStuff(pSoldier: Pointer<SOLDIERTYPE>, pTestObject: Pointer<OBJECTTYPE>): BOOLEAN {
+function SoldierContainsAnyCompatibleStuff(pSoldier: Pointer<SOLDIERTYPE>, pTestObject: Pointer<OBJECTTYPE>): boolean {
   let cnt: INT32;
   let pObject: Pointer<OBJECTTYPE>;
 
@@ -932,7 +932,7 @@ function SoldierContainsAnyCompatibleStuff(pSoldier: Pointer<SOLDIERTYPE>, pTest
       pObject = addressof(pSoldier.value.inv[cnt]);
 
       if (CompatibleAmmoForGun(pObject, pTestObject)) {
-        return TRUE;
+        return true;
       }
     }
   }
@@ -942,17 +942,17 @@ function SoldierContainsAnyCompatibleStuff(pSoldier: Pointer<SOLDIERTYPE>, pTest
       pObject = addressof(pSoldier.value.inv[cnt]);
 
       if (CompatibleGunForAmmo(pObject, pTestObject)) {
-        return TRUE;
+        return true;
       }
     }
   }
 
   // ATE: Put attachment checking here.....
 
-  return FALSE;
+  return false;
 }
 
-function HandleAnyMercInSquadHasCompatibleStuff(ubSquad: UINT8, pObject: Pointer<OBJECTTYPE>, fReset: BOOLEAN): void {
+function HandleAnyMercInSquadHasCompatibleStuff(ubSquad: UINT8, pObject: Pointer<OBJECTTYPE>, fReset: boolean): void {
   let iCounter: INT32 = 0;
 
   if (ubSquad == Enum275.NUMBER_OF_SQUADS) {
@@ -964,23 +964,23 @@ function HandleAnyMercInSquadHasCompatibleStuff(ubSquad: UINT8, pObject: Pointer
       if (!fReset) {
         if (SoldierContainsAnyCompatibleStuff(Squad[iCurrentTacticalSquad][iCounter], pObject)) {
           // Get face and set value....
-          gFacesData[Squad[iCurrentTacticalSquad][iCounter].value.iFaceIndex].fCompatibleItems = TRUE;
+          gFacesData[Squad[iCurrentTacticalSquad][iCounter].value.iFaceIndex].fCompatibleItems = true;
         }
       } else {
-        gFacesData[Squad[iCurrentTacticalSquad][iCounter].value.iFaceIndex].fCompatibleItems = FALSE;
+        gFacesData[Squad[iCurrentTacticalSquad][iCounter].value.iFaceIndex].fCompatibleItems = false;
       }
     }
   }
 }
 
-function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, fOn: BOOLEAN, fFromMerc: BOOLEAN): BOOLEAN {
-  let fFound: BOOLEAN = FALSE;
+function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, fOn: boolean, fFromMerc: boolean): boolean {
+  let fFound: boolean = false;
   let cnt: INT32;
   let pObject: Pointer<OBJECTTYPE>;
   let pTestObject: Pointer<OBJECTTYPE>;
-  let fFoundAttachment: BOOLEAN = FALSE;
+  let fFoundAttachment: boolean = false;
 
-  if (fFromMerc == FALSE) {
+  if (fFromMerc == false) {
     pTestObject = addressof(pInventoryPoolList[bInvPos].o);
   } else {
     if (bInvPos == NO_SLOT) {
@@ -997,7 +997,7 @@ function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInv
 
       if (CompatibleItemForApplyingOnMerc(pObject)) {
         if (fOn != gbCompatibleAmmo[cnt]) {
-          fFound = TRUE;
+          fFound = true;
         }
 
         // IT's an OK calibere ammo, do something!
@@ -1010,12 +1010,12 @@ function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInv
       if (CompatibleItemForApplyingOnMerc(gpItemPointer)) {
         // OK, Light up portrait as well.....
         if (fOn) {
-          gbCompatibleApplyItem = TRUE;
+          gbCompatibleApplyItem = true;
         } else {
-          gbCompatibleApplyItem = FALSE;
+          gbCompatibleApplyItem = false;
         }
 
-        fFound = TRUE;
+        fFound = true;
       }
     }
 
@@ -1038,10 +1038,10 @@ function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInv
       }
 
       if (ValidAttachment(pObject.value.usItem, pTestObject.value.usItem) || ValidAttachment(pTestObject.value.usItem, pObject.value.usItem) || ValidLaunchable(pTestObject.value.usItem, pObject.value.usItem) || ValidLaunchable(pObject.value.usItem, pTestObject.value.usItem)) {
-        fFoundAttachment = TRUE;
+        fFoundAttachment = true;
 
         if (fOn != gbCompatibleAmmo[cnt]) {
-          fFound = TRUE;
+          fFound = true;
         }
 
         // IT's an OK calibere ammo, do something!
@@ -1057,7 +1057,7 @@ function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInv
 
       if (CompatibleAmmoForGun(pObject, pTestObject)) {
         if (fOn != gbCompatibleAmmo[cnt]) {
-          fFound = TRUE;
+          fFound = true;
         }
 
         // IT's an OK calibere ammo, do something!
@@ -1071,7 +1071,7 @@ function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInv
 
       if (CompatibleGunForAmmo(pObject, pTestObject)) {
         if (fOn != gbCompatibleAmmo[cnt]) {
-          fFound = TRUE;
+          fFound = true;
         }
 
         // IT's an OK calibere ammo, do something!
@@ -1084,16 +1084,16 @@ function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInv
   return fFound;
 }
 
-function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, iStartSlotNumber: INT32, fOn: BOOLEAN, fFromMerc: BOOLEAN): BOOLEAN {
+function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, iStartSlotNumber: INT32, fOn: boolean, fFromMerc: boolean): boolean {
   // CJC: ATE, needs fixing here!
 
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let cnt: INT32;
   let pObject: Pointer<OBJECTTYPE>;
   let pTestObject: Pointer<OBJECTTYPE>;
-  let fFoundAttachment: BOOLEAN = FALSE;
+  let fFoundAttachment: boolean = false;
 
-  if (fFromMerc == FALSE) {
+  if (fFromMerc == false) {
     pTestObject = addressof(pInventoryPoolList[iStartSlotNumber + bInvPos].o);
   } else {
     if (bInvPos == NO_SLOT) {
@@ -1113,10 +1113,10 @@ function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, b
     }
 
     if (ValidAttachment(pObject.value.usItem, pTestObject.value.usItem) || ValidAttachment(pTestObject.value.usItem, pObject.value.usItem) || ValidLaunchable(pTestObject.value.usItem, pObject.value.usItem) || ValidLaunchable(pObject.value.usItem, pTestObject.value.usItem)) {
-      fFoundAttachment = TRUE;
+      fFoundAttachment = true;
 
       if (fOn != fMapInventoryItemCompatable[cnt]) {
-        fFound = TRUE;
+        fFound = true;
       }
 
       // IT's an OK calibere ammo, do something!
@@ -1131,7 +1131,7 @@ function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, b
 
       if (CompatibleAmmoForGun(pObject, pTestObject)) {
         if (fOn != fMapInventoryItemCompatable[cnt]) {
-          fFound = TRUE;
+          fFound = true;
         }
 
         // IT's an OK calibere ammo, do something!
@@ -1145,7 +1145,7 @@ function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, b
 
       if (CompatibleGunForAmmo(pObject, pTestObject)) {
         if (fOn != fMapInventoryItemCompatable[cnt]) {
-          fFound = TRUE;
+          fFound = true;
         }
 
         // IT's an OK calibere ammo, do something!
@@ -1158,11 +1158,11 @@ function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, b
   return fFound;
 }
 
-function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObject: Pointer<OBJECTTYPE>, fOn: BOOLEAN): BOOLEAN {
-  let fFound: BOOLEAN = FALSE;
+function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObject: Pointer<OBJECTTYPE>, fOn: boolean): boolean {
+  let fFound: boolean = false;
   let cnt: INT32;
   let pObject: Pointer<OBJECTTYPE>;
-  let fFoundAttachment: BOOLEAN = FALSE;
+  let fFoundAttachment: boolean = false;
 
   // ATE: If pTest object is NULL, test only for existence of syringes, etc...
   if (pTestObject == null) {
@@ -1171,7 +1171,7 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
 
       if (CompatibleItemForApplyingOnMerc(pObject)) {
         if (fOn != gbCompatibleAmmo[cnt]) {
-          fFound = TRUE;
+          fFound = true;
         }
 
         // IT's an OK calibere ammo, do something!
@@ -1184,12 +1184,12 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
       if (CompatibleItemForApplyingOnMerc(gpItemPointer)) {
         // OK, Light up portrait as well.....
         if (fOn) {
-          gbCompatibleApplyItem = TRUE;
+          gbCompatibleApplyItem = true;
         } else {
-          gbCompatibleApplyItem = FALSE;
+          gbCompatibleApplyItem = false;
         }
 
-        fFound = TRUE;
+        fFound = true;
       }
     }
 
@@ -1211,10 +1211,10 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
     }
 
     if (ValidAttachment(pObject.value.usItem, pTestObject.value.usItem) || ValidAttachment(pTestObject.value.usItem, pObject.value.usItem) || ValidLaunchable(pTestObject.value.usItem, pObject.value.usItem) || ValidLaunchable(pObject.value.usItem, pTestObject.value.usItem)) {
-      fFoundAttachment = TRUE;
+      fFoundAttachment = true;
 
       if (fOn != gbCompatibleAmmo[cnt]) {
-        fFound = TRUE;
+        fFound = true;
       }
 
       // IT's an OK calibere ammo, do something!
@@ -1231,7 +1231,7 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
 
       if (CompatibleAmmoForGun(pObject, pTestObject)) {
         if (fOn != gbCompatibleAmmo[cnt]) {
-          fFound = TRUE;
+          fFound = true;
         }
 
         // IT's an OK calibere ammo, do something!
@@ -1247,7 +1247,7 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
 
       if (CompatibleGunForAmmo(pObject, pTestObject)) {
         if (fOn != gbCompatibleAmmo[cnt]) {
-          fFound = TRUE;
+          fFound = true;
         }
 
         // IT's an OK calibere ammo, do something!
@@ -1258,7 +1258,7 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
   } else if (CompatibleItemForApplyingOnMerc(pTestObject)) {
     // If we are currently NOT in the Shopkeeper interface
     if (!(guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE)) {
-      fFound = TRUE;
+      fFound = true;
       gbCompatibleApplyItem = fOn;
     }
   }
@@ -1267,13 +1267,13 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
   if (!fFound) {
     for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
       if (gbCompatibleAmmo[cnt]) {
-        fFound = TRUE;
-        gbCompatibleAmmo[cnt] = FALSE;
+        fFound = true;
+        gbCompatibleAmmo[cnt] = false;
       }
 
       if (gbCompatibleApplyItem) {
-        fFound = TRUE;
-        gbCompatibleApplyItem = FALSE;
+        fFound = true;
+        gbCompatibleApplyItem = false;
       }
     }
   }
@@ -1291,15 +1291,15 @@ function ResetCompatibleItemArray(): void {
 
   for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
     if (gbCompatibleAmmo[cnt]) {
-      gbCompatibleAmmo[cnt] = FALSE;
+      gbCompatibleAmmo[cnt] = false;
     }
   }
 }
 
-function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, fOn: BOOLEAN): BOOLEAN {
+function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, fOn: boolean): boolean {
   let cnt: INT32;
   let pTestObject: Pointer<OBJECTTYPE>;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
 
   // if we are in the shopkeeper interface
   if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
@@ -1311,19 +1311,19 @@ function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, f
           pTestObject = gpHighLightedItemObject;
           //					gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
         } else
-          return FALSE;
+          return false;
       } else {
         gpHighLightedItemObject = null;
 
         for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
           if (gbCompatibleAmmo[cnt]) {
-            fFound = TRUE;
-            gbCompatibleAmmo[cnt] = FALSE;
+            fFound = true;
+            gbCompatibleAmmo[cnt] = false;
           }
         }
 
         gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL1;
-        return TRUE;
+        return true;
       }
     } else {
       if (fOn) {
@@ -1358,7 +1358,7 @@ function GetSlotInvHeightWidth(ubPos: UINT8, psWidth: Pointer<INT16>, psHeight: 
   psHeight.value = gSMInvData[ubPos].sHeight;
 }
 
-function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Pointer<BOOLEAN>): void {
+function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Pointer<boolean>): void {
   let cnt: UINT32;
   let sX: INT16;
   let sY: INT16;
@@ -1387,7 +1387,7 @@ function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Poin
         continue;
       }
 
-      INVRenderItem(guiSAVEBUFFER, pSoldier, pObject, sX, sY, gSMInvData[cnt].sWidth, gSMInvData[cnt].sHeight, DIRTYLEVEL2, null, 0, TRUE, us16BPPItemCyclePlacedItemColors[pSoldier.value.bNewItemCycleCount[cnt]]);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, pObject, sX, sY, gSMInvData[cnt].sWidth, gSMInvData[cnt].sHeight, DIRTYLEVEL2, null, 0, true, us16BPPItemCyclePlacedItemColors[pSoldier.value.bNewItemCycleCount[cnt]]);
     }
   }
 }
@@ -1454,7 +1454,7 @@ function InitItemInterface(): void {
   }
 }
 
-function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, sWidth: INT16, sHeight: INT16, fDirtyLevel: UINT8, pubHighlightCounter: Pointer<UINT8>, ubStatusIndex: UINT8, fOutline: BOOLEAN, sOutlineColor: INT16): void {
+function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, sWidth: INT16, sHeight: INT16, fDirtyLevel: UINT8, pubHighlightCounter: Pointer<UINT8>, ubStatusIndex: UINT8, fOutline: boolean, sOutlineColor: INT16): void {
   let uiStringLength: UINT16;
   let pItem: Pointer<INVTYPE>;
   let pTrav: Pointer<ETRLEObject>;
@@ -1465,7 +1465,7 @@ function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject
   let sNewY: INT16;
   let sNewX: INT16;
   let hVObject: HVOBJECT;
-  let fLineSplit: BOOLEAN = FALSE;
+  let fLineSplit: boolean = false;
   let sFontX2: INT16;
   let sFontY2: INT16;
   let sFontX: INT16;
@@ -1678,7 +1678,7 @@ function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject
   }
 }
 
-function InItemDescriptionBox(): BOOLEAN {
+function InItemDescriptionBox(): boolean {
   return gfInItemDescBox;
 }
 
@@ -1710,7 +1710,7 @@ function CycleItemDescriptionItem(): void {
   InternalInitItemDescriptionBox(addressof(gpItemDescSoldier.value.inv[Enum261.HANDPOS]), 214, (INV_INTERFACE_START_Y + 1), gubItemDescStatusIndex, gpItemDescSoldier);
 }
 
-function InitItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): BOOLEAN {
+function InitItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): boolean {
   let pObject: Pointer<OBJECTTYPE>;
 
   // DEF:
@@ -1727,7 +1727,7 @@ function InitItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT
   return InternalInitItemDescriptionBox(pObject, sX, sY, ubStatusIndex, pSoldier);
 }
 
-function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): BOOLEAN {
+function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): boolean {
   let pObject: Pointer<OBJECTTYPE>;
 
   AllocateObject(addressof(pObject));
@@ -1736,7 +1736,7 @@ function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: U
   return InternalInitItemDescriptionBox(pObject, sX, sY, ubStatusIndex, pSoldier);
 }
 
-function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let ubString: UINT8[] /* [48] */;
   let cnt: INT32;
@@ -1756,7 +1756,7 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
   gpItemDescObject = pObject;
   gubItemDescStatusIndex = ubStatusIndex;
   gpItemDescSoldier = pSoldier;
-  fItemDescDelete = FALSE;
+  fItemDescDelete = false;
 
   // Build a mouse region here that is over any others.....
   if (guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) {
@@ -1770,7 +1770,7 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
     // create button
     giMapInvDescButton = QuickCreateButton(giMapInvDescButtonImage, (gsInvDescX + 204), (gsInvDescY + 107), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, BtnGenericMouseMoveButtonCallback, ItemDescDoneButtonCallback);
 
-    fShowDescriptionFlag = TRUE;
+    fShowDescriptionFlag = true;
   } else {
     MSYS_DefineRegion(addressof(gInvDesc), gsInvDescX, gsInvDescY, (gsInvDescX + ITEMDESC_WIDTH), (gsInvDescY + ITEMDESC_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
     MSYS_AddRegion(addressof(gInvDesc));
@@ -1822,9 +1822,9 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
 
     FindFontCenterCoordinates(ITEMDESC_AMMO_TEXT_X, ITEMDESC_AMMO_TEXT_Y, ITEMDESC_AMMO_TEXT_WIDTH, GetFontHeight(TINYFONT1()), pStr, TINYFONT1(), addressof(usX), addressof(usY));
 
-    SpecifyButtonTextOffsets(giItemDescAmmoButton, usX, usY, TRUE);
+    SpecifyButtonTextOffsets(giItemDescAmmoButton, usX, usY, true);
 
-    gfItemAmmoDown = FALSE;
+    gfItemAmmoDown = false;
   }
 
   if (ITEM_PROS_AND_CONS(gpItemDescObject.value.usItem)) {
@@ -1965,7 +1965,7 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
 
   fInterfacePanelDirty = DIRTYLEVEL2;
 
-  gfInItemDescBox = TRUE;
+  gfInItemDescBox = true;
 
   CHECKF(ReloadItemDesc());
 
@@ -1980,7 +1980,7 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
     gbOriginalAttachStatus[cnt] = pObject.value.bAttachStatus[cnt];
   }
 
-  if ((gpItemPointer != null) && (gfItemDescHelpTextOffset == FALSE) && (CheckFact(Enum170.FACT_ATTACHED_ITEM_BEFORE, 0) == FALSE)) {
+  if ((gpItemPointer != null) && (gfItemDescHelpTextOffset == false) && (CheckFact(Enum170.FACT_ATTACHED_ITEM_BEFORE, 0) == false)) {
     // set up help text for attachments
     for (cnt = 0; cnt < NUM_INV_HELPTEXT_ENTRIES; cnt++) {
       gItemDescHelpText.iXPosition[cnt] += gsInvDescX;
@@ -1996,15 +1996,15 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
     StartShowingInterfaceFastHelpText();
 
     SetFactTrue(Enum170.FACT_ATTACHED_ITEM_BEFORE);
-    gfItemDescHelpTextOffset = TRUE;
+    gfItemDescHelpTextOffset = true;
   }
 
-  return TRUE;
+  return true;
 }
 
-function ReloadItemDesc(): BOOLEAN {
+function ReloadItemDesc(): boolean {
   if (!LoadTileGraphicForItem(addressof(Item[gpItemDescObject.value.usItem]), addressof(guiItemGraphic))) {
-    return FALSE;
+    return false;
   }
 
   //
@@ -2014,11 +2014,11 @@ function ReloadItemDesc(): BOOLEAN {
   // if the player is extracting money from the players account, use a different item name and description
   if (gfAddingMoneyToMercFromPlayersAccount && gpItemDescObject.value.usItem == Enum225.MONEY) {
     if (!LoadItemInfo(Enum225.MONEY_FOR_PLAYERS_ACCOUNT, gzItemName, gzItemDesc)) {
-      return FALSE;
+      return false;
     }
   } else {
     if (!LoadItemInfo(gpItemDescObject.value.usItem, gzItemName, gzItemDesc)) {
-      return FALSE;
+      return false;
     }
   }
 
@@ -2038,11 +2038,11 @@ function ReloadItemDesc(): BOOLEAN {
           }
           */
 
-  return TRUE;
+  return true;
 }
 
 function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  /* static */ let fRightDown: BOOLEAN = FALSE;
+  /* static */ let fRightDown: boolean = false;
   let pStr: INT16[] /* [10] */;
 
   /*	region gets disabled in SKI for shopkeeper boxes.  It now works normally for merc's inventory boxes!
@@ -2055,12 +2055,12 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   */
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fRightDown = TRUE;
-    gfItemAmmoDown = TRUE;
+    fRightDown = true;
+    gfItemAmmoDown = true;
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP && fRightDown) {
-    fRightDown = FALSE;
-    gfItemAmmoDown = FALSE;
+    fRightDown = false;
+    gfItemAmmoDown = false;
 
     if (guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) {
       if (gpItemPointer == null && EmptyWeaponMagazine(gpItemDescObject, addressof(gItemPointer))) {
@@ -2079,8 +2079,8 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
         MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
         MSYS_SetCurrentCursor(EXTERN_CURSOR);
-        fMapInventoryItem = TRUE;
-        fTeamPanelDirty = TRUE;
+        fMapInventoryItem = true;
+        fTeamPanelDirty = true;
       }
     } else {
       // Set pointer to item
@@ -2091,7 +2091,7 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         // if in SKI, load item into SKI's item pointer
         if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
           // pick up bullets from weapon into cursor (don't try to sell)
-          BeginSkiItemPointer(Enum252.PLAYERS_INVENTORY, -1, FALSE);
+          BeginSkiItemPointer(Enum252.PLAYERS_INVENTORY, -1, false);
         }
 
         // OK, END the description box
@@ -2101,7 +2101,7 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         swprintf(pStr, "0");
         SpecifyButtonText(giItemDescAmmoButton, pStr);
 
-        fItemDescDelete = TRUE;
+        fItemDescDelete = true;
       }
     }
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
@@ -2118,7 +2118,7 @@ function DoAttachment(): void {
       } else {
         // End Item pickup
         gpItemPointer = null;
-        EnableSMPanelButtons(TRUE, TRUE);
+        EnableSMPanelButtons(true, true);
 
         MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), Enum317.CURSOR_NORMAL);
         SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
@@ -2145,7 +2145,7 @@ function DoAttachment(): void {
   }
 
   // re-evaluate repairs
-  gfReEvaluateEveryonesNothingToDo = TRUE;
+  gfReEvaluateEveryonesNothingToDo = true;
 }
 
 function PermanantAttachmentMessageBoxCallBack(ubExitValue: UINT8): void {
@@ -2157,7 +2157,7 @@ function PermanantAttachmentMessageBoxCallBack(ubExitValue: UINT8): void {
 
 function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let uiItemPos: UINT32;
-  /* static */ let fRightDown: BOOLEAN = FALSE;
+  /* static */ let fRightDown: boolean = false;
 
   if (gfItemDescObjectIsAttachment) {
     // screen out completely
@@ -2176,7 +2176,7 @@ function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
     // require as many APs as to reload
     if (gpItemPointer != null) {
       // nb pointer could be NULL because of inventory manipulation in mapscreen from sector inv
-      if (!gpItemPointerSoldier || EnoughPoints(gpItemPointerSoldier, AP_RELOAD_GUN, 0, TRUE)) {
+      if (!gpItemPointerSoldier || EnoughPoints(gpItemPointerSoldier, AP_RELOAD_GUN, 0, true)) {
         if ((Item[gpItemPointer.value.usItem].fFlags & ITEM_INSEPARABLE) && ValidAttachment(gpItemPointer.value.usItem, gpItemDescObject.value.usItem)) {
           DoScreenIndependantMessageBox(Message[Enum334.STR_PERMANENT_ATTACHMENT], MSG_BOX_FLAG_YESNO, PermanantAttachmentMessageBoxCallBack);
           return;
@@ -2186,7 +2186,7 @@ function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
       }
     } else {
       // ATE: Make sure we have enough AP's to drop it if we pick it up!
-      if (EnoughPoints(gpItemDescSoldier, (AP_RELOAD_GUN + AP_PICKUP_ITEM), 0, TRUE)) {
+      if (EnoughPoints(gpItemDescSoldier, (AP_RELOAD_GUN + AP_PICKUP_ITEM), 0, true)) {
         // Get attachment if there is one
         // The follwing function will handle if no attachment is here
         if (RemoveAttachment(gpItemDescObject, uiItemPos, addressof(gItemPointer))) {
@@ -2201,45 +2201,45 @@ function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 
             MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
             MSYS_SetCurrentCursor(EXTERN_CURSOR);
-            fMapInventoryItem = TRUE;
-            fTeamPanelDirty = TRUE;
+            fMapInventoryItem = true;
+            fTeamPanelDirty = true;
           }
 
           // if we are currently in the shopkeeper interface
           else if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
             // pick up attachment from item into cursor (don't try to sell)
-            BeginSkiItemPointer(Enum252.PLAYERS_INVENTORY, -1, FALSE);
+            BeginSkiItemPointer(Enum252.PLAYERS_INVENTORY, -1, false);
           }
 
           // Dirty interface
           fInterfacePanelDirty = DIRTYLEVEL2;
 
           // re-evaluate repairs
-          gfReEvaluateEveryonesNothingToDo = TRUE;
+          gfReEvaluateEveryonesNothingToDo = true;
 
           UpdateItemHatches();
         }
       }
     }
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    fRightDown = TRUE;
+    fRightDown = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP && fRightDown) {
     /* static */ let Object2: OBJECTTYPE;
 
-    fRightDown = FALSE;
+    fRightDown = false;
 
     if (gpItemDescObject.value.usAttachItem[uiItemPos] != NOTHING) {
-      let fShopkeeperItem: BOOLEAN = FALSE;
+      let fShopkeeperItem: boolean = false;
 
       // remember if this is a shopkeeper's item we're viewing ( pShopKeeperItemDescObject will get nuked on deletion )
       if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE && pShopKeeperItemDescObject != null) {
-        fShopkeeperItem = TRUE;
+        fShopkeeperItem = true;
       }
 
       DeleteItemDescriptionBox();
 
       if (CreateItem(gpItemDescObject.value.usAttachItem[uiItemPos], gpItemDescObject.value.bAttachStatus[uiItemPos], addressof(Object2))) {
-        gfItemDescObjectIsAttachment = TRUE;
+        gfItemDescObjectIsAttachment = true;
         InternalInitItemDescriptionBox(addressof(Object2), gsInvDescX, gsInvDescY, 0, gpItemDescSoldier);
 
         if (fShopkeeperItem) {
@@ -2269,7 +2269,7 @@ function RenderItemDescriptionBox(): void {
   let usX: UINT16;
   let usY: UINT16;
   let ubAttackAPs: UINT8;
-  let fHatchOutAttachments: BOOLEAN = gfItemDescObjectIsAttachment; // if examining attachment, always hatch out attachment slots
+  let fHatchOutAttachments: boolean = gfItemDescObjectIsAttachment; // if examining attachment, always hatch out attachment slots
   let sProsConsIndent: INT16;
 
   if ((guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) && (gfInItemDescBox)) {
@@ -2298,14 +2298,14 @@ function RenderItemDescriptionBox(): void {
     BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemGraphic, 0, sCenX, sCenY, VO_BLT_SRCTRANSPARENCY, null);
 
     // Display ststus
-    DrawItemUIBarEx(gpItemDescObject, gubItemDescStatusIndex, MAP_ITEMDESC_ITEM_STATUS_X(), MAP_ITEMDESC_ITEM_STATUS_Y(), ITEMDESC_ITEM_STATUS_WIDTH, ITEMDESC_ITEM_STATUS_HEIGHT_MAP, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
+    DrawItemUIBarEx(gpItemDescObject, gubItemDescStatusIndex, MAP_ITEMDESC_ITEM_STATUS_X(), MAP_ITEMDESC_ITEM_STATUS_Y(), ITEMDESC_ITEM_STATUS_WIDTH, ITEMDESC_ITEM_STATUS_HEIGHT_MAP, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
 
     if (gpItemPointer) {
       if ((Item[gpItemPointer.value.usItem].fFlags & ITEM_HIDDEN_ADDON) ||
 
-          (!ValidItemAttachment(gpItemDescObject, gpItemPointer.value.usItem, FALSE) && !ValidMerge(gpItemPointer.value.usItem, gpItemDescObject.value.usItem) && !ValidLaunchable(gpItemPointer.value.usItem, gpItemDescObject.value.usItem))) {
+          (!ValidItemAttachment(gpItemDescObject, gpItemPointer.value.usItem, false) && !ValidMerge(gpItemPointer.value.usItem, gpItemDescObject.value.usItem) && !ValidLaunchable(gpItemPointer.value.usItem, gpItemDescObject.value.usItem))) {
         // hatch out the attachment panels
-        fHatchOutAttachments = TRUE;
+        fHatchOutAttachments = true;
       }
     }
 
@@ -2317,20 +2317,20 @@ function RenderItemDescriptionBox(): void {
           sCenX = (gsInvDescX + gMapItemDescAttachmentsXY[cnt].sX + 5);
           sCenY = (gsInvDescY + gMapItemDescAttachmentsXY[cnt].sY - 1);
 
-          INVRenderItem(guiSAVEBUFFER, null, gpItemDescObject, sCenX, sCenY, gMapItemDescAttachmentsXY[cnt].sWidth, gMapItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, null, (RENDER_ITEM_ATTACHMENT1 + cnt), FALSE, 0);
+          INVRenderItem(guiSAVEBUFFER, null, gpItemDescObject, sCenX, sCenY, gMapItemDescAttachmentsXY[cnt].sWidth, gMapItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, null, (RENDER_ITEM_ATTACHMENT1 + cnt), false, 0);
 
           sCenX = sCenX - gMapItemDescAttachmentsXY[cnt].sBarDx;
           sCenY = sCenY + gMapItemDescAttachmentsXY[cnt].sBarDy;
-          DrawItemUIBarEx(gpItemDescObject, (DRAW_ITEM_STATUS_ATTACHMENT1 + cnt), sCenX, sCenY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
+          DrawItemUIBarEx(gpItemDescObject, (DRAW_ITEM_STATUS_ATTACHMENT1 + cnt), sCenX, sCenY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
         } else {
           sCenX = (gsInvDescX + gMapItemDescAttachmentsXY[cnt].sX + 5);
           sCenY = (gsInvDescY + gMapItemDescAttachmentsXY[cnt].sY - 1);
 
-          INVRenderItem(guiSAVEBUFFER, null, gpItemDescObject, sCenX, sCenY, gMapItemDescAttachmentsXY[cnt].sWidth, gMapItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, null, (RENDER_ITEM_ATTACHMENT1 + cnt), FALSE, 0);
+          INVRenderItem(guiSAVEBUFFER, null, gpItemDescObject, sCenX, sCenY, gMapItemDescAttachmentsXY[cnt].sWidth, gMapItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, null, (RENDER_ITEM_ATTACHMENT1 + cnt), false, 0);
 
           sCenX = sCenX - gItemDescAttachmentsXY[cnt].sBarDx;
           sCenY = sCenY + gItemDescAttachmentsXY[cnt].sBarDy;
-          DrawItemUIBarEx(gpItemDescObject, (DRAW_ITEM_STATUS_ATTACHMENT1 + cnt), sCenX, sCenY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
+          DrawItemUIBarEx(gpItemDescObject, (DRAW_ITEM_STATUS_ATTACHMENT1 + cnt), sCenX, sCenY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
         }
       }
 
@@ -2364,7 +2364,7 @@ function RenderItemDescriptionBox(): void {
     SetFontForeground(FONT_BLACK);
     SetFontShadow(ITEMDESC_FONTSHADOW2);
 
-    DisplayWrappedString(MAP_ITEMDESC_DESC_START_X(), MAP_ITEMDESC_DESC_START_Y(), MAP_ITEMDESC_DESC_WIDTH, 2, ITEMDESC_FONT(), FONT_BLACK, gzItemDesc, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(MAP_ITEMDESC_DESC_START_X(), MAP_ITEMDESC_DESC_START_Y(), MAP_ITEMDESC_DESC_WIDTH, 2, ITEMDESC_FONT(), FONT_BLACK, gzItemDesc, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     if (ITEM_PROS_AND_CONS(gpItemDescObject.value.usItem)) {
       if ((gpItemDescObject.value.usItem == Enum225.ROCKET_RIFLE || gpItemDescObject.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && gpItemDescObject.value.ubImprintID < NO_PROFILE) {
@@ -2387,7 +2387,7 @@ function RenderItemDescriptionBox(): void {
       if (gzItemPros[0] != 0) {
         SetFontForeground(FONT_BLACK);
         SetFontShadow(ITEMDESC_FONTSHADOW2);
-        DisplayWrappedString((MAP_ITEMDESC_PROS_START_X() + sProsConsIndent), MAP_ITEMDESC_PROS_START_Y(), (ITEMDESC_DESC_WIDTH - sProsConsIndent), 2, ITEMDESC_FONT(), FONT_BLACK, gzItemPros, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+        DisplayWrappedString((MAP_ITEMDESC_PROS_START_X() + sProsConsIndent), MAP_ITEMDESC_PROS_START_Y(), (ITEMDESC_DESC_WIDTH - sProsConsIndent), 2, ITEMDESC_FONT(), FONT_BLACK, gzItemPros, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
       }
 
       SetFontForeground(FONT_MCOLOR_DKWHITE2);
@@ -2398,7 +2398,7 @@ function RenderItemDescriptionBox(): void {
       if (gzItemCons[0] != 0) {
         SetFontForeground(FONT_BLACK);
         SetFontShadow(ITEMDESC_FONTSHADOW2);
-        DisplayWrappedString((MAP_ITEMDESC_CONS_START_X() + sProsConsIndent), MAP_ITEMDESC_CONS_START_Y(), (ITEMDESC_DESC_WIDTH - sProsConsIndent), 2, ITEMDESC_FONT(), FONT_BLACK, gzItemCons, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+        DisplayWrappedString((MAP_ITEMDESC_CONS_START_X() + sProsConsIndent), MAP_ITEMDESC_CONS_START_Y(), (ITEMDESC_DESC_WIDTH - sProsConsIndent), 2, ITEMDESC_FONT(), FONT_BLACK, gzItemCons, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
       }
     }
 
@@ -2639,7 +2639,7 @@ function RenderItemDescriptionBox(): void {
       FindFontRightCoordinates((gMapWeaponStats[0].sX + gsInvDescX + gMapWeaponStats[0].sValDx + 6), (gMapWeaponStats[0].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(sStrX), addressof(usY));
       mprintf(sStrX, gMapWeaponStats[0].sY + gsInvDescY, pStr);
 
-      if ((InKeyRingPopup() == TRUE) || (Item[gpItemDescObject.value.usItem].usItemClass & IC_KEY)) {
+      if ((InKeyRingPopup() == true) || (Item[gpItemDescObject.value.usItem].usItemClass & IC_KEY)) {
         SetFontForeground(6);
 
         // build description for keys .. the sector found
@@ -2684,14 +2684,14 @@ function RenderItemDescriptionBox(): void {
     BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemGraphic, 0, sCenX, sCenY, VO_BLT_SRCTRANSPARENCY, null);
 
     // Display status
-    DrawItemUIBarEx(gpItemDescObject, gubItemDescStatusIndex, ITEMDESC_ITEM_STATUS_X(), ITEMDESC_ITEM_STATUS_Y(), ITEMDESC_ITEM_STATUS_WIDTH, ITEMDESC_ITEM_STATUS_HEIGHT, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
+    DrawItemUIBarEx(gpItemDescObject, gubItemDescStatusIndex, ITEMDESC_ITEM_STATUS_X(), ITEMDESC_ITEM_STATUS_Y(), ITEMDESC_ITEM_STATUS_WIDTH, ITEMDESC_ITEM_STATUS_HEIGHT, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
 
     if (gpItemPointer) {
       if ((Item[gpItemPointer.value.usItem].fFlags & ITEM_HIDDEN_ADDON) ||
 
-          (!ValidItemAttachment(gpItemDescObject, gpItemPointer.value.usItem, FALSE) && !ValidMerge(gpItemPointer.value.usItem, gpItemDescObject.value.usItem) && !ValidLaunchable(gpItemPointer.value.usItem, gpItemDescObject.value.usItem))) {
+          (!ValidItemAttachment(gpItemDescObject, gpItemPointer.value.usItem, false) && !ValidMerge(gpItemPointer.value.usItem, gpItemDescObject.value.usItem) && !ValidLaunchable(gpItemPointer.value.usItem, gpItemDescObject.value.usItem))) {
         // hatch out the attachment panels
-        fHatchOutAttachments = TRUE;
+        fHatchOutAttachments = true;
       }
     }
 
@@ -2701,11 +2701,11 @@ function RenderItemDescriptionBox(): void {
         sCenX = (gsInvDescX + gItemDescAttachmentsXY[cnt].sX + 5);
         sCenY = (gsInvDescY + gItemDescAttachmentsXY[cnt].sY - 1);
 
-        INVRenderItem(guiSAVEBUFFER, null, gpItemDescObject, sCenX, sCenY, gItemDescAttachmentsXY[cnt].sWidth, gItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, null, (RENDER_ITEM_ATTACHMENT1 + cnt), FALSE, 0);
+        INVRenderItem(guiSAVEBUFFER, null, gpItemDescObject, sCenX, sCenY, gItemDescAttachmentsXY[cnt].sWidth, gItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, null, (RENDER_ITEM_ATTACHMENT1 + cnt), false, 0);
 
         sCenX = sCenX - gItemDescAttachmentsXY[cnt].sBarDx;
         sCenY = sCenY + gItemDescAttachmentsXY[cnt].sBarDy;
-        DrawItemUIBarEx(gpItemDescObject, (DRAW_ITEM_STATUS_ATTACHMENT1 + cnt), sCenX, sCenY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
+        DrawItemUIBarEx(gpItemDescObject, (DRAW_ITEM_STATUS_ATTACHMENT1 + cnt), sCenX, sCenY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
 
         SetRegionFastHelpText(addressof(gItemDescAttachmentRegions[cnt]), ItemNames[gpItemDescObject.value.usAttachItem[cnt]]);
         SetRegionHelpEndCallback(addressof(gItemDescAttachmentRegions[cnt]), HelpTextDoneCallback);
@@ -2747,7 +2747,7 @@ function RenderItemDescriptionBox(): void {
     SetFontForeground(FONT_BLACK);
     SetFontShadow(ITEMDESC_FONTSHADOW2);
 
-    DisplayWrappedString(ITEMDESC_DESC_START_X(), ITEMDESC_DESC_START_Y(), ITEMDESC_DESC_WIDTH, 2, ITEMDESC_FONT(), FONT_BLACK, gzItemDesc, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(ITEMDESC_DESC_START_X(), ITEMDESC_DESC_START_Y(), ITEMDESC_DESC_WIDTH, 2, ITEMDESC_FONT(), FONT_BLACK, gzItemDesc, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     if (ITEM_PROS_AND_CONS(gpItemDescObject.value.usItem)) {
       if ((gpItemDescObject.value.usItem == Enum225.ROCKET_RIFLE || gpItemDescObject.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && gpItemDescObject.value.ubImprintID < NO_PROFILE) {
@@ -2771,7 +2771,7 @@ function RenderItemDescriptionBox(): void {
       if (gzItemPros[0] != 0) {
         SetFontForeground(FONT_BLACK);
         SetFontShadow(ITEMDESC_FONTSHADOW2);
-        DisplayWrappedString((ITEMDESC_PROS_START_X() + sProsConsIndent), ITEMDESC_PROS_START_Y(), (ITEMDESC_DESC_WIDTH - sProsConsIndent), 2, ITEMDESC_FONT(), FONT_BLACK, gzItemPros, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+        DisplayWrappedString((ITEMDESC_PROS_START_X() + sProsConsIndent), ITEMDESC_PROS_START_Y(), (ITEMDESC_DESC_WIDTH - sProsConsIndent), 2, ITEMDESC_FONT(), FONT_BLACK, gzItemPros, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
       }
 
       SetFontForeground(FONT_MCOLOR_DKWHITE2);
@@ -2782,7 +2782,7 @@ function RenderItemDescriptionBox(): void {
       if (gzItemCons[0] != 0) {
         SetFontForeground(FONT_BLACK);
         SetFontShadow(ITEMDESC_FONTSHADOW2);
-        DisplayWrappedString((ITEMDESC_CONS_START_X() + sProsConsIndent), ITEMDESC_CONS_START_Y(), (ITEMDESC_DESC_WIDTH - sProsConsIndent), 2, ITEMDESC_FONT(), FONT_BLACK, gzItemCons, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+        DisplayWrappedString((ITEMDESC_CONS_START_X() + sProsConsIndent), ITEMDESC_CONS_START_Y(), (ITEMDESC_DESC_WIDTH - sProsConsIndent), 2, ITEMDESC_FONT(), FONT_BLACK, gzItemCons, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
       }
     }
 
@@ -3001,7 +3001,7 @@ function RenderItemDescriptionBox(): void {
         mprintf(usX, usY, pStr);
       }
 
-      if ((InKeyRingPopup() == TRUE) || (Item[gpItemDescObject.value.usItem].usItemClass & IC_KEY)) {
+      if ((InKeyRingPopup() == true) || (Item[gpItemDescObject.value.usItem].usItemClass & IC_KEY)) {
         SetFontForeground(6);
 
         // build description for keys .. the sector found
@@ -3031,10 +3031,10 @@ function RenderItemDescriptionBox(): void {
   }
 }
 
-function HandleItemDescriptionBox(pfDirty: Pointer<BOOLEAN>): void {
+function HandleItemDescriptionBox(pfDirty: Pointer<boolean>): void {
   if (fItemDescDelete) {
     DeleteItemDescriptionBox();
-    fItemDescDelete = FALSE;
+    fItemDescDelete = false;
     pfDirty.value = DIRTYLEVEL2;
   }
 }
@@ -3042,10 +3042,10 @@ function HandleItemDescriptionBox(pfDirty: Pointer<BOOLEAN>): void {
 function DeleteItemDescriptionBox(): void {
   let cnt: INT32;
   let cnt2: INT32;
-  let fFound: BOOLEAN;
-  let fAllFound: BOOLEAN;
+  let fFound: boolean;
+  let fAllFound: boolean;
 
-  if (gfInItemDescBox == FALSE) {
+  if (gfInItemDescBox == false) {
     return;
   }
 
@@ -3060,18 +3060,18 @@ function DeleteItemDescriptionBox(): void {
   if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT)) {
     if (gpAttachSoldier) {
       // check for change in attachments, starting with removed attachments
-      fAllFound = TRUE;
+      fAllFound = true;
       for (cnt = 0; cnt < MAX_ATTACHMENTS; cnt++) {
         if (gusOriginalAttachItem[cnt] != NOTHING) {
-          fFound = FALSE;
+          fFound = false;
           for (cnt2 = 0; cnt2 < MAX_ATTACHMENTS; cnt2++) {
             if ((gusOriginalAttachItem[cnt] == gpItemDescObject.value.usAttachItem[cnt2]) && (gpItemDescObject.value.bAttachStatus[cnt2] == gbOriginalAttachStatus[cnt])) {
-              fFound = TRUE;
+              fFound = true;
             }
           }
           if (!fFound) {
             // charge APs
-            fAllFound = FALSE;
+            fAllFound = false;
             break;
           }
         }
@@ -3081,15 +3081,15 @@ function DeleteItemDescriptionBox(): void {
         // nothing was removed; search for attachment added
         for (cnt = 0; cnt < MAX_ATTACHMENTS; cnt++) {
           if (gpItemDescObject.value.usAttachItem[cnt] != NOTHING) {
-            fFound = FALSE;
+            fFound = false;
             for (cnt2 = 0; cnt2 < MAX_ATTACHMENTS; cnt2++) {
               if ((gpItemDescObject.value.usAttachItem[cnt] == gusOriginalAttachItem[cnt2]) && (gbOriginalAttachStatus[cnt2] == gpItemDescObject.value.bAttachStatus[cnt])) {
-                fFound = TRUE;
+                fFound = true;
               }
             }
             if (!fFound) {
               // charge APs
-              fAllFound = FALSE;
+              fAllFound = false;
               break;
             }
           }
@@ -3109,7 +3109,7 @@ function DeleteItemDescriptionBox(): void {
   // Delete item graphic
   DeleteVideoObjectFromIndex(guiItemGraphic);
 
-  gfInItemDescBox = FALSE;
+  gfInItemDescBox = false;
 
   //	if( guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN  )
   if (guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) {
@@ -3144,21 +3144,21 @@ function DeleteItemDescriptionBox(): void {
   }
   //	if(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN )
   if (guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) {
-    fCharacterInfoPanelDirty = TRUE;
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    fCharacterInfoPanelDirty = true;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fMapScreenBottomDirty = true;
   }
 
-  if (InKeyRingPopup() == TRUE) {
+  if (InKeyRingPopup() == true) {
     DeleteKeyObject(gpItemDescObject);
     gpItemDescObject = null;
-    fShowDescriptionFlag = FALSE;
+    fShowDescriptionFlag = false;
     fInterfacePanelDirty = DIRTYLEVEL2;
     return;
   }
 
-  fShowDescriptionFlag = FALSE;
+  fShowDescriptionFlag = false;
   fInterfacePanelDirty = DIRTYLEVEL2;
 
   if (gpItemDescObject.value.usItem == Enum225.MONEY) {
@@ -3171,9 +3171,9 @@ function DeleteItemDescriptionBox(): void {
   }
 
   if (gfAddingMoneyToMercFromPlayersAccount)
-    gfAddingMoneyToMercFromPlayersAccount = FALSE;
+    gfAddingMoneyToMercFromPlayersAccount = false;
 
-  gfItemDescObjectIsAttachment = FALSE;
+  gfItemDescObjectIsAttachment = false;
 }
 
 function InternalBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, bHandPos: INT8): void {
@@ -3192,20 +3192,20 @@ function InternalBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, pObject: Point
   gpItemPointer = addressof(gItemPointer);
   gpItemPointerSoldier = pSoldier;
   gbItemPointerSrcSlot = bHandPos;
-  gbItemPointerLocateGood = TRUE;
+  gbItemPointerLocateGood = true;
 
   CheckForDisabledForGiveItem();
 
-  EnableSMPanelButtons(FALSE, TRUE);
+  EnableSMPanelButtons(false, true);
 
-  gfItemPointerDifferentThanDefault = FALSE;
+  gfItemPointerDifferentThanDefault = false;
 
   // re-evaluate repairs
-  gfReEvaluateEveryonesNothingToDo = TRUE;
+  gfReEvaluateEveryonesNothingToDo = true;
 }
 
 function BeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
-  let fOk: BOOLEAN;
+  let fOk: boolean;
   let pObject: OBJECTTYPE;
 
   memset(addressof(pObject), 0, sizeof(OBJECTTYPE));
@@ -3223,7 +3223,7 @@ function BeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): voi
 }
 
 function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRingPosition: UINT8): void {
-  let fOk: BOOLEAN;
+  let fOk: boolean;
 
   // If not null return
   if (gpItemPointer != null) {
@@ -3251,7 +3251,7 @@ function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRingPositi
       guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
       gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-      fMapInventoryItem = TRUE;
+      fMapInventoryItem = true;
       MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
       MSYS_SetCurrentCursor(EXTERN_CURSOR);
     }
@@ -3259,7 +3259,7 @@ function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRingPositi
     // Debug mesg
   }
 
-  gfItemPointerDifferentThanDefault = FALSE;
+  gfItemPointerDifferentThanDefault = false;
 }
 
 function EndItemPointer(): void {
@@ -3273,13 +3273,13 @@ function EndItemPointer(): void {
       memset(addressof(gMoveingItem), 0, sizeof(INVENTORY_IN_SLOT));
       SetSkiCursor(Enum317.CURSOR_NORMAL);
     } else {
-      EnableSMPanelButtons(TRUE, TRUE);
+      EnableSMPanelButtons(true, true);
     }
 
-    gbItemPointerLocateGood = FALSE;
+    gbItemPointerLocateGood = false;
 
     // re-evaluate repairs
-    gfReEvaluateEveryonesNothingToDo = TRUE;
+    gfReEvaluateEveryonesNothingToDo = true;
   }
 }
 
@@ -3299,8 +3299,8 @@ function HideItemTileCursor(): void {
   //	RemoveTopmost( gusCurMousePos, gusItemPointer );
 }
 
-function SoldierCanSeeCatchComing(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: INT16): BOOLEAN {
-  return TRUE;
+function SoldierCanSeeCatchComing(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: INT16): boolean {
+  return true;
   /*-
           INT32							cnt;
           INT8							bDirection, bTargetDirection;
@@ -3343,12 +3343,12 @@ function DrawItemTileCursor(): void {
   let usIndex: UINT16;
   let ubSoldierID: UINT8;
   let sAPCost: INT16;
-  let fRecalc: BOOLEAN;
+  let fRecalc: boolean;
   let uiCursorFlags: UINT32;
   let sFinalGridNo: INT16;
   let uiCursorId: UINT32 = Enum317.CURSOR_ITEM_GOOD_THROW;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fGiveItem: BOOLEAN = FALSE;
+  let fGiveItem: boolean = false;
   let sActionGridNo: INT16;
   let ubDirection: UINT8;
   /* static */ let uiOldCursorId: UINT32 = 0;
@@ -3366,18 +3366,18 @@ function DrawItemTileCursor(): void {
     gusCurMousePos = usMapPos;
 
     if (gusCurMousePos != usOldMousePos) {
-      gfItemPointerDifferentThanDefault = FALSE;
+      gfItemPointerDifferentThanDefault = false;
     }
 
     // Save old one..
     usOldMousePos = gusCurMousePos;
 
     // Default to turning adjacent area gridno off....
-    gfUIHandleShowMoveGrid = FALSE;
+    gfUIHandleShowMoveGrid = false;
 
     // If we are over a talkable guy, set flag
-    if (IsValidTalkableNPCFromMouse(addressof(ubSoldierID), TRUE, FALSE, TRUE)) {
-      fGiveItem = TRUE;
+    if (IsValidTalkableNPCFromMouse(addressof(ubSoldierID), true, false, true)) {
+      fGiveItem = true;
     }
 
     // OK, if different than default, change....
@@ -3399,17 +3399,17 @@ function DrawItemTileCursor(): void {
     // If we are here and we are not selected, select!
     // ATE Design discussion propably needed here...
     if (gpItemPointerSoldier.value.ubID != gusSelectedSoldier) {
-      SelectSoldier(gpItemPointerSoldier.value.ubID, FALSE, FALSE);
+      SelectSoldier(gpItemPointerSoldier.value.ubID, false, false);
     }
 
     // ATE: if good for locate, locate to selected soldier....
     if (gbItemPointerLocateGood) {
-      gbItemPointerLocateGood = FALSE;
-      LocateSoldier(gusSelectedSoldier, FALSE);
+      gbItemPointerLocateGood = false;
+      LocateSoldier(gusSelectedSoldier, false);
     }
 
     if (!fGiveItem) {
-      if (UIHandleOnMerc(FALSE) && usMapPos != gpItemPointerSoldier.value.sGridNo) {
+      if (UIHandleOnMerc(false) && usMapPos != gpItemPointerSoldier.value.sGridNo) {
         // We are on a guy.. check if they can catch or not....
         if (gfUIFullTargetFound) {
           // Get soldier
@@ -3426,7 +3426,7 @@ function DrawItemTileCursor(): void {
               // Can they see the throw?
               if (SoldierCanSeeCatchComing(pSoldier, gpItemPointerSoldier.value.sGridNo)) {
                 // OK, set global that this buddy can see catch...
-                gfUIMouseOnValidCatcher = TRUE;
+                gfUIMouseOnValidCatcher = true;
                 gubUIValidCatcherID = gusUIFullTargetID;
               }
             }
@@ -3436,7 +3436,7 @@ function DrawItemTileCursor(): void {
 
       // We're going to toss it!
       if (gTacticalStatus.uiFlags & INCOMBAT) {
-        gfUIDisplayActionPoints = TRUE;
+        gfUIDisplayActionPoints = true;
         gUIDisplayActionPointsOffX = 15;
         gUIDisplayActionPointsOffY = 15;
       }
@@ -3449,7 +3449,7 @@ function DrawItemTileCursor(): void {
       }
     } else {
       if (gfUIFullTargetFound) {
-        UIHandleOnMerc(FALSE);
+        UIHandleOnMerc(false);
 
         // OK, set global that this buddy can see catch...
         gfUIMouseOnValidCatcher = 2;
@@ -3462,14 +3462,14 @@ function DrawItemTileCursor(): void {
 
         if (!(uiCursorFlags & MOUSE_MOVING)) {
           // Find adjacent gridno...
-          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, gusCurMousePos, addressof(ubDirection), null, FALSE, FALSE);
+          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, gusCurMousePos, addressof(ubDirection), null, false, false);
           if (sActionGridNo == -1) {
             sActionGridNo = gusCurMousePos;
           }
 
           // Display location...
           gsUIHandleShowMoveGridLocation = sActionGridNo;
-          gfUIHandleShowMoveGrid = TRUE;
+          gfUIHandleShowMoveGrid = true;
 
           // Get AP cost
           if (MercPtrs[gusUIFullTargetID].value.uiStatusFlags & SOLDIER_ROBOT) {
@@ -3483,7 +3483,7 @@ function DrawItemTileCursor(): void {
 
         // Set value
         if (gTacticalStatus.uiFlags & INCOMBAT) {
-          gfUIDisplayActionPoints = TRUE;
+          gfUIDisplayActionPoints = true;
           gUIDisplayActionPointsOffX = 15;
           gUIDisplayActionPointsOffY = 15;
         }
@@ -3499,7 +3499,7 @@ function DrawItemTileCursor(): void {
 
         // Write the word 'drop' on cursor...
         wcscpy(gzIntTileLocation, pMessageStrings[Enum333.MSG_DROP]);
-        gfUIIntTileLocation = TRUE;
+        gfUIIntTileLocation = true;
       } else {
         if (usMapPos == gpItemPointerSoldier.value.sGridNo) {
           EndPhysicsTrajectoryUI();
@@ -3511,10 +3511,10 @@ function DrawItemTileCursor(): void {
           // Write the word 'drop' on cursor...
           if (gfUIMouseOnValidCatcher == 0) {
             wcscpy(gzIntTileLocation, pMessageStrings[Enum333.MSG_THROW]);
-            gfUIIntTileLocation = TRUE;
+            gfUIIntTileLocation = true;
           }
 
-          gfUIHandlePhysicsTrajectory = TRUE;
+          gfUIHandlePhysicsTrajectory = true;
 
           if (fRecalc && usMapPos != gpItemPointerSoldier.value.sGridNo) {
             if (gfUIMouseOnValidCatcher) {
@@ -3541,10 +3541,10 @@ function DrawItemTileCursor(): void {
             }
 
             // Calculate chance to throw here.....
-            if (!CalculateLaunchItemChanceToGetThrough(gpItemPointerSoldier, gpItemPointer, usMapPos, gsInterfaceLevel, ((gsInterfaceLevel * 256) + sEndZ), addressof(sFinalGridNo), FALSE, addressof(bLevel), TRUE)) {
-              gfBadThrowItemCTGH = TRUE;
+            if (!CalculateLaunchItemChanceToGetThrough(gpItemPointerSoldier, gpItemPointer, usMapPos, gsInterfaceLevel, ((gsInterfaceLevel * 256) + sEndZ), addressof(sFinalGridNo), false, addressof(bLevel), true)) {
+              gfBadThrowItemCTGH = true;
             } else {
-              gfBadThrowItemCTGH = FALSE;
+              gfBadThrowItemCTGH = false;
             }
 
             BeginPhysicsTrajectoryUI(sFinalGridNo, bLevel, gfBadThrowItemCTGH);
@@ -3575,18 +3575,18 @@ function DrawItemTileCursor(): void {
   }
 }
 
-function IsValidAmmoToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>): BOOLEAN {
+function IsValidAmmoToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>): boolean {
   if (!CompatibleAmmoForGun(pObject, addressof(pSoldier.value.inv[Enum261.HANDPOS]))) {
     // Build string...
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.ROBOT_NEEDS_GIVEN_CALIBER_STR], AmmoCaliber[Weapon[pSoldier.value.inv[Enum261.HANDPOS].usItem].ubCalibre]);
 
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
+function HandleItemPointerClick(usMapPos: UINT16): boolean {
   // Determine what to do
   let ubDirection: UINT8;
   let ubSoldierID: UINT8;
@@ -3596,30 +3596,30 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
   let ubThrowActionCode: UINT8 = 0;
   let uiThrowActionData: UINT32 = 0;
   let sEndZ: INT16 = 0;
-  let fGiveItem: BOOLEAN = FALSE;
+  let fGiveItem: boolean = false;
   let TempObject: OBJECTTYPE;
   let sGridNo: INT16;
   let sDist: INT16;
   let sDistVisible: INT16;
 
   if (SelectedGuyInBusyAnimation()) {
-    return FALSE;
+    return false;
   }
 
   if (giUIMessageOverlay != -1) {
     EndUIMessage();
-    return FALSE;
+    return false;
   }
 
   // Don't allow if our soldier is a # of things...
   if (AM_AN_EPC(gpItemPointerSoldier) || gpItemPointerSoldier.value.bLife < OKLIFE || gpItemPointerSoldier.value.bOverTerrainType == Enum315.DEEP_WATER) {
-    return FALSE;
+    return false;
   }
 
   // This implies we have no path....
   if (gsCurrentActionPoints == 0) {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
-    return FALSE;
+    return false;
   }
 
   if (gfUIFullTargetFound) {
@@ -3627,21 +3627,21 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
     usMapPos = MercPtrs[gusUIFullTargetID].value.sGridNo;
 
     if (gAnimControl[MercPtrs[gusUIFullTargetID].value.usAnimState].uiFlags & ANIM_MOVING) {
-      return FALSE;
+      return false;
     }
   }
 
   // Check if we have APs....
-  if (!EnoughPoints(gpItemPointerSoldier, gsCurrentActionPoints, 0, TRUE)) {
+  if (!EnoughPoints(gpItemPointerSoldier, gsCurrentActionPoints, 0, true)) {
     if (gfDontChargeAPsToPickup && gsCurrentActionPoints == AP_PICKUP_ITEM) {
     } else {
-      return FALSE;
+      return false;
     }
   }
 
   // SEE IF WE ARE OVER A TALKABLE GUY!
-  if (IsValidTalkableNPCFromMouse(addressof(ubSoldierID), TRUE, FALSE, TRUE)) {
-    fGiveItem = TRUE;
+  if (IsValidTalkableNPCFromMouse(addressof(ubSoldierID), true, false, true)) {
+    fGiveItem = true;
   }
 
   // OK, if different than default, change....
@@ -3688,7 +3688,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
                     }
     */
 
-    if (EnoughPoints(gpItemPointerSoldier, sAPCost, 0, TRUE)) {
+    if (EnoughPoints(gpItemPointerSoldier, sAPCost, 0, true)) {
       // If we are a robot, check if this is proper item to reload!
       if (MercPtrs[ubSoldierID].value.uiStatusFlags & SOLDIER_ROBOT) {
         // Check if we can reload robot....
@@ -3699,7 +3699,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
 
           // Walk up to him and reload!
           // See if we can get there to stab
-          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, MercPtrs[ubSoldierID].value.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
+          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, MercPtrs[ubSoldierID].value.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
 
           if (sActionGridNo != -1 && gbItemPointerSrcSlot != NO_SLOT) {
             // Make a temp object for ammo...
@@ -3720,7 +3720,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
               gpItemPointerSoldier.value.ubPendingAction = Enum257.MERC_RELOADROBOT;
 
               // WALK UP TO DEST FIRST
-              EVENT_InternalGetNewSoldierPath(gpItemPointerSoldier, sActionGridNo, gpItemPointerSoldier.value.usUIMovementMode, FALSE, FALSE);
+              EVENT_InternalGetNewSoldierPath(gpItemPointerSoldier, sActionGridNo, gpItemPointerSoldier.value.usUIMovementMode, false, false);
             } else {
               EVENT_SoldierBeginReloadRobot(gpItemPointerSoldier, sAdjustedGridNo, ubDirection, gbItemPointerSrcSlot);
             }
@@ -3730,7 +3730,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
           }
         }
 
-        gfDontChargeAPsToPickup = FALSE;
+        gfDontChargeAPsToPickup = false;
         EndItemPointer();
       } else {
         // if (gbItemPointerSrcSlot != NO_SLOT )
@@ -3738,7 +3738,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
           // Give guy this item.....
           SoldierGiveItem(gpItemPointerSoldier, MercPtrs[ubSoldierID], addressof(TempObject), gbItemPointerSrcSlot);
 
-          gfDontChargeAPsToPickup = FALSE;
+          gfDontChargeAPsToPickup = false;
           EndItemPointer();
 
           // If we are giving it to somebody not on our team....
@@ -3750,7 +3750,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
       }
     }
 
-    return TRUE;
+    return true;
   }
 
   // CHECK IF WE ARE NOT ON THE SAME GRIDNO
@@ -3769,7 +3769,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
       // Try to drop in an adjacent area....
       // 1 ) is this not a good OK destination
       // this will sound strange, but this is OK......
-      if (!NewOKDestination(gpItemPointerSoldier, usMapPos, FALSE, gpItemPointerSoldier.value.bLevel) || FindBestPath(gpItemPointerSoldier, usMapPos, gpItemPointerSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, 0) == 1) {
+      if (!NewOKDestination(gpItemPointerSoldier, usMapPos, false, gpItemPointerSoldier.value.bLevel) || FindBestPath(gpItemPointerSoldier, usMapPos, gpItemPointerSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, 0) == 1) {
         // Drop
         if (!gfDontChargeAPsToPickup) {
           // Deduct points
@@ -3790,7 +3790,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
               // Turn towards.....gridno
               EVENT_SetSoldierDesiredDirection(gpItemPointerSoldier, GetDirectionFromGridNo(usMapPos, gpItemPointerSoldier));
 
-              EVENT_InitNewSoldierAnim(gpItemPointerSoldier, Enum193.DROP_ADJACENT_OBJECT, 0, FALSE);
+              EVENT_InitNewSoldierAnim(gpItemPointerSoldier, Enum193.DROP_ADJACENT_OBJECT, 0, false);
             }
             break;
 
@@ -3824,15 +3824,15 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
           // gfSwitchPanel = TRUE;
           // gbNewPanel = SM_PANEL;
           // gubNewPanelParam = (UINT8)pSoldier->ubID;
-          if (!EnoughPoints(pSoldier, 3, 0, TRUE) || !EnoughPoints(gpItemPointerSoldier, 3, 0, TRUE)) {
-            return FALSE;
+          if (!EnoughPoints(pSoldier, 3, 0, true) || !EnoughPoints(gpItemPointerSoldier, 3, 0, true)) {
+            return false;
           }
 
           sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, gpItemPointerSoldier.value.sGridNo, gpItemPointerSoldier.value.bLevel);
 
           // Check LOS....
-          if (!SoldierTo3DLocationLineOfSightTest(pSoldier, gpItemPointerSoldier.value.sGridNo, gpItemPointerSoldier.value.bLevel, 3, sDistVisible, TRUE)) {
-            return FALSE;
+          if (!SoldierTo3DLocationLineOfSightTest(pSoldier, gpItemPointerSoldier.value.sGridNo, gpItemPointerSoldier.value.bLevel, 3, sDistVisible, true)) {
+            return false;
           }
 
           // Charge AP values...
@@ -3842,7 +3842,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
           usItem = gpItemPointer.value.usItem;
 
           // try to auto place object....
-          if (AutoPlaceObject(pSoldier, gpItemPointer, TRUE)) {
+          if (AutoPlaceObject(pSoldier, gpItemPointer, true)) {
             ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_ITEM_PASSED_TO_MERC], ShortItemNames[usItem], pSoldier.value.name);
 
             // Check if it's the same now!
@@ -3864,21 +3864,21 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
               if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_STAND && !MercInWater(pSoldier)) {
                 // Turn to face, then do animation....
                 EVENT_SetSoldierDesiredDirection(pSoldier, ubFacingDirection);
-                pSoldier.value.fTurningUntilDone = TRUE;
+                pSoldier.value.fTurningUntilDone = true;
                 pSoldier.value.usPendingAnimation = Enum193.PASS_OBJECT;
               }
 
               if (gAnimControl[gpItemPointerSoldier.value.usAnimState].ubEndHeight == ANIM_STAND && !MercInWater(gpItemPointerSoldier)) {
                 EVENT_SetSoldierDesiredDirection(gpItemPointerSoldier, gOppositeDirection[ubFacingDirection]);
-                gpItemPointerSoldier.value.fTurningUntilDone = TRUE;
+                gpItemPointerSoldier.value.fTurningUntilDone = true;
                 gpItemPointerSoldier.value.usPendingAnimation = Enum193.PASS_OBJECT;
               }
             }
 
-            return TRUE;
+            return true;
           } else {
             ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_NO_ROOM_TO_PASS_ITEM], ShortItemNames[usItem], pSoldier.value.name);
-            return FALSE;
+            return false;
           }
         }
       }
@@ -3886,12 +3886,12 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
       // CHECK FOR VALID CTGH
       if (gfBadThrowItemCTGH) {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_THROW_TO_DEST_STR]);
-        return FALSE;
+        return false;
       }
 
       // Deduct points
       // DeductPoints( gpItemPointerSoldier, AP_TOSS_ITEM, 0 );
-      gpItemPointerSoldier.value.fDontChargeTurningAPs = TRUE;
+      gpItemPointerSoldier.value.fDontChargeTurningAPs = true;
       // Will be dome later....
 
       ubThrowActionCode = Enum258.NO_THROW_ACTION;
@@ -3948,7 +3948,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
       // CHANGE DIRECTION AT LEAST
       ubDirection = GetDirectionFromGridNo(sGridNo, gpItemPointerSoldier);
       EVENT_SetSoldierDesiredDirection(gpItemPointerSoldier, ubDirection);
-      gpItemPointerSoldier.value.fTurningUntilDone = TRUE;
+      gpItemPointerSoldier.value.fTurningUntilDone = true;
 
       // Increment attacker count...
       gTacticalStatus.ubAttackBusyCount++;
@@ -3962,30 +3962,30 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
     }
   }
 
-  gfDontChargeAPsToPickup = FALSE;
+  gfDontChargeAPsToPickup = false;
   EndItemPointer();
 
-  return TRUE;
+  return true;
 }
 
-function ItemCursorInLobRange(usMapPos: UINT16): BOOLEAN {
+function ItemCursorInLobRange(usMapPos: UINT16): boolean {
   // Draw item depending on distance from buddy
   if (GetRangeFromGridNoDiff(usMapPos, gpItemPointerSoldier.value.sGridNo) > MIN_LOB_RANGE) {
-    return FALSE;
+    return false;
   } else {
-    return TRUE;
+    return true;
   }
 }
 
-function InItemStackPopup(): BOOLEAN {
+function InItemStackPopup(): boolean {
   return gfInItemStackPopup;
 }
 
-function InKeyRingPopup(): BOOLEAN {
+function InKeyRingPopup(): boolean {
   return gfInKeyRingPopup;
 }
 
-function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): BOOLEAN {
+function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let sX: INT16;
   let sY: INT16;
@@ -4014,7 +4014,7 @@ function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, s
 
   // Return false if #objects not >1
   if (ubLimit < 1) {
-    return FALSE;
+    return false;
   }
 
   if (guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) {
@@ -4073,7 +4073,7 @@ function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, s
     // OK, for each item, set dirty text if applicable!
     SetRegionFastHelpText(addressof(gItemPopupRegions[cnt]), ItemNames[pSoldier.value.inv[ubPosition].usItem]);
     SetRegionHelpEndCallback(addressof(gItemPopupRegions[cnt]), HelpTextDoneCallback);
-    gfItemPopupRegionCallbackEndFix = FALSE;
+    gfItemPopupRegionCallbackEndFix = false;
   }
 
   // Build a mouse region here that is over any others.....
@@ -4088,11 +4088,11 @@ function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, s
 
   // guiTacticalInterfaceFlags |= INTERFACE_NORENDERBUTTONS;
 
-  gfInItemStackPopup = TRUE;
+  gfInItemStackPopup = true;
 
   //	if ( !(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN ) )
   if (guiCurrentItemDescriptionScreen != Enum26.MAP_SCREEN) {
-    EnableSMPanelButtons(FALSE, FALSE);
+    EnableSMPanelButtons(false, false);
   }
 
   // Reserict mouse cursor to panel
@@ -4103,7 +4103,7 @@ function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, s
 
   RestrictMouseCursor(addressof(aRect));
 
-  return TRUE;
+  return true;
 }
 
 function EndItemStackPopupWithItemInHand(): void {
@@ -4112,7 +4112,7 @@ function EndItemStackPopupWithItemInHand(): void {
   }
 }
 
-function RenderItemStackPopup(fFullRender: BOOLEAN): void {
+function RenderItemStackPopup(fFullRender: boolean): void {
   let pTrav: Pointer<ETRLEObject>;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4145,12 +4145,12 @@ function RenderItemStackPopup(fFullRender: BOOLEAN): void {
       sX = (gsItemPopupX + (cnt * usWidth) + 11);
       sY = (gsItemPopupY + 3);
 
-      INVRenderItem(FRAME_BUFFER, null, gpItemPopupObject, sX, sY, 29, 23, DIRTYLEVEL2, null, RENDER_ITEM_NOSTATUS, FALSE, 0);
+      INVRenderItem(FRAME_BUFFER, null, gpItemPopupObject, sX, sY, 29, 23, DIRTYLEVEL2, null, RENDER_ITEM_NOSTATUS, false, 0);
 
       // Do status bar here...
       sNewX = (gsItemPopupX + (cnt * usWidth) + 7);
       sNewY = gsItemPopupY + INV_BAR_DY + 3;
-      DrawItemUIBarEx(gpItemPopupObject, cnt, sNewX, sNewY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), TRUE, FRAME_BUFFER);
+      DrawItemUIBarEx(gpItemPopupObject, cnt, sNewX, sNewY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), true, FRAME_BUFFER);
     }
   }
 
@@ -4169,7 +4169,7 @@ function DeleteItemStackPopup(): void {
 
   MSYS_RemoveRegion(addressof(gItemPopupRegion));
 
-  gfInItemStackPopup = FALSE;
+  gfInItemStackPopup = false;
 
   for (cnt = 0; cnt < gubNumItemPopups; cnt++) {
     MSYS_RemoveRegion(addressof(gItemPopupRegions[cnt]));
@@ -4181,13 +4181,13 @@ function DeleteItemStackPopup(): void {
 
   //	if ( !(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN ) )
   if (guiCurrentItemDescriptionScreen != Enum26.MAP_SCREEN) {
-    EnableSMPanelButtons(TRUE, FALSE);
+    EnableSMPanelButtons(true, false);
   }
 
   FreeMouseCursor();
 }
 
-function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): BOOLEAN {
+function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let aRect: SGPRect;
   let pTrav: Pointer<ETRLEObject>;
@@ -4261,10 +4261,10 @@ function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: I
 
   //	if ( !(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN ) )
   if (guiCurrentItemDescriptionScreen != Enum26.MAP_SCREEN) {
-    EnableSMPanelButtons(FALSE, FALSE);
+    EnableSMPanelButtons(false, false);
   }
 
-  gfInKeyRingPopup = TRUE;
+  gfInKeyRingPopup = true;
 
   // Reserict mouse cursor to panel
   aRect.iTop = sInvY;
@@ -4274,10 +4274,10 @@ function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: I
 
   RestrictMouseCursor(addressof(aRect));
 
-  return TRUE;
+  return true;
 }
 
-function RenderKeyRingPopup(fFullRender: BOOLEAN): void {
+function RenderKeyRingPopup(fFullRender: boolean): void {
   let pTrav: Pointer<ETRLEObject>;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4331,7 +4331,7 @@ function RenderKeyRingPopup(fFullRender: BOOLEAN): void {
       pObject.ubNumberOfObjects = gpItemPopupSoldier.value.pKeyRing[cnt].ubNumber;
 
       // show 100% status for each
-      DrawItemUIBarEx(addressof(pObject), 0, (gsKeyRingPopupInvX + sOffSetX + (cnt % sKeyRingItemWidth * usWidth) + 7), (gsKeyRingPopupInvY + sOffSetY + (cnt / sKeyRingItemWidth * usHeight) + 24), ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), TRUE, FRAME_BUFFER);
+      DrawItemUIBarEx(addressof(pObject), 0, (gsKeyRingPopupInvX + sOffSetX + (cnt % sKeyRingItemWidth * usWidth) + 7), (gsKeyRingPopupInvY + sOffSetY + (cnt / sKeyRingItemWidth * usHeight) + 24), ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), true, FRAME_BUFFER);
 
       // set item type
       pObject.usItem = FIRST_KEY + LockTable[gpItemPopupSoldier.value.pKeyRing[cnt].ubKeyID].usKeyItem;
@@ -4350,7 +4350,7 @@ function RenderKeyRingPopup(fFullRender: BOOLEAN): void {
 function DeleteKeyRingPopup(): void {
   let cnt: INT32;
 
-  if (gfInKeyRingPopup == FALSE) {
+  if (gfInKeyRingPopup == false) {
     // done,
     return;
   }
@@ -4360,7 +4360,7 @@ function DeleteKeyRingPopup(): void {
 
   MSYS_RemoveRegion(addressof(gItemPopupRegion));
 
-  gfInKeyRingPopup = FALSE;
+  gfInKeyRingPopup = false;
 
   for (cnt = 0; cnt < NUMBER_KEYS_ON_KEYRING; cnt++) {
     MSYS_RemoveRegion(addressof(gKeyRingRegions[cnt]));
@@ -4372,7 +4372,7 @@ function DeleteKeyRingPopup(): void {
 
   //	if ( !(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN ) )
   if (guiCurrentItemDescriptionScreen != Enum26.MAP_SCREEN) {
-    EnableSMPanelButtons(TRUE, FALSE);
+    EnableSMPanelButtons(true, false);
   }
 
   FreeMouseCursor();
@@ -4407,7 +4407,7 @@ function GetTileGraphicForItem(pItem: Pointer<INVTYPE>): UINT16 {
   return usIndex;
 }
 
-function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<UINT32>): BOOLEAN {
+function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<UINT32>): boolean {
   let zName: CHAR8[] /* [100] */;
   let uiVo: UINT32;
   let VObjectDesc: VOBJECT_DESC;
@@ -4452,21 +4452,21 @@ function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<UINT32>)
 
   puiVo.value = uiVo;
 
-  return TRUE;
+  return true;
 }
 
 function ItemDescMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
 }
 
 function ItemDescCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  /* static */ let fRightDown: BOOLEAN = FALSE;
-  /* static */ let fLeftDown: BOOLEAN = FALSE;
+  /* static */ let fRightDown: boolean = false;
+  /* static */ let fLeftDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fLeftDown = TRUE;
+    fLeftDown = true;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fLeftDown) {
-      fLeftDown = FALSE;
+      fLeftDown = false;
 
       // Only exit the screen if we are NOT in the money interface.  Only the DONE button should exit the money interface.
       if (gpItemDescObject.value.usItem != Enum225.MONEY) {
@@ -4474,10 +4474,10 @@ function ItemDescCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
       }
     }
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    fRightDown = TRUE;
+    fRightDown = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (fRightDown) {
-      fRightDown = FALSE;
+      fRightDown = false;
 
       // Only exit the screen if we are NOT in the money interface.  Only the DONE button should exit the money interface.
       //			if( gpItemDescObject->usItem != MONEY )
@@ -4539,7 +4539,7 @@ function ItemPopupRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
         }
 
         // re-evaluate repairs
-        gfReEvaluateEveryonesNothingToDo = TRUE;
+        gfReEvaluateEveryonesNothingToDo = true;
       }
 
       // Dirty interface
@@ -4573,7 +4573,7 @@ function ItemPopupRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
         }
 
         // re-evaluate repairs
-        gfReEvaluateEveryonesNothingToDo = TRUE;
+        gfReEvaluateEveryonesNothingToDo = true;
 
         // Dirty interface
         // RenderItemStackPopup( FALSE );
@@ -4586,7 +4586,7 @@ function ItemPopupRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
     // Get Description....
     // Some global stuff here - for esc, etc
     // Remove
-    gfItemPopupRegionCallbackEndFix = TRUE;
+    gfItemPopupRegionCallbackEndFix = true;
 
     DeleteItemStackPopup();
 
@@ -4614,15 +4614,15 @@ function ItemPopupFullRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
     } else if (InKeyRingPopup()) {
       // end pop up with key in hand
       DeleteKeyRingPopup();
-      fTeamPanelDirty = TRUE;
+      fTeamPanelDirty = true;
     }
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (InItemStackPopup()) {
       DeleteItemStackPopup();
-      fTeamPanelDirty = TRUE;
+      fTeamPanelDirty = true;
     } else {
       DeleteKeyRingPopup();
-      fTeamPanelDirty = TRUE;
+      fTeamPanelDirty = true;
     }
   }
 }
@@ -4651,11 +4651,11 @@ interface ITEM_PICKUP_MENU_STRUCT {
   iAllButton: INT32;
   iOKButton: INT32;
   iCancelButton: INT32;
-  fCanScrollUp: BOOLEAN;
-  fCanScrollDown: BOOLEAN;
-  fDirtyLevel: BOOLEAN;
+  fCanScrollUp: boolean;
+  fCanScrollDown: boolean;
+  fDirtyLevel: boolean;
   iDirtyRect: INT32;
-  fHandled: BOOLEAN;
+  fHandled: boolean;
   sGridNo: INT16;
   bZLevel: INT8;
   sButtomPanelStartY: INT16;
@@ -4664,10 +4664,10 @@ interface ITEM_PICKUP_MENU_STRUCT {
   Regions: MOUSE_REGION[] /* [NUM_PICKUP_SLOTS] */;
   BackRegions: MOUSE_REGION;
   BackRegion: MOUSE_REGION;
-  pfSelectedArray: Pointer<BOOLEAN>;
-  fAtLeastOneSelected: BOOLEAN;
+  pfSelectedArray: Pointer<boolean>;
+  fAtLeastOneSelected: boolean;
   CompAmmoObject: OBJECTTYPE;
-  fAllSelected: BOOLEAN;
+  fAllSelected: boolean;
 }
 
 const ITEMPICK_UP_X = 55;
@@ -4695,14 +4695,14 @@ const ITEMPICK_TEXT_WIDTH = 109;
 const ITEMPICK_TEXT_HEIGHT = 17;
 
 let gItemPickupMenu: ITEM_PICKUP_MENU_STRUCT;
-let gfInItemPickupMenu: BOOLEAN = FALSE;
+let gfInItemPickupMenu: boolean = false;
 
 // STUFF FOR POPUP ITEM INFO BOX
-function SetItemPickupMenuDirty(fDirtyLevel: BOOLEAN): void {
+function SetItemPickupMenuDirty(fDirtyLevel: boolean): void {
   gItemPickupMenu.fDirtyLevel = fDirtyLevel;
 }
 
-function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pItemPool: Pointer<ITEM_POOL>, sScreenX: INT16, sScreenY: INT16, bZLevel: INT8): BOOLEAN {
+function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pItemPool: Pointer<ITEM_POOL>, sScreenX: INT16, sScreenY: INT16, bZLevel: INT8): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let ubString: UINT8[] /* [48] */;
   let pTempItemPool: Pointer<ITEM_POOL>;
@@ -4714,10 +4714,10 @@ function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   let sCenterYVal: INT16;
 
   // Erase other menus....
-  EraseInterfaceMenus(TRUE);
+  EraseInterfaceMenus(true);
 
   // Make sure menu is located if not on screen
-  LocateSoldier(pSoldier.value.ubID, FALSE);
+  LocateSoldier(pSoldier.value.ubID, false);
 
   // memset values
   memset(addressof(gItemPickupMenu), 0, sizeof(gItemPickupMenu));
@@ -4729,13 +4729,13 @@ function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   PauseGame();
   LockPauseState(18);
   // Pause timers as well....
-  PauseTime(TRUE);
+  PauseTime(true);
 
   // Alrighty, cancel lock UI if we havn't done so already
   UnSetUIBusy(pSoldier.value.ubID);
 
   // Change to INV panel if not there already...
-  gfSwitchPanel = TRUE;
+  gfSwitchPanel = true;
   gbNewPanel = Enum215.SM_PANEL;
   gubNewPanelParam = pSoldier.value.ubID;
 
@@ -4809,11 +4809,11 @@ function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   gItemPickupMenu.sY = sY;
   gItemPickupMenu.bCurSelect = 0;
   gItemPickupMenu.pSoldier = pSoldier;
-  gItemPickupMenu.fHandled = FALSE;
+  gItemPickupMenu.fHandled = false;
   gItemPickupMenu.sGridNo = sGridNo;
   gItemPickupMenu.bZLevel = bZLevel;
-  gItemPickupMenu.fAtLeastOneSelected = FALSE;
-  gItemPickupMenu.fAllSelected = FALSE;
+  gItemPickupMenu.fAtLeastOneSelected = false;
+  gItemPickupMenu.fAllSelected = false;
 
   // Load images for buttons
   FilenameForBPP("INTERFACE\\itembox.sti", ubString);
@@ -4874,18 +4874,18 @@ function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
 
   SetupPickupPage(0);
 
-  gfInItemPickupMenu = TRUE;
+  gfInItemPickupMenu = true;
 
   // Ignore scrolling
-  gfIgnoreScrolling = TRUE;
+  gfIgnoreScrolling = true;
 
-  HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
+  HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, true);
   gubSelectSMPanelToMerc = pSoldier.value.ubID;
   ReEvaluateDisabledINVPanelButtons();
-  DisableTacticalTeamPanelButtons(TRUE);
+  DisableTacticalTeamPanelButtons(true);
 
   // gfSMDisableForItems = TRUE;
-  return TRUE;
+  return true;
 }
 
 function SetupPickupPage(bPage: INT8): void {
@@ -4901,8 +4901,8 @@ function SetupPickupPage(bPage: INT8): void {
   memset(gItemPickupMenu.ItemPoolSlots, 0, sizeof(gItemPickupMenu.ItemPoolSlots));
 
   // Zero page flags
-  gItemPickupMenu.fCanScrollUp = FALSE;
-  gItemPickupMenu.fCanScrollDown = FALSE;
+  gItemPickupMenu.fCanScrollUp = false;
+  gItemPickupMenu.fCanScrollDown = false;
 
   // Get lower bound
   iStart = bPage * NUM_PICKUP_SLOTS;
@@ -4911,7 +4911,7 @@ function SetupPickupPage(bPage: INT8): void {
   }
 
   if (bPage > 0) {
-    gItemPickupMenu.fCanScrollUp = TRUE;
+    gItemPickupMenu.fCanScrollUp = true;
   }
 
   iEnd = iStart + NUM_PICKUP_SLOTS;
@@ -4919,7 +4919,7 @@ function SetupPickupPage(bPage: INT8): void {
     iEnd = gItemPickupMenu.ubTotalItems;
   } else {
     // We can go for more!
-    gItemPickupMenu.fCanScrollDown = TRUE;
+    gItemPickupMenu.fCanScrollDown = true;
   }
 
   // Setup slots!
@@ -5018,7 +5018,7 @@ function CalculateItemPickupMenuDimensions(): void {
 }
 
 // set pick up menu dirty level
-function SetPickUpMenuDirtyLevel(fDirtyLevel: BOOLEAN): void {
+function SetPickUpMenuDirtyLevel(fDirtyLevel: boolean): void {
   gItemPickupMenu.fDirtyLevel = fDirtyLevel;
 
   return;
@@ -5111,11 +5111,11 @@ function RenderItemPickupMenu(): void {
           if (gItemPickupMenu.pfSelectedArray[cnt + gItemPickupMenu.ubScrollAnchor]) {
             // SetFontForeground( FONT_MCOLOR_LTYELLOW );
             // SetFontShadow( ITEMDESC_FONTSHADOW2 );
-            Blt8BPPDataTo16BPPBufferOutline(pDestBuf, uiDestPitchBYTES, gTileDatabase[usItemTileIndex].hTileSurface, sCenX, sCenY, gTileDatabase[usItemTileIndex].usRegionIndex, Get16BPPColor(FROMRGB(255, 255, 0)), TRUE);
+            Blt8BPPDataTo16BPPBufferOutline(pDestBuf, uiDestPitchBYTES, gTileDatabase[usItemTileIndex].hTileSurface, sCenX, sCenY, gTileDatabase[usItemTileIndex].usRegionIndex, Get16BPPColor(FROMRGB(255, 255, 0)), true);
           } else {
             // SetFontForeground( FONT_BLACK );
             // SetFontShadow( ITEMDESC_FONTSHADOW2 );
-            Blt8BPPDataTo16BPPBufferOutline(pDestBuf, uiDestPitchBYTES, gTileDatabase[usItemTileIndex].hTileSurface, sCenX, sCenY, gTileDatabase[usItemTileIndex].usRegionIndex, 0, FALSE);
+            Blt8BPPDataTo16BPPBufferOutline(pDestBuf, uiDestPitchBYTES, gTileDatabase[usItemTileIndex].hTileSurface, sCenX, sCenY, gTileDatabase[usItemTileIndex].usRegionIndex, 0, false);
           }
         }
 
@@ -5207,17 +5207,17 @@ function RemoveItemPickupMenu(): void {
   let cnt: INT32;
 
   if (gfInItemPickupMenu) {
-    gfSMDisableForItems = FALSE;
+    gfSMDisableForItems = false;
 
-    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
+    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, true);
 
     UnLockPauseState();
     UnPauseGame();
     // UnPause timers as well....
-    PauseTime(FALSE);
+    PauseTime(false);
 
     // Unfreese guy!
-    gItemPickupMenu.pSoldier.value.fPauseAllAnimation = FALSE;
+    gItemPickupMenu.pSoldier.value.fPauseAllAnimation = false;
 
     // Remove graphics!
     DeleteVideoObjectFromIndex(gItemPickupMenu.uiPanelVo);
@@ -5261,18 +5261,18 @@ function RemoveItemPickupMenu(): void {
     // Rerender world
     SetRenderFlags(RENDER_FLAG_FULL);
 
-    gfInItemPickupMenu = FALSE;
+    gfInItemPickupMenu = false;
 
     // gfSMDisableForItems = FALSE;
     // EnableButtonsForInItemBox( TRUE );
-    EnableSMPanelButtons(TRUE, TRUE);
-    gfSMDisableForItems = FALSE;
+    EnableSMPanelButtons(true, true);
+    gfSMDisableForItems = false;
 
     fInterfacePanelDirty = DIRTYLEVEL2;
 
     // Turn off Ignore scrolling
-    gfIgnoreScrolling = FALSE;
-    DisableTacticalTeamPanelButtons(FALSE);
+    gfIgnoreScrolling = false;
+    DisableTacticalTeamPanelButtons(false);
     gubSelectSMPanelToMerc = gpSMCurrentMerc.value.ubID;
   }
 }
@@ -5336,7 +5336,7 @@ function ItemPickupOK(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, pickup item....
-    gItemPickupMenu.fHandled = TRUE;
+    gItemPickupMenu.fHandled = true;
 
     // Tell our soldier to pickup this item!
     SoldierGetItemFromWorld(gItemPickupMenu.pSoldier, ITEM_PICKUP_SELECTION, gItemPickupMenu.sGridNo, gItemPickupMenu.bZLevel, gItemPickupMenu.pfSelectedArray);
@@ -5354,7 +5354,7 @@ function ItemPickupCancel(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, pickup item....
-    gItemPickupMenu.fHandled = TRUE;
+    gItemPickupMenu.fHandled = true;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
@@ -5364,7 +5364,7 @@ function ItemPickMenuMouseMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: 
   let uiItemPos: UINT32;
   let pTempItemPool: Pointer<ITEM_POOL>;
   let bPos: INT32;
-  /* static */ let bChecked: BOOLEAN = FALSE;
+  /* static */ let bChecked: boolean = false;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5382,25 +5382,25 @@ function ItemPickMenuMouseMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: 
         memcpy(addressof(gItemPickupMenu.CompAmmoObject), addressof(gWorldItems[pTempItemPool.value.iItemIndex].o), sizeof(OBJECTTYPE));
 
         // Turn off first...
-        HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
-        InternalHandleCompatibleAmmoUI(gpSMCurrentMerc, addressof(gItemPickupMenu.CompAmmoObject), TRUE);
+        HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, true);
+        InternalHandleCompatibleAmmoUI(gpSMCurrentMerc, addressof(gItemPickupMenu.CompAmmoObject), true);
 
-        HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), addressof(gWorldItems[pTempItemPool.value.iItemIndex].o), FALSE);
+        HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), addressof(gWorldItems[pTempItemPool.value.iItemIndex].o), false);
 
         SetItemPickupMenuDirty(DIRTYLEVEL2);
 
-        bChecked = TRUE;
+        bChecked = true;
       }
     }
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gItemPickupMenu.bCurSelect = 255;
 
-    InternalHandleCompatibleAmmoUI(gpSMCurrentMerc, addressof(gItemPickupMenu.CompAmmoObject), FALSE);
-    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
+    InternalHandleCompatibleAmmoUI(gpSMCurrentMerc, addressof(gItemPickupMenu.CompAmmoObject), false);
+    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, true);
 
     SetItemPickupMenuDirty(DIRTYLEVEL2);
 
-    bChecked = FALSE;
+    bChecked = false;
   }
 }
 
@@ -5414,7 +5414,7 @@ function ItemPickupBackgroundClick(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 function ItemPickMenuMouseClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let uiItemPos: INT32;
   let cnt: UINT8;
-  let fEnable: BOOLEAN = FALSE;
+  let fEnable: boolean = false;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5435,7 +5435,7 @@ function ItemPickMenuMouseClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
     // Loop through all and set /unset OK
     for (cnt = 0; cnt < gItemPickupMenu.ubTotalItems; cnt++) {
       if (gItemPickupMenu.pfSelectedArray[cnt]) {
-        fEnable = TRUE;
+        fEnable = true;
         break;
       }
     }
@@ -5449,9 +5449,9 @@ function ItemPickMenuMouseClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
   }
 }
 
-function HandleItemPickupMenu(): BOOLEAN {
+function HandleItemPickupMenu(): boolean {
   if (!gfInItemPickupMenu) {
-    return FALSE;
+    return false;
   }
 
   if (gItemPickupMenu.fHandled) {
@@ -5575,7 +5575,7 @@ function RemoveMoney(): void {
 
       memset(addressof(InvSlot), 0, sizeof(INVENTORY_IN_SLOT));
 
-      InvSlot.fActive = TRUE;
+      InvSlot.fActive = true;
       InvSlot.sItemIndex = Enum225.MONEY;
       InvSlot.bSlotIdInOtherLocation = -1;
 
@@ -5631,8 +5631,8 @@ function RemoveMoney(): void {
 
         MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
         MSYS_SetCurrentCursor(EXTERN_CURSOR);
-        fMapInventoryItem = TRUE;
-        fTeamPanelDirty = TRUE;
+        fMapInventoryItem = true;
+        fTeamPanelDirty = true;
       }
     }
   }
@@ -5641,8 +5641,8 @@ function RemoveMoney(): void {
   //		gfAddingMoneyToMercFromPlayersAccount = FALSE;
 }
 
-function AttemptToApplyCamo(pSoldier: Pointer<SOLDIERTYPE>, usItemIndex: UINT16): BOOLEAN {
-  return FALSE;
+function AttemptToApplyCamo(pSoldier: Pointer<SOLDIERTYPE>, usItemIndex: UINT16): boolean {
+  return false;
 }
 
 function GetHelpTextForItem(pzStr: Pointer<INT16>, pObject: Pointer<OBJECTTYPE>, pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -5736,7 +5736,7 @@ function CancelItemPointer(): void {
       // ATE: This could potnetially swap!
       // Make sure # of items is 0, if not, auto place somewhere else...
       if (gpItemPointer.value.ubNumberOfObjects > 0) {
-        if (!AutoPlaceObject(gpItemPointerSoldier, gpItemPointer, FALSE)) {
+        if (!AutoPlaceObject(gpItemPointerSoldier, gpItemPointer, false)) {
           // Alright, place of the friggen ground!
           AddItemToPool(gpItemPointerSoldier.value.sGridNo, gpItemPointer, 1, gpItemPointerSoldier.value.bLevel, 0, -1);
           NotifySoldiersToLookforItems();
@@ -5755,11 +5755,11 @@ interface ITEM_CURSOR_SAVE_INFO {
   ItemPointerInfo: OBJECTTYPE;
   ubSoldierID: UINT8;
   ubInvSlot: UINT8;
-  fCursorActive: BOOLEAN;
+  fCursorActive: boolean;
   bPadding: INT8[] /* [5] */;
 }
 
-function LoadItemCursorFromSavedGame(hFile: HWFILE): BOOLEAN {
+function LoadItemCursorFromSavedGame(hFile: HWFILE): boolean {
   let uiLoadSize: UINT32 = 0;
   let uiNumBytesRead: UINT32 = 0;
   let SaveStruct: ITEM_CURSOR_SAVE_INFO;
@@ -5768,7 +5768,7 @@ function LoadItemCursorFromSavedGame(hFile: HWFILE): BOOLEAN {
   uiLoadSize = sizeof(ITEM_CURSOR_SAVE_INFO);
   FileRead(hFile, addressof(SaveStruct), uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
-    return FALSE;
+    return false;
   }
 
   // Now set things up.....
@@ -5793,10 +5793,10 @@ function LoadItemCursorFromSavedGame(hFile: HWFILE): BOOLEAN {
     gpItemPointer = null;
   }
 
-  return TRUE;
+  return true;
 }
 
-function SaveItemCursorToSavedGame(hFile: HWFILE): BOOLEAN {
+function SaveItemCursorToSavedGame(hFile: HWFILE): boolean {
   let uiSaveSize: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
 
@@ -5818,21 +5818,21 @@ function SaveItemCursorToSavedGame(hFile: HWFILE): BOOLEAN {
 
   // Boolean
   if (gpItemPointer != null) {
-    SaveStruct.fCursorActive = TRUE;
+    SaveStruct.fCursorActive = true;
   } else {
-    SaveStruct.fCursorActive = FALSE;
+    SaveStruct.fCursorActive = false;
   }
 
   // save locations of watched points
   uiSaveSize = sizeof(ITEM_CURSOR_SAVE_INFO);
   FileWrite(hFile, addressof(SaveStruct), uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // All done...
 
-  return TRUE;
+  return true;
 }
 
 function UpdateItemHatches(): void {

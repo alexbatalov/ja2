@@ -169,7 +169,7 @@ function FreeAllStructureFiles(): void {
   }
 }
 
-function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): BOOLEAN {
+function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): boolean {
   CHECKF(pStructureFile);
 
   // unlink the file ref
@@ -188,28 +188,28 @@ function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): BOOLEAN
   }
   // and free all the structures used!
   FreeStructureFileRef(pStructureFile);
-  return TRUE;
+  return true;
 }
 
-function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF>, puiStructureDataSize: Pointer<UINT32>): BOOLEAN
+function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF>, puiStructureDataSize: Pointer<UINT32>): boolean
 // UINT8 **ppubStructureData, UINT32 * puiDataSize, STRUCTURE_FILE_HEADER * pHeader )
 { // Loads a structure file's data as a honking chunk o' memory
   let hInput: HWFILE;
   let Header: STRUCTURE_FILE_HEADER;
   let uiBytesRead: UINT32;
   let uiDataSize: UINT32;
-  let fOk: BOOLEAN;
+  let fOk: boolean;
 
   CHECKF(szFileName);
   CHECKF(pFileRef);
-  hInput = FileOpen(szFileName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+  hInput = FileOpen(szFileName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hInput == 0) {
-    return FALSE;
+    return false;
   }
   fOk = FileRead(hInput, addressof(Header), sizeof(STRUCTURE_FILE_HEADER), addressof(uiBytesRead));
   if (!fOk || uiBytesRead != sizeof(STRUCTURE_FILE_HEADER) || strncmp(Header.szId, STRUCTURE_FILE_ID, STRUCTURE_FILE_ID_LEN) != 0 || Header.usNumberOfStructures == 0) {
     FileClose(hInput);
-    return FALSE;
+    return false;
   }
   pFileRef.value.usNumberOfStructures = Header.usNumberOfStructures;
   if (Header.fFlags & STRUCTURE_FILE_CONTAINS_AUXIMAGEDATA) {
@@ -217,13 +217,13 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
     pFileRef.value.pAuxData = MemAlloc(uiDataSize);
     if (pFileRef.value.pAuxData == null) {
       FileClose(hInput);
-      return FALSE;
+      return false;
     }
     fOk = FileRead(hInput, pFileRef.value.pAuxData, uiDataSize, addressof(uiBytesRead));
     if (!fOk || uiBytesRead != uiDataSize) {
       MemFree(pFileRef.value.pAuxData);
       FileClose(hInput);
-      return FALSE;
+      return false;
     }
     if (Header.usNumberOfImageTileLocsStored > 0) {
       uiDataSize = sizeof(RelTileLoc) * Header.usNumberOfImageTileLocsStored;
@@ -231,13 +231,13 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
       if (pFileRef.value.pTileLocData == null) {
         MemFree(pFileRef.value.pAuxData);
         FileClose(hInput);
-        return FALSE;
+        return false;
       }
       fOk = FileRead(hInput, pFileRef.value.pTileLocData, uiDataSize, addressof(uiBytesRead));
       if (!fOk || uiBytesRead != uiDataSize) {
         MemFree(pFileRef.value.pAuxData);
         FileClose(hInput);
-        return FALSE;
+        return false;
       }
     }
   }
@@ -255,7 +255,7 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
           MemFree(pFileRef.value.pTileLocData);
         }
       }
-      return FALSE;
+      return false;
     }
     fOk = FileRead(hInput, pFileRef.value.pubStructureData, uiDataSize, addressof(uiBytesRead));
     if (!fOk || uiBytesRead != uiDataSize) {
@@ -267,15 +267,15 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
         }
       }
       FileClose(hInput);
-      return FALSE;
+      return false;
     }
     puiStructureDataSize.value = uiDataSize;
   }
   FileClose(hInput);
-  return TRUE;
+  return true;
 }
 
-function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiDataSize: UINT32): BOOLEAN {
+function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiDataSize: UINT32): boolean {
   // Based on a file chunk, creates all the dynamic arrays for the
                                                                                      // structure definitions contained within
 
@@ -290,7 +290,7 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
   pCurrent = pFileRef.value.pubStructureData;
   pDBStructureRef = MemAlloc(pFileRef.value.usNumberOfStructures * sizeof(DB_STRUCTURE_REF));
   if (pDBStructureRef == null) {
-    return FALSE;
+    return false;
   }
   memset(pDBStructureRef, 0, pFileRef.value.usNumberOfStructures * sizeof(DB_STRUCTURE_REF));
   pFileRef.value.pDBStructureRef = pDBStructureRef;
@@ -298,14 +298,14 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
     if (pCurrent + sizeof(DB_STRUCTURE) > pFileRef.value.pubStructureData + uiDataSize) {
       // gone past end of file block?!
       // freeing of memory will occur outside of the function
-      return FALSE;
+      return false;
     }
     usIndex = (pCurrent).value.usStructureNumber;
     pDBStructureRef[usIndex].pDBStructure = pCurrent;
     ppTileArray = MemAlloc(pDBStructureRef[usIndex].pDBStructure.value.ubNumberOfTiles * sizeof(DB_STRUCTURE_TILE /* Pointer<DB_STRUCTURE_TILE> */));
     if (ppTileArray == null) {
       // freeing of memory will occur outside of the function
-      return FALSE;
+      return false;
     }
     pDBStructureRef[usIndex].ppTile = ppTileArray;
     pCurrent += sizeof(DB_STRUCTURE);
@@ -315,7 +315,7 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
       if (pCurrent + sizeof(DB_STRUCTURE) > pFileRef.value.pubStructureData + uiDataSize) {
         // gone past end of file block?!
         // freeing of memory will occur outside of the function
-        return FALSE;
+        return false;
       }
       ppTileArray[usTileLoop] = pCurrent;
       // set the single-value relative position between this tile and the base tile
@@ -339,13 +339,13 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
     }
     */
   }
-  return TRUE;
+  return true;
 }
 
 function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
   // NB should be passed in expected number of structures so we can check equality
   let uiDataSize: UINT32 = 0;
-  let fOk: BOOLEAN;
+  let fOk: boolean;
   let pFileRef: Pointer<STRUCTURE_FILE_REF>;
 
   pFileRef = MemAlloc(sizeof(STRUCTURE_FILE_REF));
@@ -360,7 +360,7 @@ function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
   }
   if (pFileRef.value.pubStructureData != null) {
     fOk = CreateFileStructureArrays(pFileRef, uiDataSize);
-    if (fOk == FALSE) {
+    if (fOk == false) {
       FreeStructureFileRef(pFileRef);
       return null;
     }
@@ -423,7 +423,7 @@ function CreateStructureFromDB(pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTil
   return pStructure;
 }
 
-function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTileIndex: UINT8, sExclusionID: INT16, fIgnorePeople: BOOLEAN): BOOLEAN {
+function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTileIndex: UINT8, sExclusionID: INT16, fIgnorePeople: boolean): boolean {
   // Verifies whether a structure is blocked from being added to the map at a particular point
   let pDBStructure: Pointer<DB_STRUCTURE>;
   let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
@@ -437,12 +437,12 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
   ppTile = pDBStructureRef.value.ppTile;
   sGridNo = sBaseGridNo + ppTile[ubTileIndex].value.sPosRelToBase;
   if (sGridNo < 0 || sGridNo > WORLD_MAX) {
-    return FALSE;
+    return false;
   }
 
   if (gpWorldLevelData[sBaseGridNo].sHeight != gpWorldLevelData[sGridNo].sHeight) {
     // uneven terrain, one portion on top of cliff and another not! can't add!
-    return FALSE;
+    return false;
   }
 
   pDBStructure = pDBStructureRef.value.pDBStructure;
@@ -495,7 +495,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
           if (pExistingStructure.value.fFlags & STRUCTURE_PASSABLE && !(pExistingStructure.value.fFlags & STRUCTURE_MOBILE)) {
             // no mobiles, existing structure is passable
           } else {
-            return FALSE;
+            return false;
           }
         } else if ((pDBStructure.value.ubNumberOfTiles > 1) && (pExistingStructure.value.fFlags & STRUCTURE_WALLSTUFF)) {
           // if not an open door...
@@ -519,7 +519,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
               for (bLoop2 = 0; bLoop2 < pDBStructure.value.ubNumberOfTiles; bLoop2++) {
                 if (sBaseGridNo + ppTile[bLoop2].value.sPosRelToBase == sOtherGridNo) {
                   // obstacle will straddle wall!
-                  return FALSE;
+                  return false;
                 }
               }
             }
@@ -528,7 +528,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
       } else if (pDBStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
         // two walls with the same alignment aren't allowed in the same tile
         if ((pExistingStructure.value.fFlags & STRUCTURE_WALLSTUFF) && (pDBStructure.value.ubWallOrientation == pExistingStructure.value.ubWallOrientation)) {
-          return FALSE;
+          return false;
         } else if (!(pExistingStructure.value.fFlags & (STRUCTURE_CORPSE | STRUCTURE_PERSON))) {
           // it's possible we're trying to insert this wall on top of a multitile obstacle
           for (bLoop = 1; bLoop < 4; bLoop++) {
@@ -549,7 +549,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
             for (ubTileIndex = 0; ubTileIndex < pDBStructure.value.ubNumberOfTiles; ubTileIndex++) {
               pOtherExistingStructure = FindStructureByID(sOtherGridNo, pExistingStructure.value.usStructureID);
               if (pOtherExistingStructure) {
-                return FALSE;
+                return false;
               }
             }
           }
@@ -579,7 +579,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
         // ATE: Added check here - UNLESS the part we are trying to add is PASSABLE!
         if (pExistingStructure.value.fFlags & STRUCTURE_MOBILE && !(pExistingStructure.value.fFlags & STRUCTURE_PASSABLE) && !(ppTile[ubTileIndex].value.fFlags & TILE_PASSABLE)) {
           // don't allow 2 people in the same tile
-          return FALSE;
+          return false;
         }
 
         // ATE: Another rule: allow PASSABLE *IF* the PASSABLE is *NOT* MOBILE!
@@ -592,7 +592,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
         // ATE: Added here - UNLESS this part is PASSABLE....
         // two obstacle structures aren't allowed in the same tile at the same height
         if ((pExistingStructure.value.fFlags & STRUCTURE_OBSTACLE) && !(ppTile[ubTileIndex].value.fFlags & TILE_PASSABLE)) {
-          return FALSE;
+          return false;
         }
       }
 
@@ -600,7 +600,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
         if (pExistingStructure.value.fFlags & STRUCTURE_OPENABLE) {
           // don't allow two openable structures in the same tile or things will screw
           // up on an interface level
-          return FALSE;
+          return false;
         }
       }
     }
@@ -608,10 +608,10 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
     pExistingStructure = pExistingStructure.value.pNext;
   }
 
-  return TRUE;
+  return true;
 }
 
-function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16, fIgnorePeople: BOOLEAN): BOOLEAN {
+function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16, fIgnorePeople: boolean): boolean {
   let ubLoop: UINT8;
   let sCubeOffset: INT16;
 
@@ -633,23 +633,23 @@ function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDB
       if (bLevel == 0) {
         sCubeOffset = PROFILE_Z_SIZE;
       } else {
-        return FALSE;
+        return false;
       }
     } else {
       sCubeOffset = bLevel * PROFILE_Z_SIZE;
     }
     if (!OkayToAddStructureToTile(sBaseGridNo, sCubeOffset, pDBStructureRef, ubLoop, sExclusionID, fIgnorePeople)) {
-      return FALSE;
+      return false;
     }
   }
-  return TRUE;
+  return true;
 }
 
-function OkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16): BOOLEAN {
+function OkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16): boolean {
   return InternalOkayToAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, sExclusionID, (sExclusionID == IGNORE_PEOPLE_STRUCTURE_ID));
 }
 
-function AddStructureToTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Pointer<STRUCTURE>, usStructureID: UINT16): BOOLEAN {
+function AddStructureToTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Pointer<STRUCTURE>, usStructureID: UINT16): boolean {
   // adds a STRUCTURE to a MAP_ELEMENT (adds part of a structure to a location on the map)
   let pStructureTail: Pointer<STRUCTURE>;
 
@@ -669,7 +669,7 @@ function AddStructureToTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Point
   if (pStructure.value.fFlags & STRUCTURE_OPENABLE) {
     pMapElement.value.uiFlags |= MAPELEMENT_INTERACTIVETILE;
   }
-  return TRUE;
+  return true;
 }
 
 function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelNode: Pointer<LEVELNODE>): Pointer<STRUCTURE> {
@@ -788,7 +788,7 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
         return null;
       }
     }
-    if (AddStructureToTile(addressof(gpWorldLevelData[sGridNo]), ppStructure[ubLoop], usStructureID) == FALSE) {
+    if (AddStructureToTile(addressof(gpWorldLevelData[sGridNo]), ppStructure[ubLoop], usStructureID) == false) {
       // error! abort!
       for (ubLoop2 = BASE_TILE; ubLoop2 < ubLoop; ubLoop2++) {
         DeleteStructureFromTile(addressof(gpWorldLevelData[ppStructure[ubLoop2].value.sGridNo]), ppStructure[ubLoop2]);
@@ -807,14 +807,14 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
   return pBaseStructure;
 }
 
-function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelN: PTR): BOOLEAN {
+function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelN: PTR): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = InternalAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, pLevelN);
   if (pStructure == null) {
-    return FALSE;
+    return false;
   }
-  return TRUE;
+  return true;
 }
 
 //
@@ -852,7 +852,7 @@ function DeleteStructureFromTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: 
   MemFree(pStructure);
 }
 
-function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
+function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): boolean {
   // removes all of the STRUCTURE elements for a structure from the world
   let pBaseMapElement: Pointer<MAP_ELEMENT>;
   let pBaseStructure: Pointer<STRUCTURE>;
@@ -864,9 +864,9 @@ function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
   let sBaseGridNo: INT16;
   let sGridNo: INT16;
   let usStructureID: UINT16;
-  let fMultiStructure: BOOLEAN;
-  let fRecompileMPs: BOOLEAN;
-  let fRecompileExtraRadius: BOOLEAN; // for doors... yuck
+  let fMultiStructure: boolean;
+  let fRecompileMPs: boolean;
+  let fRecompileExtraRadius: boolean; // for doors... yuck
   let sCheckGridNo: INT16;
 
   CHECKF(pStructure);
@@ -880,7 +880,7 @@ function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
   if (fRecompileMPs) {
     fRecompileExtraRadius = ((pBaseStructure.value.fFlags & STRUCTURE_WALLSTUFF) != 0);
   } else {
-    fRecompileExtraRadius = FALSE;
+    fRecompileExtraRadius = false;
   }
 
   pBaseMapElement = addressof(gpWorldLevelData[pBaseStructure.value.sGridNo]);
@@ -912,17 +912,17 @@ function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
-function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STRUCTURE>, fFlipSwitches: BOOLEAN, fStoreInMap: BOOLEAN): Pointer<STRUCTURE> {
+function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STRUCTURE>, fFlipSwitches: boolean, fStoreInMap: boolean): Pointer<STRUCTURE> {
   // switch structure
   let pLevelNode: Pointer<LEVELNODE>;
   let pShadowNode: Pointer<LEVELNODE>;
   let pBaseStructure: Pointer<STRUCTURE>;
   let pNewBaseStructure: Pointer<STRUCTURE>;
   let pPartnerDBStructure: Pointer<DB_STRUCTURE_REF>;
-  let fDoor: BOOLEAN;
+  let fDoor: boolean;
 
   let bDelta: INT8;
   let ubHitPoints: UINT8;
@@ -950,7 +950,7 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
   ubHitPoints = pBaseStructure.value.ubHitPoints;
   sCubeOffset = pBaseStructure.value.sCubeOffset;
   // delete the old structure and add the new one
-  if (DeleteStructureFromWorld(pBaseStructure) == FALSE) {
+  if (DeleteStructureFromWorld(pBaseStructure) == false) {
     return null;
   }
   pNewBaseStructure = InternalAddStructureToWorld(sGridNo, (sCubeOffset / PROFILE_Z_SIZE), pPartnerDBStructure, pLevelNode);
@@ -964,7 +964,7 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
 
     // store removal of previous if necessary
     if (fStoreInMap) {
-      ApplyMapChangesToMapTempFile(TRUE);
+      ApplyMapChangesToMapTempFile(true);
       RemoveStructFromMapTempFile(sGridNo, pLevelNode.value.usIndex);
     }
 
@@ -973,7 +973,7 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
     // store removal of new one if necessary
     if (fStoreInMap) {
       AddStructToMapTempFile(sGridNo, pLevelNode.value.usIndex);
-      ApplyMapChangesToMapTempFile(FALSE);
+      ApplyMapChangesToMapTempFile(false);
     }
 
     if (pShadowNode != null) {
@@ -992,15 +992,15 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
 }
 
 function SwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
-  return InternalSwapStructureForPartner(sGridNo, pStructure, TRUE, FALSE);
+  return InternalSwapStructureForPartner(sGridNo, pStructure, true, false);
 }
 
 function SwapStructureForPartnerWithoutTriggeringSwitches(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
-  return InternalSwapStructureForPartner(sGridNo, pStructure, FALSE, FALSE);
+  return InternalSwapStructureForPartner(sGridNo, pStructure, false, false);
 }
 
 function SwapStructureForPartnerAndStoreChangeInMap(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
-  return InternalSwapStructureForPartner(sGridNo, pStructure, TRUE, TRUE);
+  return InternalSwapStructureForPartner(sGridNo, pStructure, true, true);
 }
 
 function FindStructure(sGridNo: INT16, fFlags: UINT32): Pointer<STRUCTURE> {
@@ -1119,7 +1119,7 @@ function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
   return bGreatestHeight + 1;
 }
 
-function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
+function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: boolean): INT8 {
   let pCurrent: Pointer<STRUCTURE>;
   let iHeight: INT8;
   let iTallest: INT8 = 0;
@@ -1143,7 +1143,7 @@ function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
   return iTallest;
 }
 
-function GetStructureTargetHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
+function GetStructureTargetHeight(sGridNo: INT16, fOnRoof: boolean): INT8 {
   let pCurrent: Pointer<STRUCTURE>;
   let iHeight: INT8;
   let iTallest: INT8 = 0;
@@ -1214,7 +1214,7 @@ function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
   return bLowestHeight + 1;
 }
 
-function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UINT8>, pubLevel1: Pointer<UINT8>, pubLevel2: Pointer<UINT8>, pubLevel3: Pointer<UINT8>): BOOLEAN {
+function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UINT8>, pubLevel1: Pointer<UINT8>, pubLevel2: Pointer<UINT8>, pubLevel3: Pointer<UINT8>): boolean {
   let ubLoopX: UINT8;
   let ubLoopY: UINT8;
   let ubShapeValue: UINT8;
@@ -1254,10 +1254,10 @@ function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UIN
   pubLevel1.value *= 4;
   pubLevel2.value *= 4;
   pubLevel3.value *= 4;
-  return TRUE;
+  return true;
 }
 
-function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReason: UINT8, sGridNo: INT16, sX: INT16, sY: INT16, ubOwner: UINT8): BOOLEAN {
+function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReason: UINT8, sGridNo: INT16, sX: INT16, sY: INT16, ubOwner: UINT8): boolean {
   // do damage to a structure; returns TRUE if the structure should be removed
 
   let pBase: Pointer<STRUCTURE>;
@@ -1267,11 +1267,11 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
   CHECKF(pStructure);
   if (pStructure.value.fFlags & STRUCTURE_PERSON || pStructure.value.fFlags & STRUCTURE_CORPSE) {
     // don't hurt this structure, it's used for hit detection only!
-    return FALSE;
+    return false;
   }
 
   if ((pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_INDESTRUCTABLE_METAL) || (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_INDESTRUCTABLE_STONE)) {
-    return FALSE;
+    return false;
   }
 
   // Account for armour!
@@ -1284,7 +1284,7 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
 
     if (ubArmour > ubDamage) {
       // didn't even scratch the paint
-      return FALSE;
+      return false;
     } else {
       // did some damage to the structure
       ubDamage -= ubArmour;
@@ -1317,7 +1317,7 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
       IgniteExplosion(ubOwner, sX, sY, 0, sGridNo, Enum225.STRUCTURE_IGNITE, 0);
 
       // ATE: Return false here, as we are dealing with deleting the graphic here...
-      return FALSE;
+      return false;
     }
 
     // Make hit sound....
@@ -1329,7 +1329,7 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
       }
     }
     // Don't update damage HPs....
-    return TRUE;
+    return true;
   }
 
   // OK, LOOK FOR A SAM SITE, UPDATE....
@@ -1340,7 +1340,7 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
   CHECKF(pBase);
   if (pBase.value.ubHitPoints <= ubDamage) {
     // boom! structure destroyed!
-    return TRUE;
+    return true;
   } else {
     pBase.value.ubHitPoints -= ubDamage;
 
@@ -1376,7 +1376,7 @@ function DebugStructurePage1(): void {
 
   SetFont(LARGEFONT1());
   gprintf(0, 0, "DEBUG STRUCTURES PAGE 1 OF 1");
-  if (GetMouseMapPos(addressof(sGridNo)) == FALSE) {
+  if (GetMouseMapPos(addressof(sGridNo)) == false) {
     return;
     // gprintf( 0, LINE_HEIGHT * 1, L"No structure selected" );
   }
@@ -1431,7 +1431,7 @@ function DebugStructurePage1(): void {
     bHeight = StructureHeight(pStructure);
     pBase = FindBaseStructure(pStructure);
     gprintf(0, LINE_HEIGHT * 2, "Structure height %d, cube offset %d, armour %d, HP %d", bHeight, pStructure.value.sCubeOffset, gubMaterialArmour[pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour], pBase.value.ubHitPoints);
-    if (StructureDensity(pStructure, addressof(bDens0), addressof(bDens1), addressof(bDens2), addressof(bDens3)) == TRUE) {
+    if (StructureDensity(pStructure, addressof(bDens0), addressof(bDens1), addressof(bDens2), addressof(bDens3)) == true) {
       gprintf(0, LINE_HEIGHT * 3, "Structure fill %d%%/%d%%/%d%%/%d%% density %d", bDens0, bDens1, bDens2, bDens3, pStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity);
     }
 
@@ -1450,13 +1450,13 @@ function DebugStructurePage1(): void {
   gprintf(0, LINE_HEIGHT * 16, "Adj soldiers %d", gpWorldLevelData[sGridNo].ubAdjacentSoldierCnt);
 }
 
-function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<STRUCTURE_FILE_REF>, fFromAnimation: BOOLEAN, sSTIStartIndex: INT16): BOOLEAN {
+function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<STRUCTURE_FILE_REF>, fFromAnimation: boolean, sSTIStartIndex: INT16): boolean {
   let uiLoop: UINT32;
   let ubLoop2: UINT8;
   let ubNumIncreasing: UINT8 = 0;
   let ubNumStable: UINT8 = 0;
   let ubNumDecreasing: UINT8 = 0;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let pCurr: Pointer<ZStripInfo>;
   let sLeftHalfWidth: INT16;
   let sRightHalfWidth: INT16;
@@ -1470,11 +1470,11 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
   let sStructIndex: INT16 = 0;
   let sNext: INT16;
   let uiDestVoIndex: UINT32;
-  let fCopyIntoVo: BOOLEAN;
-  let fFirstTime: BOOLEAN;
+  let fCopyIntoVo: boolean;
+  let fFirstTime: boolean;
 
   if (pStructureFileRef.value.usNumberOfStructuresStored == 0) {
-    return TRUE;
+    return true;
   }
   for (uiLoop = 0; uiLoop < pStructureFileRef.value.usNumberOfStructures; uiLoop++) {
     pDBStructureRef = addressof(pStructureFileRef.value.pDBStructureRef[uiLoop]);
@@ -1484,7 +1484,7 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
       for (ubLoop2 = 1; ubLoop2 < pDBStructure.value.ubNumberOfTiles; ubLoop2++) {
         if (pDBStructureRef.value.ppTile[ubLoop2].value.sPosRelToBase != 0) {
           // spans multiple tiles! (could be two levels high in one tile)
-          fFound = TRUE;
+          fFound = true;
           break;
         }
       }
@@ -1493,16 +1493,16 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
 
   // ATE: Make all corpses use z-strip info..
   if (pDBStructure != null && pDBStructure.value.fFlags & STRUCTURE_CORPSE) {
-    fFound = TRUE;
+    fFound = true;
   }
 
   if (!fFound) {
     // no multi-tile images in this vobject; that's okay... return!
-    return TRUE;
+    return true;
   }
   hVObject.value.ppZStripInfo = MemAlloc(sizeof(ZStripInfo /* Pointer<ZStripInfo> */) * hVObject.value.usNumberOfObjects);
   if (hVObject.value.ppZStripInfo == null) {
-    return FALSE;
+    return false;
   }
   memset(hVObject.value.ppZStripInfo, 0, sizeof(ZStripInfo /* Pointer<ZStripInfo> */) * hVObject.value.usNumberOfObjects);
 
@@ -1521,11 +1521,11 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
 
   sStructIndex = 0;
   sNext = sSTIStartIndex + sSTIStep;
-  fFirstTime = TRUE;
+  fFirstTime = true;
 
   for (uiLoop = sSTIStartIndex; uiLoop < hVObject.value.usNumberOfObjects; uiLoop++) {
     // Defualt to true
-    fCopyIntoVo = TRUE;
+    fCopyIntoVo = true;
 
     // Increment struct index....
     if (uiLoop == sNext) {
@@ -1533,9 +1533,9 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
       sStructIndex++;
     } else {
       if (fFirstTime) {
-        fFirstTime = FALSE;
+        fFirstTime = false;
       } else {
-        fCopyIntoVo = FALSE;
+        fCopyIntoVo = false;
       }
     }
 
@@ -1562,7 +1562,7 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
             }
             MemFree(hVObject.value.ppZStripInfo);
             hVObject.value.ppZStripInfo = null;
-            return FALSE;
+            return false;
           } else {
             pCurr = hVObject.value.ppZStripInfo[uiDestVoIndex];
 
@@ -1671,7 +1671,7 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
               }
               MemFree(hVObject.value.ppZStripInfo);
               hVObject.value.ppZStripInfo = null;
-              return FALSE;
+              return false;
             }
             for (ubLoop2 = 0; ubLoop2 < ubNumIncreasing; ubLoop2++) {
               pCurr.value.pbZChange[ubLoop2] = 1;
@@ -1694,25 +1694,25 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
-function InitStructureDB(): BOOLEAN {
+function InitStructureDB(): boolean {
   gusNextAvailableStructureID = FIRST_AVAILABLE_STRUCTURE_ID;
-  return TRUE;
+  return true;
 }
 
-function FiniStructureDB(): BOOLEAN {
+function FiniStructureDB(): boolean {
   gusNextAvailableStructureID = FIRST_AVAILABLE_STRUCTURE_ID;
-  return TRUE;
+  return true;
 }
 
-function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bLevel: INT8, pStructHeight: Pointer<INT8>, ppTallestStructure: Pointer<Pointer<STRUCTURE>>, fWallsBlock: BOOLEAN): INT8 {
+function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bLevel: INT8, pStructHeight: Pointer<INT8>, ppTallestStructure: Pointer<Pointer<STRUCTURE>>, fWallsBlock: boolean): INT8 {
   let pCurrent: Pointer<STRUCTURE>;
   let pStructure: Pointer<STRUCTURE>;
   let sDesiredLevel: INT16;
-  let fOKStructOnLevel: BOOLEAN = FALSE;
-  let fMinimumBlockingFound: BOOLEAN = FALSE;
+  let fOKStructOnLevel: boolean = false;
+  let fMinimumBlockingFound: boolean = false;
 
   if (bLevel == 0) {
     sDesiredLevel = STRUCTURE_ON_GROUND;
@@ -1732,28 +1732,28 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
   while (pCurrent != null) {
     // Check level!
     if (pCurrent.value.sCubeOffset == sDesiredLevel) {
-      fOKStructOnLevel = TRUE;
+      fOKStructOnLevel = true;
       pStructure = pCurrent;
 
       // Turn off if we are on upper level!
       if (pCurrent.value.fFlags & STRUCTURE_ROOF && bLevel == 1) {
-        fOKStructOnLevel = FALSE;
+        fOKStructOnLevel = false;
       }
 
       // Don't stop FOV for people
       if (pCurrent.value.fFlags & (STRUCTURE_CORPSE | STRUCTURE_PERSON)) {
-        fOKStructOnLevel = FALSE;
+        fOKStructOnLevel = false;
       }
 
       if (pCurrent.value.fFlags & (STRUCTURE_TREE | STRUCTURE_ANYFENCE)) {
-        fMinimumBlockingFound = TRUE;
+        fMinimumBlockingFound = true;
       }
 
       // Default, if we are a wall, set full blocking
       if ((pCurrent.value.fFlags & STRUCTURE_WALL) && !fWallsBlock) {
         // Return full blocking!
         // OK! This will be handled by movement costs......!
-        fOKStructOnLevel = FALSE;
+        fOKStructOnLevel = false;
       }
 
       // CHECK FOR WINDOW
@@ -1873,7 +1873,7 @@ function FindStructureBySavedInfo(sGridNo: INT16, ubType: UINT8, ubWallOrientati
   return null;
 }
 
-function GetStructureOpenSound(pStructure: Pointer<STRUCTURE>, fClose: BOOLEAN): UINT32 {
+function GetStructureOpenSound(pStructure: Pointer<STRUCTURE>, fClose: boolean): UINT32 {
   let uiSoundID: UINT32;
 
   switch (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour) {

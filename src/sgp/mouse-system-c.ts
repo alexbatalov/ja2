@@ -23,7 +23,7 @@ let gpRegionLastLButtonDown: Pointer<MOUSE_REGION> = null;
 let gpRegionLastLButtonUp: Pointer<MOUSE_REGION> = null;
 let guiRegionLastLButtonDownTime: UINT32 = 0;
 
-let MSYS_ScanForID: INT32 = FALSE;
+let MSYS_ScanForID: INT32 = false;
 let MSYS_CurrentID: INT32 = MSYS_ID_SYSTEM;
 
 let MSYS_CurrentMX: INT16 = 0;
@@ -31,14 +31,14 @@ let MSYS_CurrentMY: INT16 = 0;
 let MSYS_CurrentButtons: INT16 = 0;
 let MSYS_Action: INT16 = 0;
 
-let MSYS_SystemInitialized: BOOLEAN = FALSE;
-let MSYS_UseMouseHandlerHook: BOOLEAN = FALSE;
+let MSYS_SystemInitialized: boolean = false;
+let MSYS_UseMouseHandlerHook: boolean = false;
 
-let MSYS_Mouse_Grabbed: BOOLEAN = FALSE;
+let MSYS_Mouse_Grabbed: boolean = false;
 let MSYS_GrabRegion: Pointer<MOUSE_REGION> = null;
 
 let gusClickedIDNumber: UINT16;
-let gfClickedModeOn: BOOLEAN = FALSE;
+let gfClickedModeOn: boolean = false;
 
 let MSYS_RegList: Pointer<MOUSE_REGION> = null;
 
@@ -48,10 +48,10 @@ let MSYS_CurrRegion: Pointer<MOUSE_REGION> = null;
 // When set, the fast help text will be instantaneous, if consecutive regions with help text are
 // hilighted.  It is set, whenever the timer for the first help button expires, and the mode is
 // cleared as soon as the cursor moves into no region or a region with no helptext.
-let gfPersistantFastHelpMode: BOOLEAN;
+let gfPersistantFastHelpMode: boolean;
 
 let gsFastHelpDelay: INT16 = 600; // In timer ticks
-let gfShowFastHelp: BOOLEAN = TRUE;
+let gfShowFastHelp: boolean = true;
 
 // Kris:
 // NOTE:  This doesn't really need to be here, however, it is a good indication that
@@ -59,7 +59,7 @@ let gfShowFastHelp: BOOLEAN = TRUE;
 // values there as well.  That's the only reason why I left this here.
 let MSYS_SystemBaseRegion: MOUSE_REGION = [ MSYS_ID_SYSTEM, MSYS_PRIORITY_SYSTEM, BASE_REGION_FLAGS, -32767, -32767, 32767, 32767, 0, 0, 0, 0, 0, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK, [ 0, 0, 0, 0 ], 0, 0, -1, MSYS_NO_CALLBACK, null, null ];
 
-let gfRefreshUpdate: BOOLEAN = FALSE;
+let gfRefreshUpdate: boolean = false;
 
 // Kris:  December 3, 1997
 // Special internal debugging utilities that will ensure that you don't attempt to delete
@@ -79,7 +79,7 @@ function MSYS_Init(): INT32 {
     MSYS_TrashRegList();
 
   MSYS_CurrentID = MSYS_ID_SYSTEM;
-  MSYS_ScanForID = FALSE;
+  MSYS_ScanForID = false;
 
   MSYS_CurrentMX = 0;
   MSYS_CurrentMY = 0;
@@ -87,10 +87,10 @@ function MSYS_Init(): INT32 {
   MSYS_Action = MSYS_NO_ACTION;
 
   MSYS_PrevRegion = null;
-  MSYS_SystemInitialized = TRUE;
-  MSYS_UseMouseHandlerHook = FALSE;
+  MSYS_SystemInitialized = true;
+  MSYS_UseMouseHandlerHook = false;
 
-  MSYS_Mouse_Grabbed = FALSE;
+  MSYS_Mouse_Grabbed = false;
   MSYS_GrabRegion = null;
 
   // Setup the system's background region
@@ -124,7 +124,7 @@ function MSYS_Init(): INT32 {
   // Add the base region to the list
   MSYS_AddRegionToList(addressof(MSYS_SystemBaseRegion));
 
-  MSYS_UseMouseHandlerHook = TRUE;
+  MSYS_UseMouseHandlerHook = true;
 
   return 1;
 }
@@ -135,8 +135,8 @@ function MSYS_Init(): INT32 {
 //	De-inits the "mousesystem" mouse region handling code.
 //
 function MSYS_Shutdown(): void {
-  MSYS_SystemInitialized = FALSE;
-  MSYS_UseMouseHandlerHook = FALSE;
+  MSYS_SystemInitialized = false;
+  MSYS_UseMouseHandlerHook = false;
   MSYS_TrashRegList();
   UnRegisterDebugTopic(TOPIC_MOUSE_SYSTEM, "Mouse Region System");
 }
@@ -146,7 +146,7 @@ function MSYS_Shutdown(): void {
 //
 //	Hook to the SGP's mouse handler
 //
-function MSYS_SGP_Mouse_Handler_Hook(Type: UINT16, Xcoord: UINT16, Ycoord: UINT16, LeftButton: BOOLEAN, RightButton: BOOLEAN): void {
+function MSYS_SGP_Mouse_Handler_Hook(Type: UINT16, Xcoord: UINT16, Ycoord: UINT16, LeftButton: boolean, RightButton: boolean): void {
   // If the mouse system isn't initialized, get out o' here
   if (!MSYS_SystemInitialized)
     return;
@@ -223,7 +223,7 @@ function MSYS_SGP_Mouse_Handler_Hook(Type: UINT16, Xcoord: UINT16, Ycoord: UINT1
         MSYS_CurrentMX = Xcoord;
         MSYS_CurrentMY = Ycoord;
 
-        gfRefreshUpdate = FALSE;
+        gfRefreshUpdate = false;
 
         MSYS_UpdateMouseRegion();
       }
@@ -253,21 +253,21 @@ function MSYS_GetNewID(): INT32 {
 
   // Crapy scan for an unused ID
   if ((MSYS_CurrentID >= MSYS_ID_MAX) || MSYS_ScanForID) {
-    MSYS_ScanForID = TRUE;
+    MSYS_ScanForID = true;
     Current = MSYS_ID_BASE;
-    done = found = FALSE;
+    done = found = false;
     while (!done) {
-      found = FALSE;
+      found = false;
       node = MSYS_RegList;
       while (node != null && !found) {
         if (node.value.IDNumber == Current)
-          found = TRUE;
+          found = true;
       }
 
       if (found && Current < MSYS_ID_MAX) // Current ID is in use, and their are more to scan
         Current++;
       else {
-        done = TRUE; // Got an ID to use.
+        done = true; // Got an ID to use.
         if (found)
           Current = MSYS_ID_MAX; // Ooops, ran out of IDs, use MAX value!
       }
@@ -322,10 +322,10 @@ function MSYS_AddRegionToList(region: Pointer<MOUSE_REGION>): void {
   } else {
     // Walk down list until we find place to insert (or at end of list)
     curr = MSYS_RegList;
-    done = FALSE;
+    done = false;
     while ((curr.value.next != null) && !done) {
       if (curr.value.PriorityLevel <= region.value.PriorityLevel)
-        done = TRUE;
+        done = true;
       else
         curr = curr.value.next;
     }
@@ -361,11 +361,11 @@ function MSYS_RegionInList(region: Pointer<MOUSE_REGION>): INT32 {
   let Current: Pointer<MOUSE_REGION>;
   let found: INT32;
 
-  found = FALSE;
+  found = false;
   Current = MSYS_RegList;
   while (Current && !found) {
     if (Current.value.IDNumber == region.value.IDNumber)
-      found = TRUE;
+      found = true;
     Current = Current.value.next;
   }
   return found;
@@ -404,7 +404,7 @@ function MSYS_DeleteRegionFromList(region: Pointer<MOUSE_REGION>): void {
   // Did we delete a grabbed region?
   if (MSYS_Mouse_Grabbed) {
     if (MSYS_GrabRegion == region) {
-      MSYS_Mouse_Grabbed = FALSE;
+      MSYS_Mouse_Grabbed = false;
       MSYS_GrabRegion = null;
     }
   }
@@ -413,11 +413,11 @@ function MSYS_DeleteRegionFromList(region: Pointer<MOUSE_REGION>): void {
   if (MSYS_RegList == addressof(MSYS_SystemBaseRegion)) {
     // Yup, so let's reset the ID values!
     MSYS_CurrentID = MSYS_ID_BASE;
-    MSYS_ScanForID = FALSE;
+    MSYS_ScanForID = false;
   } else if (MSYS_RegList == null) {
     // Ack, we actually emptied the list, so let's reset for re-init possibilities
     MSYS_CurrentID = MSYS_ID_SYSTEM;
-    MSYS_ScanForID = FALSE;
+    MSYS_ScanForID = false;
   }
 }
 
@@ -431,13 +431,13 @@ function MSYS_UpdateMouseRegion(): void {
   let found: INT32;
   let ButtonReason: UINT32;
   let pTempRegion: Pointer<MOUSE_REGION>;
-  let fFound: BOOLEAN = FALSE;
-  found = FALSE;
+  let fFound: boolean = false;
+  found = false;
 
   // Check previous region!
   if (MSYS_Mouse_Grabbed) {
     MSYS_CurrRegion = MSYS_GrabRegion;
-    found = TRUE;
+    found = true;
   }
   if (!found)
     MSYS_CurrRegion = MSYS_RegList;
@@ -447,7 +447,7 @@ function MSYS_UpdateMouseRegion(): void {
         (MSYS_CurrRegion.value.RegionTopLeftY <= MSYS_CurrentMY) && (MSYS_CurrRegion.value.RegionBottomRightX >= MSYS_CurrentMX) && (MSYS_CurrRegion.value.RegionBottomRightY >= MSYS_CurrentMY)) {
       // We got the right region. We don't need to check for priorities 'cause
       // the whole list is sorted the right way!
-      found = TRUE;
+      found = true;
     } else
       MSYS_CurrRegion = MSYS_CurrRegion.value.next;
   }
@@ -509,7 +509,7 @@ function MSYS_UpdateMouseRegion(): void {
         pTempRegion = MSYS_CurrRegion.value.next;
         while ((pTempRegion != null) && (!fFound)) {
           if ((pTempRegion.value.uiFlags & MSYS_REGION_ENABLED) && (pTempRegion.value.RegionTopLeftX <= MSYS_CurrentMX) && (pTempRegion.value.RegionTopLeftY <= MSYS_CurrentMY) && (pTempRegion.value.RegionBottomRightX >= MSYS_CurrentMX) && (pTempRegion.value.RegionBottomRightY >= MSYS_CurrentMY) && (pTempRegion.value.uiFlags & MSYS_SET_CURSOR)) {
-            fFound = TRUE;
+            fFound = true;
             if (pTempRegion.value.Cursor != MSYS_NO_CURSOR) {
               MSYS_SetCurrentCursor(pTempRegion.value.Cursor);
             }
@@ -544,26 +544,26 @@ function MSYS_UpdateMouseRegion(): void {
           ButtonReason = MSYS_CALLBACK_REASON_NONE;
           if (MSYS_Action & MSYS_DO_LBUTTON_DWN) {
             ButtonReason |= MSYS_CALLBACK_REASON_LBUTTON_DWN;
-            gfClickedModeOn = TRUE;
+            gfClickedModeOn = true;
             // Set global ID
             gusClickedIDNumber = MSYS_CurrRegion.value.IDNumber;
           }
 
           if (MSYS_Action & MSYS_DO_LBUTTON_UP) {
             ButtonReason |= MSYS_CALLBACK_REASON_LBUTTON_UP;
-            gfClickedModeOn = FALSE;
+            gfClickedModeOn = false;
           }
 
           if (MSYS_Action & MSYS_DO_RBUTTON_DWN) {
             ButtonReason |= MSYS_CALLBACK_REASON_RBUTTON_DWN;
-            gfClickedModeOn = TRUE;
+            gfClickedModeOn = true;
             // Set global ID
             gusClickedIDNumber = MSYS_CurrRegion.value.IDNumber;
           }
 
           if (MSYS_Action & MSYS_DO_RBUTTON_UP) {
             ButtonReason |= MSYS_CALLBACK_REASON_RBUTTON_UP;
-            gfClickedModeOn = FALSE;
+            gfClickedModeOn = false;
           }
 
           // ATE: Added repeat resons....
@@ -630,10 +630,10 @@ function MSYS_UpdateMouseRegion(): void {
       // OK here, if we have release a button, UNSET LOCK wherever you are....
       // Just don't give this button the message....
       if (MSYS_Action & MSYS_DO_RBUTTON_UP) {
-        gfClickedModeOn = FALSE;
+        gfClickedModeOn = false;
       }
       if (MSYS_Action & MSYS_DO_LBUTTON_UP) {
-        gfClickedModeOn = FALSE;
+        gfClickedModeOn = false;
       }
 
       // OK, you still want move messages however....
@@ -709,7 +709,7 @@ function MSYS_DefineRegion(region: Pointer<MOUSE_REGION>, tlx: UINT16, tly: UINT
   region.value.uiFlags |= MSYS_REGION_ENABLED | MSYS_REGION_EXISTS;
 
   // Dirty our update flag
-  gfRefreshUpdate = TRUE;
+  gfRefreshUpdate = true;
 }
 
 //=================================================================================================
@@ -774,13 +774,13 @@ function MSYS_RemoveRegion(region: Pointer<MOUSE_REGION>): void {
     MSYS_CurrRegion = null;
 
   // dirty our update flag
-  gfRefreshUpdate = TRUE;
+  gfRefreshUpdate = true;
 
   // Check if this is a locked region, and unlock if so
   if (gfClickedModeOn) {
     // Set global ID
     if (gusClickedIDNumber == region.value.IDNumber) {
-      gfClickedModeOn = FALSE;
+      gfClickedModeOn = false;
     }
   }
 
@@ -867,10 +867,10 @@ function MSYS_GrabMouse(region: Pointer<MOUSE_REGION>): INT32 {
   if (!MSYS_RegionInList(region))
     return MSYS_REGION_NOT_IN_LIST;
 
-  if (MSYS_Mouse_Grabbed == TRUE)
+  if (MSYS_Mouse_Grabbed == true)
     return MSYS_ALREADY_GRABBED;
 
-  MSYS_Mouse_Grabbed = TRUE;
+  MSYS_Mouse_Grabbed = true;
   MSYS_GrabRegion = region;
   return MSYS_GRABBED_OK;
 }
@@ -884,8 +884,8 @@ function MSYS_ReleaseMouse(region: Pointer<MOUSE_REGION>): void {
   if (MSYS_GrabRegion != region)
     return;
 
-  if (MSYS_Mouse_Grabbed == TRUE) {
-    MSYS_Mouse_Grabbed = FALSE;
+  if (MSYS_Mouse_Grabbed == true) {
+    MSYS_Mouse_Grabbed = false;
     MSYS_GrabRegion = null;
     MSYS_UpdateMouseRegion();
   }
@@ -1039,8 +1039,8 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
       let uiDestPitchBYTES: UINT32;
       pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-      RectangleDraw(TRUE, iX + 1, iY + 1, iX + iW - 1, iY + iH - 1, Get16BPPColor(FROMRGB(65, 57, 15)), pDestBuf);
-      RectangleDraw(TRUE, iX, iY, iX + iW - 2, iY + iH - 2, Get16BPPColor(FROMRGB(227, 198, 88)), pDestBuf);
+      RectangleDraw(true, iX + 1, iY + 1, iX + iW - 1, iY + iH - 1, Get16BPPColor(FROMRGB(65, 57, 15)), pDestBuf);
+      RectangleDraw(true, iX, iY, iX + iW - 2, iY + iH - 2, Get16BPPColor(FROMRGB(227, 198, 88)), pDestBuf);
       UnLockVideoSurface(FRAME_BUFFER);
       ShadowVideoSurfaceRect(FRAME_BUFFER, iX + 2, iY + 2, iX + iW - 3, iY + iH - 3);
       ShadowVideoSurfaceRect(FRAME_BUFFER, iX + 2, iY + 2, iX + iW - 3, iY + iH - 3);
@@ -1146,14 +1146,14 @@ function RenderFastHelp(): void {
   }
 }
 
-function SetRegionSavedRect(region: Pointer<MOUSE_REGION>): BOOLEAN {
-  return FALSE;
+function SetRegionSavedRect(region: Pointer<MOUSE_REGION>): boolean {
+  return false;
 }
 
 function FreeRegionSavedRect(region: Pointer<MOUSE_REGION>): void {
 }
 
-function MSYS_AllowDisabledRegionFastHelp(region: Pointer<MOUSE_REGION>, fAllow: BOOLEAN): void {
+function MSYS_AllowDisabledRegionFastHelp(region: Pointer<MOUSE_REGION>, fAllow: boolean): void {
   if (fAllow) {
     region.value.uiFlags |= MSYS_ALLOW_DISABLED_FASTHELP;
   } else {
@@ -1200,13 +1200,13 @@ function SetFastHelpDelay(sFastHelpDelay: INT16): void {
 }
 
 function EnableMouseFastHelp(): void {
-  gfShowFastHelp = TRUE;
+  gfShowFastHelp = true;
 }
 
 function DisableMouseFastHelp(): void {
-  gfShowFastHelp = FALSE;
+  gfShowFastHelp = false;
 }
 
 function ResetClickedMode(): void {
-  gfClickedModeOn = FALSE;
+  gfClickedModeOn = false;
 }

@@ -51,9 +51,9 @@ interface SLIDER {
 let pSliderHead: Pointer<SLIDER> = null;
 let guiCurrentSliderID: UINT32 = 1;
 
-let gfSliderInited: BOOLEAN = FALSE;
+let gfSliderInited: boolean = false;
 
-let gfCurrentSliderIsAnchored: BOOLEAN = FALSE; // if true, the current selected slider mouse button is down
+let gfCurrentSliderIsAnchored: boolean = false; // if true, the current selected slider mouse button is down
 let gpCurrentSlider: Pointer<SLIDER> = null;
 
 let guiSliderBoxImage: UINT32 = 0;
@@ -73,7 +73,7 @@ let guiSliderBoxImage: UINT32 = 0;
 //
 ///////////////////////////////////////////////////
 
-function InitSlider(): BOOLEAN {
+function InitSlider(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load Slider Box Graphic graphic and add it
@@ -81,9 +81,9 @@ function InitSlider(): BOOLEAN {
   FilenameForBPP("INTERFACE\\SliderBox.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSliderBoxImage)));
 
-  gfSliderInited = TRUE;
+  gfSliderInited = true;
 
-  return TRUE;
+  return true;
 }
 
 function ShutDownSlider(): void {
@@ -483,8 +483,8 @@ function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
   let dNewIncrement: FLOAT = 0.0;
   let pSlider: Pointer<SLIDER>;
   let usOldIncrement: UINT16;
-  let fLastSpot: BOOLEAN = FALSE;
-  let fFirstSpot: BOOLEAN = FALSE;
+  let fLastSpot: boolean = false;
+  let fFirstSpot: boolean = false;
 
   pSlider = GetSliderFromID(uiSliderID);
   if (pSlider == null)
@@ -494,10 +494,10 @@ function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
 
   if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
     if (usPos >= (pSlider.value.usHeight * .99))
-      fLastSpot = TRUE;
+      fLastSpot = true;
 
     if (usPos <= (pSlider.value.usHeight * .01))
-      fFirstSpot = TRUE;
+      fFirstSpot = true;
 
     // pSlider->usNumberOfIncrements
     if (fFirstSpot)
@@ -535,7 +535,7 @@ function OptDisplayLine(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: 
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw the line
-  LineDraw(FALSE, usStartX, usStartY, EndX, EndY, iColor, pDestBuf);
+  LineDraw(false, usStartX, usStartY, EndX, EndY, iColor, pDestBuf);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);

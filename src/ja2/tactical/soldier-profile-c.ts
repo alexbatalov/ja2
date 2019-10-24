@@ -1,4 +1,4 @@
-let gfPotentialTeamChangeDuringDeath: BOOLEAN = FALSE;
+let gfPotentialTeamChangeDuringDeath: boolean = false;
 
 const MIN_BLINK_FREQ = 3000;
 const MIN_EXPRESSION_FREQ = 2000;
@@ -132,7 +132,7 @@ let gbAssassinTown: INT8[][] /* [NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] */ 
   [ Enum135.CAMBRIA, Enum135.BALIME, Enum135.ALMA, Enum135.GRUMM, Enum135.DRASSEN ],
 ];
 
-function LoadMercProfiles(): BOOLEAN {
+function LoadMercProfiles(): boolean {
   //	FILE *fptr;
   let fptr: HWFILE;
   let pFileName: Pointer<char> = "BINARYDATA\\Prof.dat";
@@ -145,21 +145,21 @@ function LoadMercProfiles(): BOOLEAN {
   let usNewAmmo: UINT16;
   let uiNumBytesRead: UINT32;
 
-  fptr = FileOpen(pFileName, FILE_ACCESS_READ, FALSE);
+  fptr = FileOpen(pFileName, FILE_ACCESS_READ, false);
   if (!fptr) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to LoadMercProfiles from file %s", pFileName));
-    return FALSE;
+    return false;
   }
 
   for (uiLoop = 0; uiLoop < NUM_PROFILES; uiLoop++) {
     if (JA2EncryptedFileRead(fptr, addressof(gMercProfiles[uiLoop]), sizeof(MERCPROFILESTRUCT), addressof(uiNumBytesRead)) != 1) {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to Read Merc Profiles from File %d %s", uiLoop, pFileName));
       FileClose(fptr);
-      return FALSE;
+      return false;
     }
 
     // if the Dialogue exists for the merc, allow the merc to be hired
-    if (DialogueDataFileExistsForProfile(uiLoop, 0, FALSE, null)) {
+    if (DialogueDataFileExistsForProfile(uiLoop, 0, false, null)) {
       gMercProfiles[uiLoop].bMercStatus = 0;
     } else
       gMercProfiles[uiLoop].bMercStatus = MERC_HAS_NO_TEXT_FILE;
@@ -239,7 +239,7 @@ function LoadMercProfiles(): BOOLEAN {
     }
 
     // These variables to get loaded in
-    gMercProfiles[uiLoop].fUseProfileInsertionInfo = FALSE;
+    gMercProfiles[uiLoop].fUseProfileInsertionInfo = false;
     gMercProfiles[uiLoop].sGridNo = 0;
 
     // ARM: this is also being done inside the profile editor, but put it here too, so this project's code makes sense
@@ -262,7 +262,7 @@ function LoadMercProfiles(): BOOLEAN {
   // initial recruitable mercs' reputation in each town
   InitializeProfilesForTownReputation();
 
-  gfProfileDataLoaded = TRUE;
+  gfProfileDataLoaded = true;
 
   // no better place..heh?.. will load faces for profiles that are 'extern'.....won't have soldiertype instances
   InitalizeStaticExternalNPCFaces();
@@ -270,7 +270,7 @@ function LoadMercProfiles(): BOOLEAN {
   // car portrait values
   LoadCarPortraitValues();
 
-  return TRUE;
+  return true;
 }
 
 const MAX_ADDITIONAL_TERRORISTS = 4;
@@ -283,7 +283,7 @@ function DecideActiveTerrorists(): void {
   let ubNumTerroristsAdded: UINT8 = 0;
   let uiChance: UINT32;
   let uiLocationChoice: UINT32;
-  let fFoundSpot: BOOLEAN;
+  let fFoundSpot: boolean;
   let sTerroristPlacement: INT16[][] /* [MAX_ADDITIONAL_TERRORISTS][2] */ = [
     [ 0, 0 ],
     [ 0, 0 ],
@@ -326,7 +326,7 @@ function DecideActiveTerrorists(): void {
 
       // random 40% chance of adding this terrorist if not yet placed
       if ((gMercProfiles[ubTerrorist].sSectorX == 0) && (Random(100) < 40)) {
-        fFoundSpot = FALSE;
+        fFoundSpot = false;
         // Since there are 5 spots per terrorist and a maximum of 5 terrorists, we
         // are guaranteed to be able to find a spot for each terrorist since there
         // aren't enough other terrorists to use up all the spots for any one
@@ -341,7 +341,7 @@ function DecideActiveTerrorists(): void {
               }
             }
           }
-          fFoundSpot = TRUE;
+          fFoundSpot = true;
         } while (!fFoundSpot);
 
         // place terrorist!
@@ -376,7 +376,7 @@ function MakeRemainingTerroristsTougher(): void {
   for (ubLoop = 0; ubLoop < NUM_TERRORISTS; ubLoop++) {
     if (gMercProfiles[gubTerrorists[ubLoop]].bMercStatus != MERC_IS_DEAD && gMercProfiles[gubTerrorists[ubLoop]].sSectorX != 0 && gMercProfiles[gubTerrorists[ubLoop]].sSectorY != 0) {
       if (gubTerrorists[ubLoop] == Enum268.SLAY) {
-        if (FindSoldierByProfileID(Enum268.SLAY, TRUE) != null) {
+        if (FindSoldierByProfileID(Enum268.SLAY, true) != null) {
           // Slay on player's team, doesn't count towards remaining terrorists
           continue;
         }
@@ -430,7 +430,7 @@ function MakeRemainingTerroristsTougher(): void {
   for (ubLoop = 0; ubLoop < NUM_TERRORISTS; ubLoop++) {
     if (gMercProfiles[gubTerrorists[ubLoop]].bMercStatus != MERC_IS_DEAD && gMercProfiles[gubTerrorists[ubLoop]].sSectorX != 0 && gMercProfiles[gubTerrorists[ubLoop]].sSectorY != 0) {
       if (gubTerrorists[ubLoop] == Enum268.SLAY) {
-        if (FindSoldierByProfileID(Enum268.SLAY, TRUE) != null) {
+        if (FindSoldierByProfileID(Enum268.SLAY, true) != null) {
           // Slay on player's team, doesn't count towards remaining terrorists
           continue;
         }
@@ -615,7 +615,7 @@ function CalcMedicalDeposit(pProfile: Pointer<MERCPROFILESTRUCT>): INT16 {
   return usDeposit;
 }
 
-function FindSoldierByProfileID(ubProfileID: UINT8, fPlayerMercsOnly: BOOLEAN): Pointer<SOLDIERTYPE> {
+function FindSoldierByProfileID(ubProfileID: UINT8, fPlayerMercsOnly: boolean): Pointer<SOLDIERTYPE> {
   let ubLoop: UINT8;
   let ubLoopLimit: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -660,7 +660,7 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
   sOldGridNo = pSoldier.value.sGridNo;
 
   // Remove him from the game!
-  InternalTacticalRemoveSoldier(ubID, FALSE);
+  InternalTacticalRemoveSoldier(ubID, false);
 
   // Create a new one!
   memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
@@ -675,12 +675,12 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     MercCreateStruct.ubProfile = NO_PROFILE;
-    MercCreateStruct.fUseGivenVehicle = TRUE;
+    MercCreateStruct.fUseGivenVehicle = true;
     MercCreateStruct.bUseGivenVehicleID = pSoldier.value.bVehicleID;
   }
 
   if (ubTeam == gbPlayerNum) {
-    MercCreateStruct.fPlayerMerc = TRUE;
+    MercCreateStruct.fPlayerMerc = true;
   }
 
   if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubID))) {
@@ -760,15 +760,15 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
   return pNewSoldier;
 }
 
-function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
+function RecruitRPC(ubCharNum: UINT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pNewSoldier: Pointer<SOLDIERTYPE>;
 
   // Get soldier pointer
-  pSoldier = FindSoldierByProfileID(ubCharNum, FALSE);
+  pSoldier = FindSoldierByProfileID(ubCharNum, false);
 
   if (!pSoldier) {
-    return FALSE;
+    return false;
   }
 
   // OK, set recruit flag..
@@ -790,7 +790,7 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
   HandleTownLoyaltyForNPCRecruitment(pNewSoldier);
 
   // Try putting them into the current squad
-  if (AddCharacterToSquad(pNewSoldier, CurrentSquad()) == FALSE) {
+  if (AddCharacterToSquad(pNewSoldier, CurrentSquad()) == false) {
     AddCharacterToAnySquad(pNewSoldier);
   }
 
@@ -807,7 +807,7 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
       if (Item[pNewSoldier.value.inv[bSlot].usItem].fFlags & ITEM_TWO_HANDED) {
         if (bSlot != Enum261.SECONDHANDPOS && pNewSoldier.value.inv[Enum261.SECONDHANDPOS].usItem != NOTHING) {
           // need to move second hand item out first
-          AutoPlaceObject(pNewSoldier, addressof(pNewSoldier.value.inv[Enum261.SECONDHANDPOS]), FALSE);
+          AutoPlaceObject(pNewSoldier, addressof(pNewSoldier.value.inv[Enum261.SECONDHANDPOS]), false);
         }
       }
       // swap item to hand
@@ -832,18 +832,18 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
   // remove the merc from the Personnel screens departed list ( if they have never been hired before, its ok to call it )
   RemoveNewlyHiredMercFromPersonnelDepartedList(pSoldier.value.ubProfile);
 
-  return TRUE;
+  return true;
 }
 
-function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
+function RecruitEPC(ubCharNum: UINT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pNewSoldier: Pointer<SOLDIERTYPE>;
 
   // Get soldier pointer
-  pSoldier = FindSoldierByProfileID(ubCharNum, FALSE);
+  pSoldier = FindSoldierByProfileID(ubCharNum, false);
 
   if (!pSoldier) {
-    return FALSE;
+    return false;
   }
 
   // OK, set recruit flag..
@@ -856,7 +856,7 @@ function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
   pNewSoldier.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__EPC;
 
   // Try putting them into the current squad
-  if (AddCharacterToSquad(pNewSoldier, CurrentSquad()) == FALSE) {
+  if (AddCharacterToSquad(pNewSoldier, CurrentSquad()) == false) {
     AddCharacterToAnySquad(pNewSoldier);
   }
 
@@ -865,7 +865,7 @@ function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
   DirtyMercPanelInterface(pNewSoldier, DIRTYLEVEL2);
   // Make the interface panel dirty..
   // This will dirty the panel next frame...
-  gfRerenderInterfaceFromHelpText = TRUE;
+  gfRerenderInterfaceFromHelpText = true;
 
   // If we are a robot, look to update controller....
   if (pNewSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
@@ -877,22 +877,22 @@ function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
 
   UpdateTeamPanelAssignments();
 
-  return TRUE;
+  return true;
 }
 
-function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
+function UnRecruitEPC(ubCharNum: UINT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pNewSoldier: Pointer<SOLDIERTYPE>;
 
   // Get soldier pointer
-  pSoldier = FindSoldierByProfileID(ubCharNum, FALSE);
+  pSoldier = FindSoldierByProfileID(ubCharNum, false);
 
   if (!pSoldier) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__EPC) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
@@ -924,7 +924,7 @@ function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
   }
 
   // how do we decide whether or not to set this?
-  gMercProfiles[ubCharNum].fUseProfileInsertionInfo = TRUE;
+  gMercProfiles[ubCharNum].fUseProfileInsertionInfo = true;
   gMercProfiles[ubCharNum].ubMiscFlags3 |= PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE;
 
   // Add this guy to CIV team!
@@ -932,7 +932,7 @@ function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
 
   UpdateTeamPanelAssignments();
 
-  return TRUE;
+  return true;
 }
 
 function WhichBuddy(ubCharNum: UINT8, ubBuddy: UINT8): INT8 {
@@ -963,43 +963,43 @@ function WhichHated(ubCharNum: UINT8, ubHated: UINT8): INT8 {
   return -1;
 }
 
-function IsProfileATerrorist(ubProfile: UINT8): BOOLEAN {
+function IsProfileATerrorist(ubProfile: UINT8): boolean {
   if (ubProfile == 83 || ubProfile == 111 || ubProfile == 64 || ubProfile == 112 || ubProfile == 82 || ubProfile == 110) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function IsProfileAHeadMiner(ubProfile: UINT8): BOOLEAN {
+function IsProfileAHeadMiner(ubProfile: UINT8): boolean {
   if (ubProfile == 106 || ubProfile == 148 || ubProfile == 156 || ubProfile == 157 || ubProfile == 158) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function UpdateSoldierPointerDataIntoProfile(fPlayerMercs: BOOLEAN): void {
+function UpdateSoldierPointerDataIntoProfile(fPlayerMercs: boolean): void {
   let uiCount: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let pProfile: Pointer<MERCPROFILESTRUCT>;
-  let fDoCopy: BOOLEAN = FALSE;
+  let fDoCopy: boolean = false;
 
   for (uiCount = 0; uiCount < guiNumMercSlots; uiCount++) {
     pSoldier = MercSlots[uiCount];
 
     if (pSoldier != null) {
       if (pSoldier.value.ubProfile != NO_PROFILE) {
-        fDoCopy = FALSE;
+        fDoCopy = false;
 
         // If we are above player mercs
         if (fPlayerMercs) {
           if (pSoldier.value.ubProfile < FIRST_RPC) {
-            fDoCopy = TRUE;
+            fDoCopy = true;
           }
         } else {
           if (pSoldier.value.ubProfile >= FIRST_RPC) {
-            fDoCopy = TRUE;
+            fDoCopy = true;
           }
         }
 
@@ -1027,7 +1027,7 @@ function UpdateSoldierPointerDataIntoProfile(fPlayerMercs: BOOLEAN): void {
   }
 }
 
-function DoesMercHaveABuddyOnTheTeam(ubMercID: UINT8): BOOLEAN {
+function DoesMercHaveABuddyOnTheTeam(ubMercID: UINT8): boolean {
   let ubCnt: UINT8;
   let bBuddyID: INT8;
 
@@ -1042,21 +1042,21 @@ function DoesMercHaveABuddyOnTheTeam(ubMercID: UINT8): BOOLEAN {
 
     if (IsMercOnTeam(bBuddyID)) {
       if (!IsMercDead(bBuddyID)) {
-        return TRUE;
+        return true;
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function MercIsHot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function MercIsHot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == Enum270.HEAT_INTOLERANT) {
     if (SectorTemperature(GetWorldMinutesInDay(), pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) > 0) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
 function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
@@ -1170,29 +1170,29 @@ function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE
   return pSoldier;
 }
 
-function DoesNPCOwnBuilding(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
+function DoesNPCOwnBuilding(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   let ubRoomInfo: UINT8;
 
   // Get room info
   ubRoomInfo = gubWorldRoomInfo[sGridNo];
 
   if (ubRoomInfo == NO_ROOM) {
-    return FALSE;
+    return false;
   }
 
   // Are we an NPC?
   if (pSoldier.value.bTeam != CIV_TEAM) {
-    return FALSE;
+    return false;
   }
 
   // OK, check both ranges
   if (ubRoomInfo >= gMercProfiles[pSoldier.value.ubProfile].ubRoomRangeStart[0] && ubRoomInfo <= gMercProfiles[pSoldier.value.ubProfile].ubRoomRangeEnd[0]) {
-    return TRUE;
+    return true;
   }
 
   if (ubRoomInfo >= gMercProfiles[pSoldier.value.ubProfile].ubRoomRangeStart[1] && ubRoomInfo <= gMercProfiles[pSoldier.value.ubProfile].ubRoomRangeEnd[1]) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }

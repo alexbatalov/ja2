@@ -1,4 +1,4 @@
-let gfShowExitGrids: BOOLEAN = FALSE;
+let gfShowExitGrids: boolean = false;
 
 function SetEditorItemsTaskbarMode(usNewMode: UINT16): void {
   UnclickEditorButtons(Enum32.ITEMS_WEAPONS, Enum32.ITEMS_KEYS);
@@ -45,10 +45,10 @@ function SetEditorItemsTaskbarMode(usNewMode: UINT16): void {
 const NO_EFFECT = 2;
 
 function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
-  let fNewGroup: BOOLEAN = FALSE;
-  let fNewRoofs: BOOLEAN;
-  let fNewWalls: BOOLEAN;
-  let fNewRoomInfo: BOOLEAN;
+  let fNewGroup: boolean = false;
+  let fNewRoofs: boolean;
+  let fNewWalls: boolean;
+  let fNewRoomInfo: boolean;
   if (usNewMode == usCurrentMode) {
     ClickEditorButton(usNewMode);
     return;
@@ -79,26 +79,26 @@ function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
   UnclickEditorButton(Enum32.BUILDING_DRAW_ROOMNUM);
   ClickEditorButton(usNewMode);
 
-  gfRenderDrawingMode = TRUE;
+  gfRenderDrawingMode = true;
 
   // Clicking on certain buttons will automatically activate/deactive certain views.
   switch (usNewMode) {
     case Enum32.BUILDING_KILL_BUILDING: // Show everything
-      fNewWalls = TRUE;
-      fNewRoofs = TRUE;
-      fNewRoomInfo = TRUE;
+      fNewWalls = true;
+      fNewRoofs = true;
+      fNewRoomInfo = true;
       break;
     case Enum32.BUILDING_NEW_ROOF:
     case Enum32.BUILDING_PLACE_ROOFS:
-      fNewWalls = TRUE;
-      fNewRoofs = TRUE;
-      fNewRoomInfo = FALSE;
+      fNewWalls = true;
+      fNewRoofs = true;
+      fNewRoomInfo = false;
       break;
     case Enum32.BUILDING_DRAW_ROOMNUM: // Show room info
     case Enum32.BUILDING_ERASE_ROOMNUM: // Show room info
       fNewWalls = NO_EFFECT;
-      fNewRoofs = gfBasement ? TRUE : FALSE;
-      fNewRoomInfo = TRUE;
+      fNewRoofs = gfBasement ? true : false;
+      fNewRoomInfo = true;
       break;
     case Enum32.BUILDING_PLACE_DOORS:
     case Enum32.BUILDING_PLACE_WINDOWS:
@@ -118,9 +118,9 @@ function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
     case Enum32.BUILDING_COPY_BUILDING:
     case Enum32.BUILDING_MOVE_BUILDING:
     case Enum32.BUILDING_CAVE_DRAWING:
-      fNewRoofs = gfBasement ? TRUE : FALSE;
-      fNewWalls = TRUE;
-      fNewRoomInfo = FALSE;
+      fNewRoofs = gfBasement ? true : false;
+      fNewWalls = true;
+      fNewRoomInfo = false;
       if (usNewMode == Enum32.BUILDING_PLACE_FLOORS)
         gusSelectionType = gusSavedSelectionType;
       break;
@@ -150,7 +150,7 @@ function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
     else
       UnclickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
     fBuildingShowRoomInfo = fNewRoomInfo;
-    gfRenderWorld = TRUE;
+    gfRenderWorld = true;
   }
 }
 
@@ -165,7 +165,7 @@ function SetEditorTerrainTaskbarMode(usNewMode: UINT16): void {
   UnclickEditorButton(Enum32.TERRAIN_FILL_AREA);
   TerrainTileDrawMode = 0;
 
-  gfRenderDrawingMode = TRUE;
+  gfRenderDrawingMode = true;
 
   switch (usNewMode) {
     case Enum32.TERRAIN_FGROUND_TEXTURES:
@@ -220,7 +220,7 @@ function ShowExitGrids(): void {
   let pLevelNode: Pointer<LEVELNODE>;
   if (gfShowExitGrids)
     return;
-  gfShowExitGrids = TRUE;
+  gfShowExitGrids = true;
   for (i = 0; i < WORLD_MAX; i++) {
     if (GetExitGridLevelNode(i, addressof(pLevelNode))) {
       AddTopmostToTail(i, Enum312.FIRSTPOINTERS8);
@@ -233,7 +233,7 @@ function HideExitGrids(): void {
   let pLevelNode: Pointer<LEVELNODE>;
   if (!gfShowExitGrids)
     return;
-  gfShowExitGrids = FALSE;
+  gfShowExitGrids = false;
   for (i = 0; i < WORLD_MAX; i++) {
     if (GetExitGridLevelNode(i, addressof(pLevelNode))) {
       pLevelNode = gpWorldLevelData[i].pTopmostHead;
@@ -249,7 +249,7 @@ function HideExitGrids(): void {
 }
 
 function SetEditorMapInfoTaskbarMode(usNewMode: UINT16): void {
-  let fShowExitGrids: BOOLEAN = FALSE;
+  let fShowExitGrids: boolean = false;
   UnclickEditorButton(Enum32.MAPINFO_ADD_LIGHT1_SOURCE);
   UnclickEditorButton(Enum32.MAPINFO_DRAW_EXITGRIDS);
   UnclickEditorButton(Enum32.MAPINFO_NORTH_POINT);
@@ -266,7 +266,7 @@ function SetEditorMapInfoTaskbarMode(usNewMode: UINT16): void {
     case Enum32.MAPINFO_DRAW_EXITGRIDS:
       iDrawMode = Enum38.DRAW_MODE_EXITGRID;
       gusSelectionType = gusSavedSelectionType;
-      fShowExitGrids = TRUE;
+      fShowExitGrids = true;
       break;
     case Enum32.MAPINFO_NORTH_POINT:
       iDrawMode = Enum38.DRAW_MODE_NORTHPOINT;
@@ -288,15 +288,15 @@ function SetEditorMapInfoTaskbarMode(usNewMode: UINT16): void {
       break;
     case Enum32.MAPINFO_RADIO_NORMAL:
       SetEditorSmoothingMode(Enum231.SMOOTHING_NORMAL);
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       break;
     case Enum32.MAPINFO_RADIO_BASEMENT:
       SetEditorSmoothingMode(Enum231.SMOOTHING_BASEMENT);
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       break;
     case Enum32.MAPINFO_RADIO_CAVES:
       SetEditorSmoothingMode(Enum231.SMOOTHING_CAVES);
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       break;
   }
   if (fShowExitGrids) {
@@ -310,8 +310,8 @@ function SetEditorSmoothingMode(ubNewMode: UINT8): void {
   UnclickEditorButtons(Enum32.MAPINFO_RADIO_NORMAL, Enum32.MAPINFO_RADIO_CAVES);
   if (iCurrentTaskbar == Enum36.TASK_BUILDINGS)
     HideEditorButtons(Enum32.BUILDING_NEW_ROOM, Enum32.BUILDING_CAVE_DRAWING);
-  gfBasement = FALSE;
-  gfCaves = FALSE;
+  gfBasement = false;
+  gfCaves = false;
   gMapInformation.ubEditorSmoothingType = Enum231.SMOOTHING_NORMAL;
   switch (ubNewMode) {
     case Enum231.SMOOTHING_NORMAL:
@@ -321,14 +321,14 @@ function SetEditorSmoothingMode(ubNewMode: UINT8): void {
       EnableEditorButtons(Enum32.BUILDING_SMART_WALLS, Enum32.BUILDING_SMART_BROKEN_WALLS);
       break;
     case Enum231.SMOOTHING_BASEMENT:
-      gfBasement = TRUE;
+      gfBasement = true;
       ClickEditorButton(Enum32.MAPINFO_RADIO_BASEMENT);
       if (iCurrentTaskbar == Enum36.TASK_BUILDINGS)
         ShowEditorButtons(Enum32.BUILDING_NEW_ROOM, Enum32.BUILDING_KILL_BUILDING);
       EnableEditorButtons(Enum32.BUILDING_SMART_WALLS, Enum32.BUILDING_SMART_BROKEN_WALLS);
       break;
     case Enum231.SMOOTHING_CAVES:
-      gfCaves = TRUE;
+      gfCaves = true;
       ClickEditorButton(Enum32.MAPINFO_RADIO_CAVES);
       if (iCurrentTaskbar == Enum36.TASK_BUILDINGS)
         ShowEditorButton(Enum32.BUILDING_CAVE_DRAWING);

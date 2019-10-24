@@ -83,7 +83,7 @@ function InitNPCs(): void {
   // use alternate map in this sector
   // SectorInfo[ SECTOR( pProfile->sSectorX, pProfile->sSectorY ) ].uiFlags |= SF_USE_ALTERNATE_MAP;
 
-  gfPlayerTeamSawJoey = FALSE;
+  gfPlayerTeamSawJoey = false;
 
   if (gGameOptions.fSciFi) {
     // add Bob
@@ -229,8 +229,8 @@ function InitStrategicLayer(): void {
   ChangeSelectedMapSector(9, 1, 0);
 
   // Reset these flags or mapscreen could be disabled and cause major headache.
-  fDisableDueToBattleRoster = FALSE;
-  fDisableMapInterfaceDueToBattle = FALSE;
+  fDisableDueToBattleRoster = false;
+  fDisableMapInterfaceDueToBattle = false;
 }
 
 function ShutdownStrategicLayer(): void {
@@ -241,14 +241,14 @@ function ShutdownStrategicLayer(): void {
   KillStrategicAI();
 }
 
-function InitNewGame(fReset: BOOLEAN): BOOLEAN {
+function InitNewGame(fReset: boolean): boolean {
   let iStartingCash: INT32;
 
   //	static fScreenCount = 0;
 
   if (fReset) {
     gubScreenCount = 0;
-    return TRUE;
+    return true;
   }
 
   // reset meanwhile flags
@@ -259,7 +259,7 @@ function InitNewGame(fReset: BOOLEAN): BOOLEAN {
 
   if (gubScreenCount == 0) {
     if (!LoadMercProfiles())
-      return FALSE;
+      return false;
   }
 
   // Initialize the Arms Dealers and Bobby Rays inventory
@@ -315,7 +315,7 @@ function InitNewGame(fReset: BOOLEAN): BOOLEAN {
 
       default:
         Assert(0);
-        return FALSE;
+        return false;
     }
 
     // Setup initial money
@@ -333,9 +333,9 @@ function InitNewGame(fReset: BOOLEAN): BOOLEAN {
     gubScreenCount = 1;
 
     // Set the fact the game is in progress
-    gTacticalStatus.fHasAGameBeenStarted = TRUE;
+    gTacticalStatus.fHasAGameBeenStarted = true;
 
-    return TRUE;
+    return true;
   }
 
   /*
@@ -352,7 +352,7 @@ function InitNewGame(fReset: BOOLEAN): BOOLEAN {
     // BeginFade( INIT_SCREEN, 35, FADE_OUT_VERSION_SIDE, 0 );
 
     gubScreenCount = 2;
-    return TRUE;
+    return true;
   }
 
 /*
@@ -384,10 +384,10 @@ function InitNewGame(fReset: BOOLEAN): BOOLEAN {
 
         */
 
-  return TRUE;
+  return true;
 }
 
-function AnyMercsHired(): BOOLEAN {
+function AnyMercsHired(): boolean {
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let bLastTeamID: INT16;
@@ -400,11 +400,11 @@ function AnyMercsHired(): BOOLEAN {
   // look for all mercs on the same team,
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pTeamSoldier++) {
     if (pTeamSoldier.value.bActive) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function QuickStartGame(): void {
@@ -538,7 +538,7 @@ function QuickSetupOfMercProfileItems(uiCount: UINT32, ubProfileIndex: UINT8): v
   // gMercProfiles[ 78 ].bInvNumber[ SMALLPOCK4POS ] = 1;
 }
 
-function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
+function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): boolean {
   let HireMercStruct: MERC_HIRE_STRUCT;
 
   memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
@@ -547,9 +547,9 @@ function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
 
   HireMercStruct.sSectorX = gsMercArriveSectorX;
   HireMercStruct.sSectorY = gsMercArriveSectorY;
-  HireMercStruct.fUseLandingZoneForArrival = TRUE;
+  HireMercStruct.fUseLandingZoneForArrival = true;
 
-  HireMercStruct.fCopyProfileItemsOver = TRUE;
+  HireMercStruct.fCopyProfileItemsOver = true;
   HireMercStruct.ubInsertionCode = Enum175.INSERTION_CODE_CHOPPER;
 
   HireMercStruct.iTotalContractLength = 7;
@@ -559,7 +559,7 @@ function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
 
   // if we succesfully hired the merc
   if (!HireMerc(addressof(HireMercStruct))) {
-    return FALSE;
+    return false;
   }
 
   // add an entry in the finacial page for the hiring of the merc
@@ -573,7 +573,7 @@ function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
   // add an entry in the history page for the hiring of the merc
   AddHistoryToPlayersLog(Enum83.HISTORY_HIRED_MERC_FROM_AIM, ubCurrentSoldier, GetWorldTotalMin(), -1, -1);
 
-  return TRUE;
+  return true;
 }
 
 // This function is called when the game is REstarted.  Things that need to be reinited are placed in here
@@ -581,7 +581,7 @@ function ReStartingGame(): void {
   let cnt: UINT16;
 
   // Pause the game
-  gfGamePaused = TRUE;
+  gfGamePaused = true;
 
   // Reset the sectors
   gWorldSectorX = gWorldSectorY = 0;
@@ -590,10 +590,10 @@ function ReStartingGame(): void {
   SoundStopAll();
 
   // we are going to restart a game so initialize the variable so we can initialize a new game
-  InitNewGame(TRUE);
+  InitNewGame(true);
 
   // Deletes all the Temp files in the Maps\Temp directory
-  InitTacticalSave(TRUE);
+  InitTacticalSave(true);
 
   // Loop through all the soldier and delete them all
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
@@ -638,7 +638,7 @@ function ReStartingGame(): void {
   DeleteAllStrategicEvents();
 
   // This function gets called when ur in a game a click the quit to main menu button, therefore no game is in progress
-  gTacticalStatus.fHasAGameBeenStarted = FALSE;
+  gTacticalStatus.fHasAGameBeenStarted = false;
 
   // Reset timer callbacks
   gpCustomizableTimerCallback = null;

@@ -21,8 +21,8 @@ type HWFILE = UINT32;
 
 interface LibraryInitHeader {
   sLibraryName: CHAR8[] /* [FILENAME_SIZE] */; // The name of the library file on the disk
-  fOnCDrom: BOOLEAN; // A flag specifying if its a cdrom library ( not implemented yet )
-  fInitOnStart: BOOLEAN; // Flag specifying if the library is to Initialized at the begining of the game
+  fOnCDrom: boolean; // A flag specifying if its a cdrom library ( not implemented yet )
+  fInitOnStart: boolean; // Flag specifying if the library is to Initialized at the begining of the game
 }
 
 const REAL_LIBRARY_FILE = "RealFiles.slf";
@@ -49,7 +49,7 @@ interface LibraryHeaderStruct {
   sLibraryPath: STR;
   hLibraryHandle: HANDLE;
   usNumberOfEntries: UINT16;
-  fLibraryOpen: BOOLEAN;
+  fLibraryOpen: boolean;
   //	BOOLEAN	fAnotherFileAlreadyOpenedLibrary;				//this variable is set when a file is opened from the library and reset when the file is close.  No 2 files can have access to the library at 1 time.
   uiIdOfOtherFileAlreadyOpenedLibrary: UINT32; // this variable is set when a file is opened from the library and reset when the file is close.  No 2 files can have access to the library at 1 time.
   iNumFilesOpen: INT32;
@@ -68,7 +68,7 @@ interface DatabaseManagerHeaderStruct {
   sManagerName: STR;
   pLibraries: Pointer<LibraryHeaderStruct>;
   usNumberOfLibraries: UINT16;
-  fInitialized: BOOLEAN;
+  fInitialized: boolean;
   RealFiles: RealFileHeaderStruct;
 }
 
@@ -92,7 +92,7 @@ interface LIBHEADER {
   iUsed: INT32;
   iSort: UINT16;
   iVersion: UINT16;
-  fContainsSubDirectories: BOOLEAN;
+  fContainsSubDirectories: boolean;
   iReserved: INT32;
 }
 

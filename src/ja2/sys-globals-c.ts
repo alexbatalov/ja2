@@ -1,15 +1,15 @@
 // External globals
 let gubFilename: UINT8[] /* [200] */;
-let gfEditMode: BOOLEAN = FALSE;
+let gfEditMode: boolean = false;
 let gDebugStr: INT8[] /* [128] */;
 let gSystemDebugStr: INT8[] /* [128] */;
 let gbFPSDisplay: INT8 = SHOW_MIN_FPS;
-let gfResetInputCheck: BOOLEAN = FALSE;
-let gfGlobalError: BOOLEAN = FALSE;
+let gfResetInputCheck: boolean = false;
+let gfGlobalError: boolean = false;
 
 let guiGameCycleCounter: UINT32 = 0;
 
-function SET_ERROR(String: Pointer<char>, ...args: any[]): BOOLEAN {
+function SET_ERROR(String: Pointer<char>, ...args: any[]): boolean {
   let ArgPtr: va_list;
 
   va_start(ArgPtr, String);
@@ -18,7 +18,7 @@ function SET_ERROR(String: Pointer<char>, ...args: any[]): BOOLEAN {
 
   SetPendingNewScreen(Enum26.ERROR_SCREEN);
 
-  gfGlobalError = TRUE;
+  gfGlobalError = true;
 
-  return FALSE;
+  return false;
 }

@@ -44,7 +44,7 @@ let guiHandBullet: UINT32;
 let guiLargeTitleSymbol: UINT32;
 let guiSmallTitleSymbol: UINT32;
 
-let gfHomePageActive: BOOLEAN = FALSE; // Specifies whether or not the home page or the sub pages are active
+let gfHomePageActive: boolean = false; // Specifies whether or not the home page or the sub pages are active
 
 // Buttons
 
@@ -58,7 +58,7 @@ let gSelectedFloristTitleHomeLinkRegion: MOUSE_REGION;
 function GameInitFlorist(): void {
 }
 
-function EnterFlorist(): BOOLEAN {
+function EnterFlorist(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   SetBookMark(Enum98.FLORIST_BOOKMARK);
@@ -85,12 +85,12 @@ function EnterFlorist(): BOOLEAN {
   gubCurFlowerIndex = 0;
 
   RenderFlorist();
-  fReDrawScreenFlag = TRUE;
+  fReDrawScreenFlag = true;
 
   // set some variables for the order form
   InitFloristOrderFormVariables();
 
-  return TRUE;
+  return true;
 }
 
 function ExitFlorist(): void {
@@ -117,20 +117,20 @@ function RenderFlorist(): void {
   DisplayFloristDefaults();
 
   // compnay info
-  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_1_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_DROP_ANYWHERE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_2_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_PHONE_NUMBER], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_3_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_STREET_ADDRESS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_4_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_WWW_ADDRESS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_1_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_DROP_ANYWHERE], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_2_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_PHONE_NUMBER], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_3_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_STREET_ADDRESS], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_4_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_WWW_ADDRESS], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   usPosY = FLORIST_FIRST_BULLET_Y;
   ubTextCounter = Enum345.FLORIST_ADVERTISEMENT_1;
   for (i = 0; i < FLORIST_NUMBER_OF_BULLETS; i++) {
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLORIST_FIRST_BULLET_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
-    DisplayWrappedString(FLORIST_FIRST_SENTENCE_COLUMN_TEXT_X, (usPosY + 20), FLORIST_FIRST_SENTENCE_COLUMN_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[ubTextCounter], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(FLORIST_FIRST_SENTENCE_COLUMN_TEXT_X, (usPosY + 20), FLORIST_FIRST_SENTENCE_COLUMN_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[ubTextCounter], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     ubTextCounter++;
 
-    DisplayWrappedString(FLORIST_SECOND_SENTENCE_COLUMN_TEXT_X, (usPosY + 15), FLORIST_SECOND_SENTENCE_COLUMN_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[ubTextCounter], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(FLORIST_SECOND_SENTENCE_COLUMN_TEXT_X, (usPosY + 15), FLORIST_SECOND_SENTENCE_COLUMN_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT(), FLORIST_SENTENCE_COLOR, sFloristText[ubTextCounter], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     ubTextCounter++;
 
     usPosY += FLORIST_BULLET_OFFSET_Y;
@@ -141,7 +141,7 @@ function RenderFlorist(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_UL_Y);
 }
 
-function InitFloristDefaults(): BOOLEAN {
+function InitFloristDefaults(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the Florist background graphic and add it
@@ -166,7 +166,7 @@ function InitFloristDefaults(): BOOLEAN {
     MSYS_AddRegion(addressof(gSelectedFloristTitleHomeLinkRegion));
   }
 
-  return TRUE;
+  return true;
 }
 
 function DisplayFloristDefaults(): void {
@@ -176,11 +176,11 @@ function DisplayFloristDefaults(): void {
 
   // if its the first page
   if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_FLORIST) {
-    gfHomePageActive = TRUE;
+    gfHomePageActive = true;
     GetVideoObject(addressof(hPixHandle), guiLargeTitleSymbol);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLORIST_BIG_TITLE_X, FLORIST_BIG_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
   } else {
-    gfHomePageActive = FALSE;
+    gfHomePageActive = false;
     GetVideoObject(addressof(hPixHandle), guiSmallTitleSymbol);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
   }

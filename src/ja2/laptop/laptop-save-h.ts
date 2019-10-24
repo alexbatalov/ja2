@@ -6,14 +6,14 @@ const SPECK_QUOTE__ALREADY_TOLD_PLAYER_THAT_LARRY_RELAPSED = 0x00000001;
 const SPECK_QUOTE__SENT_EMAIL_ABOUT_LACK_OF_PAYMENT = 0x00000002;
 
 interface LIFE_INSURANCE_PAYOUT {
-  fActive: BOOLEAN;
+  fActive: boolean;
   ubSoldierID: UINT8;
   ubMercID: UINT8;
   iPayOutPrice: INT32;
 }
 
 interface LAST_HIRED_MERC_STRUCT {
-  fHaveDisplayedPopUpInLaptop: BOOLEAN; // Is set when the popup gets displayed, reset when entering laptop again.
+  fHaveDisplayedPopUpInLaptop: boolean; // Is set when the popup gets displayed, reset when entering laptop again.
   iIdOfMerc: INT32;
   uiArrivalTime: UINT32;
 }
@@ -23,11 +23,11 @@ interface BobbyRayPurchaseStruct {
   ubNumberPurchased: UINT8;
   bItemQuality: INT8;
   usBobbyItemIndex: UINT16; // Item number in the BobbyRayInventory structure
-  fUsed: BOOLEAN; // Indicates wether or not the item is from the used inventory or the regular inventory
+  fUsed: boolean; // Indicates wether or not the item is from the used inventory or the regular inventory
 }
 
 interface BobbyRayOrderStruct {
-  fActive: BOOLEAN;
+  fActive: boolean;
   BobbyRayPurchase: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
   ubNumberPurchases: UINT8;
 }
@@ -41,15 +41,15 @@ const enum Enum99 {
 
 interface LaptopSaveInfoStruct {
   // General Laptop Info
-  gfNewGameLaptop: BOOLEAN; // Is it the firs time in Laptop
-  fVisitedBookmarkAlready: BOOLEAN[] /* [20] */; // have we visitied this site already?
+  gfNewGameLaptop: boolean; // Is it the firs time in Laptop
+  fVisitedBookmarkAlready: boolean[] /* [20] */; // have we visitied this site already?
   iBookMarkList: INT32[] /* [MAX_BOOKMARKS] */;
 
   iCurrentBalance: INT32; // current players balance
 
   // IMP Information
-  fIMPCompletedFlag: BOOLEAN; // Has the player Completed the IMP process
-  fSentImpWarningAlready: BOOLEAN; // Has the Imp email warning already been sent
+  fIMPCompletedFlag: boolean; // Has the player Completed the IMP process
+  fSentImpWarningAlready: boolean; // Has the Imp email warning already been sent
 
   // Personnel Info
   ubDeadCharactersList: INT16[] /* [256] */;
@@ -74,14 +74,14 @@ interface LaptopSaveInfoStruct {
   ubNumberLifeInsurancePayouts: UINT8; // The number of elements in the array
   ubNumberLifeInsurancePayoutUsed: UINT8; // The number of items in the array that are used
 
-  fBobbyRSiteCanBeAccessed: BOOLEAN;
+  fBobbyRSiteCanBeAccessed: boolean;
 
   ubPlayerBeenToMercSiteStatus: UINT8;
-  fFirstVisitSinceServerWentDown: BOOLEAN;
-  fNewMercsAvailableAtMercSite: BOOLEAN;
-  fSaidGenericOpeningInMercSite: BOOLEAN;
-  fSpeckSaidFloMarriedCousinQuote: BOOLEAN;
-  fHasAMercDiedAtMercSite: BOOLEAN;
+  fFirstVisitSinceServerWentDown: boolean;
+  fNewMercsAvailableAtMercSite: boolean;
+  fSaidGenericOpeningInMercSite: boolean;
+  fSpeckSaidFloMarriedCousinQuote: boolean;
+  fHasAMercDiedAtMercSite: boolean;
 
   gbNumDaysTillFirstMercArrives: INT8;
   gbNumDaysTillSecondMercArrives: INT8;
@@ -96,7 +96,7 @@ interface LaptopSaveInfoStruct {
 
   ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction: UINT8;
 
-  fMercSiteHasGoneDownYet: BOOLEAN;
+  fMercSiteHasGoneDownYet: boolean;
 
   ubSpeckCanSayPlayersLostQuote: UINT8;
 

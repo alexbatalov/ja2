@@ -15,9 +15,9 @@ const MAP_AMBIENTLIGHTLEVEL_SAVED = 0x00000080;
 const MAP_NPCSCHEDULES_SAVED = 0x00000100;
 
 // TEMP
-let gfForceLoadPlayers: BOOLEAN = FALSE;
+let gfForceLoadPlayers: boolean = false;
 let gzForceLoadFile: CHAR8[] /* [100] */;
-let gfForceLoad: BOOLEAN = FALSE;
+let gfForceLoad: boolean = false;
 
 let gubCurrentLevel: UINT8;
 let giCurrentTilesetID: INT32 = 0;
@@ -28,11 +28,11 @@ let gCurrentBackground: UINT32 = Enum313.FIRSTTEXTURE;
 let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
 let gbNewTileSurfaceLoaded: INT8[] /* [NUMBEROFTILETYPES] */;
 
-function SetAllNewTileSurfacesLoaded(fNew: BOOLEAN): void {
+function SetAllNewTileSurfacesLoaded(fNew: boolean): void {
   memset(gbNewTileSurfaceLoaded, fNew, sizeof(gbNewTileSurfaceLoaded));
 }
 
-let gfInitAnimateLoading: BOOLEAN = FALSE;
+let gfInitAnimateLoading: boolean = false;
 
 // Global Variables
 let gpWorldLevelData: Pointer<MAP_ELEMENT>;
@@ -48,29 +48,29 @@ let gsRecompileAreaBottom: INT16 = 0;
 
 // TIMER TESTING STUFF
 
-function DoorAtGridNo(iMapIndex: UINT32): BOOLEAN {
+function DoorAtGridNo(iMapIndex: UINT32): boolean {
   let pStruct: Pointer<STRUCTURE>;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
     if (pStruct.value.fFlags & STRUCTURE_ANYDOOR)
-      return TRUE;
+      return true;
     pStruct = pStruct.value.pNext;
   }
-  return FALSE;
+  return false;
 }
 
-function OpenableAtGridNo(iMapIndex: UINT32): BOOLEAN {
+function OpenableAtGridNo(iMapIndex: UINT32): boolean {
   let pStruct: Pointer<STRUCTURE>;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
     if (pStruct.value.fFlags & STRUCTURE_OPENABLE)
-      return TRUE;
+      return true;
     pStruct = pStruct.value.pNext;
   }
-  return FALSE;
+  return false;
 }
 
-function FloorAtGridNo(iMapIndex: UINT32): BOOLEAN {
+function FloorAtGridNo(iMapIndex: UINT32): boolean {
   let pLand: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
@@ -79,20 +79,20 @@ function FloorAtGridNo(iMapIndex: UINT32): BOOLEAN {
     if (pLand.value.usIndex != NO_TILE) {
       GetTileType(pLand.value.usIndex, addressof(uiTileType));
       if (uiTileType >= Enum313.FIRSTFLOOR && uiTileType <= LASTFLOOR) {
-        return TRUE;
+        return true;
       }
       pLand = pLand.value.pNext;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function GridNoIndoors(iMapIndex: UINT32): BOOLEAN {
+function GridNoIndoors(iMapIndex: UINT32): boolean {
   if (gfBasement || gfCaves)
-    return TRUE;
+    return true;
   if (FloorAtGridNo(iMapIndex))
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
 function DOIT(): void {
@@ -121,7 +121,7 @@ function DOIT(): void {
   }
 }
 
-function InitializeWorld(): BOOLEAN {
+function InitializeWorld(): boolean {
   gTileDatabaseSize = 0;
   gSurfaceMemUsage = 0;
   giCurrentTilesetID = -1;
@@ -161,7 +161,7 @@ function InitializeWorld(): BOOLEAN {
   // INit tilesets
   InitEngineTilesets();
 
-  return TRUE;
+  return true;
 }
 
 function DeinitializeWorld(): void {
@@ -184,11 +184,11 @@ function DeinitializeWorld(): void {
   ShutdownRoomDatabase();
 }
 
-function ReloadTilesetSlot(iSlot: INT32): BOOLEAN {
-  return TRUE;
+function ReloadTilesetSlot(iSlot: INT32): boolean {
+  return true;
 }
 
-function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTilesetID: UINT8): BOOLEAN {
+function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTilesetID: UINT8): boolean {
   let cTemp: SGPFILENAME;
   let uiLoop: UINT32;
 
@@ -211,7 +211,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
 
   // If no Tileset filenames are given, return error
   if (ppTileSurfaceFilenames == null) {
-    return FALSE;
+    return false;
   } else {
     for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++)
       strcpy(TileSurfaceFilenames[uiLoop], ppTileSurfaceFilenames[uiLoop]); //(char *)(ppTileSurfaceFilenames + (65 * uiLoop)) );
@@ -242,30 +242,30 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
       GetPrivateProfileString("TileSurface Filenames", gTileSurfaceName[uiLoop], "", cTemp, SGPFILENAME_LEN, INIFile);
       if (cTemp.value != '\0') {
         strcpy(TileSurfaceFilenames[uiLoop], cTemp);
-        if (AddTileSurface(cTemp, uiLoop, ubTilesetID, TRUE) == FALSE) {
+        if (AddTileSurface(cTemp, uiLoop, ubTilesetID, true) == false) {
           DestroyTileSurfaces();
-          return FALSE;
+          return false;
         }
       } else {
         // Use default
-        if (AddTileSurface(TileSurfaceFilenames[uiLoop], uiLoop, ubTilesetID, FALSE) == FALSE) {
+        if (AddTileSurface(TileSurfaceFilenames[uiLoop], uiLoop, ubTilesetID, false) == false) {
           DestroyTileSurfaces();
-          return FALSE;
+          return false;
         }
       }
     } else {
       GetPrivateProfileString("TileSurface Filenames", gTileSurfaceName[uiLoop], "", cTemp, SGPFILENAME_LEN, INIFile);
       if (cTemp.value != '\0') {
         strcpy(TileSurfaceFilenames[uiLoop], cTemp);
-        if (AddTileSurface(cTemp, uiLoop, ubTilesetID, TRUE) == FALSE) {
+        if (AddTileSurface(cTemp, uiLoop, ubTilesetID, true) == false) {
           DestroyTileSurfaces();
-          return FALSE;
+          return false;
         }
       } else {
         if ((ppTileSurfaceFilenames[uiLoop]).value != '\0') {
-          if (AddTileSurface(ppTileSurfaceFilenames[uiLoop], uiLoop, ubTilesetID, FALSE) == FALSE) {
+          if (AddTileSurface(ppTileSurfaceFilenames[uiLoop], uiLoop, ubTilesetID, false) == false) {
             DestroyTileSurfaces();
-            return FALSE;
+            return false;
           }
         } else {
           // USE FIRST TILESET VALUE!
@@ -273,22 +273,22 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
           // ATE: If here, don't load default surface if already loaded...
           if (!gbDefaultSurfaceUsed[uiLoop]) {
             strcpy(TileSurfaceFilenames[uiLoop], gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop]); //(char *)(ppTileSurfaceFilenames + (65 * uiLoop)) );
-            if (AddTileSurface(gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop], uiLoop, Enum316.GENERIC_1, FALSE) == FALSE) {
+            if (AddTileSurface(gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop], uiLoop, Enum316.GENERIC_1, false) == false) {
               DestroyTileSurfaces();
-              return FALSE;
+              return false;
             }
           } else {
-            gbSameAsDefaultSurfaceUsed[uiLoop] = TRUE;
+            gbSameAsDefaultSurfaceUsed[uiLoop] = true;
           }
         }
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: UINT8, fGetFromRoot: BOOLEAN): BOOLEAN {
+function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: UINT8, fGetFromRoot: boolean): boolean {
   // Add tile surface
   let TileSurf: PTILE_IMAGERY;
   let cFileBPP: CHAR8[] /* [128] */;
@@ -301,7 +301,7 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
   }
 
   // Adjust flag for same as default used...
-  gbSameAsDefaultSurfaceUsed[ubType] = FALSE;
+  gbSameAsDefaultSurfaceUsed[ubType] = false;
 
   // Adjust for BPP
   FilenameForBPP(cFilename, cFileBPP);
@@ -316,7 +316,7 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
   TileSurf = LoadTileSurface(cAdjustedFile);
 
   if (TileSurf == null)
-    return FALSE;
+    return false;
 
   TileSurf.value.fType = ubType;
 
@@ -326,14 +326,14 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
 
   // OK, if we were not the default tileset, set value indicating that!
   if (ubTilesetID != Enum316.GENERIC_1) {
-    gbDefaultSurfaceUsed[ubType] = FALSE;
+    gbDefaultSurfaceUsed[ubType] = false;
   } else {
-    gbDefaultSurfaceUsed[ubType] = TRUE;
+    gbDefaultSurfaceUsed[ubType] = true;
   }
 
-  gbNewTileSurfaceLoaded[ubType] = TRUE;
+  gbNewTileSurfaceLoaded[ubType] = true;
 
-  return TRUE;
+  return true;
 }
 
 function BuildTileShadeTables(): void {
@@ -342,7 +342,7 @@ function BuildTileShadeTables(): void {
   let ShadeTableDir: STRING512;
   let uiLoop: UINT32;
   let cRootFile: CHAR8[] /* [128] */;
-  let fForceRebuildForSlot: BOOLEAN = FALSE;
+  let fForceRebuildForSlot: boolean = false;
 
   /* static */ let ubLastRed: UINT8 = 255;
   /* static */ let ubLastGreen: UINT8 = 255;
@@ -354,12 +354,12 @@ function BuildTileShadeTables(): void {
   if (!SetFileManCurrentDirectory(ShadeTableDir)) {
     AssertMsg(0, "Can't set the directory to Data\\ShadeTable.  Kris' big problem!");
   }
-  hfile = FileOpen("IgnoreShadeTables.txt", FILE_ACCESS_READ, FALSE);
+  hfile = FileOpen("IgnoreShadeTables.txt", FILE_ACCESS_READ, false);
   if (hfile) {
     FileClose(hfile);
-    gfForceBuildShadeTables = TRUE;
+    gfForceBuildShadeTables = true;
   } else {
-    gfForceBuildShadeTables = FALSE;
+    gfForceBuildShadeTables = false;
   }
   // now, determine if we are using specialized colors.
   if (gpLightColors[0].peRed || gpLightColors[0].peGreen || gpLightColors[0].peBlue) {
@@ -367,10 +367,10 @@ function BuildTileShadeTables(): void {
     // exception is if we are loading another map and the colors are the same.
     if (gpLightColors[0].peRed != ubLastRed || gpLightColors[0].peGreen != ubLastGreen || gpLightColors[0].peBlue != ubLastBlue) {
       // Same tileset, but colors are different, so set things up to regenerate the shadetables.
-      gfForceBuildShadeTables = TRUE;
+      gfForceBuildShadeTables = true;
     } else {
       // same colors, same tileset, so don't rebuild shadetables -- much faster!
-      gfForceBuildShadeTables = FALSE;
+      gfForceBuildShadeTables = false;
     }
   }
 
@@ -385,12 +385,12 @@ function BuildTileShadeTables(): void {
 // Don't Create shade tables if default were already used once!
       if (gbNewTileSurfaceLoaded[uiLoop] || gfEditorForceShadeTableRebuild)
       {
-        fForceRebuildForSlot = FALSE;
+        fForceRebuildForSlot = false;
 
         GetRootName(cRootFile, TileSurfaceFilenames[uiLoop]);
 
         if (strcmp(cRootFile, "grass2") == 0) {
-          fForceRebuildForSlot = TRUE;
+          fForceRebuildForSlot = true;
         }
 
         RenderProgressBar(0, uiLoop * 100 / Enum313.NUMBEROFTILETYPES);
@@ -477,7 +477,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
   let pLand: Pointer<LEVELNODE>;
 
   let pStructure: Pointer<STRUCTURE>;
-  let fStructuresOnRoof: BOOLEAN;
+  let fStructuresOnRoof: boolean;
 
   let ubDirLoop: UINT8;
 
@@ -528,7 +528,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
 
     // now consider all structures
     pStructure = gpWorldLevelData[usGridNo].pStructureHead;
-    fStructuresOnRoof = FALSE;
+    fStructuresOnRoof = false;
     do {
       if (pStructure.value.sCubeOffset == STRUCTURE_ON_GROUND) {
         if (pStructure.value.fFlags & STRUCTURE_PASSABLE) {
@@ -626,12 +626,12 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
               SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_OBSTACLE);
             }
 
-            if (FindStructure((usGridNo - WORLD_COLS), STRUCTURE_OBSTACLE) == FALSE && FindStructure((usGridNo + WORLD_COLS), STRUCTURE_OBSTACLE) == FALSE) {
+            if (FindStructure((usGridNo - WORLD_COLS), STRUCTURE_OBSTACLE) == false && FindStructure((usGridNo + WORLD_COLS), STRUCTURE_OBSTACLE) == false) {
               FORCE_SET_MOVEMENTCOST(usGridNo, Enum245.NORTH, 0, TRAVELCOST_FENCE);
               FORCE_SET_MOVEMENTCOST(usGridNo, Enum245.SOUTH, 0, TRAVELCOST_FENCE);
             }
 
-            if (FindStructure((usGridNo - 1), STRUCTURE_OBSTACLE) == FALSE && FindStructure((usGridNo + 1), STRUCTURE_OBSTACLE) == FALSE) {
+            if (FindStructure((usGridNo - 1), STRUCTURE_OBSTACLE) == false && FindStructure((usGridNo + 1), STRUCTURE_OBSTACLE) == false) {
               FORCE_SET_MOVEMENTCOST(usGridNo, Enum245.EAST, 0, TRAVELCOST_FENCE);
               FORCE_SET_MOVEMENTCOST(usGridNo, Enum245.WEST, 0, TRAVELCOST_FENCE);
             }
@@ -1006,7 +1006,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
         }
       } else {
         if (!(pStructure.value.fFlags & STRUCTURE_PASSABLE || pStructure.value.fFlags & STRUCTURE_NORMAL_ROOF)) {
-          fStructuresOnRoof = TRUE;
+          fStructuresOnRoof = true;
         }
       }
       pStructure = pStructure.value.pNext;
@@ -1270,7 +1270,7 @@ function CompileWorldMovementCosts(): void {
 }
 
 // SAVING CODE
-function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
+function SaveWorld(puiFilename: Pointer<UINT8>): boolean {
   let cnt: INT32;
   let uiSoldierSize: UINT32;
   let uiType: UINT32;
@@ -1303,10 +1303,10 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   sprintf(aFilename, "MAPS\\%s", puiFilename);
 
   // Open file
-  hfile = FileOpen(aFilename, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hfile = FileOpen(aFilename, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
 
   if (!hfile) {
-    return FALSE;
+    return false;
   }
 
   // Write JA2 Version ID
@@ -1360,13 +1360,13 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
                "SAVE ABORTED!  Land count too high (%d) for gridno %d."
                + "  Need to fix before map can be saved!  There are %d additional warnings.",
                LayerCount, cnt, uiNumWarningsCaught);
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       FileClose(hfile);
-      return FALSE;
+      return false;
     }
     if (LayerCount > 10) {
       uiNumWarningsCaught++;
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Land count warning of %d for gridno %d.", uiNumWarningsCaught, LayerCount, cnt);
     }
     bCounts[cnt][0] = LayerCount;
@@ -1395,13 +1395,13 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
                "SAVE ABORTED!  Object count too high (%d) for gridno %d."
                + "  Need to fix before map can be saved!  There are %d additional warnings.",
                ObjectCount, cnt, uiNumWarningsCaught);
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       FileClose(hfile);
-      return FALSE;
+      return false;
     }
     if (ObjectCount > 10) {
       uiNumWarningsCaught++;
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Object count warning of %d for gridno %d.", uiNumWarningsCaught, ObjectCount, cnt);
     }
     bCounts[cnt][1] = ObjectCount;
@@ -1421,13 +1421,13 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
                "SAVE ABORTED!  Struct count too high (%d) for gridno %d."
                + "  Need to fix before map can be saved!  There are %d additional warnings.",
                StructCount, cnt, uiNumWarningsCaught);
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       FileClose(hfile);
-      return FALSE;
+      return false;
     }
     if (StructCount > 10) {
       uiNumWarningsCaught++;
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Struct count warning of %d for gridno %d.", uiNumWarningsCaught, StructCount, cnt);
     }
     bCounts[cnt][2] = StructCount;
@@ -1451,13 +1451,13 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
                "SAVE ABORTED!  Shadow count too high (%d) for gridno %d."
                + "  Need to fix before map can be saved!  There are %d additional warnings.",
                ShadowCount, cnt, uiNumWarningsCaught);
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       FileClose(hfile);
-      return FALSE;
+      return false;
     }
     if (ShadowCount > 10) {
       uiNumWarningsCaught++;
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Shadow count warning of %d for gridno %d.", uiNumWarningsCaught, ShadowCount, cnt);
     }
     bCounts[cnt][3] = ShadowCount;
@@ -1477,13 +1477,13 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
                "SAVE ABORTED!  Roof count too high (%d) for gridno %d."
                + "  Need to fix before map can be saved!  There are %d additional warnings.",
                RoofCount, cnt, uiNumWarningsCaught);
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       FileClose(hfile);
-      return FALSE;
+      return false;
     }
     if (RoofCount > 10) {
       uiNumWarningsCaught++;
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Roof count warning of %d for gridno %d.", uiNumWarningsCaught, RoofCount, cnt);
     }
     bCounts[cnt][4] = RoofCount;
@@ -1506,13 +1506,13 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
                "SAVE ABORTED!  OnRoof count too high (%d) for gridno %d."
                + "  Need to fix before map can be saved!  There are %d additional warnings.",
                OnRoofCount, cnt, uiNumWarningsCaught);
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       FileClose(hfile);
-      return FALSE;
+      return false;
     }
     if (OnRoofCount > 10) {
       uiNumWarningsCaught++;
-      gfErrorCatch = TRUE;
+      gfErrorCatch = true;
       swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  OnRoof count warning of %d for gridno %d.", uiNumWarningsCaught, OnRoofCount, cnt);
     }
     bCounts[cnt][5] = RoofCount;
@@ -1688,7 +1688,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
   sprintf(gubFilename, puiFilename);
 
-  return TRUE;
+  return true;
 }
 
 const NUM_DIR_SEARCHES = 5;
@@ -1754,7 +1754,7 @@ function InitLoadedWorld(): void {
   CompileInteractiveTiles();
 
   // COMPILE WORLD VISIBLIY TILES
-  CalculateWorldWireFrameTiles(TRUE);
+  CalculateWorldWireFrameTiles(true);
 
   LightSpriteRenderAll();
 
@@ -1768,7 +1768,7 @@ function InitLoadedWorld(): void {
   SetBlueFlagFlags();
 }
 
-function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
+function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): boolean {
   let dMajorMapVersion: FLOAT;
   let pSummary: Pointer<SUMMARYFILE>;
   let hfile: HWFILE;
@@ -1803,14 +1803,14 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
 
   if (gfMajorUpdate) {
     if (!LoadWorld(szFilename)) // error
-      return FALSE;
+      return false;
     FileClearAttributes(szDirFilename);
     SaveWorld(szFilename);
   }
 
-  hfile = FileOpen(szDirFilename, FILE_ACCESS_READ, FALSE);
+  hfile = FileOpen(szDirFilename, FILE_ACCESS_READ, false);
   if (!hfile)
-    return FALSE;
+    return false;
 
   uiFileSize = FileGetSize(hfile);
   pBuffer = MemAlloc(uiFileSize);
@@ -2083,7 +2083,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
     let exitGrid: EXITGRID;
     let loop: INT32;
     let usMapIndex: UINT16;
-    let fExitGridFound: BOOLEAN;
+    let fExitGridFound: boolean;
     RenderProgressBar(0, 98);
     // RenderProgressBar( 1, 98 );
 
@@ -2092,18 +2092,18 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
     for (i = 0; i < cnt; i++) {
       LOADDATA(addressof(usMapIndex), pBuffer, 2);
       LOADDATA(addressof(exitGrid), pBuffer, 5);
-      fExitGridFound = FALSE;
+      fExitGridFound = false;
       for (loop = 0; loop < pSummary.value.ubNumExitGridDests; loop++) {
         if (pSummary.value.ExitGrid[loop].usGridNo == exitGrid.usGridNo && pSummary.value.ExitGrid[loop].ubGotoSectorX == exitGrid.ubGotoSectorX && pSummary.value.ExitGrid[loop].ubGotoSectorY == exitGrid.ubGotoSectorY && pSummary.value.ExitGrid[loop].ubGotoSectorZ == exitGrid.ubGotoSectorZ) {
           // same destination.
           pSummary.value.usExitGridSize[loop]++;
-          fExitGridFound = TRUE;
+          fExitGridFound = true;
           break;
         }
       }
       if (!fExitGridFound) {
         if (loop >= 4) {
-          pSummary.value.fTooManyExitGridDests = TRUE;
+          pSummary.value.fTooManyExitGridDests = true;
         } else {
           pSummary.value.ubNumExitGridDests++;
           pSummary.value.usExitGridSize[loop]++;
@@ -2112,7 +2112,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
           pSummary.value.ExitGrid[loop].ubGotoSectorY = exitGrid.ubGotoSectorY;
           pSummary.value.ExitGrid[loop].ubGotoSectorZ = exitGrid.ubGotoSectorZ;
           if (pSummary.value.ExitGrid[loop].ubGotoSectorX != exitGrid.ubGotoSectorX || pSummary.value.ExitGrid[loop].ubGotoSectorY != exitGrid.ubGotoSectorY) {
-            pSummary.value.fInvalidDest[loop] = TRUE;
+            pSummary.value.fInvalidDest[loop] = true;
           }
         }
       }
@@ -2142,10 +2142,10 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   MemFree(pBufferHead);
 
   WriteSectorSummaryUpdate(szFilename, ubLevel, pSummary);
-  return TRUE;
+  return true;
 }
 
-function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
+function LoadWorld(puiFilename: Pointer<UINT8>): boolean {
   let hfile: HWFILE;
   let dMajorMapVersion: FLOAT;
   let uiFlags: UINT32;
@@ -2166,7 +2166,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
   let pBuffer: Pointer<INT8>;
   let pBufferHead: Pointer<INT8>;
-  let fGenerateEdgePoints: BOOLEAN = FALSE;
+  let fGenerateEdgePoints: boolean = false;
   let ubMinorMapVersion: UINT8;
 
   LoadShadeTablesFromTextFile();
@@ -2179,15 +2179,15 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   }
 
   // RESET FLAGS FOR OUTDOORS/INDOORS
-  gfBasement = FALSE;
-  gfCaves = FALSE;
+  gfBasement = false;
+  gfCaves = false;
 
   // Open file
-  hfile = FileOpen(aFilename, FILE_ACCESS_READ, FALSE);
+  hfile = FileOpen(aFilename, FILE_ACCESS_READ, false);
 
   if (!hfile) {
     SET_ERROR("Could not load map file %S", aFilename);
-    return FALSE;
+    return false;
   }
 
   SetRelativeStartAndEndPercentage(0, 0, 1, "Trashing world...");
@@ -2230,7 +2230,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
   LOADDATA(addressof(iTilesetID), pBuffer, sizeof(INT32));
 
-  CHECKF(LoadMapTileset(iTilesetID) != FALSE);
+  CHECKF(LoadMapTileset(iTilesetID) != false);
 
   // Load soldier size
   LOADDATA(addressof(uiSoldierSize), pBuffer, sizeof(INT32));
@@ -2484,16 +2484,16 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     memset(gubWorldRoomInfo, 0, sizeof(gubWorldRoomInfo));
   }
 
-  memset(gubWorldRoomHidden, TRUE, sizeof(gubWorldRoomHidden));
+  memset(gubWorldRoomHidden, true, sizeof(gubWorldRoomHidden));
 
   SetRelativeStartAndEndPercentage(0, 59, 61, "Loading items...");
   RenderProgressBar(0, 100);
 
   if (uiFlags & MAP_WORLDITEMS_SAVED) {
     // Load out item information
-    gfLoadPitsWithoutArming = TRUE;
+    gfLoadPitsWithoutArming = true;
     LoadWorldItemsFromMap(addressof(pBuffer));
-    gfLoadPitsWithoutArming = FALSE;
+    gfLoadPitsWithoutArming = false;
   }
 
   SetRelativeStartAndEndPercentage(0, 62, 85, "Loading lights...");
@@ -2506,8 +2506,8 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     LOADDATA(addressof(ubAmbientLightLevel), pBuffer, 1);
   } else {
     // We are above ground.
-    gfBasement = FALSE;
-    gfCaves = FALSE;
+    gfBasement = false;
+    gfCaves = false;
     if (!gfEditMode && guiCurrentScreen != Enum26.MAPUTILITY_SCREEN) {
       ubAmbientLightLevel = GetTimeOfDayAmbientLightLevel();
     } else {
@@ -2546,9 +2546,9 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     SetRelativeStartAndEndPercentage(0, 90, 91, "Loading edgepoints...");
     RenderProgressBar(0, 0);
     if (!LoadMapEdgepoints(addressof(pBuffer)))
-      fGenerateEdgePoints = TRUE; // only if the map had the older edgepoint system
+      fGenerateEdgePoints = true; // only if the map had the older edgepoint system
   } else {
-    fGenerateEdgePoints = TRUE;
+    fGenerateEdgePoints = true;
   }
   if (uiFlags & MAP_NPCSCHEDULES_SAVED) {
     SetRelativeStartAndEndPercentage(0, 91, 92, "Loading NPC schedules...");
@@ -2586,12 +2586,12 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   RenderProgressBar(0, 40);
 
   // Reset some override flags
-  gfForceLoadPlayers = FALSE;
-  gfForceLoad = FALSE;
+  gfForceLoadPlayers = false;
+  gfForceLoad = false;
 
   // CHECK IF OUR SELECTED GUY IS GONE!
   if (gusSelectedSoldier != NO_SOLDIER) {
-    if (MercPtrs[gusSelectedSoldier].value.bActive == FALSE) {
+    if (MercPtrs[gusSelectedSoldier].value.bActive == false) {
       gusSelectedSoldier = NO_SOLDIER;
     }
   }
@@ -2608,7 +2608,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
   RenderProgressBar(0, 80);
 
-  gfWorldLoaded = TRUE;
+  gfWorldLoaded = true;
 
   sprintf(gubFilename, puiFilename);
 
@@ -2619,7 +2619,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
   DequeueAllKeyBoardEvents();
 
-  return TRUE;
+  return true;
 }
 
 //****************************************************************************************
@@ -2627,7 +2627,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 //	Deletes everything then re-creates the world with simple ground tiles
 //
 //****************************************************************************************
-function NewWorld(): BOOLEAN {
+function NewWorld(): boolean {
   let NewIndex: UINT16;
   let cnt: INT32;
 
@@ -2646,9 +2646,9 @@ function NewWorld(): BOOLEAN {
 
   InitRoomDatabase();
 
-  gfWorldLoaded = TRUE;
+  gfWorldLoaded = true;
 
-  return TRUE;
+  return true;
 }
 
 function TrashWorld(): void {
@@ -2776,7 +2776,7 @@ function TrashWorld(): void {
     }
 
     while (pMapTile.value.pStructureHead != null) {
-      if (DeleteStructureFromWorld(pMapTile.value.pStructureHead) == FALSE) {
+      if (DeleteStructureFromWorld(pMapTile.value.pStructureHead) == false) {
         // ERROR!!!!!!
         break;
       }
@@ -2796,7 +2796,7 @@ function TrashWorld(): void {
   TrashDoorStatusArray();
 
   // gfBlitBattleSectorLocator = FALSE;
-  gfWorldLoaded = FALSE;
+  gfWorldLoaded = false;
   sprintf(gubFilename, "none");
 }
 
@@ -2884,23 +2884,23 @@ function TrashMapTile(MapTile: INT16): void {
   pMapTile.value.pStructureHead = pMapTile.value.pStructureTail = null;
 }
 
-function LoadMapTileset(iTilesetID: INT32): BOOLEAN {
+function LoadMapTileset(iTilesetID: INT32): boolean {
   if (iTilesetID >= Enum316.NUM_TILESETS) {
-    return FALSE;
+    return false;
   }
 
   // Init tile surface used values
   memset(gbNewTileSurfaceLoaded, 0, sizeof(gbNewTileSurfaceLoaded));
 
   if (iTilesetID == giCurrentTilesetID) {
-    return TRUE;
+    return true;
   }
 
   // Get free memory value nere
   gSurfaceMemUsage = guiMemTotal;
 
   // LOAD SURFACES
-  CHECKF(LoadTileSurfaces(addressof(gTilesets[iTilesetID].TileSurfaceFilenames[0]), iTilesetID) != FALSE);
+  CHECKF(LoadTileSurfaces(addressof(gTilesets[iTilesetID].TileSurfaceFilenames[0]), iTilesetID) != false);
 
   // SET TERRAIN COSTS
   if (gTilesets[iTilesetID].MovementCostFnc != null) {
@@ -2918,10 +2918,10 @@ function LoadMapTileset(iTilesetID: INT32): BOOLEAN {
   // SET GLOBAL ID FOR TILESET ( FOR SAVING! )
   giCurrentTilesetID = iTilesetID;
 
-  return TRUE;
+  return true;
 }
 
-function SaveMapTileset(iTilesetID: INT32): BOOLEAN {
+function SaveMapTileset(iTilesetID: INT32): boolean {
   //	FILE *hTSet;
   let hTSet: HWFILE;
   let zTilesetName: char[] /* [65] */;
@@ -2930,15 +2930,15 @@ function SaveMapTileset(iTilesetID: INT32): BOOLEAN {
 
   // Are we trying to save the default tileset?
   if (iTilesetID == 0)
-    return TRUE;
+    return true;
 
   sprintf(zTilesetName, "TSET%04d.SET", iTilesetID);
 
   // Open file
-  hTSet = FileOpen(zTilesetName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hTSet = FileOpen(zTilesetName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
 
   if (!hTSet) {
-    return FALSE;
+    return false;
   }
 
   // Save current tile set in map file.
@@ -2946,10 +2946,10 @@ function SaveMapTileset(iTilesetID: INT32): BOOLEAN {
     FileWrite(hTSet, TileSurfaceFilenames[cnt], 65, addressof(uiBytesWritten));
   FileClose(hTSet);
 
-  return TRUE;
+  return true;
 }
 
-function SetLoadOverrideParams(fForceLoad: BOOLEAN, fForceFile: BOOLEAN, zLoadName: Pointer<CHAR8>): void {
+function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, zLoadName: Pointer<CHAR8>): void {
   gfForceLoadPlayers = fForceLoad;
   gfForceLoad = fForceFile;
 
@@ -2958,7 +2958,7 @@ function SetLoadOverrideParams(fForceLoad: BOOLEAN, fForceFile: BOOLEAN, zLoadNa
   }
 }
 
-function AddWireFrame(sGridNo: INT16, usIndex: UINT16, fForced: BOOLEAN): void {
+function AddWireFrame(sGridNo: INT16, usIndex: UINT16, fForced: boolean): void {
   let pTopmost: Pointer<LEVELNODE>;
   let pTopmostTail: Pointer<LEVELNODE>;
 
@@ -3033,7 +3033,7 @@ function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<
   return usValue;
 }
 
-function CalculateWorldWireFrameTiles(fForce: BOOLEAN): void {
+function CalculateWorldWireFrameTiles(fForce: boolean): void {
   let cnt: INT32;
   let pStructure: Pointer<STRUCTURE>;
   let sGridNo: INT16;
@@ -3285,7 +3285,7 @@ function SaveMapLights(hfile: HWFILE): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let LColors: SGPPaletteEntry[] /* [3] */;
   let ubNumColors: UINT8;
-  let fSoldierLight: BOOLEAN;
+  let fSoldierLight: boolean;
   let usNumLights: UINT16 = 0;
   let cnt: UINT16;
   let cnt2: UINT16;
@@ -3302,11 +3302,11 @@ function SaveMapLights(hfile: HWFILE): void {
   for (cnt = 0; cnt < MAX_LIGHT_SPRITES; cnt++) {
     if (LightSprites[cnt].uiFlags & LIGHT_SPR_ACTIVE) {
       // found an active light.  Check to make sure it doesn't belong to a merc.
-      fSoldierLight = FALSE;
+      fSoldierLight = false;
       for (cnt2 = 0; cnt2 < MAX_NUM_SOLDIERS && !fSoldierLight; cnt2++) {
         if (GetSoldier(addressof(pSoldier), cnt2)) {
           if (pSoldier.value.iLight == cnt)
-            fSoldierLight = TRUE;
+            fSoldierLight = true;
         }
       }
       if (!fSoldierLight)
@@ -3320,11 +3320,11 @@ function SaveMapLights(hfile: HWFILE): void {
   for (cnt = 0; cnt < MAX_LIGHT_SPRITES; cnt++) {
     if (LightSprites[cnt].uiFlags & LIGHT_SPR_ACTIVE) {
       // found an active light.  Check to make sure it doesn't belong to a merc.
-      fSoldierLight = FALSE;
+      fSoldierLight = false;
       for (cnt2 = 0; cnt2 < MAX_NUM_SOLDIERS && !fSoldierLight; cnt2++) {
         if (GetSoldier(addressof(pSoldier), cnt2)) {
           if (pSoldier.value.iLight == cnt)
-            fSoldierLight = TRUE;
+            fSoldierLight = true;
         }
       }
       if (!fSoldierLight) {
@@ -3349,8 +3349,8 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
   let TmpLight: LIGHT_SPRITE;
   let iLSprite: INT32;
   let uiHour: UINT32;
-  let fPrimeTime: BOOLEAN = FALSE;
-  let fNightTime: BOOLEAN = FALSE;
+  let fPrimeTime: boolean = false;
+  let fNightTime: boolean = false;
 
   // reset the lighting system, so that any current lights are toasted.
   LightReset();
@@ -3373,10 +3373,10 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
   if (!gfEditMode) {
     uiHour = GetWorldHour();
     if (uiHour >= NIGHT_TIME_LIGHT_START_HOUR || uiHour < NIGHT_TIME_LIGHT_END_HOUR) {
-      fNightTime = TRUE;
+      fNightTime = true;
     }
     if (uiHour >= PRIME_TIME_LIGHT_START_HOUR) {
-      fPrimeTime = TRUE;
+      fPrimeTime = true;
     }
   }
 
@@ -3397,7 +3397,7 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
       if (!gfCaves || gfEditMode) {
         if (gfEditMode || TmpLight.uiFlags & LIGHT_PRIMETIME && fPrimeTime || TmpLight.uiFlags & LIGHT_NIGHTTIME && fNightTime || !(TmpLight.uiFlags & (LIGHT_PRIMETIME | LIGHT_NIGHTTIME))) {
           // power only valid lights.
-          LightSpritePower(iLSprite, TRUE);
+          LightSpritePower(iLSprite, true);
         }
       }
       LightSpritePosition(iLSprite, TmpLight.iX, TmpLight.iY);
@@ -3409,22 +3409,22 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
   }
 }
 
-function IsRoofVisibleForWireframe(sMapPos: INT16): BOOLEAN {
+function IsRoofVisibleForWireframe(sMapPos: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   if (!gfBasement) {
     pStructure = FindStructure(sMapPos, STRUCTURE_ROOF);
 
     if (pStructure != null) {
-      return TRUE;
+      return true;
     }
   } else {
     // if ( InARoom( sMapPos, &ubRoom ) )
     {
       // if ( !( gpWorldLevelData[ sMapPos ].uiFlags & MAPELEMENT_REVEALED ) )
-      { return (TRUE); }
+      { return (true); }
     }
   }
 
-  return FALSE;
+  return false;
 }

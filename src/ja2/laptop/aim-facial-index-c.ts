@@ -39,7 +39,7 @@ let gScreenMouseRegions: MOUSE_REGION;
 function GameInitAimFacialIndex(): void {
 }
 
-function EnterAimFacialIndex(): BOOLEAN {
+function EnterAimFacialIndex(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT8;
   let usPosX: UINT16;
@@ -68,7 +68,7 @@ function EnterAimFacialIndex(): BOOLEAN {
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP(sTemp, VObjectDesc.ImageFile);
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAimFiFace[i])))
-        return FALSE;
+        return false;
 
       usPosX += AIM_FI_PORTRAIT_WIDTH + AIM_FI_MUGSHOT_GAP_X;
       i++;
@@ -86,7 +86,7 @@ function EnterAimFacialIndex(): BOOLEAN {
 
   RenderAimFacialIndex();
 
-  return TRUE;
+  return true;
 }
 
 function ExitAimFacialIndex(): void {
@@ -110,7 +110,7 @@ function HandleAimFacialIndex(): void {
   //		fPausedReDrawScreenFlag = TRUE;
 }
 
-function RenderAimFacialIndex(): BOOLEAN {
+function RenderAimFacialIndex(): boolean {
   let usPosX: UINT16;
   let usPosY: UINT16;
   let x: UINT16;
@@ -126,7 +126,7 @@ function RenderAimFacialIndex(): BOOLEAN {
   else
     swprintf(sString, AimFiText[Enum360.AIM_FI_AIM_MEMBERS_SORTED_DESCENDING], AimFiText[gubCurrentSortMode]);
 
-  DrawTextToScreen(sString, AIM_FI_MEMBER_TEXT_X, AIM_FI_MEMBER_TEXT_Y, AIM_FI_MEMBER_TEXT_WIDTH, AIM_MAINTITLE_FONT(), AIM_MAINTITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(sString, AIM_FI_MEMBER_TEXT_X, AIM_FI_MEMBER_TEXT_Y, AIM_FI_MEMBER_TEXT_WIDTH, AIM_MAINTITLE_FONT(), AIM_MAINTITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Draw the mug shot border and face
   usPosX = AIM_FI_FIRST_MUGSHOT_X;
@@ -136,7 +136,7 @@ function RenderAimFacialIndex(): BOOLEAN {
   for (y = 0; y < AIM_FI_NUM_MUHSHOTS_Y; y++) {
     for (x = 0; x < AIM_FI_NUM_MUHSHOTS_X; x++) {
       DrawMercsFaceToScreen(i, usPosX, usPosY, 1);
-      DrawTextToScreen(gMercProfiles[AimMercArray[i]].zNickname, (usPosX - AIM_FI_NNAME_OFFSET_X), (usPosY + AIM_FI_NNAME_OFFSET_Y), AIM_FI_NNAME_WIDTH, AIM_FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[AimMercArray[i]].zNickname, (usPosX - AIM_FI_NNAME_OFFSET_X), (usPosY + AIM_FI_NNAME_OFFSET_Y), AIM_FI_NNAME_WIDTH, AIM_FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       usPosX += AIM_FI_PORTRAIT_WIDTH + AIM_FI_MUGSHOT_GAP_X;
       i++;
@@ -148,18 +148,18 @@ function RenderAimFacialIndex(): BOOLEAN {
   DisableAimButton();
 
   // display the 'left and right click' onscreen help msg
-  DrawTextToScreen(AimFiText[Enum360.AIM_FI_LEFT_CLICK], AIM_FI_LEFT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_TITLE_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(AimFiText[Enum360.AIM_FI_TO_SELECT], AIM_FI_LEFT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y + AIM_FI_CLICK_DESC_TEXT_Y_OFFSET, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimFiText[Enum360.AIM_FI_LEFT_CLICK], AIM_FI_LEFT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_TITLE_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimFiText[Enum360.AIM_FI_TO_SELECT], AIM_FI_LEFT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y + AIM_FI_CLICK_DESC_TEXT_Y_OFFSET, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
-  DrawTextToScreen(AimFiText[Enum360.AIM_FI_RIGHT_CLICK], AIM_FI_RIGHT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_TITLE_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(AimFiText[Enum360.AIM_FI_TO_ENTER_SORT_PAGE], AIM_FI_RIGHT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y + AIM_FI_CLICK_DESC_TEXT_Y_OFFSET, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimFiText[Enum360.AIM_FI_RIGHT_CLICK], AIM_FI_RIGHT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_TITLE_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimFiText[Enum360.AIM_FI_TO_ENTER_SORT_PAGE], AIM_FI_RIGHT_CLICK_TEXT_X, AIM_FI_LEFT_CLICK_TEXT_Y + AIM_FI_CLICK_DESC_TEXT_Y_OFFSET, AIM_FI_CLICK_TEXT_WIDTH, AIM_FI_HELP_FONT(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   MarkButtonsDirty();
 
   RenderWWWProgramTitleBar();
 
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
-  return TRUE;
+  return true;
 }
 
 function SelectMercFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -215,12 +215,12 @@ function SelectMercFaceMoveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, reason
   }
 }
 
-function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, ubImage: UINT8): BOOLEAN {
+function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, ubImage: UINT8): boolean {
   let hMugShotBorderHandle: HVOBJECT;
   let hFaceHandle: HVOBJECT;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-  pSoldier = FindSoldierByProfileID(AimMercArray[ubMercID], TRUE);
+  pSoldier = FindSoldierByProfileID(AimMercArray[ubMercID], true);
 
   // Blt the portrait background
   GetVideoObject(addressof(hMugShotBorderHandle), guiMugShotBorder);
@@ -236,7 +236,7 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
 
     // if the merc is dead
     // shade the face red, (to signif that he is dead)
-    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
+    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // set the red pallete to the face
     SetObjectHandleShade(guiAimFiFace[ubMercID], 0);
@@ -244,28 +244,28 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
     // Blt face to screen
     BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, VO_BLT_SRCTRANSPARENCY, null);
 
-    DrawTextToScreen(AimFiText[Enum360.AIM_FI_DEAD], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(AimFiText[Enum360.AIM_FI_DEAD], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
   // else if the merc is currently a POW or, the merc was fired as a pow
   else if (gMercProfiles[AimMercArray[ubMercID]].bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, usPosX + 48 + AIM_FI_FACE_OFFSET, usPosY + 43 + AIM_FI_FACE_OFFSET);
-    DrawTextToScreen(pPOWStrings[0], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(pPOWStrings[0], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
   // if the merc is on our team
   else if (pSoldier != null) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, usPosX + 48 + AIM_FI_FACE_OFFSET, usPosY + 43 + AIM_FI_FACE_OFFSET);
-    DrawTextToScreen(MercInfo[Enum341.MERC_FILES_ALREADY_HIRED], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(MercInfo[Enum341.MERC_FILES_ALREADY_HIRED], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
   // if the merc is away, shadow his/her face and blit 'away' over top
   else if (!IsMercHireable(AimMercArray[ubMercID])) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, usPosX + 48 + AIM_FI_FACE_OFFSET, usPosY + 43 + AIM_FI_FACE_OFFSET);
-    DrawTextToScreen(AimFiText[Enum360.AIM_FI_DEAD + 1], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(AimFiText[Enum360.AIM_FI_DEAD + 1], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     // if not enough room use this..
     // AimFiText[AIM_FI_AWAY]
   }
 
-  return TRUE;
+  return true;
 }

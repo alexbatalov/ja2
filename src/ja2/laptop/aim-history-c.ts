@@ -41,10 +41,10 @@ let guiBottomButton2: UINT32;
 let guiContentButton: UINT32;
 
 let gubCurPageNum: UINT8;
-let gfInToc: BOOLEAN = FALSE;
+let gfInToc: boolean = false;
 let gubAimHistoryMenuButtonDown: UINT8 = 255;
-let gfExitingAimHistory: BOOLEAN;
-let AimHistorySubPagesVisitedFlag: BOOLEAN[] /* [NUM_AIM_HISTORY_PAGES] */;
+let gfExitingAimHistory: boolean;
+let AimHistorySubPagesVisitedFlag: boolean[] /* [NUM_AIM_HISTORY_PAGES] */;
 
 let gSelectedHistoryTocMenuRegion: MOUSE_REGION[] /* [NUM_AIM_HISTORY_PAGES] */;
 
@@ -83,10 +83,10 @@ function EnterInitAimHistory(): void {
   memset(addressof(AimHistorySubPagesVisitedFlag), 0, NUM_AIM_HISTORY_PAGES);
 }
 
-function EnterAimHistory(): BOOLEAN {
+function EnterAimHistory(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
-  gfExitingAimHistory = FALSE;
+  gfExitingAimHistory = false;
   InitAimDefaults();
   InitAimHistoryMenuBar();
 
@@ -101,11 +101,11 @@ function EnterAimHistory(): BOOLEAN {
   DisableAimHistoryButton();
   gubAimHistoryMenuButtonDown = 255;
 
-  return TRUE;
+  return true;
 }
 
 function ExitAimHistory(): void {
-  gfExitingAimHistory = TRUE;
+  gfExitingAimHistory = true;
   RemoveAimDefaults();
   ExitAimHistoryMenuBar();
 
@@ -129,7 +129,7 @@ function RenderAimHistory(): void {
   DisplayAimSlogan();
   DisplayAimCopyright();
 
-  DrawTextToScreen(AimHistoryText[Enum359.AIM_HISTORY_TITLE], AIM_HISTORY_TEXT_X, AIM_HISTORY_TEXT_Y, AIM_HISTORY_TEXT_WIDTH, AIM_HISTORY_TITLE_FONT(), AIM_HISTORY_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimHistoryText[Enum359.AIM_HISTORY_TITLE], AIM_HISTORY_TEXT_X, AIM_HISTORY_TEXT_Y, AIM_HISTORY_TEXT_WIDTH, AIM_HISTORY_TITLE_FONT(), AIM_HISTORY_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   switch (gubCurPageNum) {
     // History Page TOC
@@ -160,7 +160,7 @@ function RenderAimHistory(): void {
       usPosY = AIM_HISTORY_PARAGRAPH_Y + (GetFontHeight(AIM_HISTORY_TEXT_FONT()) + 2) * 5 + LAPTOP_SCREEN_WEB_DELTA_Y;
       uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum64.COLONEL_MOHANNED;
       LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-      DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 210 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+      DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 210 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
       break;
 
     // Load and Display the incorporation
@@ -170,12 +170,12 @@ function RenderAimHistory(): void {
       // display dunn and bradbord...
       uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum64.DUNN_AND_BRADROAD;
       LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-      DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 270 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+      DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 270 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
       // AIM_HISTORY_PARAGRAPH_Y
       uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum64.INCORPORATION_3;
       LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-      DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 290 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 290 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
       break;
   }
 
@@ -186,7 +186,7 @@ function RenderAimHistory(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function InitAimHistoryMenuBar(): BOOLEAN {
+function InitAimHistoryMenuBar(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT16;
   let usPosX: UINT16;
@@ -216,10 +216,10 @@ function InitAimHistoryMenuBar(): BOOLEAN {
     usPosX += AIM_HISTORY_GAP_X;
   }
 
-  return TRUE;
+  return true;
 }
 
-function ExitAimHistoryMenuBar(): BOOLEAN {
+function ExitAimHistoryMenuBar(): boolean {
   let i: int;
 
   //	DeleteVideoObjectFromIndex(guiHistoryMenuButtonImage);
@@ -228,12 +228,12 @@ function ExitAimHistoryMenuBar(): BOOLEAN {
   for (i = 0; i < AIM_HISTORY_MENU_BUTTON_AMOUNT; i++)
     RemoveButton(guiHistoryMenuButton[i]);
 
-  return TRUE;
+  return true;
 }
 
 function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let rValue: UINT8;
-  /* static */ let fOnPage: BOOLEAN = TRUE;
+  /* static */ let fOnPage: boolean = true;
 
   if (fOnPage) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
@@ -262,11 +262,11 @@ function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
           gubCurPageNum++;
           ChangingAimHistorySubPage(gubCurPageNum);
 
-          fOnPage = FALSE;
+          fOnPage = false;
           if (gfInToc) {
             ExitTocMenu();
           }
-          fOnPage = TRUE;
+          fOnPage = true;
           //					RenderAimHistory();
         }
       }
@@ -275,7 +275,7 @@ function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
   }
 }
 
-function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): BOOLEAN {
+function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): boolean {
   let sText: wchar_t[] /* [400] */;
   let uiStartLoc: UINT32 = 0;
   let usPosY: UINT16 = 0;
@@ -284,14 +284,14 @@ function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): B
   // title
   uiStartLoc = AIM_HISTORY_LINE_SIZE * ubPageNum;
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-  DrawTextToScreen(sText, AIM_HISTORY_PARAGRAPH_X, AIM_HISTORY_SUBTITLE_Y, 0, AIM_HISTORY_PARAGRAPH_TITLE_FONT(), AIM_HISTORY_PARAGRAPH_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sText, AIM_HISTORY_PARAGRAPH_X, AIM_HISTORY_SUBTITLE_Y, 0, AIM_HISTORY_PARAGRAPH_TITLE_FONT(), AIM_HISTORY_PARAGRAPH_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   if (ubNumParagraphs >= 1) {
     usPosY = AIM_HISTORY_PARAGRAPH_Y;
     // 1st paragraph
     uiStartLoc = AIM_HISTORY_LINE_SIZE * (ubPageNum + 1);
     LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-    usNumPixels = DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, usPosY, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    usNumPixels = DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, usPosY, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
   if (ubNumParagraphs >= 2) {
@@ -299,7 +299,7 @@ function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): B
     usPosY += usNumPixels + AIM_HISTORY_SPACE_BETWEEN_PARAGRAPHS;
     uiStartLoc = AIM_HISTORY_LINE_SIZE * (ubPageNum + 2);
     LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-    DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, usPosY, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, usPosY, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
   if (ubNumParagraphs >= 3) {
@@ -308,13 +308,13 @@ function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): B
 
     uiStartLoc = AIM_HISTORY_LINE_SIZE * (ubPageNum + 3);
     LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-    DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, usPosY, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, usPosY, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
-  return TRUE;
+  return true;
 }
 
-function InitTocMenu(): BOOLEAN {
+function InitTocMenu(): boolean {
   let i: UINT16;
   let usPosY: UINT16;
   let usHeight: UINT16;
@@ -350,24 +350,24 @@ function InitTocMenu(): BOOLEAN {
     }
 
     BltVideoObject(FRAME_BUFFER, hContentButtonHandle, 0, AIM_HISTORY_TOC_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
-    DrawTextToScreen(sText, AIM_HISTORY_TOC_X, (usPosY + AIM_HISTORY_TOC_Y), AIM_CONTENTBUTTON_WIDTH, AIM_HISTORY_TOC_TEXT_FONT(), AIM_HISTORY_TOC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(sText, AIM_HISTORY_TOC_X, (usPosY + AIM_HISTORY_TOC_Y), AIM_CONTENTBUTTON_WIDTH, AIM_HISTORY_TOC_TEXT_FONT(), AIM_HISTORY_TOC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
     usPosY += AIM_HISTORY_TOC_GAP_Y;
   }
-  gfInToc = TRUE;
-  return TRUE;
+  gfInToc = true;
+  return true;
 }
 
-function ExitTocMenu(): BOOLEAN {
+function ExitTocMenu(): boolean {
   let i: UINT16;
 
   if (gfInToc) {
-    gfInToc = FALSE;
+    gfInToc = false;
     for (i = 0; i < NUM_AIM_HISTORY_PAGES; i++)
       MSYS_RemoveRegion(addressof(gSelectedHistoryTocMenuRegion[i]));
   }
 
-  return TRUE;
+  return true;
 }
 
 function SelectHistoryTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -458,7 +458,7 @@ function ResetAimHistoryButtons(): void {
 }
 
 function DisableAimHistoryButton(): void {
-  if (gfExitingAimHistory == TRUE)
+  if (gfExitingAimHistory == true)
     return;
 
   if ((gubCurPageNum == 0)) {
@@ -469,15 +469,15 @@ function DisableAimHistoryButton(): void {
 }
 
 function ChangingAimHistorySubPage(ubSubPageNumber: UINT8): void {
-  fLoadPendingFlag = TRUE;
+  fLoadPendingFlag = true;
 
-  if (AimHistorySubPagesVisitedFlag[ubSubPageNumber] == FALSE) {
-    fConnectingToSubPage = TRUE;
-    fFastLoadFlag = FALSE;
+  if (AimHistorySubPagesVisitedFlag[ubSubPageNumber] == false) {
+    fConnectingToSubPage = true;
+    fFastLoadFlag = false;
 
-    AimHistorySubPagesVisitedFlag[ubSubPageNumber] = TRUE;
+    AimHistorySubPagesVisitedFlag[ubSubPageNumber] = true;
   } else {
-    fConnectingToSubPage = TRUE;
-    fFastLoadFlag = TRUE;
+    fConnectingToSubPage = true;
+    fFastLoadFlag = true;
   }
 }

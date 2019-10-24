@@ -262,7 +262,7 @@ function CreateTileDatabase(): void {
           TileElement.usRegionIndex = 0;
           TileElement.hTileSurface = TileSurf.value.vo;
           TileElement.fType = TileSurf.value.fType;
-          TileElement.ubFullTile = FALSE;
+          TileElement.ubFullTile = false;
           TileElement.sOffsetHeight = 0;
           TileElement.ubFullTile = 0;
           TileElement.uiFlags |= UNDERFLOW_FILLER;
@@ -297,7 +297,7 @@ function DeallocateTileDatabase(): void {
   gusNumAnimatedTiles = 0;
 }
 
-function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): BOOLEAN {
+function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): boolean {
   let usIndex: UINT16;
 
   Assert(puiType != null);
@@ -308,16 +308,16 @@ function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): BOOLEAN {
 
   GetTileType(usIndex, puiType);
 
-  return TRUE;
+  return true;
 }
 
-function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDelete: BOOLEAN): BOOLEAN {
+function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDelete: boolean): boolean {
   let usTempIndex: UINT16;
   let ubLastHighLevel: UINT8 = 0;
 
   if (fDelete) {
     RemoveLand(iMapIndex, usIndex);
-    return TRUE;
+    return true;
   }
 
   if (AnyHeigherLand(iMapIndex, uiNewType, addressof(ubLastHighLevel))) {
@@ -340,7 +340,7 @@ function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDel
   }
 }
 
-function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, ubRadius: UINT8, fReplace: BOOLEAN): BOOLEAN {
+function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, ubRadius: UINT8, fReplace: boolean): boolean {
   let usTempIndex: UINT16;
   let sTop: INT16;
   let sBottom: INT16;
@@ -349,7 +349,7 @@ function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UI
   let cnt1: INT16;
   let cnt2: INT16;
   let iNewIndex: INT32;
-  let fDoPaste: BOOLEAN = FALSE;
+  let fDoPaste: boolean = false;
   let leftmost: INT32;
   // BOOLEAN				fNewCommand;
   let Dummy: UINT16;
@@ -370,24 +370,24 @@ function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UI
 
       if (iNewIndex >= 0 && iNewIndex < WORLD_MAX && iNewIndex >= leftmost && iNewIndex < (leftmost + WORLD_COLS)) {
         if (fReplace) {
-          fDoPaste = TRUE;
+          fDoPaste = true;
         } else {
           if (!TypeExistsInLandLayer(iNewIndex, uiNewType, addressof(usTempIndex))) {
-            fDoPaste = TRUE;
+            fDoPaste = true;
           }
         }
 
         if (fDoPaste && ((uiNewType >= Enum313.FIRSTFLOOR && uiNewType <= LASTFLOOR) || ((uiNewType < Enum313.FIRSTFLOOR || uiNewType > LASTFLOOR) && !TypeRangeExistsInLandLayer(iNewIndex, Enum313.FIRSTFLOOR, LASTFLOOR, addressof(Dummy))))) {
-          SetLandIndex(iNewIndex, usIndex, uiNewType, FALSE);
+          SetLandIndex(iNewIndex, usIndex, uiNewType, false);
         }
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointer<UINT8>): BOOLEAN {
+function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointer<UINT8>): boolean {
   let level: UINT8 = 0;
   let pLand: Pointer<LEVELNODE>;
   let fTileType: UINT32 = 0;
@@ -400,7 +400,7 @@ function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointe
 
       if (fTileType == uiNewType) {
         pubLevel.value = level;
-        return TRUE;
+        return true;
       }
     }
 
@@ -408,7 +408,7 @@ function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointe
     pLand = pLand.value.pNext;
   }
 
-  return FALSE;
+  return false;
 }
 
 function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
@@ -425,56 +425,56 @@ function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
   return level;
 }
 
-function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT16>): BOOLEAN {
+function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT16>): boolean {
   let uiType: UINT32 = 0;
   if (GetTileType(usTileIndex, addressof(uiType))) {
     pusSubIndex.value = usTileIndex - gTileTypeStartIndex[uiType] + 1;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusSubIndex: Pointer<UINT16>): BOOLEAN {
+function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusSubIndex: Pointer<UINT16>): boolean {
   // Tile database is zero-based, Type indecies are 1-based!
 
   CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
 
   pusSubIndex.value = usIndex - gTileTypeStartIndex[uiCheckType] + 1;
 
-  return TRUE;
+  return true;
 }
 
-function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, pubSubIndex: Pointer<UINT8>): BOOLEAN {
+function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, pubSubIndex: Pointer<UINT8>): boolean {
   // Tile database is zero-based, Type indecies are 1-based!
 
   CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
 
   pubSubIndex.value = (usIndex - gTileTypeStartIndex[uiCheckType] + 1);
 
-  return TRUE;
+  return true;
 }
 
-function GetTileIndexFromTypeSubIndex(uiCheckType: UINT32, usSubIndex: UINT16, pusTileIndex: Pointer<UINT16>): BOOLEAN {
+function GetTileIndexFromTypeSubIndex(uiCheckType: UINT32, usSubIndex: UINT16, pusTileIndex: Pointer<UINT16>): boolean {
   // Tile database is zero-based, Type indecies are 1-based!
 
   CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
 
   pusTileIndex.value = usSubIndex + gTileTypeStartIndex[uiCheckType] - 1;
 
-  return TRUE;
+  return true;
 }
 
-function MoveLandIndexToTop(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
+function MoveLandIndexToTop(iMapIndex: UINT32, usIndex: UINT16): boolean {
   // Remove, then add again
   RemoveLand(iMapIndex, usIndex);
 
   AddLandToHead(iMapIndex, usIndex);
 
-  return TRUE;
+  return true;
 }
 
 // Database access functions
-function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): BOOLEAN {
+function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): boolean {
   let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
@@ -484,10 +484,10 @@ function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): BOOLEAN {
 
   puiType.value = TileElem.fType;
 
-  return TRUE;
+  return true;
 }
 
-function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): BOOLEAN {
+function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): boolean {
   let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
@@ -498,16 +498,16 @@ function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): BOOLEAN {
 
   puiFlags.value = TileElem.uiFlags;
 
-  return TRUE;
+  return true;
 }
 
-function GetTileTypeLogicalHeight(fType: UINT32, pubLogHeight: Pointer<UINT8>): BOOLEAN {
+function GetTileTypeLogicalHeight(fType: UINT32, pubLogHeight: Pointer<UINT8>): boolean {
   pubLogHeight.value = gTileTypeLogicalHeight[fType];
 
-  return TRUE;
+  return true;
 }
 
-function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): BOOLEAN {
+function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): boolean {
   let ubDestLogHeight: UINT8;
   let ubSrcLogHeight: UINT8;
 
@@ -518,13 +518,13 @@ function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): BOOLEAN {
   return ubDestLogHeight > ubSrcLogHeight;
 }
 
-function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): BOOLEAN {
+function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): boolean {
   let pLand: Pointer<LEVELNODE> = null;
   let ubSrcLogHeight: UINT8 = 0;
   let fTileType: UINT32 = 0;
   let level: UINT8 = 0;
   let ubSrcTypeLevel: UINT8 = 0;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
@@ -533,7 +533,7 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
   // Check that src type is not head
   if (GetTypeLandLevel(iMapIndex, uiSrcType, addressof(ubSrcTypeLevel))) {
     if (ubSrcTypeLevel == LANDHEAD) {
-      return FALSE;
+      return false;
     }
   }
 
@@ -545,7 +545,7 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
 
     if (gTileTypeLogicalHeight[fTileType] > ubSrcLogHeight) {
       pubLastLevel.value = level;
-      fFound = TRUE;
+      fFound = true;
     }
 
     // Advance to next
@@ -558,7 +558,7 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
   return fFound;
 }
 
-function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): BOOLEAN {
+function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): boolean {
   let pLand: Pointer<LEVELNODE> = null;
   let ubSrcLogHeight: UINT8;
   let fTileType: UINT32 = 0;
@@ -579,7 +579,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
 
     if (gTileTypeLogicalHeight[fTileType] < ubSrcLogHeight) {
       pubLastLevel.value = level;
-      return TRUE;
+      return true;
     }
 
     // Get tile element
@@ -587,7 +587,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
 
     // Get full tile flag
     if (TileElem.ubFullTile && fTileType != uiSrcType) {
-      return FALSE;
+      return false;
     }
 
     // Advance to next
@@ -597,10 +597,10 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
   }
 
   // Could not find it, return FALSE
-  return FALSE;
+  return false;
 }
 
-function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>): BOOLEAN {
+function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>): boolean {
   let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
@@ -610,10 +610,10 @@ function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>
 
   pusWallOrientation.value = TileElem.usWallOrientation;
 
-  return TRUE;
+  return true;
 }
 
-function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrientation: UINT16, pubLevel: Pointer<UINT8>): BOOLEAN {
+function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrientation: UINT16, pubLevel: Pointer<UINT8>): boolean {
   let pStruct: Pointer<LEVELNODE> = null;
   let level: UINT8 = 0;
   let usCheckWallOrient: UINT16 = 0;
@@ -627,7 +627,7 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
 
     if (usCheckWallOrient == usWallOrientation) {
       pubLevel.value = level;
-      return TRUE;
+      return true;
     }
 
     // Advance to next
@@ -637,7 +637,7 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
   }
 
   // Could not find it, return FALSE
-  return FALSE;
+  return false;
 }
 
 // Kris:  This function returns two special types if there are two walls
@@ -683,7 +683,7 @@ function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
   return ubFinalWallOrientation;
 }
 
-function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UINT8): BOOLEAN {
+function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UINT8): boolean {
   pTileElem.value.pAnimData = MemAlloc(sizeof(TILE_ANIMATION_DATA));
 
   CHECKF(pTileElem.value.pAnimData != null);
@@ -695,7 +695,7 @@ function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UIN
   // Set # if frames!
   pTileElem.value.pAnimData.value.ubNumFrames = ubNumFrames;
 
-  return TRUE;
+  return true;
 }
 
 function FreeAnimTileData(pTileElem: Pointer<TILE_ELEMENT>): void {

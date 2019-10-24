@@ -16,8 +16,8 @@
 
 //#define PATHAI_SKIPLIST_DEBUG
 
-let gfPlotPathToExitGrid: BOOLEAN = FALSE;
-let gfRecalculatingExistingPathCost: BOOLEAN = FALSE;
+let gfPlotPathToExitGrid: boolean = false;
+let gfRecalculatingExistingPathCost: boolean = false;
 let gubGlobalPathFlags: UINT8 = 0;
 
 let gubBuildingInfoToSet: UINT8;
@@ -319,12 +319,12 @@ const ORANGESTEPSTART = 64;
 let gubNPCAPBudget: UINT8 = 0;
 let gusNPCMovementMode: UINT16;
 let gubNPCDistLimit: UINT8 = 0;
-let gfNPCCircularDistLimit: BOOLEAN = FALSE;
+let gfNPCCircularDistLimit: boolean = false;
 let gubNPCPathCount: UINT8;
 
-let gfPlotDirectPath: BOOLEAN = FALSE;
-let gfEstimatePath: BOOLEAN = FALSE;
-let gfPathAroundObstacles: BOOLEAN = TRUE;
+let gfPlotDirectPath: boolean = false;
+let gfEstimatePath: boolean = false;
+let gfPathAroundObstacles: boolean = true;
 
 /* static */ let guiPlottedPath: UINT32[] /* [256] */;
 let guiPathingData: UINT32[] /* [256] */;
@@ -356,18 +356,18 @@ function RandomSkipListLevel(): INT8 {
   return bLevel;
 }
 
-function InitPathAI(): BOOLEAN {
+function InitPathAI(): boolean {
   pathQ = MemAlloc(ABSMAX_PATHQ * sizeof(path_t));
   trailCost = MemAlloc(MAPLENGTH * sizeof(TRAILCELLTYPE));
   trailCostUsed = MemAlloc(MAPLENGTH);
   trailTree = MemAlloc(ABSMAX_TRAIL_TREE * sizeof(trail_t));
   if (!pathQ || !trailCost || !trailCostUsed || !trailTree) {
-    return FALSE;
+    return false;
   }
   pQueueHead = addressof(pathQ[QHEADNDX]);
   pClosedHead = addressof(pathQ[QPOOLNDX()]);
   memset(trailCostUsed, 0, MAPLENGTH);
-  return TRUE;
+  return true;
 }
 
 function ShutDownPathAI(): void {
@@ -412,7 +412,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
   let iLoopEnd: INT32 = 0;
   let bLoopState: INT8 = LOOPING_CLOCKWISE;
   // BOOLEAN fLoopForwards = FALSE;
-  let fCheckedBehind: BOOLEAN = FALSE;
+  let fCheckedBehind: boolean = false;
   let ubMerc: UINT8;
   let iDestX: INT32;
   let iDestY: INT32;
@@ -434,8 +434,8 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
   let ubNewAPCost: UINT8 = 0;
   // BOOLEAN fTurnSlow = FALSE;
   // BOOLEAN fReverse = FALSE; // stuff for vehicles turning
-  let fMultiTile: BOOLEAN;
-  let fVehicle: BOOLEAN;
+  let fMultiTile: boolean;
+  let fVehicle: boolean;
   // INT32 iLastDir, iPrevToLastDir;
   // INT8 bVehicleCheckDir;
   // UINT16 adjLoc;
@@ -456,36 +456,36 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
   let iCurrLevel: INT32;
   let iLoop: INT32;
 
-  let fHiddenStructVisible: BOOLEAN; // Used for hidden struct visiblity
+  let fHiddenStructVisible: boolean; // Used for hidden struct visiblity
   let usOKToAddStructID: UINT16 = 0;
 
-  let fCopyReachable: BOOLEAN;
-  let fCopyPathCosts: BOOLEAN;
-  let fVisitSpotsOnlyOnce: BOOLEAN;
+  let fCopyReachable: boolean;
+  let fCopyPathCosts: boolean;
+  let fVisitSpotsOnlyOnce: boolean;
   let iOriginationX: INT32;
   let iOriginationY: INT32;
   let iX: INT32;
   let iY: INT32;
 
-  let fTurnBased: BOOLEAN;
-  let fPathingForPlayer: BOOLEAN;
+  let fTurnBased: boolean;
+  let fPathingForPlayer: boolean;
   let iDoorGridNo: INT32 = -1;
-  let fDoorIsObstacleIfClosed: BOOLEAN = 0; // if false, door is obstacle if it is open
+  let fDoorIsObstacleIfClosed: boolean = 0; // if false, door is obstacle if it is open
   let pDoorStatus: Pointer<DOOR_STATUS>;
   let pDoor: Pointer<DOOR>;
   let pDoorStructure: Pointer<STRUCTURE>;
-  let fDoorIsOpen: BOOLEAN = FALSE;
-  let fNonFenceJumper: BOOLEAN;
-  let fNonSwimmer: BOOLEAN;
-  let fPathAroundPeople: BOOLEAN;
-  let fConsiderPersonAtDestAsObstacle: BOOLEAN;
-  let fGoingThroughDoor: BOOLEAN = FALSE; // for one tile
-  let fContinuousTurnNeeded: BOOLEAN;
-  let fCloseGoodEnough: BOOLEAN;
+  let fDoorIsOpen: boolean = false;
+  let fNonFenceJumper: boolean;
+  let fNonSwimmer: boolean;
+  let fPathAroundPeople: boolean;
+  let fConsiderPersonAtDestAsObstacle: boolean;
+  let fGoingThroughDoor: boolean = false; // for one tile
+  let fContinuousTurnNeeded: boolean;
+  let fCloseGoodEnough: boolean;
   let usMovementModeToUseForAPs: UINT16;
   let sClosePathLimit: INT16;
 
-  fVehicle = FALSE;
+  fVehicle = false;
   iOriginationX = iOriginationY = 0;
   iOrigination = s.value.sGridNo;
 
@@ -524,7 +524,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
   fConsiderPersonAtDestAsObstacle = (fPathingForPlayer && fPathAroundPeople && !(fFlags & PATH_IGNORE_PERSON_AT_DEST));
 
   if (bCopy >= COPYREACHABLE) {
-    fCopyReachable = TRUE;
+    fCopyReachable = true;
     fCopyPathCosts = (bCopy == COPYREACHABLE_AND_APS);
     fVisitSpotsOnlyOnce = (bCopy == COPYREACHABLE);
     // make sure we aren't trying to copy path costs for an area greater than the AI array...
@@ -533,9 +533,9 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       gubNPCDistLimit = AI_PATHCOST_RADIUS;
     }
   } else {
-    fCopyReachable = FALSE;
-    fCopyPathCosts = FALSE;
-    fVisitSpotsOnlyOnce = FALSE;
+    fCopyReachable = false;
+    fCopyPathCosts = false;
+    fVisitSpotsOnlyOnce = false;
   }
 
   gubNPCPathCount++;
@@ -561,11 +561,11 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
     if (!NewOKDestination(s, sDestination, fConsiderPersonAtDestAsObstacle, ubLevel)) {
       gubNPCAPBudget = 0;
       gubNPCDistLimit = 0;
-      return FALSE;
+      return false;
     }
 
     if (sDestination == s.value.sGridNo) {
-      return FALSE;
+      return false;
     }
   }
 
@@ -614,11 +614,11 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       }
     } else {
       // turn off multitile pathing
-      fMultiTile = FALSE;
-      fContinuousTurnNeeded = FALSE;
+      fMultiTile = false;
+      fContinuousTurnNeeded = false;
     }
   } else {
-    fContinuousTurnNeeded = FALSE;
+    fContinuousTurnNeeded = false;
   }
 
   if (!fContinuousTurnNeeded) {
@@ -731,7 +731,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       iLoopStart = iLastDir;
       iLoopEnd = iLastDir;
       bLoopState = LOOPING_CLOCKWISE;
-      fCheckedBehind = FALSE;
+      fCheckedBehind = false;
     }
 
     // contemplate a new path in each direction
@@ -786,7 +786,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
                 iLoopStart = gOppositeDirection[gOneCCDirection[iLastDir]];
                 iLoopEnd = (iLoopStart + 2) % MAXDIR;
                 iCnt = iLoopStart;
-                fCheckedBehind = TRUE;
+                fCheckedBehind = true;
                 goto("NEXTDIR");
               } else {
                 // done
@@ -894,75 +894,75 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
           switch (nextCost) {
             case TRAVELCOST_DOOR_CLOSED_HERE:
-              fDoorIsObstacleIfClosed = TRUE;
+              fDoorIsObstacleIfClosed = true;
               iDoorGridNo = newLoc;
               break;
             case TRAVELCOST_DOOR_CLOSED_N:
-              fDoorIsObstacleIfClosed = TRUE;
+              fDoorIsObstacleIfClosed = true;
               iDoorGridNo = newLoc + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_CLOSED_W:
-              fDoorIsObstacleIfClosed = TRUE;
+              fDoorIsObstacleIfClosed = true;
               iDoorGridNo = newLoc + dirDelta[Enum245.WEST];
               break;
             case TRAVELCOST_DOOR_OPEN_HERE:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc;
               break;
             case TRAVELCOST_DOOR_OPEN_N:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_OPEN_NE:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.NORTHEAST];
               break;
             case TRAVELCOST_DOOR_OPEN_E:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.EAST];
               break;
             case TRAVELCOST_DOOR_OPEN_SE:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.SOUTHEAST];
               break;
             case TRAVELCOST_DOOR_OPEN_S:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.SOUTH];
               break;
             case TRAVELCOST_DOOR_OPEN_SW:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.SOUTHWEST];
               break;
             case TRAVELCOST_DOOR_OPEN_W:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.WEST];
               break;
             case TRAVELCOST_DOOR_OPEN_NW:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.NORTHWEST];
               break;
             case TRAVELCOST_DOOR_OPEN_N_N:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.NORTH] + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_OPEN_NW_N:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.NORTHWEST] + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_OPEN_NE_N:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.NORTHEAST] + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_OPEN_W_W:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.WEST] + dirDelta[Enum245.WEST];
               break;
             case TRAVELCOST_DOOR_OPEN_SW_W:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.SOUTHWEST] + dirDelta[Enum245.WEST];
               break;
             case TRAVELCOST_DOOR_OPEN_NW_W:
-              fDoorIsObstacleIfClosed = FALSE;
+              fDoorIsObstacleIfClosed = false;
               iDoorGridNo = newLoc + dirDelta[Enum245.NORTHWEST] + dirDelta[Enum245.WEST];
               break;
             default:
@@ -1010,7 +1010,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
                     if (!pDoor.value.fLocked || s.value.bHasKeys) {
                       // add to AP cost
                       if (gubNPCAPBudget) {
-                        fGoingThroughDoor = TRUE;
+                        fGoingThroughDoor = true;
                       }
                       nextCost = gTileTypeMovementCost[gpWorldLevelData[newLoc].ubTerrainID];
                     } else {
@@ -1250,7 +1250,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
           }
         } else if (fGoingThroughDoor) {
           ubAPCost += AP_OPEN_DOOR;
-          fGoingThroughDoor = FALSE;
+          fGoingThroughDoor = false;
         }
 
         ubNewAPCost = ubCurAPCost + ubAPCost;
@@ -1293,7 +1293,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
           // stop the path here!
           iDestination = newLoc;
           sDestination = newLoc;
-          fCloseGoodEnough = FALSE;
+          fCloseGoodEnough = false;
         }
       }
       // make the destination look very attractive
@@ -1480,7 +1480,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       ENDOFLOOP:
         break;
       } else if (fContinuousTurnNeeded && iCnt == gOppositeDirection[iLoopStart]) {
-        fCheckedBehind = TRUE;
+        fCheckedBehind = true;
       }
     }
   } while (pathQNotEmpty() && pathNotYetFound());
@@ -1534,7 +1534,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
     // TEMP:  This is returning zero when I am generating edgepoints, so I am force returning 1 until
     //       this is fixed?
     if (gfGeneratingMapEdgepoints) {
-      return TRUE;
+      return true;
     }
 
     return iCnt;
@@ -1654,7 +1654,7 @@ function ErasePath(bEraseOldOne: char): void {
   // EraseAPCursor();
 
   if (gfUIHandleShowMoveGrid) {
-    gfUIHandleShowMoveGrid = FALSE;
+    gfUIHandleShowMoveGrid = false;
 
     RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS4);
     RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS9);
@@ -1675,7 +1675,7 @@ function ErasePath(bEraseOldOne: char): void {
 
   // OldPath = FALSE;
 
-  gusPathShown = FALSE;
+  gusPathShown = false;
 
   for (iCnt = 0; iCnt < giPlotCnt; iCnt++) {
     // Grid[PlottedPath[cnt]].fstep = 0;
@@ -1723,11 +1723,11 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
   let usTileNum: UINT16;
   let pNode: Pointer<LEVELNODE>;
   let usMovementModeToUseForAPs: UINT16;
-  let bIgnoreNextCost: BOOLEAN = FALSE;
+  let bIgnoreNextCost: boolean = false;
   let sTestGridno: INT16;
 
   if (bPlot && gusPathShown) {
-    ErasePath(FALSE);
+    ErasePath(false);
   }
 
   gusAPtsToMove = 0;
@@ -1807,13 +1807,13 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
       }
 
       if (bIgnoreNextCost) {
-        bIgnoreNextCost = FALSE;
+        bIgnoreNextCost = false;
       } else {
         // ATE: If we have a 'special cost, like jump fence...
         if (sSwitchValue == TRAVELCOST_FENCE) {
           sPoints += sTileCost;
 
-          bIgnoreNextCost = TRUE;
+          bIgnoreNextCost = true;
 
           // If we are changeing stance ( either before or after getting there....
           // We need to reflect that...
@@ -2024,7 +2024,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
     }
 
     if (bPlot) {
-      gusPathShown = TRUE;
+      gusPathShown = true;
     }
   } // end of found a path
 
@@ -2040,7 +2040,7 @@ function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute:
   let sRet: INT16;
 
   if (_KeyDown(SHIFT)) {
-    gfPlotDirectPath = TRUE;
+    gfPlotDirectPath = true;
   }
 
   // If we are on the same level as the interface level, continue, else return
@@ -2049,11 +2049,11 @@ function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute:
   }
 
   if (gGameSettings.fOptions[Enum8.TOPTION_ALWAYS_SHOW_MOVEMENT_PATH]) {
-    bPlot = TRUE;
+    bPlot = true;
   }
 
   sRet = PlotPath(pSold, sDestGridno, bCopyRoute, bPlot, bStayOn, usMovementMode, bStealth, bReverse, sAPBudget);
-  gfPlotDirectPath = FALSE;
+  gfPlotDirectPath = false;
   return sRet;
 }
 
@@ -2065,9 +2065,9 @@ function RecalculatePathCost(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UIN
     return 0;
   }
 
-  gfRecalculatingExistingPathCost = TRUE;
-  sRet = PlotPath(pSoldier, pSoldier.value.sFinalDestination, NO_COPYROUTE, FALSE, FALSE, usMovementMode, FALSE, FALSE, 0);
-  gfRecalculatingExistingPathCost = FALSE;
+  gfRecalculatingExistingPathCost = true;
+  sRet = PlotPath(pSoldier, pSoldier.value.sFinalDestination, NO_COPYROUTE, false, false, usMovementMode, false, false, 0);
+  gfRecalculatingExistingPathCost = false;
   return sRet;
 }
 
@@ -2076,25 +2076,25 @@ function EstimatePlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopy
   // It sets stuff up to ignore all people
   let sRet: INT16;
 
-  gfEstimatePath = TRUE;
+  gfEstimatePath = true;
 
   sRet = PlotPath(pSold, sDestGridno, bCopyRoute, bPlot, bStayOn, usMovementMode, bStealth, bReverse, sAPBudget);
 
-  gfEstimatePath = FALSE;
+  gfEstimatePath = false;
 
   return sRet;
 }
 
-function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: BOOLEAN, piDoorGridNo: Pointer<INT32>, fReturnDoorCost: BOOLEAN): UINT8 {
+function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>, fReturnDoorCost: boolean): UINT8 {
   // This function will return either TRAVELCOST_DOOR (in place of closed door cost),
   // TRAVELCOST_OBSTACLE, or the base ground terrain
   // travel cost, depending on whether or not the door is open or closed etc.
-  let fDoorIsObstacleIfClosed: BOOLEAN = FALSE;
+  let fDoorIsObstacleIfClosed: boolean = false;
   let iDoorGridNo: INT32 = -1;
   let pDoorStatus: Pointer<DOOR_STATUS>;
   let pDoor: Pointer<DOOR>;
   let pDoorStructure: Pointer<STRUCTURE>;
-  let fDoorIsOpen: BOOLEAN;
+  let fDoorIsOpen: boolean;
   let ubReplacementCost: UINT8;
 
   if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
@@ -2102,78 +2102,78 @@ function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, 
 
     switch (ubMovementCost) {
       case TRAVELCOST_DOOR_CLOSED_HERE:
-        fDoorIsObstacleIfClosed = TRUE;
+        fDoorIsObstacleIfClosed = true;
         iDoorGridNo = iGridNo;
         ubReplacementCost = TRAVELCOST_DOOR;
         break;
       case TRAVELCOST_DOOR_CLOSED_N:
-        fDoorIsObstacleIfClosed = TRUE;
+        fDoorIsObstacleIfClosed = true;
         iDoorGridNo = iGridNo + dirDelta[Enum245.NORTH];
         ubReplacementCost = TRAVELCOST_DOOR;
         break;
       case TRAVELCOST_DOOR_CLOSED_W:
-        fDoorIsObstacleIfClosed = TRUE;
+        fDoorIsObstacleIfClosed = true;
         iDoorGridNo = iGridNo + dirDelta[Enum245.WEST];
         ubReplacementCost = TRAVELCOST_DOOR;
         break;
       case TRAVELCOST_DOOR_OPEN_HERE:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo;
         break;
       case TRAVELCOST_DOOR_OPEN_N:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.NORTH];
         break;
       case TRAVELCOST_DOOR_OPEN_NE:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHEAST];
         break;
       case TRAVELCOST_DOOR_OPEN_E:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.EAST];
         break;
       case TRAVELCOST_DOOR_OPEN_SE:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.SOUTHEAST];
         break;
       case TRAVELCOST_DOOR_OPEN_S:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.SOUTH];
         break;
       case TRAVELCOST_DOOR_OPEN_SW:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.SOUTHWEST];
         break;
       case TRAVELCOST_DOOR_OPEN_W:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.WEST];
         break;
       case TRAVELCOST_DOOR_OPEN_NW:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHWEST];
         break;
       case TRAVELCOST_DOOR_OPEN_N_N:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.NORTH] + dirDelta[Enum245.NORTH];
         break;
       case TRAVELCOST_DOOR_OPEN_NW_N:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHWEST] + dirDelta[Enum245.NORTH];
         break;
       case TRAVELCOST_DOOR_OPEN_NE_N:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHEAST] + dirDelta[Enum245.NORTH];
         break;
       case TRAVELCOST_DOOR_OPEN_W_W:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.WEST] + dirDelta[Enum245.WEST];
         break;
       case TRAVELCOST_DOOR_OPEN_SW_W:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.SOUTHWEST] + dirDelta[Enum245.WEST];
         break;
       case TRAVELCOST_DOOR_OPEN_NW_W:
-        fDoorIsObstacleIfClosed = FALSE;
+        fDoorIsObstacleIfClosed = false;
         iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHWEST] + dirDelta[Enum245.WEST];
         break;
       default:
@@ -2245,6 +2245,6 @@ function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, 
   return ubMovementCost;
 }
 
-function DoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: BOOLEAN, piDoorGridNo: Pointer<INT32>): UINT8 {
-  return InternalDoorTravelCost(pSoldier, iGridNo, ubMovementCost, fReturnPerceivedValue, piDoorGridNo, FALSE);
+function DoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>): UINT8 {
+  return InternalDoorTravelCost(pSoldier, iGridNo, ubMovementCost, fReturnPerceivedValue, piDoorGridNo, false);
 }

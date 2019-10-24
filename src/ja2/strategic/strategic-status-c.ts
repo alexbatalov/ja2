@@ -7,28 +7,28 @@ function InitStrategicStatus(): void {
   InitArmyGunTypes();
 }
 
-function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // Save the Strategic Status structure to the saved game file
   FileWrite(hFile, addressof(gStrategicStatus), sizeof(STRATEGIC_STATUS), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(STRATEGIC_STATUS)) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): BOOLEAN {
+function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   // Load the Strategic Status structure from the saved game file
   FileRead(hFile, addressof(gStrategicStatus), sizeof(STRATEGIC_STATUS), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(STRATEGIC_STATUS)) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 const DEATH_RATE_SEVERITY = 1.0; // increase to make death rates higher for same # of deaths/time
@@ -58,7 +58,7 @@ function ModifyPlayerReputation(bRepChange: INT8): void {
   gStrategicStatus.ubBadReputation = iNewBadRep;
 }
 
-function MercThinksDeathRateTooHigh(ubProfileID: UINT8): BOOLEAN {
+function MercThinksDeathRateTooHigh(ubProfileID: UINT8): boolean {
   let bDeathRateTolerance: INT8;
 
   bDeathRateTolerance = gMercProfiles[ubProfileID].bDeathRate;
@@ -66,19 +66,19 @@ function MercThinksDeathRateTooHigh(ubProfileID: UINT8): BOOLEAN {
   // if he couldn't care less what it is
   if (bDeathRateTolerance == 101) {
     // then obviously it CAN'T be too high...
-    return FALSE;
+    return false;
   }
 
   if (CalcDeathRate() > bDeathRateTolerance) {
     // too high - sorry
-    return TRUE;
+    return true;
   } else {
     // within tolerance
-    return FALSE;
+    return false;
   }
 }
 
-function MercThinksBadReputationTooHigh(ubProfileID: UINT8): BOOLEAN {
+function MercThinksBadReputationTooHigh(ubProfileID: UINT8): boolean {
   let bRepTolerance: INT8;
 
   bRepTolerance = gMercProfiles[ubProfileID].bReputationTolerance;
@@ -86,20 +86,20 @@ function MercThinksBadReputationTooHigh(ubProfileID: UINT8): BOOLEAN {
   // if he couldn't care less what it is
   if (bRepTolerance == 101) {
     // then obviously it CAN'T be too high...
-    return FALSE;
+    return false;
   }
 
   if (gStrategicStatus.ubBadReputation > bRepTolerance) {
     // too high - sorry
-    return TRUE;
+    return true;
   } else {
     // within tolerance
-    return FALSE;
+    return false;
   }
 }
 
 // only meaningful for already hired mercs
-function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bRepTolerance: INT8;
   let bMoraleTolerance: INT8;
 
@@ -108,7 +108,7 @@ function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if he couldn't care less what it is
   if (bRepTolerance == 101) {
     // that obviously it CAN'T be too low...
-    return FALSE;
+    return false;
   }
 
   // morale tolerance is based directly upon reputation tolerance
@@ -117,10 +117,10 @@ function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
   if (pSoldier.value.bMorale < bMoraleTolerance) {
     // too low - sorry
-    return TRUE;
+    return true;
   } else {
     // within tolerance
-    return FALSE;
+    return false;
   }
 }
 

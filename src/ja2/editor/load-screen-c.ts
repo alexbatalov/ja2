@@ -1,6 +1,6 @@
 //===========================================================================
 
-let gfErrorCatch: BOOLEAN = FALSE;
+let gfErrorCatch: boolean = false;
 let gzErrorCatchString: UINT16[] /* [256] */ = "";
 let giErrorCatchMessageBox: INT32 = 0;
 
@@ -23,21 +23,21 @@ let gzFilename: UINT16[] /* [31] */;
 let FileList: Pointer<FDLG_LIST> = null;
 
 let iFDlgState: INT32 = Enum50.DIALOG_NONE;
-let gfDestroyFDlg: BOOLEAN = FALSE;
+let gfDestroyFDlg: boolean = false;
 let iFileDlgButtons: INT32[] /* [7] */;
 
-let gfLoadError: BOOLEAN;
-let gfReadOnly: BOOLEAN;
-let gfFileExists: BOOLEAN;
-let gfIllegalName: BOOLEAN;
-let gfDeleteFile: BOOLEAN;
-let gfNoFiles: BOOLEAN;
+let gfLoadError: boolean;
+let gfReadOnly: boolean;
+let gfFileExists: boolean;
+let gfIllegalName: boolean;
+let gfDeleteFile: boolean;
+let gfNoFiles: boolean;
 
 let zOrigName: UINT16[] /* [60] */;
 let FileInfo: GETFILESTRUCT;
 
-let fEnteringLoadSaveScreen: BOOLEAN = TRUE;
-let gfPassedSaveCheck: BOOLEAN = FALSE;
+let fEnteringLoadSaveScreen: boolean = true;
+let gfPassedSaveCheck: boolean = false;
 
 let BlanketRegion: MOUSE_REGION;
 
@@ -53,25 +53,25 @@ const enum Enum51 {
 let gbCurrentFileIOStatus: INT8; // 1 init saving message, 2 save, 3 init loading message, 4 load, 0 none
 
 function LoadSaveScreenInit(): UINT32 {
-  gfUpdateSummaryInfo = TRUE;
-  fEnteringLoadSaveScreen = TRUE;
-  return TRUE;
+  gfUpdateSummaryInfo = true;
+  fEnteringLoadSaveScreen = true;
+  return true;
 }
 
 function LoadSaveScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function LoadSaveScreenEntry(): void {
-  fEnteringLoadSaveScreen = FALSE;
+  fEnteringLoadSaveScreen = false;
   gbCurrentFileIOStatus = Enum51.IOSTATUS_NONE;
 
-  gfReadOnly = FALSE;
-  gfFileExists = FALSE;
-  gfLoadError = FALSE;
-  gfIllegalName = FALSE;
-  gfDeleteFile = FALSE;
-  gfNoFiles = FALSE;
+  gfReadOnly = false;
+  gfFileExists = false;
+  gfLoadError = false;
+  gfIllegalName = false;
+  gfDeleteFile = false;
+  gfNoFiles = false;
 
   // setup filename dialog box
   // (*.dat and *.map) as file filter
@@ -100,7 +100,7 @@ function LoadSaveScreenEntry(): void {
   CreateFileDialog(zOrigName);
 
   if (!iTotalFiles) {
-    gfNoFiles = TRUE;
+    gfNoFiles = true;
     if (iCurrentAction == Enum37.ACTION_LOAD_MAP)
       DisableButton(iFileDlgButtons[0]);
   }
@@ -112,10 +112,10 @@ function LoadSaveScreenEntry(): void {
 function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
   let curr: Pointer<FDLG_LIST>;
   let temp: Pointer<FDLG_LIST>;
-  gfRenderWorld = TRUE;
+  gfRenderWorld = true;
   RemoveMessageBox();
   if (gfIllegalName) {
-    fEnteringLoadSaveScreen = TRUE;
+    fEnteringLoadSaveScreen = true;
     RemoveFileDialog();
     MarkWorldDirty();
     return gfMessageBoxResult ? Enum26.LOADSAVE_SCREEN : Enum26.EDIT_SCREEN;
@@ -131,7 +131,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
       if (curr) {
         if (gfReadOnly) {
           FileClearAttributes(gszCurrFilename);
-          gfReadOnly = FALSE;
+          gfReadOnly = false;
         }
         FileDelete(gszCurrFilename);
 
@@ -153,7 +153,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
         RemoveFromFDlgList(addressof(FileList), curr);
         iTotalFiles--;
         if (!iTotalFiles) {
-          gfNoFiles = TRUE;
+          gfNoFiles = true;
           if (iCurrentAction == Enum37.ACTION_LOAD_MAP)
             DisableButton(iFileDlgButtons[0]);
         }
@@ -167,17 +167,17 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
     }
     MarkWorldDirty();
     RenderWorld();
-    gfDeleteFile = FALSE;
+    gfDeleteFile = false;
     iFDlgState = Enum50.DIALOG_NONE;
     return Enum26.LOADSAVE_SCREEN;
   }
   if (gfLoadError) {
-    fEnteringLoadSaveScreen = TRUE;
+    fEnteringLoadSaveScreen = true;
     return gfMessageBoxResult ? Enum26.LOADSAVE_SCREEN : Enum26.EDIT_SCREEN;
   }
   if (gfReadOnly) {
     // file is readonly.  Result will determine if the file dialog stays up.
-    fEnteringLoadSaveScreen = TRUE;
+    fEnteringLoadSaveScreen = true;
     RemoveFileDialog();
     return gfMessageBoxResult ? Enum26.LOADSAVE_SCREEN : Enum26.EDIT_SCREEN;
   }
@@ -188,7 +188,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
       gbCurrentFileIOStatus = Enum51.INITIATE_MAP_SAVE;
       return Enum26.LOADSAVE_SCREEN;
     }
-    fEnteringLoadSaveScreen = TRUE;
+    fEnteringLoadSaveScreen = true;
     RemoveFileDialog();
     return Enum26.EDIT_SCREEN;
   }
@@ -264,7 +264,7 @@ function LoadSaveScreenHandle(): UINT32 {
   switch (iFDlgState) {
     case Enum50.DIALOG_CANCEL:
       RemoveFileDialog();
-      fEnteringLoadSaveScreen = TRUE;
+      fEnteringLoadSaveScreen = true;
       return Enum26.EDIT_SCREEN;
     case Enum50.DIALOG_DELETE:
       sprintf(gszCurrFilename, "MAPS\\%S", gzFilename);
@@ -272,27 +272,27 @@ function LoadSaveScreenHandle(): UINT32 {
         let str: UINT16[] /* [40] */;
         if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_HIDDEN | FILE_IS_SYSTEM)) {
           swprintf(str, " Delete READ-ONLY file %s? ", gzFilename);
-          gfReadOnly = TRUE;
+          gfReadOnly = true;
         } else
           swprintf(str, " Delete file %s? ", gzFilename);
-        gfDeleteFile = TRUE;
+        gfDeleteFile = true;
         CreateMessageBox(str);
       }
       return Enum26.LOADSAVE_SCREEN;
     case Enum50.DIALOG_SAVE:
       if (!ExtractFilenameFromFields()) {
         CreateMessageBox(" Illegal filename.  Try another filename? ");
-        gfIllegalName = TRUE;
+        gfIllegalName = true;
         iFDlgState = Enum50.DIALOG_NONE;
         return Enum26.LOADSAVE_SCREEN;
       }
       sprintf(gszCurrFilename, "MAPS\\%S", gzFilename);
       if (FileExists(gszCurrFilename)) {
-        gfFileExists = TRUE;
-        gfReadOnly = FALSE;
+        gfFileExists = true;
+        gfReadOnly = false;
         if (GetFileFirst(gszCurrFilename, addressof(FileInfo))) {
           if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_DIRECTORY | FILE_IS_HIDDEN | FILE_IS_SYSTEM | FILE_IS_OFFLINE | FILE_IS_TEMPORARY))
-            gfReadOnly = TRUE;
+            gfReadOnly = true;
           GetFileClose(addressof(FileInfo));
         }
         if (gfReadOnly)
@@ -307,7 +307,7 @@ function LoadSaveScreenHandle(): UINT32 {
     case Enum50.DIALOG_LOAD:
       if (!ExtractFilenameFromFields()) {
         CreateMessageBox(" Illegal filename.  Try another filename? ");
-        gfIllegalName = TRUE;
+        gfIllegalName = true;
         iFDlgState = Enum50.DIALOG_NONE;
         return Enum26.LOADSAVE_SCREEN;
       }
@@ -366,13 +366,13 @@ function CreateFileDialog(zTitle: Pointer<UINT16>): void {
 
 function UpdateWorldInfoCallback(b: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    gfUpdateSummaryInfo = b.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfUpdateSummaryInfo = b.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
 }
 
 // This is a hook into the text input code.  This callback is called whenever the user is currently
 // editing text, and presses Tab to transfer to the file dialog mode.  When this happens, we set the text
 // field to the currently selected file in the list which is already know.
-function FileDialogModeCallback(ubID: UINT8, fEntering: BOOLEAN): void {
+function FileDialogModeCallback(ubID: UINT8, fEntering: boolean): void {
   let x: INT32;
   let FListNode: Pointer<FDLG_LIST>;
   if (fEntering) {
@@ -479,7 +479,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
       iCurrClickTime = GetJA2Clock();
       if (iCurrClickTime - iLastClickTime < 400 && x == iLastFileClicked) {
         // Considered a double click, so activate load/save this filename.
-        gfDestroyFDlg = TRUE;
+        gfDestroyFDlg = true;
         iFDlgState = iCurrentAction == Enum37.ACTION_SAVE_MAP ? Enum50.DIALOG_SAVE : Enum50.DIALOG_LOAD;
       }
       iLastClickTime = iCurrClickTime;
@@ -516,7 +516,7 @@ function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>)
   return pList;
 }
 
-function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDLG_LIST>): BOOLEAN {
+function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDLG_LIST>): boolean {
   let curr: Pointer<FDLG_LIST>;
   curr = head.value;
   while (curr) {
@@ -529,11 +529,11 @@ function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDL
         curr.value.pNext.value.pPrev = curr.value.pPrev;
       MemFree(node);
       node = null;
-      return TRUE;
+      return true;
     }
     curr = curr.value.pNext;
   }
-  return FALSE; // wasn't deleted
+  return false; // wasn't deleted
 }
 
 function TrashFDlgList(pList: Pointer<FDLG_LIST>): void {
@@ -583,11 +583,11 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
     case ENTER:
       if (gfNoFiles && iCurrentAction == Enum37.ACTION_LOAD_MAP)
         break;
-      gfDestroyFDlg = TRUE;
+      gfDestroyFDlg = true;
       iFDlgState = iCurrentAction == Enum37.ACTION_SAVE_MAP ? Enum50.DIALOG_SAVE : Enum50.DIALOG_LOAD;
       break;
     case ESC:
-      gfDestroyFDlg = TRUE;
+      gfDestroyFDlg = true;
       iFDlgState = Enum50.DIALOG_CANCEL;
       break;
     case PGUP:
@@ -690,7 +690,7 @@ function InitErrorCatchDialog(): void {
 
   // do message box and return
   giErrorCatchMessageBox = DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzErrorCatchString, Enum26.EDIT_SCREEN, MSG_BOX_FLAG_OK, null, addressof(CenteringRect));
-  gfErrorCatch = FALSE;
+  gfErrorCatch = false;
 }
 
 // Because loading and saving the map takes a few seconds, we want to post a message
@@ -741,9 +741,9 @@ function ProcessFileIO(): UINT32 {
 
       iCurrentAction = Enum37.ACTION_NULL;
       gbCurrentFileIOStatus = Enum51.IOSTATUS_NONE;
-      gfRenderWorld = TRUE;
-      gfRenderTaskbar = TRUE;
-      fEnteringLoadSaveScreen = TRUE;
+      gfRenderWorld = true;
+      gfRenderTaskbar = true;
+      fEnteringLoadSaveScreen = true;
       RestoreFontSettings();
       if (gfErrorCatch) {
         InitErrorCatchDialog();
@@ -770,8 +770,8 @@ function ProcessFileIO(): UINT32 {
         EnableUndo();
         SetPendingNewScreen(Enum26.LOADSAVE_SCREEN);
         gbCurrentFileIOStatus = Enum51.IOSTATUS_NONE;
-        gfGlobalError = FALSE;
-        gfLoadError = TRUE;
+        gfGlobalError = false;
+        gfLoadError = true;
         // RemoveButton( iTempButton );
         CreateMessageBox(" Error loading file.  Try another filename?");
         return Enum26.LOADSAVE_SCREEN;
@@ -800,9 +800,9 @@ function ProcessFileIO(): UINT32 {
       } else
         gusLightLevel = (EDITOR_LIGHT_MAX - ubAmbientLightLevel);
       gEditorLightColor = gpLightColors[0];
-      gfRenderWorld = TRUE;
-      gfRenderTaskbar = TRUE;
-      fEnteringLoadSaveScreen = TRUE;
+      gfRenderWorld = true;
+      gfRenderTaskbar = true;
+      fEnteringLoadSaveScreen = true;
       InitJA2SelectionWindow();
       ShowEntryPoints();
       EnableUndo();
@@ -847,14 +847,14 @@ function FDlgNamesCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function FDlgOkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
-    gfDestroyFDlg = TRUE;
+    gfDestroyFDlg = true;
     iFDlgState = iCurrentAction == Enum37.ACTION_SAVE_MAP ? Enum50.DIALOG_SAVE : Enum50.DIALOG_LOAD;
   }
 }
 
 function FDlgCancelCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
-    gfDestroyFDlg = TRUE;
+    gfDestroyFDlg = true;
     iFDlgState = Enum50.DIALOG_CANCEL;
   }
 }
@@ -873,12 +873,12 @@ function FDlgDwnCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function ExtractFilenameFromFields(): BOOLEAN {
+function ExtractFilenameFromFields(): boolean {
   Get16BitStringFromField(0, gzFilename);
   return ValidFilename();
 }
 
-function ValidCoordinate(): BOOLEAN {
+function ValidCoordinate(): boolean {
   if (gzFilename[0] >= 'A' && gzFilename[0] <= 'P' || gzFilename[0] >= 'a' && gzFilename[0] <= 'p') {
     let usTotal: UINT16;
     if (gzFilename[1] == '1' && gzFilename[2] >= '0' && gzFilename[2] <= '6') {
@@ -887,17 +887,17 @@ function ValidCoordinate(): BOOLEAN {
       if (gzFilename[2] < '0' || gzFilename[2] > '9') {
         usTotal = (gzFilename[1] - 0x30);
       } else {
-        return FALSE;
+        return false;
       }
     }
     if (usTotal >= 1 && usTotal <= 16) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function ValidFilename(): BOOLEAN {
+function ValidFilename(): boolean {
   let pDest: Pointer<UINT16>;
   if (gzFilename[0] != '\0')
     ;
@@ -906,42 +906,42 @@ function ValidFilename(): BOOLEAN {
     if (!pDest)
       pDest = wcsstr(gzFilename, ".DAT");
     if (pDest && pDest != gzFilename && pDest[4] == '\0')
-      return TRUE;
+      return true;
   }
-  return FALSE;
+  return false;
 }
 
-function ExternalLoadMap(szFilename: Pointer<UINT16>): BOOLEAN {
+function ExternalLoadMap(szFilename: Pointer<UINT16>): boolean {
   Assert(szFilename);
   if (!wcslen(szFilename))
-    return FALSE;
+    return false;
   wcscpy(gzFilename, szFilename);
   if (!ValidFilename())
-    return FALSE;
+    return false;
   gbCurrentFileIOStatus = Enum51.INITIATE_MAP_LOAD;
   ProcessFileIO(); // always returns loadsave_screen and changes iostatus to loading_map.
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
   RefreshScreen(null);
   if (ProcessFileIO() == Enum26.EDIT_SCREEN)
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
-function ExternalSaveMap(szFilename: Pointer<UINT16>): BOOLEAN {
+function ExternalSaveMap(szFilename: Pointer<UINT16>): boolean {
   Assert(szFilename);
   if (!wcslen(szFilename))
-    return FALSE;
+    return false;
   wcscpy(gzFilename, szFilename);
   if (!ValidFilename())
-    return FALSE;
+    return false;
   gbCurrentFileIOStatus = Enum51.INITIATE_MAP_SAVE;
   if (ProcessFileIO() == Enum26.ERROR_SCREEN)
-    return FALSE;
+    return false;
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
   RefreshScreen(null);
   if (ProcessFileIO() == Enum26.EDIT_SCREEN)
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }

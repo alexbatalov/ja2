@@ -1,22 +1,22 @@
 let gubNumUIPlannedMoves: UINT8 = 0;
 let gpUIPlannedSoldier: Pointer<SOLDIERTYPE> = null;
 let gpUIStartPlannedSoldier: Pointer<SOLDIERTYPE> = null;
-let gfInUIPlanMode: BOOLEAN = FALSE;
+let gfInUIPlanMode: boolean = false;
 
-function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   gubNumUIPlannedMoves = 0;
   gpUIPlannedSoldier = pSoldier;
   gpUIStartPlannedSoldier = pSoldier;
-  gfInUIPlanMode = TRUE;
+  gfInUIPlanMode = true;
 
-  gfPlotNewMovement = TRUE;
+  gfPlotNewMovement = true;
 
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Entering Planning Mode");
 
-  return TRUE;
+  return true;
 }
 
-function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
+function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
   let pPlanSoldier: Pointer<SOLDIERTYPE>;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -31,8 +31,8 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
   // If we have a planned action here, ignore!
 
   // If not OK Dest, ignore!
-  if (!NewOKDestination(gpUIPlannedSoldier, sGridNo, FALSE, gsInterfaceLevel)) {
-    return FALSE;
+  if (!NewOKDestination(gpUIPlannedSoldier, sGridNo, false, gsInterfaceLevel)) {
+    return false;
   }
 
   if (ubPlanID == UIPLAN_ACTION_MOVETO) {
@@ -43,11 +43,11 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
       sAPCost += AP_START_RUN_COST;
     }
 
-    if (EnoughPoints(gpUIPlannedSoldier, sAPCost, 0, FALSE)) {
+    if (EnoughPoints(gpUIPlannedSoldier, sAPCost, 0, false)) {
       memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
       MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
       MercCreateStruct.ubProfile = NO_PROFILE;
-      MercCreateStruct.fPlayerPlan = TRUE;
+      MercCreateStruct.fPlayerPlan = true;
       MercCreateStruct.bBodyType = gpUIPlannedSoldier.value.ubBodyType;
       MercCreateStruct.sInsertionGridNo = sGridNo;
 
@@ -87,7 +87,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
         pPlanSoldier.value.bDesiredDirection = bDirection;
 
         // Set walking animation
-        ChangeSoldierState(pPlanSoldier, pPlanSoldier.value.usUIMovementMode, 0, FALSE);
+        ChangeSoldierState(pPlanSoldier, pPlanSoldier.value.usUIMovementMode, 0, false);
 
         // Change selected soldier
         gusSelectedSoldier = pPlanSoldier.value.ubID;
@@ -97,7 +97,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
 
         gubNumUIPlannedMoves++;
 
-        gfPlotNewMovement = TRUE;
+        gfPlotNewMovement = true;
 
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Adding Merc Move to Plan");
       }
@@ -105,19 +105,19 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Merc will not have enough action points");
     }
   } else if (ubPlanID == UIPLAN_ACTION_FIRE) {
-    sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, TRUE, (gpUIPlannedSoldier.value.bShownAimTime / 2));
+    sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, true, (gpUIPlannedSoldier.value.bShownAimTime / 2));
 
     // Get XY from Gridno
     ConvertGridNoToCenterCellXY(sGridNo, addressof(sXPos), addressof(sYPos));
 
     // If this is a player guy, show message about no APS
-    if (EnoughPoints(gpUIPlannedSoldier, sAPCost, 0, FALSE)) {
+    if (EnoughPoints(gpUIPlannedSoldier, sAPCost, 0, false)) {
       // CHECK IF WE ARE A PLANNED SOLDIER OR NOT< IF SO< CREATE!
       if (gpUIPlannedSoldier.value.ubID < MAX_NUM_SOLDIERS) {
         memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
         MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
         MercCreateStruct.ubProfile = NO_PROFILE;
-        MercCreateStruct.fPlayerPlan = TRUE;
+        MercCreateStruct.fPlayerPlan = true;
         MercCreateStruct.bBodyType = gpUIPlannedSoldier.value.ubBodyType;
         MercCreateStruct.sInsertionGridNo = sGridNo;
 
@@ -154,7 +154,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
           pPlanSoldier.value.bDesiredDirection = bDirection;
 
           // Set walking animation
-          ChangeSoldierState(pPlanSoldier, pPlanSoldier.value.usUIMovementMode, 0, FALSE);
+          ChangeSoldierState(pPlanSoldier, pPlanSoldier.value.usUIMovementMode, 0, false);
 
           // Change selected soldier
           gusSelectedSoldier = pPlanSoldier.value.ubID;
@@ -188,7 +188,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Merc will not have enough action points");
     }
   }
-  return TRUE;
+  return true;
 }
 
 function EndUIPlan(): void {
@@ -206,15 +206,15 @@ function EndUIPlan(): void {
       TacticalRemoveSoldier(pSoldier.value.ubID);
     }
   }
-  gfInUIPlanMode = FALSE;
+  gfInUIPlanMode = false;
   gusSelectedSoldier = gpUIStartPlannedSoldier.value.ubID;
 
-  gfPlotNewMovement = TRUE;
+  gfPlotNewMovement = true;
 
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Leaving Planning Mode");
 }
 
-function InUIPlanMode(): BOOLEAN {
+function InUIPlanMode(): boolean {
   return gfInUIPlanMode;
 }
 
@@ -225,18 +225,18 @@ function SelectPausedFireAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
     case ANIM_STAND:
 
       if (pSoldier.value.bDoBurst > 0) {
-        ChangeSoldierState(pSoldier, Enum193.STANDING_BURST, 2, FALSE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING_BURST, 2, false);
       } else {
-        ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_STAND, 2, FALSE);
+        ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_STAND, 2, false);
       }
       break;
 
     case ANIM_PRONE:
-      ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_PRONE, 2, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_PRONE, 2, false);
       break;
 
     case ANIM_CROUCH:
-      ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_CROUCH, 2, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_CROUCH, 2, false);
       break;
   }
 }

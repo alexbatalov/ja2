@@ -34,8 +34,8 @@ let gus2ndEastEdgepointMiddleIndex: UINT16 = 0;
 let gus2ndSouthEdgepointMiddleIndex: UINT16 = 0;
 let gus2ndWestEdgepointMiddleIndex: UINT16 = 0;
 
-let gfEdgepointsExist: BOOLEAN = FALSE;
-let gfGeneratingMapEdgepoints: BOOLEAN = FALSE;
+let gfEdgepointsExist: boolean = false;
+let gfGeneratingMapEdgepoints: boolean = false;
 
 let gsTLGridNo: INT16 = 13286;
 let gsTRGridNo: INT16 = 1043;
@@ -396,7 +396,7 @@ function GenerateMapEdgepoints(): void {
   // Get rid of the current edgepoint lists.
   TrashMapEdgepoints();
 
-  gfGeneratingMapEdgepoints = TRUE;
+  gfGeneratingMapEdgepoints = true;
 
   if (gMapInformation.sNorthGridNo != -1)
     sGridNo = gMapInformation.sNorthGridNo;
@@ -704,7 +704,7 @@ function GenerateMapEdgepoints(): void {
     ClassifyEdgepoints();
   }
 
-  gfGeneratingMapEdgepoints = FALSE;
+  gfGeneratingMapEdgepoints = false;
 }
 
 function SaveMapEdgepoints(fp: HWFILE): void {
@@ -775,7 +775,7 @@ function OldLoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): void {
   }
 }
 
-function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
+function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): boolean {
   TrashMapEdgepoints();
   if (gMapInformation.ubMapVersion < 17) {
     // To prevent invalidation of older maps, which only used one layer of edgepoints, and a UINT8 for
@@ -783,7 +783,7 @@ function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
     // regenerate them.
     OldLoadMapEdgepoints(hBuffer);
     TrashMapEdgepoints();
-    return FALSE;
+    return false;
   }
   LOADDATA(addressof(gus1stNorthEdgepointArraySize), hBuffer.value, 2);
   LOADDATA(addressof(gus1stNorthEdgepointMiddleIndex), hBuffer.value, 2);
@@ -845,10 +845,10 @@ function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
   if (gMapInformation.ubMapVersion < 22) {
     // regenerate them.
     TrashMapEdgepoints();
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
@@ -1017,7 +1017,7 @@ function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UI
   let sDirection: INT16;
   let sOriginalGridNo: INT16;
   let usArraySize: UINT16 = 0;
-  let fReserved: BOOLEAN;
+  let fReserved: boolean;
 
   if (gsReservedIndex >= 20) {
     // Everything is reserved.
@@ -1054,10 +1054,10 @@ function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UI
   }
 
   // Check the initial gridno, to see if it is available and an edgepoint.
-  fReserved = FALSE;
+  fReserved = false;
   for (i = 0; i < gsReservedIndex; i++) {
     if (gpReservedGridNos[i] == sGridNo) {
-      fReserved = TRUE;
+      fReserved = true;
       break;
     }
   }
@@ -1105,10 +1105,10 @@ function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UI
         if (sGridNo < 0 || sGridNo >= WORLD_MAX)
           continue;
         // Check the gridno, to see if it is available and an edgepoint.
-        fReserved = FALSE;
+        fReserved = false;
         for (i = 0; i < gsReservedIndex; i++) {
           if (gpReservedGridNos[i] == sGridNo) {
-            fReserved = TRUE;
+            fReserved = true;
             break;
           }
         }
@@ -1139,7 +1139,7 @@ function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: 
   let sDirection: INT16;
   let sOriginalGridNo: INT16;
   let usArraySize: UINT16 = 0;
-  let fReserved: BOOLEAN;
+  let fReserved: boolean;
 
   if (gsReservedIndex >= 20) {
     // Everything is reserved.
@@ -1176,10 +1176,10 @@ function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: 
   }
 
   // Check the initial gridno, to see if it is available and an edgepoint.
-  fReserved = FALSE;
+  fReserved = false;
   for (i = 0; i < gsReservedIndex; i++) {
     if (gpReservedGridNos[i] == sGridNo) {
-      fReserved = TRUE;
+      fReserved = true;
       break;
     }
   }
@@ -1227,10 +1227,10 @@ function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: 
         if (sGridNo < 0 || sGridNo >= WORLD_MAX)
           continue;
         // Check the gridno, to see if it is available and an edgepoint.
-        fReserved = FALSE;
+        fReserved = false;
         for (i = 0; i < gsReservedIndex; i++) {
           if (gpReservedGridNos[i] == sGridNo) {
-            fReserved = TRUE;
+            fReserved = true;
             break;
           }
         }
@@ -1253,7 +1253,7 @@ function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: 
 }
 
 const EDGE_OF_MAP_SEARCH = 5;
-function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): BOOLEAN {
+function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): boolean {
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
   let sMaxRight: INT16;
@@ -1311,16 +1311,16 @@ function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): BOO
 
       if (GridNoOnEdgeOfMap(sGridNo, addressof(bDirection))) {
         // ok!
-        return TRUE;
+        return true;
       }
     }
   }
 
   // no spots right on edge of map within 5 tiles
-  return FALSE;
+  return false;
 }
 
-function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEdgepoint2: INT16): BOOLEAN {
+function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEdgepoint2: INT16): boolean {
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
   let sMaxRight: INT16;
@@ -1365,9 +1365,9 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
   }
 
   if (FindBestPath(pSoldier, sEdgepoint2, pSoldier.value.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE)) {
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
@@ -1382,8 +1382,8 @@ function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
   let sTempDist: INT16;
   let sClosestSpot2: INT16 = NOWHERE;
   let sClosestDist2: INT16 = 0x7FFF;
-  let fPrimaryValid: BOOLEAN = FALSE;
-  let fSecondaryValid: BOOLEAN = FALSE;
+  let fPrimaryValid: boolean = false;
+  let fSecondaryValid: boolean = false;
 
   memset(addressof(Soldier), 0, sizeof(SOLDIERTYPE));
   Soldier.bTeam = 1;
@@ -1445,10 +1445,10 @@ function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
   gubNPCDistLimit = 15;
 
   if (!sClosestDist1 || FindBestPath(addressof(Soldier), sClosestSpot1, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
-    fPrimaryValid = TRUE;
+    fPrimaryValid = true;
   }
   if (!sClosestDist2 || FindBestPath(addressof(Soldier), sClosestSpot2, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
-    fSecondaryValid = TRUE;
+    fSecondaryValid = true;
   }
 
   if (fPrimaryValid == fSecondaryValid) {

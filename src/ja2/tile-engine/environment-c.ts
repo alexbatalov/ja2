@@ -1,7 +1,7 @@
 // effects whether or not time of day effects the lighting.  Underground
 // maps have an ambient light level that is saved in the map, and doesn't change.
-let gfBasement: BOOLEAN = FALSE;
-let gfCaves: BOOLEAN = FALSE;
+let gfBasement: boolean = false;
+let gfCaves: boolean = false;
 
 const ENV_TOD_FLAGS_DAY = 0x00000001;
 const ENV_TOD_FLAGS_DAWN = 0x00000002;
@@ -126,17 +126,17 @@ const GLOBAL_WARM_END = (17 * 60);
 
 const HOT_DAY_LIGHTLEVEL = 2;
 
-let fTimeOfDayControls: BOOLEAN = TRUE;
+let fTimeOfDayControls: boolean = true;
 let guiEnvTime: UINT32 = 0;
 let guiEnvDay: UINT32 = 0;
 let gubEnvLightValue: UINT8 = 0;
-let gfDoLighting: BOOLEAN = FALSE;
+let gfDoLighting: boolean = false;
 
 let gubDesertTemperature: UINT8 = 0;
 let gubGlobalTemperature: UINT8 = 0;
 
 // polled by the game to handle time/atmosphere changes from gamescreen
-function EnvironmentController(fCheckForLights: BOOLEAN): void {
+function EnvironmentController(fCheckForLights: boolean): void {
   let uiOldWorldHour: UINT32;
   let ubLightAdjustFromWeather: UINT8 = 0;
 
@@ -180,14 +180,14 @@ function EnvironmentController(fCheckForLights: BOOLEAN): void {
       LightSetBaseLevel(ubLightAdjustFromWeather);
 
       // Update Merc Lights since the above function modifies it.
-      HandlePlayerTogglingLightEffects(FALSE);
+      HandlePlayerTogglingLightEffects(false);
 
       // Make teams look for all
       // AllTeamsLookForAll( FALSE );
 
       // Set global light value
       SetRenderFlags(RENDER_FLAG_FULL);
-      gfDoLighting = FALSE;
+      gfDoLighting = false;
     }
   }
 }
@@ -322,11 +322,11 @@ function ForecastDayEvents(): void {
 }
 
 function EnvEnableTOD(): void {
-  fTimeOfDayControls = TRUE;
+  fTimeOfDayControls = true;
 }
 
 function EnvDisableTOD(): void {
-  fTimeOfDayControls = FALSE;
+  fTimeOfDayControls = false;
 }
 
 function EnvDoLightning(): void {
@@ -369,11 +369,11 @@ function EnvDoLightning(): void {
         if (ubLevel > ubLastLevel) {
           LightAddBaseLevel(0, (ubLevel - ubLastLevel));
           if (ubLevel > 0)
-            RenderSetShadows(TRUE);
+            RenderSetShadows(true);
         } else {
           LightSubtractBaseLevel(0, (ubLastLevel - ubLevel));
           if (ubLevel > 0)
-            RenderSetShadows(TRUE);
+            RenderSetShadows(true);
         }
         SetRenderFlags(RENDER_FLAG_FULL);
       }
@@ -391,7 +391,7 @@ function GetTimeOfDayAmbientLightLevel(): UINT8 {
 
 function EnvBeginRainStorm(ubIntensity: UINT8): void {
   if (!gfBasement && !gfCaves) {
-    gfDoLighting = TRUE;
+    gfDoLighting = true;
 
     if (ubIntensity == 1) {
       // Turn on rain storms
@@ -403,7 +403,7 @@ function EnvBeginRainStorm(ubIntensity: UINT8): void {
 }
 
 function EnvEndRainStorm(): void {
-  gfDoLighting = TRUE;
+  gfDoLighting = true;
 
   guiEnvWeather &= (~WEATHER_FORECAST_THUNDERSHOWERS);
   guiEnvWeather &= (~WEATHER_FORECAST_SHOWERS);
@@ -413,7 +413,7 @@ function TurnOnNightLights(): void {
   let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_NIGHTTIME && !(LightSprites[i].uiFlags & (LIGHT_SPR_ON | MERC_LIGHT))) {
-      LightSpritePower(i, TRUE);
+      LightSpritePower(i, true);
     }
   }
 }
@@ -422,7 +422,7 @@ function TurnOffNightLights(): void {
   let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_NIGHTTIME && LightSprites[i].uiFlags & LIGHT_SPR_ON && !(LightSprites[i].uiFlags & MERC_LIGHT)) {
-      LightSpritePower(i, FALSE);
+      LightSpritePower(i, false);
     }
   }
 }
@@ -431,7 +431,7 @@ function TurnOnPrimeLights(): void {
   let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_PRIMETIME && !(LightSprites[i].uiFlags & (LIGHT_SPR_ON | MERC_LIGHT))) {
-      LightSpritePower(i, TRUE);
+      LightSpritePower(i, true);
     }
   }
 }
@@ -440,7 +440,7 @@ function TurnOffPrimeLights(): void {
   let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_PRIMETIME && LightSprites[i].uiFlags & LIGHT_SPR_ON && !(LightSprites[i].uiFlags & MERC_LIGHT)) {
-      LightSpritePower(i, FALSE);
+      LightSpritePower(i, false);
     }
   }
 }
@@ -466,7 +466,7 @@ function UpdateTemperature(ubTemperatureCode: UINT8): void {
       gubGlobalTemperature = 2;
       break;
   }
-  gfDoLighting = TRUE;
+  gfDoLighting = true;
 }
 
 function SectorTemperature(uiTime: UINT32, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT8 {

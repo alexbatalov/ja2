@@ -146,7 +146,7 @@ let gSelectedBobbiesSignMenuRegion: MOUSE_REGION[] /* [BOBBIES_NUMBER_SIGNS] */;
 function GameInitBobbyR(): void {
 }
 
-function EnterBobbyR(): BOOLEAN {
+function EnterBobbyR(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT8;
 
@@ -212,11 +212,11 @@ function EnterBobbyR(): BOOLEAN {
   }
 
   SetBookMark(Enum98.BOBBYR_BOOKMARK);
-  HandleBobbyRUnderConstructionAni(TRUE);
+  HandleBobbyRUnderConstructionAni(true);
 
   RenderBobbyR();
 
-  return TRUE;
+  return true;
 }
 
 function ExitBobbyR(): void {
@@ -239,7 +239,7 @@ function ExitBobbyR(): void {
 }
 
 function HandleBobbyR(): void {
-  HandleBobbyRUnderConstructionAni(FALSE);
+  HandleBobbyRUnderConstructionAni(false);
 }
 
 function RenderBobbyR(): void {
@@ -287,30 +287,30 @@ function RenderBobbyR(): void {
   if (LaptopSaveInfo.fBobbyRSiteCanBeAccessed) {
     // Bobbys first sentence
     //	ShadowText( FRAME_BUFFER, BobbyRaysFrontText[BOBBYR_ADVERTISMENT_1], BOBBIES_SENTENCE_FONT, BOBBIES_FIRST_SENTENCE_X, BOBBIES_FIRST_SENTENCE_Y );
-    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_ADVERTISMENT_1], BOBBIES_FIRST_SENTENCE_X, BOBBIES_FIRST_SENTENCE_Y, BOBBIES_FIRST_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT(), BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | TEXT_SHADOWED);
+    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_ADVERTISMENT_1], BOBBIES_FIRST_SENTENCE_X, BOBBIES_FIRST_SENTENCE_Y, BOBBIES_FIRST_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT(), BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED | TEXT_SHADOWED);
 
     // Bobbys second sentence
-    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_ADVERTISMENT_2], BOBBIES_2ND_SENTENCE_X, BOBBIES_2ND_SENTENCE_Y, BOBBIES_2ND_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT(), BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | TEXT_SHADOWED);
+    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_ADVERTISMENT_2], BOBBIES_2ND_SENTENCE_X, BOBBIES_2ND_SENTENCE_Y, BOBBIES_2ND_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT(), BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED | TEXT_SHADOWED);
     SetFontShadow(DEFAULT_SHADOW);
   }
 
   SetFontShadow(BOBBIES_SIGN_BACKGROUNDCOLOR);
   // Text on the Used Sign
-  DisplayWrappedString(BOBBIES_USED_SIGN_X, BOBBIES_USED_SIGN_TEXT_OFFSET, BOBBIES_USED_SIGN_WIDTH - 5, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_USED], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_USED_SIGN_X, BOBBIES_USED_SIGN_TEXT_OFFSET, BOBBIES_USED_SIGN_WIDTH - 5, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_USED], BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED);
   // Text on the Misc Sign
-  DisplayWrappedString(BOBBIES_MISC_SIGN_X, BOBBIES_MISC_SIGN_TEXT_OFFSET, BOBBIES_MISC_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_MISC], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_MISC_SIGN_X, BOBBIES_MISC_SIGN_TEXT_OFFSET, BOBBIES_MISC_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_MISC], BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED);
   // Text on the Guns Sign
-  DisplayWrappedString(BOBBIES_GUNS_SIGN_X, BOBBIES_GUNS_SIGN_TEXT_OFFSET, BOBBIES_GUNS_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_GUNS], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_GUNS_SIGN_X, BOBBIES_GUNS_SIGN_TEXT_OFFSET, BOBBIES_GUNS_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_GUNS], BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED);
   // Text on the Ammo Sign
-  DisplayWrappedString(BOBBIES_AMMO_SIGN_X, BOBBIES_AMMO_SIGN_TEXT_OFFSET, BOBBIES_AMMO_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_AMMO], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_AMMO_SIGN_X, BOBBIES_AMMO_SIGN_TEXT_OFFSET, BOBBIES_AMMO_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_AMMO], BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED);
   // Text on the Armour Sign
-  DisplayWrappedString(BOBBIES_ARMOUR_SIGN_X, BOBBIES_ARMOUR_SIGN_TEXT_OFFSET, BOBBIES_ARMOUR_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_ARMOR], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_ARMOUR_SIGN_X, BOBBIES_ARMOUR_SIGN_TEXT_OFFSET, BOBBIES_ARMOUR_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT(), BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_ARMOR], BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED);
   SetFontShadow(DEFAULT_SHADOW);
 
   if (LaptopSaveInfo.fBobbyRSiteCanBeAccessed) {
     // Bobbys Third sentence
     SetFontShadow(BOBBIES_SENTENCE_BACKGROUNDCOLOR);
-    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_ADVERTISMENT_3], BOBBIES_3RD_SENTENCE_X, BOBBIES_3RD_SENTENCE_Y, BOBBIES_3RD_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT(), BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | TEXT_SHADOWED);
+    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_ADVERTISMENT_3], BOBBIES_3RD_SENTENCE_X, BOBBIES_3RD_SENTENCE_Y, BOBBIES_3RD_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT(), BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED | TEXT_SHADOWED);
     SetFontShadow(DEFAULT_SHADOW);
   }
 
@@ -323,7 +323,7 @@ function RenderBobbyR(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function InitBobbyRWoodBackground(): BOOLEAN {
+function InitBobbyRWoodBackground(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the Wood bacground graphic and add it
@@ -331,15 +331,15 @@ function InitBobbyRWoodBackground(): BOOLEAN {
   FilenameForBPP("LAPTOP\\BobbyWood.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiWoodBackground)));
 
-  return TRUE;
+  return true;
 }
 
-function DeleteBobbyRWoodBackground(): BOOLEAN {
+function DeleteBobbyRWoodBackground(): boolean {
   DeleteVideoObjectFromIndex(guiWoodBackground);
-  return TRUE;
+  return true;
 }
 
-function DrawBobbyRWoodBackground(): BOOLEAN {
+function DrawBobbyRWoodBackground(): boolean {
   let hWoodBackGroundHandle: HVOBJECT;
   let x: UINT16;
   let y: UINT16;
@@ -359,10 +359,10 @@ function DrawBobbyRWoodBackground(): BOOLEAN {
     uiPosY += BOBBY_WOOD_BACKGROUND_HEIGHT;
   }
 
-  return TRUE;
+  return true;
 }
 
-function InitBobbiesMouseRegion(ubNumerRegions: UINT8, usMouseRegionPosArray: Pointer<UINT16>, MouseRegion: Pointer<MOUSE_REGION>): BOOLEAN {
+function InitBobbiesMouseRegion(ubNumerRegions: UINT8, usMouseRegionPosArray: Pointer<UINT16>, MouseRegion: Pointer<MOUSE_REGION>): boolean {
   let i: UINT8;
   let ubCount: UINT8 = 0;
 
@@ -375,16 +375,16 @@ function InitBobbiesMouseRegion(ubNumerRegions: UINT8, usMouseRegionPosArray: Po
     ubCount += 4;
   }
 
-  return TRUE;
+  return true;
 }
 
-function RemoveBobbiesMouseRegion(ubNumberRegions: UINT8, Mouse_Region: Pointer<MOUSE_REGION>): BOOLEAN {
+function RemoveBobbiesMouseRegion(ubNumberRegions: UINT8, Mouse_Region: Pointer<MOUSE_REGION>): boolean {
   let i: UINT8;
 
   for (i = 0; i < ubNumberRegions; i++)
     MSYS_RemoveRegion(addressof(Mouse_Region[i]));
 
-  return TRUE;
+  return true;
 }
 
 function SelectBobbiesSignMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -421,7 +421,7 @@ BOOLEAN WebPageTileBackground(UINT8 ubNumX, UINT8 ubNumY, UINT16 usWidth, UINT16
 }
 */
 
-function HandleBobbyRUnderConstructionAni(fReset: BOOLEAN): void {
+function HandleBobbyRUnderConstructionAni(fReset: boolean): void {
   let hPixHandle: HVOBJECT;
   /* static */ let uiLastTime: UINT32 = 1;
   /* static */ let usCount: UINT16 = 0;
@@ -434,7 +434,7 @@ function HandleBobbyRUnderConstructionAni(fReset: BOOLEAN): void {
     usCount = 1;
 
   if (fShowBookmarkInfo) {
-    fReDrawBookMarkInfo = TRUE;
+    fReDrawBookMarkInfo = true;
   }
 
   if (((uiCurTime - uiLastTime) > BOBBYR_UNDERCONSTRUCTION_ANI_DELAY) || (fReDrawScreenFlag)) {
@@ -444,7 +444,7 @@ function HandleBobbyRUnderConstructionAni(fReset: BOOLEAN): void {
 
     BltVideoObject(FRAME_BUFFER, hPixHandle, usCount, BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION1_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_UNDER_CONSTRUCTION], BOBBYR_UNDER_CONSTRUCTION_TEXT_X, BOBBYR_UNDER_CONSTRUCTION_TEXT_Y, BOBBYR_UNDER_CONSTRUCTION_TEXT_WIDTH, FONT16ARIAL(), BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | INVALIDATE_TEXT);
+    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_UNDER_CONSTRUCTION], BOBBYR_UNDER_CONSTRUCTION_TEXT_X, BOBBYR_UNDER_CONSTRUCTION_TEXT_Y, BOBBYR_UNDER_CONSTRUCTION_TEXT_WIDTH, FONT16ARIAL(), BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED | INVALIDATE_TEXT);
 
     InvalidateRegion(BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION_Y, BOBBYR_UNDERCONSTRUCTION_X + BOBBYR_UNDERCONSTRUCTION_WIDTH, BOBBYR_UNDERCONSTRUCTION_Y + BOBBYR_UNDERCONSTRUCTION_HEIGHT);
     InvalidateRegion(BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION1_Y, BOBBYR_UNDERCONSTRUCTION_X + BOBBYR_UNDERCONSTRUCTION_WIDTH, BOBBYR_UNDERCONSTRUCTION1_Y + BOBBYR_UNDERCONSTRUCTION_HEIGHT);
@@ -463,16 +463,16 @@ function InitBobbyRayInventory(): void {
   InitBobbyRayNewInventory();
 
   // Initializes the starting values for Bobby Rays NEW Inventory
-  SetupStoreInventory(LaptopSaveInfo.BobbyRayInventory, FALSE);
+  SetupStoreInventory(LaptopSaveInfo.BobbyRayInventory, false);
 
   // Initializes which USED items can be bought at Bobby Rays
   InitBobbyRayUsedInventory();
 
   // Initializes the starting values for Bobby Rays USED Inventory
-  SetupStoreInventory(LaptopSaveInfo.BobbyRayUsedInventory, TRUE);
+  SetupStoreInventory(LaptopSaveInfo.BobbyRayUsedInventory, true);
 }
 
-function InitBobbyRayNewInventory(): BOOLEAN {
+function InitBobbyRayNewInventory(): boolean {
   let i: UINT16;
   let usBobbyrIndex: UINT16 = 0;
 
@@ -497,10 +497,10 @@ function InitBobbyRayNewInventory(): BOOLEAN {
   // also mark the end of the list of valid item entries
   LaptopSaveInfo.BobbyRayInventory[usBobbyrIndex].usItemIndex = BOBBYR_NO_ITEMS;
 
-  return TRUE;
+  return true;
 }
 
-function InitBobbyRayUsedInventory(): BOOLEAN {
+function InitBobbyRayUsedInventory(): boolean {
   let i: UINT16;
   let usBobbyrIndex: UINT16 = 0;
 
@@ -529,13 +529,13 @@ function InitBobbyRayUsedInventory(): BOOLEAN {
   // also mark the end of the list of valid item entries
   LaptopSaveInfo.BobbyRayUsedInventory[usBobbyrIndex].usItemIndex = BOBBYR_NO_ITEMS;
 
-  return TRUE;
+  return true;
 }
 
 function DailyUpdateOfBobbyRaysNewInventory(): void {
   let i: INT16;
   let usItemIndex: UINT16;
-  let fPrevElig: BOOLEAN;
+  let fPrevElig: boolean;
 
   // simulate other buyers by reducing the current quantity on hand
   SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayInventory, Enum112.BOBBY_RAY_NEW);
@@ -581,7 +581,7 @@ function DailyUpdateOfBobbyRaysNewInventory(): void {
 function DailyUpdateOfBobbyRaysUsedInventory(): void {
   let i: INT16;
   let usItemIndex: UINT16;
-  let fPrevElig: BOOLEAN;
+  let fPrevElig: boolean;
 
   // simulate other buyers by reducing the current quantity on hand
   SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayUsedInventory, Enum112.BOBBY_RAY_USED);
@@ -659,7 +659,7 @@ function OrderBobbyRItem(usItemIndex: UINT16): void {
 function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   let sInventorySlot: INT16;
   let pInventoryArray: Pointer<STORE_INVENTORY>;
-  let fUsed: BOOLEAN;
+  let fUsed: boolean;
   let ubItemQuality: UINT8;
 
   if (usItemIndex >= BOBBY_R_USED_PURCHASE_OFFSET) {
@@ -676,7 +676,7 @@ function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   // find out which inventory slot that item is stored in
   sInventorySlot = GetInventorySlotForItem(pInventoryArray, usItemIndex, fUsed);
   if (sInventorySlot == -1) {
-    AssertMsg(FALSE, String("AddFreshBobbyRayInventory(), Item %d not found.  AM-0.", usItemIndex));
+    AssertMsg(false, String("AddFreshBobbyRayInventory(), Item %d not found.  AM-0.", usItemIndex));
     return;
   }
 
@@ -687,7 +687,7 @@ function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   pInventoryArray[sInventorySlot].ubQtyOnOrder = 0;
 }
 
-function GetInventorySlotForItem(pInventoryArray: Pointer<STORE_INVENTORY>, usItemIndex: UINT16, fUsed: BOOLEAN): INT16 {
+function GetInventorySlotForItem(pInventoryArray: Pointer<STORE_INVENTORY>, usItemIndex: UINT16, fUsed: boolean): INT16 {
   let i: INT16;
 
   for (i = 0; i < LaptopSaveInfo.usInventoryListLength[fUsed]; i++) {
@@ -701,7 +701,7 @@ function GetInventorySlotForItem(pInventoryArray: Pointer<STORE_INVENTORY>, usIt
   return -1;
 }
 
-function SimulateBobbyRayCustomer(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: BOOLEAN): void {
+function SimulateBobbyRayCustomer(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: boolean): void {
   let i: INT16;
   let ubItemsSold: UINT8;
 

@@ -10,15 +10,15 @@ const SUBTRACTOR_FOR_SQUAD_LIST = 0;
 let gsRadarX: INT16;
 let gsRadarY: INT16;
 let gusRadarImage: UINT32;
-let fImageLoaded: BOOLEAN = FALSE;
-let fRenderRadarScreen: BOOLEAN = TRUE;
+let fImageLoaded: boolean = false;
+let fRenderRadarScreen: boolean = true;
 let sSelectedSquadLine: INT16 = -1;
 
-let gfRadarCurrentGuyFlash: BOOLEAN = FALSE;
+let gfRadarCurrentGuyFlash: boolean = false;
 
 let gRadarRegionSquadList: MOUSE_REGION[] /* [NUMBER_OF_SQUADS] */;
 
-function InitRadarScreen(): BOOLEAN {
+function InitRadarScreen(): boolean {
   // Add region for radar
   MSYS_DefineRegion(addressof(gRadarRegion), RADAR_WINDOW_X, RADAR_WINDOW_TM_Y, RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, RADAR_WINDOW_TM_Y + RADAR_WINDOW_HEIGHT, MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
 
@@ -31,10 +31,10 @@ function InitRadarScreen(): BOOLEAN {
   gsRadarX = RADAR_WINDOW_X;
   gsRadarY = RADAR_WINDOW_TM_Y;
 
-  return TRUE;
+  return true;
 }
 
-function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): BOOLEAN {
+function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let zFilename: CHAR8[] /* [260] */;
   let cnt: INT32;
@@ -46,7 +46,7 @@ function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): BOOLEAN {
   if (fImageLoaded) {
     DeleteVideoObjectFromIndex(gusRadarImage);
 
-    fImageLoaded = FALSE;
+    fImageLoaded = false;
   }
 
   /* ARM - Restriction removed Nov.29/98.  Must be able to view different radar maps from map screen while underground!
@@ -67,32 +67,32 @@ function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): BOOLEAN {
 
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(gusRadarImage)));
 
-    fImageLoaded = TRUE;
+    fImageLoaded = true;
 
     if (GetVideoObject(addressof(hVObject), gusRadarImage)) {
       // ATE: Add a shade table!
-      hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, FALSE);
-      hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, FALSE);
+      hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
+      hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, false);
     }
   }
 
   // Dirty interface
-  fInterfacePanelDirty = TRUE;
+  fInterfacePanelDirty = true;
 
-  return TRUE;
+  return true;
 }
 
 function ClearOutRadarMapImage(): void {
   // If we have loaded, remove old one
   if (fImageLoaded) {
     DeleteVideoObjectFromIndex(gusRadarImage);
-    fImageLoaded = FALSE;
+    fImageLoaded = false;
   }
 }
 
 function MoveRadarScreen(): void {
   // check if we are allowed to do anything?
-  if (fRenderRadarScreen == FALSE) {
+  if (fRenderRadarScreen == false) {
     return;
   }
 
@@ -120,7 +120,7 @@ function RadarRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   let sRadarY: INT16;
 
   // check if we are allowed to do anything?
-  if (fRenderRadarScreen == FALSE) {
+  if (fRenderRadarScreen == false) {
     return;
   }
 
@@ -142,7 +142,7 @@ function RadarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   let sRadarY: INT16;
 
   // check if we are allowed to do anything?
-  if (fRenderRadarScreen == FALSE) {
+  if (fRenderRadarScreen == false) {
     return;
   }
 
@@ -212,14 +212,14 @@ function RenderRadarScreen(): void {
   CreateDestroyMouseRegionsForSquadList();
 
   // check if we are allowed to do anything?
-  if (fRenderRadarScreen == FALSE) {
+  if (fRenderRadarScreen == false) {
     RenderSquadList();
     return;
   }
 
-  if (AreInMeanwhile() == TRUE) {
+  if (AreInMeanwhile() == true) {
     // in a meanwhile, don't render any map
-    fImageLoaded = FALSE;
+    fImageLoaded = false;
   }
 
   if (fInterfacePanelDirty == DIRTYLEVEL2 && fImageLoaded) {
@@ -290,11 +290,11 @@ function RenderRadarScreen(): void {
   if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     if (gbPixelDepth == 16) {
       usLineColor = Get16BPPColor(FROMRGB(0, 255, 0));
-      RectangleDraw(TRUE, sRadarTLX, sRadarTLY, sRadarBRX, sRadarBRY - 1, usLineColor, pDestBuf);
+      RectangleDraw(true, sRadarTLX, sRadarTLY, sRadarBRX, sRadarBRY - 1, usLineColor, pDestBuf);
     } else if (gbPixelDepth == 8) {
       // DB Need to change this to a color from the 8-but standard palette
       usLineColor = COLOR_GREEN;
-      RectangleDraw8(TRUE, sRadarTLX + 1, sRadarTLY + 1, sRadarBRX + 1, sRadarBRY + 1, usLineColor, pDestBuf);
+      RectangleDraw8(true, sRadarTLX + 1, sRadarTLY + 1, sRadarBRX + 1, sRadarBRY + 1, usLineColor, pDestBuf);
     }
   }
 
@@ -305,7 +305,7 @@ function RenderRadarScreen(): void {
     gfRadarCurrentGuyFlash = !gfRadarCurrentGuyFlash;
   }
 
-  if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) && (fShowMapInventoryPool == TRUE)) {
+  if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) && (fShowMapInventoryPool == true)) {
     let iNumberOfItems: INT32 = 0;
 
     iNumberOfItems = GetTotalNumberOfItems();
@@ -339,7 +339,7 @@ function RenderRadarScreen(): void {
         }
 
         if (iCurrentlyHighLightedItem == iCounter) {
-          RectangleDraw(TRUE, sXSoldRadar, sYSoldRadar, sXSoldRadar + 1, sYSoldRadar + 1, usLineColor, pDestBuf);
+          RectangleDraw(true, sXSoldRadar, sYSoldRadar, sXSoldRadar + 1, sYSoldRadar + 1, usLineColor, pDestBuf);
         }
       }
     }
@@ -416,18 +416,18 @@ function RenderRadarScreen(): void {
             }
           }
 
-          RectangleDraw(TRUE, sXSoldRadar, sYSoldRadar, sXSoldRadar + 1, sYSoldRadar + 1, usLineColor, pDestBuf);
+          RectangleDraw(true, sXSoldRadar, sYSoldRadar, sXSoldRadar + 1, sYSoldRadar + 1, usLineColor, pDestBuf);
         } else if (gbPixelDepth == 8) {
           // DB Need to change this to a color from the 8-but standard palette
           usLineColor = COLOR_BLUE;
-          RectangleDraw8(TRUE, sXSoldRadar, sYSoldRadar, sXSoldRadar + 1, sYSoldRadar + 1, usLineColor, pDestBuf);
+          RectangleDraw8(true, sXSoldRadar, sYSoldRadar, sXSoldRadar + 1, sYSoldRadar + 1, usLineColor, pDestBuf);
         }
       }
     }
   }
   UnLockVideoSurface(FRAME_BUFFER);
 
-  if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) && (fShowMapInventoryPool == TRUE)) {
+  if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) && (fShowMapInventoryPool == true)) {
     InvalidateRegion(RADAR_WINDOW_X, gsRadarY, RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, gsRadarY + RADAR_WINDOW_HEIGHT);
   }
 
@@ -478,12 +478,12 @@ function AdjustWorldCenterFromRadarCoords(sRadarX: INT16, sRadarY: INT16): void 
 }
 
 function DisableRadarScreenRender(): void {
-  fRenderRadarScreen = FALSE;
+  fRenderRadarScreen = false;
   return;
 }
 
 function EnableRadarScreenRender(): void {
-  fRenderRadarScreen = TRUE;
+  fRenderRadarScreen = true;
   return;
 }
 
@@ -492,15 +492,15 @@ function ToggleRadarScreenRender(): void {
   return;
 }
 
-function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
+function CreateDestroyMouseRegionsForSquadList(): boolean {
   // will check the state of renderradarscreen flag and decide if we need to create mouse regions for
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let sCounter: INT16 = 0;
   let VObjectDesc: VOBJECT_DESC;
   let hHandle: HVOBJECT;
   let uiHandle: UINT32;
 
-  if ((fRenderRadarScreen == FALSE) && (fCreated == FALSE)) {
+  if ((fRenderRadarScreen == false) && (fCreated == false)) {
     // create regions
     // load graphics
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -532,8 +532,8 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
     sSelectedSquadLine = -1;
 
     // set fact regions are created
-    fCreated = TRUE;
-  } else if ((fRenderRadarScreen == TRUE) && (fCreated == TRUE)) {
+    fCreated = true;
+  } else if ((fRenderRadarScreen == true) && (fCreated == true)) {
     // destroy regions
 
     for (sCounter = 0; sCounter < Enum275.NUMBER_OF_SQUADS; sCounter++) {
@@ -541,7 +541,7 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
     }
 
     // set fact regions are destroyed
-    fCreated = FALSE;
+    fCreated = false;
 
     if (guiCurrentScreen == Enum26.GAME_SCREEN) {
       // dirty region
@@ -559,7 +559,7 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function RenderSquadList(): void {
@@ -589,7 +589,7 @@ function RenderSquadList(): void {
     if (sSelectedSquadLine == sCounter) {
       SetFontForeground(FONT_WHITE);
     } else {
-      if (IsSquadOnCurrentTacticalMap(sCounter) == TRUE) {
+      if (IsSquadOnCurrentTacticalMap(sCounter) == true) {
         if (CurrentSquad() == sCounter) {
           SetFontForeground(FONT_LTGREEN);
         } else {
@@ -617,7 +617,7 @@ function TacticalSquadListMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    if (IsSquadOnCurrentTacticalMap(iValue) == TRUE) {
+    if (IsSquadOnCurrentTacticalMap(iValue) == true) {
       sSelectedSquadLine = iValue;
     }
   }
@@ -636,12 +636,12 @@ function TacticalSquadListBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // find out if this squad is valid and on this map..if so, set as selected
-    if (IsSquadOnCurrentTacticalMap(iValue) == TRUE) {
+    if (IsSquadOnCurrentTacticalMap(iValue) == true) {
       // ok, squad is here, set as selected
-      SetCurrentSquad(iValue, FALSE);
+      SetCurrentSquad(iValue, false);
 
       // stop showing
-      fRenderRadarScreen = TRUE;
+      fRenderRadarScreen = true;
     }
   }
 

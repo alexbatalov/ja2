@@ -21,7 +21,7 @@ const MAX_INDIVIDUALS = 148;
 // they are, what team they are on, personality traits, etc.  The Merc section of the editor is
 // what is used to define these values.
 interface BASIC_SOLDIERCREATE_STRUCT {
-  fDetailedPlacement: BOOLEAN; // Specialized information.  Has a counterpart containing all info.
+  fDetailedPlacement: boolean; // Specialized information.  Has a counterpart containing all info.
   usStartingGridNo: UINT16; // Where the placement position is.
   bTeam: INT8; // The team this individual is part of.
   bRelativeAttributeLevel: INT8;
@@ -32,24 +32,24 @@ interface BASIC_SOLDIERCREATE_STRUCT {
   bBodyType: INT8; // up to 128 body types, -1 means random
   sPatrolGrid: INT16[] /* [MAXPATROLGRIDS] */; // possible locations to visit, patrol, etc.
   bPatrolCnt: INT8;
-  fOnRoof: BOOLEAN;
+  fOnRoof: boolean;
   ubSoldierClass: UINT8; // army, administrator, elite
   ubCivilianGroup: UINT8;
-  fPriorityExistance: BOOLEAN; // These slots are used first
-  fHasKeys: BOOLEAN;
+  fPriorityExistance: boolean; // These slots are used first
+  fHasKeys: boolean;
   PADDINGSLOTS: INT8[] /* [14] */;
 } // 50 bytes
 
 interface SOLDIERCREATE_STRUCT {
   // Bulletproofing so static detailed placements aren't used to tactically create soldiers.
   // Used by editor for validation purposes.
-  fStatic: BOOLEAN;
+  fStatic: boolean;
 
   // Profile information used for special NPCs and player mercs.
   ubProfile: UINT8;
-  fPlayerMerc: BOOLEAN;
-  fPlayerPlan: BOOLEAN;
-  fCopyProfileItemsOver: BOOLEAN;
+  fPlayerMerc: boolean;
+  fPlayerPlan: boolean;
+  fCopyProfileItemsOver: boolean;
 
   // Location information
   sSectorX: INT16;
@@ -96,25 +96,25 @@ interface SOLDIERCREATE_STRUCT {
   bPatrolCnt: INT8;
 
   // Kris:  Additions November 16, 1997 (padding down to 129 from 150)
-  fVisible: BOOLEAN;
+  fVisible: boolean;
   name: UINT16[] /* [10] */;
 
   ubSoldierClass: UINT8; // army, administrator, elite
 
-  fOnRoof: BOOLEAN;
+  fOnRoof: boolean;
 
   bSectorZ: INT8;
 
   pExistingSoldier: Pointer<SOLDIERTYPE>;
-  fUseExistingSoldier: BOOLEAN;
+  fUseExistingSoldier: boolean;
   ubCivilianGroup: UINT8;
 
-  fKillSlotIfOwnerDies: BOOLEAN;
+  fKillSlotIfOwnerDies: boolean;
   ubScheduleID: UINT8;
 
-  fUseGivenVehicle: BOOLEAN;
+  fUseGivenVehicle: boolean;
   bUseGivenVehicleID: INT8;
-  fHasKeys: BOOLEAN;
+  fHasKeys: boolean;
 
   bPadding: INT8[] /* [115] */;
 }

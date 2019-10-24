@@ -259,8 +259,8 @@ let giPersonnelATMStartButtonImage: INT32[] /* [3] */;
 let giPersonnelATMButton: INT32;
 let giPersonnelATMButtonImage: INT32;
 
-let fATMFlags: BOOLEAN = 0;
-let fOldATMFlags: BOOLEAN = 0;
+let fATMFlags: boolean = 0;
+let fOldATMFlags: boolean = 0;
 // the past team of the player
 // INT16 ubDeadCharactersList[ 256 ];
 // INT16 ubLeftCharactersList[ 256 ];
@@ -272,20 +272,20 @@ let iCurrentPersonSelectedId: INT32 = -1;
 let giCurrentUpperLeftPortraitNumber: INT32 = 0;
 
 // which mode are we showing?..current team?...or deadly departed?
-let fCurrentTeamMode: BOOLEAN = TRUE;
+let fCurrentTeamMode: boolean = true;
 
 // show the atm panel?
-let fShowAtmPanel: BOOLEAN = FALSE;
-let fShowAtmPanelStartButton: BOOLEAN = TRUE;
+let fShowAtmPanel: boolean = false;
+let fShowAtmPanelStartButton: boolean = true;
 
 // create buttons for scrolling departures
-let fCreatePeronnelDepartureButton: BOOLEAN = FALSE;
+let fCreatePeronnelDepartureButton: boolean = false;
 
 // waitr one frame
-let fOneFrameDelayInPersonnel: BOOLEAN = FALSE;
+let fOneFrameDelayInPersonnel: boolean = false;
 
 // whther or not we are creating mouse regions to place over portraits
-let fCreatePersonnelPortraitMouseRegions: BOOLEAN = FALSE;
+let fCreatePersonnelPortraitMouseRegions: boolean = false;
 
 // mouse regions
 let gPortraitMouseRegions: MOUSE_REGION[] /* [20] */;
@@ -297,7 +297,7 @@ let gMouseScrollPersonnelINV: MOUSE_REGION;
 let iCurPortraitId: INT32 = 0;
 
 // create mouse regions for past/current toggles
-let fCreateRegionsForPastCurrentToggle: BOOLEAN = FALSE;
+let fCreateRegionsForPastCurrentToggle: boolean = false;
 
 // atm misc functions
 
@@ -308,7 +308,7 @@ function GameInitPersonnel(): void {
 }
 
 function EnterPersonnel(): void {
-  fReDrawScreenFlag = TRUE;
+  fReDrawScreenFlag = true;
   iStartPersonId = -1;
 
   iCurrentPersonSelectedId = -1;
@@ -322,7 +322,7 @@ function EnterPersonnel(): void {
   LoadPersonnelGraphics();
 
   // show atm panel
-  fShowAtmPanelStartButton = TRUE;
+  fShowAtmPanelStartButton = true;
 
   // create buttons needed
   CreateDestroyButtonsForPersonnelDepartures();
@@ -338,13 +338,13 @@ function EnterPersonnel(): void {
     iCurrentPersonSelectedId = GetIdOfFirstDisplayedMerc();
   }
 
-  fCreatePersonnelPortraitMouseRegions = TRUE;
+  fCreatePersonnelPortraitMouseRegions = true;
 
   CreateDestroyMouseRegionsForPersonnelPortraits();
   // set states of en- dis able buttons
   // SetPersonnelButtonStates( );
 
-  fCreateRegionsForPastCurrentToggle = TRUE;
+  fCreateRegionsForPastCurrentToggle = true;
 
   CreateDestroyCurrentDepartedMouseRegions();
 
@@ -358,15 +358,15 @@ function EnterPersonnel(): void {
 }
 
 function ExitPersonnel(): void {
-  if (fCurrentTeamMode == FALSE) {
-    fCurrentTeamMode = TRUE;
+  if (fCurrentTeamMode == false) {
+    fCurrentTeamMode = true;
     CreateDestroyButtonsForDepartedTeamList();
-    fCurrentTeamMode = FALSE;
+    fCurrentTeamMode = false;
   }
 
   // get rid of atm panel buttons
-  fShowAtmPanelStartButton = FALSE;
-  fShowAtmPanel = FALSE;
+  fShowAtmPanelStartButton = false;
+  fShowAtmPanel = false;
   fATMFlags = 0;
   CreateDestroyStartATMButton();
   CreateDestroyATMButton();
@@ -386,12 +386,12 @@ function ExitPersonnel(): void {
   // delete buttons
   DeletePersonnelButtons();
 
-  fCreatePersonnelPortraitMouseRegions = FALSE;
+  fCreatePersonnelPortraitMouseRegions = false;
 
   // delete mouse regions
   CreateDestroyMouseRegionsForPersonnelPortraits();
 
-  fCreateRegionsForPastCurrentToggle = FALSE;
+  fCreateRegionsForPastCurrentToggle = false;
 
   CreateDestroyCurrentDepartedMouseRegions();
 
@@ -422,7 +422,7 @@ function HandlePersonnel(): void {
   return;
 }
 
-function LoadPersonnelGraphics(): BOOLEAN {
+function LoadPersonnelGraphics(): boolean {
   // load graphics needed for personnel screen
   let VObjectDesc: VOBJECT_DESC;
 
@@ -442,7 +442,7 @@ function LoadPersonnelGraphics(): BOOLEAN {
   FilenameForBPP("LAPTOP\\personnel_inventory.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPersonnelInventory)));
 
-  return TRUE;
+  return true;
 }
 
 function RemovePersonnelGraphics(): void {
@@ -537,12 +537,12 @@ function RenderPersonnel(): void {
   return;
 }
 
-function RenderPersonnelPictures(): BOOLEAN {
+function RenderPersonnelPictures(): boolean {
   // will render portraits of personnel onscreen
   // find person with iStartPersonId, unless it is -1, then find first bActive Merc on Staff
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let iCounter: INT32 = 0;
   let iSlot: INT32 = 0;
   let cnt: INT32 = 0;
@@ -555,24 +555,24 @@ function RenderPersonnelPictures(): BOOLEAN {
     cnt = gTacticalStatus.Team[pSoldier.value.bTeam].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pSoldier++) {
       if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.bActive) {
-        fFound = TRUE;
+        fFound = true;
         iStartPersonId = cnt;
         break;
       }
     }
     if (!fFound)
-      return FALSE;
+      return false;
   } else {
     iCurrentId = iStartPersonId;
-    fFound = TRUE;
+    fFound = true;
     cnt = iCurrentId;
   }
 
   while (fFound) {
     // the soldier's ID is found
     // render Face
-    fFound = FALSE;
-    RenderPersonnelFace(iCurrentId, iSlot, FALSE, FALSE, FALSE);
+    fFound = false;
+    RenderPersonnelFace(iCurrentId, iSlot, false, false, false);
     // draw stats
     RenderPersonnelStats(iCurrentId, iSlot);
     DisplayCharName(iCurrentId, iSlot);
@@ -582,20 +582,20 @@ function RenderPersonnelPictures(): BOOLEAN {
     for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
       if (pTeamSoldier.value.bLife >= OKLIFE && pTeamSoldier.value.bActive) {
         if (pTeamSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-          return FALSE;
+          return false;
         }
 
-        fFound = TRUE;
+        fFound = true;
         iSlot++;
         break;
       }
     }
     if (iSlot >= MAX_SLOTS)
-      fFound = FALSE;
+      fFound = false;
     iCurrentId = cnt;
   }
 
-  return TRUE;
+  return true;
 }
 
 function RenderPersonnelStats(iId: INT32, iSlot: INT32): void {
@@ -615,7 +615,7 @@ function RenderPersonnelStats(iId: INT32, iSlot: INT32): void {
   }
 }
 
-function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: BOOLEAN, fOther: BOOLEAN): BOOLEAN {
+function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: boolean, fOther: boolean): boolean {
   let sTemp: char[] /* [100] */;
   let hFaceHandle: HVOBJECT;
   let VObjectDesc: VOBJECT_DESC;
@@ -624,7 +624,7 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: B
   // draw face to soldier iId in slot iSlot
 
   // special case?..player generated merc
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     if ((50 < MercPtrs[iId].value.ubProfile) && (57 > MercPtrs[iId].value.ubProfile)) {
       sprintf(sTemp, "%s%03d.sti", FACES_DIR, gMercProfiles[MercPtrs[iId].value.ubProfile].ubFaceIndex);
     } else {
@@ -633,7 +633,7 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: B
   } else {
     // if this is not a valid merc
     if (!fDead && !fFired && !fOther) {
-      return TRUE;
+      return true;
     }
 
     if ((50 < iId) && (57 > iId)) {
@@ -643,9 +643,9 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: B
     }
   }
 
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     if (MercPtrs[iId].value.uiStatusFlags & SOLDIER_VEHICLE) {
-      return TRUE;
+      return true;
     }
   }
 
@@ -656,16 +656,16 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: B
   // Blt face to screen to
   GetVideoObject(addressof(hFaceHandle), guiFACE);
 
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     if (MercPtrs[iId].value.bLife <= 0) {
-      hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
+      hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
       // set the red pallete to the face
       SetObjectHandleShade(guiFACE, 0);
     }
   } else {
-    if (fDead == TRUE) {
-      hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
+    if (fDead == true) {
+      hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
       // set the red pallete to the face
       SetObjectHandleShade(guiFACE, 0);
@@ -678,14 +678,14 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: B
   if (!fCurrentTeamMode) {
     let iHeightOfText: INT32;
 
-    iHeightOfText = DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, 1, PERS_FONT(), PERS_FONT_COLOR, gMercProfiles[iId].zName, 0, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
+    iHeightOfText = DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, 1, PERS_FONT(), PERS_FONT_COLOR, gMercProfiles[iId].zName, 0, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
 
     // if the string will rap
     if ((iHeightOfText - 2) > GetFontHeight(PERS_FONT())) {
       // raise where we display it, and rap it
-      DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y - GetFontHeight(PERS_FONT())), IMAGE_NAME_WIDTH, 1, PERS_FONT(), PERS_FONT_COLOR, gMercProfiles[iId].zName, 0, FALSE, CENTER_JUSTIFIED);
+      DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y - GetFontHeight(PERS_FONT())), IMAGE_NAME_WIDTH, 1, PERS_FONT(), PERS_FONT_COLOR, gMercProfiles[iId].zName, 0, false, CENTER_JUSTIFIED);
     } else {
-      DrawTextToScreen(gMercProfiles[iId].zName, IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, PERS_FONT(), PERS_FONT_COLOR, 0, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[iId].zName, IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, PERS_FONT(), PERS_FONT_COLOR, 0, false, CENTER_JUSTIFIED);
     }
     //		DrawTextToScreen(gMercProfiles[ iId  ].zName, ( INT16 ) ( IMAGE_BOX_X+(iSlot*IMAGE_BOX_WIDTH) ), ( INT16 ) ( IMAGE_BOX_Y + 107 ), IMAGE_BOX_WITH_NO_BORDERS, PERS_FONT, PERS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED	);
   }
@@ -724,19 +724,19 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: B
 
   DeleteVideoObjectFromIndex(guiFACE);
 
-  return TRUE;
+  return true;
 }
 
-function NextPersonnelFace(): BOOLEAN {
+function NextPersonnelFace(): boolean {
   if (iCurrentPersonSelectedId == -1) {
-    return TRUE;
+    return true;
   }
 
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     // wrap around?
     if (iCurrentPersonSelectedId == GetNumberOfMercsDeadOrAliveOnPlayersTeam() - 1) {
       iCurrentPersonSelectedId = 0;
-      return (FALSE); // def added 3/14/99 to enable disable buttons properly
+      return (false); // def added 3/14/99 to enable disable buttons properly
     } else {
       iCurrentPersonSelectedId++;
     }
@@ -754,24 +754,24 @@ function NextPersonnelFace(): BOOLEAN {
     // get of this merc in this slot
 
     iCurrentPersonSelectedId = iCurPortraitId;
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 
-  return TRUE;
+  return true;
 }
 
-function PrevPersonnelFace(): BOOLEAN {
+function PrevPersonnelFace(): boolean {
   if (iCurrentPersonSelectedId == -1) {
-    return TRUE;
+    return true;
   }
 
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     // wrap around?
     if (iCurrentPersonSelectedId == 0) {
       iCurrentPersonSelectedId = GetNumberOfMercsDeadOrAliveOnPlayersTeam() - 1;
 
       if (iCurrentPersonSelectedId == 0) {
-        return (FALSE); // def added 3/14/99 to enable disable buttons properly
+        return (false); // def added 3/14/99 to enable disable buttons properly
       }
     } else {
       iCurrentPersonSelectedId--;
@@ -791,10 +791,10 @@ function PrevPersonnelFace(): BOOLEAN {
     // get of this merc in this slot
 
     iCurrentPersonSelectedId = iCurPortraitId;
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 
-  return TRUE;
+  return true;
 }
 
 function CreatePersonnelButtons(): void {
@@ -859,13 +859,13 @@ function LeftButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       PrevPersonnelFace();
       uiCurrentInventoryIndex = 0;
       guiSliderPosition = 0;
@@ -879,13 +879,13 @@ function LeftFFButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       PrevPersonnelFace();
       PrevPersonnelFace();
       PrevPersonnelFace();
@@ -903,13 +903,13 @@ function RightButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       NextPersonnelFace();
       uiCurrentInventoryIndex = 0;
       guiSliderPosition = 0;
@@ -923,13 +923,13 @@ function RightFFButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       NextPersonnelFace();
       NextPersonnelFace();
       NextPersonnelFace();
@@ -1020,14 +1020,14 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
   //
 
   // first get height of text to be displayed
-  iHeightOfText = DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, 1, PERS_FONT(), PERS_FONT_COLOR, gMercProfiles[Menptr[iId].ubProfile].zName, 0, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
+  iHeightOfText = DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, 1, PERS_FONT(), PERS_FONT_COLOR, gMercProfiles[Menptr[iId].ubProfile].zName, 0, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
 
   // if the string will rap
   if ((iHeightOfText - 2) > GetFontHeight(PERS_FONT())) {
     // raise where we display it, and rap it
-    DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y - GetFontHeight(PERS_FONT())), IMAGE_NAME_WIDTH, 1, PERS_FONT(), PERS_FONT_COLOR, gMercProfiles[Menptr[iId].ubProfile].zName, 0, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y - GetFontHeight(PERS_FONT())), IMAGE_NAME_WIDTH, 1, PERS_FONT(), PERS_FONT_COLOR, gMercProfiles[Menptr[iId].ubProfile].zName, 0, false, CENTER_JUSTIFIED);
   } else {
-    DrawTextToScreen(gMercProfiles[Menptr[iId].ubProfile].zName, IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, PERS_FONT(), PERS_FONT_COLOR, 0, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(gMercProfiles[Menptr[iId].ubProfile].zName, IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, PERS_FONT(), PERS_FONT_COLOR, 0, false, CENTER_JUSTIFIED);
   }
 
   /*
@@ -1067,7 +1067,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
   let sY: INT16;
   let uiHits: UINT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = addressof(Menptr[iId]);
-  let fAmIaRobot: BOOLEAN = AM_A_ROBOT(pSoldier);
+  let fAmIaRobot: boolean = AM_A_ROBOT(pSoldier);
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     return;
@@ -1533,7 +1533,7 @@ function RenderPersonnelScreenBackground(): void {
   let hHandle: HVOBJECT;
 
   // this fucntion will render the background for the personnel screen
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     // blit title
     GetVideoObject(addressof(hHandle), guiCURRENTTEAM);
   } else {
@@ -1546,7 +1546,7 @@ function RenderPersonnelScreenBackground(): void {
   return;
 }
 
-function LoadPersonnelScreenBackgroundGraphics(): BOOLEAN {
+function LoadPersonnelScreenBackgroundGraphics(): boolean {
   // will load the graphics for the personeel screen background
   let VObjectDesc: VOBJECT_DESC;
 
@@ -1560,7 +1560,7 @@ function LoadPersonnelScreenBackgroundGraphics(): BOOLEAN {
   FilenameForBPP("LAPTOP\\CurrentTeam.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCURRENTTEAM)));
 
-  return TRUE;
+  return true;
 }
 
 function DeletePersonnelScreenBackgroundGraphics(): void {
@@ -1571,15 +1571,15 @@ function DeletePersonnelScreenBackgroundGraphics(): void {
 }
 
 function CreateDestroyButtonsForPersonnelDepartures(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
   // create/ destroy personnel departures buttons as needed
 
   // create button?..if not created
-  if ((fCreatePeronnelDepartureButton == TRUE) && (fCreated == FALSE)) {
-    fCreated = TRUE;
-  } else if ((fCreatePeronnelDepartureButton == FALSE) && (fCreated == TRUE)) {
-    fCreated = FALSE;
+  if ((fCreatePeronnelDepartureButton == true) && (fCreated == false)) {
+    fCreated = true;
+  } else if ((fCreatePeronnelDepartureButton == false) && (fCreated == true)) {
+    fCreated = false;
   }
 
   return;
@@ -1626,10 +1626,10 @@ function GetNumberOfMercsDeadOrAliveOnPlayersTeam(): INT32 {
 function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
   // creates/ destroys mouse regions for portraits
 
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let sCounter: INT16 = 0;
 
-  if ((fCreated == FALSE) && (fCreatePersonnelPortraitMouseRegions == TRUE)) {
+  if ((fCreated == false) && (fCreatePersonnelPortraitMouseRegions == true)) {
     // create regions
     for (sCounter = 0; sCounter < PERSONNEL_PORTRAIT_NUMBER; sCounter++) {
       MSYS_DefineRegion(addressof(gPortraitMouseRegions[sCounter]), (SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), ((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
@@ -1637,19 +1637,19 @@ function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
       MSYS_AddRegion(addressof(gPortraitMouseRegions[sCounter]));
     }
 
-    fCreated = TRUE;
-  } else if ((fCreated == TRUE) && (fCreatePersonnelPortraitMouseRegions == FALSE)) {
+    fCreated = true;
+  } else if ((fCreated == true) && (fCreatePersonnelPortraitMouseRegions == false)) {
     // destroy regions
     for (sCounter = 0; sCounter < PERSONNEL_PORTRAIT_NUMBER; sCounter++) {
       MSYS_RemoveRegion(addressof(gPortraitMouseRegions[sCounter]));
     }
 
-    fCreated = FALSE;
+    fCreated = false;
   }
   return;
 }
 
-function DisplayPicturesOfCurrentTeam(): BOOLEAN {
+function DisplayPicturesOfCurrentTeam(): boolean {
   let iCounter: INT32 = 0;
   let iTotalOnTeam: INT32 = 0;
   let sTemp: char[] /* [100] */;
@@ -1664,9 +1664,9 @@ function DisplayPicturesOfCurrentTeam(): BOOLEAN {
   // get number of mercs on team
   iTotalOnTeam = GetNumberOfMercsDeadOrAliveOnPlayersTeam();
 
-  if ((iTotalOnTeam == 0) || (fCurrentTeamMode == FALSE)) {
+  if ((iTotalOnTeam == 0) || (fCurrentTeamMode == false)) {
     // nobody on team, leave
-    return TRUE;
+    return true;
   }
 
   pSoldier = MercPtrs[iCounter];
@@ -1675,7 +1675,7 @@ function DisplayPicturesOfCurrentTeam(): BOOLEAN {
   iId = gTacticalStatus.Team[pSoldier.value.bTeam].bFirstID;
 
   for (iCounter = 0; iCounter < iTotalOnTeam; iCnt++) {
-    if ((MercPtrs[iId + iCnt].value.bActive == TRUE)) {
+    if ((MercPtrs[iId + iCnt].value.bActive == true)) {
       // found the next actual guy
       if ((50 < MercPtrs[iId + iCnt].value.ubProfile) && (57 > MercPtrs[iId + iCnt].value.ubProfile)) {
         sprintf(sTemp, "%s%03d.sti", SMALL_FACES_DIR, gMercProfiles[MercPtrs[iId + iCnt].value.ubProfile].ubFaceIndex);
@@ -1695,7 +1695,7 @@ function DisplayPicturesOfCurrentTeam(): BOOLEAN {
       GetVideoObject(addressof(hFaceHandle), guiFACE);
 
       if (Menptr[iId + iCnt].bLife <= 0) {
-        hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
+        hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
         // set the red pallete to the face
         SetObjectHandleShade(guiFACE, 0);
@@ -1705,7 +1705,7 @@ function DisplayPicturesOfCurrentTeam(): BOOLEAN {
 
       if (Menptr[iId + iCnt].bLife <= 0) {
         // if the merc is dead, display it
-        DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_DEAD], (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORT_HEIGHT / 2), SMALL_PORTRAIT_WIDTH_NO_BORDERS, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_DEAD], (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORT_HEIGHT / 2), SMALL_PORTRAIT_WIDTH_NO_BORDERS, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       }
 
       DeleteVideoObjectFromIndex(guiFACE);
@@ -1713,7 +1713,7 @@ function DisplayPicturesOfCurrentTeam(): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -1727,7 +1727,7 @@ function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // get id of portrait
 
-    if (fCurrentTeamMode == TRUE) {
+    if (fCurrentTeamMode == true) {
       // valid portrait, set up id
       if (iPortraitId >= GetNumberOfMercsDeadOrAliveOnPlayersTeam()) {
         // not a valid id, leave
@@ -1735,13 +1735,13 @@ function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       }
 
       iCurrentPersonSelectedId = iPortraitId;
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     } else {
       if (iPortraitId >= GetNumberOfPastMercsOnPlayersTeam()) {
         return;
       }
       iCurrentPersonSelectedId = iPortraitId;
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       iCurPortraitId = iPortraitId;
     }
 
@@ -1757,7 +1757,7 @@ function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    if (fCurrentTeamMode == TRUE) {
+    if (fCurrentTeamMode == true) {
       // valid portrait, set up id
       if (iPortraitId >= GetNumberOfMercsDeadOrAliveOnPlayersTeam()) {
         // not a valid id, leave
@@ -1774,7 +1774,7 @@ function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       }
 
       iCurrentPersonSelectedId = iPortraitId;
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
 
       uiCurrentInventoryIndex = 0;
       guiSliderPosition = 0;
@@ -1796,8 +1796,8 @@ function DisplayFaceOfDisplayedMerc(): void {
 
     // if showing inventory, leave
 
-    if (fCurrentTeamMode == TRUE) {
-      RenderPersonnelFace(GetIdOfThisSlot(iCurrentPersonSelectedId), 0, FALSE, FALSE, FALSE);
+    if (fCurrentTeamMode == true) {
+      RenderPersonnelFace(GetIdOfThisSlot(iCurrentPersonSelectedId), 0, false, false, false);
       DisplayCharName(GetIdOfThisSlot(iCurrentPersonSelectedId), 0);
 
       //			if( fShowInventory == TRUE )
@@ -1831,7 +1831,7 @@ function DisplayInventoryForSelectedChar(): void {
 
   CreateDestroyPersonnelInventoryScrollButtons();
 
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     RenderInventoryForCharacter(GetIdOfThisSlot(iCurrentPersonSelectedId), 0);
   } else {
     RenderInventoryForCharacter(GetIdOfPastMercInSlot(iCurrentPersonSelectedId), 0);
@@ -1864,7 +1864,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   GetVideoObject(addressof(hHandle), guiPersonnelInventory);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, (397), (200), VO_BLT_SRCTRANSPARENCY, null);
 
-  if (fCurrentTeamMode == FALSE) {
+  if (fCurrentTeamMode == false) {
     return;
   }
 
@@ -1907,12 +1907,12 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         // BltVideoObjectOutlineShadowFromIndex( FRAME_BUFFER, GetInterfaceGraphicForItem( pItem ), pItem->ubGraphicNum, sCenX-2, sCenY+2);
 
         // blt the item
-        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX, sCenY, 0, FALSE);
+        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX, sCenY, 0, false);
 
         SetFont(FONT10ARIAL());
         SetFontForeground(FONT_WHITE);
         SetFontBackground(FONT_BLACK);
-        SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+        SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
         // grab item name
         LoadItemInfo(sIndex, sString, null);
@@ -2003,7 +2003,7 @@ function InventoryUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
       // up one element
       uiCurrentInventoryIndex--;
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
 
       FindPositionOfPersInvSlider();
     }
@@ -2014,7 +2014,7 @@ function InventoryUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
     // up one element
     uiCurrentInventoryIndex--;
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     FindPositionOfPersInvSlider();
   }
 }
@@ -2035,7 +2035,7 @@ function InventoryDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 
     // up one element
     uiCurrentInventoryIndex++;
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     FindPositionOfPersInvSlider();
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
@@ -2049,7 +2049,7 @@ function InventoryDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 
       // up one element
       uiCurrentInventoryIndex++;
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
 
       FindPositionOfPersInvSlider();
     }
@@ -2087,7 +2087,7 @@ function GetNumberOfInventoryItemsOnCurrentMerc(): INT32 {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // in current team mode?..nope...move on
-  if (fCurrentTeamMode == FALSE) {
+  if (fCurrentTeamMode == false) {
     return 0;
   }
 
@@ -2105,10 +2105,10 @@ function GetNumberOfInventoryItemsOnCurrentMerc(): INT32 {
 }
 
 function CreateDestroyPersonnelInventoryScrollButtons(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
   //	if( ( fShowInventory == TRUE ) && ( fCreated == FALSE ) )
-  if ((gubPersonnelInfoState == Enum109.PRSNL_INV) && (fCreated == FALSE)) {
+  if ((gubPersonnelInfoState == Enum109.PRSNL_INV) && (fCreated == false)) {
     // create buttons
     giPersonnelInventoryButtonsImages[0] = LoadButtonImage("LAPTOP\\personnel_inventory.sti", -1, 1, -1, 2, -1);
     giPersonnelInventoryButtons[0] = QuickCreateButton(giPersonnelInventoryButtonsImages[0], 176 + 397, 2 + 200, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, InventoryUpButtonCallback);
@@ -2122,10 +2122,10 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
 
     MSYS_DefineRegion(addressof(gMouseScrollPersonnelINV), X_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION, X_OF_PERSONNEL_SCROLL_REGION + X_SIZE_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION + Y_SIZE_OF_PERSONNEL_SCROLL_REGION, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, HandleSliderBarClickCallback);
 
-    fCreated = TRUE;
+    fCreated = true;
   }
   //	else if( ( fCreated == TRUE ) && ( fShowInventory == FALSE ) )
-  else if ((fCreated == TRUE) && (gubPersonnelInfoState != Enum108.PERSONNEL_INV_BTN)) {
+  else if ((fCreated == true) && (gubPersonnelInfoState != Enum108.PERSONNEL_INV_BTN)) {
     // destroy buttons
     RemoveButton(giPersonnelInventoryButtons[0]);
     UnloadButtonImage(giPersonnelInventoryButtonsImages[0]);
@@ -2134,7 +2134,7 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
 
     MSYS_RemoveRegion(addressof(gMouseScrollPersonnelINV));
 
-    fCreated = FALSE;
+    fCreated = false;
   }
 }
 
@@ -2149,7 +2149,7 @@ function DisplayNumberOnCurrentTeam(): void {
   SetFontBackground(FONT_BLACK);
   SetFontForeground(PERS_TEXT_FONT_COLOR);
 
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     swprintf(sString, "%s ( %d )", pPersonelTeamStrings[0], GetNumberOfMercsDeadOrAliveOnPlayersTeam());
     sX = PERS_CURR_TEAM_X;
   } else {
@@ -2176,7 +2176,7 @@ function DisplayNumberDeparted(): void {
   SetFontBackground(FONT_BLACK);
   SetFontForeground(PERS_TEXT_FONT_COLOR);
 
-  if (fCurrentTeamMode == FALSE) {
+  if (fCurrentTeamMode == false) {
     swprintf(sString, "%s ( %d )", pPersonelTeamStrings[1], GetNumberOfPastMercsOnPlayersTeam());
     sX = PERS_CURR_TEAM_X;
   } else {
@@ -2344,7 +2344,7 @@ function DisplayCostOfCurrentTeam(): void {
   SetFontBackground(FONT_BLACK);
   SetFontForeground(PERS_TEXT_FONT_COLOR);
 
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     // daily cost
     mprintf(PERS_CURR_TEAM_COST_X, PERS_CURR_TEAM_COST_Y, pPersonelTeamStrings[2]);
 
@@ -2393,7 +2393,7 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
   let iCounter: INT32 = 0;
   let bCurrentList: INT8 = 0;
   let bCurrentListValue: Pointer<INT16> = LaptopSaveInfo.ubDeadCharactersList;
-  let fNotDone: BOOLEAN = TRUE;
+  let fNotDone: boolean = true;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiLoopCounter: UINT32;
 
@@ -2410,7 +2410,7 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
     */
     // if we are at the end of
     if (uiLoopCounter == 255 && bCurrentList == 2) {
-      fNotDone = FALSE;
+      fNotDone = false;
       continue;
     }
 
@@ -2445,7 +2445,7 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
         // health
 
         // if the soldier is a pow, dont use the health cause it aint known
-        pSoldier = FindSoldierByProfileID(cnt, FALSE);
+        pSoldier = FindSoldierByProfileID(cnt, false);
         if (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
           continue;
         }
@@ -2545,7 +2545,7 @@ function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
   let iCounter: INT32 = 0;
   let bCurrentList: INT8 = 0;
   let bCurrentListValue: Pointer<INT16> = LaptopSaveInfo.ubDeadCharactersList;
-  let fNotDone: BOOLEAN = TRUE;
+  let fNotDone: boolean = true;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiLoopCounter: UINT32;
 
@@ -2562,7 +2562,7 @@ function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
     */
     // if we are at the end of
     if (uiLoopCounter == 255 && bCurrentList == 2) {
-      fNotDone = FALSE;
+      fNotDone = false;
       continue;
     }
 
@@ -2596,7 +2596,7 @@ function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
       case 0:
         // health
 
-        pSoldier = FindSoldierByProfileID(cnt, FALSE);
+        pSoldier = FindSoldierByProfileID(cnt, false);
         if (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
           continue;
         }
@@ -3006,7 +3006,7 @@ function GetAvgStatOfPastTeamStat(iStat: INT32): INT32 {
   let iCounter: INT32 = 0;
   let bCurrentList: INT8 = 0;
   let bCurrentListValue: Pointer<INT16> = LaptopSaveInfo.ubDeadCharactersList;
-  let fNotDone: BOOLEAN = TRUE;
+  let fNotDone: boolean = true;
   let uiLoopCounter: UINT32;
 
   // run through active soldiers
@@ -3024,7 +3024,7 @@ function GetAvgStatOfPastTeamStat(iStat: INT32): INT32 {
 
     // if we are at the end of
     if (uiLoopCounter == 255 && bCurrentList == 2) {
-      fNotDone = FALSE;
+      fNotDone = false;
       continue;
     }
 
@@ -3153,12 +3153,12 @@ function DisplayAverageStatValuesForCurrentTeam(): void {
   mprintf(sX, PERS_STAT_AVG_Y, pPersonnelCurrentTeamStatsStrings[1]);
 
   // nobody on team leave
-  if ((GetNumberOfMercsDeadOrAliveOnPlayersTeam() == 0) && (fCurrentTeamMode == TRUE)) {
+  if ((GetNumberOfMercsDeadOrAliveOnPlayersTeam() == 0) && (fCurrentTeamMode == true)) {
     return;
   }
 
   // check if in past team and nobody on past team
-  if ((GetNumberOfPastMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == FALSE)) {
+  if ((GetNumberOfPastMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == false)) {
     return;
   }
 
@@ -3170,7 +3170,7 @@ function DisplayAverageStatValuesForCurrentTeam(): void {
       SetFontForeground(PERS_TEXT_FONT_COLOR);
     }
 
-    if (fCurrentTeamMode == TRUE) {
+    if (fCurrentTeamMode == true) {
       let iValue: INT32 = GetAvgStatOfCurrentTeamStat(iCounter);
 
       // if there are no values
@@ -3213,16 +3213,16 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
   mprintf(sX, PERS_STAT_AVG_Y, pPersonnelCurrentTeamStatsStrings[0]);
 
   // nobody on team leave
-  if ((GetNumberOfMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == TRUE)) {
+  if ((GetNumberOfMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == true)) {
     return;
   }
 
-  if ((GetNumberOfPastMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == FALSE)) {
+  if ((GetNumberOfPastMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == false)) {
     return;
   }
 
   for (iCounter = 0; iCounter < 11; iCounter++) {
-    if (fCurrentTeamMode == TRUE) {
+    if (fCurrentTeamMode == true) {
       iId = GetIdOfMercWithLowestStat(iCounter);
       //			if( iId == -1 )
       //				continue;
@@ -3239,7 +3239,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       SetFontForeground(PERS_TEXT_FONT_COLOR);
     }
 
-    if (fCurrentTeamMode == TRUE) {
+    if (fCurrentTeamMode == true) {
       // get name
       if (iId == -1)
         swprintf(sString, "%s", pPOWStrings[1]);
@@ -3255,7 +3255,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
     switch (iCounter) {
       case 0:
         // health
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           if (iId == -1)
             iStat = -1;
           else
@@ -3266,7 +3266,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 1:
         // agility
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bAgility;
         } else {
           iStat = gMercProfiles[iDepartedId].bAgility;
@@ -3275,7 +3275,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 2:
         // dexterity
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bDexterity;
         } else {
           iStat = gMercProfiles[iDepartedId].bDexterity;
@@ -3284,7 +3284,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 3:
         // strength
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bStrength;
         } else {
           iStat = gMercProfiles[iDepartedId].bStrength;
@@ -3293,7 +3293,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 4:
         // leadership
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bLeadership;
         } else {
           iStat = gMercProfiles[iDepartedId].bLeadership;
@@ -3301,7 +3301,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 5:
         // wisdom
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bWisdom;
         } else {
           iStat = gMercProfiles[iDepartedId].bWisdom;
@@ -3309,7 +3309,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 6:
         // exper
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bExpLevel;
         } else {
           iStat = gMercProfiles[iDepartedId].bExpLevel;
@@ -3317,7 +3317,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 7:
         // mrkmanship
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bMarksmanship;
         } else {
           iStat = gMercProfiles[iDepartedId].bMarksmanship;
@@ -3325,7 +3325,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 8:
         // mech
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bMechanical;
         } else {
           iStat = gMercProfiles[iDepartedId].bMechanical;
@@ -3333,7 +3333,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 9:
         // exp
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bExplosive;
         } else {
           iStat = gMercProfiles[iDepartedId].bExplosive;
@@ -3341,7 +3341,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
         break;
       case 10:
         // med
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bMedical;
         } else {
           iStat = gMercProfiles[iDepartedId].bMedical;
@@ -3385,16 +3385,16 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
   mprintf(sX, PERS_STAT_AVG_Y, pPersonnelCurrentTeamStatsStrings[2]);
 
   // nobody on team leave
-  if ((GetNumberOfMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == TRUE)) {
+  if ((GetNumberOfMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == true)) {
     return;
   }
 
-  if ((GetNumberOfPastMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == FALSE)) {
+  if ((GetNumberOfPastMercsOnPlayersTeam() == 0) && (fCurrentTeamMode == false)) {
     return;
   }
 
   for (iCounter = 0; iCounter < 11; iCounter++) {
-    if (fCurrentTeamMode == TRUE)
+    if (fCurrentTeamMode == true)
       iId = GetIdOfMercWithHighestStat(iCounter);
     else
       iId = GetIdOfDepartedMercWithHighestStat(iCounter);
@@ -3409,7 +3409,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       SetFontForeground(PERS_TEXT_FONT_COLOR);
     }
 
-    if (fCurrentTeamMode == TRUE) {
+    if (fCurrentTeamMode == true) {
       // get name
       if (iId == -1)
         swprintf(sString, "%s", pPOWStrings[1]);
@@ -3425,7 +3425,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
     switch (iCounter) {
       case 0:
         // health
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           if (iId == -1)
             iStat = -1;
           else
@@ -3436,7 +3436,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 1:
         // agility
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bAgility;
         } else {
           iStat = gMercProfiles[iId].bAgility;
@@ -3445,7 +3445,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 2:
         // dexterity
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bDexterity;
         } else {
           iStat = gMercProfiles[iId].bDexterity;
@@ -3454,7 +3454,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 3:
         // strength
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bStrength;
         } else {
           iStat = gMercProfiles[iId].bStrength;
@@ -3463,7 +3463,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 4:
         // leadership
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bLeadership;
         } else {
           iStat = gMercProfiles[iId].bLeadership;
@@ -3471,7 +3471,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 5:
         // wisdom
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bWisdom;
         } else {
           iStat = gMercProfiles[iId].bWisdom;
@@ -3479,7 +3479,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 6:
         // exper
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bExpLevel;
         } else {
           iStat = gMercProfiles[iId].bExpLevel;
@@ -3487,7 +3487,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 7:
         // mrkmanship
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bMarksmanship;
         } else {
           iStat = gMercProfiles[iId].bMarksmanship;
@@ -3495,7 +3495,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 8:
         // mech
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bMechanical;
         } else {
           iStat = gMercProfiles[iId].bMechanical;
@@ -3503,7 +3503,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 9:
         // exp
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bExplosive;
         } else {
           iStat = gMercProfiles[iId].bExplosive;
@@ -3511,7 +3511,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
         break;
       case 10:
         // med
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iStat = MercPtrs[iId].value.bMedical;
         } else {
           iStat = gMercProfiles[iId].bMedical;
@@ -3631,7 +3631,7 @@ function DisplayStateOfPastTeamMembers(): void {
   SetFontForeground(PERS_TEXT_FONT_COLOR);
 
   // diplsya numbers fired, dead and othered
-  if (fCurrentTeamMode == FALSE) {
+  if (fCurrentTeamMode == false) {
     // dead
     mprintf(PERS_CURR_TEAM_COST_X, PERS_CURR_TEAM_COST_Y, pPersonelTeamStrings[5]);
     swprintf(sString, "%d", GetNumberOfDeadOnPastTeam());
@@ -3662,11 +3662,11 @@ function DisplayStateOfPastTeamMembers(): void {
 }
 
 function CreateDestroyCurrentDepartedMouseRegions(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
   // will arbitrate the creation/deletion of mouse regions for current/past team toggles
 
-  if ((fCreateRegionsForPastCurrentToggle == TRUE) && (fCreated == FALSE)) {
+  if ((fCreateRegionsForPastCurrentToggle == true) && (fCreated == false)) {
     // not created, create
     MSYS_DefineRegion(addressof(gTogglePastCurrentTeam[0]), PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_CUR_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_CUR_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelCurrentTeamCallback);
 
@@ -3676,13 +3676,13 @@ function CreateDestroyCurrentDepartedMouseRegions(): void {
 
     MSYS_AddRegion(addressof(gTogglePastCurrentTeam[1]));
 
-    fCreated = TRUE;
-  } else if ((fCreateRegionsForPastCurrentToggle == FALSE) && (fCreated == TRUE)) {
+    fCreated = true;
+  } else if ((fCreateRegionsForPastCurrentToggle == false) && (fCreated == true)) {
     // created, get rid of
 
     MSYS_RemoveRegion(addressof(gTogglePastCurrentTeam[0]));
     MSYS_RemoveRegion(addressof(gTogglePastCurrentTeam[1]));
-    fCreated = FALSE;
+    fCreated = false;
   }
 
   return;
@@ -3690,9 +3690,9 @@ function CreateDestroyCurrentDepartedMouseRegions(): void {
 
 function PersonnelCurrentTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    fCurrentTeamMode = TRUE;
+    fCurrentTeamMode = true;
 
-    if (fCurrentTeamMode == TRUE) {
+    if (fCurrentTeamMode == true) {
       iCurrentPersonSelectedId = -1;
 
       // how many people do we have?..if you have someone set default to 0
@@ -3703,16 +3703,16 @@ function PersonnelCurrentTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
       }
     }
 
-    fCurrentTeamMode = TRUE;
-    fReDrawScreenFlag = TRUE;
+    fCurrentTeamMode = true;
+    fReDrawScreenFlag = true;
   }
 }
 
 function PersonnelDepartedTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    fCurrentTeamMode = FALSE;
+    fCurrentTeamMode = false;
 
-    if (fCurrentTeamMode == FALSE) {
+    if (fCurrentTeamMode == false) {
       iCurrentPersonSelectedId = -1;
 
       // how many departed people?
@@ -3724,15 +3724,15 @@ function PersonnelDepartedTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: 
       gubPersonnelInfoState = Enum108.PERSONNEL_STAT_BTN;
     }
 
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 }
 
 function CreateDestroyButtonsForDepartedTeamList(): void {
   // creates/ destroys the buttons for cdeparted team list
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
-  if ((fCurrentTeamMode == FALSE) && (fCreated == FALSE)) {
+  if ((fCurrentTeamMode == false) && (fCreated == false)) {
     // not created. create
     giPersonnelButtonImage[4] = LoadButtonImage("LAPTOP\\departuresbuttons.sti", -1, 0, -1, 2, -1);
     giPersonnelButton[4] = QuickCreateButton(giPersonnelButtonImage[4], PERS_DEPARTED_UP_X, PERS_DEPARTED_UP_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DepartedUpCallBack);
@@ -3745,15 +3745,15 @@ function CreateDestroyButtonsForDepartedTeamList(): void {
     SetButtonCursor(giPersonnelButton[4], Enum317.CURSOR_LAPTOP_SCREEN);
     SetButtonCursor(giPersonnelButton[5], Enum317.CURSOR_LAPTOP_SCREEN);
 
-    fCreated = TRUE;
-  } else if ((fCurrentTeamMode == TRUE) && (fCreated == TRUE)) {
+    fCreated = true;
+  } else if ((fCurrentTeamMode == true) && (fCreated == true)) {
     // created. destroy
     RemoveButton(giPersonnelButton[4]);
     UnloadButtonImage(giPersonnelButtonImage[4]);
     RemoveButton(giPersonnelButton[5]);
     UnloadButtonImage(giPersonnelButtonImage[5]);
-    fCreated = FALSE;
-    fReDrawScreenFlag = TRUE;
+    fCreated = false;
+    fReDrawScreenFlag = true;
   }
 }
 
@@ -3771,7 +3771,7 @@ function DepartedUpCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
       if (giCurrentUpperLeftPortraitNumber - 20 >= 0) {
         giCurrentUpperLeftPortraitNumber -= 20;
-        fReDrawScreenFlag = TRUE;
+        fReDrawScreenFlag = true;
       }
     }
   }
@@ -3790,7 +3790,7 @@ function DepartedDownCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       if ((giCurrentUpperLeftPortraitNumber + 20) < (GetNumberOfDeadOnPastTeam() + GetNumberOfLeftOnPastTeam() + GetNumberOfOtherOnPastTeam())) {
         giCurrentUpperLeftPortraitNumber += 20;
-        fReDrawScreenFlag = TRUE;
+        fReDrawScreenFlag = true;
       }
     }
   }
@@ -3803,10 +3803,10 @@ function DisplayPastMercsPortraits(): void {
   let iCounter: INT32 = 0;
   let iCounterA: INT32 = 0;
   let iStartArray: INT32 = 0; // 0 = dead list, 1 = fired list, 2 = other list
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
 
   // not time to display
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     return;
   }
 
@@ -3862,7 +3862,7 @@ function DisplayPastMercsPortraits(): void {
     for (iCounterA; iCounter < 20 && iCounterA < 256; iCounterA++) {
       // show dead pictures
       if (LaptopSaveInfo.ubDeadCharactersList[iCounterA] != -1) {
-        DisplayPortraitOfPastMerc(LaptopSaveInfo.ubDeadCharactersList[iCounterA], iCounter, TRUE, FALSE, FALSE);
+        DisplayPortraitOfPastMerc(LaptopSaveInfo.ubDeadCharactersList[iCounterA], iCounter, true, false, false);
         iCounter++;
       }
     }
@@ -3875,7 +3875,7 @@ function DisplayPastMercsPortraits(): void {
     for (iCounterA; (iCounter < 20 && iCounterA < 256); iCounterA++) {
       // show fired pics
       if (LaptopSaveInfo.ubLeftCharactersList[iCounterA] != -1) {
-        DisplayPortraitOfPastMerc(LaptopSaveInfo.ubLeftCharactersList[iCounterA], iCounter, FALSE, TRUE, FALSE);
+        DisplayPortraitOfPastMerc(LaptopSaveInfo.ubLeftCharactersList[iCounterA], iCounter, false, true, false);
         iCounter++;
       }
     }
@@ -3888,7 +3888,7 @@ function DisplayPastMercsPortraits(): void {
     for (iCounterA; (iCounter < 20 && iCounterA < 256); iCounterA++) {
       // show other pics
       if (LaptopSaveInfo.ubOtherCharactersList[iCounterA] != -1) {
-        DisplayPortraitOfPastMerc(LaptopSaveInfo.ubOtherCharactersList[iCounterA], iCounter, FALSE, FALSE, TRUE);
+        DisplayPortraitOfPastMerc(LaptopSaveInfo.ubOtherCharactersList[iCounterA], iCounter, false, false, true);
         iCounter++;
       }
     }
@@ -3905,7 +3905,7 @@ function GetIdOfPastMercInSlot(iSlot: INT32): INT32 {
   // returns ID of Merc in this slot
 
   // not time to display
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     return -1;
   }
 
@@ -3944,7 +3944,7 @@ function GetIdOfPastMercInSlot(iSlot: INT32): INT32 {
   return LaptopSaveInfo.ubOtherCharactersList[iCounterA - 1];
 }
 
-function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: BOOLEAN, fFired: BOOLEAN, fOther: BOOLEAN): BOOLEAN {
+function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, fFired: boolean, fOther: boolean): boolean {
   let sTemp: char[] /* [100] */;
   let hFaceHandle: HVOBJECT;
   let VObjectDesc: VOBJECT_DESC;
@@ -3967,7 +3967,7 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: BOOLEAN, 
   GetVideoObject(addressof(hFaceHandle), guiFACE);
 
   if (fDead) {
-    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
+    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // set the red pallete to the face
     SetObjectHandleShade(guiFACE, 0);
@@ -3995,7 +3995,7 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: BOOLEAN, 
 
   DeleteVideoObjectFromIndex(guiFACE);
 
-  return TRUE;
+  return true;
 }
 
 function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void {
@@ -4155,7 +4155,7 @@ function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void
 
 function EnableDisableDeparturesButtons(): void {
   // will enable or disable departures buttons based on upperleft picutre index value
-  if ((fCurrentTeamMode == TRUE) || (fNewMailFlag == TRUE)) {
+  if ((fCurrentTeamMode == true) || (fNewMailFlag == true)) {
     return;
   }
 
@@ -4287,7 +4287,7 @@ function DisplayPersonnelTextOnTitleBar(): void {
   // reset the shadow
 }
 
-function DisplayHighLightBox(): BOOLEAN {
+function DisplayHighLightBox(): boolean {
   // will display highlight box around selected merc
   let VObjectDesc: VOBJECT_DESC;
   let uiBox: UINT32 = 0;
@@ -4298,7 +4298,7 @@ function DisplayHighLightBox(): BOOLEAN {
   // is the current selected face valid?
   if (iCurrentPersonSelectedId == -1) {
     // no, leave
-    return FALSE;
+    return false;
   }
 
   // bounding
@@ -4313,7 +4313,7 @@ function DisplayHighLightBox(): BOOLEAN {
   // deleteit
   DeleteVideoObjectFromIndex(uiBox);
 
-  return TRUE;
+  return true;
 }
 
 // add to dead list
@@ -4377,7 +4377,7 @@ function AddCharacterToOtherList(pSoldier: Pointer<SOLDIERTYPE>): void {
 // If you have hired a merc before, then the they left for whatever reason, and now you are hiring them again,
 // we must get rid of them from the departed section in the personnel screen.  ( wouldnt make sense for them
 // to be on your team list, and departed list )
-function RemoveNewlyHiredMercFromPersonnelDepartedList(ubProfile: UINT8): BOOLEAN {
+function RemoveNewlyHiredMercFromPersonnelDepartedList(ubProfile: UINT8): boolean {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -4385,25 +4385,25 @@ function RemoveNewlyHiredMercFromPersonnelDepartedList(ubProfile: UINT8): BOOLEA
     if (LaptopSaveInfo.ubDeadCharactersList[iCounter] == ubProfile) {
       // Reset the fact that they were once hired
       LaptopSaveInfo.ubDeadCharactersList[iCounter] = -1;
-      return TRUE;
+      return true;
     }
 
     // are they already in the other list?
     if (LaptopSaveInfo.ubLeftCharactersList[iCounter] == ubProfile) {
       // Reset the fact that they were once hired
       LaptopSaveInfo.ubLeftCharactersList[iCounter] = -1;
-      return TRUE;
+      return true;
     }
 
     // are they already in the list?
     if (LaptopSaveInfo.ubOtherCharactersList[iCounter] == ubProfile) {
       // Reset the fact that they were once hired
       LaptopSaveInfo.ubOtherCharactersList[iCounter] = -1;
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 // grab the id of the first merc being displayed
@@ -4415,7 +4415,7 @@ function GetIdOfFirstDisplayedMerc(): INT32 {
   // set current soldier
   pSoldier = MercPtrs[cnt];
 
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     // run through list of soldiers on players current team
     // cnt = gTacticalStatus.Team[ pSoldier->bTeam ].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pSoldier++) {
@@ -4438,7 +4438,7 @@ function GetIdOfThisSlot(iSlot: INT32): INT32 {
   // set current soldier
   pSoldier = MercPtrs[cnt];
 
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     // run through list of soldiers on players current team
     cnt = gTacticalStatus.Team[pSoldier.value.bTeam].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pSoldier++) {
@@ -4460,7 +4460,7 @@ function GetIdOfThisSlot(iSlot: INT32): INT32 {
   return 0;
 }
 
-function RenderAtmPanel(): BOOLEAN {
+function RenderAtmPanel(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let uiBox: UINT32 = 0;
   let hHandle: HVOBJECT;
@@ -4517,14 +4517,14 @@ function RenderAtmPanel(): BOOLEAN {
     CreateDestroyStartATMButton();
     CreateDestroyATMButton();
   }
-  return TRUE;
+  return true;
 }
 
 function CreateDestroyStartATMButton(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   // create/destroy atm start button as needed
 
-  if ((fCreated == FALSE) && (fShowAtmPanelStartButton == TRUE)) {
+  if ((fCreated == false) && (fShowAtmPanelStartButton == true)) {
     // not created, must create
 
     /*
@@ -4570,8 +4570,8 @@ function CreateDestroyStartATMButton(): void {
     SpecifyButtonFont(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN], PERS_FONT());
     SetButtonCursor(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN], Enum317.CURSOR_LAPTOP_SCREEN);
 
-    fCreated = TRUE;
-  } else if ((fCreated == TRUE) && (fShowAtmPanelStartButton == FALSE)) {
+    fCreated = true;
+  } else if ((fCreated == true) && (fShowAtmPanelStartButton == false)) {
     // stop showing
     /*
     RemoveButton( giPersonnelATMStartButton[ 0 ] );
@@ -4584,7 +4584,7 @@ function CreateDestroyStartATMButton(): void {
     RemoveButton(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]);
     UnloadButtonImage(giPersonnelATMStartButtonImage[Enum108.PERSONNEL_INV_BTN]);
 
-    fCreated = FALSE;
+    fCreated = false;
   }
 }
 
@@ -4661,7 +4661,7 @@ function HandleSliderBarClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
       uiCurrentInventoryIndex = iCurrentItemValue;
 
       // force update
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
   }
 }
@@ -4785,15 +4785,15 @@ function ATMStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fReDrawScreenFlag = TRUE;
-      fShowAtmPanel = TRUE;
-      fShowAtmPanelStartButton = FALSE;
+      fReDrawScreenFlag = true;
+      fShowAtmPanel = true;
+      fShowAtmPanelStartButton = false;
       fATMFlags = 0;
     }
   }
@@ -4804,7 +4804,7 @@ function PersonnelINVStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
     ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -4818,7 +4818,7 @@ function PersonnelStatStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
     ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
     ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -4832,7 +4832,7 @@ function EmployementInfoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
     ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
     ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -4853,19 +4853,19 @@ function ATMOther2ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
     switch (iValue) {
       case (Enum107.DEPOSIT_ATM):
         fATMFlags = 2;
-        fReDrawScreenFlag = TRUE;
+        fReDrawScreenFlag = true;
         ButtonList[giPersonnelATMSideButton[Enum107.WIDTHDRAWL_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
         break;
       case (Enum107.WIDTHDRAWL_ATM):
         fATMFlags = 3;
-        fReDrawScreenFlag = TRUE;
+        fReDrawScreenFlag = true;
         ButtonList[giPersonnelATMSideButton[Enum107.DEPOSIT_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
         break;
     }
@@ -4885,7 +4885,7 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -4893,7 +4893,7 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (iCurrentPersonSelectedId != -1) {
-        if (fCurrentTeamMode == TRUE) {
+        if (fCurrentTeamMode == true) {
           iId = GetIdOfThisSlot(iCurrentPersonSelectedId);
           cnt = 0;
 
@@ -4904,8 +4904,8 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
             case (Enum107.OK_ATM):
               if (fATMFlags == 0) {
                 fATMFlags = 1;
-                fReDrawScreenFlag = TRUE;
-                fOneFrameDelayInPersonnel = TRUE;
+                fReDrawScreenFlag = true;
+                fOneFrameDelayInPersonnel = true;
               } else if (fATMFlags == 2) {
                 // deposit from merc to account
                 if (GetFundsOnMerc(pSoldier) >= wcstol(sTransferString, null, 10)) {
@@ -4915,19 +4915,19 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
                     iValue = (wcstol(sTransferString, null, 10) - (wcstol(sTransferString, null, 10) % 10));
                     swprintf(sTransferString, "%d", iValue);
-                    fReDrawScreenFlag = TRUE;
+                    fReDrawScreenFlag = true;
                   } else {
                     // transfer
                     TransferFundsFromMercToBank(pSoldier, wcstol(sTransferString, null, 10));
                     sTransferString[0] = 0;
-                    fReDrawScreenFlag = TRUE;
+                    fReDrawScreenFlag = true;
                   }
                 } else {
                   fOldATMFlags = fATMFlags;
                   fATMFlags = 4;
                   iValue = GetFundsOnMerc(pSoldier);
                   swprintf(sTransferString, "%d", iValue);
-                  fReDrawScreenFlag = TRUE;
+                  fReDrawScreenFlag = true;
                 }
               } else if (fATMFlags == 3) {
                 // deposit from merc to account
@@ -4938,33 +4938,33 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
                     iValue = (wcstol(sTransferString, null, 10) - (wcstol(sTransferString, null, 10) % 10));
                     swprintf(sTransferString, "%d", iValue);
-                    fReDrawScreenFlag = TRUE;
+                    fReDrawScreenFlag = true;
                   } else {
                     // transfer
                     TransferFundsFromBankToMerc(pSoldier, wcstol(sTransferString, null, 10));
                     sTransferString[0] = 0;
-                    fReDrawScreenFlag = TRUE;
+                    fReDrawScreenFlag = true;
                   }
                 } else {
                   fOldATMFlags = fATMFlags;
                   fATMFlags = 4;
                   iValue = LaptopSaveInfo.iCurrentBalance;
                   swprintf(sTransferString, "%d", iValue);
-                  fReDrawScreenFlag = TRUE;
+                  fReDrawScreenFlag = true;
                 }
               } else if (fATMFlags == 4) {
                 fATMFlags = fOldATMFlags;
-                fReDrawScreenFlag = TRUE;
+                fReDrawScreenFlag = true;
               }
               break;
             case (Enum107.DEPOSIT_ATM):
               fATMFlags = 2;
-              fReDrawScreenFlag = TRUE;
+              fReDrawScreenFlag = true;
 
               break;
             case (Enum107.WIDTHDRAWL_ATM):
               fATMFlags = 3;
-              fReDrawScreenFlag = TRUE;
+              fReDrawScreenFlag = true;
               break;
             case (Enum107.CANCEL_ATM):
               if (sTransferString[0] != 0) {
@@ -4974,14 +4974,14 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
                 ButtonList[giPersonnelATMSideButton[Enum107.WIDTHDRAWL_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
                 ButtonList[giPersonnelATMSideButton[Enum107.DEPOSIT_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
               } else {
-                fShowAtmPanel = FALSE;
-                fShowAtmPanelStartButton = TRUE;
+                fShowAtmPanel = false;
+                fShowAtmPanelStartButton = true;
               }
-              fReDrawScreenFlag = TRUE;
+              fReDrawScreenFlag = true;
               break;
             case (Enum107.CLEAR_ATM):
               sTransferString[0] = 0;
-              fReDrawScreenFlag = TRUE;
+              fReDrawScreenFlag = true;
               break;
           }
         }
@@ -5002,7 +5002,7 @@ function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
     }
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -5013,7 +5013,7 @@ function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
         ;
       sTransferString[iCounter] = (sZero[0] + iValue);
       sTransferString[iCounter + 1] = 0;
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
 
       // gone too far
       if (StringPixLength(sTransferString, ATM_FONT()) >= ATM_DISPLAY_WIDTH - 10) {
@@ -5030,7 +5030,7 @@ function DisplayATMAmount(): void {
   let sZero: CHAR16[] /* [2] */ = "0";
   let iCounter: INT32 = 0;
 
-  if (fShowAtmPanel == FALSE) {
+  if (fShowAtmPanel == false) {
     return;
   }
 
@@ -5108,7 +5108,7 @@ function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return iCurrentAmount;
 }
 
-function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): BOOLEAN {
+function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
   let iCurrentPocket: INT32 = 0;
   let iAmountLeftToTake: INT32 = iCurrentBalance;
   let ObjectToRemove: OBJECTTYPE;
@@ -5116,7 +5116,7 @@ function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
   // move this amount of money from the grunt to the bank
   // error check
   if (pSoldier == null) {
-    return FALSE;
+    return false;
   }
 
   // run through grunts pockets and count all the spare change
@@ -5139,26 +5139,26 @@ function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
   if (iAmountLeftToTake != 0) {
     // something wrong
     AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_FROM_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), (iCurrentBalance - iAmountLeftToTake));
-    return FALSE;
+    return false;
   } else {
     // everything ok
     AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_FROM_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), (iCurrentBalance));
-    return TRUE;
+    return true;
   }
 }
 
-function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): BOOLEAN {
+function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
   let pMoneyObject: OBJECTTYPE;
 
   // move this amount of money from the grunt to the bank
   // error check
   if (pSoldier == null) {
-    return FALSE;
+    return false;
   }
 
   // make sure we are giving them some money
   if (iCurrentBalance <= 0) {
-    return FALSE;
+    return false;
   }
 
   // current balance
@@ -5177,14 +5177,14 @@ function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
   pMoneyObject.uiMoneyAmount = iCurrentBalance;
 
   // now auto place money object
-  if (AutoPlaceObject(pSoldier, addressof(pMoneyObject), TRUE) == TRUE) {
+  if (AutoPlaceObject(pSoldier, addressof(pMoneyObject), true) == true) {
     // now place transaction
     AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iCurrentBalance));
   } else {
     // error, notify player that merc doesn't have the spce for this much cash
   }
 
-  return TRUE;
+  return true;
 }
 
 function DisplayATMStrings(): void {
@@ -5192,33 +5192,33 @@ function DisplayATMStrings(): void {
 
   switch (fATMFlags) {
     case (0):
-      if (fShowAtmPanelStartButton == FALSE) {
-        DisplayWrappedString(509, (80), 81, 2, ATM_FONT(), FONT_WHITE, sATMText[3], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      if (fShowAtmPanelStartButton == false) {
+        DisplayWrappedString(509, (80), 81, 2, ATM_FONT(), FONT_WHITE, sATMText[3], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       }
       break;
     case (2):
       if (sTransferString[0] != 0) {
-        DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[0], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[0], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
         // DisplayWrappedString(509, ( INT16 )( 80 + GetFontHeight( ATM_FONT ) ), 81, 2, ATM_FONT, FONT_WHITE, sATMText[ 1 ], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED );
       } else {
-        DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[2], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[2], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       }
       break;
     case (3):
       if (sTransferString[0] != 0) {
-        DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[0], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[0], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
         // DisplayWrappedString(509, ( INT16 )( 80 + GetFontHeight( ATM_FONT ) ), 81, 2, ATM_FONT, FONT_WHITE, sATMText[ 1 ], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED );
       } else {
-        DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[2], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[2], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       }
       break;
     case (4):
       // not enough money
-      DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[4], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[4], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       break;
     case (5):
       // not enough money
-      DisplayWrappedString(509, 73, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[5], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DisplayWrappedString(509, 73, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[5], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       break;
   }
 }
@@ -5227,7 +5227,7 @@ function UpDateStateOfStartButton(): void {
   let iId: INT32 = 0;
 
   // start button being shown?
-  if (fShowAtmPanelStartButton == FALSE) {
+  if (fShowAtmPanelStartButton == false) {
     return;
   }
 
@@ -5247,7 +5247,7 @@ function UpDateStateOfStartButton(): void {
   }
 
   // if in current mercs and the currently selected guy is valid, enable button, else disable it
-  if (fCurrentTeamMode == TRUE) {
+  if (fCurrentTeamMode == true) {
     // is the current guy valid
     if (GetNumberOfMercsDeadOrAliveOnPlayersTeam() > 0) {
       // EnableButton( giPersonnelATMStartButton[ 0 ] );
@@ -5267,12 +5267,12 @@ function UpDateStateOfStartButton(): void {
             //						fShowInventory = FALSE;
             gubPersonnelInfoState = Enum109.PRSNL_STATS;
 
-            fPausedReDrawScreenFlag = TRUE;
+            fPausedReDrawScreenFlag = true;
           }
 
           if (fATMFlags) {
             fATMFlags = 0;
-            fPausedReDrawScreenFlag = TRUE;
+            fPausedReDrawScreenFlag = true;
           }
         }
       }
@@ -5344,7 +5344,7 @@ function HandlePersonnelKeyboard(): void {
 
   GetCursorPos(addressof(MousePos));
 
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam >= '0') && (InputEvent.usParam <= '9')) {
       if ((fShowAtmPanel) && (fATMFlags != 0)) {
         iValue = (InputEvent.usParam - '0');
@@ -5353,7 +5353,7 @@ function HandlePersonnelKeyboard(): void {
           ;
         sTransferString[iCounter] = (sZero[0] + iValue);
         sTransferString[iCounter + 1] = 0;
-        fPausedReDrawScreenFlag = TRUE;
+        fPausedReDrawScreenFlag = true;
 
         // gone too far
         if (StringPixLength(sTransferString, ATM_FONT()) >= ATM_DISPLAY_WIDTH - 10) {
@@ -5398,15 +5398,15 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   RestoreClipRegionToFullScreenForRectangle(uiDestPitchBYTES);
-  RectangleDraw(TRUE, (ATM_DISPLAY_X + ATM_DISPLAY_WIDTH) - iLength - 2, ATM_DISPLAY_Y + 35, ATM_DISPLAY_X + ATM_DISPLAY_WIDTH + 1, ATM_DISPLAY_Y + iHeight + 36, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
+  RectangleDraw(true, (ATM_DISPLAY_X + ATM_DISPLAY_WIDTH) - iLength - 2, ATM_DISPLAY_Y + 35, ATM_DISPLAY_X + ATM_DISPLAY_WIDTH + 1, ATM_DISPLAY_Y + iHeight + 36, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
 function HandleTimedAtmModes(): void {
-  /* static */ let fOldAtmMode: BOOLEAN = 0;
+  /* static */ let fOldAtmMode: boolean = 0;
   /* static */ let uiBaseTime: UINT32 = 0;
 
-  if (fShowAtmPanel == FALSE) {
+  if (fShowAtmPanel == false) {
     return;
   }
 
@@ -5414,7 +5414,7 @@ function HandleTimedAtmModes(): void {
   if (fATMFlags != fOldAtmMode) {
     uiBaseTime = GetJA2Clock();
     fOldAtmMode = fATMFlags;
-    fPausedReDrawScreenFlag = TRUE;
+    fPausedReDrawScreenFlag = true;
   }
 
   if ((GetJA2Clock() - uiBaseTime) > DELAY_PER_MODE_CHANGE_IN_ATM) {
@@ -5423,33 +5423,33 @@ function HandleTimedAtmModes(): void {
       case (5):
         // insufficient funds ended
         fATMFlags = fOldATMFlags;
-        fPausedReDrawScreenFlag = TRUE;
+        fPausedReDrawScreenFlag = true;
         break;
     }
   }
 }
 
-function IsPastMercDead(iId: INT32): BOOLEAN {
+function IsPastMercDead(iId: INT32): boolean {
   if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == Enum106.DEPARTED_DEAD) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function IsPastMercFired(iId: INT32): BOOLEAN {
+function IsPastMercFired(iId: INT32): boolean {
   if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == Enum106.DEPARTED_FIRED) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function IsPastMercOther(iId: INT32): BOOLEAN {
+function IsPastMercOther(iId: INT32): boolean {
   if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == Enum106.DEPARTED_OTHER) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 

@@ -1,8 +1,8 @@
 interface EditorItemsInfo {
-  fGameInit: BOOLEAN; // Used for initializing save variables the first time.
+  fGameInit: boolean; // Used for initializing save variables the first time.
                       // This flag is initialize at
-  fKill: BOOLEAN; // flagged for deallocation.
-  fActive: BOOLEAN; // currently active
+  fKill: boolean; // flagged for deallocation.
+  fActive: boolean; // currently active
   pusItemIndex: Pointer<UINT16>; // a dynamic array of Item indices
   uiBuffer: UINT32; // index of buffer
   uiItemType: UINT32; // Weapons, ammo, armour, explosives, equipment

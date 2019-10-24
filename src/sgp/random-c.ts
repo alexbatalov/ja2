@@ -21,7 +21,7 @@ function Random(uiRange: UINT32): UINT32 {
   return rand() * uiRange / RAND_MAX % uiRange;
 }
 
-function Chance(uiChance: UINT32): BOOLEAN {
+function Chance(uiChance: UINT32): boolean {
   return (Random(100) < uiChance);
 }
 
@@ -43,6 +43,6 @@ function PreRandom(uiRange: UINT32): UINT32 {
   return uiNum;
 }
 
-function PreChance(uiChance: UINT32): BOOLEAN {
+function PreChance(uiChance: UINT32): boolean {
   return (PreRandom(100) < uiChance);
 }

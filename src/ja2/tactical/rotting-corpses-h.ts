@@ -95,7 +95,7 @@ interface ROTTING_CORPSE_DEFINITION {
   bVisible: INT8;
   bNumServicingCrows: INT8;
   ubProfile: UINT8;
-  fHeadTaken: BOOLEAN;
+  fHeadTaken: boolean;
   ubAIWarningValue: UINT8;
 
   ubFiller: UINT8[] /* [12] */;
@@ -103,7 +103,7 @@ interface ROTTING_CORPSE_DEFINITION {
 
 interface ROTTING_CORPSE {
   def: ROTTING_CORPSE_DEFINITION;
-  fActivated: BOOLEAN;
+  fActivated: boolean;
 
   pAniTile: Pointer<ANITILE>;
 
@@ -115,7 +115,7 @@ interface ROTTING_CORPSE {
   dXPos: FLOAT;
   dYPos: FLOAT;
 
-  fAttractCrowsOnlyWhenOnScreen: BOOLEAN;
+  fAttractCrowsOnlyWhenOnScreen: boolean;
   iID: INT32;
 }
 

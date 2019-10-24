@@ -7,38 +7,38 @@ let White16BPPPalette: UINT16[] /* [256] */;
 let guiShadePercent: FLOAT = 0.48;
 let guiBrightPercent: FLOAT = 1.1;
 
-function ShadesCalculateTables(p8BPPPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
+function ShadesCalculateTables(p8BPPPalette: Pointer<SGPPaletteEntry>): boolean {
   let uiCount: UINT32;
 
   // Green palette
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[0], 0, 255, 0, TRUE);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[0], 0, 255, 0, true);
   // Blue palette
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[HVOBJECT_SHADE_TABLES], 0, 0, 255, TRUE);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[HVOBJECT_SHADE_TABLES], 0, 0, 255, true);
   // Yellow palette
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[HVOBJECT_SHADE_TABLES + 1], 255, 255, 0, TRUE);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[HVOBJECT_SHADE_TABLES + 1], 255, 255, 0, true);
   // Red palette
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[HVOBJECT_SHADE_TABLES + 2], 255, 0, 0, TRUE);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[HVOBJECT_SHADE_TABLES + 2], 255, 0, 0, true);
 
   // these are the brightening tables, 115%-150% brighter than original
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[1], 293, 293, 293, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[2], 281, 281, 281, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[3], 268, 268, 268, FALSE);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[1], 293, 293, 293, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[2], 281, 281, 281, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[3], 268, 268, 268, false);
 
   // palette 4 is the non-modified palette.
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[4], 255, 255, 255, FALSE);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[4], 255, 255, 255, false);
 
   // the rest are darkening tables, right down to all-black.
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[5], 195, 195, 195, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[6], 165, 165, 165, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[7], 135, 135, 135, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[8], 105, 105, 105, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[9], 75, 75, 75, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[10], 45, 45, 45, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[11], 36, 36, 36, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[12], 27, 27, 27, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[13], 18, 18, 18, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[14], 9, 9, 9, FALSE);
-  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[15], 0, 0, 0, FALSE);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[5], 195, 195, 195, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[6], 165, 165, 165, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[7], 135, 135, 135, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[8], 105, 105, 105, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[9], 75, 75, 75, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[10], 45, 45, 45, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[11], 36, 36, 36, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[12], 27, 27, 27, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[13], 18, 18, 18, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[14], 9, 9, 9, false);
+  ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[15], 0, 0, 0, false);
 
   // Remap the shade colors to the original palette
   for (uiCount = 0; uiCount < (HVOBJECT_SHADE_TABLES + 3); uiCount++) {
@@ -46,10 +46,10 @@ function ShadesCalculateTables(p8BPPPalette: Pointer<SGPPaletteEntry>): BOOLEAN 
     ubColorTables[uiCount][0] = 0;
   }
 
-  return TRUE;
+  return true;
 }
 
-function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPalette: Pointer<SGPPaletteEntry>, usRed: UINT16, usGreen: UINT16, usBlue: UINT16, fMono: BOOLEAN): BOOLEAN {
+function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPalette: Pointer<SGPPaletteEntry>, usRed: UINT16, usGreen: UINT16, usBlue: UINT16, fMono: boolean): boolean {
   let cnt: UINT32;
   let lumin: UINT32;
   let rmod: UINT32;
@@ -76,7 +76,7 @@ function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPale
     pDestPalette[cnt].peBlue = __min(bmod, 255);
   }
 
-  return TRUE;
+  return true;
 }
 
 function FindIndecies(pSrcPalette: Pointer<SGPPaletteEntry>, pMapPalette: Pointer<SGPPaletteEntry>, pTable: Pointer<UINT8>): void {
@@ -238,8 +238,8 @@ function Init8BitTables(): void {
   Set8BPPPalette(Shaded8BPPPalettes[4]);
 }
 
-function Set8BitModePalette(pPal: Pointer<SGPPaletteEntry>): BOOLEAN {
+function Set8BitModePalette(pPal: Pointer<SGPPaletteEntry>): boolean {
   ShadesCalculateTables(pPal);
   Set8BPPPalette(pPal);
-  return TRUE;
+  return true;
 }

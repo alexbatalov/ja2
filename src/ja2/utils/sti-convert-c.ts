@@ -188,17 +188,17 @@ const COMPRESS_RUN_LIMIT = 0x7F;
 const TCI = 0x00;
 const WI = 0xFF;
 
-function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UINT32>, ppSubImageBuffer: Pointer<Pointer<UINT8>>, pusNumberOfSubImages: Pointer<UINT16>, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, fFlags: UINT32): BOOLEAN {
+function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UINT32>, ppSubImageBuffer: Pointer<Pointer<UINT8>>, pusNumberOfSubImages: Pointer<UINT16>, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, fFlags: UINT32): boolean {
   let sCurrX: INT16;
   let sCurrY: INT16;
   let sNextX: INT16;
   let sNextY: INT16;
   let pOutputNext: Pointer<UINT8>;
   let pTemp: Pointer<UINT8>;
-  let fContinue: BOOLEAN = TRUE;
-  let fOk: BOOLEAN = TRUE;
-  let fStore: BOOLEAN;
-  let fNextExists: BOOLEAN;
+  let fContinue: boolean = true;
+  let fOk: boolean = true;
+  let fStore: boolean;
+  let fNextExists: boolean;
   let pCurrSubImage: Pointer<STCISubImage>;
   let TempSubImage: STCISubImage;
   let uiCompressedSize: UINT32 = 0;
@@ -223,7 +223,7 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
     ppSubImageBuffer.value = MemAlloc(STCI_SUBIMAGE_SIZE);
     if (!(ppSubImageBuffer.value)) {
       MemFree(ppDest.value);
-      return FALSE;
+      return false;
     }
     pCurrSubImage = ppSubImageBuffer.value;
     pCurrSubImage.value.sOffsetX = 0;
@@ -233,25 +233,25 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
     if (!(fFlags & CONVERT_ETRLE_NO_SUBIMAGE_SHRINKING)) {
       if (!(DetermineSubImageUsedSize(p8BPPBuffer, usWidth, usHeight, pCurrSubImage))) {
         MemFree(ppDest.value);
-        return FALSE;
+        return false;
       }
     }
     uiSubImageCompressedSize = ETRLECompressSubImage(pOutputNext, uiSpaceLeft, p8BPPBuffer, usWidth, usHeight, pCurrSubImage);
     if (uiSubImageCompressedSize == 0) {
       MemFree(ppDest.value);
-      return FALSE;
+      return false;
     } else {
       pCurrSubImage.value.uiDataOffset = 0;
       pCurrSubImage.value.uiDataLength = uiSubImageCompressedSize;
       puiDestLen.value = uiSubImageCompressedSize;
-      return TRUE;
+      return true;
     }
   } else {
     // skip any initial wall bytes to find the first subimage
     if (!GoPastWall(addressof(sCurrX), addressof(sCurrY), usWidth, usHeight, p8BPPBuffer, 0, 0)) {
       // no subimages!
       MemFree(ppDest.value);
-      return FALSE;
+      return false;
     }
     ppSubImageBuffer.value = null;
     pusNumberOfSubImages.value = 0;
@@ -260,7 +260,7 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
       // allocate more memory for SubImage structures, and set the current pointer to the last one
       pTemp = MemRealloc(ppSubImageBuffer.value, (pusNumberOfSubImages.value + 1) * STCI_SUBIMAGE_SIZE);
       if (pTemp == null) {
-        fOk = FALSE;
+        fOk = false;
         break;
       } else {
         ppSubImageBuffer.value = pTemp;
@@ -271,7 +271,7 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
       pCurrSubImage.value.sOffsetY = sCurrY;
       // determine the subimage's full size
       if (!DetermineSubImageSize(p8BPPBuffer, usWidth, usHeight, pCurrSubImage)) {
-        fOk = FALSE;
+        fOk = false;
         break;
       }
       if (pusNumberOfSubImages.value == 0 && pCurrSubImage.value.usWidth == usWidth && pCurrSubImage.value.usHeight == usHeight) {
@@ -281,7 +281,7 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
       memcpy(addressof(TempSubImage), pCurrSubImage, STCI_SUBIMAGE_SIZE);
       if (DetermineSubImageUsedSize(p8BPPBuffer, usWidth, usHeight, addressof(TempSubImage))) {
         // image has nontransparent data; we definitely want to store it
-        fStore = TRUE;
+        fStore = true;
         if (!(fFlags & CONVERT_ETRLE_NO_SUBIMAGE_SHRINKING)) {
           memcpy(pCurrSubImage, addressof(TempSubImage), STCI_SUBIMAGE_SIZE);
         }
@@ -291,21 +291,21 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
         // find the next subimage
         fNextExists = GoToNextSubImage(addressof(sNextX), addressof(sNextY), p8BPPBuffer, usWidth, usHeight, sCurrX, sCurrY);
         if (fNextExists && sNextY == sCurrY) {
-          fStore = TRUE;
+          fStore = true;
         } else {
           // junk transparent section at the end of the line!
-          fStore = FALSE;
+          fStore = false;
         }
       } else {
         // transparent data; discarding
-        fStore = FALSE;
+        fStore = false;
       }
 
       if (fStore) {
         // we want to store this subimage!
         uiSubImageCompressedSize = ETRLECompressSubImage(pOutputNext, uiSpaceLeft, p8BPPBuffer, usWidth, usHeight, pCurrSubImage);
         if (uiSubImageCompressedSize == 0) {
-          fOk = FALSE;
+          fOk = false;
           break;
         }
         pCurrSubImage.value.uiDataOffset = (puiDestLen.value - uiSpaceLeft);
@@ -326,13 +326,13 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
   }
   if (fOk) {
     puiDestLen.value -= uiSpaceLeft;
-    return TRUE;
+    return true;
   } else {
     MemFree(ppDest.value);
     if (ppSubImageBuffer.value != null) {
       MemFree(ppSubImageBuffer.value);
     }
-    return FALSE;
+    return false;
   }
 }
 
@@ -423,18 +423,18 @@ function ETRLECompress(pDest: Pointer<UINT8>, uiDestLen: UINT32, pSource: Pointe
   }
 }
 
-function DetermineOffset(puiOffset: Pointer<UINT32>, usWidth: UINT16, usHeight: UINT16, sX: INT16, sY: INT16): BOOLEAN {
+function DetermineOffset(puiOffset: Pointer<UINT32>, usWidth: UINT16, usHeight: UINT16, sX: INT16, sY: INT16): boolean {
   if (sX < 0 || sY < 0) {
-    return FALSE;
+    return false;
   }
   puiOffset.value = sY * usWidth + sX;
   if (puiOffset.value >= usWidth * usHeight) {
-    return FALSE;
+    return false;
   }
-  return TRUE;
+  return true;
 }
 
-function GoPastWall(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, usWidth: UINT16, usHeight: UINT16, pCurrent: Pointer<UINT8>, sCurrX: INT16, sCurrY: INT16): BOOLEAN {
+function GoPastWall(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, usWidth: UINT16, usHeight: UINT16, pCurrent: Pointer<UINT8>, sCurrX: INT16, sCurrY: INT16): boolean {
   // If the current pixel is a wall, we assume that it is on a horizontal wall and
   // search right, wrapping around the end of scanlines, until we find non-wall data.
   while (pCurrent.value == WI) {
@@ -446,24 +446,24 @@ function GoPastWall(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, usWidth: UIN
       sCurrY++;
       if (sCurrY == usHeight) {
         // no more images!
-        return FALSE;
+        return false;
       }
     }
   }
 
   psNewX.value = sCurrX;
   psNewY.value = sCurrY;
-  return TRUE;
+  return true;
 }
 
-function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, sOrigX: INT16, sOrigY: INT16): BOOLEAN {
+function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, sOrigX: INT16, sOrigY: INT16): boolean {
   // return the coordinates of the next subimage in the image
   // (either to the right, or the first of the next row down
   let sCurrX: INT16 = sOrigX;
   let sCurrY: INT16 = sOrigY;
   let uiOffset: UINT32;
   let pCurrent: Pointer<UINT8>;
-  let fFound: BOOLEAN = TRUE;
+  let fFound: boolean = true;
 
   CHECKF(DetermineOffset(addressof(uiOffset), usWidth, usHeight, sCurrX, sCurrY))
   pCurrent = p8BPPBuffer + uiOffset;
@@ -484,7 +484,7 @@ function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPB
       pCurrent++;
       if (sCurrX == usWidth) {
         // there are no more images to the right!
-        fFound = FALSE;
+        fFound = false;
         break;
       }
     }
@@ -495,7 +495,7 @@ function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPB
         pCurrent++;
         if (sCurrX == usWidth) {
           // there are no more images to the right!
-          fFound = FALSE;
+          fFound = false;
           break;
         }
       }
@@ -503,7 +503,7 @@ function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPB
     if (fFound) {
       psNewX.value = sCurrX;
       psNewY.value = sCurrY;
-      return TRUE;
+      return true;
     } else {
       // go back to the beginning of the subimage and scan down
       sCurrX = sOrigX;
@@ -515,7 +515,7 @@ function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPB
         pCurrent += usWidth;
         if (sCurrY == usHeight) {
           // there are no more images!
-          return FALSE;
+          return false;
         }
       }
       // We are now at the horizontal wall at the bottom of the current image
@@ -524,14 +524,14 @@ function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPB
   }
 }
 
-function DetermineSubImageSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): BOOLEAN {
+function DetermineSubImageSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): boolean {
   let uiOffset: UINT32;
   let pCurrent: Pointer<UINT8>;
   let sCurrX: INT16 = pSubImage.value.sOffsetX;
   let sCurrY: INT16 = pSubImage.value.sOffsetY;
 
   if (!DetermineOffset(addressof(uiOffset), usWidth, usHeight, sCurrX, sCurrY)) {
-    return FALSE;
+    return false;
   }
 
   // determine width
@@ -550,10 +550,10 @@ function DetermineSubImageSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usH
   } while (pCurrent.value != WI && sCurrY < usHeight);
   pSubImage.value.usHeight = sCurrY - pSubImage.value.sOffsetY;
 
-  return TRUE;
+  return true;
 }
 
-function DetermineSubImageUsedSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): BOOLEAN {
+function DetermineSubImageUsedSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): boolean {
   let sNewValue: INT16;
   // to do our search loops properly, we can't change the height and width of the
   // subimages until we're done all of our shrinks
@@ -566,34 +566,34 @@ function DetermineSubImageUsedSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16,
   if (CheckForDataInRows(addressof(sNewValue), 1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
     usNewY = sNewValue;
   } else {
-    return FALSE;
+    return false;
   }
   // shrink from the bottom
   if (CheckForDataInRows(addressof(sNewValue), -1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
     usNewHeight = sNewValue - usNewY + 1;
   } else {
-    return FALSE;
+    return false;
   }
   // shrink from the left
   if (CheckForDataInCols(addressof(sNewValue), 1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
     usNewX = sNewValue;
   } else {
-    return FALSE;
+    return false;
   }
   // shrink from the right
   if (CheckForDataInCols(addressof(sNewValue), -1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
     usNewWidth = sNewValue - usNewX + 1;
   } else {
-    return FALSE;
+    return false;
   }
   pSubImage.value.sOffsetX = usNewX;
   pSubImage.value.sOffsetY = usNewY;
   pSubImage.value.usHeight = usNewHeight;
   pSubImage.value.usWidth = usNewWidth;
-  return TRUE;
+  return true;
 }
 
-function CheckForDataInRows(psYValue: Pointer<INT16>, sYIncrement: INT16, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): BOOLEAN {
+function CheckForDataInRows(psYValue: Pointer<INT16>, sYIncrement: INT16, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): boolean {
   let sCurrY: INT16;
   let uiOffset: UINT32;
   let pCurrent: Pointer<UINT8>;
@@ -605,25 +605,25 @@ function CheckForDataInRows(psYValue: Pointer<INT16>, sYIncrement: INT16, p8BPPB
     sCurrY = pSubImage.value.sOffsetY + pSubImage.value.usHeight - 1;
   } else {
     // invalid value!
-    return FALSE;
+    return false;
   }
   for (usLoop = 0; usLoop < pSubImage.value.usHeight; usLoop++) {
     if (!DetermineOffset(addressof(uiOffset), usWidth, usHeight, pSubImage.value.sOffsetX, sCurrY)) {
-      return FALSE;
+      return false;
     }
     pCurrent = p8BPPBuffer + uiOffset;
     pCurrent = CheckForDataInRowOrColumn(pCurrent, 1, pSubImage.value.usWidth);
     if (pCurrent) {
       // non-null data found!
       psYValue.value = sCurrY;
-      return TRUE;
+      return true;
     }
     sCurrY += sYIncrement;
   }
-  return FALSE;
+  return false;
 }
 
-function CheckForDataInCols(psXValue: Pointer<INT16>, sXIncrement: INT16, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): BOOLEAN {
+function CheckForDataInCols(psXValue: Pointer<INT16>, sXIncrement: INT16, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): boolean {
   let sCurrX: INT16;
   let uiOffset: UINT32;
   let pCurrent: Pointer<UINT8>;
@@ -635,22 +635,22 @@ function CheckForDataInCols(psXValue: Pointer<INT16>, sXIncrement: INT16, p8BPPB
     sCurrX = pSubImage.value.sOffsetX + pSubImage.value.usWidth - 1;
   } else {
     // invalid value!
-    return FALSE;
+    return false;
   }
   for (usLoop = 0; usLoop < pSubImage.value.usWidth; usLoop++) {
     if (!DetermineOffset(addressof(uiOffset), usWidth, usHeight, sCurrX, pSubImage.value.sOffsetY)) {
-      return FALSE;
+      return false;
     }
     pCurrent = p8BPPBuffer + uiOffset;
     pCurrent = CheckForDataInRowOrColumn(pCurrent, usWidth, pSubImage.value.usHeight);
     if (pCurrent) {
       // non-null data found!
       psXValue.value = sCurrX;
-      return TRUE;
+      return true;
     }
     sCurrX += sXIncrement;
   }
-  return FALSE;
+  return false;
 }
 
 function CheckForDataInRowOrColumn(pPixel: Pointer<UINT8>, usIncrement: UINT16, usNumberOfPixels: UINT16): Pointer<UINT8> {

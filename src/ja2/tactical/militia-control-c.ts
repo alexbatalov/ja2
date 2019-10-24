@@ -1,8 +1,8 @@
-let gfStrategicMilitiaChangesMade: BOOLEAN = FALSE;
+let gfStrategicMilitiaChangesMade: boolean = false;
 
 function ResetMilitia(): void {
   if (gfStrategicMilitiaChangesMade || gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
-    gfStrategicMilitiaChangesMade = FALSE;
+    gfStrategicMilitiaChangesMade = false;
     RemoveMilitiaFromTactical();
     PrepareMilitiaForTactical();
   }

@@ -4,19 +4,19 @@ let pEmailList: EmailPtr;
 /* static */ let iLastPage: INT32 = -1;
 /* static */ let iCurrentPage: INT32 = 0;
 let iDeleteId: INT32 = 0;
-let fUnReadMailFlag: BOOLEAN = FALSE;
-let fOldUnreadFlag: BOOLEAN = TRUE;
-let fNewMailFlag: BOOLEAN = FALSE;
-let fOldNewMailFlag: BOOLEAN = FALSE;
-let fDisplayMessageFlag: BOOLEAN = FALSE;
-let fOldDisplayMessageFlag: BOOLEAN = FALSE;
-let fReDraw: BOOLEAN = FALSE;
-let fDeleteMailFlag: BOOLEAN = FALSE;
-let fReDrawMessageFlag: BOOLEAN = FALSE;
-let fOnLastPageFlag: BOOLEAN = FALSE;
-let fJustStartedEmail: BOOLEAN = FALSE;
-let fDeleteInternal: BOOLEAN = FALSE;
-let fOpenMostRecentUnReadFlag: BOOLEAN = FALSE;
+let fUnReadMailFlag: boolean = false;
+let fOldUnreadFlag: boolean = true;
+let fNewMailFlag: boolean = false;
+let fOldNewMailFlag: boolean = false;
+let fDisplayMessageFlag: boolean = false;
+let fOldDisplayMessageFlag: boolean = false;
+let fReDraw: boolean = false;
+let fDeleteMailFlag: boolean = false;
+let fReDrawMessageFlag: boolean = false;
+let fOnLastPageFlag: boolean = false;
+let fJustStartedEmail: boolean = false;
+let fDeleteInternal: boolean = false;
+let fOpenMostRecentUnReadFlag: boolean = false;
 let iViewerPositionY: INT32 = 0;
 
 let giMessageId: INT32 = -1;
@@ -166,10 +166,10 @@ const NEXT_PAGE_BUTTON_X = VIEWER_X + 395;
 const DELETE_BUTTON_X = NEXT_PAGE_BUTTON_X;
 const LOWER_BUTTON_Y = BUTTON_Y + 299;
 
-let fSortDateUpwards: BOOLEAN = FALSE;
-let fSortSenderUpwards: BOOLEAN = FALSE;
-let fSortSubjectUpwards: BOOLEAN = FALSE;
-let gfPageButtonsWereCreated: BOOLEAN = FALSE;
+let fSortDateUpwards: boolean = false;
+let fSortSenderUpwards: boolean = false;
+let fSortSubjectUpwards: boolean = false;
+let gfPageButtonsWereCreated: boolean = false;
 
 // mouse regions
 let pEmailRegions: MOUSE_REGION[] /* [MAX_MESSAGES_PAGE] */;
@@ -231,11 +231,11 @@ const NEXT_HEIGHT = () => GetFontHeight(TRAVERSE_EMAIL_FONT());
 let iHighLightLine: INT32 = -1;
 
 // whther or not we need to redraw the new mail box
-let fReDrawNewMailFlag: BOOLEAN = FALSE;
+let fReDrawNewMailFlag: boolean = false;
 let giNumberOfMessageToEmail: INT32 = 0;
 let iTotalHeight: INT32 = 0;
 
-let fFirstTime: BOOLEAN = TRUE;
+let fFirstTime: boolean = true;
 
 function InitializeMouseRegions(): void {
   let iCounter: INT32 = 0;
@@ -272,13 +272,13 @@ function GameInitEmail(): void {
   iDeleteId = 0;
 
   // reset display message flag
-  fDisplayMessageFlag = FALSE;
+  fDisplayMessageFlag = false;
 
   // reset page being displayed
   giMessagePage = 0;
 }
 
-function EnterEmail(): BOOLEAN {
+function EnterEmail(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   // load graphics
 
@@ -314,7 +314,7 @@ function EnterEmail(): BOOLEAN {
   InitializeMouseRegions();
 
   // just started email
-  fJustStartedEmail = TRUE;
+  fJustStartedEmail = true;
 
   // create buttons
   CreateMailScreenButtons();
@@ -323,7 +323,7 @@ function EnterEmail(): BOOLEAN {
   MarkButtonsDirty();
 
   // no longer fitrst time in email
-  fFirstTime = FALSE;
+  fFirstTime = false;
 
   // reset current page of the message being displayed
   giMessagePage = 0;
@@ -334,7 +334,7 @@ function EnterEmail(): BOOLEAN {
   // AddEmail( MERC_REPLY_GRIZZLY, MERC_REPLY_LENGTH_GRIZZLY, GRIZZLY_MAIL, GetWorldTotalMin() );
   // RenderButtons( );
 
-  return TRUE;
+  return true;
 }
 
 function ExitEmail(): void {
@@ -345,17 +345,17 @@ function ExitEmail(): void {
 
   // displayed message?...get rid of it
   if (fDisplayMessageFlag) {
-    fDisplayMessageFlag = FALSE;
+    fDisplayMessageFlag = false;
     AddDeleteRegionsToMessageRegion(0);
-    fDisplayMessageFlag = TRUE;
-    fReDrawMessageFlag = TRUE;
+    fDisplayMessageFlag = true;
+    fReDrawMessageFlag = true;
   } else {
     giMessageId = -1;
   }
 
   // delete mail notice?...get rid of it
   if (fDeleteMailFlag) {
-    fDeleteMailFlag = FALSE;
+    fDeleteMailFlag = false;
     CreateDestroyDeleteNoticeMailButton();
   }
 
@@ -378,16 +378,16 @@ function ExitEmail(): void {
 
 function HandleEmail(): void {
   let iViewerY: INT32 = 0;
-  /* static */ let fEmailListBeenDrawAlready: BOOLEAN = FALSE;
+  /* static */ let fEmailListBeenDrawAlready: boolean = false;
   // RenderButtonsFastHelp( );
 
   // check if email message record list needs to be updated
   UpDateMessageRecordList();
 
   // does email list need to be draw, or can be drawn
-  if (((!fDisplayMessageFlag) && (!fNewMailFlag) && (!fDeleteMailFlag)) && (fEmailListBeenDrawAlready == FALSE)) {
+  if (((!fDisplayMessageFlag) && (!fNewMailFlag) && (!fDeleteMailFlag)) && (fEmailListBeenDrawAlready == false)) {
     DisplayEmailList();
-    fEmailListBeenDrawAlready = TRUE;
+    fEmailListBeenDrawAlready = true;
   }
   // if the message flag, show message
   else if ((fDisplayMessageFlag) && (fReDrawMessageFlag)) {
@@ -396,7 +396,7 @@ function HandleEmail(): void {
 
     // this simply redraws message without button manipulation
     iViewerY = DisplayEmailMessage(GetEmailMessage(giMessageId));
-    fEmailListBeenDrawAlready = FALSE;
+    fEmailListBeenDrawAlready = false;
   } else if ((fDisplayMessageFlag) && (!fOldDisplayMessageFlag)) {
     // redisplay list
     DisplayEmailList();
@@ -404,11 +404,11 @@ function HandleEmail(): void {
     // this simply redraws message with button manipulation
     iViewerY = DisplayEmailMessage(GetEmailMessage(giMessageId));
     AddDeleteRegionsToMessageRegion(iViewerY);
-    fEmailListBeenDrawAlready = FALSE;
+    fEmailListBeenDrawAlready = false;
   }
 
   // not displaying anymore?
-  if ((fDisplayMessageFlag == FALSE) && (fOldDisplayMessageFlag)) {
+  if ((fDisplayMessageFlag == false) && (fOldDisplayMessageFlag)) {
     // then clear it out
     ClearOutEmailMessageRecordsList();
   }
@@ -438,10 +438,10 @@ function HandleEmail(): void {
   // handle buttons states
   UpdateStatusOfNextPreviousButtons();
 
-  if (fOpenMostRecentUnReadFlag == TRUE) {
+  if (fOpenMostRecentUnReadFlag == true) {
     // enter email due to email icon on program panel
     OpenMostRecentUnreadEmail();
-    fOpenMostRecentUnReadFlag = FALSE;
+    fOpenMostRecentUnReadFlag = false;
   }
 
   return;
@@ -539,11 +539,11 @@ function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: INT32, u
   ReplaceMercNameAndAmountWithProperData(pSubject, addressof(FakeEmail));
 
   // add message to list
-  AddEmailMessage(iMessageOffset, iMessageLength, pSubject, iDate, ubSender, FALSE, iFirstData, uiSecondData);
+  AddEmailMessage(iMessageOffset, iMessageLength, pSubject, iDate, ubSender, false, iFirstData, uiSecondData);
 
   // if we are in fact int he laptop, redraw icons, might be change in mail status
 
-  if (fCurrentlyInLaptop == TRUE) {
+  if (fCurrentlyInLaptop == true) {
     // redraw icons, might be new mail
     DrawLapTopIcons();
   }
@@ -563,11 +563,11 @@ function AddEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8,
   LoadEncryptedDataFromFile("BINARYDATA\\Email.edt", pSubject, 640 * (iMessageOffset), 640);
 
   // add message to list
-  AddEmailMessage(iMessageOffset, iMessageLength, pSubject, iDate, ubSender, FALSE, 0, 0);
+  AddEmailMessage(iMessageOffset, iMessageLength, pSubject, iDate, ubSender, false, 0, 0);
 
   // if we are in fact int he laptop, redraw icons, might be change in mail status
 
-  if (fCurrentlyInLaptop == TRUE) {
+  if (fCurrentlyInLaptop == true) {
     // redraw icons, might be new mail
     DrawLapTopIcons();
   }
@@ -587,11 +587,11 @@ function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender:
   LoadEncryptedDataFromFile("BINARYDATA\\Email.edt", pSubject, 640 * (iMessageOffset), 640);
 
   // add message to list
-  AddEmailMessage(iMessageOffset, iMessageLength, pSubject, iDate, ubSender, TRUE, 0, 0);
+  AddEmailMessage(iMessageOffset, iMessageLength, pSubject, iDate, ubSender, true, 0, 0);
 
   // if we are in fact int he laptop, redraw icons, might be change in mail status
 
-  if (fCurrentlyInLaptop == TRUE) {
+  if (fCurrentlyInLaptop == true) {
     // redraw icons, might be new mail
     DrawLapTopIcons();
   }
@@ -599,7 +599,7 @@ function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender:
   return;
 }
 
-function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject: STR16, iDate: INT32, ubSender: UINT8, fAlreadyRead: BOOLEAN, iFirstData: INT32, uiSecondData: UINT32): void {
+function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject: STR16, iDate: INT32, ubSender: UINT8, fAlreadyRead: boolean, iFirstData: INT32, uiSecondData: UINT32): void {
   // will add a message to the list of messages
   let pEmail: EmailPtr = pEmailList;
   let pTempEmail: EmailPtr = null;
@@ -678,7 +678,7 @@ function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject:
   pTempEmail.value.Next = null;
 
   // set flag that new mail has arrived
-  fNewMailFlag = TRUE;
+  fNewMailFlag = true;
 
   // add this message to the pages of email
   AddMessageToPages(pTempEmail.value.iId);
@@ -687,7 +687,7 @@ function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject:
   pTempEmail.value.fRead = fAlreadyRead;
 
   // set fact this message is new
-  pTempEmail.value.fNew = TRUE;
+  pTempEmail.value.fNew = true;
   return;
 }
 
@@ -995,7 +995,7 @@ function SortMessages(iCriteria: INT32): void {
   // PlaceMessagesinPages();
 
   // redraw the screen
-  fReDrawScreenFlag = TRUE;
+  fReDrawScreenFlag = true;
 }
 
 function SwapMessages(iIdA: INT32, iIdB: INT32): void {
@@ -1100,7 +1100,7 @@ function DisplayMessageList(iPageNum: INT32): void {
   return;
 }
 
-function DrawLetterIcon(iCounter: INT32, fRead: BOOLEAN): void {
+function DrawLetterIcon(iCounter: INT32, fRead: boolean): void {
   let hHandle: HVOBJECT;
   // will draw the icon for letter in mail list depending if the mail has been read or not
 
@@ -1115,13 +1115,13 @@ function DrawLetterIcon(iCounter: INT32, fRead: BOOLEAN): void {
   return;
 }
 
-function DrawSubject(iCounter: INT32, pSubject: STR16, fRead: BOOLEAN): void {
+function DrawSubject(iCounter: INT32, pSubject: STR16, fRead: boolean): void {
   let pTempSubject: wchar_t[] /* [320] */;
 
   // draw subject line of mail being viewed in viewer
 
   // lock buffer to prevent overwrite
-  SetFontDestBuffer(FRAME_BUFFER, SUBJECT_X, ((MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_X + SUBJECT_WIDTH, ((MIDDLE_Y + iCounter * MIDDLE_WIDTH)) + MIDDLE_WIDTH, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, SUBJECT_X, ((MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_X + SUBJECT_WIDTH, ((MIDDLE_Y + iCounter * MIDDLE_WIDTH)) + MIDDLE_WIDTH, false);
   SetFontShadow(NO_SHADOW);
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
@@ -1135,7 +1135,7 @@ function DrawSubject(iCounter: INT32, pSubject: STR16, fRead: BOOLEAN): void {
     }
 
     // display string subject
-    IanDisplayWrappedString(SUBJECT_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pTempSubject, 0, FALSE, LEFT_JUSTIFIED);
+    IanDisplayWrappedString(SUBJECT_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pTempSubject, 0, false, LEFT_JUSTIFIED);
   } else {
     // if the subject will be too long, cap it, and add the '...'
     if (StringPixLength(pTempSubject, FONT10ARIALBOLD()) >= SUBJECT_WIDTH - 10) {
@@ -1143,16 +1143,16 @@ function DrawSubject(iCounter: INT32, pSubject: STR16, fRead: BOOLEAN): void {
     }
 
     // display string subject
-    IanDisplayWrappedString(SUBJECT_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_WIDTH, MESSAGE_GAP, FONT10ARIALBOLD(), MESSAGE_COLOR, pTempSubject, 0, FALSE, LEFT_JUSTIFIED);
+    IanDisplayWrappedString(SUBJECT_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_WIDTH, MESSAGE_GAP, FONT10ARIALBOLD(), MESSAGE_COLOR, pTempSubject, 0, false, LEFT_JUSTIFIED);
   }
   SetFontShadow(DEFAULT_SHADOW);
   // reset font dest buffer
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   return;
 }
 
-function DrawSender(iCounter: INT32, ubSender: UINT8, fRead: BOOLEAN): void {
+function DrawSender(iCounter: INT32, ubSender: UINT8, fRead: boolean): void {
   // draw name of sender in mail viewer
   SetFontShadow(NO_SHADOW);
 
@@ -1173,7 +1173,7 @@ function DrawSender(iCounter: INT32, ubSender: UINT8, fRead: BOOLEAN): void {
   return;
 }
 
-function DrawDate(iCounter: INT32, iDate: INT32, fRead: BOOLEAN): void {
+function DrawDate(iCounter: INT32, iDate: INT32, fRead: boolean): void {
   let sString: wchar_t[] /* [20] */;
 
   SetFontShadow(NO_SHADOW);
@@ -1255,20 +1255,20 @@ function DisplayEmailList(): void {
 }
 
 function LookForUnread(): void {
-  let fStatusOfNewEmailFlag: BOOLEAN = fUnReadMailFlag;
+  let fStatusOfNewEmailFlag: boolean = fUnReadMailFlag;
 
   // simply runrs through list of messages, if any unread, set unread flag
 
   let pA: EmailPtr = pEmailList;
 
   // reset unread flag
-  fUnReadMailFlag = FALSE;
+  fUnReadMailFlag = false;
 
   // look for unread mail
   while (pA) {
     // unread mail found, set flag
     if (!(pA.value.fRead))
-      fUnReadMailFlag = TRUE;
+      fUnReadMailFlag = true;
     pA = pA.value.Next;
   }
 
@@ -1308,11 +1308,11 @@ function EmailBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
 
     // invalid message
     if (iId == -1) {
-      fDisplayMessageFlag = FALSE;
+      fDisplayMessageFlag = false;
       return;
     }
     // Get email and display
-    fDisplayMessageFlag = TRUE;
+    fDisplayMessageFlag = true;
     giMessagePage = 0;
     giPrevMessageId = giMessageId;
     giMessageId = iId;
@@ -1341,7 +1341,7 @@ function EmailBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
       HandleRightButtonUpEvent();
       return;
     } else {
-      fDeleteMailFlag = TRUE;
+      fDeleteMailFlag = true;
       iDeleteId = iId;
       // DisplayDeleteNotice(GetEmailMessage(iDeleteId));
       // DeleteEmail();
@@ -1375,7 +1375,7 @@ function BtnMessageXCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // X button has been pressed and let up, this means to stop displaying the currently displayed message
 
       // reset display message flag
-      fDisplayMessageFlag = FALSE;
+      fDisplayMessageFlag = false;
 
       // reset button flag
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
@@ -1387,7 +1387,7 @@ function BtnMessageXCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       DrawLapTopIcons();
 
       // force update of entire screen
-      fPausedReDrawScreenFlag = TRUE;
+      fPausedReDrawScreenFlag = true;
 
       // rerender email
       // RenderEmail();
@@ -1401,7 +1401,7 @@ function SetUnNewMessages(): void {
   // run through the list of messages and add to pages
 
   while (pEmail) {
-    pEmail.value.fNew = FALSE;
+    pEmail.value.fNew = false;
     pEmail = pEmail.value.Next;
   }
   return;
@@ -1422,8 +1422,8 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   let iPastHeight: INT32 = 0;
   let iYPositionOnPage: INT32 = 0;
   let iTotalYPosition: INT32 = 0;
-  let fGoingOffCurrentPage: BOOLEAN = FALSE;
-  let fDonePrintingMessage: BOOLEAN = FALSE;
+  let fGoingOffCurrentPage: boolean = false;
+  let fDonePrintingMessage: boolean = false;
 
   if (!pMail)
     return 0;
@@ -1431,10 +1431,10 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   iOffSet = pMail.value.usOffset;
 
   // reset redraw email message flag
-  fReDrawMessageFlag = FALSE;
+  fReDrawMessageFlag = false;
 
   // we KNOW the player is going to "read" this, so mark it as so
-  pMail.value.fRead = TRUE;
+  pMail.value.fRead = true;
 
   // draw text for title bar
   // swprintf(pString, L"%s / %s", pSenderNameList[pMail->ubSender],pMail->pSubject);
@@ -1517,20 +1517,20 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   pTempRecord = pEmailPageInfo[giMessagePage].pFirstRecord;
 
   if (pTempRecord) {
-    while (fDonePrintingMessage == FALSE) {
+    while (fDonePrintingMessage == false) {
       // copy over string
       wcscpy(pString, pTempRecord.value.pRecord);
 
       // get the height of the string, ONLY!...must redisplay ON TOP OF background graphic
-      iHeight += IanDisplayWrappedString(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, FALSE, IAN_WRAP_NO_SHADOW);
+      iHeight += IanDisplayWrappedString(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, false, IAN_WRAP_NO_SHADOW);
 
       // increment email record ptr
       pTempRecord = pTempRecord.value.Next;
 
       if (pTempRecord == null) {
-        fDonePrintingMessage = TRUE;
+        fDonePrintingMessage = true;
       } else if ((pTempRecord == pEmailPageInfo[giMessagePage].pLastRecord) && (pEmailPageInfo[giMessagePage + 1].pFirstRecord != null)) {
-        fDonePrintingMessage = TRUE;
+        fDonePrintingMessage = true;
       }
     }
   }
@@ -1633,7 +1633,7 @@ function BtnNewOkback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fNewMailFlag = FALSE;
+      fNewMailFlag = false;
     }
   }
 }
@@ -1643,7 +1643,7 @@ function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
 
   if ((fDisplayMessageFlag) && (!fOldDisplayMessageFlag)) {
     // set old flag
-    fOldDisplayMessageFlag = TRUE;
+    fOldDisplayMessageFlag = true;
 
     // add X button
     giMessageButtonImage[0] = LoadButtonImage("LAPTOP\\X.sti", -1, 0, -1, 1, -1);
@@ -1658,7 +1658,7 @@ function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
       giMailMessageButtonsImage[1] = LoadButtonImage("LAPTOP\\NewMailButtons.sti", -1, 1, -1, 4, -1);
       giMailMessageButtons[1] = QuickCreateButton(giMailMessageButtonsImage[1], NEXT_PAGE_BUTTON_X, (LOWER_BUTTON_Y + iViewerY + 2), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnNextEmailPageCallback);
 
-      gfPageButtonsWereCreated = TRUE;
+      gfPageButtonsWereCreated = true;
     }
 
     giMailMessageButtonsImage[2] = LoadButtonImage("LAPTOP\\NewMailButtons.sti", -1, 2, -1, 5, -1);
@@ -1675,10 +1675,10 @@ function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
     SetButtonCursor(giMessageButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // force update of screen
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   } else if ((!fDisplayMessageFlag) && (fOldDisplayMessageFlag)) {
     // delete region
-    fOldDisplayMessageFlag = FALSE;
+    fOldDisplayMessageFlag = false;
     RemoveButton(giMessageButton[0]);
     UnloadButtonImage(giMessageButtonImage[0]);
 
@@ -1688,17 +1688,17 @@ function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
       UnloadButtonImage(giMailMessageButtonsImage[0]);
       RemoveButton(giMailMessageButtons[1]);
       UnloadButtonImage(giMailMessageButtonsImage[1]);
-      gfPageButtonsWereCreated = FALSE;
+      gfPageButtonsWereCreated = false;
     }
     RemoveButton(giMailMessageButtons[2]);
     UnloadButtonImage(giMailMessageButtonsImage[2]);
     // force update of screen
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 }
 
 function CreateDestroyNewMailButton(): void {
-  /* static */ let fOldNewMailFlag: BOOLEAN = FALSE;
+  /* static */ let fOldNewMailFlag: boolean = false;
 
   // check if we are video conferencing, if so, do nothing
   if (gubVideoConferencingMode != 0) {
@@ -1709,7 +1709,7 @@ function CreateDestroyNewMailButton(): void {
     // create new mail dialog box button
 
     // set old flag (stating button has been created)
-    fOldNewMailFlag = TRUE;
+    fOldNewMailFlag = true;
 
     // load image and setup button
     giNewMailButtonImage[0] = LoadButtonImage("LAPTOP\\YesNoButtons.sti", -1, 0, -1, 1, -1);
@@ -1722,10 +1722,10 @@ function CreateDestroyNewMailButton(): void {
     MSYS_DefineRegion(addressof(pScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
     MSYS_AddRegion(addressof(pScreenMask));
     MarkAButtonDirty(giNewMailButton[0]);
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   } else if ((!fNewMailFlag) && (fOldNewMailFlag)) {
     // reset old flag
-    fOldNewMailFlag = FALSE;
+    fOldNewMailFlag = false;
 
     // remove the button
     RemoveButton(giNewMailButton[0]);
@@ -1735,32 +1735,32 @@ function CreateDestroyNewMailButton(): void {
     MSYS_RemoveRegion(addressof(pScreenMask));
 
     // re draw screen
-    fReDraw = TRUE;
+    fReDraw = true;
 
     // redraw screen
-    fPausedReDrawScreenFlag = TRUE;
+    fPausedReDrawScreenFlag = true;
   }
 }
 
-function DisplayNewMailBox(): BOOLEAN {
+function DisplayNewMailBox(): boolean {
   let hHandle: HVOBJECT;
-  /* static */ let fOldNewMailFlag: BOOLEAN = FALSE;
+  /* static */ let fOldNewMailFlag: boolean = false;
   // will display a new mail box whenever new mail has arrived
 
   // check if we are video conferencing, if so, do nothing
   if (gubVideoConferencingMode != 0) {
-    return FALSE;
+    return false;
   }
 
   // just stopped displaying box, reset old flag
   if ((!fNewMailFlag) && (fOldNewMailFlag)) {
-    fOldNewMailFlag = FALSE;
-    return FALSE;
+    fOldNewMailFlag = false;
+    return false;
   }
 
   // not even set, leave NOW!
   if (!fNewMailFlag)
-    return FALSE;
+    return false;
 
   // is set but already drawn, LEAVE NOW!
   // if( ( fNewMailFlag ) && ( fOldNewMailFlag ) )
@@ -1803,18 +1803,18 @@ function DisplayNewMailBox(): BOOLEAN {
   // redraw icons
 
   // set box as displayed
-  fOldNewMailFlag = TRUE;
+  fOldNewMailFlag = true;
 
   // return
-  return TRUE;
+  return true;
 }
 
 function ReDrawNewMailBox(): void {
   // this function will check to see if the new mail region needs to be redrawn
-  if (fReDrawNewMailFlag == TRUE) {
+  if (fReDrawNewMailFlag == true) {
     if (fNewMailFlag) {
       // set display flag back to orginal
-      fNewMailFlag = FALSE;
+      fNewMailFlag = false;
 
       // display new mail box
       DisplayNewMailBox();
@@ -1823,7 +1823,7 @@ function ReDrawNewMailBox(): void {
       MarkAButtonDirty(giNewMailButton[0]);
 
       // set display flag back to orginal
-      fNewMailFlag = TRUE;
+      fNewMailFlag = true;
 
       // time to redraw
       DisplayNewMailBox();
@@ -1832,7 +1832,7 @@ function ReDrawNewMailBox(): void {
     // return;
 
     // reset flag for redraw
-    fReDrawNewMailFlag = FALSE;
+    fReDrawNewMailFlag = false;
 
     return;
   }
@@ -1895,7 +1895,7 @@ function NextRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       // not on last page, move ahead one
       if (iCurrentPage < iLastPage) {
         iCurrentPage++;
-        fReDraw = TRUE;
+        fReDraw = true;
         RenderEmail();
         MarkButtonsDirty();
       }
@@ -1921,7 +1921,7 @@ function BtnPreviousEmailPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
-      fReDraw = TRUE;
+      fReDraw = true;
       RenderEmail();
       MarkButtonsDirty();
     }
@@ -1952,7 +1952,7 @@ function BtnNextEmailPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
     }
 
     MarkButtonsDirty();
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // nothing yet
   }
@@ -1972,7 +1972,7 @@ function PreviousRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       // if we are not on forst page, more back one
       if (iCurrentPage > 0) {
         iCurrentPage--;
-        fReDraw = TRUE;
+        fReDraw = true;
         RenderEmail();
         MarkButtonsDirty();
       }
@@ -1993,8 +1993,8 @@ function BtnDeleteNoback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fDeleteMailFlag = FALSE;
-      fReDrawScreenFlag = TRUE;
+      fDeleteMailFlag = false;
+      fReDrawScreenFlag = true;
     }
   }
 }
@@ -2010,17 +2010,17 @@ function BtnDeleteYesback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       DeleteEmail();
     }
   }
 }
 
 function CreateDestroyNextPreviousRegions(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   if (fCreated) {
     // destroy already create next, previous mouse regions
-    fCreated = FALSE;
+    fCreated = false;
 
     RemoveButton(giMailPageButtons[1]);
     UnloadButtonImage(giMailPageButtonsImage[1]);
@@ -2029,7 +2029,7 @@ function CreateDestroyNextPreviousRegions(): void {
     UnloadButtonImage(giMailPageButtonsImage[0]);
   } else {
     // create uncreated mouse regions
-    fCreated = TRUE;
+    fCreated = true;
 
     CreateNextPreviousEmailPageButtons();
 
@@ -2057,17 +2057,17 @@ function ReDraw(): void {
     DrawLapTopText();
     ReDrawHighLight();
     MarkButtonsDirty();
-    fReDraw = FALSE;
+    fReDraw = false;
   }
 }
 
 function CreateDestroyDeleteNoticeMailButton(): void {
-  /* static */ let fOldDeleteMailFlag: BOOLEAN = FALSE;
+  /* static */ let fOldDeleteMailFlag: boolean = false;
   if ((fDeleteMailFlag) && (!fOldDeleteMailFlag)) {
     // confirm delete email buttons
 
     // YES button
-    fOldDeleteMailFlag = TRUE;
+    fOldDeleteMailFlag = true;
     giDeleteMailButtonImage[0] = LoadButtonImage("LAPTOP\\YesNoButtons.sti", -1, 0, -1, 1, -1);
     giDeleteMailButton[0] = QuickCreateButton(giDeleteMailButtonImage[0], NEW_BTN_X + 1, NEW_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnDeleteYesback);
 
@@ -2084,10 +2084,10 @@ function CreateDestroyDeleteNoticeMailButton(): void {
     MSYS_AddRegion(addressof(pDeleteScreenMask));
 
     // force update
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   } else if ((!fDeleteMailFlag) && (fOldDeleteMailFlag)) {
     // clear out the buttons and screen mask
-    fOldDeleteMailFlag = FALSE;
+    fOldDeleteMailFlag = false;
     RemoveButton(giDeleteMailButton[0]);
     UnloadButtonImage(giDeleteMailButtonImage[0]);
     RemoveButton(giDeleteMailButton[1]);
@@ -2097,24 +2097,24 @@ function CreateDestroyDeleteNoticeMailButton(): void {
     MSYS_RemoveRegion(addressof(pDeleteScreenMask));
 
     // force refresh
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
   return;
 }
-function DisplayDeleteNotice(pMail: EmailPtr): BOOLEAN {
+function DisplayDeleteNotice(pMail: EmailPtr): boolean {
   let hHandle: HVOBJECT;
   // will display a delete mail box whenever delete mail has arrived
   if (!fDeleteMailFlag)
-    return FALSE;
+    return false;
 
   if (!fReDrawScreenFlag) {
     // no redraw flag, leave
-    return FALSE;
+    return false;
   }
 
   // error check.. no valid message passed
   if (pMail == null) {
-    return FALSE;
+    return false;
   }
 
   // load graphics
@@ -2157,12 +2157,12 @@ function DisplayDeleteNotice(pMail: EmailPtr): BOOLEAN {
   // reset font shadow
   SetFontShadow(DEFAULT_SHADOW);
 
-  return TRUE;
+  return true;
 }
 
 function DeleteEmail(): void {
   // error check, invalid mail, or not time to delete mail
-  if (fDeleteInternal != TRUE) {
+  if (fDeleteInternal != true) {
     if ((iDeleteId == -1) || (!fDeleteMailFlag))
       return;
   }
@@ -2170,7 +2170,7 @@ function DeleteEmail(): void {
   RemoveEmailMessage(iDeleteId);
 
   // stop displaying message, if so
-  fDisplayMessageFlag = FALSE;
+  fDisplayMessageFlag = false;
 
   // upadte list
   PlaceMessagesinPages();
@@ -2186,8 +2186,8 @@ function DeleteEmail(): void {
   RenderEmail();
 
   // nolong time to delete mail
-  fDeleteMailFlag = FALSE;
-  fReDrawScreenFlag = TRUE;
+  fDeleteMailFlag = false;
+  fReDrawScreenFlag = true;
   // refresh screen (get rid of dialog box image)
   // ReDraw();
 
@@ -2207,7 +2207,7 @@ function FromCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
 
     // SpecifyButtonIcon( giSortButton[1] , giArrowsForEmail, UINT16 usVideoObjectIndex,  INT8 bXOffset, INT8 bYOffset, TRUE );
 
-    fJustStartedEmail = FALSE;
+    fJustStartedEmail = false;
 
     PlaceMessagesinPages();
     btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -2227,7 +2227,7 @@ function SubjectCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
     fSortSubjectUpwards = !fSortSubjectUpwards;
 
     SortMessages(Enum74.SUBJECT);
-    fJustStartedEmail = FALSE;
+    fJustStartedEmail = false;
     PlaceMessagesinPages();
 
     btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -2243,7 +2243,7 @@ function BtnDeleteCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     iDeleteId = giMessageId;
-    fDeleteMailFlag = TRUE;
+    fDeleteMailFlag = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // nothing yet
   }
@@ -2259,7 +2259,7 @@ function DateCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
     SortMessages(Enum74.RECEIVED);
     PlaceMessagesinPages();
 
-    fJustStartedEmail = FALSE;
+    fJustStartedEmail = false;
 
     btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
@@ -2276,7 +2276,7 @@ function ReadCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
     SortMessages(Enum74.READ);
     PlaceMessagesinPages();
 
-    fJustStartedEmail = FALSE;
+    fJustStartedEmail = false;
 
     btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
@@ -2417,7 +2417,7 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
 
   // the actual subject info
   // mprintf( , MESSAGE_SUBJECT_Y, pMail->pSubject);
-  IanDisplayWrappedString(SUBJECT_LINE_X + 2, (SUBJECT_LINE_Y + 2 + iViewerY), SUBJECT_LINE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pMail.value.pSubject, 0, FALSE, 0);
+  IanDisplayWrappedString(SUBJECT_LINE_X + 2, (SUBJECT_LINE_Y + 2 + iViewerY), SUBJECT_LINE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pMail.value.pSubject, 0, false, 0);
 
   // reset shadow
   SetFontShadow(DEFAULT_SHADOW);
@@ -2556,20 +2556,20 @@ function ReDisplayBoxes(): void {
   }
 }
 
-function HandleMailSpecialMessages(usMessageId: UINT16, iResults: Pointer<INT32>, pMail: EmailPtr): BOOLEAN {
-  let fSpecialCase: BOOLEAN = FALSE;
+function HandleMailSpecialMessages(usMessageId: UINT16, iResults: Pointer<INT32>, pMail: EmailPtr): boolean {
+  let fSpecialCase: boolean = false;
 
   // this procedure will handle special cases of email messages that are not stored in email.edt, or need special processing
   switch (usMessageId) {
     case (IMP_EMAIL_PROFILE_RESULTS):
 
       HandleIMPCharProfileResultsMessage();
-      fSpecialCase = TRUE;
+      fSpecialCase = true;
 
       break;
     case (MERC_INTRO):
       SetBookMark(Enum98.MERC_BOOKMARK);
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       break;
 
     case INSUR_PAYMENT:
@@ -2734,16 +2734,16 @@ function HandleIMPCharProfileResultsMessage(): void {
   let pTempRecord: RecordPtr;
   let iEndOfSection: INT32 = 0;
   let iRand: INT32 = 0;
-  let fSufficientMechSkill: BOOLEAN = FALSE;
-  let fSufficientMarkSkill: BOOLEAN = FALSE;
-  let fSufficientMedSkill: BOOLEAN = FALSE;
-  let fSufficientExplSkill: BOOLEAN = FALSE;
-  let fSufficientHlth: BOOLEAN = FALSE;
-  let fSufficientStr: BOOLEAN = FALSE;
-  let fSufficientWis: BOOLEAN = FALSE;
-  let fSufficientAgi: BOOLEAN = FALSE;
-  let fSufficientDex: BOOLEAN = FALSE;
-  let fSufficientLdr: BOOLEAN = FALSE;
+  let fSufficientMechSkill: boolean = false;
+  let fSufficientMarkSkill: boolean = false;
+  let fSufficientMedSkill: boolean = false;
+  let fSufficientExplSkill: boolean = false;
+  let fSufficientHlth: boolean = false;
+  let fSufficientStr: boolean = false;
+  let fSufficientWis: boolean = false;
+  let fSufficientAgi: boolean = false;
+  let fSufficientDex: boolean = false;
+  let fSufficientLdr: boolean = false;
 
   iRand = Random(32767);
 
@@ -2940,24 +2940,24 @@ function HandleIMPCharProfileResultsMessage(): void {
 
     // marksmanship
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMarksmanship >= SUPER_SKILL_VALUE) {
-      fSufficientMarkSkill = TRUE;
+      fSufficientMarkSkill = true;
       iEndOfSection = 1;
     }
 
     // medical
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMedical >= SUPER_SKILL_VALUE) {
-      fSufficientMedSkill = TRUE;
+      fSufficientMedSkill = true;
       iEndOfSection = 1;
     }
 
     // mechanical
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMechanical >= SUPER_SKILL_VALUE) {
-      fSufficientMechSkill = TRUE;
+      fSufficientMechSkill = true;
       iEndOfSection = 1;
     }
 
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bExplosive >= SUPER_SKILL_VALUE) {
-      fSufficientExplSkill = TRUE;
+      fSufficientExplSkill = true;
       iEndOfSection = 1;
     }
 
@@ -3006,10 +3006,10 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    fSufficientMechSkill = FALSE;
-    fSufficientMarkSkill = FALSE;
-    fSufficientExplSkill = FALSE;
-    fSufficientMedSkill = FALSE;
+    fSufficientMechSkill = false;
+    fSufficientMarkSkill = false;
+    fSufficientExplSkill = false;
+    fSufficientMedSkill = false;
 
     // imperial skills
     iOffSet = IMP_SKILLS_NEED_TRAIN_SKILLS;
@@ -3018,22 +3018,22 @@ function HandleIMPCharProfileResultsMessage(): void {
 
     // now the needs training values
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMarksmanship > NO_CHANCE_IN_HELL_SKILL_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMarksmanship <= NEEDS_TRAINING_SKILL_VALUE)) {
-      fSufficientMarkSkill = TRUE;
+      fSufficientMarkSkill = true;
       iEndOfSection = 1;
     }
 
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMedical > NO_CHANCE_IN_HELL_SKILL_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMedical <= NEEDS_TRAINING_SKILL_VALUE)) {
-      fSufficientMedSkill = TRUE;
+      fSufficientMedSkill = true;
       iEndOfSection = 1;
     }
 
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMechanical > NO_CHANCE_IN_HELL_SKILL_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMechanical <= NEEDS_TRAINING_SKILL_VALUE)) {
-      fSufficientMechSkill = TRUE;
+      fSufficientMechSkill = true;
       iEndOfSection = 1;
     }
 
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bExplosive > NO_CHANCE_IN_HELL_SKILL_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bExplosive <= NEEDS_TRAINING_SKILL_VALUE)) {
-      fSufficientExplSkill = TRUE;
+      fSufficientExplSkill = true;
       iEndOfSection = 1;
     }
 
@@ -3080,10 +3080,10 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    fSufficientMechSkill = FALSE;
-    fSufficientMarkSkill = FALSE;
-    fSufficientExplSkill = FALSE;
-    fSufficientMedSkill = FALSE;
+    fSufficientMechSkill = false;
+    fSufficientMarkSkill = false;
+    fSufficientExplSkill = false;
+    fSufficientMedSkill = false;
 
     // and the no chance in hell of doing anything useful values
 
@@ -3093,22 +3093,22 @@ function HandleIMPCharProfileResultsMessage(): void {
     iCounter = 0;
 
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMarksmanship <= NO_CHANCE_IN_HELL_SKILL_VALUE) {
-      fSufficientMarkSkill = TRUE;
+      fSufficientMarkSkill = true;
       iEndOfSection = 1;
     }
 
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMedical <= NO_CHANCE_IN_HELL_SKILL_VALUE) {
-      fSufficientMedSkill = TRUE;
+      fSufficientMedSkill = true;
       iEndOfSection = 1;
     }
 
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMechanical <= NO_CHANCE_IN_HELL_SKILL_VALUE) {
-      fSufficientMechSkill = TRUE;
+      fSufficientMechSkill = true;
       iEndOfSection = 1;
     }
 
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bExplosive <= NO_CHANCE_IN_HELL_SKILL_VALUE) {
-      fSufficientExplSkill = TRUE;
+      fSufficientExplSkill = true;
       iEndOfSection = 1;
     }
 
@@ -3302,37 +3302,37 @@ function HandleIMPCharProfileResultsMessage(): void {
 
     // health
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLife >= SUPER_STAT_VALUE) {
-      fSufficientHlth = TRUE;
+      fSufficientHlth = true;
       iEndOfSection = 1;
     }
 
     // dex
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bDexterity >= SUPER_STAT_VALUE) {
-      fSufficientDex = TRUE;
+      fSufficientDex = true;
       iEndOfSection = 1;
     }
 
     // agility
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bAgility >= SUPER_STAT_VALUE) {
-      fSufficientAgi = TRUE;
+      fSufficientAgi = true;
       iEndOfSection = 1;
     }
 
     // strength
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bStrength >= SUPER_STAT_VALUE) {
-      fSufficientStr = TRUE;
+      fSufficientStr = true;
       iEndOfSection = 1;
     }
 
     // wisdom
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bWisdom >= SUPER_STAT_VALUE) {
-      fSufficientWis = TRUE;
+      fSufficientWis = true;
       iEndOfSection = 1;
     }
 
     // leadership
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLeadership >= SUPER_STAT_VALUE) {
-      fSufficientLdr = TRUE;
+      fSufficientLdr = true;
       iEndOfSection = 1;
     }
 
@@ -3395,12 +3395,12 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    fSufficientHlth = FALSE;
-    fSufficientStr = FALSE;
-    fSufficientWis = FALSE;
-    fSufficientAgi = FALSE;
-    fSufficientDex = FALSE;
-    fSufficientLdr = FALSE;
+    fSufficientHlth = false;
+    fSufficientStr = false;
+    fSufficientWis = false;
+    fSufficientAgi = false;
+    fSufficientDex = false;
+    fSufficientLdr = false;
 
     // now the low attributes
     // super physical
@@ -3410,37 +3410,37 @@ function HandleIMPCharProfileResultsMessage(): void {
 
     // health
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLife < NEEDS_TRAINING_STAT_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLife > NO_CHANCE_IN_HELL_STAT_VALUE)) {
-      fSufficientHlth = TRUE;
+      fSufficientHlth = true;
       iEndOfSection = 1;
     }
 
     // strength
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bStrength < NEEDS_TRAINING_STAT_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bStrength > NO_CHANCE_IN_HELL_STAT_VALUE)) {
-      fSufficientStr = TRUE;
+      fSufficientStr = true;
       iEndOfSection = 1;
     }
 
     // agility
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bAgility < NEEDS_TRAINING_STAT_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bAgility <= NO_CHANCE_IN_HELL_STAT_VALUE)) {
-      fSufficientAgi = TRUE;
+      fSufficientAgi = true;
       iEndOfSection = 1;
     }
 
     // wisdom
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bWisdom < NEEDS_TRAINING_STAT_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bWisdom > NO_CHANCE_IN_HELL_STAT_VALUE)) {
-      fSufficientWis = TRUE;
+      fSufficientWis = true;
       iEndOfSection = 1;
     }
 
     // leadership
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLeadership < NEEDS_TRAINING_STAT_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLeadership > NO_CHANCE_IN_HELL_STAT_VALUE)) {
-      fSufficientLdr = TRUE;
+      fSufficientLdr = true;
       iEndOfSection = 1;
     }
 
     // dex
     if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bDexterity < NEEDS_TRAINING_STAT_VALUE) && (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bDexterity > NO_CHANCE_IN_HELL_STAT_VALUE)) {
-      fSufficientDex = TRUE;
+      fSufficientDex = true;
       iEndOfSection = 1;
     }
 
@@ -3508,40 +3508,40 @@ function HandleIMPCharProfileResultsMessage(): void {
     iEndOfSection = 0;
     iCounter = 0;
 
-    fSufficientHlth = FALSE;
-    fSufficientStr = FALSE;
-    fSufficientWis = FALSE;
-    fSufficientAgi = FALSE;
-    fSufficientDex = FALSE;
-    fSufficientLdr = FALSE;
+    fSufficientHlth = false;
+    fSufficientStr = false;
+    fSufficientWis = false;
+    fSufficientAgi = false;
+    fSufficientDex = false;
+    fSufficientLdr = false;
 
     // health
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLife <= NO_CHANCE_IN_HELL_STAT_VALUE) {
-      fSufficientHlth = TRUE;
+      fSufficientHlth = true;
       iEndOfSection = 1;
     }
 
     // dex
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bDexterity <= NO_CHANCE_IN_HELL_STAT_VALUE) {
-      fSufficientDex = TRUE;
+      fSufficientDex = true;
       iEndOfSection = 1;
     }
 
     // strength
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bStrength <= NO_CHANCE_IN_HELL_STAT_VALUE) {
-      fSufficientStr = TRUE;
+      fSufficientStr = true;
       iEndOfSection = 1;
     }
 
     // agility
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bAgility <= NO_CHANCE_IN_HELL_STAT_VALUE) {
-      fSufficientAgi = TRUE;
+      fSufficientAgi = true;
       iEndOfSection = 1;
     }
 
     // wisdom
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bWisdom <= NO_CHANCE_IN_HELL_STAT_VALUE) {
-      fSufficientWis = TRUE;
+      fSufficientWis = true;
       iEndOfSection = 1;
     }
 
@@ -3598,7 +3598,7 @@ function HandleIMPCharProfileResultsMessage(): void {
 
     // leadership
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLeadership <= NO_CHANCE_IN_HELL_STAT_VALUE) {
-      fSufficientLdr = TRUE;
+      fSufficientLdr = true;
     }
 
     if (fSufficientLdr) {
@@ -3709,7 +3709,7 @@ function HandleIMPCharProfileResultsMessage(): void {
 function HandleEmailViewerButtonStates(): void {
   // handle state of email viewer buttons
 
-  if (fDisplayMessageFlag == FALSE) {
+  if (fDisplayMessageFlag == false) {
     // not displaying message, leave
     return;
   }
@@ -3738,7 +3738,7 @@ function HandleEmailViewerButtonStates(): void {
 function SetUpIconForButton(): void {
   // if we just got in, return, don't set any
 
-  if (fJustStartedEmail == TRUE) {
+  if (fJustStartedEmail == true) {
     return;
   }
 
@@ -3755,20 +3755,20 @@ function DeleteCurrentMessage(): void {
   giMessageId = -1;
 
   // reset display message flag
-  fDisplayMessageFlag = FALSE;
+  fDisplayMessageFlag = false;
 
   // reset page being displayed
   giMessagePage = 0;
 
-  fDeleteInternal = TRUE;
+  fDeleteInternal = true;
 
   // delete message
   DeleteEmail();
 
-  fDeleteInternal = FALSE;
+  fDeleteInternal = false;
 
   // force update of entire screen
-  fReDrawScreenFlag = TRUE;
+  fReDrawScreenFlag = true;
 
   // rerender email
   RenderEmail();
@@ -3846,7 +3846,7 @@ function OpenMostRecentUnreadEmail(): void {
 
   while (pB) {
     // if date is lesser and unread , swap
-    if ((pB.value.iDate < iLowestDate) && (pB.value.fRead == FALSE)) {
+    if ((pB.value.iDate < iLowestDate) && (pB.value.fRead == false)) {
       iMostRecentMailId = pB.value.iId;
       iLowestDate = pB.value.iDate;
     }
@@ -3860,13 +3860,13 @@ function OpenMostRecentUnreadEmail(): void {
 
   // valid message, show it
   if (giMessageId != -1) {
-    fDisplayMessageFlag = TRUE;
+    fDisplayMessageFlag = true;
   }
 
   return;
 }
 
-function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
+function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): boolean {
   // display the indent for the display of pages to this email..along with the current page/number of pages
 
   let iCounter: INT32 = 0;
@@ -3895,7 +3895,7 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
   // turn off the shadows
   SetFontShadow(NO_SHADOW);
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   FindFontCenterCoordinates(VIEWER_X + INDENT_X_OFFSET, 0, INDENT_X_WIDTH, 0, sString, FONT12ARIAL(), addressof(sX), addressof(sY));
   mprintf(sX, VIEWER_Y + iViewerY + INDENT_Y_OFFSET - 2, sString);
@@ -3903,7 +3903,7 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
   // restore shadows
   SetFontShadow(DEFAULT_SHADOW);
 
-  return TRUE;
+  return true;
 }
 
 function GetNumberOfPagesToEmail(): INT32 {
@@ -3952,7 +3952,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
   let iCounter: INT32 = 0;
   let iHeight: INT32 = 0;
   let iOffSet: INT32 = 0;
-  let fGoingOffCurrentPage: BOOLEAN = FALSE;
+  let fGoingOffCurrentPage: boolean = false;
   let iYPositionOnPage: INT32 = 0;
 
   iOffSet = pMail.value.usOffset;
@@ -3996,7 +3996,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
     wcscpy(pString, pTempRecord.value.pRecord);
 
     // get the height of the string, ONLY!...must redisplay ON TOP OF background graphic
-    iHeight += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + GetFontHeight(MESSAGE_FONT())), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, FALSE, 0);
+    iHeight += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + GetFontHeight(MESSAGE_FONT())), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, false, 0);
 
     // next message record string
     pTempRecord = pTempRecord.value.Next;
@@ -4027,7 +4027,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
   pTempRecord = pMessageRecordList;
 
   if (iTotalHeight < MAX_EMAIL_MESSAGE_PAGE_SIZE()) {
-    fOnLastPageFlag = TRUE;
+    fOnLastPageFlag = true;
 
     if (pTempRecord && pMail.value.usOffset != IMP_EMAIL_PROFILE_RESULTS) {
       pTempRecord = pTempRecord.value.Next;
@@ -4066,7 +4066,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
     pEmailPageInfo[1].pLastRecord = null;
     pEmailPageInfo[1].iPageNumber = 1;
   } else {
-    fOnLastPageFlag = FALSE;
+    fOnLastPageFlag = false;
     pTempList = pMessageRecordList;
 
     if (pTempList && pMail.value.usOffset != IMP_EMAIL_PROFILE_RESULTS) {
@@ -4100,27 +4100,27 @@ function PreProcessEmail(pMail: EmailPtr): void {
 
         if (pString[0] == 0) {
           // on last page
-          fOnLastPageFlag = TRUE;
+          fOnLastPageFlag = true;
         }
 
         if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), 0, pTempRecord.value.pRecord, 0, 0, 0)) <= MAX_EMAIL_MESSAGE_PAGE_SIZE()) {
           // now print it
-          iYPositionOnPage += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + 10 + iYPositionOnPage + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, FALSE, IAN_WRAP_NO_SHADOW);
-          fGoingOffCurrentPage = FALSE;
+          iYPositionOnPage += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + 10 + iYPositionOnPage + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, false, IAN_WRAP_NO_SHADOW);
+          fGoingOffCurrentPage = false;
         } else {
           // gonna get cut off...end now
-          fGoingOffCurrentPage = TRUE;
+          fGoingOffCurrentPage = true;
         }
 
         pCurrentRecord = pTempRecord;
         pTempRecord = pTempRecord.value.Next;
 
-        if (fGoingOffCurrentPage == FALSE) {
+        if (fGoingOffCurrentPage == false) {
           pLastRecord = pTempRecord;
         }
         // record get cut off?...end now
 
-        if (fGoingOffCurrentPage == TRUE) {
+        if (fGoingOffCurrentPage == true) {
           pTempRecord = null;
         }
       }
@@ -4172,7 +4172,7 @@ function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pM
   giPrevMessageId = giMessageId;
 }
 
-function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>, pMail: EmailPtr): BOOLEAN {
+function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>, pMail: EmailPtr): boolean {
   //	wchar_t		pTempString[MAIL_STRING_SIZE/2 + 1];
   let pTempString: wchar_t[] /* [MAIL_STRING_SIZE] */;
   let iLength: INT32 = 0;
@@ -4181,7 +4181,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
   let pMercNameString: Pointer<CHAR16> = null;
   let pAmountString: Pointer<CHAR16> = null;
   let pSubString: Pointer<CHAR16> = null;
-  let fReplacingMercName: BOOLEAN = TRUE;
+  let fReplacingMercName: boolean = true;
 
   let sMercName: CHAR16[] /* [32] */ = "$MERCNAME$"; // Doesnt need to be translated, inside Email.txt and will be replaced by the mercs name
   let sAmount: CHAR16[] /* [32] */ = "$AMOUN$"; // Doesnt need to be translated, inside Email.txt and will be replaced by a dollar amount
@@ -4205,20 +4205,20 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
 
     if (pMercNameString != null && pAmountString != null) {
       if (pMercNameString < pAmountString) {
-        fReplacingMercName = TRUE;
+        fReplacingMercName = true;
         pSubString = pMercNameString;
         wcscpy(sSearchString, sMercName);
       } else {
-        fReplacingMercName = FALSE;
+        fReplacingMercName = false;
         pSubString = pAmountString;
         wcscpy(sSearchString, sAmount);
       }
     } else if (pMercNameString != null) {
-      fReplacingMercName = TRUE;
+      fReplacingMercName = true;
       pSubString = pMercNameString;
       wcscpy(sSearchString, sMercName);
     } else if (pAmountString != null) {
-      fReplacingMercName = FALSE;
+      fReplacingMercName = false;
       pSubString = pAmountString;
       wcscpy(sSearchString, sAmount);
     } else {
@@ -4257,5 +4257,5 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
     }
   }
 
-  return TRUE;
+  return true;
 }

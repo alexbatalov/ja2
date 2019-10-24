@@ -1,27 +1,27 @@
 let gpEventList: Pointer<STRATEGICEVENT> = null;
 
-let gfPreventDeletionOfAnyEvent: BOOLEAN = FALSE;
-let gfEventDeletionPending: BOOLEAN = FALSE;
+let gfPreventDeletionOfAnyEvent: boolean = false;
+let gfEventDeletionPending: boolean = false;
 
-let gfProcessingGameEvents: BOOLEAN = FALSE;
+let gfProcessingGameEvents: boolean = false;
 let guiTimeStampOfCurrentlyExecutingEvent: UINT32 = 0;
 
 // Determines if there are any events that will be processed between the current global time,
 // and the beginning of the next global time.
-function GameEventsPending(uiAdjustment: UINT32): BOOLEAN {
+function GameEventsPending(uiAdjustment: UINT32): boolean {
   if (!gpEventList)
-    return FALSE;
+    return false;
   if (gpEventList.value.uiTimeStamp <= GetWorldTotalSeconds() + uiAdjustment)
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
 // returns TRUE if any events were deleted
-function DeleteEventsWithDeletionPending(): BOOLEAN {
+function DeleteEventsWithDeletionPending(): boolean {
   let curr: Pointer<STRATEGICEVENT>;
   let prev: Pointer<STRATEGICEVENT>;
   let temp: Pointer<STRATEGICEVENT>;
-  let fEventDeleted: BOOLEAN = FALSE;
+  let fEventDeleted: boolean = false;
   // ValidateGameEvents();
   curr = gpEventList;
   prev = null;
@@ -34,7 +34,7 @@ function DeleteEventsWithDeletionPending(): BOOLEAN {
         temp = curr;
         curr = curr.value.next;
         MemFree(temp);
-        fEventDeleted = TRUE;
+        fEventDeleted = true;
         // ValidateGameEvents();
         continue;
       } else {
@@ -44,7 +44,7 @@ function DeleteEventsWithDeletionPending(): BOOLEAN {
         prev = null;
         curr = curr.value.next;
         MemFree(temp);
-        fEventDeleted = TRUE;
+        fEventDeleted = true;
         // ValidateGameEvents();
         continue;
       }
@@ -52,7 +52,7 @@ function DeleteEventsWithDeletionPending(): BOOLEAN {
     prev = curr;
     curr = curr.value.next;
   }
-  gfEventDeletionPending = FALSE;
+  gfEventDeletionPending = false;
   return fEventDeleted;
 }
 
@@ -78,17 +78,17 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
   let pEvent: Pointer<STRATEGICEVENT>;
   let prev: Pointer<STRATEGICEVENT>;
   let temp: Pointer<STRATEGICEVENT>;
-  let fDeleteEvent: BOOLEAN = FALSE;
-  let fDeleteQueuedEvent: BOOLEAN = FALSE;
+  let fDeleteEvent: boolean = false;
+  let fDeleteQueuedEvent: boolean = false;
 
-  gfTimeInterrupt = FALSE;
-  gfProcessingGameEvents = TRUE;
+  gfTimeInterrupt = false;
+  gfProcessingGameEvents = true;
 
   // While we have events inside the time range to be updated, process them...
   curr = gpEventList;
   prev = null; // prev only used when warping time to target time.
   while (!gfTimeInterrupt && curr && curr.value.uiTimeStamp <= guiGameClock + uiAdjustment) {
-    fDeleteEvent = FALSE;
+    fDeleteEvent = false;
     // Update the time by the difference, but ONLY if the event comes after the current time.
     // In the beginning of the game, series of events are created that are placed in the list
     // BEFORE the start time.  Those events will be processed without influencing the actual time.
@@ -158,7 +158,7 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
     }
   }
 
-  gfProcessingGameEvents = FALSE;
+  gfProcessingGameEvents = false;
 
   if (gfEventDeletionPending) {
     DeleteEventsWithDeletionPending();
@@ -168,21 +168,21 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
     guiGameClock += uiAdjustment;
 }
 
-function AddSameDayStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32): BOOLEAN {
+function AddSameDayStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32): boolean {
   return AddStrategicEvent(ubCallbackID, uiMinStamp + GetWorldDayInMinutes(), uiParam);
 }
 
-function AddSameDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32): BOOLEAN {
+function AddSameDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32): boolean {
   return AddStrategicEventUsingSeconds(ubCallbackID, uiSecondStamp + GetWorldDayInSeconds(), uiParam);
 }
 
-function AddFutureDayStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): BOOLEAN {
+function AddFutureDayStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): boolean {
   let uiDay: UINT32;
   uiDay = GetWorldDay();
   return AddStrategicEvent(ubCallbackID, uiMinStamp + GetFutureDayInMinutes(uiDay + uiNumDaysFromPresent), uiParam);
 }
 
-function AddFutureDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): BOOLEAN {
+function AddFutureDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): boolean {
   let uiDay: UINT32;
   uiDay = GetWorldDay();
   return AddStrategicEventUsingSeconds(ubCallbackID, uiSecondStamp + GetFutureDayInMinutes(uiDay + uiNumDaysFromPresent) * 60, uiParam);
@@ -246,106 +246,106 @@ function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTi
   return pNewNode;
 }
 
-function AddStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32): BOOLEAN {
+function AddStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32): boolean {
   if (AddAdvancedStrategicEvent(Enum133.ONETIME_EVENT, ubCallbackID, uiMinStamp * 60, uiParam))
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
-function AddStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32): BOOLEAN {
+function AddStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32): boolean {
   if (AddAdvancedStrategicEvent(Enum133.ONETIME_EVENT, ubCallbackID, uiSecondStamp, uiParam))
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
-function AddRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32): BOOLEAN {
+function AddRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32): boolean {
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(Enum133.RANGED_EVENT, ubCallbackID, uiStartMin * 60, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiLengthMin * 60;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function AddSameDayRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32): BOOLEAN {
+function AddSameDayRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32): boolean {
   return AddRangedStrategicEvent(ubCallbackID, uiStartMin + GetWorldDayInMinutes(), uiLengthMin, uiParam);
 }
 
-function AddFutureDayRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): BOOLEAN {
+function AddFutureDayRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): boolean {
   return AddRangedStrategicEvent(ubCallbackID, uiStartMin + GetFutureDayInMinutes(GetWorldDay() + uiNumDaysFromPresent), uiLengthMin, uiParam);
 }
 
-function AddRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiLengthSeconds: UINT32, uiParam: UINT32): BOOLEAN {
+function AddRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiLengthSeconds: UINT32, uiParam: UINT32): boolean {
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(Enum133.RANGED_EVENT, ubCallbackID, uiStartSeconds, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiLengthSeconds;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function AddSameDayRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiLengthSeconds: UINT32, uiParam: UINT32): BOOLEAN {
+function AddSameDayRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiLengthSeconds: UINT32, uiParam: UINT32): boolean {
   return AddRangedStrategicEventUsingSeconds(ubCallbackID, uiStartSeconds + GetWorldDayInSeconds(), uiLengthSeconds, uiParam);
 }
 
-function AddFutureDayRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiLengthSeconds: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): BOOLEAN {
+function AddFutureDayRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiLengthSeconds: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): boolean {
   return AddRangedStrategicEventUsingSeconds(ubCallbackID, uiStartSeconds + GetFutureDayInMinutes(GetWorldDay() + uiNumDaysFromPresent) * 60, uiLengthSeconds, uiParam);
 }
 
-function AddEveryDayStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiParam: UINT32): BOOLEAN {
+function AddEveryDayStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiParam: UINT32): boolean {
   if (AddAdvancedStrategicEvent(Enum133.EVERYDAY_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiStartMin * 60, uiParam))
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
-function AddEveryDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiParam: UINT32): BOOLEAN {
+function AddEveryDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiParam: UINT32): boolean {
   if (AddAdvancedStrategicEvent(Enum133.EVERYDAY_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiStartSeconds, uiParam))
-    return TRUE;
-  return FALSE;
+    return true;
+  return false;
 }
 
 // NEW:  Period Events
 // Event will get processed automatically once every X minutes.
-function AddPeriodStrategicEvent(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiParam: UINT32): BOOLEAN {
+function AddPeriodStrategicEvent(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiParam: UINT32): boolean {
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXMinutes * 60, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiOnceEveryXMinutes * 60;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function AddPeriodStrategicEventUsingSeconds(ubCallbackID: UINT8, uiOnceEveryXSeconds: UINT32, uiParam: UINT32): BOOLEAN {
+function AddPeriodStrategicEventUsingSeconds(ubCallbackID: UINT8, uiOnceEveryXSeconds: UINT32, uiParam: UINT32): boolean {
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXSeconds, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiOnceEveryXSeconds;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function AddPeriodStrategicEventWithOffset(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): BOOLEAN {
+function AddPeriodStrategicEventWithOffset(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): boolean {
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent * 60, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiOnceEveryXMinutes * 60;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function AddPeriodStrategicEventUsingSecondsWithOffset(ubCallbackID: UINT8, uiOnceEveryXSeconds: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): BOOLEAN {
+function AddPeriodStrategicEventUsingSecondsWithOffset(ubCallbackID: UINT8, uiOnceEveryXSeconds: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): boolean {
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiOnceEveryXSeconds;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 function DeleteAllStrategicEventsOfType(ubCallbackID: UINT8): void {
@@ -358,7 +358,7 @@ function DeleteAllStrategicEventsOfType(ubCallbackID: UINT8): void {
     if (curr.value.ubCallbackID == ubCallbackID && !(curr.value.ubFlags & SEF_DELETION_PENDING)) {
       if (gfPreventDeletionOfAnyEvent) {
         curr.value.ubFlags |= SEF_DELETION_PENDING;
-        gfEventDeletionPending = TRUE;
+        gfEventDeletionPending = true;
         prev = curr;
         curr = curr.value.next;
         continue;
@@ -397,7 +397,7 @@ function DeleteAllStrategicEvents(): void {
 // Searches for and removes the first event matching the supplied information.  There may very well be a need
 // for more specific event removal, so let me know (Kris), of any support needs.  Function returns FALSE if
 // no events were found or if the event wasn't deleted due to delete lock,
-function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): BOOLEAN {
+function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): boolean {
   let curr: Pointer<STRATEGICEVENT>;
   let prev: Pointer<STRATEGICEVENT>;
   curr = gpEventList;
@@ -408,8 +408,8 @@ function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): BOOLEAN {
       if (!(curr.value.ubFlags & SEF_DELETION_PENDING)) {
         if (gfPreventDeletionOfAnyEvent) {
           curr.value.ubFlags |= SEF_DELETION_PENDING;
-          gfEventDeletionPending = TRUE;
-          return FALSE;
+          gfEventDeletionPending = true;
+          return false;
         }
         if (prev) {
           prev.value.next = curr.value.next;
@@ -418,17 +418,17 @@ function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): BOOLEAN {
         }
         MemFree(curr);
         // ValidateGameEvents();
-        return TRUE;
+        return true;
       }
     }
     prev = curr;
     curr = curr.value.next;
   }
-  return FALSE;
+  return false;
 }
 
 // part of the game.sav files (not map files)
-function SaveStrategicEventsToSavedGame(hFile: HWFILE): BOOLEAN {
+function SaveStrategicEventsToSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let sGameEvent: STRATEGICEVENT;
 
@@ -444,7 +444,7 @@ function SaveStrategicEventsToSavedGame(hFile: HWFILE): BOOLEAN {
   // write the number of strategic events
   FileWrite(hFile, addressof(uiNumGameEvents), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   // loop through all the events and save them.
@@ -456,16 +456,16 @@ function SaveStrategicEventsToSavedGame(hFile: HWFILE): BOOLEAN {
     // write the current strategic event
     FileWrite(hFile, addressof(sGameEvent), sizeof(STRATEGICEVENT), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(STRATEGICEVENT)) {
-      return FALSE;
+      return false;
     }
 
     pTempEvent = pTempEvent.value.next;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
+function LoadStrategicEventsFromSavedGame(hFile: HWFILE): boolean {
   let uiNumGameEvents: UINT32;
   let sGameEvent: STRATEGICEVENT;
   let cnt: UINT32;
@@ -478,7 +478,7 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
   // Read the number of strategic events
   FileRead(hFile, addressof(uiNumGameEvents), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   pTemp = null;
@@ -490,12 +490,12 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
     // allocate memory for the event
     pTempEvent = MemAlloc(sizeof(STRATEGICEVENT));
     if (pTempEvent == null)
-      return FALSE;
+      return false;
 
     // Read the current strategic event
     FileRead(hFile, addressof(sGameEvent), sizeof(STRATEGICEVENT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(STRATEGICEVENT)) {
-      return FALSE;
+      return false;
     }
 
     memcpy(pTempEvent, addressof(sGameEvent), sizeof(STRATEGICEVENT));
@@ -521,7 +521,7 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
     pTempEvent.value.next = null;
   }
 
-  return TRUE;
+  return true;
 }
 
 function LockStrategicEventFromDeletion(pEvent: Pointer<STRATEGICEVENT>): void {

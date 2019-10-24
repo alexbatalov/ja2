@@ -1,4 +1,4 @@
-let gfInSectorExitMenu: BOOLEAN = FALSE;
+let gfInSectorExitMenu: boolean = false;
 
 interface EXIT_DIALOG_STRUCT {
   BackRegion: MOUSE_REGION;
@@ -24,23 +24,23 @@ interface EXIT_DIALOG_STRUCT {
   ubNumPeopleOnSquad: UINT8;
   bSingleMoveWillIsolateEPC: INT8; // if not -1, then that means the slot number is an EPC
   bHandled: INT8;
-  fRender: BOOLEAN;
-  fGotoSector: BOOLEAN;
-  fGotoSectorText: BOOLEAN;
-  fSingleMove: BOOLEAN;
-  fAllMove: BOOLEAN;
-  fSingleMoveDisabled: BOOLEAN;
-  fGotoSectorDisabled: BOOLEAN;
-  fAllMoveDisabled: BOOLEAN;
-  fGotoSectorHilighted: BOOLEAN;
-  fSingleMoveHilighted: BOOLEAN;
-  fAllMoveHilighted: BOOLEAN;
-  fMultipleSquadsInSector: BOOLEAN;
-  fSingleMoveOn: BOOLEAN;
-  fAllMoveOn: BOOLEAN;
-  fSelectedMercIsEPC: BOOLEAN;
-  fSquadHasMultipleEPCs: BOOLEAN;
-  fUncontrolledRobotInSquad: BOOLEAN;
+  fRender: boolean;
+  fGotoSector: boolean;
+  fGotoSectorText: boolean;
+  fSingleMove: boolean;
+  fAllMove: boolean;
+  fSingleMoveDisabled: boolean;
+  fGotoSectorDisabled: boolean;
+  fAllMoveDisabled: boolean;
+  fGotoSectorHilighted: boolean;
+  fSingleMoveHilighted: boolean;
+  fAllMoveHilighted: boolean;
+  fMultipleSquadsInSector: boolean;
+  fSingleMoveOn: boolean;
+  fAllMoveOn: boolean;
+  fSelectedMercIsEPC: boolean;
+  fSquadHasMultipleEPCs: boolean;
+  fUncontrolledRobotInSquad: boolean;
 }
 
 let gExitDialog: EXIT_DIALOG_STRUCT;
@@ -54,7 +54,7 @@ let gsWarpGridNo: INT16;
 
 // KM:  New method is coded for more sophistocated rules.  All the information is stored within the gExitDialog struct
 //		 and calculated upon entry to this function instead of passing in multiple arguments and calculating it prior.
-function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN {
+function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): boolean {
   let uiTraverseTimeInMinutes: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
@@ -63,7 +63,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
   let usTextBoxHeight: UINT16;
   let usMapPos: UINT16 = 0;
   let bExitCode: INT8 = -1;
-  let OkExitCode: BOOLEAN;
+  let OkExitCode: boolean;
 
   // STEP 1:  Calculate the information for the exit gui
   memset(addressof(gExitDialog), 0, sizeof(EXIT_DIALOG_STRUCT));
@@ -93,20 +93,20 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
 
   if (uiTraverseTimeInMinutes <= 5) {
     // if the traverse time is short, then traversal is percieved to be instantaneous.
-    gExitDialog.fGotoSectorText = TRUE;
+    gExitDialog.fGotoSectorText = true;
   }
 
   if (OkExitCode == 1) {
-    gExitDialog.fAllMoveDisabled = TRUE;
-    gExitDialog.fSingleMoveOn = TRUE;
-    gExitDialog.fSingleMove = TRUE;
+    gExitDialog.fAllMoveDisabled = true;
+    gExitDialog.fSingleMoveOn = true;
+    gExitDialog.fSingleMove = true;
     if (gfRobotWithoutControllerAttemptingTraversal) {
-      gfRobotWithoutControllerAttemptingTraversal = FALSE;
-      gExitDialog.fUncontrolledRobotInSquad = TRUE;
+      gfRobotWithoutControllerAttemptingTraversal = false;
+      gExitDialog.fUncontrolledRobotInSquad = true;
     }
   } else if (OkExitCode == 2) {
-    gExitDialog.fAllMoveOn = TRUE;
-    gExitDialog.fAllMove = TRUE;
+    gExitDialog.fAllMoveOn = true;
+    gExitDialog.fAllMove = true;
   }
 
   if (gTacticalStatus.uiFlags & INCOMBAT) {
@@ -117,14 +117,14 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
         cnt++;
     }
     if (cnt != 1) {
-      gExitDialog.fGotoSectorDisabled = TRUE;
+      gExitDialog.fGotoSectorDisabled = true;
     }
   }
 
   // STEP 2:  Setup the exit gui
 
   EnterModalTactical(TACTICAL_MODAL_WITHMOUSE);
-  gfIgnoreScrolling = TRUE;
+  gfIgnoreScrolling = true;
 
   aRect.iTop = 0;
   aRect.iLeft = 0;
@@ -133,7 +133,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
 
   if (gExitDialog.fAllMoveOn) {
     // either an all-move in non-combat, or the last concious guy in combat.
-    gExitDialog.fGotoSector = TRUE;
+    gExitDialog.fGotoSector = true;
   }
 
   gExitDialog.ubNumPeopleOnSquad = NumberOfPlayerControllableMercsInSquad(MercPtrs[gusSelectedSoldier].value.bAssignment);
@@ -148,7 +148,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
       // KM:  We need to determine if there are more than one squad (meaning other concious mercs in a different squad or assignment)
       //		 These conditions were done to the best of my knowledge, so if there are other situations that require modification,
       //		 then feel free to do so.
-      gExitDialog.fMultipleSquadsInSector = TRUE;
+      gExitDialog.fMultipleSquadsInSector = true;
       break;
     }
   }
@@ -158,11 +158,11 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
   if (AM_AN_EPC(MercPtrs[gusSelectedSoldier])) {
     // Check if there are more than one in this squad
     if (gExitDialog.ubNumPeopleOnSquad > 1) {
-      gExitDialog.fSingleMoveOn = FALSE;
-      gExitDialog.fAllMoveOn = TRUE;
-      gExitDialog.fSelectedMercIsEPC = TRUE;
+      gExitDialog.fSingleMoveOn = false;
+      gExitDialog.fAllMoveOn = true;
+      gExitDialog.fSelectedMercIsEPC = true;
     }
-    gExitDialog.fSingleMoveDisabled = TRUE;
+    gExitDialog.fSingleMoveDisabled = true;
   } else {
     // check to see if we have one selected merc and one or more EPCs.
     // If so, don't allow the selected merc to leave by himself.
@@ -190,11 +190,11 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
     }
 
     if (ubNumMercs == 1 && ubNumEPCs >= 1) {
-      gExitDialog.fSingleMoveOn = FALSE;
-      gExitDialog.fAllMoveOn = TRUE;
-      gExitDialog.fSingleMoveDisabled = TRUE;
+      gExitDialog.fSingleMoveOn = false;
+      gExitDialog.fAllMoveOn = true;
+      gExitDialog.fSingleMoveDisabled = true;
       if (ubNumEPCs > 1) {
-        gExitDialog.fSquadHasMultipleEPCs = TRUE;
+        gExitDialog.fSquadHasMultipleEPCs = true;
         ;
       }
     }
@@ -203,21 +203,21 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
   if (gTacticalStatus.fEnemyInSector) {
     if (gExitDialog.fMultipleSquadsInSector) {
       // We have multiple squads in a hostile sector.  That means that we can't load the adjacent sector.
-      gExitDialog.fGotoSectorDisabled = TRUE;
-      gExitDialog.fGotoSector = FALSE;
+      gExitDialog.fGotoSectorDisabled = true;
+      gExitDialog.fGotoSector = false;
     } else if (GetNumberOfMilitiaInSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ)) {
       // Leaving this sector will result in militia being forced to fight the battle, can't load adjacent sector.
-      gExitDialog.fGotoSectorDisabled = TRUE;
-      gExitDialog.fGotoSector = FALSE;
+      gExitDialog.fGotoSectorDisabled = true;
+      gExitDialog.fGotoSector = false;
     }
     if (!gExitDialog.fMultipleSquadsInSector && !gExitDialog.fAllMoveOn) {
-      gExitDialog.fGotoSectorDisabled = TRUE;
-      gExitDialog.fGotoSector = FALSE;
+      gExitDialog.fGotoSectorDisabled = true;
+      gExitDialog.fGotoSector = false;
     }
   }
 
   if (!gExitDialog.fMultipleSquadsInSector && gExitDialog.fAllMoveOn) {
-    gExitDialog.fGotoSectorDisabled = TRUE;
+    gExitDialog.fGotoSectorDisabled = true;
   }
 
   gExitDialog.ubDirection = ubDirection;
@@ -233,20 +233,20 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
   guiPendingOverrideEvent = Enum207.EX_EXITSECTORMENU;
   HandleTacticalUI();
 
-  gfInSectorExitMenu = TRUE;
+  gfInSectorExitMenu = true;
 
   MSYS_DefineRegion(addressof(gExitDialog.BackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, SectorExitBackgroundCallback);
 
   gExitDialog.iButtonImages = LoadButtonImage("INTERFACE\\popupbuttons.sti", -1, 0, -1, 1, -1);
 
   MSYS_DefineRegion(addressof(gExitDialog.SingleRegion), (gExitDialog.sX + 20), (gExitDialog.sY + 37), (gExitDialog.sX + 45 + 120), (gExitDialog.sY + 37 + 12), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, SingleRegionMoveCallback, SingleRegionCallback);
-  MSYS_AllowDisabledRegionFastHelp(addressof(gExitDialog.SingleRegion), TRUE);
+  MSYS_AllowDisabledRegionFastHelp(addressof(gExitDialog.SingleRegion), true);
 
   MSYS_DefineRegion(addressof(gExitDialog.AllRegion), (gExitDialog.sX + 20), (gExitDialog.sY + 57), (gExitDialog.sX + 45 + 120), (gExitDialog.sY + 57 + 12), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, AllRegionMoveCallback, AllRegionCallback);
-  MSYS_AllowDisabledRegionFastHelp(addressof(gExitDialog.AllRegion), TRUE);
+  MSYS_AllowDisabledRegionFastHelp(addressof(gExitDialog.AllRegion), true);
 
   MSYS_DefineRegion(addressof(gExitDialog.LoadRegion), (gExitDialog.sX + 155), (gExitDialog.sY + 45), (gExitDialog.sX + 180 + 85), (gExitDialog.sY + 45 + 15), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, LoadRegionMoveCallback, LoadRegionCallback);
-  MSYS_AllowDisabledRegionFastHelp(addressof(gExitDialog.LoadRegion), TRUE);
+  MSYS_AllowDisabledRegionFastHelp(addressof(gExitDialog.LoadRegion), true);
 
   gExitDialog.uiLoadCheckButton = CreateCheckBoxButton((gExitDialog.sX + 155), (gExitDialog.sY + 43), "INTERFACE\\popupcheck.sti", MSYS_PRIORITY_HIGHEST, CheckLoadMapCallback);
 
@@ -258,13 +258,13 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
 
   gExitDialog.uiCancelButton = CreateIconAndTextButton(gExitDialog.iButtonImages, TacticalStr[Enum335.CANCEL_BUTTON_TEXT_STR], FONT12ARIAL(), FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gExitDialog.sX + 135), (gExitDialog.sY + 78), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), CancelCallback);
 
-  gfIgnoreScrolling = TRUE;
+  gfIgnoreScrolling = true;
 
   InterruptTime();
   PauseGame();
   LockPauseState(21);
 
-  return TRUE;
+  return true;
 }
 
 function DoneFadeInWarp(): void {
@@ -283,7 +283,7 @@ function DoneFadeOutWarpCallback(): void {
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     // Are we in this sector, On the current squad?
     if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bInSector) {
-      gfTacticalTraversal = TRUE;
+      gfTacticalTraversal = true;
       SetGroupSectorValue(gsWarpWorldX, gsWarpWorldY, gbWarpWorldZ, pSoldier.value.ubGroupID);
 
       // Set next sectore
@@ -303,7 +303,7 @@ function DoneFadeOutWarpCallback(): void {
   SetCurrentWorldSector(gsWarpWorldX, gsWarpWorldY, gbWarpWorldZ);
 
   // OK, once down here, adjust the above map with crate info....
-  gfTacticalTraversal = FALSE;
+  gfTacticalTraversal = false;
   gpTacticalTraversalGroup = null;
   gpTacticalTraversalChosenSoldier = null;
 
@@ -322,7 +322,7 @@ function WarpToSurfaceCallback(bExitValue: UINT8): void {
   }
 }
 
-function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN {
+function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): boolean {
   gubExitGUIDirection = ubDirection;
   gsExitGUIAdditionalData = sAdditionalData;
 
@@ -331,7 +331,7 @@ function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN
       // ATE: Check if we are in a creature lair and bring up box if so....
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[33], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, WarpToSurfaceCallback, null);
 
-      return TRUE;
+      return true;
     }
   }
 
@@ -460,10 +460,10 @@ function RenderSectorExitMenu(): void {
     if (Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case ESC:
-          RemoveSectorExitMenu(FALSE);
+          RemoveSectorExitMenu(false);
           return;
         case ENTER:
-          RemoveSectorExitMenu(TRUE);
+          RemoveSectorExitMenu(true);
           return;
       }
     }
@@ -521,11 +521,11 @@ function RenderSectorExitMenu(): void {
   MarkAButtonDirty(gExitDialog.uiCancelButton);
 }
 
-function HandleSectorExitMenu(): BOOLEAN {
-  return (FALSE); // Why???
+function HandleSectorExitMenu(): boolean {
+  return (false); // Why???
 }
 
-function RemoveSectorExitMenu(fOk: BOOLEAN): void {
+function RemoveSectorExitMenu(fOk: boolean): void {
   let Str: INT16[] /* [50] */;
 
   if (gfInSectorExitMenu) {
@@ -548,16 +548,16 @@ function RemoveSectorExitMenu(fOk: BOOLEAN): void {
     RemoveMercPopupBoxFromIndex(gExitDialog.iBoxId);
     gExitDialog.iBoxId = -1;
 
-    gfIgnoreScrolling = FALSE;
+    gfIgnoreScrolling = false;
 
     SetRenderFlags(RENDER_FLAG_FULL);
 
-    gfInSectorExitMenu = FALSE;
+    gfInSectorExitMenu = false;
 
     UnLockPauseState();
     UnPauseGame();
     EndModalTactical();
-    gfIgnoreScrolling = FALSE;
+    gfIgnoreScrolling = false;
 
     // if we are an EPC, don't allow this if nobody else on squad
     if (fOk && AM_AN_EPC(MercPtrs[gusSelectedSoldier])) {
@@ -614,17 +614,17 @@ function SingleMoveAction(): void {
   if (!gExitDialog.fMultipleSquadsInSector) {
     if (gTacticalStatus.fEnemyInSector) {
       // if enemy in sector, and mercs will be left behind, prevent user from selecting load
-      gExitDialog.fGotoSectorDisabled = TRUE;
-      gExitDialog.fGotoSector = FALSE;
+      gExitDialog.fGotoSectorDisabled = true;
+      gExitDialog.fGotoSector = false;
     } else {
       // freedom to load or not load
-      gExitDialog.fGotoSectorDisabled = FALSE;
+      gExitDialog.fGotoSectorDisabled = false;
     }
   } else {
-    gExitDialog.fGotoSector = FALSE;
+    gExitDialog.fGotoSector = false;
   }
-  gExitDialog.fSingleMove = TRUE;
-  gExitDialog.fAllMove = FALSE;
+  gExitDialog.fSingleMove = true;
+  gExitDialog.fAllMove = false;
   // end
 
   // previous logic
@@ -638,11 +638,11 @@ function SingleMoveAction(): void {
 function AllMoveAction(): void {
   // KM: New logic Mar2 '99
   if (!gExitDialog.fMultipleSquadsInSector) {
-    gExitDialog.fGotoSectorDisabled = TRUE;
-    gExitDialog.fGotoSector = TRUE;
+    gExitDialog.fGotoSectorDisabled = true;
+    gExitDialog.fGotoSector = true;
   }
-  gExitDialog.fSingleMove = FALSE;
-  gExitDialog.fAllMove = TRUE;
+  gExitDialog.fSingleMove = false;
+  gExitDialog.fAllMove = true;
   // end
 
   // previous logic
@@ -671,7 +671,7 @@ function OKCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
-    RemoveSectorExitMenu(TRUE);
+    RemoveSectorExitMenu(true);
   }
 }
 
@@ -682,7 +682,7 @@ function CancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
-    RemoveSectorExitMenu(FALSE);
+    RemoveSectorExitMenu(false);
   }
 }
 
@@ -712,24 +712,24 @@ function LoadRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
 
 function SingleRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_MOVE) {
-    gExitDialog.fSingleMoveHilighted = TRUE;
+    gExitDialog.fSingleMoveHilighted = true;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    gExitDialog.fSingleMoveHilighted = FALSE;
+    gExitDialog.fSingleMoveHilighted = false;
   }
 }
 
 function AllRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_MOVE) {
-    gExitDialog.fAllMoveHilighted = TRUE;
+    gExitDialog.fAllMoveHilighted = true;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    gExitDialog.fAllMoveHilighted = FALSE;
+    gExitDialog.fAllMoveHilighted = false;
   }
 }
 
 function LoadRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_MOVE) {
-    gExitDialog.fGotoSectorHilighted = TRUE;
+    gExitDialog.fGotoSectorHilighted = true;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    gExitDialog.fGotoSectorHilighted = FALSE;
+    gExitDialog.fGotoSectorHilighted = false;
   }
 }

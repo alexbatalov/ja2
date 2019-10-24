@@ -15,17 +15,17 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   let usMapPos: UINT16;
   let usStandardMapPos: UINT16;
   let usNumberOfItems: UINT16;
-  let fSectorLoaded: BOOLEAN = FALSE;
+  let fSectorLoaded: boolean = false;
   let usTotalNumberOfItemTypes: UINT16;
   let uiCount: UINT32 = 0;
   let uiStolenCount: UINT32 = 0;
   /* static */ let ubShipmentsSinceNoBribes: UINT8 = 0;
   let uiChanceOfTheft: UINT32;
-  let fPablosStoleSomething: BOOLEAN = FALSE;
-  let fPablosStoleLastItem: BOOLEAN = FALSE;
+  let fPablosStoleSomething: boolean = false;
+  let fPablosStoleLastItem: boolean = false;
   let pObject: Pointer<OBJECTTYPE> = null;
   let pStolenObject: Pointer<OBJECTTYPE> = null;
-  let fThisShipmentIsFromJohnKulba: BOOLEAN = FALSE; // if it is, dont add an email
+  let fThisShipmentIsFromJohnKulba: boolean = false; // if it is, dont add an email
   let ubItemsDelivered: UINT8;
   let ubTempNumItems: UINT8;
   let ubItemsPurchased: UINT8;
@@ -42,7 +42,7 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     SetFactFalse(Enum170.FACT_NEXT_PACKAGE_CAN_BE_LOST);
     if (Random(100) < 50) {
       // lose the whole shipment!
-      gpNewBobbyrShipments[ubOrderID].fActive = FALSE;
+      gpNewBobbyrShipments[ubOrderID].fActive = false;
       SetFactTrue(Enum170.FACT_LAST_SHIPMENT_CRASHED);
       return;
     }
@@ -54,7 +54,7 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     SetFactFalse(Enum170.FACT_NEXT_PACKAGE_CAN_BE_DELAYED);
   } else if ((gTownLoyalty[Enum135.DRASSEN].ubRating < 20) || StrategicMap[CALCULATE_STRATEGIC_INDEX(13, MAP_ROW_B)].fEnemyControlled) {
     // loss of the whole shipment
-    gpNewBobbyrShipments[ubOrderID].fActive = FALSE;
+    gpNewBobbyrShipments[ubOrderID].fActive = false;
 
     SetFactTrue(Enum170.FACT_AGENTS_PREVENTED_SHIPMENT);
     return;
@@ -72,21 +72,21 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     // if any items are AutoMags
     if (gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].usItemIndex == Enum225.AUTOMAG_III) {
       // This shipment is from John Kulba, dont add an email from bobby ray
-      fThisShipmentIsFromJohnKulba = TRUE;
+      fThisShipmentIsFromJohnKulba = true;
     }
   }
 
   // determine if the sector is loaded
   if ((gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y) && (gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z))
-    fSectorLoaded = TRUE;
+    fSectorLoaded = true;
   else
-    fSectorLoaded = FALSE;
+    fSectorLoaded = false;
 
   // set crate to closed!
   if (fSectorLoaded) {
     SetOpenableStructureToClosed(BOBBYR_SHIPPING_DEST_GRIDNO, 0);
   } else {
-    ChangeStatusOfOpenableStructInUnloadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, BOBBYR_SHIPPING_DEST_GRIDNO, FALSE);
+    ChangeStatusOfOpenableStructInUnloadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, BOBBYR_SHIPPING_DEST_GRIDNO, false);
   }
 
   // if we are NOT currently in the right sector
@@ -142,11 +142,11 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
         if (!fPablosStoleLastItem && uiChanceOfTheft > 0 && Random(100) < (uiChanceOfTheft + ubItemsPurchased)) {
           uiStolenCount++;
           usMapPos = PABLOS_STOLEN_DEST_GRIDNO; // off screen!
-          fPablosStoleSomething = TRUE;
-          fPablosStoleLastItem = TRUE;
+          fPablosStoleSomething = true;
+          fPablosStoleLastItem = true;
         } else {
           usMapPos = usStandardMapPos;
-          fPablosStoleLastItem = FALSE;
+          fPablosStoleLastItem = false;
 
           if (usStandardMapPos == LOST_SHIPMENT_GRIDNO) {
             // damage the item a random amount!
@@ -165,10 +165,10 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
         if (j > 1 && !fPablosStoleLastItem && uiChanceOfTheft > 0 && Random(100) < (uiChanceOfTheft + j)) {
           memcpy(addressof(pStolenObject[uiStolenCount]), addressof(Object), sizeof(OBJECTTYPE));
           uiStolenCount++;
-          fPablosStoleSomething = TRUE;
-          fPablosStoleLastItem = TRUE;
+          fPablosStoleSomething = true;
+          fPablosStoleLastItem = true;
         } else {
-          fPablosStoleLastItem = FALSE;
+          fPablosStoleLastItem = false;
 
           // else we are not currently in the sector, so we build an array of items to add in one lump
           // add the item to the item array
@@ -221,12 +221,12 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     // add all the items from the array that was built above
     usMapPos = PABLOS_STOLEN_DEST_GRIDNO;
     // The item are to be added to the Top part of Drassen, grid loc's  10112, 9950
-    if (!AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, usStandardMapPos, uiCount, pObject, 0, 0, 0, -1, FALSE)) {
+    if (!AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, usStandardMapPos, uiCount, pObject, 0, 0, 0, -1, false)) {
       // Error adding the items
       // return;
     }
     if (uiStolenCount > 0) {
-      if (!AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, PABLOS_STOLEN_DEST_GRIDNO, uiStolenCount, pStolenObject, 0, 0, 0, -1, FALSE)) {
+      if (!AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, PABLOS_STOLEN_DEST_GRIDNO, uiStolenCount, pStolenObject, 0, 0, 0, -1, false)) {
         // Error adding the items
         // return;
       }
@@ -269,7 +269,7 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   }
 
   // We have received the shipment so fActice becomes fALSE
-  gpNewBobbyrShipments[ubOrderID].fActive = FALSE;
+  gpNewBobbyrShipments[ubOrderID].fActive = false;
 
   // Stop time compression the game
   StopTimeCompression();
@@ -292,7 +292,7 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
   let sStartGridNo: INT16;
   let uiNumWorldItems: UINT32;
   let uiLoop: UINT32;
-  let fOk: BOOLEAN;
+  let fOk: boolean;
   let pTemp: Pointer<WORLDITEM>;
   let ubLoop: UINT8;
   let Object: OBJECTTYPE;
@@ -337,7 +337,7 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
       if ((gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y) && (gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z)) {
         AddItemToPool(BOBBYR_SHIPPING_DEST_GRIDNO, addressof(Object), -1, 0, 0, 0);
       } else {
-        AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, BOBBYR_SHIPPING_DEST_GRIDNO, 1, addressof(Object), 0, 0, 0, -1, FALSE);
+        AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, BOBBYR_SHIPPING_DEST_GRIDNO, 1, addressof(Object), 0, 0, 0, -1, false);
       }
     }
   } else if (uiReason == Enum170.FACT_PACKAGE_DAMAGED) {
@@ -353,7 +353,7 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
     MoveItemPools(sStartGridNo, BOBBYR_SHIPPING_DEST_GRIDNO);
   } else {
     // otherwise load the saved items from the item file and change the records of their locations
-    fOk = GetNumberOfWorldItemsFromTempItemFile(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, addressof(uiNumWorldItems), FALSE);
+    fOk = GetNumberOfWorldItemsFromTempItemFile(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, addressof(uiNumWorldItems), false);
     if (!fOk) {
       return;
     }
@@ -368,7 +368,7 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
           pTemp[uiLoop].sGridNo = BOBBYR_SHIPPING_DEST_GRIDNO;
         }
       }
-      AddWorldItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 0, uiNumWorldItems, pTemp, TRUE);
+      AddWorldItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 0, uiNumWorldItems, pTemp, true);
     }
   }
 }
@@ -402,11 +402,11 @@ function HandlePossiblyDamagedPackage(): void {
   SetFactFalse(Enum170.FACT_SHIPMENT_DELAYED_24_HOURS);
 }
 
-function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
+function CheckForKingpinsMoneyMissing(fFirstCheck: boolean): void {
   let uiLoop: UINT32;
   let uiTotalCash: UINT32 = 0;
-  let fKingpinWillDiscover: BOOLEAN = FALSE;
-  let fKingpinDiscovers: BOOLEAN = FALSE;
+  let fKingpinWillDiscover: boolean = false;
+  let fKingpinDiscovers: boolean = false;
 
   // money in D5b1 must be less than 30k
 
@@ -419,7 +419,7 @@ function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
 
   // This function should be called every time sector D5/B1 is unloaded!
   if (fFirstCheck) {
-    if (CheckFact(Enum170.FACT_KINGPIN_WILL_LEARN_OF_MONEY_GONE, 0) == TRUE) {
+    if (CheckFact(Enum170.FACT_KINGPIN_WILL_LEARN_OF_MONEY_GONE, 0) == true) {
       // unnecessary
       return;
     }
@@ -432,16 +432,16 @@ function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
     }
   }
 
-  if (CheckFact(Enum170.FACT_KINGPIN_DEAD, 0) == TRUE) {
+  if (CheckFact(Enum170.FACT_KINGPIN_DEAD, 0) == true) {
     return;
   }
 
   if (uiTotalCash < 30000) {
     if (fFirstCheck) {
       // add event to make Kingpin aware, two days from now
-      fKingpinWillDiscover = TRUE;
+      fKingpinWillDiscover = true;
     } else {
-      fKingpinDiscovers = TRUE;
+      fKingpinDiscovers = true;
     }
   }
 
@@ -456,7 +456,7 @@ function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
       // loop through all items, look for ownership
       if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == Enum225.MONEY) {
         // remove!
-        gWorldItems[uiLoop].fExists = FALSE;
+        gWorldItems[uiLoop].fExists = false;
       }
     }
   } else if (fKingpinDiscovers) {
@@ -494,10 +494,10 @@ function HandleNPCSystemEvent(uiEvent: UINT32): void {
 
       case Enum170.FACT_KINGPIN_KNOWS_MONEY_GONE:
         // more generally events for kingpin quest
-        if (CheckFact(Enum170.FACT_KINGPIN_KNOWS_MONEY_GONE, 0) == FALSE) {
+        if (CheckFact(Enum170.FACT_KINGPIN_KNOWS_MONEY_GONE, 0) == false) {
           // check for real whether to start quest
-          CheckForKingpinsMoneyMissing(FALSE);
-        } else if (CheckFact(Enum170.FACT_KINGPIN_DEAD, 0) == FALSE) {
+          CheckForKingpinsMoneyMissing(false);
+        } else if (CheckFact(Enum170.FACT_KINGPIN_DEAD, 0) == false) {
           if (gubQuest[Enum169.QUEST_KINGPIN_MONEY] == QUESTNOTSTARTED) {
             // KP knows money is gone, hasn't told player, if this event is called then the 2
             // days are up... send email
@@ -564,7 +564,7 @@ function HandleNPCSystemEvent(uiEvent: UINT32): void {
         if (gMercProfiles[Enum268.JOEY].bMercStatus != MERC_IS_DEAD && !CheckFact(Enum170.FACT_JOEY_ESCORTED, 0) && gMercProfiles[Enum268.JOEY].sSectorX == 4 && gMercProfiles[Enum268.JOEY].sSectorY == MAP_ROW_D && gMercProfiles[Enum268.JOEY].bSectorZ == 1) {
           let pJoey: Pointer<SOLDIERTYPE>;
 
-          pJoey = FindSoldierByProfileID(Enum268.JOEY, FALSE);
+          pJoey = FindSoldierByProfileID(Enum268.JOEY, false);
           if (pJoey) {
             // he's in the currently loaded sector...delay this an hour!
             AddSameDayStrategicEvent(Enum132.EVENT_SET_BY_NPC_SYSTEM, GetWorldMinutesInDay() + 60, NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS + Enum213.NPC_ACTION_ADD_JOEY_TO_WORLD);
@@ -601,9 +601,9 @@ function HandleEarlyMorningEvents(): void {
 
   // loop through all *NPCs* and reset "default response used recently" flags
   for (cnt = FIRST_RPC; cnt < NUM_PROFILES; cnt++) {
-    gMercProfiles[cnt].bFriendlyOrDirectDefaultResponseUsedRecently = FALSE;
-    gMercProfiles[cnt].bRecruitDefaultResponseUsedRecently = FALSE;
-    gMercProfiles[cnt].bThreatenDefaultResponseUsedRecently = FALSE;
+    gMercProfiles[cnt].bFriendlyOrDirectDefaultResponseUsedRecently = false;
+    gMercProfiles[cnt].bRecruitDefaultResponseUsedRecently = false;
+    gMercProfiles[cnt].bThreatenDefaultResponseUsedRecently = false;
     gMercProfiles[cnt].ubMiscFlags2 &= (~PROFILE_MISC_FLAG2_BANDAGED_TODAY);
   }
   // reset Father Walker's drunkenness level!
@@ -674,7 +674,7 @@ function HandleEarlyMorningEvents(): void {
 
   // stop moving the truck if Hamous is dead!!
   // stop moving them if the player has the truck or Hamous is hired!
-  if (gMercProfiles[Enum268.HAMOUS].bLife > 0 && FindSoldierByProfileID(Enum268.HAMOUS, TRUE) == null && FindSoldierByProfileID(Enum268.PROF_ICECREAM, TRUE) == null && (!((gWorldSectorX == gMercProfiles[Enum268.HAMOUS].sSectorX) && (gWorldSectorY == gMercProfiles[Enum268.HAMOUS].sSectorY) && (gbWorldSectorZ == 0)))) {
+  if (gMercProfiles[Enum268.HAMOUS].bLife > 0 && FindSoldierByProfileID(Enum268.HAMOUS, true) == null && FindSoldierByProfileID(Enum268.PROF_ICECREAM, true) == null && (!((gWorldSectorX == gMercProfiles[Enum268.HAMOUS].sSectorX) && (gWorldSectorY == gMercProfiles[Enum268.HAMOUS].sSectorY) && (gbWorldSectorZ == 0)))) {
     // ok, HAMOUS's sector not loaded, so time to move!
     // might be same sector as before, if so, oh well!
     switch (Random(5)) {
@@ -828,7 +828,7 @@ function CheckForMissingHospitalSupplies(): void {
     }
   }
 
-  if (CheckFact(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES_AGAIN, 0) == TRUE) {
+  if (CheckFact(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES_AGAIN, 0) == true) {
     // player returning stuff!  if back to full then can operate
     if (ubMedicalObjects >= gubCambriaMedicalObjects) {
       SetFactFalse(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES_AGAIN);
@@ -839,7 +839,7 @@ function CheckForMissingHospitalSupplies(): void {
 
   if (ubMedicalObjects < gubCambriaMedicalObjects) {
     // player's stolen something!
-    if (CheckFact(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES, 0) == FALSE) {
+    if (CheckFact(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES, 0) == false) {
       SetFactTrue(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES);
     }
 
@@ -852,7 +852,7 @@ function CheckForMissingHospitalSupplies(): void {
 }
 
 function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
-  let fSectorLoaded: BOOLEAN = FALSE;
+  let fSectorLoaded: boolean = false;
   let Object: OBJECTTYPE;
   let uiCount: UINT32 = 0;
   let pObject: Pointer<OBJECTTYPE> = null;
@@ -865,21 +865,21 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   // if the player doesnt "own" the sector,
   if (StrategicMap[CALCULATE_STRATEGIC_INDEX(MEDUNA_ITEM_DROP_OFF_SECTOR_X, MEDUNA_ITEM_DROP_OFF_SECTOR_Y)].fEnemyControlled) {
     // the items disappear
-    gpNewBobbyrShipments[ubOrderNum].fActive = FALSE;
+    gpNewBobbyrShipments[ubOrderNum].fActive = false;
     return;
   }
 
   // determine if the sector is loaded
   if ((gWorldSectorX == MEDUNA_ITEM_DROP_OFF_SECTOR_X) && (gWorldSectorY == MEDUNA_ITEM_DROP_OFF_SECTOR_Y) && (gbWorldSectorZ == MEDUNA_ITEM_DROP_OFF_SECTOR_Z))
-    fSectorLoaded = TRUE;
+    fSectorLoaded = true;
   else
-    fSectorLoaded = FALSE;
+    fSectorLoaded = false;
 
   // set crate to closed!
   if (fSectorLoaded) {
     SetOpenableStructureToClosed(MEDUNA_ITEM_DROP_OFF_GRIDNO, 0);
   } else {
-    ChangeStatusOfOpenableStructInUnloadedSector(MEDUNA_ITEM_DROP_OFF_SECTOR_X, MEDUNA_ITEM_DROP_OFF_SECTOR_Y, MEDUNA_ITEM_DROP_OFF_SECTOR_Z, MEDUNA_ITEM_DROP_OFF_GRIDNO, FALSE);
+    ChangeStatusOfOpenableStructInUnloadedSector(MEDUNA_ITEM_DROP_OFF_SECTOR_X, MEDUNA_ITEM_DROP_OFF_SECTOR_Y, MEDUNA_ITEM_DROP_OFF_SECTOR_Z, MEDUNA_ITEM_DROP_OFF_GRIDNO, false);
   }
 
   for (i = 0; i < gpNewBobbyrShipments[ubOrderNum].ubNumberPurchases; i++) {
@@ -925,7 +925,7 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
     // add all the items from the array that was built above
 
     // The item are to be added to the Top part of Drassen, grid loc's  10112, 9950
-    if (!AddItemsToUnLoadedSector(MEDUNA_ITEM_DROP_OFF_SECTOR_X, MEDUNA_ITEM_DROP_OFF_SECTOR_Y, MEDUNA_ITEM_DROP_OFF_SECTOR_Z, MEDUNA_ITEM_DROP_OFF_GRIDNO, uiCount, pObject, 0, 0, 0, -1, FALSE)) {
+    if (!AddItemsToUnLoadedSector(MEDUNA_ITEM_DROP_OFF_SECTOR_X, MEDUNA_ITEM_DROP_OFF_SECTOR_Y, MEDUNA_ITEM_DROP_OFF_SECTOR_Z, MEDUNA_ITEM_DROP_OFF_GRIDNO, uiCount, pObject, 0, 0, 0, -1, false)) {
       // error
       Assert(0);
     }
@@ -934,7 +934,7 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   }
 
   // mark that the shipment has arrived
-  gpNewBobbyrShipments[ubOrderNum].fActive = FALSE;
+  gpNewBobbyrShipments[ubOrderNum].fActive = false;
 
   // Add an email from kulba telling the user the shipment is there
   AddEmail(BOBBY_R_MEDUNA_SHIPMENT, BOBBY_R_MEDUNA_SHIPMENT_LENGTH, Enum75.BOBBY_R, GetWorldTotalMin());

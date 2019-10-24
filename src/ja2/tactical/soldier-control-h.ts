@@ -212,7 +212,7 @@ const NO_SLOT = -1;
 interface PathSt {
   uiSectorId: UINT32;
   uiEta: UINT32;
-  fSpeed: BOOLEAN;
+  fSpeed: boolean;
   pNext: Pointer<PathSt>;
   pPrev: Pointer<PathSt>;
 }
@@ -321,17 +321,17 @@ interface SOLDIERTYPE {
   bStealthMode: INT8;
 
   sBreathRed: INT16; // current breath value
-  fDelayedMovement: BOOLEAN;
+  fDelayedMovement: boolean;
 
-  fReloading: BOOLEAN;
+  fReloading: boolean;
   ubWaitActionToDo: UINT8;
-  fPauseAim: BOOLEAN;
+  fPauseAim: boolean;
   ubInsertionDirection: INT8;
   bGunType: INT8;
   // skills
   ubOppNum: UINT8;
   bLastRenderVisibleValue: INT8;
-  fInMissionExitNode: BOOLEAN;
+  fInMissionExitNode: boolean;
   ubAttackingHand: UINT8;
   bScientific: INT8;
   // traits
@@ -346,7 +346,7 @@ interface SOLDIERTYPE {
 
   // NEW MOVEMENT INFORMATION for Strategic Movement
   ubGroupID: UINT8; // the movement group the merc is currently part of.
-  fBetweenSectors: BOOLEAN; // set when the group isn't actually in a sector.
+  fBetweenSectors: boolean; // set when the group isn't actually in a sector.
                             // sSectorX and sSectorY will reflect the sector the
                             // merc was at last.
   ubMovementNoiseHeard: UINT8; // 8 flags by direction
@@ -372,13 +372,13 @@ interface SOLDIERTYPE {
   usPendingAnimation: UINT16;
   ubPendingStanceChange: UINT8;
   usAnimState: UINT16;
-  fNoAPToFinishMove: BOOLEAN;
-  fPausedMove: BOOLEAN;
-  fUIdeadMerc: BOOLEAN; // UI Flags for removing a newly dead merc
-  fUInewMerc: BOOLEAN; // UI Flags for adding newly created merc ( panels, etc )
-  fUICloseMerc: BOOLEAN; // UI Flags for closing panels
-  fUIFirstTimeNOAP: BOOLEAN; // UI Flag for diming guys when no APs ( dirty flags )
-  fUIFirstTimeUNCON: BOOLEAN; // UI FLAG For unconscious dirty
+  fNoAPToFinishMove: boolean;
+  fPausedMove: boolean;
+  fUIdeadMerc: boolean; // UI Flags for removing a newly dead merc
+  fUInewMerc: boolean; // UI Flags for adding newly created merc ( panels, etc )
+  fUICloseMerc: boolean; // UI Flags for closing panels
+  fUIFirstTimeNOAP: boolean; // UI Flag for diming guys when no APs ( dirty flags )
+  fUIFirstTimeUNCON: boolean; // UI FLAG For unconscious dirty
 
   UpdateCounter: TIMECOUNTER;
   DamageCounter: TIMECOUNTER;
@@ -396,15 +396,15 @@ interface SOLDIERTYPE {
   sReloadDelay: INT16;
   ubAttackerID: UINT8;
   ubPreviousAttackerID: UINT8;
-  fTurnInProgress: BOOLEAN;
+  fTurnInProgress: boolean;
 
-  fIntendedTarget: BOOLEAN; // intentionally shot?
-  fPauseAllAnimation: BOOLEAN;
+  fIntendedTarget: boolean; // intentionally shot?
+  fPauseAllAnimation: boolean;
 
   bExpLevel: INT8; // general experience level
   sInsertionGridNo: INT16;
 
-  fContinueMoveAfterStanceChange: BOOLEAN;
+  fContinueMoveAfterStanceChange: boolean;
 
   // 60
   AnimCache: AnimationSurfaceCacheType; // will be 9 bytes once changed to pointers
@@ -428,7 +428,7 @@ interface SOLDIERTYPE {
   bStrength: INT8;
 
   // Weapon Stuff
-  fHoldAttackerUntilDone: BOOLEAN;
+  fHoldAttackerUntilDone: boolean;
   sTargetGridNo: INT16;
   bTargetLevel: INT8;
   bTargetCubeLevel: INT8;
@@ -436,21 +436,21 @@ interface SOLDIERTYPE {
   bTilesMoved: INT8;
   bLeadership: INT8;
   dNextBleed: FLOAT;
-  fWarnedAboutBleeding: BOOLEAN;
-  fDyingComment: BOOLEAN;
+  fWarnedAboutBleeding: boolean;
+  fDyingComment: boolean;
 
   ubTilesMovedPerRTBreathUpdate: UINT8;
   usLastMovementAnimPerRTBreathUpdate: UINT16;
 
-  fTurningToShoot: BOOLEAN;
-  fTurningToFall: BOOLEAN;
-  fTurningUntilDone: BOOLEAN;
-  fGettingHit: BOOLEAN;
-  fInNonintAnim: BOOLEAN;
-  fFlashLocator: BOOLEAN;
+  fTurningToShoot: boolean;
+  fTurningToFall: boolean;
+  fTurningUntilDone: boolean;
+  fGettingHit: boolean;
+  fInNonintAnim: boolean;
+  fFlashLocator: boolean;
   sLocatorFrame: INT16;
-  fShowLocator: BOOLEAN;
-  fFlashPortrait: BOOLEAN;
+  fShowLocator: boolean;
+  fFlashPortrait: boolean;
   bMechanical: INT8;
   bLifeMax: INT8; // maximum life for this merc
 
@@ -473,14 +473,14 @@ interface SOLDIERTYPE {
   pGlowShades: Pointer<UINT16>[] /* [20] */; //
   pCurrentShade: Pointer<UINT16>;
   bMedical: INT8;
-  fBeginFade: BOOLEAN;
+  fBeginFade: boolean;
   ubFadeLevel: UINT8;
   ubServiceCount: UINT8;
   ubServicePartner: UINT8;
   bMarksmanship: INT8;
   bExplosive: INT8;
   pThrowParams: Pointer<THROW_PARAMS>;
-  fTurningFromPronePosition: BOOLEAN;
+  fTurningFromPronePosition: boolean;
   bReverse: INT8;
   pLevelNode: Pointer<LEVELNODE>;
   pExternShadowLevelNode: Pointer<LEVELNODE>;
@@ -595,23 +595,23 @@ interface SOLDIERTYPE {
   bRTPCombat: INT8;
   fAIFlags: INT8;
 
-  fDontChargeReadyAPs: BOOLEAN;
+  fDontChargeReadyAPs: boolean;
   usAnimSurface: UINT16;
   sZLevel: UINT16;
-  fPrevInWater: BOOLEAN;
-  fGoBackToAimAfterHit: BOOLEAN;
+  fPrevInWater: boolean;
+  fGoBackToAimAfterHit: boolean;
 
   sWalkToAttackGridNo: INT16;
   sWalkToAttackWalkToCost: INT16;
 
-  fForceRenderColor: BOOLEAN;
-  fForceNoRenderPaletteCycle: BOOLEAN;
+  fForceRenderColor: boolean;
+  fForceNoRenderPaletteCycle: boolean;
 
   sLocatorOffX: INT16;
   sLocatorOffY: INT16;
-  fStopPendingNextTile: BOOLEAN;
+  fStopPendingNextTile: boolean;
 
-  fForceShade: BOOLEAN;
+  fForceShade: boolean;
   pForcedShade: Pointer<UINT16>;
 
   bDisplayDamageCount: INT8;
@@ -623,22 +623,22 @@ interface SOLDIERTYPE {
   bDoBurst: INT8;
   usUIMovementMode: INT16;
   bUIInterfaceLevel: INT8;
-  fUIMovementFast: BOOLEAN;
+  fUIMovementFast: boolean;
 
   BlinkSelCounter: TIMECOUNTER;
   PortraitFlashCounter: TIMECOUNTER;
-  fDeadSoundPlayed: BOOLEAN;
+  fDeadSoundPlayed: boolean;
   ubProfile: UINT8;
   ubQuoteRecord: UINT8;
   ubQuoteActionID: UINT8;
   ubBattleSoundID: UINT8;
 
-  fClosePanel: BOOLEAN;
-  fClosePanelToDie: BOOLEAN;
+  fClosePanel: boolean;
+  fClosePanelToDie: boolean;
   ubClosePanelFrame: UINT8;
-  fDeadPanel: BOOLEAN;
+  fDeadPanel: boolean;
   ubDeadPanelFrame: UINT8;
-  fOpenPanel: BOOLEAN;
+  fOpenPanel: boolean;
   bOpenPanelFrame: INT8;
 
   sPanelFaceX: INT16;
@@ -669,7 +669,7 @@ interface SOLDIERTYPE {
   sPlannedTargetY: INT16;
 
   sSpreadLocations: INT16[] /* [6] */;
-  fDoSpread: BOOLEAN;
+  fDoSpread: boolean;
   sStartGridNo: INT16;
   sEndGridNo: INT16;
   sForcastGridno: INT16;
@@ -682,7 +682,7 @@ interface SOLDIERTYPE {
   ubWhatKindOfMercAmI: UINT8; // Set to the type of character it is
   bAssignment: INT8; // soldiers current assignment
   bOldAssignment: INT8; // old assignment, for autosleep purposes
-  fForcedToStayAwake: BOOLEAN; // forced by player to stay awake, reset to false, the moment they are set to rest or sleep
+  fForcedToStayAwake: boolean; // forced by player to stay awake, reset to false, the moment they are set to rest or sleep
   bTrainStat: INT8; // current stat soldier is training
   sSectorX: INT16; // X position on the Stategic Map
   sSectorY: INT16; // Y position on the Stategic Map
@@ -698,9 +698,9 @@ interface SOLDIERTYPE {
   uiOptimumMovementTime: UINT32; // everytime in ececute overhead the time for the current ani will be added to this total
   usLastUpdateTime: UINT32; // The last time the soldier was in ExecuteOverhead
 
-  fIsSoldierMoving: BOOLEAN; // ie.  Record time is on
-  fIsSoldierDelayed: BOOLEAN; // Is the soldier delayed Soldier
-  fSoldierUpdatedFromNetwork: BOOLEAN;
+  fIsSoldierMoving: boolean; // ie.  Record time is on
+  fIsSoldierDelayed: boolean; // Is the soldier delayed Soldier
+  fSoldierUpdatedFromNetwork: boolean;
   uiSoldierUpdateNumber: UINT32;
   ubSoldierUpdateType: BYTE;
   iStartOfInsuranceContract: INT32;
@@ -709,7 +709,7 @@ interface SOLDIERTYPE {
 
   ubSoldierClass: UINT8; // admin, elite, troop (creature types?)
   ubAPsLostToSuppression: UINT8;
-  fChangingStanceDueToSuppression: BOOLEAN;
+  fChangingStanceDueToSuppression: boolean;
   ubSuppressorID: UINT8;
 
   // Squad merging vars
@@ -737,13 +737,13 @@ interface SOLDIERTYPE {
 
   bNewItemCount: INT8[] /* [NUM_INV_SLOTS] */;
   bNewItemCycleCount: INT8[] /* [NUM_INV_SLOTS] */;
-  fCheckForNewlyAddedItems: BOOLEAN;
+  fCheckForNewlyAddedItems: boolean;
   bEndDoorOpenCode: INT8;
 
   ubScheduleID: UINT8;
   sEndDoorOpenCodeData: INT16;
   NextTileCounter: TIMECOUNTER;
-  fBlockedByAnotherMerc: BOOLEAN;
+  fBlockedByAnotherMerc: boolean;
   bBlockedByAnotherMercDirection: INT8;
   usAttackingWeapon: UINT16;
   bWeaponMode: INT8;
@@ -768,15 +768,15 @@ interface SOLDIERTYPE {
   sBoundingBoxOffsetY: INT16;
   uiTimeSameBattleSndDone: UINT32;
   bOldBattleSnd: INT8;
-  fReactingFromBeingShot: BOOLEAN;
-  fContractPriceHasIncreased: BOOLEAN;
+  fReactingFromBeingShot: boolean;
+  fContractPriceHasIncreased: boolean;
   iBurstSoundID: INT32;
-  fFixingSAMSite: BOOLEAN;
-  fFixingRobot: BOOLEAN;
+  fFixingSAMSite: boolean;
+  fFixingRobot: boolean;
   bSlotItemTakenFrom: INT8;
-  fSignedAnotherContract: BOOLEAN;
+  fSignedAnotherContract: boolean;
   ubAutoBandagingMedic: UINT8;
-  fDontChargeTurningAPs: BOOLEAN;
+  fDontChargeTurningAPs: boolean;
   ubRobotRemoteHolderID: UINT8;
   uiTimeOfLastContractUpdate: UINT32;
   bTypeOfLastContract: INT8;
@@ -792,10 +792,10 @@ interface SOLDIERTYPE {
   bTimesDrugUsedSinceSleep: INT8[] /* [2] */;
 
   bBlindedCounter: INT8;
-  fMercCollapsedFlag: BOOLEAN;
-  fDoneAssignmentAndNothingToDoFlag: BOOLEAN;
-  fMercAsleep: BOOLEAN;
-  fDontChargeAPsForStanceChange: BOOLEAN;
+  fMercCollapsedFlag: boolean;
+  fDoneAssignmentAndNothingToDoFlag: boolean;
+  fMercAsleep: boolean;
+  fDontChargeAPsForStanceChange: boolean;
 
   ubHoursOnAssignment: UINT8; // used for assignments handled only every X hours
 
@@ -819,13 +819,13 @@ interface SOLDIERTYPE {
   bTurningIncrement: INT8;
   uiBattleSoundID: UINT32;
 
-  fSoldierWasMoving: BOOLEAN;
-  fSayAmmoQuotePending: BOOLEAN;
+  fSoldierWasMoving: boolean;
+  fSayAmmoQuotePending: boolean;
   usValueGoneUp: UINT16;
 
   ubNumLocateCycles: UINT8;
   ubDelayedMovementFlags: UINT8;
-  fMuzzleFlash: BOOLEAN;
+  fMuzzleFlash: boolean;
   ubCTGTTargetID: UINT8;
 
   PanelAnimateCounter: TIMECOUNTER;
@@ -851,27 +851,27 @@ interface SOLDIERTYPE {
 
   pGroup: Pointer<GROUP>;
   ubLeaveHistoryCode: UINT8;
-  fDontUnsetLastTargetFromTurn: BOOLEAN;
+  fDontUnsetLastTargetFromTurn: boolean;
   bOverrideMoveSpeed: INT8;
-  fUseMoverrideMoveSpeed: BOOLEAN;
+  fUseMoverrideMoveSpeed: boolean;
 
   uiTimeSoldierWillArrive: UINT32;
-  fDieSoundUsed: BOOLEAN;
-  fUseLandingZoneForArrival: BOOLEAN;
-  fFallClockwise: BOOLEAN;
+  fDieSoundUsed: boolean;
+  fUseLandingZoneForArrival: boolean;
+  fFallClockwise: boolean;
   bVehicleUnderRepairID: INT8;
   iTimeCanSignElsewhere: INT32;
   bHospitalPriceModifier: INT8;
   bFillerBytes: INT8[] /* [3] */;
   uiStartTimeOfInsuranceContract: UINT32;
-  fRTInNonintAnim: BOOLEAN;
-  fDoingExternalDeath: BOOLEAN;
+  fRTInNonintAnim: boolean;
+  fDoingExternalDeath: boolean;
   bCorpseQuoteTolerance: INT8;
   bYetAnotherPaddingSpace: INT8;
   iPositionSndID: INT32;
   iTuringSoundID: INT32;
   ubLastDamageReason: UINT8;
-  fComplainedThatTired: BOOLEAN;
+  fComplainedThatTired: boolean;
   sLastTwoLocations: INT16[] /* [2] */;
   bFillerDude: INT16;
   uiTimeSinceLastBleedGrunt: INT32;

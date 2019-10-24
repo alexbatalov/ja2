@@ -49,10 +49,10 @@ const MAP_INVEN_SLOT_IMAGE_HEIGHT = 24;
 
 // the current highlighted item
 let iCurrentlyHighLightedItem: INT32 = -1;
-let fFlashHighLightInventoryItemOnradarMap: BOOLEAN = FALSE;
+let fFlashHighLightInventoryItemOnradarMap: boolean = false;
 
 // whether we are showing the inventory pool graphic
-let fShowMapInventoryPool: BOOLEAN = FALSE;
+let fShowMapInventoryPool: boolean = false;
 
 // the v-object index value for the background
 let guiMapInventoryPoolBackground: UINT32;
@@ -75,8 +75,8 @@ let uiNumberOfUnSeenItems: UINT32 = 0;
 // the inventory slots
 let MapInventoryPoolSlots: MOUSE_REGION[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
 let MapInventoryPoolMask: MOUSE_REGION;
-let fMapInventoryItemCompatable: BOOLEAN[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
-let fChangedInventorySlots: BOOLEAN = FALSE;
+let fMapInventoryItemCompatable: boolean[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
+let fChangedInventorySlots: boolean = false;
 
 // the unseen items list...have to save this
 let pUnSeenItems: Pointer<WORLDITEM> = null;
@@ -91,10 +91,10 @@ let giCompatibleItemBaseTime: INT32 = 0;
 let guiMapInvenButtonImage: UINT32[] /* [3] */;
 let guiMapInvenButton: UINT32[] /* [3] */;
 
-let gfCheckForCursorOverMapSectorInventoryItem: BOOLEAN = FALSE;
+let gfCheckForCursorOverMapSectorInventoryItem: boolean = false;
 
 // load the background panel graphics for inventory
-function LoadInventoryPoolGraphic(): BOOLEAN {
+function LoadInventoryPoolGraphic(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the file
@@ -104,7 +104,7 @@ function LoadInventoryPoolGraphic(): BOOLEAN {
   // add to V-object index
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapInventoryPoolBackground)));
 
-  return TRUE;
+  return true;
 }
 
 // remove background panel graphics for inventory
@@ -166,7 +166,7 @@ function RenderItemsForCurrentPageOfInventoryPool(): void {
   return;
 }
 
-function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOOLEAN {
+function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boolean {
   // render item in this slot of the list
   let sCenX: INT16;
   let sCenY: INT16;
@@ -180,11 +180,11 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
   let sWidth: INT16 = 0;
   let sHeight: INT16 = 0;
   let sOutLine: INT16 = 0;
-  let fOutLine: BOOLEAN = FALSE;
+  let fOutLine: boolean = false;
 
   // check if anything there
   if (pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.ubNumberOfObjects == 0) {
-    return FALSE;
+    return false;
   }
 
   GetVideoObject(addressof(hHandle), GetInterfaceGraphicForItem(addressof(Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem])));
@@ -203,17 +203,17 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 
   if (fMapInventoryItemCompatable[iCurrentSlot]) {
     sOutLine = Get16BPPColor(FROMRGB(255, 255, 255));
-    fOutLine = TRUE;
+    fOutLine = true;
   } else {
     sOutLine = us16BPPItemCyclePlacedItemColors[0];
-    fOutLine = FALSE;
+    fOutLine = false;
   }
 
-  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   INVRenderItem(guiSAVEBUFFER, null, addressof(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), (sX + 7), sY, 60, 25, DIRTYLEVEL2, null, 0, fOutLine, sOutLine); // 67
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   // now blit this object in the box
   // BltVideoObjectOutlineFromIndex( guiSAVEBUFFER, GetInterfaceGraphicForItem( &(Item[ pInventoryPoolList[ iCurrentSlot + iFirstSlotOnPage ].o.usItem ]) ),
@@ -223,7 +223,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 
   // now draw bar for condition
   // Display ststus
-  DrawItemUIBarEx(addressof(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), 0, (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
+  DrawItemUIBarEx(addressof(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), 0, (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
 
   //
   // if the item is not reachable, or if the selected merc is not in the current sector
@@ -243,7 +243,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 
   FindFontCenterCoordinates((4 + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), 0, MAP_INVEN_SLOT_WIDTH, 0, sString, MAP_IVEN_FONT(), addressof(sWidth), addressof(sHeight));
 
-  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   SetFont(MAP_IVEN_FONT());
   SetFontForeground(FONT_WHITE);
@@ -266,9 +266,9 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
           }
   */
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
-  return TRUE;
+  return true;
 }
 
 function UpdateHelpTextForInvnentoryStashSlots(): void {
@@ -304,8 +304,8 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
 }
 
 // create and remove buttons for inventory
-function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: BOOLEAN): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: boolean): void {
+  /* static */ let fCreated: boolean = false;
 
   /* player can leave items underground, no?
           if( iCurrentMapSectorZ )
@@ -314,7 +314,7 @@ function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: BOOLEAN): void
           }
   */
 
-  if ((fShowMapInventoryPool) && (fCreated == FALSE)) {
+  if ((fShowMapInventoryPool) && (fCreated == false)) {
     if ((gWorldSectorX == sSelMapX) && (gWorldSectorY == sSelMapY) && (gbWorldSectorZ == iCurrentMapSectorZ)) {
       // handle all reachable before save
       HandleAllReachAbleItemsInTheSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
@@ -323,7 +323,7 @@ function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: BOOLEAN): void
     // destroy buttons for map border
     DeleteMapBorderButtons();
 
-    fCreated = TRUE;
+    fCreated = true;
 
     // also create the inventory slot
     CreateMapInventoryPoolSlots();
@@ -336,15 +336,15 @@ function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: BOOLEAN): void
 
     CreateMapInventoryPoolDoneButton();
 
-    fMapPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
-  } else if ((fShowMapInventoryPool == FALSE) && (fCreated == TRUE)) {
+    fMapPanelDirty = true;
+    fMapScreenBottomDirty = true;
+  } else if ((fShowMapInventoryPool == false) && (fCreated == true)) {
     // check fi we are in fact leaving mapscreen
-    if (fExitFromMapScreen == FALSE) {
+    if (fExitFromMapScreen == false) {
       // recreate mapborder buttons
       CreateButtonsForMapBorder();
     }
-    fCreated = FALSE;
+    fCreated = false;
 
     // destroy the map inventory slots
     DestroyMapInventoryPoolSlots();
@@ -362,9 +362,9 @@ function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: BOOLEAN): void
 
     DestroyStash();
 
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
 
     // DEF: added to remove the 'item blip' from staying on the radar map
     iCurrentlyHighLightedItem = -1;
@@ -377,10 +377,10 @@ function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: BOOLEAN): void
   HandleMapSectorInventory();
 }
 
-function CancelSectorInventoryDisplayIfOn(fExitFromMapScreen: BOOLEAN): void {
+function CancelSectorInventoryDisplayIfOn(fExitFromMapScreen: boolean): void {
   if (fShowMapInventoryPool) {
     // get rid of sector inventory mode & buttons
-    fShowMapInventoryPool = FALSE;
+    fShowMapInventoryPool = false;
     CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen);
   }
 }
@@ -427,8 +427,8 @@ function SaveSeenAndUnseenItems(): void {
             // get entry grid location
           }
         }
-        pSeenItemsList[iItemCount].fExists = TRUE;
-        pSeenItemsList[iItemCount].bVisible = TRUE;
+        pSeenItemsList[iItemCount].fExists = true;
+        pSeenItemsList[iItemCount].bVisible = true;
         iItemCount++;
       }
     }
@@ -441,15 +441,15 @@ function SaveSeenAndUnseenItems(): void {
     // now copy over unseen and seen
     if (uiNumberOfUnSeenItems > 0) {
       // over write file and copy unseen
-      AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, uiNumberOfUnSeenItems, pSaveList, TRUE);
+      AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, uiNumberOfUnSeenItems, pSaveList, true);
 
       // check if seen items exist too
       if (iItemCount > 0) {
-        AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, iItemCount, pSeenItemsList, FALSE);
+        AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, iItemCount, pSeenItemsList, false);
       }
     } else if (iItemCount > 0) {
       // copy only seen items
-      AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, iItemCount, pSeenItemsList, TRUE);
+      AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, iItemCount, pSeenItemsList, true);
     } else {
       // get rid of the file
       SaveWorldItemsToTempItemFile(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, null);
@@ -476,7 +476,7 @@ function SaveSeenAndUnseenItems(): void {
 // the screen mask bttn callaback...to disable the inventory and lock out the map itself
 function MapInvenPoolScreenMaskCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if ((iReason & MSYS_CALLBACK_REASON_RBUTTON_UP)) {
-    fShowMapInventoryPool = FALSE;
+    fShowMapInventoryPool = false;
   }
 
   return;
@@ -535,12 +535,12 @@ function MapInvenPoolSlotsMove(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     iCurrentlyHighLightedItem = iCounter;
-    fChangedInventorySlots = TRUE;
-    gfCheckForCursorOverMapSectorInventoryItem = TRUE;
+    fChangedInventorySlots = true;
+    gfCheckForCursorOverMapSectorInventoryItem = true;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     iCurrentlyHighLightedItem = -1;
-    fChangedInventorySlots = TRUE;
-    gfCheckForCursorOverMapSectorInventoryItem = FALSE;
+    fChangedInventorySlots = true;
+    gfCheckForCursorOverMapSectorInventoryItem = false;
 
     // re render radar map
     RenderRadarScreen();
@@ -562,7 +562,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
 
   if ((iReason & MSYS_CALLBACK_REASON_RBUTTON_UP)) {
     if (gpItemPointer == null) {
-      fShowMapInventoryPool = FALSE;
+      fShowMapInventoryPool = false;
     }
     // else do nothing
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -586,7 +586,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
     // check if selected merc is in this sector, if not, warn them and leave
 
     // valid character?
-    if (gCharactersList[bSelectedInfoChar].fValid == FALSE) {
+    if (gCharactersList[bSelectedInfoChar].fValid == false) {
       DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[1], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
       return;
     }
@@ -678,7 +678,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
           guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
           gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-          fMapInventoryItem = TRUE;
+          fMapInventoryItem = true;
           MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
           SetCurrentCursorFromDatabase(EXTERN_CURSOR);
         }
@@ -693,7 +693,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
     }
 
     // dirty region, force update
-    fMapPanelDirty = TRUE;
+    fMapPanelDirty = true;
   }
 }
 
@@ -730,11 +730,11 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
   let uiTotalNumberOfSeenItems: UINT32 = 0;
 
   //	#ifdef _DEBUG
-  let fReturn: BOOLEAN = TRUE;
+  let fReturn: boolean = true;
   //	#endif
 
   // get size of the current stash in sector (count stacks as one item)
-  iSize = GetSizeOfStashInSector(sMapX, sMapY, sMapZ, TRUE);
+  iSize = GetSizeOfStashInSector(sMapX, sMapY, sMapZ, true);
 
   // round off .. we want at least 1 free page of space...
   iSize = (iSize - (iSize % MAP_INVENTORY_POOL_SLOT_COUNT)) + MAP_INVENTORY_POOL_SLOT_COUNT;
@@ -797,7 +797,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
   } else {
     // not loaded, load
     // get total number, visable and invisible
-    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfItems), FALSE);
+    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfItems), false);
     Assert(fReturn);
 
     fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfRealItems));
@@ -970,14 +970,14 @@ function DestroyStash(): void {
   MemFree(pInventoryPoolList);
 }
 
-function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCountStacksAsOne: BOOLEAN): INT32 {
+function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCountStacksAsOne: boolean): INT32 {
   // get # of items in sector that are visible to the player
   let uiTotalNumberOfItems: UINT32 = 0;
   let uiTotalNumberOfRealItems: UINT32 = 0;
   let pTotalSectorList: Pointer<WORLDITEM> = null;
   let uiItemCount: UINT32 = 0;
   let iCounter: INT32 = 0;
-  let fReturn: BOOLEAN = TRUE;
+  let fReturn: boolean = true;
 
   if ((sMapX == gWorldSectorX) && (sMapY == gWorldSectorY) && (sMapZ == gbWorldSectorZ)) {
     uiTotalNumberOfItems = guiNumWorldItems;
@@ -1000,7 +1000,7 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
     fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfRealItems));
     Assert(fReturn);
 
-    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfItems), FALSE);
+    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfItems), false);
     Assert(fReturn);
 
     if (uiTotalNumberOfItems > 0) {
@@ -1036,7 +1036,7 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
 }
 
 function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
-  let fOk: BOOLEAN = FALSE;
+  let fOk: boolean = false;
 
   // If not null return
   if (gpItemPointer != null) {
@@ -1055,7 +1055,7 @@ function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
 
   if (fOk) {
     // Dirty interface
-    fMapPanelDirty = TRUE;
+    fMapPanelDirty = true;
     gpItemPointer = addressof(gItemPointer);
 
     gpItemPointerSoldier = null;
@@ -1064,22 +1064,22 @@ function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
     guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
     gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-    fMapInventoryItem = TRUE;
+    fMapInventoryItem = true;
     MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
     SetCurrentCursorFromDatabase(EXTERN_CURSOR);
 
     if (fShowInventoryFlag && bSelectedInfoChar >= 0) {
-      ReevaluateItemHatches(MercPtrs[gCharactersList[bSelectedInfoChar].usSolID], FALSE);
-      fTeamPanelDirty = TRUE;
+      ReevaluateItemHatches(MercPtrs[gCharactersList[bSelectedInfoChar].usSolID], false);
+      fTeamPanelDirty = true;
     }
   }
 }
 
 // get this item out of the stash slot
-function GetObjFromInventoryStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN {
+function GetObjFromInventoryStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): boolean {
   // item ptr
   if (!pItemPtr) {
-    return FALSE;
+    return false;
   }
 
   // if there are only one item in slot, just copy
@@ -1098,22 +1098,22 @@ function GetObjFromInventoryStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItem
     pInventorySlot.value.ubWeight = CalculateObjectWeight(pInventorySlot);
   }
 
-  return TRUE;
+  return true;
 }
 
-function RemoveObjectFromStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN {
+function RemoveObjectFromStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): boolean {
   CHECKF(pInventorySlot);
 
   if (pInventorySlot.value.ubNumberOfObjects == 0) {
-    return FALSE;
+    return false;
   } else {
     memcpy(pItemPtr, pInventorySlot, sizeof(OBJECTTYPE));
     DeleteObj(pInventorySlot);
-    return TRUE;
+    return true;
   }
 }
 
-function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN {
+function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): boolean {
   let ubNumberToDrop: UINT8;
   let ubSlotLimit: UINT8;
   let ubLoop: UINT8;
@@ -1174,10 +1174,10 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
       SwapObjs(pItemPtr, pInventorySlot);
     }
   }
-  return TRUE;
+  return true;
 }
 
-function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN {
+function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): boolean {
   let ubNumberToDrop: UINT8;
   let ubSlotLimit: UINT8;
   let ubLoop: UINT8;
@@ -1211,7 +1211,7 @@ function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN
   // remove a like number of objects from pObj
   RemoveObjs(pItemPtr, ubNumberToDrop);
 
-  return TRUE;
+  return true;
 }
 
 function MapInventoryPoolNextBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -1224,7 +1224,7 @@ function MapInventoryPoolNextBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       // if can go to next page, go there
       if (iCurrentInventoryPoolPage < (iLastInventoryPoolPage)) {
         iCurrentInventoryPoolPage++;
-        fMapPanelDirty = TRUE;
+        fMapPanelDirty = true;
       }
     }
   }
@@ -1240,7 +1240,7 @@ function MapInventoryPoolPrevBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       // if can go to next page, go there
       if (iCurrentInventoryPoolPage > 0) {
         iCurrentInventoryPoolPage--;
-        fMapPanelDirty = TRUE;
+        fMapPanelDirty = true;
       }
     }
   }
@@ -1254,7 +1254,7 @@ function MapInventoryPoolDoneBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // done
-      fShowMapInventoryPool = FALSE;
+      fShowMapInventoryPool = false;
     }
   }
 }
@@ -1270,7 +1270,7 @@ function DisplayPagesForMapInventoryPool(): void {
   SetFontBackground(FONT_BLACK);
 
   // set the buffer
-  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   // grab current and last pages
   swprintf(sString, "%d / %d", iCurrentInventoryPoolPage + 1, iLastInventoryPoolPage + 1);
@@ -1280,7 +1280,7 @@ function DisplayPagesForMapInventoryPool(): void {
 
   mprintf(sX, sY, sString);
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 }
 
 function GetTotalNumberOfItemsInSectorStash(): INT32 {
@@ -1328,14 +1328,14 @@ function DrawNumberOfIventoryPoolItems(): void {
   SetFontBackground(FONT_BLACK);
 
   // set the buffer
-  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   // grab centered coords
   FindFontCenterCoordinates(MAP_INVENTORY_POOL_NUMBER_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_NUMBER_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT(), addressof(sX), addressof(sY));
 
   mprintf(sX, sY, sString);
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   return;
 }
@@ -1371,14 +1371,14 @@ function DisplayCurrentSector(): void {
   SetFontBackground(FONT_BLACK);
 
   // set the buffer
-  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   // grab centered coords
   FindFontCenterCoordinates(MAP_INVENTORY_POOL_LOC_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_LOC_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT(), addressof(sX), addressof(sY));
 
   mprintf(sX, sY, sString);
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 }
 
 function CheckAndUnDateSlotAllocation(): void {
@@ -1408,26 +1408,26 @@ function DrawTextOnMapInventoryBackground(): void {
   SetFontForeground(FONT_BEIGE);
 
   // set the buffer
-  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   // Calculate the height of the string, as it needs to be vertically centered.
-  usStringHeight = DisplayWrappedString(268, 342, 53, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, FALSE, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
-  DisplayWrappedString(268, (342 - (usStringHeight / 2)), 53, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
+  usStringHeight = DisplayWrappedString(268, 342, 53, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, false, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
+  DisplayWrappedString(268, (342 - (usStringHeight / 2)), 53, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, false, RIGHT_JUSTIFIED);
 
   // Calculate the height of the string, as it needs to be vertically centered.
-  usStringHeight = DisplayWrappedString(369, 342, 65, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, FALSE, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
-  DisplayWrappedString(369, (342 - (usStringHeight / 2)), 65, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
+  usStringHeight = DisplayWrappedString(369, 342, 65, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, false, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
+  DisplayWrappedString(369, (342 - (usStringHeight / 2)), 65, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, false, RIGHT_JUSTIFIED);
 
   DrawTextOnSectorInventory();
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   return;
 }
 
 function HandleButtonStatesWhileMapInventoryActive(): void {
   // are we even showing the amp inventory pool graphic?
-  if (fShowMapInventoryPool == FALSE) {
+  if (fShowMapInventoryPool == false) {
     return;
   }
 
@@ -1461,7 +1461,7 @@ function DrawTextOnSectorInventory(): void {
   // parse the string
   swprintf(sString, zMarksMapScreenText[11]);
 
-  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   FindFontCenterCoordinates(MAP_INVENTORY_POOL_SLOT_START_X, MAP_INVENTORY_POOL_SLOT_START_Y - 20, 630 - MAP_INVENTORY_POOL_SLOT_START_X, GetFontHeight(FONT14ARIAL()), sString, FONT14ARIAL(), addressof(sX), addressof(sY));
 
@@ -1471,7 +1471,7 @@ function DrawTextOnSectorInventory(): void {
 
   mprintf(sX, sY, sString);
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 }
 
 function HandleFlashForHighLightedItem(): void {
@@ -1480,7 +1480,7 @@ function HandleFlashForHighLightedItem(): void {
 
   // if there is an invalid item, reset
   if (iCurrentlyHighLightedItem == -1) {
-    fFlashHighLightInventoryItemOnradarMap = FALSE;
+    fFlashHighLightInventoryItemOnradarMap = false;
     giFlashHighlightedItemBaseTime = 0;
   }
 
@@ -1508,25 +1508,25 @@ function HandleFlashForHighLightedItem(): void {
 
 function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  /* static */ let fItemWasHighLighted: BOOLEAN = FALSE;
+  /* static */ let fItemWasHighLighted: boolean = false;
 
   if (iCurrentSlot == -1) {
     giCompatibleItemBaseTime = 0;
   }
 
-  if (fChangedInventorySlots == TRUE) {
+  if (fChangedInventorySlots == true) {
     giCompatibleItemBaseTime = 0;
-    fChangedInventorySlots = FALSE;
+    fChangedInventorySlots = false;
   }
 
   // reset the base time to the current game clock
   if (giCompatibleItemBaseTime == 0) {
     giCompatibleItemBaseTime = GetJA2Clock();
 
-    if (fItemWasHighLighted == TRUE) {
-      fTeamPanelDirty = TRUE;
-      fMapPanelDirty = TRUE;
-      fItemWasHighLighted = FALSE;
+    if (fItemWasHighLighted == true) {
+      fTeamPanelDirty = true;
+      fMapPanelDirty = true;
+      fItemWasHighLighted = false;
     }
   }
 
@@ -1543,11 +1543,11 @@ function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): 
     if (gfCheckForCursorOverMapSectorInventoryItem) {
       pSoldier = addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]);
       if (pSoldier) {
-        if (HandleCompatibleAmmoUIForMapScreen(pSoldier, iCurrentSlot + (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT), TRUE, FALSE)) {
+        if (HandleCompatibleAmmoUIForMapScreen(pSoldier, iCurrentSlot + (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT), true, false)) {
           if (GetJA2Clock() - giCompatibleItemBaseTime > 100) {
-            if (fItemWasHighLighted == FALSE) {
-              fTeamPanelDirty = TRUE;
-              fItemWasHighLighted = TRUE;
+            if (fItemWasHighLighted == false) {
+              fTeamPanelDirty = true;
+              fItemWasHighLighted = true;
             }
           }
         }
@@ -1561,11 +1561,11 @@ function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): 
   if (fShowMapInventoryPool) {
     // check if any compatable items in the soldier inventory matches with this item
     if (gfCheckForCursorOverMapSectorInventoryItem) {
-      if (HandleCompatibleAmmoUIForMapInventory(pSoldier, iCurrentSlot, (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT), TRUE, FALSE)) {
+      if (HandleCompatibleAmmoUIForMapInventory(pSoldier, iCurrentSlot, (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT), true, false)) {
         if (GetJA2Clock() - giCompatibleItemBaseTime > 100) {
-          if (fItemWasHighLighted == FALSE) {
-            fItemWasHighLighted = TRUE;
-            fMapPanelDirty = TRUE;
+          if (fItemWasHighLighted == false) {
+            fItemWasHighLighted = true;
+            fMapPanelDirty = true;
           }
         }
       }
@@ -1583,7 +1583,7 @@ function ResetMapSectorInventoryPoolHighLights(): void {
   // now reset the highlight list for the map sector inventory
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
     if (fMapInventoryItemCompatable[iCounter]) {
-      fMapInventoryItemCompatable[iCounter] = FALSE;
+      fMapInventoryItemCompatable[iCounter] = false;
     }
   }
 
@@ -1597,21 +1597,21 @@ function HandleMapSectorInventory(): void {
 }
 
 // CJC look here to add/remove checks for the sector inventory
-function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): BOOLEAN {
+function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): boolean {
   if (pWorldItem.value.bVisible == 1 && pWorldItem.value.fExists && pWorldItem.value.o.usItem != Enum225.SWITCH && pWorldItem.value.o.usItem != Enum225.ACTION_ITEM && pWorldItem.value.o.bTrap <= 0) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // CJC look here to add/remove checks for the sector inventory
-function IsMapScreenWorldItemInvisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): BOOLEAN {
+function IsMapScreenWorldItemInvisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): boolean {
   if (pWorldItem.value.fExists && !IsMapScreenWorldItemVisibleInMapInventory(pWorldItem)) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // Check to see if any of the items in the list have a gridno of NOWHERE and the entry point flag NOT set
@@ -1663,11 +1663,11 @@ function MapScreenSectorInventoryCompare(pNum1: Pointer<void>, pNum2: Pointer<vo
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
 
-function CanPlayerUseSectorInventory(pSelectedSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function CanPlayerUseSectorInventory(pSelectedSoldier: Pointer<SOLDIERTYPE>): boolean {
   let sSectorX: INT16;
   let sSectorY: INT16;
   let sSectorZ: INT16;
-  let fInCombat: BOOLEAN;
+  let fInCombat: boolean;
 
   // Get the sector that has a battle
   fInCombat = GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(addressof(sSectorX), addressof(sSectorY), addressof(sSectorZ));
@@ -1676,9 +1676,9 @@ function CanPlayerUseSectorInventory(pSelectedSoldier: Pointer<SOLDIERTYPE>): BO
   if (fInCombat) {
     // if the selected map is the one with the combat
     if (((sSelMapX == sSectorX) && (sSelMapY == sSectorY) && (iCurrentMapSectorZ == sSectorZ))) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }

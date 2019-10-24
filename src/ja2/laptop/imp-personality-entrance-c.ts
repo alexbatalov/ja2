@@ -70,7 +70,7 @@ function BtnIMPPersonalityEntranceDoneCallback(btn: Pointer<GUI_BUTTON>, reason:
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // done with begin screen, next screen
       iCurrentImpPage = Enum71.IMP_PERSONALITY_QUIZ;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }

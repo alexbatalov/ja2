@@ -65,7 +65,7 @@ function RemoveFirstAIListEntry(): UINT8 {
     DeleteAIListEntry(pOldFirstEntry);
 
     // make sure conditions still met
-    if (SatisfiesAIListConditions(MercPtrs[ubID], null, FALSE)) {
+    if (SatisfiesAIListConditions(MercPtrs[ubID], null, false)) {
       return ubID;
     }
   }
@@ -96,7 +96,7 @@ function RemoveAIListEntryForID(ubID: UINT8): void {
   // none found, that's okay
 }
 
-function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
+function InsertIntoAIList(ubID: UINT8, bPriority: INT8): boolean {
   let ubNewEntry: UINT8;
   let pEntry: Pointer<AILIST>;
   let pNewEntry: Pointer<AILIST>;
@@ -111,7 +111,7 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
     // empty list!
     gpFirstAIListEntry = pNewEntry;
     // new entry's next ptr is null already
-    return TRUE;
+    return true;
   } else {
     pEntry = gpFirstAIListEntry;
     do {
@@ -125,11 +125,11 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
           Assert(pPrevEntry != null);
           pPrevEntry.value.pNext = pNewEntry;
         }
-        return TRUE;
+        return true;
       } else if (pEntry.value.pNext == null) {
         // end of list!
         pEntry.value.pNext = pNewEntry;
-        return TRUE;
+        return true;
       }
       pPrevEntry = pEntry;
       pEntry = pEntry.value.pNext;
@@ -138,28 +138,28 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
   }
 
   // I don't know how the heck we would get here...
-  return FALSE;
+  return false;
 }
 
-function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount: Pointer<UINT8>, fDoRandomChecks: BOOLEAN): BOOLEAN {
+function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount: Pointer<UINT8>, fDoRandomChecks: boolean): boolean {
   if ((gTacticalStatus.bBoxingState == Enum247.BOXING) && !(pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {
-    return FALSE;
+    return false;
   }
 
   if (!(pSoldier.value.bActive && pSoldier.value.bInSector)) {
     // the check for
-    return FALSE;
+    return false;
   }
 
   if (!(pSoldier.value.bLife >= OKLIFE && pSoldier.value.bBreath >= OKBREATH)) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bMoved) {
     if (pSoldier.value.bActionPoints <= 1 && pubDoneCount) {
       (pubDoneCount.value)++;
     }
-    return FALSE;
+    return false;
   }
 
   // do we need to re-evaluate alert status here?
@@ -170,7 +170,7 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
   if (PTR_CIVILIAN()) {
     if (pSoldier.value.ubBodyType == Enum194.CROW || pSoldier.value.ubBodyType == Enum194.COW) {
       // don't handle cows and crows in TB!
-      return FALSE;
+      return false;
     }
 
     // if someone in a civ group is neutral but the civ group is non-neutral, should be handled all the time
@@ -178,7 +178,7 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
       if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
         // unalerted, barely handle
         if (fDoRandomChecks && PreRandom(10) && !(pSoldier.value.ubQuoteRecord)) {
-          return FALSE;
+          return false;
         }
       } else {
         // heard gunshots
@@ -186,20 +186,20 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
           if (pSoldier.value.bVisible) {
             // if have profile, don't handle, don't want them running around
             if (pSoldier.value.ubProfile != NO_PROFILE) {
-              return FALSE;
+              return false;
             }
             // else don't handle much
             if (fDoRandomChecks && PreRandom(3)) {
-              return FALSE;
+              return false;
             }
           } else {
             // never handle
-            return FALSE;
+            return false;
           }
         } else if (pSoldier.value.ubBodyType == Enum194.COW || pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
           // don't handle much
           if (fDoRandomChecks && PreRandom(3)) {
-            return FALSE;
+            return false;
           }
         }
       }
@@ -212,19 +212,19 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function MoveToFrontOfAIList(ubID: UINT8): BOOLEAN {
+function MoveToFrontOfAIList(ubID: UINT8): boolean {
   // we'll have to fake this guy's alert status (in the list) to be the same as the current
   // front of the list
   let bPriority: INT8;
   let ubNewEntry: UINT8;
   let pNewEntry: Pointer<AILIST>;
 
-  if (!SatisfiesAIListConditions(MercPtrs[ubID], null, FALSE)) {
+  if (!SatisfiesAIListConditions(MercPtrs[ubID], null, false)) {
     // can't do dat!
-    return FALSE;
+    return false;
   }
 
   RemoveAIListEntryForID(ubID);
@@ -239,16 +239,16 @@ function MoveToFrontOfAIList(ubID: UINT8): BOOLEAN {
     // insert at front
     pNewEntry.value.pNext = gpFirstAIListEntry;
     gpFirstAIListEntry = pNewEntry;
-    return TRUE;
+    return true;
   }
 }
 
-function BuildAIListForTeam(bTeam: INT8): BOOLEAN {
+function BuildAIListForTeam(bTeam: INT8): boolean {
   // loop through all non-player-team guys and add to list
   let uiLoop: UINT32;
-  let fInsertRet: BOOLEAN;
+  let fInsertRet: boolean;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fRet: BOOLEAN = FALSE;
+  let fRet: boolean = false;
   let ubCount: UINT8 = 0;
   let ubDoneCount: UINT8 = 0;
   let bPriority: INT8;
@@ -264,21 +264,21 @@ function BuildAIListForTeam(bTeam: INT8): BOOLEAN {
     // non-null merc slot ensures active
     pSoldier = MercSlots[uiLoop];
     if (pSoldier && pSoldier.value.bTeam == bTeam) {
-      if (!SatisfiesAIListConditions(pSoldier, addressof(ubDoneCount), TRUE)) {
+      if (!SatisfiesAIListConditions(pSoldier, addressof(ubDoneCount), true)) {
         continue;
       }
 
       bPriority = pSoldier.value.bAlertStatus;
-      if (pSoldier.value.bVisible == TRUE) {
+      if (pSoldier.value.bVisible == true) {
         bPriority += 3;
       }
 
       fInsertRet = InsertIntoAIList(pSoldier.value.ubID, bPriority);
-      if (fInsertRet == FALSE) {
+      if (fInsertRet == false) {
         // wtf???
         break;
       } else {
-        fRet = TRUE;
+        fRet = true;
         ubCount++;
       }
     }

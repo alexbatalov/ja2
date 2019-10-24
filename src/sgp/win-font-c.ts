@@ -1,6 +1,6 @@
 //#define UNICODE
 
-let gfEnumSucceed: BOOLEAN = FALSE;
+let gfEnumSucceed: boolean = false;
 
 const MAX_WIN_FONTS = 10;
 
@@ -66,7 +66,7 @@ function GetWinFont(iFont: INT32): Pointer<HWINFONT> {
 
 let gzFontName: UINT16[] /* [32] */;
 
-function CreateWinFont(iHeight: INT32, iWidth: INT32, iEscapement: INT32, iWeight: INT32, fItalic: BOOLEAN, fUnderline: BOOLEAN, fStrikeOut: BOOLEAN, szFontName: STR16, iCharSet: INT32): INT32 {
+function CreateWinFont(iHeight: INT32, iWidth: INT32, iEscapement: INT32, iWeight: INT32, fItalic: boolean, fUnderline: boolean, fStrikeOut: boolean, szFontName: STR16, iCharSet: INT32): INT32 {
   let iFont: INT32;
   let hFont: HFONT;
   let szCharFontName: UINT8[] /* [32] */; // 32 characters including null terminator (matches max font name length)
@@ -231,9 +231,9 @@ function WinFont_mprintf(iFont: INT32, x: INT32, y: INT32, pFontString: Pointer<
 }
 
 function EnumFontFamProc(lplf: Pointer<LOGFONT>, lptm: Pointer<TEXTMETRIC>, dwType: DWORD, lpData: LPARAM): int {
-  gfEnumSucceed = TRUE;
+  gfEnumSucceed = true;
 
-  return TRUE;
+  return true;
 }
 
 function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTEXTMETRICEX>, FontType: int, lParam: LPARAM): int {
@@ -241,20 +241,20 @@ function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTE
 
   sprintf(szFontName, "%S", gzFontName);
   if (!strcmp(szFontName, lpelfe.value.elfFullName)) {
-    gfEnumSucceed = TRUE;
+    gfEnumSucceed = true;
     memcpy(addressof(gLogFont), addressof(lpelfe.value.elfLogFont), sizeof(LOGFONT));
   }
 
-  return TRUE;
+  return true;
 }
 
-function DoesWinFontExistOnSystem(pTypeFaceName: STR16, iCharSet: INT32): BOOLEAN {
+function DoesWinFontExistOnSystem(pTypeFaceName: STR16, iCharSet: INT32): boolean {
   let hdc: HDC;
   let string: char[] /* [512] */;
   let LogFont: LOGFONT;
   hdc = GetDC(null);
 
-  gfEnumSucceed = FALSE;
+  gfEnumSucceed = false;
   // Copy into 8-bit!
   sprintf(string, "%S", pTypeFaceName);
 

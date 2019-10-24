@@ -55,7 +55,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
   let usSubpointsPerLevel: UINT16;
   let bCurrentRating: INT8;
   let psStatGainPtr: Pointer<UINT16>;
-  let fAffectedByWisdom: BOOLEAN = TRUE;
+  let fAffectedByWisdom: boolean = true;
 
   Assert(pProfile != null);
 
@@ -77,19 +77,19 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
       bCurrentRating = pProfile.value.bLifeMax;
       psStatGainPtr = addressof(pProfile.value.sLifeGain);
       // NB physical stat checks not affected by wisdom, unless training is going on
-      fAffectedByWisdom = FALSE;
+      fAffectedByWisdom = false;
       break;
 
     case AGILAMT:
       bCurrentRating = pProfile.value.bAgility;
       psStatGainPtr = addressof(pProfile.value.sAgilityGain);
-      fAffectedByWisdom = FALSE;
+      fAffectedByWisdom = false;
       break;
 
     case DEXTAMT:
       bCurrentRating = pProfile.value.bDexterity;
       psStatGainPtr = addressof(pProfile.value.sDexterityGain);
-      fAffectedByWisdom = FALSE;
+      fAffectedByWisdom = false;
       break;
 
     case WISDOMAMT:
@@ -125,7 +125,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
     case STRAMT:
       bCurrentRating = pProfile.value.bStrength;
       psStatGainPtr = addressof(pProfile.value.sStrengthGain);
-      fAffectedByWisdom = FALSE;
+      fAffectedByWisdom = false;
       break;
 
     case LDRAMT:
@@ -141,7 +141,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 
   if (ubReason == FROM_TRAINING) {
     // training always affected by wisdom
-    fAffectedByWisdom = TRUE;
+    fAffectedByWisdom = true;
   }
 
   // stats/skills of 0 can NEVER be improved!
@@ -296,8 +296,8 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
   let pbSoldierStatPtr: Pointer<INT8> = null;
   let pbStatDeltaPtr: Pointer<INT8> = null;
   let puiStatTimerPtr: Pointer<UINT32> = null;
-  let fChangeTypeIncrease: BOOLEAN;
-  let fChangeSalary: BOOLEAN;
+  let fChangeTypeIncrease: boolean;
+  let fChangeSalary: boolean;
   let uiLevelCnt: UINT32;
   let ubMercMercIdValue: UINT8 = 0;
   let usIncreaseValue: UINT16 = 0;
@@ -451,9 +451,9 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
   if (sPtsChanged != 0) {
     // if a stat improved
     if (sPtsChanged > 0) {
-      fChangeTypeIncrease = TRUE;
+      fChangeTypeIncrease = true;
     } else {
-      fChangeTypeIncrease = FALSE;
+      fChangeTypeIncrease = false;
     }
 
     // update merc profile stat
@@ -492,7 +492,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
       }
 
       // update mapscreen soldier info panel
-      fCharacterInfoPanelDirty = TRUE;
+      fCharacterInfoPanelDirty = true;
 
       // remember what time it changed at, it's displayed in a different color for a while afterwards
       puiStatTimerPtr.value = GetJA2Clock();
@@ -536,8 +536,8 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
         switch (pSoldier.value.ubWhatKindOfMercAmI) {
           case Enum260.MERC_TYPE__AIM_MERC:
             // A.I.M.
-            pSoldier.value.fContractPriceHasIncreased = TRUE;
-            fChangeSalary = TRUE;
+            pSoldier.value.fContractPriceHasIncreased = true;
+            fChangeSalary = true;
             break;
 
           case Enum260.MERC_TYPE__MERC:
@@ -561,18 +561,18 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
             //						AddEmail( ubEmailOffset, MERC_UP_LEVEL_LENGTH_BIFF, SPECK_FROM_MERC, GetWorldTotalMin() );
             AddStrategicEvent(Enum132.EVENT_MERC_MERC_WENT_UP_LEVEL_EMAIL_DELAY, GetWorldTotalMin() + 60 + Random(60), ubMercMercIdValue);
 
-            fChangeSalary = TRUE;
+            fChangeSalary = true;
             break;
 
           default:
             // others don't increase salary
-            fChangeSalary = FALSE;
+            fChangeSalary = false;
             break;
         }
       } else // not employed by player
       {
         // only AIM and M.E.R.C.s update stats when not on player's team, and both of them DO change salary
-        fChangeSalary = TRUE;
+        fChangeSalary = true;
       }
 
       if (fChangeSalary) {
@@ -809,7 +809,7 @@ function HandleAnyStatChangesAfterAttack(): void {
   }
 }
 
-function CalcNewSalary(uiOldSalary: UINT32, fIncrease: BOOLEAN, uiMaxLimit: UINT32): UINT32 {
+function CalcNewSalary(uiOldSalary: UINT32, fIncrease: boolean, uiMaxLimit: UINT32): UINT32 {
   let uiNewSalary: UINT32;
 
   // if he was working for free, it's still free!
@@ -929,7 +929,7 @@ function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): voi
     // as long to hit level 3.  If we go lower, attribs & skills will barely move.
     usNumChances = (pProfile.value.bWisdom / 10);
     for (ubStat = FIRST_CHANGEABLE_STAT; ubStat <= LAST_CHANGEABLE_STAT; ubStat++) {
-      ProfileStatChange(pProfile, ubStat, usNumChances, FALSE);
+      ProfileStatChange(pProfile, ubStat, usNumChances, false);
     }
   } else {
     // if the merc just takes it easy (high level or stupid mercs are more likely to)
@@ -976,7 +976,7 @@ function HandleUnhiredMercDeaths(iProfileID: INT32): void {
       ubMaxDeaths = 3;
       break;
     default:
-      Assert(FALSE);
+      Assert(false);
       ubMaxDeaths = 0;
       break;
   }
@@ -1071,7 +1071,7 @@ function CurrentPlayerProgressPercentage(): UINT8 {
       ubKillsPerPoint = 15;
       break;
     default:
-      Assert(FALSE);
+      Assert(false);
       ubKillsPerPoint = 10;
       break;
   }
@@ -1165,12 +1165,12 @@ function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
   // to do: find guys in sector on the currently active squad, those that are conscious get this amount in XPs
   for (ubGuynum = gTacticalStatus.Team[gbPlayerNum].bFirstID, pSoldier = MercPtrs[ubGuynum]; ubGuynum <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubGuynum++, pSoldier++) {
     if (pSoldier.value.bActive && pSoldier.value.bInSector && IsMercOnCurrentSquad(pSoldier) && (pSoldier.value.bLife >= CONSCIOUSNESS) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier)) {
-      StatChange(pSoldier, EXPERAMT, usXPs, FALSE);
+      StatChange(pSoldier, EXPERAMT, usXPs, false);
     }
   }
 }
 
-function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: BOOLEAN, sPtsChanged: INT16, ubStat: UINT8): void {
+function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: boolean, sPtsChanged: INT16, ubStat: UINT8): void {
   let ubStringIndex: UINT8;
 
   Assert(sPtsChanged != 0);
@@ -1202,7 +1202,7 @@ function CalcImportantSectorControl(): UINT8 {
   for (ubMapX = 1; ubMapX < MAP_WORLD_X - 1; ubMapX++) {
     for (ubMapY = 1; ubMapY < MAP_WORLD_Y - 1; ubMapY++) {
       // if player controlled
-      if (StrategicMap[CALCULATE_STRATEGIC_INDEX(ubMapX, ubMapY)].fEnemyControlled == FALSE) {
+      if (StrategicMap[CALCULATE_STRATEGIC_INDEX(ubMapX, ubMapY)].fEnemyControlled == false) {
         // towns where militia can be trained and SAM sites are important sectors
         if (MilitiaTrainingAllowedInSector(ubMapX, ubMapY, 0)) {
           ubSectorControlPts++;

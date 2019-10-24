@@ -128,7 +128,7 @@ let gubAimMenuButtonDown: UINT8 = 255;
 let gubWarningTimer: UINT32;
 let gubCurrentAdvertisment: UINT8;
 
-let gfInitAdArea: BOOLEAN;
+let gfInitAdArea: boolean;
 
 // MemberCard
 let gSelectedMemberCardRegion: MOUSE_REGION;
@@ -151,7 +151,7 @@ let gSelectedBannerRegion: MOUSE_REGION;
 // Aim logo click
 let gSelectedAimLogo: MOUSE_REGION;
 
-let fFirstTimeIn: BOOLEAN = TRUE;
+let fFirstTimeIn: boolean = true;
 
 //
 // ***********************  Functions		*************************
@@ -161,7 +161,7 @@ function GameInitAIM(): void {
   LaptopInitAim();
 }
 
-function EnterAIM(): BOOLEAN {
+function EnterAIM(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   gubWarningTimer = 0;
@@ -247,14 +247,14 @@ function EnterAIM(): BOOLEAN {
 
   gubAimMenuButtonDown = 255;
 
-  fFirstTimeIn = FALSE;
+  fFirstTimeIn = false;
   RenderAIM();
 
-  return TRUE;
+  return true;
 }
 
 function LaptopInitAim(): void {
-  gfInitAdArea = TRUE;
+  gfInitAdArea = true;
 }
 
 function ExitAIM(): void {
@@ -280,8 +280,8 @@ function ExitAIM(): void {
 }
 
 function HandleAIM(): void {
-  HandleAdAndWarningArea(gfInitAdArea, FALSE);
-  gfInitAdArea = FALSE;
+  HandleAdAndWarningArea(gfInitAdArea, false);
+  gfInitAdArea = false;
 }
 
 function RenderAIM(): void {
@@ -316,15 +316,15 @@ function RenderAIM(): void {
 
   // Draw text under boxes
   // members
-  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_MEMBERS], MEMBERCARD_X, MEMBERS_TEXT_Y, LINK_SIZE_X, FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_MEMBERS], MEMBERCARD_X, MEMBERS_TEXT_Y, LINK_SIZE_X, FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   // Policies
-  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_POLICIES], POLICIES_X, POLICIES_TEXT_Y, LINK_SIZE_X, FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_POLICIES], POLICIES_X, POLICIES_TEXT_Y, LINK_SIZE_X, FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   // History
-  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_HISTORY], HISTORY_X, HISTORY_TEXT_Y, LINK_SIZE_X, FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_HISTORY], HISTORY_X, HISTORY_TEXT_Y, LINK_SIZE_X, FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   // Links
-  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_LINKS], LINKS_X, LINK_TEXT_Y, LINK_SIZE_X, FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_LINKS], LINKS_X, LINK_TEXT_Y, LINK_SIZE_X, FONT12ARIAL(), AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
-  HandleAdAndWarningArea(gfInitAdArea, TRUE);
+  HandleAdAndWarningArea(gfInitAdArea, true);
 
   RenderWWWProgramTitleBar();
 
@@ -364,7 +364,7 @@ function SelectLinksRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 }
 
-function InitAimDefaults(): BOOLEAN {
+function InitAimDefaults(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the Rust bacground graphic and add it
@@ -381,18 +381,18 @@ function InitAimDefaults(): BOOLEAN {
   MSYS_DefineRegion(addressof(gSelectedAimLogo), AIM_SYMBOL_X, AIM_SYMBOL_Y, AIM_SYMBOL_X + AIM_SYMBOL_WIDTH, AIM_SYMBOL_Y + AIM_SYMBOL_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAimLogoRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedAimLogo));
 
-  return TRUE;
+  return true;
 }
 
-function RemoveAimDefaults(): BOOLEAN {
+function RemoveAimDefaults(): boolean {
   DeleteVideoObjectFromIndex(guiRustBackGround);
   DeleteVideoObjectFromIndex(guiAimSymbol);
   MSYS_RemoveRegion(addressof(gSelectedAimLogo));
 
-  return TRUE;
+  return true;
 }
 
-function DrawAimDefaults(): BOOLEAN {
+function DrawAimDefaults(): boolean {
   let hRustBackGroundHandle: HVOBJECT;
   let hAimSymbolHandle: HVOBJECT;
   let x: UINT16;
@@ -417,7 +417,7 @@ function DrawAimDefaults(): BOOLEAN {
   GetVideoObject(addressof(hAimSymbolHandle), guiAimSymbol);
   BltVideoObject(FRAME_BUFFER, hAimSymbolHandle, 0, AIM_SYMBOL_X, AIM_SYMBOL_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-  return TRUE;
+  return true;
 }
 
 function SelectAimLogoRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -428,17 +428,17 @@ function SelectAimLogoRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
   }
 }
 
-function DisplayAimSlogan(): BOOLEAN {
+function DisplayAimSlogan(): boolean {
   let sSlogan: wchar_t[] /* [400] */;
 
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, 0, AIM_HISTORY_LINE_SIZE);
   // Display Aim Text under the logo
-  DisplayWrappedString(AIM_LOGO_TEXT_X, AIM_LOGO_TEXT_Y, AIM_LOGO_TEXT_WIDTH, 2, AIM_LOGO_FONT(), AIM_FONT_MCOLOR_WHITE, sSlogan, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(AIM_LOGO_TEXT_X, AIM_LOGO_TEXT_Y, AIM_LOGO_TEXT_WIDTH, 2, AIM_LOGO_FONT(), AIM_FONT_MCOLOR_WHITE, sSlogan, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
-  return TRUE;
+  return true;
 }
 
-function DisplayAimCopyright(): BOOLEAN {
+function DisplayAimCopyright(): boolean {
   let sSlogan: wchar_t[] /* [400] */;
   let uiStartLoc: UINT32 = 0;
 
@@ -446,21 +446,21 @@ function DisplayAimCopyright(): BOOLEAN {
 
   uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_COPYRIGHT_1;
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-  DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT(), FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT(), FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_COPYRIGHT_2;
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-  DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y + AIM_COPYRIGHT_GAP, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT(), FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y + AIM_COPYRIGHT_GAP, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT(), FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_COPYRIGHT_3;
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-  DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y + AIM_COPYRIGHT_GAP * 2, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT(), FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y + AIM_COPYRIGHT_GAP * 2, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT(), FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
-  return TRUE;
+  return true;
 }
 
 // Buttons
-function InitAimMenuBar(): BOOLEAN {
+function InitAimMenuBar(): boolean {
   let i: UINT8;
   let usPosX: UINT16;
 
@@ -476,9 +476,9 @@ function InitAimMenuBar(): BOOLEAN {
 
     usPosX += BOTTOM_BUTTON_START_WIDTH;
   }
-  return TRUE;
+  return true;
 }
-function ExitAimMenuBar(): BOOLEAN {
+function ExitAimMenuBar(): boolean {
   let i: UINT8;
 
   UnloadButtonImage(guiBottomButtonImage);
@@ -486,7 +486,7 @@ function ExitAimMenuBar(): BOOLEAN {
   for (i = 0; i < BOTTOM_BUTTON_AMOUNT; i++) {
     RemoveButton(guiBottomButtons[i]);
   }
-  return TRUE;
+  return true;
 }
 
 function BtnAimBottomButtonsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -533,7 +533,7 @@ function DisableAimButton(): void {
   }
 }
 
-function HandleAdAndWarningArea(fInit: BOOLEAN, fRedraw: BOOLEAN): void {
+function HandleAdAndWarningArea(fInit: boolean, fRedraw: boolean): void {
   /* static */ let ubPreviousAdvertisment: UINT8;
 
   if (fInit)
@@ -542,7 +542,7 @@ function HandleAdAndWarningArea(fInit: BOOLEAN, fRedraw: BOOLEAN): void {
     if (ubPreviousAdvertisment == Enum62.AIM_AD_DONE) {
       gubCurrentAdvertisment = GetNextAimAd(gubCurrentAdvertisment);
 
-      fInit = TRUE;
+      fInit = true;
 
       /*
                               UINT32	uiDay = GetWorldDay();
@@ -632,7 +632,7 @@ function HandleAdAndWarningArea(fInit: BOOLEAN, fRedraw: BOOLEAN): void {
   }
 }
 
-function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
+function DisplayFlowerAd(fInit: boolean, fRedraw: boolean): boolean {
   /* static */ let uiLastTime: UINT32;
   /* static */ let ubSubImage: UINT8 = 0;
   /* static */ let ubCount: UINT8 = 0;
@@ -655,14 +655,14 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
         BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
         // redraw new mail warning, and create new mail button, if nessacary
-        fReDrawNewMailFlag = TRUE;
+        fReDrawNewMailFlag = true;
 
         // Display Aim Warning Text
-        DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_WARNING_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, FONT14ARIAL(), FONT_GREEN, AimScreenText[Enum362.AIM_INFO_6], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_WARNING_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, FONT14ARIAL(), FONT_GREEN, AimScreenText[Enum362.AIM_INFO_6], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
         // Display Aim Warning Text
         SetFontShadow(FONT_MCOLOR_WHITE);
-        DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_FLOWER_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, FONT12ARIAL(), 2, AimScreenText[Enum362.AIM_INFO_7], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_FLOWER_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, FONT12ARIAL(), 2, AimScreenText[Enum362.AIM_INFO_7], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
         SetFontShadow(DEFAULT_SHADOW);
 
         InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
@@ -680,7 +680,7 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
       BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       // redraw new mail warning, and create new mail button, if nessacary
-      fReDrawNewMailFlag = TRUE;
+      fReDrawNewMailFlag = true;
 
       ubSubImage++;
     }
@@ -691,7 +691,7 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
   return Enum62.AIM_AD_NOT_DONE;
 }
 
-function DrawWarningBox(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
+function DrawWarningBox(fInit: boolean, fRedraw: boolean): boolean {
   /* static */ let uiLastTime: UINT32;
   /* static */ let ubSubImage: UINT8 = 0;
   let uiCurTime: UINT32 = GetJA2Clock();
@@ -710,12 +710,12 @@ function DrawWarningBox(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
     LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
 
     // Display Aim Warning Text
-    DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_WARNING_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, AIM_WARNING_FONT(), FONT_RED, sText, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_WARNING_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, AIM_WARNING_FONT(), FONT_RED, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
     InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
 
     // redraw new mail warning, and create new mail button, if nessacary
-    fReDrawNewMailFlag = TRUE;
+    fReDrawNewMailFlag = true;
 
     if (fInit)
       uiLastTime = uiCurTime;
@@ -743,7 +743,7 @@ function SelectBannerRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   }
 }
 
-function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOfSubImages: UINT16, uiAdImageIdentifier: UINT32): BOOLEAN {
+function DisplayAd(fInit: boolean, fRedraw: boolean, usDelay: UINT16, usNumberOfSubImages: UINT16, uiAdImageIdentifier: UINT32): boolean {
   /* static */ let uiLastTime: UINT32;
   /* static */ let ubSubImage: UINT8 = 0;
   /* static */ let ubCount: UINT8 = 0;
@@ -766,7 +766,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
         BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
         // redraw new mail warning, and create new mail button, if nessacary
-        fReDrawNewMailFlag = TRUE;
+        fReDrawNewMailFlag = true;
 
         InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
       }
@@ -788,7 +788,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
         BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
         // redraw new mail warning, and create new mail button, if nessacary
-        fReDrawNewMailFlag = TRUE;
+        fReDrawNewMailFlag = true;
 
         InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
       }
@@ -805,7 +805,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
       BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       // redraw new mail warning, and create new mail button, if nessacary
-      fReDrawNewMailFlag = TRUE;
+      fReDrawNewMailFlag = true;
 
       ubSubImage++;
     }
@@ -842,14 +842,14 @@ function HandleTextOnAimAdd(ubCurSubImage: UINT8): void {
       if (ubCurSubImage <= AIM_AD_BOBBYR_AD_NUM_DUCK_SUBIMAGES) {
         // Display Aim Warning Text
         SetFontShadow(2);
-        DisplayWrappedString(AIM_BOBBYR1_LINK_TEXT_X, AIM_BOBBYR1_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, BOBBYR_UNDER_CONSTRUCTION_AD_FONT(), BOBBYR_UNDER_CONSTRUCTION_AD_COLOR, AimScreenText[Enum362.AIM_BOBBYR_ADD1], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED | INVALIDATE_TEXT);
+        DisplayWrappedString(AIM_BOBBYR1_LINK_TEXT_X, AIM_BOBBYR1_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, BOBBYR_UNDER_CONSTRUCTION_AD_FONT(), BOBBYR_UNDER_CONSTRUCTION_AD_COLOR, AimScreenText[Enum362.AIM_BOBBYR_ADD1], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED | INVALIDATE_TEXT);
         SetFontShadow(DEFAULT_SHADOW);
       }
 
       else if (ubCurSubImage >= AIM_AD_BOBBYR_AD__NUM_SUBIMAGES - 5) {
         // Display Aim Warning Text
         SetFontShadow(2);
-        DisplayWrappedString(AIM_BOBBYR2_LINK_TEXT_X, AIM_BOBBYR2_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, BOBBYR_UNDER_CONSTRUCTION_AD_FONT(), BOBBYR_UNDER_CONSTRUCTION_AD_COLOR, AimScreenText[Enum362.AIM_BOBBYR_ADD2], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED | INVALIDATE_TEXT);
+        DisplayWrappedString(AIM_BOBBYR2_LINK_TEXT_X, AIM_BOBBYR2_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, BOBBYR_UNDER_CONSTRUCTION_AD_FONT(), BOBBYR_UNDER_CONSTRUCTION_AD_COLOR, AimScreenText[Enum362.AIM_BOBBYR_ADD2], FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED | INVALIDATE_TEXT);
         SetFontShadow(DEFAULT_SHADOW);
       }
       /*
@@ -865,7 +865,7 @@ function HandleTextOnAimAdd(ubCurSubImage: UINT8): void {
   }
 }
 
-function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
+function DisplayBobbyRAd(fInit: boolean, fRedraw: boolean): boolean {
   /* static */ let uiLastTime: UINT32;
   /* static */ let ubSubImage: UINT8 = 0;
   /* static */ let ubDuckCount: UINT8 = 0;
@@ -924,7 +924,7 @@ function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
       }
 
       // redraw new mail warning, and create new mail button, if nessacary
-      fReDrawNewMailFlag = TRUE;
+      fReDrawNewMailFlag = true;
 
       InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
     }
@@ -1018,7 +1018,7 @@ function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
 function GetNextAimAd(ubCurrentAd: UINT8): UINT8 {
   let ubNextAd: UINT8;
   let uiDay: UINT32 = GetWorldDay();
-  let fSkip: BOOLEAN = FALSE;
+  let fSkip: boolean = false;
 
   if (ubCurrentAd == Enum62.AIM_AD_WARNING_BOX) {
     if (uiDay < AIM_AD_BOBBYR_AD_STARTS) {

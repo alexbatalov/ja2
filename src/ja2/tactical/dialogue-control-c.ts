@@ -26,14 +26,14 @@ interface DIALOGUE_Q_STRUCT {
   uiSpecialEventData2: UINT32;
   uiSpecialEventData3: UINT32;
   uiSpecialEventData4: UINT32;
-  fFromSoldier: BOOLEAN;
-  fDelayed: BOOLEAN;
-  fPauseTime: BOOLEAN;
+  fFromSoldier: boolean;
+  fDelayed: boolean;
+  fPauseTime: boolean;
 }
 
 type DIALOGUE_Q_STRUCT_PTR = Pointer<DIALOGUE_Q_STRUCT>;
 
-let fExternFacesLoaded: BOOLEAN = FALSE;
+let fExternFacesLoaded: boolean = false;
 
 let uiExternalStaticNPCFaces: UINT32[] /* [NUMBER_OF_EXTERNAL_NPC_FACES] */;
 let uiExternalFaceProfileIds: UINT32[] /* [NUMBER_OF_EXTERNAL_NPC_FACES] */ = [
@@ -81,16 +81,16 @@ let giNPCSpecialReferenceCount: INT32 = 0;
 let gsExternPanelXPosition: INT16 = DEFAULT_EXTERN_PANEL_X_POS;
 let gsExternPanelYPosition: INT16 = DEFAULT_EXTERN_PANEL_Y_POS;
 
-let gfDialogueQueuePaused: BOOLEAN = FALSE;
+let gfDialogueQueuePaused: boolean = false;
 let gusSubtitleBoxWidth: UINT16;
 let gusSubtitleBoxHeight: UINT16;
 let giTextBoxOverlay: INT32 = -1;
-let gfFacePanelActive: BOOLEAN = FALSE;
+let gfFacePanelActive: boolean = false;
 let guiScreenIDUsedWhenUICreated: UINT32;
 let gzQuoteStr: INT16[] /* [QUOTE_MESSAGE_SIZE] */;
 let gTextBoxMouseRegion: MOUSE_REGION;
 let gFacePopupMouseRegion: MOUSE_REGION;
-let gfUseAlternateDialogueFile: BOOLEAN = FALSE;
+let gfUseAlternateDialogueFile: boolean = false;
 
 // set the top position value for merc dialogue pop up boxes
 let gsTopPosition: INT16 = 20;
@@ -98,43 +98,43 @@ let gsTopPosition: INT16 = 20;
 let iDialogueBox: INT32 = -1;
 
 // the next said quote will pause time
-let fPausedTimeDuringQuote: BOOLEAN = FALSE;
-let fWasPausedDuringDialogue: BOOLEAN = FALSE;
+let fPausedTimeDuringQuote: boolean = false;
+let fWasPausedDuringDialogue: boolean = false;
 
-let gubLogForMeTooBleeds: INT8 = FALSE;
+let gubLogForMeTooBleeds: INT8 = false;
 
 // has the text region been created?
-let fTextBoxMouseRegionCreated: BOOLEAN = FALSE;
-let fExternFaceBoxRegionCreated: BOOLEAN = FALSE;
+let fTextBoxMouseRegionCreated: boolean = false;
+let fExternFaceBoxRegionCreated: boolean = false;
 
 // due to last quote system?
-let fDialogueBoxDueToLastMessage: BOOLEAN = FALSE;
+let fDialogueBoxDueToLastMessage: boolean = false;
 
 // last quote timers
 let guiDialogueLastQuoteTime: UINT32 = 0;
 let guiDialogueLastQuoteDelay: UINT32 = 0;
 
 function UnPauseGameDuringNextQuote(): void {
-  fPausedTimeDuringQuote = FALSE;
+  fPausedTimeDuringQuote = false;
 
   return;
 }
 
 function PauseTimeDuringNextQuote(): void {
-  fPausedTimeDuringQuote = TRUE;
+  fPausedTimeDuringQuote = true;
 
   return;
 }
 
-function DialogueActive(): BOOLEAN {
+function DialogueActive(): boolean {
   if (gpCurrentTalkingFace != null) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function InitalizeDialogueControl(): BOOLEAN {
+function InitalizeDialogueControl(): boolean {
   ghDialogueQ = CreateQueue(INITIAL_Q_SIZE, sizeof(DIALOGUE_Q_STRUCT_PTR));
 
   // Initalize subtitle popup box
@@ -143,9 +143,9 @@ function InitalizeDialogueControl(): BOOLEAN {
   giNPCReferenceCount = 0;
 
   if (ghDialogueQ == null) {
-    return FALSE;
+    return false;
   } else {
-    return TRUE;
+    return true;
   }
 }
 
@@ -171,11 +171,11 @@ function InitalizeStaticExternalNPCFaces(): void {
   let iCounter: INT32 = 0;
   // go and grab all external NPC faces that are needed for the game who won't exist as soldiertypes
 
-  if (fExternFacesLoaded == TRUE) {
+  if (fExternFacesLoaded == true) {
     return;
   }
 
-  fExternFacesLoaded = TRUE;
+  fExternFacesLoaded = true;
 
   for (iCounter = 0; iCounter < Enum203.NUMBER_OF_EXTERNAL_NPC_FACES; iCounter++) {
     uiExternalStaticNPCFaces[iCounter] = InitFace((uiExternalFaceProfileIds[iCounter]), NOBODY, FACE_FORCE_SMALL);
@@ -187,11 +187,11 @@ function InitalizeStaticExternalNPCFaces(): void {
 function ShutdownStaticExternalNPCFaces(): void {
   let iCounter: INT32 = 0;
 
-  if (fExternFacesLoaded == FALSE) {
+  if (fExternFacesLoaded == false) {
     return;
   }
 
-  fExternFacesLoaded = FALSE;
+  fExternFacesLoaded = false;
 
   // remove all external npc faces
   for (iCounter = 0; iCounter < Enum203.NUMBER_OF_EXTERNAL_NPC_FACES; iCounter++) {
@@ -225,44 +225,44 @@ function EmptyDialogueQueue(): void {
     ghDialogueQ = CreateQueue(INITIAL_Q_SIZE, sizeof(DIALOGUE_Q_STRUCT_PTR));
   }
 
-  gfWaitingForTriggerTimer = FALSE;
+  gfWaitingForTriggerTimer = false;
 }
 
-function DialogueQueueIsEmpty(): BOOLEAN {
+function DialogueQueueIsEmpty(): boolean {
   let numDialogueItems: INT32;
 
   if (ghDialogueQ != null) {
     numDialogueItems = QueueSize(ghDialogueQ);
 
     if (numDialogueItems == 0) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function DialogueQueueIsEmptyOrSomebodyTalkingNow(): BOOLEAN {
+function DialogueQueueIsEmptyOrSomebodyTalkingNow(): boolean {
   if (gpCurrentTalkingFace != null) {
-    return FALSE;
+    return false;
   }
 
   if (!DialogueQueueIsEmpty()) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function DialogueAdvanceSpeech(): void {
   // Shut them up!
-  InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, FALSE);
+  InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, false);
 }
 
 function StopAnyCurrentlyTalkingSpeech(): void {
   // ATE; Make sure guys stop talking....
   if (gpCurrentTalkingFace != null) {
-    InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, TRUE);
+    InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, true);
   }
 }
 
@@ -276,7 +276,7 @@ function HandleDialogueUIAdjustments(): void {
     if (gpCurrentTalkingFace.value.fTalking) {
       // ATE: Check for change in state for the guy currently talking on 'external' panel....
       if (gfFacePanelActive) {
-        pSoldier = FindSoldierByProfileID(gubCurrentTalkingID, FALSE);
+        pSoldier = FindSoldierByProfileID(gubCurrentTalkingID, false);
 
         if (pSoldier) {
           if (0) {
@@ -286,14 +286,14 @@ function HandleDialogueUIAdjustments(): void {
               RemoveVideoOverlay(gpCurrentTalkingFace.value.iVideoOverlay);
               gpCurrentTalkingFace.value.iVideoOverlay = -1;
             }
-            gfFacePanelActive = FALSE;
+            gfFacePanelActive = false;
 
             RemoveVideoOverlay(giTextBoxOverlay);
             giTextBoxOverlay = -1;
 
             if (fTextBoxMouseRegionCreated) {
               MSYS_RemoveRegion(addressof(gTextBoxMouseRegion));
-              fTextBoxMouseRegionCreated = FALSE;
+              fTextBoxMouseRegionCreated = false;
             }
 
             // Setup UI again!
@@ -308,8 +308,8 @@ function HandleDialogueUIAdjustments(): void {
 function HandleDialogue(): void {
   let iQSize: INT32;
   let QItem: Pointer<DIALOGUE_Q_STRUCT>;
-  /* static */ let fOldEngagedInConvFlagOn: BOOLEAN = FALSE;
-  let fDoneTalking: BOOLEAN = FALSE;
+  /* static */ let fOldEngagedInConvFlagOn: boolean = false;
+  let fDoneTalking: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let zText: CHAR16[] /* [512] */;
   let zMoney: CHAR16[] /* [128] */;
@@ -329,16 +329,16 @@ function HandleDialogue(): void {
 
   // Alrighty, check for a change in state, do stuff appropriately....
   // Turned on
-  if (fOldEngagedInConvFlagOn == FALSE && (gTacticalStatus.uiFlags & ENGAGED_IN_CONV)) {
+  if (fOldEngagedInConvFlagOn == false && (gTacticalStatus.uiFlags & ENGAGED_IN_CONV)) {
     // OK, we have just entered...
-    fOldEngagedInConvFlagOn = TRUE;
+    fOldEngagedInConvFlagOn = true;
 
     // pause game..
     PauseGame();
     LockPauseState(14);
-  } else if (fOldEngagedInConvFlagOn == TRUE && !(gTacticalStatus.uiFlags & ENGAGED_IN_CONV)) {
+  } else if (fOldEngagedInConvFlagOn == true && !(gTacticalStatus.uiFlags & ENGAGED_IN_CONV)) {
     // OK, we left...
-    fOldEngagedInConvFlagOn = FALSE;
+    fOldEngagedInConvFlagOn = false;
 
     // Unpause game..
     UnLockPauseState();
@@ -400,20 +400,20 @@ function HandleDialogue(): void {
           }
 
           if (fExternFaceBoxRegionCreated) {
-            fExternFaceBoxRegionCreated = FALSE;
+            fExternFaceBoxRegionCreated = false;
             MSYS_RemoveRegion(addressof(gFacePopupMouseRegion));
           }
 
           // Set face inactive....
-          gpCurrentTalkingFace.value.fCanHandleInactiveNow = TRUE;
+          gpCurrentTalkingFace.value.fCanHandleInactiveNow = true;
           SetAutoFaceInActive(gpCurrentTalkingFace.value.iID);
           HandleTacticalSpeechUI(gubCurrentTalkingID, gpCurrentTalkingFace.value.iID);
 
           // ATE: Force mapscreen to set face active again.....
-          fReDrawFace = TRUE;
+          fReDrawFace = true;
           DrawFace(bSelectedInfoChar);
 
-          gfFacePanelActive = FALSE;
+          gfFacePanelActive = false;
         }
 
         guiScreenIDUsedWhenUICreated = guiCurrentScreen;
@@ -444,7 +444,7 @@ function HandleDialogue(): void {
 
       if (gpCurrentTalkingFace.value.uiFlags & FACE_TRIGGER_PREBATTLE_INT) {
         UnLockPauseState();
-        InitPreBattleInterface(gpCurrentTalkingFace.value.uiUserData1, TRUE);
+        InitPreBattleInterface(gpCurrentTalkingFace.value.uiUserData1, true);
         // Reset flag!
         gpCurrentTalkingFace.value.uiFlags &= (~FACE_TRIGGER_PREBATTLE_INT);
       }
@@ -452,12 +452,12 @@ function HandleDialogue(): void {
       gpCurrentTalkingFace = null;
       gubCurrentTalkingID = NO_PROFILE;
       gTacticalStatus.ubLastQuoteProfileNUm = NO_PROFILE;
-      fDoneTalking = TRUE;
+      fDoneTalking = true;
     }
   }
 
   if ((fDoneTalking) && (fWasPausedDuringDialogue)) {
-    fWasPausedDuringDialogue = FALSE;
+    fWasPausedDuringDialogue = false;
 
     // unlock pause state
     UnLockPauseState();
@@ -465,12 +465,12 @@ function HandleDialogue(): void {
   }
 
   if (iQSize == 0) {
-    if (gfMikeShouldSayHi == TRUE) {
+    if (gfMikeShouldSayHi == true) {
       let pMike: Pointer<SOLDIERTYPE>;
       let sPlayerGridNo: INT16;
       let ubPlayerID: UINT8;
 
-      pMike = FindSoldierByProfileID(Enum268.MIKE, FALSE);
+      pMike = FindSoldierByProfileID(Enum268.MIKE, false);
       if (pMike) {
         sPlayerGridNo = ClosestPC(pMike, null);
         if (sPlayerGridNo != NOWHERE) {
@@ -538,7 +538,7 @@ function HandleDialogue(): void {
   }
 
   // Try to find soldier...
-  pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, TRUE);
+  pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, true);
 
   if (pSoldier != null) {
     if (SoundIsPlaying(pSoldier.value.uiBattleSoundID)) {
@@ -551,14 +551,14 @@ function HandleDialogue(): void {
   }
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) && (QItem.value.uiSpecialEventFlag == 0)) {
-    QItem.value.fPauseTime = TRUE;
+    QItem.value.fPauseTime = true;
   }
 
   if (QItem.value.fPauseTime) {
-    if (GamePaused() == FALSE) {
+    if (GamePaused() == false) {
       PauseGame();
       LockPauseState(15);
-      fWasPausedDuringDialogue = TRUE;
+      fWasPausedDuringDialogue = true;
     }
   }
 
@@ -568,11 +568,11 @@ function HandleDialogue(): void {
     if (pSoldier) {
       // wake grunt up to say
       if (pSoldier.value.fMercAsleep) {
-        pSoldier.value.fMercAsleep = FALSE;
+        pSoldier.value.fMercAsleep = false;
 
         // refresh map screen
-        fCharacterInfoPanelDirty = TRUE;
-        fTeamPanelDirty = TRUE;
+        fCharacterInfoPanelDirty = true;
+        fTeamPanelDirty = true;
 
         // allow them to go back to sleep
         TacticalCharacterDialogueWithSpecialEvent(pSoldier, QItem.value.usQuoteNum, DIALOGUE_SPECIAL_EVENT_SLEEP, 1, 0);
@@ -593,13 +593,13 @@ function HandleDialogue(): void {
     if (QItem.value.uiSpecialEventData) {
       switch (QItem.value.uiSpecialEventData2) {
         case (Enum26.MAP_SCREEN):
-          fLockOutMapScreenInterface = TRUE;
+          fLockOutMapScreenInterface = true;
           break;
       }
     } else {
       switch (QItem.value.uiSpecialEventData2) {
         case (Enum26.MAP_SCREEN):
-          fLockOutMapScreenInterface = FALSE;
+          fLockOutMapScreenInterface = false;
           break;
       }
     }
@@ -613,7 +613,7 @@ function HandleDialogue(): void {
     HandleMercIsNotWillingToRenew(QItem.value.uiSpecialEventData);
   } else {
     if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_USE_ALTERNATE_FILES) {
-      gfUseAlternateDialogueFile = TRUE;
+      gfUseAlternateDialogueFile = true;
 
       // Setup face pointer
       gpCurrentTalkingFace = addressof(gFacesData[QItem.value.iFaceIndex]);
@@ -621,7 +621,7 @@ function HandleDialogue(): void {
 
       ExecuteCharacterDialogue(QItem.value.ubCharacterNum, QItem.value.usQuoteNum, QItem.value.iFaceIndex, QItem.value.bUIHandlerID, QItem.value.fFromSoldier);
 
-      gfUseAlternateDialogueFile = FALSE;
+      gfUseAlternateDialogueFile = false;
     }
     // We could have a special flag, but dialogue as well
     else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_PCTRIGGERNPC) {
@@ -641,14 +641,14 @@ function HandleDialogue(): void {
       // Need this stuff so that bSelectedInfoChar is set...
       SetInfoChar(pSoldier.value.ubID);
 
-      fShowContractMenu = TRUE;
+      fShowContractMenu = true;
       RebuildContractBoxForMerc(pSoldier);
       bSelectedContractChar = bSelectedInfoChar;
       pProcessingSoldier = pSoldier;
-      fProcessingAMerc = TRUE;
+      fProcessingAMerc = true;
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND) {
       // grab soldier ptr from profile ID
-      pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, FALSE);
+      pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, false);
 
       // Do battle snounds......
       if (pSoldier) {
@@ -658,7 +658,7 @@ function HandleDialogue(): void {
 
     if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_SIGNAL_ITEM_LOCATOR_START) {
       // Turn off item lock for locators...
-      gTacticalStatus.fLockItemLocators = FALSE;
+      gTacticalStatus.fLockItemLocators = false;
 
       // Slide to location!
       SlideToLocation(0, QItem.value.uiSpecialEventData);
@@ -676,7 +676,7 @@ function HandleDialogue(): void {
 
     if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_TRIGGERPREBATTLEINTERFACE) {
       UnLockPauseState();
-      InitPreBattleInterface(QItem.value.uiSpecialEventData, TRUE);
+      InitPreBattleInterface(QItem.value.uiSpecialEventData, true);
     }
     if (QItem.value.uiSpecialEventFlag & DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX) {
       let iReason: INT32 = 0;
@@ -687,7 +687,7 @@ function HandleDialogue(): void {
       switch (iReason) {
         case (Enum204.UPDATE_BOX_REASON_ADDSOLDIER):
           pUpdateSoldier = addressof(Menptr[QItem.value.uiSpecialEventData2]);
-          if (pUpdateSoldier.value.bActive == TRUE) {
+          if (pUpdateSoldier.value.bActive == true) {
             AddSoldierToUpdateBox(pUpdateSoldier);
           }
           break;
@@ -751,7 +751,7 @@ function HandleDialogue(): void {
           break;
         case (5):
           // this means a dialogue event has ended
-          gfSKIScreenExit = TRUE;
+          gfSKIScreenExit = true;
           break;
 
         case (6):
@@ -773,7 +773,7 @@ function HandleDialogue(): void {
       RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_TACTICAL);
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_DISPLAY_STAT_CHANGE) {
       // grab soldier ptr from profile ID
-      pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, FALSE);
+      pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, false);
 
       if (pSoldier) {
         let wTempString: CHAR16[] /* [128] */;
@@ -783,7 +783,7 @@ function HandleDialogue(): void {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, wTempString);
       }
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_UNSET_ARRIVES_FLAG) {
-      gTacticalStatus.bMercArrivingQuoteBeingUsed = FALSE;
+      gTacticalStatus.bMercArrivingQuoteBeingUsed = false;
     }
 
     /*
@@ -832,10 +832,10 @@ function HandleDialogue(): void {
         HandleNPCClosePanel();
       }
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_SHOW_UPDATE_MENU) {
-      SetUpdateBoxFlag(TRUE);
+      SetUpdateBoxFlag(true);
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_CONTINUE_TRAINING_MILITIA) {
       // grab soldier ptr from profile ID
-      pSoldier = FindSoldierByProfileID((QItem.value.uiSpecialEventData), FALSE);
+      pSoldier = FindSoldierByProfileID((QItem.value.uiSpecialEventData), false);
 
       // if soldier valid...
       if (pSoldier != null) {
@@ -843,12 +843,12 @@ function HandleDialogue(): void {
       }
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_ENTER_MAPSCREEN) {
       if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
-        gfEnteringMapScreen = TRUE;
-        fEnterMapDueToContract = TRUE;
+        gfEnteringMapScreen = true;
+        fEnterMapDueToContract = true;
       }
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING) {
       // grab soldier ptr from profile ID
-      pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, FALSE);
+      pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, false);
 
       // if soldier valid...
       if (pSoldier != null) {
@@ -857,7 +857,7 @@ function HandleDialogue(): void {
       }
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP) {
       // grab soldier ptr from profile ID
-      pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, FALSE);
+      pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, false);
 
       // if soldier valid...
       if (pSoldier != null) {
@@ -878,129 +878,129 @@ function HandleDialogue(): void {
 
       // wake merc up or put them back down?
       if (QItem.value.uiSpecialEventData == 1) {
-        pSoldier.value.fMercAsleep = TRUE;
+        pSoldier.value.fMercAsleep = true;
       } else {
-        pSoldier.value.fMercAsleep = FALSE;
+        pSoldier.value.fMercAsleep = false;
       }
 
       // refresh map screen
-      fCharacterInfoPanelDirty = TRUE;
-      fTeamPanelDirty = TRUE;
+      fCharacterInfoPanelDirty = true;
+      fTeamPanelDirty = true;
     }
   }
 
   // grab soldier ptr from profile ID
-  pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, FALSE);
+  pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, false);
 
   if (pSoldier && pSoldier.value.bTeam == gbPlayerNum) {
     CheckForStopTimeQuotes(QItem.value.usQuoteNum);
   }
 
   if (QItem.value.fPauseTime) {
-    fWasPausedDuringDialogue = TRUE;
+    fWasPausedDuringDialogue = true;
   }
 
   // Delete memory
   MemFree(QItem);
 }
 
-function DelayedTacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT16): BOOLEAN {
+function DelayedTacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT16): boolean {
   if (pSoldier.value.ubProfile == NO_PROFILE) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bLife < CONSCIOUSNESS)
-    return FALSE;
+    return false;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED)
-    return FALSE;
+    return false;
 
   if ((AM_A_ROBOT(pSoldier))) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bLife < OKLIFE && usQuoteNum != Enum202.QUOTE_SERIOUSLY_WOUNDED)
-    return FALSE;
+    return false;
 
   if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
-    return FALSE;
+    return false;
   }
 
-  return CharacterDialogue(pSoldier.value.ubProfile, usQuoteNum, pSoldier.value.iFaceIndex, DIALOGUE_TACTICAL_UI, TRUE, TRUE);
+  return CharacterDialogue(pSoldier.value.ubProfile, usQuoteNum, pSoldier.value.iFaceIndex, DIALOGUE_TACTICAL_UI, true, true);
 }
 
-function TacticalCharacterDialogueWithSpecialEvent(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT16, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32): BOOLEAN {
+function TacticalCharacterDialogueWithSpecialEvent(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT16, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32): boolean {
   if (pSoldier.value.ubProfile == NO_PROFILE) {
-    return FALSE;
+    return false;
   }
 
   if (uiFlag != DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND && uiData1 != Enum259.BATTLE_SOUND_DIE1) {
     if (pSoldier.value.bLife < CONSCIOUSNESS)
-      return FALSE;
+      return false;
 
     if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED)
-      return FALSE;
+      return false;
   }
 
-  return CharacterDialogueWithSpecialEvent(pSoldier.value.ubProfile, usQuoteNum, pSoldier.value.iFaceIndex, DIALOGUE_TACTICAL_UI, TRUE, FALSE, uiFlag, uiData1, uiData2);
+  return CharacterDialogueWithSpecialEvent(pSoldier.value.ubProfile, usQuoteNum, pSoldier.value.iFaceIndex, DIALOGUE_TACTICAL_UI, true, false, uiFlag, uiData1, uiData2);
 }
 
-function TacticalCharacterDialogueWithSpecialEventEx(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT16, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32, uiData3: UINT32): BOOLEAN {
+function TacticalCharacterDialogueWithSpecialEventEx(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT16, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32, uiData3: UINT32): boolean {
   if (pSoldier.value.ubProfile == NO_PROFILE) {
-    return FALSE;
+    return false;
   }
 
   if (uiFlag != DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND && uiData1 != Enum259.BATTLE_SOUND_DIE1) {
     if (pSoldier.value.bLife < CONSCIOUSNESS)
-      return FALSE;
+      return false;
 
     if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED)
-      return FALSE;
+      return false;
 
     if ((AM_A_ROBOT(pSoldier))) {
-      return FALSE;
+      return false;
     }
 
     if (pSoldier.value.bLife < OKLIFE && usQuoteNum != Enum202.QUOTE_SERIOUSLY_WOUNDED)
-      return FALSE;
+      return false;
 
     if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
-      return FALSE;
+      return false;
     }
   }
 
-  return CharacterDialogueWithSpecialEventEx(pSoldier.value.ubProfile, usQuoteNum, pSoldier.value.iFaceIndex, DIALOGUE_TACTICAL_UI, TRUE, FALSE, uiFlag, uiData1, uiData2, uiData3);
+  return CharacterDialogueWithSpecialEventEx(pSoldier.value.ubProfile, usQuoteNum, pSoldier.value.iFaceIndex, DIALOGUE_TACTICAL_UI, true, false, uiFlag, uiData1, uiData2, uiData3);
 }
 
-function TacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT16): BOOLEAN {
+function TacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT16): boolean {
   if (pSoldier.value.ubProfile == NO_PROFILE) {
-    return FALSE;
+    return false;
   }
 
   if (AreInMeanwhile()) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bLife < CONSCIOUSNESS)
-    return FALSE;
+    return false;
 
   if (pSoldier.value.bLife < OKLIFE && usQuoteNum != Enum202.QUOTE_SERIOUSLY_WOUNDED)
-    return FALSE;
+    return false;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED)
-    return FALSE;
+    return false;
 
   if ((AM_A_ROBOT(pSoldier))) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
-    return FALSE;
+    return false;
   }
 
   // OK, let's check if this is the exact one we just played, if so, skip.
   if (pSoldier.value.ubProfile == gTacticalStatus.ubLastQuoteProfileNUm && usQuoteNum == gTacticalStatus.ubLastQuoteSaid) {
-    return FALSE;
+    return false;
   }
 
   // If we are a robot, play the controller's quote!
@@ -1008,12 +1008,12 @@ function TacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: U
     if (CanRobotBeControlled(pSoldier)) {
       return TacticalCharacterDialogue(MercPtrs[pSoldier.value.ubRobotRemoteHolderID], usQuoteNum);
     } else {
-      return FALSE;
+      return false;
     }
   }
 
   if (AM_AN_EPC(pSoldier) && !(gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags & PROFILE_MISC_FLAG_FORCENPCQUOTE))
-    return FALSE;
+    return false;
 
   // Check for logging of me too bleeds...
   if (usQuoteNum == Enum202.QUOTE_STARTING_TO_BLEED) {
@@ -1027,7 +1027,7 @@ function TacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: U
     }
   }
 
-  return CharacterDialogue(pSoldier.value.ubProfile, usQuoteNum, pSoldier.value.iFaceIndex, DIALOGUE_TACTICAL_UI, TRUE, FALSE);
+  return CharacterDialogue(pSoldier.value.ubProfile, usQuoteNum, pSoldier.value.iFaceIndex, DIALOGUE_TACTICAL_UI, true, false);
 }
 
 // This function takes a profile num, quote num, faceindex and a UI hander ID.
@@ -1044,7 +1044,7 @@ function TacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: U
 
 // NB;				The queued system is not yet implemented, but will be transpatent to the caller....
 
-function CharacterDialogueWithSpecialEvent(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: BOOLEAN, fDelayed: BOOLEAN, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32): BOOLEAN {
+function CharacterDialogueWithSpecialEvent(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: boolean, fDelayed: boolean, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32): boolean {
   let QItem: Pointer<DIALOGUE_Q_STRUCT>;
 
   // Allocate new item
@@ -1072,10 +1072,10 @@ function CharacterDialogueWithSpecialEvent(ubCharacterNum: UINT8, usQuoteNum: UI
     giNPCReferenceCount++;
   }
 
-  return TRUE;
+  return true;
 }
 
-function CharacterDialogueWithSpecialEventEx(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: BOOLEAN, fDelayed: BOOLEAN, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32, uiData3: UINT32): BOOLEAN {
+function CharacterDialogueWithSpecialEventEx(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: boolean, fDelayed: boolean, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32, uiData3: UINT32): boolean {
   let QItem: Pointer<DIALOGUE_Q_STRUCT>;
 
   // Allocate new item
@@ -1104,10 +1104,10 @@ function CharacterDialogueWithSpecialEventEx(ubCharacterNum: UINT8, usQuoteNum: 
     giNPCReferenceCount++;
   }
 
-  return TRUE;
+  return true;
 }
 
-function CharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: BOOLEAN, fDelayed: BOOLEAN): BOOLEAN {
+function CharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: boolean, fDelayed: boolean): boolean {
   let QItem: Pointer<DIALOGUE_Q_STRUCT>;
 
   // Allocate new item
@@ -1123,19 +1123,19 @@ function CharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex
   QItem.value.fDelayed = fDelayed;
 
   // check if pause already locked, if so, then don't mess with it
-  if (gfLockPauseState == FALSE) {
+  if (gfLockPauseState == false) {
     QItem.value.fPauseTime = fPausedTimeDuringQuote;
   }
 
-  fPausedTimeDuringQuote = FALSE;
+  fPausedTimeDuringQuote = false;
 
   // Add to queue
   ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
-  return TRUE;
+  return true;
 }
 
-function SpecialCharacterDialogueEvent(uiSpecialEventFlag: UINT32, uiSpecialEventData1: UINT32, uiSpecialEventData2: UINT32, uiSpecialEventData3: UINT32, iFaceIndex: INT32, bUIHandlerID: UINT8): BOOLEAN {
+function SpecialCharacterDialogueEvent(uiSpecialEventFlag: UINT32, uiSpecialEventData1: UINT32, uiSpecialEventData2: UINT32, uiSpecialEventData3: UINT32, iFaceIndex: INT32, bUIHandlerID: UINT8): boolean {
   let QItem: Pointer<DIALOGUE_Q_STRUCT>;
 
   // Allocate new item
@@ -1151,19 +1151,19 @@ function SpecialCharacterDialogueEvent(uiSpecialEventFlag: UINT32, uiSpecialEven
   QItem.value.iTimeStamp = GetJA2Clock();
 
   // if paused state not already locked
-  if (gfLockPauseState == FALSE) {
+  if (gfLockPauseState == false) {
     QItem.value.fPauseTime = fPausedTimeDuringQuote;
   }
 
-  fPausedTimeDuringQuote = FALSE;
+  fPausedTimeDuringQuote = false;
 
   // Add to queue
   ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
-  return TRUE;
+  return true;
 }
 
-function SpecialCharacterDialogueEventWithExtraParam(uiSpecialEventFlag: UINT32, uiSpecialEventData1: UINT32, uiSpecialEventData2: UINT32, uiSpecialEventData3: UINT32, uiSpecialEventData4: UINT32, iFaceIndex: INT32, bUIHandlerID: UINT8): BOOLEAN {
+function SpecialCharacterDialogueEventWithExtraParam(uiSpecialEventFlag: UINT32, uiSpecialEventData1: UINT32, uiSpecialEventData2: UINT32, uiSpecialEventData3: UINT32, uiSpecialEventData4: UINT32, iFaceIndex: INT32, bUIHandlerID: UINT8): boolean {
   let QItem: Pointer<DIALOGUE_Q_STRUCT>;
 
   // Allocate new item
@@ -1180,19 +1180,19 @@ function SpecialCharacterDialogueEventWithExtraParam(uiSpecialEventFlag: UINT32,
   QItem.value.iTimeStamp = GetJA2Clock();
 
   // if paused state not already locked
-  if (gfLockPauseState == FALSE) {
+  if (gfLockPauseState == false) {
     QItem.value.fPauseTime = fPausedTimeDuringQuote;
   }
 
-  fPausedTimeDuringQuote = FALSE;
+  fPausedTimeDuringQuote = false;
 
   // Add to queue
   ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
-  return TRUE;
+  return true;
 }
 
-function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: BOOLEAN): BOOLEAN {
+function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: boolean): boolean {
   let zSoundString: CHAR8[] /* [164] */;
   let uiSoundID: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1200,35 +1200,35 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
   // Check if we are dead now or not....( if from a soldier... )
 
   // Try to find soldier...
-  pSoldier = FindSoldierByProfileID(ubCharacterNum, TRUE);
+  pSoldier = FindSoldierByProfileID(ubCharacterNum, true);
 
   if (pSoldier != null) {
     // Check vital stats
     if (pSoldier.value.bLife < CONSCIOUSNESS) {
-      return FALSE;
+      return false;
     }
 
     if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED)
-      return FALSE;
+      return false;
 
     if ((AM_A_ROBOT(pSoldier))) {
-      return FALSE;
+      return false;
     }
 
     if (pSoldier.value.bLife < OKLIFE && usQuoteNum != Enum202.QUOTE_SERIOUSLY_WOUNDED) {
-      return FALSE;
+      return false;
     }
 
     if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
-      return FALSE;
+      return false;
     }
 
     // sleeping guys don't talk.. go to standby to talk
-    if (pSoldier.value.fMercAsleep == TRUE) {
+    if (pSoldier.value.fMercAsleep == true) {
       // check if the soldier was compaining about lack of sleep and was alseep, if so, leave them alone
       if ((usQuoteNum == Enum202.QUOTE_NEED_SLEEP) || (usQuoteNum == Enum202.QUOTE_OUT_OF_BREATH)) {
         // leave them alone
-        return TRUE;
+        return true;
       }
 
       // may want to wake up any character that has VERY important dialogue to say
@@ -1272,7 +1272,7 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
   } else {
     // If from a soldier, and he does not exist anymore, donot play!
     if (fFromSoldier) {
-      return FALSE;
+      return false;
     }
   }
 
@@ -1280,7 +1280,7 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
   CHECKF(iFaceIndex != -1);
 
   if (!GetDialogue(ubCharacterNum, usQuoteNum, DIALOGUESIZE, gzQuoteStr, addressof(uiSoundID), zSoundString)) {
-    return FALSE;
+    return false;
   }
 
   if (bUIHandlerID == DIALOGUE_EXTERNAL_NPC_UI) {
@@ -1298,7 +1298,7 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
 
   guiScreenIDUsedWhenUICreated = guiCurrentScreen;
 
-  return TRUE;
+  return true;
 }
 
 function CreateTalkingUI(bUIHandlerID: INT8, iFaceIndex: INT32, ubCharacterNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>, zQuoteStr: Pointer<INT16>): void {
@@ -1352,7 +1352,7 @@ function CreateTalkingUI(bUIHandlerID: INT8, iFaceIndex: INT32, ubCharacterNum: 
   }
 }
 
-function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWavFile: BOOLEAN): Pointer<INT8> {
+function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWavFile: boolean): Pointer<INT8> {
   /* static */ let zFileName: UINT8[] /* [164] */;
   let ubFileNumID: UINT8;
 
@@ -1412,7 +1412,7 @@ function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWav
 }
 
 // Used to see if the dialog text file exists
-function DialogueDataFileExistsForProfile(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWavFile: BOOLEAN, ppStr: Pointer<Pointer<UINT8>>): BOOLEAN {
+function DialogueDataFileExistsForProfile(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWavFile: boolean, ppStr: Pointer<Pointer<UINT8>>): boolean {
   let pFilename: Pointer<UINT8>;
 
   pFilename = GetDialogueDataFilename(ubCharacterNum, usQuoteNum, fWavFile);
@@ -1424,28 +1424,28 @@ function DialogueDataFileExistsForProfile(ubCharacterNum: UINT8, usQuoteNum: UIN
   return FileExists(pFilename);
 }
 
-function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT32, zDialogueText: Pointer<UINT16>, puiSoundID: Pointer<UINT32>, zSoundString: Pointer<CHAR8>): BOOLEAN {
+function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT32, zDialogueText: Pointer<UINT16>, puiSoundID: Pointer<UINT32>, zSoundString: Pointer<CHAR8>): boolean {
   let pFilename: Pointer<UINT8>;
 
   // first things first  - grab the text (if player has SUBTITLE PREFERENCE ON)
   // if ( gGameSettings.fOptions[ TOPTION_SUBTITLES ] )
   {
-    if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, FALSE, addressof(pFilename))) {
+    if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, false, addressof(pFilename))) {
       LoadEncryptedDataFromFile(pFilename, zDialogueText, usQuoteNum * iDataSize, iDataSize);
       if (zDialogueText[0] == 0) {
         swprintf(zDialogueText, "I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
 
-        return FALSE;
+        return false;
       }
     } else {
       swprintf(zDialogueText, "I have no text in the file ( %d ) %S", usQuoteNum, pFilename);
 
-      return FALSE;
+      return false;
     }
   }
 
   // CHECK IF THE FILE EXISTS, IF NOT, USE DEFAULT!
-  pFilename = GetDialogueDataFilename(ubCharacterNum, usQuoteNum, TRUE);
+  pFilename = GetDialogueDataFilename(ubCharacterNum, usQuoteNum, true);
 
   // Copy
   strcpy(zSoundString, pFilename);
@@ -1474,7 +1474,7 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
     puiSoundID.value = SoundLoadSample(pFilename);
   }
 
-  return TRUE;
+  return true;
 }
 
 // Handlers for tactical UI stuff
@@ -1483,8 +1483,8 @@ function HandleTacticalNPCTextUI(ubCharacterNum: UINT8, zQuoteStr: Pointer<INT16
 
   // Setup dialogue text box
   if (guiCurrentScreen != Enum26.MAP_SCREEN) {
-    gTalkPanel.fRenderSubTitlesNow = TRUE;
-    gTalkPanel.fSetupSubTitles = TRUE;
+    gTalkPanel.fRenderSubTitlesNow = true;
+    gTalkPanel.fSetupSubTitles = true;
   }
 
   // post message to mapscreen message system
@@ -1500,8 +1500,8 @@ function DisplayTextForExternalNPC(ubCharacterNum: UINT8, zQuoteStr: STR16): voi
 
   // Setup dialogue text box
   if (guiCurrentScreen != Enum26.MAP_SCREEN) {
-    gTalkPanel.fRenderSubTitlesNow = TRUE;
-    gTalkPanel.fSetupSubTitles = TRUE;
+    gTalkPanel.fRenderSubTitlesNow = true;
+    gTalkPanel.fSetupSubTitles = true;
   }
 
   // post message to mapscreen message system
@@ -1543,7 +1543,7 @@ function HandleTacticalTextUI(iFaceIndex: INT32, pSoldier: Pointer<SOLDIERTYPE>,
 function ExecuteTacticalTextBoxForLastQuote(sLeftPosition: INT16, pString: STR16): void {
   let uiDelay: UINT32 = FindDelayForString(pString);
 
-  fDialogueBoxDueToLastMessage = TRUE;
+  fDialogueBoxDueToLastMessage = true;
 
   guiDialogueLastQuoteTime = GetJA2Clock();
 
@@ -1557,17 +1557,17 @@ function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: STR16): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   // check if mouse region created, if so, do not recreate
-  if (fTextBoxMouseRegionCreated == TRUE) {
+  if (fTextBoxMouseRegionCreated == true) {
     return;
   }
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VIDEO_OVERLAY_DESC));
 
   // Prepare text box
-  SET_USE_WINFONTS(TRUE);
+  SET_USE_WINFONTS(true);
   SET_WINFONT(giSubTitleWinFont);
   iDialogueBox = PrepareMercPopupBox(iDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, pString, DIALOGUE_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, addressof(gusSubtitleBoxWidth), addressof(gusSubtitleBoxHeight));
-  SET_USE_WINFONTS(FALSE);
+  SET_USE_WINFONTS(false);
 
   VideoOverlayDesc.sLeft = sLeftPosition;
   VideoOverlayDesc.sTop = gsTopPosition;
@@ -1586,7 +1586,7 @@ function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: STR16): void {
   // Add region
   MSYS_AddRegion(addressof(gTextBoxMouseRegion));
 
-  fTextBoxMouseRegionCreated = TRUE;
+  fTextBoxMouseRegionCreated = true;
 }
 
 function HandleExternNPCSpeechFace(iIndex: INT32): void {
@@ -1632,7 +1632,7 @@ function HandleExternNPCSpeechFace(iIndex: INT32): void {
 
   // ATE: Create mouse region.......
   if (!fExternFaceBoxRegionCreated) {
-    fExternFaceBoxRegionCreated = TRUE;
+    fExternFaceBoxRegionCreated = true;
 
     // Define main region
     MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
@@ -1640,7 +1640,7 @@ function HandleExternNPCSpeechFace(iIndex: INT32): void {
     MSYS_AddRegion(addressof(gFacePopupMouseRegion));
   }
 
-  gfFacePanelActive = TRUE;
+  gfFacePanelActive = true;
 
   return;
 }
@@ -1649,22 +1649,22 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
   let iFaceOverlay: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fDoExternPanel: BOOLEAN = FALSE;
+  let fDoExternPanel: boolean = false;
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VIDEO_OVERLAY_DESC));
 
   // Get soldier pointer, if there is one...
   // Try to find soldier...
-  pSoldier = FindSoldierByProfileID(ubCharacterNum, FALSE);
+  pSoldier = FindSoldierByProfileID(ubCharacterNum, false);
 
   // PLEASE NOTE:  pSoldier may legally be NULL (e.g. Skyrider) !!!
 
   if (pSoldier == null) {
-    fDoExternPanel = TRUE;
+    fDoExternPanel = true;
   } else {
     // If we are not an active face!
     if (guiCurrentScreen != Enum26.MAP_SCREEN) {
-      fDoExternPanel = TRUE;
+      fDoExternPanel = true;
     }
   }
 
@@ -1679,7 +1679,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
     if ((guiCurrentScreen == Enum26.GAME_SCREEN) && (pSoldier != null) && (pSoldier.value.bAssignment == iCurrentTacticalSquad)) {
       // Make the interface panel dirty..
       // This will dirty the panel next frame...
-      gfRerenderInterfaceFromHelpText = TRUE;
+      gfRerenderInterfaceFromHelpText = true;
     }
 
     // Setup video overlay!
@@ -1698,7 +1698,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
 
     // ATE: Create mouse region.......
     if (!fExternFaceBoxRegionCreated) {
-      fExternFaceBoxRegionCreated = TRUE;
+      fExternFaceBoxRegionCreated = true;
 
       // Define main region
       MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
@@ -1706,12 +1706,12 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
       MSYS_AddRegion(addressof(gFacePopupMouseRegion));
     }
 
-    gfFacePanelActive = TRUE;
+    gfFacePanelActive = true;
   } else if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     // Are we in mapscreen?
     // If so, set current guy active to talk.....
     if (pSoldier != null) {
-      ContinueDialogue(pSoldier, FALSE);
+      ContinueDialogue(pSoldier, false);
     }
   }
 }
@@ -1733,12 +1733,12 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
 
         if (gfFacePanelActive) {
           // Set face inactive!
-          pFace.value.fCanHandleInactiveNow = TRUE;
+          pFace.value.fCanHandleInactiveNow = true;
           SetAutoFaceInActive(pFace.value.iID);
-          gfFacePanelActive = FALSE;
+          gfFacePanelActive = false;
 
           if (fExternFaceBoxRegionCreated) {
-            fExternFaceBoxRegionCreated = FALSE;
+            fExternFaceBoxRegionCreated = false;
             MSYS_RemoveRegion(addressof(gFacePopupMouseRegion));
           }
         }
@@ -1746,12 +1746,12 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
       case DIALOGUE_NPC_UI:
         break;
       case DIALOGUE_EXTERNAL_NPC_UI:
-        pFace.value.fCanHandleInactiveNow = TRUE;
+        pFace.value.fCanHandleInactiveNow = true;
         SetAutoFaceInActive(pFace.value.iID);
-        gfFacePanelActive = FALSE;
+        gfFacePanelActive = false;
 
         if (fExternFaceBoxRegionCreated) {
-          fExternFaceBoxRegionCreated = FALSE;
+          fExternFaceBoxRegionCreated = false;
           MSYS_RemoveRegion(addressof(gFacePopupMouseRegion));
         }
 
@@ -1774,7 +1774,7 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
             // reset box id
             iDialogueBox = -1;
             MSYS_RemoveRegion(addressof(gTextBoxMouseRegion));
-            fTextBoxMouseRegionCreated = FALSE;
+            fTextBoxMouseRegionCreated = false;
           }
         }
 
@@ -1785,11 +1785,11 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
         // Remove region
         if (gTalkPanel.fTextRegionOn) {
           MSYS_RemoveRegion(addressof(gTalkPanel.TextRegion));
-          gTalkPanel.fTextRegionOn = FALSE;
+          gTalkPanel.fTextRegionOn = false;
         }
 
         SetRenderFlags(RENDER_FLAG_FULL);
-        gTalkPanel.fRenderSubTitlesNow = FALSE;
+        gTalkPanel.fRenderSubTitlesNow = false;
 
         // Delete subtitle box
         gTalkPanel.fDirtyLevel = DIRTYLEVEL2;
@@ -1826,7 +1826,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   }
 
   if (gfFacePanelActive) {
-    pSoldier = FindSoldierByProfileID(gpCurrentTalkingFace.value.ubCharacterNum, FALSE);
+    pSoldier = FindSoldierByProfileID(gpCurrentTalkingFace.value.ubCharacterNum, false);
 
     // a living soldier?..or external NPC?..choose panel based on this
     if (pSoldier) {
@@ -1842,14 +1842,14 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
     if (pSoldier) {
       // reset the font dest buffer
-      SetFontDestBuffer(pBlitter.value.uiDestBuff, 0, 0, 640, 480, FALSE);
+      SetFontDestBuffer(pBlitter.value.uiDestBuff, 0, 0, 640, 480, false);
 
       VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2(), addressof(sFontX), addressof(sFontY), "%s", pSoldier.value.name);
       mprintf(sFontX, sFontY, "%s", pSoldier.value.name);
 
       // What sector are we in, ( and is it the same as ours? )
       if (pSoldier.value.sSectorX != gWorldSectorX || pSoldier.value.sSectorY != gWorldSectorY || pSoldier.value.bSectorZ != gbWorldSectorZ || pSoldier.value.fBetweenSectors) {
-        GetSectorIDString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, zTownIDString, FALSE);
+        GetSectorIDString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, zTownIDString, false);
 
         ReduceStringLength(zTownIDString, 64, BLOCKFONT2());
 
@@ -1858,12 +1858,12 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       }
 
       // reset the font dest buffer
-      SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+      SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
       // Display bars
-      DrawLifeUIBarEx(pSoldier, (pBlitter.value.sX + 69), (pBlitter.value.sY + 47), 3, 42, FALSE, pBlitter.value.uiDestBuff);
-      DrawBreathUIBarEx(pSoldier, (pBlitter.value.sX + 75), (pBlitter.value.sY + 47), 3, 42, FALSE, pBlitter.value.uiDestBuff);
-      DrawMoraleUIBarEx(pSoldier, (pBlitter.value.sX + 81), (pBlitter.value.sY + 47), 3, 42, FALSE, pBlitter.value.uiDestBuff);
+      DrawLifeUIBarEx(pSoldier, (pBlitter.value.sX + 69), (pBlitter.value.sY + 47), 3, 42, false, pBlitter.value.uiDestBuff);
+      DrawBreathUIBarEx(pSoldier, (pBlitter.value.sX + 75), (pBlitter.value.sY + 47), 3, 42, false, pBlitter.value.uiDestBuff);
+      DrawMoraleUIBarEx(pSoldier, (pBlitter.value.sX + 81), (pBlitter.value.sY + 47), 3, 42, false, pBlitter.value.uiDestBuff);
     } else {
       VarFindFontCenterCoordinates((pBlitter.value.sX + 9), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2(), addressof(sFontX), addressof(sFontY), "%s", gMercProfiles[gpCurrentTalkingFace.value.ubCharacterNum].zNickname);
       mprintf(sFontX, sFontY, "%s", gMercProfiles[gpCurrentTalkingFace.value.ubCharacterNum].zNickname);
@@ -1998,7 +1998,7 @@ function SayQuoteFromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuote
   // run through list
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
     // Add guy if he's a candidate...
-    if (OK_INSECTOR_MERC(pTeamSoldier) && PythSpacesAway(sGridNo, pTeamSoldier.value.sGridNo) < bDistance && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier.value.fMercAsleep && SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, 0, 0, MaxDistanceVisible(), TRUE)) {
+    if (OK_INSECTOR_MERC(pTeamSoldier) && PythSpacesAway(sGridNo, pTeamSoldier.value.sGridNo) < bDistance && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier.value.fMercAsleep && SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, 0, 0, MaxDistanceVisible(), true)) {
       if (usQuoteNum == 66 && Random(100) > EffectiveWisdom(pTeamSoldier)) {
         continue;
       }
@@ -2033,7 +2033,7 @@ function SayQuote58FromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuo
   // run through list
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
     // Add guy if he's a candidate...
-    if (OK_INSECTOR_MERC(pTeamSoldier) && PythSpacesAway(sGridNo, pTeamSoldier.value.sGridNo) < bDistance && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier.value.fMercAsleep && SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, 0, 0, MaxDistanceVisible(), TRUE)) {
+    if (OK_INSECTOR_MERC(pTeamSoldier) && PythSpacesAway(sGridNo, pTeamSoldier.value.sGridNo) < bDistance && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier.value.fMercAsleep && SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, 0, 0, MaxDistanceVisible(), true)) {
       // ATE: This is to check gedner for this quote...
       if (QuoteExp_GenderCode[pTeamSoldier.value.ubProfile] == 0 && bSex == Enum272.FEMALE) {
         continue;
@@ -2056,15 +2056,15 @@ function SayQuote58FromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuo
 }
 
 function TextOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP && fLButtonDown) {
     if (gpCurrentTalkingFace != null) {
-      InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, FALSE);
+      InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, false);
 
       // Did we succeed in shutting them up?
       if (!gpCurrentTalkingFace.value.fTalking) {
@@ -2073,23 +2073,23 @@ function TextOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
       }
     }
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 
 function FaceOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP && fLButtonDown) {
     if (gpCurrentTalkingFace != null) {
-      InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, FALSE);
+      InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, false);
     }
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 
@@ -2100,10 +2100,10 @@ function ShutDownLastQuoteTacticalTextBox(): void {
 
     if (fTextBoxMouseRegionCreated) {
       MSYS_RemoveRegion(addressof(gTextBoxMouseRegion));
-      fTextBoxMouseRegionCreated = FALSE;
+      fTextBoxMouseRegionCreated = false;
     }
 
-    fDialogueBoxDueToLastMessage = FALSE;
+    fDialogueBoxDueToLastMessage = false;
   }
 }
 
@@ -2111,7 +2111,7 @@ function FindDelayForString(sString: STR16): UINT32 {
   return wcslen(sString) * TEXT_DELAY_MODIFIER;
 }
 
-function BeginLoggingForBleedMeToos(fStart: BOOLEAN): void {
+function BeginLoggingForBleedMeToos(fStart: boolean): void {
   gubLogForMeTooBleeds = fStart;
 }
 
@@ -2128,16 +2128,16 @@ function UnSetEngagedInConvFromPCAction(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function IsStopTimeQuote(usQuoteNum: UINT16): BOOLEAN {
+function IsStopTimeQuote(usQuoteNum: UINT16): boolean {
   let cnt: INT32;
 
   for (cnt = 0; cnt < gubNumStopTimeQuotes; cnt++) {
     if (gusStopTimeQuoteList[cnt] == usQuoteNum) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function CheckForStopTimeQuotes(usQuoteNum: UINT16): void {
@@ -2155,64 +2155,64 @@ function SetStopTimeQuoteCallback(pCallBack: MODAL_HOOK): void {
   gModalDoneCallback = pCallBack;
 }
 
-function IsMercSayingDialogue(ubProfileID: UINT8): BOOLEAN {
+function IsMercSayingDialogue(ubProfileID: UINT8): boolean {
   if (gpCurrentTalkingFace != null && gubCurrentTalkingID == ubProfileID) {
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function ShouldMercSayPrecedentToRepeatOneSelf(ubMercID: UINT8, uiQuoteID: UINT32): BOOLEAN {
+function ShouldMercSayPrecedentToRepeatOneSelf(ubMercID: UINT8, uiQuoteID: UINT32): boolean {
   let ubQuoteBit: UINT8 = 0;
 
   // If the quote is not in the array
   if (!IsQuoteInPrecedentArray(uiQuoteID)) {
-    return FALSE;
+    return false;
   }
 
   ubQuoteBit = GetQuoteBitNumberFromQuoteID(uiQuoteID);
   if (ubQuoteBit == 0)
-    return FALSE;
+    return false;
 
   if (GetMercPrecedentQuoteBitStatus(ubMercID, ubQuoteBit)) {
-    return TRUE;
+    return true;
   } else {
     SetMercPrecedentQuoteBitStatus(ubMercID, ubQuoteBit);
   }
 
-  return FALSE;
+  return false;
 }
 
-function GetMercPrecedentQuoteBitStatus(ubMercID: UINT8, ubQuoteBit: UINT8): BOOLEAN {
+function GetMercPrecedentQuoteBitStatus(ubMercID: UINT8, ubQuoteBit: UINT8): boolean {
   if (gMercProfiles[ubMercID].uiPrecedentQuoteSaid & (1 << (ubQuoteBit - 1)))
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }
 
-function SetMercPrecedentQuoteBitStatus(ubMercID: UINT8, ubBitToSet: UINT8): BOOLEAN {
+function SetMercPrecedentQuoteBitStatus(ubMercID: UINT8, ubBitToSet: UINT8): boolean {
   // Set the bit
   gMercProfiles[ubMercID].uiPrecedentQuoteSaid |= 1 << (ubBitToSet - 1);
 
-  return TRUE;
+  return true;
 }
 
-function IsQuoteInPrecedentArray(uiQuoteID: UINT32): BOOLEAN {
+function IsQuoteInPrecedentArray(uiQuoteID: UINT32): boolean {
   let ubCnt: UINT8;
 
   // If the quote id is above or below the ones in the array
   if (uiQuoteID < gubMercValidPrecedentQuoteID[0] || uiQuoteID > gubMercValidPrecedentQuoteID[NUMBER_VALID_MERC_PRECEDENT_QUOTES - 1]) {
-    return FALSE;
+    return false;
   }
 
   // loop through all the quotes
   for (ubCnt = 0; ubCnt < NUMBER_VALID_MERC_PRECEDENT_QUOTES; ubCnt++) {
     if (gubMercValidPrecedentQuoteID[ubCnt] == uiQuoteID) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function GetQuoteBitNumberFromQuoteID(uiQuoteID: UINT32): UINT8 {
@@ -2248,13 +2248,13 @@ function HandleImportantMercQuote(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNumber:
 
 // handle pausing of the dialogue queue
 function PauseDialogueQueue(): void {
-  gfDialogueQueuePaused = TRUE;
+  gfDialogueQueuePaused = true;
   return;
 }
 
 // unpause the dialogue queue
 function UnPauseDialogueQueue(): void {
-  gfDialogueQueuePaused = FALSE;
+  gfDialogueQueuePaused = false;
   return;
 }
 

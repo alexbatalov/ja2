@@ -28,7 +28,7 @@ const GRAVITY = (9.8 * 2.5);
 
 let ObjectSlots: REAL_OBJECT[] /* [NUM_OBJECT_SLOTS] */;
 let guiNumObjectSlots: UINT32 = 0;
-let fDampingActive: BOOLEAN = FALSE;
+let fDampingActive: boolean = false;
 // real						Kdl	= (float)0.5;					// LINEAR DAMPENING ( WIND RESISTANCE )
 let Kdl: real = (0.1 * TIME_MULTI); // LINEAR DAMPENING ( WIND RESISTANCE )
 
@@ -45,7 +45,7 @@ function GetFreeObjectSlot(): INT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumObjectSlots; uiCount++) {
-    if ((ObjectSlots[uiCount].fAllocated == FALSE))
+    if ((ObjectSlots[uiCount].fAllocated == false))
       return uiCount;
   }
 
@@ -98,9 +98,9 @@ function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, 
   // Set lifelength
   pObject.value.dLifeLength = dLifeLength;
 
-  pObject.value.fAllocated = TRUE;
-  pObject.value.fAlive = TRUE;
-  pObject.value.fApplyFriction = FALSE;
+  pObject.value.fAllocated = true;
+  pObject.value.fAlive = true;
+  pObject.value.fApplyFriction = false;
   pObject.value.iSoundID = NO_SAMPLE;
 
   // Set values
@@ -108,14 +108,14 @@ function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, 
   pObject.value.Position.x = xPos;
   pObject.value.Position.y = yPos;
   pObject.value.Position.z = zPos;
-  pObject.value.fVisible = TRUE;
+  pObject.value.fVisible = true;
   pObject.value.ubOwner = ubOwner;
   pObject.value.ubActionCode = ubActionCode;
   pObject.value.uiActionData = uiActionData;
-  pObject.value.fDropItem = TRUE;
+  pObject.value.fDropItem = true;
   pObject.value.ubLastTargetTakenDamage = NOBODY;
 
-  pObject.value.fFirstTimeMoved = TRUE;
+  pObject.value.fFirstTimeMoved = true;
 
   pObject.value.InitialForce.x = SCALE_VERT_VAL_TO_HORZ(xForce);
   pObject.value.InitialForce.y = SCALE_VERT_VAL_TO_HORZ(yForce);
@@ -141,14 +141,14 @@ function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, 
   return iObjectIndex;
 }
 
-function RemoveObjectSlot(iObject: INT32): BOOLEAN {
+function RemoveObjectSlot(iObject: INT32): boolean {
   CHECKF(iObject < NUM_OBJECT_SLOTS);
 
-  ObjectSlots[iObject].fAllocated = FALSE;
+  ObjectSlots[iObject].fAllocated = false;
 
   RecountObjectSlots();
 
-  return TRUE;
+  return true;
 }
 
 function SimulateWorld(): void {
@@ -186,7 +186,7 @@ function SimulateObject(pObject: Pointer<REAL_OBJECT>, deltaT: real): void {
   let CurrentTime: real = 0;
   let TargetTime: real = DeltaTime;
   let iCollisionID: INT32;
-  let fEndThisObject: BOOLEAN = FALSE;
+  let fEndThisObject: boolean = false;
 
   if (!PhysicsUpdateLife(pObject, deltaT)) {
     return;
@@ -205,12 +205,12 @@ function SimulateObject(pObject: Pointer<REAL_OBJECT>, deltaT: real): void {
 
     while (CurrentTime < TargetTime) {
       if (!PhysicsIntegrate(pObject, DeltaTime)) {
-        fEndThisObject = TRUE;
+        fEndThisObject = true;
         break;
       }
 
       if (!PhysicsHandleCollisions(pObject, addressof(iCollisionID), DeltaTime)) {
-        fEndThisObject = TRUE;
+        fEndThisObject = true;
         break;
       }
 
@@ -231,7 +231,7 @@ function SimulateObject(pObject: Pointer<REAL_OBJECT>, deltaT: real): void {
   }
 }
 
-function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
+function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): boolean {
   let vTemp: vector_3;
 
   // Calculate forces
@@ -249,7 +249,7 @@ function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
     vTemp = VMultScalar(addressof(pObject.value.Velocity), -pObject.value.AppliedMu);
     pObject.value.Force = VAdd(addressof(vTemp), addressof(pObject.value.Force));
 
-    pObject.value.fApplyFriction = FALSE;
+    pObject.value.fApplyFriction = false;
   }
 
   if (fDampingActive) {
@@ -257,10 +257,10 @@ function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
     pObject.value.Force = VAdd(addressof(vTemp), addressof(pObject.value.Force));
   }
 
-  return TRUE;
+  return true;
 }
 
-function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOLEAN {
+function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): boolean {
   let bLevel: UINT8 = 0;
 
   pObject.value.dLifeSpan += DeltaTime;
@@ -268,17 +268,17 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
   // End life if time has ran out or we are stationary
   if (pObject.value.dLifeLength != -1) {
     if (pObject.value.dLifeSpan > pObject.value.dLifeLength) {
-      pObject.value.fAlive = FALSE;
+      pObject.value.fAlive = false;
     }
   }
 
   // End life if we are out of bounds....
   if (!GridNoOnVisibleWorldTile(pObject.value.sGridNo)) {
-    pObject.value.fAlive = FALSE;
+    pObject.value.fAlive = false;
   }
 
   if (!pObject.value.fAlive) {
-    pObject.value.fAlive = FALSE;
+    pObject.value.fAlive = false;
 
     if (!pObject.value.fTestObject) {
       if (pObject.value.iSoundID != NO_SAMPLE) {
@@ -316,13 +316,13 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
       }
 
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count..., PHYSICS OBJECT DONE effect gone off"));
-      ReduceAttackBusyCount(pObject.value.ubOwner, FALSE);
+      ReduceAttackBusyCount(pObject.value.ubOwner, false);
 
       // ATE: Handle end of animation...
       if (pObject.value.fCatchAnimOn) {
         let pSoldier: Pointer<SOLDIERTYPE>;
 
-        pObject.value.fCatchAnimOn = FALSE;
+        pObject.value.fCatchAnimOn = false;
 
         // Get intended target
         pSoldier = MercPtrs[pObject.value.uiActionData];
@@ -332,13 +332,13 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
           case ANIM_STAND:
 
             pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-            EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CATCH, 0, FALSE);
+            EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CATCH, 0, false);
             break;
 
           case ANIM_CROUCH:
 
             pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-            EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CROUCH_CATCH, 0, FALSE);
+            EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CROUCH_CATCH, 0, false);
             break;
         }
 
@@ -347,13 +347,13 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
     }
 
     PhysicsDeleteObject(pObject);
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function PhysicsIntegrate(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOLEAN {
+function PhysicsIntegrate(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): boolean {
   let vTemp: vector_3;
 
   // Save old position
@@ -387,10 +387,10 @@ function PhysicsIntegrate(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOLE
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: Pointer<INT32>, DeltaTime: real): BOOLEAN {
+function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: Pointer<INT32>, DeltaTime: real): boolean {
   let dDeltaX: FLOAT;
   let dDeltaY: FLOAT;
   let dDeltaZ: FLOAT;
@@ -415,7 +415,7 @@ function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: P
         pObject.value.Velocity.z = 0;
 
         // Set us not alive!
-        pObject.value.fAlive = FALSE;
+        pObject.value.fAlive = false;
       }
 
       piCollisionID.value = Enum229.COLLISION_NONE;
@@ -448,8 +448,8 @@ function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: P
     {
       // ATE: This is a safeguard
       if (pObject.value.sConsecutiveCollisions > 30) {
-        pObject.value.fAlive = FALSE;
-        return FALSE;
+        pObject.value.fAlive = false;
+        return false;
       }
     }
 
@@ -464,7 +464,7 @@ function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: P
     //}
   }
 
-  return TRUE;
+  return true;
 }
 
 function PhysicsDeleteObject(pObject: Pointer<REAL_OBJECT>): void {
@@ -481,7 +481,7 @@ function PhysicsDeleteObject(pObject: Pointer<REAL_OBJECT>): void {
   }
 }
 
-function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: Pointer<INT32>): BOOLEAN {
+function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: Pointer<INT32>): boolean {
   let vTemp: vector_3;
   let dDeltaX: FLOAT;
   let dDeltaY: FLOAT;
@@ -490,7 +490,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
   let dY: FLOAT;
   let dZ: FLOAT;
   let iCollisionCode: INT32 = Enum229.COLLISION_NONE;
-  let fDoCollision: BOOLEAN = FALSE;
+  let fDoCollision: boolean = false;
   let dElasity: FLOAT = 1;
   let usStructureID: UINT16;
   let dNormalX: FLOAT;
@@ -526,7 +526,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
     if (dZ < pObject.value.TestZTarget && dDeltaZ < 0) {
       if (pObject.value.fTestPositionNotSet) {
         if (pObject.value.TestZTarget > 32) {
-          pObject.value.fTestPositionNotSet = FALSE;
+          pObject.value.fTestPositionNotSet = false;
           pObject.value.TestZTarget = 0;
         } else {
           iCollisionCode = Enum229.COLLISION_GROUND;
@@ -541,9 +541,9 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
   // Or destination?
   if (pObject.value.fTestObject == TEST_OBJECT_ANY_COLLISION) {
     if (iCollisionCode != Enum229.COLLISION_GROUND && iCollisionCode != Enum229.COLLISION_ROOF && iCollisionCode != Enum229.COLLISION_WATER && iCollisionCode != Enum229.COLLISION_NONE) {
-      pObject.value.fTestEndedWithCollision = TRUE;
-      pObject.value.fAlive = FALSE;
-      return FALSE;
+      pObject.value.fTestEndedWithCollision = true;
+      pObject.value.fAlive = false;
+      return false;
     }
   }
 
@@ -575,16 +575,16 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
         // OK, if it's mercs... don't stop
         if (usStructureID >= INVALID_STRUCTURE_ID) {
-          pObject.value.fTestEndedWithCollision = TRUE;
+          pObject.value.fTestEndedWithCollision = true;
 
           if (!pObject.value.fEndedWithCollisionPositionSet) {
-            pObject.value.fEndedWithCollisionPositionSet = TRUE;
+            pObject.value.fEndedWithCollisionPositionSet = true;
             pObject.value.EndedWithCollisionPosition = VSetEqual(addressof(pObject.value.Position));
           }
           iCollisionCode = Enum229.COLLISION_NONE;
         } else {
           if (!pObject.value.fEndedWithCollisionPositionSet) {
-            pObject.value.fEndedWithCollisionPositionSet = TRUE;
+            pObject.value.fEndedWithCollisionPositionSet = true;
             pObject.value.EndedWithCollisionPosition = VSetEqual(addressof(pObject.value.Position));
           }
         }
@@ -593,7 +593,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       case Enum229.COLLISION_ROOF:
 
         if (!pObject.value.fEndedWithCollisionPositionSet) {
-          pObject.value.fEndedWithCollisionPositionSet = TRUE;
+          pObject.value.fEndedWithCollisionPositionSet = true;
           pObject.value.EndedWithCollisionPosition = VSetEqual(addressof(pObject.value.Position));
         }
         break;
@@ -615,7 +615,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
         // THis is for walls, windows, etc
         // here, we set test ended with collision, but keep going...
-        pObject.value.fTestEndedWithCollision = TRUE;
+        pObject.value.fTestEndedWithCollision = true;
         break;
     }
   }
@@ -659,16 +659,16 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
         sGridNo = MAPROWCOLTOPOS((pObject.value.Position.y / CELL_Y_SIZE), (pObject.value.Position.x / CELL_X_SIZE));
 
-        ObjectHitWindow(sGridNo, usStructureID, FALSE, TRUE);
+        ObjectHitWindow(sGridNo, usStructureID, false, true);
       }
       piCollisionID.value = Enum229.COLLISION_NONE;
-      return FALSE;
+      return false;
     }
 
     // ATE: IF detonate on impact, stop now!
     if (OBJECT_DETONATE_ON_IMPACT(pObject)) {
-      pObject.value.fAlive = FALSE;
-      return TRUE;
+      pObject.value.fAlive = false;
+      return true;
     }
 
     if (iCollisionCode == Enum229.COLLISION_GROUND) {
@@ -676,45 +676,45 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       vTemp.y = 0;
       vTemp.z = -1;
 
-      pObject.value.fApplyFriction = TRUE;
+      pObject.value.fApplyFriction = true;
       // pObject->AppliedMu			= (float)(0.54 * TIME_MULTI );
       pObject.value.AppliedMu = (0.34 * TIME_MULTI);
 
       // dElasity = (float)1.5;
       dElasity = 1.3;
 
-      fDoCollision = TRUE;
+      fDoCollision = true;
 
       if (!pObject.value.fTestObject && !pObject.value.fHaveHitGround) {
         PlayJA2Sample(Enum330.THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pObject.value.sGridNo), 1, SoundDir(pObject.value.sGridNo));
       }
 
-      pObject.value.fHaveHitGround = TRUE;
+      pObject.value.fHaveHitGround = true;
     } else if (iCollisionCode == Enum229.COLLISION_WATER) {
       let AniParams: ANITILE_PARAMS;
       let pNode: Pointer<ANITILE>;
 
       // Continue going...
-      pObject.value.fApplyFriction = TRUE;
+      pObject.value.fApplyFriction = true;
       pObject.value.AppliedMu = (1.54 * TIME_MULTI);
 
       sGridNo = MAPROWCOLTOPOS((pObject.value.Position.y / CELL_Y_SIZE), (pObject.value.Position.x / CELL_X_SIZE));
 
       // Make thing unalive...
-      pObject.value.fAlive = FALSE;
+      pObject.value.fAlive = false;
 
       // If first time...
       if (pObject.value.fVisible) {
         if (pObject.value.fTestObject == NO_TEST_OBJECT) {
           // Make invisible
-          pObject.value.fVisible = FALSE;
+          pObject.value.fVisible = false;
 
           // JA25 CJC Oct 13 1999 - if node pointer is null don't try to set flags inside it!
           if (pObject.value.pNode) {
             pObject.value.pNode.value.uiFlags |= LEVELNODE_HIDDEN;
           }
 
-          pObject.value.fInWater = TRUE;
+          pObject.value.fInWater = true;
 
           // Make ripple
           memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
@@ -748,12 +748,12 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       vTemp.y = 0;
       vTemp.z = -1;
 
-      pObject.value.fApplyFriction = TRUE;
+      pObject.value.fApplyFriction = true;
       pObject.value.AppliedMu = (0.54 * TIME_MULTI);
 
       dElasity = 1.4;
 
-      fDoCollision = TRUE;
+      fDoCollision = true;
     }
     // else if ( iCollisionCode == COLLISION_INTERIOR_ROOF )
     //{
@@ -771,7 +771,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
     //}
     else if (iCollisionCode == Enum229.COLLISION_STRUCTURE_Z) {
       if (CheckForCatcher(pObject, usStructureID)) {
-        return FALSE;
+        return false;
       }
 
       CheckForObjectHittingMerc(pObject, usStructureID);
@@ -780,26 +780,26 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       vTemp.y = 0;
       vTemp.z = -1;
 
-      pObject.value.fApplyFriction = TRUE;
+      pObject.value.fApplyFriction = true;
       pObject.value.AppliedMu = (0.54 * TIME_MULTI);
 
       dElasity = 1.2;
 
-      fDoCollision = TRUE;
+      fDoCollision = true;
     } else if (iCollisionCode == Enum229.COLLISION_WALL_SOUTHEAST || iCollisionCode == Enum229.COLLISION_WALL_SOUTHWEST || iCollisionCode == Enum229.COLLISION_WALL_NORTHEAST || iCollisionCode == Enum229.COLLISION_WALL_NORTHWEST) {
       // A wall, do stuff
       vTemp.x = dNormalX;
       vTemp.y = dNormalY;
       vTemp.z = dNormalZ;
 
-      fDoCollision = TRUE;
+      fDoCollision = true;
 
       dElasity = 1.1;
     } else {
       let vIncident: vector_3;
 
       if (CheckForCatcher(pObject, usStructureID)) {
-        return FALSE;
+        return false;
       }
 
       CheckForObjectHittingMerc(pObject, usStructureID);
@@ -818,7 +818,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       vTemp.y = -1 * vIncident.y;
       vTemp.z = 0;
 
-      fDoCollision = TRUE;
+      fDoCollision = true;
 
       dElasity = 1.1;
     }
@@ -840,12 +840,12 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
         PhysicsDebugMsg(String("Object %d: Collision Velocity %f %f %f", pObject.value.iID, pObject.value.CollisionVelocity.x, pObject.value.CollisionVelocity.y, pObject.value.CollisionVelocity.z));
       }
 
-      pObject.value.fColliding = TRUE;
+      pObject.value.fColliding = true;
     } else {
-      pObject.value.fColliding = FALSE;
+      pObject.value.fColliding = false;
       pObject.value.sConsecutiveCollisions = 0;
       pObject.value.sConsecutiveZeroVelocityCollisions = 0;
-      pObject.value.fHaveHitGround = FALSE;
+      pObject.value.fHaveHitGround = false;
     }
   }
 
@@ -866,7 +866,7 @@ function PhysicsResolveCollision(pObject: Pointer<REAL_OBJECT>, pVelocity: Point
   pObject.value.Velocity = VAdd(addressof(pObject.value.Velocity), addressof(vTemp));
 }
 
-function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
+function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): boolean {
   let pNode: Pointer<LEVELNODE>;
   let sNewGridNo: INT16;
   let sTileIndex: INT16;
@@ -877,21 +877,21 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
   sNewGridNo = MAPROWCOLTOPOS((pObject.value.Position.y / CELL_Y_SIZE), (pObject.value.Position.x / CELL_X_SIZE));
 
   if (pObject.value.fFirstTimeMoved) {
-    pObject.value.fFirstTimeMoved = FALSE;
+    pObject.value.fFirstTimeMoved = false;
     pObject.value.sFirstGridNo = sNewGridNo;
   }
 
   // CHECK FOR RANGE< IF INVALID, REMOVE!
   if (sNewGridNo == -1) {
     PhysicsDeleteObject(pObject);
-    return FALSE;
+    return false;
   }
 
   // Look at old gridno
   if (sNewGridNo != pObject.value.sGridNo || pObject.value.pNode == null) {
     if (pObject.value.fVisible) {
       if (CheckForCatchObject(pObject)) {
-        pObject.value.fVisible = FALSE;
+        pObject.value.fVisible = false;
       }
     }
 
@@ -999,10 +999,10 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function ObjectHitWindow(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOLEAN, fLargeForce: BOOLEAN): void {
+function ObjectHitWindow(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: boolean, fLargeForce: boolean): void {
   let SWindowHit: EV_S_WINDOWHIT;
   SWindowHit.sGridNo = sGridNo;
   SWindowHit.usStructureID = usStructureID;
@@ -1084,7 +1084,7 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
 
     // Adjust force accordingly
     dForce = dForce - ((dPercentDiff) / 2);
-  } while (TRUE);
+  } while (true);
 
   // OK, we have our force, calculate change to get through without collide
   // if ( ChanceToGetThroughObjectTrajectory( sEndZ, pItem, &vPosition, &vForce, NULL ) == 0 )
@@ -1228,7 +1228,7 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
 
     // From degrees, calculate Z portion of normal
     vDirNormal.z = sin(dzDegrees);
-  } while (TRUE);
+  } while (true);
 
   // OK, we have our force, calculate change to get through without collide
   // if ( ChanceToGetThroughObjectTrajectory( sEndZ, pItem, &vPosition, &vForce ) == 0 )
@@ -1302,8 +1302,8 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
   // Set some special values...
   pObject.value.fTestObject = TEST_OBJECT_NO_COLLISIONS;
   pObject.value.TestZTarget = sTargetZ;
-  pObject.value.fTestPositionNotSet = TRUE;
-  pObject.value.fVisible = FALSE;
+  pObject.value.fTestPositionNotSet = true;
+  pObject.value.fVisible = false;
 
   // Alrighty, move this beast until it dies....
   while (pObject.value.fAlive) {
@@ -1326,7 +1326,7 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
   return sqrt((dDiffX * dDiffX) + (dDiffY * dDiffY));
 }
 
-function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, vPosition: Pointer<vector_3>, vForce: Pointer<vector_3>, psNewGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>, fFromUI: BOOLEAN): INT32 {
+function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, vPosition: Pointer<vector_3>, vForce: Pointer<vector_3>, psNewGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>, fFromUI: boolean): INT32 {
   let iID: INT32;
   let pObject: Pointer<REAL_OBJECT>;
 
@@ -1341,9 +1341,9 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJE
 
   // Set some special values...
   pObject.value.fTestObject = TEST_OBJECT_NOTWALLROOF_COLLISIONS;
-  pObject.value.fTestPositionNotSet = TRUE;
+  pObject.value.fTestPositionNotSet = true;
   pObject.value.TestZTarget = sTargetZ;
-  pObject.value.fVisible = FALSE;
+  pObject.value.fVisible = false;
   // pObject->fPotentialForDebug = TRUE;
 
   // Alrighty, move this beast until it dies....
@@ -1386,7 +1386,7 @@ function CalculateLaunchItemAngle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   return dAngle;
 }
 
-function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: Pointer<OBJECTTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, pdMagForce: Pointer<FLOAT>, pdDegrees: Pointer<FLOAT>, psFinalGridNo: Pointer<INT16>, fArmed: BOOLEAN): void {
+function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: Pointer<OBJECTTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, pdMagForce: Pointer<FLOAT>, pdDegrees: Pointer<FLOAT>, psFinalGridNo: Pointer<INT16>, fArmed: boolean): void {
   let sInterGridNo: INT16;
   let sStartZ: INT16;
   let dMagForce: FLOAT;
@@ -1394,12 +1394,12 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
   let dMinForce: FLOAT;
   let dDegrees: FLOAT;
   let dNewDegrees: FLOAT;
-  let fThroughIntermediateGridNo: BOOLEAN = FALSE;
+  let fThroughIntermediateGridNo: boolean = false;
   let usLauncher: UINT16;
-  let fIndoors: BOOLEAN = FALSE;
-  let fLauncher: BOOLEAN = FALSE;
-  let fMortar: BOOLEAN = FALSE;
-  let fGLauncher: BOOLEAN = FALSE;
+  let fIndoors: boolean = false;
+  let fLauncher: boolean = false;
+  let fMortar: boolean = false;
+  let fGLauncher: boolean = false;
   let sMinRange: INT16 = 0;
 
   // Start with default degrees/ force
@@ -1413,7 +1413,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
   if (fArmed && (usLauncher == Enum225.MORTAR || pItem.value.usItem == Enum225.MORTAR)) {
     // Start at 0....
     sStartZ = (pSoldier.value.bLevel * 256);
-    fMortar = TRUE;
+    fMortar = true;
     sMinRange = MIN_MORTAR_RANGE;
     // fLauncher = TRUE;
   }
@@ -1426,7 +1426,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
     } else {
       dDegrees = GLAUNCHER_START_ANGLE;
     }
-    fGLauncher = TRUE;
+    fGLauncher = true;
     sMinRange = MIN_MORTAR_RANGE;
     // fLauncher = TRUE;
   }
@@ -1437,20 +1437,20 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
   if (gfCaves || gfBasement) {
     // Adjust angle....
     dDegrees = INDOORS_START_ANGLE;
-    fIndoors = TRUE;
+    fIndoors = true;
   }
 
   if ((IsRoofPresentAtGridno(pSoldier.value.sGridNo)) && pSoldier.value.bLevel == 0) {
     // Adjust angle....
     dDegrees = INDOORS_START_ANGLE;
-    fIndoors = TRUE;
+    fIndoors = true;
   }
 
   // IS OUR TARGET INSIDE?
   if (IsRoofPresentAtGridno(sGridNo) && ubLevel == 0) {
     // Adjust angle....
     dDegrees = INDOORS_START_ANGLE;
-    fIndoors = TRUE;
+    fIndoors = true;
   }
 
   // OK, look if we can go through a windows here...
@@ -1464,7 +1464,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
     // IF so, adjust target height, gridno....
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, "Through a window!");
 
-    fThroughIntermediateGridNo = TRUE;
+    fThroughIntermediateGridNo = true;
   }
 
   if (!fLauncher) {
@@ -1529,7 +1529,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
   (pdDegrees.value) = dDegrees;
 }
 
-function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pItem: Pointer<OBJECTTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, psFinalGridNo: Pointer<INT16>, fArmed: BOOLEAN, pbLevel: Pointer<INT8>, fFromUI: BOOLEAN): BOOLEAN {
+function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pItem: Pointer<OBJECTTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, psFinalGridNo: Pointer<INT16>, fArmed: boolean, pbLevel: Pointer<INT8>, fFromUI: boolean): boolean {
   let dForce: FLOAT;
   let dDegrees: FLOAT;
   let sDestX: INT16;
@@ -1570,18 +1570,18 @@ function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, p
 
   // OK, we have our force, calculate change to get through without collide
   if (ChanceToGetThroughObjectTrajectory(sEndZ, pItem, addressof(vPosition), addressof(vForce), psFinalGridNo, pbLevel, fFromUI) == 0) {
-    return FALSE;
+    return false;
   }
 
   if ((pbLevel.value) != ubLevel) {
-    return FALSE;
+    return false;
   }
 
   if (!fFromUI && (psFinalGridNo.value) != sGridNo) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function CalculateForceFromRange(sRange: INT16, dDegrees: FLOAT): FLOAT {
@@ -1604,7 +1604,7 @@ function CalculateForceFromRange(sRange: INT16, dDegrees: FLOAT): FLOAT {
   return dMagForce;
 }
 
-function CalculateSoldierMaxForce(pSoldier: Pointer<SOLDIERTYPE>, dDegrees: FLOAT, pItem: Pointer<OBJECTTYPE>, fArmed: BOOLEAN): FLOAT {
+function CalculateSoldierMaxForce(pSoldier: Pointer<SOLDIERTYPE>, dDegrees: FLOAT, pItem: Pointer<OBJECTTYPE>, fArmed: boolean): FLOAT {
   let uiMaxRange: INT32;
   let dMagForce: FLOAT;
 
@@ -1631,7 +1631,7 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
   let vForce: vector_3;
   let vDirNormal: vector_3;
   let sFinalGridNo: INT16;
-  let fArmed: BOOLEAN = FALSE;
+  let fArmed: boolean = false;
   let usLauncher: UINT16;
   let sStartZ: INT16;
   let bMinMissRadius: INT8;
@@ -1643,7 +1643,7 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
   pSoldier.value.ubTargetID = WhoIsThere2(sGridNo, ubLevel);
 
   if (ubActionCode == Enum258.THROW_ARM_ITEM) {
-    fArmed = TRUE;
+    fArmed = true;
   }
 
   if (bMissBy < 0) {
@@ -1748,7 +1748,7 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
   DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 }
 
-function CheckForCatcher(pObject: Pointer<REAL_OBJECT>, usStructureID: UINT16): BOOLEAN {
+function CheckForCatcher(pObject: Pointer<REAL_OBJECT>, usStructureID: UINT16): boolean {
   // Do we want to catch?
   if (pObject.value.fTestObject == NO_TEST_OBJECT) {
     if (pObject.value.ubActionCode == Enum258.THROW_TARGET_MERC_CATCH) {
@@ -1757,14 +1757,14 @@ function CheckForCatcher(pObject: Pointer<REAL_OBJECT>, usStructureID: UINT16): 
         // Is it the same guy?
         if (usStructureID == pObject.value.uiActionData) {
           if (DoCatchObject(pObject)) {
-            pObject.value.fAlive = FALSE;
-            return TRUE;
+            pObject.value.fAlive = false;
+            return true;
           }
         }
       }
     }
   }
-  return FALSE;
+  return false;
 }
 
 function CheckForObjectHittingMerc(pObject: Pointer<REAL_OBJECT>, usStructureID: UINT16): void {
@@ -1790,7 +1790,7 @@ function CheckForObjectHittingMerc(pObject: Pointer<REAL_OBJECT>, usStructureID:
   }
 }
 
-function CheckForCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
+function CheckForCatchObject(pObject: Pointer<REAL_OBJECT>): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiSpacesAway: UINT32;
 
@@ -1806,28 +1806,28 @@ function CheckForCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
       if (uiSpacesAway < 4 && !pObject.value.fAttemptedCatch) {
         if (pSoldier.value.usAnimState != Enum193.CATCH_STANDING && pSoldier.value.usAnimState != Enum193.CATCH_CROUCHED && pSoldier.value.usAnimState != Enum193.LOWER_RIFLE) {
           if (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND) {
-            EVENT_InitNewSoldierAnim(pSoldier, Enum193.CATCH_STANDING, 0, FALSE);
+            EVENT_InitNewSoldierAnim(pSoldier, Enum193.CATCH_STANDING, 0, false);
           } else if (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_CROUCH) {
-            EVENT_InitNewSoldierAnim(pSoldier, Enum193.CATCH_CROUCHED, 0, FALSE);
+            EVENT_InitNewSoldierAnim(pSoldier, Enum193.CATCH_CROUCHED, 0, false);
           }
 
-          pObject.value.fCatchAnimOn = TRUE;
+          pObject.value.fCatchAnimOn = true;
         }
       }
 
-      pObject.value.fAttemptedCatch = TRUE;
+      pObject.value.fAttemptedCatch = true;
 
       if (uiSpacesAway <= 1 && !pObject.value.fCatchCheckDone) {
         if (AttemptToCatchObject(pObject)) {
-          return TRUE;
+          return true;
         }
       }
     }
   }
-  return FALSE;
+  return false;
 }
 
-function AttemptToCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
+function AttemptToCatchObject(pObject: Pointer<REAL_OBJECT>): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let ubChanceToCatch: UINT8;
 
@@ -1838,20 +1838,20 @@ function AttemptToCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
   // base it on...? CC? Dexterity?
   ubChanceToCatch = 50 + EffectiveDexterity(pSoldier) / 2;
 
-  pObject.value.fCatchCheckDone = TRUE;
+  pObject.value.fCatchCheckDone = true;
 
   if (PreRandom(100) > ubChanceToCatch) {
-    return FALSE;
+    return false;
   }
 
-  pObject.value.fCatchGood = TRUE;
+  pObject.value.fCatchGood = true;
 
-  return TRUE;
+  return true;
 }
 
-function DoCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
+function DoCatchObject(pObject: Pointer<REAL_OBJECT>): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fGoodCatch: BOOLEAN = FALSE;
+  let fGoodCatch: boolean = false;
   let usItem: UINT16;
 
   // Get intended target
@@ -1862,46 +1862,46 @@ function DoCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
     case ANIM_STAND:
 
       pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-      EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CATCH, 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CATCH, 0, false);
       break;
 
     case ANIM_CROUCH:
 
       pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-      EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CROUCH_CATCH, 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CROUCH_CATCH, 0, false);
       break;
   }
 
   PlayJA2Sample(Enum330.CATCH_OBJECT, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
 
-  pObject.value.fCatchAnimOn = FALSE;
+  pObject.value.fCatchAnimOn = false;
 
   if (!pObject.value.fCatchGood) {
-    return FALSE;
+    return false;
   }
 
   // Get item
   usItem = pObject.value.Obj.usItem;
 
   // Transfer object
-  fGoodCatch = AutoPlaceObject(pSoldier, addressof(pObject.value.Obj), TRUE);
+  fGoodCatch = AutoPlaceObject(pSoldier, addressof(pObject.value.Obj), true);
 
   // Report success....
   if (fGoodCatch) {
-    pObject.value.fDropItem = FALSE;
+    pObject.value.fDropItem = false;
 
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_MERC_CAUGHT_ITEM], pSoldier.value.name, ShortItemNames[usItem]);
   }
 
-  return TRUE;
+  return true;
 }
 
 //#define TESTDUDEXPLOSIVES
 
 function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
   let sZ: INT16;
-  let fDoImpact: BOOLEAN = FALSE;
-  let fCheckForDuds: BOOLEAN = FALSE;
+  let fDoImpact: boolean = false;
+  let fCheckForDuds: boolean = false;
   let pObj: Pointer<OBJECTTYPE>;
   let iTrapped: INT32 = 0;
   let usFlags: UINT16 = 0;
@@ -1917,11 +1917,11 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
   pObj.value.ubNumberOfObjects = 1;
 
   if (Item[pObj.value.usItem].usItemClass & IC_GRENADE) {
-    fCheckForDuds = TRUE;
+    fCheckForDuds = true;
   }
 
   if (pObj.value.usItem == Enum225.MORTAR_SHELL) {
-    fCheckForDuds = TRUE;
+    fCheckForDuds = true;
   }
 
   if (Item[pObj.value.usItem].usItemClass & IC_THROWN) {
@@ -1932,7 +1932,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
     // If we landed on anything other than the floor, always! go off...
     if (sZ != 0 || pObject.value.fInWater || (pObj.value.bStatus[0] >= USABLE && (PreRandom(100) < pObj.value.bStatus[0] + PreRandom(50))))
     {
-      fDoImpact = TRUE;
+      fDoImpact = true;
     } else // didn't go off!
     {
       if (pObj.value.bStatus[0] >= USABLE && PreRandom(100) < pObj.value.bStatus[0] + PreRandom(50))
@@ -1964,7 +1964,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
       }
     }
   } else {
-    fDoImpact = TRUE;
+    fDoImpact = true;
   }
 
   if (fDoImpact) {
@@ -1993,7 +1993,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
   }
 }
 
-function SavePhysicsTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SavePhysicsTableToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let usCnt: UINT16 = 0;
   let usPhysicsCount: UINT32 = 0;
@@ -2008,7 +2008,7 @@ function SavePhysicsTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
   // Save the number of REAL_OBJECTs in the array
   FileWrite(hFile, addressof(usPhysicsCount), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   if (usPhysicsCount != 0) {
@@ -2018,16 +2018,16 @@ function SavePhysicsTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
         // Save the the REAL_OBJECT structure
         FileWrite(hFile, addressof(ObjectSlots[usCnt]), sizeof(REAL_OBJECT), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != sizeof(REAL_OBJECT)) {
-          return FALSE;
+          return false;
         }
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
+function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let usCnt: UINT16 = 0;
 
@@ -2037,7 +2037,7 @@ function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   // Load the number of REAL_OBJECTs in the array
   FileRead(hFile, addressof(guiNumObjectSlots), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   // loop through and add the objects
@@ -2045,7 +2045,7 @@ function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
     // Load the the REAL_OBJECT structure
     FileRead(hFile, addressof(ObjectSlots[usCnt]), sizeof(REAL_OBJECT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(REAL_OBJECT)) {
-      return FALSE;
+      return false;
     }
 
     ObjectSlots[usCnt].pNode = null;
@@ -2053,7 +2053,7 @@ function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
     ObjectSlots[usCnt].iID = usCnt;
   }
 
-  return TRUE;
+  return true;
 }
 
 function RandomGridFromRadius(sSweetGridNo: INT16, ubMinRadius: INT8, ubMaxRadius: INT8): UINT16 {
@@ -2061,7 +2061,7 @@ function RandomGridFromRadius(sSweetGridNo: INT16, ubMinRadius: INT8, ubMaxRadiu
   let sY: INT16;
   let sGridNo: INT16;
   let leftmost: INT32;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let cnt: UINT32 = 0;
 
   if (ubMaxRadius == 0 || ubMinRadius == 0) {
@@ -2093,7 +2093,7 @@ function RandomGridFromRadius(sSweetGridNo: INT16, ubMinRadius: INT8, ubMaxRadiu
     }
 
     if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
-      fFound = TRUE;
+      fFound = true;
     }
 
     cnt++;

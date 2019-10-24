@@ -1,5 +1,5 @@
 interface NODE {
-  bIsLeaf: BOOL; // TRUE if node has no children
+  bIsLeaf: boolean; // TRUE if node has no children
   nPixelCount: UINT; // Number of pixels represented by this leaf
   nRedSum: UINT; // Sum of red components
   nGreenSum: UINT; // Sum of green components

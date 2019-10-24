@@ -2266,7 +2266,7 @@ function GetTraversability(sStartSector: INT16, sEndSector: INT16): UINT8 {
   return SectorInfo[sStartSector].ubTraversability[ubDirection];
 }
 
-function SectorIsImpassable(sSector: INT16): BOOLEAN {
+function SectorIsImpassable(sSector: INT16): boolean {
   // returns true if the sector is impassable in all directions
   return SectorInfo[sSector].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] == Enum127.GROUNDBARRIER || SectorInfo[sSector].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] == Enum127.EDGEOFWORLD;
 }

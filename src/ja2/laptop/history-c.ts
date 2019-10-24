@@ -52,7 +52,7 @@ const enum Enum82 {
 // the page flipping buttons
 let giHistoryButton: INT32[] /* [2] */;
 let giHistoryButtonImage: INT32[] /* [2] */;
-let fInHistoryMode: BOOLEAN = FALSE;
+let fInHistoryMode: boolean = false;
 
 // current page displayed
 let iCurrentHistoryPage: INT32 = 1;
@@ -164,7 +164,7 @@ function EnterHistory(): void {
   RenderHistory();
 
   // set the fact we are in the history viewer
-  fInHistoryMode = TRUE;
+  fInHistoryMode = true;
 
   // build Historys list
   // OpenAndReadHistoryFile( );
@@ -182,7 +182,7 @@ function ExitHistory(): void {
   LaptopSaveInfo.iCurrentHistoryPage = iCurrentHistoryPage;
 
   // not in History system anymore
-  fInHistoryMode = FALSE;
+  fInHistoryMode = false;
 
   // write out history list to file
   // OpenAndWriteHistoryFile( );
@@ -229,7 +229,7 @@ function RenderHistory(): void {
   return;
 }
 
-function LoadHistory(): BOOLEAN {
+function LoadHistory(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   // load History video objects into memory
 
@@ -260,7 +260,7 @@ function LoadHistory(): BOOLEAN {
   FilenameForBPP("LAPTOP\\divisionline480.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLONGLINE)));
 
-  return TRUE;
+  return true;
 }
 
 function RemoveHistory(): void {
@@ -339,12 +339,12 @@ function DestroyHistoryButtons(): void {
 function BtnHistoryDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // force redraw
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 
   // force redraw
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
     btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     // this page is > 0, there are pages before it, decrement
 
@@ -361,7 +361,7 @@ function BtnHistoryDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
 
 function BtnHistoryDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 
   // force redraw
@@ -371,34 +371,34 @@ function BtnHistoryDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
     LoadNextHistoryPage();
     // set new state
     SetHistoryButtonStates();
-    fReDrawScreenFlag = TRUE;
+    fReDrawScreenFlag = true;
   }
 }
 
-function IncrementCurrentPageHistoryDisplay(): BOOLEAN {
+function IncrementCurrentPageHistoryDisplay(): boolean {
   // run through list, from pCurrentHistory, to NUM_RECORDS_PER_PAGE +1 HistoryUnits
   let pTempHistory: HistoryUnitPtr = pCurrentHistory;
-  let fOkToIncrementPage: BOOLEAN = FALSE;
+  let fOkToIncrementPage: boolean = false;
   let iCounter: INT32 = 0;
   let hFileHandle: HWFILE;
   let uiFileSize: UINT32 = 0;
   let uiSizeOfRecordsOnEachPage: UINT32 = 0;
 
   if (!(FileExists(HISTORY_DATA_FILE)))
-    return FALSE;
+    return false;
 
   // open file
-  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
-    return FALSE;
+    return false;
   }
 
   // make sure file is more than 0 length
   if (FileGetSize(hFileHandle) == 0) {
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   }
 
   uiFileSize = FileGetSize(hFileHandle) - 1;
@@ -409,7 +409,7 @@ function IncrementCurrentPageHistoryDisplay(): BOOLEAN {
   if (uiFileSize / uiSizeOfRecordsOnEachPage + 1 < (iCurrentHistoryPage + 1)) {
     // nope
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   } else {
     iCurrentHistoryPage++;
     FileClose(hFileHandle);
@@ -433,7 +433,7 @@ iCounter++;
 */
   // if ok to increment, increment
 
-  return TRUE;
+  return true;
 }
 
 function ProcessAndEnterAHistoryRecord(ubCode: UINT8, uiDate: UINT32, ubSecondCode: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubColor: UINT8): UINT32 {
@@ -505,7 +505,7 @@ function OpenAndReadHistoryFile(): void {
     return;
 
   // open file
-  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -542,7 +542,7 @@ function OpenAndReadHistoryFile(): void {
   return;
 }
 
-function OpenAndWriteHistoryFile(): BOOLEAN {
+function OpenAndWriteHistoryFile(): boolean {
   // this procedure will open and write out data from the History list
 
   let hFileHandle: HWFILE;
@@ -550,11 +550,11 @@ function OpenAndWriteHistoryFile(): BOOLEAN {
   let pHistoryList: HistoryUnitPtr = pHistoryListHead;
 
   // open file
-  hFileHandle = FileOpen(HISTORY_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hFileHandle = FileOpen(HISTORY_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
 
   // if no file exits, do nothing
   if (!hFileHandle) {
-    return FALSE;
+    return false;
   }
   // write info, while there are elements left in the list
   while (pHistoryList) {
@@ -576,7 +576,7 @@ function OpenAndWriteHistoryFile(): BOOLEAN {
   // clear out the old list
   ClearHistoryList();
 
-  return TRUE;
+  return true;
 }
 
 function ClearHistoryList(): void {
@@ -693,7 +693,7 @@ function DrawHistoryRecordsText(): void {
       FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, pHistoryLocations[0], HISTORY_TEXT_FONT(), addressof(sX), addressof(sY));
       mprintf(sX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, pHistoryLocations[0]);
     } else {
-      GetSectorIDString(pCurHistory.value.sSectorX, pCurHistory.value.sSectorY, pCurHistory.value.bSectorZ, sString, TRUE);
+      GetSectorIDString(pCurHistory.value.sSectorX, pCurHistory.value.sSectorY, pCurHistory.value.bSectorZ, sString, true);
       FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, sString, HISTORY_TEXT_FONT(), addressof(sX), addressof(sY));
 
       ReduceStringLength(sString, RECORD_LOCATION_WIDTH + 10, HISTORY_TEXT_FONT());
@@ -1012,10 +1012,10 @@ function SetHistoryButtonStates(): void {
   }
 }
 
-function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
+function LoadInHistoryRecords(uiPage: UINT32): boolean {
   // loads in records belogning, to page uiPage
   // no file, return
-  let fOkToContinue: BOOLEAN = TRUE;
+  let fOkToContinue: boolean = true;
   let iCount: INT32 = 0;
   let hFileHandle: HWFILE;
   let ubCode: UINT8;
@@ -1030,31 +1030,31 @@ function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
 
   // check if bad page
   if (uiPage == 0) {
-    return FALSE;
+    return false;
   }
 
   if (!(FileExists(HISTORY_DATA_FILE)))
-    return FALSE;
+    return false;
 
   // open file
-  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
-    return FALSE;
+    return false;
   }
 
   // make sure file is more than 0 length
   if (FileGetSize(hFileHandle) == 0) {
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   }
 
   // is the file long enough?
   if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD()) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   }
 
   FileSeek(hFileHandle, (uiPage - 1) * NUM_RECORDS_PER_PAGE * (SIZE_OF_HISTORY_FILE_RECORD()), FILE_SEEK_FROM_START);
@@ -1080,7 +1080,7 @@ function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
     // we've overextended our welcome, and bypassed end of file, get out
     if (uiByteCount >= FileGetSize(hFileHandle)) {
       // not ok to continue
-      fOkToContinue = FALSE;
+      fOkToContinue = false;
     }
 
     iCount++;
@@ -1092,19 +1092,19 @@ function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
   // check to see if we in fact have a list to display
   if (pHistoryListHead == null) {
     // got no records, return false
-    return FALSE;
+    return false;
   }
 
   // set up current finance
   pCurrentHistory = pHistoryListHead;
 
-  return TRUE;
+  return true;
 }
 
-function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
+function WriteOutHistoryRecords(uiPage: UINT32): boolean {
   // loads in records belogning, to page uiPage
   // no file, return
-  let fOkToContinue: BOOLEAN = TRUE;
+  let fOkToContinue: boolean = true;
   let iCount: INT32 = 0;
   let hFileHandle: HWFILE;
   let pList: HistoryUnitPtr;
@@ -1113,37 +1113,37 @@ function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
 
   // check if bad page
   if (uiPage == 0) {
-    return FALSE;
+    return false;
   }
 
   if (!(FileExists(HISTORY_DATA_FILE)))
-    return FALSE;
+    return false;
 
   // open file
-  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_WRITE), FALSE);
+  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_WRITE), false);
 
   // failed to get file, return
   if (!hFileHandle) {
-    return FALSE;
+    return false;
   }
 
   // make sure file is more than 0 length
   if (FileGetSize(hFileHandle) == 0) {
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   }
 
   // is the file long enough?
   if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD()) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   }
 
   pList = pHistoryListHead;
 
   if (pList == null) {
-    return FALSE;
+    return false;
   }
 
   FileSeek(hFileHandle, sizeof(INT32) + (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD(), FILE_SEEK_FROM_START);
@@ -1164,7 +1164,7 @@ function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
     // we've overextended our welcome, and bypassed end of file, get out
     if (pList == null) {
       // not ok to continue
-      fOkToContinue = FALSE;
+      fOkToContinue = false;
     }
 
     iCount++;
@@ -1175,39 +1175,39 @@ function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
 
   ClearHistoryList();
 
-  return TRUE;
+  return true;
 }
 
-function LoadNextHistoryPage(): BOOLEAN {
+function LoadNextHistoryPage(): boolean {
   // clear out old list of records, and load in previous page worth of records
   ClearHistoryList();
 
   // now load in previous page's records, if we can
   if (LoadInHistoryRecords(iCurrentHistoryPage + 1)) {
     iCurrentHistoryPage++;
-    return TRUE;
+    return true;
   } else {
     LoadInHistoryRecords(iCurrentHistoryPage);
-    return FALSE;
+    return false;
   }
 }
 
-function LoadPreviousHistoryPage(): BOOLEAN {
+function LoadPreviousHistoryPage(): boolean {
   // clear out old list of records, and load in previous page worth of records
   ClearHistoryList();
 
   // load previous page
   if ((iCurrentHistoryPage == 1)) {
-    return FALSE;
+    return false;
   }
 
   // now load in previous page's records, if we can
   if (LoadInHistoryRecords(iCurrentHistoryPage - 1)) {
     iCurrentHistoryPage--;
-    return TRUE;
+    return true;
   } else {
     LoadInHistoryRecords(iCurrentHistoryPage);
-    return FALSE;
+    return false;
   }
 }
 
@@ -1221,7 +1221,7 @@ function SetLastPageInHistoryRecords(): void {
     return;
 
   // open file
-  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1256,7 +1256,7 @@ function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {
@@ -1279,25 +1279,25 @@ function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
   return (iFileSize) / (SIZE_OF_HISTORY_FILE_RECORD());
 }
 
-function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): BOOLEAN {
+function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): boolean {
   // will write the current finance to disk
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
   let pHistoryList: HistoryUnitPtr = pHistoryListHead;
 
   // open file
-  hFileHandle = FileOpen(HISTORY_DATA_FILE, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
+  hFileHandle = FileOpen(HISTORY_DATA_FILE, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
 
   // if no file exits, do nothing
   if (!hFileHandle) {
-    return FALSE;
+    return false;
   }
 
   // go to the end
-  if (FileSeek(hFileHandle, 0, FILE_SEEK_FROM_END) == FALSE) {
+  if (FileSeek(hFileHandle, 0, FILE_SEEK_FROM_END) == false) {
     // error
     FileClose(hFileHandle);
-    return FALSE;
+    return false;
   }
 
   // now write date and amount, and code
@@ -1312,14 +1312,14 @@ function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): BOOLEAN {
   // close file
   FileClose(hFileHandle);
 
-  return TRUE;
+  return true;
 }
 
 function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void {
   // run through history list
   let iOldHistoryPage: INT32 = iCurrentHistoryPage;
   let pList: HistoryUnitPtr = pHistoryListHead;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
 
   // set current page to before list
   iCurrentHistoryPage = 0;
@@ -1334,14 +1334,14 @@ function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void
     if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == Enum83.HISTORY_QUEST_STARTED)) {
       // reset color
       pList.value.ubColor = 0;
-      fFound = TRUE;
+      fFound = true;
 
       // save
       OpenAndWriteHistoryFile();
       pList = null;
     }
 
-    if (fFound != TRUE) {
+    if (fFound != true) {
       pList = pList.value.Next;
     }
   }
@@ -1361,7 +1361,7 @@ function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   // run through history list
   let iOldHistoryPage: INT32 = iCurrentHistoryPage;
   let pList: HistoryUnitPtr = pHistoryListHead;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let uiTime: UINT32 = 0;
 
   // set current page to before list
@@ -1376,12 +1376,12 @@ function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   while (pList) {
     if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == Enum83.HISTORY_QUEST_STARTED)) {
       uiTime = pList.value.uiDate;
-      fFound = TRUE;
+      fFound = true;
 
       pList = null;
     }
 
-    if (fFound != TRUE) {
+    if (fFound != true) {
       pList = pList.value.Next;
     }
   }
@@ -1416,7 +1416,7 @@ function GetNumberOfHistoryPages(): INT32 {
     return 0;
 
   // open file
-  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
+  hFileHandle = FileOpen(HISTORY_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
 
   // failed to get file, return
   if (!hFileHandle) {

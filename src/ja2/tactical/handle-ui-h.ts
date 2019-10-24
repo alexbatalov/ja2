@@ -56,8 +56,8 @@ interface UI_EVENT {
   uiFlags: UINT32;
   ChangeToUIMode: UI_MODE;
   HandleEvent: UI_HANDLEFNC;
-  fFirstTime: BOOLEAN;
-  fDoneMenu: BOOLEAN;
+  fFirstTime: boolean;
+  fDoneMenu: boolean;
   uiMenuPreviousMode: UINT32;
   uiParams: UINT32[] /* [3] */;
 }
@@ -149,4 +149,4 @@ const enum Enum207 {
   NUM_UI_EVENTS,
 }
 
-type UIKEYBOARD_HOOK = (pInputEvent: Pointer<InputAtom>) => BOOLEAN;
+type UIKEYBOARD_HOOK = (pInputEvent: Pointer<InputAtom>) => boolean;

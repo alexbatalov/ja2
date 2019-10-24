@@ -7,7 +7,7 @@ let iMsgBoxOk: INT32;
 let iMsgBoxCancel: INT32;
 let MsgBoxRect: SGPRect;
 
-let gfMessageBoxResult: BOOLEAN = FALSE;
+let gfMessageBoxResult: boolean = false;
 let gubMessageBoxStatus: UINT8 = Enum52.MESSAGEBOX_NONE;
 
 function CreateMessageBox(wzString: Pointer<UINT16>): void {
@@ -22,7 +22,7 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
   sStartX = (640 - sPixLen) / 2;
   sStartY = (480 - 96) / 2;
 
-  gfMessageBoxResult = FALSE;
+  gfMessageBoxResult = false;
 
   // Fake button for background w/ text
   iMsgBoxBgrnd = CreateTextButton(wzString, gpLargeFontType1, FONT_LTKHAKI, FONT_DKKHAKI, BUTTON_USE_DEFAULT, sStartX, sStartY, sPixLen, 96, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
@@ -46,7 +46,7 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
   gubMessageBoxStatus = Enum52.MESSAGEBOX_WAIT;
 }
 
-function MessageBoxHandled(): BOOLEAN {
+function MessageBoxHandled(): boolean {
   let DummyEvent: InputAtom;
 
   while (DequeueEvent(addressof(DummyEvent))) {
@@ -56,13 +56,13 @@ function MessageBoxHandled(): BOOLEAN {
         case 'y':
         case 'Y':
           gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
-          gfMessageBoxResult = TRUE;
+          gfMessageBoxResult = true;
           break;
         case ESC:
         case 'n':
         case 'N':
           gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
-          gfMessageBoxResult = FALSE;
+          gfMessageBoxResult = false;
           break;
       }
     }
@@ -99,7 +99,7 @@ function MsgBoxOkClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
     butn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
-    gfMessageBoxResult = TRUE;
+    gfMessageBoxResult = true;
   }
 }
 
@@ -108,7 +108,7 @@ function MsgBoxCnclClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
     butn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
-    gfMessageBoxResult = FALSE;
+    gfMessageBoxResult = false;
   }
 }
 

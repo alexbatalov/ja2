@@ -1,9 +1,9 @@
 //#define DEBUG_GAME_CLOCK
 
 // is the clock pause region created currently?
-let fClockMouseRegionCreated: BOOLEAN = FALSE;
+let fClockMouseRegionCreated: boolean = false;
 
-let fTimeCompressHasOccured: BOOLEAN = FALSE;
+let fTimeCompressHasOccured: boolean = false;
 
 // This value represents the time that the sector was loaded.  If you are in sector A9, and leave
 // the game clock at that moment will get saved into the temp file associated with it.  The next time you
@@ -11,7 +11,7 @@ let fTimeCompressHasOccured: BOOLEAN = FALSE;
 let guiTimeCurrentSectorWasLastLoaded: UINT32 = 0;
 
 // did we JUST finish up a game pause by the player
-let gfJustFinishedAPause: BOOLEAN = FALSE;
+let gfJustFinishedAPause: boolean = false;
 
 // clock mouse region
 let gClockMouseRegion: MOUSE_REGION;
@@ -28,10 +28,10 @@ const CLOCK_FONT = () => COMPFONT();
 // All of these get saved and loaded.
 let giTimeCompressMode: INT32 = Enum130.TIME_COMPRESS_X0;
 let gubClockResolution: UINT8 = 1;
-let gfGamePaused: BOOLEAN = TRUE;
-let gfTimeInterrupt: BOOLEAN = FALSE;
-let gfTimeInterruptPause: BOOLEAN = FALSE;
-let fSuperCompression: BOOLEAN = FALSE;
+let gfGamePaused: boolean = true;
+let gfTimeInterrupt: boolean = false;
+let gfTimeInterruptPause: boolean = false;
+let fSuperCompression: boolean = false;
 let guiGameClock: UINT32 = STARTING_TIME;
 let guiPreviousGameClock: UINT32 = 0; // used only for error-checking purposes
 let guiGameSecondsPerRealSecond: UINT32;
@@ -51,10 +51,10 @@ let giTimeCompressSpeeds: INT32[] /* [NUM_TIME_COMPRESS_SPEEDS] */ = [
 let usPausedActualWidth: UINT16;
 let usPausedActualHeight: UINT16;
 let guiTimeOfLastEventQuery: UINT32 = 0;
-let gfLockPauseState: BOOLEAN = FALSE;
-let gfPauseDueToPlayerGamePause: BOOLEAN = FALSE;
-let gfResetAllPlayerKnowsEnemiesFlags: BOOLEAN = FALSE;
-let gfTimeCompressionOn: BOOLEAN = FALSE;
+let gfLockPauseState: boolean = false;
+let gfPauseDueToPlayerGamePause: boolean = false;
+let gfResetAllPlayerKnowsEnemiesFlags: boolean = false;
+let gfTimeCompressionOn: boolean = false;
 let guiLockPauseStateLastReasonId: UINT32 = 0;
 //***When adding new saved time variables, make sure you remove the appropriate amount from the paddingbytes and
 //   more IMPORTANTLY, add appropriate code in Save/LoadGameClock()!
@@ -152,7 +152,7 @@ function AdvanceClock(ubWarpCode: UINT8): void {
   }
 
   if (guiGameClock < guiPreviousGameClock) {
-    AssertMsg(FALSE, String("AdvanceClock: TIME FLOWING BACKWARDS!!! guiPreviousGameClock %d, now %d", guiPreviousGameClock, guiGameClock));
+    AssertMsg(false, String("AdvanceClock: TIME FLOWING BACKWARDS!!! guiPreviousGameClock %d, now %d", guiPreviousGameClock, guiGameClock));
 
     // fix it if assertions are disabled
     guiGameClock = guiPreviousGameClock;
@@ -171,7 +171,7 @@ function AdvanceClock(ubWarpCode: UINT8): void {
   if (gfResetAllPlayerKnowsEnemiesFlags && !gTacticalStatus.fEnemyInSector) {
     ClearAnySectorsFlashingNumberOfEnemies();
 
-    gfResetAllPlayerKnowsEnemiesFlags = FALSE;
+    gfResetAllPlayerKnowsEnemiesFlags = false;
   }
 
   ForecastDayEvents();
@@ -190,18 +190,18 @@ function AdvanceToNextDay(): void {
 
 // set the flag that time compress has occured
 function SetFactTimeCompressHasOccured(): void {
-  fTimeCompressHasOccured = TRUE;
+  fTimeCompressHasOccured = true;
   return;
 }
 
 // reset fact the time compress has occured
 function ResetTimeCompressHasOccured(): void {
-  fTimeCompressHasOccured = FALSE;
+  fTimeCompressHasOccured = false;
   return;
 }
 
 // has time compress occured?
-function HasTimeCompressOccured(): BOOLEAN {
+function HasTimeCompressOccured(): boolean {
   return fTimeCompressHasOccured;
 }
 
@@ -219,7 +219,7 @@ function RenderClock(sX: INT16, sY: INT16): void {
   // Erase first!
   RestoreExternBackgroundRect(sX, sY, CLOCK_STRING_WIDTH, CLOCK_STRING_HEIGHT);
 
-  if ((gfPauseDueToPlayerGamePause == FALSE)) {
+  if ((gfPauseDueToPlayerGamePause == false)) {
     mprintf(sX + (CLOCK_STRING_WIDTH - StringPixLength(WORLDTIMESTR(), CLOCK_FONT())) / 2, sY, WORLDTIMESTR());
   } else {
     mprintf(sX + (CLOCK_STRING_WIDTH - StringPixLength(pPausedGameText[0], CLOCK_FONT())) / 2, sY, pPausedGameText[0]);
@@ -251,11 +251,11 @@ function ToggleSuperCompression(): void {
   }
 }
 
-function DidGameJustStart(): BOOLEAN {
+function DidGameJustStart(): boolean {
   if (gTacticalStatus.fDidGameJustStart)
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }
 
 function StopTimeCompression(): void {
@@ -303,15 +303,15 @@ function StartTimeCompression(): void {
 }
 
 // returns FALSE if time isn't currently being compressed for ANY reason (various pauses, etc.)
-function IsTimeBeingCompressed(): BOOLEAN {
+function IsTimeBeingCompressed(): boolean {
   if (!gfTimeCompressionOn || (giTimeCompressMode == Enum130.TIME_COMPRESS_X0) || gfGamePaused)
-    return FALSE;
+    return false;
   else
-    return TRUE;
+    return true;
 }
 
 // returns TRUE if the player currently doesn't want time to be compressing
-function IsTimeCompressionOn(): BOOLEAN {
+function IsTimeCompressionOn(): boolean {
   return gfTimeCompressionOn;
 }
 
@@ -399,15 +399,15 @@ function SetClockResolutionToCompressMode(iCompressMode: INT32): void {
 
   // if the compress mode is X0 or X1
   if (iCompressMode <= Enum130.TIME_COMPRESS_X1) {
-    gfTimeCompressionOn = FALSE;
+    gfTimeCompressionOn = false;
   } else {
-    gfTimeCompressionOn = TRUE;
+    gfTimeCompressionOn = true;
 
     // handle the player just starting a game
     HandleTimeCompressWithTeamJackedInAndGearedToGo();
   }
 
-  fMapScreenBottomDirty = TRUE;
+  fMapScreenBottomDirty = true;
 }
 
 function SetGameHoursPerSecond(uiGameHoursPerSecond: UINT32): void {
@@ -440,7 +440,7 @@ function SetGameSecondsPerSecond(uiGameSecondsPerSecond: UINT32): void {
 // call this to prevent player from changing the time compression state via the interface
 
 function LockPauseState(uiUniqueReasonId: UINT32): void {
-  gfLockPauseState = TRUE;
+  gfLockPauseState = true;
 
   // if adding a new call, please choose a new uiUniqueReasonId, this helps track down the cause when it's left locked
   // Highest # used was 21 on Feb 15 '99.
@@ -449,19 +449,19 @@ function LockPauseState(uiUniqueReasonId: UINT32): void {
 
 // call this to allow player to change the time compression state via the interface once again
 function UnLockPauseState(): void {
-  gfLockPauseState = FALSE;
+  gfLockPauseState = false;
 }
 
 // tells you whether the player is currently locked out from messing with the time compression state
-function PauseStateLocked(): BOOLEAN {
+function PauseStateLocked(): boolean {
   return gfLockPauseState;
 }
 
 function PauseGame(): void {
   // always allow pausing, even if "locked".  Locking applies only to trying to compress time, not to pausing it
   if (!gfGamePaused) {
-    gfGamePaused = TRUE;
-    fMapScreenBottomDirty = TRUE;
+    gfGamePaused = true;
+    fMapScreenBottomDirty = true;
   }
 }
 
@@ -474,8 +474,8 @@ function UnPauseGame(): void {
       return;
     }
 
-    gfGamePaused = FALSE;
-    fMapScreenBottomDirty = TRUE;
+    gfGamePaused = false;
+    fMapScreenBottomDirty = true;
   }
 }
 
@@ -487,17 +487,17 @@ function TogglePause(): void {
   }
 }
 
-function GamePaused(): BOOLEAN {
+function GamePaused(): boolean {
   return gfGamePaused;
 }
 
 // ONLY APPLICABLE INSIDE EVENT CALLBACKS!
 function InterruptTime(): void {
-  gfTimeInterrupt = TRUE;
+  gfTimeInterrupt = true;
 }
 
 function PauseTimeForInterupt(): void {
-  gfTimeInterruptPause = TRUE;
+  gfTimeInterruptPause = true;
 }
 
 // USING CLOCK RESOLUTION
@@ -541,13 +541,13 @@ function UpdateClock(): void {
   if (guiCurrentScreen != Enum26.GAME_SCREEN && guiCurrentScreen != Enum26.MAP_SCREEN && guiCurrentScreen != Enum26.GAME_SCREEN)
   {
     uiLastSecondTime = GetJA2Clock();
-    gfTimeInterruptPause = FALSE;
+    gfTimeInterruptPause = false;
     return;
   }
 
   if (gfGamePaused || gfTimeInterruptPause || (gubClockResolution == 0) || !guiGameSecondsPerRealSecond || ARE_IN_FADE_IN() || gfFadeOut) {
     uiLastSecondTime = GetJA2Clock();
-    gfTimeInterruptPause = FALSE;
+    gfTimeInterruptPause = false;
     return;
   }
 
@@ -603,165 +603,165 @@ function UpdateClock(): void {
   }
 }
 
-function SaveGameClock(hFile: HWFILE, fGamePaused: BOOLEAN, fLockPauseState: BOOLEAN): BOOLEAN {
+function SaveGameClock(hFile: HWFILE, fGamePaused: boolean, fLockPauseState: boolean): boolean {
   let uiNumBytesWritten: UINT32 = 0;
 
   FileWrite(hFile, addressof(giTimeCompressMode), sizeof(INT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(gubClockResolution), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(fGamePaused), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(gfTimeInterrupt), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(fSuperCompression), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(guiGameClock), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(guiGameSecondsPerRealSecond), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(ubAmbientLightLevel), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(guiEnvTime), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(guiEnvDay), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(gubEnvLightValue), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(guiTimeOfLastEventQuery), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(fLockPauseState), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(gfPauseDueToPlayerGamePause), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(gfResetAllPlayerKnowsEnemiesFlags), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(gfTimeCompressionOn), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(guiPreviousGameClock), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, addressof(guiLockPauseStateLastReasonId), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileWrite(hFile, gubUnusedTimePadding, TIME_PADDINGBYTES, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != TIME_PADDINGBYTES)
-    return FALSE;
-  return TRUE;
+    return false;
+  return true;
 }
 
-function LoadGameClock(hFile: HWFILE): BOOLEAN {
+function LoadGameClock(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   FileRead(hFile, addressof(giTimeCompressMode), sizeof(INT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT32))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(gubClockResolution), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(gfGamePaused), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(gfTimeInterrupt), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(fSuperCompression), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(guiGameClock), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(guiGameSecondsPerRealSecond), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(ubAmbientLightLevel), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(guiEnvTime), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(guiEnvDay), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(gubEnvLightValue), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(guiTimeOfLastEventQuery), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(gfLockPauseState), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(gfPauseDueToPlayerGamePause), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(gfResetAllPlayerKnowsEnemiesFlags), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(gfTimeCompressionOn), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(guiPreviousGameClock), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileRead(hFile, addressof(guiLockPauseStateLastReasonId), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
-    return FALSE;
+    return false;
 
   FileRead(hFile, gubUnusedTimePadding, TIME_PADDINGBYTES, addressof(uiNumBytesRead));
   if (uiNumBytesRead != TIME_PADDINGBYTES)
-    return FALSE;
+    return false;
 
   // Update the game clock
   guiDay = (guiGameClock / NUM_SEC_IN_DAY);
@@ -771,19 +771,19 @@ function LoadGameClock(hFile: HWFILE): BOOLEAN {
   swprintf(WORLDTIMESTR(), "%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
 
   if (!gfBasement && !gfCaves)
-    gfDoLighting = TRUE;
+    gfDoLighting = true;
 
-  return TRUE;
+  return true;
 }
 
 function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
-  if (fClockMouseRegionCreated == FALSE) {
+  if (fClockMouseRegionCreated == false) {
     // create a mouse region for pausing of game clock
     MSYS_DefineRegion(addressof(gClockMouseRegion), (sX), (sY), (sX + CLOCK_REGION_WIDTH), (sY + CLOCK_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, PauseOfClockBtnCallback);
 
-    fClockMouseRegionCreated = TRUE;
+    fClockMouseRegionCreated = true;
 
-    if (gfGamePaused == FALSE) {
+    if (gfGamePaused == false) {
       SetRegionFastHelpText(addressof(gClockMouseRegion), pPausedGameText[2]);
     } else {
       SetRegionFastHelpText(addressof(gClockMouseRegion), pPausedGameText[1]);
@@ -793,9 +793,9 @@ function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
 
 function RemoveMouseRegionForPauseOfClock(): void {
   // remove pause region
-  if (fClockMouseRegionCreated == TRUE) {
+  if (fClockMouseRegionCreated == true) {
     MSYS_RemoveRegion(addressof(gClockMouseRegion));
-    fClockMouseRegionCreated = FALSE;
+    fClockMouseRegionCreated = false;
   }
 }
 
@@ -823,41 +823,41 @@ function HandlePlayerPauseUnPauseOfGame(): void {
     }
 
     UnPauseGame();
-    PauseTime(FALSE);
-    gfIgnoreScrolling = FALSE;
-    gfPauseDueToPlayerGamePause = FALSE;
+    PauseTime(false);
+    gfIgnoreScrolling = false;
+    gfPauseDueToPlayerGamePause = false;
   } else {
     // pause game
     PauseGame();
-    PauseTime(TRUE);
-    gfIgnoreScrolling = TRUE;
-    gfPauseDueToPlayerGamePause = TRUE;
+    PauseTime(true);
+    gfIgnoreScrolling = true;
+    gfPauseDueToPlayerGamePause = true;
   }
 
   return;
 }
 
 function CreateDestroyScreenMaskForPauseGame(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
 
-  if (((fClockMouseRegionCreated == FALSE) || (gfGamePaused == FALSE) || (gfPauseDueToPlayerGamePause == FALSE)) && (fCreated == TRUE)) {
-    fCreated = FALSE;
+  if (((fClockMouseRegionCreated == false) || (gfGamePaused == false) || (gfPauseDueToPlayerGamePause == false)) && (fCreated == true)) {
+    fCreated = false;
     MSYS_RemoveRegion(addressof(gClockScreenMaskMouseRegion));
     RemoveMercPopupBoxFromIndex(iPausedPopUpBox);
     iPausedPopUpBox = -1;
     SetRenderFlags(RENDER_FLAG_FULL);
-    fTeamPanelDirty = TRUE;
-    fMapPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE;
-    gfJustFinishedAPause = TRUE;
+    fTeamPanelDirty = true;
+    fMapPanelDirty = true;
+    fMapScreenBottomDirty = true;
+    gfJustFinishedAPause = true;
     MarkButtonsDirty();
     SetRenderFlags(RENDER_FLAG_FULL);
-  } else if ((gfPauseDueToPlayerGamePause == TRUE) && (fCreated == FALSE)) {
+  } else if ((gfPauseDueToPlayerGamePause == true) && (fCreated == false)) {
     // create a mouse region for pausing of game clock
     MSYS_DefineRegion(addressof(gClockScreenMaskMouseRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, 0, MSYS_NO_CALLBACK, ScreenMaskForGamePauseBtnCallBack);
-    fCreated = TRUE;
+    fCreated = true;
 
     // get region x and y values
     sX = (addressof(gClockMouseRegion)).value.RegionTopLeftX;
@@ -869,7 +869,7 @@ function CreateDestroyScreenMaskForPauseGame(): void {
 
     SetRegionFastHelpText(addressof(gClockMouseRegion), pPausedGameText[1]);
 
-    fMapScreenBottomDirty = TRUE;
+    fMapScreenBottomDirty = true;
 
     // UnMarkButtonsDirty( );
 
@@ -886,21 +886,21 @@ function ScreenMaskForGamePauseBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
 }
 
 function RenderPausedGameBox(): void {
-  if ((gfPauseDueToPlayerGamePause == TRUE) && (gfGamePaused == TRUE) && (iPausedPopUpBox != -1)) {
+  if ((gfPauseDueToPlayerGamePause == true) && (gfGamePaused == true) && (iPausedPopUpBox != -1)) {
     RenderMercPopUpBoxFromIndex(iPausedPopUpBox, (320 - usPausedActualWidth / 2), (200 - usPausedActualHeight / 2), FRAME_BUFFER);
     InvalidateRegion((320 - usPausedActualWidth / 2), (200 - usPausedActualHeight / 2), (320 - usPausedActualWidth / 2 + usPausedActualWidth), (200 - usPausedActualHeight / 2 + usPausedActualHeight));
   }
 
   // reset we've just finished a pause by the player
-  gfJustFinishedAPause = FALSE;
+  gfJustFinishedAPause = false;
 }
 
-function DayTime(): BOOLEAN {
+function DayTime(): boolean {
   // between 7AM and 9PM
   return guiHour >= 7 && guiHour < 21;
 }
 
-function NightTime(): BOOLEAN {
+function NightTime(): boolean {
   // before 7AM or after 9PM
   return guiHour < 7 || guiHour >= 21;
 }

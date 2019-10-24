@@ -1,12 +1,12 @@
-function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): BOOLEAN {
+function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): boolean {
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
   let i: UINT16;
   let uiStartSeekAmount: UINT32;
 
-  hFile = FileOpen(ITEMSTRINGFILENAME, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(ITEMSTRINGFILENAME, FILE_ACCESS_READ, false);
   if (!hFile) {
-    return FALSE;
+    return false;
   }
 
   // Get current mercs bio info
@@ -15,14 +15,14 @@ function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): 
   // Skip short names
   uiStartSeekAmount += SIZE_SHORT_ITEM_NAME;
 
-  if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == FALSE) {
+  if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   if (!FileRead(hFile, pNameString, SIZE_ITEM_NAME, addressof(uiBytesRead))) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // Decrement, by 1, any value > 32
@@ -98,14 +98,14 @@ function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): 
   if (pInfoString != null) {
     // Get the additional info
     uiStartSeekAmount = ((SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME + SIZE_ITEM_INFO) * ubIndex) + SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME;
-    if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == FALSE) {
+    if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
 
     if (!FileRead(hFile, pInfoString, SIZE_ITEM_INFO, addressof(uiBytesRead))) {
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
 
     // Decrement, by 1, any value > 32
@@ -177,32 +177,32 @@ function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): 
   }
 
   FileClose(hFile);
-  return TRUE;
+  return true;
 }
 
-function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): BOOLEAN {
+function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): boolean {
   let hFile: HWFILE;
   //  wchar_t		DestString[ SIZE_MERC_BIO_INFO ];
   let uiBytesRead: UINT32;
   let i: UINT16;
   let uiStartSeekAmount: UINT32;
 
-  hFile = FileOpen(ITEMSTRINGFILENAME, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(ITEMSTRINGFILENAME, FILE_ACCESS_READ, false);
   if (!hFile) {
-    return FALSE;
+    return false;
   }
 
   // Get current mercs bio info
   uiStartSeekAmount = ((SIZE_SHORT_ITEM_NAME + SIZE_ITEM_NAME + SIZE_ITEM_INFO) * ubIndex);
 
-  if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == FALSE) {
+  if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   if (!FileRead(hFile, pNameString, SIZE_ITEM_NAME, addressof(uiBytesRead))) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // Decrement, by 1, any value > 32
@@ -273,7 +273,7 @@ function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): BOOLEAN {
   }
 
   FileClose(hFile);
-  return TRUE;
+  return true;
 }
 
 function LoadAllItemNames(): void {

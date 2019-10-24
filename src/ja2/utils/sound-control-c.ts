@@ -384,7 +384,7 @@ let AmbientVols: UINT8[] /* [NUM_AMBIENTS] */ = [
 let gDelayedSoundParms: SOUNDPARMS;
 let guiDelayedSoundNum: UINT32;
 
-function InitJA2Sound(): BOOLEAN {
+function InitJA2Sound(): boolean {
   // UINT32 uiCount;
 
   // for(uiCount=0; uiCount < NUM_SAMPLES; uiCount++)
@@ -392,10 +392,10 @@ function InitJA2Sound(): BOOLEAN {
   //	SoundLoadSample(szSoundEffects[uiCount]);
   //	SoundLockSample(szSoundEffects[uiCount]);
   //}
-  return TRUE;
+  return true;
 }
 
-function ShutdownJA2Sound(): BOOLEAN {
+function ShutdownJA2Sound(): boolean {
   // UINT32 uiCount;
 
   SoundStopAll();
@@ -406,7 +406,7 @@ function ShutdownJA2Sound(): BOOLEAN {
   //	SoundFreeSample(szSoundEffects[uiCount]);
   //}
 
-  return TRUE;
+  return true;
 }
 
 function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
@@ -496,7 +496,7 @@ function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT3
   return SoundPlayRandom(szAmbientEffects[usNum], addressof(rpParms));
 }
 
-function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, fCheck: BOOLEAN): UINT32 {
+function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, fCheck: boolean): UINT32 {
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // CHECK IF GUY IS ON SCREEN BEFORE PLAYING!
     if ((MercPtrs[usID].value.bVisible != -1) || !fCheck) {
@@ -636,7 +636,7 @@ function PlayDelayedJA2Sample(uiDelay: UINT32, usNum: UINT32, usRate: UINT32, ub
   // return(SoundPlay(szSoundEffects[usNum], &spParms));
 
   // Setup multipurpose timer....
-  SetCustomizableTimerCallbackAndDelay(uiDelay, DelayedSoundTimerCallback, FALSE);
+  SetCustomizableTimerCallbackAndDelay(uiDelay, DelayedSoundTimerCallback, false);
 }
 
 function DelayedSoundTimerCallback(): void {
@@ -657,20 +657,20 @@ interface POSITIONSND {
   iSoundSampleID: INT32;
   iSoundToPlay: INT32;
   uiData: UINT32;
-  fAllocated: BOOLEAN;
-  fInActive: BOOLEAN;
+  fAllocated: boolean;
+  fInActive: boolean;
 }
 
 // GLOBAL FOR SMOKE LISTING
 let gPositionSndData: POSITIONSND[] /* [NUM_POSITION_SOUND_EFFECT_SLOTS] */;
 let guiNumPositionSnds: UINT32 = 0;
-let gfPositionSoundsActive: BOOLEAN = FALSE;
+let gfPositionSoundsActive: boolean = false;
 
 function GetFreePositionSnd(): INT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumPositionSnds; uiCount++) {
-    if ((gPositionSndData[uiCount].fAllocated == FALSE))
+    if ((gPositionSndData[uiCount].fAllocated == false))
       return uiCount;
   }
 
@@ -705,15 +705,15 @@ function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundT
   // Default to inactive
 
   if (gfPositionSoundsActive) {
-    pPositionSnd.value.fInActive = FALSE;
+    pPositionSnd.value.fInActive = false;
   } else {
-    pPositionSnd.value.fInActive = TRUE;
+    pPositionSnd.value.fInActive = true;
   }
 
   pPositionSnd.value.sGridNo = sGridNo;
   pPositionSnd.value.uiData = uiData;
   pPositionSnd.value.uiFlags = uiFlags;
-  pPositionSnd.value.fAllocated = TRUE;
+  pPositionSnd.value.fAllocated = true;
   pPositionSnd.value.iSoundToPlay = iSoundToPlay;
 
   pPositionSnd.value.iSoundSampleID = NO_SAMPLE;
@@ -728,14 +728,14 @@ function DeletePositionSnd(iPositionSndIndex: INT32): void {
 
   if (pPositionSnd.value.fAllocated) {
     // Turn inactive first...
-    pPositionSnd.value.fInActive = TRUE;
+    pPositionSnd.value.fInActive = true;
 
     // End sound...
     if (pPositionSnd.value.iSoundSampleID != NO_SAMPLE) {
       SoundStop(pPositionSnd.value.iSoundSampleID);
     }
 
-    pPositionSnd.value.fAllocated = FALSE;
+    pPositionSnd.value.fAllocated = false;
 
     RecountPositionSnds();
   }
@@ -757,14 +757,14 @@ function SetPositionSndsActive(): void {
   let cnt: UINT32;
   let pPositionSnd: Pointer<POSITIONSND>;
 
-  gfPositionSoundsActive = TRUE;
+  gfPositionSoundsActive = true;
 
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
     pPositionSnd = addressof(gPositionSndData[cnt]);
 
     if (pPositionSnd.value.fAllocated) {
       if (pPositionSnd.value.fInActive) {
-        pPositionSnd.value.fInActive = FALSE;
+        pPositionSnd.value.fInActive = false;
 
         // Begin sound effect
         // Volume 0
@@ -778,13 +778,13 @@ function SetPositionSndsInActive(): void {
   let cnt: UINT32;
   let pPositionSnd: Pointer<POSITIONSND>;
 
-  gfPositionSoundsActive = FALSE;
+  gfPositionSoundsActive = false;
 
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
     pPositionSnd = addressof(gPositionSndData[cnt]);
 
     if (pPositionSnd.value.fAllocated) {
-      pPositionSnd.value.fInActive = TRUE;
+      pPositionSnd.value.fInActive = true;
 
       // End sound...
       if (pPositionSnd.value.iSoundSampleID != NO_SAMPLE) {

@@ -2,7 +2,7 @@ const IMP_MERC_FILE = "IMP.dat";
 
 let giIMPConfirmButton: UINT32[] /* [2] */;
 let giIMPConfirmButtonImage: UINT32[] /* [2] */;
-let fNoAlreadySelected: BOOLEAN = FALSE;
+let fNoAlreadySelected: boolean = false;
 let uiEyeXPositions: UINT16[] /* [] */ = [
   8,
   9,
@@ -79,7 +79,7 @@ let uiMouthYPositions: UINT16[] /* [] */ = [
   26,
 ];
 
-let fLoadingCharacterForPreviousImpProfile: BOOLEAN = FALSE;
+let fLoadingCharacterForPreviousImpProfile: boolean = false;
 
 function EnterIMPConfirm(): void {
   // create buttons
@@ -136,7 +136,7 @@ function DestroyConfirmButtons(): void {
   return;
 }
 
-function AddCharacterToPlayersTeam(): BOOLEAN {
+function AddCharacterToPlayersTeam(): boolean {
   let HireMercStruct: MERC_HIRE_STRUCT;
 
   // last minute chage to make sure merc with right facehas not only the right body but body specific skills...
@@ -148,16 +148,16 @@ function AddCharacterToPlayersTeam(): BOOLEAN {
 
   HireMercStruct.ubProfileID = (PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
 
-  if (fLoadingCharacterForPreviousImpProfile == FALSE) {
+  if (fLoadingCharacterForPreviousImpProfile == false) {
     // give them items
     GiveItemsToPC(HireMercStruct.ubProfileID);
   }
 
   HireMercStruct.sSectorX = gsMercArriveSectorX;
   HireMercStruct.sSectorY = gsMercArriveSectorY;
-  HireMercStruct.fUseLandingZoneForArrival = TRUE;
+  HireMercStruct.fUseLandingZoneForArrival = true;
 
-  HireMercStruct.fCopyProfileItemsOver = TRUE;
+  HireMercStruct.fCopyProfileItemsOver = true;
 
   // indefinite contract length
   HireMercStruct.iTotalContractLength = -1;
@@ -169,9 +169,9 @@ function AddCharacterToPlayersTeam(): BOOLEAN {
 
   // if we succesfully hired the merc
   if (!HireMerc(addressof(HireMercStruct))) {
-    return FALSE;
+    return false;
   } else {
-    return TRUE;
+    return true;
   }
 }
 
@@ -198,7 +198,7 @@ function BtnIMPConfirmYes(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
 
       // line moved by CJC Nov 28 2002 to AFTER the check for money
-      LaptopSaveInfo.fIMPCompletedFlag = TRUE;
+      LaptopSaveInfo.fIMPCompletedFlag = true;
 
       // charge the player
       AddTransactionToPlayersBook(Enum80.IMP_PROFILE, (PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId), GetWorldTotalMin(), -(COST_OF_PROFILE));
@@ -208,7 +208,7 @@ function BtnIMPConfirmYes(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // write the created imp merc
       WriteOutCurrentImpCharacter((PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId));
 
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
       iCurrentImpPage = Enum71.IMP_HOME_PAGE;
 
       // send email notice
@@ -427,7 +427,7 @@ function WriteOutCurrentImpCharacter(iProfileId: INT32): void {
   let uiBytesWritten: UINT32 = 0;
 
   // open the file for writing
-  hFile = FileOpen(IMP_MERC_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
+  hFile = FileOpen(IMP_MERC_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
 
   // write out the profile id
   if (!FileWrite(hFile, addressof(iProfileId), sizeof(INT32), addressof(uiBytesWritten))) {
@@ -456,7 +456,7 @@ function LoadInCurrentImpCharacter(): void {
   let uiBytesRead: UINT32 = 0;
 
   // open the file for writing
-  hFile = FileOpen(IMP_MERC_FILE, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(IMP_MERC_FILE, FILE_ACCESS_READ, false);
 
   // valid file?
   if (hFile == -1) {
@@ -489,15 +489,15 @@ function LoadInCurrentImpCharacter(): void {
   // charge the player
   // is the character male?
   fCharacterIsMale = (gMercProfiles[iProfileId].bSex == Enum272.MALE);
-  fLoadingCharacterForPreviousImpProfile = TRUE;
+  fLoadingCharacterForPreviousImpProfile = true;
   AddTransactionToPlayersBook(Enum80.IMP_PROFILE, 0, GetWorldTotalMin(), -(COST_OF_PROFILE));
   AddHistoryToPlayersLog(Enum83.HISTORY_CHARACTER_GENERATED, 0, GetWorldTotalMin(), -1, -1);
   LaptopSaveInfo.iVoiceId = iProfileId - PLAYER_GENERATED_CHARACTER_ID;
   AddCharacterToPlayersTeam();
   AddFutureDayStrategicEvent(Enum132.EVENT_DAY2_ADD_EMAIL_FROM_IMP, 60 * 7, 0, 2);
-  LaptopSaveInfo.fIMPCompletedFlag = TRUE;
-  fPausedReDrawScreenFlag = TRUE;
-  fLoadingCharacterForPreviousImpProfile = FALSE;
+  LaptopSaveInfo.fIMPCompletedFlag = true;
+  fPausedReDrawScreenFlag = true;
+  fLoadingCharacterForPreviousImpProfile = false;
 
   return;
 }

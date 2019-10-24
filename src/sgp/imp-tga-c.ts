@@ -42,19 +42,19 @@
 //
 //**************************************************************************
 
-function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
+function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
   let hFile: HWFILE;
   let uiImgID: UINT8;
   let uiColMap: UINT8;
   let uiType: UINT8;
   let uiBytesRead: UINT32;
-  let fReturnVal: BOOLEAN = FALSE;
+  let fReturnVal: boolean = false;
 
   Assert(hImage != null);
 
   CHECKF(FileExists(hImage.value.ImageFile));
 
-  hFile = FileOpen(hImage.value.ImageFile, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(hImage.value.ImageFile, FILE_ACCESS_READ, false);
   CHECKF(hFile);
 
   if (!FileRead(hFile, addressof(uiImgID), sizeof(UINT8), addressof(uiBytesRead)))
@@ -102,8 +102,8 @@ end:
 //
 //**************************************************************************
 
-function ReadUncompColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): BOOLEAN {
-  return FALSE;
+function ReadUncompColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
+  return false;
 }
 
 //**************************************************************************
@@ -120,7 +120,7 @@ function ReadUncompColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, ui
 //
 //**************************************************************************
 
-function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): BOOLEAN {
+function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
   let pBMData: Pointer<UINT8>;
   let pBMPtr: Pointer<UINT8>;
 
@@ -242,14 +242,14 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
       hImage.value.fFlags |= IMAGE_BITMAPDATA;
     }
   }
-  return TRUE;
+  return true;
 
 end:
-  return FALSE;
+  return false;
 
 freeEnd:
   MemFree(pBMData);
-  return FALSE;
+  return false;
 }
 
 //**************************************************************************
@@ -266,8 +266,8 @@ freeEnd:
 //
 //**************************************************************************
 
-function ReadRLEColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): BOOLEAN {
-  return FALSE;
+function ReadRLEColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
+  return false;
 }
 
 //**************************************************************************
@@ -284,8 +284,8 @@ function ReadRLEColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
 //
 //**************************************************************************
 
-function ReadRLERGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): BOOLEAN {
-  return FALSE;
+function ReadRLERGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
+  return false;
 }
 
 /*

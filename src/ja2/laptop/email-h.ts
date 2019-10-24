@@ -145,8 +145,8 @@ interface Email {
   iId: INT32;
   iFirstData: INT32;
   uiSecondData: UINT32;
-  fRead: BOOLEAN;
-  fNew: BOOLEAN;
+  fRead: boolean;
+  fNew: boolean;
 
   iThirdData: INT32;
   iFourthData: INT32;
@@ -174,8 +174,8 @@ interface SavedEmailStruct {
   uiFifthData: UINT32;
   uiSixData: UINT32;
 
-  fRead: BOOLEAN;
-  fNew: BOOLEAN;
+  fRead: boolean;
+  fNew: boolean;
 }
 
 interface Page {

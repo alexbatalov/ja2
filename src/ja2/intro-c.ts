@@ -5,8 +5,8 @@ const enum Enum19 {
 // ddd
 
 // ggg
-let gfIntroScreenEntry: BOOLEAN;
-let gfIntroScreenExit: BOOLEAN;
+let gfIntroScreenEntry: boolean;
+let gfIntroScreenExit: boolean;
 
 let guiIntroExitScreen: UINT32 = Enum26.INTRO_SCREEN;
 
@@ -64,7 +64,7 @@ let gbIntroScreenMode: INT8 = -1;
 
 function IntroScreenInit(): UINT32 {
   // Set so next time we come in, we can set up
-  gfIntroScreenEntry = TRUE;
+  gfIntroScreenEntry = true;
 
   return 1;
 }
@@ -76,8 +76,8 @@ function IntroScreenShutdown(): UINT32 {
 function IntroScreenHandle(): UINT32 {
   if (gfIntroScreenEntry) {
     EnterIntroScreen();
-    gfIntroScreenEntry = FALSE;
-    gfIntroScreenExit = FALSE;
+    gfIntroScreenEntry = false;
+    gfIntroScreenExit = false;
 
     InvalidateRegion(0, 0, 640, 480);
   }
@@ -93,14 +93,14 @@ function IntroScreenHandle(): UINT32 {
 
   if (gfIntroScreenExit) {
     ExitIntroScreen();
-    gfIntroScreenExit = FALSE;
-    gfIntroScreenEntry = TRUE;
+    gfIntroScreenExit = false;
+    gfIntroScreenEntry = true;
   }
 
   return guiIntroExitScreen;
 }
 
-function EnterIntroScreen(): BOOLEAN {
+function EnterIntroScreen(): boolean {
   let iFirstVideoID: INT32 = -1;
 
   ClearMainMenu();
@@ -113,7 +113,7 @@ function EnterIntroScreen(): BOOLEAN {
   // if the library doesnt exist, exit
   if (!IsLibraryOpened(Enum30.LIBRARY_INTRO)) {
     PrepareToExitIntroScreen();
-    return TRUE;
+    return true;
   }
 
   // initialize smacker
@@ -133,7 +133,7 @@ function EnterIntroScreen(): BOOLEAN {
     PrepareToExitIntroScreen();
   }
 
-  return TRUE;
+  return true;
 }
 
 function RenderIntroScreen(): void {
@@ -145,7 +145,7 @@ function ExitIntroScreen(): void {
 }
 
 function HandleIntroScreen(): void {
-  let fFlicStillPlaying: BOOLEAN = FALSE;
+  let fFlicStillPlaying: boolean = false;
 
   // if we are exiting this screen, this frame, dont update the screen
   if (gfIntroScreenExit)
@@ -228,7 +228,7 @@ function PrepareToExitIntroScreen(): void {
     // display a logo when exiting
     DisplaySirtechSplashScreen();
 
-    gfDoneWithSplashScreen = TRUE;
+    gfDoneWithSplashScreen = true;
     guiIntroExitScreen = Enum26.INIT_SCREEN;
   } else {
     // We want to reinitialize the game
@@ -238,7 +238,7 @@ function PrepareToExitIntroScreen(): void {
     guiIntroExitScreen = Enum26.CREDIT_SCREEN;
   }
 
-  gfIntroScreenExit = TRUE;
+  gfIntroScreenExit = true;
 }
 
 function GetNextIntroVideo(uiCurrentVideo: UINT32): INT32 {
@@ -314,7 +314,7 @@ function GetNextIntroVideo(uiCurrentVideo: UINT32): INT32 {
 function StartPlayingIntroFlic(iIndexOfFlicToPlay: INT32): void {
   if (iIndexOfFlicToPlay != -1) {
     // start playing a flic
-    gpSmackFlic = SmkPlayFlic(gpzSmackerFileNames[iIndexOfFlicToPlay], 0, 0, TRUE);
+    gpSmackFlic = SmkPlayFlic(gpzSmackerFileNames[iIndexOfFlicToPlay], 0, 0, true);
 
     if (gpSmackFlic != null) {
       giCurrentIntroBeingPlayed = iIndexOfFlicToPlay;

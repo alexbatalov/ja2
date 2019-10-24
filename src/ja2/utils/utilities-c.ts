@@ -24,7 +24,7 @@ function FilenameForBPP(pFilename: STR, pDestination: STR): void {
   }
 }
 
-function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile: SGPFILENAME): BOOLEAN {
+function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile: SGPFILENAME): boolean {
   let hFileHandle: HWFILE;
   let bColHeader: BYTE[] /* [8] */;
   let cnt: UINT32;
@@ -33,14 +33,14 @@ function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile
   if (!FileExists(ColFile)) {
     // Return FALSE w/ debug
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot find COL file");
-    return FALSE;
+    return false;
   }
 
   // Open and read in the file
-  if ((hFileHandle = FileOpen(ColFile, FILE_ACCESS_READ, FALSE)) == 0) {
+  if ((hFileHandle = FileOpen(ColFile, FILE_ACCESS_READ, false)) == 0) {
     // Return FALSE w/ debug
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot open COL file");
-    return FALSE;
+    return false;
   }
 
   // Skip header
@@ -56,10 +56,10 @@ function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile
   // Close file
   FileClose(hFileHandle);
 
-  return TRUE;
+  return true;
 }
 
-function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, uiDestSurface: UINT32): BOOLEAN {
+function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, uiDestSurface: UINT32): boolean {
   let us16BPPColor: UINT16;
   let cnt1: UINT32;
   let ubSize: UINT8;
@@ -91,17 +91,17 @@ function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, 
 
   gprintf(ubXPos + (16 * 20), ubYPos, "%S", gpPalRep[ubPaletteRep].ID);
 
-  return TRUE;
+  return true;
 }
 
-function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16, uiFont: INT32): BOOLEAN {
+function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16, uiFont: INT32): boolean {
   let Cur: UINT32;
   let uiLet: UINT32;
   let uiNewLet: UINT32;
   let uiHyphenLet: UINT32;
   let curletter: Pointer<UINT16>;
   let transletter: UINT16;
-  let fLineSplit: BOOLEAN = FALSE;
+  let fLineSplit: boolean = false;
   let hFont: HVOBJECT;
 
   // CHECK FOR WRAP
@@ -125,7 +125,7 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
       while ((curletter.value) != 0) {
         if ((curletter.value) == 32) {
           // Split Line!
-          fLineSplit = TRUE;
+          fLineSplit = true;
 
           pStr[uiNewLet] = '\0';
 
@@ -142,7 +142,7 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
         // We completed the check for a space, but failed, so use the hyphen method.
         swprintf(pStr2, "-%s", addressof(pStr[uiHyphenLet]));
         pStr[uiHyphenLet] = '/0';
-        fLineSplit = TRUE; // hyphen method
+        fLineSplit = true; // hyphen method
         break;
       }
     }
@@ -157,7 +157,7 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
   return fLineSplit;
 }
 
-function IfWinNT(): BOOLEAN {
+function IfWinNT(): boolean {
   let OsVerInfo: OSVERSIONINFO;
 
   OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -165,12 +165,12 @@ function IfWinNT(): BOOLEAN {
   GetVersionEx(addressof(OsVerInfo));
 
   if (OsVerInfo.dwPlatformId == VER_PLATFORM_WIN32_NT)
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }
 
-function IfWin95(): BOOLEAN {
+function IfWin95(): boolean {
   let OsVerInfo: OSVERSIONINFO;
 
   OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -178,9 +178,9 @@ function IfWin95(): BOOLEAN {
   GetVersionEx(addressof(OsVerInfo));
 
   if (OsVerInfo.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }
 
 function HandleLimitedNumExecutions(): void {
@@ -197,7 +197,7 @@ function HandleLimitedNumExecutions(): void {
   // Open file and check # runs...
   if (FileExists(ubSysDir)) {
     // Open and read
-    if ((hFileHandle = FileOpen(ubSysDir, FILE_ACCESS_READ, FALSE)) == 0) {
+    if ((hFileHandle = FileOpen(ubSysDir, FILE_ACCESS_READ, false)) == 0) {
       return;
     }
 
@@ -220,7 +220,7 @@ function HandleLimitedNumExecutions(): void {
   bNumRuns--;
 
   // Open and write
-  if ((hFileHandle = FileOpen(ubSysDir, FILE_ACCESS_WRITE, FALSE)) == 0) {
+  if ((hFileHandle = FileOpen(ubSysDir, FILE_ACCESS_WRITE, false)) == 0) {
     return;
   }
 
@@ -247,22 +247,22 @@ let gCheckFileMinSizes: UINT32[] /* [] */ = [
   236000000,
 ];
 
-function HandleJA2CDCheck(): BOOLEAN {
-  return TRUE;
+function HandleJA2CDCheck(): boolean {
+  return true;
 }
 
-function HandleJA2CDCheckTwo(): BOOLEAN {
-  return TRUE;
+function HandleJA2CDCheckTwo(): boolean {
+  return true;
 
-  return FALSE;
+  return false;
 }
 
-function PerformTimeLimitedCheck(): BOOLEAN {
-  return TRUE;
+function PerformTimeLimitedCheck(): boolean {
+  return true;
 }
 
-function DoJA2FilesExistsOnDrive(zCdLocation: Pointer<CHAR8>): BOOLEAN {
-  let fFailed: BOOLEAN = FALSE;
+function DoJA2FilesExistsOnDrive(zCdLocation: Pointer<CHAR8>): boolean {
+  let fFailed: boolean = false;
   let zCdFile: CHAR8[] /* [SGPFILENAME_LEN] */;
   let cnt: INT32;
   let hFile: HWFILE;
@@ -271,11 +271,11 @@ function DoJA2FilesExistsOnDrive(zCdLocation: Pointer<CHAR8>): BOOLEAN {
     // OK, build filename
     sprintf(zCdFile, "%s%s", zCdLocation, gCheckFilenames[cnt]);
 
-    hFile = FileOpen(zCdFile, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
+    hFile = FileOpen(zCdFile, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
 
     // Check if it exists...
     if (!hFile) {
-      fFailed = TRUE;
+      fFailed = true;
       FileClose(hFile);
       break;
     }

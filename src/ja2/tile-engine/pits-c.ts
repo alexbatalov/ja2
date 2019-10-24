@@ -1,12 +1,12 @@
 // used by editor
-let gfShowPits: BOOLEAN = FALSE;
+let gfShowPits: boolean = false;
 
-let gfLoadPitsWithoutArming: BOOLEAN = FALSE;
+let gfLoadPitsWithoutArming: boolean = false;
 
 function Add3X3Pit(iMapIndex: INT32): void {
   let ExitGrid: EXITGRID;
   if (!gfEditMode)
-    ApplyMapChangesToMapTempFile(TRUE);
+    ApplyMapChangesToMapTempFile(true);
   AddObjectToTail(iMapIndex + 159, Enum312.REGWATERTEXTURE1);
   AddObjectToTail(iMapIndex - 1, Enum312.REGWATERTEXTURE2);
   AddObjectToTail(iMapIndex - 161, Enum312.REGWATERTEXTURE3);
@@ -36,13 +36,13 @@ function Add3X3Pit(iMapIndex: INT32): void {
 
   MarkWorldDirty();
   if (!gfEditMode)
-    ApplyMapChangesToMapTempFile(FALSE);
+    ApplyMapChangesToMapTempFile(false);
 }
 
 function Add5X5Pit(iMapIndex: INT32): void {
   let ExitGrid: EXITGRID;
   if (!gfEditMode)
-    ApplyMapChangesToMapTempFile(TRUE);
+    ApplyMapChangesToMapTempFile(true);
   AddObjectToTail(iMapIndex + 318, Enum312.REGWATERTEXTURE10);
   AddObjectToTail(iMapIndex + 158, Enum312.REGWATERTEXTURE11);
   AddObjectToTail(iMapIndex - 2, Enum312.REGWATERTEXTURE12);
@@ -103,7 +103,7 @@ function Add5X5Pit(iMapIndex: INT32): void {
   }
   MarkWorldDirty();
   if (!gfEditMode)
-    ApplyMapChangesToMapTempFile(FALSE);
+    ApplyMapChangesToMapTempFile(false);
 }
 
 function Remove3X3Pit(iMapIndex: INT32): void {
@@ -196,7 +196,7 @@ function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRa
 
           pSoldier.value.uiPendingActionData4 = sNewGridNo;
 
-          EVENT_InitNewSoldierAnim(pSoldier, Enum193.FALL_INTO_PIT, 0, FALSE);
+          EVENT_InitNewSoldierAnim(pSoldier, Enum193.FALL_INTO_PIT, 0, false);
         }
       }
     }
@@ -221,7 +221,7 @@ function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
   pSoldier.value.bSectorZ = ExitGrid.ubGotoSectorZ;
 
   // Remove from world......
-  RemoveSoldierFromTacticalSector(pSoldier, TRUE);
+  RemoveSoldierFromTacticalSector(pSoldier, true);
 
   HandleSoldierLeavingSectorByThemSelf(pSoldier);
 

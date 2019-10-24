@@ -68,25 +68,25 @@ let gbSmoothWaterStruct: INT16[] /* [] */ = [
   -1,
 ];
 
-function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: BOOLEAN): void {
+function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
   let temp: int = 0;
   let type: int = 0;
-  let FullTile: int = FALSE;
+  let FullTile: int = false;
   let usOldIndex: UINT16;
   let usTempIndex: UINT16;
   let cnt: UINT32;
-  let fFound: BOOLEAN;
+  let fFound: boolean;
   let uiTempIndex: UINT32;
   let usTileIndex: UINT16;
   let land: UINT16 = 0;
   let uiTopType: UINT32;
-  let fSameTile: BOOLEAN;
+  let fSameTile: boolean;
 
   let pSmoothStruct: Pointer<INT16>;
   // Check to see if the orginal texture was water, is so, smooth square/hex with
   // SmoothWaterTerrain rather than the proceeding method
   if (origType == Enum313.REGWATERTEXTURE) {
-    SmoothWaterTerrain(gridno, origType, piNewTile, TRUE);
+    SmoothWaterTerrain(gridno, origType, piNewTile, true);
     return;
   }
   pSmoothStruct = gbSmoothStruct;
@@ -146,22 +146,22 @@ function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, f
 
   // Loop through smooth struct
   cnt = 0;
-  fFound = FALSE;
+  fFound = false;
 
   GetLandHeadType(gridno, addressof(uiTopType));
 
   while (pSmoothStruct[cnt] != -1) {
     if (pSmoothStruct[cnt] == temp) {
-      fSameTile = FALSE;
+      fSameTile = false;
       // If water is it's top type
       do {
         // CHeck if it's the same tile
         if (pSmoothStruct[cnt + 2] == usOldIndex) {
-          fSameTile = TRUE;
+          fSameTile = true;
         }
         if (pSmoothStruct[cnt + 3]) {
           if (pSmoothStruct[cnt + 3] == usOldIndex) {
-            fSameTile = TRUE;
+            fSameTile = true;
           }
         }
         if (fSameTile) {
@@ -170,8 +170,8 @@ function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, f
         }
         uiTempIndex = rand() % pSmoothStruct[cnt + 1];
         land = pSmoothStruct[cnt + 2 + uiTempIndex];
-        fFound = TRUE;
-      } while (FALSE);
+        fFound = true;
+      } while (false);
       break;
     }
     cnt += 6;
@@ -185,7 +185,7 @@ function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, f
     // this is a "full" tile, so randomize between the
     // five available tiles
     land = (rand() % 10) + 1;
-    FullTile = TRUE;
+    FullTile = true;
   }
   GetTileIndexFromTypeSubIndex(origType, land, addressof(usTileIndex));
   piNewTile.value = usTileIndex;
@@ -206,7 +206,7 @@ function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
       if (GridNoOnVisibleWorldTile(sMapIndex)) {
         if (GetExitGridLevelNode(sMapIndex, addressof(pShadow))) {
           let usIndex: UINT16;
-          SmoothExitGrid(sMapIndex, addressof(usIndex), TRUE);
+          SmoothExitGrid(sMapIndex, addressof(usIndex), true);
           if (usIndex != NO_TILE && usIndex != pShadow.value.usIndex) {
             AddToUndoList(sMapIndex);
             pShadow.value.usIndex = usIndex;
@@ -217,18 +217,18 @@ function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
   }
 }
 
-function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: BOOLEAN): void {
+function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
   let temp: int = 0;
   let type: int = 0;
-  let FullTile: int = FALSE;
+  let FullTile: int = false;
   let usOldIndex: UINT16;
   let usTempIndex: UINT16;
   let cnt: UINT32;
-  let fFound: BOOLEAN;
+  let fFound: boolean;
   let uiTempIndex: UINT32;
   let usTileIndex: UINT16;
   let usExitGridIndex: UINT16 = 0;
-  let fSameTile: BOOLEAN;
+  let fSameTile: boolean;
 
   let pSmoothStruct: Pointer<INT16>;
 
@@ -289,20 +289,20 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
 
   // Loop through smooth struct
   cnt = 0;
-  fFound = FALSE;
+  fFound = false;
 
   while (pSmoothStruct[cnt] != -1) {
     if (pSmoothStruct[cnt] == temp) {
-      fSameTile = FALSE;
+      fSameTile = false;
       // If water is it's top type
       do {
         // CHeck if it's the same tile
         if (pSmoothStruct[cnt + 2] == usOldIndex) {
-          fSameTile = TRUE;
+          fSameTile = true;
         }
         if (pSmoothStruct[cnt + 3]) {
           if (pSmoothStruct[cnt + 3] == usOldIndex) {
-            fSameTile = TRUE;
+            fSameTile = true;
           }
         }
         if (fSameTile) {
@@ -311,8 +311,8 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
         }
         uiTempIndex = rand() % pSmoothStruct[cnt + 1];
         usExitGridIndex = pSmoothStruct[cnt + 2 + uiTempIndex];
-        fFound = TRUE;
-      } while (FALSE);
+        fFound = true;
+      } while (false);
       break;
     }
     cnt += 6;
@@ -326,7 +326,7 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
     // this is a "full" tile, so randomize between the
     // five available tiles
     usExitGridIndex = (rand() % 10) + 1;
-    FullTile = TRUE;
+    FullTile = true;
   }
   GetTileIndexFromTypeSubIndex(Enum313.EXITTEXTURE, usExitGridIndex, addressof(usTileIndex));
   piNewTile.value = usTileIndex;
@@ -339,11 +339,11 @@ function SmoothTerrainWorld(uiCheckType: UINT32): void {
   // Smooth out entire world surrounding tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (TypeExistsInLandLayer(cnt, uiCheckType, addressof(usIndex))) {
-      SmoothTerrain(cnt, uiCheckType, addressof(NewTile), TRUE);
+      SmoothTerrain(cnt, uiCheckType, addressof(NewTile), true);
 
       if (NewTile != NO_TILE) {
         // Change tile
-        SetLandIndex(cnt, NewTile, uiCheckType, FALSE);
+        SetLandIndex(cnt, NewTile, uiCheckType, false);
       }
     }
   }
@@ -358,18 +358,18 @@ function SmoothAllTerrainWorld(): void {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     for (uiCheckType = Enum313.FIRSTTEXTURE; uiCheckType <= Enum313.SEVENTHTEXTURE; uiCheckType++) {
       if (TypeExistsInLandLayer(cnt, uiCheckType, addressof(usIndex))) {
-        SmoothTerrain(cnt, uiCheckType, addressof(NewTile), TRUE);
+        SmoothTerrain(cnt, uiCheckType, addressof(NewTile), true);
 
         if (NewTile != NO_TILE) {
           // Change tile
-          SetLandIndex(cnt, NewTile, uiCheckType, FALSE);
+          SetLandIndex(cnt, NewTile, uiCheckType, false);
         }
       }
     }
   }
 }
 
-function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: UINT8, fForceSmooth: BOOLEAN): void {
+function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: UINT8, fForceSmooth: boolean): void {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -399,7 +399,7 @@ function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: U
           if (NewTile != NO_TILE) {
             // Change tile
             AddToUndoList(iNewIndex);
-            SetLandIndex(iNewIndex, NewTile, uiCheckType, FALSE);
+            SetLandIndex(iNewIndex, NewTile, uiCheckType, false);
           }
         }
       }
@@ -407,7 +407,7 @@ function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: U
   }
 }
 
-function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, fForceSmooth: BOOLEAN): void {
+function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, fForceSmooth: boolean): void {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -434,7 +434,7 @@ function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, fForceSm
             SmoothTerrain(iNewIndex, cnt3, addressof(NewTile), fForceSmooth);
             if (NewTile != NO_TILE) {
               // Change tile
-              SetLandIndex(iNewIndex, NewTile, cnt3, FALSE);
+              SetLandIndex(iNewIndex, NewTile, cnt3, false);
             }
           }
         }
@@ -443,22 +443,22 @@ function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, fForceSm
   }
 }
 
-function SmoothWaterTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: BOOLEAN): void {
+function SmoothWaterTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
   // This procedure will calculate the approriate smooth texture for a water texture
   // based on the surrounding water textures. This is done via masking bits within
   // a temp variable, then searching for the right texture and inserting it
   let temp: int = 0;
   let type: int = 0;
-  let FullTile: int = FALSE;
+  let FullTile: int = false;
   let usOldIndex: UINT16;
   let usTempIndex: UINT16;
   let cnt: UINT32;
-  let fFound: BOOLEAN;
+  let fFound: boolean;
   let uiTempIndex: UINT32;
   let usTileIndex: UINT16;
   let land: UINT16 = 0;
   let uiTopType: UINT32;
-  let fSameTile: BOOLEAN;
+  let fSameTile: boolean;
   let pSmoothStruct: Pointer<INT16>;
 
   pSmoothStruct = gbSmoothWaterStruct;
@@ -545,22 +545,22 @@ function SmoothWaterTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT1
   }
   // Loop through smooth struct
   cnt = 0;
-  fFound = FALSE;
+  fFound = false;
   GetLandHeadType(gridno, addressof(uiTopType));
   // Speed up of this while loop  using double/quick search will result
   // in an incorrect solution due to multiple instances of bitvalues in the list of
   // smoothed water textures
   while (pSmoothStruct[cnt] != -1) {
     if (pSmoothStruct[cnt] == temp) {
-      fSameTile = FALSE;
+      fSameTile = false;
       do {
         // CHeck if it's the same tile
         if (pSmoothStruct[cnt + 2] == usOldIndex) {
-          fSameTile = TRUE;
+          fSameTile = true;
         }
         if (pSmoothStruct[cnt + 3]) {
           if (pSmoothStruct[cnt + 3] == usOldIndex) {
-            fSameTile = TRUE;
+            fSameTile = true;
           }
         }
         if (fSameTile) {
@@ -569,8 +569,8 @@ function SmoothWaterTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT1
         }
         uiTempIndex = rand() % pSmoothStruct[cnt + 1];
         land = pSmoothStruct[cnt + 2 + uiTempIndex];
-        fFound = TRUE;
-      } while (FALSE);
+        fFound = true;
+      } while (false);
       break;
     }
     cnt += 4;
@@ -582,7 +582,7 @@ function SmoothWaterTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT1
       return;
     }
     land = (rand() % 10) + 1;
-    FullTile = TRUE;
+    FullTile = true;
   }
   GetTileIndexFromTypeSubIndex(origType, land, addressof(usTileIndex));
   piNewTile.value = usTileIndex;

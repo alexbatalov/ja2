@@ -48,9 +48,9 @@ let guiCurrentlySelectedFlower: UINT32 = 0;
 let gubCurFlowerIndex: UINT8 = 0;
 let gubCurNumberOfFlowers: UINT8 = 0;
 let gubPrevNumberOfFlowers: UINT8 = 0;
-let gfRedrawFloristGallery: BOOLEAN = FALSE;
+let gfRedrawFloristGallery: boolean = false;
 
-let FloristGallerySubPagesVisitedFlag: BOOLEAN[] /* [4] */;
+let FloristGallerySubPagesVisitedFlag: boolean[] /* [4] */;
 
 // Floral buttons
 let guiGalleryButtonImage: INT32;
@@ -67,7 +67,7 @@ function EnterInitFloristGallery(): void {
   memset(addressof(FloristGallerySubPagesVisitedFlag), 0, 4);
 }
 
-function EnterFloristGallery(): BOOLEAN {
+function EnterFloristGallery(): boolean {
   InitFloristDefaults();
 
   // the next previous buttons
@@ -83,7 +83,7 @@ function EnterFloristGallery(): BOOLEAN {
 
   InitFlowerButtons();
 
-  return TRUE;
+  return true;
 }
 
 function ExitFloristGallery(): void {
@@ -101,21 +101,21 @@ function ExitFloristGallery(): void {
 
 function HandleFloristGallery(): void {
   if (gfRedrawFloristGallery) {
-    gfRedrawFloristGallery = FALSE;
+    gfRedrawFloristGallery = false;
 
     //
     DeleteFlowerButtons();
     InitFlowerButtons();
 
-    fPausedReDrawScreenFlag = TRUE;
+    fPausedReDrawScreenFlag = true;
   }
 }
 
 function RenderFloristGallery(): void {
   DisplayFloristDefaults();
 
-  DrawTextToScreen(sFloristGalleryText[Enum347.FLORIST_GALLERY_CLICK_TO_ORDER], FLOR_GALLERY_TITLE_TEXT_X, FLOR_GALLERY_TITLE_TEXT_Y, FLOR_GALLERY_TITLE_TEXT_WIDTH, FLOR_GALLERY_TITLE_FONT(), FLOR_GALLERY_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(sFloristGalleryText[Enum347.FLORIST_GALLERY_ADDIFTIONAL_FEE], FLOR_GALLERY_TITLE_TEXT_X, FLOR_GALLERY_TITLE_TEXT_Y + 11, FLOR_GALLERY_TITLE_TEXT_WIDTH, FLOR_GALLERY_TITLE_FONT(), FLOR_GALLERY_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(sFloristGalleryText[Enum347.FLORIST_GALLERY_CLICK_TO_ORDER], FLOR_GALLERY_TITLE_TEXT_X, FLOR_GALLERY_TITLE_TEXT_Y, FLOR_GALLERY_TITLE_TEXT_WIDTH, FLOR_GALLERY_TITLE_FONT(), FLOR_GALLERY_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DrawTextToScreen(sFloristGalleryText[Enum347.FLORIST_GALLERY_ADDIFTIONAL_FEE], FLOR_GALLERY_TITLE_TEXT_X, FLOR_GALLERY_TITLE_TEXT_Y + 11, FLOR_GALLERY_TITLE_TEXT_WIDTH, FLOR_GALLERY_TITLE_FONT(), FLOR_GALLERY_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   DisplayFloralDescriptions();
 
@@ -140,7 +140,7 @@ function BtnFloralGalleryNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: IN
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
 
-      gfRedrawFloristGallery = TRUE;
+      gfRedrawFloristGallery = true;
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -169,7 +169,7 @@ function BtnFloralGalleryBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: IN
         guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST;
       }
 
-      gfRedrawFloristGallery = TRUE;
+      gfRedrawFloristGallery = true;
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
@@ -192,7 +192,7 @@ function BtnGalleryFlowerButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
       guiCurrentlySelectedFlower = MSYS_GetBtnUserData(btn, 0);
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST_ORDERFORM;
 
-      gfShowBookmarks = FALSE;
+      gfShowBookmarks = false;
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
@@ -203,7 +203,7 @@ function BtnGalleryFlowerButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function InitFlowerButtons(): BOOLEAN {
+function InitFlowerButtons(): boolean {
   let i: UINT16;
   let j: UINT16;
   let count: UINT16;
@@ -239,7 +239,7 @@ function InitFlowerButtons(): BOOLEAN {
     SetButtonCursor(guiGalleryButton[j], Enum317.CURSOR_WWW);
     MSYS_SetBtnUserData(guiGalleryButton[j], 0, count);
 
-    SpecifyButtonIcon(guiGalleryButton[j], guiFlowerImages[j], 0, 5, 5, FALSE);
+    SpecifyButtonIcon(guiGalleryButton[j], guiFlowerImages[j], 0, 5, 5, false);
     usPosY += FLOR_GALLERY_FLOWER_BUTTON_OFFSET_Y;
     count++;
   }
@@ -256,7 +256,7 @@ function InitFlowerButtons(): BOOLEAN {
   else
     EnableButton(guiFloralGalleryButton[1]);
 
-  return TRUE;
+  return true;
 }
 
 function DeleteFlowerButtons(): void {
@@ -273,7 +273,7 @@ function DeleteFlowerButtons(): void {
   }
 }
 
-function DisplayFloralDescriptions(): BOOLEAN {
+function DisplayFloralDescriptions(): boolean {
   let sTemp: wchar_t[] /* [640] */;
   let uiStartLoc: UINT32 = 0;
   let i: UINT32;
@@ -290,28 +290,28 @@ function DisplayFloralDescriptions(): BOOLEAN {
     // Display Flower title
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex);
     LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_TITLE_SIZE);
-    DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_TITLE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_TITLE_FONT(), FLOR_GALLERY_FLOWER_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_TITLE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_TITLE_FONT(), FLOR_GALLERY_FLOWER_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     // Display Flower Price
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex) + FLOR_GALLERY_TEXT_TITLE_SIZE;
     LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
     swscanf(sTemp, "%hu", addressof(usPrice));
     swprintf(sTemp, "$%d.00 %s", usPrice, pMessageStrings[Enum333.MSG_USDOLLAR_ABBREVIATION]);
-    DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_PRICE_FONT(), FLOR_GALLERY_FLOWER_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_PRICE_FONT(), FLOR_GALLERY_FLOWER_PRICE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     // Display Flower Desc
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex) + FLOR_GALLERY_TEXT_TITLE_SIZE + FLOR_GALLERY_TEXT_PRICE_SIZE;
     LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_DESC_SIZE);
-    DisplayWrappedString(FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_DESC_OFFSET_Y), FLOR_GALLERY_DESC_WIDTH, 2, FLOR_GALLERY_FLOWER_DESC_FONT(), FLOR_GALLERY_FLOWER_DESC_COLOR, sTemp, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_DESC_OFFSET_Y), FLOR_GALLERY_DESC_WIDTH, 2, FLOR_GALLERY_FLOWER_DESC_FONT(), FLOR_GALLERY_FLOWER_DESC_COLOR, sTemp, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     usPosY += FLOR_GALLERY_FLOWER_BUTTON_OFFSET_Y;
   }
 
-  return TRUE;
+  return true;
 }
 
 function ChangingFloristGallerySubPage(ubSubPageNumber: UINT8): void {
-  fLoadPendingFlag = TRUE;
+  fLoadPendingFlag = true;
 
   // there are 3 flowers per page
   if (ubSubPageNumber == FLOR_GALLERY_NUMBER_FLORAL_IMAGES)
@@ -319,13 +319,13 @@ function ChangingFloristGallerySubPage(ubSubPageNumber: UINT8): void {
   else
     ubSubPageNumber = ubSubPageNumber / 3;
 
-  if (FloristGallerySubPagesVisitedFlag[ubSubPageNumber] == FALSE) {
-    fConnectingToSubPage = TRUE;
-    fFastLoadFlag = FALSE;
+  if (FloristGallerySubPagesVisitedFlag[ubSubPageNumber] == false) {
+    fConnectingToSubPage = true;
+    fFastLoadFlag = false;
 
-    FloristGallerySubPagesVisitedFlag[ubSubPageNumber] = TRUE;
+    FloristGallerySubPagesVisitedFlag[ubSubPageNumber] = true;
   } else {
-    fConnectingToSubPage = TRUE;
-    fFastLoadFlag = TRUE;
+    fConnectingToSubPage = true;
+    fFastLoadFlag = true;
   }
 }

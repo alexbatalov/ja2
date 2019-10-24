@@ -74,7 +74,7 @@ const enum Enum211 {
 
 // GLOBAL NPC STRUCT
 let gTalkPanel: NPC_DIALOGUE_TYPE;
-let gfInTalkPanel: BOOLEAN = FALSE;
+let gfInTalkPanel: boolean = false;
 let gpSrcSoldier: Pointer<SOLDIERTYPE> = null;
 let gpDestSoldier: Pointer<SOLDIERTYPE> = null;
 let gubSrcSoldierProfile: UINT8;
@@ -84,12 +84,12 @@ let gubNastyNPCProfile: UINT8 = NO_PROFILE;
 let gubTargetNPC: UINT8;
 let gubTargetRecord: UINT8;
 let gubTargetApproach: UINT8;
-let gfShowDialogueMenu: BOOLEAN;
-let gfWaitingForTriggerTimer: BOOLEAN;
+let gfShowDialogueMenu: boolean;
+let gfWaitingForTriggerTimer: boolean;
 let guiWaitingForTriggerTime: UINT32;
 let iInterfaceDialogueBox: INT32 = -1;
 let ubRecordThatTriggeredLiePrompt: UINT8;
-let gfConversationPending: BOOLEAN = FALSE;
+let gfConversationPending: boolean = false;
 let gpPendingDestSoldier: Pointer<SOLDIERTYPE>;
 let gpPendingSrcSoldier: Pointer<SOLDIERTYPE>;
 let gbPendingApproach: INT8;
@@ -108,17 +108,17 @@ const enum Enum212 {
   HOSPITAL_RANDOM_FREEBIE,
 }
 
-function InitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: Pointer<SOLDIERTYPE>, bApproach: INT8, uiApproachData: UINT32): BOOLEAN {
+function InitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: Pointer<SOLDIERTYPE>, bApproach: INT8, uiApproachData: UINT32): boolean {
   // ATE: OK, let's check the status of the Q
   // If it has something in it....delay this until after....
   if (DialogueQueueIsEmptyOrSomebodyTalkingNow()) {
-    gfConversationPending = FALSE;
+    gfConversationPending = false;
 
     // Initiate directly....
     return InternalInitiateConversation(pDestSoldier, pSrcSoldier, bApproach, uiApproachData);
   } else {
     // Wait.....
-    gfConversationPending = TRUE;
+    gfConversationPending = true;
 
     gpPendingDestSoldier = pDestSoldier;
     gpPendingSrcSoldier = pSrcSoldier;
@@ -136,7 +136,7 @@ function InitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: P
     guiPendingOverrideEvent = Enum207.TA_TALKINGMENU;
     HandleTacticalUI();
 
-    return FALSE;
+    return false;
   }
 }
 
@@ -147,14 +147,14 @@ function HandlePendingInitConv(): void {
   }
 }
 
-function InternalInitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: Pointer<SOLDIERTYPE>, bApproach: INT8, uiApproachData: UINT32): BOOLEAN {
+function InternalInitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: Pointer<SOLDIERTYPE>, bApproach: INT8, uiApproachData: UINT32): boolean {
   // OK, init talking menu
-  let fFromPending: BOOLEAN;
+  let fFromPending: boolean;
 
   fFromPending = gfConversationPending;
 
   // Set pending false
-  gfConversationPending = FALSE;
+  gfConversationPending = false;
 
   // ATE: If we are already in menu, delete!
   if (gfInTalkPanel) {
@@ -167,7 +167,7 @@ function InternalInitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSo
       gTacticalStatus.uiFlags &= (~ENGAGED_IN_CONV);
     }
 
-    return FALSE;
+    return false;
   }
 
   // Set soldier pointer
@@ -184,9 +184,9 @@ function InternalInitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSo
 
   // find which squad this guy is, then set selected squad to this guy
   if (pSrcSoldier.value.bTeam == gbPlayerNum && gTacticalStatus.ubCurrentTeam == gbPlayerNum) {
-    SetCurrentSquad(gpSrcSoldier.value.bAssignment, FALSE);
+    SetCurrentSquad(gpSrcSoldier.value.bAssignment, false);
 
-    SelectSoldier(pSrcSoldier.value.ubID, FALSE, FALSE);
+    SelectSoldier(pSrcSoldier.value.ubID, false, false);
   }
 
   Converse(gTalkPanel.ubCharNum, gubSrcSoldierProfile, bApproach, uiApproachData);
@@ -208,10 +208,10 @@ function InternalInitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSo
     HandleTacticalUI();
   }
 
-  return TRUE;
+  return true;
 }
 
-function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): BOOLEAN {
+function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): boolean {
   let sXMapPos: INT16;
   let sYMapPos: INT16;
   let sScreenX: INT16;
@@ -236,7 +236,7 @@ function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): BOOLEAN {
   }
 }
 
-function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): BOOLEAN {
+function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): boolean {
   let iFaceIndex: INT32;
   let cnt: INT32;
   let vs_desc: VSURFACE_DESC;
@@ -252,19 +252,19 @@ function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): B
   HideMessagesDuringNPCDialogue();
 
   // ATE: OK, let go of any other dialogues up.....
-  EraseInterfaceMenus(FALSE);
+  EraseInterfaceMenus(false);
 
   gTalkPanel.ubCharNum = ubCharacterNum;
   gTalkPanel.bCurSelect = -1;
   gTalkPanel.bOldCurSelect = -1;
-  gTalkPanel.fHandled = FALSE;
-  gTalkPanel.fOnName = FALSE;
+  gTalkPanel.fHandled = false;
+  gTalkPanel.fOnName = false;
 
   // Load Video Object!
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sprintf(VObjectDesc.ImageFile, "INTERFACE\\talkbox1.sti");
   // Load
-  if (AddVideoObject(addressof(VObjectDesc), addressof(gTalkPanel.uiPanelVO)) == FALSE) {
+  if (AddVideoObject(addressof(VObjectDesc), addressof(gTalkPanel.uiPanelVO)) == false) {
     return 0;
   }
 
@@ -381,12 +381,12 @@ function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): B
   // Render once!
   RenderAutoFace(gTalkPanel.iFaceIndex);
 
-  gfInTalkPanel = TRUE;
+  gfInTalkPanel = true;
 
-  gfIgnoreScrolling = TRUE;
+  gfIgnoreScrolling = true;
 
   // return OK....
-  return TRUE;
+  return true;
 }
 
 function DoneTalkingButtonClickCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -396,9 +396,9 @@ function DoneTalkingButtonClickCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, pickup item....
-    gTalkPanel.fHandled = TRUE;
+    gTalkPanel.fHandled = true;
     gTalkPanel.fHandledTalkingVal = gFacesData[gTalkPanel.iFaceIndex].fTalking;
-    gTalkPanel.fHandledCanDeleteVal = TRUE;
+    gTalkPanel.fHandledCanDeleteVal = true;
   }
 }
 
@@ -428,7 +428,7 @@ function DeleteTalkingMenu(): void {
   if (gTalkPanel.fTextRegionOn) {
     // Remove
     MSYS_RemoveRegion(addressof(gTalkPanel.TextRegion));
-    gTalkPanel.fTextRegionOn = FALSE;
+    gTalkPanel.fTextRegionOn = false;
   }
 
   // Delete save buffer
@@ -452,9 +452,9 @@ function DeleteTalkingMenu(): void {
   // Rerender world
   SetRenderFlags(RENDER_FLAG_FULL);
 
-  gfInTalkPanel = FALSE;
+  gfInTalkPanel = false;
 
-  gfIgnoreScrolling = FALSE;
+  gfIgnoreScrolling = false;
 
   // Set this guy up as NOT engaged in conversation
   gpDestSoldier.value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
@@ -470,18 +470,18 @@ function DeleteTalkingMenu(): void {
   if (CheckFact(Enum170.FACT_NEED_TO_SAY_SOMETHING, 0)) {
     if (DialogueQueueIsEmpty() && !gfWaitingForTriggerTimer) {
       let ubNPC: UINT8;
-      let fNice: BOOLEAN = FALSE;
+      let fNice: boolean = false;
       let pNPC: Pointer<SOLDIERTYPE>;
 
       if (gubNiceNPCProfile != NO_PROFILE) {
         ubNPC = gubNiceNPCProfile;
-        fNice = TRUE;
+        fNice = true;
       } else {
         ubNPC = gubNastyNPCProfile;
       }
 
       if (ubNPC != NO_PROFILE) {
-        pNPC = FindSoldierByProfileID(ubNPC, FALSE);
+        pNPC = FindSoldierByProfileID(ubNPC, false);
         if (pNPC) {
           // find someone to say their "nice guy" line
           if (fNice) {
@@ -591,12 +591,12 @@ function RenderTalkingMenu(): void {
         iInterfaceDialogueBox = -1;
       }
 
-      SET_USE_WINFONTS(TRUE);
+      SET_USE_WINFONTS(true);
       SET_WINFONT(giSubTitleWinFont);
       iInterfaceDialogueBox = PrepareMercPopupBox(iInterfaceDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gTalkPanel.zQuoteStr, TALK_PANEL_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, addressof(usTextBoxWidth), addressof(usTextBoxHeight));
-      SET_USE_WINFONTS(FALSE);
+      SET_USE_WINFONTS(false);
 
-      gTalkPanel.fSetupSubTitles = FALSE;
+      gTalkPanel.fSetupSubTitles = false;
 
       CalculatePopupTextOrientation(usTextBoxWidth, usTextBoxHeight);
       CalculatePopupTextPosition(usTextBoxWidth, usTextBoxHeight);
@@ -605,7 +605,7 @@ function RenderTalkingMenu(): void {
       if (gTalkPanel.fTextRegionOn) {
         // Remove
         MSYS_RemoveRegion(addressof(gTalkPanel.TextRegion));
-        gTalkPanel.fTextRegionOn = FALSE;
+        gTalkPanel.fTextRegionOn = false;
       }
 
       MSYS_DefineRegion(addressof(gTalkPanel.TextRegion), gTalkPanel.sPopupX, gTalkPanel.sPopupY, (gTalkPanel.sPopupX + usTextBoxWidth), (gTalkPanel.sPopupY + usTextBoxHeight), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, TextRegionClickCallback);
@@ -613,7 +613,7 @@ function RenderTalkingMenu(): void {
       MSYS_AddRegion(addressof(gTalkPanel.TextRegion));
 
       // Set to true
-      gTalkPanel.fTextRegionOn = TRUE;
+      gTalkPanel.fTextRegionOn = true;
     }
 
     if (gTalkPanel.fRenderSubTitlesNow) {
@@ -718,7 +718,7 @@ function TalkPanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 
 function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let uiItemPos: UINT32;
-  let fDoConverse: BOOLEAN = TRUE;
+  let fDoConverse: boolean = true;
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -728,7 +728,7 @@ function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
         // if its an arms dealer
         if (IsMercADealer(gTalkPanel.ubCharNum)) {
           if (NPCHasUnusedRecordWithGivenApproach(gTalkPanel.ubCharNum, Enum296.APPROACH_BUYSELL)) {
-            TriggerNPCWithGivenApproach(gTalkPanel.ubCharNum, Enum296.APPROACH_BUYSELL, TRUE);
+            TriggerNPCWithGivenApproach(gTalkPanel.ubCharNum, Enum296.APPROACH_BUYSELL, true);
           } else {
             DeleteTalkingMenu();
 
@@ -748,12 +748,12 @@ function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
         } else {
           // Do something different if we selected the 'give' approach
           // Close panel, set UI guy to wait a sec, open inv if not done so yet
-          gTalkPanel.fHandled = TRUE;
+          gTalkPanel.fHandled = true;
           gTalkPanel.fHandledTalkingVal = gFacesData[gTalkPanel.iFaceIndex].fTalking;
-          gTalkPanel.fHandledCanDeleteVal = TRUE;
+          gTalkPanel.fHandledCanDeleteVal = true;
 
           // open inv panel...
-          gfSwitchPanel = TRUE;
+          gfSwitchPanel = true;
           gbNewPanel = Enum215.SM_PANEL;
           gubNewPanelParam = gpSrcSoldier.value.ubID;
 
@@ -764,7 +764,7 @@ function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
           // UNless he's has a pending action, delete what he was doing!
           // Cancel anything he was doing
           if (gpDestSoldier.value.bAction != Enum289.AI_ACTION_PENDING_ACTION) {
-            CancelAIAction(gpDestSoldier, TRUE);
+            CancelAIAction(gpDestSoldier, true);
           }
         }
       } else {
@@ -779,22 +779,22 @@ function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 }
 
 function TalkPanelBaseRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP && fLButtonDown) {
     // Only do this if we are talking already
     if (gFacesData[gTalkPanel.iFaceIndex].fTalking) {
       // Stop speech, cancel
-      InternalShutupaYoFace(gTalkPanel.iFaceIndex, FALSE);
+      InternalShutupaYoFace(gTalkPanel.iFaceIndex, false);
 
-      fLButtonDown = FALSE;
+      fLButtonDown = false;
     }
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 
@@ -817,57 +817,57 @@ function TalkPanelNameRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason
 
   if (iReason & MSYS_CALLBACK_REASON_MOVE) {
     // Set current selected guy....
-    gTalkPanel.fOnName = TRUE;
+    gTalkPanel.fOnName = true;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    gTalkPanel.fOnName = FALSE;
+    gTalkPanel.fOnName = false;
   }
 }
 
 // Dirty menu
-function SetTalkingMenuDirty(fDirtyLevel: BOOLEAN): void {
+function SetTalkingMenuDirty(fDirtyLevel: boolean): void {
   gTalkPanel.fDirtyLevel = fDirtyLevel;
 }
 
-function HandleTalkingMenu(): BOOLEAN {
+function HandleTalkingMenu(): boolean {
   if (!gfInTalkPanel) {
-    return FALSE;
+    return false;
   }
 
   if (gTalkPanel.fHandled) {
-    return HandleTalkingMenuEscape(gTalkPanel.fHandledCanDeleteVal, FALSE);
+    return HandleTalkingMenuEscape(gTalkPanel.fHandledCanDeleteVal, false);
   }
 
-  return FALSE;
+  return false;
 }
 
-function TalkingMenuDialogue(usQuoteNum: UINT16): BOOLEAN {
+function TalkingMenuDialogue(usQuoteNum: UINT16): boolean {
   // Set back current select....
   gTalkPanel.bCurSelect = -1;
-  gTalkPanel.fOnName = FALSE;
+  gTalkPanel.fOnName = false;
   // gTalkPanel.fHandled		= FALSE;
 
-  CHECKF(CharacterDialogue(gTalkPanel.ubCharNum, usQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, FALSE, FALSE) != FALSE);
-  return TRUE;
+  CHECKF(CharacterDialogue(gTalkPanel.ubCharNum, usQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, false, false) != false);
+  return true;
 }
 
-function ProfileCurrentlyTalkingInDialoguePanel(ubProfile: UINT8): BOOLEAN {
+function ProfileCurrentlyTalkingInDialoguePanel(ubProfile: UINT8): boolean {
   if (gfInTalkPanel) {
     if (gpDestSoldier != null) {
       if (gpDestSoldier.value.ubProfile == ubProfile) {
-        return TRUE;
+        return true;
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function HandleTalkingMenuEscape(fCanDelete: BOOLEAN, fFromEscKey: BOOLEAN): BOOLEAN {
+function HandleTalkingMenuEscape(fCanDelete: boolean, fFromEscKey: boolean): boolean {
   let pFace: Pointer<FACETYPE>;
-  let fTalking: BOOLEAN = FALSE;
+  let fTalking: boolean = false;
 
   if (!gfInTalkPanel) {
-    return FALSE;
+    return false;
   }
 
   pFace = addressof(gFacesData[gTalkPanel.iFaceIndex]);
@@ -881,7 +881,7 @@ function HandleTalkingMenuEscape(fCanDelete: BOOLEAN, fFromEscKey: BOOLEAN): BOO
   }
 
   // Set to false
-  gTalkPanel.fHandled = FALSE;
+  gTalkPanel.fHandled = false;
 
   if (!fFromEscKey) {
     if (fTalking) {
@@ -894,7 +894,7 @@ function HandleTalkingMenuEscape(fCanDelete: BOOLEAN, fFromEscKey: BOOLEAN): BOO
         DeleteTalkingMenu();
         // reset records which are on a can-say-once-per-convo basis
         ResetOncePerConvoRecordsForNPC(gpDestSoldier.value.ubProfile);
-        return TRUE;
+        return true;
       }
     }
   } else {
@@ -903,15 +903,15 @@ function HandleTalkingMenuEscape(fCanDelete: BOOLEAN, fFromEscKey: BOOLEAN): BOO
       DeleteTalkingMenu();
       // reset records which are on a can-say-once-per-convo basis
       ResetOncePerConvoRecordsForNPC(gpDestSoldier.value.ubProfile);
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
 function HandleTalkingMenuBackspace(): void {
   let pFace: Pointer<FACETYPE>;
-  let fTalking: BOOLEAN = FALSE;
+  let fTalking: boolean = false;
 
   if (!gfInTalkPanel) {
     return;
@@ -943,10 +943,10 @@ function HandleTalkingMenuBackspace(): void {
 }
 
 function CalculatePopupTextOrientation(sWidth: INT16, sHeight: INT16): void {
-  let fOKLeft: BOOLEAN = FALSE;
-  let fOKTop: BOOLEAN = FALSE;
-  let fOKBottom: BOOLEAN = FALSE;
-  let fOK: BOOLEAN = FALSE;
+  let fOKLeft: boolean = false;
+  let fOKTop: boolean = false;
+  let fOKBottom: boolean = false;
+  let fOK: boolean = false;
   let sX: INT16;
   let sY: INT16;
 
@@ -954,21 +954,21 @@ function CalculatePopupTextOrientation(sWidth: INT16, sHeight: INT16): void {
   sX = gTalkPanel.sX - sWidth;
 
   if (sX > 0) {
-    fOKLeft = TRUE;
+    fOKLeft = true;
   }
 
   // Check bottom
   sY = gTalkPanel.sY + sHeight + gTalkPanel.usHeight;
 
   if (sY < 340) {
-    fOKBottom = TRUE;
+    fOKBottom = true;
   }
 
   // Check top
   sY = gTalkPanel.sY - sHeight;
 
   if (sY > gsVIEWPORT_WINDOW_START_Y) {
-    fOKTop = TRUE;
+    fOKTop = true;
   }
 
   // OK, now decide where to put it!
@@ -977,7 +977,7 @@ function CalculatePopupTextOrientation(sWidth: INT16, sHeight: INT16): void {
   if (fOKBottom) {
     gTalkPanel.ubPopupOrientation = TALK_PANEL_POPUP_BOTTOM;
 
-    fOK = TRUE;
+    fOK = true;
   }
 
   if (!fOK) {
@@ -985,7 +985,7 @@ function CalculatePopupTextOrientation(sWidth: INT16, sHeight: INT16): void {
     if (fOKLeft) {
       // Our panel should not be heigher than our dialogue talking panel, so don't bother with the height checks!
       gTalkPanel.ubPopupOrientation = TALK_PANEL_POPUP_LEFT;
-      fOK = TRUE;
+      fOK = true;
     }
   }
 
@@ -995,7 +995,7 @@ function CalculatePopupTextOrientation(sWidth: INT16, sHeight: INT16): void {
     if (fOKTop) {
       gTalkPanel.ubPopupOrientation = TALK_PANEL_POPUP_TOP;
 
-      fOK = TRUE;
+      fOK = true;
     }
   }
 
@@ -1003,7 +1003,7 @@ function CalculatePopupTextOrientation(sWidth: INT16, sHeight: INT16): void {
   if (!fOK) {
     // when all else fails go right
     gTalkPanel.ubPopupOrientation = TALK_PANEL_POPUP_RIGHT;
-    fOK = TRUE;
+    fOK = true;
   }
   // If we don't have anything here... our viewport/box is too BIG! ( which should never happen
   // DebugMsg
@@ -1042,65 +1042,65 @@ function CalculatePopupTextPosition(sWidth: INT16, sHeight: INT16): void {
   }
 }
 
-function TalkingMenuGiveItem(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): BOOLEAN {
-  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GIVE_ITEM, ubNPC, pObject, bInvPos, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
+function TalkingMenuGiveItem(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): boolean {
+  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GIVE_ITEM, ubNPC, pObject, bInvPos, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
 
-  return TRUE;
+  return true;
 }
 
-function NPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, ubTargetApproach: UINT8, fShowDialogueMenu: BOOLEAN): BOOLEAN {
+function NPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, ubTargetApproach: UINT8, fShowDialogueMenu: boolean): boolean {
   // CHECKF( SpecialCharacterDialogueEvent( DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI ) != FALSE );
-  CHECKF(SpecialCharacterDialogueEventWithExtraParam(DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, ubTargetApproach, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
+  CHECKF(SpecialCharacterDialogueEventWithExtraParam(DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, ubTargetApproach, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
 
-  return TRUE;
+  return true;
 }
 
-function NPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubRecordNum: UINT8): BOOLEAN {
-  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GOTO_GRIDNO, ubTargetNPC, usGridNo, ubRecordNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
+function NPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubRecordNum: UINT8): boolean {
+  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GOTO_GRIDNO, ubTargetNPC, usGridNo, ubRecordNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
 
-  return TRUE;
+  return true;
 }
 
-function NPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): BOOLEAN {
-  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_DO_ACTION, ubTargetNPC, usActionCode, ubQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
+function NPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): boolean {
+  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_DO_ACTION, ubTargetNPC, usActionCode, ubQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
 
-  return TRUE;
+  return true;
 }
 
-function NPCClosePanel(): BOOLEAN {
-  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CLOSE_PANEL, 0, 0, 0, 0, DIALOGUE_NPC_UI) != FALSE);
+function NPCClosePanel(): boolean {
+  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CLOSE_PANEL, 0, 0, 0, 0, DIALOGUE_NPC_UI) != false);
 
-  return TRUE;
+  return true;
 }
 
-function SourceSoldierPointerIsValidAndReachableForGive(pGiver: Pointer<SOLDIERTYPE>): BOOLEAN {
+function SourceSoldierPointerIsValidAndReachableForGive(pGiver: Pointer<SOLDIERTYPE>): boolean {
   let sAdjGridNo: INT16;
 
   if (!gpSrcSoldier) {
-    return FALSE;
+    return false;
   }
   if (!gpSrcSoldier.value.bActive || !gpSrcSoldier.value.bInSector) {
-    return FALSE;
+    return false;
   }
   if (gpSrcSoldier.value.bLife < OKLIFE || (gpSrcSoldier.value.bBreath < OKBREATH && gpSrcSoldier.value.bCollapsed)) {
-    return FALSE;
+    return false;
   }
 
   if (!pGiver) {
-    return FALSE;
+    return false;
   }
 
   // pointer should always be valid anyhow
   if (PythSpacesAway(pGiver.value.sGridNo, gpSrcSoldier.value.sGridNo) > MaxDistanceVisible()) {
-    return FALSE;
+    return false;
   }
 
-  sAdjGridNo = FindAdjacentGridEx(pGiver, gpSrcSoldier.value.sGridNo, null, null, FALSE, FALSE);
+  sAdjGridNo = FindAdjacentGridEx(pGiver, gpSrcSoldier.value.sGridNo, null, null, false, false);
   if (sAdjGridNo == -1) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): void {
@@ -1115,10 +1115,10 @@ function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos:
 
     let pNPC: Pointer<SOLDIERTYPE>;
 
-    pNPC = FindSoldierByProfileID(ubNPC, FALSE);
+    pNPC = FindSoldierByProfileID(ubNPC, false);
     if (pNPC) {
-      AddItemToPool(pNPC.value.sGridNo, addressof(pNPC.value.inv[bInvPos]), TRUE, 0, 0, 0);
-      TriggerNPCWithGivenApproach(ubNPC, Enum296.APPROACH_DONE_GIVING_ITEM, TRUE);
+      AddItemToPool(pNPC.value.sGridNo, addressof(pNPC.value.inv[bInvPos]), true, 0, 0, 0);
+      TriggerNPCWithGivenApproach(ubNPC, Enum296.APPROACH_DONE_GIVING_ITEM, true);
     }
   } else {
     // Remove dialogue!
@@ -1129,10 +1129,10 @@ function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos:
   }
 }
 
-function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDialogueMenu: BOOLEAN, ubTargetApproach: UINT8): void {
+function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDialogueMenu: boolean, ubTargetApproach: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+  pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
 
   if (pSoldier == null) {
     return;
@@ -1167,7 +1167,7 @@ function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDia
     // SO WE CAN SEE NPC RADIO LOCATOR
     // THEN AFTER THIS IS DONE, DO THE STUFF
     // Setup timer!
-    gfWaitingForTriggerTimer = TRUE;
+    gfWaitingForTriggerTimer = true;
     guiWaitingForTriggerTime = GetJA2Clock();
 
     // Setup locator!
@@ -1175,7 +1175,7 @@ function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDia
 
     // If he's visible, locate...
     if (pSoldier.value.bVisible != -1) {
-      LocateSoldier(pSoldier.value.ubID, FALSE);
+      LocateSoldier(pSoldier.value.ubID, false);
     }
 
     guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
@@ -1196,7 +1196,7 @@ function HandleNPCTrigger(): void {
   let sPlayerGridNo: INT16;
   let ubPlayerID: UINT8;
 
-  pSoldier = FindSoldierByProfileID(gubTargetNPC, FALSE);
+  pSoldier = FindSoldierByProfileID(gubTargetNPC, false);
   if (!pSoldier) {
     return;
   }
@@ -1247,7 +1247,7 @@ function HandleWaitTimerForNPCTrigger(): void {
 
       HandleNPCTrigger();
 
-      gfWaitingForTriggerTimer = FALSE;
+      gfWaitingForTriggerTimer = false;
     }
   }
 }
@@ -1260,7 +1260,7 @@ function HandleNPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubQuoteNum: U
   DeleteTalkingMenu();
 
   // Get merc id for NPC
-  pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+  pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
   if (!pSoldier) {
     return;
   }
@@ -1286,7 +1286,7 @@ function HandleNPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubQuoteNum: U
   // UNless he's has a pending action, delete what he was doing!
   // Cancel anything he was doing
   if (pSoldier.value.bAction != Enum289.AI_ACTION_PENDING_ACTION) {
-    CancelAIAction(pSoldier, TRUE);
+    CancelAIAction(pSoldier, true);
   }
   // Go for it!
 
@@ -1324,7 +1324,7 @@ function HandleStuffForNPCEscorted(ubNPC: UINT8): void {
       // recruit Mary as well
       RecruitEPC(Enum268.MARY);
 
-      pSoldier = FindSoldierByProfileID(Enum268.MARY, TRUE);
+      pSoldier = FindSoldierByProfileID(Enum268.MARY, true);
       if (pSoldier) {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NOW_BING_ESCORTED_STR], gMercProfiles[Enum268.MARY].zNickname, (pSoldier.value.bAssignment + 1));
       }
@@ -1337,7 +1337,7 @@ function HandleStuffForNPCEscorted(ubNPC: UINT8): void {
       // recruit John as well
       RecruitEPC(Enum268.JOHN);
 
-      pSoldier = FindSoldierByProfileID(Enum268.JOHN, TRUE);
+      pSoldier = FindSoldierByProfileID(Enum268.JOHN, true);
       if (pSoldier) {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NOW_BING_ESCORTED_STR], gMercProfiles[Enum268.JOHN].zNickname, (pSoldier.value.bAssignment + 1));
       }
@@ -1391,8 +1391,8 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
   // Switch on action code!
   if (usActionCode > Enum213.NPC_ACTION_TURN_TO_FACE_NEAREST_MERC && usActionCode < Enum213.NPC_ACTION_LAST_TURN_TO_FACE_PROFILE) {
-    pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
-    pSoldier2 = FindSoldierByProfileID((usActionCode - Enum213.NPC_ACTION_TURN_TO_FACE_NEAREST_MERC), FALSE);
+    pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
+    pSoldier2 = FindSoldierByProfileID((usActionCode - Enum213.NPC_ACTION_TURN_TO_FACE_NEAREST_MERC), false);
     if (pSoldier && pSoldier2) {
       // see if we are facing this person
       ubDesiredMercDir = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(pSoldier2.value.sGridNo), CenterY(pSoldier2.value.sGridNo));
@@ -1418,9 +1418,9 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         ExitGrid.ubGotoSectorZ = 1;
         ExitGrid.usGridNo = 12722;
 
-        ApplyMapChangesToMapTempFile(TRUE);
+        ApplyMapChangesToMapTempFile(true);
         AddExitGridToWorld(7887, addressof(ExitGrid));
-        ApplyMapChangesToMapTempFile(FALSE);
+        ApplyMapChangesToMapTempFile(false);
 
         // For one, loop through our current squad and move them over
         cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -1432,7 +1432,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
           // Are we in this sector, On the current squad?
           if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bInSector && pSoldier.value.bAssignment == CurrentSquad()) {
-            gfTacticalTraversal = TRUE;
+            gfTacticalTraversal = true;
             SetGroupSectorValue(10, 1, 1, pSoldier.value.ubGroupID);
 
             // Set insertion gridno
@@ -1476,10 +1476,10 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         DeleteTalkingMenu();
 
         // Get pointer for Fatima
-        pSoldier = FindSoldierByProfileID(101, FALSE);
+        pSoldier = FindSoldierByProfileID(101, false);
 
         // Get pointer for meguel
-        pSoldier2 = FindSoldierByProfileID(57, FALSE);
+        pSoldier2 = FindSoldierByProfileID(57, false);
 
         // Give item!
         if (!pSoldier || !pSoldier2) {
@@ -1502,7 +1502,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case Enum213.NPC_ACTION_FACE_CLOSEST_PLAYER:
 
         // Get pointer for player
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
@@ -1520,19 +1520,19 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         DeleteTalkingMenu();
 
         // Get pointer to NPC
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
 
         // FInd, open Closest Door
-        NPCOpenThing(pSoldier, TRUE);
+        NPCOpenThing(pSoldier, true);
 
         break;
 
       case Enum213.NPC_ACTION_LOWER_GUN:
         // Get pointer for player
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
@@ -1545,7 +1545,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
           usGun = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
           ReLoadSoldierAnimationDueToHandItemChange(pSoldier, pSoldier.value.inv[Enum261.HANDPOS].usItem, NOTHING);
-          AutoPlaceObject(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), FALSE);
+          AutoPlaceObject(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), false);
 
           bNewSlot = FindObj(pSoldier, usGun);
           if (bNewSlot != NO_SLOT && gMercProfiles[ubTargetNPC].inv[bNewSlot] == NOTHING) {
@@ -1566,24 +1566,24 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case Enum213.NPC_ACTION_READY_GUN:
         // Get pointer for player
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier && pSoldier.value.inv[Enum261.HANDPOS].usItem != NOTHING) {
           sGridNo = pSoldier.value.sGridNo + DirectionInc(pSoldier.value.bDirection);
-          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), (sGridNo / WORLD_COLS), FALSE);
+          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), (sGridNo / WORLD_COLS), false);
         }
         break;
 
       case Enum213.NPC_ACTION_START_RUNNING:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
-          pSoldier.value.fUIMovementFast = TRUE;
+          pSoldier.value.fUIMovementFast = true;
         }
         break;
 
       case Enum213.NPC_ACTION_STOP_RUNNING:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
-          pSoldier.value.fUIMovementFast = FALSE;
+          pSoldier.value.fUIMovementFast = false;
         }
         break;
 
@@ -1595,7 +1595,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         // break;
 
       case Enum213.NPC_ACTION_STOP_PLAYER_GIVING_FIRST_AID:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           ReceivingSoldierCancelServices(pSoldier);
         }
@@ -1603,7 +1603,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case Enum213.NPC_ACTION_FACE_NORTH:
         // handle this separately to keep the code clean...
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           SendSoldierSetDesiredDirectionEvent(pSoldier, Enum245.NORTHWEST);
         }
@@ -1616,7 +1616,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case Enum213.NPC_ACTION_FACE_SOUTH_WEST:
       case Enum213.NPC_ACTION_FACE_WEST:
       case Enum213.NPC_ACTION_FACE_NORTH_WEST:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           // screen NORTHEAST corresponds to in-game NORTH
           SendSoldierSetDesiredDirectionEvent(pSoldier, (Enum245.NORTH + (usActionCode - Enum213.NPC_ACTION_FACE_NORTH_EAST)));
@@ -1645,7 +1645,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case Enum213.NPC_ACTION_BECOME_ENEMY:
         // CJC: disable because of new system?
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
@@ -1689,7 +1689,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
           // Are we in this sector, On the current squad?
           if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bInSector) {
-            gfTacticalTraversal = TRUE;
+            gfTacticalTraversal = true;
             SetGroupSectorValue(10, 1, 0, pSoldier.value.ubGroupID);
 
             // Set insertion gridno
@@ -1719,7 +1719,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_TRAVERSE_MAP_EAST:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
@@ -1728,7 +1728,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_TRAVERSE_MAP_SOUTH:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
@@ -1737,7 +1737,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_TRAVERSE_MAP_WEST:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
@@ -1746,7 +1746,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_TRAVERSE_MAP_NORTH:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
@@ -1775,7 +1775,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case Enum213.NPC_ACTION_RETURN_STOLEN_SHIPMENT_ITEMS:
         AddFutureDayStrategicEvent(Enum132.EVENT_SET_BY_NPC_SYSTEM, 480 + Random(60), NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS + Enum213.NPC_ACTION_RETURN_STOLEN_SHIPMENT_ITEMS, 1);
         // also make Pablo neutral again and exit combat if we're in combat
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
@@ -1785,7 +1785,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
           pSoldier.value.bBleeding = 0; // make sure he doesn't bleed now...
           RecalculateOppCntsDueToBecomingNeutral(pSoldier);
           if (gTacticalStatus.uiFlags & INCOMBAT) {
-            CheckForEndOfCombatMode(FALSE);
+            CheckForEndOfCombatMode(false);
           }
         }
         break;
@@ -1793,7 +1793,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case Enum213.NPC_ACTION_THREATENINGLY_RAISE_GUN:
 
         // Get pointer for NPC
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (!pSoldier) {
           return;
         }
@@ -1802,11 +1802,11 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         if (bItemIn != NO_SLOT && bItemIn != Enum261.HANDPOS) {
           SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bItemIn]));
           sGridNo = pSoldier.value.sGridNo + DirectionInc(pSoldier.value.bDirection);
-          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), (sGridNo / WORLD_COLS), FALSE);
+          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), (sGridNo / WORLD_COLS), false);
         }
         // fall through so that the person faces the nearest merc!
       case Enum213.NPC_ACTION_TURN_TO_FACE_NEAREST_MERC:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           sGridNo = ClosestPC(pSoldier, null);
           if (sGridNo != NOWHERE) {
@@ -1821,14 +1821,14 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_SEND_PACOS_INTO_HIDING:
-        pSoldier = FindSoldierByProfileID(114, FALSE);
+        pSoldier = FindSoldierByProfileID(114, false);
         sGridNo = 16028;
         if (pSoldier) {
-          if (NewOKDestination(pSoldier, sGridNo, TRUE, 0)) {
+          if (NewOKDestination(pSoldier, sGridNo, true, 0)) {
             // go for it!
             NPCGotoGridNo(114, sGridNo, ubQuoteNum);
           } else {
-            sAdjustedGridNo = FindAdjacentGridEx(pSoldier, sGridNo, null, null, FALSE, FALSE);
+            sAdjustedGridNo = FindAdjacentGridEx(pSoldier, sGridNo, null, null, false, false);
             if (sAdjustedGridNo != -1) {
               NPCGotoGridNo(114, sAdjustedGridNo, ubQuoteNum);
             }
@@ -1836,14 +1836,14 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         }
         break;
       case Enum213.NPC_ACTION_HAVE_PACOS_FOLLOW:
-        pSoldier = FindSoldierByProfileID(114, FALSE);
+        pSoldier = FindSoldierByProfileID(114, false);
         sGridNo = 18193;
         if (pSoldier) {
-          if (NewOKDestination(pSoldier, sGridNo, TRUE, 0)) {
+          if (NewOKDestination(pSoldier, sGridNo, true, 0)) {
             // go for it!
             NPCGotoGridNo(114, sGridNo, ubQuoteNum);
           } else {
-            sAdjustedGridNo = FindAdjacentGridEx(pSoldier, sGridNo, null, null, FALSE, FALSE);
+            sAdjustedGridNo = FindAdjacentGridEx(pSoldier, sGridNo, null, null, false, false);
             if (sAdjustedGridNo != -1) {
               NPCGotoGridNo(114, sAdjustedGridNo, ubQuoteNum);
             }
@@ -1923,7 +1923,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
           let sGridNo: INT16 = 14952;
           let iWorldItem: INT32;
 
-          pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+          pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
           if (pSoldier) {
             CreateItem(Enum225.MONEY, 1, addressof(Object));
             Object.uiMoneyAmount = 10000;
@@ -1946,7 +1946,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_MARTHA_DIES:
-        pSoldier = FindSoldierByProfileID(Enum268.MARTHA, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.MARTHA, false);
         if (pSoldier) {
           DeleteTalkingMenu();
           EVENT_SoldierGotHit(pSoldier, 1, 100, 10, pSoldier.value.bDirection, 320, NOBODY, FIRE_WEAPON_NO_SPECIAL, AIM_SHOT_TORSO, 0, NOWHERE);
@@ -2013,7 +2013,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
           pDoor = FindDoorInfoAtGridNo(sGridNo);
           if (pDoor) {
-            pDoor.value.fLocked = FALSE;
+            pDoor.value.fLocked = false;
           }
         }
         /*
@@ -2111,14 +2111,14 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case Enum213.NPC_ACTION_REMOVE_JOE_QUEEN:
 
         // Find queen and joe and remove from sector...
-        pSoldier = FindSoldierByProfileID(Enum268.QUEEN, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.QUEEN, false);
 
         if (pSoldier != null) {
           TacticalRemoveSoldier(pSoldier.value.ubID);
         }
 
         // Find queen and joe and remove from sector...
-        pSoldier = FindSoldierByProfileID(Enum268.JOE, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.JOE, false);
 
         if (pSoldier != null) {
           TacticalRemoveSoldier(pSoldier.value.ubID);
@@ -2128,7 +2128,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case Enum213.NPC_ACTION_REMOVE_ELLIOT_END_MEANWHILE:
 
         // Find queen and joe and remove from sector...
-        pSoldier = FindSoldierByProfileID(Enum268.ELLIOT, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.ELLIOT, false);
 
         if (pSoldier != null) {
           TacticalRemoveSoldier(pSoldier.value.ubID);
@@ -2157,7 +2157,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case Enum213.NPC_ACTION_HAVE_MARRIED_NPC_LEAVE_TEAM:
 
         // get the soldier
-        pSoldier = FindSoldierByProfileID(gMercProfiles[Enum268.DARYL].bNPCData, FALSE);
+        pSoldier = FindSoldierByProfileID(gMercProfiles[Enum268.DARYL].bNPCData, false);
         pSoldier2 = gpDestSoldier;
 
         if (!pSoldier || !pSoldier2) {
@@ -2208,7 +2208,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_TRIGGER_MARIA:
-        if (CheckFact(Enum170.FACT_MARIA_ESCAPE_NOTICED, Enum268.MARIA) == FALSE) {
+        if (CheckFact(Enum170.FACT_MARIA_ESCAPE_NOTICED, Enum268.MARIA) == false) {
           TriggerNPCRecord(Enum268.MARIA, 8);
         } else {
           if (CheckFact(Enum170.FACT_PLAYER_IN_SAME_ROOM, Enum268.MARIA)) {
@@ -2220,7 +2220,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_ANGEL_LEAVES_DEED:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           bItemIn = FindObj(pSoldier, Enum225.DEED);
           if (bItemIn != NO_SLOT) {
@@ -2301,11 +2301,11 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_TRIGGER_FATHER_18_20_OR_15:
-        if (CheckFact(132, Enum268.FATHER) == FALSE) {
+        if (CheckFact(132, Enum268.FATHER) == false) {
           TriggerNPCRecord(Enum268.FATHER, 18);
-        } else if (CheckFact(133, Enum268.FATHER) == FALSE) {
+        } else if (CheckFact(133, Enum268.FATHER) == false) {
           TriggerNPCRecord(Enum268.FATHER, 20);
-        } else if (CheckFact(134, Enum268.FATHER) == FALSE) {
+        } else if (CheckFact(134, Enum268.FATHER) == false) {
           TriggerNPCRecord(Enum268.FATHER, 15);
         } else {
           TriggerNPCRecord(Enum268.FATHER, 26);
@@ -2313,7 +2313,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_ENTER_COMBAT:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           if (pSoldier.value.ubCivilianGroup != Enum246.NON_CIV_GROUP) {
             if (gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] == CIV_GROUP_NEUTRAL) {
@@ -2369,7 +2369,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         // set "don't add to sector" cause he'll only appear after an event...
         gMercProfiles[ubTargetNPC].ubMiscFlags2 |= PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR;
 
-        SetCustomizableTimerCallbackAndDelay(10000, CarmenLeavesSectorCallback, TRUE);
+        SetCustomizableTimerCallbackAndDelay(10000, CarmenLeavesSectorCallback, true);
         break;
 
       case Enum213.NPC_ACTION_CARMEN_LEAVES_ON_NEXT_SECTOR_LOAD:
@@ -2388,14 +2388,14 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_BECOME_FRIENDLY_END_COMBAT:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           DeleteTalkingMenu();
 
           SetSoldierNeutral(pSoldier);
           RecalculateOppCntsDueToBecomingNeutral(pSoldier);
           if (gTacticalStatus.bNumFoughtInBattle[CIV_TEAM] == 0) {
-            gTacticalStatus.fEnemyInSector = FALSE;
+            gTacticalStatus.fEnemyInSector = false;
           }
           if (!gTacticalStatus.fEnemyInSector) {
             ExitCombatMode();
@@ -2421,7 +2421,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
           // wcsncpy( zTemp, gMercProfiles[ ubTargetNPC ].zNickname, NICKNAME_LENGTH );
           wcsncpy(gMercProfiles[ubTargetNPC].zNickname, gMercProfiles[ubTargetNPC].zName, NICKNAME_LENGTH);
           // wcsncpy( gMercProfiles[ ubTargetNPC ].zName, zTemp, NICKNAME_LENGTH );
-          pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+          pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
           if (pSoldier) {
             wcsncpy(pSoldier.value.name, gMercProfiles[ubTargetNPC].zNickname, 10);
           }
@@ -2498,15 +2498,15 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case Enum213.NPC_ACTION_MADLAB_ATTACHES_GOOD_CAMERA:
         SetFactFalse(Enum170.FACT_MADLAB_HAS_GOOD_CAMERA);
-        pSoldier = FindSoldierByProfileID(Enum268.MADLAB, FALSE);
-        pSoldier2 = FindSoldierByProfileID(Enum268.ROBOT, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.MADLAB, false);
+        pSoldier2 = FindSoldierByProfileID(Enum268.ROBOT, false);
         if (pSoldier && pSoldier2) {
           // Give weapon to robot
           let bSlot: INT8;
 
           bSlot = FindObjClass(pSoldier, IC_GUN);
           if (bSlot != NO_SLOT) {
-            AutoPlaceObject(pSoldier2, addressof(pSoldier.value.inv[bSlot]), FALSE);
+            AutoPlaceObject(pSoldier2, addressof(pSoldier.value.inv[bSlot]), false);
           }
         }
         // Allow robot to be controlled by remote!
@@ -2537,7 +2537,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case Enum213.NPC_ACTION_DARREN_PAYS_PLAYER:
         // should change to split up cash
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
 
         if (pSoldier) {
           let sNearestPC: INT16;
@@ -2577,7 +2577,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_TRIGGER_SPIKE_OR_DARREN:
-        pSoldier = FindSoldierByProfileID(Enum268.KINGPIN, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.KINGPIN, false);
         if (pSoldier) {
           let ubRoom: UINT8;
 
@@ -2597,19 +2597,19 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         DeleteTalkingMenu();
 
         // Get pointer to NPC
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
 
         if (!pSoldier) {
           return;
         }
 
         // FInd, open Closest non-door
-        NPCOpenThing(pSoldier, FALSE);
+        NPCOpenThing(pSoldier, false);
 
         break;
 
       case Enum213.NPC_ACTION_GET_ITEMS_FROM_CLOSEST_CABINET:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           // shouldn't have any current action but make sure everything
           // is clear... and set pending action so the guy won't move
@@ -2618,8 +2618,8 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
           pSoldier.value.bAction = Enum289.AI_ACTION_PENDING_ACTION;
 
           // make sure the pickup starts dammit!
-          pSoldier.value.fInNonintAnim = FALSE;
-          pSoldier.value.fRTInNonintAnim = FALSE;
+          pSoldier.value.fInNonintAnim = false;
+          pSoldier.value.fRTInNonintAnim = false;
 
           if (pSoldier.value.ubProfile == Enum268.ARMAND) {
             sGridNo = 6968;
@@ -2642,9 +2642,9 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case Enum213.NPC_ACTION_SLAP:
 
         // OK, LET'S FIND THE QUEEN AND MAKE HER DO SLAP ANIMATION
-        pSoldier = FindSoldierByProfileID(Enum268.QUEEN, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.QUEEN, false);
         if (pSoldier) {
-          EVENT_InitNewSoldierAnim(pSoldier, Enum193.QUEEN_SLAP, 0, FALSE);
+          EVENT_InitNewSoldierAnim(pSoldier, Enum193.QUEEN_SLAP, 0, false);
         }
         break;
 
@@ -2654,7 +2654,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
         DeleteTalkingMenu();
         // OK, LET'S FIND THE QUEEN AND MAKE HER DO SLAP ANIMATION
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           let ubTargetID: UINT8;
           let pTarget: Pointer<SOLDIERTYPE>;
@@ -2696,14 +2696,14 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
             // UNless he's has a pending action, delete what he was doing!
             // Cancel anything he was doing
             if (pSoldier.value.bAction != Enum289.AI_ACTION_PENDING_ACTION) {
-              CancelAIAction(pSoldier, TRUE);
+              CancelAIAction(pSoldier, true);
             }
 
             // HandleItem( pSoldier, pTarget->sGridNo, 0, NOTHING, FALSE );
 
             pSoldier.value.uiStatusFlags |= SOLDIER_NPC_DOING_PUNCH;
           } else {
-            TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, pSoldier.value.uiPendingActionData4, FALSE);
+            TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, pSoldier.value.uiPendingActionData4, false);
           }
         }
         break;
@@ -2712,11 +2712,11 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
         DeleteTalkingMenu();
 
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           let pTarget: Pointer<SOLDIERTYPE>;
 
-          pTarget = FindSoldierByProfileID(Enum268.ELLIOT, FALSE);
+          pTarget = FindSoldierByProfileID(Enum268.ELLIOT, false);
 
           if (pTarget) {
             // Set special flag....
@@ -2736,7 +2736,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
             // UNless he's has a pending action, delete what he was doing!
             // Cancel anything he was doing
             if (pSoldier.value.bAction != Enum289.AI_ACTION_PENDING_ACTION) {
-              CancelAIAction(pSoldier, TRUE);
+              CancelAIAction(pSoldier, true);
             }
 
             // change elliot portrait...
@@ -2753,12 +2753,12 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
         // Punch first living pc....
         // OK, LET'S FIND THE QUEEN AND MAKE HER DO SLAP ANIMATION
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           let ubTargetID: UINT8;
           let pTarget: Pointer<SOLDIERTYPE>;
           let cnt: INT32;
-          let fGoodTarget: BOOLEAN = FALSE;
+          let fGoodTarget: boolean = false;
 
           for (cnt = 0; cnt < 3; cnt++) {
             ubTargetID = WhoIsThere2(gsInterrogationGridNo[cnt], 0);
@@ -2773,11 +2773,11 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
             // If we are elliot, we can't do unconocious guys....
             if (pSoldier.value.ubProfile == Enum268.ELLIOT) {
               if (pTarget.value.bActive && pTarget.value.bInSector && pTarget.value.bLife >= OKLIFE) {
-                fGoodTarget = TRUE;
+                fGoodTarget = true;
               }
             } else {
               if (pTarget.value.bActive && pTarget.value.bInSector && pTarget.value.bLife != 0) {
-                fGoodTarget = TRUE;
+                fGoodTarget = true;
               }
             }
 
@@ -2789,7 +2789,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
               // UNless he's has a pending action, delete what he was doing!
               // Cancel anything he was doing
               if (pSoldier.value.bAction != Enum289.AI_ACTION_PENDING_ACTION) {
-                CancelAIAction(pSoldier, TRUE);
+                CancelAIAction(pSoldier, true);
               }
 
               pSoldier.value.uiStatusFlags |= SOLDIER_NPC_DOING_PUNCH;
@@ -2799,7 +2799,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
           if (cnt == 3) {
             // If here, nobody was found...
-            TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, pSoldier.value.uiPendingActionData4, FALSE);
+            TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, pSoldier.value.uiPendingActionData4, false);
           }
         }
         break;
@@ -2807,9 +2807,9 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case Enum213.NPC_ACTION_FRUSTRATED_SLAP:
 
         // OK, LET'S FIND THE QUEEN AND MAKE HER DO SLAP ANIMATION
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
-          EVENT_InitNewSoldierAnim(pSoldier, Enum193.QUEEN_FRUSTRATED_SLAP, 0, FALSE);
+          EVENT_InitNewSoldierAnim(pSoldier, Enum193.QUEEN_FRUSTRATED_SLAP, 0, false);
         }
         break;
       case Enum213.NPC_ACTION_START_TIMER_ON_KEITH_GOING_OUT_OF_BUSINESS:
@@ -2888,7 +2888,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         if (CheckFact(Enum170.FACT_NPC_OWED_MONEY, ubTargetNPC) && (ubTargetNPC == Enum268.VINCE)) {
           // check if we owe vince cash
           TriggerNPCRecord(ubTargetNPC, 21);
-        } else if (CheckFact(Enum170.FACT_VINCE_EXPLAINED_HAS_TO_CHARGE, ubTargetNPC) == FALSE) {
+        } else if (CheckFact(Enum170.FACT_VINCE_EXPLAINED_HAS_TO_CHARGE, ubTargetNPC) == false) {
           TriggerNPCRecord(ubTargetNPC, 15);
         } else {
           if (CheckFact(Enum170.FACT_LOYALTY_LOW, ubTargetNPC)) {
@@ -2900,7 +2900,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
           } else {
             iRandom = PreRandom(100);
             if (ubTargetNPC == Enum268.VINCE) {
-              if ((gbHospitalPriceModifier == Enum212.HOSPITAL_RANDOM_FREEBIE || gbHospitalPriceModifier == Enum212.HOSPITAL_FREEBIE) || (CheckFact(Enum170.FACT_HOSPITAL_FREEBIE_DECISION_MADE, 0) == FALSE && iRandom < CHANCE_FOR_DOCTOR_TO_SAY_RANDOM_QUOTE)) {
+              if ((gbHospitalPriceModifier == Enum212.HOSPITAL_RANDOM_FREEBIE || gbHospitalPriceModifier == Enum212.HOSPITAL_FREEBIE) || (CheckFact(Enum170.FACT_HOSPITAL_FREEBIE_DECISION_MADE, 0) == false && iRandom < CHANCE_FOR_DOCTOR_TO_SAY_RANDOM_QUOTE)) {
                 SetFactTrue(Enum170.FACT_HOSPITAL_FREEBIE_DECISION_MADE);
                 if (CheckFact(Enum170.FACT_LOYALTY_HIGH, ubTargetNPC) && CheckFact(Enum170.FACT_24_HOURS_SINCE_DOCTOR_TALKED_TO, ubTargetNPC)) {
                   // loyalty high... freebie
@@ -2928,7 +2928,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
                 // joey rescued.... note this will set FACT_WILLIS_GIVES_DISCOUNT so this will only ever be handled once
                 gbHospitalPriceModifier = Enum212.HOSPITAL_FREEBIE;
                 TriggerNPCRecord(ubTargetNPC, 20);
-              } else if (CheckFact(Enum170.FACT_LOYALTY_HIGH, ubTargetNPC) && CheckFact(Enum170.FACT_24_HOURS_SINCE_DOCTOR_TALKED_TO, ubTargetNPC) && ((gbHospitalPriceModifier == Enum212.HOSPITAL_FREEBIE) || (CheckFact(Enum170.FACT_HOSPITAL_FREEBIE_DECISION_MADE, 0) == FALSE && iRandom < CHANCE_FOR_DOCTOR_TO_SAY_RANDOM_QUOTE))) {
+              } else if (CheckFact(Enum170.FACT_LOYALTY_HIGH, ubTargetNPC) && CheckFact(Enum170.FACT_24_HOURS_SINCE_DOCTOR_TALKED_TO, ubTargetNPC) && ((gbHospitalPriceModifier == Enum212.HOSPITAL_FREEBIE) || (CheckFact(Enum170.FACT_HOSPITAL_FREEBIE_DECISION_MADE, 0) == false && iRandom < CHANCE_FOR_DOCTOR_TO_SAY_RANDOM_QUOTE))) {
                 // loyalty high... freebie
                 gbHospitalPriceModifier = Enum212.HOSPITAL_FREEBIE;
                 TriggerNPCRecord(ubTargetNPC, 19);
@@ -2945,7 +2945,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
       case Enum213.NPC_ACTION_DOCTOR_ESCORT_PATIENTS:
         // find anyone in sector who is wounded; set to hospital patient
-        pSoldier2 = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier2 = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier2) {
           // HOSPITAL_PATIENT_DISTANCE
           cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -3041,14 +3041,14 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case Enum213.NPC_ACTION_CHOOSE_DOCTOR:
         // find doctors available and trigger record 12 or 13
-        pSoldier = FindSoldierByProfileID(Enum268.STEVE, FALSE); // Steve Willis, 80
+        pSoldier = FindSoldierByProfileID(Enum268.STEVE, false); // Steve Willis, 80
         if (pSoldier) {
           if (!pSoldier.value.bActive || !pSoldier.value.bInSector || !(pSoldier.value.bTeam == CIV_TEAM) || !(pSoldier.value.bNeutral) || (pSoldier.value.bLife < OKLIFE)) {
             pSoldier = null;
           }
         }
 
-        pSoldier2 = FindSoldierByProfileID(Enum268.VINCE, FALSE); // Vince, 69
+        pSoldier2 = FindSoldierByProfileID(Enum268.VINCE, false); // Vince, 69
         if (pSoldier2) {
           if (!pSoldier2.value.bActive || !pSoldier2.value.bInSector || !(pSoldier2.value.bTeam == CIV_TEAM) || !(pSoldier2.value.bNeutral) || (pSoldier2.value.bLife < OKLIFE)) {
             pSoldier2 = null;
@@ -3092,7 +3092,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
           let sNearestPC: INT16;
           let ubID: UINT8;
 
-          pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+          pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
           if (pSoldier) {
             pSoldier2 = null;
 
@@ -3112,7 +3112,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_KINGPIN_TRIGGER_25_OR_14:
-        if (CheckFact(Enum170.FACT_KINGPIN_INTRODUCED_SELF, ubTargetNPC) == TRUE) {
+        if (CheckFact(Enum170.FACT_KINGPIN_INTRODUCED_SELF, ubTargetNPC) == true) {
           TriggerNPCRecord(ubTargetNPC, 25);
         } else {
           TriggerNPCRecord(ubTargetNPC, 14);
@@ -3121,7 +3121,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case Enum213.NPC_ACTION_INITIATE_SHOPKEEPER_INTERFACE:
         // check if this is a shopkeeper who has been shutdown
-        if (HandleShopKeepHasBeenShutDown(gTalkPanel.ubCharNum) == FALSE) {
+        if (HandleShopKeepHasBeenShutDown(gTalkPanel.ubCharNum) == false) {
           DeleteTalkingMenu();
 
           EnterShopKeeperInterfaceScreen(gTalkPanel.ubCharNum);
@@ -3161,14 +3161,14 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         AwardExperienceBonusToActiveSquad(Enum200.EXP_BONUS_MAXIMUM);
         break;
       case Enum213.NPC_ACTION_TRIGGER_YANNI:
-        if (CheckFact(Enum170.FACT_CHALICE_STOLEN, 0) == TRUE) {
+        if (CheckFact(Enum170.FACT_CHALICE_STOLEN, 0) == true) {
           TriggerNPCRecord(Enum268.YANNI, 8);
         } else {
           TriggerNPCRecord(Enum268.YANNI, 7);
         }
         break;
       case Enum213.NPC_ACTION_TRIGGER_MARY_OR_JOHN_RECORD_9:
-        pSoldier = FindSoldierByProfileID(Enum268.MARY, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.MARY, false);
         if (pSoldier && pSoldier.value.bLife >= OKLIFE) {
           TriggerNPCRecord(Enum268.MARY, 9);
         } else {
@@ -3176,7 +3176,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         }
         break;
       case Enum213.NPC_ACTION_TRIGGER_MARY_OR_JOHN_RECORD_10:
-        pSoldier = FindSoldierByProfileID(Enum268.MARY, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.MARY, false);
         if (pSoldier && pSoldier.value.bLife >= OKLIFE) {
           TriggerNPCRecord(Enum268.MARY, 10);
         } else {
@@ -3185,18 +3185,18 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_GET_OUT_OF_WHEELCHAIR:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier && pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
           DeleteTalkingMenu();
-          EVENT_InitNewSoldierAnim(pSoldier, Enum193.CRIPPLE_KICKOUT, 0, TRUE);
+          EVENT_InitNewSoldierAnim(pSoldier, Enum193.CRIPPLE_KICKOUT, 0, true);
         }
         break;
 
       case Enum213.NPC_ACTION_GET_OUT_OF_WHEELCHAIR_AND_BECOME_HOSTILE:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier && pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
           DeleteTalkingMenu();
-          EVENT_InitNewSoldierAnim(pSoldier, Enum193.CRIPPLE_KICKOUT, 0, TRUE);
+          EVENT_InitNewSoldierAnim(pSoldier, Enum193.CRIPPLE_KICKOUT, 0, true);
         }
         TriggerFriendWithHostileQuote(ubTargetNPC);
         break;
@@ -3212,7 +3212,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_CANCEL_WAYPOINTS:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           pSoldier.value.bOrders = Enum241.ONGUARD;
         }
@@ -3242,8 +3242,8 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         gMercProfiles[Enum268.MANNY].ubMiscFlags3 |= PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE;
         gMercProfiles[Enum268.MANNY].ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
         gMercProfiles[Enum268.MANNY].usStrategicInsertionData = 19904;
-        gMercProfiles[Enum268.MANNY].fUseProfileInsertionInfo = TRUE;
-        pSoldier = FindSoldierByProfileID(Enum268.MANNY, FALSE);
+        gMercProfiles[Enum268.MANNY].fUseProfileInsertionInfo = true;
+        pSoldier = FindSoldierByProfileID(Enum268.MANNY, false);
         if (pSoldier) {
           pSoldier.value.bOrders = Enum241.STATIONARY;
         }
@@ -3252,23 +3252,23 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_MAKE_BRENDA_STATIONARY:
-        pSoldier = FindSoldierByProfileID(Enum268.BRENDA, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.BRENDA, false);
         if (pSoldier) {
           gMercProfiles[Enum268.BRENDA].ubMiscFlags3 |= PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE;
           gMercProfiles[Enum268.BRENDA].ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
           gMercProfiles[Enum268.BRENDA].usStrategicInsertionData = pSoldier.value.sGridNo;
-          gMercProfiles[Enum268.BRENDA].fUseProfileInsertionInfo = TRUE;
+          gMercProfiles[Enum268.BRENDA].fUseProfileInsertionInfo = true;
           pSoldier.value.bOrders = Enum241.STATIONARY;
         }
         break;
 
       case Enum213.NPC_ACTION_MAKE_MIGUEL_STATIONARY:
-        pSoldier = FindSoldierByProfileID(Enum268.MIGUEL, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.MIGUEL, false);
         if (pSoldier) {
           gMercProfiles[Enum268.MIGUEL].ubMiscFlags3 |= PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE;
           gMercProfiles[Enum268.MIGUEL].ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
           gMercProfiles[Enum268.MIGUEL].usStrategicInsertionData = pSoldier.value.sGridNo;
-          gMercProfiles[Enum268.MIGUEL].fUseProfileInsertionInfo = TRUE;
+          gMercProfiles[Enum268.MIGUEL].fUseProfileInsertionInfo = true;
           pSoldier.value.bOrders = Enum241.STATIONARY;
         }
         break;
@@ -3327,7 +3327,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
 
       case Enum213.NPC_ACTION_REMOVE_MERC_FOR_MARRIAGE:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           pSoldier = ChangeSoldierTeam(pSoldier, CIV_TEAM);
         }
@@ -3354,14 +3354,14 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         }
         break;
       case Enum213.NPC_ACTION_REMOVE_NPC:
-        pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
+        pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier) {
           EndAIGuysTurn(pSoldier);
           RemoveManAsTarget(pSoldier);
           TacticalRemoveSoldier(pSoldier.value.ubID);
           gMercProfiles[ubTargetNPC].sSectorX = 0;
           gMercProfiles[ubTargetNPC].sSectorY = 0;
-          CheckForEndOfBattle(TRUE);
+          CheckForEndOfBattle(true);
         }
         break;
 
@@ -3484,7 +3484,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         }
         break;
       case Enum213.NPC_ACTION_TRIGGER_BREWSTER_BY_WARDEN_PROXIMITY:
-        pSoldier = FindSoldierByProfileID(Enum268.BREWSTER, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.BREWSTER, false);
         if (pSoldier) {
           sGridNo = GetGridNoOfCorpseGivenProfileID(Enum268.WARDEN);
           if (sGridNo != NOWHERE && PythSpacesAway(pSoldier.value.sGridNo, sGridNo) <= 10) {
@@ -3495,12 +3495,12 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         }
         break;
       case Enum213.NPC_ACTION_FILL_UP_CAR:
-        pSoldier = FindSoldierByProfileID(Enum268.PROF_HUMMER, TRUE);
+        pSoldier = FindSoldierByProfileID(Enum268.PROF_HUMMER, true);
         if (!pSoldier) {
           // ice cream truck?
-          pSoldier = FindSoldierByProfileID(Enum268.PROF_ICECREAM, TRUE);
+          pSoldier = FindSoldierByProfileID(Enum268.PROF_ICECREAM, true);
         } else if (pSoldier.value.sBreathRed == 10000) {
-          pSoldier2 = FindSoldierByProfileID(Enum268.PROF_ICECREAM, TRUE);
+          pSoldier2 = FindSoldierByProfileID(Enum268.PROF_ICECREAM, true);
           if (pSoldier2) {
             // try refueling this vehicle instead
             pSoldier = pSoldier2;
@@ -3584,7 +3584,7 @@ function CalcMedicalCost(ubId: UINT8): UINT32 {
   uiCostSoFar = 0;
 
   // find the doctor's soldiertype to get his position
-  pNPC = FindSoldierByProfileID(ubId, FALSE);
+  pNPC = FindSoldierByProfileID(ubId, false);
   if (!pNPC) {
     return 0;
   }
@@ -3612,7 +3612,7 @@ function CalcMedicalCost(ubId: UINT8): UINT32 {
   return uiCostSoFar;
 }
 
-function PlayerTeamHasTwoSpotsLeft(): BOOLEAN {
+function PlayerTeamHasTwoSpotsLeft(): boolean {
   let cnt: UINT32;
   let uiCount: UINT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -3624,9 +3624,9 @@ function PlayerTeamHasTwoSpotsLeft(): BOOLEAN {
   }
 
   if (uiCount <= (gTacticalStatus.Team[gbPlayerNum].bLastID - 2) - 2) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
@@ -3720,7 +3720,7 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
         } else {
           if (ubProfile == Enum268.JOHN) {
             // Mary might be alive, and if so we need to ensure two places
-            pSoldier = FindSoldierByProfileID(Enum268.MARY, TRUE);
+            pSoldier = FindSoldierByProfileID(Enum268.MARY, true);
             if (pSoldier && !PlayerTeamHasTwoSpotsLeft()) {
               ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_RECRUIT_TEAM_FULL]);
               break;
@@ -3730,7 +3730,7 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
           RecruitEPC(ubProfile);
 
           // Get soldier pointer
-          pSoldier = FindSoldierByProfileID(ubProfile, FALSE);
+          pSoldier = FindSoldierByProfileID(ubProfile, false);
           if (!pSoldier) {
             return;
           }
@@ -3739,7 +3739,7 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NOW_BING_ESCORTED_STR], gMercProfiles[ubProfile].zNickname, (pSoldier.value.bAssignment + 1));
 
           // Change Squads....
-          SetCurrentSquad(pSoldier.value.bAssignment, FALSE);
+          SetCurrentSquad(pSoldier.value.bAssignment, false);
 
           HandleStuffForNPCEscorted(ubProfile);
         }
@@ -3887,12 +3887,12 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
         gMercProfiles[Enum268.DARYL].bNPCData = gpSrcSoldier.value.ubProfile;
 
         // create key for Daryl to give to player
-        pSoldier = FindSoldierByProfileID(Enum268.DARYL, FALSE);
+        pSoldier = FindSoldierByProfileID(Enum268.DARYL, false);
         if (pSoldier) {
           let Key: OBJECTTYPE;
 
           CreateKeyObject(addressof(Key), 1, 38);
-          AutoPlaceObject(pSoldier, addressof(Key), FALSE);
+          AutoPlaceObject(pSoldier, addressof(Key), false);
         }
         TriggerNPCRecord(Enum268.DARYL, 11);
       } else {
@@ -3909,7 +3909,7 @@ function DoneFadeOutActionBasement(): void {
   SetCurrentWorldSector(10, 1, 1);
 
   // OK, once down here, adjust the above map with crate info....
-  gfTacticalTraversal = FALSE;
+  gfTacticalTraversal = false;
   gpTacticalTraversalGroup = null;
   gpTacticalTraversalChosenSoldier = null;
 
@@ -3947,7 +3947,7 @@ function DoneFadeInActionBasement(): void {
   }
 
   // Get merc id for carlos!
-  pNPCSoldier = FindSoldierByProfileID(58, FALSE);
+  pNPCSoldier = FindSoldierByProfileID(58, false);
   if (!pNPCSoldier) {
     return;
   }
@@ -3961,7 +3961,7 @@ function DoneFadeOutActionLeaveBasement(): void {
   // OK, insertion data found, enter sector!
   SetCurrentWorldSector(10, 1, 0);
 
-  gfTacticalTraversal = FALSE;
+  gfTacticalTraversal = false;
   gpTacticalTraversalGroup = null;
   gpTacticalTraversalChosenSoldier = null;
 
@@ -3974,7 +3974,7 @@ function DoneFadeInActionLeaveBasement(): void {
   // Start conversation, etc
 }
 
-function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: BOOLEAN): BOOLEAN {
+function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: boolean): boolean {
   let pStructure: Pointer<STRUCTURE>;
   let sStructGridNo: INT16;
   let sActionGridNo: INT16;
@@ -3987,7 +3987,7 @@ function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: BOOLEAN): BOOLEAN {
     sStructGridNo = FindClosestDoor(pSoldier);
 
     if (sStructGridNo == NOWHERE) {
-      return FALSE;
+      return false;
     }
 
     pStructure = FindStructure(sStructGridNo, STRUCTURE_ANYDOOR);
@@ -4000,32 +4000,32 @@ function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: BOOLEAN): BOOLEAN {
     }
 
     if (sStructGridNo == NOWHERE) {
-      return FALSE;
+      return false;
     }
 
     pStructure = FindStructure(sStructGridNo, STRUCTURE_OPENABLE);
   }
 
   if (pStructure == null) {
-    return FALSE;
+    return false;
   }
 
   if (pStructure.value.fFlags & STRUCTURE_OPEN) {
     // it's already open!
-    TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_OPEN_STRUCTURE, FALSE);
-    return FALSE;
+    TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_OPEN_STRUCTURE, false);
+    return false;
   }
 
   // anything that an NPC opens this way should become unlocked!
 
   pDoor = FindDoorInfoAtGridNo(sStructGridNo);
   if (pDoor) {
-    pDoor.value.fLocked = FALSE;
+    pDoor.value.fLocked = false;
   }
 
-  sActionGridNo = FindAdjacentGridEx(pSoldier, sStructGridNo, addressof(ubDirection), null, FALSE, TRUE);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, sStructGridNo, addressof(ubDirection), null, false, true);
   if (sActionGridNo == -1) {
-    return FALSE;
+    return false;
   }
 
   // Set dest gridno
@@ -4042,20 +4042,20 @@ function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: BOOLEAN): BOOLEAN {
 
   pSoldier.value.bAction = Enum289.AI_ACTION_PENDING_ACTION;
 
-  return TRUE;
+  return true;
 }
 
 function TextRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP && fLButtonDown) {
-    InternalShutupaYoFace(gTalkPanel.iFaceIndex, FALSE);
+    InternalShutupaYoFace(gTalkPanel.iFaceIndex, false);
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 

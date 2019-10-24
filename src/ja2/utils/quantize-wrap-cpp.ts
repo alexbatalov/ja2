@@ -4,7 +4,7 @@ interface RGBValues {
   b: UINT8;
 }
 
-function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, pPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
+function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, pPalette: Pointer<SGPPaletteEntry>): boolean {
   let sNumColors: INT16;
 
   // FIRST CREATE PALETTE
@@ -22,7 +22,7 @@ function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT1
   // OK, MAPIT!
   MapPalette(pDest, pSrc, sWidth, sHeight, sNumColors, pPalette);
 
-  return TRUE;
+  return true;
 }
 
 function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, sNumColors: INT16, pTable: Pointer<SGPPaletteEntry>): void {

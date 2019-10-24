@@ -4,8 +4,8 @@
 // The gfKeyState table is used to track which of the keys is up or down at any one time. This is used while polling
 // the interface.
 
-let gfKeyState: BOOLEAN[] /* [256] */; // TRUE = Pressed, FALSE = Not Pressed
-let fCursorWasClipped: BOOLEAN = FALSE;
+let gfKeyState: boolean[] /* [256] */; // TRUE = Pressed, FALSE = Not Pressed
+let fCursorWasClipped: boolean = false;
 let gCursorClipRect: RECT;
 
 // The gsKeyTranslationTables basically translates scan codes to our own key value table. Please note that the table is 2 bytes
@@ -17,20 +17,20 @@ let gfCtrlState: UINT16; // TRUE = Pressed, FALSE = Not Pressed
 
 // These data structure are used to track the mouse while polling
 
-let gfTrackDblClick: BOOLEAN;
+let gfTrackDblClick: boolean;
 let guiDoubleClkDelay: UINT32; // Current delay in milliseconds for a delay
 let guiSingleClickTimer: UINT32;
 let guiRecordedWParam: UINT32;
 let guiRecordedLParam: UINT32;
 let gusRecordedKeyState: UINT16;
-let gfRecordedLeftButtonUp: BOOLEAN;
+let gfRecordedLeftButtonUp: boolean;
 
 let guiLeftButtonRepeatTimer: UINT32;
 let guiRightButtonRepeatTimer: UINT32;
 
-let gfTrackMousePos: BOOLEAN; // TRUE = queue mouse movement events, FALSE = don't
-let gfLeftButtonState: BOOLEAN; // TRUE = Pressed, FALSE = Not Pressed
-let gfRightButtonState: BOOLEAN; // TRUE = Pressed, FALSE = Not Pressed
+let gfTrackMousePos: boolean; // TRUE = queue mouse movement events, FALSE = don't
+let gfLeftButtonState: boolean; // TRUE = Pressed, FALSE = Not Pressed
+let gfRightButtonState: boolean; // TRUE = Pressed, FALSE = Not Pressed
 let gusMouseXPos: UINT16; // X position of the mouse on screen
 let gusMouseYPos: UINT16; // y position of the mouse on screen
 
@@ -42,7 +42,7 @@ let gusHeadIndex: UINT16;
 let gusTailIndex: UINT16;
 
 // ATE: Added to signal if we have had input this frame - cleared by the SGP main loop
-let gfSGPInputReceived: BOOLEAN = FALSE;
+let gfSGPInputReceived: boolean = false;
 
 // This is the WIN95 hook specific data and defines used to handle the keyboard and
 // mouse hook
@@ -53,7 +53,7 @@ let ghMouseHook: HHOOK;
 // If the following pointer is non NULL then input characters are redirected to
 // the related string
 
-let gfCurrentStringInputState: BOOLEAN;
+let gfCurrentStringInputState: boolean;
 let gpCurrentStringDescriptor: Pointer<StringInput>;
 
 // Local function headers
@@ -74,10 +74,10 @@ function KeyboardHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
   } else {
     // Key was up
     KeyDown(wParam, lParam);
-    gfSGPInputReceived = TRUE;
+    gfSGPInputReceived = true;
   }
 
-  return TRUE;
+  return true;
 }
 
 function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
@@ -97,9 +97,9 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
       // Update the button state
-      gfLeftButtonState = TRUE;
+      gfLeftButtonState = true;
       // Set that we have input
-      gfSGPInputReceived = TRUE;
+      gfSGPInputReceived = true;
       // Trigger an input event
       QueueEvent(LEFT_BUTTON_DOWN, 0, uiParam);
       break;
@@ -110,9 +110,9 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
       // Update the button state
-      gfLeftButtonState = FALSE;
+      gfLeftButtonState = false;
       // Set that we have input
-      gfSGPInputReceived = TRUE;
+      gfSGPInputReceived = true;
       // Trigger an input event
       QueueEvent(LEFT_BUTTON_UP, 0, uiParam);
       break;
@@ -123,9 +123,9 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
       // Update the button state
-      gfRightButtonState = TRUE;
+      gfRightButtonState = true;
       // Set that we have input
-      gfSGPInputReceived = TRUE;
+      gfSGPInputReceived = true;
       // Trigger an input event
       QueueEvent(RIGHT_BUTTON_DOWN, 0, uiParam);
       break;
@@ -136,9 +136,9 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
       // Update the button state
-      gfRightButtonState = FALSE;
+      gfRightButtonState = false;
       // Set that we have input
-      gfSGPInputReceived = TRUE;
+      gfSGPInputReceived = true;
       // Trigger an input event
       QueueEvent(RIGHT_BUTTON_UP, 0, uiParam);
       break;
@@ -149,39 +149,39 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
       // Trigger an input event
-      if (gfTrackMousePos == TRUE) {
+      if (gfTrackMousePos == true) {
         QueueEvent(MOUSE_POS, 0, uiParam);
       }
       // Set that we have input
-      gfSGPInputReceived = TRUE;
+      gfSGPInputReceived = true;
       break;
   }
-  return TRUE;
+  return true;
 }
 
-function InitializeInputManager(): BOOLEAN {
+function InitializeInputManager(): boolean {
   // Link to debugger
   RegisterDebugTopic(TOPIC_INPUT, "Input Manager");
   // Initialize the gfKeyState table to FALSE everywhere
-  memset(gfKeyState, FALSE, 256);
+  memset(gfKeyState, false, 256);
   // Initialize the Event Queue
   gusQueueCount = 0;
   gusHeadIndex = 0;
   gusTailIndex = 0;
   // By default, we will not queue mousemove events
-  gfTrackMousePos = FALSE;
+  gfTrackMousePos = false;
   // Initialize other variables
-  gfShiftState = FALSE;
-  gfAltState = FALSE;
-  gfCtrlState = FALSE;
+  gfShiftState = false;
+  gfAltState = false;
+  gfCtrlState = false;
   // Initialize variables pertaining to DOUBLE CLIK stuff
-  gfTrackDblClick = TRUE;
+  gfTrackDblClick = true;
   guiDoubleClkDelay = DBL_CLK_TIME;
   guiSingleClickTimer = 0;
-  gfRecordedLeftButtonUp = FALSE;
+  gfRecordedLeftButtonUp = false;
   // Initialize variables pertaining to the button states
-  gfLeftButtonState = FALSE;
-  gfRightButtonState = FALSE;
+  gfLeftButtonState = false;
+  gfRightButtonState = false;
   // Initialize variables pertaining to the repeat mechanism
   guiLeftButtonRepeatTimer = 0;
   guiRightButtonRepeatTimer = 0;
@@ -189,7 +189,7 @@ function InitializeInputManager(): BOOLEAN {
   gusMouseXPos = 320;
   gusMouseYPos = 240;
   // Initialize the string input mechanism
-  gfCurrentStringInputState = FALSE;
+  gfCurrentStringInputState = false;
   gpCurrentStringDescriptor = null;
   // Activate the hook functions for both keyboard and Mouse
   ghKeyboardHook = SetWindowsHookEx(WH_KEYBOARD, KeyboardHandler, 0, GetCurrentThreadId());
@@ -197,7 +197,7 @@ function InitializeInputManager(): BOOLEAN {
 
   ghMouseHook = SetWindowsHookEx(WH_MOUSE, MouseHandler, 0, GetCurrentThreadId());
   DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, String("Set mouse hook returned %d", ghMouseHook));
-  return TRUE;
+  return true;
 }
 
 function ShutdownInputManager(): void {
@@ -340,7 +340,7 @@ function QueueEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): voi
   }
 }
 
-function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): BOOLEAN {
+function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): boolean {
   // Is there an event to dequeue
   if (gusQueueCount > 0) {
     memcpy(Event, addressof(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
@@ -351,10 +351,10 @@ function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): B
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function DequeueEvent(Event: Pointer<InputAtom>): BOOLEAN {
+function DequeueEvent(Event: Pointer<InputAtom>): boolean {
   HandleSingleClicksAndButtonRepeats();
 
   // Is there an event to dequeue
@@ -372,10 +372,10 @@ function DequeueEvent(Event: Pointer<InputAtom>): BOOLEAN {
     gusQueueCount--;
 
     // dequeued an event, return TRUE
-    return TRUE;
+    return true;
   } else {
     // No events to dequeue, return FALSE
-    return FALSE;
+    return false;
   }
 }
 
@@ -677,7 +677,7 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
 
   // Find ucChar by translating ubKey using the gsKeyTranslationTable. If the SHIFT, ALT or CTRL key are down, then
   // the index into the translation table us changed from ubKey to ubKey+256, ubKey+512 and ubKey+768 respectively
-  if (gfShiftState == TRUE) {
+  if (gfShiftState == true) {
     // SHIFT is pressed, hence we add 256 to ubKey before translation to ubChar
     ubChar = gsKeyTranslationTable[ubKey + 256];
   } else {
@@ -688,11 +688,11 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
     // Just something i found, and thought u should know about.  DF.
     //
 
-    if (gfAltState == TRUE) {
+    if (gfAltState == true) {
       // ALT is pressed, hence ubKey is multiplied by 3 before translation to ubChar
       ubChar = gsKeyTranslationTable[ubKey + 512];
     } else {
-      if (gfCtrlState == TRUE) {
+      if (gfCtrlState == true) {
         // CTRL is pressed, hence ubKey is multiplied by 4 before translation to ubChar
         ubChar = gsKeyTranslationTable[ubKey + 768];
       } else {
@@ -705,14 +705,14 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
   GetCursorPos(addressof(MousePos));
   uiTmpLParam = ((MousePos.y << 16) & 0xffff0000) | (MousePos.x & 0x0000ffff);
 
-  if (ufKeyState == TRUE) {
+  if (ufKeyState == true) {
     // Key has been PRESSED
     // Find out if the key is already pressed and if not, queue an event and update the gfKeyState array
-    if (gfKeyState[ubKey] == FALSE) {
+    if (gfKeyState[ubKey] == false) {
       // Well the key has just been pressed, therefore we queue up and event and update the gsKeyState
-      if (gfCurrentStringInputState == FALSE) {
+      if (gfCurrentStringInputState == false) {
         // There is no string input going on right now, so we queue up the event
-        gfKeyState[ubKey] = TRUE;
+        gfKeyState[ubKey] = true;
         QueueEvent(KEY_DOWN, ubChar, uiTmpLParam);
       } else {
         // There is a current input string which will capture this event
@@ -721,7 +721,7 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
       }
     } else {
       // Well the key gets repeated
-      if (gfCurrentStringInputState == FALSE) {
+      if (gfCurrentStringInputState == false) {
         // There is no string input going on right now, so we queue up the event
         QueueEvent(KEY_REPEAT, ubChar, uiTmpLParam);
       } else {
@@ -732,17 +732,17 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
   } else {
     // Key has been RELEASED
     // Find out if the key is already pressed and if so, queue an event and update the gfKeyState array
-    if (gfKeyState[ubKey] == TRUE) {
+    if (gfKeyState[ubKey] == true) {
       // Well the key has just been pressed, therefore we queue up and event and update the gsKeyState
-      gfKeyState[ubKey] = FALSE;
+      gfKeyState[ubKey] = false;
       QueueEvent(KEY_UP, ubChar, uiTmpLParam);
     }
     // else if the alt tab key was pressed
     else if (ubChar == TAB && gfAltState) {
       // therefore minimize the application
       ShowWindow(ghWindow, SW_MINIMIZE);
-      gfKeyState[ALT] = FALSE;
-      gfAltState = FALSE;
+      gfKeyState[ALT] = false;
+      gfAltState = false;
     }
   }
 }
@@ -752,17 +752,17 @@ function KeyDown(usParam: UINT32, uiParam: UINT32): void {
   if (usParam == 16) {
     // SHIFT key is PRESSED
     gfShiftState = SHIFT_DOWN;
-    gfKeyState[16] = TRUE;
+    gfKeyState[16] = true;
   } else {
     if (usParam == 17) {
       // CTRL key is PRESSED
       gfCtrlState = CTRL_DOWN;
-      gfKeyState[17] = TRUE;
+      gfKeyState[17] = true;
     } else {
       if (usParam == 18) {
         // ALT key is pressed
         gfAltState = ALT_DOWN;
-        gfKeyState[18] = TRUE;
+        gfKeyState[18] = true;
       } else {
         if (usParam == SNAPSHOT) {
           // PrintScreen();
@@ -772,7 +772,7 @@ function KeyDown(usParam: UINT32, uiParam: UINT32): void {
         } else {
           // No special keys have been pressed
           // Call KeyChange() and pass TRUE to indicate key has been PRESSED and not RELEASED
-          KeyChange(usParam, uiParam, TRUE);
+          KeyChange(usParam, uiParam, true);
         }
       }
     }
@@ -783,18 +783,18 @@ function KeyUp(usParam: UINT32, uiParam: UINT32): void {
   // Are we RELEASING one of SHIFT, ALT or CTRL ???
   if (usParam == 16) {
     // SHIFT key is RELEASED
-    gfShiftState = FALSE;
-    gfKeyState[16] = FALSE;
+    gfShiftState = false;
+    gfKeyState[16] = false;
   } else {
     if (usParam == 17) {
       // CTRL key is RELEASED
-      gfCtrlState = FALSE;
-      gfKeyState[17] = FALSE;
+      gfCtrlState = false;
+      gfKeyState[17] = false;
     } else {
       if (usParam == 18) {
         // ALT key is RELEASED
-        gfAltState = FALSE;
-        gfKeyState[18] = FALSE;
+        gfAltState = false;
+        gfKeyState[18] = false;
       } else {
         if (usParam == SNAPSHOT) {
           // DB this used to be keyed to SCRL_LOCK
@@ -808,7 +808,7 @@ function KeyUp(usParam: UINT32, uiParam: UINT32): void {
         } else {
           // No special keys have been pressed
           // Call KeyChange() and pass FALSE to indicate key has been PRESSED and not RELEASED
-          KeyChange(usParam, uiParam, FALSE);
+          KeyChange(usParam, uiParam, false);
         }
       }
     }
@@ -894,8 +894,8 @@ function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilte
       pStringDescriptor.value.usCurrentStringLength = 0;
     }
 
-    pStringDescriptor.value.fInsertMode = FALSE;
-    pStringDescriptor.value.fFocus = FALSE;
+    pStringDescriptor.value.fInsertMode = false;
+    pStringDescriptor.value.fFocus = false;
     pStringDescriptor.value.pPreviousString = null;
     pStringDescriptor.value.pNextString = null;
 
@@ -931,7 +931,7 @@ function LinkNextString(pCurrentString: Pointer<StringInput>, pNextString: Point
   }
 }
 
-function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): BOOLEAN {
+function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): boolean {
   let uiIndex: UINT32;
   let uiEndIndex: UINT32;
 
@@ -939,13 +939,13 @@ function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): BOOLEA
     uiEndIndex = pFilter.value;
     for (uiIndex = 1; uiIndex <= pFilter.value; uiIndex++) {
       if (usCharacter == (pFilter + uiIndex).value) {
-        return TRUE;
+        return true;
       }
     }
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function RedirectToString(usInputCharacter: UINT16): void {
@@ -956,50 +956,50 @@ function RedirectToString(usInputCharacter: UINT16): void {
     switch (usInputCharacter) {
       case ENTER: // ENTER is pressed, the last character field should be set to ENTER
         if (gpCurrentStringDescriptor.value.pNextString != null) {
-          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor.value.fFocus = false;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
-          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.fFocus = true;
           gpCurrentStringDescriptor.value.usLastCharacter = 0;
         } else {
-          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor.value.fFocus = false;
           gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
-          gfCurrentStringInputState = FALSE;
+          gfCurrentStringInputState = false;
         }
         break;
       case ESC: // ESC was pressed, the last character field should be set to ESC
-        gpCurrentStringDescriptor.value.fFocus = FALSE;
+        gpCurrentStringDescriptor.value.fFocus = false;
         gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
-        gfCurrentStringInputState = FALSE;
+        gfCurrentStringInputState = false;
         break;
       case SHIFT_TAB: // TAB was pressed, the last character field should be set to TAB
         if (gpCurrentStringDescriptor.value.pPreviousString != null) {
-          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor.value.fFocus = false;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pPreviousString;
-          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.fFocus = true;
           gpCurrentStringDescriptor.value.usLastCharacter = 0;
         }
         break;
       case TAB: // TAB was pressed, the last character field should be set to TAB
         if (gpCurrentStringDescriptor.value.pNextString != null) {
-          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor.value.fFocus = false;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
-          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.fFocus = true;
           gpCurrentStringDescriptor.value.usLastCharacter = 0;
         }
         break;
       case UPARROW: // The UPARROW was pressed, the last character field should be set to UPARROW
         if (gpCurrentStringDescriptor.value.pPreviousString != null) {
-          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor.value.fFocus = false;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pPreviousString;
-          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.fFocus = true;
           gpCurrentStringDescriptor.value.usLastCharacter = 0;
         }
         break;
       case DNARROW: // The DNARROW was pressed, the last character field should be set to DNARROW
         if (gpCurrentStringDescriptor.value.pNextString != null) {
-          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor.value.fFocus = false;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
-          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.fFocus = true;
           gpCurrentStringDescriptor.value.usLastCharacter = 0;
         }
         break;
@@ -1041,10 +1041,10 @@ function RedirectToString(usInputCharacter: UINT16): void {
         gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         break;
       case INSERT: // Toggle insert mode
-        if (gpCurrentStringDescriptor.value.fInsertMode == TRUE) {
-          gpCurrentStringDescriptor.value.fInsertMode = FALSE;
+        if (gpCurrentStringDescriptor.value.fInsertMode == true) {
+          gpCurrentStringDescriptor.value.fInsertMode = false;
         } else {
-          gpCurrentStringDescriptor.value.fInsertMode = TRUE;
+          gpCurrentStringDescriptor.value.fInsertMode = true;
         }
         gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         break;
@@ -1060,8 +1060,8 @@ function RedirectToString(usInputCharacter: UINT16): void {
       default: //
         // normal input
         //
-        if (CharacterIsValid(usInputCharacter, gpCurrentStringDescriptor.value.pFilter) == TRUE) {
-          if (gpCurrentStringDescriptor.value.fInsertMode == TRUE) {
+        if (CharacterIsValid(usInputCharacter, gpCurrentStringDescriptor.value.pFilter) == true) {
+          if (gpCurrentStringDescriptor.value.fInsertMode == true) {
             // Before we can shift characters for the insert, we must make sure we have the space
             if (gpCurrentStringDescriptor.value.usCurrentStringLength < (gpCurrentStringDescriptor.value.usMaxStringLength - 1)) {
               // Before we can add a new character we must shift existing ones to for the insert
@@ -1103,29 +1103,29 @@ function GetStringInputState(): UINT16 {
   }
 }
 
-function StringInputHasFocus(): BOOLEAN {
+function StringInputHasFocus(): boolean {
   return gfCurrentStringInputState;
 }
 
-function SetStringFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
+function SetStringFocus(pStringDescriptor: Pointer<StringInput>): boolean {
   if (pStringDescriptor != null) {
     if (gpCurrentStringDescriptor != null) {
-      gpCurrentStringDescriptor.value.fFocus = FALSE;
+      gpCurrentStringDescriptor.value.fFocus = false;
     }
     // Ok overide current entry
-    gfCurrentStringInputState = TRUE;
+    gfCurrentStringInputState = true;
     gpCurrentStringDescriptor = pStringDescriptor;
-    gpCurrentStringDescriptor.value.fFocus = TRUE;
+    gpCurrentStringDescriptor.value.fFocus = true;
     gpCurrentStringDescriptor.value.usLastCharacter = 0;
-    return TRUE;
+    return true;
   } else {
     if (gpCurrentStringDescriptor != null) {
-      gpCurrentStringDescriptor.value.fFocus = FALSE;
+      gpCurrentStringDescriptor.value.fFocus = false;
     }
     // Ok overide current entry
-    gfCurrentStringInputState = FALSE;
+    gfCurrentStringInputState = false;
     gpCurrentStringDescriptor = null;
-    return TRUE;
+    return true;
   }
 }
 
@@ -1133,11 +1133,11 @@ function GetCursorPositionInString(pStringDescriptor: Pointer<StringInput>): UIN
   return pStringDescriptor.value.usStringOffset;
 }
 
-function StringHasFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
+function StringHasFocus(pStringDescriptor: Pointer<StringInput>): boolean {
   if (pStringDescriptor != null) {
     return pStringDescriptor.value.fFocus;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
@@ -1165,7 +1165,7 @@ function RestoreString(pStringDescriptor: Pointer<StringInput>): void {
     pStringDescriptor.value.usCurrentStringLength = 0;
   }
 
-  pStringDescriptor.value.fInsertMode = FALSE;
+  pStringDescriptor.value.fInsertMode = false;
 }
 
 function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
@@ -1174,7 +1174,7 @@ function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
     // make sure the gpCurrentStringDescriptor is NULL if necessary
     if (pStringDescriptor == gpCurrentStringDescriptor) {
       gpCurrentStringDescriptor = null;
-      gfCurrentStringInputState = FALSE;
+      gfCurrentStringInputState = false;
     }
     // Make sure we have a valid string within the string descriptor
     if (pStringDescriptor.value.pOriginalString != null) {
@@ -1205,12 +1205,12 @@ function RestrictMouseCursor(pRectangle: Pointer<SGPRect>): void {
   // Make a copy of our rect....
   memcpy(addressof(gCursorClipRect), pRectangle, sizeof(gCursorClipRect));
   ClipCursor(pRectangle);
-  fCursorWasClipped = TRUE;
+  fCursorWasClipped = true;
 }
 
 function FreeMouseCursor(): void {
   ClipCursor(null);
-  fCursorWasClipped = FALSE;
+  fCursorWasClipped = false;
 }
 
 function RestoreCursorClipRect(): void {
@@ -1223,7 +1223,7 @@ function GetRestrictedClipCursor(pRectangle: Pointer<SGPRect>): void {
   GetClipCursor(pRectangle);
 }
 
-function IsCursorRestricted(): BOOLEAN {
+function IsCursorRestricted(): boolean {
   return fCursorWasClipped;
 }
 
@@ -1248,7 +1248,7 @@ function SimulateMouseMovement(uiNewXPos: UINT32, uiNewYPos: UINT32): void {
   mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, flNewXPos, flNewYPos, 0, 0);
 }
 
-function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32, uiX2: UINT32, uiY2: UINT32): BOOLEAN {
+function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32, uiX2: UINT32, uiY2: UINT32): boolean {
   let uiEventX: UINT32;
   let uiEventY: UINT32;
 
@@ -1267,7 +1267,7 @@ function DequeueAllKeyBoardEvents(): void {
     ;
 
   // Deque all the events waiting in the SGP queue
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     // dont do anything
   }
 }

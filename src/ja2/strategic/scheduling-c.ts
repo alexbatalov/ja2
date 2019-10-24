@@ -107,7 +107,7 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
   let pSchedule: Pointer<SCHEDULENODE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let iScheduleIndex: INT32 = 0;
-  let fAutoProcess: BOOLEAN;
+  let fAutoProcess: boolean;
 
   // Attempt to locate the schedule.
   pSchedule = GetSchedule(ubScheduleID);
@@ -131,9 +131,9 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
 
   // Okay, now we have good pointers to the soldier and the schedule.
   // Now, determine which time in this schedule that we are processing.
-  fAutoProcess = FALSE;
+  fAutoProcess = false;
   if (guiCurrentScreen != Enum26.GAME_SCREEN) {
-    fAutoProcess = TRUE;
+    fAutoProcess = true;
   } else {
     for (iScheduleIndex = 0; iScheduleIndex < MAX_SCHEDULE_ACTIONS; iScheduleIndex++) {
       if (pSchedule.value.usTime[iScheduleIndex] == GetWorldMinutesInDay()) {
@@ -141,7 +141,7 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
       }
     }
     if (iScheduleIndex == MAX_SCHEDULE_ACTIONS) {
-      fAutoProcess = TRUE;
+      fAutoProcess = true;
     }
   }
   if (fAutoProcess) {
@@ -295,7 +295,7 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
   // Schedules are posted when the soldier is added...
 }
 
-function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
+function LoadSchedulesFromSave(hFile: HWFILE): boolean {
   let pSchedule: Pointer<SCHEDULENODE> = null;
   let temp: SCHEDULENODE;
   let ubNum: UINT8;
@@ -309,7 +309,7 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
   FileRead(hFile, addressof(ubNum), uiNumBytesToRead, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiNumBytesToRead) {
     FileClose(hFile);
-    return FALSE;
+    return false;
   }
 
   // Hack problem with schedules getting misaligned.
@@ -321,7 +321,7 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
     FileRead(hFile, addressof(temp), uiNumBytesToRead, addressof(uiNumBytesRead));
     if (uiNumBytesRead != uiNumBytesToRead) {
       FileClose(hFile);
-      return FALSE;
+      return false;
     }
     // LOADDATA( &temp, *hBuffer, sizeof( SCHEDULENODE ) );
 
@@ -348,7 +348,7 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
     ubRealNum--;
   }
   // Schedules are posted when the soldier is added...
-  return TRUE;
+  return true;
 }
 
 // used to fix a bug in the editor where the schedules were reversed.  Because only
@@ -396,7 +396,7 @@ function ClearAllSchedules(): void {
   }
 }
 
-function SaveSchedules(hFile: HWFILE): BOOLEAN {
+function SaveSchedules(hFile: HWFILE): boolean {
   let curr: Pointer<SCHEDULENODE>;
   let uiBytesWritten: UINT32;
   let ubNum: UINT8;
@@ -416,7 +416,7 @@ function SaveSchedules(hFile: HWFILE): BOOLEAN {
 
   FileWrite(hFile, addressof(ubNum), sizeof(UINT8), addressof(uiBytesWritten));
   if (uiBytesWritten != sizeof(UINT8)) {
-    return FALSE;
+    return false;
   }
   // Now, save each schedule
   curr = gpScheduleList;
@@ -426,21 +426,21 @@ function SaveSchedules(hFile: HWFILE): BOOLEAN {
     if (!(curr.value.usFlags & SCHEDULE_FLAGS_TEMPORARY)) {
       ubNumFucker++;
       if (ubNumFucker > ubNum) {
-        return TRUE;
+        return true;
       }
       FileWrite(hFile, curr, sizeof(SCHEDULENODE), addressof(uiBytesWritten));
       if (uiBytesWritten != sizeof(SCHEDULENODE)) {
-        return FALSE;
+        return false;
       }
     }
     curr = curr.value.next;
   }
-  return TRUE;
+  return true;
 }
 
 // Each schedule has upto four parts to it, so sort them chronologically.
 // Happily, the fields with no times actually are the highest.
-function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
+function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): boolean {
   let index: INT32;
   let i: INT32;
   let iBestIndex: INT32;
@@ -448,7 +448,7 @@ function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
   let usData1: UINT16;
   let usData2: UINT16;
   let ubAction: UINT8;
-  let fSorted: BOOLEAN = FALSE;
+  let fSorted: boolean = false;
 
   // Use a bubblesort method (max:  3 switches).
   index = 0;
@@ -463,7 +463,7 @@ function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
     }
     if (iBestIndex != index) {
       // we will swap the best index with the current index.
-      fSorted = TRUE;
+      fSorted = true;
       usTime = pSchedule.value.usTime[index];
       usData1 = pSchedule.value.usData1[index];
       usData2 = pSchedule.value.usData2[index];
@@ -482,7 +482,7 @@ function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
   return fSorted;
 }
 
-function BumpAnyExistingMerc(sGridNo: INT16): BOOLEAN {
+function BumpAnyExistingMerc(sGridNo: INT16): boolean {
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>; // NB this is the person already in the location,
   let sNewGridNo: INT16;
@@ -495,13 +495,13 @@ function BumpAnyExistingMerc(sGridNo: INT16): BOOLEAN {
   // we want to 'bump' them to the nearest available spot
 
   if (!GridNoOnVisibleWorldTile(sGridNo)) {
-    return TRUE;
+    return true;
   }
 
   ubID = WhoIsThere2(sGridNo, 0);
 
   if (ubID == NOBODY) {
-    return TRUE;
+    return true;
   }
 
   pSoldier = MercPtrs[ubID];
@@ -511,13 +511,13 @@ function BumpAnyExistingMerc(sGridNo: INT16): BOOLEAN {
   // sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpot( pSoldier, sGridNo, 10, &ubDir );
 
   if (sNewGridNo == NOWHERE) {
-    return FALSE;
+    return false;
   }
 
   ConvertGridNoToCellXY(sNewGridNo, addressof(sCellX), addressof(sCellY));
   EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
-  return TRUE;
+  return true;
 }
 
 function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): void {
@@ -559,7 +559,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
         // civ should go off map; this tells us where the civ will return
         pSoldier.value.sOffWorldGridNo = pSchedule.value.usData2[index];
         MoveSoldierFromMercToAwaySlot(pSoldier);
-        pSoldier.value.bInSector = FALSE;
+        pSoldier.value.bInSector = false;
       } else {
         // let this person patrol from here from now on
         pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData2[index];
@@ -581,7 +581,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       ConvertGridNoToCellXY(pSchedule.value.usData1[index], addressof(sCellX), addressof(sCellY));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       MoveSoldierFromAwayToMercSlot(pSoldier);
-      pSoldier.value.bInSector = TRUE;
+      pSoldier.value.bInSector = true;
       // let this person patrol from here from now on
       pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
       break;
@@ -614,7 +614,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       // ok, that tells us where the civ will return
       pSoldier.value.sOffWorldGridNo = sGridNo;
       MoveSoldierFromMercToAwaySlot(pSoldier);
-      pSoldier.value.bInSector = FALSE;
+      pSoldier.value.bInSector = false;
       break;
   }
 }
@@ -718,7 +718,7 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiStartTime: UINT32, uiEndTime: UINT32): void {
   let i: INT32;
-  let fPostedNextEvent: BOOLEAN = FALSE;
+  let fPostedNextEvent: boolean = false;
 
   if (uiStartTime > uiEndTime) {
     // The start time is later in the day than the end time, which means we'll be wrapping
@@ -738,7 +738,7 @@ function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiSt
       } else {
         // CJC: Note that end time is always passed in here as the current time so GetWorldDayInMinutes will be for the correct day
         AddStrategicEvent(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[i], pSchedule.value.ubScheduleID);
-        fPostedNextEvent = TRUE;
+        fPostedNextEvent = true;
         break;
       }
     }
@@ -751,7 +751,7 @@ function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiSt
       if (pSchedule.value.usTime[i] >= uiStartTime && pSchedule.value.usTime[i] <= uiEndTime) {
         AutoProcessSchedule(pSchedule, i);
       } else if (pSchedule.value.usTime[i] >= uiEndTime) {
-        fPostedNextEvent = TRUE;
+        fPostedNextEvent = true;
         AddStrategicEvent(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[i], pSchedule.value.ubScheduleID);
         break;
       }
@@ -818,11 +818,11 @@ function PostDefaultSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 function PostSchedules(): void {
   let curr: Pointer<SOLDIERINITNODE>;
-  let fDefaultSchedulesPossible: BOOLEAN = FALSE;
+  let fDefaultSchedulesPossible: boolean = false;
 
   // If no way to leave the map, then don't post default schedules.
   if (gMapInformation.sNorthGridNo != -1 || gMapInformation.sEastGridNo != -1 || gMapInformation.sSouthGridNo != -1 || gMapInformation.sWestGridNo != -1) {
-    fDefaultSchedulesPossible = TRUE;
+    fDefaultSchedulesPossible = true;
   }
   curr = gSoldierInitHead;
   while (curr) {
@@ -850,22 +850,22 @@ function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: 
       case Enum171.SCHEDULE_ACTION_LOCKDOOR:
         pDoor = FindDoorInfoAtGridNo(sDoorGridNo);
         if (pDoor) {
-          pDoor.value.fLocked = TRUE;
+          pDoor.value.fLocked = true;
         }
         // make sure it's closed as well
-        ModifyDoorStatus(sDoorGridNo, FALSE, DONTSETDOORSTATUS);
+        ModifyDoorStatus(sDoorGridNo, false, DONTSETDOORSTATUS);
         break;
       case Enum171.SCHEDULE_ACTION_UNLOCKDOOR:
         pDoor = FindDoorInfoAtGridNo(sDoorGridNo);
         if (pDoor) {
-          pDoor.value.fLocked = FALSE;
+          pDoor.value.fLocked = false;
         }
         break;
       case Enum171.SCHEDULE_ACTION_OPENDOOR:
-        ModifyDoorStatus(sDoorGridNo, TRUE, DONTSETDOORSTATUS);
+        ModifyDoorStatus(sDoorGridNo, true, DONTSETDOORSTATUS);
         break;
       case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
-        ModifyDoorStatus(sDoorGridNo, FALSE, DONTSETDOORSTATUS);
+        ModifyDoorStatus(sDoorGridNo, false, DONTSETDOORSTATUS);
         break;
     }
   }
@@ -907,10 +907,10 @@ function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   AddStrategicEvent(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[iBestIndex], pSchedule.value.ubScheduleID);
 }
 
-function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntryTime: Pointer<UINT32>, puiExitTime: Pointer<UINT32>): BOOLEAN {
+function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntryTime: Pointer<UINT32>, puiExitTime: Pointer<UINT32>): boolean {
   let iLoop: INT32;
-  let fFoundEntryTime: BOOLEAN = FALSE;
-  let fFoundExitTime: BOOLEAN = FALSE;
+  let fFoundEntryTime: boolean = false;
+  let fFoundExitTime: boolean = false;
   let pSchedule: Pointer<SCHEDULENODE>;
 
   puiEntryTime.value = 0;
@@ -921,31 +921,31 @@ function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntr
     // If person had default schedule then would have been assigned and this would
     // have succeeded.
     // Hence this is an error.
-    return FALSE;
+    return false;
   }
 
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
     if (pSchedule.value.ubAction[iLoop] == Enum171.SCHEDULE_ACTION_ENTERSECTOR) {
-      fFoundEntryTime = TRUE;
+      fFoundEntryTime = true;
       puiEntryTime.value = pSchedule.value.usTime[iLoop];
     } else if (pSchedule.value.ubAction[iLoop] == Enum171.SCHEDULE_ACTION_LEAVESECTOR) {
-      fFoundExitTime = TRUE;
+      fFoundExitTime = true;
       puiExitTime.value = pSchedule.value.usTime[iLoop];
     }
   }
 
   if (fFoundEntryTime && fFoundExitTime) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
 // This is for determining shopkeeper's opening/closing hours
-function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): BOOLEAN {
+function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): boolean {
   let iLoop: INT32;
-  let fFoundOpeningTime: BOOLEAN = FALSE;
-  let fFoundClosingTime: BOOLEAN = FALSE;
+  let fFoundOpeningTime: boolean = false;
+  let fFoundClosingTime: boolean = false;
   let pSchedule: Pointer<SCHEDULENODE>;
 
   puiOpeningTime.value = 0;
@@ -956,29 +956,29 @@ function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, pu
     // If person had default schedule then would have been assigned and this would
     // have succeeded.
     // Hence this is an error.
-    return FALSE;
+    return false;
   }
 
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
     if (pSchedule.value.ubAction[iLoop] == Enum171.SCHEDULE_ACTION_UNLOCKDOOR) {
-      fFoundOpeningTime = TRUE;
+      fFoundOpeningTime = true;
       puiOpeningTime.value = pSchedule.value.usTime[iLoop];
     } else if (pSchedule.value.ubAction[iLoop] == Enum171.SCHEDULE_ACTION_LOCKDOOR) {
-      fFoundClosingTime = TRUE;
+      fFoundClosingTime = true;
       puiClosingTime.value = pSchedule.value.usTime[iLoop];
     }
   }
 
   if (fFoundOpeningTime && fFoundClosingTime) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function GetEarliestMorningScheduleEvent(pSchedule: Pointer<SCHEDULENODE>, puiTime: Pointer<UINT32>): BOOLEAN {
+function GetEarliestMorningScheduleEvent(pSchedule: Pointer<SCHEDULENODE>, puiTime: Pointer<UINT32>): boolean {
   let iLoop: INT32;
-  let fFoundTime: BOOLEAN = FALSE;
+  let fFoundTime: boolean = false;
 
   puiTime.value = 100000;
 
@@ -989,23 +989,23 @@ function GetEarliestMorningScheduleEvent(pSchedule: Pointer<SCHEDULENODE>, puiTi
   }
 
   if (puiTime.value == 100000) {
-    return FALSE;
+    return false;
   } else {
-    return TRUE;
+    return true;
   }
 }
 
-function ScheduleHasMorningNonSleepEntries(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
+function ScheduleHasMorningNonSleepEntries(pSchedule: Pointer<SCHEDULENODE>): boolean {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
     if (pSchedule.value.ubAction[bLoop] != Enum171.SCHEDULE_ACTION_NONE && pSchedule.value.ubAction[bLoop] != Enum171.SCHEDULE_ACTION_SLEEP) {
       if (pSchedule.value.usTime[bLoop] < (12 * 60)) {
-        return TRUE;
+        return true;
       }
     }
   }
-  return FALSE;
+  return false;
 }
 
 function GetEmptyScheduleEntry(pSchedule: Pointer<SCHEDULENODE>): INT8 {

@@ -6,11 +6,11 @@ interface CUR_INTERACTIVE_TILE {
   sTileIndex: INT16;
   sMaxScreenY: INT16;
   sHeighestScreenY: INT16;
-  fFound: BOOLEAN;
+  fFound: boolean;
   pFoundNode: Pointer<LEVELNODE>;
   sFoundGridNo: INT16;
   usStructureID: UINT16;
-  fStructure: BOOLEAN;
+  fStructure: boolean;
 }
 
 interface INTERACTIVE_TILE_STACK_TYPE {
@@ -20,10 +20,10 @@ interface INTERACTIVE_TILE_STACK_TYPE {
 }
 
 let gCurIntTileStack: INTERACTIVE_TILE_STACK_TYPE;
-let gfCycleIntTile: BOOLEAN = FALSE;
+let gfCycleIntTile: boolean = false;
 
 let gCurIntTile: CUR_INTERACTIVE_TILE;
-let gfOverIntTile: BOOLEAN = FALSE;
+let gfOverIntTile: boolean = false;
 
 // Values to determine if we should check or not
 let gsINTOldRenderCenterX: INT16 = 0;
@@ -31,28 +31,28 @@ let gsINTOldRenderCenterY: INT16 = 0;
 let gusINTOldMousePosX: UINT16 = 0;
 let gusINTOldMousePosY: UINT16 = 0;
 
-function InitInteractiveTileManagement(): BOOLEAN {
-  return TRUE;
+function InitInteractiveTileManagement(): boolean {
+  return true;
 }
 
 function ShutdownInteractiveTileManagement(): void {
 }
 
-function AddInteractiveTile(sGridNo: INT16, pLevelNode: Pointer<LEVELNODE>, uiFlags: UINT32, usType: UINT16): BOOLEAN {
-  return TRUE;
+function AddInteractiveTile(sGridNo: INT16, pLevelNode: Pointer<LEVELNODE>, uiFlags: UINT32, usType: UINT16): boolean {
+  return true;
 }
 
-function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier: Pointer<SOLDIERTYPE>, ubDirection: UINT8): BOOLEAN {
+function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier: Pointer<SOLDIERTYPE>, ubDirection: UINT8): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   // ATE: Patch fix: Don't allow if alreay in animation
   if (pSoldier.value.usAnimState == Enum193.OPEN_STRUCT || pSoldier.value.usAnimState == Enum193.OPEN_STRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT_CROUCHED) {
-    return FALSE;
+    return false;
   }
 
   pStructure = FindStructureByID(sGridNo, usStructureID);
   if (pStructure == null) {
-    return FALSE;
+    return false;
   }
   if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
     // Add soldier event for opening door....
@@ -70,12 +70,12 @@ function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier:
     pSoldier.value.ubPendingActionAnimCount = 0;
   }
 
-  return TRUE;
+  return true;
 }
 
-function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>, psAPCost: Pointer<INT16>, psBPCost: Pointer<INT16>): BOOLEAN {
+function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>, psAPCost: Pointer<INT16>, psBPCost: Pointer<INT16>): boolean {
   if (pStructure == null) {
-    return FALSE;
+    return false;
   }
   if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
     // For doors, if open, we can safely add APs for closing
@@ -95,26 +95,26 @@ function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>
     psBPCost.value = AP_OPEN_DOOR;
   }
 
-  return TRUE;
+  return true;
 }
 
-function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8): BOOLEAN {
-  let fDoor: BOOLEAN = FALSE;
+function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8): boolean {
+  let fDoor: boolean = false;
 
   if (pStructure == null) {
-    return FALSE;
+    return false;
   }
 
   if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
-    fDoor = TRUE;
+    fDoor = true;
   }
 
   InteractWithOpenableStruct(pSoldier, pStructure, ubDirection, fDoor);
 
-  return TRUE;
+  return true;
 }
 
-function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pStructure: Pointer<STRUCTURE>;
   let usStructureID: UINT16;
   let sGridNo: INT16;
@@ -126,7 +126,7 @@ function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
   pStructure = FindStructureByID(sGridNo, usStructureID);
   if (pStructure == null) {
     // DEBUG MSG!
-    return FALSE;
+    return false;
   }
 
   return HandleOpenableStruct(pSoldier, sGridNo, pStructure);
@@ -138,7 +138,7 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   let sAPCost: INT16 = 0;
   let sBPCost: INT16 = 0;
   let pItemPool: Pointer<ITEM_POOL>;
-  let fDidMissingQuote: BOOLEAN = FALSE;
+  let fDidMissingQuote: boolean = false;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
 
@@ -149,10 +149,10 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   // Do sound...
   if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
     // Play Opening sound...
-    PlayJA2Sample(GetStructureOpenSound(pStructure, FALSE), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
+    PlayJA2Sample(GetStructureOpenSound(pStructure, false), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
   } else {
     // Play Opening sound...
-    PlayJA2Sample((GetStructureOpenSound(pStructure, TRUE)), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
+    PlayJA2Sample((GetStructureOpenSound(pStructure, true)), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
   }
 
   // ATE: Don't handle switches!
@@ -160,11 +160,11 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
     if (pSoldier.value.bTeam == gbPlayerNum) {
       if (sGridNo == BOBBYR_SHIPPING_DEST_GRIDNO && gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X && gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y && gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z && CheckFact(Enum170.FACT_PABLOS_STOLE_FROM_LATEST_SHIPMENT, 0) && !(CheckFact(Enum170.FACT_PLAYER_FOUND_ITEMS_MISSING, 0))) {
         SayQuoteFromNearbyMercInSector(BOBBYR_SHIPPING_DEST_GRIDNO, 3, Enum202.QUOTE_STUFF_MISSING_DRASSEN);
-        fDidMissingQuote = TRUE;
+        fDidMissingQuote = true;
       }
     } else if (pSoldier.value.bTeam == CIV_TEAM) {
       if (pSoldier.value.ubProfile != NO_PROFILE) {
-        TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_OPEN_STRUCTURE, FALSE);
+        TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_OPEN_STRUCTURE, false);
       }
     }
 
@@ -172,17 +172,17 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
     if (GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
       // Update visiblity....
       if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
-        let fDoHumm: BOOLEAN = TRUE;
-        let fDoLocators: BOOLEAN = TRUE;
+        let fDoHumm: boolean = true;
+        let fDoLocators: boolean = true;
 
         if (pSoldier.value.bTeam != gbPlayerNum) {
-          fDoHumm = FALSE;
-          fDoLocators = FALSE;
+          fDoHumm = false;
+          fDoLocators = false;
         }
 
         // Look for ownership here....
         if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.OWNERSHIP) {
-          fDoHumm = FALSE;
+          fDoHumm = false;
           TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, Enum259.BATTLE_SOUND_NOTHING, 500);
         }
 
@@ -196,7 +196,7 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
         if (!fDidMissingQuote) {
           if (pItemPool.value.pNext != null) {
             if (pItemPool.value.pNext.value.pNext != null) {
-              fDoHumm = FALSE;
+              fDoHumm = false;
 
               TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, Enum259.BATTLE_SOUND_COOL1, 500);
             }
@@ -231,7 +231,7 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 }
 
-function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: BOOLEAN): UINT32 {
+function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean): UINT32 {
   let pIntNode: Pointer<LEVELNODE>;
   let pStructure: Pointer<STRUCTURE>;
   let sGridNo: INT16;
@@ -251,7 +251,7 @@ function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: BOOLEAN): UINT3
     } else {
       if (pStructure.value.fFlags & STRUCTURE_SWITCH) {
         wcscpy(gzIntTileLocation, gzLateLocalizedString[25]);
-        gfUIIntTileLocation = TRUE;
+        gfUIIntTileLocation = true;
       }
 
       if (fConfirm) {
@@ -394,7 +394,7 @@ function LogMouseOverInteractiveTile(sGridNo: INT16): void {
         if (RefinePointCollisionOnStruct(sGridNo, sScreenX, sScreenY, aRect.iLeft, aRect.iBottom, pNode)) {
           // Do some additional checks here!
           if (RefineLogicOnStruct(sGridNo, pNode)) {
-            gCurIntTile.fFound = TRUE;
+            gCurIntTile.fFound = true;
 
             // Only if we are not currently cycling....
             if (!gfCycleIntTile) {
@@ -425,7 +425,7 @@ function LogMouseOverInteractiveTile(sGridNo: INT16): void {
   }
 }
 
-function InternalGetCurInteractiveTile(fRejectItemsOnTop: BOOLEAN): Pointer<LEVELNODE> {
+function InternalGetCurInteractiveTile(fRejectItemsOnTop: boolean): Pointer<LEVELNODE> {
   let pNode: Pointer<LEVELNODE> = null;
   let pStructure: Pointer<STRUCTURE> = null;
 
@@ -466,7 +466,7 @@ function InternalGetCurInteractiveTile(fRejectItemsOnTop: BOOLEAN): Pointer<LEVE
 }
 
 function GetCurInteractiveTile(): Pointer<LEVELNODE> {
-  return InternalGetCurInteractiveTile(TRUE);
+  return InternalGetCurInteractiveTile(true);
 }
 
 function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<LEVELNODE> {
@@ -483,7 +483,7 @@ function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<LEVELNOD
   return pNode;
 }
 
-function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>, fRejectOnTopItems: BOOLEAN): Pointer<LEVELNODE> {
+function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>, fRejectOnTopItems: boolean): Pointer<LEVELNODE> {
   let pNode: Pointer<LEVELNODE>;
   let pStructure: Pointer<STRUCTURE>;
 
@@ -513,18 +513,18 @@ function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<IN
 }
 
 function GetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>): Pointer<LEVELNODE> {
-  return ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo, ppStructure, TRUE);
+  return ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo, ppStructure, true);
 }
 
 function BeginCurInteractiveTileCheck(bCheckFlags: UINT8): void {
-  gfOverIntTile = FALSE;
+  gfOverIntTile = false;
 
   // OK, release our stack, stuff could be different!
-  gfCycleIntTile = FALSE;
+  gfCycleIntTile = false;
 
   // Reset some highest values
   gCurIntTile.sHeighestScreenY = 0;
-  gCurIntTile.fFound = FALSE;
+  gCurIntTile.fFound = false;
   gCurIntTile.ubFlags = bCheckFlags;
 
   // Reset stack values
@@ -549,26 +549,26 @@ function EndCurInteractiveTileCheck(): void {
 
     if (pCurIntTile.value.pFoundNode.value.pStructureData != null) {
       gCurIntTile.usStructureID = pCurIntTile.value.pFoundNode.value.pStructureData.value.usStructureID;
-      gCurIntTile.fStructure = TRUE;
+      gCurIntTile.fStructure = true;
     } else {
-      gCurIntTile.fStructure = FALSE;
+      gCurIntTile.fStructure = false;
     }
 
-    gfOverIntTile = TRUE;
+    gfOverIntTile = true;
   } else {
     // If we are in cycle mode, end it
     if (gfCycleIntTile) {
-      gfCycleIntTile = FALSE;
+      gfCycleIntTile = false;
     }
   }
 }
 
-function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN {
+function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): boolean {
   let TileElem: Pointer<TILE_ELEMENT>;
   let pStructure: Pointer<STRUCTURE>;
 
   if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
-    return FALSE;
+    return false;
   }
 
   TileElem = addressof(gTileDatabase[pNode.value.usIndex]);
@@ -580,35 +580,35 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
 
     // If no data, quit
     if (pStructure == null) {
-      return FALSE;
+      return false;
     }
 
     if (!(pStructure.value.fFlags & (STRUCTURE_OPENABLE | STRUCTURE_HASITEMONTOP))) {
-      return FALSE;
+      return false;
     }
 
     if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].value.ubBodyType == Enum194.ROBOTNOWEAPON) {
-      return FALSE;
+      return false;
     }
 
     // If we are a door, we need a different definition of being visible than other structs
     if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
       if (!IsDoorVisibleAtGridNo(sGridNo)) {
-        return FALSE;
+        return false;
       }
 
       // OK, For a OPENED door, addition requirements are: need to be in 'HAND CURSOR' mode...
       if (pStructure.value.fFlags & STRUCTURE_OPEN) {
         // Are we in hand cursor mode?
         if (gCurrentUIMode != Enum206.HANDCURSOR_MODE && gCurrentUIMode != Enum206.ACTION_MODE) {
-          return FALSE;
+          return false;
         }
       }
 
       // If this option is on...
       if (!gGameSettings.fOptions[Enum8.TOPTION_SNAP_CURSOR_TO_DOOR]) {
         if (gCurrentUIMode != Enum206.HANDCURSOR_MODE) {
-          return FALSE;
+          return false;
         }
       }
     } else {
@@ -636,13 +636,13 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
         if (sNewGridNo != NOWHERE) {
           // If we are hidden by a roof, reject it!
           if (!gfBasement && IsRoofVisible2(sNewGridNo) && !(gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
-            return FALSE;
+            return false;
           }
         }
       } else {
         // If we are hidden by a roof, reject it!
         if (!gfBasement && IsRoofVisible(sGridNo) && !(gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
-          return FALSE;
+          return false;
         }
       }
     }
@@ -651,15 +651,15 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
     if (TileElem.value.uiFlags & HIDDEN_TILE) {
       if (!IsHiddenStructureVisible(sGridNo, pNode.value.usIndex)) {
         // Return false
-        return FALSE;
+        return false;
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT16, sSrcX: INT16, sSrcY: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN {
+function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT16, sSrcX: INT16, sSrcY: INT16, pNode: Pointer<LEVELNODE>): boolean {
   let TileElem: Pointer<TILE_ELEMENT>;
 
   if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
@@ -686,14 +686,14 @@ function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT
 
 // This function will check the video object at SrcX and SrcY for the lack of transparency
 // will return true if data found, else false
-function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: UINT16, iTestX: INT32, iTestY: INT32): BOOLEAN {
+function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: UINT16, iTestX: INT32, iTestY: INT32): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
   let SrcPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let pTrav: Pointer<ETRLEObject>;
-  let fDataFound: BOOLEAN = FALSE;
+  let fDataFound: boolean = false;
   let iTestPos: INT32;
   let iStartPos: INT32;
 
@@ -823,11 +823,11 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
   return fDataFound;
 }
 
-function ShouldCheckForMouseDetections(): BOOLEAN {
-  let fOK: BOOLEAN = FALSE;
+function ShouldCheckForMouseDetections(): boolean {
+  let fOK: boolean = false;
 
   if (gsINTOldRenderCenterX != gsRenderCenterX || gsINTOldRenderCenterY != gsRenderCenterY || gusINTOldMousePosX != gusMouseXPos || gusINTOldMousePosY != gusMouseYPos) {
-    fOK = TRUE;
+    fOK = true;
   }
 
   // Set old values
@@ -841,13 +841,13 @@ function ShouldCheckForMouseDetections(): BOOLEAN {
 }
 
 function CycleIntTileFindStack(usMapPos: UINT16): void {
-  gfCycleIntTile = TRUE;
+  gfCycleIntTile = true;
 
   // Cycle around!
   gCurIntTileStack.bCur++;
 
   // PLot new movement
-  gfPlotNewMovement = TRUE;
+  gfPlotNewMovement = true;
 
   if (gCurIntTileStack.bCur == gCurIntTileStack.bNum) {
     gCurIntTileStack.bCur = 0;

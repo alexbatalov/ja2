@@ -4,7 +4,7 @@ let giTimerDiag: INT32 = 0;
 let guiBaseJA2Clock: UINT32 = 0;
 let guiBaseJA2NoPauseClock: UINT32 = 0;
 
-let gfPauseClock: BOOLEAN = FALSE;
+let gfPauseClock: boolean = false;
 
 let giTimerIntervals: INT32[] /* [NUMTIMERS] */ = [
   5, // Tactical Overhead
@@ -58,11 +58,11 @@ let guiClockDiff: UINT32 = 0;
 let guiClockStart: UINT32 = 0;
 
 function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD): void {
-  /* static */ let fInFunction: BOOLEAN = FALSE;
+  /* static */ let fInFunction: boolean = false;
   // SOLDIERTYPE		*pSoldier;
 
   if (!fInFunction) {
-    fInFunction = TRUE;
+    fInFunction = true;
 
     guiBaseJA2NoPauseClock += BASETIMESLICE;
 
@@ -113,11 +113,11 @@ function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD):
       }
     }
 
-    fInFunction = FALSE;
+    fInFunction = false;
   }
 }
 
-function InitializeJA2Clock(): BOOLEAN {
+function InitializeJA2Clock(): boolean {
   let mmResult: MMRESULT;
   let tc: TIMECAPS;
   let cnt: INT32;
@@ -141,7 +141,7 @@ function InitializeJA2Clock(): BOOLEAN {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not create timer callback");
   }
 
-  return TRUE;
+  return true;
 }
 
 function ShutdownJA2Clock(): void {
@@ -185,7 +185,7 @@ function InitializeJA2TimerID(uiDelay: UINT32, uiCallbackID: UINT32, uiUser: UIN
   }
 
   // invalid callback id
-  Assert(FALSE);
+  Assert(false);
   return 0;
 }
 
@@ -195,11 +195,11 @@ function InitializeJA2TimerID(uiDelay: UINT32, uiCallbackID: UINT32, uiUser: UIN
 function FlashItem(uiID: UINT, uiMsg: UINT, uiUser: DWORD, uiDw1: DWORD, uiDw2: DWORD): void {
 }
 
-function PauseTime(fPaused: BOOLEAN): void {
+function PauseTime(fPaused: boolean): void {
   gfPauseClock = fPaused;
 }
 
-function SetCustomizableTimerCallbackAndDelay(iDelay: INT32, pCallback: CUSTOMIZABLE_TIMER_CALLBACK, fReplace: BOOLEAN): void {
+function SetCustomizableTimerCallbackAndDelay(iDelay: INT32, pCallback: CUSTOMIZABLE_TIMER_CALLBACK, fReplace: boolean): void {
   if (gpCustomizableTimerCallback) {
     if (!fReplace) {
       // replace callback but call the current callback first

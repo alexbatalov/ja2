@@ -127,9 +127,9 @@ interface ARMS_DEALER_STATUS {
   uiArmsDealersCash: UINT32; // How much money the arms dealer currently has
 
   ubSpecificDealerFlags: UINT8; // Misc state flags for specific dealers
-  fOutOfBusiness: BOOLEAN; // Set when a dealer has been killed, etc.
-  fRepairDelayBeenUsed: BOOLEAN; // Set when a repairman has missed his repair time estimate & given his excuse for it
-  fUnusedKnowsPlayer: BOOLEAN; // Set if the shopkeeper has met with the player before [UNUSED]
+  fOutOfBusiness: boolean; // Set when a dealer has been killed, etc.
+  fRepairDelayBeenUsed: boolean; // Set when a repairman has missed his repair time estimate & given his excuse for it
+  fUnusedKnowsPlayer: boolean; // Set if the shopkeeper has met with the player before [UNUSED]
 
   uiTimePlayerLastInSKI: UINT32; // game time (in total world minutes) when player last talked to this dealer in SKI
 
@@ -154,7 +154,7 @@ interface DEALER_SPECIAL_ITEM {
 
   uiRepairDoneTime: UINT32; // If the item is in for repairs, this holds the time when it will be repaired (in min)
 
-  fActive: BOOLEAN; // TRUE means an item is stored here (empty elements may not always be freed immediately)
+  fActive: boolean; // TRUE means an item is stored here (empty elements may not always be freed immediately)
 
   ubOwnerProfileId: UINT8; // stores which merc previously owned an item being repaired
 
@@ -171,7 +171,7 @@ interface DEALER_ITEM_HEADER {
 
   uiOrderArrivalTime: UINT32; // Day the items ordered will arrive on.  It's UINT32 in case we change this to minutes.
   ubQtyOnOrder: UINT8; // The number of items currently on order
-  fPreviouslyEligible: BOOLEAN; // whether or not dealer has been eligible to sell this item in days prior to today
+  fPreviouslyEligible: boolean; // whether or not dealer has been eligible to sell this item in days prior to today
 
   ubPadding: UINT8[] /* [2] */; // filler
 }

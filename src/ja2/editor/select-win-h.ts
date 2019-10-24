@@ -60,7 +60,7 @@ interface DisplayList {
   iWidth: INT16;
   iHeight: INT16;
   uiObjIndx: UINT32;
-  fChosen: BOOLEAN;
+  fChosen: boolean;
   pNext: Pointer<DisplayList>;
 }
 

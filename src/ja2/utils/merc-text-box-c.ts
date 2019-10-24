@@ -57,39 +57,39 @@ let guiFlags: UINT32 = 0;
 let guiBoxIcons: UINT32;
 let guiSkullIcons: UINT32;
 
-function SetCurrentPopUpBox(uiId: UINT32): BOOLEAN {
+function SetCurrentPopUpBox(uiId: UINT32): boolean {
   // given id of the box, find it in the list and set to current
 
   // make sure the box id is valid
   if (uiId == -1) {
     // ScreenMsg( FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Error: Trying to set Current Popup Box using -1 as an ID" );
-    return FALSE;
+    return false;
   }
 
   // see if box inited
   if (gpPopUpBoxList[uiId] != null) {
     gPopUpTextBox = gpPopUpBoxList[uiId];
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function OverrideMercPopupBox(pMercBox: Pointer<MercPopUpBox>): BOOLEAN {
+function OverrideMercPopupBox(pMercBox: Pointer<MercPopUpBox>): boolean {
   // store old box and set current this passed one
   gOldPopUpTextBox = gPopUpTextBox;
 
   gPopUpTextBox = pMercBox;
 
-  return TRUE;
+  return true;
 }
 
-function ResetOverrideMercPopupBox(): BOOLEAN {
+function ResetOverrideMercPopupBox(): boolean {
   gPopUpTextBox = gOldPopUpTextBox;
 
-  return TRUE;
+  return true;
 }
 
-function InitMercPopupBox(): BOOLEAN {
+function InitMercPopupBox(): boolean {
   let iCounter: INT32 = 0;
   let VObjectDesc: VOBJECT_DESC;
 
@@ -111,21 +111,21 @@ function InitMercPopupBox(): BOOLEAN {
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSkullIcons)))
     AssertMsg(0, "Missing INTERFACE\\msgboxiconskull.sti");
 
-  return TRUE;
+  return true;
 }
 
-function ShutDownPopUpBoxes(): BOOLEAN {
+function ShutDownPopUpBoxes(): boolean {
   let iCounter: INT32 = 0;
   for (iCounter = 0; iCounter < MAX_NUMBER_OF_POPUP_BOXES; iCounter++) {
     // now attempt to remove this box
     RemoveMercPopupBoxFromIndex(iCounter);
   }
 
-  return TRUE;
+  return true;
 }
 
 // Tactical Popup
-function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8): BOOLEAN {
+function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8): boolean {
   let vs_desc: VSURFACE_DESC;
   let VObjectDesc: VOBJECT_DESC;
 
@@ -141,13 +141,13 @@ function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8)
   FilenameForBPP(zMercBorderPopupFilenames[ubBorderIndex], VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(gPopUpTextBox.value.uiMercTextPopUpBorder)));
 
-  gPopUpTextBox.value.fMercTextPopupInitialized = TRUE;
+  gPopUpTextBox.value.fMercTextPopupInitialized = true;
 
   // so far so good, return successful
   gPopUpTextBox.value.ubBackgroundIndex = ubBackgroundIndex;
   gPopUpTextBox.value.ubBorderIndex = ubBorderIndex;
 
-  return TRUE;
+  return true;
 }
 
 function RemoveTextMercPopupImages(): void {
@@ -160,7 +160,7 @@ function RemoveTextMercPopupImages(): void {
       // the border
       DeleteVideoObjectFromIndex(gPopUpTextBox.value.uiMercTextPopUpBorder);
 
-      gPopUpTextBox.value.fMercTextPopupInitialized = FALSE;
+      gPopUpTextBox.value.fMercTextPopupInitialized = false;
     }
   }
 
@@ -168,24 +168,24 @@ function RemoveTextMercPopupImages(): void {
   return;
 }
 
-function RenderMercPopUpBoxFromIndex(iBoxId: INT32, sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): BOOLEAN {
+function RenderMercPopUpBoxFromIndex(iBoxId: INT32, sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): boolean {
   // set the current box
-  if (SetCurrentPopUpBox(iBoxId) == FALSE) {
-    return FALSE;
+  if (SetCurrentPopUpBox(iBoxId) == false) {
+    return false;
   }
 
   // now attempt to render the box
   return RenderMercPopupBox(sDestX, sDestY, uiBuffer);
 }
 
-function RenderMercPopupBox(sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): BOOLEAN {
+function RenderMercPopupBox(sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): boolean {
   //	UINT32  uiDestPitchBYTES;
   //	UINT32  uiSrcPitchBYTES;
   //  UINT16  *pDestBuf;
   //	UINT16  *pSrcBuf;
 
   // will render/transfer the image from the buffer in the data structure to the buffer specified by user
-  let fReturnValue: BOOLEAN = TRUE;
+  let fReturnValue: boolean = true;
 
   // grab the destination buffer
   //	pDestBuf = ( UINT16* )LockVideoSurface( uiBuffer, &uiDestPitchBYTES );
@@ -291,7 +291,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
     gPopUpTextBox = pPopUpTextBox;
 
     // Load appropriate images
-    if (LoadTextMercPopupImages(ubBackgroundIndex, ubBorderIndex) == FALSE) {
+    if (LoadTextMercPopupImages(ubBackgroundIndex, ubBorderIndex) == false) {
       MemFree(pPopUpTextBox);
       return -1;
     }
@@ -311,7 +311,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
     if (ubBackgroundIndex != pPopUpTextBox.value.ubBackgroundIndex || ubBorderIndex != pPopUpTextBox.value.ubBorderIndex || !pPopUpTextBox.value.fMercTextPopupInitialized) {
       // Remove old, set new
       RemoveTextMercPopupImages();
-      if (LoadTextMercPopupImages(ubBackgroundIndex, ubBorderIndex) == FALSE) {
+      if (LoadTextMercPopupImages(ubBackgroundIndex, ubBorderIndex) == false) {
         return -1;
       }
     }
@@ -330,7 +330,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
     usTextWidth = usWidth - (MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X)*2 + 1 - usMarginX;
   }
 
-  usNumberVerticalPixels = IanWrappedStringHeight(0, 0, usTextWidth, 2, TEXT_POPUP_FONT(), MERC_TEXT_COLOR, pString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  usNumberVerticalPixels = IanWrappedStringHeight(0, 0, usTextWidth, 2, TEXT_POPUP_FONT(), MERC_TEXT_COLOR, pString, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usNumberOfLines = usNumberVerticalPixels / TEXT_POPUP_GAP_BN_LINES;
 
@@ -368,7 +368,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
   vs_desc.usHeight = usHeight;
   vs_desc.ubBitDepth = 16;
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(pPopUpTextBox.value.uiSourceBufferIndex)));
-  pPopUpTextBox.value.fMercTextPopupSurfaceInitialized = TRUE;
+  pPopUpTextBox.value.fMercTextPopupSurfaceInitialized = true;
 
   pPopUpTextBox.value.sWidth = usWidth;
   pPopUpTextBox.value.sHeight = usHeight;
@@ -450,7 +450,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
   GetMercPopupBoxFontColor(ubBackgroundIndex, addressof(ubFontColor), addressof(ubFontShadowColor));
 
   SetFontShadow(ubFontShadowColor);
-  SetFontDestBuffer(pPopUpTextBox.value.uiSourceBufferIndex, 0, 0, usWidth, usHeight, FALSE);
+  SetFontDestBuffer(pPopUpTextBox.value.uiSourceBufferIndex, 0, 0, usWidth, usHeight, false);
 
   // Display the text
   sDispTextXPos = ((MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X + usMarginX));
@@ -461,10 +461,10 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
 
   {
     // Display the text
-    DisplayWrappedString(sDispTextXPos, ((MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_Y + usMarginTopY)), usTextWidth, 2, MERC_TEXT_FONT(), ubFontColor, pString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(sDispTextXPos, ((MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_Y + usMarginTopY)), usTextWidth, 2, MERC_TEXT_FONT(), ubFontColor, pString, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   SetFontShadow(DEFAULT_SHADOW);
 
   if (iBoxId == -1) {
@@ -479,13 +479,13 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
 }
 
 // Deletes the surface thats contains the border, background and the text.
-function RemoveMercPopupBox(): BOOLEAN {
+function RemoveMercPopupBox(): boolean {
   let iCounter: INT32 = 0;
 
   // make sure the current box does in fact exist
   if (gPopUpTextBox == null) {
     // failed..
-    return FALSE;
+    return false;
   }
 
   // now check to see if inited...
@@ -510,14 +510,14 @@ function RemoveMercPopupBox(): BOOLEAN {
     gPopUpTextBox = null;
   }
 
-  return TRUE;
+  return true;
 }
 
-function RemoveMercPopupBoxFromIndex(uiId: UINT32): BOOLEAN {
+function RemoveMercPopupBoxFromIndex(uiId: UINT32): boolean {
   // find this box, set it to current, and delete it
-  if (SetCurrentPopUpBox(uiId) == FALSE) {
+  if (SetCurrentPopUpBox(uiId) == false) {
     // failed
-    return FALSE;
+    return false;
   }
 
   // now try to remove it
@@ -554,16 +554,16 @@ function GetMercPopupBoxFontColor(ubBackgroundIndex: UINT8, pubFontColor: Pointe
   }
 }
 
-function SetPrepareMercPopupFlags(uiFlags: UINT32): BOOLEAN {
+function SetPrepareMercPopupFlags(uiFlags: UINT32): boolean {
   guiFlags |= uiFlags;
-  return TRUE;
+  return true;
 }
 
-function SetPrepareMercPopUpFlagsFromIndex(uiFlags: UINT32, uiId: UINT32): BOOLEAN {
+function SetPrepareMercPopUpFlagsFromIndex(uiFlags: UINT32, uiId: UINT32): boolean {
   // find this box, set it to current, and delete it
-  if (SetCurrentPopUpBox(uiId) == FALSE) {
+  if (SetCurrentPopUpBox(uiId) == false) {
     // failed
-    return FALSE;
+    return false;
   }
 
   // now try to remove it

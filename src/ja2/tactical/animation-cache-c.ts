@@ -7,7 +7,7 @@ function DetermineOptimumAnimationCacheSize(): void {
   guiCacheSize = MIN_CACHE_SIZE;
 }
 
-function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): BOOLEAN {
+function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): boolean {
   let cnt: UINT32;
 
   // Allocate entries
@@ -29,7 +29,7 @@ function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSu
   // Zero surface databse history for this soldeir
   ClearAnimationSurfacesUsageHistory(usSoldierID);
 
-  return TRUE;
+  return true;
 }
 
 function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {
@@ -45,7 +45,7 @@ function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<Animation
   }
 }
 
-function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>, usSurfaceIndex: UINT16, usCurrentAnimation: UINT16): BOOLEAN {
+function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>, usSurfaceIndex: UINT16, usCurrentAnimation: UINT16): boolean {
   let cnt: UINT8;
   let ubLowestIndex: UINT8 = 0;
   let sMostHits: INT16 = 32000;
@@ -57,7 +57,7 @@ function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<Anim
       // Found surface, return
       AnimDebugMsg(String("Anim Cache: Hit %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
       pAnimCache.value.sCacheHits[cnt]++;
-      return TRUE;
+      return true;
     }
   }
 
@@ -101,7 +101,7 @@ function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<Anim
       AnimDebugMsg(String("Anim Cache: Loading Surface %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
 
       // Insert here
-      CHECKF(LoadAnimationSurface(usSoldierID, usSurfaceIndex, usCurrentAnimation) != FALSE);
+      CHECKF(LoadAnimationSurface(usSoldierID, usSurfaceIndex, usCurrentAnimation) != false);
       pAnimCache.value.sCacheHits[cnt] = 0;
       pAnimCache.value.usCachedSurfaces[cnt] = usSurfaceIndex;
       pAnimCache.value.ubCacheSize++;
@@ -110,7 +110,7 @@ function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<Anim
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function UnLoadCachedAnimationSurfaces(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {

@@ -7,7 +7,7 @@ let giIMPPortraitButton: INT32[] /* [3] */;
 let giIMPPortraitButtonImage: INT32[] /* [3] */;
 
 // redraw protrait screen
-let fReDrawPortraitScreenFlag: BOOLEAN = FALSE;
+let fReDrawPortraitScreenFlag: boolean = false;
 
 // face index
 let iPortraitNumber: INT32 = 0;
@@ -52,16 +52,16 @@ function ExitIMPPortraits(): void {
 
 function HandleIMPPortraits(): void {
   // do we need to re write screen
-  if (fReDrawPortraitScreenFlag == TRUE) {
+  if (fReDrawPortraitScreenFlag == true) {
     RenderIMPPortraits();
 
     // reset redraw flag
-    fReDrawPortraitScreenFlag = FALSE;
+    fReDrawPortraitScreenFlag = false;
   }
   return;
 }
 
-function RenderPortrait(sX: INT16, sY: INT16): BOOLEAN {
+function RenderPortrait(sX: INT16, sY: INT16): boolean {
   // render the portrait of the current picture
   let VObjectDesc: VOBJECT_DESC;
   let hHandle: HVOBJECT;
@@ -93,7 +93,7 @@ function RenderPortrait(sX: INT16, sY: INT16): BOOLEAN {
     DeleteVideoObjectFromIndex(uiGraphicHandle);
   }
 
-  return TRUE;
+  return true;
 }
 
 function IncrementPictureIndex(): void {
@@ -186,7 +186,7 @@ function BtnIMPPortraitNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
       // next picture!!
       IncrementPictureIndex();
 
-      fReDrawPortraitScreenFlag = TRUE;
+      fReDrawPortraitScreenFlag = true;
     }
   }
 }
@@ -205,7 +205,7 @@ function BtnIMPPortraitPreviousCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
       // previous picture, please!!!
       DecrementPicture();
 
-      fReDrawPortraitScreenFlag = TRUE;
+      fReDrawPortraitScreenFlag = true;
     }
   }
 }
@@ -243,7 +243,7 @@ function BtnIMPPortraitDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
         iPortraitNumber = iCurrentPortrait + (8);
       }
 
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }

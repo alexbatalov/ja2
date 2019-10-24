@@ -26,21 +26,21 @@ let SmkList: SMKFLIC[] /* [SMK_NUM_FLICS] */;
 let hDisplayWindow: HWND = 0;
 let uiDisplayHeight: UINT32;
 let uiDisplayWidth: UINT32;
-let fSuspendFlics: BOOLEAN = FALSE;
+let fSuspendFlics: boolean = false;
 let uiFlicsPlaying: UINT32 = 0;
 let guiSmackPixelFormat: UINT32 = SMACKBUFFER565;
 
 let lpVideoPlayback: LPDIRECTDRAWSURFACE = null;
 let lpVideoPlayback2: LPDIRECTDRAWSURFACE2 = null;
 
-function SmkPollFlics(): BOOLEAN {
+function SmkPollFlics(): boolean {
   let uiCount: UINT32;
-  let fFlicStatus: BOOLEAN = FALSE;
+  let fFlicStatus: boolean = false;
   let SurfaceDescription: DDSURFACEDESC;
 
   for (uiCount = 0; uiCount < SMK_NUM_FLICS; uiCount++) {
     if (SmkList[uiCount].uiFlags & SMK_FLIC_PLAYING) {
-      fFlicStatus = TRUE;
+      fFlicStatus = true;
       if (!fSuspendFlics) {
         if (!SmackWait(SmkList[uiCount].SmackHandle)) {
           DDLockSurface(SmkList[uiCount].lpDDS, null, addressof(SurfaceDescription), 0, null);
@@ -101,7 +101,7 @@ function SmkShutdown(): void {
   }
 }
 
-function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, fClose: BOOLEAN): Pointer<SMKFLIC> {
+function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, fClose: boolean): Pointer<SMKFLIC> {
   let pSmack: Pointer<SMKFLIC>;
 
   // Open the flic
@@ -130,7 +130,7 @@ function SmkOpenFlic(cFilename: Pointer<CHAR8>): Pointer<SMKFLIC> {
   }
 
   // Attempt opening the filename
-  if (!(pSmack.value.hFileHandle = FileOpen(cFilename, FILE_OPEN_EXISTING | FILE_ACCESS_READ, FALSE))) {
+  if (!(pSmack.value.hFileHandle = FileOpen(cFilename, FILE_OPEN_EXISTING | FILE_ACCESS_READ, false))) {
     ErrorMsg("SMK ERROR: Can't open the SMK file");
     return null;
   }

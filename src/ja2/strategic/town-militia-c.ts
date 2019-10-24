@@ -5,7 +5,7 @@ let gubTownSectorServerTownId: UINT8 = Enum135.BLANK_SECTOR;
 let gsTownSectorServerSkipX: INT16 = -1;
 let gsTownSectorServerSkipY: INT16 = -1;
 let gubTownSectorServerIndex: UINT8 = 0;
-let gfYesNoPromptIsForContinue: BOOLEAN = FALSE; // this flag remembers whether we're starting new training, or continuing
+let gfYesNoPromptIsForContinue: boolean = false; // this flag remembers whether we're starting new training, or continuing
 let giTotalCostOfTraining: INT32 = 0;
 
 // the completed list of sector soldiers for training militia
@@ -18,7 +18,7 @@ let gsUnpaidStrategicSector: INT16[] /* [MAX_CHARACTER_COUNT] */;
 function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: INT16): void {
   let pSectorInfo: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(sMapX, sMapY)]);
   let ubMilitiaTrained: UINT8 = 0;
-  let fFoundOne: BOOLEAN;
+  let fFoundOne: boolean;
   let sNeighbourX: INT16;
   let sNeighbourY: INT16;
   let ubTownId: UINT8;
@@ -31,7 +31,7 @@ function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT
   }
 
   // force tactical to update militia status
-  gfStrategicMilitiaChangesMade = TRUE;
+  gfStrategicMilitiaChangesMade = true;
 
   // ok, so what do we do with all this training?  Well, in order of decreasing priority:
   // 1) If there's room in training sector, create new GREEN militia guys there
@@ -46,7 +46,7 @@ function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT
       // great! Create a new GREEN militia guy in the training sector
       StrategicAddMilitiaToSector(sMapX, sMapY, Enum126.GREEN_MILITIA, 1);
     } else {
-      fFoundOne = FALSE;
+      fFoundOne = false;
 
       if (ubTownId != Enum135.BLANK_SECTOR) {
         InitFriendlyTownSectorServer(ubTownId, sMapX, sMapY);
@@ -58,7 +58,7 @@ function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT
             // great! Create a new GREEN militia guy in the neighbouring sector
             StrategicAddMilitiaToSector(sNeighbourX, sNeighbourY, Enum126.GREEN_MILITIA, 1);
 
-            fFoundOne = TRUE;
+            fFoundOne = true;
             break;
           }
         }
@@ -84,7 +84,7 @@ function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT
                 // great! Promote a GREEN militia guy in the neighbouring sector to a REGULAR
                 StrategicPromoteMilitiaInSector(sNeighbourX, sNeighbourY, Enum126.GREEN_MILITIA, 1);
 
-                fFoundOne = TRUE;
+                fFoundOne = true;
                 break;
               }
             }
@@ -107,7 +107,7 @@ function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT
   // if anyone actually got trained
   if (ubMilitiaTrained > 0) {
     // update the screen display
-    fMapPanelDirty = TRUE;
+    fMapPanelDirty = true;
 
     if (ubTownId != Enum135.BLANK_SECTOR) {
       // loyalty in this town increases a bit because we obviously care about them...
@@ -116,7 +116,7 @@ function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT
   }
 
   // the trainer announces to player that he's finished his assignment.  Make his sector flash!
-  AssignmentDone(pTrainer, TRUE, FALSE);
+  AssignmentDone(pTrainer, true, false);
 
   // handle completion of town by training group
   HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer);
@@ -166,7 +166,7 @@ function StrategicAddMilitiaToSector(sMapX: INT16, sMapY: INT16, ubRank: UINT8, 
   pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] += ubHowMany;
 
   // update the screen display
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 function StrategicPromoteMilitiaInSector(sMapX: INT16, sMapY: INT16, ubCurrentRank: UINT8, ubHowMany: UINT8): void {
@@ -184,7 +184,7 @@ function StrategicPromoteMilitiaInSector(sMapX: INT16, sMapY: INT16, ubCurrentRa
   pSectorInfo.value.ubNumberOfCivsAtLevel[ubCurrentRank + 1] += ubHowMany;
 
   // update the screen display
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 function StrategicRemoveMilitiaFromSector(sMapX: INT16, sMapY: INT16, ubRank: UINT8, ubHowMany: UINT8): void {
@@ -201,7 +201,7 @@ function StrategicRemoveMilitiaFromSector(sMapX: INT16, sMapY: INT16, ubRank: UI
   pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] -= ubHowMany;
 
   // update the screen display
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 // kill pts are (2 * kills) + assists
@@ -296,26 +296,26 @@ function MilitiaInSectorOfRank(sMapX: INT16, sMapY: INT16, ubRank: UINT8): UINT8
   return SectorInfo[SECTOR(sMapX, sMapY)].ubNumberOfCivsAtLevel[ubRank];
 }
 
-function SectorOursAndPeaceful(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
+function SectorOursAndPeaceful(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   // if this sector is currently loaded
   if ((sMapX == gWorldSectorX) && (sMapY == gWorldSectorY) && (bMapZ == gbWorldSectorZ)) {
     // and either there are enemies prowling this sector, or combat is in progress
     if (gTacticalStatus.fEnemyInSector || (gTacticalStatus.uiFlags & INCOMBAT)) {
-      return FALSE;
+      return false;
     }
   }
 
   // if sector is controlled by enemies, it's not ours (duh!)
-  if (!bMapZ && StrategicMap[sMapX + sMapY * MAP_WORLD_X].fEnemyControlled == TRUE) {
-    return FALSE;
+  if (!bMapZ && StrategicMap[sMapX + sMapY * MAP_WORLD_X].fEnemyControlled == true) {
+    return false;
   }
 
   if (NumHostilesInSector(sMapX, sMapY, bMapZ)) {
-    return FALSE;
+    return false;
   }
 
   // safe & secure, s'far as we can tell
-  return TRUE;
+  return true;
 }
 
 function InitFriendlyTownSectorServer(ubTownId: UINT8, sSkipSectorX: INT16, sSkipSectorY: INT16): void {
@@ -330,17 +330,17 @@ function InitFriendlyTownSectorServer(ubTownId: UINT8, sSkipSectorX: INT16, sSki
 // this feeds the X,Y of the next town sector on the town list for the town specified at initialization
 // it will skip an entry that matches the skip X/Y value if one was specified at initialization
 // MUST CALL InitFriendlyTownSectorServer() before using!!!
-function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY: Pointer<INT16>): BOOLEAN {
+function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY: Pointer<INT16>): boolean {
   let iTownSector: INT32;
   let sMapX: INT16;
   let sMapY: INT16;
-  let fStopLooking: BOOLEAN = FALSE;
+  let fStopLooking: boolean = false;
 
   do {
     // have we reached the end of the town list?
     if (pTownNamesList[gubTownSectorServerIndex] == Enum135.BLANK_SECTOR) {
       // end of list reached
-      return FALSE;
+      return false;
     }
 
     iTownSector = pTownLocationsList[gubTownSectorServerIndex];
@@ -359,7 +359,7 @@ function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY:
           sNeighbourX.value = sMapX;
           sNeighbourY.value = sMapY;
 
-          fStopLooking = TRUE;
+          fStopLooking = true;
         }
       }
     }
@@ -369,7 +369,7 @@ function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY:
   } while (!fStopLooking);
 
   // found & returning a valid sector
-  return TRUE;
+  return true;
 }
 
 function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -387,7 +387,7 @@ function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: Pointer<SOLDIE
   giTotalCostOfTraining = MILITIA_TRAINING_COST * iNumberOfSectors;
   Assert(giTotalCostOfTraining > 0);
 
-  gfYesNoPromptIsForContinue = FALSE;
+  gfYesNoPromptIsForContinue = false;
 
   if (LaptopSaveInfo.iCurrentBalance < giTotalCostOfTraining) {
     swprintf(sString, pMilitiaConfirmStrings[8], giTotalCostOfTraining);
@@ -431,14 +431,14 @@ function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Pointer<SO
   sSectorX = pSoldier.value.sSectorX;
   sSectorY = pSoldier.value.sSectorY;
 
-  Assert(SectorInfo[SECTOR(sSectorX, sSectorY)].fMilitiaTrainingPaid == FALSE);
+  Assert(SectorInfo[SECTOR(sSectorX, sSectorY)].fMilitiaTrainingPaid == false);
 
   pMilitiaTrainerSoldier = pSoldier;
 
-  gfYesNoPromptIsForContinue = TRUE;
+  gfYesNoPromptIsForContinue = true;
 
   // is there enough loyalty to continue training
-  if (DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier) == FALSE) {
+  if (DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier) == false) {
     // loyalty too low to continue training
     swprintf(sString, pMilitiaConfirmStrings[9], pTownNames[GetTownIdForSector(sSectorX, sSectorY)], MIN_RATING_TO_TRAIN_TOWN);
     DoContinueMilitiaTrainingMessageBox(sSectorX, sSectorY, sString, MSG_BOX_FLAG_OK, CantTrainMilitiaOkBoxCallback);
@@ -450,7 +450,7 @@ function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Pointer<SO
     bTownId = GetTownIdForSector(sSectorX, sSectorY);
     if (bTownId == Enum135.BLANK_SECTOR) {
       // wilderness SAM site
-      GetSectorIDString(sSectorX, sSectorY, 0, sStringB, TRUE);
+      GetSectorIDString(sSectorX, sSectorY, 0, sStringB, true);
       swprintf(sString, pMilitiaConfirmStrings[10], sStringB, GetSectorIDString, MIN_RATING_TO_TRAIN_TOWN);
     } else {
       // town
@@ -473,7 +473,7 @@ function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Pointer<SO
 
   // ok to continue, ask player
 
-  GetSectorIDString(sSectorX, sSectorY, 0, sStringB, TRUE);
+  GetSectorIDString(sSectorX, sSectorY, 0, sStringB, true);
   swprintf(sString, pMilitiaConfirmStrings[3], sStringB, pMilitiaConfirmStrings[4], giTotalCostOfTraining);
 
   // ask player whether he'd like to continue training
@@ -547,7 +547,7 @@ function HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap(): void {
   }
 }
 
-function CanNearbyMilitiaScoutThisSector(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
+function CanNearbyMilitiaScoutThisSector(sSectorX: INT16, sSectorY: INT16): boolean {
   let sSectorValue: INT16 = 0;
   let sSector: INT16 = 0;
   let sCounterA: INT16 = 0;
@@ -568,19 +568,19 @@ function CanNearbyMilitiaScoutThisSector(sSectorX: INT16, sSectorY: INT16): BOOL
 
       // check if any sort of militia here
       if (SectorInfo[sSectorValue].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA]) {
-        return TRUE;
+        return true;
       } else if (SectorInfo[sSectorValue].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA]) {
-        return TRUE;
+        return true;
       } else if (SectorInfo[sSectorValue].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA]) {
-        return TRUE;
+        return true;
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsTownFullMilitia(bTownId: INT8): BOOLEAN {
+function IsTownFullMilitia(bTownId: INT8): boolean {
   let iCounter: INT32 = 0;
   let sSectorX: INT16 = 0;
   let sSectorY: INT16 = 0;
@@ -607,22 +607,22 @@ function IsTownFullMilitia(bTownId: INT8): BOOLEAN {
 
   // now check the number of militia
   if (iMaxNumber > iNumberOfMilitia) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function IsSAMSiteFullOfMilitia(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
-  let fSamSitePresent: BOOLEAN = FALSE;
+function IsSAMSiteFullOfMilitia(sSectorX: INT16, sSectorY: INT16): boolean {
+  let fSamSitePresent: boolean = false;
   let iNumberOfMilitia: INT32 = 0;
   let iMaxNumber: INT32 = 0;
 
   // check if SAM site is ours?
   fSamSitePresent = IsThisSectorASAMSector(sSectorX, sSectorY, 0);
 
-  if (fSamSitePresent == FALSE) {
-    return FALSE;
+  if (fSamSitePresent == false) {
+    return false;
   }
 
   if (SectorOursAndPeaceful(sSectorX, sSectorY, 0)) {
@@ -634,10 +634,10 @@ function IsSAMSiteFullOfMilitia(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
 
   // now check the number of militia
   if (iMaxNumber > iNumberOfMilitia) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLDIERTYPE>): void {
@@ -654,7 +654,7 @@ function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLD
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // valid character?
-    if (gCharactersList[iCounter].fValid == FALSE) {
+    if (gCharactersList[iCounter].fValid == false) {
       // nope
       continue;
     }
@@ -662,13 +662,13 @@ function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLD
     pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
     // valid soldier?
-    if (pSoldier.value.bActive == FALSE) {
+    if (pSoldier.value.bActive == false) {
       continue;
     }
 
     if ((pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) && (pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == bSectorZ)) {
       // done assignment
-      AssignmentDone(pSoldier, FALSE, FALSE);
+      AssignmentDone(pSoldier, false, false);
     }
   }
 
@@ -722,14 +722,14 @@ function ClearSectorListForCompletedTrainingOfMilitia(): void {
 function HandleContinueOfTownTraining(): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
-  let fContinueEventPosted: BOOLEAN = FALSE;
+  let fContinueEventPosted: boolean = false;
 
   while (giListOfMercsInSectorsCompletedMilitiaTraining[iCounter] != -1) {
     // get the soldier
     pSoldier = addressof(Menptr[giListOfMercsInSectorsCompletedMilitiaTraining[iCounter]]);
 
     if (pSoldier.value.bActive) {
-      fContinueEventPosted = TRUE;
+      fContinueEventPosted = true;
       SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CONTINUE_TRAINING_MILITIA, pSoldier.value.ubProfile, 0, 0, 0, 0);
 
       // now set all of these peoples assignment done too
@@ -746,7 +746,7 @@ function HandleContinueOfTownTraining(): void {
   if (fContinueEventPosted) {
     // ATE: If this event happens in tactical mode we will be switching at some time to mapscreen...
     if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-      gfEnteringMapScreen = TRUE;
+      gfEnteringMapScreen = true;
     }
 
     // If the militia view isn't currently active, then turn it on when prompting to continue training.
@@ -770,11 +770,11 @@ function BuildListOfUnpaidTrainableSectors(): void {
       // valid character?
       if (gCharactersList[iCounter].fValid) {
         // selected?
-        if ((fSelectedListOfMercsForMapScreen[iCounter] == TRUE) || (iCounter == bSelectedAssignChar)) {
+        if ((fSelectedListOfMercsForMapScreen[iCounter] == true) || (iCounter == bSelectedAssignChar)) {
           pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
-          if (CanCharacterTrainMilitia(pSoldier) == TRUE) {
-            if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == FALSE) {
+          if (CanCharacterTrainMilitia(pSoldier) == true) {
+            if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == false) {
               // check to see if this sector is a town and needs equipment
               gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
             }
@@ -787,8 +787,8 @@ function BuildListOfUnpaidTrainableSectors(): void {
     pSoldier = addressof(Menptr[gusUIFullTargetID]);
     iCounter = 0;
 
-    if (CanCharacterTrainMilitia(pSoldier) == TRUE) {
-      if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == FALSE) {
+    if (CanCharacterTrainMilitia(pSoldier) == true) {
+      if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == false) {
         // check to see if this sector is a town and needs equipment
         gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
       }
@@ -853,13 +853,13 @@ function ContinueTrainingInThisSector(): void {
 }
 
 function PayForTrainingInSector(ubSector: UINT8): void {
-  Assert(SectorInfo[ubSector].fMilitiaTrainingPaid == FALSE);
+  Assert(SectorInfo[ubSector].fMilitiaTrainingPaid == false);
 
   // spend the money
   AddTransactionToPlayersBook(Enum80.TRAIN_TOWN_MILITIA, ubSector, GetWorldTotalMin(), -(MILITIA_TRAINING_COST));
 
   // mark this sector sectors as being paid up
-  SectorInfo[ubSector].fMilitiaTrainingPaid = TRUE;
+  SectorInfo[ubSector].fMilitiaTrainingPaid = true;
 
   // reset done flags
   ResetDoneFlagForAllMilitiaTrainersInSector(ubSector);
@@ -875,7 +875,7 @@ function ResetDoneFlagForAllMilitiaTrainersInSector(ubSector: UINT8): void {
     if (pSoldier.value.bActive) {
       if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
         if ((SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY) == ubSector) && (pSoldier.value.bSectorZ == 0)) {
-          pSoldier.value.fDoneAssignmentAndNothingToDoFlag = FALSE;
+          pSoldier.value.fDoneAssignmentAndNothingToDoFlag = false;
           pSoldier.value.usQuoteSaidExtFlags &= ~SOLDIER_QUOTE_SAID_DONE_ASSIGNMENT;
         }
       }
@@ -883,19 +883,19 @@ function ResetDoneFlagForAllMilitiaTrainersInSector(ubSector: UINT8): void {
   }
 }
 
-function MilitiaTrainingAllowedInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
+function MilitiaTrainingAllowedInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let bTownId: INT8;
-  let fSamSitePresent: BOOLEAN = FALSE;
+  let fSamSitePresent: boolean = false;
 
   if (bSectorZ != 0) {
-    return FALSE;
+    return false;
   }
 
   fSamSitePresent = IsThisSectorASAMSector(sSectorX, sSectorY, bSectorZ);
 
   if (fSamSitePresent) {
     // all SAM sites may have militia trained at them
-    return TRUE;
+    return true;
   }
 
   bTownId = GetTownIdForSector(sSectorX, sSectorY);
@@ -903,7 +903,7 @@ function MilitiaTrainingAllowedInSector(sSectorX: INT16, sSectorY: INT16, bSecto
   return MilitiaTrainingAllowedInTown(bTownId);
 }
 
-function MilitiaTrainingAllowedInTown(bTownId: INT8): BOOLEAN {
+function MilitiaTrainingAllowedInTown(bTownId: INT8): boolean {
   switch (bTownId) {
     case Enum135.DRASSEN:
     case Enum135.ALMA:
@@ -912,7 +912,7 @@ function MilitiaTrainingAllowedInTown(bTownId: INT8): BOOLEAN {
     case Enum135.BALIME:
     case Enum135.MEDUNA:
     case Enum135.CHITZENA:
-      return TRUE;
+      return true;
 
     case Enum135.OMERTA:
     case Enum135.ESTONI:
@@ -920,18 +920,18 @@ function MilitiaTrainingAllowedInTown(bTownId: INT8): BOOLEAN {
     case Enum135.TIXA:
     case Enum135.ORTA:
       // can't keep militia in these towns
-      return FALSE;
+      return false;
 
     case Enum135.BLANK_SECTOR:
     default:
       // not a town sector!
-      return FALSE;
+      return false;
   }
 }
 
 function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
   let pStr: UINT16[] /* [256] */;
-  let fAddSpace: BOOLEAN = FALSE;
+  let fAddSpace: boolean = false;
   swprintf(str, "");
 
   if (!gbMilitiaPromotions) {
@@ -940,10 +940,10 @@ function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
   if (gbGreenToElitePromotions > 1) {
     swprintf(pStr, gzLateLocalizedString[22], gbGreenToElitePromotions);
     wcscat(str, pStr);
-    fAddSpace = TRUE;
+    fAddSpace = true;
   } else if (gbGreenToElitePromotions == 1) {
     wcscat(str, gzLateLocalizedString[29]);
-    fAddSpace = TRUE;
+    fAddSpace = true;
   }
 
   if (gbGreenToRegPromotions > 1) {
@@ -952,13 +952,13 @@ function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
     }
     swprintf(pStr, gzLateLocalizedString[23], gbGreenToRegPromotions);
     wcscat(str, pStr);
-    fAddSpace = TRUE;
+    fAddSpace = true;
   } else if (gbGreenToRegPromotions == 1) {
     if (fAddSpace) {
       wcscat(str, " ");
     }
     wcscat(str, gzLateLocalizedString[30]);
-    fAddSpace = TRUE;
+    fAddSpace = true;
   }
 
   if (gbRegToElitePromotions > 1) {
@@ -972,7 +972,7 @@ function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
       wcscat(str, " ");
     }
     wcscat(str, gzLateLocalizedString[31]);
-    fAddSpace = TRUE;
+    fAddSpace = true;
   }
 
   // Clear the fields

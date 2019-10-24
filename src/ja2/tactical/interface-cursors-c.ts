@@ -4,7 +4,7 @@ const SNAPCURSOR_AP_X_STARTVAL = 18;
 const SNAPCURSOR_AP_Y_STARTVAL = 9;
 
 const LOOSE_CURSOR_DELAY = 300;
-/* static */ let gfLooseCursorOn: BOOLEAN = FALSE;
+/* static */ let gfLooseCursorOn: boolean = false;
 /* static */ let gsLooseCursorGridNo: INT16 = NOWHERE;
 /* static */ let guiLooseCursorID: UINT32 = 0;
 /* static */ let guiLooseCursorTimeOfLastUpdate: UINT32 = 0;
@@ -181,18 +181,18 @@ let guiCurUICursor: UINT32 = Enum210.NO_UICURSOR;
 let guiOldUICursor: UINT32 = Enum210.NO_UICURSOR;
 let gusCurMousePos: UINT16;
 let gusTargetDropPos: UINT16;
-let gfTargetDropPos: BOOLEAN = FALSE;
+let gfTargetDropPos: boolean = false;
 
-function SetUICursor(uiNewCursor: UINT32): BOOLEAN {
+function SetUICursor(uiNewCursor: UINT32): boolean {
   guiOldUICursor = guiCurUICursor;
   guiCurUICursor = uiNewCursor;
 
-  return TRUE;
+  return true;
 }
 
-function DrawUICursor(): BOOLEAN {
+function DrawUICursor(): boolean {
   let usMapPos: UINT16;
-  /* static */ let fHideCursor: BOOLEAN = FALSE;
+  /* static */ let fHideCursor: boolean = false;
   let pNode: Pointer<LEVELNODE>;
   let usTileCursor: UINT16;
 
@@ -210,7 +210,7 @@ function DrawUICursor(): BOOLEAN {
     } else {
       DrawItemFreeCursor();
     }
-    return TRUE;
+    return true;
   }
 
   if (GetMouseMapPos(addressof(usMapPos))) {
@@ -218,7 +218,7 @@ function DrawUICursor(): BOOLEAN {
 
     if (guiCurUICursor == Enum210.NO_UICURSOR) {
       MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
-      return TRUE;
+      return true;
     }
 
     if (gUICursors[guiCurUICursor].uiFlags & UICURSOR_SHOWTILE) {
@@ -238,10 +238,10 @@ function DrawUICursor(): BOOLEAN {
       }
     }
 
-    gfTargetDropPos = FALSE;
+    gfTargetDropPos = false;
 
     if (gUICursors[guiCurUICursor].uiFlags & UICURSOR_FREEFLOWING && !(gUICursors[guiCurUICursor].uiFlags & UICURSOR_DONTSHOW2NDLEVEL)) {
-      gfTargetDropPos = TRUE;
+      gfTargetDropPos = true;
       gusTargetDropPos = gusCurMousePos;
 
       if (gsInterfaceLevel == Enum214.I_ROOF_LEVEL) {
@@ -310,7 +310,7 @@ function DrawUICursor(): BOOLEAN {
         case Enum210.MOVE_VEHICLE_UICURSOR:
 
           // Set position for APS
-          gfUIDisplayActionPointsCenter = FALSE;
+          gfUIDisplayActionPointsCenter = false;
           gUIDisplayActionPointsOffX = 16;
           gUIDisplayActionPointsOffY = 14;
           break;
@@ -319,7 +319,7 @@ function DrawUICursor(): BOOLEAN {
         case Enum210.MOVE_RUN_UICURSOR:
 
           // Set position for APS
-          gfUIDisplayActionPointsCenter = FALSE;
+          gfUIDisplayActionPointsCenter = false;
           gUIDisplayActionPointsOffX = 16;
           gUIDisplayActionPointsOffY = 14;
           break;
@@ -327,7 +327,7 @@ function DrawUICursor(): BOOLEAN {
         case Enum210.MOVE_SWAT_UICURSOR:
 
           // Set position for APS
-          gfUIDisplayActionPointsCenter = FALSE;
+          gfUIDisplayActionPointsCenter = false;
           gUIDisplayActionPointsOffX = 16;
           gUIDisplayActionPointsOffY = 10;
           break;
@@ -335,13 +335,13 @@ function DrawUICursor(): BOOLEAN {
         case Enum210.MOVE_PRONE_UICURSOR:
 
           // Set position for APS
-          gfUIDisplayActionPointsCenter = FALSE;
+          gfUIDisplayActionPointsCenter = false;
           gUIDisplayActionPointsOffX = 16;
           gUIDisplayActionPointsOffY = 9;
           break;
       }
 
-      fHideCursor = FALSE;
+      fHideCursor = false;
 
       if (!fHideCursor) {
         MSYS_ChangeRegionCursor(addressof(gViewportRegion), gUICursors[guiCurUICursor].usFreeCursorName);
@@ -352,13 +352,13 @@ function DrawUICursor(): BOOLEAN {
     }
 
     if (gUICursors[guiCurUICursor].uiFlags & UICURSOR_CENTERAPS) {
-      gfUIDisplayActionPointsCenter = TRUE;
+      gfUIDisplayActionPointsCenter = true;
     }
   }
-  return TRUE;
+  return true;
 }
 
-function HideUICursor(): BOOLEAN {
+function HideUICursor(): boolean {
   HandleLooseCursorHide();
 
   // OK, WE OVERRIDE HERE CURSOR DRAWING FOR THINGS LIKE
@@ -366,13 +366,13 @@ function HideUICursor(): BOOLEAN {
     // Check if we are in the viewport region...
     if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
       HideItemTileCursor();
-      return TRUE;
+      return true;
     }
   }
 
   if (guiCurUICursor == Enum210.NO_UICURSOR) {
     // Do nothing here
-    return TRUE;
+    return true;
   }
 
   if (gUICursors[guiCurUICursor].uiFlags & (UICURSOR_SHOWTILE | UICURSOR_SHOWTILEAPDEPENDENT)) {
@@ -402,13 +402,13 @@ function HideUICursor(): BOOLEAN {
     // Nothing special here...
   }
 
-  return TRUE;
+  return true;
 }
 
 function DrawSnappingCursor(): void {
   let pNewUIElem: Pointer<LEVELNODE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  /* static */ let fShowAP: BOOLEAN = TRUE;
+  /* static */ let fShowAP: boolean = true;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     GetSoldier(addressof(pSoldier), gusSelectedSoldier);
@@ -523,7 +523,7 @@ function DrawSnappingCursor(): void {
         fShowAP = !fShowAP;
       }
     } else {
-      fShowAP = TRUE;
+      fShowAP = true;
     }
 
     if (gsInterfaceLevel > 0) {
@@ -537,7 +537,7 @@ function DrawSnappingCursor(): void {
     pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
     if (!fShowAP) {
-      gfUIDisplayActionPointsBlack = TRUE;
+      gfUIDisplayActionPointsBlack = true;
     }
   }
 }
@@ -551,7 +551,7 @@ function EraseSnappingCursor(): void {
 }
 
 function StartLooseCursor(sGridNo: INT16, uiCursorID: UINT32): void {
-  gfLooseCursorOn = TRUE;
+  gfLooseCursorOn = true;
 
   guiLooseCursorID = uiCursorID;
 
@@ -564,7 +564,7 @@ function HandleLooseCursorDraw(): void {
   let pNewUIElem: Pointer<LEVELNODE>;
 
   if ((GetJA2Clock() - guiLooseCursorTimeOfLastUpdate) > LOOSE_CURSOR_DELAY) {
-    gfLooseCursorOn = FALSE;
+    gfLooseCursorOn = false;
   }
 
   if (gfLooseCursorOn) {

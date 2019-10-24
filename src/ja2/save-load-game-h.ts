@@ -28,9 +28,9 @@ interface SAVED_GAME_HEADER {
 
   uiCurrentScreen: UINT32;
 
-  fAlternateSector: BOOLEAN;
+  fAlternateSector: boolean;
 
-  fWorldLoaded: BOOLEAN;
+  fWorldLoaded: boolean;
 
   ubLoadScreenID: UINT8; // The load screen that should be used when loading the saved game
 

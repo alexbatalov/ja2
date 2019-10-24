@@ -5,14 +5,14 @@ let sAutoBandageString: STR16 = null;
 let giBoxId: INT32 = -1;
 let gusTextBoxWidth: UINT16 = 0;
 let gusTextBoxHeight: UINT16 = 0;
-let gfBeginningAutoBandage: BOOLEAN = FALSE;
+let gfBeginningAutoBandage: boolean = false;
 let gsX: INT16 = 0;
 let gsY: INT16 = 0;
 let guiAutoBandageSeconds: UINT32 = 0;
-let fAutoBandageComplete: BOOLEAN = FALSE;
-let fEndAutoBandage: BOOLEAN = FALSE;
+let fAutoBandageComplete: boolean = false;
+let fEndAutoBandage: boolean = false;
 
-let gfAutoBandageFailed: BOOLEAN;
+let gfAutoBandageFailed: boolean;
 
 // the button and associated image for ending autobandage
 let iEndAutoBandageButton: INT32[] /* [2] */;
@@ -28,13 +28,13 @@ let iPatientList: INT32[] /* [MAX_CHARACTER_COUNT] */;
 let giAutoBandagesSoldierFaces: INT32[] /* [2 * MAX_CHARACTER_COUNT] */;
 
 // has the button for autobandage end been setup yet
-let fAutoEndBandageButtonCreated: BOOLEAN = FALSE;
+let fAutoEndBandageButtonCreated: boolean = false;
 
 function BeginAutoBandage(): void {
   let cnt: INT32;
-  let fFoundAGuy: BOOLEAN = FALSE;
+  let fFoundAGuy: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let fFoundAMedKit: BOOLEAN = FALSE;
+  let fFoundAMedKit: boolean = false;
 
   // If we are in combat, we con't...
   if ((gTacticalStatus.uiFlags & INCOMBAT) || (NumEnemyInSector() != 0)) {
@@ -51,14 +51,14 @@ function BeginAutoBandage(): void {
     }
 
     // can this character be helped out by a teammate?
-    if (CanCharacterBeAutoBandagedByTeammate(pSoldier) == TRUE) {
-      fFoundAGuy = TRUE;
+    if (CanCharacterBeAutoBandagedByTeammate(pSoldier) == true) {
+      fFoundAGuy = true;
       if (fFoundAGuy && fFoundAMedKit) {
         break;
       }
     }
     if (FindObjClass(pSoldier, IC_MEDKIT) != NO_SLOT) {
-      fFoundAMedKit = TRUE;
+      fFoundAMedKit = true;
       if (fFoundAGuy && fFoundAMedKit) {
         break;
       }
@@ -70,7 +70,7 @@ function BeginAutoBandage(): void {
   } else if (!fFoundAMedKit) {
     DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[9], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
   } else {
-    if (!CanAutoBandage(FALSE)) {
+    if (!CanAutoBandage(false)) {
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.CANT_AUTOBANDAGE_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
     } else {
       // Confirm if we want to start or not....
@@ -116,12 +116,12 @@ function HandleAutoBandagePending(): void {
     }
 
     // If here, all's a go!
-    gTacticalStatus.fAutoBandagePending = FALSE;
+    gTacticalStatus.fAutoBandagePending = false;
     BeginAutoBandage();
   }
 }
 
-function SetAutoBandagePending(fSet: BOOLEAN): void {
+function SetAutoBandagePending(fSet: boolean): void {
   gTacticalStatus.fAutoBandagePending = fSet;
 }
 
@@ -137,13 +137,13 @@ function ShouldBeginAutoBandage(): void {
     return;
   }
 
-  if (CanAutoBandage(FALSE)) {
+  if (CanAutoBandage(false)) {
     // OK, now setup as a pending event...
-    SetAutoBandagePending(TRUE);
+    SetAutoBandagePending(true);
   }
 }
 
-function HandleAutoBandage(): BOOLEAN {
+function HandleAutoBandage(): boolean {
   let InputEvent: InputAtom;
 
   if (gTacticalStatus.fAutoBandageMode) {
@@ -175,30 +175,30 @@ function HandleAutoBandage(): BOOLEAN {
     ExecuteOverhead();
 
     // Deque all game events
-    DequeAllGameEvents(TRUE);
+    DequeAllGameEvents(true);
 
-    while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+    while (DequeueEvent(addressof(InputEvent)) == true) {
       if (InputEvent.usEvent == KEY_UP) {
-        if (((InputEvent.usParam == ESC) && (fAutoBandageComplete == FALSE)) || (((InputEvent.usParam == ENTER) || (InputEvent.usParam == SPACE)) && (fAutoBandageComplete == TRUE))) {
-          AutoBandage(FALSE);
+        if (((InputEvent.usParam == ESC) && (fAutoBandageComplete == false)) || (((InputEvent.usParam == ENTER) || (InputEvent.usParam == SPACE)) && (fAutoBandageComplete == true))) {
+          AutoBandage(false);
         }
       }
     }
 
-    gfBeginningAutoBandage = FALSE;
+    gfBeginningAutoBandage = false;
 
     if (fEndAutoBandage) {
-      AutoBandage(FALSE);
-      fEndAutoBandage = FALSE;
+      AutoBandage(false);
+      fEndAutoBandage = false;
     }
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function CreateAutoBandageString(): BOOLEAN {
+function CreateAutoBandageString(): boolean {
   let cnt: INT32;
   let ubDoctor: UINT8[] /* [20] */;
   let ubDoctors: UINT8 = 0;
@@ -217,7 +217,7 @@ function CreateAutoBandageString(): BOOLEAN {
     }
   }
   if (ubDoctors == 0) {
-    return FALSE;
+    return false;
   }
 
   if (ubDoctors == 1) {
@@ -228,7 +228,7 @@ function CreateAutoBandageString(): BOOLEAN {
 
   sAutoBandageString = MemRealloc(sAutoBandageString, uiDoctorNameStringLength * sizeof(CHAR16));
   if (!sAutoBandageString) {
-    return FALSE;
+    return false;
   }
 
   if (ubDoctors == 1) {
@@ -238,7 +238,7 @@ function CreateAutoBandageString(): BOOLEAN {
     sTemp = MemAlloc(uiDoctorNameStringLength * sizeof(CHAR16));
     //	sTemp = MemAlloc( 1000 );
     if (!sTemp) {
-      return FALSE;
+      return false;
     }
     wcscpy(sTemp, "");
     for (cnt = 0; cnt < ubDoctors - 1; cnt++) {
@@ -254,27 +254,27 @@ function CreateAutoBandageString(): BOOLEAN {
     swprintf(sAutoBandageString, Message[Enum334.STR_ARE_APPLYING_FIRST_AID], sTemp, MercPtrs[ubDoctor[ubDoctors - 1]].value.name);
     MemFree(sTemp);
   }
-  return TRUE;
+  return true;
 }
 
 function SetAutoBandageComplete(): void {
   // this will set the fact autobandage is complete
-  fAutoBandageComplete = TRUE;
+  fAutoBandageComplete = true;
 
   return;
 }
 
-function AutoBandage(fStart: BOOLEAN): void {
+function AutoBandage(fStart: boolean): void {
   let aRect: SGPRect;
   let ubLoop: UINT8;
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (fStart) {
-    gTacticalStatus.fAutoBandageMode = TRUE;
+    gTacticalStatus.fAutoBandageMode = true;
     gTacticalStatus.uiFlags |= OUR_MERCS_AUTO_MOVE;
 
-    gfAutoBandageFailed = FALSE;
+    gfAutoBandageFailed = false;
 
     // ste up the autobandage panel
     SetUpAutoBandageUpdatePanel();
@@ -313,9 +313,9 @@ function AutoBandage(fStart: BOOLEAN): void {
     // build a mask
     MSYS_DefineRegion(addressof(gAutoBandageRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-    gfBeginningAutoBandage = TRUE;
+    gfBeginningAutoBandage = true;
   } else {
-    gTacticalStatus.fAutoBandageMode = FALSE;
+    gTacticalStatus.fAutoBandageMode = false;
     gTacticalStatus.uiFlags &= (~OUR_MERCS_AUTO_MOVE);
 
     // make sure anyone under AI control has their action cancelled
@@ -377,7 +377,7 @@ function AutoBandage(fStart: BOOLEAN): void {
     if (gfAutoBandageFailed) {
       // inform player some mercs could not be bandaged
       DoScreenIndependantMessageBox(pDoctorWarningString[1], MSG_BOX_FLAG_OK, null);
-      gfAutoBandageFailed = FALSE;
+      gfAutoBandageFailed = false;
     }
   }
   guiAutoBandageSeconds = 0;
@@ -387,8 +387,8 @@ function AutoBandage(fStart: BOOLEAN): void {
 
 function BeginAutoBandageCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
-    fRestoreBackgroundForMessageBox = TRUE;
-    AutoBandage(TRUE);
+    fRestoreBackgroundForMessageBox = true;
+    AutoBandage(true);
   }
 }
 
@@ -433,7 +433,7 @@ function SetUpAutoBandageUpdatePanel(): void {
   // now add the faces
   AddFacesToAutoBandageBox();
 
-  fAutoBandageComplete = FALSE;
+  fAutoBandageComplete = false;
 
   return;
 }
@@ -461,7 +461,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   let sY: INT16 = 0;
 
   // are even in autobandage mode?
-  if (gTacticalStatus.fAutoBandageMode == FALSE) {
+  if (gTacticalStatus.fAutoBandageMode == false) {
     // nope,
     return;
   }
@@ -710,7 +710,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   iTotalPixelsHigh += 35;
 
   // if autobandage is complete, set the fact by enabling the done button
-  if (fAutoBandageComplete == FALSE) {
+  if (fAutoBandageComplete == false) {
     DisableButton(iEndAutoBandageButton[0]);
     EnableButton(iEndAutoBandageButton[1]);
   } else {
@@ -731,7 +731,7 @@ function CreateTerminateAutoBandageButton(sX: INT16, sY: INT16): void {
     return;
   }
 
-  fAutoEndBandageButtonCreated = TRUE;
+  fAutoEndBandageButtonCreated = true;
 
   // the continue button
 
@@ -767,7 +767,7 @@ function StopAutoBandageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fEndAutoBandage = TRUE;
+      fEndAutoBandage = true;
     }
   }
 
@@ -776,12 +776,12 @@ function StopAutoBandageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
 function DestroyTerminateAutoBandageButton(): void {
   // destroy the kill autobandage button
-  if (fAutoEndBandageButtonCreated == FALSE) {
+  if (fAutoEndBandageButtonCreated == false) {
     // not around, don't destroy what ain't there
     return;
   }
 
-  fAutoEndBandageButtonCreated = FALSE;
+  fAutoEndBandageButtonCreated = false;
 
   // remove button
   RemoveButton(iEndAutoBandageButton[0]);
@@ -794,7 +794,7 @@ function DestroyTerminateAutoBandageButton(): void {
   return;
 }
 
-function AddFacesToAutoBandageBox(): BOOLEAN {
+function AddFacesToAutoBandageBox(): boolean {
   let iCounter: INT32 = 0;
   let iNumberOfDoctors: INT32 = 0;
   let VObjectDesc: VOBJECT_DESC;
@@ -844,10 +844,10 @@ function AddFacesToAutoBandageBox(): BOOLEAN {
     AssertMsg(0, "Failed to load Interface\\panels.sti");
   }
 
-  return TRUE;
+  return true;
 }
 
-function RemoveFacesForAutoBandage(): BOOLEAN {
+function RemoveFacesForAutoBandage(): boolean {
   let iCounter: INT32 = 0;
   let iNumberOfDoctors: INT32 = 0;
 
@@ -870,10 +870,10 @@ function RemoveFacesForAutoBandage(): BOOLEAN {
 
   DeleteVideoObjectFromIndex(giMercPanelImage);
 
-  return TRUE;
+  return true;
 }
 
-function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosition: INT16, sCurrentYPosition: INT16): BOOLEAN {
+function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosition: INT16, sCurrentYPosition: INT16): boolean {
   let iStartY: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
@@ -910,7 +910,7 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
 
   // is the merc alive?
   if (!pSoldier.value.bLife)
-    return FALSE;
+    return false;
 
   // yellow one for bleeding
   iStartY = sCurrentYPosition + 29 - 27 * pSoldier.value.bLifeMax / 100;
@@ -937,5 +937,5 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 42, iStartY, sCurrentXPosition + 43, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 43, iStartY, sCurrentXPosition + 44, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
 
-  return TRUE;
+  return true;
 }

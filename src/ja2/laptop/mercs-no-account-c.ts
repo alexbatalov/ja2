@@ -24,7 +24,7 @@ let guiCancelBoxButton: UINT32;
 function GameInitMercsNoAccount(): void {
 }
 
-function EnterMercsNoAccount(): BOOLEAN {
+function EnterMercsNoAccount(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   InitMercBackGround();
@@ -47,7 +47,7 @@ function EnterMercsNoAccount(): BOOLEAN {
 
   RenderMercsNoAccount();
 
-  return TRUE;
+  return true;
 }
 
 function ExitMercsNoAccount(): void {
@@ -73,7 +73,7 @@ function RenderMercsNoAccount(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_NO_ACCOUNT_IMAGE_X, MERC_NO_ACCOUNT_IMAGE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the sentence
-  DisplayWrappedString(MERC_NA_SENTENCE_X, MERC_NA_SENTENCE_Y, MERC_NA_SENTENCE_WIDTH, 2, MERC_NA_TEXT_FONT(), MERC_NA_TEXT_COLOR, MercNoAccountText[Enum342.MERC_NO_ACC_NO_ACCOUNT_OPEN_ONE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(MERC_NA_SENTENCE_X, MERC_NA_SENTENCE_Y, MERC_NA_SENTENCE_WIDTH, 2, MERC_NA_TEXT_FONT(), MERC_NA_TEXT_COLOR, MercNoAccountText[Enum342.MERC_NO_ACC_NO_ACCOUNT_OPEN_ONE], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   MarkButtonsDirty();
   RenderWWWProgramTitleBar();

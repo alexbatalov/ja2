@@ -22,7 +22,7 @@ let iCurrentProfileMode: INT32 = 0;
 
 function EnterIMPMainPage(): void {
   // turn off review mode
-  fReviewStats = FALSE;
+  fReviewStats = false;
 
   // create buttons
   CreateIMPMainPageButtons();
@@ -91,7 +91,7 @@ function CreateIMPMainPageButtons(): void {
           */
   giIMPMainPageButton[0] = CreateIconAndTextButton(giIMPMainPageButtonImage[0], pImpButtonText[19], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 15, LAPTOP_SCREEN_WEB_UL_Y + (360), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageBackCallback);
 
-  SpecifyButtonTextSubOffsets(giIMPMainPageButton[0], 0, -1, FALSE);
+  SpecifyButtonTextSubOffsets(giIMPMainPageButton[0], 0, -1, false);
 
   // the begin profiling button
   giIMPMainPageButtonImage[1] = LoadButtonImage("LAPTOP\\button_2.sti", -1, 0, -1, 1, -1);
@@ -155,10 +155,10 @@ function CreateIMPMainPageButtons(): void {
   SetButtonCursor(giIMPMainPageButton[4], Enum317.CURSOR_WWW);
   SetButtonCursor(giIMPMainPageButton[5], Enum317.CURSOR_WWW);
 
-  SpecifyButtonTextOffsets(giIMPMainPageButton[2], 10, 40, TRUE);
-  SpecifyButtonTextOffsets(giIMPMainPageButton[3], 10, 40, TRUE);
-  SpecifyButtonTextOffsets(giIMPMainPageButton[4], 10, 40, TRUE);
-  SpecifyButtonTextOffsets(giIMPMainPageButton[5], 10, 40, TRUE);
+  SpecifyButtonTextOffsets(giIMPMainPageButton[2], 10, 40, true);
+  SpecifyButtonTextOffsets(giIMPMainPageButton[3], 10, 40, true);
+  SpecifyButtonTextOffsets(giIMPMainPageButton[4], 10, 40, true);
+  SpecifyButtonTextOffsets(giIMPMainPageButton[5], 10, 40, true);
 
   SpecifyButtonTextWrappedWidth(giIMPMainPageButton[2], MAIN_PAGE_BUTTON_TEXT_WIDTH);
   SpecifyButtonTextWrappedWidth(giIMPMainPageButton[3], MAIN_PAGE_BUTTON_TEXT_WIDTH);
@@ -208,9 +208,9 @@ function BtnIMPMainPageBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_HOME_PAGE;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
       iCurrentProfileMode = 0;
-      fFinishedCharGeneration = FALSE;
+      fFinishedCharGeneration = false;
       ResetCharacterStats();
     }
   }
@@ -242,7 +242,7 @@ function BtnIMPMainPageBeginCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
         } else {
           // change name
           iCurrentImpPage = Enum71.IMP_BEGIN;
-          fButtonPendingFlag = TRUE;
+          fButtonPendingFlag = true;
         }
       }
     }
@@ -267,7 +267,7 @@ function BtnIMPMainPagePersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_PERSONALITY;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }
@@ -289,7 +289,7 @@ function BtnIMPMainPageAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_ATTRIBUTE_ENTRANCE;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }
@@ -311,7 +311,7 @@ function BtnIMPMainPagePortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_PORTRAIT;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }
@@ -333,7 +333,7 @@ function BtnIMPMainPageVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_VOICE;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }
@@ -348,16 +348,16 @@ function NextProfilingMode(): void {
   return;
 }
 
-function CheckIfFinishedCharacterGeneration(): BOOLEAN {
+function CheckIfFinishedCharacterGeneration(): boolean {
   // this function checks to see if character is done character generation
 
   // are we done character generation
   if (iCurrentProfileMode == 5) {
     // yes
-    return TRUE;
+    return true;
   } else {
     // no
-    return FALSE;
+    return false;
   }
 }
 
@@ -371,7 +371,7 @@ function ShadeUnSelectableButtons(): void {
     InvalidateRegion(13 + (iCounter)*120 + 114, 245, 13 + (iCounter)*120 + 114, 245 + 92);
   }
 
-  fMarkButtonsDirtyFlag = FALSE;
+  fMarkButtonsDirtyFlag = false;
   return;
 }
 
@@ -484,7 +484,7 @@ function IMPMainPageNotSelectableBtnCallback(pRegion: Pointer<MOUSE_REGION>, iRe
   return;
 }
 
-function LoadCharacterPortraitForMainPage(): BOOLEAN {
+function LoadCharacterPortraitForMainPage(): boolean {
   // this function will load the character's portrait, to be used on portrait button
   let VObjectDesc: VOBJECT_DESC;
 
@@ -495,8 +495,8 @@ function LoadCharacterPortraitForMainPage(): BOOLEAN {
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAITFORMAINPAGE)));
 
     // now specify
-    SpecifyButtonIcon(giIMPMainPageButton[4], guiCHARACTERPORTRAITFORMAINPAGE, 0, 33, 23, FALSE);
+    SpecifyButtonIcon(giIMPMainPageButton[4], guiCHARACTERPORTRAITFORMAINPAGE, 0, 33, 23, false);
   }
 
-  return TRUE;
+  return true;
 }

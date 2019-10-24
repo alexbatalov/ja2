@@ -1,50 +1,50 @@
-function IsFencePresentAtGridno(sGridNo: INT16): BOOLEAN {
+function IsFencePresentAtGridno(sGridNo: INT16): boolean {
   if (FindStructure(sGridNo, STRUCTURE_ANYFENCE) != null) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsRoofPresentAtGridno(sGridNo: INT16): BOOLEAN {
+function IsRoofPresentAtGridno(sGridNo: INT16): boolean {
   if (FindStructure(sGridNo, STRUCTURE_ROOF) != null) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsJumpableFencePresentAtGridno(sGridNo: INT16): BOOLEAN {
+function IsJumpableFencePresentAtGridno(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_OBSTACLE);
 
   if (pStructure) {
     if (pStructure.value.fFlags & STRUCTURE_FENCE && !(pStructure.value.fFlags & STRUCTURE_SPECIAL)) {
-      return TRUE;
+      return true;
     }
     if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_SANDBAG && StructureHeight(pStructure) < 2) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsDoorPresentAtGridno(sGridNo: INT16): BOOLEAN {
+function IsDoorPresentAtGridno(sGridNo: INT16): boolean {
   if (FindStructure(sGridNo, STRUCTURE_ANYDOOR) != null) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsTreePresentAtGridno(sGridNo: INT16): BOOLEAN {
+function IsTreePresentAtGridno(sGridNo: INT16): boolean {
   if (FindStructure(sGridNo, STRUCTURE_TREE) != null) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function IsWallPresentAtGridno(sGridNo: INT16): Pointer<LEVELNODE> {
@@ -103,7 +103,7 @@ function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOr
   return null;
 }
 
-function IsDoorVisibleAtGridNo(sGridNo: INT16): BOOLEAN {
+function IsDoorVisibleAtGridNo(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
   let sNewGridNo: INT16;
 
@@ -123,7 +123,7 @@ function IsDoorVisibleAtGridNo(sGridNo: INT16): BOOLEAN {
           sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.SOUTH));
 
           if (IsRoofVisible2(sNewGridNo)) {
-            return FALSE;
+            return false;
           }
         }
         break;
@@ -139,7 +139,7 @@ function IsDoorVisibleAtGridNo(sGridNo: INT16): BOOLEAN {
           sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.EAST));
 
           if (IsRoofVisible2(sNewGridNo)) {
-            return FALSE;
+            return false;
           }
         }
         break;
@@ -147,10 +147,10 @@ function IsDoorVisibleAtGridNo(sGridNo: INT16): BOOLEAN {
   }
 
   // Return true here, even if she does not exist
-  return TRUE;
+  return true;
 }
 
-function DoesGridnoContainHiddenStruct(sGridNo: INT16, pfVisible: Pointer<BOOLEAN>): BOOLEAN {
+function DoesGridnoContainHiddenStruct(sGridNo: INT16, pfVisible: Pointer<boolean>): boolean {
   // ATE: These are ignored now - always return false
 
   // STRUCTURE *pStructure;
@@ -171,22 +171,22 @@ function DoesGridnoContainHiddenStruct(sGridNo: INT16, pfVisible: Pointer<BOOLEA
   //	return( TRUE );
   //}
 
-  return FALSE;
+  return false;
 }
 
-function IsHiddenStructureVisible(sGridNo: INT16, usIndex: UINT16): BOOLEAN {
+function IsHiddenStructureVisible(sGridNo: INT16, usIndex: UINT16): boolean {
   // Check if it's a hidden struct and we have not revealed anything!
   if (gTileDatabase[usIndex].uiFlags & HIDDEN_TILE) {
     if (!(gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
       // Return false
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function WallExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
+function WallExistsOfTopLeftOrientation(sGridNo: INT16): boolean {
   // CJC: changing to search only for normal walls, July 16, 1998
   let pStructure: Pointer<STRUCTURE>;
 
@@ -195,16 +195,16 @@ function WallExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
   while (pStructure != null) {
     // Check orientation
     if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
-      return TRUE;
+      return true;
     }
 
     pStructure = FindNextStructure(pStructure, STRUCTURE_WALL);
   }
 
-  return FALSE;
+  return false;
 }
 
-function WallExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
+function WallExistsOfTopRightOrientation(sGridNo: INT16): boolean {
   // CJC: changing to search only for normal walls, July 16, 1998
   let pStructure: Pointer<STRUCTURE>;
 
@@ -213,16 +213,16 @@ function WallExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
   while (pStructure != null) {
     // Check orientation
     if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
-      return TRUE;
+      return true;
     }
 
     pStructure = FindNextStructure(pStructure, STRUCTURE_WALL);
   }
 
-  return FALSE;
+  return false;
 }
 
-function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
+function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
@@ -232,17 +232,17 @@ function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
     if (!((pStructure.value.fFlags & STRUCTURE_ANYDOOR) && (pStructure.value.fFlags & STRUCTURE_OPEN))) {
       // Check orientation
       if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
-        return TRUE;
+        return true;
       }
     }
 
     pStructure = FindNextStructure(pStructure, STRUCTURE_WALLSTUFF);
   }
 
-  return FALSE;
+  return false;
 }
 
-function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
+function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
@@ -252,17 +252,17 @@ function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
     if (!((pStructure.value.fFlags & STRUCTURE_ANYDOOR) && (pStructure.value.fFlags & STRUCTURE_OPEN))) {
       // Check orientation
       if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
-        return TRUE;
+        return true;
       }
     }
 
     pStructure = FindNextStructure(pStructure, STRUCTURE_WALLSTUFF);
   }
 
-  return FALSE;
+  return false;
 }
 
-function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): BOOLEAN {
+function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
@@ -271,17 +271,17 @@ function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): BOOLE
     // Check orientation
     if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
       if ((pStructure.value.fFlags & STRUCTURE_DOOR) || (pStructure.value.fFlags & STRUCTURE_DDOOR_RIGHT)) {
-        return TRUE;
+        return true;
       }
     }
 
     pStructure = FindNextStructure(pStructure, STRUCTURE_ANYDOOR);
   }
 
-  return FALSE;
+  return false;
 }
 
-function OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(sGridNo: INT16): BOOLEAN {
+function OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
@@ -290,14 +290,14 @@ function OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(sGridNo: INT16): BOOLEAN
     // Check orientation
     if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
       if ((pStructure.value.fFlags & STRUCTURE_DOOR) || (pStructure.value.fFlags & STRUCTURE_DDOOR_LEFT)) {
-        return TRUE;
+        return true;
       }
     }
 
     pStructure = FindNextStructure(pStructure, STRUCTURE_ANYDOOR);
   }
 
-  return FALSE;
+  return false;
 }
 
 function FindCuttableWireFenceAtGridNo(sGridNo: INT16): Pointer<STRUCTURE> {
@@ -310,7 +310,7 @@ function FindCuttableWireFenceAtGridNo(sGridNo: INT16): Pointer<STRUCTURE> {
   return null;
 }
 
-function CutWireFence(sGridNo: INT16): BOOLEAN {
+function CutWireFence(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindCuttableWireFenceAtGridNo(sGridNo);
@@ -319,17 +319,17 @@ function CutWireFence(sGridNo: INT16): BOOLEAN {
     if (pStructure) {
       RecompileLocalMovementCosts(sGridNo);
       SetRenderFlags(RENDER_FLAG_FULL);
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function IsCuttableWireFenceAtGridNo(sGridNo: INT16): BOOLEAN {
+function IsCuttableWireFenceAtGridNo(sGridNo: INT16): boolean {
   return FindCuttableWireFenceAtGridNo(sGridNo) != null;
 }
 
-function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOLEAN {
+function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): boolean {
   let ubMerc: UINT8;
 
   // OK, first look for a vehicle....
@@ -351,10 +351,10 @@ function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOL
     return 3;
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOLEAN {
+function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): boolean {
   let ubMerc: UINT8;
 
   // OK, first look for a vehicle....
@@ -366,20 +366,20 @@ function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOL
 
   if (ubMerc != NOBODY) {
     if (MercPtrs[ubMerc].value.uiStatusFlags & SOLDIER_VEHICLE) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function IsCutWireFenceAtGridNo(sGridNo: INT16): BOOLEAN {
+function IsCutWireFenceAtGridNo(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WIREFENCE);
   if (pStructure != null && (pStructure.value.ubWallOrientation != Enum314.NO_ORIENTATION) && (pStructure.value.fFlags & STRUCTURE_OPEN)) {
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 function FindDoorAtGridNoOrAdjacent(sGridNo: INT16): INT16 {
@@ -411,21 +411,21 @@ function FindDoorAtGridNoOrAdjacent(sGridNo: INT16): INT16 {
   return NOWHERE;
 }
 
-function IsCorpseAtGridNo(sGridNo: INT16, ubLevel: UINT8): BOOLEAN {
+function IsCorpseAtGridNo(sGridNo: INT16, ubLevel: UINT8): boolean {
   if (GetCorpseAtGridNo(sGridNo, ubLevel) != null) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function SetOpenableStructureToClosed(sGridNo: INT16, ubLevel: UINT8): BOOLEAN {
+function SetOpenableStructureToClosed(sGridNo: INT16, ubLevel: UINT8): boolean {
   let pStructure: Pointer<STRUCTURE>;
   let pNewStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
   if (!pStructure) {
-    return FALSE;
+    return false;
   }
 
   if (pStructure.value.fFlags & STRUCTURE_OPEN) {
@@ -436,5 +436,5 @@ function SetOpenableStructureToClosed(sGridNo: INT16, ubLevel: UINT8): BOOLEAN {
     }
   }
   // else leave it as is!
-  return TRUE;
+  return true;
 }

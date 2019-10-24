@@ -1,4 +1,4 @@
-let gfRenderSquareArea: BOOLEAN = FALSE;
+let gfRenderSquareArea: boolean = false;
 let iStartClickX: INT16;
 let iStartClickY: INT16;
 let iEndClickX: INT16;
@@ -11,8 +11,8 @@ let iScrollUp: INT32;
 let iScrollDown: INT32;
 let iOkWin: INT32;
 
-let fAllDone: BOOLEAN = FALSE;
-let fButtonsPresent: BOOLEAN = FALSE;
+let fAllDone: boolean = false;
+let fButtonsPresent: boolean = false;
 
 let SelWinSpacing: SGPPoint;
 let SelWinStartPoint: SGPPoint;
@@ -148,7 +148,7 @@ function CreateJA2SelectionWindow(sWhat: INT16): void {
   let pDSpec: Pointer<DisplaySpec>;
   let usNSpecs: UINT16;
 
-  fAllDone = FALSE;
+  fAllDone = false;
 
   DisableEditorTaskbar();
 
@@ -172,7 +172,7 @@ function CreateJA2SelectionWindow(sWhat: INT16): void {
   iScrollDown = CreateIconButton(iButtonIcons[DOWN_ICON], 0, BUTTON_USE_DEFAULT, 600, 240, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), DwnClkCallback);
   SetButtonFastHelpText(iScrollDown, "Scroll window down");
 
-  fButtonsPresent = TRUE;
+  fButtonsPresent = true;
 
   SelWinSpacing.iX = 2;
   SelWinSpacing.iY = 2;
@@ -706,7 +706,7 @@ function ShutdownJA2SelectionWindow(): void {
   if (pDispList != null) {
     pDispList = TrashList(pDispList);
   }
-  gfRenderWorld = TRUE;
+  gfRenderWorld = true;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -721,14 +721,14 @@ function RemoveJA2SelectionWindow(): void {
   RemoveButton(iScrollDown);
   RemoveButton(iOkWin);
 
-  gfRenderSquareArea = FALSE;
+  gfRenderSquareArea = false;
 
   if (pDispList != null) {
     pDispList = TrashList(pDispList);
   }
-  gfRenderTaskbar = TRUE;
+  gfRenderTaskbar = true;
 
-  gfOverheadMapDirty = TRUE;
+  gfOverheadMapDirty = true;
   EnableEditorTaskbar();
 }
 
@@ -830,7 +830,7 @@ function RenderSelectionWindow(): void {
 //
 function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
   let pNode: Pointer<DisplayList>;
-  let fDone: BOOLEAN;
+  let fDone: boolean;
   let iClickX: INT16;
   let iClickY: INT16;
   let iYInc: INT16;
@@ -846,24 +846,24 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
     button.value.uiFlags |= BUTTON_CLICKED_ON;
     iStartClickX = iClickX;
     iStartClickY = iClickY;
-    gfRenderSquareArea = TRUE;
+    gfRenderSquareArea = true;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     button.value.uiFlags |= BUTTON_CLICKED_ON;
 
     if (gfRenderSquareArea) {
-      gfRenderSquareArea = FALSE;
+      gfRenderSquareArea = false;
       return;
     }
 
     // Code to figure out what image user wants goes here
     pNode = pDispList;
 
-    fDone = FALSE;
+    fDone = false;
     while ((pNode != null) && !fDone) {
       if ((iClickX >= pNode.value.iX) && (iClickX < (pNode.value.iX + pNode.value.iWidth)) && (iClickY >= pNode.value.iY) && (iClickY < (pNode.value.iY + pNode.value.iHeight))) {
-        fDone = TRUE;
+        fDone = true;
         if (RemoveFromSelectionList(pNode))
-          pNode.value.fChosen = FALSE;
+          pNode.value.fChosen = false;
       } else
         pNode = pNode.value.pNext;
     }
@@ -878,7 +878,7 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
     iEndClickX = iClickX;
     iEndClickY = iClickY;
 
-    gfRenderSquareArea = FALSE;
+    gfRenderSquareArea = false;
 
     if (iEndClickX < iStartClickX) {
       iStartClickX ^= iEndClickX;
@@ -900,12 +900,12 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
         // Code to figure out what image user wants goes here
         pNode = pDispList;
 
-        fDone = FALSE;
+        fDone = false;
         while ((pNode != null) && !fDone) {
           if ((iClickX >= pNode.value.iX) && (iClickX < (pNode.value.iX + pNode.value.iWidth)) && (iClickY >= pNode.value.iY) && (iClickY < (pNode.value.iY + pNode.value.iHeight))) {
-            fDone = TRUE;
+            fDone = true;
             AddToSelectionList(pNode);
-            pNode.value.fChosen = TRUE;
+            pNode.value.fChosen = true;
             iXInc = (pNode.value.iX + pNode.value.iWidth) - iClickX;
             if (iYInc < ((pNode.value.iY + pNode.value.iHeight) - iClickY))
               iYInc = (pNode.value.iY + pNode.value.iHeight) - iClickY;
@@ -921,7 +921,7 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 // at the top of the screen.
 function DisplaySelectionWindowGraphicalInformation(): void {
   let pNode: Pointer<DisplayList>;
-  let fDone: BOOLEAN;
+  let fDone: boolean;
   // UINT16 usObjIndex, usIndex;
   let y: UINT16;
   // Determine if there is a valid picture at cursor position.
@@ -930,10 +930,10 @@ function DisplaySelectionWindowGraphicalInformation(): void {
 
   y = gusMouseYPos + iTopWinCutOff - SelWinStartPoint.iY;
   pNode = pDispList;
-  fDone = FALSE;
+  fDone = false;
   while ((pNode != null) && !fDone) {
     if ((gusMouseXPos >= pNode.value.iX) && (gusMouseXPos < (pNode.value.iX + pNode.value.iWidth)) && (y >= pNode.value.iY) && (y < (pNode.value.iY + pNode.value.iHeight))) {
-      fDone = TRUE;
+      fDone = true;
       // pNode->fChosen = TRUE;
       // iXInc = (pNode->iX + pNode->iWidth) - iClickX;
       // if ( iYInc < ((pNode->iY + pNode->iHeight) - iClickY) )
@@ -964,12 +964,12 @@ function DisplaySelectionWindowGraphicalInformation(): void {
 function AddToSelectionList(pNode: Pointer<DisplayList>): void {
   let iIndex: INT32;
   let iUseIndex: INT32;
-  let fDone: BOOLEAN;
+  let fDone: boolean;
 
-  fDone = FALSE;
+  fDone = false;
   for (iIndex = 0; iIndex < (pNumSelList.value) && !fDone; iIndex++) {
     if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
-      fDone = TRUE;
+      fDone = true;
       iUseIndex = iIndex;
     }
   }
@@ -994,16 +994,16 @@ function AddToSelectionList(pNode: Pointer<DisplayList>): void {
 //
 //	Removes everything from the current selection list
 //
-function ClearSelectionList(): BOOLEAN {
+function ClearSelectionList(): boolean {
   let iIndex: INT32;
   let pNode: Pointer<DisplayList>;
 
   if (pNumSelList == null)
-    return FALSE;
+    return false;
 
   pNode = pDispList;
   while (pNode != null) {
-    pNode.value.fChosen = FALSE;
+    pNode.value.fChosen = false;
     pNode = pNode.value.pNext;
   }
 
@@ -1011,7 +1011,7 @@ function ClearSelectionList(): BOOLEAN {
     pSelList[iIndex].sCount = 0;
 
   (pNumSelList.value) = 0;
-  return TRUE;
+  return true;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -1020,21 +1020,21 @@ function ClearSelectionList(): BOOLEAN {
 //	Removes the object given n a display list from the selection list. If the objects count is
 //	greater than one, then the count is decremented and the object remains in the list.
 //
-function RemoveFromSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
+function RemoveFromSelectionList(pNode: Pointer<DisplayList>): boolean {
   let iIndex: INT32;
   let iUseIndex: INT32;
-  let fDone: BOOLEAN;
-  let fRemoved: BOOLEAN;
+  let fDone: boolean;
+  let fRemoved: boolean;
 
   // Abort if no entries in list (pretend we removed a node)
   if ((pNumSelList.value) <= 0)
-    return TRUE;
+    return true;
 
-  fRemoved = FALSE;
-  fDone = FALSE;
+  fRemoved = false;
+  fDone = false;
   for (iIndex = 0; iIndex < (pNumSelList.value) && !fDone; iIndex++) {
     if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
-      fDone = TRUE;
+      fDone = true;
       iUseIndex = iIndex;
     }
   }
@@ -1049,7 +1049,7 @@ function RemoveFromSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
         pSelList[iIndex] = pSelList[iIndex + 1];
 
       (pNumSelList.value)--;
-      fRemoved = TRUE;
+      fRemoved = true;
     }
   }
 
@@ -1070,7 +1070,7 @@ function GetRandomSelection(): INT32 {
   let iNextCount: INT32;
 
   if (fDontUseRandom) {
-    fDontUseRandom = FALSE;
+    fDontUseRandom = false;
     return iCurBank;
   }
 
@@ -1096,14 +1096,14 @@ function GetRandomSelection(): INT32 {
 //
 //	Verifies if a particular display list object exists in the current selection list.
 //
-function IsInSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
+function IsInSelectionList(pNode: Pointer<DisplayList>): boolean {
   let iIndex: INT32;
-  let fFound: BOOLEAN;
+  let fFound: boolean;
 
-  fFound = FALSE;
+  fFound = false;
   for (iIndex = 0; iIndex < (pNumSelList.value) && !fFound; iIndex++) {
     if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
-      fFound = TRUE;
+      fFound = true;
     }
   }
 
@@ -1120,13 +1120,13 @@ function IsInSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
 function FindInSelectionList(pNode: Pointer<DisplayList>): INT32 {
   let iIndex: INT32;
   let iUseIndex: INT32;
-  let fFound: BOOLEAN;
+  let fFound: boolean;
 
-  fFound = FALSE;
+  fFound = false;
   iUseIndex = -1;
   for (iIndex = 0; iIndex < (pNumSelList.value) && !fFound; iIndex++) {
     if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
-      fFound = TRUE;
+      fFound = true;
       iUseIndex = iIndex;
     }
   }
@@ -1172,7 +1172,7 @@ function OkClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
     button.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     button.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    fAllDone = TRUE;
+    fAllDone = true;
   }
 }
 
@@ -1186,7 +1186,7 @@ function CnclClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
     button.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     button.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    fAllDone = TRUE;
+    fAllDone = true;
     RestoreSelectionList();
   }
 }
@@ -1214,20 +1214,20 @@ function ScrollSelWinUp(): void {
   let pNode: Pointer<DisplayList>;
   let iCutOff: INT16;
   let iBotCutOff: INT16;
-  let fDone: BOOLEAN;
+  let fDone: boolean;
 
   // Code to scroll window up!
   pNode = pDispList;
   iCutOff = iTopWinCutOff;
 
-  fDone = FALSE;
+  fDone = false;
   while ((pNode != null) && !fDone) {
     if (pNode.value.iY >= iTopWinCutOff) {
       iCutOff = pNode.value.iY;
       pNode = pNode.value.pNext;
     } else {
       iCutOff = pNode.value.iY;
-      fDone = TRUE;
+      fDone = true;
     }
   }
 
@@ -1244,18 +1244,18 @@ function ScrollSelWinDown(): void {
   let pNode: Pointer<DisplayList>;
   let iCutOff: INT16;
   let iBotCutOff: INT16;
-  let fDone: BOOLEAN;
+  let fDone: boolean;
 
   pNode = pDispList;
   iCutOff = iTopWinCutOff;
 
-  fDone = FALSE;
+  fDone = false;
   while ((pNode != null) && !fDone) {
     if (pNode.value.iY > iTopWinCutOff) {
       iCutOff = pNode.value.iY;
       pNode = pNode.value.pNext;
     } else
-      fDone = TRUE;
+      fDone = true;
   }
 
   iBotCutOff = iBotWinCutOff - iTopWinCutOff + iCutOff;
@@ -1311,7 +1311,7 @@ function DrawSelections(): void {
 //	Creates a display list from a display specification list. It also sets variables up for
 //	properly scrolling the window etc.
 //
-function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UINT16, pDisplayList: Pointer<Pointer<DisplayList>>, pUpperLeft: Pointer<SGPPoint>, pBottomRight: Pointer<SGPPoint>, pSpacing: Pointer<SGPPoint>, fFlags: UINT16): BOOLEAN {
+function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UINT16, pDisplayList: Pointer<Pointer<DisplayList>>, pUpperLeft: Pointer<SGPPoint>, pBottomRight: Pointer<SGPPoint>, pSpacing: Pointer<SGPPoint>, fFlags: UINT16): boolean {
   let iCurrX: INT32 = pUpperLeft.value.iX;
   let iCurrY: INT32 = pUpperLeft.value.iY;
   let usGreatestHeightInRow: UINT16 = 0;
@@ -1329,7 +1329,7 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
     pDisplaySpec = addressof(pDisplaySpecs[usSpecLoop]);
     if (pDisplaySpec.value.ubType == DISPLAY_GRAPHIC) {
       if (!pDisplaySpec.value.hVObject)
-        return FALSE;
+        return false;
       usETRLEStart = pDisplaySpec.value.usStart;
       usETRLEEnd = pDisplaySpec.value.usEnd;
 
@@ -1339,9 +1339,9 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
       }
 
       if (usETRLEStart > usETRLEEnd)
-        return FALSE;
+        return false;
       if (usETRLEEnd >= pDisplaySpec.value.hVObject.value.usNumberOfObjects)
-        return FALSE;
+        return false;
 
       for (usETRLELoop = usETRLEStart; usETRLELoop <= usETRLEEnd; usETRLELoop++) {
         pETRLEObject = addressof(pDisplaySpec.value.hVObject.value.pETRLEObject[usETRLELoop]);
@@ -1355,7 +1355,7 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
           usGreatestHeightInRow = 0;
         }
 
-        if ((pCurNode = MemAlloc(sizeof(DisplayList))) != FALSE) {
+        if ((pCurNode = MemAlloc(sizeof(DisplayList))) != false) {
           pCurNode.value.hObj = pDisplaySpec.value.hVObject;
           pCurNode.value.uiIndex = usETRLELoop;
           pCurNode.value.iX = iCurrX;
@@ -1366,13 +1366,13 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
           pCurNode.value.uiObjIndx = pDisplaySpec.value.uiObjIndx;
 
           if (IsInSelectionList(pCurNode))
-            pCurNode.value.fChosen = TRUE;
+            pCurNode.value.fChosen = true;
           else
-            pCurNode.value.fChosen = FALSE;
+            pCurNode.value.fChosen = false;
 
           pDisplayList.value = pCurNode;
         } else
-          return FALSE;
+          return false;
 
         if (pETRLEObject.value.usHeight > usGreatestHeightInRow) {
           usGreatestHeightInRow = pETRLEObject.value.usHeight;
@@ -1383,7 +1383,7 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -1393,27 +1393,27 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
 //	have been selected (in the selection list) are highlighted and the count placed in the upper
 //	left corner of the image.
 //
-function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBottomCutOff: INT16, pUpperLeft: Pointer<SGPPoint>, fFlags: UINT16): BOOLEAN {
+function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBottomCutOff: INT16, pUpperLeft: Pointer<SGPPoint>, fFlags: UINT16): boolean {
   let iCurrY: INT16;
   let sTempOffsetX: INT16;
   let sTempOffsetY: INT16;
-  let fReturnVal: BOOLEAN;
+  let fReturnVal: boolean;
   let pETRLEObject: Pointer<ETRLEObject>;
   let usFillColor: UINT16;
   let sCount: INT16;
 
   if (pNode == null)
-    return TRUE;
+    return true;
 
   if (pNode.value.iY < iTopCutOff)
-    return TRUE;
+    return true;
 
-  fReturnVal = FALSE;
+  fReturnVal = false;
   if (DisplayWindowFunc(pNode.value.pNext, iTopCutOff, iBottomCutOff, pUpperLeft, fFlags)) {
     iCurrY = pUpperLeft.value.iY + pNode.value.iY - iTopCutOff;
 
     if (iCurrY > iBottomCutOff)
-      return TRUE;
+      return true;
 
     pETRLEObject = addressof(pNode.value.hObj.value.pETRLEObject[pNode.value.uiIndex]);
 

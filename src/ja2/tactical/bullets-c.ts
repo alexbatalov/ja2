@@ -9,7 +9,7 @@ function GetFreeBullet(): INT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumBullets; uiCount++) {
-    if ((gBullets[uiCount].fAllocated == FALSE))
+    if ((gBullets[uiCount].fAllocated == false))
       return uiCount;
   }
 
@@ -31,7 +31,7 @@ function RecountBullets(): void {
   guiNumBullets = 0;
 }
 
-function CreateBullet(ubFirerID: UINT8, fFake: BOOLEAN, usFlags: UINT16): INT32 {
+function CreateBullet(ubFirerID: UINT8, fFake: boolean, usFlags: UINT16): INT32 {
   let iBulletIndex: INT32;
   let pBullet: Pointer<BULLET>;
 
@@ -43,16 +43,16 @@ function CreateBullet(ubFirerID: UINT8, fFake: BOOLEAN, usFlags: UINT16): INT32 
   pBullet = addressof(gBullets[iBulletIndex]);
 
   pBullet.value.iBullet = iBulletIndex;
-  pBullet.value.fAllocated = TRUE;
-  pBullet.value.fLocated = FALSE;
+  pBullet.value.fAllocated = true;
+  pBullet.value.fLocated = false;
   pBullet.value.ubFirerID = ubFirerID;
   pBullet.value.usFlags = usFlags;
   pBullet.value.usLastStructureHit = 0;
 
   if (fFake) {
-    pBullet.value.fReal = FALSE;
+    pBullet.value.fReal = false;
   } else {
-    pBullet.value.fReal = TRUE;
+    pBullet.value.fReal = true;
   }
 
   return iBulletIndex;
@@ -115,7 +115,7 @@ function RemoveBullet(iBullet: INT32): void {
 
   if (gBullets[iBullet].fReal) {
     // set to be deleted at next update
-    gBullets[iBullet].fToDelete = TRUE;
+    gBullets[iBullet].fToDelete = true;
 
     // decrement reference to bullet in the firer
     gBullets[iBullet].pFirer.value.bBulletsLeft--;
@@ -138,7 +138,7 @@ function RemoveBullet(iBullet: INT32): void {
     }
   } else {
     // delete this fake bullet right away!
-    gBullets[iBullet].fAllocated = FALSE;
+    gBullets[iBullet].fAllocated = false;
     RecountBullets();
   }
 }
@@ -149,7 +149,7 @@ function LocateBullet(iBulletIndex: INT32): void {
     if (gBullets[iBulletIndex].ubFirerID != NOBODY) {
       if (MercPtrs[gBullets[iBulletIndex].ubFirerID].value.bSide == gbPlayerNum) {
         if (!gBullets[iBulletIndex].fLocated) {
-          gBullets[iBulletIndex].fLocated = TRUE;
+          gBullets[iBulletIndex].fLocated = true;
 
           // Only if we are in turnbased and noncombat
           if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -164,7 +164,7 @@ function LocateBullet(iBulletIndex: INT32): void {
 function UpdateBullets(): void {
   let uiCount: UINT32;
   let pNode: Pointer<LEVELNODE>;
-  let fDeletedSome: BOOLEAN = FALSE;
+  let fDeletedSome: boolean = false;
 
   for (uiCount = 0; uiCount < guiNumBullets; uiCount++) {
     if (gBullets[uiCount].fAllocated) {
@@ -173,8 +173,8 @@ function UpdateBullets(): void {
         // someone at point blank range, in the first MoveBullet call in the FireGun code
         if (gBullets[uiCount].fToDelete) {
           // Remove from old position
-          gBullets[uiCount].fAllocated = FALSE;
-          fDeletedSome = TRUE;
+          gBullets[uiCount].fAllocated = false;
+          fDeletedSome = true;
           continue;
         }
 
@@ -192,8 +192,8 @@ function UpdateBullets(): void {
         MoveBullet(uiCount);
         if (gBullets[uiCount].fToDelete) {
           // Remove from old position
-          gBullets[uiCount].fAllocated = FALSE;
-          fDeletedSome = TRUE;
+          gBullets[uiCount].fAllocated = false;
+          fDeletedSome = true;
           continue;
         }
 
@@ -239,8 +239,8 @@ function UpdateBullets(): void {
         }
       } else {
         if (gBullets[uiCount].fToDelete) {
-          gBullets[uiCount].fAllocated = FALSE;
-          fDeletedSome = TRUE;
+          gBullets[uiCount].fAllocated = false;
+          fDeletedSome = true;
         }
       }
     }
@@ -303,7 +303,7 @@ function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXE
   CreateAnimationTile(addressof(AniParams));
 }
 
-function SaveBulletStructureToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveBulletStructureToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let usCnt: UINT16;
   let uiBulletCount: UINT32 = 0;
@@ -319,7 +319,7 @@ function SaveBulletStructureToSaveGameFile(hFile: HWFILE): BOOLEAN {
   // Save the number of Bullets in the array
   FileWrite(hFile, addressof(uiBulletCount), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   if (uiBulletCount != 0) {
@@ -329,16 +329,16 @@ function SaveBulletStructureToSaveGameFile(hFile: HWFILE): BOOLEAN {
         // Save the the Bullet structure
         FileWrite(hFile, addressof(gBullets[usCnt]), sizeof(BULLET), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != sizeof(BULLET)) {
-          return FALSE;
+          return false;
         }
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): BOOLEAN {
+function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let usCnt: UINT16;
 
@@ -348,14 +348,14 @@ function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   // Load the number of Bullets in the array
   FileRead(hFile, addressof(guiNumBullets), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
-    return FALSE;
+    return false;
   }
 
   for (usCnt = 0; usCnt < guiNumBullets; usCnt++) {
     // Load the the Bullet structure
     FileRead(hFile, addressof(gBullets[usCnt]), sizeof(BULLET), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(BULLET)) {
-      return FALSE;
+      return false;
     }
 
     // Set some parameters
@@ -372,7 +372,7 @@ function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): BOOLEAN {
     HandleBulletSpecialFlags(gBullets[usCnt].iBullet);
   }
 
-  return TRUE;
+  return true;
 }
 
 function StopBullet(iBullet: INT32): void {
@@ -389,7 +389,7 @@ function DeleteAllBullets(): void {
     if (gBullets[uiCount].fAllocated) {
       // Remove from old position
       RemoveBullet(uiCount);
-      gBullets[uiCount].fAllocated = FALSE;
+      gBullets[uiCount].fAllocated = false;
     }
   }
 

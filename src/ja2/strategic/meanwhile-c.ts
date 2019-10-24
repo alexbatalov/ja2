@@ -52,8 +52,8 @@ interface NPC_SAVE_INFO {
 // BEGIN SERALIZATION
 let gCurrentMeanwhileDef: MEANWHILE_DEFINITION;
 let gMeanwhileDef: MEANWHILE_DEFINITION[] /* [NUM_MEANWHILES] */;
-let gfMeanwhileTryingToStart: BOOLEAN = FALSE;
-let gfInMeanwhile: BOOLEAN = FALSE;
+let gfMeanwhileTryingToStart: boolean = false;
+let gfInMeanwhile: boolean = false;
 // END SERIALIZATION
 let gsOldSectorX: INT16;
 let gsOldSectorY: INT16;
@@ -65,9 +65,9 @@ let gsOldSelectedSectorZ: INT16;
 let guiOldScreen: UINT32;
 let gNPCSaveData: NPC_SAVE_INFO[] /* [MAX_MEANWHILE_PROFILES] */;
 let guiNumNPCSaves: UINT32 = 0;
-let gfReloadingScreenFromMeanwhile: BOOLEAN = FALSE;
+let gfReloadingScreenFromMeanwhile: boolean = false;
 let gsOldCurInterfacePanel: INT16 = 0;
-let gfWorldWasLoaded: BOOLEAN = FALSE;
+let gfWorldWasLoaded: boolean = false;
 let ubCurrentMeanWhileId: UINT8 = 0;
 
 let uiMeanWhileFlags: UINT32 = 0;
@@ -149,8 +149,8 @@ function SetMeanWhileFlag(ubMeanwhileID: UINT8): void {
 }
 
 // is this flag set?
-function GetMeanWhileFlag(ubMeanwhileID: UINT8): BOOLEAN {
-  let uiTrue: UINT32 = FALSE;
+function GetMeanWhileFlag(ubMeanwhileID: UINT8): boolean {
+  let uiTrue: UINT32 = false;
   switch (ubMeanwhileID) {
     case Enum160.END_OF_PLAYERS_FIRST_BATTLE:
       uiTrue = (uiMeanWhileFlags & END_OF_PLAYERS_FIRST_BATTLE_FLAG);
@@ -206,9 +206,9 @@ function GetMeanWhileFlag(ubMeanwhileID: UINT8): BOOLEAN {
   }
 
   if (uiTrue) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
@@ -239,7 +239,7 @@ function RecountNPCSaves(): void {
 
 function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, uiTime: UINT32): void {
   // event scheduled to happen before, ignore
-  if (GetMeanWhileFlag(pMeanwhileDef.value.ubMeanwhileID) == TRUE) {
+  if (GetMeanWhileFlag(pMeanwhileDef.value.ubMeanwhileID) == true) {
     return;
   }
 
@@ -263,13 +263,13 @@ function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, ui
   AddStrategicEvent(Enum132.EVENT_MEANWHILE, uiTime, pMeanwhileDef.value.ubMeanwhileID);
 }
 
-function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
+function BeginMeanwhile(ubMeanwhileID: UINT8): boolean {
   let cnt: INT32;
 
   // copy meanwhile data from array to structure for current
   memcpy(addressof(gCurrentMeanwhileDef), addressof(gMeanwhileDef[ubMeanwhileID]), sizeof(MEANWHILE_DEFINITION));
 
-  gfMeanwhileTryingToStart = TRUE;
+  gfMeanwhileTryingToStart = true;
   PauseGame();
   // prevent anyone from messing with the pause!
   LockPauseState(6);
@@ -279,7 +279,7 @@ function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
     gNPCSaveData[cnt].ubProfile = NO_PROFILE;
   }
 
-  return TRUE;
+  return true;
 }
 
 function BringupMeanwhileBox(): void {
@@ -310,7 +310,7 @@ function CheckForMeanwhileOKStart(): void {
       return;
     }
 
-    gfMeanwhileTryingToStart = FALSE;
+    gfMeanwhileTryingToStart = false;
 
     guiOldScreen = guiCurrentScreen;
 
@@ -341,7 +341,7 @@ function StartMeanwhile(): void {
   gsOldSelectedSectorY = sSelMapY;
   gsOldSelectedSectorZ = iCurrentMapSectorZ;
 
-  gfInMeanwhile = TRUE;
+  gfInMeanwhile = true;
 
   // ATE: Change music before load
   SetMusicMode(Enum328.MUSIC_MAIN_MENU);
@@ -518,18 +518,18 @@ function BeginMeanwhileCallBack(bExitValue: UINT8): void {
   }
 }
 
-function AreInMeanwhile(): BOOLEAN {
+function AreInMeanwhile(): boolean {
   let curr: Pointer<STRATEGICEVENT>;
 
   // KM:  April 6, 1999
   // Tactical traversal needs to take precedence over meanwhile events.  When tactically traversing, we
   // expect to make it to the other side without interruption.
   if (gfTacticalTraversal) {
-    return FALSE;
+    return false;
   }
 
   if (gfInMeanwhile) {
-    return TRUE;
+    return true;
   }
   // Check to make sure a meanwhile scene isn't in the event list occurring at the exact same time as this call.  Meanwhile
   // scenes have precedence over a new battle if they occur in the same second.
@@ -537,15 +537,15 @@ function AreInMeanwhile(): BOOLEAN {
   while (curr) {
     if (curr.value.uiTimeStamp == GetWorldTotalSeconds()) {
       if (curr.value.ubCallbackID == Enum132.EVENT_MEANWHILE) {
-        return TRUE;
+        return true;
       }
     } else {
-      return FALSE;
+      return false;
     }
     curr = curr.value.next;
   }
 
-  return FALSE;
+  return false;
 }
 
 function ProcessImplicationsOfMeanwhile(): void {
@@ -624,7 +624,7 @@ function EndMeanwhile(): void {
   ProcessImplicationsOfMeanwhile();
   SetMeanwhileSceneSeen(gCurrentMeanwhileDef.ubMeanwhileID);
 
-  gfInMeanwhile = FALSE;
+  gfInMeanwhile = false;
   giNPCReferenceCount = 0;
 
   gTacticalStatus.uiFlags &= (~ENGAGED_IN_CONV);
@@ -671,7 +671,7 @@ function DoneFadeOutMeanwhileOnceDone(): void {
   let ubProfile: UINT8;
 
   // OK, insertion data found, enter sector!
-  gfReloadingScreenFromMeanwhile = TRUE;
+  gfReloadingScreenFromMeanwhile = true;
 
   if (gfWorldWasLoaded) {
     SetCurrentWorldSector(gsOldSectorX, gsOldSectorY, gsOldSectorZ);
@@ -687,7 +687,7 @@ function DoneFadeOutMeanwhileOnceDone(): void {
 
   ChangeSelectedMapSector(gsOldSelectedSectorX, gsOldSelectedSectorY, gsOldSelectedSectorZ);
 
-  gfReloadingScreenFromMeanwhile = FALSE;
+  gfReloadingScreenFromMeanwhile = false;
 
   // OK, restore NPC save info...
   for (cnt = 0; cnt < guiNumNPCSaves; cnt++) {
@@ -731,7 +731,7 @@ function LocateMeanWhileGrid(): void {
   // go to the approp. gridno
   sGridNo = gusMeanWhileGridNo[ubCurrentMeanWhileId];
 
-  InternalLocateGridNo(sGridNo, TRUE);
+  InternalLocateGridNo(sGridNo, true);
 
   return;
 }
@@ -740,15 +740,15 @@ function LocateToMeanwhileCharacter(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gfInMeanwhile) {
-    pSoldier = FindSoldierByProfileID(gCurrentMeanwhileDef.ubNPCNumber, FALSE);
+    pSoldier = FindSoldierByProfileID(gCurrentMeanwhileDef.ubNPCNumber, false);
 
     if (pSoldier != null) {
-      LocateSoldier(pSoldier.value.ubID, FALSE);
+      LocateSoldier(pSoldier.value.ubID, false);
     }
   }
 }
 
-function AreReloadingFromMeanwhile(): BOOLEAN {
+function AreReloadingFromMeanwhile(): boolean {
   return gfReloadingScreenFromMeanwhile;
 }
 
@@ -778,7 +778,7 @@ function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
   let ubId: UINT8 = 0;
-  let fHandled: BOOLEAN = FALSE;
+  let fHandled: boolean = false;
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
@@ -791,27 +791,27 @@ function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
   switch (bTownId) {
     case Enum135.DRASSEN:
       ubId = Enum160.DRASSEN_LIBERATED;
-      fHandled = TRUE;
+      fHandled = true;
       break;
     case Enum135.CAMBRIA:
       ubId = Enum160.CAMBRIA_LIBERATED;
-      fHandled = TRUE;
+      fHandled = true;
       break;
     case Enum135.ALMA:
       ubId = Enum160.ALMA_LIBERATED;
-      fHandled = TRUE;
+      fHandled = true;
       break;
     case Enum135.GRUMM:
       ubId = Enum160.GRUMM_LIBERATED;
-      fHandled = TRUE;
+      fHandled = true;
       break;
     case Enum135.CHITZENA:
       ubId = Enum160.CHITZENA_LIBERATED;
-      fHandled = TRUE;
+      fHandled = true;
       break;
     case Enum135.BALIME:
       ubId = Enum160.BALIME_LIBERATED;
-      fHandled = TRUE;
+      fHandled = true;
       break;
   }
 
@@ -849,7 +849,7 @@ function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
   let ubId: UINT8 = 0;
-  let fHandled: BOOLEAN = FALSE;
+  let fHandled: boolean = false;
 
   if (bSamId == -1) {
     // invalid parameter!
@@ -870,15 +870,15 @@ function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
   switch (bSamId) {
     case 0:
       ubId = Enum160.NW_SAM;
-      fHandled = TRUE;
+      fHandled = true;
       break;
     case 1:
       ubId = Enum160.NE_SAM;
-      fHandled = TRUE;
+      fHandled = true;
       break;
     case 2:
       ubId = Enum160.CENTRAL_SAM;
-      fHandled = TRUE;
+      fHandled = true;
       break;
     default:
       // wtf?
@@ -1068,7 +1068,7 @@ function HandleDelayedFirstBattleVictory(): void {
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
-function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT16, fFromAutoResolve: BOOLEAN): void {
+function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT16, fFromAutoResolve: boolean): void {
   let bTownId: INT8 = 0;
   let sSector: INT16 = 0;
 
@@ -1089,12 +1089,12 @@ function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bS
   if (bTownId == Enum135.BLANK_SECTOR) {
     // invalid town
     HandleDelayedFirstBattleVictory();
-    gfFirstBattleMeanwhileScenePending = FALSE;
+    gfFirstBattleMeanwhileScenePending = false;
   } else if (gfFirstBattleMeanwhileScenePending || fFromAutoResolve) {
     HandleFirstBattleVictory();
-    gfFirstBattleMeanwhileScenePending = FALSE;
+    gfFirstBattleMeanwhileScenePending = false;
   } else {
-    gfFirstBattleMeanwhileScenePending = TRUE;
+    gfFirstBattleMeanwhileScenePending = true;
   }
 
   return;
@@ -1104,6 +1104,6 @@ function HandleFirstMeanWhileSetUpWithTrashWorld(): void {
   // exiting sector after first battle fought
   if (gfFirstBattleMeanwhileScenePending) {
     HandleFirstBattleVictory();
-    gfFirstBattleMeanwhileScenePending = FALSE;
+    gfFirstBattleMeanwhileScenePending = false;
   }
 }

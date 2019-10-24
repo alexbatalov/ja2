@@ -49,7 +49,7 @@ const DOOR_PERCEIVED_UNTRAPPED = 2;
 
 interface DOOR {
   sGridNo: INT16;
-  fLocked: BOOLEAN; // is the door locked
+  fLocked: boolean; // is the door locked
   ubTrapLevel: UINT8; // difficulty of finding the trap, 0-10
   ubTrapID: UINT8; // the trap type (0 is no trap)
   ubLockID: UINT8; // the lock (0 is no lock)

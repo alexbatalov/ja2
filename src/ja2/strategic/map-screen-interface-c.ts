@@ -32,8 +32,8 @@ const REASON_FOR_SOLDIER_UPDATE_OFFSET_Y = (14);
 
 const MAX_MAPSCREEN_FAST_HELP = 100;
 
-const VEHICLE_ONLY = FALSE;
-const AND_ALL_ON_BOARD = TRUE;
+const VEHICLE_ONLY = false;
+const AND_ALL_ON_BOARD = true;
 
 // the regions int he movemenu
 const enum Enum145 {
@@ -55,15 +55,15 @@ let gMoveMenuRegion: MOUSE_REGION[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
 
 let gMapScreenHelpTextMask: MOUSE_REGION;
 
-let fShowMapScreenHelpText: BOOLEAN = FALSE;
-let fScreenMaskForMoveCreated: BOOLEAN = FALSE;
-let fLockOutMapScreenInterface: BOOLEAN = FALSE;
+let fShowMapScreenHelpText: boolean = false;
+let fScreenMaskForMoveCreated: boolean = false;
+let fLockOutMapScreenInterface: boolean = false;
 
 let gsCustomErrorString: CHAR16[] /* [128] */;
 
-let fShowUpdateBox: BOOLEAN = FALSE;
-let fInterfaceFastHelpTextActive: BOOLEAN = FALSE;
-let fReBuildCharacterList: BOOLEAN = FALSE;
+let fShowUpdateBox: boolean = false;
+let fInterfaceFastHelpTextActive: boolean = false;
+let fReBuildCharacterList: boolean = false;
 let giSizeOfInterfaceFastHelpTextList: INT32 = 0;
 
 // Animated sector locator icon variables.
@@ -115,7 +115,7 @@ let iHeightOfInitFastHelpText: INT32 = 0;
 
 // the list of soldiers that are moving
 let pSoldierMovingList: Pointer<SOLDIERTYPE>[] /* [MAX_CHARACTER_COUNT] */;
-let fSoldierIsMoving: BOOLEAN[] /* [MAX_CHARACTER_COUNT] */;
+let fSoldierIsMoving: boolean[] /* [MAX_CHARACTER_COUNT] */;
 
 let pUpdateSoldierBox: Pointer<SOLDIERTYPE>[] /* [SIZE_OF_UPDATE_BOX] */;
 
@@ -132,8 +132,8 @@ let fVehicleIsMoving: INT32[] /* [NUMBER_OF_SQUADS] */;
 let gMoveBoxScreenMask: MOUSE_REGION;
 
 // has the inventory pool been selected to be on or off?
-let fMapInventoryPoolInited: BOOLEAN = FALSE;
-let fShowMapScreenMovementList: BOOLEAN = FALSE;
+let fMapInventoryPoolInited: boolean = false;
+let fShowMapScreenMovementList: boolean = false;
 
 let gCharactersList: MapScreenCharacterSt[] /* [MAX_CHARACTER_COUNT + 1] */;
 
@@ -142,15 +142,15 @@ let gMapStatusBarsRegion: MOUSE_REGION;
 let MovePosition: SGPPoint = [ 450, 100 ];
 
 // which lines are selected? .. for assigning groups of mercs to the same thing
-let fSelectedListOfMercsForMapScreen: BOOLEAN[] /* [MAX_CHARACTER_COUNT] */;
-let fResetTimerForFirstEntryIntoMapScreen: BOOLEAN = FALSE;
+let fSelectedListOfMercsForMapScreen: boolean[] /* [MAX_CHARACTER_COUNT] */;
+let fResetTimerForFirstEntryIntoMapScreen: boolean = false;
 let iReasonForSoldierUpDate: INT32 = Enum154.NO_REASON_FOR_UPDATE;
 
 // sam and mine icons
 let guiSAMICON: UINT32;
 
 // disable team info panels due to battle roster
-let fDisableDueToBattleRoster: BOOLEAN = FALSE;
+let fDisableDueToBattleRoster: boolean = false;
 
 // track old contract times
 let iOldContractTimes: INT32[] /* [MAX_CHARACTER_COUNT] */;
@@ -201,7 +201,7 @@ let gpLeaveListHead: Pointer<MERC_LEAVE_ITEM>[] /* [NUM_LEAVE_LIST_SLOTS] */;
 let guiLeaveListOwnerProfileId: UINT32[] /* [NUM_LEAVE_LIST_SLOTS] */;
 
 // flag to reset contract region glow
-let fResetContractGlow: BOOLEAN = FALSE;
+let fResetContractGlow: boolean = false;
 
 // timers for double click
 let giDblClickTimersForMoveBoxMouseRegions: INT32[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
@@ -210,14 +210,14 @@ let giExitToTactBaseTime: INT32 = 0;
 let guiSectorLocatorBaseTime: UINT32 = 0;
 
 // which menus are we showing
-let fShowAssignmentMenu: BOOLEAN = FALSE;
-let fShowTrainingMenu: BOOLEAN = FALSE;
-let fShowAttributeMenu: BOOLEAN = FALSE;
-let fShowSquadMenu: BOOLEAN = FALSE;
-let fShowContractMenu: BOOLEAN = FALSE;
-let fShowRemoveMenu: BOOLEAN = FALSE;
+let fShowAssignmentMenu: boolean = false;
+let fShowTrainingMenu: boolean = false;
+let fShowAttributeMenu: boolean = false;
+let fShowSquadMenu: boolean = false;
+let fShowContractMenu: boolean = false;
+let fShowRemoveMenu: boolean = false;
 
-let fRebuildMoveBox: BOOLEAN = FALSE;
+let fRebuildMoveBox: boolean = false;
 
 // positions for all the pop up boxes
 let ContractDimensions: SGPRect = [ 0, 0, 140, 60 ];
@@ -247,7 +247,7 @@ let OrigVehiclePosition: SGPPoint = [ 160, 150 ];
 // extern BOOLEAN fMapExitDueToMessageBox;
 
 // at least one merc was hired at some time
-let gfAtLeastOneMercWasHired: BOOLEAN = FALSE;
+let gfAtLeastOneMercWasHired: boolean = false;
 
 // how many people does the player have?
 // INT32 GetNumberOfCharactersOnPlayersTeam( void );
@@ -263,7 +263,7 @@ function SetEntryInSelectedCharacterList(bEntry: INT8): void {
   Assert((bEntry >= 0) && (bEntry < MAX_CHARACTER_COUNT));
 
   // set this entry to selected
-  fSelectedListOfMercsForMapScreen[bEntry] = TRUE;
+  fSelectedListOfMercsForMapScreen[bEntry] = true;
 
   return;
 }
@@ -272,17 +272,17 @@ function ResetEntryForSelectedList(bEntry: INT8): void {
   Assert((bEntry >= 0) && (bEntry < MAX_CHARACTER_COUNT));
 
   // set this entry to selected
-  fSelectedListOfMercsForMapScreen[bEntry] = FALSE;
+  fSelectedListOfMercsForMapScreen[bEntry] = false;
 
   return;
 }
 
 function ResetSelectedListForMapScreen(): void {
   // set all the entries int he selected list to false
-  memset(addressof(fSelectedListOfMercsForMapScreen), FALSE, MAX_CHARACTER_COUNT * sizeof(BOOLEAN));
+  memset(addressof(fSelectedListOfMercsForMapScreen), false, MAX_CHARACTER_COUNT * sizeof(BOOLEAN));
 
   // if we still have a valid dude selected
-  if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid == TRUE)) {
+  if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid == true)) {
     // then keep him selected
     SetEntryInSelectedCharacterList(bSelectedInfoChar);
   }
@@ -290,7 +290,7 @@ function ResetSelectedListForMapScreen(): void {
   return;
 }
 
-function IsEntryInSelectedListSet(bEntry: INT8): BOOLEAN {
+function IsEntryInSelectedListSet(bEntry: INT8): boolean {
   Assert((bEntry >= 0) && (bEntry < MAX_CHARACTER_COUNT));
 
   // is this entry in the selected list set?
@@ -330,21 +330,21 @@ function BuildSelectedListFromAToB(bA: INT8, bB: INT8): void {
   return;
 }
 
-function MultipleCharacterListEntriesSelected(): BOOLEAN {
+function MultipleCharacterListEntriesSelected(): boolean {
   let ubSelectedCnt: UINT8 = 0;
   let iCounter: INT32 = 0;
 
   // check if more than one person is selected in the selected list
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    if (fSelectedListOfMercsForMapScreen[iCounter] == TRUE) {
+    if (fSelectedListOfMercsForMapScreen[iCounter] == true) {
       ubSelectedCnt++;
     }
   }
 
   if (ubSelectedCnt > 1) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
@@ -354,19 +354,19 @@ function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAssignment
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // valid character?
-    if (gCharactersList[iCounter].fValid == FALSE) {
+    if (gCharactersList[iCounter].fValid == false) {
       // nope
       continue;
     }
 
     pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
-    if (pSoldier.value.bActive == FALSE) {
+    if (pSoldier.value.bActive == false) {
       continue;
     }
 
     if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
-      if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == FALSE) {
+      if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == false) {
         ResumeOldAssignment(pSoldier);
       }
     }
@@ -379,14 +379,14 @@ function ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(sSectorX: INT
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // valid character?
-    if (gCharactersList[iCounter].fValid == FALSE) {
+    if (gCharactersList[iCounter].fValid == false) {
       // nope
       continue;
     }
 
     pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
-    if (pSoldier.value.bActive == FALSE) {
+    if (pSoldier.value.bActive == false) {
       continue;
     }
 
@@ -421,8 +421,8 @@ function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointer<SOLDI
 
   // deselect any other selected mercs that can't travel together with pSoldier
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    if (gCharactersList[iCounter].fValid == TRUE) {
-      if (fSelectedListOfMercsForMapScreen[iCounter] == TRUE) {
+    if (gCharactersList[iCounter].fValid == true) {
+      if (fSelectedListOfMercsForMapScreen[iCounter] == true) {
         pSoldier2 = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
         // skip the guy we are
@@ -491,9 +491,9 @@ function SelectUnselectedMercsWhoMustMoveWithThisGuy(): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    if (gCharactersList[iCounter].fValid == TRUE) {
+    if (gCharactersList[iCounter].fValid == true) {
       // if not already selected
-      if (fSelectedListOfMercsForMapScreen[iCounter] == FALSE) {
+      if (fSelectedListOfMercsForMapScreen[iCounter] == false) {
         pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
         // if on a squad or in a vehicle
@@ -509,43 +509,43 @@ function SelectUnselectedMercsWhoMustMoveWithThisGuy(): void {
   }
 }
 
-function AnyMercInSameSquadOrVehicleIsSelected(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function AnyMercInSameSquadOrVehicleIsSelected(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iCounter: INT32 = 0;
   let pSoldier2: Pointer<SOLDIERTYPE> = null;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    if (gCharactersList[iCounter].fValid == TRUE) {
+    if (gCharactersList[iCounter].fValid == true) {
       // if selected
-      if (fSelectedListOfMercsForMapScreen[iCounter] == TRUE) {
+      if (fSelectedListOfMercsForMapScreen[iCounter] == true) {
         pSoldier2 = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
         // if they have the same assignment
         if (pSoldier.value.bAssignment == pSoldier2.value.bAssignment) {
           // same squad?
           if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
-            return TRUE;
+            return true;
           }
 
           // same vehicle?
           if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId == pSoldier2.value.iVehicleId)) {
-            return TRUE;
+            return true;
           }
         }
 
         // target guy is in a vehicle, and this guy IS that vehicle
         if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier2.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.iVehicleId == pSoldier2.value.bVehicleID)) {
-          return TRUE;
+          return true;
         }
 
         // this guy is in a vehicle, and the target guy IS that vehicle
         if ((pSoldier2.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier2.value.iVehicleId == pSoldier.value.bVehicleID)) {
-          return TRUE;
+          return true;
         }
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function RestoreBackgroundForAssignmentGlowRegionList(): void {
@@ -554,14 +554,14 @@ function RestoreBackgroundForAssignmentGlowRegionList(): void {
   // will restore the background region of the assignment list after a glow has ceased
   // ( a _LOST_MOUSE reason to the assignment region mvt callback handler )
 
-  if (fShowAssignmentMenu == TRUE) {
+  if (fShowAssignmentMenu == true) {
     // force update
     ForceUpDateOfBox(ghAssignmentBox);
     ForceUpDateOfBox(ghEpcBox);
     ForceUpDateOfBox(ghRemoveMercAssignBox);
-    if (fShowSquadMenu == TRUE) {
+    if (fShowSquadMenu == true) {
       ForceUpDateOfBox(ghSquadBox);
-    } else if (fShowTrainingMenu == TRUE) {
+    } else if (fShowTrainingMenu == true) {
       ForceUpDateOfBox(ghTrainingBox);
     }
   }
@@ -575,7 +575,7 @@ function RestoreBackgroundForAssignmentGlowRegionList(): void {
     RestoreExternBackgroundRect(66, Y_START - 1, 118 + 1 - 67, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
     // ARM: not good enough! must reblit the whole panel to erase glow chunk restored by help text disappearing!!!
-    fTeamPanelDirty = TRUE;
+    fTeamPanelDirty = true;
 
     // set old to current
     iOldAssignmentLine = giAssignHighLine;
@@ -600,7 +600,7 @@ function RestoreBackgroundForDestinationGlowRegionList(): void {
     RestoreExternBackgroundRect(182, Y_START - 1, 217 + 1 - 182, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
     // ARM: not good enough! must reblit the whole panel to erase glow chunk restored by help text disappearing!!!
-    fTeamPanelDirty = TRUE;
+    fTeamPanelDirty = true;
 
     // set old to current
     iOldDestinationLine = giDestHighLine;
@@ -625,13 +625,13 @@ function RestoreBackgroundForContractGlowRegionList(): void {
     RestoreExternBackgroundRect(222, Y_START - 1, 250 + 1 - 222, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
     // ARM: not good enough! must reblit the whole panel to erase glow chunk restored by help text disappearing!!!
-    fTeamPanelDirty = TRUE;
+    fTeamPanelDirty = true;
 
     // set old to current
     iOldContractLine = giContractHighLine;
 
     // reset color rotation
-    fResetContractGlow = TRUE;
+    fResetContractGlow = true;
   }
 
   // leave
@@ -653,13 +653,13 @@ function RestoreBackgroundForSleepGlowRegionList(): void {
     RestoreExternBackgroundRect(123, Y_START - 1, 142 + 1 - 123, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
     // ARM: not good enough! must reblit the whole panel to erase glow chunk restored by help text disappearing!!!
-    fTeamPanelDirty = TRUE;
+    fTeamPanelDirty = true;
 
     // set old to current
     iOldSleepHighLine = giSleepHighLine;
 
     // reset color rotation
-    fResetContractGlow = TRUE;
+    fResetContractGlow = true;
   }
 
   // leave
@@ -672,7 +672,7 @@ function PlayGlowRegionSound(): void {
 
   if (uiSoundId != 0) {
     // is sound playing?..don't play new one
-    if (SoundIsPlaying(uiSoundId) == TRUE) {
+    if (SoundIsPlaying(uiSoundId) == true) {
       return;
     }
   }
@@ -686,99 +686,99 @@ function PlayGlowRegionSound(): void {
 function CharacterIsGettingPathPlotted(sCharNumber: INT16): INT16 {
   // valid character number?
   if ((sCharNumber < 0) || (sCharNumber >= MAX_CHARACTER_COUNT)) {
-    return FALSE;
+    return false;
   }
 
   // is the character a valid one?
-  if (gCharactersList[sCharNumber].fValid == FALSE) {
-    return FALSE;
+  if (gCharactersList[sCharNumber].fValid == false) {
+    return false;
   }
 
   // if the highlighted line character is also selected
   if (((giDestHighLine != -1) && IsEntryInSelectedListSet(giDestHighLine)) || ((bSelectedDestChar != -1) && IsEntryInSelectedListSet(bSelectedDestChar))) {
     // then ALL selected lines will be affected
     if (IsEntryInSelectedListSet(sCharNumber)) {
-      return TRUE;
+      return true;
     }
   } else {
     // if he is *the* selected dude
     if (bSelectedDestChar == sCharNumber) {
-      return TRUE;
+      return true;
     }
 
     // ONLY the highlighted line will be affected
     if (sCharNumber == giDestHighLine) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsCharacterSelectedForAssignment(sCharNumber: INT16): BOOLEAN {
+function IsCharacterSelectedForAssignment(sCharNumber: INT16): boolean {
   // valid character number?
   if ((sCharNumber < 0) || (sCharNumber >= MAX_CHARACTER_COUNT)) {
-    return FALSE;
+    return false;
   }
 
   // is the character a valid one?
-  if (gCharactersList[sCharNumber].fValid == FALSE) {
-    return FALSE;
+  if (gCharactersList[sCharNumber].fValid == false) {
+    return false;
   }
 
   // if the highlighted line character is also selected
   if ((giAssignHighLine != -1) && IsEntryInSelectedListSet(giAssignHighLine)) {
     // then ALL selected lines will be affected
     if (IsEntryInSelectedListSet(sCharNumber)) {
-      return TRUE;
+      return true;
     }
   } else {
     // ONLY the highlighted line will be affected
     if (sCharNumber == giAssignHighLine) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsCharacterSelectedForSleep(sCharNumber: INT16): BOOLEAN {
+function IsCharacterSelectedForSleep(sCharNumber: INT16): boolean {
   // valid character number?
   if ((sCharNumber < 0) || (sCharNumber >= MAX_CHARACTER_COUNT)) {
-    return FALSE;
+    return false;
   }
 
   // is the character a valid one?
-  if (gCharactersList[sCharNumber].fValid == FALSE) {
-    return FALSE;
+  if (gCharactersList[sCharNumber].fValid == false) {
+    return false;
   }
 
   // if the highlighted line character is also selected
   if ((giSleepHighLine != -1) && IsEntryInSelectedListSet(giSleepHighLine)) {
     // then ALL selected lines will be affected
     if (IsEntryInSelectedListSet(sCharNumber)) {
-      return TRUE;
+      return true;
     }
   } else {
     // ONLY the highlighted line will be affected
     if (sCharNumber == giSleepHighLine) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function DisableTeamInfoPanels(): void {
   // disable team info panel
-  fDisableDueToBattleRoster = TRUE;
+  fDisableDueToBattleRoster = true;
 
   return;
 }
 
 function EnableTeamInfoPanels(): void {
   // enable team info panel
-  fDisableDueToBattleRoster = FALSE;
+  fDisableDueToBattleRoster = false;
 
   return;
 }
@@ -887,7 +887,7 @@ function JumpToLevel(iLevel: INT32): void {
     return;
   }
 
-  if (gfPreBattleInterfaceActive == TRUE) {
+  if (gfPreBattleInterfaceActive == true) {
     return;
   }
 
@@ -895,7 +895,7 @@ function JumpToLevel(iLevel: INT32): void {
   if (fShowMapInventoryPool)
     return;
 
-  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
+  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == true)) {
     AbortMovementPlottingMode();
   }
 
@@ -917,7 +917,7 @@ function CheckAndUpdateBasedOnContractTimes(): void {
   let iTimeRemaining: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    if (gCharactersList[iCounter].fValid == TRUE) {
+    if (gCharactersList[iCounter].fValid == true) {
       // what kind of merc
       if (Menptr[gCharactersList[iCounter].usSolID].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
         // amount of time left on contract
@@ -931,8 +931,8 @@ function CheckAndUpdateBasedOnContractTimes(): void {
             iOldContractTimes[iCounter] = iTimeRemaining;
 
             // dirty screen
-            fTeamPanelDirty = TRUE;
-            fCharacterInfoPanelDirty = TRUE;
+            fTeamPanelDirty = true;
+            fCharacterInfoPanelDirty = true;
           }
         } else {
           // less than a day, display hours left in red
@@ -942,8 +942,8 @@ function CheckAndUpdateBasedOnContractTimes(): void {
           if (iTimeRemaining != iOldContractTimes[iCounter]) {
             iOldContractTimes[iCounter] = iTimeRemaining;
             // dirty screen
-            fTeamPanelDirty = TRUE;
-            fCharacterInfoPanelDirty = TRUE;
+            fTeamPanelDirty = true;
+            fCharacterInfoPanelDirty = true;
           }
         }
       } else if (Menptr[gCharactersList[iCounter].usSolID].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
@@ -953,8 +953,8 @@ function CheckAndUpdateBasedOnContractTimes(): void {
           iOldContractTimes[iCounter] = iTimeRemaining;
 
           // dirty screen
-          fTeamPanelDirty = TRUE;
-          fCharacterInfoPanelDirty = TRUE;
+          fTeamPanelDirty = true;
+          fCharacterInfoPanelDirty = true;
         }
       }
     }
@@ -971,11 +971,11 @@ function HandleDisplayOfSelectedMercArrows(): void {
   }
 
   // is the character valid?
-  if (gCharactersList[bSelectedInfoChar].fValid == FALSE) {
+  if (gCharactersList[bSelectedInfoChar].fValid == false) {
     return;
   }
 
-  if (fShowInventoryFlag == TRUE) {
+  if (fShowInventoryFlag == true) {
     return;
   }
   // now blit one by the selected merc
@@ -990,9 +990,9 @@ function HandleDisplayOfSelectedMercArrows(): void {
 
   // now run through the selected list of guys, an arrow for each
   for (ubCount = 0; ubCount < MAX_CHARACTER_COUNT; ubCount++) {
-    if (gCharactersList[ubCount].fValid == TRUE) {
+    if (gCharactersList[ubCount].fValid == true) {
       // are they in the selected list or int he same mvt group as this guy
-      if ((IsEntryInSelectedListSet(ubCount) == TRUE) || ((bSelectedDestChar != -1) ? ((Menptr[gCharactersList[ubCount].usSolID].ubGroupID != 0) ? (Menptr[gCharactersList[bSelectedDestChar].usSolID].ubGroupID == Menptr[gCharactersList[ubCount].usSolID].ubGroupID) : FALSE) : FALSE)) {
+      if ((IsEntryInSelectedListSet(ubCount) == true) || ((bSelectedDestChar != -1) ? ((Menptr[gCharactersList[ubCount].usSolID].ubGroupID != 0) ? (Menptr[gCharactersList[bSelectedDestChar].usSolID].ubGroupID == Menptr[gCharactersList[ubCount].usSolID].ubGroupID) : false) : false)) {
         sYPosition = Y_START + (ubCount * (Y_SIZE() + 2)) - 1;
         if (ubCount >= FIRST_VEHICLE) {
           sYPosition += 6;
@@ -1010,24 +1010,24 @@ function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sMapZ: IN
   // handle display of item pop up for this sector
   // check if anyone alive in this sector
   let pItemPool: Pointer<ITEM_POOL> = null;
-  /* static */ let fWasInited: BOOLEAN = FALSE;
+  /* static */ let fWasInited: boolean = false;
 
   if (bSelectedInfoChar == -1) {
     return;
   }
 
-  if ((fWasInited == FALSE) && (fMapInventoryPoolInited)) {
-    if (gCharactersList[bSelectedInfoChar].fValid == TRUE) {
+  if ((fWasInited == false) && (fMapInventoryPoolInited)) {
+    if (gCharactersList[bSelectedInfoChar].fValid == true) {
       if ((Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorX == sMapX) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorY == sMapY) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bSectorZ == sMapZ) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bActive) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bLife >= OKLIFE)) {
         // valid character
         InitializeItemPickupMenu(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]), NOWHERE, pItemPool, MAP_INVEN_POOL_X, MAP_INVEN_POOL_Y, -1);
-        fWasInited = TRUE;
+        fWasInited = true;
 
         CreateScreenMaskForInventoryPoolPopUp();
       }
     }
-  } else if ((fWasInited == TRUE) && (fMapInventoryPoolInited == FALSE)) {
-    fWasInited = FALSE;
+  } else if ((fWasInited == true) && (fMapInventoryPoolInited == false)) {
+    fWasInited = false;
 
     // now clear up the box
     RemoveItemPickupMenu();
@@ -1036,7 +1036,7 @@ function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sMapZ: IN
     RemoveScreenMaskForInventoryPoolPopUp();
 
     // drity nessacary regions
-    fMapPanelDirty = TRUE;
+    fMapPanelDirty = true;
   }
 
   // showing it
@@ -1062,7 +1062,7 @@ function RemoveScreenMaskForInventoryPoolPopUp(): void {
 function InventoryScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // inventory screen mask btn callback
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    fMapInventoryPoolInited = FALSE;
+    fMapInventoryPoolInited = false;
   }
 }
 
@@ -1122,14 +1122,14 @@ function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void {
     if (Menptr[uiMercId].inv[iCounter].ubNumberOfObjects > 0) {
       if (Menptr[uiMercId].sSectorX != gWorldSectorX || Menptr[uiMercId].sSectorY != gWorldSectorY || Menptr[uiMercId].bSectorZ != gbWorldSectorZ) {
         // Set flag for item...
-        AddItemsToUnLoadedSector(Menptr[uiMercId].sSectorX, Menptr[uiMercId].sSectorY, Menptr[uiMercId].bSectorZ, sGridNo, 1, addressof(Menptr[uiMercId].inv[iCounter]), Menptr[uiMercId].bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, 1, FALSE);
+        AddItemsToUnLoadedSector(Menptr[uiMercId].sSectorX, Menptr[uiMercId].sSectorY, Menptr[uiMercId].bSectorZ, sGridNo, 1, addressof(Menptr[uiMercId].inv[iCounter]), Menptr[uiMercId].bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, 1, false);
       } else {
         AddItemToPool(sGridNo, addressof(Menptr[uiMercId].inv[iCounter]), 1, Menptr[uiMercId].bLevel, WORLD_ITEM_REACHABLE, 0);
       }
     }
   }
 
-  DropKeysInKeyRing(MercPtrs[uiMercId], sGridNo, MercPtrs[uiMercId].value.bLevel, 1, FALSE, 0, FALSE);
+  DropKeysInKeyRing(MercPtrs[uiMercId], sGridNo, MercPtrs[uiMercId].value.bLevel, 1, false, 0, false);
 }
 
 function HandleMercLeavingEquipmentInOmerta(uiMercId: UINT32): void {
@@ -1141,7 +1141,7 @@ function HandleMercLeavingEquipmentInOmerta(uiMercId: UINT32): void {
     AddStrategicEvent(Enum132.EVENT_MERC_LEAVE_EQUIP_IN_OMERTA, GetWorldTotalMin() + (6 * 60), iSlotIndex);
   } else {
     // otherwise there's no free slots left (shouldn't ever happen)
-    AssertMsg(FALSE, "HandleMercLeavingEquipmentInOmerta: No more free slots, equipment lost");
+    AssertMsg(false, "HandleMercLeavingEquipmentInOmerta: No more free slots, equipment lost");
   }
 }
 
@@ -1154,7 +1154,7 @@ function HandleMercLeavingEquipmentInDrassen(uiMercId: UINT32): void {
     AddStrategicEvent(Enum132.EVENT_MERC_LEAVE_EQUIP_IN_DRASSEN, GetWorldTotalMin() + (6 * 60), iSlotIndex);
   } else {
     // otherwise there's no free slots left (shouldn't ever happen)
-    AssertMsg(FALSE, "HandleMercLeavingEquipmentInDrassen: No more free slots, equipment lost");
+    AssertMsg(false, "HandleMercLeavingEquipmentInDrassen: No more free slots, equipment lost");
   }
 }
 
@@ -1179,7 +1179,7 @@ function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
   while (pItem) {
     if (gWorldSectorX != OMERTA_LEAVE_EQUIP_SECTOR_X || gWorldSectorY != OMERTA_LEAVE_EQUIP_SECTOR_Y || gbWorldSectorZ != OMERTA_LEAVE_EQUIP_SECTOR_Z) {
       // given this slot value, add to sector item list
-      AddItemsToUnLoadedSector(OMERTA_LEAVE_EQUIP_SECTOR_X, OMERTA_LEAVE_EQUIP_SECTOR_Y, OMERTA_LEAVE_EQUIP_SECTOR_Z, OMERTA_LEAVE_EQUIP_GRIDNO, 1, addressof(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, FALSE);
+      AddItemsToUnLoadedSector(OMERTA_LEAVE_EQUIP_SECTOR_X, OMERTA_LEAVE_EQUIP_SECTOR_Y, OMERTA_LEAVE_EQUIP_SECTOR_Z, OMERTA_LEAVE_EQUIP_GRIDNO, 1, addressof(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, false);
     } else {
       AddItemToPool(OMERTA_LEAVE_EQUIP_GRIDNO, addressof(pItem.value.o), 1, 0, WORLD_ITEM_REACHABLE, 0);
     }
@@ -1210,7 +1210,7 @@ function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
   while (pItem) {
     if (gWorldSectorX != BOBBYR_SHIPPING_DEST_SECTOR_X || gWorldSectorY != BOBBYR_SHIPPING_DEST_SECTOR_Y || gbWorldSectorZ != BOBBYR_SHIPPING_DEST_SECTOR_Z) {
       // given this slot value, add to sector item list
-      AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 10433, 1, addressof(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, FALSE);
+      AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 10433, 1, addressof(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, false);
     } else {
       AddItemToPool(10433, addressof(pItem.value.o), 1, 0, WORLD_ITEM_REACHABLE, 0);
     }
@@ -1241,14 +1241,14 @@ function ShutDownLeaveList(): void {
   }
 }
 
-function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32): BOOLEAN {
+function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32): boolean {
   let pItem: Pointer<MERC_LEAVE_ITEM>;
   let pCurrentItem: Pointer<MERC_LEAVE_ITEM>;
 
   Assert(uiSlotIndex < NUM_LEAVE_LIST_SLOTS);
 
   if (o == null) {
-    return FALSE;
+    return false;
   }
 
   // allocate space
@@ -1265,7 +1265,7 @@ function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32): BOOLE
 
   if (pCurrentItem == null) {
     gpLeaveListHead[uiSlotIndex] = pItem;
-    return TRUE;
+    return true;
   }
 
   // move through list
@@ -1276,7 +1276,7 @@ function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32): BOOLE
   // found
   pCurrentItem.value.pNext = pItem;
 
-  return TRUE;
+  return true;
 }
 
 // release memory for all items in this slot's leave item list
@@ -1334,7 +1334,7 @@ function SetUpDropItemListForMerc(uiMercId: UINT32): INT32 {
 
   // ATE: Added this to drop keyring keys - the 2nd last paramter says to add it to a leave list...
   // the gridno, level and visiblity are ignored
-  DropKeysInKeyRing(MercPtrs[uiMercId], NOWHERE, 0, 0, TRUE, iSlotIndex, FALSE);
+  DropKeysInKeyRing(MercPtrs[uiMercId], NOWHERE, 0, 0, true, iSlotIndex, false);
 
   // zero out profiles
   memset((gMercProfiles[Menptr[uiMercId].ubProfile].bInvStatus), 0, sizeof(UINT8) * 19);
@@ -1399,7 +1399,7 @@ BOOLEAN RemoveItemFromLeaveIndex( MERC_LEAVE_ITEM *pItem, UINT32 uiSlotIndex )
 
 function HandleGroupAboutToArrive(): void {
   // reblit map to change the color of the "people in motion" marker
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 
   // ARM - commented out - don't see why this is needed
   //	fTeamPanelDirty = TRUE;
@@ -1531,7 +1531,7 @@ function UpdateCharRegionHelpText(): void {
   let pMoraleStr: CHAR16[] /* [128] */;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-  if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid == TRUE)) {
+  if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid == true)) {
     // valid soldier selected
     pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
 
@@ -1592,20 +1592,20 @@ function UpdateCharRegionHelpText(): void {
 function FindAndSetThisContractSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iCounter: INT32 = 0;
 
-  fShowContractMenu = FALSE;
+  fShowContractMenu = false;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    if (gCharactersList[iCounter].fValid == TRUE) {
+    if (gCharactersList[iCounter].fValid == true) {
       if (gCharactersList[iCounter].usSolID == pSoldier.value.ubID) {
-        ChangeSelectedInfoChar(iCounter, TRUE);
+        ChangeSelectedInfoChar(iCounter, true);
         bSelectedContractChar = iCounter;
-        fShowContractMenu = TRUE;
+        fShowContractMenu = true;
 
         // create
         RebuildContractBoxForMerc(pSoldier);
 
-        fTeamPanelDirty = TRUE;
-        fCharacterInfoPanelDirty = TRUE;
+        fTeamPanelDirty = true;
+        fCharacterInfoPanelDirty = true;
       }
     }
   }
@@ -1613,7 +1613,7 @@ function FindAndSetThisContractSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 function HandleMAPUILoseCursorFromOtherScreen(): void {
   // rerender map without cursors
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 
   if (fInMapMode) {
     RenderMapRegionBackground();
@@ -1630,14 +1630,14 @@ function UpdateMapScreenAssignmentPositions(): void {
   }
 
   if (bSelectedAssignChar == -1) {
-    if (gfPreBattleInterfaceActive == FALSE) {
+    if (gfPreBattleInterfaceActive == false) {
       giBoxY = 0;
     }
     return;
   }
 
-  if (gCharactersList[bSelectedAssignChar].fValid == FALSE) {
-    if (gfPreBattleInterfaceActive == FALSE) {
+  if (gCharactersList[bSelectedAssignChar].fValid == false) {
+    if (gfPreBattleInterfaceActive == false) {
       giBoxY = 0;
     }
     return;
@@ -1734,7 +1734,7 @@ function GetNumberOfPeopleInCharacterList(): INT32 {
 
   // get the number of valid mercs in the mapscreen character list
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    if (gCharactersList[iCounter].fValid == TRUE) {
+    if (gCharactersList[iCounter].fValid == true) {
       // another valid character
       iCount++;
     }
@@ -1743,30 +1743,30 @@ function GetNumberOfPeopleInCharacterList(): INT32 {
   return iCount;
 }
 
-function ValidSelectableCharForNextOrPrev(iNewCharSlot: INT32): BOOLEAN {
-  let fHoldingItem: BOOLEAN = FALSE;
+function ValidSelectableCharForNextOrPrev(iNewCharSlot: INT32): boolean {
+  let fHoldingItem: boolean = false;
 
   // if holding an item
   if ((gMPanelRegion.Cursor == EXTERN_CURSOR) || gpItemPointer || fMapInventoryItem) {
-    fHoldingItem = TRUE;
+    fHoldingItem = true;
   }
 
   // if showing merc inventory, or holding an item
   if (fShowInventoryFlag || fHoldingItem) {
     // the new guy must have accessible inventory
     if (!MapCharacterHasAccessibleInventory(iNewCharSlot)) {
-      return FALSE;
+      return false;
     }
   }
 
   if (fHoldingItem) {
     return MapscreenCanPassItemToCharNum(iNewCharSlot);
   } else {
-    return TRUE;
+    return true;
   }
 }
 
-function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): BOOLEAN {
+function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): boolean {
   let pNewSoldier: Pointer<SOLDIERTYPE>;
   let pOldSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1775,12 +1775,12 @@ function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): BOOLEAN {
 
   // if in a hostile sector, disallow
   if (gTacticalStatus.fEnemyInSector) {
-    return FALSE;
+    return false;
   }
 
   // can't pass items to nobody!
   if (iNewCharSlot == -1) {
-    return FALSE;
+    return false;
   }
 
   pNewSoldier = MercPtrs[gCharactersList[iNewCharSlot].usSolID];
@@ -1789,11 +1789,11 @@ function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): BOOLEAN {
   if (fShowMapInventoryPool && !gpItemPointerSoldier && fMapInventoryItem) {
     // disallow passing items to anyone not in that sector
     if (pNewSoldier.value.sSectorX != sSelMapX || pNewSoldier.value.sSectorY != sSelMapY || pNewSoldier.value.bSectorZ != (iCurrentMapSectorZ)) {
-      return FALSE;
+      return false;
     }
 
     if (pNewSoldier.value.fBetweenSectors) {
-      return FALSE;
+      return false;
     }
   }
 
@@ -1813,41 +1813,41 @@ function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): BOOLEAN {
   if (pOldSoldier != null) {
     // disallow passing items to a merc not in the same sector
     if (pNewSoldier.value.sSectorX != pOldSoldier.value.sSectorX || pNewSoldier.value.sSectorY != pOldSoldier.value.sSectorY || pNewSoldier.value.bSectorZ != pOldSoldier.value.bSectorZ) {
-      return FALSE;
+      return false;
     }
 
     // if on the road
     if (pNewSoldier.value.fBetweenSectors) {
       // other guy must also be on the road...
       if (!pOldSoldier.value.fBetweenSectors) {
-        return FALSE;
+        return false;
       }
 
       // only exchanges between those is the same squad or vehicle are permitted
       if (pNewSoldier.value.bAssignment != pOldSoldier.value.bAssignment) {
-        return FALSE;
+        return false;
       }
 
       // if in vehicles, make sure it's the same one
       if ((pNewSoldier.value.bAssignment == Enum117.VEHICLE) && (pNewSoldier.value.iVehicleId != pOldSoldier.value.iVehicleId)) {
-        return FALSE;
+        return false;
       }
     }
   }
 
   // passed all tests
-  return TRUE;
+  return true;
 }
 
 function GoToNextCharacterInList(): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
 
-  if (fShowDescriptionFlag == TRUE) {
+  if (fShowDescriptionFlag == true) {
     return;
   }
 
-  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
+  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == true)) {
     AbortMovementPlottingMode();
   }
 
@@ -1860,7 +1860,7 @@ function GoToNextCharacterInList(): void {
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if ((gCharactersList[iCount].fValid) && (iCount < MAX_CHARACTER_COUNT) && ValidSelectableCharForNextOrPrev(iCount)) {
-      ChangeSelectedInfoChar(iCount, TRUE);
+      ChangeSelectedInfoChar(iCount, true);
       break;
     } else {
       iCount++;
@@ -1876,11 +1876,11 @@ function GoToPrevCharacterInList(): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
 
-  if (fShowDescriptionFlag == TRUE) {
+  if (fShowDescriptionFlag == true) {
     return;
   }
 
-  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
+  if ((bSelectedDestChar != -1) || (fPlotForHelicopter == true)) {
     AbortMovementPlottingMode();
   }
 
@@ -1894,7 +1894,7 @@ function GoToPrevCharacterInList(): void {
   // now run through the list and find first prev guy
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if ((gCharactersList[iCount].fValid) && (iCount < MAX_CHARACTER_COUNT) && ValidSelectableCharForNextOrPrev(iCount)) {
-      ChangeSelectedInfoChar(iCount, TRUE);
+      ChangeSelectedInfoChar(iCount, true);
       break;
     } else {
       iCount--;
@@ -1907,17 +1907,17 @@ function GoToPrevCharacterInList(): void {
   }
 }
 
-function HandleMinerEvent(bMinerNumber: UINT8, sSectorX: INT16, sSectorY: INT16, sQuoteNumber: INT16, fForceMapscreen: BOOLEAN): void {
-  let fFromMapscreen: BOOLEAN = FALSE;
+function HandleMinerEvent(bMinerNumber: UINT8, sSectorX: INT16, sSectorY: INT16, sQuoteNumber: INT16, fForceMapscreen: boolean): void {
+  let fFromMapscreen: boolean = false;
 
   if (guiCurrentScreen == Enum26.MAP_SCREEN) {
-    fFromMapscreen = TRUE;
+    fFromMapscreen = true;
   } else {
     // if transition to mapscreen is required
     if (fForceMapscreen) {
       // switch to mapscreen so we can flash the mine sector the guy is talking about
       EnterMapScreen();
-      fFromMapscreen = TRUE;
+      fFromMapscreen = true;
     }
   }
 
@@ -1932,16 +1932,16 @@ function HandleMinerEvent(bMinerNumber: UINT8, sSectorX: INT16, sSectorY: INT16,
     gsSectorLocatorX = sSectorX;
     gsSectorLocatorY = sSectorY;
 
-    fMapPanelDirty = TRUE;
+    fMapPanelDirty = true;
 
     // post dialogue events for miners to say this quote and flash the sector where his mine is
-    CharacterDialogueWithSpecialEvent(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, bMinerNumber, DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, Enum155.START_RED_SECTOR_LOCATOR, 1);
-    CharacterDialogue(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, uiExternalStaticNPCFaces[bMinerNumber], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
-    CharacterDialogueWithSpecialEvent(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, bMinerNumber, DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, Enum155.STOP_RED_SECTOR_LOCATOR, 1);
+    CharacterDialogueWithSpecialEvent(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, bMinerNumber, DIALOGUE_EXTERNAL_NPC_UI, false, false, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, Enum155.START_RED_SECTOR_LOCATOR, 1);
+    CharacterDialogue(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, uiExternalStaticNPCFaces[bMinerNumber], DIALOGUE_EXTERNAL_NPC_UI, false, false);
+    CharacterDialogueWithSpecialEvent(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, bMinerNumber, DIALOGUE_EXTERNAL_NPC_UI, false, false, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, Enum155.STOP_RED_SECTOR_LOCATOR, 1);
   } else // stay in tactical
   {
     // no need to to highlight mine sector
-    CharacterDialogue(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, uiExternalStaticNPCFaces[bMinerNumber], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
+    CharacterDialogue(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, uiExternalStaticNPCFaces[bMinerNumber], DIALOGUE_EXTERNAL_NPC_UI, false, false);
   }
 }
 
@@ -1977,7 +1977,7 @@ function ShutDownUserDefineHelpTextRegions(): void {
 
 // thsi will setup the fast help text regions that are unrelated to mouse regions
 // user is to pass in the x,y position of the box, the width to wrap the strings and the string itself
-function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPosition: INT32[] /* [] */, iWidth: INT32[] /* [] */, sString: STR16[] /* [] */, iSize: INT32): BOOLEAN {
+function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPosition: INT32[] /* [] */, iWidth: INT32[] /* [] */, sString: STR16[] /* [] */, iSize: INT32): boolean {
   let iCounter: INT32 = 0;
 
   // reset the size
@@ -1999,12 +1999,12 @@ function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPosition: INT3
     giSizeOfInterfaceFastHelpTextList = iCounter + 1;
   }
 
-  return TRUE;
+  return true;
 }
 
 // handle the actual showing of the interface fast help text
 function HandleShowingOfTacticalInterfaceFastHelpText(): void {
-  /* static */ let fTextActive: BOOLEAN = FALSE;
+  /* static */ let fTextActive: boolean = false;
 
   if (fInterfaceFastHelpTextActive) {
     DisplayFastHelpRegions(pFastHelpMapScreenList, giSizeOfInterfaceFastHelpTextList);
@@ -2014,14 +2014,14 @@ function HandleShowingOfTacticalInterfaceFastHelpText(): void {
     // lock out the screen
     SetUpShutDownMapScreenHelpTextScreenMask();
 
-    gfIgnoreScrolling = TRUE;
+    gfIgnoreScrolling = true;
 
     // the text is active
-    fTextActive = TRUE;
-  } else if ((fInterfaceFastHelpTextActive == FALSE) && (fTextActive)) {
-    fTextActive = FALSE;
+    fTextActive = true;
+  } else if ((fInterfaceFastHelpTextActive == false) && (fTextActive)) {
+    fTextActive = false;
     UnPauseGame();
-    gfIgnoreScrolling = FALSE;
+    gfIgnoreScrolling = false;
 
     // shut down
     ShutDownUserDefineHelpTextRegions();
@@ -2032,16 +2032,16 @@ function HandleShowingOfTacticalInterfaceFastHelpText(): void {
 
 // start showing fast help text
 function StartShowingInterfaceFastHelpText(): void {
-  fInterfaceFastHelpTextActive = TRUE;
+  fInterfaceFastHelpTextActive = true;
 }
 
 // stop showing interface fast help text
 function StopShowingInterfaceFastHelpText(): void {
-  fInterfaceFastHelpTextActive = FALSE;
+  fInterfaceFastHelpTextActive = false;
 }
 
 // is the interface text up?
-function IsTheInterfaceFastHelpTextActive(): BOOLEAN {
+function IsTheInterfaceFastHelpTextActive(): boolean {
   return fInterfaceFastHelpTextActive;
 }
 
@@ -2075,7 +2075,7 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
   iY = pRegion.value.iY;
   // get the width and height of the string
   iW = (pRegion.value.iW) + 14;
-  iH = IanWrappedStringHeight(iX, iY, (pRegion.value.iW), 0, FONT10ARIAL(), FONT_BLACK, pRegion.value.FastHelpText, FONT_BLACK, TRUE, 0);
+  iH = IanWrappedStringHeight(iX, iY, (pRegion.value.iW), 0, FONT10ARIAL(), FONT_BLACK, pRegion.value.FastHelpText, FONT_BLACK, true, 0);
 
   // tack on the outer border
   iH += 14;
@@ -2101,8 +2101,8 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-  RectangleDraw(TRUE, iX + 1, iY + 1, iX + iW - 1, iY + iH - 1, Get16BPPColor(FROMRGB(65, 57, 15)), pDestBuf);
-  RectangleDraw(TRUE, iX, iY, iX + iW - 2, iY + iH - 2, Get16BPPColor(FROMRGB(227, 198, 88)), pDestBuf);
+  RectangleDraw(true, iX + 1, iY + 1, iX + iW - 1, iY + iH - 1, Get16BPPColor(FROMRGB(65, 57, 15)), pDestBuf);
+  RectangleDraw(true, iX, iY, iX + iW - 2, iY + iH - 2, Get16BPPColor(FROMRGB(227, 198, 88)), pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);
   ShadowVideoSurfaceRect(FRAME_BUFFER, iX + 2, iY + 2, iX + iW - 3, iY + iH - 3);
   ShadowVideoSurfaceRect(FRAME_BUFFER, iX + 2, iY + 2, iX + iW - 3, iY + iH - 3);
@@ -2114,7 +2114,7 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
   SetFont(FONT10ARIAL());
   SetFontForeground(FONT_BEIGE);
 
-  iH = DisplayWrappedString((iX + 10), (iY + 6), pRegion.value.iW, 0, FONT10ARIAL(), FONT_BEIGE, pRegion.value.FastHelpText, FONT_NEARBLACK, TRUE, 0);
+  iH = DisplayWrappedString((iX + 10), (iY + 6), pRegion.value.iW, 0, FONT10ARIAL(), FONT_BEIGE, pRegion.value.FastHelpText, FONT_NEARBLACK, true, 0);
 
   iHeightOfInitFastHelpText = iH + 20;
 
@@ -2123,7 +2123,7 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
 
 function DisplayFastHelpForInitialTripInToMapScreen(pRegion: Pointer<FASTHELPREGION>): void {
   if (gTacticalStatus.fDidGameJustStart) {
-    if (AnyMercsHired() == FALSE) {
+    if (AnyMercsHired() == false) {
       return;
     }
 
@@ -2169,36 +2169,36 @@ function SetUpMapScreenFastHelpText(): void {
 }
 
 function StopMapScreenHelpText(): void {
-  fShowMapScreenHelpText = FALSE;
-  fTeamPanelDirty = TRUE;
-  fMapPanelDirty = TRUE;
-  fCharacterInfoPanelDirty = TRUE;
-  fMapScreenBottomDirty = TRUE;
+  fShowMapScreenHelpText = false;
+  fTeamPanelDirty = true;
+  fMapPanelDirty = true;
+  fCharacterInfoPanelDirty = true;
+  fMapScreenBottomDirty = true;
 
   SetUpShutDownMapScreenHelpTextScreenMask();
   return;
 }
 
-function IsMapScreenHelpTextUp(): BOOLEAN {
+function IsMapScreenHelpTextUp(): boolean {
   return fShowMapScreenHelpText;
 }
 
 function SetUpShutDownMapScreenHelpTextScreenMask(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
   // create or destroy the screen mask as needed
-  if (((fShowMapScreenHelpText == TRUE) || (fInterfaceFastHelpTextActive == TRUE)) && (fCreated == FALSE)) {
+  if (((fShowMapScreenHelpText == true) || (fInterfaceFastHelpTextActive == true)) && (fCreated == false)) {
     if (gTacticalStatus.fDidGameJustStart) {
       MSYS_DefineRegion(addressof(gMapScreenHelpTextMask), (pMapScreenFastHelpLocationList[9].iX), (pMapScreenFastHelpLocationList[9].iY), (pMapScreenFastHelpLocationList[9].iX + pMapScreenFastHelpWidthList[9]), (pMapScreenFastHelpLocationList[9].iY + iHeightOfInitFastHelpText), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
     } else {
       MSYS_DefineRegion(addressof(gMapScreenHelpTextMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
     }
 
-    fCreated = TRUE;
-  } else if ((fShowMapScreenHelpText == FALSE) && (fInterfaceFastHelpTextActive == FALSE) && (fCreated == TRUE)) {
+    fCreated = true;
+  } else if ((fShowMapScreenHelpText == false) && (fInterfaceFastHelpTextActive == false) && (fCreated == true)) {
     MSYS_RemoveRegion(addressof(gMapScreenHelpTextMask));
 
-    fCreated = FALSE;
+    fCreated = false;
   }
 }
 
@@ -2212,41 +2212,41 @@ function MapScreenHelpTextScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, 
   }
 }
 
-function IsSoldierSelectedForMovement(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function IsSoldierSelectedForMovement(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iCounter: INT32 = 0;
 
   // run through the list and turn this soldiers value on
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     if ((pSoldierMovingList[iCounter] == pSoldier) && (fSoldierIsMoving[iCounter])) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
-function IsSquadSelectedForMovement(iSquadNumber: INT32): BOOLEAN {
+function IsSquadSelectedForMovement(iSquadNumber: INT32): boolean {
   let iCounter: INT32 = 0;
 
   // run through squad list and set them on
   for (iCounter = 0; iCounter < giNumberOfSquadsInSectorMoving; iCounter++) {
     if ((iSquadMovingList[iCounter] == iSquadNumber) && (fSquadIsMoving[iCounter])) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsVehicleSelectedForMovement(iVehicleId: INT32): BOOLEAN {
+function IsVehicleSelectedForMovement(iVehicleId: INT32): boolean {
   let iCounter: INT32 = 0;
 
   // run through squad list and set them on
   for (iCounter = 0; iCounter < giNumberOfVehiclesInSectorMoving; iCounter++) {
     if ((iVehicleMovingList[iCounter] == iVehicleId) && (fVehicleIsMoving[iCounter])) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
 function SelectSoldierForMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -2260,7 +2260,7 @@ function SelectSoldierForMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     if (pSoldierMovingList[iCounter] == pSoldier) {
       // turn the selected soldier ON
-      fSoldierIsMoving[iCounter] = TRUE;
+      fSoldierIsMoving[iCounter] = true;
       break;
     }
   }
@@ -2277,7 +2277,7 @@ function DeselectSoldierForMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     if (pSoldierMovingList[iCounter] == pSoldier) {
       // turn the selected soldier off
-      fSoldierIsMoving[iCounter] = FALSE;
+      fSoldierIsMoving[iCounter] = false;
       break;
     }
   }
@@ -2286,16 +2286,16 @@ function DeselectSoldierForMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
 function SelectSquadForMovement(iSquadNumber: INT32): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
-  let fSomeCantMove: BOOLEAN = FALSE;
+  let fSomeCantMove: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let fFirstFailure: BOOLEAN;
+  let fFirstFailure: boolean;
 
   // run through squad list and set them on
   for (iCounter = 0; iCounter < giNumberOfSquadsInSectorMoving; iCounter++) {
     if (iSquadMovingList[iCounter] == iSquadNumber) {
       // found it
 
-      fFirstFailure = TRUE;
+      fFirstFailure = true;
 
       // try to select everyone in squad
       for (iCount = 0; iCount < NUMBER_OF_SOLDIERS_PER_SQUAD; iCount++) {
@@ -2306,14 +2306,14 @@ function SelectSquadForMovement(iSquadNumber: INT32): void {
           if (CanMoveBoxSoldierMoveStrategically(pSoldier, fFirstFailure)) {
             SelectSoldierForMovement(pSoldier);
           } else {
-            fSomeCantMove = TRUE;
-            fFirstFailure = FALSE;
+            fSomeCantMove = true;
+            fFirstFailure = false;
           }
         }
       }
 
       if (!fSomeCantMove) {
-        fSquadIsMoving[iCounter] = TRUE;
+        fSquadIsMoving[iCounter] = true;
       }
 
       break;
@@ -2330,7 +2330,7 @@ function DeselectSquadForMovement(iSquadNumber: INT32): void {
   for (iCounter = 0; iCounter < giNumberOfSquadsInSectorMoving; iCounter++) {
     if (iSquadMovingList[iCounter] == iSquadNumber) {
       // found it
-      fSquadIsMoving[iCounter] = FALSE;
+      fSquadIsMoving[iCounter] = false;
 
       // now deselect everyone in squad
       for (iCount = 0; iCount < NUMBER_OF_SOLDIERS_PER_SQUAD; iCount++) {
@@ -2346,35 +2346,35 @@ function DeselectSquadForMovement(iSquadNumber: INT32): void {
   }
 }
 
-function AllSoldiersInSquadSelected(iSquadNumber: INT32): BOOLEAN {
+function AllSoldiersInSquadSelected(iSquadNumber: INT32): boolean {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
 
   // is everyone on this squad moving?
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     if (pSoldierMovingList[iCounter].value.bAssignment == iSquadNumber) {
-      if (fSoldierIsMoving[iCounter] == FALSE) {
-        return FALSE;
+      if (fSoldierIsMoving[iCounter] == false) {
+        return false;
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function SelectVehicleForMovement(iVehicleId: INT32, fAndAllOnBoard: BOOLEAN): void {
+function SelectVehicleForMovement(iVehicleId: INT32, fAndAllOnBoard: boolean): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
   let pPassenger: Pointer<SOLDIERTYPE> = null;
-  let fHasDriver: BOOLEAN = FALSE;
-  let fFirstFailure: BOOLEAN;
+  let fHasDriver: boolean = false;
+  let fFirstFailure: boolean;
 
   // run through vehicle list and set them on
   for (iCounter = 0; iCounter < giNumberOfVehiclesInSectorMoving; iCounter++) {
     if (iVehicleMovingList[iCounter] == iVehicleId) {
       // found it
 
-      fFirstFailure = TRUE;
+      fFirstFailure = true;
 
       for (iCount = 0; iCount < 10; iCount++) {
         pPassenger = pVehicleList[iVehicleId].pPassengers[iCount];
@@ -2387,19 +2387,19 @@ function SelectVehicleForMovement(iVehicleId: INT32, fAndAllOnBoard: BOOLEAN): v
             if (CanMoveBoxSoldierMoveStrategically(pPassenger, fFirstFailure)) {
               SelectSoldierForMovement(pPassenger);
             } else {
-              fFirstFailure = FALSE;
+              fFirstFailure = false;
             }
           }
         }
 
         if (IsSoldierSelectedForMovement(pPassenger)) {
-          fHasDriver = TRUE;
+          fHasDriver = true;
         }
       }
 
       // vehicle itself can only move if at least one passenger can move and is moving!
       if (fHasDriver) {
-        fVehicleIsMoving[iCounter] = TRUE;
+        fVehicleIsMoving[iCounter] = true;
       }
 
       break;
@@ -2416,7 +2416,7 @@ function DeselectVehicleForMovement(iVehicleId: INT32): void {
   for (iCounter = 0; iCounter < giNumberOfVehiclesInSectorMoving; iCounter++) {
     if (iVehicleMovingList[iCounter] == iVehicleId) {
       // found it
-      fVehicleIsMoving[iCounter] = FALSE;
+      fVehicleIsMoving[iCounter] = false;
 
       // now deselect everyone in vehicle
       for (iCount = 0; iCount < 10; iCount++) {
@@ -2479,7 +2479,7 @@ function AddSoldierToMovingLists(pSoldier: Pointer<SOLDIERTYPE>): void {
     } else if (pSoldierMovingList[iCounter] == null) {
       // found a free slot
       pSoldierMovingList[iCounter] = pSoldier;
-      fSoldierIsMoving[iCounter] = FALSE;
+      fSoldierIsMoving[iCounter] = false;
 
       giNumberOfSoldiersInSectorMoving++;
       return;
@@ -2505,7 +2505,7 @@ function AddSquadToMovingLists(iSquadNumber: INT32): void {
     if (iSquadMovingList[iCounter] == -1) {
       // found a free slot
       iSquadMovingList[iCounter] = iSquadNumber;
-      fSquadIsMoving[iCounter] = FALSE;
+      fSquadIsMoving[iCounter] = false;
 
       giNumberOfSquadsInSectorMoving++;
       return;
@@ -2531,7 +2531,7 @@ function AddVehicleToMovingLists(iVehicleId: INT32): void {
     if (iVehicleMovingList[iCounter] == -1) {
       // found a free slot
       iVehicleMovingList[iCounter] = iVehicleId;
-      fVehicleIsMoving[iCounter] = FALSE;
+      fVehicleIsMoving[iCounter] = false;
 
       giNumberOfVehiclesInSectorMoving++;
       return;
@@ -2552,7 +2552,7 @@ function InitializeMovingLists(): void {
     // soldier is NOT moving
     pSoldierMovingList[iCounter] = null;
     // turn the selected soldier off
-    fSoldierIsMoving[iCounter] = FALSE;
+    fSoldierIsMoving[iCounter] = false;
   }
 
   // init the squads
@@ -2560,7 +2560,7 @@ function InitializeMovingLists(): void {
     // reset squad value
     iSquadMovingList[iCounter] = -1;
     // turn it off
-    fSquadIsMoving[iCounter] = FALSE;
+    fSquadIsMoving[iCounter] = false;
   }
 
   // init the vehicles
@@ -2568,63 +2568,63 @@ function InitializeMovingLists(): void {
     // reset squad value
     iVehicleMovingList[iCounter] = -1;
     // turn it off
-    fVehicleIsMoving[iCounter] = FALSE;
+    fVehicleIsMoving[iCounter] = false;
   }
 
   return;
 }
 
-function IsAnythingSelectedForMoving(): BOOLEAN {
+function IsAnythingSelectedForMoving(): boolean {
   let iCounter: INT32 = 0;
 
   // check soldiers
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if ((pSoldierMovingList[iCounter] != null) && fSoldierIsMoving[iCounter]) {
-      return TRUE;
+      return true;
     }
   }
 
   // init the squads
   for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     if ((iSquadMovingList[iCounter] != -1) && fSquadIsMoving[iCounter]) {
-      return TRUE;
+      return true;
     }
   }
 
   // init the vehicles
   for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     if ((iVehicleMovingList[iCounter] != -1) && fVehicleIsMoving[iCounter]) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function CreateDestroyMovementBox(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
   // not allowed for underground movement!
   Assert(sSectorZ == 0);
 
-  if ((fShowMapScreenMovementList == TRUE) && (fCreated == FALSE)) {
-    fCreated = TRUE;
+  if ((fShowMapScreenMovementList == true) && (fCreated == false)) {
+    fCreated = true;
 
     // create the box and mouse regions
     CreatePopUpBoxForMovementBox();
     BuildMouseRegionsForMoveBox();
     CreateScreenMaskForMoveBox();
-    fMapPanelDirty = TRUE;
-  } else if ((fShowMapScreenMovementList == FALSE) && (fCreated == TRUE)) {
-    fCreated = FALSE;
+    fMapPanelDirty = true;
+  } else if ((fShowMapScreenMovementList == false) && (fCreated == true)) {
+    fCreated = false;
 
     // destroy the box and mouse regions
     ClearMouseRegionsForMoveBox();
     RemoveBox(ghMoveBox);
     ghMoveBox = -1;
     RemoveScreenMaskForMoveBox();
-    fMapPanelDirty = TRUE;
-    fMapScreenBottomDirty = TRUE; // really long move boxes can overlap bottom panel
+    fMapPanelDirty = true;
+    fMapScreenBottomDirty = true; // really long move boxes can overlap bottom panel
   }
 }
 
@@ -2670,7 +2670,7 @@ function SetUpMovingListsForSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
     }
   }
 
-  fShowMapScreenMovementList = TRUE;
+  fShowMapScreenMovementList = true;
   CreateDestroyMovementBox(sSectorX, sSectorY, sSectorZ);
 }
 
@@ -2753,7 +2753,7 @@ function AddStringsToMoveBox(): void {
   let sString: CHAR16[] /* [128] */;
   let sStringB: CHAR16[] /* [128] */;
   let hStringHandle: UINT32;
-  let fFirstOne: BOOLEAN = TRUE;
+  let fFirstOne: boolean = true;
 
   // set the current box
   SetCurrentBox(ghMoveBox);
@@ -2783,7 +2783,7 @@ function AddStringsToMoveBox(): void {
     for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
       if (pSoldierMovingList[iCountB].value.bAssignment == iSquadMovingList[iCount]) {
         // add mercs in squads
-        if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == TRUE) {
+        if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == true) {
           swprintf(sString, "   *%s*", pSoldierMovingList[iCountB].value.name);
         } else {
           swprintf(sString, "   %s", pSoldierMovingList[iCountB].value.name);
@@ -2807,7 +2807,7 @@ function AddStringsToMoveBox(): void {
     for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
       if ((pSoldierMovingList[iCountB].value.bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
         // add mercs in vehicles
-        if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == TRUE) {
+        if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == true) {
           swprintf(sString, "   *%s*", pSoldierMovingList[iCountB].value.name);
         } else {
           swprintf(sString, "   %s", pSoldierMovingList[iCountB].value.name);
@@ -2817,7 +2817,7 @@ function AddStringsToMoveBox(): void {
     }
   }
 
-  fFirstOne = TRUE;
+  fFirstOne = true;
 
   // add "other" soldiers heading, once, if there are any
   for (iCount = 0; iCount < giNumberOfSoldiersInSectorMoving; iCount++) {
@@ -2832,11 +2832,11 @@ function AddStringsToMoveBox(): void {
         }
         AddMonoString(addressof(hStringHandle), sString);
 
-        fFirstOne = FALSE;
+        fFirstOne = false;
       }
 
       // add OTHER soldiers (not on duty nor in a vehicle)
-      if (IsSoldierSelectedForMovement(pSoldierMovingList[iCount]) == TRUE) {
+      if (IsSoldierSelectedForMovement(pSoldierMovingList[iCount]) == true) {
         swprintf(sString, "  *%s ( %s )*", pSoldierMovingList[iCount].value.name, pAssignmentStrings[pSoldierMovingList[iCount].value.bAssignment]);
       } else {
         swprintf(sString, "   %s ( %s )", pSoldierMovingList[iCount].value.name, pAssignmentStrings[pSoldierMovingList[iCount].value.bAssignment]);
@@ -2875,7 +2875,7 @@ function BuildMouseRegionsForMoveBox(): void {
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
-  let fDefinedOtherRegion: BOOLEAN = FALSE;
+  let fDefinedOtherRegion: boolean = false;
 
   // grab height of font
   iFontHeight = GetLineSpace(ghMoveBox) + GetFontHeight(GetBoxFont(ghMoveBox));
@@ -2970,7 +2970,7 @@ function BuildMouseRegionsForMoveBox(): void {
           MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
           iCounter++;
 
-          fDefinedOtherRegion = TRUE;
+          fDefinedOtherRegion = true;
         }
 
         MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
@@ -3066,7 +3066,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
 
       if (iRegionType == Enum145.SQUAD_REGION) {
         // is the squad moving
-        if (fSquadIsMoving[iListIndex] == TRUE) {
+        if (fSquadIsMoving[iListIndex] == true) {
           // squad stays
           DeselectSquadForMovement(iSquadMovingList[iListIndex]);
         } else {
@@ -3075,7 +3075,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
         }
       } else if (iRegionType == Enum145.VEHICLE_REGION) {
         // is the vehicle moving
-        if (fVehicleIsMoving[iListIndex] == TRUE) {
+        if (fVehicleIsMoving[iListIndex] == true) {
           // vehicle stays
           DeselectVehicleForMovement(iVehicleMovingList[iListIndex]);
         } else {
@@ -3083,7 +3083,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
           SelectVehicleForMovement(iVehicleMovingList[iListIndex], AND_ALL_ON_BOARD);
         }
       } else if (iRegionType == Enum145.OTHER_REGION) {
-        if (AllOtherSoldiersInListAreSelected() == TRUE) {
+        if (AllOtherSoldiersInListAreSelected() == true) {
           // deselect all others in the list
           DeselectAllOtherSoldiersInList();
         } else {
@@ -3129,7 +3129,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
         } else // currently NOT moving
         {
           // is he able & allowed to move?  (Errors with a reason are reported within)
-          if (CanMoveBoxSoldierMoveStrategically(pSoldier, TRUE)) {
+          if (CanMoveBoxSoldierMoveStrategically(pSoldier, true)) {
             // change him to move instead
             SelectSoldierForMovement(pSoldier);
 
@@ -3155,17 +3155,17 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
           return;
         }
       } else if (iRegionType == Enum145.CANCEL_REGION) {
-        fShowMapScreenMovementList = FALSE;
+        fShowMapScreenMovementList = false;
         return;
       } else {
         AssertMsg(0, String("MoveMenuBtnCallback: Invalid regionType %d, moveBoxLine %d", iRegionType, iMoveBoxLine));
         return;
       }
 
-      fRebuildMoveBox = TRUE;
-      fTeamPanelDirty = TRUE;
-      fMapPanelDirty = TRUE;
-      fCharacterInfoPanelDirty = TRUE;
+      fRebuildMoveBox = true;
+      fTeamPanelDirty = true;
+      fMapPanelDirty = true;
+      fCharacterInfoPanelDirty = true;
       MarkAllBoxesAsAltered();
     }
   }
@@ -3173,7 +3173,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
   return;
 }
 
-function CanMoveBoxSoldierMoveStrategically(pSoldier: Pointer<SOLDIERTYPE>, fShowErrorMessage: BOOLEAN): BOOLEAN {
+function CanMoveBoxSoldierMoveStrategically(pSoldier: Pointer<SOLDIERTYPE>, fShowErrorMessage: boolean): boolean {
   let bErrorNumber: INT8 = -1;
 
   // valid soldier?
@@ -3181,7 +3181,7 @@ function CanMoveBoxSoldierMoveStrategically(pSoldier: Pointer<SOLDIERTYPE>, fSho
   Assert(pSoldier.value.bActive);
 
   if (CanCharacterMoveInStrategic(pSoldier, addressof(bErrorNumber))) {
-    return TRUE;
+    return true;
   } else {
     // function may fail without returning any specific error # (-1).
     // if it gave us the # of an error msg, and we were told to display it
@@ -3189,20 +3189,20 @@ function CanMoveBoxSoldierMoveStrategically(pSoldier: Pointer<SOLDIERTYPE>, fSho
       ReportMapScreenMovementError(bErrorNumber);
     }
 
-    return FALSE;
+    return false;
   }
 }
 
 function SelectAllOtherSoldiersInList(): void {
   let iCounter: INT32 = 0;
-  let fSomeCantMove: BOOLEAN = FALSE;
+  let fSomeCantMove: boolean = false;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     if ((pSoldierMovingList[iCounter].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment != Enum117.VEHICLE)) {
-      if (CanMoveBoxSoldierMoveStrategically(pSoldierMovingList[iCounter], FALSE)) {
-        fSoldierIsMoving[iCounter] = TRUE;
+      if (CanMoveBoxSoldierMoveStrategically(pSoldierMovingList[iCounter], false)) {
+        fSoldierIsMoving[iCounter] = true;
       } else {
-        fSomeCantMove = TRUE;
+        fSomeCantMove = true;
       }
     }
   }
@@ -3218,7 +3218,7 @@ function DeselectAllOtherSoldiersInList(): void {
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     if ((pSoldierMovingList[iCounter].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment != Enum117.VEHICLE)) {
-      fSoldierIsMoving[iCounter] = FALSE;
+      fSoldierIsMoving[iCounter] = false;
     }
   }
 }
@@ -3227,22 +3227,22 @@ function HandleMoveoutOfSectorMovementTroops(): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = 0;
   let iSquadNumber: INT32 = -1;
-  let fCheckForCompatibleSquad: BOOLEAN = FALSE;
+  let fCheckForCompatibleSquad: boolean = false;
 
   // cancel move box
-  fShowMapScreenMovementList = FALSE;
+  fShowMapScreenMovementList = false;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     pSoldier = pSoldierMovingList[iCounter];
 
-    fCheckForCompatibleSquad = FALSE;
+    fCheckForCompatibleSquad = false;
 
     // if he is on a valid squad
     if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
       // if he and his squad are parting ways (soldier is staying behind, but squad is leaving, or vice versa)
       if (fSoldierIsMoving[iCounter] != IsSquadSelectedForMovement(pSoldier.value.bAssignment)) {
         // split the guy from his squad to any other compatible squad
-        fCheckForCompatibleSquad = TRUE;
+        fCheckForCompatibleSquad = true;
       }
     }
     // if in a vehicle
@@ -3250,14 +3250,14 @@ function HandleMoveoutOfSectorMovementTroops(): void {
       // if he and his vehicle are parting ways (soldier is staying behind, but vehicle is leaving, or vice versa)
       if (fSoldierIsMoving[iCounter] != IsVehicleSelectedForMovement(pSoldier.value.iVehicleId)) {
         // split the guy from his vehicle to any other compatible squad
-        fCheckForCompatibleSquad = TRUE;
+        fCheckForCompatibleSquad = true;
       }
     } else // on his own - not on a squad or in a vehicle
     {
       // if he's going anywhere
       if (fSoldierIsMoving[iCounter]) {
         // find out if anyone is going with this guy...see if he can tag along
-        fCheckForCompatibleSquad = TRUE;
+        fCheckForCompatibleSquad = true;
       }
     }
 
@@ -3299,10 +3299,10 @@ function HandleMoveoutOfSectorMovementTroops(): void {
 }
 
 function HandleSettingTheSelectedListOfMercs(): void {
-  let fFirstOne: BOOLEAN = TRUE;
+  let fFirstOne: boolean = true;
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let fSelected: BOOLEAN;
+  let fSelected: boolean;
 
   // reset the selected character
   bSelectedDestChar = -1;
@@ -3310,7 +3310,7 @@ function HandleSettingTheSelectedListOfMercs(): void {
   // run through the list of grunts
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // is the current guy a valid character?
-    if (gCharactersList[iCounter].fValid == TRUE) {
+    if (gCharactersList[iCounter].fValid == true) {
       pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
 
       if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
@@ -3322,15 +3322,15 @@ function HandleSettingTheSelectedListOfMercs(): void {
       // is he/she selected for movement?
       if (fSelected) {
         // yes, are they the first one to be selected?
-        if (fFirstOne == TRUE) {
+        if (fFirstOne == true) {
           // yes, then set them as the destination plotting character for movement arrow purposes
-          fFirstOne = FALSE;
+          fFirstOne = false;
 
           bSelectedDestChar = iCounter;
           // make DEST column glow
           giDestHighLine = iCounter;
 
-          ChangeSelectedInfoChar(iCounter, TRUE);
+          ChangeSelectedInfoChar(iCounter, true);
         }
 
         // add this guy to the selected list of grunts
@@ -3342,9 +3342,9 @@ function HandleSettingTheSelectedListOfMercs(): void {
   if (bSelectedDestChar != -1) {
     // set cursor
     SetUpCursorForStrategicMap();
-    fTeamPanelDirty = TRUE;
-    fMapPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fTeamPanelDirty = true;
+    fMapPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
 
     DeselectSelectedListMercsWhoCantMoveWithThisGuy(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
 
@@ -3370,14 +3370,14 @@ INT32 GetSquadListIndexForSquadNumber( INT32 iSquadNumber )
 }
 */
 
-function AllOtherSoldiersInListAreSelected(): BOOLEAN {
+function AllOtherSoldiersInListAreSelected(): boolean {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     if ((pSoldierMovingList[iCounter].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment >= Enum117.VEHICLE)) {
-      if (fSoldierIsMoving[iCounter] == FALSE) {
-        return FALSE;
+      if (fSoldierIsMoving[iCounter] == false) {
+        return false;
       }
 
       iCount++;
@@ -3386,19 +3386,19 @@ function AllOtherSoldiersInListAreSelected(): BOOLEAN {
 
   // some merc on other assignments and no result?
   if (iCount) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsThisSquadInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, bSquadValue: INT8): BOOLEAN {
+function IsThisSquadInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, bSquadValue: INT8): boolean {
   let sX: INT16 = 0;
   let sY: INT16 = 0;
   let bZ: INT8 = 0;
 
   // check if the squad is empty
-  if (SquadIsEmpty(bSquadValue) == FALSE) {
+  if (SquadIsEmpty(bSquadValue) == false) {
     // now grab the squad location
     GetLocationOfSquad(addressof(sX), addressof(sY), addressof(bZ), bSquadValue);
 
@@ -3407,13 +3407,13 @@ function IsThisSquadInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
       // a squad that's between sectors isn't *in* this sector
       if (!IsThisSquadOnTheMove(bSquadValue)) {
         // yep
-        return TRUE;
+        return true;
       }
     }
   }
 
   // nope
-  return FALSE;
+  return false;
 }
 
 function FindSquadThatSoldierCanJoin(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -3425,7 +3425,7 @@ function FindSquadThatSoldierCanJoin(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     // is this squad in this sector
     if (IsThisSquadInThisSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, bCounter)) {
       // does it have room?
-      if (IsThisSquadFull(bCounter) == FALSE) {
+      if (IsThisSquadFull(bCounter) == false) {
         // is it doing the same thing as the soldier is (staying or going) ?
         if (IsSquadSelectedForMovement(bCounter) == IsSoldierSelectedForMovement(pSoldier)) {
           // go ourselves a match, then
@@ -3440,54 +3440,54 @@ function FindSquadThatSoldierCanJoin(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
 function ReBuildMoveBox(): void {
   // check to see if we need to rebuild the movement box and mouse regions
-  if (fRebuildMoveBox == FALSE) {
+  if (fRebuildMoveBox == false) {
     return;
   }
 
   // reset the fact
-  fRebuildMoveBox = FALSE;
-  fTeamPanelDirty = TRUE;
-  fMapPanelDirty = TRUE;
-  fCharacterInfoPanelDirty = TRUE;
+  fRebuildMoveBox = false;
+  fTeamPanelDirty = true;
+  fMapPanelDirty = true;
+  fCharacterInfoPanelDirty = true;
 
   // stop showing the box
-  fShowMapScreenMovementList = FALSE;
+  fShowMapScreenMovementList = false;
   CreateDestroyMovementBox(sSelMapX, sSelMapY, iCurrentMapSectorZ);
 
   // show the box
-  fShowMapScreenMovementList = TRUE;
+  fShowMapScreenMovementList = true;
   CreateDestroyMovementBox(sSelMapX, sSelMapY, iCurrentMapSectorZ);
   ShowBox(ghMoveBox);
   MarkAllBoxesAsAltered();
 }
 
 function CreateScreenMaskForMoveBox(): void {
-  if (fScreenMaskForMoveCreated == FALSE) {
+  if (fScreenMaskForMoveCreated == false) {
     // set up the screen mask
     MSYS_DefineRegion(addressof(gMoveBoxScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MoveScreenMaskBtnCallback);
 
-    fScreenMaskForMoveCreated = TRUE;
+    fScreenMaskForMoveCreated = true;
   }
 }
 
 function RemoveScreenMaskForMoveBox(): void {
-  if (fScreenMaskForMoveCreated == TRUE) {
+  if (fScreenMaskForMoveCreated == true) {
     // remove the screen mask
     MSYS_RemoveRegion(addressof(gMoveBoxScreenMask));
-    fScreenMaskForMoveCreated = FALSE;
+    fScreenMaskForMoveCreated = false;
   }
 }
 
 function MoveScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // btn callback handler for move box screen mask region
   if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_UP)) {
-    fShowMapScreenMovementList = FALSE;
+    fShowMapScreenMovementList = false;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     sSelectedMilitiaTown = 0;
 
     // are we showing the update box
     if (fShowUpdateBox) {
-      fShowUpdateBox = FALSE;
+      fShowUpdateBox = false;
     }
   }
 
@@ -3531,15 +3531,15 @@ function GetNumberOfMercsInUpdateList(): INT32 {
   return iCount;
 }
 
-function IsThePopUpBoxEmpty(): BOOLEAN {
+function IsThePopUpBoxEmpty(): boolean {
   let iCounter: INT32 = 0;
-  let fEmpty: BOOLEAN = TRUE;
+  let fEmpty: boolean = true;
 
   // run through the non-empty slots
   for (iCounter = 0; iCounter < SIZE_OF_UPDATE_BOX; iCounter++) {
     // valid guy here
     if (pUpdateSoldierBox[iCounter] != null) {
-      fEmpty = FALSE;
+      fEmpty = false;
     }
   }
 
@@ -3569,7 +3569,7 @@ function AddDisplayBoxToWaitingQueue(): void {
 
 function ShowUpdateBox(): void {
   // we want to show the box
-  fShowUpdateBox = TRUE;
+  fShowUpdateBox = true;
 }
 
 function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -3583,7 +3583,7 @@ function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
     return;
   }
 
-  if (pSoldier.value.bActive == FALSE) {
+  if (pSoldier.value.bActive == false) {
     return;
   }
 
@@ -3636,7 +3636,7 @@ function DisplaySoldierUpdateBox(): void {
   let iY: INT32 = 0;
   let iFaceX: INT32 = 0;
   let iFaceY: INT32 = 0;
-  let fFourWideMode: BOOLEAN = FALSE;
+  let fFourWideMode: boolean = false;
   let hBackGroundHandle: HVOBJECT;
   let iCounter: INT32 = 0;
   let sString: CHAR16[] /* [32] */;
@@ -3648,7 +3648,7 @@ function DisplaySoldierUpdateBox(): void {
   let iOrigY: INT32 = 0;
   let iUpperLimit: INT32 = 0;
 
-  if (fShowUpdateBox == FALSE) {
+  if (fShowUpdateBox == false) {
     return;
   }
 
@@ -3657,7 +3657,7 @@ function DisplaySoldierUpdateBox(): void {
 
   if (iNumberOfMercsOnUpdatePanel == 0) {
     // nobody home
-    fShowUpdateBox = FALSE;
+    fShowUpdateBox = false;
     // unpause
     UnPauseDialogueQueue();
     return;
@@ -3676,7 +3676,7 @@ function DisplaySoldierUpdateBox(): void {
 
   // do we have enough for 4 wide, or just 2 wide?
   if (iNumberOfMercsOnUpdatePanel > NUMBER_OF_MERCS_FOR_FOUR_WIDTH_UPDATE_PANEL) {
-    fFourWideMode = TRUE;
+    fFourWideMode = true;
   }
 
   // get number of rows
@@ -3737,7 +3737,7 @@ function DisplaySoldierUpdateBox(): void {
     BltVideoObject(guiSAVEBUFFER, hBackGroundHandle, 2, iX + iUpdatePanelWidth, iY + iUpdatePanelHeight - 3, VO_BLT_SRCTRANSPARENCY, null);
   }
 
-  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   iUpperLimit = fFourWideMode ? (iNumberOfMercsOnUpdatePanel + NUMBER_OF_MERC_COLUMNS_FOR_FOUR_WIDE_MODE) : (iNumberOfMercsOnUpdatePanel + NUMBER_OF_MERC_COLUMNS_FOR_TWO_WIDE_MODE);
 
@@ -3814,7 +3814,7 @@ function DisplaySoldierUpdateBox(): void {
     DisplayWrappedString((iX), (iY + 3), iUpdatePanelWidth, 0, MAP_SCREEN_FONT(), FONT_WHITE, pUpdateMercStrings[iReasonForSoldierUpDate], FONT_BLACK, 0, CENTER_JUSTIFIED);
   }
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   // restore extern background rect
   RestoreExternBackgroundRect((iX - 5), (iY - 5), (iUpdatePanelWidth + 10), (iUpdatePanelHeight + 6));
@@ -3825,15 +3825,15 @@ function DisplaySoldierUpdateBox(): void {
   return;
 }
 
-function CreateDestroyUpdatePanelButtons(iX: INT32, iY: INT32, fFourWideMode: BOOLEAN): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+function CreateDestroyUpdatePanelButtons(iX: INT32, iY: INT32, fFourWideMode: boolean): void {
+  /* static */ let fCreated: boolean = false;
 
-  if ((fShowUpdateBox == TRUE) && (fCreated == FALSE)) {
+  if ((fShowUpdateBox == true) && (fCreated == false)) {
     // set to created
-    fCreated = TRUE;
+    fCreated = true;
 
-    fShowAssignmentMenu = FALSE;
-    fShowContractMenu = FALSE;
+    fShowAssignmentMenu = false;
+    fShowContractMenu = false;
 
     //		guiUpdatePanelButtonsImage[ 0 ]=  LoadButtonImage( "INTERFACE\\group_confirm.sti" ,-1,7,-1,8,-1 );
     //		guiUpdatePanelButtonsImage[ 1 ] = LoadButtonImage( "INTERFACE\\group_confirm.sti" ,-1,7,-1,8,-1 );
@@ -3861,9 +3861,9 @@ function CreateDestroyUpdatePanelButtons(iX: INT32, iY: INT32, fFourWideMode: BO
     SpecifyButtonUpTextColors(guiUpdatePanelButtons[1], FONT_MCOLOR_BLACK, FONT_BLACK);
     SpecifyButtonDownTextColors(guiUpdatePanelButtons[1], FONT_MCOLOR_BLACK, FONT_BLACK);
     SetButtonFastHelpText(guiUpdatePanelButtons[1], gzLateLocalizedString[52]);
-  } else if ((fShowUpdateBox == FALSE) && (fCreated == TRUE)) {
+  } else if ((fShowUpdateBox == false) && (fCreated == true)) {
     // set to uncreated
-    fCreated = FALSE;
+    fCreated = false;
 
     // get rid of the buttons and images
     RemoveButton(guiUpdatePanelButtons[0]);
@@ -3991,22 +3991,22 @@ void DisplayUpdateBox( void )
 */
 
 function CreateDestroyTheUpdateBox(): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+  /* static */ let fCreated: boolean = false;
 
-  if ((fCreated == FALSE) && (fShowUpdateBox == TRUE)) {
+  if ((fCreated == false) && (fShowUpdateBox == true)) {
     if (GetNumberOfMercsInUpdateList() == 0) {
-      fShowUpdateBox = FALSE;
+      fShowUpdateBox = false;
       return;
     }
 
-    fCreated = TRUE;
+    fCreated = true;
 
     // InterruptTime();
     // create screen mask
     CreateScreenMaskForMoveBox();
 
     // lock it paused
-    PauseGame(TRUE);
+    PauseGame(true);
     LockPauseState(5);
 
     // display the box
@@ -4014,23 +4014,23 @@ function CreateDestroyTheUpdateBox(): void {
 
     // Do beep
     PlayJA2SampleFromFile("Sounds\\newbeep.wav", RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
-  } else if ((fCreated == TRUE) && (fShowUpdateBox == FALSE)) {
-    fCreated = FALSE;
+  } else if ((fCreated == true) && (fShowUpdateBox == false)) {
+    fCreated = false;
 
     UnLockPauseState();
-    UnPauseGame(FALSE);
+    UnPauseGame(false);
 
     // dirty screen
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
 
     // remove screen mask
     RemoveScreenMaskForMoveBox();
 
     ResetSoldierUpdateBox();
 
-    CreateDestroyUpdatePanelButtons(0, 0, FALSE);
+    CreateDestroyUpdatePanelButtons(0, 0, false);
   }
 }
 
@@ -4105,7 +4105,7 @@ function ContinueUpdateButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
-      EndUpdateBox(TRUE); // restart time compression
+      EndUpdateBox(true); // restart time compression
     }
   }
 
@@ -4119,15 +4119,15 @@ function StopUpdateButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
-      EndUpdateBox(FALSE); // stop time compression
+      EndUpdateBox(false); // stop time compression
     }
   }
 
   return;
 }
 
-function EndUpdateBox(fContinueTimeCompression: BOOLEAN): void {
-  fShowUpdateBox = FALSE;
+function EndUpdateBox(fContinueTimeCompression: boolean): void {
+  fShowUpdateBox = false;
 
   CreateDestroyTheUpdateBox();
 
@@ -4138,7 +4138,7 @@ function EndUpdateBox(fContinueTimeCompression: BOOLEAN): void {
   }
 }
 
-function SetUpdateBoxFlag(fFlag: BOOLEAN): void {
+function SetUpdateBoxFlag(fFlag: boolean): void {
   // set the flag
   fShowUpdateBox = fFlag;
   return;
@@ -4146,20 +4146,20 @@ function SetUpdateBoxFlag(fFlag: BOOLEAN): void {
 
 function SetTixaAsFound(): void {
   // set the town of Tixa as found by the player
-  fFoundTixa = TRUE;
-  fMapPanelDirty = TRUE;
+  fFoundTixa = true;
+  fMapPanelDirty = true;
 }
 
 function SetOrtaAsFound(): void {
   // set the town of Orta as found by the player
-  fFoundOrta = TRUE;
-  fMapPanelDirty = TRUE;
+  fFoundOrta = true;
+  fMapPanelDirty = true;
 }
 
 function SetSAMSiteAsFound(uiSamIndex: UINT8): void {
   // set this SAM site as being found by the player
-  fSamSiteFound[uiSamIndex] = TRUE;
-  fMapPanelDirty = TRUE;
+  fSamSiteFound[uiSamIndex] = true;
+  fMapPanelDirty = true;
 }
 
 // ste up the timers for move menu in mapscreen for double click detection
@@ -4172,7 +4172,7 @@ function InitTimersForMoveMenuMouseRegions(): void {
 }
 
 function UpdateHelpTextForMapScreenMercIcons(): void {
-  if ((bSelectedInfoChar == -1) || (gCharactersList[bSelectedInfoChar].fValid == FALSE)) {
+  if ((bSelectedInfoChar == -1) || (gCharactersList[bSelectedInfoChar].fValid == false)) {
     SetRegionFastHelpText(addressof(gContractIconRegion), "");
     SetRegionFastHelpText(addressof(gInsuranceIconRegion), "");
     SetRegionFastHelpText(addressof(gDepositIconRegion), "");
@@ -4200,22 +4200,22 @@ function UpdateHelpTextForMapScreenMercIcons(): void {
   }
 }
 
-function CreateDestroyInsuranceMouseRegionForMercs(fCreate: BOOLEAN): void {
-  /* static */ let fCreated: BOOLEAN = FALSE;
+function CreateDestroyInsuranceMouseRegionForMercs(fCreate: boolean): void {
+  /* static */ let fCreated: boolean = false;
 
-  if ((fCreated == FALSE) && (fCreate == TRUE)) {
+  if ((fCreated == false) && (fCreate == true)) {
     MSYS_DefineRegion(addressof(gContractIconRegion), CHAR_ICON_X, CHAR_ICON_CONTRACT_Y, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
     MSYS_DefineRegion(addressof(gInsuranceIconRegion), CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
     MSYS_DefineRegion(addressof(gDepositIconRegion), CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING), CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING) + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-    fCreated = TRUE;
-  } else if ((fCreated == TRUE) && (fCreate == FALSE)) {
+    fCreated = true;
+  } else if ((fCreated == true) && (fCreate == false)) {
     MSYS_RemoveRegion(addressof(gContractIconRegion));
     MSYS_RemoveRegion(addressof(gInsuranceIconRegion));
     MSYS_RemoveRegion(addressof(gDepositIconRegion));
-    fCreated = FALSE;
+    fCreated = false;
   }
 }
 
@@ -4268,16 +4268,16 @@ void DoneHandlePlayerFirstEntryToMapScreen(  UINT8 bExitValue )
 }
 */
 
-function HandleTimeCompressWithTeamJackedInAndGearedToGo(): BOOLEAN {
+function HandleTimeCompressWithTeamJackedInAndGearedToGo(): boolean {
   // check a team is ready to go
   if (!(AnyMercsHired())) {
     // no mercs, leave
-    return FALSE;
+    return false;
   }
 
   // make sure the game just started
-  if (gTacticalStatus.fDidGameJustStart == FALSE) {
-    return FALSE;
+  if (gTacticalStatus.fDidGameJustStart == false) {
+    return false;
   }
 
   // select starting sector (A9 - Omerta)
@@ -4285,12 +4285,12 @@ function HandleTimeCompressWithTeamJackedInAndGearedToGo(): BOOLEAN {
 
   // load starting sector
   if (!SetCurrentWorldSector(9, 1, 0)) {
-    return FALSE;
+    return false;
   }
 
   // Setup variables in the PBI for this first battle.  We need to support the
   // non-persistant PBI in case the user goes to mapscreen.
-  gfBlitBattleSectorLocator = TRUE;
+  gfBlitBattleSectorLocator = true;
   gubPBSectorX = 9;
   gubPBSectorY = 1;
   gubPBSectorZ = 0;
@@ -4305,24 +4305,24 @@ function HandleTimeCompressWithTeamJackedInAndGearedToGo(): BOOLEAN {
   // Add e-mail message
   AddEmail(ENRICO_CONGRATS, ENRICO_CONGRATS_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
 
-  return TRUE;
+  return true;
 }
 
 function HandleDisplayOfExitToTacticalMessageForFirstEntryToMapScreen(): void {
   let iTime: INT32 = 0;
   let iDifference: INT32 = 0;
 
-  if (gTacticalStatus.fDidGameJustStart == FALSE) {
+  if (gTacticalStatus.fDidGameJustStart == false) {
     return;
   }
 
-  if (AnyMercsHired() == FALSE) {
+  if (AnyMercsHired() == false) {
     return;
   }
 
   if (fResetTimerForFirstEntryIntoMapScreen) {
     giExitToTactBaseTime = 0;
-    fResetTimerForFirstEntryIntoMapScreen = FALSE;
+    fResetTimerForFirstEntryIntoMapScreen = false;
   }
 
   // is this the first time in?
@@ -4336,17 +4336,17 @@ function HandleDisplayOfExitToTacticalMessageForFirstEntryToMapScreen(): void {
   iDifference = iTime - giExitToTactBaseTime;
 
   if (iDifference > TIMER_FOR_SHOW_EXIT_TO_TACTICAL_MESSAGE) {
-    fShowMapScreenHelpText = FALSE;
-    fMapPanelDirty = TRUE;
-    fTeamPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fShowMapScreenHelpText = false;
+    fMapPanelDirty = true;
+    fTeamPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
     giExitToTactBaseTime = 0;
   }
 
   return;
 }
 
-function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fContested: BOOLEAN): BOOLEAN {
+function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fContested: boolean): boolean {
   let sString: CHAR16[] /* [128] */;
   let sStringA: CHAR16[] /* [64] */;
   let sStringB: CHAR16[] /* [256] */;
@@ -4359,11 +4359,11 @@ function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSe
   // are we below ground?
   if (bSectorZ != 0) {
     // yes we are..there is nothing important to player here
-    return FALSE;
+    return false;
   }
 
   // get the name of the sector
-  GetSectorIDString(sSectorX, sSectorY, bSectorZ, sString, TRUE);
+  GetSectorIDString(sSectorX, sSectorY, bSectorZ, sString, true);
 
   bTownId = GetTownIdForSector(sSectorX, sSectorY);
 
@@ -4373,7 +4373,7 @@ function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSe
 
     // put up the message informing the player of the event
     DoScreenIndependantMessageBox(sStringB, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
-    return TRUE;
+    return true;
   }
 
   // check if a mine is here
@@ -4396,31 +4396,31 @@ function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSe
 
       // put up the message informing the player of the event
       DoScreenIndependantMessageBox(sStringB, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
-      return TRUE;
+      return true;
     }
   }
 
   if (fContested && bTownId) {
     if (bTownId == Enum135.SAN_MONA) {
       // San Mona isn't important.
-      return TRUE;
+      return true;
     }
     swprintf(sStringB, pMapErrorString[25], sString);
 
     // put up the message informing the player of the event
     DoScreenIndependantMessageBox(sStringB, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
-    return TRUE;
+    return true;
   }
 
   // get the strategic sector value
   sSector = sSectorX + MAP_WORLD_X * sSectorY;
 
   if (StrategicMap[sSector].bNameId == Enum135.BLANK_SECTOR) {
-    return FALSE;
+    return false;
   }
 
   // get the name of the sector
-  GetSectorIDString(sSectorX, sSectorY, bSectorZ, sStringA, TRUE);
+  GetSectorIDString(sSectorX, sSectorY, bSectorZ, sStringA, true);
 
   // now build the string
   swprintf(sString, pMapErrorString[17], sStringA);
@@ -4428,7 +4428,7 @@ function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSe
   // put up the message box
   DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
 
-  return TRUE;
+  return true;
 }
 
 function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ReturnCallback: MSGBOX_CALLBACK): void {
@@ -4445,7 +4445,7 @@ function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: INT16, b
   // grab sector value
   sSector = sSectorX + MAP_WORLD_X * sSectorY;
 
-  if (StrategicMap[sSector].fEnemyControlled == TRUE) {
+  if (StrategicMap[sSector].fEnemyControlled == true) {
     // enemy controlled any ways, leave
     return;
   }
@@ -4462,7 +4462,7 @@ function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: INT16, b
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, ReturnCallback);
   } else if (bTownId) {
     // get the name of the sector
-    GetSectorIDString(sSectorX, sSectorY, bSectorZ, sStringA, TRUE);
+    GetSectorIDString(sSectorX, sSectorY, bSectorZ, sStringA, true);
 
     swprintf(sString, pMapErrorString[23], sStringA);
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, ReturnCallback);
@@ -4475,10 +4475,10 @@ function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: INT16, b
   }
 }
 
-function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumber: Pointer<INT8>): BOOLEAN {
-  let fCanMove: BOOLEAN = TRUE;
+function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumber: Pointer<INT8>): boolean {
+  let fCanMove: boolean = true;
   let sSector: INT16 = 0;
-  let fProblemExists: BOOLEAN = FALSE;
+  let fProblemExists: boolean = false;
 
   // valid soldier?
   Assert(pSoldier);
@@ -4488,21 +4488,21 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   // In case several cases apply, only the reason found first will be given, so make it a good one!
 
   // still in transit?
-  if (IsCharacterInTransit(pSoldier) == TRUE) {
+  if (IsCharacterInTransit(pSoldier) == true) {
     pbErrorNumber.value = 8;
-    return FALSE;
+    return false;
   }
 
   // a POW?
   if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     pbErrorNumber.value = 5;
-    return FALSE;
+    return false;
   }
 
   // underground? (can't move strategically, must use tactical traversal )
   if (pSoldier.value.bSectorZ != 0) {
     pbErrorNumber.value = 1;
-    return FALSE;
+    return false;
   }
 
   // vehicle checks
@@ -4510,19 +4510,19 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
     // empty (needs a driver!)?
     if (GetNumberInVehicle(pSoldier.value.bVehicleID) == 0) {
       pbErrorNumber.value = 32;
-      return FALSE;
+      return false;
     }
 
     // too damaged?
     if (pSoldier.value.bLife < OKLIFE) {
       pbErrorNumber.value = 47;
-      return FALSE;
+      return false;
     }
 
     // out of fuel?
     if (!VehicleHasFuel(pSoldier)) {
       pbErrorNumber.value = 42;
-      return FALSE;
+      return false;
     }
   } else // non-vehicle
   {
@@ -4530,19 +4530,19 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
     if (pSoldier.value.bLife <= 0) {
       swprintf(gsCustomErrorString, pMapErrorString[35], pSoldier.value.name);
       pbErrorNumber.value = -99; // customized error message!
-      return FALSE;
+      return false;
     }
 
     // too injured?
     if (pSoldier.value.bLife < OKLIFE) {
       swprintf(gsCustomErrorString, pMapErrorString[33], pSoldier.value.name);
       pbErrorNumber.value = -99; // customized error message!
-      return FALSE;
+      return false;
     }
   }
 
   // if merc is in a particular sector, not somewhere in between
-  if (pSoldier.value.fBetweenSectors == FALSE) {
+  if (pSoldier.value.fBetweenSectors == false) {
     // and he's NOT flying above it all in a working helicopter
     if (!SoldierAboardAirborneHeli(pSoldier)) {
       // and that sector is loaded...
@@ -4550,26 +4550,26 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
         // in combat?
         if (gTacticalStatus.uiFlags & INCOMBAT) {
           pbErrorNumber.value = 11;
-          return FALSE;
+          return false;
         }
 
         // hostile sector?
         if (gTacticalStatus.fEnemyInSector) {
           pbErrorNumber.value = 2;
-          return FALSE;
+          return false;
         }
 
         // air raid in loaded sector where character is?
         if (InAirRaid()) {
           pbErrorNumber.value = 10;
-          return FALSE;
+          return false;
         }
       }
 
       // not necessarily loaded - if there are any hostiles there
       if (NumHostilesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) > 0) {
         pbErrorNumber.value = 2;
-        return FALSE;
+        return false;
       }
     }
   }
@@ -4587,7 +4587,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
         if (pSoldier2.value.bActive) {
           if (FindObj(pSoldier2, Enum225.CHALICE) != ITEM_NOT_FOUND) {
             pbErrorNumber.value = 34;
-            return FALSE;
+            return false;
           }
         }
       }
@@ -4597,7 +4597,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   // on assignment, other than just in a VEHICLE?
   if ((pSoldier.value.bAssignment >= Enum117.ON_DUTY) && (pSoldier.value.bAssignment != Enum117.VEHICLE)) {
     pbErrorNumber.value = 3;
-    return FALSE;
+    return false;
   }
 
   // if he's walking/driving, and so tired that he would just stop the group anyway in the next sector,
@@ -4606,7 +4606,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
     // too tired
     swprintf(gsCustomErrorString, pMapErrorString[43], pSoldier.value.name);
     pbErrorNumber.value = -99; // customized error message!
-    return FALSE;
+    return false;
   }
 
   // a robot?
@@ -4614,7 +4614,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
     // going alone?
     if (((pSoldier.value.bAssignment == Enum117.VEHICLE) && (!IsRobotControllerInVehicle(pSoldier.value.iVehicleId))) || ((pSoldier.value.bAssignment < Enum117.ON_DUTY) && (!IsRobotControllerInSquad(pSoldier.value.bAssignment)))) {
       pbErrorNumber.value = 49;
-      return FALSE;
+      return false;
     }
   }
   // an Escorted NPC?
@@ -4629,12 +4629,12 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
       }
 
       pbErrorNumber.value = -99; // customized error message!
-      return FALSE;
+      return false;
     }
   }
 
   // assume there's no problem
-  fProblemExists = FALSE;
+  fProblemExists = false;
 
   // find out if this particular character can't move for some reason
   switch (pSoldier.value.ubProfile) {
@@ -4643,7 +4643,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
       sSector = SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
       if (sSector == Enum123.SEC_C5) {
         // can't move at this time
-        fProblemExists = TRUE;
+        fProblemExists = true;
       }
       break;
   }
@@ -4652,23 +4652,23 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
     // inform user this specific merc cannot be moved out of the sector
     swprintf(gsCustomErrorString, pMapErrorString[29], pSoldier.value.name);
     pbErrorNumber.value = -99; // customized error message!
-    return FALSE;
+    return false;
   }
 
   // passed all checks - this character may move strategically!
-  return TRUE;
+  return true;
 }
 
-function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumber: Pointer<INT8>): BOOLEAN {
+function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumber: Pointer<INT8>): boolean {
   let pCurrentSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
   let ubGroup: UINT8 = 0;
   let ubCurrentGroup: UINT8 = 0;
 
   // first check the requested character himself
-  if (CanCharacterMoveInStrategic(pSoldier, pbErrorNumber) == FALSE) {
+  if (CanCharacterMoveInStrategic(pSoldier, pbErrorNumber) == false) {
     // failed no point checking anyone else
-    return FALSE;
+    return false;
   }
 
   // now check anybody who would be travelling with him
@@ -4688,12 +4688,12 @@ function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbEr
 
   // if anyone in the merc's group or also selected cannot move for whatever reason return false
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    if (gCharactersList[iCounter].fValid == TRUE) {
+    if (gCharactersList[iCounter].fValid == true) {
       // get soldier
       pCurrentSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
       // skip inactive grunts
-      if (pCurrentSoldier.value.bActive == FALSE) {
+      if (pCurrentSoldier.value.bActive == false) {
         continue;
       }
 
@@ -4714,18 +4714,18 @@ function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbEr
       }
 
       // if he is in the same movement group (i.e. squad), or he is still selected to go with us (legal?)
-      if ((ubCurrentGroup == ubGroup) || (fSelectedListOfMercsForMapScreen[iCounter] == TRUE)) {
+      if ((ubCurrentGroup == ubGroup) || (fSelectedListOfMercsForMapScreen[iCounter] == true)) {
         // can this character also move strategically?
-        if (CanCharacterMoveInStrategic(pCurrentSoldier, pbErrorNumber) == FALSE) {
+        if (CanCharacterMoveInStrategic(pCurrentSoldier, pbErrorNumber) == false) {
           // cannot move, fail, and don't bother checking anyone else, either
-          return FALSE;
+          return false;
         }
       }
     }
   }
 
   // everybody can move...  Yey!  :-)
-  return TRUE;
+  return true;
 }
 
 function ReportMapScreenMovementError(bErrorNumber: INT8): void {
@@ -4745,7 +4745,7 @@ function HandleRebuildingOfMapScreenCharacterList(): void {
     ReBuildCharactersList();
 
     // reset the flag
-    fReBuildCharacterList = FALSE;
+    fReBuildCharacterList = false;
   }
 }
 
@@ -4793,7 +4793,7 @@ function RequestDecreaseInTimeCompression(): void {
   }
 }
 
-function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id: INT32): BOOLEAN {
+function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id: INT32): boolean {
   let iVehicle2Id: INT32 = -1;
   let pVehicle1: Pointer<VEHICLETYPE>;
   let pVehicle2: Pointer<VEHICLETYPE>;
@@ -4813,12 +4813,12 @@ function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id
   if (iVehicle2Id != -1) {
     // if it's the same vehicle
     if (iVehicle1Id == iVehicle2Id) {
-      return TRUE;
+      return true;
     }
 
     // helicopter can't move together with ground vehicles!
     if ((iVehicle1Id == iHelicopterVehicleId) || (iVehicle2Id == iHelicopterVehicleId)) {
-      return FALSE;
+      return false;
     }
 
     pVehicle1 = addressof(pVehicleList[iVehicle1Id]);
@@ -4826,31 +4826,31 @@ function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id
 
     // as long as they're in the same location, amd neither is between sectors, different vehicles is also ok
     if ((pVehicle1.value.sSectorX == pVehicle2.value.sSectorX) && (pVehicle1.value.sSectorY == pVehicle2.value.sSectorY) && (pVehicle1.value.sSectorZ == pVehicle2.value.sSectorZ) && !pVehicle1.value.fBetweenSectors && !pVehicle2.value.fBetweenSectors) {
-      return TRUE;
+      return true;
     }
   }
 
   // not in/is a vehicle, or in a different vehicle that isn't in the same location
-  return FALSE;
+  return false;
 }
 
-function SaveLeaveItemList(hFile: HWFILE): BOOLEAN {
+function SaveLeaveItemList(hFile: HWFILE): boolean {
   let iCounter: INT32 = 0;
   let pCurrentItem: Pointer<MERC_LEAVE_ITEM>;
   let uiCount: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
-  let fNodeExists: BOOLEAN = FALSE;
+  let fNodeExists: boolean = false;
   let uiCnt: UINT32;
 
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
     // go through nodes and save them
     if (gpLeaveListHead[iCounter] != null) {
-      fNodeExists = TRUE;
+      fNodeExists = true;
 
       // Save the to specify that a node DOES exist
       FileWrite(hFile, addressof(fNodeExists), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(BOOLEAN)) {
-        return FALSE;
+        return false;
       }
 
       uiCount = 1;
@@ -4865,7 +4865,7 @@ function SaveLeaveItemList(hFile: HWFILE): BOOLEAN {
       // Save the number specifing how many items there are in the list
       FileWrite(hFile, addressof(uiCount), sizeof(UINT32), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT32)) {
-        return FALSE;
+        return false;
       }
 
       pCurrentItem = gpLeaveListHead[iCounter];
@@ -4875,17 +4875,17 @@ function SaveLeaveItemList(hFile: HWFILE): BOOLEAN {
         // Save the items
         FileWrite(hFile, pCurrentItem, sizeof(MERC_LEAVE_ITEM), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != sizeof(MERC_LEAVE_ITEM)) {
-          return FALSE;
+          return false;
         }
 
         pCurrentItem = pCurrentItem.value.pNext;
       }
     } else {
-      fNodeExists = FALSE;
+      fNodeExists = false;
       // Save the to specify that a node DOENST exist
       FileWrite(hFile, addressof(fNodeExists), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(BOOLEAN)) {
-        return FALSE;
+        return false;
       }
     }
   }
@@ -4894,20 +4894,20 @@ function SaveLeaveItemList(hFile: HWFILE): BOOLEAN {
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
     FileWrite(hFile, addressof(guiLeaveListOwnerProfileId[iCounter]), sizeof(UINT32), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(UINT32)) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadLeaveItemList(hFile: HWFILE): BOOLEAN {
+function LoadLeaveItemList(hFile: HWFILE): boolean {
   let iCounter: INT32 = 0;
   let pCurrentItem: Pointer<MERC_LEAVE_ITEM>;
   let pItem: Pointer<MERC_LEAVE_ITEM>;
   let uiCount: UINT32 = 0;
   let uiNumBytesRead: UINT32 = 0;
-  let fNodeExists: BOOLEAN = FALSE;
+  let fNodeExists: boolean = false;
   let uiSubItem: UINT32;
 
   // Shutdown the list
@@ -4921,7 +4921,7 @@ function LoadLeaveItemList(hFile: HWFILE): BOOLEAN {
     // load the flag that specifis that a node DOES exist
     FileRead(hFile, addressof(fNodeExists), sizeof(BOOLEAN), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(BOOLEAN)) {
-      return FALSE;
+      return false;
     }
 
     // if a root node is supposed to exist
@@ -4929,13 +4929,13 @@ function LoadLeaveItemList(hFile: HWFILE): BOOLEAN {
       // load the number specifing how many items there are in the list
       FileRead(hFile, addressof(uiCount), sizeof(UINT32), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(UINT32)) {
-        return FALSE;
+        return false;
       }
 
       // allocate space
       gpLeaveListHead[iCounter] = MemAlloc(sizeof(MERC_LEAVE_ITEM));
       if (gpLeaveListHead[iCounter] == null) {
-        return FALSE;
+        return false;
       }
       memset(gpLeaveListHead[iCounter], 0, sizeof(MERC_LEAVE_ITEM));
 
@@ -4945,14 +4945,14 @@ function LoadLeaveItemList(hFile: HWFILE): BOOLEAN {
         // allocate space
         pItem = MemAlloc(sizeof(MERC_LEAVE_ITEM));
         if (pItem == null) {
-          return FALSE;
+          return false;
         }
         memset(pItem, 0, sizeof(MERC_LEAVE_ITEM));
 
         // Load the items
         FileRead(hFile, pItem, sizeof(MERC_LEAVE_ITEM), addressof(uiNumBytesRead));
         if (uiNumBytesRead != sizeof(MERC_LEAVE_ITEM)) {
-          return FALSE;
+          return false;
         }
 
         pItem.value.pNext = null;
@@ -4973,11 +4973,11 @@ function LoadLeaveItemList(hFile: HWFILE): BOOLEAN {
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
     FileRead(hFile, addressof(guiLeaveListOwnerProfileId[iCounter]), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function TurnOnSectorLocator(ubProfileID: UINT8): void {
@@ -4985,7 +4985,7 @@ function TurnOnSectorLocator(ubProfileID: UINT8): void {
 
   Assert(ubProfileID != NO_PROFILE);
 
-  pSoldier = FindSoldierByProfileID(ubProfileID, FALSE);
+  pSoldier = FindSoldierByProfileID(ubProfileID, false);
   if (pSoldier) {
     gsSectorLocatorX = pSoldier.value.sSectorX;
     gsSectorLocatorY = pSoldier.value.sSectorY;
@@ -5012,7 +5012,7 @@ function TurnOnSectorLocator(ubProfileID: UINT8): void {
 
 function TurnOffSectorLocator(): void {
   gubBlitSectorLocatorCode = Enum156.LOCATOR_COLOR_NONE;
-  fMapPanelDirty = TRUE;
+  fMapPanelDirty = true;
 }
 
 function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubLocatorID: UINT8): void {
@@ -5093,7 +5093,7 @@ function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSector
   InvalidateRegion(sScreenX, sScreenY - 1, sScreenX + MAP_GRID_X, sScreenY + MAP_GRID_Y);
 }
 
-function CheckIfSalaryIncreasedAndSayQuote(pSoldier: Pointer<SOLDIERTYPE>, fTriggerContractMenu: BOOLEAN): BOOLEAN {
+function CheckIfSalaryIncreasedAndSayQuote(pSoldier: Pointer<SOLDIERTYPE>, fTriggerContractMenu: boolean): boolean {
   Assert(pSoldier);
 
   // OK, check if their price has gone up
@@ -5108,12 +5108,12 @@ function CheckIfSalaryIncreasedAndSayQuote(pSoldier: Pointer<SOLDIERTYPE>, fTrig
       HandleImportantMercQuote(pSoldier, Enum202.QUOTE_MERC_GONE_UP_IN_PRICE);
     }
 
-    pSoldier.value.fContractPriceHasIncreased = FALSE;
+    pSoldier.value.fContractPriceHasIncreased = false;
 
     // said quote / triggered contract menu
-    return TRUE;
+    return true;
   } else {
     // nope, nothing to do
-    return FALSE;
+    return false;
   }
 }

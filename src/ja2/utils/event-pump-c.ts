@@ -136,7 +136,7 @@ let SNoise: EV_S_NOISE;
 let SStopMerc: EV_S_STOP_MERC;
 let SUpdateNetworkSoldier: EV_S_SENDPATHTONETWORK;
 
-function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): BOOLEAN {
+function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): boolean {
   if (usDelay == DEMAND_EVENT_DELAY) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local and network #%d", uiEvent));
     return AddGameEventToQueue(uiEvent, 0, pEventData, DEMAND_EVENT_QUEUE);
@@ -148,25 +148,25 @@ function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): BOOLEA
     return AddGameEventToQueue(uiEvent, usDelay, pEventData, PRIMARY_EVENT_QUEUE);
   } else if (uiEvent < Enum319.EVENTS_ONLY_SENT_OVER_NETWORK) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending network #%d", uiEvent));
-    return TRUE;
+    return true;
   }
   // There is an error with the event
   else
-    return FALSE;
+    return false;
 }
 
-function AddGameEventFromNetwork(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): BOOLEAN {
+function AddGameEventFromNetwork(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): boolean {
   return AddGameEventToQueue(uiEvent, usDelay, pEventData, PRIMARY_EVENT_QUEUE);
 }
 
-function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, ubQueueID: UINT8): BOOLEAN {
+function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, ubQueueID: UINT8): boolean {
   let uiDataSize: UINT32;
 
   // Check range of Event ui
   if (uiEvent < 0 || uiEvent > Enum319.NUM_EVENTS) {
     // Set debug message!
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Unknown event type");
-    return FALSE;
+    return false;
   }
 
   // Switch on event type and set size accordingly
@@ -264,26 +264,26 @@ function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, 
 
       // Set debug msg: unknown message!
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Event Type mismatch");
-      return FALSE;
+      return false;
   }
 
   CHECKF(AddEvent(uiEvent, usDelay, pEventData, uiDataSize, ubQueueID));
 
   // successful
-  return TRUE;
+  return true;
 }
 
-function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
+function DequeAllGameEvents(fExecute: boolean): boolean {
   let pEvent: Pointer<EVENT>;
   let uiQueueSize: UINT32;
   let cnt: UINT32;
-  let fCompleteLoop: BOOLEAN = FALSE;
+  let fCompleteLoop: boolean = false;
   // First dequeue all primary events
 
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
     // Get Event
-    if (RemoveEvent(addressof(pEvent), 0, PRIMARY_EVENT_QUEUE) == FALSE) {
-      return FALSE;
+    if (RemoveEvent(addressof(pEvent), 0, PRIMARY_EVENT_QUEUE) == false) {
+      return false;
     }
 
     if (fExecute) {
@@ -304,8 +304,8 @@ function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
   uiQueueSize = EventQueueSize(SECONDARY_EVENT_QUEUE);
 
   for (cnt = 0; cnt < uiQueueSize; cnt++) {
-    if (PeekEvent(addressof(pEvent), cnt, SECONDARY_EVENT_QUEUE) == FALSE) {
-      return FALSE;
+    if (PeekEvent(addressof(pEvent), cnt, SECONDARY_EVENT_QUEUE) == false) {
+      return false;
     }
 
     // Check time
@@ -323,8 +323,8 @@ function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
     uiQueueSize = EventQueueSize(SECONDARY_EVENT_QUEUE);
 
     for (cnt = 0; cnt < uiQueueSize; cnt++) {
-      if (PeekEvent(addressof(pEvent), cnt, SECONDARY_EVENT_QUEUE) == FALSE) {
-        return FALSE;
+      if (PeekEvent(addressof(pEvent), cnt, SECONDARY_EVENT_QUEUE) == false) {
+        return false;
       }
 
       // Check time
@@ -337,23 +337,23 @@ function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
     }
 
     if (cnt == uiQueueSize) {
-      fCompleteLoop = TRUE;
+      fCompleteLoop = true;
     }
-  } while (fCompleteLoop == FALSE);
+  } while (fCompleteLoop == false);
 
-  return TRUE;
+  return true;
 }
 
-function DequeueAllDemandGameEvents(fExecute: BOOLEAN): BOOLEAN {
+function DequeueAllDemandGameEvents(fExecute: boolean): boolean {
   let pEvent: Pointer<EVENT>;
-  let fCompleteLoop: BOOLEAN = FALSE;
+  let fCompleteLoop: boolean = false;
 
   // Dequeue all events on the demand queue (only)
 
   while (EventQueueSize(DEMAND_EVENT_QUEUE) > 0) {
     // Get Event
-    if (RemoveEvent(addressof(pEvent), 0, DEMAND_EVENT_QUEUE) == FALSE) {
-      return FALSE;
+    if (RemoveEvent(addressof(pEvent), 0, DEMAND_EVENT_QUEUE) == false) {
+      return false;
     }
 
     if (fExecute) {
@@ -369,10 +369,10 @@ function DequeueAllDemandGameEvents(fExecute: BOOLEAN): BOOLEAN {
     FreeEvent(pEvent);
   };
 
-  return TRUE;
+  return true;
 }
 
-function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
+function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Switch on event type
@@ -390,7 +390,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SChangeState), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SChangeState.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SChangeState.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -411,7 +411,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SChangeDest), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SChangeDest.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SChangeDest.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: Invalid Soldier ID #%d", SChangeDest.usSoldierID));
         break;
@@ -432,7 +432,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SSetPosition), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SSetPosition.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SSetPosition.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -453,7 +453,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SGetNewPath), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SGetNewPath.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SGetNewPath.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -473,7 +473,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SBeginTurn), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SBeginTurn.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SBeginTurn.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -486,7 +486,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
       // Call soldier function
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: BeginTurn");
-      EVENT_BeginMercTurn(pSoldier, FALSE, 0);
+      EVENT_BeginMercTurn(pSoldier, false, 0);
       break;
 
     case Enum319.S_CHANGESTANCE:
@@ -494,7 +494,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SChangeStance), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SChangeStance.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SChangeStance.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -514,7 +514,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SSetDirection), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SSetDirection.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SSetDirection.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -535,7 +535,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SSetDesiredDirection), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SSetDesiredDirection.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SSetDesiredDirection.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -556,7 +556,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SBeginFireWeapon), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SBeginFireWeapon.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SBeginFireWeapon.usSoldierID) == false) {
         pSoldier = null;
         break;
         // Handle Error?
@@ -581,7 +581,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SFireWeapon), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SFireWeapon.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SFireWeapon.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -611,7 +611,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
       memcpy(addressof(SStructureHit), pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: StructureHit"));
-      StructureHit(SStructureHit.iBullet, SStructureHit.usWeaponIndex, SStructureHit.bWeaponStatus, SStructureHit.ubAttackerID, SStructureHit.sXPos, SStructureHit.sYPos, SStructureHit.sZPos, SStructureHit.usStructureID, SStructureHit.iImpact, TRUE);
+      StructureHit(SStructureHit.iBullet, SStructureHit.usWeaponIndex, SStructureHit.bWeaponStatus, SStructureHit.ubAttackerID, SStructureHit.sXPos, SStructureHit.sYPos, SStructureHit.sZPos, SStructureHit.usStructureID, SStructureHit.iImpact, true);
       break;
 
     case Enum319.S_WINDOWHIT:
@@ -639,7 +639,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       memcpy(addressof(SStopMerc), pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SStopMerc.usSoldierID) == FALSE) {
+      if (GetSoldier(addressof(pSoldier), SStopMerc.usSoldierID) == false) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -657,21 +657,21 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
     default:
 
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Event Received");
-      return FALSE;
+      return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function ClearEventQueue(): BOOLEAN {
+function ClearEventQueue(): boolean {
   // clear out the event queue
   let pEvent: Pointer<EVENT>;
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
     // Get Event
-    if (RemoveEvent(addressof(pEvent), 0, PRIMARY_EVENT_QUEUE) == FALSE) {
-      return FALSE;
+    if (RemoveEvent(addressof(pEvent), 0, PRIMARY_EVENT_QUEUE) == false) {
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }

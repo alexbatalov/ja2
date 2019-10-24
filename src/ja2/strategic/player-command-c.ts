@@ -58,15 +58,15 @@ function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString:
 }
 
 // ALL changes of control to player must be funneled through here!
-function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: BOOLEAN): BOOLEAN {
+function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: boolean): boolean {
   // NOTE: MapSector must be 16-bit, cause MAX_WORLD_X is actually 18, so the sector numbers exceed 256 although we use only 16x16
   let usMapSector: UINT16 = 0;
-  let fWasEnemyControlled: BOOLEAN = FALSE;
+  let fWasEnemyControlled: boolean = false;
   let bTownId: INT8 = 0;
   let ubSectorID: UINT8;
 
   if (AreInMeanwhile()) {
-    return FALSE;
+    return false;
   }
 
   if (bMapZ == 0) {
@@ -82,12 +82,12 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
     */
     if (NumHostilesInSector(sMapX, sMapY, bMapZ)) {
       // too premature:  enemies still in sector.
-      return FALSE;
+      return false;
     }
 
     // check if we ever grabbed drassen airport, if so, set fact we can go to BR's
     if ((sMapX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (sMapY == BOBBYR_SHIPPING_DEST_SECTOR_Y)) {
-      LaptopSaveInfo.fBobbyRSiteCanBeAccessed = TRUE;
+      LaptopSaveInfo.fBobbyRSiteCanBeAccessed = true;
 
       // If the player has been to Bobbyr when it was down, and we havent already sent email, send him an email
       if (LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction == Enum99.BOBBYR_BEEN_TO_SITE_ONCE && LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction != Enum99.BOBBYR_ALREADY_SENT_EMAIL) {
@@ -98,8 +98,8 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
 
     fWasEnemyControlled = StrategicMap[usMapSector].fEnemyControlled;
 
-    StrategicMap[usMapSector].fEnemyControlled = FALSE;
-    SectorInfo[SECTOR(sMapX, sMapY)].fPlayer[bMapZ] = TRUE;
+    StrategicMap[usMapSector].fEnemyControlled = false;
+    SectorInfo[SECTOR(sMapX, sMapY)].fPlayer[bMapZ] = true;
 
     bTownId = StrategicMap[usMapSector].bNameId;
 
@@ -147,7 +147,7 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
         // if Skyrider has been delivered to chopper, and already mentioned Drassen SAM site, but not used this quote yet
         if (IsHelicopterPilotAvailable() && (guiHelicopterSkyriderTalkState >= 1) && (!gfSkyriderSaidCongratsOnTakingSAM)) {
           SkyRiderTalk(SAM_SITE_TAKEN);
-          gfSkyriderSaidCongratsOnTakingSAM = TRUE;
+          gfSkyriderSaidCongratsOnTakingSAM = true;
         }
 
         if (!SectorInfo[SECTOR(sMapX, sMapY)].fSurfaceWasEverPlayerControlled) {
@@ -177,15 +177,15 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   } else {
     if (sMapX == 3 && sMapY == 16 && bMapZ == 1) {
       // Basement sector (P3_b1)
-      gfUseAlternateQueenPosition = TRUE;
+      gfUseAlternateQueenPosition = true;
     }
   }
 
   // also set fact the player knows they own it
-  SectorInfo[SECTOR(sMapX, sMapY)].fPlayer[bMapZ] = TRUE;
+  SectorInfo[SECTOR(sMapX, sMapY)].fPlayer[bMapZ] = true;
 
   if (bMapZ == 0) {
-    SectorInfo[SECTOR(sMapX, sMapY)].fSurfaceWasEverPlayerControlled = TRUE;
+    SectorInfo[SECTOR(sMapX, sMapY)].fSurfaceWasEverPlayerControlled = true;
   }
 
   // KM : Aug 11, 1999 -- Patch fix:  Relocated this check so it gets called everytime a sector changes hands,
@@ -194,16 +194,16 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   UpdateAirspaceControl();
 
   // redraw map/income if in mapscreen
-  fMapPanelDirty = TRUE;
-  fMapScreenBottomDirty = TRUE;
+  fMapPanelDirty = true;
+  fMapScreenBottomDirty = true;
 
   return fWasEnemyControlled;
 }
 
 // ALL changes of control to enemy must be funneled through here!
-function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: BOOLEAN): BOOLEAN {
+function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: boolean): boolean {
   let usMapSector: UINT16 = 0;
-  let fWasPlayerControlled: BOOLEAN = FALSE;
+  let fWasPlayerControlled: boolean = false;
   let bTownId: INT8 = 0;
   let ubTheftChance: UINT8;
   let ubSectorID: UINT8;
@@ -212,7 +212,7 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
   //     This check was added because this function gets called when player mercs retreat from an unresolved
   //     battle between militia and enemies.  It will get called again AFTER autoresolve is finished.
   if (gfAutomaticallyStartAutoResolve) {
-    return FALSE;
+    return false;
   }
 
   if (bMapZ == 0) {
@@ -220,19 +220,19 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
 
     fWasPlayerControlled = !StrategicMap[usMapSector].fEnemyControlled;
 
-    StrategicMap[usMapSector].fEnemyControlled = TRUE;
+    StrategicMap[usMapSector].fEnemyControlled = true;
 
     // if player lost control to the enemy
     if (fWasPlayerControlled) {
       if (PlayerMercsInSector(sMapX, sMapY, bMapZ)) {
         // too premature:  Player mercs still in sector.
-        return FALSE;
+        return false;
       }
 
       // check if there's a town in the sector
       bTownId = StrategicMap[usMapSector].bNameId;
 
-      SectorInfo[SECTOR(sMapX, sMapY)].fPlayer[bMapZ] = FALSE;
+      SectorInfo[SECTOR(sMapX, sMapY)].fPlayer[bMapZ] = false;
 
       // and it's a town
       if ((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS)) {
@@ -274,7 +274,7 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
     // enemy reinforcements arrive, and they deserve another crack at stealing what the first group missed! :-)
 
     // stealing should fail anyway 'cause there shouldn't be a temp file for unvisited sectors, but let's check anyway
-    if (GetSectorFlagStatus(sMapX, sMapY, bMapZ, SF_ALREADY_VISITED) == TRUE) {
+    if (GetSectorFlagStatus(sMapX, sMapY, bMapZ, SF_ALREADY_VISITED) == true) {
       // enemies can steal items left lying about (random chance).  The more there are, the more they take!
       ubTheftChance = 5 * NumEnemiesInAnySector(sMapX, sMapY, bMapZ);
       // max 90%, some stuff may just simply not get found
@@ -288,7 +288,7 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
     // just because player has lost the sector doesn't mean he realizes it - that's up to our caller to decide!
   } else {
     // underground sector control is always up to date, because we don't track control down there
-    SectorInfo[SECTOR(sMapX, sMapY)].fPlayer[bMapZ] = FALSE;
+    SectorInfo[SECTOR(sMapX, sMapY)].fPlayer[bMapZ] = false;
   }
 
   // KM : Aug 11, 1999 -- Patch fix:  Relocated this check so it gets called everytime a sector changes hands,
@@ -297,8 +297,8 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
   UpdateAirspaceControl();
 
   // redraw map/income if in mapscreen
-  fMapPanelDirty = TRUE;
-  fMapScreenBottomDirty = TRUE;
+  fMapPanelDirty = true;
+  fMapScreenBottomDirty = true;
 
   return fWasPlayerControlled;
 }

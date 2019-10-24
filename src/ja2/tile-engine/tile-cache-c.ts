@@ -6,7 +6,7 @@ let giDefaultStructIndex: INT32 = -1;
 let gpTileCache: Pointer<TILE_CACHE_ELEMENT> = null;
 let gpTileCacheStructInfo: Pointer<TILE_CACHE_STRUCT> = null;
 
-function InitTileCache(): BOOLEAN {
+function InitTileCache(): boolean {
   let cnt: UINT32;
   let FileInfo: GETFILESTRUCT;
   let sFiles: INT16 = 0;
@@ -59,7 +59,7 @@ function InitTileCache(): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function DeleteTileCache(): void {
@@ -151,7 +151,7 @@ function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
 
       // ATE: Add z-strip info
       if (gpTileCache[cnt].sStructRefID != -1) {
-        AddZStripInfoToVObject(gpTileCache[cnt].pImagery.value.vo, gpTileCacheStructInfo[gpTileCache[cnt].sStructRefID].pStructureFileRef, TRUE, 0);
+        AddZStripInfoToVObject(gpTileCache[cnt].pImagery.value.vo, gpTileCacheStructInfo[gpTileCache[cnt].sStructRefID].pStructureFileRef, true, 0);
       }
 
       if (gpTileCache[cnt].pImagery.value.pAuxData != null) {
@@ -174,7 +174,7 @@ function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
   return -1;
 }
 
-function RemoveCachedTile(iCachedTile: INT32): BOOLEAN {
+function RemoveCachedTile(iCachedTile: INT32): boolean {
   let cnt: UINT32;
 
   // Find tile
@@ -189,14 +189,14 @@ function RemoveCachedTile(iCachedTile: INT32): BOOLEAN {
           DeleteTileSurface(gpTileCache[cnt].pImagery);
           gpTileCache[cnt].pImagery = null;
           gpTileCache[cnt].sStructRefID = -1;
-          return TRUE;
+          return true;
           ;
         }
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function GetCachedTileVideoObject(iIndex: INT32): HVOBJECT {

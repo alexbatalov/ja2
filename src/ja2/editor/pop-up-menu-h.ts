@@ -69,8 +69,8 @@ interface CurrentPopupMenuInformation {
   ubColumnWidth: UINT8[] /* [MAX_COLUMNS] */;
   ubActiveType: UINT8;
   usFont: UINT16;
-  fActive: BOOLEAN;
-  fUseKeyboardInfoUntilMouseMoves: BOOLEAN;
+  fActive: boolean;
+  fUseKeyboardInfoUntilMouseMoves: boolean;
 
   // popup region coords.
   usLeft: UINT16;

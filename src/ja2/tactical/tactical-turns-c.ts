@@ -4,7 +4,7 @@ function HandleRPCDescription(): void {
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt2: INT32;
-  let fSAMSite: BOOLEAN = FALSE;
+  let fSAMSite: boolean = false;
 
   if (!gTacticalStatus.fCountingDownForGuideDescription) {
     return;
@@ -21,7 +21,7 @@ function HandleRPCDescription(): void {
 
   // Are we a SAM site?
   if (gTacticalStatus.ubGuideDescriptionToUse == 27 || gTacticalStatus.ubGuideDescriptionToUse == 30 || gTacticalStatus.ubGuideDescriptionToUse == 32 || gTacticalStatus.ubGuideDescriptionToUse == 25 || gTacticalStatus.ubGuideDescriptionToUse == 31) {
-    fSAMSite = TRUE;
+    fSAMSite = true;
     gTacticalStatus.bGuideDescriptionCountDown = 1;
   }
 
@@ -38,7 +38,7 @@ function HandleRPCDescription(): void {
   gTacticalStatus.bGuideDescriptionCountDown--;
 
   if (gTacticalStatus.bGuideDescriptionCountDown == 0) {
-    gTacticalStatus.fCountingDownForGuideDescription = FALSE;
+    gTacticalStatus.fCountingDownForGuideDescription = false;
 
     // OK, count how many rpc guys we have....
     // set up soldier ptr as first element in mercptrs list
@@ -132,13 +132,13 @@ function HandleTacticalEndTurn(): void {
 
   // First exit if we are not in realtime combat or realtime noncombat
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    BeginLoggingForBleedMeToos(TRUE);
+    BeginLoggingForBleedMeToos(true);
 
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
       if (pSoldier.value.bActive && pSoldier.value.bLife > 0 && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !(AM_A_ROBOT(pSoldier))) {
         // Handle everything from getting breath back, to bleeding, etc
-        EVENT_BeginMercTurn(pSoldier, TRUE, 0);
+        EVENT_BeginMercTurn(pSoldier, true, 0);
 
         // Handle Player services
         HandlePlayerServices(pSoldier);
@@ -156,7 +156,7 @@ function HandleTacticalEndTurn(): void {
       }
     }
 
-    BeginLoggingForBleedMeToos(FALSE);
+    BeginLoggingForBleedMeToos(false);
 
     // OK, loop through the mercs to perform 'end turn' events on each...
     // We're looping through only mercs in tactical engine, ignoring our mercs
@@ -167,7 +167,7 @@ function HandleTacticalEndTurn(): void {
       if (pSoldier != null) {
         if (pSoldier.value.bTeam != gbPlayerNum) {
           // Handle everything from getting breath back, to bleeding, etc
-          EVENT_BeginMercTurn(pSoldier, TRUE, 0);
+          EVENT_BeginMercTurn(pSoldier, true, 0);
 
           // Handle Player services
           HandlePlayerServices(pSoldier);

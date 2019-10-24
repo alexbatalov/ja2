@@ -19,7 +19,7 @@ class CQuantizer {
       DeleteTree(addressof(m_pTree));
   }
 
-  ProcessImage(pData: Pointer<BYTE>, iWidth: int, iHeight: int): BOOL {
+  ProcessImage(pData: Pointer<BYTE>, iWidth: int, iHeight: int): boolean {
     let pbBits: Pointer<BYTE>;
     let r: BYTE;
     let g: BYTE;
@@ -40,7 +40,7 @@ class CQuantizer {
       // Padding
       // pbBits ++;
     }
-    return TRUE;
+    return true;
   }
 
   GetLeftShiftCount(dwVal: DWORD): int {
@@ -106,7 +106,7 @@ class CQuantizer {
     if ((pNode = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(NODE))) == null)
       return null;
 
-    pNode.value.bIsLeaf = (nLevel == nColorBits) ? TRUE : FALSE;
+    pNode.value.bIsLeaf = (nLevel == nColorBits) ? true : false;
     if (pNode.value.bIsLeaf)
       (pLeafCount.value)++;
     else {
@@ -146,7 +146,7 @@ class CQuantizer {
       }
     }
 
-    pNode.value.bIsLeaf = TRUE;
+    pNode.value.bIsLeaf = true;
     pNode.value.nRedSum = nRedSum;
     pNode.value.nGreenSum = nGreenSum;
     pNode.value.nBlueSum = nBlueSum;

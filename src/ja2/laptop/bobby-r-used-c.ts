@@ -4,7 +4,7 @@ let guiUsedGrid: UINT32;
 function GameInitBobbyRUsed(): void {
 }
 
-function EnterBobbyRUsed(): BOOLEAN {
+function EnterBobbyRUsed(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
@@ -27,7 +27,7 @@ function EnterBobbyRUsed(): BOOLEAN {
 
   RenderBobbyRUsed();
 
-  return TRUE;
+  return true;
 }
 
 function ExitBobbyRUsed(): void {

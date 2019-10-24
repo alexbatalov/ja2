@@ -41,7 +41,7 @@ let guiAccountNumberGrid: UINT32;
 
 let giMercTotalContractCharge: INT32;
 
-let gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning: BOOLEAN = FALSE;
+let gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning: boolean = false;
 
 let guiMercAuthorizeBoxButton: UINT32;
 let guiMercAuthorizeButtonImage: INT32;
@@ -51,7 +51,7 @@ let guiMercBackBoxButton: UINT32;
 function GameInitMercsAccount(): void {
 }
 
-function EnterMercsAccount(): BOOLEAN {
+function EnterMercsAccount(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   InitMercBackGround();
@@ -79,9 +79,9 @@ function EnterMercsAccount(): BOOLEAN {
   //	RenderMercsAccount();
 
   // if true, will display a msgbox telling user that they dont have enough funds
-  gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = FALSE;
+  gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = false;
 
-  return TRUE;
+  return true;
 }
 
 function ExitMercsAccount(): void {
@@ -98,7 +98,7 @@ function ExitMercsAccount(): void {
 function HandleMercsAccount(): void {
   // if true, will display a msgbox telling user that they dont have enough funds
   if (gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning) {
-    gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = FALSE;
+    gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = false;
 
     DoLapTopMessageBox(Enum24.MSG_BOX_BLUE_ON_GREY, "Transfer failed.  No funds available.", Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
   }
@@ -120,14 +120,14 @@ function RenderMercsAccount(): void {
 
   // Display Players account number
   swprintf(sText, "%s %05d", MercAccountText[Enum340.MERC_ACCOUNT_ACCOUNT], LaptopSaveInfo.guiPlayersMercAccountNumber);
-  DrawTextToScreen(sText, MERC_AC_ACCOUNT_NUMBER_TEXT_X, MERC_AC_ACCOUNT_NUMBER_TEXT_Y, 0, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sText, MERC_AC_ACCOUNT_NUMBER_TEXT_X, MERC_AC_ACCOUNT_NUMBER_TEXT_Y, 0, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the order grid titles
-  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_MERC], MERC_AC_FIRST_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_FIRST_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_DAYS], MERC_AC_SECOND_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_SECOND_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_RATE], MERC_AC_THIRD_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_CHARGE], MERC_AC_FOURTH_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_FOURTH_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_TOTAL], MERC_AC_THIRD_COLUMN_X, MERC_AC_TOTAL_COST_Y, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_MERC], MERC_AC_FIRST_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_FIRST_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_DAYS], MERC_AC_SECOND_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_SECOND_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_RATE], MERC_AC_THIRD_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_CHARGE], MERC_AC_FOURTH_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_FOURTH_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_TOTAL], MERC_AC_THIRD_COLUMN_X, MERC_AC_TOTAL_COST_Y, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT(), MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   DisplayHiredMercs();
 
@@ -222,21 +222,21 @@ function DisplayHiredMercs(): void {
       uiContractCharge = 0;
 
       // Display Mercs Name
-      DrawTextToScreen(gMercProfiles[usMercID].zName, MERC_AC_FIRST_COLUMN_X + 5, usPosY, MERC_AC_FIRST_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[usMercID].zName, MERC_AC_FIRST_COLUMN_X + 5, usPosY, MERC_AC_FIRST_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // Display The # of days the merc has worked since last paid
 
       swprintf(sTemp, "%d", gMercProfiles[usMercID].iMercMercContractLength);
-      DrawTextToScreen(sTemp, MERC_AC_SECOND_COLUMN_X, usPosY, MERC_AC_SECOND_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), ubFontColor, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(sTemp, MERC_AC_SECOND_COLUMN_X, usPosY, MERC_AC_SECOND_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), ubFontColor, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       // Display the mercs rate
       swprintf(sTemp, "$%6d", gMercProfiles[usMercID].sSalary);
-      DrawTextToScreen(sTemp, MERC_AC_THIRD_COLUMN_X, usPosY, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), ubFontColor, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(sTemp, MERC_AC_THIRD_COLUMN_X, usPosY, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), ubFontColor, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       // Display the total charge
       uiContractCharge = gMercProfiles[usMercID].sSalary * gMercProfiles[usMercID].iMercMercContractLength;
       swprintf(sTemp, "$%6d", uiContractCharge);
-      DrawTextToScreen(sTemp, MERC_AC_FOURTH_COLUMN_X, usPosY, MERC_AC_FOURTH_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), ubFontColor, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(sTemp, MERC_AC_FOURTH_COLUMN_X, usPosY, MERC_AC_FOURTH_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), ubFontColor, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       giMercTotalContractCharge += uiContractCharge;
       usPosY += MERC_AC_ROW_SIZE;
@@ -244,7 +244,7 @@ function DisplayHiredMercs(): void {
   }
 
   swprintf(sTemp, "$%6d", giMercTotalContractCharge);
-  DrawTextToScreen(sTemp, MERC_AC_FOURTH_COLUMN_X, MERC_AC_TOTAL_COST_Y, MERC_AC_FOURTH_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), MERC_ACCOUNT_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(sTemp, MERC_AC_FOURTH_COLUMN_X, MERC_AC_TOTAL_COST_Y, MERC_AC_FOURTH_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT(), MERC_ACCOUNT_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 }
 
 function SettleMercAccounts(): void {
@@ -281,7 +281,7 @@ function SettleMercAccounts(): void {
 
   if (iPartialPayment == 0) {
     // if true, will display a msgbox telling user that they dont have enough funds
-    gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = TRUE;
+    gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = true;
     return;
   }
 

@@ -31,36 +31,36 @@ function SetClippingRegionAndImageWidth(iImageWidth: int, iClipStartX: int, iCli
   giClipYMax = iClipStartY + iClipHeight - 1;
 }
 
-function Clipt(denom: FLOAT, num: FLOAT, tE: Pointer<FLOAT>, tL: Pointer<FLOAT>): BOOL {
+function Clipt(denom: FLOAT, num: FLOAT, tE: Pointer<FLOAT>, tL: Pointer<FLOAT>): boolean {
   let t: FLOAT;
-  let accept: BOOL;
+  let accept: boolean;
 
-  accept = TRUE;
+  accept = true;
 
   if (denom > 0.0) {
     t = num / denom;
     if (t > tL.value)
-      accept = FALSE;
+      accept = false;
     else if (t > tE.value)
       tE.value = t;
   } else if (denom < 0.0) {
     t = num / denom;
     if (t < tE.value)
-      accept = FALSE;
+      accept = false;
     else if (t < tL.value)
       tL.value = t;
   } else if (num > 0)
-    accept = FALSE;
+    accept = false;
 
   return accept;
 }
 
-function ClipPoint(x: int, y: int): BOOL {
+function ClipPoint(x: int, y: int): boolean {
   return x <= giClipXMax && x >= giClipXMin && y <= giClipYMax && y >= giClipYMin;
 }
 
-function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Pointer<int>): BOOL {
-  let visible: BOOL;
+function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Pointer<int>): boolean {
+  let visible: boolean;
   let te: FLOAT;
   let tl: FLOAT;
   let dx: FLOAT;
@@ -77,10 +77,10 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
 
   dx = x1 - x0;
   dy = y1 - y0;
-  visible = FALSE;
+  visible = false;
 
   if (dx == 0.0 && dy == 0.0 && ClipPoint(ix0.value, iy0.value))
-    visible = TRUE;
+    visible = true;
   else {
     te = 0.0;
     tl = 1.0;
@@ -88,7 +88,7 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
       if (Clipt(-dx, x0 - giClipXMax, addressof(te), addressof(tl))) {
         if (Clipt(dy, giClipYMin - y0, addressof(te), addressof(tl))) {
           if (Clipt(-dy, y0 - giClipYMax, addressof(te), addressof(tl))) {
-            visible = TRUE;
+            visible = true;
             if (tl < 1.0) {
               x1 = x0 + tl * dx;
               y1 = y0 + tl * dy;
@@ -112,7 +112,7 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
 }
 
 /* Draws a line between the specified endpoints in color Color. */
-function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
+function LineDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   let Temp: int;
   let AdjUp: int;
   let AdjDown: int;
@@ -303,7 +303,7 @@ function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, C
 }
 
 // Draws a pixel in the specified color
-function PixelDraw(fClip: BOOLEAN, xp: INT32, yp: INT32, sColor: INT16, pScreen: Pointer<INT8>): void {
+function PixelDraw(fClip: boolean, xp: INT32, yp: INT32, sColor: INT16, pScreen: Pointer<INT8>): void {
   let col2: INT8 = sColor >> 8;
   let col1: INT8 = sColor & 0x00ff;
 
@@ -356,7 +356,7 @@ function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLe
 }
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-function RectangleDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
+function RectangleDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   LineDraw(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);
@@ -372,7 +372,7 @@ function RectangleDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: i
  ***********************************************************************************/
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-function RectangleDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
+function RectangleDraw8(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   LineDraw8(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);
@@ -380,7 +380,7 @@ function RectangleDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: 
 }
 
 /* Draws a line between the specified endpoints in color Color. */
-function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
+function LineDraw8(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   let Temp: int;
   let AdjUp: int;
   let AdjDown: int;

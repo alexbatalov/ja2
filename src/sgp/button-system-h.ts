@@ -98,7 +98,7 @@ interface GUI_BUTTON {
   // For buttons with text
   string: Pointer<UINT16>; // the string
   usFont: UINT16; // font for text
-  fMultiColor: BOOLEAN; // font is a multi-color font
+  fMultiColor: boolean; // font is a multi-color font
   sForeColor: INT16; // text colors if there is text
   sShadowColor: INT16;
   sForeColorDown: INT16; // text colors when button is down (optional)
@@ -110,14 +110,14 @@ interface GUI_BUTTON {
   bTextYOffset: INT8;
   bTextXSubOffSet: INT8;
   bTextYSubOffSet: INT8;
-  fShiftText: BOOLEAN;
+  fShiftText: boolean;
   sWrappedWidth: INT16;
   // For buttons with icons (don't confuse this with quickbuttons which have up to 5 states )
   iIconID: INT32;
   usIconIndex: INT16;
   bIconXOffset: INT8; //-1 means horizontally centered
   bIconYOffset: INT8; //-1 means vertically centered
-  fShiftImage: BOOLEAN; // if true, icon is shifted +1,+1 when button state is down.
+  fShiftImage: boolean; // if true, icon is shifted +1,+1 when button state is down.
 
   ubToggleButtonOldState: UINT8; // Varibles for new toggle buttons that work
   ubToggleButtonActivated: UINT8;
@@ -147,8 +147,8 @@ const MAX_BUTTON_PICS = 256;
 
 const RenderButtonsFastHelp = () => RenderFastHelp();
 
-const EnableHilightsAndHelpText = () => gfRenderHilights = TRUE;
-const DisableHilightsAndHelpText = () => gfRenderHilights = FALSE;
+const EnableHilightsAndHelpText = () => gfRenderHilights = true;
+const DisableHilightsAndHelpText = () => gfRenderHilights = false;
 
 const enum Enum28 {
   DEFAULT_STATUS_NONE,

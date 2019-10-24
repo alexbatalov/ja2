@@ -59,9 +59,9 @@ interface GAME_SETTINGS {
   uiSettingsVersionNumber: UINT32;
   uiMeanwhileScenesSeenFlags: UINT32;
 
-  fHideHelpInAllScreens: BOOLEAN;
+  fHideHelpInAllScreens: boolean;
 
-  fUNUSEDPlayerFinishedTheGame: BOOLEAN; // JA2Gold: for UB compatibility
+  fUNUSEDPlayerFinishedTheGame: boolean; // JA2Gold: for UB compatibility
   ubSizeOfDisplayCover: UINT8;
   ubSizeOfLOS: UINT8;
 
@@ -78,11 +78,11 @@ const enum Enum9 {
 }
 
 interface GAME_OPTIONS {
-  fGunNut: BOOLEAN;
-  fSciFi: BOOLEAN;
+  fGunNut: boolean;
+  fSciFi: boolean;
   ubDifficultyLevel: UINT8;
-  fTurnTimeLimit: BOOLEAN;
-  fIronManMode: BOOLEAN;
+  fTurnTimeLimit: boolean;
+  fIronManMode: boolean;
 
   ubFiller: UINT8[] /* [7] */;
 }

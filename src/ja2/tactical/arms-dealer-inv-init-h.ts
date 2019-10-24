@@ -19,5 +19,5 @@ interface DEALER_POSSIBLE_INV {
 interface ITEM_SORT_ENTRY {
   uiItemClass: UINT32;
   ubWeaponClass: UINT8;
-  fAllowUsed: BOOLEAN;
+  fAllowUsed: boolean;
 }

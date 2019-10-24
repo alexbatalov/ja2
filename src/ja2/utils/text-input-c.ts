@@ -1,5 +1,5 @@
 let szClipboard: Pointer<UINT16>;
-let gfNoScroll: BOOLEAN = FALSE;
+let gfNoScroll: boolean = false;
 
 interface TextInputColors {
   // internal values that contain all of the colors for the text editing fields.
@@ -14,7 +14,7 @@ interface TextInputColors {
   ubHiBackColor: UINT8;
 
   // optional -- no bevelling by default
-  fBevelling: BOOLEAN;
+  fBevelling: boolean;
 
   usBrighterColor: UINT16;
   usDarkerColor: UINT16;
@@ -22,7 +22,7 @@ interface TextInputColors {
   // optional -- cursor color defaults to black
   usCursorColor: UINT16;
   // optional colors for disabled fields (defaults to 25% darker shading)
-  fUseDisabledAutoShade: BOOLEAN;
+  fUseDisabledAutoShade: boolean;
   ubDisabledForeColor: UINT8;
   ubDisabledShadowColor: UINT8;
   usDisabledTextFieldColor: UINT16;
@@ -37,8 +37,8 @@ interface TEXTINPUTNODE {
   ubMaxChars: UINT8;
   szString: Pointer<UINT16>;
   ubStrLen: UINT8;
-  fEnabled: BOOLEAN;
-  fUserField: BOOLEAN;
+  fEnabled: boolean;
+  fUserField: boolean;
   region: MOUSE_REGION;
   InputCallback: INPUT_CALLBACK;
 
@@ -93,9 +93,9 @@ function PopTextInputLevel(): void {
 }
 
 // flags for determining various editing modes.
-let gfEditingText: BOOLEAN = FALSE;
-let gfTextInputMode: BOOLEAN = FALSE;
-let gfHiliteMode: BOOLEAN = FALSE;
+let gfEditingText: boolean = false;
+let gfTextInputMode: boolean = false;
+let gfHiliteMode: boolean = false;
 
 // values that contain the hiliting positions and the cursor position.
 let gubCursorPos: UINT8 = 0;
@@ -122,10 +122,10 @@ function InitTextInputMode(): void {
   gpTextInputHead = null;
   pColors = MemAlloc(sizeof(TextInputColors));
   Assert(pColors);
-  gfTextInputMode = TRUE;
-  gfEditingText = FALSE;
-  pColors.value.fBevelling = FALSE;
-  pColors.value.fUseDisabledAutoShade = TRUE;
+  gfTextInputMode = true;
+  gfEditingText = false;
+  pColors.value.fBevelling = false;
+  pColors.value.fUseDisabledAutoShade = true;
   pColors.value.usCursorColor = 0;
 }
 
@@ -168,8 +168,8 @@ function KillTextInputMode(): void {
     PopTextInputLevel();
     SetActiveField(0);
   } else {
-    gfTextInputMode = FALSE;
-    gfEditingText = FALSE;
+    gfTextInputMode = false;
+    gfEditingText = false;
   }
 
   if (!gpTextInputHead)
@@ -196,7 +196,7 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
   pNode.value.next = null;
   if (!gpTextInputHead) // first entry, so we start with text input.
   {
-    gfEditingText = TRUE;
+    gfEditingText = true;
     gpTextInputHead = gpTextInputTail = pNode;
     pNode.value.prev = null;
     pNode.value.ubID = 0;
@@ -231,10 +231,10 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
     gubStartHilite = 0;
     gubEndHilite = pNode.value.ubStrLen;
     gubCursorPos = pNode.value.ubStrLen;
-    gfHiliteMode = TRUE;
+    gfHiliteMode = true;
   }
-  pNode.value.fUserField = FALSE;
-  pNode.value.fEnabled = TRUE;
+  pNode.value.fUserField = false;
+  pNode.value.fEnabled = true;
   // Setup the region.
   MSYS_DefineRegion(addressof(pNode.value.region), sLeft, sTop, (sLeft + sWidth), (sTop + sHeight), bPriority, gusTextInputCursor, MouseMovedInTextRegionCallback, MouseClickedInTextRegionCallback);
   MSYS_SetRegionUserData(addressof(pNode.value.region), 0, pNode.value.ubID);
@@ -254,7 +254,7 @@ function AddUserInputField(userFunction: INPUT_CALLBACK): void {
   pNode.value.next = null;
   if (!gpTextInputHead) // first entry, so we don't start with text input.
   {
-    gfEditingText = FALSE;
+    gfEditingText = false;
     gpTextInputHead = gpTextInputTail = pNode;
     pNode.value.prev = null;
     pNode.value.ubID = 0;
@@ -267,9 +267,9 @@ function AddUserInputField(userFunction: INPUT_CALLBACK): void {
     gpTextInputTail = gpTextInputTail.value.next;
   }
   // Setup the information for the node
-  pNode.value.fUserField = TRUE;
+  pNode.value.fUserField = true;
   pNode.value.szString = null;
-  pNode.value.fEnabled = TRUE;
+  pNode.value.fEnabled = true;
   // Setup the callback
   pNode.value.InputCallback = userFunction;
 }
@@ -298,8 +298,8 @@ function RemoveTextInputField(ubField: UINT8): void {
       MemFree(curr);
       curr = null;
       if (!gpTextInputHead) {
-        gfTextInputMode = FALSE;
-        gfEditingText = FALSE;
+        gfTextInputMode = false;
+        gfEditingText = false;
       }
       return;
     }
@@ -450,13 +450,13 @@ function SetActiveField(ubField: UINT8): void {
         gubStartHilite = 0;
         gubEndHilite = gpActive.value.ubStrLen;
         gubCursorPos = gpActive.value.ubStrLen;
-        gfHiliteMode = TRUE;
-        gfEditingText = TRUE;
+        gfHiliteMode = true;
+        gfEditingText = true;
       } else {
-        gfHiliteMode = FALSE;
-        gfEditingText = FALSE;
+        gfHiliteMode = false;
+        gfEditingText = false;
         if (gpActive.value.InputCallback)
-          (gpActive.value.InputCallback)(gpActive.value.ubID, TRUE);
+          (gpActive.value.InputCallback)(gpActive.value.ubID, true);
       }
       return;
     }
@@ -465,7 +465,7 @@ function SetActiveField(ubField: UINT8): void {
 }
 
 function SelectNextField(): void {
-  let fDone: BOOLEAN = FALSE;
+  let fDone: boolean = false;
   let pStart: Pointer<TEXTINPUTNODE>;
 
   if (!gpActive)
@@ -473,36 +473,36 @@ function SelectNextField(): void {
   if (gpActive.value.szString)
     RenderInactiveTextFieldNode(gpActive);
   else if (gpActive.value.InputCallback)
-    (gpActive.value.InputCallback)(gpActive.value.ubID, FALSE);
+    (gpActive.value.InputCallback)(gpActive.value.ubID, false);
   pStart = gpActive;
   while (!fDone) {
     gpActive = gpActive.value.next;
     if (!gpActive)
       gpActive = gpTextInputHead;
     if (gpActive.value.fEnabled) {
-      fDone = TRUE;
+      fDone = true;
       if (gpActive.value.szString) {
         gubStartHilite = 0;
         gubEndHilite = gpActive.value.ubStrLen;
         gubCursorPos = gpActive.value.ubStrLen;
-        gfHiliteMode = TRUE;
-        gfEditingText = TRUE;
+        gfHiliteMode = true;
+        gfEditingText = true;
       } else {
-        gfHiliteMode = FALSE;
-        gfEditingText = FALSE;
+        gfHiliteMode = false;
+        gfEditingText = false;
         if (gpActive.value.InputCallback)
-          (gpActive.value.InputCallback)(gpActive.value.ubID, TRUE);
+          (gpActive.value.InputCallback)(gpActive.value.ubID, true);
       }
     }
     if (gpActive == pStart) {
-      gfEditingText = FALSE;
+      gfEditingText = false;
       return;
     }
   }
 }
 
 function SelectPrevField(): void {
-  let fDone: BOOLEAN = FALSE;
+  let fDone: boolean = false;
   let pStart: Pointer<TEXTINPUTNODE>;
 
   if (!gpActive)
@@ -510,29 +510,29 @@ function SelectPrevField(): void {
   if (gpActive.value.szString)
     RenderInactiveTextFieldNode(gpActive);
   else if (gpActive.value.InputCallback)
-    (gpActive.value.InputCallback)(gpActive.value.ubID, FALSE);
+    (gpActive.value.InputCallback)(gpActive.value.ubID, false);
   pStart = gpActive;
   while (!fDone) {
     gpActive = gpActive.value.prev;
     if (!gpActive)
       gpActive = gpTextInputTail;
     if (gpActive.value.fEnabled) {
-      fDone = TRUE;
+      fDone = true;
       if (gpActive.value.szString) {
         gubStartHilite = 0;
         gubEndHilite = gpActive.value.ubStrLen;
         gubCursorPos = gpActive.value.ubStrLen;
-        gfHiliteMode = TRUE;
-        gfEditingText = TRUE;
+        gfHiliteMode = true;
+        gfEditingText = true;
       } else {
-        gfHiliteMode = FALSE;
-        gfEditingText = FALSE;
+        gfHiliteMode = false;
+        gfEditingText = false;
         if (gpActive.value.InputCallback)
-          (gpActive.value.InputCallback)(gpActive.value.ubID, TRUE);
+          (gpActive.value.InputCallback)(gpActive.value.ubID, true);
       }
     }
     if (gpActive == pStart) {
-      gfEditingText = FALSE;
+      gfEditingText = false;
       return;
     }
   }
@@ -562,14 +562,14 @@ function SetTextInputHilitedColors(ubForeColor: UINT8, ubShadowColor: UINT8, ubB
 }
 
 function SetDisabledTextFieldColors(ubForeColor: UINT8, ubShadowColor: UINT8, usTextFieldColor: UINT16): void {
-  pColors.value.fUseDisabledAutoShade = FALSE;
+  pColors.value.fUseDisabledAutoShade = false;
   pColors.value.ubDisabledForeColor = ubForeColor;
   pColors.value.ubDisabledShadowColor = ubShadowColor;
   pColors.value.usDisabledTextFieldColor = usTextFieldColor;
 }
 
 function SetBevelColors(usBrighterColor: UINT16, usDarkerColor: UINT16): void {
-  pColors.value.fBevelling = TRUE;
+  pColors.value.fBevelling = true;
   pColors.value.usBrighterColor = usBrighterColor;
   pColors.value.usDarkerColor = usDarkerColor;
 }
@@ -593,36 +593,36 @@ function SetCursorColor(usCursorColor: UINT16): void {
 //	}
 //}
 // It is only necessary for event loops that contain text input fields.
-function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
+function HandleTextInput(Event: Pointer<InputAtom>): boolean {
   // Check the multitude of terminating conditions...
 
   // not in text input mode
-  gfNoScroll = FALSE;
+  gfNoScroll = false;
   if (!gfTextInputMode)
-    return FALSE;
+    return false;
   // currently in a user field, so return unless TAB or SHIFT_TAB are pressed.
   if (!gfEditingText && Event.value.usParam != TAB && Event.value.usParam != SHIFT_TAB)
-    return FALSE;
+    return false;
   // unless we are psycho typers, we only want to process these key events.
   if (Event.value.usEvent != KEY_DOWN && Event.value.usEvent != KEY_REPEAT)
-    return FALSE;
+    return false;
   // ESC and ENTER must be handled externally, due to the infinite uses for it.
   // When editing text, ESC is equivalent to cancel, and ENTER is to confirm.
   if (Event.value.usParam == ESC)
-    return FALSE;
+    return false;
   if (Event.value.usParam == ENTER) {
     PlayJA2Sample(Enum330.REMOVING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
-    return FALSE;
+    return false;
   }
   if (Event.value.usKeyState & ALT_DOWN || Event.value.usKeyState & CTRL_DOWN && Event.value.usParam != DEL)
-    return FALSE;
+    return false;
   // F1-F12 regardless of state are processed externally as well.
   if (Event.value.usParam >= F1 && Event.value.usParam <= F12 || Event.value.usParam >= SHIFT_F1 && Event.value.usParam <= SHIFT_F12) {
-    return FALSE;
+    return false;
   }
   if (Event.value.usParam == '%' || Event.value.usParam == '\\') {
     // Input system doesn't support strings that are format specifiers.
-    return FALSE;
+    return false;
   }
   // If we have met all of the conditions, we then have a valid key press
   // which will be handled universally for all text input fields
@@ -640,9 +640,9 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
     case LEFTARROW:
       // Move the cursor to the left one position.  If there is selected text,
       // the cursor moves to the left of the block, and clears the block.
-      gfNoScroll = TRUE;
+      gfNoScroll = true;
       if (gfHiliteMode) {
-        gfHiliteMode = FALSE;
+        gfHiliteMode = false;
         gubCursorPos = gubStartHilite;
         break;
       }
@@ -652,9 +652,9 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
     case RIGHTARROW:
       // Move the cursor to the right one position.  If there is selected text,
       // the block is cleared.
-      gfNoScroll = TRUE;
+      gfNoScroll = true;
       if (gfHiliteMode) {
-        gfHiliteMode = FALSE;
+        gfHiliteMode = false;
         gubCursorPos = gubEndHilite;
         break;
       }
@@ -663,20 +663,20 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
       break;
     case END:
       // Any hilighting is cleared and the cursor moves to the end of the text.
-      gfHiliteMode = FALSE;
+      gfHiliteMode = false;
       gubCursorPos = gpActive.value.ubStrLen;
       break;
     case HOME:
       // Any hilighting is cleared and the cursor moves to the beginning of the line.
-      gfHiliteMode = FALSE;
+      gfHiliteMode = false;
       gubCursorPos = 0;
       break;
     case SHIFT_LEFTARROW:
       // Initiates or continues hilighting to the left one position.  If the cursor
       // is at the left end of the block, then the block decreases one position.
-      gfNoScroll = TRUE;
+      gfNoScroll = true;
       if (!gfHiliteMode) {
-        gfHiliteMode = TRUE;
+        gfHiliteMode = true;
         gubStartHilite = gubCursorPos;
       }
       if (gubCursorPos)
@@ -686,9 +686,9 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
     case SHIFT_RIGHTARROW:
       // Initiates or continues hilighting to the right one position.  If the cursor
       // is at the right end of the block, then the block decreases one position.
-      gfNoScroll = TRUE;
+      gfNoScroll = true;
       if (!gfHiliteMode) {
-        gfHiliteMode = TRUE;
+        gfHiliteMode = true;
         gubStartHilite = gubCursorPos;
       }
       if (gubCursorPos < gpActive.value.ubStrLen)
@@ -699,7 +699,7 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
       // From the location of the anchored cursor for hilighting, the cursor goes to
       // the end of the text, selecting all text from the anchor to the end of the text.
       if (!gfHiliteMode) {
-        gfHiliteMode = TRUE;
+        gfHiliteMode = true;
         gubStartHilite = gubCursorPos;
       }
       gubCursorPos = gpActive.value.ubStrLen;
@@ -710,7 +710,7 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
       // the beginning of the text, selecting all text from the anchor to the beginning
       // of the text.
       if (!gfHiliteMode) {
-        gfHiliteMode = TRUE;
+        gfHiliteMode = true;
         gubStartHilite = gubCursorPos;
       }
       gubCursorPos = 0;
@@ -724,7 +724,7 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
       if (Event.value.usKeyState & CTRL_DOWN) {
         gubStartHilite = 0;
         gubEndHilite = gpActive.value.ubStrLen;
-        gfHiliteMode = TRUE;
+        gfHiliteMode = true;
         DeleteHilitedText();
       } else if (gfHiliteMode)
         PlayJA2Sample(Enum330.ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
@@ -753,17 +753,17 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
         // Handle space key
         if (key == SPACE && type & INPUTTYPE_SPACES) {
           AddChar(key);
-          return TRUE;
+          return true;
         }
         // Handle allowing minus key only at the beginning of a field.
         if (key == '-' && type & INPUTTYPE_FIRSTPOSMINUS && !gubCursorPos) {
           AddChar(key);
-          return TRUE;
+          return true;
         }
         // Handle numerics
         if (key >= '0' && key <= '9' && type & INPUTTYPE_NUMERICSTRICT) {
           AddChar(key);
-          return TRUE;
+          return true;
         }
         // Handle alphas
         if (type & INPUTTYPE_ALPHA) {
@@ -771,13 +771,13 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
             if (type & INPUTTYPE_LOWERCASE)
               key -= 32;
             AddChar(key);
-            return TRUE;
+            return true;
           }
           if (key >= 'a' && key <= 'z') {
             if (type & INPUTTYPE_UPPERCASE)
               key += 32;
             AddChar(key);
-            return TRUE;
+            return true;
           }
         }
         // Handle special characters
@@ -789,13 +789,13 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
               key >= 0x7b && key <= 0x7d) // { | }
           {
             AddChar(key);
-            return TRUE;
+            return true;
           }
         }
       }
-      return TRUE;
+      return true;
   }
-  return TRUE;
+  return true;
 }
 
 function HandleExclusiveInput(uiKey: UINT32): void {
@@ -886,7 +886,7 @@ function DeleteHilitedText(): void {
   let ubCount: UINT8;
   let ubStart: UINT8;
   let ubEnd: UINT8;
-  gfHiliteMode = FALSE;
+  gfHiliteMode = false;
   if (gubStartHilite != gubEndHilite) {
     if (gubStartHilite < gubEndHilite) {
       ubStart = gubStartHilite;
@@ -901,16 +901,16 @@ function DeleteHilitedText(): void {
     }
     gubStartHilite = gubEndHilite = 0;
     gubCursorPos = ubStart;
-    gfHiliteMode = FALSE;
+    gfHiliteMode = false;
   }
 }
 
 function RemoveChar(ubArrayIndex: UINT8): void {
-  let fDeleting: BOOLEAN = FALSE;
+  let fDeleting: boolean = false;
   while (ubArrayIndex < gpActive.value.ubStrLen) {
     gpActive.value.szString[ubArrayIndex] = gpActive.value.szString[ubArrayIndex + 1];
     ubArrayIndex++;
-    fDeleting = TRUE;
+    fDeleting = true;
   }
   // if we deleted a char, then decrement the strlen.
   if (fDeleting)
@@ -942,11 +942,11 @@ function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT3
       if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
         if (gusMouseYPos < reg.value.RegionTopLeftY) {
           gubEndHilite = 0;
-          gfHiliteMode = TRUE;
+          gfHiliteMode = true;
           return;
         } else if (gusMouseYPos > reg.value.RegionBottomRightY) {
           gubEndHilite = gpActive.value.ubStrLen;
-          gfHiliteMode = TRUE;
+          gfHiliteMode = true;
           return;
         }
       }
@@ -963,7 +963,7 @@ function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT3
       }
       gubEndHilite = gubCursorPos;
       if (gubEndHilite != gubStartHilite)
-        gfHiliteMode = TRUE;
+        gfHiliteMode = true;
     }
   }
 }
@@ -990,7 +990,7 @@ function MouseClickedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: IN
       }
     }
     // Signifies that we are typing text now.
-    gfEditingText = TRUE;
+    gfEditingText = true;
     // Calculate the cursor position.
     iClickX = gusMouseXPos - reg.value.RegionTopLeftX;
     iCurrCharPos = 0;
@@ -1003,7 +1003,7 @@ function MouseClickedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: IN
     }
     gubStartHilite = gubCursorPos; // This value is the anchor
     gubEndHilite = gubCursorPos; // The end will move with the cursor as long as it's down.
-    gfHiliteMode = FALSE;
+    gfHiliteMode = false;
   }
 }
 
@@ -1183,7 +1183,7 @@ function EnableTextField(ubID: UINT8): void {
         if (!gpActive)
           gpActive = curr;
         MSYS_EnableRegion(addressof(curr.value.region));
-        curr.value.fEnabled = TRUE;
+        curr.value.fEnabled = true;
       } else
         return;
     }
@@ -1200,7 +1200,7 @@ function DisableTextField(ubID: UINT8): void {
         SelectNextField();
       if (curr.value.fEnabled) {
         MSYS_DisableRegion(addressof(curr.value.region));
-        curr.value.fEnabled = FALSE;
+        curr.value.fEnabled = false;
       } else
         return;
     }
@@ -1217,7 +1217,7 @@ function EnableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
         SelectNextField();
       if (!curr.value.fEnabled) {
         MSYS_EnableRegion(addressof(curr.value.region));
-        curr.value.fEnabled = TRUE;
+        curr.value.fEnabled = true;
       }
     }
     curr = curr.value.next;
@@ -1233,7 +1233,7 @@ function DisableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
         SelectNextField();
       if (curr.value.fEnabled) {
         MSYS_DisableRegion(addressof(curr.value.region));
-        curr.value.fEnabled = FALSE;
+        curr.value.fEnabled = false;
       }
     }
     curr = curr.value.next;
@@ -1246,7 +1246,7 @@ function EnableAllTextFields(): void {
   while (curr) {
     if (!curr.value.fEnabled) {
       MSYS_EnableRegion(addressof(curr.value.region));
-      curr.value.fEnabled = TRUE;
+      curr.value.fEnabled = true;
     }
     curr = curr.value.next;
   }
@@ -1260,18 +1260,18 @@ function DisableAllTextFields(): void {
   while (curr) {
     if (curr.value.fEnabled) {
       MSYS_DisableRegion(addressof(curr.value.region));
-      curr.value.fEnabled = FALSE;
+      curr.value.fEnabled = false;
     }
     curr = curr.value.next;
   }
   gpActive = null;
 }
 
-function EditingText(): BOOLEAN {
+function EditingText(): boolean {
   return gfEditingText;
 }
 
-function TextInputMode(): BOOLEAN {
+function TextInputMode(): boolean {
   return gfTextInputMode;
 }
 
@@ -1420,7 +1420,7 @@ function GetExclusive24HourTimeValueFromField(ubField: UINT8): UINT16 {
     curr = curr.value.next;
   }
 
-  AssertMsg(FALSE, String("GetExclusive24HourTimeValueFromField: Invalid field %d", ubField));
+  AssertMsg(false, String("GetExclusive24HourTimeValueFromField: Invalid field %d", ubField));
   return 0xffff;
 }
 

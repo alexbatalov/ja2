@@ -13,7 +13,7 @@ const PALACE_SECTOR_Y = 16;
 
 const MAX_PALACE_DISTANCE = 20;
 
-let gfProfiledEnemyAdded: BOOLEAN = FALSE;
+let gfProfiledEnemyAdded: boolean = false;
 
 let guiCurrentUniqueSoldierId: UINT32 = 1;
 
@@ -66,7 +66,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
   let Soldier: SOLDIERTYPE;
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
-  let fGuyAvail: BOOLEAN = FALSE;
+  let fGuyAvail: boolean = false;
   let bLastTeamID: UINT8;
   let ubVehicleID: UINT8 = 0;
 
@@ -185,7 +185,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
       // look for all mercs on the same team,
       for (pTeamSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pTeamSoldier++) {
         if (!pTeamSoldier.value.bActive) {
-          fGuyAvail = TRUE;
+          fGuyAvail = true;
           break;
         }
       }
@@ -209,7 +209,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     Soldier.bActionPoints = CalcActionPoints(addressof(Soldier));
     Soldier.bInitialActionPoints = Soldier.bActionPoints;
     Soldier.bSide = gTacticalStatus.Team[Soldier.bTeam].bSide;
-    Soldier.bActive = TRUE;
+    Soldier.bActive = true;
     Soldier.sSectorX = pCreateStruct.value.sSectorX;
     Soldier.sSectorY = pCreateStruct.value.sSectorY;
     Soldier.bSectorZ = pCreateStruct.value.bSectorZ;
@@ -224,15 +224,15 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     // If a civvy, set neutral
     if (Soldier.bTeam == CIV_TEAM) {
       if (Soldier.ubProfile == Enum268.WARDEN) {
-        Soldier.bNeutral = FALSE;
+        Soldier.bNeutral = false;
       } else if (Soldier.ubCivilianGroup != Enum246.NON_CIV_GROUP) {
         if (gTacticalStatus.fCivGroupHostile[Soldier.ubCivilianGroup] == CIV_GROUP_HOSTILE) {
-          Soldier.bNeutral = FALSE;
+          Soldier.bNeutral = false;
         } else {
-          Soldier.bNeutral = TRUE;
+          Soldier.bNeutral = true;
         }
       } else {
-        Soldier.bNeutral = TRUE;
+        Soldier.bNeutral = true;
       }
 
       // Weaken stats based on the bodytype of the civilian.
@@ -268,7 +268,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     } else if (Soldier.bTeam == CREATURE_TEAM) {
       // bloodcats are neutral to start out
       if (Soldier.ubBodyType == Enum194.BLOODCAT) {
-        Soldier.bNeutral = TRUE;
+        Soldier.bNeutral = true;
       } // otherwise (creatures) false
     }
 
@@ -293,12 +293,12 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     // that item to a face slot and clear the pocket!
     if (Soldier.bTeam != OUR_TEAM) {
       let i: INT32;
-      let fSecondFaceItem: BOOLEAN = FALSE;
+      let fSecondFaceItem: boolean = false;
       for (i = Enum261.BIGPOCK1POS; i <= Enum261.BIGPOCK4POS; i++) {
         if (Item[Soldier.inv[i].usItem].usItemClass & IC_FACE) {
           if (!fSecondFaceItem) {
             // Don't check for compatibility...  automatically assume there are no head positions filled.
-            fSecondFaceItem = TRUE;
+            fSecondFaceItem = true;
             memcpy(addressof(Soldier.inv[Enum261.HEAD1POS]), addressof(Soldier.inv[i]), sizeof(OBJECTTYPE));
             memset(addressof(Soldier.inv[i]), 0, sizeof(OBJECTTYPE));
           } else {
@@ -395,19 +395,19 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
           case Enum194.HUMVEE:
 
             ubVehicleID = Enum279.HUMMER;
-            Soldier.bNeutral = TRUE;
+            Soldier.bNeutral = true;
             break;
 
           case Enum194.ELDORADO:
 
             ubVehicleID = Enum279.ELDORADO_CAR;
-            Soldier.bNeutral = TRUE;
+            Soldier.bNeutral = true;
             break;
 
           case Enum194.ICECREAMTRUCK:
 
             ubVehicleID = Enum279.ICE_CREAM_TRUCK;
-            Soldier.bNeutral = TRUE;
+            Soldier.bNeutral = true;
             break;
 
           case Enum194.JEEP:
@@ -440,12 +440,12 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
       // Copy into merc struct
       memcpy(MercPtrs[Soldier.ubID], addressof(Soldier), sizeof(SOLDIERTYPE));
       // Alrighty then, we are set to create the merc, stuff after here can fail!
-      CHECKF(CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Enum193.STANDING) != FALSE);
+      CHECKF(CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Enum193.STANDING) != false);
     }
   } else {
     // Copy the data from the existing soldier struct to the new soldier struct
     if (!CopySavedSoldierInfoToNewSoldier(addressof(Soldier), pCreateStruct.value.pExistingSoldier))
-      return FALSE;
+      return false;
 
     // Reset the face index
     Soldier.iFaceIndex = -1;
@@ -455,14 +455,14 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     Soldier.iLight = -1;
 
     if (Soldier.ubBodyType == Enum194.HUMVEE || Soldier.ubBodyType == Enum194.ICECREAMTRUCK) {
-      Soldier.bNeutral = TRUE;
+      Soldier.bNeutral = true;
     }
 
     // Copy into merc struct
     memcpy(MercPtrs[Soldier.ubID], addressof(Soldier), sizeof(SOLDIERTYPE));
 
     // Alrighty then, we are set to create the merc, stuff after here can fail!
-    CHECKF(CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Menptr[Soldier.ubID].usAnimState) != FALSE);
+    CHECKF(CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Menptr[Soldier.ubID].usAnimState) != false);
 
     pubID.value = Soldier.ubID;
 
@@ -502,7 +502,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
   }
 }
 
-function TacticalCopySoldierFromProfile(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): BOOLEAN {
+function TacticalCopySoldierFromProfile(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): boolean {
   let ubProfileIndex: UINT8;
   let pProfile: Pointer<MERCPROFILESTRUCT>;
 
@@ -556,7 +556,7 @@ function TacticalCopySoldierFromProfile(pSoldier: Pointer<SOLDIERTYPE>, pCreateS
     // set camouflaged to 100 automatically
     pSoldier.value.bCamo = 100;
   }
-  return TRUE;
+  return true;
 }
 
 const enum Enum266 {
@@ -635,7 +635,7 @@ function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
 function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClass: UINT8): void {
   let skin: INT32;
   let hair: INT32;
-  let fMercClothingScheme: BOOLEAN;
+  let fMercClothingScheme: boolean;
   hair = -1;
 
   // choose random skin tone which will limit the choice of hair colors.
@@ -725,10 +725,10 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
   // of the civilian clothing scheme which means the civilians will choose the
   // merc clothing scheme often ( actually 60% of the time ).
   if (!pSoldier.value.PantsPal[0] || !pSoldier.value.VestPal[0]) {
-    fMercClothingScheme = TRUE;
+    fMercClothingScheme = true;
     if (pSoldier.value.bTeam == CIV_TEAM && Random(100) < 40) {
       // 40% chance of using cheezy civilian colors
-      fMercClothingScheme = FALSE;
+      fMercClothingScheme = false;
     }
     if (!fMercClothingScheme) // CHEEZY CIVILIAN COLORS
     {
@@ -844,7 +844,7 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
   }
 }
 
-function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): BOOLEAN {
+function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): boolean {
   pSoldier.value.ubProfile = NO_PROFILE;
 
   // Randomize attributes
@@ -963,7 +963,7 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCr
   // Copy item info over
   memcpy(pSoldier.value.inv, pCreateStruct.value.Inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);
 
-  return TRUE;
+  return true;
 }
 
 function InitSoldierStruct(pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -990,7 +990,7 @@ function InitSoldierStruct(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Set update time to new speed
   pSoldier.value.ubDesiredHeight = NO_DESIRED_HEIGHT;
   pSoldier.value.bViewRange = NORMAL_VIEW_RANGE;
-  pSoldier.value.bInSector = FALSE;
+  pSoldier.value.bInSector = false;
   pSoldier.value.sGridNo = NO_MAP_POS;
   pSoldier.value.iMuzFlash = -1;
   pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
@@ -1001,8 +1001,8 @@ function InitSoldierStruct(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bLastRenderVisibleValue = -1;
   pSoldier.value.bBreath = 99;
   pSoldier.value.bBreathMax = 100;
-  pSoldier.value.bActive = TRUE;
-  pSoldier.value.fShowLocator = FALSE;
+  pSoldier.value.bActive = true;
+  pSoldier.value.fShowLocator = false;
   pSoldier.value.sLastTarget = NOWHERE;
   pSoldier.value.sAbsoluteFinalDestination = NOWHERE;
   pSoldier.value.sZLevelOverride = -1;
@@ -1010,7 +1010,7 @@ function InitSoldierStruct(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.ubAttackingHand = Enum261.HANDPOS;
   pSoldier.value.usAnimState = Enum193.STANDING;
   pSoldier.value.bInterruptDuelPts = NO_INTERRUPT;
-  pSoldier.value.bMoved = FALSE;
+  pSoldier.value.bMoved = false;
   pSoldier.value.ubRobotRemoteHolderID = NOBODY;
   pSoldier.value.sNoiseGridno = NOWHERE;
   pSoldier.value.ubPrevSectorID = 255;
@@ -1024,23 +1024,23 @@ function InitSoldierStruct(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bVehicleUnderRepairID = -1;
 }
 
-function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVehicle: BOOLEAN): BOOLEAN {
+function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVehicle: boolean): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Check range of index given
   if (usSoldierIndex < 0 || usSoldierIndex > TOTAL_SOLDIERS - 1) {
     // Set debug message
 
-    return FALSE;
+    return false;
   }
 
   // ATE: If this guy is our global selected dude, take selection off...
   if (gfUIFullTargetFound && gusUIFullTargetID == usSoldierIndex) {
-    gfUIFullTargetFound = FALSE;
+    gfUIFullTargetFound = false;
   }
   // This one is for a single-gridno guy.....
   if (gfUISelectiveTargetFound && gusUISelectiveTargetID == usSoldierIndex) {
-    gfUISelectiveTargetFound = FALSE;
+    gfUISelectiveTargetFound = false;
   }
 
   pSoldier = MercPtrs[usSoldierIndex];
@@ -1048,9 +1048,9 @@ function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVehicle: B
   return TacticalRemoveSoldierPointer(pSoldier, fRemoveVehicle);
 }
 
-function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVehicle: BOOLEAN): BOOLEAN {
+function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVehicle: boolean): boolean {
   if (!pSoldier.value.bActive)
-    return FALSE;
+    return false;
 
   if (pSoldier.value.ubScheduleID) {
     DeleteSchedule(pSoldier.value.ubScheduleID);
@@ -1089,7 +1089,7 @@ function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVeh
         RemoveManFromTeam(pSoldier.value.bTeam);
       } // people specified off-map have already been removed from their team count
 
-      pSoldier.value.bActive = FALSE;
+      pSoldier.value.bActive = false;
 
       // Delete!
       DeleteSoldier(pSoldier);
@@ -1101,11 +1101,11 @@ function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVeh
     MemFree(pSoldier);
   }
 
-  return TRUE;
+  return true;
 }
 
-function TacticalRemoveSoldier(usSoldierIndex: UINT16): BOOLEAN {
-  return InternalTacticalRemoveSoldier(usSoldierIndex, TRUE);
+function TacticalRemoveSoldier(usSoldierIndex: UINT16): boolean {
+  return InternalTacticalRemoveSoldier(usSoldierIndex, true);
 }
 
 // returns a soldier difficulty modifier from 0 to 100 based on player's progress, distance from the Palace, mining income, and
@@ -1194,12 +1194,12 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
 
   if (!pp || !bp)
     return;
-  pp.value.fStatic = FALSE;
+  pp.value.fStatic = false;
   pp.value.ubProfile = NO_PROFILE;
   pp.value.sInsertionGridNo = bp.value.usStartingGridNo;
-  pp.value.fPlayerMerc = FALSE;
-  pp.value.fPlayerPlan = FALSE;
-  pp.value.fCopyProfileItemsOver = FALSE;
+  pp.value.fPlayerMerc = false;
+  pp.value.fPlayerPlan = false;
+  pp.value.fCopyProfileItemsOver = false;
   pp.value.bTeam = bp.value.bTeam;
   pp.value.ubSoldierClass = bp.value.ubSoldierClass;
   pp.value.ubCivilianGroup = bp.value.ubCivilianGroup;
@@ -1332,7 +1332,7 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
       break;
 
     default:
-      AssertMsg(FALSE, String("Invalid bRelativeAttributeLevel = %d", bp.value.bRelativeAttributeLevel));
+      AssertMsg(false, String("Invalid bRelativeAttributeLevel = %d", bp.value.bRelativeAttributeLevel));
       break;
   }
 
@@ -1450,12 +1450,12 @@ function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: Pointer<SOLDI
   if (!spp || !bp)
     return;
   memset(spp, 0, sizeof(SOLDIERCREATE_STRUCT));
-  spp.value.fStatic = TRUE;
+  spp.value.fStatic = true;
   spp.value.ubProfile = NO_PROFILE;
   spp.value.sInsertionGridNo = bp.value.usStartingGridNo;
-  spp.value.fPlayerMerc = FALSE;
-  spp.value.fPlayerPlan = FALSE;
-  spp.value.fCopyProfileItemsOver = FALSE;
+  spp.value.fPlayerMerc = false;
+  spp.value.fPlayerPlan = false;
+  spp.value.fCopyProfileItemsOver = false;
   spp.value.bTeam = bp.value.bTeam;
   spp.value.ubSoldierClass = bp.value.ubSoldierClass;
   spp.value.ubCivilianGroup = bp.value.ubCivilianGroup;
@@ -1517,7 +1517,7 @@ function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInf
 
   memset(pp, 0, sizeof(SOLDIERCREATE_STRUCT));
   pp.value.fOnRoof = spp.value.fOnRoof = bp.value.fOnRoof;
-  pp.value.fStatic = FALSE;
+  pp.value.fStatic = false;
   pp.value.ubSoldierClass = bp.value.ubSoldierClass;
   // Generate the new placement
   pp.value.ubProfile = spp.value.ubProfile;
@@ -2027,7 +2027,7 @@ function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8
       break;
 
     default:
-      Assert(FALSE);
+      Assert(false);
       pbRelLevel.value = 2;
       break;
   }
@@ -2116,10 +2116,10 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
             }
             if (cnt2 == Enum261.NUM_INV_SLOTS) {
               // oh well, couldn't find anything to attach to!
-              AutoPlaceObject(pSoldier, addressof(Obj), FALSE);
+              AutoPlaceObject(pSoldier, addressof(Obj), false);
             }
           } else {
-            AutoPlaceObject(pSoldier, addressof(Obj), FALSE);
+            AutoPlaceObject(pSoldier, addressof(Obj), false);
           }
         }
       }
@@ -2211,11 +2211,11 @@ function OkayToUpgradeEliteToSpecialProfiledEnemy(pp: Pointer<SOLDIERCREATE_STRU
     if (gubFact[Enum170.FACT_MIKE_AVAILABLE_TO_ARMY] == 1 && !pp.value.fOnRoof) {
       gubFact[Enum170.FACT_MIKE_AVAILABLE_TO_ARMY] = 2; // so it fails all subsequent checks
       pp.value.ubProfile = Enum268.MIKE;
-      gfProfiledEnemyAdded = TRUE;
+      gfProfiledEnemyAdded = true;
     } else if (gubFact[Enum170.FACT_IGGY_AVAILABLE_TO_ARMY] == 1 && !pp.value.fOnRoof) {
       gubFact[Enum170.FACT_IGGY_AVAILABLE_TO_ARMY] = 2; // so it fails all subsequent checks
       pp.value.ubProfile = Enum268.IGGY;
-      gfProfiledEnemyAdded = TRUE;
+      gfProfiledEnemyAdded = true;
     }
   }
 }
@@ -2241,7 +2241,7 @@ function GetLocationModifier(ubSoldierClass: UINT8): UINT8 {
   let sSectorY: INT16;
   let sSectorZ: INT16;
   let bTownId: INT8;
-  let fSuccess: BOOLEAN;
+  let fSuccess: boolean;
 
   // where is all this taking place?
   fSuccess = GetCurrentBattleSectorXYZ(addressof(sSectorX), addressof(sSectorY), addressof(sSectorZ));

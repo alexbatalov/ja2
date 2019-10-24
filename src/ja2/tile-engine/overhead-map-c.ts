@@ -22,16 +22,16 @@ interface SMALL_TILE_DB {
 let gSmTileSurf: SMALL_TILE_SURF[] /* [NUMBEROFTILETYPES] */;
 let gSmTileDB: SMALL_TILE_DB[] /* [NUMBEROFTILES] */;
 let gubSmTileNum: UINT8 = 0;
-let gfSmTileLoaded: BOOLEAN = FALSE;
-let gfInOverheadMap: BOOLEAN = FALSE;
+let gfSmTileLoaded: boolean = false;
+let gfInOverheadMap: boolean = false;
 let OverheadRegion: MOUSE_REGION;
 let OverheadBackgroundRegion: MOUSE_REGION;
 let uiOVERMAP: UINT32;
 let uiPERSONS: UINT32;
-let gfOverheadMapDirty: BOOLEAN = FALSE;
+let gfOverheadMapDirty: boolean = false;
 let gsStartRestrictedX: INT16;
 let gsStartRestrictedY: INT16;
-let gfOverItemPool: BOOLEAN = FALSE;
+let gfOverItemPool: boolean = false;
 let gsOveritemPoolGridNo: INT16;
 
 function InitNewOverheadDB(ubTilesetID: UINT8): void {
@@ -141,7 +141,7 @@ function DeleteOverheadDB(): void {
   }
 }
 
-function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Pointer<ITEM_POOL>>, ubRadius: UINT8, bLevel: INT8): BOOLEAN {
+function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Pointer<ITEM_POOL>>, ubRadius: UINT8, bLevel: INT8): boolean {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -152,7 +152,7 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Poi
   let uiRange: INT32;
   let uiLowestRange: INT32 = 999999;
   let leftmost: INT32;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let pItemPool: Pointer<ITEM_POOL>;
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
@@ -178,7 +178,7 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Poi
           if (uiRange < uiLowestRange) {
             (ppReturnedItemPool.value) = pItemPool;
             uiLowestRange = uiRange;
-            fFound = TRUE;
+            fFound = true;
           }
         }
       }
@@ -188,7 +188,7 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Poi
   return fFound;
 }
 
-function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Pointer<Pointer<SOLDIERTYPE>>, ubRadius: UINT8): BOOLEAN {
+function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Pointer<Pointer<SOLDIERTYPE>>, ubRadius: UINT8): boolean {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -199,7 +199,7 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
   let uiRange: INT32;
   let uiLowestRange: INT32 = 999999;
   let leftmost: INT32;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
@@ -224,7 +224,7 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
           if (uiRange < uiLowestRange) {
             (ppReturnedSoldier.value) = gpWorldLevelData[sGridNo].pMercHead.value.pSoldier;
             uiLowestRange = uiRange;
-            fFound = TRUE;
+            fFound = true;
           }
         }
       }
@@ -262,15 +262,15 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleOverheadMap(): void {
-  /* static */ let fFirst: BOOLEAN = TRUE;
+  /* static */ let fFirst: boolean = true;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (fFirst) {
-    fFirst = FALSE;
+    fFirst = false;
   }
 
-  gfInOverheadMap = TRUE;
-  gfOverItemPool = FALSE;
+  gfInOverheadMap = true;
+  gfOverItemPool = false;
 
   // Check tileset numbers
   if (gubSmTileNum != giCurrentTilesetID) {
@@ -280,23 +280,23 @@ function HandleOverheadMap(): void {
       DeleteOverheadDB();
 
       // Force load
-      gfSmTileLoaded = FALSE;
+      gfSmTileLoaded = false;
     }
   }
 
   gubSmTileNum = giCurrentTilesetID;
 
-  if (gfSmTileLoaded == FALSE) {
+  if (gfSmTileLoaded == false) {
     // LOAD LAND
     InitNewOverheadDB(gubSmTileNum);
-    gfSmTileLoaded = TRUE;
+    gfSmTileLoaded = true;
   }
 
   // restore background rects
   RestoreBackgroundRects();
 
   // RENDER!!!!!!!!
-  RenderOverheadMap(0, (WORLD_COLS / 2), 0, 0, 640, 320, FALSE);
+  RenderOverheadMap(0, (WORLD_COLS / 2), 0, 0, 640, 320, false);
 
   HandleTalkingAutoFaces();
 
@@ -326,9 +326,9 @@ function HandleOverheadMap(): void {
     let usMapPos: INT16;
     let pItemPool: Pointer<ITEM_POOL>;
 
-    gfUIHandleSelectionAboveGuy = FALSE;
+    gfUIHandleSelectionAboveGuy = false;
 
-    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
+    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, true);
 
     if (GetOverheadMouseGridNo(addressof(usMapPos))) {
       // ATE: Find the closest item pool within 5 tiles....
@@ -339,7 +339,7 @@ function HandleOverheadMap(): void {
         let sActionGridNo: INT16 = usMapPos;
 
         // Get interactive tile...
-        if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), FALSE)) {
+        if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), false)) {
           sActionGridNo = sIntTileGridNo;
         }
 
@@ -348,7 +348,7 @@ function HandleOverheadMap(): void {
         if (AnyItemsVisibleOnLevel(pItemPool, bZLevel)) {
           DrawItemPoolList(pItemPool, usMapPos, ITEMLIST_DISPLAY, bZLevel, gusMouseXPos, gusMouseYPos);
 
-          gfOverItemPool = TRUE;
+          gfOverItemPool = true;
           gsOveritemPoolGridNo = pItemPool.value.sGridNo;
         }
       }
@@ -360,7 +360,7 @@ function HandleOverheadMap(): void {
         if (AnyItemsVisibleOnLevel(pItemPool, bZLevel)) {
           DrawItemPoolList(pItemPool, usMapPos, ITEMLIST_DISPLAY, bZLevel, gusMouseXPos, (gusMouseYPos - 5));
 
-          gfOverItemPool = TRUE;
+          gfOverItemPool = true;
           gsOveritemPoolGridNo = pItemPool.value.sGridNo;
         }
       }
@@ -369,7 +369,7 @@ function HandleOverheadMap(): void {
     if (GetOverheadMouseGridNoForFullSoldiersGridNo(addressof(usMapPos))) {
       if (GetClosestMercInOverheadMap(usMapPos, addressof(pSoldier), 1)) {
         if (pSoldier.value.bTeam == gbPlayerNum) {
-          gfUIHandleSelectionAboveGuy = TRUE;
+          gfUIHandleSelectionAboveGuy = true;
           gsSelectedGuy = pSoldier.value.ubID;
         }
 
@@ -396,10 +396,10 @@ function HandleOverheadMap(): void {
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
 
-  fInterfacePanelDirty = FALSE;
+  fInterfacePanelDirty = false;
 }
 
-function InOverheadMap(): BOOLEAN {
+function InOverheadMap(): boolean {
   return gfInOverheadMap;
 }
 
@@ -407,7 +407,7 @@ function GoIntoOverheadMap(): void {
   let VObjectDesc: VOBJECT_DESC;
   let hVObject: HVOBJECT;
 
-  gfInOverheadMap = TRUE;
+  gfInOverheadMap = true;
 
   MSYS_DefineRegion(addressof(OverheadBackgroundRegion), 0, 0, 640, 360, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
@@ -431,15 +431,15 @@ function GoIntoOverheadMap(): void {
 
   // Add shades to persons....
   GetVideoObject(addressof(hVObject), uiPERSONS);
-  hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 256, 256, 256, FALSE);
-  hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 310, 310, 310, FALSE);
-  hVObject.value.pShades[2] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 0, 0, 0, FALSE);
+  hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 256, 256, 256, false);
+  hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 310, 310, 310, false);
+  hVObject.value.pShades[2] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 0, 0, 0, false);
 
-  gfOverheadMapDirty = TRUE;
+  gfOverheadMapDirty = true;
 
   if (!gfEditMode) {
     // Make sure we are in team panel mode...
-    gfSwitchPanel = TRUE;
+    gfSwitchPanel = true;
     gbNewPanel = Enum215.TEAM_PANEL;
     gubNewPanelParam = gusSelectedSoldier;
     fInterfacePanelDirty = DIRTYLEVEL2;
@@ -448,7 +448,7 @@ function GoIntoOverheadMap(): void {
     if (!gfEnterTacticalPlacementGUI) {
       // Handle switch of panel....
       HandleTacticalPanelSwitch();
-      DisableTacticalTeamPanelButtons(TRUE);
+      DisableTacticalTeamPanelButtons(true);
     }
 
     EmptyBackgroundRects();
@@ -472,7 +472,7 @@ function HandleOverheadUI(): void {
     }
   }
 
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     if ((InputEvent.usEvent == KEY_DOWN)) {
       switch (InputEvent.usParam) {
         case (ESC):
@@ -492,7 +492,7 @@ function HandleOverheadUI(): void {
 }
 
 function KillOverheadMap(): void {
-  gfInOverheadMap = FALSE;
+  gfInOverheadMap = false;
   SetRenderFlags(RENDER_FLAG_FULL);
   RenderWorld();
 
@@ -503,7 +503,7 @@ function KillOverheadMap(): void {
   DeleteVideoObjectFromIndex(uiPERSONS);
 
   HandleTacticalPanelSwitch();
-  DisableTacticalTeamPanelButtons(FALSE);
+  DisableTacticalTeamPanelButtons(false);
 }
 
 function GetOffsetLandHeight(sGridNo: INT32): INT16 {
@@ -529,7 +529,7 @@ function GetModifiedOffsetLandHeight(sGridNo: INT32): INT16 {
   return sModifiedTileHeight;
 }
 
-function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16, fFromMapUtility: BOOLEAN): void {
+function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16, fFromMapUtility: boolean): void {
   let bXOddFlag: INT8 = 0;
   let sModifiedHeight: INT16 = 0;
   let sAnchorPosX_M: INT16;
@@ -540,8 +540,8 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
   let sTempPosY_M: INT16;
   let sTempPosX_S: INT16;
   let sTempPosY_S: INT16;
-  let fEndRenderRow: BOOLEAN = FALSE;
-  let fEndRenderCol: BOOLEAN = FALSE;
+  let fEndRenderRow: boolean = false;
+  let fEndRenderCol: boolean = false;
   let usTileIndex: UINT32;
   let sX: INT16;
   let sY: INT16;
@@ -566,7 +566,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
     ColorFillVideoSurfaceArea(FRAME_BUFFER, sStartPointX_S, sStartPointY_S, sEndXS, sEndYS, 0);
 
     InvalidateScreen();
-    gfOverheadMapDirty = FALSE;
+    gfOverheadMapDirty = false;
 
     // Begin Render Loop
     sAnchorPosX_M = sStartPointX_M;
@@ -580,7 +580,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
     pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
     do {
-      fEndRenderRow = FALSE;
+      fEndRenderRow = false;
       sTempPosX_M = sAnchorPosX_M;
       sTempPosY_M = sAnchorPosY_M;
       sTempPosX_S = sAnchorPosX_S;
@@ -618,7 +618,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
         sTempPosY_M--;
 
         if (sTempPosX_S >= sEndXS) {
-          fEndRenderRow = TRUE;
+          fEndRenderRow = true;
         }
       } while (!fEndRenderRow);
 
@@ -632,7 +632,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
       sAnchorPosY_S += 2;
 
       if (sAnchorPosY_S >= sEndYS) {
-        fEndRenderCol = TRUE;
+        fEndRenderCol = true;
       }
     } while (!fEndRenderCol);
 
@@ -642,11 +642,11 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
     sAnchorPosX_S = sStartPointX_S;
     sAnchorPosY_S = sStartPointY_S;
     bXOddFlag = 0;
-    fEndRenderRow = FALSE;
-    fEndRenderCol = FALSE;
+    fEndRenderRow = false;
+    fEndRenderCol = false;
 
     do {
-      fEndRenderRow = FALSE;
+      fEndRenderRow = false;
       sTempPosX_M = sAnchorPosX_M;
       sTempPosY_M = sAnchorPosY_M;
       sTempPosX_S = sAnchorPosX_S;
@@ -743,7 +743,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
         sTempPosY_M--;
 
         if (sTempPosX_S >= sEndXS) {
-          fEndRenderRow = TRUE;
+          fEndRenderRow = true;
         }
       } while (!fEndRenderRow);
 
@@ -757,7 +757,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
       sAnchorPosY_S += 2;
 
       if (sAnchorPosY_S >= sEndYS) {
-        fEndRenderCol = TRUE;
+        fEndRenderCol = true;
       }
     } while (!fEndRenderCol);
 
@@ -770,11 +770,11 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
       sAnchorPosX_S = sStartPointX_S;
       sAnchorPosY_S = sStartPointY_S;
       bXOddFlag = 0;
-      fEndRenderRow = FALSE;
-      fEndRenderCol = FALSE;
+      fEndRenderRow = false;
+      fEndRenderCol = false;
 
       do {
-        fEndRenderRow = FALSE;
+        fEndRenderRow = false;
         sTempPosX_M = sAnchorPosX_M;
         sTempPosY_M = sAnchorPosY_M;
         sTempPosX_S = sAnchorPosX_S;
@@ -817,7 +817,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
           sTempPosY_M--;
 
           if (sTempPosX_S >= sEndXS) {
-            fEndRenderRow = TRUE;
+            fEndRenderRow = true;
           }
         } while (!fEndRenderRow);
 
@@ -831,7 +831,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
         sAnchorPosY_S += 2;
 
         if (sAnchorPosY_S >= sEndYS) {
-          fEndRenderCol = TRUE;
+          fEndRenderCol = true;
         }
       } while (!fEndRenderCol);
     }
@@ -1031,7 +1031,7 @@ function RenderOverheadOverlays(): void {
         usLineColor = Get16BPPColor(FROMRGB(255, 0, 0));
       }
 
-      PixelDraw(FALSE, sX, sY, usLineColor, pDestBuf);
+      PixelDraw(false, sX, sY, usLineColor, pDestBuf);
 
       InvalidateRegion(sX, sY, (sX + 1), (sY + 1));
     }
@@ -1272,7 +1272,7 @@ function GetOverheadScreenXYFromGridNo(sGridNo: INT16, psScreenX: Pointer<INT16>
   //*psScreenY -= gpWorldLevelData[ sGridNo ].sHeight / 5;
 }
 
-function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
+function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): boolean {
   let uiCellX: UINT32;
   let uiCellY: UINT32;
   let sWorldScreenX: INT16;
@@ -1297,13 +1297,13 @@ function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
     // Get gridNo
     (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
 
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
+function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): boolean {
   let uiCellX: UINT32;
   let uiCellY: UINT32;
   let sWorldScreenX: INT16;
@@ -1328,9 +1328,9 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
     // Get gridNo
     (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
 
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
@@ -1397,6 +1397,6 @@ function TrashOverheadMap(): void {
     DeleteOverheadDB();
 
     // Force load
-    gfSmTileLoaded = FALSE;
+    gfSmTileLoaded = false;
   }
 }

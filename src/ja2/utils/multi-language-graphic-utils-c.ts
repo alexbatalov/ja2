@@ -1,106 +1,106 @@
-function GetMLGFilename(filename: SGPFILENAME, usMLGGraphicID: UINT16): BOOLEAN {
+function GetMLGFilename(filename: SGPFILENAME, usMLGGraphicID: UINT16): boolean {
 // FIXME: Language-specific code
 // #if defined(ENGLISH) || defined(FRENCH)
   switch (usMLGGraphicID) {
     case Enum326.MLG_AIMSYMBOL:
       sprintf(filename, "LAPTOP\\AimSymbol.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_BOBBYNAME:
       sprintf(filename, "LAPTOP\\BobbyName.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_BOBBYRAYAD21:
       sprintf(filename, "LAPTOP\\BobbyRayAd_21.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_BOBBYRAYLINK:
       sprintf(filename, "LAPTOP\\BobbyRayLink.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_CLOSED:
       sprintf(filename, "LAPTOP\\Closed.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_CONFIRMORDER:
       sprintf(filename, "LAPTOP\\ConfirmOrder.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_DESKTOP:
       sprintf(filename, "LAPTOP\\desktop.pcx");
-      return TRUE;
+      return true;
     case Enum326.MLG_FUNERALAD9:
       sprintf(filename, "LAPTOP\\FuneralAd_9.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_GOLDPIECEBUTTONS:
       sprintf(filename, "INTERFACE\\goldpiecebuttons.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_HISTORY:
       sprintf(filename, "LAPTOP\\history.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_INSURANCEAD10:
       sprintf(filename, "LAPTOP\\insurancead_10.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_INSURANCELINK:
       sprintf(filename, "LAPTOP\\insurancelink.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_INSURANCETITLE:
       sprintf(filename, "LAPTOP\\largetitle.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_LARGEFLORISTSYMBOL:
       sprintf(filename, "LAPTOP\\LargeSymbol.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_SMALLFLORISTSYMBOL:
       sprintf(filename, "LAPTOP\\SmallSymbol.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_MCGILLICUTTYS:
       sprintf(filename, "LAPTOP\\McGillicuttys.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_MORTUARY:
       sprintf(filename, "LAPTOP\\Mortuary.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_MORTUARYLINK:
       sprintf(filename, "LAPTOP\\MortuaryLink.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_ORDERGRID:
       sprintf(filename, "LAPTOP\\OrderGrid.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_PREBATTLEPANEL:
       sprintf(filename, "INTERFACE\\PreBattlePanel.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_SMALLTITLE:
       sprintf(filename, "LAPTOP\\SmallTitle.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_STATSBOX:
       sprintf(filename, "LAPTOP\\StatsBox.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_STOREPLAQUE:
       sprintf(filename, "LAPTOP\\BobbyStorePlaque.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_TITLETEXT:
       sprintf(filename, "LOADSCREENS\\titletext.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_TOALUMNI:
       sprintf(filename, "LAPTOP\\ToAlumni.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_TOMUGSHOTS:
       sprintf(filename, "LAPTOP\\ToMugShots.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_TOSTATS:
       sprintf(filename, "LAPTOP\\ToStats.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_WARNING:
       sprintf(filename, "LAPTOP\\Warning.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_YOURAD13:
       sprintf(filename, "LAPTOP\\YourAd_13.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_OPTIONHEADER:
       sprintf(filename, "INTERFACE\\optionscreenaddons.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_LOADSAVEHEADER:
       sprintf(filename, "INTERFACE\\loadscreenaddons.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_SPLASH:
       sprintf(filename, "INTERFACE\\splash.sti");
-      return TRUE;
+      return true;
     case Enum326.MLG_IMPSYMBOL:
       sprintf(filename, "LAPTOP\\IMPSymbol.sti");
-      return TRUE;
+      return true;
   }
 
 // #elif defined(GERMAN)
@@ -341,5 +341,5 @@ function GetMLGFilename(filename: SGPFILENAME, usMLGGraphicID: UINT16): BOOLEAN 
 //   }
 // #endif
 
-  return FALSE;
+  return false;
 }

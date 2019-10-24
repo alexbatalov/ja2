@@ -1,28 +1,28 @@
 // This table controls the order items appear in inventory at BR's and dealers, and which kinds of items are sold used
 let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = [
   //  item class					weapon class	sold used?
-  [ IC_GUN, Enum282.HANDGUNCLASS, TRUE ],
-  [ IC_GUN, Enum282.SHOTGUNCLASS, TRUE ],
-  [ IC_GUN, Enum282.SMGCLASS, TRUE ],
-  [ IC_GUN, Enum282.RIFLECLASS, TRUE ],
-  [ IC_GUN, Enum282.MGCLASS, FALSE ],
-  [ IC_LAUNCHER, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_AMMO, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_GRENADE, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_BOMB, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_BLADE, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_THROWING_KNIFE, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_PUNCH, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_ARMOUR, Enum282.NOGUNCLASS, TRUE ],
-  [ IC_FACE, Enum282.NOGUNCLASS, TRUE ],
-  [ IC_MEDKIT, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_KIT, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_MISC, Enum282.NOGUNCLASS, TRUE ],
-  [ IC_THROWN, Enum282.NOGUNCLASS, FALSE ],
-  [ IC_KEY, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_GUN, Enum282.HANDGUNCLASS, true ],
+  [ IC_GUN, Enum282.SHOTGUNCLASS, true ],
+  [ IC_GUN, Enum282.SMGCLASS, true ],
+  [ IC_GUN, Enum282.RIFLECLASS, true ],
+  [ IC_GUN, Enum282.MGCLASS, false ],
+  [ IC_LAUNCHER, Enum282.NOGUNCLASS, false ],
+  [ IC_AMMO, Enum282.NOGUNCLASS, false ],
+  [ IC_GRENADE, Enum282.NOGUNCLASS, false ],
+  [ IC_BOMB, Enum282.NOGUNCLASS, false ],
+  [ IC_BLADE, Enum282.NOGUNCLASS, false ],
+  [ IC_THROWING_KNIFE, Enum282.NOGUNCLASS, false ],
+  [ IC_PUNCH, Enum282.NOGUNCLASS, false ],
+  [ IC_ARMOUR, Enum282.NOGUNCLASS, true ],
+  [ IC_FACE, Enum282.NOGUNCLASS, true ],
+  [ IC_MEDKIT, Enum282.NOGUNCLASS, false ],
+  [ IC_KIT, Enum282.NOGUNCLASS, false ],
+  [ IC_MISC, Enum282.NOGUNCLASS, true ],
+  [ IC_THROWN, Enum282.NOGUNCLASS, false ],
+  [ IC_KEY, Enum282.NOGUNCLASS, false ],
 
   // marks end of list
-  [ IC_NONE, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_NONE, Enum282.NOGUNCLASS, false ],
 ];
 
 //
@@ -655,7 +655,7 @@ function GetDealersMaxItemAmount(ubDealerID: UINT8, usItemIndex: UINT16): INT8 {
       break;
 
     default:
-      Assert(FALSE);
+      Assert(false);
       return 0;
       break;
   }
@@ -862,10 +862,10 @@ function GetCurrentSuitabilityForItem(bArmsDealer: INT8, usItemIndex: UINT16): U
   return ITEM_SUITABILITY_LOW;
 }
 
-function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: BOOLEAN, fUsed: BOOLEAN): UINT8 {
+function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: boolean, fUsed: boolean): UINT8 {
   let ubItemCoolness: UINT8;
   let ubChance: UINT8 = 0;
-  let fBobbyRay: BOOLEAN = FALSE;
+  let fBobbyRay: boolean = false;
 
   // make sure dealers don't carry used items that they shouldn't
   if (fUsed && !fDealerIsSelling && !CanDealerItemBeSoldUsed(usItemIndex))
@@ -873,7 +873,7 @@ function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, fDealer
 
   if (bArmsDealer == -1) {
     // Bobby Ray has an easier time getting resupplied than the local dealers do
-    fBobbyRay = TRUE;
+    fBobbyRay = true;
   }
 
   ubItemCoolness = Item[usItemIndex].ubCoolness;
@@ -937,7 +937,7 @@ function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, fDealer
   return ubChance;
 }
 
-function ItemTransactionOccurs(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: BOOLEAN, fUsed: BOOLEAN): BOOLEAN {
+function ItemTransactionOccurs(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: boolean, fUsed: boolean): boolean {
   let ubChance: UINT8;
   let sInventorySlot: INT16;
 
@@ -949,25 +949,25 @@ function ItemTransactionOccurs(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIs
     if (bArmsDealer == -1) {
       if (fUsed) {
         sInventorySlot = GetInventorySlotForItem(LaptopSaveInfo.BobbyRayUsedInventory, usItemIndex, fUsed);
-        LaptopSaveInfo.BobbyRayUsedInventory[sInventorySlot].fPreviouslyEligible = TRUE;
+        LaptopSaveInfo.BobbyRayUsedInventory[sInventorySlot].fPreviouslyEligible = true;
       } else {
         sInventorySlot = GetInventorySlotForItem(LaptopSaveInfo.BobbyRayInventory, usItemIndex, fUsed);
-        LaptopSaveInfo.BobbyRayInventory[sInventorySlot].fPreviouslyEligible = TRUE;
+        LaptopSaveInfo.BobbyRayInventory[sInventorySlot].fPreviouslyEligible = true;
       }
     } else {
-      gArmsDealersInventory[bArmsDealer][usItemIndex].fPreviouslyEligible = TRUE;
+      gArmsDealersInventory[bArmsDealer][usItemIndex].fPreviouslyEligible = true;
     }
   }
 
   // roll to see if a transaction occurs
   if (Random(100) < ubChance) {
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
-function DetermineInitialInvItems(bArmsDealerID: INT8, usItemIndex: UINT16, ubChances: UINT8, fUsed: BOOLEAN): UINT8 {
+function DetermineInitialInvItems(bArmsDealerID: INT8, usItemIndex: UINT16, ubChances: UINT8, fUsed: boolean): UINT8 {
   let ubNumBought: UINT8;
   let ubCnt: UINT8;
 
@@ -982,7 +982,7 @@ function DetermineInitialInvItems(bArmsDealerID: INT8, usItemIndex: UINT16, ubCh
   return ubNumBought;
 }
 
-function HowManyItemsAreSold(bArmsDealerID: INT8, usItemIndex: UINT16, ubNumInStock: UINT8, fUsed: BOOLEAN): UINT8 {
+function HowManyItemsAreSold(bArmsDealerID: INT8, usItemIndex: UINT16, ubNumInStock: UINT8, fUsed: boolean): UINT8 {
   let ubNumSold: UINT8;
   let ubCnt: UINT8;
 
@@ -1196,13 +1196,13 @@ function GetDealerItemCategoryNumber(usItemIndex: UINT16): UINT8 {
   }
 
   // should never be trying to locate an item that's not covered in the table!
-  Assert(FALSE);
+  Assert(false);
   return 0;
 }
 
-function CanDealerItemBeSoldUsed(usItemIndex: UINT16): BOOLEAN {
+function CanDealerItemBeSoldUsed(usItemIndex: UINT16): boolean {
   if (!(Item[usItemIndex].fFlags & ITEM_DAMAGEABLE))
-    return FALSE;
+    return false;
 
   // certain items, although they're damagable, shouldn't be sold in a used condition
   return DealerItemSortInfo[GetDealerItemCategoryNumber(usItemIndex)].fAllowUsed;

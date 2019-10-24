@@ -62,17 +62,17 @@ interface MINE_STATUS_TYPE {
   uiRemainingOreSupply: UINT32; // the total value left to this mine (-1 means unlimited)
   uiOreRunningOutPoint: UINT32; // when supply drop below this, workers tell player the mine is running out of ore
 
-  fEmpty: BOOLEAN; // whether no longer minable
-  fRunningOut: BOOLEAN; // whether mine is beginning to run out
-  fWarnedOfRunningOut: BOOLEAN; // whether mine foreman has already told player the mine's running out
-  fShutDownIsPermanent: BOOLEAN; // means will never produce again in the game (head miner was attacked & died/quit)
-  fShutDown: BOOLEAN; // TRUE means mine production has been shut off
-  fPrevInvadedByMonsters: BOOLEAN; // whether or not mine has been previously invaded by monsters
-  fSpokeToHeadMiner: BOOLEAN; // player doesn't receive income from mine without speaking to the head miner first
-  fMineHasProducedForPlayer: BOOLEAN; // player has earned income from this mine at least once
+  fEmpty: boolean; // whether no longer minable
+  fRunningOut: boolean; // whether mine is beginning to run out
+  fWarnedOfRunningOut: boolean; // whether mine foreman has already told player the mine's running out
+  fShutDownIsPermanent: boolean; // means will never produce again in the game (head miner was attacked & died/quit)
+  fShutDown: boolean; // TRUE means mine production has been shut off
+  fPrevInvadedByMonsters: boolean; // whether or not mine has been previously invaded by monsters
+  fSpokeToHeadMiner: boolean; // player doesn't receive income from mine without speaking to the head miner first
+  fMineHasProducedForPlayer: boolean; // player has earned income from this mine at least once
 
-  fQueenRetookProducingMine: BOOLEAN; // whether or not queen ever retook a mine after a player had produced from it
-  fAttackedHeadMiner: BOOLEAN; // player has attacked the head miner, shutting down mine & decreasing loyalty
+  fQueenRetookProducingMine: boolean; // whether or not queen ever retook a mine after a player had produced from it
+  fAttackedHeadMiner: boolean; // player has attacked the head miner, shutting down mine & decreasing loyalty
   usValidDayCreaturesCanInfest: UINT16; // Creatures will be permitted to spread if the game day is greater than this value.
   uiTimePlayerProductionStarted: UINT32; // time in minutes when 'fMineHasProducedForPlayer' was first set
 

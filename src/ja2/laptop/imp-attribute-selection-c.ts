@@ -45,16 +45,16 @@ let iCurrentStatAtZero: INT32 = 0;
 let iCurrentBonusPoints: INT32 = 40;
 
 // diplsay the 0 skill point warning..if skill set to 0, warn character
-let fSkillAtZeroWarning: BOOLEAN = FALSE;
+let fSkillAtZeroWarning: boolean = false;
 
 // is the sliding of the sliding bar active right now?
-let fSlideIsActive: BOOLEAN = TRUE;
+let fSlideIsActive: boolean = true;
 
 // first time in game
-let fFirstIMPAttribTime: BOOLEAN = TRUE;
+let fFirstIMPAttribTime: boolean = true;
 
 // review mode
-let fReviewStats: BOOLEAN = FALSE;
+let fReviewStats: boolean = false;
 
 // buttons
 let giIMPAttributeSelectionButton: UINT32[] /* [1] */;
@@ -73,16 +73,16 @@ let gpCurrentScrollBox: Pointer<MOUSE_REGION> = null;
 let giCurrentlySelectedStat: INT32 = -1;
 
 // has any of the sliding bars moved?...for re-rendering puposes
-let fHasAnySlidingBarMoved: BOOLEAN = FALSE;
+let fHasAnySlidingBarMoved: boolean = false;
 
 let uiBarToReRender: INT32 = -1;
 
 // are we actually coming back to edit, or are we restarting?
-let fReturnStatus: BOOLEAN = FALSE;
+let fReturnStatus: boolean = false;
 
 function EnterIMPAttributeSelection(): void {
   // set attributes and skills
-  if ((fReturnStatus == FALSE) && (fFirstIMPAttribTime == TRUE)) {
+  if ((fReturnStatus == false) && (fFirstIMPAttribTime == true)) {
     // re starting
     SetAttributes();
 
@@ -101,8 +101,8 @@ if( DoesCharacterHaveAPersoanlity( ) )
     }
     */
   }
-  fReturnStatus = TRUE;
-  fFirstIMPAttribTime = FALSE;
+  fReturnStatus = true;
+  fFirstIMPAttribTime = false;
 
   // create done button
   CreateIMPAttributeSelectionButtons();
@@ -133,12 +133,12 @@ function RenderIMPAttributeSelection(): void {
 
   RenderAttrib1IndentFrame(51, 30);
 
-  if (fReviewStats != TRUE) {
+  if (fReviewStats != true) {
     RenderAttrib2IndentFrame(350, 42);
   }
 
   // reset rerender flag
-  fHasAnySlidingBarMoved = FALSE;
+  fHasAnySlidingBarMoved = false;
 
   // print text for screen
   PrintImpText();
@@ -160,7 +160,7 @@ function ExitIMPAttributeSelection(): void {
   // get rid of done buttons
   DestroyIMPAttributeSelectionButtons();
 
-  fReturnStatus = FALSE;
+  fReturnStatus = false;
 
   return;
 }
@@ -195,7 +195,7 @@ function HandleIMPAttributeSelection(): void {
       // chenged, move mouse region if change large enough
       if (iCurrentAttributeValue != iNewValue) {
         // update screen
-        fHasAnySlidingBarMoved = TRUE;
+        fHasAnySlidingBarMoved = true;
       }
 
       // change is enough
@@ -250,11 +250,11 @@ function HandleIMPAttributeSelection(): void {
       MarkButtonsDirty();
     }
 
-    fHasAnySlidingBarMoved = FALSE;
+    fHasAnySlidingBarMoved = false;
   }
-  if (fSkillAtZeroWarning == TRUE) {
+  if (fSkillAtZeroWarning == true) {
     DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pSkillAtZeroWarning[0], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, StatAtZeroBoxCallBack);
-    fSkillAtZeroWarning = FALSE;
+    fSkillAtZeroWarning = false;
   }
   return;
 }
@@ -417,10 +417,10 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
         return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         if (iCurrentMarkmanship == 0) {
-          if (DoWeHaveThisManyBonusPoints(15) == TRUE) {
+          if (DoWeHaveThisManyBonusPoints(15) == true) {
             iCurrentMarkmanship += 35;
             iCurrentBonusPoints -= 15;
-            fSkillAtZeroWarning = FALSE;
+            fSkillAtZeroWarning = false;
           } else {
             return Enum85.SLIDER_OK;
           }
@@ -436,10 +436,10 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
         return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         if (iCurrentMechanical == 0) {
-          if (DoWeHaveThisManyBonusPoints(15) == TRUE) {
+          if (DoWeHaveThisManyBonusPoints(15) == true) {
             iCurrentMechanical += 35;
             iCurrentBonusPoints -= 15;
-            fSkillAtZeroWarning = FALSE;
+            fSkillAtZeroWarning = false;
           } else {
             return Enum85.SLIDER_OK;
           }
@@ -455,10 +455,10 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
         return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         if (iCurrentMedical == 0) {
-          if (DoWeHaveThisManyBonusPoints(15) == TRUE) {
+          if (DoWeHaveThisManyBonusPoints(15) == true) {
             iCurrentMedical += 35;
             iCurrentBonusPoints -= 15;
-            fSkillAtZeroWarning = FALSE;
+            fSkillAtZeroWarning = false;
           } else {
             return Enum85.SLIDER_OK;
           }
@@ -474,10 +474,10 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
         return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         if (iCurrentExplosives == 0) {
-          if (DoWeHaveThisManyBonusPoints(15) == TRUE) {
+          if (DoWeHaveThisManyBonusPoints(15) == true) {
             iCurrentExplosives += 35;
             iCurrentBonusPoints -= 15;
-            fSkillAtZeroWarning = FALSE;
+            fSkillAtZeroWarning = false;
           } else {
             return Enum85.SLIDER_OK;
           }
@@ -564,7 +564,7 @@ function DecrementStat(iStatToDecrement: INT32): UINT8 {
         // ok to decrement
         iCurrentMarkmanship -= 35;
         iCurrentBonusPoints += 15;
-        fSkillAtZeroWarning = TRUE;
+        fSkillAtZeroWarning = true;
       }
       break;
     case (Enum84.MEDICAL_SKILL):
@@ -576,7 +576,7 @@ function DecrementStat(iStatToDecrement: INT32): UINT8 {
         // ok to decrement
         iCurrentMedical -= 35;
         iCurrentBonusPoints += 15;
-        fSkillAtZeroWarning = TRUE;
+        fSkillAtZeroWarning = true;
       }
       break;
     case (Enum84.MECHANICAL_SKILL):
@@ -588,7 +588,7 @@ function DecrementStat(iStatToDecrement: INT32): UINT8 {
         // ok to decrement
         iCurrentMechanical -= 35;
         iCurrentBonusPoints += 15;
-        fSkillAtZeroWarning = TRUE;
+        fSkillAtZeroWarning = true;
       }
       break;
     case (Enum84.EXPLOSIVE_SKILL):
@@ -600,12 +600,12 @@ function DecrementStat(iStatToDecrement: INT32): UINT8 {
         // ok to decrement
         iCurrentExplosives -= 35;
         iCurrentBonusPoints += 15;
-        fSkillAtZeroWarning = TRUE;
+        fSkillAtZeroWarning = true;
       }
       break;
   }
 
-  if (fSkillAtZeroWarning == TRUE) {
+  if (fSkillAtZeroWarning == true) {
     // current stat at zero
     iCurrentStatAtZero = iStatToDecrement;
   }
@@ -613,14 +613,14 @@ function DecrementStat(iStatToDecrement: INT32): UINT8 {
   return Enum85.SLIDER_OK;
 }
 
-function DoWeHaveThisManyBonusPoints(iBonusPoints: INT32): BOOLEAN {
+function DoWeHaveThisManyBonusPoints(iBonusPoints: INT32): boolean {
   // returns if player has at least this many bonus points
   if (iCurrentBonusPoints >= iBonusPoints) {
     // yep, return true
-    return TRUE;
+    return true;
   } else {
     // nope, return false
-    return FALSE;
+    return false;
   }
 }
 
@@ -659,12 +659,12 @@ function BtnIMPAttributeFinishCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // are we done diting, or just reviewing the stats?
-      if (fReviewStats == TRUE) {
+      if (fReviewStats == true) {
         iCurrentImpPage = Enum71.IMP_FINISH;
       } else {
         iCurrentImpPage = Enum71.IMP_ATTRIBUTE_FINISH;
       }
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }
@@ -932,11 +932,11 @@ function BtnIMPAttributeSliderLeftCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
     DecrementStat(iValue);
     // stat has changed, rerender
-    fHasAnySlidingBarMoved = TRUE;
+    fHasAnySlidingBarMoved = true;
     uiBarToReRender = iValue;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     DecrementStat(iValue);
-    fHasAnySlidingBarMoved = TRUE;
+    fHasAnySlidingBarMoved = true;
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     uiBarToReRender = iValue;
   }
@@ -960,11 +960,11 @@ function BtnIMPAttributeSliderRightCallback(btn: Pointer<GUI_BUTTON>, reason: IN
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
     IncrementStat(iValue);
     // stat has changed, rerender
-    fHasAnySlidingBarMoved = TRUE;
+    fHasAnySlidingBarMoved = true;
     uiBarToReRender = iValue;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     IncrementStat(iValue);
-    fHasAnySlidingBarMoved = TRUE;
+    fHasAnySlidingBarMoved = true;
     uiBarToReRender = iValue;
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   }
@@ -1060,7 +1060,7 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
     return;
   }
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    if (fSlideIsActive == FALSE) {
+    if (fSlideIsActive == false) {
       // not active leave
       return;
     }
@@ -1097,7 +1097,7 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
       // chenged, move mouse region if change large enough
       if (iCurrentAttributeValue != iNewValue) {
         // update screen
-        fHasAnySlidingBarMoved = TRUE;
+        fHasAnySlidingBarMoved = true;
       }
 
       // change is enough
@@ -1120,7 +1120,7 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fSlideIsActive) {
       // reset slide is active flag
-      fSlideIsActive = FALSE;
+      fSlideIsActive = false;
       return;
     }
 
@@ -1169,7 +1169,7 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
     }
 
     // update screen
-    fHasAnySlidingBarMoved = TRUE;
+    fHasAnySlidingBarMoved = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // get mouse positions
@@ -1193,21 +1193,21 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 
     if ((sX > sNewX) && (sX < sNewX + SLIDER_BAR_WIDTH)) {
       // we are within the slide bar, set fact we want to drag and draw
-      fSlideIsActive = TRUE;
+      fSlideIsActive = true;
     } else {
       // otherwise want to jump to position
-      fSlideIsActive = FALSE;
+      fSlideIsActive = false;
     }
   }
 }
 
 function SliderBarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    fSlideIsActive = TRUE;
+    fSlideIsActive = true;
     SliderRegionButtonCallback(addressof(pSliderRegions[MSYS_GetRegionUserData(pRegion, 0)]), MSYS_CALLBACK_REASON_LBUTTON_REPEAT);
   }
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    fSlideIsActive = FALSE;
+    fSlideIsActive = false;
   }
 }
 
@@ -1299,7 +1299,7 @@ function DrawBonusPointsRemaining(): void {
   let sString: CHAR16[] /* [64] */;
 
   // just reviewing, don't blit stats
-  if (fReviewStats == TRUE) {
+  if (fReviewStats == true) {
     return;
   }
   // parse amountof bns pts remaining
@@ -1340,7 +1340,7 @@ function StatAtZeroBoxCallBack(bExitValue: UINT8): void {
     MarkButtonsDirty();
   } else if (bExitValue == MSG_BOX_RETURN_NO) {
     IncrementStat(iCurrentStatAtZero);
-    fHasAnySlidingBarMoved = TRUE;
+    fHasAnySlidingBarMoved = true;
     MarkButtonsDirty();
   }
 

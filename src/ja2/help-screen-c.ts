@@ -255,15 +255,15 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
   ],
 ];
 
-let gfHelpScreenEntry: BOOLEAN = TRUE;
-let gfHelpScreenExit: BOOLEAN = FALSE;
+let gfHelpScreenEntry: boolean = true;
+let gfHelpScreenExit: boolean = false;
 
 let guiHelpScreenBackGround: UINT32;
 let guiHelpScreenTextBufferSurface: UINT32;
 
-let gfScrollBoxIsScrolling: BOOLEAN = FALSE;
+let gfScrollBoxIsScrolling: boolean = false;
 
-let gfHaveRenderedFirstFrameToSaveBuffer: BOOLEAN = FALSE;
+let gfHaveRenderedFirstFrameToSaveBuffer: boolean = false;
 
 //  must use this cause you have ur cursor over a button when entering the help screen, the button will burn though.
 // It does this cause that region loses it focus so it draws the button again.
@@ -304,26 +304,26 @@ function InitHelpScreenSystem(): void {
   memset(addressof(gHelpScreen), 0, sizeof(gHelpScreen));
 
   // set it up so we can enter the screen
-  gfHelpScreenEntry = TRUE;
-  gfHelpScreenExit = FALSE;
+  gfHelpScreenEntry = true;
+  gfHelpScreenExit = false;
 
   gHelpScreen.bCurrentHelpScreenActiveSubPage = -1;
 
-  gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = FALSE;
+  gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = false;
 }
 
-function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: BOOLEAN): BOOLEAN {
+function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: boolean): boolean {
   // if the screen is being forsced to come up ( user pressed 'h' )
   if (fForceHelpScreenToComeUp) {
     // Set thefact that the user broughtthe help screen up
-    gHelpScreen.fForceHelpScreenToComeUp = TRUE;
+    gHelpScreen.fForceHelpScreenToComeUp = true;
 
     goto("HELP_SCREEN_SHOULD_COME_UP");
   }
 
   // if we are already in the help system, return true
   if (gHelpScreen.uiFlags & HELP_SCREEN_ACTIVE) {
-    return TRUE;
+    return true;
   }
 
   // has the player been in the screen before
@@ -333,7 +333,7 @@ function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: 
 
   // if we have already been in the screen, and the user DIDNT press 'h', leave
   if (gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen) {
-    return FALSE;
+    return false;
   }
 
   // should the screen come up, based on the users choice for it automatically coming up
@@ -343,7 +343,7 @@ function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: 
   }
 
   // the help screen shouldnt come up
-  return FALSE;
+  return false;
 
 HELP_SCREEN_WAIT_1_FRAME:
 
@@ -353,7 +353,7 @@ HELP_SCREEN_WAIT_1_FRAME:
 
     UnmarkButtonsDirty();
 
-    return FALSE;
+    return false;
   }
 
 HELP_SCREEN_SHOULD_COME_UP:
@@ -374,7 +374,7 @@ HELP_SCREEN_SHOULD_COME_UP:
   // reset
   gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount = 0;
 
-  return TRUE;
+  return true;
 }
 
 function HelpScreenHandler(): void {
@@ -383,8 +383,8 @@ function HelpScreenHandler(): void {
     // setup the help screen
     EnterHelpScreen();
 
-    gfHelpScreenEntry = FALSE;
-    gfHelpScreenExit = FALSE;
+    gfHelpScreenEntry = false;
+    gfHelpScreenExit = false;
   }
 
   RestoreBackgroundRects();
@@ -416,9 +416,9 @@ function HelpScreenHandler(): void {
 
   // if we are leaving the help screen
   if (gfHelpScreenExit) {
-    gfHelpScreenExit = FALSE;
+    gfHelpScreenExit = false;
 
-    gfHelpScreenEntry = TRUE;
+    gfHelpScreenEntry = true;
 
     // exit mouse regions etc..
     ExitHelpScreen();
@@ -428,7 +428,7 @@ function HelpScreenHandler(): void {
   }
 }
 
-function EnterHelpScreen(): BOOLEAN {
+function EnterHelpScreen(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosX: UINT16;
   let usPosY: UINT16; //, usWidth, usHeight;
@@ -517,7 +517,7 @@ function EnterHelpScreen(): BOOLEAN {
   gHelpScreen.ubHelpScreenDirty = Enum10.HLP_SCRN_DRTY_LVL_REFRESH_ALL;
 
   // mark it that we have been in since we enter the current screen
-  gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = TRUE;
+  gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = true;
 
   // set the fact that we have been to the screen
   gHelpScreen.usHasPlayerSeenHelpScreenInCurrentScreen &= ~(1 << gHelpScreen.bCurrentHelpScreen);
@@ -535,14 +535,14 @@ function EnterHelpScreen(): BOOLEAN {
   ChangeHelpScreenSubPage();
 
   // reset scroll box flag
-  gfScrollBoxIsScrolling = FALSE;
+  gfScrollBoxIsScrolling = false;
 
   // reset first frame buffer
-  gfHaveRenderedFirstFrameToSaveBuffer = FALSE;
+  gfHaveRenderedFirstFrameToSaveBuffer = false;
 
   gubRenderHelpScreenTwiceInaRow = 0;
 
-  return TRUE;
+  return true;
 }
 
 function HandleHelpScreen(): void {
@@ -553,7 +553,7 @@ function HandleHelpScreen(): void {
     if (gfLeftButtonState) {
       HelpScreenMouseMoveScrollBox(gusMouseYPos);
     } else {
-      gfScrollBoxIsScrolling = FALSE;
+      gfScrollBoxIsScrolling = false;
       gHelpScreen.iLastMouseClickY = -1;
     }
   }
@@ -588,7 +588,7 @@ function RenderHelpScreen(): void {
   }
 
   if (!gfHaveRenderedFirstFrameToSaveBuffer) {
-    gfHaveRenderedFirstFrameToSaveBuffer = TRUE;
+    gfHaveRenderedFirstFrameToSaveBuffer = true;
 
     // blit everything to the save buffer ( cause the save buffer can bleed through )
     BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, gHelpScreen.usScreenLocX, gHelpScreen.usScreenLocY, (gHelpScreen.usScreenLocX + gHelpScreen.usScreenWidth), (gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight));
@@ -608,10 +608,10 @@ function ExitHelpScreen(): void {
   if (!gHelpScreen.fForceHelpScreenToComeUp) {
     // Get the current value of the checkbox
     if (ButtonList[gHelpScreenDontShowHelpAgainToggle].value.uiFlags & BUTTON_CLICKED_ON) {
-      gGameSettings.fHideHelpInAllScreens = TRUE;
+      gGameSettings.fHideHelpInAllScreens = true;
       gHelpScreen.usHasPlayerSeenHelpScreenInCurrentScreen = 0;
     } else {
-      gGameSettings.fHideHelpInAllScreens = FALSE;
+      gGameSettings.fHideHelpInAllScreens = false;
     }
 
     // remove the mouse region for the '[ ] dont show help...'
@@ -648,7 +648,7 @@ function ExitHelpScreen(): void {
   HelpScreenSpecialExitCode();
 
   // if the game was NOT paused
-  if (gHelpScreen.fWasTheGamePausedPriorToEnteringHelpScreen == FALSE) {
+  if (gHelpScreen.fWasTheGamePausedPriorToEnteringHelpScreen == false) {
     // un pause the game
     UnPauseGame();
   }
@@ -657,12 +657,12 @@ function ExitHelpScreen(): void {
   DeleteScrollArrowButtons();
 
   // reset
-  gHelpScreen.fForceHelpScreenToComeUp = FALSE;
+  gHelpScreen.fForceHelpScreenToComeUp = false;
 
   SaveGameSettings();
 }
 
-function DrawHelpScreenBackGround(): BOOLEAN {
+function DrawHelpScreenBackGround(): boolean {
   let hPixHandle: HVOBJECT;
   let usPosX: UINT16;
 
@@ -681,7 +681,7 @@ function DrawHelpScreenBackGround(): BOOLEAN {
 
   InvalidateRegion(gHelpScreen.usScreenLocX, gHelpScreen.usScreenLocY, gHelpScreen.usScreenLocX + gHelpScreen.usScreenWidth, gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight);
 
-  return TRUE;
+  return true;
 }
 
 function SetSizeAndPropertiesOfHelpScreen(): void {
@@ -894,17 +894,17 @@ function HelpScreenSpecialExitCode(): void {
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreen) {
     case Enum17.HELP_SCREEN_LAPTOP:
-      fReDrawScreenFlag = TRUE;
+      fReDrawScreenFlag = true;
       break;
 
     case Enum17.HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
     case Enum17.HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
     case Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
     case Enum17.HELP_SCREEN_MAPSCREEN:
-      fCharacterInfoPanelDirty = TRUE;
-      fTeamPanelDirty = TRUE;
-      fMapScreenBottomDirty = TRUE;
-      fMapPanelDirty = TRUE;
+      fCharacterInfoPanelDirty = true;
+      fTeamPanelDirty = true;
+      fMapScreenBottomDirty = true;
+      fMapPanelDirty = true;
       break;
 
     case Enum17.HELP_SCREEN_TACTICAL:
@@ -923,7 +923,7 @@ function HelpScreenSpecialExitCode(): void {
 }
 
 function PrepareToExitHelpScreen(): void {
-  gfHelpScreenExit = TRUE;
+  gfHelpScreenExit = true;
 }
 
 // Handles anything special that must be done when exiting the specific screen we are about to reenter ( eg. dirtying of the screen )
@@ -964,7 +964,7 @@ function RenderSpecificHelpScreen(): UINT16 {
   // set the buffer for the text to go to
   //	SetFontDestBuffer( guiHelpScreenTextBufferSurface, gHelpScreen.usLeftMarginPosX, gHelpScreen.usScreenLocY + HELP_SCREEN_TEXT_OFFSET_Y,
   //										 HLP_SCRN__WIDTH_OF_TEXT_BUFFER, HLP_SCRN__NUMBER_BYTES_IN_TEXT_BUFFER, FALSE );
-  SetFontDestBuffer(guiHelpScreenTextBufferSurface, 0, 0, HLP_SCRN__WIDTH_OF_TEXT_BUFFER, HLP_SCRN__HEIGHT_OF_TEXT_BUFFER(), FALSE);
+  SetFontDestBuffer(guiHelpScreenTextBufferSurface, 0, 0, HLP_SCRN__WIDTH_OF_TEXT_BUFFER, HLP_SCRN__HEIGHT_OF_TEXT_BUFFER(), false);
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreen) {
@@ -995,7 +995,7 @@ function RenderSpecificHelpScreen(): UINT16 {
       break;
   }
 
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
   // add 1 line to the bottom of the buffer
   usNumVerticalPixelsDisplayed += 10;
@@ -1072,7 +1072,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
     //									 HELP_SCREEN_TITLE_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, HELP_SCREEN_TEXT_BACKGROUND, FALSE, CENTER_JUSTIFIED );
 
     // Display the Title
-    IanDisplayWrappedString(usPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TITLE_OFFSET_Y), usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT(), HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
+    IanDisplayWrappedString(usPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TITLE_OFFSET_Y), usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT(), HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, false, 0);
   }
 
   // Display the '( press H to get help... )'
@@ -1085,7 +1085,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
   //	DrawTextToScreen( zText, usPosX, usPosY, usWidth,
   //								 HELP_SCREEN_TEXT_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, HELP_SCREEN_TEXT_BACKGROUND, FALSE, CENTER_JUSTIFIED );
 
-  IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT(), HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
+  IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT(), HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, false, 0);
 
   if (!gHelpScreen.fForceHelpScreenToComeUp) {
     // calc location for the ' [ x ] Dont display again...'
@@ -1097,7 +1097,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
     usPosY = gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight - HELP_SCREEN_SHOW_HELP_AGAIN_REGION_TEXT_OFFSET_Y + 2;
 
     // Display the ' [ x ] Dont display again...'
-    IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TEXT_BODY_FONT(), HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
+    IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TEXT_BODY_FONT(), HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, false, 0);
   }
 
   SetFontShadow(DEFAULT_SHADOW);
@@ -1197,7 +1197,7 @@ function GetAndDisplayHelpScreenText(uiRecord: UINT32, usPosX: UINT16, usPosY: U
   LoadEncryptedDataFromFile(HELPSCREEN_FILE, zText, uiStartLoc, HELPSCREEN_RECORD_SIZE);
 
   // Display the text
-  usNumVertPixels = IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TEXT_BODY_FONT(), HELP_SCREEN_TEXT_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
+  usNumVertPixels = IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TEXT_BODY_FONT(), HELP_SCREEN_TEXT_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, false, 0);
 
   SetFontShadow(DEFAULT_SHADOW);
 
@@ -1250,7 +1250,7 @@ void HelpScreenDontShowHelpAgainToggleTextRegionCallBack(MOUSE_REGION * pRegion,
 
 // set the fact the we have chmaged to a new screen
 function NewScreenSoResetHelpScreen(): void {
-  gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = FALSE;
+  gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = false;
   gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount = 0;
 }
 
@@ -1748,7 +1748,7 @@ function HelpScreenDetermineWhichMapScreenHelpToShow(): INT8 {
     return Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY;
   }
 
-  if (AnyMercsHired() == FALSE) {
+  if (AnyMercsHired() == false) {
     return Enum17.HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED;
   }
 
@@ -1759,7 +1759,7 @@ function HelpScreenDetermineWhichMapScreenHelpToShow(): INT8 {
   return Enum17.HELP_SCREEN_MAPSCREEN;
 }
 
-function CreateHelpScreenTextBuffer(): BOOLEAN {
+function CreateHelpScreenTextBuffer(): boolean {
   let vs_desc: VSURFACE_DESC;
 
   // Create a background video surface to blt the face onto
@@ -1769,7 +1769,7 @@ function CreateHelpScreenTextBuffer(): BOOLEAN {
   vs_desc.ubBitDepth = 16;
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiHelpScreenTextBufferSurface)));
 
-  return TRUE;
+  return true;
 }
 
 function DestroyHelpScreenTextBuffer(): void {
@@ -1902,12 +1902,12 @@ function DisplayHelpScreenTextBufferScrollBox(): void {
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
     // draw the gold highlite line on the top and left
-    LineDraw(FALSE, usPosX, iTopPosScrollBox, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox, Get16BPPColor(FROMRGB(235, 222, 171)), pDestBuf);
-    LineDraw(FALSE, usPosX, iTopPosScrollBox, usPosX, iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(235, 222, 171)), pDestBuf);
+    LineDraw(false, usPosX, iTopPosScrollBox, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox, Get16BPPColor(FROMRGB(235, 222, 171)), pDestBuf);
+    LineDraw(false, usPosX, iTopPosScrollBox, usPosX, iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(235, 222, 171)), pDestBuf);
 
     // draw the shadow line on the bottom and right
-    LineDraw(FALSE, usPosX, iTopPosScrollBox + iSizeOfBox - 1, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(65, 49, 6)), pDestBuf);
-    LineDraw(FALSE, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(65, 49, 6)), pDestBuf);
+    LineDraw(false, usPosX, iTopPosScrollBox + iSizeOfBox - 1, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(65, 49, 6)), pDestBuf);
+    LineDraw(false, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(65, 49, 6)), pDestBuf);
 
     // unlock frame buffer
     UnLockVideoSurface(FRAME_BUFFER);
@@ -2005,10 +2005,10 @@ function CalculateHeightAndPositionForHelpScreenScrollBox(piHeightOfScrollBox: P
 function SelectHelpScrollAreaCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfScrollBoxIsScrolling = FALSE;
+    gfScrollBoxIsScrolling = false;
     gHelpScreen.iLastMouseClickY = -1;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    gfScrollBoxIsScrolling = TRUE;
+    gfScrollBoxIsScrolling = true;
     HelpScreenMouseMoveScrollBox(pRegion.value.MouseYPos);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
@@ -2113,14 +2113,14 @@ function BtnHelpScreenScrollArrowsCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   }
 }
 
-function AreWeClickingOnScrollBar(usMousePosY: INT32): BOOLEAN {
+function AreWeClickingOnScrollBar(usMousePosY: INT32): boolean {
   let iPosY: INT32;
   let iHeight: INT32;
 
   CalculateHeightAndPositionForHelpScreenScrollBox(addressof(iHeight), addressof(iPosY));
 
   if (usMousePosY >= iPosY && usMousePosY < (iPosY + iHeight))
-    return TRUE;
+    return true;
   else
-    return FALSE;
+    return false;
 }

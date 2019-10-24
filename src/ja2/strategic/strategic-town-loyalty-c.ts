@@ -109,20 +109,20 @@ let gubTownRebelSentiment: UINT8[] /* [NUM_TOWNS] */ = [
   35, // CHITZENA, - Artificially high 'cause there's not enough fights near it to get the loyalty up otherwise
 ];
 
-let gfTownUsesLoyalty: BOOLEAN[] /* [NUM_TOWNS] */ = [
-  FALSE, // not a town - blank sector index
-  TRUE, // OMERTA
-  TRUE, // DRASSEN
-  TRUE, // ALMA
-  TRUE, // GRUMM
-  FALSE, // TIXA
-  TRUE, // CAMBRIA
-  FALSE, // SAN_MONA
-  FALSE, // ESTONI
-  FALSE, // ORTA
-  TRUE, // BALIME
-  TRUE, // MEDUNA
-  TRUE, // CHITZENA
+let gfTownUsesLoyalty: boolean[] /* [NUM_TOWNS] */ = [
+  false, // not a town - blank sector index
+  true, // OMERTA
+  true, // DRASSEN
+  true, // ALMA
+  true, // GRUMM
+  false, // TIXA
+  true, // CAMBRIA
+  false, // SAN_MONA
+  false, // ESTONI
+  false, // ORTA
+  true, // BALIME
+  true, // MEDUNA
+  true, // CHITZENA
 ];
 
 // location of first enocunter with enemy
@@ -143,9 +143,9 @@ function InitTownLoyalty(): void {
   for (ubTown = FIRST_TOWN; ubTown < Enum135.NUM_TOWNS; ubTown++) {
     gTownLoyalty[ubTown].ubRating = 0;
     gTownLoyalty[ubTown].sChange = 0;
-    gTownLoyalty[ubTown].fStarted = FALSE;
+    gTownLoyalty[ubTown].fStarted = false;
     //		gTownLoyalty[ ubTown ].ubRebelSentiment = gubTownRebelSentiment[ ubTown ];
-    gTownLoyalty[ubTown].fLiberatedAlready = FALSE;
+    gTownLoyalty[ubTown].fLiberatedAlready = false;
   }
 
   return;
@@ -174,7 +174,7 @@ function StartTownLoyaltyIfFirstTime(bTownId: INT8): void {
     gTownLoyalty[bTownId].sChange = 0;
 
     // remember we've started
-    gTownLoyalty[bTownId].fStarted = TRUE;
+    gTownLoyalty[bTownId].fStarted = true;
   }
 }
 
@@ -188,7 +188,7 @@ function SetTownLoyalty(bTownId: INT8, ubNewLoyaltyRating: UINT8): void {
     gTownLoyalty[bTownId].sChange = 0;
 
     // this is just like starting the loyalty if it happens first
-    gTownLoyalty[bTownId].fStarted = TRUE;
+    gTownLoyalty[bTownId].fStarted = true;
   }
 
   return;
@@ -312,7 +312,7 @@ function UpdateTownLoyaltyRating(bTownId: INT8): void {
 
   // check old aginst new, if diff, dirty map panel
   if (ubOldLoyaltyRating != gTownLoyalty[bTownId].ubRating) {
-    fMapPanelDirty = TRUE;
+    fMapPanelDirty = true;
   }
 
   return;
@@ -548,7 +548,7 @@ void UpdateTownLoyaltyBasedOnBadGuysInTown( INT8 bTownId )
 }
 */
 
-function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BOOLEAN): void {
+function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: boolean): void {
   // handle the impact on loyalty of the murder of a civilian
   let bTownId: INT8 = 0;
   let iLoyaltyChange: INT32 = 0;
@@ -557,7 +557,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
   let pCivSoldier: Pointer<SOLDIERTYPE> = null;
   let uiChanceFalseAccusal: UINT32 = 0;
   let bKillerTeam: INT8 = 0;
-  let fIncrement: BOOLEAN = FALSE;
+  let fIncrement: boolean = false;
   let uiLoyaltyEffectDelay: UINT32 = 0;
   let uiValue: UINT32 = 0;
 
@@ -640,12 +640,12 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
     }
 
     // killer seen by civ?
-    if (SoldierToSoldierLineOfSightTest(pCivSoldier, MercPtrs[pSoldier.value.ubAttackerID], STRAIGHT_RANGE, TRUE) != 0) {
+    if (SoldierToSoldierLineOfSightTest(pCivSoldier, MercPtrs[pSoldier.value.ubAttackerID], STRAIGHT_RANGE, true) != 0) {
       bSeenState |= 1;
     }
 
     // victim seen by civ?
-    if (SoldierToSoldierLineOfSightTest(pCivSoldier, pSoldier, STRAIGHT_RANGE, TRUE) != 0) {
+    if (SoldierToSoldierLineOfSightTest(pCivSoldier, pSoldier, STRAIGHT_RANGE, true) != 0) {
       bSeenState |= 2;
     }
   }
@@ -671,7 +671,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
         uiChanceFalseAccusal = 0;
         break;
       default:
-        Assert(FALSE);
+        Assert(false);
         return;
     }
 
@@ -693,7 +693,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
   switch (bKillerTeam) {
     case OUR_TEAM:
       // town thinks player committed the murder, bad bad bad
-      fIncrement = FALSE;
+      fIncrement = false;
 
       // debug message
       ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Civilian killed by friendly forces.");
@@ -701,9 +701,9 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
 
     case ENEMY_TEAM:
       // check whose sector this is
-      if (StrategicMap[(pSoldier.value.sSectorX) + (MAP_WORLD_X * (pSoldier.value.sSectorY))].fEnemyControlled == TRUE) {
+      if (StrategicMap[(pSoldier.value.sSectorX) + (MAP_WORLD_X * (pSoldier.value.sSectorY))].fEnemyControlled == true) {
         // enemy soldiers... in enemy controlled sector.  Gain loyalty
-        fIncrement = TRUE;
+        fIncrement = true;
 
         // debug message
         ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Enemy soldiers murdered a civilian. Town loyalty increases");
@@ -713,7 +713,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
         iLoyaltyChange /= 100;
 
         // lose loyalty
-        fIncrement = FALSE;
+        fIncrement = false;
 
         // debug message
         ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Town holds you responsible for murder by enemy.");
@@ -722,13 +722,13 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
 
     case MILITIA_TEAM:
       // the rebels did it... check if are they on our side
-      if (CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0) == FALSE) {
+      if (CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0) == false) {
         // on our side, penalty
         iLoyaltyChange *= REDUCTION_FOR_MURDER_BY_REBEL;
         iLoyaltyChange /= 100;
 
         // lose loyalty
-        fIncrement = FALSE;
+        fIncrement = false;
 
         // debug message
         ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Town holds you responsible for murder by rebels.");
@@ -742,18 +742,18 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
         iLoyaltyChange *= MULTIPLIER_FOR_MURDER_BY_MONSTER;
 
         // check whose sector this is
-        if (StrategicMap[(pSoldier.value.sSectorX) + (MAP_WORLD_X * (pSoldier.value.sSectorY))].fEnemyControlled == TRUE) {
+        if (StrategicMap[(pSoldier.value.sSectorX) + (MAP_WORLD_X * (pSoldier.value.sSectorY))].fEnemyControlled == true) {
           // enemy controlled sector - gain loyalty
-          fIncrement = TRUE;
+          fIncrement = true;
         } else {
           // our sector - lose loyalty
-          fIncrement = FALSE;
+          fIncrement = false;
         }
       }
       break;
 
     default:
-      Assert(FALSE);
+      Assert(false);
       return;
   }
 
@@ -817,9 +817,9 @@ function HandleTownLoyaltyForNPCRecruitment(pSoldier: Pointer<SOLDIERTYPE>): voi
   return;
 }
 
-function HandleLoyaltyAdjustmentForRobbery(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function HandleLoyaltyAdjustmentForRobbery(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // not to be implemented at this time
-  return FALSE;
+  return false;
 
   /*
           // this function will handle robbery by the passed soldiertype of an object from a town he/she is in
@@ -865,7 +865,7 @@ function HandleLoyaltyForDemolitionOfBuilding(pSoldier: Pointer<SOLDIERTYPE>, sP
     IncrementTownLoyalty(bTownId, sLoyaltyValue);
   } else if (pSoldier.value.ubCivilianGroup == Enum246.REBEL_CIV_GROUP) {
     // the rebels did it...are they on our side
-    if (CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0) == FALSE) {
+    if (CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0) == false) {
       sLoyaltyValue /= DIVISOR_FOR_REBEL_BUILDING_DMG;
 
       // decrement loyalty value for rebels on our side dmging town
@@ -874,7 +874,7 @@ function HandleLoyaltyForDemolitionOfBuilding(pSoldier: Pointer<SOLDIERTYPE>, sP
   }
 
   // penalize the side that should have stopped it
-  if (StrategicMap[pSoldier.value.sSectorX + pSoldier.value.sSectorY * MAP_WORLD_X].fEnemyControlled == TRUE) {
+  if (StrategicMap[pSoldier.value.sSectorX + pSoldier.value.sSectorY * MAP_WORLD_X].fEnemyControlled == true) {
     // enemy should have prevented it, let them suffer a little
     IncrementTownLoyalty(bTownId, sPolicingLoyalty);
   } else {
@@ -894,17 +894,17 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
   let wSectorName: CHAR16[] /* [128] */;
 
   // stealing should fail anyway 'cause there shouldn't be a temp file for unvisited sectors, but let's check anyway
-  Assert(GetSectorFlagStatus(sSectorX, sSectorY, sSectorZ, SF_ALREADY_VISITED) == TRUE);
+  Assert(GetSectorFlagStatus(sSectorX, sSectorY, sSectorZ, SF_ALREADY_VISITED) == true);
 
   // get sector name string
-  GetSectorIDString(sSectorX, sSectorY, sSectorZ, wSectorName, TRUE);
+  GetSectorIDString(sSectorX, sSectorY, sSectorZ, wSectorName, true);
 
   // go through list of items in sector and randomly remove them
 
   // if unloaded sector
   if (gWorldSectorX != sSectorX || gWorldSectorY != sSectorY || gbWorldSectorZ != sSectorZ) {
     // if the player has never been there, there's no temp file, and 0 items will get returned, preventing any stealing
-    GetNumberOfWorldItemsFromTempItemFile(sSectorX, sSectorY, sSectorZ, addressof(uiNumberOfItems), FALSE);
+    GetNumberOfWorldItemsFromTempItemFile(sSectorX, sSectorY, sSectorZ, addressof(uiNumberOfItems), false);
 
     if (uiNumberOfItems == 0) {
       return;
@@ -919,11 +919,11 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
     // set up item list ptrs
     for (iCounter = 0; iCounter < uiNumberOfItems; iCounter++) {
       // if the item exists, and is visible and reachable, see if it should be stolen
-      if (pItemList[iCounter].fExists && pItemList[iCounter].bVisible == TRUE && pItemList[iCounter].usFlags & WORLD_ITEM_REACHABLE) {
+      if (pItemList[iCounter].fExists && pItemList[iCounter].bVisible == true && pItemList[iCounter].usFlags & WORLD_ITEM_REACHABLE) {
         if (Random(100) < ubChance) {
           // remove
           uiNewTotal--;
-          pItemList[iCounter].fExists = FALSE;
+          pItemList[iCounter].fExists = false;
 
           // debug message
           ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "%s stolen in %s!", ItemNames[pItemList[iCounter].o.usItem], wSectorName);
@@ -933,7 +933,7 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
 
     // only save if something was stolen
     if (uiNewTotal < uiNumberOfItems) {
-      AddWorldItemsToUnLoadedSector(sSectorX, sSectorY, sSectorZ, 0, uiNumberOfItems, pItemList, TRUE);
+      AddWorldItemsToUnLoadedSector(sSectorX, sSectorY, sSectorZ, 0, uiNumberOfItems, pItemList, true);
     }
 
     // mem free
@@ -942,7 +942,7 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
   {
     for (iCounter = 0; iCounter < guiNumWorldItems; iCounter++) {
       // note, can't do reachable test here because we'd have to do a path call...
-      if (gWorldItems[iCounter].fExists && gWorldItems[iCounter].bVisible == TRUE) {
+      if (gWorldItems[iCounter].fExists && gWorldItems[iCounter].bVisible == true) {
         if (Random(100) < ubChance) {
           RemoveItemFromPool(gWorldItems[iCounter].sGridNo, iCounter, gWorldItems[iCounter].ubLevel);
           // debug message
@@ -1037,7 +1037,7 @@ function BuildListOfTownSectors(): void {
 function ReadInDistancesBetweenTowns(): void {
   let hFileHandle: HWFILE;
 
-  hFileHandle = FileOpen("BinaryData\\TownDistances.dat", FILE_ACCESS_READ, FALSE);
+  hFileHandle = FileOpen("BinaryData\\TownDistances.dat", FILE_ACCESS_READ, false);
 
   FileRead(hFileHandle, addressof(iTownDistances), (sizeof(INT32) * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS), null);
 
@@ -1102,28 +1102,28 @@ UINT32 BuildLoyaltyEventValue( INT8 bTownValue, UINT32 uiValue, BOOLEAN fIncreme
 }
 */
 
-function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): BOOLEAN {
+function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // Save the Town Loyalty
   FileWrite(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadStrategicTownLoyaltyFromSavedGameFile(hFile: HWFILE): BOOLEAN {
+function LoadStrategicTownLoyaltyFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   // Restore the Town Loyalty
   FileRead(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function ReduceLoyaltyForRebelsBetrayed(): void {
@@ -1180,10 +1180,10 @@ function IsTownUnderCompleteControlByPlayer(bTownId: INT8): INT32 {
   let iNumber: INT32 = 0;
 
   if (GetTownSectorSize(bTownId) == GetTownSectorsUnderControl(bTownId)) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // is the ENTIRE town under enemy control?
@@ -1191,10 +1191,10 @@ function IsTownUnderCompleteControlByEnemy(bTownId: INT8): INT32 {
   let iNumber: INT32 = 0;
 
   if (GetTownSectorsUnderControl(bTownId) == 0) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: INT16, ubHowMany: UINT8): void {
@@ -1212,7 +1212,7 @@ function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: INT16, u
   }
 
   // Report this to player
-  GetSectorIDString(sSectorX, sSectorY, 0, pSectorString, TRUE);
+  GetSectorIDString(sSectorX, sSectorY, 0, pSectorString, true);
   swprintf(str, gpStrategicString[Enum365.STR_DIALOG_CREATURES_KILL_CIVILIANS], ubHowMany, pSectorString);
   DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
 
@@ -1302,7 +1302,7 @@ function HandleGlobalLoyaltyEvent(ubEventType: UINT8, sSectorX: INT16, sSectorY:
       break;
 
     default:
-      Assert(FALSE);
+      Assert(false);
       return;
   }
 
@@ -1337,7 +1337,7 @@ function AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange: INT32, sSectorX: IN
     // skip path test if distance is already known to be zero to speed this up a bit
     if (iShortestDistance[bTownId] > 0) {
       // calculate across how many sectors the fastest travel path from event to this town sector
-      iThisDistance = FindStratPath(sEventSector, pTownLocationsList[uiIndex], ubTempGroupId, FALSE);
+      iThisDistance = FindStratPath(sEventSector, pTownLocationsList[uiIndex], ubTempGroupId, false);
 
       if (iThisDistance < iShortestDistance[bTownId]) {
         iShortestDistance[bTownId] = iThisDistance;
@@ -1418,7 +1418,7 @@ function CheckIfEntireTownHasBeenLiberated(bTownId: INT8, sSectorX: INT16, sSect
     }
 
     // set flag even for towns where you can't train militia, useful for knowing Orta/Tixa were previously controlled
-    gTownLoyalty[bTownId].fLiberatedAlready = TRUE;
+    gTownLoyalty[bTownId].fLiberatedAlready = true;
   }
 }
 
@@ -1486,7 +1486,7 @@ function SetTheFirstBattleSector(sSectorValue: INT16): void {
 }
 
 // did first battle take place here
-function DidFirstBattleTakePlaceInThisTown(bTownId: INT8): BOOLEAN {
+function DidFirstBattleTakePlaceInThisTown(bTownId: INT8): boolean {
   let bTownBattleId: INT8 = 0;
 
   // get town id for sector

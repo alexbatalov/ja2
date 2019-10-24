@@ -34,21 +34,21 @@ doesn't use the undo methodology.
 
 */
 
-let gfUndoEnabled: BOOLEAN = FALSE;
+let gfUndoEnabled: boolean = false;
 
 function EnableUndo(): void {
-  gfUndoEnabled = TRUE;
+  gfUndoEnabled = true;
 }
 
 function DisableUndo(): void {
-  gfUndoEnabled = FALSE;
+  gfUndoEnabled = false;
 }
 
 // undo node data element
 interface undo_struct {
   iMapIndex: INT32;
   pMapTile: Pointer<MAP_ELEMENT>;
-  fLightSaved: BOOLEAN; // determines that a light has been saved
+  fLightSaved: boolean; // determines that a light has been saved
   ubLightRadius: UINT8; // the radius of the light to build if undo is called
   ubLightID: UINT8; // only applies if a light was saved.
   ubRoomNum: UINT8;
@@ -63,8 +63,8 @@ interface undo_stack {
 }
 let gpTileUndoStack: Pointer<undo_stack> = null;
 
-let fNewUndoCmd: BOOLEAN = TRUE;
-let gfIgnoreUndoCmdsForLights: BOOLEAN = FALSE;
+let fNewUndoCmd: boolean = true;
+let gfIgnoreUndoCmdsForLights: boolean = false;
 
 // New pre-undo binary tree stuff
 // With this, new undo commands will not duplicate saves in the same command.  This will
@@ -94,7 +94,7 @@ function ClearUndoMapIndexTree(): void {
     DeleteTreeNode(addressof(top));
 }
 
-function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
+function AddMapIndexToTree(usMapIndex: UINT16): boolean {
   let curr: Pointer<MapIndexBinaryTree>;
   let parent: Pointer<MapIndexBinaryTree>;
   if (!top) {
@@ -103,7 +103,7 @@ function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
     top.value.usMapIndex = usMapIndex;
     top.value.left = null;
     top.value.right = null;
-    return TRUE;
+    return true;
   }
   curr = top;
   parent = null;
@@ -113,7 +113,7 @@ function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
   while (curr) {
     parent = curr;
     if (curr.value.usMapIndex == usMapIndex) // found a match, so stop
-      return FALSE;
+      return false;
     // if the mapIndex is < node's mapIndex, then go left, else right
     curr = (usMapIndex < curr.value.usMapIndex) ? curr.value.left : curr.value.right;
   }
@@ -130,7 +130,7 @@ function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
     parent.value.left = curr;
   else
     parent.value.right = curr;
-  return TRUE;
+  return true;
 }
 //*************************************************************************
 //
@@ -138,7 +138,7 @@ function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
 //
 //*************************************************************************
 
-function DeleteTopStackNode(): BOOLEAN {
+function DeleteTopStackNode(): boolean {
   let pCurrent: Pointer<undo_stack>;
 
   pCurrent = gpTileUndoStack;
@@ -149,7 +149,7 @@ function DeleteTopStackNode(): BOOLEAN {
   gpTileUndoStack = gpTileUndoStack.value.pNext;
   MemFree(pCurrent);
 
-  return TRUE;
+  return true;
 }
 
 function DeleteThisStackNode(pThisNode: Pointer<undo_stack>): Pointer<undo_stack> {
@@ -166,7 +166,7 @@ function DeleteThisStackNode(pThisNode: Pointer<undo_stack>): Pointer<undo_stack
   return pNextNode;
 }
 
-function DeleteStackNodeContents(pCurrent: Pointer<undo_stack>): BOOLEAN {
+function DeleteStackNodeContents(pCurrent: Pointer<undo_stack>): boolean {
   let pData: Pointer<undo_struct>;
   let pMapTile: Pointer<MAP_ELEMENT>;
   let pLandNode: Pointer<LEVELNODE>;
@@ -183,7 +183,7 @@ function DeleteStackNodeContents(pCurrent: Pointer<undo_stack>): BOOLEAN {
   pMapTile = pData.value.pMapTile;
 
   if (!pMapTile)
-    return TRUE; // light was saved -- mapelement wasn't saved.
+    return true; // light was saved -- mapelement wasn't saved.
 
   // Free the memory associated with the map tile liked lists
   pLandNode = pMapTile.value.pLandHead;
@@ -260,7 +260,7 @@ function DeleteStackNodeContents(pCurrent: Pointer<undo_stack>): BOOLEAN {
   // Free the undo struct
   MemFree(pData);
 
-  return TRUE;
+  return true;
 }
 
 function CropStackToMaxLength(iMaxCmds: INT32): void {
@@ -318,7 +318,7 @@ function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UI
     return;
   }
 
-  pUndoInfo.value.fLightSaved = TRUE;
+  pUndoInfo.value.fLightSaved = true;
   // if ubLightRadius is 0, then we don't need to save the light information because we
   // will erase it when it comes time to execute the undo command.
   pUndoInfo.value.ubLightRadius = iLightRadius;
@@ -335,14 +335,14 @@ function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UI
   CropStackToMaxLength(MAX_UNDO_COMMAND_LENGTH);
 }
 
-function AddToUndoList(iMapIndex: INT32): BOOLEAN {
+function AddToUndoList(iMapIndex: INT32): boolean {
   /* static */ let iCount: INT32 = 1;
 
   if (!gfUndoEnabled)
-    return FALSE;
+    return false;
   if (fNewUndoCmd) {
     iCount = 0;
-    fNewUndoCmd = FALSE;
+    fNewUndoCmd = false;
   }
 
   // Check to see if the tile in question is even on the visible map, then
@@ -352,13 +352,13 @@ function AddToUndoList(iMapIndex: INT32): BOOLEAN {
 
   {
     if (AddToUndoListCmd(iMapIndex, ++iCount))
-      return TRUE;
+      return true;
     iCount--;
   }
-  return FALSE;
+  return false;
 }
 
-function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): BOOLEAN {
+function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): boolean {
   let pNode: Pointer<undo_stack>;
   let pUndoInfo: Pointer<undo_struct>;
   let pData: Pointer<MAP_ELEMENT>;
@@ -367,18 +367,18 @@ function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): BOOLEAN {
   let ubLoop: UINT8;
 
   if ((pNode = MemAlloc(sizeof(undo_stack))) == null) {
-    return FALSE;
+    return false;
   }
 
   if ((pUndoInfo = MemAlloc(sizeof(undo_struct))) == null) {
     MemFree(pNode);
-    return FALSE;
+    return false;
   }
 
   if ((pData = MemAlloc(sizeof(MAP_ELEMENT))) == null) {
     MemFree(pNode);
     MemFree(pUndoInfo);
-    return FALSE;
+    return false;
   }
 
   // Init map element struct
@@ -394,17 +394,17 @@ function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): BOOLEAN {
   pData.value.sHeight = 0;
 
   // Copy the world map's tile
-  if (CopyMapElementFromWorld(pData, iMapIndex) == FALSE) {
+  if (CopyMapElementFromWorld(pData, iMapIndex) == false) {
     MemFree(pNode);
     MemFree(pUndoInfo);
     MemFree(pData);
-    return FALSE;
+    return false;
   }
 
   // copy the room number information (it's not in the mapelement structure)
   pUndoInfo.value.ubRoomNum = gubWorldRoomInfo[iMapIndex];
 
-  pUndoInfo.value.fLightSaved = FALSE;
+  pUndoInfo.value.fLightSaved = false;
   pUndoInfo.value.ubLightRadius = 0;
   pUndoInfo.value.ubLightID = 0;
   pUndoInfo.value.pMapTile = pData;
@@ -434,7 +434,7 @@ function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): BOOLEAN {
 
   CropStackToMaxLength(MAX_UNDO_COMMAND_LENGTH);
 
-  return TRUE;
+  return true;
 }
 
 function CheckMapIndexForMultiTileStructures(usMapIndex: UINT16): void {
@@ -467,27 +467,27 @@ function CheckForMultiTilesInTreeAndAddToUndoList(node: Pointer<MapIndexBinaryTr
     CheckForMultiTilesInTreeAndAddToUndoList(node.value.right);
 }
 
-function RemoveAllFromUndoList(): BOOLEAN {
+function RemoveAllFromUndoList(): boolean {
   ClearUndoMapIndexTree();
 
   while (gpTileUndoStack != null)
     DeleteTopStackNode();
 
-  return TRUE;
+  return true;
 }
 
-function ExecuteUndoList(): BOOLEAN {
+function ExecuteUndoList(): boolean {
   let iCmdCount: INT32;
   let iCurCount: INT32;
   let iUndoMapIndex: INT32;
-  let fExitGrid: BOOLEAN;
+  let fExitGrid: boolean;
 
   if (!gfUndoEnabled)
-    return FALSE;
+    return false;
 
   // Is there something on the undo stack?
   if (gpTileUndoStack == null)
-    return TRUE;
+    return true;
 
   // Get number of stack entries for this command (top node will tell this)
   iCmdCount = gpTileUndoStack.value.iCmdCount;
@@ -504,14 +504,14 @@ function ExecuteUndoList(): BOOLEAN {
       let sY: INT16;
       // Turn on this flag so that the following code, when executed, doesn't attempt to
       // add lights to the undo list.  That would cause problems...
-      gfIgnoreUndoCmdsForLights = TRUE;
+      gfIgnoreUndoCmdsForLights = true;
       ConvertGridNoToXY(iUndoMapIndex, addressof(sX), addressof(sY));
       if (!gpTileUndoStack.value.pData.value.ubLightRadius)
         RemoveLight(sX, sY);
       else
         PlaceLight(gpTileUndoStack.value.pData.value.ubLightRadius, sX, sY, gpTileUndoStack.value.pData.value.ubLightID);
       // Turn off the flag so lights can again be added to the undo list.
-      gfIgnoreUndoCmdsForLights = FALSE;
+      gfIgnoreUndoCmdsForLights = false;
     } else {
       // We execute the undo command node by simply swapping the contents
       // of the undo's MAP_ELEMENT with the world's element.
@@ -523,7 +523,7 @@ function ExecuteUndoList(): BOOLEAN {
 
       // Now we smooth out the changes...
       // SmoothUndoMapTileTerrain( iUndoMapIndex, gpTileUndoStack->pData->pMapTile );
-      SmoothAllTerrainTypeRadius(iUndoMapIndex, 1, TRUE);
+      SmoothAllTerrainTypeRadius(iUndoMapIndex, 1, true);
     }
 
     // ...trash the top element of the stack...
@@ -547,7 +547,7 @@ function ExecuteUndoList(): BOOLEAN {
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEMENT>): void {
@@ -557,7 +557,7 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
   let pWLand: Pointer<LEVELNODE>;
   let uiCheckType: UINT32;
   let uiWCheckType: UINT32;
-  let fFound: BOOLEAN;
+  let fFound: boolean;
 
   pUndoLand = pUndoTile.value.pLandHead;
   pWorldLand = gpWorldLevelData[iWorldTile].pLandHead;
@@ -567,7 +567,7 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
     pLand = gpWorldLevelData[iWorldTile].pLandHead;
     while (pLand != null) {
       GetTileType(pLand.value.usIndex, addressof(uiCheckType));
-      SmoothTerrainRadius(iWorldTile, uiCheckType, 1, TRUE);
+      SmoothTerrainRadius(iWorldTile, uiCheckType, 1, true);
       pLand = pLand.value.pNext;
     }
   } else if (gpWorldLevelData[iWorldTile].pLandHead == null) {
@@ -575,7 +575,7 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
     pLand = pUndoLand;
     while (pLand != null) {
       GetTileType(pLand.value.usIndex, addressof(uiCheckType));
-      SmoothTerrainRadius(iWorldTile, uiCheckType, 1, TRUE);
+      SmoothTerrainRadius(iWorldTile, uiCheckType, 1, true);
       pLand = pLand.value.pNext;
     }
   } else {
@@ -583,19 +583,19 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
     while (pLand != null) {
       GetTileType(pLand.value.usIndex, addressof(uiCheckType));
 
-      fFound = FALSE;
+      fFound = false;
       pWLand = pWorldLand;
       while (pWLand != null && !fFound) {
         GetTileType(pWLand.value.usIndex, addressof(uiWCheckType));
 
         if (uiCheckType == uiWCheckType)
-          fFound = TRUE;
+          fFound = true;
 
         pWLand = pWLand.value.pNext;
       }
 
       if (!fFound)
-        SmoothTerrainRadius(iWorldTile, uiCheckType, 1, TRUE);
+        SmoothTerrainRadius(iWorldTile, uiCheckType, 1, true);
 
       pLand = pLand.value.pNext;
     }
@@ -604,19 +604,19 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
     while (pWLand != null) {
       GetTileType(pWLand.value.usIndex, addressof(uiWCheckType));
 
-      fFound = FALSE;
+      fFound = false;
       pLand = pUndoLand;
       while (pLand != null && !fFound) {
         GetTileType(pLand.value.usIndex, addressof(uiCheckType));
 
         if (uiCheckType == uiWCheckType)
-          fFound = TRUE;
+          fFound = true;
 
         pLand = pLand.value.pNext;
       }
 
       if (!fFound)
-        SmoothTerrainRadius(iWorldTile, uiWCheckType, 1, TRUE);
+        SmoothTerrainRadius(iWorldTile, uiWCheckType, 1, true);
 
       pWLand = pWLand.value.pNext;
     }
@@ -672,7 +672,7 @@ function DeleteMapElementContentsAfterCreationFail(pNewMapElement: Pointer<MAP_E
                 };
         }; // ( 4 byte union )
 */
-function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex: INT32): BOOLEAN {
+function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex: INT32): boolean {
   let pOldMapElement: Pointer<MAP_ELEMENT>;
   let pOldLevelNode: Pointer<LEVELNODE>;
   let pLevelNode: Pointer<LEVELNODE>;
@@ -697,7 +697,7 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
       pStructure = MemAlloc(sizeof(STRUCTURE));
       if (!pStructure) {
         DeleteMapElementContentsAfterCreationFail(pNewMapElement);
-        return FALSE;
+        return false;
       }
       if (!tail) {
         // first node in structure list
@@ -741,7 +741,7 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
       pLevelNode = MemAlloc(sizeof(LEVELNODE));
       if (!pLevelNode) {
         DeleteMapElementContentsAfterCreationFail(pNewMapElement);
-        return FALSE;
+        return false;
       }
       if (!tail) {
         // first node in levelnode list
@@ -826,10 +826,10 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
   pNewMapElement.value.ubTerrainID = pOldMapElement.value.ubTerrainID;
   pNewMapElement.value.ubReservedSoldierID = pOldMapElement.value.ubReservedSoldierID;
 
-  return TRUE;
+  return true;
 }
 
-function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_ELEMENT>): BOOLEAN {
+function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_ELEMENT>): boolean {
   let pCurrentMapElement: Pointer<MAP_ELEMENT>;
   let TempMapElement: MAP_ELEMENT;
 
@@ -846,7 +846,7 @@ function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_
   pCurrentMapElement.value = pUndoMapElement.value;
   pUndoMapElement.value = TempMapElement;
 
-  return TRUE;
+  return true;
 }
 
 function DetermineUndoState(): void {
@@ -854,7 +854,7 @@ function DetermineUndoState(): void {
   if (!fNewUndoCmd) {
     if (!gfLeftButtonState && !gfCurrentSelectionWithRightButton || !gfRightButtonState && gfCurrentSelectionWithRightButton) {
       // Clear the mapindex binary tree list, and set up flag for new undo command.
-      fNewUndoCmd = TRUE;
+      fNewUndoCmd = true;
       ClearUndoMapIndexTree();
     }
   }

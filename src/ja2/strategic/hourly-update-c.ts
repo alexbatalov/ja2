@@ -83,18 +83,18 @@ function HourlyQuestUpdate(): void {
 
     // reset boxes fought
     for (ubLoop = 0; ubLoop < NUM_BOXERS; ubLoop++) {
-      gfBoxerFought[ubLoop] = FALSE;
+      gfBoxerFought[ubLoop] = false;
     }
 
     // if # of boxing matches the player has won is a multiple of
     // 3, and the boxers haven't rested, then make them rest
     if (gfBoxersResting) {
       // done resting now!
-      gfBoxersResting = FALSE;
+      gfBoxersResting = false;
       gubBoxersRests++;
     } else if (gubBoxingMatchesWon / 3 > gubBoxersRests) {
       // time for the boxers to rest!
-      gfBoxersResting = TRUE;
+      gfBoxersResting = true;
     }
   } else if (uiHour == 2) {
     SetFactFalse(Enum170.FACT_CLUB_OPEN);
@@ -128,11 +128,11 @@ function HourlyLarryUpdate(): void {
   let bLarryItemLoop: INT8;
   let usTemptation: UINT16 = 0;
   let usCashAmount: UINT16;
-  let fBar: BOOLEAN = FALSE;
+  let fBar: boolean = false;
 
-  pSoldier = FindSoldierByProfileID(Enum268.LARRY_NORMAL, TRUE);
+  pSoldier = FindSoldierByProfileID(Enum268.LARRY_NORMAL, true);
   if (!pSoldier) {
-    pSoldier = FindSoldierByProfileID(Enum268.LARRY_DRUNK, TRUE);
+    pSoldier = FindSoldierByProfileID(Enum268.LARRY_DRUNK, true);
   }
   if (pSoldier) {
     if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
@@ -159,7 +159,7 @@ function HourlyLarryUpdate(): void {
     if (usTemptation < BAR_TEMPTATION && GetCurrentBalance() >= Item[Enum225.ALCOHOL].usPrice) {
       if (pSoldier.value.bSectorZ == 0 && ((pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B) || (pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_C) || (pSoldier.value.sSectorX == 5 && pSoldier.value.sSectorY == MAP_ROW_C) || (pSoldier.value.sSectorX == 6 && pSoldier.value.sSectorY == MAP_ROW_C) || (pSoldier.value.sSectorX == 5 && pSoldier.value.sSectorY == MAP_ROW_D) || (pSoldier.value.sSectorX == 2 && pSoldier.value.sSectorY == MAP_ROW_H))) {
         // in a bar!
-        fBar = TRUE;
+        fBar = true;
         usTemptation = BAR_TEMPTATION;
       }
     }
@@ -224,7 +224,7 @@ function HourlyLarryUpdate(): void {
 
 function HourlyCheckIfSlayAloneSoHeCanLeave(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
-  pSoldier = FindSoldierByProfileID(Enum268.SLAY, TRUE);
+  pSoldier = FindSoldierByProfileID(Enum268.SLAY, true);
   if (!pSoldier) {
     return;
   }

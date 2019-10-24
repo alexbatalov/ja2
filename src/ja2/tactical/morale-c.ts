@@ -49,7 +49,7 @@ let gbMoraleEvent: MoraleEvent[] /* [NUM_MORALE_EVENTS] */ = [
   [ Enum235.STRATEGIC_MORALE_EVENT, +5 ], //  MORALE_SEX,
 ];
 
-let gfSomeoneSaidMoraleQuote: BOOLEAN = FALSE;
+let gfSomeoneSaidMoraleQuote: boolean = false;
 
 function GetMoraleModifier(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
@@ -102,7 +102,7 @@ function DecayTacticalMoraleModifiers(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let ubLoop: UINT8;
   let ubLoop2: UINT8;
-  let fHandleNervous: BOOLEAN;
+  let fHandleNervous: boolean;
 
   ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   for (pSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pSoldier++) {
@@ -128,23 +128,23 @@ function DecayTacticalMoraleModifiers(): void {
           if (pSoldier.value.bMorale < 50) {
             if (pSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.value.ubGroupID)) {
               if (NumberOfPeopleInSquad(pSoldier.value.bAssignment) == 1) {
-                fHandleNervous = TRUE;
+                fHandleNervous = true;
               } else {
-                fHandleNervous = FALSE;
+                fHandleNervous = false;
               }
             } else if (pSoldier.value.bActive && pSoldier.value.bInSector) {
               if (DistanceToClosestFriend(pSoldier) > NERVOUS_RADIUS) {
-                fHandleNervous = TRUE;
+                fHandleNervous = true;
               } else {
-                fHandleNervous = FALSE;
+                fHandleNervous = false;
               }
             } else {
               // look for anyone else in same sector
-              fHandleNervous = TRUE;
+              fHandleNervous = true;
               for (ubLoop2 = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubLoop2 <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop2++) {
                 if (MercPtrs[ubLoop2] != pSoldier && MercPtrs[ubLoop2].value.bActive && MercPtrs[ubLoop2].value.sSectorX == pSoldier.value.sSectorX && MercPtrs[ubLoop2].value.sSectorY == pSoldier.value.sSectorY && MercPtrs[ubLoop2].value.bSectorZ == pSoldier.value.bSectorZ) {
                   // found someone!
-                  fHandleNervous = FALSE;
+                  fHandleNervous = false;
                   break;
                 }
               }
@@ -213,7 +213,7 @@ function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bMorale = iActualMorale;
 
   // update mapscreen as needed
-  fCharacterInfoPanelDirty = TRUE;
+  fCharacterInfoPanelDirty = true;
 }
 
 function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMoraleMod: INT8): void {
@@ -301,7 +301,7 @@ function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMor
       if (pSoldier.value.bMorale < 35) {
         // Have we said this quote yet?
         if (!(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_LOW_MORAL)) {
-          gfSomeoneSaidMoraleQuote = TRUE;
+          gfSomeoneSaidMoraleQuote = true;
 
           // ATE: Amde it a DELAYED QUOTE - will be delayed by the dialogue Q until it's our turn...
           DelayedTacticalCharacterDialogue(pSoldier, Enum202.QUOTE_STARTING_TO_WHINE);
@@ -326,7 +326,7 @@ function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, s
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let pProfile: Pointer<MERCPROFILESTRUCT>;
 
-  gfSomeoneSaidMoraleQuote = FALSE;
+  gfSomeoneSaidMoraleQuote = false;
 
   // NOTE: Many morale events are NOT attached to a specific player soldier at all!
   // Those that do need it have Asserts on a case by case basis below
@@ -589,9 +589,9 @@ function HourlyMoraleUpdate(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pOtherSoldier: Pointer<SOLDIERTYPE>;
   let pProfile: Pointer<MERCPROFILESTRUCT>;
-  let fSameGroupOnly: BOOLEAN;
+  let fSameGroupOnly: boolean;
   /* static */ let bStrategicMoraleUpdateCounter: INT8 = 0;
-  let fFoundHated: BOOLEAN = FALSE;
+  let fFoundHated: boolean = false;
   let bHated: INT8;
 
   bMercID = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -600,18 +600,18 @@ function HourlyMoraleUpdate(): void {
   // loop through all mercs to calculate their morale
   for (pSoldier = MercPtrs[bMercID]; bMercID <= bLastTeamID; bMercID++, pSoldier++) {
     // if the merc is active, in Arulco, and conscious, not POW
-    if (pSoldier.value.bActive && pSoldier.value.ubProfile != NO_PROFILE && !(pSoldier.value.bAssignment == Enum117.IN_TRANSIT || pSoldier.value.fMercAsleep == TRUE || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+    if (pSoldier.value.bActive && pSoldier.value.ubProfile != NO_PROFILE && !(pSoldier.value.bAssignment == Enum117.IN_TRANSIT || pSoldier.value.fMercAsleep == true || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
       // calculate the guy's opinion of the people he is with
       pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
       // if we're moving
       if (pSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.value.ubGroupID)) {
         // we only check our opinions of people in our squad
-        fSameGroupOnly = TRUE;
+        fSameGroupOnly = true;
       } else {
-        fSameGroupOnly = FALSE;
+        fSameGroupOnly = false;
       }
-      fFoundHated = FALSE;
+      fFoundHated = false;
 
       // reset counts to calculate average opinion
       iTotalOpinions = 0;
@@ -624,7 +624,7 @@ function HourlyMoraleUpdate(): void {
       bOtherID = gTacticalStatus.Team[gbPlayerNum].bFirstID;
       for (pOtherSoldier = MercPtrs[bOtherID]; bOtherID <= bLastTeamID; bOtherID++, pOtherSoldier++) {
         // skip past ourselves and all inactive mercs
-        if (bOtherID != bMercID && pOtherSoldier.value.bActive && pOtherSoldier.value.ubProfile != NO_PROFILE && !(pOtherSoldier.value.bAssignment == Enum117.IN_TRANSIT || pOtherSoldier.value.fMercAsleep == TRUE || pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD || pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+        if (bOtherID != bMercID && pOtherSoldier.value.bActive && pOtherSoldier.value.ubProfile != NO_PROFILE && !(pOtherSoldier.value.bAssignment == Enum117.IN_TRANSIT || pOtherSoldier.value.fMercAsleep == true || pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD || pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
           if (fSameGroupOnly) {
             // all we have to check is the group ID
             if (pSoldier.value.ubGroupID != pOtherSoldier.value.ubGroupID) {
@@ -646,7 +646,7 @@ function HourlyMoraleUpdate(): void {
             bHated = WhichHated(pSoldier.value.ubProfile, pOtherSoldier.value.ubProfile);
             if (bHated >= 2) {
               // learn to hate which has become full-blown hatred, full strength
-              fFoundHated = TRUE;
+              fFoundHated = true;
               break;
             } else {
               // scale according to how close to we are to snapping
@@ -657,7 +657,7 @@ function HourlyMoraleUpdate(): void {
 
               if (pProfile.value.bHatedCount[bHated] <= pProfile.value.bHatedTime[bHated] / 2) {
                 // Augh, we're teamed with someone we hate!  We HATE this!!  Ignore everyone else!
-                fFoundHated = TRUE;
+                fFoundHated = true;
                 break;
               }
               // otherwise just mix this opinion in with everyone else...

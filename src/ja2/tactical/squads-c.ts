@@ -12,7 +12,7 @@ let sDeadMercs: INT16[][] /* [NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD] */
 // the movement group ids
 let SquadMovementGroups: INT8[] /* [NUMBER_OF_SQUADS] */;
 
-let fExitingVehicleToSquad: BOOLEAN = FALSE;
+let fExitingVehicleToSquad: boolean = false;
 
 let iCurrentTacticalSquad: INT32 = Enum275.FIRST_SQUAD;
 
@@ -34,7 +34,7 @@ function InitSquads(): void {
 
     // Set persistent....
     pGroup = GetGroup(SquadMovementGroups[iCounter]);
-    pGroup.value.fPersistant = TRUE;
+    pGroup.value.fPersistant = true;
   }
 
   memset(sDeadMercs, -1, sizeof(INT16) * Enum275.NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
@@ -42,7 +42,7 @@ function InitSquads(): void {
   return;
 }
 
-function IsThisSquadFull(bSquadValue: INT8): BOOLEAN {
+function IsThisSquadFull(bSquadValue: INT8): boolean {
   let iCounter: INT32 = 0;
 
   // run through entries in the squad list, make sure there is a free entry
@@ -50,43 +50,43 @@ function IsThisSquadFull(bSquadValue: INT8): BOOLEAN {
     // check this slot
     if (Squad[bSquadValue][iCounter] == null) {
       // a free slot found - not full
-      return FALSE;
+      return false;
     }
   }
 
   // no free slots - it's full
-  return TRUE;
+  return true;
 }
 
 function GetFirstEmptySquad(): INT8 {
   let ubCounter: UINT8 = 0;
 
   for (ubCounter = 0; ubCounter < Enum275.NUMBER_OF_SQUADS; ubCounter++) {
-    if (SquadIsEmpty(ubCounter) == TRUE) {
+    if (SquadIsEmpty(ubCounter) == true) {
       // empty squad, return value
       return ubCounter;
     }
   }
 
   // not found - none are completely empty (shouldn't ever happen!)
-  Assert(FALSE);
+  Assert(false);
   return -1;
 }
 
-function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): BOOLEAN {
+function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): boolean {
   let bCounter: INT8 = 0;
   let sX: INT16;
   let sY: INT16;
   let bZ: INT8;
   //	BOOLEAN fBetweenSectors = FALSE;
   let pGroup: Pointer<GROUP>;
-  let fNewSquad: BOOLEAN;
+  let fNewSquad: boolean;
 
   // add character to squad...return success or failure
   // run through list of people in squad, find first free slo
 
   if (fExitingVehicleToSquad) {
-    return FALSE;
+    return false;
   }
 
   // ATE: If any vehicle exists in this squad AND we're not set to
@@ -96,32 +96,32 @@ function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8
     // NB: We obviously need to make sure that REAL passengers have their
     // flags set before adding them to a squad!
     if (!(pCharacter.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER | SOLDIER_VEHICLE))) {
-      return FALSE;
+      return false;
     }
   }
 
   // if squad is on the move, can't add someone
-  if (IsThisSquadOnTheMove(bSquadValue) == TRUE) {
+  if (IsThisSquadOnTheMove(bSquadValue) == true) {
     // nope, go away now
-    return FALSE;
+    return false;
   }
 
   for (bCounter = 0; bCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; bCounter++) {
     // check if on current squad and current slot?
     if (Squad[bSquadValue][bCounter] == pCharacter) {
       // 'successful of sorts, if there, then he's 'added'
-      return TRUE;
+      return true;
     }
 
     // free slot, add here
     if (Squad[bSquadValue][bCounter] == null) {
       // check if squad empty, if not check sector x,y,z are the same as this guys
-      if (SquadIsEmpty(bSquadValue) == FALSE) {
+      if (SquadIsEmpty(bSquadValue) == false) {
         GetLocationOfSquad(addressof(sX), addressof(sY), addressof(bZ), bSquadValue);
 
         // if not same, return false
         if ((pCharacter.value.sSectorX != sX) || (pCharacter.value.sSectorY != sY) || (pCharacter.value.bSectorZ != bZ)) {
-          return FALSE;
+          return false;
         }
         // remove them
         RemoveCharacterFromSquads(pCharacter);
@@ -180,14 +180,14 @@ function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8
 
           if (pGroup) {
             // set where it is and where it's going, then make it arrive there.  Don't check for battle
-            PlaceGroupInSector(SquadMovementGroups[bSquadValue], pGroup.value.ubPrevX, pGroup.value.ubPrevY, pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ, FALSE);
+            PlaceGroupInSector(SquadMovementGroups[bSquadValue], pGroup.value.ubPrevX, pGroup.value.ubPrevY, pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ, false);
           }
         }
       } else if ((pCharacter.value.bAssignment == Enum117.VEHICLE) && (pCharacter.value.iVehicleId != -1)) {
-        fExitingVehicleToSquad = TRUE;
+        fExitingVehicleToSquad = true;
         // remove from vehicle
         TakeSoldierOutOfVehicle(pCharacter);
-        fExitingVehicleToSquad = FALSE;
+        fExitingVehicleToSquad = false;
 
         AddPlayerToGroup(SquadMovementGroups[bSquadValue], pCharacter);
         SetGroupSectorValue(pCharacter.value.sSectorX, pCharacter.value.sSectorY, pCharacter.value.bSectorZ, SquadMovementGroups[bSquadValue]);
@@ -205,7 +205,7 @@ function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8
         // check to see if we should wake them up
         if (pCharacter.value.fMercAsleep) {
           // try to wake him up
-          SetMercAwake(pCharacter, FALSE, FALSE);
+          SetMercAwake(pCharacter, false, false);
         }
         SetTimeOfAssignmentChangeForMerc(pCharacter);
       }
@@ -218,7 +218,7 @@ function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8
 
       // if current tactical sqaud...upadte panel
       if (NumberOfPeopleInSquad(iCurrentTacticalSquad) == 0) {
-        SetCurrentSquad(bSquadValue, TRUE);
+        SetCurrentSquad(bSquadValue, true);
       }
 
       if (bSquadValue == iCurrentTacticalSquad) {
@@ -226,18 +226,18 @@ function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8
       }
 
       if (pCharacter.value.ubID == gusSelectedSoldier) {
-        SetCurrentSquad(bSquadValue, TRUE);
+        SetCurrentSquad(bSquadValue, true);
       }
 
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 // find the first slot we can fit the guy in
-function AddCharacterToAnySquad(pCharacter: Pointer<SOLDIERTYPE>): BOOLEAN {
+function AddCharacterToAnySquad(pCharacter: Pointer<SOLDIERTYPE>): boolean {
   // add character to any squad, if character is assigned to a squad, returns TRUE
   let bCounter: INT8 = 0;
   let bFirstEmptySquad: INT8 = -1;
@@ -247,9 +247,9 @@ function AddCharacterToAnySquad(pCharacter: Pointer<SOLDIERTYPE>): BOOLEAN {
 
   // first look for a compatible NON-EMPTY squad (don't start new squad if we don't have to)
   for (bCounter = 0; bCounter < Enum275.NUMBER_OF_SQUADS; bCounter++) {
-    if (SquadIsEmpty(bCounter) == FALSE) {
-      if (AddCharacterToSquad(pCharacter, bCounter) == TRUE) {
-        return TRUE;
+    if (SquadIsEmpty(bCounter) == false) {
+      if (AddCharacterToSquad(pCharacter, bCounter) == true) {
+        return true;
       }
     } else {
       if (bFirstEmptySquad == -1) {
@@ -262,14 +262,14 @@ function AddCharacterToAnySquad(pCharacter: Pointer<SOLDIERTYPE>): BOOLEAN {
 
   // try the first empty one (and there better be one)
   if (bFirstEmptySquad != -1) {
-    if (AddCharacterToSquad(pCharacter, bFirstEmptySquad) == TRUE) {
-      return TRUE;
+    if (AddCharacterToSquad(pCharacter, bFirstEmptySquad) == true) {
+      return true;
     }
   }
 
   // should never happen!
-  Assert(FALSE);
-  return FALSE;
+  Assert(false);
+  return false;
 }
 
 // find the first slot we can fit the guy in
@@ -283,8 +283,8 @@ function AddCharacterToUniqueSquad(pCharacter: Pointer<SOLDIERTYPE>): INT8 {
   RemoveCharacterFromSquads(pCharacter);
 
   for (bCounter = 0; bCounter < Enum275.NUMBER_OF_SQUADS; bCounter++) {
-    if (SquadIsEmpty(bCounter) == TRUE) {
-      if (AddCharacterToSquad(pCharacter, bCounter) == TRUE) {
+    if (SquadIsEmpty(bCounter) == true) {
+      if (AddCharacterToSquad(pCharacter, bCounter) == true) {
         return bCounter;
       }
     }
@@ -293,21 +293,21 @@ function AddCharacterToUniqueSquad(pCharacter: Pointer<SOLDIERTYPE>): INT8 {
   return -1;
 }
 
-function SquadIsEmpty(bSquadValue: INT8): BOOLEAN {
+function SquadIsEmpty(bSquadValue: INT8): boolean {
   // run through this squad's slots and find if they ALL are empty
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     if (Squad[bSquadValue][iCounter] != null) {
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 // find and remove characters from any squad
-function RemoveCharacterFromSquads(pCharacter: Pointer<SOLDIERTYPE>): BOOLEAN {
+function RemoveCharacterFromSquads(pCharacter: Pointer<SOLDIERTYPE>): boolean {
   let iCounterA: INT32 = 0;
   let iCounter: INT32 = 0;
   let ubGroupId: UINT8 = 0;
@@ -350,16 +350,16 @@ function RemoveCharacterFromSquads(pCharacter: Pointer<SOLDIERTYPE>): BOOLEAN {
           UpdateCurrentlySelectedMerc(pCharacter, iCounterA);
         }
 
-        return TRUE;
+        return true;
       }
     }
   }
 
   // not found
-  return FALSE;
+  return false;
 }
 
-function RemoveCharacterFromASquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): BOOLEAN {
+function RemoveCharacterFromASquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): boolean {
   let iCounter: INT32 = 0;
   let iCounterA: INT32 = 0;
 
@@ -382,27 +382,27 @@ function RemoveCharacterFromASquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue
       RebuildSquad(bSquadValue);
 
       // found
-      return TRUE;
+      return true;
     }
   }
 
   // not found
-  return FALSE;
+  return false;
 }
 
-function IsCharacterInSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): BOOLEAN {
+function IsCharacterInSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): boolean {
   let iCounter: INT32 = 0;
   // find character in particular squad..return if successful
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     // check if on current squad and current slot?
     if (Squad[bSquadValue][iCounter] == pCharacter) {
       // found
-      return TRUE;
+      return true;
     }
   }
 
   // not found
-  return FALSE;
+  return false;
 }
 
 function SlotCharacterIsInSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): INT8 {
@@ -484,7 +484,7 @@ function NumberOfNonEPCsInSquad(bSquadValue: INT8): INT8 {
   return bSquadCount;
 }
 
-function IsRobotControllerInSquad(bSquadValue: INT8): BOOLEAN {
+function IsRobotControllerInSquad(bSquadValue: INT8): boolean {
   let bCounter: INT8 = 0;
 
   if (bSquadValue == NO_CURRENT_SQUAD) {
@@ -496,15 +496,15 @@ function IsRobotControllerInSquad(bSquadValue: INT8): BOOLEAN {
     // valid slot?
     if ((Squad[bSquadValue][bCounter] != null) && ControllingRobot(Squad[bSquadValue][bCounter])) {
       // yep
-      return TRUE;
+      return true;
     }
   }
 
   // return number found
-  return FALSE;
+  return false;
 }
 
-function SectorSquadIsIn(bSquadValue: INT8, sMapX: Pointer<INT16>, sMapY: Pointer<INT16>, sMapZ: Pointer<INT16>): BOOLEAN {
+function SectorSquadIsIn(bSquadValue: INT8, sMapX: Pointer<INT16>, sMapY: Pointer<INT16>, sMapZ: Pointer<INT16>): boolean {
   // returns if there is anyone on the squad and what sector ( strategic ) they are in
   let bCounter: INT8 = 0;
 
@@ -517,15 +517,15 @@ function SectorSquadIsIn(bSquadValue: INT8, sMapX: Pointer<INT16>, sMapY: Pointe
       sMapY.value = Squad[bSquadValue][bCounter].value.sSectorY;
       sMapZ.value = Squad[bSquadValue][bCounter].value.bSectorZ;
 
-      return TRUE;
+      return true;
     }
   }
 
   // return there is no squad
-  return FALSE;
+  return false;
 }
 
-function CopyPathOfSquadToCharacter(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): BOOLEAN {
+function CopyPathOfSquadToCharacter(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): boolean {
   // copy path from squad to character
   let bCounter: INT8 = 0;
 
@@ -535,17 +535,17 @@ function CopyPathOfSquadToCharacter(pCharacter: Pointer<SOLDIERTYPE>, bSquadValu
       pCharacter.value.pMercPath = CopyPaths(Squad[bSquadValue][bCounter].value.pMercPath, pCharacter.value.pMercPath);
 
       // return success
-      return TRUE;
+      return true;
     }
   }
 
   // return failure
-  return FALSE;
+  return false;
 }
 
-function CopyPathOfCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): BOOLEAN {
+function CopyPathOfCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8): boolean {
   // copy path of this character to members of squad
-  let fSuccess: BOOLEAN = FALSE;
+  let fSuccess: boolean = false;
   let bCounter: INT8 = 0;
 
   // anyone else on squad?
@@ -553,7 +553,7 @@ function CopyPathOfCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValu
     // nope
 
     // return failure
-    return FALSE;
+    return false;
   }
 
   // copy each person on squad, skip this character
@@ -568,7 +568,7 @@ function CopyPathOfCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValu
       Squad[bSquadValue][bCounter].value.pMercPath = CopyPaths(pCharacter.value.pMercPath, Squad[bSquadValue][bCounter].value.pMercPath);
 
       // successful at least once
-      fSuccess = TRUE;
+      fSuccess = true;
     }
   }
 
@@ -582,14 +582,14 @@ function CurrentSquad(): INT32 {
   return iCurrentTacticalSquad;
 }
 
-function SetCurrentSquad(iCurrentSquad: INT32, fForce: BOOLEAN): BOOLEAN {
+function SetCurrentSquad(iCurrentSquad: INT32, fForce: boolean): boolean {
   // set the current tactical squad
   let iCounter: INT32 = 0;
 
   // ARM: can't call SetCurrentSquad() in mapscreen, it calls SelectSoldier(), that will initialize interface panels!!!
   // ATE: Adjusted conditions a bit ( sometimes were not getting selected )
   if (guiCurrentScreen == Enum26.LAPTOP_SCREEN || guiCurrentScreen == Enum26.MAP_SCREEN) {
-    return FALSE;
+    return false;
   }
 
   // ATE; Added to allow us to have NO current squad
@@ -603,18 +603,18 @@ function SetCurrentSquad(iCurrentSquad: INT32, fForce: BOOLEAN): BOOLEAN {
     // set all auto faces inactive
     SetAllAutoFacesInactive();
 
-    return FALSE;
+    return false;
   }
 
   // check if valid value passed
   if ((iCurrentSquad >= Enum275.NUMBER_OF_SQUADS) || (iCurrentSquad < 0)) {
     // no
-    return FALSE;
+    return false;
   }
 
   // check if squad is current
   if (iCurrentSquad == iCurrentTacticalSquad && !fForce) {
-    return TRUE;
+    return true;
   }
 
   // set current squad and return success
@@ -639,14 +639,14 @@ function SetCurrentSquad(iCurrentSquad: INT32, fForce: BOOLEAN): BOOLEAN {
   if (gusSelectedSoldier != NO_SOLDIER) {
     if (Menptr[gusSelectedSoldier].bAssignment != iCurrentTacticalSquad) {
       // ATE: Changed this to FALSE for ackoledgement sounds.. sounds bad if just starting/entering sector..
-      SelectSoldier(Squad[iCurrentTacticalSquad][0].value.ubID, FALSE, TRUE);
+      SelectSoldier(Squad[iCurrentTacticalSquad][0].value.ubID, false, true);
     }
   } else {
     // ATE: Changed this to FALSE for ackoledgement sounds.. sounds bad if just starting/entering sector..
-    SelectSoldier(Squad[iCurrentTacticalSquad][0].value.ubID, FALSE, TRUE);
+    SelectSoldier(Squad[iCurrentTacticalSquad][0].value.ubID, false, true);
   }
 
-  return TRUE;
+  return true;
 }
 
 function RebuildCurrentSquad(): void {
@@ -662,7 +662,7 @@ function RebuildCurrentSquad(): void {
   }
 
   // set default squad..just inc ase we no longer have a valid squad
-  SetDefaultSquadOnSectorEntry(TRUE);
+  SetDefaultSquadOnSectorEntry(true);
 
   // cleat list
   RemoveAllPlayersFromSlot();
@@ -682,7 +682,7 @@ function RebuildCurrentSquad(): void {
 
     for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
       if (sDeadMercs[iCurrentTacticalSquad][iCounter] != -1) {
-        pDeadSoldier = FindSoldierByProfileID((sDeadMercs[iCurrentTacticalSquad][iCounter]), TRUE);
+        pDeadSoldier = FindSoldierByProfileID((sDeadMercs[iCurrentTacticalSquad][iCounter]), true);
 
         if (pDeadSoldier) {
           // squad set, now add soldiers in
@@ -722,14 +722,14 @@ function ExamineCurrentSquadLights(): void {
   //}
 }
 
-function GetSoldiersInSquad(iCurrentSquad: INT32, pSoldierArray: Pointer<SOLDIERTYPE>[] /* [] */): BOOLEAN {
+function GetSoldiersInSquad(iCurrentSquad: INT32, pSoldierArray: Pointer<SOLDIERTYPE>[] /* [] */): boolean {
   let iCounter: INT32 = 0;
   // will get the soldiertype pts for every merc in this squad
 
   // check if valid value passed
   if ((iCurrentSquad >= Enum275.NUMBER_OF_SQUADS) || (iCurrentSquad < 0)) {
     // no
-    return FALSE;
+    return false;
   }
 
   // copy pts values over
@@ -737,37 +737,37 @@ function GetSoldiersInSquad(iCurrentSquad: INT32, pSoldierArray: Pointer<SOLDIER
     pSoldierArray[iCounter] = Squad[iCurrentSquad][iCounter];
   }
 
-  return TRUE;
+  return true;
 }
 
-function IsSquadOnCurrentTacticalMap(iCurrentSquad: INT32): BOOLEAN {
+function IsSquadOnCurrentTacticalMap(iCurrentSquad: INT32): boolean {
   let iCounter: INT32 = 0;
   // check to see if this squad is on the current map
 
   // check if valid value passed
   if ((iCurrentSquad >= Enum275.NUMBER_OF_SQUADS) || (iCurrentSquad < 0)) {
     // no
-    return FALSE;
+    return false;
   }
 
   // go through memebrs of squad...if anyone on this map, return true
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     if (Squad[iCurrentSquad][iCounter] != null) {
       // ATE; Added more checks here for being in sector ( fBetweenSectors and SectorZ )
-      if ((Squad[iCurrentSquad][iCounter].value.sSectorX == gWorldSectorX) && (Squad[iCurrentSquad][iCounter].value.sSectorY == gWorldSectorY) && Squad[iCurrentSquad][iCounter].value.bSectorZ == gbWorldSectorZ && Squad[iCurrentSquad][iCounter].value.fBetweenSectors != TRUE) {
-        return TRUE;
+      if ((Squad[iCurrentSquad][iCounter].value.sSectorX == gWorldSectorX) && (Squad[iCurrentSquad][iCounter].value.sSectorY == gWorldSectorY) && Squad[iCurrentSquad][iCounter].value.bSectorZ == gbWorldSectorZ && Squad[iCurrentSquad][iCounter].value.fBetweenSectors != true) {
+        return true;
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function SetDefaultSquadOnSectorEntry(fForce: BOOLEAN): void {
+function SetDefaultSquadOnSectorEntry(fForce: boolean): void {
   let iCounter: INT32 = 0;
   // check if selected squad is in current sector, if so, do nothing, if not...first first case that they are
 
-  if (IsSquadOnCurrentTacticalMap(iCurrentTacticalSquad) == TRUE) {
+  if (IsSquadOnCurrentTacticalMap(iCurrentTacticalSquad) == true) {
     // is in sector, leave
     return;
   }
@@ -776,7 +776,7 @@ function SetDefaultSquadOnSectorEntry(fForce: BOOLEAN): void {
 
   // find first squad availiable
   for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
-    if (IsSquadOnCurrentTacticalMap(iCounter) == TRUE) {
+    if (IsSquadOnCurrentTacticalMap(iCounter) == true) {
       // squad in sector...set as current
       SetCurrentSquad(iCounter, fForce);
 
@@ -785,7 +785,7 @@ function SetDefaultSquadOnSectorEntry(fForce: BOOLEAN): void {
   }
 
   // If here, set to no current squad
-  SetCurrentSquad(NO_CURRENT_SQUAD, FALSE);
+  SetCurrentSquad(NO_CURRENT_SQUAD, false);
 
   return;
 }
@@ -837,7 +837,7 @@ function SetSquadPositionBetweenSectors(ubNextX: UINT8, ubNextY: UINT8, ubPrevX:
   return;
 }
 
-function SaveSquadInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
+function SaveSquadInfoToSavedGameFile(hFile: HWFILE): boolean {
   let sSquadSaveStruct: SAVE_SQUAD_INFO_STRUCT[][] /* [NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD] */;
   let uiNumBytesWritten: UINT32 = 0;
   let uiSaveSize: UINT32 = 0;
@@ -859,19 +859,19 @@ function SaveSquadInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
 
   FileWrite(hFile, sSquadSaveStruct, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // Save all the squad movement id's
   FileWrite(hFile, SquadMovementGroups, sizeof(INT8) * Enum275.NUMBER_OF_SQUADS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT8) * Enum275.NUMBER_OF_SQUADS) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function LoadSquadInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
+function LoadSquadInfoFromSavedGameFile(hFile: HWFILE): boolean {
   let sSquadSaveStruct: SAVE_SQUAD_INFO_STRUCT[][] /* [NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD] */;
   let uiNumBytesRead: UINT32 = 0;
   let uiSaveSize: UINT32 = 0;
@@ -893,7 +893,7 @@ function LoadSquadInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 
   FileRead(hFile, sSquadSaveStruct, uiSaveSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiSaveSize) {
-    return FALSE;
+    return false;
   }
 
   // Loop through the array loaded in
@@ -909,10 +909,10 @@ function LoadSquadInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   // Load in the Squad movement id's
   FileRead(hFile, SquadMovementGroups, sizeof(INT8) * Enum275.NUMBER_OF_SQUADS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT8) * Enum275.NUMBER_OF_SQUADS) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function GetLocationOfSquad(sX: Pointer<INT16>, sY: Pointer<INT16>, bZ: Pointer<INT8>, bSquadValue: INT8): void {
@@ -931,7 +931,7 @@ function GetLocationOfSquad(sX: Pointer<INT16>, sY: Pointer<INT16>, bZ: Pointer<
   return;
 }
 
-function IsThisSquadOnTheMove(bSquadValue: INT8): BOOLEAN {
+function IsThisSquadOnTheMove(bSquadValue: INT8): boolean {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
@@ -940,7 +940,7 @@ function IsThisSquadOnTheMove(bSquadValue: INT8): BOOLEAN {
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 // rebuild this squad after someone has been removed, to 'squeeze' together any empty spots
@@ -972,10 +972,10 @@ function UpdateCurrentlySelectedMerc(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue
 
   // Are we the selected guy?
   if (gusSelectedSoldier == pSoldier.value.ubID) {
-    ubID = FindNextActiveAndAliveMerc(pSoldier, FALSE, FALSE);
+    ubID = FindNextActiveAndAliveMerc(pSoldier, false, false);
 
     if (ubID != NOBODY && ubID != gusSelectedSoldier) {
-      SelectSoldier(ubID, FALSE, FALSE);
+      SelectSoldier(ubID, false, false);
     } else {
       gusSelectedSoldier = NOBODY;
 
@@ -987,73 +987,73 @@ function UpdateCurrentlySelectedMerc(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue
   return;
 }
 
-function IsSquadInSector(pSoldier: Pointer<SOLDIERTYPE>, ubSquad: UINT8): BOOLEAN {
+function IsSquadInSector(pSoldier: Pointer<SOLDIERTYPE>, ubSquad: UINT8): boolean {
   if (pSoldier == null) {
-    return FALSE;
+    return false;
   }
 
-  if (pSoldier.value.fBetweenSectors == TRUE) {
-    return FALSE;
+  if (pSoldier.value.fBetweenSectors == true) {
+    return false;
   }
 
   if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
-    return FALSE;
+    return false;
   }
 
   if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
-    return FALSE;
+    return false;
   }
 
-  if (SquadIsEmpty(ubSquad) == TRUE) {
-    return TRUE;
+  if (SquadIsEmpty(ubSquad) == true) {
+    return true;
   }
 
   if ((pSoldier.value.sSectorX != Squad[ubSquad][0].value.sSectorX) || (pSoldier.value.sSectorY != Squad[ubSquad][0].value.sSectorY) || (pSoldier.value.bSectorZ != Squad[ubSquad][0].value.bSectorZ)) {
-    return FALSE;
+    return false;
   }
 
-  if (Squad[ubSquad][0].value.fBetweenSectors == TRUE) {
-    return FALSE;
+  if (Squad[ubSquad][0].value.fBetweenSectors == true) {
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
-function IsAnyMercOnSquadAsleep(ubSquadValue: UINT8): BOOLEAN {
+function IsAnyMercOnSquadAsleep(ubSquadValue: UINT8): boolean {
   let iCounter: INT32 = 0;
 
-  if (SquadIsEmpty(ubSquadValue) == TRUE) {
-    return FALSE;
+  if (SquadIsEmpty(ubSquadValue) == true) {
+    return false;
   }
 
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD - 1; iCounter++) {
     if (Squad[ubSquadValue][iCounter] != null) {
       if (Squad[ubSquadValue][iCounter].value.fMercAsleep) {
-        return TRUE;
+        return true;
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function AddDeadCharacterToSquadDeadGuys(pSoldier: Pointer<SOLDIERTYPE>, iSquadValue: INT32): BOOLEAN {
+function AddDeadCharacterToSquadDeadGuys(pSoldier: Pointer<SOLDIERTYPE>, iSquadValue: INT32): boolean {
   let iCounter: INT32 = 0;
   let pTempSoldier: Pointer<SOLDIERTYPE> = null;
 
   // is dead guy in any squad
-  if (IsDeadGuyOnAnySquad(pSoldier) == TRUE) {
-    return TRUE;
+  if (IsDeadGuyOnAnySquad(pSoldier) == true) {
+    return true;
   }
 
   // first find out if the guy is in the list
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     // valid soldier?
     if (sDeadMercs[iSquadValue][iCounter] != -1) {
-      pTempSoldier = FindSoldierByProfileID((sDeadMercs[iSquadValue][iCounter]), TRUE);
+      pTempSoldier = FindSoldierByProfileID((sDeadMercs[iSquadValue][iCounter]), true);
 
       if (pSoldier == pTempSoldier) {
-        return TRUE;
+        return true;
       }
     }
   }
@@ -1063,26 +1063,26 @@ function AddDeadCharacterToSquadDeadGuys(pSoldier: Pointer<SOLDIERTYPE>, iSquadV
     // valid soldier?
     if (sDeadMercs[iSquadValue][iCounter] != -1) {
       // yep
-      pTempSoldier = FindSoldierByProfileID((sDeadMercs[iSquadValue][iCounter]), TRUE);
+      pTempSoldier = FindSoldierByProfileID((sDeadMercs[iSquadValue][iCounter]), true);
 
       // valid soldier?
       if (pTempSoldier == null) {
         // nope
         sDeadMercs[iSquadValue][iCounter] = pSoldier.value.ubProfile;
-        return TRUE;
+        return true;
       }
     } else {
       // nope
       sDeadMercs[iSquadValue][iCounter] = pSoldier.value.ubProfile;
-      return TRUE;
+      return true;
     }
   }
 
   // no go
-  return FALSE;
+  return false;
 }
 
-function IsDeadGuyOnAnySquad(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function IsDeadGuyOnAnySquad(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iCounterA: INT32 = 0;
   let iCounter: INT32 = 0;
 
@@ -1091,15 +1091,15 @@ function IsDeadGuyOnAnySquad(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     // slot?
     for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
       if (sDeadMercs[iCounterA][iCounter] == pSoldier.value.ubProfile) {
-        return TRUE;
+        return true;
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsDeadGuyInThisSquadSlot(bSlotId: INT8, bSquadValue: INT8, bNumberOfDeadGuysSoFar: Pointer<INT8>): BOOLEAN {
+function IsDeadGuyInThisSquadSlot(bSlotId: INT8, bSquadValue: INT8, bNumberOfDeadGuysSoFar: Pointer<INT8>): boolean {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
 
@@ -1118,67 +1118,67 @@ function IsDeadGuyInThisSquadSlot(bSlotId: INT8, bSquadValue: INT8, bNumberOfDea
         // far enough, start checking
         bNumberOfDeadGuysSoFar++;
 
-        return TRUE;
+        return true;
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function SoldierIsDeadAndWasOnSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): BOOLEAN {
+function SoldierIsDeadAndWasOnSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): boolean {
   let iCounter: INT32 = 0;
 
   if (bSquadValue == NO_CURRENT_SQUAD) {
-    return FALSE;
+    return false;
   }
 
   // check if guy is on squad
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     if (pSoldier.value.ubProfile == sDeadMercs[bSquadValue][iCounter]) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function ResetDeadSquadMemberList(iSquadValue: INT32): BOOLEAN {
+function ResetDeadSquadMemberList(iSquadValue: INT32): boolean {
   memset(sDeadMercs[iSquadValue], -1, sizeof(INT16) * NUMBER_OF_SOLDIERS_PER_SQUAD);
 
-  return TRUE;
+  return true;
 }
 
 // this passed  soldier on the current squad int he tactical map
-function IsMercOnCurrentSquad(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function IsMercOnCurrentSquad(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iCounter: INT32 = 0;
 
   // valid soldier?
   if (pSoldier == null) {
     // no
-    return FALSE;
+    return false;
   }
 
   // active grunt?
-  if (pSoldier.value.bActive == FALSE) {
+  if (pSoldier.value.bActive == false) {
     // no
-    return FALSE;
+    return false;
   }
 
   // current squad valid?
   if (iCurrentTacticalSquad >= Enum275.NUMBER_OF_SQUADS) {
     // no
-    return FALSE;
+    return false;
   }
 
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     if (Squad[iCurrentTacticalSquad][iCounter] == pSoldier) {
       // found him
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function NumberOfPlayerControllableMercsInSquad(bSquadValue: INT8): INT8 {
@@ -1209,13 +1209,13 @@ function NumberOfPlayerControllableMercsInSquad(bSquadValue: INT8): INT8 {
   return bSquadCount;
 }
 
-function DoesVehicleExistInSquad(bSquadValue: INT8): BOOLEAN {
+function DoesVehicleExistInSquad(bSquadValue: INT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let bCounter: INT8 = 0;
   let bSquadCount: INT8 = 0;
 
   if (bSquadValue == NO_CURRENT_SQUAD) {
-    return FALSE;
+    return false;
   }
 
   // find number of characters in particular squad.
@@ -1227,12 +1227,12 @@ function DoesVehicleExistInSquad(bSquadValue: INT8): BOOLEAN {
 
       // If we are an EPC or ROBOT, don't allow this
       if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-        return TRUE;
+        return true;
       }
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function CheckSquadMovementGroups(): void {
@@ -1248,7 +1248,7 @@ function CheckSquadMovementGroups(): void {
       // Set persistent....
       pGroup = GetGroup(SquadMovementGroups[iSquad]);
       Assert(pGroup);
-      pGroup.value.fPersistant = TRUE;
+      pGroup.value.fPersistant = true;
     }
   }
 }

@@ -25,7 +25,7 @@ const PREVIOUS_MOUSE_DATA = 1;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 interface MouseCursorBackground {
-  fRestore: BOOLEAN;
+  fRestore: boolean;
 
   usMouseXPos: UINT16;
   usMouseYPos: UINT16;
@@ -58,7 +58,7 @@ interface MouseCursorBackground {
 
 const MAX_NUM_FRAMES = 25;
 
-let gfVideoCapture: BOOLEAN = FALSE;
+let gfVideoCapture: boolean = false;
 let guiFramePeriod: UINT32 = (1000 / 15);
 let guiLastFrame: UINT32;
 let gpFrameData: Pointer<UINT16>[] /* [MAX_NUM_FRAMES] */;
@@ -101,7 +101,7 @@ let giNumFrames: INT32 = 0;
 
 /* static */ let gpCursorStore: HVOBJECT;
 
-let gfFatalError: BOOLEAN = FALSE;
+let gfFatalError: boolean = false;
 let gFatalErrorString: char[] /* [512] */;
 
 // 8-bit palette stuff
@@ -131,7 +131,7 @@ let guiRefreshThreadState: UINT32; // THREAD_ON, THREAD_OFF, THREAD_SUSPENDED
 void (gpFrameBufferRefreshOverride.value);
 let gListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
 let guiDirtyRegionCount: UINT32;
-let gfForceFullScreenRefresh: BOOLEAN;
+let gfForceFullScreenRefresh: boolean;
 
 let gDirtyRegionsEx: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
 let gDirtyRegionsFlagsEx: UINT32[] /* [MAX_DIRTY_REGIONS] */;
@@ -139,13 +139,13 @@ let guiDirtyRegionExCount: UINT32;
 
 let gBACKUPListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
 let gBACKUPuiDirtyRegionCount: UINT32;
-let gBACKUPfForceFullScreenRefresh: BOOLEAN;
+let gBACKUPfForceFullScreenRefresh: boolean;
 
 //
 // Screen output stuff
 //
 
-let gfPrintFrameBuffer: BOOLEAN;
+let gfPrintFrameBuffer: boolean;
 let guiPrintFrameBufferIndex: UINT32;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ let guiPrintFrameBufferIndex: UINT32;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, WindowProc: Pointer<void>): BOOLEAN {
+function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, WindowProc: Pointer<void>): boolean {
   let uiIndex: UINT32;
   let uiPitch: UINT32;
   let ReturnCode: HRESULT;
@@ -210,7 +210,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   hWindow = CreateWindowEx(WS_EX_TOPMOST, ClassName, ClassName, WS_POPUP | WS_VISIBLE, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), null, null, hInstance, null);
   if (hWindow == null) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to create window frame for Direct Draw");
-    return FALSE;
+    return false;
   }
 
   //
@@ -225,7 +225,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   // Display our full screen window
   //
 
-  ShowCursor(FALSE);
+  ShowCursor(false);
   ShowWindow(hWindow, usCommandShow);
   UpdateWindow(hWindow);
   SetFocus(hWindow);
@@ -243,13 +243,13 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   ReturnCode = DirectDrawCreate(null, addressof(_gpDirectDrawObject), null);
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   ReturnCode = IDirectDraw_QueryInterface(_gpDirectDrawObject, addressof(IID_IDirectDraw2), addressof(gpDirectDrawObject));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   //
@@ -258,7 +258,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   ReturnCode = IDirectDraw2_SetCooperativeLevel(gpDirectDrawObject, ghWindow, DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   //
@@ -267,7 +267,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   ReturnCode = IDirectDraw2_SetDisplayMode(gpDirectDrawObject, SCREEN_WIDTH, SCREEN_HEIGHT, gbPixelDepth, 0, 0);
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   gusScreenWidth = SCREEN_WIDTH;
@@ -293,20 +293,20 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, addressof(SurfaceDescription), addressof(_gpPrimarySurface), null);
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   ReturnCode = IDirectDrawSurface_QueryInterface(_gpPrimarySurface, addressof(IID_IDirectDrawSurface2), addressof(gpPrimarySurface));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   SurfaceCaps.dwCaps = DDSCAPS_BACKBUFFER;
   ReturnCode = IDirectDrawSurface2_GetAttachedSurface(gpPrimarySurface, addressof(SurfaceCaps), addressof(gpBackBuffer));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   //
@@ -322,13 +322,13 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, addressof(SurfaceDescription), addressof(_gpFrameBuffer), null);
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   ReturnCode = IDirectDrawSurface_QueryInterface(_gpFrameBuffer, addressof(IID_IDirectDrawSurface2), addressof(gpFrameBuffer));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   //
@@ -354,13 +354,13 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   if (ReturnCode != DD_OK) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to create MouseCursor witd %ld", ReturnCode & 0x0f));
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   ReturnCode = IDirectDrawSurface_QueryInterface(_gpMouseCursor, addressof(IID_IDirectDrawSurface2), addressof(gpMouseCursor));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   ColorKey.dwColorSpaceLowValue = 0;
@@ -368,7 +368,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   ReturnCode = IDirectDrawSurface2_SetColorKey(gpMouseCursor, DDCKEY_SRCBLT, addressof(ColorKey));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   //
@@ -385,13 +385,13 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   if (ReturnCode != DD_OK) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to create MouseCursorOriginal");
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   ReturnCode = IDirectDrawSurface_QueryInterface(_gpMouseCursorOriginal, addressof(IID_IDirectDrawSurface2), addressof(gpMouseCursorOriginal));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   //
@@ -404,7 +404,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
     // Initialize various mouse background variables
     //
 
-    gMouseCursorBackground[uiIndex].fRestore = FALSE;
+    gMouseCursorBackground[uiIndex].fRestore = false;
 
     //
     // Initialize the direct draw surfaces for the mouse background
@@ -421,13 +421,13 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
     if (ReturnCode != DD_OK) {
       DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to create MouseCursorBackground");
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-      return FALSE;
+      return false;
     }
 
     ReturnCode = IDirectDrawSurface_QueryInterface(gMouseCursorBackground[uiIndex]._pSurface, addressof(IID_IDirectDrawSurface2), addressof(gMouseCursorBackground[uiIndex].pSurface));
     if (ReturnCode != DD_OK) {
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-      return FALSE;
+      return false;
     }
   }
 
@@ -436,14 +436,14 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   //
 
   // ATE: Keep these mutexes for now!
-  if (InitializeMutex(REFRESH_THREAD_MUTEX, "RefreshThreadMutex") == FALSE) {
-    return FALSE;
+  if (InitializeMutex(REFRESH_THREAD_MUTEX, "RefreshThreadMutex") == false) {
+    return false;
   }
-  if (InitializeMutex(FRAME_BUFFER_MUTEX, "FrameBufferMutex") == FALSE) {
-    return FALSE;
+  if (InitializeMutex(FRAME_BUFFER_MUTEX, "FrameBufferMutex") == false) {
+    return false;
   }
-  if (InitializeMutex(MOUSE_BUFFER_MUTEX, "MouseBufferMutex") == FALSE) {
-    return FALSE;
+  if (InitializeMutex(MOUSE_BUFFER_MUTEX, "MouseBufferMutex") == false) {
+    return false;
   }
 
   //
@@ -455,10 +455,10 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   guiVideoManagerState = VIDEO_ON;
   guiRefreshThreadState = THREAD_OFF;
   guiDirtyRegionCount = 0;
-  gfForceFullScreenRefresh = TRUE;
+  gfForceFullScreenRefresh = true;
   gpFrameBufferRefreshOverride = null;
   gpCursorStore = null;
-  gfPrintFrameBuffer = FALSE;
+  gfPrintFrameBuffer = false;
   guiPrintFrameBufferIndex = 0;
 
   //
@@ -467,7 +467,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
 
   GetRGBDistribution();
 
-  return TRUE;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -516,12 +516,12 @@ function SuspendVideoManager(): void {
 function DoTester(): void {
   IDirectDraw2_RestoreDisplayMode(gpDirectDrawObject);
   IDirectDraw2_SetCooperativeLevel(gpDirectDrawObject, ghWindow, DDSCL_NORMAL);
-  ShowCursor(TRUE);
+  ShowCursor(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function RestoreVideoManager(): BOOLEAN {
+function RestoreVideoManager(): boolean {
   let ReturnCode: HRESULT;
 
   //
@@ -536,13 +536,13 @@ function RestoreVideoManager(): BOOLEAN {
     ReturnCode = IDirectDrawSurface2_Restore(gpPrimarySurface);
     if (ReturnCode != DD_OK) {
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-      return FALSE;
+      return false;
     }
 
     ReturnCode = IDirectDrawSurface2_Restore(gpBackBuffer);
     if (ReturnCode != DD_OK) {
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-      return FALSE;
+      return false;
     }
 
     //
@@ -552,13 +552,13 @@ function RestoreVideoManager(): BOOLEAN {
     ReturnCode = IDirectDrawSurface2_Restore(gMouseCursorBackground[0].pSurface);
     if (ReturnCode != DD_OK) {
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-      return FALSE;
+      return false;
     }
 
     ReturnCode = IDirectDrawSurface2_Restore(gpMouseCursor);
     if (ReturnCode != DD_OK) {
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-      return FALSE;
+      return false;
     } else {
       guiMouseBufferState = BUFFER_DIRTY;
     }
@@ -569,11 +569,11 @@ function RestoreVideoManager(): BOOLEAN {
 
     guiFrameBufferState = BUFFER_DIRTY;
     guiMouseBufferState = BUFFER_DIRTY;
-    gfForceFullScreenRefresh = TRUE;
+    gfForceFullScreenRefresh = true;
     guiVideoManagerState = VIDEO_ON;
-    return TRUE;
+    return true;
   } else {
-    return FALSE;
+    return false;
   }
 }
 
@@ -587,8 +587,8 @@ function GetCurrentVideoSettings(usWidth: Pointer<UINT16>, usHeight: Pointer<UIN
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function CanBlitToFrameBuffer(): BOOLEAN {
-  let fCanBlit: BOOLEAN;
+function CanBlitToFrameBuffer(): boolean {
+  let fCanBlit: boolean;
 
   //
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
@@ -605,8 +605,8 @@ function CanBlitToFrameBuffer(): BOOLEAN {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function CanBlitToMouseBuffer(): BOOLEAN {
-  let fCanBlit: BOOLEAN;
+function CanBlitToMouseBuffer(): boolean {
+  let fCanBlit: boolean;
 
   //
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
@@ -624,7 +624,7 @@ function CanBlitToMouseBuffer(): BOOLEAN {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function InvalidateRegion(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32): void {
-  if (gfForceFullScreenRefresh == TRUE) {
+  if (gfForceFullScreenRefresh == true) {
     //
     // There's no point in going on since we are forcing a full screen refresh
     //
@@ -671,7 +671,7 @@ function InvalidateRegion(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT
     //
     guiDirtyRegionExCount = 0;
     guiDirtyRegionCount = 0;
-    gfForceFullScreenRefresh = TRUE;
+    gfForceFullScreenRefresh = true;
   }
 }
 
@@ -727,14 +727,14 @@ function AddRegionEx(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32, u
   } else {
     guiDirtyRegionExCount = 0;
     guiDirtyRegionCount = 0;
-    gfForceFullScreenRefresh = TRUE;
+    gfForceFullScreenRefresh = true;
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function InvalidateRegions(pArrayOfRegions: Pointer<SGPRect>, uiRegionCount: UINT32): void {
-  if (gfForceFullScreenRefresh == TRUE) {
+  if (gfForceFullScreenRefresh == true) {
     //
     // There's no point in going on since we are forcing a full screen refresh
     //
@@ -759,7 +759,7 @@ function InvalidateRegions(pArrayOfRegions: Pointer<SGPRect>, uiRegionCount: UIN
     }
   } else {
     guiDirtyRegionCount = 0;
-    gfForceFullScreenRefresh = TRUE;
+    gfForceFullScreenRefresh = true;
   }
 }
 
@@ -776,7 +776,7 @@ function InvalidateScreen(): void {
 
   guiDirtyRegionCount = 0;
   guiDirtyRegionExCount = 0;
-  gfForceFullScreenRefresh = TRUE;
+  gfForceFullScreenRefresh = true;
   guiFrameBufferState = BUFFER_DIRTY;
 }
 
@@ -803,7 +803,7 @@ function SetFrameBufferRefreshOverride(pFrameBufferRefreshOverride: PTR): void {
 //#define SCROLL_TEST
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScrollYIncrement: INT16, pSource: LPDIRECTDRAWSURFACE2, pDest: LPDIRECTDRAWSURFACE2, fRenderStrip: BOOLEAN, uiCurrentMouseBackbuffer: UINT32): void {
+function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScrollYIncrement: INT16, pSource: LPDIRECTDRAWSURFACE2, pDest: LPDIRECTDRAWSURFACE2, fRenderStrip: boolean, uiCurrentMouseBackbuffer: UINT32): void {
   let usWidth: UINT16;
   let usHeight: UINT16;
   let ubBitDepth: UINT8;
@@ -1127,7 +1127,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
     // Memset to 0
 
     for (cnt = 0; cnt < usNumStrips; cnt++) {
-      RenderStaticWorldRect(StripRegions[cnt].left, StripRegions[cnt].top, StripRegions[cnt].right, StripRegions[cnt].bottom, TRUE);
+      RenderStaticWorldRect(StripRegions[cnt].left, StripRegions[cnt].top, StripRegions[cnt].right, StripRegions[cnt].bottom, true);
       // Optimize Redundent tiles too!
       // ExamineZBufferRect( (INT16)StripRegions[ cnt ].left, (INT16)StripRegions[ cnt ].top, (INT16)StripRegions[ cnt ].right, (INT16)StripRegions[ cnt ].bottom );
 
@@ -1217,17 +1217,17 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
   /* static */ let uiIndex: UINT32;
   let usScreenWidth: UINT16;
   let usScreenHeight: UINT16;
-  /* static */ let fShowMouse: BOOLEAN;
+  /* static */ let fShowMouse: boolean;
   let ReturnCode: HRESULT;
   /* static */ let Region: RECT;
   /* static */ let MousePos: POINT;
-  /* static */ let fFirstTime: BOOLEAN = TRUE;
+  /* static */ let fFirstTime: boolean = true;
   let uiTime: UINT32;
 
   usScreenWidth = usScreenHeight = 0;
 
   if (fFirstTime) {
-    fShowMouse = FALSE;
+    fShowMouse = false;
   }
 
   // DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Looping in refresh");
@@ -1279,7 +1279,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
   /////////////////////////////////////////////////////////////////////////////////////////////
 
   // RESTORE OLD POSITION OF MOUSE
-  if (gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore == TRUE) {
+  if (gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore == true) {
     Region.left = gMouseCursorBackground[CURRENT_MOUSE_DATA].usLeft;
     Region.top = gMouseCursorBackground[CURRENT_MOUSE_DATA].usTop;
     Region.right = gMouseCursorBackground[CURRENT_MOUSE_DATA].usRight;
@@ -1325,7 +1325,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     // Either Method (1) or (2)
     //
     {
-      if (gfForceFullScreenRefresh == TRUE) {
+      if (gfForceFullScreenRefresh == true) {
         //
         // Method (1) - We will be refreshing the entire screen
         //
@@ -1393,9 +1393,9 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
       }
     }
     if (gfRenderScroll) {
-      ScrollJA2Background(guiScrollDirection, gsScrollXIncrement, gsScrollYIncrement, gpPrimarySurface, gpBackBuffer, TRUE, PREVIOUS_MOUSE_DATA);
+      ScrollJA2Background(guiScrollDirection, gsScrollXIncrement, gsScrollYIncrement, gpPrimarySurface, gpBackBuffer, true, PREVIOUS_MOUSE_DATA);
     }
-    gfIgnoreScrollDueToCenterAdjust = FALSE;
+    gfIgnoreScrollDueToCenterAdjust = false;
 
     //
     // Update the guiFrameBufferState variable to reflect that the frame buffer can now be handled
@@ -1416,7 +1416,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     }
   }
 
-  if (gfPrintFrameBuffer == TRUE) {
+  if (gfPrintFrameBuffer == true) {
     let _pTmpBuffer: LPDIRECTDRAWSURFACE;
     let pTmpBuffer: LPDIRECTDRAWSURFACE2;
     let SurfaceDescription: DDSURFACEDESC;
@@ -1534,7 +1534,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     // Release temp surface
     //
 
-    gfPrintFrameBuffer = FALSE;
+    gfPrintFrameBuffer = false;
     IDirectDrawSurface2_Release(pTmpBuffer);
 
     strcat(ExecDir, "\\Data");
@@ -1570,15 +1570,15 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
   // Check current state of the mouse cursor
   //
 
-  if (fShowMouse == FALSE) {
+  if (fShowMouse == false) {
     if (guiMouseBufferState == BUFFER_READY) {
-      fShowMouse = TRUE;
+      fShowMouse = true;
     } else {
-      fShowMouse = FALSE;
+      fShowMouse = false;
     }
   } else {
     if (guiMouseBufferState == BUFFER_DISABLED) {
-      fShowMouse = FALSE;
+      fShowMouse = false;
     }
   }
 
@@ -1597,7 +1597,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
   //
   ///////////////////////////////////////////////////////////////////////////////////////////////
 
-  if (fShowMouse == TRUE) {
+  if (fShowMouse == true) {
     //
     // Step (1) - Save mouse background
     //
@@ -1621,7 +1621,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
       // future restore
       //
 
-      gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore = TRUE;
+      gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore = true;
       gMouseCursorBackground[CURRENT_MOUSE_DATA].usRight = Region.right - Region.left;
       gMouseCursorBackground[CURRENT_MOUSE_DATA].usBottom = Region.bottom - Region.top;
       if (Region.left < 0) {
@@ -1684,21 +1684,21 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         // Hum, the mouse was not blitted this round. Henceforth we will flag fRestore as FALSE
         //
 
-        gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore = FALSE;
+        gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore = false;
       }
     } else {
       //
       // Hum, the mouse was not blitted this round. Henceforth we will flag fRestore as FALSE
       //
 
-      gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore = FALSE;
+      gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore = false;
     }
   } else {
     //
     // Well since there was no mouse handling this round, we disable the mouse restore
     //
 
-    gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore = FALSE;
+    gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore = false;
   }
 
   ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1753,14 +1753,14 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
 
     //
 
-    gfRenderScroll = FALSE;
-    gfScrollStart = FALSE;
+    gfRenderScroll = false;
+    gfScrollStart = false;
   }
 
   // COPY MOUSE AREAS FROM PRIMARY BACK!
 
   // FIRST OLD ERASED POSITION
-  if (gMouseCursorBackground[PREVIOUS_MOUSE_DATA].fRestore == TRUE) {
+  if (gMouseCursorBackground[PREVIOUS_MOUSE_DATA].fRestore == true) {
     Region = gMouseCursorBackground[PREVIOUS_MOUSE_DATA].Region;
 
     do {
@@ -1776,7 +1776,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
   }
 
   // NOW NEW MOUSE AREA
-  if (gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore == TRUE) {
+  if (gMouseCursorBackground[CURRENT_MOUSE_DATA].fRestore == true) {
     Region = gMouseCursorBackground[CURRENT_MOUSE_DATA].Region;
 
     do {
@@ -1791,7 +1791,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     } while (ReturnCode != DD_OK);
   }
 
-  if (gfForceFullScreenRefresh == TRUE) {
+  if (gfForceFullScreenRefresh == true) {
     //
     // Method (1) - We will be refreshing the entire screen
     //
@@ -1813,7 +1813,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
 
     guiDirtyRegionCount = 0;
     guiDirtyRegionExCount = 0;
-    gfForceFullScreenRefresh = FALSE;
+    gfForceFullScreenRefresh = false;
   } else {
     for (uiIndex = 0; uiIndex < guiDirtyRegionCount; uiIndex++) {
       Region.left = gListOfDirtyRegions[uiIndex].iLeft;
@@ -1834,7 +1834,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     }
 
     guiDirtyRegionCount = 0;
-    gfForceFullScreenRefresh = FALSE;
+    gfForceFullScreenRefresh = false;
   }
 
   // Do extended dirty regions!
@@ -1864,7 +1864,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
 
 ENDOFLOOP:
 
-  fFirstTime = FALSE;
+  fFirstTime = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2079,7 +2079,7 @@ function UnlockMouseBuffer(): void {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function GetRGBDistribution(): BOOLEAN {
+function GetRGBDistribution(): boolean {
   let SurfaceDescription: DDSURFACEDESC;
   let usBit: UINT16;
   let ReturnCode: HRESULT;
@@ -2088,7 +2088,7 @@ function GetRGBDistribution(): BOOLEAN {
 
   // ONLY DO IF WE ARE IN 16BIT MODE
   if (gbPixelDepth == 8) {
-    return TRUE;
+    return true;
   }
 
   ZEROMEM(SurfaceDescription);
@@ -2097,7 +2097,7 @@ function GetRGBDistribution(): BOOLEAN {
   ReturnCode = IDirectDrawSurface2_GetSurfaceDesc(gpPrimarySurface, addressof(SurfaceDescription));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
+    return false;
   }
 
   //
@@ -2136,23 +2136,23 @@ function GetRGBDistribution(): BOOLEAN {
     gusBlueShift--;
   }
 
-  return TRUE;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function GetPrimaryRGBDistributionMasks(RedBitMask: Pointer<UINT32>, GreenBitMask: Pointer<UINT32>, BlueBitMask: Pointer<UINT32>): BOOLEAN {
+function GetPrimaryRGBDistributionMasks(RedBitMask: Pointer<UINT32>, GreenBitMask: Pointer<UINT32>, BlueBitMask: Pointer<UINT32>): boolean {
   RedBitMask.value = gusRedMask;
   GreenBitMask.value = gusGreenMask;
   BlueBitMask.value = gusBlueMask;
 
-  return TRUE;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): BOOLEAN {
-  let ReturnValue: BOOLEAN;
+function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): boolean {
+  let ReturnValue: boolean;
   let pTmpPointer: PTR;
   let uiPitch: UINT32;
   let pETRLEPointer: ETRLEObject;
@@ -2188,7 +2188,7 @@ function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubI
   return ReturnValue;
 }
 
-function EraseMouseCursor(): BOOLEAN {
+function EraseMouseCursor(): boolean {
   let pTmpPointer: PTR;
   let uiPitch: UINT32;
 
@@ -2201,19 +2201,19 @@ function EraseMouseCursor(): BOOLEAN {
   UnlockMouseBuffer();
 
   // Don't set dirty
-  return TRUE;
+  return true;
 }
 
-function SetMouseCursorProperties(sOffsetX: INT16, sOffsetY: INT16, usCursorHeight: UINT16, usCursorWidth: UINT16): BOOLEAN {
+function SetMouseCursorProperties(sOffsetX: INT16, sOffsetY: INT16, usCursorHeight: UINT16, usCursorWidth: UINT16): boolean {
   gsMouseCursorXOffset = sOffsetX;
   gsMouseCursorYOffset = sOffsetY;
   gusMouseCursorWidth = usCursorWidth;
   gusMouseCursorHeight = usCursorHeight;
-  return TRUE;
+  return true;
 }
 
-function BltToMouseCursor(uiVideoObjectHandle: UINT32, usVideoObjectSubIndex: UINT16, usXPos: UINT16, usYPos: UINT16): BOOLEAN {
-  let ReturnValue: BOOLEAN;
+function BltToMouseCursor(uiVideoObjectHandle: UINT32, usVideoObjectSubIndex: UINT16, usXPos: UINT16, usYPos: UINT16): boolean {
+  let ReturnValue: boolean;
 
   ReturnValue = BltVideoObjectFromIndex(MOUSE_BUFFER, uiVideoObjectHandle, usVideoObjectSubIndex, usXPos, usYPos, VO_BLT_SRCTRANSPARENCY, null);
 
@@ -2224,7 +2224,7 @@ function DirtyCursor(): void {
   guiMouseBufferState = BUFFER_DIRTY;
 }
 
-function EnableCursor(fEnable: BOOLEAN): void {
+function EnableCursor(fEnable: boolean): void {
   if (fEnable) {
     guiMouseBufferState = BUFFER_DISABLED;
   } else {
@@ -2234,15 +2234,15 @@ function EnableCursor(fEnable: BOOLEAN): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function HideMouseCursor(): BOOLEAN {
+function HideMouseCursor(): boolean {
   guiMouseBufferState = BUFFER_DISABLED;
 
-  return TRUE;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function LoadCursorFile(pFilename: PTR): BOOLEAN {
+function LoadCursorFile(pFilename: PTR): boolean {
   let VideoObjectDescription: VOBJECT_DESC;
 
   //
@@ -2267,16 +2267,16 @@ function LoadCursorFile(pFilename: PTR): BOOLEAN {
   //
 
   if (gpCursorStore == null) {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): BOOLEAN {
-  let ReturnValue: BOOLEAN;
+function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): boolean {
+  let ReturnValue: boolean;
   let pTmpPointer: PTR;
   let uiPitch: UINT32;
   let pETRLEPointer: ETRLEObject;
@@ -2287,7 +2287,7 @@ function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOf
 
   if (gpCursorStore == null) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "ERROR : Cursor store is not loaded");
-    return FALSE;
+    return false;
   }
 
   //
@@ -2341,11 +2341,11 @@ function EndFrameBufferRender(): void {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function PrintScreen(): void {
-  gfPrintFrameBuffer = TRUE;
+  gfPrintFrameBuffer = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
+function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): boolean {
   let ReturnCode: HRESULT;
 
   // If we are in 256 colors, then we have to initialize the palette system to 0 (faded out)
@@ -2354,28 +2354,28 @@ function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
   ReturnCode = IDirectDraw_CreatePalette(gpDirectDrawObject, (DDPCAPS_8BIT | DDPCAPS_ALLOW256), (addressof(gSgpPalette[0])), addressof(gpDirectDrawPalette), null);
   if (ReturnCode != DD_OK) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to create palette (Rc = %d)", ReturnCode));
-    return FALSE;
+    return false;
   }
   // Apply the palette to the surfaces
   ReturnCode = IDirectDrawSurface_SetPalette(gpPrimarySurface, gpDirectDrawPalette);
   if (ReturnCode != DD_OK) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to apply 8-bit palette to primary surface"));
-    return FALSE;
+    return false;
   }
 
   ReturnCode = IDirectDrawSurface_SetPalette(gpBackBuffer, gpDirectDrawPalette);
   if (ReturnCode != DD_OK) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to apply 8-bit palette to back buffer"));
-    return FALSE;
+    return false;
   }
 
   ReturnCode = IDirectDrawSurface_SetPalette(gpFrameBuffer, gpDirectDrawPalette);
   if (ReturnCode != DD_OK) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to apply 8-bit palette to frame buffer"));
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function FatalError(pError: Pointer<UINT8>, ...args: any[]): void {
@@ -2385,7 +2385,7 @@ function FatalError(pError: Pointer<UINT8>, ...args: any[]): void {
   vsprintf(gFatalErrorString, pError, argptr);
   va_end(argptr);
 
-  gfFatalError = TRUE;
+  gfFatalError = true;
 
   // Release DDraw
   IDirectDraw2_RestoreDisplayMode(gpDirectDrawObject);
@@ -2395,7 +2395,7 @@ function FatalError(pError: Pointer<UINT8>, ...args: any[]): void {
   // destroy the window
   // DestroyWindow( ghWindow );
 
-  gfProgramIsRunning = FALSE;
+  gfProgramIsRunning = false;
 
   MessageBox(ghWindow, gFatalErrorString, "JA2 Fatal Error", MB_OK | MB_TASKMODAL);
 }
@@ -2497,7 +2497,7 @@ function SnapshotSmall(): void {
 function VideoCaptureToggle(): void {
 }
 
-function VideoMovieCapture(fEnable: BOOLEAN): void {
+function VideoMovieCapture(fEnable: boolean): void {
   let cnt: INT32;
 
   gfVideoCapture = fEnable;
@@ -2532,7 +2532,7 @@ function RefreshMovieCache(): void {
   let cnt: INT32;
   let ExecDir: STRING512;
 
-  PauseTime(TRUE);
+  PauseTime(true);
 
   GetExecutableDirectory(ExecDir);
   SetFileManCurrentDirectory(ExecDir);
@@ -2563,7 +2563,7 @@ function RefreshMovieCache(): void {
     fclose(disk);
   }
 
-  PauseTime(FALSE);
+  PauseTime(false);
 
   giNumFrames = 0;
 

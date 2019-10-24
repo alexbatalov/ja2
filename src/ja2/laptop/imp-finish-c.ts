@@ -6,7 +6,7 @@ let giIMPFinishButton: INT32[] /* [6] */;
 let giIMPFinishButtonImage: INT32[] /* [6] */;
 
 // we are in fact done
-let fFinishedCharGeneration: BOOLEAN = FALSE;
+let fFinishedCharGeneration: boolean = false;
 
 // portrait position
 let sFaceX: INT16 = 253;
@@ -26,11 +26,11 @@ function EnterIMPFinish(): void {
   CreateIMPFinishButtons();
 
   // set review mode
-  fReviewStats = TRUE;
+  fReviewStats = true;
   iCurrentProfileMode = 5;
 
   // note that we are in fact done char generation
-  fFinishedCharGeneration = TRUE;
+  fFinishedCharGeneration = true;
 
   return;
 }
@@ -91,7 +91,7 @@ function CreateIMPFinishButtons(): void {
   */
   giIMPFinishButton[2] = CreateIconAndTextButton(giIMPFinishButtonImage[2], pImpButtonText[2], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 13, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPFinishPersonalityCallback);
 
-  SpecifyButtonIcon(giIMPFinishButton[2], guiANALYSE, 0, 33, 23, FALSE);
+  SpecifyButtonIcon(giIMPFinishButton[2], guiANALYSE, 0, 33, 23, false);
 
   // the attribs button
   giIMPFinishButtonImage[3] = LoadButtonImage("LAPTOP\\button_8.sti", -1, 0, -1, 1, -1);
@@ -101,7 +101,7 @@ function CreateIMPFinishButtons(): void {
   */
   giIMPFinishButton[3] = CreateIconAndTextButton(giIMPFinishButtonImage[3], pImpButtonText[3], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 133, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPFinishAttributesCallback);
 
-  SpecifyButtonIcon(giIMPFinishButton[3], guiATTRIBUTEGRAPH, 0, 25, 25, FALSE);
+  SpecifyButtonIcon(giIMPFinishButton[3], guiATTRIBUTEGRAPH, 0, 25, 25, false);
 
   // the portrait button
   giIMPFinishButtonImage[4] = LoadButtonImage("LAPTOP\\button_8.sti", -1, 0, -1, 1, -1);
@@ -111,7 +111,7 @@ function CreateIMPFinishButtons(): void {
    */
   giIMPFinishButton[4] = CreateIconAndTextButton(giIMPFinishButtonImage[4], pImpButtonText[4], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 253, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPagePortraitCallback);
 
-  SpecifyButtonIcon(giIMPFinishButton[4], guiCHARACTERPORTRAIT, 0, 33, 23, FALSE);
+  SpecifyButtonIcon(giIMPFinishButton[4], guiCHARACTERPORTRAIT, 0, 33, 23, false);
 
   swprintf(sString, pImpButtonText[5], iCurrentVoices + 1);
 
@@ -123,7 +123,7 @@ function CreateIMPFinishButtons(): void {
 */
   giIMPFinishButton[5] = CreateIconAndTextButton(giIMPFinishButtonImage[5], sString, FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 373, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageVoiceCallback);
 
-  SpecifyButtonIcon(giIMPFinishButton[5], guiSMALLSILHOUETTE, 0, 33, 23, FALSE);
+  SpecifyButtonIcon(giIMPFinishButton[5], guiSMALLSILHOUETTE, 0, 33, 23, false);
 
   SetButtonCursor(giIMPFinishButton[0], Enum317.CURSOR_WWW);
   SetButtonCursor(giIMPFinishButton[1], Enum317.CURSOR_WWW);
@@ -193,9 +193,9 @@ function BtnIMPFinishDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_CONFIRM;
       CreateACharacterFromPlayerEnteredStats();
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
       iCurrentProfileMode = 0;
-      fFinishedCharGeneration = FALSE;
+      fFinishedCharGeneration = false;
       // ResetCharacterStats( );
     }
   }
@@ -203,9 +203,9 @@ function BtnIMPFinishDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 
 function BtnIMPFinishPersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
-  /* static */ let fAnimateFlag: BOOLEAN = FALSE;
+  /* static */ let fAnimateFlag: boolean = false;
   /* static */ let uiBaseTime: UINT32 = 0;
-  /* static */ let fState: BOOLEAN = 0;
+  /* static */ let fState: boolean = 0;
   let iDifference: INT32 = 0;
 
   if (!(btn.value.uiFlags & BUTTON_ENABLED))
@@ -215,13 +215,13 @@ function BtnIMPFinishPersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     uiBaseTime = GetJA2Clock();
     SpecifyButtonText(giIMPFinishButton[2], pImpButtonText[23]);
-    fAnimateFlag = TRUE;
+    fAnimateFlag = true;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
       uiBaseTime = 0;
-      fAnimateFlag = FALSE;
+      fAnimateFlag = false;
       SpecifyButtonText(giIMPFinishButton[2], pImpButtonText[2]);
     }
   }
@@ -233,13 +233,13 @@ function BtnIMPFinishPersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     if (iDifference > ANIMATE_MIN_TIME) {
       uiBaseTime = GetJA2Clock();
       if (fState) {
-        SpecifyButtonIcon(giIMPFinishButton[2], guiANALYSE, 1, 33, 23, FALSE);
+        SpecifyButtonIcon(giIMPFinishButton[2], guiANALYSE, 1, 33, 23, false);
 
-        fState = FALSE;
+        fState = false;
       } else {
-        SpecifyButtonIcon(giIMPFinishButton[2], guiANALYSE, 0, 33, 23, FALSE);
+        SpecifyButtonIcon(giIMPFinishButton[2], guiANALYSE, 0, 33, 23, false);
 
-        fState = TRUE;
+        fState = true;
       }
     }
   }
@@ -262,7 +262,7 @@ function BtnIMPFinishAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_ATTRIBUTE_PAGE;
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
       SpecifyButtonText(giIMPFinishButton[2], pImpButtonText[2]);
     }
   }
@@ -301,7 +301,7 @@ function BtnIMPFinishVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   // if not this far in char generation, don't alot ANY action
   if (iCurrentProfileMode < 4) {
     btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    fButtonPendingFlag = TRUE;
+    fButtonPendingFlag = true;
     return;
   }
 
@@ -314,18 +314,18 @@ function BtnIMPFinishVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
         uiVoiceSound = PlayVoice();
       }
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }
 
-function RenderCharProfileFinishFace(): BOOLEAN {
+function RenderCharProfileFinishFace(): boolean {
   // render the portrait of the current picture
   let VObjectDesc: VOBJECT_DESC;
   let hHandle: HVOBJECT;
   let uiGraphicHandle: UINT32;
 
-  if (fCharacterIsMale == TRUE) {
+  if (fCharacterIsMale == true) {
     switch (LaptopSaveInfo.iVoiceId) {
       case (0):
         // first portrait
@@ -436,7 +436,7 @@ function RenderCharProfileFinishFace(): BOOLEAN {
 
   mprintf(253, 350, pNickName);
 
-  return TRUE;
+  return true;
 }
 
 function RenderCharFullName(): void {
@@ -456,7 +456,7 @@ function RenderCharFullName(): void {
   return;
 }
 
-function LoadCharacterPortrait(): BOOLEAN {
+function LoadCharacterPortrait(): boolean {
   // this function will load the character's portrait, to be used on portrait button
   let VObjectDesc: VOBJECT_DESC;
 
@@ -465,7 +465,7 @@ function LoadCharacterPortrait(): BOOLEAN {
   FilenameForBPP(pPlayerSelectedFaceFileNames[iPortraitNumber], VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAIT)));
 
-  return TRUE;
+  return true;
 }
 
 function DestroyCharacterPortrait(): void {
@@ -479,9 +479,9 @@ function FinishMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
     iCurrentImpPage = Enum71.IMP_HOME_PAGE;
-    fButtonPendingFlag = TRUE;
+    fButtonPendingFlag = true;
     iCurrentProfileMode = 0;
-    fFinishedCharGeneration = FALSE;
+    fFinishedCharGeneration = false;
     ResetCharacterStats();
   }
 

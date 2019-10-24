@@ -10,24 +10,24 @@ let gbPixelDepth: UINT8; // GLOBAL RUN-TIME SETTINGS
 
 let guiMouseWheelMsg: UINT32; // For mouse wheel messages
 
-let gfApplicationActive: BOOLEAN;
-let gfProgramIsRunning: BOOLEAN;
-let gfGameInitialized: BOOLEAN = FALSE;
+let gfApplicationActive: boolean;
+let gfProgramIsRunning: boolean;
+let gfGameInitialized: boolean = false;
 let giStartMem: UINT32;
-let gfDontUseDDBlits: BOOLEAN = FALSE;
+let gfDontUseDDBlits: boolean = false;
 
 // There were TWO of them??!?! -- DB
 // CHAR8		gzCommandLine[ 100 ];
 let gzCommandLine: CHAR8[] /* [100] */; // Command line given
 
 let gzErrorMsg: CHAR8[] /* [2048] */ = "";
-let gfIgnoreMessages: BOOLEAN = FALSE;
+let gfIgnoreMessages: boolean = false;
 
 // GLOBAL VARIBLE, SET TO DEFAULT BUT CAN BE CHANGED BY THE GAME IF INIT FILE READ
 let gbPixelDepth: UINT8 = PIXEL_DEPTH;
 
 function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam: LPARAM): INT32 {
-  /* static */ let fRestore: BOOLEAN = FALSE;
+  /* static */ let fRestore: boolean = false;
 
   if (gfIgnoreMessages)
     return DefWindowProc(hWindow, Message, wParam, lParam);
@@ -46,28 +46,28 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
 
     case WM_ACTIVATEAPP:
       switch (wParam) {
-        case TRUE: // We are restarting DirectDraw
-          if (fRestore == TRUE) {
+        case true: // We are restarting DirectDraw
+          if (fRestore == true) {
             RestoreVideoManager();
             RestoreVideoSurfaces(); // Restore any video surfaces
 
             // unpause the JA2 Global clock
             if (!gfPauseDueToPlayerGamePause) {
-              PauseTime(FALSE);
+              PauseTime(false);
             }
-            gfApplicationActive = TRUE;
+            gfApplicationActive = true;
           }
           break;
-        case FALSE: // We are suspending direct draw
+        case false: // We are suspending direct draw
                     // pause the JA2 Global clock
-          PauseTime(TRUE);
+          PauseTime(true);
           SuspendVideoManager();
           // suspend movement timer, to prevent timer crash if delay becomes long
           // * it doesn't matter whether the 3-D engine is actually running or not, or if it's even been initialized
           // * restore is automatic, no need to do anything on reactivation
 
-          gfApplicationActive = FALSE;
-          fRestore = TRUE;
+          gfApplicationActive = false;
+          fRestore = true;
           break;
       }
       break;
@@ -77,7 +77,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
 
     case WM_DESTROY:
       ShutdownStandardGamingPlatform();
-      ShowCursor(TRUE);
+      ShowCursor(true);
       PostQuitMessage(0);
       break;
 
@@ -88,7 +88,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
 
     case WM_KILLFOCUS:
       // Set a flag to restore surfaces once a WM_ACTIVEATEAPP is received
-      fRestore = TRUE;
+      fRestore = true;
       break;
 
     case WM_DEVICECHANGE: {
@@ -111,7 +111,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
   return 0;
 }
 
-function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: int): BOOLEAN {
+function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: int): boolean {
   let pFontTable: Pointer<FontTranslationTable>;
 
   // now required by all (even JA2) in order to call ShutdownSGP
@@ -132,26 +132,26 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: in
   // this one needs to go ahead of all others (except Debug), for MemDebugCounter to work right...
   FastDebugMsg("Initializing Memory Manager");
   // Initialize the Memory Manager
-  if (InitializeMemoryManager() == FALSE) {
+  if (InitializeMemoryManager() == false) {
     // We were unable to initialize the memory manager
     FastDebugMsg("FAILED : Initializing Memory Manager");
-    return FALSE;
+    return false;
   }
 
   FastDebugMsg("Initializing Mutex Manager");
   // Initialize the Dirty Rectangle Manager
-  if (InitializeMutexManager() == FALSE) {
+  if (InitializeMutexManager() == false) {
     // We were unable to initialize the game
     FastDebugMsg("FAILED : Initializing Mutex Manager");
-    return FALSE;
+    return false;
   }
 
   FastDebugMsg("Initializing File Manager");
   // Initialize the File Manager
-  if (InitializeFileManager(null) == FALSE) {
+  if (InitializeFileManager(null) == false) {
     // We were unable to initialize the file manager
     FastDebugMsg("FAILED : Initializing File Manager");
-    return FALSE;
+    return false;
   }
 
   FastDebugMsg("Initializing Containers Manager");
@@ -159,32 +159,32 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: in
 
   FastDebugMsg("Initializing Input Manager");
   // Initialize the Input Manager
-  if (InitializeInputManager() == FALSE) {
+  if (InitializeInputManager() == false) {
     // We were unable to initialize the input manager
     FastDebugMsg("FAILED : Initializing Input Manager");
-    return FALSE;
+    return false;
   }
 
   FastDebugMsg("Initializing Video Manager");
   // Initialize DirectDraw (DirectX 2)
-  if (InitializeVideoManager(hInstance, sCommandShow, WindowProcedure) == FALSE) {
+  if (InitializeVideoManager(hInstance, sCommandShow, WindowProcedure) == false) {
     // We were unable to initialize the video manager
     FastDebugMsg("FAILED : Initializing Video Manager");
-    return FALSE;
+    return false;
   }
 
   // Initialize Video Object Manager
   FastDebugMsg("Initializing Video Object Manager");
   if (!InitializeVideoObjectManager()) {
     FastDebugMsg("FAILED : Initializing Video Object Manager");
-    return FALSE;
+    return false;
   }
 
   // Initialize Video Surface Manager
   FastDebugMsg("Initializing Video Surface Manager");
   if (!InitializeVideoSurfaceManager()) {
     FastDebugMsg("FAILED : Initializing Video Surface Manager");
-    return FALSE;
+    return false;
   }
 
   InitJA2SplashScreen();
@@ -196,7 +196,7 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: in
   // Create font translation table (store in temp structure)
   pFontTable = CreateEnglishTransTable();
   if (pFontTable == null) {
-    return FALSE;
+    return false;
   }
 
   // Initialize Font Manager
@@ -204,17 +204,17 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: in
   // Init the manager and copy the TransTable stuff into it.
   if (!InitializeFontManager(8, pFontTable)) {
     FastDebugMsg("FAILED : Initializing Font Manager");
-    return FALSE;
+    return false;
   }
   // Don't need this thing anymore, so get rid of it (but don't de-alloc the contents)
   MemFree(pFontTable);
 
   FastDebugMsg("Initializing Sound Manager");
   // Initialize the Sound Manager (DirectSound)
-  if (InitializeSoundManager() == FALSE) {
+  if (InitializeSoundManager() == false) {
     // We were unable to initialize the sound manager
     FastDebugMsg("FAILED : Initializing Sound Manager");
-    return FALSE;
+    return false;
   }
 
   FastDebugMsg("Initializing Random");
@@ -223,18 +223,18 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: in
 
   FastDebugMsg("Initializing Game Manager");
   // Initialize the Game
-  if (InitializeGame() == FALSE) {
+  if (InitializeGame() == false) {
     // We were unable to initialize the game
     FastDebugMsg("FAILED : Initializing Game Manager");
-    return FALSE;
+    return false;
   }
 
   // Register mouse wheel message
   guiMouseWheelMsg = RegisterWindowMessage(MSH_MOUSEWHEEL);
 
-  gfGameInitialized = TRUE;
+  gfGameInitialized = true;
 
-  return TRUE;
+  return true;
 }
 
 function ShutdownStandardGamingPlatform(): void {
@@ -310,10 +310,10 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
     return 0;
   }
 
-  ShowCursor(FALSE);
+  ShowCursor(false);
 
   // Inititialize the SGP
-  if (InitializeStandardGamingPlatform(hInstance, sCommandShow) == FALSE) {
+  if (InitializeStandardGamingPlatform(hInstance, sCommandShow) == false) {
     // We failed to initialize the SGP
     return 0;
   }
@@ -323,8 +323,8 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
   SetIntroType(Enum21.INTRO_SPLASH);
 // #endif
 
-  gfApplicationActive = TRUE;
-  gfProgramIsRunning = TRUE;
+  gfApplicationActive = true;
+  gfProgramIsRunning = true;
 
   FastDebugMsg("Running Game");
 
@@ -342,7 +342,7 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
       DispatchMessage(addressof(Message));
     } else {
       // Windows hasn't processed any messages, therefore we handle the rest
-      if (gfApplicationActive == FALSE) {
+      if (gfApplicationActive == false) {
         // Well we got nothing to do but to wait for a message to activate
         WaitMessage();
       } else {
@@ -350,7 +350,7 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
         GameLoop();
 
         // After this frame, reset input given flag
-        gfSGPInputReceived = FALSE;
+        gfSGPInputReceived = false;
       }
     }
   }
@@ -367,19 +367,19 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
 }
 
 function SGPExit(): void {
-  /* static */ let fAlreadyExiting: BOOLEAN = FALSE;
-  let fUnloadScreens: BOOLEAN = TRUE;
+  /* static */ let fAlreadyExiting: boolean = false;
+  let fUnloadScreens: boolean = true;
 
   // helps prevent heap crashes when multiple assertions occur and call us
   if (fAlreadyExiting) {
     return;
   }
 
-  fAlreadyExiting = TRUE;
-  gfProgramIsRunning = FALSE;
+  fAlreadyExiting = true;
+  gfProgramIsRunning = false;
 
   ShutdownStandardGamingPlatform();
-  ShowCursor(TRUE);
+  ShowCursor(true);
   if (strlen(gzErrorMsg)) {
     MessageBox(null, gzErrorMsg, "Error", MB_OK | MB_ICONERROR);
   }
@@ -401,7 +401,7 @@ function GetRuntimeSettings(): void {
 function ShutdownWithErrorBox(pcMessage: Pointer<CHAR8>): void {
   strncpy(gzErrorMsg, pcMessage, 255);
   gzErrorMsg[255] = '\0';
-  gfIgnoreMessages = TRUE;
+  gfIgnoreMessages = true;
 
   exit(0);
 }
@@ -424,7 +424,7 @@ function ProcessJa2CommandLineBeforeInitialization(pCommandLine: Pointer<CHAR8>)
     // if its the NO SOUND option
     if (!_strnicmp(pToken, "/NOSOUND", 8)) {
       // disable the sound
-      SoundEnableSound(FALSE);
+      SoundEnableSound(false);
     }
 
     // get the next token

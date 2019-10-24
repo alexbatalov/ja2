@@ -43,7 +43,7 @@ const BOBBYR_SHIPMENT_NUM_ITEMS_WIDTH = 116;
 
 let guiBobbyRShipmentGrid: UINT32;
 
-let gfBobbyRShipmentsDirty: BOOLEAN = FALSE;
+let gfBobbyRShipmentsDirty: boolean = false;
 
 let giBobbyRShipmentSelectedShipment: INT32 = -1;
 
@@ -68,7 +68,7 @@ let gSelectedPreviousShipmentsRegion: MOUSE_REGION[] /* [BOBBYR_SHIPMENT_NUM_PRE
 function GameInitBobbyRShipments(): void {
 }
 
-function EnterBobbyRShipments(): BOOLEAN {
+function EnterBobbyRShipments(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   InitBobbyRWoodBackground();
@@ -103,7 +103,7 @@ function EnterBobbyRShipments(): BOOLEAN {
 
   CreatePreviousShipmentsMouseRegions();
 
-  return TRUE;
+  return true;
 }
 
 function ExitBobbyRShipments(): void {
@@ -122,7 +122,7 @@ function ExitBobbyRShipments(): void {
 
 function HandleBobbyRShipments(): void {
   if (gfBobbyRShipmentsDirty) {
-    gfBobbyRShipmentsDirty = FALSE;
+    gfBobbyRShipmentsDirty = false;
 
     RenderBobbyRShipments();
   }
@@ -136,16 +136,16 @@ function RenderBobbyRShipments(): void {
   DrawBobbyROrderTitle();
 
   // Output the title
-  DrawTextToScreen(gzBobbyRShipmentText[Enum380.BOBBYR_SHIPMENT__TITLE], BOBBYR_ORDER_FORM_TITLE_X, BOBBYR_ORDER_FORM_TITLE_Y, BOBBYR_ORDER_FORM_TITLE_WIDTH, BOBBYR_SHIPMENT_TITLE_TEXT_FONT(), BOBBYR_SHIPMENT_TITLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(gzBobbyRShipmentText[Enum380.BOBBYR_SHIPMENT__TITLE], BOBBYR_ORDER_FORM_TITLE_X, BOBBYR_ORDER_FORM_TITLE_Y, BOBBYR_ORDER_FORM_TITLE_WIDTH, BOBBYR_SHIPMENT_TITLE_TEXT_FONT(), BOBBYR_SHIPMENT_TITLE_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   DisplayShipmentGrid();
 
   if (giBobbyRShipmentSelectedShipment != -1 && gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].fActive && gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].fDisplayedInShipmentPage) {
     //		DisplayPurchasedItems( FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, &LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0], FALSE );
-    DisplayPurchasedItems(FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, addressof(gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0]), FALSE, giBobbyRShipmentSelectedShipment);
+    DisplayPurchasedItems(false, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, addressof(gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0]), false, giBobbyRShipmentSelectedShipment);
   } else {
     //		DisplayPurchasedItems( FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, &LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0], TRUE );
-    DisplayPurchasedItems(FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, null, TRUE, giBobbyRShipmentSelectedShipment);
+    DisplayPurchasedItems(false, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, null, true, giBobbyRShipmentSelectedShipment);
   }
 
   DisplayShipmentTitles();
@@ -206,10 +206,10 @@ function DisplayShipmentGrid(): void {
 
 function DisplayShipmentTitles(): void {
   // output the order #
-  DrawTextToScreen(gzBobbyRShipmentText[Enum380.BOBBYR_SHIPMENT__ORDERED_ON], BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_X, BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_Y, BOBBYR_SHIPMENT_ORDER_NUM_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT(), BOBBYR_SHIPMENT_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(gzBobbyRShipmentText[Enum380.BOBBYR_SHIPMENT__ORDERED_ON], BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_X, BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_Y, BOBBYR_SHIPMENT_ORDER_NUM_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT(), BOBBYR_SHIPMENT_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Output the # of items
-  DrawTextToScreen(gzBobbyRShipmentText[Enum380.BOBBYR_SHIPMENT__NUM_ITEMS], BOBBYR_SHIPMENT_NUM_ITEMS_X, BOBBYR_SHIPMENT_NUM_ITEMS_Y, BOBBYR_SHIPMENT_NUM_ITEMS_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT(), BOBBYR_SHIPMENT_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(gzBobbyRShipmentText[Enum380.BOBBYR_SHIPMENT__NUM_ITEMS], BOBBYR_SHIPMENT_NUM_ITEMS_X, BOBBYR_SHIPMENT_NUM_ITEMS_Y, BOBBYR_SHIPMENT_NUM_ITEMS_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT(), BOBBYR_SHIPMENT_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 }
 
 function DisplayPreviousShipments(): void {
@@ -233,7 +233,7 @@ function DisplayPreviousShipments(): void {
 
       // Display the "ordered on day num"
       swprintf(zText, "%s %d", gpGameClockString[0], gpNewBobbyrShipments[uiCnt].uiOrderedOnDayNum);
-      DrawTextToScreen(zText, BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, BOBBYR_SHIPMENT_ORDER_NUM_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT(), ubFontColor, 0, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(zText, BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, BOBBYR_SHIPMENT_ORDER_NUM_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT(), ubFontColor, 0, false, CENTER_JUSTIFIED);
 
       uiNumberItemsInShipments = 0;
 
@@ -245,7 +245,7 @@ function DisplayPreviousShipments(): void {
 
       // Display the # of items
       swprintf(zText, "%d", uiNumberItemsInShipments);
-      DrawTextToScreen(zText, BOBBYR_SHIPMENT_NUM_ITEMS_X, usPosY, BOBBYR_SHIPMENT_NUM_ITEMS_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT(), ubFontColor, 0, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(zText, BOBBYR_SHIPMENT_NUM_ITEMS_X, usPosY, BOBBYR_SHIPMENT_NUM_ITEMS_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT(), ubFontColor, 0, false, CENTER_JUSTIFIED);
       usPosY += BOBBYR_SHIPMENT_GAP_BTN_LINES;
     }
   }
@@ -299,7 +299,7 @@ function SelectPreviousShipmentsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
       }
     }
 
-    gfBobbyRShipmentsDirty = TRUE;
+    gfBobbyRShipmentsDirty = true;
   }
 }
 

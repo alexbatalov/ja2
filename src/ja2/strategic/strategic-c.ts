@@ -1,6 +1,6 @@
 let StrategicMap: StrategicMapElement[] /* [MAP_WORLD_X * MAP_WORLD_Y] */;
 
-function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // add the guy to the dead list
   // AddCharacterToDeadList( pSoldier );
 
@@ -21,7 +21,7 @@ function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   } else if ((pSoldier.value.bLife == 0) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD)) {
     // died in mapscreen
 
-    fReDrawFace = TRUE;
+    fReDrawFace = true;
 
     // dead
     if ((pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD)) {
@@ -48,14 +48,14 @@ function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     // put the dead guys down
     AddDeadSoldierToUnLoadedSector((pSoldier.value.sSectorX), (pSoldier.value.sSectorY), pSoldier.value.bSectorZ, pSoldier, RandomGridNo(), ADD_DEAD_SOLDIER_TO_SWEETSPOT);
 
-    fTeamPanelDirty = TRUE;
-    fMapPanelDirty = TRUE;
-    fCharacterInfoPanelDirty = TRUE;
+    fTeamPanelDirty = true;
+    fMapPanelDirty = true;
+    fCharacterInfoPanelDirty = true;
 
     StopTimeCompression();
   }
 
-  return TRUE;
+  return true;
 }
 
 function HandleSoldierDeadComments(pSoldier: Pointer<SOLDIERTYPE>): void {

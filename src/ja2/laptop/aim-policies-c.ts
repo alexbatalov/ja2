@@ -131,15 +131,15 @@ let guiPoliciesMenuButtonImage: INT32;
 let guiBottomButton: UINT32;
 let guiBottomButton2: UINT32;
 let gubCurPageNum: UINT8;
-let gfInPolicyToc: BOOLEAN = FALSE;
-let gfInAgreementPage: BOOLEAN = FALSE;
-let gfAimPolicyMenuBarLoaded: BOOLEAN = FALSE;
+let gfInPolicyToc: boolean = false;
+let gfInAgreementPage: boolean = false;
+let gfAimPolicyMenuBarLoaded: boolean = false;
 let guiContentButton: UINT32;
-let gfExitingPolicesAgreeButton: BOOLEAN;
+let gfExitingPolicesAgreeButton: boolean;
 let gubPoliciesAgreeButtonDown: UINT8;
 let gubAimPolicyMenuButtonDown: UINT8 = 255;
-let gfExitingAimPolicy: BOOLEAN;
-let AimPoliciesSubPagesVisitedFlag: BOOLEAN[] /* [NUM_AIM_POLICY_PAGES] */;
+let gfExitingAimPolicy: boolean;
+let AimPoliciesSubPagesVisitedFlag: boolean[] /* [NUM_AIM_POLICY_PAGES] */;
 
 function GameInitAimPolicies(): void {
 }
@@ -148,15 +148,15 @@ function EnterInitAimPolicies(): void {
   memset(addressof(AimPoliciesSubPagesVisitedFlag), 0, NUM_AIM_POLICY_PAGES);
 }
 
-function EnterAimPolicies(): BOOLEAN {
+function EnterAimPolicies(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   InitAimDefaults();
 
   gubCurPageNum = giCurrentSubPage;
 
-  gfAimPolicyMenuBarLoaded = FALSE;
-  gfExitingAimPolicy = FALSE;
+  gfAimPolicyMenuBarLoaded = false;
+  gfExitingAimPolicy = false;
 
   gubPoliciesAgreeButtonDown = 255;
   gubAimPolicyMenuButtonDown = 255;
@@ -164,7 +164,7 @@ function EnterAimPolicies(): BOOLEAN {
   if (gubCurPageNum != 0)
     InitAimPolicyMenuBar();
 
-  gfInPolicyToc = FALSE;
+  gfInPolicyToc = false;
 
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -181,11 +181,11 @@ function EnterAimPolicies(): BOOLEAN {
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiContentButton)));
 
   RenderAimPolicies();
-  return TRUE;
+  return true;
 }
 
 function ExitAimPolicies(): void {
-  gfExitingAimPolicy = TRUE;
+  gfExitingAimPolicy = true;
 
   DeleteVideoObjectFromIndex(guiBottomButton);
   DeleteVideoObjectFromIndex(guiBottomButton2);
@@ -205,10 +205,10 @@ function ExitAimPolicies(): void {
 }
 
 function HandleAimPolicies(): void {
-  if ((gfAimPolicyMenuBarLoaded != TRUE) && gubCurPageNum != 0) {
+  if ((gfAimPolicyMenuBarLoaded != true) && gubCurPageNum != 0) {
     InitAimPolicyMenuBar();
     //		RenderAimPolicies();
-    fPausedReDrawScreenFlag = TRUE;
+    fPausedReDrawScreenFlag = true;
   }
 }
 
@@ -330,12 +330,12 @@ function RenderAimPolicies(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function InitAimPolicyMenuBar(): BOOLEAN {
+function InitAimPolicyMenuBar(): boolean {
   let i: UINT16;
   let usPosX: UINT16;
 
   if (gfAimPolicyMenuBarLoaded)
-    return TRUE;
+    return true;
 
   // Load graphic for buttons
   guiPoliciesMenuButtonImage = LoadButtonImage("LAPTOP\\BottomButtons2.sti", -1, 0, -1, 1, -1);
@@ -355,28 +355,28 @@ function InitAimPolicyMenuBar(): BOOLEAN {
     usPosX += AIM_POLICY_GAP_X;
   }
 
-  gfAimPolicyMenuBarLoaded = TRUE;
+  gfAimPolicyMenuBarLoaded = true;
 
-  return TRUE;
+  return true;
 }
 
-function ExitAimPolicyMenuBar(): BOOLEAN {
+function ExitAimPolicyMenuBar(): boolean {
   let i: int;
 
   if (!gfAimPolicyMenuBarLoaded)
-    return FALSE;
+    return false;
 
   for (i = 0; i < AIM_POLICY_MENU_BUTTON_AMOUNT; i++)
     RemoveButton(guiPoliciesMenuButton[i]);
 
   UnloadButtonImage(guiPoliciesMenuButtonImage);
 
-  gfAimPolicyMenuBarLoaded = FALSE;
+  gfAimPolicyMenuBarLoaded = false;
 
-  return TRUE;
+  return true;
 }
 
-function DrawAimPolicyMenu(): BOOLEAN {
+function DrawAimPolicyMenu(): boolean {
   let i: UINT16;
   let usPosY: UINT16;
   let usHeight: UINT16;
@@ -404,23 +404,23 @@ function DrawAimPolicyMenu(): BOOLEAN {
 
     uiStartLoc = AIM_POLICY_LINE_SIZE * ubLocInFile[i];
     LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-    DrawTextToScreen(sText, AIM_POLICY_TOC_X + AIM_POLICY_TOC_TEXT_OFFSET_X, (usPosY + AIM_POLICY_TOC_TEXT_OFFSET_Y), AIM_CONTENTBUTTON_WIDTH, AIM_POLICY_TOC_FONT(), AIM_POLICY_TOC_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sText, AIM_POLICY_TOC_X + AIM_POLICY_TOC_TEXT_OFFSET_X, (usPosY + AIM_POLICY_TOC_TEXT_OFFSET_Y), AIM_CONTENTBUTTON_WIDTH, AIM_POLICY_TOC_FONT(), AIM_POLICY_TOC_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     usPosY += AIM_POLICY_TOC_GAP_Y;
   }
-  gfInPolicyToc = TRUE;
+  gfInPolicyToc = true;
 
-  return TRUE;
+  return true;
 }
 
-function InitAimPolicyTocMenu(): BOOLEAN {
+function InitAimPolicyTocMenu(): boolean {
   let i: UINT16;
   let usPosY: UINT16;
   let usHeight: UINT16;
   let uiStartLoc: UINT32 = 0;
 
   if (gfInPolicyToc)
-    return TRUE;
+    return true;
 
   usHeight = GetFontHeight(AIM_POLICY_TOC_FONT());
   usPosY = AIM_POLICY_TOC_Y;
@@ -432,19 +432,19 @@ function InitAimPolicyTocMenu(): BOOLEAN {
 
     usPosY += AIM_POLICY_TOC_GAP_Y;
   }
-  gfInPolicyToc = TRUE;
+  gfInPolicyToc = true;
 
-  return TRUE;
+  return true;
 }
 
-function ExitAimPolicyTocMenu(): BOOLEAN {
+function ExitAimPolicyTocMenu(): boolean {
   let i: UINT16;
 
-  gfInPolicyToc = FALSE;
+  gfInPolicyToc = false;
   for (i = 0; i < NUM_AIM_POLICY_TOC_BUTTONS; i++)
     MSYS_RemoveRegion(addressof(gSelectedPolicyTocMenuRegion[i]));
 
-  return TRUE;
+  return true;
 }
 
 function SelectPolicyTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -463,7 +463,7 @@ function SelectPolicyTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
   }
 }
 
-function DisplayAimPolicyTitleText(): BOOLEAN {
+function DisplayAimPolicyTitleText(): boolean {
   let sText: wchar_t[] /* [400] */;
   let uiStartLoc: UINT32 = 0;
 
@@ -472,14 +472,14 @@ function DisplayAimPolicyTitleText(): BOOLEAN {
   LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
 
   if (gubCurPageNum == 0)
-    DrawTextToScreen(sText, AIM_POLICY_TITLE_X, AIM_POLICY_TITLE_STATEMENT_Y - 25, AIM_POLICY_TITLE_WIDTH, AIM_POLICY_TITLE_FONT(), AIM_POLICY_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(sText, AIM_POLICY_TITLE_X, AIM_POLICY_TITLE_STATEMENT_Y - 25, AIM_POLICY_TITLE_WIDTH, AIM_POLICY_TITLE_FONT(), AIM_POLICY_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   else
-    DrawTextToScreen(sText, AIM_POLICY_TITLE_X, AIM_POLICY_TITLE_Y, AIM_POLICY_TITLE_WIDTH, AIM_POLICY_TITLE_FONT(), AIM_POLICY_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(sText, AIM_POLICY_TITLE_X, AIM_POLICY_TITLE_Y, AIM_POLICY_TITLE_WIDTH, AIM_POLICY_TITLE_FONT(), AIM_POLICY_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
-  return TRUE;
+  return true;
 }
 
-function DisplayAimPolicyStatement(): BOOLEAN {
+function DisplayAimPolicyStatement(): boolean {
   let sText: wchar_t[] /* [400] */;
   let uiStartLoc: UINT32 = 0;
   let usNumPixels: UINT16;
@@ -487,21 +487,21 @@ function DisplayAimPolicyStatement(): BOOLEAN {
   // load and display the statment of policies
   uiStartLoc = AIM_POLICY_LINE_SIZE * Enum68.AIM_STATEMENT_OF_POLICY_1;
   LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
-  usNumPixels = DisplayWrappedString(AIM_POLICY_TITLE_STATEMENT_X, AIM_POLICY_TITLE_STATEMENT_Y, AIM_POLICY_TITLE_STATEMENT_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  usNumPixels = DisplayWrappedString(AIM_POLICY_TITLE_STATEMENT_X, AIM_POLICY_TITLE_STATEMENT_Y, AIM_POLICY_TITLE_STATEMENT_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // load and display the statment of policies
   uiStartLoc = AIM_POLICY_LINE_SIZE * Enum68.AIM_STATEMENT_OF_POLICY_2;
   LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
-  DisplayWrappedString(AIM_POLICY_TITLE_STATEMENT_X, (AIM_POLICY_TITLE_STATEMENT_Y + usNumPixels + 15), AIM_POLICY_TITLE_STATEMENT_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(AIM_POLICY_TITLE_STATEMENT_X, (AIM_POLICY_TITLE_STATEMENT_Y + usNumPixels + 15), AIM_POLICY_TITLE_STATEMENT_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  return TRUE;
+  return true;
 }
 
-function InitAgreementRegion(): BOOLEAN {
+function InitAgreementRegion(): boolean {
   let usPosX: UINT16;
   let i: UINT16;
 
-  gfExitingPolicesAgreeButton = FALSE;
+  gfExitingPolicesAgreeButton = false;
 
   // Load graphic for buttons
   guiPoliciesButtonImage = LoadButtonImage("LAPTOP\\BottomButtons2.sti", -1, 0, -1, 1, -1);
@@ -520,35 +520,35 @@ function InitAgreementRegion(): BOOLEAN {
 
     usPosX += 125;
   }
-  gfInAgreementPage = TRUE;
-  return TRUE;
+  gfInAgreementPage = true;
+  return true;
 }
 
-function ExitAgreementButton(): BOOLEAN {
+function ExitAgreementButton(): boolean {
   let i: UINT8;
 
-  gfExitingPolicesAgreeButton = TRUE;
+  gfExitingPolicesAgreeButton = true;
 
   UnloadButtonImage(guiPoliciesButtonImage);
 
   for (i = 0; i < 2; i++)
     RemoveButton(guiPoliciesAgreeButton[i]);
 
-  gfInAgreementPage = FALSE;
+  gfInAgreementPage = false;
 
-  return TRUE;
+  return true;
 }
 
-function DisplayAimPolicyTitle(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT): BOOLEAN {
+function DisplayAimPolicyTitle(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT): boolean {
   let sText: wchar_t[] /* [400] */;
   let uiStartLoc: UINT32 = 0;
 
   // Load and display title
   uiStartLoc = AIM_POLICY_LINE_SIZE * ubPageNum;
   LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
-  DrawTextToScreen(sText, AIM_POLICY_SUBTITLE_NUMBER, usPosY, 0, AIM_POLICY_SUBTITLE_FONT(), AIM_POLICY_SUBTITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sText, AIM_POLICY_SUBTITLE_NUMBER, usPosY, 0, AIM_POLICY_SUBTITLE_FONT(), AIM_POLICY_SUBTITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  return TRUE;
+  return true;
 }
 
 function DisplayAimPolicyParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT): UINT16 {
@@ -563,11 +563,11 @@ function DisplayAimPolicyParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber: FL
   if (fNumber != 0.0) {
     // Display the section number
     swprintf(sTemp, "%2.1f", fNumber);
-    DrawTextToScreen(sTemp, AIM_POLICY_PARAGRAPH_NUMBER, usPosY, 0, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTemp, AIM_POLICY_PARAGRAPH_NUMBER, usPosY, 0, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
   // Display the text beside the section number
-  usNumPixels = DisplayWrappedString(AIM_POLICY_PARAGRAPH_X, usPosY, AIM_POLICY_PARAGRAPH_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  usNumPixels = DisplayWrappedString(AIM_POLICY_PARAGRAPH_X, usPosY, AIM_POLICY_PARAGRAPH_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   return usNumPixels;
 }
@@ -583,17 +583,17 @@ function DisplayAimPolicySubParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber:
 
   // Display the section number
   swprintf(sTemp, "%2.2f", fNumber);
-  DrawTextToScreen(sTemp, AIM_POLICY_SUBPARAGRAPH_NUMBER, usPosY, 0, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sTemp, AIM_POLICY_SUBPARAGRAPH_NUMBER, usPosY, 0, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the text beside the section number
-  usNumPixels = DisplayWrappedString(AIM_POLICY_SUBPARAGRAPH_X, usPosY, AIM_POLICY_PARAGRAPH_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  usNumPixels = DisplayWrappedString(AIM_POLICY_SUBPARAGRAPH_X, usPosY, AIM_POLICY_PARAGRAPH_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   return usNumPixels;
 }
 
 function BtnPoliciesAgreeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let ubRetValue: UINT8;
-  /* static */ let fOnPage: BOOLEAN = TRUE;
+  /* static */ let fOnPage: boolean = true;
   if (fOnPage) {
     ubRetValue = MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -607,7 +607,7 @@ function BtnPoliciesAgreeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
         btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
         // Agree
-        fOnPage = FALSE;
+        fOnPage = false;
         if (ubRetValue == 1) {
           gubCurPageNum++;
           ChangingAimPoliciesSubPage(gubCurPageNum);
@@ -618,7 +618,7 @@ function BtnPoliciesAgreeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
           guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM;
         }
         InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
-        fOnPage = TRUE;
+        fOnPage = true;
         gubPoliciesAgreeButtonDown = 255;
       }
     }
@@ -632,7 +632,7 @@ function BtnPoliciesAgreeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 
 function BtnPoliciesMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let ubRetValue: UINT8;
-  /* static */ let fOnPage: BOOLEAN = TRUE;
+  /* static */ let fOnPage: boolean = true;
   if (fOnPage) {
     ubRetValue = MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -673,17 +673,17 @@ function BtnPoliciesMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
             gubCurPageNum++;
             ChangingAimPoliciesSubPage(gubCurPageNum);
 
-            fOnPage = FALSE;
+            fOnPage = false;
             if (gfInPolicyToc) {
               ExitAimPolicyTocMenu();
             }
-            fOnPage = TRUE;
+            fOnPage = true;
           }
         }
         InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
         ResetAimPolicyButtons();
         DisableAimPolicyButton();
-        fOnPage = TRUE;
+        fOnPage = true;
       }
     }
     if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -704,7 +704,7 @@ function ResetAimPolicyButtons(): void {
 }
 
 function DisableAimPolicyButton(): void {
-  if (gfExitingAimPolicy == TRUE || gfAimPolicyMenuBarLoaded == FALSE)
+  if (gfExitingAimPolicy == true || gfAimPolicyMenuBarLoaded == false)
     return;
 
   if ((gubCurPageNum == AIM_POLICY_TOC_PAGE)) {
@@ -716,15 +716,15 @@ function DisableAimPolicyButton(): void {
 }
 
 function ChangingAimPoliciesSubPage(ubSubPageNumber: UINT8): void {
-  fLoadPendingFlag = TRUE;
+  fLoadPendingFlag = true;
 
-  if (AimPoliciesSubPagesVisitedFlag[ubSubPageNumber] == FALSE) {
-    fConnectingToSubPage = TRUE;
-    fFastLoadFlag = FALSE;
+  if (AimPoliciesSubPagesVisitedFlag[ubSubPageNumber] == false) {
+    fConnectingToSubPage = true;
+    fFastLoadFlag = false;
 
-    AimPoliciesSubPagesVisitedFlag[ubSubPageNumber] = TRUE;
+    AimPoliciesSubPagesVisitedFlag[ubSubPageNumber] = true;
   } else {
-    fConnectingToSubPage = TRUE;
-    fFastLoadFlag = TRUE;
+    fConnectingToSubPage = true;
+    fFastLoadFlag = true;
   }
 }

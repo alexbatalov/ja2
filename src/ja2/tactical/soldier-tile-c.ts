@@ -26,12 +26,12 @@ function SetDelayedTileWaiting(pSoldier: Pointer<SOLDIERTYPE>, sCauseGridNo: INT
       // Here we have another guy.... save his stats so we can use them for
       // speed determinations....
       pSoldier.value.bOverrideMoveSpeed = ubPerson;
-      pSoldier.value.fUseMoverrideMoveSpeed = TRUE;
+      pSoldier.value.fUseMoverrideMoveSpeed = true;
     }
   }
 }
 
-function SetFinalTile(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fGivenUp: BOOLEAN): void {
+function SetFinalTile(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fGivenUp: boolean): void {
   // OK, If we were waiting for stuff, do it here...
 
   // ATE: Disabled stuff below, made obsolete by timeout...
@@ -87,7 +87,7 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
   let ubPerson: UINT8;
   let sTempDestGridNo: INT16;
   let sNewGridNo: INT16;
-  let fSwapInDoor: BOOLEAN = FALSE;
+  let fSwapInDoor: boolean = false;
 
   if (sGridNo == NOWHERE) {
     return MOVE_TILE_CLEAR;
@@ -102,7 +102,7 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
       if (pSoldier.value.bTeam != gbPlayerNum) // CJC: shouldn't this be in all cases???
       // if ( 0 )
       {
-        pSoldier.value.fBlockedByAnotherMerc = TRUE;
+        pSoldier.value.fBlockedByAnotherMerc = true;
         // Set direction we were trying to goto
         pSoldier.value.bBlockedByAnotherMercDirection = bDirection;
 
@@ -120,12 +120,12 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
             MercPtrs[ubPerson].value.sFinalDestination = MercPtrs[ubPerson].value.sGridNo;
 
             if (PlotPath(pSoldier, pSoldier.value.sFinalDestination, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints)) {
-              pSoldier.value.bPathStored = FALSE;
+              pSoldier.value.bPathStored = false;
               // OK, make guy go here...
               EVENT_GetNewSoldierPath(pSoldier, pSoldier.value.sFinalDestination, pSoldier.value.usUIMovementMode);
               // Restore final dest....
               MercPtrs[ubPerson].value.sFinalDestination = sTempDestGridNo;
-              pSoldier.value.fBlockedByAnotherMerc = FALSE;
+              pSoldier.value.fBlockedByAnotherMerc = false;
 
               // Is the next tile blocked too?
               sNewGridNo = NewGridNo(pSoldier.value.sGridNo, DirectionInc(guiPathingData[0]));
@@ -136,13 +136,13 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
               if (!(pSoldier.value.uiStatusFlags & SOLDIER_MULTITILE)) {
                 // Is the next movement cost for a door?
                 if (DoorTravelCost(pSoldier, sGridNo, gubWorldMovementCosts[sGridNo][bDirection][pSoldier.value.bLevel], (pSoldier.value.bTeam == gbPlayerNum), null) == TRAVELCOST_DOOR) {
-                  fSwapInDoor = TRUE;
+                  fSwapInDoor = true;
                 }
 
                 // If we are to swap and we're near a door, open door first and then close it...?
 
                 // Swap now!
-                MercPtrs[ubPerson].value.fBlockedByAnotherMerc = FALSE;
+                MercPtrs[ubPerson].value.fBlockedByAnotherMerc = false;
 
                 // Restore final dest....
                 MercPtrs[ubPerson].value.sFinalDestination = sTempDestGridNo;
@@ -184,7 +184,7 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
   }
 
   // Are we clear of structs?
-  if (!NewOKDestination(pSoldier, sGridNo, FALSE, pSoldier.value.bLevel)) {
+  if (!NewOKDestination(pSoldier, sGridNo, false, pSoldier.value.bLevel)) {
     // ATE: Fence cost is an exclusiuon here....
     if (gubWorldMovementCosts[sGridNo][bDirection][pSoldier.value.bLevel] != TRAVELCOST_FENCE) {
       // ATE: HIdden structs - we do something here... reveal it!
@@ -196,19 +196,19 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
       }
 
       // Unset flag for blocked by soldier...
-      pSoldier.value.fBlockedByAnotherMerc = FALSE;
+      pSoldier.value.fBlockedByAnotherMerc = false;
       return MOVE_TILE_STATIONARY_BLOCKED;
     } else {
     }
   }
 
   // Unset flag for blocked by soldier...
-  pSoldier.value.fBlockedByAnotherMerc = FALSE;
+  pSoldier.value.fBlockedByAnotherMerc = false;
 
   return MOVE_TILE_CLEAR;
 }
 
-function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: INT16, sFinalDestTile: INT16): BOOLEAN {
+function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: INT16, sFinalDestTile: INT16): boolean {
   let bBlocked: INT8;
   let bOverTerrainType: INT16;
 
@@ -217,12 +217,12 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
 
   // ATE: If not on visible tile, return clear ( for path out of map )
   if (!GridNoOnVisibleWorldTile(sGridNo)) {
-    return TRUE;
+    return true;
   }
 
   // If animation state is crow, iall is clear
   if (pSoldier.value.usAnimState == Enum193.CROW_FLY) {
-    return TRUE;
+    return true;
   }
 
   {
@@ -234,9 +234,9 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
       // OK: Let's check if we are NOT walking off screen
       if (sGridNo == sFinalDestTile && pSoldier.value.ubWaitActionToDo == 0 && (pSoldier.value.bTeam == gbPlayerNum || pSoldier.value.sAbsoluteFinalDestination == NOWHERE)) {
         // Yah, well too bad, stop here.
-        SetFinalTile(pSoldier, pSoldier.value.sGridNo, FALSE);
+        SetFinalTile(pSoldier, pSoldier.value.sGridNo, false);
 
-        return FALSE;
+        return false;
       }
       // CHECK IF they are stationary
       else if (bBlocked == MOVE_TILE_STATIONARY_BLOCKED) {
@@ -252,7 +252,7 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
 
           SetDelayedTileWaiting(pSoldier, sGridNo, 1);
 
-          return FALSE;
+          return false;
         }
       } else {
         {
@@ -268,7 +268,7 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
           SetDelayedTileWaiting(pSoldier, sGridNo, 100);
         }
 
-        return FALSE;
+        return false;
       }
     } else {
       // Mark this tile as reserverd ( until we get there! )
@@ -286,7 +286,7 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
           case ANIM_CROUCH:
 
             // Change height to stand
-            pSoldier.value.fContinueMoveAfterStanceChange = TRUE;
+            pSoldier.value.fContinueMoveAfterStanceChange = true;
             SendChangeSoldierStanceEvent(pSoldier, ANIM_STAND);
             break;
         }
@@ -294,15 +294,15 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
         // Check animation
         // Change to walking
         if (pSoldier.value.usAnimState == Enum193.RUNNING) {
-          ChangeSoldierState(pSoldier, Enum193.WALKING, 0, FALSE);
+          ChangeSoldierState(pSoldier, Enum193.WALKING, 0, false);
         }
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
-function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // Buddy is waiting to continue his path
   let bBlocked: INT8;
   let bPathBlocked: INT8;
@@ -331,10 +331,10 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         // Are we close enough to give up? ( and are a pc )
         if (pSoldier.value.fDelayedMovement > 120) {
           // Quit...
-          SetFinalTile(pSoldier, pSoldier.value.sGridNo, TRUE);
-          pSoldier.value.fDelayedMovement = FALSE;
+          SetFinalTile(pSoldier, pSoldier.value.sGridNo, true);
+          pSoldier.value.fDelayedMovement = false;
         }
-        return TRUE;
+        return true;
       }
 
       // Try new path if anything but temp blockage!
@@ -361,7 +361,7 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         if (pSoldier.value.sAbsoluteFinalDestination == pSoldier.value.sFinalDestination) {
           // on last lap of scripted move, make sure we get to final dest
           sCheckGridNo = pSoldier.value.sAbsoluteFinalDestination;
-        } else if (!NewOKDestination(pSoldier, pSoldier.value.sFinalDestination, TRUE, pSoldier.value.bLevel)) {
+        } else if (!NewOKDestination(pSoldier, pSoldier.value.sFinalDestination, true, pSoldier.value.bLevel)) {
           if (pSoldier.value.fDelayedMovement >= 150) {
             // OK, look around dest for the first one!
             sCheckGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sFinalDestination, 6, addressof(ubDirection));
@@ -386,11 +386,11 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         // Try another path to destination
         // ATE: Allow path to exit grid!
         if (pSoldier.value.ubWaitActionToDo == 1 && gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
-          gfPlotPathToExitGrid = TRUE;
+          gfPlotPathToExitGrid = true;
         }
 
         sCost = FindBestPath(pSoldier, sCheckGridNo, pSoldier.value.bLevel, pSoldier.value.usUIMovementMode, NO_COPYROUTE, fFlags);
-        gfPlotPathToExitGrid = FALSE;
+        gfPlotPathToExitGrid = false;
 
         // Can we get there
         if (sCost > 0) {
@@ -403,12 +403,12 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             // Try to path around everyone except dest person
 
             if (pSoldier.value.ubWaitActionToDo == 1 && gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
-              gfPlotPathToExitGrid = TRUE;
+              gfPlotPathToExitGrid = true;
             }
 
             sCost = FindBestPath(pSoldier, sCheckGridNo, pSoldier.value.bLevel, pSoldier.value.usUIMovementMode, NO_COPYROUTE, PATH_IGNORE_PERSON_AT_DEST);
 
-            gfPlotPathToExitGrid = FALSE;
+            gfPlotPathToExitGrid = false;
 
             // Is the next tile in this new path blocked too?
             sNewGridNo = NewGridNo(pSoldier.value.sGridNo, DirectionInc(guiPathingData[0]));
@@ -428,19 +428,19 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           if (bPathBlocked == MOVE_TILE_CLEAR) {
             // Go for it path!
             if (pSoldier.value.ubWaitActionToDo == 1 && gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
-              gfPlotPathToExitGrid = TRUE;
+              gfPlotPathToExitGrid = true;
             }
 
             // pSoldier->fDelayedMovement = FALSE;
             // ATE: THis will get set in EENT_GetNewSoldierPath....
             pSoldier.value.usActionData = sCheckGridNo;
 
-            pSoldier.value.bPathStored = FALSE;
+            pSoldier.value.bPathStored = false;
 
             EVENT_GetNewSoldierPath(pSoldier, sCheckGridNo, pSoldier.value.usUIMovementMode);
-            gfPlotPathToExitGrid = FALSE;
+            gfPlotPathToExitGrid = false;
 
-            return TRUE;
+            return true;
           }
         }
 
@@ -468,7 +468,7 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             SwapMercPositions(pSoldier, MercPtrs[ubPerson]);
 
             // With these two guys swapped, we should try to continue on our way....
-            pSoldier.value.fDelayedMovement = FALSE;
+            pSoldier.value.fDelayedMovement = false;
 
             // We must calculate the path here so that we can give it the "through people" parameter
             if (gTacticalStatus.fAutoBandageMode && pSoldier.value.sAbsoluteFinalDestination == NOWHERE) {
@@ -476,13 +476,13 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             } else if (pSoldier.value.sAbsoluteFinalDestination != NOWHERE && !FindBestPath(pSoldier, pSoldier.value.sAbsoluteFinalDestination, pSoldier.value.bLevel, pSoldier.value.usUIMovementMode, COPYROUTE, PATH_THROUGH_PEOPLE)) {
               // check to see if we're there now!
               if (pSoldier.value.sGridNo == pSoldier.value.sAbsoluteFinalDestination) {
-                NPCReachedDestination(pSoldier, FALSE);
+                NPCReachedDestination(pSoldier, false);
                 pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
                 pSoldier.value.usNextActionData = 500;
-                return TRUE;
+                return true;
               }
             }
-            pSoldier.value.bPathStored = TRUE;
+            pSoldier.value.bPathStored = true;
 
             EVENT_GetNewSoldierPath(pSoldier, pSoldier.value.sAbsoluteFinalDestination, pSoldier.value.usUIMovementMode);
             // EVENT_GetNewSoldierPath( MercPtrs[ ubPerson ], MercPtrs[ ubPerson ]->sFinalDestination, MercPtrs[ ubPerson ]->usUIMovementMode );
@@ -493,8 +493,8 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         if (pSoldier.value.fDelayedMovement > 20 && pSoldier.value.fDelayedMovement != 150) {
           if (PythSpacesAway(pSoldier.value.sGridNo, pSoldier.value.sFinalDestination) < 5 && pSoldier.value.bTeam == gbPlayerNum) {
             // Quit...
-            SetFinalTile(pSoldier, pSoldier.value.sGridNo, FALSE);
-            pSoldier.value.fDelayedMovement = FALSE;
+            SetFinalTile(pSoldier, pSoldier.value.sGridNo, false);
+            pSoldier.value.fDelayedMovement = false;
           }
         }
 
@@ -502,22 +502,22 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         if (pSoldier.value.fDelayedMovement > 170) {
           if (PythSpacesAway(pSoldier.value.sGridNo, pSoldier.value.sFinalDestination) < 5 && pSoldier.value.bTeam == gbPlayerNum) {
             // Quit...
-            SetFinalTile(pSoldier, pSoldier.value.sGridNo, FALSE);
-            pSoldier.value.fDelayedMovement = FALSE;
+            SetFinalTile(pSoldier, pSoldier.value.sGridNo, false);
+            pSoldier.value.fDelayedMovement = false;
           }
         }
       }
     }
   }
-  return TRUE;
+  return true;
 }
 
-function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce: BOOLEAN): BOOLEAN {
+function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce: boolean): boolean {
   let sX: INT16;
   let sY: INT16;
 
   // Check dest...
-  if (NewOKDestination(pSoldier, sGridNo, TRUE, 0) || fForce) {
+  if (NewOKDestination(pSoldier, sGridNo, true, 0) || fForce) {
     // TELEPORT TO THIS LOCATION!
     sX = CenterX(sGridNo);
     sY = CenterY(sGridNo);
@@ -526,7 +526,7 @@ function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce:
     pSoldier.value.sFinalDestination = sGridNo;
 
     // Make call to FOV to update items...
-    RevealRoofsAndItems(pSoldier, TRUE, TRUE, pSoldier.value.bLevel, TRUE);
+    RevealRoofsAndItems(pSoldier, true, true, pSoldier.value.bLevel, true);
 
     // Handle sight!
     HandleSight(pSoldier, SIGHT_LOOK | SIGHT_RADIO);
@@ -537,15 +537,15 @@ function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce:
     // Change light....
     if (pSoldier.value.bLevel == 0) {
       if (pSoldier.value.iLight != (-1))
-        LightSpriteRoofStatus(pSoldier.value.iLight, FALSE);
+        LightSpriteRoofStatus(pSoldier.value.iLight, false);
     } else {
       if (pSoldier.value.iLight != (-1))
-        LightSpriteRoofStatus(pSoldier.value.iLight, TRUE);
+        LightSpriteRoofStatus(pSoldier.value.iLight, true);
     }
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 // Swaps 2 soldier positions...
@@ -562,41 +562,41 @@ function SwapMercPositions(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<S
   RemoveSoldierFromGridNo(pSoldier2);
 
   // OK, test OK destination for each.......
-  if (NewOKDestination(pSoldier1, sGridNo2, TRUE, 0) && NewOKDestination(pSoldier2, sGridNo1, TRUE, 0)) {
+  if (NewOKDestination(pSoldier1, sGridNo2, true, 0) && NewOKDestination(pSoldier2, sGridNo1, true, 0)) {
     // OK, call teleport function for each.......
-    TeleportSoldier(pSoldier1, sGridNo2, FALSE);
-    TeleportSoldier(pSoldier2, sGridNo1, FALSE);
+    TeleportSoldier(pSoldier1, sGridNo2, false);
+    TeleportSoldier(pSoldier2, sGridNo1, false);
   } else {
     // Place back...
-    TeleportSoldier(pSoldier1, sGridNo1, TRUE);
-    TeleportSoldier(pSoldier2, sGridNo2, TRUE);
+    TeleportSoldier(pSoldier1, sGridNo1, true);
+    TeleportSoldier(pSoldier2, sGridNo2, true);
   }
 }
 
-function CanExchangePlaces(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<SOLDIERTYPE>, fShow: BOOLEAN): BOOLEAN {
+function CanExchangePlaces(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<SOLDIERTYPE>, fShow: boolean): boolean {
   // NB checks outside of this function
   if (EnoughPoints(pSoldier1, AP_EXCHANGE_PLACES, 0, fShow)) {
     if (EnoughPoints(pSoldier2, AP_EXCHANGE_PLACES, 0, fShow)) {
       if ((gAnimControl[pSoldier2.value.usAnimState].uiFlags & ANIM_MOVING)) {
-        return FALSE;
+        return false;
       }
 
       if ((gAnimControl[pSoldier1.value.usAnimState].uiFlags & ANIM_MOVING) && !(gTacticalStatus.uiFlags & INCOMBAT)) {
-        return FALSE;
+        return false;
       }
 
       if (pSoldier2.value.bSide == 0) {
-        return TRUE;
+        return true;
       }
 
       // hehe - don't allow animals to exchange places
       if (pSoldier2.value.uiStatusFlags & (SOLDIER_ANIMAL)) {
-        return FALSE;
+        return false;
       }
 
       // must NOT be hostile, must NOT have stationary orders OR militia team, must be >= OKLIFE
       if (pSoldier2.value.bNeutral && pSoldier2.value.bLife >= OKLIFE && pSoldier2.value.ubCivilianGroup != Enum246.HICKS_CIV_GROUP && ((pSoldier2.value.bOrders != Enum241.STATIONARY || pSoldier2.value.bTeam == MILITIA_TEAM) || (pSoldier2.value.sAbsoluteFinalDestination != NOWHERE && pSoldier2.value.sAbsoluteFinalDestination != pSoldier2.value.sGridNo))) {
-        return TRUE;
+        return true;
       }
 
       if (fShow) {
@@ -610,12 +610,12 @@ function CanExchangePlaces(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<S
       // ATE: OK, reduce this guy's next ai counter....
       pSoldier2.value.uiAIDelay = 100;
 
-      return FALSE;
+      return false;
     } else {
-      return FALSE;
+      return false;
     }
   } else {
-    return FALSE;
+    return false;
   }
-  return TRUE;
+  return true;
 }

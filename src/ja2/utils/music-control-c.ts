@@ -1,10 +1,10 @@
 let uiMusicHandle: UINT32 = NO_SAMPLE;
 let uiMusicVolume: UINT32 = 50;
-let fMusicPlaying: BOOLEAN = FALSE;
-let fMusicFadingOut: BOOLEAN = FALSE;
-let fMusicFadingIn: BOOLEAN = FALSE;
+let fMusicPlaying: boolean = false;
+let fMusicFadingOut: boolean = false;
+let fMusicFadingIn: boolean = false;
 
-let gfMusicEnded: BOOLEAN = FALSE;
+let gfMusicEnded: boolean = false;
 
 let gubMusicMode: UINT8 = 0;
 let gubOldMusicMode: UINT8 = 0;
@@ -36,10 +36,10 @@ let szMusicList: Pointer<CHAR8>[] /* [NUM_MUSIC] */ = [
   "MUSIC\\creature battle.wav",
 ];
 
-let gfForceMusicToTense: BOOLEAN = FALSE;
-let gfDontRestartSong: BOOLEAN = FALSE;
+let gfForceMusicToTense: boolean = false;
+let gfDontRestartSong: boolean = false;
 
-function NoEnemiesInSight(): BOOLEAN {
+function NoEnemiesInSight(): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
 
@@ -51,12 +51,12 @@ function NoEnemiesInSight(): BOOLEAN {
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE) {
       if (pSoldier.value.bOppCnt != 0) {
-        return FALSE;
+        return false;
       }
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 //********************************************************************************
@@ -67,7 +67,7 @@ function NoEnemiesInSight(): BOOLEAN {
 //	Returns:	TRUE if the music was started, FALSE if an error occurred
 //
 //********************************************************************************
-function MusicPlay(uiNum: UINT32): BOOLEAN {
+function MusicPlay(uiNum: UINT32): boolean {
   let spParms: SOUNDPARMS;
 
   if (fMusicPlaying)
@@ -84,15 +84,15 @@ function MusicPlay(uiNum: UINT32): BOOLEAN {
   if (uiMusicHandle != SOUND_ERROR) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music PLay %d %d", uiMusicHandle, gubMusicMode));
 
-    gfMusicEnded = FALSE;
-    fMusicPlaying = TRUE;
+    gfMusicEnded = false;
+    fMusicPlaying = true;
     MusicFadeIn();
-    return TRUE;
+    return true;
   }
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music PLay %d %d", uiMusicHandle, gubMusicMode));
 
-  return FALSE;
+  return false;
 }
 
 //********************************************************************************
@@ -103,7 +103,7 @@ function MusicPlay(uiNum: UINT32): BOOLEAN {
 //	Returns:	TRUE if the volume was set, FALSE if an error occurred
 //
 //********************************************************************************
-function MusicSetVolume(uiVolume: UINT32): BOOLEAN {
+function MusicSetVolume(uiVolume: UINT32): boolean {
   let uiOldMusicVolume: INT32 = uiMusicVolume;
 
   uiMusicVolume = __min(uiVolume, 127);
@@ -111,14 +111,14 @@ function MusicSetVolume(uiVolume: UINT32): BOOLEAN {
   if (uiMusicHandle != NO_SAMPLE) {
     // get volume and if 0 stop music!
     if (uiMusicVolume == 0) {
-      gfDontRestartSong = TRUE;
+      gfDontRestartSong = true;
       MusicStop();
-      return TRUE;
+      return true;
     }
 
     SoundSetVolume(uiMusicHandle, uiMusicVolume);
 
-    return TRUE;
+    return true;
   }
 
   // If here, check if we need to re-start music
@@ -127,7 +127,7 @@ function MusicSetVolume(uiVolume: UINT32): BOOLEAN {
     StartMusicBasedOnMode();
   }
 
-  return FALSE;
+  return false;
 }
 
 //********************************************************************************
@@ -150,19 +150,19 @@ function MusicGetVolume(): UINT32 {
 //	Returns:	TRUE if the music was stopped, FALSE if an error occurred
 //
 //********************************************************************************
-function MusicStop(): BOOLEAN {
+function MusicStop(): boolean {
   if (uiMusicHandle != NO_SAMPLE) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music Stop %d %d", uiMusicHandle, gubMusicMode));
 
     SoundStop(uiMusicHandle);
-    fMusicPlaying = FALSE;
+    fMusicPlaying = false;
     uiMusicHandle = NO_SAMPLE;
-    return TRUE;
+    return true;
   }
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music Stop %d %d", uiMusicHandle, gubMusicMode));
 
-  return FALSE;
+  return false;
 }
 
 //********************************************************************************
@@ -173,12 +173,12 @@ function MusicStop(): BOOLEAN {
 //	Returns:	TRUE if the music has begun fading, FALSE if an error occurred
 //
 //********************************************************************************
-function MusicFadeOut(): BOOLEAN {
+function MusicFadeOut(): boolean {
   if (uiMusicHandle != NO_SAMPLE) {
-    fMusicFadingOut = TRUE;
-    return TRUE;
+    fMusicFadingOut = true;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 //********************************************************************************
@@ -189,12 +189,12 @@ function MusicFadeOut(): BOOLEAN {
 //	Returns:	TRUE if the music has begun fading in, FALSE if an error occurred
 //
 //********************************************************************************
-function MusicFadeIn(): BOOLEAN {
+function MusicFadeIn(): boolean {
   if (uiMusicHandle != NO_SAMPLE) {
-    fMusicFadingIn = TRUE;
-    return TRUE;
+    fMusicFadingIn = true;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 //********************************************************************************
@@ -206,7 +206,7 @@ function MusicFadeIn(): BOOLEAN {
 //	Returns:	TRUE always
 //
 //********************************************************************************
-function MusicPoll(fForce: BOOLEAN): BOOLEAN {
+function MusicPoll(fForce: boolean): boolean {
   let iVol: INT32;
 
   SoundServiceStreams();
@@ -223,7 +223,7 @@ function MusicPoll(fForce: BOOLEAN): BOOLEAN {
         iVol = __min(uiMusicVolume, iVol + gbFadeSpeed);
         SoundSetVolume(uiMusicHandle, iVol);
         if (iVol == uiMusicVolume) {
-          fMusicFadingIn = FALSE;
+          fMusicFadingIn = false;
           gbFadeSpeed = 1;
         }
       }
@@ -237,7 +237,7 @@ function MusicPoll(fForce: BOOLEAN): BOOLEAN {
         SoundSetVolume(uiMusicHandle, iVol);
         if (iVol == 0) {
           MusicStop();
-          fMusicFadingOut = FALSE;
+          fMusicFadingOut = false;
           gbFadeSpeed = 1;
         }
       }
@@ -264,15 +264,15 @@ function MusicPoll(fForce: BOOLEAN): BOOLEAN {
         }
       }
 
-      gfMusicEnded = FALSE;
-      gfDontRestartSong = FALSE;
+      gfMusicEnded = false;
+      gfDontRestartSong = false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
-function SetMusicMode(ubMusicMode: UINT8): BOOLEAN {
+function SetMusicMode(ubMusicMode: UINT8): boolean {
   /* static */ let bPreviousMode: INT8 = 0;
 
   // OK, check if we want to restore
@@ -307,14 +307,14 @@ function SetMusicMode(ubMusicMode: UINT8): BOOLEAN {
   }
   gubOldMusicMode = gubMusicMode;
 
-  return TRUE;
+  return true;
 }
 
-function StartMusicBasedOnMode(): BOOLEAN {
-  /* static */ let fFirstTime: BOOLEAN = TRUE;
+function StartMusicBasedOnMode(): boolean {
+  /* static */ let fFirstTime: boolean = true;
 
   if (fFirstTime) {
-    fFirstTime = FALSE;
+    fFirstTime = false;
 
     bNothingModeSong = Enum327.NOTHING_A_MUSIC + Random(4);
 
@@ -380,7 +380,7 @@ function StartMusicBasedOnMode(): BOOLEAN {
 
       if (gfUseCreatureMusic && !gbWorldSectorZ) {
         // We just killed all the creatures that just attacked the town.
-        gfUseCreatureMusic = FALSE;
+        gfUseCreatureMusic = false;
       }
       break;
 
@@ -397,13 +397,13 @@ function StartMusicBasedOnMode(): BOOLEAN {
       break;
   }
 
-  return TRUE;
+  return true;
 }
 
 function MusicStopCallback(pData: Pointer<void>): void {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music EndCallback %d %d", uiMusicHandle, gubMusicMode));
 
-  gfMusicEnded = TRUE;
+  gfMusicEnded = true;
   uiMusicHandle = NO_SAMPLE;
 }
 

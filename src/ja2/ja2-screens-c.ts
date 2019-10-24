@@ -3,11 +3,11 @@ const MAX_DEBUG_PAGES = 4;
 // GLOBAL FOR PAL EDITOR
 let CurrentPalette: UINT8 = 0;
 let guiBackgroundRect: UINT32;
-let gfExitPalEditScreen: BOOLEAN = FALSE;
-let gfExitDebugScreen: BOOLEAN = FALSE;
-let gfInitRect: BOOLEAN = TRUE;
-/* static */ let FirstTime: BOOLEAN = TRUE;
-let gfDoneWithSplashScreen: BOOLEAN = FALSE;
+let gfExitPalEditScreen: boolean = false;
+let gfExitDebugScreen: boolean = false;
+let gfInitRect: boolean = true;
+/* static */ let FirstTime: boolean = true;
+let gfDoneWithSplashScreen: boolean = false;
 
 let gCurDebugPage: INT8 = 0;
 
@@ -15,8 +15,8 @@ let hVAnims: HVSURFACE[] /* [7] */;
 let bTitleAnimFrame: INT8 = 0;
 let uiTitleAnimTime: UINT32 = 0;
 let uiDoTitleAnimTime: UINT32 = 0;
-let gfDoTitleAnimation: BOOLEAN = FALSE;
-let gfStartTitleAnimation: BOOLEAN = FALSE;
+let gfDoTitleAnimation: boolean = false;
+let gfStartTitleAnimation: boolean = false;
 
 let gDebugRenderOverride: RENDER_HOOK[] /* [MAX_DEBUG_PAGES] */ = [
   DefaultDebugPage1,
@@ -60,12 +60,12 @@ function DisplayFrameRate(): void {
     memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
     swprintf(VideoOverlayDesc.pzText, "%ld", __min(uiFPS, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
-    UpdateVideoOverlay(addressof(VideoOverlayDesc), giFPSOverlay, FALSE);
+    UpdateVideoOverlay(addressof(VideoOverlayDesc), giFPSOverlay, false);
 
     // TIMER COUNTER
     swprintf(VideoOverlayDesc.pzText, "%ld", __min(giTimerDiag, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
-    UpdateVideoOverlay(addressof(VideoOverlayDesc), giCounterPeriodOverlay, FALSE);
+    UpdateVideoOverlay(addressof(VideoOverlayDesc), giCounterPeriodOverlay, false);
 
     if (GetMouseMapPos(addressof(usMapPos))) {
       // gprintfdirty( 0, 315, L"(%d)",usMapPos);
@@ -95,32 +95,32 @@ function DisplayFrameRate(): void {
 
 // USELESS!!!!!!!!!!!!!!!!!!
 function SavingScreenInitialize(): UINT32 {
-  return TRUE;
+  return true;
 }
 function SavingScreenHandle(): UINT32 {
   return Enum26.SAVING_SCREEN;
 }
 function SavingScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function LoadingScreenInitialize(): UINT32 {
-  return TRUE;
+  return true;
 }
 function LoadingScreenHandle(): UINT32 {
   return Enum26.LOADING_SCREEN;
 }
 function LoadingScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function ErrorScreenInitialize(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function ErrorScreenHandle(): UINT32 {
   let InputEvent: InputAtom;
-  /* static */ let fFirstTime: BOOLEAN = FALSE;
+  /* static */ let fFirstTime: boolean = false;
 
   // For quick setting of new video stuff / to be changed
   StartFrameBufferRender();
@@ -141,7 +141,7 @@ function ErrorScreenHandle(): UINT32 {
 
   if (!fFirstTime) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Runtime Error: %s ", gubErrorText));
-    fFirstTime = TRUE;
+    fFirstTime = true;
   }
 
   // For quick setting of new video stuff / to be changed
@@ -149,7 +149,7 @@ function ErrorScreenHandle(): UINT32 {
   EndFrameBufferRender();
 
   // Check for esc
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     if (InputEvent.usEvent == KEY_DOWN) {
       if (InputEvent.usParam == ESC || InputEvent.usParam == 'x' && InputEvent.usKeyState & ALT_DOWN) {
         // Exit the program
@@ -165,11 +165,11 @@ function ErrorScreenHandle(): UINT32 {
 }
 
 function ErrorScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function InitScreenInitialize(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function InitScreenHandle(): UINT32 {
@@ -193,7 +193,7 @@ function InitScreenHandle(): UINT32 {
 
   if (ubCurrentScreen == 0) {
     if (strcmp(gzCommandLine, "-NODD") == 0) {
-      gfDontUseDDBlits = TRUE;
+      gfDontUseDDBlits = true;
     }
 
     // Load version number....
@@ -257,25 +257,25 @@ function InitScreenHandle(): UINT32 {
 
   if (ubCurrentScreen == 4) {
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
-    InitNewGame(FALSE);
+    InitNewGame(false);
   }
   return Enum26.INIT_SCREEN;
 }
 
 function InitScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function PalEditScreenInit(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function PalEditScreenHandle(): UINT32 {
-  /* static */ let FirstTime: BOOLEAN = TRUE;
+  /* static */ let FirstTime: boolean = true;
 
   if (gfExitPalEditScreen) {
-    gfExitPalEditScreen = FALSE;
-    FirstTime = TRUE;
+    gfExitPalEditScreen = false;
+    FirstTime = true;
     FreeBackgroundRect(guiBackgroundRect);
     SetRenderHook(null);
     SetUIKeyboardHook(null);
@@ -283,7 +283,7 @@ function PalEditScreenHandle(): UINT32 {
   }
 
   if (FirstTime) {
-    FirstTime = FALSE;
+    FirstTime = false;
 
     SetRenderHook(PalEditRenderHook);
     SetUIKeyboardHook(PalEditKeyboardHook);
@@ -297,7 +297,7 @@ function PalEditScreenHandle(): UINT32 {
 }
 
 function PalEditScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function PalEditRenderHook(): void {
@@ -314,7 +314,7 @@ function PalEditRenderHook(): void {
   }
 }
 
-function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
+function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
   let ubType: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let ubPaletteRep: UINT8;
@@ -323,12 +323,12 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
   let ubEndRep: UINT8 = 0;
 
   if (gusSelectedSoldier == NO_SOLDIER) {
-    return FALSE;
+    return false;
   }
 
   if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == ESC)) {
-    gfExitPalEditScreen = TRUE;
-    return TRUE;
+    gfExitPalEditScreen = true;
+    return true;
   }
 
   if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'h')) {
@@ -355,7 +355,7 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
     CreateSoldierPalettes(pSoldier);
 
-    return TRUE;
+    return true;
   }
 
   if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'v')) {
@@ -382,7 +382,7 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
     CreateSoldierPalettes(pSoldier);
 
-    return TRUE;
+    return true;
   }
 
   if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'p')) {
@@ -409,7 +409,7 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
     CreateSoldierPalettes(pSoldier);
 
-    return TRUE;
+    return true;
   }
 
   if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 's')) {
@@ -436,34 +436,34 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
     CreateSoldierPalettes(pSoldier);
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function DebugScreenInit(): UINT32 {
-  return TRUE;
+  return true;
 }
 
-function CheckForAndExitTacticalDebug(): BOOLEAN {
+function CheckForAndExitTacticalDebug(): boolean {
   if (gfExitDebugScreen) {
-    FirstTime = TRUE;
-    gfInitRect = TRUE;
-    gfExitDebugScreen = FALSE;
+    FirstTime = true;
+    gfInitRect = true;
+    gfExitDebugScreen = false;
     FreeBackgroundRect(guiBackgroundRect);
     SetRenderHook(null);
     SetUIKeyboardHook(null);
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function ExitDebugScreen(): void {
   if (guiCurrentScreen == Enum26.DEBUG_SCREEN) {
-    gfExitDebugScreen = TRUE;
+    gfExitDebugScreen = true;
   }
 
   CheckForAndExitTacticalDebug();
@@ -476,11 +476,11 @@ function DebugScreenHandle(): UINT32 {
 
   if (gfInitRect) {
     guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, 0, 0, 600, 360);
-    gfInitRect = FALSE;
+    gfInitRect = false;
   }
 
   if (FirstTime) {
-    FirstTime = FALSE;
+    FirstTime = false;
 
     SetRenderHook(DebugRenderHook);
     SetUIKeyboardHook(DebugKeyboardHook);
@@ -492,17 +492,17 @@ function DebugScreenHandle(): UINT32 {
 }
 
 function DebugScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function DebugRenderHook(): void {
   gDebugRenderOverride[gCurDebugPage]();
 }
 
-function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
+function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
   if ((pInputEvent.value.usEvent == KEY_UP) && (pInputEvent.value.usParam == 'q')) {
-    gfExitDebugScreen = TRUE;
-    return TRUE;
+    gfExitDebugScreen = true;
+    return true;
   }
 
   if ((pInputEvent.value.usEvent == KEY_UP) && (pInputEvent.value.usParam == PGUP)) {
@@ -514,7 +514,7 @@ function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
     }
 
     FreeBackgroundRect(guiBackgroundRect);
-    gfInitRect = TRUE;
+    gfInitRect = true;
   }
 
   if ((pInputEvent.value.usEvent == KEY_UP) && (pInputEvent.value.usParam == PGDN)) {
@@ -526,10 +526,10 @@ function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
     }
 
     FreeBackgroundRect(guiBackgroundRect);
-    gfInitRect = TRUE;
+    gfInitRect = true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function SetDebugRenderHook(pDebugRenderOverride: RENDER_HOOK, ubPage: INT8): void {
@@ -557,7 +557,7 @@ function DefaultDebugPage4(): void {
 }
 
 function SexScreenInit(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 const SMILY_DELAY = 100;
@@ -654,15 +654,15 @@ function SexScreenHandle(): UINT32 {
 }
 
 function SexScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function DemoExitScreenInit(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function DoneFadeOutForDemoExitScreen(): void {
-  gfProgramIsRunning = FALSE;
+  gfProgramIsRunning = false;
 }
 
 // FIXME: Language-specific code
@@ -702,10 +702,10 @@ function DoneFadeOutForDemoExitScreen(): void {
 // #endif
 
 function DemoExitScreenHandle(): UINT32 {
-  gfProgramIsRunning = FALSE;
+  gfProgramIsRunning = false;
   return Enum26.DEMO_EXIT_SCREEN;
 }
 
 function DemoExitScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }

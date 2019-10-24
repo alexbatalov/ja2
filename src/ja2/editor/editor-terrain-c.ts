@@ -1,8 +1,8 @@
-let gfShowTerrainTileButtons: BOOLEAN;
+let gfShowTerrainTileButtons: boolean;
 let ubTerrainTileButtonWeight: UINT8[] /* [NUM_TERRAIN_TILE_REGIONS] */;
 let usTotalWeight: UINT16;
-let fPrevShowTerrainTileButtons: BOOLEAN = TRUE;
-let fUseTerrainWeights: BOOLEAN = FALSE;
+let fPrevShowTerrainTileButtons: boolean = true;
+let fUseTerrainWeights: boolean = false;
 let TerrainTileSelected: INT32 = 0;
 let TerrainForegroundTile: INT32;
 let TerrainBackgroundTile: INT32;
@@ -21,8 +21,8 @@ function ResetTerrainTileWeights(): void {
     ubTerrainTileButtonWeight[x] = 0;
   }
   usTotalWeight = 0;
-  fUseTerrainWeights = FALSE;
-  gfRenderTaskbar = TRUE;
+  fUseTerrainWeights = false;
+  gfRenderTaskbar = true;
 }
 
 function HideTerrainTileButtons(): void {
@@ -31,7 +31,7 @@ function HideTerrainTileButtons(): void {
     for (x = Enum45.BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
       DisableEditorRegion(x);
     }
-    gfShowTerrainTileButtons = FALSE;
+    gfShowTerrainTileButtons = false;
   }
 }
 
@@ -41,7 +41,7 @@ function ShowTerrainTileButtons(): void {
     for (x = Enum45.BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
       EnableEditorRegion(x);
     }
-    gfShowTerrainTileButtons = TRUE;
+    gfShowTerrainTileButtons = true;
   }
 }
 
@@ -93,14 +93,14 @@ function RenderTerrainTileButtons(): void {
 // contains the terrain button's index value.
 function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderTaskbar = TRUE;
+    gfRenderTaskbar = true;
     TerrainTileSelected = MSYS_GetRegionUserData(reg, 0);
     if (TerrainTileDrawMode == TERRAIN_TILES_FOREGROUND) {
       TerrainForegroundTile = TerrainTileSelected;
       CurrentPaste = TerrainForegroundTile;
       // iEditorToolbarState = TBAR_MODE_DRAW;
       if (_KeyDown(SHIFT)) {
-        fUseTerrainWeights = TRUE;
+        fUseTerrainWeights = true;
       }
       if (fUseTerrainWeights) {
         // SHIFT+LEFTCLICK adds weight to the selected terrain tile.
@@ -119,7 +119,7 @@ function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT
     }
   }
   if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    gfRenderTaskbar = TRUE;
+    gfRenderTaskbar = true;
     TerrainTileSelected = MSYS_GetRegionUserData(reg, 0);
     if (TerrainTileDrawMode == TERRAIN_TILES_FOREGROUND) {
       TerrainForegroundTile = TerrainTileSelected;

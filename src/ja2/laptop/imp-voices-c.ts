@@ -10,20 +10,20 @@ let giIMPVoicesButton: INT32[] /* [3] */;
 let giIMPVoicesButtonImage: INT32[] /* [3] */;
 
 // hacks to be removeed later
-let fVoiceAVisited: BOOLEAN = FALSE;
-let fVoiceBVisited: BOOLEAN = FALSE;
-let fVoiceCVisited: BOOLEAN = FALSE;
+let fVoiceAVisited: boolean = false;
+let fVoiceBVisited: boolean = false;
+let fVoiceCVisited: boolean = false;
 
 // redraw protrait screen
-let fReDrawVoicesScreenFlag: BOOLEAN = FALSE;
+let fReDrawVoicesScreenFlag: boolean = false;
 
 // the portrait region, for player to click on and re-hear voice
 let gVoicePortraitRegion: MOUSE_REGION;
 
 function EnterIMPVoices(): void {
-  fVoiceAVisited = FALSE;
-  fVoiceBVisited = FALSE;
-  fVoiceCVisited = FALSE;
+  fVoiceAVisited = false;
+  fVoiceBVisited = false;
+  fVoiceCVisited = false;
 
   // create buttons
   CreateIMPVoicesButtons();
@@ -74,11 +74,11 @@ function ExitIMPVoices(): void {
 
 function HandleIMPVoices(): void {
   // do we need to re write screen
-  if (fReDrawVoicesScreenFlag == TRUE) {
+  if (fReDrawVoicesScreenFlag == true) {
     RenderIMPVoices();
 
     // reset redraw flag
-    fReDrawVoicesScreenFlag = FALSE;
+    fReDrawVoicesScreenFlag = false;
   }
   return;
 }
@@ -180,7 +180,7 @@ function BtnIMPVoicesNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
         uiVocVoiceSound = PlayVoice();
       }
 
-      fReDrawVoicesScreenFlag = TRUE;
+      fReDrawVoicesScreenFlag = true;
     }
   }
 }
@@ -206,7 +206,7 @@ function BtnIMPVoicesPreviousCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
         uiVocVoiceSound = PlayVoice();
       }
 
-      fReDrawVoicesScreenFlag = TRUE;
+      fReDrawVoicesScreenFlag = true;
     }
   }
 }
@@ -240,14 +240,14 @@ function BtnIMPVoicesDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       }
 
       // set voice id, to grab character slot
-      if (fCharacterIsMale == TRUE) {
+      if (fCharacterIsMale == true) {
         LaptopSaveInfo.iVoiceId = iCurrentVoices;
       } else {
         LaptopSaveInfo.iVoiceId = iCurrentVoices + 3;
       }
 
       // set button up image  pending
-      fButtonPendingFlag = TRUE;
+      fButtonPendingFlag = true;
     }
   }
 }
@@ -257,7 +257,7 @@ function PlayVoice(): UINT32 {
 
   // gender?
 
-  if (fCharacterIsMale == TRUE) {
+  if (fCharacterIsMale == true) {
     switch (iCurrentVoices) {
       case (0):
         // fVoiceAVisited = TRUE;

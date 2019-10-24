@@ -14,17 +14,17 @@ let pOldMousePosition: SGPPoint;
 let MessageBoxRestrictedCursorRegion: SGPRect;
 
 // if the cursor was locked to a region
-let fCursorLockedToArea: BOOLEAN = FALSE;
-let gfInMsgBox: BOOLEAN = FALSE;
+let fCursorLockedToArea: boolean = false;
+let gfInMsgBox: boolean = false;
 
 let gOldCursorLimitRectangle: SGPRect;
 
 let gMsgBox: MESSAGE_BOX_STRUCT;
-let gfNewMessageBox: BOOLEAN = FALSE;
-let gfStartedFromGameScreen: BOOLEAN = FALSE;
-let gfStartedFromMapScreen: BOOLEAN = FALSE;
-let fRestoreBackgroundForMessageBox: BOOLEAN = FALSE;
-let gfDontOverRideSaveBuffer: BOOLEAN = TRUE; // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
+let gfNewMessageBox: boolean = false;
+let gfStartedFromGameScreen: boolean = false;
+let gfStartedFromMapScreen: boolean = false;
+let fRestoreBackgroundForMessageBox: boolean = false;
+let gfDontOverRideSaveBuffer: boolean = true; // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
 
 let gzUserDefinedButton1: CHAR16[] /* [128] */;
 let gzUserDefinedButton2: CHAR16[] /* [128] */;
@@ -51,7 +51,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   GetMousePos(addressof(pOldMousePosition));
 
   // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
-  gfDontOverRideSaveBuffer = TRUE;
+  gfDontOverRideSaveBuffer = true;
 
   SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
@@ -162,7 +162,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   gMsgBox.usFlags = usFlags;
   gMsgBox.uiExitScreen = uiExitScreen;
   gMsgBox.ExitCallback = ReturnCallback;
-  gMsgBox.fRenderBox = TRUE;
+  gMsgBox.fRenderBox = true;
   gMsgBox.bHandled = 0;
 
   // Init message box
@@ -181,13 +181,13 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   gMsgBox.sY = ((((aRect.iBottom - aRect.iTop) - usTextBoxHeight) / 2) + aRect.iTop);
 
   if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-    gfStartedFromGameScreen = TRUE;
+    gfStartedFromGameScreen = true;
   }
 
-  if ((fInMapMode == TRUE)) {
+  if ((fInMapMode == true)) {
     //		fMapExitDueToMessageBox = TRUE;
-    gfStartedFromMapScreen = TRUE;
-    fMapPanelDirty = TRUE;
+    gfStartedFromMapScreen = true;
+    fMapPanelDirty = true;
   }
 
   // Set pending screen
@@ -199,7 +199,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   vs_desc.usHeight = usTextBoxHeight;
   vs_desc.ubBitDepth = 16;
 
-  if (AddVideoSurface(addressof(vs_desc), addressof(gMsgBox.uiSaveBuffer)) == FALSE) {
+  if (AddVideoSurface(addressof(vs_desc), addressof(gMsgBox.uiSaveBuffer)) == false) {
     return -1;
   }
 
@@ -215,7 +215,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   // Create top-level mouse region
   MSYS_DefineRegion(addressof(gMsgBox.BackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, usCursor, MSYS_NO_CALLBACK, MsgBoxClickCallback);
 
-  if (gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] == FALSE) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] == false) {
     if (usFlags & MSG_BOX_FLAG_OK) {
       SimulateMouseMovement((gMsgBox.sX + (usTextBoxWidth / 2) + 27), (gMsgBox.sY + (usTextBoxHeight - 10)));
     } else {
@@ -228,7 +228,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
 
   // findout if cursor locked, if so, store old params and store, restore when done
   if (IsCursorRestricted()) {
-    fCursorLockedToArea = TRUE;
+    fCursorLockedToArea = true;
     GetRestrictedClipCursor(addressof(MessageBoxRestrictedCursorRegion));
     FreeMouseCursor();
   }
@@ -411,15 +411,15 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   PauseGame();
   LockPauseState(1);
   // Pause timers as well....
-  PauseTime(TRUE);
+  PauseTime(true);
 
   // Save mouse restriction region...
   GetRestrictedClipCursor(addressof(gOldCursorLimitRectangle));
   FreeMouseCursor();
 
-  gfNewMessageBox = TRUE;
+  gfNewMessageBox = true;
 
-  gfInMsgBox = TRUE;
+  gfInMsgBox = true;
 
   return iId;
 }
@@ -433,82 +433,82 @@ function MsgBoxClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
 }
 
 function OKMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_OK;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 
 function YESMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_YES;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 
 function NOMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_NO;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 
 function ContractMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_CONTRACT;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 
 function LieMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  /* static */ let fLButtonDown: BOOLEAN = FALSE;
+  /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = TRUE;
+    fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_LIE;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = FALSE;
+    fLButtonDown = false;
   }
 }
 
@@ -596,12 +596,12 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   UnLockPauseState();
   UnPauseGame();
   // UnPause timers as well....
-  PauseTime(FALSE);
+  PauseTime(false);
 
   // Restore mouse restriction region...
   RestrictMouseCursor(addressof(gOldCursorLimitRectangle));
 
-  gfInMsgBox = FALSE;
+  gfInMsgBox = false;
 
   // Call done callback!
   if (gMsgBox.ExitCallback != null) {
@@ -609,7 +609,7 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   }
 
   // if ur in a non gamescreen and DONT want the msg box to use the save buffer, unset gfDontOverRideSaveBuffer in ur callback
-  if (((gMsgBox.uiExitScreen != Enum26.GAME_SCREEN) || (fRestoreBackgroundForMessageBox == TRUE)) && gfDontOverRideSaveBuffer) {
+  if (((gMsgBox.uiExitScreen != Enum26.GAME_SCREEN) || (fRestoreBackgroundForMessageBox == true)) && gfDontOverRideSaveBuffer) {
     // restore what we have under here...
     pSrcBuf = LockVideoSurface(gMsgBox.uiSaveBuffer, addressof(uiSrcPitchBYTES));
     pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
@@ -622,17 +622,17 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
     InvalidateRegion(gMsgBox.sX, gMsgBox.sY, (gMsgBox.sX + gMsgBox.usWidth), (gMsgBox.sY + gMsgBox.usHeight));
   }
 
-  fRestoreBackgroundForMessageBox = FALSE;
-  gfDontOverRideSaveBuffer = TRUE;
+  fRestoreBackgroundForMessageBox = false;
+  gfDontOverRideSaveBuffer = true;
 
-  if (fCursorLockedToArea == TRUE) {
+  if (fCursorLockedToArea == true) {
     GetMousePos(addressof(pPosition));
 
     if ((pPosition.iX > MessageBoxRestrictedCursorRegion.iRight) || (pPosition.iX > MessageBoxRestrictedCursorRegion.iLeft) && (pPosition.iY < MessageBoxRestrictedCursorRegion.iTop) && (pPosition.iY > MessageBoxRestrictedCursorRegion.iBottom)) {
       SimulateMouseMovement(pOldMousePosition.iX, pOldMousePosition.iY);
     }
 
-    fCursorLockedToArea = FALSE;
+    fCursorLockedToArea = false;
     RestrictMouseCursor(addressof(MessageBoxRestrictedCursorRegion));
   }
 
@@ -646,13 +646,13 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
     case Enum26.GAME_SCREEN:
 
       if (InOverheadMap()) {
-        gfOverheadMapDirty = TRUE;
+        gfOverheadMapDirty = true;
       } else {
         SetRenderFlags(RENDER_FLAG_FULL);
       }
       break;
     case Enum26.MAP_SCREEN:
-      fMapPanelDirty = TRUE;
+      fMapPanelDirty = true;
       break;
   }
 
@@ -665,7 +665,7 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
 }
 
 function MessageBoxScreenInit(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function MessageBoxScreenHandle(): UINT32 {
@@ -683,8 +683,8 @@ function MessageBoxScreenHandle(): UINT32 {
         HandleMAPUILoseCursorFromOtherScreen();
       }
 
-      gfStartedFromGameScreen = FALSE;
-      gfStartedFromMapScreen = FALSE;
+      gfStartedFromGameScreen = false;
+      gfStartedFromMapScreen = false;
       /*
                               // Save what we have under here...
                               pDestBuf = LockVideoSurface( gMsgBox.uiSaveBuffer, &uiDestPitchBYTES);
@@ -701,7 +701,7 @@ function MessageBoxScreenHandle(): UINT32 {
       */
     }
 
-    gfNewMessageBox = FALSE;
+    gfNewMessageBox = false;
 
     return Enum26.MSG_BOX_SCREEN;
   }
@@ -781,7 +781,7 @@ function MessageBoxScreenHandle(): UINT32 {
 
   // carter, need key shortcuts for clearing up message boxes
   // Check for esc
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     if (InputEvent.usEvent == KEY_UP) {
       if ((InputEvent.usParam == ESC) || (InputEvent.usParam == 'n')) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_YESNO) {
@@ -850,7 +850,7 @@ function MessageBoxScreenHandle(): UINT32 {
 }
 
 function MessageBoxScreenShutdown(): UINT32 {
-  return FALSE;
+  return false;
 }
 
 // a basic box that don't care what screen we came from

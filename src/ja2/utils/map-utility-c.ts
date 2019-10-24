@@ -20,11 +20,11 @@ interface RGBValues {
 }
 
 function MapUtilScreenInit(): UINT32 {
-  return TRUE;
+  return true;
 }
 
 function MapUtilScreenHandle(): UINT32 {
-  /* static */ let fNewMap: INT16 = TRUE;
+  /* static */ let fNewMap: INT16 = true;
   /* static */ let sFileNum: INT16 = 0;
   let InputEvent: InputAtom;
   let FileInfo: GETFILESTRUCT;
@@ -90,7 +90,7 @@ function MapUtilScreenHandle(): UINT32 {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, (640), (480), Get16BPPColor(FROMRGB(0, 0, 0)));
 
   if (fNewMap) {
-    fNewMap = FALSE;
+    fNewMap = false;
 
     // Create render buffer
     GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
@@ -99,7 +99,7 @@ function MapUtilScreenHandle(): UINT32 {
     vs_desc.usHeight = 44;
     vs_desc.ubBitDepth = ubBitDepth;
 
-    if (AddVideoSurface(addressof(vs_desc), addressof(giMiniMap)) == FALSE) {
+    if (AddVideoSurface(addressof(vs_desc), addressof(giMiniMap)) == false) {
       return Enum26.ERROR_SCREEN;
     }
 
@@ -126,7 +126,7 @@ function MapUtilScreenHandle(): UINT32 {
     vs_desc.usHeight = 44;
     vs_desc.ubBitDepth = 8;
 
-    if (AddVideoSurface(addressof(vs_desc), addressof(gi8BitMiniMap)) == FALSE) {
+    if (AddVideoSurface(addressof(vs_desc), addressof(gi8BitMiniMap)) == false) {
       return Enum26.ERROR_SCREEN;
     }
     GetVideoSurface(addressof(ghvSurface), gi8BitMiniMap);
@@ -134,7 +134,7 @@ function MapUtilScreenHandle(): UINT32 {
 
   // OK, we are here, now loop through files
   if (sCurFile == sFiles || FListNode == null) {
-    gfProgramIsRunning = FALSE;
+    gfProgramIsRunning = false;
     return Enum26.MAPUTILITY_SCREEN;
   }
 
@@ -148,9 +148,9 @@ function MapUtilScreenHandle(): UINT32 {
   // Render small map
   InitNewOverheadDB(giCurrentTilesetID);
 
-  gfOverheadMapDirty = TRUE;
+  gfOverheadMapDirty = true;
 
-  RenderOverheadMap(0, (WORLD_COLS / 2), 0, 0, 640, 320, TRUE);
+  RenderOverheadMap(0, (WORLD_COLS / 2), 0, 0, 640, 320, true);
 
   TrashOverheadMap();
 
@@ -262,9 +262,9 @@ function MapUtilScreenHandle(): UINT32 {
 
     for (cnt = 0; cnt < 256; cnt++) {
       usLineColor = Get16BPPColor(FROMRGB(pPalette[cnt].peRed, pPalette[cnt].peGreen, pPalette[cnt].peBlue));
-      RectangleDraw(TRUE, sX, sY, sX, (sY + 10), usLineColor, pDestBuf);
+      RectangleDraw(true, sX, sY, sX, (sY + 10), usLineColor, pDestBuf);
       sX++;
-      RectangleDraw(TRUE, sX, sY, sX, (sY + 10), usLineColor, pDestBuf);
+      RectangleDraw(true, sX, sY, sX, (sY + 10), usLineColor, pDestBuf);
       sX++;
     }
   }
@@ -292,10 +292,10 @@ function MapUtilScreenHandle(): UINT32 {
 
   InvalidateScreen();
 
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == ESC)) {
       // Exit the program
-      gfProgramIsRunning = FALSE;
+      gfProgramIsRunning = false;
     }
   }
 
@@ -307,5 +307,5 @@ function MapUtilScreenHandle(): UINT32 {
 }
 
 function MapUtilScreenShutdown(): UINT32 {
-  return TRUE;
+  return true;
 }

@@ -8,7 +8,7 @@ const MAJOR_MAP_VERSION = 5.00;
 
 let gdMajorMapVersion: FLOAT = MAJOR_MAP_VERSION;
 
-let gfWorldLoaded: BOOLEAN;
+let gfWorldLoaded: boolean;
 
 let gMapInformation: MAPCREATE_STRUCT;
 
@@ -54,7 +54,7 @@ Version 11 -- Kris -- obsolete May 2, 1998
 
 // EntryPoints can't be placed on the top two gridnos in a map.  So all we do in this case
 // is return the closest gridno.  Returns TRUE if the mapindex changes.
-function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
+function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): boolean {
   let sXMapPos: INT16;
   let sYMapPos: INT16;
   let sWorldX: INT16;
@@ -65,7 +65,7 @@ function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
   let sBottomLimit: INT16;
 
   if (sGridNo.value < 0)
-    return FALSE; // entry point is non-existant
+    return false; // entry point is non-existant
 
   ConvertGridNoToXY(sGridNo.value, addressof(sXMapPos), addressof(sYMapPos));
 
@@ -80,12 +80,12 @@ function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
   } else if (sWorldY > sBottomLimit) {
     GetFromAbsoluteScreenXYWorldXY(addressof(iNewMapX), addressof(iNewMapY), sWorldX, sBottomLimit);
   } else {
-    return FALSE; // already valid
+    return false; // already valid
   }
 
   sGridNo.value = MAPROWCOLTOPOS(iNewMapY / 10, iNewMapX / 10);
 
-  return TRUE; // modified
+  return true; // modified
 }
 
 function SaveMapInformation(fp: HWFILE): void {

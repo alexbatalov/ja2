@@ -134,13 +134,13 @@ const enum Enum46 {
   NUM_ATTACHMENT_BUTTONS,
 }
 let guiAttachmentButton: UINT32[] /* [NUM_ATTACHMENT_BUTTONS] */;
-let gfAttachment: BOOLEAN[] /* [NUM_ATTACHMENT_BUTTONS] */;
+let gfAttachment: boolean[] /* [NUM_ATTACHMENT_BUTTONS] */;
 
 let guiCeramicPlatesButton: UINT32;
-let gfCeramicPlates: BOOLEAN;
+let gfCeramicPlates: boolean;
 
 let guiDetonatorButton: UINT32;
-let gfDetonator: BOOLEAN;
+let gfDetonator: boolean;
 
 let guiActionItemButton: UINT32;
 let gbActionItemIndex: INT8 = Enum49.ACTIONITEM_MEDIUM;
@@ -165,7 +165,7 @@ const enum Enum47 {
 let gbEditingMode: INT8 = Enum47.EDITING_NOTHING;
 
 let gpItem: Pointer<OBJECTTYPE> = null;
-let gfShowItemStatsPanel: BOOLEAN;
+let gfShowItemStatsPanel: boolean;
 let gsItemGridNo: INT16;
 
 let gpEditingItemPool: Pointer<ITEM_POOL> = null;
@@ -174,13 +174,13 @@ function ShowItemStatsPanel(): void {
   ShowEditorButtons(Enum32.FIRST_ITEMSTATS_BUTTON, Enum32.LAST_ITEMSTATS_BUTTON);
   if (iCurrentTaskbar == Enum36.TASK_MERCS || !gpItem)
     HideEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
-  gfShowItemStatsPanel = TRUE;
+  gfShowItemStatsPanel = true;
 }
 
 function HideItemStatsPanel(): void {
   HideEditorButtons(Enum32.FIRST_ITEMSTATS_BUTTON, Enum32.LAST_ITEMSTATS_BUTTON);
   SpecifyItemToEdit(null, -1);
-  gfShowItemStatsPanel = FALSE;
+  gfShowItemStatsPanel = false;
 }
 
 function EnableItemStatsPanel(): void {
@@ -223,7 +223,7 @@ function ExecuteItemStatsCmd(ubAction: UINT8): void {
             break;
         }
       SetActiveField(0);
-      gfRenderTaskbar = TRUE;
+      gfRenderTaskbar = true;
       break;
     case Enum48.ITEMSTATS_CANCEL:
       SpecifyItemToEdit(gpItem, gsItemGridNo);
@@ -297,7 +297,7 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
   } else
     RemoveItemGUI();
 
-  gfRenderTaskbar = TRUE;
+  gfRenderTaskbar = true;
 
   if (!gpItem) {
     // Hide all edit features.
@@ -569,7 +569,7 @@ function SetupGunGUI(): void {
     yp += 14;
     if (FindAttachment(gpItem, Enum225.SILENCER) != -1) {
       ButtonList[guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
-      gfAttachment[0] = TRUE;
+      gfAttachment[0] = true;
     }
   }
   guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON] = -1;
@@ -578,7 +578,7 @@ function SetupGunGUI(): void {
     yp += 14;
     if (FindAttachment(gpItem, Enum225.SNIPERSCOPE) != -1) {
       ButtonList[guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
-      gfAttachment[1] = TRUE;
+      gfAttachment[1] = true;
     }
   }
   guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON] = -1;
@@ -587,7 +587,7 @@ function SetupGunGUI(): void {
     yp += 14;
     if (FindAttachment(gpItem, Enum225.LASERSCOPE) != -1) {
       ButtonList[guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
-      gfAttachment[2] = TRUE;
+      gfAttachment[2] = true;
     }
   }
   guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON] = -1;
@@ -596,7 +596,7 @@ function SetupGunGUI(): void {
     yp += 14;
     if (FindAttachment(gpItem, Enum225.BIPOD) != -1) {
       ButtonList[guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
-      gfAttachment[3] = TRUE;
+      gfAttachment[3] = true;
     }
   }
   guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON] = -1;
@@ -605,7 +605,7 @@ function SetupGunGUI(): void {
     yp += 14;
     if (FindAttachment(gpItem, Enum225.DUCKBILL) != -1) {
       ButtonList[guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
-      gfAttachment[4] = TRUE;
+      gfAttachment[4] = true;
     }
   }
   guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON] = -1;
@@ -614,7 +614,7 @@ function SetupGunGUI(): void {
     yp += 14;
     if (FindAttachment(gpItem, Enum225.UNDER_GLAUNCHER) != -1) {
       ButtonList[guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
-      gfAttachment[5] = TRUE;
+      gfAttachment[5] = true;
     }
   }
   ReEvaluateAttachmentStatii();
@@ -717,7 +717,7 @@ function SetupArmourGUI(): void {
     guiCeramicPlatesButton = CreateTextButton("CERAMIC PLATES", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 558, 375, 72, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleCeramicPlates);
     if (FindAttachment(gpItem, Enum225.CERAMIC_PLATES) != -1) {
       ButtonList[guiCeramicPlatesButton].value.uiFlags |= BUTTON_CLICKED_ON;
-      gfCeramicPlates = TRUE;
+      gfCeramicPlates = true;
     }
   }
 }
@@ -808,14 +808,14 @@ function SetupExplosivesGUI(): void {
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   yp = 375;
-  gfDetonator = FALSE;
+  gfDetonator = false;
   guiDetonatorButton = -1;
   if (ValidAttachment(Enum225.DETONATOR, gpItem.value.usItem)) {
     guiDetonatorButton = CreateTextButton("DETONATOR", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleDetonator);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.DETONATOR) != -1) {
       ButtonList[guiDetonatorButton].value.uiFlags |= BUTTON_CLICKED_ON;
-      gfDetonator = TRUE;
+      gfDetonator = true;
     }
   }
 }
@@ -1085,14 +1085,14 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       if (guiAttachmentButton[i] != -1 && btn == ButtonList[guiAttachmentButton[i]]) {
         // Found it, now check the state of the button.
         if (!gfAttachment[i]) {
-          gfAttachment[i] = TRUE;
+          gfAttachment[i] = true;
           btn.value.uiFlags |= BUTTON_CLICKED_ON;
           CreateItem(usAttachment, gpItem.value.bGunStatus, addressof(temp));
           AttachObject(null, gpItem, addressof(temp));
         } else {
           // Button is out, so remove the attachment
           let slot: INT8;
-          gfAttachment[i] = FALSE;
+          gfAttachment[i] = false;
           btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
           slot = FindAttachment(gpItem, usAttachment);
           if (slot != -1)
@@ -1107,7 +1107,7 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let temp: OBJECTTYPE;
-    gfCeramicPlates ^= TRUE;
+    gfCeramicPlates ^= true;
     if (gfCeramicPlates) {
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
       CreateItem(Enum225.CERAMIC_PLATES, gpItem.value.bStatus[0], addressof(temp));
@@ -1126,14 +1126,14 @@ function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let temp: OBJECTTYPE;
     if (!gfDetonator) {
-      gfDetonator = TRUE;
+      gfDetonator = true;
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
       CreateItem(Enum225.DETONATOR, gpItem.value.bStatus[0], addressof(temp));
       AttachObject(null, gpItem, addressof(temp));
     } else {
       // Button is out, so remove the attachment
       let slot: INT8;
-      gfDetonator = FALSE;
+      gfDetonator = false;
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
       slot = FindAttachment(gpItem, Enum225.DETONATOR);
       if (slot != -1)
@@ -1332,7 +1332,7 @@ function ReEvaluateAttachmentStatii(): void {
           usAttachment = Enum225.UNDER_GLAUNCHER;
           break;
       }
-      if (ValidItemAttachment(gpItem, usAttachment, TRUE))
+      if (ValidItemAttachment(gpItem, usAttachment, true))
         EnableButton(guiAttachmentButton[i]);
       else
         DisableButton(guiAttachmentButton[i]);

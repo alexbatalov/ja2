@@ -52,7 +52,7 @@ interface EV_S_CHANGESTATE {
   sXPos: INT16;
   sYPos: INT16;
   usStartingAniCode: UINT16;
-  fForce: BOOLEAN;
+  fForce: boolean;
 }
 
 interface EV_S_CHANGEDEST {
@@ -128,7 +128,7 @@ interface EV_S_WEAPONHIT {
   sZPos: INT16;
   sRange: INT16;
   ubAttackerID: UINT8;
-  fHit: BOOLEAN;
+  fHit: boolean;
   ubSpecial: UINT8;
   ubLocation: UINT8;
 }
@@ -148,8 +148,8 @@ interface EV_S_STRUCTUREHIT {
 interface EV_S_WINDOWHIT {
   sGridNo: INT16;
   usStructureID: UINT16;
-  fBlowWindowSouth: BOOLEAN;
-  fLargeForce: BOOLEAN;
+  fBlowWindowSouth: boolean;
+  fLargeForce: boolean;
 }
 
 interface EV_S_MISS {

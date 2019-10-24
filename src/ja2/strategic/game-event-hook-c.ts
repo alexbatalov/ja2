@@ -1,26 +1,26 @@
-function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
+function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): boolean {
   let pNewEvent: Pointer<STRATEGICEVENT>;
   if (gTacticalStatus.fEnemyInSector) {
     pNewEvent = AddAdvancedStrategicEvent(pEvent.value.ubEventType, pEvent.value.ubCallbackID, pEvent.value.uiTimeStamp + 180 + Random(121), pEvent.value.uiParam);
     Assert(pNewEvent);
     pNewEvent.value.uiTimeOffset = pEvent.value.uiTimeOffset;
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
-  let fOrigPreventFlag: BOOLEAN;
+function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean {
+  let fOrigPreventFlag: boolean;
 
   fOrigPreventFlag = gfPreventDeletionOfAnyEvent;
-  gfPreventDeletionOfAnyEvent = TRUE;
+  gfPreventDeletionOfAnyEvent = true;
   // No events can be posted before this time when gfProcessingGameEvents is set, otherwise,
   // we have a chance of running into an infinite loop.
   guiTimeStampOfCurrentlyExecutingEvent = pEvent.value.uiTimeStamp;
 
   if (pEvent.value.ubFlags & SEF_DELETION_PENDING) {
     gfPreventDeletionOfAnyEvent = fOrigPreventFlag;
-    return FALSE;
+    return false;
   }
 
   // Look at the ID of event and do stuff according to that!
@@ -29,7 +29,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       // Change light to value
       gubEnvLightValue = pEvent.value.uiParam;
       if (!gfBasement && !gfCaves)
-        gfDoLighting = TRUE;
+        gfDoLighting = true;
       break;
     case Enum132.EVENT_CHECKFORQUESTS:
       CheckForQuests(GetWorldDay());
@@ -114,7 +114,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
     // Whenever any group (player or enemy) arrives in a new sector during movement.
     case Enum132.EVENT_GROUP_ARRIVAL:
       // ValidateGameEvents();
-      GroupArrivedAtSector(pEvent.value.uiParam, TRUE, FALSE);
+      GroupArrivedAtSector(pEvent.value.uiParam, true, false);
       // ValidateGameEvents();
       break;
     case Enum132.EVENT_MERC_COMPLAIN_EQUIPMENT:
@@ -213,7 +213,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       CreatureNightPlanning();
       break;
     case Enum132.EVENT_CREATURE_ATTACK:
-      CreatureAttackTown(pEvent.value.uiParam, FALSE);
+      CreatureAttackTown(pEvent.value.uiParam, false);
       break;
     case Enum132.EVENT_EVALUATE_QUEEN_SITUATION:
       EvaluateQueenSituation();
@@ -250,7 +250,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       break;
     case Enum132.EVENT_KEITH_GOING_OUT_OF_BUSINESS:
       // make sure killbillies are still alive, if so, set fact 274 true
-      if (CheckFact(Enum170.FACT_HILLBILLIES_KILLED, Enum268.KEITH) == FALSE) {
+      if (CheckFact(Enum170.FACT_HILLBILLIES_KILLED, Enum268.KEITH) == false) {
         // s et the fact true keith is out of business
         SetFactTrue(Enum170.FACT_KEITH_OUT_OF_BUSINESS);
       }
@@ -292,5 +292,5 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       break;
   }
   gfPreventDeletionOfAnyEvent = fOrigPreventFlag;
-  return TRUE;
+  return true;
 }

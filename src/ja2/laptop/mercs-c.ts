@@ -136,7 +136,7 @@ let gsSpeckDialogueTextPopUp: wchar_t[] /* [900] */;
 let gusSpeckDialogueX: UINT16;
 let gusSpeckDialogueActualWidth: UINT16;
 
-let gfInMercSite: BOOLEAN = FALSE; // this flag is set when inide of the merc site
+let gfInMercSite: boolean = false; // this flag is set when inide of the merc site
 
 // Merc Video Conferencing Mode
 const enum Enum103 {
@@ -147,23 +147,23 @@ const enum Enum103 {
 }
 
 let gubCurrentMercVideoMode: UINT8;
-let gfMercVideoIsBeingDisplayed: BOOLEAN;
+let gfMercVideoIsBeingDisplayed: boolean;
 let giVideoSpeckFaceIndex: INT32;
 let gusMercVideoSpeckSpeech: UINT16;
 
-let gfDisplaySpeckTextBox: BOOLEAN = FALSE;
+let gfDisplaySpeckTextBox: boolean = false;
 
-let gfJustEnteredMercSite: BOOLEAN = FALSE;
+let gfJustEnteredMercSite: boolean = false;
 let gubArrivedFromMercSubSite: UINT8 = Enum105.MERC_CAME_FROM_OTHER_PAGE; // the merc is arriving from one of the merc sub pages
-let gfDoneIntroSpeech: BOOLEAN = TRUE;
+let gfDoneIntroSpeech: boolean = true;
 
-let gfMercSiteScreenIsReDrawn: BOOLEAN = FALSE;
+let gfMercSiteScreenIsReDrawn: boolean = false;
 
-let gfJustHiredAMercMerc: BOOLEAN = FALSE;
+let gfJustHiredAMercMerc: boolean = false;
 
-let gfRedrawMercSite: BOOLEAN = FALSE;
+let gfRedrawMercSite: boolean = false;
 
-let gfFirstTimeIntoMERCSiteSinceEnteringLaptop: BOOLEAN = FALSE;
+let gfFirstTimeIntoMERCSiteSinceEnteringLaptop: boolean = false;
 
 // used for the random quotes to try to balance the ones that are said
 interface NUMBER_TIMES_QUOTE_SAID {
@@ -234,7 +234,7 @@ function GameInitMercs(): void {
   LaptopSaveInfo.gubLastMercIndex = NUMBER_OF_BAD_MERCS;
 
   gubCurrentMercVideoMode = Enum103.MERC_VIDEO_NO_VIDEO_MODE;
-  gfMercVideoIsBeingDisplayed = FALSE;
+  gfMercVideoIsBeingDisplayed = false;
 
   LaptopSaveInfo.guiNumberOfMercPaymentsInDays = 0;
 
@@ -248,14 +248,14 @@ function GameInitMercs(): void {
   */
 }
 
-function EnterMercs(): BOOLEAN {
+function EnterMercs(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let vs_desc: VSURFACE_DESC;
 
   SetBookMark(Enum98.MERC_BOOKMARK);
 
   // Reset a static variable
-  HandleSpeckTalking(TRUE);
+  HandleSpeckTalking(true);
 
   InitMercBackGround();
 
@@ -320,7 +320,7 @@ function EnterMercs(): BOOLEAN {
 
   // init the face
 
-  gfJustEnteredMercSite = TRUE;
+  gfJustEnteredMercSite = true;
 
   // if NOT entering from a subsite
   if (gubArrivedFromMercSubSite == Enum105.MERC_CAME_FROM_OTHER_PAGE) {
@@ -336,7 +336,7 @@ function EnterMercs(): BOOLEAN {
     gusMercVideoSpeckSpeech = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
   }
 
-  GetSpeckConditionalOpening(TRUE);
+  GetSpeckConditionalOpening(true);
   //	gubArrivedFromMercSubSite = MERC_CAME_FROM_OTHER_PAGE;
 
   // if Speck should start talking
@@ -345,21 +345,21 @@ function EnterMercs(): BOOLEAN {
   }
 
   // Reset the some variables
-  HandleSpeckIdleConversation(TRUE);
+  HandleSpeckIdleConversation(true);
 
   // Since we are in the site, set the flag
-  gfInMercSite = TRUE;
+  gfInMercSite = true;
 
-  return TRUE;
+  return true;
 }
 
 function ExitMercs(): void {
   StopSpeckFromTalking();
 
   if (gfMercVideoIsBeingDisplayed) {
-    gfMercVideoIsBeingDisplayed = FALSE;
+    gfMercVideoIsBeingDisplayed = false;
     DeleteFace(giVideoSpeckFaceIndex);
-    InitDestroyXToCloseVideoWindow(FALSE);
+    InitDestroyXToCloseVideoWindow(false);
     gubCurrentMercVideoMode = Enum103.MERC_VIDEO_NO_VIDEO_MODE;
   }
 
@@ -386,7 +386,7 @@ function ExitMercs(): void {
                   LaptopSaveInfo.ubPlayerBeenToMercSiteStatus = MERC_SITE_THIRD_OR_MORE_VISITS;
   */
 
-  gfJustEnteredMercSite = TRUE;
+  gfJustEnteredMercSite = true;
   gusMercVideoSpeckSpeech = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
 
   // Remove the merc text box if one is available
@@ -395,10 +395,10 @@ function ExitMercs(): void {
   // Set up so next time we come in, we know we came from a differnt page
   gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_OTHER_PAGE;
 
-  gfJustHiredAMercMerc = FALSE;
+  gfJustHiredAMercMerc = false;
 
   // Since we are leaving the site, set the flag
-  gfInMercSite = TRUE;
+  gfInMercSite = true;
 
   // Empty the Queue cause Speck could still have a quote in waiting
   EmptyDialogueQueue();
@@ -407,8 +407,8 @@ function ExitMercs(): void {
 function HandleMercs(): void {
   if (gfRedrawMercSite) {
     RenderMercs();
-    gfRedrawMercSite = FALSE;
-    gfMercSiteScreenIsReDrawn = TRUE;
+    gfRedrawMercSite = false;
+    gfMercSiteScreenIsReDrawn = true;
   }
 
   // if Speck has something to say, say it
@@ -419,7 +419,7 @@ function HandleMercs(): void {
       // Blt the video window background
       DrawMercVideoBackGround();
 
-      InitDestroyXToCloseVideoWindow(TRUE);
+      InitDestroyXToCloseVideoWindow(true);
 
       InitMercVideoFace();
       gubCurrentMercVideoMode = Enum103.MERC_VIDEO_INIT_VIDEO_MODE;
@@ -433,7 +433,7 @@ function HandleMercs(): void {
     // Blt the video window background
     DrawMercVideoBackGround();
 
-    gfMercSiteScreenIsReDrawn = FALSE;
+    gfMercSiteScreenIsReDrawn = false;
   }
 
   // if Specks should be video conferencing...
@@ -442,9 +442,9 @@ function HandleMercs(): void {
   }
 
   // Reset the some variables
-  HandleSpeckIdleConversation(FALSE);
+  HandleSpeckIdleConversation(false);
 
-  if (fCurrentlyInLaptop == FALSE) {
+  if (fCurrentlyInLaptop == false) {
     // if we are exiting the laptop screen, shut up the speck
     StopSpeckFromTalking();
   }
@@ -472,16 +472,16 @@ function RenderMercs(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILE_BOX_X, MERC_FILE_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Text on the Speck Portrait
-  DisplayWrappedString(MERC_PORTRAIT_TEXT_X, MERC_PORTRAIT_TEXT_Y, MERC_PORTRAIT_TEXT_WIDTH, 2, MERC_TEXT_FONT(), MERC_TEXT_COLOR, MercHomePageText[Enum343.MERC_SPECK_OWNER], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(MERC_PORTRAIT_TEXT_X, MERC_PORTRAIT_TEXT_Y, MERC_PORTRAIT_TEXT_WIDTH, 2, MERC_TEXT_FONT(), MERC_TEXT_COLOR, MercHomePageText[Enum343.MERC_SPECK_OWNER], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Text on the Account Box
   if (LaptopSaveInfo.gubPlayersMercAccountStatus == Enum104.MERC_NO_ACCOUNT)
-    DisplayWrappedString(MERC_ACCOUNT_BOX_TEXT_X, MERC_ACCOUNT_BOX_TEXT_Y, MERC_ACCOUNT_BOX_TEXT_WIDTH, 2, MERC_TEXT_FONT(), MERC_TEXT_COLOR, MercHomePageText[Enum343.MERC_OPEN_ACCOUNT], FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+    DisplayWrappedString(MERC_ACCOUNT_BOX_TEXT_X, MERC_ACCOUNT_BOX_TEXT_Y, MERC_ACCOUNT_BOX_TEXT_WIDTH, 2, MERC_TEXT_FONT(), MERC_TEXT_COLOR, MercHomePageText[Enum343.MERC_OPEN_ACCOUNT], FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   else
-    DisplayWrappedString(MERC_ACCOUNT_BOX_TEXT_X, MERC_ACCOUNT_BOX_TEXT_Y, MERC_ACCOUNT_BOX_TEXT_WIDTH, 2, MERC_TEXT_FONT(), MERC_TEXT_COLOR, MercHomePageText[Enum343.MERC_VIEW_ACCOUNT], FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+    DisplayWrappedString(MERC_ACCOUNT_BOX_TEXT_X, MERC_ACCOUNT_BOX_TEXT_Y, MERC_ACCOUNT_BOX_TEXT_WIDTH, 2, MERC_TEXT_FONT(), MERC_TEXT_COLOR, MercHomePageText[Enum343.MERC_VIEW_ACCOUNT], FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   // Text on the Files Box
-  DisplayWrappedString(MERC_FILE_BOX_TEXT_X, MERC_FILE_BOX_TEXT_Y, MERC_FILE_BOX_TEXT_WIDTH, 2, MERC_TEXT_FONT(), MERC_TEXT_COLOR, MercHomePageText[Enum343.MERC_VIEW_FILES], FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DisplayWrappedString(MERC_FILE_BOX_TEXT_X, MERC_FILE_BOX_TEXT_Y, MERC_FILE_BOX_TEXT_WIDTH, 2, MERC_TEXT_FONT(), MERC_TEXT_COLOR, MercHomePageText[Enum343.MERC_VIEW_FILES], FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   // If the Specks popup dioalogue box is active, display it.
   if (iMercPopUpBox != -1) {
@@ -495,14 +495,14 @@ function RenderMercs(): void {
   RenderWWWProgramTitleBar();
 
   // if the page is redrawn, and we are in video conferencing, redraw the VC backgrund graphic
-  gfMercSiteScreenIsReDrawn = TRUE;
+  gfMercSiteScreenIsReDrawn = true;
 
   ButtonList[guiAccountBoxButton].value.uiFlags &= ~BUTTON_FORCE_UNDIRTY;
 
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function InitMercBackGround(): BOOLEAN {
+function InitMercBackGround(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the Merc background graphic and add it
@@ -510,18 +510,18 @@ function InitMercBackGround(): BOOLEAN {
   FilenameForBPP("LAPTOP\\MERCBackGround.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercBackGround)));
 
-  return TRUE;
+  return true;
 }
 
-function DrawMecBackGround(): BOOLEAN {
+function DrawMecBackGround(): boolean {
   WebPageTileBackground(4, 4, MERC_BACKGROUND_WIDTH, MERC_BACKGROUND_HEIGHT, guiMercBackGround);
-  return TRUE;
+  return true;
 }
 
-function RemoveMercBackGround(): BOOLEAN {
+function RemoveMercBackGround(): boolean {
   DeleteVideoObjectFromIndex(guiMercBackGround);
 
-  return TRUE;
+  return true;
 }
 
 function BtnAccountBoxButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -579,7 +579,7 @@ function DailyUpdateOfMercSite(usDate: UINT16): void {
   let i: INT16;
   let ubMercID: UINT8;
   let iNumDays: INT32;
-  let fAlreadySentEmailToPlayerThisTurn: BOOLEAN = FALSE;
+  let fAlreadySentEmailToPlayerThisTurn: boolean = false;
 
   // if its the first day, leave
   if (usDate == 1)
@@ -767,7 +767,7 @@ function DailyUpdateOfMercSite(usDate: UINT16): void {
     let uiTimeInMinutes: UINT32 = 0;
 
     // Set the fact the site has gone down
-    LaptopSaveInfo.fMercSiteHasGoneDownYet = TRUE;
+    LaptopSaveInfo.fMercSiteHasGoneDownYet = true;
 
     // No lnger removing the bookmark, leave it up, and the user will go to the broken link page
     // Remove the book mark
@@ -805,7 +805,7 @@ function GetMercIDFromMERCArray(ubMercID: UINT8): UINT8 {
   // else its an error
   else {
     Assert(0);
-    return TRUE;
+    return true;
   }
 }
 
@@ -848,37 +848,37 @@ function InitMercVideoFace(): void {
   RenderAutoFace(giVideoSpeckFaceIndex);
 
   // enables the global flag indicating the the video is being displayed
-  gfMercVideoIsBeingDisplayed = TRUE;
+  gfMercVideoIsBeingDisplayed = true;
 }
 
-function StartSpeckTalking(usQuoteNum: UINT16): BOOLEAN {
+function StartSpeckTalking(usQuoteNum: UINT16): boolean {
   if (usQuoteNum == MERC_VIDEO_SPECK_SPEECH_NOT_TALKING || usQuoteNum == MERC_VIDEO_SPECK_HAS_TO_TALK_BUT_QUOTE_NOT_CHOSEN_YET)
-    return FALSE;
+    return false;
 
   // Reset the time for when speck starts to do the random quotes
-  HandleSpeckIdleConversation(TRUE);
+  HandleSpeckIdleConversation(true);
 
   // Start Speck talking
-  if (!CharacterDialogue(MERC_VIDEO_MERC_ID_FOR_SPECKS, usQuoteNum, giVideoSpeckFaceIndex, DIALOGUE_SPECK_CONTACT_PAGE_UI, FALSE, FALSE)) {
+  if (!CharacterDialogue(MERC_VIDEO_MERC_ID_FOR_SPECKS, usQuoteNum, giVideoSpeckFaceIndex, DIALOGUE_SPECK_CONTACT_PAGE_UI, false, false)) {
     Assert(0);
-    return FALSE;
+    return false;
   }
 
   gusMercVideoSpeckSpeech = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
 
-  return TRUE;
+  return true;
 }
 
 // Performs the frame by frame update
-function HandleSpeckTalking(fReset: BOOLEAN): BOOLEAN {
-  /* static */ let fWasTheMercTalking: BOOLEAN = FALSE;
-  let fIsTheMercTalking: BOOLEAN;
+function HandleSpeckTalking(fReset: boolean): boolean {
+  /* static */ let fWasTheMercTalking: boolean = false;
+  let fIsTheMercTalking: boolean;
   let SrcRect: SGPRect;
   let DestRect: SGPRect;
 
   if (fReset) {
-    fWasTheMercTalking = FALSE;
-    return TRUE;
+    fWasTheMercTalking = false;
+    return true;
   }
 
   SrcRect.iLeft = 0;
@@ -897,7 +897,7 @@ function HandleSpeckTalking(fReset: BOOLEAN): BOOLEAN {
 
   // Blt the face surface to the video background surface
   if (!BltStretchVideoSurface(FRAME_BUFFER, guiMercVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DestRect)))
-    return FALSE;
+    return false;
 
   // HandleCurrentMercDistortion();
 
@@ -908,19 +908,19 @@ function HandleSpeckTalking(fReset: BOOLEAN): BOOLEAN {
 
   // if the merc just stopped talking
   if (fWasTheMercTalking && !fIsTheMercTalking) {
-    fWasTheMercTalking = FALSE;
+    fWasTheMercTalking = false;
 
     if (DialogueQueueIsEmpty()) {
       RemoveSpeckPopupTextBox();
 
-      gfDisplaySpeckTextBox = FALSE;
+      gfDisplaySpeckTextBox = false;
 
       gusMercVideoSpeckSpeech = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
 
       // Reset the time for when speck starts to do the random quotes
-      HandleSpeckIdleConversation(TRUE);
+      HandleSpeckIdleConversation(true);
     } else
-      fIsTheMercTalking = TRUE;
+      fIsTheMercTalking = true;
   }
 
   fWasTheMercTalking = fIsTheMercTalking;
@@ -930,7 +930,7 @@ function HandleSpeckTalking(fReset: BOOLEAN): BOOLEAN {
 
 function HandleCurrentMercDistortion(): void {
   /* static */ let ubCurrentMercDistortionMode: UINT8 = Enum101.MERC_DISTORTION_NO_DISTORTION;
-  let fReturnStatus: BOOLEAN;
+  let fReturnStatus: boolean;
 
   // if there is no current distortion mode, randomly choose one
   if (ubCurrentMercDistortionMode == Enum101.MERC_DISTORTION_NO_DISTORTION) {
@@ -954,14 +954,14 @@ function HandleCurrentMercDistortion(): void {
 
     case Enum101.MERC_DISTORTION_PIXELATE_UP:
       //			fReturnStatus = PixelateVideoMercImage( TRUE );
-      fReturnStatus = PixelateVideoMercImage(TRUE, MERC_VIDEO_FACE_X, MERC_VIDEO_FACE_Y, MERC_VIDEO_FACE_WIDTH, MERC_VIDEO_FACE_HEIGHT);
+      fReturnStatus = PixelateVideoMercImage(true, MERC_VIDEO_FACE_X, MERC_VIDEO_FACE_Y, MERC_VIDEO_FACE_WIDTH, MERC_VIDEO_FACE_HEIGHT);
       if (fReturnStatus)
         ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_PIXELATE_DOWN;
       break;
 
     case Enum101.MERC_DISTORTION_PIXELATE_DOWN:
       //			fReturnStatus = PixelateVideoMercImage( FALSE );
-      fReturnStatus = PixelateVideoMercImage(FALSE, MERC_VIDEO_FACE_X, MERC_VIDEO_FACE_Y, MERC_VIDEO_FACE_WIDTH, MERC_VIDEO_FACE_HEIGHT);
+      fReturnStatus = PixelateVideoMercImage(false, MERC_VIDEO_FACE_X, MERC_VIDEO_FACE_Y, MERC_VIDEO_FACE_WIDTH, MERC_VIDEO_FACE_HEIGHT);
       if (fReturnStatus)
         ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_NO_DISTORTION;
       break;
@@ -976,7 +976,7 @@ function HandleCurrentMercDistortion(): void {
   }
 }
 
-function PixelateVideoMercImage(fUp: BOOLEAN, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): BOOLEAN {
+function PixelateVideoMercImage(fUp: boolean, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): boolean {
   /* static */ let uiLastTime: UINT32;
   let uiCurTime: UINT32 = GetJA2Clock();
   let pBuffer: Pointer<UINT16> = null;
@@ -985,7 +985,7 @@ function PixelateVideoMercImage(fUp: BOOLEAN, usPosX: UINT16, usPosY: UINT16, us
   let i: UINT16;
   let j: UINT16;
   /* static */ let ubPixelationAmount: UINT8 = 255;
-  let fReturnStatus: BOOLEAN = FALSE;
+  let fReturnStatus: boolean = false;
   i = 0;
 
   pBuffer = LockVideoSurface(FRAME_BUFFER, addressof(uiPitch));
@@ -1006,20 +1006,20 @@ function PixelateVideoMercImage(fUp: BOOLEAN, usPosX: UINT16, usPosY: UINT16, us
       // the varying degrees of pixelation
       if (ubPixelationAmount <= 4) {
         ubPixelationAmount++;
-        fReturnStatus = FALSE;
+        fReturnStatus = false;
       } else {
         ubPixelationAmount = 255;
-        fReturnStatus = TRUE;
+        fReturnStatus = true;
       }
     }
     // else we are pixelating down
     else {
       if (ubPixelationAmount > 1) {
         ubPixelationAmount--;
-        fReturnStatus = FALSE;
+        fReturnStatus = false;
       } else {
         ubPixelationAmount = 255;
-        fReturnStatus = TRUE;
+        fReturnStatus = true;
       }
     }
     uiLastTime = GetJA2Clock();
@@ -1049,7 +1049,7 @@ function PixelateVideoMercImage(fUp: BOOLEAN, usPosX: UINT16, usPosY: UINT16, us
   return fReturnStatus;
 }
 
-function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): BOOLEAN {
+function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): boolean {
   let uiPitch: UINT32;
   let i: UINT16;
   let j: UINT16;
@@ -1074,11 +1074,11 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
 
   if (usDistortionValue >= usPosY + usHeight) {
     usDistortionValue = 0;
-    uiReturnValue = TRUE;
+    uiReturnValue = true;
   } else {
     usDistortionValue++;
 
-    uiReturnValue = FALSE;
+    uiReturnValue = false;
 
     if (usDistortionValue + 10 >= usHeight)
       usEndOnLine = usHeight - 1;
@@ -1106,8 +1106,8 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
   return uiReturnValue;
 }
 
-function InitDestroyXToCloseVideoWindow(fCreate: BOOLEAN): BOOLEAN {
-  /* static */ let fButtonCreated: BOOLEAN = FALSE;
+function InitDestroyXToCloseVideoWindow(fCreate: boolean): boolean {
+  /* static */ let fButtonCreated: boolean = false;
 
   // if we are asked to create the buttons and the button isnt already created
   if (fCreate && !fButtonCreated) {
@@ -1116,17 +1116,17 @@ function InitDestroyXToCloseVideoWindow(fCreate: BOOLEAN): BOOLEAN {
     guiXToCloseMercVideoButton = QuickCreateButton(guiXToCloseMercVideoButtonImage, MERC_X_TO_CLOSE_VIDEO_X, MERC_X_TO_CLOSE_VIDEO_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnXToCloseMercVideoButtonCallback);
     SetButtonCursor(guiXToCloseMercVideoButton, Enum317.CURSOR_LAPTOP_SCREEN);
 
-    fButtonCreated = TRUE;
+    fButtonCreated = true;
   }
 
   // if we are asked to destroy the buttons and the buttons are created
   if (!fCreate && fButtonCreated) {
     UnloadButtonImage(guiXToCloseMercVideoButtonImage);
     RemoveButton(guiXToCloseMercVideoButton);
-    fButtonCreated = FALSE;
+    fButtonCreated = false;
   }
 
-  return TRUE;
+  return true;
 }
 
 function BtnXToCloseMercVideoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -1143,7 +1143,7 @@ function BtnXToCloseMercVideoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: IN
       StopSpeckFromTalking();
 
       // make sure we are done the intro speech
-      gfDoneIntroSpeech = TRUE;
+      gfDoneIntroSpeech = true;
 
       // remove the video conf mode
       gubCurrentMercVideoMode = Enum103.MERC_VIDEO_EXIT_VIDEO_MODE;
@@ -1159,7 +1159,7 @@ function BtnXToCloseMercVideoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: IN
   }
 }
 
-function DisplayMercVideoIntro(usTimeTillFinish: UINT16): BOOLEAN {
+function DisplayMercVideoIntro(usTimeTillFinish: UINT16): boolean {
   let uiCurTime: UINT32 = GetJA2Clock();
   /* static */ let uiLastTime: UINT32 = 0;
 
@@ -1172,13 +1172,13 @@ function DisplayMercVideoIntro(usTimeTillFinish: UINT16): BOOLEAN {
   // if the intro is done
   if ((uiCurTime - uiLastTime) > usTimeTillFinish) {
     uiLastTime = 0;
-    return TRUE;
+    return true;
   } else
-    return FALSE;
+    return false;
 }
 
 function HandleTalkingSpeck(): void {
-  let fIsSpeckTalking: BOOLEAN = TRUE;
+  let fIsSpeckTalking: boolean = true;
 
   switch (gubCurrentMercVideoMode) {
     // Init the video conferencing
@@ -1207,14 +1207,14 @@ function HandleTalkingSpeck(): void {
       // def:
 
       if (gfJustEnteredMercSite && gubArrivedFromMercSubSite != Enum105.MERC_CAME_FROM_OTHER_PAGE || gfFirstTimeIntoMERCSiteSinceEnteringLaptop) {
-        gfFirstTimeIntoMERCSiteSinceEnteringLaptop = FALSE;
-        GetSpeckConditionalOpening(FALSE);
-        gfJustEnteredMercSite = FALSE;
+        gfFirstTimeIntoMERCSiteSinceEnteringLaptop = false;
+        GetSpeckConditionalOpening(false);
+        gfJustEnteredMercSite = false;
       } else {
-        fIsSpeckTalking = HandleSpeckTalking(FALSE);
+        fIsSpeckTalking = HandleSpeckTalking(false);
 
         if (!fIsSpeckTalking)
-          fIsSpeckTalking = GetSpeckConditionalOpening(FALSE);
+          fIsSpeckTalking = GetSpeckConditionalOpening(false);
 
         // if speck didnt start talking, see if he just hired someone
         if (!fIsSpeckTalking) {
@@ -1255,10 +1255,10 @@ function HandleTalkingSpeck(): void {
 
         // Delete the face
         DeleteFace(giVideoSpeckFaceIndex);
-        InitDestroyXToCloseVideoWindow(FALSE);
+        InitDestroyXToCloseVideoWindow(false);
 
-        gfRedrawMercSite = TRUE;
-        gfMercVideoIsBeingDisplayed = FALSE;
+        gfRedrawMercSite = true;
+        gfMercVideoIsBeingDisplayed = false;
 
         // Remove the merc popup
         RemoveSpeckPopupTextBox();
@@ -1285,7 +1285,7 @@ function DisplayTextForSpeckVideoPopUp(pString: STR16): void {
 // add the "" around the speech.
   swprintf(gsSpeckDialogueTextPopUp, "\"%s\"", pString);
 
-  gfDisplaySpeckTextBox = TRUE;
+  gfDisplaySpeckTextBox = true;
 
   // Set this so the popup box doesnt render in RenderMercs()
   iMercPopUpBox = -1;
@@ -1300,10 +1300,10 @@ function DisplayTextForSpeckVideoPopUp(pString: STR16): void {
   }
 
   // Create the popup box
-  SET_USE_WINFONTS(TRUE);
+  SET_USE_WINFONTS(true);
   SET_WINFONT(giSubTitleWinFont);
   iMercPopUpBox = PrepareMercPopupBox(iMercPopUpBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsSpeckDialogueTextPopUp, 300, 0, 0, 0, addressof(gusSpeckDialogueActualWidth), addressof(usActualHeight));
-  SET_USE_WINFONTS(FALSE);
+  SET_USE_WINFONTS(false);
 
   gusSpeckDialogueX = (LAPTOP_SCREEN_LR_X - gusSpeckDialogueActualWidth - LAPTOP_SCREEN_UL_X) / 2 + LAPTOP_SCREEN_UL_X;
 
@@ -1329,26 +1329,26 @@ function CheatToGetAll5Merc(): void {
   LaptopSaveInfo.gubLastMercIndex = NUMBER_MERCS_AFTER_FOURTH_MERC_ARRIVES;
 }
 
-function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
+function GetSpeckConditionalOpening(fJustEnteredScreen: boolean): boolean {
   /* static */ let usQuoteToSay: UINT16 = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
   let ubRandom: UINT8 = 0;
   let ubCnt: UINT8;
-  let fCanSayLackOfPaymentQuote: BOOLEAN = TRUE;
-  let fCanUseIdleTag: BOOLEAN = FALSE;
+  let fCanSayLackOfPaymentQuote: boolean = true;
+  let fCanUseIdleTag: boolean = false;
 
   // If we just entered the screen, reset some variables
   if (fJustEnteredScreen) {
-    gfDoneIntroSpeech = FALSE;
+    gfDoneIntroSpeech = false;
     usQuoteToSay = 0;
-    return FALSE;
+    return false;
   }
 
   // if we are done the intro speech, or arrived from a sub page, get out of the function
   if (gfDoneIntroSpeech || gubArrivedFromMercSubSite != Enum105.MERC_CAME_FROM_OTHER_PAGE) {
-    return FALSE;
+    return false;
   }
 
-  gfDoneIntroSpeech = TRUE;
+  gfDoneIntroSpeech = true;
 
   // set the opening quote based on if the player has been here before
   if (LaptopSaveInfo.ubPlayerBeenToMercSiteStatus == Enum102.MERC_SITE_FIRST_VISIT && usQuoteToSay <= 8) //!= 0 )
@@ -1356,13 +1356,13 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
     StartSpeckTalking(usQuoteToSay);
     usQuoteToSay++;
     if (usQuoteToSay <= 8)
-      gfDoneIntroSpeech = FALSE;
+      gfDoneIntroSpeech = false;
   }
 
   // if its the players second visit
   else if (LaptopSaveInfo.ubPlayerBeenToMercSiteStatus == Enum102.MERC_SITE_SECOND_VISIT) {
     StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_1_TOUGH_START);
-    fCanUseIdleTag = TRUE;
+    fCanUseIdleTag = true;
   }
 
   // We have been here at least 2 times before, Check which quote we should use
@@ -1374,10 +1374,10 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
     }
 
     // else if it is the first visit since the server went down
-    else if (LaptopSaveInfo.fFirstVisitSinceServerWentDown == TRUE) {
+    else if (LaptopSaveInfo.fFirstVisitSinceServerWentDown == true) {
       LaptopSaveInfo.fFirstVisitSinceServerWentDown = 2;
       StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_9_FIRST_VISIT_SINCE_SERVER_WENT_DOWN);
-      fCanUseIdleTag = TRUE;
+      fCanUseIdleTag = true;
     }
     /*
                     //else if new mercs are available
@@ -1400,7 +1400,7 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
     else if (LaptopSaveInfo.gubPlayersMercAccountStatus == Enum104.MERC_ACCOUNT_SUSPENDED) {
       StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_5_PLAYER_OWES_SPECK_ACCOUNT_SUSPENDED);
 
-      fCanSayLackOfPaymentQuote = FALSE;
+      fCanSayLackOfPaymentQuote = false;
     }
 
     // else if the player owes speck a large sum of money, have speck say so
@@ -1408,7 +1408,7 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
       StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_6_PLAYER_OWES_SPECK_ALMOST_BANKRUPT_1);
       StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_6_PLAYER_OWES_SPECK_ALMOST_BANKRUPT_2);
 
-      fCanSayLackOfPaymentQuote = FALSE;
+      fCanSayLackOfPaymentQuote = false;
     }
 
     else {
@@ -1419,24 +1419,24 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
       //			if( ubRandom < 40 && ubNumMercsDead < 2 && CountNumberOfMercMercsHired() > 1 )
       if (ubRandom < 40 && AreAnyOfTheNewMercsAvailable() && CountNumberOfMercMercsHired() > 1) {
         StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_3_BUSINESS_GOOD);
-        fCanUseIdleTag = TRUE;
+        fCanUseIdleTag = true;
       }
 
       // or if still trying to recruit ( the last recruit hasnt arrived and the player has paid for some of his mercs )
       //			else if( ubRandom < 80 && LaptopSaveInfo.gbNumDaysTillFourthMercArrives != -1 && LaptopSaveInfo.gbNumDaysTillFirstMercArrives < MERC_NUM_DAYS_TILL_FIRST_MERC_AVAILABLE )
       else if (ubRandom < 80 && gConditionsForMercAvailability[LaptopSaveInfo.ubLastMercAvailableId].usMoneyPaid <= LaptopSaveInfo.uiTotalMoneyPaidToSpeck && CanMercBeAvailableYet(LaptopSaveInfo.ubLastMercAvailableId)) {
         StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_4_TRYING_TO_RECRUIT);
-        fCanUseIdleTag = TRUE;
+        fCanUseIdleTag = true;
       }
 
       // else use the generic opening
       else {
         StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_10_GENERIC_OPENING);
-        fCanUseIdleTag = TRUE;
+        fCanUseIdleTag = true;
 
         // if the  merc hasnt said the line before
         if (!LaptopSaveInfo.fSaidGenericOpeningInMercSite) {
-          LaptopSaveInfo.fSaidGenericOpeningInMercSite = TRUE;
+          LaptopSaveInfo.fSaidGenericOpeningInMercSite = true;
           StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_10_TAG_FOR_20);
         }
       }
@@ -1480,7 +1480,7 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
 
   // if new mercs are available
   if (LaptopSaveInfo.fNewMercsAvailableAtMercSite) {
-    LaptopSaveInfo.fNewMercsAvailableAtMercSite = FALSE;
+    LaptopSaveInfo.fNewMercsAvailableAtMercSite = false;
 
     StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_11_NEW_MERCS_AVAILABLE);
   }
@@ -1489,7 +1489,7 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
   if (IsAnyMercMercsDead()) {
     // if no merc has died before
     if (!LaptopSaveInfo.fHasAMercDiedAtMercSite) {
-      LaptopSaveInfo.fHasAMercDiedAtMercSite = TRUE;
+      LaptopSaveInfo.fHasAMercDiedAtMercSite = true;
       StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_TAG_FIRST_MERC_DIES);
     }
 
@@ -1552,7 +1552,7 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
     // if speck hasnt said the quote before, and Biff is NOT dead
     if (!LaptopSaveInfo.fSpeckSaidFloMarriedCousinQuote && !IsMercDead(Enum268.BIFF)) {
       StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_TAG_FLO_MARRIED_A_COUSIN_BIFF_IS_ALIVE);
-      LaptopSaveInfo.fSpeckSaidFloMarriedCousinQuote = TRUE;
+      LaptopSaveInfo.fSpeckSaidFloMarriedCousinQuote = true;
 
       MakeBiffAwayForCoupleOfDays();
     }
@@ -1565,10 +1565,10 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
     StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_TAG_LARRY_RELAPSED);
   }
 
-  return TRUE;
+  return true;
 }
 
-function IsAnyMercMercsHired(): BOOLEAN {
+function IsAnyMercMercsHired(): boolean {
   let ubMercID: UINT8;
   let i: UINT8;
 
@@ -1576,23 +1576,23 @@ function IsAnyMercMercsHired(): BOOLEAN {
   for (i = 0; i < NUMBER_OF_MERCS; i++) {
     ubMercID = GetMercIDFromMERCArray(i);
     if (IsMercOnTeam(ubMercID)) {
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function IsAnyMercMercsDead(): BOOLEAN {
+function IsAnyMercMercsDead(): boolean {
   let i: UINT8;
 
   // loop through all of the hired mercs from M.E.R.C.
   for (i = 0; i < NUMBER_OF_MERCS; i++) {
     if (gMercProfiles[i + Enum268.BIFF].bMercStatus == MERC_IS_DEAD)
-      return TRUE;
+      return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function NumberOfMercMercsDead(): UINT8 {
@@ -1658,7 +1658,7 @@ function RemoveSpeckPopupTextBox(): void {
   }
 
   // redraw the screen
-  gfRedrawMercSite = TRUE;
+  gfRedrawMercSite = true;
 }
 
 function HandlePlayerHiringMerc(ubHiredMercID: UINT8): void {
@@ -1715,7 +1715,7 @@ function HandlePlayerHiringMerc(ubHiredMercID: UINT8): void {
   gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_HIRE_PAGE;
 }
 
-function IsMercMercAvailable(ubMercID: UINT8): BOOLEAN {
+function IsMercMercAvailable(ubMercID: UINT8): boolean {
   let cnt: UINT8;
 
   // loop through the array of mercs
@@ -1725,14 +1725,14 @@ function IsMercMercAvailable(ubMercID: UINT8): BOOLEAN {
       // if the merc is available, and Not dead
       //			if( gMercProfiles[ ubMercID ].bMercStatus == 0 && !IsMercDead( ubMercID ) )
       if (IsMercHireable(ubMercID))
-        return TRUE;
+        return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
-function ShouldSpeckStartTalkingDueToActionOnSubPage(): BOOLEAN {
+function ShouldSpeckStartTalkingDueToActionOnSubPage(): boolean {
   // if the merc came from the hire screen
   if (gfJustHiredAMercMerc) {
     HandlePlayerHiringMerc(GetMercIDFromMERCArray(gubCurMercIndex));
@@ -1743,27 +1743,27 @@ function ShouldSpeckStartTalkingDueToActionOnSubPage(): BOOLEAN {
     else
       StartSpeckTalking(Enum111.SPECK_QUOTE_GENERIC_THANKS_FOR_HIRING_MERCS_2);
 
-    gfJustHiredAMercMerc = FALSE;
+    gfJustHiredAMercMerc = false;
     //				gfDoneIntroSpeech = TRUE;
 
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
-function ShouldSpeckSayAQuote(): BOOLEAN {
+function ShouldSpeckSayAQuote(): boolean {
   // if we are entering from anywhere except a sub page, and we should say the opening quote
   if (gfJustEnteredMercSite && gubArrivedFromMercSubSite == Enum105.MERC_CAME_FROM_OTHER_PAGE) {
     // if the merc has something to say
     if (gusMercVideoSpeckSpeech != MERC_VIDEO_SPECK_SPEECH_NOT_TALKING)
-      return FALSE;
+      return false;
   }
 
   // if the player just hired a merc
   if (gfJustHiredAMercMerc) {
     gusMercVideoSpeckSpeech = MERC_VIDEO_SPECK_HAS_TO_TALK_BUT_QUOTE_NOT_CHOSEN_YET;
-    return TRUE;
+    return true;
 
     /*
                     //if the merc has something to say
@@ -1781,7 +1781,7 @@ function ShouldSpeckSayAQuote(): BOOLEAN {
   if (gfFirstTimeIntoMERCSiteSinceEnteringLaptop) {
     //		gfFirstTimeIntoMERCSiteSinceEnteringLaptop = FALSE;
     gusMercVideoSpeckSpeech = MERC_VIDEO_SPECK_HAS_TO_TALK_BUT_QUOTE_NOT_CHOSEN_YET;
-    return TRUE;
+    return true;
   }
 
   /*
@@ -1792,10 +1792,10 @@ function ShouldSpeckSayAQuote(): BOOLEAN {
                   return( TRUE );
           }
   */
-  return FALSE;
+  return false;
 }
 
-function HandleSpeckIdleConversation(fReset: BOOLEAN): void {
+function HandleSpeckIdleConversation(fReset: boolean): void {
   /* static */ let uiLastTime: UINT32 = 0;
   let uiCurTime: UINT32 = GetJA2Clock();
   let sLeastSaidQuote: INT16;
@@ -1871,17 +1871,17 @@ function StopSpeckFromTalking(): void {
   gusMercVideoSpeckSpeech = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
 }
 
-function HasLarryRelapsed(): BOOLEAN {
+function HasLarryRelapsed(): boolean {
   return CheckFact(Enum170.FACT_LARRY_CHANGED, 0);
 }
 
 // Gets Called on each enter into laptop.
 function EnterInitMercSite(): void {
-  gfFirstTimeIntoMERCSiteSinceEnteringLaptop = TRUE;
+  gfFirstTimeIntoMERCSiteSinceEnteringLaptop = true;
   gubCurMercIndex = 0;
 }
 
-function ShouldTheMercSiteServerGoDown(): BOOLEAN {
+function ShouldTheMercSiteServerGoDown(): boolean {
   let uiDay: UINT32 = GetWorldDay();
 
   // If the merc site has never gone down, the first new merc has shown ( which shows the player is using the site ),
@@ -1889,13 +1889,13 @@ function ShouldTheMercSiteServerGoDown(): BOOLEAN {
   //	if( !LaptopSaveInfo.fMercSiteHasGoneDownYet  && LaptopSaveInfo.gbNumDaysTillThirdMercArrives <= 6 && LaptopSaveInfo.gubPlayersMercAccountStatus == MERC_ACCOUNT_VALID )
   if (!LaptopSaveInfo.fMercSiteHasGoneDownYet && LaptopSaveInfo.ubLastMercAvailableId >= 1 && LaptopSaveInfo.gubPlayersMercAccountStatus == Enum104.MERC_ACCOUNT_VALID) {
     if (Random(100) < (uiDay * 2 + 10)) {
-      return TRUE;
+      return true;
     } else {
-      return FALSE;
+      return false;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 function GetMercSiteBackOnline(): void {
@@ -1903,7 +1903,7 @@ function GetMercSiteBackOnline(): void {
   AddEmail(MERC_NEW_SITE_ADDRESS, MERC_NEW_SITE_ADDRESS_LENGTH, Enum75.SPECK_FROM_MERC, GetWorldTotalMin());
 
   // Set a flag indicating that the server just went up ( so speck can make a comment when the player next visits the site )
-  LaptopSaveInfo.fFirstVisitSinceServerWentDown = TRUE;
+  LaptopSaveInfo.fFirstVisitSinceServerWentDown = true;
 }
 
 function DrawMercVideoBackGround(): void {
@@ -1913,7 +1913,7 @@ function DrawMercVideoBackGround(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_VIDEO_BACKGROUND_X, MERC_VIDEO_BACKGROUND_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // put the title on the window
-  DrawTextToScreen(MercHomePageText[Enum343.MERC_SPECK_COM], MERC_X_VIDEO_TITLE_X, MERC_X_VIDEO_TITLE_Y, 0, MERC_VIDEO_TITLE_FONT(), MERC_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercHomePageText[Enum343.MERC_SPECK_COM], MERC_X_VIDEO_TITLE_X, MERC_X_VIDEO_TITLE_Y, 0, MERC_VIDEO_TITLE_FONT(), MERC_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   InvalidateRegion(MERC_VIDEO_BACKGROUND_X, MERC_VIDEO_BACKGROUND_Y, (MERC_VIDEO_BACKGROUND_X + MERC_VIDEO_BACKGROUND_WIDTH), (MERC_VIDEO_BACKGROUND_Y + MERC_VIDEO_BACKGROUND_HEIGHT));
 }
 
@@ -1923,59 +1923,59 @@ function DisableMercSiteButton(): void {
   }
 }
 
-function CanMercQuoteBeSaid(uiQuoteID: UINT32): BOOLEAN {
-  let fRetVal: BOOLEAN = TRUE;
+function CanMercQuoteBeSaid(uiQuoteID: UINT32): boolean {
+  let fRetVal: boolean = true;
 
   // switch onb the quote being said, if hes plugging a merc that has already been hired, dont say it
   switch (uiQuoteID) {
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_BIFF:
       if (!IsMercMercAvailable(Enum268.BIFF))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
 
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_HAYWIRE:
       if (!IsMercMercAvailable(Enum268.HAYWIRE))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
 
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_GASKET:
       if (!IsMercMercAvailable(Enum268.GASKET))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
 
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_RAZOR:
       if (!IsMercMercAvailable(Enum268.RAZOR))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
 
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_FLO:
       if (!IsMercMercAvailable(Enum268.FLO))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
 
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_GUMPY:
       if (!IsMercMercAvailable(Enum268.GUMPY))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
 
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_LARRY:
       if (!IsMercMercAvailable(Enum268.LARRY_NORMAL) || IsMercMercAvailable(Enum268.LARRY_DRUNK))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
 
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_COUGER:
       if (!IsMercMercAvailable(Enum268.COUGAR))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
 
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_NUMB:
       if (!IsMercMercAvailable(Enum268.NUMB))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
 
     case Enum111.SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_BUBBA:
       if (!IsMercMercAvailable(Enum268.BUBBA))
-        fRetVal = FALSE;
+        fRetVal = false;
       break;
   }
 
@@ -1995,31 +1995,31 @@ function MakeBiffAwayForCoupleOfDays(): void {
   gMercProfiles[Enum268.BIFF].uiDayBecomesAvailable = Random(2) + 2;
 }
 
-function AreAnyOfTheNewMercsAvailable(): BOOLEAN {
+function AreAnyOfTheNewMercsAvailable(): boolean {
   let i: UINT8;
   let ubMercID: UINT8;
 
   if (LaptopSaveInfo.fNewMercsAvailableAtMercSite)
-    return FALSE;
+    return false;
 
   for (i = (Enum268.LARRY_NORMAL - Enum268.BIFF); i <= LaptopSaveInfo.gubLastMercIndex; i++) {
     ubMercID = GetMercIDFromMERCArray(i);
 
     if (IsMercMercAvailable(ubMercID))
-      return TRUE;
+      return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function ShouldAnyNewMercMercBecomeAvailable(): void {
-  let fNewMercAreAvailable: BOOLEAN = FALSE;
+  let fNewMercAreAvailable: boolean = false;
 
   // for bubba
   //	if( GetMercIDFromMERCArray( LaptopSaveInfo.gubLastMercIndex ) == GUMPY )
   {
     if (CanMercBeAvailableYet(Enum100.MERC_ARRIVES_BUBBA)) {
-      fNewMercAreAvailable = TRUE;
+      fNewMercAreAvailable = true;
     }
   }
 
@@ -2028,7 +2028,7 @@ function ShouldAnyNewMercMercBecomeAvailable(): void {
   //		GetMercIDFromMERCArray( LaptopSaveInfo.gubLastMercIndex ) == LARRY_DRUNK )
   {
     if (CanMercBeAvailableYet(Enum100.MERC_ARRIVES_LARRY)) {
-      fNewMercAreAvailable = TRUE;
+      fNewMercAreAvailable = true;
     }
   }
 
@@ -2036,7 +2036,7 @@ function ShouldAnyNewMercMercBecomeAvailable(): void {
   //	if( GetMercIDFromMERCArray( LaptopSaveInfo.gubLastMercIndex ) == NUMB )
   {
     if (CanMercBeAvailableYet(Enum100.MERC_ARRIVES_NUMB)) {
-      fNewMercAreAvailable = TRUE;
+      fNewMercAreAvailable = true;
     }
   }
 
@@ -2044,7 +2044,7 @@ function ShouldAnyNewMercMercBecomeAvailable(): void {
   //	if( GetMercIDFromMERCArray( LaptopSaveInfo.gubLastMercIndex ) == COUGAR )
   {
     if (CanMercBeAvailableYet(Enum100.MERC_ARRIVES_COUGAR)) {
-      fNewMercAreAvailable = TRUE;
+      fNewMercAreAvailable = true;
     }
   }
 
@@ -2055,31 +2055,31 @@ function ShouldAnyNewMercMercBecomeAvailable(): void {
   }
 }
 
-function CanMercBeAvailableYet(ubMercToCheck: UINT8): BOOLEAN {
+function CanMercBeAvailableYet(ubMercToCheck: UINT8): boolean {
   // if the merc is already available
   if (gConditionsForMercAvailability[ubMercToCheck].ubMercArrayID <= LaptopSaveInfo.gubLastMercIndex)
-    return FALSE;
+    return false;
 
   // if the merc is already hired
   if (!IsMercHireable(GetMercIDFromMERCArray(gConditionsForMercAvailability[ubMercToCheck].ubMercArrayID)))
-    return FALSE;
+    return false;
 
   // if player has paid enough money for the merc to be available, and the it is after the current day
   if (gConditionsForMercAvailability[ubMercToCheck].usMoneyPaid <= LaptopSaveInfo.uiTotalMoneyPaidToSpeck && gConditionsForMercAvailability[ubMercToCheck].usDay <= GetWorldDay()) {
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function NewMercsAvailableAtMercSiteCallBack(): void {
-  let fSendEmail: BOOLEAN = FALSE;
+  let fSendEmail: boolean = false;
   //	if( GetMercIDFromMERCArray( LaptopSaveInfo.gubLastMercIndex ) == BUBBA )
   {
     if (CanMercBeAvailableYet(Enum100.MERC_ARRIVES_BUBBA)) {
       LaptopSaveInfo.gubLastMercIndex++;
       LaptopSaveInfo.ubLastMercAvailableId = Enum100.MERC_ARRIVES_BUBBA;
-      fSendEmail = TRUE;
+      fSendEmail = true;
     }
   }
 
@@ -2090,7 +2090,7 @@ function NewMercsAvailableAtMercSiteCallBack(): void {
     if (CanMercBeAvailableYet(Enum100.MERC_ARRIVES_LARRY)) {
       LaptopSaveInfo.gubLastMercIndex++;
       LaptopSaveInfo.ubLastMercAvailableId = Enum100.MERC_ARRIVES_LARRY;
-      fSendEmail = TRUE;
+      fSendEmail = true;
     }
   }
 
@@ -2100,7 +2100,7 @@ function NewMercsAvailableAtMercSiteCallBack(): void {
     if (CanMercBeAvailableYet(Enum100.MERC_ARRIVES_NUMB)) {
       LaptopSaveInfo.gubLastMercIndex = 9;
       LaptopSaveInfo.ubLastMercAvailableId = Enum100.MERC_ARRIVES_NUMB;
-      fSendEmail = TRUE;
+      fSendEmail = true;
     }
   }
 
@@ -2110,7 +2110,7 @@ function NewMercsAvailableAtMercSiteCallBack(): void {
     if (CanMercBeAvailableYet(Enum100.MERC_ARRIVES_COUGAR)) {
       LaptopSaveInfo.gubLastMercIndex = 10;
       LaptopSaveInfo.ubLastMercAvailableId = Enum100.MERC_ARRIVES_COUGAR;
-      fSendEmail = TRUE;
+      fSendEmail = true;
     }
   }
 
@@ -2118,7 +2118,7 @@ function NewMercsAvailableAtMercSiteCallBack(): void {
     AddEmail(NEW_MERCS_AT_MERC, NEW_MERCS_AT_MERC_LENGTH, Enum75.SPECK_FROM_MERC, GetWorldTotalMin());
 
   // new mercs are available
-  LaptopSaveInfo.fNewMercsAvailableAtMercSite = TRUE;
+  LaptopSaveInfo.fNewMercsAvailableAtMercSite = true;
 }
 
 // used for older saves

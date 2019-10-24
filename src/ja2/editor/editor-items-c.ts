@@ -149,7 +149,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
   let pStr: INT16[] /* [100] */; //, pStr2[ 100 ];
   let pItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
   let ubBitDepth: UINT8;
-  let fTypeMatch: BOOLEAN;
+  let fTypeMatch: boolean;
   let iEquipCount: INT32 = 0;
 
   // Check to make sure that there isn't already a valid eInfo
@@ -169,7 +169,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
   EnableEditorRegion(Enum45.ITEM_REGION_ID);
 
   eInfo.uiItemType = uiItemType;
-  eInfo.fActive = TRUE;
+  eInfo.fActive = true;
   // Begin initialization of data.
   switch (uiItemType) {
     case Enum35.TBAR_MODE_ITEM_WEAPONS:
@@ -241,8 +241,8 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
 
   //!!!Memory check.  Create the item buffer
   if (!AddVideoSurface(addressof(vs_desc), addressof(eInfo.uiBuffer))) {
-    eInfo.fKill = TRUE;
-    eInfo.fActive = FALSE;
+    eInfo.fKill = true;
+    eInfo.fActive = false;
     return;
   }
 
@@ -278,17 +278,17 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
 
       SetFont(SMALLCOMPFONT());
       SetFontForeground(FONT_MCOLOR_WHITE);
-      SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, FALSE);
+      SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, false);
 
       swprintf(pStr, "%S", LockTable[i].ubEditorName);
-      DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+      DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, true, CENTER_JUSTIFIED);
 
       // Calculate the center position of the graphic in a 60 pixel wide area.
       sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
       sOffset = hVObject.value.pETRLEObject[item.value.ubGraphicNum].sOffsetX;
       sStart = x + (60 - sWidth - sOffset * 2) / 2;
 
-      BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, 0, FALSE);
+      BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, 0, false);
       // cycle through the various slot positions (0,0), (0,40), (60,0), (60,40), (120,0)...
       if (y == 0) {
         y = 40;
@@ -299,7 +299,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
     }
   } else
     for (i = 0; i < eInfo.sNumItems; i++) {
-      fTypeMatch = FALSE;
+      fTypeMatch = false;
       while (usCounter < Enum225.MAXITEMS && !fTypeMatch) {
         item = addressof(Item[usCounter]);
         if (Item[usCounter].fFlags & ITEM_NOT_EDITOR) {
@@ -311,7 +311,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
             usCounter = (i % 2) ? Enum225.ACTION_ITEM : Enum225.SWITCH;
           else
             usCounter = Enum225.ACTION_ITEM;
-          fTypeMatch = TRUE;
+          fTypeMatch = true;
           item = addressof(Item[usCounter]);
         } else
           switch (item.value.usItemClass) {
@@ -326,7 +326,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
               if (i != NOTHING) {
                 fTypeMatch = eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_WEAPONS;
               } else {
-                fTypeMatch = FALSE;
+                fTypeMatch = false;
               }
               break;
             case IC_AMMO:
@@ -364,7 +364,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
 
           SetFont(SMALLCOMPFONT());
           SetFontForeground(FONT_MCOLOR_WHITE);
-          SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, FALSE);
+          SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, false);
 
           if (eInfo.uiItemType != Enum35.TBAR_MODE_ITEM_TRIGGERS) {
             LoadItemInfo(usCounter, pItemName, null);
@@ -394,7 +394,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
                 swprintf(pStr, "Action%d", (i - 4) / 2);
             }
           }
-          DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+          DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, true, CENTER_JUSTIFIED);
 
           // Calculate the center position of the graphic in a 60 pixel wide area.
           sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
@@ -402,7 +402,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
           sStart = x + (60 - sWidth - sOffset * 2) / 2;
 
           if (sWidth) {
-            BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, 0, FALSE);
+            BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, 0, false);
           }
           // cycle through the various slot positions (0,0), (0,40), (60,0), (60,40), (120,0)...
           if (y == 0) {
@@ -415,9 +415,9 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
         usCounter++;
       }
     }
-  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
+  SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
   SetClippingRect(addressof(SaveRect));
-  gfRenderTaskbar = TRUE;
+  gfRenderTaskbar = true;
 }
 
 function DetermineItemsScrolling(): void {
@@ -486,7 +486,7 @@ function RenderEditorItemsInfo(): void {
       sOffset = hVObject.value.pETRLEObject[item.value.ubGraphicNum].sOffsetX;
       sStart = x + (60 - sWidth - sOffset * 2) / 2;
       if (sWidth) {
-        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 250, 0)), TRUE);
+        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 250, 0)), true);
       }
     }
   }
@@ -502,7 +502,7 @@ function RenderEditorItemsInfo(): void {
       sOffset = hVObject.value.pETRLEObject[item.value.ubGraphicNum].sOffsetX;
       sStart = x + (60 - sWidth - sOffset * 2) / 2;
       if (sWidth) {
-        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 0, 0)), TRUE);
+        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 0, 0)), true);
       }
     }
   }
@@ -595,7 +595,7 @@ function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): v
     case Enum44.GUI_MOVE_EVENT:
       if (sIndex < eInfo.sNumItems) {
         if (eInfo.sHilitedItemIndex != sIndex)
-          gfRenderTaskbar = TRUE;
+          gfRenderTaskbar = true;
         // this index will now highlight in yellow.
         eInfo.sHilitedItemIndex = sIndex;
       }
@@ -604,10 +604,10 @@ function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): v
       if (sIndex < eInfo.sNumItems) {
         // this index will now highlight in red.
         if (eInfo.sSelItemIndex != sIndex)
-          gfRenderTaskbar = TRUE;
+          gfRenderTaskbar = true;
         eInfo.sSelItemIndex = sIndex;
         if (gfMercGetItem) {
-          gfMercGetItem = FALSE;
+          gfMercGetItem = false;
           gusMercsNewItemIndex = eInfo.pusItemIndex[eInfo.sSelItemIndex];
           SetMercEditingMode(Enum42.MERC_INVENTORYMODE);
           ClearEditorItemsInfo();
@@ -616,13 +616,13 @@ function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): v
       break;
     case Enum44.GUI_RCLICK_EVENT:
       if (gfMercGetItem) {
-        gfMercGetItem = FALSE;
+        gfMercGetItem = false;
         gusMercsNewItemIndex = 0xffff;
         SetMercEditingMode(Enum42.MERC_INVENTORYMODE);
         ClearEditorItemsInfo();
       } else if (sIndex < eInfo.sNumItems) {
         eInfo.sSelItemIndex = sIndex;
-        gfRenderTaskbar = TRUE;
+        gfRenderTaskbar = true;
         if (CountNumberOfEditorPlacementsInWorld(eInfo.sSelItemIndex, addressof(usQuantity))) {
           FindNextItemOfSelectedType();
         }
@@ -646,18 +646,18 @@ function HideItemCursor(iMapIndex: INT32): void {
   RemoveTopmost(iMapIndex, Enum312.SELRING1);
 }
 
-function TriggerAtGridNo(sGridNo: INT16): BOOLEAN {
+function TriggerAtGridNo(sGridNo: INT16): boolean {
   let pItemPool: Pointer<ITEM_POOL>;
   if (!GetItemPool(sGridNo, addressof(pItemPool), 0)) {
-    return FALSE;
+    return false;
   }
   while (pItemPool) {
     if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.SWITCH) {
-      return TRUE;
+      return true;
     }
     pItemPool = pItemPool.value.pNext;
   }
-  return FALSE;
+  return false;
 }
 
 function AddSelectedItemToWorld(sGridNo: INT16): void {
@@ -667,7 +667,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
   let pItemPool: Pointer<ITEM_POOL>;
   let iItemIndex: INT32;
   let bVisibility: INT8 = INVISIBLE;
-  let fFound: BOOLEAN = FALSE;
+  let fFound: boolean = false;
   let pIPCurr: Pointer<IPListNode>;
   let pIPPrev: Pointer<IPListNode>;
   let usFlags: UINT16;
@@ -774,7 +774,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
     Assert(0);
   while (pItemPool) {
     if (addressof((gWorldItems[pItemPool.value.iItemIndex].o) == pObject)) {
-      fFound = TRUE;
+      fFound = true;
       // ShowSelectedItem();
       break;
     }
@@ -1325,7 +1325,7 @@ function CountNumberOfKeysOfTypeInWorld(ubKeyID: UINT8): UINT16 {
 }
 
 function DisplayItemStatistics(): void {
-  let fUseSelectedItem: BOOLEAN;
+  let fUseSelectedItem: boolean;
   let usItemIndex: INT16;
   let pItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
   let pItem: Pointer<INVTYPE>;

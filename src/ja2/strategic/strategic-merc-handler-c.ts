@@ -1,11 +1,11 @@
 const NUM_DAYS_TILL_UNPAID_RPC_QUITS = 3;
 
 // can you say me too after someone has said thier contract about to end
-let fContractOverMeTooFlag: BOOLEAN = FALSE;
-let fContractOverAndIWontRenewMeTooFlag: BOOLEAN = FALSE;
-let fProcessingAMerc: BOOLEAN = FALSE;
+let fContractOverMeTooFlag: boolean = false;
+let fContractOverAndIWontRenewMeTooFlag: boolean = false;
+let fProcessingAMerc: boolean = false;
 let pProcessingSoldier: Pointer<SOLDIERTYPE> = null;
-let gfFirstMercSayingQuoteWillLeaveNoMatterWhat: BOOLEAN = FALSE;
+let gfFirstMercSayingQuoteWillLeaveNoMatterWhat: boolean = false;
 
 function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pKiller: Pointer<SOLDIERTYPE> = null;
@@ -52,7 +52,7 @@ function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
   pSoldier.value.bBreathMax = pSoldier.value.bBreath = 0;
 
   // not asleep, DEAD!
-  pSoldier.value.fMercAsleep = FALSE;
+  pSoldier.value.fMercAsleep = false;
 
   // if the merc had life insurance
   if (pSoldier.value.usLifeInsurance) {
@@ -107,7 +107,7 @@ function MercDailyUpdate(): void {
   let pProfile: Pointer<MERCPROFILESTRUCT>;
   let uiChance: UINT32;
   let iOffset: INT32 = 0;
-  let fFoundSomeOneForMenuShowing: BOOLEAN = FALSE;
+  let fFoundSomeOneForMenuShowing: boolean = false;
 
   // if its the first day, leave
   if (GetWorldDay() == 1)
@@ -496,7 +496,7 @@ function MercsContractIsFinished(ubID: UINT8): void {
     return;
 
   if (fShowContractMenu) {
-    fShowContractMenu = FALSE;
+    fShowContractMenu = false;
   }
 
   // go to mapscreen
@@ -548,7 +548,7 @@ function RPCWhineAboutNoPay(ubID: UINT8): void {
 }
 
 // OK loop through and check!
-function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
+function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let cnt: INT32;
   let usItem: UINT16;
   let bBestArmour: INT8 = -1;
@@ -591,10 +591,10 @@ function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): BOO
   // OK, check values!
   if ((bBestGun != -1 && bBestGun < (gMercProfiles[pSoldier.value.ubProfile].bMainGunAttractiveness / 2)) || (bBestArmour != -1 && bBestArmour < (gMercProfiles[pSoldier.value.ubProfile].bArmourAttractiveness / 2))) {
     // Pipe up!
-    return TRUE;
+    return true;
   }
 
-  return FALSE;
+  return false;
 }
 
 function MercComplainAboutEquipment(ubProfile: UINT8): void {
@@ -605,15 +605,15 @@ function MercComplainAboutEquipment(ubProfile: UINT8): void {
       ubProfile = Enum268.LARRY_DRUNK;
     }
   } else if (ubProfile == Enum268.LARRY_DRUNK) {
-    if (CheckFact(Enum170.FACT_LARRY_CHANGED, 0) == FALSE) {
+    if (CheckFact(Enum170.FACT_LARRY_CHANGED, 0) == false) {
       ubProfile = Enum268.LARRY_NORMAL;
     }
   }
   // Are we dead/ does merc still exist?
-  pSoldier = FindSoldierByProfileID(ubProfile, FALSE);
+  pSoldier = FindSoldierByProfileID(ubProfile, false);
 
   if (pSoldier != null) {
-    if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.fMercAsleep != TRUE && pSoldier.value.bAssignment < Enum117.ON_DUTY) {
+    if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.fMercAsleep != true && pSoldier.value.bAssignment < Enum117.ON_DUTY) {
       // ATE: Double check that this problem still exists!
       if (SoldierHasWorseEquipmentThanUsedTo(pSoldier)) {
         // Say quote!
@@ -632,16 +632,16 @@ function UpdateBuddyAndHatedCounters(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pOtherSoldier: Pointer<SOLDIERTYPE>;
   let pProfile: Pointer<MERCPROFILESTRUCT>;
-  let fSameGroupOnly: BOOLEAN;
+  let fSameGroupOnly: boolean;
 
-  let fUpdatedTimeTillNextHatedComplaint: BOOLEAN = FALSE;
+  let fUpdatedTimeTillNextHatedComplaint: boolean = false;
 
   bMercID = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
 
   // loop though all the mercs
   for (pSoldier = MercPtrs[bMercID]; bMercID <= bLastTeamID; bMercID++, pSoldier++) {
-    fSameGroupOnly = FALSE;
+    fSameGroupOnly = false;
 
     // if the merc is active and on a combat assignment
     if (pSoldier.value.bActive && pSoldier.value.bAssignment < Enum117.ON_DUTY) {
@@ -649,10 +649,10 @@ function UpdateBuddyAndHatedCounters(): void {
 
       // if we're moving, we only check vs other people in our squad
       if (pSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.value.ubGroupID)) {
-        fSameGroupOnly = TRUE;
+        fSameGroupOnly = true;
       }
 
-      fUpdatedTimeTillNextHatedComplaint = FALSE;
+      fUpdatedTimeTillNextHatedComplaint = false;
 
       bOtherID = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
@@ -731,7 +731,7 @@ function UpdateBuddyAndHatedCounters(): void {
                       } else {
                         pProfile.value.ubTimeTillNextHatedComplaint--;
                       }
-                      fUpdatedTimeTillNextHatedComplaint = TRUE;
+                      fUpdatedTimeTillNextHatedComplaint = true;
                     }
 
                     if (pProfile.value.ubTimeTillNextHatedComplaint == 0) {
@@ -782,7 +782,7 @@ function UpdateBuddyAndHatedCounters(): void {
                       } else {
                         pProfile.value.ubTimeTillNextHatedComplaint--;
                       }
-                      fUpdatedTimeTillNextHatedComplaint = TRUE;
+                      fUpdatedTimeTillNextHatedComplaint = true;
                     }
 
                     if (pProfile.value.ubTimeTillNextHatedComplaint == 0) {

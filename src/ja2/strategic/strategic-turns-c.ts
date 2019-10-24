@@ -22,7 +22,7 @@ function HandleStrategicTurn(): void {
     RESETCOUNTER(Enum386.STRATEGIC_OVERHEAD);
 
     // if the game is paused, or we're in mapscreen and time is not being compressed
-    if ((GamePaused() == TRUE) || ((guiCurrentScreen == Enum26.MAP_SCREEN) && !IsTimeBeingCompressed())) {
+    if ((GamePaused() == true) || ((guiCurrentScreen == Enum26.MAP_SCREEN) && !IsTimeBeingCompressed())) {
       // don't do any of this
       return;
     }

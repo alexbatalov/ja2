@@ -4,7 +4,7 @@ let guiAmmoGrid: UINT32;
 function GameInitBobbyRAmmo(): void {
 }
 
-function EnterBobbyRAmmo(): BOOLEAN {
+function EnterBobbyRAmmo(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
@@ -27,7 +27,7 @@ function EnterBobbyRAmmo(): BOOLEAN {
 
   RenderBobbyRAmmo();
 
-  return TRUE;
+  return true;
 }
 
 function ExitBobbyRAmmo(): void {

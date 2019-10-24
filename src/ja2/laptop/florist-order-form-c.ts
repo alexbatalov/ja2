@@ -148,12 +148,12 @@ let guiPersonalSentiments: UINT32;
 let guiFlowerOrderCheckBoxButtonImage: UINT32;
 let guiDropDownBorder: UINT32;
 
-let gfFLoristCheckBox0Down: BOOLEAN = FALSE; // next day delviery
-let gfFLoristCheckBox1Down: BOOLEAN = TRUE; // when it gets there delivery
-let gfFLoristCheckBox2Down: BOOLEAN = FALSE;
-let gfFLoristCheckBox3Down: BOOLEAN = FALSE;
-let gfFLoristCheckBox4Down: BOOLEAN = FALSE;
-let gfFLoristCheckBox5Down: BOOLEAN = FALSE;
+let gfFLoristCheckBox0Down: boolean = false; // next day delviery
+let gfFLoristCheckBox1Down: boolean = true; // when it gets there delivery
+let gfFLoristCheckBox2Down: boolean = false;
+let gfFLoristCheckBox3Down: boolean = false;
+let gfFLoristCheckBox4Down: boolean = false;
+let gfFLoristCheckBox5Down: boolean = false;
 
 let guiFlowerPrice: UINT32;
 
@@ -214,7 +214,7 @@ let gSelectedFlowerDropDownRegion: MOUSE_REGION[] /* [FLOWER_ORDER_NUMBER_OF_DRO
 function GameInitFloristOrderForm(): void {
 }
 
-function EnterFloristOrderForm(): BOOLEAN {
+function EnterFloristOrderForm(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT8;
   let sTemp: char[] /* [40] */;
@@ -342,7 +342,7 @@ function EnterFloristOrderForm(): BOOLEAN {
   //	gubFlowerDestDropDownMode = FLOWER_ORDER_DROP_DOWN_NO_ACTION;
   //	gubCurrentlySelectedFlowerLocation = 0;
 
-  return TRUE;
+  return true;
 }
 
 function InitFloristOrderFormVariables(): void {
@@ -434,58 +434,58 @@ function RenderFloristOrderForm(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLOWER_ORDER_SENTIMENT_BOX_X, FLOWER_ORDER_SENTIMENT_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Bouquet name, price and order number,text
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_NAME_BOUQUET], FLOWER_ORDER_FLOWER_NAME_X, FLOWER_ORDER_FLOWER_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_PRICE], FLOWER_ORDER_BOUQUET_NAME_X, FLOWER_ORDER_BOUQUET_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_ORDER_NUMBER], FLOWER_ORDER_ORDER_NUM_NAME_X, FLOWER_ORDER_ORDER_NUM_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_NAME_BOUQUET], FLOWER_ORDER_FLOWER_NAME_X, FLOWER_ORDER_FLOWER_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_PRICE], FLOWER_ORDER_BOUQUET_NAME_X, FLOWER_ORDER_BOUQUET_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_ORDER_NUMBER], FLOWER_ORDER_ORDER_NUM_NAME_X, FLOWER_ORDER_ORDER_NUM_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // The flower name
   usPosX = StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_NAME_BOUQUET], FLOWER_ORDEER_SMALL_FONT()) + 5 + FLOWER_ORDER_FLOWER_NAME_X;
   uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * guiCurrentlySelectedFlower;
   LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_TITLE_SIZE);
-  DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_FLOWER_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_FLOWER_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Deliverry Date
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_DELIVERY_DATE], FLOWER_ORDER_ORDER_NUM_NAME_X, FLOWER_ORDER_DATE_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_DELIVERY_DATE], FLOWER_ORDER_ORDER_NUM_NAME_X, FLOWER_ORDER_DATE_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Next day
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_NEXT_DAY], FLOWER_ORDER_CHECK_BOX_0_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_0_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_NEXT_DAY], FLOWER_ORDER_CHECK_BOX_0_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_0_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // When it get there
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_GETS_THERE], FLOWER_ORDER_CHECK_BOX_1_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_1_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_GETS_THERE], FLOWER_ORDER_CHECK_BOX_1_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_1_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Deliverry locatiuon
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_DELIVERY_LOCATION], FLOWER_ORDER_ORDER_NUM_NAME_X, FLOWER_ORDER_LOCATION_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_DELIVERY_LOCATION], FLOWER_ORDER_ORDER_NUM_NAME_X, FLOWER_ORDER_LOCATION_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Additional services
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_ADDITIONAL_CHARGES], FLOWER_ORDER_ADDITIONAL_SERVICES_X, FLOWER_ORDER_ADDITIONAL_SERVICES_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_ADDITIONAL_CHARGES], FLOWER_ORDER_ADDITIONAL_SERVICES_X, FLOWER_ORDER_ADDITIONAL_SERVICES_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // crushed bouquet
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_CRUSHED], FLOWER_ORDER_CHECK_BOX_2_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_2_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_CRUSHED], FLOWER_ORDER_CHECK_BOX_2_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_2_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // black roses
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_BLACK_ROSES], FLOWER_ORDER_CHECK_BOX_3_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_3_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_BLACK_ROSES], FLOWER_ORDER_CHECK_BOX_3_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_3_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // wilted bouquet
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_WILTED], FLOWER_ORDER_CHECK_BOX_4_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_4_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_WILTED], FLOWER_ORDER_CHECK_BOX_4_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_4_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // fruit cake
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_FRUIT_CAKE], FLOWER_ORDER_CHECK_BOX_5_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_5_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_FRUIT_CAKE], FLOWER_ORDER_CHECK_BOX_5_X + FLOWER_ORDER_CHECK_WIDTH + 3, FLOWER_ORDER_CHECK_BOX_5_Y + 2, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Personal sentiment
   usPosX = FLOWER_ORDER_PERSONAL_SENT_TEXT_X + StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_PERSONAL_SENTIMENTS], FLOWER_ORDEER_BIG_FONT()) + 5;
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_PERSONAL_SENTIMENTS], FLOWER_ORDER_PERSONAL_SENT_TEXT_X, FLOWER_ORDER_PERSONAL_SENT_TEXT_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_CARD_LENGTH], usPosX, FLOWER_ORDER_PERSONAL_SENT_TEXT_Y + 2, 0, FLOWER_ORDEER_TINY_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_PERSONAL_SENTIMENTS], FLOWER_ORDER_PERSONAL_SENT_TEXT_X, FLOWER_ORDER_PERSONAL_SENT_TEXT_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_CARD_LENGTH], usPosX, FLOWER_ORDER_PERSONAL_SENT_TEXT_Y + 2, 0, FLOWER_ORDEER_TINY_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Billing information
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_BILLING_INFO], FLOWER_ORDER_BILLING_INFO_X, FLOWER_ORDER_BILLING_INFO_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_BILLING_INFO], FLOWER_ORDER_BILLING_INFO_X, FLOWER_ORDER_BILLING_INFO_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Billing Name
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_NAME], FLOWER_ORDER_NAME_TEXT_X, FLOWER_ORDER_NAME_TEXT_Y, FLOWER_ORDER_NAME_TEXT_WIDTH, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_NAME], FLOWER_ORDER_NAME_TEXT_X, FLOWER_ORDER_NAME_TEXT_Y, FLOWER_ORDER_NAME_TEXT_WIDTH, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   // the text to link to the card gallery
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_SELECT_FROM_OURS], FLOWER_ORDER_LINK_TO_CARD_GALLERY_X, FLOWER_ORDER_LINK_TO_CARD_GALLERY_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_SELECT_FROM_OURS], FLOWER_ORDER_LINK_TO_CARD_GALLERY_X, FLOWER_ORDER_LINK_TO_CARD_GALLERY_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usPosX = StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_SELECT_FROM_OURS], FLOWER_ORDEER_SMALL_FONT()) + 5 + FLOWER_ORDER_LINK_TO_CARD_GALLERY_X;
-  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_STANDARDIZED_CARDS], usPosX, FLOWER_ORDER_LINK_TO_CARD_GALLERY_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDEER_LINK_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sOrderFormText[Enum346.FLORIST_ORDER_STANDARDIZED_CARDS], usPosX, FLOWER_ORDER_LINK_TO_CARD_GALLERY_Y, 0, FLOWER_ORDEER_BIG_FONT(), FLOWER_ORDEER_LINK_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   DisplayFloristCheckBox();
 
@@ -610,49 +610,49 @@ function SelectFlorsitCheckBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
     switch (uiUserData) {
       case 0:
         if (gfFLoristCheckBox0Down) {
-          gfFLoristCheckBox0Down = FALSE;
-          gfFLoristCheckBox1Down = TRUE;
+          gfFLoristCheckBox0Down = false;
+          gfFLoristCheckBox1Down = true;
         } else {
-          gfFLoristCheckBox0Down = TRUE;
-          gfFLoristCheckBox1Down = FALSE;
+          gfFLoristCheckBox0Down = true;
+          gfFLoristCheckBox1Down = false;
         }
         break;
       case 1:
         if (gfFLoristCheckBox1Down) {
-          gfFLoristCheckBox1Down = FALSE;
-          gfFLoristCheckBox0Down = TRUE;
+          gfFLoristCheckBox1Down = false;
+          gfFLoristCheckBox0Down = true;
         } else {
-          gfFLoristCheckBox1Down = TRUE;
-          gfFLoristCheckBox0Down = FALSE;
+          gfFLoristCheckBox1Down = true;
+          gfFLoristCheckBox0Down = false;
         }
         break;
       case 2:
         if (gfFLoristCheckBox2Down)
-          gfFLoristCheckBox2Down = FALSE;
+          gfFLoristCheckBox2Down = false;
         else
-          gfFLoristCheckBox2Down = TRUE;
+          gfFLoristCheckBox2Down = true;
         break;
       case 3:
         if (gfFLoristCheckBox3Down)
-          gfFLoristCheckBox3Down = FALSE;
+          gfFLoristCheckBox3Down = false;
         else
-          gfFLoristCheckBox3Down = TRUE;
+          gfFLoristCheckBox3Down = true;
         break;
       case 4:
         if (gfFLoristCheckBox4Down)
-          gfFLoristCheckBox4Down = FALSE;
+          gfFLoristCheckBox4Down = false;
         else
-          gfFLoristCheckBox4Down = TRUE;
+          gfFLoristCheckBox4Down = true;
         break;
       case 5:
         if (gfFLoristCheckBox5Down)
-          gfFLoristCheckBox5Down = FALSE;
+          gfFLoristCheckBox5Down = false;
         else
-          gfFLoristCheckBox5Down = TRUE;
+          gfFLoristCheckBox5Down = true;
         break;
     }
     DisplayFloristCheckBox();
-    fPausedReDrawScreenFlag = TRUE;
+    fPausedReDrawScreenFlag = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -738,7 +738,7 @@ function DisplayFlowerDynamicItems(): void {
   // order number
   usPosX = StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_ORDER_NUMBER], FLOWER_ORDEER_SMALL_FONT()) + 5 + FLOWER_ORDER_ORDER_NUM_NAME_X;
   swprintf(sTemp, "%d", LaptopSaveInfo.uiFlowerOrderNumber);
-  DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_ORDER_NUM_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_ORDER_NUM_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   guiFlowerPrice = 0;
   // the user selected crushed bouquet
@@ -771,7 +771,7 @@ function DisplayFlowerDynamicItems(): void {
     guiFlowerPrice += usPrice + FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].ubWhenItGetsThereCost;
 
   swprintf(sTemp, "$%d.00 %s", guiFlowerPrice, pMessageStrings[Enum333.MSG_USDOLLAR_ABBREVIATION]);
-  DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_BOUQUET_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_BOUQUET_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 }
 
 function SelectFloristGalleryLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -819,9 +819,9 @@ function SelectFlowerDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>, re
   }
 }
 
-function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
+function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
   /* static */ let usHeight: UINT16;
-  /* static */ let fMouseRegionsCreated: BOOLEAN = FALSE;
+  /* static */ let fMouseRegionsCreated: boolean = false;
 
   switch (ubDropDownMode) {
     case Enum81.FLOWER_ORDER_DROP_DOWN_NO_ACTION: {
@@ -836,7 +836,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
       let ubTextFieldID: UINT8;
 
       if (fMouseRegionsCreated) {
-        return FALSE;
+        return false;
         break;
       }
 
@@ -853,7 +853,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
 
       SetActiveField(0);
 
-      fMouseRegionsCreated = TRUE;
+      fMouseRegionsCreated = true;
 
       usPosX = FLOWER_ORDER_DROP_DOWN_CITY_START_X;
       usPosY = FLOWER_ORDER_DROP_DOWN_CITY_START_Y;
@@ -889,13 +889,13 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
 
       // display the name on the title bar
       ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X + 3, FLOWER_ORDER_DELIVERY_LOCATION_Y + 3, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
-      DrawTextToScreen((FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, FLOWER_ORDER_DROP_DOWN_CITY_START_Y + 3, 0, FLOWER_ORDEER_DROP_DOWN_FONT(), FLOWER_ORDEER_DROP_DOWN_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen((FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, FLOWER_ORDER_DROP_DOWN_CITY_START_Y + 3, 0, FLOWER_ORDEER_DROP_DOWN_FONT(), FLOWER_ORDEER_DROP_DOWN_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // enable the drop down region
       MSYS_DisableRegion(addressof(gSelectedFloristDisableDropDownRegion));
 
-      fPausedReDrawScreenFlag = TRUE;
-      fMouseRegionsCreated = FALSE;
+      fPausedReDrawScreenFlag = true;
+      fMouseRegionsCreated = false;
       gubFlowerDestDropDownMode = Enum81.FLOWER_ORDER_DROP_DOWN_NO_ACTION;
 
       // enable the text entry fields
@@ -948,7 +948,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
       // Display the list of cities
       usPosY = FLOWER_ORDER_DROP_DOWN_CITY_START_Y + 3;
       for (i = 0; i < FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS; i++) {
-        DrawTextToScreen((FlowerOrderLocations[i].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, usPosY, 0, FLOWER_ORDEER_DROP_DOWN_FONT(), FLOWER_ORDEER_DROP_DOWN_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+        DrawTextToScreen((FlowerOrderLocations[i].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, usPosY, 0, FLOWER_ORDEER_DROP_DOWN_FONT(), FLOWER_ORDEER_DROP_DOWN_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
         usPosY += usFontHeight + 2;
       }
 
@@ -957,7 +957,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
       InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
     } break;
   }
-  return TRUE;
+  return true;
 }
 
 function FlowerOrderDrawSelectedCity(ubNumber: UINT8): void {
@@ -970,7 +970,7 @@ function FlowerOrderDrawSelectedCity(ubNumber: UINT8): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_CITY_START_X, usPosY + 2, FLOWER_ORDER_DROP_DOWN_CITY_START_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH - 9, usPosY + usFontHeight + 4, Get16BPPColor(FROMRGB(255, 255, 255)));
 
   SetFontShadow(NO_SHADOW);
-  DrawTextToScreen((FlowerOrderLocations[ubNumber].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, (usPosY + 3), 0, FLOWER_ORDEER_DROP_DOWN_FONT(), 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen((FlowerOrderLocations[ubNumber].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, (usPosY + 3), 0, FLOWER_ORDEER_DROP_DOWN_FONT(), 2, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   SetFontShadow(DEFAULT_SHADOW);
 
   FlowerOrderDisplayShippingLocationCity();
@@ -980,7 +980,7 @@ function FlowerOrderDrawSelectedCity(ubNumber: UINT8): void {
 function FlowerOrderDisplayShippingLocationCity(): void {
   // display the name on the title bar
   ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X + 3, FLOWER_ORDER_DELIVERY_LOCATION_Y + 3, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
-  DrawTextToScreen((FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc).value, FLOWER_ORDER_DELIVERY_LOCATION_X + 5, FLOWER_ORDER_DELIVERY_LOCATION_Y + 5, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen((FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc).value, FLOWER_ORDER_DELIVERY_LOCATION_X + 5, FLOWER_ORDER_DELIVERY_LOCATION_Y + 5, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 }
 
 function InitFlowerOrderTextInputBoxes(): void {
@@ -1029,7 +1029,7 @@ function DestroyFlowerOrderTextInputBoxes(): void {
 function HandleFloristOrderKeyBoardInput(): void {
   let InputEvent: InputAtom;
 
-  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == true) {
     if (!HandleTextInput(addressof(InputEvent)) && InputEvent.usEvent == KEY_DOWN) {
       let ubTextFieldID: UINT8;
       switch (InputEvent.usParam) {
@@ -1060,7 +1060,7 @@ function HandleFloristOrderKeyBoardInput(): void {
   }
 }
 
-function FlowerOrderUserTextFieldCallBack(ubID: UINT8, fEntering: BOOLEAN): void {
+function FlowerOrderUserTextFieldCallBack(ubID: UINT8, fEntering: boolean): void {
   if (fEntering) {
     //		SetActiveField(1);
   }
@@ -1070,12 +1070,12 @@ function FlowerOrderUserTextFieldCallBack(ubID: UINT8, fEntering: BOOLEAN): void
 function InitFloristOrderForm(): void {
   gsSentimentTextField[0] = 0;
 
-  gfFLoristCheckBox0Down = FALSE; // next day delviery
-  gfFLoristCheckBox1Down = TRUE; // when it gets there delivery
-  gfFLoristCheckBox2Down = FALSE;
-  gfFLoristCheckBox3Down = FALSE;
-  gfFLoristCheckBox4Down = FALSE;
-  gfFLoristCheckBox5Down = FALSE;
+  gfFLoristCheckBox0Down = false; // next day delviery
+  gfFLoristCheckBox1Down = true; // when it gets there delivery
+  gfFLoristCheckBox2Down = false;
+  gfFLoristCheckBox3Down = false;
+  gfFLoristCheckBox4Down = false;
+  gfFLoristCheckBox5Down = false;
 
   guiFlowerPrice = 0;
 

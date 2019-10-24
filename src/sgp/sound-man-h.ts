@@ -48,7 +48,7 @@ interface SAMPLETAG {
   uiSoundSize: UINT32; // Playable sound size
   uiFlags: UINT32; // Status flags
   uiSpeed: UINT32; // Playback frequency
-  fStereo: BOOLEAN; // Stereo/Mono
+  fStereo: boolean; // Stereo/Mono
   ubBits: UINT8; // 8/16 bits
   pData: PTR; // pointer to sample data memory
   pSoundStart: PTR; // pointer to start of sound data
@@ -93,10 +93,10 @@ interface SOUNDTAG {
   EOSCallback: (a: Pointer<void>) => void;
   pCallbackData: Pointer<void>;
   uiTimeStamp: UINT32;
-  fLooping: BOOLEAN;
+  fLooping: boolean;
   hFile: HWFILE;
-  fMusic: BOOLEAN;
-  fStopAtZero: BOOLEAN;
+  fMusic: boolean;
+  fStopAtZero: boolean;
   uiFadeVolume: UINT32;
   uiFadeRate: UINT32;
   uiFadeTime: UINT32;
