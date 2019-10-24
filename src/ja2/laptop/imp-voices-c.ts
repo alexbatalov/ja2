@@ -118,7 +118,7 @@ function CreateIMPVoicesButtons(): void {
                                                                           BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPVoicesNextCallback );
 */
-  giIMPVoicesButton[0] = CreateIconAndTextButton(giIMPVoicesButtonImage[0], pImpButtonText[13], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (343), LAPTOP_SCREEN_WEB_UL_Y + (205), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPVoicesNextCallback);
+  giIMPVoicesButton[0] = CreateIconAndTextButton(giIMPVoicesButtonImage[0], pImpButtonText[13], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (343), LAPTOP_SCREEN_WEB_UL_Y + (205), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPVoicesNextCallback);
 
   // previous button
   giIMPVoicesButtonImage[1] = LoadButtonImage("LAPTOP\\voicearrows.sti", -1, 0, -1, 2, -1);
@@ -126,7 +126,7 @@ function CreateIMPVoicesButtons(): void {
                                                                                   BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPVoicesPreviousCallback );
     */
-  giIMPVoicesButton[1] = CreateIconAndTextButton(giIMPVoicesButtonImage[1], pImpButtonText[12], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (93), LAPTOP_SCREEN_WEB_UL_Y + (205), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPVoicesPreviousCallback);
+  giIMPVoicesButton[1] = CreateIconAndTextButton(giIMPVoicesButtonImage[1], pImpButtonText[12], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (93), LAPTOP_SCREEN_WEB_UL_Y + (205), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPVoicesPreviousCallback);
 
   // done button
   giIMPVoicesButtonImage[2] = LoadButtonImage("LAPTOP\\button_5.sti", -1, 0, -1, 1, -1);
@@ -134,7 +134,7 @@ function CreateIMPVoicesButtons(): void {
                                                                           BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPVoicesDoneCallback );
 */
-  giIMPVoicesButton[2] = CreateIconAndTextButton(giIMPVoicesButtonImage[2], pImpButtonText[11], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (187), LAPTOP_SCREEN_WEB_UL_Y + (330), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPVoicesDoneCallback);
+  giIMPVoicesButton[2] = CreateIconAndTextButton(giIMPVoicesButtonImage[2], pImpButtonText[11], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (187), LAPTOP_SCREEN_WEB_UL_Y + (330), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPVoicesDoneCallback);
 
   SetButtonCursor(giIMPVoicesButton[0], Enum317.CURSOR_WWW);
   SetButtonCursor(giIMPVoicesButton[1], Enum317.CURSOR_WWW);
@@ -330,9 +330,9 @@ function RenderVoiceIndex(): void {
   // render the voice index value on the the blank portrait
   swprintf(sString, "%s %d", pIMPVoicesStrings[0], iCurrentVoices + 1);
 
-  FindFontCenterCoordinates(290 + LAPTOP_UL_X, 0, 100, 0, sString, FONT12ARIAL, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(290 + LAPTOP_UL_X, 0, 100, 0, sString, FONT12ARIAL(), addressof(sX), addressof(sY));
 
-  SetFont(FONT12ARIAL);
+  SetFont(FONT12ARIAL());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 

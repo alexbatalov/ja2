@@ -64,8 +64,8 @@ function EnterIMPBeginScreen(): void {
     wcscpy(pNickNameString, pNickName);
     uiFullNameCharacterPosition = wcslen(pFullNameString);
     uiNickNameCharacterPosition = wcslen(pNickNameString);
-    uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL);
-    uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL);
+    uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL());
+    uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL());
 
     // set gender too
     bGenderFlag = fCharacterIsMale;
@@ -205,7 +205,7 @@ function CreateIMPBeginScreenButtons(): void {
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPBeginScreenDoneCallback);
     */
 
-  giIMPBeginScreenButton[0] = CreateIconAndTextButton(giIMPBeginScreenButtonImage[0], pImpButtonText[6], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (134), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPBeginScreenDoneCallback);
+  giIMPBeginScreenButton[0] = CreateIconAndTextButton(giIMPBeginScreenButtonImage[0], pImpButtonText[6], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (134), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPBeginScreenDoneCallback);
 
   SetButtonCursor(giIMPBeginScreenButton[0], Enum317.CURSOR_WWW);
   return;
@@ -373,7 +373,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
             pFullNameString[uiFullNameCharacterPosition] = 0;
 
             // move cursor back by sizeof char
-            uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL);
+            uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL());
 
             // string has been altered, redisplay
             fNewCharInString = TRUE;
@@ -389,7 +389,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
             pNickNameString[uiNickNameCharacterPosition] = 0;
 
             // move cursor back by sizeof char
-            uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL);
+            uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL());
 
             // string has been altered, redisplay
             fNewCharInString = TRUE;
@@ -411,7 +411,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
                 uiFullNameCharacterPosition = 0;
               }
               // make sure we haven't moved too far
-              if ((uiFullNameCursorPosition + StringPixLength(addressof(uiKey), FONT14ARIAL)) > FULL_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
+              if ((uiFullNameCursorPosition + StringPixLength(addressof(uiKey), FONT14ARIAL())) > FULL_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
                 // do nothing for now, when pop up is in place, display
                 break;
               }
@@ -422,7 +422,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               pFullNameString[uiFullNameCharacterPosition + 1] = 0;
 
               // move cursor position ahead
-              uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL);
+              uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL());
 
               // increment string position
               uiFullNameCharacterPosition += 1;
@@ -440,7 +440,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               }
 
               // make sure we haven't moved too far
-              if ((uiNickNameCursorPosition + StringPixLength(addressof(uiKey), FONT14ARIAL)) > NICK_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
+              if ((uiNickNameCursorPosition + StringPixLength(addressof(uiKey), FONT14ARIAL())) > NICK_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
                 // do nothing for now, when pop up is in place, display
                 break;
               }
@@ -452,7 +452,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               pNickNameString[uiNickNameCharacterPosition + 1] = 0;
 
               // move cursor position ahead
-              uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL);
+              uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL());
 
               // increment string position
               uiNickNameCharacterPosition += 1;
@@ -510,9 +510,9 @@ function DisplayFullNameStringCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(TRUE, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT - 2, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(TRUE, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT() - 2, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
-  InvalidateRegion(uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition + 1, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT + 1 - 2);
+  InvalidateRegion(uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition + 1, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT() + 1 - 2);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -560,9 +560,9 @@ function DisplayNickNameStringCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(TRUE, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(TRUE, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
-  InvalidateRegion(uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition + 1, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT + 1);
+  InvalidateRegion(uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition + 1, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT() + 1);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -582,7 +582,7 @@ function DisplayPlayerFullNameString(): void {
   RenderNameIndent(194, 132);
 
   // setup the font stuff
-  SetFont(FONT14ARIAL);
+  SetFont(FONT14ARIAL());
   SetFontForeground(184);
   SetFontBackground(FONT_BLACK);
 
@@ -608,7 +608,7 @@ function DisplayPlayerNickNameString(): void {
   RenderNickNameIndent(194, 192);
 
   // setup the font stuff
-  SetFont(FONT14ARIAL);
+  SetFont(FONT14ARIAL());
   SetFontForeground(184);
   SetFontBackground(FONT_BLACK);
 
@@ -906,7 +906,7 @@ function RenderGender(): void {
 function Print8CharacterOnlyString(): void {
   SetFontBackground(FONT_BLACK);
   SetFontForeground(FONT_BLACK);
-  SetFont(FONT12ARIAL);
+  SetFont(FONT12ARIAL());
   SetFontShadow(NO_SHADOW);
 
   mprintf(430, LAPTOP_SCREEN_WEB_DELTA_Y + 228, pIMPBeginScreenStrings[0]);

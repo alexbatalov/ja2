@@ -188,7 +188,7 @@ const ClosedListAdd = (pNew) => {
 };
 
 const ClosedListGet = (pNew) => {
-  if (queRequests < QPOOLNDX) {
+  if (queRequests < QPOOLNDX()) {
     pNew = pathQ + (queRequests);
     queRequests++;
     pNew.value.bLevel = RandomSkipListLevel();
@@ -294,7 +294,7 @@ const REMQUEHEADNODE = () => SkipListRemoveHead();
 
 const DELQUENODE = (ndx) => SkipListRemoveHead();
 
-const REMAININGCOST = (ptr) => ((dy = abs(iDestY - iLocY)), (dx = abs(iDestX - iLocX)), ESTIMATE);
+const REMAININGCOST = (ptr) => ((dy = abs(iDestY - iLocY)), (dx = abs(iDestX - iLocX)), ESTIMATE());
 /*
 #define REMAININGCOST(ptr)					\
 (								\
@@ -365,7 +365,7 @@ function InitPathAI(): BOOLEAN {
     return FALSE;
   }
   pQueueHead = addressof(pathQ[QHEADNDX]);
-  pClosedHead = addressof(pathQ[QPOOLNDX]);
+  pClosedHead = addressof(pathQ[QPOOLNDX()]);
   memset(trailCostUsed, 0, MAPLENGTH);
   return TRUE;
 }
@@ -387,7 +387,7 @@ function ReconfigurePathAI(iNewMaxSkipListLevel: INT32, iNewMaxTrailTree: INT32,
   iMaxTrailTree = iNewMaxTrailTree;
   iMaxPathQ = iNewMaxPathQ;
   // relocate the head of the closed list to the end of the array portion being used
-  pClosedHead = addressof(pathQ[QPOOLNDX]);
+  pClosedHead = addressof(pathQ[QPOOLNDX()]);
   memset(pClosedHead, 0, sizeof(path_t));
 }
 
@@ -396,7 +396,7 @@ function RestorePathAIToDefaults(): void {
   iMaxTrailTree = MAX_TRAIL_TREE;
   iMaxPathQ = MAX_PATHQ;
   // relocate the head of the closed list to the end of the array portion being used
-  pClosedHead = addressof(pathQ[QPOOLNDX]);
+  pClosedHead = addressof(pathQ[QPOOLNDX()]);
   memset(pClosedHead, 0, sizeof(path_t));
 }
 
@@ -1354,7 +1354,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       if (trailCostUsed[newLoc] != gubGlobalPathCount || newTotCost < trailCost[newLoc]) {
         // NEWQUENODE;
         {
-          if (queRequests < QPOOLNDX) {
+          if (queRequests < QPOOLNDX()) {
             pNewPtr = pathQ + (queRequests);
             queRequests++;
             memset(pNewPtr.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
@@ -1483,10 +1483,10 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         fCheckedBehind = TRUE;
       }
     }
-  } while (pathQNotEmpty && pathNotYetFound);
+  } while (pathQNotEmpty() && pathNotYetFound());
 
   // work finished. Did we find a path?
-  if (pathQNotEmpty && pathFound) {
+  if (pathQNotEmpty() && pathFound()) {
     let z: INT16;
     let _z: INT16;
     let _nextLink: INT16; //,tempgrid;

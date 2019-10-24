@@ -101,13 +101,13 @@ function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
   dEnd = dPercentage * sHeight;
   dStart = sYPos;
 
-  usLineColor = Get16BPPColor(LIFE_BAR_SHADOW);
+  usLineColor = Get16BPPColor(LIFE_BAR_SHADOW());
   RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
-  usLineColor = Get16BPPColor(LIFE_BAR);
+  usLineColor = Get16BPPColor(LIFE_BAR());
   RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
-  usLineColor = Get16BPPColor(LIFE_BAR_SHADOW);
+  usLineColor = Get16BPPColor(LIFE_BAR_SHADOW());
   RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
 
   // NOW DO BANDAGE
@@ -120,13 +120,13 @@ function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     dStart = (sYPos - dEnd);
     dEnd = (dPercentage * sHeight);
 
-    usLineColor = Get16BPPColor(BANDAGE_BAR_SHADOW);
+    usLineColor = Get16BPPColor(BANDAGE_BAR_SHADOW());
     RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
-    usLineColor = Get16BPPColor(BANDAGE_BAR);
+    usLineColor = Get16BPPColor(BANDAGE_BAR());
     RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
-    usLineColor = Get16BPPColor(BANDAGE_BAR_SHADOW);
+    usLineColor = Get16BPPColor(BANDAGE_BAR_SHADOW());
     RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
   }
 
@@ -136,13 +136,13 @@ function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     dStart = (dStart - dEnd);
     dEnd = (dPercentage * sHeight);
 
-    usLineColor = Get16BPPColor(BLEEDING_BAR_SHADOW);
+    usLineColor = Get16BPPColor(BLEEDING_BAR_SHADOW());
     RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
-    usLineColor = Get16BPPColor(BLEEDING_BAR);
+    usLineColor = Get16BPPColor(BLEEDING_BAR());
     RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
-    usLineColor = Get16BPPColor(BLEEDING_BAR_SHADOW);
+    usLineColor = Get16BPPColor(BLEEDING_BAR_SHADOW());
     RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
   }
 
@@ -201,13 +201,13 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
     dStart = sYPos;
 
     // the old background colors for breath max diff
-    usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK);
+    usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK());
     RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
-    usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK);
+    usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK());
     RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
-    usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK);
+    usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK());
     RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
   }
 
@@ -215,13 +215,13 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   dEnd = dPercentage * sHeight;
   dStart = sYPos;
 
-  usLineColor = Get16BPPColor(CURR_MAX_BREATH_SHADOW);
+  usLineColor = Get16BPPColor(CURR_MAX_BREATH_SHADOW());
   RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
-  usLineColor = Get16BPPColor(CURR_MAX_BREATH);
+  usLineColor = Get16BPPColor(CURR_MAX_BREATH());
   RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
-  usLineColor = Get16BPPColor(CURR_MAX_BREATH_SHADOW);
+  usLineColor = Get16BPPColor(CURR_MAX_BREATH_SHADOW());
   RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
 
   // NOW DO BREATH
@@ -229,13 +229,13 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   dEnd = dPercentage * sHeight;
   dStart = sYPos;
 
-  usLineColor = Get16BPPColor(CURR_BREATH_BAR_SHADOW);
+  usLineColor = Get16BPPColor(CURR_BREATH_BAR_SHADOW());
   RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
-  usLineColor = Get16BPPColor(CURR_BREATH_BAR);
+  usLineColor = Get16BPPColor(CURR_BREATH_BAR());
   RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
-  usLineColor = Get16BPPColor(CURR_BREATH_BAR_SHADOW);
+  usLineColor = Get16BPPColor(CURR_BREATH_BAR_SHADOW());
   RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
 
   UnLockVideoSurface(uiBuffer);
@@ -269,13 +269,13 @@ function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   dEnd = dPercentage * sHeight;
   dStart = sYPos;
 
-  usLineColor = Get16BPPColor(MORALE_BAR_SHADOW);
+  usLineColor = Get16BPPColor(MORALE_BAR_SHADOW());
   RectangleDraw(TRUE, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
 
-  usLineColor = Get16BPPColor(MORALE_BAR);
+  usLineColor = Get16BPPColor(MORALE_BAR());
   RectangleDraw(TRUE, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
 
-  usLineColor = Get16BPPColor(MORALE_BAR_SHADOW);
+  usLineColor = Get16BPPColor(MORALE_BAR_SHADOW());
   RectangleDraw(TRUE, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
 
   UnLockVideoSurface(uiBuffer);

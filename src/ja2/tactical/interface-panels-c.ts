@@ -636,7 +636,7 @@ function UpdateSMPanel(): void {
     // Make new
     giSMStealthImages = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCE_IMAGES], gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][0], gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][1], -1, gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][2], -1);
 
-    giSMStealthButton = QuickCreateButton(giSMStealthImages, SM_STEALTHMODE_X, SM_STEALTHMODE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnStealthModeCallback);
+    giSMStealthButton = QuickCreateButton(giSMStealthImages, SM_STEALTHMODE_X, SM_STEALTHMODE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnStealthModeCallback);
 
     SetButtonFastHelpText(giSMStealthButton, TacticalStr[Enum335.TOGGLE_STEALTH_MODE_POPUPTEXT]);
 
@@ -1075,11 +1075,11 @@ function CreateSMPanelButtons(): BOOLEAN {
   // SET BUTTONS TO -1
   memset(iSMPanelButtons, -1, sizeof(iSMPanelButtons));
 
-  iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.MAPSCREEN_IMAGES], SM_MAPSCREEN_X, SM_MAPSCREEN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnMapScreenCallback);
+  iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.MAPSCREEN_IMAGES], SM_MAPSCREEN_X, SM_MAPSCREEN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnMapScreenCallback);
   SetButtonFastHelpText(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON], TacticalStr[Enum335.MAPSCREEN_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[Enum220.SM_DONE_BUTTON] = CreateIconAndTextButton(iSMPanelImages[Enum218.DONE_IMAGES], "", FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SM_DONE_X, SM_DONE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnSMDoneCallback);
+  iSMPanelButtons[Enum220.SM_DONE_BUTTON] = CreateIconAndTextButton(iSMPanelImages[Enum218.DONE_IMAGES], "", FONT12ARIAL(), FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SM_DONE_X, SM_DONE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnSMDoneCallback);
   SetButtonFastHelpText(iSMPanelButtons[Enum220.SM_DONE_BUTTON], TacticalStr[Enum335.END_TURN_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[Enum220.SM_DONE_BUTTON], HelpTextDoneCallback);
 
@@ -1087,11 +1087,11 @@ function CreateSMPanelButtons(): BOOLEAN {
   SetButtonFastHelpText(iSMPanelButtons[Enum220.TALK_BUTTON], TacticalStr[Enum335.TALK_CURSOR_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[Enum220.TALK_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[Enum220.MUTE_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.MUTE_IMAGES], SM_MUTEB_X, SM_MUTEB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnMuteCallback);
+  iSMPanelButtons[Enum220.MUTE_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.MUTE_IMAGES], SM_MUTEB_X, SM_MUTEB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnMuteCallback);
   SetButtonFastHelpText(iSMPanelButtons[Enum220.MUTE_BUTTON], TacticalStr[Enum335.TOGGLE_MUTE_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[Enum220.MUTE_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[Enum220.STANCEUP_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.STANCEUP_IMAGES], SM_STANCEUPB_X, SM_STANCEUPB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnStanceUpCallback);
+  iSMPanelButtons[Enum220.STANCEUP_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.STANCEUP_IMAGES], SM_STANCEUPB_X, SM_STANCEUPB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnStanceUpCallback);
   if (iSMPanelButtons[Enum220.STANCEUP_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
@@ -1110,7 +1110,7 @@ function CreateSMPanelButtons(): BOOLEAN {
   SetButtonFastHelpText(iSMPanelButtons[Enum220.UPDOWN_BUTTON], TacticalStr[Enum335.CURSOR_LEVEL_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[Enum220.UPDOWN_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[Enum220.CLIMB_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.CLIMB_IMAGES], SM_CLIMBB_X, SM_CLIMBB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnClimbCallback);
+  iSMPanelButtons[Enum220.CLIMB_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.CLIMB_IMAGES], SM_CLIMBB_X, SM_CLIMBB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnClimbCallback);
   if (iSMPanelButtons[Enum220.CLIMB_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
@@ -1119,7 +1119,7 @@ function CreateSMPanelButtons(): BOOLEAN {
   SetButtonFastHelpText(iSMPanelButtons[Enum220.CLIMB_BUTTON], TacticalStr[Enum335.JUMPCLIMB_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[Enum220.CLIMB_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[Enum220.STANCEDOWN_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.STANCEDOWN_IMAGES], SM_STANCEDOWNB_X, SM_STANCEDOWNB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnStanceDownCallback);
+  iSMPanelButtons[Enum220.STANCEDOWN_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.STANCEDOWN_IMAGES], SM_STANCEDOWNB_X, SM_STANCEDOWNB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnStanceDownCallback);
   if (iSMPanelButtons[Enum220.STANCEDOWN_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
@@ -1137,7 +1137,7 @@ function CreateSMPanelButtons(): BOOLEAN {
   SetButtonFastHelpText(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON], TacticalStr[Enum335.EXAMINE_CURSOR_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[Enum220.PREVMERC_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.PREVMERC_IMAGES], SM_PREVMERCB_X, SM_PREVMERCB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnPrevMercCallback);
+  iSMPanelButtons[Enum220.PREVMERC_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.PREVMERC_IMAGES], SM_PREVMERCB_X, SM_PREVMERCB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnPrevMercCallback);
   if (iSMPanelButtons[Enum220.PREVMERC_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
@@ -1146,7 +1146,7 @@ function CreateSMPanelButtons(): BOOLEAN {
   SetButtonFastHelpText(iSMPanelButtons[Enum220.PREVMERC_BUTTON], TacticalStr[Enum335.PREV_MERC_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[Enum220.PREVMERC_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[Enum220.NEXTMERC_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.NEXTMERC_IMAGES], SM_NEXTMERCB_X, SM_NEXTMERCB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnNextMercCallback);
+  iSMPanelButtons[Enum220.NEXTMERC_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.NEXTMERC_IMAGES], SM_NEXTMERCB_X, SM_NEXTMERCB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnNextMercCallback);
   if (iSMPanelButtons[Enum220.NEXTMERC_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
@@ -1155,7 +1155,7 @@ function CreateSMPanelButtons(): BOOLEAN {
   // SetButtonFastHelpText( iSMPanelButtons[ NEXTMERC_BUTTON ],L"Change Stance Down");
   SetBtnHelpEndCallback(iSMPanelButtons[Enum220.NEXTMERC_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[Enum220.OPTIONS_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.OPTIONS_IMAGES], SM_OPTIONSB_X, SM_OPTIONSB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnOptionsCallback);
+  iSMPanelButtons[Enum220.OPTIONS_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.OPTIONS_IMAGES], SM_OPTIONSB_X, SM_OPTIONSB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnOptionsCallback);
   if (iSMPanelButtons[Enum220.OPTIONS_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
@@ -1344,7 +1344,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
       //}
       // RestoreExternBackgroundRect( SM_POSITIONB_X, SM_POSITIONB_Y, SM_POSITIONB_WIDTH , SM_POSITIONB_HEIGHT );
 
-      SetFont(BLOCKFONT2);
+      SetFont(BLOCKFONT2());
 
       // Render Values for stats!
       // Set font drawing to saved buffer
@@ -1357,73 +1357,73 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
         mprintf(137, (347 + cnt * 10), pShortAttributeStrings[cnt + 5]);
       }
 
-      mprintf(SM_ARMOR_LABEL_X - StringPixLength(pInvPanelTitleStrings[0], BLOCKFONT2) / 2, SM_ARMOR_LABEL_Y, pInvPanelTitleStrings[0]);
+      mprintf(SM_ARMOR_LABEL_X - StringPixLength(pInvPanelTitleStrings[0], BLOCKFONT2()) / 2, SM_ARMOR_LABEL_Y, pInvPanelTitleStrings[0]);
       mprintf(SM_ARMOR_PERCENT_X, SM_ARMOR_PERCENT_Y, "%%");
 
-      mprintf(SM_WEIGHT_LABEL_X - StringPixLength(pInvPanelTitleStrings[1], BLOCKFONT2), SM_WEIGHT_LABEL_Y, pInvPanelTitleStrings[1]);
+      mprintf(SM_WEIGHT_LABEL_X - StringPixLength(pInvPanelTitleStrings[1], BLOCKFONT2()), SM_WEIGHT_LABEL_Y, pInvPanelTitleStrings[1]);
       mprintf(SM_WEIGHT_PERCENT_X, SM_WEIGHT_PERCENT_Y, "%%");
 
-      mprintf(SM_CAMMO_LABEL_X - StringPixLength(pInvPanelTitleStrings[2], BLOCKFONT2), SM_CAMMO_LABEL_Y, pInvPanelTitleStrings[2]);
+      mprintf(SM_CAMMO_LABEL_X - StringPixLength(pInvPanelTitleStrings[2], BLOCKFONT2()), SM_CAMMO_LABEL_Y, pInvPanelTitleStrings[2]);
       mprintf(SM_CAMMO_PERCENT_X, SM_CAMMO_PERCENT_Y, "%%");
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeAgilityTime, (gpSMCurrentMerc.value.usValueGoneUp & AGIL_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bAgility);
-      FindFontRightCoordinates(SM_AGI_X, SM_AGI_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_AGI_X, SM_AGI_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeDexterityTime, (gpSMCurrentMerc.value.usValueGoneUp & DEX_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bDexterity);
-      FindFontRightCoordinates(SM_DEX_X, SM_DEX_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_DEX_X, SM_DEX_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeStrengthTime, (gpSMCurrentMerc.value.usValueGoneUp & STRENGTH_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bStrength);
-      FindFontRightCoordinates(SM_STR_X, SM_STR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_STR_X, SM_STR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeLeadershipTime, (gpSMCurrentMerc.value.usValueGoneUp & LDR_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bLeadership);
-      FindFontRightCoordinates(SM_CHAR_X, SM_CHAR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_CHAR_X, SM_CHAR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeWisdomTime, (gpSMCurrentMerc.value.usValueGoneUp & WIS_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bWisdom);
-      FindFontRightCoordinates(SM_WIS_X, SM_WIS_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_WIS_X, SM_WIS_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeLevelTime, (gpSMCurrentMerc.value.usValueGoneUp & LVL_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bExpLevel);
-      FindFontRightCoordinates(SM_EXPLVL_X, SM_EXPLVL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_EXPLVL_X, SM_EXPLVL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeMarksmanshipTime, (gpSMCurrentMerc.value.usValueGoneUp & MRK_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bMarksmanship);
-      FindFontRightCoordinates(SM_MRKM_X, SM_MRKM_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_MRKM_X, SM_MRKM_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeExplosivesTime, (gpSMCurrentMerc.value.usValueGoneUp & EXP_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bExplosive);
-      FindFontRightCoordinates(SM_EXPL_X, SM_EXPL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_EXPL_X, SM_EXPL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeMechanicalTime, (gpSMCurrentMerc.value.usValueGoneUp & MECH_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bMechanical);
-      FindFontRightCoordinates(SM_MECH_X, SM_MECH_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_MECH_X, SM_MECH_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeMedicalTime, (gpSMCurrentMerc.value.usValueGoneUp & MED_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bMedical);
-      FindFontRightCoordinates(SM_MED_X, SM_MED_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_MED_X, SM_MED_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       if (gpSMCurrentMerc.value.bLife >= OKLIFE) {
@@ -1436,17 +1436,17 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
 
       // Display armour value!
       swprintf(sString, "%3d", ArmourPercent(gpSMCurrentMerc));
-      FindFontRightCoordinates(SM_ARMOR_X, SM_ARMOR_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_ARMOR_X, SM_ARMOR_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       // Display wieght value!
       swprintf(sString, "%3d", CalculateCarriedWeight(gpSMCurrentMerc));
-      FindFontRightCoordinates(SM_WEIGHT_X, SM_WEIGHT_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_WEIGHT_X, SM_WEIGHT_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       // Display cammo value!
       swprintf(sString, "%3d", gpSMCurrentMerc.value.bCamo);
-      FindFontRightCoordinates(SM_CAMMO_X, SM_CAMMO_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+      FindFontRightCoordinates(SM_CAMMO_X, SM_CAMMO_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       // reset to frame buffer!
@@ -1458,7 +1458,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     }
 
     // Render Name!
-    SetFont(BLOCKFONT2);
+    SetFont(BLOCKFONT2());
 
     if (gpSMCurrentMerc.value.bStealthMode) {
       SetFontBackground(FONT_MCOLOR_BLACK);
@@ -1469,7 +1469,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     }
 
     RestoreExternBackgroundRect(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT);
-    VarFindFontCenterCoordinates(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT, SMALLFONT1, addressof(sFontX), addressof(sFontY), "%s", gpSMCurrentMerc.value.name);
+    VarFindFontCenterCoordinates(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT, SMALLFONT1(), addressof(sFontX), addressof(sFontY), "%s", gpSMCurrentMerc.value.name);
     mprintf(sFontX + 5, sFontY, "%s", gpSMCurrentMerc.value.name);
   }
 
@@ -1498,7 +1498,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     // display AP
     if (!(gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_DEAD)) {
       if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT) && gpSMCurrentMerc.value.bLife >= OKLIFE) {
-        SetFont(TINYFONT1);
+        SetFont(TINYFONT1());
         // if ( gpSMCurrentMerc->sLastTarget != NOWHERE && !EnoughPoints( gpSMCurrentMerc, MinAPsToAttack( gpSMCurrentMerc, gpSMCurrentMerc->sLastTarget, FALSE ), 0, FALSE ) || GetUIApsToDisplay( gpSMCurrentMerc ) < 0 )
         if (!EnoughPoints(gpSMCurrentMerc, MinAPsToAttack(gpSMCurrentMerc, gpSMCurrentMerc.value.sLastTarget, FALSE), 0, FALSE) || GetUIApsToDisplay(gpSMCurrentMerc) < 0) {
           SetFontBackground(FONT_MCOLOR_BLACK);
@@ -1517,7 +1517,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
         }
 
         gprintfRestore(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, "%2d", GetUIApsToDisplay(gpSMCurrentMerc));
-        VarFindFontCenterCoordinates(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, SM_SELMERC_AP_WIDTH, SM_SELMERC_AP_HEIGHT, TINYFONT1, addressof(sFontX), addressof(sFontY), "%d", GetUIApsToDisplay(gpSMCurrentMerc));
+        VarFindFontCenterCoordinates(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, SM_SELMERC_AP_WIDTH, SM_SELMERC_AP_HEIGHT, TINYFONT1(), addressof(sFontX), addressof(sFontY), "%d", GetUIApsToDisplay(gpSMCurrentMerc));
         mprintf(sFontX, SM_SELMERC_AP_Y, "%d", GetUIApsToDisplay(gpSMCurrentMerc));
       }
 
@@ -2705,7 +2705,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
         // RestoreExternBackgroundRect( (INT16)(sTEAMAPPanelXY[ posIndex ]), (INT16)(sTEAMAPPanelXY[ posIndex + 1 ]), TM_APPANEL_WIDTH, TM_APPANEL_HEIGHT );
         // InvalidateRegion( (INT16)(sTEAMAPPanelXY[ posIndex ]), (INT16)(sTEAMAPPanelXY[ posIndex + 1 ]), (INT16)(sTEAMAPPanelXY[ posIndex ] + TM_APPANEL_WIDTH), (INT16)(sTEAMAPPanelXY[ posIndex + 1 ] + TM_APPANEL_HEIGHT ) );
 
-        if (gTacticalStatus.ubCurrentTeam != OUR_TEAM || INTERRUPT_QUEUED) {
+        if (gTacticalStatus.ubCurrentTeam != OUR_TEAM || INTERRUPT_QUEUED()) {
           // Hatch out...
           BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMObjects, 1, sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, NULL);
           RestoreExternBackgroundRect(sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], TM_FACEHIGHTL_WIDTH, TM_FACEHIGHTL_HEIGHT);
@@ -2772,7 +2772,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
         // Restore AP/LIFE POSIITONS
 
         // Render name!
-        SetFont(BLOCKFONT2);
+        SetFont(BLOCKFONT2());
 
         if (pSoldier.value.bStealthMode) {
           SetFontBackground(FONT_MCOLOR_BLACK);
@@ -2784,7 +2784,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
 
         // RENDER ON SAVE BUFFER!
         SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
-        VarFindFontCenterCoordinates((sTEAMNamesXY[posIndex] + 2), (sTEAMNamesXY[posIndex + 1]), TM_NAME_WIDTH, TM_NAME_HEIGHT, BLOCKFONT2, addressof(sFontX), addressof(sFontY), "%s", pSoldier.value.name);
+        VarFindFontCenterCoordinates((sTEAMNamesXY[posIndex] + 2), (sTEAMNamesXY[posIndex + 1]), TM_NAME_WIDTH, TM_NAME_HEIGHT, BLOCKFONT2(), addressof(sFontX), addressof(sFontY), "%s", pSoldier.value.name);
         mprintf(sFontX, sFontY, "%s", pSoldier.value.name);
         gprintfRestore(sFontX, sFontY, "%s", pSoldier.value.name);
         // reset to frame buffer!
@@ -2837,7 +2837,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
 
           if (gTacticalStatus.uiFlags & TURNBASED && pSoldier.value.bLife >= OKLIFE) {
             // Render APs
-            SetFont(TINYFONT1);
+            SetFont(TINYFONT1());
 
             // if ( pSoldier->sLastTarget != NOWHERE && !EnoughPoints( pSoldier, MinAPsToAttack( pSoldier, pSoldier->sLastTarget, TRUE ), 0, FALSE ) || GetUIApsToDisplay( pSoldier ) < 0 )
             if (!EnoughPoints(pSoldier, MinAPsToAttack(pSoldier, pSoldier.value.sLastTarget, TRUE), 0, FALSE) || GetUIApsToDisplay(pSoldier) < 0) {
@@ -2858,7 +2858,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
             RestoreExternBackgroundRect(sTEAMApXY[posIndex], sTEAMApXY[posIndex + 1], TM_AP_WIDTH, TM_AP_HEIGHT);
 
             if (gTacticalStatus.uiFlags & INCOMBAT) {
-              VarFindFontCenterCoordinates(sTEAMApXY[posIndex], sTEAMApXY[posIndex + 1], TM_AP_WIDTH, TM_AP_HEIGHT, TINYFONT1, addressof(sFontX), addressof(sFontY), "%d", GetUIApsToDisplay(pSoldier));
+              VarFindFontCenterCoordinates(sTEAMApXY[posIndex], sTEAMApXY[posIndex + 1], TM_AP_WIDTH, TM_AP_HEIGHT, TINYFONT1(), addressof(sFontX), addressof(sFontY), "%d", GetUIApsToDisplay(pSoldier));
               mprintf(sFontX, sTEAMApXY[posIndex + 1], "%d", GetUIApsToDisplay(pSoldier));
             }
           }
@@ -2903,21 +2903,21 @@ function CreateTEAMPanelButtons(): BOOLEAN {
   iTEAMPanelImages[Enum219.DISK_IMAGES] = UseLoadedButtonImage(iTEAMPanelImages[Enum219.ENDTURN_IMAGES], -1, 2, -1, 5, -1);
 
   // Create buttons
-  iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON] = QuickCreateButton(iTEAMPanelImages[Enum219.ENDTURN_IMAGES], TM_ENDTURN_X, TM_ENDTURN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnEndTurnCallback);
+  iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON] = QuickCreateButton(iTEAMPanelImages[Enum219.ENDTURN_IMAGES], TM_ENDTURN_X, TM_ENDTURN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnEndTurnCallback);
   if (iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
   SetButtonFastHelpText(iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON], TacticalStr[Enum335.END_TURN_POPUPTEXT]);
 
-  iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON] = QuickCreateButton(iTEAMPanelImages[Enum219.ROSTERMODE_IMAGES], TM_ROSTERMODE_X, TM_ROSTERMODE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnRostermodeCallback);
+  iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON] = QuickCreateButton(iTEAMPanelImages[Enum219.ROSTERMODE_IMAGES], TM_ROSTERMODE_X, TM_ROSTERMODE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnRostermodeCallback);
   if (iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
   SetButtonFastHelpText(iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON], TacticalStr[Enum335.MAPSCREEN_POPUPTEXT]);
 
-  iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON] = QuickCreateButton(iTEAMPanelImages[Enum219.DISK_IMAGES], TM_DISK_X, TM_DISK_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnSquadCallback);
+  iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON] = QuickCreateButton(iTEAMPanelImages[Enum219.DISK_IMAGES], TM_DISK_X, TM_DISK_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK(), BtnSquadCallback);
   if (iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
@@ -3762,13 +3762,13 @@ function RenderTownIDString(): void {
   let sFontY: INT16;
 
   // Render town, position
-  SetFont(COMPFONT);
+  SetFont(COMPFONT());
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
   GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTownIDString, TRUE);
-  ReduceStringLength(zTownIDString, 80, COMPFONT);
-  VarFindFontCenterCoordinates(548, 425, 80, 16, COMPFONT, addressof(sFontX), addressof(sFontY), zTownIDString);
+  ReduceStringLength(zTownIDString, 80, COMPFONT());
+  VarFindFontCenterCoordinates(548, 425, 80, 16, COMPFONT(), addressof(sFontX), addressof(sFontY), zTownIDString);
   mprintf(sFontX, sFontY, "%s", zTownIDString);
 }
 

@@ -53,7 +53,7 @@ function MainGameScreenInit(): UINT32 {
   // FIRST, FRAMERATE
   VideoOverlayDesc.sLeft = 0;
   VideoOverlayDesc.sTop = 0;
-  VideoOverlayDesc.uiFontID = SMALLFONT1;
+  VideoOverlayDesc.uiFontID = SMALLFONT1();
   VideoOverlayDesc.ubFontBack = FONT_MCOLOR_BLACK;
   VideoOverlayDesc.ubFontFore = FONT_MCOLOR_DKGRAY;
   VideoOverlayDesc.sX = VideoOverlayDesc.sLeft;

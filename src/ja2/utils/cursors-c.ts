@@ -429,8 +429,8 @@ function DrawMouseText(): void {
     // Set dest for gprintf to be different
     SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
 
-    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzLocation, TINYFONT1, addressof(sX), addressof(sY));
-    SetFont(TINYFONT1);
+    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzLocation, TINYFONT1(), addressof(sX), addressof(sY));
+    SetFont(TINYFONT1());
 
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_WHITE);
@@ -444,8 +444,8 @@ function DrawMouseText(): void {
     // Set dest for gprintf to be different
     SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
 
-    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation, TINYFONT1, addressof(sX), addressof(sY));
-    SetFont(TINYFONT1);
+    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation, TINYFONT1(), addressof(sX), addressof(sY));
+    SetFont(TINYFONT1());
 
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_WHITE);
@@ -459,8 +459,8 @@ function DrawMouseText(): void {
     // Set dest for gprintf to be different
     SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
 
-    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation2, TINYFONT1, addressof(sX), addressof(sY));
-    SetFont(TINYFONT1);
+    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation2, TINYFONT1(), addressof(sX), addressof(sY));
+    SetFont(TINYFONT1());
 
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_WHITE);
@@ -502,12 +502,12 @@ function DrawMouseText(): void {
       swprintf(pStr, "%d", gsCurrentActionPoints);
 
       if (gfUIDisplayActionPointsCenter) {
-        FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, pStr, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, pStr, TINYFONT1(), addressof(sX), addressof(sY));
       } else {
-        FindFontCenterCoordinates(gUIDisplayActionPointsOffX, gUIDisplayActionPointsOffY, 1, 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(gUIDisplayActionPointsOffX, gUIDisplayActionPointsOffY, 1, 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
       }
 
-      SetFont(TINYFONT1);
+      SetFont(TINYFONT1());
 
       if (fShow) {
         if (gfUIDisplayActionPointsInvalid) {

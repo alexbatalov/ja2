@@ -43,7 +43,7 @@ function CreateAttributeFinishButtons(): void {
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAttributeFinishYesCallback );
 
   */
-  giIMPAttributeFinishButton[0] = CreateIconAndTextButton(giIMPAttributeFinishButtonImage[0], pImpButtonText[20], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (130), LAPTOP_SCREEN_WEB_UL_Y + (180), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeFinishYesCallback);
+  giIMPAttributeFinishButton[0] = CreateIconAndTextButton(giIMPAttributeFinishButtonImage[0], pImpButtonText[20], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (130), LAPTOP_SCREEN_WEB_UL_Y + (180), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeFinishYesCallback);
 
   // the no button
   giIMPAttributeFinishButtonImage[1] = LoadButtonImage("LAPTOP\\button_2.sti", -1, 0, -1, 1, -1);
@@ -51,7 +51,7 @@ function CreateAttributeFinishButtons(): void {
                                                                                   BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAttributeFinishNoCallback );
   */
-  giIMPAttributeFinishButton[1] = CreateIconAndTextButton(giIMPAttributeFinishButtonImage[1], pImpButtonText[21], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (130), LAPTOP_SCREEN_WEB_UL_Y + (264), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeFinishNoCallback);
+  giIMPAttributeFinishButton[1] = CreateIconAndTextButton(giIMPAttributeFinishButtonImage[1], pImpButtonText[21], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (130), LAPTOP_SCREEN_WEB_UL_Y + (264), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeFinishNoCallback);
 
   SetButtonCursor(giIMPAttributeFinishButton[0], Enum317.CURSOR_WWW);
   SetButtonCursor(giIMPAttributeFinishButton[1], Enum317.CURSOR_WWW);

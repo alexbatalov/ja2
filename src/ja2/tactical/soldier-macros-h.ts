@@ -14,7 +14,7 @@ const OK_CONTROLLABLE_MERC = (p) => (p.value.bLife >= OKLIFE && p.value.bActive 
 const OK_INSECTOR_MERC = (p) => (p.value.bLife >= OKLIFE && p.value.bActive && p.value.bInSector && p.value.bTeam == gbPlayerNum && p.value.bAssignment < Enum117.ON_DUTY);
 
 // Checkf if our guy can be selected and is not in a position where our team has an interupt and he does not have one...
-const OK_INTERRUPT_MERC = (p) => ((INTERRUPT_QUEUED != 0) ? ((p.value.bMoved) ? FALSE : TRUE) : TRUE);
+const OK_INTERRUPT_MERC = (p) => ((INTERRUPT_QUEUED() != 0) ? ((p.value.bMoved) ? FALSE : TRUE) : TRUE);
 
 const CREATURE_OR_BLOODCAT = (p) => ((p.value.uiStatusFlags & SOLDIER_MONSTER) || p.value.ubBodyType == Enum194.BLOODCAT);
 

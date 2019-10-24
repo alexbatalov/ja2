@@ -1551,7 +1551,7 @@ function CanNPCAttack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   // NEUTRAL civilians are not allowed to attack, but those that are not
   // neutral (KILLNPC mission guynums, escorted guys) can, if they're armed
-  if (PTR_CIVILIAN && pSoldier.value.bNeutral) {
+  if (PTR_CIVILIAN() && pSoldier.value.bNeutral) {
     return FALSE;
   }
 

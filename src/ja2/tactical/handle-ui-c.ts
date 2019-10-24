@@ -2974,7 +2974,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       }
       sAPCost += AP_STEAL_ITEM;
       // CJC August 13 2002: take into account stance in AP prediction
-      if (!(PTR_STANDING)) {
+      if (!(PTR_STANDING())) {
         sAPCost += GetAPsToChangeStance(pSoldier, ANIM_STAND);
       }
       sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);

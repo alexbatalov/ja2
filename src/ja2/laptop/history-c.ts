@@ -295,7 +295,7 @@ function RenderHistoryBackGround(): void {
 
 function DrawHistoryTitleText(): void {
   // setup the font stuff
-  SetFont(HISTORY_HEADER_FONT);
+  SetFont(HISTORY_HEADER_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(DEFAULT_SHADOW);
@@ -533,7 +533,7 @@ function OpenAndReadHistoryFile(): void {
     ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, bSectorZ, ubColor);
 
     // increment byte counter
-    uiByteCount += SIZE_OF_HISTORY_FILE_RECORD;
+    uiByteCount += SIZE_OF_HISTORY_FILE_RECORD();
   }
 
   // close file
@@ -607,21 +607,21 @@ function DisplayHistoryListHeaders(): void {
   let usY: UINT16;
 
   // font stuff
-  SetFont(HISTORY_TEXT_FONT);
+  SetFont(HISTORY_TEXT_FONT());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
 
   // the date header
-  FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, pHistoryHeaders[0], HISTORY_TEXT_FONT, addressof(usX), addressof(usY));
+  FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, pHistoryHeaders[0], HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pHistoryHeaders[0]);
 
   // the date header
-  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT, addressof(usX), addressof(usY));
+  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pHistoryHeaders[3]);
 
   // event header
-  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + RECORD_LOCATION_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT, addressof(usX), addressof(usY));
+  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + RECORD_LOCATION_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pHistoryHeaders[4]);
   // reset shadow
   SetFontShadow(DEFAULT_SHADOW);
@@ -661,7 +661,7 @@ function DrawHistoryRecordsText(): void {
   let sY: INT16 = 0;
 
   // setup the font stuff
-  SetFont(HISTORY_TEXT_FONT);
+  SetFont(HISTORY_TEXT_FONT());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -679,7 +679,7 @@ function DrawHistoryRecordsText(): void {
     }
     // get and write the date
     swprintf(sString, "%d", (pCurHistory.value.uiDate / (24 * 60)));
-    FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
     mprintf(usX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
     // now the actual history text
@@ -690,13 +690,13 @@ function DrawHistoryRecordsText(): void {
 
     // no location
     if ((pCurHistory.value.sSectorX == -1) || (pCurHistory.value.sSectorY == -1)) {
-      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, pHistoryLocations[0], HISTORY_TEXT_FONT, addressof(sX), addressof(sY));
+      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, pHistoryLocations[0], HISTORY_TEXT_FONT(), addressof(sX), addressof(sY));
       mprintf(sX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, pHistoryLocations[0]);
     } else {
       GetSectorIDString(pCurHistory.value.sSectorX, pCurHistory.value.sSectorY, pCurHistory.value.bSectorZ, sString, TRUE);
-      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, sString, HISTORY_TEXT_FONT, addressof(sX), addressof(sY));
+      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, sString, HISTORY_TEXT_FONT(), addressof(sX), addressof(sY));
 
-      ReduceStringLength(sString, RECORD_LOCATION_WIDTH + 10, HISTORY_TEXT_FONT);
+      ReduceStringLength(sString, RECORD_LOCATION_WIDTH + 10, HISTORY_TEXT_FONT());
 
       mprintf(sX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
     }
@@ -761,7 +761,7 @@ function DisplayPageNumberAndDateRange(): void {
   let sString: wchar_t[] /* [50] */;
 
   // setup the font stuff
-  SetFont(HISTORY_TEXT_FONT);
+  SetFont(HISTORY_TEXT_FONT());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -1051,15 +1051,15 @@ function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
   }
 
   // is the file long enough?
-  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD) + 1 < uiPage) {
+  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD()) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
     return FALSE;
   }
 
-  FileSeek(hFileHandle, (uiPage - 1) * NUM_RECORDS_PER_PAGE * (SIZE_OF_HISTORY_FILE_RECORD), FILE_SEEK_FROM_START);
+  FileSeek(hFileHandle, (uiPage - 1) * NUM_RECORDS_PER_PAGE * (SIZE_OF_HISTORY_FILE_RECORD()), FILE_SEEK_FROM_START);
 
-  uiByteCount = (uiPage - 1) * NUM_RECORDS_PER_PAGE * (SIZE_OF_HISTORY_FILE_RECORD);
+  uiByteCount = (uiPage - 1) * NUM_RECORDS_PER_PAGE * (SIZE_OF_HISTORY_FILE_RECORD());
   // file exists, read in data, continue until end of page
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue)) {
     // read in other data
@@ -1075,7 +1075,7 @@ function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
     ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, bSectorZ, ubColor);
 
     // increment byte counter
-    uiByteCount += SIZE_OF_HISTORY_FILE_RECORD;
+    uiByteCount += SIZE_OF_HISTORY_FILE_RECORD();
 
     // we've overextended our welcome, and bypassed end of file, get out
     if (uiByteCount >= FileGetSize(hFileHandle)) {
@@ -1134,7 +1134,7 @@ function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
   }
 
   // is the file long enough?
-  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD) + 1 < uiPage) {
+  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD()) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
     return FALSE;
@@ -1146,9 +1146,9 @@ function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
     return FALSE;
   }
 
-  FileSeek(hFileHandle, sizeof(INT32) + (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD, FILE_SEEK_FROM_START);
+  FileSeek(hFileHandle, sizeof(INT32) + (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD(), FILE_SEEK_FROM_START);
 
-  uiByteCount = /*sizeof( INT32 )+ */ (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD;
+  uiByteCount = /*sizeof( INT32 )+ */ (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD();
   // file exists, read in data, continue until end of page
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue)) {
     FileWrite(hFileHandle, addressof(pList.value.ubCode), sizeof(UINT8), NULL);
@@ -1264,7 +1264,7 @@ function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
   }
 
   // make sure file is more than balance size + length of 1 record - 1 byte
-  if (FileGetSize(hFileHandle) < SIZE_OF_HISTORY_FILE_RECORD) {
+  if (FileGetSize(hFileHandle) < SIZE_OF_HISTORY_FILE_RECORD()) {
     FileClose(hFileHandle);
     return 0;
   }
@@ -1276,7 +1276,7 @@ function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
   FileClose(hFileHandle);
 
   // file size  / sizeof record in bytes is id
-  return (iFileSize) / (SIZE_OF_HISTORY_FILE_RECORD);
+  return (iFileSize) / (SIZE_OF_HISTORY_FILE_RECORD());
 }
 
 function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): BOOLEAN {

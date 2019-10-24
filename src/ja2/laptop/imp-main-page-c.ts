@@ -89,7 +89,7 @@ function CreateIMPMainPageButtons(): void {
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPMainPageBackCallback);
 
           */
-  giIMPMainPageButton[0] = CreateIconAndTextButton(giIMPMainPageButtonImage[0], pImpButtonText[19], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 15, LAPTOP_SCREEN_WEB_UL_Y + (360), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageBackCallback);
+  giIMPMainPageButton[0] = CreateIconAndTextButton(giIMPMainPageButtonImage[0], pImpButtonText[19], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 15, LAPTOP_SCREEN_WEB_UL_Y + (360), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageBackCallback);
 
   SpecifyButtonTextSubOffsets(giIMPMainPageButton[0], 0, -1, FALSE);
 
@@ -100,9 +100,9 @@ function CreateIMPMainPageButtons(): void {
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPMainPageBeginCallback);
 */
   if ((iCurrentProfileMode == 0) || (iCurrentProfileMode > 2)) {
-    giIMPMainPageButton[1] = CreateIconAndTextButton(giIMPMainPageButtonImage[1], pImpButtonText[1], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 136, LAPTOP_SCREEN_WEB_UL_Y + (174), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageBeginCallback);
+    giIMPMainPageButton[1] = CreateIconAndTextButton(giIMPMainPageButtonImage[1], pImpButtonText[1], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 136, LAPTOP_SCREEN_WEB_UL_Y + (174), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageBeginCallback);
   } else {
-    giIMPMainPageButton[1] = CreateIconAndTextButton(giIMPMainPageButtonImage[1], pImpButtonText[22], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 136, LAPTOP_SCREEN_WEB_UL_Y + (174), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageBeginCallback);
+    giIMPMainPageButton[1] = CreateIconAndTextButton(giIMPMainPageButtonImage[1], pImpButtonText[22], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 136, LAPTOP_SCREEN_WEB_UL_Y + (174), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageBeginCallback);
   }
   // the personality button
   giIMPMainPageButtonImage[2] = LoadButtonImage("LAPTOP\\button_8.sti", -1, 0, -1, 1, -1);
@@ -112,7 +112,7 @@ function CreateIMPMainPageButtons(): void {
                                                                           BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPMainPagePersonalityCallback);
 */
-  giIMPMainPageButton[2] = CreateIconAndTextButton(giIMPMainPageButtonImage[2], pImpButtonText[2], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 13, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPagePersonalityCallback);
+  giIMPMainPageButton[2] = CreateIconAndTextButton(giIMPMainPageButtonImage[2], pImpButtonText[2], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 13, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPagePersonalityCallback);
 
   // the attribs button
   giIMPMainPageButtonImage[3] = LoadButtonImage("LAPTOP\\button_8.sti", -1, 0, -1, 1, -1);
@@ -122,7 +122,7 @@ function CreateIMPMainPageButtons(): void {
                                                                           BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPMainPageAttributesCallback);
 */
-  giIMPMainPageButton[3] = CreateIconAndTextButton(giIMPMainPageButtonImage[3], pImpButtonText[3], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 133, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageAttributesCallback);
+  giIMPMainPageButton[3] = CreateIconAndTextButton(giIMPMainPageButtonImage[3], pImpButtonText[3], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 133, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageAttributesCallback);
 
   // the portrait button
   giIMPMainPageButtonImage[4] = LoadButtonImage("LAPTOP\\button_8.sti", -1, 0, -1, 1, -1);
@@ -132,7 +132,7 @@ function CreateIMPMainPageButtons(): void {
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPMainPagePortraitCallback);
 */
 
-  giIMPMainPageButton[4] = CreateIconAndTextButton(giIMPMainPageButtonImage[4], pImpButtonText[4], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 253, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPagePortraitCallback);
+  giIMPMainPageButton[4] = CreateIconAndTextButton(giIMPMainPageButtonImage[4], pImpButtonText[4], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 253, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPagePortraitCallback);
 
   // the voice button
   giIMPMainPageButtonImage[5] = LoadButtonImage("LAPTOP\\button_8.sti", -1, 0, -1, 1, -1);
@@ -146,7 +146,7 @@ function CreateIMPMainPageButtons(): void {
   } else {
     swprintf(sString, pImpButtonText[25]);
   }
-  giIMPMainPageButton[5] = CreateIconAndTextButton(giIMPMainPageButtonImage[5], sString, FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 373, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageVoiceCallback);
+  giIMPMainPageButton[5] = CreateIconAndTextButton(giIMPMainPageButtonImage[5], sString, FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 373, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageVoiceCallback);
 
   SetButtonCursor(giIMPMainPageButton[0], Enum317.CURSOR_WWW);
   SetButtonCursor(giIMPMainPageButton[1], Enum317.CURSOR_WWW);

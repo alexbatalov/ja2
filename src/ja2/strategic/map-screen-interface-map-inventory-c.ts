@@ -223,7 +223,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 
   // now draw bar for condition
   // Display ststus
-  DrawItemUIBarEx(addressof(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), 0, (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR), Get16BPPColor(DESC_STATUS_BAR_SHADOW), TRUE, guiSAVEBUFFER);
+  DrawItemUIBarEx(addressof(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), 0, (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
 
   //
   // if the item is not reachable, or if the selected merc is not in the current sector
@@ -237,15 +237,15 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 
   wcscpy(sString, ShortItemNames[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem]);
 
-  if (StringPixLength(sString, MAP_IVEN_FONT) >= (MAP_INVEN_SLOT_WIDTH)) {
-    ReduceStringLength(sString, (MAP_INVEN_SLOT_WIDTH - StringPixLength(" ...", MAP_IVEN_FONT)), MAP_IVEN_FONT);
+  if (StringPixLength(sString, MAP_IVEN_FONT()) >= (MAP_INVEN_SLOT_WIDTH)) {
+    ReduceStringLength(sString, (MAP_INVEN_SLOT_WIDTH - StringPixLength(" ...", MAP_IVEN_FONT())), MAP_IVEN_FONT());
   }
 
-  FindFontCenterCoordinates((4 + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), 0, MAP_INVEN_SLOT_WIDTH, 0, sString, MAP_IVEN_FONT, addressof(sWidth), addressof(sHeight));
+  FindFontCenterCoordinates((4 + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), 0, MAP_INVEN_SLOT_WIDTH, 0, sString, MAP_IVEN_FONT(), addressof(sWidth), addressof(sHeight));
 
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
-  SetFont(MAP_IVEN_FONT);
+  SetFont(MAP_IVEN_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
@@ -1265,7 +1265,7 @@ function DisplayPagesForMapInventoryPool(): void {
   let sX: INT16;
   let sY: INT16;
 
-  SetFont(COMPFONT);
+  SetFont(COMPFONT());
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
@@ -1276,7 +1276,7 @@ function DisplayPagesForMapInventoryPool(): void {
   swprintf(sString, "%d / %d", iCurrentInventoryPoolPage + 1, iLastInventoryPoolPage + 1);
 
   // grab centered coords
-  FindFontCenterCoordinates(MAP_INVENTORY_POOL_PAGE_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_PAGE_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(MAP_INVENTORY_POOL_PAGE_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_PAGE_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT(), addressof(sX), addressof(sY));
 
   mprintf(sX, sY, sString);
 
@@ -1323,7 +1323,7 @@ function DrawNumberOfIventoryPoolItems(): void {
   swprintf(sString, "%d", iNumberOfItems);
 
   // set font stuff
-  SetFont(COMPFONT);
+  SetFont(COMPFONT());
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
@@ -1331,7 +1331,7 @@ function DrawNumberOfIventoryPoolItems(): void {
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
   // grab centered coords
-  FindFontCenterCoordinates(MAP_INVENTORY_POOL_NUMBER_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_NUMBER_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(MAP_INVENTORY_POOL_NUMBER_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_NUMBER_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT(), addressof(sX), addressof(sY));
 
   mprintf(sX, sY, sString);
 
@@ -1366,7 +1366,7 @@ function DisplayCurrentSector(): void {
   swprintf(sString, "%s%s%s", pMapVertIndex[sSelMapY], pMapHortIndex[sSelMapX], pMapDepthIndex[iCurrentMapSectorZ]);
 
   // set font stuff
-  SetFont(COMPFONT);
+  SetFont(COMPFONT());
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
@@ -1374,7 +1374,7 @@ function DisplayCurrentSector(): void {
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
   // grab centered coords
-  FindFontCenterCoordinates(MAP_INVENTORY_POOL_LOC_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_LOC_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(MAP_INVENTORY_POOL_LOC_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_LOC_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT(), addressof(sX), addressof(sY));
 
   mprintf(sX, sY, sString);
 
@@ -1403,7 +1403,7 @@ function DrawTextOnMapInventoryBackground(): void {
   //	CHAR16 sString[ 64 ];
   let usStringHeight: UINT16;
 
-  SetFont(MAP_IVEN_FONT);
+  SetFont(MAP_IVEN_FONT());
   SetFontBackground(FONT_BLACK);
   SetFontForeground(FONT_BEIGE);
 
@@ -1411,12 +1411,12 @@ function DrawTextOnMapInventoryBackground(): void {
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
   // Calculate the height of the string, as it needs to be vertically centered.
-  usStringHeight = DisplayWrappedString(268, 342, 53, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, FALSE, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
-  DisplayWrappedString(268, (342 - (usStringHeight / 2)), 53, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
+  usStringHeight = DisplayWrappedString(268, 342, 53, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, FALSE, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
+  DisplayWrappedString(268, (342 - (usStringHeight / 2)), 53, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   // Calculate the height of the string, as it needs to be vertically centered.
-  usStringHeight = DisplayWrappedString(369, 342, 65, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, FALSE, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
-  DisplayWrappedString(369, (342 - (usStringHeight / 2)), 65, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
+  usStringHeight = DisplayWrappedString(369, 342, 65, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, FALSE, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
+  DisplayWrappedString(369, (342 - (usStringHeight / 2)), 65, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   DrawTextOnSectorInventory();
 
@@ -1463,9 +1463,9 @@ function DrawTextOnSectorInventory(): void {
 
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
-  FindFontCenterCoordinates(MAP_INVENTORY_POOL_SLOT_START_X, MAP_INVENTORY_POOL_SLOT_START_Y - 20, 630 - MAP_INVENTORY_POOL_SLOT_START_X, GetFontHeight(FONT14ARIAL), sString, FONT14ARIAL, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(MAP_INVENTORY_POOL_SLOT_START_X, MAP_INVENTORY_POOL_SLOT_START_Y - 20, 630 - MAP_INVENTORY_POOL_SLOT_START_X, GetFontHeight(FONT14ARIAL()), sString, FONT14ARIAL(), addressof(sX), addressof(sY));
 
-  SetFont(FONT14ARIAL);
+  SetFont(FONT14ARIAL());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 

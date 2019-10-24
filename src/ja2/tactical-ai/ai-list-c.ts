@@ -167,7 +167,7 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
 
   // if we are dealing with the civ team and this person
   // hasn't heard any gunfire, handle only 1 time in 10
-  if (PTR_CIVILIAN) {
+  if (PTR_CIVILIAN()) {
     if (pSoldier.value.ubBodyType == Enum194.CROW || pSoldier.value.ubBodyType == Enum194.COW) {
       // don't handle cows and crows in TB!
       return FALSE;

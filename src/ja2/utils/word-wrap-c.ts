@@ -612,7 +612,7 @@ function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16
               memset(zWordString, 0, sizeof(zWordString));
 
               // turn bold ON
-              uiLocalFont = FONT10ARIALBOLD;
+              uiLocalFont = FONT10ARIALBOLD();
               SetFontShadow(NO_SHADOW);
               fBoldOn = TRUE;
 
@@ -1061,7 +1061,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
               memset(zWordString, 0, sizeof(zWordString));
 
               // turn bold ON
-              uiLocalFont = FONT10ARIALBOLD;
+              uiLocalFont = FONT10ARIALBOLD();
               SetFontShadow(NO_SHADOW);
               fBoldOn = TRUE;
 
@@ -1349,7 +1349,7 @@ function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16,
               memset(zWordString, 0, sizeof(zWordString));
 
               // turn bold ON
-              uiLocalFont = FONT10ARIALBOLD;
+              uiLocalFont = FONT10ARIALBOLD();
               SetFontShadow(NO_SHADOW);
               fBoldOn = TRUE;
 

@@ -2434,7 +2434,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       cnt++;
     }
 
-    sHeight += GetFontHeight(SMALLFONT1) - 2;
+    sHeight += GetFontHeight(SMALLFONT1()) - 2;
 
     pTempItemPool = pTempItemPool.value.pNext;
   }
@@ -2471,7 +2471,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       }
 
       // Get Width
-      sLineWidth = StringPixLength(pStr, SMALLFONT1);
+      sLineWidth = StringPixLength(pStr, SMALLFONT1());
 
       if (sLineWidth > sLargeLineWidth) {
         sLargeLineWidth = sLineWidth;
@@ -2497,7 +2497,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
   // Detertime vertiacal center
   sFontY -= (sHeight / 2);
 
-  SetFont(SMALLFONT1);
+  SetFont(SMALLFONT1());
   SetFontBackground(FONT_MCOLOR_BLACK);
   SetFontForeground(FONT_MCOLOR_DKGRAY);
 
@@ -2530,7 +2530,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
     swprintf(pStr, TacticalStr[Enum335.ITEMPOOL_POPUP_PREV_STR]);
     gprintfdirty(sFontX, sY, pStr);
     mprintf(sFontX, sY, pStr);
-    sY += GetFontHeight(SMALLFONT1) - 2;
+    sY += GetFontHeight(SMALLFONT1()) - 2;
     cnt++;
   }
 
@@ -2557,7 +2557,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       gprintfdirty(sFontX, sY, pStr);
       mprintf(sFontX, sY, pStr);
 
-      sY += GetFontHeight(SMALLFONT1) - 2;
+      sY += GetFontHeight(SMALLFONT1()) - 2;
       cnt++;
     }
     pItemPool = pItemPool.value.pNext;
@@ -2595,7 +2595,7 @@ function GetListMouseHotSpot(sLargestLineWidth: INT16, bNumItemsListed: INT8, sF
   let gbCurrentItemSel: INT8 = -1;
   let bListedItems: INT8;
 
-  sLineHeight = GetFontHeight(SMALLFONT1) - 2;
+  sLineHeight = GetFontHeight(SMALLFONT1()) - 2;
 
   sTestX1 = sFontX;
   sTestX2 = sFontX + sLargestLineWidth;

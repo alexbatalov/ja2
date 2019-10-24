@@ -1080,7 +1080,7 @@ function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
   // return the height of an object from 1-4
   let ubLoopX: UINT8;
   let ubLoopY: UINT8;
-  PROFILE *pShape;
+  PROFILE() *pShape;
   let ubShapeValue: UINT8;
   let bLoopZ: INT8;
   let bGreatestHeight: INT8 = -1;
@@ -1184,7 +1184,7 @@ function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
   // return the bottom level of an object, from 1-4
   let ubLoopX: UINT8;
   let ubLoopY: UINT8;
-  PROFILE *pShape;
+  PROFILE() *pShape;
   let ubShapeValue: UINT8;
   let bLoopZ: INT8;
   let bLowestHeight: INT8 = PROFILE_Z_SIZE;
@@ -1218,7 +1218,7 @@ function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UIN
   let ubLoopX: UINT8;
   let ubLoopY: UINT8;
   let ubShapeValue: UINT8;
-  PROFILE *pShape;
+  PROFILE() *pShape;
 
   CHECKF(pStructure);
   CHECKF(pubLevel0);
@@ -1374,7 +1374,7 @@ function DebugStructurePage1(): void {
     "Outside right",
   ];
 
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   gprintf(0, 0, "DEBUG STRUCTURES PAGE 1 OF 1");
   if (GetMouseMapPos(addressof(sGridNo)) == FALSE) {
     return;

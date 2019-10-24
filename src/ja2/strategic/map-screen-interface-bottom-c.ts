@@ -382,14 +382,14 @@ function DrawNameOfLoadedSector(): void {
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
-  SetFont(COMPFONT);
+  SetFont(COMPFONT());
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
   GetSectorIDString(sSelMapX, sSelMapY, (iCurrentMapSectorZ), sString, TRUE);
-  ReduceStringLength(sString, 80, COMPFONT);
+  ReduceStringLength(sString, 80, COMPFONT());
 
-  VarFindFontCenterCoordinates(548, 426, 80, 16, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
+  VarFindFontCenterCoordinates(548, 426, 80, 16, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
   mprintf(sFontX, sFontY, "%s", sString);
 }
 
@@ -645,7 +645,7 @@ function DisplayCompressMode(): void {
 
   RestoreExternBackgroundRect(489, 456, 522 - 489, 467 - 454);
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
-  SetFont(COMPFONT);
+  SetFont(COMPFONT());
 
   if (GetJA2Clock() - guiCompressionStringBaseTime >= PAUSE_GAME_TIMER) {
     if (usColor == FONT_LTGREEN) {
@@ -663,7 +663,7 @@ function DisplayCompressMode(): void {
 
   SetFontForeground(usColor);
   SetFontBackground(FONT_BLACK);
-  FindFontCenterCoordinates(489, 456, 522 - 489, 467 - 454, sString, COMPFONT, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(489, 456, 522 - 489, 467 - 454, sString, COMPFONT(), addressof(sX), addressof(sY));
   mprintf(sX, sY, sString);
 
   return;
@@ -1001,14 +1001,14 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   // ste the font buffer
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
-  SetFont(COMPFONT);
+  SetFont(COMPFONT());
   SetFontForeground(MAP_BOTTOM_FONT_COLOR);
   SetFontBackground(FONT_BLACK);
 
   swprintf(sString, "%s", pMapScreenBottomText[0]);
 
   // center it
-  VarFindFontCenterCoordinates(359, 387 - 14, 437 - 359, 10, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
+  VarFindFontCenterCoordinates(359, 387 - 14, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1016,7 +1016,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   swprintf(sString, "%s", zMarksMapScreenText[2]);
 
   // center it
-  VarFindFontCenterCoordinates(359, 433 - 14, 437 - 359, 10, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
+  VarFindFontCenterCoordinates(359, 433 - 14, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1036,7 +1036,7 @@ function DisplayCurrentBalanceForMapBottom(): void {
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
   // set up the font
-  SetFont(COMPFONT);
+  SetFont(COMPFONT());
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
@@ -1048,7 +1048,7 @@ function DisplayCurrentBalanceForMapBottom(): void {
   InsertDollarSignInToString(sString);
 
   // center it
-  VarFindFontCenterCoordinates(359, 387 + 2, 437 - 359, 10, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
+  VarFindFontCenterCoordinates(359, 387 + 2, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1120,7 +1120,7 @@ function DisplayProjectedDailyMineIncome(): void {
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
   // set up the font
-  SetFont(COMPFONT);
+  SetFont(COMPFONT());
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
@@ -1131,7 +1131,7 @@ function DisplayProjectedDailyMineIncome(): void {
   InsertDollarSignInToString(sString);
 
   // center it
-  VarFindFontCenterCoordinates(359, 433 + 2, 437 - 359, 10, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
+  VarFindFontCenterCoordinates(359, 433 + 2, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);

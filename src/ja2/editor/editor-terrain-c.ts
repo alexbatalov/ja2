@@ -64,7 +64,7 @@ function RenderTerrainTileButtons(): void {
     usY = 369;
     usY2 = 391;
 
-    SetFont(SMALLCOMPFONT);
+    SetFont(SMALLCOMPFONT());
     SetFontForeground(FONT_YELLOW);
 
     for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {

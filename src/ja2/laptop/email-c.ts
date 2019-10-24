@@ -451,7 +451,7 @@ function DisplayEmailHeaders(): void {
   // draw the text at the top of the screen
 
   // font stuff
-  SetFont(EMAIL_WARNING_FONT);
+  SetFont(EMAIL_WARNING_FONT());
   SetFontShadow(NO_SHADOW);
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
@@ -1130,20 +1130,20 @@ function DrawSubject(iCounter: INT32, pSubject: STR16, fRead: BOOLEAN): void {
 
   if (fRead) {
     // if the subject will be too long, cap it, and add the '...'
-    if (StringPixLength(pTempSubject, MESSAGE_FONT) >= SUBJECT_WIDTH - 10) {
-      ReduceStringLength(pTempSubject, SUBJECT_WIDTH - 10, MESSAGE_FONT);
+    if (StringPixLength(pTempSubject, MESSAGE_FONT()) >= SUBJECT_WIDTH - 10) {
+      ReduceStringLength(pTempSubject, SUBJECT_WIDTH - 10, MESSAGE_FONT());
     }
 
     // display string subject
-    IanDisplayWrappedString(SUBJECT_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_WIDTH, MESSAGE_GAP, MESSAGE_FONT, MESSAGE_COLOR, pTempSubject, 0, FALSE, LEFT_JUSTIFIED);
+    IanDisplayWrappedString(SUBJECT_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pTempSubject, 0, FALSE, LEFT_JUSTIFIED);
   } else {
     // if the subject will be too long, cap it, and add the '...'
-    if (StringPixLength(pTempSubject, FONT10ARIALBOLD) >= SUBJECT_WIDTH - 10) {
-      ReduceStringLength(pTempSubject, SUBJECT_WIDTH - 10, FONT10ARIALBOLD);
+    if (StringPixLength(pTempSubject, FONT10ARIALBOLD()) >= SUBJECT_WIDTH - 10) {
+      ReduceStringLength(pTempSubject, SUBJECT_WIDTH - 10, FONT10ARIALBOLD());
     }
 
     // display string subject
-    IanDisplayWrappedString(SUBJECT_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_WIDTH, MESSAGE_GAP, FONT10ARIALBOLD, MESSAGE_COLOR, pTempSubject, 0, FALSE, LEFT_JUSTIFIED);
+    IanDisplayWrappedString(SUBJECT_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), SUBJECT_WIDTH, MESSAGE_GAP, FONT10ARIALBOLD(), MESSAGE_COLOR, pTempSubject, 0, FALSE, LEFT_JUSTIFIED);
   }
   SetFontShadow(DEFAULT_SHADOW);
   // reset font dest buffer
@@ -1161,14 +1161,14 @@ function DrawSender(iCounter: INT32, ubSender: UINT8, fRead: BOOLEAN): void {
   SetFontBackground(FONT_BLACK);
 
   if (fRead) {
-    SetFont(MESSAGE_FONT);
+    SetFont(MESSAGE_FONT());
   } else {
-    SetFont(FONT10ARIALBOLD);
+    SetFont(FONT10ARIALBOLD());
   }
 
   mprintf(SENDER_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), pSenderNameList[ubSender]);
 
-  SetFont(MESSAGE_FONT);
+  SetFont(MESSAGE_FONT());
   SetFontShadow(DEFAULT_SHADOW);
   return;
 }
@@ -1181,15 +1181,15 @@ function DrawDate(iCounter: INT32, iDate: INT32, fRead: BOOLEAN): void {
   SetFontBackground(FONT_BLACK);
 
   if (fRead) {
-    SetFont(MESSAGE_FONT);
+    SetFont(MESSAGE_FONT());
   } else {
-    SetFont(FONT10ARIALBOLD);
+    SetFont(FONT10ARIALBOLD());
   }
   // draw date of message being displayed in mail viewer
   swprintf(sString, "%s %d", pDayStrings[0], iDate / (24 * 60));
   mprintf(DATE_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), sString);
 
-  SetFont(MESSAGE_FONT);
+  SetFont(MESSAGE_FONT());
   SetFontShadow(DEFAULT_SHADOW);
   return;
 }
@@ -1215,7 +1215,7 @@ function DisplayEmailList(): void {
   // now we have current page, display it
   pEmail = GetEmailMessage(pPage.value.iIds[iCounter]);
   SetFontShadow(NO_SHADOW);
-  SetFont(EMAIL_TEXT_FONT);
+  SetFont(EMAIL_TEXT_FONT());
 
   // draw each line of the list for this page
   while (pEmail) {
@@ -1441,7 +1441,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   // DisplayWrappedString(VIEWER_X+VIEWER_HEAD_X+4, VIEWER_Y+VIEWER_HEAD_Y+4, VIEWER_HEAD_WIDTH, MESSAGE_GAP, MESSAGE_FONT, MESSAGE_COLOR, pString, 0,FALSE,0);
 
   // increment height for size of one line
-  iHeight += GetFontHeight(MESSAGE_FONT);
+  iHeight += GetFontHeight(MESSAGE_FONT());
 
   // is there any special event meant for this mail?..if so, handle it
   HandleAnySpecialEmailMessageEvents(iOffSet);
@@ -1458,7 +1458,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
 
   // place the graphic on the frame buffer
   BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, VIEWER_MESSAGE_BODY_START_Y + iViewerPositionY, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, VIEWER_MESSAGE_BODY_START_Y + GetFontHeight(MESSAGE_FONT) + iViewerPositionY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, VIEWER_MESSAGE_BODY_START_Y + GetFontHeight(MESSAGE_FONT()) + iViewerPositionY, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // set shadow
   SetFontShadow(NO_SHADOW);
@@ -1481,12 +1481,12 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
 
   iCounter = 0;
   // now blit the text background based on height
-  for (iCounter = 2; iCounter < ((iTotalHeight) / (GetFontHeight(MESSAGE_FONT))); iCounter++) {
+  for (iCounter = 2; iCounter < ((iTotalHeight) / (GetFontHeight(MESSAGE_FONT()))); iCounter++) {
     // get a handle to the bitmap of EMAIL VIEWER Background
     GetVideoObject(addressof(hHandle), guiEmailMessage);
 
     // place the graphic on the frame buffer
-    BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT)) * (iCounter)), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   // now the bottom piece to the message viewer
@@ -1494,15 +1494,15 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
 
   if (giNumberOfPagesToCurrentEmail <= 2) {
     // place the graphic on the frame buffer
-    BltVideoObject(FRAME_BUFFER, hHandle, 2, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT)) * (iCounter)), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 2, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCY, NULL);
   } else {
     // place the graphic on the frame buffer
-    BltVideoObject(FRAME_BUFFER, hHandle, 3, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT)) * (iCounter)), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 3, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   // reset iCounter and iHeight
   iCounter = 1;
-  iHeight = GetFontHeight(MESSAGE_FONT);
+  iHeight = GetFontHeight(MESSAGE_FONT());
 
   // draw body of text. Any particular email can encompass more than one "record" in the
   // email file. Draw each record (length is number of records)
@@ -1522,7 +1522,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
       wcscpy(pString, pTempRecord.value.pRecord);
 
       // get the height of the string, ONLY!...must redisplay ON TOP OF background graphic
-      iHeight += IanDisplayWrappedString(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT, MESSAGE_COLOR, pString, 0, FALSE, IAN_WRAP_NO_SHADOW);
+      iHeight += IanDisplayWrappedString(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, FALSE, IAN_WRAP_NO_SHADOW);
 
       // increment email record ptr
       pTempRecord = pTempRecord.value.Next;
@@ -1774,7 +1774,7 @@ function DisplayNewMailBox(): BOOLEAN {
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X + 5, EMAIL_WARNING_Y + 2, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // font stuff
-  SetFont(EMAIL_HEADER_FONT);
+  SetFont(EMAIL_HEADER_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(DEFAULT_SHADOW);
@@ -1784,7 +1784,7 @@ function DisplayNewMailBox(): BOOLEAN {
 
   // font stuff
   SetFontShadow(NO_SHADOW);
-  SetFont(EMAIL_WARNING_FONT);
+  SetFont(EMAIL_WARNING_FONT());
   SetFontForeground(FONT_BLACK);
 
   // printf warning string
@@ -1858,7 +1858,7 @@ function DetermineNextPrevPageDisplay(): void {
     // display Previous graphic
 
     // font stuff
-    SetFont(TRAVERSE_EMAIL_FONT);
+    SetFont(TRAVERSE_EMAIL_FONT());
     SetFontForeground(FONT_RED);
     SetFontBackground(FONT_BLACK);
 
@@ -1871,7 +1871,7 @@ function DetermineNextPrevPageDisplay(): void {
     // display Next graphic
 
     // font stuff
-    SetFont(TRAVERSE_EMAIL_FONT);
+    SetFont(TRAVERSE_EMAIL_FONT());
     SetFontForeground(FONT_RED);
     SetFontBackground(FONT_BLACK);
 
@@ -2123,7 +2123,7 @@ function DisplayDeleteNotice(pMail: EmailPtr): BOOLEAN {
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X, EMAIL_WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // font stuff
-  SetFont(EMAIL_HEADER_FONT);
+  SetFont(EMAIL_HEADER_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(DEFAULT_SHADOW);
@@ -2137,7 +2137,7 @@ function DisplayDeleteNotice(pMail: EmailPtr): BOOLEAN {
 
   // shadow, font, and foreground
   SetFontShadow(NO_SHADOW);
-  SetFont(EMAIL_WARNING_FONT);
+  SetFont(EMAIL_WARNING_FONT());
   SetFontForeground(FONT_BLACK);
 
   // draw text based on mail being read or not
@@ -2326,7 +2326,7 @@ function DisplayTextOnTitleBar(): void {
   // draw email screen title text
 
   // font stuff
-  SetFont(EMAIL_TITLE_FONT);
+  SetFont(EMAIL_TITLE_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
@@ -2364,19 +2364,19 @@ function CreateMailScreenButtons(): void {
   giSortButtonImage[1] = LoadButtonImage("LAPTOP\\mailbuttons.sti", -1, 1, -1, 5, -1);
   giSortButton[1] = QuickCreateButton(giSortButtonImage[1], FROM_BOX_X, FROM_BOX_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, FromCallback);
   SetButtonCursor(giSortButton[1], Enum317.CURSOR_LAPTOP_SCREEN);
-  SpecifyFullButtonTextAttributes(giSortButton[1], pEmailHeaders[Enum73.FROM_HEADER], EMAIL_WARNING_FONT, FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
+  SpecifyFullButtonTextAttributes(giSortButton[1], pEmailHeaders[Enum73.FROM_HEADER], EMAIL_WARNING_FONT(), FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
 
   // sender sort
   giSortButtonImage[2] = LoadButtonImage("LAPTOP\\mailbuttons.sti", -1, 2, -1, 6, -1);
   giSortButton[2] = QuickCreateButton(giSortButtonImage[2], SUBJECT_BOX_X, FROM_BOX_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, SubjectCallback);
   SetButtonCursor(giSortButton[2], Enum317.CURSOR_LAPTOP_SCREEN);
-  SpecifyFullButtonTextAttributes(giSortButton[2], pEmailHeaders[Enum73.SUBJECT_HEADER], EMAIL_WARNING_FONT, FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
+  SpecifyFullButtonTextAttributes(giSortButton[2], pEmailHeaders[Enum73.SUBJECT_HEADER], EMAIL_WARNING_FONT(), FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
 
   // date sort
   giSortButtonImage[3] = LoadButtonImage("LAPTOP\\mailbuttons.sti", -1, 3, -1, 7, -1);
   giSortButton[3] = QuickCreateButton(giSortButtonImage[3], DATE_BOX_X, FROM_BOX_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DateCallback);
   SetButtonCursor(giSortButton[3], Enum317.CURSOR_LAPTOP_SCREEN);
-  SpecifyFullButtonTextAttributes(giSortButton[3], pEmailHeaders[Enum73.RECD_HEADER], EMAIL_WARNING_FONT, FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
+  SpecifyFullButtonTextAttributes(giSortButton[3], pEmailHeaders[Enum73.RECD_HEADER], EMAIL_WARNING_FONT(), FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
 
   return;
 }
@@ -2389,7 +2389,7 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
   let sString: wchar_t[] /* [100] */;
 
   // font stuff
-  SetFont(MESSAGE_FONT);
+  SetFont(MESSAGE_FONT());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -2397,14 +2397,14 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
   // all headers, but not info are right justified
 
   // print from
-  FindFontRightCoordinates(MESSAGE_HEADER_X - 20, (MESSAGE_FROM_Y + iViewerY), MESSAGE_HEADER_WIDTH, (MESSAGE_FROM_Y + GetFontHeight(MESSAGE_FONT)), pEmailHeaders[0], MESSAGE_FONT, addressof(usX), addressof(usY));
+  FindFontRightCoordinates(MESSAGE_HEADER_X - 20, (MESSAGE_FROM_Y + iViewerY), MESSAGE_HEADER_WIDTH, (MESSAGE_FROM_Y + GetFontHeight(MESSAGE_FONT())), pEmailHeaders[0], MESSAGE_FONT(), addressof(usX), addressof(usY));
   mprintf(usX, MESSAGE_FROM_Y + iViewerY, pEmailHeaders[0]);
 
   // the actual from info
   mprintf(MESSAGE_HEADER_X + MESSAGE_HEADER_WIDTH - 13, MESSAGE_FROM_Y + iViewerY, pSenderNameList[pMail.value.ubSender]);
 
   // print date
-  FindFontRightCoordinates(MESSAGE_HEADER_X + 168, (MESSAGE_DATE_Y + iViewerY), MESSAGE_HEADER_WIDTH, (MESSAGE_DATE_Y + GetFontHeight(MESSAGE_FONT)), pEmailHeaders[2], MESSAGE_FONT, addressof(usX), addressof(usY));
+  FindFontRightCoordinates(MESSAGE_HEADER_X + 168, (MESSAGE_DATE_Y + iViewerY), MESSAGE_HEADER_WIDTH, (MESSAGE_DATE_Y + GetFontHeight(MESSAGE_FONT())), pEmailHeaders[2], MESSAGE_FONT(), addressof(usX), addressof(usY));
   mprintf(usX, MESSAGE_DATE_Y + iViewerY, pEmailHeaders[2]);
 
   // the actual date info
@@ -2412,12 +2412,12 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
   mprintf(MESSAGE_HEADER_X + 235, MESSAGE_DATE_Y + iViewerY, sString);
 
   // print subject
-  FindFontRightCoordinates(MESSAGE_HEADER_X - 20, MESSAGE_SUBJECT_Y, MESSAGE_HEADER_WIDTH, (MESSAGE_SUBJECT_Y + GetFontHeight(MESSAGE_FONT)), pEmailHeaders[1], MESSAGE_FONT, addressof(usX), addressof(usY));
+  FindFontRightCoordinates(MESSAGE_HEADER_X - 20, MESSAGE_SUBJECT_Y, MESSAGE_HEADER_WIDTH, (MESSAGE_SUBJECT_Y + GetFontHeight(MESSAGE_FONT())), pEmailHeaders[1], MESSAGE_FONT(), addressof(usX), addressof(usY));
   mprintf(usX, MESSAGE_SUBJECT_Y + iViewerY, pEmailHeaders[1]);
 
   // the actual subject info
   // mprintf( , MESSAGE_SUBJECT_Y, pMail->pSubject);
-  IanDisplayWrappedString(SUBJECT_LINE_X + 2, (SUBJECT_LINE_Y + 2 + iViewerY), SUBJECT_LINE_WIDTH, MESSAGE_GAP, MESSAGE_FONT, MESSAGE_COLOR, pMail.value.pSubject, 0, FALSE, 0);
+  IanDisplayWrappedString(SUBJECT_LINE_X + 2, (SUBJECT_LINE_Y + 2 + iViewerY), SUBJECT_LINE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pMail.value.pSubject, 0, FALSE, 0);
 
   // reset shadow
   SetFontShadow(DEFAULT_SHADOW);
@@ -2428,7 +2428,7 @@ function DrawEmailMessageDisplayTitleText(iViewerY: INT32): void {
   // this procedure will display the title of the email message display box
 
   // font stuff
-  SetFont(EMAIL_HEADER_FONT);
+  SetFont(EMAIL_HEADER_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
@@ -2751,7 +2751,7 @@ function HandleIMPCharProfileResultsMessage(): void {
   pTempRecord = pMessageRecordList;
 
   // increment height for size of one line
-  iHeight += GetFontHeight(MESSAGE_FONT);
+  iHeight += GetFontHeight(MESSAGE_FONT());
 
   // load intro
   iEndOfSection = IMP_RESULTS_INTRO_LENGTH;
@@ -3818,7 +3818,7 @@ function DisplayWhichPageOfEmailProgramIsDisplayed(): void {
   let sString: CHAR16[] /* [10] */;
 
   // font stuff
-  SetFont(MESSAGE_FONT);
+  SetFont(MESSAGE_FONT());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -3888,7 +3888,7 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
   // parse current page and max number of pages to email
   swprintf(sString, "%d / %d", (giMessagePage + 1), (giNumberOfPagesToCurrentEmail - 1));
 
-  SetFont(FONT12ARIAL);
+  SetFont(FONT12ARIAL());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
 
@@ -3897,7 +3897,7 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
-  FindFontCenterCoordinates(VIEWER_X + INDENT_X_OFFSET, 0, INDENT_X_WIDTH, 0, sString, FONT12ARIAL, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(VIEWER_X + INDENT_X_OFFSET, 0, INDENT_X_WIDTH, 0, sString, FONT12ARIAL(), addressof(sX), addressof(sY));
   mprintf(sX, VIEWER_Y + iViewerY + INDENT_Y_OFFSET - 2, sString);
 
   // restore shadows
@@ -3915,7 +3915,7 @@ function GetNumberOfPagesToEmail(): INT32 {
 
   // run through messages, and find out how many
   while (pTempRecord) {
-    pTempRecord = GetFirstRecordOnThisPage(pMessageRecordList, MESSAGE_FONT, MESSAGE_WIDTH, MESSAGE_GAP, iNumberOfPagesToEmail, MAX_EMAIL_MESSAGE_PAGE_SIZE);
+    pTempRecord = GetFirstRecordOnThisPage(pMessageRecordList, MESSAGE_FONT(), MESSAGE_WIDTH, MESSAGE_GAP, iNumberOfPagesToEmail, MAX_EMAIL_MESSAGE_PAGE_SIZE());
     iNumberOfPagesToEmail++;
   }
 
@@ -3996,7 +3996,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
     wcscpy(pString, pTempRecord.value.pRecord);
 
     // get the height of the string, ONLY!...must redisplay ON TOP OF background graphic
-    iHeight += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + GetFontHeight(MESSAGE_FONT)), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT, MESSAGE_COLOR, pString, 0, FALSE, 0);
+    iHeight += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + GetFontHeight(MESSAGE_FONT())), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, FALSE, 0);
 
     // next message record string
     pTempRecord = pTempRecord.value.Next;
@@ -4013,20 +4013,20 @@ function PreProcessEmail(pMail: EmailPtr): void {
   iTotalHeight = iHeight;
 
   // if the message background is less than MIN_MESSAGE_HEIGHT_IN_LINES, set to that number
-  if ((iTotalHeight / GetFontHeight(MESSAGE_FONT)) < MIN_MESSAGE_HEIGHT_IN_LINES) {
-    iTotalHeight = GetFontHeight(MESSAGE_FONT) * MIN_MESSAGE_HEIGHT_IN_LINES;
+  if ((iTotalHeight / GetFontHeight(MESSAGE_FONT())) < MIN_MESSAGE_HEIGHT_IN_LINES) {
+    iTotalHeight = GetFontHeight(MESSAGE_FONT()) * MIN_MESSAGE_HEIGHT_IN_LINES;
   }
 
-  if (iTotalHeight > MAX_EMAIL_MESSAGE_PAGE_SIZE) {
+  if (iTotalHeight > MAX_EMAIL_MESSAGE_PAGE_SIZE()) {
     // if message to big to fit on page
-    iTotalHeight = MAX_EMAIL_MESSAGE_PAGE_SIZE + 10;
+    iTotalHeight = MAX_EMAIL_MESSAGE_PAGE_SIZE() + 10;
   } else {
     iTotalHeight += 10;
   }
 
   pTempRecord = pMessageRecordList;
 
-  if (iTotalHeight < MAX_EMAIL_MESSAGE_PAGE_SIZE) {
+  if (iTotalHeight < MAX_EMAIL_MESSAGE_PAGE_SIZE()) {
     fOnLastPageFlag = TRUE;
 
     if (pTempRecord && pMail.value.usOffset != IMP_EMAIL_PROFILE_RESULTS) {
@@ -4086,7 +4086,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
 
     // more than one page
     // for( iCounter = 0; iCounter < giNumberOfPagesToCurrentEmail; iCounter++ )
-    while (pTempRecord = GetFirstRecordOnThisPage(pTempList, MESSAGE_FONT, MESSAGE_WIDTH, MESSAGE_GAP, iCounter, MAX_EMAIL_MESSAGE_PAGE_SIZE)) {
+    while (pTempRecord = GetFirstRecordOnThisPage(pTempList, MESSAGE_FONT(), MESSAGE_WIDTH, MESSAGE_GAP, iCounter, MAX_EMAIL_MESSAGE_PAGE_SIZE())) {
       iYPositionOnPage = 0;
 
       pEmailPageInfo[iCounter].pFirstRecord = pTempRecord;
@@ -4103,9 +4103,9 @@ function PreProcessEmail(pMail: EmailPtr): void {
           fOnLastPageFlag = TRUE;
         }
 
-        if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT, 0, pTempRecord.value.pRecord, 0, 0, 0)) <= MAX_EMAIL_MESSAGE_PAGE_SIZE) {
+        if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), 0, pTempRecord.value.pRecord, 0, 0, 0)) <= MAX_EMAIL_MESSAGE_PAGE_SIZE()) {
           // now print it
-          iYPositionOnPage += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + 10 + iYPositionOnPage + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT, MESSAGE_COLOR, pString, 0, FALSE, IAN_WRAP_NO_SHADOW);
+          iYPositionOnPage += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + 10 + iYPositionOnPage + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, FALSE, IAN_WRAP_NO_SHADOW);
           fGoingOffCurrentPage = FALSE;
         } else {
           // gonna get cut off...end now
@@ -4153,7 +4153,7 @@ function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pM
   pTempRecord = pMessageRecordList;
 
   // increment height for size of one line
-  iHeight += GetFontHeight(MESSAGE_FONT);
+  iHeight += GetFontHeight(MESSAGE_FONT());
 
   for (ubCnt = 0; ubCnt < ubNumberOfRecords; ubCnt++) {
     // read one record from email file

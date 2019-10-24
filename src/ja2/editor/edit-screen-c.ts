@@ -2223,7 +2223,7 @@ function WaitForHelpScreenResponse(): UINT32 {
     }
   }
 
-  if ((_LeftButtonDown) || (_RightButtonDown) || fLeaveScreen) {
+  if ((_LeftButtonDown()) || (_RightButtonDown()) || fLeaveScreen) {
     fHelpScreen = FALSE;
 
     while (DequeueEvent(addressof(DummyEvent)))
@@ -2746,7 +2746,7 @@ function HandleMouseClicksInGameScreen(): void {
 
   fPrevState = gfRenderWorld;
 
-  if (_LeftButtonDown) {
+  if (_LeftButtonDown()) {
     gfRenderWorld = TRUE;
     // Are we trying to erase something?
     if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
@@ -2893,7 +2893,7 @@ function HandleMouseClicksInGameScreen(): void {
         gfRenderWorld = fPrevState;
         break;
     }
-  } else if (_RightButtonDown) {
+  } else if (_RightButtonDown()) {
     gfRenderWorld = TRUE;
     switch (iDrawMode) {
       // Handle right clicking on a merc (for editing/moving him)
@@ -2985,7 +2985,7 @@ function HandleMouseClicksInGameScreen(): void {
         gfRenderWorld = fPrevState;
         break;
     }
-  } else if (!_LeftButtonDown && !gfFirstPlacement) {
+  } else if (!_LeftButtonDown() && !gfFirstPlacement) {
     switch (iDrawMode) {
       case Enum38.DRAW_MODE_SCHEDULECONFIRM:
         if (IsLocationSittableExcludingPeople(iMapIndex, FALSE)) {
@@ -3296,7 +3296,7 @@ function EditScreenHandle(): UINT32 {
   // If we are copying or moving a building, we process, then delete the building layout immediately
   // after releasing the mouse button.  If released in the world, then the building would have been
   // processed in above function, HandleMouseClicksInGameScreen().
-  if (!_LeftButtonDown && gpBuildingLayoutList)
+  if (!_LeftButtonDown() && gpBuildingLayoutList)
     DeleteBuildingLayout();
 
   fShowingCursor = DoIRenderASpecialMouseCursor();
@@ -3361,7 +3361,7 @@ function CreateGotoGridNoUI(): void {
   // Disable the rest of the editor
   DisableEditorTaskbar();
   // Create the background panel.
-  guiGotoGridNoUIButtonID = CreateTextButton("Enter gridno:", FONT10ARIAL, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 290, 155, 60, 50, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, MSYS_NO_CALLBACK);
+  guiGotoGridNoUIButtonID = CreateTextButton("Enter gridno:", FONT10ARIAL(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 290, 155, 60, 50, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), MSYS_NO_CALLBACK);
   SpecifyDisabledButtonStyle(guiGotoGridNoUIButtonID, Enum29.DISABLED_STYLE_NONE);
   SpecifyButtonTextOffsets(guiGotoGridNoUIButtonID, 5, 5, FALSE);
   DisableButton(guiGotoGridNoUIButtonID);

@@ -41,7 +41,7 @@ function UpdateWallsView(): void {
 
 function UpdateBuildingsInfo(): void {
   // print the headers on top of the columns
-  SetFont(SMALLCOMPFONT);
+  SetFont(SMALLCOMPFONT());
   SetFontForeground(FONT_RED);
   mprintfEditor(112, 362, "TOGGLE");
   mprintfEditor(114, 372, "VIEWS");
@@ -436,8 +436,8 @@ function InitDoorEditing(iMapIndex: INT32): void {
   iDoorButton[Enum34.DOOR_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 200, 130, 240, 100, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iDoorButton[Enum34.DOOR_BACKGROUND]);
   SpecifyDisabledButtonStyle(iDoorButton[Enum34.DOOR_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
-  iDoorButton[Enum34.DOOR_OKAY] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 330, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorOkayCallback);
-  iDoorButton[Enum34.DOOR_CANCEL] = CreateTextButton("Cancel", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 385, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorCancelCallback);
+  iDoorButton[Enum34.DOOR_OKAY] = CreateTextButton("Okay", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 330, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), DoorOkayCallback);
+  iDoorButton[Enum34.DOOR_CANCEL] = CreateTextButton("Cancel", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 385, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), DoorCancelCallback);
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddTextInputField(210, 155, 25, 16, MSYS_PRIORITY_HIGH, "0", 3, INPUTTYPE_NUMERICSTRICT);
   AddTextInputField(210, 175, 25, 16, MSYS_PRIORITY_HIGH, "0", 2, INPUTTYPE_NUMERICSTRICT);
@@ -540,7 +540,7 @@ function FindNextLockedDoor(): void {
 
 function RenderDoorEditingWindow(): void {
   InvalidateRegion(200, 130, 440, 230);
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_YELLOW);
   SetFontShadow(FONT_NEARBLACK);
   SetFontBackground(0);

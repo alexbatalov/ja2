@@ -512,7 +512,7 @@ function CreateIMPButtons(): void {
   giIMPButtonImage[0] = LoadButtonImage("LAPTOP\\button_3.sti", -1, 0, -1, 1, -1);
 
   // cancel
-  giIMPButton[0] = CreateIconAndTextButton(giIMPButtonImage[0], pImpButtonText[19], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 15, LAPTOP_SCREEN_WEB_UL_Y + (360), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPCancelCallback);
+  giIMPButton[0] = CreateIconAndTextButton(giIMPButtonImage[0], pImpButtonText[19], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 15, LAPTOP_SCREEN_WEB_UL_Y + (360), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPCancelCallback);
 
   SpecifyButtonTextSubOffsets(giIMPButton[0], 0, -1, FALSE);
 

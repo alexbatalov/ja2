@@ -41,7 +41,7 @@ function SetupTextInputForMapInfo(): void {
 }
 
 function UpdateMapInfo(): void {
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontShadow(FONT_NEARBLACK);
 
   SetFontForeground(FONT_RED);

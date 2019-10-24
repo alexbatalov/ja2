@@ -314,7 +314,7 @@ function ScrollString(): void {
       for (cnt = 0; cnt <= MAX_LINE_COUNT - 1; cnt++) {
         // Adjust position!
         if (gpDisplayList[cnt] != NULL) {
-          SetStringVideoOverlayPosition(gpDisplayList[cnt], X_START, ((Y_START - ((cnt)*GetFontHeight(SMALLFONT1))) - (WIDTH_BETWEEN_NEW_STRINGS * (iNumberOfNewStrings))));
+          SetStringVideoOverlayPosition(gpDisplayList[cnt], X_START, ((Y_START - ((cnt)*GetFontHeight(SMALLFONT1()))) - (WIDTH_BETWEEN_NEW_STRINGS * (iNumberOfNewStrings))));
 
           // start of new string, increment count of new strings, for spacing purposes
           if (gpDisplayList[cnt].value.fBeginningOfNewString == TRUE) {
@@ -482,7 +482,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
   // this function sets up the string into several single line structures
 
   let pStringSt: ScrollStringStPtr;
-  let uiFont: UINT32 = TINYFONT1;
+  let uiFont: UINT32 = TINYFONT1();
   let usPosition: UINT16 = 0;
   let usCount: UINT16 = 0;
   let usStringLength: UINT16 = 0;
@@ -603,7 +603,7 @@ function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, .
   // this function sets up the string into several single line structures
 
   let pStringSt: ScrollStringStPtr;
-  let uiFont: UINT32 = MAP_SCREEN_MESSAGE_FONT;
+  let uiFont: UINT32 = MAP_SCREEN_MESSAGE_FONT();
   let usPosition: UINT16 = 0;
   let usCount: UINT16 = 0;
   let usStringLength: UINT16 = 0;
@@ -796,14 +796,14 @@ function DisplayStringsInMapScreenMessageList(): void {
 
   SetFontDestBuffer(FRAME_BUFFER, 17, 360 + 6, 407, 360 + 101, FALSE);
 
-  SetFont(MAP_SCREEN_MESSAGE_FONT); // no longer supports variable fonts
+  SetFont(MAP_SCREEN_MESSAGE_FONT()); // no longer supports variable fonts
   SetFontBackground(FONT_BLACK);
   SetFontShadow(DEFAULT_SHADOW);
 
   ubCurrentStringIndex = gubCurrentMapMessageString;
 
   sY = 377;
-  usSpacing = GetFontHeight(MAP_SCREEN_MESSAGE_FONT);
+  usSpacing = GetFontHeight(MAP_SCREEN_MESSAGE_FONT());
 
   for (ubLinesPrinted = 0; ubLinesPrinted < MAX_MESSAGES_ON_MAP_BOTTOM; ubLinesPrinted++) {
     // reached the end of the list?

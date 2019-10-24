@@ -3875,7 +3875,7 @@ function DisplayRepairMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // cancel
   AddMonoString(addressof(hStringHandle), pRepairStrings[2]);
 
-  SetBoxFont(ghRepairBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghRepairBox, MAP_SCREEN_FONT());
   SetBoxHighLight(ghRepairBox, FONT_WHITE);
   SetBoxShade(ghRepairBox, FONT_GRAY7);
   SetBoxForeground(ghRepairBox, FONT_LTGREEN);
@@ -6302,7 +6302,7 @@ function CreateSquadBox(): void {
   AddMonoString(addressof(hStringHandle), pSquadMenuStrings[Enum275.NUMBER_OF_SQUADS]);
 
   // set font type
-  SetBoxFont(ghSquadBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghSquadBox, MAP_SCREEN_FONT());
 
   // set highlight color
   SetBoxHighLight(ghSquadBox, FONT_WHITE);
@@ -6367,7 +6367,7 @@ function CreateEPCBox(): void {
   }
 
   // set font type
-  SetBoxFont(ghEpcBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghEpcBox, MAP_SCREEN_FONT());
 
   // set highlight color
   SetBoxHighLight(ghEpcBox, FONT_WHITE);
@@ -6475,7 +6475,7 @@ function DisplayVehicleMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // cancel string (borrow the one in the squad menu)
   AddMonoString(addressof(hStringHandle), pSquadMenuStrings[Enum151.SQUAD_MENU_CANCEL]);
 
-  SetBoxFont(ghVehicleBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghVehicleBox, MAP_SCREEN_FONT());
   SetBoxHighLight(ghVehicleBox, FONT_WHITE);
   SetBoxForeground(ghVehicleBox, FONT_LTGREEN);
   SetBoxBackground(ghVehicleBox, FONT_BLACK);
@@ -6584,7 +6584,7 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
     }
   }
 
-  SetBoxFont(ghContractBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghContractBox, MAP_SCREEN_FONT());
   SetBoxHighLight(ghContractBox, FONT_WHITE);
   SetBoxForeground(ghContractBox, FONT_LTGREEN);
   SetBoxBackground(ghContractBox, FONT_BLACK);
@@ -6646,7 +6646,7 @@ function CreateAttributeBox(): void {
   }
 
   // set font type
-  SetBoxFont(ghAttributeBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghAttributeBox, MAP_SCREEN_FONT());
 
   // set highlight color
   SetBoxHighLight(ghAttributeBox, FONT_WHITE);
@@ -6673,7 +6673,7 @@ function CreateTrainingBox(): void {
   TrainPosition.iX = OrigTrainPosition.iX;
 
   if (giBoxY != 0) {
-    TrainPosition.iY = giBoxY + (Enum148.ASSIGN_MENU_TRAIN * GetFontHeight(MAP_SCREEN_FONT));
+    TrainPosition.iY = giBoxY + (Enum148.ASSIGN_MENU_TRAIN * GetFontHeight(MAP_SCREEN_FONT()));
   }
 
   // create basic box
@@ -6706,7 +6706,7 @@ function CreateTrainingBox(): void {
   }
 
   // set font type
-  SetBoxFont(ghTrainingBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghTrainingBox, MAP_SCREEN_FONT());
 
   // set highlight color
   SetBoxHighLight(ghTrainingBox, FONT_WHITE);
@@ -6781,7 +6781,7 @@ function CreateAssignmentsBox(): void {
   }
 
   // set font type
-  SetBoxFont(ghAssignmentBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghAssignmentBox, MAP_SCREEN_FONT());
 
   // set highlight color
   SetBoxHighLight(ghAssignmentBox, FONT_WHITE);
@@ -6837,7 +6837,7 @@ function CreateMercRemoveAssignBox(): void {
   }
 
   // set font type
-  SetBoxFont(ghRemoveMercAssignBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghRemoveMercAssignBox, MAP_SCREEN_FONT());
 
   // set highlight color
   SetBoxHighLight(ghRemoveMercAssignBox, FONT_WHITE);
@@ -6954,13 +6954,13 @@ function DetermineBoxPositions(): void {
 
   if ((fShowRepairMenu == TRUE) && (ghRepairBox != -1)) {
     CreateDestroyMouseRegionForRepairMenu();
-    pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR);
+    pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_REPAIR);
 
     SetBoxPosition(ghRepairBox, pNewPoint);
   }
 
   if ((fShowTrainingMenu == TRUE) && (ghTrainingBox != -1)) {
-    pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN);
+    pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN);
     SetBoxPosition(ghTrainingBox, pNewPoint);
     TrainPosition.iX = pNewPoint.iX;
     TrainPosition.iY = pNewPoint.iY;
@@ -7073,9 +7073,9 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     }
 
     if (pDimensions2.iBottom > pDimensions.iBottom) {
-      sLongest = pDimensions2.iBottom + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR);
+      sLongest = pDimensions2.iBottom + ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_REPAIR);
     } else {
-      sLongest = pDimensions.iBottom + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR);
+      sLongest = pDimensions.iBottom + ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_REPAIR);
     }
 
     if (gsAssignmentBoxesY + sLongest >= 360) {
@@ -7084,7 +7084,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     }
 
     pPoint.iX = gsAssignmentBoxesX + pDimensions2.iRight;
-    pPoint.iY = gsAssignmentBoxesY + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR);
+    pPoint.iY = gsAssignmentBoxesY + ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_REPAIR);
 
     SetBoxPosition(ghRepairBox, pPoint);
   } else if (fShowSquadMenu == TRUE) {
@@ -7119,7 +7119,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
       SetRenderFlags(RENDER_FLAG_FULL);
     }
 
-    if (gsAssignmentBoxesY + pDimensions3.iBottom + (GetFontHeight(MAP_SCREEN_FONT) * Enum148.ASSIGN_MENU_TRAIN) >= 360) {
+    if (gsAssignmentBoxesY + pDimensions3.iBottom + (GetFontHeight(MAP_SCREEN_FONT()) * Enum148.ASSIGN_MENU_TRAIN) >= 360) {
       gsAssignmentBoxesY = (359 - (pDimensions3.iBottom));
       SetRenderFlags(RENDER_FLAG_FULL);
     }
@@ -7127,13 +7127,13 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     pPoint.iX = gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight;
     pPoint.iY = gsAssignmentBoxesY;
 
-    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN);
+    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN);
     SetBoxPosition(ghAttributeBox, pPoint);
 
     pPoint.iX = gsAssignmentBoxesX + pDimensions2.iRight;
     pPoint.iY = gsAssignmentBoxesY;
 
-    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN);
+    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN);
 
     SetBoxPosition(ghTrainingBox, pPoint);
   } else if (fShowTrainingMenu == TRUE) {
@@ -7144,14 +7144,14 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
       SetRenderFlags(RENDER_FLAG_FULL);
     }
 
-    if (gsAssignmentBoxesY + pDimensions2.iBottom + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN) >= 360) {
-      gsAssignmentBoxesY = (359 - (pDimensions2.iBottom) - ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN));
+    if (gsAssignmentBoxesY + pDimensions2.iBottom + ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN) >= 360) {
+      gsAssignmentBoxesY = (359 - (pDimensions2.iBottom) - ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN));
       SetRenderFlags(RENDER_FLAG_FULL);
     }
 
     pPoint.iX = gsAssignmentBoxesX + pDimensions2.iRight;
     pPoint.iY = gsAssignmentBoxesY;
-    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN);
+    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN);
 
     SetBoxPosition(ghTrainingBox, pPoint);
   } else {

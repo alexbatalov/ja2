@@ -438,7 +438,7 @@ function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: P
     // TO STOP?
 
     // Check for delta position values
-    if (dDeltaZ <= EPSILONP && dDeltaZ >= -EPSILONP && dDeltaY <= EPSILONP && dDeltaY >= -EPSILONP && dDeltaX <= EPSILONP && dDeltaX >= -EPSILONP) {
+    if (dDeltaZ <= EPSILONP() && dDeltaZ >= -EPSILONP() && dDeltaY <= EPSILONP() && dDeltaY >= -EPSILONP() && dDeltaX <= EPSILONP() && dDeltaX >= -EPSILONP()) {
       // pObject->fAlive = FALSE;
       // return( FALSE );
     }

@@ -596,11 +596,11 @@ function EnterShopKeeperInterface(): BOOLEAN {
   guiSKI_InvPageDownButtonImage = UseLoadedButtonImage(guiSKI_InvPageUpButtonImage, -1, 2, -1, 3, -1);
 
   // Page up button for the merchant inventory
-  guiSKI_InvPageUpButton = QuickCreateButton(guiSKI_InvPageUpButtonImage, SKI_PAGE_UP_ARROWS_X, SKI_PAGE_UP_ARROWS_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnSKI_InvPageUpButtonCallback);
+  guiSKI_InvPageUpButton = QuickCreateButton(guiSKI_InvPageUpButtonImage, SKI_PAGE_UP_ARROWS_X, SKI_PAGE_UP_ARROWS_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), BtnSKI_InvPageUpButtonCallback);
   SpecifyDisabledButtonStyle(guiSKI_InvPageUpButton, Enum29.DISABLED_STYLE_HATCHED);
 
   // Page down button for the merchant inventory
-  guiSKI_InvPageDownButton = QuickCreateButton(guiSKI_InvPageDownButtonImage, SKI_PAGE_DOWN_ARROWS_X, SKI_PAGE_DOWN_ARROWS_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnSKI_InvPageDownButtonCallback);
+  guiSKI_InvPageDownButton = QuickCreateButton(guiSKI_InvPageDownButtonImage, SKI_PAGE_DOWN_ARROWS_X, SKI_PAGE_DOWN_ARROWS_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), BtnSKI_InvPageDownButtonCallback);
   SpecifyDisabledButtonStyle(guiSKI_InvPageDownButton, Enum29.DISABLED_STYLE_HATCHED);
 
   // Evaluate:
@@ -622,7 +622,7 @@ function EnterShopKeeperInterface(): BOOLEAN {
   */
 
   // Transaction button
-  guiSKI_TransactionButton = CreateIconAndTextButton(guiSKI_TransactionButtonImage, SKI_Text[Enum367.SKI_TEXT_TRANSACTION], SKI_BUTTON_FONT, SKI_BUTTON_COLOR, DEFAULT_SHADOW, SKI_BUTTON_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SKI_TRANSACTION_BUTTON_X, SKI_TRANSACTION_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnSKI_TransactionButtonCallback);
+  guiSKI_TransactionButton = CreateIconAndTextButton(guiSKI_TransactionButtonImage, SKI_Text[Enum367.SKI_TEXT_TRANSACTION], SKI_BUTTON_FONT(), SKI_BUTTON_COLOR, DEFAULT_SHADOW, SKI_BUTTON_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SKI_TRANSACTION_BUTTON_X, SKI_TRANSACTION_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnSKI_TransactionButtonCallback);
   SpecifyDisabledButtonStyle(guiSKI_TransactionButton, Enum29.DISABLED_STYLE_HATCHED);
 
   // if the dealer repairs, use the repair fast help text for the transaction button
@@ -632,7 +632,7 @@ function EnterShopKeeperInterface(): BOOLEAN {
     SetButtonFastHelpText(guiSKI_TransactionButton, SkiMessageBoxText[Enum370.SKI_TRANSACTION_BUTTON_HELP_TEXT]);
 
   // Done button
-  guiSKI_DoneButton = CreateIconAndTextButton(guiSKI_DoneButtonImage, SKI_Text[Enum367.SKI_TEXT_DONE], SKI_BUTTON_FONT, SKI_BUTTON_COLOR, DEFAULT_SHADOW, SKI_BUTTON_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SKI_DONE_BUTTON_X, SKI_DONE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 10, DEFAULT_MOVE_CALLBACK, BtnSKI_DoneButtonCallback);
+  guiSKI_DoneButton = CreateIconAndTextButton(guiSKI_DoneButtonImage, SKI_Text[Enum367.SKI_TEXT_DONE], SKI_BUTTON_FONT(), SKI_BUTTON_COLOR, DEFAULT_SHADOW, SKI_BUTTON_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SKI_DONE_BUTTON_X, SKI_DONE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 10, DEFAULT_MOVE_CALLBACK(), BtnSKI_DoneButtonCallback);
   SpecifyDisabledButtonStyle(guiSKI_DoneButton, Enum29.DISABLED_STYLE_HATCHED);
   SetButtonFastHelpText(guiSKI_DoneButton, SkiMessageBoxText[Enum370.SKI_DONE_BUTTON_HELP_TEXT]);
 
@@ -989,29 +989,29 @@ function RenderShopKeeperInterface(): BOOLEAN {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, SKI_MAIN_BACKGROUND_X, SKI_MAIN_BACKGROUND_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the Title
-  DrawTextToScreen(SKI_Text[Enum367.SKI_TEXT_MERCHADISE_IN_STOCK], SKI_MAIN_TITLE_X, SKI_MAIN_TITLE_Y, SKI_MAIN_TITLE_WIDTH, SKI_TITLE_FONT, SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(SKI_Text[Enum367.SKI_TEXT_MERCHADISE_IN_STOCK], SKI_MAIN_TITLE_X, SKI_MAIN_TITLE_Y, SKI_MAIN_TITLE_WIDTH, SKI_TITLE_FONT(), SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // if the dealer repairs
   if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
     // Display the Repair cost text
-    DisplayWrappedString(SKI_TOTAL_COST_X, SKI_TOTAL_COST_Y, SKI_TOTAL_COST_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_REPAIR_COST], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(SKI_TOTAL_COST_X, SKI_TOTAL_COST_Y, SKI_TOTAL_COST_WIDTH, 2, SKI_LABEL_FONT(), SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_REPAIR_COST], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   } else {
     // Display the Total cost text
-    DisplayWrappedString(SKI_TOTAL_COST_X, SKI_TOTAL_COST_Y, SKI_TOTAL_COST_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_TOTAL_COST], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(SKI_TOTAL_COST_X, SKI_TOTAL_COST_Y, SKI_TOTAL_COST_WIDTH, 2, SKI_LABEL_FONT(), SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_TOTAL_COST], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
 
   // Display the total value text
-  DisplayWrappedString(SKI_TOTAL_VALUE_X, SKI_TOTAL_VALUE_Y, SKI_TOTAL_VALUE_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_TOTAL_VALUE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(SKI_TOTAL_VALUE_X, SKI_TOTAL_VALUE_Y, SKI_TOTAL_VALUE_WIDTH, 2, SKI_LABEL_FONT(), SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_TOTAL_VALUE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the players current balance text
-  DisplayWrappedString(SKI_PLAYERS_CURRENT_BALANCE_X, SKI_PLAYERS_CURRENT_BALANCE_Y, SKI_PLAYERS_CURRENT_BALANCE_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SkiMessageBoxText[Enum370.SKI_PLAYERS_CURRENT_BALANCE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(SKI_PLAYERS_CURRENT_BALANCE_X, SKI_PLAYERS_CURRENT_BALANCE_Y, SKI_PLAYERS_CURRENT_BALANCE_WIDTH, 2, SKI_LABEL_FONT(), SKI_TITLE_COLOR, SkiMessageBoxText[Enum370.SKI_PLAYERS_CURRENT_BALANCE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the players current balance value
   swprintf(zMoney, "%d", LaptopSaveInfo.iCurrentBalance);
 
   InsertCommasForDollarFigure(zMoney);
   InsertDollarSignInToString(zMoney);
-  DrawTextToScreen(zMoney, SKI_PLAYERS_CURRENT_BALANCE_X, SKI_PLAYERS_CURRENT_BALANCE_OFFSET_TO_VALUE, SKI_PLAYERS_CURRENT_BALANCE_WIDTH, FONT10ARIAL, SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, TRUE, CENTER_JUSTIFIED);
+  DrawTextToScreen(zMoney, SKI_PLAYERS_CURRENT_BALANCE_X, SKI_PLAYERS_CURRENT_BALANCE_OFFSET_TO_VALUE, SKI_PLAYERS_CURRENT_BALANCE_WIDTH, FONT10ARIAL(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, TRUE, CENTER_JUSTIFIED);
 
   BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, 0, 0, SKI_TACTICAL_BACKGROUND_START_X, SKI_TACTICAL_BACKGROUND_START_HEIGHT);
 
@@ -1830,12 +1830,12 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
       RestoreExternBackgroundRect(SKI_ARMS_DEALERS_INV_START_X, SKI_ARMS_DEALERS_INV_START_Y, 370, 107);
 
       // Display the current inventory page
-      DrawTextToScreen(SKI_Text[Enum367.SKI_TEXT_PAGE], SKI_PAGE_X, (SKI_PAGE_Y + 3), SKI_PAGE_WIDTH, SKI_LABEL_FONT, SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(SKI_Text[Enum367.SKI_TEXT_PAGE], SKI_PAGE_X, (SKI_PAGE_Y + 3), SKI_PAGE_WIDTH, SKI_LABEL_FONT(), SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
       // Display the Current Page number
-      uiFontHeight = GetFontHeight(SKI_LABEL_FONT);
+      uiFontHeight = GetFontHeight(SKI_LABEL_FONT());
       swprintf(zTemp, "%d/%d", gSelectArmsDealerInfo.ubCurrentPage, gSelectArmsDealerInfo.ubNumberOfPages);
-      DrawTextToScreen(zTemp, SKI_PAGE_X, (SKI_PAGE_Y + uiFontHeight + 6), SKI_PAGE_WIDTH, SKI_LABEL_FONT, SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(zTemp, SKI_PAGE_X, (SKI_PAGE_Y + uiFontHeight + 6), SKI_PAGE_WIDTH, SKI_LABEL_FONT(), SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
     }
 
     // Display all the items for the current page
@@ -2003,7 +2003,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
       ubElement = gpTempDealersInventory[ubSlotNum].sSpecialItemElement;
 
       BuildDoneWhenTimeString(zTemp, gbSelectedArmsDealerID, usItemIndex, ubElement);
-      DrawTextToScreen(zTemp, (usPosX + SKI_INV_PRICE_OFFSET_X), (usPosY + SKI_INV_PRICE_OFFSET_Y), SKI_INV_SLOT_WIDTH, SKI_ITEM_DESC_FONT, SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(zTemp, (usPosX + SKI_INV_PRICE_OFFSET_X), (usPosY + SKI_INV_PRICE_OFFSET_Y), SKI_INV_SLOT_WIDTH, SKI_ITEM_DESC_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
       // if the item belongs to a merc
       if (gpTempDealersInventory[ubSlotNum].ubIdOfMercWhoOwnsTheItem != NO_PROFILE) {
@@ -2029,7 +2029,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
     swprintf(zTemp, "%d", uiItemCost);
     InsertCommasForDollarFigure(zTemp);
     InsertDollarSignInToString(zTemp);
-    DrawTextToScreen(zTemp, (usPosX + SKI_INV_PRICE_OFFSET_X), (usPosY + SKI_INV_PRICE_OFFSET_Y), SKI_INV_SLOT_WIDTH, SKI_ITEM_DESC_FONT, SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(zTemp, (usPosX + SKI_INV_PRICE_OFFSET_X), (usPosY + SKI_INV_PRICE_OFFSET_Y), SKI_INV_SLOT_WIDTH, SKI_ITEM_DESC_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
 
   // if the there is more then 1 or if the item is stackable and some of it has been bought and only 1 remains
@@ -2037,7 +2037,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   //	if( pItemObject->ubNumberOfObjects > 1 || Item[ usItemIndex ].ubPerPocket > 1 )
   if ((pItemObject.value.ubNumberOfObjects > 1) || ((pItemObject.value.ubNumberOfObjects == 1) && DealerItemIsSafeToStack(usItemIndex) && (ubItemArea == Enum252.ARMS_DEALER_INVENTORY) && (gpTempDealersInventory[ubSlotNum].uiFlags & ARMS_INV_ITEM_SELECTED))) {
     swprintf(zTemp, "x%d", pItemObject.value.ubNumberOfObjects);
-    DrawTextToScreen(zTemp, (usPosX + SKI_ITEM_NUMBER_TEXT_OFFSET_X), (usPosY + SKI_ITEM_NUMBER_TEXT_OFFSET_Y), SKI_ITEM_NUMBER_TEXT_WIDTH, SKIT_NUMBER_FONT, SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+    DrawTextToScreen(zTemp, (usPosX + SKI_ITEM_NUMBER_TEXT_OFFSET_X), (usPosY + SKI_ITEM_NUMBER_TEXT_OFFSET_Y), SKI_ITEM_NUMBER_TEXT_WIDTH, SKIT_NUMBER_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
   }
 
   // if we are to display the face
@@ -2056,18 +2056,18 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   if (ItemHasAttachments(pItemObject)) {
     // Display the '*' in the bottom right corner of the square
     swprintf(zTemp, "*");
-    DrawTextToScreen(zTemp, (usPosX + SKI_ATTACHMENT_SYMBOL_X_OFFSET), (usPosY + SKI_ATTACHMENT_SYMBOL_Y_OFFSET), 0, TINYFONT1, FONT_GREEN, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(zTemp, (usPosX + SKI_ATTACHMENT_SYMBOL_X_OFFSET), (usPosY + SKI_ATTACHMENT_SYMBOL_Y_OFFSET), 0, TINYFONT1(), FONT_GREEN, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 
   // Display 'JAMMED' if it's jammed
   if (pItemObject.value.bGunAmmoStatus < 0) {
     swprintf(zTemp, TacticalStr[Enum335.JAMMED_ITEM_STR]);
-    VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1, addressof(sCenX), addressof(sCenY), zTemp);
-    DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1, FONT_RED, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1(), addressof(sCenX), addressof(sCenY), zTemp);
+    DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1(), FONT_RED, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   } else if (fPrintRepaired) {
     swprintf(zTemp, SKI_Text[Enum367.SKI_TEXT_REPAIRED]);
-    VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1, addressof(sCenX), addressof(sCenY), zTemp);
-    DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1, FONT_RED, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1(), addressof(sCenX), addressof(sCenY), zTemp);
+    DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1(), FONT_RED, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 
   if (fHatchedOut) {
@@ -2522,7 +2522,7 @@ function DisplayArmsDealerOfferArea(): void {
     swprintf(zTemp, "%d", uiTotalCost);
     InsertCommasForDollarFigure(zTemp);
     InsertDollarSignInToString(zTemp);
-    DrawTextToScreen(zTemp, SKI_ARMS_DEALER_TOTAL_COST_X, (SKI_ARMS_DEALER_TOTAL_COST_Y + 5), SKI_INV_SLOT_WIDTH, SKI_LABEL_FONT, SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(zTemp, SKI_ARMS_DEALER_TOTAL_COST_X, (SKI_ARMS_DEALER_TOTAL_COST_Y + 5), SKI_INV_SLOT_WIDTH, SKI_LABEL_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
 }
 
@@ -2761,7 +2761,7 @@ function DisplayPlayersOfferArea(): void {
     swprintf(zTemp, "%d", uiTotalCost);
     InsertCommasForDollarFigure(zTemp);
     InsertDollarSignInToString(zTemp);
-    DrawTextToScreen(zTemp, SKI_PLAYERS_TOTAL_VALUE_X, (SKI_PLAYERS_TOTAL_VALUE_Y + 5), SKI_INV_SLOT_WIDTH, SKI_LABEL_FONT, SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(zTemp, SKI_PLAYERS_TOTAL_VALUE_X, (SKI_PLAYERS_TOTAL_VALUE_Y + 5), SKI_INV_SLOT_WIDTH, SKI_LABEL_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
 
   CrossOutUnwantedItems();
@@ -3865,7 +3865,7 @@ function CreateSkiAtmButtons(): void {
   usPosY = SKI_ATM_BUTTON_Y;
   ubCount = 0;
   for (ubCnt = Enum368.SKI_ATM_1; ubCnt <= Enum368.SKI_ATM_9; ubCnt++) {
-    guiSKI_AtmButton[ubCnt] = CreateIconAndTextButton(guiSKI_AtmNumButtonImage, SkiAtmText[ubCnt], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
+    guiSKI_AtmButton[ubCnt] = CreateIconAndTextButton(guiSKI_AtmNumButtonImage, SkiAtmText[ubCnt], SKI_ATM_BUTTON_FONT(), SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK(), BtnSKI_AtmButtonCallback);
 
     SpecifyDisabledButtonStyle(guiSKI_AtmButton[ubCnt], Enum29.DISABLED_STYLE_SHADED);
 
@@ -3882,19 +3882,19 @@ function CreateSkiAtmButtons(): void {
 
   // Create the zero button
   usPosX = SKI_ATM_BUTTON_X;
-  guiSKI_AtmButton[Enum368.SKI_ATM_0] = CreateIconAndTextButton(guiSKI_AtmOkButtonImage, SkiAtmText[Enum368.SKI_ATM_0], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
+  guiSKI_AtmButton[Enum368.SKI_ATM_0] = CreateIconAndTextButton(guiSKI_AtmOkButtonImage, SkiAtmText[Enum368.SKI_ATM_0], SKI_ATM_BUTTON_FONT(), SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK(), BtnSKI_AtmButtonCallback);
   MSYS_SetBtnUserData(guiSKI_AtmButton[Enum368.SKI_ATM_0], 0, Enum368.SKI_ATM_0);
 
   // Create the ok button
   usPosX = SKI_ATM_BUTTON_X + SKI_ATM_NUM_BUTTON_WIDTH + 8;
-  guiSKI_AtmButton[Enum368.SKI_ATM_OK] = CreateIconAndTextButton(guiSKI_AtmOkButtonImage, SkiAtmText[Enum368.SKI_ATM_OK], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
+  guiSKI_AtmButton[Enum368.SKI_ATM_OK] = CreateIconAndTextButton(guiSKI_AtmOkButtonImage, SkiAtmText[Enum368.SKI_ATM_OK], SKI_ATM_BUTTON_FONT(), SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK(), BtnSKI_AtmButtonCallback);
   MSYS_SetBtnUserData(guiSKI_AtmButton[Enum368.SKI_ATM_OK], 0, Enum368.SKI_ATM_OK);
 
   // Create the side menu text buttons
   usPosX = SKI_ATM_BUTTON_X + SKI_ATM_SIDE_MENU_PANEL_START_X;
   usPosY = SKI_ATM_BUTTON_Y;
   for (ubCnt = Enum368.SKI_ATM_TAKE; ubCnt <= Enum368.SKI_ATM_CLEAR; ubCnt++) {
-    guiSKI_AtmButton[ubCnt] = CreateIconAndTextButton(guiSKI_AtmSideMenuButtonImage, SkiAtmText[ubCnt], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
+    guiSKI_AtmButton[ubCnt] = CreateIconAndTextButton(guiSKI_AtmSideMenuButtonImage, SkiAtmText[ubCnt], SKI_ATM_BUTTON_FONT(), SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK(), BtnSKI_AtmButtonCallback);
 
     MSYS_SetBtnUserData(guiSKI_AtmButton[ubCnt], 0, ubCnt);
 
@@ -4110,7 +4110,7 @@ function DisplaySkiAtmTransferString(): void {
   InsertDollarSignInToString(zSkiAtmTransferString);
 
   // Display the transfer string
-  DrawTextToScreen(zSkiAtmTransferString, SKI_TRANSFER_STRING_X, SKI_TRANSFER_STRING_Y, SKI_TRANSFER_STRING_WIDTH, SKI_ATM_BUTTON_FONT, FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(zSkiAtmTransferString, SKI_TRANSFER_STRING_X, SKI_TRANSFER_STRING_Y, SKI_TRANSFER_STRING_WIDTH, SKI_ATM_BUTTON_FONT(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   //
   // Get and Display the money on the merc
@@ -4122,7 +4122,7 @@ function DisplaySkiAtmTransferString(): void {
   InsertCommasForDollarFigure(zSkiAtmTransferString);
   InsertDollarSignInToString(zSkiAtmTransferString);
 
-  DrawTextToScreen(zSkiAtmTransferString, SKI_TRANSFER_STRING_X, SKI_MERCS_MONEY_Y, SKI_TRANSFER_STRING_WIDTH, SKI_ATM_BUTTON_FONT, FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(zSkiAtmTransferString, SKI_TRANSFER_STRING_X, SKI_MERCS_MONEY_Y, SKI_TRANSFER_STRING_WIDTH, SKI_ATM_BUTTON_FONT(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 }
 
 function EnableDisableSkiAtmButtons(): void {
@@ -4256,7 +4256,7 @@ function HandleCurrentModeText(ubMode: UINT8): void {
       break;
   }
 
-  DisplayWrappedString(SKI_MODE_TEXT_X, SKI_MODE_TEXT_Y, SKI_MODE_TEXT_WIDTH, 2, SKI_ATM_BUTTON_FONT, FONT_MCOLOR_WHITE, zTemp, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(SKI_MODE_TEXT_X, SKI_MODE_TEXT_Y, SKI_MODE_TEXT_WIDTH, 2, SKI_ATM_BUTTON_FONT(), FONT_MCOLOR_WHITE, zTemp, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // invalidate the atm panel area
   InvalidateRegion(SKI_ATM_PANEL_X, SKI_ATM_PANEL_Y, SKI_ATM_PANEL_X + SKI_ATM_PANEL_WIDTH, SKI_ATM_PANEL_Y + SKI_ATM_PANEL_HEIGHT);
@@ -5177,7 +5177,7 @@ function OfferObjectToDealer(pComplexObject: Pointer<OBJECTTYPE>, ubOwnerProfile
     }
 
     // we have room, so move them all to the appropriate slots
-    for (ubSubObject = 0; ubSubObject < MAX_SUBOBJECTS_PER_OBJECT; ubSubObject++) {
+    for (ubSubObject = 0; ubSubObject < MAX_SUBOBJECTS_PER_OBJECT(); ubSubObject++) {
       // if there is something stored there
       if (gSubObject[ubSubObject].usItem != Enum225.NONE) {
         // if it's the main item itself (always in the very first subobject), and it has no other subobjects
@@ -5220,7 +5220,7 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
   Assert(pComplexObject.value.ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT);
 
   // clear subobject array
-  memset(gSubObject, 0, sizeof(OBJECTTYPE) * MAX_SUBOBJECTS_PER_OBJECT);
+  memset(gSubObject, 0, sizeof(OBJECTTYPE) * MAX_SUBOBJECTS_PER_OBJECT());
 
   // if it isn't stacked
   if (pComplexObject.value.ubNumberOfObjects == 1) {
@@ -5329,7 +5329,7 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
   }
 
   // make sure we didn't screw up and honk something!
-  Assert(ubNextFreeSlot <= MAX_SUBOBJECTS_PER_OBJECT);
+  Assert(ubNextFreeSlot <= MAX_SUBOBJECTS_PER_OBJECT());
 }
 
 function CountSubObjectsInObject(pComplexObject: Pointer<OBJECTTYPE>, pubTotalSubObjects: Pointer<UINT8>, pubRepairableSubObjects: Pointer<UINT8>, pubNonRepairableSubObjects: Pointer<UINT8>): void {
@@ -5340,7 +5340,7 @@ function CountSubObjectsInObject(pComplexObject: Pointer<OBJECTTYPE>, pubTotalSu
   pubNonRepairableSubObjects.value = 0;
 
   // check every subobject and count it as either repairable or non-
-  for (ubSubObject = 0; ubSubObject < MAX_SUBOBJECTS_PER_OBJECT; ubSubObject++) {
+  for (ubSubObject = 0; ubSubObject < MAX_SUBOBJECTS_PER_OBJECT(); ubSubObject++) {
     // if there is something stored there
     if (gSubObject[ubSubObject].usItem != Enum225.NONE) {
       (pubTotalSubObjects.value)++;
@@ -5933,10 +5933,10 @@ function DisplayTheSkiDropItemToGroundString(): void {
   let usHeight: UINT16;
 
   // get the height of the displayed text
-  usHeight = DisplayWrappedString(SKI_DROP_ITEM_TO_GROUND_START_X, SKI_DROP_ITEM_TO_GROUND_TEXT_START_Y, (640 - SKI_DROP_ITEM_TO_GROUND_START_X), 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_DROP_ITEM_TO_GROUND], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
+  usHeight = DisplayWrappedString(SKI_DROP_ITEM_TO_GROUND_START_X, SKI_DROP_ITEM_TO_GROUND_TEXT_START_Y, (640 - SKI_DROP_ITEM_TO_GROUND_START_X), 2, SKI_LABEL_FONT(), SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_DROP_ITEM_TO_GROUND], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
 
   // display the 'drop item to ground' text
-  DisplayWrappedString(SKI_DROP_ITEM_TO_GROUND_START_X, (SKI_DROP_ITEM_TO_GROUND_TEXT_START_Y - usHeight), (640 - SKI_DROP_ITEM_TO_GROUND_START_X), 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_DROP_ITEM_TO_GROUND], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | INVALIDATE_TEXT);
+  DisplayWrappedString(SKI_DROP_ITEM_TO_GROUND_START_X, (SKI_DROP_ITEM_TO_GROUND_TEXT_START_Y - usHeight), (640 - SKI_DROP_ITEM_TO_GROUND_START_X), 2, SKI_LABEL_FONT(), SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_DROP_ITEM_TO_GROUND], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | INVALIDATE_TEXT);
 }
 
 function EvaluateInvSlot(pInvSlot: Pointer<INVENTORY_IN_SLOT>): UINT32 {

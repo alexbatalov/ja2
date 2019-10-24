@@ -97,7 +97,7 @@ function ConsiderProne(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 function StanceChange(pSoldier: Pointer<SOLDIERTYPE>, ubAttackAPCost: UINT8): UINT8 {
   // consider crouching or going prone
 
-  if (PTR_STANDING) {
+  if (PTR_STANDING()) {
     if (pSoldier.value.bActionPoints - ubAttackAPCost >= AP_CROUCH) {
       if ((pSoldier.value.bActionPoints - ubAttackAPCost >= AP_CROUCH + AP_PRONE) && IsValidStance(pSoldier, ANIM_PRONE) && ConsiderProne(pSoldier)) {
         return ANIM_PRONE;
@@ -105,7 +105,7 @@ function StanceChange(pSoldier: Pointer<SOLDIERTYPE>, ubAttackAPCost: UINT8): UI
         return ANIM_CROUCH;
       }
     }
-  } else if (PTR_CROUCHED) {
+  } else if (PTR_CROUCHED()) {
     if ((pSoldier.value.bActionPoints - ubAttackAPCost >= AP_PRONE) && IsValidStance(pSoldier, ANIM_PRONE) && ConsiderProne(pSoldier)) {
       return ANIM_PRONE;
     }
@@ -1242,7 +1242,7 @@ function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, pfClimb
   let pFriend: Pointer<SOLDIERTYPE>;
 
   // civilians don't really have any "friends", so they don't bother with this
-  if (PTR_CIVILIAN) {
+  if (PTR_CIVILIAN()) {
     return sClosestFriend;
   }
 

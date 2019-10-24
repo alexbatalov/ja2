@@ -43,7 +43,7 @@ function DisplayFrameRate(): void {
   }
 
   // Create string
-  SetFont(SMALLFONT1);
+  SetFont(SMALLFONT1());
 
   // DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String( "FPS: %d ", __min( uiFPS, 1000 ) ) );
 
@@ -77,7 +77,7 @@ function DisplayFrameRate(): void {
   }
 
   if ((gTacticalStatus.uiFlags & GODMODE)) {
-    SetFont(SMALLFONT1);
+    SetFont(SMALLFONT1());
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_DKRED);
     // gprintfdirty( 0, 0, L"GOD MODE" );
@@ -85,7 +85,7 @@ function DisplayFrameRate(): void {
   }
 
   if ((gTacticalStatus.uiFlags & DEMOMODE)) {
-    SetFont(SMALLFONT1);
+    SetFont(SMALLFONT1());
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_DKGRAY);
     // gprintfdirty( 0, 0, L"DEMO MODE" );
@@ -126,14 +126,14 @@ function ErrorScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   // Create string
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   SetFontBackground(FONT_MCOLOR_BLACK);
   SetFontForeground(FONT_MCOLOR_LTGRAY);
   mprintf(50, 200, "RUNTIME ERROR");
 
   mprintf(50, 225, "PRESS <ESC> TO EXIT");
 
-  SetFont(FONT12ARIAL);
+  SetFont(FONT12ARIAL());
   SetFontForeground(FONT_YELLOW);
   SetFontShadow(60); // 60 is near black
   mprintf(50, 255, "%S", gubErrorText);
@@ -214,7 +214,7 @@ function InitScreenHandle(): UINT32 {
     // Init screen
 
     // Set Font
-    SetFont(TINYFONT1);
+    SetFont(TINYFONT1());
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_WHITE);
 
@@ -537,22 +537,22 @@ function SetDebugRenderHook(pDebugRenderOverride: RENDER_HOOK, ubPage: INT8): vo
 }
 
 function DefaultDebugPage1(): void {
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   gprintf(0, 0, "DEBUG PAGE ONE");
 }
 
 function DefaultDebugPage2(): void {
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   gprintf(0, 0, "DEBUG PAGE TWO");
 }
 
 function DefaultDebugPage3(): void {
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   gprintf(0, 0, "DEBUG PAGE THREE");
 }
 
 function DefaultDebugPage4(): void {
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   gprintf(0, 0, "DEBUG PAGE FOUR");
 }
 

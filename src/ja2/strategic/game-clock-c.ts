@@ -67,7 +67,7 @@ function InitNewGameClock(): void {
   guiDay = (guiGameClock / NUM_SEC_IN_DAY);
   guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
   guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
-  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
+  swprintf(WORLDTIMESTR(), "%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
   guiTimeCurrentSectorWasLastLoaded = 0;
   guiGameSecondsPerRealSecond = 0;
   gubClockResolution = 1;
@@ -166,7 +166,7 @@ function AdvanceClock(ubWarpCode: UINT8): void {
   guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
   guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
 
-  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", gpGameClockString[Enum366.STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
+  swprintf(WORLDTIMESTR(), "%s %d, %02d:%02d", gpGameClockString[Enum366.STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
 
   if (gfResetAllPlayerKnowsEnemiesFlags && !gTacticalStatus.fEnemyInSector) {
     ClearAnySectorsFlashingNumberOfEnemies();
@@ -206,7 +206,7 @@ function HasTimeCompressOccured(): BOOLEAN {
 }
 
 function RenderClock(sX: INT16, sY: INT16): void {
-  SetFont(CLOCK_FONT);
+  SetFont(CLOCK_FONT());
   SetFontBackground(FONT_MCOLOR_BLACK);
 
   // Are we in combat?
@@ -220,9 +220,9 @@ function RenderClock(sX: INT16, sY: INT16): void {
   RestoreExternBackgroundRect(sX, sY, CLOCK_STRING_WIDTH, CLOCK_STRING_HEIGHT);
 
   if ((gfPauseDueToPlayerGamePause == FALSE)) {
-    mprintf(sX + (CLOCK_STRING_WIDTH - StringPixLength(WORLDTIMESTR, CLOCK_FONT)) / 2, sY, WORLDTIMESTR);
+    mprintf(sX + (CLOCK_STRING_WIDTH - StringPixLength(WORLDTIMESTR(), CLOCK_FONT())) / 2, sY, WORLDTIMESTR());
   } else {
-    mprintf(sX + (CLOCK_STRING_WIDTH - StringPixLength(pPausedGameText[0], CLOCK_FONT)) / 2, sY, pPausedGameText[0]);
+    mprintf(sX + (CLOCK_STRING_WIDTH - StringPixLength(pPausedGameText[0], CLOCK_FONT())) / 2, sY, pPausedGameText[0]);
   }
 }
 
@@ -768,7 +768,7 @@ function LoadGameClock(hFile: HWFILE): BOOLEAN {
   guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
   guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
 
-  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
+  swprintf(WORLDTIMESTR(), "%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
 
   if (!gfBasement && !gfCaves)
     gfDoLighting = TRUE;

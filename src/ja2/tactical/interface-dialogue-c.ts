@@ -371,7 +371,7 @@ function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): B
   sprintf(ubString, "INTERFACE\\talkbox2.sti");
   gTalkPanel.iButtonImages = LoadButtonImage(ubString, -1, 3, -1, 4, -1);
 
-  gTalkPanel.uiCancelButton = CreateIconAndTextButton(gTalkPanel.iButtonImages, zDialogActions[Enum211.DIALOG_DONE], MILITARYFONT1, 33, DEFAULT_SHADOW, 33, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gTalkPanel.sX + TALK_PANEL_BUTTON_X), (gTalkPanel.sY + TALK_PANEL_BUTTON_Y), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, DoneTalkingButtonClickCallback);
+  gTalkPanel.uiCancelButton = CreateIconAndTextButton(gTalkPanel.iButtonImages, zDialogActions[Enum211.DIALOG_DONE], MILITARYFONT1(), 33, DEFAULT_SHADOW, 33, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gTalkPanel.sX + TALK_PANEL_BUTTON_X), (gTalkPanel.sY + TALK_PANEL_BUTTON_Y), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), DoneTalkingButtonClickCallback);
 
   SpecifyButtonHilitedTextColors(gTalkPanel.uiCancelButton, FONT_MCOLOR_WHITE, DEFAULT_SHADOW);
 
@@ -529,7 +529,7 @@ function RenderTalkingMenu(): void {
   pFace = addressof(gFacesData[gTalkPanel.iFaceIndex]);
 
   if (gTalkPanel.fDirtyLevel == DIRTYLEVEL2) {
-    SetFont(MILITARYFONT1);
+    SetFont(MILITARYFONT1());
 
     // Render box!
     BltVideoObjectFromIndex(FRAME_BUFFER, gTalkPanel.uiPanelVO, 0, gTalkPanel.sX, gTalkPanel.sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -542,7 +542,7 @@ function RenderTalkingMenu(): void {
       SetFontBackground(FONT_MCOLOR_BLACK);
       SetFontForeground(33);
     }
-    VarFindFontCenterCoordinates((gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), TALK_PANEL_NAME_WIDTH, TALK_PANEL_NAME_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", gMercProfiles[gTalkPanel.ubCharNum].zNickname);
+    VarFindFontCenterCoordinates((gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), TALK_PANEL_NAME_WIDTH, TALK_PANEL_NAME_HEIGHT, MILITARYFONT1(), addressof(sFontX), addressof(sFontY), "%s", gMercProfiles[gTalkPanel.ubCharNum].zNickname);
     mprintf(sFontX, sFontY, "%s", gMercProfiles[ubCharacterNum].zNickname);
 
     // Set font settings back
@@ -622,7 +622,7 @@ function RenderTalkingMenu(): void {
   }
 
   if (gTalkPanel.fDirtyLevel > DIRTYLEVEL0) {
-    SetFont(MILITARYFONT1);
+    SetFont(MILITARYFONT1());
 
     // Set some font settings
     SetFontForeground(FONT_BLACK);
@@ -646,7 +646,7 @@ function RenderTalkingMenu(): void {
         {
           switch (cnt) {
             case 0:
-              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", zTalkMenuStrings[cnt]);
+              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1(), addressof(sFontX), addressof(sFontY), "%s", zTalkMenuStrings[cnt]);
               mprintf(sFontX, sFontY, "%s", zTalkMenuStrings[cnt]);
               break;
             case 4:
@@ -661,11 +661,11 @@ function RenderTalkingMenu(): void {
               } else
                 wcscpy(zTempString, zTalkMenuStrings[cnt]);
 
-              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", zTempString);
+              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1(), addressof(sFontX), addressof(sFontY), "%s", zTempString);
               mprintf(sFontX, sFontY, "%s", zTempString);
               break;
             default:
-              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s (%d)", zTalkMenuStrings[cnt], ubTalkMenuApproachIDs[cnt]);
+              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1(), addressof(sFontX), addressof(sFontY), "%s (%d)", zTalkMenuStrings[cnt], ubTalkMenuApproachIDs[cnt]);
               mprintf(sFontX, sFontY, "%s (%d)", zTalkMenuStrings[cnt], CalcDesireToTalk(ubCharacterNum, gubSrcSoldierProfile, ubTalkMenuApproachIDs[cnt]));
               break;
           }
@@ -682,10 +682,10 @@ function RenderTalkingMenu(): void {
             } else
               wcscpy(zTempString, zTalkMenuStrings[cnt]);
 
-            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", zTempString);
+            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1(), addressof(sFontX), addressof(sFontY), "%s", zTempString);
             mprintf(sFontX, sFontY, "%s", zTempString);
           } else {
-            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", zTalkMenuStrings[cnt]);
+            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1(), addressof(sFontX), addressof(sFontY), "%s", zTalkMenuStrings[cnt]);
             mprintf(sFontX, sFontY, "%s", zTalkMenuStrings[cnt]);
           }
         }
@@ -2405,7 +2405,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
           // make stand up if not standing already
           if (ubTargetNPC == Enum268.SLAY && pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
             HandleNPCDoAction(Enum268.SLAY, Enum213.NPC_ACTION_GET_OUT_OF_WHEELCHAIR, ubQuoteNum);
-          } else if (!PTR_STANDING) {
+          } else if (!PTR_STANDING()) {
             pSoldier.value.bNextAction = Enum289.AI_ACTION_CHANGE_STANCE;
             pSoldier.value.usNextActionData = ANIM_STAND;
           }

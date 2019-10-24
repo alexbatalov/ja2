@@ -73,7 +73,7 @@ function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, 
   // Create 16BPP Palette
   CHECKF(GetPaletteRepIndexFromID(aPalRep, addressof(ubPaletteRep)));
 
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
 
   ubType = gpPalRep[ubPaletteRep].ubType;
   ubSize = gpPalRep[ubPaletteRep].ubPaletteSize;

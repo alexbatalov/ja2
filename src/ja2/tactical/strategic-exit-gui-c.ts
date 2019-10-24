@@ -254,9 +254,9 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
 
   gExitDialog.uiAllMoveButton = CreateCheckBoxButton((gExitDialog.sX + 20), (gExitDialog.sY + 55), "INTERFACE\\popupradiobuttons.sti", MSYS_PRIORITY_HIGHEST, AllMoveCallback);
 
-  gExitDialog.uiOKButton = CreateIconAndTextButton(gExitDialog.iButtonImages, TacticalStr[Enum335.OK_BUTTON_TEXT_STR], FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gExitDialog.sX + 65), (gExitDialog.sY + 78), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, OKCallback);
+  gExitDialog.uiOKButton = CreateIconAndTextButton(gExitDialog.iButtonImages, TacticalStr[Enum335.OK_BUTTON_TEXT_STR], FONT12ARIAL(), FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gExitDialog.sX + 65), (gExitDialog.sY + 78), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), OKCallback);
 
-  gExitDialog.uiCancelButton = CreateIconAndTextButton(gExitDialog.iButtonImages, TacticalStr[Enum335.CANCEL_BUTTON_TEXT_STR], FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gExitDialog.sX + 135), (gExitDialog.sY + 78), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, CancelCallback);
+  gExitDialog.uiCancelButton = CreateIconAndTextButton(gExitDialog.iButtonImages, TacticalStr[Enum335.CANCEL_BUTTON_TEXT_STR], FONT12ARIAL(), FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gExitDialog.sX + 135), (gExitDialog.sY + 78), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), CancelCallback);
 
   gfIgnoreScrolling = TRUE;
 
@@ -474,7 +474,7 @@ function RenderSectorExitMenu(): void {
   RenderMercPopUpBoxFromIndex(gExitDialog.iBoxId, gExitDialog.sX, gExitDialog.sY, FRAME_BUFFER);
   InvalidateRegion(gExitDialog.sX, gExitDialog.sY, gExitDialog.usWidth, gExitDialog.usHeight);
 
-  SetFont(FONT12ARIAL);
+  SetFont(FONT12ARIAL());
   SetFontBackground(FONT_MCOLOR_BLACK);
 
   if (gExitDialog.fSingleMoveDisabled) {

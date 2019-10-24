@@ -473,7 +473,7 @@ function RenderTopmostTacticalInterface(): void {
   }
 
   if (gfUIInDeadlock) {
-    SetFont(LARGEFONT1);
+    SetFont(LARGEFONT1());
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_WHITE);
     gprintfdirty(0, 300, "OPPONENT %d DEADLOCKED - 'Q' TO DEBUG, <ALT><ENTER> END OPP TURN", gUIDeadlockedSoldier);
@@ -535,7 +535,7 @@ function RenderTopmostTacticalInterface(): void {
             }
           }
 
-          SetFont(TINYFONT1);
+          SetFont(TINYFONT1());
           SetFontBackground(FONT_MCOLOR_BLACK);
           SetFontForeground(FONT_MCOLOR_WHITE);
 

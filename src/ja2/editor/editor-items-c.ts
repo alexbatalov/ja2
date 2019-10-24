@@ -276,12 +276,12 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
       // Store these item pointers for later when rendering selected items.
       eInfo.pusItemIndex[i] = KeyTable[0].usItem + LockTable[i].usKeyItem;
 
-      SetFont(SMALLCOMPFONT);
+      SetFont(SMALLCOMPFONT());
       SetFontForeground(FONT_MCOLOR_WHITE);
       SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, FALSE);
 
       swprintf(pStr, "%S", LockTable[i].ubEditorName);
-      DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+      DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
 
       // Calculate the center position of the graphic in a 60 pixel wide area.
       sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
@@ -362,7 +362,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
           // Store these item pointers for later when rendering selected items.
           eInfo.pusItemIndex[i] = usCounter;
 
-          SetFont(SMALLCOMPFONT);
+          SetFont(SMALLCOMPFONT());
           SetFontForeground(FONT_MCOLOR_WHITE);
           SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, FALSE);
 
@@ -394,7 +394,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
                 swprintf(pStr, "Action%d", (i - 4) / 2);
             }
           }
-          DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+          DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
 
           // Calculate the center position of the graphic in a 60 pixel wide area.
           sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
@@ -513,7 +513,7 @@ function RenderEditorItemsInfo(): void {
     if (usNumItems) {
       x = (i / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (i % 2) * 40;
-      SetFont(FONT10ARIAL);
+      SetFont(FONT10ARIAL());
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
       if (usNumItems == usQuantity)
@@ -1337,7 +1337,7 @@ function DisplayItemStatistics(): void {
   // If there is nothing else currently highlited by the mouse, use the selected item.
   fUseSelectedItem = eInfo.sHilitedItemIndex == -1 || eInfo.sHilitedItemIndex == eInfo.sSelItemIndex;
 
-  SetFont(SMALLCOMPFONT);
+  SetFont(SMALLCOMPFONT());
   SetFontForeground((fUseSelectedItem ? FONT_LTRED : FONT_YELLOW));
 
   // Extract all of the item information.
@@ -1347,7 +1347,7 @@ function DisplayItemStatistics(): void {
   pItem = addressof(Item[usItemIndex]);
   LoadItemInfo(usItemIndex, pItemName, NULL);
 
-  mprintf(50 - StringPixLength(pItemName, SMALLCOMPFONT) / 2, 403, pItemName);
+  mprintf(50 - StringPixLength(pItemName, SMALLCOMPFONT()) / 2, 403, pItemName);
   mprintf(2, 410, "Status Info Line 1");
   mprintf(2, 420, "Status Info Line 2");
   mprintf(2, 430, "Status Info Line 3");

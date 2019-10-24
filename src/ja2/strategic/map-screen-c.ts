@@ -512,7 +512,7 @@ function DisplayDestinationOfCurrentDestMerc(): void {
   let sY: INT16;
   let sSector: INT16;
 
-  SetFont(MAP_SCREEN_FONT);
+  SetFont(MAP_SCREEN_FONT());
 
   sSector = GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
 
@@ -520,9 +520,9 @@ function DisplayDestinationOfCurrentDestMerc(): void {
   SetBoxBackground(ghVehicleBox, FONT_BLACK);
 
   swprintf(sString, "%s%s", pMapVertIndex[sSector / MAP_WORLD_X], pMapHortIndex[sSector % MAP_WORLD_X]);
-  FindFontCenterCoordinates(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT), sString, MAP_SCREEN_FONT, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT()), sString, MAP_SCREEN_FONT(), addressof(sX), addressof(sY));
 
-  RestoreExternBackgroundRect(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT));
+  RestoreExternBackgroundRect(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT()));
   mprintf(sX, sY, sString);
 }
 
@@ -626,14 +626,14 @@ function ContractListRegionBoxGlow(usCount: UINT16): void {
   }
 
   // y start position of box
-  usY = (Y_OFFSET * usCount - 1) + (Y_START + (usCount * Y_SIZE) + sYAdd);
+  usY = (Y_OFFSET * usCount - 1) + (Y_START + (usCount * Y_SIZE()) + sYAdd);
 
   // glow contract box
   usColor = Get16BPPColor(FROMRGB(GlowColorsA[iColorNum].ubRed, GlowColorsA[iColorNum].ubGreen, GlowColorsA[iColorNum].ubBlue));
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-  RectangleDraw(TRUE, TIME_REMAINING_X, usY, TIME_REMAINING_X + TIME_REMAINING_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
-  InvalidateRegion(TIME_REMAINING_X - 1, usY, TIME_REMAINING_X + TIME_REMAINING_WIDTH + 1, usY + GetFontHeight(MAP_SCREEN_FONT) + 3);
+  RectangleDraw(TRUE, TIME_REMAINING_X, usY, TIME_REMAINING_X + TIME_REMAINING_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
+  InvalidateRegion(TIME_REMAINING_X - 1, usY, TIME_REMAINING_X + TIME_REMAINING_WIDTH + 1, usY + GetFontHeight(MAP_SCREEN_FONT()) + 3);
   UnLockVideoSurface(FRAME_BUFFER);
 
   /*
@@ -853,7 +853,7 @@ function RenderHandPosItem(): void {
     return;
   }
 
-  SetFont(BLOCKFONT2);
+  SetFont(BLOCKFONT2());
   SetFontForeground(CHAR_INFO_PANEL_BLOCK_COLOR);
   SetFontBackground(FONT_BLACK);
 
@@ -906,10 +906,10 @@ function DrawPay(sCharNumber: INT16): void {
   swprintf(sString, "%d", uiSalary);
 
   // right justify salary
-  FindFontRightCoordinates(CHAR_PAY_X, CHAR_PAY_Y, CHAR_PAY_WID, CHAR_PAY_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
+  FindFontRightCoordinates(CHAR_PAY_X, CHAR_PAY_Y, CHAR_PAY_WID, CHAR_PAY_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
 
   // draw salary
-  DrawString(sString, usX, usY, CHAR_FONT);
+  DrawString(sString, usX, usY, CHAR_FONT());
 }
 
 function DrawCharBars(): void {
@@ -972,7 +972,7 @@ function DrawCharStats(sCharNum: INT16): void {
   pSoldier = addressof(Menptr[gCharactersList[sCharNum].usSolID]);
 
   // set up font
-  SetFont(CHAR_FONT);
+  SetFont(CHAR_FONT());
   SetFontForeground(CHAR_TEXT_FONT_COLOR);
   SetFontBackground(FONT_BLACK);
 
@@ -990,8 +990,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(STR_X, STR_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, STR_Y, CHAR_FONT);
+  FindFontRightCoordinates(STR_X, STR_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, STR_Y, CHAR_FONT());
 
   // dexterity
   swprintf(sString, "%d", pSoldier.value.bDexterity);
@@ -1007,8 +1007,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(DEX_X, DEX_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, DEX_Y, CHAR_FONT);
+  FindFontRightCoordinates(DEX_X, DEX_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, DEX_Y, CHAR_FONT());
 
   // agility
   swprintf(sString, "%d", pSoldier.value.bAgility);
@@ -1024,8 +1024,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(AGL_X, AGL_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, AGL_Y, CHAR_FONT);
+  FindFontRightCoordinates(AGL_X, AGL_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, AGL_Y, CHAR_FONT());
 
   // wisdom
   swprintf(sString, "%d", pSoldier.value.bWisdom);
@@ -1041,8 +1041,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(WIS_X, WIS_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, WIS_Y, CHAR_FONT);
+  FindFontRightCoordinates(WIS_X, WIS_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, WIS_Y, CHAR_FONT());
 
   // leadership
   swprintf(sString, "%d", pSoldier.value.bLeadership);
@@ -1058,8 +1058,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(LDR_X, LDR_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, LDR_Y, CHAR_FONT);
+  FindFontRightCoordinates(LDR_X, LDR_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, LDR_Y, CHAR_FONT());
 
   // experience level
   swprintf(sString, "%d", pSoldier.value.bExpLevel);
@@ -1075,8 +1075,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(LVL_X, LVL_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, LVL_Y, CHAR_FONT);
+  FindFontRightCoordinates(LVL_X, LVL_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, LVL_Y, CHAR_FONT());
 
   // marksmanship
   swprintf(sString, "%d", pSoldier.value.bMarksmanship);
@@ -1092,8 +1092,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(MRK_X, MRK_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, MRK_Y, CHAR_FONT);
+  FindFontRightCoordinates(MRK_X, MRK_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, MRK_Y, CHAR_FONT());
 
   // explosives
   swprintf(sString, "%d", pSoldier.value.bExplosive);
@@ -1109,8 +1109,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(EXP_X, EXP_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, EXP_Y, CHAR_FONT);
+  FindFontRightCoordinates(EXP_X, EXP_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, EXP_Y, CHAR_FONT());
 
   // mechanical
   swprintf(sString, "%d", pSoldier.value.bMechanical);
@@ -1126,8 +1126,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(MEC_X, MEC_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, MEC_Y, CHAR_FONT);
+  FindFontRightCoordinates(MEC_X, MEC_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, MEC_Y, CHAR_FONT());
 
   // medical
   swprintf(sString, "%d", pSoldier.value.bMedical);
@@ -1143,8 +1143,8 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(MED_X, MED_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, MED_Y, CHAR_FONT);
+  FindFontRightCoordinates(MED_X, MED_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, MED_Y, CHAR_FONT());
 
   SetFontForeground(CHAR_TEXT_FONT_COLOR);
 
@@ -1163,7 +1163,7 @@ function DrawCharHealth(sCharNum: INT16): void {
   if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
     // find starting X coordinate by centering all 3 substrings together, then print them separately (different colors)!
     swprintf(sString, "%d/%d", pSoldier.value.bLife, pSoldier.value.bLifeMax);
-    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
 
     if (pSoldier.value.bLifeMax > 0) {
       uiHealthPercent = (pSoldier.value.bLife * 100) / pSoldier.value.bLifeMax;
@@ -1186,14 +1186,14 @@ function DrawCharHealth(sCharNum: INT16): void {
 
     // current life
     swprintf(sString, "%d", pSoldier.value.bLife);
-    DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT);
-    usX += StringPixLength(sString, CHAR_FONT);
+    DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT());
+    usX += StringPixLength(sString, CHAR_FONT());
 
     // slash
     SetFontForeground(CHAR_TEXT_FONT_COLOR);
     wcscpy(sString, "/");
-    DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT);
-    usX += StringPixLength(sString, CHAR_FONT);
+    DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT());
+    usX += StringPixLength(sString, CHAR_FONT());
 
     if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeHealthTime) && (pSoldier.value.uiChangeHealthTime != 0)) {
       if (pSoldier.value.usValueGoneUp & HEALTH_INCREASE) {
@@ -1207,13 +1207,13 @@ function DrawCharHealth(sCharNum: INT16): void {
 
     // maximum life
     swprintf(sString, "%d", pSoldier.value.bLifeMax);
-    DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT);
+    DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT());
   } else {
     // POW - health unknown
     SetFontForeground(CHAR_TEXT_FONT_COLOR);
     swprintf(sString, pPOWStrings[1]);
-    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-    DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT);
+    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+    DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT());
   }
 
   SetFontForeground(CHAR_TEXT_FONT_COLOR);
@@ -1247,7 +1247,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   usMercProfileID = pSoldier.value.ubProfile;
 
   // set font stuff
-  SetFont(CHAR_FONT);
+  SetFont(CHAR_FONT());
   SetFontForeground(CHAR_TEXT_FONT_COLOR);
   SetFontBackground(FONT_BLACK);
 
@@ -1260,8 +1260,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     wcscpy(sString, gMercProfiles[usMercProfileID].zNickname);
   }
 
-  FindFontCenterCoordinates(PIC_NAME_X, PIC_NAME_Y, PIC_NAME_WID, PIC_NAME_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, usY, CHAR_FONT);
+  FindFontCenterCoordinates(PIC_NAME_X, PIC_NAME_Y, PIC_NAME_WID, PIC_NAME_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, usY, CHAR_FONT());
 
   // Full name (Top Box)
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
@@ -1272,8 +1272,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     wcscpy(sString, gMercProfiles[usMercProfileID].zName);
   }
 
-  FindFontCenterCoordinates(CHAR_NAME_X, CHAR_NAME_Y, CHAR_NAME_WID, CHAR_NAME_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, usY, CHAR_FONT);
+  FindFontCenterCoordinates(CHAR_NAME_X, CHAR_NAME_Y, CHAR_NAME_WID, CHAR_NAME_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, usY, CHAR_FONT());
 
   // Assignment
   if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
@@ -1283,8 +1283,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     wcscpy(sString, pAssignmentStrings[pSoldier.value.bAssignment]);
   }
 
-  FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN1_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, usY, CHAR_FONT);
+  FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN1_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, usY, CHAR_FONT());
 
   // second assignment line
 
@@ -1333,8 +1333,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   }
 
   if (wcslen(sString) > 0) {
-    FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN2_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-    DrawString(sString, usX, usY, CHAR_FONT);
+    FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN2_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+    DrawString(sString, usX, usY, CHAR_FONT());
   }
 
   // draw health/condition
@@ -1416,8 +1416,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   SetFontBackground(FONT_BLACK);
 
   // center and draw
-  FindFontCenterCoordinates(CHAR_TIME_REMAINING_X, CHAR_TIME_REMAINING_Y, CHAR_TIME_REMAINING_WID, CHAR_TIME_REMAINING_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, usY, CHAR_FONT);
+  FindFontCenterCoordinates(CHAR_TIME_REMAINING_X, CHAR_TIME_REMAINING_Y, CHAR_TIME_REMAINING_WID, CHAR_TIME_REMAINING_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, usY, CHAR_FONT());
 
   // salary
   if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
@@ -1440,8 +1440,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   InsertCommasForDollarFigure(sString);
   InsertDollarSignInToString(sString);
 
-  FindFontRightCoordinates(CHAR_SALARY_X, CHAR_SALARY_Y, CHAR_SALARY_WID, CHAR_SALARY_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, usY, CHAR_FONT);
+  FindFontRightCoordinates(CHAR_SALARY_X, CHAR_SALARY_Y, CHAR_SALARY_WID, CHAR_SALARY_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, usY, CHAR_FONT());
 
   // medical deposit
   if (gMercProfiles[Menptr[gCharactersList[sCharNumber].usSolID].ubProfile].sMedicalDepositAmount > 0) {
@@ -1451,8 +1451,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     InsertCommasForDollarFigure(sString);
     InsertDollarSignInToString(sString);
 
-    FindFontRightCoordinates(CHAR_MEDICAL_X, CHAR_MEDICAL_Y, CHAR_MEDICAL_WID, CHAR_MEDICAL_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-    DrawString(sString, usX, CHAR_MEDICAL_Y, CHAR_FONT);
+    FindFontRightCoordinates(CHAR_MEDICAL_X, CHAR_MEDICAL_Y, CHAR_MEDICAL_WID, CHAR_MEDICAL_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+    DrawString(sString, usX, CHAR_MEDICAL_Y, CHAR_FONT());
   }
 
   /*
@@ -1476,8 +1476,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     swprintf(sString, pPOWStrings[1]);
   }
 
-  FindFontCenterCoordinates(CHAR_MORALE_X, CHAR_MORALE_Y, CHAR_MORALE_WID, CHAR_MORALE_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
-  DrawString(sString, usX, CHAR_MORALE_Y, CHAR_FONT);
+  FindFontCenterCoordinates(CHAR_MORALE_X, CHAR_MORALE_Y, CHAR_MORALE_WID, CHAR_MORALE_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  DrawString(sString, usX, CHAR_MORALE_Y, CHAR_FONT());
 
   return;
 }
@@ -1638,7 +1638,7 @@ function DisplayGroundEta(): void {
   iTotalTime = GetGroundTravelTimeOfCharacter(bSelectedDestChar);
 
   // now display it
-  SetFont(ETA_FONT);
+  SetFont(ETA_FONT());
   SetFontForeground(FONT_LTGREEN);
   SetFontBackground(FONT_BLACK);
   mprintf(CLOCK_ETA_X, CLOCK_Y_START, pEtaString[0]);
@@ -1693,7 +1693,7 @@ function HighLightAssignLine(): void {
     iColorNum--;
 
   // usY=Y_START+(giHighLine*GetFontHeight((MAP_SCREEN_FONT)));
-  usY = (Y_OFFSET * giAssignHighLine - 1) + (Y_START + (giAssignHighLine * Y_SIZE));
+  usY = (Y_OFFSET * giAssignHighLine - 1) + (Y_START + (giAssignHighLine * Y_SIZE()));
 
   if (giAssignHighLine >= FIRST_VEHICLE) {
     usY += 6;
@@ -1706,24 +1706,24 @@ function HighLightAssignLine(): void {
     if (IsCharacterSelectedForAssignment(usCount) == TRUE) {
       usX = ASSIGN_X;
       // usY=Y_START+(giHighLine*GetFontHeight((MAP_SCREEN_FONT)));
-      usY = (Y_OFFSET * usCount - 1) + (Y_START + (usCount * Y_SIZE));
+      usY = (Y_OFFSET * usCount - 1) + (Y_START + (usCount * Y_SIZE()));
       if (usCount >= FIRST_VEHICLE) {
         usY += 6;
       }
 
       usColor = Get16BPPColor(FROMRGB(GlowColorsA[iColorNum].ubRed, GlowColorsA[iColorNum].ubGreen, GlowColorsA[iColorNum].ubBlue));
 
-      LineDraw(TRUE, usX, usY, usX, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
-      LineDraw(TRUE, usX + ASSIGN_WIDTH, usY, usX + ASSIGN_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
+      LineDraw(TRUE, usX, usY, usX, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
+      LineDraw(TRUE, usX + ASSIGN_WIDTH, usY, usX + ASSIGN_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
       if ((usCount == 0) || (usCount != 0 ? !(IsCharacterSelectedForAssignment((usCount - 1))) : 0) || (usCount == FIRST_VEHICLE)) {
         LineDraw(TRUE, usX, usY, usX + ASSIGN_WIDTH, usY, usColor, pDestBuf);
       }
 
       if (((usCount == MAX_CHARACTER_COUNT - 1)) || (usCount != (MAX_CHARACTER_COUNT - 1) ? !(IsCharacterSelectedForAssignment((usCount + 1))) : 0) || (usCount == FIRST_VEHICLE - 1)) {
-        LineDraw(TRUE, usX, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usX + ASSIGN_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
+        LineDraw(TRUE, usX, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usX + ASSIGN_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
       }
 
-      InvalidateRegion(usX, usY, usX + ASSIGN_WIDTH + 1, usY + GetFontHeight(MAP_SCREEN_FONT) + 3);
+      InvalidateRegion(usX, usY, usX + ASSIGN_WIDTH + 1, usY + GetFontHeight(MAP_SCREEN_FONT()) + 3);
     }
   }
 
@@ -1773,7 +1773,7 @@ function HighLightDestLine(): void {
     if (CharacterIsGettingPathPlotted(usCount) == TRUE) {
       usX = DEST_ETA_X - 4;
       // usY=Y_START+(giHighLine*GetFontHeight((MAP_SCREEN_FONT)));
-      usY = (Y_OFFSET * usCount - 1) + (Y_START + (usCount * Y_SIZE));
+      usY = (Y_OFFSET * usCount - 1) + (Y_START + (usCount * Y_SIZE()));
       if (usCount >= FIRST_VEHICLE) {
         usY += 6;
       }
@@ -1784,13 +1784,13 @@ function HighLightDestLine(): void {
         LineDraw(TRUE, usX + 4, usY, usX + DEST_ETA_WIDTH + 4, usY, usColor, pDestBuf);
       }
       if (((usCount == MAX_CHARACTER_COUNT - 1)) || (usCount != (MAX_CHARACTER_COUNT - 1) ? !(CharacterIsGettingPathPlotted((usCount + 1))) : 0) || (usCount == FIRST_VEHICLE - 1)) {
-        LineDraw(TRUE, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usX + DEST_ETA_WIDTH + 4, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
+        LineDraw(TRUE, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usX + DEST_ETA_WIDTH + 4, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
       }
 
-      LineDraw(TRUE, usX + 4, usY, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
-      LineDraw(TRUE, usX + DEST_ETA_WIDTH + 4, usY, usX + DEST_ETA_WIDTH + 4, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
+      LineDraw(TRUE, usX + 4, usY, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
+      LineDraw(TRUE, usX + DEST_ETA_WIDTH + 4, usY, usX + DEST_ETA_WIDTH + 4, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
 
-      InvalidateRegion(usX, usY, usX + DEST_ETA_WIDTH + 5, usY + GetFontHeight(MAP_SCREEN_FONT) + 3);
+      InvalidateRegion(usX, usY, usX + DEST_ETA_WIDTH + 5, usY + GetFontHeight(MAP_SCREEN_FONT()) + 3);
     }
   }
   // InvalidateRegion( usX+4, usY, DEST_ETA_WIDTH-10, usY+GetFontHeight(MAP_SCREEN_FONT)+3);
@@ -1845,7 +1845,7 @@ function HighLightSleepLine(): void {
       usX2 = SLEEP_X + SLEEP_WIDTH;
 
       // usY=Y_START+(giHighLine*GetFontHeight((MAP_SCREEN_FONT)));
-      usY = (Y_OFFSET * usCount - 1) + (Y_START + (usCount * Y_SIZE));
+      usY = (Y_OFFSET * usCount - 1) + (Y_START + (usCount * Y_SIZE()));
       if (usCount >= FIRST_VEHICLE) {
         usY += 6;
       }
@@ -1856,13 +1856,13 @@ function HighLightSleepLine(): void {
         LineDraw(TRUE, usX + 4, usY, usX2, usY, usColor, pDestBuf);
       }
       if (((usCount == MAX_CHARACTER_COUNT - 1)) || (usCount != (MAX_CHARACTER_COUNT - 1) ? !(IsCharacterSelectedForSleep((usCount + 1))) : 0) || (usCount == FIRST_VEHICLE - 1)) {
-        LineDraw(TRUE, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usX2, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
+        LineDraw(TRUE, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usX2, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
       }
 
-      LineDraw(TRUE, usX + 4, usY, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
-      LineDraw(TRUE, usX2, usY, usX2, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
+      LineDraw(TRUE, usX + 4, usY, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
+      LineDraw(TRUE, usX2, usY, usX2, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
 
-      InvalidateRegion(usX, usY, usX2 + 5, usY + GetFontHeight(MAP_SCREEN_FONT) + 3);
+      InvalidateRegion(usX, usY, usX2 + 5, usY + GetFontHeight(MAP_SCREEN_FONT()) + 3);
     }
   }
   UnLockVideoSurface(FRAME_BUFFER);
@@ -1987,7 +1987,7 @@ function DisplayCharacterList(): void {
 
   // set dest buffer
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
-  SetFont(MAP_SCREEN_FONT);
+  SetFont(MAP_SCREEN_FONT());
   SetFontBackground(FONT_BLACK);
 
   for (sCount = 0; sCount < MAX_CHARACTER_COUNT; sCount++) {
@@ -2016,11 +2016,11 @@ function DisplayCharacterList(): void {
 
       SetFontForeground(ubForegroundColor);
 
-      DrawName(Menptr[gCharactersList[sCount].usSolID].name, sCount, MAP_SCREEN_FONT);
-      DrawLocation(sCount, sCount, MAP_SCREEN_FONT);
-      DrawDestination(sCount, sCount, MAP_SCREEN_FONT);
-      DrawAssignment(sCount, sCount, MAP_SCREEN_FONT);
-      DrawTimeRemaining(sCount, MAP_SCREEN_FONT, ubForegroundColor);
+      DrawName(Menptr[gCharactersList[sCount].usSolID].name, sCount, MAP_SCREEN_FONT());
+      DrawLocation(sCount, sCount, MAP_SCREEN_FONT());
+      DrawDestination(sCount, sCount, MAP_SCREEN_FONT());
+      DrawAssignment(sCount, sCount, MAP_SCREEN_FONT());
+      DrawTimeRemaining(sCount, MAP_SCREEN_FONT(), ubForegroundColor);
     }
   }
 
@@ -2416,7 +2416,7 @@ function MapScreenHandle(): UINT32 {
     giMapContractButton = QuickCreateButton(giMapContractButtonImage, CONTRACT_X + 5, CONTRACT_Y - 1, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, BtnGenericMouseMoveButtonCallback, ContractButtonCallback);
 
     SpecifyButtonText(giMapContractButton, pContractButtonString[0]);
-    SpecifyButtonFont(giMapContractButton, MAP_SCREEN_FONT);
+    SpecifyButtonFont(giMapContractButton, MAP_SCREEN_FONT());
     SpecifyButtonUpTextColors(giMapContractButton, CHAR_TEXT_FONT_COLOR, FONT_BLACK);
     SpecifyButtonDownTextColors(giMapContractButton, CHAR_TEXT_FONT_COLOR, FONT_BLACK);
 
@@ -2456,8 +2456,8 @@ function MapScreenHandle(): UINT32 {
     // TestMessageSystem( );
 
     // fill in
-    ColorFillVideoSurfaceArea(guiSAVEBUFFER, 0, 0, 640, 480, Get16BPPColor(RGB_NEAR_BLACK));
-    ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, Get16BPPColor(RGB_NEAR_BLACK));
+    ColorFillVideoSurfaceArea(guiSAVEBUFFER, 0, 0, 640, 480, Get16BPPColor(RGB_NEAR_BLACK()));
+    ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, Get16BPPColor(RGB_NEAR_BLACK()));
 
     if ((fFirstTimeInMapScreen == TRUE) && (AnyMercsHired() == FALSE)) {
       // render both panels for the restore
@@ -3003,7 +3003,7 @@ function SetDayAlternate(pStringA: STR16, ...args: any[]): void {
   uiX = CLOCK_HOUR_X_START - 9;
   uiY = CLOCK_Y_START;
 
-  SetFont(ETA_FONT);
+  SetFont(ETA_FONT());
   SetFontForeground(FONT_LTGREEN);
   SetFontBackground(FONT_BLACK);
 
@@ -3032,9 +3032,9 @@ function SetHourAlternate(pStringA: STR16, ...args: any[]): void {
   String[4] = 0;
   uiX = CLOCK_MIN_X_START - 5;
   uiY = CLOCK_Y_START;
-  DrawString(String, uiX, uiY, ETA_FONT);
+  DrawString(String, uiX, uiY, ETA_FONT());
 
-  SetFont(ETA_FONT);
+  SetFont(ETA_FONT());
   SetFontForeground(FONT_LTGREEN);
   SetFontBackground(FONT_BLACK);
 
@@ -3062,7 +3062,7 @@ function SetClockHour(pStringA: STR16, ...args: any[]): void {
   uiX = CLOCK_HOUR_X_START - 8;
   uiY = CLOCK_Y_START;
 
-  SetFont(ETA_FONT);
+  SetFont(ETA_FONT());
   SetFontForeground(FONT_LTGREEN);
   SetFontBackground(FONT_BLACK);
 
@@ -3087,7 +3087,7 @@ function SetClockMin(pStringA: STR16, ...args: any[]): void {
   String[3] = ' ';
   String[4] = 0;
 
-  SetFont(ETA_FONT);
+  SetFont(ETA_FONT());
   SetFontForeground(FONT_LTGREEN);
   SetFontBackground(FONT_BLACK);
 
@@ -3100,9 +3100,9 @@ function DrawName(pName: STR16, sRowIndex: INT16, iFont: INT32): void {
   let usY: UINT16 = 0;
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE)), NAME_WIDTH, Y_SIZE, pName, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE())), NAME_WIDTH, Y_SIZE(), pName, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), NAME_WIDTH, Y_SIZE, pName, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), NAME_WIDTH, Y_SIZE(), pName, iFont, addressof(usX), addressof(usY));
   }
 
   // RestoreExternBackgroundRect(NAME_X, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), NAME_WIDTH, Y_SIZE);
@@ -3117,9 +3117,9 @@ function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): voi
   GetMapscreenMercAssignmentString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE)), ASSIGN_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE())), ASSIGN_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), ASSIGN_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), ASSIGN_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
   }
 
   if (fFlashAssignDone == TRUE) {
@@ -3141,9 +3141,9 @@ function DrawLocation(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void 
 
   if (sRowIndex < FIRST_VEHICLE) {
     // center
-    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE)), LOC_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE())), LOC_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), LOC_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), LOC_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
   }
   // restore background
   // RestoreExternBackgroundRect(LOC_X, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), LOC_WIDTH, Y_SIZE);
@@ -3164,9 +3164,9 @@ function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): vo
   }
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE)), DEST_ETA_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE())), DEST_ETA_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), DEST_ETA_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), DEST_ETA_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
   }
 
   // RestoreExternBackgroundRect(DEST_ETA_X+1, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), DEST_ETA_WIDTH-1, Y_SIZE);
@@ -3190,9 +3190,9 @@ function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8)
   SetFontForeground(ubFontColor);
 
   if (sCharNumber < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE)), TIME_REMAINING_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE())), TIME_REMAINING_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE) + 6), TIME_REMAINING_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE()) + 6), TIME_REMAINING_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
   }
 
   // RestoreExternBackgroundRect(TIME_REMAINING_X, ((UINT16)(usY+(Y_OFFSET*sCharNumber+1))), TIME_REMAINING_WIDTH, Y_SIZE);
@@ -3231,7 +3231,7 @@ function RenderMapCursorsIndexesAnims(): void {
       }
 
       // draw WHITE highlight rectangle
-      RenderMapHighlight(gsHighlightSectorX, gsHighlightSectorY, Get16BPPColor(RGB_WHITE), FALSE);
+      RenderMapHighlight(gsHighlightSectorX, gsHighlightSectorY, Get16BPPColor(RGB_WHITE()), FALSE);
 
       sPrevHighlightedMapX = gsHighlightSectorX;
       sPrevHighlightedMapY = gsHighlightSectorY;
@@ -3271,10 +3271,10 @@ function RenderMapCursorsIndexesAnims(): void {
 
     if (!fSelectedSectorHighlighted || fFlashCursorIsYellow) {
       // draw YELLOW highlight rectangle
-      usCursorColor = Get16BPPColor(RGB_YELLOW);
+      usCursorColor = Get16BPPColor(RGB_YELLOW());
     } else {
       // draw WHITE highlight rectangle
-      usCursorColor = Get16BPPColor(RGB_WHITE);
+      usCursorColor = Get16BPPColor(RGB_WHITE());
 
       // index letters will also be white instead of yellow so that they flash in synch with the cursor
       fSelectedCursorIsYellow = FALSE;
@@ -3632,22 +3632,22 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
     }
 
@@ -4847,17 +4847,17 @@ function PopupText(pFontString: Pointer<UINT16>, ...args: any[]): void {
   vswprintf(PopupString, pFontString, argptr); // process gprintf string (get output str)
   va_end(argptr);
 
-  FindFontCenterCoordinates(0, 0, SCREEN_WIDTH, INTERFACE_START_Y, PopupString, LARGEFONT1, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(0, 0, SCREEN_WIDTH, INTERFACE_START_Y, PopupString, LARGEFONT1(), addressof(sX), addressof(sY));
 
   BltVideoSurface(FRAME_BUFFER, guiINTEXT, 0, 85, 160, VS_BLT_FAST | VS_BLT_USECOLORKEY, NULL);
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   SetFontBackground(FONT_MCOLOR_BLACK);
   SetFontForeground(FONT_MCOLOR_DKGRAY);
 
-  mprintf_buffer(pDestBuf, uiDestPitchBYTES, LARGEFONT1, sX, sY, PopupString);
+  mprintf_buffer(pDestBuf, uiDestPitchBYTES, LARGEFONT1(), sX, sY, PopupString);
 
   UnLockVideoSurface(FRAME_BUFFER);
 
@@ -4994,7 +4994,7 @@ function BltCharInvPanel(): void {
   // reset font destination buffer
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
-  SetFont(BLOCKFONT2);
+  SetFont(BLOCKFONT2());
 
   // Render Values for stats!
   // Set font drawing to saved buffer
@@ -5015,17 +5015,17 @@ function BltCharInvPanel(): void {
 
   // display armor value
   swprintf(sString, "%3d", ArmourPercent(pSoldier));
-  FindFontRightCoordinates(MAP_ARMOR_X, MAP_ARMOR_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+  FindFontRightCoordinates(MAP_ARMOR_X, MAP_ARMOR_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
   mprintf(usX, usY, sString);
 
   // Display weight value
   swprintf(sString, "%3d", CalculateCarriedWeight(pSoldier));
-  FindFontRightCoordinates(MAP_WEIGHT_X, MAP_WEIGHT_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+  FindFontRightCoordinates(MAP_WEIGHT_X, MAP_WEIGHT_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
   mprintf(usX, usY, sString);
 
   // Display camo value
   swprintf(sString, "%3d", pSoldier.value.bCamo);
-  FindFontRightCoordinates(MAP_CAMMO_X, MAP_CAMMO_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
+  FindFontRightCoordinates(MAP_CAMMO_X, MAP_CAMMO_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
   mprintf(usX, usY, sString);
 
   if (InKeyRingPopup()) {
@@ -5390,32 +5390,32 @@ function RenderAttributeStringsForUpperLeftHandCorner(uiBufferToRenderTo: UINT32
     pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
   }
 
-  SetFont(CHAR_FONT);
+  SetFont(CHAR_FONT());
   SetFontForeground(CHAR_TITLE_FONT_COLOR);
   SetFontBackground(FONT_BLACK);
   SetFontDestBuffer(uiBufferToRenderTo, 0, 0, 640, 480, FALSE);
 
   // assignment strings
-  DrawString(pUpperLeftMapScreenStrings[0], (220 - StringPixLength(pUpperLeftMapScreenStrings[0], CHAR_FONT) / 2), 6, CHAR_FONT);
+  DrawString(pUpperLeftMapScreenStrings[0], (220 - StringPixLength(pUpperLeftMapScreenStrings[0], CHAR_FONT()) / 2), 6, CHAR_FONT());
 
   // vehicles and robot don't have attributes, contracts, or morale
   if ((pSoldier == NULL) || (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier))) {
     // health
-    DrawString(pUpperLeftMapScreenStrings[2], 87, 80, CHAR_FONT);
+    DrawString(pUpperLeftMapScreenStrings[2], 87, 80, CHAR_FONT());
 
     for (iCounter = 0; iCounter < 5; iCounter++) {
-      DrawString(pShortAttributeStrings[iCounter], 88, (22 + iCounter * 10), CHAR_FONT);
-      DrawString(pShortAttributeStrings[iCounter + 5], 133, (22 + iCounter * 10), CHAR_FONT);
+      DrawString(pShortAttributeStrings[iCounter], 88, (22 + iCounter * 10), CHAR_FONT());
+      DrawString(pShortAttributeStrings[iCounter + 5], 133, (22 + iCounter * 10), CHAR_FONT());
     }
 
     // contract
     // DrawString(pUpperLeftMapScreenStrings[ 1 ], 194, 52,  CHAR_FONT);
 
     // morale
-    DrawString(pUpperLeftMapScreenStrings[3], 87, 94, CHAR_FONT);
+    DrawString(pUpperLeftMapScreenStrings[3], 87, 94, CHAR_FONT());
   } else {
     // condition
-    DrawString(pUpperLeftMapScreenStrings[4], 96, 80, CHAR_FONT);
+    DrawString(pUpperLeftMapScreenStrings[4], 96, 80, CHAR_FONT());
   }
 
   // restore buffer
@@ -5621,22 +5621,22 @@ function CreateMouseRegionsForTeamList(): void {
     }
 
     // name region
-    MSYS_DefineRegion(addressof(gTeamListNameRegion[sCounter]), NAME_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), NAME_X + NAME_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListNameRegion[sCounter]), NAME_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), NAME_X + NAME_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
 
     // assignment region
-    MSYS_DefineRegion(addressof(gTeamListAssignmentRegion[sCounter]), ASSIGN_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), ASSIGN_X + ASSIGN_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListAssignmentRegionMvtCallBack, TeamListAssignmentRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListAssignmentRegion[sCounter]), ASSIGN_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), ASSIGN_X + ASSIGN_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListAssignmentRegionMvtCallBack, TeamListAssignmentRegionBtnCallBack);
 
     // location region (same function as name regions, so uses the same callbacks)
-    MSYS_DefineRegion(addressof(gTeamListLocationRegion[sCounter]), LOC_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), LOC_X + LOC_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListLocationRegion[sCounter]), LOC_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), LOC_X + LOC_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
 
     // destination region
-    MSYS_DefineRegion(addressof(gTeamListDestinationRegion[sCounter]), DEST_ETA_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), DEST_ETA_X + DEST_ETA_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListDestinationRegionMvtCallBack, TeamListDestinationRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListDestinationRegion[sCounter]), DEST_ETA_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), DEST_ETA_X + DEST_ETA_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListDestinationRegionMvtCallBack, TeamListDestinationRegionBtnCallBack);
 
     // contract region
-    MSYS_DefineRegion(addressof(gTeamListContractRegion[sCounter]), TIME_REMAINING_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), TIME_REMAINING_X + TIME_REMAINING_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListContractRegionMvtCallBack, TeamListContractRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListContractRegion[sCounter]), TIME_REMAINING_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), TIME_REMAINING_X + TIME_REMAINING_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListContractRegionMvtCallBack, TeamListContractRegionBtnCallBack);
 
     // contract region
-    MSYS_DefineRegion(addressof(gTeamListSleepRegion[sCounter]), SLEEP_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), SLEEP_X + SLEEP_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListSleepRegionMvtCallBack, TeamListSleepRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListSleepRegion[sCounter]), SLEEP_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), SLEEP_X + SLEEP_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListSleepRegionMvtCallBack, TeamListSleepRegionBtnCallBack);
 
     MSYS_SetRegionUserData(addressof(gTeamListNameRegion[sCounter]), 0, sCounter);
     MSYS_SetRegionUserData(addressof(gTeamListAssignmentRegion[sCounter]), 0, sCounter);
@@ -8467,7 +8467,7 @@ function DisplayIconsForMercsAsleep(): void {
     if (gCharactersList[iCounter].fValid == TRUE) {
       pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
       if (pSoldier.value.bActive && pSoldier.value.fMercAsleep && CanChangeSleepStatusForSoldier(pSoldier)) {
-        BltVideoObject(guiSAVEBUFFER, hHandle, 0, 125, (Y_START + (iCounter * (Y_SIZE + 2))), VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObject(guiSAVEBUFFER, hHandle, 0, 125, (Y_START + (iCounter * (Y_SIZE() + 2))), VO_BLT_SRCTRANSPARENCY, NULL);
       }
     }
   }

@@ -114,7 +114,7 @@ function DisplayPlayerActivationString(): void {
   RenderActivationIndent(257, 328);
 
   // setup the font stuff
-  SetFont(FONT14ARIAL);
+  SetFont(FONT14ARIAL());
   SetFontForeground(184);
   SetFontBackground(FONT_BLACK);
 
@@ -168,12 +168,12 @@ function DisplayActivationStringCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(TRUE, uiCursorPosition, CURSOR_Y, uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(TRUE, uiCursorPosition, CURSOR_Y, uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
 
-  InvalidateRegion(uiCursorPosition, CURSOR_Y, uiCursorPosition + 1, CURSOR_Y + CURSOR_HEIGHT + 1);
+  InvalidateRegion(uiCursorPosition, CURSOR_Y, uiCursorPosition + 1, CURSOR_Y + CURSOR_HEIGHT() + 1);
 
   return;
 }
@@ -245,7 +245,7 @@ function HandleTextEvent(uiKey: UINT32): void {
         pPlayerActivationString[iStringPos] = 0;
 
         // move back cursor
-        uiCursorPosition = StringPixLength(pPlayerActivationString, FONT14ARIAL) + IMP_PLAYER_ACTIVATION_STRING_X;
+        uiCursorPosition = StringPixLength(pPlayerActivationString, FONT14ARIAL()) + IMP_PLAYER_ACTIVATION_STRING_X;
 
         // string has been altered, redisplay
         fNewCharInActivationString = TRUE;
@@ -269,7 +269,7 @@ function HandleTextEvent(uiKey: UINT32): void {
           pPlayerActivationString[iStringPos + 1] = 0;
 
           // move cursor position ahead
-          uiCursorPosition = StringPixLength(pPlayerActivationString, FONT14ARIAL) + IMP_PLAYER_ACTIVATION_STRING_X;
+          uiCursorPosition = StringPixLength(pPlayerActivationString, FONT14ARIAL()) + IMP_PLAYER_ACTIVATION_STRING_X;
 
           // increment string position
           iStringPos += 1;
@@ -316,7 +316,7 @@ function CreateIMPHomePageButtons(): void {
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAboutUsCallback);
 */
 
-  giIMPHomePageButton[0] = CreateIconAndTextButton(giIMPHomePageButtonImage[0], pImpButtonText[0], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (286 - 106), LAPTOP_SCREEN_WEB_UL_Y + (248 - 48), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAboutUsCallback);
+  giIMPHomePageButton[0] = CreateIconAndTextButton(giIMPHomePageButtonImage[0], pImpButtonText[0], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (286 - 106), LAPTOP_SCREEN_WEB_UL_Y + (248 - 48), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAboutUsCallback);
 
   SetButtonCursor(giIMPHomePageButton[0], Enum317.CURSOR_WWW);
 

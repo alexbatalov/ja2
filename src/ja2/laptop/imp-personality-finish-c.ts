@@ -119,7 +119,7 @@ function CreateIMPPersonalityFinishButtons(): void {
                                                                                   BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPersonalityFinishYesCallback);
   */
-  giIMPPersonalityFinishButton[0] = CreateIconAndTextButton(giIMPPersonalityFinishButtonImage[0], pImpButtonText[9], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (90), LAPTOP_SCREEN_WEB_UL_Y + (224), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityFinishYesCallback);
+  giIMPPersonalityFinishButton[0] = CreateIconAndTextButton(giIMPPersonalityFinishButtonImage[0], pImpButtonText[9], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (90), LAPTOP_SCREEN_WEB_UL_Y + (224), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityFinishYesCallback);
 
   // the no Button
   giIMPPersonalityFinishButtonImage[1] = LoadButtonImage("LAPTOP\\button_5.sti", -1, 0, -1, 1, -1);
@@ -127,7 +127,7 @@ function CreateIMPPersonalityFinishButtons(): void {
                                                                                   BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPersonalityFinishNoCallback);
     */
-  giIMPPersonalityFinishButton[1] = CreateIconAndTextButton(giIMPPersonalityFinishButtonImage[1], pImpButtonText[10], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (276), LAPTOP_SCREEN_WEB_UL_Y + (224), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityFinishNoCallback);
+  giIMPPersonalityFinishButton[1] = CreateIconAndTextButton(giIMPPersonalityFinishButtonImage[1], pImpButtonText[10], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (276), LAPTOP_SCREEN_WEB_UL_Y + (224), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityFinishNoCallback);
 
   SetButtonCursor(giIMPPersonalityFinishButton[0], Enum317.CURSOR_WWW);
   SetButtonCursor(giIMPPersonalityFinishButton[1], Enum317.CURSOR_WWW);
@@ -219,7 +219,7 @@ function BtnIMPPersonalityFinishNoCallback(btn: Pointer<GUI_BUTTON>, reason: INT
 function CreatePersonalityFinishOkButton(): void {
   // create personality button finish button
   giIMPPersonalityFinishButtonImage[0] = LoadButtonImage("LAPTOP\\button_5.sti", -1, 0, -1, 1, -1);
-  giIMPPersonalityFinishButton[0] = CreateIconAndTextButton(giIMPPersonalityFinishButtonImage[0], pImpButtonText[24], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (186), LAPTOP_SCREEN_WEB_UL_Y + (224), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityFinishOkCallback);
+  giIMPPersonalityFinishButton[0] = CreateIconAndTextButton(giIMPPersonalityFinishButtonImage[0], pImpButtonText[24], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (186), LAPTOP_SCREEN_WEB_UL_Y + (224), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityFinishOkCallback);
 
   SetButtonCursor(giIMPPersonalityFinishButton[0], Enum317.CURSOR_WWW);
 

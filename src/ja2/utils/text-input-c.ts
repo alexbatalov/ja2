@@ -135,7 +135,7 @@ function InitTextInputModeWithScheme(ubSchemeID: UINT8): void {
   InitTextInputMode();
   switch (ubSchemeID) {
     case Enum384.DEFAULT_SCHEME: // yellow boxes with black text, with bluish bevelling
-      SetTextInputFont(FONT12POINT1);
+      SetTextInputFont(FONT12POINT1());
       Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(250, 240, 188)));
       SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
       SetTextInputRegularColors(FONT_BLACK, FONT_BLACK);

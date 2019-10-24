@@ -313,7 +313,7 @@ function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   }
 
   if (gfSchedulesHosed) {
-    SetFont(FONT10ARIAL);
+    SetFont(FONT10ARIAL());
     SetFontForeground(FONT_YELLOW);
     SetFontShadow(FONT_NEARBLACK);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, 0);
@@ -325,7 +325,7 @@ function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
     DeleteVideoSurfaceFromIndex(uiLoadScreen);
   } else {
     // Failed to load the file, so use a black screen and print out message.
-    SetFont(FONT10ARIAL);
+    SetFont(FONT10ARIAL());
     SetFontForeground(FONT_YELLOW);
     SetFontShadow(FONT_NEARBLACK);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, 0);

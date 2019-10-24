@@ -62,7 +62,7 @@ const LINE_HEIGHT = 20;
 function DebugLevelNodePage(): void {
   let uiLoop: UINT32;
 
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   gprintf(0, 0, "DEBUG LEVELNODES PAGE 1 OF 1");
 
   for (uiLoop = 1; uiLoop < 9; uiLoop++) {

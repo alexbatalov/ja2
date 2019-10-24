@@ -443,7 +443,7 @@ function DrawMapIndexBigMap(fSelectedCursorIsYellow: BOOLEAN): void {
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
   // SetFontColors(FONT_FCOLOR_GREEN)
-  SetFont(MAP_FONT);
+  SetFont(MAP_FONT());
   SetFontForeground(MAP_INDEX_COLOR);
   // Dk Red is 163
   SetFontBackground(FONT_MCOLOR_BLACK);
@@ -458,7 +458,7 @@ function DrawMapIndexBigMap(fSelectedCursorIsYellow: BOOLEAN): void {
     else
       SetFontForeground(MAP_INDEX_COLOR);
 
-    FindFontCenterCoordinates(((MAP_HORT_INDEX_X + (iCount - 1) * MAP_GRID_X)), MAP_HORT_INDEX_Y, MAP_GRID_X, MAP_HORT_HEIGHT, pMapHortIndex[iCount], MAP_FONT, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(((MAP_HORT_INDEX_X + (iCount - 1) * MAP_GRID_X)), MAP_HORT_INDEX_Y, MAP_GRID_X, MAP_HORT_HEIGHT(), pMapHortIndex[iCount], MAP_FONT(), addressof(usX), addressof(usY));
     mprintf(usX, usY, pMapHortIndex[iCount]);
 
     if (fDrawCursors && (iCount == sSelMapY) && (bSelectedDestChar == -1) && (fPlotForHelicopter == FALSE))
@@ -468,12 +468,12 @@ function DrawMapIndexBigMap(fSelectedCursorIsYellow: BOOLEAN): void {
     else
       SetFontForeground(MAP_INDEX_COLOR);
 
-    FindFontCenterCoordinates(MAP_VERT_INDEX_X, ((MAP_VERT_INDEX_Y + (iCount - 1) * MAP_GRID_Y)), MAP_HORT_HEIGHT, MAP_GRID_Y, pMapVertIndex[iCount], MAP_FONT, addressof(usX), addressof(usY));
+    FindFontCenterCoordinates(MAP_VERT_INDEX_X, ((MAP_VERT_INDEX_Y + (iCount - 1) * MAP_GRID_Y)), MAP_HORT_HEIGHT(), MAP_GRID_Y, pMapVertIndex[iCount], MAP_FONT(), addressof(usX), addressof(usY));
     mprintf(usX, usY, pMapVertIndex[iCount]);
   }
 
-  InvalidateRegion(MAP_VERT_INDEX_X, MAP_VERT_INDEX_Y, MAP_VERT_INDEX_X + MAP_HORT_HEIGHT, MAP_VERT_INDEX_Y + (iCount - 1) * MAP_GRID_Y);
-  InvalidateRegion(MAP_HORT_INDEX_X, MAP_HORT_INDEX_Y, MAP_HORT_INDEX_X + (iCount - 1) * MAP_GRID_X, MAP_HORT_INDEX_Y + MAP_HORT_HEIGHT);
+  InvalidateRegion(MAP_VERT_INDEX_X, MAP_VERT_INDEX_Y, MAP_VERT_INDEX_X + MAP_HORT_HEIGHT(), MAP_VERT_INDEX_Y + (iCount - 1) * MAP_GRID_Y);
+  InvalidateRegion(MAP_HORT_INDEX_X, MAP_HORT_INDEX_Y, MAP_HORT_INDEX_X + (iCount - 1) * MAP_GRID_X, MAP_HORT_INDEX_Y + MAP_HORT_HEIGHT());
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 }
@@ -756,7 +756,7 @@ function ShowTownText(): void {
 
   // this procedure will display the town names on the screen
 
-  SetFont(MAP_FONT);
+  SetFont(MAP_FONT());
   SetFontBackground(FONT_MCOLOR_BLACK);
 
   for (bTown = FIRST_TOWN; bTown < Enum135.NUM_TOWNS; bTown++) {
@@ -814,14 +814,14 @@ function DrawTownLabels(pString: STR16, pStringA: STR16, usFirstX: UINT16, usFir
   ClipBlitsToMapViewRegion();
 
   // we're CENTERING the first string AROUND usFirstX, so calculate the starting X
-  usFirstX -= StringPixLength(pString, MAP_FONT) / 2;
+  usFirstX -= StringPixLength(pString, MAP_FONT()) / 2;
 
   // print first string
   gprintfdirty(usFirstX, usFirstY, pString);
   mprintf(usFirstX, usFirstY, pString);
 
   // calculate starting coordinates for the second string
-  VarFindFontCenterCoordinates((usFirstX), usFirstY, StringPixLength(pString, MAP_FONT), 0, MAP_FONT, addressof(sSecondX), addressof(sSecondY), pStringA);
+  VarFindFontCenterCoordinates((usFirstX), usFirstY, StringPixLength(pString, MAP_FONT()), 0, MAP_FONT(), addressof(sSecondX), addressof(sSecondY), pStringA);
 
   // make sure we don't go past left edge (Grumm)
   if (!fZoomFlag) {
@@ -832,7 +832,7 @@ function DrawTownLabels(pString: STR16, pStringA: STR16, usFirstX: UINT16, usFir
   }
 
   // print second string beneath first
-  sSecondY = (usFirstY + GetFontHeight(MAP_FONT));
+  sSecondY = (usFirstY + GetFontHeight(MAP_FONT()));
   gprintfdirty(sSecondX, sSecondY, pStringA);
   mprintf(sSecondX, sSecondY, pStringA);
 
@@ -3393,7 +3393,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
 
         // blit the text
 
-        SetFont(MAP_MVT_ICON_FONT);
+        SetFont(MAP_MVT_ICON_FONT());
 
         if (!fAboutToEnter) {
           SetFontForeground(FONT_WHITE);
@@ -3435,7 +3435,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
           RestoreClipRegionToFullScreen();
         }
 
-        FindFontCenterCoordinates((iX + sTextXOffset), 0, ICON_WIDTH, 0, sString, MAP_FONT, addressof(usX), addressof(usY));
+        FindFontCenterCoordinates((iX + sTextXOffset), 0, ICON_WIDTH, 0, sString, MAP_FONT(), addressof(usX), addressof(usY));
         SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
         mprintf(usX, iY + sTextYOffset, sString);
 
@@ -3525,7 +3525,7 @@ function DisplayDistancesForHelicopter(): void {
   }
 
   // set the font stuff
-  SetFont(MAP_FONT);
+  SetFont(MAP_FONT());
   SetFontForeground(FONT_LTGREEN);
   SetFontBackground(FONT_BLACK);
 
@@ -3542,27 +3542,27 @@ function DisplayDistancesForHelicopter(): void {
   { SetFontForeground(FONT_LTGREEN); }
 
   swprintf(sString, "%d", sTotalOfTrip);
-  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, MAP_HELICOPTER_ETA_POPUP_Y + 5, MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT, addressof(sX), addressof(sY));
+  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, MAP_HELICOPTER_ETA_POPUP_Y + 5, MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT(), addressof(sX), addressof(sY));
   mprintf(sX, sYPosition + 5, sString);
 
   SetFontForeground(FONT_LTGREEN);
 
   swprintf(sString, "%s", pHelicopterEtaStrings[1]);
-  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + GetFontHeight(MAP_FONT), sString);
+  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + GetFontHeight(MAP_FONT()), sString);
 
   swprintf(sString, "%d", sNumSafeSectors);
-  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 2 * GetFontHeight(MAP_FONT)), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT, addressof(sX), addressof(sY));
-  mprintf(sX, (sYPosition + 5 + GetFontHeight(MAP_FONT)), sString);
+  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 2 * GetFontHeight(MAP_FONT())), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT(), addressof(sX), addressof(sY));
+  mprintf(sX, (sYPosition + 5 + GetFontHeight(MAP_FONT())), sString);
 
   swprintf(sString, "%s", pHelicopterEtaStrings[2]);
-  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + 2 * GetFontHeight(MAP_FONT), sString);
+  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + 2 * GetFontHeight(MAP_FONT()), sString);
 
   swprintf(sString, "%d", sNumUnSafeSectors);
-  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 2 * GetFontHeight(MAP_FONT)), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT, addressof(sX), addressof(sY));
-  mprintf(sX, (sYPosition + 5 + 2 * GetFontHeight(MAP_FONT)), sString);
+  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 2 * GetFontHeight(MAP_FONT())), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT(), addressof(sX), addressof(sY));
+  mprintf(sX, (sYPosition + 5 + 2 * GetFontHeight(MAP_FONT())), sString);
 
   swprintf(sString, "%s", pHelicopterEtaStrings[3]);
-  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + 3 * GetFontHeight(MAP_FONT), sString);
+  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + 3 * GetFontHeight(MAP_FONT()), sString);
 
   // calculate the cost of the trip based on the number of safe and unsafe sectors it will pass through
   uiTripCost = (sNumSafeSectors * COST_AIRSPACE_SAFE) + (sNumUnSafeSectors * COST_AIRSPACE_UNSAFE);
@@ -3570,11 +3570,11 @@ function DisplayDistancesForHelicopter(): void {
   swprintf(sString, "%d", uiTripCost);
   InsertCommasForDollarFigure(sString);
   InsertDollarSignInToString(sString);
-  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 3 * GetFontHeight(MAP_FONT)), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT, addressof(sX), addressof(sY));
-  mprintf(sX, (sYPosition + 5 + 3 * GetFontHeight(MAP_FONT)), sString);
+  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 3 * GetFontHeight(MAP_FONT())), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT(), addressof(sX), addressof(sY));
+  mprintf(sX, (sYPosition + 5 + 3 * GetFontHeight(MAP_FONT())), sString);
 
   swprintf(sString, "%s", pHelicopterEtaStrings[4]);
-  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + 4 * GetFontHeight(MAP_FONT), sString);
+  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + 4 * GetFontHeight(MAP_FONT()), sString);
 
   // get travel time for the last path segment
   iTime = GetPathTravelTimeDuringPlotting(pTempHelicopterPath);
@@ -3583,14 +3583,14 @@ function DisplayDistancesForHelicopter(): void {
   iTime += GetPathTravelTimeDuringPlotting(pVehicleList[iHelicopterVehicleId].pMercPath);
 
   swprintf(sString, "%d%s %d%s", iTime / 60, gsTimeStrings[0], iTime % 60, gsTimeStrings[1]);
-  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (sYPosition + 5 + 4 * GetFontHeight(MAP_FONT)), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT, addressof(sX), addressof(sY));
-  mprintf(sX, (sYPosition + 5 + 4 * GetFontHeight(MAP_FONT)), sString);
+  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (sYPosition + 5 + 4 * GetFontHeight(MAP_FONT())), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT(), addressof(sX), addressof(sY));
+  mprintf(sX, (sYPosition + 5 + 4 * GetFontHeight(MAP_FONT())), sString);
 
   // show # of passengers aboard the chopper
-  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + 5 * GetFontHeight(MAP_FONT), pHelicopterEtaStrings[6]);
+  mprintf(MAP_HELICOPTER_ETA_POPUP_X + 5, sYPosition + 5 + 5 * GetFontHeight(MAP_FONT()), pHelicopterEtaStrings[6]);
   swprintf(sString, "%d", GetNumberOfPassengersInHelicopter());
-  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 5 * GetFontHeight(MAP_FONT)), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT, addressof(sX), addressof(sY));
-  mprintf(sX, (sYPosition + 5 + 5 * GetFontHeight(MAP_FONT)), sString);
+  FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 5 * GetFontHeight(MAP_FONT())), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT(), addressof(sX), addressof(sY));
+  mprintf(sX, (sYPosition + 5 + 5 * GetFontHeight(MAP_FONT())), sString);
 
   InvalidateRegion(MAP_HELICOPTER_ETA_POPUP_X, sOldYPosition, MAP_HELICOPTER_ETA_POPUP_X + MAP_HELICOPTER_ETA_POPUP_WIDTH + 20, sOldYPosition + MAP_HELICOPTER_ETA_POPUP_HEIGHT);
   return;
@@ -3715,7 +3715,7 @@ function DisplayPositionOfHelicopter(): void {
       iNumberOfPeopleInHelicopter = GetNumberOfPassengersInHelicopter();
       swprintf(sString, "%d", iNumberOfPeopleInHelicopter);
 
-      SetFont(MAP_MVT_ICON_FONT);
+      SetFont(MAP_MVT_ICON_FONT());
       SetFontForeground(FONT_WHITE);
       SetFontBackground(FONT_BLACK);
 
@@ -3892,7 +3892,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
 
   SetFontDestBuffer(guiSAVEBUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, FALSE);
 
-  SetFont(MAP_FONT);
+  SetFont(MAP_FONT());
   SetFontForeground(FONT_LTGREEN);
   SetFontBackground(FONT_BLACK);
 
@@ -3901,24 +3901,24 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
   // display associated town name, followed by "mine"
   swprintf(wString, "%s %s", pTownNames[GetTownAssociatedWithMine(GetMineIndexForSector(sMapX, sMapY))], pwMineStrings[0]);
   AdjustXForLeftMapEdge(wString, addressof(sScreenX));
-  mprintf((sScreenX - StringPixLength(wString, MAP_FONT) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT), wString);
+  mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
   ubLineCnt++;
 
   // check if mine is empty (abandoned) or running out
   if (gMineStatus[ubMineIndex].fEmpty) {
     swprintf(wString, "%s", pwMineStrings[5]);
     AdjustXForLeftMapEdge(wString, addressof(sScreenX));
-    mprintf((sScreenX - StringPixLength(wString, MAP_FONT) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT), wString);
+    mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   } else if (gMineStatus[ubMineIndex].fShutDown) {
     swprintf(wString, "%s", pwMineStrings[6]);
     AdjustXForLeftMapEdge(wString, addressof(sScreenX));
-    mprintf((sScreenX - StringPixLength(wString, MAP_FONT) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT), wString);
+    mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   } else if (gMineStatus[ubMineIndex].fRunningOut) {
     swprintf(wString, "%s", pwMineStrings[7]);
     AdjustXForLeftMapEdge(wString, addressof(sScreenX));
-    mprintf((sScreenX - StringPixLength(wString, MAP_FONT) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT), wString);
+    mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   }
 
@@ -3946,7 +3946,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
     }
 
     AdjustXForLeftMapEdge(wString, addressof(sScreenX));
-    mprintf((sScreenX - StringPixLengthArg(MAP_FONT, wcslen(wString), wString) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT), wString);
+    mprintf((sScreenX - StringPixLengthArg(MAP_FONT(), wcslen(wString), wString) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   }
 
@@ -3961,7 +3961,7 @@ function AdjustXForLeftMapEdge(wString: STR16, psX: Pointer<INT16>): void {
     // it's ok to cut strings off in zoomed mode
     return;
 
-  sStartingX = psX.value - (StringPixLengthArg(MAP_FONT, wcslen(wString), wString) / 2);
+  sStartingX = psX.value - (StringPixLengthArg(MAP_FONT(), wcslen(wString), wString) / 2);
   sPastEdge = (MAP_VIEW_START_X + 23) - sStartingX;
 
   if (sPastEdge > 0)
@@ -4139,7 +4139,7 @@ function DisplayLevelString(): void {
 
   SetFontDestBuffer(guiSAVEBUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, FALSE);
 
-  SetFont(MAP_FONT);
+  SetFont(MAP_FONT());
   SetFontForeground(MAP_INDEX_COLOR);
   SetFontBackground(FONT_BLACK);
   swprintf(sString, "%s %d", sMapLevelString[0], iCurrentMapSectorZ);
@@ -4420,9 +4420,9 @@ function RenderIconsPerSectorForSelectedTown(): void {
     iTotalNumberOfTroops = iNumberOfGreens + iNumberOfRegulars + iNumberOfElites;
 
     // printf number of troops
-    SetFont(FONT10ARIAL);
+    SetFont(FONT10ARIAL());
     swprintf(sString, "%d", iTotalNumberOfTroops);
-    FindFontRightCoordinates((MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH)), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT)), MILITIA_BOX_BOX_WIDTH, 0, sString, FONT10ARIAL, addressof(sX), addressof(sY));
+    FindFontRightCoordinates((MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH)), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT)), MILITIA_BOX_BOX_WIDTH, 0, sString, FONT10ARIAL(), addressof(sX), addressof(sY));
 
     if (StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].bNameId != Enum135.BLANK_SECTOR && !StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].fEnemyControlled) {
       if (sSectorMilitiaMapSector != iCounter) {
@@ -4578,7 +4578,7 @@ function CreateDestroyMilitiaSectorButtons(): void {
 
       // set button user data
       MSYS_SetBtnUserData(giMapMilitiaButton[iCounter], 0, iCounter);
-      SpecifyButtonFont(giMapMilitiaButton[iCounter], FONT10ARIAL);
+      SpecifyButtonFont(giMapMilitiaButton[iCounter], FONT10ARIAL());
       SpecifyButtonUpTextColors(giMapMilitiaButton[iCounter], gsMilitiaSectorButtonColors[iCounter], FONT_BLACK);
       SpecifyButtonDownTextColors(giMapMilitiaButton[iCounter], gsMilitiaSectorButtonColors[iCounter], FONT_BLACK);
 
@@ -4766,12 +4766,12 @@ function DrawTownMilitiaName(): void {
 
   // get the name for the current militia town
   swprintf(sString, "%s %s", pTownNames[sSelectedMilitiaTown], pMilitiaString[0]);
-  FindFontCenterCoordinates(MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y + MILITIA_BOX_TEXT_OFFSET_Y, MILITIA_BOX_WIDTH, MILITIA_BOX_TEXT_TITLE_HEIGHT, sString, FONT10ARIAL, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y + MILITIA_BOX_TEXT_OFFSET_Y, MILITIA_BOX_WIDTH, MILITIA_BOX_TEXT_TITLE_HEIGHT, sString, FONT10ARIAL(), addressof(sX), addressof(sY));
   mprintf(sX, sY, sString);
 
   // might as well show the unassigned string
   swprintf(sString, "%s %s", pTownNames[sSelectedMilitiaTown], pMilitiaString[1]);
-  FindFontCenterCoordinates(MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y + MILITIA_BOX_UNASSIGNED_TEXT_OFFSET_Y, MILITIA_BOX_WIDTH, GetFontHeight(FONT10ARIAL), sString, FONT10ARIAL, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y + MILITIA_BOX_UNASSIGNED_TEXT_OFFSET_Y, MILITIA_BOX_WIDTH, GetFontHeight(FONT10ARIAL()), sString, FONT10ARIAL(), addressof(sX), addressof(sY));
   mprintf(sX, sY, sString);
 
   return;
@@ -4990,11 +4990,11 @@ function CreateMilitiaPanelBottomButton(): void {
 
   giMapMilitiaButton[4] = QuickCreateButton(giMapMilitiaButtonImage[4], MAP_MILITIA_BOX_POS_X + MAP_MILITIA_BOX_DONE_BOX_X, MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_BOX_AUTO_BOX_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, MilitiaDoneButtonCallback);
 
-  SpecifyButtonFont(giMapMilitiaButton[3], FONT10ARIAL);
+  SpecifyButtonFont(giMapMilitiaButton[3], FONT10ARIAL());
   SpecifyButtonUpTextColors(giMapMilitiaButton[3], FONT_BLACK, FONT_BLACK);
   SpecifyButtonDownTextColors(giMapMilitiaButton[3], FONT_BLACK, FONT_BLACK);
 
-  SpecifyButtonFont(giMapMilitiaButton[4], FONT10ARIAL);
+  SpecifyButtonFont(giMapMilitiaButton[4], FONT10ARIAL());
   SpecifyButtonUpTextColors(giMapMilitiaButton[4], FONT_BLACK, FONT_BLACK);
   SpecifyButtonDownTextColors(giMapMilitiaButton[4], FONT_BLACK, FONT_BLACK);
 
@@ -5545,7 +5545,7 @@ function ShowSAMSitesOnStrategicMap(): void {
       wcscpy(wString, pLandTypeStrings[Enum127.SAM_SITE]);
 
       // we're CENTERING the first string AROUND sX, so calculate the starting X value
-      sX -= StringPixLength(wString, MAP_FONT) / 2;
+      sX -= StringPixLength(wString, MAP_FONT()) / 2;
 
       // if within view region...render, else don't
       if ((sX > MAP_VIEW_START_X + MAP_VIEW_WIDTH) || (sX < MAP_VIEW_START_X) || (sY > MAP_VIEW_START_Y + MAP_VIEW_HEIGHT) || (sY < MAP_VIEW_START_Y)) {
@@ -5557,7 +5557,7 @@ function ShowSAMSitesOnStrategicMap(): void {
       // clip blits to mapscreen region
       ClipBlitsToMapViewRegion();
 
-      SetFont(MAP_FONT);
+      SetFont(MAP_FONT());
       // Green on green doesn't contrast well, use Yellow
       SetFontForeground(FONT_MCOLOR_LTYELLOW);
       SetFontBackground(FONT_MCOLOR_BLACK);
@@ -5689,7 +5689,7 @@ function ShowItemsOnMap(): void {
 
   SetFontDestBuffer(guiSAVEBUFFER, MapScreenRect.iLeft + 2, MapScreenRect.iTop, MapScreenRect.iRight, MapScreenRect.iBottom, FALSE);
 
-  SetFont(MAP_FONT);
+  SetFont(MAP_FONT());
   SetFontForeground(FONT_MCOLOR_LTGREEN);
   SetFontBackground(FONT_MCOLOR_BLACK);
 
@@ -5707,7 +5707,7 @@ function ShowItemsOnMap(): void {
 
           swprintf(sString, "%d", uiItemCnt);
 
-          FindFontCenterCoordinates(sXCorner, sYCorner, MAP_GRID_X, MAP_GRID_Y, sString, MAP_FONT, addressof(usXPos), addressof(usYPos));
+          FindFontCenterCoordinates(sXCorner, sYCorner, MAP_GRID_X, MAP_GRID_Y, sString, MAP_FONT(), addressof(usXPos), addressof(usYPos));
           //				sXPos -= StringPixLength( sString, MAP_FONT ) / 2;
 
           gprintfdirty(usXPos, usYPos, sString);

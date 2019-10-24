@@ -572,7 +572,7 @@ function RestoreBackgroundForAssignmentGlowRegionList(): void {
 
   if (iOldAssignmentLine != giAssignHighLine) {
     // restore background
-    RestoreExternBackgroundRect(66, Y_START - 1, 118 + 1 - 67, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE + 2)) + 1));
+    RestoreExternBackgroundRect(66, Y_START - 1, 118 + 1 - 67, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
     // ARM: not good enough! must reblit the whole panel to erase glow chunk restored by help text disappearing!!!
     fTeamPanelDirty = TRUE;
@@ -597,7 +597,7 @@ function RestoreBackgroundForDestinationGlowRegionList(): void {
 
   if (iOldDestinationLine != giDestHighLine) {
     // restore background
-    RestoreExternBackgroundRect(182, Y_START - 1, 217 + 1 - 182, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE + 2)) + 1));
+    RestoreExternBackgroundRect(182, Y_START - 1, 217 + 1 - 182, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
     // ARM: not good enough! must reblit the whole panel to erase glow chunk restored by help text disappearing!!!
     fTeamPanelDirty = TRUE;
@@ -622,7 +622,7 @@ function RestoreBackgroundForContractGlowRegionList(): void {
 
   if (iOldContractLine != giContractHighLine) {
     // restore background
-    RestoreExternBackgroundRect(222, Y_START - 1, 250 + 1 - 222, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE + 2)) + 1));
+    RestoreExternBackgroundRect(222, Y_START - 1, 250 + 1 - 222, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
     // ARM: not good enough! must reblit the whole panel to erase glow chunk restored by help text disappearing!!!
     fTeamPanelDirty = TRUE;
@@ -650,7 +650,7 @@ function RestoreBackgroundForSleepGlowRegionList(): void {
 
   if (iOldSleepHighLine != giSleepHighLine) {
     // restore background
-    RestoreExternBackgroundRect(123, Y_START - 1, 142 + 1 - 123, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE + 2)) + 1));
+    RestoreExternBackgroundRect(123, Y_START - 1, 142 + 1 - 123, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
     // ARM: not good enough! must reblit the whole panel to erase glow chunk restored by help text disappearing!!!
     fTeamPanelDirty = TRUE;
@@ -979,7 +979,7 @@ function HandleDisplayOfSelectedMercArrows(): void {
     return;
   }
   // now blit one by the selected merc
-  sYPosition = Y_START + (bSelectedInfoChar * (Y_SIZE + 2)) - 1;
+  sYPosition = Y_START + (bSelectedInfoChar * (Y_SIZE() + 2)) - 1;
 
   if (bSelectedInfoChar >= FIRST_VEHICLE) {
     sYPosition += 6;
@@ -993,7 +993,7 @@ function HandleDisplayOfSelectedMercArrows(): void {
     if (gCharactersList[ubCount].fValid == TRUE) {
       // are they in the selected list or int he same mvt group as this guy
       if ((IsEntryInSelectedListSet(ubCount) == TRUE) || ((bSelectedDestChar != -1) ? ((Menptr[gCharactersList[ubCount].usSolID].ubGroupID != 0) ? (Menptr[gCharactersList[bSelectedDestChar].usSolID].ubGroupID == Menptr[gCharactersList[ubCount].usSolID].ubGroupID) : FALSE) : FALSE)) {
-        sYPosition = Y_START + (ubCount * (Y_SIZE + 2)) - 1;
+        sYPosition = Y_START + (ubCount * (Y_SIZE() + 2)) - 1;
         if (ubCount >= FIRST_VEHICLE) {
           sYPosition += 6;
         }
@@ -1646,7 +1646,7 @@ function UpdateMapScreenAssignmentPositions(): void {
   if (gfPreBattleInterfaceActive) {
     // do nothing
   } else {
-    giBoxY = (Y_START + (bSelectedAssignChar) * (Y_SIZE + 2));
+    giBoxY = (Y_START + (bSelectedAssignChar) * (Y_SIZE() + 2));
 
     /* ARM: Removed this - refreshes fine without it, apparently
                     // make sure the menus don't overlap the map screen bottom panel (but where did 102 come from?)
@@ -1657,9 +1657,9 @@ function UpdateMapScreenAssignmentPositions(): void {
 
   AssignmentPosition.iY = giBoxY;
 
-  AttributePosition.iY = TrainPosition.iY = AssignmentPosition.iY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN;
+  AttributePosition.iY = TrainPosition.iY = AssignmentPosition.iY + (GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN;
 
-  VehiclePosition.iY = AssignmentPosition.iY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_VEHICLE;
+  VehiclePosition.iY = AssignmentPosition.iY + (GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_VEHICLE;
   SquadPosition.iY = AssignmentPosition.iY;
 
   if (fShowAssignmentMenu) {
@@ -1677,14 +1677,14 @@ function UpdateMapScreenAssignmentPositions(): void {
   if (fShowAttributeMenu) {
     GetBoxPosition(ghAttributeBox, addressof(pPoint));
 
-    pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN;
+    pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN;
 
     SetBoxPosition(ghAttributeBox, pPoint);
   }
 
   if (fShowRepairMenu) {
     GetBoxPosition(ghRepairBox, addressof(pPoint));
-    pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR;
+    pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_REPAIR;
 
     SetBoxPosition(ghRepairBox, pPoint);
   }
@@ -2075,7 +2075,7 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
   iY = pRegion.value.iY;
   // get the width and height of the string
   iW = (pRegion.value.iW) + 14;
-  iH = IanWrappedStringHeight(iX, iY, (pRegion.value.iW), 0, FONT10ARIAL, FONT_BLACK, pRegion.value.FastHelpText, FONT_BLACK, TRUE, 0);
+  iH = IanWrappedStringHeight(iX, iY, (pRegion.value.iW), 0, FONT10ARIAL(), FONT_BLACK, pRegion.value.FastHelpText, FONT_BLACK, TRUE, 0);
 
   // tack on the outer border
   iH += 14;
@@ -2111,10 +2111,10 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
   // ColorFillVideoSurfaceArea(FRAME_BUFFER, iX, iY, (iX + iW), (iY + iH), 0);
   // ColorFillVideoSurfaceArea(FRAME_BUFFER, (iX + 1), (iY + 1), (iX + iW - 1), (iY + iH - 1), usFillColor);
 
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_BEIGE);
 
-  iH = DisplayWrappedString((iX + 10), (iY + 6), pRegion.value.iW, 0, FONT10ARIAL, FONT_BEIGE, pRegion.value.FastHelpText, FONT_NEARBLACK, TRUE, 0);
+  iH = DisplayWrappedString((iX + 10), (iY + 6), pRegion.value.iW, 0, FONT10ARIAL(), FONT_BEIGE, pRegion.value.FastHelpText, FONT_NEARBLACK, TRUE, 0);
 
   iHeightOfInitFastHelpText = iH + 20;
 
@@ -2705,7 +2705,7 @@ function CreatePopUpBoxForMovementBox(): void {
   AddStringsToMoveBox();
 
   // set font type
-  SetBoxFont(ghMoveBox, MAP_SCREEN_FONT);
+  SetBoxFont(ghMoveBox, MAP_SCREEN_FONT());
 
   // set highlight color
   SetBoxHighLight(ghMoveBox, FONT_WHITE);
@@ -3772,7 +3772,7 @@ function DisplaySoldierUpdateBox(): void {
 
       // display the mercs name
       swprintf(sString, "%s", pUpdateSoldierBox[iCounter].value.name);
-      DrawTextToScreen(sString, (iFaceX - 5), (iFaceY + 31), 57, TINYFONT1, FONT_LTRED, FONT_BLACK, 0, CENTER_JUSTIFIED);
+      DrawTextToScreen(sString, (iFaceX - 5), (iFaceY + 31), 57, TINYFONT1(), FONT_LTRED, FONT_BLACK, 0, CENTER_JUSTIFIED);
     }
   }
 
@@ -3782,13 +3782,13 @@ function DisplaySoldierUpdateBox(): void {
     BltVideoObject(guiSAVEBUFFER, hBackGroundHandle, 19, iX - 4 + TACT_UPDATE_MERC_FACE_X_WIDTH, iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3, VO_BLT_SRCTRANSPARENCY, NULL);
 
     // ATE: Display string for time compression
-    DisplayWrappedString((iX), (iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + 5 + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3), (iUpdatePanelWidth), 0, MAP_SCREEN_FONT, FONT_WHITE, gzLateLocalizedString[49], FONT_BLACK, 0, CENTER_JUSTIFIED);
+    DisplayWrappedString((iX), (iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + 5 + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3), (iUpdatePanelWidth), 0, MAP_SCREEN_FONT(), FONT_WHITE, gzLateLocalizedString[49], FONT_BLACK, 0, CENTER_JUSTIFIED);
   } else {
     // def: 3/1/99 WAS SUBINDEX 6,
     BltVideoObject(guiSAVEBUFFER, hBackGroundHandle, 19, iX - 4, iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3, VO_BLT_SRCTRANSPARENCY, NULL);
 
     // ATE: Display string for time compression
-    DisplayWrappedString((iX), (iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + 5 + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3), (iUpdatePanelWidth), 0, MAP_SCREEN_FONT, FONT_WHITE, gzLateLocalizedString[49], FONT_BLACK, 0, CENTER_JUSTIFIED);
+    DisplayWrappedString((iX), (iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + 5 + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3), (iUpdatePanelWidth), 0, MAP_SCREEN_FONT(), FONT_WHITE, gzLateLocalizedString[49], FONT_BLACK, 0, CENTER_JUSTIFIED);
   }
 
   iCounter = 0;
@@ -3809,9 +3809,9 @@ function DisplaySoldierUpdateBox(): void {
 
   // Display the reason for the update box
   if (fFourWideMode) {
-    DisplayWrappedString((iX), (iY + 6), iUpdatePanelWidth, 0, MAP_SCREEN_FONT, FONT_WHITE, pUpdateMercStrings[iReasonForSoldierUpDate], FONT_BLACK, 0, CENTER_JUSTIFIED);
+    DisplayWrappedString((iX), (iY + 6), iUpdatePanelWidth, 0, MAP_SCREEN_FONT(), FONT_WHITE, pUpdateMercStrings[iReasonForSoldierUpDate], FONT_BLACK, 0, CENTER_JUSTIFIED);
   } else {
-    DisplayWrappedString((iX), (iY + 3), iUpdatePanelWidth, 0, MAP_SCREEN_FONT, FONT_WHITE, pUpdateMercStrings[iReasonForSoldierUpDate], FONT_BLACK, 0, CENTER_JUSTIFIED);
+    DisplayWrappedString((iX), (iY + 3), iUpdatePanelWidth, 0, MAP_SCREEN_FONT(), FONT_WHITE, pUpdateMercStrings[iReasonForSoldierUpDate], FONT_BLACK, 0, CENTER_JUSTIFIED);
   }
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
@@ -3851,13 +3851,13 @@ function CreateDestroyUpdatePanelButtons(iX: INT32, iY: INT32, fFourWideMode: BO
     }
 
     SpecifyButtonText(guiUpdatePanelButtons[0], pUpdatePanelButtons[0]);
-    SpecifyButtonFont(guiUpdatePanelButtons[0], MAP_SCREEN_FONT);
+    SpecifyButtonFont(guiUpdatePanelButtons[0], MAP_SCREEN_FONT());
     SpecifyButtonUpTextColors(guiUpdatePanelButtons[0], FONT_MCOLOR_BLACK, FONT_BLACK);
     SpecifyButtonDownTextColors(guiUpdatePanelButtons[0], FONT_MCOLOR_BLACK, FONT_BLACK);
     SetButtonFastHelpText(guiUpdatePanelButtons[0], gzLateLocalizedString[51]);
 
     SpecifyButtonText(guiUpdatePanelButtons[1], pUpdatePanelButtons[1]);
-    SpecifyButtonFont(guiUpdatePanelButtons[1], MAP_SCREEN_FONT);
+    SpecifyButtonFont(guiUpdatePanelButtons[1], MAP_SCREEN_FONT());
     SpecifyButtonUpTextColors(guiUpdatePanelButtons[1], FONT_MCOLOR_BLACK, FONT_BLACK);
     SpecifyButtonDownTextColors(guiUpdatePanelButtons[1], FONT_MCOLOR_BLACK, FONT_BLACK);
     SetButtonFastHelpText(guiUpdatePanelButtons[1], gzLateLocalizedString[52]);

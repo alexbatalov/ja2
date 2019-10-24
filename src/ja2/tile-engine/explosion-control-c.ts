@@ -2433,7 +2433,7 @@ function DecayBombTimers(): void {
           }
 
           if (pObj.value.usItem != Enum225.ACTION_ITEM || pObj.value.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
-            uiTimeStamp += BOMB_QUEUE_DELAY;
+            uiTimeStamp += BOMB_QUEUE_DELAY();
           }
         }
       }
@@ -2460,7 +2460,7 @@ function SetOffBombsByFrequency(ubID: UINT8, bFrequency: INT8): void {
           // put this bomb on the queue
           AddBombToQueue(uiWorldBombIndex, uiTimeStamp);
           if (pObj.value.usItem != Enum225.ACTION_ITEM || pObj.value.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
-            uiTimeStamp += BOMB_QUEUE_DELAY;
+            uiTimeStamp += BOMB_QUEUE_DELAY();
           }
         }
       }
@@ -2536,7 +2536,7 @@ function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: BOOLEAN, bL
             // put this bomb on the queue
             AddBombToQueue(uiWorldBombIndex, uiTimeStamp);
             if (pObj.value.usItem != Enum225.ACTION_ITEM || pObj.value.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
-              uiTimeStamp += BOMB_QUEUE_DELAY;
+              uiTimeStamp += BOMB_QUEUE_DELAY();
             }
 
             if (pObj.value.usBombItem != NOTHING && Item[pObj.value.usBombItem].usItemClass & IC_EXPLOSV) {

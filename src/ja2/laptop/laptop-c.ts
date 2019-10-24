@@ -401,22 +401,22 @@ function GetLaptopKeyboardInput(): void {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
     }
 
@@ -1824,7 +1824,7 @@ function CreateLaptopButtons(): UINT32 {
   CreateLaptopButtonHelpText(gLaptopButton[0], Enum376.LAPTOP_BN_HLP_TXT_VIEW_EMAIL);
 
   SpecifyButtonText(gLaptopButton[0], pLaptopIcons[0]);
-  SpecifyButtonFont(gLaptopButton[0], FONT10ARIAL);
+  SpecifyButtonFont(gLaptopButton[0], FONT10ARIAL());
   SpecifyButtonTextOffsets(gLaptopButton[0], 30, 11, TRUE);
   SpecifyButtonDownTextColors(gLaptopButton[0], 2, 0);
   SpecifyButtonUpTextColors(gLaptopButton[0], 2, 0);
@@ -1834,7 +1834,7 @@ function CreateLaptopButtons(): UINT32 {
   CreateLaptopButtonHelpText(gLaptopButton[1], Enum376.LAPTOP_BN_HLP_TXT_BROWSE_VARIOUS_WEB_SITES);
 
   SpecifyButtonText(gLaptopButton[1], pLaptopIcons[1]);
-  SpecifyButtonFont(gLaptopButton[1], FONT10ARIAL);
+  SpecifyButtonFont(gLaptopButton[1], FONT10ARIAL());
   SpecifyButtonTextOffsets(gLaptopButton[1], 30, 11, TRUE);
   SpecifyButtonUpTextColors(gLaptopButton[1], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[1], 2, 0);
@@ -1844,7 +1844,7 @@ function CreateLaptopButtons(): UINT32 {
   CreateLaptopButtonHelpText(gLaptopButton[2], Enum376.LAPTOP_BN_HLP_TXT_VIEW_FILES_AND_EMAIL_ATTACHMENTS);
 
   SpecifyButtonText(gLaptopButton[2], pLaptopIcons[5]);
-  SpecifyButtonFont(gLaptopButton[2], FONT10ARIAL);
+  SpecifyButtonFont(gLaptopButton[2], FONT10ARIAL());
   SpecifyButtonTextOffsets(gLaptopButton[2], 30, 11, TRUE);
   SpecifyButtonUpTextColors(gLaptopButton[2], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[2], 2, 0);
@@ -1854,7 +1854,7 @@ function CreateLaptopButtons(): UINT32 {
   CreateLaptopButtonHelpText(gLaptopButton[3], Enum376.LAPTOP_BN_HLP_TXT_VIEW_TEAM_INFO);
 
   SpecifyButtonText(gLaptopButton[3], pLaptopIcons[3]);
-  SpecifyButtonFont(gLaptopButton[3], FONT10ARIAL);
+  SpecifyButtonFont(gLaptopButton[3], FONT10ARIAL());
   SpecifyButtonTextOffsets(gLaptopButton[3], 30, 11, TRUE);
   SpecifyButtonUpTextColors(gLaptopButton[3], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[3], 2, 0);
@@ -1864,7 +1864,7 @@ function CreateLaptopButtons(): UINT32 {
   CreateLaptopButtonHelpText(gLaptopButton[4], Enum376.LAPTOP_BN_HLP_TXT_READ_LOG_OF_EVENTS);
 
   SpecifyButtonText(gLaptopButton[4], pLaptopIcons[4]);
-  SpecifyButtonFont(gLaptopButton[4], FONT10ARIAL);
+  SpecifyButtonFont(gLaptopButton[4], FONT10ARIAL());
   SpecifyButtonTextOffsets(gLaptopButton[4], 30, 11, TRUE);
   SpecifyButtonUpTextColors(gLaptopButton[4], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[4], 2, 0);
@@ -1874,7 +1874,7 @@ function CreateLaptopButtons(): UINT32 {
   CreateLaptopButtonHelpText(gLaptopButton[5], Enum376.LAPTOP_BN_HLP_TXT_VIEW_FINANCIAL_SUMMARY_AND_HISTORY);
 
   SpecifyButtonText(gLaptopButton[5], pLaptopIcons[2]);
-  SpecifyButtonFont(gLaptopButton[5], FONT10ARIAL);
+  SpecifyButtonFont(gLaptopButton[5], FONT10ARIAL());
   SpecifyButtonTextOffsets(gLaptopButton[5], 30, 11, TRUE);
   SpecifyButtonUpTextColors(gLaptopButton[5], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[5], 2, 0);
@@ -1885,7 +1885,7 @@ function CreateLaptopButtons(): UINT32 {
   CreateLaptopButtonHelpText(gLaptopButton[6], Enum376.LAPTOP_BN_HLP_TXT_CLOSE_LAPTOP);
 
   SpecifyButtonText(gLaptopButton[6], pLaptopIcons[6]);
-  SpecifyButtonFont(gLaptopButton[6], FONT10ARIAL);
+  SpecifyButtonFont(gLaptopButton[6], FONT10ARIAL());
   SpecifyButtonTextOffsets(gLaptopButton[6], 25, 11, TRUE);
   SpecifyButtonUpTextColors(gLaptopButton[6], 2, 0);
   SpecifyButtonDownTextColors(gLaptopButton[6], 2, 0);
@@ -2658,7 +2658,7 @@ function DisplayBookMarks(): void {
   }
 
   // font stuff
-  SetFont(BOOK_FONT);
+  SetFont(BOOK_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -2690,7 +2690,7 @@ function DisplayBookMarks(): void {
       SetFontBackground(FONT_BLACK);
     }
 
-    FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[LaptopSaveInfo.iBookMarkList[iCounter - 1]], BOOK_FONT, addressof(sX), addressof(sY));
+    FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[LaptopSaveInfo.iBookMarkList[iCounter - 1]], BOOK_FONT(), addressof(sX), addressof(sY));
 
     mprintf(sX, sY, pBookMarkStrings[LaptopSaveInfo.iBookMarkList[iCounter - 1]]);
     iCounter++;
@@ -2715,7 +2715,7 @@ function DisplayBookMarks(): void {
     SetFontForeground(FONT_BLACK);
     SetFontBackground(FONT_BLACK);
   }
-  FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[Enum98.CANCEL_STRING], BOOK_FONT, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[Enum98.CANCEL_STRING], BOOK_FONT(), addressof(sX), addressof(sY));
   mprintf(sX, sY, pBookMarkStrings[Enum98.CANCEL_STRING]);
   iCounter++;
 
@@ -3134,19 +3134,19 @@ function DisplayLoadPending(): BOOLEAN {
   BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, 1, DOWNLOAD_X + 4, DOWNLOAD_Y + 1, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // font stuff
-  SetFont(DOWNLOAD_FONT);
+  SetFont(DOWNLOAD_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
 
   // reload or download?
   if (fFastLoadFlag == TRUE) {
-    FindFontCenterCoordinates(328, 0, 446 - 328, 0, pDownloadString[1], DOWNLOAD_FONT, addressof(sXPosition), addressof(sYPosition));
+    FindFontCenterCoordinates(328, 0, 446 - 328, 0, pDownloadString[1], DOWNLOAD_FONT(), addressof(sXPosition), addressof(sYPosition));
 
     // display download string
     mprintf(sXPosition, DOWN_STRING_Y, pDownloadString[1]);
   } else {
-    FindFontCenterCoordinates(328, 0, 446 - 328, 0, pDownloadString[0], DOWNLOAD_FONT, addressof(sXPosition), addressof(sYPosition));
+    FindFontCenterCoordinates(328, 0, 446 - 328, 0, pDownloadString[0], DOWNLOAD_FONT(), addressof(sXPosition), addressof(sYPosition));
 
     // display download string
     mprintf(sXPosition, DOWN_STRING_Y, pDownloadString[0]);
@@ -3271,7 +3271,7 @@ function DisplayErrorBox(): void {
   BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, 0, ERROR_X, ERROR_Y + 6 * BOOK_HEIGHT, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // font stuff
-  SetFont(ERROR_TITLE_FONT);
+  SetFont(ERROR_TITLE_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -3279,10 +3279,10 @@ function DisplayErrorBox(): void {
   // print title
   mprintf(ERROR_TITLE_X, ERROR_TITLE_Y, pErrorStrings[0]);
   SetFontForeground(FONT_BLACK);
-  SetFont(ERROR_FONT);
+  SetFont(ERROR_FONT());
 
   // display error string
-  DisplayWrappedString(ERROR_X + ERROR_TEXT_X, (ERROR_Y + ERROR_TEXT_Y + DisplayWrappedString(ERROR_X + ERROR_TEXT_X, ERROR_Y + ERROR_TEXT_Y, BOOK_WIDTH, 2, ERROR_FONT, FONT_BLACK, pErrorStrings[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED)), BOOK_WIDTH, 2, ERROR_FONT, FONT_BLACK, pErrorStrings[2], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(ERROR_X + ERROR_TEXT_X, (ERROR_Y + ERROR_TEXT_Y + DisplayWrappedString(ERROR_X + ERROR_TEXT_X, ERROR_Y + ERROR_TEXT_Y, BOOK_WIDTH, 2, ERROR_FONT(), FONT_BLACK, pErrorStrings[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED)), BOOK_WIDTH, 2, ERROR_FONT(), FONT_BLACK, pErrorStrings[2], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
 
   SetFontShadow(DEFAULT_SHADOW);
 
@@ -3291,7 +3291,7 @@ function DisplayErrorBox(): void {
 
 function DrawTextOnErrorButton(): void {
   // draws text on error button
-  SetFont(ERROR_TITLE_FONT);
+  SetFont(ERROR_TITLE_FONT());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -3371,7 +3371,7 @@ function DisplayPlayersBalanceToDate(): void {
   memset(sString, 0, sizeof(sString));
 
   // font stuff
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(142);
   SetFontShadow(NO_SHADOW);
 
@@ -3383,7 +3383,7 @@ function DisplayPlayersBalanceToDate(): void {
   InsertDollarSignInToString(sString);
 
   // get center
-  FindFontCenterCoordinates(LAPTOP_ICON_TEXT_X, 0, (LAPTOP_ICON_TEXT_WIDTH), (LAPTOP_ICON_TEXT_HEIGHT), sString, LAPTOPICONFONT, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(LAPTOP_ICON_TEXT_X, 0, (LAPTOP_ICON_TEXT_WIDTH), (LAPTOP_ICON_TEXT_HEIGHT), sString, LAPTOPICONFONT(), addressof(sX), addressof(sY));
   //	gprintfdirty( sX , LAPTOP_ICON_TEXT_FINANCIAL_Y + 10, sString );
   // printf it!
   if (ButtonList[gLaptopButton[5]].value.uiFlags & BUTTON_CLICKED_ON) {
@@ -3618,7 +3618,7 @@ function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: STR16
   BltVideoObject(guiTitleBarSurface, hImageHandle, usIconGraphicIndex, LAPTOP_TITLE_BAR_ICON_OFFSET_X, LAPTOP_TITLE_BAR_ICON_OFFSET_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   SetFontDestBuffer(guiTitleBarSurface, 0, 0, vs_desc.usWidth, vs_desc.usHeight, FALSE);
-  DrawTextToScreen(pTitle, LAPTOP_TITLE_BAR_TEXT_OFFSET_X, LAPTOP_TITLE_BAR_TEXT_OFFSET_Y, 0, FONT14ARIAL, FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(pTitle, LAPTOP_TITLE_BAR_TEXT_OFFSET_X, LAPTOP_TITLE_BAR_TEXT_OFFSET_Y, 0, FONT14ARIAL(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
   return TRUE;
@@ -4251,7 +4251,7 @@ function PrintBalance(): void {
   let pString: CHAR16[] /* [32] */;
   //	UINT16 usX, usY;
 
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -4282,7 +4282,7 @@ function PrintNumberOnTeam(): void {
   let usFontHeight: UINT16;
   let usStrLength: UINT16;
 
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -4300,8 +4300,8 @@ function PrintNumberOnTeam(): void {
 
   swprintf(pString, "%s %d", pPersonnelString[0], iCounter);
 
-  usFontHeight = GetFontHeight(FONT10ARIAL);
-  usStrLength = StringPixLength(pString, FONT10ARIAL);
+  usFontHeight = GetFontHeight(FONT10ARIAL());
+  usStrLength = StringPixLength(pString, FONT10ARIAL());
 
   if (ButtonList[gLaptopButton[3]].value.uiFlags & BUTTON_CLICKED_ON) {
     usPosX = 47 + 1;
@@ -4323,13 +4323,13 @@ function PrintNumberOnTeam(): void {
 }
 
 function PrintDate(): void {
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
 
   SetFontShadow(NO_SHADOW);
 
-  mprintf(30 + (70 - StringPixLength(WORLDTIMESTR, FONT10ARIAL)) / 2, 433, WORLDTIMESTR);
+  mprintf(30 + (70 - StringPixLength(WORLDTIMESTR(), FONT10ARIAL())) / 2, 433, WORLDTIMESTR());
 
   SetFontShadow(DEFAULT_SHADOW);
 
@@ -4458,7 +4458,7 @@ function RenderWWWProgramTitleBar(): BOOLEAN {
   DeleteVideoObjectFromIndex(uiTITLEFORWWW);
 
   // now slapdown text
-  SetFont(FONT14ARIAL);
+  SetFont(FONT14ARIAL());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
@@ -4801,7 +4801,7 @@ function DisplayWebBookMarkNotify(): void {
     //					CURSOR_LAPTOP_SCREEN, ScreenRegionMvtCallback, LapTopScreenCallBack );
 
     // font stuff
-    SetFont(DOWNLOAD_FONT);
+    SetFont(DOWNLOAD_FONT());
     SetFontForeground(FONT_WHITE);
     SetFontBackground(FONT_BLACK);
     SetFontShadow(NO_SHADOW);
@@ -4809,13 +4809,13 @@ function DisplayWebBookMarkNotify(): void {
     // display download string
     mprintf(DOWN_STRING_X, DOWN_STRING_Y, pShowBookmarkString[0]);
 
-    SetFont(BOOK_FONT);
+    SetFont(BOOK_FONT());
     SetFontForeground(FONT_BLACK);
     SetFontBackground(FONT_BLACK);
     SetFontShadow(NO_SHADOW);
 
     // now draw the message
-    DisplayWrappedString((DOWN_STRING_X - 42), (DOWN_STRING_Y + 20), BOOK_WIDTH + 45, 2, BOOK_FONT, FONT_BLACK, pShowBookmarkString[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString((DOWN_STRING_X - 42), (DOWN_STRING_Y + 20), BOOK_WIDTH + 45, 2, BOOK_FONT(), FONT_BLACK, pShowBookmarkString[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
 
     // invalidate region
     InvalidateRegion(DOWNLOAD_X, DOWNLOAD_Y, DOWNLOAD_X + 150, DOWNLOAD_Y + 100);

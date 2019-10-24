@@ -172,7 +172,7 @@ function EndTurn(ubNextTeam: UINT8): void {
           }
           */
 
-  if (INTERRUPT_QUEUED) {
+  if (INTERRUPT_QUEUED()) {
     EndInterrupt(FALSE);
   } else {
     AddPossiblePendingEnemiesToBattle();
@@ -203,7 +203,7 @@ function EndAITurn(): void {
 
   // Remove any deadlock message
   EndDeadlockMsg();
-  if (INTERRUPT_QUEUED) {
+  if (INTERRUPT_QUEUED()) {
     EndInterrupt(FALSE);
   } else {
     cnt = gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bFirstID;
@@ -228,7 +228,7 @@ function EndAllAITurns(): void {
 
   // Remove any deadlock message
   EndDeadlockMsg();
-  if (INTERRUPT_QUEUED) {
+  if (INTERRUPT_QUEUED()) {
     EndInterrupt(FALSE);
   }
 
@@ -367,9 +367,9 @@ function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
   gfPlotNewMovement = TRUE;
 
   // Stop our guy....
-  AdjustNoAPToFinishMove(MercPtrs[LATEST_INTERRUPT_GUY], TRUE);
+  AdjustNoAPToFinishMove(MercPtrs[LATEST_INTERRUPT_GUY()], TRUE);
   // Stop him from going to prone position if doing a turn while prone
-  MercPtrs[LATEST_INTERRUPT_GUY].value.fTurningFromPronePosition = FALSE;
+  MercPtrs[LATEST_INTERRUPT_GUY()].value.fTurningFromPronePosition = FALSE;
 
   // get rid of any old overlay message
   if (pSoldier.value.bTeam == MILITIA_TEAM) {
@@ -445,7 +445,7 @@ function StartInterrupt(): void {
   let ubInterrupter: UINT8;
   let cnt: INT32;
 
-  ubFirstInterrupter = LATEST_INTERRUPT_GUY;
+  ubFirstInterrupter = LATEST_INTERRUPT_GUY();
   pSoldier = MercPtrs[ubFirstInterrupter];
   bTeam = pSoldier.value.bTeam;
   ubInterrupter = ubFirstInterrupter;
@@ -481,7 +481,7 @@ function StartInterrupt(): void {
 
       REMOVE_LATEST_INTERRUPT_GUY();
       // now LATEST_INTERRUPT_GUY is the guy before the previous
-      ubInterrupter = LATEST_INTERRUPT_GUY;
+      ubInterrupter = LATEST_INTERRUPT_GUY();
 
       if (ubInterrupter == NOBODY) // previously emptied slot!
       {
@@ -581,7 +581,7 @@ function StartInterrupt(): void {
 
       REMOVE_LATEST_INTERRUPT_GUY();
       // now LATEST_INTERRUPT_GUY is the guy before the previous
-      ubInterrupter = LATEST_INTERRUPT_GUY;
+      ubInterrupter = LATEST_INTERRUPT_GUY();
       if (ubInterrupter == NOBODY) // previously emptied slot!
       {
         continue;
@@ -618,8 +618,8 @@ function StartInterrupt(): void {
 
   if (!gfHiddenInterrupt) {
     // Stop this guy....
-    AdjustNoAPToFinishMove(MercPtrs[LATEST_INTERRUPT_GUY], TRUE);
-    MercPtrs[LATEST_INTERRUPT_GUY].value.fTurningFromPronePosition = FALSE;
+    AdjustNoAPToFinishMove(MercPtrs[LATEST_INTERRUPT_GUY()], TRUE);
+    MercPtrs[LATEST_INTERRUPT_GUY()].value.fTurningFromPronePosition = FALSE;
   }
 }
 
@@ -661,7 +661,7 @@ function EndInterrupt(fMarkInterruptOccurred: BOOLEAN): void {
     // resume interrupted interrupt
     StartInterrupt();
   } else {
-    ubInterruptedSoldier = LATEST_INTERRUPT_GUY;
+    ubInterruptedSoldier = LATEST_INTERRUPT_GUY();
 
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: interrupt over, %d's team regains control", ubInterruptedSoldier));
 
@@ -889,7 +889,7 @@ function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOppone
     // if his team's already in control
     if (pSoldier.value.bTeam == gTacticalStatus.ubCurrentTeam) {
       // if this is a player's a merc or civilian
-      if ((pSoldier.value.uiStatusFlags & SOLDIER_PC) || PTR_CIVILIAN) {
+      if ((pSoldier.value.uiStatusFlags & SOLDIER_PC) || PTR_CIVILIAN()) {
         // then they are not allowed to interrupt their own team
         return FALSE;
       } else {
@@ -966,7 +966,7 @@ function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOppone
     // if the soldiers are on the same side
     if (pSoldier.value.bSide == pOpponent.value.bSide) {
       // human/civilians on same side can't interrupt each other
-      if ((pSoldier.value.uiStatusFlags & SOLDIER_PC) || PTR_CIVILIAN) {
+      if ((pSoldier.value.uiStatusFlags & SOLDIER_PC) || PTR_CIVILIAN()) {
         return FALSE;
       } else // enemy
       {
@@ -1020,7 +1020,7 @@ function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOppone
       }
 
       // if the soldier isn't currently crouching
-      if (!PTR_CROUCHED) {
+      if (!PTR_CROUCHED()) {
         ubMinPtsNeeded = AP_CROUCH;
       } else {
         ubMinPtsNeeded = MinPtsToMove(pSoldier);
@@ -1504,7 +1504,7 @@ function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptType: UI
         if (ubSmallestSlot < NOBODY) {
           // add this guy to everyone's interrupt queue
           AddToIntList(ubIntList[ubSmallestSlot], TRUE, TRUE);
-          if (INTERRUPTS_OVER) {
+          if (INTERRUPTS_OVER()) {
             // a loop was created which removed all the people in the interrupt queue!
             EndInterrupt(TRUE);
             return;

@@ -4,7 +4,7 @@ function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances:
   Assert(pSoldier.value.bActive);
 
   // ignore non-player soldiers
-  if (!PTR_OURTEAM)
+  if (!PTR_OURTEAM())
     return;
 
   // ignore anything without a profile
@@ -615,7 +615,7 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
       return;
 
     // ignore non-player soldiers
-    if (!PTR_OURTEAM)
+    if (!PTR_OURTEAM())
       return;
 
     // ignore anything without a profile

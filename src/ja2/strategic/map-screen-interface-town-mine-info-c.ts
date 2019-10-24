@@ -77,7 +77,7 @@ function CreateDestroyTownInfoBox(): void {
     AddItemsInSectorToBox();
 
     // set font type
-    SetBoxFont(ghTownMineBox, BLOCKFONT2);
+    SetBoxFont(ghTownMineBox, BLOCKFONT2());
 
     // set highlight color
     SetBoxHighLight(ghTownMineBox, FONT_WHITE);
@@ -86,7 +86,7 @@ function CreateDestroyTownInfoBox(): void {
     SetBoxSecondColumnBackground(ghTownMineBox, FONT_BLACK);
     SetBoxSecondColumnHighLight(ghTownMineBox, FONT_WHITE);
     SetBoxSecondColumnShade(ghTownMineBox, FONT_BLACK);
-    SetBoxSecondColumnFont(ghTownMineBox, BLOCKFONT2);
+    SetBoxSecondColumnFont(ghTownMineBox, BLOCKFONT2());
     SetBoxSecondColumnMinimumOffset(ghTownMineBox, 20);
 
     // unhighlighted color
@@ -623,14 +623,14 @@ function AddInventoryButtonForMapPopUpBox(): void {
 
   guiMapButtonInventoryImage[0] = LoadButtonImage("INTERFACE\\mapinvbtns.sti", -1, 0, -1, 2, -1);
 
-  guiMapButtonInventory[0] = CreateIconAndTextButton(guiMapButtonInventoryImage[0], pMapPopUpInventoryText[0], BLOCKFONT2, FONT_WHITE, FONT_BLACK, FONT_WHITE, FONT_BLACK, TEXT_CJUSTIFIED, (sX), (sY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, MapTownMineInventoryButtonCallBack);
+  guiMapButtonInventory[0] = CreateIconAndTextButton(guiMapButtonInventoryImage[0], pMapPopUpInventoryText[0], BLOCKFONT2(), FONT_WHITE, FONT_BLACK, FONT_WHITE, FONT_BLACK, TEXT_CJUSTIFIED, (sX), (sY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), MapTownMineInventoryButtonCallBack);
 
   sX = sX + sWidthA + (pDimensions.iRight - sTotalBoxWidth) / 3;
   sY = pPosition.iY + pDimensions.iBottom - ((BOX_BUTTON_HEIGHT + 5));
 
   guiMapButtonInventoryImage[1] = LoadButtonImage("INTERFACE\\mapinvbtns.sti", -1, 1, -1, 3, -1);
 
-  guiMapButtonInventory[1] = CreateIconAndTextButton(guiMapButtonInventoryImage[1], pMapPopUpInventoryText[1], BLOCKFONT2, FONT_WHITE, FONT_BLACK, FONT_WHITE, FONT_BLACK, TEXT_CJUSTIFIED, (sX), (sY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, MapTownMineExitButtonCallBack);
+  guiMapButtonInventory[1] = CreateIconAndTextButton(guiMapButtonInventoryImage[1], pMapPopUpInventoryText[1], BLOCKFONT2(), FONT_WHITE, FONT_BLACK, FONT_WHITE, FONT_BLACK, TEXT_CJUSTIFIED, (sX), (sY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), MapTownMineExitButtonCallBack);
 
   // delete video object
   DeleteVideoObjectFromIndex(uiObject);

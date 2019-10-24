@@ -79,15 +79,15 @@ const INSQUENODE = (newNode, curNode) => {
 
 const DELQUENODE = (ndx) => {
   REMQUENODE(ndx);
-  INSQUENODEPREV(ndx, QPOOLNDX);
+  INSQUENODEPREV(ndx, QPOOLNDX());
   pathQB[ndx].location = -1;
 };
 
 const NEWQUENODE = () => {
-  if (queRequests < QPOOLNDX)
+  if (queRequests < QPOOLNDX())
     qNewNdx = queRequests++;
   else {
-    qNewNdx = pathQB[QPOOLNDX].nextLink;
+    qNewNdx = pathQB[QPOOLNDX()].nextLink;
     REMQUENODE(qNewNdx);
   }
 };
@@ -98,7 +98,7 @@ const ESTIMATE2 = () => FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14
 const ESTIMATEn = () => ((FLATCOST * sqrt(dx * dx + dy * dy)));
 const ESTIMATE = () => ESTIMATE1();
 
-const REMAININGCOST = (ndx) => ((locY = pathQB[ndx].location / MAP_WIDTH), (locX = pathQB[ndx].location % MAP_WIDTH), (dy = abs(iDestY - locY)), (dx = abs(iDestX - locX)), ESTIMATE);
+const REMAININGCOST = (ndx) => ((locY = pathQB[ndx].location / MAP_WIDTH), (locX = pathQB[ndx].location % MAP_WIDTH), (dy = abs(iDestY - locY)), (dx = abs(iDestX - locX)), ESTIMATE());
 
 const MAXCOST = (99900);
 const TOTALCOST = (ndx) => (pathQB[ndx].costSoFar + pathQB[ndx].costToGo);
@@ -203,8 +203,8 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
   pathQB[QHEADNDX].prevLink = 1;
   pathQB[QHEADNDX].costSoFar = MAXCOST;
 
-  pathQB[QPOOLNDX].nextLink = QPOOLNDX;
-  pathQB[QPOOLNDX].prevLink = QPOOLNDX;
+  pathQB[QPOOLNDX()].nextLink = QPOOLNDX();
+  pathQB[QPOOLNDX()].prevLink = QPOOLNDX();
 
   // setup first path record
   pathQB[1].nextLink = QHEADNDX;
@@ -312,13 +312,13 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
       // if (_KeyDown(CTRL_DOWN) && nextCost < TRAVELCOST_VEINEND)
       newTotCost = curCost + nextCost;
       if (newTotCost < trailCostB[newLoc]) {
-        NEWQUENODE;
+        NEWQUENODE();
 
         if (qNewNdx == QHEADNDX) {
           return 0;
         }
 
-        if (qNewNdx == QPOOLNDX) {
+        if (qNewNdx == QPOOLNDX()) {
           return 0;
         }
 
@@ -341,9 +341,9 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
         INSQUENODEPREV(qNewNdx, insertNdx);
       }
     }
-  } while (pathQNotEmpty && pathNotYetFound);
+  } while (pathQNotEmpty() && pathNotYetFound());
   // work finished. Did we find a path?
-  if (pathFound) {
+  if (pathFound()) {
     let z: INT16;
     let _z: INT16;
     let _nextLink: INT16; //,tempgrid;

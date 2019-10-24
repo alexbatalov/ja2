@@ -355,18 +355,18 @@ function EnterSaveLoadScreen(): BOOLEAN {
   //	else
   usPosX = SLG_LOAD_CANCEL_POS_X;
 
-  guiSlgCancelBtn = CreateIconAndTextButton(guiSlgButtonImage, zSaveLoadText[Enum371.SLG_CANCEL], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, SLG_CANCEL_POS_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnSlgCancelCallback);
+  guiSlgCancelBtn = CreateIconAndTextButton(guiSlgButtonImage, zSaveLoadText[Enum371.SLG_CANCEL], OPT_BUTTON_FONT(), OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, SLG_CANCEL_POS_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnSlgCancelCallback);
 
   // Either the save or load button
   if (gfSaveGame) {
     // If we are saving, dont have the save game button
     guiSaveLoadImage = UseLoadedButtonImage(guiSlgButtonImage, -1, 5, -1, 8, -1);
 
-    guiSlgSaveLoadBtn = CreateIconAndTextButton(guiSaveLoadImage, zSaveLoadText[Enum371.SLG_SAVE_GAME], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SLG_SAVE_LOAD_BTN_POS_X, SLG_SAVE_LOAD_BTN_POS_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnSlgSaveLoadCallback);
+    guiSlgSaveLoadBtn = CreateIconAndTextButton(guiSaveLoadImage, zSaveLoadText[Enum371.SLG_SAVE_GAME], OPT_BUTTON_FONT(), OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SLG_SAVE_LOAD_BTN_POS_X, SLG_SAVE_LOAD_BTN_POS_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnSlgSaveLoadCallback);
   } else {
     guiSaveLoadImage = UseLoadedButtonImage(guiSlgButtonImage, -1, 4, -1, 7, -1);
 
-    guiSlgSaveLoadBtn = CreateIconAndTextButton(guiSaveLoadImage, zSaveLoadText[Enum371.SLG_LOAD_GAME], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SLG_SAVE_LOAD_BTN_POS_X, SLG_SAVE_LOAD_BTN_POS_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnSlgSaveLoadCallback);
+    guiSlgSaveLoadBtn = CreateIconAndTextButton(guiSaveLoadImage, zSaveLoadText[Enum371.SLG_LOAD_GAME], OPT_BUTTON_FONT(), OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SLG_SAVE_LOAD_BTN_POS_X, SLG_SAVE_LOAD_BTN_POS_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnSlgSaveLoadCallback);
   }
 
   // if we are loading, disable the load button
@@ -643,22 +643,22 @@ function GetSaveLoadScreenUserInput(): void {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
     }
 
@@ -911,7 +911,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
   let SaveGameHeader: SAVED_GAME_HEADER;
   let hPixHandle: HVOBJECT;
   let usPosX: UINT16 = SLG_FIRST_SAVED_SPOT_X;
-  let uiFont: UINT32 = SAVE_LOAD_TITLE_FONT;
+  let uiFont: UINT32 = SAVE_LOAD_TITLE_FONT();
   let ubFontColor: UINT8 = SAVE_LOAD_TITLE_COLOR;
   let usPosY: UINT16 = SLG_FIRST_SAVED_SPOT_Y + (SLG_GAP_BETWEEN_LOCATIONS * bEntryID);
 
@@ -939,7 +939,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
   if (bEntryID == 0 && gfSaveGame) {
     SetFontShadow(SAVE_LOAD_QUICKSAVE_SHADOW_COLOR);
     ubFontColor = SAVE_LOAD_QUICKSAVE_COLOR;
-    uiFont = SAVE_LOAD_QUICKSAVE_FONT;
+    uiFont = SAVE_LOAD_QUICKSAVE_FONT();
 
     // Shadow the slot
     //		if( !gbSaveGameArray[ bEntryID ] )
@@ -950,14 +950,14 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
   else if (bEntryID == gbSelectedSaveLocation) {
     SetFontShadow(SAVE_LOAD_SELECTED_SHADOW_COLOR); // 130
     ubFontColor = SAVE_LOAD_SELECTED_COLOR; // SAVE_LOAD_NORMAL_COLOR;
-    uiFont = SAVE_LOAD_SELECTED_FONT;
+    uiFont = SAVE_LOAD_SELECTED_FONT();
   }
 
   // else it is the highlighted slot
   else if (bEntryID == gbHighLightedLocation) {
     SetFontShadow(SAVE_LOAD_HIGHLIGHTED_SHADOW_COLOR);
     ubFontColor = SAVE_LOAD_HIGHLIGHTED_COLOR;
-    uiFont = SAVE_LOAD_HIGHLIGHTED_FONT;
+    uiFont = SAVE_LOAD_HIGHLIGHTED_FONT();
   }
 
   // if the file doesnt exists
@@ -966,19 +966,19 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
     if (!gfSaveGame) {
       SetFontShadow(SAVE_LOAD_QUICKSAVE_SHADOW_COLOR);
       ubFontColor = SAVE_LOAD_QUICKSAVE_COLOR;
-      uiFont = SAVE_LOAD_QUICKSAVE_FONT;
+      uiFont = SAVE_LOAD_QUICKSAVE_FONT();
 
       // Shadow the surface
       ShadowVideoSurfaceRect(FRAME_BUFFER, usPosX, usPosY, usPosX + SLG_SAVELOCATION_WIDTH, usPosY + SLG_SAVELOCATION_HEIGHT);
     } else {
       SetFontShadow(SAVE_LOAD_EMPTYSLOT_SHADOW_COLOR);
       ubFontColor = SAVE_LOAD_EMPTYSLOT_COLOR;
-      uiFont = SAVE_LOAD_EMPTYSLOT_FONT;
+      uiFont = SAVE_LOAD_EMPTYSLOT_FONT();
     }
   } else {
     SetFontShadow(SAVE_LOAD_NORMAL_SHADOW_COLOR);
     ubFontColor = SAVE_LOAD_NORMAL_COLOR;
-    uiFont = SAVE_LOAD_NORMAL_FONT;
+    uiFont = SAVE_LOAD_NORMAL_FONT();
   }
 
   // if the file exists
@@ -1428,7 +1428,7 @@ function InitSaveLoadScreenTextInputBoxes(): void {
   InitTextInputMode();
 
   SetTextInputCursor(Enum317.CUROSR_IBEAM_WHITE);
-  SetTextInputFont(FONT12ARIALFIXEDWIDTH); // FONT12ARIAL //FONT12ARIALFIXEDWIDTH
+  SetTextInputFont(FONT12ARIALFIXEDWIDTH()); // FONT12ARIAL //FONT12ARIALFIXEDWIDTH
   Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(0, 0, 0)));
   SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
   SetTextInputRegularColors(FONT_WHITE, 2);
@@ -1651,7 +1651,7 @@ function DisplayOnScreenNumber(fErase: BOOLEAN): void {
     }
 
     if (!fErase)
-      DrawTextToScreen(zTempString, usPosX, (usPosY + SLG_DATE_OFFSET_Y), 0, SAVE_LOAD_NUMBER_FONT, SAVE_LOAD_NUMBER_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zTempString, usPosX, (usPosY + SLG_DATE_OFFSET_Y), 0, SAVE_LOAD_NUMBER_FONT(), SAVE_LOAD_NUMBER_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     InvalidateRegion(usPosX, usPosY + SLG_DATE_OFFSET_Y, usPosX + 10, usPosY + SLG_DATE_OFFSET_Y + 10);
 

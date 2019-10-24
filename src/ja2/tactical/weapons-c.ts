@@ -849,7 +849,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
 
     // NB bDoBurst will be 2 at this point for the first shot since it was incremented
     // above
-    if (PTR_OURTEAM && pSoldier.value.ubTargetID != NOBODY && (!pSoldier.value.bDoBurst || pSoldier.value.bDoBurst == 2) && (gTacticalStatus.uiFlags & INCOMBAT) && (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, MercPtrs[pSoldier.value.ubTargetID], pSoldier.value.bAimShotLocation) > 0)) {
+    if (PTR_OURTEAM() && pSoldier.value.ubTargetID != NOBODY && (!pSoldier.value.bDoBurst || pSoldier.value.bDoBurst == 2) && (gTacticalStatus.uiFlags & INCOMBAT) && (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, MercPtrs[pSoldier.value.ubTargetID], pSoldier.value.bAimShotLocation) > 0)) {
       if (fGonnaHit) {
         // grant extra exp for hitting a difficult target
         usExpGain += (100 - uiHitChance) / 25;
@@ -906,7 +906,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     // Deduct knife from inv! (not here, later?)
 
     // Improve for using a throwing knife....
-    if (PTR_OURTEAM && pSoldier.value.ubTargetID != NOBODY) {
+    if (PTR_OURTEAM() && pSoldier.value.ubTargetID != NOBODY) {
       if (fGonnaHit) {
         // grant extra exp for hitting a difficult target
         usExpGain += (100 - uiHitChance) / 10;
@@ -1120,7 +1120,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN
       FreeUpAttacker(pSoldier.value.ubID);
     }
 
-    if (PTR_OURTEAM && pSoldier.value.ubTargetID != NOBODY) {
+    if (PTR_OURTEAM() && pSoldier.value.ubTargetID != NOBODY) {
       if (fGonnaHit) {
         // grant extra exp for hitting a difficult target
         usExpGain += (100 - iHitChance) / 10;

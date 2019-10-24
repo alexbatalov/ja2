@@ -768,14 +768,14 @@ function DisplayEditMercWindow(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 1, iYPos + 1, iXPos + iWidth, iYPos + iHeight, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 1, iYPos + 1, iXPos + iWidth - 1, iYPos + iHeight - 1, usFillColorBack);
 
-  SetFont(FONT12POINT1);
+  SetFont(FONT12POINT1());
 
   // Name window
   gprintf(iXPos + 128, iYPos + 3, "Merc Name:");
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 16, iXPos + 128 + 104, iYPos + 16 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 17, iXPos + 128 + 104, iYPos + 17 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 17, iXPos + 128 + 103, iYPos + 17 + 18, usFillColorTextBk);
-  iXOff = (105 - StringPixLength(pSoldier.value.name, FONT12POINT1)) / 2;
+  iXOff = (105 - StringPixLength(pSoldier.value.name, FONT12POINT1())) / 2;
   gprintf(iXPos + 130 + iXOff, iYPos + 20, "%s", pSoldier.value.name);
 
   // Orders window
@@ -783,7 +783,7 @@ function DisplayEditMercWindow(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 51, iXPos + 128 + 104, iYPos + 51 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 52, iXPos + 128 + 104, iYPos + 52 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 52, iXPos + 128 + 103, iYPos + 52 + 18, usFillColorTextBk);
-  iXOff = (105 - StringPixLength(EditMercOrders[pSoldier.value.bOrders], FONT12POINT1)) / 2;
+  iXOff = (105 - StringPixLength(EditMercOrders[pSoldier.value.bOrders], FONT12POINT1())) / 2;
   gprintf(iXPos + 130 + iXOff, iYPos + 55, "%s", EditMercOrders[pSoldier.value.bOrders]);
 
   // Combat window
@@ -791,7 +791,7 @@ function DisplayEditMercWindow(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 86, iXPos + 128 + 104, iYPos + 86 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 87, iXPos + 128 + 104, iYPos + 87 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 87, iXPos + 128 + 103, iYPos + 87 + 18, usFillColorTextBk);
-  iXOff = (105 - StringPixLength(EditMercAttitudes[pSoldier.value.bAttitude], FONT12POINT1)) / 2;
+  iXOff = (105 - StringPixLength(EditMercAttitudes[pSoldier.value.bAttitude], FONT12POINT1())) / 2;
   gprintf(iXPos + 130 + iXOff, iYPos + 90, "%s", EditMercAttitudes[pSoldier.value.bAttitude]);
 
   // Get stats
@@ -816,7 +816,7 @@ function DisplayEditMercWindow(): void {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 117, iYPos + 111 + (20 * x), iXPos + 116 + 29, iYPos + 111 + (20 * x) + 18, usFillColorTextBk);
 
     swprintf(TempString, "%d", iEditStat[x]);
-    iXOff = (30 - StringPixLength(TempString, FONT12POINT1)) / 2;
+    iXOff = (30 - StringPixLength(TempString, FONT12POINT1())) / 2;
     gprintf(iXPos + 118 + iXOff, iYPos + 114 + (20 * x), "%s", TempString);
   }
 }
@@ -1225,14 +1225,14 @@ function DisplayWayPoints(): void {
 
     if (sScreenY <= 355) {
       // Shown it on screen!
-      SetFont(TINYFONT1);
+      SetFont(TINYFONT1());
       if (pSoldier.value.bLevel == 1) {
         SetFontBackground(FONT_LTBLUE);
         sScreenY -= 68;
       } else
         SetFontBackground(FONT_LTRED);
       SetFontForeground(FONT_WHITE);
-      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1, addressof(sX), addressof(sY), "%d", bPoint);
+      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1(), addressof(sX), addressof(sY), "%d", bPoint);
       mprintf(sX, sY, "%d", bPoint);
     }
   }
@@ -1255,60 +1255,60 @@ function CreateEditMercWindow(): void {
   iEditMercLocation = pSoldier.value.sGridNo;
   gpWorldLevelData[iEditMercLocation].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
 
-  iEditMercBkgrndArea = CreateHotSpot(iXPos, iYPos, iWidth, iHeight, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, EditMercBkgrndCallback);
+  iEditMercBkgrndArea = CreateHotSpot(iXPos, iYPos, iWidth, iHeight, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), EditMercBkgrndCallback);
 
-  iEditMercColorPage = CreateTextButton("Merc Colors", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, (iXPos + 183), (iYPos + 315), 80, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercChangeToColorPageCallback);
-  iEditMercEnd = CreateTextButton("Done", FONT12POINT1, FONT_MCOLOR_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, (iXPos + 183), (iYPos + 337), 80, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercDoneEditCallback);
+  iEditMercColorPage = CreateTextButton("Merc Colors", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, (iXPos + 183), (iYPos + 315), 80, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercChangeToColorPageCallback);
+  iEditMercEnd = CreateTextButton("Done", FONT12POINT1(), FONT_MCOLOR_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, (iXPos + 183), (iYPos + 337), 80, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercDoneEditCallback);
 
   // Disable color editing for PC Mercs
   if (gsSelectedMercID >= gTacticalStatus.Team[OUR_TEAM].bFirstID && gsSelectedMercID <= gTacticalStatus.Team[OUR_TEAM].bLastID)
     DisableButton(iEditMercColorPage);
 
-  iEditorButton[8] = QuickCreateButton(giEditMercImage[0], (iXPos + 98), (iYPos + 51), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercPrevOrderCallback);
-  iEditorButton[9] = QuickCreateButton(giEditMercImage[1], (iXPos + 233), (iYPos + 51), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercNextOrderCallback);
+  iEditorButton[8] = QuickCreateButton(giEditMercImage[0], (iXPos + 98), (iYPos + 51), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercPrevOrderCallback);
+  iEditorButton[9] = QuickCreateButton(giEditMercImage[1], (iXPos + 233), (iYPos + 51), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercNextOrderCallback);
   SetButtonFastHelpText(iEditorButton[8], "Previous merc standing orders");
   SetButtonFastHelpText(iEditorButton[9], "Next merc standing orders");
 
-  iEditorButton[10] = QuickCreateButton(giEditMercImage[0], (iXPos + 98), (iYPos + 86), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercPrevAttCallback);
-  iEditorButton[11] = QuickCreateButton(giEditMercImage[1], (iXPos + 233), (iYPos + 86), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercNextAttCallback);
+  iEditorButton[10] = QuickCreateButton(giEditMercImage[0], (iXPos + 98), (iYPos + 86), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercPrevAttCallback);
+  iEditorButton[11] = QuickCreateButton(giEditMercImage[1], (iXPos + 233), (iYPos + 86), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercNextAttCallback);
   SetButtonFastHelpText(iEditorButton[10], "Previous merc combat attitude");
   SetButtonFastHelpText(iEditorButton[11], "Next merc combat attitude");
 
-  iEditorButton[12] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 110), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[13] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 110), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[12] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 110), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[13] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 110), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[14] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 130), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[15] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 130), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[14] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 130), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[15] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 130), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[16] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 150), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[17] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 150), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[16] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 150), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[17] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 150), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[18] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 170), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[19] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 170), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[18] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 170), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[19] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 170), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[20] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 190), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[21] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 190), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[20] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 190), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[21] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 190), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[22] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 210), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[23] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 210), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[22] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 210), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[23] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 210), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[24] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 230), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[25] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 230), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[24] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 230), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[25] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 230), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[26] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 250), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[27] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 250), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[26] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 250), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[27] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 250), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[28] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 270), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[29] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 270), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[28] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 270), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[29] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 270), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[30] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 290), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[31] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 290), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[30] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 290), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[31] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 290), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[32] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 310), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[33] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 310), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[32] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 310), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[33] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 310), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
-  iEditorButton[34] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 330), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
-  iEditorButton[35] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 330), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
+  iEditorButton[34] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 330), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatDwnCallback);
+  iEditorButton[35] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 330), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), EditMercStatUpCallback);
 
   for (x = 12; x < 36; x += 2) {
     SetButtonFastHelpText(iEditorButton[x], "Decrease merc stat");
@@ -2291,7 +2291,7 @@ function DisplayBodyTypeInfo(): void {
       swprintf(str, "Bloodcat");
       break;
   }
-  DrawEditorInfoBox(str, FONT10ARIAL, 490, 364, 70, 20);
+  DrawEditorInfoBox(str, FONT10ARIAL(), 490, 364, 70, 20);
 }
 
 function UpdateMercsInfo(): void {
@@ -2316,14 +2316,14 @@ function UpdateMercsInfo(): void {
     case Enum42.MERC_GENERALMODE:
       BltVideoObjectFromIndex(FRAME_BUFFER, guiExclamation, 0, 188, 362, VO_BLT_SRCTRANSPARENCY, NULL);
       BltVideoObjectFromIndex(FRAME_BUFFER, guiKeyImage, 0, 186, 387, VO_BLT_SRCTRANSPARENCY, NULL);
-      SetFont(SMALLCOMPFONT);
+      SetFont(SMALLCOMPFONT());
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
       mprintf(240, 363, " --=ORDERS=-- ");
       mprintf(240, 419, "--=ATTITUDE=--");
       if (iDrawMode == Enum38.DRAW_MODE_CREATURE) {
         DisplayBodyTypeInfo();
-        SetFont(SMALLCOMPFONT);
+        SetFont(SMALLCOMPFONT());
         SetFontForeground(FONT_LTBLUE);
         mprintf(493, 416, "RELATIVE");
         mprintf(480, 422, "ATTRIBUTES");
@@ -2336,7 +2336,7 @@ function UpdateMercsInfo(): void {
         mprintf(530, 371, "ATTRIBUTES");
       }
       if (iDrawMode == Enum38.DRAW_MODE_ENEMY) {
-        SetFont(FONT10ARIAL);
+        SetFont(FONT10ARIAL());
         SetFontForeground(FONT_YELLOW);
         mprintf(590, 411, "Army");
         mprintf(590, 425, "Admin");
@@ -2344,7 +2344,7 @@ function UpdateMercsInfo(): void {
       }
       break;
     case Enum42.MERC_ATTRIBUTEMODE:
-      SetFont(FONT10ARIAL);
+      SetFont(FONT10ARIAL());
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
       mprintf(225, 370, "Exp. Level");
@@ -2362,7 +2362,7 @@ function UpdateMercsInfo(): void {
       mprintf(525, 370, "Morale");
       break;
     case Enum42.MERC_APPEARANCEMODE:
-      SetFont(FONT10ARIAL);
+      SetFont(FONT10ARIAL());
       if (gpSelected.value.pDetailedPlacement.value.fVisible || gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE)
         SetFontForeground(FONT_YELLOW);
       else
@@ -2374,7 +2374,7 @@ function UpdateMercsInfo(): void {
       mprintf(396, 412, "Vest color:");
       mprintf(396, 436, "Pant color:");
 
-      SetFont(SMALLCOMPFONT);
+      SetFont(SMALLCOMPFONT());
       SetFontForeground(FONT_BLACK);
       if (gpSelected.value.pDetailedPlacement.value.fVisible || gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE) {
         mprintfEditor(396, 374, "%S    ", gpSelected.value.pSoldier.value.HeadPal);
@@ -2392,15 +2392,15 @@ function UpdateMercsInfo(): void {
       DisplayBodyTypeInfo();
       break;
     case Enum42.MERC_PROFILEMODE:
-      SetFont(FONT10ARIAL);
+      SetFont(FONT10ARIAL());
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
       {
         // scope trick
         let tempStr: UINT16[] /* [500] */;
         swprintf(tempStr, "%s%s%s%s%s%d.", "By specifying a profile index, all of the information will be extracted from the profile ", "and override any values that you have edited.  It will also disable the editing features ", "though, you will still be able to view stats, etc.  Pressing ENTER will automatically ", "extract the number you have typed.  A blank field will clear the profile.  The current ", "number of profiles range from 0 to ", NUM_PROFILES);
-        DisplayWrappedString(180, 370, 400, 2, FONT10ARIAL, 146, tempStr, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
-        SetFont(FONT12POINT1);
+        DisplayWrappedString(180, 370, 400, 2, FONT10ARIAL(), 146, tempStr, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+        SetFont(FONT12POINT1());
         if (gpSelected.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
           SetFontForeground(FONT_GRAY3);
           mprintfEditor(240, 435, "Current Profile:  n/a                            ");
@@ -2412,7 +2412,7 @@ function UpdateMercsInfo(): void {
       }
       break;
     case Enum42.MERC_SCHEDULEMODE:
-      SetFont(FONT10ARIAL);
+      SetFont(FONT10ARIAL());
       SetFontForeground(FONT_WHITE);
       SetFontShadow(FONT_NEARBLACK);
       switch (gpSelected.value.pSoldier.value.bOrders) {
@@ -2485,7 +2485,7 @@ function UpdateMercsInfo(): void {
             return;
         }
         wcscat(str, "  Hit ESC to abort entering this line in the schedule.");
-        DisplayWrappedString(436, 392, 149, 2, FONT10ARIAL, FONT_YELLOW, str, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+        DisplayWrappedString(436, 392, 149, 2, FONT10ARIAL(), FONT_YELLOW, str, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
       }
       break;
   }
@@ -2566,14 +2566,14 @@ function RenderSelectedMercsInventory(): void {
       }
       xp += MERCPANEL_X;
       yp += MERCPANEL_Y;
-      SetFont(SMALLCOMPFONT);
+      SetFont(SMALLCOMPFONT());
       if (i == gbCurrSelect)
         ubFontColor = FONT_LTRED;
       else if (i == gbCurrHilite)
         ubFontColor = FONT_YELLOW;
       else
         ubFontColor = FONT_WHITE;
-      DisplayWrappedString(xp, yp, 60, 2, SMALLCOMPFONT, ubFontColor, pItemName, 0, FALSE, LEFT_JUSTIFIED);
+      DisplayWrappedString(xp, yp, 60, 2, SMALLCOMPFONT(), ubFontColor, pItemName, 0, FALSE, LEFT_JUSTIFIED);
     }
   }
 }
@@ -2957,11 +2957,11 @@ function RenderMercStrings(): void {
       pSoldier = curr.value.pSoldier;
       GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), FALSE);
       // Display name
-      SetFont(TINYFONT1);
+      SetFont(TINYFONT1());
       SetFontBackground(FONT_BLACK);
       SetFontForeground(FONT_WHITE);
       if (pSoldier.value.ubProfile != NO_PROFILE) {
-        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pSoldier.value.name, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pSoldier.value.name, TINYFONT1(), addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, pSoldier.value.name);
           mprintf(sX, sY, pSoldier.value.name);
@@ -2970,11 +2970,11 @@ function RenderMercStrings(): void {
 
         pStr = GetSoldierHealthString(pSoldier);
 
-        SetFont(TINYFONT1);
+        SetFont(TINYFONT1());
         SetFontBackground(FONT_BLACK);
         SetFontForeground(FONT_RED);
 
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, pStr);
           mprintf(sX, sY, pStr);
@@ -2983,7 +2983,7 @@ function RenderMercStrings(): void {
 
         SetFontForeground(FONT_GRAY2);
         swprintf(str, "Slot #%d", pSoldier.value.ubID);
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
           mprintf(sX, sY, str);
@@ -2992,11 +2992,11 @@ function RenderMercStrings(): void {
       } else {
         pStr = GetSoldierHealthString(pSoldier);
 
-        SetFont(TINYFONT1);
+        SetFont(TINYFONT1());
         SetFontBackground(FONT_BLACK);
         SetFontForeground(FONT_RED);
 
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, pStr);
           mprintf(sX, sY, pStr);
@@ -3005,7 +3005,7 @@ function RenderMercStrings(): void {
 
         SetFontForeground(FONT_GRAY2);
         swprintf(str, "Slot #%d", pSoldier.value.ubID);
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
           mprintf(sX, sY, str);
@@ -3020,7 +3020,7 @@ function RenderMercStrings(): void {
           else
             SetFontForeground(FONT_RED);
           swprintf(str, "Patrol orders with no waypoints");
-          FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, addressof(sX), addressof(sY));
+          FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
           if (sY < 352) {
             gprintfdirty(sX, sY, str);
             mprintf(sX, sY, str);
@@ -3033,7 +3033,7 @@ function RenderMercStrings(): void {
         else
           SetFontForeground(FONT_RED);
         swprintf(str, "Waypoints with no patrol orders");
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
           mprintf(sX, sY, str);
@@ -3327,11 +3327,11 @@ function RenderCurrentSchedule(): void {
 
     if (sScreenY <= 355) {
       // Shown it on screen!
-      SetFont(TINYFONT1);
+      SetFont(TINYFONT1());
       SetFontBackground(FONT_LTKHAKI);
       SetFontForeground(FONT_WHITE);
       swprintf(str, "%d%c", i / 2 + 1, 'A' + (i % 2));
-      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1, addressof(sX), addressof(sY), str);
+      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1(), addressof(sX), addressof(sY), str);
       mprintf(sX, sY, str);
     }
   }

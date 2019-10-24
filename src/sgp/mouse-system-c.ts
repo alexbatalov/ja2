@@ -1013,7 +1013,7 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
     usFillColor = Get16BPPColor(FROMRGB(250, 240, 188));
 
     iW = GetWidthOfString(region.value.FastHelpText) + 10;
-    iH = (GetNumberOfLinesInHeight(region.value.FastHelpText) * (GetFontHeight(FONT10ARIAL) + 1) + 8);
+    iH = (GetNumberOfLinesInHeight(region.value.FastHelpText) * (GetFontHeight(FONT10ARIAL()) + 1) + 8);
 
     iX = region.value.RegionTopLeftX + 10;
 
@@ -1045,7 +1045,7 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
       ShadowVideoSurfaceRect(FRAME_BUFFER, iX + 2, iY + 2, iX + iW - 3, iY + iH - 3);
       ShadowVideoSurfaceRect(FRAME_BUFFER, iX + 2, iY + 2, iX + iW - 3, iY + iH - 3);
 
-      SetFont(FONT10ARIAL);
+      SetFont(FONT10ARIAL());
       SetFontShadow(FONT_NEARBLACK);
       DisplayHelpTokenizedString(region.value.FastHelpText, (iX + 5), (iY + 5));
       InvalidateRegion(iX, iY, (iX + iW), (iY + iH));
@@ -1063,8 +1063,8 @@ function GetWidthOfString(pStringA: STR16): INT16 {
   pToken = wcstok(pString, "\n");
 
   while (pToken != NULL) {
-    if (sWidth < StringPixLength(pToken, FONT10ARIAL)) {
-      sWidth = StringPixLength(pToken, FONT10ARIAL);
+    if (sWidth < StringPixLength(pToken, FONT10ARIAL())) {
+      sWidth = StringPixLength(pToken, FONT10ARIAL());
     }
 
     pToken = wcstok(NULL, "\n");
@@ -1089,16 +1089,16 @@ function DisplayHelpTokenizedString(pStringA: STR16, sX: INT16, sY: INT16): void
   while (pToken != NULL) {
     iLength = wcslen(pToken);
     for (i = 0; i < iLength; i++) {
-      uiCursorXPos = StringPixLengthArgFastHelp(FONT10ARIAL, FONT10ARIALBOLD, i, pToken);
+      uiCursorXPos = StringPixLengthArgFastHelp(FONT10ARIAL(), FONT10ARIALBOLD(), i, pToken);
       if (pToken[i] == '|') {
         i++;
-        SetFont(FONT10ARIALBOLD);
+        SetFont(FONT10ARIALBOLD());
         SetFontForeground(146);
       } else {
-        SetFont(FONT10ARIAL);
+        SetFont(FONT10ARIAL());
         SetFontForeground(FONT_BEIGE);
       }
-      mprintf(sX + uiCursorXPos, sY + iCounter * (GetFontHeight(FONT10ARIAL) + 1), "%c", pToken[i]);
+      mprintf(sX + uiCursorXPos, sY + iCounter * (GetFontHeight(FONT10ARIAL()) + 1), "%c", pToken[i]);
     }
     pToken = wcstok(NULL, "\n");
     iCounter++;

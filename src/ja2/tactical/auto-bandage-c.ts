@@ -573,8 +573,8 @@ function DisplayAutoBandageUpdatePanel(): void {
 
         // display the mercs name
         swprintf(sString, "%s", (Menptr[iDoctorList[iCounterA * iNumberDoctorsWide + iCounterB]]).name);
-        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, addressof(sX), addressof(sY));
-        SetFont(TINYFONT1);
+        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
+        SetFont(TINYFONT1());
         SetFontForeground(FONT_LTRED);
         SetFontBackground(FONT_BLACK);
 
@@ -599,7 +599,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 11, sXPosition - 4, sYPosition + ((iNumberDoctorsHigh)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
   BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 13, sXPosition + iTotalPixelsWide, sYPosition + ((iNumberDoctorsHigh)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
 
-  SetFont(TINYFONT1);
+  SetFont(TINYFONT1());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
@@ -607,7 +607,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   iCurPixelY = sYPosition + ((iCounterA - 1) * TACT_UPDATE_MERC_FACE_X_HEIGHT);
 
   swprintf(sString, "%s", zMarksMapScreenText[13]);
-  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
   // print medic
   mprintf(sX, sYPosition - 7, sString);
 
@@ -635,8 +635,8 @@ function DisplayAutoBandageUpdatePanel(): void {
 
         // display the mercs name
         swprintf(sString, "%s", (Menptr[iPatientList[iIndex]]).name);
-        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, addressof(sX), addressof(sY));
-        SetFont(TINYFONT1);
+        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
+        SetFont(TINYFONT1());
         SetFontForeground(FONT_LTRED);
         SetFontBackground(FONT_BLACK);
         sY += 35;
@@ -692,12 +692,12 @@ function DisplayAutoBandageUpdatePanel(): void {
     CreateTerminateAutoBandageButton((sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH), (sYPosition + iTotalPixelsHigh + 3));
   }
 
-  SetFont(TINYFONT1);
+  SetFont(TINYFONT1());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
   swprintf(sString, "%s", zMarksMapScreenText[14]);
-  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
   // print patient
   mprintf(sX, iCurPixelY + (TACT_UPDATE_MERC_FACE_X_HEIGHT) + 2, sString);
 
@@ -749,12 +749,12 @@ function CreateTerminateAutoBandageButton(sX: INT16, sY: INT16): void {
   iEndAutoBandageButton[1] = QuickCreateButton(iEndAutoBandageButtonImage[1], (sX + 70), sY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, StopAutoBandageButtonCallback);
 
   SpecifyButtonText(iEndAutoBandageButton[0], zMarksMapScreenText[15]);
-  SpecifyButtonFont(iEndAutoBandageButton[0], MAP_SCREEN_FONT);
+  SpecifyButtonFont(iEndAutoBandageButton[0], MAP_SCREEN_FONT());
   SpecifyButtonUpTextColors(iEndAutoBandageButton[0], FONT_MCOLOR_BLACK, FONT_BLACK);
   SpecifyButtonDownTextColors(iEndAutoBandageButton[0], FONT_MCOLOR_BLACK, FONT_BLACK);
 
   SpecifyButtonText(iEndAutoBandageButton[1], zMarksMapScreenText[16]);
-  SpecifyButtonFont(iEndAutoBandageButton[1], MAP_SCREEN_FONT);
+  SpecifyButtonFont(iEndAutoBandageButton[1], MAP_SCREEN_FONT());
   SpecifyButtonUpTextColors(iEndAutoBandageButton[1], FONT_MCOLOR_BLACK, FONT_BLACK);
   SpecifyButtonDownTextColors(iEndAutoBandageButton[1], FONT_MCOLOR_BLACK, FONT_BLACK);
 

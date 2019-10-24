@@ -33,20 +33,20 @@ function RTDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function RealtimeDelay(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
-  if (PTR_CIV_OR_MILITIA && !(pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP)) {
-    return REALTIME_CIV_AI_DELAY;
+  if (PTR_CIV_OR_MILITIA() && !(pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP)) {
+    return REALTIME_CIV_AI_DELAY();
   } else if (CREATURE_OR_BLOODCAT(pSoldier) && !(pSoldier.value.bHunting)) {
-    return REALTIME_CREATURE_AI_DELAY;
+    return REALTIME_CREATURE_AI_DELAY();
   } else {
     if (pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
       let ubRoom: UINT8;
 
       if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom)) {
-        return (REALTIME_AI_DELAY / 3);
+        return (REALTIME_AI_DELAY() / 3);
       }
     }
 
-    return REALTIME_AI_DELAY;
+    return REALTIME_AI_DELAY();
   }
 }
 
@@ -139,12 +139,12 @@ function RTHandleAI(pSoldier: Pointer<SOLDIERTYPE>): void {
       // do a standard wait before doing anything else!
       pSoldier.value.bAction = Enum289.AI_ACTION_WAIT;
       // if (PTR_CIVILIAN && pSoldier->bAlertStatus != STATUS_BLACK)
-      if (PTR_CIV_OR_MILITIA && !(pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP)) {
-        pSoldier.value.usActionData = REALTIME_CIV_AI_DELAY;
+      if (PTR_CIV_OR_MILITIA() && !(pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP)) {
+        pSoldier.value.usActionData = REALTIME_CIV_AI_DELAY();
       } else if (CREATURE_OR_BLOODCAT(pSoldier) && !(pSoldier.value.bHunting)) {
-        pSoldier.value.usActionData = REALTIME_CREATURE_AI_DELAY;
+        pSoldier.value.usActionData = REALTIME_CREATURE_AI_DELAY();
       } else {
-        pSoldier.value.usActionData = REALTIME_AI_DELAY;
+        pSoldier.value.usActionData = REALTIME_AI_DELAY();
         if (pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
           let ubRoom: UINT8;
 

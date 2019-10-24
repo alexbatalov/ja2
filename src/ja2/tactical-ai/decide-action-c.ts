@@ -491,8 +491,8 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bInWater: INT8;
   let bInGas: INT8;
 
-  let fCivilian: BOOLEAN = (PTR_CIVILIAN && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || pSoldier.value.bNeutral || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
-  let fCivilianOrMilitia: BOOLEAN = PTR_CIV_OR_MILITIA;
+  let fCivilian: BOOLEAN = (PTR_CIVILIAN() && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || pSoldier.value.bNeutral || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
+  let fCivilianOrMilitia: BOOLEAN = PTR_CIV_OR_MILITIA();
 
   gubNPCPathCount = 0;
 
@@ -831,7 +831,7 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           if (fCivilianOrMilitia && !gfTurnBasedAI) {
             // pause at the end of the walk!
             pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-            pSoldier.value.usNextActionData = REALTIME_CIV_AI_DELAY;
+            pSoldier.value.usNextActionData = REALTIME_CIV_AI_DELAY();
           }
 
           return Enum289.AI_ACTION_SEEK_FRIEND;
@@ -902,7 +902,7 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iChance: INT32;
   let iSneaky: INT32;
   let sClosestFriend: INT16;
-  let fCivilian: BOOLEAN = (PTR_CIVILIAN && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || pSoldier.value.bNeutral || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
+  let fCivilian: BOOLEAN = (PTR_CIVILIAN() && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || pSoldier.value.bNeutral || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
   let fClimb: BOOLEAN;
   let fReachable: BOOLEAN;
 
@@ -1319,7 +1319,7 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////////
 
   // if not in water and not already crouched, try to crouch down first
-  if (!fCivilian && !PTR_CROUCHED && IsValidStance(pSoldier, ANIM_CROUCH)) {
+  if (!fCivilian && !PTR_CROUCHED() && IsValidStance(pSoldier, ANIM_CROUCH)) {
     if (!gfTurnBasedAI || GetAPsToChangeStance(pSoldier, ANIM_CROUCH) <= pSoldier.value.bActionPoints) {
       pSoldier.value.usActionData = ANIM_CROUCH;
       return Enum289.AI_ACTION_CHANGE_STANCE;
@@ -1356,7 +1356,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
   let bHighestWatchLoc: INT8;
   let BestThrow: ATTACKTYPE;
   let fClimb: BOOLEAN;
-  let fCivilian: BOOLEAN = (PTR_CIVILIAN && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || (pSoldier.value.bNeutral && gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] == CIV_GROUP_NEUTRAL) || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
+  let fCivilian: BOOLEAN = (PTR_CIVILIAN() && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || (pSoldier.value.bNeutral && gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] == CIV_GROUP_NEUTRAL) || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
 
   // if we have absolutely no action points, we can't do a thing under RED!
   if (!pSoldier.value.bActionPoints) {
@@ -1368,7 +1368,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
   ubCanMove = (pSoldier.value.bActionPoints >= MinPtsToMove(pSoldier));
 
   // if we're an alerted enemy, and there are panic bombs or a trigger around
-  if ((!PTR_CIVILIAN || pSoldier.value.ubProfile == Enum268.WARDEN) && ((gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition || (pSoldier.value.ubID == gTacticalStatus.ubTheChosenOne) || (pSoldier.value.ubProfile == Enum268.WARDEN)) && (gTacticalStatus.fPanicFlags & (PANIC_BOMBS_HERE | PANIC_TRIGGERS_HERE)))) {
+  if ((!PTR_CIVILIAN() || pSoldier.value.ubProfile == Enum268.WARDEN) && ((gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition || (pSoldier.value.ubID == gTacticalStatus.ubTheChosenOne) || (pSoldier.value.ubProfile == Enum268.WARDEN)) && (gTacticalStatus.fPanicFlags & (PANIC_BOMBS_HERE | PANIC_TRIGGERS_HERE)))) {
     if (pSoldier.value.ubProfile == Enum268.WARDEN && gTacticalStatus.ubTheChosenOne == NOBODY) {
       PossiblyMakeThisEnemyChosenOne(pSoldier);
     }
@@ -1463,7 +1463,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
         } else // not in battle, cower for a certain length of time
         {
           pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-          pSoldier.value.usNextActionData = REALTIME_CIV_AI_DELAY;
+          pSoldier.value.usNextActionData = REALTIME_CIV_AI_DELAY();
           pSoldier.value.usActionData = ANIM_CROUCH;
           return Enum289.AI_ACTION_COWER;
         }
@@ -1522,7 +1522,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
         } else // not in battle, cower for a certain length of time
         {
           pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-          pSoldier.value.usNextActionData = REALTIME_CIV_AI_DELAY;
+          pSoldier.value.usNextActionData = REALTIME_CIV_AI_DELAY();
           pSoldier.value.usActionData = ANIM_CROUCH;
           return Enum289.AI_ACTION_COWER;
         }
@@ -1598,7 +1598,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
   // if our breath is running a bit low, and we're not in water or under fire
   if ((pSoldier.value.bBreath < 25) && !bInWater && !pSoldier.value.bUnderFire) {
     // if not already crouched, try to crouch down first
-    if (!fCivilian && !PTR_CROUCHED && IsValidStance(pSoldier, ANIM_CROUCH)) {
+    if (!fCivilian && !PTR_CROUCHED() && IsValidStance(pSoldier, ANIM_CROUCH)) {
       if (!gfTurnBasedAI || GetAPsToChangeStance(pSoldier, ANIM_CROUCH) <= pSoldier.value.bActionPoints) {
         pSoldier.value.usActionData = ANIM_CROUCH;
 
@@ -2136,7 +2136,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
               pSoldier.value.bNextAction = Enum289.AI_ACTION_END_TURN;
             } else {
               pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-              pSoldier.value.usNextActionData = REALTIME_AI_DELAY;
+              pSoldier.value.usNextActionData = REALTIME_AI_DELAY();
             }
           }
 
@@ -2271,7 +2271,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let BestThrow: ATTACKTYPE;
   let BestStab: ATTACKTYPE;
   let BestAttack: ATTACKTYPE;
-  let fCivilian: BOOLEAN = (PTR_CIVILIAN && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || pSoldier.value.bNeutral || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
+  let fCivilian: BOOLEAN = (PTR_CIVILIAN() && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || pSoldier.value.bNeutral || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
   let ubBestStance: UINT8;
   let ubStanceCost: UINT8;
   let fChangeStanceFirst: BOOLEAN; // before firing
@@ -3394,7 +3394,7 @@ function DecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
 
         case Enum243.STATUS_YELLOW:
           // if all enemies have been RED alerted, or we're under fire
-          if (!PTR_CIVILIAN && (gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition || pSoldier.value.bUnderFire)) {
+          if (!PTR_CIVILIAN() && (gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition || pSoldier.value.bUnderFire)) {
             pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
           } else {
             // if we are NOT aware of any uninvestigated noises right now
@@ -3410,7 +3410,7 @@ function DecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
 
         case Enum243.STATUS_GREEN:
           // if all enemies have been RED alerted, or we're under fire
-          if (!PTR_CIVILIAN && (gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition || pSoldier.value.bUnderFire)) {
+          if (!PTR_CIVILIAN() && (gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition || pSoldier.value.bUnderFire)) {
             pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
           } else {
             // if we ARE aware of any uninvestigated noises right now

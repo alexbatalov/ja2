@@ -249,12 +249,12 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   sWorldScreenY += (gsRenderHeight / 5);
 
   // Display name
-  SetFont(TINYFONT1);
+  SetFont(TINYFONT1());
   SetFontBackground(FONT_MCOLOR_BLACK);
   SetFontForeground(FONT_MCOLOR_WHITE);
 
   // Center here....
-  FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier.value.name, TINYFONT1, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier.value.name, TINYFONT1(), addressof(sX), addressof(sY));
 
   // OK, selected guy is here...
   gprintfdirty(sX, sY, pSoldier.value.name);
@@ -982,10 +982,10 @@ function RenderOverheadOverlays(): void {
       RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sX, sY, (sX + 3), (sY + 9));
     }
     if (ubPassengers) {
-      SetFont(SMALLCOMPFONT);
+      SetFont(SMALLCOMPFONT());
       SetFontForeground(FONT_WHITE);
       gprintfdirty((sX - 3), sY, "%d", ubPassengers);
-      mprintf_buffer(pDestBuf, uiDestPitchBYTES, SMALLCOMPFONT, sX - 3, sY, "%d", ubPassengers);
+      mprintf_buffer(pDestBuf, uiDestPitchBYTES, SMALLCOMPFONT(), sX - 3, sY, "%d", ubPassengers);
     }
   }
 

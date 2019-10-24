@@ -283,7 +283,7 @@ function MapUtilScreenHandle(): UINT32 {
 
   UnLockVideoSurface(gi8BitMiniMap);
 
-  SetFont(TINYFONT1);
+  SetFont(TINYFONT1());
   SetFontBackground(FONT_MCOLOR_BLACK);
   SetFontForeground(FONT_MCOLOR_DKGRAY);
   mprintf(10, 340, "Writing radar image %S", zFilename2);

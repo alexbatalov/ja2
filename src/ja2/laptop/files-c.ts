@@ -241,7 +241,7 @@ function RenderFilesBackGround(): void {
 
 function DrawFilesTitleText(): void {
   // setup the font stuff
-  SetFont(FILES_TITLE_FONT);
+  SetFont(FILES_TITLE_FONT());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
   // reset shadow
@@ -526,7 +526,7 @@ function DisplayFilesList(): void {
   let hHandle: HVOBJECT;
 
   // font stuff
-  SetFont(FILES_TEXT_FONT);
+  SetFont(FILES_TEXT_FONT());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
@@ -699,7 +699,7 @@ function DisplayFormattedText(): BOOLEAN {
         LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
-        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT, FILE_TEXT_COLOR, sString, 0, FALSE, 0);
+        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, FALSE, 0);
 
         // increment file record counter
         iCounter++;
@@ -730,7 +730,7 @@ function DisplayFormattedText(): BOOLEAN {
         LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
-        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT, FILE_TEXT_COLOR, sString, 0, FALSE, 0);
+        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, FALSE, 0);
 
         // increment file record counter
         iCounter++;
@@ -789,7 +789,7 @@ function DisplayFormattedText(): BOOLEAN {
         LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
-        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT, FILE_TEXT_COLOR, sString, 0, FALSE, 0);
+        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, FALSE, 0);
 
         // increment file record counter
         iCounter++;
@@ -851,7 +851,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
       iCounter = 0;
       pLocatorString = pTempString;
 
-      pTempString = GetFirstStringOnThisPage(pFileStringList, FILES_TEXT_FONT, 350, FILE_GAP, giFilesPage, MAX_FILE_MESSAGE_PAGE_SIZE, WidthList);
+      pTempString = GetFirstStringOnThisPage(pFileStringList, FILES_TEXT_FONT(), 350, FILE_GAP, giFilesPage, MAX_FILE_MESSAGE_PAGE_SIZE, WidthList);
 
       // find out where this string is
       while (pLocatorString != pTempString) {
@@ -871,11 +871,11 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
         }
 
         // set up font
-        uiFont = FILES_TEXT_FONT;
+        uiFont = FILES_TEXT_FONT();
         if (giFilesPage == 0) {
           switch (iCounter) {
             case (0):
-              uiFont = FILES_TITLE_FONT;
+              uiFont = FILES_TITLE_FONT();
               break;
           }
         }
@@ -1340,7 +1340,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
   iCounter = 0;
   pLocatorString = pTempString;
 
-  pTempString = GetFirstStringOnThisPage(pFileStringList, FILES_TEXT_FONT, 350, FILE_GAP, giFilesPage, MAX_FILE_MESSAGE_PAGE_SIZE, WidthList);
+  pTempString = GetFirstStringOnThisPage(pFileStringList, FILES_TEXT_FONT(), 350, FILE_GAP, giFilesPage, MAX_FILE_MESSAGE_PAGE_SIZE, WidthList);
 
   // find out where this string is
   while (pLocatorString != pTempString) {
@@ -1360,11 +1360,11 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
     }
 
     // set up font
-    uiFont = FILES_TEXT_FONT;
+    uiFont = FILES_TEXT_FONT();
     if (giFilesPage == 0) {
       switch (iCounter) {
         case (0):
-          uiFont = FILES_TITLE_FONT;
+          uiFont = FILES_TITLE_FONT();
           break;
       }
     }

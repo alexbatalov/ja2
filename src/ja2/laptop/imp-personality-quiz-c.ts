@@ -118,7 +118,7 @@ function CreateIMPPersonalityQuizButtons(): void {
                                                                                   BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPersonalityQuizAnswerConfirmCallback);
   */
-  giIMPPersonalityQuizButton[0] = CreateIconAndTextButton(giIMPPersonalityQuizButtonImage[0], pImpButtonText[8], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (197), LAPTOP_SCREEN_WEB_UL_Y + (302), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityQuizAnswerConfirmCallback);
+  giIMPPersonalityQuizButton[0] = CreateIconAndTextButton(giIMPPersonalityQuizButtonImage[0], pImpButtonText[8], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (197), LAPTOP_SCREEN_WEB_UL_Y + (302), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityQuizAnswerConfirmCallback);
 
   // start over
   giIMPPersonalityQuizButtonImage[1] = LoadButtonImage("LAPTOP\\button_5.sti", -1, 0, -1, 1, -1);
@@ -128,13 +128,13 @@ function CreateIMPPersonalityQuizButtons(): void {
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPersonalityQuizStartOverCallback);
 */
 
-  giIMPPersonalityQuizButton[1] = CreateIconAndTextButton(giIMPPersonalityQuizButtonImage[1], pImpButtonText[7], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (BTN_FIRST_COLUMN_X), LAPTOP_SCREEN_WEB_UL_Y + (302), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityQuizStartOverCallback);
+  giIMPPersonalityQuizButton[1] = CreateIconAndTextButton(giIMPPersonalityQuizButtonImage[1], pImpButtonText[7], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (BTN_FIRST_COLUMN_X), LAPTOP_SCREEN_WEB_UL_Y + (302), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityQuizStartOverCallback);
 
   giPreviousQuestionButtonImage = LoadButtonImage("LAPTOP\\button_3.sti", -1, 0, -1, 1, -1);
-  giPreviousQuestionButton = CreateIconAndTextButton(giPreviousQuestionButtonImage, pImpButtonText[12], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (197), LAPTOP_SCREEN_WEB_UL_Y + (361), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, PreviousQuestionButtonCallback);
+  giPreviousQuestionButton = CreateIconAndTextButton(giPreviousQuestionButtonImage, pImpButtonText[12], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (197), LAPTOP_SCREEN_WEB_UL_Y + (361), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, PreviousQuestionButtonCallback);
 
   giNextQuestionButtonImage = LoadButtonImage("LAPTOP\\button_3.sti", -1, 0, -1, 1, -1);
-  giNextQuestionButton = CreateIconAndTextButton(giNextQuestionButtonImage, pImpButtonText[13], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (417), LAPTOP_SCREEN_WEB_UL_Y + (361), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, NextQuestionButtonCallback);
+  giNextQuestionButton = CreateIconAndTextButton(giNextQuestionButtonImage, pImpButtonText[13], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (417), LAPTOP_SCREEN_WEB_UL_Y + (361), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, NextQuestionButtonCallback);
 
   SpecifyButtonTextSubOffsets(giNextQuestionButton, 0, -1, FALSE);
   SpecifyButtonTextSubOffsets(giPreviousQuestionButton, 0, -1, FALSE);
@@ -337,7 +337,7 @@ function AddIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
     SpecifyButtonUpTextColors(giIMPPersonalityQuizAnswerButton[iCounter], FONT_WHITE, FONT_BLACK);
     SpecifyButtonDownTextColors(giIMPPersonalityQuizAnswerButton[iCounter], FONT_WHITE, FONT_BLACK);
     SpecifyButtonTextOffsets(giIMPPersonalityQuizAnswerButton[iCounter], +23, +12, TRUE);
-    SpecifyButtonFont(giIMPPersonalityQuizAnswerButton[iCounter], FONT12ARIAL);
+    SpecifyButtonFont(giIMPPersonalityQuizAnswerButton[iCounter], FONT12ARIAL());
     SpecifyButtonText(giIMPPersonalityQuizAnswerButton[iCounter], sString);
     SetButtonCursor(giIMPPersonalityQuizAnswerButton[iCounter], Enum317.CURSOR_WWW);
   }
@@ -1271,7 +1271,7 @@ function PrintQuizQuestionNumber(): void {
   let sString: CHAR16[] /* [10] */;
 
   // setup font
-  SetFont(FONT12ARIAL);
+  SetFont(FONT12ARIAL());
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
@@ -1373,27 +1373,27 @@ function HandleIMPQuizKeyBoard(): void {
 
 */ switch (InputEvent.usEvent) {
         case LEFT_BUTTON_DOWN:
-          MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+          MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
 
           break;
         case LEFT_BUTTON_UP:
-          MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+          MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
 
           break;
         case RIGHT_BUTTON_DOWN:
-          MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+          MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
 
           break;
         case RIGHT_BUTTON_UP:
-          MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+          MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
 
           break;
         case RIGHT_BUTTON_REPEAT:
-          MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+          MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
 
           break;
         case LEFT_BUTTON_REPEAT:
-          MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+          MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
 
           break;
         default:

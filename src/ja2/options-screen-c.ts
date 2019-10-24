@@ -267,7 +267,7 @@ function EnterOptionsScreen(): BOOLEAN {
 
   // Save game button
   giOptionsButtonImages = LoadButtonImage("INTERFACE\\OptionScreenAddons.sti", -1, 2, -1, 3, -1);
-  guiOptGotoSaveGameBtn = CreateIconAndTextButton(giOptionsButtonImages, zOptionsText[Enum372.OPT_SAVE_GAME], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_SAVE_BTN_X, OPT_SAVE_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnOptGotoSaveGameCallback);
+  guiOptGotoSaveGameBtn = CreateIconAndTextButton(giOptionsButtonImages, zOptionsText[Enum372.OPT_SAVE_GAME], OPT_BUTTON_FONT(), OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_SAVE_BTN_X, OPT_SAVE_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnOptGotoSaveGameCallback);
   SpecifyDisabledButtonStyle(guiOptGotoSaveGameBtn, Enum29.DISABLED_STYLE_HATCHED);
   if (guiPreviousOptionScreen == Enum26.MAINMENU_SCREEN || !CanGameBeSaved()) {
     DisableButton(guiOptGotoSaveGameBtn);
@@ -275,24 +275,24 @@ function EnterOptionsScreen(): BOOLEAN {
 
   // Load game button
   giGotoLoadBtnImage = UseLoadedButtonImage(giOptionsButtonImages, -1, 2, -1, 3, -1);
-  guiOptGotoLoadGameBtn = CreateIconAndTextButton(giGotoLoadBtnImage, zOptionsText[Enum372.OPT_LOAD_GAME], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_LOAD_BTN_X, OPT_LOAD_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnOptGotoLoadGameCallback);
+  guiOptGotoLoadGameBtn = CreateIconAndTextButton(giGotoLoadBtnImage, zOptionsText[Enum372.OPT_LOAD_GAME], OPT_BUTTON_FONT(), OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_LOAD_BTN_X, OPT_LOAD_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnOptGotoLoadGameCallback);
   //	SpecifyDisabledButtonStyle( guiBobbyRAcceptOrder, DISABLED_STYLE_SHADED );
 
   // Quit to main menu button
   giQuitBtnImage = UseLoadedButtonImage(giOptionsButtonImages, -1, 2, -1, 3, -1);
-  guiQuitButton = CreateIconAndTextButton(giQuitBtnImage, zOptionsText[Enum372.OPT_MAIN_MENU], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_QUIT_BTN_X, OPT_QUIT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnOptQuitCallback);
+  guiQuitButton = CreateIconAndTextButton(giQuitBtnImage, zOptionsText[Enum372.OPT_MAIN_MENU], OPT_BUTTON_FONT(), OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_QUIT_BTN_X, OPT_QUIT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnOptQuitCallback);
   SpecifyDisabledButtonStyle(guiQuitButton, Enum29.DISABLED_STYLE_HATCHED);
   //	DisableButton( guiQuitButton );
 
   // Done button
   giDoneBtnImage = UseLoadedButtonImage(giOptionsButtonImages, -1, 2, -1, 3, -1);
-  guiDoneButton = CreateIconAndTextButton(giDoneBtnImage, zOptionsText[Enum372.OPT_DONE], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_DONE_BTN_X, OPT_DONE_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnDoneCallback);
+  guiDoneButton = CreateIconAndTextButton(giDoneBtnImage, zOptionsText[Enum372.OPT_DONE], OPT_BUTTON_FONT(), OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_DONE_BTN_X, OPT_DONE_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnDoneCallback);
   //	SpecifyDisabledButtonStyle( guiBobbyRAcceptOrder, DISABLED_STYLE_SHADED );
 
   //
   // Toggle Boxes
   //
-  usTextHeight = GetFontHeight(OPT_MAIN_FONT);
+  usTextHeight = GetFontHeight(OPT_MAIN_FONT());
 
   // Create the first column of check boxes
   usPosY = OPT_TOGGLE_BOX_FIRST_COLUMN_START_Y;
@@ -309,11 +309,11 @@ function EnterOptionsScreen(): BOOLEAN {
     guiOptionsToggles[cnt] = CreateCheckBoxButton(OPT_TOGGLE_BOX_FIRST_COLUMN_X, usPosY, "INTERFACE\\OptionsCheckBoxes.sti", MSYS_PRIORITY_HIGH + 10, BtnOptionsTogglesCallback);
     MSYS_SetBtnUserData(guiOptionsToggles[cnt], 0, cnt);
 
-    usTextWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT);
+    usTextWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT());
 
     if (usTextWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       // Get how many lines will be used to display the string, without displaying the string
-      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT);
+      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT());
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
@@ -345,11 +345,11 @@ function EnterOptionsScreen(): BOOLEAN {
     // Create mouse regions for the option toggle text
     //
 
-    usTextWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT);
+    usTextWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT());
 
     if (usTextWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       // Get how many lines will be used to display the string, without displaying the string
-      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT);
+      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT());
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
@@ -528,13 +528,13 @@ function RenderOptionsScreen(): void {
       continue;
     }
 
-    usWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT);
+    usWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT());
 
     // if the string is going to wrap, move the string up a bit
     if (usWidth > OPT_TOGGLE_BOX_TEXT_WIDTH)
-      DisplayWrappedString(OPT_TOGGLE_BOX_FIRST_COL_TEXT_X, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DisplayWrappedString(OPT_TOGGLE_BOX_FIRST_COL_TEXT_X, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
     else
-      DrawTextToScreen(zOptionsToggleText[cnt], OPT_TOGGLE_BOX_FIRST_COL_TEXT_X, usPosY, 0, OPT_MAIN_FONT, OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zOptionsToggleText[cnt], OPT_TOGGLE_BOX_FIRST_COL_TEXT_X, usPosY, 0, OPT_MAIN_FONT(), OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     usPosY += OPT_GAP_BETWEEN_TOGGLE_BOXES;
   }
@@ -542,13 +542,13 @@ function RenderOptionsScreen(): void {
   usPosY = OPT_TOGGLE_BOX_SECOND_COLUMN_START_Y + OPT_TOGGLE_TEXT_OFFSET_Y;
   // Display the 2nd column of toggles
   for (cnt = gubFirstColOfOptions; cnt < Enum8.NUM_GAME_OPTIONS; cnt++) {
-    usWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT);
+    usWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT());
 
     // if the string is going to wrap, move the string up a bit
     if (usWidth > OPT_TOGGLE_BOX_TEXT_WIDTH)
-      DisplayWrappedString(OPT_TOGGLE_BOX_SECOND_TEXT_X, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DisplayWrappedString(OPT_TOGGLE_BOX_SECOND_TEXT_X, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
     else
-      DrawTextToScreen(zOptionsToggleText[cnt], OPT_TOGGLE_BOX_SECOND_TEXT_X, usPosY, 0, OPT_MAIN_FONT, OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zOptionsToggleText[cnt], OPT_TOGGLE_BOX_SECOND_TEXT_X, usPosY, 0, OPT_MAIN_FONT(), OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     usPosY += OPT_GAP_BETWEEN_TOGGLE_BOXES;
   }
@@ -558,13 +558,13 @@ function RenderOptionsScreen(): void {
   //
 
   // Display the Sound Fx text
-  DisplayWrappedString(OPT_SOUND_FX_TEXT_X, OPT_SOUND_FX_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SOUND_FX], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(OPT_SOUND_FX_TEXT_X, OPT_SOUND_FX_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SOUND_FX], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the Speech text
-  DisplayWrappedString(OPT_SPEECH_TEXT_X, OPT_SPEECH_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SPEECH], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(OPT_SPEECH_TEXT_X, OPT_SPEECH_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SPEECH], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the Music text
-  DisplayWrappedString(OPT_MUSIC_TEXT_X, OPT_MUSIC_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_MUSIC], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(OPT_MUSIC_TEXT_X, OPT_MUSIC_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_MUSIC], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   InvalidateRegion(OPTIONS__TOP_LEFT_X, OPTIONS__TOP_LEFT_Y, OPTIONS__BOTTOM_RIGHT_X, OPTIONS__BOTTOM_RIGHT_Y);
 }
@@ -579,22 +579,22 @@ function GetOptionsScreenUserInput(): void {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
     }
 
@@ -984,21 +984,21 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
       bHighLight++;
     }
 
-    usWidth = StringPixLength(zOptionsToggleText[bHighLight], OPT_MAIN_FONT);
+    usWidth = StringPixLength(zOptionsToggleText[bHighLight], OPT_MAIN_FONT());
 
     // if the string is going to wrap, move the string up a bit
     if (usWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       if (fHighLight)
-        DisplayWrappedString(usPosX, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, zOptionsToggleText[bHighLight], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
+        DisplayWrappedString(usPosX, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, zOptionsToggleText[bHighLight], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
       //				DrawTextToScreen( zOptionsToggleText[ bHighLight ], usPosX, usPosY, 0, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED	);
       else
-        DisplayWrappedString(usPosX, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsToggleText[bHighLight], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
+        DisplayWrappedString(usPosX, usPosY, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT(), OPT_MAIN_COLOR, zOptionsToggleText[bHighLight], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
       //				DrawTextToScreen( zOptionsToggleText[ bHighLight ], usPosX, usPosY, 0, OPT_MAIN_FONT, OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED	);
     } else {
       if (fHighLight)
-        DrawTextToScreen(zOptionsToggleText[bHighLight], usPosX, usPosY, 0, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
+        DrawTextToScreen(zOptionsToggleText[bHighLight], usPosX, usPosY, 0, OPT_MAIN_FONT(), OPT_HIGHLIGHT_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
       else
-        DrawTextToScreen(zOptionsToggleText[bHighLight], usPosX, usPosY, 0, OPT_MAIN_FONT, OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
+        DrawTextToScreen(zOptionsToggleText[bHighLight], usPosX, usPosY, 0, OPT_MAIN_FONT(), OPT_MAIN_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
     }
   }
 }

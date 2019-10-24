@@ -1341,7 +1341,7 @@ function RenderAutoResolve(): void {
   }
 
   // Render the titles
-  SetFont(FONT10ARIALBOLD);
+  SetFont(FONT10ARIALBOLD());
   SetFontForeground(FONT_WHITE);
   SetFontShadow(FONT_NEARBLACK);
 
@@ -1355,16 +1355,16 @@ function RenderAutoResolve(): void {
       break;
   }
 
-  xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIALBOLD) / 2;
+  xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIALBOLD()) / 2;
   yp = gpAR.value.Rect.iTop + 15;
   mprintf(xp, yp, str);
 
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
 
   GetSectorIDString(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, str, TRUE);
-  xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL) / 2;
+  xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL()) / 2;
   yp += 11;
   mprintf(xp, yp, str);
 
@@ -1373,7 +1373,7 @@ function RenderAutoResolve(): void {
   ubBad = gpAR.value.ubAliveEnemies;
   swprintf(str, gzLateLocalizedString[17], ubGood, ubBad);
 
-  SetFont(FONT14ARIAL);
+  SetFont(FONT14ARIAL());
   if (ubGood * 3 <= ubBad * 2) {
     SetFontForeground(FONT_LTRED);
   } else if (ubGood * 2 >= ubBad * 3) {
@@ -1382,12 +1382,12 @@ function RenderAutoResolve(): void {
     SetFontForeground(FONT_YELLOW);
   }
 
-  xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT14ARIAL) / 2;
+  xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT14ARIAL()) / 2;
   yp += 11;
   mprintf(xp, yp, str);
 
   if (gpAR.value.fPendingSurrender) {
-    DisplayWrappedString((gpAR.value.sCenterStartX + 16), (230 + gpAR.value.bVerticalOffset), 108, 2, FONT10ARIAL, FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_SURRENDER_OFFER], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString((gpAR.value.sCenterStartX + 16), (230 + gpAR.value.bVerticalOffset), 108, 2, FONT10ARIAL(), FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_SURRENDER_OFFER], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 
   if (gpAR.value.ubBattleStatus != Enum120.BATTLE_IN_PROGRESS) {
@@ -1473,7 +1473,7 @@ function RenderAutoResolve(): void {
         if (gpAR.value.ubBattleStatus == Enum120.BATTLE_SURRENDERED) {
           swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_SURRENDERED]);
         } else {
-          DisplayWrappedString((gpAR.value.sCenterStartX + 16), 310, 108, 2, FONT10ARIAL, FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_CAPTURED], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+          DisplayWrappedString((gpAR.value.sCenterStartX + 16), 310, 108, 2, FONT10ARIAL(), FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_CAPTURED], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
           swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_CAPTURED]);
         }
         SetFontForeground(FONT_RED);
@@ -1488,18 +1488,18 @@ function RenderAutoResolve(): void {
         break;
     }
     // Render the results of the battle.
-    SetFont(BLOCKFONT2);
+    SetFont(BLOCKFONT2());
     xp = gpAR.value.sCenterStartX + 12;
     yp = 218 + gpAR.value.bVerticalOffset;
     BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iIndent, 0, xp, yp, VO_BLT_SRCTRANSPARENCY, NULL);
-    xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, BLOCKFONT2) / 2;
+    xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, BLOCKFONT2()) / 2;
     yp = 227 + gpAR.value.bVerticalOffset;
     mprintf(xp, yp, str);
 
     // Render the total battle time elapsed.
-    SetFont(FONT10ARIAL);
+    SetFont(FONT10ARIAL());
     swprintf(str, "%s:  %dm %02ds", gpStrategicString[Enum365.STR_AR_TIME_ELAPSED], gpAR.value.uiTotalElapsedBattleTimeInMilliseconds / 60000, (gpAR.value.uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000);
-    xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL) / 2;
+    xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL()) / 2;
     yp = 290 + gpAR.value.bVerticalOffset;
     SetFontForeground(FONT_YELLOW);
     mprintf(xp, yp, str);
@@ -1729,26 +1729,26 @@ function CreateAutoResolveInterface(): void {
   gpAR.value.bVerticalOffset = 240 - gpAR.value.sHeight / 2 > 120 ? -40 : 0;
 
   // Create the buttons -- subject to relocation
-  gpAR.value.iButton[Enum119.PLAY_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.PLAY_BUTTON], (gpAR.value.sCenterStartX + 11), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, PlayButtonCallback);
-  gpAR.value.iButton[Enum119.FAST_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.FAST_BUTTON], (gpAR.value.sCenterStartX + 51), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, FastButtonCallback);
-  gpAR.value.iButton[Enum119.FINISH_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.FINISH_BUTTON], (gpAR.value.sCenterStartX + 91), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, FinishButtonCallback);
-  gpAR.value.iButton[Enum119.PAUSE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], (gpAR.value.sCenterStartX + 11), (274 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, PauseButtonCallback);
+  gpAR.value.iButton[Enum119.PLAY_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.PLAY_BUTTON], (gpAR.value.sCenterStartX + 11), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), PlayButtonCallback);
+  gpAR.value.iButton[Enum119.FAST_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.FAST_BUTTON], (gpAR.value.sCenterStartX + 51), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), FastButtonCallback);
+  gpAR.value.iButton[Enum119.FINISH_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.FINISH_BUTTON], (gpAR.value.sCenterStartX + 91), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), FinishButtonCallback);
+  gpAR.value.iButton[Enum119.PAUSE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], (gpAR.value.sCenterStartX + 11), (274 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), PauseButtonCallback);
 
-  gpAR.value.iButton[Enum119.RETREAT_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.RETREAT_BUTTON], (gpAR.value.sCenterStartX + 51), (274 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, RetreatButtonCallback);
+  gpAR.value.iButton[Enum119.RETREAT_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.RETREAT_BUTTON], (gpAR.value.sCenterStartX + 51), (274 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), RetreatButtonCallback);
   if (!gpAR.value.ubMercs) {
     DisableButton(gpAR.value.iButton[Enum119.RETREAT_BUTTON]);
   }
-  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[Enum119.RETREAT_BUTTON], gpStrategicString[Enum365.STR_AR_RETREAT_BUTTON], BLOCKFONT2, 169, FONT_NEARBLACK);
+  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[Enum119.RETREAT_BUTTON], gpStrategicString[Enum365.STR_AR_RETREAT_BUTTON], BLOCKFONT2(), 169, FONT_NEARBLACK);
 
-  gpAR.value.iButton[Enum119.BANDAGE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.BANDAGE_BUTTON], (gpAR.value.sCenterStartX + 11), (245 + gpAR.value.bVerticalOffset), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BandageButtonCallback);
+  gpAR.value.iButton[Enum119.BANDAGE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.BANDAGE_BUTTON], (gpAR.value.sCenterStartX + 11), (245 + gpAR.value.bVerticalOffset), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BandageButtonCallback);
 
-  gpAR.value.iButton[Enum119.DONEWIN_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.DONEWIN_BUTTON], (gpAR.value.sCenterStartX + 51), (245 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoneButtonCallback);
-  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[Enum119.DONEWIN_BUTTON], gpStrategicString[Enum365.STR_AR_DONE_BUTTON], BLOCKFONT2, 169, FONT_NEARBLACK);
+  gpAR.value.iButton[Enum119.DONEWIN_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.DONEWIN_BUTTON], (gpAR.value.sCenterStartX + 51), (245 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), DoneButtonCallback);
+  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[Enum119.DONEWIN_BUTTON], gpStrategicString[Enum365.STR_AR_DONE_BUTTON], BLOCKFONT2(), 169, FONT_NEARBLACK);
 
-  gpAR.value.iButton[Enum119.DONELOSE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.DONELOSE_BUTTON], (gpAR.value.sCenterStartX + 25), (245 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoneButtonCallback);
-  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[Enum119.DONELOSE_BUTTON], gpStrategicString[Enum365.STR_AR_DONE_BUTTON], BLOCKFONT2, 169, FONT_NEARBLACK);
-  gpAR.value.iButton[Enum119.YES_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.YES_BUTTON], (gpAR.value.sCenterStartX + 21), (257 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, AcceptSurrenderCallback);
-  gpAR.value.iButton[Enum119.NO_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.NO_BUTTON], (gpAR.value.sCenterStartX + 81), (257 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, RejectSurrenderCallback);
+  gpAR.value.iButton[Enum119.DONELOSE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.DONELOSE_BUTTON], (gpAR.value.sCenterStartX + 25), (245 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), DoneButtonCallback);
+  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[Enum119.DONELOSE_BUTTON], gpStrategicString[Enum365.STR_AR_DONE_BUTTON], BLOCKFONT2(), 169, FONT_NEARBLACK);
+  gpAR.value.iButton[Enum119.YES_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.YES_BUTTON], (gpAR.value.sCenterStartX + 21), (257 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), AcceptSurrenderCallback);
+  gpAR.value.iButton[Enum119.NO_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.NO_BUTTON], (gpAR.value.sCenterStartX + 81), (257 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), RejectSurrenderCallback);
   HideButton(gpAR.value.iButton[Enum119.YES_BUTTON]);
   HideButton(gpAR.value.iButton[Enum119.NO_BUTTON]);
   HideButton(gpAR.value.iButton[Enum119.DONEWIN_BUTTON]);
@@ -2486,7 +2486,7 @@ function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
   let uiDestPitchBYTES: UINT32;
   let usColor: UINT16;
 
-  SetFont(SMALLCOMPFONT);
+  SetFont(SMALLCOMPFONT());
   // Restore the background before drawing text.
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   pSrcBuf = LockVideoSurface(gpAR.value.iInterfaceBuffer, addressof(uiSrcPitchBYTES));
@@ -2553,13 +2553,13 @@ function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
     if (pCell.value.pSoldier.value.bLife >= OKLIFE) {
       SetFontForeground(FONT_YELLOW);
       swprintf(str, gpStrategicString[Enum365.STR_AR_MERC_RETREAT]);
-      xp = pCell.value.xp + 25 - StringPixLength(pStr, SMALLCOMPFONT) / 2;
+      xp = pCell.value.xp + 25 - StringPixLength(pStr, SMALLCOMPFONT()) / 2;
       yp = pCell.value.yp + 12;
       mprintf(xp, yp, str);
     }
   }
   SetFontForeground(usColor);
-  xp = pCell.value.xp + 25 - StringPixLength(pStr, SMALLCOMPFONT) / 2;
+  xp = pCell.value.xp + 25 - StringPixLength(pStr, SMALLCOMPFONT()) / 2;
   yp = pCell.value.yp + 33;
   mprintf(xp, yp, pStr);
 }
@@ -2801,7 +2801,7 @@ function DrawDebugText(pCell: Pointer<SOLDIERCELL>): void {
   let yp: INT32;
   if (!gpAR.value.fDebugInfo)
     return;
-  SetFont(SMALLCOMPFONT);
+  SetFont(SMALLCOMPFONT());
   SetFontForeground(FONT_WHITE);
   xp = pCell.value.xp + 4;
   yp = pCell.value.yp + 4;
@@ -2817,7 +2817,7 @@ function DrawDebugText(pCell: Pointer<SOLDIERCELL>): void {
 
   xp = pCell.value.xp;
   yp = pCell.value.yp - 4;
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   SetFontShadow(FONT_NEARBLACK);
   if (pCell.value.uiFlags & CELL_FIREDATTARGET) {
     SetFontForeground(FONT_YELLOW);

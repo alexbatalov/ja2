@@ -1729,7 +1729,7 @@ function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: 
     return -1;
   }
 
-  ButNum = QuickCreateButton(ButPic, x, y, Type, Priority, DEFAULT_MOVE_CALLBACK, ClickCallback);
+  ButNum = QuickCreateButton(ButPic, x, y, Type, Priority, DEFAULT_MOVE_CALLBACK(), ClickCallback);
 
   AssertMsg(ButNum != -1, "Failed to CreateSimpleButton.");
 
@@ -2258,7 +2258,7 @@ function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
   // down the button, but only if the button is up.  In Win95, buttons that are already
   // down, and anchored never change state, unless you release the mouse in the button area.
 
-  if (b.value.MoveCallback == DEFAULT_MOVE_CALLBACK && b.value.uiFlags & BUTTON_ENABLED) {
+  if (b.value.MoveCallback == DEFAULT_MOVE_CALLBACK() && b.value.uiFlags & BUTTON_ENABLED) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
       gpAnchoredButton = b;
       gfAnchoredState = StateBefore;
@@ -2311,7 +2311,7 @@ function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
     // Added these checks to avoid a case where it was possible to process a leftbuttonup message when
     // the button wasn't anchored, and should have been.
     gfDelayButtonDeletion = TRUE;
-    if (!(reason & MSYS_CALLBACK_REASON_LBUTTON_UP) || b.value.MoveCallback != DEFAULT_MOVE_CALLBACK || b.value.MoveCallback == DEFAULT_MOVE_CALLBACK && gpPrevAnchoredButton == b)
+    if (!(reason & MSYS_CALLBACK_REASON_LBUTTON_UP) || b.value.MoveCallback != DEFAULT_MOVE_CALLBACK() || b.value.MoveCallback == DEFAULT_MOVE_CALLBACK() && gpPrevAnchoredButton == b)
       (b.value.ClickCallback)(b, reason);
     gfDelayButtonDeletion = FALSE;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) && !(b.value.uiFlags & BUTTON_IGNORE_CLICKS)) {

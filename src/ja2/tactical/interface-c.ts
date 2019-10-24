@@ -520,7 +520,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   iMenuAnchorX = giMenuAnchorX + 9;
   iMenuAnchorY = giMenuAnchorY + 8;
 
-  iActionIcons[Enum209.RUN_ICON] = QuickCreateButton(iIconImages[Enum208.RUN_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[Enum209.RUN_ICON] = QuickCreateButton(iIconImages[Enum208.RUN_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
   if (iActionIcons[Enum209.RUN_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -533,7 +533,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     DisableButton(iActionIcons[Enum209.RUN_ICON]);
   }
 
-  iActionIcons[Enum209.WALK_ICON] = QuickCreateButton(iIconImages[Enum208.WALK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[Enum209.WALK_ICON] = QuickCreateButton(iIconImages[Enum208.WALK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
   if (iActionIcons[Enum209.WALK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -554,7 +554,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     }
   }
 
-  iActionIcons[Enum209.SNEAK_ICON] = QuickCreateButton(iIconImages[Enum208.SNEAK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[Enum209.SNEAK_ICON] = QuickCreateButton(iIconImages[Enum208.SNEAK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
   if (iActionIcons[Enum209.SNEAK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -568,7 +568,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     DisableButton(iActionIcons[Enum209.SNEAK_ICON]);
   }
 
-  iActionIcons[Enum209.CRAWL_ICON] = QuickCreateButton(iIconImages[Enum208.CRAWL_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[Enum209.CRAWL_ICON] = QuickCreateButton(iIconImages[Enum208.CRAWL_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
   if (iActionIcons[Enum209.CRAWL_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -582,7 +582,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     DisableButton(iActionIcons[Enum209.CRAWL_ICON]);
   }
 
-  iActionIcons[Enum209.LOOK_ICON] = QuickCreateButton(iIconImages[Enum208.LOOK_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[Enum209.LOOK_ICON] = QuickCreateButton(iIconImages[Enum208.LOOK_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
   if (iActionIcons[Enum209.LOOK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -661,7 +661,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     fDisableAction = TRUE;
   }
 
-  iActionIcons[Enum209.ACTIONC_ICON] = QuickCreateButton(iIconImages[uiActionImages], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[Enum209.ACTIONC_ICON] = QuickCreateButton(iIconImages[uiActionImages], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
   if (iActionIcons[Enum209.ACTIONC_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -674,7 +674,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     DisableButton(iActionIcons[Enum209.ACTIONC_ICON]);
   }
 
-  iActionIcons[Enum209.TALK_ICON] = QuickCreateButton(iIconImages[Enum208.TALK_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[Enum209.TALK_ICON] = QuickCreateButton(iIconImages[Enum208.TALK_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
   if (iActionIcons[Enum209.TALK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -687,7 +687,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     DisableButton(iActionIcons[Enum209.TALK_ICON]);
   }
 
-  iActionIcons[Enum209.HAND_ICON] = QuickCreateButton(iIconImages[Enum208.HAND_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[Enum209.HAND_ICON] = QuickCreateButton(iIconImages[Enum208.HAND_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
   if (iActionIcons[Enum209.HAND_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -700,7 +700,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     DisableButton(iActionIcons[Enum209.HAND_ICON]);
   }
 
-  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[Enum208.CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[Enum208.CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnMovementCallback);
   if (iActionIcons[CANCEL_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1247,39 +1247,39 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), FALSE);
 
   // Display name
-  SetFont(TINYFONT1);
+  SetFont(TINYFONT1());
   SetFontBackground(FONT_MCOLOR_BLACK);
   SetFontForeground(FONT_MCOLOR_WHITE);
 
   if (pSoldier.value.ubProfile != NO_PROFILE || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
     if (gfUIMouseOnValidCatcher == 1 && pSoldier.value.ubID == gubUIValidCatcherID) {
       swprintf(NameStr, TacticalStr[Enum335.CATCH_STR]);
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (gfUIMouseOnValidCatcher == 3 && pSoldier.value.ubID == gubUIValidCatcherID) {
       swprintf(NameStr, TacticalStr[Enum335.RELOAD_STR]);
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (gfUIMouseOnValidCatcher == 4 && pSoldier.value.ubID == gubUIValidCatcherID) {
       swprintf(NameStr, pMessageStrings[Enum333.MSG_PASS]);
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
       SetFontForeground(FONT_YELLOW);
       swprintf(NameStr, "(%s)", pAssignmentStrings[pSoldier.value.bAssignment]);
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment < Enum117.ON_DUTY && pSoldier.value.bAssignment != CurrentSquad() && !(pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED)) {
       swprintf(NameStr, gzLateLocalizedString[34], (pSoldier.value.bAssignment + 1));
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
@@ -1299,12 +1299,12 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     if (fDoName) {
       if (fRaiseName) {
         swprintf(NameStr, "%s", pSoldier.value.name);
-        FindFontCenterCoordinates(sXPos, (sYPos - 10), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, (sYPos - 10), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
         swprintf(NameStr, "%s", pSoldier.value.name);
-        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       }
@@ -1339,22 +1339,22 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       }
     } else {
       if (gfUIMouseOnValidCatcher == 2 && pSoldier.value.ubID == gubUIValidCatcherID) {
-        SetFont(TINYFONT1);
+        SetFont(TINYFONT1());
         SetFontBackground(FONT_MCOLOR_BLACK);
         SetFontForeground(FONT_MCOLOR_WHITE);
 
         swprintf(NameStr, TacticalStr[Enum335.GIVE_STR]);
-        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
-        SetFont(TINYFONT1);
+        SetFont(TINYFONT1());
         SetFontBackground(FONT_MCOLOR_BLACK);
         SetFontForeground(FONT_MCOLOR_DKRED);
 
         pStr = GetSoldierHealthString(pSoldier);
 
-        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
+        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
         gprintfdirty(sX, sY, pStr);
         mprintf(sX, sY, pStr);
       }
@@ -1362,23 +1362,23 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   } else {
     if (pSoldier.value.bLevel != 0) {
       // Display name
-      SetFont(TINYFONT1);
+      SetFont(TINYFONT1());
       SetFontBackground(FONT_MCOLOR_BLACK);
       SetFontForeground(FONT_YELLOW);
 
       swprintf(NameStr, gzLateLocalizedString[15]);
-      FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
+      FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
     }
 
     pStr = GetSoldierHealthString(pSoldier);
 
-    SetFont(TINYFONT1);
+    SetFont(TINYFONT1());
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_DKRED);
 
-    FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
+    FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
     gprintfdirty(sX, sY, pStr);
     mprintf(sX, sY, pStr);
   }
@@ -1724,7 +1724,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   // Add region
   MSYS_AddRegion(addressof(gMenuOverlayRegion));
 
-  iActionIcons[Enum209.USE_KEYRING_ICON] = QuickCreateButton(iIconImages[Enum208.USE_KEYRING_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[Enum209.USE_KEYRING_ICON] = QuickCreateButton(iIconImages[Enum208.USE_KEYRING_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[Enum209.USE_KEYRING_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1746,7 +1746,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[Enum209.USE_KEYRING_ICON]);
   }
 
-  iActionIcons[Enum209.USE_CROWBAR_ICON] = QuickCreateButton(iIconImages[Enum208.CROWBAR_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[Enum209.USE_CROWBAR_ICON] = QuickCreateButton(iIconImages[Enum208.CROWBAR_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[Enum209.USE_CROWBAR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1768,7 +1768,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[Enum209.USE_CROWBAR_ICON]);
   }
 
-  iActionIcons[Enum209.LOCKPICK_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.LOCKPICK_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[Enum209.LOCKPICK_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.LOCKPICK_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[Enum209.LOCKPICK_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1790,7 +1790,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[Enum209.LOCKPICK_DOOR_ICON]);
   }
 
-  iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.EXPLOSIVE_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.EXPLOSIVE_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1813,7 +1813,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON]);
   }
 
-  iActionIcons[Enum209.OPEN_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.OPEN_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[Enum209.OPEN_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.OPEN_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[Enum209.OPEN_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1839,7 +1839,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   }
 
   // Create button based on what is in our hands at the moment!
-  iActionIcons[Enum209.EXAMINE_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.EXAMINE_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[Enum209.EXAMINE_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.EXAMINE_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[Enum209.EXAMINE_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1856,7 +1856,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[Enum209.EXAMINE_DOOR_ICON]);
   }
 
-  iActionIcons[Enum209.BOOT_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.BOOT_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[Enum209.BOOT_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.BOOT_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[Enum209.BOOT_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1873,7 +1873,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[Enum209.BOOT_DOOR_ICON]);
   }
 
-  iActionIcons[Enum209.UNTRAP_DOOR_ICON] = QuickCreateButton(iIconImages[Enum209.UNTRAP_DOOR_ICON], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[Enum209.UNTRAP_DOOR_ICON] = QuickCreateButton(iIconImages[Enum209.UNTRAP_DOOR_ICON], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[Enum209.UNTRAP_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1890,7 +1890,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[Enum209.UNTRAP_DOOR_ICON]);
   }
 
-  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[Enum208.CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[Enum208.CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[CANCEL_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -2331,7 +2331,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
 
   // Change dest buffer
   SetFontDestBuffer(uiSurface, 0, 0, 640, 20, FALSE);
-  SetFont(TINYFONT1);
+  SetFont(TINYFONT1());
 
   switch (ubType) {
     case Enum216.COMPUTER_TURN_MESSAGE:
@@ -2429,7 +2429,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
   { DeleteVideoObjectFromIndex(uiPLAYERBAR); }
 
   // Draw text....
-  FindFontCenterCoordinates(320, 7, 1, 1, psString, TINYFONT1, addressof(sX), addressof(sY));
+  FindFontCenterCoordinates(320, 7, 1, 1, psString, TINYFONT1(), addressof(sX), addressof(sY));
   mprintf(sX, sY, psString);
 
   // Change back...

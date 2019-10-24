@@ -321,7 +321,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
   // reset flags
   guiFlags = 0;
 
-  usStringPixLength = WFStringPixLength(pString, TEXT_POPUP_FONT);
+  usStringPixLength = WFStringPixLength(pString, TEXT_POPUP_FONT());
 
   if (usStringPixLength < (usWidth - (MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X)*2)) {
     usWidth = usStringPixLength + MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X * 2;
@@ -330,7 +330,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
     usTextWidth = usWidth - (MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X)*2 + 1 - usMarginX;
   }
 
-  usNumberVerticalPixels = IanWrappedStringHeight(0, 0, usTextWidth, 2, TEXT_POPUP_FONT, MERC_TEXT_COLOR, pString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  usNumberVerticalPixels = IanWrappedStringHeight(0, 0, usTextWidth, 2, TEXT_POPUP_FONT(), MERC_TEXT_COLOR, pString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usNumberOfLines = usNumberVerticalPixels / TEXT_POPUP_GAP_BN_LINES;
 
@@ -461,7 +461,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
 
   {
     // Display the text
-    DisplayWrappedString(sDispTextXPos, ((MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_Y + usMarginTopY)), usTextWidth, 2, MERC_TEXT_FONT, ubFontColor, pString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(sDispTextXPos, ((MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_Y + usMarginTopY)), usTextWidth, 2, MERC_TEXT_FONT(), ubFontColor, pString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);

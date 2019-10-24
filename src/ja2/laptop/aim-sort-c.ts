@@ -183,49 +183,49 @@ function EnterAimSort(): BOOLEAN {
   // CURSOR_WWW MSYS_NO_CURSOR
   ubCurNumber = 0;
   // Mouse region for the Price Check Box
-  ubWidth = StringPixLength(AimSortText[Enum352.PRICE], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
+  ubWidth = StringPixLength(AimSortText[Enum352.PRICE], AIM_SORT_FONT_SORT_TEXT()) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   MSYS_DefineRegion(addressof(gSelectedPriceBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectPriceBoxRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedPriceBoxRegion));
 
   ubCurNumber += 2;
-  ubWidth = StringPixLength(AimSortText[Enum352.EXPERIENCE], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
+  ubWidth = StringPixLength(AimSortText[Enum352.EXPERIENCE], AIM_SORT_FONT_SORT_TEXT()) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Experience Check Box
   MSYS_DefineRegion(addressof(gSelectedExpBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExpBoxRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedExpBoxRegion));
 
   ubCurNumber += 2;
-  ubWidth = StringPixLength(AimSortText[Enum352.AIMMARKSMANSHIP], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
+  ubWidth = StringPixLength(AimSortText[Enum352.AIMMARKSMANSHIP], AIM_SORT_FONT_SORT_TEXT()) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Markmanship Check Box
   MSYS_DefineRegion(addressof(gSelectedMarkBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMarkBoxRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedMarkBoxRegion));
 
   ubCurNumber += 2;
-  ubWidth = StringPixLength(AimSortText[Enum352.AIMMEDICAL], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
+  ubWidth = StringPixLength(AimSortText[Enum352.AIMMEDICAL], AIM_SORT_FONT_SORT_TEXT()) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Medical  Check Box
   MSYS_DefineRegion(addressof(gSelectedMedicalBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMedicalBoxRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedMedicalBoxRegion));
 
   ubCurNumber += 2;
-  ubWidth = StringPixLength(AimSortText[Enum352.EXPLOSIVES], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
+  ubWidth = StringPixLength(AimSortText[Enum352.EXPLOSIVES], AIM_SORT_FONT_SORT_TEXT()) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Explosive  Check Box
   MSYS_DefineRegion(addressof(gSelectedExplosiveBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExplosiveBoxRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedExplosiveBoxRegion));
 
   ubCurNumber += 2;
-  ubWidth = StringPixLength(AimSortText[Enum352.AIMMECHANICAL], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
+  ubWidth = StringPixLength(AimSortText[Enum352.AIMMECHANICAL], AIM_SORT_FONT_SORT_TEXT()) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Mechanical Check Box
   MSYS_DefineRegion(addressof(gSelectedMechanicalBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMechanicalBoxRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedMechanicalBoxRegion));
 
   ubCurNumber += 2;
 
-  ubWidth = AimSortCheckBoxLoc[ubCurNumber] - StringPixLength(AimSortText[Enum352.ASCENDING], AIM_SORT_FONT_SORT_TEXT) - 6;
+  ubWidth = AimSortCheckBoxLoc[ubCurNumber] - StringPixLength(AimSortText[Enum352.ASCENDING], AIM_SORT_FONT_SORT_TEXT()) - 6;
   // Mouse region for the Ascend Check Box
   MSYS_DefineRegion(addressof(gSelectedAscendBoxRegion), ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectAscendBoxRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedAscendBoxRegion));
 
   ubCurNumber += 2;
-  ubWidth = AimSortCheckBoxLoc[ubCurNumber] - StringPixLength(AimSortText[Enum352.DESCENDING], AIM_SORT_FONT_SORT_TEXT) - 6;
+  ubWidth = AimSortCheckBoxLoc[ubCurNumber] - StringPixLength(AimSortText[Enum352.DESCENDING], AIM_SORT_FONT_SORT_TEXT()) - 6;
 
   // Mouse region for the Descend Check Box
   MSYS_DefineRegion(addressof(gSelectedDescendBoxRegion), ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectDescendBoxRegionCallBack);
@@ -294,26 +294,26 @@ function RenderAimSort(): void {
   DisplayAimSlogan();
 
   // Display AIM Member text
-  DrawTextToScreen(AimSortText[Enum352.AIM_AIMMEMBERS], AIM_SORT_AIM_MEMBER_X, AIM_SORT_AIM_MEMBER_Y, AIM_SORT_AIM_MEMBER_WIDTH, AIM_MAINTITLE_FONT, AIM_MAINTITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.AIM_AIMMEMBERS], AIM_SORT_AIM_MEMBER_X, AIM_SORT_AIM_MEMBER_Y, AIM_SORT_AIM_MEMBER_WIDTH, AIM_MAINTITLE_FONT(), AIM_MAINTITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display sort title
-  DrawTextToScreen(AimSortText[Enum352.SORT_BY], AIM_SORT_SORT_BY_TEXT_X, AIM_SORT_SORT_BY_TEXT_Y, 0, AIM_SORT_FONT_TITLE, AIM_SORT_SORT_BY_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.SORT_BY], AIM_SORT_SORT_BY_TEXT_X, AIM_SORT_SORT_BY_TEXT_Y, 0, AIM_SORT_FONT_TITLE(), AIM_SORT_SORT_BY_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display all the sort by text
-  DrawTextToScreen(AimSortText[Enum352.PRICE], AIM_SORT_PRICE_TEXT_X, AIM_SORT_PRICE_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(AimSortText[Enum352.EXPERIENCE], AIM_SORT_EXP_TEXT_X, AIM_SORT_EXP_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(AimSortText[Enum352.AIMMARKSMANSHIP], AIM_SORT_MARKMNSHP_TEXT_X, AIM_SORT_MARKMNSHP_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(AimSortText[Enum352.AIMMEDICAL], AIM_SORT_MEDICAL_X, AIM_SORT_MEDICAL_Y, 0, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(AimSortText[Enum352.EXPLOSIVES], AIM_SORT_EXPLOSIVES_X, AIM_SORT_EXPLOSIVES_Y, 0, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(AimSortText[Enum352.AIMMECHANICAL], AIM_SORT_MECHANICAL_X, AIM_SORT_MECHANICAL_Y, 0, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.PRICE], AIM_SORT_PRICE_TEXT_X, AIM_SORT_PRICE_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.EXPERIENCE], AIM_SORT_EXP_TEXT_X, AIM_SORT_EXP_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.AIMMARKSMANSHIP], AIM_SORT_MARKMNSHP_TEXT_X, AIM_SORT_MARKMNSHP_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.AIMMEDICAL], AIM_SORT_MEDICAL_X, AIM_SORT_MEDICAL_Y, 0, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.EXPLOSIVES], AIM_SORT_EXPLOSIVES_X, AIM_SORT_EXPLOSIVES_Y, 0, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.AIMMECHANICAL], AIM_SORT_MECHANICAL_X, AIM_SORT_MECHANICAL_Y, 0, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
-  DrawTextToScreen(AimSortText[Enum352.ASCENDING], AIM_SORT_ASCEND_TEXT_X, AIM_SORT_ASCEND_TEXT_Y, AIM_SORT_ASC_DESC_WIDTH, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
-  DrawTextToScreen(AimSortText[Enum352.DESCENDING], AIM_SORT_DESCEND_TEXT_X, AIM_SORT_DESCEND_TEXT_Y, AIM_SORT_ASC_DESC_WIDTH, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.ASCENDING], AIM_SORT_ASCEND_TEXT_X, AIM_SORT_ASCEND_TEXT_Y, AIM_SORT_ASC_DESC_WIDTH, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.DESCENDING], AIM_SORT_DESCEND_TEXT_X, AIM_SORT_DESCEND_TEXT_Y, AIM_SORT_ASC_DESC_WIDTH, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_COLOR_SORT_TEXT, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   // Display text for the 3 icons
-  DrawTextToScreen(AimSortText[Enum352.MUGSHOT_INDEX], AIM_SORT_MUGSHOT_TEXT_X, AIM_SORT_MUGSHOT_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_LINK_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(AimSortText[Enum352.MERCENARY_FILES], AIM_SORT_MERC_STATS_TEXT_X, AIM_SORT_MERC_STATS_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_LINK_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
-  DrawTextToScreen(AimSortText[Enum352.ALUMNI_GALLERY], AIM_SORT_ALUMNI_TEXT_X, AIM_SORT_ALUMNI_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT, AIM_SORT_LINK_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.MUGSHOT_INDEX], AIM_SORT_MUGSHOT_TEXT_X, AIM_SORT_MUGSHOT_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_LINK_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.MERCENARY_FILES], AIM_SORT_MERC_STATS_TEXT_X, AIM_SORT_MERC_STATS_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_LINK_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(AimSortText[Enum352.ALUMNI_GALLERY], AIM_SORT_ALUMNI_TEXT_X, AIM_SORT_ALUMNI_TEXT_Y, 0, AIM_SORT_FONT_SORT_TEXT(), AIM_SORT_LINK_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   DrawSelectLight(gubCurrentSortMode, AIM_SORT_ON);
   DrawSelectLight(gubCurrentListMode, AIM_SORT_ON);

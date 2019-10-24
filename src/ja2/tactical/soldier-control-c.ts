@@ -5263,7 +5263,7 @@ function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8, sLifeD
     }
   }
 
-  if (PTR_OURTEAM) {
+  if (PTR_OURTEAM()) {
     // EXPERIENCE GAIN: Took some damage
     StatChange(pSoldier, EXPERAMT, (5 * ubCombinedLoss), FROM_FAILURE);
 
@@ -6954,7 +6954,7 @@ function SoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Pointer<SOLD
 
   DeductPoints(pSoldier, uiUsedAPs, ((uiUsedAPs * BP_PER_AP_LT_EFFORT)));
 
-  if (PTR_OURTEAM) {
+  if (PTR_OURTEAM()) {
     // MEDICAL GAIN   (actual / 2):  Helped someone by giving first aid
     StatChange(pSoldier, MEDICALAMT, (uiActual / 2), FALSE);
 

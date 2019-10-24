@@ -397,7 +397,7 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
 
 // called from the taskbar renderer.
 function UpdateItemStatsPanel(): void {
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
   SetFontBackground(FONT_BLACK);
@@ -565,7 +565,7 @@ function SetupGunGUI(): void {
   yp = 383;
   guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(Enum225.SILENCER, gpItem.value.usItem)) {
-    guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON] = CreateTextButton("SILENCER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON] = CreateTextButton("SILENCER", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.SILENCER) != -1) {
       ButtonList[guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
@@ -574,7 +574,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(Enum225.SNIPERSCOPE, gpItem.value.usItem)) {
-    guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("SNIPERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("SNIPERSCOPE", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.SNIPERSCOPE) != -1) {
       ButtonList[guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
@@ -583,7 +583,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(Enum225.LASERSCOPE, gpItem.value.usItem)) {
-    guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("LASERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("LASERSCOPE", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.LASERSCOPE) != -1) {
       ButtonList[guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
@@ -592,7 +592,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(Enum225.BIPOD, gpItem.value.usItem)) {
-    guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON] = CreateTextButton("BIPOD", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON] = CreateTextButton("BIPOD", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.BIPOD) != -1) {
       ButtonList[guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
@@ -601,7 +601,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(Enum225.DUCKBILL, gpItem.value.usItem)) {
-    guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON] = CreateTextButton("DUCKBILL", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON] = CreateTextButton("DUCKBILL", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.DUCKBILL) != -1) {
       ButtonList[guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
@@ -610,7 +610,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(Enum225.UNDER_GLAUNCHER, gpItem.value.usItem)) {
-    guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON] = CreateTextButton("G-LAUNCHER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON] = CreateTextButton("G-LAUNCHER", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.UNDER_GLAUNCHER) != -1) {
       ButtonList[guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
@@ -714,7 +714,7 @@ function SetupArmourGUI(): void {
 
   guiCeramicPlatesButton = -1;
   if (ValidAttachment(Enum225.CERAMIC_PLATES, gpItem.value.usItem)) {
-    guiCeramicPlatesButton = CreateTextButton("CERAMIC PLATES", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 558, 375, 72, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleCeramicPlates);
+    guiCeramicPlatesButton = CreateTextButton("CERAMIC PLATES", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 558, 375, 72, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleCeramicPlates);
     if (FindAttachment(gpItem, Enum225.CERAMIC_PLATES) != -1) {
       ButtonList[guiCeramicPlatesButton].value.uiFlags |= BUTTON_CLICKED_ON;
       gfCeramicPlates = TRUE;
@@ -811,7 +811,7 @@ function SetupExplosivesGUI(): void {
   gfDetonator = FALSE;
   guiDetonatorButton = -1;
   if (ValidAttachment(Enum225.DETONATOR, gpItem.value.usItem)) {
-    guiDetonatorButton = CreateTextButton("DETONATOR", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleDetonator);
+    guiDetonatorButton = CreateTextButton("DETONATOR", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleDetonator);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.DETONATOR) != -1) {
       ButtonList[guiDetonatorButton].value.uiFlags |= BUTTON_CLICKED_ON;
@@ -897,7 +897,7 @@ function SetupOwnershipGUI(): void {
   let str: UINT16[] /* [20] */;
   swprintf(str, "%d", gpItem.value.ubOwnerProfile);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem.value.ubOwnerCivGroup], SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, OwnershipGroupButtonCallback);
+  giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem.value.ubOwnerCivGroup], SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), OwnershipGroupButtonCallback);
 }
 
 function OwnershipGroupButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -962,7 +962,7 @@ function SetupActionItemsGUI(): void {
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   pStr = GetActionItemName(gpItem);
-  guiActionItemButton = CreateTextButton(pStr, FONT10ARIAL, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 510, 410, 100, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ActionItemCallback);
+  guiActionItemButton = CreateTextButton(pStr, FONT10ARIAL(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 510, 410, 100, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ActionItemCallback);
 }
 
 function ExtractAndUpdateActionItemsGUI(): void {

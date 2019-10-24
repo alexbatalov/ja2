@@ -158,18 +158,18 @@ function CreateJA2SelectionWindow(sWhat: INT16): void {
   iButtonIcons[DOWN_ICON] = LoadGenericButtonIcon("EDITOR//lgDownArrow.sti");
   iButtonIcons[OK_ICON] = LoadGenericButtonIcon("EDITOR//checkmark.sti");
 
-  iSelectWin = CreateHotSpot(0, 0, 600, 360, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SelWinClkCallback);
+  iSelectWin = CreateHotSpot(0, 0, 600, 360, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SelWinClkCallback);
 
-  iCancelWin = CreateIconButton(iButtonIcons[CANCEL_ICON], 0, BUTTON_USE_DEFAULT, 600, 40, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, CnclClkCallback);
+  iCancelWin = CreateIconButton(iButtonIcons[CANCEL_ICON], 0, BUTTON_USE_DEFAULT, 600, 40, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), CnclClkCallback);
   SetButtonFastHelpText(iCancelWin, "Cancel selections");
 
-  iOkWin = CreateIconButton(iButtonIcons[OK_ICON], 0, BUTTON_USE_DEFAULT, 600, 0, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, OkClkCallback);
+  iOkWin = CreateIconButton(iButtonIcons[OK_ICON], 0, BUTTON_USE_DEFAULT, 600, 0, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), OkClkCallback);
   SetButtonFastHelpText(iOkWin, "Accept selections");
 
-  iScrollUp = CreateIconButton(iButtonIcons[UP_ICON], 0, BUTTON_USE_DEFAULT, 600, 80, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, UpClkCallback);
+  iScrollUp = CreateIconButton(iButtonIcons[UP_ICON], 0, BUTTON_USE_DEFAULT, 600, 80, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), UpClkCallback);
   SetButtonFastHelpText(iScrollUp, "Scroll window up");
 
-  iScrollDown = CreateIconButton(iButtonIcons[DOWN_ICON], 0, BUTTON_USE_DEFAULT, 600, 240, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DwnClkCallback);
+  iScrollDown = CreateIconButton(iButtonIcons[DOWN_ICON], 0, BUTTON_USE_DEFAULT, 600, 240, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), DwnClkCallback);
   SetButtonFastHelpText(iScrollDown, "Scroll window down");
 
   fButtonsPresent = TRUE;
@@ -941,7 +941,7 @@ function DisplaySelectionWindowGraphicalInformation(): void {
     } else
       pNode = pNode.value.pNext;
   }
-  SetFont(FONT12POINT1);
+  SetFont(FONT12POINT1());
   SetFontForeground(FONT_WHITE);
   if (pNode) {
     // usObjIndex = (UINT16)pNode->uiObjIndx;

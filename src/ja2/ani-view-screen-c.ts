@@ -75,7 +75,7 @@ function AniEditScreenHandle(): UINT32 {
   /////////////////////////////////////////////////////
   EndFrameBufferRender();
 
-  SetFont(LARGEFONT1);
+  SetFont(LARGEFONT1());
   mprintf(0, 0, "SOLDIER ANIMATION VIEWER");
   gprintfdirty(0, 0, "SOLDIER ANIMATION VIEWER");
 

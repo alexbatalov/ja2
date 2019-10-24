@@ -631,7 +631,7 @@ function CreateIMPAttributeSelectionButtons(): void {
                                                                                   BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAttributeFinishCallback );
     */
-  giIMPAttributeSelectionButton[0] = CreateIconAndTextButton(giIMPAttributeSelectionButtonImage[0], pImpButtonText[11], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeFinishCallback);
+  giIMPAttributeSelectionButton[0] = CreateIconAndTextButton(giIMPAttributeSelectionButtonImage[0], pImpButtonText[11], FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeFinishCallback);
 
   SetButtonCursor(giIMPAttributeSelectionButton[0], Enum317.CURSOR_WWW);
   return;
@@ -682,7 +682,7 @@ function RenderAttributeBoxes(): void {
   sString[2] = 0;
 
   // font stuff
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontShadow(NO_SHADOW);
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
@@ -1308,7 +1308,7 @@ function DrawBonusPointsRemaining(): void {
   // set font color
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
-  SetFont(FONT12ARIAL);
+  SetFont(FONT12ARIAL());
   // print string
   mprintf(LAPTOP_SCREEN_UL_X + 425, LAPTOP_SCREEN_WEB_UL_Y + 51, sString);
 

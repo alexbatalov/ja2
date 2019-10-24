@@ -145,7 +145,7 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         if (!gfTurnBasedAI) {
           // pause at the end of the walk!
           pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-          pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY;
+          pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY();
         }
 
         return Enum289.AI_ACTION_POINT_PATROL;
@@ -157,7 +157,7 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         if (!gfTurnBasedAI) {
           // pause at the end of the walk!
           pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-          pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY;
+          pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY();
         }
 
         return Enum289.AI_ACTION_POINT_PATROL;
@@ -258,7 +258,7 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         if (!gfTurnBasedAI) {
           // pause at the end of the walk!
           pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-          pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY;
+          pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY();
           if (pSoldier.value.bMobility == Enum295.CREATURE_CRAWLER) {
             pSoldier.value.usNextActionData *= 2;
           }
@@ -365,7 +365,7 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           if (!gfTurnBasedAI) {
             // pause at the end of the turn!
             pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-            pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY;
+            pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY();
           }
 
           return Enum289.AI_ACTION_CHANGE_FACING;

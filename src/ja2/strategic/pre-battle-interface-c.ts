@@ -223,13 +223,13 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     AssertMsg(0, "Failed to load interface\\PreBattleButton.sti");
   iPBButtonImage[1] = UseLoadedButtonImage(iPBButtonImage[0], -1, 0, -1, 1, -1);
   iPBButtonImage[2] = UseLoadedButtonImage(iPBButtonImage[0], -1, 0, -1, 1, -1);
-  iPBButton[0] = QuickCreateButton(iPBButtonImage[0], 27, 54, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, DEFAULT_MOVE_CALLBACK, AutoResolveBattleCallback);
-  iPBButton[1] = QuickCreateButton(iPBButtonImage[1], 98, 54, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, DEFAULT_MOVE_CALLBACK, GoToSectorCallback);
-  iPBButton[2] = QuickCreateButton(iPBButtonImage[2], 169, 54, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, DEFAULT_MOVE_CALLBACK, RetreatMercsCallback);
+  iPBButton[0] = QuickCreateButton(iPBButtonImage[0], 27, 54, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, DEFAULT_MOVE_CALLBACK(), AutoResolveBattleCallback);
+  iPBButton[1] = QuickCreateButton(iPBButtonImage[1], 98, 54, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, DEFAULT_MOVE_CALLBACK(), GoToSectorCallback);
+  iPBButton[2] = QuickCreateButton(iPBButtonImage[2], 169, 54, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, DEFAULT_MOVE_CALLBACK(), RetreatMercsCallback);
 
-  SpecifyGeneralButtonTextAttributes(iPBButton[0], gpStrategicString[Enum365.STR_PB_AUTORESOLVE_BTN], BLOCKFONT, FONT_BEIGE, 141);
-  SpecifyGeneralButtonTextAttributes(iPBButton[1], gpStrategicString[Enum365.STR_PB_GOTOSECTOR_BTN], BLOCKFONT, FONT_BEIGE, 141);
-  SpecifyGeneralButtonTextAttributes(iPBButton[2], gpStrategicString[Enum365.STR_PB_RETREATMERCS_BTN], BLOCKFONT, FONT_BEIGE, 141);
+  SpecifyGeneralButtonTextAttributes(iPBButton[0], gpStrategicString[Enum365.STR_PB_AUTORESOLVE_BTN], BLOCKFONT(), FONT_BEIGE, 141);
+  SpecifyGeneralButtonTextAttributes(iPBButton[1], gpStrategicString[Enum365.STR_PB_GOTOSECTOR_BTN], BLOCKFONT(), FONT_BEIGE, 141);
+  SpecifyGeneralButtonTextAttributes(iPBButton[2], gpStrategicString[Enum365.STR_PB_RETREATMERCS_BTN], BLOCKFONT(), FONT_BEIGE, 141);
   SpecifyButtonHilitedTextColors(iPBButton[0], FONT_WHITE, FONT_NEARBLACK);
   SpecifyButtonHilitedTextColors(iPBButton[1], FONT_WHITE, FONT_NEARBLACK);
   SpecifyButtonHilitedTextColors(iPBButton[2], FONT_WHITE, FONT_NEARBLACK);
@@ -642,7 +642,7 @@ function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
   let str: UINT16[] /* [100] */;
   let x: INT32;
   let width: INT32;
-  SetFont(FONT10ARIALBOLD);
+  SetFont(FONT10ARIALBOLD());
   if (gfBlinkHeader) {
     if (GetJA2Clock() % 1000 < 667) {
       SetFontForeground(FONT_WHITE);
@@ -682,7 +682,7 @@ function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
         swprintf(str, gpStrategicString[Enum365.STR_PB_ENTERINGBLOODCATLAIR_HEADER]);
         break;
     }
-  width = StringPixLength(str, FONT10ARIALBOLD);
+  width = StringPixLength(str, FONT10ARIALBOLD());
   x = 130 - width / 2;
   mprintf(x, 4, str);
   InvalidateRegion(0, 0, 231, 12);
@@ -753,17 +753,17 @@ function RenderPreBattleInterface(): void {
     y = BOTTOM_Y - ACTUAL_HEIGHT - ROW_HEIGHT * max(guiNumUninvolved, 1);
     BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.UNINVOLVED_HEADER, 8, y, VO_BLT_SRCTRANSPARENCY, NULL);
 
-    SetFont(BLOCKFONT);
+    SetFont(BLOCKFONT());
     SetFontForeground(FONT_BEIGE);
     swprintf(str, gpStrategicString[Enum365.STR_PB_LOCATION]);
-    width = StringPixLength(str, BLOCKFONT);
+    width = StringPixLength(str, BLOCKFONT());
     if (width > 64) {
-      SetFont(BLOCKFONTNARROW);
-      width = StringPixLength(str, BLOCKFONTNARROW);
+      SetFont(BLOCKFONTNARROW());
+      width = StringPixLength(str, BLOCKFONTNARROW());
     }
     mprintf(65 - width, 17, str);
 
-    SetFont(BLOCKFONT);
+    SetFont(BLOCKFONT());
     if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
       swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMIES]);
     } else if (gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
@@ -771,28 +771,28 @@ function RenderPreBattleInterface(): void {
     } else {
       swprintf(str, gpStrategicString[Enum365.STR_PB_CREATURES]);
     }
-    width = StringPixLength(str, BLOCKFONT);
+    width = StringPixLength(str, BLOCKFONT());
     if (width > 52) {
-      SetFont(BLOCKFONTNARROW);
-      width = StringPixLength(str, BLOCKFONTNARROW);
+      SetFont(BLOCKFONTNARROW());
+      width = StringPixLength(str, BLOCKFONTNARROW());
     }
     mprintf(54 - width, 38, str);
 
-    SetFont(BLOCKFONT);
+    SetFont(BLOCKFONT());
     swprintf(str, gpStrategicString[Enum365.STR_PB_MERCS]);
-    width = StringPixLength(str, BLOCKFONT);
+    width = StringPixLength(str, BLOCKFONT());
     if (width > 52) {
-      SetFont(BLOCKFONTNARROW);
-      width = StringPixLength(str, BLOCKFONTNARROW);
+      SetFont(BLOCKFONTNARROW());
+      width = StringPixLength(str, BLOCKFONTNARROW());
     }
     mprintf(139 - width, 38, str);
 
-    SetFont(BLOCKFONT);
+    SetFont(BLOCKFONT());
     swprintf(str, gpStrategicString[Enum365.STR_PB_MILITIA]);
-    width = StringPixLength(str, BLOCKFONT);
+    width = StringPixLength(str, BLOCKFONT());
     if (width > 52) {
-      SetFont(BLOCKFONTNARROW);
-      width = StringPixLength(str, BLOCKFONTNARROW);
+      SetFont(BLOCKFONTNARROW());
+      width = StringPixLength(str, BLOCKFONTNARROW());
     }
     mprintf(224 - width, 38, str);
 
@@ -808,7 +808,7 @@ function RenderPreBattleInterface(): void {
     }
 
     // location
-    SetFont(FONT10ARIAL);
+    SetFont(FONT10ARIAL());
     SetFontForeground(FONT_YELLOW);
     SetFontShadow(FONT_NEARBLACK);
 
@@ -816,7 +816,7 @@ function RenderPreBattleInterface(): void {
     mprintf(70, 17, "%s %s", gpStrategicString[Enum365.STR_PB_SECTOR], pSectorName);
 
     // enemy
-    SetFont(FONT14ARIAL);
+    SetFont(FONT14ARIAL());
     if (gubEnemyEncounterCode == Enum164.CREATURE_ATTACK_CODE || gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE || WhatPlayerKnowsAboutEnemiesInSector(gubPBSectorX, gubPBSectorY) != Enum159.KNOWS_HOW_MANY) {
       // don't know how many
       swprintf(str, "?");
@@ -827,20 +827,20 @@ function RenderPreBattleInterface(): void {
       swprintf(str, "%d", i);
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = i;
     }
-    x = 57 + (27 - StringPixLength(str, FONT14ARIAL)) / 2;
+    x = 57 + (27 - StringPixLength(str, FONT14ARIAL())) / 2;
     y = 36;
     mprintf(x, y, str);
     // player
     swprintf(str, "%d", guiNumInvolved);
-    x = 142 + (27 - StringPixLength(str, FONT14ARIAL)) / 2;
+    x = 142 + (27 - StringPixLength(str, FONT14ARIAL())) / 2;
     mprintf(x, y, str);
     // militia
     swprintf(str, "%d", CountAllMilitiaInSector(gubPBSectorX, gubPBSectorY));
-    x = 227 + (27 - StringPixLength(str, FONT14ARIAL)) / 2;
+    x = 227 + (27 - StringPixLength(str, FONT14ARIAL())) / 2;
     mprintf(x, y, str);
     SetFontShadow(FONT_NEARBLACK);
 
-    SetFont(BLOCKFONT2);
+    SetFont(BLOCKFONT2());
     SetFontForeground(FONT_YELLOW);
 
     // print out the participants of the battle.
@@ -857,24 +857,24 @@ function RenderPreBattleInterface(): void {
             SetFontForeground(FONT_YELLOW);
           // NAME
           wcscpy(str, MercPtrs[i].value.name);
-          x = 17 + (52 - StringPixLength(str, BLOCKFONT2)) / 2;
+          x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
           mprintf(x, y, str);
           // ASSIGN
           GetMapscreenMercAssignmentString(MercPtrs[i], str);
-          x = 72 + (54 - StringPixLength(str, BLOCKFONT2)) / 2;
+          x = 72 + (54 - StringPixLength(str, BLOCKFONT2())) / 2;
           mprintf(x, y, str);
           // COND
           GetSoldierConditionInfo(MercPtrs[i], str, addressof(ubHPPercent), addressof(ubBPPercent));
-          x = 129 + (58 - StringPixLength(str, BLOCKFONT2)) / 2;
+          x = 129 + (58 - StringPixLength(str, BLOCKFONT2())) / 2;
           mprintf(x, y, str);
           // HP
           swprintf(str, "%d%%", ubHPPercent);
-          x = 189 + (25 - StringPixLength(str, BLOCKFONT2)) / 2;
+          x = 189 + (25 - StringPixLength(str, BLOCKFONT2())) / 2;
           wcscat(str, "%");
           mprintf(x, y, str);
           // BP
           swprintf(str, "%d%%", ubBPPercent);
-          x = 217 + (25 - StringPixLength(str, BLOCKFONT2)) / 2;
+          x = 217 + (25 - StringPixLength(str, BLOCKFONT2())) / 2;
           wcscat(str, "%");
           mprintf(x, y, str);
 
@@ -889,7 +889,7 @@ function RenderPreBattleInterface(): void {
     if (!guiNumUninvolved) {
       SetFontForeground(FONT_YELLOW);
       wcscpy(str, gpStrategicString[Enum365.STR_PB_NONE]);
-      x = 17 + (52 - StringPixLength(str, BLOCKFONT2)) / 2;
+      x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
       y = BOTTOM_Y - ROW_HEIGHT + 2;
       mprintf(x, y, str);
     } else {
@@ -905,25 +905,25 @@ function RenderPreBattleInterface(): void {
               SetFontForeground(FONT_YELLOW);
             // NAME
             wcscpy(str, MercPtrs[i].value.name);
-            x = 17 + (52 - StringPixLength(str, BLOCKFONT2)) / 2;
+            x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
             mprintf(x, y, str);
             // ASSIGN
             GetMapscreenMercAssignmentString(MercPtrs[i], str);
-            x = 72 + (54 - StringPixLength(str, BLOCKFONT2)) / 2;
+            x = 72 + (54 - StringPixLength(str, BLOCKFONT2())) / 2;
             mprintf(x, y, str);
             // LOC
             GetMapscreenMercLocationString(MercPtrs[i], str);
-            x = 128 + (33 - StringPixLength(str, BLOCKFONT2)) / 2;
+            x = 128 + (33 - StringPixLength(str, BLOCKFONT2())) / 2;
             mprintf(x, y, str);
             // DEST
             GetMapscreenMercDestinationString(MercPtrs[i], str);
             if (wcslen(str) > 0) {
-              x = 164 + (41 - StringPixLength(str, BLOCKFONT2)) / 2;
+              x = 164 + (41 - StringPixLength(str, BLOCKFONT2())) / 2;
               mprintf(x, y, str);
             }
             // DEP
             GetMapscreenMercDepartureString(MercPtrs[i], str, addressof(ubJunk));
-            x = 208 + (34 - StringPixLength(str, BLOCKFONT2)) / 2;
+            x = 208 + (34 - StringPixLength(str, BLOCKFONT2())) / 2;
             mprintf(x, y, str);
             line++;
             y += ROW_HEIGHT;

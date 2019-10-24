@@ -1459,7 +1459,7 @@ function AIDecideRadioAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
     return;
   }
 
-  if (PTR_CIVILIAN && pSoldier.value.ubCivilianGroup != Enum246.KINGPIN_CIV_GROUP) {
+  if (PTR_CIVILIAN() && pSoldier.value.ubCivilianGroup != Enum246.KINGPIN_CIV_GROUP) {
     // don't play anim
     ActionDone(pSoldier);
     return;
@@ -1656,7 +1656,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
               } else {
                 // Have buddy wait a while...
                 pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-                pSoldier.value.usNextActionData = REALTIME_AI_DELAY;
+                pSoldier.value.usNextActionData = REALTIME_AI_DELAY();
               }
             }
 

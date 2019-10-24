@@ -204,7 +204,7 @@ function CreateSummaryWindow(): void {
   SpecifyDisabledButtonStyle(iSummaryButton[Enum58.SUMMARY_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
   DisableButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
 
-  iSummaryButton[Enum58.SUMMARY_OKAY] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 585, 325, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryOkayCallback);
+  iSummaryButton[Enum58.SUMMARY_OKAY] = CreateTextButton("Okay", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 585, 325, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryOkayCallback);
   // GiveButtonDefaultStatus( iSummaryButton[ SUMMARY_OKAY ], DEFAULT_STATUS_WINDOWS95 );
 
   iSummaryButton[Enum58.SUMMARY_GRIDCHECKBOX] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleGridCallback);
@@ -215,19 +215,19 @@ function CreateSummaryWindow(): void {
   ButtonList[iSummaryButton[Enum58.SUMMARY_PROGRESSCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
   gfRenderProgress = TRUE;
 
-  iSummaryButton[Enum58.SUMMARY_ALL] = CreateTextButton("A", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 110, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[Enum58.SUMMARY_ALL] = CreateTextButton("A", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 110, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == ALL_LEVELS_MASK || giCurrentViewLevel == ALTERNATE_LEVELS_MASK)
     ButtonList[iSummaryButton[Enum58.SUMMARY_ALL]].value.uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[Enum58.SUMMARY_G] = CreateTextButton("G", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 128, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[Enum58.SUMMARY_G] = CreateTextButton("G", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 128, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == GROUND_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_GROUND_MASK)
     ButtonList[iSummaryButton[Enum58.SUMMARY_G]].value.uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[Enum58.SUMMARY_B1] = CreateTextButton("B1", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 146, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[Enum58.SUMMARY_B1] = CreateTextButton("B1", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 146, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT1_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B1_MASK)
     ButtonList[iSummaryButton[Enum58.SUMMARY_B1]].value.uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[Enum58.SUMMARY_B2] = CreateTextButton("B2", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 164, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[Enum58.SUMMARY_B2] = CreateTextButton("B2", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 164, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT2_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B2_MASK)
     ButtonList[iSummaryButton[Enum58.SUMMARY_B2]].value.uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[Enum58.SUMMARY_B3] = CreateTextButton("B3", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 182, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[Enum58.SUMMARY_B3] = CreateTextButton("B3", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 182, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
     ButtonList[iSummaryButton[Enum58.SUMMARY_B3]].value.uiFlags |= BUTTON_CLICKED_ON;
 
@@ -235,11 +235,11 @@ function CreateSummaryWindow(): void {
   if (gfAlternateMaps)
     ButtonList[iSummaryButton[Enum58.SUMMARY_ALTERNATE]].value.uiFlags |= BUTTON_CLICKED_ON;
 
-  iSummaryButton[Enum58.SUMMARY_LOAD] = CreateTextButton("LOAD", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryLoadMapCallback);
-  iSummaryButton[Enum58.SUMMARY_SAVE] = CreateTextButton("SAVE", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 55, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummarySaveMapCallback);
+  iSummaryButton[Enum58.SUMMARY_LOAD] = CreateTextButton("LOAD", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryLoadMapCallback);
+  iSummaryButton[Enum58.SUMMARY_SAVE] = CreateTextButton("SAVE", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 55, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummarySaveMapCallback);
   iSummaryButton[Enum58.SUMMARY_OVERRIDE] = CreateCheckBoxButton((MAP_LEFT + 110), (MAP_BOTTOM + 59), "EDITOR\\smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryOverrideCallback);
 
-  iSummaryButton[Enum58.SUMMARY_UPDATE] = CreateTextButton("Update", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 255, 15, 40, 16, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryUpdateCallback);
+  iSummaryButton[Enum58.SUMMARY_UPDATE] = CreateTextButton("Update", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 255, 15, 40, 16, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryUpdateCallback);
 
   iSummaryButton[Enum58.SUMMARY_REAL] = CreateCheckBoxButton(350, 47, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummaryRealCallback);
   iSummaryButton[Enum58.SUMMARY_SCIFI] = CreateCheckBoxButton(376, 47, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummarySciFiCallback);
@@ -367,7 +367,7 @@ function RenderSectorInformation(): void {
   let usLine: UINT16 = 35;
   let iOverall: INT32;
 
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontShadow(FONT_NEARBLACK);
 
   s = gpCurrentSectorSummary;
@@ -399,30 +399,30 @@ function RenderSectorInformation(): void {
     let x: INT32;
     x = 140;
     mprintf(x, 75, "(");
-    x += StringPixLength("(", FONT10ARIAL) + 2;
+    x += StringPixLength("(", FONT10ARIAL()) + 2;
     if (m.value.sNorthGridNo != -1) {
       mprintf(x, 75, "N");
-      x += StringPixLength("N", FONT10ARIAL) + 2;
+      x += StringPixLength("N", FONT10ARIAL()) + 2;
     }
     if (m.value.sEastGridNo != -1) {
       mprintf(x, 75, "E");
-      x += StringPixLength("E", FONT10ARIAL) + 2;
+      x += StringPixLength("E", FONT10ARIAL()) + 2;
     }
     if (m.value.sSouthGridNo != -1) {
       mprintf(x, 75, "S");
-      x += StringPixLength("S", FONT10ARIAL) + 2;
+      x += StringPixLength("S", FONT10ARIAL()) + 2;
     }
     if (m.value.sWestGridNo != -1) {
       mprintf(x, 75, "W");
-      x += StringPixLength("W", FONT10ARIAL) + 2;
+      x += StringPixLength("W", FONT10ARIAL()) + 2;
     }
     if (m.value.sCenterGridNo != -1) {
       mprintf(x, 75, "C");
-      x += StringPixLength("C", FONT10ARIAL) + 2;
+      x += StringPixLength("C", FONT10ARIAL()) + 2;
     }
     if (m.value.sIsolatedGridNo != -1) {
       mprintf(x, 75, "I");
-      x += StringPixLength("I", FONT10ARIAL) + 2;
+      x += StringPixLength("I", FONT10ARIAL()) + 2;
     }
     mprintf(x, 75, ")");
   }
@@ -538,7 +538,7 @@ function RenderItemDetails(): void {
   let xp: UINT32;
   let yp: UINT32;
   let bFreqIndex: INT8;
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
   mprintf(364, 49, "R");
@@ -815,7 +815,7 @@ function RenderSummaryWindow(): void {
     DrawButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
     InvalidateRegion(0, 0, 640, 360);
 
-    SetFont(BLOCKFONT2);
+    SetFont(BLOCKFONT2());
     SetFontForeground(FONT_LTKHAKI);
     SetFontShadow(FONT_DKKHAKI);
     SetFontBackground(0);
@@ -829,7 +829,7 @@ function RenderSummaryWindow(): void {
       SetFontShadow(FONT_NEARBLACK);
       mprintf(270, 5, "(NO MAP LOADED).");
     }
-    SetFont(FONT10ARIAL);
+    SetFont(FONT10ARIAL());
     SetFontShadow(FONT_NEARBLACK);
     if (gfGlobalSummaryExists) {
       let str: UINT16[] /* [100] */;
@@ -1120,7 +1120,7 @@ function RenderSummaryWindow(): void {
       mprintf(10, 20, "No summary info.  Creation denied.");
     }
 
-    SetFont(FONT10ARIAL);
+    SetFont(FONT10ARIAL());
     SetFontForeground(FONT_GRAY3);
     mprintf(MAP_LEFT + 15, MAP_BOTTOM + 7, "Grid");
     mprintf(MAP_LEFT + 65, MAP_BOTTOM + 7, "Progress");
@@ -1167,7 +1167,7 @@ function RenderSummaryWindow(): void {
     BltVideoObjectFromIndex(FRAME_BUFFER, guiOmertaMap, 0, MAP_LEFT - 2, MAP_TOP - 2, VO_BLT_SRCTRANSPARENCY, NULL);
     InvalidateRegion(MAP_LEFT - 1, MAP_TOP - 1, MAP_RIGHT + 1, MAP_BOTTOM + 1);
     // Draw the coordinates
-    SetFont(SMALLCOMPFONT);
+    SetFont(SMALLCOMPFONT());
     SetFontForeground(FONT_BLACK);
     for (y = 0; y < 16; y++) {
       mprintf(MAP_LEFT - 8, MAP_TOP + 4 + y * 13, "%c", 65 + y);
@@ -1175,7 +1175,7 @@ function RenderSummaryWindow(): void {
     for (x = 1; x <= 16; x++) {
       let str: UINT16[] /* [3] */;
       swprintf(str, "%d", x);
-      mprintf(MAP_LEFT + x * 13 - (13 + StringPixLength(str, SMALLCOMPFONT)) / 2, MAP_TOP - 8, str);
+      mprintf(MAP_LEFT + x * 13 - (13 + StringPixLength(str, SMALLCOMPFONT())) / 2, MAP_TOP - 8, str);
     }
     if (gfRenderGrid) {
       let pos: UINT16;
@@ -1209,7 +1209,7 @@ function RenderSummaryWindow(): void {
             if (ubNumUndergroundLevels) {
               // display the number of underground levels.  If there
               // is no ground level, then it'll be shadowed.
-              SetFont(SMALLCOMPFONT);
+              SetFont(SMALLCOMPFONT());
               SetFontForeground(FONT_YELLOW);
               swprintf(str, "%d", ubNumUndergroundLevels);
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
@@ -1229,7 +1229,7 @@ function RenderSummaryWindow(): void {
             if (ubNumUndergroundLevels) {
               // display the number of underground levels.  If there
               // is no ground level, then it'll be shadowed.
-              SetFont(SMALLCOMPFONT);
+              SetFont(SMALLCOMPFONT());
               SetFontForeground(FONT_YELLOW);
               swprintf(str, "%d", ubNumUndergroundLevels);
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
@@ -1382,7 +1382,7 @@ function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): vo
   }
 
   if (fUpdate) {
-    SetFont(FONT10ARIAL);
+    SetFont(FONT10ARIAL());
     SetFontForeground(FONT_LTKHAKI);
     SetFontShadow(FONT_NEARBLACK);
     swprintf(str, "Analyzing map:  %s...", gszFilename);
@@ -1392,7 +1392,7 @@ function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): vo
       InvalidateRegion(MAP_LEFT, MAP_BOTTOM + 100, MAP_LEFT + 150, MAP_BOTTOM + 110);
       CreateProgressBar(0, MAP_LEFT, MAP_BOTTOM + 110, MAP_LEFT + 140, MAP_BOTTOM + 120);
     } else {
-      mprintf(320 - StringPixLength(str, FONT10ARIAL) / 2, 190, str);
+      mprintf(320 - StringPixLength(str, FONT10ARIAL()) / 2, 190, str);
       InvalidateRegion(200, 190, 400, 200);
       CreateProgressBar(0, 250, 200, 390, 210);
     }
@@ -1779,7 +1779,7 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     let str: UINT16[] /* [50] */;
     gfRenderSummary = TRUE;
 
-    SetFont(FONT10ARIAL);
+    SetFont(FONT10ARIAL());
     SetFontForeground(FONT_LTKHAKI);
     SetFontShadow(FONT_NEARBLACK);
 
@@ -1791,8 +1791,8 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     DefineProgressBarPanel(0, 65, 79, 94, MAP_LEFT, 318, 578, 356);
     swprintf(str, "Loading map:  %s", gszDisplayName);
-    SetProgressBarTitle(0, str, BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
-    SetProgressBarMsgAttributes(0, SMALLCOMPFONT, FONT_BLACK, FONT_BLACK);
+    SetProgressBarTitle(0, str, BLOCKFONT2(), FONT_RED, FONT_NEARBLACK);
+    SetProgressBarMsgAttributes(0, SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK);
 
     if (ExternalLoadMap(gszDisplayName)) {
       EnableButton(iSummaryButton[Enum58.SUMMARY_OKAY]);
@@ -2249,8 +2249,8 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
   // DefineProgressBarPanel( 0, 65, 79, 94, 10, 80, 310, 152 );
   CreateProgressBar(0, 20, 100, 300, 112); // master (total)
   DefineProgressBarPanel(0, 65, 79, 94, 10, 80, 310, 132);
-  SetProgressBarTitle(0, "Generating map information", BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
-  SetProgressBarMsgAttributes(0, SMALLCOMPFONT, FONT_BLACK, FONT_BLACK);
+  SetProgressBarTitle(0, "Generating map information", BLOCKFONT2(), FONT_RED, FONT_NEARBLACK);
+  SetProgressBarMsgAttributes(0, SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK);
   gfUpdatingNow = TRUE;
 
   gusCurrent = 0;
@@ -2319,8 +2319,8 @@ function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     let str: UINT8[] /* [40] */;
     CreateProgressBar(0, 20, 100, 300, 112); // slave (individual)
     DefineProgressBarPanel(0, 65, 79, 94, 10, 80, 310, 132);
-    SetProgressBarTitle(0, "Generating map summary", BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
-    SetProgressBarMsgAttributes(0, SMALLCOMPFONT, FONT_BLACK, FONT_BLACK);
+    SetProgressBarTitle(0, "Generating map summary", BLOCKFONT2(), FONT_RED, FONT_NEARBLACK);
+    SetProgressBarMsgAttributes(0, SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK);
 
     if (gpCurrentSectorSummary) {
       MemFree(gpCurrentSectorSummary);
@@ -2364,20 +2364,20 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
   // Draw it
   DrawButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
   InvalidateRegion(0, 0, 640, 480);
-  SetFont(HUGEFONT);
+  SetFont(HUGEFONT());
   SetFontForeground(FONT_RED);
   SetFontShadow(FONT_NEARBLACK);
   swprintf(str, "MAJOR VERSION UPDATE");
-  mprintf(320 - StringPixLength(str, HUGEFONT) / 2, 105, str);
-  SetFont(FONT10ARIAL);
+  mprintf(320 - StringPixLength(str, HUGEFONT()) / 2, 105, str);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_YELLOW);
   swprintf(str, "There are %d maps requiring a major version update.", gusNumberOfMapsToBeForceUpdated);
-  mprintf(320 - StringPixLength(str, FONT10ARIAL) / 2, 130, str);
+  mprintf(320 - StringPixLength(str, FONT10ARIAL()) / 2, 130, str);
 
   CreateProgressBar(2, 120, 170, 520, 202);
   DefineProgressBarPanel(2, 65, 79, 94, 100, 150, 540, 222);
-  SetProgressBarTitle(2, "Updating all outdated maps", BLOCKFONT2, FONT_RED, 0);
-  SetProgressBarMsgAttributes(2, SMALLCOMPFONT, FONT_BLACK, FONT_BLACK);
+  SetProgressBarTitle(2, "Updating all outdated maps", BLOCKFONT2(), FONT_RED, 0);
+  SetProgressBarMsgAttributes(2, SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK);
 
   gusCurrent = 0;
   gusTotal = gusNumberOfMapsToBeForceUpdated;

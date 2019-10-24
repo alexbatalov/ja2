@@ -1706,7 +1706,7 @@ function GetAPsToStealItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT
   sAPCost += AP_STEAL_ITEM;
 
   // CJC August 13 2002: added cost to stand into equation
-  if (!(PTR_STANDING)) {
+  if (!(PTR_STANDING())) {
     sAPCost += GetAPsToChangeStance(pSoldier, ANIM_STAND);
   }
 

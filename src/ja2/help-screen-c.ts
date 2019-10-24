@@ -464,7 +464,7 @@ function EnterHelpScreen(): BOOLEAN {
   // Create the exit buttons
   giExitBtnImage = LoadButtonImage("INTERFACE\\HelpScreen.sti", -1, 0, 4, 2, 6);
 
-  guiHelpScreenExitBtn = CreateIconAndTextButton(giExitBtnImage, "", HELP_SCREEN_BTN_FONT, HELP_SCREEN_BTN_FONT_ON_COLOR, DEFAULT_SHADOW, HELP_SCREEN_BTN_FONT_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnHelpScreenExitCallback);
+  guiHelpScreenExitBtn = CreateIconAndTextButton(giExitBtnImage, "", HELP_SCREEN_BTN_FONT(), HELP_SCREEN_BTN_FONT_ON_COLOR, DEFAULT_SHADOW, HELP_SCREEN_BTN_FONT_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), BtnHelpScreenExitCallback);
   SetButtonFastHelpText(guiHelpScreenExitBtn, gzHelpScreenText[Enum377.HLP_SCRN_TXT__EXIT_SCREEN]);
   SetButtonCursor(guiHelpScreenExitBtn, gHelpScreen.usCursor);
 
@@ -781,7 +781,7 @@ function CreateHelpScreenButtons(): void {
 
       giHelpScreenButtonsImage[i] = UseLoadedButtonImage(giExitBtnImage, -1, 1, 5, 3, 7);
 
-      guiHelpScreenBtns[i] = CreateIconAndTextButton(giHelpScreenButtonsImage[i], sText, HELP_SCREEN_BTN_FONT, HELP_SCREEN_BTN_FONT_ON_COLOR, DEFAULT_SHADOW, HELP_SCREEN_BTN_FONT_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnHelpScreenBtnsCallback);
+      guiHelpScreenBtns[i] = CreateIconAndTextButton(giHelpScreenButtonsImage[i], sText, HELP_SCREEN_BTN_FONT(), HELP_SCREEN_BTN_FONT_ON_COLOR, DEFAULT_SHADOW, HELP_SCREEN_BTN_FONT_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), BtnHelpScreenBtnsCallback);
 
       SetButtonCursor(guiHelpScreenBtns[i], gHelpScreen.usCursor);
       MSYS_SetBtnUserData(guiHelpScreenBtns[i], 0, i);
@@ -805,22 +805,22 @@ function GetHelpScreenUserInput(): void {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
         break;
     }
 
@@ -839,10 +839,10 @@ function GetHelpScreenUserInput(): void {
         } break;
 
         case PGUP: {
-          ChangeTopLineInTextBufferByAmount(-(HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER - 1));
+          ChangeTopLineInTextBufferByAmount(-(HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER() - 1));
         } break;
         case PGDN: {
-          ChangeTopLineInTextBufferByAmount((HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER - 1));
+          ChangeTopLineInTextBufferByAmount((HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER() - 1));
         } break;
 
         case LEFTARROW:
@@ -879,10 +879,10 @@ function GetHelpScreenUserInput(): void {
         } break;
 
         case PGUP: {
-          ChangeTopLineInTextBufferByAmount(-(HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER - 1));
+          ChangeTopLineInTextBufferByAmount(-(HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER() - 1));
         } break;
         case PGDN: {
-          ChangeTopLineInTextBufferByAmount((HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER - 1));
+          ChangeTopLineInTextBufferByAmount((HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER() - 1));
         } break;
       }
     }
@@ -964,7 +964,7 @@ function RenderSpecificHelpScreen(): UINT16 {
   // set the buffer for the text to go to
   //	SetFontDestBuffer( guiHelpScreenTextBufferSurface, gHelpScreen.usLeftMarginPosX, gHelpScreen.usScreenLocY + HELP_SCREEN_TEXT_OFFSET_Y,
   //										 HLP_SCRN__WIDTH_OF_TEXT_BUFFER, HLP_SCRN__NUMBER_BYTES_IN_TEXT_BUFFER, FALSE );
-  SetFontDestBuffer(guiHelpScreenTextBufferSurface, 0, 0, HLP_SCRN__WIDTH_OF_TEXT_BUFFER, HLP_SCRN__HEIGHT_OF_TEXT_BUFFER, FALSE);
+  SetFontDestBuffer(guiHelpScreenTextBufferSurface, 0, 0, HLP_SCRN__WIDTH_OF_TEXT_BUFFER, HLP_SCRN__HEIGHT_OF_TEXT_BUFFER(), FALSE);
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreen) {
@@ -1072,7 +1072,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
     //									 HELP_SCREEN_TITLE_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, HELP_SCREEN_TEXT_BACKGROUND, FALSE, CENTER_JUSTIFIED );
 
     // Display the Title
-    IanDisplayWrappedString(usPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TITLE_OFFSET_Y), usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
+    IanDisplayWrappedString(usPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TITLE_OFFSET_Y), usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT(), HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
   }
 
   // Display the '( press H to get help... )'
@@ -1085,7 +1085,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
   //	DrawTextToScreen( zText, usPosX, usPosY, usWidth,
   //								 HELP_SCREEN_TEXT_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, HELP_SCREEN_TEXT_BACKGROUND, FALSE, CENTER_JUSTIFIED );
 
-  IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
+  IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT(), HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
 
   if (!gHelpScreen.fForceHelpScreenToComeUp) {
     // calc location for the ' [ x ] Dont display again...'
@@ -1097,7 +1097,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
     usPosY = gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight - HELP_SCREEN_SHOW_HELP_AGAIN_REGION_TEXT_OFFSET_Y + 2;
 
     // Display the ' [ x ] Dont display again...'
-    IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TEXT_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
+    IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TEXT_BODY_FONT(), HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
   }
 
   SetFontShadow(DEFAULT_SHADOW);
@@ -1197,7 +1197,7 @@ function GetAndDisplayHelpScreenText(uiRecord: UINT32, usPosX: UINT16, usPosY: U
   LoadEncryptedDataFromFile(HELPSCREEN_FILE, zText, uiStartLoc, HELPSCREEN_RECORD_SIZE);
 
   // Display the text
-  usNumVertPixels = IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TEXT_BODY_FONT, HELP_SCREEN_TEXT_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
+  usNumVertPixels = IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TEXT_BODY_FONT(), HELP_SCREEN_TEXT_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
 
   SetFontShadow(DEFAULT_SHADOW);
 
@@ -1279,7 +1279,7 @@ function RenderLaptopHelpScreen(): UINT16 {
   let usNumVertPixels: UINT16;
   let ubCnt: UINT8;
   let usTotalNumberOfVerticalPixels: UINT16 = 0;
-  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT);
+  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT());
 
   if (gHelpScreen.bCurrentHelpScreenActiveSubPage == -1) {
     return 0;
@@ -1384,7 +1384,7 @@ function RenderMapScreenNoOneHiredYetHelpScreen(): UINT16 {
   let usNumVertPixels: UINT16;
   let ubCnt: UINT8;
   let usTotalNumberOfVerticalPixels: UINT16 = 0;
-  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT);
+  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT());
 
   if (gHelpScreen.bCurrentHelpScreenActiveSubPage == -1) {
     return 0;
@@ -1421,7 +1421,7 @@ function RenderMapScreenNotYetInArulcoHelpScreen(): UINT16 {
   let usNumVertPixels: UINT16;
   let ubCnt: UINT8;
   let usTotalNumberOfVerticalPixels: UINT16 = 0;
-  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT);
+  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT());
 
   if (gHelpScreen.bCurrentHelpScreenActiveSubPage == -1) {
     return 0;
@@ -1457,7 +1457,7 @@ function RenderMapScreenSectorInventoryHelpScreen(): UINT16 {
   let usNumVertPixels: UINT16;
   let ubCnt: UINT8;
   let usTotalNumberOfVerticalPixels: UINT16 = 0;
-  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT);
+  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT());
 
   if (gHelpScreen.bCurrentHelpScreenActiveSubPage == -1) {
     return 0;
@@ -1494,7 +1494,7 @@ function RenderTacticalHelpScreen(): UINT16 {
   let usNumVertPixels: UINT16;
   let ubCnt: UINT8;
   let usTotalNumberOfVerticalPixels: UINT16 = 0;
-  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT);
+  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT());
 
   if (gHelpScreen.bCurrentHelpScreenActiveSubPage == -1) {
     return 0;
@@ -1598,7 +1598,7 @@ function RenderMapScreenHelpScreen(): UINT16 {
   let usNumVertPixels: UINT16;
   let ubCnt: UINT8;
   let usTotalNumberOfVerticalPixels: UINT16 = 0;
-  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT);
+  let usFontHeight: UINT16 = GetFontHeight(HELP_SCREEN_TEXT_BODY_FONT());
 
   if (gHelpScreen.bCurrentHelpScreenActiveSubPage == -1) {
     return 0;
@@ -1765,7 +1765,7 @@ function CreateHelpScreenTextBuffer(): BOOLEAN {
   // Create a background video surface to blt the face onto
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.usWidth = HLP_SCRN__WIDTH_OF_TEXT_BUFFER;
-  vs_desc.usHeight = HLP_SCRN__HEIGHT_OF_TEXT_BUFFER;
+  vs_desc.usHeight = HLP_SCRN__HEIGHT_OF_TEXT_BUFFER();
   vs_desc.ubBitDepth = 16;
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiHelpScreenTextBufferSurface)));
 
@@ -1784,7 +1784,7 @@ function RenderCurrentHelpScreenTextToBuffer(): void {
   gHelpScreen.usTotalNumberOfPixelsInBuffer = RenderSpecificHelpScreen();
 
   // calc the number of lines in the buffer
-  gHelpScreen.usTotalNumberOfLinesInBuffer = gHelpScreen.usTotalNumberOfPixelsInBuffer / (HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER);
+  gHelpScreen.usTotalNumberOfLinesInBuffer = gHelpScreen.usTotalNumberOfPixelsInBuffer / (HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER());
 }
 
 function RenderTextBufferToScreen(): void {
@@ -1796,7 +1796,7 @@ function RenderTextBufferToScreen(): void {
   GetVideoSurface(addressof(hSrcVSurface), guiHelpScreenTextBufferSurface);
 
   SrcRect.iLeft = 0;
-  SrcRect.iTop = gHelpScreen.iLineAtTopOfTextBuffer * HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER;
+  SrcRect.iTop = gHelpScreen.iLineAtTopOfTextBuffer * HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER();
   SrcRect.iRight = HLP_SCRN__WIDTH_OF_TEXT_BUFFER;
   SrcRect.iBottom = SrcRect.iTop + HLP_SCRN__HEIGHT_OF_TEXT_AREA - (2 * 8);
 
@@ -1812,7 +1812,7 @@ function ChangeHelpScreenSubPage(): void {
   RenderCurrentHelpScreenTextToBuffer();
 
   // enable or disable the help screen arrow buttons
-  if (gHelpScreen.usTotalNumberOfLinesInBuffer <= HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER) {
+  if (gHelpScreen.usTotalNumberOfLinesInBuffer <= HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER()) {
     DisableButton(giHelpScreenScrollArrows[0]);
     DisableButton(giHelpScreenScrollArrows[1]);
   } else {
@@ -1827,7 +1827,7 @@ function ClearHelpScreenTextBuffer(): void {
 
   // CLEAR THE FRAME BUFFER
   pDestBuf = LockVideoSurface(guiHelpScreenTextBufferSurface, addressof(uiDestPitchBYTES));
-  memset(pDestBuf, 0, HLP_SCRN__HEIGHT_OF_TEXT_BUFFER * uiDestPitchBYTES);
+  memset(pDestBuf, 0, HLP_SCRN__HEIGHT_OF_TEXT_BUFFER() * uiDestPitchBYTES);
   UnLockVideoSurface(guiHelpScreenTextBufferSurface);
   InvalidateScreen();
 }
@@ -1854,13 +1854,13 @@ function ChangeTopLineInTextBufferByAmount(iAmouontToMove: INT32): void {
   // else we are moving down
   else {
     // if we dont have to scroll cause there is not enough text
-    if (gHelpScreen.usTotalNumberOfLinesInBuffer <= HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER) {
+    if (gHelpScreen.usTotalNumberOfLinesInBuffer <= HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER()) {
       gHelpScreen.iLineAtTopOfTextBuffer = 0;
     } else {
-      if ((gHelpScreen.iLineAtTopOfTextBuffer + HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER + iAmouontToMove) <= gHelpScreen.usTotalNumberOfLinesInBuffer) {
+      if ((gHelpScreen.iLineAtTopOfTextBuffer + HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER() + iAmouontToMove) <= gHelpScreen.usTotalNumberOfLinesInBuffer) {
         gHelpScreen.iLineAtTopOfTextBuffer += iAmouontToMove;
       } else {
-        gHelpScreen.iLineAtTopOfTextBuffer = gHelpScreen.usTotalNumberOfLinesInBuffer - HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER;
+        gHelpScreen.iLineAtTopOfTextBuffer = gHelpScreen.usTotalNumberOfLinesInBuffer - HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER();
       }
     }
   }
@@ -1894,7 +1894,7 @@ function DisplayHelpScreenTextBufferScrollBox(): void {
   //
 
   // if there ARE scroll bars, draw the
-  if (!(gHelpScreen.usTotalNumberOfLinesInBuffer <= HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER)) {
+  if (!(gHelpScreen.usTotalNumberOfLinesInBuffer <= HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER())) {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, usPosX, iTopPosScrollBox, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(227, 198, 88)));
 
     // display the line
@@ -1947,14 +1947,14 @@ function CreateScrollAreaButtons(): void {
   usPosY = gHelpScreen.usScreenLocY + HLP_SCRN__SCROLL_UP_ARROW_Y;
 
   // Create the scroll arrows
-  giHelpScreenScrollArrows[0] = QuickCreateButton(guiHelpScreenScrollArrowImage[0], usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnHelpScreenScrollArrowsCallback);
+  giHelpScreenScrollArrows[0] = QuickCreateButton(guiHelpScreenScrollArrowImage[0], usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), BtnHelpScreenScrollArrowsCallback);
   MSYS_SetBtnUserData(giHelpScreenScrollArrows[0], 0, 0);
   SetButtonCursor(giHelpScreenScrollArrows[0], gHelpScreen.usCursor);
 
   usPosY = gHelpScreen.usScreenLocY + HLP_SCRN__SCROLL_DWN_ARROW_Y;
 
   // Create the scroll arrows
-  giHelpScreenScrollArrows[1] = QuickCreateButton(guiHelpScreenScrollArrowImage[1], usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnHelpScreenScrollArrowsCallback);
+  giHelpScreenScrollArrows[1] = QuickCreateButton(guiHelpScreenScrollArrowImage[1], usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), BtnHelpScreenScrollArrowsCallback);
   MSYS_SetBtnUserData(giHelpScreenScrollArrows[1], 0, 1);
   SetButtonCursor(giHelpScreenScrollArrows[1], gHelpScreen.usCursor);
 }
@@ -1976,14 +1976,14 @@ function CalculateHeightAndPositionForHelpScreenScrollBox(piHeightOfScrollBox: P
   let dPercentSizeOfBox: FLOAT = 0;
   let dTemp: FLOAT = 0;
 
-  dPercentSizeOfBox = HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER / gHelpScreen.usTotalNumberOfLinesInBuffer;
+  dPercentSizeOfBox = HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER() / gHelpScreen.usTotalNumberOfLinesInBuffer;
 
   // if the # is >= 1 then the box is the full size of the scroll area
   if (dPercentSizeOfBox >= 1.0) {
     iSizeOfBox = HLP_SCRN__HEIGHT_OF_SCROLL_AREA;
 
     // no need to calc the top spot for the box
-    iTopPosScrollBox = HLP_SCRN__SCROLL_POSY;
+    iTopPosScrollBox = HLP_SCRN__SCROLL_POSY();
   } else {
     iSizeOfBox = (dPercentSizeOfBox * HLP_SCRN__HEIGHT_OF_SCROLL_AREA + 0.5);
 
@@ -1992,7 +1992,7 @@ function CalculateHeightAndPositionForHelpScreenScrollBox(piHeightOfScrollBox: P
     //
     dTemp = (HLP_SCRN__HEIGHT_OF_SCROLL_AREA / gHelpScreen.usTotalNumberOfLinesInBuffer) * gHelpScreen.iLineAtTopOfTextBuffer;
 
-    iTopPosScrollBox = (dTemp + .5) + HLP_SCRN__SCROLL_POSY;
+    iTopPosScrollBox = (dTemp + .5) + HLP_SCRN__SCROLL_POSY();
   }
 
   if (piHeightOfScrollBox != NULL)
@@ -2061,8 +2061,8 @@ function HelpScreenMouseMoveScrollBox(usMousePosY: INT32): void {
     //		return;
   } else {
     // if the mouse is higher then the top of the scroll area, set it to the top of the scroll area
-    if (usMousePosY < HLP_SCRN__SCROLL_POSY)
-      usMousePosY = HLP_SCRN__SCROLL_POSY;
+    if (usMousePosY < HLP_SCRN__SCROLL_POSY())
+      usMousePosY = HLP_SCRN__SCROLL_POSY();
 
     dTemp = (usMousePosY - iPosY) / dSizeOfIncrement;
 

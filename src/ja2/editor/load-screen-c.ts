@@ -236,7 +236,7 @@ function LoadSaveScreenHandle(): UINT32 {
   }
 
   // Show up to 8 filenames in the window
-  SetFont(FONT12POINT1);
+  SetFont(FONT12POINT1());
   if (gfNoFiles) {
     SetFontForeground(FONT_LTRED);
     SetFontBackground(142);
@@ -315,7 +315,7 @@ function LoadSaveScreenHandle(): UINT32 {
       CreateProgressBar(0, 118, 183, 522, 202);
       DefineProgressBarPanel(0, 65, 79, 94, 100, 155, 540, 235);
       swprintf(zOrigName, "Loading map:  %s", gzFilename);
-      SetProgressBarTitle(0, zOrigName, BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
+      SetProgressBarTitle(0, zOrigName, BLOCKFONT2(), FONT_RED, FONT_NEARBLACK);
       gbCurrentFileIOStatus = Enum51.INITIATE_MAP_LOAD;
       return Enum26.LOADSAVE_SCREEN;
     default:
@@ -333,8 +333,8 @@ function CreateFileDialog(zTitle: Pointer<UINT16>): void {
   MSYS_DefineRegion(addressof(BlanketRegion), 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_END_Y, MSYS_PRIORITY_HIGH - 5, 0, 0, 0);
 
   // Okay and cancel buttons
-  iFileDlgButtons[0] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 354, 225, 50, 30, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, FDlgOkCallback);
-  iFileDlgButtons[1] = CreateTextButton("Cancel", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 406, 225, 50, 30, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, FDlgCancelCallback);
+  iFileDlgButtons[0] = CreateTextButton("Okay", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 354, 225, 50, 30, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), FDlgOkCallback);
+  iFileDlgButtons[1] = CreateTextButton("Cancel", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 406, 225, 50, 30, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), FDlgCancelCallback);
 
   // Scroll buttons
   iFileDlgButtons[2] = CreateSimpleButton(426, 92, "EDITOR//uparrow.sti", BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, FDlgUpCallback);
@@ -343,7 +343,7 @@ function CreateFileDialog(zTitle: Pointer<UINT16>): void {
   // File list window
   iFileDlgButtons[4] = CreateHotSpot((179 + 4), (69 + 3), (179 + 4 + 240), (69 + 120 + 3), MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, FDlgNamesCallback);
   // Title button
-  iFileDlgButtons[5] = CreateTextButton(zTitle, HUGEFONT, FONT_LTKHAKI, FONT_DKKHAKI, BUTTON_USE_DEFAULT, 179, 39, 281, 30, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH - 2, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  iFileDlgButtons[5] = CreateTextButton(zTitle, HUGEFONT(), FONT_LTKHAKI, FONT_DKKHAKI, BUTTON_USE_DEFAULT, 179, 39, 281, 30, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH - 2, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iFileDlgButtons[5]);
   SpecifyDisabledButtonStyle(iFileDlgButtons[5], Enum29.DISABLED_STYLE_NONE);
 
@@ -431,7 +431,7 @@ function DrawFileDialog(): void {
   RenderButtons();
   RenderButtonsFastHelp();
 
-  SetFont(FONT10ARIAL);
+  SetFont(FONT10ARIAL());
   SetFontForeground(FONT_LTKHAKI);
   SetFontShadow(FONT_DKKHAKI);
   SetFontBackground(FONT_BLACK);
@@ -705,13 +705,13 @@ function ProcessFileIO(): UINT32 {
     case Enum51.INITIATE_MAP_SAVE: // draw save message
       StartFrameBufferRender();
       SaveFontSettings();
-      SetFont(HUGEFONT);
+      SetFont(HUGEFONT());
       SetFontForeground(FONT_LTKHAKI);
       SetFontShadow(FONT_DKKHAKI);
       SetFontBackground(0);
       swprintf(zOrigName, "Saving map:  %s", gzFilename);
-      usStartX = 320 - StringPixLength(zOrigName, LARGEFONT1) / 2;
-      usStartY = 180 - GetFontHeight(LARGEFONT1) / 2;
+      usStartX = 320 - StringPixLength(zOrigName, LARGEFONT1()) / 2;
+      usStartY = 180 - GetFontHeight(LARGEFONT1()) / 2;
       mprintf(usStartX, usStartY, zOrigName);
 
       InvalidateScreen();

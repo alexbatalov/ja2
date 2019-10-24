@@ -1010,15 +1010,15 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
         swprintf(sString, "%d", pSoldier.value.bOppCnt);
 
-        SetFont(TINYFONT1);
+        SetFont(TINYFONT1());
         SetFontForeground(FONT_DKRED);
         SetFontBackground(FONT_NEARBLACK);
 
         sX1 = (sFaceX);
         sY1 = (sFaceY);
 
-        sX2 = sX1 + StringPixLength(sString, TINYFONT1) + 1;
-        sY2 = sY1 + GetFontHeight(TINYFONT1) - 1;
+        sX2 = sX1 + StringPixLength(sString, TINYFONT1()) + 1;
+        sY2 = sY1 + GetFontHeight(TINYFONT1()) - 1;
 
         mprintf((sX1 + 1), (sY1 - 1), sString);
         SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
@@ -1041,13 +1041,13 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
       if (!pFace.value.fDisabled && !pFace.value.fInvalidAnim) {
         // Render text above here if that's what was asked for
         if (pFace.value.fDisplayTextOver != FACE_NO_TEXT_OVER) {
-          SetFont(TINYFONT1);
+          SetFont(TINYFONT1());
           SetFontBackground(FONT_MCOLOR_BLACK);
           SetFontForeground(FONT_MCOLOR_WHITE);
 
           SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, FALSE);
 
-          VarFindFontCenterCoordinates(sFaceX, sFaceY, pFace.value.usFaceWidth, pFace.value.usFaceHeight, TINYFONT1, addressof(sFontX), addressof(sFontY), pFace.value.zDisplayText);
+          VarFindFontCenterCoordinates(sFaceX, sFaceY, pFace.value.usFaceWidth, pFace.value.usFaceHeight, TINYFONT1(), addressof(sFontX), addressof(sFontY), pFace.value.zDisplayText);
 
           if (pFace.value.fDisplayTextOver == FACE_DRAW_TEXT_OVER) {
             gprintfinvalidate(sFontX, sFontY, pFace.value.zDisplayText);
@@ -1196,10 +1196,10 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
           swprintf(sString, "%d", sPtsAvailable);
         }
 
-        usTextWidth = StringPixLength(sString, FONT10ARIAL);
+        usTextWidth = StringPixLength(sString, FONT10ARIAL());
         usTextWidth += 1;
 
-        SetFont(FONT10ARIAL);
+        SetFont(FONT10ARIAL());
         SetFontForeground(FONT_YELLOW);
         SetFontBackground(FONT_BLACK);
 

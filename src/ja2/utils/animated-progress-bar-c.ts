@@ -43,7 +43,7 @@ function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16
   pNew.value.usBarBottom = usBottom;
   // Init default data
   pNew.value.fPanel = FALSE;
-  pNew.value.usMsgFont = FONT12POINT1;
+  pNew.value.usMsgFont = FONT12POINT1();
   pNew.value.ubMsgFontForeColor = FONT_BLACK;
   pNew.value.ubMsgFontShadowColor = 0;
   SetRelativeStartAndEndPercentage(pNew.value.ubProgressBarID, 0, 100, NULL);

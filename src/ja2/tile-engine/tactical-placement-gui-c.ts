@@ -81,20 +81,20 @@ function InitTacticalPlacementGUI(): void {
   giOverheadButtonImages[Enum310.CLEAR_BUTTON] = UseLoadedButtonImage(giOverheadButtonImages[Enum310.DONE_BUTTON], -1, 0, -1, 1, -1);
 
   // Create the buttons which provide automatic placements.
-  iTPButtons[Enum310.CLEAR_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.CLEAR_BUTTON], 11, 332, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, ClearPlacementsCallback);
-  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.CLEAR_BUTTON], gpStrategicString[Enum365.STR_TP_CLEAR], BLOCKFONT, FONT_BEIGE, 141);
+  iTPButtons[Enum310.CLEAR_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.CLEAR_BUTTON], 11, 332, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), ClearPlacementsCallback);
+  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.CLEAR_BUTTON], gpStrategicString[Enum365.STR_TP_CLEAR], BLOCKFONT(), FONT_BEIGE, 141);
   SetButtonFastHelpText(iTPButtons[Enum310.CLEAR_BUTTON], gpStrategicString[Enum365.STR_TP_CLEARHELP]);
   SetBtnHelpEndCallback(iTPButtons[Enum310.CLEAR_BUTTON], FastHelpRemoved2Callback);
-  iTPButtons[Enum310.SPREAD_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.SPREAD_BUTTON], 11, 367, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SpreadPlacementsCallback);
-  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.SPREAD_BUTTON], gpStrategicString[Enum365.STR_TP_SPREAD], BLOCKFONT, FONT_BEIGE, 141);
+  iTPButtons[Enum310.SPREAD_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.SPREAD_BUTTON], 11, 367, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SpreadPlacementsCallback);
+  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.SPREAD_BUTTON], gpStrategicString[Enum365.STR_TP_SPREAD], BLOCKFONT(), FONT_BEIGE, 141);
   SetButtonFastHelpText(iTPButtons[Enum310.SPREAD_BUTTON], gpStrategicString[Enum365.STR_TP_SPREADHELP]);
   SetBtnHelpEndCallback(iTPButtons[Enum310.SPREAD_BUTTON], FastHelpRemovedCallback);
-  iTPButtons[Enum310.GROUP_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.GROUP_BUTTON], 11, 402, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, GroupPlacementsCallback);
-  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.GROUP_BUTTON], gpStrategicString[Enum365.STR_TP_GROUP], BLOCKFONT, FONT_BEIGE, 141);
+  iTPButtons[Enum310.GROUP_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.GROUP_BUTTON], 11, 402, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), GroupPlacementsCallback);
+  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.GROUP_BUTTON], gpStrategicString[Enum365.STR_TP_GROUP], BLOCKFONT(), FONT_BEIGE, 141);
   SetButtonFastHelpText(iTPButtons[Enum310.GROUP_BUTTON], gpStrategicString[Enum365.STR_TP_GROUPHELP]);
   SetBtnHelpEndCallback(iTPButtons[Enum310.GROUP_BUTTON], FastHelpRemovedCallback);
-  iTPButtons[Enum310.DONE_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.DONE_BUTTON], 11, 437, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoneOverheadPlacementClickCallback);
-  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DONE], BLOCKFONT, FONT_BEIGE, 141);
+  iTPButtons[Enum310.DONE_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.DONE_BUTTON], 11, 437, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), DoneOverheadPlacementClickCallback);
+  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DONE], BLOCKFONT(), FONT_BEIGE, 141);
   SetButtonFastHelpText(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DONEHELP]);
   SetBtnHelpEndCallback(iTPButtons[Enum310.DONE_BUTTON], FastHelpRemovedCallback);
   AllowDisabledButtonFastHelp(iTPButtons[Enum310.DONE_BUTTON], TRUE);
@@ -264,7 +264,7 @@ function RenderTacticalPlacementGUI(): void {
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 42, iStartY, xp + 43, yp + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 43, iStartY, xp + 44, yp + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
     }
-    SetFont(BLOCKFONT);
+    SetFont(BLOCKFONT());
     SetFontForeground(FONT_BEIGE);
     SetFontShadow(141);
 
@@ -330,7 +330,7 @@ function RenderTacticalPlacementGUI(): void {
     } else {
       ubColor = FONT_GRAY3;
     }
-    SetFont(FONT10ARIALBOLD);
+    SetFont(FONT10ARIALBOLD());
     SetFontForeground(ubColor);
     SetFontShadow(141);
     // Render the question mark over the face if the merc hasn't yet been placed.
@@ -340,9 +340,9 @@ function RenderTacticalPlacementGUI(): void {
       mprintf(xp + 16, yp + 14, "?");
       InvalidateRegion(xp + 16, yp + 14, xp + 24, yp + 22);
     }
-    SetFont(BLOCKFONT);
-    width = StringPixLength(pSoldier.value.name, BLOCKFONT);
-    height = GetFontHeight(BLOCKFONT);
+    SetFont(BLOCKFONT());
+    width = StringPixLength(pSoldier.value.name, BLOCKFONT());
+    height = GetFontHeight(BLOCKFONT());
     xp = xp + (48 - width) / 2;
     yp = yp + 33;
     mprintf(xp, yp, pSoldier.value.name);
