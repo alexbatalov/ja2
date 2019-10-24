@@ -87,7 +87,7 @@ function FindFreeButtonSlot(): INT32 {
 
   // Search for a slot
   for (slot = 0; slot < MAX_BUTTON_PICS; slot++) {
-    if (ButtonPictures[slot].vobj == NULL)
+    if (ButtonPictures[slot].vobj == null)
       return slot;
   }
 
@@ -131,7 +131,7 @@ function LoadButtonImage(filename: Pointer<UINT8>, Grayed: INT32, OffNormal: INT
   strcpy(vo_desc.ImageFile, filename);
 
   MemBefore = MemGetFree();
-  if ((ButtonPictures[UseSlot].vobj = CreateVideoObject(addressof(vo_desc))) == NULL) {
+  if ((ButtonPictures[UseSlot].vobj = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("Couldn't create VOBJECT for %s", filename));
     return -1;
   }
@@ -227,7 +227,7 @@ function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal: INT32,
   let ThisWidth: UINT32;
 
   // Is button image index given valid?
-  if (ButtonPictures[LoadedImg].vobj == NULL) {
+  if (ButtonPictures[LoadedImg].vobj == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("Invalid button picture handle given for pre-loaded button image %d", LoadedImg));
     return -1;
   }
@@ -345,7 +345,7 @@ function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT3
   let ThisWidth: UINT32;
 
   // Is button image index given valid?
-  if (hVObject == NULL) {
+  if (hVObject == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("UseVObjAsButtonImage: Invalid VObject image given"));
     return -1;
   }
@@ -466,7 +466,7 @@ function UnloadButtonImage(Index: INT32): void {
 
   // If this is a duplicated button image, then don't trash the vobject
   if (ButtonPictures[Index].fFlags & GUI_BTN_DUPLICATE_VOBJ || ButtonPictures[Index].fFlags & GUI_BTN_EXTERNAL_VOBJ) {
-    ButtonPictures[Index].vobj = NULL;
+    ButtonPictures[Index].vobj = null;
     ButtonPicsLoaded--;
   } else {
     // Deleting a non-duplicate, so see if any dups present. if so, then
@@ -481,7 +481,7 @@ function UnloadButtonImage(Index: INT32): void {
           ButtonPictures[x].fFlags &= (~GUI_BTN_DUPLICATE_VOBJ);
 
           // Now remove this button, but not it's vobject
-          ButtonPictures[Index].vobj = NULL;
+          ButtonPictures[Index].vobj = null;
 
           fDone = TRUE;
           ButtonPicsLoaded--;
@@ -491,9 +491,9 @@ function UnloadButtonImage(Index: INT32): void {
   }
 
   // If image slot isn't empty, delete the image
-  if (ButtonPictures[Index].vobj != NULL) {
+  if (ButtonPictures[Index].vobj != null) {
     DeleteVideoObject(ButtonPictures[Index].vobj);
-    ButtonPictures[Index].vobj = NULL;
+    ButtonPictures[Index].vobj = null;
     ButtonPicsLoaded--;
   }
 }
@@ -586,7 +586,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
 
   // Blank out all QuickButton images
   for (x = 0; x < MAX_BUTTON_PICS; x++) {
-    ButtonPictures[x].vobj = NULL;
+    ButtonPictures[x].vobj = null;
     ButtonPictures[x].Grayed = -1;
     ButtonPictures[x].OffNormal = -1;
     ButtonPictures[x].OffHilite = -1;
@@ -597,12 +597,12 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
 
   // Blank out all Generic button data
   for (x = 0; x < MAX_GENERIC_PICS; x++) {
-    GenericButtonGrayed[x] = NULL;
-    GenericButtonOffNormal[x] = NULL;
-    GenericButtonOffHilite[x] = NULL;
-    GenericButtonOnNormal[x] = NULL;
-    GenericButtonOnHilite[x] = NULL;
-    GenericButtonBackground[x] = NULL;
+    GenericButtonGrayed[x] = null;
+    GenericButtonOffNormal[x] = null;
+    GenericButtonOffHilite[x] = null;
+    GenericButtonOnNormal[x] = null;
+    GenericButtonOnHilite[x] = null;
+    GenericButtonBackground[x] = null;
     GenericButtonBackgroundIndex[x] = 0;
     GenericButtonFillColors[x] = 0;
     GenericButtonBackgroundIndex[x] = 0;
@@ -612,13 +612,13 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
 
   // Blank out all icon images
   for (x = 0; x < MAX_BUTTON_ICONS; x++)
-    GenericButtonIcons[x] = NULL;
+    GenericButtonIcons[x] = null;
 
   // Load the default generic button images
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   strcpy(vo_desc.ImageFile, DEFAULT_GENERIC_BUTTON_OFF);
 
-  if ((GenericButtonOffNormal[0] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+  if ((GenericButtonOffNormal[0] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " + DEFAULT_GENERIC_BUTTON_OFF);
     return FALSE;
   }
@@ -626,7 +626,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   strcpy(vo_desc.ImageFile, DEFAULT_GENERIC_BUTTON_ON);
 
-  if ((GenericButtonOnNormal[0] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+  if ((GenericButtonOnNormal[0] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " + DEFAULT_GENERIC_BUTTON_ON);
     return FALSE;
   }
@@ -667,7 +667,7 @@ function FindFreeGenericSlot(): INT16 {
 
   slot = BUTTON_NO_SLOT;
   for (x = 0; x < MAX_GENERIC_PICS && slot < 0; x++) {
-    if (GenericButtonOffNormal[x] == NULL)
+    if (GenericButtonOffNormal[x] == null)
       slot = x;
   }
 
@@ -685,7 +685,7 @@ function FindFreeIconSlot(): INT16 {
 
   slot = BUTTON_NO_SLOT;
   for (x = 0; x < MAX_BUTTON_ICONS && slot < 0; x++) {
-    if (GenericButtonIcons[x] == NULL)
+    if (GenericButtonIcons[x] == null)
       slot = x;
   }
 
@@ -713,7 +713,7 @@ function LoadGenericButtonIcon(filename: Pointer<UINT8>): INT16 {
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   strcpy(vo_desc.ImageFile, filename);
 
-  if ((GenericButtonIcons[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+  if ((GenericButtonIcons[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonIcon: Couldn't create VOBJECT for %s", filename));
     return -1;
   }
@@ -739,7 +739,7 @@ function UnloadGenericButtonIcon(GenImg: INT16): BOOLEAN {
   }
   // If an icon is present in the slot, remove it.
   DeleteVideoObject(GenericButtonIcons[GenImg]);
-  GenericButtonIcons[GenImg] = NULL;
+  GenericButtonIcons[GenImg] = null;
   return TRUE;
 }
 
@@ -758,39 +758,39 @@ function UnloadGenericButtonImage(GenImg: INT16): BOOLEAN {
 
   // For each possible image type in a generic button, check if it's
   // present, and if so, remove it.
-  if (GenericButtonGrayed[GenImg] != NULL) {
+  if (GenericButtonGrayed[GenImg] != null) {
     DeleteVideoObject(GenericButtonGrayed[GenImg]);
-    GenericButtonGrayed[GenImg] = NULL;
+    GenericButtonGrayed[GenImg] = null;
     fDeletedSomething = TRUE;
   }
 
-  if (GenericButtonOffNormal[GenImg] != NULL) {
+  if (GenericButtonOffNormal[GenImg] != null) {
     DeleteVideoObject(GenericButtonOffNormal[GenImg]);
-    GenericButtonOffNormal[GenImg] = NULL;
+    GenericButtonOffNormal[GenImg] = null;
     fDeletedSomething = TRUE;
   }
 
-  if (GenericButtonOffHilite[GenImg] != NULL) {
+  if (GenericButtonOffHilite[GenImg] != null) {
     DeleteVideoObject(GenericButtonOffHilite[GenImg]);
-    GenericButtonOffHilite[GenImg] = NULL;
+    GenericButtonOffHilite[GenImg] = null;
     fDeletedSomething = TRUE;
   }
 
-  if (GenericButtonOnNormal[GenImg] != NULL) {
+  if (GenericButtonOnNormal[GenImg] != null) {
     DeleteVideoObject(GenericButtonOnNormal[GenImg]);
-    GenericButtonOnNormal[GenImg] = NULL;
+    GenericButtonOnNormal[GenImg] = null;
     fDeletedSomething = TRUE;
   }
 
-  if (GenericButtonOnHilite[GenImg] != NULL) {
+  if (GenericButtonOnHilite[GenImg] != null) {
     DeleteVideoObject(GenericButtonOnHilite[GenImg]);
-    GenericButtonOnHilite[GenImg] = NULL;
+    GenericButtonOnHilite[GenImg] = null;
     fDeletedSomething = TRUE;
   }
 
-  if (GenericButtonBackground[GenImg] != NULL) {
+  if (GenericButtonBackground[GenImg] != null) {
     DeleteVideoObject(GenericButtonBackground[GenImg]);
-    GenericButtonBackground[GenImg] = NULL;
+    GenericButtonBackground[GenImg] = null;
     fDeletedSomething = TRUE;
   }
 
@@ -829,7 +829,7 @@ function LoadGenericButtonImages(GrayName: Pointer<UINT8>, OffNormName: Pointer<
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   strcpy(vo_desc.ImageFile, OffNormName);
 
-  if ((GenericButtonOffNormal[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+  if ((GenericButtonOffNormal[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffNormName));
     return -1;
   }
@@ -838,7 +838,7 @@ function LoadGenericButtonImages(GrayName: Pointer<UINT8>, OffNormName: Pointer<
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   strcpy(vo_desc.ImageFile, OnNormName);
 
-  if ((GenericButtonOnNormal[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+  if ((GenericButtonOnNormal[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnNormName));
     return -1;
   }
@@ -850,45 +850,45 @@ function LoadGenericButtonImages(GrayName: Pointer<UINT8>, OffNormName: Pointer<
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     strcpy(vo_desc.ImageFile, GrayName);
 
-    if ((GenericButtonGrayed[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+    if ((GenericButtonGrayed[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", GrayName));
       return -1;
     }
   } else
-    GenericButtonGrayed[ImgSlot] = NULL;
+    GenericButtonGrayed[ImgSlot] = null;
 
   if (OffHiliteName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     strcpy(vo_desc.ImageFile, OffHiliteName);
 
-    if ((GenericButtonOffHilite[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+    if ((GenericButtonOffHilite[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffHiliteName));
       return -1;
     }
   } else
-    GenericButtonOffHilite[ImgSlot] = NULL;
+    GenericButtonOffHilite[ImgSlot] = null;
 
   if (OnHiliteName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     strcpy(vo_desc.ImageFile, OnHiliteName);
 
-    if ((GenericButtonOnHilite[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+    if ((GenericButtonOnHilite[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnHiliteName));
       return -1;
     }
   } else
-    GenericButtonOnHilite[ImgSlot] = NULL;
+    GenericButtonOnHilite[ImgSlot] = null;
 
   if (BkGrndName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     strcpy(vo_desc.ImageFile, BkGrndName);
 
-    if ((GenericButtonBackground[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+    if ((GenericButtonBackground[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", BkGrndName));
       return -1;
     }
   } else
-    GenericButtonBackground[ImgSlot] = NULL;
+    GenericButtonBackground[ImgSlot] = null;
 
   GenericButtonBackgroundIndex[ImgSlot] = Index;
 
@@ -926,34 +926,34 @@ function ShutdownButtonImageManager(): void {
 
   // Remove all GenericButton images
   for (x = 0; x < MAX_GENERIC_PICS; x++) {
-    if (GenericButtonGrayed[x] != NULL) {
+    if (GenericButtonGrayed[x] != null) {
       DeleteVideoObject(GenericButtonGrayed[x]);
-      GenericButtonGrayed[x] = NULL;
+      GenericButtonGrayed[x] = null;
     }
 
-    if (GenericButtonOffNormal[x] != NULL) {
+    if (GenericButtonOffNormal[x] != null) {
       DeleteVideoObject(GenericButtonOffNormal[x]);
-      GenericButtonOffNormal[x] = NULL;
+      GenericButtonOffNormal[x] = null;
     }
 
-    if (GenericButtonOffHilite[x] != NULL) {
+    if (GenericButtonOffHilite[x] != null) {
       DeleteVideoObject(GenericButtonOffHilite[x]);
-      GenericButtonOffHilite[x] = NULL;
+      GenericButtonOffHilite[x] = null;
     }
 
-    if (GenericButtonOnNormal[x] != NULL) {
+    if (GenericButtonOnNormal[x] != null) {
       DeleteVideoObject(GenericButtonOnNormal[x]);
-      GenericButtonOnNormal[x] = NULL;
+      GenericButtonOnNormal[x] = null;
     }
 
-    if (GenericButtonOnHilite[x] != NULL) {
+    if (GenericButtonOnHilite[x] != null) {
       DeleteVideoObject(GenericButtonOnHilite[x]);
-      GenericButtonOnHilite[x] = NULL;
+      GenericButtonOnHilite[x] = null;
     }
 
-    if (GenericButtonBackground[x] != NULL) {
+    if (GenericButtonBackground[x] != null) {
       DeleteVideoObject(GenericButtonBackground[x]);
-      GenericButtonBackground[x] = NULL;
+      GenericButtonBackground[x] = null;
     }
 
     GenericButtonFillColors[x] = 0;
@@ -964,8 +964,8 @@ function ShutdownButtonImageManager(): void {
 
   // Remove all button icons
   for (x = 0; x < MAX_BUTTON_ICONS; x++) {
-    if (GenericButtonIcons[x] != NULL)
-      GenericButtonIcons[x] = NULL;
+    if (GenericButtonIcons[x] != null)
+      GenericButtonIcons[x] = null;
   }
 }
 
@@ -982,7 +982,7 @@ function InitButtonSystem(): BOOLEAN {
 
   // Clear out button list
   for (x = 0; x < MAX_BUTTONS; x++) {
-    ButtonList[x] = NULL;
+    ButtonList[x] = null;
   }
 
   // Initialize the button image manager sub-system
@@ -1008,7 +1008,7 @@ function ShutdownButtonSystem(): void {
 
   // Kill off all buttons in the system
   for (x = 0; x < MAX_BUTTONS; x++) {
-    if (ButtonList[x] != NULL)
+    if (ButtonList[x] != null)
       RemoveButton(x);
   }
   // Shutdown the button image manager sub-system
@@ -1074,17 +1074,17 @@ function RemoveButton(iButtonID: INT32): void {
   }
 
   // Get rid of the text string
-  if (b.value.string != NULL)
+  if (b.value.string != null)
     MemFree(b.value.string);
 
   if (b == gpAnchoredButton)
-    gpAnchoredButton = NULL;
+    gpAnchoredButton = null;
   if (b == gpPrevAnchoredButton)
-    gpPrevAnchoredButton = NULL;
+    gpPrevAnchoredButton = null;
 
   MemFree(b);
-  b = NULL;
-  ButtonList[iButtonID] = NULL;
+  b = null;
+  ButtonList[iButtonID] = null;
 }
 
 //=============================================================================
@@ -1096,7 +1096,7 @@ function GetNextButtonNumber(): INT32 {
   let x: INT32;
 
   for (x = 0; x < MAX_BUTTONS; x++) {
-    if (ButtonList[x] == NULL)
+    if (ButtonList[x] == null)
       return x;
   }
 
@@ -1151,7 +1151,7 @@ function ResizeButton(iButtonID: INT32, w: INT16, h: INT16): void {
 
   if (b.value.uiFlags & BUTTON_SAVEBACKGROUND) {
     FreeBackgroundRectPending(b.value.BackRect);
-    b.value.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, NULL, xloc, yloc, (xloc + w), (yloc + h));
+    b.value.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, xloc, yloc, (xloc + w), (yloc + h));
   }
 }
 
@@ -1199,7 +1199,7 @@ function SetButtonPosition(iButtonID: INT32, x: INT16, y: INT16): void {
 
   if (b.value.uiFlags & BUTTON_SAVEBACKGROUND) {
     FreeBackgroundRectPending(b.value.BackRect);
-    b.value.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, NULL, xloc, yloc, (xloc + w), (yloc + h));
+    b.value.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, xloc, yloc, (xloc + w), (yloc + h));
   }
 }
 
@@ -1280,7 +1280,7 @@ function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: IN
   }
 
   // Allocate memory for the GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == NULL) {
+  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "CreateIconButton: Can't alloc mem for button struct");
     return -1;
   }
@@ -1304,7 +1304,7 @@ function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: IN
   b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
   b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
   // Init text
-  b.value.string = NULL;
+  b.value.string = null;
   b.value.usFont = 0;
   b.value.fMultiColor = FALSE;
   b.value.sForeColor = 0;
@@ -1393,13 +1393,13 @@ function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: I
   }
 
   // Allocate memory for a GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == NULL) {
+  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "CreateTextButton: Can't alloc mem for button struct");
     return -1;
   }
 
   // Allocate memory for the button's text string...
-  b.value.string = NULL;
+  b.value.string = null;
   if (string && wcslen(string)) {
     b.value.string = MemAlloc((wcslen(string) + 1) * sizeof(UINT16));
     AssertMsg(b.value.string, "Out of memory error:  Couldn't allocate string in CreateTextButton.");
@@ -1506,7 +1506,7 @@ function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Pr
   }
 
   // Allocate memory for the GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == NULL) {
+  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "CreateHotSpot: Can't alloc mem for button struct");
     return -1;
   }
@@ -1521,7 +1521,7 @@ function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Pr
   for (x = 0; x < 4; x++)
     b.value.UserData[x] = 0;
   b.value.Group = -1;
-  b.value.string = NULL;
+  b.value.string = null;
 
   // Set the hotspot click callback function (if any)
   if (ClickCallback != BUTTON_NO_CALLBACK) {
@@ -1595,7 +1595,7 @@ function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32,
   BType = Type & (BUTTON_TYPE_MASK | BUTTON_NEWTOGGLE);
 
   // Is there a QuickButton image in the given image slot?
-  if (ButtonPictures[Image].vobj == NULL) {
+  if (ButtonPictures[Image].vobj == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "QuickCreateButton: Invalid button image number");
     return -1;
   }
@@ -1607,7 +1607,7 @@ function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32,
   }
 
   // Allocate memory for a GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == NULL) {
+  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "QuickCreateButton: Can't alloc mem for button struct");
     return -1;
   }
@@ -1627,7 +1627,7 @@ function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32,
 
   b.value.Group = -1;
   // Init string
-  b.value.string = NULL;
+  b.value.string = null;
   b.value.usFont = 0;
   b.value.fMultiColor = FALSE;
   b.value.sForeColor = 0;
@@ -1759,7 +1759,7 @@ function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: 
   BType = Type & (BUTTON_TYPE_MASK | BUTTON_NEWTOGGLE);
 
   // Is there a QuickButton image in the given image slot?
-  if (ButtonPictures[Image].vobj == NULL) {
+  if (ButtonPictures[Image].vobj == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "QuickCreateButton: Invalid button image number");
     return -1;
   }
@@ -1771,7 +1771,7 @@ function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: 
   }
 
   // Allocate memory for a GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == NULL) {
+  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "QuickCreateButton: Can't alloc mem for button struct");
     return -1;
   }
@@ -1790,7 +1790,7 @@ function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: 
   b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
 
   // Allocate memory for the button's text string...
-  b.value.string = NULL;
+  b.value.string = null;
   if (string) {
     b.value.string = MemAlloc((wcslen(string) + 1) * sizeof(UINT16));
     AssertMsg(b.value.string, "Out of memory error:  Couldn't allocate string in CreateIconAndTextButton.");
@@ -1862,7 +1862,7 @@ function SpecifyButtonText(iButtonID: INT32, string: Pointer<UINT16>): void {
   // free the previous strings memory if applicable
   if (b.value.string)
     MemFree(b.value.string);
-  b.value.string = NULL;
+  b.value.string = null;
 
   if (string && wcslen(string)) {
     // allocate memory for the new string
@@ -2056,7 +2056,7 @@ function RemoveTextFromButton(iButtonID: INT32): void {
   // Init string
   if (b.value.string)
     MemFree(b.value.string);
-  b.value.string = NULL;
+  b.value.string = null;
   b.value.usFont = 0;
   b.value.sForeColor = 0;
   b.value.sWrappedWidth = -1;
@@ -2133,7 +2133,7 @@ function QuickButtonCallbackMMove(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
   let b: Pointer<GUI_BUTTON>;
   let iButtonID: INT32;
 
-  Assert(reg != NULL);
+  Assert(reg != null);
 
   iButtonID = MSYS_GetRegionUserData(reg, 0);
 
@@ -2144,7 +2144,7 @@ function QuickButtonCallbackMMove(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 
   b = ButtonList[iButtonID];
 
-  AssertMsg(b != NULL, str);
+  AssertMsg(b != null, str);
 
   if (!b)
     return; // This is getting called when Adding new regions...
@@ -2212,7 +2212,7 @@ function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
   let StateBefore: BOOLEAN;
   let StateAfter: BOOLEAN;
 
-  Assert(reg != NULL);
+  Assert(reg != null);
 
   iButtonID = MSYS_GetRegionUserData(reg, 0);
 
@@ -2223,7 +2223,7 @@ function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 
   b = ButtonList[iButtonID];
 
-  AssertMsg(b != NULL, str);
+  AssertMsg(b != null, str);
 
   if (!b)
     return;
@@ -2580,7 +2580,7 @@ function DrawQuickButton(b: Pointer<GUI_BUTTON>): void {
   }
 
   // Display the button image
-  BltVideoObject(ButtonDestBuffer, ButtonPictures[b.value.ImageNum].vobj, UseImage, b.value.XLoc, b.value.YLoc, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(ButtonDestBuffer, ButtonPictures[b.value.ImageNum].vobj, UseImage, b.value.XLoc, b.value.YLoc, VO_BLT_SRCTRANSPARENCY, null);
 }
 
 function DrawHatchOnButton(b: Pointer<GUI_BUTTON>): void {
@@ -2708,7 +2708,7 @@ function DrawCheckBoxButton(b: Pointer<GUI_BUTTON>): void {
   }
 
   // Display the button image
-  BltVideoObject(ButtonDestBuffer, ButtonPictures[b.value.ImageNum].vobj, UseImage, b.value.XLoc, b.value.YLoc, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(ButtonDestBuffer, ButtonPictures[b.value.ImageNum].vobj, UseImage, b.value.XLoc, b.value.YLoc, VO_BLT_SRCTRANSPARENCY, null);
 }
 
 function DrawIconOnButton(b: Pointer<GUI_BUTTON>): void {
@@ -2809,9 +2809,9 @@ function DrawIconOnButton(b: Pointer<GUI_BUTTON>): void {
     SetClippingRect(addressof(NewClip));
     // Blit the icon
     if (b.value.uiFlags & BUTTON_GENERIC)
-      BltVideoObject(ButtonDestBuffer, GenericButtonIcons[b.value.iIconID], b.value.usIconIndex, xp, yp, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(ButtonDestBuffer, GenericButtonIcons[b.value.iIconID], b.value.usIconIndex, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
     else
-      BltVideoObject(ButtonDestBuffer, hvObject, b.value.usIconIndex, xp, yp, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(ButtonDestBuffer, hvObject, b.value.usIconIndex, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
     // Restore previous clip region
     SetClippingRect(addressof(OldClip));
   }
@@ -3014,15 +3014,15 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
 
   // Select the graphics to use depending on the current state of the button
   if (b.value.uiFlags & BUTTON_ENABLED) {
-    if (!(b.value.uiFlags & BUTTON_ENABLED) && (GenericButtonGrayed[b.value.ImageNum] == NULL))
+    if (!(b.value.uiFlags & BUTTON_ENABLED) && (GenericButtonGrayed[b.value.ImageNum] == null))
       BPic = GenericButtonOffNormal[b.value.ImageNum];
     else if (b.value.uiFlags & BUTTON_CLICKED_ON) {
-      if ((b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA) && (GenericButtonOnHilite[b.value.ImageNum] != NULL) && gfRenderHilights)
+      if ((b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA) && (GenericButtonOnHilite[b.value.ImageNum] != null) && gfRenderHilights)
         BPic = GenericButtonOnHilite[b.value.ImageNum];
       else
         BPic = GenericButtonOnNormal[b.value.ImageNum];
     } else {
-      if ((b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA) && (GenericButtonOffHilite[b.value.ImageNum] != NULL) && gfRenderHilights)
+      if ((b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA) && (GenericButtonOffHilite[b.value.ImageNum] != null) && gfRenderHilights)
         BPic = GenericButtonOffHilite[b.value.ImageNum];
       else
         BPic = GenericButtonOffNormal[b.value.ImageNum];
@@ -3044,7 +3044,7 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
 
   iBorderWidth = 3;
   iBorderHeight = 2;
-  pTrav = NULL;
+  pTrav = null;
 
   // DB - Added this to support more flexible sizing of border images
   // The 3x2 size was a bit limiting. JA2 should default to the original
@@ -3065,7 +3065,7 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
   ColorFillVideoSurfaceArea(ButtonDestBuffer, b.value.Area.RegionTopLeftX, b.value.Area.RegionTopLeftY, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY, GenericButtonFillColors[b.value.ImageNum]);
 
   // If there is a background image, fill the button's area with it
-  if (GenericButtonBackground[b.value.ImageNum] != NULL) {
+  if (GenericButtonBackground[b.value.ImageNum] != null) {
     ox = oy = 0;
     // if the button was clicked on, adjust the background image so that we get
     // the illusion that it is sunk into the screen.
@@ -3310,13 +3310,13 @@ function SetDialogAttributes(pDlgInfo: Pointer<CreateDlgInfo>, iAttrib: INT32, .
 
       zString = va_arg(arg, UINT32);
 
-      if (pDlgInfo.value.zDlgText != NULL)
+      if (pDlgInfo.value.zDlgText != null)
         MemFree(pDlgInfo.value.zDlgText);
 
-      if (zString == NULL)
-        pDlgInfo.value.zDlgText = NULL;
+      if (zString == null)
+        pDlgInfo.value.zDlgText = null;
       else {
-        pDlgInfo.value.zDlgText = NULL; // Temp
+        pDlgInfo.value.zDlgText = null; // Temp
       }
 
       if (iFontOptions & DLG_USE_MONO_FONTS) {
@@ -3398,7 +3398,7 @@ function CreateCheckBoxButton(x: INT16, y: INT16, filename: Pointer<UINT8>, Prio
   let b: Pointer<GUI_BUTTON>;
   let ButPic: INT32;
   let iButtonID: INT32;
-  Assert(filename != NULL);
+  Assert(filename != null);
   Assert(strlen(filename));
   if ((ButPic = LoadButtonImage(filename, -1, 0, 1, 2, 3)) == -1) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "CreateCheckBoxButton: Can't load button image");
@@ -3470,7 +3470,7 @@ function ReleaseAnchorMode(): void {
     InvalidateRegion(gpAnchoredButton.value.Area.RegionTopLeftX, gpAnchoredButton.value.Area.RegionTopLeftY, gpAnchoredButton.value.Area.RegionBottomRightX, gpAnchoredButton.value.Area.RegionBottomRightY);
   }
   gpPrevAnchoredButton = gpAnchoredButton;
-  gpAnchoredButton = NULL;
+  gpAnchoredButton = null;
 }
 
 // Used to setup a dirtysaved region for buttons
@@ -3494,7 +3494,7 @@ function SetButtonSavedRect(iButton: INT32): BOOLEAN {
   if (!(b.value.uiFlags & BUTTON_SAVEBACKGROUND)) {
     b.value.uiFlags |= BUTTON_SAVEBACKGROUND;
 
-    b.value.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, NULL, xloc, yloc, (xloc + w), (yloc + h));
+    b.value.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, xloc, yloc, (xloc + w), (yloc + h));
   }
 
   return TRUE;
@@ -3592,7 +3592,7 @@ function GetButtonArea(iButtonID: INT32, pRect: Pointer<SGPRect>): BOOLEAN {
   b = ButtonList[iButtonID];
   Assert(b);
 
-  if ((pRect == NULL) || (b == NULL))
+  if ((pRect == null) || (b == null))
     return FALSE;
 
   pRect.value.iLeft = b.value.Area.RegionTopLeftX;
@@ -3612,7 +3612,7 @@ function GetButtonWidth(iButtonID: INT32): INT32 {
   b = ButtonList[iButtonID];
   Assert(b);
 
-  if (b == NULL)
+  if (b == null)
     return -1;
 
   return b.value.Area.RegionBottomRightX - b.value.Area.RegionTopLeftX;
@@ -3627,7 +3627,7 @@ function GetButtonHeight(iButtonID: INT32): INT32 {
   b = ButtonList[iButtonID];
   Assert(b);
 
-  if (b == NULL)
+  if (b == null)
     return -1;
 
   return b.value.Area.RegionBottomRightY - b.value.Area.RegionTopLeftY;
@@ -3642,7 +3642,7 @@ function GetButtonX(iButtonID: INT32): INT32 {
   b = ButtonList[iButtonID];
   Assert(b);
 
-  if (b == NULL)
+  if (b == null)
     return 0;
 
   return b.value.Area.RegionTopLeftX;
@@ -3657,7 +3657,7 @@ function GetButtonY(iButtonID: INT32): INT32 {
   b = ButtonList[iButtonID];
   Assert(b);
 
-  if (b == NULL)
+  if (b == null)
     return 0;
 
   return b.value.Area.RegionTopLeftY;

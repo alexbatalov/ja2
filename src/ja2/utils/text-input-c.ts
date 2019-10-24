@@ -28,7 +28,7 @@ interface TextInputColors {
   usDisabledTextFieldColor: UINT16;
 }
 
-let pColors: Pointer<TextInputColors> = NULL;
+let pColors: Pointer<TextInputColors> = null;
 
 // Internal nodes for keeping track of the text and user defined fields.
 interface TEXTINPUTNODE {
@@ -53,16 +53,16 @@ interface STACKTEXTINPUTNODE {
   next: Pointer<STACKTEXTINPUTNODE>;
 }
 
-let pInputStack: Pointer<STACKTEXTINPUTNODE> = NULL;
+let pInputStack: Pointer<STACKTEXTINPUTNODE> = null;
 
 // Internal list vars.  active always points to the currently edited field.
-let gpTextInputHead: Pointer<TEXTINPUTNODE> = NULL;
-let gpTextInputTail: Pointer<TEXTINPUTNODE> = NULL;
-let gpActive: Pointer<TEXTINPUTNODE> = NULL;
+let gpTextInputHead: Pointer<TEXTINPUTNODE> = null;
+let gpTextInputTail: Pointer<TEXTINPUTNODE> = null;
+let gpActive: Pointer<TEXTINPUTNODE> = null;
 
 // Saving current mode
-let pSavedHead: Pointer<TEXTINPUTNODE> = NULL;
-let pSavedColors: Pointer<TextInputColors> = NULL;
+let pSavedHead: Pointer<TEXTINPUTNODE> = null;
+let pSavedColors: Pointer<TextInputColors> = null;
 let gusTextInputCursor: UINT16 = Enum317.CURSOR_IBEAM;
 
 // Saves the current text input mode by pushing it onto our stack, then starts a new
@@ -88,7 +88,7 @@ function PopTextInputLevel(): void {
   pLevel = pInputStack;
   pInputStack = pInputStack.value.next;
   MemFree(pLevel);
-  pLevel = NULL;
+  pLevel = null;
   EnableAllTextFields();
 }
 
@@ -119,7 +119,7 @@ function InitTextInputMode(): void {
     PushTextInputLevel();
     // KillTextInputMode();
   }
-  gpTextInputHead = NULL;
+  gpTextInputHead = null;
   pColors = MemAlloc(sizeof(TextInputColors));
   Assert(pColors);
   gfTextInputMode = TRUE;
@@ -155,15 +155,15 @@ function KillTextInputMode(): void {
     gpTextInputHead = gpTextInputHead.value.next;
     if (curr.value.szString) {
       MemFree(curr.value.szString);
-      curr.value.szString = NULL;
+      curr.value.szString = null;
       MSYS_RemoveRegion(addressof(curr.value.region));
     }
     MemFree(curr);
     curr = gpTextInputHead;
   }
   MemFree(pColors);
-  pColors = NULL;
-  gpTextInputHead = NULL;
+  pColors = null;
+  gpTextInputHead = null;
   if (pInputStack) {
     PopTextInputLevel();
     SetActiveField(0);
@@ -173,7 +173,7 @@ function KillTextInputMode(): void {
   }
 
   if (!gpTextInputHead)
-    gpActive = NULL;
+    gpActive = null;
 }
 
 // Kills all levels of text input modes.  When you init a second consecutive text input mode, without
@@ -193,12 +193,12 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
   pNode = MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
   memset(pNode, 0, sizeof(TEXTINPUTNODE));
-  pNode.value.next = NULL;
+  pNode.value.next = null;
   if (!gpTextInputHead) // first entry, so we start with text input.
   {
     gfEditingText = TRUE;
     gpTextInputHead = gpTextInputTail = pNode;
-    pNode.value.prev = NULL;
+    pNode.value.prev = null;
     pNode.value.ubID = 0;
     gpActive = pNode;
   } else // add to the end of the list.
@@ -251,12 +251,12 @@ function AddUserInputField(userFunction: INPUT_CALLBACK): void {
   let pNode: Pointer<TEXTINPUTNODE>;
   pNode = MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
-  pNode.value.next = NULL;
+  pNode.value.next = null;
   if (!gpTextInputHead) // first entry, so we don't start with text input.
   {
     gfEditingText = FALSE;
     gpTextInputHead = gpTextInputTail = pNode;
-    pNode.value.prev = NULL;
+    pNode.value.prev = null;
     pNode.value.ubID = 0;
     gpActive = pNode;
   } else // add to the end of the list.
@@ -268,7 +268,7 @@ function AddUserInputField(userFunction: INPUT_CALLBACK): void {
   }
   // Setup the information for the node
   pNode.value.fUserField = TRUE;
-  pNode.value.szString = NULL;
+  pNode.value.szString = null;
   pNode.value.fEnabled = TRUE;
   // Setup the callback
   pNode.value.InputCallback = userFunction;
@@ -292,11 +292,11 @@ function RemoveTextInputField(ubField: UINT8): void {
         curr.value.prev.value.next = curr.value.next;
       if (curr.value.szString) {
         MemFree(curr.value.szString);
-        curr.value.szString = NULL;
+        curr.value.szString = null;
         MSYS_RemoveRegion(addressof(curr.value.region));
       }
       MemFree(curr);
-      curr = NULL;
+      curr = null;
       if (!gpTextInputHead) {
         gfTextInputMode = FALSE;
         gfEditingText = FALSE;
@@ -1092,7 +1092,7 @@ function RenderInactiveTextField(ubID: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   let str: UINT16[] /* [256] */;
   curr = gpTextInputHead;
-  pNode = NULL;
+  pNode = null;
   while (curr) {
     if (curr.value.ubID == ubID) {
       pNode = curr;
@@ -1264,7 +1264,7 @@ function DisableAllTextFields(): void {
     }
     curr = curr.value.next;
   }
-  gpActive = NULL;
+  gpActive = null;
 }
 
 function EditingText(): BOOLEAN {
@@ -1277,13 +1277,13 @@ function TextInputMode(): BOOLEAN {
 
 // copy, cut, and paste hilighted text code
 function InitClipboard(): void {
-  szClipboard = NULL;
+  szClipboard = null;
 }
 
 function KillClipboard(): void {
   if (szClipboard) {
     MemFree(szClipboard);
-    szClipboard = NULL;
+    szClipboard = null;
   }
 }
 
@@ -1344,8 +1344,8 @@ function SaveAndRemoveCurrentTextInputMode(): void {
     gpTextInputHead = pInputStack.value.head;
     pColors = pInputStack.value.pColors;
   } else {
-    gpTextInputHead = NULL;
-    pColors = NULL;
+    gpTextInputHead = null;
+    pColors = null;
   }
 }
 
@@ -1354,8 +1354,8 @@ function RestoreSavedTextInputMode(): void {
     AssertMsg(0, "Attempting to restore saved text input stack head, when one doesn't exist.");
   gpTextInputHead = pSavedHead;
   pColors = pSavedColors;
-  pSavedHead = NULL;
-  pSavedColors = NULL;
+  pSavedHead = null;
+  pSavedColors = null;
 }
 
 function GetTextInputCursor(): UINT16 {

@@ -1884,7 +1884,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       }
 
       pStructure = FindStructure(sDoorGridNo, STRUCTURE_ANYDOOR);
-      if (pStructure == NULL) {
+      if (pStructure == null) {
         CancelAIAction(pSoldier, FORCE);
         EndAIGuysTurn(pSoldier);
       }

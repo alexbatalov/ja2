@@ -135,7 +135,7 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
               // Not for multi-tiled things...
               if (!(pSoldier.value.uiStatusFlags & SOLDIER_MULTITILE)) {
                 // Is the next movement cost for a door?
-                if (DoorTravelCost(pSoldier, sGridNo, gubWorldMovementCosts[sGridNo][bDirection][pSoldier.value.bLevel], (pSoldier.value.bTeam == gbPlayerNum), NULL) == TRAVELCOST_DOOR) {
+                if (DoorTravelCost(pSoldier, sGridNo, gubWorldMovementCosts[sGridNo][bDirection][pSoldier.value.bLevel], (pSoldier.value.bTeam == gbPlayerNum), null) == TRAVELCOST_DOOR) {
                   fSwapInDoor = TRUE;
                 }
 

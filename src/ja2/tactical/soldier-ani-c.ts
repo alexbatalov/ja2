@@ -765,7 +765,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: THORW ITEM
           // Launch ITem!
-          if (pSoldier.value.pTempObject != NULL && pSoldier.value.pThrowParams != NULL) {
+          if (pSoldier.value.pTempObject != null && pSoldier.value.pThrowParams != null) {
             // ATE: If we are armmed...
             if (pSoldier.value.pThrowParams.value.ubActionCode == Enum258.THROW_ARM_ITEM) {
               // ATE: Deduct points!
@@ -784,10 +784,10 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 
             MemFree(pSoldier.value.pTempObject);
-            pSoldier.value.pTempObject = NULL;
+            pSoldier.value.pTempObject = null;
 
             MemFree(pSoldier.value.pThrowParams);
-            pSoldier.value.pThrowParams = NULL;
+            pSoldier.value.pThrowParams = null;
           }
           break;
 
@@ -2103,7 +2103,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               }
 
               MemFree(pSoldier.value.pTempObject);
-              pSoldier.value.pTempObject = NULL;
+              pSoldier.value.pTempObject = null;
             }
           }
           break;
@@ -2170,7 +2170,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 763:
 
           // CODE: Drop item at gridno
-          if (pSoldier.value.pTempObject != NULL) {
+          if (pSoldier.value.pTempObject != null) {
             if (pSoldier.value.bVisible != -1) {
               PlayJA2Sample(Enum330.THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
             }
@@ -2179,7 +2179,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             NotifySoldiersToLookforItems();
 
             MemFree(pSoldier.value.pTempObject);
-            pSoldier.value.pTempObject = NULL;
+            pSoldier.value.pTempObject = null;
           }
           break;
 

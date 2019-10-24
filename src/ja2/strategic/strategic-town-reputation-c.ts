@@ -47,7 +47,7 @@ function GetTownOpinionOfMerc(ubProfileId: UINT8, ubTownId: UINT8): UINT8 {
 
 function GetTownOpinionOfMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId: UINT8): UINT8 {
   // error check
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return 0;
   }
 
@@ -76,7 +76,7 @@ function UpdateTownOpinionOfThisMerc(ubProfileId: UINT8, ubTownId: UINT8, bAmoun
 
 function UpdateTownOpinionOfThisMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId: UINT8, bAmount: INT8): void {
   // error check
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return;
   }
 

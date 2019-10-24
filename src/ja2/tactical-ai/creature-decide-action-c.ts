@@ -710,7 +710,7 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
     if (GetAPsToLook(pSoldier) <= pSoldier.value.bActionPoints) {
       // determine the location of the known closest opponent
       // (don't care if he's conscious, don't care if he's reachable at all)
-      sClosestOpponent = ClosestKnownOpponent(pSoldier, NULL, NULL);
+      sClosestOpponent = ClosestKnownOpponent(pSoldier, null, null);
 
       if (sClosestOpponent != NOWHERE) {
         // determine direction from this soldier to the closest opponent
@@ -1107,7 +1107,7 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     if ((GetAPsToLook(pSoldier) <= pSoldier.value.bActionPoints)) {
       // determine the location of the known closest opponent
       // (don't care if he's conscious, don't care if he's reachable at all)
-      sClosestOpponent = ClosestKnownOpponent(pSoldier, NULL, NULL);
+      sClosestOpponent = ClosestKnownOpponent(pSoldier, null, null);
       // if we have a closest reachable opponent
       if (sClosestOpponent != NOWHERE) {
         if (ubCanMove && PythSpacesAway(pSoldier.value.sGridNo, sClosestOpponent) > 2) {

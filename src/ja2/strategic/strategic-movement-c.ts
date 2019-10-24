@@ -3,7 +3,7 @@ const ABOUT_TO_ARRIVE_DELAY = 5;
 
 let gpGroupList: Pointer<GROUP>;
 
-let gpPendingSimultaneousGroup: Pointer<GROUP> = NULL;
+let gpPendingSimultaneousGroup: Pointer<GROUP> = null;
 
 let gfDelayAutoResolveStart: BOOLEAN = FALSE;
 
@@ -31,7 +31,7 @@ let gszTerrain: UINT8[][] /* [NUM_TRAVTERRAIN_TYPES][15] */ = [
 let gfUndergroundTacticalTraversal: BOOLEAN = FALSE;
 
 // remembers which player group is the Continue/Stop prompt about?  No need to save as long as you can't save while prompt ON
-let gpGroupPrompting: Pointer<GROUP> = NULL;
+let gpGroupPrompting: Pointer<GROUP> = null;
 
 let uniqueIDMask: UINT32[] /* [8] */ = [
   0,
@@ -46,7 +46,7 @@ let uniqueIDMask: UINT32[] /* [8] */ = [
 
 // Internal function manipulation prototypes
 
-let gpInitPrebattleGroup: Pointer<GROUP> = NULL;
+let gpInitPrebattleGroup: Pointer<GROUP> = null;
 
 // waiting for input from user
 let gfWaitingForInput: BOOLEAN = FALSE;
@@ -62,8 +62,8 @@ function CreateNewPlayerGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UI
   pNew = MemAlloc(sizeof(GROUP));
   AssertMsg(pNew, "MemAlloc failure during CreateNewPlayerGroup.");
   memset(pNew, 0, sizeof(GROUP));
-  pNew.value.pPlayerList = NULL;
-  pNew.value.pWaypoints = NULL;
+  pNew.value.pPlayerList = null;
+  pNew.value.pWaypoints = null;
   pNew.value.ubSectorX = pNew.value.ubNextX = ubSectorX;
   pNew.value.ubSectorY = pNew.value.ubNextY = ubSectorY;
   pNew.value.ubOriginalSector = SECTOR(ubSectorX, ubSectorY);
@@ -87,7 +87,7 @@ function CreateNewVehicleGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: U
   pNew = MemAlloc(sizeof(GROUP));
   AssertMsg(pNew, "MemAlloc failure during CreateNewVehicleGroup.");
   memset(pNew, 0, sizeof(GROUP));
-  pNew.value.pWaypoints = NULL;
+  pNew.value.pWaypoints = null;
   pNew.value.ubSectorX = pNew.value.ubNextX = ubSectorX;
   pNew.value.ubSectorY = pNew.value.ubNextY = ubSectorY;
   pNew.value.ubOriginalSector = SECTOR(ubSectorX, ubSectorY);
@@ -97,7 +97,7 @@ function CreateNewVehicleGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: U
   pNew.value.ubRestAtFatigueLevel = 0;
   pNew.value.fVehicle = TRUE;
   pNew.value.fPlayer = TRUE;
-  pNew.value.pPlayerList = NULL;
+  pNew.value.pPlayerList = null;
   pNew.value.ubCreatedSectorID = pNew.value.ubOriginalSector;
   pNew.value.ubSectorIDOfLastReassignment = 255;
 
@@ -121,7 +121,7 @@ function AddPlayerToGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): BOO
   pPlayer.value.ubProfileID = pSoldier.value.ubProfile;
   pPlayer.value.ubID = pSoldier.value.ubID;
   pPlayer.value.bFlags = 0;
-  pPlayer.value.next = NULL;
+  pPlayer.value.next = null;
 
   if (!pGroup.value.pPlayerList) {
     pGroup.value.pPlayerList = pPlayer;
@@ -231,7 +231,7 @@ function RemovePlayerFromPGroup(pGroup: Pointer<GROUP>, pSoldier: Pointer<SOLDIE
 
     return TRUE;
   }
-  prev = NULL;
+  prev = null;
 
   while (curr) {
     // definately more than one node
@@ -460,7 +460,7 @@ function AddWaypointToPGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY
   // Fill in the information for the new waypoint.
   pWay.value.x = ubSectorX;
   pWay.value.y = ubSectorY;
-  pWay.value.next = NULL;
+  pWay.value.next = null;
 
   // IMPORTANT:
   // The first waypoint added actually initiates the group's movement to the next sector.
@@ -532,7 +532,7 @@ function CreateNewEnemyGroupDepartingFromSector(uiSector: UINT32, ubNumAdmins: U
   pNew.value.pEnemyGroup = MemAlloc(sizeof(ENEMYGROUP));
   AssertMsg(pNew.value.pEnemyGroup, "MemAlloc failure during enemy group creation.");
   memset(pNew.value.pEnemyGroup, 0, sizeof(ENEMYGROUP));
-  pNew.value.pWaypoints = NULL;
+  pNew.value.pWaypoints = null;
   pNew.value.ubSectorX = SECTORX(uiSector);
   pNew.value.ubSectorY = SECTORY(uiSector);
   pNew.value.ubOriginalSector = uiSector;
@@ -552,7 +552,7 @@ function CreateNewEnemyGroupDepartingFromSector(uiSector: UINT32, ubNumAdmins: U
 
   if (AddGroupToList(pNew))
     return pNew;
-  return NULL;
+  return null;
 }
 
 // INTERNAL LIST MANIPULATION FUNCTIONS
@@ -585,7 +585,7 @@ function AddGroupToList(pGroup: Pointer<GROUP>): UINT8 {
         curr.value.next = pGroup;
       } else // new list
         gpGroupList = pGroup;
-      pGroup.value.next = NULL;
+      pGroup.value.next = null;
       return ID;
     }
   }
@@ -652,7 +652,7 @@ function RemoveGroupFromList(pGroup: Pointer<GROUP>): void {
     uniqueIDMask[index] -= mask;
 
     MemFree(curr);
-    curr = NULL;
+    curr = null;
   }
 }
 
@@ -664,7 +664,7 @@ function GetGroup(ubGroupID: UINT8): Pointer<GROUP> {
       return curr;
     curr = curr.value.next;
   }
-  return NULL;
+  return null;
 }
 
 function HandleImportantPBIQuote(pSoldier: Pointer<SOLDIERTYPE>, pInitiatingBattleGroup: Pointer<GROUP>): void {
@@ -702,7 +702,7 @@ function PrepareForPreBattleInterface(pPlayerDialogGroup: Pointer<GROUP>, pIniti
   pPlayer = pPlayerDialogGroup.value.pPlayerList;
   AssertMsg(pPlayer, String("Player group %d doesn't have *any* players in it!  (Finding dialog group)", pPlayerDialogGroup.value.ubGroupID));
 
-  while (pPlayer != NULL) {
+  while (pPlayer != null) {
     pSoldier = pPlayer.value.pSoldier;
 
     if (pSoldier.value.bLife >= OKLIFE && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && !AM_AN_EPC(pSoldier)) {
@@ -768,7 +768,7 @@ function PrepareForPreBattleInterface(pPlayerDialogGroup: Pointer<GROUP>, pIniti
 
 function CheckConditionsForBattle(pGroup: Pointer<GROUP>): BOOLEAN {
   let curr: Pointer<GROUP>;
-  let pPlayerDialogGroup: Pointer<GROUP> = NULL;
+  let pPlayerDialogGroup: Pointer<GROUP> = null;
   let pPlayer: Pointer<PLAYERGROUP>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let fBattlePending: BOOLEAN = FALSE;
@@ -923,7 +923,7 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): BOOLEAN {
 function TriggerPrebattleInterface(ubResult: UINT8): void {
   StopTimeCompression();
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_TRIGGERPREBATTLEINTERFACE, gpInitPrebattleGroup, 0, 0, 0, 0);
-  gpInitPrebattleGroup = NULL;
+  gpInitPrebattleGroup = null;
 }
 
 function DeployGroupToSector(pGroup: Pointer<GROUP>): void {
@@ -1018,10 +1018,10 @@ function CalculateNextMoveIntention(pGroup: Pointer<GROUP>): void {
 }
 
 function AttemptToMergeSeparatedGroups(pGroup: Pointer<GROUP>, fDecrementTraversals: BOOLEAN): BOOLEAN {
-  let curr: Pointer<GROUP> = NULL;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
-  let pCharacter: Pointer<SOLDIERTYPE> = NULL;
-  let pPlayer: Pointer<PLAYERGROUP> = NULL;
+  let curr: Pointer<GROUP> = null;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pCharacter: Pointer<SOLDIERTYPE> = null;
+  let pPlayer: Pointer<PLAYERGROUP> = null;
   let fSuccess: BOOLEAN = FALSE;
   return FALSE;
 }
@@ -1128,7 +1128,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
   let curr: Pointer<PLAYERGROUP>;
   let ubInsertionDirection: UINT8;
   let ubStrategicInsertionCode: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let fExceptionQueue: BOOLEAN = FALSE;
   let fFirstTimeInSector: BOOLEAN = FALSE;
   let fGroupDestroyed: BOOLEAN = FALSE;
@@ -1140,7 +1140,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
   // grab the group and see if valid
   pGroup = GetGroup(ubGroupID);
 
-  if (pGroup == NULL) {
+  if (pGroup == null) {
     return;
   }
 
@@ -1161,7 +1161,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
     if (pGroup.value.fVehicle) {
       if ((iVehId = (GivenMvtGroupIdFindVehicleId(ubGroupID))) != -1) {
         if (iVehId != iHelicopterVehicleId) {
-          if (pGroup.value.pPlayerList == NULL) {
+          if (pGroup.value.pPlayerList == null) {
             // nobody here, better just get out now
             // with vehicles, arriving empty is probably ok, since passengers might have been killed but vehicle lived.
             return;
@@ -1169,7 +1169,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
         }
       }
     } else {
-      if (pGroup.value.pPlayerList == NULL) {
+      if (pGroup.value.pPlayerList == null) {
         // nobody here, better just get out now
         AssertMsg(0, String("Player group %d arrived in sector empty.  KM 0", ubGroupID));
         return;
@@ -1548,7 +1548,7 @@ function HandleOtherGroupsArrivingSimultaneously(ubSectorX: UINT8, ubSectorY: UI
 function PrepareGroupsForSimultaneousArrival(): void {
   let pGroup: Pointer<GROUP>;
   let uiLatestArrivalTime: UINT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iVehId: INT32 = 0;
 
   pGroup = gpGroupList;
@@ -1728,7 +1728,7 @@ function InitiateGroupMovementToNextSector(pGroup: Pointer<GROUP>): void {
   let ubSector: UINT8;
   let wp: Pointer<WAYPOINT>;
   let iVehId: INT32 = -1;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let uiSleepMinutes: UINT32 = 0;
 
   Assert(pGroup);
@@ -1894,7 +1894,7 @@ function RemovePGroupWaypoints(pGroup: Pointer<GROUP>): void {
     MemFree(wp);
   }
   pGroup.value.ubNextWaypointID = 0;
-  pGroup.value.pWaypoints = NULL;
+  pGroup.value.pWaypoints = null;
 
   // By setting this flag, it acknowledges the possibility that the group is currently between sectors,
   // and will continue moving until it reaches the next sector.  If the user decides to change directions,
@@ -1946,7 +1946,7 @@ function RemovePGroup(pGroup: Pointer<GROUP>): void {
   if (pGroup.value.fPersistant && !gfRemovingAllGroups) {
     CancelEmptyPersistentGroupMovement(pGroup);
     return;
-    DoScreenIndependantMessageBox("Strategic Info Warning:  Attempting to delete a persistant group.", MSG_BOX_FLAG_OK, NULL);
+    DoScreenIndependantMessageBox("Strategic Info Warning:  Attempting to delete a persistant group.", MSG_BOX_FLAG_OK, null);
   }
   // if removing head, then advance head first.
   if (pGroup == gpGroupList)
@@ -1993,7 +1993,7 @@ function RemovePGroup(pGroup: Pointer<GROUP>): void {
   uniqueIDMask[index] -= mask;
 
   MemFree(pGroup);
-  pGroup = NULL;
+  pGroup = null;
 }
 
 function RemoveAllGroups(): void {
@@ -2087,7 +2087,7 @@ function CalculateTravelTimeOfGroupId(ubId: UINT8): INT32 {
   // get the group
   pGroup = GetGroup(ubId);
 
-  if (pGroup == NULL) {
+  if (pGroup == null) {
     return 0;
   }
 
@@ -2097,13 +2097,13 @@ function CalculateTravelTimeOfGroupId(ubId: UINT8): INT32 {
 function CalculateTravelTimeOfGroup(pGroup: Pointer<GROUP>): INT32 {
   let iDelta: INT32;
   let uiEtaTime: UINT32 = 0;
-  let pNode: Pointer<WAYPOINT> = NULL;
+  let pNode: Pointer<WAYPOINT> = null;
   let pCurrent: WAYPOINT;
   let pDest: WAYPOINT;
   let ubCurrentSector: INT8 = 0;
 
   // check if valid group
-  if (pGroup == NULL) {
+  if (pGroup == null) {
     // return current time
     return uiEtaTime;
   }
@@ -2462,7 +2462,7 @@ function PlayerIDGroupInMotion(ubID: UINT8): BOOLEAN {
   // make sure it is valid
 
   // no group
-  if (pGroup == NULL) {
+  if (pGroup == null) {
     return FALSE;
   }
 
@@ -2685,7 +2685,7 @@ function GetGroupPosition(ubNextX: Pointer<UINT8>, ubNextY: Pointer<UINT8>, ubPr
   // make sure it is valid
 
   // no group
-  if (pGroup == NULL) {
+  if (pGroup == null) {
     ubNextX.value = 0;
     ubNextY.value = 0;
     ubPrevX.value = 0;
@@ -2715,7 +2715,7 @@ function SetGroupPosition(ubNextX: UINT8, ubNextY: UINT8, ubPrevX: UINT8, ubPrev
   pGroup = GetGroup(ubGroupId);
 
   // no group
-  if (pGroup == NULL) {
+  if (pGroup == null) {
     return;
   }
 
@@ -2742,7 +2742,7 @@ function SetGroupPosition(ubNextX: UINT8, ubNextY: UINT8, ubPrevX: UINT8, ubPrev
 }
 
 function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  let pGroup: Pointer<GROUP> = NULL;
+  let pGroup: Pointer<GROUP> = null;
   let uiNumberOfGroups: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
 
@@ -2809,8 +2809,8 @@ function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): BOOLEAN {
-  let pGroup: Pointer<GROUP> = NULL;
-  let pTemp: Pointer<GROUP> = NULL;
+  let pGroup: Pointer<GROUP> = null;
+  let pTemp: Pointer<GROUP> = null;
   let uiNumberOfGroups: UINT32 = 0;
   // UINT32	uiNumBytesWritten=0;
   let uiNumBytesRead: UINT32 = 0;
@@ -2840,7 +2840,7 @@ function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   for (cnt = 0; cnt < uiNumberOfGroups; cnt++) {
     // allocate memory for the node
     pTemp = MemAlloc(sizeof(GROUP));
-    if (pTemp == NULL)
+    if (pTemp == null)
       return FALSE;
     memset(pTemp, 0, sizeof(GROUP));
 
@@ -2869,7 +2869,7 @@ function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): BOOLEAN {
     // Save the waypoint list for the group, if they have one
     LoadWayPointList(hFile, pTemp);
 
-    pTemp.value.next = NULL;
+    pTemp.value.next = null;
 
     // add the node to the list
 
@@ -2924,7 +2924,7 @@ function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 // Saves the Player's group list to the saved game file
 function SavePlayerGroupList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   let uiNumberOfNodesInList: UINT32 = 0;
-  let pTemp: Pointer<PLAYERGROUP> = NULL;
+  let pTemp: Pointer<PLAYERGROUP> = null;
   let uiNumBytesWritten: UINT32 = 0;
   let uiProfileID: UINT32;
 
@@ -2962,8 +2962,8 @@ function SavePlayerGroupList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
 
 function LoadPlayerGroupList(hFile: HWFILE, pGroup: Pointer<Pointer<GROUP>>): BOOLEAN {
   let uiNumberOfNodesInList: UINT32 = 0;
-  let pTemp: Pointer<PLAYERGROUP> = NULL;
-  let pHead: Pointer<PLAYERGROUP> = NULL;
+  let pTemp: Pointer<PLAYERGROUP> = null;
+  let pHead: Pointer<PLAYERGROUP> = null;
   let uiNumberOfNodes: UINT32 = 0;
   let uiProfileID: UINT32 = 0;
   let uiNumBytesRead: UINT32;
@@ -2986,7 +2986,7 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: Pointer<Pointer<GROUP>>): BO
   for (cnt = 0; cnt < uiNumberOfNodes; cnt++) {
     // allcate space for the current node
     pTemp = MemAlloc(sizeof(PLAYERGROUP));
-    if (pTemp == NULL)
+    if (pTemp == null)
       return FALSE;
 
     // Load the ubProfile ID for this node
@@ -3006,7 +3006,7 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: Pointer<Pointer<GROUP>>): BO
 
     pTemp.value.pSoldier = addressof(Menptr[pTemp.value.ubID]);
 
-    pTemp.value.next = NULL;
+    pTemp.value.next = null;
 
     // if its the first time through
     if (cnt == 0) {
@@ -3040,11 +3040,11 @@ function SaveEnemyGroupStruct(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
 // Loads the enemy group struct from the saved game file
 function LoadEnemyGroupStructFromSavedGame(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   let uiNumBytesRead: UINT32 = 0;
-  let pEnemyGroup: Pointer<ENEMYGROUP> = NULL;
+  let pEnemyGroup: Pointer<ENEMYGROUP> = null;
 
   // Alllocate memory for the enemy struct
   pEnemyGroup = MemAlloc(sizeof(ENEMYGROUP));
-  if (pEnemyGroup == NULL)
+  if (pEnemyGroup == null)
     return FALSE;
   memset(pEnemyGroup, 0, sizeof(ENEMYGROUP));
 
@@ -3065,13 +3065,13 @@ function CheckMembersOfMvtGroupAndComplainAboutBleeding(pSoldier: Pointer<SOLDIE
   // run through members of group
   let ubGroupId: UINT8 = pSoldier.value.ubGroupID;
   let pGroup: Pointer<GROUP>;
-  let pPlayer: Pointer<PLAYERGROUP> = NULL;
-  let pCurrentSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pPlayer: Pointer<PLAYERGROUP> = null;
+  let pCurrentSoldier: Pointer<SOLDIERTYPE> = null;
 
   pGroup = GetGroup(ubGroupId);
 
   // valid group?
-  if (pGroup == NULL) {
+  if (pGroup == null) {
     return;
   }
 
@@ -3084,7 +3084,7 @@ function CheckMembersOfMvtGroupAndComplainAboutBleeding(pSoldier: Pointer<SOLDIE
   pPlayer = pGroup.value.pPlayerList;
 
   // is there a player list?
-  if (pPlayer == NULL) {
+  if (pPlayer == null) {
     return;
   }
 
@@ -3110,7 +3110,7 @@ function SaveWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   let pWayPoints: Pointer<WAYPOINT> = pGroup.value.pWaypoints;
 
   // loop trhough and count all the node in the waypoint list
-  while (pWayPoints != NULL) {
+  while (pWayPoints != null) {
     uiNumberOfWayPoints++;
     pWayPoints = pWayPoints.value.next;
   }
@@ -3145,7 +3145,7 @@ function LoadWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   let uiNumberOfWayPoints: UINT32 = 0;
   let uiNumBytesRead: UINT32 = 0;
   let pWayPoints: Pointer<WAYPOINT> = pGroup.value.pWaypoints;
-  let pTemp: Pointer<WAYPOINT> = NULL;
+  let pTemp: Pointer<WAYPOINT> = null;
 
   // Load the number of waypoints
   FileRead(hFile, addressof(uiNumberOfWayPoints), sizeof(UINT32), addressof(uiNumBytesRead));
@@ -3159,7 +3159,7 @@ function LoadWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
     for (cnt = 0; cnt < uiNumberOfWayPoints; cnt++) {
       // Allocate memory for the node
       pTemp = MemAlloc(sizeof(WAYPOINT));
-      if (pTemp == NULL)
+      if (pTemp == null)
         return FALSE;
       memset(pTemp, 0, sizeof(WAYPOINT));
 
@@ -3170,7 +3170,7 @@ function LoadWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
         return FALSE;
       }
 
-      pTemp.value.next = NULL;
+      pTemp.value.next = null;
 
       // if its the first node
       if (cnt == 0) {
@@ -3184,7 +3184,7 @@ function LoadWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
       }
     }
   } else
-    pGroup.value.pWaypoints = NULL;
+    pGroup.value.pWaypoints = null;
 
   return TRUE;
 }
@@ -3320,7 +3320,7 @@ function FindMovementGroupInSector(ubSectorX: UINT8, ubSectorY: UINT8, fPlayer: 
 
     pGroup = pGroup.value.next;
   }
-  return NULL;
+  return null;
 }
 
 function GroupAtFinalDestination(pGroup: Pointer<GROUP>): BOOLEAN {
@@ -3419,7 +3419,7 @@ function ResetMovementForEnemyGroup(pGroup: Pointer<GROUP>): void {
 }
 
 function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
-  let pGroup: Pointer<GROUP> = NULL;
+  let pGroup: Pointer<GROUP> = null;
   let fDone: BOOLEAN = FALSE;
   let cnt: INT32;
   let fDoChange: BOOLEAN = FALSE;
@@ -3430,7 +3430,7 @@ function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
       // create mvt groups
       pGroup = GetGroup(cnt);
 
-      if (pGroup != NULL && pGroup.value.fPlayer) {
+      if (pGroup != null && pGroup.value.fPlayer) {
         pGroup.value.fPersistant = TRUE;
       }
     }
@@ -3441,7 +3441,7 @@ function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
       // create mvt groups
       pGroup = GetGroup(SquadMovementGroups[cnt]);
 
-      if (pGroup != NULL) {
+      if (pGroup != null) {
         pGroup.value.fPersistant = TRUE;
       }
     }
@@ -3449,7 +3449,7 @@ function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
     for (cnt = 0; cnt < MAX_VEHICLES; cnt++) {
       pGroup = GetGroup(gubVehicleMovementGroups[cnt]);
 
-      if (pGroup != NULL) {
+      if (pGroup != null) {
         pGroup.value.fPersistant = TRUE;
       }
     }
@@ -3623,18 +3623,18 @@ function ReportVehicleOutOfGas(iVehicleID: INT32, ubSectorX: UINT8, ubSectorY: U
   let str: UINT16[] /* [255] */;
   // Report that the vehicle that just arrived is out of gas.
   swprintf(str, gzLateLocalizedString[5], pVehicleStrings[pVehicleList[iVehicleID].ubVehicleType], ubSectorY + 'A' - 1, ubSectorX);
-  DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, NULL);
+  DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, null);
 }
 
 function SetLocationOfAllPlayerSoldiersInGroup(pGroup: Pointer<GROUP>, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
-  let pPlayer: Pointer<PLAYERGROUP> = NULL;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pPlayer: Pointer<PLAYERGROUP> = null;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   pPlayer = pGroup.value.pPlayerList;
   while (pPlayer) {
     pSoldier = pPlayer.value.pSoldier;
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       pSoldier.value.sSectorX = sSectorX;
       pSoldier.value.sSectorY = sSectorY;
       pSoldier.value.bSectorZ = bSectorZ;
@@ -3646,7 +3646,7 @@ function SetLocationOfAllPlayerSoldiersInGroup(pGroup: Pointer<GROUP>, sSectorX:
   // if it's a vehicle
   if (pGroup.value.fVehicle) {
     let iVehicleId: INT32 = -1;
-    let pVehicle: Pointer<VEHICLETYPE> = NULL;
+    let pVehicle: Pointer<VEHICLETYPE> = null;
 
     iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.value.ubGroupID);
     Assert(iVehicleId != -1);
@@ -3832,7 +3832,7 @@ function NotifyPlayerOfBloodcatBattle(ubSectorX: UINT8, ubSectorY: UINT8): void 
     fMapPanelDirty = TRUE;
     MapScreenHandle();
     InvalidateScreen();
-    RefreshScreen(NULL);
+    RefreshScreen(null);
   }
 
   gfUsePersistantPBI = TRUE;
@@ -3954,7 +3954,7 @@ function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(pGroup: Pointer<GRO
   Assert(pGroup.value.fPlayer);
 
   // nobody in the group (perfectly legal with the chopper)
-  if (pGroup.value.pPlayerList == NULL) {
+  if (pGroup.value.pPlayerList == null) {
     return FALSE;
   }
 
@@ -3964,7 +3964,7 @@ function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(pGroup: Pointer<GRO
   }
 
   // if we're already in the middle of a prompt (possible with simultaneously group arrivals!), don't try to prompt again
-  if (gpGroupPrompting != NULL) {
+  if (gpGroupPrompting != null) {
     return FALSE;
   }
 
@@ -4070,7 +4070,7 @@ function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNoteCallback(ubExitValue
     StopTimeCompression();
   }
 
-  gpGroupPrompting = NULL;
+  gpGroupPrompting = null;
 
   fMapPanelDirty = TRUE;
   fMapScreenBottomDirty = TRUE;

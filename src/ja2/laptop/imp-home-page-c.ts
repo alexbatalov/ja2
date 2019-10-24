@@ -298,9 +298,9 @@ function ProcessPlayerInputActivationString(): void {
   */
   else {
     if (((wcscmp(pPlayerActivationString, "XEP624") != 0) && (wcscmp(pPlayerActivationString, "xep624") != 0))) {
-      DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[0], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[0], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
     } else if (LaptopSaveInfo.fIMPCompletedFlag == TRUE) {
-      DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[6], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[6], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
     }
   }
   return;

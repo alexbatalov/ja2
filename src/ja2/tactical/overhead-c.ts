@@ -176,7 +176,7 @@ function GetFreeMercSlot(): INT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumMercSlots; uiCount++) {
-    if ((MercSlots[uiCount] == NULL))
+    if ((MercSlots[uiCount] == null))
       return uiCount;
   }
 
@@ -192,7 +192,7 @@ function RecountMercSlots(): void {
   if (guiNumMercSlots > 0) {
     // set equal to 0 as a default
     for (iCount = guiNumMercSlots - 1; (iCount >= 0); iCount--) {
-      if ((MercSlots[iCount] != NULL)) {
+      if ((MercSlots[iCount] != null)) {
         guiNumMercSlots = (iCount + 1);
         return;
       }
@@ -216,11 +216,11 @@ function AddMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 function RemoveMercSlot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let uiCount: UINT32;
 
-  CHECKF(pSoldier != NULL);
+  CHECKF(pSoldier != null);
 
   for (uiCount = 0; uiCount < guiNumMercSlots; uiCount++) {
     if (MercSlots[uiCount] == pSoldier) {
-      MercSlots[uiCount] = NULL;
+      MercSlots[uiCount] = null;
       RecountMercSlots();
       return TRUE;
     }
@@ -234,7 +234,7 @@ function GetFreeAwaySlot(): INT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumAwaySlots; uiCount++) {
-    if ((AwaySlots[uiCount] == NULL))
+    if ((AwaySlots[uiCount] == null))
       return uiCount;
   }
 
@@ -249,7 +249,7 @@ function RecountAwaySlots(): void {
 
   if (guiNumAwaySlots > 0) {
     for (iCount = guiNumAwaySlots - 1; (iCount >= 0); iCount--) {
-      if ((AwaySlots[iCount] != NULL)) {
+      if ((AwaySlots[iCount] != null)) {
         guiNumAwaySlots = (iCount + 1);
         return;
       }
@@ -273,11 +273,11 @@ function AddAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 function RemoveAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let uiCount: UINT32;
 
-  CHECKF(pSoldier != NULL);
+  CHECKF(pSoldier != null);
 
   for (uiCount = 0; uiCount < guiNumAwaySlots; uiCount++) {
     if (AwaySlots[uiCount] == pSoldier) {
-      AwaySlots[uiCount] = NULL;
+      AwaySlots[uiCount] = null;
       RecountAwaySlots();
       return TRUE;
     }
@@ -422,7 +422,7 @@ function InitOverhead(): BOOLEAN {
 
   // Zero out merc slots!
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
-    MercSlots[cnt] = NULL;
+    MercSlots[cnt] = null;
   }
 
   // Set other tactical flags
@@ -450,11 +450,11 @@ function InitOverhead(): BOOLEAN {
   gTacticalStatus.bRealtimeSpeed = MAX_REALTIME_SPEED_VAL / 2;
 
   gfInAirRaid = FALSE;
-  gpCustomizableTimerCallback = NULL;
+  gpCustomizableTimerCallback = null;
 
   // Reset cursor
-  gpItemPointer = NULL;
-  gpItemPointerSoldier = NULL;
+  gpItemPointer = null;
+  gpItemPointerSoldier = null;
   memset(gbInvalidPlacementSlot, 0, sizeof(gbInvalidPlacementSlot));
 
   InitCivQuoteSystem();
@@ -469,7 +469,7 @@ function ShutdownOverhead(): BOOLEAN {
 
   // Delete any soldiers which have been created!
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
-    if (MercPtrs[cnt] != NULL) {
+    if (MercPtrs[cnt] != null) {
       if (MercPtrs[cnt].value.bActive) {
         DeleteSoldier(MercPtrs[cnt]);
       }
@@ -481,7 +481,7 @@ function ShutdownOverhead(): BOOLEAN {
 
 function GetSoldier(ppSoldier: Pointer<Pointer<SOLDIERTYPE>>, usSoldierIndex: UINT16): BOOLEAN {
   // Check range of index given
-  ppSoldier.value = NULL;
+  ppSoldier.value = null;
 
   if (usSoldierIndex < 0 || usSoldierIndex > TOTAL_SOLDIERS - 1) {
     // Set debug message
@@ -648,7 +648,7 @@ function ExecuteOverhead(): BOOLEAN {
       // Syncronize for upcoming soldier counters
       SYNCTIMECOUNTER();
 
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         HandlePanelFaceAnimations(pSoldier);
 
         // Handle damage counters
@@ -931,7 +931,7 @@ function ExecuteOverhead(): BOOLEAN {
                       // LOOK FOR STRUCT OPENABLE
                       pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
 
-                      if (pStructure == NULL) {
+                      if (pStructure == null) {
                         fKeepMoving = FALSE;
                       } else {
                         CalcInteractiveObjectAPs(sGridNo, pStructure, addressof(sAPCost), addressof(sBPCost));
@@ -1171,7 +1171,7 @@ function ExecuteOverhead(): BOOLEAN {
       // Syncronize for upcoming soldier counters
       SYNCTIMECOUNTER();
 
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         // the ONLY thing to do with away soldiers is process their schedule if they have one
         // and there is an action for them to do (like go on-sector)
         if (pSoldier.value.fAIFlags & AI_CHECK_SCHEDULE) {
@@ -1197,7 +1197,7 @@ function ExecuteOverhead(): BOOLEAN {
         // Reset all waitng codes
         for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
           pSoldier = MercSlots[cnt];
-          if (pSoldier != NULL) {
+          if (pSoldier != null) {
             pSoldier.value.ubWaitActionToDo = 0;
           }
         }
@@ -1374,7 +1374,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
     }
 
     return FALSE;
-  } else if (InternalDoorTravelCost(pSoldier, usNewGridNo, gubWorldMovementCosts[usNewGridNo][pSoldier.value.usPathingData[pSoldier.value.usPathIndex]][pSoldier.value.bLevel], (pSoldier.value.bTeam == gbPlayerNum), NULL, TRUE) == TRAVELCOST_DOOR) {
+  } else if (InternalDoorTravelCost(pSoldier, usNewGridNo, gubWorldMovementCosts[usNewGridNo][pSoldier.value.usPathingData[pSoldier.value.usPathIndex]][pSoldier.value.bLevel], (pSoldier.value.bTeam == gbPlayerNum), null, TRUE) == TRAVELCOST_DOOR) {
     let pStructure: Pointer<STRUCTURE>;
     let bDirection: INT8;
     let sDoorGridNo: INT16;
@@ -1405,7 +1405,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
     // Get door
     pStructure = FindStructure(sDoorGridNo, STRUCTURE_ANYDOOR);
 
-    if (pStructure == NULL) {
+    if (pStructure == null) {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Door does not exist"));
       HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
       pSoldier.value.bEndDoorOpenCode = FALSE;
@@ -1519,7 +1519,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
       // note: this will have to use the minimum types of structures for tear/creature gas
       // since there isn't a way to retrieve the smoke effect structure
       if (gpWorldLevelData[pSoldier.value.sGridNo].ubExtFlags[pSoldier.value.bLevel] & ANY_SMOKE_EFFECT && PreRandom(5) == 0) {
-        let pExplosive: Pointer<EXPLOSIVETYPE> = NULL;
+        let pExplosive: Pointer<EXPLOSIVETYPE> = null;
         let bPosOfMask: INT8;
 
         if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD1POS].bStatus[0] >= GASMASK_MIN_STATUS) {
@@ -1704,7 +1704,7 @@ function HandleMaryArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleJohnArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
-  let pSoldier2: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier2: Pointer<SOLDIERTYPE> = null;
   let sDist: INT16;
 
   if (!pSoldier) {
@@ -1756,7 +1756,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
       // Turn off
       pSoldier.value.fBeginFade = FALSE;
 
-      if (pSoldier.value.bLevel > 0 && gpWorldLevelData[pSoldier.value.sGridNo].pRoofHead != NULL) {
+      if (pSoldier.value.bLevel > 0 && gpWorldLevelData[pSoldier.value.sGridNo].pRoofHead != null) {
         pSoldier.value.ubFadeLevel = gpWorldLevelData[pSoldier.value.sGridNo].pRoofHead.value.ubShadeLevel;
       } else {
         pSoldier.value.ubFadeLevel = gpWorldLevelData[pSoldier.value.sGridNo].pLandHead.value.ubShadeLevel;
@@ -1963,9 +1963,9 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
     // Drassen stuff for John & Mary
     else if (gubQuest[Enum169.QUEST_ESCORT_TOURISTS] == QUESTINPROGRESS && pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B && pSoldier.value.bSectorZ == 0) {
       if (CheckFact(Enum170.FACT_JOHN_ALIVE, 0)) {
-        HandleJohnArrival(NULL);
+        HandleJohnArrival(null);
       } else {
-        HandleMaryArrival(NULL);
+        HandleMaryArrival(null);
       }
     }
   } else if (pSoldier.value.bTeam == CIV_TEAM && pSoldier.value.ubProfile != NO_PROFILE && pSoldier.value.bNeutral) {
@@ -2156,7 +2156,7 @@ function ResetAllAnimationCache(): BOOLEAN {
 
   // Loop through all mercs and make go
   for (pSoldier = Menptr, cnt = 0; cnt < TOTAL_SOLDIERS; pSoldier++, cnt++) {
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       InitAnimationCache(cnt, addressof(pSoldier.value.AnimCache));
     }
   }
@@ -2337,7 +2337,7 @@ function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
     switch (pSoldier.value.ubProfile) {
       case Enum268.SLAY:
         pTeamSoldier = FindSoldierByProfileID(Enum268.CARMEN, FALSE);
-        if (pTeamSoldier && pTeamSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && ClosestPC(pTeamSoldier, NULL) != NOWHERE) {
+        if (pTeamSoldier && pTeamSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && ClosestPC(pTeamSoldier, null) != NOWHERE) {
           // Carmen now becomes friendly again
           TriggerNPCRecord(Enum268.CARMEN, 29);
         }
@@ -2370,7 +2370,7 @@ function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
-  let pKiller: Pointer<SOLDIERTYPE> = NULL;
+  let pKiller: Pointer<SOLDIERTYPE> = null;
   let bVisible: BOOLEAN;
 
   pSoldierOld.value.uiStatusFlags |= SOLDIER_DEAD;
@@ -2554,7 +2554,7 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
   } else // enemies and creatures... should any of this stuff not be called if a creature dies?
   {
     if (pSoldierOld.value.ubBodyType == Enum194.QUEENMONSTER) {
-      let pKiller: Pointer<SOLDIERTYPE> = NULL;
+      let pKiller: Pointer<SOLDIERTYPE> = null;
 
       if (pSoldierOld.value.ubAttackerID != NOBODY) {
         pKiller = MercPtrs[pSoldierOld.value.ubAttackerID];
@@ -2582,10 +2582,10 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
     }
 
     if (pSoldierOld.value.ubProfile == Enum268.QUEEN) {
-      HandleMoraleEvent(NULL, Enum234.MORALE_DEIDRANNA_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+      HandleMoraleEvent(null, Enum234.MORALE_DEIDRANNA_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       MaximizeLoyaltyForDeidrannaKilled();
     } else if (pSoldierOld.value.ubBodyType == Enum194.QUEENMONSTER) {
-      HandleMoraleEvent(NULL, Enum234.MORALE_MONSTER_QUEEN_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+      HandleMoraleEvent(null, Enum234.MORALE_MONSTER_QUEEN_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       IncrementTownLoyaltyEverywhere(LOYALTY_BONUS_KILL_QUEEN_MONSTER);
 
       // Grant experience gain.....
@@ -3027,7 +3027,7 @@ function FindNextActiveSquad(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYP
 
   for (cnt = pSoldier.value.bAssignment + 1; cnt < Enum275.NUMBER_OF_SQUADS; cnt++) {
     for (cnt2 = 0; cnt2 < NUMBER_OF_SOLDIERS_PER_SQUAD; cnt2++) {
-      if (Squad[cnt][cnt2] != NULL && Squad[cnt][cnt2].value.bInSector && OK_INTERRUPT_MERC(Squad[cnt][cnt2]) && OK_CONTROLLABLE_MERC(Squad[cnt][cnt2]) && !(Squad[cnt][cnt2].value.uiStatusFlags & SOLDIER_VEHICLE)) {
+      if (Squad[cnt][cnt2] != null && Squad[cnt][cnt2].value.bInSector && OK_INTERRUPT_MERC(Squad[cnt][cnt2]) && OK_CONTROLLABLE_MERC(Squad[cnt][cnt2]) && !(Squad[cnt][cnt2].value.uiStatusFlags & SOLDIER_VEHICLE)) {
         return Squad[cnt][cnt2];
       }
     }
@@ -3037,7 +3037,7 @@ function FindNextActiveSquad(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYP
   // Now loop back
   for (cnt = 0; cnt <= pSoldier.value.bAssignment; cnt++) {
     for (cnt2 = 0; cnt2 < NUMBER_OF_SOLDIERS_PER_SQUAD; cnt2++) {
-      if (Squad[cnt][cnt2] != NULL && Squad[cnt][cnt2].value.bInSector && OK_INTERRUPT_MERC(Squad[cnt][cnt2]) && OK_CONTROLLABLE_MERC(Squad[cnt][cnt2]) && !(Squad[cnt][cnt2].value.uiStatusFlags & SOLDIER_VEHICLE)) {
+      if (Squad[cnt][cnt2] != null && Squad[cnt][cnt2].value.bInSector && OK_INTERRUPT_MERC(Squad[cnt][cnt2]) && OK_CONTROLLABLE_MERC(Squad[cnt][cnt2]) && !(Squad[cnt][cnt2].value.uiStatusFlags & SOLDIER_VEHICLE)) {
         return Squad[cnt][cnt2];
       }
     }
@@ -3155,7 +3155,7 @@ function EnterTacticalDemoMode(): UINT32 {
   gTacticalStatus.uiFlags &= (~PLAYER_TEAM_DEAD);
 
   // Force load of guys
-  SetLoadOverrideParams(TRUE, FALSE, NULL);
+  SetLoadOverrideParams(TRUE, FALSE, null);
 
   // Load random level
   // Dont't do first three levels
@@ -3227,7 +3227,7 @@ function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fP
       // if ANY direction is valid, consider moving here valid
       for (bLoop = 0; bLoop < Enum245.NUM_WORLD_DIRECTIONS; bLoop++) {
         // ATE: Only if we have a levelnode...
-        if (pCurrSoldier.value.pLevelNode != NULL && pCurrSoldier.value.pLevelNode.value.pStructureData != NULL) {
+        if (pCurrSoldier.value.pLevelNode != null && pCurrSoldier.value.pLevelNode.value.pStructureData != null) {
           usStructureID = pCurrSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
         } else {
           usStructureID = INVALID_STRUCTURE_ID;
@@ -3242,7 +3242,7 @@ function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fP
     return FALSE;
   } else {
     // quick test
-    if (gpWorldLevelData[sGridNo].pStructureHead != NULL) {
+    if (gpWorldLevelData[sGridNo].pStructureHead != null) {
       // Something is here, check obstruction in future
       if (bLevel == 0) {
         sDesiredLevel = STRUCTURE_ON_GROUND;
@@ -3256,17 +3256,17 @@ function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fP
       // we are a cave....still allow this..
       // if ( pStructure && gfPlotPathToExitGrid && pStructure->fFlags & STRUCTURE_CAVEWALL )
       if (pStructure && gfPlotPathToExitGrid) {
-        pStructure = NULL;
+        pStructure = null;
       }
 
-      while (pStructure != NULL) {
+      while (pStructure != null) {
         if (!(pStructure.value.fFlags & STRUCTURE_PASSABLE)) {
           fOKCheckStruct = TRUE;
 
           // Check if this is a multi-tile
           if ((pStructure.value.fFlags & STRUCTURE_MOBILE) && (pCurrSoldier.value.uiStatusFlags & SOLDIER_MULTITILE)) {
             // Check IDs with soldier's ID
-            if (pCurrSoldier.value.pLevelNode != NULL && pCurrSoldier.value.pLevelNode.value.pStructureData != NULL && pCurrSoldier.value.pLevelNode.value.pStructureData.value.usStructureID == pStructure.value.usStructureID) {
+            if (pCurrSoldier.value.pLevelNode != null && pCurrSoldier.value.pLevelNode.value.pStructureData != null && pCurrSoldier.value.pLevelNode.value.pStructureData.value.usStructureID == pStructure.value.usStructureID) {
               fOKCheckStruct = FALSE;
             }
           }
@@ -3326,7 +3326,7 @@ function NewOKDestinationAndDirection(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridN
 
       {
         // ATE: Only if we have a levelnode...
-        if (pCurrSoldier.value.pLevelNode != NULL && pCurrSoldier.value.pLevelNode.value.pStructureData != NULL) {
+        if (pCurrSoldier.value.pLevelNode != null && pCurrSoldier.value.pLevelNode.value.pStructureData != null) {
           usStructureID = pCurrSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
         }
 
@@ -3339,7 +3339,7 @@ function NewOKDestinationAndDirection(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridN
     return FALSE;
   } else {
     // quick test
-    if (gpWorldLevelData[sGridNo].pStructureHead != NULL) {
+    if (gpWorldLevelData[sGridNo].pStructureHead != null) {
       // Something is here, check obstruction in future
       if (bLevel == 0) {
         sDesiredLevel = STRUCTURE_ON_GROUND;
@@ -3353,17 +3353,17 @@ function NewOKDestinationAndDirection(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridN
       // we are a cave....still allow this..
       // if ( pStructure && gfPlotPathToExitGrid && pStructure->fFlags & STRUCTURE_CAVEWALL )
       if (pStructure && gfPlotPathToExitGrid) {
-        pStructure = NULL;
+        pStructure = null;
       }
 
-      while (pStructure != NULL) {
+      while (pStructure != null) {
         if (!(pStructure.value.fFlags & STRUCTURE_PASSABLE)) {
           fOKCheckStruct = TRUE;
 
           // Check if this is a multi-tile
           if ((pStructure.value.fFlags & STRUCTURE_MOBILE) && (pCurrSoldier.value.uiStatusFlags & SOLDIER_MULTITILE)) {
             // Check IDs with soldier's ID
-            if (pCurrSoldier.value.pLevelNode != NULL && pCurrSoldier.value.pLevelNode.value.pStructureData != NULL && pCurrSoldier.value.pLevelNode.value.pStructureData.value.usStructureID == pStructure.value.usStructureID) {
+            if (pCurrSoldier.value.pLevelNode != null && pCurrSoldier.value.pLevelNode.value.pStructureData != null && pCurrSoldier.value.pLevelNode.value.pStructureData.value.usStructureID == pStructure.value.usStructureID) {
               fOKCheckStruct = FALSE;
             }
           }
@@ -3502,7 +3502,7 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
   }
 
   // CHECK IF WE WANT TO FORCE GRIDNO TO PERSON
-  if (psAdjustedGridNo != NULL) {
+  if (psAdjustedGridNo != null) {
     psAdjustedGridNo.value = sGridNo;
   }
 
@@ -3520,7 +3520,7 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
       // ATE: Added: Switch behave EXACTLY like doors
       pDoor = FindStructure(sGridNo, (STRUCTURE_ANYDOOR));
 
-      if (pDoor != NULL) {
+      if (pDoor != null) {
         // Get orinetation
         ubWallOrientation = pDoor.value.ubWallOrientation;
 
@@ -3550,13 +3550,13 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
   if (fDoor) {
     pDoor = FindStructure(sGridNo, (STRUCTURE_ANYDOOR | STRUCTURE_SWITCH));
   } else {
-    pDoor = NULL;
+    pDoor = null;
   }
 
   if (fForceToPerson) {
     if (FindSoldier(sGridNo, addressof(usSoldierIndex), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usSoldierIndex].value.sGridNo;
-      if (psAdjustedGridNo != NULL) {
+      if (psAdjustedGridNo != null) {
         psAdjustedGridNo.value = sGridNo;
 
         // Use direction to this guy!
@@ -3613,14 +3613,14 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
       }
     } else {
       // this function returns original MP cost if not a door cost
-      if (DoorTravelCost(pSoldier, sSpot, gubWorldMovementCosts[sSpot][ubTestDirection][pSoldier.value.bLevel], FALSE, NULL) >= TRAVELCOST_BLOCKED) {
+      if (DoorTravelCost(pSoldier, sSpot, gubWorldMovementCosts[sSpot][ubTestDirection][pSoldier.value.bLevel], FALSE, null) >= TRAVELCOST_BLOCKED) {
         // obstacle or wall there!
         continue;
       }
     }
 
     // Eliminate some directions if we are looking at doors!
-    if (pDoor != NULL) {
+    if (pDoor != null) {
       // Get orinetation
       ubWallOrientation = pDoor.value.ubWallOrientation;
 
@@ -3740,7 +3740,7 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   let ubWhoIsThere: UINT8;
 
   // CHECK IF WE WANT TO FORCE GRIDNO TO PERSON
-  if (psAdjustedGridNo != NULL) {
+  if (psAdjustedGridNo != null) {
     psAdjustedGridNo.value = sGridNo;
   }
 
@@ -3754,13 +3754,13 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   if (fDoor) {
     pDoor = FindStructure(sGridNo, (STRUCTURE_ANYDOOR | STRUCTURE_SWITCH));
   } else {
-    pDoor = NULL;
+    pDoor = null;
   }
 
   if (fForceToPerson) {
     if (FindSoldier(sGridNo, addressof(usSoldierIndex), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usSoldierIndex].value.sGridNo;
-      if (psAdjustedGridNo != NULL) {
+      if (psAdjustedGridNo != null) {
         psAdjustedGridNo.value = sGridNo;
       }
     }
@@ -3810,7 +3810,7 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
     }
 
     // Eliminate some directions if we are looking at doors!
-    if (pDoor != NULL) {
+    if (pDoor != null) {
       // Get orinetation
       ubWallOrientation = pDoor.value.ubWallOrientation;
 
@@ -3829,7 +3829,7 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
 
     // first tile is okay, how about the second?
     sSpot2 = NewGridNo(sSpot, DirectionInc(sDirs[cnt]));
-    if (gubWorldMovementCosts[sSpot2][sDirs[cnt]][pSoldier.value.bLevel] >= TRAVELCOST_BLOCKED || DoorTravelCost(pSoldier, sSpot2, gubWorldMovementCosts[sSpot2][sDirs[cnt]][pSoldier.value.bLevel], (pSoldier.value.bTeam == gbPlayerNum), NULL) == TRAVELCOST_DOOR) // closed door blocks!
+    if (gubWorldMovementCosts[sSpot2][sDirs[cnt]][pSoldier.value.bLevel] >= TRAVELCOST_BLOCKED || DoorTravelCost(pSoldier, sSpot2, gubWorldMovementCosts[sSpot2][sDirs[cnt]][pSoldier.value.bLevel], (pSoldier.value.bTeam == gbPlayerNum), null) == TRAVELCOST_DOOR) // closed door blocks!
     {
       // obstacle or wall there!
       continue;
@@ -3947,7 +3947,7 @@ function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier:
   for (cnt = 0; cnt < Enum245.NUM_WORLD_DIRECTIONS; cnt++) {
     sSpot = NewGridNo(pSoldier.value.sGridNo, DirectionInc(cnt));
 
-    if (DoorTravelCost(pSoldier, sSpot, gubWorldMovementCosts[sSpot][cnt][pSoldier.value.bLevel], FALSE, NULL) >= TRAVELCOST_BLOCKED) {
+    if (DoorTravelCost(pSoldier, sSpot, gubWorldMovementCosts[sSpot][cnt][pSoldier.value.bLevel], FALSE, null) >= TRAVELCOST_BLOCKED) {
       // blocked!
       continue;
     }
@@ -3955,7 +3955,7 @@ function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier:
     // Check for who is there...
     ubGuyThere = WhoIsThere2(sSpot, pSoldier.value.bLevel);
 
-    if (pTargetSoldier != NULL && ubGuyThere == pTargetSoldier.value.ubID) {
+    if (pTargetSoldier != null && ubGuyThere == pTargetSoldier.value.ubID) {
       // We've got a guy here....
       // Who is the one we want......
       psAdjustedTargetGridNo.value = pTargetSoldier.value.sGridNo;
@@ -4411,7 +4411,7 @@ function WeSeeNoOne(): BOOLEAN {
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if (pSoldier.value.bTeam == gbPlayerNum) {
         if (pSoldier.value.bOppCnt > 0) {
           return FALSE;
@@ -4429,7 +4429,7 @@ function NobodyAlerted(): BOOLEAN {
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if ((pSoldier.value.bTeam != gbPlayerNum) && (!pSoldier.value.bNeutral) && (pSoldier.value.bLife >= OKLIFE) && (pSoldier.value.bAlertStatus >= Enum243.STATUS_RED)) {
         return FALSE;
       }
@@ -4446,7 +4446,7 @@ function WeSawSomeoneThisTurn(): BOOLEAN {
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if (pSoldier.value.bTeam == gbPlayerNum) {
         for (uiLoop2 = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; uiLoop2 < TOTAL_SOLDIERS; uiLoop2++) {
           if (pSoldier.value.bOppList[uiLoop2] == SEEN_THIS_TURN) {
@@ -4690,7 +4690,7 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
       ExitCombatMode();
     }
 
-    HandleMoraleEvent(NULL, Enum234.MORALE_HEARD_BATTLE_LOST, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+    HandleMoraleEvent(null, Enum234.MORALE_HEARD_BATTLE_LOST, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_LOST, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
     // Play death music
@@ -4796,7 +4796,7 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
           }
         }
 
-        HandleMoraleEvent(NULL, Enum234.MORALE_BATTLE_WON, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+        HandleMoraleEvent(null, Enum234.MORALE_BATTLE_WON, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
         HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_WON, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
         // Change music modes
@@ -5444,7 +5444,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
             break;
           case ANIM_CROUCH:
             if (ubTotalPointsLost >= AP_PRONE && IsValidStance(pSoldier, ANIM_PRONE)) {
-              sClosestOpponent = ClosestKnownOpponent(pSoldier, addressof(sClosestOppLoc), NULL);
+              sClosestOpponent = ClosestKnownOpponent(pSoldier, addressof(sClosestOppLoc), null);
               if (sClosestOpponent == NOWHERE || SpacesAway(pSoldier.value.sGridNo, sClosestOppLoc) > 8) {
                 if (ubPointsLost < AP_PRONE) {
                   // Have to give APs back so that we can change stance without
@@ -5463,7 +5463,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
               // can't change stance here!
               break;
             } else if (ubTotalPointsLost >= (AP_CROUCH + AP_PRONE) && (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_PRONE) && IsValidStance(pSoldier, ANIM_PRONE)) {
-              sClosestOpponent = ClosestKnownOpponent(pSoldier, addressof(sClosestOppLoc), NULL);
+              sClosestOpponent = ClosestKnownOpponent(pSoldier, addressof(sClosestOppLoc), null);
               if (sClosestOpponent == NOWHERE || SpacesAway(pSoldier.value.sGridNo, sClosestOppLoc) > 8) {
                 if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_STAND) {
                   // can only crouch for now
@@ -5669,14 +5669,14 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
   let fEnterCombat: BOOLEAN = FALSE;
 
   if (ubID == NOBODY) {
-    pSoldier = NULL;
-    pTarget = NULL;
+    pSoldier = null;
+    pTarget = null;
   } else {
     pSoldier = MercPtrs[ubID];
     if (ubTargetID != NOBODY) {
       pTarget = MercPtrs[ubTargetID];
     } else {
-      pTarget = NULL;
+      pTarget = null;
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String(">>Target ptr is null!"));
     }
   }
@@ -5730,7 +5730,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
   // this is so we DON'T call freeupattacker() which will cancel
   // the AI guy's meanwhile NPC stuff.
   // OK< let's NOT do this if it was the queen attacking....
-  if (AreInMeanwhile() && pSoldier != NULL && pSoldier.value.ubProfile != Enum268.QUEEN) {
+  if (AreInMeanwhile() && pSoldier != null && pSoldier.value.ubProfile != Enum268.QUEEN) {
     return pTarget;
   }
 
@@ -6165,17 +6165,17 @@ function HandleEndDemoInCreatureLevel(): void {
 
 function DeathTimerCallback(): void {
   if (gTacticalStatus.Team[CREATURE_TEAM].bMenInSector > gTacticalStatus.Team[ENEMY_TEAM].bMenInSector) {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[Enum337.LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_AGAINST_CREATURES_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[Enum337.LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_AGAINST_CREATURES_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, null);
   } else {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[Enum337.LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[Enum337.LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, null);
   }
 }
 
 function CaptureTimerCallback(): void {
   if (gfSurrendered) {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[3], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[3], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, null);
   } else {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[Enum337.LARGESTR_HAVE_BEEN_CAPTURED], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[Enum337.LARGESTR_HAVE_BEEN_CAPTURED], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, null);
   }
   gfSurrendered = FALSE;
 }

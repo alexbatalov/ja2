@@ -229,7 +229,7 @@ function RenderInsuranceContract(): void {
   let sNextMercID: INT16;
   let usPosX: UINT16;
   let fIsThereAnyAimMercs: BOOLEAN = FALSE;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   SetFontShadow(INS_FONT_SHADOW);
 
@@ -258,7 +258,7 @@ function RenderInsuranceContract(): void {
 
   // Get and display the insurance bullet
   GetVideoObject(addressof(hPixHandle), guiInsOrderBulletImage);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the first instruction sentence
   GetInsuranceText(Enum90.INS_MLTI_TO_PURCHASE_INSURANCE, sText);
@@ -266,7 +266,7 @@ function RenderInsuranceContract(): void {
 
   // Get and display the insurance bullet
   GetVideoObject(addressof(hPixHandle), guiInsOrderBulletImage);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_SECOND_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_SECOND_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the second instruction sentence
   GetInsuranceText(Enum90.INS_MLTI_ONCE_SATISFIED_CLICK_ACCEPT, sText);
@@ -400,7 +400,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
 
   // Get and display the insurance order grid #1
   GetVideoObject(addressof(hPixHandle), guiInsOrderGridImage);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, usPosX, INS_CTRCT_ORDER_GRID1_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, usPosX, INS_CTRCT_ORDER_GRID1_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // load the mercs face graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -422,7 +422,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   }
 
   // Get and display the mercs face
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, usPosX + INS_CTRCT_OG_FACE_OFFSET_X, INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_OG_FACE_OFFSET_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, usPosX + INS_CTRCT_OG_FACE_OFFSET_X, INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_OG_FACE_OFFSET_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // the face images isn't needed anymore so delete it
   DeleteVideoObjectFromIndex(uiInsMercFaceImage);
@@ -983,7 +983,7 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let uiCostPerDay: UINT32;
   let uiDaysToPay: UINT32;
 
-  Assert(pSoldier != NULL);
+  Assert(pSoldier != null);
   Assert(pSoldier.value.ubProfile != NO_PROFILE);
 
   pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
@@ -992,7 +992,7 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (LaptopSaveInfo.ubNumberLifeInsurancePayouts <= LaptopSaveInfo.ubNumberLifeInsurancePayoutUsed) {
     LaptopSaveInfo.ubNumberLifeInsurancePayouts++;
     LaptopSaveInfo.pLifeInsurancePayouts = MemRealloc(LaptopSaveInfo.pLifeInsurancePayouts, sizeof(LIFE_INSURANCE_PAYOUT) * LaptopSaveInfo.ubNumberLifeInsurancePayouts);
-    if (LaptopSaveInfo.pLifeInsurancePayouts == NULL)
+    if (LaptopSaveInfo.pLifeInsurancePayouts == null)
       return FALSE;
 
     memset(addressof(LaptopSaveInfo.pLifeInsurancePayouts[LaptopSaveInfo.ubNumberLifeInsurancePayouts - 1]), 0, sizeof(LIFE_INSURANCE_PAYOUT));
@@ -1124,7 +1124,7 @@ function InsuranceContractEndGameShutDown(): void {
   // Free up the memory allocated to the insurance payouts
   if (LaptopSaveInfo.pLifeInsurancePayouts) {
     MemFree(LaptopSaveInfo.pLifeInsurancePayouts);
-    LaptopSaveInfo.pLifeInsurancePayouts = NULL;
+    LaptopSaveInfo.pLifeInsurancePayouts = null;
   }
 }
 
@@ -1245,7 +1245,7 @@ function GetTimeRemainingOnSoldiersContract(pSoldier: Pointer<SOLDIERTYPE>): UIN
 function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiInsuranceLength: UINT32): void {
   let iAmountOfMoneyTransfer: INT32 = -1;
 
-  if (pSoldier == NULL)
+  if (pSoldier == null)
     AssertMsg(0, "Soldier pointer is NULL!");
 
   // if the user doesnt have insruance already,
@@ -1279,9 +1279,9 @@ function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiI
 
       GetInsuranceText(Enum90.INS_MLTI_NOT_ENOUGH_FUNDS, sText);
       if (guiCurrentScreen == Enum26.LAPTOP_SCREEN)
-        DoLapTopMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoLapTopMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
       else
-        DoMapMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
     } else {
       // else if the player has enought to cover the bill, let him
 
@@ -1369,7 +1369,7 @@ function CalcStartDayOfInsurance(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 function AreAnyAimMercsOnTeam(): BOOLEAN {
   let sNextMercID: INT16 = 0;
   let fIsThereAnyAimMercs: BOOLEAN = FALSE;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   for (sNextMercID = 0; sNextMercID <= gTacticalStatus.Team[gbPlayerNum].bLastID; sNextMercID++) {
     pSoldier = addressof(Menptr[GetSoldierIDFromMercID(sNextMercID)]);

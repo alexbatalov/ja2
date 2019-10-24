@@ -795,7 +795,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
         iCoverValue += (iCoverValue / 10) * NumberOfTeamMatesAdjacent(pSoldier, sGridNo);
       }
 
-      if (fNight && !(InARoom(sGridNo, NULL))) // ignore in buildings in case placed there
+      if (fNight && !(InARoom(sGridNo, null))) // ignore in buildings in case placed there
       {
         // reduce cover at nighttime based on how bright the light is at that location
         // using the difference in sighting distance between the background and the
@@ -1665,7 +1665,7 @@ function FindClosestDoor(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
       // calculate the next potential gridno
       sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
-      if (FindStructure(sGridNo, STRUCTURE_ANYDOOR) != NULL) {
+      if (FindStructure(sGridNo, STRUCTURE_ANYDOOR) != null) {
         iDist = PythSpacesAway(pSoldier.value.sGridNo, sGridNo);
         if (iDist < iClosestDist) {
           iClosestDist = iDist;

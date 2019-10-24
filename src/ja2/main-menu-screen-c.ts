@@ -453,7 +453,7 @@ function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
       iStartLoc = MAINMENU_RECORD_SIZE * cnt;
       if (!LoadEncryptedDataFromFile(MAINMENU_TEXT_FILE, zText, iStartLoc, MAINMENU_RECORD_SIZE)) {
         // the file was not able to be loaded properly
-        let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+        let pSoldier: Pointer<SOLDIERTYPE> = null;
 
         if (pSoldier.value.bActive != TRUE) {
           // something is very wrong
@@ -483,12 +483,12 @@ function RenderMainMenu(): void {
 
   // Get and display the background image
   GetVideoObject(addressof(hPixHandle), guiMainMenuBackGroundImage);
-  BltVideoObject(guiSAVEBUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
   GetVideoObject(addressof(hPixHandle), guiJa2LogoImage);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(guiSAVEBUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(guiSAVEBUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, null);
 
   DrawTextToScreen(gzCopyrightText[0], 0, 465, 640, FONT10ARIAL(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 

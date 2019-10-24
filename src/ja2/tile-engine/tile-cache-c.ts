@@ -3,8 +3,8 @@ let guiMaxTileCacheSize: UINT32 = 50;
 let guiCurTileCacheSize: UINT32 = 0;
 let giDefaultStructIndex: INT32 = -1;
 
-let gpTileCache: Pointer<TILE_CACHE_ELEMENT> = NULL;
-let gpTileCacheStructInfo: Pointer<TILE_CACHE_STRUCT> = NULL;
+let gpTileCache: Pointer<TILE_CACHE_ELEMENT> = null;
+let gpTileCacheStructInfo: Pointer<TILE_CACHE_STRUCT> = null;
 
 function InitTileCache(): BOOLEAN {
   let cnt: UINT32;
@@ -15,7 +15,7 @@ function InitTileCache(): BOOLEAN {
 
   // Zero entries
   for (cnt = 0; cnt < guiMaxTileCacheSize; cnt++) {
-    gpTileCache[cnt].pImagery = NULL;
+    gpTileCache[cnt].pImagery = null;
     gpTileCache[cnt].sStructRefID = -1;
   }
 
@@ -66,17 +66,17 @@ function DeleteTileCache(): void {
   let cnt: UINT32;
 
   // Allocate entries
-  if (gpTileCache != NULL) {
+  if (gpTileCache != null) {
     // Loop through and delete any entries
     for (cnt = 0; cnt < guiMaxTileCacheSize; cnt++) {
-      if (gpTileCache[cnt].pImagery != NULL) {
+      if (gpTileCache[cnt].pImagery != null) {
         DeleteTileSurface(gpTileCache[cnt].pImagery);
       }
     }
     MemFree(gpTileCache);
   }
 
-  if (gpTileCacheStructInfo != NULL) {
+  if (gpTileCacheStructInfo != null) {
     MemFree(gpTileCacheStructInfo);
   }
 
@@ -102,7 +102,7 @@ function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
 
   // Check to see if surface exists already
   for (cnt = 0; cnt < guiCurTileCacheSize; cnt++) {
-    if (gpTileCache[cnt].pImagery != NULL) {
+    if (gpTileCache[cnt].pImagery != null) {
       if (_stricmp(gpTileCache[cnt].zName, cFilename) == 0) {
         // Found surface, return
         gpTileCache[cnt].sHits++;
@@ -126,18 +126,18 @@ function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
 
     // Decrement
     gpTileCache[ubLowestIndex].sHits = 0;
-    gpTileCache[ubLowestIndex].pImagery = NULL;
+    gpTileCache[ubLowestIndex].pImagery = null;
     gpTileCache[ubLowestIndex].sStructRefID = -1;
   }
 
   // If here, Insert at an empty slot
   // Find an empty slot
   for (cnt = 0; cnt < guiMaxTileCacheSize; cnt++) {
-    if (gpTileCache[cnt].pImagery == NULL) {
+    if (gpTileCache[cnt].pImagery == null) {
       // Insert here
       gpTileCache[cnt].pImagery = LoadTileSurface(cFilename);
 
-      if (gpTileCache[cnt].pImagery == NULL) {
+      if (gpTileCache[cnt].pImagery == null) {
         return -1;
       }
 
@@ -154,7 +154,7 @@ function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
         AddZStripInfoToVObject(gpTileCache[cnt].pImagery.value.vo, gpTileCacheStructInfo[gpTileCache[cnt].sStructRefID].pStructureFileRef, TRUE, 0);
       }
 
-      if (gpTileCache[cnt].pImagery.value.pAuxData != NULL) {
+      if (gpTileCache[cnt].pImagery.value.pAuxData != null) {
         gpTileCache[cnt].ubNumFrames = gpTileCache[cnt].pImagery.value.pAuxData.value.ubNumberOfFrames;
       } else {
         gpTileCache[cnt].ubNumFrames = 1;
@@ -179,7 +179,7 @@ function RemoveCachedTile(iCachedTile: INT32): BOOLEAN {
 
   // Find tile
   for (cnt = 0; cnt < guiCurTileCacheSize; cnt++) {
-    if (gpTileCache[cnt].pImagery != NULL) {
+    if (gpTileCache[cnt].pImagery != null) {
       if (cnt == iCachedTile) {
         // Found surface, decrement hits
         gpTileCache[cnt].sHits--;
@@ -187,7 +187,7 @@ function RemoveCachedTile(iCachedTile: INT32): BOOLEAN {
         // Are we at zero?
         if (gpTileCache[cnt].sHits == 0) {
           DeleteTileSurface(gpTileCache[cnt].pImagery);
-          gpTileCache[cnt].pImagery = NULL;
+          gpTileCache[cnt].pImagery = null;
           gpTileCache[cnt].sStructRefID = -1;
           return TRUE;
           ;
@@ -201,11 +201,11 @@ function RemoveCachedTile(iCachedTile: INT32): BOOLEAN {
 
 function GetCachedTileVideoObject(iIndex: INT32): HVOBJECT {
   if (iIndex == -1) {
-    return NULL;
+    return null;
   }
 
-  if (gpTileCache[iIndex].pImagery == NULL) {
-    return NULL;
+  if (gpTileCache[iIndex].pImagery == null) {
+    return null;
   }
 
   return gpTileCache[iIndex].pImagery.value.vo;
@@ -213,11 +213,11 @@ function GetCachedTileVideoObject(iIndex: INT32): HVOBJECT {
 
 function GetCachedTileStructureRef(iIndex: INT32): Pointer<STRUCTURE_FILE_REF> {
   if (iIndex == -1) {
-    return NULL;
+    return null;
   }
 
   if (gpTileCache[iIndex].sStructRefID == -1) {
-    return NULL;
+    return null;
   }
 
   return gpTileCacheStructInfo[gpTileCache[iIndex].sStructRefID].pStructureFileRef;
@@ -230,7 +230,7 @@ function GetCachedTileStructureRefFromFilename(cFilename: Pointer<INT8>): Pointe
   sStructDataIndex = FindCacheStructDataIndex(cFilename);
 
   if (sStructDataIndex == -1) {
-    return NULL;
+    return null;
   }
 
   return gpTileCacheStructInfo[sStructDataIndex].pStructureFileRef;
@@ -241,12 +241,12 @@ function CheckForAndAddTileCacheStructInfo(pNode: Pointer<LEVELNODE>, sGridNo: I
 
   pStructureFileRef = GetCachedTileStructureRef(usIndex);
 
-  if (pStructureFileRef != NULL) {
+  if (pStructureFileRef != null) {
     if (!AddStructureToWorld(sGridNo, 0, addressof(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode)) {
       if (giDefaultStructIndex != -1) {
         pStructureFileRef = gpTileCacheStructInfo[giDefaultStructIndex].pStructureFileRef;
 
-        if (pStructureFileRef != NULL) {
+        if (pStructureFileRef != null) {
           AddStructureToWorld(sGridNo, 0, addressof(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode);
         }
       }
@@ -260,7 +260,7 @@ function CheckForAndDeleteTileCacheStructInfo(pNode: Pointer<LEVELNODE>, usIndex
   if (usIndex >= TILE_CACHE_START_INDEX) {
     pStructureFileRef = GetCachedTileStructureRef((usIndex - TILE_CACHE_START_INDEX));
 
-    if (pStructureFileRef != NULL) {
+    if (pStructureFileRef != null) {
       DeleteStructureFromWorld(pNode.value.pStructureData);
     }
   }
@@ -274,7 +274,7 @@ function GetRootName(pDestStr: Pointer<INT8>, pSrcStr: Pointer<INT8>): void {
   // Remove path
   strcpy(cTempFilename, pSrcStr);
   cEndOfName = strrchr(cTempFilename, '\\');
-  if (cEndOfName != NULL) {
+  if (cEndOfName != null) {
     cEndOfName++;
     strcpy(pDestStr, cEndOfName);
   } else {
@@ -283,7 +283,7 @@ function GetRootName(pDestStr: Pointer<INT8>, pSrcStr: Pointer<INT8>): void {
 
   // Now remove extension...
   cEndOfName = strchr(pDestStr, '.');
-  if (cEndOfName != NULL) {
+  if (cEndOfName != null) {
     cEndOfName.value = '\0';
   }
 }

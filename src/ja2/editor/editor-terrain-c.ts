@@ -80,7 +80,7 @@ function RenderTerrainTileButtons(): void {
       ColorFillVideoSurfaceArea(ButtonDestBuffer, usX + 1, usY + 1, usX2 - 1, usY2 - 1, 0);
 
       SetObjectShade(gTileDatabase[gTileTypeStartIndex[x]].hTileSurface, DEFAULT_SHADE_LEVEL);
-      BltVideoObject(ButtonDestBuffer, gTileDatabase[gTileTypeStartIndex[x]].hTileSurface, 0, (usX + 1), (usY + 1), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(ButtonDestBuffer, gTileDatabase[gTileTypeStartIndex[x]].hTileSurface, 0, (usX + 1), (usY + 1), VO_BLT_SRCTRANSPARENCY, null);
 
       if (fUseTerrainWeights) {
         mprintf(usX + 2, usY + 2, "%d", ubTerrainTileButtonWeight[x]);

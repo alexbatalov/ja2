@@ -297,7 +297,7 @@ function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
                 break;*/
         default:
           if (PreRandom(5 - SoldierDifficultyLevel(pSoldier)) == 0) {
-            let sClosestNoise: INT16 = MostImportantNoiseHeard(pSoldier, NULL, NULL, NULL);
+            let sClosestNoise: INT16 = MostImportantNoiseHeard(pSoldier, null, null, null);
             if (sClosestNoise != NOWHERE && PythSpacesAway(pSoldier.value.sGridNo, sClosestNoise) < MaxDistanceVisible() + 10) {
               pSoldier.value.usUIMovementMode = Enum193.SWATTING;
               fSet = TRUE;
@@ -1444,7 +1444,7 @@ function InLightAtNight(sGridNo: INT16, bLevel: INT8): BOOLEAN {
   }
 
   // could've been placed here, ignore the light
-  if (InARoom(sGridNo, NULL)) {
+  if (InARoom(sGridNo, null)) {
     return FALSE;
   }
 

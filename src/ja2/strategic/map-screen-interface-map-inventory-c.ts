@@ -58,7 +58,7 @@ let fShowMapInventoryPool: BOOLEAN = FALSE;
 let guiMapInventoryPoolBackground: UINT32;
 
 // inventory pool list
-let pInventoryPoolList: Pointer<WORLDITEM> = NULL;
+let pInventoryPoolList: Pointer<WORLDITEM> = null;
 
 // current page of inventory
 let iCurrentInventoryPoolPage: INT32 = 0;
@@ -79,10 +79,10 @@ let fMapInventoryItemCompatable: BOOLEAN[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */
 let fChangedInventorySlots: BOOLEAN = FALSE;
 
 // the unseen items list...have to save this
-let pUnSeenItems: Pointer<WORLDITEM> = NULL;
+let pUnSeenItems: Pointer<WORLDITEM> = null;
 
 // save list to write to temp file
-let pSaveList: Pointer<WORLDITEM> = NULL;
+let pSaveList: Pointer<WORLDITEM> = null;
 
 let giFlashHighlightedItemBaseTime: INT32 = 0;
 let giCompatibleItemBaseTime: INT32 = 0;
@@ -124,7 +124,7 @@ function BlitInventoryPoolGraphic(): void {
 
   // blit inventory pool graphic to the screen
   GetVideoObject(addressof(hHandle), guiMapInventoryPoolBackground);
-  BltVideoObject(guiSAVEBUFFER, hHandle, 0, INVEN_POOL_X, INVEN_POOL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hHandle, 0, INVEN_POOL_X, INVEN_POOL_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // resize list
   CheckAndUnDateSlotAllocation();
@@ -211,7 +211,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
-  INVRenderItem(guiSAVEBUFFER, NULL, addressof(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), (sX + 7), sY, 60, 25, DIRTYLEVEL2, NULL, 0, fOutLine, sOutLine); // 67
+  INVRenderItem(guiSAVEBUFFER, null, addressof(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), (sX + 7), sY, 60, 25, DIRTYLEVEL2, null, 0, fOutLine, sOutLine); // 67
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
@@ -279,7 +279,7 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
   // run through list of items in slots and update help text for mouse regions
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
     if (pInventoryPoolList[iCounter + iFirstSlotOnPage].o.ubNumberOfObjects > 0) {
-      GetHelpTextForItem(pStr, addressof(pInventoryPoolList[iCounter + iFirstSlotOnPage].o), NULL);
+      GetHelpTextForItem(pStr, addressof(pInventoryPoolList[iCounter + iFirstSlotOnPage].o), null);
       SetRegionFastHelpText(addressof(MapInventoryPoolSlots[iCounter]), pStr);
 
       /*
@@ -387,19 +387,19 @@ function CancelSectorInventoryDisplayIfOn(fExitFromMapScreen: BOOLEAN): void {
 
 function ClearUpTempUnSeenList(): void {
   // save these items and all the others
-  if (pUnSeenItems == NULL) {
+  if (pUnSeenItems == null) {
     return;
   }
 
   // build the list based on this
   pSaveList = pUnSeenItems;
-  pUnSeenItems = NULL;
+  pUnSeenItems = null;
 
   return;
 }
 
 function SaveSeenAndUnseenItems(): void {
-  let pSeenItemsList: Pointer<WORLDITEM> = NULL;
+  let pSeenItemsList: Pointer<WORLDITEM> = null;
   let iCounter: INT32 = 0;
   let iItemCount: INT32 = 0;
   let iTotalNumberItems: INT32 = 0;
@@ -452,21 +452,21 @@ function SaveSeenAndUnseenItems(): void {
       AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, iItemCount, pSeenItemsList, TRUE);
     } else {
       // get rid of the file
-      SaveWorldItemsToTempItemFile(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, NULL);
+      SaveWorldItemsToTempItemFile(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, null);
       return;
     }
   }
 
   // now clear out seen list
-  if (pSeenItemsList != NULL) {
+  if (pSeenItemsList != null) {
     MemFree(pSeenItemsList);
-    pSeenItemsList = NULL;
+    pSeenItemsList = null;
   }
 
   // clear out unseen list
-  if (pSaveList != NULL) {
+  if (pSaveList != null) {
     MemFree(pSaveList);
-    pSaveList = NULL;
+    pSaveList = null;
   }
 
   uiNumberOfUnSeenItems = 0;
@@ -555,20 +555,20 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
   let sGridNo: INT16 = 0;
   let iOldNumberOfObjects: INT32 = 0;
   let sDistanceFromObject: INT16 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let sString: CHAR16[] /* [128] */;
 
   iCounter = MSYS_GetRegionUserData(pRegion, 0);
 
   if ((iReason & MSYS_CALLBACK_REASON_RBUTTON_UP)) {
-    if (gpItemPointer == NULL) {
+    if (gpItemPointer == null) {
       fShowMapInventoryPool = FALSE;
     }
     // else do nothing
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // check if item in cursor, if so, then swap, and no item in curor, pick up, if item in cursor but not box, put in box
 
-    if (gpItemPointer == NULL) {
+    if (gpItemPointer == null) {
       // Return if empty
       if (pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o.usItem == NOTHING)
         return;
@@ -578,7 +578,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
     if (!(pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].usFlags & WORLD_ITEM_REACHABLE)) {
       if (pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o.usItem != NOTHING) {
         // not reachable
-        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[38], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[38], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
         return;
       }
     }
@@ -587,7 +587,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
 
     // valid character?
     if (gCharactersList[bSelectedInfoChar].fValid == FALSE) {
-      DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[1], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[1], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
       return;
     }
 
@@ -595,18 +595,18 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
     {
       // not in sector?
       if ((Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorX != sSelMapX) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorY != sSelMapY) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bSectorZ != iCurrentMapSectorZ) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].fBetweenSectors)) {
-        if (gpItemPointer == NULL) {
+        if (gpItemPointer == null) {
           swprintf(sString, pMapInventoryErrorString[2], Menptr[gCharactersList[bSelectedInfoChar].usSolID].name);
         } else {
           swprintf(sString, pMapInventoryErrorString[5], Menptr[gCharactersList[bSelectedInfoChar].usSolID].name);
         }
-        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
         return;
       }
     }
 
     // If we do not have an item in hand, start moving it
-    if (gpItemPointer == NULL) {
+    if (gpItemPointer == null) {
       // Return if empty
       if (pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o.usItem == NOTHING)
         return;
@@ -614,7 +614,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
       // if in battle inform player they will have to do this in tactical
       //			if( ( ( gTacticalStatus.fEnemyInSector ) ||( ( sSelMapX == gWorldSectorX ) && ( sSelMapY == gWorldSectorY ) && ( iCurrentMapSectorZ == gbWorldSectorZ ) && ( gTacticalStatus.uiFlags & INCOMBAT ) ) ) )
       if (!CanPlayerUseSectorInventory(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]))) {
-        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[3], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[3], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
         return;
       }
 
@@ -642,7 +642,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
       // if in battle inform player they will have to do this in tactical
       //			if( ( gTacticalStatus.fEnemyInSector ) ||( ( sSelMapX == gWorldSectorX ) && ( sSelMapY == gWorldSectorY ) && ( iCurrentMapSectorZ == gbWorldSectorZ ) && ( gTacticalStatus.uiFlags & INCOMBAT ) ) )
       if (!CanPlayerUseSectorInventory(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]))) {
-        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[4], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[4], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
         return;
       }
 
@@ -721,11 +721,11 @@ function DestroyMapInventoryButtons(): void {
 
 function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): void {
   let iSize: INT32 = 0;
-  let pTempList: Pointer<OBJECTTYPE> = NULL;
+  let pTempList: Pointer<OBJECTTYPE> = null;
   let uiItemCount: UINT32 = 0;
   let uiTotalNumberOfItems: UINT32 = 0;
   let uiTotalNumberOfRealItems: UINT32 = 0;
-  let pTotalSectorList: Pointer<WORLDITEM> = NULL;
+  let pTotalSectorList: Pointer<WORLDITEM> = null;
   let iCounter: INT32 = 0;
   let uiTotalNumberOfSeenItems: UINT32 = 0;
 
@@ -880,7 +880,7 @@ function ReBuildWorldItemStashForLoadedSector(iNumberSeenItems: INT32, iNumberUn
   let iCounter: INT32 = 0;
   let iRemainder: INT32 = 0;
   let uiTotalNumberOfVisibleItems: UINT32 = 0;
-  let pTotalList: Pointer<WORLDITEM> = NULL;
+  let pTotalList: Pointer<WORLDITEM> = null;
 
   // clear out the list
   TrashWorldItems();
@@ -929,7 +929,7 @@ function ReBuildWorldItemStashForLoadedSector(iNumberSeenItems: INT32, iNumberUn
   MemFree(pTotalList);
 
   // reset total list
-  pTotalList = NULL;
+  pTotalList = null;
 
   return;
 }
@@ -974,7 +974,7 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
   // get # of items in sector that are visible to the player
   let uiTotalNumberOfItems: UINT32 = 0;
   let uiTotalNumberOfRealItems: UINT32 = 0;
-  let pTotalSectorList: Pointer<WORLDITEM> = NULL;
+  let pTotalSectorList: Pointer<WORLDITEM> = null;
   let uiItemCount: UINT32 = 0;
   let iCounter: INT32 = 0;
   let fReturn: BOOLEAN = TRUE;
@@ -1026,9 +1026,9 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
     }
 
     // if anything was alloced, then get rid of it
-    if (pTotalSectorList != NULL) {
+    if (pTotalSectorList != null) {
       MemFree(pTotalSectorList);
-      pTotalSectorList = NULL;
+      pTotalSectorList = null;
     }
   }
 
@@ -1039,7 +1039,7 @@ function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
   let fOk: BOOLEAN = FALSE;
 
   // If not null return
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     return;
   }
 
@@ -1058,7 +1058,7 @@ function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
     fMapPanelDirty = TRUE;
     gpItemPointer = addressof(gItemPointer);
 
-    gpItemPointerSoldier = NULL;
+    gpItemPointerSoldier = null;
 
     // now set the cursor
     guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
@@ -1507,7 +1507,7 @@ function HandleFlashForHighLightedItem(): void {
 }
 
 function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   /* static */ let fItemWasHighLighted: BOOLEAN = FALSE;
 
   if (iCurrentSlot == -1) {

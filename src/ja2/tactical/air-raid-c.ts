@@ -342,7 +342,7 @@ function AirRaidLookForDive(): void {
     giNumTurnsSinceLastDive = 0;
 
     // Do morale hit on our guys
-    HandleMoraleEvent(NULL, Enum234.MORALE_AIRSTRIKE, gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ);
+    HandleMoraleEvent(null, Enum234.MORALE_AIRSTRIKE, gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ);
   }
 
   // If NOT in combat....
@@ -1096,7 +1096,7 @@ function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): BOOLEAN {
     gpRaidSoldier.value.sY = sAirRaidSaveStruct.sY;
     gpRaidSoldier.value.sGridNo = sAirRaidSaveStruct.sGridNo;
   } else
-    gpRaidSoldier = NULL;
+    gpRaidSoldier = null;
 
   memcpy(addressof(gAirRaidDef), addressof(sAirRaidSaveStruct.AirRaidDef), sizeof(AIR_RAID_DEFINITION));
 

@@ -107,7 +107,7 @@ function DOIT(): void {
   for (uiLoop = 0; uiLoop < WORLD_MAX; uiLoop++) {
     pStruct = gpWorldLevelData[uiLoop].pStructHead;
 
-    while (pStruct != NULL) {
+    while (pStruct != null) {
       pNewStruct = pStruct.value.pNext;
 
       if (pStruct.value.usIndex >= Enum312.DEBRISWOOD1 && pStruct.value.usIndex <= Enum312.DEBRISWEEDS10) {
@@ -167,11 +167,11 @@ function InitializeWorld(): BOOLEAN {
 function DeinitializeWorld(): void {
   TrashWorld();
 
-  if (gpWorldLevelData != NULL) {
+  if (gpWorldLevelData != null) {
     MemFree(gpWorldLevelData);
   }
 
-  if (gpDirtyData != NULL) {
+  if (gpDirtyData != null) {
     MemFree(gpDirtyData);
   }
 
@@ -210,7 +210,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
   }
 
   // If no Tileset filenames are given, return error
-  if (ppTileSurfaceFilenames == NULL) {
+  if (ppTileSurfaceFilenames == null) {
     return FALSE;
   } else {
     for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++)
@@ -238,7 +238,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
     // The cost of having to do this check each time through the loop,
     // thus about 20 times, seems better than having to maintain two
     // almost completely identical functions
-    if (ppTileSurfaceFilenames == NULL) {
+    if (ppTileSurfaceFilenames == null) {
       GetPrivateProfileString("TileSurface Filenames", gTileSurfaceName[uiLoop], "", cTemp, SGPFILENAME_LEN, INIFile);
       if (cTemp.value != '\0') {
         strcpy(TileSurfaceFilenames[uiLoop], cTemp);
@@ -295,9 +295,9 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
   let cAdjustedFile: CHAR8[] /* [128] */;
 
   // Delete the surface first!
-  if (gTileSurfaceArray[ubType] != NULL) {
+  if (gTileSurfaceArray[ubType] != null) {
     DeleteTileSurface(gTileSurfaceArray[ubType]);
-    gTileSurfaceArray[ubType] = NULL;
+    gTileSurfaceArray[ubType] = null;
   }
 
   // Adjust flag for same as default used...
@@ -315,7 +315,7 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
 
   TileSurf = LoadTileSurface(cAdjustedFile);
 
-  if (TileSurf == NULL)
+  if (TileSurf == null)
     return FALSE;
 
   TileSurf.value.fType = ubType;
@@ -381,7 +381,7 @@ function BuildTileShadeTables(): void {
   }
 
   for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
-    if (gTileSurfaceArray[uiLoop] != NULL) {
+    if (gTileSurfaceArray[uiLoop] != null) {
 // Don't Create shade tables if default were already used once!
       if (gbNewTileSurfaceLoaded[uiLoop] || gfEditorForceShadeTableRebuild)
       {
@@ -411,7 +411,7 @@ function DestroyTileShadeTables(): void {
   let uiLoop: UINT32;
 
   for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
-    if (gTileSurfaceArray[uiLoop] != NULL) {
+    if (gTileSurfaceArray[uiLoop] != null) {
 // Don't Delete shade tables if default are still being used...
       if (gbNewTileSurfaceLoaded[uiLoop] || gfEditorForceShadeTableRebuild) {
         DestroyObjectPaletteTables(gTileSurfaceArray[uiLoop].value.vo);
@@ -424,9 +424,9 @@ function DestroyTileSurfaces(): void {
   let uiLoop: UINT32;
 
   for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
-    if (gTileSurfaceArray[uiLoop] != NULL) {
+    if (gTileSurfaceArray[uiLoop] != null) {
       DeleteTileSurface(gTileSurfaceArray[uiLoop]);
-      gTileSurfaceArray[uiLoop] = NULL;
+      gTileSurfaceArray[uiLoop] = null;
     }
   }
 }
@@ -446,7 +446,7 @@ function CompileWorldTerrainIDs(): void {
       // ATE: CRAPOLA! Special case stuff here for the friggen pool since art was fu*ked up
       if (giCurrentTilesetID == Enum316.TEMP_19) {
         // Get ID
-        if (pNode != NULL) {
+        if (pNode != null) {
           if (pNode.value.usIndex == Enum312.ANOTHERDEBRIS4 || pNode.value.usIndex == Enum312.ANOTHERDEBRIS6 || pNode.value.usIndex == Enum312.ANOTHERDEBRIS7) {
             gpWorldLevelData[sGridNo].ubTerrainID = Enum315.LOW_WATER;
             continue;
@@ -454,7 +454,7 @@ function CompileWorldTerrainIDs(): void {
         }
       }
 
-      if (pNode == NULL || pNode.value.usIndex >= Enum312.NUMBEROFTILES || gTileDatabase[pNode.value.usIndex].ubTerrainID == Enum315.NO_TERRAIN) {
+      if (pNode == null || pNode.value.usIndex >= Enum312.NUMBEROFTILES || gTileDatabase[pNode.value.usIndex].ubTerrainID == Enum315.NO_TERRAIN) {
         // Try terrain instead!
         pNode = gpWorldLevelData[sGridNo].pLandHead;
       }
@@ -504,16 +504,16 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
       SET_MOVEMENTCOST(usGridNo, ubDirLoop, 0, TRAVELCOST_OFF_MAP);
       SET_MOVEMENTCOST(usGridNo, ubDirLoop, 1, TRAVELCOST_OFF_MAP);
     }
-    if (gpWorldLevelData[usGridNo].pStructureHead == NULL) {
+    if (gpWorldLevelData[usGridNo].pStructureHead == null) {
       return;
     }
   }
 
-  if (gpWorldLevelData[usGridNo].pStructureHead != NULL) {
+  if (gpWorldLevelData[usGridNo].pStructureHead != null) {
     // structures in tile
     // consider the land
     pLand = gpWorldLevelData[usGridNo].pLandHead;
-    if (pLand != NULL) {
+    if (pLand != null) {
       // Set TEMPORARY cost here
       // Get from tile database
       TileElem = gTileDatabase[pLand.value.usIndex];
@@ -1010,10 +1010,10 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
         }
       }
       pStructure = pStructure.value.pNext;
-    } while (pStructure != NULL);
+    } while (pStructure != null);
 
     // HIGHEST LAYER
-    if ((gpWorldLevelData[usGridNo].pRoofHead != NULL)) {
+    if ((gpWorldLevelData[usGridNo].pRoofHead != null)) {
       if (!fStructuresOnRoof) {
         for (ubDirLoop = 0; ubDirLoop < 8; ubDirLoop++) {
           SET_MOVEMENTCOST(usGridNo, ubDirLoop, 1, TRAVELCOST_FLAT);
@@ -1056,7 +1056,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                     }
     */
     // HIGHEST LEVEL
-    if (gpWorldLevelData[usGridNo].pRoofHead != NULL) {
+    if (gpWorldLevelData[usGridNo].pRoofHead != null) {
       for (ubDirLoop = 0; ubDirLoop < 8; ubDirLoop++) {
         SET_MOVEMENTCOST(usGridNo, ubDirLoop, 1, TRAVELCOST_FLAT);
       }
@@ -1284,7 +1284,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   let pShadow: Pointer<LEVELNODE>;
   let pRoof: Pointer<LEVELNODE>;
   let pOnRoof: Pointer<LEVELNODE>;
-  let pTailLand: Pointer<LEVELNODE> = NULL;
+  let pTailLand: Pointer<LEVELNODE> = null;
   let usNumExitGrids: UINT16 = 0;
   let usTypeSubIndex: UINT16;
   let LayerCount: UINT8;
@@ -1351,7 +1351,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     pLand = gpWorldLevelData[cnt].pLandHead;
     LayerCount = 0;
 
-    while (pLand != NULL) {
+    while (pLand != null) {
       LayerCount++;
       pLand = pLand.value.pNext;
     }
@@ -1379,7 +1379,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     // Determine # of objects
     pObject = gpWorldLevelData[cnt].pObjectHead;
     ObjectCount = 0;
-    while (pObject != NULL) {
+    while (pObject != null) {
       // DON'T WRITE ANY ITEMS
       if (!(pObject.value.uiFlags & (LEVELNODE_ITEM))) {
         let uiTileType: UINT32;
@@ -1409,7 +1409,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     // Determine # of structs
     pStruct = gpWorldLevelData[cnt].pStructHead;
     StructCount = 0;
-    while (pStruct != NULL) {
+    while (pStruct != null) {
       // DON'T WRITE ANY ITEMS
       if (!(pStruct.value.uiFlags & (LEVELNODE_ITEM))) {
         StructCount++;
@@ -1439,7 +1439,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     // Determine # of shadows
     pShadow = gpWorldLevelData[cnt].pShadowHead;
     ShadowCount = 0;
-    while (pShadow != NULL) {
+    while (pShadow != null) {
       // Don't write any shadowbuddys or exit grids
       if (!(pShadow.value.uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
         ShadowCount++;
@@ -1465,7 +1465,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     // Determine # of Roofs
     pRoof = gpWorldLevelData[cnt].pRoofHead;
     RoofCount = 0;
-    while (pRoof != NULL) {
+    while (pRoof != null) {
       // ATE: Don't save revealed roof info...
       if (pRoof.value.usIndex != Enum312.SLANTROOFCEILING1) {
         RoofCount++;
@@ -1497,7 +1497,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     pOnRoof = gpWorldLevelData[cnt].pOnRoofHead;
     OnRoofCount = 0;
 
-    while (pOnRoof != NULL) {
+    while (pOnRoof != null) {
       OnRoofCount++;
       pOnRoof = pOnRoof.value.pNext;
     }
@@ -1532,12 +1532,12 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
       // Write out land peices backwards so that they are loaded properly
       pLand = gpWorldLevelData[cnt].pLandHead;
       // GET TAIL
-      while (pLand != NULL) {
+      while (pLand != null) {
         pTailLand = pLand;
         pLand = pLand.value.pNext;
       }
 
-      while (pTailLand != NULL) {
+      while (pTailLand != null) {
         // Write out object type and sub-index
         GetTileType(pTailLand.value.usIndex, addressof(uiType));
         ubType = uiType;
@@ -1553,7 +1553,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Write object layer
     pObject = gpWorldLevelData[cnt].pObjectHead;
-    while (pObject != NULL) {
+    while (pObject != null) {
       // DON'T WRITE ANY ITEMS
       if (!(pObject.value.uiFlags & (LEVELNODE_ITEM))) {
         // Write out object type and sub-index
@@ -1575,7 +1575,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Write struct layer
     pStruct = gpWorldLevelData[cnt].pStructHead;
-    while (pStruct != NULL) {
+    while (pStruct != null) {
       // DON'T WRITE ANY ITEMS
       if (!(pStruct.value.uiFlags & (LEVELNODE_ITEM))) {
         // Write out object type and sub-index
@@ -1593,7 +1593,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Write shadows
     pShadow = gpWorldLevelData[cnt].pShadowHead;
-    while (pShadow != NULL) {
+    while (pShadow != null) {
       // Dont't write any buddys or exit grids
       if (!(pShadow.value.uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
         // Write out object type and sub-index
@@ -1614,7 +1614,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pRoof = gpWorldLevelData[cnt].pRoofHead;
-    while (pRoof != NULL) {
+    while (pRoof != null) {
       // ATE: Don't save revealed roof info...
       if (pRoof.value.usIndex != Enum312.SLANTROOFCEILING1) {
         // Write out object type and sub-index
@@ -1632,7 +1632,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Write OnRoofs
     pOnRoof = gpWorldLevelData[cnt].pOnRoofHead;
-    while (pOnRoof != NULL) {
+    while (pOnRoof != null) {
       // Write out object type and sub-index
       GetTileType(pOnRoof.value.usIndex, addressof(uiType));
       ubType = uiType;
@@ -1711,7 +1711,7 @@ function OptimizeMapForShadows(): void {
       for (dir = 0; dir < NUM_DIR_SEARCHES; dir++) {
         sNewGridNo = NewGridNo(cnt, DirectionInc(bDirectionsForShadowSearch[dir]));
 
-        if (gpWorldLevelData[sNewGridNo].pStructureHead == NULL) {
+        if (gpWorldLevelData[sNewGridNo].pStructureHead == null) {
           break;
         }
       }
@@ -1948,7 +1948,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   memcpy(addressof(pSummary.value.MapInfo), addressof(mapInfo), sizeof(MAPCREATE_STRUCT));
 
   if (uiFlags & MAP_FULLSOLDIER_SAVED) {
-    let pTeam: Pointer<TEAMSUMMARY> = NULL;
+    let pTeam: Pointer<TEAMSUMMARY> = null;
     let basic: BASIC_SOLDIERCREATE_STRUCT;
     let priority: SOLDIERCREATE_STRUCT;
     RenderProgressBar(0, 94);
@@ -2689,7 +2689,7 @@ function TrashWorld(): void {
     if (pSoldier.value.bActive) {
       if (pSoldier.value.bTeam == gbPlayerNum) {
         // Just delete levelnode
-        pSoldier.value.pLevelNode = NULL;
+        pSoldier.value.pLevelNode = null;
       } else {
         // Delete from world
         TacticalRemoveSoldier(cnt);
@@ -2720,62 +2720,62 @@ function TrashWorld(): void {
 
     // Free the memory associated with the map tile link lists
     pLandNode = pMapTile.value.pLandHead;
-    while (pLandNode != NULL) {
+    while (pLandNode != null) {
       pMapTile.value.pLandHead = pLandNode.value.pNext;
       MemFree(pLandNode);
       pLandNode = pMapTile.value.pLandHead;
     }
 
     pObjectNode = pMapTile.value.pObjectHead;
-    while (pObjectNode != NULL) {
+    while (pObjectNode != null) {
       pMapTile.value.pObjectHead = pObjectNode.value.pNext;
       MemFree(pObjectNode);
       pObjectNode = pMapTile.value.pObjectHead;
     }
 
     pStructNode = pMapTile.value.pStructHead;
-    while (pStructNode != NULL) {
+    while (pStructNode != null) {
       pMapTile.value.pStructHead = pStructNode.value.pNext;
       MemFree(pStructNode);
       pStructNode = pMapTile.value.pStructHead;
     }
 
     pShadowNode = pMapTile.value.pShadowHead;
-    while (pShadowNode != NULL) {
+    while (pShadowNode != null) {
       pMapTile.value.pShadowHead = pShadowNode.value.pNext;
       MemFree(pShadowNode);
       pShadowNode = pMapTile.value.pShadowHead;
     }
 
     pMercNode = pMapTile.value.pMercHead;
-    while (pMercNode != NULL) {
+    while (pMercNode != null) {
       pMapTile.value.pMercHead = pMercNode.value.pNext;
       MemFree(pMercNode);
       pMercNode = pMapTile.value.pMercHead;
     }
 
     pRoofNode = pMapTile.value.pRoofHead;
-    while (pRoofNode != NULL) {
+    while (pRoofNode != null) {
       pMapTile.value.pRoofHead = pRoofNode.value.pNext;
       MemFree(pRoofNode);
       pRoofNode = pMapTile.value.pRoofHead;
     }
 
     pOnRoofNode = pMapTile.value.pOnRoofHead;
-    while (pOnRoofNode != NULL) {
+    while (pOnRoofNode != null) {
       pMapTile.value.pOnRoofHead = pOnRoofNode.value.pNext;
       MemFree(pOnRoofNode);
       pOnRoofNode = pMapTile.value.pOnRoofHead;
     }
 
     pTopmostNode = pMapTile.value.pTopmostHead;
-    while (pTopmostNode != NULL) {
+    while (pTopmostNode != null) {
       pMapTile.value.pTopmostHead = pTopmostNode.value.pNext;
       MemFree(pTopmostNode);
       pTopmostNode = pMapTile.value.pTopmostHead;
     }
 
-    while (pMapTile.value.pStructureHead != NULL) {
+    while (pMapTile.value.pStructureHead != null) {
       if (DeleteStructureFromWorld(pMapTile.value.pStructureHead) == FALSE) {
         // ERROR!!!!!!
         break;
@@ -2815,73 +2815,73 @@ function TrashMapTile(MapTile: INT16): void {
 
   // Free the memory associated with the map tile link lists
   pLandNode = pMapTile.value.pLandHead;
-  while (pLandNode != NULL) {
+  while (pLandNode != null) {
     pMapTile.value.pLandHead = pLandNode.value.pNext;
     MemFree(pLandNode);
     pLandNode = pMapTile.value.pLandHead;
   }
-  pMapTile.value.pLandHead = pMapTile.value.pLandStart = NULL;
+  pMapTile.value.pLandHead = pMapTile.value.pLandStart = null;
 
   pObjectNode = pMapTile.value.pObjectHead;
-  while (pObjectNode != NULL) {
+  while (pObjectNode != null) {
     pMapTile.value.pObjectHead = pObjectNode.value.pNext;
     MemFree(pObjectNode);
     pObjectNode = pMapTile.value.pObjectHead;
   }
-  pMapTile.value.pObjectHead = NULL;
+  pMapTile.value.pObjectHead = null;
 
   pStructNode = pMapTile.value.pStructHead;
-  while (pStructNode != NULL) {
+  while (pStructNode != null) {
     pMapTile.value.pStructHead = pStructNode.value.pNext;
     MemFree(pStructNode);
     pStructNode = pMapTile.value.pStructHead;
   }
-  pMapTile.value.pStructHead = NULL;
+  pMapTile.value.pStructHead = null;
 
   pShadowNode = pMapTile.value.pShadowHead;
-  while (pShadowNode != NULL) {
+  while (pShadowNode != null) {
     pMapTile.value.pShadowHead = pShadowNode.value.pNext;
     MemFree(pShadowNode);
     pShadowNode = pMapTile.value.pShadowHead;
   }
-  pMapTile.value.pShadowHead = NULL;
+  pMapTile.value.pShadowHead = null;
 
   pMercNode = pMapTile.value.pMercHead;
-  while (pMercNode != NULL) {
+  while (pMercNode != null) {
     pMapTile.value.pMercHead = pMercNode.value.pNext;
     MemFree(pMercNode);
     pMercNode = pMapTile.value.pMercHead;
   }
-  pMapTile.value.pMercHead = NULL;
+  pMapTile.value.pMercHead = null;
 
   pRoofNode = pMapTile.value.pRoofHead;
-  while (pRoofNode != NULL) {
+  while (pRoofNode != null) {
     pMapTile.value.pRoofHead = pRoofNode.value.pNext;
     MemFree(pRoofNode);
     pRoofNode = pMapTile.value.pRoofHead;
   }
-  pMapTile.value.pRoofHead = NULL;
+  pMapTile.value.pRoofHead = null;
 
   pOnRoofNode = pMapTile.value.pOnRoofHead;
-  while (pOnRoofNode != NULL) {
+  while (pOnRoofNode != null) {
     pMapTile.value.pOnRoofHead = pOnRoofNode.value.pNext;
     MemFree(pOnRoofNode);
     pOnRoofNode = pMapTile.value.pOnRoofHead;
   }
-  pMapTile.value.pOnRoofHead = NULL;
+  pMapTile.value.pOnRoofHead = null;
 
   pTopmostNode = pMapTile.value.pTopmostHead;
-  while (pTopmostNode != NULL) {
+  while (pTopmostNode != null) {
     pMapTile.value.pTopmostHead = pTopmostNode.value.pNext;
     MemFree(pTopmostNode);
     pTopmostNode = pMapTile.value.pTopmostHead;
   }
-  pMapTile.value.pTopmostHead = NULL;
+  pMapTile.value.pTopmostHead = null;
 
-  while (pMapTile.value.pStructureHead != NULL) {
+  while (pMapTile.value.pStructureHead != null) {
     DeleteStructureFromWorld(pMapTile.value.pStructureHead);
   }
-  pMapTile.value.pStructureHead = pMapTile.value.pStructureTail = NULL;
+  pMapTile.value.pStructureHead = pMapTile.value.pStructureTail = null;
 }
 
 function LoadMapTileset(iTilesetID: INT32): BOOLEAN {
@@ -2903,7 +2903,7 @@ function LoadMapTileset(iTilesetID: INT32): BOOLEAN {
   CHECKF(LoadTileSurfaces(addressof(gTilesets[iTilesetID].TileSurfaceFilenames[0]), iTilesetID) != FALSE);
 
   // SET TERRAIN COSTS
-  if (gTilesets[iTilesetID].MovementCostFnc != NULL) {
+  if (gTilesets[iTilesetID].MovementCostFnc != null) {
     gTilesets[iTilesetID].MovementCostFnc();
   } else {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Tileset %d has no callback function for movement costs. Using default.", iTilesetID));
@@ -2953,7 +2953,7 @@ function SetLoadOverrideParams(fForceLoad: BOOLEAN, fForceFile: BOOLEAN, zLoadNa
   gfForceLoadPlayers = fForceLoad;
   gfForceLoad = fForceFile;
 
-  if (zLoadName != NULL) {
+  if (zLoadName != null) {
     strcpy(gzForceLoadFile, zLoadName);
   }
 }
@@ -2964,7 +2964,7 @@ function AddWireFrame(sGridNo: INT16, usIndex: UINT16, fForced: BOOLEAN): void {
 
   pTopmost = gpWorldLevelData[sGridNo].pTopmostHead;
 
-  while (pTopmost != NULL) {
+  while (pTopmost != null) {
     // Check if one of the samer type exists!
     if (pTopmost.value.usIndex == usIndex) {
       return;
@@ -2980,7 +2980,7 @@ function AddWireFrame(sGridNo: INT16, usIndex: UINT16, fForced: BOOLEAN): void {
 }
 
 function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): UINT16 {
-  let pNode: Pointer<LEVELNODE> = NULL;
+  let pNode: Pointer<LEVELNODE> = null;
   let ubWallOrientation: UINT8;
   let usValue: UINT16 = 0;
   let usSubIndex: UINT16;
@@ -2993,14 +2993,14 @@ function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<
   if (pBaseStructure) {
     // Find levelnode...
     pNode = gpWorldLevelData[sGridNo].pStructHead;
-    while (pNode != NULL) {
+    while (pNode != null) {
       if (pNode.value.pStructureData == pBaseStructure) {
         break;
       }
       pNode = pNode.value.pNext;
     }
 
-    if (pNode != NULL) {
+    if (pNode != null) {
       // Get Subindex for this wall...
       GetSubIndexFromTileIndex(pNode.value.usIndex, addressof(usSubIndex));
 
@@ -3064,7 +3064,7 @@ function CalculateWorldWireFrameTiles(fForce: BOOLEAN): void {
 
       pStructure = gpWorldLevelData[cnt].pStructureHead;
 
-      while (pStructure != NULL) {
+      while (pStructure != null) {
         // Check for doors
         if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
           // ATE: need this additional check here for hidden doors!
@@ -3217,7 +3217,7 @@ function RemoveWireFrameTiles(sGridNo: INT16): void {
 
   pTopmost = gpWorldLevelData[sGridNo].pTopmostHead;
 
-  while (pTopmost != NULL) {
+  while (pTopmost != null) {
     pNewTopmost = pTopmost.value.pNext;
 
     if (pTopmost.value.usIndex < Enum312.NUMBEROFTILES) {
@@ -3238,7 +3238,7 @@ function IsHiddenTileMarkerThere(sGridNo: INT16): INT8 {
   if (!gfBasement) {
     pStructure = FindStructure(sGridNo, STRUCTURE_ROOF);
 
-    if (pStructure != NULL) {
+    if (pStructure != null) {
       // if ( !( gpWorldLevelData[ sGridNo ].uiFlags & MAPELEMENT_REVEALED ) )
       { return (2); }
 
@@ -3415,7 +3415,7 @@ function IsRoofVisibleForWireframe(sMapPos: INT16): BOOLEAN {
   if (!gfBasement) {
     pStructure = FindStructure(sMapPos, STRUCTURE_ROOF);
 
-    if (pStructure != NULL) {
+    if (pStructure != null) {
       return TRUE;
     }
   } else {

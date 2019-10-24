@@ -644,7 +644,7 @@ function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
   if (usAttachIndex) {
     CreateItem(usAttachIndex, 100, addressof(Object));
     Object.fFlags |= OBJECT_UNDROPPABLE;
-    AttachObject(NULL, addressof(pp.value.Inv[Enum261.HANDPOS]), addressof(Object));
+    AttachObject(null, addressof(pp.value.Inv[Enum261.HANDPOS]), addressof(Object));
   }
 }
 
@@ -962,7 +962,7 @@ function ChooseArmourForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
                   if (Random(100) < (15 * (bOrigVestClass - pItem.value.ubCoolness))) {
                     CreateItem(Enum225.CERAMIC_PLATES, (70 + Random(31)), addressof(Object));
                     Object.fFlags |= OBJECT_UNDROPPABLE;
-                    AttachObject(NULL, addressof(pp.value.Inv[Enum261.VESTPOS]), addressof(Object));
+                    AttachObject(null, addressof(pp.value.Inv[Enum261.VESTPOS]), addressof(Object));
                   }
                 }
               }

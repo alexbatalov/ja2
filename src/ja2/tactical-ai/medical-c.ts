@@ -171,7 +171,7 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
   let sPathCost: INT16;
   let sOtherMedicPathCost: INT16;
   let pPatient: Pointer<SOLDIERTYPE>;
-  let pBestPatient: Pointer<SOLDIERTYPE> = NULL;
+  let pBestPatient: Pointer<SOLDIERTYPE> = null;
   let pOtherMedic: Pointer<SOLDIERTYPE>;
   let bPatientPriority: INT8;
   let ubDirection: UINT8;

@@ -1,6 +1,6 @@
 // give pSoldier usNumChances to improve ubStat.  If it's from training, it doesn't count towards experience level gain
 function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
-  Assert(pSoldier != NULL);
+  Assert(pSoldier != null);
   Assert(pSoldier.value.bActive);
 
   // ignore non-player soldiers
@@ -57,7 +57,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
   let psStatGainPtr: Pointer<UINT16>;
   let fAffectedByWisdom: BOOLEAN = TRUE;
 
-  Assert(pProfile != NULL);
+  Assert(pProfile != null);
 
   if (pProfile.value.bEvolution == Enum274.NO_EVOLUTION)
     return; // No change possible, quit right away
@@ -286,16 +286,16 @@ function UpdateStats(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 // UpdateStats version for mercs not currently on player's team
 function ProfileUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>): void {
-  ProcessUpdateStats(pProfile, NULL);
+  ProcessUpdateStats(pProfile, null);
 }
 
 function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, sPtsChanged: INT16): void {
   // this function changes the stat a given amount...
-  let psStatGainPtr: Pointer<INT16> = NULL;
-  let pbStatPtr: Pointer<INT8> = NULL;
-  let pbSoldierStatPtr: Pointer<INT8> = NULL;
-  let pbStatDeltaPtr: Pointer<INT8> = NULL;
-  let puiStatTimerPtr: Pointer<UINT32> = NULL;
+  let psStatGainPtr: Pointer<INT16> = null;
+  let pbStatPtr: Pointer<INT8> = null;
+  let pbSoldierStatPtr: Pointer<INT8> = null;
+  let pbStatDeltaPtr: Pointer<INT8> = null;
+  let puiStatTimerPtr: Pointer<UINT32> = null;
   let fChangeTypeIncrease: BOOLEAN;
   let fChangeSalary: BOOLEAN;
   let uiLevelCnt: UINT32;
@@ -375,7 +375,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
   }
 
   // if this merc is currently on the player's team
-  if (pSoldier != NULL) {
+  if (pSoldier != null) {
     // build ptrs to appropriate soldiertype stat fields
     switch (ubStat) {
       case HEALTHAMT:
@@ -460,7 +460,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
     pbStatPtr.value += sPtsChanged;
 
     // if this merc is currently on the player's team (DON'T count increases earned outside the player's employ)
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       // also note the delta (how much this stat has changed since start of game)
       pbStatDeltaPtr.value += sPtsChanged;
     }
@@ -469,7 +469,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
     psStatGainPtr.value = (psStatGainPtr.value) % usSubpointsPerPoint;
 
     // if the guy is employed by player
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       // transfer over change to soldiertype structure
       pbSoldierStatPtr.value = pbStatPtr.value;
 
@@ -517,7 +517,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
       }
 
       // if the guy is employed by player
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         // adjust current health by the same amount as max health
         pSoldier.value.bLife += sPtsChanged;
 
@@ -532,7 +532,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
     // merc salaries increase if level goes up (but they don't go down if level drops!)
     if ((ubStat == EXPERAMT) && fChangeTypeIncrease) {
       // if the guy is employed by player
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         switch (pSoldier.value.ubWhatKindOfMercAmI) {
           case Enum260.MERC_TYPE__AIM_MERC:
             // A.I.M.
@@ -599,17 +599,17 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
 function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLDIERTYPE>): void {
   // this function will run through the soldier's profile and update their stats based on any accumulated gain pts.
   let ubStat: UINT8 = 0;
-  let psStatGainPtr: Pointer<INT16> = NULL;
-  let pbStatPtr: Pointer<INT8> = NULL;
-  let pbSoldierStatPtr: Pointer<INT8> = NULL;
-  let pbStatDeltaPtr: Pointer<INT8> = NULL;
+  let psStatGainPtr: Pointer<INT16> = null;
+  let pbStatPtr: Pointer<INT8> = null;
+  let pbSoldierStatPtr: Pointer<INT8> = null;
+  let pbStatDeltaPtr: Pointer<INT8> = null;
   let bMinStatValue: INT8;
   let bMaxStatValue: INT8;
   let usSubpointsPerPoint: UINT16;
   let sPtsChanged: INT16;
 
   // if hired, not back at AIM
-  if (pSoldier != NULL) {
+  if (pSoldier != null) {
     // ATE: if in the midst of an attack, if in the field, delay all stat changes until the check made after the 'attack'...
     if ((gTacticalStatus.ubAttackBusyCount > 0) && pSoldier.value.bInSector && (gTacticalStatus.uiFlags & INCOMBAT))
       return;
@@ -721,7 +721,7 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
     }
 
     // if this merc is currently on the player's team
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       // build ptrs to appropriate soldiertype stat fields
       switch (ubStat) {
         case HEALTHAMT:

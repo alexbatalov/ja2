@@ -270,7 +270,7 @@ function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
         }
       } else {
         // invalid name, reset current mode
-        DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[2], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[2], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
         iCurrentProfileMode = 0;
       }
     }

@@ -30,7 +30,7 @@ function TerrainActionPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDi
     // use the cost of the terrain!
     sSwitchValue = gTileTypeMovementCost[gpWorldLevelData[sGridno].ubTerrainID];
   } else if (IS_TRAVELCOST_DOOR(sSwitchValue)) {
-    sSwitchValue = DoorTravelCost(pSoldier, sGridno, sSwitchValue, (pSoldier.value.bTeam == gbPlayerNum), NULL);
+    sSwitchValue = DoorTravelCost(pSoldier, sGridno, sSwitchValue, (pSoldier.value.bTeam == gbPlayerNum), null);
   }
 
   if (sSwitchValue >= TRAVELCOST_BLOCKED && sSwitchValue != TRAVELCOST_DOOR) {
@@ -1265,7 +1265,7 @@ function DeductAmmo(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8): void {
       }
 
       if (bAttachPos != ITEM_NOT_FOUND) {
-        RemoveAttachment(pObj, bAttachPos, NULL);
+        RemoveAttachment(pObj, bAttachPos, null);
       }
     }
 
@@ -1498,7 +1498,7 @@ function CheckForMercContMove(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     return FALSE;
   }
 
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     return FALSE;
   }
 

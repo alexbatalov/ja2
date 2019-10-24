@@ -42,7 +42,7 @@ function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
 }
 
 function PlayButtonSound(iButtonID: INT32, iSoundType: INT32): void {
-  if (ButtonList[iButtonID] == NULL) {
+  if (ButtonList[iButtonID] == null) {
     return;
   }
 

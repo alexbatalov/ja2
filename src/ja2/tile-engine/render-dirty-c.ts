@@ -178,19 +178,19 @@ function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16>, sLef
 
   gBackSaves[iBackIndex].fZBuffer = FALSE;
 
-  if (pSaveArea == NULL) {
+  if (pSaveArea == null) {
     uiBufSize = ((sRight - sLeft) * 2) * (sBottom - sTop);
 
     if (uiBufSize == 0)
       return -1;
 
     if (uiFlags & BGND_FLAG_SAVERECT) {
-      if ((gBackSaves[iBackIndex].pSaveArea = MemAlloc(uiBufSize)) == NULL)
+      if ((gBackSaves[iBackIndex].pSaveArea = MemAlloc(uiBufSize)) == null)
         return -1;
     }
 
     if (uiFlags & BGND_FLAG_SAVE_Z) {
-      if ((gBackSaves[iBackIndex].pZSaveArea = MemAlloc(uiBufSize)) == NULL)
+      if ((gBackSaves[iBackIndex].pZSaveArea = MemAlloc(uiBufSize)) == null)
         return -1;
       gBackSaves[iBackIndex].fZBuffer = TRUE;
     }
@@ -233,7 +233,7 @@ function RestoreBackgroundRects(): BOOLEAN {
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
     if (gBackSaves[uiCount].fFilled && (!gBackSaves[uiCount].fDisabled)) {
       if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SAVERECT) {
-        if (gBackSaves[uiCount].pSaveArea != NULL) {
+        if (gBackSaves[uiCount].pSaveArea != null) {
           Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, gBackSaves[uiCount].pSaveArea, gBackSaves[uiCount].sWidth * 2, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, 0, 0, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
 
           AddBaseDirtyRect(gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sRight, gBackSaves[uiCount].sBottom);
@@ -267,7 +267,7 @@ function EmptyBackgroundRects(): BOOLEAN {
 
       if (!(gBackSaves[uiCount].fAllocated) && (gBackSaves[uiCount].fFreeMemory == TRUE)) {
         if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SAVERECT) {
-          if (gBackSaves[uiCount].pSaveArea != NULL) {
+          if (gBackSaves[uiCount].pSaveArea != null) {
             MemFree(gBackSaves[uiCount].pSaveArea);
           }
         }
@@ -278,7 +278,7 @@ function EmptyBackgroundRects(): BOOLEAN {
         gBackSaves[uiCount].fAllocated = FALSE;
         gBackSaves[uiCount].fFreeMemory = FALSE;
         gBackSaves[uiCount].fFilled = FALSE;
-        gBackSaves[uiCount].pSaveArea = NULL;
+        gBackSaves[uiCount].pSaveArea = null;
 
         RecountBackgrounds();
       }
@@ -287,7 +287,7 @@ function EmptyBackgroundRects(): BOOLEAN {
     if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SINGLE || gBackSaves[uiCount].fPendingDelete) {
       if (gBackSaves[uiCount].fFreeMemory == TRUE) {
         if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SAVERECT) {
-          if (gBackSaves[uiCount].pSaveArea != NULL) {
+          if (gBackSaves[uiCount].pSaveArea != null) {
             MemFree(gBackSaves[uiCount].pSaveArea);
           }
         }
@@ -300,7 +300,7 @@ function EmptyBackgroundRects(): BOOLEAN {
       gBackSaves[uiCount].fAllocated = FALSE;
       gBackSaves[uiCount].fFreeMemory = FALSE;
       gBackSaves[uiCount].fFilled = FALSE;
-      gBackSaves[uiCount].pSaveArea = NULL;
+      gBackSaves[uiCount].pSaveArea = null;
       gBackSaves[uiCount].fPendingDelete = FALSE;
 
       RecountBackgrounds();
@@ -323,7 +323,7 @@ function SaveBackgroundRects(): BOOLEAN {
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
     if (gBackSaves[uiCount].fAllocated && (!gBackSaves[uiCount].fDisabled)) {
       if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SAVERECT) {
-        if (gBackSaves[uiCount].pSaveArea != NULL) {
+        if (gBackSaves[uiCount].pSaveArea != null) {
           Blt16BPPTo16BPP(gBackSaves[uiCount].pSaveArea, gBackSaves[uiCount].sWidth * 2, pSrcBuf, uiDestPitchBYTES, 0, 0, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
         }
       } else if (gBackSaves[uiCount].fZBuffer) {
@@ -369,7 +369,7 @@ function FreeBackgroundRectNow(uiCount: INT32): BOOLEAN {
   gBackSaves[uiCount].fAllocated = FALSE;
   gBackSaves[uiCount].fFreeMemory = FALSE;
   gBackSaves[uiCount].fFilled = FALSE;
-  gBackSaves[uiCount].pSaveArea = NULL;
+  gBackSaves[uiCount].pSaveArea = null;
 
   RecountBackgrounds();
   return TRUE;
@@ -390,7 +390,7 @@ function FreeBackgroundRectType(uiFlags: UINT32): BOOLEAN {
       gBackSaves[uiCount].fAllocated = FALSE;
       gBackSaves[uiCount].fFreeMemory = FALSE;
       gBackSaves[uiCount].fFilled = FALSE;
-      gBackSaves[uiCount].pSaveArea = NULL;
+      gBackSaves[uiCount].pSaveArea = null;
     }
   }
 
@@ -558,7 +558,7 @@ function gprintfdirty(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args:
   let uiStringHeight: UINT16;
   let iBack: INT32;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -573,7 +573,7 @@ function gprintfdirty(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args:
   }
 
   if (uiStringLength > 0) {
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, x, y, (x + uiStringLength), (y + uiStringHeight));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, x, y, (x + uiStringLength), (y + uiStringHeight));
 
     if (iBack != -1) {
       SetBackgroundRectFilled(iBack);
@@ -589,7 +589,7 @@ function gprintfinvalidate(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -610,7 +610,7 @@ function gprintfRestore(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...arg
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -660,17 +660,17 @@ function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDEO_OVERL
 
   if (uiFlags & VOVERLAY_DIRTYBYTEXT) {
     // Get dims by supplied text
-    if (pTopmostDesc.value.pzText == NULL) {
+    if (pTopmostDesc.value.pzText == null) {
       return -1;
     }
 
     uiStringLength = StringPixLength(pTopmostDesc.value.pzText, pTopmostDesc.value.uiFontID);
     uiStringHeight = GetFontHeight(pTopmostDesc.value.uiFontID);
 
-    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, (pTopmostDesc.value.sLeft + uiStringLength), (pTopmostDesc.value.sTop + uiStringHeight));
+    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, (pTopmostDesc.value.sLeft + uiStringLength), (pTopmostDesc.value.sTop + uiStringHeight));
   } else {
     // Register background
-    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, pTopmostDesc.value.sRight, pTopmostDesc.value.sBottom);
+    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, pTopmostDesc.value.sRight, pTopmostDesc.value.sBottom);
   }
 
   if (iBackIndex == -1) {
@@ -730,10 +730,10 @@ function RemoveVideoOverlay(iVideoOverlay: INT32): void {
       // DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "Delete Overlay %d %S", iVideoOverlay, gVideoOverlays[ iVideoOverlay ].zText ) );
 
       // Remove save buffer if not done so
-      if (gVideoOverlays[iVideoOverlay].pSaveArea != NULL) {
+      if (gVideoOverlays[iVideoOverlay].pSaveArea != null) {
         MemFree(gVideoOverlays[iVideoOverlay].pSaveArea);
       }
-      gVideoOverlays[iVideoOverlay].pSaveArea = NULL;
+      gVideoOverlays[iVideoOverlay].pSaveArea = null;
 
       // Set as not allocated
       gVideoOverlays[iVideoOverlay].fAllocated = FALSE;
@@ -760,12 +760,12 @@ function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterI
       gVideoOverlays[iBlitterIndex].ubFontBack = pTopmostDesc.value.ubFontBack;
       gVideoOverlays[iBlitterIndex].ubFontFore = pTopmostDesc.value.ubFontFore;
 
-      if (pTopmostDesc.value.pzText != NULL) {
+      if (pTopmostDesc.value.pzText != null) {
         wcscpy(gVideoOverlays[iBlitterIndex].zText, pTopmostDesc.value.pzText);
       }
     } else {
       if (uiFlags & VOVERLAY_DESC_TEXT) {
-        if (pTopmostDesc.value.pzText != NULL) {
+        if (pTopmostDesc.value.pzText != null) {
           wcscpy(gVideoOverlays[iBlitterIndex].zText, pTopmostDesc.value.pzText);
         }
       }
@@ -779,7 +779,7 @@ function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterI
       if ((uiFlags & VOVERLAY_DESC_POSITION)) {
         if (gVideoOverlays[iBlitterIndex].uiFlags & VOVERLAY_DIRTYBYTEXT) {
           // Get dims by supplied text
-          if (pTopmostDesc.value.pzText == NULL) {
+          if (pTopmostDesc.value.pzText == null) {
             return FALSE;
           }
 
@@ -790,7 +790,7 @@ function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterI
           // Remove background
           FreeBackgroundRectPending(gVideoOverlays[iBlitterIndex].uiBackground);
 
-          gVideoOverlays[iBlitterIndex].uiBackground = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, (pTopmostDesc.value.sLeft + uiStringLength), (pTopmostDesc.value.sTop + uiStringHeight));
+          gVideoOverlays[iBlitterIndex].uiBackground = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, (pTopmostDesc.value.sLeft + uiStringLength), (pTopmostDesc.value.sTop + uiStringHeight));
           gVideoOverlays[iBlitterIndex].sX = pTopmostDesc.value.sX;
           gVideoOverlays[iBlitterIndex].sY = pTopmostDesc.value.sY;
         }
@@ -867,7 +867,7 @@ function AllocateVideoOverlaysArea(): void {
       // DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "Setting Overlay Actively saving %d %S", uiCount, gVideoOverlays[ uiCount ].zText ) );
 
       // Allocate
-      if ((gVideoOverlays[uiCount].pSaveArea = MemAlloc(uiBufSize)) == NULL) {
+      if ((gVideoOverlays[uiCount].pSaveArea = MemAlloc(uiBufSize)) == null) {
         continue;
       }
     }
@@ -889,7 +889,7 @@ function AllocateVideoOverlayArea(uiCount: UINT32): void {
     // DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "Setting Overlay Actively saving %d %S", uiCount, gVideoOverlays[ uiCount ].zText ) );
 
     // Allocate
-    if ((gVideoOverlays[uiCount].pSaveArea = MemAlloc(uiBufSize)) == NULL) {
+    if ((gVideoOverlays[uiCount].pSaveArea = MemAlloc(uiBufSize)) == null) {
     }
   }
 }
@@ -905,11 +905,11 @@ function SaveVideoOverlaysArea(uiSrcBuffer: UINT32): void {
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
     if (gVideoOverlays[uiCount].fAllocated && !gVideoOverlays[uiCount].fDisabled) {
       // OK, if our saved area is null, allocate it here!
-      if (gVideoOverlays[uiCount].pSaveArea == NULL) {
+      if (gVideoOverlays[uiCount].pSaveArea == null) {
         AllocateVideoOverlayArea(uiCount);
       }
 
-      if (gVideoOverlays[uiCount].pSaveArea != NULL) {
+      if (gVideoOverlays[uiCount].pSaveArea != null) {
         iBackIndex = gVideoOverlays[uiCount].uiBackground;
 
         // Save data from frame buffer!
@@ -930,11 +930,11 @@ function SaveVideoOverlayArea(uiSrcBuffer: UINT32, uiCount: UINT32): void {
 
   if (gVideoOverlays[uiCount].fAllocated && !gVideoOverlays[uiCount].fDisabled) {
     // OK, if our saved area is null, allocate it here!
-    if (gVideoOverlays[uiCount].pSaveArea == NULL) {
+    if (gVideoOverlays[uiCount].pSaveArea == null) {
       AllocateVideoOverlayArea(uiCount);
     }
 
-    if (gVideoOverlays[uiCount].pSaveArea != NULL) {
+    if (gVideoOverlays[uiCount].pSaveArea != null) {
       iBackIndex = gVideoOverlays[uiCount].uiBackground;
 
       // Save data from frame buffer!
@@ -950,13 +950,13 @@ function DeleteVideoOverlaysArea(): void {
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
     if (gVideoOverlays[uiCount].fAllocated && !gVideoOverlays[uiCount].fDisabled) {
-      if (gVideoOverlays[uiCount].pSaveArea != NULL) {
+      if (gVideoOverlays[uiCount].pSaveArea != null) {
         MemFree(gVideoOverlays[uiCount].pSaveArea);
       }
 
       gVideoOverlays[uiCount].fActivelySaving = FALSE;
 
-      gVideoOverlays[uiCount].pSaveArea = NULL;
+      gVideoOverlays[uiCount].pSaveArea = null;
 
       // DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "Removing Overlay Actively saving %d %S", uiCount, gVideoOverlays[ uiCount ].zText ) );
 
@@ -1002,7 +1002,7 @@ function RestoreShiftedVideoOverlays(sShiftX: INT16, sShiftY: INT16): BOOLEAN {
     if (gVideoOverlays[uiCount].fAllocated && !gVideoOverlays[uiCount].fDisabled) {
       iBackIndex = gVideoOverlays[uiCount].uiBackground;
 
-      if (gVideoOverlays[uiCount].pSaveArea != NULL) {
+      if (gVideoOverlays[uiCount].pSaveArea != null) {
         // Get restore background values
         sLeft = gBackSaves[iBackIndex].sLeft;
         sTop = gBackSaves[iBackIndex].sTop;

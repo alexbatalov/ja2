@@ -5,7 +5,7 @@ let sStatueGridNos: INT16[] /* [] */ = [
   13670,
 ];
 
-let gpKillerSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gpKillerSoldier: Pointer<SOLDIERTYPE> = null;
 let gsGridNo: INT16;
 let gbLevel: INT8;
 
@@ -210,7 +210,7 @@ function DoneFadeOutKilledQueen(): void {
 
   SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
 
-  HandleMoraleEvent(NULL, Enum234.MORALE_QUEEN_BATTLE_WON, 3, MAP_ROW_P, 0);
+  HandleMoraleEvent(null, Enum234.MORALE_QUEEN_BATTLE_WON, 3, MAP_ROW_P, 0);
   HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_QUEEN_BATTLE_WON, 3, MAP_ROW_P, 0);
 
   SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
@@ -239,8 +239,8 @@ function DoneFadeOutKilledQueen(): void {
 
   // OK, once down here, adjust the above map with crate info....
   gfTacticalTraversal = FALSE;
-  gpTacticalTraversalGroup = NULL;
-  gpTacticalTraversalChosenSoldier = NULL;
+  gpTacticalTraversalGroup = null;
+  gpTacticalTraversalChosenSoldier = null;
 
   gFadeInDoneCallback = DoneFadeInKilledQueen;
 

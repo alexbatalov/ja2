@@ -112,7 +112,7 @@ function CalcWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UI
 }
 
 function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
-  let pWall: Pointer<LEVELNODE> = NULL;
+  let pWall: Pointer<LEVELNODE> = null;
   let usWallOrientation: UINT16;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
@@ -132,7 +132,7 @@ function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UI
 }
 
 function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
-  let pWall: Pointer<LEVELNODE> = NULL;
+  let pWall: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
 
@@ -166,7 +166,7 @@ function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<
 }
 
 function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
-  let pWall: Pointer<LEVELNODE> = NULL;
+  let pWall: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
 
@@ -415,7 +415,7 @@ function PasteSmartWall(iMapIndex: UINT32): void {
 }
 
 function PasteSmartDoor(iMapIndex: UINT32): void {
-  let pWall: Pointer<LEVELNODE> = NULL;
+  let pWall: Pointer<LEVELNODE> = null;
   let usTileIndex: UINT16;
   let usDoorType: UINT16;
   let usIndex: UINT16;
@@ -442,7 +442,7 @@ function PasteSmartDoor(iMapIndex: UINT32): void {
 function PasteSmartWindow(iMapIndex: UINT32): void {
   let usNewWallIndex: UINT16;
 
-  let pWall: Pointer<LEVELNODE> = NULL;
+  let pWall: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallType: UINT16;
   let usIndex: UINT16;

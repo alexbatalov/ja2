@@ -78,7 +78,7 @@ function WriteSTIFile(pData: Pointer<INT8>, pPalette: Pointer<SGPPaletteEntry>, 
   let pOutput: Pointer<FILE>;
 
   let uiOriginalSize: UINT32;
-  let pOutputBuffer: Pointer<UINT8> = NULL;
+  let pOutputBuffer: Pointer<UINT8> = null;
   let uiCompressedSize: UINT32;
 
   let Header: STCIHeader;
@@ -134,14 +134,14 @@ function WriteSTIFile(pData: Pointer<INT8>, pPalette: Pointer<SGPPaletteEntry>, 
   //
 
   pOutput = fopen(cOutputName, "wb");
-  if (pOutput == NULL) {
+  if (pOutput == null) {
     return;
   }
   // write header
   fwrite(addressof(Header), STCI_HEADER_SIZE, 1, pOutput);
   // write palette and subimage structs, if any
   if (Header.fFlags & STCI_INDEXED) {
-    if (pPalette != NULL) {
+    if (pPalette != null) {
       // have to convert palette to STCI format!
       pSGPPaletteEntry = pPalette;
       for (uiLoop = 0; uiLoop < 256; uiLoop++) {
@@ -164,7 +164,7 @@ function WriteSTIFile(pData: Pointer<INT8>, pPalette: Pointer<SGPPaletteEntry>, 
   }
 
   // write app-specific data (blanked to 0)
-  if (Image.pAppData == NULL) {
+  if (Image.pAppData == null) {
     if (Header.uiAppDataSize > 0) {
       for (uiLoop = 0; uiLoop < Header.uiAppDataSize; uiLoop++) {
         fputc(0, pOutput);
@@ -176,7 +176,7 @@ function WriteSTIFile(pData: Pointer<INT8>, pPalette: Pointer<SGPPaletteEntry>, 
 
   fclose(pOutput);
 
-  if (pOutputBuffer != NULL) {
+  if (pOutputBuffer != null) {
     MemFree(pOutputBuffer);
   }
 }
@@ -253,13 +253,13 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
       MemFree(ppDest.value);
       return FALSE;
     }
-    ppSubImageBuffer.value = NULL;
+    ppSubImageBuffer.value = null;
     pusNumberOfSubImages.value = 0;
 
     while (fContinue) {
       // allocate more memory for SubImage structures, and set the current pointer to the last one
       pTemp = MemRealloc(ppSubImageBuffer.value, (pusNumberOfSubImages.value + 1) * STCI_SUBIMAGE_SIZE);
-      if (pTemp == NULL) {
+      if (pTemp == null) {
         fOk = FALSE;
         break;
       } else {
@@ -329,7 +329,7 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
     return TRUE;
   } else {
     MemFree(ppDest.value);
-    if (ppSubImageBuffer.value != NULL) {
+    if (ppSubImageBuffer.value != null) {
       MemFree(ppSubImageBuffer.value);
     }
     return FALSE;
@@ -666,5 +666,5 @@ function CheckForDataInRowOrColumn(pPixel: Pointer<UINT8>, usIncrement: UINT16, 
       pPixel += usIncrement;
     }
   }
-  return NULL;
+  return null;
 }

@@ -75,10 +75,10 @@ function RenderProfileBackGround(): void {
   // render each row 5 times wide, 5 tiles high
   for (iCounter = 0; iCounter < 4; iCounter++) {
     // blt background to screen from left to right
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + 0 * CHAR_PROFILE_BACKGROUND_TILE_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + iCounter * CHAR_PROFILE_BACKGROUND_TILE_HEIGHT, VO_BLT_SRCTRANSPARENCY, NULL);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + 1 * CHAR_PROFILE_BACKGROUND_TILE_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + iCounter * CHAR_PROFILE_BACKGROUND_TILE_HEIGHT, VO_BLT_SRCTRANSPARENCY, NULL);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + 2 * CHAR_PROFILE_BACKGROUND_TILE_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + iCounter * CHAR_PROFILE_BACKGROUND_TILE_HEIGHT, VO_BLT_SRCTRANSPARENCY, NULL);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + 3 * CHAR_PROFILE_BACKGROUND_TILE_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + iCounter * CHAR_PROFILE_BACKGROUND_TILE_HEIGHT, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + 0 * CHAR_PROFILE_BACKGROUND_TILE_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + iCounter * CHAR_PROFILE_BACKGROUND_TILE_HEIGHT, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + 1 * CHAR_PROFILE_BACKGROUND_TILE_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + iCounter * CHAR_PROFILE_BACKGROUND_TILE_HEIGHT, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + 2 * CHAR_PROFILE_BACKGROUND_TILE_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + iCounter * CHAR_PROFILE_BACKGROUND_TILE_HEIGHT, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + 3 * CHAR_PROFILE_BACKGROUND_TILE_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + iCounter * CHAR_PROFILE_BACKGROUND_TILE_HEIGHT, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // dirty buttons
@@ -115,7 +115,7 @@ function RenderIMPSymbol(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiIMPSYMBOL);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -146,7 +146,7 @@ function RenderBeginIndent(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiBEGININDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -176,7 +176,7 @@ function RenderActivationIndent(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiACTIVATIONINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -206,7 +206,7 @@ function RenderFrontPageIndent(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiFRONTPAGEINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -236,7 +236,7 @@ function RenderAnalyse(sX: INT16, sY: INT16, bImageNumber: INT8): void {
   GetVideoObject(addressof(hHandle), guiANALYSE);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, bImageNumber, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, bImageNumber, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -266,7 +266,7 @@ function RenderAttributeGraph(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiATTRIBUTEGRAPH);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -296,7 +296,7 @@ function RenderAttributeBarGraph(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiATTRIBUTEGRAPHBAR);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -326,7 +326,7 @@ function RenderFullNameIndent(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiFULLNAMEINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -356,7 +356,7 @@ function RenderNickNameIndent(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiNICKNAMEINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -386,7 +386,7 @@ function RenderNameIndent(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiNAMEINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -416,7 +416,7 @@ function RenderGenderIndent(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiGENDERINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -446,7 +446,7 @@ function RenderSmallFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiSMALLFRAME);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -476,7 +476,7 @@ function RenderSmallSilhouette(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiSMALLSILHOUETTE);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -506,7 +506,7 @@ function RenderLargeSilhouette(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiLARGESILHOUETTE);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -538,19 +538,19 @@ function RenderAttributeFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiATTRIBUTEFRAME);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   sCurrentY += 10;
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // blt to sX, sY relative to upper left corner
-    BltVideoObject(FRAME_BUFFER, hHandle, 2, LAPTOP_SCREEN_UL_X + sX + 134, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, NULL);
-    BltVideoObject(FRAME_BUFFER, hHandle, 1, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, NULL);
-    BltVideoObject(FRAME_BUFFER, hHandle, 3, LAPTOP_SCREEN_UL_X + sX + 368, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 2, LAPTOP_SCREEN_UL_X + sX + 134, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hHandle, 1, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hHandle, 3, LAPTOP_SCREEN_UL_X + sX + 368, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, null);
 
     sCurrentY += 20;
   }
 
-  BltVideoObject(FRAME_BUFFER, hHandle, 4, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 4, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -570,7 +570,7 @@ function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32): void
   GetVideoObject(addressof(hHandle), guiATTRIBUTEFRAME);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 2, LAPTOP_SCREEN_UL_X + sX + 134, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 2, LAPTOP_SCREEN_UL_X + sX + 134, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, null);
 
   RenderAttrib2IndentFrame(350, 42);
 
@@ -610,7 +610,7 @@ function RenderSliderBar(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiSLIDERBAR);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -640,7 +640,7 @@ function RenderButton2Image(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiBUTTON2IMAGE);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -670,7 +670,7 @@ function RenderButton4Image(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiBUTTON4IMAGE);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -700,7 +700,7 @@ function RenderButton1Image(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiBUTTON1IMAGE);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -730,7 +730,7 @@ function RenderPortraitFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiPORTRAITFRAME);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -760,7 +760,7 @@ function RenderMainIndentFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiMAININDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -790,7 +790,7 @@ function RenderQtnLongIndentFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiLONGINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -820,7 +820,7 @@ function RenderQtnShortIndentFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiSHORTINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -850,7 +850,7 @@ function RenderQtnLongIndentHighFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiLONGHINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -880,7 +880,7 @@ function RenderQtnShortIndentHighFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiSHORTHINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -910,7 +910,7 @@ function RenderQtnIndentFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiQINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -940,7 +940,7 @@ function RenderAttrib1IndentFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiA1INDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -970,7 +970,7 @@ function RenderAttrib2IndentFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiA2INDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -1000,7 +1000,7 @@ function RenderAvgMercIndentFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiAVGMERCINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -1030,7 +1030,7 @@ function RenderAboutUsIndentFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiABOUTUSINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -1060,7 +1060,7 @@ function RenderQtnShort2IndentFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiSHORT2INDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -1090,7 +1090,7 @@ function RenderQtnShort2IndentHighFrame(sX: INT16, sY: INT16): void {
   GetVideoObject(addressof(hHandle), guiSHORT2HINDENT);
 
   // blt to sX, sY relative to upper left corner
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }

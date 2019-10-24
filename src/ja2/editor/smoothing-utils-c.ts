@@ -126,7 +126,7 @@ function GetVerticalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
     }
     pStruct = pStruct.value.pNext;
   }
-  return NULL;
+  return null;
 }
 
 function GetHorizontalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
@@ -146,7 +146,7 @@ function GetHorizontalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
     }
     pStruct = pStruct.value.pNext;
   }
-  return NULL;
+  return null;
 }
 
 function GetVerticalWallType(iMapIndex: UINT32): UINT16 {
@@ -192,7 +192,7 @@ function GetVerticalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
     }
     pStruct = pStruct.value.pNext;
   }
-  return NULL;
+  return null;
 }
 
 function GetHorizontalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
@@ -212,7 +212,7 @@ function GetHorizontalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
     }
     pStruct = pStruct.value.pNext;
   }
-  return NULL;
+  return null;
 }
 
 function EraseHorizontalWall(iMapIndex: UINT32): void {
@@ -272,7 +272,7 @@ function ChangeVerticalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
 }
 
 function RestoreWalls(iMapIndex: UINT32): void {
-  let pWall: Pointer<LEVELNODE> = NULL;
+  let pWall: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallType: UINT16;
   let usWallOrientation: UINT16;

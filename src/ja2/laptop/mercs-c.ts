@@ -457,19 +457,19 @@ function RenderMercs(): void {
 
   // Title
   GetVideoObject(addressof(hPixHandle), guiMercSymbol);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_TITLE_X, MERC_TITLE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_TITLE_X, MERC_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Speck Portrait
   GetVideoObject(addressof(hPixHandle), guiSpecPortrait);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_PORTRAIT_X, MERC_PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_PORTRAIT_X, MERC_PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Account Box
   GetVideoObject(addressof(hPixHandle), guiAccountBox);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_ACCOUNT_BOX_X, MERC_ACCOUNT_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_ACCOUNT_BOX_X, MERC_ACCOUNT_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Files Box
   GetVideoObject(addressof(hPixHandle), guiFilesBox);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILE_BOX_X, MERC_FILE_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILE_BOX_X, MERC_FILE_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Text on the Speck Portrait
   DisplayWrappedString(MERC_PORTRAIT_TEXT_X, MERC_PORTRAIT_TEXT_Y, MERC_PORTRAIT_TEXT_WIDTH, 2, MERC_TEXT_FONT(), MERC_TEXT_COLOR, MercHomePageText[Enum343.MERC_SPECK_OWNER], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
@@ -979,7 +979,7 @@ function HandleCurrentMercDistortion(): void {
 function PixelateVideoMercImage(fUp: BOOLEAN, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): BOOLEAN {
   /* static */ let uiLastTime: UINT32;
   let uiCurTime: UINT32 = GetJA2Clock();
-  let pBuffer: Pointer<UINT16> = NULL;
+  let pBuffer: Pointer<UINT16> = null;
   let DestColor: UINT16;
   let uiPitch: UINT32;
   let i: UINT16;
@@ -1053,7 +1053,7 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
   let uiPitch: UINT32;
   let i: UINT16;
   let j: UINT16;
-  let pBuffer: Pointer<UINT16> = NULL;
+  let pBuffer: Pointer<UINT16> = null;
   let DestColor: UINT16;
   let uiColor: UINT32;
   let red: UINT8;
@@ -1910,7 +1910,7 @@ function DrawMercVideoBackGround(): void {
   let hPixHandle: HVOBJECT;
 
   GetVideoObject(addressof(hPixHandle), guiMercVideoPopupBackground);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_VIDEO_BACKGROUND_X, MERC_VIDEO_BACKGROUND_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_VIDEO_BACKGROUND_X, MERC_VIDEO_BACKGROUND_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // put the title on the window
   DrawTextToScreen(MercHomePageText[Enum343.MERC_SPECK_COM], MERC_X_VIDEO_TITLE_X, MERC_X_VIDEO_TITLE_Y, 0, MERC_VIDEO_TITLE_FONT(), MERC_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);

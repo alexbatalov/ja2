@@ -37,7 +37,7 @@ let fOkToBeepNewMessage: BOOLEAN = TRUE;
 
 /* static */ let gpDisplayList: ScrollStringStPtr[] /* [MAX_LINE_COUNT] */;
 /* static */ let gMapScreenMessageList: ScrollStringStPtr[] /* [256] */;
-/* static */ let pStringS: ScrollStringStPtr = NULL;
+/* static */ let pStringS: ScrollStringStPtr = null;
 
 // first time adding any message to the message dialogue system
 let fFirstTimeInMessageSystem: BOOLEAN = TRUE;
@@ -60,7 +60,7 @@ function GetStringFont(pStringSt: ScrollStringStPtr): UINT32 {
 
 function AddString(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewString: BOOLEAN, ubPriority: UINT8): ScrollStringStPtr {
   // add a new string to the list of strings
-  let pStringSt: ScrollStringStPtr = NULL;
+  let pStringSt: ScrollStringStPtr = null;
   pStringSt = MemAlloc(sizeof(ScrollStringSt));
 
   SetString(pStringSt, pString);
@@ -69,8 +69,8 @@ function AddString(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewS
   pStringSt.value.fBeginningOfNewString = fStartOfNewString;
   pStringSt.value.uiFlags = ubPriority;
 
-  SetStringNext(pStringSt, NULL);
-  SetStringPrev(pStringSt, NULL);
+  SetStringNext(pStringSt, null);
+  SetStringPrev(pStringSt, null);
   pStringSt.value.iVideoOverlay = -1;
 
   // now add string to map screen strings
@@ -96,16 +96,16 @@ function SetStringColor(pStringSt: ScrollStringStPtr, usColor: UINT16): void {
 
 function GetNextString(pStringSt: ScrollStringStPtr): ScrollStringStPtr {
   // returns pointer to next string line
-  if (pStringSt == NULL)
-    return NULL;
+  if (pStringSt == null)
+    return null;
   else
     return pStringSt.value.pNext;
 }
 
 function GetPrevString(pStringSt: ScrollStringStPtr): ScrollStringStPtr {
   // returns pointer to previous string line
-  if (pStringSt == NULL)
-    return NULL;
+  if (pStringSt == null)
+    return null;
   else
     return pStringSt.value.pPrev;
 }
@@ -206,7 +206,7 @@ function ClearDisplayedListOfTacticalStrings(): void {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
-    if (gpDisplayList[cnt] != NULL) {
+    if (gpDisplayList[cnt] != null) {
       // CHECK IF WE HAVE AGED
 
       // Remove our sorry ass
@@ -215,7 +215,7 @@ function ClearDisplayedListOfTacticalStrings(): void {
       MemFree(gpDisplayList[cnt]);
 
       // Free slot
-      gpDisplayList[cnt] = NULL;
+      gpDisplayList[cnt] = null;
     }
   }
 
@@ -254,7 +254,7 @@ function ScrollString(): void {
   iNumberOfMessagesOnQueue = GetMessageQueueSize();
   iMaxAge = MAX_AGE;
 
-  if ((iNumberOfMessagesOnQueue > 0) && (gpDisplayList[MAX_LINE_COUNT - 1] != NULL)) {
+  if ((iNumberOfMessagesOnQueue > 0) && (gpDisplayList[MAX_LINE_COUNT - 1] != null)) {
     fDitchLastMessage = TRUE;
   } else {
     fDitchLastMessage = FALSE;
@@ -268,7 +268,7 @@ function ScrollString(): void {
 
   // AGE
   for (cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
-    if (gpDisplayList[cnt] != NULL) {
+    if (gpDisplayList[cnt] != null) {
       if ((fDitchLastMessage) && (cnt == MAX_LINE_COUNT - 1)) {
         gpDisplayList[cnt].value.uiTimeOfLastUpdate = iMaxAge;
       }
@@ -280,7 +280,7 @@ function ScrollString(): void {
         MemFree(gpDisplayList[cnt]);
 
         // Free slot
-        gpDisplayList[cnt] = NULL;
+        gpDisplayList[cnt] = null;
       }
     }
   }
@@ -288,10 +288,10 @@ function ScrollString(): void {
   // CHECK FOR FREE SPOTS AND ADD ANY STRINGS IF WE HAVE SOME TO ADD!
 
   // FIRST CHECK IF WE HAVE ANY IN OUR QUEUE
-  if (pStringS != NULL) {
+  if (pStringS != null) {
     // CHECK IF WE HAVE A SLOT!
     // CHECK OUR LAST SLOT!
-    if (gpDisplayList[MAX_LINE_COUNT - 1] == NULL) {
+    if (gpDisplayList[MAX_LINE_COUNT - 1] == null) {
       // MOVE ALL UP!
 
       // cpy, then move
@@ -313,7 +313,7 @@ function ScrollString(): void {
       // now move
       for (cnt = 0; cnt <= MAX_LINE_COUNT - 1; cnt++) {
         // Adjust position!
-        if (gpDisplayList[cnt] != NULL) {
+        if (gpDisplayList[cnt] != null) {
           SetStringVideoOverlayPosition(gpDisplayList[cnt], X_START, ((Y_START - ((cnt)*GetFontHeight(SMALLFONT1()))) - (WIDTH_BETWEEN_NEW_STRINGS * (iNumberOfNewStrings))));
 
           // start of new string, increment count of new strings, for spacing purposes
@@ -328,11 +328,11 @@ function ScrollString(): void {
       // Adjust head!
       pStringS = pStringS.value.pNext;
       if (pStringS) {
-        pStringS.value.pPrev = NULL;
+        pStringS.value.pPrev = null;
       }
 
       // check if new meesage we have not seen since mapscreen..if so, beep
-      if ((fOkToBeepNewMessage == TRUE) && (gpDisplayList[MAX_LINE_COUNT - 2] == NULL) && ((guiCurrentScreen == Enum26.GAME_SCREEN) || (guiCurrentScreen == Enum26.MAP_SCREEN)) && (gfFacePanelActive == FALSE)) {
+      if ((fOkToBeepNewMessage == TRUE) && (gpDisplayList[MAX_LINE_COUNT - 2] == null) && ((guiCurrentScreen == Enum26.GAME_SCREEN) || (guiCurrentScreen == Enum26.MAP_SCREEN)) && (gfFacePanelActive == FALSE)) {
         PlayNewMessageSound();
       }
     }
@@ -366,7 +366,7 @@ function HideMessagesDuringNPCDialogue(): void {
   uiStartOfPauseTime = GetJA2Clock();
 
   for (cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
-    if (gpDisplayList[cnt] != NULL) {
+    if (gpDisplayList[cnt] != null) {
       RestoreExternBackgroundRectGivenID(gVideoOverlays[gpDisplayList[cnt].value.iVideoOverlay].uiBackground);
       UpdateVideoOverlay(addressof(VideoOverlayDesc), gpDisplayList[cnt].value.iVideoOverlay, FALSE);
     }
@@ -386,7 +386,7 @@ function UnHideMessagesDuringNPCDialogue(): void {
   fScrollMessagesHidden = FALSE;
 
   for (cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
-    if (gpDisplayList[cnt] != NULL) {
+    if (gpDisplayList[cnt] != null) {
       gpDisplayList[cnt].value.uiTimeOfLastUpdate += GetJA2Clock() - uiStartOfPauseTime;
       UpdateVideoOverlay(addressof(VideoOverlayDesc), gpDisplayList[cnt].value.iVideoOverlay, FALSE);
     }
@@ -447,11 +447,11 @@ function ScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args:
 
 function ClearWrappedStrings(pStringWrapperHead: Pointer<WRAPPED_STRING>): void {
   let pNode: Pointer<WRAPPED_STRING> = pStringWrapperHead;
-  let pDeleteNode: Pointer<WRAPPED_STRING> = NULL;
+  let pDeleteNode: Pointer<WRAPPED_STRING> = null;
   // clear out a link list of wrapped string structures
 
   // error check, is there a node to delete?
-  if (pNode == NULL) {
+  if (pNode == null) {
     // leave,
     return;
   }
@@ -465,16 +465,16 @@ function ClearWrappedStrings(pStringWrapperHead: Pointer<WRAPPED_STRING>): void 
 
     // delete the string
     MemFree(pDeleteNode.value.sString);
-    pDeleteNode.value.sString = NULL;
+    pDeleteNode.value.sString = null;
 
     // clear out delete node
     MemFree(pDeleteNode);
-    pDeleteNode = NULL;
+    pDeleteNode = null;
   } while (pNode);
 
   //	MemFree( pNode );
 
-  pStringWrapperHead = NULL;
+  pStringWrapperHead = null;
 }
 
 // new tactical and mapscreen message system
@@ -496,9 +496,9 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
   let DestStringA: wchar_t[] /* [512] */;
   // wchar_t *pStringBuffer;
   let fMultiLine: BOOLEAN = FALSE;
-  let pTempStringSt: ScrollStringStPtr = NULL;
-  let pStringWrapper: Pointer<WRAPPED_STRING> = NULL;
-  let pStringWrapperHead: Pointer<WRAPPED_STRING> = NULL;
+  let pTempStringSt: ScrollStringStPtr = null;
+  let pStringWrapper: Pointer<WRAPPED_STRING> = null;
+  let pStringWrapperHead: Pointer<WRAPPED_STRING> = null;
   let fNewString: BOOLEAN = FALSE;
   let usLineWidthIfWordIsWiderThenWidth: UINT16 = 0;
 
@@ -562,12 +562,12 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
     return;
 
   fNewString = TRUE;
-  while (pStringWrapper.value.pNextWrappedString != NULL) {
+  while (pStringWrapper.value.pNextWrappedString != null) {
     if (!pStringSt) {
       pStringSt = AddString(pStringWrapper.value.sString, usColor, uiFont, fNewString, ubPriority);
       fNewString = FALSE;
-      pStringSt.value.pNext = NULL;
-      pStringSt.value.pPrev = NULL;
+      pStringSt.value.pNext = null;
+      pStringSt.value.pPrev = null;
       pStringS = pStringSt;
     } else {
       pTempStringSt = AddString(pStringWrapper.value.sString, usColor, uiFont, fNewString, ubPriority);
@@ -575,7 +575,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
       pTempStringSt.value.pPrev = pStringSt;
       pStringSt.value.pNext = pTempStringSt;
       pStringSt = pTempStringSt;
-      pTempStringSt.value.pNext = NULL;
+      pTempStringSt.value.pNext = null;
     }
     pStringWrapper = pStringWrapper.value.pNextWrappedString;
   }
@@ -584,11 +584,11 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
     pStringSt.value.pNext = pTempStringSt;
     pTempStringSt.value.pPrev = pStringSt;
     pStringSt = pTempStringSt;
-    pStringSt.value.pNext = NULL;
+    pStringSt.value.pNext = null;
   } else {
     pStringSt = pTempStringSt;
-    pStringSt.value.pNext = NULL;
-    pStringSt.value.pPrev = NULL;
+    pStringSt.value.pNext = null;
+    pStringSt.value.pPrev = null;
     pStringS = pStringSt;
   }
 
@@ -616,8 +616,8 @@ function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, .
   let DestStringA: wchar_t[] /* [512] */;
   // wchar_t *pStringBuffer;
   let fMultiLine: BOOLEAN = FALSE;
-  let pStringWrapper: Pointer<WRAPPED_STRING> = NULL;
-  let pStringWrapperHead: Pointer<WRAPPED_STRING> = NULL;
+  let pStringWrapper: Pointer<WRAPPED_STRING> = null;
+  let pStringWrapperHead: Pointer<WRAPPED_STRING> = null;
   let fNewString: BOOLEAN = FALSE;
   let usLineWidthIfWordIsWiderThenWidth: UINT16;
 
@@ -725,7 +725,7 @@ function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, .
 
   fNewString = TRUE;
 
-  while (pStringWrapper.value.pNextWrappedString != NULL) {
+  while (pStringWrapper.value.pNextWrappedString != null) {
     AddStringToMapScreenMessageList(pStringWrapper.value.sString, usColor, uiFont, fNewString, ubPriority);
     fNewString = FALSE;
 
@@ -748,7 +748,7 @@ function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, .
 // add string to the map screen message list
 function AddStringToMapScreenMessageList(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewString: BOOLEAN, ubPriority: UINT8): void {
   let ubSlotIndex: UINT8 = 0;
-  let pStringSt: ScrollStringStPtr = NULL;
+  let pStringSt: ScrollStringStPtr = null;
 
   pStringSt = MemAlloc(sizeof(ScrollStringSt));
 
@@ -760,8 +760,8 @@ function AddStringToMapScreenMessageList(pString: STR16, usColor: UINT16, uiFont
   pStringSt.value.iVideoOverlay = -1;
 
   // next/previous are not used, it's strictly a wraparound queue
-  SetStringNext(pStringSt, NULL);
-  SetStringPrev(pStringSt, NULL);
+  SetStringNext(pStringSt, null);
+  SetStringPrev(pStringSt, null);
 
   // Figure out which queue slot index we're going to use to store this
   // If queue isn't full, this is easy, if is is full, we'll re-use the oldest slot
@@ -770,7 +770,7 @@ function AddStringToMapScreenMessageList(pString: STR16, usColor: UINT16, uiFont
   // always store the new message at the END index
 
   // check if slot is being used, if so, clear it up
-  if (gMapScreenMessageList[gubEndOfMapScreenMessageList] != NULL) {
+  if (gMapScreenMessageList[gubEndOfMapScreenMessageList] != null) {
     MemFree(gMapScreenMessageList[gubEndOfMapScreenMessageList].value.pString16);
     MemFree(gMapScreenMessageList[gubEndOfMapScreenMessageList]);
   }
@@ -812,7 +812,7 @@ function DisplayStringsInMapScreenMessageList(): void {
     }
 
     // nothing stored there?
-    if (gMapScreenMessageList[ubCurrentStringIndex] == NULL) {
+    if (gMapScreenMessageList[ubCurrentStringIndex] == null) {
       break;
     }
 
@@ -838,7 +838,7 @@ function EnableDisableScrollStringVideoOverlay(fEnable: BOOLEAN): void {
 
   for (bCounter = 0; bCounter < MAX_LINE_COUNT; bCounter++) {
     // if valid, enable/disable
-    if (gpDisplayList[bCounter] != NULL) {
+    if (gpDisplayList[bCounter] != null) {
       EnableVideoOverlay(fEnable, gpDisplayList[bCounter].value.iVideoOverlay);
     }
   }
@@ -977,14 +977,14 @@ function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
       if (gMapScreenMessageList[uiCount]) {
         if (gMapScreenMessageList[uiCount].value.pString16) {
           MemFree(gMapScreenMessageList[uiCount].value.pString16);
-          gMapScreenMessageList[uiCount].value.pString16 = NULL;
+          gMapScreenMessageList[uiCount].value.pString16 = null;
         }
       } else {
         // There is now message here, add one
         let sScroll: Pointer<ScrollStringSt>;
 
         sScroll = MemAlloc(sizeof(ScrollStringSt));
-        if (sScroll == NULL)
+        if (sScroll == null)
           return FALSE;
 
         memset(sScroll, 0, sizeof(ScrollStringSt));
@@ -994,7 +994,7 @@ function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
 
       // allocate space for the new string
       gMapScreenMessageList[uiCount].value.pString16 = MemAlloc(uiSizeOfString);
-      if (gMapScreenMessageList[uiCount].value.pString16 == NULL)
+      if (gMapScreenMessageList[uiCount].value.pString16 == null)
         return FALSE;
 
       memset(gMapScreenMessageList[uiCount].value.pString16, 0, uiSizeOfString);
@@ -1015,7 +1015,7 @@ function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
       gMapScreenMessageList[uiCount].value.fBeginningOfNewString = StringSave.fBeginningOfNewString;
       gMapScreenMessageList[uiCount].value.uiTimeOfLastUpdate = StringSave.uiTimeOfLastUpdate;
     } else
-      gMapScreenMessageList[uiCount] = NULL;
+      gMapScreenMessageList[uiCount] = null;
   }
 
   // this will set a valid value for gubFirstMapscreenMessageIndex, which isn't being saved/restored
@@ -1041,8 +1041,8 @@ function HandleLastQuotePopUpTimer(): void {
 function MoveToBeginningOfMessageQueue(): ScrollStringStPtr {
   let pStringSt: ScrollStringStPtr = pStringS;
 
-  if (pStringSt == NULL) {
-    return NULL;
+  if (pStringSt == null) {
+    return null;
   }
 
   while (pStringSt.value.pPrev) {
@@ -1080,7 +1080,7 @@ function ClearTacticalMessageQueue(): void {
     MemFree(pOtherStringSt);
   }
 
-  pStringS = NULL;
+  pStringS = null;
 
   return;
 }
@@ -1092,7 +1092,7 @@ function InitGlobalMessageList(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
-    gMapScreenMessageList[iCounter] = NULL;
+    gMapScreenMessageList[iCounter] = null;
   }
 
   gubEndOfMapScreenMessageList = 0;
@@ -1108,7 +1108,7 @@ function FreeGlobalMessageList(): void {
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     // check if next unit is empty, if not...clear it up
-    if (gMapScreenMessageList[iCounter] != NULL) {
+    if (gMapScreenMessageList[iCounter] != null) {
       MemFree(gMapScreenMessageList[iCounter].value.pString16);
       MemFree(gMapScreenMessageList[iCounter]);
     }

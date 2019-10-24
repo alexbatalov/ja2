@@ -1,8 +1,8 @@
 // Global dynamic array of all of the items in a loaded map.
-let gWorldItems: Pointer<WORLDITEM> = NULL;
+let gWorldItems: Pointer<WORLDITEM> = null;
 let guiNumWorldItems: UINT32 = 0;
 
-let gWorldBombs: Pointer<WORLDBOMB> = NULL;
+let gWorldBombs: Pointer<WORLDBOMB> = null;
 let guiNumWorldBombs: UINT32 = 0;
 
 function GetFreeWorldBombIndex(): INT32 {
@@ -19,7 +19,7 @@ function GetFreeWorldBombIndex(): INT32 {
   guiNumWorldBombs += 10;
   // Allocate new table with max+10 items.
   newWorldBombs = MemRealloc(gWorldBombs, sizeof(WORLDBOMB) * guiNumWorldBombs);
-  if (newWorldBombs == NULL) {
+  if (newWorldBombs == null) {
     return -1;
   }
 
@@ -172,7 +172,7 @@ function GetFreeWorldItemIndex(): INT32 {
   guiNumWorldItems += 10;
   // Allocate new table with max+10 items.
   newWorldItems = MemRealloc(gWorldItems, sizeof(WORLDITEM) * guiNumWorldItems);
-  if (newWorldItems == NULL) {
+  if (newWorldItems == null) {
     return -1;
   }
 
@@ -255,12 +255,12 @@ function TrashWorldItems(): void {
       }
     }
     MemFree(gWorldItems);
-    gWorldItems = NULL;
+    gWorldItems = null;
     guiNumWorldItems = 0;
   }
   if (gWorldBombs) {
     MemFree(gWorldBombs);
-    gWorldBombs = NULL;
+    gWorldBombs = null;
     guiNumWorldBombs = 0;
   }
 }

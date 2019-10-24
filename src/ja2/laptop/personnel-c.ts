@@ -463,11 +463,11 @@ function RenderPersonnel(): void {
 
   // blit title
   GetVideoObject(addressof(hHandle), guiTITLE);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y - 2, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y - 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // blit screen
   GetVideoObject(addressof(hHandle), guiSCREEN);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y + 22, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y + 22, VO_BLT_SRCTRANSPARENCY, null);
 
   // render pictures of mercs on scnree
   // RenderPersonnelPictures( );
@@ -672,7 +672,7 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: B
     }
   }
 
-  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, IMAGE_BOX_X + (iSlot * IMAGE_BOX_WIDTH), IMAGE_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, IMAGE_BOX_X + (iSlot * IMAGE_BOX_WIDTH), IMAGE_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // if the merc is dead, display it
   if (!fCurrentTeamMode) {
@@ -1541,7 +1541,7 @@ function RenderPersonnelScreenBackground(): void {
     GetVideoObject(addressof(hHandle), guiDEPARTEDTEAM);
   }
 
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, DEPARTED_X, DEPARTED_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, DEPARTED_X, DEPARTED_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -1701,7 +1701,7 @@ function DisplayPicturesOfCurrentTeam(): BOOLEAN {
         SetObjectHandleShade(guiFACE, 0);
       }
 
-      BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
 
       if (Menptr[iId + iCnt].bLife <= 0) {
         // if the merc is dead, display it
@@ -1862,7 +1862,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   let iTotalAmmo: INT32 = 0;
 
   GetVideoObject(addressof(hHandle), guiPersonnelInventory);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, (397), (200), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, (397), (200), VO_BLT_SRCTRANSPARENCY, null);
 
   if (fCurrentTeamMode == FALSE) {
     return;
@@ -1915,7 +1915,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
         // grab item name
-        LoadItemInfo(sIndex, sString, NULL);
+        LoadItemInfo(sIndex, sString, null);
 
         // shorten if needed
         if (StringPixLength(sString, FONT10ARIAL()) > (171 - 75)) {
@@ -3973,7 +3973,7 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: BOOLEAN, 
     SetObjectHandleShade(guiFACE, 0);
   }
 
-  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
 
   /*
    text on the Small portrait
@@ -4308,7 +4308,7 @@ function DisplayHighLightBox(): BOOLEAN {
 
   // blit it
   GetVideoObject(addressof(hHandle), uiBox);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, (SMALL_PORTRAIT_START_X + (iCurrentPersonSelectedId % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH - 2), (SMALL_PORTRAIT_START_Y + (iCurrentPersonSelectedId / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT - 3), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, (SMALL_PORTRAIT_START_X + (iCurrentPersonSelectedId % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH - 2), (SMALL_PORTRAIT_START_Y + (iCurrentPersonSelectedId / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT - 3), VO_BLT_SRCTRANSPARENCY, null);
 
   // deleteit
   DeleteVideoObjectFromIndex(uiBox);
@@ -4473,7 +4473,7 @@ function RenderAtmPanel(): BOOLEAN {
 
     // blit it
     GetVideoObject(addressof(hHandle), uiBox);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, (ATM_UL_X), (ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, (ATM_UL_X), (ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, null);
 
     DeleteVideoObjectFromIndex(uiBox);
 
@@ -4500,11 +4500,11 @@ function RenderAtmPanel(): BOOLEAN {
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiBox)));
 
     GetVideoObject(addressof(hHandle), uiBox);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, (ATM_UL_X), (ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, (ATM_UL_X), (ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, null);
 
     // blit it
     GetVideoObject(addressof(hHandle), uiBox);
-    BltVideoObject(FRAME_BUFFER, hHandle, 1, (ATM_UL_X + 1), (ATM_UL_Y + 18), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 1, (ATM_UL_X + 1), (ATM_UL_Y + 18), VO_BLT_SRCTRANSPARENCY, null);
 
     DeleteVideoObjectFromIndex(uiBox);
 
@@ -4671,7 +4671,7 @@ function RenderSliderBarForPersonnelInventory(): void {
 
   // render slider bar for personnel
   GetVideoObject(addressof(hHandle), guiPersonnelInventory);
-  BltVideoObject(FRAME_BUFFER, hHandle, 5, (X_OF_PERSONNEL_SCROLL_REGION), (guiSliderPosition + Y_OF_PERSONNEL_SCROLL_REGION), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 5, (X_OF_PERSONNEL_SCROLL_REGION), (guiSliderPosition + Y_OF_PERSONNEL_SCROLL_REGION), VO_BLT_SRCTRANSPARENCY, null);
 }
 
 function CreateDestroyATMButton(): void {
@@ -4908,17 +4908,17 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
                 fOneFrameDelayInPersonnel = TRUE;
               } else if (fATMFlags == 2) {
                 // deposit from merc to account
-                if (GetFundsOnMerc(pSoldier) >= wcstol(sTransferString, NULL, 10)) {
-                  if ((wcstol(sTransferString, NULL, 10) % 10) != 0) {
+                if (GetFundsOnMerc(pSoldier) >= wcstol(sTransferString, null, 10)) {
+                  if ((wcstol(sTransferString, null, 10) % 10) != 0) {
                     fOldATMFlags = fATMFlags;
                     fATMFlags = 5;
 
-                    iValue = (wcstol(sTransferString, NULL, 10) - (wcstol(sTransferString, NULL, 10) % 10));
+                    iValue = (wcstol(sTransferString, null, 10) - (wcstol(sTransferString, null, 10) % 10));
                     swprintf(sTransferString, "%d", iValue);
                     fReDrawScreenFlag = TRUE;
                   } else {
                     // transfer
-                    TransferFundsFromMercToBank(pSoldier, wcstol(sTransferString, NULL, 10));
+                    TransferFundsFromMercToBank(pSoldier, wcstol(sTransferString, null, 10));
                     sTransferString[0] = 0;
                     fReDrawScreenFlag = TRUE;
                   }
@@ -4931,17 +4931,17 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
                 }
               } else if (fATMFlags == 3) {
                 // deposit from merc to account
-                if (LaptopSaveInfo.iCurrentBalance >= wcstol(sTransferString, NULL, 10)) {
-                  if ((wcstol(sTransferString, NULL, 10) % 10) != 0) {
+                if (LaptopSaveInfo.iCurrentBalance >= wcstol(sTransferString, null, 10)) {
+                  if ((wcstol(sTransferString, null, 10) % 10) != 0) {
                     fOldATMFlags = fATMFlags;
                     fATMFlags = 5;
 
-                    iValue = (wcstol(sTransferString, NULL, 10) - (wcstol(sTransferString, NULL, 10) % 10));
+                    iValue = (wcstol(sTransferString, null, 10) - (wcstol(sTransferString, null, 10) % 10));
                     swprintf(sTransferString, "%d", iValue);
                     fReDrawScreenFlag = TRUE;
                   } else {
                     // transfer
-                    TransferFundsFromBankToMerc(pSoldier, wcstol(sTransferString, NULL, 10));
+                    TransferFundsFromBankToMerc(pSoldier, wcstol(sTransferString, null, 10));
                     sTransferString[0] = 0;
                     fReDrawScreenFlag = TRUE;
                   }
@@ -5094,7 +5094,7 @@ function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   // run through mercs pockets, if any money in them, add to total
 
   // error check
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return 0;
   }
 
@@ -5115,7 +5115,7 @@ function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
 
   // move this amount of money from the grunt to the bank
   // error check
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return FALSE;
   }
 
@@ -5152,7 +5152,7 @@ function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
 
   // move this amount of money from the grunt to the bank
   // error check
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return FALSE;
   }
 
@@ -5295,7 +5295,7 @@ function UpDateStateOfStartButton(): void {
 function DisplayAmountOnCurrentMerc(): void {
   // will display the amount that the merc is carrying on him or herself
   let iId: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iFunds: INT32;
   let sString: CHAR16[] /* [64] */;
   let sX: INT16;
@@ -5304,7 +5304,7 @@ function DisplayAmountOnCurrentMerc(): void {
   iId = GetIdOfThisSlot(iCurrentPersonSelectedId);
 
   if (iId == -1) {
-    pSoldier = NULL;
+    pSoldier = null;
   } else {
     // set soldier
     pSoldier = MercPtrs[iId];

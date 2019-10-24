@@ -166,15 +166,15 @@ function RenderMercsFiles(): void {
 
   // Portrait Box
   GetVideoObject(addressof(hPixHandle), guiPortraitBox);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_PORTRAIT_BOX_X, MERC_FILES_PORTRAIT_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_PORTRAIT_BOX_X, MERC_FILES_PORTRAIT_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Stats Box
   GetVideoObject(addressof(hPixHandle), guiStatsBox);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_STATS_BOX_X, MERC_FILES_STATS_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_STATS_BOX_X, MERC_FILES_STATS_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // bio box
   GetVideoObject(addressof(hPixHandle), guiBioBox);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_BIO_BOX_X + 1, MERC_FILES_BIO_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_BIO_BOX_X + 1, MERC_FILES_BIO_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the mercs face
   DisplayMercFace(GetMercIDFromMERCArray(gubCurMercIndex));
@@ -312,11 +312,11 @@ function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
   let sTemp: char[] /* [100] */;
   let pMerc: Pointer<MERCPROFILESTRUCT>;
   let VObjectDesc: VOBJECT_DESC;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // Portrait Frame
   GetVideoObject(addressof(hPortraitHandle), guiPortraitBox);
-  BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, MERC_FILES_PORTRAIT_BOX_X, MERC_FILES_PORTRAIT_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, MERC_FILES_PORTRAIT_BOX_X, MERC_FILES_PORTRAIT_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   pMerc = addressof(gMercProfiles[ubMercID]);
 
@@ -331,7 +331,7 @@ function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
 
   // Blt face to screen
   GetVideoObject(addressof(hFaceHandle), guiMercFace);
-  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, MERC_FACE_X, MERC_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, MERC_FACE_X, MERC_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // if the merc is dead, shadow the face red and put text over top saying the merc is dead
   if (IsMercDead(ubMercID)) {
@@ -345,7 +345,7 @@ function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
     SetObjectHandleShade(guiMercFace, 0);
 
     // Blt face to screen
-    BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, MERC_FACE_X, MERC_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, MERC_FACE_X, MERC_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL(), 145, MercInfo[Enum341.MERC_FILES_MERC_IS_DEAD], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
@@ -514,7 +514,7 @@ function MercFilesHireMerc(ubMercID: UINT8): BOOLEAN {
   bReturnCode = HireMerc(addressof(HireMercStruct));
   // already have 20 mercs on the team
   if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
-    DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, MercInfo[Enum341.MERC_FILES_HIRE_TO_MANY_PEOPLE_WARNING], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, MercInfo[Enum341.MERC_FILES_HIRE_TO_MANY_PEOPLE_WARNING], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
     return FALSE;
   } else if (bReturnCode == MERC_HIRE_FAILED) {
     // function failed

@@ -6,7 +6,7 @@ interface MERCPLACEMENT {
   fPlaced: BOOLEAN;
 }
 
-let gMercPlacement: Pointer<MERCPLACEMENT> = NULL;
+let gMercPlacement: Pointer<MERCPLACEMENT> = null;
 
 const enum Enum310 {
   DONE_BUTTON,
@@ -38,8 +38,8 @@ let gubCursorGroupID: UINT8 = 0;
 let gbSelectedMercID: INT8 = -1;
 let gbHilightedMercID: INT8 = -1;
 let gbCursorMercID: INT8 = -1;
-let gpTacticalPlacementSelectedSoldier: Pointer<SOLDIERTYPE> = NULL;
-let gpTacticalPlacementHilightedSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gpTacticalPlacementSelectedSoldier: Pointer<SOLDIERTYPE> = null;
+let gpTacticalPlacementHilightedSoldier: Pointer<SOLDIERTYPE> = null;
 
 let gfNorth: BOOLEAN;
 let gfEast: BOOLEAN;
@@ -220,7 +220,7 @@ function RenderTacticalPlacementGUI(): void {
       gbHilightedMercID = -1;
       gubHilightedGroupID = 0;
       SetCursorMerc(gbSelectedMercID);
-      gpTacticalPlacementHilightedSoldier = NULL;
+      gpTacticalPlacementHilightedSoldier = null;
     }
   }
   // If the display is dirty render the entire panel.
@@ -238,8 +238,8 @@ function RenderTacticalPlacementGUI(): void {
       xp = 95 + (i / 2) * 54;
       yp = (i % 2) ? 422 : 371;
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 36, yp + 2, xp + 44, yp + 30, 0);
-      BltVideoObjectFromIndex(FRAME_BUFFER, giMercPanelImage, 0, xp, yp, VO_BLT_SRCTRANSPARENCY, NULL);
-      BltVideoObjectFromIndex(FRAME_BUFFER, gMercPlacement[i].uiVObjectID, 0, xp + 2, yp + 2, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, giMercPanelImage, 0, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObjectFromIndex(FRAME_BUFFER, gMercPlacement[i].uiVObjectID, 0, xp + 2, yp + 2, VO_BLT_SRCTRANSPARENCY, null);
       // HEALTH BAR
       if (!pSoldier.value.bLife)
         continue;
@@ -335,7 +335,7 @@ function RenderTacticalPlacementGUI(): void {
     SetFontShadow(141);
     // Render the question mark over the face if the merc hasn't yet been placed.
     if (gMercPlacement[i].fPlaced) {
-      RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (xp + 16), (yp + 14), (xp + 24), (yp + 22));
+      RegisterBackgroundRect(BGND_FLAG_SINGLE, null, (xp + 16), (yp + 14), (xp + 24), (yp + 22));
     } else {
       mprintf(xp + 16, yp + 14, "?");
       InvalidateRegion(xp + 16, yp + 14, xp + 24, yp + 22);
@@ -380,7 +380,7 @@ function TacticalPlacementHandle(): void {
   if (gfRightButtonState) {
     gbSelectedMercID = -1;
     gubSelectedGroupID = 0;
-    gpTacticalPlacementSelectedSoldier = NULL;
+    gpTacticalPlacementSelectedSoldier = null;
   }
 
   while (DequeueEvent(addressof(InputEvent))) {
@@ -459,8 +459,8 @@ function KillTacticalPlacementGUI(): void {
   gubSelectedGroupID = 0;
   gubHilightedGroupID = 0;
   gbCursorMercID = -1;
-  gpTacticalPlacementHilightedSoldier = NULL;
-  gpTacticalPlacementSelectedSoldier = NULL;
+  gpTacticalPlacementHilightedSoldier = null;
+  gpTacticalPlacementSelectedSoldier = null;
 
   // Destroy the tactical placement gui.
   gfEnterTacticalPlacementGUI = FALSE;

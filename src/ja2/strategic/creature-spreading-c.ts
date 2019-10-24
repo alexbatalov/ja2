@@ -107,7 +107,7 @@ function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UI
 
   curr.value.pLevel.value.ubCreatureHabitat = ubCreatureHabitat;
   Assert(curr.value.pLevel);
-  curr.value.next = NULL;
+  curr.value.next = null;
   return curr;
 }
 
@@ -752,11 +752,11 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
   SectorInfo[ubSectorID].ubDayOfLastCreatureAttack = GetWorldDay();
   switch (gubCreatureBattleCode) {
     case Enum129.CREATURE_BATTLE_CODE_PREBATTLEINTERFACE:
-      InitPreBattleInterface(NULL, TRUE);
+      InitPreBattleInterface(null, TRUE);
       break;
     case Enum129.CREATURE_BATTLE_CODE_AUTORESOLVE:
       gfAutomaticallyStartAutoResolve = TRUE;
-      InitPreBattleInterface(NULL, TRUE);
+      InitPreBattleInterface(null, TRUE);
       break;
     case Enum129.CREATURE_BATTLE_CODE_TACTICALLYADD:
       PrepareCreaturesForBattle();
@@ -791,7 +791,7 @@ function DeleteDirectiveNode(node: Pointer<Pointer<CREATURE_DIRECTIVE>>): void {
   if ((node.value).value.next)
     DeleteDirectiveNode(addressof((node.value).value.next));
   MemFree(node.value);
-  node.value = NULL;
+  node.value = null;
 }
 
 // Recursively delete all nodes (from the top down).

@@ -117,7 +117,7 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
         if ((bTownId != Enum135.OMERTA) || (GetWorldDay() != 1)) {
           ubSectorID = SECTOR(sMapX, sMapY);
           if (!bMapZ && ubSectorID != Enum123.SEC_J9 && ubSectorID != Enum123.SEC_K4) {
-            HandleMoraleEvent(NULL, Enum234.MORALE_TOWN_LIBERATED, sMapX, sMapY, bMapZ);
+            HandleMoraleEvent(null, Enum234.MORALE_TOWN_LIBERATED, sMapX, sMapY, bMapZ);
             HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_GAIN_TOWN_SECTOR, sMapX, sMapY, bMapZ);
 
             // liberation by definition requires that the place was enemy controlled in the first place
@@ -129,7 +129,7 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
       // if it's a mine that's still worth something
       if (IsThereAMineInThisSector(sMapX, sMapY)) {
         if (GetTotalLeftInMine(GetMineIndexForSector(sMapX, sMapY)) > 0) {
-          HandleMoraleEvent(NULL, Enum234.MORALE_MINE_LIBERATED, sMapX, sMapY, bMapZ);
+          HandleMoraleEvent(null, Enum234.MORALE_MINE_LIBERATED, sMapX, sMapY, bMapZ);
           HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_GAIN_MINE, sMapX, sMapY, bMapZ);
         }
       }
@@ -141,7 +141,7 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
           HandleMeanWhileEventPostingForSAMLiberation(GetSAMIdFromSector(sMapX, sMapY, bMapZ));
         }
 
-        HandleMoraleEvent(NULL, Enum234.MORALE_SAM_SITE_LIBERATED, sMapX, sMapY, bMapZ);
+        HandleMoraleEvent(null, Enum234.MORALE_SAM_SITE_LIBERATED, sMapX, sMapY, bMapZ);
         HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_GAIN_SAM, sMapX, sMapY, bMapZ);
 
         // if Skyrider has been delivered to chopper, and already mentioned Drassen SAM site, but not used this quote yet
@@ -238,7 +238,7 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
       if ((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS)) {
         ubSectorID = SECTOR(sMapX, sMapY);
         if (!bMapZ && ubSectorID != Enum123.SEC_J9 && ubSectorID != Enum123.SEC_K4) {
-          HandleMoraleEvent(NULL, Enum234.MORALE_TOWN_LOST, sMapX, sMapY, bMapZ);
+          HandleMoraleEvent(null, Enum234.MORALE_TOWN_LOST, sMapX, sMapY, bMapZ);
           HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_LOSE_TOWN_SECTOR, sMapX, sMapY, bMapZ);
 
           CheckIfEntireTownHasBeenLost(bTownId, sMapX, sMapY);
@@ -250,14 +250,14 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
         // if it isn't empty
         if (GetTotalLeftInMine(GetMineIndexForSector(sMapX, sMapY)) > 0) {
           QueenHasRegainedMineSector(GetMineIndexForSector(sMapX, sMapY));
-          HandleMoraleEvent(NULL, Enum234.MORALE_MINE_LOST, sMapX, sMapY, bMapZ);
+          HandleMoraleEvent(null, Enum234.MORALE_MINE_LOST, sMapX, sMapY, bMapZ);
           HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_LOSE_MINE, sMapX, sMapY, bMapZ);
         }
       }
 
       // if it's a SAM site sector
       if (IsThisSectorASAMSector(sMapX, sMapY, bMapZ)) {
-        HandleMoraleEvent(NULL, Enum234.MORALE_SAM_SITE_LOST, sMapX, sMapY, bMapZ);
+        HandleMoraleEvent(null, Enum234.MORALE_SAM_SITE_LOST, sMapX, sMapY, bMapZ);
         HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_LOSE_SAM, sMapX, sMapY, bMapZ);
       }
 

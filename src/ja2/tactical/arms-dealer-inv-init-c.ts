@@ -756,7 +756,7 @@ function GetPointerToDealersPossibleInventory(ubArmsDealerID: UINT8): Pointer<DE
       break;
 
     default:
-      return NULL;
+      return null;
   }
 }
 

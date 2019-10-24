@@ -175,13 +175,13 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): BOOLEAN {
   }
 
   // READ #
-  if (!FileRead(hFile, addressof(gsNumAmbData), sizeof(INT16), NULL)) {
+  if (!FileRead(hFile, addressof(gsNumAmbData), sizeof(INT16), null)) {
     return FALSE;
   }
 
   // LOOP FOR OTHERS
   for (cnt = 0; cnt < gsNumAmbData; cnt++) {
-    if (!FileRead(hFile, addressof(gAmbData[cnt]), sizeof(AMBIENTDATA_STRUCT), NULL)) {
+    if (!FileRead(hFile, addressof(gAmbData[cnt]), sizeof(AMBIENTDATA_STRUCT), null)) {
       return FALSE;
     }
 

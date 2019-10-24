@@ -512,6 +512,6 @@ function CheckForValidArrivalSector(): void {
 
     swprintf(sString, "Arrival of new recruits is being rerouted to sector %s, as scheduled drop-off point of sector %s is enemy occupied.", zShortTownIDString2, zShortTownIDString1);
 
-    DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, NULL);
+    DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
   }
 }

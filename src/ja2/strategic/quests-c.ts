@@ -139,12 +139,12 @@ function CheckIfMercIsNearNPC(pMerc: Pointer<SOLDIERTYPE>, ubProfileId: UINT8): 
   let sGridNo: INT16;
 
   // no merc nearby?
-  if (pMerc == NULL) {
+  if (pMerc == null) {
     return FALSE;
   }
 
   pNPC = FindSoldierByProfileID(ubProfileId, FALSE);
-  if (pNPC == NULL) {
+  if (pNPC == null) {
     return FALSE;
   }
   sGridNo = pNPC.value.sGridNo;
@@ -646,10 +646,10 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       gubFact[usFact] = ((gMercProfiles[Enum268.SLAY].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gMercProfiles[Enum268.SLAY].usTotalDaysServed > 1));
       break;
     case Enum170.FACT_SHANK_IN_SQUAD_BUT_NOT_SPEAKING:
-      gubFact[usFact] = ((FindSoldierByProfileID(Enum268.SHANK, TRUE) != NULL) && (gMercProfiles[Enum268.SHANK].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gpSrcSoldier == NULL || gpSrcSoldier.value.ubProfile != Enum268.SHANK));
+      gubFact[usFact] = ((FindSoldierByProfileID(Enum268.SHANK, TRUE) != null) && (gMercProfiles[Enum268.SHANK].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gpSrcSoldier == null || gpSrcSoldier.value.ubProfile != Enum268.SHANK));
       break;
     case Enum170.FACT_SHANK_NOT_IN_SECTOR:
-      gubFact[usFact] = (FindSoldierByProfileID(Enum268.SHANK, FALSE) == NULL);
+      gubFact[usFact] = (FindSoldierByProfileID(Enum268.SHANK, FALSE) == null);
       break;
     case Enum170.FACT_QUEEN_DEAD:
       gubFact[usFact] = (gMercProfiles[Enum268.QUEEN].bMercStatus == MERC_IS_DEAD);
@@ -679,7 +679,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       gubFact[usFact] = (gMercProfiles[Enum268.DYNAMO].bMercStatus != MERC_IS_DEAD);
       break;
     case Enum170.FACT_DYNAMO_SPEAKING_OR_NEARBY:
-      gubFact[usFact] = (gpSrcSoldier != NULL && (gpSrcSoldier.value.ubProfile == Enum268.DYNAMO || (CheckNPCWithin(gpSrcSoldier.value.ubProfile, Enum268.DYNAMO, 10) && CheckGuyVisible(gpSrcSoldier.value.ubProfile, Enum268.DYNAMO))));
+      gubFact[usFact] = (gpSrcSoldier != null && (gpSrcSoldier.value.ubProfile == Enum268.DYNAMO || (CheckNPCWithin(gpSrcSoldier.value.ubProfile, Enum268.DYNAMO, 10) && CheckGuyVisible(gpSrcSoldier.value.ubProfile, Enum268.DYNAMO))));
       break;
     case Enum170.FACT_JOHN_EPC:
       gubFact[usFact] = CheckNPCIsEPC(Enum268.JOHN);
@@ -874,7 +874,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case Enum170.FACT_ROCKET_RIFLE_EXISTS:
-      gubFact[usFact] = ItemTypeExistsAtLocation(10472, Enum225.ROCKET_RIFLE, 0, NULL);
+      gubFact[usFact] = ItemTypeExistsAtLocation(10472, Enum225.ROCKET_RIFLE, 0, null);
       break;
 
     case Enum170.FACT_DOREEN_ALIVE:
@@ -987,7 +987,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case Enum170.FACT_DYNAMO_NOT_SPEAKER:
-      gubFact[usFact] = !(gpSrcSoldier != NULL && (gpSrcSoldier.value.ubProfile == Enum268.DYNAMO));
+      gubFact[usFact] = !(gpSrcSoldier != null && (gpSrcSoldier.value.ubProfile == Enum268.DYNAMO));
       break;
 
     case Enum170.FACT_PABLO_BRIBED:
@@ -995,7 +995,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case Enum170.FACT_VEHICLE_PRESENT:
-      gubFact[usFact] = CheckFact(Enum170.FACT_OK_USE_HUMMER, ubProfileID) && ((FindSoldierByProfileID(Enum268.PROF_HUMMER, TRUE) != NULL) || (FindSoldierByProfileID(Enum268.PROF_ICECREAM, TRUE) != NULL));
+      gubFact[usFact] = CheckFact(Enum170.FACT_OK_USE_HUMMER, ubProfileID) && ((FindSoldierByProfileID(Enum268.PROF_HUMMER, TRUE) != null) || (FindSoldierByProfileID(Enum268.PROF_ICECREAM, TRUE) != null));
       break;
 
     case Enum170.FACT_PLAYER_KILLED_BOXERS:

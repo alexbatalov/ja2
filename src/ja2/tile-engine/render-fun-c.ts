@@ -68,7 +68,7 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   //	UINT32 cnt;
   //  ITEM_POOL					*pItemPool;
   //	INT16							sX, sY;
-  let pNode: Pointer<LEVELNODE> = NULL;
+  let pNode: Pointer<LEVELNODE> = null;
   let pStructure: Pointer<STRUCTURE>;
   let pBase: Pointer<STRUCTURE>;
 
@@ -99,7 +99,7 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   // Look for anything but walls pn this gridno!
   pStructure = gpWorldLevelData[sGridNo].pStructureHead;
 
-  while (pStructure != NULL) {
+  while (pStructure != null) {
     if (pStructure.value.sCubeOffset == STRUCTURE_ON_GROUND || (pStructure.value.fFlags & STRUCTURE_SLANTED_ROOF)) {
       if (((pStructure.value.fFlags & STRUCTURE_OBSTACLE) && !(pStructure.value.fFlags & (STRUCTURE_PERSON | STRUCTURE_CORPSE))) || (pStructure.value.fFlags & STRUCTURE_SLANTED_ROOF)) {
         pBase = FindBaseStructure(pStructure);
@@ -126,7 +126,7 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
 }
 
 function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
-  let pNode: Pointer<LEVELNODE> = NULL;
+  let pNode: Pointer<LEVELNODE> = null;
   let pStructure: Pointer<STRUCTURE>;
   let pBase: Pointer<STRUCTURE>;
   let ubLoop: UINT8;
@@ -138,7 +138,7 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
   // CHECK FOR A SLANTED ROOF HERE....
   pStructure = FindStructure(sCheckGridNo, STRUCTURE_SLANTED_ROOF);
 
-  if (pStructure != NULL) {
+  if (pStructure != null) {
     // We have a slanted roof here ... find base and remove...
     pBase = FindBaseStructure(pStructure);
 
@@ -188,7 +188,7 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
   let pItemPool: Pointer<ITEM_POOL>;
   let sX: INT16;
   let sY: INT16;
-  let pNode: Pointer<LEVELNODE> = NULL;
+  let pNode: Pointer<LEVELNODE> = null;
   let fSaidItemSeenQuote: BOOLEAN = FALSE;
 
   //	STRUCTURE					*pStructure;//, *pBase;
@@ -207,7 +207,7 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
           if (!fSaidItemSeenQuote) {
             fSaidItemSeenQuote = TRUE;
 
-            if (pSoldier != NULL) {
+            if (pSoldier != null) {
               TacticalCharacterDialogue(pSoldier, (Enum202.QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
             }
           }

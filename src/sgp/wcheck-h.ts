@@ -10,7 +10,7 @@ const CHECKV = (exp) => {
 };
 const CHECKN = (exp) => {
   if (!(exp)) {
-    return (NULL);
+    return (null);
   }
 };
 const CHECKBI = (exp) => {
@@ -34,7 +34,7 @@ const CHECKASSERTV = (exp) => {
 const CHECKASSERTN = (exp) => {
   if (!(exp)) {
     ASSERT(0);
-    return (NULL);
+    return (null);
   }
 };
 const CHECKASSERTBI = (exp) => {

@@ -30,8 +30,8 @@ let fSuspendFlics: BOOLEAN = FALSE;
 let uiFlicsPlaying: UINT32 = 0;
 let guiSmackPixelFormat: UINT32 = SMACKBUFFER565;
 
-let lpVideoPlayback: LPDIRECTDRAWSURFACE = NULL;
-let lpVideoPlayback2: LPDIRECTDRAWSURFACE2 = NULL;
+let lpVideoPlayback: LPDIRECTDRAWSURFACE = null;
+let lpVideoPlayback2: LPDIRECTDRAWSURFACE2 = null;
 
 function SmkPollFlics(): BOOLEAN {
   let uiCount: UINT32;
@@ -43,7 +43,7 @@ function SmkPollFlics(): BOOLEAN {
       fFlicStatus = TRUE;
       if (!fSuspendFlics) {
         if (!SmackWait(SmkList[uiCount].SmackHandle)) {
-          DDLockSurface(SmkList[uiCount].lpDDS, NULL, addressof(SurfaceDescription), 0, NULL);
+          DDLockSurface(SmkList[uiCount].lpDDS, null, addressof(SurfaceDescription), 0, null);
           SmackToBuffer(SmkList[uiCount].SmackHandle, SmkList[uiCount].uiLeft, SmkList[uiCount].uiTop, SurfaceDescription.lPitch, SmkList[uiCount].SmackHandle.value.Height, SurfaceDescription.lpSurface, guiSmackPixelFormat);
           SmackDoFrame(SmkList[uiCount].SmackHandle);
           DDUnlockSurface(SmkList[uiCount].lpDDS, SurfaceDescription.lpSurface);
@@ -70,7 +70,7 @@ function SmkPollFlics(): BOOLEAN {
 }
 
 function SmkInitialize(hWindow: HWND, uiWidth: UINT32, uiHeight: UINT32): void {
-  let pSoundDriver: HDIGDRIVER = NULL;
+  let pSoundDriver: HDIGDRIVER = null;
 
   // Wipe the flic list clean
   memset(SmkList, 0, sizeof(SMKFLIC) * SMK_NUM_FLICS);
@@ -105,8 +105,8 @@ function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, f
   let pSmack: Pointer<SMKFLIC>;
 
   // Open the flic
-  if ((pSmack = SmkOpenFlic(cFilename)) == NULL)
-    return NULL;
+  if ((pSmack = SmkOpenFlic(cFilename)) == null)
+    return null;
 
   // Set the blitting position on the screen
   SmkSetBlitPosition(pSmack, uiLeft, uiTop);
@@ -126,13 +126,13 @@ function SmkOpenFlic(cFilename: Pointer<CHAR8>): Pointer<SMKFLIC> {
   // Get an available flic slot from the list
   if (!(pSmack = SmkGetFreeFlic())) {
     ErrorMsg("SMK ERROR: Out of flic slots, cannot open another");
-    return NULL;
+    return null;
   }
 
   // Attempt opening the filename
   if (!(pSmack.value.hFileHandle = FileOpen(cFilename, FILE_OPEN_EXISTING | FILE_ACCESS_READ, FALSE))) {
     ErrorMsg("SMK ERROR: Can't open the SMK file");
-    return NULL;
+    return null;
   }
 
   // Get the real file handle for the file man handle for the smacker file
@@ -141,14 +141,14 @@ function SmkOpenFlic(cFilename: Pointer<CHAR8>): Pointer<SMKFLIC> {
   // Allocate a Smacker buffer for video decompression
   if (!(pSmack.value.SmackBuffer = SmackBufferOpen(hDisplayWindow, SMACKAUTOBLIT, 640, 480, 0, 0))) {
     ErrorMsg("SMK ERROR: Can't allocate a Smacker decompression buffer");
-    return NULL;
+    return null;
   }
 
   if (!(pSmack.value.SmackHandle = SmackOpen(hFile, SMACKFILEHANDLE | SMACKTRACKS, SMACKAUTOEXTRA)))
   //	if(!(pSmack->SmackHandle=SmackOpen(cFilename, SMACKTRACKS, SMACKAUTOEXTRA)))
   {
     ErrorMsg("SMK ERROR: Smacker won't open the SMK file");
-    return NULL;
+    return null;
   }
 
   // Make sure we have a video surface
@@ -190,7 +190,7 @@ function SmkGetFreeFlic(): Pointer<SMKFLIC> {
     if (!(SmkList[uiCount].uiFlags & SMK_FLIC_OPEN))
       return addressof(SmkList[uiCount]);
 
-  return NULL;
+  return null;
 }
 
 function SmkSetupVideo(): void {

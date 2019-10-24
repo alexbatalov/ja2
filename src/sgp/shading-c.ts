@@ -56,8 +56,8 @@ function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPale
   let gmod: UINT32;
   let bmod: UINT32;
 
-  Assert(pSrcPalette != NULL);
-  Assert(pDestPalette != NULL);
+  Assert(pSrcPalette != null);
+  Assert(pDestPalette != null);
 
   for (cnt = 0; cnt < 256; cnt++) {
     if (fMono) {

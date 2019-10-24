@@ -75,15 +75,15 @@ let gubScheduleInstructions: UINT8 = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
 // these temp values must be updated when different mercs are selected, and reset when a merc detailed
 // placement is created.
 let gpMercSlotItem: Pointer<OBJECTTYPE>[] /* [9] */ = [
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
 ];
 // Because we only support these nine slots, they aren't continuous values, so this array helps
 // processing functions by referring to this array to get the appropriate slot.
@@ -607,7 +607,7 @@ function ResetAllMercPositions(): void {
   while (curr) {
     if (curr.value.pSoldier) {
       TacticalRemoveSoldier(curr.value.pSoldier.value.ubID);
-      curr.value.pSoldier = NULL;
+      curr.value.pSoldier = null;
     }
     // usMapIndex = gpSelected->pBasicPlacement->usStartingGridNo;
     // ConvertGridNoToCellXY( usMapIndex, &sCellX, &sCellY );
@@ -624,7 +624,7 @@ function ResetAllMercPositions(): void {
   AddSoldierInitListTeamToWorld(CREATURE_TEAM, 255);
   AddSoldierInitListTeamToWorld(MILITIA_TEAM, 255);
   AddSoldierInitListTeamToWorld(CIV_TEAM, 255);
-  gpSelected = NULL;
+  gpSelected = null;
   gsSelectedMercID = -1;
 }
 
@@ -695,7 +695,7 @@ function EraseMercWaypoint(): void {
 //	for NPC mercs) to reflect the base difficulty level selected.
 //
 function ChangeBaseSoldierStats(pSoldier: Pointer<SOLDIERTYPE>): void {
-  if (pSoldier == NULL)
+  if (pSoldier == null)
     return;
 
   pSoldier.value.bLifeMax = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
@@ -1192,7 +1192,7 @@ function DisplayWayPoints(): void {
     return;
 
   GetSoldier(addressof(pSoldier), gsSelectedMercID);
-  if (pSoldier == NULL || !pSoldier.value.bActive)
+  if (pSoldier == null || !pSoldier.value.bActive)
     return;
 
   // point 0 is not used!
@@ -1421,7 +1421,7 @@ function IndicateSelectedMerc(sID: INT16): void {
       break;
     case Enum43.SELECT_NO_MERC:
       SetMercEditability(TRUE);
-      gpSelected = NULL;
+      gpSelected = null;
       gsSelectedMercID = -1;
       gsSelectedGridNo = 0;
       SetMercEditingMode(Enum42.MERC_TEAMMODE);
@@ -1579,7 +1579,7 @@ function IndicateSelectedMerc(sID: INT16): void {
 function DeleteSelectedMerc(): void {
   if (gsSelectedMercID != -1) {
     RemoveSoldierNodeFromInitList(gpSelected);
-    gpSelected = NULL;
+    gpSelected = null;
     gsSelectedMercID = -1;
     gfRenderWorld = TRUE;
     if (TextInputMode())
@@ -1723,7 +1723,7 @@ function ExtractAndUpdateMercProfile(): void {
 
 function SetupTextInputForMercSchedule(): void {
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
-  AddUserInputField(NULL);
+  AddUserInputField(null);
   AddTextInputField(268, 373, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, Enum383.INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
   SetExclusive24HourTimeValue(1, gCurrSchedule.usTime[0]);
   AddTextInputField(268, 394, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, Enum383.INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
@@ -1738,7 +1738,7 @@ function ExtractAndUpdateMercSchedule(): void {
   let i: INT32;
   let fValidSchedule: BOOLEAN = FALSE;
   let fScheduleNeedsUpdate: BOOLEAN = FALSE;
-  let pNext: Pointer<SCHEDULENODE> = NULL;
+  let pNext: Pointer<SCHEDULENODE> = null;
   if (!gpSelected)
     return;
   // extract all of the fields into a temp schedulenode.
@@ -1837,7 +1837,7 @@ function InitDetailedPlacementForMerc(): void {
 function KillDetailedPlacementForMerc(): void {
   Assert(gpSelected.value.pDetailedPlacement);
   MemFree(gpSelected.value.pDetailedPlacement);
-  gpSelected.value.pDetailedPlacement = NULL;
+  gpSelected.value.pDetailedPlacement = null;
   gpSelected.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
   SetMercEditability(TRUE);
 }
@@ -2110,7 +2110,7 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
       UpdateMercItemSlots();
       ShowItemStatsPanel();
       if (gbCurrSelect == -1)
-        SpecifyItemToEdit(NULL, -1);
+        SpecifyItemToEdit(null, -1);
       else
         SpecifyItemToEdit(gpMercSlotItem[gbCurrSelect], -1);
       HideEditorButtons(Enum32.MERCS_DELETE, Enum32.MERCS_NEXT);
@@ -2314,8 +2314,8 @@ function UpdateMercsInfo(): void {
       break;
     case Enum42.MERC_BASICMODE:
     case Enum42.MERC_GENERALMODE:
-      BltVideoObjectFromIndex(FRAME_BUFFER, guiExclamation, 0, 188, 362, VO_BLT_SRCTRANSPARENCY, NULL);
-      BltVideoObjectFromIndex(FRAME_BUFFER, guiKeyImage, 0, 186, 387, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, guiExclamation, 0, 188, 362, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObjectFromIndex(FRAME_BUFFER, guiKeyImage, 0, 186, 387, VO_BLT_SRCTRANSPARENCY, null);
       SetFont(SMALLCOMPFONT());
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
@@ -2387,7 +2387,7 @@ function UpdateMercsInfo(): void {
         mprintf(396, 398, "RANDOM");
         mprintf(396, 422, "RANDOM");
         mprintf(396, 446, "RANDOM");
-        ShowEditMercPalettes(NULL); // will display grey scale to signify random
+        ShowEditMercPalettes(null); // will display grey scale to signify random
       }
       DisplayBodyTypeInfo();
       break;
@@ -2544,7 +2544,7 @@ function RenderSelectedMercsInventory(): void {
       Blt16BPPTo16BPPTrans(pDst, uiDstPitchBYTES, pSrc, uiSrcPitchBYTES, xp, yp, 0, 0, i < 3 ? 22 : 44, 15, 0);
       UnLockVideoSurface(FRAME_BUFFER);
       UnLockVideoSurface(guiMercInvPanelBuffers[i]);
-      LoadItemInfo(gpMercSlotItem[i].value.usItem, pItemName, NULL);
+      LoadItemInfo(gpMercSlotItem[i].value.usItem, pItemName, null);
       // Render the text
       switch (i) {
         case 2: // legs (to the right of the box, but move it down to make room for right hand text)
@@ -2748,7 +2748,7 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
 function RenderMercInventoryPanel(): void {
   let x: INT32;
   // Draw the graphical panel
-  BltVideoObjectFromIndex(FRAME_BUFFER, guiMercInventoryPanel, 0, MERCPANEL_X, MERCPANEL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(FRAME_BUFFER, guiMercInventoryPanel, 0, MERCPANEL_X, MERCPANEL_Y, VO_BLT_SRCTRANSPARENCY, null);
   // Mark the buttons dirty, so they don't disappear.
   for (x = FIRST_MERCS_INVENTORY_BUTTON; x <= LAST_MERCS_INVENTORY_BUTTON; x++) {
     MarkAButtonDirty(iEditorButton[x]);
@@ -2821,7 +2821,7 @@ function UpdateMercItemSlots(): void {
   let x: INT8;
   if (!gpSelected.value.pDetailedPlacement) {
     for (x = 0; x < 9; x++) {
-      gpMercSlotItem[x] = NULL;
+      gpMercSlotItem[x] = null;
     }
   } else {
     if (gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE) {
@@ -2835,7 +2835,7 @@ function UpdateMercItemSlots(): void {
     }
   }
   SetDroppableCheckboxesBasedOnMercsInventory();
-  SpecifyItemToEdit(NULL, -1);
+  SpecifyItemToEdit(null, -1);
   gbCurrSelect = -1;
   gbCurrHilite = -1;
 }

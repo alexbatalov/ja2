@@ -4,7 +4,7 @@ let guiPreRandomNums: UINT32[] /* [MAX_PREGENERATED_NUMS] */;
 function InitializeRandom(): void {
   // Seed the random-number generator with current time so that
   // the numbers will be different every time we run.
-  srand(time(NULL));
+  srand(time(null));
   // Pregenerate all of the random numbers.
   for (guiPreRandomIndex = 0; guiPreRandomIndex < MAX_PREGENERATED_NUMS; guiPreRandomIndex++) {
     guiPreRandomNums[guiPreRandomIndex] = rand();

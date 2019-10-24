@@ -5,7 +5,7 @@ let gfAniEditMode: BOOLEAN = FALSE;
 
 /* static */ let fOKFiles: BOOLEAN = FALSE;
 /* static */ let ubNumStates: UINT8 = 0;
-/* static */ let pusStates: Pointer<UINT16> = NULL;
+/* static */ let pusStates: Pointer<UINT16> = null;
 /* static */ let ubCurLoadedState: INT8 = 0;
 
 function CycleAnimations(): void {
@@ -280,7 +280,7 @@ function BuildListFile(): void {
       pusStates[cnt] = usState;
     } else {
       swprintf(zError, "Animation str %S is not known: ", currFilename);
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zError, Enum26.ANIEDIT_SCREEN, MSG_BOX_FLAG_YESNO, NULL, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zError, Enum26.ANIEDIT_SCREEN, MSG_BOX_FLAG_YESNO, null, null);
       fclose(infoFile);
       return;
     }

@@ -161,7 +161,7 @@ function MemAllocLocked(uiSize: UINT32): Pointer<PTR> {
   if (!fMemManagerInit)
     DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("MemAllocLocked: Warning -- Memory manager not initialized!!! "));
 
-  ptr = VirtualAlloc(NULL, uiSize, MEM_COMMIT, PAGE_READWRITE);
+  ptr = VirtualAlloc(null, uiSize, MEM_COMMIT, PAGE_READWRITE);
 
   if (ptr) {
     VirtualLock(ptr, uiSize);
@@ -180,7 +180,7 @@ function MemFreeLocked(ptr: PTR, uiSize: UINT32): void {
   if (!fMemManagerInit)
     DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("MemFreeLocked: Warning -- Memory manager not initialized!!! "));
 
-  if (ptr != NULL) {
+  if (ptr != null) {
     VirtualUnlock(ptr, uiSize);
     VirtualFree(ptr, uiSize, MEM_RELEASE);
 

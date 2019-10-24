@@ -233,7 +233,7 @@ function RenderRadarScreen(): void {
       }
     }
 
-    BltVideoObjectFromIndex(guiSAVEBUFFER, gusRadarImage, 0, RADAR_WINDOW_X, gsRadarY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(guiSAVEBUFFER, gusRadarImage, 0, RADAR_WINDOW_X, gsRadarY, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // FIRST DELETE WHAT'S THERE
@@ -350,7 +350,7 @@ function RenderRadarScreen(): void {
     for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
       pSoldier = MercSlots[cnt];
 
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         // Don't place guys in radar until visible!
         if (pSoldier.value.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS) && !(pSoldier.value.ubMiscSoldierFlags & SOLDIER_MISC_XRAYED)) {
           continue;
@@ -508,7 +508,7 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiHandle)));
 
     GetVideoObject(addressof(hHandle), uiHandle);
-    BltVideoObject(guiSAVEBUFFER, hHandle, 0, 538, 0 + gsVIEWPORT_END_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 0, 538, 0 + gsVIEWPORT_END_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     RestoreExternBackgroundRect(538, gsVIEWPORT_END_Y, (640 - 538), (480 - gsVIEWPORT_END_Y));
 

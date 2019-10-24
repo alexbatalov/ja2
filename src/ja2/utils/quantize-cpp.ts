@@ -6,16 +6,16 @@ class CQuantizer {
   protected m_nColorBits: UINT;
 
   constructor(nMaxColors: UINT, nColorBits: UINT) {
-    m_pTree = NULL;
+    m_pTree = null;
     m_nLeafCount = 0;
     for (let i: int = 0; i <= nColorBits; i++)
-      m_pReducibleNodes[i] = NULL;
+      m_pReducibleNodes[i] = null;
     m_nMaxColors = nMaxColors;
     m_nColorBits = nColorBits;
   }
 
   dispose(): void {
-    if (m_pTree != NULL)
+    if (m_pTree != null)
       DeleteTree(addressof(m_pTree));
   }
 
@@ -77,7 +77,7 @@ class CQuantizer {
     //
     // If the node doesn't exist, create it.
     //
-    if (ppNode.value == NULL)
+    if (ppNode.value == null)
       ppNode.value = CreateNode(nLevel, nColorBits, pLeafCount, pReducibleNodes);
 
     //
@@ -103,8 +103,8 @@ class CQuantizer {
   CreateNode(nLevel: UINT, nColorBits: UINT, pLeafCount: Pointer<UINT>, pReducibleNodes: Pointer<Pointer<NODE>>): Pointer<NODE> {
     let pNode: Pointer<NODE>;
 
-    if ((pNode = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(NODE))) == NULL)
-      return NULL;
+    if ((pNode = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(NODE))) == null)
+      return null;
 
     pNode.value.bIsLeaf = (nLevel == nColorBits) ? TRUE : FALSE;
     if (pNode.value.bIsLeaf)
@@ -120,7 +120,7 @@ class CQuantizer {
     //
     // Find the deepest level containing at least one reducible node.
     //
-    for (let i: int = nColorBits - 1; (i > 0) && (pReducibleNodes[i] == NULL); i--)
+    for (let i: int = nColorBits - 1; (i > 0) && (pReducibleNodes[i] == null); i--)
       ;
 
     //
@@ -135,13 +135,13 @@ class CQuantizer {
     let nChildren: UINT = 0;
 
     for (i = 0; i < 8; i++) {
-      if (pNode.value.pChild[i] != NULL) {
+      if (pNode.value.pChild[i] != null) {
         nRedSum += pNode.value.pChild[i].value.nRedSum;
         nGreenSum += pNode.value.pChild[i].value.nGreenSum;
         nBlueSum += pNode.value.pChild[i].value.nBlueSum;
         pNode.value.nPixelCount += pNode.value.pChild[i].value.nPixelCount;
         HeapFree(GetProcessHeap(), 0, pNode.value.pChild[i]);
-        pNode.value.pChild[i] = NULL;
+        pNode.value.pChild[i] = null;
         nChildren++;
       }
     }
@@ -155,11 +155,11 @@ class CQuantizer {
 
   DeleteTree(ppNode: Pointer<Pointer<NODE>>): void {
     for (let i: int = 0; i < 8; i++) {
-      if ((ppNode.value).value.pChild[i] != NULL)
+      if ((ppNode.value).value.pChild[i] != null)
         DeleteTree(addressof((ppNode.value).value.pChild[i]));
     }
     HeapFree(GetProcessHeap(), 0, ppNode.value);
-    ppNode.value = NULL;
+    ppNode.value = null;
   }
 
   GetPaletteColors(pTree: Pointer<NODE>, prgb: Pointer<RGBQUAD>, pIndex: Pointer<UINT>): void {
@@ -171,7 +171,7 @@ class CQuantizer {
       (pIndex.value)++;
     } else {
       for (let i: int = 0; i < 8; i++) {
-        if (pTree.value.pChild[i] != NULL)
+        if (pTree.value.pChild[i] != null)
           GetPaletteColors(pTree.value.pChild[i], prgb, pIndex);
       }
     }

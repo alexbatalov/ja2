@@ -3,7 +3,7 @@
 // The sector information required for the strategic AI.  Contains the number of enemy troops,
 // as well as intentions, etc.
 let SectorInfo: SECTORINFO[] /* [256] */;
-let gpUndergroundSectorInfoHead: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+let gpUndergroundSectorInfoHead: Pointer<UNDERGROUND_SECTORINFO> = null;
 let gfPendingEnemies: BOOLEAN = FALSE;
 
 let gsInterrogationGridNo: INT16[] /* [3] */ = [
@@ -423,7 +423,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
       //			 group after the battle is resolved.
 
       // no one in the group any more continue loop
-      if (pGroup.value.pPlayerList == NULL) {
+      if (pGroup.value.pPlayerList == null) {
         pGroup = pGroup.value.next;
         continue;
       }
@@ -1022,8 +1022,8 @@ function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
   let uiNumOfRecords: UINT32 = 0;
   let cnt: UINT32 = 0;
-  let TempNode: Pointer<UNDERGROUND_SECTORINFO> = NULL;
-  let TempSpot: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+  let TempNode: Pointer<UNDERGROUND_SECTORINFO> = null;
+  let TempSpot: Pointer<UNDERGROUND_SECTORINFO> = null;
 
   // Clear the current LL
   TrashUndergroundSectorInfo();
@@ -1037,7 +1037,7 @@ function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
   for (cnt = 0; cnt < uiNumOfRecords; cnt++) {
     // Malloc space for the new node
     TempNode = MemAlloc(sizeof(UNDERGROUND_SECTORINFO));
-    if (TempNode == NULL)
+    if (TempNode == null)
       return FALSE;
 
     // read in the new node
@@ -1050,14 +1050,14 @@ function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
     if (cnt == 0) {
       gpUndergroundSectorInfoHead = TempNode;
       TempSpot = gpUndergroundSectorInfoHead;
-      TempSpot.value.next = NULL;
+      TempSpot.value.next = null;
     } else {
       // assign the new node to the LL
       TempSpot.value.next = TempNode;
 
       // advance to the next node
       TempSpot = TempSpot.value.next;
-      TempSpot.value.next = NULL;
+      TempSpot.value.next = null;
       gpUndergroundSectorInfoTail = TempSpot;
     }
   }
@@ -1078,7 +1078,7 @@ function FindUnderGroundSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8): Pointe
     pUnderground = pUnderground.value.next;
   }
 
-  return NULL;
+  return null;
 }
 
 function BeginCaptureSquence(): void {

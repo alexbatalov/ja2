@@ -20,7 +20,7 @@ let iLastClickTime: INT32;
 
 let gzFilename: UINT16[] /* [31] */;
 
-let FileList: Pointer<FDLG_LIST> = NULL;
+let FileList: Pointer<FDLG_LIST> = null;
 
 let iFDlgState: INT32 = Enum50.DIALOG_NONE;
 let gfDestroyFDlg: BOOLEAN = FALSE;
@@ -231,7 +231,7 @@ function LoadSaveScreenHandle(): UINT32 {
 
   // Skip to first filename to show
   FListNode = FileList;
-  for (x = 0; x < iTopFileShown && x < iTotalFiles && FListNode != NULL; x++) {
+  for (x = 0; x < iTopFileShown && x < iTotalFiles && FListNode != null; x++) {
     FListNode = FListNode.value.pNext;
   }
 
@@ -242,7 +242,7 @@ function LoadSaveScreenHandle(): UINT32 {
     SetFontBackground(142);
     mprintf(226, 126, "NO FILES IN \\MAPS DIRECTORY");
   } else
-    for (x = iTopFileShown; x < (iTopFileShown + 8) && x < iTotalFiles && FListNode != NULL; x++) {
+    for (x = iTopFileShown; x < (iTopFileShown + 8) && x < iTotalFiles && FListNode != null; x++) {
       if (!EditingText() && x == iCurrFileShown) {
         SetFontForeground(FONT_GRAY2);
         SetFontBackground(FONT_METALGRAY);
@@ -378,11 +378,11 @@ function FileDialogModeCallback(ubID: UINT8, fEntering: BOOLEAN): void {
   if (fEntering) {
     // Skip to first filename
     FListNode = FileList;
-    for (x = 0; x < iTopFileShown && x < iTotalFiles && FListNode != NULL; x++) {
+    for (x = 0; x < iTopFileShown && x < iTotalFiles && FListNode != null; x++) {
       FListNode = FListNode.value.pNext;
     }
     // Find the already selected filename
-    for (x = iTopFileShown; x < iTopFileShown + 8 && x < iTotalFiles && FListNode != NULL; x++) {
+    for (x = iTopFileShown; x < iTopFileShown + 8 && x < iTotalFiles && FListNode != null; x++) {
       if (iCurrFileShown == (x - iTopFileShown)) {
         FListNode.value.FileInfo.zFileName[30] = 0;
         SetInputFieldStringWith8BitString(0, FListNode.value.FileInfo.zFileName);
@@ -407,7 +407,7 @@ function RemoveFileDialog(): void {
   }
 
   TrashFDlgList(FileList);
-  FileList = NULL;
+  FileList = null;
 
   InvalidateScreen();
 
@@ -456,11 +456,11 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
 
   // Skip to first filename
   FListNode = FileList;
-  for (x = 0; x < iTopFileShown && x < iTotalFiles && FListNode != NULL; x++) {
+  for (x = 0; x < iTopFileShown && x < iTotalFiles && FListNode != null; x++) {
     FListNode = FListNode.value.pNext;
   }
 
-  for (x = iTopFileShown; x < (iTopFileShown + 8) && x < iTotalFiles && FListNode != NULL; x++) {
+  for (x = iTopFileShown; x < (iTopFileShown + 8) && x < iTotalFiles && FListNode != null; x++) {
     if (sSelName == (x - iTopFileShown)) {
       let iCurrClickTime: INT32;
       iCurrFileShown = x;
@@ -493,10 +493,10 @@ function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>)
   let pNode: Pointer<FDLG_LIST>;
 
   // Add to start of list
-  if (pList == NULL) {
+  if (pList == null) {
     pNode = MemAlloc(sizeof(FDLG_LIST));
     pNode.value.FileInfo = pInfo.value;
-    pNode.value.pPrev = pNode.value.pNext = NULL;
+    pNode.value.pPrev = pNode.value.pNext = null;
     return pNode;
   }
 
@@ -528,7 +528,7 @@ function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDL
       if (curr.value.pNext)
         curr.value.pNext.value.pPrev = curr.value.pPrev;
       MemFree(node);
-      node = NULL;
+      node = null;
       return TRUE;
     }
     curr = curr.value.pNext;
@@ -539,7 +539,7 @@ function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDL
 function TrashFDlgList(pList: Pointer<FDLG_LIST>): void {
   let pNode: Pointer<FDLG_LIST>;
 
-  while (pList != NULL) {
+  while (pList != null) {
     pNode = pList;
     pList = pList.value.pNext;
     MemFree(pNode);
@@ -689,7 +689,7 @@ function InitErrorCatchDialog(): void {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
-  giErrorCatchMessageBox = DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzErrorCatchString, Enum26.EDIT_SCREEN, MSG_BOX_FLAG_OK, NULL, addressof(CenteringRect));
+  giErrorCatchMessageBox = DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzErrorCatchString, Enum26.EDIT_SCREEN, MSG_BOX_FLAG_OK, null, addressof(CenteringRect));
   gfErrorCatch = FALSE;
 }
 
@@ -757,7 +757,7 @@ function ProcessFileIO(): UINT32 {
       gbCurrentFileIOStatus = Enum51.LOADING_MAP;
       if (gfEditMode && iCurrentTaskbar == Enum36.TASK_MERCS)
         IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
-      SpecifyItemToEdit(NULL, -1);
+      SpecifyItemToEdit(null, -1);
       return Enum26.LOADSAVE_SCREEN;
     case Enum51.LOADING_MAP: // load map
       DisableUndo();
@@ -922,7 +922,7 @@ function ExternalLoadMap(szFilename: Pointer<UINT16>): BOOLEAN {
   ProcessFileIO(); // always returns loadsave_screen and changes iostatus to loading_map.
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  RefreshScreen(NULL);
+  RefreshScreen(null);
   if (ProcessFileIO() == Enum26.EDIT_SCREEN)
     return TRUE;
   return FALSE;
@@ -940,7 +940,7 @@ function ExternalSaveMap(szFilename: Pointer<UINT16>): BOOLEAN {
     return FALSE;
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  RefreshScreen(NULL);
+  RefreshScreen(null);
   if (ProcessFileIO() == Enum26.EDIT_SCREEN)
     return TRUE;
   return FALSE;

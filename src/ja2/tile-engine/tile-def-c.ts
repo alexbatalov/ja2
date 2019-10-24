@@ -152,7 +152,7 @@ function CreateTileDatabase(): void {
     // Get number of regions
     TileSurf = gTileSurfaceArray[cnt1];
 
-    if (TileSurf != NULL) {
+    if (TileSurf != null) {
       // Build start index list
       gTileTypeStartIndex[cnt1] = gTileDatabaseSize;
 
@@ -176,10 +176,10 @@ function CreateTileDatabase(): void {
         TileElement.sBuddyNum = -1;
 
         // Check for multi-z stuff
-        if (TileSurf.value.vo.value.ppZStripInfo != NULL) {
+        if (TileSurf.value.vo.value.ppZStripInfo != null) {
           // Only do this if we are within the # of video objects
           if (cnt2 < TileSurf.value.vo.value.usNumberOfObjects) {
-            if (TileSurf.value.vo.value.ppZStripInfo[cnt2] != NULL) {
+            if (TileSurf.value.vo.value.ppZStripInfo[cnt2] != null) {
               TileElement.uiFlags |= MULTI_Z_TILE;
             }
           } else {
@@ -189,8 +189,8 @@ function CreateTileDatabase(): void {
         }
 
         // Structure database stuff!
-        if (TileSurf.value.pStructureFileRef != NULL && TileSurf.value.pStructureFileRef.value.pubStructureData != NULL) {
-          if (TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2].pDBStructure != NULL) {
+        if (TileSurf.value.pStructureFileRef != null && TileSurf.value.pStructureFileRef.value.pubStructureData != null) {
+          if (TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2].pDBStructure != null) {
             TileElement.pDBStructureRef = addressof(TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2]);
 
             if (TileElement.pDBStructureRef.value.pDBStructure.value.fFlags & STRUCTURE_HIDDEN) {
@@ -204,7 +204,7 @@ function CreateTileDatabase(): void {
         TileElement.ubTerrainID = TileSurf.value.ubTerrainID;
         TileElement.usWallOrientation = Enum314.NO_ORIENTATION;
 
-        if (TileSurf.value.pAuxData != NULL) {
+        if (TileSurf.value.pAuxData != null) {
           if (TileSurf.value.pAuxData[cnt2].fFlags & AUX_FULL_TILE) {
             TileElement.ubFullTile = 1;
           }
@@ -287,7 +287,7 @@ function DeallocateTileDatabase(): void {
 
   for (cnt = 0; cnt < Enum312.NUMBEROFTILES; cnt++) {
     // Check if an existing set of animated tiles are in place, remove if found
-    if (gTileDatabase[cnt].pAnimData != NULL) {
+    if (gTileDatabase[cnt].pAnimData != null) {
       FreeAnimTileData(addressof(gTileDatabase[cnt]));
     }
   }
@@ -300,9 +300,9 @@ function DeallocateTileDatabase(): void {
 function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): BOOLEAN {
   let usIndex: UINT16;
 
-  Assert(puiType != NULL);
+  Assert(puiType != null);
 
-  CHECKF(gpWorldLevelData[iMapIndex].pLandHead != NULL);
+  CHECKF(gpWorldLevelData[iMapIndex].pLandHead != null);
 
   usIndex = gpWorldLevelData[iMapIndex].pLandHead.value.usIndex;
 
@@ -394,7 +394,7 @@ function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointe
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
-  while (pLand != NULL) {
+  while (pLand != null) {
     if (pLand.value.usIndex != NO_TILE) {
       GetTileType(pLand.value.usIndex, addressof(fTileType));
 
@@ -417,7 +417,7 @@ function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
-  while (pLand != NULL) {
+  while (pLand != null) {
     level++;
     pLand = pLand.value.pNext;
   }
@@ -519,7 +519,7 @@ function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): BOOLEAN {
 }
 
 function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): BOOLEAN {
-  let pLand: Pointer<LEVELNODE> = NULL;
+  let pLand: Pointer<LEVELNODE> = null;
   let ubSrcLogHeight: UINT8 = 0;
   let fTileType: UINT32 = 0;
   let level: UINT8 = 0;
@@ -539,7 +539,7 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
 
   // Look through all objects and Search for type
 
-  while (pLand != NULL) {
+  while (pLand != null) {
     // Get type and height
     GetTileType(pLand.value.usIndex, addressof(fTileType));
 
@@ -559,7 +559,7 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
 }
 
 function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): BOOLEAN {
-  let pLand: Pointer<LEVELNODE> = NULL;
+  let pLand: Pointer<LEVELNODE> = null;
   let ubSrcLogHeight: UINT8;
   let fTileType: UINT32 = 0;
   let level: UINT8 = 0;
@@ -573,7 +573,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
   GetTypeLandLevel(iMapIndex, uiSrcType, addressof(ubSrcTypeLevel));
 
   // Look through all objects and Search for type
-  while (pLand != NULL) {
+  while (pLand != null) {
     // Get type and height
     GetTileType(pLand.value.usIndex, addressof(fTileType));
 
@@ -614,7 +614,7 @@ function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>
 }
 
 function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrientation: UINT16, pubLevel: Pointer<UINT8>): BOOLEAN {
-  let pStruct: Pointer<LEVELNODE> = NULL;
+  let pStruct: Pointer<LEVELNODE> = null;
   let level: UINT8 = 0;
   let usCheckWallOrient: UINT16 = 0;
 
@@ -622,7 +622,7 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
 
   // Look through all objects and Search for type
 
-  while (pStruct != NULL) {
+  while (pStruct != null) {
     GetWallOrientation(pStruct.value.usIndex, addressof(usCheckWallOrient));
 
     if (usCheckWallOrient == usWallOrientation) {
@@ -646,11 +646,11 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
 // first wall encountered -- not that there should be duplicate walls...
 function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
   let usCheckWallOrientation: UINT16 = 0;
-  let pStruct: Pointer<LEVELNODE> = NULL;
+  let pStruct: Pointer<LEVELNODE> = null;
   let ubFinalWallOrientation: UINT8 = Enum314.NO_ORIENTATION;
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   // Traverse all of the pStructs
-  while (pStruct != NULL) {
+  while (pStruct != null) {
     GetWallOrientation(pStruct.value.usIndex, addressof(usCheckWallOrientation));
     if (ubFinalWallOrientation == Enum314.NO_ORIENTATION) {
       // Get the first valid orientation.
@@ -686,11 +686,11 @@ function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
 function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UINT8): BOOLEAN {
   pTileElem.value.pAnimData = MemAlloc(sizeof(TILE_ANIMATION_DATA));
 
-  CHECKF(pTileElem.value.pAnimData != NULL);
+  CHECKF(pTileElem.value.pAnimData != null);
 
   pTileElem.value.pAnimData.value.pusFrames = MemAlloc(sizeof(UINT16) * ubNumFrames);
 
-  CHECKF(pTileElem.value.pAnimData.value.pusFrames != NULL);
+  CHECKF(pTileElem.value.pAnimData.value.pusFrames != null);
 
   // Set # if frames!
   pTileElem.value.pAnimData.value.ubNumFrames = ubNumFrames;
@@ -699,7 +699,7 @@ function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UIN
 }
 
 function FreeAnimTileData(pTileElem: Pointer<TILE_ELEMENT>): void {
-  if (pTileElem.value.pAnimData != NULL) {
+  if (pTileElem.value.pAnimData != null) {
     // Free frames list
     MemFree(pTileElem.value.pAnimData.value.pusFrames);
 

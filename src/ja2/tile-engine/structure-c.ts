@@ -135,8 +135,8 @@ function FreeStructureFileRef(pFileRef: Pointer<STRUCTURE_FILE_REF>): void {
 
   let usLoop: UINT16;
 
-  Assert(pFileRef != NULL);
-  if (pFileRef.value.pDBStructureRef != NULL) {
+  Assert(pFileRef != null);
+  if (pFileRef.value.pDBStructureRef != null) {
     for (usLoop = 0; usLoop < pFileRef.value.usNumberOfStructures; usLoop++) {
       if (pFileRef.value.pDBStructureRef[usLoop].ppTile) {
         MemFree(pFileRef.value.pDBStructureRef[usLoop].ppTile);
@@ -144,12 +144,12 @@ function FreeStructureFileRef(pFileRef: Pointer<STRUCTURE_FILE_REF>): void {
     }
     MemFree(pFileRef.value.pDBStructureRef);
   }
-  if (pFileRef.value.pubStructureData != NULL) {
+  if (pFileRef.value.pubStructureData != null) {
     MemFree(pFileRef.value.pubStructureData);
   }
-  if (pFileRef.value.pAuxData != NULL) {
+  if (pFileRef.value.pAuxData != null) {
     MemFree(pFileRef.value.pAuxData);
-    if (pFileRef.value.pTileLocData != NULL) {
+    if (pFileRef.value.pTileLocData != null) {
       MemFree(pFileRef.value.pTileLocData);
     }
   }
@@ -162,7 +162,7 @@ function FreeAllStructureFiles(): void {
   let pNextRef: Pointer<STRUCTURE_FILE_REF>;
 
   pFileRef = gpStructureFileRefs;
-  while (pFileRef != NULL) {
+  while (pFileRef != null) {
     pNextRef = pFileRef.value.pNext;
     FreeStructureFileRef(pFileRef);
     pFileRef = pNextRef;
@@ -173,18 +173,18 @@ function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): BOOLEAN
   CHECKF(pStructureFile);
 
   // unlink the file ref
-  if (pStructureFile.value.pPrev != NULL) {
+  if (pStructureFile.value.pPrev != null) {
     pStructureFile.value.pPrev.value.pNext = pStructureFile.value.pNext;
   } else {
     // freeing the head of the list!
     gpStructureFileRefs = pStructureFile.value.pNext;
   }
-  if (pStructureFile.value.pNext != NULL) {
+  if (pStructureFile.value.pNext != null) {
     pStructureFile.value.pNext.value.pPrev = pStructureFile.value.pPrev;
   }
-  if (pStructureFile.value.pPrev == NULL && pStructureFile.value.pNext == NULL) {
+  if (pStructureFile.value.pPrev == null && pStructureFile.value.pNext == null) {
     // toasting the list!
-    gpStructureFileRefs = NULL;
+    gpStructureFileRefs = null;
   }
   // and free all the structures used!
   FreeStructureFileRef(pStructureFile);
@@ -215,7 +215,7 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
   if (Header.fFlags & STRUCTURE_FILE_CONTAINS_AUXIMAGEDATA) {
     uiDataSize = sizeof(AuxObjectData) * Header.usNumberOfImages;
     pFileRef.value.pAuxData = MemAlloc(uiDataSize);
-    if (pFileRef.value.pAuxData == NULL) {
+    if (pFileRef.value.pAuxData == null) {
       FileClose(hInput);
       return FALSE;
     }
@@ -228,7 +228,7 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
     if (Header.usNumberOfImageTileLocsStored > 0) {
       uiDataSize = sizeof(RelTileLoc) * Header.usNumberOfImageTileLocsStored;
       pFileRef.value.pTileLocData = MemAlloc(uiDataSize);
-      if (pFileRef.value.pTileLocData == NULL) {
+      if (pFileRef.value.pTileLocData == null) {
         MemFree(pFileRef.value.pAuxData);
         FileClose(hInput);
         return FALSE;
@@ -247,11 +247,11 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
     // Determine the size of the data, from the header just read,
     // allocate enough memory and read it in
     pFileRef.value.pubStructureData = MemAlloc(uiDataSize);
-    if (pFileRef.value.pubStructureData == NULL) {
+    if (pFileRef.value.pubStructureData == null) {
       FileClose(hInput);
-      if (pFileRef.value.pAuxData != NULL) {
+      if (pFileRef.value.pAuxData != null) {
         MemFree(pFileRef.value.pAuxData);
-        if (pFileRef.value.pTileLocData != NULL) {
+        if (pFileRef.value.pTileLocData != null) {
           MemFree(pFileRef.value.pTileLocData);
         }
       }
@@ -260,9 +260,9 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
     fOk = FileRead(hInput, pFileRef.value.pubStructureData, uiDataSize, addressof(uiBytesRead));
     if (!fOk || uiBytesRead != uiDataSize) {
       MemFree(pFileRef.value.pubStructureData);
-      if (pFileRef.value.pAuxData != NULL) {
+      if (pFileRef.value.pAuxData != null) {
         MemFree(pFileRef.value.pAuxData);
-        if (pFileRef.value.pTileLocData != NULL) {
+        if (pFileRef.value.pTileLocData != null) {
           MemFree(pFileRef.value.pTileLocData);
         }
       }
@@ -289,7 +289,7 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
 
   pCurrent = pFileRef.value.pubStructureData;
   pDBStructureRef = MemAlloc(pFileRef.value.usNumberOfStructures * sizeof(DB_STRUCTURE_REF));
-  if (pDBStructureRef == NULL) {
+  if (pDBStructureRef == null) {
     return FALSE;
   }
   memset(pDBStructureRef, 0, pFileRef.value.usNumberOfStructures * sizeof(DB_STRUCTURE_REF));
@@ -303,7 +303,7 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
     usIndex = (pCurrent).value.usStructureNumber;
     pDBStructureRef[usIndex].pDBStructure = pCurrent;
     ppTileArray = MemAlloc(pDBStructureRef[usIndex].pDBStructure.value.ubNumberOfTiles * sizeof(DB_STRUCTURE_TILE /* Pointer<DB_STRUCTURE_TILE> */));
-    if (ppTileArray == NULL) {
+    if (ppTileArray == null) {
       // freeing of memory will occur outside of the function
       return FALSE;
     }
@@ -349,24 +349,24 @@ function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
   let pFileRef: Pointer<STRUCTURE_FILE_REF>;
 
   pFileRef = MemAlloc(sizeof(STRUCTURE_FILE_REF));
-  if (pFileRef == NULL) {
-    return NULL;
+  if (pFileRef == null) {
+    return null;
   }
   memset(pFileRef, 0, sizeof(STRUCTURE_FILE_REF));
   fOk = LoadStructureData(szFileName, pFileRef, addressof(uiDataSize));
   if (!fOk) {
     MemFree(pFileRef);
-    return NULL;
+    return null;
   }
-  if (pFileRef.value.pubStructureData != NULL) {
+  if (pFileRef.value.pubStructureData != null) {
     fOk = CreateFileStructureArrays(pFileRef, uiDataSize);
     if (fOk == FALSE) {
       FreeStructureFileRef(pFileRef);
-      return NULL;
+      return null;
     }
   }
   // Add the file reference to the master list, at the head for convenience
-  if (gpStructureFileRefs != NULL) {
+  if (gpStructureFileRefs != null) {
     gpStructureFileRefs.value.pPrev = pFileRef;
   }
   pFileRef.value.pNext = gpStructureFileRefs;
@@ -456,7 +456,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
           }
   */
 
-  while (pExistingStructure != NULL) {
+  while (pExistingStructure != null) {
     if (sCubeOffset == pExistingStructure.value.sCubeOffset) {
       // CJC:
       // If adding a mobile structure, allow addition if existing structure is passable
@@ -656,7 +656,7 @@ function AddStructureToTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Point
   CHECKF(pMapElement);
   CHECKF(pStructure);
   pStructureTail = pMapElement.value.pStructureTail;
-  if (pStructureTail == NULL) {
+  if (pStructureTail == null) {
     // set the head and tail to the new structure
     pMapElement.value.pStructureHead = pStructure;
   } else {
@@ -697,7 +697,7 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
 
   // first check to see if the structure will be blocked
   if (!OkayToAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, INVALID_STRUCTURE_ID)) {
-    return NULL;
+    return null;
   }
 
   // We go through a definition stage here and a later stage of
@@ -715,13 +715,13 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
   for (ubLoop = BASE_TILE; ubLoop < pDBStructure.value.ubNumberOfTiles; ubLoop++) {
     // for each tile, create the appropriate STRUCTURE struct
     ppStructure[ubLoop] = CreateStructureFromDB(pDBStructureRef, ubLoop);
-    if (ppStructure[ubLoop] == NULL) {
+    if (ppStructure[ubLoop] == null) {
       // Free allocated memory and abort!
       for (ubLoop2 = 0; ubLoop2 < ubLoop; ubLoop2++) {
         MemFree(ppStructure[ubLoop2]);
       }
       MemFree(ppStructure);
-      return NULL;
+      return null;
     }
     ppStructure[ubLoop].value.sGridNo = sBaseGridNo + ppTile[ubLoop].value.sPosRelToBase;
     if (ubLoop != BASE_TILE) {
@@ -785,7 +785,7 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
           DeleteStructureFromTile(addressof(gpWorldLevelData[ppStructure[ubLoop2].value.sGridNo]), ppStructure[ubLoop2]);
         }
         MemFree(ppStructure);
-        return NULL;
+        return null;
       }
     }
     if (AddStructureToTile(addressof(gpWorldLevelData[sGridNo]), ppStructure[ubLoop], usStructureID) == FALSE) {
@@ -794,7 +794,7 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
         DeleteStructureFromTile(addressof(gpWorldLevelData[ppStructure[ubLoop2].value.sGridNo]), ppStructure[ubLoop2]);
       }
       MemFree(ppStructure);
-      return NULL;
+      return null;
     }
   }
 
@@ -811,7 +811,7 @@ function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: 
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = InternalAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, pLevelN);
-  if (pStructure == NULL) {
+  if (pStructure == null) {
     return FALSE;
   }
   return TRUE;
@@ -827,21 +827,21 @@ function DeleteStructureFromTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: 
   if (pMapElement.value.pStructureHead == pStructure) {
     if (pMapElement.value.pStructureTail == pStructure) {
       // only element in the list!
-      pMapElement.value.pStructureHead = NULL;
-      pMapElement.value.pStructureTail = NULL;
+      pMapElement.value.pStructureHead = null;
+      pMapElement.value.pStructureTail = null;
     } else {
       // first element in the list of 2+ members
       pMapElement.value.pStructureHead = pStructure.value.pNext;
     }
   } else if (pMapElement.value.pStructureTail == pStructure) {
     // last element in the list
-    pStructure.value.pPrev.value.pNext = NULL;
+    pStructure.value.pPrev.value.pNext = null;
     pMapElement.value.pStructureTail = pStructure.value.pPrev;
   } else {
     // second or later element in the list; it's guaranteed that there is a
     // previous element but not necessary a next
     pStructure.value.pPrev.value.pNext = pStructure.value.pNext;
-    if (pStructure.value.pNext != NULL) {
+    if (pStructure.value.pNext != null) {
       pStructure.value.pNext.value.pPrev = pStructure.value.pPrev;
     }
   }
@@ -928,18 +928,18 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
   let ubHitPoints: UINT8;
   let sCubeOffset: INT16;
 
-  if (pStructure == NULL) {
-    return NULL;
+  if (pStructure == null) {
+    return null;
   }
   pBaseStructure = FindBaseStructure(pStructure);
   CHECKF(pBaseStructure);
   if ((pBaseStructure.value.pDBStructureRef.value.pDBStructure).value.bPartnerDelta == NO_PARTNER_STRUCTURE) {
-    return NULL;
+    return null;
   }
   fDoor = ((pBaseStructure.value.fFlags & STRUCTURE_ANYDOOR) > 0);
   pLevelNode = FindLevelNodeBasedOnStructure(pBaseStructure.value.sGridNo, pBaseStructure);
-  if (pLevelNode == NULL) {
-    return NULL;
+  if (pLevelNode == null) {
+    return null;
   }
   pShadowNode = FindShadow(pBaseStructure.value.sGridNo, pLevelNode.value.usIndex);
 
@@ -951,11 +951,11 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
   sCubeOffset = pBaseStructure.value.sCubeOffset;
   // delete the old structure and add the new one
   if (DeleteStructureFromWorld(pBaseStructure) == FALSE) {
-    return NULL;
+    return null;
   }
   pNewBaseStructure = InternalAddStructureToWorld(sGridNo, (sCubeOffset / PROFILE_Z_SIZE), pPartnerDBStructure, pLevelNode);
-  if (pNewBaseStructure == NULL) {
-    return NULL;
+  if (pNewBaseStructure == null) {
+    return null;
   }
   // set values in the new structure
   pNewBaseStructure.value.ubHitPoints = ubHitPoints;
@@ -976,7 +976,7 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
       ApplyMapChangesToMapTempFile(FALSE);
     }
 
-    if (pShadowNode != NULL) {
+    if (pShadowNode != null) {
       pShadowNode.value.usIndex += bDelta;
     }
   }
@@ -1008,13 +1008,13 @@ function FindStructure(sGridNo: INT16, fFlags: UINT32): Pointer<STRUCTURE> {
   let pCurrent: Pointer<STRUCTURE>;
 
   pCurrent = gpWorldLevelData[sGridNo].pStructureHead;
-  while (pCurrent != NULL) {
+  while (pCurrent != null) {
     if ((pCurrent.value.fFlags & fFlags) != 0) {
       return pCurrent;
     }
     pCurrent = pCurrent.value.pNext;
   }
-  return NULL;
+  return null;
 }
 
 function FindNextStructure(pStructure: Pointer<STRUCTURE>, fFlags: UINT32): Pointer<STRUCTURE> {
@@ -1022,13 +1022,13 @@ function FindNextStructure(pStructure: Pointer<STRUCTURE>, fFlags: UINT32): Poin
 
   CHECKF(pStructure);
   pCurrent = pStructure.value.pNext;
-  while (pCurrent != NULL) {
+  while (pCurrent != null) {
     if ((pCurrent.value.fFlags & fFlags) != 0) {
       return pCurrent;
     }
     pCurrent = pCurrent.value.pNext;
   }
-  return NULL;
+  return null;
 }
 
 function FindStructureByID(sGridNo: INT16, usStructureID: UINT16): Pointer<STRUCTURE> {
@@ -1036,13 +1036,13 @@ function FindStructureByID(sGridNo: INT16, usStructureID: UINT16): Pointer<STRUC
   let pCurrent: Pointer<STRUCTURE>;
 
   pCurrent = gpWorldLevelData[sGridNo].pStructureHead;
-  while (pCurrent != NULL) {
+  while (pCurrent != null) {
     if (pCurrent.value.usStructureID == usStructureID) {
       return pCurrent;
     }
     pCurrent = pCurrent.value.pNext;
   }
-  return NULL;
+  return null;
 }
 
 function FindBaseStructure(pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
@@ -1059,14 +1059,14 @@ function FindNonBaseStructure(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): P
   CHECKF(pStructure);
   if (!(pStructure.value.fFlags & STRUCTURE_BASE_TILE)) {
     // error!
-    return NULL;
+    return null;
   }
 
   return FindStructureByID(sGridNo, pStructure.value.usStructureID);
 }
 
 function GetBaseTile(pStructure: Pointer<STRUCTURE>): INT16 {
-  if (pStructure == NULL) {
+  if (pStructure == null) {
     return -1;
   }
   if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
@@ -1085,7 +1085,7 @@ function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
   let bLoopZ: INT8;
   let bGreatestHeight: INT8 = -1;
 
-  if (pStructure == NULL || pStructure.value.pShape == NULL) {
+  if (pStructure == null || pStructure.value.pShape == null) {
     return 0;
   }
 
@@ -1131,7 +1131,7 @@ function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
     sDesiredHeight = STRUCTURE_ON_GROUND;
   }
   pCurrent = gpWorldLevelData[sGridNo].pStructureHead;
-  while (pCurrent != NULL) {
+  while (pCurrent != null) {
     if (pCurrent.value.sCubeOffset == sDesiredHeight) {
       iHeight = StructureHeight(pCurrent);
       if (iHeight > iTallest) {
@@ -1166,7 +1166,7 @@ function GetStructureTargetHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
     }
   } else {
     pCurrent = gpWorldLevelData[sGridNo].pStructureHead;
-    while (pCurrent != NULL) {
+    while (pCurrent != null) {
       if (pCurrent.value.sCubeOffset == sDesiredHeight) {
         iHeight = StructureHeight(pCurrent);
 
@@ -1189,7 +1189,7 @@ function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
   let bLoopZ: INT8;
   let bLowestHeight: INT8 = PROFILE_Z_SIZE;
 
-  if (pStructure == NULL || pStructure.value.pShape == NULL) {
+  if (pStructure == null || pStructure.value.pShape == null) {
     return 0;
   }
   pShape = pStructure.value.pShape;
@@ -1395,14 +1395,14 @@ function DebugStructurePage1(): void {
   */
 
   pStructure = gpWorldLevelData[sGridNo].pStructureHead;
-  while (pStructure != NULL) {
+  while (pStructure != null) {
     if (pStructure.value.sCubeOffset == sDesiredLevel) {
       break;
     }
     pStructure = pStructure.value.pNext;
   }
 
-  if (pStructure != NULL) {
+  if (pStructure != null) {
     if (pStructure.value.fFlags & STRUCTURE_GENERIC) {
       gprintf(0, LINE_HEIGHT * 1, "Generic structure %x #%d", pStructure.value.fFlags, pStructure.value.pDBStructureRef.value.pDBStructure.value.usStructureNumber);
     } else if (pStructure.value.fFlags & STRUCTURE_TREE) {
@@ -1438,7 +1438,7 @@ function DebugStructurePage1(): void {
     gprintf(0, LINE_HEIGHT * 4, "Structure ID %d", pStructure.value.usStructureID);
 
     pStructure = gpWorldLevelData[sGridNo].pStructureHead;
-    for (bStructures = 0; pStructure != NULL; pStructure = pStructure.value.pNext) {
+    for (bStructures = 0; pStructure != null; pStructure = pStructure.value.pNext) {
       bStructures++;
     }
     gprintf(0, LINE_HEIGHT * 12, "Number of structures = %d", bStructures);
@@ -1465,7 +1465,7 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
   let usWidth: UINT16;
   let usHeight: UINT16;
   let pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
-  let pDBStructure: Pointer<DB_STRUCTURE> = NULL;
+  let pDBStructure: Pointer<DB_STRUCTURE> = null;
   let sSTIStep: INT16 = 0;
   let sStructIndex: INT16 = 0;
   let sNext: INT16;
@@ -1480,7 +1480,7 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
     pDBStructureRef = addressof(pStructureFileRef.value.pDBStructureRef[uiLoop]);
     pDBStructure = pDBStructureRef.value.pDBStructure;
     // if (pDBStructure != NULL && pDBStructure->ubNumberOfTiles > 1 && !(pDBStructure->fFlags & STRUCTURE_WALLSTUFF) )
-    if (pDBStructure != NULL && pDBStructure.value.ubNumberOfTiles > 1) {
+    if (pDBStructure != null && pDBStructure.value.ubNumberOfTiles > 1) {
       for (ubLoop2 = 1; ubLoop2 < pDBStructure.value.ubNumberOfTiles; ubLoop2++) {
         if (pDBStructureRef.value.ppTile[ubLoop2].value.sPosRelToBase != 0) {
           // spans multiple tiles! (could be two levels high in one tile)
@@ -1492,7 +1492,7 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
   }
 
   // ATE: Make all corpses use z-strip info..
-  if (pDBStructure != NULL && pDBStructure.value.fFlags & STRUCTURE_CORPSE) {
+  if (pDBStructure != null && pDBStructure.value.fFlags & STRUCTURE_CORPSE) {
     fFound = TRUE;
   }
 
@@ -1501,7 +1501,7 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
     return TRUE;
   }
   hVObject.value.ppZStripInfo = MemAlloc(sizeof(ZStripInfo /* Pointer<ZStripInfo> */) * hVObject.value.usNumberOfObjects);
-  if (hVObject.value.ppZStripInfo == NULL) {
+  if (hVObject.value.ppZStripInfo == null) {
     return FALSE;
   }
   memset(hVObject.value.ppZStripInfo, 0, sizeof(ZStripInfo /* Pointer<ZStripInfo> */) * hVObject.value.usNumberOfObjects);
@@ -1547,21 +1547,21 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
 
     if (fCopyIntoVo && sStructIndex < pStructureFileRef.value.usNumberOfStructures) {
       pDBStructure = pStructureFileRef.value.pDBStructureRef[sStructIndex].pDBStructure;
-      if (pDBStructure != NULL && (pDBStructure.value.ubNumberOfTiles > 1 || (pDBStructure.value.fFlags & STRUCTURE_CORPSE)))
+      if (pDBStructure != null && (pDBStructure.value.ubNumberOfTiles > 1 || (pDBStructure.value.fFlags & STRUCTURE_CORPSE)))
       // if (pDBStructure != NULL && pDBStructure->ubNumberOfTiles > 1 )
       {
         // ATE: We allow SLIDING DOORS of 2 tile sizes...
         if (!(pDBStructure.value.fFlags & STRUCTURE_ANYDOOR) || ((pDBStructure.value.fFlags & (STRUCTURE_ANYDOOR)) && (pDBStructure.value.fFlags & STRUCTURE_SLIDINGDOOR))) {
           hVObject.value.ppZStripInfo[uiDestVoIndex] = MemAlloc(sizeof(ZStripInfo));
-          if (hVObject.value.ppZStripInfo[uiDestVoIndex] == NULL) {
+          if (hVObject.value.ppZStripInfo[uiDestVoIndex] == null) {
             // augh!! out of memory!  free everything allocated and abort
             for (ubLoop2 = 0; ubLoop2 < uiLoop; ubLoop2++) {
-              if (hVObject.value.ppZStripInfo[ubLoop2] != NULL) {
+              if (hVObject.value.ppZStripInfo[ubLoop2] != null) {
                 MemFree(hVObject.value.ppZStripInfo[uiLoop]);
               }
             }
             MemFree(hVObject.value.ppZStripInfo);
-            hVObject.value.ppZStripInfo = NULL;
+            hVObject.value.ppZStripInfo = null;
             return FALSE;
           } else {
             pCurr = hVObject.value.ppZStripInfo[uiDestVoIndex];
@@ -1662,15 +1662,15 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
             // now create the array!
             pCurr.value.ubNumberOfZChanges = ubNumIncreasing + ubNumStable + ubNumDecreasing;
             pCurr.value.pbZChange = MemAlloc(pCurr.value.ubNumberOfZChanges);
-            if (pCurr.value.pbZChange == NULL) {
+            if (pCurr.value.pbZChange == null) {
               // augh!
               for (ubLoop2 = 0; ubLoop2 < uiLoop; ubLoop2++) {
-                if (hVObject.value.ppZStripInfo[ubLoop2] != NULL) {
+                if (hVObject.value.ppZStripInfo[ubLoop2] != null) {
                   MemFree(hVObject.value.ppZStripInfo[uiLoop]);
                 }
               }
               MemFree(hVObject.value.ppZStripInfo);
-              hVObject.value.ppZStripInfo = NULL;
+              hVObject.value.ppZStripInfo = null;
               return FALSE;
             }
             for (ubLoop2 = 0; ubLoop2 < ubNumIncreasing; ubLoop2++) {
@@ -1723,13 +1723,13 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
   pCurrent = gpWorldLevelData[sGridNo].pStructureHead;
 
   // If no struct, return
-  if (pCurrent == NULL) {
+  if (pCurrent == null) {
     (pStructHeight.value) = StructureHeight(pCurrent);
-    (ppTallestStructure.value) = NULL;
+    (ppTallestStructure.value) = null;
     return NOTHING_BLOCKING;
   }
 
-  while (pCurrent != NULL) {
+  while (pCurrent != null) {
     // Check level!
     if (pCurrent.value.sCubeOffset == sDesiredLevel) {
       fOKStructOnLevel = TRUE;
@@ -1832,7 +1832,7 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
     }
   } else {
     (pStructHeight.value) = 0;
-    (ppTallestStructure.value) = NULL;
+    (ppTallestStructure.value) = null;
     return NOTHING_BLOCKING;
   }
 }
@@ -1864,13 +1864,13 @@ function FindStructureBySavedInfo(sGridNo: INT16, ubType: UINT8, ubWallOrientati
   uiTypeFlag = StructureTypeToFlag(ubType);
 
   pCurrent = gpWorldLevelData[sGridNo].pStructureHead;
-  while (pCurrent != NULL) {
+  while (pCurrent != null) {
     if (pCurrent.value.fFlags & uiTypeFlag && pCurrent.value.ubWallOrientation == ubWallOrientation && ((bLevel == 0 && pCurrent.value.sCubeOffset == 0) || (bLevel > 0 && pCurrent.value.sCubeOffset > 0))) {
       return pCurrent;
     }
     pCurrent = pCurrent.value.pNext;
   }
-  return NULL;
+  return null;
 }
 
 function GetStructureOpenSound(pStructure: Pointer<STRUCTURE>, fClose: BOOLEAN): UINT32 {

@@ -476,7 +476,7 @@ let gItemPointer: OBJECTTYPE;
 let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
 
 let gpCharacterPreviousMercPath: PathStPtr[] /* [MAX_CHARACTER_COUNT] */;
-let gpHelicopterPreviousMercPath: PathStPtr = NULL;
+let gpHelicopterPreviousMercPath: PathStPtr = null;
 
 // GLOBAL VARIABLES (EXTERNAL)
 
@@ -795,7 +795,7 @@ function GlowTrashCan(): void {
 }
 
 function DrawFace(sCharNumber: INT16): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   /* static */ let sOldId: INT16 = -1;
 
   // draws the face of the currently selected merc, being displayed int he upper left hand corner
@@ -807,7 +807,7 @@ function DrawFace(sCharNumber: INT16): void {
     }
   }
 
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return;
   }
 
@@ -829,7 +829,7 @@ function DrawFace(sCharNumber: INT16): void {
 }
 
 function RenderHandPosItem(): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   // renders the inventory item in char's right hand
 
   // ARM: if already in the inventory panel, don't show the item again here, seeing it twice is confusing
@@ -844,7 +844,7 @@ function RenderHandPosItem(): void {
     }
   }
 
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return;
   }
 
@@ -857,7 +857,7 @@ function RenderHandPosItem(): void {
   SetFontForeground(CHAR_INFO_PANEL_BLOCK_COLOR);
   SetFontBackground(FONT_BLACK);
 
-  INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), SOLDIER_HAND_X, SOLDIER_HAND_Y, 58, 23, DIRTYLEVEL2, NULL, 0, FALSE, 0);
+  INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), SOLDIER_HAND_X, SOLDIER_HAND_Y, 58, 23, DIRTYLEVEL2, null, 0, FALSE, 0);
 }
 
 function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
@@ -868,19 +868,19 @@ function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
   // if merc is an AIM merc
   if (Menptr[gCharactersList[bCharNumber].usSolID].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
     // finite contract length icon
-    BltVideoObject(guiSAVEBUFFER, hHandle, 0, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 0, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // if merc has life insurance
   if (Menptr[gCharactersList[bCharNumber].usSolID].usLifeInsurance > 0) {
     // draw life insurance icon
-    BltVideoObject(guiSAVEBUFFER, hHandle, 2, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 2, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // if merc has a medical deposit
   if (Menptr[gCharactersList[bCharNumber].usSolID].usMedicalDeposit > 0) {
     // draw medical deposit icon
-    BltVideoObject(guiSAVEBUFFER, hHandle, 1, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 1, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING), VO_BLT_SRCTRANSPARENCY, null);
   }
 }
 
@@ -932,7 +932,7 @@ function DrawCharBars(): void {
     // grab soldier's id number
     GetSoldier(addressof(pSoldier), usSoldierID);
 
-    if (pSoldier == NULL) {
+    if (pSoldier == null) {
       // no soldier
       return;
     }
@@ -967,7 +967,7 @@ function DrawCharStats(sCharNum: INT16): void {
   let usX: UINT16;
   let usY: UINT16;
   // HVOBJECT hCrossHandle;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   pSoldier = addressof(Menptr[gCharactersList[sCharNum].usSolID]);
 
@@ -1156,7 +1156,7 @@ function DrawCharHealth(sCharNum: INT16): void {
   let sString: wchar_t[] /* [9] */;
   let usX: UINT16;
   let usY: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   pSoldier = addressof(Menptr[gCharactersList[sCharNum].usSolID]);
 
@@ -1228,7 +1228,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   let iTimeRemaining: INT32 = 0;
   let bMorale: INT8 = 0;
   let iDailyCost: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let uiArrivalTime: UINT32;
 
   if (gCharactersList[sCharNumber].fValid == FALSE) {
@@ -1546,7 +1546,7 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
     return 0;
   }
 
-  if (pPath == NULL) {
+  if (pPath == null) {
     return 0;
   }
 
@@ -1558,7 +1558,7 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
       ubGroupId = pVehicleList[Menptr[gCharactersList[bSelectedDestChar].usSolID].iVehicleId].ubMovementGroup;
       pGroup = GetGroup(ubGroupId);
 
-      if (pGroup == NULL) {
+      if (pGroup == null) {
         SetUpMvtGroupForVehicle(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
 
         // get vehicle id
@@ -1569,7 +1569,7 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
       ubGroupId = pVehicleList[Menptr[gCharactersList[bSelectedDestChar].usSolID].bVehicleID].ubMovementGroup;
       pGroup = GetGroup(ubGroupId);
 
-      if (pGroup == NULL) {
+      if (pGroup == null) {
         SetUpMvtGroupForVehicle(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
 
         // get vehicle id
@@ -1874,7 +1874,7 @@ function AddCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
   let usVehicleLoop: UINT16 = 0;
 
   // is character valid?
-  if (pCharacter == NULL) {
+  if (pCharacter == null) {
     // not valid, leave
     return;
   }
@@ -2089,7 +2089,7 @@ function MapScreenHandle(): UINT32 {
   let VObjectDesc: VOBJECT_DESC;
   //	static BOOLEAN fSecondFrame = FALSE;
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // DO NOT MOVE THIS FUNCTION CALL!!!
   // This determines if the help screen should be active
@@ -2442,7 +2442,7 @@ function MapScreenHandle(): UINT32 {
     MSYS_DisableRegion(addressof(gMPanelRegion));
 
     // create contract box
-    CreateContractBox(NULL);
+    CreateContractBox(null);
 
     // create the permanent boxes for assignment and its submenus
     fShowAssignmentMenu = TRUE;
@@ -2470,7 +2470,7 @@ function MapScreenHandle(): UINT32 {
 
     fFirstTimeInMapScreen = FALSE;
 
-    if (gpCurrentTalkingFace != NULL) {
+    if (gpCurrentTalkingFace != null) {
       // GO FROM GAMESCREEN TO MAPSCREEN
       // REMOVE OLD UI
       // Set face inactive!
@@ -3319,7 +3319,7 @@ function HandleMapUI(): UINT32 {
   let sX: INT16;
   let sY: INT16;
   let ubCount: UINT8 = 0;
-  let pNode: PathStPtr = NULL;
+  let pNode: PathStPtr = null;
   let fVehicle: BOOLEAN = FALSE;
   let MousePos: POINT;
   let uiNewScreen: UINT32 = Enum26.MAP_SCREEN;
@@ -3463,7 +3463,7 @@ function HandleMapUI(): UINT32 {
           }
 
           // if item's owner is known
-          if (gpItemPointerSoldier != NULL) {
+          if (gpItemPointerSoldier != null) {
             // make sure it's the owner's sector that's selected
             if ((gpItemPointerSoldier.value.sSectorX != sSelMapX) || (gpItemPointerSoldier.value.sSectorY != sSelMapY) || (gpItemPointerSoldier.value.bSectorZ != iCurrentMapSectorZ)) {
               ChangeSelectedMapSector(gpItemPointerSoldier.value.sSectorX, gpItemPointerSoldier.value.sSectorY, gpItemPointerSoldier.value.bSectorZ);
@@ -3558,7 +3558,7 @@ function HandleMapUI(): UINT32 {
         if (gfBlitBattleSectorLocator && sMapX == gubPBSectorX && sMapY == gubPBSectorY && iCurrentMapSectorZ == gubPBSectorZ) {
           // Bring up a non-persistant version of mapscreen if the user clicks on the sector where a
           // battle is taking place.
-          InitPreBattleInterface(NULL, FALSE);
+          InitPreBattleInterface(null, FALSE);
           return Enum26.MAP_SCREEN;
         }
 
@@ -3676,7 +3676,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           if (gfPreBattleInterfaceActive && !gfPersistantPBI) {
             // Non persistant PBI.  Allow ESC to close it and return to mapscreen.
             KillPreBattleInterface();
-            gpBattleGroup = NULL;
+            gpBattleGroup = null;
             return;
           }
 
@@ -3689,7 +3689,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             CancelMapUIMessage();
           } else if (IsMapScreenHelpTextUp()) {
             StopMapScreenHelpText();
-          } else if (gpCurrentTalkingFace != NULL && gpCurrentTalkingFace.value.fTalking) {
+          } else if (gpCurrentTalkingFace != null && gpCurrentTalkingFace.value.fTalking) {
             // ATE: We want to stop speech if somebody is talking...
             StopAnyCurrentlyTalkingSpeech();
           } else if (fShowUpdateBox) {
@@ -4098,7 +4098,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
                 DoQuickSave();
               } else {
                 // Display a message saying the player cant save now
-                DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+                DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
               }
             }
           } else if (fCtrl) {
@@ -4501,12 +4501,12 @@ function EndMapScreen(fDuringFade: BOOLEAN): void {
     sprintf(VObjectDesc.ImageFile, "INTERFACE\\LaptopOn.sti");
     if (!AddVideoObject(addressof(VObjectDesc), addressof(uiLaptopOn)))
       AssertMsg(0, "Failed to load data\\Interface\\LaptopOn.sti");
-    BltVideoObjectFromIndex(FRAME_BUFFER, uiLaptopOn, 0, 465, 417, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, uiLaptopOn, 0, 465, 417, VO_BLT_SRCTRANSPARENCY, null);
     InvalidateRegion(465, 417, 480, 427);
     ExecuteBaseDirtyRectQueue();
     EndFrameBufferRender();
     DeleteVideoObjectFromIndex(uiLaptopOn);
-    RefreshScreen(NULL);
+    RefreshScreen(null);
   }
 
   // Kris:  Removes the pre battle interface, but only if it exists.
@@ -4849,7 +4849,7 @@ function PopupText(pFontString: Pointer<UINT16>, ...args: any[]): void {
 
   FindFontCenterCoordinates(0, 0, SCREEN_WIDTH, INTERFACE_START_Y, PopupString, LARGEFONT1(), addressof(sX), addressof(sY));
 
-  BltVideoSurface(FRAME_BUFFER, guiINTEXT, 0, 85, 160, VS_BLT_FAST | VS_BLT_USECOLORKEY, NULL);
+  BltVideoSurface(FRAME_BUFFER, guiINTEXT, 0, 85, 160, VS_BLT_FAST | VS_BLT_USECOLORKEY, null);
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
@@ -5137,7 +5137,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // If we do not have an item in hand, start moving it
-    if (gpItemPointer == NULL) {
+    if (gpItemPointer == null) {
       // Return if empty
       if (pSoldier.value.inv[uiHandPos].usItem == NOTHING) {
         return;
@@ -5149,7 +5149,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
       }
 
       if (_KeyDown(CTRL)) {
-        CleanUpStack(addressof(pSoldier.value.inv[uiHandPos]), NULL);
+        CleanUpStack(addressof(pSoldier.value.inv[uiHandPos]), null);
       }
 
       // remember what it was
@@ -5296,7 +5296,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
 
 function InternalMAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>): void {
   // If not null return
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     return;
   }
 
@@ -5324,7 +5324,7 @@ function MAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): 
   let fOk: BOOLEAN;
 
   // If not null return
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     return;
   }
 
@@ -5343,7 +5343,7 @@ function MAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): 
 
 function MAPBeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, uiKeySlot: UINT8): void {
   // If not null return
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     return;
   }
 
@@ -5358,8 +5358,8 @@ function MAPBeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, uiKeySlot: U
 }
 
 function MAPEndItemPointer(): void {
-  if (gpItemPointer != NULL) {
-    gpItemPointer = NULL;
+  if (gpItemPointer != null) {
+    gpItemPointer = null;
     MSYS_ChangeRegionCursor(addressof(gMPanelRegion), Enum317.CURSOR_NORMAL);
     MSYS_SetCurrentCursor(Enum317.CURSOR_NORMAL);
     fMapInventoryItem = FALSE;
@@ -5384,7 +5384,7 @@ function HandleMapInventoryCursor(): void {
 // will place down the upper left hand corner attribute strings
 function RenderAttributeStringsForUpperLeftHandCorner(uiBufferToRenderTo: UINT32): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid)) {
     pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
@@ -5399,7 +5399,7 @@ function RenderAttributeStringsForUpperLeftHandCorner(uiBufferToRenderTo: UINT32
   DrawString(pUpperLeftMapScreenStrings[0], (220 - StringPixLength(pUpperLeftMapScreenStrings[0], CHAR_FONT()) / 2), 6, CHAR_FONT());
 
   // vehicles and robot don't have attributes, contracts, or morale
-  if ((pSoldier == NULL) || (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier))) {
+  if ((pSoldier == null) || (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier))) {
     // health
     DrawString(pUpperLeftMapScreenStrings[2], 87, 80, CHAR_FONT());
 
@@ -5729,7 +5729,7 @@ function ContractButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let iValue: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -5851,7 +5851,7 @@ function TeamListInfoRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
 
 function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let iValue: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -5881,7 +5881,7 @@ function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
       // and it's between sectors and it can be reassigned (non-vehicles)
       if ((pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD) && (pSoldier.value.bLife > 0) && (pSoldier.value.fBetweenSectors) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
         // can't reassign mercs while between sectors
-        DoScreenIndependantMessageBox(pMapErrorString[41], MSG_BOX_FLAG_OK, NULL);
+        DoScreenIndependantMessageBox(pMapErrorString[41], MSG_BOX_FLAG_OK, null);
         return;
       }
 
@@ -6111,7 +6111,7 @@ function TeamListDestinationRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iR
 
 function TeamListSleepRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let iValue: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -6475,7 +6475,7 @@ function RenderTeamRegionBackground(): void {
   // show inventory or the team list?
   if (fShowInventoryFlag == FALSE) {
     GetVideoObject(addressof(hHandle), guiCHARLIST);
-    BltVideoObject(guiSAVEBUFFER, hHandle, 0, PLAYER_INFO_X, PLAYER_INFO_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 0, PLAYER_INFO_X, PLAYER_INFO_Y, VO_BLT_SRCTRANSPARENCY, null);
   } else {
     BltCharInvPanel();
   }
@@ -6520,7 +6520,7 @@ function RenderCharacterInfoBackground(): void {
 
   // the upleft hand corner character info panel
   GetVideoObject(addressof(hHandle), guiCHARINFO);
-  BltVideoObject(guiSAVEBUFFER, hHandle, 0, TOWN_INFO_X, TOWN_INFO_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hHandle, 0, TOWN_INFO_X, TOWN_INFO_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   UpdateHelpTextForMapScreenMercIcons();
 
@@ -6602,7 +6602,7 @@ function CheckIfPlottingForCharacterWhileAirCraft(): void {
 }
 
 function ContractRegionBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // btn callback handler for contract region
 
@@ -6974,7 +6974,7 @@ function ContinueDialogue(pSoldier: Pointer<SOLDIERTYPE>, fDone: BOOLEAN): BOOLE
   }
 
   // check if valid character talking?
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return FALSE;
   }
 
@@ -7008,10 +7008,10 @@ function HandleSpontanousTalking(): void {
 }
 
 function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
-  let ppMovePath: Pointer<PathStPtr> = NULL;
+  let ppMovePath: Pointer<PathStPtr> = null;
   let fLastSectorInPath: BOOLEAN = FALSE;
   let iVehicleId: INT32 = -1;
-  let pPreviousMercPath: PathStPtr = NULL;
+  let pPreviousMercPath: PathStPtr = null;
 
   // see if we have clicked on the last sector in the characters path
 
@@ -7084,7 +7084,7 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
     } else // NULL path confirmed
     {
       // if previously there was a path
-      if (pPreviousMercPath != NULL) {
+      if (pPreviousMercPath != null) {
         // then this means we've CANCELED it
         MapScreenMessage(FONT_MCOLOR_LTYELLOW, MSG_MAP_UI_POSITION_MIDDLE, pMapPlotStrings[3]);
       } else // no previous path
@@ -7102,9 +7102,9 @@ function RebuildWayPointsForAllSelectedCharsGroups(): void {
   // rebuild the waypoints for everyone in the selected character list
   let iCounter: INT32 = 0;
   let fGroupIDRebuilt: BOOLEAN[] /* [256] */;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iVehicleId: INT32;
-  let ppMovePath: Pointer<PathStPtr> = NULL;
+  let ppMovePath: Pointer<PathStPtr> = null;
   let ubGroupId: UINT8;
 
   memset(fGroupIDRebuilt, FALSE, sizeof(fGroupIDRebuilt));
@@ -7322,7 +7322,7 @@ function DestroyTheItemInCursor(): void {
   // actually destroy this item
   // End Item pickup
   MAPEndItemPointer();
-  gpItemPointer = NULL;
+  gpItemPointer = null;
 }
 
 function TrashItemMessageBoxCallBack(bExitValue: UINT8): void {
@@ -7348,7 +7348,7 @@ function TrashCanBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
     }
 
     // check if an item is in the cursor, if so, warn player
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       // set up for mapscreen
       if (gpItemPointer.value.ubMission) {
         DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pTrashItemText[1], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, TrashItemMessageBoxCallBack);
@@ -8092,7 +8092,7 @@ function TellPlayerWhyHeCantCompressTime(): void {
       DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, str, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
     } else {
       // The NEW non-persistant PBI is used instead of a dialog box explaining why we can't compress time.
-      InitPreBattleInterface(NULL, FALSE);
+      InitPreBattleInterface(null, FALSE);
     }
   } else if (PlayerGroupIsInACreatureInfestedMine()) {
     DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[28], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
@@ -8169,8 +8169,8 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
   let iExpiryTimeA: INT32;
   let fEntrySelected: BOOLEAN = FALSE;
   let pSelectedSoldier: Pointer<SOLDIERTYPE>[] /* [MAX_CHARACTER_COUNT] */;
-  let pCurrentSoldier: Pointer<SOLDIERTYPE> = NULL;
-  let pPreviousSelectedInfoChar: Pointer<SOLDIERTYPE> = NULL;
+  let pCurrentSoldier: Pointer<SOLDIERTYPE> = null;
+  let pPreviousSelectedInfoChar: Pointer<SOLDIERTYPE> = null;
 
   if (fRetainSelectedMercs) {
     // if we have anyone valid selected
@@ -8180,7 +8180,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
 
     for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
       // set current entry to null
-      pSelectedSoldier[iCounter] = NULL;
+      pSelectedSoldier[iCounter] = null;
 
       // is this entry even valid
       if (gCharactersList[iCounter].fValid == FALSE) {
@@ -8416,7 +8416,7 @@ function HandleAssignmentsDoneAndAwaitingFurtherOrders(): void {
   // run through list of grunts and handle awating further orders
   let iCounter: INT32 = 0;
   let iCurrentTime: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // update "nothing to do" flags if necessary
   if (gfReEvaluateEveryonesNothingToDo) {
@@ -8467,7 +8467,7 @@ function DisplayIconsForMercsAsleep(): void {
     if (gCharactersList[iCounter].fValid == TRUE) {
       pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
       if (pSoldier.value.bActive && pSoldier.value.fMercAsleep && CanChangeSleepStatusForSoldier(pSoldier)) {
-        BltVideoObject(guiSAVEBUFFER, hHandle, 0, 125, (Y_START + (iCounter * (Y_SIZE() + 2))), VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObject(guiSAVEBUFFER, hHandle, 0, 125, (Y_START + (iCounter * (Y_SIZE() + 2))), VO_BLT_SRCTRANSPARENCY, null);
       }
     }
   }
@@ -8481,11 +8481,11 @@ function CheckForAndRenderNewMailOverlay(): void {
     if (GetJA2Clock() % 1000 < 667) {
       if (ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].value.uiFlags & BUTTON_CLICKED_ON) {
         // button is down, so offset the icon
-        BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 1, 465, 418, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 1, 465, 418, VO_BLT_SRCTRANSPARENCY, null);
         InvalidateRegion(465, 418, 480, 428);
       } else {
         // button is up, so draw the icon normally
-        BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 0, 464, 417, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 0, 464, 417, VO_BLT_SRCTRANSPARENCY, null);
         if (!(ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].value.uiFlags & BUTTON_ENABLED)) {
           let uiDestPitchBYTES: UINT32;
           let pDestBuf: Pointer<UINT8>;
@@ -8505,7 +8505,7 @@ function CheckForAndRenderNewMailOverlay(): void {
 }
 
 function CanToggleSelectedCharInventory(): BOOLEAN {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (gfPreBattleInterfaceActive == TRUE) {
     return FALSE;
@@ -8529,7 +8529,7 @@ function CanToggleSelectedCharInventory(): BOOLEAN {
   pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
 
   // if not in inventory, and holding an item from sector inventory
-  if (!fShowInventoryFlag && ((gMPanelRegion.Cursor == EXTERN_CURSOR) || gpItemPointer || fMapInventoryItem) && (gpItemPointerSoldier == NULL)) {
+  if (!fShowInventoryFlag && ((gMPanelRegion.Cursor == EXTERN_CURSOR) || gpItemPointer || fMapInventoryItem) && (gpItemPointerSoldier == null)) {
     // make sure he's in that sector
     if ((pSoldier.value.sSectorX != sSelMapX) || (pSoldier.value.sSectorY != sSelMapY) || (pSoldier.value.bSectorZ != iCurrentMapSectorZ) || pSoldier.value.fBetweenSectors) {
       return FALSE;
@@ -8541,7 +8541,7 @@ function CanToggleSelectedCharInventory(): BOOLEAN {
 }
 
 function MapCharacterHasAccessibleInventory(bCharNumber: INT8): BOOLEAN {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   Assert(bCharNumber >= 0);
   Assert(bCharNumber < MAX_CHARACTER_COUNT);
@@ -8617,7 +8617,7 @@ function ChangeSelectedMapSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void 
 }
 
 function CanChangeDestinationForCharSlot(bCharNumber: INT8, fShowErrorMessage: BOOLEAN): BOOLEAN {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let bErrorNumber: INT8 = -1;
 
   if (bCharNumber == -1)
@@ -8646,7 +8646,7 @@ function CanChangeDestinationForCharSlot(bCharNumber: INT8, fShowErrorMessage: B
 }
 
 function CanExtendContractForCharSlot(bCharNumber: INT8): BOOLEAN {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (bCharNumber == -1)
     return FALSE;
@@ -8673,7 +8673,7 @@ function CanExtendContractForCharSlot(bCharNumber: INT8): BOOLEAN {
 }
 
 function CanChangeSleepStatusForCharSlot(bCharNumber: INT8): BOOLEAN {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (bCharNumber == -1)
     return FALSE;
@@ -8890,7 +8890,7 @@ function ChangeSelectedInfoChar(bCharNumber: INT8, fResetSelectedList: BOOLEAN):
 
 function CopyPathToAllSelectedCharacters(pPath: PathStPtr): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // run through list and copy paths for each selected character
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -8915,7 +8915,7 @@ function CopyPathToAllSelectedCharacters(pPath: PathStPtr): void {
 
 function CancelPathsOfAllSelectedCharacters(): void {
   let bCounter: INT8 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let fSkyriderMsgShown: BOOLEAN = FALSE;
 
   // cancel destination for the clicked and ALL other valid & selected characters with a route set
@@ -8983,7 +8983,7 @@ function GetGroundTravelTimeOfCharacter(bCharNumber: INT8): INT32 {
 }
 
 function CalcLocationValueForChar(iCounter: INT32): INT16 {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let sLocValue: INT16 = 0;
 
   Assert(iCounter < MAX_CHARACTER_COUNT);
@@ -9014,7 +9014,7 @@ function CancelChangeArrivalSectorMode(): void {
 }
 
 function MakeMapModesSuitableForDestPlotting(bCharNumber: INT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (gCharactersList[bCharNumber].fValid == TRUE) {
     pSoldier = MercPtrs[gCharactersList[bCharNumber].usSolID];
@@ -9047,7 +9047,7 @@ function AnyMovableCharsInOrBetweenThisSector(sSectorX: INT16, sSectorY: INT16, 
   let iFirstId: INT32 = 0;
   let iLastId: INT32 = 0;
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // to speed it up a little?
   iFirstId = gTacticalStatus.Team[OUR_TEAM].bFirstID;
@@ -9155,7 +9155,7 @@ function ExplainWhySkyriderCantFly(): void {
 }
 
 function PlayerMercsInHelicopterSector(): UINT8 {
-  let pGroup: Pointer<GROUP> = NULL;
+  let pGroup: Pointer<GROUP> = null;
 
   Assert(iHelicopterVehicleId != -1);
   pGroup = GetGroup(pVehicleList[iHelicopterVehicleId].ubMovementGroup);
@@ -9213,7 +9213,7 @@ function HandleNewDestConfirmation(sMapX: INT16, sMapY: INT16): void {
 }
 
 function RandomAwakeSelectedMercConfirmsStrategicMove(): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32;
   let ubSelectedMercID: UINT8[] /* [20] */;
   let ubSelectedMercIndex: UINT8[] /* [20] */;
@@ -9284,16 +9284,16 @@ function HandleMilitiaRedistributionClick(): void {
           sSelectedMilitiaTown = bTownId;
         } else {
           // can't redistribute militia during combat!
-          DoScreenIndependantMessageBox(pMilitiaString[2], MSG_BOX_FLAG_OK, NULL);
+          DoScreenIndependantMessageBox(pMilitiaString[2], MSG_BOX_FLAG_OK, null);
         }
       } else {
         // can't have militia in this town
         swprintf(sString, pMapErrorString[31], pTownNames[bTownId]);
-        DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, NULL);
+        DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
       }
     } else if (IsThisSectorASAMSector(sSelMapX, sSelMapY, 0) && fSamSiteFound[GetSAMIdFromSector(sSelMapX, sSelMapY, 0)]) {
       // can't move militia around sam sites
-      DoScreenIndependantMessageBox(pMapErrorString[30], MSG_BOX_FLAG_OK, NULL);
+      DoScreenIndependantMessageBox(pMapErrorString[30], MSG_BOX_FLAG_OK, null);
     }
   }
 }
@@ -9351,7 +9351,7 @@ function BullsEyeOrChopperSelectionPopupCallback(ubExitValue: UINT8): void {
 
 // wake up anybody who needs to be awake to travel
 function WakeUpAnySleepingSelectedMercsOnFootOrDriving(): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32;
   let fSuccess: BOOLEAN = FALSE;
 
@@ -9437,7 +9437,7 @@ function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>, sStri
   let iSectorX: INT32;
   let iSectorY: INT32;
   let sSector: INT16 = 0;
-  let pGroup: Pointer<GROUP> = NULL;
+  let pGroup: Pointer<GROUP> = null;
 
   // by default, show nothing
   wcscpy(sString, "");
@@ -9527,16 +9527,16 @@ function InitPreviousPaths(): void {
 
   // init character previous paths
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    gpCharacterPreviousMercPath[iCounter] = NULL;
+    gpCharacterPreviousMercPath[iCounter] = null;
   }
 
   // init helicopter previous path
-  gpHelicopterPreviousMercPath = NULL;
+  gpHelicopterPreviousMercPath = null;
 }
 
 function RememberPreviousPathForAllSelectedChars(): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (fSelectedListOfMercsForMapScreen[iCounter] == TRUE) {
@@ -9550,8 +9550,8 @@ function RememberPreviousPathForAllSelectedChars(): void {
 
 function RestorePreviousPaths(): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
-  let ppMovePath: Pointer<PathStPtr> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let ppMovePath: Pointer<PathStPtr> = null;
   let ubGroupId: UINT8 = 0;
   let fPathChanged: BOOLEAN = FALSE;
 
@@ -9563,7 +9563,7 @@ function RestorePreviousPaths(): void {
     ubGroupId = pVehicleList[iHelicopterVehicleId].ubMovementGroup;
 
     // if the helicopter had a previous path
-    if (gpHelicopterPreviousMercPath != NULL) {
+    if (gpHelicopterPreviousMercPath != null) {
       gpHelicopterPreviousMercPath = MoveToBeginningOfPathList(gpHelicopterPreviousMercPath);
 
       // clear current path

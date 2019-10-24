@@ -5,7 +5,7 @@ const WAKETIME = (x) => (NUM_SEC_IN_DAY / NUM_SEC_IN_MIN - x);
 
 //#define DISABLESCHEDULES
 
-let gpScheduleList: Pointer<SCHEDULENODE> = NULL;
+let gpScheduleList: Pointer<SCHEDULENODE> = null;
 let gubScheduleID: UINT8 = 0;
 
 // IMPORTANT:
@@ -41,7 +41,7 @@ function GetSchedule(ubScheduleID: UINT8): Pointer<SCHEDULENODE> {
       return curr;
     curr = curr.value.next;
   }
-  return NULL;
+  return null;
 }
 
 // Removes all schedules from the event list, and cleans out the list.
@@ -55,7 +55,7 @@ function DestroyAllSchedules(): void {
     gpScheduleList = gpScheduleList.value.next;
     MemFree(curr);
   }
-  gpScheduleList = NULL;
+  gpScheduleList = null;
   gubScheduleID = 0;
 }
 
@@ -69,13 +69,13 @@ function DestroyAllSchedulesWithoutDestroyingEvents(): void {
     gpScheduleList = gpScheduleList.value.next;
     MemFree(curr);
   }
-  gpScheduleList = NULL;
+  gpScheduleList = null;
   gubScheduleID = 0;
 }
 
 function DeleteSchedule(ubScheduleID: UINT8): void {
   let curr: Pointer<SCHEDULENODE>;
-  let temp: Pointer<SCHEDULENODE> = NULL;
+  let temp: Pointer<SCHEDULENODE> = null;
 
   if (!gpScheduleList) {
     // ScreenMsg( 0, MSG_BETAVERSION, L"Attempting to delete schedule that doesn't exist -- KM : 2" );
@@ -229,7 +229,7 @@ function PrepareSchedulesForEditorEntry(): void {
 
   // Now, delete all of the temporary schedules.
   curr = gpScheduleList;
-  prev = NULL;
+  prev = null;
   while (curr) {
     if (curr.value.usFlags & SCHEDULE_FLAGS_TEMPORARY) {
       if (prev)
@@ -261,7 +261,7 @@ function PrepareSchedulesForEditorExit(): void {
 }
 
 function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
-  let pSchedule: Pointer<SCHEDULENODE> = NULL;
+  let pSchedule: Pointer<SCHEDULENODE> = null;
   let temp: SCHEDULENODE;
   let ubNum: UINT8;
 
@@ -288,7 +288,7 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
     }
     pSchedule.value.ubScheduleID = gubScheduleID;
     pSchedule.value.ubSoldierID = NO_SOLDIER;
-    pSchedule.value.next = NULL;
+    pSchedule.value.next = null;
     gubScheduleID++;
     ubNum--;
   }
@@ -296,7 +296,7 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
 }
 
 function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
-  let pSchedule: Pointer<SCHEDULENODE> = NULL;
+  let pSchedule: Pointer<SCHEDULENODE> = null;
   let temp: SCHEDULENODE;
   let ubNum: UINT8;
   let ubRealNum: UINT32;
@@ -343,7 +343,7 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
     pSchedule->ubSoldierID = NO_SOLDIER;
     */
 
-    pSchedule.value.next = NULL;
+    pSchedule.value.next = null;
     gubScheduleID++;
     ubRealNum--;
   }
@@ -361,7 +361,7 @@ function ReverseSchedules(): void {
   // First, remove any gaps which would mess up the reverse ID assignment by optimizing
   // the schedules.
   OptimizeSchedules();
-  pReverseHead = NULL;
+  pReverseHead = null;
   while (gpScheduleList) {
     // reverse the ID
     gpScheduleList.value.ubScheduleID = ubOppositeID;

@@ -1,4 +1,4 @@
-let pAniTileHead: Pointer<ANITILE> = NULL;
+let pAniTileHead: Pointer<ANITILE> = null;
 
 function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITILE> {
   let pAniNode: Pointer<ANITILE>;
@@ -44,7 +44,7 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
       iCachedTile = GetCachedTile(pAniParams.value.zCachedFile);
 
       if (iCachedTile == -1) {
-        return NULL;
+        return null;
       }
 
       usTileIndex = iCachedTile + TILE_CACHE_START_INDEX;
@@ -89,7 +89,7 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
 
       default:
 
-        return NULL;
+        return null;
     }
 
     // SET NEW TILE VALUES
@@ -183,7 +183,7 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
   if ((uiFlags & ANITILE_CACHEDTILE)) {
     pNewAniNode.value.usNumFrames = gpTileCache[iCachedTile].ubNumFrames;
   } else {
-    Assert(gTileDatabase[usTileIndex].pAnimData != NULL);
+    Assert(gTileDatabase[usTileIndex].pAnimData != null);
     pNewAniNode.value.usNumFrames = gTileDatabase[usTileIndex].pAnimData.value.ubNumFrames;
   }
 
@@ -226,14 +226,14 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
 
 // Loop throug all ani tiles and remove...
 function DeleteAniTiles(): void {
-  let pAniNode: Pointer<ANITILE> = NULL;
-  let pNode: Pointer<ANITILE> = NULL;
+  let pAniNode: Pointer<ANITILE> = null;
+  let pNode: Pointer<ANITILE> = null;
 
   // LOOP THROUGH EACH NODE
   // And call delete function...
   pAniNode = pAniTileHead;
 
-  while (pAniNode != NULL) {
+  while (pAniNode != null) {
     pNode = pAniNode;
     pAniNode = pAniNode.value.pNext;
 
@@ -242,17 +242,17 @@ function DeleteAniTiles(): void {
 }
 
 function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
-  let pAniNode: Pointer<ANITILE> = NULL;
-  let pOldAniNode: Pointer<ANITILE> = NULL;
+  let pAniNode: Pointer<ANITILE> = null;
+  let pOldAniNode: Pointer<ANITILE> = null;
   let TileElem: Pointer<TILE_ELEMENT>;
 
   pAniNode = pAniTileHead;
 
-  while (pAniNode != NULL) {
+  while (pAniNode != null) {
     if (pAniNode == pAniTile) {
       // OK, set links
       // Check for head or tail
-      if (pOldAniNode == NULL) {
+      if (pOldAniNode == null) {
         // It's the head
         pAniTileHead = pAniTile.value.pNext;
       } else {
@@ -323,7 +323,7 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
         TileElem = addressof(gTileDatabase[pAniNode.value.usTileIndex]);
 
         // OK, update existing tile usIndex....
-        Assert(TileElem.value.pAnimData != NULL);
+        Assert(TileElem.value.pAnimData != null);
         pAniNode.value.pLevelNode.value.usIndex = TileElem.value.pAnimData.value.pusFrames[pAniNode.value.pLevelNode.value.sCurrentFrame];
 
         // OK, set our frame data back to zero....
@@ -358,8 +358,8 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
 }
 
 function UpdateAniTiles(): void {
-  let pAniNode: Pointer<ANITILE> = NULL;
-  let pNode: Pointer<ANITILE> = NULL;
+  let pAniNode: Pointer<ANITILE> = null;
+  let pNode: Pointer<ANITILE> = null;
   let uiClock: UINT32 = GetJA2Clock();
   let usMaxFrames: UINT16;
   let usMinFrames: UINT16;
@@ -368,7 +368,7 @@ function UpdateAniTiles(): void {
   // LOOP THROUGH EACH NODE
   pAniNode = pAniTileHead;
 
-  while (pAniNode != NULL) {
+  while (pAniNode != null) {
     pNode = pAniNode;
     pAniNode = pAniNode.value.pNext;
 
@@ -602,7 +602,7 @@ function SetAniTileFrame(pAniTile: Pointer<ANITILE>, sFrame: INT16): void {
 }
 
 function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT32): Pointer<ANITILE> {
-  let pNode: Pointer<LEVELNODE> = NULL;
+  let pNode: Pointer<LEVELNODE> = null;
 
   switch (ubLevelID) {
     case ANI_STRUCT_LEVEL:
@@ -637,10 +637,10 @@ function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT3
 
     default:
 
-      return NULL;
+      return null;
   }
 
-  while (pNode != NULL) {
+  while (pNode != null) {
     if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
       if (pNode.value.pAniTile.value.uiFlags & uiFlags) {
         return pNode.value.pAniTile;
@@ -650,7 +650,7 @@ function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT3
     pNode = pNode.value.pNext;
   }
 
-  return NULL;
+  return null;
 }
 
 function HideAniTile(pAniTile: Pointer<ANITILE>, fHide: BOOLEAN): void {
@@ -670,13 +670,13 @@ function PauseAniTile(pAniTile: Pointer<ANITILE>, fPause: BOOLEAN): void {
 }
 
 function PauseAllAniTilesOfType(uiType: UINT32, fPause: BOOLEAN): void {
-  let pAniNode: Pointer<ANITILE> = NULL;
-  let pNode: Pointer<ANITILE> = NULL;
+  let pAniNode: Pointer<ANITILE> = null;
+  let pNode: Pointer<ANITILE> = null;
 
   // LOOP THROUGH EACH NODE
   pAniNode = pAniTileHead;
 
-  while (pAniNode != NULL) {
+  while (pAniNode != null) {
     pNode = pAniNode;
     pAniNode = pAniNode.value.pNext;
 

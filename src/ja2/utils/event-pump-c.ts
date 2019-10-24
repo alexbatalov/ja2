@@ -557,7 +557,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SBeginFireWeapon.usSoldierID) == FALSE) {
-        pSoldier = NULL;
+        pSoldier = null;
         break;
         // Handle Error?
         // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");

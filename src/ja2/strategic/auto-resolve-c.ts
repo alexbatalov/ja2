@@ -228,10 +228,10 @@ let gsCiviliansEatenByMonsters: INT16 = -1;
 
 // Dynamic globals -- to conserve memory, all global variables are allocated upon entry
 // and deleted before we leave.
-let gpAR: Pointer<AUTORESOLVE_STRUCT> = NULL;
-let gpMercs: Pointer<SOLDIERCELL> = NULL;
-let gpCivs: Pointer<SOLDIERCELL> = NULL;
-let gpEnemies: Pointer<SOLDIERCELL> = NULL;
+let gpAR: Pointer<AUTORESOLVE_STRUCT> = null;
+let gpMercs: Pointer<SOLDIERCELL> = null;
+let gpCivs: Pointer<SOLDIERCELL> = null;
+let gpEnemies: Pointer<SOLDIERCELL> = null;
 
 // Simple wrappers for autoresolve sounds that are played.
 function PlayAutoResolveSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): void {
@@ -247,7 +247,7 @@ function PlayAutoResolveSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolum
 }
 
 function EliminateAllMercs(): void {
-  let pAttacker: Pointer<SOLDIERCELL> = NULL;
+  let pAttacker: Pointer<SOLDIERCELL> = null;
   let i: INT32;
   let iNum: INT32 = 0;
   if (gpAR) {
@@ -328,7 +328,7 @@ function EliminateAllEnemies(ubSectorX: UINT8, ubSectorY: UINT8): void {
         pDeleteGroup = pGroup;
         pGroup = pGroup.value.next;
         if (gpBattleGroup == pDeleteGroup)
-          gpBattleGroup = NULL;
+          gpBattleGroup = null;
         RemovePGroup(pDeleteGroup);
       } else
         pGroup = pGroup.value.next;
@@ -350,7 +350,7 @@ function EliminateAllEnemies(ubSectorX: UINT8, ubSectorY: UINT8): void {
     }
     gpAR.value.ubAliveEnemies = 0;
   }
-  gpBattleGroup = NULL;
+  gpBattleGroup = null;
 }
 
 const ORIG_LEFT = 26;
@@ -433,7 +433,7 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
 
     BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(SrcRect), addressof(DstRect));
     InvalidateScreen();
-    RefreshScreen(NULL);
+    RefreshScreen(null);
 
     // Restore the previous rect.
     BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, DstRect.iLeft, DstRect.iTop, (DstRect.iRight - DstRect.iLeft + 1), (DstRect.iBottom - DstRect.iTop + 1));
@@ -497,7 +497,7 @@ function AutoResolveScreenInit(): UINT32 {
 }
 
 function AutoResolveScreenShutdown(): UINT32 {
-  gpBattleGroup = NULL;
+  gpBattleGroup = null;
   return TRUE;
 }
 
@@ -765,29 +765,29 @@ function RenderSoldierCell(pCell: Pointer<SOLDIERCELL>): void {
   let x: UINT8;
   if (pCell.value.uiFlags & CELL_MERC) {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.value.xp + 36, pCell.value.yp + 2, pCell.value.xp + 44, pCell.value.yp + 30, 0);
-    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iPanelImages, Enum121.MERC_PANEL, pCell.value.xp, pCell.value.yp, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iPanelImages, Enum121.MERC_PANEL, pCell.value.xp, pCell.value.yp, VO_BLT_SRCTRANSPARENCY, null);
     RenderSoldierCellBars(pCell);
     x = 0;
   } else {
-    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iPanelImages, Enum121.OTHER_PANEL, pCell.value.xp, pCell.value.yp, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iPanelImages, Enum121.OTHER_PANEL, pCell.value.xp, pCell.value.yp, VO_BLT_SRCTRANSPARENCY, null);
     x = 6;
   }
   if (!pCell.value.pSoldier.value.bLife) {
     SetObjectHandleShade(pCell.value.uiVObjectID, 0);
     if (!(pCell.value.uiFlags & CELL_CREATURE))
-      BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iFaces, Enum122.HUMAN_SKULL, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iFaces, Enum122.HUMAN_SKULL, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, null);
     else
-      BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iFaces, Enum122.CREATURE_SKULL, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iFaces, Enum122.CREATURE_SKULL, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, null);
   } else {
     if (pCell.value.uiFlags & CELL_HITBYATTACKER) {
       ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.value.xp + 3 + x, pCell.value.yp + 3, pCell.value.xp + 33 + x, pCell.value.yp + 29, 65535);
     } else if (pCell.value.uiFlags & CELL_HITLASTFRAME) {
       ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.value.xp + 3 + x, pCell.value.yp + 3, pCell.value.xp + 33 + x, pCell.value.yp + 29, 0);
       SetObjectHandleShade(pCell.value.uiVObjectID, 1);
-      BltVideoObjectFromIndex(FRAME_BUFFER, pCell.value.uiVObjectID, pCell.value.usIndex, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, pCell.value.uiVObjectID, pCell.value.usIndex, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, null);
     } else {
       SetObjectHandleShade(pCell.value.uiVObjectID, 0);
-      BltVideoObjectFromIndex(FRAME_BUFFER, pCell.value.uiVObjectID, pCell.value.usIndex, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, pCell.value.uiVObjectID, pCell.value.usIndex, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, null);
     }
   }
 
@@ -913,22 +913,22 @@ function BuildInterfaceBuffer(): void {
     BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.B_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
   }
   // Blit the 4 corners
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.TL_BORDER, DestRect.iLeft, DestRect.iTop, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.TR_BORDER, DestRect.iRight - 10, DestRect.iTop, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BL_BORDER, DestRect.iLeft, DestRect.iBottom - 9, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BR_BORDER, DestRect.iRight - 10, DestRect.iBottom - 9, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.TL_BORDER, DestRect.iLeft, DestRect.iTop, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.TR_BORDER, DestRect.iRight - 10, DestRect.iTop, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BL_BORDER, DestRect.iLeft, DestRect.iBottom - 9, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BR_BORDER, DestRect.iRight - 10, DestRect.iBottom - 9, VO_BLT_SRCTRANSPARENCY, null);
 
   // Blit the center pieces
   x = gpAR.value.sCenterStartX - gpAR.value.Rect.iLeft;
   y = 0;
   // Top
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.TOP_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.TOP_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, null);
   // Middle
   for (y = 40; y < gpAR.value.sHeight - 40; y += 40) {
-    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.AUTO_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.AUTO_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, null);
   }
   y = gpAR.value.sHeight - 40;
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BOT_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BOT_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, null);
 
   SetClippingRect(addressof(ClipRect));
 }
@@ -1182,7 +1182,7 @@ function FindMedicalKit(): Pointer<OBJECTTYPE> {
       return addressof(gpMercs[i].pSoldier.value.inv[iSlot]);
     }
   }
-  return NULL;
+  return null;
 }
 
 function AutoBandageMercs(): UINT32 {
@@ -1193,7 +1193,7 @@ function AutoBandageMercs(): UINT32 {
   let uiMaxPointsUsed: UINT32;
   let uiParallelPointsUsed: UINT32;
   let usKitPts: UINT16;
-  let pKit: Pointer<OBJECTTYPE> = NULL;
+  let pKit: Pointer<OBJECTTYPE> = null;
   let fFound: BOOLEAN = FALSE;
   let fComplete: BOOLEAN = TRUE;
   let bSlot: INT8;
@@ -1253,7 +1253,7 @@ function AutoBandageMercs(): UINT32 {
       }
       usKitPts = TotalPoints(pKit);
       if (!usKitPts) {
-        pKit = NULL;
+        pKit = null;
         fComplete = FALSE;
         continue;
       }
@@ -1278,7 +1278,7 @@ function RenderAutoResolve(): void {
   let hVSurface: HVSURFACE;
   let xp: INT32;
   let yp: INT32;
-  let pCell: Pointer<SOLDIERCELL> = NULL;
+  let pCell: Pointer<SOLDIERCELL> = null;
   let index: INT32 = 0;
   let str: UINT16[] /* [100] */;
   let bTownId: UINT8 = 0;
@@ -1407,7 +1407,7 @@ function RenderAutoResolve(): void {
 
       switch (gpAR.value.ubBattleStatus) {
         case Enum120.BATTLE_VICTORY:
-          HandleMoraleEvent(NULL, Enum234.MORALE_BATTLE_WON, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+          HandleMoraleEvent(null, Enum234.MORALE_BATTLE_WON, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
           HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_WON, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
 
           SectorInfo[SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY)].bLastKnownEnemies = 0;
@@ -1428,14 +1428,14 @@ function RenderAutoResolve(): void {
               }
             }
           }
-          HandleMoraleEvent(NULL, Enum234.MORALE_HEARD_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+          HandleMoraleEvent(null, Enum234.MORALE_HEARD_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
           HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
 
           SetMusicMode(Enum328.MUSIC_TACTICAL_DEATH);
           gsEnemyGainedControlOfSectorID = SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
           break;
         case Enum120.BATTLE_DEFEAT:
-          HandleMoraleEvent(NULL, Enum234.MORALE_HEARD_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+          HandleMoraleEvent(null, Enum234.MORALE_HEARD_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
           HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
           if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
             gsEnemyGainedControlOfSectorID = SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
@@ -1491,7 +1491,7 @@ function RenderAutoResolve(): void {
     SetFont(BLOCKFONT2());
     xp = gpAR.value.sCenterStartX + 12;
     yp = 218 + gpAR.value.bVerticalOffset;
-    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iIndent, 0, xp, yp, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iIndent, 0, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
     xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, BLOCKFONT2()) / 2;
     yp = 227 + gpAR.value.bVerticalOffset;
     mprintf(xp, yp, str);
@@ -1824,7 +1824,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
           fFirstGroup = FALSE;
         }
       }
-      gpMercs[i].pSoldier = NULL;
+      gpMercs[i].pSoldier = null;
     }
 
     // End capture squence....
@@ -1840,7 +1840,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
     if (gpMercs[i].pRegion) {
       MSYS_RemoveRegion(gpMercs[i].pRegion);
       MemFree(gpMercs[i].pRegion);
-      gpMercs[i].pRegion = NULL;
+      gpMercs[i].pRegion = null;
     }
   }
   // Delete all militia
@@ -1937,22 +1937,22 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
     // Deallocate all of the global memory.
     // Everything internal to them, should have already been deleted.
     MemFree(gpAR);
-    gpAR = NULL;
+    gpAR = null;
 
     MemFree(gpMercs);
-    gpMercs = NULL;
+    gpMercs = null;
 
     MemFree(gpCivs);
-    gpCivs = NULL;
+    gpCivs = null;
 
     MemFree(gpEnemies);
-    gpEnemies = NULL;
+    gpEnemies = null;
   }
 
   // KM : Aug 09, 1999 Patch fix -- Would break future dialog while time compressing
   gTacticalStatus.ubCurrentTeam = gbPlayerNum;
 
-  gpBattleGroup = NULL;
+  gpBattleGroup = null;
 
   if (gubEnemyEncounterCode == Enum164.CREATURE_ATTACK_CODE) {
     gubNumCreaturesAttackingTown = 0;
@@ -2039,7 +2039,7 @@ function RetreatButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function DetermineBandageButtonState(): void {
   let i: INT32;
-  let pKit: Pointer<OBJECTTYPE> = NULL;
+  let pKit: Pointer<OBJECTTYPE> = null;
   let fFound: BOOLEAN = FALSE;
 
   // Does anyone need bandaging?
@@ -2099,7 +2099,7 @@ function DoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function MercCellMouseMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   // Find the merc with the same region.
   let i: INT32;
-  let pCell: Pointer<SOLDIERCELL> = NULL;
+  let pCell: Pointer<SOLDIERCELL> = null;
   for (i = 0; i < gpAR.value.ubMercs; i++) {
     if (gpMercs[i].pRegion == reg) {
       pCell = addressof(gpMercs[i]);
@@ -2128,7 +2128,7 @@ function MercCellMouseClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Find the merc with the same region.
     let i: INT32;
-    let pCell: Pointer<SOLDIERCELL> = NULL;
+    let pCell: Pointer<SOLDIERCELL> = null;
 
     if (gpAR.value.fPendingSurrender) {
       // Can't setup retreats when pending surrender.
@@ -2292,7 +2292,7 @@ function ResetAutoResolveInterface(): void {
     // Removing temp mercs
     gpAR.value.iNumMercFaces--;
     TacticalRemoveSoldierPointer(gpMercs[gpAR.value.iNumMercFaces].pSoldier, FALSE);
-    gpMercs[gpAR.value.iNumMercFaces].pSoldier = NULL;
+    gpMercs[gpAR.value.iNumMercFaces].pSoldier = null;
   }
   while (gpAR.value.iNumMercFaces < gpAR.value.ubMercs && gpAR.value.iNumMercFaces >= gpAR.value.iActualMercFaces) {
     CreateTempPlayerMerc();
@@ -2606,7 +2606,7 @@ function CreateTempPlayerMerc(): void {
 
 function DetermineTeamLeader(fFriendlyTeam: BOOLEAN): void {
   let i: INT32;
-  let pBestLeaderCell: Pointer<SOLDIERCELL> = NULL;
+  let pBestLeaderCell: Pointer<SOLDIERCELL> = null;
   // For each team (civs and players count as same team), find the merc with the best
   // leadership ability.
   if (fFriendlyTeam) {
@@ -2843,7 +2843,7 @@ function ChooseTarget(pAttacker: Pointer<SOLDIERCELL>): Pointer<SOLDIERCELL> {
   let iAvailableTargets: INT32;
   let index: INT32;
   let iRandom: INT32 = -1;
-  let pTarget: Pointer<SOLDIERCELL> = NULL;
+  let pTarget: Pointer<SOLDIERCELL> = null;
   let usSavedDefence: UINT16;
   // Determine what team we are attacking
   if (pAttacker.value.uiFlags & (CELL_ENEMY | CELL_CREATURE)) {
@@ -2893,7 +2893,7 @@ function ChooseTarget(pAttacker: Pointer<SOLDIERCELL>): Pointer<SOLDIERCELL> {
     }
   }
   AssertMsg(0, "Error in ChooseTarget logic for choosing enemy target.");
-  return NULL;
+  return null;
 }
 
 function FireAShot(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
@@ -3063,7 +3063,7 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
     else
       ubLocation = AIM_SHOT_TORSO;
     ubAccuracy = ((usAttack - usDefence + PreRandom(usDefence - pTarget.value.usDefence)) / 10);
-    iImpact = BulletImpact(pAttacker.value.pSoldier, pTarget.value.pSoldier, ubLocation, ubImpact, ubAccuracy, NULL);
+    iImpact = BulletImpact(pAttacker.value.pSoldier, pTarget.value.pSoldier, ubLocation, ubImpact, ubAccuracy, null);
 
     if (bAttackIndex == -1) {
       // tack damage on to end of last hit
@@ -3248,11 +3248,11 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
       pAssister1 = pTarget.value.pAttacker[index < 2 ? index + 1 : 0];
       pAssister2 = pTarget.value.pAttacker[index > 0 ? index - 1 : 2];
       if (pKiller == pAssister1)
-        pAssister1 = NULL;
+        pAssister1 = null;
       if (pKiller == pAssister2)
-        pAssister2 = NULL;
+        pAssister2 = null;
       if (pAssister1 == pAssister2)
-        pAssister2 = NULL;
+        pAssister2 = null;
       if (pKiller) {
         if (pKiller.value.uiFlags & CELL_MERC) {
           gMercProfiles[pKiller.value.pSoldier.value.ubProfile].usKills++;
@@ -3577,7 +3577,7 @@ function ProcessBattleFrame(): void {
   let iTime: INT32;
   let iAttacksThisFrame: INT32;
 
-  pAttacker = NULL;
+  pAttacker = null;
   iAttacksThisFrame = 0;
 
   if (fContinue) {

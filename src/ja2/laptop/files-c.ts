@@ -38,9 +38,9 @@ const FILES_COUNTER_3_WIDTH = 45;
 let iHighLightFileLine: INT32 = -1;
 
 // the files record list
-let pFilesListHead: FilesUnitPtr = NULL;
+let pFilesListHead: FilesUnitPtr = null;
 
-let pFileStringList: FileStringPtr = NULL;
+let pFileStringList: FileStringPtr = null;
 
 // are we in files mode
 let fInFilesMode: BOOLEAN = FALSE;
@@ -140,7 +140,7 @@ function GameInitFiles(): void {
   ClearFilesList();
 
   // add background check by RIS
-  AddFilesToPlayersLog(Enum78.ENRICO_BACKGROUND, 0, 255, NULL, NULL);
+  AddFilesToPlayersLog(Enum78.ENRICO_BACKGROUND, 0, 255, null, null);
 }
 
 function EnterFiles(): void {
@@ -218,7 +218,7 @@ function RenderFiles(): void {
 
   // display border
   GetVideoObject(addressof(hHandle), guiLaptopBACKGROUND);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, null);
 }
 
 function RenderFilesBackGround(): void {
@@ -230,11 +230,11 @@ function RenderFilesBackGround(): void {
   GetVideoObject(addressof(hHandle), guiTITLE);
 
   // blt title bar to screen
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // get and blt the top part of the screen, video object and blt to screen
   GetVideoObject(addressof(hHandle), guiTOP);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -323,7 +323,7 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
 
     // set up information passed
     pFiles = pFiles.value.Next;
-    pFiles.value.Next = NULL;
+    pFiles.value.Next = null;
     pFiles.value.ubCode = ubCode;
     pFiles.value.uiDate = uiDate;
     pFiles.value.uiIdNumber = uiId;
@@ -334,7 +334,7 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
     pFiles = MemAlloc(sizeof(FilesUnit));
 
     // setup info passed
-    pFiles.value.Next = NULL;
+    pFiles.value.Next = null;
     pFiles.value.ubCode = ubCode;
     pFiles.value.uiDate = uiDate;
     pFiles.value.uiIdNumber = uiId;
@@ -344,8 +344,8 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
   }
 
   // null out ptr's to picture file names
-  pFiles.value.pPicFileNameList[0] = NULL;
-  pFiles.value.pPicFileNameList[1] = NULL;
+  pFiles.value.pPicFileNameList[0] = null;
+  pFiles.value.pPicFileNameList[1] = null;
 
   // copy file name strings
 
@@ -443,7 +443,7 @@ function OpenAndWriteFilesFile(): BOOLEAN {
   memset(addressof(pFirstFilePath), 0, sizeof(pFirstFilePath));
   memset(addressof(pSecondFilePath), 0, sizeof(pSecondFilePath));
 
-  if (pFilesList != NULL) {
+  if (pFilesList != null) {
     if (pFilesList.value.pPicFileNameList[0]) {
       strcpy(pFirstFilePath, pFilesList.value.pPicFileNameList[0]);
     }
@@ -462,12 +462,12 @@ function OpenAndWriteFilesFile(): BOOLEAN {
   // write info, while there are elements left in the list
   while (pFilesList) {
     // now write date and amount, and code
-    FileWrite(hFileHandle, addressof(pFilesList.value.ubCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, addressof(pFilesList.value.uiDate), sizeof(UINT32), NULL);
-    FileWrite(hFileHandle, addressof(pFirstFilePath), 128, NULL);
-    FileWrite(hFileHandle, addressof(pSecondFilePath), 128, NULL);
-    FileWrite(hFileHandle, addressof(pFilesList.value.ubFormat), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, addressof(pFilesList.value.fRead), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pFilesList.value.ubCode), sizeof(UINT8), null);
+    FileWrite(hFileHandle, addressof(pFilesList.value.uiDate), sizeof(UINT32), null);
+    FileWrite(hFileHandle, addressof(pFirstFilePath), 128, null);
+    FileWrite(hFileHandle, addressof(pSecondFilePath), 128, null);
+    FileWrite(hFileHandle, addressof(pFilesList.value.ubFormat), sizeof(UINT8), null);
+    FileWrite(hFileHandle, addressof(pFilesList.value.fRead), sizeof(UINT8), null);
 
     // next element in list
     pFilesList = pFilesList.value.Next;
@@ -505,7 +505,7 @@ function ClearFilesList(): void {
     // delete current node
     MemFree(pFilesNode);
   }
-  pFilesListHead = NULL;
+  pFilesListHead = null;
   return;
 }
 
@@ -537,7 +537,7 @@ function DisplayFilesList(): void {
     if (iCounter == iHighLightFileLine) {
       // render highlight
       GetVideoObject(addressof(hHandle), guiHIGHLIGHT);
-      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILES_SENDER_TEXT_X - 5, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 4, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILES_SENDER_TEXT_X - 5, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 4, VO_BLT_SRCTRANSPARENCY, null);
     }
     mprintf(FILES_SENDER_TEXT_X, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 2, pFilesSenderList[pFilesList.value.ubCode]);
     iCounter++;
@@ -666,7 +666,7 @@ function DisplayFormattedText(): BOOLEAN {
   GetVideoObject(addressof(hHandle), guiFileBack);
 
   // blt background to screen
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X, FILE_VIEWER_Y - 4, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X, FILE_VIEWER_Y - 4, VO_BLT_SRCTRANSPARENCY, null);
 
   // get the offset in the file
   while (iCounter < iMessageCode) {
@@ -721,7 +721,7 @@ function DisplayFormattedText(): BOOLEAN {
       GetVideoObject(addressof(hHandle), uiFirstTempPicture);
 
       // blt background to screen
-      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + 4 + (FILE_VIEWER_WIDTH - usFirstWidth) / 2, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + 4 + (FILE_VIEWER_WIDTH - usFirstWidth) / 2, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, null);
 
       iHeight = usFirstHeight + 20;
 
@@ -765,7 +765,7 @@ function DisplayFormattedText(): BOOLEAN {
       GetVideoObject(addressof(hHandle), uiFirstTempPicture);
 
       // blt background to screen
-      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + usFreeSpace, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + usFreeSpace, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, null);
 
       // get file background object
       GetVideoObject(addressof(hHandle), uiSecondTempPicture);
@@ -775,7 +775,7 @@ function DisplayFormattedText(): BOOLEAN {
       usFreeSpace += usFirstWidth;
 
       // blt background to screen
-      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + usFreeSpace, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + usFreeSpace, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, null);
 
       // delete video object
       DeleteVideoObjectFromIndex(uiFirstTempPicture);
@@ -816,8 +816,8 @@ function DisplayFormattedText(): BOOLEAN {
 function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
   let iCounter: INT32 = 0;
   let sString: wchar_t[] /* [2048] */;
-  let pTempString: FileStringPtr = NULL;
-  let pLocatorString: FileStringPtr = NULL;
+  let pTempString: FileStringPtr = null;
+  let pLocatorString: FileStringPtr = null;
   let iTotalYPosition: INT32 = 0;
   let iYPositionOnPage: INT32 = 0;
   let iFileLineWidth: INT32 = 0;
@@ -825,7 +825,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
   let uiFlags: UINT32 = 0;
   let uiFont: UINT32 = 0;
   let fGoingOffCurrentPage: BOOLEAN = FALSE;
-  let WidthList: FileRecordWidthPtr = NULL;
+  let WidthList: FileRecordWidthPtr = null;
 
   let uiPicture: UINT32;
   let hHandle: HVOBJECT;
@@ -931,7 +931,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
 
         pTempString = pTempString.value.Next;
 
-        if (pTempString == NULL) {
+        if (pTempString == null) {
           // on last page
           fOnLastFilesPageFlag = TRUE;
         } else {
@@ -940,7 +940,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
 
         // going over the edge, stop now
         if (fGoingOffCurrentPage == TRUE) {
-          pTempString = NULL;
+          pTempString = null;
         }
         iCounter++;
       }
@@ -961,7 +961,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
     GetVideoObject(addressof(hHandle), uiPicture);
 
     // blt title bar to screen
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, 300, 270, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, 300, 270, VO_BLT_SRCTRANSPARENCY, null);
 
     DeleteVideoObjectFromIndex(uiPicture);
   } else if (giFilesPage == 4) {
@@ -974,7 +974,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
     GetVideoObject(addressof(hHandle), uiPicture);
 
     // blt title bar to screen
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, 260, 225, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, 260, 225, VO_BLT_SRCTRANSPARENCY, null);
 
     DeleteVideoObjectFromIndex(uiPicture);
   } else if (giFilesPage == 5) {
@@ -987,7 +987,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
     GetVideoObject(addressof(hHandle), uiPicture);
 
     // blt title bar to screen
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, 260, 85, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, 260, 85, VO_BLT_SRCTRANSPARENCY, null);
 
     DeleteVideoObjectFromIndex(uiPicture);
   }
@@ -1009,8 +1009,8 @@ function AddStringToFilesList(pString: STR16): void {
 
   // set Next to NULL
 
-  pFileString.value.Next = NULL;
-  if (pFileStringList == NULL) {
+  pFileString.value.Next = null;
+  if (pFileStringList == null) {
     pFileStringList = pFileString;
   } else {
     while (pTempString.value.Next) {
@@ -1028,7 +1028,7 @@ function ClearFileStringList(): void {
 
   pFileString = pFileStringList;
 
-  if (pFileString == NULL) {
+  if (pFileString == null) {
     return;
   }
   while (pFileString.value.Next) {
@@ -1040,7 +1040,7 @@ function ClearFileStringList(): void {
   // last one
   MemFree(pFileString);
 
-  pFileStringList = NULL;
+  pFileStringList = null;
 }
 
 function CreateButtonsForFilesPage(): void {
@@ -1167,13 +1167,13 @@ function HandleFileViewerButtonStates(): void {
 }
 
 function CreateRecordWidth(iRecordNumber: INT32, iRecordWidth: INT32, iRecordHeightAdjustment: INT32, ubFlags: UINT8): FileRecordWidthPtr {
-  let pTempRecord: FileRecordWidthPtr = NULL;
+  let pTempRecord: FileRecordWidthPtr = null;
 
   // allocs and inits a width info record for the multipage file viewer...this will tell the procedure that does inital computation on which record is the start of the current page
   // how wide special records are ( ones that share space with pictures )
   pTempRecord = MemAlloc(sizeof(FileRecordWidth));
 
-  pTempRecord.value.Next = NULL;
+  pTempRecord.value.Next = null;
   pTempRecord.value.iRecordNumber = iRecordNumber;
   pTempRecord.value.iRecordWidth = iRecordWidth;
   pTempRecord.value.iRecordHeightAdjustment = iRecordHeightAdjustment;
@@ -1184,8 +1184,8 @@ function CreateRecordWidth(iRecordNumber: INT32, iRecordWidth: INT32, iRecordHei
 
 function CreateWidthRecordsForAruloIntelFile(): FileRecordWidthPtr {
   // this fucntion will create the width list for the Arulco intelligence file
-  let pTempRecord: FileRecordWidthPtr = NULL;
-  let pRecordListHead: FileRecordWidthPtr = NULL;
+  let pTempRecord: FileRecordWidthPtr = null;
+  let pRecordListHead: FileRecordWidthPtr = null;
 
   // first record width
   //	pTempRecord = CreateRecordWidth( 7, 350, 200,0 );
@@ -1209,8 +1209,8 @@ function CreateWidthRecordsForAruloIntelFile(): FileRecordWidthPtr {
 
 function CreateWidthRecordsForTerroristFile(): FileRecordWidthPtr {
   // this fucntion will create the width list for the Arulco intelligence file
-  let pTempRecord: FileRecordWidthPtr = NULL;
-  let pRecordListHead: FileRecordWidthPtr = NULL;
+  let pTempRecord: FileRecordWidthPtr = null;
+  let pRecordListHead: FileRecordWidthPtr = null;
 
   // first record width
   pTempRecord = CreateRecordWidth(4, 170, 0, 0);
@@ -1229,14 +1229,14 @@ function CreateWidthRecordsForTerroristFile(): FileRecordWidthPtr {
 }
 
 function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidthPtr): void {
-  let pTempRecord: FileRecordWidthPtr = NULL;
-  let pDeleteRecord: FileRecordWidthPtr = NULL;
+  let pTempRecord: FileRecordWidthPtr = null;
+  let pDeleteRecord: FileRecordWidthPtr = null;
 
   // set up to head of the list
   pTempRecord = pDeleteRecord = pFileRecordWidthList;
 
   // error check
-  if (pFileRecordWidthList == NULL) {
+  if (pFileRecordWidthList == null) {
     return;
   }
 
@@ -1254,7 +1254,7 @@ function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidthPtr): voi
   MemFree(pTempRecord);
 
   // null out passed ptr
-  pFileRecordWidthList = NULL;
+  pFileRecordWidthList = null;
 
   return;
 }
@@ -1307,8 +1307,8 @@ function CheckForUnreadFiles(): void {
 function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOLEAN {
   let iCounter: INT32 = 0;
   let sString: wchar_t[] /* [2048] */;
-  let pTempString: FileStringPtr = NULL;
-  let pLocatorString: FileStringPtr = NULL;
+  let pTempString: FileStringPtr = null;
+  let pLocatorString: FileStringPtr = null;
   let iTotalYPosition: INT32 = 0;
   let iYPositionOnPage: INT32 = 0;
   let iFileLineWidth: INT32 = 0;
@@ -1316,7 +1316,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
   let uiFlags: UINT32 = 0;
   let uiFont: UINT32 = 0;
   let fGoingOffCurrentPage: BOOLEAN = FALSE;
-  let WidthList: FileRecordWidthPtr = NULL;
+  let WidthList: FileRecordWidthPtr = null;
   let iOffset: INT32 = 0;
   let uiPicture: UINT32;
   let hHandle: HVOBJECT;
@@ -1391,7 +1391,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
 
     pTempString = pTempString.value.Next;
 
-    if ((pTempString == NULL) && (fGoingOffCurrentPage == FALSE)) {
+    if ((pTempString == null) && (fGoingOffCurrentPage == FALSE)) {
       // on last page
       fOnLastFilesPageFlag = TRUE;
     } else {
@@ -1400,7 +1400,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
 
     // going over the edge, stop now
     if (fGoingOffCurrentPage == TRUE) {
-      pTempString = NULL;
+      pTempString = null;
     }
 
     // show picture
@@ -1420,7 +1420,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
 
       // def: 3/24/99
       //				BltVideoObject(FRAME_BUFFER, hHandle, 0,( INT16 ) (  FILE_VIEWER_X +  30 ), ( INT16 ) ( iYPositionOnPage + 5), VO_BLT_SRCTRANSPARENCY,NULL);
-      BltVideoObject(FRAME_BUFFER, hHandle, 0, (FILE_VIEWER_X + 30), (iYPositionOnPage + 21), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hHandle, 0, (FILE_VIEWER_X + 30), (iYPositionOnPage + 21), VO_BLT_SRCTRANSPARENCY, null);
 
       DeleteVideoObjectFromIndex(uiPicture);
 
@@ -1431,7 +1431,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
       // Blt face to screen to
       GetVideoObject(addressof(hHandle), uiPicture);
 
-      BltVideoObject(FRAME_BUFFER, hHandle, 0, (FILE_VIEWER_X + 25), (iYPositionOnPage + 16), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hHandle, 0, (FILE_VIEWER_X + 25), (iYPositionOnPage + 16), VO_BLT_SRCTRANSPARENCY, null);
 
       DeleteVideoObjectFromIndex(uiPicture);
     }
@@ -1452,7 +1452,7 @@ function AddFileAboutTerrorist(iProfileId: INT32): BOOLEAN {
   for (iCounter = 1; iCounter < 7; iCounter++) {
     if (usProfileIdsForTerroristFiles[iCounter] == iProfileId) {
       // checked, and this file is there
-      AddFilesToPlayersLog(iCounter, 0, 3, NULL, NULL);
+      AddFilesToPlayersLog(iCounter, 0, 3, null, null);
       return TRUE;
     }
   }

@@ -392,7 +392,7 @@ function mprintfEditor(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -734,7 +734,7 @@ function RenderSelectedItemBlownUp(): void {
   } else if (Item[gpItem.value.usItem].usItemClass == IC_KEY) {
     swprintf(szItemName, "%S", LockTable[gpItem.value.ubKeyID].ubEditorName);
   } else {
-    LoadItemInfo(gpItem.value.usItem, szItemName, NULL);
+    LoadItemInfo(gpItem.value.usItem, szItemName, null);
   }
   xp = sScreenX - (StringPixLength(szItemName, FONT10ARIAL()) - 40) / 2;
   yp -= 10;

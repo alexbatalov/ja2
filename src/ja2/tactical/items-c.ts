@@ -1947,7 +1947,7 @@ function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pA
 function EmptyWeaponMagazine(pWeapon: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): BOOLEAN {
   let usReloadSound: UINT16;
 
-  CHECKF(pAmmo != NULL);
+  CHECKF(pAmmo != null);
 
   if (pWeapon.value.ubGunShotsLeft > 0) {
     // start by erasing ammo item, just in case...
@@ -2044,7 +2044,7 @@ function FindAmmoToReload(pSoldier: Pointer<SOLDIERTYPE>, bWeaponIn: INT8, bExcl
   let pObj: Pointer<OBJECTTYPE>;
   let bSlot: INT8;
 
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return NO_SLOT;
   }
   pObj = addressof(pSoldier.value.inv[bWeaponIn]);
@@ -3284,8 +3284,8 @@ function RandomMagazine(usItem: UINT16, ubPercentStandard: UINT8): UINT16 {
 function CreateGun(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   let usAmmo: UINT16;
 
-  Assert(pObj != NULL);
-  if (pObj == NULL) {
+  Assert(pObj != null);
+  if (pObj == null) {
     return FALSE;
   }
 
@@ -3334,7 +3334,7 @@ function CreateGun(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): BO
 }
 
 function CreateMagazine(usItem: UINT16, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
-  if (pObj == NULL) {
+  if (pObj == null) {
     return FALSE;
   }
   memset(pObj, 0, sizeof(OBJECTTYPE));
@@ -3528,7 +3528,7 @@ function RemoveAttachment(pObj: Pointer<OBJECTTYPE>, bAttachPos: INT8, pNewObj: 
   }
 
   // if pNewObj is passed in NULL, then we just delete the attachment
-  if (pNewObj != NULL) {
+  if (pNewObj != null) {
     CreateItem(pObj.value.usAttachItem[bAttachPos], pObj.value.bAttachStatus[bAttachPos], pNewObj);
   }
 
@@ -3581,7 +3581,7 @@ function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<OBJECTTY
   }
 
   for (bLoop = Enum261.BIGPOCK1POS; bLoop < Enum261.SMALLPOCK8POS; bLoop++) {
-    if (gMercProfiles[ubProfile].bInvNumber[bLoop] == 0 && (pSoldier == NULL || pSoldier.value.inv[bLoop].usItem == NOTHING)) {
+    if (gMercProfiles[ubProfile].bInvNumber[bLoop] == 0 && (pSoldier == null || pSoldier.value.inv[bLoop].usItem == NOTHING)) {
       // CJC: Deal with money by putting money into # stored in profile
       if (Item[usItem].usItemClass == IC_MONEY) {
         gMercProfiles[ubProfile].uiMoney += pObject.value.uiMoneyAmount;
@@ -3604,7 +3604,7 @@ function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<OBJECTTY
     // pSoldier = FindSoldierByProfileID( ubProfile, FALSE );
 
     // Do we have a valid profile?
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       // OK, place in soldier...
       if (usItem == Enum225.MONEY) {
         CreateMoney(gMercProfiles[ubProfile].uiMoney, addressof(pSoldier.value.inv[bLoop]));
@@ -3654,7 +3654,7 @@ function RemoveObjectFromSoldierProfile(ubProfile: UINT8, usItem: UINT16): BOOLE
   pSoldier = FindSoldierByProfileID(ubProfile, FALSE);
 
   // Do we have a valid profile?
-  if (pSoldier != NULL) {
+  if (pSoldier != null) {
     // Remove item...
     RemoveInvObject(pSoldier, usItem);
   }

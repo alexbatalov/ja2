@@ -144,7 +144,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
         bDir = GetDirectionToGridNoFromGridNo(pSoldier.value.sGridNo, pOpponent.value.sGridNo);
 
         // ATE: Only if we have a levelnode...
-        if (pSoldier.value.pLevelNode != NULL && pSoldier.value.pLevelNode.value.pStructureData != NULL) {
+        if (pSoldier.value.pLevelNode != null && pSoldier.value.pLevelNode.value.pStructureData != null) {
           usStructureID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
         } else {
           usStructureID = INVALID_STRUCTURE_ID;
@@ -293,7 +293,7 @@ function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): BOOLEAN {
       sTempGridNo = NewGridNo(sGridNo, DirectionInc(bDirection));
       ubMovementCost = gubWorldMovementCosts[sTempGridNo][bDirection][0];
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(NULL, sTempGridNo, ubMovementCost, FALSE, NULL);
+        ubMovementCost = DoorTravelCost(null, sTempGridNo, ubMovementCost, FALSE, null);
       }
       if (ubMovementCost >= TRAVELCOST_BLOCKED) {
         return FALSE;
@@ -321,7 +321,7 @@ function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): BOOLEAN {
       sTempGridNo = NewGridNo(sTempGridNo, DirectionInc(bDirection));
       ubMovementCost = gubWorldMovementCosts[sTempGridNo][bDirection][0];
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(NULL, sTempGridNo, ubMovementCost, FALSE, NULL);
+        ubMovementCost = DoorTravelCost(null, sTempGridNo, ubMovementCost, FALSE, null);
       }
       if (ubMovementCost >= TRAVELCOST_BLOCKED) {
         return FALSE;
@@ -1641,13 +1641,13 @@ function CountAdjacentSpreadTargets(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget
   let bTargets: INT8;
   let sTarget: INT16;
   let pTarget: Pointer<SOLDIERTYPE>;
-  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = [ NULL ];
+  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = [ null ];
 
   bTargetIndex = -1;
   bCheckDir = -1;
 
   pTargets[2] = SimpleFindSoldier(sFirstTarget, bTargetLevel);
-  if (pTargets[2] == NULL) {
+  if (pTargets[2] == null) {
     return 0;
   }
   bTargets = 1;
@@ -1735,7 +1735,7 @@ function CountAdjacentSpreadTargets(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget
     if (bDirLoop == 6 && bTargets > 1) {
       // we're done!  otherwise we continue and try to find people in front/behind
       break;
-    } else if (pTargets[bTargetIndex] != NULL) {
+    } else if (pTargets[bTargetIndex] != null) {
       continue;
     }
     sTarget = sFirstTarget + DirIncrementer[bCheckDir];
@@ -1760,14 +1760,14 @@ function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bT
   let bTargets: INT8;
   let sTarget: INT16;
   let pTarget: Pointer<SOLDIERTYPE>;
-  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = [ NULL ];
+  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = [ null ];
   let bAdjacents: INT8;
   let bOtherAdjacents: INT8;
 
   bCheckDir = -1;
 
   pTargets[2] = SimpleFindSoldier(sFirstTarget, bTargetLevel);
-  if (pTargets[2] == NULL) {
+  if (pTargets[2] == null) {
     return sFirstTarget;
   }
   bTargets = 1;
@@ -1856,7 +1856,7 @@ function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bT
     if (bDirLoop == 6 && bTargets > 1) {
       // we're done!  otherwise we continue and try to find people in front/behind
       break;
-    } else if (pTargets[bTargetIndex] != NULL) {
+    } else if (pTargets[bTargetIndex] != null) {
       continue;
     }
     sTarget = sFirstTarget + DirIncrementer[bCheckDir];
@@ -1875,24 +1875,24 @@ function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bT
   if (bTargets > 1) {
     // Move all the locations down in the array if necessary
     // Check the 4th position
-    if (pTargets[3] == NULL && pTargets[4] != NULL) {
+    if (pTargets[3] == null && pTargets[4] != null) {
       pTargets[3] = pTargets[4];
-      pTargets[4] = NULL;
+      pTargets[4] = null;
     }
     // Check the first two positions; we know the 3rd value is set because
     // it's our initial target
-    if (pTargets[1] == NULL) {
+    if (pTargets[1] == null) {
       pTargets[1] = pTargets[2];
       pTargets[2] = pTargets[3];
       pTargets[3] = pTargets[4];
-      pTargets[4] = NULL;
+      pTargets[4] = null;
     }
-    if (pTargets[0] == NULL) {
+    if (pTargets[0] == null) {
       pTargets[0] = pTargets[1];
       pTargets[1] = pTargets[2];
       pTargets[2] = pTargets[3];
       pTargets[3] = pTargets[4];
-      pTargets[4] = NULL;
+      pTargets[4] = null;
     }
     // now 50% chance to reorganize to fire in reverse order
     if (Random(2)) {

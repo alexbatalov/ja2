@@ -36,7 +36,7 @@ const StructZLevel = (sMapX, sMapY) => {
   GetMapXYWorldY(sMapX, sMapY, sWorldY);
   if ((uiLevelNodeFlags & LEVELNODE_ROTTINGCORPSE)) {
     if (pCorpse.value.def.usFlags & ROTTING_CORPSE_VEHICLE) {
-      if (pNode.value.pStructureData != NULL) {
+      if (pNode.value.pStructureData != null) {
         sZOffsetX = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetX;
         sZOffsetY = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetY;
       }
@@ -105,7 +105,7 @@ const ShadowZLevel = (sMapX, sMapY) => {
 
 const SoldierZLevel = (pSoldier, sMapX, sMapY) => {
   if ((pSoldier.value.uiStatusFlags & SOLDIER_MULTITILE)) {
-    if (pNode.value.pStructureData != NULL) {
+    if (pNode.value.pStructureData != null) {
       sZOffsetX = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetX;
       sZOffsetY = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetY;
     }

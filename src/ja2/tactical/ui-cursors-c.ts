@@ -573,7 +573,7 @@ function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos
 
 function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRecalc: BOOLEAN): void {
   let usMapPos: UINT16;
-  let pTargetSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pTargetSoldier: Pointer<SOLDIERTYPE> = null;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let usFlags: UINT16;
   let sMouseX: INT16;
@@ -602,10 +602,10 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
     }
 
     // Determine which body part it's on
-    pNode = GetAnimProfileFlags(usMapPos, addressof(usFlags), addressof(pTargetSoldier), NULL);
+    pNode = GetAnimProfileFlags(usMapPos, addressof(usFlags), addressof(pTargetSoldier), null);
 
-    while (pNode != NULL) {
-      if (pTargetSoldier != NULL) {
+    while (pNode != null) {
+      if (pTargetSoldier != null) {
         // ATE: Check their stance - if prone - return!
         if (gAnimControl[pTargetSoldier.value.usAnimState].ubHeight == ANIM_PRONE) {
           return;
@@ -1094,7 +1094,7 @@ function HandleRepairCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiC
   HandleUIMovementCursor(pSoldier, uiCursorFlags, sGridNo, MOVEUI_TARGET_REPAIR);
 
   // Are we over a cuttable fence?
-  if (IsRepairableStructAtGridNo(sGridNo, NULL) && pSoldier.value.bLevel == 0) {
+  if (IsRepairableStructAtGridNo(sGridNo, null) && pSoldier.value.bLevel == 0) {
     return Enum210.GOOD_REPAIR_UICURSOR;
   }
 
@@ -1106,7 +1106,7 @@ function HandleRefuelCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiC
   HandleUIMovementCursor(pSoldier, uiCursorFlags, sGridNo, MOVEUI_TARGET_REFUEL);
 
   // Are we over a cuttable fence?
-  if (IsRefuelableStructAtGridNo(sGridNo, NULL) && pSoldier.value.bLevel == 0) {
+  if (IsRefuelableStructAtGridNo(sGridNo, null) && pSoldier.value.bLevel == 0) {
     return Enum210.REFUEL_RED_UICURSOR;
   }
 
@@ -1137,7 +1137,7 @@ function HandleTinCanCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiC
   pIntTile = GetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure));
 
   // We should not have null here if we are given this flag...
-  if (pIntTile != NULL) {
+  if (pIntTile != null) {
     if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
       return Enum210.PLACE_TINCAN_GREY_UICURSOR;
     }

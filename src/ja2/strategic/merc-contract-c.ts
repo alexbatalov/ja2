@@ -1,15 +1,15 @@
 let uiContractTimeMode: UINT32 = 0;
 
-let pLeaveSoldier: Pointer<SOLDIERTYPE> = NULL;
+let pLeaveSoldier: Pointer<SOLDIERTYPE> = null;
 
 let fEnterMapDueToContract: BOOLEAN = FALSE;
 let ubQuitType: UINT8 = 0;
 let gfFirstMercSayQuote: BOOLEAN = FALSE;
 
-let pContractReHireSoldier: Pointer<SOLDIERTYPE> = NULL;
+let pContractReHireSoldier: Pointer<SOLDIERTYPE> = null;
 
 let gubContractLength: UINT8 = 0; // used when extending a mercs insurance contract
-let gpInsuranceSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gpInsuranceSoldier: Pointer<SOLDIERTYPE> = null;
 
 // The values need to be saved!
 let ContractRenewalList: CONTRACT_NEWAL_LIST_NODE[] /* [20] */;
@@ -112,7 +112,7 @@ function HandleContractRenewalSequence(): void {
     // Get soldier - if there is none, adavance to next
     pSoldier = FindSoldierByProfileID(ContractRenewalList[ubCurrentContractRenewal].ubProfileID, FALSE); // Steve Willis, 80
 
-    if (pSoldier == NULL) {
+    if (pSoldier == null) {
       // Advance to next guy!
       EndCurrentContractRenewal();
       return;
@@ -895,7 +895,7 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
 
 function MercDepartEquipmentBoxCallBack(bExitValue: UINT8): void {
   // gear left in current sector?
-  if (pLeaveSoldier == NULL) {
+  if (pLeaveSoldier == null) {
     return;
   }
 
@@ -929,7 +929,7 @@ function MercDepartEquipmentBoxCallBack(bExitValue: UINT8): void {
 
   StrategicRemoveMerc(pLeaveSoldier);
 
-  pLeaveSoldier = NULL;
+  pLeaveSoldier = null;
 
   return;
 }
@@ -968,8 +968,8 @@ function HandleExtendMercsContract(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
   // find out is something was said
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
-  let pSoldierWhoWillQuit: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldierWhoWillQuit: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
   let iNumberOnTeam: INT32 = 0;
   let ubPotentialMercs: UINT8[] /* [20] */ = [ 0 ];
@@ -1025,7 +1025,7 @@ function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
 
   // OK, check if we should display line for the guy who does not want
   // to stay
-  if (ubNumMercs == 0 && pSoldierWhoWillQuit != NULL) {
+  if (ubNumMercs == 0 && pSoldierWhoWillQuit != null) {
     // OK, he does not want to renew.......
     HandleImportantMercQuote(pSoldierWhoWillQuit, Enum202.QUOTE_MERC_LEAVING_ALSUCO_SOON);
 
@@ -1051,7 +1051,7 @@ function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
 }
 
 function HandleNotifyPlayerCantAffordInsurance(): void {
-  DoScreenIndependantMessageBox(zMarksMapScreenText[9], MSG_BOX_FLAG_OK, NULL);
+  DoScreenIndependantMessageBox(zMarksMapScreenText[9], MSG_BOX_FLAG_OK, null);
 }
 
 function HandleNotifyPlayerCanAffordInsurance(pSoldier: Pointer<SOLDIERTYPE>, ubLength: UINT8, iCost: INT32): void {
@@ -1090,7 +1090,7 @@ function ExtendMercInsuranceContractCallBack(bExitValue: UINT8): void {
     EndCurrentContractRenewal();
   }
 
-  gpInsuranceSoldier = NULL;
+  gpInsuranceSoldier = null;
 }
 
 function HandleUniqueEventWhenPlayerLeavesTeam(pSoldier: Pointer<SOLDIERTYPE>): void {

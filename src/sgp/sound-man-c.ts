@@ -92,7 +92,7 @@ let pSampleList: SAMPLETAG[] /* [SOUND_MAX_CACHED] */;
 let pSoundList: SOUNDTAG[] /* [SOUND_MAX_CHANNELS] */;
 
 // 3D sound globals
-let gpProviderName: Pointer<CHAR8> = NULL;
+let gpProviderName: Pointer<CHAR8> = null;
 let gh3DProvider: HPROVIDER = 0;
 let gh3DListener: H3DPOBJECT = 0;
 let gfUsingEAX: BOOLEAN = TRUE;
@@ -435,13 +435,13 @@ function SoundIndexIsPlaying(uiSound: UINT32): BOOLEAN {
   let iStatus: INT32 = SMP_DONE;
 
   if (fSoundSystemInit) {
-    if (pSoundList[uiSound].hMSS != NULL)
+    if (pSoundList[uiSound].hMSS != null)
       iStatus = AIL_sample_status(pSoundList[uiSound].hMSS);
 
-    if (pSoundList[uiSound].hMSSStream != NULL)
+    if (pSoundList[uiSound].hMSSStream != null)
       iStatus = AIL_stream_status(pSoundList[uiSound].hMSSStream);
 
-    if (pSoundList[uiSound].hM3D != NULL)
+    if (pSoundList[uiSound].hM3D != null)
       iStatus = AIL_3D_sample_status(pSoundList[uiSound].hM3D);
 
     return (iStatus != SMP_DONE) && (iStatus != SMP_STOPPED);
@@ -489,7 +489,7 @@ function SoundStopGroup(uiPriority: UINT32): BOOLEAN {
 
   if (fSoundSystemInit) {
     for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
-      if ((pSoundList[uiCount].hMSS != NULL) || (pSoundList[uiCount].hMSSStream != NULL) || (pSoundList[uiCount].hM3D != NULL)) {
+      if ((pSoundList[uiCount].hMSS != null) || (pSoundList[uiCount].hMSSStream != null) || (pSoundList[uiCount].hM3D != null)) {
         if (pSoundList[uiCount].uiPriority == uiPriority) {
           SoundStop(pSoundList[uiCount].uiSoundID);
           fStopped = TRUE;
@@ -701,13 +701,13 @@ function SoundSetVolumeIndex(uiChannel: UINT32, uiVolume: UINT32): BOOLEAN {
   if (fSoundSystemInit) {
     uiVolCap = __min(uiVolume, 127);
 
-    if (pSoundList[uiChannel].hMSS != NULL)
+    if (pSoundList[uiChannel].hMSS != null)
       AIL_set_sample_volume(pSoundList[uiChannel].hMSS, uiVolCap);
 
-    if (pSoundList[uiChannel].hMSSStream != NULL)
+    if (pSoundList[uiChannel].hMSSStream != null)
       AIL_set_stream_volume(pSoundList[uiChannel].hMSSStream, uiVolCap);
 
-    if (pSoundList[uiChannel].hM3D != NULL)
+    if (pSoundList[uiChannel].hM3D != null)
       AIL_set_3D_sample_volume(pSoundList[uiChannel].hM3D, uiVolCap);
 
     return TRUE;
@@ -733,10 +733,10 @@ function SoundSetPan(uiSoundID: UINT32, uiPan: UINT32): BOOLEAN {
     uiPanCap = __min(uiPan, 127);
 
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != NULL)
+      if (pSoundList[uiSound].hMSS != null)
         AIL_set_sample_pan(pSoundList[uiSound].hMSS, uiPanCap);
 
-      if (pSoundList[uiSound].hMSSStream != NULL)
+      if (pSoundList[uiSound].hMSSStream != null)
         AIL_set_stream_pan(pSoundList[uiSound].hMSSStream, uiPanCap);
 
       return TRUE;
@@ -763,13 +763,13 @@ function SoundSetFrequency(uiSoundID: UINT32, uiFreq: UINT32): BOOLEAN {
     uiFreqCap = __min(uiFreq, 44100);
 
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != NULL)
+      if (pSoundList[uiSound].hMSS != null)
         AIL_set_sample_playback_rate(pSoundList[uiSound].hMSS, uiFreqCap);
 
-      if (pSoundList[uiSound].hMSSStream != NULL)
+      if (pSoundList[uiSound].hMSSStream != null)
         AIL_set_stream_playback_rate(pSoundList[uiSound].hMSSStream, uiFreqCap);
 
-      if (pSoundList[uiSound].hM3D != NULL)
+      if (pSoundList[uiSound].hM3D != null)
         AIL_set_3D_sample_playback_rate(pSoundList[uiSound].hM3D, uiFreqCap);
 
       return TRUE;
@@ -796,13 +796,13 @@ function SoundSetLoop(uiSoundID: UINT32, uiLoop: UINT32): BOOLEAN {
     uiLoopCap = __min(uiLoop, 10000);
 
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != NULL)
+      if (pSoundList[uiSound].hMSS != null)
         AIL_set_sample_loop_count(pSoundList[uiSound].hMSS, uiLoopCap);
 
-      if (pSoundList[uiSound].hMSSStream != NULL)
+      if (pSoundList[uiSound].hMSSStream != null)
         AIL_set_stream_loop_count(pSoundList[uiSound].hMSSStream, uiLoopCap);
 
-      if (pSoundList[uiSound].hM3D != NULL)
+      if (pSoundList[uiSound].hM3D != null)
         AIL_set_3D_sample_loop_count(pSoundList[uiSound].hM3D, uiLoopCap);
 
       return TRUE;
@@ -843,13 +843,13 @@ function SoundGetVolume(uiSoundID: UINT32): UINT32 {
 //*****************************************************************************************
 function SoundGetVolumeIndex(uiChannel: UINT32): UINT32 {
   if (fSoundSystemInit) {
-    if (pSoundList[uiChannel].hMSS != NULL)
+    if (pSoundList[uiChannel].hMSS != null)
       return AIL_sample_volume(pSoundList[uiChannel].hMSS);
 
-    if (pSoundList[uiChannel].hMSSStream != NULL)
+    if (pSoundList[uiChannel].hMSSStream != null)
       return AIL_stream_volume(pSoundList[uiChannel].hMSSStream);
 
-    if (pSoundList[uiChannel].hM3D != NULL)
+    if (pSoundList[uiChannel].hM3D != null)
       return AIL_3D_sample_volume(pSoundList[uiChannel].hM3D);
   }
 
@@ -868,10 +868,10 @@ function SoundGetPan(uiSoundID: UINT32): UINT32 {
 
   if (fSoundSystemInit) {
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != NULL)
+      if (pSoundList[uiSound].hMSS != null)
         return AIL_sample_pan(pSoundList[uiSound].hMSS);
 
-      if (pSoundList[uiSound].hMSSStream != NULL)
+      if (pSoundList[uiSound].hMSSStream != null)
         return AIL_stream_pan(pSoundList[uiSound].hMSSStream);
     }
   }
@@ -891,13 +891,13 @@ function SoundGetFrequency(uiSoundID: UINT32): UINT32 {
 
   if (fSoundSystemInit) {
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != NULL)
+      if (pSoundList[uiSound].hMSS != null)
         return AIL_sample_playback_rate(pSoundList[uiSound].hMSS);
 
-      if (pSoundList[uiSound].hMSSStream != NULL)
+      if (pSoundList[uiSound].hMSSStream != null)
         return AIL_stream_playback_rate(pSoundList[uiSound].hMSSStream);
 
-      if (pSoundList[uiSound].hM3D != NULL)
+      if (pSoundList[uiSound].hM3D != null)
         return AIL_3D_sample_playback_rate(pSoundList[uiSound].hM3D);
     }
   }
@@ -917,13 +917,13 @@ function SoundGetLoop(uiSoundID: UINT32): UINT32 {
 
   if (fSoundSystemInit) {
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != NULL)
+      if (pSoundList[uiSound].hMSS != null)
         return AIL_sample_loop_count(pSoundList[uiSound].hMSS);
 
-      if (pSoundList[uiSound].hMSSStream != NULL)
+      if (pSoundList[uiSound].hMSSStream != null)
         return AIL_stream_loop_count(pSoundList[uiSound].hMSSStream);
 
-      if (pSoundList[uiSound].hM3D != NULL)
+      if (pSoundList[uiSound].hM3D != null)
         return AIL_3D_sample_loop_count(pSoundList[uiSound].hM3D);
     }
   }
@@ -1025,7 +1025,7 @@ function SoundStopAllRandom(): BOOLEAN {
 
   // Stop all currently playing random sounds
   for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if ((pSoundList[uiChannel].hMSS != NULL) || (pSoundList[uiChannel].hM3D != NULL)) {
+    if ((pSoundList[uiChannel].hMSS != null) || (pSoundList[uiChannel].hM3D != null)) {
       uiSample = pSoundList[uiChannel].uiSample;
 
       // if this was a random sample, decrease the iteration count
@@ -1067,7 +1067,7 @@ function SoundServiceStreams(): BOOLEAN {
 
   if (fSoundSystemInit) {
     for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
-      if (pSoundList[uiCount].hMSSStream != NULL) {
+      if (pSoundList[uiCount].hMSSStream != null) {
         if (AIL_service_stream(pSoundList[uiCount].hMSSStream, 0)) {
           if (pSoundList[uiCount].uiFlags & SOUND_CALLBACK) {
             uiSpeed = pSoundList[uiCount].hMSSStream.value.datarate;
@@ -1196,12 +1196,12 @@ function SoundGetMilliSecondPosition(uiSoundID: UINT32, puiTotalMilliseconds: Po
   if (fSoundSystemInit) {
     uiSound = SoundGetIndexByID(uiSoundID);
     if (uiSound != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != NULL) {
+      if (pSoundList[uiSound].hMSS != null) {
         AIL_sample_ms_position(pSoundList[uiSound].hMSS, puiTotalMilliseconds, puiCurrentMilliseconds);
         return TRUE;
       }
 
-      if (pSoundList[uiSound].hMSSStream != NULL) {
+      if (pSoundList[uiSound].hMSSStream != null) {
         AIL_stream_ms_position(pSoundList[uiSound].hMSSStream, puiTotalMilliseconds, puiCurrentMilliseconds);
         return TRUE;
       }
@@ -1420,7 +1420,7 @@ function SoundLoadDisk(pFilename: STR): UINT32 {
   let uiSample: UINT32;
   let fRemoved: BOOLEAN = TRUE;
 
-  Assert(pFilename != NULL);
+  Assert(pFilename != null);
 
   if ((hFile = FileOpen(pFilename, FILE_ACCESS_READ, FALSE)) != 0) {
     uiSize = FileGetSize(hFile);
@@ -1453,7 +1453,7 @@ function SoundLoadDisk(pFilename: STR): UINT32 {
 
     memset(addressof(pSampleList[uiSample]), 0, sizeof(SAMPLETAG));
 
-    if ((pSampleList[uiSample].pData = AIL_mem_alloc_lock(uiSize)) == NULL) {
+    if ((pSampleList[uiSample].pData = AIL_mem_alloc_lock(uiSize)) == null) {
       FastDebugMsg(String("SoundLoadDisk:  ERROR: Trying to play %s, AIL channels are full\n", pFilename));
       FileClose(hFile);
       return NO_SAMPLE;
@@ -1461,7 +1461,7 @@ function SoundLoadDisk(pFilename: STR): UINT32 {
 
     guiSoundMemoryUsed += uiSize;
 
-    FileRead(hFile, pSampleList[uiSample].pData, uiSize, NULL);
+    FileRead(hFile, pSampleList[uiSample].pData, uiSize, null);
     FileClose(hFile);
 
     strcpy(pSampleList[uiSample].pName, pFilename);
@@ -1590,7 +1590,7 @@ function SoundProcessWAVHeader(uiSample: UINT32): BOOLEAN {
 //*******************************************************************************
 function SoundFreeSampleIndex(uiSample: UINT32): UINT32 {
   if (pSampleList[uiSample].uiFlags & SAMPLE_ALLOCATED) {
-    if (pSampleList[uiSample].pData != NULL) {
+    if (pSampleList[uiSample].pData != null) {
       guiSoundMemoryUsed -= pSampleList[uiSample].uiSize;
       AIL_mem_free_lock(pSampleList[uiSample].pData);
     }
@@ -1639,7 +1639,7 @@ function SoundInitHardware(): BOOLEAN {
     return FALSE;
 
   // Initialize the driver handle
-  hSoundDriver = NULL;
+  hSoundDriver = null;
 
   // Set up preferences, to try to use DirectSound and to set the
   // maximum number of handles that we are allowed to allocate. Note
@@ -1651,13 +1651,13 @@ function SoundInitHardware(): BOOLEAN {
 
   AIL_set_preference(DIG_USE_WAVEOUT, NO);
   // startup with DirectSound
-  if (hSoundDriver == NULL)
+  if (hSoundDriver == null)
     hSoundDriver = SoundInitDriver(44100, 16, 2);
-  if (hSoundDriver == NULL)
+  if (hSoundDriver == null)
     hSoundDriver = SoundInitDriver(44100, 8, 2);
-  if (hSoundDriver == NULL)
+  if (hSoundDriver == null)
     hSoundDriver = SoundInitDriver(22050, 8, 2);
-  if (hSoundDriver == NULL)
+  if (hSoundDriver == null)
     hSoundDriver = SoundInitDriver(11025, 8, 1);
 
   if (hSoundDriver) {
@@ -1668,26 +1668,26 @@ function SoundInitHardware(): BOOLEAN {
     // code layer can slow us down by up to 40% under NT
     if (strstr(cDriverName, "emulated")) {
       AIL_waveOutClose(hSoundDriver);
-      hSoundDriver = NULL;
+      hSoundDriver = null;
     }
   }
 
   // nothing in DirectSound worked, so try waveOut
-  if (hSoundDriver == NULL) {
+  if (hSoundDriver == null) {
     fDirectSound = FALSE;
     AIL_set_preference(DIG_USE_WAVEOUT, YES);
   }
 
-  if (hSoundDriver == NULL)
+  if (hSoundDriver == null)
     hSoundDriver = SoundInitDriver(44100, 16, 2);
-  if (hSoundDriver == NULL)
+  if (hSoundDriver == null)
     hSoundDriver = SoundInitDriver(44100, 8, 2);
-  if (hSoundDriver == NULL)
+  if (hSoundDriver == null)
     hSoundDriver = SoundInitDriver(22050, 8, 2);
-  if (hSoundDriver == NULL)
+  if (hSoundDriver == null)
     hSoundDriver = SoundInitDriver(11025, 8, 1);
 
-  if (hSoundDriver != NULL) {
+  if (hSoundDriver != null) {
     for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++)
       memset(addressof(pSoundList[uiCount]), 0, sizeof(SOUNDTAG));
 
@@ -1751,8 +1751,8 @@ function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGD
   sPCMWF.wf.nBlockAlign = (uiBits / 8) * uiChans;
   sPCMWF.wBitsPerSample = uiBits;
 
-  if (AIL_waveOutOpen(addressof(DIG), NULL, 0, addressof(sPCMWF)))
-    return NULL;
+  if (AIL_waveOutOpen(addressof(DIG), null, 0, addressof(sPCMWF)))
+    return null;
 
   memset(cBuf, 0, 128);
   AIL_digital_configuration(DIG, 0, 0, cBuf);
@@ -1772,7 +1772,7 @@ function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGD
 function SoundGetDriverName(DIG: HDIGDRIVER, cBuf: Pointer<CHAR8>): BOOLEAN {
   if (DIG) {
     cBuf[0] = '\0';
-    AIL_digital_configuration(DIG, NULL, NULL, cBuf);
+    AIL_digital_configuration(DIG, null, null, cBuf);
     return TRUE;
   } else
     return FALSE;
@@ -1794,7 +1794,7 @@ function SoundGetFreeChannel(): UINT32 {
       SoundStopIndex(uiCount);
     }
 
-    if ((pSoundList[uiCount].hMSS == NULL) && (pSoundList[uiCount].hMSSStream == NULL) && (pSoundList[uiCount].hM3D == NULL))
+    if ((pSoundList[uiCount].hMSS == null) && (pSoundList[uiCount].hMSSStream == null) && (pSoundList[uiCount].hM3D == null))
       return uiCount;
   }
 
@@ -1818,7 +1818,7 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
   if (!fSoundSystemInit)
     return SOUND_ERROR;
 
-  if ((pSoundList[uiChannel].hMSS = AIL_allocate_sample_handle(hSoundDriver)) == NULL) {
+  if ((pSoundList[uiChannel].hMSS = AIL_allocate_sample_handle(hSoundDriver)) == null) {
     sprintf(AILString, "Sample Error: %s", AIL_last_error());
     FastDebugMsg(AILString);
     return SOUND_ERROR;
@@ -1828,7 +1828,7 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
 
   if (!AIL_set_named_sample_file(pSoundList[uiChannel].hMSS, pSampleList[uiSample].pName, pSampleList[uiSample].pData, pSampleList[uiSample].uiSize, 0)) {
     AIL_release_sample_handle(pSoundList[uiChannel].hMSS);
-    pSoundList[uiChannel].hMSS = NULL;
+    pSoundList[uiChannel].hMSS = null;
 
     sprintf(AILString, "AIL Set Sample Error: %s", AIL_last_error());
     DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
@@ -1845,24 +1845,24 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
       AIL_set_sample_playback_rate(pSoundList[uiChannel].hMSS, uiSpeed);
     }
   } else {
-    if ((pParms != NULL) && (pParms.value.uiSpeed != SOUND_PARMS_DEFAULT)) {
+    if ((pParms != null) && (pParms.value.uiSpeed != SOUND_PARMS_DEFAULT)) {
       Assert((pParms.value.uiSpeed > 0) && (pParms.value.uiSpeed <= 60000));
       AIL_set_sample_playback_rate(pSoundList[uiChannel].hMSS, pParms.value.uiSpeed);
     }
   }
 
-  if ((pParms != NULL) && (pParms.value.uiPitchBend != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.value.uiPitchBend != SOUND_PARMS_DEFAULT)) {
     let uiRate: UINT32 = AIL_sample_playback_rate(pSoundList[uiChannel].hMSS);
     let uiBend: UINT32 = uiRate * pParms.value.uiPitchBend / 100;
     AIL_set_sample_playback_rate(pSoundList[uiChannel].hMSS, uiRate + (Random(uiBend * 2) - uiBend));
   }
 
-  if ((pParms != NULL) && (pParms.value.uiVolume != SOUND_PARMS_DEFAULT))
+  if ((pParms != null) && (pParms.value.uiVolume != SOUND_PARMS_DEFAULT))
     AIL_set_sample_volume(pSoundList[uiChannel].hMSS, pParms.value.uiVolume);
   else
     AIL_set_sample_volume(pSoundList[uiChannel].hMSS, guiSoundDefaultVolume);
 
-  if ((pParms != NULL) && (pParms.value.uiLoop != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.value.uiLoop != SOUND_PARMS_DEFAULT)) {
     AIL_set_sample_loop_count(pSoundList[uiChannel].hMSS, pParms.value.uiLoop);
 
     // If looping infinately, lock the sample so it can't be unloaded
@@ -1873,20 +1873,20 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
     }
   }
 
-  if ((pParms != NULL) && (pParms.value.uiPan != SOUND_PARMS_DEFAULT))
+  if ((pParms != null) && (pParms.value.uiPan != SOUND_PARMS_DEFAULT))
     AIL_set_sample_pan(pSoundList[uiChannel].hMSS, pParms.value.uiPan);
 
-  if ((pParms != NULL) && (pParms.value.uiPriority != SOUND_PARMS_DEFAULT))
+  if ((pParms != null) && (pParms.value.uiPriority != SOUND_PARMS_DEFAULT))
     pSoundList[uiChannel].uiPriority = pParms.value.uiPriority;
   else
     pSoundList[uiChannel].uiPriority = PRIORITY_MAX;
 
-  if ((pParms != NULL) && (pParms.value.EOSCallback != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.value.EOSCallback != SOUND_PARMS_DEFAULT)) {
     pSoundList[uiChannel].EOSCallback = pParms.value.EOSCallback;
     pSoundList[uiChannel].pCallbackData = pParms.value.pCallbackData;
   } else {
-    pSoundList[uiChannel].EOSCallback = NULL;
-    pSoundList[uiChannel].pCallbackData = NULL;
+    pSoundList[uiChannel].EOSCallback = null;
+    pSoundList[uiChannel].pCallbackData = null;
   }
 
   uiSoundID = SoundGetUniqueID();
@@ -1920,40 +1920,40 @@ function SoundStartStream(pFilename: STR, uiChannel: UINT32, pParms: Pointer<SOU
   if (!fSoundSystemInit)
     return SOUND_ERROR;
 
-  if ((pSoundList[uiChannel].hMSSStream = AIL_open_stream(hSoundDriver, pFilename, SOUND_DEFAULT_STREAM)) == NULL) {
+  if ((pSoundList[uiChannel].hMSSStream = AIL_open_stream(hSoundDriver, pFilename, SOUND_DEFAULT_STREAM)) == null) {
     SoundCleanCache();
     pSoundList[uiChannel].hMSSStream = AIL_open_stream(hSoundDriver, pFilename, SOUND_DEFAULT_STREAM);
   }
 
-  if (pSoundList[uiChannel].hMSSStream == NULL) {
+  if (pSoundList[uiChannel].hMSSStream == null) {
     sprintf(AILString, "Stream Error: %s", AIL_last_error());
     DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
     return SOUND_ERROR;
   }
 
-  if ((pParms != NULL) && (pParms.value.uiSpeed != SOUND_PARMS_DEFAULT))
+  if ((pParms != null) && (pParms.value.uiSpeed != SOUND_PARMS_DEFAULT))
     uiSpeed = pParms.value.uiSpeed;
   else
     uiSpeed = AIL_stream_playback_rate(pSoundList[uiChannel].hMSSStream);
 
-  if ((pParms != NULL) && (pParms.value.uiPitchBend != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.value.uiPitchBend != SOUND_PARMS_DEFAULT)) {
     let uiBend: UINT32 = uiSpeed * pParms.value.uiPitchBend / 100;
     uiSpeed += (Random(uiBend * 2) - uiBend);
   }
 
   AIL_set_stream_playback_rate(pSoundList[uiChannel].hMSSStream, uiSpeed);
 
-  if ((pParms != NULL) && (pParms.value.uiVolume != SOUND_PARMS_DEFAULT))
+  if ((pParms != null) && (pParms.value.uiVolume != SOUND_PARMS_DEFAULT))
     AIL_set_stream_volume(pSoundList[uiChannel].hMSSStream, pParms.value.uiVolume);
   else
     AIL_set_stream_volume(pSoundList[uiChannel].hMSSStream, guiSoundDefaultVolume);
 
-  if (pParms != NULL) {
+  if (pParms != null) {
     if (pParms.value.uiLoop != SOUND_PARMS_DEFAULT)
       AIL_set_stream_loop_count(pSoundList[uiChannel].hMSSStream, pParms.value.uiLoop);
   }
 
-  if ((pParms != NULL) && (pParms.value.uiPan != SOUND_PARMS_DEFAULT))
+  if ((pParms != null) && (pParms.value.uiPan != SOUND_PARMS_DEFAULT))
     AIL_set_stream_pan(pSoundList[uiChannel].hMSSStream, pParms.value.uiPan);
 
   AIL_start_stream(pSoundList[uiChannel].hMSSStream);
@@ -1965,12 +1965,12 @@ function SoundStartStream(pFilename: STR, uiChannel: UINT32, pParms: Pointer<SOU
   else
     pSoundList[uiChannel].uiPriority = SOUND_PARMS_DEFAULT;
 
-  if ((pParms != NULL) && (pParms.value.EOSCallback != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.value.EOSCallback != SOUND_PARMS_DEFAULT)) {
     pSoundList[uiChannel].EOSCallback = pParms.value.EOSCallback;
     pSoundList[uiChannel].pCallbackData = pParms.value.pCallbackData;
   } else {
-    pSoundList[uiChannel].EOSCallback = NULL;
-    pSoundList[uiChannel].pCallbackData = NULL;
+    pSoundList[uiChannel].EOSCallback = null;
+    pSoundList[uiChannel].pCallbackData = null;
   }
 
   pSoundList[uiChannel].uiTimeStamp = GetTickCount();
@@ -2034,17 +2034,17 @@ function SoundStopIndex(uiChannel: UINT32): BOOLEAN {
 
   if (fSoundSystemInit) {
     if (uiChannel != NO_SAMPLE) {
-      if (pSoundList[uiChannel].hMSS != NULL) {
+      if (pSoundList[uiChannel].hMSS != null) {
         AIL_stop_sample(pSoundList[uiChannel].hMSS);
         AIL_release_sample_handle(pSoundList[uiChannel].hMSS);
-        pSoundList[uiChannel].hMSS = NULL;
+        pSoundList[uiChannel].hMSS = null;
         uiSample = pSoundList[uiChannel].uiSample;
 
         // if this was a random sample, decrease the iteration count
         if (pSampleList[uiSample].uiFlags & SAMPLE_RANDOM)
           pSampleList[uiSample].uiInstances--;
 
-        if (pSoundList[uiChannel].EOSCallback != NULL)
+        if (pSoundList[uiChannel].EOSCallback != null)
           pSoundList[uiChannel].EOSCallback(pSoundList[uiChannel].pCallbackData);
 
         if (pSoundList[uiChannel].fLooping && !SoundSampleIsInUse(uiChannel))
@@ -2053,26 +2053,26 @@ function SoundStopIndex(uiChannel: UINT32): BOOLEAN {
         pSoundList[uiChannel].uiSample = NO_SAMPLE;
       }
 
-      if (pSoundList[uiChannel].hMSSStream != NULL) {
+      if (pSoundList[uiChannel].hMSSStream != null) {
         AIL_close_stream(pSoundList[uiChannel].hMSSStream);
-        pSoundList[uiChannel].hMSSStream = NULL;
-        if (pSoundList[uiChannel].EOSCallback != NULL)
+        pSoundList[uiChannel].hMSSStream = null;
+        if (pSoundList[uiChannel].EOSCallback != null)
           pSoundList[uiChannel].EOSCallback(pSoundList[uiChannel].pCallbackData);
 
         pSoundList[uiChannel].uiSample = NO_SAMPLE;
       }
 
-      if (pSoundList[uiChannel].hM3D != NULL) {
+      if (pSoundList[uiChannel].hM3D != null) {
         AIL_stop_3D_sample(pSoundList[uiChannel].hM3D);
         AIL_release_3D_sample_handle(pSoundList[uiChannel].hM3D);
-        pSoundList[uiChannel].hM3D = NULL;
+        pSoundList[uiChannel].hM3D = null;
         uiSample = pSoundList[uiChannel].uiSample;
 
         // if this was a random sample, decrease the iteration count
         if (pSampleList[uiSample].uiFlags & SAMPLE_RANDOM)
           pSampleList[uiSample].uiInstances--;
 
-        if (pSoundList[uiChannel].EOSCallback != NULL)
+        if (pSoundList[uiChannel].EOSCallback != null)
           pSoundList[uiChannel].EOSCallback(pSoundList[uiChannel].pCallbackData);
 
         if (pSoundList[uiChannel].fLooping && !SoundSampleIsInUse(uiChannel))
@@ -2236,7 +2236,7 @@ function SoundStopMusic(): BOOLEAN {
 
   if (fSoundSystemInit) {
     for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
-      if ((pSoundList[uiCount].hMSS != NULL) || (pSoundList[uiCount].hMSSStream != NULL) || (pSoundList[uiCount].hM3D != NULL)) {
+      if ((pSoundList[uiCount].hMSS != null) || (pSoundList[uiCount].hMSSStream != null) || (pSoundList[uiCount].hM3D != null)) {
         if (pSoundList[uiCount].fMusic) {
           SoundStop(pSoundList[uiCount].uiSoundID);
           fStopped = TRUE;
@@ -2379,7 +2379,7 @@ function Sound3DSetPosition(uiSample: UINT32, flX: FLOAT, flY: FLOAT, flZ: FLOAT
 
   if (fSoundSystemInit && gh3DProvider) {
     if ((uiChannel = SoundGetIndexByID(uiSample)) != NO_SAMPLE) {
-      if (pSoundList[uiChannel].hM3D != NULL) {
+      if (pSoundList[uiChannel].hM3D != null) {
         AIL_set_3D_position(pSoundList[uiChannel].hM3D, flX, flY, flZ);
       }
     }
@@ -2406,7 +2406,7 @@ function Sound3DSetVelocity(uiSample: UINT32, flX: FLOAT, flY: FLOAT, flZ: FLOAT
 
   if (fSoundSystemInit && gh3DProvider) {
     if ((uiChannel = SoundGetIndexByID(uiSample)) != NO_SAMPLE) {
-      if (pSoundList[uiChannel].hM3D != NULL) {
+      if (pSoundList[uiChannel].hM3D != null) {
       }
     }
   }
@@ -2476,7 +2476,7 @@ function Sound3DSetDirection(uiSample: UINT32, flXFace: FLOAT, flYFace: FLOAT, f
 
   if (fSoundSystemInit && gh3DProvider) {
     if ((uiChannel = SoundGetIndexByID(uiSample)) != NO_SAMPLE) {
-      if (pSoundList[uiChannel].hM3D != NULL) {
+      if (pSoundList[uiChannel].hM3D != null) {
         AIL_set_3D_orientation(pSoundList[uiChannel].hM3D, flXFace, flYFace, flZFace, flXUp, flYUp, flZUp);
       }
     }
@@ -2505,7 +2505,7 @@ function Sound3DSetFalloff(uiSample: UINT32, flMax: FLOAT, flMin: FLOAT): void {
 
   if (fSoundSystemInit && gh3DProvider) {
     if ((uiChannel = SoundGetIndexByID(uiSample)) != NO_SAMPLE) {
-      if (pSoundList[uiChannel].hM3D != NULL) {
+      if (pSoundList[uiChannel].hM3D != null) {
         AIL_set_3D_sample_distances(pSoundList[uiChannel].hM3D, flMax, flMin);
       }
     }
@@ -2592,7 +2592,7 @@ function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer
   if (pSampleList[uiSample].fStereo || strstr(pSampleList[uiSample].pName, ".MP3"))
     return SOUND_ERROR;
 
-  if ((pSoundList[uiChannel].hM3D = AIL_allocate_3D_sample_handle(gh3DProvider)) == NULL) {
+  if ((pSoundList[uiChannel].hM3D = AIL_allocate_3D_sample_handle(gh3DProvider)) == null) {
     sprintf(AILString, "AIL3D Error: %s", AIL_last_error());
     DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
     return SOUND_ERROR;
@@ -2600,7 +2600,7 @@ function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer
 
   if (!AIL_set_3D_sample_file(pSoundList[uiChannel].hM3D, pSampleList[uiSample].pData)) {
     AIL_release_3D_sample_handle(pSoundList[uiChannel].hM3D);
-    pSoundList[uiChannel].hM3D = NULL;
+    pSoundList[uiChannel].hM3D = null;
 
     sprintf(AILString, "AIL3D Set Sample Error: %s", AIL_last_error());
     DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
@@ -2617,22 +2617,22 @@ function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer
       AIL_set_3D_sample_playback_rate(pSoundList[uiChannel].hM3D, uiSpeed);
     }
   } else {
-    if ((pParms != NULL) && (pParms.value.uiSpeed != SOUND_PARMS_DEFAULT))
+    if ((pParms != null) && (pParms.value.uiSpeed != SOUND_PARMS_DEFAULT))
       AIL_set_3D_sample_playback_rate(pSoundList[uiChannel].hM3D, pParms.value.uiSpeed);
   }
 
-  if ((pParms != NULL) && (pParms.value.uiPitchBend != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.value.uiPitchBend != SOUND_PARMS_DEFAULT)) {
     let uiRate: UINT32 = AIL_3D_sample_playback_rate(pSoundList[uiChannel].hM3D);
     let uiBend: UINT32 = uiRate * pParms.value.uiPitchBend / 100;
     AIL_set_3D_sample_playback_rate(pSoundList[uiChannel].hM3D, uiRate + (Random(uiBend * 2) - uiBend));
   }
 
-  if ((pParms != NULL) && (pParms.value.uiVolume != SOUND_PARMS_DEFAULT))
+  if ((pParms != null) && (pParms.value.uiVolume != SOUND_PARMS_DEFAULT))
     AIL_set_3D_sample_volume(pSoundList[uiChannel].hM3D, pParms.value.uiVolume);
   else
     AIL_set_3D_sample_volume(pSoundList[uiChannel].hM3D, guiSoundDefaultVolume);
 
-  if ((pParms != NULL) && (pParms.value.uiLoop != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.value.uiLoop != SOUND_PARMS_DEFAULT)) {
     AIL_set_3D_sample_loop_count(pSoundList[uiChannel].hM3D, pParms.value.uiLoop);
 
     // If looping infinately, lock the sample so it can't be unloaded
@@ -2643,17 +2643,17 @@ function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer
     }
   }
 
-  if ((pParms != NULL) && (pParms.value.uiPriority != SOUND_PARMS_DEFAULT))
+  if ((pParms != null) && (pParms.value.uiPriority != SOUND_PARMS_DEFAULT))
     pSoundList[uiChannel].uiPriority = pParms.value.uiPriority;
   else
     pSoundList[uiChannel].uiPriority = PRIORITY_MAX;
 
-  if ((pParms != NULL) && (pParms.value.EOSCallback != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.value.EOSCallback != SOUND_PARMS_DEFAULT)) {
     pSoundList[uiChannel].EOSCallback = pParms.value.EOSCallback;
     pSoundList[uiChannel].pCallbackData = pParms.value.pCallbackData;
   } else {
-    pSoundList[uiChannel].EOSCallback = NULL;
-    pSoundList[uiChannel].pCallbackData = NULL;
+    pSoundList[uiChannel].EOSCallback = null;
+    pSoundList[uiChannel].pCallbackData = null;
   }
 
   AIL_set_3D_position(pSoundList[uiChannel].hM3D, pParms.value.Pos.flX, pParms.value.Pos.flY, pParms.value.Pos.flZ);
@@ -2688,7 +2688,7 @@ function Sound3DStopAll(): void {
 
   // Stop all currently playing random sounds
   for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if (pSoundList[uiChannel].hM3D != NULL)
+    if (pSoundList[uiChannel].hM3D != null)
       SoundStopIndex(uiChannel);
   }
 }
@@ -2785,7 +2785,7 @@ function Sound3DChannelsInUse(): UINT32 {
 
   // Stop all currently playing random sounds
   for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if (pSoundList[uiChannel].hM3D != NULL)
+    if (pSoundList[uiChannel].hM3D != null)
       uiUsed++;
   }
 
@@ -2807,7 +2807,7 @@ function SoundStreamsInUse(): UINT32 {
 
   // Stop all currently playing random sounds
   for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if (pSoundList[uiChannel].hMSSStream != NULL)
+    if (pSoundList[uiChannel].hMSSStream != null)
       uiUsed++;
   }
 
@@ -2829,7 +2829,7 @@ function Sound2DChannelsInUse(): UINT32 {
 
   // Stop all currently playing random sounds
   for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if (pSoundList[uiChannel].hMSS != NULL)
+    if (pSoundList[uiChannel].hMSS != null)
       uiUsed++;
   }
 

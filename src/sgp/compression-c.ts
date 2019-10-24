@@ -14,22 +14,22 @@ function DecompressInit(pCompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
 
   // allocate memory for the z_stream struct
   pZStream = MemAlloc(sizeof(z_stream));
-  if (pZStream == NULL) {
+  if (pZStream == null) {
     // out of memory!
-    return NULL;
+    return null;
   }
 
   // initial defines
   pZStream.value.zalloc = ZAlloc;
   pZStream.value.zfree = ZFree;
-  pZStream.value.opaque = NULL;
+  pZStream.value.opaque = null;
 
   // call the ZLIB init routine
   iZRetCode = inflateInit(pZStream);
   if (iZRetCode != Z_OK) {
     // ZLIB init error!
     MemFree(pZStream);
-    return NULL;
+    return null;
   }
 
   // set up our parameters
@@ -43,7 +43,7 @@ function Decompress(pDecompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32
   let pZStream: Pointer<z_stream> = pDecompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
-  Assert(pZStream != NULL);
+  Assert(pZStream != null);
   Assert(pZStream.value.zalloc == ZAlloc);
 
   if (pZStream.value.avail_in == 0) {
@@ -66,7 +66,7 @@ function DecompressFini(pDecompPtr: PTR): void {
   let pZStream: Pointer<z_stream> = pDecompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
-  Assert(pZStream != NULL);
+  Assert(pZStream != null);
   Assert(pZStream.value.zalloc == ZAlloc);
 
   inflateEnd(pZStream);
@@ -86,22 +86,22 @@ function CompressInit(pUncompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
 
   // allocate memory for the z_stream struct
   pZStream = MemAlloc(sizeof(z_stream));
-  if (pZStream == NULL) {
+  if (pZStream == null) {
     // out of memory!
-    return NULL;
+    return null;
   }
 
   // initial defines
   pZStream.value.zalloc = ZAlloc;
   pZStream.value.zfree = ZFree;
-  pZStream.value.opaque = NULL;
+  pZStream.value.opaque = null;
 
   // call the ZLIB init routine
   iZRetCode = deflateInit(pZStream, Z_BEST_COMPRESSION);
   if (iZRetCode != Z_OK) {
     // ZLIB init error!
     MemFree(pZStream);
-    return NULL;
+    return null;
   }
 
   // set up our parameters
@@ -115,7 +115,7 @@ function Compress(pCompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): U
   let pZStream: Pointer<z_stream> = pCompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
-  Assert(pZStream != NULL);
+  Assert(pZStream != null);
   Assert(pZStream.value.zalloc == ZAlloc);
 
   if (pZStream.value.avail_in == 0) {
@@ -138,7 +138,7 @@ function CompressFini(pCompPtr: PTR): void {
   let pZStream: Pointer<z_stream> = pCompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
-  Assert(pZStream != NULL);
+  Assert(pZStream != null);
   Assert(pZStream.value.zalloc == ZAlloc);
 
   deflateEnd(pZStream);

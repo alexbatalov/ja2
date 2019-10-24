@@ -576,7 +576,7 @@ function RenderSaveLoadScreen(): void {
   }
 
   GetVideoObject(addressof(hPixHandle), guiSlgBackGroundImage);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
   if (gfSaveGame) {
     // If we are saving a game
@@ -584,13 +584,13 @@ function RenderSaveLoadScreen(): void {
     // Display the Title
     //		DrawTextToScreen( zSaveLoadText[SLG_SAVE_GAME], 0, 10, 639, SAVE_LOAD_TITLE_FONT, SAVE_LOAD_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED	);
     GetVideoObject(addressof(hPixHandle), guiBackGroundAddOns);
-    BltVideoObject(FRAME_BUFFER, hPixHandle, 1, SLG_TITLE_POS_X, SLG_TITLE_POS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hPixHandle, 1, SLG_TITLE_POS_X, SLG_TITLE_POS_Y, VO_BLT_SRCTRANSPARENCY, null);
   } else {
     // If we are Loading a game
 
     // Display the Title
     GetVideoObject(addressof(hPixHandle), guiBackGroundAddOns);
-    BltVideoObject(FRAME_BUFFER, hPixHandle, 0, SLG_TITLE_POS_X, SLG_TITLE_POS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hPixHandle, 0, SLG_TITLE_POS_X, SLG_TITLE_POS_Y, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   DisplaySaveGameList();
@@ -929,7 +929,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
 
   // background
   GetVideoObject(addressof(hPixHandle), guiBackGroundAddOns);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, gbSaveGameSelectedLocation[bEntryID], usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, gbSaveGameSelectedLocation[bEntryID], usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
   //
   // Set the shadow color
@@ -1435,7 +1435,7 @@ function InitSaveLoadScreenTextInputBoxes(): void {
   SetTextInputHilitedColors(2, FONT_WHITE, FONT_WHITE);
   SetCursorColor(Get16BPPColor(FROMRGB(255, 255, 255)));
 
-  AddUserInputField(NULL);
+  AddUserInputField(null);
 
   usPosY = SLG_FIRST_SAVED_SPOT_Y + SLG_GAP_BETWEEN_LOCATIONS * gbSelectedSaveLocation;
 
@@ -1825,9 +1825,9 @@ function DoQuickSave(): BOOLEAN {
     gTacticalStatus.uiFlags &= ~LOADING_SAVED_GAME;
 
     if (guiPreviousOptionScreen == Enum26.MAP_SCREEN)
-      DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
     else
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
   }
 
   return TRUE;
@@ -2002,7 +2002,7 @@ function SaveGameToSlotNum(): void {
     // Unset the fact that we are saving a game
     gTacticalStatus.uiFlags &= ~LOADING_SAVED_GAME;
 
-    DoSaveLoadMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.SAVE_LOAD_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    DoSaveLoadMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.SAVE_LOAD_SCREEN, MSG_BOX_FLAG_OK, null);
   }
 
   //			gfExitAfterMessageBox = TRUE;

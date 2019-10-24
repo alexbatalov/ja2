@@ -182,14 +182,14 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   if (guiCurrentScreen != Enum26.MAP_SCREEN) {
     if (gusSelectedSoldier == pSoldier.value.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(pSoldier)) {
       // gold, the second entry in the .sti
-      BltVideoObject(uiBuffer, hHandle, 1, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(uiBuffer, hHandle, 1, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, null);
     } else {
       // brown, first entry
-      BltVideoObject(uiBuffer, hHandle, 0, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(uiBuffer, hHandle, 0, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, null);
     }
   } else {
     // brown, first entry
-    BltVideoObject(uiBuffer, hHandle, 0, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(uiBuffer, hHandle, 0, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, null);
   }
 
   pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
@@ -356,7 +356,7 @@ function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY
       ubVehicleType = pVehicleList[pSoldier.value.bVehicleID].ubVehicleType;
 
       // just draw the vehicle
-      BltVideoObjectFromIndex(guiSAVEBUFFER, giCarPortraits[ubVehicleType], 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, giCarPortraits[ubVehicleType], 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
       RestoreExternBackgroundRect(sFaceX, sFaceY, FACE_WIDTH, FACE_HEIGHT);
 
       return;
@@ -386,7 +386,7 @@ function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY
     // Put close panel there
     // if(gbPixelDepth==16)
     //{
-    BltVideoObjectFromIndex(guiSAVEBUFFER, guiCLOSE, 5, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(guiSAVEBUFFER, guiCLOSE, 5, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
     //}
     RestoreExternBackgroundRect(sFaceX, sFaceY, FACE_WIDTH, FACE_HEIGHT);
   }

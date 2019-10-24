@@ -33,7 +33,7 @@ function ExitBoxing(): void {
     for (uiLoop = 0; uiLoop < gTacticalStatus.Team[CIV_TEAM].bLastID; uiLoop++) {
       pSoldier = MercPtrs[uiLoop];
 
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         if ((pSoldier.value.uiStatusFlags & SOLDIER_BOXER) && InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == BOXING_RING) {
           if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
             if (ubPass == 0) // pass 0, only handle AI
@@ -137,7 +137,7 @@ function CountPeopleInBoxingRing(): UINT8 {
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == BOXING_RING) {
         ubTotalInRing++;
       }
@@ -154,15 +154,15 @@ function CountPeopleInBoxingRingAndDoActions(): void {
   let ubPlayersInRing: UINT8 = 0;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pInRing: Pointer<SOLDIERTYPE>[] /* [2] */ = [
-    NULL,
-    NULL,
+    null,
+    null,
   ];
-  let pNonBoxingPlayer: Pointer<SOLDIERTYPE> = NULL;
+  let pNonBoxingPlayer: Pointer<SOLDIERTYPE> = null;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == BOXING_RING) {
         if (ubTotalInRing < 2) {
           pInRing[ubTotalInRing] = pSoldier;

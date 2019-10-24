@@ -284,7 +284,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
 
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  RefreshScreen(NULL);
+  RefreshScreen(null);
 
   if (RemoveMercPopupBoxFromIndex(iSaveLoadGameMessageBoxID)) {
     iSaveLoadGameMessageBoxID = -1;
@@ -781,7 +781,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   gfDontStartTransitionFromLaptop = TRUE;
 
   // Reset timer callbacks
-  gpCustomizableTimerCallback = NULL;
+  gpCustomizableTimerCallback = null;
 
   gubSaveGameLoc = ubSavedGameID;
 
@@ -1614,7 +1614,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
       // see if we can find him and remove him if so....
       pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, FALSE);
 
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         TacticalRemoveSoldier(pSoldier.value.ubID);
       }
 
@@ -1820,7 +1820,7 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
       // do we have a 	KEY_ON_RING									*pKeyRing;
       //
 
-      if (Menptr[cnt].pKeyRing != NULL) {
+      if (Menptr[cnt].pKeyRing != null) {
         // write to the file saying we have the ....
         FileWrite(hFile, addressof(ubOne), 1, addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != 1) {
@@ -1897,21 +1897,21 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       }
 
       // Make sure all the pointer references are NULL'ed out.
-      SavedSoldierInfo.pTempObject = NULL;
-      SavedSoldierInfo.pKeyRing = NULL;
-      SavedSoldierInfo.p8BPPPalette = NULL;
-      SavedSoldierInfo.p16BPPPalette = NULL;
+      SavedSoldierInfo.pTempObject = null;
+      SavedSoldierInfo.pKeyRing = null;
+      SavedSoldierInfo.p8BPPPalette = null;
+      SavedSoldierInfo.p16BPPPalette = null;
       memset(SavedSoldierInfo.pShades, 0, sizeof(UINT16 /* Pointer<UINT16> */) * NUM_SOLDIER_SHADES);
       memset(SavedSoldierInfo.pGlowShades, 0, sizeof(UINT16 /* Pointer<UINT16> */) * 20);
-      SavedSoldierInfo.pCurrentShade = NULL;
-      SavedSoldierInfo.pThrowParams = NULL;
-      SavedSoldierInfo.pLevelNode = NULL;
-      SavedSoldierInfo.pExternShadowLevelNode = NULL;
-      SavedSoldierInfo.pRoofUILevelNode = NULL;
-      SavedSoldierInfo.pBackGround = NULL;
-      SavedSoldierInfo.pZBackground = NULL;
-      SavedSoldierInfo.pForcedShade = NULL;
-      SavedSoldierInfo.pMercPath = NULL;
+      SavedSoldierInfo.pCurrentShade = null;
+      SavedSoldierInfo.pThrowParams = null;
+      SavedSoldierInfo.pLevelNode = null;
+      SavedSoldierInfo.pExternShadowLevelNode = null;
+      SavedSoldierInfo.pRoofUILevelNode = null;
+      SavedSoldierInfo.pBackGround = null;
+      SavedSoldierInfo.pZBackground = null;
+      SavedSoldierInfo.pForcedShade = null;
+      SavedSoldierInfo.pMercPath = null;
       memset(SavedSoldierInfo.pEffectShades, 0, sizeof(UINT16 /* Pointer<UINT16> */) * NUM_SOLDIER_EFFECTSHADES);
 
       // if the soldier wasnt active, dont add them now.  Advance to the next merc
@@ -1949,7 +1949,7 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
           return FALSE;
         }
       } else {
-        Assert(Menptr[cnt].pKeyRing == NULL);
+        Assert(Menptr[cnt].pKeyRing == null);
       }
 
       // if the soldier is an IMP character
@@ -2123,7 +2123,7 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
 
   // Allocate a buffer to read the data into
   pData = MemAlloc(uiFileSize);
-  if (pData == NULL)
+  if (pData == null)
     return FALSE;
   memset(pData, 0, uiFileSize);
 
@@ -2192,7 +2192,7 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
 
   // Allocate a buffer to read the data into
   pData = MemAlloc(uiFileSize);
-  if (pData == NULL) {
+  if (pData == null) {
     FileClose(hSrcFile);
     return FALSE;
   }
@@ -2232,7 +2232,7 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
   let uiNumOfEmails: UINT32 = 0;
   let uiSizeOfEmails: UINT32 = 0;
   let pEmail: EmailPtr = pEmailList;
-  let pTempEmail: EmailPtr = NULL;
+  let pTempEmail: EmailPtr = null;
   let cnt: UINT32;
   let uiStringLength: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
@@ -2303,8 +2303,8 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
   let uiNumOfEmails: UINT32 = 0;
   let uiSizeOfSubject: UINT32 = 0;
   let pEmail: EmailPtr = pEmailList;
-  let pTempEmail: EmailPtr = NULL;
-  let pData: Pointer<UINT8> = NULL;
+  let pTempEmail: EmailPtr = null;
+  let pData: Pointer<UINT8> = null;
   let cnt: UINT32;
   let SavedEmail: SavedEmailStruct;
   let uiNumBytesRead: UINT32 = 0;
@@ -2312,10 +2312,10 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
   // Delete the existing list of emails
   ShutDownEmailList();
 
-  pEmailList = NULL;
+  pEmailList = null;
   // Allocate memory for the header node
   pEmailList = MemAlloc(sizeof(Email));
-  if (pEmailList == NULL)
+  if (pEmailList == null)
     return FALSE;
 
   memset(pEmailList, 0, sizeof(Email));
@@ -2337,7 +2337,7 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
 
     // allocate space for the subject
     pData = MemAlloc(EMAIL_SUBJECT_LENGTH * sizeof(wchar_t));
-    if (pData == NULL)
+    if (pData == null)
       return FALSE;
     memset(pData, 0, EMAIL_SUBJECT_LENGTH * sizeof(wchar_t));
 
@@ -2359,7 +2359,7 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
 
     // if we havent allocated space yet
     pTempEmail = MemAlloc(sizeof(Email));
-    if (pTempEmail == NULL)
+    if (pTempEmail == null)
       return FALSE;
     memset(pTempEmail, 0, sizeof(Email));
 
@@ -2393,11 +2393,11 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
     // the first node of the LL was a dummy, node,get rid  of it
     pTempEmail = pEmailList;
     pEmailList = pEmailList.value.Next;
-    pEmailList.value.Prev = NULL;
+    pEmailList.value.Prev = null;
     MemFree(pTempEmail);
   } else {
     MemFree(pEmailList);
-    pEmailList = NULL;
+    pEmailList = null;
   }
 
   return TRUE;
@@ -2753,8 +2753,8 @@ function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
 
 function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   let uiNumOfNodes: UINT32 = 0;
-  let pTempPath: PathStPtr = NULL;
-  let pTemp: PathStPtr = NULL;
+  let pTempPath: PathStPtr = null;
+  let pTemp: PathStPtr = null;
   let uiNumBytesRead: UINT32 = 0;
   let cnt: UINT32;
 
@@ -2787,7 +2787,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   for (cnt = 0; cnt < uiNumOfNodes; cnt++) {
     // Allocate memory for the new node
     pTemp = MemAlloc(sizeof(PathSt));
-    if (pTemp == NULL)
+    if (pTemp == null)
       return FALSE;
     memset(pTemp, 0, sizeof(PathSt));
 
@@ -2800,7 +2800,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
     // Put the node into the list
     if (cnt == 0) {
       pTempPath = pTemp;
-      pTemp.value.pPrev = NULL;
+      pTemp.value.pPrev = null;
     } else {
       pTempPath.value.pNext = pTemp;
       pTemp.value.pPrev = pTempPath;
@@ -2808,7 +2808,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
       pTempPath = pTempPath.value.pNext;
     }
 
-    pTemp.value.pNext = NULL;
+    pTemp.value.pNext = null;
   }
 
   // move to beginning of list
@@ -2816,7 +2816,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
 
   Menptr[ubID].pMercPath = pTempPath;
   if (Menptr[ubID].pMercPath)
-    Menptr[ubID].pMercPath.value.pPrev = NULL;
+    Menptr[ubID].pMercPath.value.pPrev = null;
 
   return TRUE;
 }
@@ -2891,7 +2891,7 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   sGeneralInfo.fEnterMapDueToContract = fEnterMapDueToContract;
   sGeneralInfo.ubQuitType = ubQuitType;
 
-  if (pContractReHireSoldier != NULL)
+  if (pContractReHireSoldier != null)
     sGeneralInfo.sContractRehireSoldierID = pContractReHireSoldier.value.ubID;
   else
     sGeneralInfo.sContractRehireSoldierID = -1;
@@ -3114,7 +3114,7 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
 
   // if the soldier id is valid
   if (sGeneralInfo.sContractRehireSoldierID == -1)
-    pContractReHireSoldier = NULL;
+    pContractReHireSoldier = null;
   else
     pContractReHireSoldier = addressof(Menptr[sGeneralInfo.sContractRehireSoldierID]);
 
@@ -3128,7 +3128,7 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
 
   // Restore the selected merc
   if (sGeneralInfo.ubSMCurrentMercID == 255)
-    gpSMCurrentMerc = NULL;
+    gpSMCurrentMerc = null;
   else
     gpSMCurrentMerc = addressof(Menptr[sGeneralInfo.ubSMCurrentMercID]);
 
@@ -3553,7 +3553,7 @@ function UpdateMercMercContractInfo(): void {
     pSoldier = FindSoldierByProfileID(ubCnt, TRUE);
 
     // if the merc is on the team
-    if (pSoldier == NULL)
+    if (pSoldier == null)
       continue;
 
     gMercProfiles[ubCnt].iMercMercContractLength = pSoldier.value.iTotalContractLength;
@@ -3629,7 +3629,7 @@ function HandleOldBobbyRMailOrders(): void {
   if (LaptopSaveInfo.usNumberOfBobbyRayOrderUsed != 0) {
     // Allocate memory for the list
     gpNewBobbyrShipments = MemAlloc(sizeof(NewBobbyRayOrderStruct) * LaptopSaveInfo.usNumberOfBobbyRayOrderUsed);
-    if (gpNewBobbyrShipments == NULL) {
+    if (gpNewBobbyrShipments == null) {
       Assert(0);
       return;
     }
@@ -3658,7 +3658,7 @@ function HandleOldBobbyRMailOrders(): void {
     // Clear out the old list
     LaptopSaveInfo.usNumberOfBobbyRayOrderUsed = 0;
     MemFree(LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray);
-    LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray = NULL;
+    LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray = null;
   }
 }
 

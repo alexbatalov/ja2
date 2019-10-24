@@ -58,10 +58,10 @@ let fInHistoryMode: BOOLEAN = FALSE;
 let iCurrentHistoryPage: INT32 = 1;
 
 // the History record list
-let pHistoryListHead: HistoryUnitPtr = NULL;
+let pHistoryListHead: HistoryUnitPtr = null;
 
 // current History record (the one at the top of the current page)
-let pCurrentHistory: HistoryUnitPtr = NULL;
+let pCurrentHistory: HistoryUnitPtr = null;
 
 // last page in list
 let guiLastPageInHistoryRecordsList: UINT32 = 0;
@@ -282,11 +282,11 @@ function RenderHistoryBackGround(): void {
   GetVideoObject(addressof(hHandle), guiTITLE);
 
   // blt title bar to screen
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // get and blt the top part of the screen, video object and blt to screen
   GetVideoObject(addressof(hHandle), guiTOP);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, null);
 
   // display background for history list
   DisplayHistoryListBackground();
@@ -454,7 +454,7 @@ function ProcessAndEnterAHistoryRecord(ubCode: UINT8, uiDate: UINT32, ubSecondCo
 
     // set up information passed
     pHistory = pHistory.value.Next;
-    pHistory.value.Next = NULL;
+    pHistory.value.Next = null;
     pHistory.value.ubCode = ubCode;
     pHistory.value.ubSecondCode = ubSecondCode;
     pHistory.value.uiDate = uiDate;
@@ -468,7 +468,7 @@ function ProcessAndEnterAHistoryRecord(ubCode: UINT8, uiDate: UINT32, ubSecondCo
     pHistory = MemAlloc(sizeof(HistoryUnit));
 
     // setup info passed
-    pHistory.value.Next = NULL;
+    pHistory.value.Next = null;
     pHistory.value.ubCode = ubCode;
     pHistory.value.ubSecondCode = ubSecondCode;
     pHistory.value.uiDate = uiDate;
@@ -559,13 +559,13 @@ function OpenAndWriteHistoryFile(): BOOLEAN {
   // write info, while there are elements left in the list
   while (pHistoryList) {
     // now write date and amount, and code
-    FileWrite(hFileHandle, addressof(pHistoryList.value.ubCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.ubSecondCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.uiDate), sizeof(UINT32), NULL);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorX), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorY), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.bSectorZ), sizeof(INT8), NULL);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.ubColor), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.ubCode), sizeof(UINT8), null);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.ubSecondCode), sizeof(UINT8), null);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.uiDate), sizeof(UINT32), null);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorX), sizeof(INT16), null);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorY), sizeof(INT16), null);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.bSectorZ), sizeof(INT8), null);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.ubColor), sizeof(UINT8), null);
 
     // next element in list
     pHistoryList = pHistoryList.value.Next;
@@ -596,7 +596,7 @@ function ClearHistoryList(): void {
     // delete current node
     MemFree(pHistoryNode);
   }
-  pHistoryListHead = NULL;
+  pHistoryListHead = null;
 
   return;
 }
@@ -637,13 +637,13 @@ function DisplayHistoryListBackground(): void {
   GetVideoObject(addressof(hHandle), guiSHADELINE);
   for (iCounter = 0; iCounter < 11; iCounter++) {
     // blt title bar to screen
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 15, (TOP_DIVLINE_Y + BOX_HEIGHT * 2 * iCounter), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 15, (TOP_DIVLINE_Y + BOX_HEIGHT * 2 * iCounter), VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // the long hortizontal line int he records list display region
   GetVideoObject(addressof(hHandle), guiLONGLINE);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 9, (TOP_DIVLINE_Y), VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 9, (TOP_DIVLINE_Y + BOX_HEIGHT * 2 * 11), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 9, (TOP_DIVLINE_Y), VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 9, (TOP_DIVLINE_Y + BOX_HEIGHT * 2 * 11), VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }
@@ -1090,7 +1090,7 @@ function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
   FileClose(hFileHandle);
 
   // check to see if we in fact have a list to display
-  if (pHistoryListHead == NULL) {
+  if (pHistoryListHead == null) {
     // got no records, return false
     return FALSE;
   }
@@ -1142,7 +1142,7 @@ function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
 
   pList = pHistoryListHead;
 
-  if (pList == NULL) {
+  if (pList == null) {
     return FALSE;
   }
 
@@ -1151,18 +1151,18 @@ function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
   uiByteCount = /*sizeof( INT32 )+ */ (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD();
   // file exists, read in data, continue until end of page
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue)) {
-    FileWrite(hFileHandle, addressof(pList.value.ubCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, addressof(pList.value.ubSecondCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, addressof(pList.value.uiDate), sizeof(UINT32), NULL);
-    FileWrite(hFileHandle, addressof(pList.value.sSectorX), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, addressof(pList.value.sSectorY), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, addressof(pList.value.bSectorZ), sizeof(INT8), NULL);
-    FileWrite(hFileHandle, addressof(pList.value.ubColor), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pList.value.ubCode), sizeof(UINT8), null);
+    FileWrite(hFileHandle, addressof(pList.value.ubSecondCode), sizeof(UINT8), null);
+    FileWrite(hFileHandle, addressof(pList.value.uiDate), sizeof(UINT32), null);
+    FileWrite(hFileHandle, addressof(pList.value.sSectorX), sizeof(INT16), null);
+    FileWrite(hFileHandle, addressof(pList.value.sSectorY), sizeof(INT16), null);
+    FileWrite(hFileHandle, addressof(pList.value.bSectorZ), sizeof(INT8), null);
+    FileWrite(hFileHandle, addressof(pList.value.ubColor), sizeof(UINT8), null);
 
     pList = pList.value.Next;
 
     // we've overextended our welcome, and bypassed end of file, get out
-    if (pList == NULL) {
+    if (pList == null) {
       // not ok to continue
       fOkToContinue = FALSE;
     }
@@ -1301,13 +1301,13 @@ function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): BOOLEAN {
   }
 
   // now write date and amount, and code
-  FileWrite(hFileHandle, addressof(pHistoryList.value.ubCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.ubSecondCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.uiDate), sizeof(UINT32), NULL);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorX), sizeof(INT16), NULL);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorY), sizeof(INT16), NULL);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.bSectorZ), sizeof(INT8), NULL);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.ubColor), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.ubCode), sizeof(UINT8), null);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.ubSecondCode), sizeof(UINT8), null);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.uiDate), sizeof(UINT32), null);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorX), sizeof(INT16), null);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorY), sizeof(INT16), null);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.bSectorZ), sizeof(INT8), null);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.ubColor), sizeof(UINT8), null);
 
   // close file
   FileClose(hFileHandle);
@@ -1338,7 +1338,7 @@ function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void
 
       // save
       OpenAndWriteHistoryFile();
-      pList = NULL;
+      pList = null;
     }
 
     if (fFound != TRUE) {
@@ -1378,7 +1378,7 @@ function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
       uiTime = pList.value.uiDate;
       fFound = TRUE;
 
-      pList = NULL;
+      pList = null;
     }
 
     if (fFound != TRUE) {

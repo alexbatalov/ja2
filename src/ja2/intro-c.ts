@@ -10,7 +10,7 @@ let gfIntroScreenExit: BOOLEAN;
 
 let guiIntroExitScreen: UINT32 = Enum26.INTRO_SCREEN;
 
-let gpSmackFlic: Pointer<SMKFLIC> = NULL;
+let gpSmackFlic: Pointer<SMKFLIC> = null;
 
 const SMKINTRO_FIRST_VIDEO = 255;
 const SMKINTRO_NO_VIDEO = -1;
@@ -316,7 +316,7 @@ function StartPlayingIntroFlic(iIndexOfFlicToPlay: INT32): void {
     // start playing a flic
     gpSmackFlic = SmkPlayFlic(gpzSmackerFileNames[iIndexOfFlicToPlay], 0, 0, TRUE);
 
-    if (gpSmackFlic != NULL) {
+    if (gpSmackFlic != null) {
       giCurrentIntroBeingPlayed = iIndexOfFlicToPlay;
     } else {
       // do a check
@@ -363,9 +363,9 @@ function DisplaySirtechSplashScreen(): void {
   }
 
   GetVideoObject(addressof(hPixHandle), uiLogoID);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
   DeleteVideoObjectFromIndex(uiLogoID);
 
   InvalidateScreen();
-  RefreshScreen(NULL);
+  RefreshScreen(null);
 }

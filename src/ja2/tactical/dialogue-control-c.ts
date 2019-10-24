@@ -70,8 +70,8 @@ let gubNumStopTimeQuotes: UINT8 = 2;
 
 // QUEUE UP DIALOG!
 const INITIAL_Q_SIZE = 10;
-let ghDialogueQ: HQUEUE = NULL;
-let gpCurrentTalkingFace: Pointer<FACETYPE> = NULL;
+let ghDialogueQ: HQUEUE = null;
+let gpCurrentTalkingFace: Pointer<FACETYPE> = null;
 let gubCurrentTalkingID: UINT8 = NO_PROFILE;
 let gbUIHandlerID: INT8;
 
@@ -127,7 +127,7 @@ function PauseTimeDuringNextQuote(): void {
 }
 
 function DialogueActive(): BOOLEAN {
-  if (gpCurrentTalkingFace != NULL) {
+  if (gpCurrentTalkingFace != null) {
     return TRUE;
   }
 
@@ -142,7 +142,7 @@ function InitalizeDialogueControl(): BOOLEAN {
 
   giNPCReferenceCount = 0;
 
-  if (ghDialogueQ == NULL) {
+  if (ghDialogueQ == null) {
     return FALSE;
   } else {
     return TRUE;
@@ -150,13 +150,13 @@ function InitalizeDialogueControl(): BOOLEAN {
 }
 
 function ShutdownDialogueControl(): void {
-  if (ghDialogueQ != NULL) {
+  if (ghDialogueQ != null) {
     // Empty
     EmptyDialogueQueue();
 
     // Delete
     DeleteQueue(ghDialogueQ);
-    ghDialogueQ = NULL;
+    ghDialogueQ = null;
   }
 
   // shutdown external static NPC faces
@@ -201,7 +201,7 @@ function ShutdownStaticExternalNPCFaces(): void {
 
 function EmptyDialogueQueue(): void {
   // If we have anything left in the queue, remove!
-  if (ghDialogueQ != NULL) {
+  if (ghDialogueQ != null) {
     /*
     DEF:  commented out because the Queue system ?? uses a contiguous memory block ??? for the queue
             so you cant delete a single node.  The DeleteQueue, below, will free the entire memory block
@@ -219,7 +219,7 @@ function EmptyDialogueQueue(): void {
 
     // Delete list
     DeleteQueue(ghDialogueQ);
-    ghDialogueQ = NULL;
+    ghDialogueQ = null;
 
     // Recreate list
     ghDialogueQ = CreateQueue(INITIAL_Q_SIZE, sizeof(DIALOGUE_Q_STRUCT_PTR));
@@ -231,7 +231,7 @@ function EmptyDialogueQueue(): void {
 function DialogueQueueIsEmpty(): BOOLEAN {
   let numDialogueItems: INT32;
 
-  if (ghDialogueQ != NULL) {
+  if (ghDialogueQ != null) {
     numDialogueItems = QueueSize(ghDialogueQ);
 
     if (numDialogueItems == 0) {
@@ -243,7 +243,7 @@ function DialogueQueueIsEmpty(): BOOLEAN {
 }
 
 function DialogueQueueIsEmptyOrSomebodyTalkingNow(): BOOLEAN {
-  if (gpCurrentTalkingFace != NULL) {
+  if (gpCurrentTalkingFace != null) {
     return FALSE;
   }
 
@@ -261,7 +261,7 @@ function DialogueAdvanceSpeech(): void {
 
 function StopAnyCurrentlyTalkingSpeech(): void {
   // ATE; Make sure guys stop talking....
-  if (gpCurrentTalkingFace != NULL) {
+  if (gpCurrentTalkingFace != null) {
     InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, TRUE);
   }
 }
@@ -272,7 +272,7 @@ function HandleDialogueUIAdjustments(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // OK, check if we are still taking
-  if (gpCurrentTalkingFace != NULL) {
+  if (gpCurrentTalkingFace != null) {
     if (gpCurrentTalkingFace.value.fTalking) {
       // ATE: Check for change in state for the guy currently talking on 'external' panel....
       if (gfFacePanelActive) {
@@ -310,7 +310,7 @@ function HandleDialogue(): void {
   let QItem: Pointer<DIALOGUE_Q_STRUCT>;
   /* static */ let fOldEngagedInConvFlagOn: BOOLEAN = FALSE;
   let fDoneTalking: BOOLEAN = FALSE;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let zText: CHAR16[] /* [512] */;
   let zMoney: CHAR16[] /* [128] */;
 
@@ -321,7 +321,7 @@ function HandleDialogue(): void {
 
   iQSize = QueueSize(ghDialogueQ);
 
-  if (iQSize == 0 && gpCurrentTalkingFace == NULL) {
+  if (iQSize == 0 && gpCurrentTalkingFace == null) {
     HandlePendingInitConv();
   }
 
@@ -373,7 +373,7 @@ function HandleDialogue(): void {
   }
 
   // OK, check if we are still taking
-  if (gpCurrentTalkingFace != NULL) {
+  if (gpCurrentTalkingFace != null) {
     if (gpCurrentTalkingFace.value.fTalking) {
       // ATE: OK, MANAGE THE DISPLAY OF OUR CURRENTLY ACTIVE FACE IF WE / IT CHANGES STATUS
       // THINGS THAT CAN CHANGE STATUS:
@@ -449,7 +449,7 @@ function HandleDialogue(): void {
         gpCurrentTalkingFace.value.uiFlags &= (~FACE_TRIGGER_PREBATTLE_INT);
       }
 
-      gpCurrentTalkingFace = NULL;
+      gpCurrentTalkingFace = null;
       gubCurrentTalkingID = NO_PROFILE;
       gTacticalStatus.ubLastQuoteProfileNUm = NO_PROFILE;
       fDoneTalking = TRUE;
@@ -472,7 +472,7 @@ function HandleDialogue(): void {
 
       pMike = FindSoldierByProfileID(Enum268.MIKE, FALSE);
       if (pMike) {
-        sPlayerGridNo = ClosestPC(pMike, NULL);
+        sPlayerGridNo = ClosestPC(pMike, null);
         if (sPlayerGridNo != NOWHERE) {
           ubPlayerID = WhoIsThere2(sPlayerGridNo, 0);
           if (ubPlayerID != NOBODY) {
@@ -540,7 +540,7 @@ function HandleDialogue(): void {
   // Try to find soldier...
   pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, TRUE);
 
-  if (pSoldier != NULL) {
+  if (pSoldier != null) {
     if (SoundIsPlaying(pSoldier.value.uiBattleSoundID)) {
       // Place back in!
       // Add to queue
@@ -680,7 +680,7 @@ function HandleDialogue(): void {
     }
     if (QItem.value.uiSpecialEventFlag & DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX) {
       let iReason: INT32 = 0;
-      let pUpdateSoldier: Pointer<SOLDIERTYPE> = NULL;
+      let pUpdateSoldier: Pointer<SOLDIERTYPE> = null;
 
       iReason = QItem.value.uiSpecialEventData;
 
@@ -838,7 +838,7 @@ function HandleDialogue(): void {
       pSoldier = FindSoldierByProfileID((QItem.value.uiSpecialEventData), FALSE);
 
       // if soldier valid...
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier);
       }
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_ENTER_MAPSCREEN) {
@@ -851,7 +851,7 @@ function HandleDialogue(): void {
       pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, FALSE);
 
       // if soldier valid...
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         // .. remove the fired soldier again
         BeginStrategicRemoveMerc(pSoldier, QItem.value.uiSpecialEventData);
       }
@@ -860,7 +860,7 @@ function HandleDialogue(): void {
       pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, FALSE);
 
       // if soldier valid...
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         // .. remove the fired soldier again
         StrategicRemoveMerc(pSoldier);
       }
@@ -872,7 +872,7 @@ function HandleDialogue(): void {
       }
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_SLEEP) {
       // no soldier, leave now
-      if (pSoldier == NULL) {
+      if (pSoldier == null) {
         return;
       }
 
@@ -1202,7 +1202,7 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
   // Try to find soldier...
   pSoldier = FindSoldierByProfileID(ubCharacterNum, TRUE);
 
-  if (pSoldier != NULL) {
+  if (pSoldier != null) {
     // Check vital stats
     if (pSoldier.value.bLife < CONSCIOUSNESS) {
       return FALSE;
@@ -1659,7 +1659,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
 
   // PLEASE NOTE:  pSoldier may legally be NULL (e.g. Skyrider) !!!
 
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     fDoExternPanel = TRUE;
   } else {
     // If we are not an active face!
@@ -1676,7 +1676,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
     gFacesData[iFaceIndex].uiFlags |= (FACE_INACTIVE_HANDLED_ELSEWHERE | FACE_MAKEACTIVE_ONCE_DONE);
 
     // IF we are in tactical and this soldier is on the current squad
-    if ((guiCurrentScreen == Enum26.GAME_SCREEN) && (pSoldier != NULL) && (pSoldier.value.bAssignment == iCurrentTacticalSquad)) {
+    if ((guiCurrentScreen == Enum26.GAME_SCREEN) && (pSoldier != null) && (pSoldier.value.bAssignment == iCurrentTacticalSquad)) {
       // Make the interface panel dirty..
       // This will dirty the panel next frame...
       gfRerenderInterfaceFromHelpText = TRUE;
@@ -1710,7 +1710,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
   } else if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     // Are we in mapscreen?
     // If so, set current guy active to talk.....
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       ContinueDialogue(pSoldier, FALSE);
     }
   }
@@ -1821,7 +1821,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let zTownIDString: INT16[] /* [50] */;
 
-  if (gpCurrentTalkingFace == NULL) {
+  if (gpCurrentTalkingFace == null) {
     return;
   }
 
@@ -1830,9 +1830,9 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
     // a living soldier?..or external NPC?..choose panel based on this
     if (pSoldier) {
-      BltVideoObjectFromIndex(pBlitter.value.uiDestBuff, guiCOMPANEL, 0, pBlitter.value.sX, pBlitter.value.sY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(pBlitter.value.uiDestBuff, guiCOMPANEL, 0, pBlitter.value.sX, pBlitter.value.sY, VO_BLT_SRCTRANSPARENCY, null);
     } else {
-      BltVideoObjectFromIndex(pBlitter.value.uiDestBuff, guiCOMPANELB, 0, pBlitter.value.sX, pBlitter.value.sY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(pBlitter.value.uiDestBuff, guiCOMPANELB, 0, pBlitter.value.sX, pBlitter.value.sY, VO_BLT_SRCTRANSPARENCY, null);
     }
 
     // Display name, location ( if not current )
@@ -2063,7 +2063,7 @@ function TextOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP && fLButtonDown) {
-    if (gpCurrentTalkingFace != NULL) {
+    if (gpCurrentTalkingFace != null) {
       InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, FALSE);
 
       // Did we succeed in shutting them up?
@@ -2085,7 +2085,7 @@ function FaceOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP && fLButtonDown) {
-    if (gpCurrentTalkingFace != NULL) {
+    if (gpCurrentTalkingFace != null) {
       InternalShutupaYoFace(gpCurrentTalkingFace.value.iID, FALSE);
     }
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -2156,7 +2156,7 @@ function SetStopTimeQuoteCallback(pCallBack: MODAL_HOOK): void {
 }
 
 function IsMercSayingDialogue(ubProfileID: UINT8): BOOLEAN {
-  if (gpCurrentTalkingFace != NULL && gubCurrentTalkingID == ubProfileID) {
+  if (gpCurrentTalkingFace != null && gubCurrentTalkingID == ubProfileID) {
     return TRUE;
   }
   return FALSE;

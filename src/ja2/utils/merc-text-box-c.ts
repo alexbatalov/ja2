@@ -44,10 +44,10 @@ let zMercBackgroundPopupFilenames: STR8[] /* [] */ = [
 let gBasicPopUpTextBox: MercPopUpBox;
 
 // the current pop up box
-let gPopUpTextBox: Pointer<MercPopUpBox> = NULL;
+let gPopUpTextBox: Pointer<MercPopUpBox> = null;
 
 // the old one
-let gOldPopUpTextBox: Pointer<MercPopUpBox> = NULL;
+let gOldPopUpTextBox: Pointer<MercPopUpBox> = null;
 
 // the list of boxes
 let gpPopUpBoxList: Pointer<MercPopUpBox>[] /* [MAX_NUMBER_OF_POPUP_BOXES] */;
@@ -67,7 +67,7 @@ function SetCurrentPopUpBox(uiId: UINT32): BOOLEAN {
   }
 
   // see if box inited
-  if (gpPopUpBoxList[uiId] != NULL) {
+  if (gpPopUpBoxList[uiId] != null) {
     gPopUpTextBox = gpPopUpBoxList[uiId];
     return TRUE;
   }
@@ -96,7 +96,7 @@ function InitMercPopupBox(): BOOLEAN {
   // init the pop up box list
   for (iCounter = 0; iCounter < MAX_NUMBER_OF_POPUP_BOXES; iCounter++) {
     // set ptr to null
-    gpPopUpBoxList[iCounter] = NULL;
+    gpPopUpBoxList[iCounter] = null;
   }
 
   // LOAD STOP ICON...
@@ -195,9 +195,9 @@ function RenderMercPopupBox(sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): BOO
 
   // check to see if we are wanting to blit a transparent background
   if (gPopUpTextBox.value.uiFlags & MERC_POPUP_PREPARE_FLAGS_TRANS_BACK)
-    BltVideoSurface(uiBuffer, gPopUpTextBox.value.uiSourceBufferIndex, 0, sDestX, sDestY, VS_BLT_FAST | VS_BLT_USECOLORKEY, NULL);
+    BltVideoSurface(uiBuffer, gPopUpTextBox.value.uiSourceBufferIndex, 0, sDestX, sDestY, VS_BLT_FAST | VS_BLT_USECOLORKEY, null);
   else
-    BltVideoSurface(uiBuffer, gPopUpTextBox.value.uiSourceBufferIndex, 0, sDestX, sDestY, VS_BLT_FAST, NULL);
+    BltVideoSurface(uiBuffer, gPopUpTextBox.value.uiSourceBufferIndex, 0, sDestX, sDestY, VS_BLT_FAST, null);
 
   // blt, and grab return value
   //	fReturnValue = Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sDestX, sDestY, 0, 0, gPopUpTextBox->sWidth, gPopUpTextBox->sHeight);
@@ -223,13 +223,13 @@ function AddPopUpBoxToList(pPopUpTextBox: Pointer<MercPopUpBox>): INT32 {
   let iCounter: INT32 = 0;
 
   // make sure is a valid box
-  if (pPopUpTextBox == NULL) {
+  if (pPopUpTextBox == null) {
     return -1;
   }
 
   // attempt to add box to list
   for (iCounter = 0; iCounter < MAX_NUMBER_OF_POPUP_BOXES; iCounter++) {
-    if (gpPopUpBoxList[iCounter] == NULL) {
+    if (gpPopUpBoxList[iCounter] == null) {
       // found a spot, inset
       gpPopUpBoxList[iCounter] = pPopUpTextBox;
 
@@ -272,7 +272,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
   let usColorVal: UINT16;
   let usLoopEnd: UINT16;
   let sDispTextXPos: INT16;
-  let pPopUpTextBox: Pointer<MercPopUpBox> = NULL;
+  let pPopUpTextBox: Pointer<MercPopUpBox> = null;
 
   if (usWidth >= 640)
     return -1;
@@ -416,34 +416,34 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
   // blit top row of images
   for (i = TEXT_POPUP_GAP_BN_LINES; i < usWidth - TEXT_POPUP_GAP_BN_LINES; i += TEXT_POPUP_GAP_BN_LINES) {
     // TOP ROW
-    BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 1, i, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 1, i, usPosY, VO_BLT_SRCTRANSPARENCY, null);
     // BOTTOM ROW
-    BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 6, i, usHeight - TEXT_POPUP_GAP_BN_LINES + 6, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 6, i, usHeight - TEXT_POPUP_GAP_BN_LINES + 6, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // blit the left and right row of images
   usPosX = 0;
   for (i = TEXT_POPUP_GAP_BN_LINES; i < usHeight - TEXT_POPUP_GAP_BN_LINES; i += TEXT_POPUP_GAP_BN_LINES) {
-    BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 3, usPosX, i, VO_BLT_SRCTRANSPARENCY, NULL);
-    BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 4, usPosX + usWidth - 4, i, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 3, usPosX, i, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 4, usPosX + usWidth - 4, i, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // blt the corner images for the row
   // top left
-  BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 0, 0, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 0, 0, usPosY, VO_BLT_SRCTRANSPARENCY, null);
   // top right
-  BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 2, usWidth - TEXT_POPUP_GAP_BN_LINES, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 2, usWidth - TEXT_POPUP_GAP_BN_LINES, usPosY, VO_BLT_SRCTRANSPARENCY, null);
   // bottom left
-  BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 5, 0, usHeight - TEXT_POPUP_GAP_BN_LINES, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 5, 0, usHeight - TEXT_POPUP_GAP_BN_LINES, VO_BLT_SRCTRANSPARENCY, null);
   // bottom right
-  BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 7, usWidth - TEXT_POPUP_GAP_BN_LINES, usHeight - TEXT_POPUP_GAP_BN_LINES, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(pPopUpTextBox.value.uiSourceBufferIndex, hImageHandle, 7, usWidth - TEXT_POPUP_GAP_BN_LINES, usHeight - TEXT_POPUP_GAP_BN_LINES, VO_BLT_SRCTRANSPARENCY, null);
 
   // Icon if ness....
   if (pPopUpTextBox.value.uiFlags & MERC_POPUP_PREPARE_FLAGS_STOPICON) {
-    BltVideoObjectFromIndex(pPopUpTextBox.value.uiSourceBufferIndex, guiBoxIcons, 0, 5, 4, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(pPopUpTextBox.value.uiSourceBufferIndex, guiBoxIcons, 0, 5, 4, VO_BLT_SRCTRANSPARENCY, null);
   }
   if (pPopUpTextBox.value.uiFlags & MERC_POPUP_PREPARE_FLAGS_SKULLICON) {
-    BltVideoObjectFromIndex(pPopUpTextBox.value.uiSourceBufferIndex, guiSkullIcons, 0, 9, 4, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(pPopUpTextBox.value.uiSourceBufferIndex, guiSkullIcons, 0, 9, 4, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // Get the font and shadow colors
@@ -483,7 +483,7 @@ function RemoveMercPopupBox(): BOOLEAN {
   let iCounter: INT32 = 0;
 
   // make sure the current box does in fact exist
-  if (gPopUpTextBox == NULL) {
+  if (gPopUpTextBox == null) {
     // failed..
     return FALSE;
   }
@@ -493,7 +493,7 @@ function RemoveMercPopupBox(): BOOLEAN {
     // now find this box in the list
     for (iCounter = 0; iCounter < MAX_NUMBER_OF_POPUP_BOXES; iCounter++) {
       if (gpPopUpBoxList[iCounter] == gPopUpTextBox) {
-        gpPopUpBoxList[iCounter] = NULL;
+        gpPopUpBoxList[iCounter] = null;
         iCounter = MAX_NUMBER_OF_POPUP_BOXES;
       }
     }
@@ -507,7 +507,7 @@ function RemoveMercPopupBox(): BOOLEAN {
     MemFree(gPopUpTextBox);
 
     // reset current ptr
-    gPopUpTextBox = NULL;
+    gPopUpTextBox = null;
   }
 
   return TRUE;

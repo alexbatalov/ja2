@@ -145,7 +145,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
       break;
   }
 
-  if (usFlags & MSG_BOX_FLAG_USE_CENTERING_RECT && pCenteringRect != NULL) {
+  if (usFlags & MSG_BOX_FLAG_USE_CENTERING_RECT && pCenteringRect != null) {
     aRect.iTop = pCenteringRect.value.iTop;
     aRect.iLeft = pCenteringRect.value.iLeft;
     aRect.iBottom = pCenteringRect.value.iBottom;
@@ -604,7 +604,7 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   gfInMsgBox = FALSE;
 
   // Call done callback!
-  if (gMsgBox.ExitCallback != NULL) {
+  if (gMsgBox.ExitCallback != null) {
     ((gMsgBox.ExitCallback).value)(ubExitCode);
   }
 

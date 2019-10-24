@@ -19,7 +19,7 @@ function RemoveMilitiaFromTactical(): void {
   curr = gSoldierInitHead;
   while (curr) {
     if (curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM) {
-      curr.value.pSoldier = NULL;
+      curr.value.pSoldier = null;
     }
     curr = curr.value.next;
   }

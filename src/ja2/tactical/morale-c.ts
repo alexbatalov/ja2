@@ -330,7 +330,7 @@ function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, s
 
   // NOTE: Many morale events are NOT attached to a specific player soldier at all!
   // Those that do need it have Asserts on a case by case basis below
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Handling morale event %d at X=%d, Y=%d,Z=%d", bMoraleEvent, sMapX, sMapY, bMapZ));
   } else {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Handling morale event %d for %S at X=%d, Y=%d, Z=%d", bMoraleEvent, pSoldier.value.name, sMapX, sMapY, bMapZ));

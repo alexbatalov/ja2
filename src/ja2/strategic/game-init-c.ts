@@ -641,7 +641,7 @@ function ReStartingGame(): void {
   gTacticalStatus.fHasAGameBeenStarted = FALSE;
 
   // Reset timer callbacks
-  gpCustomizableTimerCallback = NULL;
+  gpCustomizableTimerCallback = null;
 
   gubCheatLevel = STARTING_CHEAT_LEVEL;
 }

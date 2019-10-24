@@ -23,7 +23,7 @@ interface SplitUINT32 {
 }
 
 function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
-  let hImage: HIMAGE = NULL;
+  let hImage: HIMAGE = null;
   let Extension: SGPFILENAME;
   let ExtensionSep: CHAR8[] /* [] */ = ".";
   let StrPtr: STR;
@@ -33,7 +33,7 @@ function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
   // Get extension
   StrPtr = strstr(ImageFile, ExtensionSep);
 
-  if (StrPtr == NULL) {
+  if (StrPtr == null) {
     // No extension given, use default internal loader extension
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, "No extension given, using default");
     strcat(ImageFile, ".PCX");
@@ -65,7 +65,7 @@ function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
   // Determine if resource exists before creating image structure
   if (!FileExists(ImageFile)) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, String("Resource file %s does not exist.", ImageFile));
-    return NULL;
+    return null;
   }
 
   // Create memory for image structure
@@ -86,7 +86,7 @@ function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
   hImage.value.iFileLoader = iFileLoader;
 
   if (!LoadImageData(hImage, fContents)) {
-    return NULL;
+    return null;
   }
 
   // All is fine, image is loaded and allocated, return pointer
@@ -94,7 +94,7 @@ function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
 }
 
 function DestroyImage(hImage: HIMAGE): BOOLEAN {
-  Assert(hImage != NULL);
+  Assert(hImage != null);
 
   // First delete contents
   ReleaseImageData(hImage, IMAGE_ALLDATA); // hImage->fFlags );
@@ -106,18 +106,18 @@ function DestroyImage(hImage: HIMAGE): BOOLEAN {
 }
 
 function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
-  Assert(hImage != NULL);
+  Assert(hImage != null);
 
   if ((fContents & IMAGE_PALETTE) && (hImage.value.fFlags & IMAGE_PALETTE)) {
     // Destroy palette
-    if (hImage.value.pPalette != NULL) {
+    if (hImage.value.pPalette != null) {
       MemFree(hImage.value.pPalette);
-      hImage.value.pPalette = NULL;
+      hImage.value.pPalette = null;
     }
 
-    if (hImage.value.pui16BPPPalette != NULL) {
+    if (hImage.value.pui16BPPPalette != null) {
       MemFree(hImage.value.pui16BPPPalette);
-      hImage.value.pui16BPPPalette = NULL;
+      hImage.value.pui16BPPPalette = null;
     }
 
     // Remove contents flag
@@ -126,9 +126,9 @@ function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
 
   if ((fContents & IMAGE_BITMAPDATA) && (hImage.value.fFlags & IMAGE_BITMAPDATA)) {
     // Destroy image data
-    Assert(hImage.value.pImageData != NULL);
+    Assert(hImage.value.pImageData != null);
     MemFree(hImage.value.pImageData);
-    hImage.value.pImageData = NULL;
+    hImage.value.pImageData = null;
     if (hImage.value.usNumberOfObjects > 0) {
       MemFree(hImage.value.pETRLEObject);
     }
@@ -138,7 +138,7 @@ function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
 
   if ((fContents & IMAGE_APPDATA) && (hImage.value.fFlags & IMAGE_APPDATA)) {
     // get rid of the APP DATA
-    if (hImage.value.pAppData != NULL) {
+    if (hImage.value.pAppData != null) {
       MemFree(hImage.value.pAppData);
       hImage.value.fFlags &= (~IMAGE_APPDATA);
     }
@@ -150,7 +150,7 @@ function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
 function LoadImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   let fReturnVal: BOOLEAN = FALSE;
 
-  Assert(hImage != NULL);
+  Assert(hImage != null);
 
   // Switch on file loader
   switch (hImage.value.iFileLoader) {
@@ -182,7 +182,7 @@ function LoadImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
 
 function CopyImageToBuffer(hImage: HIMAGE, fBufferType: UINT32, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): BOOLEAN {
   // Use blitter based on type of image
-  Assert(hImage != NULL);
+  Assert(hImage != null);
 
   if (hImage.value.ubBitDepth == 8 && fBufferType == BUFFER_8BPP) {
     // Default do here
@@ -214,8 +214,8 @@ function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDe
   let pSrc: Pointer<UINT8>;
 
   // Assertions
-  Assert(hImage != NULL);
-  Assert(hImage.value.p16BPPData != NULL);
+  Assert(hImage != null);
+  Assert(hImage.value.p16BPPData != null);
 
   // Validations
   CHECKF(usX >= 0);
@@ -258,8 +258,8 @@ function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, us
   let pDest: Pointer<UINT16>;
   let pSrc: Pointer<UINT16>;
 
-  Assert(hImage != NULL);
-  Assert(hImage.value.p16BPPData != NULL);
+  Assert(hImage != null);
+  Assert(hImage.value.p16BPPData != null);
 
   // Validations
   CHECKF(usX >= 0);
@@ -317,11 +317,11 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   p16BPPPalette = hImage.value.pui16BPPPalette;
 
   // Assertions
-  Assert(p16BPPPalette != NULL);
-  Assert(hImage != NULL);
+  Assert(p16BPPPalette != null);
+  Assert(hImage != null);
 
   // Validations
-  CHECKF(hImage.value.p16BPPData != NULL);
+  CHECKF(hImage.value.p16BPPData != null);
   CHECKF(usX >= 0);
   CHECKF(usX < usDestWidth);
   CHECKF(usY >= 0);
@@ -374,7 +374,7 @@ function Create16BPPPalette(pPalette: Pointer<SGPPaletteEntry>): Pointer<UINT16>
   let g: UINT8;
   let b: UINT8;
 
-  Assert(pPalette != NULL);
+  Assert(pPalette != null);
 
   p16BPPPalette = MemAlloc(sizeof(UINT16) * 256);
 
@@ -451,7 +451,7 @@ function Create16BPPPaletteShaded(pPalette: Pointer<SGPPaletteEntry>, rscale: UI
   let g: UINT8;
   let b: UINT8;
 
-  Assert(pPalette != NULL);
+  Assert(pPalette != null);
 
   p16BPPPalette = MemAlloc(sizeof(UINT16) * 256);
 
@@ -615,22 +615,22 @@ function ConvertRGBToPaletteEntry(sbStart: UINT8, sbEnd: UINT8, pOldPalette: Poi
 
 function GetETRLEImageData(hImage: HIMAGE, pBuffer: Pointer<ETRLEData>): BOOLEAN {
   // Assertions
-  Assert(hImage != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hImage != null);
+  Assert(pBuffer != null);
 
   // Create memory for data
   pBuffer.value.usNumberOfObjects = hImage.value.usNumberOfObjects;
 
   // Create buffer for objects
   pBuffer.value.pETRLEObject = MemAlloc(sizeof(ETRLEObject) * pBuffer.value.usNumberOfObjects);
-  CHECKF(pBuffer.value.pETRLEObject != NULL);
+  CHECKF(pBuffer.value.pETRLEObject != null);
 
   // Copy into buffer
   memcpy(pBuffer.value.pETRLEObject, hImage.value.pETRLEObject, sizeof(ETRLEObject) * pBuffer.value.usNumberOfObjects);
 
   // Allocate memory for pixel data
   pBuffer.value.pPixData = MemAlloc(hImage.value.uiSizePixData);
-  CHECKF(pBuffer.value.pPixData != NULL);
+  CHECKF(pBuffer.value.pPixData != null);
 
   pBuffer.value.uiSizePixData = hImage.value.uiSizePixData;
 

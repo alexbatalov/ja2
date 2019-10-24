@@ -48,14 +48,14 @@ function QueryTBLeftButton(puiNewEvent: Pointer<UINT32>): void {
               if (giUIMessageOverlay != -1) {
                 EndUIMessage();
               } else {
-                if (!HandleCheckForExitArrowsInput(FALSE) && gpItemPointer == NULL) {
+                if (!HandleCheckForExitArrowsInput(FALSE) && gpItemPointer == null) {
                   // First check if we clicked on a guy, if so, make selected if it's ours
                   if (gfUIFullTargetFound && (guiUIFullTargetFlags & OWNED_MERC)) {
                     if (!(guiUIFullTargetFlags & UNCONSCIOUS_MERC)) {
                       fClickHoldIntercepted = TRUE;
 
                       // Select guy
-                      if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && gpItemPointer == NULL) {
+                      if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && gpItemPointer == null) {
                         if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
                           // do nothing
                           fClickHoldIntercepted = FALSE;
@@ -218,7 +218,7 @@ function QueryTBLeftButton(puiNewEvent: Pointer<UINT32>): void {
                 EndUIMessage();
               } else {
                 if (!HandleCheckForExitArrowsInput(TRUE)) {
-                  if (gpItemPointer != NULL) {
+                  if (gpItemPointer != null) {
                     if (HandleItemPointerClick(usMapPos)) {
                       // getout of mode
                       EndItemPointer();
@@ -255,7 +255,7 @@ function QueryTBLeftButton(puiNewEvent: Pointer<UINT32>): void {
                           // Select guy
                           if ((guiUIFullTargetFlags & OWNED_MERC) && !(guiUIFullTargetFlags & UNCONSCIOUS_MERC)) {
                             // Select guy
-                            if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && (gpItemPointer == NULL) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+                            if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && (gpItemPointer == null) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
                               if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
                                 PopupAssignmentMenuInTactical(pSoldier);
                               }
@@ -400,7 +400,7 @@ function QueryTBRightButton(puiNewEvent: Pointer<UINT32>): void {
       // CHECK COMBINATIONS
       if (fLeftButtonDown) {
       } else {
-        if (gpItemPointer == NULL) {
+        if (gpItemPointer == null) {
           // IF HERE, DO A CLICK-HOLD IF IN INTERVAL
           if (COUNTERDONE(Enum386.RMOUSECLICK_DELAY_COUNTER) && !fClickHoldIntercepted) {
             // Switch on UI mode
@@ -420,7 +420,7 @@ function QueryTBRightButton(puiNewEvent: Pointer<UINT32>): void {
 
                 if ((guiUIFullTargetFlags & OWNED_MERC) && !(guiUIFullTargetFlags & UNCONSCIOUS_MERC)) {
                   // Select guy
-                  if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && (gpItemPointer == NULL) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+                  if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && (gpItemPointer == null) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
                     // if( pSoldier->bAssignment >= ON_DUTY )
                     {
                       PopupAssignmentMenuInTactical(pSoldier);
@@ -462,7 +462,7 @@ function QueryTBRightButton(puiNewEvent: Pointer<UINT32>): void {
         if (fLeftButtonDown) {
           fIgnoreLeftUp = TRUE;
 
-          if (gpItemPointer == NULL) {
+          if (gpItemPointer == null) {
             // ATE:
             if (gusSelectedSoldier != NOBODY) {
               switch (gCurrentUIMode) {
@@ -501,7 +501,7 @@ function QueryTBRightButton(puiNewEvent: Pointer<UINT32>): void {
           }
         } else {
           if (!fClickHoldIntercepted && !fClickIntercepted) {
-            if (gpItemPointer == NULL) {
+            if (gpItemPointer == null) {
               // ATE:
               if (gusSelectedSoldier != NOBODY) {
                 // Switch on UI mode
@@ -594,7 +594,7 @@ function GetTBMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
     HandleObjectHighlighting();
 
     // Check if we have an item in our hands...
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       puiNewEvent.value = Enum207.A_ON_TERRAIN;
       return;
     }
@@ -995,7 +995,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
       }
     }
 
-    if (gUIKeyboardHook != NULL) {
+    if (gUIKeyboardHook != null) {
       fKeyTaken = gUIKeyboardHook(addressof(InputEvent));
     }
     if (fKeyTaken) {
@@ -1049,7 +1049,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
               gTacticalStatus.ubAttackBusyCount = 0;
 
               guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
-              UIHandleLUIEndLock(NULL);
+              UIHandleLUIEndLock(null);
             }
             if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == ENTER) && (InputEvent.usKeyState & CTRL_DOWN)) {
               EscapeUILock();
@@ -1230,8 +1230,8 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           break;
         case TAB:
           // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-          if ((gpItemPointer == NULL) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
-            UIHandleChangeLevel(NULL);
+          if ((gpItemPointer == null) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+            UIHandleChangeLevel(null);
 
             if (gsCurInterfacePanel == Enum215.SM_PANEL) {
               // Remember soldier's new value
@@ -1504,7 +1504,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             // gGameSettings.fOptions[ TOPTION_HIDE_BULLETS ] ^= TRUE;
           } else {
             // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-            if ((gpItemPointer == NULL) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+            if ((gpItemPointer == null) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
               SetBurstMode();
             }
           }
@@ -1528,7 +1528,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           if (gTacticalStatus.uiFlags & TURNBASED && gTacticalStatus.uiFlags & INCOMBAT) {
             if (gTacticalStatus.ubCurrentTeam == gbPlayerNum) {
               // nothing in hand and the Done button for whichever panel we're in must be enabled
-              if ((gpItemPointer == NULL) && !gfDisableTacticalPanelButtons && (((gsCurInterfacePanel == Enum215.SM_PANEL) && (ButtonList[iSMPanelButtons[Enum220.SM_DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED)) || ((gsCurInterfacePanel == Enum215.TEAM_PANEL) && (ButtonList[iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED)))) {
+              if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && (((gsCurInterfacePanel == Enum215.SM_PANEL) && (ButtonList[iSMPanelButtons[Enum220.SM_DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED)) || ((gsCurInterfacePanel == Enum215.TEAM_PANEL) && (ButtonList[iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED)))) {
                 if (fAlt) {
                   let cnt: INT32;
                   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1779,7 +1779,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             */
           } else {
             // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-            if ((gpItemPointer == NULL) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+            if ((gpItemPointer == null) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
               puiNewEvent.value = Enum207.LC_CHANGE_TO_LOOK;
             }
           }
@@ -1796,7 +1796,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             }
           } else {
             // nothing in hand and the Map Screen button for whichever panel we're in must be enabled
-            if ((gpItemPointer == NULL) && !gfDisableTacticalPanelButtons && (((gsCurInterfacePanel == Enum215.SM_PANEL) && (ButtonList[iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]].value.uiFlags & BUTTON_ENABLED)) || ((gsCurInterfacePanel == Enum215.TEAM_PANEL) && (ButtonList[iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON]].value.uiFlags & BUTTON_ENABLED)))) {
+            if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && (((gsCurInterfacePanel == Enum215.SM_PANEL) && (ButtonList[iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]].value.uiFlags & BUTTON_ENABLED)) || ((gsCurInterfacePanel == Enum215.TEAM_PANEL) && (ButtonList[iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON]].value.uiFlags & BUTTON_ENABLED)))) {
               // go to Map screen
               if (!(gTacticalStatus.uiFlags & ENGAGED_IN_CONV)) {
                 GoToMapScreenFromTactical();
@@ -1815,7 +1815,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           if (guiCurrentScreen != Enum26.DEBUG_SCREEN) {
             if (gusSelectedSoldier != NOBODY) {
               // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-              if ((gpItemPointer == NULL)) {
+              if ((gpItemPointer == null)) {
                 GotoLowerStance(MercPtrs[gusSelectedSoldier]);
               }
             }
@@ -1832,7 +1832,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           if (guiCurrentScreen != Enum26.DEBUG_SCREEN) {
             if (gusSelectedSoldier != NOBODY) {
               // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-              if ((gpItemPointer == NULL)) {
+              if ((gpItemPointer == null)) {
                 GotoHeigherStance(MercPtrs[gusSelectedSoldier]);
               }
             }
@@ -1886,7 +1886,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             }
           } else {
             // nothing in hand and the Options Screen button for whichever panel we're in must be enabled
-            if ((gpItemPointer == NULL) && !gfDisableTacticalPanelButtons && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.OPTIONS_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+            if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.OPTIONS_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
               if (!fDisableMapInterfaceDueToBattle) {
                 // go to Options screen
                 guiPreviousOptionScreen = Enum26.GAME_SCREEN;
@@ -1940,7 +1940,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
                 LeaveTacticalScreen(Enum26.SAVE_LOAD_SCREEN);
               } else {
                 // Display a message saying the player cant save now
-                DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+                DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
               }
             }
           } else if (fAlt) {
@@ -1952,7 +1952,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
                 DoQuickSave();
               } else {
                 // Display a message saying the player cant save now
-                DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+                DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
               }
             }
           } else if (gusSelectedSoldier != NOBODY) {
@@ -2123,7 +2123,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
 
               for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID, pTeamSoldier = MercPtrs[bLoop]; bLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++, pTeamSoldier++) {
                 if (OK_CONTROLLABLE_MERC(pTeamSoldier) && pTeamSoldier.value.bAssignment == CurrentSquad() && !AM_A_ROBOT(pTeamSoldier)) {
-                  if (gpSMCurrentMerc != NULL && bLoop == gpSMCurrentMerc.value.ubID) {
+                  if (gpSMCurrentMerc != null && bLoop == gpSMCurrentMerc.value.ubID) {
                     gfUIStanceDifferent = TRUE;
                   }
 
@@ -2142,7 +2142,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             }
           } else {
             // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-            if ((gpItemPointer == NULL)) {
+            if ((gpItemPointer == null)) {
               HandleStealthChangeFromUIKeys();
             }
           }
@@ -2584,7 +2584,7 @@ function TeleportSelectedSoldier(): void {
         EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
       } else {
         // Is there a roof?
-        if (FindStructure(usMapPos, STRUCTURE_ROOF) != NULL) {
+        if (FindStructure(usMapPos, STRUCTURE_ROOF) != null) {
           SetSoldierHeight(pSoldier, 50.0);
 
           TeleportSoldier(pSoldier, usMapPos, TRUE);
@@ -2946,7 +2946,7 @@ function HandleHandCursorClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): 
   let ubDirection: UINT8;
   let sAPCost: INT16;
   let sAdjustedGridNo: INT16;
-  let pStructure: Pointer<STRUCTURE> = NULL;
+  let pStructure: Pointer<STRUCTURE> = null;
   let pItemPool: Pointer<ITEM_POOL>;
   let fIgnoreItems: BOOLEAN = FALSE;
 
@@ -2988,7 +2988,7 @@ function HandleHandCursorClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): 
 
     // If we are over an interactive struct, adjust gridno to this....
     pIntTile = ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), FALSE);
-    if (pIntTile != NULL) {
+    if (pIntTile != null) {
       sActionGridNo = sIntTileGridNo;
 
       // if ( pStructure->fFlags & ( STRUCTURE_SWITCH | STRUCTURE_ANYDOOR ) )
@@ -3018,8 +3018,8 @@ function HandleHandCursorClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): 
         puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
       }
     } else {
-      if (pIntTile != NULL && !(pStructure.value.fFlags & STRUCTURE_HASITEMONTOP)) {
-        sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, addressof(ubDirection), NULL, FALSE, TRUE);
+      if (pIntTile != null && !(pStructure.value.fFlags & STRUCTURE_HASITEMONTOP)) {
+        sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, addressof(ubDirection), null, FALSE, TRUE);
         if (sActionGridNo == -1) {
           sActionGridNo = sIntTileGridNo;
         }
@@ -3074,7 +3074,7 @@ function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Pointer<U
   let ubDirection: UINT8;
   let bReturnCode: INT8 = 0;
   let bZLevel: INT8;
-  let pStructure: Pointer<STRUCTURE> = NULL;
+  let pStructure: Pointer<STRUCTURE> = null;
 
   if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
     // If we are out of breath, no cursor...
@@ -3118,7 +3118,7 @@ function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Pointer<U
 
     pIntTile = GetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure));
 
-    if (pIntTile != NULL) {
+    if (pIntTile != null) {
       bReturnCode = -3;
 
       // Check if we are over an item pool, take precedence over that.....
@@ -3150,7 +3150,7 @@ function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Pointer<U
       }
 
       if (fContinue) {
-        sActionGridNo = FindAdjacentGridEx(MercPtrs[gusSelectedSoldier], sIntTileGridNo, addressof(ubDirection), NULL, FALSE, TRUE);
+        sActionGridNo = FindAdjacentGridEx(MercPtrs[gusSelectedSoldier], sIntTileGridNo, addressof(ubDirection), null, FALSE, TRUE);
         if (sActionGridNo == -1) {
           sActionGridNo = sIntTileGridNo;
         }
@@ -3228,7 +3228,7 @@ function ConfirmActionCancel(usMapPos: UINT16, usOldMapPos: UINT16): BOOLEAN {
 
 function ChangeCurrentSquad(iSquad: INT32): void {
   // only allow if nothing in hand and the Change Squad button for whichever panel we're in must be enabled
-  if ((gpItemPointer == NULL) && !gfDisableTacticalPanelButtons && ((gsCurInterfacePanel != Enum215.TEAM_PANEL) || (ButtonList[iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+  if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && ((gsCurInterfacePanel != Enum215.TEAM_PANEL) || (ButtonList[iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
     if (IsSquadOnCurrentTacticalMap(iSquad)) {
       SetCurrentSquad(iSquad, FALSE);
     }
@@ -3287,14 +3287,14 @@ function EscapeUILock(): void {
   gTacticalStatus.ubAttackBusyCount = 0;
 
   guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
-  UIHandleLUIEndLock(NULL);
+  UIHandleLUIEndLock(null);
 }
 
 function HandleStanceChangeFromUIKeys(ubAnimHeight: UINT8): void {
   // If we have multiple guys selected, make all change stance!
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
-  let pFirstSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pFirstSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (gTacticalStatus.fAtLeastOneGuyOnMultiSelect) {
     // OK, loop through all guys who are 'multi-selected' and
@@ -3318,7 +3318,7 @@ function ToggleStealthMode(pSoldier: Pointer<SOLDIERTYPE>): void {
   // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
   if ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[giSMStealthButton].value.uiFlags & BUTTON_ENABLED)) {
     // ATE: Toggle stealth
-    if (gpSMCurrentMerc != NULL && pSoldier.value.ubID == gpSMCurrentMerc.value.ubID) {
+    if (gpSMCurrentMerc != null && pSoldier.value.ubID == gpSMCurrentMerc.value.ubID) {
       gfUIStanceDifferent = TRUE;
     }
 
@@ -3338,7 +3338,7 @@ function HandleStealthChangeFromUIKeys(): void {
   // If we have multiple guys selected, make all change stance!
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
-  let pFirstSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pFirstSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (gTacticalStatus.fAtLeastOneGuyOnMultiSelect) {
     // OK, loop through all guys who are 'multi-selected' and

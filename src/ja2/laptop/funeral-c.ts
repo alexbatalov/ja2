@@ -176,26 +176,26 @@ function RenderFuneral(): void {
 
   // LeftColumn
   GetVideoObject(addressof(hPixHandle), guiLeftColumn);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_LEFT_COLUMN_X, FUNERAL_LEFT_COLUMN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_LEFT_COLUMN_X, FUNERAL_LEFT_COLUMN_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Mcgillicuttys
   GetVideoObject(addressof(hPixHandle), guiMcGillicuttys);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_MCGILICUTTYS_SIGN_X, FUNERAL_MCGILICUTTYS_SIGN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_MCGILICUTTYS_SIGN_X, FUNERAL_MCGILICUTTYS_SIGN_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Mortuary
   GetVideoObject(addressof(hPixHandle), guiMortuary);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_MORTUARY_SIGN_X, FUNERAL_MORTUARY_SIGN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_MORTUARY_SIGN_X, FUNERAL_MORTUARY_SIGN_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // right column
   GetVideoObject(addressof(hPixHandle), guiRightColumn);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_RIGHT_COLUMN_X, FUNERAL_RIGHT_COLUMN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_RIGHT_COLUMN_X, FUNERAL_RIGHT_COLUMN_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // LinkCarving
   GetVideoObject(addressof(hPixHandle), guiLinkCarving);
 
   usPosX = FUNERAL_LINK_1_X;
   for (i = 0; i < FUNERAL_NUMBER_OF_LINKS; i++) {
-    BltVideoObject(FRAME_BUFFER, hPixHandle, 0, usPosX, FUNERAL_LINK_1_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hPixHandle, 0, usPosX, FUNERAL_LINK_1_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     // Calculate the height of the string, as it needs to be vertically centered.
     usStringHeight = IanWrappedStringHeight(0, 0, FUNERAL_LINK_TEXT_WIDTH, 2, FUNERAL_SENTENCE_FONT(), 0, sFuneralString[i + Enum344.FUNERAL_SEND_FLOWERS], 0, 0, 0);
@@ -236,7 +236,7 @@ function DisplayFuneralRipTombStone(): void {
   // rip tombstone
   GetVideoObject(addressof(hPixHandle), guiClosedSign);
   BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, guiClosedSign, 0, FUNERAL_CLOSED_RIP_SIGN_X + 5, FUNERAL_CLOSED_RIP_SIGN_Y + 5);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   SetFontShadow(FUNERAL_RIP_SHADOW_COLOR);
 

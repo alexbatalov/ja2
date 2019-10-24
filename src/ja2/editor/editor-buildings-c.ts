@@ -92,7 +92,7 @@ function KillBuilding(iMapIndex: UINT32): void {
     RebuildRoof(iMapIndex, 0);
 }
 
-let gpBuildingLayoutList: Pointer<BUILDINGLAYOUTNODE> = NULL;
+let gpBuildingLayoutList: Pointer<BUILDINGLAYOUTNODE> = null;
 let gsBuildingLayoutAnchorGridNo: INT16 = -1;
 
 function DeleteBuildingLayout(): void {
@@ -104,7 +104,7 @@ function DeleteBuildingLayout(): void {
     gpBuildingLayoutList = gpBuildingLayoutList.value.next;
     MemFree(curr);
   }
-  gpBuildingLayoutList = NULL;
+  gpBuildingLayoutList = null;
   gsBuildingLayoutAnchorGridNo = -1;
 }
 
@@ -158,7 +158,7 @@ function CopyBuilding(iMapIndex: INT32): void {
   gpBuildingLayoutList = MemAlloc(sizeof(BUILDINGLAYOUTNODE));
   Assert(gpBuildingLayoutList);
   gpBuildingLayoutList.value.sGridNo = iMapIndex;
-  gpBuildingLayoutList.value.next = NULL;
+  gpBuildingLayoutList.value.next = null;
 
   // Set the anchor point for this building -- this is where the user clicked.
   gsBuildingLayoutAnchorGridNo = iMapIndex;
@@ -184,13 +184,13 @@ function SortBuildingLayout(iMapIndex): void {
   let prevBest: Pointer<BUILDINGLAYOUTNODE>;
   let best: Pointer<BUILDINGLAYOUTNODE>;
   let iBestIndex: INT32;
-  head = NULL;
+  head = null;
   if (iMapIndex < gsBuildingLayoutAnchorGridNo) {
     // Forward sort (in increasing order)
     while (gpBuildingLayoutList) {
       iBestIndex = -1;
       curr = gpBuildingLayoutList;
-      prev = NULL;
+      prev = null;
       while (curr) {
         if (iBestIndex < curr.value.sGridNo) {
           iBestIndex = curr.value.sGridNo;
@@ -214,7 +214,7 @@ function SortBuildingLayout(iMapIndex): void {
     while (gpBuildingLayoutList) {
       iBestIndex = 100000;
       curr = gpBuildingLayoutList;
-      prev = NULL;
+      prev = null;
       while (curr) {
         if (iBestIndex > curr.value.sGridNo) {
           iBestIndex = curr.value.sGridNo;
@@ -346,7 +346,7 @@ interface ROOFNODE {
   next: Pointer<ROOFNODE>;
 }
 
-let gpRoofList: Pointer<ROOFNODE> = NULL;
+let gpRoofList: Pointer<ROOFNODE> = null;
 
 function ReplaceRoof(iMapIndex: INT32, usRoofType: UINT16): void {
   let curr: Pointer<ROOFNODE>;
@@ -410,7 +410,7 @@ function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
     gpRoofList = gpRoofList.value.next;
     MemFree(curr);
   }
-  gpRoofList = NULL;
+  gpRoofList = null;
 }
 
 // internal door editing vars.
@@ -611,7 +611,7 @@ function RemoveLockedDoorCursors(): void {
 function SetupTextInputForBuildings(): void {
   let str: UINT16[] /* [4] */;
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
-  AddUserInputField(NULL); // just so we can use short cut keys while not typing.
+  AddUserInputField(null); // just so we can use short cut keys while not typing.
   swprintf(str, "%d", gubMaxRoomNumber);
   AddTextInputField(410, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
 }

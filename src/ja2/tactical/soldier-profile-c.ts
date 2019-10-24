@@ -159,7 +159,7 @@ function LoadMercProfiles(): BOOLEAN {
     }
 
     // if the Dialogue exists for the merc, allow the merc to be hired
-    if (DialogueDataFileExistsForProfile(uiLoop, 0, FALSE, NULL)) {
+    if (DialogueDataFileExistsForProfile(uiLoop, 0, FALSE, null)) {
       gMercProfiles[uiLoop].bMercStatus = 0;
     } else
       gMercProfiles[uiLoop].bMercStatus = MERC_HAS_NO_TEXT_FILE;
@@ -376,7 +376,7 @@ function MakeRemainingTerroristsTougher(): void {
   for (ubLoop = 0; ubLoop < NUM_TERRORISTS; ubLoop++) {
     if (gMercProfiles[gubTerrorists[ubLoop]].bMercStatus != MERC_IS_DEAD && gMercProfiles[gubTerrorists[ubLoop]].sSectorX != 0 && gMercProfiles[gubTerrorists[ubLoop]].sSectorY != 0) {
       if (gubTerrorists[ubLoop] == Enum268.SLAY) {
-        if (FindSoldierByProfileID(Enum268.SLAY, TRUE) != NULL) {
+        if (FindSoldierByProfileID(Enum268.SLAY, TRUE) != null) {
           // Slay on player's team, doesn't count towards remaining terrorists
           continue;
         }
@@ -430,7 +430,7 @@ function MakeRemainingTerroristsTougher(): void {
   for (ubLoop = 0; ubLoop < NUM_TERRORISTS; ubLoop++) {
     if (gMercProfiles[gubTerrorists[ubLoop]].bMercStatus != MERC_IS_DEAD && gMercProfiles[gubTerrorists[ubLoop]].sSectorX != 0 && gMercProfiles[gubTerrorists[ubLoop]].sSectorY != 0) {
       if (gubTerrorists[ubLoop] == Enum268.SLAY) {
-        if (FindSoldierByProfileID(Enum268.SLAY, TRUE) != NULL) {
+        if (FindSoldierByProfileID(Enum268.SLAY, TRUE) != null) {
           // Slay on player's team, doesn't count towards remaining terrorists
           continue;
         }
@@ -631,12 +631,12 @@ function FindSoldierByProfileID(ubProfileID: UINT8, fPlayerMercsOnly: BOOLEAN): 
       return pSoldier;
     }
   }
-  return NULL;
+  return null;
 }
 
 function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Pointer<SOLDIERTYPE> {
   let ubID: UINT8;
-  let pNewSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pNewSoldier: Pointer<SOLDIERTYPE> = null;
   let MercCreateStruct: SOLDIERCREATE_STRUCT;
   let cnt: UINT32;
   let sOldGridNo: INT16;
@@ -717,7 +717,7 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
     for (uiSlot = 0; uiSlot < guiNumMercSlots; uiSlot++) {
       pGroupMember = MercSlots[uiSlot];
 
-      if (pGroupMember != NULL) {
+      if (pGroupMember != null) {
         if (pGroupMember.value.ubTargetID == pSoldier.value.ubID) {
           pGroupMember.value.ubTargetID = pNewSoldier.value.ubID;
         }
@@ -981,14 +981,14 @@ function IsProfileAHeadMiner(ubProfile: UINT8): BOOLEAN {
 
 function UpdateSoldierPointerDataIntoProfile(fPlayerMercs: BOOLEAN): void {
   let uiCount: UINT32;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let pProfile: Pointer<MERCPROFILESTRUCT>;
   let fDoCopy: BOOLEAN = FALSE;
 
   for (uiCount = 0; uiCount < guiNumMercSlots; uiCount++) {
     pSoldier = MercSlots[uiCount];
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if (pSoldier.value.ubProfile != NO_PROFILE) {
         fDoCopy = FALSE;
 

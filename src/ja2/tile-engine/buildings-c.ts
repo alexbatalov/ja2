@@ -6,7 +6,7 @@ let gubNumberOfBuildings: UINT8;
 
 function CreateNewBuilding(pubBuilding: Pointer<UINT8>): Pointer<BUILDING> {
   if (gubNumberOfBuildings + 1 >= MAX_BUILDINGS) {
-    return NULL;
+    return null;
   }
   // increment # of buildings
   gubNumberOfBuildings++;
@@ -40,7 +40,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
 
   pBuilding = CreateNewBuilding(addressof(ubBuildingID));
   if (!pBuilding) {
-    return NULL;
+    return null;
   }
 
   // set up fake soldier for location testing
@@ -61,7 +61,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
     sNextTempGridNo = NewGridNo(sTempGridNo, DirectionInc(bDirection));
     if (sTempGridNo == sNextTempGridNo) {
       // hit edge of map!??!
-      return NULL;
+      return null;
     } else {
       sTempGridNo = sNextTempGridNo;
     }
@@ -125,7 +125,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
         }
         if (!fFoundDir) {
           // WTF is going on?
-          return NULL;
+          return null;
         }
       }
       bDirection = bTempDirection;
@@ -173,7 +173,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
           break;
         default:
           // what the heck?
-          return NULL;
+          return null;
       }
 
       if (bDesiredOrientation == Enum314.OUTSIDE_TOP_LEFT) {
@@ -255,13 +255,13 @@ function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
   // UINT8					ubRoomNo;
 
   if (sGridNo <= 0 || sGridNo > WORLD_MAX) {
-    return NULL;
+    return null;
   }
 
   // id 0 indicates no building
   ubBuildingID = gubBuildingInfo[sGridNo];
   if (ubBuildingID == NO_BUILDING) {
-    return NULL;
+    return null;
     /*
     // need extra checks to see if is valid spot...
     // must have valid room information and be a flat-roofed
@@ -277,14 +277,14 @@ function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
     */
   } else if (ubBuildingID > gubNumberOfBuildings) // huh?
   {
-    return NULL;
+    return null;
   }
 
   return addressof(gBuildings[ubBuildingID]);
 }
 
 function InBuilding(sGridNo: INT16): BOOLEAN {
-  if (FindBuilding(sGridNo) == NULL) {
+  if (FindBuilding(sGridNo) == null) {
     return FALSE;
   }
   return TRUE;
@@ -314,7 +314,7 @@ function GenerateBuildings(): void {
   // for each location in a room try to find building info
 
   for (uiLoop = 0; uiLoop < WORLD_MAX; uiLoop++) {
-    if ((gubWorldRoomInfo[uiLoop] != NO_ROOM) && (gubBuildingInfo[uiLoop] == NO_BUILDING) && (FindStructure(uiLoop, STRUCTURE_NORMAL_ROOF) != NULL)) {
+    if ((gubWorldRoomInfo[uiLoop] != NO_ROOM) && (gubBuildingInfo[uiLoop] == NO_BUILDING) && (FindStructure(uiLoop, STRUCTURE_NORMAL_ROOF) != null)) {
       GenerateBuilding(uiLoop);
     }
   }

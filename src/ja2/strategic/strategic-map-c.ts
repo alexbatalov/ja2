@@ -21,7 +21,7 @@ let gbWorldSectorZ: INT8 = -1;
 let gsAdjacentSectorX: INT16;
 let gsAdjacentSectorY: INT16;
 let gbAdjacentSectorZ: INT8;
-let gpAdjacentGroup: Pointer<GROUP> = NULL;
+let gpAdjacentGroup: Pointer<GROUP> = null;
 let gubAdjacentJumpCode: UINT8;
 let guiAdjacentTraverseTime: UINT32;
 let gubTacticalDirection: UINT8;
@@ -258,12 +258,12 @@ function BeginLoadScreen(): void {
       SrcRect.iBottom = 480 - 39 * iPercentage / 100;
       BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(SrcRect), addressof(DstRect));
       InvalidateScreen();
-      RefreshScreen(NULL);
+      RefreshScreen(null);
     }
   }
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, Get16BPPColor(FROMRGB(0, 0, 0)));
   InvalidateScreen();
-  RefreshScreen(NULL);
+  RefreshScreen(null);
 
   // If we are loading a saved game, use the Loading screen we saved into the SavedGameHeader file
   // ( which gets reloaded into gubLastLoadingScreenID )
@@ -510,7 +510,7 @@ function HandleRPCDescriptionOfSector(sSectorX: INT16, sSectorY: INT16, sSectorZ
 }
 
 function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  let pUnderWorld: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+  let pUnderWorld: Pointer<UNDERGROUND_SECTORINFO> = null;
   let fChangeMusic: BOOLEAN = TRUE;
 
   // ATE: Zero out accounting functions
@@ -833,7 +833,7 @@ function PrepareLoadedSector(): void {
     UnPauseGame();
   }
 
-  gpBattleGroup = NULL;
+  gpBattleGroup = null;
 
   if (gfTacticalTraversal) {
     CalculateNonPersistantPBIInfo();
@@ -1002,7 +1002,7 @@ function HandleQuestCodeOnSectorExit(sOldSectorX: INT16, sOldSectorY: INT16, bOl
 
 function EnterSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
   let i: INT32;
-  let pNode: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+  let pNode: Pointer<UNDERGROUND_SECTORINFO> = null;
   let bFilename: CHAR8[] /* [50] */;
 
   // pause game
@@ -1159,7 +1159,7 @@ function UpdateMercsInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): 
 
                 // ATE: If we are in i13 - pop up message!
                 if (sSectorY == MAP_ROW_I && sSectorX == 13) {
-                  DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.POW_MERCS_ARE_HERE], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+                  DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.POW_MERCS_ARE_HERE], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
                 } else {
                   AddCharacterToUniqueSquad(pSoldier);
                   ubPOWSquad = pSoldier.value.bAssignment;
@@ -1371,7 +1371,7 @@ function InitializeStrategicMapSectorTownNames(): void {
 
 // Get sector ID string makes a string like 'A9 - OMERTA', or just J11 if no town....
 function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zString: Pointer<CHAR16>, fDetailed: BOOLEAN): void {
-  let pSector: Pointer<SECTORINFO> = NULL;
+  let pSector: Pointer<SECTORINFO> = null;
   let pUnderground: Pointer<UNDERGROUND_SECTORINFO>;
   let bTownNameID: INT8;
   let bMineIndex: INT8;
@@ -1623,7 +1623,7 @@ function GetStrategicInsertionDataFromAdjacentMoveDirection(ubTacticalDirection:
 function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, sAdditionalData: INT16): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let pValidSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pValidSoldier: Pointer<SOLDIERTYPE> = null;
   let pGroup: Pointer<GROUP>;
   let uiTraverseTime: UINT32 = 0;
   let ubDirection: UINT8;
@@ -1926,8 +1926,8 @@ function AllMercsWalkedToExitGrid(): void {
   }
   if (gubAdjacentJumpCode == Enum177.JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == Enum177.JUMP_SINGLE_NO_LOAD) {
     gfTacticalTraversal = FALSE;
-    gpTacticalTraversalGroup = NULL;
-    gpTacticalTraversalChosenSoldier = NULL;
+    gpTacticalTraversalGroup = null;
+    gpTacticalTraversalChosenSoldier = null;
   }
 }
 
@@ -2184,8 +2184,8 @@ function SetupTacticalTraversalInformation(): void {
   }
   if (gubAdjacentJumpCode == Enum177.JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == Enum177.JUMP_SINGLE_NO_LOAD) {
     gfTacticalTraversal = FALSE;
-    gpTacticalTraversalGroup = NULL;
-    gpTacticalTraversalChosenSoldier = NULL;
+    gpTacticalTraversalGroup = null;
+    gpTacticalTraversalChosenSoldier = null;
   }
 }
 
@@ -2281,8 +2281,8 @@ function DoneFadeOutExitGridSector(): void {
     }
   }
   gfTacticalTraversal = FALSE;
-  gpTacticalTraversalGroup = NULL;
-  gpTacticalTraversalChosenSoldier = NULL;
+  gpTacticalTraversalGroup = null;
+  gpTacticalTraversalChosenSoldier = null;
   FadeInGameScreen();
 }
 
@@ -2297,8 +2297,8 @@ function DoneFadeOutAdjacentSector(): void {
     }
   }
   gfTacticalTraversal = FALSE;
-  gpTacticalTraversalGroup = NULL;
-  gpTacticalTraversalChosenSoldier = NULL;
+  gpTacticalTraversalGroup = null;
+  gpTacticalTraversalChosenSoldier = null;
 
   if (gfCaves) {
     // ATE; Set tactical status flag...
@@ -2450,7 +2450,7 @@ function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, puiTrav
   let pSoldier: Pointer<SOLDIERTYPE>;
   let fAtLeastOneMercControllable: BOOLEAN = FALSE;
   let fOnlySelectedGuy: BOOLEAN = FALSE;
-  let pValidSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pValidSoldier: Pointer<SOLDIERTYPE> = null;
   let ubReturnVal: UINT8 = FALSE;
   let ubNumControllableMercs: UINT8 = 0;
   let ubNumMercs: UINT8 = 0;
@@ -2739,7 +2739,7 @@ function UpdateAirspaceControl(): void {
   let iCounterA: INT32 = 0;
   let iCounterB: INT32 = 0;
   let ubControllingSAM: UINT8;
-  let pSAMStrategicMap: Pointer<StrategicMapElement> = NULL;
+  let pSAMStrategicMap: Pointer<StrategicMapElement> = null;
   let fEnemyControlsAir: BOOLEAN;
 
   for (iCounterA = 1; iCounterA < (MAP_WORLD_X - 1); iCounterA++) {
@@ -2788,7 +2788,7 @@ function UpdateAirspaceControl(): void {
     swprintf(sMsgString, pBullseyeStrings[4], sMsgSubString1, sMsgSubString2);
 
     // confirm the change with overlay message
-    DoScreenIndependantMessageBox(sMsgString, MSG_BOX_FLAG_OK, NULL);
+    DoScreenIndependantMessageBox(sMsgString, MSG_BOX_FLAG_OK, null);
 
     // update position of bullseye
     fMapPanelDirty = TRUE;
@@ -3507,12 +3507,12 @@ function GetLoadedSectorString(pString: Pointer<UINT16>): void {
 }
 
 function HandleSlayDailyEvent(): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // grab slay
   pSoldier = FindSoldierByProfileID(64, TRUE);
 
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return;
   }
 
@@ -3693,7 +3693,7 @@ function CheckAndHandleUnloadingOfCurrentWorld(): BOOLEAN {
   // ATE: Change cursor to wait cursor for duration of frame.....
   // save old cursor ID....
   SetCurrentCursorFromDatabase(Enum317.CURSOR_WAIT_NODELAY);
-  RefreshScreen(NULL);
+  RefreshScreen(null);
 
   // JA2Gold: Leaving sector, so get rid of ambients!
   DeleteAllAmbients();

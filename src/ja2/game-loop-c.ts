@@ -144,9 +144,9 @@ function GameLoop(): void {
           swprintf(zText, pMessageStrings[Enum333.MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive, zSizeNeeded);
 
           if (guiPreviousOptionScreen == Enum26.MAP_SCREEN)
-            DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+            DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
           else
-            DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+            DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
         }
         gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
       }
@@ -192,7 +192,7 @@ function GameLoop(): void {
     guiCurrentScreen = uiOldScreen;
   }
 
-  RefreshScreen(NULL);
+  RefreshScreen(null);
 
   guiGameCycleCounter++;
 

@@ -673,11 +673,11 @@ function DrawHelpScreenBackGround(): BOOLEAN {
 
   // if there are buttons, blit the button border
   if (gHelpScreen.bNumberOfButtons != 0) {
-    BltVideoObject(FRAME_BUFFER, hPixHandle, HLP_SCRN_BUTTON_BORDER, usPosX, gHelpScreen.usScreenLocY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hPixHandle, HLP_SCRN_BUTTON_BORDER, usPosX, gHelpScreen.usScreenLocY, VO_BLT_SRCTRANSPARENCY, null);
     usPosX += HELP_SCREEN_BUTTON_BORDER_WIDTH;
   }
 
-  BltVideoObject(FRAME_BUFFER, hPixHandle, HLP_SCRN_DEFAULT_TYPE, usPosX, gHelpScreen.usScreenLocY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, HLP_SCRN_DEFAULT_TYPE, usPosX, gHelpScreen.usScreenLocY, VO_BLT_SRCTRANSPARENCY, null);
 
   InvalidateRegion(gHelpScreen.usScreenLocX, gHelpScreen.usScreenLocY, gHelpScreen.usScreenLocX + gHelpScreen.usScreenWidth, gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight);
 
@@ -1005,13 +1005,13 @@ function RenderSpecificHelpScreen(): UINT16 {
 
 function GetHelpScreenTextPositions(pusPosX: Pointer<UINT16>, pusPosY: Pointer<UINT16>, pusWidth: Pointer<UINT16>): void {
   // if there are buttons
-  if (pusPosX != NULL)
+  if (pusPosX != null)
     pusPosX.value = 0;
 
-  if (pusWidth != NULL)
+  if (pusWidth != null)
     pusWidth.value = HLP_SCRN__WIDTH_OF_TEXT_BUFFER - 1 * HELP_SCREEN_MARGIN_SIZE; // DEF was 2
 
-  if (pusPosY != NULL)
+  if (pusPosY != null)
     pusPosY.value = 0;
 }
 
@@ -1995,10 +1995,10 @@ function CalculateHeightAndPositionForHelpScreenScrollBox(piHeightOfScrollBox: P
     iTopPosScrollBox = (dTemp + .5) + HLP_SCRN__SCROLL_POSY();
   }
 
-  if (piHeightOfScrollBox != NULL)
+  if (piHeightOfScrollBox != null)
     piHeightOfScrollBox.value = iSizeOfBox;
 
-  if (piTopOfScrollBox != NULL)
+  if (piTopOfScrollBox != null)
     piTopOfScrollBox.value = iTopPosScrollBox;
 }
 

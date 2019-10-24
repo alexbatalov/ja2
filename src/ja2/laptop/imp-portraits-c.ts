@@ -75,7 +75,7 @@ function RenderPortrait(sX: INT16, sY: INT16): BOOLEAN {
 
     // show it
     GetVideoObject(addressof(hHandle), uiGraphicHandle);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
     // and kick it's sorry ..umm never mind, outta here
     DeleteVideoObjectFromIndex(uiGraphicHandle);
@@ -87,7 +87,7 @@ function RenderPortrait(sX: INT16, sY: INT16): BOOLEAN {
 
     // show it
     GetVideoObject(addressof(hHandle), uiGraphicHandle);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
     // and kick it's sorry ..umm never mind, outta here
     DeleteVideoObjectFromIndex(uiGraphicHandle);

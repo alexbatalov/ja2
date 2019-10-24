@@ -546,7 +546,7 @@ function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT
   let pInventoryArray: Pointer<STORE_INVENTORY>;
 
   pInventoryArray = GetPtrToStoreInventory(ubDealerID);
-  if (pInventoryArray == NULL)
+  if (pInventoryArray == null)
     return FALSE;
 
   // go through all of the guns
@@ -572,7 +572,7 @@ function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT
 
 function GetPtrToStoreInventory(ubDealerID: UINT8): Pointer<STORE_INVENTORY> {
   if (ubDealerID >= Enum112.BOBBY_RAY_LISTS)
-    return NULL;
+    return null;
 
   if (ubDealerID == Enum112.BOBBY_RAY_NEW)
     return LaptopSaveInfo.BobbyRayInventory;
@@ -583,7 +583,7 @@ function GetPtrToStoreInventory(ubDealerID: UINT8): Pointer<STORE_INVENTORY> {
   //	else
   //		return( gArmsDealersInventory[ ubDealerID - TONYS_ITEMS ] );
 
-  return NULL;
+  return null;
 }
 
 /*

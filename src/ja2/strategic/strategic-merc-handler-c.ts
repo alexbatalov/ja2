@@ -4,11 +4,11 @@ const NUM_DAYS_TILL_UNPAID_RPC_QUITS = 3;
 let fContractOverMeTooFlag: BOOLEAN = FALSE;
 let fContractOverAndIWontRenewMeTooFlag: BOOLEAN = FALSE;
 let fProcessingAMerc: BOOLEAN = FALSE;
-let pProcessingSoldier: Pointer<SOLDIERTYPE> = NULL;
+let pProcessingSoldier: Pointer<SOLDIERTYPE> = null;
 let gfFirstMercSayingQuoteWillLeaveNoMatterWhat: BOOLEAN = FALSE;
 
 function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
-  let pKiller: Pointer<SOLDIERTYPE> = NULL;
+  let pKiller: Pointer<SOLDIERTYPE> = null;
   let sSectorX: INT16;
   let sSectorY: INT16;
 
@@ -119,7 +119,7 @@ function MercDailyUpdate(): void {
   // if the death rate is very low (this is independent of mercs' personal deathrate tolerances)
   if (CalcDeathRate() < 5) {
     // everyone gets a morale bonus, which also gets player a reputation bonus.
-    HandleMoraleEvent(NULL, Enum234.MORALE_LOW_DEATHRATE, -1, -1, -1);
+    HandleMoraleEvent(null, Enum234.MORALE_LOW_DEATHRATE, -1, -1, -1);
   }
 
   // add an event so the merc will say the departing warning ( 2 hours prior to leaving
@@ -612,7 +612,7 @@ function MercComplainAboutEquipment(ubProfile: UINT8): void {
   // Are we dead/ does merc still exist?
   pSoldier = FindSoldierByProfileID(ubProfile, FALSE);
 
-  if (pSoldier != NULL) {
+  if (pSoldier != null) {
     if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.fMercAsleep != TRUE && pSoldier.value.bAssignment < Enum117.ON_DUTY) {
       // ATE: Double check that this problem still exists!
       if (SoldierHasWorseEquipmentThanUsedTo(pSoldier)) {

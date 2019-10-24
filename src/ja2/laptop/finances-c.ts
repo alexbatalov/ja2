@@ -67,7 +67,7 @@ const BTN_Y = 53;
 const RECORD_SIZE = () => (sizeof(UINT32) + sizeof(INT32) + sizeof(INT32) + sizeof(UINT8) + sizeof(UINT8));
 
 // the financial record list
-let pFinanceListHead: FinanceUnitPtr = NULL;
+let pFinanceListHead: FinanceUnitPtr = null;
 
 // current players balance
 // INT32 iCurrentBalance=0;
@@ -76,7 +76,7 @@ let pFinanceListHead: FinanceUnitPtr = NULL;
 let iCurrentPage: INT32 = 0;
 
 // current financial record (the one at the top of the current page)
-let pCurrentFinance: FinanceUnitPtr = NULL;
+let pCurrentFinance: FinanceUnitPtr = null;
 
 // video object id's
 let guiTITLE: UINT32;
@@ -164,7 +164,7 @@ function GetFinance(uiId: UINT32): FinanceUnitPtr {
 
   // error check
   if (!pFinance)
-    return NULL;
+    return null;
 
   // look for finance object with Id
   while (pFinance) {
@@ -403,7 +403,7 @@ function RenderFinances(): void {
 
   // display border
   GetVideoObject(addressof(hHandle), guiLaptopBACKGROUND);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, null);
 
   // title bar icon
   BlitTitleBarIcons();
@@ -461,11 +461,11 @@ function RenderBackGround(): void {
 
   // get title bar object
   GetVideoObject(addressof(hHandle), guiTITLE);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // get and blt the top part of the screen, video object and blt to screen
   GetVideoObject(addressof(hHandle), guiTOP);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, null);
   DrawFinanceTitleText();
   return;
 }
@@ -486,11 +486,11 @@ function DrawSummaryLines(): void {
   GetVideoObject(addressof(hHandle), guiLINE);
 
   // blit summary LINE object to screen
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, DIVLINE_X, TOP_DIVLINE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, DIVLINE_X, TOP_DIVLINE_Y + 2, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, DIVLINE_X, TOP_DIVLINE_Y, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, DIVLINE_X, TOP_DIVLINE_Y + 2, VO_BLT_SRCTRANSPARENCY, null);
   // BltVideoObject(FRAME_BUFFER, hHandle, 0,DIVLINE_X, MID_DIVLINE_Y, VO_BLT_SRCTRANSPARENCY,NULL);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, DIVLINE_X, BOT_DIVLINE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, DIVLINE_X, MID_DIVLINE_Y2, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, DIVLINE_X, BOT_DIVLINE_Y, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, DIVLINE_X, MID_DIVLINE_Y2, VO_BLT_SRCTRANSPARENCY, null);
   // BltVideoObject(FRAME_BUFFER, hHandle, 0,DIVLINE_X, BOT_DIVLINE_Y2, VO_BLT_SRCTRANSPARENCY,NULL);
 
   return;
@@ -527,16 +527,16 @@ function DrawRecordsBackGround(): void {
   for (iCounter; iCounter < 35; iCounter++) {
     // get and blt middle background to screen
     GetVideoObject(addressof(hHandle), guiLISTCOLUMNS);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 18 + (iCounter * BLOCK_HEIGHT) + 1, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 18 + (iCounter * BLOCK_HEIGHT) + 1, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // the divisorLines
   GetVideoObject(addressof(hHandle), guiLONGLINE);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 17 + (6 * (BLOCK_HEIGHT)), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 17 + (6 * (BLOCK_HEIGHT)), VO_BLT_SRCTRANSPARENCY, null);
   GetVideoObject(addressof(hHandle), guiLONGLINE);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 19 + (6 * (BLOCK_HEIGHT)), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 19 + (6 * (BLOCK_HEIGHT)), VO_BLT_SRCTRANSPARENCY, null);
   GetVideoObject(addressof(hHandle), guiLONGLINE);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 19 + ((iCounter) * (BLOCK_HEIGHT)), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 19 + ((iCounter) * (BLOCK_HEIGHT)), VO_BLT_SRCTRANSPARENCY, null);
 
   // the header text
   DrawRecordsColumnHeadersText();
@@ -596,7 +596,7 @@ function DrawRecordsText(): void {
   SetFontShadow(NO_SHADOW);
 
   // anything to print
-  if (pCurrentFinance == NULL) {
+  if (pCurrentFinance == null) {
     // nothing to print
     return;
   }
@@ -985,8 +985,8 @@ function ClearFinanceList(): void {
     // delete current node
     MemFree(pFinanceNode);
   }
-  pCurrentFinance = NULL;
-  pFinanceListHead = NULL;
+  pCurrentFinance = null;
+  pFinanceListHead = null;
   return;
 }
 
@@ -1008,7 +1008,7 @@ function ProcessAndEnterAFinacialRecord(ubCode: UINT8, uiDate: UINT32, iAmount: 
 
     // set up information passed
     pFinance = pFinance.value.Next;
-    pFinance.value.Next = NULL;
+    pFinance.value.Next = null;
     pFinance.value.ubCode = ubCode;
     pFinance.value.ubSecondCode = ubSecondCode;
     pFinance.value.uiDate = uiDate;
@@ -1021,7 +1021,7 @@ function ProcessAndEnterAFinacialRecord(ubCode: UINT8, uiDate: UINT32, iAmount: 
     pFinance = MemAlloc(sizeof(FinanceUnit));
 
     // setup info passed
-    pFinance.value.Next = NULL;
+    pFinance.value.Next = null;
     pFinance.value.ubCode = ubCode;
     pFinance.value.ubSecondCode = ubSecondCode;
     pFinance.value.uiDate = uiDate;
@@ -1141,7 +1141,7 @@ function IncrementCurrentPageFinancialDisplay(): void {
   }
 
   // no list, we are on page 2
-  if (pTempFinance == NULL) {
+  if (pTempFinance == null) {
     iCurrentPage = 2;
     return;
   }
@@ -1333,7 +1333,7 @@ function WriteBalanceToDisk(): BOOLEAN {
   hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
 
   // write balance to disk
-  FileWrite(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), NULL);
+  FileWrite(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), null);
 
   // close file
   FileClose(hFileHandle);
@@ -1399,11 +1399,11 @@ function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): BOOLEAN {
 
   // write finance to disk
   // now write date and amount, and code
-  FileWrite(hFileHandle, addressof(pFinanceList.value.ubCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, addressof(pFinanceList.value.ubSecondCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, addressof(pFinanceList.value.uiDate), sizeof(UINT32), NULL);
-  FileWrite(hFileHandle, addressof(pFinanceList.value.iAmount), sizeof(INT32), NULL);
-  FileWrite(hFileHandle, addressof(pFinanceList.value.iBalanceToDate), sizeof(INT32), NULL);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.ubCode), sizeof(UINT8), null);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.ubSecondCode), sizeof(UINT8), null);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.uiDate), sizeof(UINT32), null);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.iAmount), sizeof(INT32), null);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.iBalanceToDate), sizeof(INT32), null);
 
   // close file
   FileClose(hFileHandle);
@@ -1596,7 +1596,7 @@ function LoadInRecords(uiPage: UINT32): BOOLEAN {
   FileClose(hFileHandle);
 
   // check to see if we in fact have a list to display
-  if (pFinanceListHead == NULL) {
+  if (pFinanceListHead == null) {
     // got no records, return false
     return FALSE;
   }

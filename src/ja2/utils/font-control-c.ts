@@ -244,10 +244,10 @@ function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
 
   for (count = 0; count < 16; count++) {
     if ((count == 4) && (pObj.value.p16BPPPalette == pObj.value.pShades[count]))
-      pObj.value.pShades[count] = NULL;
-    else if (pObj.value.pShades[count] != NULL) {
+      pObj.value.pShades[count] = null;
+    else if (pObj.value.pShades[count] != null) {
       MemFree(pObj.value.pShades[count]);
-      pObj.value.pShades[count] = NULL;
+      pObj.value.pShades[count] = null;
     }
   }
 

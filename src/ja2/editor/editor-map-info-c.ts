@@ -9,7 +9,7 @@ function SetupTextInputForMapInfo(): void {
 
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
 
-  AddUserInputField(NULL); // just so we can use short cut keys while not typing.
+  AddUserInputField(null); // just so we can use short cut keys while not typing.
 
   // light rgb fields
   swprintf(str, "%d", gEditorLightColor.peRed);

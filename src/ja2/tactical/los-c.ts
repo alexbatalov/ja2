@@ -551,7 +551,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
 
   let pMapElement: Pointer<MAP_ELEMENT>;
   let pStructure: Pointer<STRUCTURE>;
-  let pRoofStructure: Pointer<STRUCTURE> = NULL;
+  let pRoofStructure: Pointer<STRUCTURE> = null;
 
   let fCheckForRoof: BOOLEAN;
   let qLastZ: FIXEDPT;
@@ -739,7 +739,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
       }
       // check for the existence of structures
       pStructure = pMapElement.value.pStructureHead;
-      if (pStructure == NULL) {
+      if (pStructure == null) {
         // no structures in this tile, AND THAT INCLUDES ROOFS! :-)
 
         // new system; figure out how many steps until we cross the next edge
@@ -844,7 +844,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
             iCurrCubesAboveLevelZ -= STRUCTURE_ON_ROOF;
           }
           // check structures for collision
-          while (pStructure != NULL) {
+          while (pStructure != null) {
             // transparent structures should be skipped
             // normal roof structures should be skipped here because their only bits are roof lips
             // and those should act as transparent
@@ -927,7 +927,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
                       }
                     } else if ((pStructure.value.fFlags & STRUCTURE_WALLNWINDOW) && !(pStructure.value.fFlags & STRUCTURE_SPECIAL) && qCurrZ >= (gqStandardWindowBottomHeight + qLandHeight) && qCurrZ <= (gqStandardWindowTopHeight + qLandHeight)) {
                       // do nothing; windows are transparent (except ones marked as special)
-                      if (psWindowGridNo != NULL) {
+                      if (psWindowGridNo != null) {
                         // we're supposed to note the location of this window!
                         // but if a location has already been set then there are two windows, in which case
                         // we abort
@@ -1302,7 +1302,7 @@ function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pE
     ubTreeReduction = gubTreeSightReduction[gAnimControl[pEndSoldier.value.usAnimState].ubEndHeight];
   }
 
-  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, CenterX(pEndSoldier.value.sGridNo), CenterY(pEndSoldier.value.sGridNo), dEndZPos, ubTileSightLimit, ubTreeReduction, bAware, bEffectiveCamo, fSmell, NULL);
+  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, CenterX(pEndSoldier.value.sGridNo), CenterY(pEndSoldier.value.sGridNo), dEndZPos, ubTileSightLimit, ubTreeReduction, bAware, bEffectiveCamo, fSmell, null);
 }
 
 function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>, sEndGridNo: INT16): INT16 {
@@ -1347,7 +1347,7 @@ function SoldierToSoldierLineOfSightTimingTest(pStartSoldier: Pointer<SOLDIERTYP
     SoldierToSoldierLineOfSightTest(pStartSoldier, pEndSoldier, ubTileSightLimit, bAware);
   }
   uiEndTime = GetJA2Clock();
-  if ((OutFile = fopen("Timing.txt", "a+t")) != NULL) {
+  if ((OutFile = fopen("Timing.txt", "a+t")) != null) {
     fprintf(OutFile, String("Time for %d calls is %d milliseconds\n", uiLoopLimit, uiEndTime - uiStartTime));
     fclose(OutFile);
   }
@@ -1388,7 +1388,7 @@ function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>,
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
-  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, NULL);
+  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, null);
 }
 
 function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, ubAimLocation: UINT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
@@ -1437,7 +1437,7 @@ function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, s
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
-  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, NULL);
+  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, null);
 }
 
 function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bStance: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
@@ -1476,7 +1476,7 @@ function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTY
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
-  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, NULL);
+  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, null);
 }
 
 function SoldierToLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
@@ -1514,7 +1514,7 @@ function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLevel: INT
   sEndXPos = sEndXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sEndYPos = sEndYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
-  return LineOfSightTest(sStartXPos, sStartYPos, dStartZPos, sEndXPos, sEndYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, NULL);
+  return LineOfSightTest(sStartXPos, sStartYPos, dStartZPos, sEndXPos, sEndYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, null);
 }
 
 /*
@@ -2085,7 +2085,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
 
   let pMapElement: Pointer<MAP_ELEMENT>;
   let pStructure: Pointer<STRUCTURE>;
-  let pRoofStructure: Pointer<STRUCTURE> = NULL;
+  let pRoofStructure: Pointer<STRUCTURE> = null;
 
   let qLastZ: FIXEDPT;
 
@@ -2131,7 +2131,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
     uiChanceOfHit = ChanceOfBulletHittingStructure(pBullet.value.iLoop, pBullet.value.iDistanceLimit, 0);
 
     // reset roof structure pointer each tile
-    pRoofStructure = NULL;
+    pRoofStructure = null;
 
     if (iGridNo == pBullet.value.sTargetGridNo) {
       fIntended = TRUE;
@@ -2217,7 +2217,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
         if (iGridNo == pBullet.value.sTargetGridNo || (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles >= 10)) {
           // could hit this corpse!
           // but we should ignore the corpse if there is someone standing there
-          if (FindStructure(iGridNo, STRUCTURE_PERSON) == NULL) {
+          if (FindStructure(iGridNo, STRUCTURE_PERSON) == null) {
             gpLocalStructure[iNumLocalStructures] = pStructure;
             iNumLocalStructures++;
           }
@@ -2250,7 +2250,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
       }
       // check for the existence of structures
       pStructure = pMapElement.value.pStructureHead;
-      if (pStructure == NULL) {
+      if (pStructure == null) {
         // no structures in this tile, and THAT INCLUDES ROOFS AND PEOPLE! :-)
         // new system; figure out how many steps until we cross the next edge
         // and then fast forward that many steps.
@@ -2504,7 +2504,7 @@ function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>
   CHECKF(pStartSoldier);
 
   pEndSoldier = SimpleFindSoldier(sGridNo, bLevel);
-  if (pEndSoldier != NULL) {
+  if (pEndSoldier != null) {
     return SoldierToSoldierChanceToGetThrough(pStartSoldier, pEndSoldier);
   } else {
     if (bCubeLevel) {
@@ -2577,7 +2577,7 @@ function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYP
   CHECKF(pStartSoldier);
 
   pEndSoldier = SimpleFindSoldier(sGridNo, bLevel);
-  if (pEndSoldier != NULL) {
+  if (pEndSoldier != null) {
     return AISoldierToSoldierChanceToGetThrough(pStartSoldier, pEndSoldier);
   } else {
     if (bCubeLevel) {
@@ -2984,7 +2984,7 @@ function MoveBullet(iBullet: INT32): void {
 
   let pMapElement: Pointer<MAP_ELEMENT>;
   let pStructure: Pointer<STRUCTURE>;
-  let pRoofStructure: Pointer<STRUCTURE> = NULL;
+  let pRoofStructure: Pointer<STRUCTURE> = null;
 
   let qLastZ: FIXEDPT;
 
@@ -3209,7 +3209,7 @@ function MoveBullet(iBullet: INT32): void {
         if (iGridNo == pBullet.value.sTargetGridNo || (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles >= 10)) {
           // could hit this corpse!
           // but ignore if someone is here
-          if (FindStructure(iGridNo, STRUCTURE_PERSON) == NULL) {
+          if (FindStructure(iGridNo, STRUCTURE_PERSON) == null) {
             gpLocalStructure[iNumLocalStructures] = pStructure;
             iNumLocalStructures++;
           }
@@ -3423,7 +3423,7 @@ function MoveBullet(iBullet: INT32): void {
                     return;
                   } else {
                     // set pointer to null so that we don't consider hitting this person again
-                    gpLocalStructure[iStructureLoop] = NULL;
+                    gpLocalStructure[iStructureLoop] = null;
                   }
                 } else if (pStructure.value.fFlags & STRUCTURE_WALLNWINDOW && pBullet.value.qCurrZ >= qWindowBottomHeight && pBullet.value.qCurrZ <= qWindowTopHeight) {
                   fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY, pBullet.value.ddHorizAngle);
@@ -3478,21 +3478,21 @@ function MoveBullet(iBullet: INT32): void {
                           BulletHitWindow(pBullet, (pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS), pStructure.value.usStructureID, TRUE);
                           LocateBullet(pBullet.value.iBullet);
                           // have to remove this window from future hit considerations so the deleted structure data can't be referenced!
-                          gpLocalStructure[iStructureLoop] = NULL;
+                          gpLocalStructure[iStructureLoop] = null;
                         } else {
                           BulletHitWindow(pBullet, (pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS), pStructure.value.usStructureID, FALSE);
                           LocateBullet(pBullet.value.iBullet);
-                          gpLocalStructure[iStructureLoop] = NULL;
+                          gpLocalStructure[iStructureLoop] = null;
                         }
                       } else {
                         if (pBullet.value.qIncrY > 0) {
                           BulletHitWindow(pBullet, (pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS), pStructure.value.usStructureID, TRUE);
                           LocateBullet(pBullet.value.iBullet);
-                          gpLocalStructure[iStructureLoop] = NULL;
+                          gpLocalStructure[iStructureLoop] = null;
                         } else {
                           BulletHitWindow(pBullet, (pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS), pStructure.value.usStructureID, FALSE);
                           LocateBullet(pBullet.value.iBullet);
-                          gpLocalStructure[iStructureLoop] = NULL;
+                          gpLocalStructure[iStructureLoop] = null;
                         }
                       }
                       // but the bullet keeps on going!!!
@@ -3691,7 +3691,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
   //}
 
   // if (pMapElement->pMercHead != NULL && pBullet->iLoop != 1)
-  if (pMapElement.value.pMercHead != NULL) {
+  if (pMapElement.value.pMercHead != null) {
     // a merc! that isn't us :-)
     pTarget = pMapElement.value.pMercHead.value.pSoldier;
     dTargetX = pTarget.value.dXPos;
@@ -3708,7 +3708,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
       fIntended = FALSE;
     }
   } else {
-    pTarget = NULL;
+    pTarget = null;
   }
 
   // record old tile location for loop purposes
@@ -3725,7 +3725,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
   }
   // check for the existence of structures
   pStructure = pMapElement.value.pStructureHead;
-  if (pStructure == NULL) {
+  if (pStructure == null) {
     // no structures in this tile
 
     // we can go as far as we like vertically (so long as we don't hit
@@ -3800,7 +3800,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
       }
 
       // check structures for collision
-      while (pStructure != NULL) {
+      while (pStructure != null) {
         if (pStructure.value.fFlags & STRUCTURE_ROOF || gfCaves || gfBasement) {
           if (dOldZUnits > HEIGHT_UNITS && dZUnits < HEIGHT_UNITS) {
             return Enum229.COLLISION_ROOF;
@@ -3874,7 +3874,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
                     pTempStructure = pMapElement.value.pStructureHead;
 
                     // LOOK at ALL structs on roof
-                    while (pTempStructure != NULL) {
+                    while (pTempStructure != null) {
                       if (pTempStructure.value.sCubeOffset == STRUCTURE_ON_ROOF) {
                         if (!(((pTempStructure.value.pShape).value)[bLOSIndexX][bLOSIndexY] & AtHeight[0])) {
                           return Enum229.COLLISION_STRUCTURE_Z;

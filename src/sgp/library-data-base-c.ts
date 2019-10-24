@@ -110,7 +110,7 @@ function ShutDownFileDatabase(): BOOLEAN {
   // Free up the memory used for all the library headers
   if (gFileDataBase.pLibraries) {
     MemFree(gFileDataBase.pLibraries);
-    gFileDataBase.pLibraries = NULL;
+    gFileDataBase.pLibraries = null;
   }
 
   // loop through all the 'opened files' ( there should be no files open )
@@ -122,7 +122,7 @@ function ShutDownFileDatabase(): BOOLEAN {
   // Free up the memory used for the real files array for the opened files
   if (gFileDataBase.RealFiles.pRealFilesOpen) {
     MemFree(gFileDataBase.RealFiles.pRealFilesOpen);
-    gFileDataBase.RealFiles.pRealFilesOpen = NULL;
+    gFileDataBase.RealFiles.pRealFilesOpen = null;
   }
 
   return TRUE;
@@ -133,7 +133,7 @@ function CheckForLibraryExistence(pLibraryName: STR): BOOLEAN {
   let hFile: HANDLE;
 
   // try to opent the file, if we canm the library exists
-  hFile = CreateFile(pLibraryName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL);
+  hFile = CreateFile(pLibraryName, GENERIC_READ, 0, null, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, null);
 
   // if the file was not opened
   if (hFile == INVALID_HANDLE_VALUE) {
@@ -158,7 +158,7 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   let zTempPath: CHAR8[] /* [SGPFILENAME_LEN] */;
 
   // open the library for reading ( if it exists )
-  hFile = CreateFile(pLibraryName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL);
+  hFile = CreateFile(pLibraryName, GENERIC_READ, 0, null, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, null);
   if (hFile == INVALID_HANDLE_VALUE) {
     // if it failed finding the file on the hard drive, and the file can be on the cdrom
     if (fCanBeOnCDrom) {
@@ -166,11 +166,11 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
       sprintf(zTempPath, "%s%s", gzCdDirectory, pLibraryName);
 
       // look on the cdrom
-      hFile = CreateFile(zTempPath, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL);
+      hFile = CreateFile(zTempPath, GENERIC_READ, 0, null, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, null);
       if (hFile == INVALID_HANDLE_VALUE) {
         let uiLastError: UINT32 = GetLastError();
         let zString: char[] /* [1024] */;
-        FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, NULL);
+        FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
 
         return FALSE;
       } else
@@ -182,7 +182,7 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   }
 
   // Read in the library header ( at the begining of the library )
-  if (!ReadFile(hFile, addressof(LibFileHeader), sizeof(LIBHEADER), addressof(uiNumBytesRead), NULL))
+  if (!ReadFile(hFile, addressof(LibFileHeader), sizeof(LIBHEADER), addressof(uiNumBytesRead), null))
     return FALSE;
 
   if (uiNumBytesRead != sizeof(LIBHEADER)) {
@@ -191,14 +191,14 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   }
 
   // place the file pointer at the begining of the file headers ( they are at the end of the file )
-  SetFilePointer(hFile, -(LibFileHeader.iEntries * sizeof(DIRENTRY)), NULL, FILE_END);
+  SetFilePointer(hFile, -(LibFileHeader.iEntries * sizeof(DIRENTRY)), null, FILE_END);
 
   // loop through the library and determine the number of files that are FILE_OK
   // ie.  so we dont load the old or deleted files
   usNumEntries = 0;
   for (uiLoop = 0; uiLoop < LibFileHeader.iEntries; uiLoop++) {
     // read in the file header
-    if (!ReadFile(hFile, addressof(DirEntry), sizeof(DIRENTRY), addressof(uiNumBytesRead), NULL))
+    if (!ReadFile(hFile, addressof(DirEntry), sizeof(DIRENTRY), addressof(uiNumBytesRead), null))
       return FALSE;
 
     if (DirEntry.ubState == FILE_OK)
@@ -209,13 +209,13 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   pLibHeader.value.pFileHeader = MemAlloc(sizeof(FileHeaderStruct) * usNumEntries);
 
   // place the file pointer at the begining of the file headers ( they are at the end of the file )
-  SetFilePointer(hFile, -(LibFileHeader.iEntries * sizeof(DIRENTRY)), NULL, FILE_END);
+  SetFilePointer(hFile, -(LibFileHeader.iEntries * sizeof(DIRENTRY)), null, FILE_END);
 
   // loop through all the entries
   uiCount = 0;
   for (uiLoop = 0; uiLoop < LibFileHeader.iEntries; uiLoop++) {
     // read in the file header
-    if (!ReadFile(hFile, addressof(DirEntry), sizeof(DIRENTRY), addressof(uiNumBytesRead), NULL))
+    if (!ReadFile(hFile, addressof(DirEntry), sizeof(DIRENTRY), addressof(uiNumBytesRead), null))
       return FALSE;
 
     if (DirEntry.ubState == FILE_OK) {
@@ -292,7 +292,7 @@ function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, u
   uiCurPos = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFilePosInFile;
 
   // set the file pointer to the right location
-  SetFilePointer(hLibraryFile, (uiOffsetInLibrary + uiCurPos), NULL, FILE_BEGIN);
+  SetFilePointer(hLibraryFile, (uiOffsetInLibrary + uiCurPos), null, FILE_BEGIN);
 
   // if we are trying to read more data then the size of the file, return an error
   if (uiBytesToRead + uiCurPos > uiLength) {
@@ -301,7 +301,7 @@ function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, u
   }
 
   // get the data
-  if (!ReadFile(hLibraryFile, pData, uiBytesToRead, addressof(uiNumBytesRead), NULL))
+  if (!ReadFile(hLibraryFile, pData, uiBytesToRead, addressof(uiNumBytesRead), null))
     return FALSE;
 
   if (uiBytesToRead != uiNumBytesRead) {
@@ -363,7 +363,7 @@ function GetLibraryIDFromFileName(pFileName: STR): INT16 {
       // if the library path name is of size zero, ( the library is for the default path )
       if (strlen(gFileDataBase.pLibraries[sLoop1].sLibraryPath) == 0) {
         // determine if there is a directory in the file name
-        if (strchr(pFileName, '\\') == NULL && strchr(pFileName, '//') == NULL) {
+        if (strchr(pFileName, '\\') == null && strchr(pFileName, '//') == null) {
           // There is no directory in the file name
           return sLoop1;
         }
@@ -410,7 +410,7 @@ function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: STR, pFileHea
     pFileHeader.value = ppFileHeader;
     return TRUE;
   } else {
-    pFileHeader = NULL;
+    pFileHeader = null;
     return FALSE;
   }
 }
@@ -537,12 +537,12 @@ function OpenFileFromLibrary(pName: STR): HWFILE {
       gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader = pFileHeader;
 
       // Save the current file position in the library
-      gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiActualPositionInLibrary = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, 0, NULL, FILE_CURRENT);
+      gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiActualPositionInLibrary = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, 0, null, FILE_CURRENT);
 
       // Set the file position in the library to the begining of the 'file' in the library
-      uiNewFilePosition = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileOffset, NULL, FILE_BEGIN);
+      uiNewFilePosition = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileOffset, null, FILE_BEGIN);
 
-      uiNewFilePosition = GetFileSize(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, NULL);
+      uiNewFilePosition = GetFileSize(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, null);
     } else {
       // Failed to find the file in a library
       return 0;
@@ -641,10 +641,10 @@ function CloseLibraryFile(sLibraryID: INT16, uiFileID: UINT32): BOOLEAN {
       // reset the variables
       gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].uiFileID = 0;
       gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].uiFilePosInFile = 0;
-      gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].pFileHeader = NULL;
+      gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].pFileHeader = null;
 
       // reset the libraries file pointer to the positon it was in prior to opening the current file
-      SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].uiActualPositionInLibrary, NULL, FILE_CURRENT);
+      SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].uiActualPositionInLibrary, null, FILE_CURRENT);
 
       // decrement the number of files that are open
       gFileDataBase.pLibraries[sLibraryID].iNumFilesOpen--;
@@ -730,25 +730,25 @@ function CloseLibrary(sLibraryID: INT16): BOOLEAN {
   // Free up the memory used for each file name
   for (uiLoop1 = 0; uiLoop1 < gFileDataBase.pLibraries[sLibraryID].usNumberOfEntries; uiLoop1++) {
     MemFree(gFileDataBase.pLibraries[sLibraryID].pFileHeader[uiLoop1].pFileName);
-    gFileDataBase.pLibraries[sLibraryID].pFileHeader[uiLoop1].pFileName = NULL;
+    gFileDataBase.pLibraries[sLibraryID].pFileHeader[uiLoop1].pFileName = null;
   }
 
   // Free up the memory needed for the Library File Headers
   if (gFileDataBase.pLibraries[sLibraryID].pFileHeader) {
     MemFree(gFileDataBase.pLibraries[sLibraryID].pFileHeader);
-    gFileDataBase.pLibraries[sLibraryID].pFileHeader = NULL;
+    gFileDataBase.pLibraries[sLibraryID].pFileHeader = null;
   }
 
   // Free up the memory used for the library name
   if (gFileDataBase.pLibraries[sLibraryID].sLibraryPath) {
     MemFree(gFileDataBase.pLibraries[sLibraryID].sLibraryPath);
-    gFileDataBase.pLibraries[sLibraryID].sLibraryPath = NULL;
+    gFileDataBase.pLibraries[sLibraryID].sLibraryPath = null;
   }
 
   // Free up the space requiered for the open files array
   if (gFileDataBase.pLibraries[sLibraryID].pOpenFiles) {
     MemFree(gFileDataBase.pLibraries[sLibraryID].pOpenFiles);
-    gFileDataBase.pLibraries[sLibraryID].pOpenFiles = NULL;
+    gFileDataBase.pLibraries[sLibraryID].pOpenFiles = null;
   }
 
   // set that the library isnt open
@@ -818,10 +818,10 @@ function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime
 
   memset(pLastWriteTime, 0, sizeof(SGP_FILETIME));
 
-  SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, 0, NULL, FILE_BEGIN);
+  SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, 0, null, FILE_BEGIN);
 
   // Read in the library header ( at the begining of the library )
-  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, addressof(LibFileHeader), sizeof(LIBHEADER), addressof(uiNumBytesRead), NULL))
+  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, addressof(LibFileHeader), sizeof(LIBHEADER), addressof(uiNumBytesRead), null))
     return FALSE;
   if (uiNumBytesRead != sizeof(LIBHEADER)) {
     // Error Reading the file database header.
@@ -833,17 +833,17 @@ function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime
     return FALSE;
 
   pAllEntries = MemAlloc(sizeof(DIRENTRY) * LibFileHeader.iEntries);
-  if (pAllEntries == NULL)
+  if (pAllEntries == null)
     return FALSE;
   memset(pAllEntries, 0, sizeof(DIRENTRY));
 
   iFilePos = -(LibFileHeader.iEntries * sizeof(DIRENTRY));
 
   // set the file pointer to the right location
-  SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, iFilePos, NULL, FILE_END);
+  SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, iFilePos, null, FILE_END);
 
   // Read in the library header ( at the begining of the library )
-  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, pAllEntries, (sizeof(DIRENTRY) * LibFileHeader.iEntries), addressof(uiNumBytesRead), NULL))
+  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, pAllEntries, (sizeof(DIRENTRY) * LibFileHeader.iEntries), addressof(uiNumBytesRead), null))
     return FALSE;
   if (uiNumBytesRead != (sizeof(DIRENTRY) * LibFileHeader.iEntries)) {
     // Error Reading the file database header.
@@ -862,7 +862,7 @@ function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime
   memcpy(pLastWriteTime, addressof(pDirEntry.value.sFileTime), sizeof(SGP_FILETIME));
 
   MemFree(pAllEntries);
-  pAllEntries = NULL;
+  pAllEntries = null;
 
   return TRUE;
 }

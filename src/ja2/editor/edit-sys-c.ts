@@ -77,11 +77,11 @@ function EraseMapTile(iMapIndex: UINT32): void {
       break;
     case Enum38.DRAW_MODE_GROUND:
       // Is there ground on this tile? if not, get out o here
-      if (gpWorldLevelData[iMapIndex].pLandHead == NULL)
+      if (gpWorldLevelData[iMapIndex].pLandHead == null)
         break;
 
       // is there only 1 ground tile here? if so, get out o here
-      if (gpWorldLevelData[iMapIndex].pLandHead.value.pNext == NULL)
+      if (gpWorldLevelData[iMapIndex].pLandHead.value.pNext == null)
         break;
       AddToUndoList(iMapIndex);
       GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex, addressof(uiCheckType));
@@ -184,7 +184,7 @@ function PasteDebris(iMapIndex: UINT32): void {
     AddToUndoList(iMapIndex);
 
     // Remove any debris that is currently at this map location
-    if (gpWorldLevelData[iMapIndex].pObjectHead != NULL) {
+    if (gpWorldLevelData[iMapIndex].pObjectHead != null) {
       RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.ANOTHERDEBRIS, Enum313.FIRSTPOINTERS - 1);
     }
 
@@ -471,7 +471,7 @@ function PasteStructureCommon(iMapIndex: UINT32): void {
 
       // Check with Structure Database (aka ODB) if we can put the object here!
       fOkayToAdd = OkayToAddStructureToWorld(iMapIndex, 0, gTileDatabase[(gTileTypeStartIndex[usUseObjIndex] + usUseIndex)].pDBStructureRef, INVALID_STRUCTURE_ID);
-      if (fOkayToAdd || (gTileDatabase[(gTileTypeStartIndex[usUseObjIndex] + usUseIndex)].pDBStructureRef == NULL)) {
+      if (fOkayToAdd || (gTileDatabase[(gTileTypeStartIndex[usUseObjIndex] + usUseIndex)].pDBStructureRef == null)) {
         // Actual structure info is added by the functions below
         AddStructToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
         // For now, adjust to shadows by a hard-coded amount,
@@ -506,7 +506,7 @@ function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: BOOLEAN)
   if (iMapIndex < 0x8000) {
     fDoPaste = TRUE;
 
-    if (gpWorldLevelData[iMapIndex].pStructHead != NULL) {
+    if (gpWorldLevelData[iMapIndex].pStructHead != null) {
       // CHECK IF THE SAME TILE IS HERE
       if (gpWorldLevelData[iMapIndex].pStructHead.value.usIndex == (gTileTypeStartIndex[usUseObjIndex] + usUseIndex)) {
         fDoPaste = FALSE;
@@ -615,7 +615,7 @@ function PasteTextureCommon(iMapIndex: UINT32): void {
 function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
   let NewTile: UINT16;
   let ubLastHighLevel: UINT8;
-  let puiDeletedTypes: Pointer<UINT32> = NULL;
+  let puiDeletedTypes: Pointer<UINT32> = null;
   let ubNumTypes: UINT8;
   let cnt: UINT8;
 
@@ -812,7 +812,7 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
   let fDoPaste: BOOLEAN = FALSE;
   let leftmost: INT32;
   let ubLastHighLevel: UINT8;
-  let puiSmoothTiles: Pointer<UINT32> = NULL;
+  let puiSmoothTiles: Pointer<UINT32> = null;
   let sNumSmoothTiles: INT16 = 0;
   let usTemp: UINT16;
   let NewTile: UINT16; //,Dummy;
@@ -1160,7 +1160,7 @@ function EliminateObjectLayerRedundancy(): void {
   for (i = 0; i < WORLD_MAX; i++) {
     // Eliminate all but the last ROADPIECE and ANOTHERDEBRIS
     pObject = gpWorldLevelData[i].pObjectHead;
-    pValidRoad = pValidAnother = NULL;
+    pValidRoad = pValidAnother = null;
     numRoads = numAnothers = 0;
     while (pObject) {
       GetTileType(pObject.value.usIndex, addressof(uiType));

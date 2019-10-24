@@ -1,4 +1,4 @@
-let gpEventList: Pointer<STRATEGICEVENT> = NULL;
+let gpEventList: Pointer<STRATEGICEVENT> = null;
 
 let gfPreventDeletionOfAnyEvent: BOOLEAN = FALSE;
 let gfEventDeletionPending: BOOLEAN = FALSE;
@@ -24,7 +24,7 @@ function DeleteEventsWithDeletionPending(): BOOLEAN {
   let fEventDeleted: BOOLEAN = FALSE;
   // ValidateGameEvents();
   curr = gpEventList;
-  prev = NULL;
+  prev = null;
   while (curr) {
     // ValidateGameEvents();
     if (curr.value.ubFlags & SEF_DELETION_PENDING) {
@@ -41,7 +41,7 @@ function DeleteEventsWithDeletionPending(): BOOLEAN {
         // deleting head
         gpEventList = gpEventList.value.next;
         temp = curr;
-        prev = NULL;
+        prev = null;
         curr = curr.value.next;
         MemFree(temp);
         fEventDeleted = TRUE;
@@ -86,7 +86,7 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
 
   // While we have events inside the time range to be updated, process them...
   curr = gpEventList;
-  prev = NULL; // prev only used when warping time to target time.
+  prev = null; // prev only used when warping time to target time.
   while (!gfTimeInterrupt && curr && curr.value.uiTimeStamp <= guiGameClock + uiAdjustment) {
     fDeleteEvent = FALSE;
     // Update the time by the difference, but ONLY if the event comes after the current time.
@@ -143,7 +143,7 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
         gpEventList = gpEventList.value.next;
         MemFree(curr);
         curr = gpEventList;
-        prev = NULL;
+        prev = null;
         // ValidateGameEvents();
       } else {
         temp = curr;
@@ -196,7 +196,7 @@ function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTi
   if (gfProcessingGameEvents && uiTimeStamp <= guiTimeStampOfCurrentlyExecutingEvent) {
     // Prevents infinite loops of posting events that are the same time or earlier than the event
 // currently being processed.
-    return NULL;
+    return null;
   }
 
   pNewNode = MemAlloc(sizeof(STRATEGICEVENT));
@@ -214,9 +214,9 @@ function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTi
   // If it's the first head, do this!
   if (!pNode) {
     gpEventList = pNewNode;
-    pNewNode.value.next = NULL;
+    pNewNode.value.next = null;
   } else {
-    pPrevNode = NULL;
+    pPrevNode = null;
     while (pNode) {
       if (uiTimeStamp < pNode.value.uiTimeStamp) {
         break;
@@ -228,7 +228,7 @@ function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTi
     // If we are at the end, set at the end!
     if (!pNode) {
       pPrevNode.value.next = pNewNode;
-      pNewNode.value.next = NULL;
+      pNewNode.value.next = null;
     } else {
       // We have a previous node here
       // Insert IN FRONT!
@@ -352,7 +352,7 @@ function DeleteAllStrategicEventsOfType(ubCallbackID: UINT8): void {
   let curr: Pointer<STRATEGICEVENT>;
   let prev: Pointer<STRATEGICEVENT>;
   let temp: Pointer<STRATEGICEVENT>;
-  prev = NULL;
+  prev = null;
   curr = gpEventList;
   while (curr) {
     if (curr.value.ubCallbackID == ubCallbackID && !(curr.value.ubFlags & SEF_DELETION_PENDING)) {
@@ -389,9 +389,9 @@ function DeleteAllStrategicEvents(): void {
     gpEventList = gpEventList.value.next;
     MemFree(temp);
     // ValidateGameEvents();
-    temp = NULL;
+    temp = null;
   }
-  gpEventList = NULL;
+  gpEventList = null;
 }
 
 // Searches for and removes the first event matching the supplied information.  There may very well be a need
@@ -401,7 +401,7 @@ function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): BOOLEAN {
   let curr: Pointer<STRATEGICEVENT>;
   let prev: Pointer<STRATEGICEVENT>;
   curr = gpEventList;
-  prev = NULL;
+  prev = null;
   while (curr) {
     // deleting middle
     if (curr.value.ubCallbackID == ubCallbackID && curr.value.uiParam == uiParam) {
@@ -470,7 +470,7 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
   let sGameEvent: STRATEGICEVENT;
   let cnt: UINT32;
   let uiNumBytesRead: UINT32 = 0;
-  let pTemp: Pointer<STRATEGICEVENT> = NULL;
+  let pTemp: Pointer<STRATEGICEVENT> = null;
 
   // erase the old Game Event queue
   DeleteAllStrategicEvents();
@@ -481,15 +481,15 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
     return FALSE;
   }
 
-  pTemp = NULL;
+  pTemp = null;
 
   // loop through all the events and save them.
   for (cnt = 0; cnt < uiNumGameEvents; cnt++) {
-    let pTempEvent: Pointer<STRATEGICEVENT> = NULL;
+    let pTempEvent: Pointer<STRATEGICEVENT> = null;
 
     // allocate memory for the event
     pTempEvent = MemAlloc(sizeof(STRATEGICEVENT));
-    if (pTempEvent == NULL)
+    if (pTempEvent == null)
       return FALSE;
 
     // Read the current strategic event
@@ -518,7 +518,7 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
     }
 
     // NULL out the next field ( cause there is no next field yet )
-    pTempEvent.value.next = NULL;
+    pTempEvent.value.next = null;
   }
 
   return TRUE;

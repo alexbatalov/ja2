@@ -10,7 +10,7 @@ let giTotalCostOfTraining: INT32 = 0;
 
 // the completed list of sector soldiers for training militia
 let giListOfMercsInSectorsCompletedMilitiaTraining: INT32[] /* [SIZE_OF_MILITIA_COMPLETED_TRAINING_LIST] */;
-let pMilitiaTrainerSoldier: Pointer<SOLDIERTYPE> = NULL;
+let pMilitiaTrainerSoldier: Pointer<SOLDIERTYPE> = null;
 
 // note that these sector values are STRATEGIC INDEXES, not 0-255!
 let gsUnpaidStrategicSector: INT16[] /* [MAX_CHARACTER_COUNT] */;
@@ -499,7 +499,7 @@ function PayMilitiaTrainingYesNoBoxCallback(bExitValue: UINT8): void {
       }
 
       // this completes the training prompt sequence
-      pMilitiaTrainerSoldier = NULL;
+      pMilitiaTrainerSoldier = null;
     } else // can't afford it
     {
       StopTimeCompression();
@@ -533,7 +533,7 @@ function MilitiaTrainingRejected(): void {
   }
 
   // this completes the training prompt sequence
-  pMilitiaTrainerSoldier = NULL;
+  pMilitiaTrainerSoldier = null;
 }
 
 function HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap(): void {
@@ -644,7 +644,7 @@ function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLD
   let sSectorX: INT16 = 0;
   let sSectorY: INT16 = 0;
   let bSectorZ: INT8 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
 
   // get the sector values
@@ -679,7 +679,7 @@ function AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(pSoldier
   let iCounter: INT32 = 0;
   let sSector: INT16 = 0;
   let sCurrentSector: INT16 = 0;
-  let pCurrentSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pCurrentSoldier: Pointer<SOLDIERTYPE> = null;
 
   // get the sector value
   sSector = pSoldier.value.sSectorX + pSoldier.value.sSectorY * MAP_WORLD_X;
@@ -720,7 +720,7 @@ function ClearSectorListForCompletedTrainingOfMilitia(): void {
 }
 
 function HandleContinueOfTownTraining(): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
   let fContinueEventPosted: BOOLEAN = FALSE;
 
@@ -761,7 +761,7 @@ function HandleContinueOfTownTraining(): void {
 function BuildListOfUnpaidTrainableSectors(): void {
   let iCounter: INT32 = 0;
   let iCounterB: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   memset(gsUnpaidStrategicSector, 0, sizeof(INT16) * MAX_CHARACTER_COUNT);
 
@@ -867,7 +867,7 @@ function PayForTrainingInSector(ubSector: UINT8): void {
 
 function ResetDoneFlagForAllMilitiaTrainersInSector(ubSector: UINT8): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   for (iCounter = 0; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
     pSoldier = addressof(Menptr[iCounter]);

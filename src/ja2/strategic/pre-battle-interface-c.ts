@@ -1,6 +1,6 @@
 let gfTacticalTraversal: BOOLEAN = FALSE;
-let gpTacticalTraversalGroup: Pointer<GROUP> = NULL;
-let gpTacticalTraversalChosenSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gpTacticalTraversalGroup: Pointer<GROUP> = null;
+let gpTacticalTraversalChosenSoldier: Pointer<SOLDIERTYPE> = null;
 
 let gfAutomaticallyStartAutoResolve: BOOLEAN = FALSE;
 let gfAutoAmbush: BOOLEAN = FALSE;
@@ -36,7 +36,7 @@ let gusRetreatButtonTop: UINT16;
 let gusRetreatButtonRight: UINT16;
 let gusRetreatButtonBottom: UINT16;
 
-let gpBattleGroup: Pointer<GROUP> = NULL;
+let gpBattleGroup: Pointer<GROUP> = null;
 
 /*
 void InvolvedMoveCallback( MOUSE_REGION *reg, INT32 reason );
@@ -549,7 +549,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
   BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, 0, 0, 261, 359);
   PlayJA2SampleFromFile("SOUNDS\\Laptop power up (8-11).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
   InvalidateScreen();
-  RefreshScreen(NULL);
+  RefreshScreen(null);
 
   while (iPercentage < 100) {
     uiCurrTime = GetJA2Clock();
@@ -578,7 +578,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
     BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(PBIRect), addressof(DstRect));
 
     InvalidateScreen();
-    RefreshScreen(NULL);
+    RefreshScreen(null);
 
     // Restore the previous rect.
     BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, DstRect.iLeft, DstRect.iTop, (DstRect.iRight - DstRect.iLeft + 1), (DstRect.iBottom - DstRect.iTop + 1));
@@ -738,20 +738,20 @@ function RenderPreBattleInterface(): void {
     gfRenderPBInterface = FALSE;
     GetVideoObject(addressof(hVObject), uiInterfaceImages);
     // main panel
-    BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.MAINPANEL, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.MAINPANEL, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
     // main title
 
     RenderPBHeader(addressof(x), addressof(width));
     // now draw the title bars up to the text.
     for (i = x - 12; i > 20; i -= 10) {
-      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, null);
     }
     for (i = x + width + 2; i < 231; i += 10) {
-      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, null);
     }
 
     y = BOTTOM_Y - ACTUAL_HEIGHT - ROW_HEIGHT * max(guiNumUninvolved, 1);
-    BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.UNINVOLVED_HEADER, 8, y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.UNINVOLVED_HEADER, 8, y, VO_BLT_SRCTRANSPARENCY, null);
 
     SetFont(BLOCKFONT());
     SetFontForeground(FONT_BEIGE);
@@ -799,12 +799,12 @@ function RenderPreBattleInterface(): void {
     // Draw the bottom columns
     for (i = 0; i < max(guiNumUninvolved, 1); i++) {
       y = BOTTOM_Y - ROW_HEIGHT * (i + 1) + 1;
-      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.BOTTOM_COLUMN, 161, y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.BOTTOM_COLUMN, 161, y, VO_BLT_SRCTRANSPARENCY, null);
     }
 
     for (i = 0; i < (21 - max(guiNumUninvolved, 1)); i++) {
       y = TOP_Y + ROW_HEIGHT * i;
-      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TOP_COLUMN, 186, y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TOP_COLUMN, 186, y, VO_BLT_SRCTRANSPARENCY, null);
     }
 
     // location
@@ -969,7 +969,7 @@ function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
         InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
         ExecuteBaseDirtyRectQueue();
         EndFrameBufferRender();
-        RefreshScreen(NULL);
+        RefreshScreen(null);
         KillPreBattleInterface();
         StopTimeCompression();
         SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
@@ -997,7 +997,7 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
         ExecuteBaseDirtyRectQueue();
         EndFrameBufferRender();
-        RefreshScreen(NULL);
+        RefreshScreen(null);
         KillPreBattleInterface();
         StopTimeCompression();
         SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
@@ -1011,7 +1011,7 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
       ExecuteBaseDirtyRectQueue();
       EndFrameBufferRender();
-      RefreshScreen(NULL);
+      RefreshScreen(null);
       if (gubPBSectorX == gWorldSectorX && gubPBSectorY == gWorldSectorY && !gbWorldSectorZ) {
         gfGotoSectorTransition = TRUE;
       }
@@ -1025,7 +1025,7 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         ClearMovementForAllInvolvedPlayerGroups();
       } else {
         // Clear the battlegroup pointer.
-        gpBattleGroup = NULL;
+        gpBattleGroup = null;
       }
 
       // must come AFTER anything that needs gpBattleGroup, as it wipes it out
@@ -1060,10 +1060,10 @@ function RetreatMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
       ExecuteBaseDirtyRectQueue();
       EndFrameBufferRender();
-      RefreshScreen(NULL);
+      RefreshScreen(null);
       KillPreBattleInterface();
       StopTimeCompression();
-      gpBattleGroup = NULL;
+      gpBattleGroup = null;
       gfBlitBattleSectorLocator = FALSE;
 
       SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
@@ -1416,7 +1416,7 @@ function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehi
 function WakeUpAllMercsInSectorUnderAttack(): void {
   let iCounter: INT32 = 0;
   let iNumberOfMercsOnTeam: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // get number of possible grunts on team
   iNumberOfMercsOnTeam = gTacticalStatus.Team[OUR_TEAM].bLastID;
@@ -1595,7 +1595,7 @@ function HandlePreBattleInterfaceStates(): void {
   if (gfEnteringMapScreenToEnterPreBattleInterface && !gfEnteringMapScreen) {
     gfEnteringMapScreenToEnterPreBattleInterface = FALSE;
     if (!gfUsePersistantPBI) {
-      InitPreBattleInterface(NULL, FALSE);
+      InitPreBattleInterface(null, FALSE);
       gfUsePersistantPBI = TRUE;
     } else {
       InitPreBattleInterface(gpBattleGroup, TRUE);

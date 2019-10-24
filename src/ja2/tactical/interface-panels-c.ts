@@ -381,7 +381,7 @@ let gfSM_HandInvDispText: BOOLEAN[] /* [NUM_INV_SLOTS] */;
 
 // Globals - for one - the current merc here
 let gusSMCurrentMerc: UINT16 = 0;
-let gpSMCurrentMerc: Pointer<SOLDIERTYPE> = NULL;
+let gpSMCurrentMerc: Pointer<SOLDIERTYPE> = null;
 let gbSMCurStanceObj: INT8;
 
 let gbStanceButPos: INT8[][][] /* [2][3][3] */ = [
@@ -411,7 +411,7 @@ function GetUIApsToDisplay(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier.value.uiStatusFlags & SOLDIER_DRIVER) {
     pVehicle = GetSoldierStructureForVehicle(pSoldier.value.iVehicleId);
 
-    if (pVehicle != NULL) {
+    if (pVehicle != null) {
       return pVehicle.value.bActionPoints;
     } else {
       return 0;
@@ -430,7 +430,7 @@ function CheckForDisabledForGiveItem(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let ubSrcSoldier: UINT8;
 
-  Assert(gpSMCurrentMerc != NULL);
+  Assert(gpSMCurrentMerc != null);
 
   if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
     gfSMDisableForItems = !CanMercInteractWithSelectedShopkeeper(gpSMCurrentMerc);
@@ -441,7 +441,7 @@ function CheckForDisabledForGiveItem(): void {
   gfSMDisableForItems = TRUE;
 
   // ATE: Is the current merc unconscious.....
-  if (gpSMCurrentMerc.value.bLife < OKLIFE && gpItemPointer != NULL) {
+  if (gpSMCurrentMerc.value.bLife < OKLIFE && gpItemPointer != null) {
     // Go through each merc and see if there is one closeby....
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
@@ -462,7 +462,7 @@ function CheckForDisabledForGiveItem(): void {
   } else {
     ubSrcSoldier = gusSelectedSoldier;
 
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       ubSrcSoldier = gpItemPointerSoldier.value.ubID;
     }
 
@@ -517,7 +517,7 @@ function SetSMPanelCurrentMerc(ubNewID: UINT8): void {
   SetAllAutoFacesInactive();
 
   // Turn off compat ammo....
-  if (gpItemPointer == NULL) {
+  if (gpItemPointer == null) {
     HandleCompatibleAmmoUI(gpSMCurrentMerc, Enum261.HANDPOS, FALSE);
     gfCheckForMouseOverItem = FALSE;
   } else {
@@ -534,14 +534,14 @@ function SetSMPanelCurrentMerc(ubNewID: UINT8): void {
   if (gfInItemPickupMenu) {
     gfSMDisableForItems = TRUE;
   } else {
-    if ((gpItemPointer != NULL || guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE || gpSMCurrentMerc.value.bLife < OKLIFE)) {
+    if ((gpItemPointer != null || guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE || gpSMCurrentMerc.value.bLife < OKLIFE)) {
       CheckForDisabledForGiveItem();
     } else {
       gfSMDisableForItems = FALSE;
     }
   }
 
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     ReevaluateItemHatches(gpSMCurrentMerc, FALSE);
   }
 
@@ -558,7 +558,7 @@ function UpdateForContOverPortrait(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN)
   let cnt: INT32;
 
   if (gsCurInterfacePanel == Enum215.SM_PANEL) {
-    if (gpSMCurrentMerc != NULL) {
+    if (gpSMCurrentMerc != null) {
       // Check if mouse is in region and if so, adjust...
       if (IsMouseInRegion(addressof(gSM_SELMERCPanelRegion))) {
         HandleMouseOverSoldierFaceForContMove(gpSMCurrentMerc, fOn);
@@ -806,7 +806,7 @@ function ReevaluateItemHatches(pSoldier: Pointer<SOLDIERTYPE>, fAllValid: BOOLEA
   let cnt: INT32;
 
   // if there's an item in the cursor and we're not supposed to just make them all valid
-  if ((gpItemPointer != NULL) && !fAllValid) {
+  if ((gpItemPointer != null) && !fAllValid) {
     // check all inventory positions and mark the ones where cursor item won't fit as invalid
     for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
       gbInvalidPlacementSlot[cnt] = !CanItemFitInPosition(pSoldier, gpItemPointer, cnt, FALSE);
@@ -840,7 +840,7 @@ function EnableSMPanelButtons(fEnable: BOOLEAN, fFromItemPickup: BOOLEAN): void 
     // If we have the item pointer up...
     // CJC Dec 4 2002: or if item pickup menu is up
     // if ( gpItemPointer != NULL )
-    if (gpItemPointer != NULL || gfInItemPickupMenu) {
+    if (gpItemPointer != null || gfInItemPickupMenu) {
       DisableTacticalTeamPanelButtons(TRUE);
     } else {
       DisableTacticalTeamPanelButtons(FALSE);
@@ -852,7 +852,7 @@ function EnableSMPanelButtons(fEnable: BOOLEAN, fFromItemPickup: BOOLEAN): void 
   if (gsCurInterfacePanel == Enum215.SM_PANEL) {
     if (fFromItemPickup) {
       // If we have the item pointer up...
-      if (gpItemPointer != NULL) {
+      if (gpItemPointer != null) {
         ReevaluateItemHatches(gpSMCurrentMerc, fEnable);
 
         // Turn it all false first....
@@ -867,7 +867,7 @@ function EnableSMPanelButtons(fEnable: BOOLEAN, fFromItemPickup: BOOLEAN): void 
         // InternalHandleCompatibleAmmoUI( gpSMCurrentMerc, gpItemPointer, FALSE );
         gfCheckForMouseOverItem = FALSE;
 
-        HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), NULL, TRUE);
+        HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
       }
 
       if (fEnable) {
@@ -1022,7 +1022,7 @@ function InitializeSMPanel(): BOOLEAN {
 
   // this is important! It will disable buttons like SM_MAP_SCREEN_BUTTON when they're supposed to be disabled - the previous
   // disabled state is lost everytime panel is reinitialized, because all the buttons are created from scratch!
-  if (gpItemPointer == NULL) {
+  if (gpItemPointer == null) {
     // empty cursor - enable, not from item pickup
     EnableSMPanelButtons(TRUE, FALSE);
   } else {
@@ -1298,23 +1298,23 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     //}
 
     if (InItemDescriptionBox()) {
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMPanel, 0, INTERFACE_START_X, INV_INTERFACE_START_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMPanel, 0, INTERFACE_START_X, INV_INTERFACE_START_Y, VO_BLT_SRCTRANSPARENCY, null);
       RenderSoldierFace(gpSMCurrentMerc, SM_SELMERC_FACE_X, SM_SELMERC_FACE_Y, TRUE);
 
       // ATE: Need these lines here to fix flash bug with face selection box
       if (gfSMDisableForItems) {
-        BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects2, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects2, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, null);
         RestoreExternBackgroundRect(SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, SM_SELMERC_PLATE_WIDTH, SM_SELMERC_PLATE_HEIGHT);
       } else {
         if (gusSelectedSoldier == gpSMCurrentMerc.value.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(gpSMCurrentMerc)) {
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, null);
           RestoreExternBackgroundRect(SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, SM_SELMERC_PLATE_WIDTH, SM_SELMERC_PLATE_HEIGHT);
         }
       }
 
       RenderItemDescriptionBox();
     } else {
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMPanel, 0, INTERFACE_START_X, INV_INTERFACE_START_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMPanel, 0, INTERFACE_START_X, INV_INTERFACE_START_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       RenderInvBodyPanel(gpSMCurrentMerc, SM_BODYINV_X, SM_BODYINV_Y);
 
@@ -1324,11 +1324,11 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
       // Hitlight
 
       if (gfSMDisableForItems) {
-        BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects2, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects2, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, null);
         RestoreExternBackgroundRect(SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, SM_SELMERC_PLATE_WIDTH, SM_SELMERC_PLATE_HEIGHT);
       } else {
         if (gusSelectedSoldier == gpSMCurrentMerc.value.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(gpSMCurrentMerc)) {
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, null);
           RestoreExternBackgroundRect(SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, SM_SELMERC_PLATE_WIDTH, SM_SELMERC_PLATE_HEIGHT);
         }
       }
@@ -1587,7 +1587,7 @@ function SMInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
 
   if (iReason == MSYS_CALLBACK_REASON_MOVE) {
   } else if (iReason == MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    if (gpItemPointer == NULL) {
+    if (gpItemPointer == null) {
       // Setup a timer....
       guiMouseOverItemTime = GetJA2Clock();
       gfCheckForMouseOverItem = TRUE;
@@ -1596,7 +1596,7 @@ function SMInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
   }
   if (iReason == MSYS_CALLBACK_REASON_LOST_MOUSE) {
     // gfSM_HandInvDispText[ uiHandPos ] = 1;
-    if (gpItemPointer == NULL) {
+    if (gpItemPointer == null) {
       HandleCompatibleAmmoUI(gpSMCurrentMerc, uiHandPos, FALSE);
       gfCheckForMouseOverItem = FALSE;
       fInterfacePanelDirty = DIRTYLEVEL2;
@@ -1642,7 +1642,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // Apply camo ( if we have something in cursor... )
     // If we do not have an item in hand, start moving it
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       // ATE: OK, get source, dest guy if different... check for and then charge appropriate APs
       ubSrcID = gpSMCurrentMerc.value.ubID;
       ubDestID = gpItemPointerSoldier.value.ubID;
@@ -1795,7 +1795,7 @@ function UIHandleItemPlacement(ubHandPos: UINT8, usOldItemIndex: UINT16, usNewIt
     // UPDATE ITEM POINTER.....
     gpItemPointerSoldier = gpSMCurrentMerc;
 
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       ReevaluateItemHatches(gpSMCurrentMerc, FALSE);
     }
 
@@ -1848,7 +1848,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
     fLeftDown = FALSE;
 
     // If we do not have an item in hand, start moving it
-    if (gpItemPointer == NULL) {
+    if (gpItemPointer == null) {
       // Return if empty
       if (gpSMCurrentMerc.value.inv[uiHandPos].usItem == NOTHING)
         return;
@@ -1863,7 +1863,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
       }
 
       if (_KeyDown(CTRL)) {
-        CleanUpStack(addressof(gpSMCurrentMerc.value.inv[uiHandPos]), NULL);
+        CleanUpStack(addressof(gpSMCurrentMerc.value.inv[uiHandPos]), null);
         return;
       }
 
@@ -1952,9 +1952,9 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
               // locked in a region, free it up.
               FreeMouseCursor();
 
-              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_MERGE_ITEMS], Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, MergeMessageBoxCallBack, NULL);
+              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_MERGE_ITEMS], Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, MergeMessageBoxCallBack, null);
             } else
-              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_MERGE_ITEMS], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, MergeMessageBoxCallBack, NULL);
+              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_MERGE_ITEMS], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, MergeMessageBoxCallBack, null);
             return;
           }
           // else handle normally
@@ -1975,7 +1975,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
             SetNewItem(gpSMCurrentMerc, uiHandPos, fNewItem);
 
             // and the cursor is now empty
-            if (gpItemPointer == NULL) {
+            if (gpItemPointer == null) {
               // clean up
               memset(addressof(gMoveingItem), 0, sizeof(INVENTORY_IN_SLOT));
               SetSkiCursor(Enum317.CURSOR_NORMAL);
@@ -2094,7 +2094,7 @@ function HandleMouseOverSoldierFaceForContMove(pSoldier: Pointer<SOLDIERTYPE>, f
   let pFace: Pointer<FACETYPE>;
   let sGridNo: INT16;
 
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return;
   }
 
@@ -2132,7 +2132,7 @@ function HandleMouseOverSoldierFaceForContMove(pSoldier: Pointer<SOLDIERTYPE>, f
 }
 
 function SelectedMercButtonMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  if (gpSMCurrentMerc == NULL) {
+  if (gpSMCurrentMerc == null) {
     return;
   }
 
@@ -2146,7 +2146,7 @@ function SelectedMercButtonMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
 function SelectedMercButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let pVehicle: Pointer<SOLDIERTYPE>;
 
-  if (gpSMCurrentMerc == NULL) {
+  if (gpSMCurrentMerc == null) {
     return;
   }
 
@@ -2193,7 +2193,7 @@ function SelectedMercButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 }
 
 function SelectedMercEnemyIndicatorCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  if (gpSMCurrentMerc == NULL) {
+  if (gpSMCurrentMerc == null) {
     return;
   }
 
@@ -2256,7 +2256,7 @@ function BtnUpdownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     // gsInterfaceLevel = gpSMCurrentMerc->bUIInterfaceLevel;
 
     // Change interface level via HandleUI handler
-    UIHandleChangeLevel(NULL);
+    UIHandleChangeLevel(null);
 
     // Remember soldier's new value
     gpSMCurrentMerc.value.bUIInterfaceLevel = gsInterfaceLevel;
@@ -2527,7 +2527,7 @@ function BtnLookCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    ToggleLookCursorMode(NULL);
+    ToggleLookCursorMode(null);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
@@ -2688,7 +2688,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
     // Blit video surface
     // if(gbPixelDepth==16)
     //{
-    BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMPanel, 0, INTERFACE_START_X, INTERFACE_START_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMPanel, 0, INTERFACE_START_X, INTERFACE_START_Y, VO_BLT_SRCTRANSPARENCY, null);
     //}
     RestoreExternBackgroundRect(INTERFACE_START_X, INTERFACE_START_Y, (640 - INTERFACE_START_X), (480 - INTERFACE_START_Y));
 
@@ -2697,7 +2697,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
       // GET SOLDIER
       if (!gTeamPanel[cnt].fOccupied) {
         // BLIT CLOSE PANEL
-        BltVideoObjectFromIndex(guiSAVEBUFFER, guiCLOSE, 5, sTEAMFacesXY[posIndex], sTEAMFacesXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(guiSAVEBUFFER, guiCLOSE, 5, sTEAMFacesXY[posIndex], sTEAMFacesXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, null);
         RestoreExternBackgroundRect(sTEAMFacesXY[posIndex], sTEAMFacesXY[posIndex + 1], TM_FACE_WIDTH, TM_FACE_HEIGHT);
 
         // BLIT AP CLOSE PANEL
@@ -2707,7 +2707,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
 
         if (gTacticalStatus.ubCurrentTeam != OUR_TEAM || INTERRUPT_QUEUED()) {
           // Hatch out...
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMObjects, 1, sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMObjects, 1, sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, null);
           RestoreExternBackgroundRect(sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], TM_FACEHIGHTL_WIDTH, TM_FACEHIGHTL_HEIGHT);
         }
       } else {
@@ -2746,7 +2746,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
         if (gusSelectedSoldier == pSoldier.value.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(pSoldier)) {
           // if(gbPixelDepth==16)
           //{
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMObjects, 0, sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMObjects, 0, sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, null);
           RestoreExternBackgroundRect(sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], TM_FACEHIGHTL_WIDTH, TM_FACEHIGHTL_HEIGHT);
 
           // Render faceplate
@@ -2754,7 +2754,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
           // RestoreExternBackgroundRect( (INT16)(sTEAMFacesXY[ posIndex ] + TM_FACEPLATE_OFFSET_X), (INT16)(sTEAMFacesXY[ posIndex + 1 ] + TM_FACEPLATE_OFFSET_Y ), TM_FACEPLATE_WIDTH, TM_FACEPLATE_HEIGHT );
           //}
         } else if (gTacticalStatus.ubCurrentTeam != OUR_TEAM || !OK_INTERRUPT_MERC(pSoldier)) {
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMObjects, 1, sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMObjects, 1, sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, null);
           RestoreExternBackgroundRect(sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], TM_FACEHIGHTL_WIDTH, TM_FACEHIGHTL_HEIGHT);
           // Render non-selection
           // BltVideoObjectFromIndex( guiSAVEBUFFER, guiTEAMObjects, 4, sTEAMFaceHighlXY[ posIndex ], sTEAMFaceHighlXY[ posIndex + 1 ], VO_BLT_SRCTRANSPARENCY, NULL );
@@ -2946,7 +2946,7 @@ function BtnEndTurnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // END TURN
-    UIHandleEndTurn(NULL);
+    UIHandleEndTurn(null);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
@@ -3179,7 +3179,7 @@ function MercFacePanelCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!gfInItemPickupMenu && gpItemPointer == NULL) {
+    if (!gfInItemPickupMenu && gpItemPointer == null) {
       if (MercPtrs[ubSoldierID].value.uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
         pVehicle = GetSoldierStructureForVehicle(MercPtrs[ubSoldierID].value.iVehicleId);
 
@@ -3218,7 +3218,7 @@ function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
     return;
   }
 
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     // ATE: Disable for feel purposes....
     // return;
   }
@@ -3413,7 +3413,7 @@ function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void {
     //{
     if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
       RestoreExternBackgroundRect(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
-      BltVideoObjectFromIndex(FRAME_BUFFER, guiCLOSE, pSoldier.value.ubClosePanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, guiCLOSE, pSoldier.value.ubClosePanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, null);
       InvalidateRegion(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, pSoldier.value.sPanelFaceX + TM_FACE_WIDTH, pSoldier.value.sPanelFaceY + TM_FACE_HEIGHT);
     }
     //}
@@ -3437,10 +3437,10 @@ function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void {
 
         // Finish!
         if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiDEAD, pSoldier.value.ubDeadPanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiDEAD, pSoldier.value.ubDeadPanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
           // Blit hatch!
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiHATCH, 0, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiHATCH, 0, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
           RestoreExternBackgroundRect(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
         }
@@ -3455,10 +3455,10 @@ function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void {
     // if(gbPixelDepth==16)
     //{
     if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
-      BltVideoObjectFromIndex(FRAME_BUFFER, guiDEAD, pSoldier.value.ubDeadPanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, guiDEAD, pSoldier.value.ubDeadPanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
       // Blit hatch!
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiHATCH, 0, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiHATCH, 0, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
       InvalidateRegion(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, pSoldier.value.sPanelFaceX + TM_FACE_WIDTH, pSoldier.value.sPanelFaceY + TM_FACE_HEIGHT);
     }
@@ -3487,7 +3487,7 @@ function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void {
     //{
     if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
       RestoreExternBackgroundRect(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
-      BltVideoObjectFromIndex(FRAME_BUFFER, guiCLOSE, pSoldier.value.bOpenPanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, guiCLOSE, pSoldier.value.bOpenPanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, null);
       // InvalidateRegion( sTEAMFacesXY[ ubOpenPanelID ], sTEAMFacesXY[ ubOpenPanelID + 1 ], sTEAMFacesXY[ ubOpenPanelID ] + TM_FACE_WIDTH, sTEAMFacesXY[ ubOpenPanelID + 1 ] + TM_FACE_HEIGHT );
     }
     //}
@@ -3500,7 +3500,7 @@ function HandleSoldierFaceFlash(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, s
 function RenderSoldierTeamInv(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, ubPanelNum: UINT8, fDirty: BOOLEAN): void {
   if (pSoldier.value.bActive && !(pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
     if (pSoldier.value.uiStatusFlags & SOLDIER_DRIVER) {
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiVEHINV, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiVEHINV, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
       RestoreExternBackgroundRect(sX, sY, (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Look in primary hand
@@ -3508,7 +3508,7 @@ function RenderSoldierTeamInv(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT
     }
 
     if (pSoldier.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiVEHINV, 1, sX, (sY + TM_INV_HAND_SEPY), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiVEHINV, 1, sX, (sY + TM_INV_HAND_SEPY), VO_BLT_SRCTRANSPARENCY, null);
       RestoreExternBackgroundRect(sX, (sY + TM_INV_HAND_SEPY), (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Do secondary hand
@@ -3880,7 +3880,7 @@ function DisableTacticalTeamPanelButtons(fDisable: BOOLEAN): void {
 }
 
 function BeginKeyPanelFromKeyShortcut(): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let sStartYPosition: INT16 = 0;
   let sWidth: INT16 = 0;
   let sHeight: INT16 = 0;
@@ -3889,7 +3889,7 @@ function BeginKeyPanelFromKeyShortcut(): void {
     return;
   }
 
-  if (gpSMCurrentMerc == NULL) {
+  if (gpSMCurrentMerc == null) {
     return;
   }
 
@@ -3910,7 +3910,7 @@ function BeginKeyPanelFromKeyShortcut(): void {
 }
 
 function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let sStartYPosition: INT16 = 0;
   let sWidth: INT16 = 0;
   let sHeight: INT16 = 0;
@@ -3929,7 +3929,7 @@ function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
     sWidth = 261;
     sHeight = (359 - 107);
   } else {
-    if (gpSMCurrentMerc == NULL) {
+    if (gpSMCurrentMerc == null) {
       return;
     }
 
@@ -4015,7 +4015,7 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
     }
 
     // If we do not have an item in hand, start moving it
-    if (gpItemPointer == NULL) {
+    if (gpItemPointer == null) {
       // Return if empty
       if ((gpItemPopupSoldier.value.pKeyRing[uiKeyRing].ubKeyID == INVALID_KEY_NUMBER) || (gpItemPopupSoldier.value.pKeyRing[uiKeyRing].ubNumber == 0))
         return;
@@ -4261,7 +4261,7 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
       return;
 
     // if the player has an item in his hand,
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       // and the item is money
       if (Item[gpItemPointer.value.usItem].usItemClass == IC_MONEY) {
         let zText: CHAR16[] /* [512] */;
@@ -4285,9 +4285,9 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
             FreeMouseCursor();
           }
 
-          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmationToDepositMoneyToPlayersAccount, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmationToDepositMoneyToPlayersAccount, null);
         } else
-          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmationToDepositMoneyToPlayersAccount, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmationToDepositMoneyToPlayersAccount, null);
       }
     }
 
@@ -4348,7 +4348,7 @@ function AbandonBoxingCallback(ubExitValue: UINT8): void {
 function GoToMapScreenFromTactical(): void {
   if (gTacticalStatus.bBoxingState != Enum247.NOT_BOXING) {
     // pop up dialogue asking whether the player wants to abandon the fight
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_ABANDON_FIGHT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, AbandonBoxingCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_ABANDON_FIGHT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, AbandonBoxingCallback, null);
     return;
   }
   // ok, proceed!

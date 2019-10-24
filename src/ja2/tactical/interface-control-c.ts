@@ -195,7 +195,7 @@ function SetUpInterface(): void {
   if (gfUIShowCurIntTile) {
     pIntTile = GetCurInteractiveTileGridNo(addressof(gsUICurIntTileEffectGridNo));
 
-    if (pIntTile != NULL) {
+    if (pIntTile != null) {
       gusUICurIntTileEffectIndex = pIntTile.value.usIndex;
 
       // Shade green
@@ -251,7 +251,7 @@ function ResetInterface(): void {
       // Find our tile!
       pNode = gpWorldLevelData[gsUICurIntTileEffectGridNo].pStructHead;
 
-      while (pNode != NULL) {
+      while (pNode != null) {
         if (pNode.value.usIndex == gusUICurIntTileEffectIndex) {
           pNode.value.ubShadeLevel = gsUICurIntTileOldShade;
           pNode.value.uiFlags &= (~LEVELNODE_DYNAMIC);
@@ -320,10 +320,10 @@ function RenderRubberBanding(): void {
 
   if ((iRight - iLeft) > 0) {
     LineDraw(TRUE, iLeft, iTop, iRight, iTop, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iTop, (iRight + 1), (iTop + 1));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iLeft, iTop, (iRight + 1), (iTop + 1));
   } else if ((iRight - iLeft) < 0) {
     LineDraw(TRUE, iLeft, iTop, iRight, iTop, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iTop, (iLeft + 1), (iTop + 1));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iRight, iTop, (iLeft + 1), (iTop + 1));
   }
 
   if (iBack != -1) {
@@ -334,10 +334,10 @@ function RenderRubberBanding(): void {
 
   if ((iRight - iLeft) > 0) {
     LineDraw(TRUE, iLeft, iBottom, iRight, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iBottom, (iRight + 1), (iBottom + 1));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iLeft, iBottom, (iRight + 1), (iBottom + 1));
   } else if ((iRight - iLeft) < 0) {
     LineDraw(TRUE, iLeft, iBottom, iRight, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iBottom, (iLeft + 1), (iBottom + 1));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iRight, iBottom, (iLeft + 1), (iBottom + 1));
   }
 
   if (iBack != -1) {
@@ -348,10 +348,10 @@ function RenderRubberBanding(): void {
 
   if ((iBottom - iTop) > 0) {
     LineDraw(TRUE, iLeft, iTop, iLeft, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iTop, (iLeft + 1), iBottom);
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iLeft, iTop, (iLeft + 1), iBottom);
   } else if ((iBottom - iTop) < 0) {
     LineDraw(TRUE, iLeft, iTop, iLeft, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iBottom, (iLeft + 1), iTop);
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iLeft, iBottom, (iLeft + 1), iTop);
   }
 
   if (iBack != -1) {
@@ -362,10 +362,10 @@ function RenderRubberBanding(): void {
 
   if ((iBottom - iTop) > 0) {
     LineDraw(TRUE, iRight, iTop, iRight, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iTop, (iRight + 1), iBottom);
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iRight, iTop, (iRight + 1), iBottom);
   } else if ((iBottom - iTop) < 0) {
     LineDraw(TRUE, iRight, iTop, iRight, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iBottom, (iRight + 1), iTop);
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, iRight, iBottom, (iRight + 1), iTop);
   }
 
   if (iBack != -1) {
@@ -464,7 +464,7 @@ function RenderTopmostTacticalInterface(): void {
             sX -= 10;
             sY -= 10;
 
-            BltVideoObjectFromIndex(FRAME_BUFFER, uiBogTarget, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+            BltVideoObjectFromIndex(FRAME_BUFFER, uiBogTarget, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
             InvalidateRegion(sX, sY, sX + 20, sY + 20);
           }
         }
@@ -496,7 +496,7 @@ function RenderTopmostTacticalInterface(): void {
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
     pSoldier = MercSlots[cnt];
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if (pSoldier.value.ubID == gsSelectedGuy && gfUIHandleSelectionAboveGuy) {
       } else {
         DrawSelectedUIAboveGuy(pSoldier.value.ubID);
@@ -565,8 +565,8 @@ function RenderTopmostTacticalInterface(): void {
 
   RenderRubberBanding();
 
-  if (!gfInItemPickupMenu && gpItemPointer == NULL) {
-    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), NULL, TRUE);
+  if (!gfInItemPickupMenu && gpItemPointer == null) {
+    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
   }
 
   // CHECK IF OUR CURSOR IS OVER AN INV POOL
@@ -575,7 +575,7 @@ function RenderTopmostTacticalInterface(): void {
       if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
         // Check if we are over an item pool
         if (GetItemPool(gfUIOverItemPoolGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
-          let pStructure: Pointer<STRUCTURE> = NULL;
+          let pStructure: Pointer<STRUCTURE> = null;
           let sIntTileGridNo: INT16;
           let bZLevel: INT8 = 0;
           let sActionGridNo: INT16 = usMapPos;
@@ -605,7 +605,7 @@ function RenderTopmostTacticalInterface(): void {
 
           // Check if we are over an item pool
           if (GetItemPool(gfUIOverItemPoolGridNo, addressof(pItemPool), bCheckLevel)) {
-            let pStructure: Pointer<STRUCTURE> = NULL;
+            let pStructure: Pointer<STRUCTURE> = null;
             let sIntTileGridNo: INT16;
             let bZLevel: INT8 = 0;
             let sActionGridNo: INT16 = usMapPos;

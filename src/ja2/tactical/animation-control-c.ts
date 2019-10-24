@@ -3092,7 +3092,7 @@ function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBo
     case Enum194.STOCKYMALE:
     case Enum194.REGFEMALE:
 
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         // Are we on fire?
         if (pSoldier.value.usAnimState == Enum193.CHARIOTS_OF_FIRE || pSoldier.value.usAnimState == Enum193.BODYEXPLODING) {
           return 0;
@@ -3148,15 +3148,15 @@ function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState:
   let usAnimSurface: UINT16;
 
   // Delete any structure info!
-  if (pSoldier.value.pLevelNode != NULL) {
+  if (pSoldier.value.pLevelNode != null) {
     DeleteStructureFromWorld(pSoldier.value.pLevelNode.value.pStructureData);
-    pSoldier.value.pLevelNode.value.pStructureData = NULL;
+    pSoldier.value.pLevelNode.value.pStructureData = null;
   }
 
   usAnimSurface = LoadSoldierAnimationSurface(pSoldier, usAnimState);
 
   // Add structure info!
-  if (pSoldier.value.pLevelNode != NULL && !(pSoldier.value.uiStatusFlags & SOLDIER_PAUSEANIMOVE)) {
+  if (pSoldier.value.pLevelNode != null && !(pSoldier.value.uiStatusFlags & SOLDIER_PAUSEANIMOVE)) {
     AddMercStructureInfoFromAnimSurface(pSoldier.value.sGridNo, pSoldier, usAnimSurface, usAnimState);
   }
 
@@ -3376,7 +3376,7 @@ function GetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState:
 
   if (usAnimSurface != INVALID_ANIMATION_SURFACE) {
     // Ensure that it's loaded!
-    if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == NULL) {
+    if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == null) {
       ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "IAnimation Surface for Body %d, animation %S, surface %d not loaded.", pSoldier.value.ubBodyType, gAnimControl[usAnimState].zAnimStr, usAnimSurface);
       AnimDebugMsg(String("Surface Database: PROBLEMS!!!!!!"));
       usAnimSurface = INVALID_ANIMATION_SURFACE;

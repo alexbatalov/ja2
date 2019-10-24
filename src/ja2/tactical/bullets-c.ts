@@ -123,16 +123,16 @@ function RemoveBullet(iBullet: INT32): void {
 
     if (gBullets[iBullet].usFlags & (BULLET_FLAG_KNIFE)) {
       // Delete ani tile
-      if (gBullets[iBullet].pAniTile != NULL) {
+      if (gBullets[iBullet].pAniTile != null) {
         DeleteAniTile(gBullets[iBullet].pAniTile);
-        gBullets[iBullet].pAniTile = NULL;
+        gBullets[iBullet].pAniTile = null;
       }
 
       // Delete shadow
       if (gBullets[iBullet].usFlags & (BULLET_FLAG_KNIFE)) {
-        if (gBullets[iBullet].pShadowAniTile != NULL) {
+        if (gBullets[iBullet].pShadowAniTile != null) {
           DeleteAniTile(gBullets[iBullet].pShadowAniTile);
-          gBullets[iBullet].pShadowAniTile = NULL;
+          gBullets[iBullet].pShadowAniTile = null;
         }
       }
     }
@@ -205,7 +205,7 @@ function UpdateBullets(): void {
         // if ( !( gGameSettings.fOptions[ TOPTION_HIDE_BULLETS ] ) )
         {
           if (gBullets[uiCount].usFlags & (BULLET_FLAG_KNIFE)) {
-            if (gBullets[uiCount].pAniTile != NULL) {
+            if (gBullets[uiCount].pAniTile != null) {
               gBullets[uiCount].pAniTile.value.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
               gBullets[uiCount].pAniTile.value.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
               gBullets[uiCount].pAniTile.value.pLevelNode.value.sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
@@ -363,10 +363,10 @@ function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): BOOLEAN {
     if (gBullets[usCnt].ubFirerID != NOBODY)
       gBullets[usCnt].pFirer = addressof(Menptr[gBullets[usCnt].ubFirerID]);
     else
-      gBullets[usCnt].pFirer = NULL;
+      gBullets[usCnt].pFirer = null;
 
-    gBullets[usCnt].pAniTile = NULL;
-    gBullets[usCnt].pShadowAniTile = NULL;
+    gBullets[usCnt].pAniTile = null;
+    gBullets[usCnt].pShadowAniTile = null;
     gBullets[usCnt].iBullet = usCnt;
 
     HandleBulletSpecialFlags(gBullets[usCnt].iBullet);

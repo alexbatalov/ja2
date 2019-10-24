@@ -21,8 +21,8 @@ const TEXT_RJUSTIFIED = BUTTON_TEXT_RIGHT;
 
 // Some GUI_BUTTON system defines
 const BUTTON_USE_DEFAULT = -1;
-const BUTTON_NO_FILENAME = NULL;
-const BUTTON_NO_CALLBACK = NULL;
+const BUTTON_NO_FILENAME = null;
+const BUTTON_NO_CALLBACK = null;
 const BUTTON_NO_IMAGE = -1;
 const BUTTON_NO_SLOT = -1;
 
@@ -128,7 +128,7 @@ interface GUI_BUTTON {
 
 const MAX_BUTTONS = 400;
 
-const GetButtonPtr = (x) => (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonList[x] : NULL);
+const GetButtonPtr = (x) => (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonList[x] : null);
 
 // Struct definition for the QuickButton pictures.
 interface BUTTON_PICS {

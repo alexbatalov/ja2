@@ -313,7 +313,7 @@ function InitJA2SelectionWindow(): void {
   let usETRLEObjects: UINT16;
   let hVObject: HVOBJECT;
 
-  pDispList = NULL;
+  pDispList = null;
 
   // Init the display spec lists for the types of selection windows
 
@@ -703,7 +703,7 @@ function ShutdownJA2SelectionWindow(): void {
   for (x = 0; x < 4; x++)
     UnloadGenericButtonIcon(iButtonIcons[x]);
 
-  if (pDispList != NULL) {
+  if (pDispList != null) {
     pDispList = TrashList(pDispList);
   }
   gfRenderWorld = TRUE;
@@ -723,7 +723,7 @@ function RemoveJA2SelectionWindow(): void {
 
   gfRenderSquareArea = FALSE;
 
-  if (pDispList != NULL) {
+  if (pDispList != null) {
     pDispList = TrashList(pDispList);
   }
   gfRenderTaskbar = TRUE;
@@ -738,16 +738,16 @@ function RemoveJA2SelectionWindow(): void {
 //	Free the current display list for the selection window.
 //
 function TrashList(pNode: Pointer<DisplayList>): Pointer<DisplayList> {
-  if (pNode == NULL)
-    return NULL;
+  if (pNode == null)
+    return null;
 
-  if (pNode.value.pNext != NULL)
+  if (pNode.value.pNext != null)
     pNode.value.pNext = TrashList(pNode.value.pNext);
 
-  if (pNode.value.pNext == NULL)
+  if (pNode.value.pNext == null)
     MemFree(pNode);
 
-  return NULL;
+  return null;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -775,7 +775,7 @@ function RenderSelectionWindow(): void {
 
   if (gfRenderSquareArea) {
     button = ButtonList[iSelectWin];
-    if (button == NULL)
+    if (button == null)
       return;
 
     if ((abs(iStartClickX - button.value.Area.MouseXPos) > 9) || (abs(iStartClickY - (button.value.Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY)) > 9)) {
@@ -859,7 +859,7 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
     pNode = pDispList;
 
     fDone = FALSE;
-    while ((pNode != NULL) && !fDone) {
+    while ((pNode != null) && !fDone) {
       if ((iClickX >= pNode.value.iX) && (iClickX < (pNode.value.iX + pNode.value.iWidth)) && (iClickY >= pNode.value.iY) && (iClickY < (pNode.value.iY + pNode.value.iHeight))) {
         fDone = TRUE;
         if (RemoveFromSelectionList(pNode))
@@ -901,7 +901,7 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
         pNode = pDispList;
 
         fDone = FALSE;
-        while ((pNode != NULL) && !fDone) {
+        while ((pNode != null) && !fDone) {
           if ((iClickX >= pNode.value.iX) && (iClickX < (pNode.value.iX + pNode.value.iWidth)) && (iClickY >= pNode.value.iY) && (iClickY < (pNode.value.iY + pNode.value.iHeight))) {
             fDone = TRUE;
             AddToSelectionList(pNode);
@@ -931,7 +931,7 @@ function DisplaySelectionWindowGraphicalInformation(): void {
   y = gusMouseYPos + iTopWinCutOff - SelWinStartPoint.iY;
   pNode = pDispList;
   fDone = FALSE;
-  while ((pNode != NULL) && !fDone) {
+  while ((pNode != null) && !fDone) {
     if ((gusMouseXPos >= pNode.value.iX) && (gusMouseXPos < (pNode.value.iX + pNode.value.iWidth)) && (y >= pNode.value.iY) && (y < (pNode.value.iY + pNode.value.iHeight))) {
       fDone = TRUE;
       // pNode->fChosen = TRUE;
@@ -998,11 +998,11 @@ function ClearSelectionList(): BOOLEAN {
   let iIndex: INT32;
   let pNode: Pointer<DisplayList>;
 
-  if (pNumSelList == NULL)
+  if (pNumSelList == null)
     return FALSE;
 
   pNode = pDispList;
-  while (pNode != NULL) {
+  while (pNode != null) {
     pNode.value.fChosen = FALSE;
     pNode = pNode.value.pNext;
   }
@@ -1221,7 +1221,7 @@ function ScrollSelWinUp(): void {
   iCutOff = iTopWinCutOff;
 
   fDone = FALSE;
-  while ((pNode != NULL) && !fDone) {
+  while ((pNode != null) && !fDone) {
     if (pNode.value.iY >= iTopWinCutOff) {
       iCutOff = pNode.value.iY;
       pNode = pNode.value.pNext;
@@ -1250,7 +1250,7 @@ function ScrollSelWinDown(): void {
   iCutOff = iTopWinCutOff;
 
   fDone = FALSE;
-  while ((pNode != NULL) && !fDone) {
+  while ((pNode != null) && !fDone) {
     if (pNode.value.iY > iTopWinCutOff) {
       iCutOff = pNode.value.iY;
       pNode = pNode.value.pNext;
@@ -1402,7 +1402,7 @@ function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBott
   let usFillColor: UINT16;
   let sCount: INT16;
 
-  if (pNode == NULL)
+  if (pNode == null)
     return TRUE;
 
   if (pNode.value.iY < iTopCutOff)
@@ -1438,7 +1438,7 @@ function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBott
       sCount = pSelList[FindInSelectionList(pNode)].sCount;
 
     SetObjectShade(pNode.value.hObj, DEFAULT_SHADE_LEVEL);
-    fReturnVal = BltVideoObject(FRAME_BUFFER, pNode.value.hObj, pNode.value.uiIndex, pNode.value.iX, iCurrY, VO_BLT_SRCTRANSPARENCY, NULL);
+    fReturnVal = BltVideoObject(FRAME_BUFFER, pNode.value.hObj, pNode.value.uiIndex, pNode.value.iX, iCurrY, VO_BLT_SRCTRANSPARENCY, null);
 
     if (sCount != 0) {
       gprintf(pNode.value.iX, iCurrY, "%d", sCount);

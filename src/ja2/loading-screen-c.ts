@@ -321,7 +321,7 @@ function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   } else if (AddVideoSurface(addressof(vs_desc), addressof(uiLoadScreen))) {
     // Blit the background image
     GetVideoSurface(addressof(hVSurface), uiLoadScreen);
-    BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, 0, 0, 0, NULL);
+    BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, 0, 0, 0, null);
     DeleteVideoSurfaceFromIndex(uiLoadScreen);
   } else {
     // Failed to load the file, so use a black screen and print out message.
@@ -336,5 +336,5 @@ function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   InvalidateScreen();
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  RefreshScreen(NULL);
+  RefreshScreen(null);
 }

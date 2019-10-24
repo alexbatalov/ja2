@@ -50,7 +50,7 @@ function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   let uiBytesRead: UINT32;
   let fReturnVal: BOOLEAN = FALSE;
 
-  Assert(hImage != NULL);
+  Assert(hImage != null);
 
   CHECKF(FileExists(hImage.value.ImageFile));
 
@@ -184,7 +184,7 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
 
       hImage.value.p16BPPData = MemAlloc(iNumValues * (uiImagePixelSize / 8));
 
-      if (hImage.value.p16BPPData == NULL)
+      if (hImage.value.p16BPPData == null)
         goto("end");
 
       // Get data pointer
@@ -213,7 +213,7 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
     if (uiImagePixelSize == 24) {
       hImage.value.p8BPPData = MemAlloc(uiWidth * uiHeight * (uiImagePixelSize / 8));
 
-      if (hImage.value.p8BPPData == NULL)
+      if (hImage.value.p8BPPData == null)
         goto("end");
 
       // Get data pointer

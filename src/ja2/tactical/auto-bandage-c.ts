@@ -1,7 +1,7 @@
 // max number of merc faces per row in autobandage box
 const NUMBER_MERC_FACES_AUTOBANDAGE_BOX = 4;
 
-let sAutoBandageString: STR16 = NULL;
+let sAutoBandageString: STR16 = null;
 let giBoxId: INT32 = -1;
 let gusTextBoxWidth: UINT16 = 0;
 let gusTextBoxHeight: UINT16 = 0;
@@ -38,7 +38,7 @@ function BeginAutoBandage(): void {
 
   // If we are in combat, we con't...
   if ((gTacticalStatus.uiFlags & INCOMBAT) || (NumEnemyInSector() != 0)) {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_SECTOR_NOT_CLEARED], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_SECTOR_NOT_CLEARED], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
     return;
   }
 
@@ -66,22 +66,22 @@ function BeginAutoBandage(): void {
   }
 
   if (!fFoundAGuy) {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.AUTOBANDAGE_NOT_NEEDED], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.AUTOBANDAGE_NOT_NEEDED], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
   } else if (!fFoundAMedKit) {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[9], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[9], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
   } else {
     if (!CanAutoBandage(FALSE)) {
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.CANT_AUTOBANDAGE_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.CANT_AUTOBANDAGE_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
     } else {
       // Confirm if we want to start or not....
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.BEGIN_AUTOBANDAGE_PROMPT_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, BeginAutoBandageCallBack, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.BEGIN_AUTOBANDAGE_PROMPT_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, BeginAutoBandageCallBack, null);
     }
   }
 }
 
 function HandleAutoBandagePending(): void {
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // OK, if we have a pending autobandage....
   // check some conditions
@@ -93,7 +93,7 @@ function HandleAutoBandagePending(): void {
     }
 
     // If there is no actively talking guy...
-    if (gpCurrentTalkingFace != NULL) {
+    if (gpCurrentTalkingFace != null) {
       return;
     }
 
@@ -151,7 +151,7 @@ function HandleAutoBandage(): BOOLEAN {
       // Shadow area
       ShadowVideoSurfaceRect(FRAME_BUFFER, 0, 0, 640, 480);
       InvalidateScreen();
-      RefreshScreen(NULL);
+      RefreshScreen(null);
     }
 
     DisplayAutoBandageUpdatePanel();
@@ -376,7 +376,7 @@ function AutoBandage(fStart: BOOLEAN): void {
 
     if (gfAutoBandageFailed) {
       // inform player some mercs could not be bandaged
-      DoScreenIndependantMessageBox(pDoctorWarningString[1], MSG_BOX_FLAG_OK, NULL);
+      DoScreenIndependantMessageBox(pDoctorWarningString[1], MSG_BOX_FLAG_OK, null);
       gfAutoBandageFailed = FALSE;
     }
   }
@@ -560,7 +560,7 @@ function DisplayAutoBandageUpdatePanel(): void {
       sCurrentYPosition = sYPosition + (iCounterA * TACT_UPDATE_MERC_FACE_X_HEIGHT);
 
       // slap down background piece
-      BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 15, sCurrentXPosition, sCurrentYPosition, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 15, sCurrentXPosition, sCurrentYPosition, VO_BLT_SRCTRANSPARENCY, null);
 
       iIndex = iCounterA * iNumberDoctorsWide + iCounterB;
 
@@ -591,13 +591,13 @@ function DisplayAutoBandageUpdatePanel(): void {
 
   for (iCounterB = 0; iCounterB < iNumberPatientsWide; iCounterB++) {
     // slap down background piece
-    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 16, sXPosition + (iCounterB * TACT_UPDATE_MERC_FACE_X_WIDTH), sCurrentYPosition + (TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
-    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 16, sXPosition + (iCounterB * TACT_UPDATE_MERC_FACE_X_WIDTH), sYPosition - 9, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 16, sXPosition + (iCounterB * TACT_UPDATE_MERC_FACE_X_WIDTH), sCurrentYPosition + (TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 16, sXPosition + (iCounterB * TACT_UPDATE_MERC_FACE_X_WIDTH), sYPosition - 9, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // bordering patient title
-  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 11, sXPosition - 4, sYPosition + ((iNumberDoctorsHigh)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 13, sXPosition + iTotalPixelsWide, sYPosition + ((iNumberDoctorsHigh)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 11, sXPosition - 4, sYPosition + ((iNumberDoctorsHigh)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 13, sXPosition + iTotalPixelsWide, sYPosition + ((iNumberDoctorsHigh)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
 
   SetFont(TINYFONT1());
   SetFontForeground(FONT_WHITE);
@@ -622,7 +622,7 @@ function DisplayAutoBandageUpdatePanel(): void {
       sCurrentYPosition = sYPosition + ((iCounterA + iNumberDoctorsHigh) * TACT_UPDATE_MERC_FACE_X_HEIGHT);
 
       // slap down background piece
-      BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 15, sCurrentXPosition, sCurrentYPosition, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 15, sCurrentXPosition, sCurrentYPosition, VO_BLT_SRCTRANSPARENCY, null);
 
       iIndex = iCounterA * iNumberPatientsWide + iCounterB;
 
@@ -651,8 +651,8 @@ function DisplayAutoBandageUpdatePanel(): void {
 
   // bordering patients squares
   for (iCounterA = 0; iCounterA < iNumberPatientsHigh; iCounterA++) {
-    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 3, sXPosition - 4, sYPosition + ((iCounterA + iNumberDoctorsHigh) * TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
-    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 5, sXPosition + iTotalPixelsWide, sYPosition + ((iCounterA + iNumberDoctorsHigh) * TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 3, sXPosition - 4, sYPosition + ((iCounterA + iNumberDoctorsHigh) * TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 5, sXPosition + iTotalPixelsWide, sYPosition + ((iCounterA + iNumberDoctorsHigh) * TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // back up 11 pixels
@@ -660,35 +660,35 @@ function DisplayAutoBandageUpdatePanel(): void {
 
   // pieces bordering doctor squares
   for (iCounterA = 0; iCounterA < iNumberDoctorsHigh; iCounterA++) {
-    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 3, sXPosition - 4, sYPosition + ((iCounterA)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
-    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 5, sXPosition + iTotalPixelsWide, sYPosition + ((iCounterA)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 3, sXPosition - 4, sYPosition + ((iCounterA)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 5, sXPosition + iTotalPixelsWide, sYPosition + ((iCounterA)*TACT_UPDATE_MERC_FACE_X_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // bordering doctor title
-  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 11, sXPosition - 4, sYPosition - 9, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 13, sXPosition + iTotalPixelsWide, sYPosition - 9, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 11, sXPosition - 4, sYPosition - 9, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 13, sXPosition + iTotalPixelsWide, sYPosition - 9, VO_BLT_SRCTRANSPARENCY, null);
 
   // now the top pieces
   for (iCounterA = 0; iCounterA < iNumberPatientsWide; iCounterA++) {
     // the top bottom
-    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 1, sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH * (iCounterA), sYPosition - 13, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 1, sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH * (iCounterA), sYPosition - 13, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // the top corners
-  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 0, sXPosition - 4, sYPosition - 13, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 2, sXPosition + iTotalPixelsWide, sYPosition - 13, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 0, sXPosition - 4, sYPosition - 13, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 2, sXPosition + iTotalPixelsWide, sYPosition - 13, VO_BLT_SRCTRANSPARENCY, null);
 
   iTotalPixelsHigh += 9;
 
   // the bottom
-  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 17, sXPosition - 4, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 18, sXPosition + iTotalPixelsWide - TACT_UPDATE_MERC_FACE_X_WIDTH, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 17, sXPosition - 4, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 18, sXPosition + iTotalPixelsWide - TACT_UPDATE_MERC_FACE_X_WIDTH, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, null);
 
   if (iNumberPatientsWide == 2) {
-    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 6, sXPosition - 4, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 6, sXPosition - 4, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, null);
     CreateTerminateAutoBandageButton((sXPosition), (sYPosition + iTotalPixelsHigh + 3));
   } else {
-    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 6, sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH - 4, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 6, sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH - 4, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, null);
     CreateTerminateAutoBandageButton((sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH), (sYPosition + iTotalPixelsHigh + 3));
   }
 
@@ -875,7 +875,7 @@ function RemoveFacesForAutoBandage(): BOOLEAN {
 
 function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosition: INT16, sCurrentYPosition: INT16): BOOLEAN {
   let iStartY: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
   let iIndexCount: INT32 = 0;
   let hHandle: HVOBJECT;
@@ -887,10 +887,10 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, sCurrentYPosition + 2, sCurrentXPosition + 44, sCurrentYPosition + 30, 0);
 
   // put down the background
-  BltVideoObjectFromIndex(FRAME_BUFFER, giMercPanelImage, 0, sCurrentXPosition, sCurrentYPosition, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(FRAME_BUFFER, giMercPanelImage, 0, sCurrentXPosition, sCurrentYPosition, VO_BLT_SRCTRANSPARENCY, null);
 
   // grab the face
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, sCurrentXPosition + 2, sCurrentYPosition + 2, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, sCurrentXPosition + 2, sCurrentYPosition + 2, VO_BLT_SRCTRANSPARENCY, null);
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // find a free slot

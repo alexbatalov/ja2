@@ -58,7 +58,7 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
   let uiNumberOfElementsSavedBackToFile: UINT32 = 0; // added becuase if no files get saved back to disk, the flag needs to be erased
   let cnt: UINT32;
   let pMap: Pointer<MODIFY_MAP>;
-  let pTempArrayOfMaps: Pointer<MODIFY_MAP> = NULL;
+  let pTempArrayOfMaps: Pointer<MODIFY_MAP> = null;
   let usIndex: UINT16;
 
   // Convert the current sector location into a file name
@@ -87,7 +87,7 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
 
   // Allocate memory for the buffer
   pTempArrayOfMaps = MemAlloc(uiFileSize);
-  if (pTempArrayOfMaps == NULL) {
+  if (pTempArrayOfMaps == null) {
     Assert(0);
     return TRUE;
   }
@@ -239,7 +239,7 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
 
   // Free the memory used for the temp array
   MemFree(pTempArrayOfMaps);
-  pTempArrayOfMaps = NULL;
+  pTempArrayOfMaps = null;
 
   return TRUE;
 }
@@ -366,7 +366,7 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
   let pStructure: Pointer<STRUCTURE>;
 
   gpRevealedMap = MemAlloc(NUM_REVEALED_BYTES);
-  if (gpRevealedMap == NULL)
+  if (gpRevealedMap == null)
     AssertMsg(0, "Failed allocating memory for the revealed map");
   memset(gpRevealedMap, 0, NUM_REVEALED_BYTES);
 
@@ -467,7 +467,7 @@ function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: IN
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
 
-  Assert(gpRevealedMap != NULL);
+  Assert(gpRevealedMap != null);
 
   // Convert the current sector location into a file name
   //	GetMapFileName( gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTempName, FALSE );
@@ -497,7 +497,7 @@ function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: IN
   SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_REVEALED_STATUS_TEMP_FILE_EXISTS);
 
   MemFree(gpRevealedMap);
-  gpRevealedMap = NULL;
+  gpRevealedMap = null;
 
   return TRUE;
 }
@@ -529,9 +529,9 @@ function LoadRevealedStatusArrayFromRevealedTempFile(): BOOLEAN {
   }
 
   // Allocate memory
-  Assert(gpRevealedMap == NULL);
+  Assert(gpRevealedMap == null);
   gpRevealedMap = MemAlloc(NUM_REVEALED_BYTES);
-  if (gpRevealedMap == NULL)
+  if (gpRevealedMap == null)
     AssertMsg(0, "Failed allocating memory for the revealed map");
   memset(gpRevealedMap, 0, NUM_REVEALED_BYTES);
 
@@ -547,7 +547,7 @@ function LoadRevealedStatusArrayFromRevealedTempFile(): BOOLEAN {
   SetMapRevealedStatus();
 
   MemFree(gpRevealedMap);
-  gpRevealedMap = NULL;
+  gpRevealedMap = null;
 
   return TRUE;
 }
@@ -567,7 +567,7 @@ function SetMapRevealedStatus(): void {
   let ubBitCnt: UINT8;
   let usMapIndex: UINT16;
 
-  if (gpRevealedMap == NULL)
+  if (gpRevealedMap == null)
     AssertMsg(0, "gpRevealedMap is NULL.  DF 1");
 
   ClearSlantRoofs();
@@ -591,7 +591,7 @@ function SetMapRevealedStatus(): void {
 }
 
 function DamageStructsFromMapTempFile(pMap: Pointer<MODIFY_MAP>): void {
-  let pCurrent: Pointer<STRUCTURE> = NULL;
+  let pCurrent: Pointer<STRUCTURE> = null;
   let bLevel: INT8;
   let ubWallOrientation: UINT8;
   let ubBitToSet: UINT8 = 0x80;
@@ -601,7 +601,7 @@ function DamageStructsFromMapTempFile(pMap: Pointer<MODIFY_MAP>): void {
   // Find the base structure
   pCurrent = FindStructure(pMap.value.usGridNo, STRUCTURE_BASE_TILE);
 
-  if (pCurrent == NULL)
+  if (pCurrent == null)
     return;
 
   bLevel = pMap.value.ubExtra & ubBitToSet;
@@ -611,7 +611,7 @@ function DamageStructsFromMapTempFile(pMap: Pointer<MODIFY_MAP>): void {
   // Check to see if the desired strucure node is in this tile
   pCurrent = FindStructureBySavedInfo(pMap.value.usGridNo, ubType, ubWallOrientation, bLevel);
 
-  if (pCurrent != NULL) {
+  if (pCurrent != null) {
     // Assign the hitpoints
     pCurrent.value.ubHitPoints = (pMap.value.usSubImageIndex);
 
@@ -742,7 +742,7 @@ function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
-  let pTempArrayOfMaps: Pointer<MODIFY_MAP> = NULL;
+  let pTempArrayOfMaps: Pointer<MODIFY_MAP> = null;
   let pMap: Pointer<MODIFY_MAP>;
   let uiFileSize: UINT32;
   let uiNumberOfElements: UINT32;
@@ -777,7 +777,7 @@ function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX
 
   // Allocate memory for the buffer
   pTempArrayOfMaps = MemAlloc(uiFileSize);
-  if (pTempArrayOfMaps == NULL) {
+  if (pTempArrayOfMaps == null) {
     Assert(0);
     return FALSE;
   }
@@ -863,7 +863,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOO
 
   pStructure = FindStructure(uiMapIndex, STRUCTURE_OPENABLE);
 
-  if (pStructure == NULL) {
+  if (pStructure == null) {
     //		ScreenMsg( FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"SetOpenableStructStatusFromMapTempFile( %d, %d ) failed to find the openable struct.  DF 1.", uiMapIndex, fOpened );
     return;
   }
@@ -879,7 +879,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOO
       sBaseGridNo = pBase.value.sGridNo;
     }
 
-    if (SwapStructureForPartnerWithoutTriggeringSwitches(uiMapIndex, pStructure) == NULL) {
+    if (SwapStructureForPartnerWithoutTriggeringSwitches(uiMapIndex, pStructure) == null) {
       // an error occured
     }
 
@@ -910,7 +910,7 @@ function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSecto
   let uiNumberOfElementsSavedBackToFile: UINT32 = 0; // added becuase if no files get saved back to disk, the flag needs to be erased
   let cnt: UINT32;
   let pMap: Pointer<MODIFY_MAP>;
-  let pTempArrayOfMaps: Pointer<MODIFY_MAP> = NULL;
+  let pTempArrayOfMaps: Pointer<MODIFY_MAP> = null;
   //	UINT16	usIndex;
 
   // Convert the current sector location into a file name
@@ -939,7 +939,7 @@ function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSecto
 
   // Allocate memory for the buffer
   pTempArrayOfMaps = MemAlloc(uiFileSize);
-  if (pTempArrayOfMaps == NULL) {
+  if (pTempArrayOfMaps == null) {
     Assert(0);
     return TRUE;
   }

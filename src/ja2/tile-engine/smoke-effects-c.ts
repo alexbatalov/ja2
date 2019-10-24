@@ -314,7 +314,7 @@ function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
 
   pAniTile = GetCachedAniTileOfType(sGridNo, ubLevelID, ANITILE_SMOKE_EFFECT);
 
-  if (pAniTile != NULL) {
+  if (pAniTile != null) {
     DeleteAniTile(pAniTile);
 
     SetRenderFlags(RENDER_FLAG_FULL);
@@ -322,7 +322,7 @@ function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
 
   // Unset flags in world....
   // ( // check to see if we are the last one....
-  if (GetCachedAniTileOfType(sGridNo, ubLevelID, ANITILE_SMOKE_EFFECT) == NULL) {
+  if (GetCachedAniTileOfType(sGridNo, ubLevelID, ANITILE_SMOKE_EFFECT) == null) {
     gpWorldLevelData[sGridNo].ubExtFlags[bLevel] &= (~ANY_SMOKE_EFFECT);
   }
 }

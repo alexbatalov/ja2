@@ -507,12 +507,12 @@ function RenderOptionsScreen(): void {
 
   // Get and display the background image
   GetVideoObject(addressof(hPixHandle), guiOptionBackGroundImage);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
   // Get and display the titla image
   GetVideoObject(addressof(hPixHandle), guiOptionsAddOnImages);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 1, 0, 434, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 1, 0, 434, VO_BLT_SRCTRANSPARENCY, null);
 
   //
   // Text for the toggle boxes
@@ -763,7 +763,7 @@ function HandleOptionToggle(ubButton: UINT8, fState: BOOLEAN, fDown: BOOLEAN, fP
           ButtonList[guiOptionsToggles[ubButton]].value.uiFlags |= BUTTON_CLICKED_ON;
 
           // Confirm the Exit to the main menu screen
-          DoOptionsMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zOptionsText[Enum372.OPT_NEED_AT_LEAST_SPEECH_OR_SUBTITLE_OPTION_ON], Enum26.OPTIONS_SCREEN, MSG_BOX_FLAG_OK, NULL);
+          DoOptionsMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zOptionsText[Enum372.OPT_NEED_AT_LEAST_SPEECH_OR_SUBTITLE_OPTION_ON], Enum26.OPTIONS_SCREEN, MSG_BOX_FLAG_OK, null);
           gfExitOptionsDueToMessageBox = FALSE;
         }
       }
@@ -885,7 +885,7 @@ function HandleSliderBarMovementSounds(): void {
     guiSpeechSliderMoving = 0xffffffff;
 
     if (!SoundIsPlaying(uiLastPlayingSpeechID))
-      uiLastPlayingSpeechID = PlayJA2GapSample("BattleSnds\\m_cool.wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN, NULL);
+      uiLastPlayingSpeechID = PlayJA2GapSample("BattleSnds\\m_cool.wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN, null);
   } else
     uiLastSpeechTime = GetJA2Clock();
 }

@@ -80,7 +80,7 @@ function DecideActionSchedule(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           }
 
           pStructure = FindStructure(usGridNo1, STRUCTURE_ANYDOOR);
-          if (pStructure == NULL) {
+          if (pStructure == null) {
             fDoUseDoor = FALSE;
           } else {
             // action-specific tests to not handle the door
@@ -171,7 +171,7 @@ function DecideActionSchedule(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           }
 
           pStructure = FindStructure(usGridNo1, STRUCTURE_ANYDOOR);
-          if (pStructure == NULL) {
+          if (pStructure == null) {
             fDoUseDoor = FALSE;
           } else {
             fDoUseDoor = TRUE;
@@ -387,7 +387,7 @@ function DecideActionBoxerEnteringRing(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom))) {
     if (ubRoom == BOXING_RING) {
       // look towards nearest player
-      sDesiredMercLoc = ClosestPC(pSoldier, NULL);
+      sDesiredMercLoc = ClosestPC(pSoldier, null);
       if (sDesiredMercLoc != NOWHERE) {
         // see if we are facing this person
         ubDesiredMercDir = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(sDesiredMercLoc), CenterY(sDesiredMercLoc));
@@ -527,7 +527,7 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
               // character then didn't trigger the end of boxing record
               // (and we know from the if statement above that we're
               // still in a boxing state of some sort...)
-              TriggerEndOfBoxingRecord(NULL);
+              TriggerEndOfBoxingRecord(null);
             }
           }
         }
@@ -2002,7 +2002,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
 
         // if HIDING is possible and at least as desirable as seeking or helping
         if ((bHidePts > -90) && (bHidePts >= bSeekPts) && (bHidePts >= bHelpPts) && (bHidePts >= bWatchPts)) {
-          sClosestOpponent = ClosestKnownOpponent(pSoldier, NULL, NULL);
+          sClosestOpponent = ClosestKnownOpponent(pSoldier, null, null);
           // if an opponent is known (not necessarily reachable or conscious)
           if (!SkipCoverCheck && sClosestOpponent != NOWHERE) {
             //////////////////////////////////////////////////////////////////////
@@ -2079,7 +2079,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
   if (!gfTurnBasedAI || GetAPsToLook(pSoldier) <= pSoldier.value.bActionPoints) {
     // determine the location of the known closest opponent
     // (don't care if he's conscious, don't care if he's reachable at all)
-    sClosestOpponent = ClosestKnownOpponent(pSoldier, NULL, NULL);
+    sClosestOpponent = ClosestKnownOpponent(pSoldier, null, null);
 
     if (sClosestOpponent != NOWHERE) {
       // determine direction from this soldier to the closest opponent
@@ -2116,7 +2116,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
   if (TANK(pSoldier)) {
     // try turning in a random direction as we still can't see anyone.
     if (!gfTurnBasedAI || GetAPsToLook(pSoldier) <= pSoldier.value.bActionPoints) {
-      sClosestDisturbance = MostImportantNoiseHeard(pSoldier, NULL, NULL, NULL);
+      sClosestDisturbance = MostImportantNoiseHeard(pSoldier, null, null, null);
       if (sClosestDisturbance != NOWHERE) {
         ubOpponentDir = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(sClosestDisturbance), CenterY(sClosestDisturbance));
         if (pSoldier.value.bDirection == ubOpponentDir) {
@@ -2207,7 +2207,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
 
   // if not in water and not already crouched, try to crouch down first
   if (!fCivilian && !bInWater && (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND) && IsValidStance(pSoldier, ANIM_CROUCH)) {
-    sClosestOpponent = ClosestKnownOpponent(pSoldier, NULL, NULL);
+    sClosestOpponent = ClosestKnownOpponent(pSoldier, null, null);
 
     if ((sClosestOpponent != NOWHERE && PythSpacesAway(pSoldier.value.sGridNo, sClosestOpponent) < (MaxDistanceVisible() * 3) / 2) || PreRandom(4) == 0) {
       if (!gfTurnBasedAI || GetAPsToChangeStance(pSoldier, ANIM_CROUCH) <= pSoldier.value.bActionPoints) {
@@ -2222,7 +2222,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
   ////////////////////////////////////////////////////////////////////////////
 
   if (!fCivilian && pSoldier.value.bUnderFire && pSoldier.value.bActionPoints >= (pSoldier.value.bInitialActionPoints - GetAPsToLook(pSoldier)) && IsValidStance(pSoldier, ANIM_PRONE)) {
-    sClosestDisturbance = MostImportantNoiseHeard(pSoldier, NULL, NULL, NULL);
+    sClosestDisturbance = MostImportantNoiseHeard(pSoldier, null, null, null);
     if (sClosestDisturbance != NOWHERE) {
       ubOpponentDir = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(sClosestDisturbance), CenterY(sClosestDisturbance));
       if (pSoldier.value.bDirection != ubOpponentDir) {
@@ -3047,7 +3047,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // try to make boxer close if possible
   if (pSoldier.value.uiStatusFlags & SOLDIER_BOXER) {
     if (ubCanMove) {
-      sClosestOpponent = ClosestSeenOpponent(pSoldier, NULL, NULL);
+      sClosestOpponent = ClosestSeenOpponent(pSoldier, null, null);
       if (sClosestOpponent != NOWHERE) {
         // temporarily make boxer have orders of CLOSEPATROL rather than STATIONARY
         // so he has a good roaming range
@@ -3130,7 +3130,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
             // determine the location of the known closest opponent
             // (don't care if he's conscious, don't care if he's reachable at all)
 
-            sClosestOpponent = ClosestSeenOpponent(pSoldier, NULL, NULL);
+            sClosestOpponent = ClosestSeenOpponent(pSoldier, null, null);
             // if we have a closest seen opponent
             if (sClosestOpponent != NOWHERE) {
               bDirection = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(sClosestOpponent), CenterY(sClosestOpponent));
@@ -3175,7 +3175,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // determine the location of the known closest opponent
       // (don't care if he's conscious, don't care if he's reachable at all)
 
-      sClosestOpponent = ClosestSeenOpponent(pSoldier, NULL, NULL);
+      sClosestOpponent = ClosestSeenOpponent(pSoldier, null, null);
       // if we have a closest reachable opponent
       if (sClosestOpponent != NOWHERE) {
         bDirection = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(sClosestOpponent), CenterY(sClosestOpponent));

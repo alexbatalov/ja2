@@ -97,7 +97,7 @@ function InitializeHelicopter(): void {
 
   fSkyRiderAvailable = FALSE;
   fSkyRiderSetUp = FALSE;
-  pSkyRider = NULL;
+  pSkyRider = null;
   memset(addressof(SoldierSkyRider), 0, sizeof(SoldierSkyRider));
 
   fHelicopterIsAirBorne = FALSE;
@@ -107,7 +107,7 @@ function InitializeHelicopter(): void {
   uiStartHoverTime = 0;
 
   fPlotForHelicopter = FALSE;
-  pTempHelicopterPath = NULL;
+  pTempHelicopterPath = null;
 
   //	iTotalHeliDistanceSinceRefuel = 0;
   iTotalAccumulatedCostByPlayer = 0;
@@ -585,7 +585,7 @@ function DoesSkyriderNoticeEnemiesInSector(ubNumEnemies: UINT8): BOOLEAN {
 
 // if the heli is on the move, what is the distance it will move..the length of the merc path, less the first node
 function DistanceOfIntendedHelicopterPath(): INT32 {
-  let pNode: PathStPtr = NULL;
+  let pNode: PathStPtr = null;
   let iLength: INT32 = 0;
 
   if (CanHelicopterFly() == FALSE) {
@@ -596,7 +596,7 @@ function DistanceOfIntendedHelicopterPath(): INT32 {
   pNode = pVehicleList[iHelicopterVehicleId].pMercPath;
 
   // any path yet?
-  if (pNode != NULL) {
+  if (pNode != null) {
     while (pNode.value.pNext) {
       iLength++;
       pNode = pNode.value.pNext;
@@ -606,7 +606,7 @@ function DistanceOfIntendedHelicopterPath(): INT32 {
   pNode = MoveToBeginningOfPathList(pTempHelicopterPath);
 
   // any path yet?
-  if (pNode != NULL) {
+  if (pNode != null) {
     while (pNode.value.pNext) {
       iLength++;
       pNode = pNode.value.pNext;
@@ -643,7 +643,7 @@ function SetUpHelicopterForMovement(): void {
 
     // add everyone in vehicle to this mvt group
     for (iCounter = 0; iCounter < iSeatingCapacities[pVehicleList[iHelicopterVehicleId].ubVehicleType]; iCounter++) {
-      if (pVehicleList[iHelicopterVehicleId].pPassengers[iCounter] != NULL) {
+      if (pVehicleList[iHelicopterVehicleId].pPassengers[iCounter] != null) {
         // add character
         AddPlayerToGroup(pVehicleList[iHelicopterVehicleId].ubMovementGroup, pVehicleList[iHelicopterVehicleId].pPassengers[iCounter]);
       }
@@ -699,7 +699,7 @@ function UpdateRefuelSiteAvailability(): void {
       if (!fHelicopterAvailable && !fHelicopterDestroyed && fSkyRiderAvailable && (iHelicopterVehicleId != -1)) {
         if ((pVehicleList[iHelicopterVehicleId].sSectorX == ubRefuelList[iCounter][0]) && (pVehicleList[iHelicopterVehicleId].sSectorY == ubRefuelList[iCounter][1])) {
           // no longer grounded
-          DoScreenIndependantMessageBox(pSkyriderText[5], MSG_BOX_FLAG_OK, NULL);
+          DoScreenIndependantMessageBox(pSkyriderText[5], MSG_BOX_FLAG_OK, null);
         }
       }
     }
@@ -756,7 +756,7 @@ function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
     // get passenger
     pSoldier = pVehicleList[iHelicopterVehicleId].pPassengers[iCounter];
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       // better really be in there!
       Assert(pSoldier.value.bAssignment == Enum117.VEHICLE);
       Assert(pSoldier.value.iVehicleId == iHelicopterVehicleId);
@@ -1040,7 +1040,7 @@ function HandleAnimationOfSectors(): void {
 
 function LastSectorInHelicoptersPath(): INT16 {
   // get the last sector value in the helictoper's path
-  let pNode: PathStPtr = NULL;
+  let pNode: PathStPtr = null;
   let uiLocation: UINT32 = 0;
 
   // if the heli is on the move, what is the distance it will move..the length of the merc path, less the first node
@@ -1054,7 +1054,7 @@ function LastSectorInHelicoptersPath(): INT16 {
   pNode = pVehicleList[iHelicopterVehicleId].pMercPath;
 
   // any path yet?
-  if (pNode != NULL) {
+  if (pNode != null) {
     while (pNode) {
       uiLocation = pNode.value.uiSectorId;
 
@@ -1064,7 +1064,7 @@ function LastSectorInHelicoptersPath(): INT16 {
 
   pNode = MoveToBeginningOfPathList(pTempHelicopterPath);
   // any path yet?
-  if (pNode != NULL) {
+  if (pNode != null) {
     while (pNode) {
       uiLocation = pNode.value.uiSectorId;
 
@@ -1274,7 +1274,7 @@ function HandleHelicopterOnGroundGraphic(): void {
           pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, FALSE);
 
           // ATE: Don't do this if buddy is on our team!
-          if (pSoldier != NULL && pSoldier.value.bTeam != gbPlayerNum) {
+          if (pSoldier != null && pSoldier.value.bTeam != gbPlayerNum) {
             TacticalRemoveSoldier(pSoldier.value.ubID);
           }
         }
@@ -1319,7 +1319,7 @@ function HandleHelicopterOnGroundSkyriderProfile(): void {
           pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, FALSE);
 
           // ATE: Don't do this if buddy is on our team!
-          if (pSoldier != NULL && pSoldier.value.bTeam != gbPlayerNum) {
+          if (pSoldier != null && pSoldier.value.bTeam != gbPlayerNum) {
             TacticalRemoveSoldier(pSoldier.value.ubID);
           }
         }
@@ -1504,11 +1504,11 @@ function HandleSAMSiteAttackOfHelicopterInSector(sSectorX: INT16, sSectorY: INT1
 
 // are we at the end of the path for the heli?
 function EndOfHelicoptersPath(): BOOLEAN {
-  if (pVehicleList[iHelicopterVehicleId].pMercPath == NULL) {
+  if (pVehicleList[iHelicopterVehicleId].pMercPath == null) {
     return TRUE;
   }
 
-  if (pVehicleList[iHelicopterVehicleId].pMercPath.value.pNext == NULL) {
+  if (pVehicleList[iHelicopterVehicleId].pMercPath.value.pNext == null) {
     return TRUE;
   }
 
@@ -1624,7 +1624,7 @@ function IsGroupTheHelicopterGroup(pGroup: Pointer<GROUP>): BOOLEAN {
 
 function GetNumSafeSectorsInPath(): INT16 {
   // get the last sector value in the helictoper's path
-  let pNode: PathStPtr = NULL;
+  let pNode: PathStPtr = null;
   let uiLocation: UINT32 = 0;
   let uiCount: UINT32 = 0;
   let iHeliSector: INT32 = -1;
@@ -1645,10 +1645,10 @@ function GetNumSafeSectorsInPath(): INT16 {
   pNode = pVehicleList[iHelicopterVehicleId].pMercPath;
 
   // any path yet?
-  if (pNode != NULL) {
+  if (pNode != null) {
     // first node: skip it if that's the sector the chopper is currently in, AND
     // we're NOT gonna be changing directions (not actually performed until waypoints are rebuilt AFTER plotting is done)
-    if ((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) {
+    if ((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != null) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) {
       pNode = pNode.value.pNext;
     }
 
@@ -1665,11 +1665,11 @@ function GetNumSafeSectorsInPath(): INT16 {
 
   pNode = MoveToBeginningOfPathList(pTempHelicopterPath);
   // any path yet?
-  if (pNode != NULL) {
+  if (pNode != null) {
     // first node: skip it if that's the sector the chopper is currently in, AND
     // we're NOT gonna be changing directions (not actually performed until waypoints are rebuilt AFTER plotting is done)
     // OR if the chopper has a mercpath, in which case this a continuation of it that would count the sector twice
-    if (((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) || (GetLengthOfPath(pVehicleList[iHelicopterVehicleId].pMercPath) > 0)) {
+    if (((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != null) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) || (GetLengthOfPath(pVehicleList[iHelicopterVehicleId].pMercPath) > 0)) {
       pNode = pNode.value.pNext;
     }
 
@@ -1689,7 +1689,7 @@ function GetNumSafeSectorsInPath(): INT16 {
 
 function GetNumUnSafeSectorsInPath(): INT16 {
   // get the last sector value in the helictoper's path
-  let pNode: PathStPtr = NULL;
+  let pNode: PathStPtr = null;
   let uiLocation: UINT32 = 0;
   let uiCount: UINT32 = 0;
   let iHeliSector: INT32 = -1;
@@ -1710,10 +1710,10 @@ function GetNumUnSafeSectorsInPath(): INT16 {
   pNode = pVehicleList[iHelicopterVehicleId].pMercPath;
 
   // any path yet?
-  if (pNode != NULL) {
+  if (pNode != null) {
     // first node: skip it if that's the sector the chopper is currently in, AND
     // we're NOT gonna be changing directions (not actually performed until waypoints are rebuilt AFTER plotting is done)
-    if ((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) {
+    if ((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != null) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) {
       pNode = pNode.value.pNext;
     }
 
@@ -1730,11 +1730,11 @@ function GetNumUnSafeSectorsInPath(): INT16 {
 
   pNode = MoveToBeginningOfPathList(pTempHelicopterPath);
   // any path yet?
-  if (pNode != NULL) {
+  if (pNode != null) {
     // first node: skip it if that's the sector the chopper is currently in, AND
     // we're NOT gonna be changing directions (not actually performed until waypoints are rebuilt AFTER plotting is done)
     // OR if the chopper has a mercpath, in which case this a continuation of it that would count the sector twice
-    if (((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) || (GetLengthOfPath(pVehicleList[iHelicopterVehicleId].pMercPath) > 0)) {
+    if (((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != null) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) || (GetLengthOfPath(pVehicleList[iHelicopterVehicleId].pMercPath) > 0)) {
       pNode = pNode.value.pNext;
     }
 
@@ -1827,7 +1827,7 @@ function MakeHeliReturnToBase(): void {
     pVehicleList[iHelicopterVehicleId].pMercPath = ClearStrategicPathList(pVehicleList[iHelicopterVehicleId].pMercPath, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
 
     // plot path to that sector
-    pVehicleList[iHelicopterVehicleId].pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(NULL, GetLastSectorIdInVehiclePath(iHelicopterVehicleId), (CALCULATE_STRATEGIC_INDEX(ubRefuelList[iLocation][0], ubRefuelList[iLocation][1])), pVehicleList[iHelicopterVehicleId].ubMovementGroup, FALSE /*, FALSE */)), pVehicleList[iHelicopterVehicleId].pMercPath);
+    pVehicleList[iHelicopterVehicleId].pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(null, GetLastSectorIdInVehiclePath(iHelicopterVehicleId), (CALCULATE_STRATEGIC_INDEX(ubRefuelList[iLocation][0], ubRefuelList[iLocation][1])), pVehicleList[iHelicopterVehicleId].ubMovementGroup, FALSE /*, FALSE */)), pVehicleList[iHelicopterVehicleId].pMercPath);
     pVehicleList[iHelicopterVehicleId].pMercPath = MoveToBeginningOfPathList(pVehicleList[iHelicopterVehicleId].pMercPath);
 
     // rebuild the movement waypoints

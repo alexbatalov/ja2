@@ -624,7 +624,7 @@ function BlinkAutoFace(iFaceIndex: INT32): void {
 
         if (sFrame > 0) {
           // Blit Accordingly!
-          BltVideoObjectFromIndex(pFace.value.uiAutoDisplayBuffer, pFace.value.uiVideoObject, (sFrame), pFace.value.usEyesX, pFace.value.usEyesY, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(pFace.value.uiAutoDisplayBuffer, pFace.value.uiVideoObject, (sFrame), pFace.value.usEyesX, pFace.value.usEyesY, VO_BLT_SRCTRANSPARENCY, null);
 
           if (pFace.value.uiAutoDisplayBuffer == FRAME_BUFFER) {
             InvalidateRegion(pFace.value.usEyesX, pFace.value.usEyesY, pFace.value.usEyesX + pFace.value.usEyesWidth, pFace.value.usEyesY + pFace.value.usEyesHeight);
@@ -766,7 +766,7 @@ function MouthAutoFace(iFaceIndex: INT32): void {
 
               if (sFrame > 0) {
                 // Blit Accordingly!
-                BltVideoObjectFromIndex(pFace.value.uiAutoDisplayBuffer, pFace.value.uiVideoObject, (sFrame + 4), pFace.value.usMouthX, pFace.value.usMouthY, VO_BLT_SRCTRANSPARENCY, NULL);
+                BltVideoObjectFromIndex(pFace.value.uiAutoDisplayBuffer, pFace.value.uiVideoObject, (sFrame + 4), pFace.value.usMouthX, pFace.value.usMouthY, VO_BLT_SRCTRANSPARENCY, null);
 
                 // Update rects
                 if (pFace.value.uiAutoDisplayBuffer == FRAME_BUFFER) {
@@ -922,7 +922,7 @@ function DoRightIcon(uiRenderBuffer: UINT32, pFace: Pointer<FACETYPE>, sFaceX: I
 
   // Find X, y for placement
   GetXYForRightIconPlacement(pFace, sIconIndex, sFaceX, sFaceY, addressof(sIconX), addressof(sIconY), bNumIcons);
-  BltVideoObjectFromIndex(uiRenderBuffer, guiPORTRAITICONS, sIconIndex, sIconX, sIconY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(uiRenderBuffer, guiPORTRAITICONS, sIconIndex, sIconX, sIconY, VO_BLT_SRCTRANSPARENCY, null);
 }
 
 function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: BOOLEAN, fUseExternBuffer: BOOLEAN, uiBuffer: UINT32, sFaceX: INT16, sFaceY: INT16, usEyesX: UINT16, usEyesY: UINT16): void {
@@ -971,25 +971,25 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
     if ((MercPtrs[pFace.value.ubSoldierID].value.bLife < CONSCIOUSNESS || MercPtrs[pFace.value.ubSoldierID].value.fDeadPanel)) {
       // Blit Closed eyes here!
-      BltVideoObjectFromIndex(uiRenderBuffer, pFace.value.uiVideoObject, 1, usEyesX, usEyesY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(uiRenderBuffer, pFace.value.uiVideoObject, 1, usEyesX, usEyesY, VO_BLT_SRCTRANSPARENCY, null);
 
       // Blit hatch!
-      BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
     }
 
     if (MercPtrs[pFace.value.ubSoldierID].value.fMercAsleep == TRUE) {
       // blit eyes closed
-      BltVideoObjectFromIndex(uiRenderBuffer, pFace.value.uiVideoObject, 1, usEyesX, usEyesY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(uiRenderBuffer, pFace.value.uiVideoObject, 1, usEyesX, usEyesY, VO_BLT_SRCTRANSPARENCY, null);
     }
 
     if ((pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
       // IF we are in the process of doing any deal/close animations, show face, not skill...
       if (!pSoldier.value.fClosePanel && !pSoldier.value.fDeadPanel && !pSoldier.value.fUIdeadMerc && !pSoldier.value.fUICloseMerc) {
         // Put close panel there
-        BltVideoObjectFromIndex(uiRenderBuffer, guiDEAD, 5, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(uiRenderBuffer, guiDEAD, 5, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
         // Blit hatch!
-        BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
       }
     }
 
@@ -1035,7 +1035,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
       if (MercPtrs[pFace.value.ubSoldierID].value.bInSector && (((gTacticalStatus.ubCurrentTeam != OUR_TEAM) || !OK_INTERRUPT_MERC(MercPtrs[pFace.value.ubSoldierID])) && !gfHiddenInterrupt) || ((gfSMDisableForItems && !gfInItemPickupMenu) && gusSMCurrentMerc == pFace.value.ubSoldierID && gsCurInterfacePanel == Enum215.SM_PANEL)) {
         // Blit hatch!
-        BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
       }
 
       if (!pFace.value.fDisabled && !pFace.value.fInvalidAnim) {
@@ -1145,7 +1145,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
             usMaximumPts = (usMaximumPts + 5) / 10;
             break;
           case (Enum117.TRAIN_TEAMMATE):
-            sPtsAvailable = GetBonusTrainingPtsDueToInstructor(MercPtrs[pFace.value.ubSoldierID], NULL, MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, addressof(usMaximumPts));
+            sPtsAvailable = GetBonusTrainingPtsDueToInstructor(MercPtrs[pFace.value.ubSoldierID], null, MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, addressof(usMaximumPts));
             break;
         }
         break;
@@ -1184,7 +1184,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
     if (fDoIcon) {
       // Find X, y for placement
       GetXYForIconPlacement(pFace, sIconIndex, sFaceX, sFaceY, addressof(sIconX), addressof(sIconY));
-      BltVideoObjectFromIndex(uiRenderBuffer, guiPORTRAITICONS, sIconIndex, sIconX, sIconY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(uiRenderBuffer, guiPORTRAITICONS, sIconIndex, sIconX, sIconY, VO_BLT_SRCTRANSPARENCY, null);
 
       // ATE: Show numbers only in mapscreen
       if (fShowNumber) {
@@ -1238,9 +1238,9 @@ function RenderAutoFace(iFaceIndex: INT32): BOOLEAN {
   // Blit face to save buffer!
   if (pFace.value.uiAutoRestoreBuffer != FACE_NO_RESTORE_BUFFER) {
     if (pFace.value.uiAutoRestoreBuffer == guiSAVEBUFFER) {
-      BltVideoObjectFromIndex(pFace.value.uiAutoRestoreBuffer, pFace.value.uiVideoObject, 0, pFace.value.usFaceX, pFace.value.usFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(pFace.value.uiAutoRestoreBuffer, pFace.value.uiVideoObject, 0, pFace.value.usFaceX, pFace.value.usFaceY, VO_BLT_SRCTRANSPARENCY, null);
     } else {
-      BltVideoObjectFromIndex(pFace.value.uiAutoRestoreBuffer, pFace.value.uiVideoObject, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(pFace.value.uiAutoRestoreBuffer, pFace.value.uiVideoObject, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
     }
   }
 
@@ -1286,7 +1286,7 @@ function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: IN
   }
 
   // Blit face to save buffer!
-  BltVideoObjectFromIndex(uiBuffer, pFace.value.uiVideoObject, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(uiBuffer, pFace.value.uiVideoObject, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 
   GetFaceRelativeCoordinates(pFace, addressof(usEyesX), addressof(usEyesY), addressof(usMouthX), addressof(usMouthY));
 
@@ -1525,7 +1525,7 @@ function HandleAutoFaces(): void {
           pFace.value.ubOldServiceCount = pSoldier.value.ubServiceCount;
         }
 
-        if (pFace.value.fOldCompatibleItems != pFace.value.fCompatibleItems || gfInItemPickupMenu || gpItemPointer != NULL) {
+        if (pFace.value.fOldCompatibleItems != pFace.value.fCompatibleItems || gfInItemPickupMenu || gpItemPointer != null) {
           fRerender = TRUE;
           pFace.value.fOldCompatibleItems = pFace.value.fCompatibleItems;
         }

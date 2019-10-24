@@ -131,7 +131,7 @@ const QPOOLNDX = () => (iMaxPathQ - 1);
 /* static */ let pQueueHead: Pointer<path_t>;
 /* static */ let pClosedHead: Pointer<path_t>;
 
-const pathQNotEmpty = () => (pQueueHead.value.pNext[0] != NULL);
+const pathQNotEmpty = () => (pQueueHead.value.pNext[0] != null);
 const pathFound = () => (pQueueHead.value.pNext[0].value.iLocation == iDestination);
 const pathNotYetFound = () => (!pathFound());
 
@@ -200,7 +200,7 @@ const ClosedListGet = (pNew) => {
     memset(pNew.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
     pNew.value.bLevel = RandomSkipListLevel();
   } else {
-    pNew = NULL;
+    pNew = null;
   }
 };
 
@@ -439,7 +439,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
   // INT32 iLastDir, iPrevToLastDir;
   // INT8 bVehicleCheckDir;
   // UINT16 adjLoc;
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = NULL;
+  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;
   let usAnimSurface: UINT16;
   // INT32 iCnt2, iCnt3;
 
@@ -607,7 +607,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       */
       if (gfEstimatePath) {
         usOKToAddStructID = IGNORE_PEOPLE_STRUCTURE_ID;
-      } else if (s.value.pLevelNode != NULL && s.value.pLevelNode.value.pStructureData != NULL) {
+      } else if (s.value.pLevelNode != null && s.value.pLevelNode.value.pStructureData != null) {
         usOKToAddStructID = s.value.pLevelNode.value.pStructureData.value.usStructureID;
       } else {
         usOKToAddStructID = INVALID_STRUCTURE_ID;
@@ -1367,11 +1367,11 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
             memset(pNewPtr.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
             pNewPtr.value.bLevel = RandomSkipListLevel();
           } else {
-            pNewPtr = NULL;
+            pNewPtr = null;
           }
         }
 
-        if (pNewPtr == NULL) {
+        if (pNewPtr == null) {
           gubNPCAPBudget = 0;
           gubNPCDistLimit = 0;
           return 0;

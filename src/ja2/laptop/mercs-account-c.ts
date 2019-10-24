@@ -100,7 +100,7 @@ function HandleMercsAccount(): void {
   if (gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning) {
     gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = FALSE;
 
-    DoLapTopMessageBox(Enum24.MSG_BOX_BLUE_ON_GREY, "Transfer failed.  No funds available.", Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    DoLapTopMessageBox(Enum24.MSG_BOX_BLUE_ON_GREY, "Transfer failed.  No funds available.", Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
   }
 }
 
@@ -112,11 +112,11 @@ function RenderMercsAccount(): void {
 
   // Account Number Grid
   GetVideoObject(addressof(hPixHandle), guiMercOrderGrid);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_AC_ORDER_GRID_X, MERC_AC_ORDER_GRID_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_AC_ORDER_GRID_X, MERC_AC_ORDER_GRID_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Merc Order Grid
   GetVideoObject(addressof(hPixHandle), guiAccountNumberGrid);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_AC_ACCOUNT_NUMBER_X, MERC_AC_ACCOUNT_NUMBER_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_AC_ACCOUNT_NUMBER_X, MERC_AC_ACCOUNT_NUMBER_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display Players account number
   swprintf(sText, "%s %05d", MercAccountText[Enum340.MERC_ACCOUNT_ACCOUNT], LaptopSaveInfo.guiPlayersMercAccountNumber);

@@ -304,8 +304,8 @@ function DoneFadeOutWarpCallback(): void {
 
   // OK, once down here, adjust the above map with crate info....
   gfTacticalTraversal = FALSE;
-  gpTacticalTraversalGroup = NULL;
-  gpTacticalTraversalChosenSoldier = NULL;
+  gpTacticalTraversalGroup = null;
+  gpTacticalTraversalChosenSoldier = null;
 
   gFadeInDoneCallback = DoneFadeInWarp;
 
@@ -329,7 +329,7 @@ function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN
   if (gbWorldSectorZ >= 2 && gubQuest[Enum169.QUEST_CREATURES] == QUESTDONE) {
     if (GetWarpOutOfMineCodes(addressof(gsWarpWorldX), addressof(gsWarpWorldY), addressof(gbWarpWorldZ), addressof(gsWarpGridNo))) {
       // ATE: Check if we are in a creature lair and bring up box if so....
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[33], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, WarpToSurfaceCallback, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[33], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, WarpToSurfaceCallback, null);
 
       return TRUE;
     }
@@ -565,7 +565,7 @@ function RemoveSectorExitMenu(fOk: BOOLEAN): void {
       if (gExitDialog.ubNumPeopleOnSquad == 0) {
         swprintf(Str, pMessageStrings[Enum333.MSG_EPC_CANT_TRAVERSE], MercPtrs[gusSelectedSoldier].value.name);
 
-        DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Str, Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+        DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Str, Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
         return;
       }
     }

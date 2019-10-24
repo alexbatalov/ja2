@@ -44,13 +44,13 @@ function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile
   }
 
   // Skip header
-  FileRead(hFileHandle, bColHeader, sizeof(bColHeader), NULL);
+  FileRead(hFileHandle, bColHeader, sizeof(bColHeader), null);
 
   // Read in a palette entry at a time
   for (cnt = 0; cnt < 256; cnt++) {
-    FileRead(hFileHandle, addressof(pPalette[cnt].peRed), sizeof(UINT8), NULL);
-    FileRead(hFileHandle, addressof(pPalette[cnt].peGreen), sizeof(UINT8), NULL);
-    FileRead(hFileHandle, addressof(pPalette[cnt].peBlue), sizeof(UINT8), NULL);
+    FileRead(hFileHandle, addressof(pPalette[cnt].peRed), sizeof(UINT8), null);
+    FileRead(hFileHandle, addressof(pPalette[cnt].peGreen), sizeof(UINT8), null);
+    FileRead(hFileHandle, addressof(pPalette[cnt].peBlue), sizeof(UINT8), null);
   }
 
   // Close file
@@ -202,7 +202,7 @@ function HandleLimitedNumExecutions(): void {
     }
 
     // Read value
-    FileRead(hFileHandle, addressof(bNumRuns), sizeof(bNumRuns), NULL);
+    FileRead(hFileHandle, addressof(bNumRuns), sizeof(bNumRuns), null);
 
     // Close file
     FileClose(hFileHandle);
@@ -225,7 +225,7 @@ function HandleLimitedNumExecutions(): void {
   }
 
   // Write value
-  FileWrite(hFileHandle, addressof(bNumRuns), sizeof(bNumRuns), NULL);
+  FileWrite(hFileHandle, addressof(bNumRuns), sizeof(bNumRuns), null);
 
   // Close file
   FileClose(hFileHandle);

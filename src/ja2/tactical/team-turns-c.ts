@@ -875,7 +875,7 @@ function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOppone
     if (Menptr[WhoThrewRock].controller != Net.pnum)
             return(FALSE);
     */
-    pOpponent = NULL;
+    pOpponent = null;
   }
 
   // if interrupts have been disabled for any reason

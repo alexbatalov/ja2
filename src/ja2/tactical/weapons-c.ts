@@ -337,7 +337,7 @@ function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
   let iValue: INT32;
   let bPlate: INT8;
 
-  if (pObj == NULL || Item[pObj.value.usItem].usItemClass != IC_ARMOUR) {
+  if (pObj == null || Item[pObj.value.usItem].usItemClass != IC_ARMOUR) {
     return 0;
   }
   iValue = Armour[Item[pObj.value.usItem].ubClassIndex].ubProtection;
@@ -390,7 +390,7 @@ function ExplosiveEffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
   let iValue: INT32;
   let bPlate: INT8;
 
-  if (pObj == NULL || Item[pObj.value.usItem].usItemClass != IC_ARMOUR) {
+  if (pObj == null || Item[pObj.value.usItem].usItemClass != IC_ARMOUR) {
     return 0;
   }
   iValue = Armour[Item[pObj.value.usItem].ubClassIndex].ubProtection;
@@ -1363,21 +1363,21 @@ function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEA
     // check target gridno
     ubTargetID = WhoIsThere2(pSoldier.value.sTargetGridNo, pSoldier.value.bTargetLevel);
     if (ubTargetID == NOBODY) {
-      pTargetSoldier = NULL;
+      pTargetSoldier = null;
     } else {
       pTargetSoldier = MercPtrs[ubTargetID];
     }
 
     if (pTargetSoldier && pTargetSoldier.value.bTeam == pSoldier.value.bTeam) {
       // ignore!
-      pTargetSoldier = NULL;
+      pTargetSoldier = null;
     }
 
-    if (pTargetSoldier == NULL) {
+    if (pTargetSoldier == null) {
       // search for an opponent near the target gridno
       for (bLoop = 0; bLoop < Enum245.NUM_WORLD_DIRECTIONS; bLoop++) {
         ubTargetID = WhoIsThere2(NewGridNo(pSoldier.value.sTargetGridNo, DirectionInc(bLoop)), pSoldier.value.bTargetLevel);
-        pTargetSoldier = NULL;
+        pTargetSoldier = null;
         if (ubTargetID != NOBODY) {
           pTargetSoldier = MercPtrs[ubTargetID];
           if (pTargetSoldier.value.bTeam != pSoldier.value.bTeam) {
@@ -1447,7 +1447,7 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOL
   } else {
     // Firing an attached grenade launcher... the attachment we found above
     // is the one to remove!
-    RemoveAttachment(pObj, bAttachPos, NULL);
+    RemoveAttachment(pObj, bAttachPos, null);
   }
 
   // ATE: Check here if the launcher should fail 'cause of bad status.....
@@ -1495,10 +1495,10 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOL
   // pObject->fPotentialForDebug = TRUE;
 
   MemFree(pSoldier.value.pTempObject);
-  pSoldier.value.pTempObject = NULL;
+  pSoldier.value.pTempObject = null;
 
   MemFree(pSoldier.value.pThrowParams);
-  pSoldier.value.pThrowParams = NULL;
+  pSoldier.value.pThrowParams = null;
 
   return TRUE;
 }
@@ -1617,7 +1617,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
   let AniParams: ANITILE_PARAMS;
   let usMissTileIndex: UINT16;
   let usMissTileType: UINT16;
-  let pStructure: Pointer<STRUCTURE> = NULL;
+  let pStructure: Pointer<STRUCTURE> = null;
   let uiMissVolume: UINT32 = MIDVOLUME;
   let fHitSameStructureAsBefore: BOOLEAN;
   let pBullet: Pointer<BULLET>;
@@ -1865,12 +1865,12 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOL
 
   // find the wall structure, and go one length along the chain
   pWallAndWindow = FindStructureByID(sGridNo, usStructureID);
-  if (pWallAndWindow == NULL) {
+  if (pWallAndWindow == null) {
     return;
   }
 
   pWallAndWindow = SwapStructureForPartner(sGridNo, pWallAndWindow);
-  if (pWallAndWindow == NULL) {
+  if (pWallAndWindow == null) {
     return;
   }
 
@@ -2334,7 +2334,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
   }
 
   pTarget = SimpleFindSoldier(sGridNo, pSoldier.value.bTargetLevel);
-  if (pTarget != NULL) {
+  if (pTarget != null) {
     // targeting a merc
     // adjust for crouched/prone target
     switch (gAnimControl[pTarget.value.usAnimState].ubHeight) {
@@ -3620,7 +3620,7 @@ function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
     pSoldier = MercSlots[cnt];
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if (pSoldier.value.ubID != pQueenSoldier.value.ubID) {
         // ATE: Ok, lets check for some basic things here!
         if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.sGridNo != NOWHERE && pSoldier.value.bActive && pSoldier.value.bInSector) {

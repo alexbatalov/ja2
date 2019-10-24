@@ -164,7 +164,7 @@ function HandleTacticalEndTurn(): void {
     for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
       pSoldier = MercSlots[cnt];
 
-      if (pSoldier != NULL) {
+      if (pSoldier != null) {
         if (pSoldier.value.bTeam != gbPlayerNum) {
           // Handle everything from getting breath back, to bleeding, etc
           EVENT_BeginMercTurn(pSoldier, TRUE, 0);

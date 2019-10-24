@@ -118,7 +118,7 @@ function RenderMapBorder(): void {
 
   // get and blt border
   GetVideoObject(addressof(hHandle), guiMapBorder);
-  BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BORDER_X, MAP_BORDER_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BORDER_X, MAP_BORDER_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // show the level marker
   DisplayCurrentLevelMarker();
@@ -175,7 +175,7 @@ function RenderMapBorderEtaPopUp(): void {
 
   // get and blt ETA box
   GetVideoObject(addressof(hHandle), guiMapBorderEtaPopUp);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, MAP_BORDER_X + 215, 291, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, MAP_BORDER_X + 215, 291, VO_BLT_SRCTRANSPARENCY, null);
 
   InvalidateRegion(MAP_BORDER_X + 215, 291, MAP_BORDER_X + 215 + 100, 310);
 
@@ -577,7 +577,7 @@ function ToggleShowMilitiaMode(): void {
 
     // check if player has any militia
     if (DoesPlayerHaveAnyMilitia() == FALSE) {
-      let pwString: STR16 = NULL;
+      let pwString: STR16 = null;
 
       // no - so put up a message explaining how it works
 
@@ -952,7 +952,7 @@ function DisplayCurrentLevelMarker(): void {
 
   // it's actually a white rectangle, not a green arrow!
   GetVideoObject(addressof(hHandle), guiLEVELMARKER);
-  BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_LEVEL_MARKER_X + 1, MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * iCurrentMapSectorZ), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_LEVEL_MARKER_X + 1, MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * iCurrentMapSectorZ), VO_BLT_SRCTRANSPARENCY, null);
 
   return;
 }

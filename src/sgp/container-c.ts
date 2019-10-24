@@ -82,12 +82,12 @@ function CreateStack(uiNum_items: UINT32, uiSiz_each: UINT32): HSTACK {
     uiAmount = uiNum_items * uiSiz_each;
   else {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Requested stack items and size have to be >0");
-    return NULL;
+    return null;
   }
   // allocate the container memory
   if ((hStack = MemAlloc(uiAmount + sizeof(StackHeader))) == 0) {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Could not allocate stack container memory");
-    return NULL;
+    return null;
   }
   pStack = hStack;
   // initialize the header variables
@@ -125,13 +125,13 @@ function CreateQueue(uiNum_items: UINT32, uiSiz_each: UINT32): HQUEUE {
     uiAmount = uiNum_items * uiSiz_each;
   else {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "Requested queue items and size have to be >0");
-    return NULL;
+    return null;
   }
 
   // allocate the queue memory
   if ((hQueue = MemAlloc(uiAmount + sizeof(QueueHeader))) == 0) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "Could not allocate queue container memory");
-    return NULL;
+    return null;
   }
 
   pQueue = hQueue;
@@ -264,15 +264,15 @@ function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
 
   // check for a NULL pointer
 
-  if (hStack == NULL) {
+  if (hStack == null) {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the stack");
-    return NULL;
+    return null;
   }
 
   // some valid data should be passed in
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto stack is NULL");
-    return NULL;
+    return null;
   }
 
   // perform operations to calculate offset and decide if the container has to resized
@@ -282,9 +282,9 @@ function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
   if ((uiOffset + pTemp_cont.value.uiSiz_of_elem) > pTemp_cont.value.uiMax_size) {
     uiNew_size = pTemp_cont.value.uiMax_size + (pTemp_cont.value.uiMax_size - sizeof(StackHeader));
     pTemp_cont.value.uiMax_size = uiNew_size;
-    if ((hStack = MemRealloc(hStack, uiNew_size)) == NULL) {
+    if ((hStack = MemRealloc(hStack, uiNew_size)) == null) {
       DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Could not resize stack container memory");
-      return NULL;
+      return null;
     }
     pTemp_cont = hStack;
   }
@@ -322,11 +322,11 @@ function Pop(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
 
   // check for a NULL queue
 
-  if (hStack == NULL) {
+  if (hStack == null) {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the stack");
     return FALSE;
   }
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Variable where data is to be stored is NULL");
     return FALSE;
   }
@@ -372,11 +372,11 @@ function PeekStack(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
 
   // check for a NULL queue
 
-  if (hStack == NULL) {
+  if (hStack == null) {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the stack");
     return FALSE;
   }
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Variable where data is to be stored is NULL");
     return FALSE;
   }
@@ -411,7 +411,7 @@ function PeekStack(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
 //
 //*****************************************************************************
 function DeleteStack(hStack: HSTACK): BOOLEAN {
-  if (hStack == NULL) {
+  if (hStack == null) {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the stack");
     return FALSE;
   }
@@ -432,7 +432,7 @@ function DeleteStack(hStack: HSTACK): BOOLEAN {
 //
 //*****************************************************************************
 function DeleteQueue(hQueue: HQUEUE): BOOLEAN {
-  if (hQueue == NULL) {
+  if (hQueue == null) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the queue");
     return FALSE;
   }
@@ -453,7 +453,7 @@ function DeleteQueue(hQueue: HQUEUE): BOOLEAN {
 //
 //*****************************************************************************
 function DeleteList(hList: HLIST): BOOLEAN {
-  if (hList == NULL) {
+  if (hList == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the list");
     return FALSE;
   }
@@ -474,7 +474,7 @@ function DeleteList(hList: HLIST): BOOLEAN {
 //
 //*****************************************************************************
 function DeleteOrdList(hOrdList: HORDLIST): BOOLEAN {
-  if (hOrdList == NULL) {
+  if (hOrdList == null) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the ordered list");
     return FALSE;
   }
@@ -544,11 +544,11 @@ function PeekQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
   let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
-  if (hQueue == NULL) {
+  if (hQueue == null) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the queue");
     return FALSE;
   }
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "Memory fo Data to be removed from queue is NULL");
     return FALSE;
   }
@@ -594,11 +594,11 @@ function PeekList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
   let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
-  if (hList == NULL) {
+  if (hList == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the list");
     return FALSE;
   }
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Memory fo Data to be removed from list is NULL");
     return FALSE;
   }
@@ -656,12 +656,12 @@ function SwapListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEA
   let pSrc: Pointer<BYTE>;
 
   // cannot check for invalid handle, only 0
-  if (hList == NULL) {
+  if (hList == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Invalid pointer to list");
     return FALSE;
   }
 
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Data pointer to be swapped from list is NULL");
     return FALSE;
   }
@@ -720,12 +720,12 @@ function StoreListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLE
   let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
-  if (hList == NULL) {
+  if (hList == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Invalid pointer to list");
     return FALSE;
   }
 
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Data pointer to be swapped from list is NULL");
     return FALSE;
   }
@@ -779,11 +779,11 @@ function PeekOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): B
   let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
-  if (hOrdList == NULL) {
+  if (hOrdList == null) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the ordered list");
     return FALSE;
   }
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Memory fo Data to be removed from ordered list is NULL");
     return FALSE;
   }
@@ -834,11 +834,11 @@ function RemfromQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
   let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
-  if (hQueue == NULL) {
+  if (hQueue == null) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the queue");
     return FALSE;
   }
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "Memory fo Data to be removed from queue is NULL");
     return FALSE;
   }
@@ -906,15 +906,15 @@ function AddtoQueue(hQueue: HQUEUE, pdata: Pointer<void>): HQUEUE {
   let fresize: BOOLEAN;
 
   // check for invalid handle = 0
-  if (hQueue == NULL) {
+  if (hQueue == null) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the queue");
-    return NULL;
+    return null;
   }
 
   // check for data = NULL
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "Data to be added onto queue is NULL");
-    return NULL;
+    return null;
   }
 
   // assign some temporary variables
@@ -932,9 +932,9 @@ function AddtoQueue(hQueue: HQUEUE, pdata: Pointer<void>): HQUEUE {
   if ((uiHead == uiTail) && ((uiHead >= (sizeof(QueueHeader) + uiSize_of_each)) || (fresize == TRUE))) {
     uiNew_size = uiMax_size + (uiMax_size - sizeof(QueueHeader));
     pTemp_cont.value.uiMax_size = uiNew_size;
-    if ((hQueue = MemRealloc(hQueue, uiNew_size)) == NULL) {
+    if ((hQueue = MemRealloc(hQueue, uiNew_size)) == null) {
       DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "Could not resize queue container memory");
-      return NULL;
+      return null;
     }
     // copy memory from beginning of container to end of container
     // so that all the data is in one continuous block
@@ -981,7 +981,7 @@ function do_copy(pmem_void: Pointer<void>, uiSourceOfst: UINT32, uiDestOfst: UIN
     return FALSE;
   }
 
-  if (pmem_void == NULL) {
+  if (pmem_void == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Invalid pointer passed to do_copy");
     return FALSE;
   }
@@ -1016,7 +1016,7 @@ function do_copy_data(pmem_void: Pointer<void>, data: Pointer<void>, uiSrcOfst: 
     return FALSE;
   }
 
-  if (pmem_void == NULL) {
+  if (pmem_void == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Invalid pointer passed to do_copy_data");
     return FALSE;
   }
@@ -1041,7 +1041,7 @@ function do_copy_data(pmem_void: Pointer<void>, data: Pointer<void>, uiSrcOfst: 
 //*****************************************************************************
 function StackSize(hStack: HSTACK): UINT32 {
   let pTemp_cont: Pointer<StackHeader>;
-  if (hStack == NULL) {
+  if (hStack == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Stack pointer is NULL");
     return 0;
   }
@@ -1063,7 +1063,7 @@ function StackSize(hStack: HSTACK): UINT32 {
 //*****************************************************************************
 function QueueSize(hQueue: HQUEUE): UINT32 {
   let pTemp_cont: Pointer<QueueHeader>;
-  if (hQueue == NULL) {
+  if (hQueue == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Queue pointer is NULL");
     return 0;
   }
@@ -1085,7 +1085,7 @@ function QueueSize(hQueue: HQUEUE): UINT32 {
 //*****************************************************************************
 function ListSize(hList: HLIST): UINT32 {
   let pTemp_cont: Pointer<ListHeader>;
-  if (hList == NULL) {
+  if (hList == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "List pointer is NULL");
     return 0;
   }
@@ -1107,7 +1107,7 @@ function ListSize(hList: HLIST): UINT32 {
 //*****************************************************************************
 function OrdListSize(hOrdList: HORDLIST): UINT32 {
   let pTemp_cont: Pointer<OrdListHeader>;
-  if (hOrdList == NULL) {
+  if (hOrdList == null) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Ordered List pointer is NULL");
     return 0;
   }
@@ -1146,20 +1146,20 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
   let fTail_check: BOOLEAN = FALSE;
 
   // check for invalid handle = 0
-  if (hList == NULL) {
+  if (hList == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid handle to the list");
-    return NULL;
+    return null;
   }
 
   // check for data = NULL
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto list is NULL");
-    return NULL;
+    return null;
   }
   // check for a 0 or negative position passed in
   if (uiPos < 0) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto list is NULL");
-    return NULL;
+    return null;
   }
 
   // assign some temporary variables
@@ -1167,7 +1167,7 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
   pTemp_cont = hList;
   if (uiPos > pTemp_cont.value.uiTotal_items) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "There are not enough elements in the list");
-    return NULL;
+    return null;
   }
   uiTotal = pTemp_cont.value.uiTotal_items;
   uiSize_of_each = pTemp_cont.value.uiSiz_of_elem;
@@ -1186,7 +1186,7 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
     if (fTail_check == FALSE) {
       if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == FALSE) {
         DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return NULL;
+        return null;
       }
     }
     if (fTail_check == FALSE)
@@ -1202,7 +1202,7 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
       uiOffsetDst = uiOffsetSrc + uiSize_of_each;
       if (do_copy(hList, uiOffsetDst, uiOffsetSrc, uiTail - uiOffsetSrc) == FALSE) {
         DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return NULL;
+        return null;
       }
       uiFinalLoc = uiOffsetSrc;
     } else {
@@ -1210,20 +1210,20 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
       uiOffsetDst = uiOffsetSrc + uiSize_of_each;
       if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == FALSE) {
         DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return NULL;
+        return null;
       }
 
       uiOffsetSrc = uiMax_size - uiSize_of_each;
       uiOffsetDst = sizeof(ListHeader);
       if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiSize_of_each) == FALSE) {
         DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return NULL;
+        return null;
       }
       uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
       uiOffsetDst = uiOffsetSrc + uiSize_of_each;
       if (do_copy(hList, uiOffsetSrc, uiOffsetDst, (uiMax_size - uiSize_of_each) - uiOffsetSrc) == FALSE) {
         DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return NULL;
+        return null;
       }
     }
     pTemp_cont.value.uiTail += uiSize_of_each;
@@ -1234,14 +1234,14 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
     // need to resize the container
     uiNew_size = uiMax_size + (uiMax_size - sizeof(ListHeader));
     pTemp_cont.value.uiMax_size = uiNew_size;
-    if ((hList = MemRealloc(hList, uiNew_size)) == NULL) {
+    if ((hList = MemRealloc(hList, uiNew_size)) == null) {
       DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not resize list container memory");
-      return NULL;
+      return null;
     }
     pTemp_cont = hList;
     if (do_copy(hList, sizeof(ListHeader), uiMax_size, uiHead - sizeof(ListHeader)) == FALSE) {
       DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not copy list container memory");
-      return NULL;
+      return null;
     }
     pTemp_cont.value.uiTail = uiMax_size + (uiHead - sizeof(ListHeader));
 
@@ -1251,7 +1251,7 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
     uiOffsetDst = uiOffsetSrc + pTemp_cont.value.uiSiz_of_elem;
     if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == FALSE) {
       DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-      return NULL;
+      return null;
     }
     pTemp_cont.value.uiTail += uiSize_of_each;
     uiFinalLoc = uiOffsetSrc;
@@ -1262,7 +1262,7 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
   pbyte = hList;
   if (uiFinalLoc == 0) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This should never happen! report this problem!");
-    return NULL;
+    return null;
   }
   pbyte += uiFinalLoc;
   pvoid = pbyte;
@@ -1303,13 +1303,13 @@ function RemfromList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN
   let fTail_check: BOOLEAN = FALSE;
 
   // check for invalid handle = 0
-  if (hList == NULL) {
+  if (hList == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid handle to the list");
     return FALSE;
   }
 
   // check for data = NULL
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto list is NULL");
     return FALSE;
   }
@@ -1428,13 +1428,13 @@ function RemfromOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
   let uiFinalLoc: UINT32 = 0;
 
   // check for invalid handle = 0
-  if (hOrdList == NULL) {
+  if (hOrdList == null) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid handle to the ordered list");
     return FALSE;
   }
 
   // check for data = NULL
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto ordered list is NULL");
     return FALSE;
   }
@@ -1566,15 +1566,15 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
   let fTail_check: BOOLEAN = FALSE;
 
   // check for invalid handle = 0
-  if (hOrdList == NULL) {
+  if (hOrdList == null) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid handle to the ordered list");
-    return NULL;
+    return null;
   }
 
   // check for data = NULL
-  if (pdata == NULL) {
+  if (pdata == null) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto ordered list is NULL");
-    return NULL;
+    return null;
   }
 
   // assign some temporary variables
@@ -1583,7 +1583,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
   // check for invalid position
   if (uiPos > pTemp_cont.value.uiTotal_items) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "There are not enough elements in the ordered list to add after");
-    return NULL;
+    return null;
   }
 
   uiTotal = pTemp_cont.value.uiTotal_items;
@@ -1609,7 +1609,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
     if (fTail_check == FALSE) {
       if (do_copy(hOrdList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == FALSE) {
         DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in ordered list");
-        return NULL;
+        return null;
       }
     }
 
@@ -1628,7 +1628,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
 
       if (do_copy(hOrdList, uiOffsetDst, uiOffsetSrc, uiTail - uiOffsetSrc) == FALSE) {
         DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return NULL;
+        return null;
       }
       uiFinalLoc = uiOffsetSrc;
     } else {
@@ -1637,7 +1637,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
 
       if (do_copy(hOrdList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == FALSE) {
         DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return NULL;
+        return null;
       }
 
       uiOffsetSrc = uiMax_size - uiSize_of_each;
@@ -1645,7 +1645,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
 
       if (do_copy(hOrdList, uiOffsetSrc, uiOffsetDst, uiSize_of_each) == FALSE) {
         DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return NULL;
+        return null;
       }
 
       uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
@@ -1653,7 +1653,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
 
       if (do_copy(hOrdList, uiOffsetSrc, uiOffsetDst, (uiMax_size - uiSize_of_each) - uiOffsetSrc) == FALSE) {
         DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return NULL;
+        return null;
       }
     }
 
@@ -1666,16 +1666,16 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
     uiNew_size = uiMax_size + (uiMax_size - sizeof(OrdListHeader));
     pTemp_cont.value.uiMax_size = uiNew_size;
 
-    if ((hOrdList = MemRealloc(hOrdList, uiNew_size)) == NULL) {
+    if ((hOrdList = MemRealloc(hOrdList, uiNew_size)) == null) {
       DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not resize ordered list container memory");
-      return NULL;
+      return null;
     }
 
     pTemp_cont = hOrdList;
 
     if (do_copy(hOrdList, sizeof(OrdListHeader), uiMax_size, uiHead - sizeof(OrdListHeader)) == FALSE) {
       DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not copy ordered list container memory");
-      return NULL;
+      return null;
     }
 
     pTemp_cont.value.uiTail = uiMax_size + (uiHead - sizeof(OrdListHeader));
@@ -1687,7 +1687,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
 
     if (do_copy(hOrdList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == FALSE) {
       DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-      return NULL;
+      return null;
     }
     pTemp_cont.value.uiTail += uiSize_of_each;
     uiFinalLoc = uiOffsetSrc;
@@ -1695,7 +1695,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
 
   if (uiFinalLoc == 0) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "This should never happen! report this problem!");
-    return NULL;
+    return null;
   }
 
   // finally insert data at position uiFinalLoc
@@ -1746,7 +1746,7 @@ function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
       // so store it in position 0
       if ((hOrdList = StoreinOrdList(hOrdList, pdata, 0)) == FALSE) {
         DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not copy the data into ordered list");
-        return NULL;
+        return null;
       }
 
       return hOrdList;
@@ -1778,7 +1778,7 @@ function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
     if (do_copy_data(hOrdList, pTemp_data, (uiOffset - pOrdList.value.uiSiz_of_elem), pOrdList.value.uiSiz_of_elem) == FALSE) {
       DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not copy the data from list");
       MemFree(pTemp_data);
-      return NULL;
+      return null;
     }
 
     // run the compare function
@@ -1789,16 +1789,16 @@ function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
       case ORDLIST_ERROR: {
         DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not perform comparison for ordered lists");
         MemFree(pTemp_data);
-        return NULL;
+        return null;
       }
 
       case ORDLIST_EQUAL:
       case ORDLIST_LEFT_LESS: {
         // found the right spot!  Insert it at the current position
-        if ((hOrdList = StoreinOrdList(hOrdList, pdata, uiPosition)) == NULL) {
+        if ((hOrdList = StoreinOrdList(hOrdList, pdata, uiPosition)) == null) {
           DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not copy the data into ordered list");
           MemFree(pTemp_data);
-          return NULL;
+          return null;
         }
         return hOrdList;
       }
@@ -1813,7 +1813,7 @@ function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
       default: {
         DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Invalid result received from Compare function");
         MemFree(pTemp_data);
-        return NULL;
+        return null;
       }
     } // end switch
 
@@ -1822,12 +1822,12 @@ function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
 
   // don't need this anymore
   MemFree(pTemp_data);
-  pTemp_data = NULL;
+  pTemp_data = null;
 
   // never found the right spot, which means we must have reached the head (damn well better)
   if (uiOffset != pOrdList.value.uiHead) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "ERROR - left the while loop but not at the head");
-    return NULL;
+    return null;
   }
 
   // the new item will be first in list, so calculate the position based on the head
@@ -1836,7 +1836,7 @@ function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
   // and stick it in there...
   if ((hOrdList = StoreinOrdList(hOrdList, pdata, uiPosition)) == FALSE) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not copy the data into ordered list");
-    return NULL;
+    return null;
   }
 
   return hOrdList;

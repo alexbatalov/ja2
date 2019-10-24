@@ -172,7 +172,7 @@ function ShutDownQuoteBox(fForce: BOOLEAN): void {
 
     // do we need to do anything at the end of the civ quote?
     if (gCivQuoteData.pCiv && gCivQuoteData.pCiv.value.bAction == Enum289.AI_ACTION_OFFER_SURRENDER) {
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_SURRENDER], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SurrenderMessageBoxCallBack, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_SURRENDER], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SurrenderMessageBoxCallBack, null);
     }
   }
 }

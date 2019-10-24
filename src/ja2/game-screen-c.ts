@@ -1,7 +1,7 @@
 const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
 
 let fDirtyRectangleMode: BOOLEAN = FALSE;
-let gpFPSBuffer: Pointer<UINT16> = NULL;
+let gpFPSBuffer: Pointer<UINT16> = null;
 // MarkNote
 // extern ScrollStringStPtr pStringS=NULL;
 let counter: UINT32 = 0;
@@ -30,7 +30,7 @@ let gfBeginEndTurn: BOOLEAN = FALSE;
 
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
-let gRenderOverride: RENDER_HOOK = NULL;
+let gRenderOverride: RENDER_HOOK = null;
 
 const NOINPUT_DELAY = 60000;
 const DEMOPLAY_DELAY = 40000;
@@ -191,7 +191,7 @@ function LeaveTacticalScreen(uiNewScreen: UINT32): void {
 }
 
 function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
-  gpCustomizableTimerCallback = NULL;
+  gpCustomizableTimerCallback = null;
 
   // unload the sector they teleported out of
   if (!gfAutomaticallyStartAutoResolve) {
@@ -265,7 +265,7 @@ function MainGameScreenHandle(): UINT32 {
   }
 
   if (gfBeginEndTurn) {
-    UIHandleEndTurn(NULL);
+    UIHandleEndTurn(null);
     gfBeginEndTurn = FALSE;
   }
 
@@ -309,7 +309,7 @@ function MainGameScreenHandle(): UINT32 {
   if (gfFailedToSaveGameWhenInsideAMessageBox) {
     gfFailedToSaveGameWhenInsideAMessageBox = FALSE;
 
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
 
     return Enum26.GAME_SCREEN;
   }
@@ -497,7 +497,7 @@ function MainGameScreenHandle(): UINT32 {
 
   RenderWorld();
 
-  if (gRenderOverride != NULL) {
+  if (gRenderOverride != null) {
     gRenderOverride();
   }
 
@@ -684,10 +684,10 @@ function EndModalTactical(): void {
     gfTacticalDisableRegionActive = FALSE;
   }
 
-  if (gModalDoneCallback != NULL) {
+  if (gModalDoneCallback != null) {
     gModalDoneCallback();
 
-    gModalDoneCallback = NULL;
+    gModalDoneCallback = null;
   }
 
   gfTacticalIsModal = FALSE;

@@ -69,7 +69,7 @@ let pSliderRegions: MOUSE_REGION[] /* [10] */;
 let pSliderBarRegions: MOUSE_REGION[] /* [10] */;
 
 // The currently "anchored scroll bar"
-let gpCurrentScrollBox: Pointer<MOUSE_REGION> = NULL;
+let gpCurrentScrollBox: Pointer<MOUSE_REGION> = null;
 let giCurrentlySelectedStat: INT32 = -1;
 
 // has any of the sliding bars moved?...for re-rendering puposes
@@ -86,7 +86,7 @@ function EnterIMPAttributeSelection(): void {
     // re starting
     SetAttributes();
 
-    gpCurrentScrollBox = NULL;
+    gpCurrentScrollBox = null;
     giCurrentlySelectedStat = -1;
 
     // does character have PROBLEMS!!?!?!
@@ -172,7 +172,7 @@ function HandleIMPAttributeSelection(): void {
   }
 
   // set the currently selectd slider bar
-  if (gfLeftButtonState && gpCurrentScrollBox != NULL) {
+  if (gfLeftButtonState && gpCurrentScrollBox != null) {
     // if theuser is holding down the mouse cursor to left of the start of the slider bars
     if (gusMouseXPos < (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X)) {
       DecrementStat(giCurrentlySelectedStat);
@@ -216,7 +216,7 @@ function HandleIMPAttributeSelection(): void {
 
     RenderIMPAttributeSelection();
   } else {
-    gpCurrentScrollBox = NULL;
+    gpCurrentScrollBox = null;
     giCurrentlySelectedStat = -1;
   }
 
@@ -1053,7 +1053,7 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   let sNewX: INT16 = -1;
 
   // if we already have an anchored slider bar
-  if (gpCurrentScrollBox != pRegion && gpCurrentScrollBox != NULL)
+  if (gpCurrentScrollBox != pRegion && gpCurrentScrollBox != null)
     return;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {

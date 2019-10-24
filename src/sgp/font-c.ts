@@ -182,7 +182,7 @@ function SetRGBFontShadow(uiRed: UINT32, uiGreen: UINT32, uiBlue: UINT32): void 
 function ResetFontObjectPalette(iFont: INT32): BOOLEAN {
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
-  Assert(FontObjs[iFont] != NULL);
+  Assert(FontObjs[iFont] != null);
 
   SetFontObjectPalette8BPP(iFont, FontObjs[iFont].value.pPaletteEntry);
 
@@ -201,10 +201,10 @@ function SetFontObjectPalette8BPP(iFont: INT32, pPal8: Pointer<SGPPaletteEntry>)
 
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
-  Assert(FontObjs[iFont] != NULL);
+  Assert(FontObjs[iFont] != null);
 
-  if ((pPal16 = Create16BPPPalette(pPal8)) == NULL)
-    return NULL;
+  if ((pPal16 = Create16BPPPalette(pPal8)) == null)
+    return null;
 
   FontObjs[iFont].value.p16BPPPalette = pPal16;
   FontObjs[iFont].value.pShadeCurrent = pPal16;
@@ -221,7 +221,7 @@ function SetFontObjectPalette8BPP(iFont: INT32, pPal8: Pointer<SGPPaletteEntry>)
 function SetFontObjectPalette16BPP(iFont: INT32, pPal16: Pointer<UINT16>): Pointer<UINT16> {
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
-  Assert(FontObjs[iFont] != NULL);
+  Assert(FontObjs[iFont] != null);
 
   FontObjs[iFont].value.p16BPPPalette = pPal16;
   FontObjs[iFont].value.pShadeCurrent = pPal16;
@@ -238,7 +238,7 @@ function SetFontObjectPalette16BPP(iFont: INT32, pPal16: Pointer<UINT16>): Point
 function GetFontObjectPalette16BPP(iFont: INT32): Pointer<UINT16> {
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
-  Assert(FontObjs[iFont] != NULL);
+  Assert(FontObjs[iFont] != null);
 
   return FontObjs[iFont].value.p16BPPPalette;
 }
@@ -252,7 +252,7 @@ function GetFontObjectPalette16BPP(iFont: INT32): Pointer<UINT16> {
 function GetFontObject(iFont: INT32): HVOBJECT {
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
-  Assert(FontObjs[iFont] != NULL);
+  Assert(FontObjs[iFont] != null);
 
   return FontObjs[iFont];
 }
@@ -267,7 +267,7 @@ function FindFreeFont(): INT32 {
   let count: int;
 
   for (count = 0; count < MAX_FONTS; count++)
-    if (FontObjs[count] == NULL)
+    if (FontObjs[count] == null)
       return count;
 
   return -1;
@@ -284,7 +284,7 @@ function LoadFontFile(filename: Pointer<UINT8>): INT32 {
   let vo_desc: VOBJECT_DESC;
   let LoadIndex: UINT32;
 
-  Assert(filename != NULL);
+  Assert(filename != null);
   Assert(strlen(filename));
 
   if ((LoadIndex = FindFreeFont()) == (-1)) {
@@ -296,7 +296,7 @@ function LoadFontFile(filename: Pointer<UINT8>): INT32 {
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   strcpy(vo_desc.ImageFile, filename);
 
-  if ((FontObjs[LoadIndex] = CreateVideoObject(addressof(vo_desc))) == NULL) {
+  if ((FontObjs[LoadIndex] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Error creating VOBJECT (%s)", filename));
     FatalError("Cannot init FONT file %s", filename);
     return -1;
@@ -318,10 +318,10 @@ function LoadFontFile(filename: Pointer<UINT8>): INT32 {
 function UnloadFont(FontIndex: UINT32): void {
   Assert(FontIndex >= 0);
   Assert(FontIndex <= MAX_FONTS);
-  Assert(FontObjs[FontIndex] != NULL);
+  Assert(FontObjs[FontIndex] != null);
 
   DeleteVideoObject(FontObjs[FontIndex]);
-  FontObjs[FontIndex] = NULL;
+  FontObjs[FontIndex] = null;
 }
 
 //*****************************************************************************
@@ -334,7 +334,7 @@ function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
   let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
+  Assert(hSrcVObject != null);
 
   if (ssIndex < 0 || ssIndex > 92) {
     let i: int = 0;
@@ -357,7 +357,7 @@ function StringPixLengthArg(usUseFont: INT32, uiCharCount: UINT32, pFontString: 
   let argptr: va_list;
   let string: wchar_t[] /* [512] */;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -393,7 +393,7 @@ function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, uiCharC
   let sBoldDiff: INT16 = 0;
   let str: UINT16[] /* [2] */;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   wcscpy(string, pFontString);
 
@@ -468,7 +468,7 @@ function StringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
   let curletter: Pointer<UINT16>;
   let transletter: UINT16;
 
-  if (string == NULL) {
+  if (string == null) {
     return 0;
   }
 
@@ -534,7 +534,7 @@ function GetHeight(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
   let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
+  Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[ssIndex]);
@@ -551,7 +551,7 @@ function GetHeight(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
 function GetFontHeight(FontNum: INT32): UINT16 {
   Assert(FontNum >= 0);
   Assert(FontNum <= MAX_FONTS);
-  Assert(FontObjs[FontNum] != NULL);
+  Assert(FontObjs[FontNum] != null);
 
   return GetHeight(FontObjs[FontNum], 0);
 }
@@ -595,7 +595,7 @@ function GetIndex(siChar: UINT16): INT16 {
 function SetFont(iFontIndex: INT32): BOOLEAN {
   Assert(iFontIndex >= 0);
   Assert(iFontIndex <= MAX_FONTS);
-  Assert(FontObjs[iFontIndex] != NULL);
+  Assert(FontObjs[iFontIndex] != null);
 
   FontDefault = iFontIndex;
   return TRUE;
@@ -641,7 +641,7 @@ function mprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -742,7 +742,7 @@ function gprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -789,7 +789,7 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args:
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -843,7 +843,7 @@ function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
   let argptr: va_list;
   let string: wchar_t[] /* [512] */;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -883,7 +883,7 @@ function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
   let argptr: va_list;
   let string: wchar_t[] /* [512] */;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -923,7 +923,7 @@ function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32
   let string: wchar_t[] /* [512] */;
   let usOldForeColor: UINT16;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -976,7 +976,7 @@ function mprintf_coded(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
-  Assert(pFontString != NULL);
+  Assert(pFontString != null);
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -1053,16 +1053,16 @@ function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer
   FontDestWrap = FALSE;
 
   // register the appropriate debug topics
-  if (pTransTable == NULL) {
+  if (pTransTable == null) {
     return FALSE;
   }
   RegisterDebugTopic(TOPIC_FONT_HANDLER, "Font Manager");
 
-  if ((pFManager = MemAlloc(sizeof(FontManager))) == NULL) {
+  if ((pFManager = MemAlloc(sizeof(FontManager))) == null) {
     return FALSE;
   }
 
-  if ((pTransTab = MemAlloc(sizeof(FontTranslationTable))) == NULL) {
+  if ((pTransTab = MemAlloc(sizeof(FontTranslationTable))) == null) {
     return FALSE;
   }
 
@@ -1073,7 +1073,7 @@ function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer
 
   // Mark all font slots as empty
   for (count = 0; count < MAX_FONTS; count++)
-    FontObjs[count] = NULL;
+    FontObjs[count] = null;
 
   return TRUE;
 }
@@ -1091,7 +1091,7 @@ function ShutdownFontManager(): void {
     MemFree(pFManager);
 
   for (count = 0; count < MAX_FONTS; count++) {
-    if (FontObjs[count] != NULL)
+    if (FontObjs[count] != null)
       UnloadFont(count);
   }
 }
@@ -1103,14 +1103,14 @@ function ShutdownFontManager(): void {
 //*****************************************************************************
 function DestroyEnglishTransTable(): void {
   if (pFManager) {
-    if (pFManager.value.pTranslationTable != NULL) {
-      if (pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues != NULL) {
+    if (pFManager.value.pTranslationTable != null) {
+      if (pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues != null) {
         MemFree(pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues);
       }
 
       MemFree(pFManager.value.pTranslationTable);
 
-      pFManager.value.pTranslationTable = NULL;
+      pFManager.value.pTranslationTable = null;
     }
   }
 }
@@ -1121,7 +1121,7 @@ function DestroyEnglishTransTable(): void {
 // Creates the English text->font map table.
 //*****************************************************************************
 function CreateEnglishTransTable(): Pointer<FontTranslationTable> {
-  let pTable: Pointer<FontTranslationTable> = NULL;
+  let pTable: Pointer<FontTranslationTable> = null;
   let temp: Pointer<UINT16>;
 
   pTable = MemAlloc(sizeof(FontTranslationTable));

@@ -193,7 +193,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
       // Check if there was space!
       if (!fGuyAvail) {
         // No space, so can't create the soldier.
-        return NULL;
+        return null;
       }
 
       // OK, set ID
@@ -491,7 +491,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     ubSectorID = GetAutoResolveSectorID();
     pSoldier = MemAlloc(sizeof(SOLDIERTYPE));
     if (!pSoldier)
-      return NULL;
+      return null;
     memcpy(pSoldier, addressof(Soldier), sizeof(SOLDIERTYPE));
     pSoldier.value.ubID = 255;
     pSoldier.value.sSectorX = SECTORX(ubSectorID);
@@ -1079,9 +1079,9 @@ function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVeh
       RemoveSoldierFromGridNo(pSoldier);
 
       // Delete shadow of crow....
-      if (pSoldier.value.pAniTile != NULL) {
+      if (pSoldier.value.pAniTile != null) {
         DeleteAniTile(pSoldier.value.pAniTile);
-        pSoldier.value.pAniTile = NULL;
+        pSoldier.value.pAniTile = null;
       }
 
       if (!(pSoldier.value.uiStatusFlags & SOLDIER_OFF_MAP)) {
@@ -1805,7 +1805,7 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
         // Allocate and copy the soldier
         pSoldier = MemAlloc(sizeof(SOLDIERTYPE));
         if (!pSoldier)
-          return NULL;
+          return null;
         memcpy(pSoldier, MercPtrs[i], sizeof(SOLDIERTYPE));
 
         // Assign a bogus ID, then return it
@@ -1814,7 +1814,7 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
       }
     }
   }
-  return NULL;
+  return null;
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
@@ -2110,7 +2110,7 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
             // try to find the appropriate item to attach to!
             for (cnt2 = 0; cnt2 < Enum261.NUM_INV_SLOTS; cnt2++) {
               if (pSoldier.value.inv[cnt2].usItem != NOTHING && ValidAttachment(Obj.usItem, pSoldier.value.inv[cnt2].usItem)) {
-                AttachObject(NULL, addressof(pSoldier.value.inv[cnt2]), addressof(Obj));
+                AttachObject(null, addressof(pSoldier.value.inv[cnt2]), addressof(Obj));
                 break;
               }
             }

@@ -601,7 +601,7 @@ function ExitAIMMembers(): void {
 
   ExitAimMenuBar();
 
-  InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, NULL, NULL, 0, 0, 0);
+  InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, null, null, 0, 0, 0);
 
   RemoveTextMercPopupImages();
 }
@@ -640,7 +640,7 @@ function HandleAIMMembers(): void {
 
   // If we have to get rid of the popup box
   if (gubPopUpBoxAction == Enum66.AIM_POPUP_DELETE) {
-    InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, NULL, NULL, 0, 0, 0);
+    InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, null, null, 0, 0, 0);
 
     // if we are exiting to display a popup box, dont rerender the display
     if (!fExitDueToMessageBox)
@@ -685,7 +685,7 @@ function HandleAIMMembers(): void {
 }
 
 function RenderAIMMembersTopLevel(): BOOLEAN {
-  InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DISPLAY, NULL, NULL, 0, 0, 0);
+  InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DISPLAY, null, null, 0, 0, 0);
 
   return TRUE;
 }
@@ -702,18 +702,18 @@ function RenderAIMMembers(): BOOLEAN {
 
   // Stats
   GetVideoObject(addressof(hStatsHandle), guiStats);
-  BltVideoObject(FRAME_BUFFER, hStatsHandle, 0, STATS_X, STATS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hStatsHandle, 0, STATS_X, STATS_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Price
   GetVideoObject(addressof(hPriceHandle), guiPrice);
-  BltVideoObject(FRAME_BUFFER, hPriceHandle, 0, PRICE_X, PRICE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPriceHandle, 0, PRICE_X, PRICE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // WeaponBox
   GetVideoObject(addressof(hWeaponBoxHandle), guiWeaponBox);
 
   uiPosX = WEAPONBOX_X;
   for (x = 0; x < WEAPONBOX_NUMBER; x++) {
-    BltVideoObject(FRAME_BUFFER, hWeaponBoxHandle, 0, uiPosX, WEAPONBOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hWeaponBoxHandle, 0, uiPosX, WEAPONBOX_Y, VO_BLT_SRCTRANSPARENCY, null);
     uiPosX += WEAPONBOX_SIZE_X;
   }
 
@@ -1116,7 +1116,7 @@ function BtnPreviousButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-      InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, NULL, NULL, 0, 0, 0);
+      InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, null, null, 0, 0, 0);
 
       if (gbCurrentIndex > 0)
         gbCurrentIndex--;
@@ -1153,7 +1153,7 @@ function BtnContactButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-      InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, NULL, NULL, 0, 0, 0);
+      InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, null, null, 0, 0, 0);
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
@@ -1172,7 +1172,7 @@ function BtnNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-      InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, NULL, NULL, 0, 0, 0);
+      InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, null, null, 0, 0, 0);
 
       if (gbCurrentIndex < MAX_NUMBER_MERCS - 1)
         gbCurrentIndex++;
@@ -1200,14 +1200,14 @@ function DisplayMercsFace(): BOOLEAN {
   let sFaceLoc: STR = "FACES\\BIGFACES\\";
   let sTemp: char[] /* [100] */;
   let VObjectDesc: VOBJECT_DESC;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // See if the merc is currently hired
   pSoldier = FindSoldierByProfileID(gbCurrentSoldier, TRUE);
 
   // Portrait Frame
   GetVideoObject(addressof(hPortraitHandle), guiPortrait);
-  BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, PORTRAIT_X, PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, PORTRAIT_X, PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // load the Face graphic and add it
   sprintf(sTemp, "%s%02d.sti", sFaceLoc, gbCurrentSoldier);
@@ -1217,7 +1217,7 @@ function DisplayMercsFace(): BOOLEAN {
 
   // Blt face to screen
   GetVideoObject(addressof(hFaceHandle), guiFace);
-  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, FACE_X, FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, FACE_X, FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // if the merc is dead
   if (IsMercDead(gbCurrentSoldier)) {
@@ -1231,7 +1231,7 @@ function DisplayMercsFace(): BOOLEAN {
     SetObjectHandleShade(guiFace, 0);
 
     // Blt face to screen
-    BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, FACE_X, FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, FACE_X, FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     // if the merc is dead, display it
     DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_DEAD], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
@@ -1456,7 +1456,7 @@ function BtnAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
         // Was the merc hired
         if (AimMemberHireMerc()) {
           // if merc was hired
-          InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_CREATE, AimPopUpText[Enum357.AIM_MEMBER_FUNDS_TRANSFER_SUCCESFUL], NULL, AIM_POPUP_BOX_X, AIM_POPUP_BOX_Y, AIM_POPUP_BOX_SUCCESS);
+          InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_CREATE, AimPopUpText[Enum357.AIM_MEMBER_FUNDS_TRANSFER_SUCCESFUL], null, AIM_POPUP_BOX_X, AIM_POPUP_BOX_Y, AIM_POPUP_BOX_SUCCESS);
           DelayMercSpeech(gbCurrentSoldier, Enum202.QUOTE_CONTRACT_ACCEPTANCE, 750, TRUE, FALSE);
 
           // Disable the buttons behind the message box
@@ -1553,7 +1553,7 @@ function AimMemberHireMerc(): INT8 {
   bReturnCode = HireMerc(addressof(HireMercStruct));
   if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
     // display a warning saying u cant hire more then 20 mercs
-    DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, AimPopUpText[Enum357.AIM_MEMBER_ALREADY_HAVE_20_MERCS], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, AimPopUpText[Enum357.AIM_MEMBER_ALREADY_HAVE_20_MERCS], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
     return FALSE;
   } else if (bReturnCode == MERC_HIRE_FAILED) {
     return FALSE;
@@ -1637,7 +1637,7 @@ function DisplayMercsVideoFace(): BOOLEAN {
   // Get and Blt Terminal Frame
   GetVideoObject(addressof(hTerminalHandle), guiVideoConfTerminal);
   ShadowVideoSurfaceImage(FRAME_BUFFER, hTerminalHandle, AIM_MEMBER_VIDEO_CONF_TERMINAL_X, AIM_MEMBER_VIDEO_CONF_TERMINAL_Y);
-  BltVideoObject(FRAME_BUFFER, hTerminalHandle, 0, AIM_MEMBER_VIDEO_CONF_TERMINAL_X, AIM_MEMBER_VIDEO_CONF_TERMINAL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hTerminalHandle, 0, AIM_MEMBER_VIDEO_CONF_TERMINAL_X, AIM_MEMBER_VIDEO_CONF_TERMINAL_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the Select light on the merc
   if (gubVideoConferencingMode == Enum65.AIM_VIDEO_HIRE_MERC_MODE)
@@ -1700,9 +1700,9 @@ function DisplayMercChargeAmount(): UINT32 {
 
   // Display the 'black hole'for the contract charge  in the video conference terminal
   GetVideoObject(addressof(hImageHandle), guiVideoContractCharge);
-  BltVideoObject(FRAME_BUFFER, hImageHandle, 0, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_X, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hImageHandle, 0, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_X, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-  if (FindSoldierByProfileID(gbCurrentSoldier, TRUE) == NULL) {
+  if (FindSoldierByProfileID(gbCurrentSoldier, TRUE) == null) {
     giContractAmount = 0;
 
     // the contract charge amount
@@ -1764,12 +1764,12 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
       // Disable the 'X' to close the pop upi video
       DisableButton(giXToCloseVideoConfButton);
 
-      if (sString1 != NULL)
+      if (sString1 != null)
         wcscpy(sPopUpString1, sString1);
       else
         sPopUpString1[0] = '\0';
 
-      if (sString2 != NULL)
+      if (sString2 != null)
         wcscpy(sPopUpString2, sString2);
       else
         sPopUpString2[0] = '\0';
@@ -1783,7 +1783,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
       CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPopUpBox)));
 
       GetVideoObject(addressof(hPopupBoxHandle), guiPopUpBox);
-      BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
       // Create the popup boxes button
       guiPopUpImage = LoadButtonImage("LAPTOP\\VideoConfButtons.sti", -1, 2, -1, 3, -1);
@@ -1816,7 +1816,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
 
       // load and display the popup box graphic
       GetVideoObject(addressof(hPopupBoxHandle), guiPopUpBox);
-      BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPopUpBoxPosX, usPopUpBoxPosY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPopUpBoxPosX, usPopUpBoxPosY, VO_BLT_SRCTRANSPARENCY, null);
 
       SetFontShadow(AIM_M_VIDEO_NAME_SHADOWCOLOR);
 
@@ -2274,7 +2274,7 @@ function DisplaySnowBackground(): BOOLEAN {
   }
   // Get the snow background, and blit it
   GetVideoObject(addressof(hSnowHandle), guiBWSnow);
-  BltVideoObject(FRAME_BUFFER, hSnowHandle, ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hSnowHandle, ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   InvalidateRegion(AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH, AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT);
 
@@ -2446,7 +2446,7 @@ function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxI
 
   // Get the snow background, and blit it
   GetVideoObject(addressof(hFuzzLineHandle), uiImageIdentifier);
-  BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, bCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, bCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   if (bForward) {
     if (bCount == ubMaxImages - 1) {
@@ -2485,7 +2485,7 @@ function DisplayDistortionLine(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxIm
 
   // Get the snow background, and blit it
   GetVideoObject(addressof(hFuzzLineHandle), uiImageIdentifier);
-  BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   if (ubCount == ubMaxImages - 1) {
     ubCount = 0;
@@ -2693,7 +2693,7 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
       gfAimMemberCanMercSayOpeningQuote = TRUE;
 
       GetVideoObject(addressof(hImageHandle), uiVideoBackgroundGraphic);
-      BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
       DeleteVideoObjectFromIndex(uiVideoBackgroundGraphic);
     }
@@ -2882,7 +2882,7 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
     CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar)));
 
     GetVideoObject(addressof(hImageHandle), uiVideoBackgroundGraphic);
-    BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
     DeleteVideoObjectFromIndex(uiVideoBackgroundGraphic);
   }
@@ -3435,7 +3435,7 @@ BOOLEAN DisplayShadedStretchedMercFace( UINT8 ubMercID, UINT16 usPosX, UINT16 us
 
 function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   let szLocAndTime: CHAR16[] /* [512] */;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let zTimeString: CHAR16[] /* [128] */;
   let zSectorIDString: CHAR16[] /* [512] */;
   let uiHour: UINT32;
@@ -3450,7 +3450,7 @@ function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
 
   pSoldier = FindSoldierByProfileID(LaptopSaveInfo.sLastHiredMerc.iIdOfMerc, TRUE);
 
-  if (pSoldier == NULL)
+  if (pSoldier == null)
     return;
 
   // calc the approximate hour the mercs will arrive at

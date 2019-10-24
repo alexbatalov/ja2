@@ -1,4 +1,4 @@
-let gpDoorStatus: Pointer<DOOR_STATUS> = NULL;
+let gpDoorStatus: Pointer<DOOR_STATUS> = null;
 let gubNumDoorStatus: UINT8 = 0;
 
 let KeyTable: KEY[] /* [NUM_KEYS] */ = [
@@ -85,7 +85,7 @@ let DoorTrapTable: DOORTRAP[] /* [NUM_DOOR_TRAPS] */ = [
 // Dynamic array of Doors.  For general game purposes, the doors that are locked and/or trapped
 // are permanently saved within the map, and are loaded and allocated when the map is loaded.  Because
 // the editor allows more doors to be added, or removed, the actual size of the DoorTable may change.
-let DoorTable: Pointer<DOOR> = NULL;
+let DoorTable: Pointer<DOOR> = null;
 
 function LoadLockTable(): BOOLEAN {
   let uiNumBytesRead: UINT32 = 0;
@@ -114,7 +114,7 @@ function LoadLockTable(): BOOLEAN {
 }
 
 function SoldierHasKey(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): BOOLEAN {
-  if (KeyExistsInKeyRing(pSoldier, ubKeyID, NULL) || KeyExistsInInventory(pSoldier, ubKeyID)) {
+  if (KeyExistsInKeyRing(pSoldier, ubKeyID, null) || KeyExistsInInventory(pSoldier, ubKeyID)) {
     return TRUE;
   }
 
@@ -194,7 +194,7 @@ function AttemptToUnlockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 
   for (ubLoop = 0; ubLoop < MAX_KEYS_PER_LOCK; ubLoop++) {
     ubKeyID = pDoor.value.ubLockID;
-    if (KeyExistsInKeyRing(pSoldier, ubKeyID, NULL)) {
+    if (KeyExistsInKeyRing(pSoldier, ubKeyID, null)) {
       // unlock door and move key to front of key ring!
       DoUnlockDoor(pDoor, ubKeyID);
       return TRUE;
@@ -217,7 +217,7 @@ function AttemptToLockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>)
 
   for (ubLoop = 0; ubLoop < MAX_KEYS_PER_LOCK; ubLoop++) {
     ubKeyID = pDoor.value.ubLockID;
-    if (KeyExistsInKeyRing(pSoldier, ubKeyID, NULL)) {
+    if (KeyExistsInKeyRing(pSoldier, ubKeyID, null)) {
       // lock door and move key to front of key ring!
       DoLockDoor(pDoor, ubKeyID);
       return TRUE;
@@ -718,7 +718,7 @@ function FindDoorInfoAtGridNo(iMapIndex: INT32): Pointer<DOOR> {
     if (DoorTable[i].sGridNo == iMapIndex)
       return addressof(DoorTable[i]);
   }
-  return NULL;
+  return null;
 }
 
 // Upon world deallocation, the door table needs to be deallocated.  Remember, this function
@@ -726,7 +726,7 @@ function FindDoorInfoAtGridNo(iMapIndex: INT32): Pointer<DOOR> {
 function TrashDoorTable(): void {
   if (DoorTable)
     MemFree(DoorTable);
-  DoorTable = NULL;
+  DoorTable = null;
   gubNumDoors = 0;
   gubMaxDoors = 0;
 }
@@ -847,7 +847,7 @@ function LoadDoorTableFromDoorTableTempFile(): BOOLEAN {
   if (gubNumDoors != 0) {
     // Allocate space for the door table
     DoorTable = MemAlloc(sizeof(DOOR) * gubMaxDoors);
-    if (DoorTable == NULL) {
+    if (DoorTable == null) {
       FileClose(hFile);
       return FALSE;
     }
@@ -878,10 +878,10 @@ function ModifyDoorStatus(sGridNo: INT16, fOpen: BOOLEAN, fPerceivedOpen: BOOLEA
   if (pStructure) {
     pBaseStructure = FindBaseStructure(pStructure);
   } else {
-    pBaseStructure = NULL;
+    pBaseStructure = null;
   }
 
-  if (pBaseStructure == NULL) {
+  if (pBaseStructure == null) {
     return FALSE;
   }
 
@@ -925,14 +925,14 @@ function ModifyDoorStatus(sGridNo: INT16, fOpen: BOOLEAN, fPerceivedOpen: BOOLEA
 
     // reallocate memory to hold the new door
     gpDoorStatus = MemRealloc(gpDoorStatus, sizeof(DOOR_STATUS) * gubNumDoorStatus);
-    if (gpDoorStatus == NULL)
+    if (gpDoorStatus == null)
       return FALSE;
   } else {
     // Set the initial number of doors
     gubNumDoorStatus = 1;
 
     gpDoorStatus = MemAlloc(sizeof(DOOR_STATUS));
-    if (gpDoorStatus == NULL)
+    if (gpDoorStatus == null)
       return FALSE;
   }
 
@@ -962,7 +962,7 @@ function ModifyDoorStatus(sGridNo: INT16, fOpen: BOOLEAN, fPerceivedOpen: BOOLEA
 function TrashDoorStatusArray(): void {
   if (gpDoorStatus) {
     MemFree(gpDoorStatus);
-    gpDoorStatus = NULL;
+    gpDoorStatus = null;
   }
 
   gubNumDoorStatus = 0;
@@ -978,10 +978,10 @@ function IsDoorOpen(sGridNo: INT16): BOOLEAN {
   if (pStructure) {
     pBaseStructure = FindBaseStructure(pStructure);
   } else {
-    pBaseStructure = NULL;
+    pBaseStructure = null;
   }
 
-  if (pBaseStructure == NULL) {
+  if (pBaseStructure == null) {
     return FALSE;
   }
 
@@ -1015,11 +1015,11 @@ function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
     if (pStructure) {
       pBaseStructure = FindBaseStructure(pStructure);
     } else {
-      pBaseStructure = NULL;
+      pBaseStructure = null;
     }
 
-    if (pBaseStructure == NULL) {
-      return NULL;
+    if (pBaseStructure == null) {
+      return null;
     }
 
     // Check to see if the user is adding an existing door
@@ -1031,7 +1031,7 @@ function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
     }
   }
 
-  return NULL;
+  return null;
 }
 
 function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
@@ -1055,7 +1055,7 @@ function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
   // Get door
   pDoorStatus = GetDoorStatus(sGridNo);
 
-  if (pDoorStatus == NULL) {
+  if (pDoorStatus == null) {
     return FALSE;
   }
 
@@ -1187,10 +1187,10 @@ function SyncronizeDoorStatusToStructureData(pDoorStatus: Pointer<DOOR_STATUS>):
     pBaseStructure = FindBaseStructure(pStructure);
     sBaseGridNo = pBaseStructure.value.sGridNo;
   } else {
-    pBaseStructure = NULL;
+    pBaseStructure = null;
   }
 
-  if (pBaseStructure == NULL) {
+  if (pBaseStructure == null) {
     return;
   }
 
@@ -1252,10 +1252,10 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
     pBaseStructure = FindBaseStructure(pStructure);
     sBaseGridNo = pBaseStructure.value.sGridNo;
   } else {
-    pBaseStructure = NULL;
+    pBaseStructure = null;
   }
 
-  if (pBaseStructure == NULL) {
+  if (pBaseStructure == null) {
     return;
   }
 
@@ -1404,10 +1404,10 @@ function InternalUpdateDoorsPerceivedValue(pDoorStatus: Pointer<DOOR_STATUS>): v
 }
 
 function UpdateDoorStatusPerceivedValue(sGridNo: INT16): BOOLEAN {
-  let pDoorStatus: Pointer<DOOR_STATUS> = NULL;
+  let pDoorStatus: Pointer<DOOR_STATUS> = null;
 
   pDoorStatus = GetDoorStatus(sGridNo);
-  CHECKF(pDoorStatus != NULL);
+  CHECKF(pDoorStatus != null);
 
   InternalUpdateDoorsPerceivedValue(pDoorStatus);
 
@@ -1439,11 +1439,11 @@ function InternalSetDoorPerceivedOpenStatus(pDoorStatus: Pointer<DOOR_STATUS>, f
 }
 
 function SetDoorPerceivedOpenStatus(sGridNo: INT16, fPerceivedOpen: BOOLEAN): BOOLEAN {
-  let pDoorStatus: Pointer<DOOR_STATUS> = NULL;
+  let pDoorStatus: Pointer<DOOR_STATUS> = null;
 
   pDoorStatus = GetDoorStatus(sGridNo);
 
-  CHECKF(pDoorStatus != NULL);
+  CHECKF(pDoorStatus != null);
 
   return InternalSetDoorPerceivedOpenStatus(pDoorStatus, fPerceivedOpen);
 }
@@ -1556,7 +1556,7 @@ function LoadDoorStatusArrayFromDoorStatusTempFile(): BOOLEAN {
 
   // Allocate space for the door status array
   gpDoorStatus = MemAlloc(sizeof(DOOR_STATUS) * gubNumDoorStatus);
-  if (gpDoorStatus == NULL)
+  if (gpDoorStatus == null)
     AssertMsg(0, "Error Allocating memory for the gpDoorStatus");
   memset(gpDoorStatus, 0, sizeof(DOOR_STATUS) * gubNumDoorStatus);
 
@@ -1646,7 +1646,7 @@ function ExamineDoorsOnEnteringSector(): void {
       // Get status of door....
       if (pDoorStatus.value.ubFlags & DOOR_OPEN) {
         // If open, close!
-        HandleDoorChangeFromGridNo(NULL, pDoorStatus.value.sGridNo, TRUE);
+        HandleDoorChangeFromGridNo(null, pDoorStatus.value.sGridNo, TRUE);
       }
     }
   }
@@ -1709,7 +1709,7 @@ function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
         // If open, close!
         gfSetPerceivedDoorState = TRUE;
 
-        HandleDoorChangeFromGridNo(NULL, pDoorStatus.value.sGridNo, TRUE);
+        HandleDoorChangeFromGridNo(null, pDoorStatus.value.sGridNo, TRUE);
 
         gfSetPerceivedDoorState = FALSE;
 

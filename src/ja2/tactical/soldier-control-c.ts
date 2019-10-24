@@ -143,10 +143,10 @@ let gsFullTileDirections: INT16[] /* [MAX_FULLTILE_DIRECTIONS] */ = [
 
 // Palette ranges
 let guiNumPaletteSubRanges: UINT32;
-let guipPaletteSubRanges: Pointer<PaletteSubRangeType> = NULL;
+let guipPaletteSubRanges: Pointer<PaletteSubRangeType> = null;
 // Palette replacements
 let guiNumReplacements: UINT32;
-let guipPaletteReplacements: Pointer<PaletteReplacementType> = NULL;
+let guipPaletteReplacements: Pointer<PaletteReplacementType> = null;
 
 let gfGetNewPathThroughPeople: BOOLEAN = FALSE;
 
@@ -197,7 +197,7 @@ function AdjustNoAPToFinishMove(pSoldier: Pointer<SOLDIERTYPE>, fSet: BOOLEAN): 
 function HandleCrowShadowVisibility(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.ubBodyType == Enum194.CROW) {
     if (pSoldier.value.usAnimState == Enum193.CROW_FLY) {
-      if (pSoldier.value.pAniTile != NULL) {
+      if (pSoldier.value.pAniTile != null) {
         if (pSoldier.value.bLastRenderVisibleValue != -1) {
           HideAniTile(pSoldier.value.pAniTile, FALSE);
         } else {
@@ -214,9 +214,9 @@ function HandleCrowShadowNewGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
 
   if (pSoldier.value.ubBodyType == Enum194.CROW) {
-    if (pSoldier.value.pAniTile != NULL) {
+    if (pSoldier.value.pAniTile != null) {
       DeleteAniTile(pSoldier.value.pAniTile);
-      pSoldier.value.pAniTile = NULL;
+      pSoldier.value.pAniTile = null;
     }
 
     if (pSoldier.value.sGridNo != NOWHERE) {
@@ -244,9 +244,9 @@ function HandleCrowShadowNewGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
 function HandleCrowShadowRemoveGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.ubBodyType == Enum194.CROW) {
     if (pSoldier.value.usAnimState == Enum193.CROW_FLY) {
-      if (pSoldier.value.pAniTile != NULL) {
+      if (pSoldier.value.pAniTile != null) {
         DeleteAniTile(pSoldier.value.pAniTile);
-        pSoldier.value.pAniTile = NULL;
+        pSoldier.value.pAniTile = null;
       }
     }
   }
@@ -255,7 +255,7 @@ function HandleCrowShadowRemoveGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
 function HandleCrowShadowNewDirection(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.ubBodyType == Enum194.CROW) {
     if (pSoldier.value.usAnimState == Enum193.CROW_FLY) {
-      if (pSoldier.value.pAniTile != NULL) {
+      if (pSoldier.value.pAniTile != null) {
         pSoldier.value.pAniTile.value.uiUserData3 = pSoldier.value.bDirection;
       }
     }
@@ -265,7 +265,7 @@ function HandleCrowShadowNewDirection(pSoldier: Pointer<SOLDIERTYPE>): void {
 function HandleCrowShadowNewPosition(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.ubBodyType == Enum194.CROW) {
     if (pSoldier.value.usAnimState == Enum193.CROW_FLY) {
-      if (pSoldier.value.pAniTile != NULL) {
+      if (pSoldier.value.pAniTile != null) {
         pSoldier.value.pAniTile.value.sRelativeX = pSoldier.value.sX;
         pSoldier.value.pAniTile.value.sRelativeY = pSoldier.value.sY;
       }
@@ -517,7 +517,7 @@ function CreateSoldierCommon(ubBodyType: UINT8, pSoldier: Pointer<SOLDIERTYPE>, 
         pSoldier.value.pKeyRing[iCounter].ubKeyID = INVALID_KEY_NUMBER;
       }
     } else {
-      pSoldier.value.pKeyRing = NULL;
+      pSoldier.value.pKeyRing = null;
     }
     // Create frame cache
     if (InitAnimationCache(usSoldierID, addressof(pSoldier.value.AnimCache)) == FALSE) {
@@ -584,7 +584,7 @@ function DeleteSoldier(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let bDir: INT8;
   let fRet: BOOLEAN;
 
-  if (pSoldier != NULL) {
+  if (pSoldier != null) {
     // if(pSoldier->pBackGround!=NULL)
     // MemFree(pSoldier->pBackGround);
 
@@ -604,41 +604,41 @@ function DeleteSoldier(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     // Delete key ring
     if (pSoldier.value.pKeyRing) {
       MemFree(pSoldier.value.pKeyRing);
-      pSoldier.value.pKeyRing = NULL;
+      pSoldier.value.pKeyRing = null;
     }
 
     // Delete faces
     DeleteSoldierFace(pSoldier);
 
     // FREE PALETTES
-    if (pSoldier.value.p8BPPPalette != NULL) {
+    if (pSoldier.value.p8BPPPalette != null) {
       MemFree(pSoldier.value.p8BPPPalette);
-      pSoldier.value.p8BPPPalette = NULL;
+      pSoldier.value.p8BPPPalette = null;
     }
 
-    if (pSoldier.value.p16BPPPalette != NULL) {
+    if (pSoldier.value.p16BPPPalette != null) {
       MemFree(pSoldier.value.p16BPPPalette);
-      pSoldier.value.p16BPPPalette = NULL;
+      pSoldier.value.p16BPPPalette = null;
     }
 
     for (cnt = 0; cnt < NUM_SOLDIER_SHADES; cnt++) {
-      if (pSoldier.value.pShades[cnt] != NULL) {
+      if (pSoldier.value.pShades[cnt] != null) {
         MemFree(pSoldier.value.pShades[cnt]);
-        pSoldier.value.pShades[cnt] = NULL;
+        pSoldier.value.pShades[cnt] = null;
       }
     }
     for (cnt = 0; cnt < NUM_SOLDIER_EFFECTSHADES; cnt++) {
-      if (pSoldier.value.pEffectShades[cnt] != NULL) {
+      if (pSoldier.value.pEffectShades[cnt] != null) {
         MemFree(pSoldier.value.pEffectShades[cnt]);
-        pSoldier.value.pEffectShades[cnt] = NULL;
+        pSoldier.value.pEffectShades[cnt] = null;
       }
     }
 
     // Delete glows
     for (cnt = 0; cnt < 20; cnt++) {
-      if (pSoldier.value.pGlowShades[cnt] != NULL) {
+      if (pSoldier.value.pGlowShades[cnt] != null) {
         MemFree(pSoldier.value.pGlowShades[cnt]);
-        pSoldier.value.pGlowShades[cnt] = NULL;
+        pSoldier.value.pGlowShades[cnt] = null;
       }
     }
 
@@ -1447,9 +1447,9 @@ function EVENT_InitNewSoldierAnim(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UI
       case Enum193.CROW_DIE:
 
         // Delete shadow of crow....
-        if (pSoldier.value.pAniTile != NULL) {
+        if (pSoldier.value.pAniTile != null) {
           DeleteAniTile(pSoldier.value.pAniTile);
-          pSoldier.value.pAniTile = NULL;
+          pSoldier.value.pAniTile = null;
         }
         break;
 
@@ -1830,7 +1830,7 @@ function SetSoldierGridNo(pSoldier: Pointer<SOLDIERTYPE>, sNewGridNo: INT16, fFo
     return;
   }
 
-  if (sNewGridNo != pSoldier.value.sGridNo || pSoldier.value.pLevelNode == NULL) {
+  if (sNewGridNo != pSoldier.value.sGridNo || pSoldier.value.pLevelNode == null) {
     // Check if we are moving AND this is our next dest gridno....
     if (gAnimControl[pSoldier.value.usAnimState].uiFlags & (ANIM_MOVING | ANIM_SPECIALMOVE)) {
       if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
@@ -1939,7 +1939,7 @@ function SetSoldierGridNo(pSoldier: Pointer<SOLDIERTYPE>, sNewGridNo: INT16, fFo
       // JA2Gold:
       // if the player wants the merc to cast the fake light AND it is night
       if (pSoldier.value.bTeam != OUR_TEAM || gGameSettings.fOptions[Enum8.TOPTION_MERC_CASTS_LIGHT] && NightTime()) {
-        if (pSoldier.value.bLevel > 0 && gpWorldLevelData[pSoldier.value.sGridNo].pRoofHead != NULL) {
+        if (pSoldier.value.bLevel > 0 && gpWorldLevelData[pSoldier.value.sGridNo].pRoofHead != null) {
           gpWorldLevelData[pSoldier.value.sGridNo].pMercHead.value.ubShadeLevel = gpWorldLevelData[pSoldier.value.sGridNo].pRoofHead.value.ubShadeLevel;
           gpWorldLevelData[pSoldier.value.sGridNo].pMercHead.value.ubSumLights = gpWorldLevelData[pSoldier.value.sGridNo].pRoofHead.value.ubSumLights;
           gpWorldLevelData[pSoldier.value.sGridNo].pMercHead.value.ubMaxLights = gpWorldLevelData[pSoldier.value.sGridNo].pRoofHead.value.ubMaxLights;
@@ -2662,7 +2662,7 @@ function EVENT_SoldierGotHit(pSoldier: Pointer<SOLDIERTYPE>, usWeaponIndex: UINT
       pNewSoldier = ReduceAttackBusyGivenTarget(pSoldier.value.ubAttackerID, pSoldier.value.ubID);
     }
 
-    if (pNewSoldier != NULL) {
+    if (pNewSoldier != null) {
       pSoldier = pNewSoldier;
     }
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Tried to free up attacker, attack count now %d", gTacticalStatus.ubAttackBusyCount));
@@ -3489,7 +3489,7 @@ function MultiTiledTurnDirection(pSoldier: Pointer<SOLDIERTYPE>, bStartDirection
   }
 
   // ATE: Only if we have a levelnode...
-  if (pSoldier.value.pLevelNode != NULL && pSoldier.value.pLevelNode.value.pStructureData != NULL) {
+  if (pSoldier.value.pLevelNode != null && pSoldier.value.pLevelNode.value.pStructureData != null) {
     usStructureID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
   } else {
     usStructureID = INVALID_STRUCTURE_ID;
@@ -3895,7 +3895,7 @@ function ConvertAniCodeToAniFrame(pSoldier: Pointer<SOLDIERTYPE>, usAniFrame: UI
 
   pSoldier.value.usAniFrame = usAniFrame + ((gAnimSurfaceDatabase[usAnimSurface].uiNumFramesPerDir * ubTempDir));
 
-  if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == NULL) {
+  if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == null) {
     pSoldier.value.usAniFrame = 0;
     return TRUE;
   }
@@ -4015,7 +4015,7 @@ function TurnSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     // Else check if we are trying to shoot and once was prone, but am now crouched because we needed to turn...
     if (pSoldier.value.fTurningFromPronePosition == TURNING_FROM_PRONE_ON) {
       // ATE: Don't do this if we have something in our hands we are going to throw!
-      if (IsValidStance(pSoldier, ANIM_PRONE) && pSoldier.value.pTempObject == NULL) {
+      if (IsValidStance(pSoldier, ANIM_PRONE) && pSoldier.value.pTempObject == null) {
         SendChangeSoldierStanceEvent(pSoldier, ANIM_PRONE);
       }
       pSoldier.value.fTurningFromPronePosition = TURNING_FROM_PRONE_OFF;
@@ -4227,16 +4227,16 @@ function CreateSoldierPalettes(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // NT32 uiCount;
   // PPaletteEntry Pal[256];
 
-  if (pSoldier.value.p8BPPPalette != NULL) {
+  if (pSoldier.value.p8BPPPalette != null) {
     MemFree(pSoldier.value.p8BPPPalette);
-    pSoldier.value.p8BPPPalette = NULL;
+    pSoldier.value.p8BPPPalette = null;
   }
 
   // Allocate mem for new palette
   pSoldier.value.p8BPPPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
   memset(pSoldier.value.p8BPPPalette, 0, sizeof(SGPPaletteEntry) * 256);
 
-  CHECKF(pSoldier.value.p8BPPPalette != NULL);
+  CHECKF(pSoldier.value.p8BPPPalette != null);
 
   // --- TAKE FROM CURRENT ANIMATION HVOBJECT!
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
@@ -4271,32 +4271,32 @@ function CreateSoldierPalettes(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     }
   }
 
-  if (pSoldier.value.p16BPPPalette != NULL) {
+  if (pSoldier.value.p16BPPPalette != null) {
     MemFree(pSoldier.value.p16BPPPalette);
-    pSoldier.value.p16BPPPalette = NULL;
+    pSoldier.value.p16BPPPalette = null;
   }
 
   // -- BUILD 16BPP Palette from this
   pSoldier.value.p16BPPPalette = Create16BPPPalette(pSoldier.value.p8BPPPalette);
 
   for (iWhich = 0; iWhich < NUM_SOLDIER_SHADES; iWhich++) {
-    if (pSoldier.value.pShades[iWhich] != NULL) {
+    if (pSoldier.value.pShades[iWhich] != null) {
       MemFree(pSoldier.value.pShades[iWhich]);
-      pSoldier.value.pShades[iWhich] = NULL;
+      pSoldier.value.pShades[iWhich] = null;
     }
   }
 
   for (iWhich = 0; iWhich < NUM_SOLDIER_EFFECTSHADES; iWhich++) {
-    if (pSoldier.value.pEffectShades[iWhich] != NULL) {
+    if (pSoldier.value.pEffectShades[iWhich] != null) {
       MemFree(pSoldier.value.pEffectShades[iWhich]);
-      pSoldier.value.pEffectShades[iWhich] = NULL;
+      pSoldier.value.pEffectShades[iWhich] = null;
     }
   }
 
   for (iWhich = 0; iWhich < 20; iWhich++) {
-    if (pSoldier.value.pGlowShades[iWhich] != NULL) {
+    if (pSoldier.value.pGlowShades[iWhich] != null) {
       MemFree(pSoldier.value.pGlowShades[iWhich]);
-      pSoldier.value.pGlowShades[iWhich] = NULL;
+      pSoldier.value.pGlowShades[iWhich] = null;
     }
   }
 
@@ -4528,7 +4528,7 @@ function LoadPaletteData(): BOOLEAN {
   hFile = FileOpen(PALETTEFILENAME, FILE_ACCESS_READ, FALSE);
 
   // Read # of types
-  if (!FileRead(hFile, addressof(guiNumPaletteSubRanges), sizeof(guiNumPaletteSubRanges), NULL)) {
+  if (!FileRead(hFile, addressof(guiNumPaletteSubRanges), sizeof(guiNumPaletteSubRanges), null)) {
     return FALSE;
   }
 
@@ -4538,23 +4538,23 @@ function LoadPaletteData(): BOOLEAN {
 
   // Read # of types for each!
   for (cnt = 0; cnt < guiNumPaletteSubRanges; cnt++) {
-    if (!FileRead(hFile, addressof(gubpNumReplacementsPerRange[cnt]), sizeof(UINT8), NULL)) {
+    if (!FileRead(hFile, addressof(gubpNumReplacementsPerRange[cnt]), sizeof(UINT8), null)) {
       return FALSE;
     }
   }
 
   // Loop for each one, read in data
   for (cnt = 0; cnt < guiNumPaletteSubRanges; cnt++) {
-    if (!FileRead(hFile, addressof(gpPaletteSubRanges[cnt].ubStart), sizeof(UINT8), NULL)) {
+    if (!FileRead(hFile, addressof(gpPaletteSubRanges[cnt].ubStart), sizeof(UINT8), null)) {
       return FALSE;
     }
-    if (!FileRead(hFile, addressof(gpPaletteSubRanges[cnt].ubEnd), sizeof(UINT8), NULL)) {
+    if (!FileRead(hFile, addressof(gpPaletteSubRanges[cnt].ubEnd), sizeof(UINT8), null)) {
       return FALSE;
     }
   }
 
   // Read # of palettes
-  if (!FileRead(hFile, addressof(guiNumReplacements), sizeof(guiNumReplacements), NULL)) {
+  if (!FileRead(hFile, addressof(guiNumReplacements), sizeof(guiNumReplacements), null)) {
     return FALSE;
   }
 
@@ -4564,35 +4564,35 @@ function LoadPaletteData(): BOOLEAN {
   // Read!
   for (cnt = 0; cnt < guiNumReplacements; cnt++) {
     // type
-    if (!FileRead(hFile, addressof(gpPalRep[cnt].ubType), sizeof(gpPalRep[cnt].ubType), NULL)) {
+    if (!FileRead(hFile, addressof(gpPalRep[cnt].ubType), sizeof(gpPalRep[cnt].ubType), null)) {
       return FALSE;
     }
 
-    if (!FileRead(hFile, addressof(gpPalRep[cnt].ID), sizeof(gpPalRep[cnt].ID), NULL)) {
+    if (!FileRead(hFile, addressof(gpPalRep[cnt].ID), sizeof(gpPalRep[cnt].ID), null)) {
       return FALSE;
     }
 
     // # entries
-    if (!FileRead(hFile, addressof(gpPalRep[cnt].ubPaletteSize), sizeof(gpPalRep[cnt].ubPaletteSize), NULL)) {
+    if (!FileRead(hFile, addressof(gpPalRep[cnt].ubPaletteSize), sizeof(gpPalRep[cnt].ubPaletteSize), null)) {
       return FALSE;
     }
 
     // Malloc
     gpPalRep[cnt].r = MemAlloc(gpPalRep[cnt].ubPaletteSize);
-    CHECKF(gpPalRep[cnt].r != NULL);
+    CHECKF(gpPalRep[cnt].r != null);
     gpPalRep[cnt].g = MemAlloc(gpPalRep[cnt].ubPaletteSize);
-    CHECKF(gpPalRep[cnt].g != NULL);
+    CHECKF(gpPalRep[cnt].g != null);
     gpPalRep[cnt].b = MemAlloc(gpPalRep[cnt].ubPaletteSize);
-    CHECKF(gpPalRep[cnt].b != NULL);
+    CHECKF(gpPalRep[cnt].b != null);
 
     for (cnt2 = 0; cnt2 < gpPalRep[cnt].ubPaletteSize; cnt2++) {
-      if (!FileRead(hFile, addressof(gpPalRep[cnt].r[cnt2]), sizeof(UINT8), NULL)) {
+      if (!FileRead(hFile, addressof(gpPalRep[cnt].r[cnt2]), sizeof(UINT8), null)) {
         return FALSE;
       }
-      if (!FileRead(hFile, addressof(gpPalRep[cnt].g[cnt2]), sizeof(UINT8), NULL)) {
+      if (!FileRead(hFile, addressof(gpPalRep[cnt].g[cnt2]), sizeof(UINT8), null)) {
         return FALSE;
       }
-      if (!FileRead(hFile, addressof(gpPalRep[cnt].b[cnt2]), sizeof(UINT8), NULL)) {
+      if (!FileRead(hFile, addressof(gpPalRep[cnt].b[cnt2]), sizeof(UINT8), null)) {
         return FALSE;
       }
     }
@@ -4626,36 +4626,36 @@ function DeletePaletteData(): BOOLEAN {
   let cnt: UINT32;
 
   // Free!
-  if (gpPaletteSubRanges != NULL) {
+  if (gpPaletteSubRanges != null) {
     MemFree(gpPaletteSubRanges);
-    gpPaletteSubRanges = NULL;
+    gpPaletteSubRanges = null;
   }
 
-  if (gubpNumReplacementsPerRange != NULL) {
+  if (gubpNumReplacementsPerRange != null) {
     MemFree(gubpNumReplacementsPerRange);
-    gubpNumReplacementsPerRange = NULL;
+    gubpNumReplacementsPerRange = null;
   }
 
   for (cnt = 0; cnt < guiNumReplacements; cnt++) {
     // Free
-    if (gpPalRep[cnt].r != NULL) {
+    if (gpPalRep[cnt].r != null) {
       MemFree(gpPalRep[cnt].r);
-      gpPalRep[cnt].r = NULL;
+      gpPalRep[cnt].r = null;
     }
-    if (gpPalRep[cnt].g != NULL) {
+    if (gpPalRep[cnt].g != null) {
       MemFree(gpPalRep[cnt].g);
-      gpPalRep[cnt].g = NULL;
+      gpPalRep[cnt].g = null;
     }
-    if (gpPalRep[cnt].b != NULL) {
+    if (gpPalRep[cnt].b != null) {
       MemFree(gpPalRep[cnt].b);
-      gpPalRep[cnt].b = NULL;
+      gpPalRep[cnt].b = null;
     }
   }
 
   // Free
-  if (gpPalRep != NULL) {
+  if (gpPalRep != null) {
     MemFree(gpPalRep);
-    gpPalRep = NULL;
+    gpPalRep = null;
   }
 
   return TRUE;
@@ -5322,7 +5322,7 @@ function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSound
     // Pick a passenger from vehicle....
     pSoldier = PickRandomPassengerFromVehicle(pSoldier);
 
-    if (pSoldier == NULL) {
+    if (pSoldier == null) {
       return FALSE;
     }
   }
@@ -6003,15 +6003,15 @@ function CheckForFullStructures(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function CheckForFullStruct(sGridNo: INT16, pusIndex: Pointer<UINT16>): BOOLEAN {
-  let pStruct: Pointer<LEVELNODE> = NULL;
-  let pOldStruct: Pointer<LEVELNODE> = NULL;
+  let pStruct: Pointer<LEVELNODE> = null;
+  let pOldStruct: Pointer<LEVELNODE> = null;
   let fTileFlags: UINT32;
 
   pStruct = gpWorldLevelData[sGridNo].pStructHead;
 
   // Look through all structs and Search for type
 
-  while (pStruct != NULL) {
+  while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE && pStruct.value.usIndex < Enum312.NUMBEROFTILES) {
       GetTileFlags(pStruct.value.usIndex, addressof(fTileFlags));
 
@@ -6065,7 +6065,7 @@ function FullStructAlone(sGridNo: INT16, ubRadius: UINT8): BOOLEAN {
 
       if (iNewIndex >= 0 && iNewIndex < WORLD_MAX && iNewIndex >= leftmost && iNewIndex < (leftmost + WORLD_COLS)) {
         if (iNewIndex != sGridNo) {
-          if (FindStructure(iNewIndex, STRUCTURE_TREE) != NULL) {
+          if (FindStructure(iNewIndex, STRUCTURE_TREE) != null) {
             return FALSE;
           }
         }
@@ -6320,10 +6320,10 @@ function HandleAnimationProfile(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UIN
 function GetAnimProfileFlags(sGridNo: UINT16, usFlags: Pointer<UINT16>, ppTargSoldier: Pointer<Pointer<SOLDIERTYPE>>, pGivenNode: Pointer<LEVELNODE>): Pointer<LEVELNODE> {
   let pNode: Pointer<LEVELNODE>;
 
-  (ppTargSoldier.value) = NULL;
+  (ppTargSoldier.value) = null;
   (usFlags.value) = 0;
 
-  if (pGivenNode == NULL) {
+  if (pGivenNode == null) {
     pNode = gpWorldLevelData[sGridNo].pMercHead;
   } else {
     pNode = pGivenNode.value.pNext;
@@ -6331,7 +6331,7 @@ function GetAnimProfileFlags(sGridNo: UINT16, usFlags: Pointer<UINT16>, ppTargSo
 
   //#if 0
 
-  if (pNode != NULL) {
+  if (pNode != null) {
     if (pNode.value.uiFlags & LEVELNODE_MERCPLACEHOLDER) {
       (usFlags.value) = pNode.value.uiAnimHitLocationFlags;
       (ppTargSoldier.value) = pNode.value.pSoldier;
@@ -6516,7 +6516,7 @@ function EVENT_SoldierBeginBladeAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: 
         // Check for corpse!
         pCorpse = GetCorpseAtGridNo(sGridNo, pSoldier.value.bLevel);
 
-        if (pCorpse == NULL) {
+        if (pCorpse == null) {
           EVENT_InitNewSoldierAnim(pSoldier, Enum193.CROUCH_STAB, 0, FALSE);
         } else {
           if (IsValidDecapitationCorpse(pCorpse)) {
@@ -7043,11 +7043,11 @@ function HaultSoldierFromSighting(pSoldier: Pointer<SOLDIERTYPE>, fFromSightingE
   }
 
   // OK, check if we were going to throw something, and give it back if so!
-  if (pSoldier.value.pTempObject != NULL && fFromSightingEnemy) {
+  if (pSoldier.value.pTempObject != null && fFromSightingEnemy) {
     // Place it back into inv....
     AutoPlaceObject(pSoldier, pSoldier.value.pTempObject, FALSE);
     MemFree(pSoldier.value.pTempObject);
-    pSoldier.value.pTempObject = NULL;
+    pSoldier.value.pTempObject = null;
     pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
     pSoldier.value.usPendingAnimation2 = NO_PENDING_ANIMATION;
 
@@ -7101,7 +7101,7 @@ function HaultSoldierFromSighting(pSoldier: Pointer<SOLDIERTYPE>, fFromSightingE
   }
 
   // Unset UI!
-  if (fFromSightingEnemy || (pSoldier.value.pTempObject == NULL && !pSoldier.value.fTurningToShoot)) {
+  if (fFromSightingEnemy || (pSoldier.value.pTempObject == null && !pSoldier.value.fTurningToShoot)) {
     UnSetUIBusy(pSoldier.value.ubID);
   }
 
@@ -7244,7 +7244,7 @@ function CreateEnemyGlow16BPPPalette(pPalette: Pointer<SGPPaletteEntry>, rscale:
   let g: UINT8;
   let b: UINT8;
 
-  Assert(pPalette != NULL);
+  Assert(pPalette != null);
 
   p16BPPPalette = MemAlloc(sizeof(UINT16) * 256);
 
@@ -7303,7 +7303,7 @@ function CreateEnemyGreyGlow16BPPPalette(pPalette: Pointer<SGPPaletteEntry>, rsc
   let g: UINT8;
   let b: UINT8;
 
-  Assert(pPalette != NULL);
+  Assert(pPalette != null);
 
   p16BPPPalette = MemAlloc(sizeof(UINT16) * 256);
 
@@ -7466,7 +7466,7 @@ function InternalIsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8,
   }
 
   // Check if we can do this....
-  if (pSoldier.value.pLevelNode && pSoldier.value.pLevelNode.value.pStructureData != NULL) {
+  if (pSoldier.value.pLevelNode && pSoldier.value.pLevelNode.value.pStructureData != null) {
     usOKToAddStructID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
   } else {
     usOKToAddStructID = INVALID_STRUCTURE_ID;
@@ -7500,7 +7500,7 @@ function InternalIsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8,
   // Get structure ref........
   pStructureFileRef = GetAnimationStructureRef(pSoldier.value.ubID, usAnimSurface, usAnimState);
 
-  if (pStructureFileRef != NULL) {
+  if (pStructureFileRef != null) {
     // Can we add structure data for this stance...?
     if (!OkayToAddStructureToWorld(pSoldier.value.sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[bDirection]]), usOKToAddStructID)) {
       return FALSE;
@@ -7557,7 +7557,7 @@ function GetActualSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Poin
     return;
   }
 
-  if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == NULL) {
+  if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == null) {
     psHeight.value = 5;
     psWidth.value = 5;
     return;
@@ -7590,7 +7590,7 @@ function GetActualSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: P
     return;
   }
 
-  if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == NULL) {
+  if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == null) {
     sOffsetX.value = 0;
     sOffsetY.value = 0;
     return;
@@ -7641,7 +7641,7 @@ function CheckBleeding(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
     // if merc is hurt beyond the minimum required to bleed, or he's dying
     if ((pSoldier.value.bBleeding > MIN_BLEEDING_THRESHOLD) || pSoldier.value.bLife < OKLIFE) {
       // if he's NOT in the process of being bandaged or DOCTORed
-      if ((pSoldier.value.ubServiceCount == 0) && (AnyDoctorWhoCanHealThisPatient(pSoldier, HEALABLE_EVER) == NULL)) {
+      if ((pSoldier.value.ubServiceCount == 0) && (AnyDoctorWhoCanHealThisPatient(pSoldier, HEALABLE_EVER) == null)) {
         // may drop blood whether or not any bleeding takes place this turn
         if (pSoldier.value.bTilesMoved < 1) {
           iBlood = ((pSoldier.value.bBleeding - MIN_BLEEDING_THRESHOLD) / BLOODDIVISOR); // + pSoldier->dying;
@@ -7887,7 +7887,7 @@ function HandlePlacingRoofMarker(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
       return;
     }
 
-    if (pRoofNode != NULL) {
+    if (pRoofNode != null) {
       if (fSet) {
         if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) {
           // Set some flags on this poor thing
@@ -7999,7 +7999,7 @@ function PickPickupAnimation(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, 
           if (bZLevel > 0) {
             //#if 0
             // Get direction to face....
-            if ((pStructure = FindStructure(sGridNo, (STRUCTURE_HASITEMONTOP | STRUCTURE_OPENABLE))) != NULL) {
+            if ((pStructure = FindStructure(sGridNo, (STRUCTURE_HASITEMONTOP | STRUCTURE_OPENABLE))) != null) {
               fDoNormalPickup = FALSE;
 
               // OK, look at orientation
@@ -8152,7 +8152,7 @@ function EVENT_SoldierBeginTakeBlood(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
   // See if these is a corpse here....
   pCorpse = GetCorpseAtGridNo(sGridNo, pSoldier.value.bLevel);
 
-  if (pCorpse != NULL) {
+  if (pCorpse != null) {
     pSoldier.value.uiPendingActionData4 = pCorpse.value.iID;
 
     // CHANGE DIRECTION AND GOTO ANIMATION NOW
@@ -8179,7 +8179,7 @@ function EVENT_SoldierBeginAttachCan(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
 
-  if (pStructure == NULL) {
+  if (pStructure == null) {
     return;
   }
 
@@ -8193,7 +8193,7 @@ function EVENT_SoldierBeginAttachCan(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
 
   // Now get door status...
   pDoorStatus = GetDoorStatus(sGridNo);
-  if (pDoorStatus == NULL) {
+  if (pDoorStatus == null) {
     // SOmething wrong here...
     return;
   }
@@ -8551,7 +8551,7 @@ function ControllingRobot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
 function GetRobotController(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   if (pSoldier.value.ubRobotRemoteHolderID == NOBODY) {
-    return NULL;
+    return null;
   } else {
     return MercPtrs[pSoldier.value.ubRobotRemoteHolderID];
   }
@@ -8642,11 +8642,11 @@ function HandleSystemNewAISituation(pSoldier: Pointer<SOLDIERTYPE>, fResetABC: B
           ReduceAttackBusyCount(pSoldier.value.ubID, FALSE);
         }
 
-        if (pSoldier.value.pTempObject != NULL) {
+        if (pSoldier.value.pTempObject != null) {
           // Place it back into inv....
           AutoPlaceObject(pSoldier, pSoldier.value.pTempObject, FALSE);
           MemFree(pSoldier.value.pTempObject);
-          pSoldier.value.pTempObject = NULL;
+          pSoldier.value.pTempObject = null;
           pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
           pSoldier.value.usPendingAnimation2 = NO_PENDING_ANIMATION;
 
@@ -8753,10 +8753,10 @@ function BeginTyingToFall(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function SetSoldierAsUnderAiControl(pSoldierToSet: Pointer<SOLDIERTYPE>): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let cnt: INT32;
 
-  if (pSoldierToSet == NULL) {
+  if (pSoldierToSet == null) {
     return;
   }
 
@@ -8784,7 +8784,7 @@ function HandlePlayerTogglingLightEffects(fToggleValue: BOOLEAN): void {
 }
 
 function EnableDisableSoldierLightEffects(fEnableLights: BOOLEAN): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let cnt: INT32;
 
   // Loop through player teams...
@@ -8808,7 +8808,7 @@ function EnableDisableSoldierLightEffects(fEnableLights: BOOLEAN): void {
 }
 
 function SetSoldierPersonalLightLevel(pSoldier: Pointer<SOLDIERTYPE>): void {
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return;
   }
 

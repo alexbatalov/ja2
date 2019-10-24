@@ -1,8 +1,8 @@
 // dynamic arrays that contain the valid gridno's for each edge
-let gps1stNorthEdgepointArray: Pointer<INT16> = NULL;
-let gps1stEastEdgepointArray: Pointer<INT16> = NULL;
-let gps1stSouthEdgepointArray: Pointer<INT16> = NULL;
-let gps1stWestEdgepointArray: Pointer<INT16> = NULL;
+let gps1stNorthEdgepointArray: Pointer<INT16> = null;
+let gps1stEastEdgepointArray: Pointer<INT16> = null;
+let gps1stSouthEdgepointArray: Pointer<INT16> = null;
+let gps1stWestEdgepointArray: Pointer<INT16> = null;
 // contains the size for each array
 let gus1stNorthEdgepointArraySize: UINT16 = 0;
 let gus1stEastEdgepointArraySize: UINT16 = 0;
@@ -17,10 +17,10 @@ let gus1stSouthEdgepointMiddleIndex: UINT16 = 0;
 let gus1stWestEdgepointMiddleIndex: UINT16 = 0;
 
 // dynamic arrays that contain the valid gridno's for each edge
-let gps2ndNorthEdgepointArray: Pointer<INT16> = NULL;
-let gps2ndEastEdgepointArray: Pointer<INT16> = NULL;
-let gps2ndSouthEdgepointArray: Pointer<INT16> = NULL;
-let gps2ndWestEdgepointArray: Pointer<INT16> = NULL;
+let gps2ndNorthEdgepointArray: Pointer<INT16> = null;
+let gps2ndEastEdgepointArray: Pointer<INT16> = null;
+let gps2ndSouthEdgepointArray: Pointer<INT16> = null;
+let gps2ndWestEdgepointArray: Pointer<INT16> = null;
 // contains the size for each array
 let gus2ndNorthEdgepointArraySize: UINT16 = 0;
 let gus2ndEastEdgepointArraySize: UINT16 = 0;
@@ -52,10 +52,10 @@ function TrashMapEdgepoints(): void {
     MemFree(gps1stSouthEdgepointArray);
   if (gps1stWestEdgepointArray)
     MemFree(gps1stWestEdgepointArray);
-  gps1stNorthEdgepointArray = NULL;
-  gps1stEastEdgepointArray = NULL;
-  gps1stSouthEdgepointArray = NULL;
-  gps1stWestEdgepointArray = NULL;
+  gps1stNorthEdgepointArray = null;
+  gps1stEastEdgepointArray = null;
+  gps1stSouthEdgepointArray = null;
+  gps1stWestEdgepointArray = null;
   gus1stNorthEdgepointArraySize = 0;
   gus1stEastEdgepointArraySize = 0;
   gus1stSouthEdgepointArraySize = 0;
@@ -73,10 +73,10 @@ function TrashMapEdgepoints(): void {
     MemFree(gps2ndSouthEdgepointArray);
   if (gps2ndWestEdgepointArray)
     MemFree(gps2ndWestEdgepointArray);
-  gps2ndNorthEdgepointArray = NULL;
-  gps2ndEastEdgepointArray = NULL;
-  gps2ndSouthEdgepointArray = NULL;
-  gps2ndWestEdgepointArray = NULL;
+  gps2ndNorthEdgepointArray = null;
+  gps2ndEastEdgepointArray = null;
+  gps2ndSouthEdgepointArray = null;
+  gps2ndWestEdgepointArray = null;
   gus2ndNorthEdgepointArraySize = 0;
   gus2ndEastEdgepointArraySize = 0;
   gus2ndSouthEdgepointArraySize = 0;
@@ -709,39 +709,39 @@ function GenerateMapEdgepoints(): void {
 
 function SaveMapEdgepoints(fp: HWFILE): void {
   // 1st priority edgepoints -- for common entry -- tactical placement gui uses only these points.
-  FileWrite(fp, addressof(gus1stNorthEdgepointArraySize), 2, NULL);
-  FileWrite(fp, addressof(gus1stNorthEdgepointMiddleIndex), 2, NULL);
+  FileWrite(fp, addressof(gus1stNorthEdgepointArraySize), 2, null);
+  FileWrite(fp, addressof(gus1stNorthEdgepointMiddleIndex), 2, null);
   if (gus1stNorthEdgepointArraySize)
-    FileWrite(fp, gps1stNorthEdgepointArray, gus1stNorthEdgepointArraySize * sizeof(INT16), NULL);
-  FileWrite(fp, addressof(gus1stEastEdgepointArraySize), 2, NULL);
-  FileWrite(fp, addressof(gus1stEastEdgepointMiddleIndex), 2, NULL);
+    FileWrite(fp, gps1stNorthEdgepointArray, gus1stNorthEdgepointArraySize * sizeof(INT16), null);
+  FileWrite(fp, addressof(gus1stEastEdgepointArraySize), 2, null);
+  FileWrite(fp, addressof(gus1stEastEdgepointMiddleIndex), 2, null);
   if (gus1stEastEdgepointArraySize)
-    FileWrite(fp, gps1stEastEdgepointArray, gus1stEastEdgepointArraySize * sizeof(INT16), NULL);
-  FileWrite(fp, addressof(gus1stSouthEdgepointArraySize), 2, NULL);
-  FileWrite(fp, addressof(gus1stSouthEdgepointMiddleIndex), 2, NULL);
+    FileWrite(fp, gps1stEastEdgepointArray, gus1stEastEdgepointArraySize * sizeof(INT16), null);
+  FileWrite(fp, addressof(gus1stSouthEdgepointArraySize), 2, null);
+  FileWrite(fp, addressof(gus1stSouthEdgepointMiddleIndex), 2, null);
   if (gus1stSouthEdgepointArraySize)
-    FileWrite(fp, gps1stSouthEdgepointArray, gus1stSouthEdgepointArraySize * sizeof(INT16), NULL);
-  FileWrite(fp, addressof(gus1stWestEdgepointArraySize), 2, NULL);
-  FileWrite(fp, addressof(gus1stWestEdgepointMiddleIndex), 2, NULL);
+    FileWrite(fp, gps1stSouthEdgepointArray, gus1stSouthEdgepointArraySize * sizeof(INT16), null);
+  FileWrite(fp, addressof(gus1stWestEdgepointArraySize), 2, null);
+  FileWrite(fp, addressof(gus1stWestEdgepointMiddleIndex), 2, null);
   if (gus1stWestEdgepointArraySize)
-    FileWrite(fp, gps1stWestEdgepointArray, gus1stWestEdgepointArraySize * sizeof(INT16), NULL);
+    FileWrite(fp, gps1stWestEdgepointArray, gus1stWestEdgepointArraySize * sizeof(INT16), null);
   // 2nd priority edgepoints -- for isolated areas.  Okay to be zero
-  FileWrite(fp, addressof(gus2ndNorthEdgepointArraySize), 2, NULL);
-  FileWrite(fp, addressof(gus2ndNorthEdgepointMiddleIndex), 2, NULL);
+  FileWrite(fp, addressof(gus2ndNorthEdgepointArraySize), 2, null);
+  FileWrite(fp, addressof(gus2ndNorthEdgepointMiddleIndex), 2, null);
   if (gus2ndNorthEdgepointArraySize)
-    FileWrite(fp, gps2ndNorthEdgepointArray, gus2ndNorthEdgepointArraySize * sizeof(INT16), NULL);
-  FileWrite(fp, addressof(gus2ndEastEdgepointArraySize), 2, NULL);
-  FileWrite(fp, addressof(gus2ndEastEdgepointMiddleIndex), 2, NULL);
+    FileWrite(fp, gps2ndNorthEdgepointArray, gus2ndNorthEdgepointArraySize * sizeof(INT16), null);
+  FileWrite(fp, addressof(gus2ndEastEdgepointArraySize), 2, null);
+  FileWrite(fp, addressof(gus2ndEastEdgepointMiddleIndex), 2, null);
   if (gus2ndEastEdgepointArraySize)
-    FileWrite(fp, gps2ndEastEdgepointArray, gus2ndEastEdgepointArraySize * sizeof(INT16), NULL);
-  FileWrite(fp, addressof(gus2ndSouthEdgepointArraySize), 2, NULL);
-  FileWrite(fp, addressof(gus2ndSouthEdgepointMiddleIndex), 2, NULL);
+    FileWrite(fp, gps2ndEastEdgepointArray, gus2ndEastEdgepointArraySize * sizeof(INT16), null);
+  FileWrite(fp, addressof(gus2ndSouthEdgepointArraySize), 2, null);
+  FileWrite(fp, addressof(gus2ndSouthEdgepointMiddleIndex), 2, null);
   if (gus2ndSouthEdgepointArraySize)
-    FileWrite(fp, gps2ndSouthEdgepointArray, gus2ndSouthEdgepointArraySize * sizeof(INT16), NULL);
-  FileWrite(fp, addressof(gus2ndWestEdgepointArraySize), 2, NULL);
-  FileWrite(fp, addressof(gus2ndWestEdgepointMiddleIndex), 2, NULL);
+    FileWrite(fp, gps2ndSouthEdgepointArray, gus2ndSouthEdgepointArraySize * sizeof(INT16), null);
+  FileWrite(fp, addressof(gus2ndWestEdgepointArraySize), 2, null);
+  FileWrite(fp, addressof(gus2ndWestEdgepointMiddleIndex), 2, null);
   if (gus2ndWestEdgepointArraySize)
-    FileWrite(fp, gps2ndWestEdgepointArray, gus2ndWestEdgepointArraySize * sizeof(INT16), NULL);
+    FileWrite(fp, gps2ndWestEdgepointArray, gus2ndWestEdgepointArraySize * sizeof(INT16), null);
 }
 
 function OldLoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): void {
@@ -852,7 +852,7 @@ function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
 }
 
 function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
-  let psArray: Pointer<INT16> = NULL;
+  let psArray: Pointer<INT16> = null;
   let usArraySize: UINT16 = 0;
   /* static */ let randomVal: INT32 = 0;
 
@@ -886,12 +886,12 @@ function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
 }
 
 function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStrategicInsertionCode: UINT8, ubNumDesiredPoints: UINT8): void {
-  let psArray: Pointer<INT16> = NULL;
+  let psArray: Pointer<INT16> = null;
   let usArraySize: UINT16 = 0;
   let i: INT32 = -1;
   let usSlots: UINT16;
   let usCurrSlot: UINT16;
-  let psTempArray: Pointer<INT16> = NULL;
+  let psTempArray: Pointer<INT16> = null;
 
   AssertMsg(ubNumDesiredPoints > 0 && ubNumDesiredPoints <= 32, String("ChooseMapEdgepoints:  Desired points = %d, valid range is 1-32", ubNumDesiredPoints));
   // First validate and get access to the correct array based on strategic direction.
@@ -972,7 +972,7 @@ function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStr
   MemFree(psTempArray);
 }
 
-let gpReservedGridNos: Pointer<INT16> = NULL;
+let gpReservedGridNos: Pointer<INT16> = null;
 let gsReservedIndex: INT16 = 0;
 
 function BeginMapEdgepointSearch(): void {
@@ -1003,7 +1003,7 @@ function BeginMapEdgepointSearch(): void {
 function EndMapEdgepointSearch(): void {
   AssertMsg(gpReservedGridNos, "Attempting to EndMapEdgepointSearch that has already been removed.");
   MemFree(gpReservedGridNos);
-  gpReservedGridNos = NULL;
+  gpReservedGridNos = null;
   gsReservedIndex = 0;
 }
 
@@ -1011,7 +1011,7 @@ function EndMapEdgepointSearch(): void {
 function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
   let i: INT32;
   let iDirectionLoop: INT32;
-  let psArray: Pointer<INT16> = NULL;
+  let psArray: Pointer<INT16> = null;
   let sRadius: INT16;
   let sDistance: INT16;
   let sDirection: INT16;
@@ -1133,7 +1133,7 @@ function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UI
 function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
   let i: INT32;
   let iDirectionLoop: INT32;
-  let psArray: Pointer<INT16> = NULL;
+  let psArray: Pointer<INT16> = null;
   let sRadius: INT16;
   let sDistance: INT16;
   let sDirection: INT16;

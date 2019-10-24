@@ -43,7 +43,7 @@ let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
 
 function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
   if (!pItem || pItem.value.usItem != Enum225.ACTION_ITEM)
-    return NULL;
+    return null;
   if (pItem.value.bActionValue != Enum191.ACTION_ITEM_BLOW_UP) {
     switch (pItem.value.bActionValue) {
       case Enum191.ACTION_ITEM_OPEN_DOOR:
@@ -93,7 +93,7 @@ function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
       case Enum191.ACTION_ITEM_BLOODCAT_ALARM:
         return gszActionItemDesc[Enum49.ACTIONITEM_BLOODCAT_ALARM];
       default:
-        return NULL;
+        return null;
     }
   } else
     switch (pItem.value.usBombItem) {
@@ -120,7 +120,7 @@ function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
       case Enum225.BIG_TEAR_GAS:
         return gszActionItemDesc[Enum49.ACTIONITEM_BIG_TEAR_GAS];
       default:
-        return NULL;
+        return null;
     }
 }
 
@@ -164,11 +164,11 @@ const enum Enum47 {
 
 let gbEditingMode: INT8 = Enum47.EDITING_NOTHING;
 
-let gpItem: Pointer<OBJECTTYPE> = NULL;
+let gpItem: Pointer<OBJECTTYPE> = null;
 let gfShowItemStatsPanel: BOOLEAN;
 let gsItemGridNo: INT16;
 
-let gpEditingItemPool: Pointer<ITEM_POOL> = NULL;
+let gpEditingItemPool: Pointer<ITEM_POOL> = null;
 
 function ShowItemStatsPanel(): void {
   ShowEditorButtons(Enum32.FIRST_ITEMSTATS_BUTTON, Enum32.LAST_ITEMSTATS_BUTTON);
@@ -179,7 +179,7 @@ function ShowItemStatsPanel(): void {
 
 function HideItemStatsPanel(): void {
   HideEditorButtons(Enum32.FIRST_ITEMSTATS_BUTTON, Enum32.LAST_ITEMSTATS_BUTTON);
-  SpecifyItemToEdit(NULL, -1);
+  SpecifyItemToEdit(null, -1);
   gfShowItemStatsPanel = FALSE;
 }
 
@@ -313,7 +313,7 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
     ShowEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
 
   // Determine the type of item so that we can determine the dynamic editing mode.
-  AddUserInputField(NULL);
+  AddUserInputField(null);
 
   SetupGameTypeFlags();
 
@@ -1088,7 +1088,7 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
           gfAttachment[i] = TRUE;
           btn.value.uiFlags |= BUTTON_CLICKED_ON;
           CreateItem(usAttachment, gpItem.value.bGunStatus, addressof(temp));
-          AttachObject(NULL, gpItem, addressof(temp));
+          AttachObject(null, gpItem, addressof(temp));
         } else {
           // Button is out, so remove the attachment
           let slot: INT8;
@@ -1111,7 +1111,7 @@ function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     if (gfCeramicPlates) {
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
       CreateItem(Enum225.CERAMIC_PLATES, gpItem.value.bStatus[0], addressof(temp));
-      AttachObject(NULL, gpItem, addressof(temp));
+      AttachObject(null, gpItem, addressof(temp));
     } else {
       let slot: INT8;
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
@@ -1129,7 +1129,7 @@ function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       gfDetonator = TRUE;
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
       CreateItem(Enum225.DETONATOR, gpItem.value.bStatus[0], addressof(temp));
-      AttachObject(NULL, gpItem, addressof(temp));
+      AttachObject(null, gpItem, addressof(temp));
     } else {
       // Button is out, so remove the attachment
       let slot: INT8;

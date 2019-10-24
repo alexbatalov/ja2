@@ -278,8 +278,8 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
           let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
           let usAnimSurface: UINT16;
 
-          if (pSoldier.value.pLevelNode != NULL) {
-            if (pSoldier.value.pLevelNode.value.pStructureData != NULL) {
+          if (pSoldier.value.pLevelNode != null) {
+            if (pSoldier.value.pLevelNode.value.pStructureData != null) {
               usOKToAddStructID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
             } else {
               usOKToAddStructID = INVALID_STRUCTURE_ID;
@@ -416,8 +416,8 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
           let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
           let usAnimSurface: UINT16;
 
-          if (pSoldier.value.pLevelNode != NULL) {
-            if (pSoldier.value.pLevelNode.value.pStructureData != NULL) {
+          if (pSoldier.value.pLevelNode != null) {
+            if (pSoldier.value.pLevelNode.value.pStructureData != null) {
               usOKToAddStructID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
             } else {
               usOKToAddStructID = INVALID_STRUCTURE_ID;
@@ -559,7 +559,7 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
           let usAnimSurface: UINT16;
 
           if (fClosestToMerc != 3) {
-            if (pSoldier.value.pLevelNode != NULL && pSoldier.value.pLevelNode.value.pStructureData != NULL) {
+            if (pSoldier.value.pLevelNode != null && pSoldier.value.pLevelNode.value.pStructureData != null) {
               usOKToAddStructID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
             } else {
               usOKToAddStructID = INVALID_STRUCTURE_ID;
@@ -743,7 +743,7 @@ function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERTYPE>, s
     return FALSE;
   }
 
-  sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), NULL, FALSE, FALSE);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), null, FALSE, FALSE);
 
   if (sActionGridNo == -1) {
     sActionGridNo = sGridNo;

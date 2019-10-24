@@ -604,7 +604,7 @@ fprintf(OpplistFile,"OtherTeamsLookForMan (HandleSight/Look) for %d\n",ptr->guyn
     for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
       pThem = MercSlots[uiLoop];
 
-      if (pThem != NULL && pThem.value.bLife >= OKLIFE) {
+      if (pThem != null && pThem.value.bLife >= OKLIFE) {
         // if this merc is on the same team as the target soldier
         if (pThem.value.bTeam == pSoldier.value.bTeam)
           continue; // he doesn't look (he ALWAYS knows about him)
@@ -874,7 +874,7 @@ function EndMuzzleFlash(pSoldier: Pointer<SOLDIERTYPE>): void {
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pOtherSoldier = MercSlots[uiLoop];
 
-    if (pOtherSoldier != NULL) {
+    if (pOtherSoldier != null) {
       if (pOtherSoldier.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY) {
         if (pOtherSoldier.value.sGridNo != NOWHERE) {
           if (PythSpacesAway(pOtherSoldier.value.sGridNo, pSoldier.value.sGridNo) > DistanceVisible(pOtherSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pSoldier.value.sGridNo, pSoldier.value.bLevel)) {
@@ -900,7 +900,7 @@ function TurnOffEveryonesMuzzleFlashes(): void {
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier != NULL && pSoldier.value.fMuzzleFlash) {
+    if (pSoldier != null && pSoldier.value.fMuzzleFlash) {
       EndMuzzleFlash(pSoldier);
     }
   }
@@ -1007,7 +1007,7 @@ function AllTeamsLookForAll(ubAllowInterrupts: UINT8): void {
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier != NULL && pSoldier.value.bLife >= OKLIFE) {
+    if (pSoldier != null && pSoldier.value.bLife >= OKLIFE) {
       HandleSight(pSoldier, SIGHT_LOOK); // no radio or interrupts yet
     }
   }
@@ -1741,7 +1741,7 @@ PopMessage(tempstr);
     if (pOpponent.value.fBeginFade == 1 || pOpponent.value.fBeginFade == 2) {
       pOpponent.value.fBeginFade = FALSE;
 
-      if (pOpponent.value.bLevel > 0 && gpWorldLevelData[pOpponent.value.sGridNo].pRoofHead != NULL) {
+      if (pOpponent.value.bLevel > 0 && gpWorldLevelData[pOpponent.value.sGridNo].pRoofHead != null) {
         pOpponent.value.ubFadeLevel = gpWorldLevelData[pOpponent.value.sGridNo].pRoofHead.value.ubShadeLevel;
       } else {
         pOpponent.value.ubFadeLevel = gpWorldLevelData[pOpponent.value.sGridNo].pLandHead.value.ubShadeLevel;
@@ -1847,7 +1847,7 @@ function OtherTeamsLookForMan(pOpponent: Pointer<SOLDIERTYPE>): void {
     pSoldier = MercSlots[uiLoop];
 
     // if this merc is active, in this sector, and well enough to look
-    if (pSoldier != NULL && pSoldier.value.bLife >= OKLIFE && (pSoldier.value.ubBodyType != Enum194.LARVAE_MONSTER)) {
+    if (pSoldier != null && pSoldier.value.bLife >= OKLIFE && (pSoldier.value.ubBodyType != Enum194.LARVAE_MONSTER)) {
       // if this merc is on the same team as the target soldier
       if (pSoldier.value.bTeam == pOpponent.value.bTeam) {
         continue; // he doesn't look (he ALWAYS knows about him)
@@ -2269,7 +2269,7 @@ function SaySeenQuote(pSoldier: Pointer<SOLDIERTYPE>, fSeenCreature: BOOLEAN, fV
     for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
       pTeamSoldier = MercSlots[cnt];
 
-      if (pTeamSoldier != NULL) {
+      if (pTeamSoldier != null) {
         if (OK_ENEMY_MERC(pTeamSoldier)) {
           ubNumEnemies++;
         }
@@ -2280,7 +2280,7 @@ function SaySeenQuote(pSoldier: Pointer<SOLDIERTYPE>, fSeenCreature: BOOLEAN, fV
     for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
       pTeamSoldier = MercSlots[cnt];
 
-      if (pTeamSoldier != NULL) {
+      if (pTeamSoldier != null) {
         if (!OK_ENEMY_MERC(pTeamSoldier)) {
           if (pTeamSoldier.value.bOppCnt >= (ubNumEnemies / 2)) {
             ubNumAllies++;
@@ -2313,7 +2313,7 @@ function SaySeenQuote(pSoldier: Pointer<SOLDIERTYPE>, fSeenCreature: BOOLEAN, fV
         for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
           pTeamSoldier = MercSlots[cnt];
 
-          if (pTeamSoldier != NULL) {
+          if (pTeamSoldier != null) {
             if (OK_ENEMY_MERC(pTeamSoldier)) {
               if (pTeamSoldier.value.uiStatusFlags & SOLDIER_MONSTER && pSoldier.value.bOppList[pTeamSoldier.value.ubID] == SEEN_CURRENTLY) {
                 ubNumEnemies++;
@@ -2939,7 +2939,7 @@ function DebugSoldierPage2(): void {
     mprintf(150, LINE_HEIGHT * ubLine, "%x", gpWorldLevelData[usMapPos].pLandHead);
     ubLine++;
 
-    if (gpWorldLevelData[usMapPos].pLandHead != NULL) {
+    if (gpWorldLevelData[usMapPos].pLandHead != null) {
       SetFontColors(COLOR1);
       mprintf(0, LINE_HEIGHT * ubLine, "Land Node:");
       SetFontColors(COLOR2);
@@ -2978,7 +2978,7 @@ function DebugSoldierPage2(): void {
 
     pNode = GetCurInteractiveTile();
 
-    if (pNode != NULL) {
+    if (pNode != null) {
       SetFontColors(COLOR2);
       mprintf(0, LINE_HEIGHT * ubLine, "Tile: %d", pNode.value.usIndex);
       SetFontColors(COLOR2);
@@ -3225,7 +3225,7 @@ function DebugSoldierPage3(): void {
 
     ubLine = 1;
 
-    if (pDoorStatus == NULL) {
+    if (pDoorStatus == null) {
       SetFontColors(COLOR1);
       mprintf(0, LINE_HEIGHT * ubLine, "No Door Status");
       ubLine++;
@@ -3268,7 +3268,7 @@ function DebugSoldierPage3(): void {
     // Find struct data and se what it says......
     pStructure = FindStructure(usMapPos, STRUCTURE_ANYDOOR);
 
-    if (pStructure == NULL) {
+    if (pStructure == null) {
       SetFontColors(COLOR1);
       mprintf(0, LINE_HEIGHT * ubLine, "No Door Struct Data");
       ubLine++;
@@ -4724,7 +4724,7 @@ function VerifyAndDecayOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
     pOpponent = MercSlots[uiLoop];
 
     // if this merc is active, here, and alive
-    if (pOpponent != NULL && pOpponent.value.bLife) {
+    if (pOpponent != null && pOpponent.value.bLife) {
       // if this merc is on the same team, he's no opponent, so skip him
       if (pSoldier.value.bTeam == pOpponent.value.bTeam) {
         continue;
@@ -4807,7 +4807,7 @@ function DecayIndividualOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
     pOpponent = MercSlots[uiLoop];
 
     // if this merc is active, here, and alive
-    if (pOpponent != NULL && pOpponent.value.bLife) {
+    if (pOpponent != null && pOpponent.value.bLife) {
       // if this merc is on the same team, he's no opponent, so skip him
       if (pSoldier.value.bTeam == pOpponent.value.bTeam) {
         continue;
@@ -4853,7 +4853,7 @@ function VerifyPublicOpplistDueToDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
     pOpponent = MercSlots[uiLoop];
 
     // if this opponent is active, here, and alive
-    if (pOpponent != NULL && pOpponent.value.bLife) {
+    if (pOpponent != null && pOpponent.value.bLife) {
       // if this opponent is on the same team, he's no opponent, so skip him
       if (pSoldier.value.bTeam == pOpponent.value.bTeam) {
         continue;
@@ -4872,7 +4872,7 @@ function VerifyPublicOpplistDueToDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
           pTeamMate = MercSlots[uiTeamMateLoop];
 
           // if this teammate is active, here, and alive
-          if (pTeamMate != NULL && pTeamMate.value.bLife) {
+          if (pTeamMate != null && pTeamMate.value.bLife) {
             // if this opponent is NOT on the same team, then skip him
             if (pTeamMate.value.bTeam != pSoldier.value.bTeam) {
               continue;

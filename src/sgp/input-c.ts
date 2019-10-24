@@ -190,7 +190,7 @@ function InitializeInputManager(): BOOLEAN {
   gusMouseYPos = 240;
   // Initialize the string input mechanism
   gfCurrentStringInputState = FALSE;
-  gpCurrentStringDescriptor = NULL;
+  gpCurrentStringDescriptor = null;
   // Activate the hook functions for both keyboard and Mouse
   ghKeyboardHook = SetWindowsHookEx(WH_KEYBOARD, KeyboardHandler, 0, GetCurrentThreadId());
   DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, String("Set keyboard hook returned %d", ghKeyboardHook));
@@ -849,22 +849,22 @@ function GetMousePos(Point: Pointer<SGPPoint>): void {
 function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilter: Pointer<UINT16>): Pointer<StringInput> {
   let pStringDescriptor: Pointer<StringInput>;
 
-  if ((pStringDescriptor = MemAlloc(sizeof(StringInput))) == NULL) {
+  if ((pStringDescriptor = MemAlloc(sizeof(StringInput))) == null) {
     //
     // Hum we failed to allocate memory for the string descriptor
     //
 
     DbgMessage(TOPIC_INPUT, DBG_LEVEL_1, "Failed to allocate memory for string descriptor");
-    return NULL;
+    return null;
   } else {
-    if ((pStringDescriptor.value.pOriginalString = MemAlloc(usLength * 2)) == NULL) {
+    if ((pStringDescriptor.value.pOriginalString = MemAlloc(usLength * 2)) == null) {
       //
       // free up structure before aborting
       //
 
       MemFree(pStringDescriptor);
       DbgMessage(TOPIC_INPUT, DBG_LEVEL_1, "Failed to allocate memory for string duplicate");
-      return NULL;
+      return null;
     }
 
     memcpy(pStringDescriptor.value.pOriginalString, pInputString, usLength * 2);
@@ -896,36 +896,36 @@ function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilte
 
     pStringDescriptor.value.fInsertMode = FALSE;
     pStringDescriptor.value.fFocus = FALSE;
-    pStringDescriptor.value.pPreviousString = NULL;
-    pStringDescriptor.value.pNextString = NULL;
+    pStringDescriptor.value.pPreviousString = null;
+    pStringDescriptor.value.pNextString = null;
 
     return pStringDescriptor;
   }
 }
 
 function LinkPreviousString(pCurrentString: Pointer<StringInput>, pPreviousString: Pointer<StringInput>): void {
-  if (pCurrentString != NULL) {
-    if (pCurrentString.value.pPreviousString != NULL) {
-      pCurrentString.value.pPreviousString.value.pNextString = NULL;
+  if (pCurrentString != null) {
+    if (pCurrentString.value.pPreviousString != null) {
+      pCurrentString.value.pPreviousString.value.pNextString = null;
     }
 
     pCurrentString.value.pPreviousString = pPreviousString;
 
-    if (pPreviousString != NULL) {
+    if (pPreviousString != null) {
       pPreviousString.value.pNextString = pCurrentString;
     }
   }
 }
 
 function LinkNextString(pCurrentString: Pointer<StringInput>, pNextString: Pointer<StringInput>): void {
-  if (pCurrentString != NULL) {
-    if (pCurrentString.value.pNextString != NULL) {
-      pCurrentString.value.pNextString.value.pPreviousString = NULL;
+  if (pCurrentString != null) {
+    if (pCurrentString.value.pNextString != null) {
+      pCurrentString.value.pNextString.value.pPreviousString = null;
     }
 
     pCurrentString.value.pNextString = pNextString;
 
-    if (pNextString != NULL) {
+    if (pNextString != null) {
       pNextString.value.pPreviousString = pCurrentString;
     }
   }
@@ -935,7 +935,7 @@ function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): BOOLEA
   let uiIndex: UINT32;
   let uiEndIndex: UINT32;
 
-  if (pFilter != NULL) {
+  if (pFilter != null) {
     uiEndIndex = pFilter.value;
     for (uiIndex = 1; uiIndex <= pFilter.value; uiIndex++) {
       if (usCharacter == (pFilter + uiIndex).value) {
@@ -951,11 +951,11 @@ function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): BOOLEA
 function RedirectToString(usInputCharacter: UINT16): void {
   let usIndex: UINT16;
 
-  if (gpCurrentStringDescriptor != NULL) {
+  if (gpCurrentStringDescriptor != null) {
     // Handle the new character input
     switch (usInputCharacter) {
       case ENTER: // ENTER is pressed, the last character field should be set to ENTER
-        if (gpCurrentStringDescriptor.value.pNextString != NULL) {
+        if (gpCurrentStringDescriptor.value.pNextString != null) {
           gpCurrentStringDescriptor.value.fFocus = FALSE;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
           gpCurrentStringDescriptor.value.fFocus = TRUE;
@@ -972,7 +972,7 @@ function RedirectToString(usInputCharacter: UINT16): void {
         gfCurrentStringInputState = FALSE;
         break;
       case SHIFT_TAB: // TAB was pressed, the last character field should be set to TAB
-        if (gpCurrentStringDescriptor.value.pPreviousString != NULL) {
+        if (gpCurrentStringDescriptor.value.pPreviousString != null) {
           gpCurrentStringDescriptor.value.fFocus = FALSE;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pPreviousString;
           gpCurrentStringDescriptor.value.fFocus = TRUE;
@@ -980,7 +980,7 @@ function RedirectToString(usInputCharacter: UINT16): void {
         }
         break;
       case TAB: // TAB was pressed, the last character field should be set to TAB
-        if (gpCurrentStringDescriptor.value.pNextString != NULL) {
+        if (gpCurrentStringDescriptor.value.pNextString != null) {
           gpCurrentStringDescriptor.value.fFocus = FALSE;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
           gpCurrentStringDescriptor.value.fFocus = TRUE;
@@ -988,7 +988,7 @@ function RedirectToString(usInputCharacter: UINT16): void {
         }
         break;
       case UPARROW: // The UPARROW was pressed, the last character field should be set to UPARROW
-        if (gpCurrentStringDescriptor.value.pPreviousString != NULL) {
+        if (gpCurrentStringDescriptor.value.pPreviousString != null) {
           gpCurrentStringDescriptor.value.fFocus = FALSE;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pPreviousString;
           gpCurrentStringDescriptor.value.fFocus = TRUE;
@@ -996,7 +996,7 @@ function RedirectToString(usInputCharacter: UINT16): void {
         }
         break;
       case DNARROW: // The DNARROW was pressed, the last character field should be set to DNARROW
-        if (gpCurrentStringDescriptor.value.pNextString != NULL) {
+        if (gpCurrentStringDescriptor.value.pNextString != null) {
           gpCurrentStringDescriptor.value.fFocus = FALSE;
           gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
           gpCurrentStringDescriptor.value.fFocus = TRUE;
@@ -1096,7 +1096,7 @@ function RedirectToString(usInputCharacter: UINT16): void {
 }
 
 function GetStringInputState(): UINT16 {
-  if (gpCurrentStringDescriptor != NULL) {
+  if (gpCurrentStringDescriptor != null) {
     return gpCurrentStringDescriptor.value.usLastCharacter;
   } else {
     return 0;
@@ -1108,8 +1108,8 @@ function StringInputHasFocus(): BOOLEAN {
 }
 
 function SetStringFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
-  if (pStringDescriptor != NULL) {
-    if (gpCurrentStringDescriptor != NULL) {
+  if (pStringDescriptor != null) {
+    if (gpCurrentStringDescriptor != null) {
       gpCurrentStringDescriptor.value.fFocus = FALSE;
     }
     // Ok overide current entry
@@ -1119,12 +1119,12 @@ function SetStringFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
     gpCurrentStringDescriptor.value.usLastCharacter = 0;
     return TRUE;
   } else {
-    if (gpCurrentStringDescriptor != NULL) {
+    if (gpCurrentStringDescriptor != null) {
       gpCurrentStringDescriptor.value.fFocus = FALSE;
     }
     // Ok overide current entry
     gfCurrentStringInputState = FALSE;
-    gpCurrentStringDescriptor = NULL;
+    gpCurrentStringDescriptor = null;
     return TRUE;
   }
 }
@@ -1134,7 +1134,7 @@ function GetCursorPositionInString(pStringDescriptor: Pointer<StringInput>): UIN
 }
 
 function StringHasFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
-  if (pStringDescriptor != NULL) {
+  if (pStringDescriptor != null) {
     return pStringDescriptor.value.fFocus;
   } else {
     return FALSE;
@@ -1170,14 +1170,14 @@ function RestoreString(pStringDescriptor: Pointer<StringInput>): void {
 
 function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
   // Make sure we have a valid pStringDescriptor
-  if (pStringDescriptor != NULL) {
+  if (pStringDescriptor != null) {
     // make sure the gpCurrentStringDescriptor is NULL if necessary
     if (pStringDescriptor == gpCurrentStringDescriptor) {
-      gpCurrentStringDescriptor = NULL;
+      gpCurrentStringDescriptor = null;
       gfCurrentStringInputState = FALSE;
     }
     // Make sure we have a valid string within the string descriptor
-    if (pStringDescriptor.value.pOriginalString != NULL) {
+    if (pStringDescriptor.value.pOriginalString != null) {
       // free up the string
       MemFree(pStringDescriptor.value.pOriginalString);
     }
@@ -1209,7 +1209,7 @@ function RestrictMouseCursor(pRectangle: Pointer<SGPRect>): void {
 }
 
 function FreeMouseCursor(): void {
-  ClipCursor(NULL);
+  ClipCursor(null);
   fCursorWasClipped = FALSE;
 }
 

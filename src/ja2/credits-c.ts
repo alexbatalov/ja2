@@ -241,8 +241,8 @@ let guiCreditsExitScreen: UINT32;
 
 let gubCreditScreenRenderFlags: UINT8 = Enum1.CRDT_RENDER_ALL;
 
-let gCrdtRootNode: Pointer<CRDT_NODE> = NULL;
-let gCrdtLastAddedNode: Pointer<CRDT_NODE> = NULL;
+let gCrdtRootNode: Pointer<CRDT_NODE> = null;
+let gCrdtLastAddedNode: Pointer<CRDT_NODE> = null;
 
 let gfCrdtHaveRenderedFirstFrameToSaveBuffer: BOOLEAN; // need to render background image to save buffer once
 
@@ -454,9 +454,9 @@ function HandleCreditScreen(): void {
   HandleCreditEyeBlinking();
 
   // is it time to get a new node
-  if (gCrdtLastAddedNode == NULL || (CRDT_START_POS_Y - (gCrdtLastAddedNode.value.sPosY + gCrdtLastAddedNode.value.sHeightOfString - 16)) >= guiGapTillReadNextCredit) {
+  if (gCrdtLastAddedNode == null || (CRDT_START_POS_Y - (gCrdtLastAddedNode.value.sPosY + gCrdtLastAddedNode.value.sHeightOfString - 16)) >= guiGapTillReadNextCredit) {
     // if there are no more credits in the file
-    if (!GetNextCreditFromTextFile() && gCrdtLastAddedNode == NULL) {
+    if (!GetNextCreditFromTextFile() && gCrdtLastAddedNode == null) {
       SetCreditsExitScreen(Enum26.MAINMENU_SCREEN);
     }
   }
@@ -475,7 +475,7 @@ function RenderCreditScreen(): BOOLEAN {
   let hPixHandle: HVOBJECT;
 
   GetVideoObject(addressof(hPixHandle), guiCreditBackGroundImage);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
   /*
           HVSURFACE hVSurface;
 
@@ -517,21 +517,21 @@ function SetCreditsExitScreen(uiScreenToGoTo: UINT32): void {
 }
 
 function InitCreditNode(): BOOLEAN {
-  if (gCrdtRootNode != NULL)
+  if (gCrdtRootNode != null)
     Assert(0);
 
-  gCrdtRootNode = NULL;
+  gCrdtRootNode = null;
 
   return TRUE;
 }
 
 function ShutDownCreditList(): BOOLEAN {
-  let pNodeToDelete: Pointer<CRDT_NODE> = NULL;
-  let pTemp: Pointer<CRDT_NODE> = NULL;
+  let pNodeToDelete: Pointer<CRDT_NODE> = null;
+  let pTemp: Pointer<CRDT_NODE> = null;
 
   pNodeToDelete = gCrdtRootNode;
 
-  while (pNodeToDelete != NULL) {
+  while (pNodeToDelete != null) {
     pTemp = pNodeToDelete;
 
     pNodeToDelete = pNodeToDelete.value.pNext;
@@ -549,31 +549,31 @@ function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): BOOLEAN {
   pTempNode = pNodeToDelete;
 
   if (gCrdtLastAddedNode == pNodeToDelete) {
-    gCrdtLastAddedNode = NULL;
+    gCrdtLastAddedNode = null;
   }
 
   // if its Not the first node
-  if (pNodeToDelete.value.pPrev != NULL)
+  if (pNodeToDelete.value.pPrev != null)
     pNodeToDelete.value.pPrev = pNodeToDelete.value.pNext;
   else {
-    if (gCrdtRootNode.value.pNext != NULL) {
+    if (gCrdtRootNode.value.pNext != null) {
       gCrdtRootNode = gCrdtRootNode.value.pNext;
-      gCrdtRootNode.value.pPrev = NULL;
+      gCrdtRootNode.value.pPrev = null;
     }
   }
 
   // if its the last node in the list
-  if (pNodeToDelete.value.pNext == NULL && pNodeToDelete.value.pPrev != NULL)
-    pNodeToDelete.value.pPrev.value.pNext = NULL;
+  if (pNodeToDelete.value.pNext == null && pNodeToDelete.value.pPrev != null)
+    pNodeToDelete.value.pPrev.value.pNext = null;
 
   // iof the node that is being deleted is the first node
   if (pTempNode == gCrdtRootNode)
-    gCrdtRootNode = NULL;
+    gCrdtRootNode = null;
 
   // Free the string
-  if (pTempNode.value.pString != NULL) {
+  if (pTempNode.value.pString != null) {
     MemFree(pTempNode.value.pString);
-    pTempNode.value.pString = NULL;
+    pTempNode.value.pString = null;
   }
 
   // if the node had something to display, delete a surface for it
@@ -584,15 +584,15 @@ function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): BOOLEAN {
 
   // Free the node
   MemFree(pTempNode);
-  pTempNode = NULL;
+  pTempNode = null;
 
   return TRUE;
 }
 
 // aaa
 function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN {
-  let pNodeToAdd: Pointer<CRDT_NODE> = NULL;
-  let pTemp: Pointer<CRDT_NODE> = NULL;
+  let pNodeToAdd: Pointer<CRDT_NODE> = null;
+  let pTemp: Pointer<CRDT_NODE> = null;
   let uiSizeOfString: UINT32 = (wcslen(pString) + 2) * 2;
   let uiFontToUse: UINT32;
   let uiColorToUse: UINT8;
@@ -604,7 +604,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
   }
 
   pNodeToAdd = MemAlloc(sizeof(CRDT_NODE));
-  if (pNodeToAdd == NULL) {
+  if (pNodeToAdd == null) {
     return FALSE;
   }
   memset(pNodeToAdd, 0, sizeof(CRDT_NODE));
@@ -646,7 +646,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
 
   // Allocate memory for the string
   pNodeToAdd.value.pString = MemAlloc(uiSizeOfString);
-  if (pNodeToAdd.value.pString == NULL)
+  if (pNodeToAdd.value.pString == null)
     return FALSE;
 
   // copy the string into the node
@@ -695,16 +695,16 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
   //
 
   // if its the first node to add
-  if (gCrdtRootNode == NULL) {
+  if (gCrdtRootNode == null) {
     // make the new node the root node
     gCrdtRootNode = pNodeToAdd;
 
-    gCrdtRootNode.value.pNext = NULL;
-    gCrdtRootNode.value.pPrev = NULL;
+    gCrdtRootNode.value.pNext = null;
+    gCrdtRootNode.value.pPrev = null;
   } else {
     pTemp = gCrdtRootNode;
 
-    while (pTemp.value.pNext != NULL) {
+    while (pTemp.value.pNext != null) {
       pTemp = pTemp.value.pNext;
     }
 
@@ -722,10 +722,10 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
 
 function HandleCreditNodes(): void {
   let uiCurrentTime: UINT32 = GetJA2Clock();
-  let pCurrent: Pointer<CRDT_NODE> = NULL;
-  let pTemp: Pointer<CRDT_NODE> = NULL;
+  let pCurrent: Pointer<CRDT_NODE> = null;
+  let pTemp: Pointer<CRDT_NODE> = null;
 
-  if (gCrdtRootNode == NULL)
+  if (gCrdtRootNode == null)
     return;
 
   // if the screen is paused, exit
@@ -738,7 +738,7 @@ function HandleCreditNodes(): void {
     return;
 
   // loop through all the nodes
-  while (pCurrent != NULL) {
+  while (pCurrent != null) {
     pTemp = pCurrent;
 
     pCurrent = pCurrent.value.pNext;
@@ -807,7 +807,7 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
   let hVSurface: HVSURFACE;
 
   // Currently, we have no need to display a node that doesnt have a string
-  if (pCurrent.value.pString == NULL)
+  if (pCurrent.value.pString == null)
     return FALSE;
 
   // if the node is new and we havent displayed it yet
@@ -838,7 +838,7 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
 
   GetVideoSurface(addressof(hVSurface), pCurrent.value.uiVideoSurfaceImage);
 
-  BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, pCurrent.value.sPosX, pCurrent.value.sPosY, VS_BLT_CLIPPED | VS_BLT_USECOLORKEY, NULL);
+  BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, pCurrent.value.sPosX, pCurrent.value.sPosY, VS_BLT_CLIPPED | VS_BLT_USECOLORKEY, null);
 
   return TRUE;
 }
@@ -850,7 +850,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
   let zOriginalString: CHAR16[] /* [512] */;
   let zString: CHAR16[] /* [512] */;
   let zCodes: CHAR16[] /* [512] */;
-  let pzNewCode: STR16 = NULL;
+  let pzNewCode: STR16 = null;
   let uiCodeType: UINT32 = 0;
   let uiNodeType: UINT32 = 0;
   let uiStartLoc: UINT32 = 0;
@@ -874,7 +874,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
   } else {
     let uiSizeOfCodes: UINT32 = 0;
     let uiSizeOfSubCode: UINT32 = 0;
-    let pzEndCode: STR16 = NULL;
+    let pzEndCode: STR16 = null;
     let uiDistanceIntoCodes: UINT32 = 0;
 
     // Retrive all the codes from the string
@@ -921,7 +921,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
       pzNewCode = GetNextCreditCode(addressof(zCodes[uiDistanceIntoCodes]), addressof(uiSizeOfSubCode));
 
       // if we are done getting the sub codes
-      if (pzNewCode == NULL) {
+      if (pzNewCode == null) {
         uiDistanceIntoCodes = uiSizeOfCodes;
       } else {
         // else increment by the size of the code
@@ -1057,18 +1057,18 @@ function CountNumberOfCreditNodes(): UINT32 {
 }
 
 function GetNextCreditCode(pString: STR16, pSizeOfCode: Pointer<UINT32>): STR16 {
-  let pzNewCode: STR16 = NULL;
+  let pzNewCode: STR16 = null;
   let uiSizeOfCode: UINT32 = 0;
 
   // get the new subcode out
   pzNewCode = wcsstr(pString, CRDT_SEPARATION_CODE);
 
   // if there is no separation code, then there must be an end code
-  if (pzNewCode == NULL) {
+  if (pzNewCode == null) {
     // pzNewCode = wcsstr( pString, CRDT_END_CODE );
 
     // we are done
-    pzNewCode = NULL;
+    pzNewCode = null;
   } else {
     // get rid of separeation code
     pzNewCode++;
@@ -1129,7 +1129,7 @@ function HandleCreditEyeBlinking(): void {
 
   for (ubCnt = 0; ubCnt < Enum382.NUM_PEOPLE_IN_CREDITS; ubCnt++) {
     if ((GetJA2Clock() - gCreditFaces[ubCnt].uiLastBlinkTime) > gCreditFaces[ubCnt].sBlinkFreq) {
-      BltVideoObject(FRAME_BUFFER, hPixHandle, (ubCnt * 3), gCreditFaces[ubCnt].sEyeX, gCreditFaces[ubCnt].sEyeY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hPixHandle, (ubCnt * 3), gCreditFaces[ubCnt].sEyeX, gCreditFaces[ubCnt].sEyeY, VO_BLT_SRCTRANSPARENCY, null);
       InvalidateRegion(gCreditFaces[ubCnt].sEyeX, gCreditFaces[ubCnt].sEyeY, gCreditFaces[ubCnt].sEyeX + CRDT_EYE_WIDTH, gCreditFaces[ubCnt].sEyeY + CRDT_EYE_HEIGHT);
 
       gCreditFaces[ubCnt].uiLastBlinkTime = GetJA2Clock();

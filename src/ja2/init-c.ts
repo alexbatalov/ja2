@@ -82,7 +82,7 @@ function ShutdownJA2(): void {
   // Remove cursor....
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
-  RefreshScreen(NULL);
+  RefreshScreen(null);
 
   ShutdownStrategicLayer();
 

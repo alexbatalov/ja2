@@ -148,7 +148,7 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: in
 
   FastDebugMsg("Initializing File Manager");
   // Initialize the File Manager
-  if (InitializeFileManager(NULL) == FALSE) {
+  if (InitializeFileManager(null) == FALSE) {
     // We were unable to initialize the file manager
     FastDebugMsg("FAILED : Initializing File Manager");
     return FALSE;
@@ -195,7 +195,7 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: in
 
   // Create font translation table (store in temp structure)
   pFontTable = CreateEnglishTransTable();
-  if (pFontTable == NULL) {
+  if (pFontTable == null) {
     return FALSE;
   }
 
@@ -284,10 +284,10 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
 
   // Make sure that only one instance of this application is running at once
   // // Look for prev instance by searching for the window
-  hPrevInstanceWindow = FindWindowEx(NULL, NULL, APPLICATION_NAME, APPLICATION_NAME);
+  hPrevInstanceWindow = FindWindowEx(null, null, APPLICATION_NAME, APPLICATION_NAME);
 
   // One is found, bring it up!
-  if (hPrevInstanceWindow != NULL) {
+  if (hPrevInstanceWindow != null) {
     SetForegroundWindow(hPrevInstanceWindow);
     ShowWindow(hPrevInstanceWindow, SW_RESTORE);
     return 0;
@@ -331,9 +331,9 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
   // At this point the SGP is set up, which means all I/O, Memory, tools, etc... are available. All we need to do is
   // attend to the gaming mechanics themselves
   while (gfProgramIsRunning) {
-    if (PeekMessage(addressof(Message), NULL, 0, 0, PM_NOREMOVE)) {
+    if (PeekMessage(addressof(Message), null, 0, 0, PM_NOREMOVE)) {
       // We have a message on the WIN95 queue, let's get it
-      if (!GetMessage(addressof(Message), NULL, 0, 0)) {
+      if (!GetMessage(addressof(Message), null, 0, 0)) {
         // It's quitting time
         return Message.wParam;
       }
@@ -381,7 +381,7 @@ function SGPExit(): void {
   ShutdownStandardGamingPlatform();
   ShowCursor(TRUE);
   if (strlen(gzErrorMsg)) {
-    MessageBox(NULL, gzErrorMsg, "Error", MB_OK | MB_ICONERROR);
+    MessageBox(null, gzErrorMsg, "Error", MB_OK | MB_ICONERROR);
   }
 }
 
@@ -408,7 +408,7 @@ function ShutdownWithErrorBox(pcMessage: Pointer<CHAR8>): void {
 
 function ProcessJa2CommandLineBeforeInitialization(pCommandLine: Pointer<CHAR8>): void {
   let cSeparators: CHAR8[] /* [] */ = "\t =";
-  let pCopy: Pointer<CHAR8> = NULL;
+  let pCopy: Pointer<CHAR8> = null;
   let pToken: Pointer<CHAR8>;
 
   pCopy = MemAlloc(strlen(pCommandLine) + 1);
@@ -428,7 +428,7 @@ function ProcessJa2CommandLineBeforeInitialization(pCommandLine: Pointer<CHAR8>)
     }
 
     // get the next token
-    pToken = strtok(NULL, cSeparators);
+    pToken = strtok(null, cSeparators);
   }
 
   MemFree(pCopy);

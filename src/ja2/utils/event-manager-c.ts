@@ -1,6 +1,6 @@
-let hEventQueue: HLIST = NULL;
-let hDelayEventQueue: HLIST = NULL;
-let hDemandEventQueue: HLIST = NULL;
+let hEventQueue: HLIST = null;
+let hDelayEventQueue: HLIST = null;
+let hDemandEventQueue: HLIST = null;
 
 const QUEUE_RESIZE = 20;
 
@@ -8,14 +8,14 @@ function InitializeEventManager(): BOOLEAN {
   // Create Queue
   hEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
-  if (hEventQueue == NULL) {
+  if (hEventQueue == null) {
     return FALSE;
   }
 
   // Create Delay Queue
   hDelayEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
-  if (hDelayEventQueue == NULL) {
+  if (hDelayEventQueue == null) {
     return FALSE;
   }
 
@@ -23,7 +23,7 @@ function InitializeEventManager(): BOOLEAN {
   // called for by code)
   hDemandEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
-  if (hDemandEventQueue == NULL) {
+  if (hDemandEventQueue == null) {
     return FALSE;
   }
 
@@ -31,15 +31,15 @@ function InitializeEventManager(): BOOLEAN {
 }
 
 function ShutdownEventManager(): BOOLEAN {
-  if (hEventQueue != NULL) {
+  if (hEventQueue != null) {
     DeleteList(hEventQueue);
   }
 
-  if (hDelayEventQueue != NULL) {
+  if (hDelayEventQueue != null) {
     DeleteList(hDelayEventQueue);
   }
 
-  if (hDemandEventQueue != NULL) {
+  if (hDemandEventQueue != null) {
     DeleteList(hDemandEventQueue);
   }
 
@@ -54,7 +54,7 @@ function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize:
   // Allocate new event
   pEvent = MemAlloc(uiEventSize + uiDataSize);
 
-  CHECKF(pEvent != NULL);
+  CHECKF(pEvent != null);
 
   // Set values
   pEvent.value.TimeStamp = GetJA2Clock();
@@ -120,7 +120,7 @@ function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID:
 }
 
 function FreeEvent(pEvent: Pointer<EVENT>): BOOLEAN {
-  CHECKF(pEvent != NULL);
+  CHECKF(pEvent != null);
 
   // Delete event
   MemFree(pEvent);

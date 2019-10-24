@@ -21,7 +21,7 @@ let gfJustFoundBoobyTrap: BOOLEAN = FALSE;
 function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, bLevel: INT8): BOOLEAN {
   let fBadChangeToGetThrough: BOOLEAN = FALSE;
 
-  if (pTargetSoldier != NULL) {
+  if (pTargetSoldier != null) {
     if (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, pTargetSoldier, pSoldier.value.bAimShotLocation) < OK_CHANCE_TO_GET_THROUGH) {
       fBadChangeToGetThrough = TRUE;
     }
@@ -65,7 +65,7 @@ function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTa
 }
 
 function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: INT8, usHandItem: UINT16, fFromUI: BOOLEAN): INT32 {
-  let pTargetSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pTargetSoldier: Pointer<SOLDIERTYPE> = null;
   let usSoldierIndex: UINT16;
   let sTargetGridNo: INT16;
   let sAPCost: INT16;
@@ -95,9 +95,9 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       // ATE: Check if we are targeting an interactive tile, and adjust gridno accordingly...
       pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
 
-      if (pIntNode != NULL && pTargetSoldier == pSoldier) {
+      if (pIntNode != null && pTargetSoldier == pSoldier) {
         // Truncate target sioldier
-        pTargetSoldier = NULL;
+        pTargetSoldier = null;
       }
     }
   }
@@ -212,7 +212,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     }
 
     // Get gridno - either soldier's position or the gridno
-    if (pTargetSoldier != NULL) {
+    if (pTargetSoldier != null) {
       sTargetGridNo = pTargetSoldier.value.sGridNo;
     } else {
       sTargetGridNo = usGridNo;
@@ -361,7 +361,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       // Check for who is there...
       ubGuyThere = WhoIsThere2(sSpot, pSoldier.value.bLevel);
 
-      if (pTargetSoldier != NULL && ubGuyThere == pTargetSoldier.value.ubID) {
+      if (pTargetSoldier != null && ubGuyThere == pTargetSoldier.value.ubID) {
         // We've got a guy here....
         // Who is the one we want......
         sGotLocation = sSpot;
@@ -456,7 +456,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         if (fHadToUseCursorPos) {
           pSoldier.value.sPendingActionData2 = usMapPos;
         } else {
-          if (pTargetSoldier != NULL) {
+          if (pTargetSoldier != null) {
             pSoldier.value.sPendingActionData2 = pTargetSoldier.value.sGridNo;
           } else {
             pSoldier.value.sPendingActionData2 = usGridNo;
@@ -691,7 +691,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     pIntTile = GetCurInteractiveTileGridNoAndStructure(addressof(usGridNo), addressof(pStructure));
 
     // We should not have null here if we are given this flag...
-    if (pIntTile != NULL) {
+    if (pIntTile != null) {
       sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), FALSE, TRUE);
 
       if (sActionGridNo != -1) {
@@ -874,7 +874,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     let sCheckGridNo: INT16;
 
     // Get gridno - either soldier's position or the gridno
-    if (pTargetSoldier != NULL) {
+    if (pTargetSoldier != null) {
       sTargetGridNo = pTargetSoldier.value.sGridNo;
     } else {
       sTargetGridNo = usGridNo;
@@ -989,7 +989,7 @@ function HandleSoldierUseRemote(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
 
 function SoldierHandleDropItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   // LOOK IN PANDING DATA FOR ITEM TO DROP, AND LOCATION
-  if (pSoldier.value.pTempObject != NULL) {
+  if (pSoldier.value.pTempObject != null) {
     if (pSoldier.value.bVisible != -1) {
       PlayJA2Sample(Enum330.THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
     }
@@ -998,7 +998,7 @@ function SoldierHandleDropItem(pSoldier: Pointer<SOLDIERTYPE>): void {
     NotifySoldiersToLookforItems();
 
     MemFree(pSoldier.value.pTempObject);
-    pSoldier.value.pTempObject = NULL;
+    pSoldier.value.pTempObject = null;
   }
 }
 
@@ -1040,12 +1040,12 @@ function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
       // CHECK IF WE ARE NOT ON THE SAME GRIDNO
       if (sGridNo == pSoldier.value.sGridNo) {
         // OK, JUST DROP ITEM!
-        if (pSoldier.value.pTempObject != NULL) {
+        if (pSoldier.value.pTempObject != null) {
           AddItemToPool(sGridNo, pSoldier.value.pTempObject, 1, pSoldier.value.bLevel, 0, -1);
           NotifySoldiersToLookforItems();
 
           MemFree(pSoldier.value.pTempObject);
-          pSoldier.value.pTempObject = NULL;
+          pSoldier.value.pTempObject = null;
         }
       } else {
         // OK, go from prone/crouch to stand first!
@@ -1105,7 +1105,7 @@ function SoldierGiveItem(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer
 
 function SoldierDropItem(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   pSoldier.value.pTempObject = MemAlloc(sizeof(OBJECTTYPE));
-  if (pSoldier.value.pTempObject == NULL) {
+  if (pSoldier.value.pTempObject == null) {
     // OUT OF MEMORY! YIKES!
     return FALSE;
   }
@@ -1156,7 +1156,7 @@ function SoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sG
 function HandleAutoPlaceFail(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16): void {
   if (pSoldier.value.bTeam == gbPlayerNum) {
     // Place it in buddy's hand!
-    if (gpItemPointer == NULL) {
+    if (gpItemPointer == null) {
       InternalBeginItemPointer(pSoldier, addressof(gWorldItems[iItemIndex].o), NO_SLOT);
     } else {
       // Add back to world...
@@ -1172,7 +1172,7 @@ function HandleAutoPlaceFail(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, 
 
 function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8, pfSelectionList: Pointer<BOOLEAN>): void {
   let pItemPool: Pointer<ITEM_POOL>;
-  let pItemPoolToDelete: Pointer<ITEM_POOL> = NULL;
+  let pItemPoolToDelete: Pointer<ITEM_POOL> = null;
   let Object: OBJECTTYPE;
   let cnt: INT32 = 0;
   let fPickup: BOOLEAN;
@@ -1215,7 +1215,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
               // ask about activating the switch!
               bTempFrequency = Object.bFrequency;
               gpTempSoldier = pSoldier;
-              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.ACTIVATE_SWITCH_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
+              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.ACTIVATE_SWITCH_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, null);
               pItemPool = pItemPool.value.pNext;
             } else {
               if (!AutoPlaceObject(pSoldier, addressof(Object), TRUE)) {
@@ -1268,11 +1268,11 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
     }
 
     // ATE; If here, and we failed to add any more stuff, put failed one in our cursor...
-    if (pItemPoolToDelete != NULL && fFailedAutoPlace) {
+    if (pItemPoolToDelete != null && fFailedAutoPlace) {
       gfDontChargeAPsToPickup = TRUE;
       HandleAutoPlaceFail(pSoldier, pItemPoolToDelete.value.iItemIndex, sGridNo);
       RemoveItemFromPool(sGridNo, pItemPoolToDelete.value.iItemIndex, pSoldier.value.bLevel);
-      pItemPoolToDelete = NULL;
+      pItemPoolToDelete = null;
     }
   } else {
     // REMOVE ITEM FROM POOL
@@ -1289,7 +1289,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
           // handle switch
           bTempFrequency = Object.bFrequency;
           gpTempSoldier = pSoldier;
-          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.ACTIVATE_SWITCH_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.ACTIVATE_SWITCH_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, null);
         } else {
           /*
                                                   // handle theft.. will return true if theft has failed ( if soldier was caught )
@@ -1365,7 +1365,7 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
   if (GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
     // OK, if an enemy, go directly ( skip menu )
     if (pSoldier.value.bTeam != gbPlayerNum) {
-      SoldierGetItemFromWorld(pSoldier, iItemIndex, sGridNo, bZLevel, NULL);
+      SoldierGetItemFromWorld(pSoldier, iItemIndex, sGridNo, bZLevel, null);
     } else {
       if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_PLAYER_MINE_PRESENT) {
         // have the computer ask us if we want to proceed
@@ -1381,7 +1381,7 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
         gfDisarmingBuriedBomb = TRUE;
         gbTrapDifficulty = gWorldItems[iItemIndex].o.bTrap;
 
-        DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_TRAP_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
+        DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_TRAP_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, null);
       } else {
         // OK, only hidden items exist...
         if (pSoldier.value.bTeam == gbPlayerNum && DoesItemPoolContainAllHiddenItems(pItemPool)) {
@@ -1403,7 +1403,7 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
             while (!ItemPoolOKForDisplay(pItemPool, bZLevel)) {
               pItemPool = pItemPool.value.pNext;
             }
-            SoldierGetItemFromWorld(pSoldier, pItemPool.value.iItemIndex, sGridNo, bZLevel, NULL);
+            SoldierGetItemFromWorld(pSoldier, pItemPool.value.iItemIndex, sGridNo, bZLevel, null);
           } else {
             if (usNum != 0) {
               // Freeze guy!
@@ -1464,7 +1464,7 @@ function RemoveItemGraphicFromWorld(pItem: Pointer<INVTYPE>, sGridNo: INT16, ubL
     pNode = gpWorldLevelData[sGridNo].pOnRoofHead;
   }
 
-  while (pNode != NULL) {
+  while (pNode != null) {
     if (pNode == pLevelNode) {
       // Found one!
       if (ubLevel == 0) {
@@ -1492,7 +1492,7 @@ function RemoveItemGraphicFromWorld(pItem: Pointer<INVTYPE>, sGridNo: INT16, ubL
 
 // INVENTORY POOL STUFF
 function AddItemToPool(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8): Pointer<OBJECTTYPE> {
-  return InternalAddItemToPool(addressof(sGridNo), pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel, NULL);
+  return InternalAddItemToPool(addressof(sGridNo), pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel, null);
 }
 
 function AddItemToPoolAndGetIndex(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, piItemIndex: Pointer<INT32>): Pointer<OBJECTTYPE> {
@@ -1531,7 +1531,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
 
   if (bTerrainID == Enum315.DEEP_WATER || bTerrainID == Enum315.LOW_WATER || bTerrainID == Enum315.MED_WATER) {
     if (Item[pObject.value.usItem].fFlags & ITEM_SINKS) {
-      return NULL;
+      return null;
     }
   }
 
@@ -1628,7 +1628,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
       // switch items which are not hidden inside objects should be considered buried
       bVisible = BURIED;
       // and they are pressure-triggered unless there is a switch structure there
-      if (FindStructure(psGridNo.value, STRUCTURE_SWITCH) != NULL) {
+      if (FindStructure(psGridNo.value, STRUCTURE_SWITCH) != null) {
         pObject.value.bDetonatorType = Enum224.BOMB_SWITCH;
       } else {
         pObject.value.bDetonatorType = Enum224.BOMB_PRESSURE;
@@ -1672,7 +1672,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
     pItemPool = MemAlloc(sizeof(ITEM_POOL));
 
     // Set Next to NULL
-    pItemPool.value.pNext = NULL;
+    pItemPool.value.pNext = null;
     // Set Item index
     pItemPool.value.iItemIndex = iWorldItem;
     // Get a link back!
@@ -1680,7 +1680,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
 
     if (pItemPoolTemp) {
       // Get last item in list
-      while (pItemPoolTemp.value.pNext != NULL)
+      while (pItemPoolTemp.value.pNext != null)
         pItemPoolTemp = pItemPoolTemp.value.pNext;
 
       // Set Next of previous
@@ -1697,9 +1697,9 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
     pNode.value.pItemPool = pItemPool;
 
     // Set prev to NULL
-    pItemPool.value.pPrev = NULL;
+    pItemPool.value.pPrev = null;
     // Set next to NULL
-    pItemPool.value.pNext = NULL;
+    pItemPool.value.pNext = null;
     // Set Item index
     pItemPool.value.iItemIndex = iWorldItem;
     // Get a link back!
@@ -1748,7 +1748,7 @@ function ItemExistsAtLocation(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8)
   if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
-    while (pItemPoolTemp != NULL) {
+    while (pItemPoolTemp != null) {
       if (pItemPoolTemp.value.iItemIndex == iItemIndex) {
         return TRUE;
       }
@@ -1768,7 +1768,7 @@ function ItemTypeExistsAtLocation(sGridNo: INT16, usItem: UINT16, ubLevel: UINT8
   if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
     // LOOP THROUGH LIST TO FIND ITEM WE WANT
     pItemPoolTemp = pItemPool;
-    while (pItemPoolTemp != NULL) {
+    while (pItemPoolTemp != null) {
       if (gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem == usItem) {
         if (piItemIndex) {
           piItemIndex.value = pItemPoolTemp.value.iItemIndex;
@@ -1791,7 +1791,7 @@ function GetItemOfClassTypeInPool(sGridNo: INT16, uiItemClass: UINT32, ubLevel: 
   if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
-    while (pItemPoolTemp != NULL) {
+    while (pItemPoolTemp != null) {
       if (Item[gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem].usItemClass & uiItemClass) {
         return pItemPoolTemp.value.iItemIndex;
       }
@@ -1811,7 +1811,7 @@ function GetItemPoolForIndex(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8):
   if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
-    while (pItemPoolTemp != NULL) {
+    while (pItemPoolTemp != null) {
       if (pItemPoolTemp.value.iItemIndex == iItemIndex) {
         return pItemPoolTemp;
       }
@@ -1819,12 +1819,12 @@ function GetItemPoolForIndex(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8):
     }
   }
 
-  return NULL;
+  return null;
 }
 
 function DoesItemPoolContainAnyHiddenItems(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
   // LOOP THROUGH LIST TO FIND NODE WE WANT
-  while (pItemPool != NULL) {
+  while (pItemPool != null) {
     if (gWorldItems[pItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM) {
       return TRUE;
     }
@@ -1837,7 +1837,7 @@ function DoesItemPoolContainAnyHiddenItems(pItemPool: Pointer<ITEM_POOL>): BOOLE
 
 function DoesItemPoolContainAllHiddenItems(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
   // LOOP THROUGH LIST TO FIND NODE WE WANT
-  while (pItemPool != NULL) {
+  while (pItemPool != null) {
     if (gWorldItems[pItemPool.value.iItemIndex].bVisible != HIDDEN_ITEM) {
       return FALSE;
     }
@@ -1849,15 +1849,15 @@ function DoesItemPoolContainAllHiddenItems(pItemPool: Pointer<ITEM_POOL>): BOOLE
 }
 
 function LookForHiddenItems(sGridNo: INT16, ubLevel: INT8, fSetLocator: BOOLEAN, bZLevel: INT8): BOOLEAN {
-  let pItemPool: Pointer<ITEM_POOL> = NULL;
-  let pHeadItemPool: Pointer<ITEM_POOL> = NULL;
+  let pItemPool: Pointer<ITEM_POOL> = null;
+  let pHeadItemPool: Pointer<ITEM_POOL> = null;
   let fFound: BOOLEAN = FALSE;
 
   if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
     pHeadItemPool = pItemPool;
 
     // LOOP THROUGH LIST TO FIND NODE WE WANT
-    while (pItemPool != NULL) {
+    while (pItemPool != null) {
       if (gWorldItems[pItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.usItem != Enum225.OWNERSHIP) {
         fFound = TRUE;
 
@@ -1879,7 +1879,7 @@ function LookForHiddenItems(sGridNo: INT16, ubLevel: INT8, fSetLocator: BOOLEAN,
 function GetZLevelOfItemPoolGivenStructure(sGridNo: INT16, ubLevel: UINT8, pStructure: Pointer<STRUCTURE>): INT8 {
   let pItemPool: Pointer<ITEM_POOL>;
 
-  if (pStructure == NULL) {
+  if (pStructure == null) {
     return 0;
   }
 
@@ -1892,7 +1892,7 @@ function GetZLevelOfItemPoolGivenStructure(sGridNo: INT16, ubLevel: UINT8, pStru
 
 function GetLargestZLevelOfItemPool(pItemPool: Pointer<ITEM_POOL>): INT8 {
   // OK, loop through pools and get any height != 0........
-  while (pItemPool != NULL) {
+  while (pItemPool != null) {
     if (pItemPool.value.bRenderZHeightAboveLevel > 0) {
       return pItemPool.value.bRenderZHeightAboveLevel;
     }
@@ -1905,7 +1905,7 @@ function GetLargestZLevelOfItemPool(pItemPool: Pointer<ITEM_POOL>): INT8 {
 
 function DoesItemPoolContainAllItemsOfHigherZLevel(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
   // LOOP THROUGH LIST TO FIND NODE WE WANT
-  while (pItemPool != NULL) {
+  while (pItemPool != null) {
     if (pItemPool.value.bRenderZHeightAboveLevel == 0) {
       return FALSE;
     }
@@ -1918,7 +1918,7 @@ function DoesItemPoolContainAllItemsOfHigherZLevel(pItemPool: Pointer<ITEM_POOL>
 
 function DoesItemPoolContainAllItemsOfZeroZLevel(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
   // LOOP THROUGH LIST TO FIND NODE WE WANT
-  while (pItemPool != NULL) {
+  while (pItemPool != null) {
     if (pItemPool.value.bRenderZHeightAboveLevel != 0) {
       return FALSE;
     }
@@ -1956,7 +1956,7 @@ function RemoveAllUnburiedItems(sGridNo: INT16, ubLevel: UINT8): void {
 }
 
 function LoopLevelNodeForShowThroughFlag(pNode: Pointer<LEVELNODE>, sGridNo: INT16, ubLevel: UINT8): void {
-  while (pNode != NULL) {
+  while (pNode != null) {
     if (pNode.value.uiFlags & LEVELNODE_ITEM) {
       if (ubLevel == 0) {
         // If we are in a room....
@@ -1994,7 +1994,7 @@ function SetItemPoolVisibilityOn(pItemPool: Pointer<ITEM_POOL>, bAllGreaterThan:
   // OBJECTTYPE *pObj;
 
   pItemPoolTemp = pItemPool;
-  while (pItemPoolTemp != NULL) {
+  while (pItemPoolTemp != null) {
     bVisibleValue = gWorldItems[pItemPoolTemp.value.iItemIndex].bVisible;
 
     // Update each item...
@@ -2067,7 +2067,7 @@ function SetItemPoolVisibilityOn(pItemPool: Pointer<ITEM_POOL>, bAllGreaterThan:
 
   // Update global pool bVisible to true ( if at least one is visible... )
   pItemPoolTemp = pItemPool;
-  while (pItemPoolTemp != NULL) {
+  while (pItemPoolTemp != null) {
     pItemPoolTemp.value.bVisible = VISIBLE;
 
     pItemPoolTemp = pItemPoolTemp.value.pNext;
@@ -2087,7 +2087,7 @@ function SetItemPoolVisibilityHidden(pItemPool: Pointer<ITEM_POOL>): void {
   let pItemPoolTemp: Pointer<ITEM_POOL>;
 
   pItemPoolTemp = pItemPool;
-  while (pItemPoolTemp != NULL) {
+  while (pItemPoolTemp != null) {
     // Update the world value
     gWorldItems[pItemPoolTemp.value.iItemIndex].bVisible = HIDDEN_IN_OBJECT;
     pItemPoolTemp.value.bVisible = HIDDEN_IN_OBJECT;
@@ -2103,7 +2103,7 @@ function AdjustItemPoolVisibility(pItemPool: Pointer<ITEM_POOL>): void {
   let fAtLeastModified: BOOLEAN = FALSE;
 
   pItemPoolTemp = pItemPool;
-  while (pItemPoolTemp != NULL) {
+  while (pItemPoolTemp != null) {
     // DEFAULT ITEM POOL TO INVISIBLE....
     pItemPoolTemp.value.bVisible = INVISIBLE;
 
@@ -2126,7 +2126,7 @@ function AdjustItemPoolVisibility(pItemPool: Pointer<ITEM_POOL>): void {
 
   // Update global pool bVisible to true ( if at least one is visible... )
   pItemPoolTemp = pItemPool;
-  while (pItemPoolTemp != NULL) {
+  while (pItemPoolTemp != null) {
     pItemPoolTemp.value.bVisible = VISIBLE;
 
     pItemPoolTemp = pItemPoolTemp.value.pNext;
@@ -2148,7 +2148,7 @@ function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): 
 
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
-    while (pItemPoolTemp != NULL) {
+    while (pItemPoolTemp != null) {
       if (pItemPoolTemp.value.iItemIndex == iItemIndex) {
         fItemFound = TRUE;
         break;
@@ -2171,17 +2171,17 @@ function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): 
     }
 
     // REMOVE PREV
-    if (pItemPoolTemp.value.pPrev != NULL) {
+    if (pItemPoolTemp.value.pPrev != null) {
       pItemPoolTemp.value.pPrev.value.pNext = pItemPoolTemp.value.pNext;
     }
 
     // REMOVE NEXT
-    if (pItemPoolTemp.value.pNext != NULL) {
+    if (pItemPoolTemp.value.pNext != null) {
       pItemPoolTemp.value.pNext.value.pPrev = pItemPoolTemp.value.pPrev;
     }
 
     // IF THIS NODE WAS THE HEAD, SET ANOTHER AS HEAD AT THIS GRIDNO
-    if (pItemPoolTemp.value.pPrev == NULL) {
+    if (pItemPoolTemp.value.pPrev == null) {
       // WE'RE HEAD
       if (ubLevel == 0) {
         pObject = gpWorldLevelData[sGridNo].pStructHead;
@@ -2191,7 +2191,7 @@ function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): 
 
       fItemFound = FALSE;
       // LOOP THORUGH OBJECT LAYER
-      while (pObject != NULL) {
+      while (pObject != null) {
         if (pObject.value.uiFlags & LEVELNODE_ITEM) {
           // ADJUST TO NEXT GUY FOR HEAD
           pObject.value.pItemPool = pItemPoolTemp.value.pNext;
@@ -2215,7 +2215,7 @@ function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): 
       if (!GetItemPool(pItemPoolTemp.value.sGridNo, addressof(pTempPool), pItemPoolTemp.value.ubLevel)) {
         pStructure = FindStructure(pItemPoolTemp.value.sGridNo, STRUCTURE_HASITEMONTOP);
 
-        if (pStructure != NULL) {
+        if (pStructure != null) {
           // Remove...
           pStructure.value.fFlags &= (~STRUCTURE_HASITEMONTOP);
 
@@ -2261,10 +2261,10 @@ function GetItemPool(usMapPos: UINT16, ppItemPool: Pointer<Pointer<ITEM_POOL>>, 
     pObject = gpWorldLevelData[usMapPos].pOnRoofHead;
   }
 
-  (ppItemPool.value) = NULL;
+  (ppItemPool.value) = null;
 
   // LOOP THORUGH OBJECT LAYER
-  while (pObject != NULL) {
+  while (pObject != null) {
     if (pObject.value.uiFlags & LEVELNODE_ITEM) {
       (ppItemPool.value) = pObject.value.pItemPool;
 
@@ -2288,7 +2288,7 @@ function NotifySoldiersToLookforItems(): void {
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
     pSoldier = MercSlots[cnt];
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       pSoldier.value.uiStatusFlags |= SOLDIER_LOOKFOR_ITEMS;
     }
   }
@@ -2301,7 +2301,7 @@ function AllSoldiersLookforItems(fShowLocators: BOOLEAN): void {
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
     pSoldier = MercSlots[cnt];
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       RevealRoofsAndItems(pSoldier, TRUE, fShowLocators, pSoldier.value.bLevel, FALSE);
     }
   }
@@ -2312,7 +2312,7 @@ function GetNumOkForDisplayItemsInPool(pItemPool: Pointer<ITEM_POOL>, bZLevel: I
 
   // Determine total #
   cnt = 0;
-  while (pItemPool != NULL) {
+  while (pItemPool != null) {
     if (ItemPoolOKForDisplay(pItemPool, bZLevel)) {
       cnt++;
     }
@@ -2329,7 +2329,7 @@ function AnyItemsVisibleOnLevel(pItemPool: Pointer<ITEM_POOL>, bZLevel: INT8): B
   }
 
   // Determine total #
-  while (pItemPool != NULL) {
+  while (pItemPool != null) {
     if (pItemPool.value.bRenderZHeightAboveLevel == bZLevel) {
       if (gWorldItems[pItemPool.value.iItemIndex].bVisible == VISIBLE) {
         return TRUE;
@@ -2406,7 +2406,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
   // MOVE HEAD TO CURRENT START
   cnt = 0;
   pTempItemPool = pItemPool;
-  while (pTempItemPool != NULL) {
+  while (pTempItemPool != null) {
     if (cnt == bCurStart) {
       break;
     }
@@ -2421,7 +2421,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
 
   cnt = bCurStart;
   fDoBack = FALSE;
-  while (pTempItemPool != NULL) {
+  while (pTempItemPool != null) {
     // IF WE HAVE MORE THAN THE SET AMOUNT, QUIT NOW!
     if (cnt == (bCurStart + NUM_ITEMS_LISTED)) {
       cnt++;
@@ -2440,7 +2440,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
   }
 
   pTempItemPool = pItemPool;
-  while (pTempItemPool != NULL) {
+  while (pTempItemPool != null) {
     // ATE: Put some conditions on this....
     if (ItemPoolOKForDisplay(pTempItemPool, bZLevel)) {
       HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), addressof(gWorldItems[pTempItemPool.value.iItemIndex].o), FALSE);
@@ -2459,7 +2459,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
   // RENDER LIST!
   // Determine max length
   pTempItemPool = pItemPool;
-  while (pTempItemPool != NULL) {
+  while (pTempItemPool != null) {
     if (ItemPoolOKForDisplay(pTempItemPool, bZLevel)) {
       // GET ITEM
       pItem = addressof(Item[gWorldItems[pTempItemPool.value.iItemIndex].o.usItem]);
@@ -2503,7 +2503,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
 
   // MOVE HEAD TO CURRENT START
   cnt = 0;
-  while (pItemPool != NULL) {
+  while (pItemPool != null) {
     if (cnt == bCurStart) {
       break;
     }
@@ -2534,7 +2534,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
     cnt++;
   }
 
-  while (pItemPool != NULL) {
+  while (pItemPool != null) {
     if (bCommand == ITEMLIST_HANDLE) {
       if (cnt == gbCurrentItemSel) {
         SetFontForeground(FONT_MCOLOR_LTGRAY);
@@ -2626,7 +2626,7 @@ function GetListMouseHotSpot(sLargestLineWidth: INT16, bNumItemsListed: INT8, sF
 function SetItemPoolLocator(pItemPool: Pointer<ITEM_POOL>): void {
   pItemPool.value.bFlashColor = 59;
 
-  pItemPool.value.uiTimerID = AddFlashItemSlot(pItemPool, NULL, 0);
+  pItemPool.value.uiTimerID = AddFlashItemSlot(pItemPool, null, 0);
 }
 
 function SetItemPoolLocatorWithCallback(pItemPool: Pointer<ITEM_POOL>, Callback: ITEM_POOL_LOCATOR_HOOK): void {
@@ -2684,7 +2684,7 @@ function AddFlashItemSlot(pItemPool: Pointer<ITEM_POOL>, Callback: ITEM_POOL_LOC
 function RemoveFlashItemSlot(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
   let uiCount: UINT32;
 
-  CHECKF(pItemPool != NULL);
+  CHECKF(pItemPool != null);
 
   for (uiCount = 0; uiCount < guiNumFlashItemSlots; uiCount++) {
     if (FlashItemSlots[uiCount].fAllocated) {
@@ -2692,7 +2692,7 @@ function RemoveFlashItemSlot(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
         FlashItemSlots[uiCount].fAllocated = FALSE;
 
         // Check if we have a callback and call it if so!
-        if (FlashItemSlots[uiCount].Callback != NULL) {
+        if (FlashItemSlots[uiCount].Callback != null) {
           FlashItemSlots[uiCount].Callback();
         }
 
@@ -2761,7 +2761,7 @@ function HandleFlashingItems(): void {
           }
 
           // LOOP THORUGH OBJECT LAYER
-          while (pObject != NULL) {
+          while (pObject != null) {
             if (pObject.value.uiFlags & LEVELNODE_ITEM) {
               if (pItemPool.value.bFlashColor == 1) {
                 // pObject->uiFlags &= (~LEVELNODE_DYNAMIC);
@@ -2842,12 +2842,12 @@ function RenderTopmostFlashingItems(): void {
           sXPos -= 20;
           sYPos -= 20;
 
-          iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (sXPos + 40), (sYPos + 40));
+          iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, sXPos, sYPos, (sXPos + 40), (sYPos + 40));
           if (iBack != -1) {
             SetBackgroundRectFilled(iBack);
           }
 
-          BltVideoObjectFromIndex(FRAME_BUFFER, guiRADIO, pLocator.value.bRadioFrame, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(FRAME_BUFFER, guiRADIO, pLocator.value.bRadioFrame, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, null);
 
           DrawItemPoolList(pItemPool, pItemPool.value.sGridNo, ITEMLIST_DISPLAY, pItemPool.value.bRenderZHeightAboveLevel, sXPos, sYPos);
         }
@@ -2892,7 +2892,7 @@ function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer
 
     return TRUE;
   } else {
-    if (pSoldier.value.pTempObject != NULL) {
+    if (pSoldier.value.pTempObject != null) {
       AddItemToPool(pSoldier.value.sGridNo, pSoldier.value.pTempObject, 1, pSoldier.value.bLevel, 0, -1);
 
       // Place it on the ground!
@@ -2906,7 +2906,7 @@ function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer
       }
 
       MemFree(pSoldier.value.pTempObject);
-      pSoldier.value.pTempObject = NULL;
+      pSoldier.value.pTempObject = null;
     }
   }
 
@@ -2930,14 +2930,14 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Get objectype and delete
   memcpy(addressof(TempObject), pSoldier.value.pTempObject, sizeof(OBJECTTYPE));
   MemFree(pSoldier.value.pTempObject);
-  pSoldier.value.pTempObject = NULL;
+  pSoldier.value.pTempObject = null;
 
   bInvPos = pSoldier.value.bPendingActionData5;
   usItemNum = TempObject.usItem;
 
   // ATE: OK, check if we have an item in the cursor from
   // this soldier and from this inv slot, if so, delete!!!!!!!
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     if (pSoldier.value.ubID == gpItemPointerSoldier.value.ubID) {
       if (bInvPos == gbItemPointerSrcSlot && usItemNum == gpItemPointer.value.usItem) {
         // Remove!!!
@@ -3137,7 +3137,7 @@ function StartBombMessageBox(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): vo
   gpTempSoldier = pSoldier;
   gsTempGridno = sGridNo;
   if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.REMOTEBOMBTRIGGER) {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[Enum335.CHOOSE_BOMB_FREQUENCY_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[Enum335.CHOOSE_BOMB_FREQUENCY_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, null);
   } else if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.REMOTETRIGGER) {
     // ATE ignore the commented-out code and add stuff to open the secret passage here
     /*
@@ -3165,9 +3165,9 @@ function StartBombMessageBox(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): vo
       DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
     }
   } else if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.DETONATOR) != ITEM_NOT_FOUND) {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[Enum335.CHOOSE_TIMER_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[Enum335.CHOOSE_TIMER_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, null);
   } else if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.REMDETONATOR) != ITEM_NOT_FOUND) {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[Enum335.CHOOSE_REMOTE_FREQUENCY_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[Enum335.CHOOSE_REMOTE_FREQUENCY_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, null);
   }
 }
 
@@ -3353,9 +3353,9 @@ function ContinuePastBoobyTrap(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, b
         gbTrapDifficulty = pObj.value.bTrap;
 
         if (fInStrategic) {
-          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, null);
         } else {
-          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, null);
         }
       } else {
         // oops!
@@ -3460,7 +3460,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
     }
   } else {
     if (gfDisarmingBuriedBomb) {
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.REMOVE_BLUE_FLAG_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.REMOVE_BLUE_FLAG_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, null);
     }
     // otherwise do nothing
   }
@@ -3531,7 +3531,7 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
     }
   } else {
     if (gfDisarmingBuriedBomb) {
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.REMOVE_BLUE_FLAG_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.REMOVE_BLUE_FLAG_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, null);
     }
     // otherwise do nothing
   }
@@ -3604,7 +3604,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
       // don't check directions that are impassable!
       ubMovementCost = gubWorldMovementCosts[sNextGridNo][ubDirection][pSoldier.value.bLevel];
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(NULL, sNextGridNo, ubMovementCost, FALSE, NULL);
+        ubMovementCost = DoorTravelCost(null, sNextGridNo, ubMovementCost, FALSE, null);
       }
       if (ubMovementCost >= TRAVELCOST_BLOCKED) {
         continue;
@@ -3716,7 +3716,7 @@ function MineSpottedLocatorCallback(): void {
   guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
 
   // now ask the player if he wants to place a blue flag.
-  DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.PLACE_BLUE_FLAG_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, MineSpottedMessageBoxCallBack, NULL);
+  DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.PLACE_BLUE_FLAG_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, MineSpottedMessageBoxCallBack, null);
 }
 
 function MineSpottedMessageBoxCallBack(ubExitValue: UINT8): void {
@@ -3845,7 +3845,7 @@ function CheckForPickedOwnership(): void {
 }
 
 function LoopLevelNodeForItemGlowFlag(pNode: Pointer<LEVELNODE>, sGridNo: INT16, ubLevel: UINT8, fOn: BOOLEAN): void {
-  while (pNode != NULL) {
+  while (pNode != null) {
     if (pNode.value.uiFlags & LEVELNODE_ITEM) {
       if (fOn) {
         pNode.value.uiFlags |= LEVELNODE_DYNAMIC;
@@ -3921,7 +3921,7 @@ function ContinuePastBoobyTrapInMapScreen(pObject: Pointer<OBJECTTYPE>, pSoldier
         // have the computer ask us if we want to proceed
         gpBoobyTrapSoldier = pSoldier;
         gbTrapDifficulty = pObject.value.bTrap;
-        DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
+        DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, null);
       } else {
         // oops!
         SetOffBoobyTrapInMapScreen(pSoldier, pObject);

@@ -494,7 +494,7 @@ function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGrid
 
   // Allocate memeory for the item
   pWorldItems = MemAlloc(sizeof(WORLDITEM) * uiNumberOfItems);
-  if (pWorldItems == NULL) {
+  if (pWorldItems == null) {
     // Error Allocating memory for the temp item array
     return FALSE;
   }
@@ -532,7 +532,7 @@ function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGrid
     if (cnt == (uiNumberOfItems)) {
       // Error, there wasnt a free spot.  Reallocate memory for the array
       pWorldItems = MemRealloc(pWorldItems, sizeof(WORLDITEM) * (uiNumberOfItems + 1));
-      if (pWorldItems == NULL) {
+      if (pWorldItems == null) {
         // error realloctin memory
         return FALSE;
       }
@@ -732,7 +732,7 @@ function HandleAllReachAbleItemsInTheSector(sSectorX: INT16, sSectorY: INT16, bS
     // if the item is trapped then flag it as unreachable, period
     if (gWorldItems[uiCounter].o.bTrap > 0) {
       fReachable = FALSE;
-    } else if (ItemTypeExistsAtLocation(gWorldItems[uiCounter].sGridNo, Enum225.OWNERSHIP, gWorldItems[uiCounter].ubLevel, NULL)) {
+    } else if (ItemTypeExistsAtLocation(gWorldItems[uiCounter].sGridNo, Enum225.OWNERSHIP, gWorldItems[uiCounter].ubLevel, null)) {
       fReachable = FALSE;
     } else if (gWorldItems[uiCounter].o.usItem == Enum225.CHALICE) {
       fReachable = FALSE;
@@ -943,7 +943,7 @@ function GetLastTimePlayerWasInSector(): UINT32 {
 
 function LoadAndAddWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
   let uiNumberOfItems: UINT32 = 0;
-  let pWorldItems: Pointer<WORLDITEM> = NULL;
+  let pWorldItems: Pointer<WORLDITEM> = null;
   let cnt: UINT32;
   let sNewGridNo: INT16;
 
@@ -955,7 +955,7 @@ function LoadAndAddWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT
 
   if (uiNumberOfItems) {
     pWorldItems = MemAlloc(sizeof(WORLDITEM) * uiNumberOfItems);
-    if (pWorldItems == NULL) {
+    if (pWorldItems == null) {
       // Error Allocating memory for the temp item array
       return FALSE;
     }
@@ -1532,7 +1532,7 @@ function GetNumberOfActiveWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMa
     // If there items in the data file
     if (uiNumberOfItems != 0) {
       pWorldItems = MemAlloc(sizeof(WORLDITEM) * uiNumberOfItems);
-      if (pWorldItems == NULL) {
+      if (pWorldItems == null) {
         // Error Allocating memory for the temp item array
         return FALSE;
       }
@@ -1699,9 +1699,9 @@ function LoadTempNpcQuoteInfoForNPCFromTempFile(ubNpcId: UINT8): BOOLEAN {
   memset(TempNpcQuote, 0, uiSizeOfTempArray);
 
   // If there isnt already memory allocated, allocate memory to hold the array
-  if (gpNPCQuoteInfoArray[ubNpcId] == NULL) {
+  if (gpNPCQuoteInfoArray[ubNpcId] == null) {
     gpNPCQuoteInfoArray[ubNpcId] = MemAlloc(sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS);
-    if (gpNPCQuoteInfoArray[ubNpcId] == NULL)
+    if (gpNPCQuoteInfoArray[ubNpcId] == null)
       return FALSE;
   }
 
@@ -1937,7 +1937,7 @@ function GetSectorFlagStatus(sMapX: INT16, sMapY: INT16, bMapZ: UINT8, uiFlagToS
 
 function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8, pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, uiFlags: UINT32): BOOLEAN {
   let uiNumberOfItems: UINT32;
-  let pWorldItems: Pointer<WORLDITEM> = NULL;
+  let pWorldItems: Pointer<WORLDITEM> = null;
   let i: UINT;
   let bCount: UINT8 = 0;
   let uiFlagsForWorldItems: UINT16 = 0;
@@ -1999,7 +1999,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
   if (uiNumberOfItems) {
     // allocate memory for the world item array
     pWorldItems = MemAlloc(sizeof(WORLDITEM) * uiNumberOfItems);
-    if (pWorldItems == NULL) {
+    if (pWorldItems == null) {
       // Error Allocating memory for the temp item array
       return FALSE;
     }
@@ -2078,7 +2078,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
 
   // FRee the memory used for the pWorldItem array
   MemFree(pWorldItems);
-  pWorldItems = NULL;
+  pWorldItems = null;
 
   return TRUE;
 }
@@ -2428,7 +2428,7 @@ function GetMapTempFileName(uiType: UINT32, pMapName: STR, sMapX: INT16, sMapY: 
 
 function GetNumberOfVisibleWorldItemsFromSectorStructureForSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): UINT32 {
   let uiNumberOfItems: UINT32 = 0;
-  let pSector: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+  let pSector: Pointer<UNDERGROUND_SECTORINFO> = null;
 
   // if the sector is above ground
   if (bMapZ == 0) {
@@ -2436,7 +2436,7 @@ function GetNumberOfVisibleWorldItemsFromSectorStructureForSector(sMapX: INT16, 
   } else {
     // find the underground sector
     pSector = FindUnderGroundSector(sMapX, sMapY, bMapZ);
-    if (pSector != NULL) {
+    if (pSector != null) {
       // get the number of items
       uiNumberOfItems = pSector.value.uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer;
     }
@@ -2455,7 +2455,7 @@ function GetNumberOfVisibleWorldItemsFromSectorStructureForSector(sMapX: INT16, 
 }
 
 function SetNumberOfVisibleWorldItemsInSectorStructureForSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, uiNumberOfItems: UINT32): void {
-  let pSector: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+  let pSector: Pointer<UNDERGROUND_SECTORINFO> = null;
 
   // if the sector is above ground
   if (bMapZ == 0) {
@@ -2463,7 +2463,7 @@ function SetNumberOfVisibleWorldItemsInSectorStructureForSector(sMapX: INT16, sM
   } else {
     // find the underground sector
     pSector = FindUnderGroundSector(sMapX, sMapY, bMapZ);
-    if (pSector != NULL) {
+    if (pSector != null) {
       // get the number of items
       pSector.value.uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer = uiNumberOfItems;
     }
@@ -2473,7 +2473,7 @@ function SetNumberOfVisibleWorldItemsInSectorStructureForSector(sMapX: INT16, sM
 function SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fLoadingGame: BOOLEAN): void {
   let uiTotalNumberOfItems: UINT32 = 0;
   let uiTotalNumberOfRealItems: UINT32 = 0;
-  let pTotalSectorList: Pointer<WORLDITEM> = NULL;
+  let pTotalSectorList: Pointer<WORLDITEM> = null;
   let uiItemCount: UINT32 = 0;
   let iCounter: INT32 = 0;
   let fReturn: BOOLEAN;
@@ -2502,9 +2502,9 @@ function SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(sMapX: INT16,
   }
 
   // if anything was alloced, then get rid of it
-  if (pTotalSectorList != NULL) {
+  if (pTotalSectorList != null) {
     MemFree(pTotalSectorList);
-    pTotalSectorList = NULL;
+    pTotalSectorList = null;
   }
 
   // record the number of items

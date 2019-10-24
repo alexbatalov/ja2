@@ -661,7 +661,7 @@ function HandleHeliDrop(): void {
 
             // Ahh, but still delete the heli!
             DeleteAniTile(gpHeli);
-            gpHeli = NULL;
+            gpHeli = null;
           } else {
             // Goto drop animation
             gsHeliScript = -1;
@@ -669,7 +669,7 @@ function HandleHeliDrop(): void {
 
             // Delete helicopter image!
             DeleteAniTile(gpHeli);
-            gpHeli = NULL;
+            gpHeli = null;
             gfIgnoreScrolling = FALSE;
 
             // Select our first guy

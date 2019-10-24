@@ -277,8 +277,8 @@ function PalEditScreenHandle(): UINT32 {
     gfExitPalEditScreen = FALSE;
     FirstTime = TRUE;
     FreeBackgroundRect(guiBackgroundRect);
-    SetRenderHook(NULL);
-    SetUIKeyboardHook(NULL);
+    SetRenderHook(null);
+    SetUIKeyboardHook(null);
     return Enum26.GAME_SCREEN;
   }
 
@@ -288,7 +288,7 @@ function PalEditScreenHandle(): UINT32 {
     SetRenderHook(PalEditRenderHook);
     SetUIKeyboardHook(PalEditKeyboardHook);
 
-    guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, 50, 10, 600, 400);
+    guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, 50, 10, 600, 400);
   } else {
     ((GameScreens[Enum26.GAME_SCREEN].HandleScreen).value)();
   }
@@ -452,8 +452,8 @@ function CheckForAndExitTacticalDebug(): BOOLEAN {
     gfInitRect = TRUE;
     gfExitDebugScreen = FALSE;
     FreeBackgroundRect(guiBackgroundRect);
-    SetRenderHook(NULL);
-    SetUIKeyboardHook(NULL);
+    SetRenderHook(null);
+    SetUIKeyboardHook(null);
 
     return TRUE;
   }
@@ -475,7 +475,7 @@ function DebugScreenHandle(): UINT32 {
   }
 
   if (gfInitRect) {
-    guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, 0, 0, 600, 360);
+    guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, 0, 0, 600, 360);
     gfInitRect = FALSE;
   }
 
@@ -603,7 +603,7 @@ function SexScreenHandle(): UINT32 {
 
   // if we are animation smile...
   if (ubCurrentScreen == 1) {
-    PlayJA2StreamingSampleFromFile("Sounds\\Sex.wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN, NULL);
+    PlayJA2StreamingSampleFromFile("Sounds\\Sex.wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN, null);
     if ((uiTime - uiTimeOfLastUpdate) > SMILY_DELAY) {
       uiTimeOfLastUpdate = uiTime;
 
@@ -643,9 +643,9 @@ function SexScreenHandle(): UINT32 {
   sY = ((480 - pTrav.value.usHeight) / 2);
 
   if (bCurFrame < 24) {
-    BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
   } else {
-    BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, (bCurFrame % 8), sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, (bCurFrame % 8), sX, sY, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   InvalidateRegion(sX, sY, (sX + pTrav.value.usWidth), (sY + pTrav.value.usHeight));

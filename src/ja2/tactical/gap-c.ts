@@ -182,7 +182,7 @@ function PlayJA2GapSample(zSoundFile: Pointer<CHAR8>, usRate: UINT32, ubVolume: 
   spParms.uiPriority = GROUP_PLAYER;
 
   // Setup Gap Detection, if it is not null
-  if (pData != NULL)
+  if (pData != null)
     AudioGapListInit(zSoundFile, pData);
 
   return SoundPlayStreamedFile(zSoundFile, addressof(spParms));

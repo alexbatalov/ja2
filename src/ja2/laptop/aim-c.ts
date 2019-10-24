@@ -295,19 +295,19 @@ function RenderAIM(): void {
 
   // MemberCard
   GetVideoObject(addressof(hMemberCardHandle), guiMemberCard);
-  BltVideoObject(FRAME_BUFFER, hMemberCardHandle, 0, MEMBERCARD_X, MEMBERCARD_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hMemberCardHandle, 0, MEMBERCARD_X, MEMBERCARD_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Policies
   GetVideoObject(addressof(hPoliciesHandle), guiPolicies);
-  BltVideoObject(FRAME_BUFFER, hPoliciesHandle, 0, POLICIES_X, POLICIES_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPoliciesHandle, 0, POLICIES_X, POLICIES_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Links
   GetVideoObject(addressof(hLinksHandle), guiLinks);
-  BltVideoObject(FRAME_BUFFER, hLinksHandle, 0, LINKS_X, LINKS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hLinksHandle, 0, LINKS_X, LINKS_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // History
   GetVideoObject(addressof(hHistoryHandle), guiHistory);
-  BltVideoObject(FRAME_BUFFER, hHistoryHandle, 0, HISTORY_X, HISTORY_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHistoryHandle, 0, HISTORY_X, HISTORY_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Draw the aim slogan under the symbol
   DisplayAimSlogan();
@@ -407,7 +407,7 @@ function DrawAimDefaults(): BOOLEAN {
   for (y = 0; y < 4; y++) {
     uiPosX = RUSTBACKGROUND_1_X;
     for (x = 0; x < 4; x++) {
-      BltVideoObject(FRAME_BUFFER, hRustBackGroundHandle, 0, uiPosX, uiPosY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hRustBackGroundHandle, 0, uiPosX, uiPosY, VO_BLT_SRCTRANSPARENCY, null);
       uiPosX += RUSTBACKGROUND_SIZE_X;
     }
     uiPosY += RUSTBACKGROUND_SIZE_Y;
@@ -415,7 +415,7 @@ function DrawAimDefaults(): BOOLEAN {
 
   // Aim Symbol
   GetVideoObject(addressof(hAimSymbolHandle), guiAimSymbol);
-  BltVideoObject(FRAME_BUFFER, hAimSymbolHandle, 0, AIM_SYMBOL_X, AIM_SYMBOL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hAimSymbolHandle, 0, AIM_SYMBOL_X, AIM_SYMBOL_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   return TRUE;
 }
@@ -652,7 +652,7 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
       if (ubCount == 0 || fRedraw) {
         // Blit the blue sky frame with text on top
         GetVideoObject(addressof(hAdHandle), guiFlowerAdvertisement);
-        BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
         // redraw new mail warning, and create new mail button, if nessacary
         fReDrawNewMailFlag = TRUE;
@@ -677,7 +677,7 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
         return Enum62.AIM_AD_NOT_DONE;
     } else {
       GetVideoObject(addressof(hAdHandle), guiFlowerAdvertisement);
-      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       // redraw new mail warning, and create new mail button, if nessacary
       fReDrawNewMailFlag = TRUE;
@@ -704,7 +704,7 @@ function DrawWarningBox(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
 
     // Warning
     GetVideoObject(addressof(hWarningHandle), guiWarning);
-    BltVideoObject(FRAME_BUFFER, hWarningHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hWarningHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_WARNING_1;
     LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
@@ -763,7 +763,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
       if (ubCount == 0 || fRedraw) {
         // Blit the ad
         GetVideoObject(addressof(hAdHandle), uiAdImageIdentifier);
-        BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
         // redraw new mail warning, and create new mail button, if nessacary
         fReDrawNewMailFlag = TRUE;
@@ -785,7 +785,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
       if (ubCount == 0 || fRedraw) {
         // Blit the ad
         GetVideoObject(addressof(hAdHandle), uiAdImageIdentifier);
-        BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
         // redraw new mail warning, and create new mail button, if nessacary
         fReDrawNewMailFlag = TRUE;
@@ -802,7 +802,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
       }
     } else {
       GetVideoObject(addressof(hAdHandle), uiAdImageIdentifier);
-      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       // redraw new mail warning, and create new mail button, if nessacary
       fReDrawNewMailFlag = TRUE;
@@ -889,7 +889,7 @@ function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
 
     // if we are still looping through the first 6 animations
     if (ubDuckCount < 2) {
-      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       ubSubImage++;
 
@@ -909,7 +909,7 @@ function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
 
     else {
       // Blit the ad
-      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       ubSubImage++;
 

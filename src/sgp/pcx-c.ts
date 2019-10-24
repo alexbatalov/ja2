@@ -21,7 +21,7 @@ function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   // First Load a PCX Image
   pPcxObject = LoadPcx(hImage.value.ImageFile);
 
-  if (pPcxObject == NULL) {
+  if (pPcxObject == null) {
     return FALSE;
   }
 
@@ -66,36 +66,36 @@ function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
   // Open and read in the file
   if ((hFileHandle = FileOpen(pFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE)) == 0) {
     // damn we failed to open the file
-    return NULL;
+    return null;
   }
 
   uiFileSize = FileGetSize(hFileHandle);
   if (uiFileSize == 0) {
     // we failed to size up the file
-    return NULL;
+    return null;
   }
 
   // Create enw pCX object
   pCurrentPcxObject = MemAlloc(sizeof(PcxObject));
 
-  if (pCurrentPcxObject == NULL) {
-    return NULL;
+  if (pCurrentPcxObject == null) {
+    return null;
   }
 
   pCurrentPcxObject.value.pPcxBuffer = MemAlloc(uiFileSize - (sizeof(PcxHeader) + 768));
 
-  if (pCurrentPcxObject.value.pPcxBuffer == NULL) {
-    return NULL;
+  if (pCurrentPcxObject.value.pPcxBuffer == null) {
+    return null;
   }
 
   // Ok we now have a file handle, so let's read in the data
-  FileRead(hFileHandle, addressof(Header), sizeof(PcxHeader), NULL);
+  FileRead(hFileHandle, addressof(Header), sizeof(PcxHeader), null);
   if ((Header.ubManufacturer != 10) || (Header.ubEncoding != 1)) {
     // We have an invalid pcx format
     // Delete the object
     MemFree(pCurrentPcxObject.value.pPcxBuffer);
     MemFree(pCurrentPcxObject);
-    return NULL;
+    return null;
   }
 
   if (Header.ubBitsPerPixel == 8) {
@@ -111,10 +111,10 @@ function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
   // We are ready to read in the pcx buffer data. Therefore we must lock the buffer
   pPcxBuffer = pCurrentPcxObject.value.pPcxBuffer;
 
-  FileRead(hFileHandle, pPcxBuffer, pCurrentPcxObject.value.uiBufferSize, NULL);
+  FileRead(hFileHandle, pPcxBuffer, pCurrentPcxObject.value.uiBufferSize, null);
 
   // Read in the palette
-  FileRead(hFileHandle, addressof(pCurrentPcxObject.value.ubPalette[0]), 768, NULL);
+  FileRead(hFileHandle, addressof(pCurrentPcxObject.value.ubPalette[0]), 768, null);
 
   // Close file
   FileClose(hFileHandle);
@@ -295,7 +295,7 @@ function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): B
   // Allocate memory for palette
   hImage.value.pPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
 
-  if (hImage.value.pPalette == NULL) {
+  if (hImage.value.pPalette == null) {
     return FALSE;
   }
 

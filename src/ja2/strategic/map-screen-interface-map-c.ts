@@ -379,10 +379,10 @@ let gOldClipRect: SGPRect;
 let FullScreenRect: SGPRect = [ 0, 0, 640, 480 ];
 
 // temp helicopter path
-let pTempHelicopterPath: PathStPtr = NULL;
+let pTempHelicopterPath: PathStPtr = null;
 
 // character temp path
-let pTempCharacterPath: PathStPtr = NULL;
+let pTempCharacterPath: PathStPtr = null;
 
 // draw temp path?
 let fDrawTempHeliPath: BOOLEAN = FALSE;
@@ -845,7 +845,7 @@ function ShowOnDutyTeam(sMapX: INT16, sMapY: INT16): INT32 {
   let ubCounter: UINT8 = 0;
   let ubIconPosition: UINT8 = 0;
   let hIconHandle: HVOBJECT;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   GetVideoObject(addressof(hIconHandle), guiCHARICONS);
 
@@ -867,7 +867,7 @@ function ShowAssignedTeam(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
   let ubCounter: UINT8;
   let ubIconPosition: UINT8;
   let hIconHandle: HVOBJECT;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   GetVideoObject(addressof(hIconHandle), guiCHARICONS);
   ubCounter = 0;
@@ -963,7 +963,7 @@ function ShowUncertainNumberEnemiesInSector(sSectorX: INT16, sSectorY: INT16): v
     sYPosition -= 2;
 
     // small question mark
-    BltVideoObject(guiSAVEBUFFER, hIconHandle, SMALL_QUESTION_MARK, sXPosition, sYPosition, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hIconHandle, SMALL_QUESTION_MARK, sXPosition, sYPosition, VO_BLT_SRCTRANSPARENCY, null);
     InvalidateRegion(sXPosition, sYPosition, sXPosition + DMAP_GRID_X, sYPosition + DMAP_GRID_Y);
   }
   /*
@@ -1387,10 +1387,10 @@ function ShutDownPalettesForMap(): void {
   MemFree(pMapLTGreenPalette);
   MemFree(pMapDKGreenPalette);
 
-  pMapLTRedPalette = NULL;
-  pMapDKRedPalette = NULL;
-  pMapLTGreenPalette = NULL;
-  pMapDKGreenPalette = NULL;
+  pMapLTRedPalette = null;
+  pMapDKRedPalette = null;
+  pMapLTGreenPalette = null;
+  pMapDKGreenPalette = null;
 
   return;
 }
@@ -1429,7 +1429,7 @@ function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: I
 
   // will plot a path from current position to sX, sY
   // get last sector in characters list, build new path, remove tail section, move to beginning of list, and append onto old list
-  pCharacter.value.pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(NULL, GetLastSectorIdInCharactersPath(pCharacter), (sX + sY * (MAP_WORLD_X)), GetSoldierGroupId(pCharacter), fTacticalTraversal /*, FALSE */)), pCharacter.value.pMercPath);
+  pCharacter.value.pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(null, GetLastSectorIdInCharactersPath(pCharacter), (sX + sY * (MAP_WORLD_X)), GetSoldierGroupId(pCharacter), fTacticalTraversal /*, FALSE */)), pCharacter.value.pMercPath);
 
   // move to beginning of list
   pCharacter.value.pMercPath = MoveToBeginningOfPathList(pCharacter.value.pMercPath);
@@ -1463,7 +1463,7 @@ function PlotATemporaryPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: IN
 // clear out character path list, after and including this sector
 function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): UINT32 {
   let iOrigLength: INT32 = 0;
-  let pVehicle: Pointer<VEHICLETYPE> = NULL;
+  let pVehicle: Pointer<VEHICLETYPE> = null;
 
   iOrigLength = GetLengthOfMercPath(pCharacter);
 
@@ -1498,7 +1498,7 @@ function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, 
     }
 
     // if there's an associated vehicle structure
-    if (pVehicle != NULL) {
+    if (pVehicle != null) {
       // do it for the vehicle, too
       pVehicle.value.pMercPath = ClearStrategicPathListAfterThisSector(pVehicle.value.pMercPath, sX, sY, pVehicle.value.ubMovementGroup);
     }
@@ -1613,7 +1613,7 @@ function CopyPathToCharactersSquadIfInOne(pCharacter: Pointer<SOLDIERTYPE>): voi
 }
 
 function DisplaySoldierPath(pCharacter: Pointer<SOLDIERTYPE>): void {
-  let pPath: PathStPtr = NULL;
+  let pPath: PathStPtr = null;
 
   /* ARM: Hopefully no longer required once using GetSoldierMercPathPtr() ???
           // check if in vehicle, if so, copy path to vehicle
@@ -1688,7 +1688,7 @@ function PlotPathForHelicopter(sX: INT16, sY: INT16): void {
 
   // will plot a path from current position to sX, sY
   // get last sector in helicopters list, build new path, remove tail section, move to beginning of list, and append onto old list
-  pVehicleList[iHelicopterVehicleId].pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(NULL, GetLastSectorOfHelicoptersPath(), (sX + sY * (MAP_WORLD_X)), pVehicleList[iHelicopterVehicleId].ubMovementGroup, FALSE /*, FALSE */)), pVehicleList[iHelicopterVehicleId].pMercPath);
+  pVehicleList[iHelicopterVehicleId].pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(null, GetLastSectorOfHelicoptersPath(), (sX + sY * (MAP_WORLD_X)), pVehicleList[iHelicopterVehicleId].ubMovementGroup, FALSE /*, FALSE */)), pVehicleList[iHelicopterVehicleId].pMercPath);
 
   // move to beginning of list
   pVehicleList[iHelicopterVehicleId].pMercPath = MoveToBeginningOfPathList(pVehicleList[iHelicopterVehicleId].pMercPath);
@@ -1708,14 +1708,14 @@ function PlotATemporaryPathForHelicopter(sX: INT16, sY: INT16): void {
   }
 
   // build path
-  pTempHelicopterPath = BuildAStrategicPath(NULL, GetLastSectorOfHelicoptersPath(), (sX + sY * (MAP_WORLD_X)), pVehicleList[iHelicopterVehicleId].ubMovementGroup, FALSE /*, TRUE */);
+  pTempHelicopterPath = BuildAStrategicPath(null, GetLastSectorOfHelicoptersPath(), (sX + sY * (MAP_WORLD_X)), pVehicleList[iHelicopterVehicleId].ubMovementGroup, FALSE /*, TRUE */);
 
   return;
 }
 
 // clear out helicopter path list, after and including this sector
 function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
-  let pVehicle: Pointer<VEHICLETYPE> = NULL;
+  let pVehicle: Pointer<VEHICLETYPE> = null;
   let iOrigLength: INT32 = 0;
 
   // clear out helicopter path list, after and including this sector
@@ -1758,7 +1758,7 @@ function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
 function GetLastSectorOfHelicoptersPath(): INT16 {
   // will return the last sector of the helicopter's current path
   let sLastSector: INT16 = pVehicleList[iHelicopterVehicleId].sSectorX + pVehicleList[iHelicopterVehicleId].sSectorY * MAP_WORLD_X;
-  let pNode: PathStPtr = NULL;
+  let pNode: PathStPtr = null;
 
   pNode = pVehicleList[iHelicopterVehicleId].pMercPath;
 
@@ -1771,7 +1771,7 @@ function GetLastSectorOfHelicoptersPath(): INT16 {
 }
 
 function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathStPtr): BOOLEAN {
-  let pCurrentNode: PathStPtr = NULL;
+  let pCurrentNode: PathStPtr = null;
   let fSpeedFlag: BOOLEAN = FALSE;
   let fUpDate: BOOLEAN = FALSE;
   let iDifference: INT32 = 0;
@@ -1788,14 +1788,14 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
   let iDirection: INT32 = 0;
   let fUTurnFlag: BOOLEAN = FALSE;
   let fNextNode: BOOLEAN = FALSE;
-  let pTempNode: PathStPtr = NULL;
-  let pNode: PathStPtr = NULL;
-  let pPastNode: PathStPtr = NULL;
-  let pNextNode: PathStPtr = NULL;
+  let pTempNode: PathStPtr = null;
+  let pNode: PathStPtr = null;
+  let pPastNode: PathStPtr = null;
+  let pNextNode: PathStPtr = null;
   let ubCounter: UINT = 1;
   let hMapHandle: HVOBJECT;
 
-  if (pPath == NULL) {
+  if (pPath == null) {
     return FALSE;
   }
 
@@ -1809,11 +1809,11 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
   if (pNode.value.pNext)
     pNextNode = pNode.value.pNext;
   else
-    pNextNode = NULL;
+    pNextNode = null;
   if (pNode.value.pPrev)
     pPastNode = pNode.value.pPrev;
   else
-    pPastNode = NULL;
+    pPastNode = null;
 
   GetVideoObject(addressof(hMapHandle), guiMAPCURSORS);
   // go through characters list and display arrows for path
@@ -2312,10 +2312,10 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
     }
     if ((iDirection != -1)) {
       if ((!fZoomFlag) || ((fZoomFlag) && (iX > MAP_VIEW_START_X) && (iY > MAP_VIEW_START_Y) && (iX < 640 - MAP_GRID_X * 2) && (iY < MAP_VIEW_START_Y + MAP_VIEW_HEIGHT))) {
-        BltVideoObject(FRAME_BUFFER, hMapHandle, iDirection, iX, iY, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObject(FRAME_BUFFER, hMapHandle, iDirection, iX, iY, VO_BLT_SRCTRANSPARENCY, null);
 
         if (!fUTurnFlag) {
-          BltVideoObject(FRAME_BUFFER, hMapHandle, iArrow, iArrowX, iArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObject(FRAME_BUFFER, hMapHandle, iArrow, iArrowX, iArrowY, VO_BLT_SRCTRANSPARENCY, null);
           InvalidateRegion(iArrowX, iArrowY, iArrowX + 2 * MAP_GRID_X, iArrowY + 2 * MAP_GRID_Y);
         }
 
@@ -2333,7 +2333,7 @@ function TracePathRoute(fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN, pPath: PathS
     if (pNode.value.pNext)
       pNextNode = pNode.value.pNext;
     else
-      pNextNode = NULL;
+      pNextNode = null;
   }
 
   return TRUE;
@@ -2400,7 +2400,7 @@ function RestoreArrowBackgroundsForTrace(iArrow: INT32, iArrowX: INT32, iArrowY:
 }
 
 function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpDate: BOOLEAN): BOOLEAN {
-  /* static */ let pCurrentNode: PathStPtr = NULL;
+  /* static */ let pCurrentNode: PathStPtr = null;
   /* static */ let bCurrentChar: INT8 = -1;
   /* static */ let fUpDateFlag: BOOLEAN = FALSE;
   /* static */ let fPauseFlag: BOOLEAN = TRUE;
@@ -2425,10 +2425,10 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   let iDirection: INT32 = -1;
   let fUTurnFlag: BOOLEAN = FALSE;
   let fNextNode: BOOLEAN = FALSE;
-  let pTempNode: PathStPtr = NULL;
-  let pNode: PathStPtr = NULL;
-  let pPastNode: PathStPtr = NULL;
-  let pNextNode: PathStPtr = NULL;
+  let pTempNode: PathStPtr = null;
+  let pNode: PathStPtr = null;
+  let pPastNode: PathStPtr = null;
+  let pNextNode: PathStPtr = null;
 
   // must be plotting movement
   if ((bSelectedDestChar == -1) && (fPlotForHelicopter == FALSE)) {
@@ -2438,14 +2438,14 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   // if any nodes have been deleted, reset current node to beginning of the list
   if (fDeletedNode) {
     fDeletedNode = FALSE;
-    pCurrentNode = NULL;
+    pCurrentNode = null;
   }
 
   // Valid path?
-  if (pPath == NULL) {
+  if (pPath == null) {
     return FALSE;
   } else {
-    if (pCurrentNode == NULL) {
+    if (pCurrentNode == null) {
       pCurrentNode = pPath;
     }
   }
@@ -2499,7 +2499,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   }
 
   // if deleted, restart at beginnning
-  if (pTempNode == NULL) {
+  if (pTempNode == null) {
     pCurrentNode = pPath;
 
     // set pause flag
@@ -2521,12 +2521,12 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
   if (pNode.value.pNext)
     pNextNode = pNode.value.pNext;
   else
-    pNextNode = NULL;
+    pNextNode = null;
 
   if (pNode.value.pPrev)
     pPastNode = pNode.value.pPrev;
   else
-    pPastNode = NULL;
+    pPastNode = null;
 
   // go through characters list and display arrows for path
   fUTurnFlag = FALSE;
@@ -3058,7 +3058,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: BOOLEAN, fForceUpD
         // else
         // RestoreExternBackgroundRect(((INT16)iArrowX), ((INT16)iArrowY),DMAP_GRID_ZOOM_X, DMAP_GRID_ZOOM_Y);
         if (pNode != pPath) {
-          BltVideoObject(FRAME_BUFFER, hMapHandle, iArrow, iArrowX, iArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObject(FRAME_BUFFER, hMapHandle, iArrow, iArrowX, iArrowY, VO_BLT_SRCTRANSPARENCY, null);
           InvalidateRegion(iArrowX, iArrowY, iArrowX + 2 * MAP_GRID_X, iArrowY + 2 * MAP_GRID_Y);
         }
       }
@@ -3419,7 +3419,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
           iX = MAP_VIEW_START_X + (iX * MAP_GRID_X) + sOffsetX;
           iY = MAP_Y_ICON_OFFSET + MAP_VIEW_START_Y + (iY * MAP_GRID_Y) + sOffsetY;
 
-          BltVideoObject(guiSAVEBUFFER, hIconHandle, iCounter, iX, iY, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObject(guiSAVEBUFFER, hIconHandle, iCounter, iX, iY, VO_BLT_SRCTRANSPARENCY, null);
         } else {
           GetScreenXYFromMapXYStationary(((iX)), ((iY)), addressof(sXPosition), addressof(sYPosition));
 
@@ -3429,7 +3429,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
           // clip blits to mapscreen region
           ClipBlitsToMapViewRegion();
 
-          BltVideoObject(guiSAVEBUFFER, hIconHandle, iCounter, iX, iY, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObject(guiSAVEBUFFER, hIconHandle, iCounter, iX, iY, VO_BLT_SRCTRANSPARENCY, null);
 
           // restore clip blits
           RestoreClipRegionToFullScreen();
@@ -3508,7 +3508,7 @@ function DisplayDistancesForHelicopter(): void {
 
   // blit in background
   GetVideoObject(addressof(hHandle), guiMapBorderHeliSectors);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, MAP_HELICOPTER_ETA_POPUP_X, sYPosition, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, MAP_HELICOPTER_ETA_POPUP_X, sYPosition, VO_BLT_SRCTRANSPARENCY, null);
 
   //	sTotalCanTravel = ( INT16 )GetTotalDistanceHelicopterCanTravel( );
   sDistanceToGo = DistanceOfIntendedHelicopterPath();
@@ -3709,7 +3709,7 @@ function DisplayPositionOfHelicopter(): void {
       ClipBlitsToMapViewRegion();
 
       GetVideoObject(addressof(hHandle), guiHelicopterIcon);
-      BltVideoObject(FRAME_BUFFER, hHandle, HELI_ICON, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hHandle, HELI_ICON, x, y, VO_BLT_SRCTRANSPARENCY, null);
 
       // now get number of people and blit that too
       iNumberOfPeopleInHelicopter = GetNumberOfPassengersInHelicopter();
@@ -3770,7 +3770,7 @@ function DisplayDestinationOfHelicopter(): void {
     ClipBlitsToMapViewRegion();
 
     GetVideoObject(addressof(hHandle), guiHelicopterIcon);
-    BltVideoObject(FRAME_BUFFER, hHandle, HELI_SHADOW_ICON, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, HELI_SHADOW_ICON, x, y, VO_BLT_SRCTRANSPARENCY, null);
     InvalidateRegion(x, y, x + HELI_SHADOW_ICON_WIDTH, y + HELI_SHADOW_ICON_HEIGHT);
 
     RestoreClipRegionToFullScreen();
@@ -3784,7 +3784,7 @@ function DisplayDestinationOfHelicopter(): void {
 function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClickedSectorY: INT16): BOOLEAN {
   let iDeltaTime: INT32 = 0;
   let fIgnoreClick: BOOLEAN = FALSE;
-  let pGroup: Pointer<GROUP> = NULL;
+  let pGroup: Pointer<GROUP> = null;
   let fHelicopterOverNextSector: BOOLEAN = FALSE;
   let flRatio: FLOAT = 0.0;
   let sSectorX: INT16;
@@ -3859,11 +3859,11 @@ function BlitMineIcon(sMapX: INT16, sMapY: INT16): void {
   if (fZoomFlag) {
     GetScreenXYFromMapXYStationary((sMapX), (sMapY), addressof(sScreenX), addressof(sScreenY));
     // when zoomed, the x,y returned is the CENTER of the map square in question
-    BltVideoObject(guiSAVEBUFFER, hHandle, 0, sScreenX - MAP_GRID_ZOOM_X / 4, sScreenY - MAP_GRID_ZOOM_Y / 4, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 0, sScreenX - MAP_GRID_ZOOM_X / 4, sScreenY - MAP_GRID_ZOOM_Y / 4, VO_BLT_SRCTRANSPARENCY, null);
   } else {
     GetScreenXYFromMapXY((sMapX), (sMapY), addressof(sScreenX), addressof(sScreenY));
     // when not zoomed, the x,y returned is the top left CORNER of the map square in question
-    BltVideoObject(guiSAVEBUFFER, hHandle, 1, sScreenX + MAP_GRID_X / 4, sScreenY + MAP_GRID_Y / 4, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 1, sScreenX + MAP_GRID_X / 4, sScreenY + MAP_GRID_Y / 4, VO_BLT_SRCTRANSPARENCY, null);
   }
 }
 
@@ -4301,10 +4301,10 @@ function DrawMilitiaPopUpBox(): BOOLEAN {
   // get the properties of the militia object
   GetVideoObject(addressof(hVObject), guiMilitia);
 
-  BltVideoObject(FRAME_BUFFER, hVObject, 0, MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hVObject, 0, MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   GetVideoObject(addressof(hVObject), guiMilitiaMaps);
-  BltVideoObject(FRAME_BUFFER, hVObject, (sSelectedMilitiaTown - 1), MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X, MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hVObject, (sSelectedMilitiaTown - 1), MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X, MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // set font color for labels and "total militia" counts
   SetFontForeground(FONT_WHITE);
@@ -4459,7 +4459,7 @@ function RenderIconsPerSectorForSelectedTown(): void {
         }
       }
 
-      BltVideoObject(FRAME_BUFFER, hVObject, (iCurrentIcon), sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hVObject, (iCurrentIcon), sX, sY, VO_BLT_SRCTRANSPARENCY, null);
     }
   }
 
@@ -4492,7 +4492,7 @@ function ShowHighLightedSectorOnMilitiaMap(): void {
     GetVideoObject(addressof(hVObject), guiMilitiaSectorHighLight);
 
     // blt the object
-    BltVideoObject(FRAME_BUFFER, hVObject, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hVObject, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   if (sSectorMilitiaMapSectorOutline != -1) {
@@ -4503,7 +4503,7 @@ function ShowHighLightedSectorOnMilitiaMap(): void {
     GetVideoObject(addressof(hVObject), guiMilitiaSectorOutline);
 
     // blt the object
-    BltVideoObject(FRAME_BUFFER, hVObject, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hVObject, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   return;
@@ -4729,7 +4729,7 @@ function DisplayUnallocatedMilitia(): void {
       iCurrentIcon = 10;
     }
 
-    BltVideoObject(FRAME_BUFFER, hVObject, (iCurrentIcon), sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hVObject, (iCurrentIcon), sX, sY, VO_BLT_SRCTRANSPARENCY, null);
   }
 }
 
@@ -5288,7 +5288,7 @@ function HandleLowerLevelMapBlit(): void {
   }
 
   // handle the blt of the sublevel
-  BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_VIEW_START_X + 21, MAP_VIEW_START_Y + 17, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_VIEW_START_X + 21, MAP_VIEW_START_Y + 17, VO_BLT_SRCTRANSPARENCY, null);
 
   // handle shading of sublevels
   ShadeSubLevelsNotVisited();
@@ -5375,7 +5375,7 @@ function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
   let iFirstId: INT32 = 0;
   let iLastId: INT32 = 0;
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // to speed it up a little?
   iFirstId = gTacticalStatus.Team[OUR_TEAM].bFirstID;
@@ -5529,7 +5529,7 @@ function ShowSAMSitesOnStrategicMap(): void {
 
     // draw SAM site icon
     GetVideoObject(addressof(hHandle), guiSAMICON);
-    BltVideoObject(guiSAVEBUFFER, hHandle, ubVidObjIndex, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hHandle, ubVidObjIndex, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 
     if (fShowAircraftFlag) {
       // write "SAM Site" centered underneath
@@ -5739,7 +5739,7 @@ function DrawMapBoxIcon(hIconHandle: HVOBJECT, usVOIndex: UINT16, sMapX: INT16, 
     iX = MAP_VIEW_START_X + (sMapX * MAP_GRID_X) + MAP_X_ICON_OFFSET + (3 * iColumnNumber);
     iY = MAP_VIEW_START_Y + (sMapY * MAP_GRID_Y) + MAP_Y_ICON_OFFSET + (3 * iRowNumber);
 
-    BltVideoObject(guiSAVEBUFFER, hIconHandle, usVOIndex, iX, iY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hIconHandle, usVOIndex, iX, iY, VO_BLT_SRCTRANSPARENCY, null);
     InvalidateRegion(iX, iY, iX + DMAP_GRID_X, iY + DMAP_GRID_Y);
   }
   /*
@@ -5790,7 +5790,7 @@ function DrawOrta(): void {
 
   // draw Orta in its sector
   GetVideoObject(addressof(hHandle), guiORTAICON);
-  BltVideoObject(guiSAVEBUFFER, hHandle, ubVidObjIndex, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hHandle, ubVidObjIndex, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 }
 
 function DrawTixa(): void {
@@ -5818,7 +5818,7 @@ function DrawTixa(): void {
 
   // draw Tixa in its sector
   GetVideoObject(addressof(hHandle), guiTIXAICON);
-  BltVideoObject(guiSAVEBUFFER, hHandle, ubVidObjIndex, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hHandle, ubVidObjIndex, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 }
 
 function DrawBullseye(): void {
@@ -5831,7 +5831,7 @@ function DrawBullseye(): void {
 
   // draw the bullseye in that sector
   GetVideoObject(addressof(hHandle), guiBULLSEYE);
-  BltVideoObject(guiSAVEBUFFER, hHandle, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hHandle, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 }
 
 function HideExistenceOfUndergroundMapSector(ubSectorX: UINT8, ubSectorY: UINT8): void {

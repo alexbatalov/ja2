@@ -127,8 +127,8 @@ function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, 
   // Calculate gridNo
   pObject.value.sGridNo = MAPROWCOLTOPOS((yPos / CELL_Y_SIZE), (xPos / CELL_X_SIZE));
   pObject.value.iID = iObjectIndex;
-  pObject.value.pNode = NULL;
-  pObject.value.pShadow = NULL;
+  pObject.value.pNode = null;
+  pObject.value.pShadow = null;
 
   // If gridno not equal to NOWHERE, use sHeight of alnd....
   if (pObject.value.sGridNo != NOWHERE) {
@@ -469,11 +469,11 @@ function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: P
 
 function PhysicsDeleteObject(pObject: Pointer<REAL_OBJECT>): void {
   if (pObject.value.fAllocated) {
-    if (pObject.value.pNode != NULL) {
+    if (pObject.value.pNode != null) {
       RemoveStructFromLevelNode(pObject.value.sLevelNodeGridNo, pObject.value.pNode);
     }
 
-    if (pObject.value.pShadow != NULL) {
+    if (pObject.value.pShadow != null) {
       RemoveShadowFromLevelNode(pObject.value.sLevelNodeGridNo, pObject.value.pShadow);
     }
 
@@ -888,7 +888,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
   }
 
   // Look at old gridno
-  if (sNewGridNo != pObject.value.sGridNo || pObject.value.pNode == NULL) {
+  if (sNewGridNo != pObject.value.sGridNo || pObject.value.pNode == null) {
     if (pObject.value.fVisible) {
       if (CheckForCatchObject(pObject)) {
         pObject.value.fVisible = FALSE;
@@ -917,12 +917,12 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
       } else if (pObject.value.uiNumTilesMoved > 0) {
         if (sNewGridNo != pObject.value.sGridNo) {
           // We're at a new gridno!
-          if (pObject.value.pNode != NULL) {
+          if (pObject.value.pNode != null) {
             RemoveStructFromLevelNode(pObject.value.sLevelNodeGridNo, pObject.value.pNode);
           }
 
           // We're at a new gridno!
-          if (pObject.value.pShadow != NULL) {
+          if (pObject.value.pShadow != null) {
             RemoveShadowFromLevelNode(pObject.value.sLevelNodeGridNo, pObject.value.pShadow);
           }
 
@@ -954,17 +954,17 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
       }
     } else {
       // Remove!
-      if (pObject.value.pNode != NULL) {
+      if (pObject.value.pNode != null) {
         RemoveStructFromLevelNode(pObject.value.sLevelNodeGridNo, pObject.value.pNode);
       }
 
       // We're at a new gridno!
-      if (pObject.value.pShadow != NULL) {
+      if (pObject.value.pShadow != null) {
         RemoveShadowFromLevelNode(pObject.value.sLevelNodeGridNo, pObject.value.pShadow);
       }
 
-      pObject.value.pNode = NULL;
-      pObject.value.pShadow = NULL;
+      pObject.value.pNode = null;
+      pObject.value.pShadow = null;
     }
 
     if (sNewGridNo != pObject.value.sGridNo) {
@@ -980,7 +980,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 
   if (pObject.value.fVisible) {
     if (pObject.value.Obj.usItem != Enum225.MORTAR_SHELL || pObject.value.ubActionCode != Enum258.THROW_ARM_ITEM) {
-      if (pObject.value.pNode != NULL) {
+      if (pObject.value.pNode != null) {
         // OK, get offsets
         hVObject = gTileDatabase[pObject.value.pNode.value.usIndex].hTileSurface;
         pTrav = addressof(hVObject.value.pETRLEObject[gTileDatabase[pObject.value.pNode.value.usIndex].usRegionIndex]);
@@ -1351,7 +1351,7 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJE
     SimulateObject(pObject, DELTA_T);
   }
 
-  if (psNewGridNo != NULL) {
+  if (psNewGridNo != null) {
     // Calculate gridno from last position
 
     // If NOT from UI, use exact collision position
@@ -2048,8 +2048,8 @@ function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
       return FALSE;
     }
 
-    ObjectSlots[usCnt].pNode = NULL;
-    ObjectSlots[usCnt].pShadow = NULL;
+    ObjectSlots[usCnt].pNode = null;
+    ObjectSlots[usCnt].pShadow = null;
     ObjectSlots[usCnt].iID = usCnt;
   }
 

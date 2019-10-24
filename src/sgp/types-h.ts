@@ -51,8 +51,6 @@ const PI = 3.1415926;
 
 const ST_EPSILON = 0.00001; // define a sir-tech epsilon value
 
-const NULL = 0;
-
 interface SGPRect {
   iLeft: INT32;
   iTop: INT32;

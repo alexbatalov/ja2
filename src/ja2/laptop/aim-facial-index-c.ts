@@ -218,17 +218,17 @@ function SelectMercFaceMoveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, reason
 function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, ubImage: UINT8): BOOLEAN {
   let hMugShotBorderHandle: HVOBJECT;
   let hFaceHandle: HVOBJECT;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   pSoldier = FindSoldierByProfileID(AimMercArray[ubMercID], TRUE);
 
   // Blt the portrait background
   GetVideoObject(addressof(hMugShotBorderHandle), guiMugShotBorder);
-  BltVideoObject(FRAME_BUFFER, hMugShotBorderHandle, ubImage, usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hMugShotBorderHandle, ubImage, usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
   // Blt face to screen
   GetVideoObject(addressof(hFaceHandle), guiAimFiFace[ubMercID]);
-  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, VO_BLT_SRCTRANSPARENCY, null);
 
   if (IsMercDead(AimMercArray[ubMercID])) {
     // get the face object
@@ -242,7 +242,7 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
     SetObjectHandleShade(guiAimFiFace[ubMercID], 0);
 
     // Blt face to screen
-    BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, VO_BLT_SRCTRANSPARENCY, null);
 
     DrawTextToScreen(AimFiText[Enum360.AIM_FI_DEAD], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
@@ -254,7 +254,7 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
   }
 
   // if the merc is on our team
-  else if (pSoldier != NULL) {
+  else if (pSoldier != null) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, usPosX + 48 + AIM_FI_FACE_OFFSET, usPosY + 43 + AIM_FI_FACE_OFFSET);
     DrawTextToScreen(MercInfo[Enum341.MERC_FILES_ALREADY_HIRED], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }

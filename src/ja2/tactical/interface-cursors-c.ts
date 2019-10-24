@@ -201,7 +201,7 @@ function DrawUICursor(): BOOLEAN {
   HandleLooseCursorDraw();
 
   // OK, WE OVERRIDE HERE CURSOR DRAWING FOR THINGS LIKE
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
 
     // Check if we are in the viewport region...
@@ -362,7 +362,7 @@ function HideUICursor(): BOOLEAN {
   HandleLooseCursorHide();
 
   // OK, WE OVERRIDE HERE CURSOR DRAWING FOR THINGS LIKE
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     // Check if we are in the viewport region...
     if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
       HideItemTileCursor();

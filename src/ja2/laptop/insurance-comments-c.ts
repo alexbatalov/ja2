@@ -147,7 +147,7 @@ function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT1
 
   // Get and display the insurance bullet
   GetVideoObject(addressof(hPixHandle), guiInsCmntBulletImage);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CMNT_FIRST_BULLET_X, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CMNT_FIRST_BULLET_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the commenters comment
   GetInsuranceText(ubComment, sText); //+INS_CMNT_COMMENT_OFFSET_Y

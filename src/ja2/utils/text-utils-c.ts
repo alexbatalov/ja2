@@ -95,7 +95,7 @@ function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): 
   // condition added by Chris - so we can get the name without the item info
   // when desired, by passing in a null pInfoString
 
-  if (pInfoString != NULL) {
+  if (pInfoString != null) {
     // Get the additional info
     uiStartSeekAmount = ((SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME + SIZE_ITEM_INFO) * ubIndex) + SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME;
     if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == FALSE) {
@@ -280,7 +280,7 @@ function LoadAllItemNames(): void {
   let usLoop: UINT16;
 
   for (usLoop = 0; usLoop < Enum225.MAXITEMS; usLoop++) {
-    LoadItemInfo(usLoop, ItemNames[usLoop], NULL);
+    LoadItemInfo(usLoop, ItemNames[usLoop], null);
 
     // Load short item info
     LoadShortNameItemInfo(usLoop, ShortItemNames[usLoop]);

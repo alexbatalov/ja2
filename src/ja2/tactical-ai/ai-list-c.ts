@@ -13,7 +13,7 @@
 const AI_LIST_SIZE = TOTAL_SOLDIERS;
 
 let gAIList: AILIST[] /* [AI_LIST_SIZE] */;
-let gpFirstAIListEntry: Pointer<AILIST> = NULL;
+let gpFirstAIListEntry: Pointer<AILIST> = null;
 
 function ClearAIList(): void {
   let ubLoop: UINT8;
@@ -21,15 +21,15 @@ function ClearAIList(): void {
   for (ubLoop = 0; ubLoop < AI_LIST_SIZE; ubLoop++) {
     gAIList[ubLoop].ubID = NOBODY;
     gAIList[ubLoop].bPriority = 0;
-    gAIList[ubLoop].pNext = NULL;
+    gAIList[ubLoop].pNext = null;
   }
-  gpFirstAIListEntry = NULL; // ??
+  gpFirstAIListEntry = null; // ??
 }
 
 function DeleteAIListEntry(pEntry: Pointer<AILIST>): void {
   pEntry.value.ubID = NOBODY;
   pEntry.value.bPriority = 0;
-  pEntry.value.pNext = NULL;
+  pEntry.value.pNext = null;
 }
 
 function FindEmptyAIListEntry(): UINT8 {
@@ -47,7 +47,7 @@ function FindEmptyAIListEntry(): UINT8 {
 function CreateNewAIListEntry(ubNewEntry: UINT8, ubID: UINT8, bPriority: INT8): Pointer<AILIST> {
   gAIList[ubNewEntry].ubID = ubID;
   gAIList[ubNewEntry].bPriority = bPriority;
-  gAIList[ubNewEntry].pNext = NULL;
+  gAIList[ubNewEntry].pNext = null;
   return addressof(gAIList[ubNewEntry]);
 }
 
@@ -55,7 +55,7 @@ function RemoveFirstAIListEntry(): UINT8 {
   let pOldFirstEntry: Pointer<AILIST>;
   let ubID: UINT8;
 
-  while (gpFirstAIListEntry != NULL) {
+  while (gpFirstAIListEntry != null) {
     // record pointer to start of list, and advance head ptr
     pOldFirstEntry = gpFirstAIListEntry;
     gpFirstAIListEntry = gpFirstAIListEntry.value.pNext;
@@ -65,7 +65,7 @@ function RemoveFirstAIListEntry(): UINT8 {
     DeleteAIListEntry(pOldFirstEntry);
 
     // make sure conditions still met
-    if (SatisfiesAIListConditions(MercPtrs[ubID], NULL, FALSE)) {
+    if (SatisfiesAIListConditions(MercPtrs[ubID], null, FALSE)) {
       return ubID;
     }
   }
@@ -78,9 +78,9 @@ function RemoveAIListEntryForID(ubID: UINT8): void {
   let pPrevEntry: Pointer<AILIST>;
 
   pEntry = gpFirstAIListEntry;
-  pPrevEntry = NULL;
+  pPrevEntry = null;
 
-  while (pEntry != NULL) {
+  while (pEntry != null) {
     if (pEntry.value.ubID == ubID) {
       if (pEntry == gpFirstAIListEntry) {
         RemoveFirstAIListEntry();
@@ -100,14 +100,14 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
   let ubNewEntry: UINT8;
   let pEntry: Pointer<AILIST>;
   let pNewEntry: Pointer<AILIST>;
-  let pPrevEntry: Pointer<AILIST> = NULL;
+  let pPrevEntry: Pointer<AILIST> = null;
 
   ubNewEntry = FindEmptyAIListEntry();
 
   pNewEntry = CreateNewAIListEntry(ubNewEntry, ubID, bPriority);
 
   // look through the list now to see where to insert the entry
-  if (gpFirstAIListEntry == NULL) {
+  if (gpFirstAIListEntry == null) {
     // empty list!
     gpFirstAIListEntry = pNewEntry;
     // new entry's next ptr is null already
@@ -122,11 +122,11 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
           // inserting at head of list
           gpFirstAIListEntry = pNewEntry;
         } else {
-          Assert(pPrevEntry != NULL);
+          Assert(pPrevEntry != null);
           pPrevEntry.value.pNext = pNewEntry;
         }
         return TRUE;
-      } else if (pEntry.value.pNext == NULL) {
+      } else if (pEntry.value.pNext == null) {
         // end of list!
         pEntry.value.pNext = pNewEntry;
         return TRUE;
@@ -134,7 +134,7 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
       pPrevEntry = pEntry;
       pEntry = pEntry.value.pNext;
       AssertMsg(pEntry != gpFirstAIListEntry, "Fatal error: Loop in AI list!");
-    } while (pEntry != NULL);
+    } while (pEntry != null);
   }
 
   // I don't know how the heck we would get here...
@@ -222,14 +222,14 @@ function MoveToFrontOfAIList(ubID: UINT8): BOOLEAN {
   let ubNewEntry: UINT8;
   let pNewEntry: Pointer<AILIST>;
 
-  if (!SatisfiesAIListConditions(MercPtrs[ubID], NULL, FALSE)) {
+  if (!SatisfiesAIListConditions(MercPtrs[ubID], null, FALSE)) {
     // can't do dat!
     return FALSE;
   }
 
   RemoveAIListEntryForID(ubID);
 
-  if (gpFirstAIListEntry == NULL) {
+  if (gpFirstAIListEntry == null) {
     return InsertIntoAIList(ubID, MAX_AI_PRIORITY);
   } else {
     bPriority = gpFirstAIListEntry.value.bPriority;

@@ -5,7 +5,7 @@ function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   let TempImage: image_type;
 
   // Check that hImage is valid, and that the file in question exists
-  Assert(hImage != NULL);
+  Assert(hImage != null);
 
   TempImage = hImage.value;
 
@@ -68,7 +68,7 @@ function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: 
   if (fContents & IMAGE_BITMAPDATA) {
     // Allocate memory for the image data and read it in
     hImage.value.pImageData = MemAlloc(pHeader.value.uiStoredSize);
-    if (hImage.value.pImageData == NULL) {
+    if (hImage.value.pImageData == null) {
       return FALSE;
     } else if (!FileRead(hFile, hImage.value.pImageData, pHeader.value.uiStoredSize, addressof(uiBytesRead)) || uiBytesRead != pHeader.value.uiStoredSize) {
       MemFree(hImage.value.pImageData);
@@ -125,7 +125,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
     }
     uiFileSectionSize = pHeader.value.Indexed.uiNumberOfColours * STCI_PALETTE_ELEMENT_SIZE;
     pSTCIPalette = MemAlloc(uiFileSectionSize);
-    if (pSTCIPalette == NULL) {
+    if (pSTCIPalette == null) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Out of memory!");
       FileClose(hFile);
       return FALSE;
@@ -165,7 +165,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
       hImage.value.usNumberOfObjects = pHeader.value.Indexed.usNumberOfSubImages;
       uiFileSectionSize = hImage.value.usNumberOfObjects * STCI_SUBIMAGE_SIZE;
       hImage.value.pETRLEObject = MemAlloc(uiFileSectionSize);
-      if (hImage.value.pETRLEObject == NULL) {
+      if (hImage.value.pETRLEObject == null) {
         DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Out of memory!");
         FileClose(hFile);
         if (fContents & IMAGE_PALETTE) {
@@ -187,7 +187,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
     }
     // allocate memory for and read in the image data
     hImage.value.pImageData = MemAlloc(pHeader.value.uiStoredSize);
-    if (hImage.value.pImageData == NULL) {
+    if (hImage.value.pImageData == null) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Out of memory!");
       FileClose(hFile);
       if (fContents & IMAGE_PALETTE) {
@@ -223,7 +223,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
   if (fContents & IMAGE_APPDATA && pHeader.value.uiAppDataSize > 0) {
     // load application-specific data
     hImage.value.pAppData = MemAlloc(pHeader.value.uiAppDataSize);
-    if (hImage.value.pAppData == NULL) {
+    if (hImage.value.pAppData == null) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Out of memory!");
       FileClose(hFile);
       MemFree(hImage.value.pAppData);
@@ -257,7 +257,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
     ;
     hImage.value.fFlags |= IMAGE_APPDATA;
   } else {
-    hImage.value.pAppData = NULL;
+    hImage.value.pAppData = null;
     hImage.value.uiAppDataSize = 0;
   }
   return TRUE;
@@ -273,7 +273,7 @@ function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): BOOLEAN {
   hImage.value.pPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
   memset(hImage.value.pPalette, 0, (sizeof(SGPPaletteEntry) * 256));
 
-  if (hImage.value.pPalette == NULL) {
+  if (hImage.value.pPalette == null) {
     return FALSE;
   }
 

@@ -19,10 +19,10 @@ let gfFadeInVideo: BOOLEAN;
 
 let uiOldMusicMode: UINT32;
 
-let gFadeFunction: FADE_FUNCTION = NULL;
+let gFadeFunction: FADE_FUNCTION = null;
 
-let gFadeInDoneCallback: FADE_HOOK = NULL;
-let gFadeOutDoneCallback: FADE_HOOK = NULL;
+let gFadeInDoneCallback: FADE_HOOK = null;
+let gFadeOutDoneCallback: FADE_HOOK = null;
 
 let gfFadeIn: BOOLEAN = FALSE;
 let gfFadeOut: BOOLEAN = FALSE;
@@ -71,10 +71,10 @@ function HandleFadeOutCallback(): BOOLEAN {
   if (gfFadeOutDone) {
     gfFadeOutDone = FALSE;
 
-    if (gFadeOutDoneCallback != NULL) {
+    if (gFadeOutDoneCallback != null) {
       gFadeOutDoneCallback();
 
-      gFadeOutDoneCallback = NULL;
+      gFadeOutDoneCallback = null;
 
       return TRUE;
     }
@@ -87,11 +87,11 @@ function HandleFadeInCallback(): BOOLEAN {
   if (gfFadeInDone) {
     gfFadeInDone = FALSE;
 
-    if (gFadeInDoneCallback != NULL) {
+    if (gFadeInDoneCallback != null) {
       gFadeInDoneCallback();
     }
 
-    gFadeInDoneCallback = NULL;
+    gFadeInDoneCallback = null;
 
     return TRUE;
   }
@@ -562,7 +562,7 @@ function FadeInFrameBufferRealFade(): void {
     }
 
     // Refresh Screen
-    RefreshScreen(NULL);
+    RefreshScreen(null);
 
     // Copy save buffer back
     RestoreExternBackgroundRect(0, 0, 640, 480);

@@ -870,7 +870,7 @@ function EraseBuilding(iMapIndex: UINT32): void {
 // and the TOP_LEFT oriented wall in the gridno up one as well as the other building information at this
 // gridno.
 function EraseFloorOwnedBuildingPieces(iMapIndex: UINT32): void {
-  let pStruct: Pointer<LEVELNODE> = NULL;
+  let pStruct: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
 
@@ -881,7 +881,7 @@ function EraseFloorOwnedBuildingPieces(iMapIndex: UINT32): void {
   EraseBuilding(iMapIndex);
   // FIRST, SEARCH AND DESTROY FOR A LEFT NEIGHBORING TILE WITH A TOP_RIGHT ORIENTED WALL
   pStruct = gpWorldLevelData[iMapIndex - 1].pStructHead;
-  while (pStruct != NULL) {
+  while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE) {
       GetTileType(pStruct.value.usIndex, addressof(uiTileType));
       if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
@@ -898,7 +898,7 @@ function EraseFloorOwnedBuildingPieces(iMapIndex: UINT32): void {
   }
   // FINALLY, SEARCH AND DESTROY FOR A TOP NEIGHBORING TILE WITH A TOP_LEFT ORIENTED WALL
   pStruct = gpWorldLevelData[iMapIndex - WORLD_COLS].pStructHead;
-  while (pStruct != NULL) {
+  while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE) {
       GetTileType(pStruct.value.usIndex, addressof(uiTileType));
       if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {

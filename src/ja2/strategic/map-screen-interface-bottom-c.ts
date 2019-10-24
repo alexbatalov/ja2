@@ -154,7 +154,7 @@ function RenderMapScreenInterfaceBottom(): void {
   if (fMapScreenBottomDirty == TRUE) {
     // get and blt panel
     GetVideoObject(addressof(hHandle), guiMAPBOTTOMPANEL);
-    BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BOTTOM_X, MAP_BOTTOM_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BOTTOM_X, MAP_BOTTOM_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     if (GetSectorFlagStatus(sSelMapX, sSelMapY, iCurrentMapSectorZ, SF_ALREADY_VISITED) == TRUE) {
       GetMapFileName(sSelMapX, sSelMapY, iCurrentMapSectorZ, bFilename, TRUE, TRUE);
@@ -765,7 +765,7 @@ function DisplayScrollBarSlider(): void {
     ubSliderOffset = (SLIDER_BAR_RANGE * gubFirstMapscreenMessageIndex) / (ubNumMessages - MAX_MESSAGES_ON_MAP_BOTTOM);
 
     GetVideoObject(addressof(hHandle), guiSliderBar);
-    BltVideoObject(FRAME_BUFFER, hHandle, 8, MESSAGE_SCROLL_AREA_START_X + 2, MESSAGE_SCROLL_AREA_START_Y + ubSliderOffset, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 8, MESSAGE_SCROLL_AREA_START_X + 2, MESSAGE_SCROLL_AREA_START_Y + ubSliderOffset, VO_BLT_SRCTRANSPARENCY, null);
   }
 }
 
@@ -1156,7 +1156,7 @@ function CommonTimeCompressionChecks(): BOOLEAN {
 }
 
 function AnyUsableRealMercenariesOnTeam(): BOOLEAN {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
   let iNumberOnTeam: INT32 = 0;
 
@@ -1185,7 +1185,7 @@ function RequestTriggerExitFromMapscreen(bExitToWhere: INT8): void {
       // if the game CAN NOT be saved
       if (!CanGameBeSaved()) {
         // Display a message saying the player cant save now
-        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
         return;
       }
     }

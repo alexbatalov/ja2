@@ -356,8 +356,8 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
   let pWallStruct: Pointer<STRUCTURE>;
   let pAttached: Pointer<STRUCTURE>;
   let pAttachedBase: Pointer<STRUCTURE>;
-  let pNode: Pointer<LEVELNODE> = NULL;
-  let pNewNode: Pointer<LEVELNODE> = NULL;
+  let pNode: Pointer<LEVELNODE> = null;
+  let pNewNode: Pointer<LEVELNODE> = null;
   let pAttachedNode: Pointer<LEVELNODE>;
   let sNewGridNo: INT16;
   let sStructGridNo: INT16;
@@ -448,7 +448,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
       if (fContinue) {
         // Remove the beast!
-        while ((ppNextCurrent.value) != NULL && (ppNextCurrent.value).value.usStructureID == pCurrent.value.usStructureID) {
+        while ((ppNextCurrent.value) != null && (ppNextCurrent.value).value.usStructureID == pCurrent.value.usStructureID) {
           // the next structure will also be deleted so we had better
           // skip past it!
           (ppNextCurrent.value) = (ppNextCurrent.value).value.pNext;
@@ -570,7 +570,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
               pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
 
-              if (pNewNode != NULL) {
+              if (pNewNode != null) {
                 if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
                   if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
                     sSubIndex = 48;
@@ -596,7 +596,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
               pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
 
-              if (pNewNode != NULL) {
+              if (pNewNode != null) {
                 if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
                   if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
                     sSubIndex = 49;
@@ -624,7 +624,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                 pAttachedBase = FindBaseStructure(pAttached);
                 if (pAttachedBase) {
                   // Remove the beast!
-                  while ((ppNextCurrent.value) != NULL && (ppNextCurrent.value).value.usStructureID == pAttachedBase.value.usStructureID) {
+                  while ((ppNextCurrent.value) != null && (ppNextCurrent.value).value.usStructureID == pAttachedBase.value.usStructureID) {
                     // the next structure will also be deleted so we had better
                     // skip past it!
                     (ppNextCurrent.value) = (ppNextCurrent.value).value.pNext;
@@ -679,7 +679,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
               pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
 
-              if (pNewNode != NULL) {
+              if (pNewNode != null) {
                 if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
                   if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
                     sSubIndex = 51;
@@ -705,7 +705,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
               pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
 
-              if (pNewNode != NULL) {
+              if (pNewNode != null) {
                 if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
                   if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
                     sSubIndex = 50;
@@ -899,7 +899,7 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
 
   // This code gets a little hairy because
   // (1) we might need to destroy the currently-examined structure
-  while (pCurrent != NULL) {
+  while (pCurrent != null) {
     // ATE: These are for the chacks below for multi-structs....
     pBaseStructure = FindBaseStructure(pCurrent);
 
@@ -1524,7 +1524,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
   ubMovementCost = gubWorldMovementCosts[uiNewSpot][ubDir][bLevel];
 
   if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-    ubMovementCost = DoorTravelCost(NULL, uiNewSpot, ubMovementCost, FALSE, NULL);
+    ubMovementCost = DoorTravelCost(null, uiNewSpot, ubMovementCost, FALSE, null);
     // If we have hit a wall, STOP HERE
     if (ubMovementCost >= TRAVELCOST_BLOCKED) {
       fTravelCostObs = TRUE;
@@ -1599,7 +1599,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
           fBlowWindowSouth = TRUE;
         }
 
-        if (pBlockingStructure != NULL) {
+        if (pBlockingStructure != null) {
           WindowHit(uiNewSpot, pBlockingStructure.value.usStructureID, fBlowWindowSouth, TRUE);
         }
       }
@@ -1614,7 +1614,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
         fReduceRay = FALSE;
       }
       if (BlockingTemp == BLOCKING_TOPRIGHT_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_WINDOW) {
-        if (pBlockingStructure != NULL) {
+        if (pBlockingStructure != null) {
           WindowHit(sNewGridNo, pBlockingStructure.value.usStructureID, FALSE, TRUE);
         }
       }
@@ -1627,7 +1627,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
         fReduceRay = FALSE;
       }
       if (BlockingTemp == BLOCKING_TOPRIGHT_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_WINDOW) {
-        if (pBlockingStructure != NULL) {
+        if (pBlockingStructure != null) {
           WindowHit(sNewGridNo, pBlockingStructure.value.usStructureID, FALSE, TRUE);
         }
       }
@@ -1956,9 +1956,9 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
           // because we are basically just ensuring that the door is open
         } else {
           if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
-            HandleDoorChangeFromGridNo(NULL, sGridNo, FALSE);
+            HandleDoorChangeFromGridNo(null, sGridNo, FALSE);
           } else {
-            HandleDoorChangeFromGridNo(NULL, pStructure.value.sBaseGridNo, FALSE);
+            HandleDoorChangeFromGridNo(null, pStructure.value.sBaseGridNo, FALSE);
           }
           gfExplosionQueueMayHaveChangedSight = TRUE;
         }
@@ -1971,9 +1971,9 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       if (pStructure) {
         if (pStructure.value.fFlags & STRUCTURE_OPEN) {
           if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
-            HandleDoorChangeFromGridNo(NULL, sGridNo, FALSE);
+            HandleDoorChangeFromGridNo(null, sGridNo, FALSE);
           } else {
-            HandleDoorChangeFromGridNo(NULL, pStructure.value.sBaseGridNo, FALSE);
+            HandleDoorChangeFromGridNo(null, pStructure.value.sBaseGridNo, FALSE);
           }
           gfExplosionQueueMayHaveChangedSight = TRUE;
         } else {
@@ -1988,9 +1988,9 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
       if (pStructure) {
         if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
-          HandleDoorChangeFromGridNo(NULL, sGridNo, FALSE);
+          HandleDoorChangeFromGridNo(null, sGridNo, FALSE);
         } else {
-          HandleDoorChangeFromGridNo(NULL, pStructure.value.sBaseGridNo, FALSE);
+          HandleDoorChangeFromGridNo(null, pStructure.value.sBaseGridNo, FALSE);
         }
         gfExplosionQueueMayHaveChangedSight = TRUE;
       } else {
@@ -2257,7 +2257,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
     case Enum191.ACTION_ITEM_REVEAL_ROOM: {
       let ubRoom: UINT8;
       if (InAHiddenRoom(sGridNo, addressof(ubRoom))) {
-        RemoveRoomRoof(sGridNo, ubRoom, NULL);
+        RemoveRoomRoof(sGridNo, ubRoom, null);
       }
     } break;
     case Enum191.ACTION_ITEM_LOCAL_ALARM:

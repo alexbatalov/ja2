@@ -44,7 +44,7 @@ let giTimerAirRaidUpdate: INT32 = 0;
 let giTimerCustomizable: INT32 = 0;
 let giTimerTeamTurnUpdate: INT32 = 0;
 
-let gpCustomizableTimerCallback: CUSTOMIZABLE_TIMER_CALLBACK = NULL;
+let gpCustomizableTimerCallback: CUSTOMIZABLE_TIMER_CALLBACK = null;
 
 // Clock Callback event ID
 let gTimerID: MMRESULT;
@@ -97,7 +97,7 @@ function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD):
         for (gCNT = 0; gCNT < guiNumMercSlots; gCNT++) {
           gPSOLDIER = MercSlots[gCNT];
 
-          if (gPSOLDIER != NULL) {
+          if (gPSOLDIER != null) {
             UPDATETIMECOUNTER(gPSOLDIER.value.UpdateCounter);
             UPDATETIMECOUNTER(gPSOLDIER.value.DamageCounter);
             UPDATETIMECOUNTER(gPSOLDIER.value.ReloadCounter);
@@ -220,7 +220,7 @@ function CheckCustomizableTimer(): void {
       let pTempCallback: CUSTOMIZABLE_TIMER_CALLBACK;
 
       pTempCallback = gpCustomizableTimerCallback;
-      gpCustomizableTimerCallback = NULL;
+      gpCustomizableTimerCallback = null;
       pTempCallback();
     }
   }

@@ -21,12 +21,12 @@ let gusExtern2VoSubIndex: UINT16;
 let guiOldSetCursor: UINT32 = 0;
 let guiDelayTimer: UINT32 = 0;
 
-let gMouseBltOverride: MOUSEBLT_HOOK = NULL;
+let gMouseBltOverride: MOUSEBLT_HOOK = null;
 
 function BltToMouseCursorFromVObject(hVObject: HVOBJECT, usVideoObjectSubIndex: UINT16, usXPos: UINT16, usYPos: UINT16): BOOLEAN {
   let ReturnValue: BOOLEAN;
 
-  ReturnValue = BltVideoObject(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, usXPos, usYPos, VO_BLT_SRCTRANSPARENCY, NULL);
+  ReturnValue = BltVideoObject(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, usXPos, usYPos, VO_BLT_SRCTRANSPARENCY, null);
 
   return ReturnValue;
 }
@@ -98,12 +98,12 @@ function LoadCursorData(uiCursorIndex: UINT32): BOOLEAN {
       // ATE: First check if we are using an extern vo cursor...
       if (gpCursorFileDatabase[pCurImage.value.uiFileIndex].ubFlags & USE_EXTERN_VO_CURSOR) {
         // Let's check if we have NOT NULL here...
-        if (gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject == NULL) {
+        if (gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject == null) {
           // Something wrong here...
         }
       } else {
         hImage = CreateImage(gpCursorFileDatabase[pCurImage.value.uiFileIndex].ubFilename, IMAGE_ALLDATA);
-        if (hImage == NULL) {
+        if (hImage == null) {
           return FALSE;
         }
 
@@ -320,7 +320,7 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
         }
 
         // Hook into hook function
-        if (gMouseBltOverride != NULL) {
+        if (gMouseBltOverride != null) {
           gMouseBltOverride();
         }
 
@@ -424,7 +424,7 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
         }
 
         // Hook into hook function
-        if (gMouseBltOverride != NULL) {
+        if (gMouseBltOverride != null) {
           gMouseBltOverride();
         }
 
@@ -494,7 +494,7 @@ function RemoveExternVOData(uiCursorIndex: UINT32): void {
     pCurImage = addressof(pCurData.value.Composites[cnt]);
 
     if (gpCursorFileDatabase[pCurImage.value.uiFileIndex].ubFlags & USE_EXTERN_VO_CURSOR) {
-      gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject = NULL;
+      gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject = null;
     }
   }
 }

@@ -148,12 +148,12 @@ function RenderAccumulatedBurstLocations(): void {
       // sXPos -= 10;
       // sYPos -= 10;
 
-      iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (sXPos + 40), (sYPos + 40));
+      iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, sXPos, sYPos, (sXPos + 40), (sYPos + 40));
       if (iBack != -1) {
         SetBackgroundRectFilled(iBack);
       }
 
-      BltVideoObject(FRAME_BUFFER, hVObject, 1, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hVObject, 1, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, null);
     }
   }
 }

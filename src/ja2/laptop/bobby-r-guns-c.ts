@@ -232,7 +232,7 @@ function RenderBobbyRGuns(): void {
 
   // GunForm
   GetVideoObject(addressof(hPixHandle), guiGunsGrid);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   //	DeleteMouseRegionForBigImage();
   DisplayItemInfo(IC_BOBBY_GUN);
@@ -247,7 +247,7 @@ function DisplayBobbyRBrTitle(): BOOLEAN {
 
   // BR title
   GetVideoObject(addressof(hPixHandle), guiBrTitle);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // To Order Text
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_TO_ORDER], BOBBYR_TO_ORDER_TITLE_X, BOBBYR_TO_ORDER_TITLE_Y, 0, BOBBYR_ORDER_TITLE_FONT(), BOBBYR_ORDER_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
@@ -714,7 +714,7 @@ function DisplayBigItemImage(usIndex: UINT16, PosY: UINT16): BOOLEAN {
   // blt the shadow of the item
   BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, uiImage, 0, sCenX - 2, sCenY + 2); // pItem->ubGraphicNum
 
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, sCenX, sCenY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, sCenX, sCenY, VO_BLT_SRCTRANSPARENCY, null);
   DeleteVideoObjectFromIndex(uiImage);
 
   return TRUE;
@@ -1161,7 +1161,7 @@ function PurchaseBobbyRayItem(usItemNumber: UINT16): void {
           BobbyRayPurchases[ubPurchaseNumber].fUsed = TRUE;
         } else {
           // display error popup because the player is trying to purchase more thenn 10 items
-          DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyRText[Enum350.BOBBYR_MORE_THEN_10_PURCHASES], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+          DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyRText[Enum350.BOBBYR_MORE_THEN_10_PURCHASES], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
         }
       }
       // Else If the item is already purchased increment purchase amount.  Only if ordering less then the max amount!
@@ -1170,7 +1170,7 @@ function PurchaseBobbyRayItem(usItemNumber: UINT16): void {
           BobbyRayPurchases[ubPurchaseNumber].ubNumberPurchased++;
       }
     } else {
-      DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyRText[Enum350.BOBBYR_MORE_NO_MORE_IN_STOCK], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyRText[Enum350.BOBBYR_MORE_NO_MORE_IN_STOCK], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
     }
   }
   // else the player is on a any other page except the used page
@@ -1189,7 +1189,7 @@ function PurchaseBobbyRayItem(usItemNumber: UINT16): void {
           BobbyRayPurchases[ubPurchaseNumber].fUsed = FALSE;
         } else {
           // display error popup because the player is trying to purchase more thenn 10 items
-          DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyRText[Enum350.BOBBYR_MORE_THEN_10_PURCHASES], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+          DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyRText[Enum350.BOBBYR_MORE_THEN_10_PURCHASES], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
         }
       }
       // Else If the item is already purchased increment purchase amount.  Only if ordering less then the max amount!
@@ -1198,7 +1198,7 @@ function PurchaseBobbyRayItem(usItemNumber: UINT16): void {
           BobbyRayPurchases[ubPurchaseNumber].ubNumberPurchased++;
       }
     } else {
-      DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyRText[Enum350.BOBBYR_MORE_NO_MORE_IN_STOCK], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyRText[Enum350.BOBBYR_MORE_NO_MORE_IN_STOCK], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
     }
   }
 }

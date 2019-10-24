@@ -151,7 +151,7 @@ let gInvRegions: MOUSE_REGION[] /* [NUM_INV_SLOTS] */;
 
 let gInvDesc: MOUSE_REGION;
 
-let gpItemPointer: Pointer<OBJECTTYPE> = NULL;
+let gpItemPointer: Pointer<OBJECTTYPE> = null;
 let gItemPointer: OBJECTTYPE;
 let gfItemPointerDifferentThanDefault: BOOLEAN = FALSE;
 let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
@@ -171,7 +171,7 @@ let guiMoneyGraphicsForDescBox: UINT32;
 let guiBullet: UINT32;
 let gfInItemDescBox: BOOLEAN = FALSE;
 let guiCurrentItemDescriptionScreen: UINT32 = 0;
-let gpItemDescObject: Pointer<OBJECTTYPE> = NULL;
+let gpItemDescObject: Pointer<OBJECTTYPE> = null;
 let gfItemDescObjectIsAttachment: BOOLEAN = FALSE;
 let gzItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
 let gzItemDesc: UINT16[] /* [SIZE_ITEM_INFO] */;
@@ -742,7 +742,7 @@ function RenderInvBodyPanel(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16
   // Blit body inv, based on body type
   let bSubImageIndex: INT8 = gbCompatibleApplyItem;
 
-  BltVideoObjectFromIndex(guiSAVEBUFFER, guiBodyInvVO[pSoldier.value.ubBodyType][bSubImageIndex], 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(guiSAVEBUFFER, guiBodyInvVO[pSoldier.value.ubBodyType][bSubImageIndex], 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 }
 
 function HandleRenderInvSlots(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: UINT8): void {
@@ -761,13 +761,13 @@ function HandleRenderInvSlots(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: UINT8
       INVRenderINVPanelItem(pSoldier, cnt, fDirtyLevel);
     }
 
-    if (KeyExistsInKeyRing(pSoldier, ANYKEY, NULL)) {
+    if (KeyExistsInKeyRing(pSoldier, ANYKEY, null)) {
       // blit gold key here?
       if (guiCurrentItemDescriptionScreen != Enum26.MAP_SCREEN) {
-        BltVideoObjectFromIndex(guiSAVEBUFFER, guiGoldKeyVO, 0, 496, 446, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(guiSAVEBUFFER, guiGoldKeyVO, 0, 496, 446, VO_BLT_SRCTRANSPARENCY, null);
         RestoreExternBackgroundRect(496, 446, 29, 23);
       } else {
-        BltVideoObjectFromIndex(guiSAVEBUFFER, guiGoldKeyVO, 0, 217, 271, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(guiSAVEBUFFER, guiGoldKeyVO, 0, 217, 271, VO_BLT_SRCTRANSPARENCY, null);
         RestoreExternBackgroundRect(217, 271, 29, 23);
       }
     }
@@ -836,10 +836,10 @@ function INVRenderINVPanelItem(pSoldier: Pointer<SOLDIERTYPE>, sPocket: INT16, f
     if (sPocket == Enum261.SECONDHANDPOS && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].fFlags & ITEM_TWO_HANDED) {
       //			if( guiCurrentScreen != MAP_SCREEN )
       if (guiCurrentItemDescriptionScreen != Enum26.MAP_SCREEN) {
-        BltVideoObjectFromIndex(guiSAVEBUFFER, guiSecItemHiddenVO, 0, 217, 448, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(guiSAVEBUFFER, guiSecItemHiddenVO, 0, 217, 448, VO_BLT_SRCTRANSPARENCY, null);
         RestoreExternBackgroundRect(217, 448, 72, 28);
       } else {
-        BltVideoObjectFromIndex(guiSAVEBUFFER, guiMapInvSecondHandBlockout, 0, 14, 218, VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObjectFromIndex(guiSAVEBUFFER, guiMapInvSecondHandBlockout, 0, 14, 218, VO_BLT_SRCTRANSPARENCY, null);
         RestoreExternBackgroundRect(14, 218, 102, 24);
       }
     }
@@ -855,7 +855,7 @@ function INVRenderINVPanelItem(pSoldier: Pointer<SOLDIERTYPE>, sPocket: INT16, f
 
   // Now render as normal
   // INVRenderItem( guiSAVEBUFFER, pObject, (INT16)(sX + gSMInvData[ sPocket ].sSubX), (INT16)(sY + gSMInvData[ sPocket ].sSubY), gSMInvData[ sPocket ].sWidth, gSMInvData[ sPocket ].sHeight, fDirtyLevel, &(gfSM_HandInvDispText[ sPocket ] ) );
-  INVRenderItem(guiSAVEBUFFER, pSoldier, pObject, sX, sY, gSMInvData[sPocket].sWidth, gSMInvData[sPocket].sHeight, fRenderDirtyLevel, NULL, 0, fOutline, sOutlineColor);
+  INVRenderItem(guiSAVEBUFFER, pSoldier, pObject, sX, sY, gSMInvData[sPocket].sWidth, gSMInvData[sPocket].sHeight, fRenderDirtyLevel, null, 0, fOutline, sOutlineColor);
 
   if (gbInvalidPlacementSlot[sPocket]) {
     if (sPocket != Enum261.SECONDHANDPOS) {
@@ -960,7 +960,7 @@ function HandleAnyMercInSquadHasCompatibleStuff(ubSquad: UINT8, pObject: Pointer
   }
 
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
-    if (Squad[iCurrentTacticalSquad][iCounter] != NULL) {
+    if (Squad[iCurrentTacticalSquad][iCounter] != null) {
       if (!fReset) {
         if (SoldierContainsAnyCompatibleStuff(Squad[iCurrentTacticalSquad][iCounter], pObject)) {
           // Get face and set value....
@@ -984,14 +984,14 @@ function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInv
     pTestObject = addressof(pInventoryPoolList[bInvPos].o);
   } else {
     if (bInvPos == NO_SLOT) {
-      pTestObject = NULL;
+      pTestObject = null;
     } else {
       pTestObject = addressof(pSoldier.value.inv[bInvPos]);
     }
   }
 
   // ATE: If pTest object is NULL, test only for existence of syringes, etc...
-  if (pTestObject == NULL) {
+  if (pTestObject == null) {
     for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
       pObject = addressof(pSoldier.value.inv[cnt]);
 
@@ -1006,7 +1006,7 @@ function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInv
       }
     }
 
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       if (CompatibleItemForApplyingOnMerc(gpItemPointer)) {
         // OK, Light up portrait as well.....
         if (fOn) {
@@ -1097,7 +1097,7 @@ function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, b
     pTestObject = addressof(pInventoryPoolList[iStartSlotNumber + bInvPos].o);
   } else {
     if (bInvPos == NO_SLOT) {
-      pTestObject = NULL;
+      pTestObject = null;
     } else {
       pTestObject = addressof(pSoldier.value.inv[bInvPos]);
     }
@@ -1165,7 +1165,7 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
   let fFoundAttachment: BOOLEAN = FALSE;
 
   // ATE: If pTest object is NULL, test only for existence of syringes, etc...
-  if (pTestObject == NULL) {
+  if (pTestObject == null) {
     for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
       pObject = addressof(pSoldier.value.inv[cnt]);
 
@@ -1180,7 +1180,7 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
       }
     }
 
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       if (CompatibleItemForApplyingOnMerc(gpItemPointer)) {
         // OK, Light up portrait as well.....
         if (fOn) {
@@ -1313,7 +1313,7 @@ function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, f
         } else
           return FALSE;
       } else {
-        gpHighLightedItemObject = NULL;
+        gpHighLightedItemObject = null;
 
         for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
           if (gbCompatibleAmmo[cnt]) {
@@ -1331,7 +1331,7 @@ function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, f
         gpHighLightedItemObject = pTestObject;
       } else {
         pTestObject = addressof(pSoldier.value.inv[bInvPos]);
-        gpHighLightedItemObject = NULL;
+        gpHighLightedItemObject = null;
         gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL1;
       }
     }
@@ -1339,7 +1339,7 @@ function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, f
     //		if( fOn )
 
     if (bInvPos == NO_SLOT) {
-      pTestObject = NULL;
+      pTestObject = null;
     } else {
       pTestObject = addressof(pSoldier.value.inv[bInvPos]);
     }
@@ -1387,7 +1387,7 @@ function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Poin
         continue;
       }
 
-      INVRenderItem(guiSAVEBUFFER, pSoldier, pObject, sX, sY, gSMInvData[cnt].sWidth, gSMInvData[cnt].sHeight, DIRTYLEVEL2, NULL, 0, TRUE, us16BPPItemCyclePlacedItemColors[pSoldier.value.bNewItemCycleCount[cnt]]);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, pObject, sX, sY, gSMInvData[cnt].sWidth, gSMInvData[cnt].sHeight, DIRTYLEVEL2, null, 0, TRUE, us16BPPItemCyclePlacedItemColors[pSoldier.value.bNewItemCycleCount[cnt]]);
     }
   }
 }
@@ -1635,7 +1635,7 @@ function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject
     }
   }
 
-  if (pubHighlightCounter != NULL) {
+  if (pubHighlightCounter != null) {
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_LTGRAY);
 
@@ -1811,7 +1811,7 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
       // if we are being called from the
     }
     // if we are being init from the shop keeper screen and this is a dealer item we are getting info from
-    if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE && pShopKeeperItemDescObject != NULL) {
+    if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE && pShopKeeperItemDescObject != null) {
       // disable the eject button
       SpecifyDisabledButtonStyle(giItemDescAmmoButton, Enum29.DISABLED_STYLE_HATCHED);
 
@@ -1980,7 +1980,7 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
     gbOriginalAttachStatus[cnt] = pObject.value.bAttachStatus[cnt];
   }
 
-  if ((gpItemPointer != NULL) && (gfItemDescHelpTextOffset == FALSE) && (CheckFact(Enum170.FACT_ATTACHED_ITEM_BEFORE, 0) == FALSE)) {
+  if ((gpItemPointer != null) && (gfItemDescHelpTextOffset == FALSE) && (CheckFact(Enum170.FACT_ATTACHED_ITEM_BEFORE, 0) == FALSE)) {
     // set up help text for attachments
     for (cnt = 0; cnt < NUM_INV_HELPTEXT_ENTRIES; cnt++) {
       gItemDescHelpText.iXPosition[cnt] += gsInvDescX;
@@ -2063,7 +2063,7 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     gfItemAmmoDown = FALSE;
 
     if (guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) {
-      if (gpItemPointer == NULL && EmptyWeaponMagazine(gpItemDescObject, addressof(gItemPointer))) {
+      if (gpItemPointer == null && EmptyWeaponMagazine(gpItemDescObject, addressof(gItemPointer))) {
         // OK, END the description box
         // fItemDescDelete = TRUE;
         fInterfacePanelDirty = DIRTYLEVEL2;
@@ -2084,7 +2084,7 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     } else {
       // Set pointer to item
-      if (gpItemPointer == NULL && EmptyWeaponMagazine(gpItemDescObject, addressof(gItemPointer))) {
+      if (gpItemPointer == null && EmptyWeaponMagazine(gpItemDescObject, addressof(gItemPointer))) {
         gpItemPointer = addressof(gItemPointer);
         gpItemPointerSoldier = gpItemDescSoldier;
 
@@ -2117,7 +2117,7 @@ function DoAttachment(): void {
         MAPEndItemPointer();
       } else {
         // End Item pickup
-        gpItemPointer = NULL;
+        gpItemPointer = null;
         EnableSMPanelButtons(TRUE, TRUE);
 
         MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), Enum317.CURSOR_NORMAL);
@@ -2168,13 +2168,13 @@ function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // if the item being described belongs to a shopkeeper, ignore attempts to pick it up / replace it
-    if ((guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) && (pShopKeeperItemDescObject != NULL)) {
+    if ((guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) && (pShopKeeperItemDescObject != null)) {
       return;
     }
 
     // Try to place attachment if something is in our hand
     // require as many APs as to reload
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       // nb pointer could be NULL because of inventory manipulation in mapscreen from sector inv
       if (!gpItemPointerSoldier || EnoughPoints(gpItemPointerSoldier, AP_RELOAD_GUN, 0, TRUE)) {
         if ((Item[gpItemPointer.value.usItem].fFlags & ITEM_INSEPARABLE) && ValidAttachment(gpItemPointer.value.usItem, gpItemDescObject.value.usItem)) {
@@ -2232,7 +2232,7 @@ function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
       let fShopkeeperItem: BOOLEAN = FALSE;
 
       // remember if this is a shopkeeper's item we're viewing ( pShopKeeperItemDescObject will get nuked on deletion )
-      if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE && pShopKeeperItemDescObject != NULL) {
+      if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE && pShopKeeperItemDescObject != null) {
         fShopkeeperItem = TRUE;
       }
 
@@ -2284,18 +2284,18 @@ function RenderItemDescriptionBox(): void {
     sCenX = MAP_ITEMDESC_ITEM_X() + (abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.value.sOffsetX;
     sCenY = MAP_ITEMDESC_ITEM_Y() + (abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.value.sOffsetY;
 
-    BltVideoObjectFromIndex(guiSAVEBUFFER, guiMapItemDescBox, 0, gsInvDescX, gsInvDescY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(guiSAVEBUFFER, guiMapItemDescBox, 0, gsInvDescX, gsInvDescY, VO_BLT_SRCTRANSPARENCY, null);
 
     // Display the money 'seperating' border
     if (gpItemDescObject.value.usItem == Enum225.MONEY) {
       // Render the money Boxes
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiMoneyGraphicsForDescBox, 0, (gMapMoneyButtonLoc.x + gMoneyButtonOffsets[0].x), (gMapMoneyButtonLoc.y + gMoneyButtonOffsets[0].y), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiMoneyGraphicsForDescBox, 0, (gMapMoneyButtonLoc.x + gMoneyButtonOffsets[0].x), (gMapMoneyButtonLoc.y + gMoneyButtonOffsets[0].y), VO_BLT_SRCTRANSPARENCY, null);
     }
 
     // Display item
     BltVideoObjectOutlineShadowFromIndex(guiSAVEBUFFER, guiItemGraphic, 0, sCenX - 2, sCenY + 2);
 
-    BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemGraphic, 0, sCenX, sCenY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemGraphic, 0, sCenX, sCenY, VO_BLT_SRCTRANSPARENCY, null);
 
     // Display ststus
     DrawItemUIBarEx(gpItemDescObject, gubItemDescStatusIndex, MAP_ITEMDESC_ITEM_STATUS_X(), MAP_ITEMDESC_ITEM_STATUS_Y(), ITEMDESC_ITEM_STATUS_WIDTH, ITEMDESC_ITEM_STATUS_HEIGHT_MAP, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
@@ -2317,7 +2317,7 @@ function RenderItemDescriptionBox(): void {
           sCenX = (gsInvDescX + gMapItemDescAttachmentsXY[cnt].sX + 5);
           sCenY = (gsInvDescY + gMapItemDescAttachmentsXY[cnt].sY - 1);
 
-          INVRenderItem(guiSAVEBUFFER, NULL, gpItemDescObject, sCenX, sCenY, gMapItemDescAttachmentsXY[cnt].sWidth, gMapItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, NULL, (RENDER_ITEM_ATTACHMENT1 + cnt), FALSE, 0);
+          INVRenderItem(guiSAVEBUFFER, null, gpItemDescObject, sCenX, sCenY, gMapItemDescAttachmentsXY[cnt].sWidth, gMapItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, null, (RENDER_ITEM_ATTACHMENT1 + cnt), FALSE, 0);
 
           sCenX = sCenX - gMapItemDescAttachmentsXY[cnt].sBarDx;
           sCenY = sCenY + gMapItemDescAttachmentsXY[cnt].sBarDy;
@@ -2326,7 +2326,7 @@ function RenderItemDescriptionBox(): void {
           sCenX = (gsInvDescX + gMapItemDescAttachmentsXY[cnt].sX + 5);
           sCenY = (gsInvDescY + gMapItemDescAttachmentsXY[cnt].sY - 1);
 
-          INVRenderItem(guiSAVEBUFFER, NULL, gpItemDescObject, sCenX, sCenY, gMapItemDescAttachmentsXY[cnt].sWidth, gMapItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, NULL, (RENDER_ITEM_ATTACHMENT1 + cnt), FALSE, 0);
+          INVRenderItem(guiSAVEBUFFER, null, gpItemDescObject, sCenX, sCenY, gMapItemDescAttachmentsXY[cnt].sWidth, gMapItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, null, (RENDER_ITEM_ATTACHMENT1 + cnt), FALSE, 0);
 
           sCenX = sCenX - gItemDescAttachmentsXY[cnt].sBarDx;
           sCenY = sCenY + gItemDescAttachmentsXY[cnt].sBarDy;
@@ -2341,11 +2341,11 @@ function RenderItemDescriptionBox(): void {
 
     if (Item[gpItemDescObject.value.usItem].usItemClass & IC_GUN) {
       // display bullets for ROF
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiBullet, 0, MAP_BULLET_SING_X(), MAP_BULLET_SING_Y(), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiBullet, 0, MAP_BULLET_SING_X(), MAP_BULLET_SING_Y(), VO_BLT_SRCTRANSPARENnullNULL);
 
       if (Weapon[gpItemDescObject.value.usItem].ubShotsPerBurst > 0) {
         for (cnt = 0; cnt < Weapon[gpItemDescObject.value.usItem].ubShotsPerBurst; cnt++) {
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiBullet, 0, MAP_BULLET_BURST_X() + cnt * (BULLET_WIDTH + 1), MAP_BULLET_BURST_Y(), VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiBullet, 0, MAP_BULLET_BURST_X() + cnt * (BULLET_WIDTH + 1), MAP_BULLET_BURST_Y(), VO_BLT_SRCTRANSPARENCYnullLL);
         }
       }
     }
@@ -2672,16 +2672,16 @@ function RenderItemDescriptionBox(): void {
     sCenX = ITEMDESC_ITEM_X() + (abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.value.sOffsetX;
     sCenY = ITEMDESC_ITEM_Y() + (abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.value.sOffsetY;
 
-    BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemDescBox, 0, gsInvDescX, gsInvDescY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemDescBox, 0, gsInvDescX, gsInvDescY, VO_BLT_SRCTRANSPARENCY, null);
 
     if (gpItemDescObject.value.usItem == Enum225.MONEY) {
       // Render the money Boxes
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiMoneyGraphicsForDescBox, 0, (gsInvDescX + gItemDescAttachmentsXY[0].sX - 1), (gsInvDescY + gItemDescAttachmentsXY[0].sY - 2), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiMoneyGraphicsForDescBox, 0, (gsInvDescX + gItemDescAttachmentsXY[0].sX - 1), (gsInvDescY + gItemDescAttachmentsXY[0].sY - 2), VO_BLT_SRCTRANSPARENCY, null);
     }
 
     // Display item
     BltVideoObjectOutlineShadowFromIndex(guiSAVEBUFFER, guiItemGraphic, 0, sCenX - 2, sCenY + 2);
-    BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemGraphic, 0, sCenX, sCenY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemGraphic, 0, sCenX, sCenY, VO_BLT_SRCTRANSPARENCY, null);
 
     // Display status
     DrawItemUIBarEx(gpItemDescObject, gubItemDescStatusIndex, ITEMDESC_ITEM_STATUS_X(), ITEMDESC_ITEM_STATUS_Y(), ITEMDESC_ITEM_STATUS_WIDTH, ITEMDESC_ITEM_STATUS_HEIGHT, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), TRUE, guiSAVEBUFFER);
@@ -2701,7 +2701,7 @@ function RenderItemDescriptionBox(): void {
         sCenX = (gsInvDescX + gItemDescAttachmentsXY[cnt].sX + 5);
         sCenY = (gsInvDescY + gItemDescAttachmentsXY[cnt].sY - 1);
 
-        INVRenderItem(guiSAVEBUFFER, NULL, gpItemDescObject, sCenX, sCenY, gItemDescAttachmentsXY[cnt].sWidth, gItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, NULL, (RENDER_ITEM_ATTACHMENT1 + cnt), FALSE, 0);
+        INVRenderItem(guiSAVEBUFFER, null, gpItemDescObject, sCenX, sCenY, gItemDescAttachmentsXY[cnt].sWidth, gItemDescAttachmentsXY[cnt].sHeight, DIRTYLEVEL2, null, (RENDER_ITEM_ATTACHMENT1 + cnt), FALSE, 0);
 
         sCenX = sCenX - gItemDescAttachmentsXY[cnt].sBarDx;
         sCenY = sCenY + gItemDescAttachmentsXY[cnt].sBarDy;
@@ -2721,11 +2721,11 @@ function RenderItemDescriptionBox(): void {
 
     if (Item[gpItemDescObject.value.usItem].usItemClass & IC_GUN) {
       // display bullets for ROF
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiBullet, 0, BULLET_SING_X(), BULLET_SING_Y(), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiBullet, 0, BULLET_SING_X(), BULLET_SING_Y(), VO_BLT_SRCTRANSPARENnullNULL);
 
       if (Weapon[gpItemDescObject.value.usItem].ubShotsPerBurst > 0) {
         for (cnt = 0; cnt < Weapon[gpItemDescObject.value.usItem].ubShotsPerBurst; cnt++) {
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiBullet, 0, BULLET_BURST_X() + cnt * (BULLET_WIDTH + 1), BULLET_BURST_Y(), VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiBullet, 0, BULLET_BURST_X() + cnt * (BULLET_WIDTH + 1), BULLET_BURST_Y(), VO_BLT_SRCTRANSPARENCYnullLL);
         }
       }
     }
@@ -3152,7 +3152,7 @@ function DeleteItemDescriptionBox(): void {
 
   if (InKeyRingPopup() == TRUE) {
     DeleteKeyObject(gpItemDescObject);
-    gpItemDescObject = NULL;
+    gpItemDescObject = null;
     fShowDescriptionFlag = FALSE;
     fInterfacePanelDirty = DIRTYLEVEL2;
     return;
@@ -3166,7 +3166,7 @@ function DeleteItemDescriptionBox(): void {
     if (gRemoveMoney.uiMoneyRemaining == 0 && !gfAddingMoneyToMercFromPlayersAccount) {
       // get rid of the money in the slot
       memset(gpItemDescObject, 0, sizeof(OBJECTTYPE));
-      gpItemDescObject = NULL;
+      gpItemDescObject = null;
     }
   }
 
@@ -3180,7 +3180,7 @@ function InternalBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, pObject: Point
   //	BOOLEAN fOk;
 
   // If not null return
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     return;
   }
 
@@ -3226,7 +3226,7 @@ function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRingPositi
   let fOk: BOOLEAN;
 
   // If not null return
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     return;
   }
 
@@ -3263,8 +3263,8 @@ function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRingPositi
 }
 
 function EndItemPointer(): void {
-  if (gpItemPointer != NULL) {
-    gpItemPointer = NULL;
+  if (gpItemPointer != null) {
+    gpItemPointer = null;
     gbItemPointerSrcSlot = NO_SLOT;
     MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), Enum317.CURSOR_NORMAL);
     MSYS_SetCurrentCursor(Enum317.CURSOR_NORMAL);
@@ -3386,7 +3386,7 @@ function DrawItemTileCursor(): void {
     }
 
     // Get recalc and cursor flags
-    fRecalc = GetMouseRecalcAndShowAPFlags(addressof(uiCursorFlags), NULL);
+    fRecalc = GetMouseRecalcAndShowAPFlags(addressof(uiCursorFlags), null);
 
     // OK, if we begin to move, reset the cursor...
     if (uiCursorFlags & MOUSE_MOVING) {
@@ -3462,7 +3462,7 @@ function DrawItemTileCursor(): void {
 
         if (!(uiCursorFlags & MOUSE_MOVING)) {
           // Find adjacent gridno...
-          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, gusCurMousePos, addressof(ubDirection), NULL, FALSE, FALSE);
+          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, gusCurMousePos, addressof(ubDirection), null, FALSE, FALSE);
           if (sActionGridNo == -1) {
             sActionGridNo = gusCurMousePos;
           }
@@ -3592,7 +3592,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
   let ubSoldierID: UINT8;
   let usItem: UINT16;
   let sAPCost: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let ubThrowActionCode: UINT8 = 0;
   let uiThrowActionData: UINT32 = 0;
   let sEndZ: INT16 = 0;
@@ -3783,7 +3783,7 @@ function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
           case ANIM_STAND:
 
             gpItemPointerSoldier.value.pTempObject = MemAlloc(sizeof(OBJECTTYPE));
-            if (gpItemPointerSoldier.value.pTempObject != NULL) {
+            if (gpItemPointerSoldier.value.pTempObject != null) {
               memcpy(gpItemPointerSoldier.value.pTempObject, gpItemPointer, sizeof(OBJECTTYPE));
               gpItemPointerSoldier.value.sPendingActionData2 = usMapPos;
 
@@ -4107,7 +4107,7 @@ function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, s
 }
 
 function EndItemStackPopupWithItemInHand(): void {
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     DeleteItemStackPopup();
   }
 }
@@ -4139,13 +4139,13 @@ function RenderItemStackPopup(fFullRender: BOOLEAN): void {
   usWidth = pTrav.value.usWidth;
 
   for (cnt = 0; cnt < gubNumItemPopups; cnt++) {
-    BltVideoObjectFromIndex(FRAME_BUFFER, guiItemPopupBoxes, 0, gsItemPopupX + (cnt * usWidth), gsItemPopupY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, guiItemPopupBoxes, 0, gsItemPopupX + (cnt * usWidth), gsItemPopupY, VO_BLT_SRCTRANSPARENCY, null);
 
     if (cnt < gpItemPopupObject.value.ubNumberOfObjects) {
       sX = (gsItemPopupX + (cnt * usWidth) + 11);
       sY = (gsItemPopupY + 3);
 
-      INVRenderItem(FRAME_BUFFER, NULL, gpItemPopupObject, sX, sY, 29, 23, DIRTYLEVEL2, NULL, RENDER_ITEM_NOSTATUS, FALSE, 0);
+      INVRenderItem(FRAME_BUFFER, null, gpItemPopupObject, sX, sY, 29, 23, DIRTYLEVEL2, null, RENDER_ITEM_NOSTATUS, FALSE, 0);
 
       // Do status bar here...
       sNewX = (gsItemPopupX + (cnt * usWidth) + 7);
@@ -4324,7 +4324,7 @@ function RenderKeyRingPopup(fFullRender: BOOLEAN): void {
   }
 
   for (cnt = 0; cnt < NUMBER_KEYS_ON_KEYRING; cnt++) {
-    BltVideoObjectFromIndex(FRAME_BUFFER, guiItemPopupBoxes, 0, (gsKeyRingPopupInvX + (cnt % sKeyRingItemWidth * usWidth) + sOffSetX), (gsKeyRingPopupInvY + sOffSetY + (cnt / sKeyRingItemWidth * usHeight)), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, guiItemPopupBoxes, 0, (gsKeyRingPopupInvX + (cnt % sKeyRingItemWidth * usWidth) + sOffSetX), (gsKeyRingPopupInvY + sOffSetY + (cnt / sKeyRingItemWidth * usHeight)), VO_BLT_SRCTRANSPARENCY, null);
 
     // will want to draw key here.. if there is one
     if ((gpItemPopupSoldier.value.pKeyRing[cnt].ubKeyID != INVALID_KEY_NUMBER) && (gpItemPopupSoldier.value.pKeyRing[cnt].ubNumber > 0)) {
@@ -4337,7 +4337,7 @@ function RenderKeyRingPopup(fFullRender: BOOLEAN): void {
       pObject.usItem = FIRST_KEY + LockTable[gpItemPopupSoldier.value.pKeyRing[cnt].ubKeyID].usKeyItem;
 
       // render the item
-      INVRenderItem(FRAME_BUFFER, NULL, addressof(pObject), (gsKeyRingPopupInvX + sOffSetX + (cnt % sKeyRingItemWidth * usWidth) + 8), (gsKeyRingPopupInvY + sOffSetY + (cnt / sKeyRingItemWidth * usHeight)), (usWidth - 8), (usHeight - 2), DIRTYLEVEL2, NULL, 0, 0, 0);
+      INVRenderItem(FRAME_BUFFER, null, addressof(pObject), (gsKeyRingPopupInvX + sOffSetX + (cnt % sKeyRingItemWidth * usWidth) + 8), (gsKeyRingPopupInvY + sOffSetY + (cnt / sKeyRingItemWidth * usHeight)), (usWidth - 8), (usHeight - 2), DIRTYLEVEL2, null, 0, 0, 0);
     }
 
     // BltVideoObjectFromIndex( FRAME_BUFFER, guiItemPopupBoxes, 0, (INT16)(gsKeyRingPopupInvX + ( cnt % KEY_RING_ROW_WIDTH * usWidth ) ), ( INT16 )( gsKeyRingPopupInvY + ( cnt / KEY_RING_ROW_WIDTH * usHeight ) ), VO_BLT_SRCTRANSPARENCY, NULL );
@@ -4523,12 +4523,12 @@ function ItemPopupRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // If one in our hand, place it
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       if (!PlaceObjectAtObjectIndex(gpItemPointer, gpItemPopupObject, uiItemPos)) {
         if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
           MAPEndItemPointer();
         } else {
-          gpItemPointer = NULL;
+          gpItemPointer = null;
           MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), Enum317.CURSOR_NORMAL);
           SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
@@ -4742,7 +4742,7 @@ function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   // Determine total #
   cnt = 0;
   pTempItemPool = pItemPool;
-  while (pTempItemPool != NULL) {
+  while (pTempItemPool != null) {
     if (ItemPoolOKForDisplay(pTempItemPool, bZLevel)) {
       cnt++;
     }
@@ -4879,7 +4879,7 @@ function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   // Ignore scrolling
   gfIgnoreScrolling = TRUE;
 
-  HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), NULL, TRUE);
+  HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
   gubSelectSMPanelToMerc = pSoldier.value.ubID;
   ReEvaluateDisabledINVPanelButtons();
   DisableTacticalTeamPanelButtons(TRUE);
@@ -5064,7 +5064,7 @@ function RenderItemPickupMenu(): void {
         usSubRegion = 1;
       }
 
-      BltVideoObjectFromIndex(FRAME_BUFFER, gItemPickupMenu.uiPanelVo, usSubRegion, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, gItemPickupMenu.uiPanelVo, usSubRegion, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 
       // Add hieght of object
       GetVideoObjectETRLESubregionProperties(gItemPickupMenu.uiPanelVo, usSubRegion, addressof(usWidth), addressof(usHeight));
@@ -5074,9 +5074,9 @@ function RenderItemPickupMenu(): void {
 
     // Do end
     if (gItemPickupMenu.bNumSlotsPerPage == NUM_PICKUP_SLOTS && gItemPickupMenu.ubTotalItems > NUM_PICKUP_SLOTS) {
-      BltVideoObjectFromIndex(FRAME_BUFFER, gItemPickupMenu.uiPanelVo, 2, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, gItemPickupMenu.uiPanelVo, 2, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
     } else {
-      BltVideoObjectFromIndex(FRAME_BUFFER, gItemPickupMenu.uiPanelVo, 3, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, gItemPickupMenu.uiPanelVo, 3, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
     }
 
     // Render items....
@@ -5090,7 +5090,7 @@ function RenderItemPickupMenu(): void {
     SetFontShadow(ITEMDESC_FONTSHADOW2);
 
     for (cnt = 0; cnt < gItemPickupMenu.bNumSlotsPerPage; cnt++) {
-      if (gItemPickupMenu.ItemPoolSlots[cnt] != NULL) {
+      if (gItemPickupMenu.ItemPoolSlots[cnt] != null) {
         // Get item to render
         pObject = addressof(gWorldItems[gItemPickupMenu.ItemPoolSlots[cnt].value.iItemIndex].o);
         pItem = addressof(Item[pObject.value.usItem]);
@@ -5209,7 +5209,7 @@ function RemoveItemPickupMenu(): void {
   if (gfInItemPickupMenu) {
     gfSMDisableForItems = FALSE;
 
-    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), NULL, TRUE);
+    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
 
     UnLockPauseState();
     UnPauseGame();
@@ -5253,7 +5253,7 @@ function RemoveItemPickupMenu(): void {
 
     // Free selection list...
     MemFree(gItemPickupMenu.pfSelectedArray);
-    gItemPickupMenu.pfSelectedArray = NULL;
+    gItemPickupMenu.pfSelectedArray = null;
 
     // Set cursor back to normal mode...
     guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
@@ -5382,7 +5382,7 @@ function ItemPickMenuMouseMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: 
         memcpy(addressof(gItemPickupMenu.CompAmmoObject), addressof(gWorldItems[pTempItemPool.value.iItemIndex].o), sizeof(OBJECTTYPE));
 
         // Turn off first...
-        HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), NULL, TRUE);
+        HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
         InternalHandleCompatibleAmmoUI(gpSMCurrentMerc, addressof(gItemPickupMenu.CompAmmoObject), TRUE);
 
         HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), addressof(gWorldItems[pTempItemPool.value.iItemIndex].o), FALSE);
@@ -5396,7 +5396,7 @@ function ItemPickMenuMouseMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: 
     gItemPickupMenu.bCurSelect = 255;
 
     InternalHandleCompatibleAmmoUI(gpSMCurrentMerc, addressof(gItemPickupMenu.CompAmmoObject), FALSE);
-    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), NULL, TRUE);
+    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
 
     SetItemPickupMenuDirty(DIRTYLEVEL2);
 
@@ -5482,9 +5482,9 @@ function BtnMoneyButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
           // if the player is removing money from their account, and they are removing more then $20,000
           if (gfAddingMoneyToMercFromPlayersAccount && (gRemoveMoney.uiMoneyRemoving + 1000) > MAX_MONEY_PER_SLOT) {
             if (guiCurrentScreen == Enum26.SHOPKEEPER_SCREEN)
-              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzMoneyWithdrawMessageText[Enum374.MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM], Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzMoneyWithdrawMessageText[Enum374.MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM], Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_OK, null, null);
             else
-              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzMoneyWithdrawMessageText[Enum374.MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzMoneyWithdrawMessageText[Enum374.MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
             return;
           }
 
@@ -5496,7 +5496,7 @@ function BtnMoneyButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         if (gRemoveMoney.uiMoneyRemaining >= 100) {
           // if the player is removing money from their account, and they are removing more then $20,000
           if (gfAddingMoneyToMercFromPlayersAccount && (gRemoveMoney.uiMoneyRemoving + 100) > MAX_MONEY_PER_SLOT) {
-            DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzMoneyWithdrawMessageText[Enum374.MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+            DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzMoneyWithdrawMessageText[Enum374.MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
             return;
           }
 
@@ -5508,7 +5508,7 @@ function BtnMoneyButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         if (gRemoveMoney.uiMoneyRemaining >= 10) {
           // if the player is removing money from their account, and they are removing more then $20,000
           if (gfAddingMoneyToMercFromPlayersAccount && (gRemoveMoney.uiMoneyRemoving + 10) > MAX_MONEY_PER_SLOT) {
-            DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzMoneyWithdrawMessageText[Enum374.MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+            DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzMoneyWithdrawMessageText[Enum374.MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
             return;
           }
 
@@ -5651,7 +5651,7 @@ function GetHelpTextForItem(pzStr: Pointer<INT16>, pObject: Pointer<OBJECTTYPE>,
   let cnt: INT32 = 0;
   let iNumAttachments: INT32 = 0;
 
-  if (pSoldier != NULL) {
+  if (pSoldier != null) {
     if (pSoldier.value.uiStatusFlags & SOLDIER_DEAD) {
       swprintf(pStr, "");
       swprintf(pzStr, "%s", pStr);
@@ -5728,7 +5728,7 @@ function GetPrefferedItemSlotGraphicNum(usItem: UINT16): UINT8 {
 
 function CancelItemPointer(): void {
   // ATE: If we have an item pointer end it!
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     if (gbItemPointerSrcSlot != NO_SLOT) {
       // Place it back in our hands!
       PlaceObject(gpItemPointerSoldier, gbItemPointerSrcSlot, gpItemPointer);
@@ -5777,7 +5777,7 @@ function LoadItemCursorFromSavedGame(hFile: HWFILE): BOOLEAN {
 
   // Copy soldier ID
   if (SaveStruct.ubSoldierID == NOBODY) {
-    gpItemPointerSoldier = NULL;
+    gpItemPointerSoldier = null;
   } else {
     gpItemPointerSoldier = MercPtrs[SaveStruct.ubSoldierID];
   }
@@ -5790,7 +5790,7 @@ function LoadItemCursorFromSavedGame(hFile: HWFILE): BOOLEAN {
     gpItemPointer = addressof(gItemPointer);
     ReEvaluateDisabledINVPanelButtons();
   } else {
-    gpItemPointer = NULL;
+    gpItemPointer = null;
   }
 
   return TRUE;
@@ -5807,7 +5807,7 @@ function SaveItemCursorToSavedGame(hFile: HWFILE): BOOLEAN {
   memcpy(addressof(SaveStruct.ItemPointerInfo), addressof(gItemPointer), sizeof(OBJECTTYPE));
 
   // Soldier
-  if (gpItemPointerSoldier != NULL) {
+  if (gpItemPointerSoldier != null) {
     SaveStruct.ubSoldierID = gpItemPointerSoldier.value.ubID;
   } else {
     SaveStruct.ubSoldierID = NOBODY;
@@ -5817,7 +5817,7 @@ function SaveItemCursorToSavedGame(hFile: HWFILE): BOOLEAN {
   SaveStruct.ubInvSlot = gbItemPointerSrcSlot;
 
   // Boolean
-  if (gpItemPointer != NULL) {
+  if (gpItemPointer != null) {
     SaveStruct.fCursorActive = TRUE;
   } else {
     SaveStruct.fCursorActive = FALSE;
@@ -5836,7 +5836,7 @@ function SaveItemCursorToSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function UpdateItemHatches(): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
     if (fShowInventoryFlag && bSelectedInfoChar >= 0) {
@@ -5846,7 +5846,7 @@ function UpdateItemHatches(): void {
     pSoldier = gpSMCurrentMerc;
   }
 
-  if (pSoldier != NULL) {
-    ReevaluateItemHatches(pSoldier, (gpItemPointer == NULL));
+  if (pSoldier != null) {
+    ReevaluateItemHatches(pSoldier, (gpItemPointer == null));
   }
 }

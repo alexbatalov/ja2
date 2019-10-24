@@ -31,7 +31,7 @@ function MapUtilScreenHandle(): UINT32 {
   /* static */ let FListNode: Pointer<FDLG_LIST>;
   /* static */ let sFiles: INT16 = 0;
   /* static */ let sCurFile: INT16 = 0;
-  /* static */ let FileList: Pointer<FDLG_LIST> = NULL;
+  /* static */ let FileList: Pointer<FDLG_LIST> = null;
   let zFilename: INT8[] /* [260] */;
   let zFilename2: INT8[] /* [260] */;
   let vs_desc: VSURFACE_DESC;
@@ -44,8 +44,8 @@ function MapUtilScreenHandle(): UINT32 {
   let pSrcBuf: Pointer<UINT16>;
   let pDataPtr: Pointer<UINT8>;
 
-  /* static */ let p24BitDest: Pointer<UINT8> = NULL;
-  /* static */ let p24BitValues: Pointer<RGBValues> = NULL;
+  /* static */ let p24BitDest: Pointer<UINT8> = null;
+  /* static */ let p24BitValues: Pointer<RGBValues> = null;
 
   let uiRGBColor: UINT32;
 
@@ -133,7 +133,7 @@ function MapUtilScreenHandle(): UINT32 {
   }
 
   // OK, we are here, now loop through files
-  if (sCurFile == sFiles || FListNode == NULL) {
+  if (sCurFile == sFiles || FListNode == null) {
     gfProgramIsRunning = FALSE;
     return Enum26.MAPUTILITY_SCREEN;
   }
@@ -241,7 +241,7 @@ function MapUtilScreenHandle(): UINT32 {
   UnLockVideoSurface(FRAME_BUFFER);
 
   // RENDER!
-  BltVideoSurface(FRAME_BUFFER, giMiniMap, 0, 20, 360, VS_BLT_FAST | VS_BLT_USECOLORKEY, NULL);
+  BltVideoSurface(FRAME_BUFFER, giMiniMap, 0, 20, 360, VS_BLT_FAST | VS_BLT_USECOLORKEY, null);
 
   // QUantize!
   pDataPtr = LockVideoSurface(gi8BitMiniMap, addressof(uiSrcPitchBYTES));

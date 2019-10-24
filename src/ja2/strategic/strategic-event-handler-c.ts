@@ -23,8 +23,8 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   let uiChanceOfTheft: UINT32;
   let fPablosStoleSomething: BOOLEAN = FALSE;
   let fPablosStoleLastItem: BOOLEAN = FALSE;
-  let pObject: Pointer<OBJECTTYPE> = NULL;
-  let pStolenObject: Pointer<OBJECTTYPE> = NULL;
+  let pObject: Pointer<OBJECTTYPE> = null;
+  let pStolenObject: Pointer<OBJECTTYPE> = null;
   let fThisShipmentIsFromJohnKulba: BOOLEAN = FALSE; // if it is, dont add an email
   let ubItemsDelivered: UINT8;
   let ubTempNumItems: UINT8;
@@ -94,7 +94,7 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     // build an array of objects to be added
     pObject = MemAlloc(sizeof(OBJECTTYPE) * usNumberOfItems);
     pStolenObject = MemAlloc(sizeof(OBJECTTYPE) * usNumberOfItems);
-    if (pObject == NULL || pStolenObject == NULL)
+    if (pObject == null || pStolenObject == null)
       return;
     memset(pObject, 0, sizeof(OBJECTTYPE) * usNumberOfItems);
     memset(pStolenObject, 0, sizeof(OBJECTTYPE) * usNumberOfItems);
@@ -233,8 +233,8 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     }
     MemFree(pObject);
     MemFree(pStolenObject);
-    pObject = NULL;
-    pStolenObject = NULL;
+    pObject = null;
+    pStolenObject = null;
   }
 
   if (fPablosStoleSomething) {
@@ -674,7 +674,7 @@ function HandleEarlyMorningEvents(): void {
 
   // stop moving the truck if Hamous is dead!!
   // stop moving them if the player has the truck or Hamous is hired!
-  if (gMercProfiles[Enum268.HAMOUS].bLife > 0 && FindSoldierByProfileID(Enum268.HAMOUS, TRUE) == NULL && FindSoldierByProfileID(Enum268.PROF_ICECREAM, TRUE) == NULL && (!((gWorldSectorX == gMercProfiles[Enum268.HAMOUS].sSectorX) && (gWorldSectorY == gMercProfiles[Enum268.HAMOUS].sSectorY) && (gbWorldSectorZ == 0)))) {
+  if (gMercProfiles[Enum268.HAMOUS].bLife > 0 && FindSoldierByProfileID(Enum268.HAMOUS, TRUE) == null && FindSoldierByProfileID(Enum268.PROF_ICECREAM, TRUE) == null && (!((gWorldSectorX == gMercProfiles[Enum268.HAMOUS].sSectorX) && (gWorldSectorY == gMercProfiles[Enum268.HAMOUS].sSectorY) && (gbWorldSectorZ == 0)))) {
     // ok, HAMOUS's sector not loaded, so time to move!
     // might be same sector as before, if so, oh well!
     switch (Random(5)) {
@@ -855,7 +855,7 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   let fSectorLoaded: BOOLEAN = FALSE;
   let Object: OBJECTTYPE;
   let uiCount: UINT32 = 0;
-  let pObject: Pointer<OBJECTTYPE> = NULL;
+  let pObject: Pointer<OBJECTTYPE> = null;
   let usNumberOfItems: UINT16 = 0;
   let usItem: UINT16;
   let ubItemsDelivered: UINT8;
@@ -891,7 +891,7 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   if (!fSectorLoaded) {
     // build an array of objects to be added
     pObject = MemAlloc(sizeof(OBJECTTYPE) * usNumberOfItems);
-    if (pObject == NULL)
+    if (pObject == null)
       return;
     memset(pObject, 0, sizeof(OBJECTTYPE) * usNumberOfItems);
   }
@@ -930,7 +930,7 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
       Assert(0);
     }
     MemFree(pObject);
-    pObject = NULL;
+    pObject = null;
   }
 
   // mark that the shipment has arrived

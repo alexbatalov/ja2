@@ -59,7 +59,7 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
     strcpy(VObjectDesc.ImageFile, cAdjustedFile);
     hVObject = CreateVideoObject(addressof(VObjectDesc));
 
-    if (hVObject == NULL) {
+    if (hVObject == null) {
       // TRY loading from default directory
       FilenameForBPP(gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop], cFileBPP);
       // Adjust for tileset position
@@ -70,7 +70,7 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
       strcpy(VObjectDesc.ImageFile, cAdjustedFile);
       hVObject = CreateVideoObject(addressof(VObjectDesc));
 
-      if (hVObject == NULL) {
+      if (hVObject == null) {
         // LOAD ONE WE KNOW ABOUT!
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         strcpy(VObjectDesc.ImageFile, "TILESETS\\0\\T\\grass.sti");
@@ -218,7 +218,7 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
         // Go on sweet stop
-        if (gpWorldLevelData[sGridNo].pMercHead != NULL && gpWorldLevelData[sGridNo].pMercHead.value.pSoldier.value.bVisible != -1) {
+        if (gpWorldLevelData[sGridNo].pMercHead != null && gpWorldLevelData[sGridNo].pMercHead.value.pSoldier.value.bVisible != -1) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {
@@ -328,12 +328,12 @@ function HandleOverheadMap(): void {
 
     gfUIHandleSelectionAboveGuy = FALSE;
 
-    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), NULL, TRUE);
+    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, TRUE);
 
     if (GetOverheadMouseGridNo(addressof(usMapPos))) {
       // ATE: Find the closest item pool within 5 tiles....
       if (GetClosestItemPool(usMapPos, addressof(pItemPool), 1, 0)) {
-        let pStructure: Pointer<STRUCTURE> = NULL;
+        let pStructure: Pointer<STRUCTURE> = null;
         let sIntTileGridNo: INT16;
         let bZLevel: INT8 = 0;
         let sActionGridNo: INT16 = usMapPos;
@@ -596,7 +596,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
           sHeight = (GetOffsetLandHeight(usTileIndex) / 5);
 
           pNode = gpWorldLevelData[usTileIndex].pLandStart;
-          while (pNode != NULL) {
+          while (pNode != null) {
             pTile = addressof(gSmTileDB[pNode.value.usIndex]);
 
             sX = sTempPosX_S;
@@ -663,7 +663,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
           sModifiedHeight = (GetModifiedOffsetLandHeight(usTileIndex) / 5);
 
           pNode = gpWorldLevelData[usTileIndex].pObjectHead;
-          while (pNode != NULL) {
+          while (pNode != null) {
             if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
               // Don't render itempools!
               if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
@@ -691,7 +691,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
           }
 
           pNode = gpWorldLevelData[usTileIndex].pShadowHead;
-          while (pNode != NULL) {
+          while (pNode != null) {
             if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
               pTile = addressof(gSmTileDB[pNode.value.usIndex]);
               sX = sTempPosX_S;
@@ -710,7 +710,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
           pNode = gpWorldLevelData[usTileIndex].pStructHead;
 
-          while (pNode != NULL) {
+          while (pNode != null) {
             if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
               // Don't render itempools!
               if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
@@ -790,7 +790,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
             sHeight = (GetOffsetLandHeight(usTileIndex) / 5);
 
             pNode = gpWorldLevelData[usTileIndex].pRoofHead;
-            while (pNode != NULL) {
+            while (pNode != null) {
               if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
                 if (!(pNode.value.uiFlags & LEVELNODE_HIDDEN)) {
                   pTile = addressof(gSmTileDB[pNode.value.usIndex]);
@@ -855,7 +855,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
     if (!fFromMapUtility) {
       // Render border!
-      BltVideoObjectFromIndex(FRAME_BUFFER, uiOVERMAP, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, uiOVERMAP, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
     }
 
     // Update the save buffer
@@ -958,11 +958,11 @@ function RenderOverheadOverlays(): void {
         if (!gfTacticalPlacementGUIActive) {
           // normal
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier.value.bTeam);
-      RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sX, sY, (sX + 3), (sY + 9));
+      RegisterBackgroundRect(BGND_FLAG_SINGLE, null, sX, sY, (sX + 3), (sY + 9));
     } else if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
       // vehicle
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 9);
-      RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (sX - 6), (sY), (sX + 9), (sY + 10));
+      RegisterBackgroundRect(BGND_FLAG_SINGLE, null, (sX - 6), (sY), (sX + 9), (sY + 10));
     }
     // else if( pSoldier->uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER) )
     //{// //don't draw person, because they are inside the vehicle.
@@ -971,15 +971,15 @@ function RenderOverheadOverlays(): void {
     else if (gpTacticalPlacementSelectedSoldier == pSoldier) {
       // tactical placement selected merc
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 7);
-      RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (sX - 2), (sY - 2), (sX + 5), (sY + 11));
+      RegisterBackgroundRect(BGND_FLAG_SINGLE, null, (sX - 2), (sY - 2), (sX + 5), (sY + 11));
     } else if (gpTacticalPlacementHilightedSoldier == pSoldier && pSoldier.value.uiStatusFlags) {
       // tactical placement hilighted merc
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 8);
-      RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (sX - 2), (sY - 2), (sX + 5), (sY + 11));
+      RegisterBackgroundRect(BGND_FLAG_SINGLE, null, (sX - 2), (sY - 2), (sX + 5), (sY + 11));
     } else {
       // normal
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier.value.bTeam);
-      RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sX, sY, (sX + 3), (sY + 9));
+      RegisterBackgroundRect(BGND_FLAG_SINGLE, null, sX, sY, (sX + 3), (sY + 9));
     }
     if (ubPassengers) {
       SetFont(SMALLCOMPFONT());

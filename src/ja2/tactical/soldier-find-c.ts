@@ -144,7 +144,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
     fInScreenRect = FALSE;
     fInGridNo = FALSE;
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if (pSoldier.value.bActive && !(pSoldier.value.uiStatusFlags & SOLDIER_DEAD) && (pSoldier.value.bVisible != -1 || (gTacticalStatus.uiFlags & SHOW_ALL_MERCS))) {
         // OK, ignore if we are a passenger...
         if (pSoldier.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
@@ -368,7 +368,7 @@ function SimpleFindSoldier(sGridNo: INT16, bLevel: INT8): Pointer<SOLDIERTYPE> {
 
   ubID = WhoIsThere2(sGridNo, bLevel);
   if (ubID == NOBODY) {
-    return NULL;
+    return null;
   } else {
     return MercPtrs[ubID];
   }
@@ -748,13 +748,13 @@ function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Po
 // VERY quickly finds a soldier at gridno , ( that is visible )
 function QuickFindSoldier(sGridNo: INT16): UINT8 {
   let cnt: UINT32;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // Loop through all mercs and make go
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
     pSoldier = MercSlots[cnt];
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       if (pSoldier.value.sGridNo == sGridNo && pSoldier.value.bVisible != -1) {
         return cnt;
       }

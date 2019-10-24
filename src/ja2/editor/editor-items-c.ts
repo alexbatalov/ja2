@@ -8,10 +8,10 @@ interface IPListNode {
   next: Pointer<IPListNode>;
 }
 
-let pIPHead: Pointer<IPListNode> = NULL;
+let pIPHead: Pointer<IPListNode> = null;
 
-let gpCurrItemPoolNode: Pointer<IPListNode> = NULL;
-let gpItemPool: Pointer<ITEM_POOL> = NULL;
+let gpCurrItemPoolNode: Pointer<IPListNode> = null;
+let gpItemPool: Pointer<ITEM_POOL> = null;
 
 function BuildItemPoolList(): void {
   let temp: Pointer<ITEM_POOL>;
@@ -31,11 +31,11 @@ function BuildItemPoolList(): void {
       }
       ShowItemCursor(i);
       tail.value.sGridNo = i;
-      tail.value.next = NULL;
+      tail.value.next = null;
     }
   }
   gpCurrItemPoolNode = pIPHead;
-  SpecifyItemToEdit(NULL, -1);
+  SpecifyItemToEdit(null, -1);
 }
 
 function KillItemPoolList(): void {
@@ -47,7 +47,7 @@ function KillItemPoolList(): void {
     MemFree(pIPCurr);
     pIPCurr = pIPHead;
   }
-  pIPHead = NULL;
+  pIPHead = null;
 }
 
 // Contains global information about the editor items
@@ -68,7 +68,7 @@ function EntryInitEditorItemsInfo(): void {
   eInfo.sSelItemIndex = 0;
   eInfo.sHilitedItemIndex = -1;
   eInfo.sNumItems = 0;
-  eInfo.pusItemIndex = NULL;
+  eInfo.pusItemIndex = null;
   if (eInfo.fGameInit) {
     // This only gets called one time in game execution.
     memset(addressof(eInfo), 0, sizeof(EditorItemsInfo));
@@ -367,7 +367,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
           SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, FALSE);
 
           if (eInfo.uiItemType != Enum35.TBAR_MODE_ITEM_TRIGGERS) {
-            LoadItemInfo(usCounter, pItemName, NULL);
+            LoadItemInfo(usCounter, pItemName, null);
             swprintf(pStr, "%s", pItemName);
           } else {
             if (i == PRESSURE_ACTION_ID) {
@@ -531,7 +531,7 @@ function ClearEditorItemsInfo(): void {
   }
   if (eInfo.pusItemIndex) {
     MemFree(eInfo.pusItemIndex);
-    eInfo.pusItemIndex = NULL;
+    eInfo.pusItemIndex = null;
   }
   DisableEditorRegion(Enum45.ITEM_REGION_ID);
   eInfo.fKill = 0;
@@ -673,7 +673,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
   let usFlags: UINT16;
 
   // Extract the currently selected item.
-  SpecifyItemToEdit(NULL, -1);
+  SpecifyItemToEdit(null, -1);
 
   // memset( &tempObject, 0, sizeof( OBJECTTYPE ) );
   if (eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_KEYS) {
@@ -789,7 +789,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
   // Get access to the itempool.
   // search for a current node in list containing same mapindex
   pIPCurr = pIPHead;
-  pIPPrev = NULL;
+  pIPPrev = null;
   while (pIPCurr) {
     pIPPrev = pIPCurr;
     if (pIPCurr.value.sGridNo == sGridNo) {
@@ -805,13 +805,13 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
     pIPPrev.value.next = MemAlloc(sizeof(IPListNode));
     Assert(pIPPrev.value.next);
     pIPPrev = pIPPrev.value.next;
-    pIPPrev.value.next = NULL;
+    pIPPrev.value.next = null;
     pIPPrev.value.sGridNo = sGridNo;
     gpCurrItemPoolNode = pIPPrev;
   } else {
     pIPHead = MemAlloc(sizeof(IPListNode));
     Assert(pIPHead);
-    pIPHead.value.next = NULL;
+    pIPHead.value.next = null;
     pIPHead.value.sGridNo = sGridNo;
     gpCurrItemPoolNode = pIPHead;
   }
@@ -838,7 +838,7 @@ function HandleRightClickOnItem(sGridNo: INT16): void {
 
   // set up the item pool pointer to point to the same mapindex node
   pIPCurr = pIPHead;
-  gpCurrItemPoolNode = NULL;
+  gpCurrItemPoolNode = null;
   while (pIPCurr) {
     if (pIPCurr.value.sGridNo == sGridNo) {
       gpCurrItemPoolNode = pIPCurr;
@@ -851,7 +851,7 @@ function HandleRightClickOnItem(sGridNo: INT16): void {
 }
 
 function DeleteSelectedItem(): void {
-  SpecifyItemToEdit(NULL, -1);
+  SpecifyItemToEdit(null, -1);
   // First, check to see if there even is a currently selected item.
   if (iCurrentTaskbar == Enum36.TASK_MERCS) {
     DeleteSelectedMercsItem();
@@ -873,16 +873,16 @@ function DeleteSelectedItem(): void {
         Remove5X5Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
     }
     if (gpEditingItemPool == gpItemPool)
-      gpEditingItemPool = NULL;
+      gpEditingItemPool = null;
     RemoveItemFromPool(sGridNo, gpItemPool.value.iItemIndex, 0);
-    gpItemPool = NULL;
+    gpItemPool = null;
     // determine if there are still any items at this location
     if (!GetItemPool(sGridNo, addressof(gpItemPool), 0)) {
       // no items left, so remove the node from the list.
       let pIPPrev: Pointer<IPListNode>;
       let pIPCurr: Pointer<IPListNode>;
       pIPCurr = pIPHead;
-      pIPPrev = NULL;
+      pIPPrev = null;
       while (pIPCurr) {
         if (pIPCurr.value.sGridNo == sGridNo) {
           if (pIPPrev) // middle of list
@@ -901,7 +901,7 @@ function DeleteSelectedItem(): void {
           // remove node
           HideItemCursor(sGridNo);
           MemFree(pIPCurr);
-          pIPCurr = NULL;
+          pIPCurr = null;
           return;
         }
         pIPPrev = pIPCurr;
@@ -1345,7 +1345,7 @@ function DisplayItemStatistics(): void {
     return;
   usItemIndex = eInfo.pusItemIndex[fUseSelectedItem ? eInfo.sSelItemIndex : eInfo.sHilitedItemIndex];
   pItem = addressof(Item[usItemIndex]);
-  LoadItemInfo(usItemIndex, pItemName, NULL);
+  LoadItemInfo(usItemIndex, pItemName, null);
 
   mprintf(50 - StringPixLength(pItemName, SMALLCOMPFONT()) / 2, 403, pItemName);
   mprintf(2, 410, "Status Info Line 1");

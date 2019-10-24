@@ -1,6 +1,6 @@
 let gubNumUIPlannedMoves: UINT8 = 0;
-let gpUIPlannedSoldier: Pointer<SOLDIERTYPE> = NULL;
-let gpUIStartPlannedSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gpUIPlannedSoldier: Pointer<SOLDIERTYPE> = null;
+let gpUIStartPlannedSoldier: Pointer<SOLDIERTYPE> = null;
 let gfInUIPlanMode: BOOLEAN = FALSE;
 
 function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {

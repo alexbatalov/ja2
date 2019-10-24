@@ -60,7 +60,7 @@ let fDontUseRandom: BOOLEAN = FALSE;
 
 let TestButtons: INT32[] /* [10] */;
 
-let gCursorNode: Pointer<LEVELNODE> = NULL;
+let gCursorNode: Pointer<LEVELNODE> = null;
 // LEVELNODE *gBasicCursorNode = NULL;
 let gsCursorGridNo: INT16;
 
@@ -489,7 +489,7 @@ function DoWindowSelection(): BOOLEAN {
 function RemoveTempMouseCursorObject(): void {
   if (iCurBankMapIndex < 0x8000) {
     ForceRemoveStructFromTail(iCurBankMapIndex);
-    gCursorNode = NULL;
+    gCursorNode = null;
   }
 }
 
@@ -826,7 +826,7 @@ function ShowCurrentDrawingMode(): void {
     pETRLEObject.value.sOffsetY = 0;
 
     SetObjectShade(gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface, DEFAULT_SHADE_LEVEL);
-    BltVideoObject(FRAME_BUFFER, gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface, usUseIndex, (0 + iStartX), (400 + iStartY), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface, usUseIndex, (0 + iStartX), (400 + iStartY), VO_BLT_SRCTRANSPARENCY, null);
 
     pETRLEObject.value.sOffsetX = sTempOffsetX;
     pETRLEObject.value.sOffsetY = sTempOffsetY;
@@ -2417,7 +2417,7 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   pETRLEObject.value.sOffsetY = 0;
 
   SetObjectShade(hVObj, DEFAULT_SHADE_LEVEL);
-  BltVideoObject(FRAME_BUFFER, hVObj, 0, (iStartX), (iStartY), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hVObj, 0, (iStartX), (iStartY), VO_BLT_SRCTRANSPARENCY, null);
 
   pETRLEObject.value.sOffsetX = sTempOffsetX;
   pETRLEObject.value.sOffsetY = sTempOffsetY;
@@ -2687,7 +2687,7 @@ function CheckForFences(): BOOLEAN {
 
   for (usCheck = 0; usCheck < iNumOStructs2Selected; usCheck++) {
     T = addressof(gTileDatabase[gTileTypeStartIndex[pSelList[usCheck].uiObject]]);
-    if (T.value.pDBStructureRef == NULL)
+    if (T.value.pDBStructureRef == null)
       fFence = FALSE;
     else if (!(T.value.pDBStructureRef.value.pDBStructure.value.fFlags & STRUCTURE_ANYFENCE))
       fFence = FALSE;
@@ -3392,7 +3392,7 @@ function RemoveGotoGridNoUI(): void {
 function UpdateLastActionBeforeLeaving(): void {
   if (iCurrentTaskbar == Enum36.TASK_MERCS)
     IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
-  SpecifyItemToEdit(NULL, -1);
+  SpecifyItemToEdit(null, -1);
 }
 
 function ReloadMap(): void {

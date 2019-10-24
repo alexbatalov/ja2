@@ -376,7 +376,7 @@ let giHaveSelectedItem: INT32 = -1; // If it is not the first time in, dont rese
 let giHaveSelectedNPC: INT32 = -1; // If it is not the first time in, dont reset the selected NPC
 
 let giSelectedMercCurrentQuote: INT32 = -1;
-let gTalkingMercSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gTalkingMercSoldier: Pointer<SOLDIERTYPE> = null;
 let gfPauseTalkingMercPopup: BOOLEAN = FALSE;
 let gfAddNpcToTeam: BOOLEAN = FALSE;
 let gfRpcToSaySectorDesc: BOOLEAN = FALSE;
@@ -564,7 +564,7 @@ function QuestDebugScreenHandle(): UINT32 {
 
   if (gfTextEntryActive || gubTextEntryAction) {
     if (gubTextEntryAction != Enum166.QD_DROP_DOWN_NO_ACTION) {
-      CreateDestroyDisplayTextEntryBox(gubTextEntryAction, NULL, NULL);
+      CreateDestroyDisplayTextEntryBox(gubTextEntryAction, null, null);
       gubTextEntryAction = Enum166.QD_DROP_DOWN_NO_ACTION;
     }
 
@@ -908,7 +908,7 @@ function RenderQuestDebugSystem(): void {
 
   if (gfTextEntryActive) {
     gubTextEntryAction = Enum166.QD_DROP_DOWN_DISPLAY;
-    CreateDestroyDisplayTextEntryBox(gubTextEntryAction, NULL, NULL);
+    CreateDestroyDisplayTextEntryBox(gubTextEntryAction, null, null);
     gubTextEntryAction = Enum166.QD_DROP_DOWN_NO_ACTION;
   }
 
@@ -1038,7 +1038,7 @@ function GetUserInput(): void {
           // toggle whether dropped items are damaged or not
           gfDropDamagedItems ^= 1;
           swprintf(zTemp, "Items dropped will be in %s condition", gfDropDamagedItems ? "DAMAGED" : "PERFECT");
-          DoQDSMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.QUEST_DEBUG_SCREEN, MSG_BOX_FLAG_OK, NULL);
+          DoQDSMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.QUEST_DEBUG_SCREEN, MSG_BOX_FLAG_OK, null);
         } break;
       }
     }
@@ -1481,10 +1481,10 @@ function DisplaySelectedListBox(): void {
   // get and display the up and down arrows
   GetVideoObject(addressof(hImageHandle), guiQdScrollArrowImage);
   // top arrow
-  BltVideoObject(FRAME_BUFFER, hImageHandle, 0, usPosX - 5, usPosY - 1, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hImageHandle, 0, usPosX - 5, usPosY - 1, VO_BLT_SRCTRANSPARENCY, null);
 
   // Bottom arrow
-  BltVideoObject(FRAME_BUFFER, hImageHandle, 1, usPosX, usPosY + gpActiveListBox.value.usScrollHeight - gpActiveListBox.value.usScrollArrowHeight, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hImageHandle, 1, usPosX, usPosY + gpActiveListBox.value.usScrollHeight - gpActiveListBox.value.usScrollArrowHeight, VO_BLT_SRCTRANSPARENCY, null);
 
   // display the scroll rectangle
   DrawQdsScrollRectangle(); // gpActiveListBox->sCurSelectedItem, usPosX, usPosY, (UINT16)(usPosY + gpActiveListBox->usScrollHeight), NUM_PROFILES-FIRST_RPC );
@@ -2083,7 +2083,7 @@ function BtnQuestDebugNPCRefreshButtonButtonCallback(btn: Pointer<GUI_BUTTON>, r
       swprintf(zTemp, "%s %s", QuestDebugText[Enum167.QUEST_DBS_REFRESH_FAILED], gMercProfiles[ubMercID].zNickname);
     }
 
-    DoQDSMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.QUEST_DEBUG_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    DoQDSMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.QUEST_DEBUG_SCREEN, MSG_BOX_FLAG_OK, null);
 
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
@@ -2560,7 +2560,7 @@ function AddNPCsInSectorToArray(): void {
   // Setup array of merc who are in the current sector
   i = 0;
   for (pSoldier = Menptr, cnt = 0; cnt < TOTAL_SOLDIERS; pSoldier++, cnt++) {
-    if ((pSoldier != NULL) && pSoldier.value.bActive) {
+    if ((pSoldier != null) && pSoldier.value.bActive) {
       // if soldier is a NPC, add him to the local NPC array
       if ((pSoldier.value.ubProfile >= FIRST_RPC) && (pSoldier.value.ubProfile < NUM_PROFILES)) {
         gubCurrentNpcInSector[i] = pSoldier.value.ubProfile;
@@ -2919,7 +2919,7 @@ function StartMercTalkingFromQuoteNum(iQuoteToStartTalkingFrom: INT32): void {
   // do some error checks
   if (iQuoteToStartTalkingFrom < 0 || iQuoteToStartTalkingFrom > uiMaxNumberOfQuotes) {
     swprintf(zTemp, "Please enter a value between 0 and %d", uiMaxNumberOfQuotes);
-    DoQDSMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.QUEST_DEBUG_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    DoQDSMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.QUEST_DEBUG_SCREEN, MSG_BOX_FLAG_OK, null);
   } else {
     // Start the merc talking from the selected quote number
     giSelectedMercCurrentQuote = iQuoteToStartTalkingFrom;
@@ -2963,7 +2963,7 @@ function HandleQDSTalkingMerc(): void {
   let ubPanelMercShouldUse: UINT8;
 
   if (giSelectedMercCurrentQuote != -1) {
-    if (gTalkingMercSoldier == NULL)
+    if (gTalkingMercSoldier == null)
       return;
 
     // Call this function to enable or disable the flags in the faces struct ( without modifing the pause state )
@@ -3114,7 +3114,7 @@ function BtnQuestDebugRPCSaySectorDescToggleCallback(btn: Pointer<GUI_BUTTON>, r
 }
 
 function WhichPanelShouldTalkingMercUse(): UINT8 {
-  if (gTalkingMercSoldier == NULL) {
+  if (gTalkingMercSoldier == null) {
     return Enum168.QDS_NO_PANEL;
   }
 
@@ -3176,7 +3176,7 @@ function GetDebugLocationString(usProfileID: UINT16, pzText: STR16): void {
   pSoldier = FindSoldierByProfileID(usProfileID, FALSE);
 
   // if their is a soldier, the soldier is alive and the soldier is off the map
-  if (pSoldier != NULL && pSoldier.value.bActive && pSoldier.value.uiStatusFlags & SOLDIER_OFF_MAP) {
+  if (pSoldier != null && pSoldier.value.bActive && pSoldier.value.uiStatusFlags & SOLDIER_OFF_MAP) {
     // the soldier is on schedule
     swprintf(pzText, "On Schdl.");
   }
@@ -3187,7 +3187,7 @@ function GetDebugLocationString(usProfileID: UINT16, pzText: STR16): void {
   }
 
   // the soldier is in this sector
-  else if (pSoldier != NULL) {
+  else if (pSoldier != null) {
     GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pzText);
   }
 

@@ -1,10 +1,10 @@
 let gfOriginalList: BOOLEAN = TRUE;
 
-let gSoldierInitHead: Pointer<SOLDIERINITNODE> = NULL;
-let gSoldierInitTail: Pointer<SOLDIERINITNODE> = NULL;
+let gSoldierInitHead: Pointer<SOLDIERINITNODE> = null;
+let gSoldierInitTail: Pointer<SOLDIERINITNODE> = null;
 
-let gOriginalSoldierInitListHead: Pointer<SOLDIERINITNODE> = NULL;
-let gAlternateSoldierInitListHead: Pointer<SOLDIERINITNODE> = NULL;
+let gOriginalSoldierInitListHead: Pointer<SOLDIERINITNODE> = null;
+let gAlternateSoldierInitListHead: Pointer<SOLDIERINITNODE> = null;
 
 function CountNumberOfNodesWithSoldiers(): UINT32 {
   let curr: Pointer<SOLDIERINITNODE>;
@@ -22,17 +22,17 @@ function CountNumberOfNodesWithSoldiers(): UINT32 {
 function InitSoldierInitList(): void {
   if (gSoldierInitHead)
     KillSoldierInitList();
-  gSoldierInitHead = NULL;
-  gSoldierInitTail = NULL;
+  gSoldierInitHead = null;
+  gSoldierInitTail = null;
 }
 
 function KillSoldierInitList(): void {
   while (gSoldierInitHead)
     RemoveSoldierNodeFromInitList(gSoldierInitTail);
   if (gfOriginalList)
-    gOriginalSoldierInitListHead = NULL;
+    gOriginalSoldierInitListHead = null;
   else
-    gAlternateSoldierInitListHead = NULL;
+    gAlternateSoldierInitListHead = null;
 }
 
 function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDIERCREATE_STRUCT>): Pointer<SOLDIERINITNODE> {
@@ -46,7 +46,7 @@ function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDI
   curr.value.pBasicPlacement = MemAlloc(sizeof(BASIC_SOLDIERCREATE_STRUCT));
   if (!curr.value.pBasicPlacement) {
     AssertMsg(0, "Failed to allocate memory for AddBasicPlacementToSoldierInitList.");
-    return NULL;
+    return null;
   }
 
   // Copy memory for basic placement
@@ -55,8 +55,8 @@ function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDI
   // It is impossible to set up detailed placement stuff now.
   // If there is any detailed placement information during map load, it will be added
   // immediately after this function call.
-  curr.value.pDetailedPlacement = NULL;
-  curr.value.pSoldier = NULL;
+  curr.value.pDetailedPlacement = null;
+  curr.value.pSoldier = null;
 
   // Insert the new node in the list in its proper place.
   if (!gSoldierInitHead) {
@@ -66,12 +66,12 @@ function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDI
     else
       gAlternateSoldierInitListHead = curr;
     gSoldierInitTail = curr;
-    gSoldierInitHead.value.next = NULL;
-    gSoldierInitHead.value.prev = NULL;
+    gSoldierInitHead.value.next = null;
+    gSoldierInitHead.value.prev = null;
   } else {
     // TEMP:  no sorting, just enemies
     curr.value.prev = gSoldierInitTail;
-    curr.value.next = NULL;
+    curr.value.next = null;
     gSoldierInitTail.value.next = curr;
     gSoldierInitTail = gSoldierInitTail.value.next;
   }
@@ -87,11 +87,11 @@ function RemoveSoldierNodeFromInitList(pNode: Pointer<SOLDIERINITNODE>): void {
     gMapInformation.ubNumIndividuals--;
   if (pNode.value.pBasicPlacement) {
     MemFree(pNode.value.pBasicPlacement);
-    pNode.value.pBasicPlacement = NULL;
+    pNode.value.pBasicPlacement = null;
   }
   if (pNode.value.pDetailedPlacement) {
     MemFree(pNode.value.pDetailedPlacement);
-    pNode.value.pDetailedPlacement = NULL;
+    pNode.value.pDetailedPlacement = null;
   }
   if (pNode.value.pSoldier) {
     if (pNode.value.pSoldier.value.ubID >= 20) {
@@ -103,14 +103,14 @@ function RemoveSoldierNodeFromInitList(pNode: Pointer<SOLDIERINITNODE>): void {
   if (pNode == gSoldierInitHead) {
     gSoldierInitHead = gSoldierInitHead.value.next;
     if (gSoldierInitHead)
-      gSoldierInitHead.value.prev = NULL;
+      gSoldierInitHead.value.prev = null;
     if (gfOriginalList)
       gOriginalSoldierInitListHead = gSoldierInitHead;
     else
       gAlternateSoldierInitListHead = gSoldierInitHead;
   } else if (pNode == gSoldierInitTail) {
     gSoldierInitTail = gSoldierInitTail.value.prev;
-    gSoldierInitTail.value.next = NULL;
+    gSoldierInitTail.value.next = null;
   } else {
     pNode.value.prev.value.next = pNode.value.next;
     pNode.value.next.value.prev = pNode.value.prev;
@@ -275,8 +275,8 @@ function SortSoldierInitList(): void {
           gOriginalSoldierInitListHead = gSoldierInitHead;
         else
           gAlternateSoldierInitListHead = gSoldierInitHead;
-        gSoldierInitHead.value.prev = NULL;
-        temp.value.next = NULL;
+        gSoldierInitHead.value.prev = null;
+        temp.value.next = null;
       }
       curr = curr.value.prev;
       // detach node from list
@@ -286,7 +286,7 @@ function SortSoldierInitList(): void {
         temp.value.next.value.prev = temp.value.prev;
       // add node to end of list
       temp.value.prev = gSoldierInitTail;
-      temp.value.next = NULL;
+      temp.value.next = null;
       gSoldierInitTail.value.next = temp;
       gSoldierInitTail = temp;
     } else {
@@ -303,8 +303,8 @@ function SortSoldierInitList(): void {
       if (temp == gSoldierInitTail) {
         // If we dealing with the tail, we need to move it now.
         gSoldierInitTail = gSoldierInitTail.value.prev;
-        gSoldierInitTail.value.next = NULL;
-        temp.value.prev = NULL;
+        gSoldierInitTail.value.next = null;
+        temp.value.prev = null;
       }
       curr = curr.value.next;
       // detach node from list
@@ -313,7 +313,7 @@ function SortSoldierInitList(): void {
       if (temp.value.next)
         temp.value.next.value.prev = temp.value.prev;
       // add node to beginning of list
-      temp.value.prev = NULL;
+      temp.value.prev = null;
       temp.value.next = gSoldierInitHead;
       gSoldierInitHead.value.prev = temp;
       gSoldierInitHead = temp;
@@ -335,8 +335,8 @@ function SortSoldierInitList(): void {
       if (temp == gSoldierInitTail) {
         // If we dealing with the tail, we need to move it now.
         gSoldierInitTail = gSoldierInitTail.value.prev;
-        gSoldierInitTail.value.next = NULL;
-        temp.value.prev = NULL;
+        gSoldierInitTail.value.next = null;
+        temp.value.prev = null;
       }
       curr = curr.value.next;
       // detach node from list
@@ -345,7 +345,7 @@ function SortSoldierInitList(): void {
       if (temp.value.next)
         temp.value.next.value.prev = temp.value.prev;
       // add node to beginning of list
-      temp.value.prev = NULL;
+      temp.value.prev = null;
       temp.value.next = gSoldierInitHead;
       gSoldierInitHead.value.prev = temp;
       gSoldierInitHead = temp;
@@ -368,8 +368,8 @@ function SortSoldierInitList(): void {
       if (temp == gSoldierInitTail) {
         // If we dealing with the tail, we need to move it now.
         gSoldierInitTail = gSoldierInitTail.value.prev;
-        gSoldierInitTail.value.next = NULL;
-        temp.value.prev = NULL;
+        gSoldierInitTail.value.next = null;
+        temp.value.prev = null;
       }
       curr = curr.value.next;
       // detach node from list
@@ -378,7 +378,7 @@ function SortSoldierInitList(): void {
       if (temp.value.next)
         temp.value.next.value.prev = temp.value.prev;
       // add node to beginning of list
-      temp.value.prev = NULL;
+      temp.value.prev = null;
       temp.value.next = gSoldierInitHead;
       gSoldierInitHead.value.prev = temp;
       gSoldierInitHead = temp;
@@ -427,7 +427,7 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
     // Special case code when adding icecream truck.
     if (!gfEditMode) {
       // CJC, August 18, 1999: don't do this code unless the ice cream truck is on our team
-      if (FindSoldierByProfileID(Enum194.ICECREAMTRUCK, TRUE) != NULL) {
+      if (FindSoldierByProfileID(Enum194.ICECREAMTRUCK, TRUE) != null) {
         if (curr.value.pDetailedPlacement.value.bBodyType == Enum194.ICECREAMTRUCK) {
           // Check to see if Hamous is here and not recruited.  If so, add truck
           if (gMercProfiles[Enum268.HAMOUS].sSectorX != gWorldSectorX || gMercProfiles[Enum268.HAMOUS].sSectorY != gWorldSectorY || gMercProfiles[Enum268.HAMOUS].bSectorZ) {
@@ -666,8 +666,8 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   let ubAdminPSlots: UINT8 = 0;
   let ubAdminBSlots: UINT8 = 0;
   let ubFreeSlots: UINT8;
-  let pCurrSlots: Pointer<UINT8> = NULL;
-  let pCurrTotal: Pointer<UINT8> = NULL;
+  let pCurrSlots: Pointer<UINT8> = null;
+  let pCurrTotal: Pointer<UINT8> = null;
   let ubCurrClass: UINT8;
 
   ResetMortarsOnTeamCount();
@@ -1018,8 +1018,8 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
   let ubRegSlots: UINT8 = 0;
   let ubGreenSlots: UINT8 = 0;
   let ubFreeSlots: UINT8;
-  let pCurrSlots: Pointer<UINT8> = NULL;
-  let pCurrTotal: Pointer<UINT8> = NULL;
+  let pCurrSlots: Pointer<UINT8> = null;
+  let pCurrTotal: Pointer<UINT8> = null;
   let ubCurrClass: UINT8;
 
   ubMaxNum = ubNumGreen + ubNumRegs + ubNumElites;
@@ -1057,7 +1057,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
         if (curr.value.pDetailedPlacement) {
           // delete the detailed placement information.
           MemFree(curr.value.pDetailedPlacement);
-          curr.value.pDetailedPlacement = NULL;
+          curr.value.pDetailedPlacement = null;
           curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
           RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeAttributeLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
           RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeEquipmentLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
@@ -1189,7 +1189,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
         if (curr.value.pDetailedPlacement) {
           // delete the detailed placement information.
           MemFree(curr.value.pDetailedPlacement);
-          curr.value.pDetailedPlacement = NULL;
+          curr.value.pDetailedPlacement = null;
           curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
           RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeAttributeLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
           RandomizeRelativeLevel(addressof(curr.value.pBasicPlacement.value.bRelativeEquipmentLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
@@ -1309,7 +1309,7 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
         if (curr.value.pDetailedPlacement) {
           // delete the detailed placement information.
           MemFree(curr.value.pDetailedPlacement);
-          curr.value.pDetailedPlacement = NULL;
+          curr.value.pDetailedPlacement = null;
           curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
         }
         if (AddPlacementToWorld(curr)) {
@@ -1334,7 +1334,7 @@ function FindSoldierInitNodeWithProfileID(usProfile: UINT16): Pointer<SOLDIERINI
       return curr;
     curr = curr.value.next;
   }
-  return NULL;
+  return null;
 }
 
 function FindSoldierInitNodeWithID(usID: UINT16): Pointer<SOLDIERINITNODE> {
@@ -1345,7 +1345,7 @@ function FindSoldierInitNodeWithID(usID: UINT16): Pointer<SOLDIERINITNODE> {
       return curr;
     curr = curr.value.next;
   }
-  return NULL;
+  return null;
 }
 
 function UseEditorOriginalList(): void {
@@ -1393,9 +1393,9 @@ function EvaluateDeathEffectsToSoldierInitList(pSoldier: Pointer<SOLDIERTYPE>): 
 
         // RECORD UBNODEID IN TEMP FILE.
 
-        curr.value.pSoldier = NULL;
+        curr.value.pSoldier = null;
         MemFree(curr.value.pDetailedPlacement);
-        curr.value.pDetailedPlacement = NULL;
+        curr.value.pDetailedPlacement = null;
         return;
       }
     }
@@ -1411,7 +1411,7 @@ function RemoveDetailedPlacementInfo(ubNodeID: UINT8): void {
     if (curr.value.ubNodeID == ubNodeID) {
       if (curr.value.pDetailedPlacement) {
         MemFree(curr.value.pDetailedPlacement);
-        curr.value.pDetailedPlacement = NULL;
+        curr.value.pDetailedPlacement = null;
         return;
       }
     }
@@ -1626,7 +1626,7 @@ function FindSoldierInitListNodeByProfile(ubProfile: UINT8): Pointer<SOLDIERINIT
     }
     curr = curr.value.next;
   }
-  return NULL;
+  return null;
 }
 
 // This is the code that loops through the profiles starting at the RPCs, and adds them using strategic insertion
@@ -1848,7 +1848,7 @@ function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
     if (curr.value.pDetailedPlacement) {
       if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
         MemFree(curr.value.pDetailedPlacement);
-        curr.value.pDetailedPlacement = NULL;
+        curr.value.pDetailedPlacement = null;
         curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
         curr.value.pBasicPlacement.value.fPriorityExistance = FALSE;
         curr.value.pBasicPlacement.value.bBodyType = -1;

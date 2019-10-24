@@ -47,8 +47,8 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -60,7 +60,7 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -313,8 +313,8 @@ function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDe
   let p16BPPObject: Pointer<SixteenBPPObjectInfo>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   p16BPPObject = addressof(hSrcVObject.value.p16BPPObject[usIndex]);
 
@@ -326,7 +326,7 @@ function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDe
   iTempX = iX + p16BPPObject.value.sOffsetX;
   iTempY = iY + p16BPPObject.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -575,8 +575,8 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -588,7 +588,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -827,8 +827,8 @@ function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT16>, uiD
   let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -964,8 +964,8 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -977,7 +977,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -1219,8 +1219,8 @@ function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UINT16>, u
   let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -1350,8 +1350,8 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
   let usZLinesToGo: UINT16;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -1363,7 +1363,7 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -1594,8 +1594,8 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
 function InitZBuffer(uiPitch: UINT32, uiHeight: UINT32): Pointer<UINT16> {
   let pBuffer: Pointer<UINT16>;
 
-  if ((pBuffer = MemAlloc(uiPitch * uiHeight)) == NULL)
-    return NULL;
+  if ((pBuffer = MemAlloc(uiPitch * uiHeight)) == null)
+    return null;
 
   memset(pBuffer, 0, (uiPitch * uiHeight));
   return pBuffer;
@@ -1678,8 +1678,8 @@ function Blt8BPPDataTo8BPPBuffer(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT
   /* static */ let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -1787,8 +1787,8 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -1926,8 +1926,8 @@ function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPi
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -1939,7 +1939,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPi
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -2184,8 +2184,8 @@ function Blt8BPPDataTo8BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestP
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -2311,8 +2311,8 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -2447,8 +2447,8 @@ function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiD
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -2460,7 +2460,7 @@ function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiD
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -2720,8 +2720,8 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, u
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -2733,7 +2733,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, u
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -2983,8 +2983,8 @@ function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDest
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -2996,7 +2996,7 @@ function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDest
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -3246,8 +3246,8 @@ function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitc
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -3394,8 +3394,8 @@ function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -3620,8 +3620,8 @@ function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBY
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -3733,8 +3733,8 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -3864,8 +3864,8 @@ function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitch
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -3877,7 +3877,7 @@ function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitch
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -4120,8 +4120,8 @@ function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPit
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -4133,7 +4133,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPit
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -4373,8 +4373,8 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -4386,7 +4386,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -4620,8 +4620,8 @@ function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -4731,8 +4731,8 @@ function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -4853,8 +4853,8 @@ function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitc
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -4866,7 +4866,7 @@ function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitc
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -5108,8 +5108,8 @@ function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -5121,7 +5121,7 @@ function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -5349,8 +5349,8 @@ function Blt8BPPDataTo8BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPit
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -5472,8 +5472,8 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestP
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -5604,8 +5604,8 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -5617,7 +5617,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -5869,8 +5869,8 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiD
   let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -5882,7 +5882,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiD
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -6113,8 +6113,8 @@ function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -6264,8 +6264,8 @@ function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitch
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -6277,7 +6277,7 @@ function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitch
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -6545,8 +6545,8 @@ function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDest
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -6558,7 +6558,7 @@ function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDest
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -6795,8 +6795,8 @@ function Blt16BPPTo16BPP(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Poin
   let uiLineSkipDest: UINT32;
   let uiLineSkipSrc: UINT32;
 
-  Assert(pDest != NULL);
-  Assert(pSrc != NULL);
+  Assert(pDest != null);
+  Assert(pSrc != null);
 
   pSrcPtr = (pSrc + (iSrcYPos * uiSrcPitch) + (iSrcXPos * 2));
   pDestPtr = (pDest + (iDestYPos * uiDestPitch) + (iDestXPos * 2));
@@ -6861,8 +6861,8 @@ function Blt16BPPTo16BPPTrans(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc:
   let uiLineSkipDest: UINT32;
   let uiLineSkipSrc: UINT32;
 
-  Assert(pDest != NULL);
-  Assert(pSrc != NULL);
+  Assert(pDest != null);
+  Assert(pSrc != null);
 
   pSrcPtr = (pSrc + (iSrcYPos * uiSrcPitch) + (iSrcXPos * 2));
   pDestPtr = (pDest + (iDestYPos * uiDestPitch) + (iDestXPos * 2));
@@ -6925,16 +6925,16 @@ function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc
   let ClipY1: INT32;
   let ClipX2: INT32;
   let ClipY2: INT32;
-  let clipregion: Pointer<SGPRect> = NULL;
+  let clipregion: Pointer<SGPRect> = null;
 
-  Assert(pDest != NULL);
-  Assert(pSrc != NULL);
+  Assert(pDest != null);
+  Assert(pSrc != null);
 
   // Add to start position of dest buffer
   iTempX = iDestXPos;
   iTempY = iDestYPos;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = 0; // ClippingRect.iLeft;
     ClipY1 = 0; // ClippingRect.iTop;
     ClipX2 = 640; // ClippingRect.iRight;
@@ -7019,8 +7019,8 @@ function Blt8BPPTo8BPP(pDest: Pointer<UINT8>, uiDestPitch: UINT32, pSrc: Pointer
   let uiLineSkipDest: UINT32;
   let uiLineSkipSrc: UINT32;
 
-  Assert(pDest != NULL);
-  Assert(pSrc != NULL);
+  Assert(pDest != null);
+  Assert(pSrc != null);
 
   pSrcPtr = pSrc + (iSrcYPos * uiSrcPitch) + (iSrcXPos);
   pDestPtr = pDest + (iDestYPos * uiDestPitch) + (iDestXPos);
@@ -7092,8 +7092,8 @@ function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDest
   let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -7222,8 +7222,8 @@ function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<UINT16>
   let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -7379,8 +7379,8 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -7392,7 +7392,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -7638,8 +7638,8 @@ function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDe
   let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -7779,8 +7779,8 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, 
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -7792,7 +7792,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, 
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -8035,8 +8035,8 @@ function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -8150,8 +8150,8 @@ function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -8263,8 +8263,8 @@ function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestP
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -8379,8 +8379,8 @@ function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, uiDestPit
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -8486,8 +8486,8 @@ function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPi
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -8605,8 +8605,8 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDest
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -8726,8 +8726,8 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<UINT16>
   let uiLineFlag: UINT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -8882,8 +8882,8 @@ function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDe
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -8895,7 +8895,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDe
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -9143,8 +9143,8 @@ function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDes
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -9156,7 +9156,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDes
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -9392,8 +9392,8 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, ui
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -9405,7 +9405,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, ui
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -9656,8 +9656,8 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UIN
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -9669,7 +9669,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UIN
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -9942,8 +9942,8 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -9955,7 +9955,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -10191,8 +10191,8 @@ function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBY
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -10313,8 +10313,8 @@ function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPit
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -10326,7 +10326,7 @@ function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPit
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -10553,8 +10553,8 @@ function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitch
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -10673,8 +10673,8 @@ function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestP
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -10686,7 +10686,7 @@ function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestP
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -10924,8 +10924,8 @@ function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitc
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -10937,7 +10937,7 @@ function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitc
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -11177,8 +11177,8 @@ function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -11190,7 +11190,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -11429,8 +11429,8 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -11442,7 +11442,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -11675,9 +11675,9 @@ function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES:
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVSurface != NULL);
-  Assert(pSrcBuffer != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVSurface != null);
+  Assert(pSrcBuffer != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   usHeight = hSrcVSurface.value.usHeight;
@@ -11761,9 +11761,9 @@ function Blt8BPPDataTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UI
   let rows: UINT32;
 
   // Assertions
-  Assert(hSrcVSurface != NULL);
-  Assert(pSrcBuffer != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVSurface != null);
+  Assert(pSrcBuffer != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   usHeight = hSrcVSurface.value.usHeight;
@@ -11895,9 +11895,9 @@ function Blt8BPPDataTo16BPPBufferHalf(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   let uiSrcSkip: UINT32;
 
   // Assertions
-  Assert(hSrcVSurface != NULL);
-  Assert(pSrcBuffer != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVSurface != null);
+  Assert(pSrcBuffer != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   usHeight = hSrcVSurface.value.usHeight;
@@ -11983,10 +11983,10 @@ function Blt8BPPDataTo16BPPBufferHalfRect(pBuffer: Pointer<UINT16>, uiDestPitchB
   let uiSrcSkip: UINT32;
 
   // Assertions
-  Assert(hSrcVSurface != NULL);
-  Assert(pSrcBuffer != NULL);
-  Assert(pBuffer != NULL);
-  Assert(pRect != NULL);
+  Assert(hSrcVSurface != null);
+  Assert(pSrcBuffer != null);
+  Assert(pBuffer != null);
+  Assert(pRect != null);
 
   // Get Offsets from Index into structure
   usWidth = (pRect.value.iRight - pRect.value.iLeft);
@@ -12078,8 +12078,8 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -12206,7 +12206,7 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
 }
 
 function SetClippingRect(clip: Pointer<SGPRect>): void {
-  Assert(clip != NULL);
+  Assert(clip != null);
   Assert(clip.value.iLeft < clip.value.iRight);
   Assert(clip.value.iTop < clip.value.iBottom);
 
@@ -12214,7 +12214,7 @@ function SetClippingRect(clip: Pointer<SGPRect>): void {
 }
 
 function GetClippingRect(clip: Pointer<SGPRect>): void {
-  Assert(clip != NULL);
+  Assert(clip != null);
 
   memcpy(clip, addressof(ClippingRect), sizeof(SGPRect));
 }
@@ -12250,8 +12250,8 @@ function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPit
   let iBottom: INT32;
 
   // Assertions
-  Assert(pBuffer != NULL);
-  Assert(Pattern != NULL);
+  Assert(pBuffer != null);
+  Assert(Pattern != null);
 
   iLeft = __max(ClippingRect.iLeft, area.value.iLeft);
   iTop = __max(ClippingRect.iTop, area.value.iTop);
@@ -12393,8 +12393,8 @@ function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -12533,8 +12533,8 @@ function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPit
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -12682,8 +12682,8 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -12848,8 +12848,8 @@ function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDes
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -12861,7 +12861,7 @@ function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDes
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -13117,7 +13117,7 @@ function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
+  Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -13128,7 +13128,7 @@ function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -13188,8 +13188,8 @@ function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitc
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -13201,7 +13201,7 @@ function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitc
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -13448,7 +13448,7 @@ function Blt16BPPBufferShadowRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UI
   let DestPtr: Pointer<UINT16>;
 
   // Assertions
-  Assert(pBuffer != NULL);
+  Assert(pBuffer != null);
 
   // Clipping
   if (area.value.iLeft < ClippingRect.iLeft)
@@ -13515,7 +13515,7 @@ function Blt16BPPBufferShadowRectAlternateTable(pBuffer: Pointer<UINT16>, uiDest
   let DestPtr: Pointer<UINT16>;
 
   // Assertions
-  Assert(pBuffer != NULL);
+  Assert(pBuffer != null);
 
   // Clipping
   if (area.value.iLeft < ClippingRect.iLeft)
@@ -13587,8 +13587,8 @@ function Blt8BPPDataTo16BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitc
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -14053,7 +14053,7 @@ function FillRect8BPP(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, x1: INT
   let startoffset: Pointer<UINT8>;
 
   // check parameters
-  Assert(pBuffer != NULL);
+  Assert(pBuffer != null);
   Assert(uiDestPitchBYTES > 0);
   Assert(x2 > x1);
   Assert(y2 > y1);
@@ -14129,7 +14129,7 @@ function FillRect16BPP(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, x1: I
   let startoffset: Pointer<UINT16>;
 
   // check parameters
-  Assert(pBuffer != NULL);
+  Assert(pBuffer != null);
   Assert(uiDestPitchBYTES > 0);
   Assert(x2 > x1);
   Assert(y2 > y1);
@@ -14202,7 +14202,7 @@ function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, us
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
+  Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -14213,7 +14213,7 @@ function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, us
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -14271,8 +14271,8 @@ function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDestPitchBY
   let p16BPPPalette: Pointer<UINT16>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -14386,8 +14386,8 @@ function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPit
   let p16BPPPalette: Pointer<UINT16>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -14399,7 +14399,7 @@ function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPit
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -14631,8 +14631,8 @@ function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPi
   let p16BPPPalette: Pointer<UINT16>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -14644,7 +14644,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPi
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -14895,8 +14895,8 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<U
   let uiLineFlag: UINT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -14908,7 +14908,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<U
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -15170,8 +15170,8 @@ function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, uiDestP
   let p16BPPPalette: Pointer<UINT16>;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -15273,8 +15273,8 @@ function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiD
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -15286,7 +15286,7 @@ function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiD
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -15536,8 +15536,8 @@ function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDestPitchB
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -15660,8 +15660,8 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointer<UINT1
   let uiLineFlag: UINT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -15806,8 +15806,8 @@ function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiDestPitc
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -15937,8 +15937,8 @@ function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiDestPitc
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -16059,8 +16059,8 @@ function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDest
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -16072,7 +16072,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDest
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -16299,8 +16299,8 @@ function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, uiDestPi
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -16419,8 +16419,8 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -16432,7 +16432,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -16666,8 +16666,8 @@ function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestP
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -16679,7 +16679,7 @@ function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestP
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;
@@ -16929,8 +16929,8 @@ function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDestPitch
   let iTempY: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -17087,8 +17087,8 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UIN
   let ClipY2: INT32;
 
   // Assertions
-  Assert(hSrcVObject != NULL);
-  Assert(pBuffer != NULL);
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
   pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
@@ -17100,7 +17100,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UIN
   iTempX = iX + pTrav.value.sOffsetX;
   iTempY = iY + pTrav.value.sOffsetY;
 
-  if (clipregion == NULL) {
+  if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
     ClipY1 = ClippingRect.iTop;
     ClipX2 = ClippingRect.iRight;

@@ -103,11 +103,11 @@ let gubSummaryItemMode: UINT8 = Enum56.ITEMMODE_SCIFI;
 
 let gfItemDetailsMode: BOOLEAN = FALSE;
 
-let gpWorldItemsSummaryArray: Pointer<WORLDITEM> = NULL;
+let gpWorldItemsSummaryArray: Pointer<WORLDITEM> = null;
 let gusWorldItemsSummaryArraySize: UINT16 = 0;
-let gpPEnemyItemsSummaryArray: Pointer<OBJECTTYPE> = NULL;
+let gpPEnemyItemsSummaryArray: Pointer<OBJECTTYPE> = null;
 let gusPEnemyItemsSummaryArraySize: UINT16 = 0;
-let gpNEnemyItemsSummaryArray: Pointer<OBJECTTYPE> = NULL;
+let gpNEnemyItemsSummaryArray: Pointer<OBJECTTYPE> = null;
 let gusNEnemyItemsSummaryArraySize: UINT16 = 0;
 
 let gfSetupItemDetailsMode: BOOLEAN = TRUE;
@@ -261,7 +261,7 @@ function CreateSummaryWindow(): void {
 
   // Init the textinput field.
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
-  AddUserInputField(NULL); // just so we can use short cut keys while not typing.
+  AddUserInputField(null); // just so we can use short cut keys while not typing.
   AddTextInputField(MAP_LEFT + 112, MAP_BOTTOM + 75, 100, 18, MSYS_PRIORITY_HIGH, "", 20, Enum383.INPUTTYPE_EXCLUSIVE_DOSFILENAME);
 
   for (i = 1; i < Enum58.NUM_SUMMARY_BUTTONS; i++)
@@ -341,17 +341,17 @@ function DestroySummaryWindow(): void {
 
   if (gpWorldItemsSummaryArray) {
     MemFree(gpWorldItemsSummaryArray);
-    gpWorldItemsSummaryArray = NULL;
+    gpWorldItemsSummaryArray = null;
     gusWorldItemsSummaryArraySize = 0;
   }
   if (gpPEnemyItemsSummaryArray) {
     MemFree(gpPEnemyItemsSummaryArray);
-    gpPEnemyItemsSummaryArray = NULL;
+    gpPEnemyItemsSummaryArray = null;
     gusPEnemyItemsSummaryArraySize = 0;
   }
   if (gpNEnemyItemsSummaryArray) {
     MemFree(gpNEnemyItemsSummaryArray);
-    gpNEnemyItemsSummaryArray = NULL;
+    gpNEnemyItemsSummaryArray = null;
     gusNEnemyItemsSummaryArraySize = 0;
   }
   if (gfWorldLoaded) {
@@ -1164,7 +1164,7 @@ function RenderSummaryWindow(): void {
 
   if (gfRenderMap) {
     gfRenderMap = FALSE;
-    BltVideoObjectFromIndex(FRAME_BUFFER, guiOmertaMap, 0, MAP_LEFT - 2, MAP_TOP - 2, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, guiOmertaMap, 0, MAP_LEFT - 2, MAP_TOP - 2, VO_BLT_SRCTRANSPARENCY, null);
     InvalidateRegion(MAP_LEFT - 1, MAP_TOP - 1, MAP_RIGHT + 1, MAP_BOTTOM + 1);
     // Draw the coordinates
     SetFont(SMALLCOMPFONT());
@@ -1674,7 +1674,7 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
           else if (gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][3])
             gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][3];
           else
-            gpCurrentSectorSummary = NULL;
+            gpCurrentSectorSummary = null;
           break;
         case GROUND_LEVEL_MASK: // already pointing to the correct level
           gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][0];
@@ -1698,7 +1698,7 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
           else if (gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][7])
             gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][7];
           else
-            gpCurrentSectorSummary = NULL;
+            gpCurrentSectorSummary = null;
           break;
         case ALTERNATE_GROUND_MASK: // already pointing to the correct level
           gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][4];
@@ -1715,7 +1715,7 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
       }
       if (gpWorldItemsSummaryArray) {
         MemFree(gpWorldItemsSummaryArray);
-        gpWorldItemsSummaryArray = NULL;
+        gpWorldItemsSummaryArray = null;
         gusWorldItemsSummaryArraySize = 0;
       }
       if (gfItemDetailsMode) {
@@ -2196,7 +2196,7 @@ function LoadSummary(pSector: Pointer<UINT8>, ubLevel: UINT8, dMajorMapVersion: 
     x = pSector[1] - '0' - 1;
   if (gpSectorSummary[x][y][ubLevel]) {
     MemFree(gpSectorSummary[x][y][ubLevel]);
-    gpSectorSummary[x][y][ubLevel] = NULL;
+    gpSectorSummary[x][y][ubLevel] = null;
   }
   gpSectorSummary[x][y][ubLevel] = MemAlloc(sizeof(SUMMARYFILE));
   if (gpSectorSummary[x][y][ubLevel])
@@ -2216,10 +2216,10 @@ function UpdateMasterProgress(): void {
     gusCurrent++;
     MasterEnd = (gusCurrent / gusTotal) * 100.0;
     if (gfMajorUpdate) {
-      SetRelativeStartAndEndPercentage(2, MasterStart, MasterEnd, NULL);
+      SetRelativeStartAndEndPercentage(2, MasterStart, MasterEnd, null);
       RenderProgressBar(2, 0);
     } else
-      SetRelativeStartAndEndPercentage(1, MasterStart, MasterEnd, NULL);
+      SetRelativeStartAndEndPercentage(1, MasterStart, MasterEnd, null);
   }
 }
 
@@ -2324,7 +2324,7 @@ function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     if (gpCurrentSectorSummary) {
       MemFree(gpCurrentSectorSummary);
-      gpCurrentSectorSummary = NULL;
+      gpCurrentSectorSummary = null;
     }
 
     sprintf(str, "%c%d", gsSelSectorY + 'A' - 1, gsSelSectorX);
@@ -2482,17 +2482,17 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
   // Clear memory for all the item summaries loaded
   if (gpWorldItemsSummaryArray) {
     MemFree(gpWorldItemsSummaryArray);
-    gpWorldItemsSummaryArray = NULL;
+    gpWorldItemsSummaryArray = null;
     gusWorldItemsSummaryArraySize = 0;
   }
   if (gpPEnemyItemsSummaryArray) {
     MemFree(gpPEnemyItemsSummaryArray);
-    gpPEnemyItemsSummaryArray = NULL;
+    gpPEnemyItemsSummaryArray = null;
     gusPEnemyItemsSummaryArraySize = 0;
   }
   if (gpNEnemyItemsSummaryArray) {
     MemFree(gpNEnemyItemsSummaryArray);
-    gpNEnemyItemsSummaryArray = NULL;
+    gpNEnemyItemsSummaryArray = null;
     gusNEnemyItemsSummaryArraySize = 0;
   }
 

@@ -554,7 +554,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
   let iLoyaltyChange: INT32 = 0;
   let bSeenState: INT8 = 0;
   let iCounter: INT32 = 0;
-  let pCivSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pCivSoldier: Pointer<SOLDIERTYPE> = null;
   let uiChanceFalseAccusal: UINT32 = 0;
   let bKillerTeam: INT8 = 0;
   let fIncrement: BOOLEAN = FALSE;
@@ -1039,7 +1039,7 @@ function ReadInDistancesBetweenTowns(): void {
 
   hFileHandle = FileOpen("BinaryData\\TownDistances.dat", FILE_ACCESS_READ, FALSE);
 
-  FileRead(hFileHandle, addressof(iTownDistances), (sizeof(INT32) * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS), NULL);
+  FileRead(hFileHandle, addressof(iTownDistances), (sizeof(INT32) * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS), null);
 
   // close file
   FileClose(hFileHandle);
@@ -1545,10 +1545,10 @@ function HandleLoyaltyImplicationsOfMercRetreat(bRetreatCode: INT8, sSectorX: IN
   if (bRetreatCode == RETREAT_TACTICAL_TRAVERSAL) {
     // if not worse than 2:1 odds, then penalize morale
     if (gTacticalStatus.fEnemyInSector && (PlayerStrength() * 2 >= EnemyStrength())) {
-      HandleMoraleEvent(NULL, Enum234.MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
+      HandleMoraleEvent(null, Enum234.MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
     }
   } else {
-    HandleMoraleEvent(NULL, Enum234.MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
+    HandleMoraleEvent(null, Enum234.MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
   }
 }
 

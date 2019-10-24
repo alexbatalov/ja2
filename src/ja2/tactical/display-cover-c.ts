@@ -201,7 +201,7 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
   let sMaxDown: INT16;
   let sXOffset: INT16;
   let sYOffset: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let sGridNo: INT16;
   let sCounterX: INT16;
   let sCounterY: INT16;
@@ -416,7 +416,7 @@ function RemoveCoverObjectFromWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: BO
 }
 
 function GetCurrentMercForDisplayCover(): Pointer<SOLDIERTYPE> {
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   // Get a soldier that is on the player team
   if (gusSelectedSoldier != NOBODY) {
     GetSoldier(addressof(pSoldier), gusSelectedSoldier);
@@ -428,7 +428,7 @@ function GetCurrentMercForDisplayCover(): Pointer<SOLDIERTYPE> {
 
 function GetCurrentMercForDisplayCoverStance(): INT8 {
   let bStance: INT8;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   pSoldier = GetCurrentMercForDisplayCover();
 
@@ -541,7 +541,7 @@ function CalculateVisibleToSoldierAroundGridno(sTargetGridNo: INT16, bSearchRang
   let sMaxDown: INT16;
   let sXOffset: INT16;
   let sYOffset: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = null;
   let sGridNo: INT16;
   let sCounterX: INT16;
   let sCounterY: INT16;

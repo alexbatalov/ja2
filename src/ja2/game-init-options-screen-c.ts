@@ -442,7 +442,7 @@ function RenderGIOScreen(): BOOLEAN {
 
   // Get the main background screen graphic and blt it
   GetVideoObject(addressof(hPixHandle), guiGIOMainBackGroundImage);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
   // Shade the background
   ShadowVideoSurfaceRect(FRAME_BUFFER, 48, 55, 592, 378); // 358

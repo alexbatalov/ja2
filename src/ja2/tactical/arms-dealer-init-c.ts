@@ -952,7 +952,7 @@ function AllocMemsetSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, u
   Assert(ubElementsNeeded > 0);
 
   pDealerItem.value.SpecialItem = MemAlloc(sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
-  if (pDealerItem.value.SpecialItem == NULL) {
+  if (pDealerItem.value.SpecialItem == null) {
     Assert(0);
     return FALSE;
   }
@@ -977,7 +977,7 @@ function ResizeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElem
 
   // already allocated, but change its size
   pDealerItem.value.SpecialItem = MemRealloc(pDealerItem.value.SpecialItem, sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
-  if (pDealerItem.value.SpecialItem == NULL) {
+  if (pDealerItem.value.SpecialItem == null) {
     Assert(0);
     return FALSE;
   }
@@ -999,7 +999,7 @@ function FreeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>): void {
   Assert(pDealerItem.value.SpecialItem);
 
   MemFree(pDealerItem.value.SpecialItem);
-  pDealerItem.value.SpecialItem = NULL;
+  pDealerItem.value.SpecialItem = null;
 
   pDealerItem.value.ubElementsAlloced = 0;
   pDealerItem.value.ubTotalItems = pDealerItem.value.ubPerfectItems;
@@ -1506,7 +1506,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
 
   // Get a pointer to the dealer
   pSoldier = FindSoldierByProfileID(ubMercID, FALSE);
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     // This should never happen, a dealer getting knocked off without the sector being loaded, should it?
     // If it's possible, we should modify code below to dump his belongings into the sector without using pSoldier->sGridNo
     Assert(0);
@@ -1955,12 +1955,12 @@ function IsItemInfoSpecial(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): BOOLEAN {
 }
 
 function DoesItemAppearInDealerInventoryList(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: BOOLEAN): BOOLEAN {
-  let pDealerInv: Pointer<DEALER_POSSIBLE_INV> = NULL;
+  let pDealerInv: Pointer<DEALER_POSSIBLE_INV> = null;
   let usCnt: UINT16;
 
   // the others will buy only things that appear in their own "for sale" inventory lists
   pDealerInv = GetPointerToDealersPossibleInventory(ubArmsDealer);
-  Assert(pDealerInv != NULL);
+  Assert(pDealerInv != null);
 
   // loop through the dealers' possible inventory and see if the item exists there
   usCnt = 0;
@@ -2143,7 +2143,7 @@ function GetArmsDealerShopHours(ubArmsDealer: UINT8, puiOpeningTime: Pointer<UIN
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = FindSoldierByProfileID(ArmsDealerInfo[ubArmsDealer].ubShopKeeperID, FALSE);
-  if (pSoldier == NULL) {
+  if (pSoldier == null) {
     return FALSE;
   }
 

@@ -366,7 +366,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let AniParams: ANITILE_PARAMS;
   let ubLevelID: UINT8;
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = NULL;
+  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;
   let zFilename: INT8[] /* [150] */;
   let pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
   let ubLoop: UINT8;
@@ -447,7 +447,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
 
   pCorpse.value.pAniTile = CreateAnimationTile(addressof(AniParams));
 
-  if (pCorpse.value.pAniTile == NULL) {
+  if (pCorpse.value.pAniTile == null) {
     pCorpse.value.fActivated = FALSE;
     return -1;
   }
@@ -508,7 +508,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
 
   pStructureFileRef = GetCachedTileStructureRefFromFilename(zFilename);
 
-  if (pStructureFileRef != NULL) {
+  if (pStructureFileRef != null) {
     usStructIndex = GetCorpseStructIndex(pCorpseDef, TRUE);
 
     pDBStructureRef = addressof(pStructureFileRef.value.pDBStructureRef[usStructIndex]);
@@ -535,9 +535,9 @@ function FreeCorpsePalettes(pCorpse: Pointer<ROTTING_CORPSE>): void {
   MemFree(pCorpse.value.p16BPPPalette);
 
   for (cnt = 0; cnt < NUM_CORPSE_SHADES; cnt++) {
-    if (pCorpse.value.pShades[cnt] != NULL) {
+    if (pCorpse.value.pShades[cnt] != null) {
       MemFree(pCorpse.value.pShades[cnt]);
-      pCorpse.value.pShades[cnt] = NULL;
+      pCorpse.value.pShades[cnt] = null;
     }
   }
 }
@@ -570,9 +570,9 @@ function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
 
   pCorpse.value.p8BPPPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
 
-  CHECKF(pCorpse.value.p8BPPPalette != NULL);
+  CHECKF(pCorpse.value.p8BPPPalette != null);
 
-  bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(NULL, pCorpse.value.def.ubBodyType, zColFilename);
+  bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(null, pCorpse.value.def.ubBodyType, zColFilename);
 
   // If this corpse has cammo,
   if (pCorpse.value.def.ubType == Enum249.ROTTING_STAGE2) {
@@ -630,7 +630,7 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
   }
 
   // ATE: Change to fix crash when item in hand
-  if (gpItemPointer != NULL && gpItemPointerSoldier == pSoldier) {
+  if (gpItemPointer != null && gpItemPointerSoldier == pSoldier) {
     CancelItemPointer();
   }
 
@@ -826,7 +826,7 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
   MercCreateStruct.sInsertionGridNo = pCorpse.value.def.sGridNo;
   RandomizeNewSoldierStats(addressof(MercCreateStruct));
 
-  if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex)) != NULL) {
+  if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex)) != null) {
     pSoldier = MercPtrs[iNewIndex];
 
     sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse.value.def.sGridNo, 2, addressof(ubDirection));
@@ -1120,17 +1120,17 @@ function CreateCorpseShadedPalette(pCorpse: Pointer<ROTTING_CORPSE>, uiBase: UIN
 
 function FindCorpseBasedOnStructure(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<ROTTING_CORPSE> {
   let pLevelNode: Pointer<LEVELNODE>;
-  let pCorpse: Pointer<ROTTING_CORPSE> = NULL;
+  let pCorpse: Pointer<ROTTING_CORPSE> = null;
 
   pLevelNode = gpWorldLevelData[sGridNo].pStructHead;
-  while (pLevelNode != NULL) {
+  while (pLevelNode != null) {
     if (pLevelNode.value.pStructureData == pStructure) {
       break;
     }
     pLevelNode = pLevelNode.value.pNext;
   }
 
-  if (pLevelNode != NULL) {
+  if (pLevelNode != null) {
     // Get our corpse....
     pCorpse = addressof(gRottingCorpse[pLevelNode.value.pAniTile.value.uiUserData]);
   }
@@ -1144,7 +1144,7 @@ function CorpseHit(sGridNo: INT16, usStructureID: UINT16): void {
 function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
   let pStructure: Pointer<STRUCTURE>;
   let pBaseStructure: Pointer<STRUCTURE>;
-  let pCorpse: Pointer<ROTTING_CORPSE> = NULL;
+  let pCorpse: Pointer<ROTTING_CORPSE> = null;
   let sBaseGridNo: INT16;
   let AniParams: ANITILE_PARAMS;
 
@@ -1159,7 +1159,7 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
   // Get corpse ID.....
   pCorpse = FindCorpseBasedOnStructure(sBaseGridNo, pBaseStructure);
 
-  if (pCorpse == NULL) {
+  if (pCorpse == null) {
     return;
   }
 
@@ -1214,7 +1214,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
   let soldier: SOLDIERTYPE;
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = NULL;
+  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;
   let zFilename: INT8[] /* [150] */;
   let ubBestDirection: UINT8 = 0;
   let fSetDirection: BOOLEAN = FALSE;
@@ -1276,7 +1276,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
           let fCanSetDirection: BOOLEAN = FALSE;
 
           // Check each struct in each direction
-          if (pStructureFileRef == NULL) {
+          if (pStructureFileRef == null) {
             fDirectionFound = TRUE;
           } else {
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
@@ -1332,19 +1332,19 @@ function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING_CORPSE
 
   pStructure = FindStructure(sGridNo, STRUCTURE_CORPSE);
 
-  if (pStructure != NULL) {
+  if (pStructure != null) {
     // Get base....
     pBaseStructure = FindBaseStructure(pStructure);
 
     // Find base gridno...
     sBaseGridNo = pBaseStructure.value.sGridNo;
 
-    if (pBaseStructure != NULL) {
+    if (pBaseStructure != null) {
       return FindCorpseBasedOnStructure(sBaseGridNo, pBaseStructure);
     }
   }
 
-  return NULL;
+  return null;
 }
 
 function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
@@ -1355,7 +1355,7 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
 
   pCorpse = GetCorpseAtGridNo(sGridNo, bLevel);
 
-  if (pCorpse == NULL) {
+  if (pCorpse == null) {
     return;
   }
 
@@ -1479,7 +1479,7 @@ function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGri
 
   pCorpse = GetCorpseAtGridNo(sGridNo, ubLevel);
 
-  if (pCorpse == NULL) {
+  if (pCorpse == null) {
     return;
   }
 

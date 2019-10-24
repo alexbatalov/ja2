@@ -31,7 +31,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
     }
 
     if (gusSelectedSoldier != NOBODY) {
-      if (MercPtrs[gusSelectedSoldier].value.pTempObject != NULL) {
+      if (MercPtrs[gusSelectedSoldier].value.pTempObject != null) {
         return;
       }
     }
@@ -44,12 +44,12 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
         RESETCOUNTER(Enum386.RUBBER_BAND_START_DELAY);
 
         if (giUIMessageOverlay == -1) {
-          if (gpItemPointer == NULL) {
+          if (gpItemPointer == null) {
             switch (gCurrentUIMode) {
               case Enum206.ACTION_MODE:
 
                 if (gusSelectedSoldier != NOBODY) {
-                  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier) && gpItemPointer == NULL) {
+                  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier) && gpItemPointer == null) {
                     // OK, check for needing ammo
                     if (HandleUIReloading(pSoldier)) {
                       gfRTClickLeftHoldIntercepted = TRUE;
@@ -79,7 +79,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
 
                 gfUICanBeginAllMoveCycle = TRUE;
 
-                if (!HandleCheckForExitArrowsInput(FALSE) && gpItemPointer == NULL) {
+                if (!HandleCheckForExitArrowsInput(FALSE) && gpItemPointer == null) {
                   if (gfUIFullTargetFound && (guiUIFullTargetFlags & OWNED_MERC)) {
                     // Reset , if this guy is selected merc, reset any multi selections...
                     if (gusUIFullTargetID == gusSelectedSoldier) {
@@ -137,7 +137,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
         }
       }
 
-      if (gpItemPointer == NULL) {
+      if (gpItemPointer == null) {
         if (giUIMessageOverlay == -1 && !gfRTHaveClickedRightWhileLeftDown) {
           // HERE FOR CLICK-DRAG CLICK
           switch (gCurrentUIMode) {
@@ -207,7 +207,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
           if ((GetJA2Clock() - uiSingleClickTime) < 300) {
             // CHECK HERE FOR DOUBLE CLICK EVENTS
             if (fValidDoubleClickPossible) {
-              if (gpItemPointer == NULL) {
+              if (gpItemPointer == null) {
                 fDoubleClickIntercepted = TRUE;
 
                 // First check if we clicked on a guy, if so, make selected if it's ours
@@ -241,7 +241,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
             }
 
             // CHECK IF WE CLICKED-HELD
-            if (COUNTERDONE(Enum386.LMOUSECLICK_DELAY_COUNTER) && gpItemPointer != NULL) {
+            if (COUNTERDONE(Enum386.LMOUSECLICK_DELAY_COUNTER) && gpItemPointer != null) {
               // LEFT CLICK-HOLD EVENT
               // Switch on UI mode
               switch (gCurrentUIMode) {
@@ -278,7 +278,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                   EndUIMessage();
                 } else {
                   if (!HandleCheckForExitArrowsInput(TRUE)) {
-                    if (gpItemPointer != NULL) {
+                    if (gpItemPointer != null) {
                       if (HandleItemPointerClick(usMapPos)) {
                         // getout of mode
                         EndItemPointer();
@@ -366,12 +366,12 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
 
                           case Enum206.MOVE_MODE:
 
-                            if (!HandleCheckForExitArrowsInput(FALSE) && gpItemPointer == NULL) {
+                            if (!HandleCheckForExitArrowsInput(FALSE) && gpItemPointer == null) {
                               // First check if we clicked on a guy, if so, make selected if it's ours
                               if (gfUIFullTargetFound && (guiUIFullTargetFlags & OWNED_MERC)) {
                                 if (!(guiUIFullTargetFlags & UNCONSCIOUS_MERC)) {
                                   // Select guy
-                                  if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && gpItemPointer == NULL) {
+                                  if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && gpItemPointer == null) {
                                     if (pSoldier.value.bAssignment >= Enum117.ON_DUTY && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
                                       PopupAssignmentMenuInTactical(pSoldier);
                                     } else {
@@ -447,7 +447,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                       if (pSoldier.value.usAnimState != Enum193.RUNNING) {
                                         puiNewEvent.value = Enum207.C_MOVE_MERC;
                                       } else {
-                                        if (GetCurInteractiveTileGridNo(addressof(sIntTileGridNo)) != NULL) {
+                                        if (GetCurInteractiveTileGridNo(addressof(sIntTileGridNo)) != null) {
                                           pSoldier.value.fUIMovementFast = TRUE;
                                           puiNewEvent.value = Enum207.C_MOVE_MERC;
                                         }
@@ -644,7 +644,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
         // fIgnoreLeftUp = TRUE;
         gfRTHaveClickedRightWhileLeftDown = TRUE;
 
-        if (gpItemPointer == NULL) {
+        if (gpItemPointer == null) {
           // ATE:
           if (gusSelectedSoldier != NOBODY) {
             switch (gCurrentUIMode) {
@@ -688,7 +688,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
       } else {
         // IF HERE, DO A CLICK-HOLD IF IN INTERVAL
         if (COUNTERDONE(Enum386.RMOUSECLICK_DELAY_COUNTER) && !fClickHoldIntercepted) {
-          if (gpItemPointer == NULL) {
+          if (gpItemPointer == null) {
             // Switch on UI mode
             switch (gCurrentUIMode) {
               case Enum206.IDLE_MODE:
@@ -738,7 +738,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
             // Do stuff....
             // OK, check if left button down...
             if (fLeftButtonDown) {
-              if (gpItemPointer == NULL) {
+              if (gpItemPointer == null) {
                 if (!fClickIntercepted && !fClickHoldIntercepted) {
                   // ATE:
                   if (gusSelectedSoldier != NOBODY) {
@@ -767,7 +767,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
         if (!fDoubleClickIntercepted) {
           // CHECK COMBINATIONS
           if (fLeftButtonDown) {
-            if (gpItemPointer == NULL) {
+            if (gpItemPointer == null) {
               if (!fClickHoldIntercepted && !fClickIntercepted) {
                 // ATE:
                 if (gusSelectedSoldier != NOBODY) {
@@ -786,7 +786,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
             }
           } else {
             if (!fClickHoldIntercepted && !fClickIntercepted) {
-              if (gpItemPointer == NULL) {
+              if (gpItemPointer == null) {
                 // ATE:
                 if (gusSelectedSoldier != NOBODY) {
                   // Switch on UI mode
@@ -878,7 +878,7 @@ function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
     HandleObjectHighlighting();
 
     // Check if we have an item in our hands...
-    if (gpItemPointer != NULL) {
+    if (gpItemPointer != null) {
       puiNewEvent.value = Enum207.A_ON_TERRAIN;
       return;
     }

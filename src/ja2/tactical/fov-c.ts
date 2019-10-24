@@ -401,7 +401,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
         ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier.value.bTeam == gbPlayerNum), addressof(iDoorGridNo));
         pStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
-        if (pStructure != NULL && pStructure.value.fFlags & STRUCTURE_TRANSPARENT) {
+        if (pStructure != null && pStructure.value.fFlags & STRUCTURE_TRANSPARENT) {
           // cell door or somehow otherwise transparent; allow merc to see through
           ubMovementCost = TRAVELCOST_FLAT;
         }
@@ -618,7 +618,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
 
             pStructure = FindStructure(marker, STRUCTURE_SLANTED_ROOF);
 
-            if (pStructure != NULL) {
+            if (pStructure != null) {
               pBase = FindBaseStructure(pStructure);
 
               // ADD TO SLANTED ROOF LIST!

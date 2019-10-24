@@ -1,4 +1,4 @@
-let gpUndergroundSectorInfoTail: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+let gpUndergroundSectorInfoTail: Pointer<UNDERGROUND_SECTORINFO> = null;
 
 function NewUndergroundNode(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): Pointer<UNDERGROUND_SECTORINFO> {
   let curr: Pointer<UNDERGROUND_SECTORINFO>;
@@ -140,8 +140,8 @@ function TrashUndergroundSectorInfo(): void {
     gpUndergroundSectorInfoHead = gpUndergroundSectorInfoHead.value.next;
     MemFree(curr);
   }
-  gpUndergroundSectorInfoHead = NULL;
-  gpUndergroundSectorInfoTail = NULL;
+  gpUndergroundSectorInfoHead = null;
+  gpUndergroundSectorInfoTail = null;
 }
 
 // Defines the sectors that can be occupied by enemies, creatures, etc.  It also
@@ -150,7 +150,7 @@ function TrashUndergroundSectorInfo(): void {
 // changes to the maps, require changes accordingly.
 function BuildUndergroundSectorInfoList(): void {
   let curr: Pointer<UNDERGROUND_SECTORINFO>;
-  let pSector: Pointer<SECTORINFO> = NULL;
+  let pSector: Pointer<SECTORINFO> = null;
 
   TrashUndergroundSectorInfo();
 

@@ -289,9 +289,9 @@ function BringupMeanwhileBox(): void {
 
   if (gCurrentMeanwhileDef.ubMeanwhileID != Enum160.INTERROGATION && MeanwhileSceneSeen(gCurrentMeanwhileDef.ubMeanwhileID))
   {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OKSKIP, BeginMeanwhileCallBack, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OKSKIP, BeginMeanwhileCallBack, null);
   } else {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OK, BeginMeanwhileCallBack, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OK, BeginMeanwhileCallBack, null);
   }
 }
 
@@ -742,7 +742,7 @@ function LocateToMeanwhileCharacter(): void {
   if (gfInMeanwhile) {
     pSoldier = FindSoldierByProfileID(gCurrentMeanwhileDef.ubNPCNumber, FALSE);
 
-    if (pSoldier != NULL) {
+    if (pSoldier != null) {
       LocateSoldier(pSoldier.value.ubID, FALSE);
     }
   }

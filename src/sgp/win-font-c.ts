@@ -44,7 +44,7 @@ function FindFreeWinFont(): INT32 {
   let iCount: INT32;
 
   for (iCount = 0; iCount < MAX_WIN_FONTS; iCount++) {
-    if (WinFonts[iCount].hFont == NULL) {
+    if (WinFonts[iCount].hFont == null) {
       return iCount;
     }
   }
@@ -54,11 +54,11 @@ function FindFreeWinFont(): INT32 {
 
 function GetWinFont(iFont: INT32): Pointer<HWINFONT> {
   if (iFont == -1) {
-    return NULL;
+    return null;
   }
 
-  if (WinFonts[iFont].hFont == NULL) {
-    return NULL;
+  if (WinFonts[iFont].hFont == null) {
+    return null;
   } else {
     return addressof(WinFonts[iFont]);
   }
@@ -91,7 +91,7 @@ function CreateWinFont(iHeight: INT32, iWidth: INT32, iEscapement: INT32, iWeigh
     return -1;
   }
 
-  if (hFont == NULL) {
+  if (hFont == null) {
     return -1;
   }
 
@@ -106,7 +106,7 @@ function DeleteWinFont(iFont: INT32): void {
 
   pWinFont = GetWinFont(iFont);
 
-  if (pWinFont != NULL) {
+  if (pWinFont != null) {
     DeleteObject(pWinFont.value.hFont);
   }
 }
@@ -116,7 +116,7 @@ function SetWinFontForeColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
 
   pWinFont = GetWinFont(iFont);
 
-  if (pWinFont != NULL) {
+  if (pWinFont != null) {
     pWinFont.value.ForeColor = (pColor.value);
   }
 }
@@ -126,7 +126,7 @@ function SetWinFontBackColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
 
   pWinFont = GetWinFont(iFont);
 
-  if (pWinFont != NULL) {
+  if (pWinFont != null) {
     pWinFont.value.BackColor = (pColor.value);
   }
 }
@@ -145,7 +145,7 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
 
   pWinFont = GetWinFont(iFont);
 
-  if (pWinFont == NULL) {
+  if (pWinFont == null) {
     return;
   }
 
@@ -169,7 +169,7 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
 
   GetTextExtentPoint32(hdc, string, len, addressof(RectSize));
   SetRect(addressof(rc), x, y, x + RectSize.cx, y + RectSize.cy);
-  ExtTextOut(hdc, x, y, ETO_OPAQUE, addressof(rc), string, len, NULL);
+  ExtTextOut(hdc, x, y, ETO_OPAQUE, addressof(rc), string, len, null);
   IDirectDrawSurface2_ReleaseDC(pDDSurface, hdc);
 }
 
@@ -181,16 +181,16 @@ function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
 
   pWinFont = GetWinFont(iFont);
 
-  if (pWinFont == NULL) {
+  if (pWinFont == null) {
     return 0;
   }
 
   sprintf(string, "%S", string2);
 
-  hdc = GetDC(NULL);
+  hdc = GetDC(null);
   SelectObject(hdc, pWinFont.value.hFont);
   GetTextExtentPoint32(hdc, string, strlen(string), addressof(RectSize));
-  ReleaseDC(NULL, hdc);
+  ReleaseDC(null, hdc);
 
   return RectSize.cx;
 }
@@ -203,16 +203,16 @@ function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
 
   pWinFont = GetWinFont(iFont);
 
-  if (pWinFont == NULL) {
+  if (pWinFont == null) {
     return 0;
   }
 
   sprintf(string, "%S", string2);
 
-  hdc = GetDC(NULL);
+  hdc = GetDC(null);
   SelectObject(hdc, pWinFont.value.hFont);
   GetTextExtentPoint32(hdc, string, strlen(string), addressof(RectSize));
-  ReleaseDC(NULL, hdc);
+  ReleaseDC(null, hdc);
 
   return RectSize.cy;
 }
@@ -252,7 +252,7 @@ function DoesWinFontExistOnSystem(pTypeFaceName: STR16, iCharSet: INT32): BOOLEA
   let hdc: HDC;
   let string: char[] /* [512] */;
   let LogFont: LOGFONT;
-  hdc = GetDC(NULL);
+  hdc = GetDC(null);
 
   gfEnumSucceed = FALSE;
   // Copy into 8-bit!
@@ -264,7 +264,7 @@ function DoesWinFontExistOnSystem(pTypeFaceName: STR16, iCharSet: INT32): BOOLEA
 
   EnumFontFamiliesEx(hdc, addressof(LogFont), EnumFontFamExProc, 0, 0);
 
-  ReleaseDC(NULL, hdc);
+  ReleaseDC(null, hdc);
 
   return gfEnumSucceed;
 }

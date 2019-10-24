@@ -46,8 +46,8 @@ function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16
   pNew.value.usMsgFont = FONT12POINT1();
   pNew.value.ubMsgFontForeColor = FONT_BLACK;
   pNew.value.ubMsgFontShadowColor = 0;
-  SetRelativeStartAndEndPercentage(pNew.value.ubProgressBarID, 0, 100, NULL);
-  pNew.value.swzTitle = NULL;
+  SetRelativeStartAndEndPercentage(pNew.value.ubProgressBarID, 0, 100, null);
+  pNew.value.swzTitle = null;
 
   // Default the progress bar's color to be red
   pNew.value.ubColorFillRed = 150;
@@ -89,7 +89,7 @@ function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UIN
     return;
   if (pCurr.value.swzTitle) {
     MemFree(pCurr.value.swzTitle);
-    pCurr.value.swzTitle = NULL;
+    pCurr.value.swzTitle = null;
   }
   if (pString && wcslen(pString)) {
     pCurr.value.swzTitle = MemAlloc(sizeof(UINT16) * (wcslen(pString) + 1));
@@ -120,7 +120,7 @@ function RemoveProgressBar(ubID: UINT8): void {
     if (pBar[ubID].value.swzTitle)
       MemFree(pBar[ubID].value.swzTitle);
     MemFree(pBar[ubID]);
-    pBar[ubID] = NULL;
+    pBar[ubID] = null;
     return;
   }
 }
@@ -192,14 +192,14 @@ function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
   /* static */ let uiLastTime: UINT32 = 0;
   let uiCurTime: UINT32 = GetJA2Clock();
   let rActual: double;
-  let pCurr: Pointer<PROGRESSBAR> = NULL;
+  let pCurr: Pointer<PROGRESSBAR> = null;
   // UINT32 r, g;
   let end: INT32;
 
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
 
-  if (pCurr == NULL)
+  if (pCurr == null)
     return;
 
   if (pCurr) {
@@ -232,7 +232,7 @@ function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
     InvalidateRegion(pCurr.value.usBarLeft, pCurr.value.usBarTop, pCurr.value.usBarRight, pCurr.value.usBarBottom);
     ExecuteBaseDirtyRectQueue();
     EndFrameBufferRender();
-    RefreshScreen(NULL);
+    RefreshScreen(null);
   }
 
   // update music here
@@ -243,12 +243,12 @@ function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
 }
 
 function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGreen: UINT8, ubColorFillBlue: UINT8): void {
-  let pCurr: Pointer<PROGRESSBAR> = NULL;
+  let pCurr: Pointer<PROGRESSBAR> = null;
 
   Assert(ubID < MAX_PROGRESSBARS);
 
   pCurr = pBar[ubID];
-  if (pCurr == NULL)
+  if (pCurr == null)
     return;
 
   pCurr.value.ubColorFillRed = ubColorFillRed;
@@ -257,12 +257,12 @@ function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGree
 }
 
 function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: BOOLEAN, fUseSaveBuffer: BOOLEAN, fSaveScreenToFrameBuffer: BOOLEAN): void {
-  let pCurr: Pointer<PROGRESSBAR> = NULL;
+  let pCurr: Pointer<PROGRESSBAR> = null;
 
   Assert(ubID < MAX_PROGRESSBARS);
 
   pCurr = pBar[ubID];
-  if (pCurr == NULL)
+  if (pCurr == null)
     return;
 
   pCurr.value.fDisplayText = fDisplayText;

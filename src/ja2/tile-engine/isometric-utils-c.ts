@@ -666,7 +666,7 @@ function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStart
 
   // IF there is a roof over our heads, this is an ivalid....
   // return ( FALSE );l
-  if (FindStructure(sGridNo, STRUCTURE_ROOF) != NULL) {
+  if (FindStructure(sGridNo, STRUCTURE_ROOF) != null) {
     return FALSE;
   }
 
@@ -713,7 +713,7 @@ function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartin
     // Make sure there is NOT a roof here...
     // Check OK destination
     if (NewOKDestination(pSoldier, sNewGridNo, TRUE, 0)) {
-      if (FindStructure(sNewGridNo, STRUCTURE_ROOF) == NULL) {
+      if (FindStructure(sNewGridNo, STRUCTURE_ROOF) == null) {
         {
           fFound = TRUE;
 
