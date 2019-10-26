@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // JA2
 
 //**************************************************************************
@@ -51,4 +53,6 @@ export function String(String: Pointer<char>, ...args: any[]): Pointer<UINT8> {
   va_end(ArgPtr);
 
   return gbTmpDebugString[usIndex];
+}
+
 }

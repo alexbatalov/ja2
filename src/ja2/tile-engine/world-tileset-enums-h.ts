@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum316 {
   GENERIC_1,
   CAVES_1,
@@ -55,4 +57,6 @@ export const enum Enum316 {
   TEMP_30,
 
   NUM_TILESETS,
+}
+
 }

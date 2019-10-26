@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const FLORIST_CARDS_SENTENCE_FONT = () => FONT12ARIAL();
 const FLORIST_CARDS_SENTENCE_COLOR = FONT_MCOLOR_WHITE;
 
@@ -164,4 +166,6 @@ function BtnFlowerCardsBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
+}
+
 }

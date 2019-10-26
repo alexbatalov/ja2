@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //**************************************************************************
 //
 // Filename :	MemMan.cpp
@@ -260,4 +262,6 @@ function MemCheckPool(): boolean {
   let fRet: boolean = true;
 
   return fRet;
+}
+
 }

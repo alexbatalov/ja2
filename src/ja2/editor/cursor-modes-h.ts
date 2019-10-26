@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum33 {
   SMALLSELECTION, // 1x1
   MEDIUMSELECTION, // 3x3
@@ -6,4 +8,6 @@ export const enum Enum33 {
   LINESELECTION, // v or h line with a specified width
   AREASELECTION, // user controlled area
   NUMSELECTIONTYPES,
+}
+
 }

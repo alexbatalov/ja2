@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // When line of sight reaches a gridno, and there is a light there, it turns it on.
 // This is only done in the cave levels.
 export function RemoveFogFromGridNo(uiGridNo: UINT32): void {
@@ -17,4 +19,6 @@ export function RemoveFogFromGridNo(uiGridNo: UINT32): void {
       }
     }
   }
+}
+
 }

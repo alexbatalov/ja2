@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const SHIFT = 16;
 export const CTRL = 17;
 export const ALT = 18;
@@ -119,3 +121,5 @@ const CURSOR = 1023;
 
 export const ENTER = 13;
 export const SPACE = 32;
+
+}

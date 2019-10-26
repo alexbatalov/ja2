@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // DEFINES FOR VARIOUS PANELS
 const CLOCK_X = 554;
 const CLOCK_Y = 459;
@@ -4383,4 +4385,6 @@ export function HandleTacticalEffectsOfEquipmentChange(pSoldier: Pointer<SOLDIER
       pSoldier.value.bWeaponMode = Enum265.WM_NORMAL;
     }
   }
+}
+
 }

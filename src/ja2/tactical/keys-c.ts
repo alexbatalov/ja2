@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gpDoorStatus: Pointer<DOOR_STATUS> = null;
 let gubNumDoorStatus: UINT8 = 0;
 
@@ -1753,4 +1755,6 @@ export function DropKeysInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
       }
     }
   }
+}
+
 }

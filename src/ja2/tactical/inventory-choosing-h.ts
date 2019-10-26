@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const MORTAR_GRENADE_CLASS = 100;
 
 export interface ARMY_GUN_CHOICE_TYPE {
@@ -35,3 +37,5 @@ export const enum Enum223 {
 
 export const MIN_EQUIPMENT_CLASS = 1;
 export const MAX_EQUIPMENT_CLASS = 11;
+
+}

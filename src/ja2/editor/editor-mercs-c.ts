@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //--------------------------------------------------
 //	NON_CIV_GROUP,
 //	REBEL_CIV_GROUP,
@@ -3512,4 +3514,6 @@ export function PasteMercPlacement(iMapIndex: INT32): void {
       ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, "Placement not pasted as the maximum number of placements for this team is already used.");
     }
   }
+}
+
 }

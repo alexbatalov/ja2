@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum132 {
   EVENT_CHANGELIGHTVAL = 1,
   EVENT_WEATHERSTART,
@@ -97,3 +99,5 @@ export const enum Enum132 {
 // This value is added to the param value for NPC-system-created events which are based on an
 // action rather than a fact:
 export const NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS = 10000;
+
+}

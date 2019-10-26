@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const AP_MINIMUM = 10; // no merc can have less for his turn
 export const AP_MAXIMUM = 25; // no merc can have more for his turn
 export const AP_MONSTER_MAXIMUM = 40; // no monster can have more for his turn
@@ -257,3 +259,5 @@ export const BP_JUMP_OVER = 250;
 
 export const DEFAULT_APS = 20;
 export const DEFAULT_AIMSKILL = 80;
+
+}

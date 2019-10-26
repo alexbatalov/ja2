@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAX_UICOMPOSITES = 4;
 
 export const INTERFACE_START_Y = 360;
@@ -82,4 +84,6 @@ export const enum Enum216 {
   MILITIA_INTERRUPT_MESSAGE,
   AIR_RAID_TURN_MESSAGE,
   PLAYER_TURN_MESSAGE,
+}
+
 }

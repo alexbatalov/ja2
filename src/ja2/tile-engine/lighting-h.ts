@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /****************************************************************************************
  * JA2 Lighting Module
  *
@@ -98,3 +100,5 @@ export interface LIGHT_SPRITE {
 const LightSpriteGetType = (x) => (LightSprites[x].uiLightType);
 export const LightSpriteGetTypeName = (x) => (pLightNames[LightSprites[x].iTemplate]);
 export const LightGetAmbient = () => (ubAmbientLightLevel);
+
+}

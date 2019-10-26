@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let StrategicMap: StrategicMapElement[] /* [MAP_WORLD_X * MAP_WORLD_Y] */;
 
 export function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): boolean {
@@ -90,4 +92,6 @@ function HandleSoldierDeadComments(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   return;
+}
+
 }

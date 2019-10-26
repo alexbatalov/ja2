@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#define TESTOPPLIST
 
 // for ManSeesMan()
@@ -5441,4 +5443,6 @@ function MakeBloodcatsHostile(): void {
       }
     }
   }
+}
+
 }

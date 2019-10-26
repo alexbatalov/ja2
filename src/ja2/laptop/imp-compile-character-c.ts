@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // how many times should a 'die' be rolled for skills of the same type?
 
 const HOW_MANY_ROLLS_FOR_SAME_SKILL_CHECK = 20;
@@ -690,4 +692,6 @@ function ShouldThisMercHaveABigBody(): boolean {
   }
 
   return false;
+}
+
 }

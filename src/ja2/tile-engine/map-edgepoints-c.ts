@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // dynamic arrays that contain the valid gridno's for each edge
 export let gps1stNorthEdgepointArray: Pointer<INT16> = null;
 export let gps1stEastEdgepointArray: Pointer<INT16> = null;
@@ -1461,4 +1463,6 @@ export function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
     return Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX;
   }
   return Enum175.INSERTION_CODE_SECONDARY_EDGEINDEX;
+}
+
 }

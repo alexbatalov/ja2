@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const AIM_ALUMNI_NAME_FILE = "BINARYDATA\\AlumName.edt";
 const AIM_ALUMNI_FILE = "BINARYDATA\\Alumni.edt";
 
@@ -587,4 +589,6 @@ function ChangingAimArchiveSubPage(ubSubPageNumber: UINT8): void {
     fConnectingToSubPage = true;
     fFastLoadFlag = true;
   }
+}
+
 }

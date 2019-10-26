@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let fValidCursor: boolean = false;
 let fAnchored: boolean = false;
 let gfBrushEnabled: boolean = true;
@@ -374,4 +376,6 @@ export function RemoveBuildingLayout(): void {
       RemoveTopmost(iMapIndex, Enum312.FIRSTPOINTERS1);
     curr = curr.value.next;
   }
+}
+
 }

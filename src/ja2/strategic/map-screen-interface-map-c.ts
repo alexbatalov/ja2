@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // zoom x and y coords for map scrolling
 export let iZoomX: INT32 = 0;
 export let iZoomY: INT32 = 0;
@@ -5908,4 +5910,6 @@ export function CanRedistributeMilitiaInSector(sClickedSectorX: INT16, sClickedS
 
   // the fight is elsewhere - ok to redistribute
   return true;
+}
+
 }

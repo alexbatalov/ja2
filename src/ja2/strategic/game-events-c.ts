@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gpEventList: Pointer<STRATEGICEVENT> = null;
 
 export let gfPreventDeletionOfAnyEvent: boolean = false;
@@ -541,4 +543,6 @@ function ValidateGameEvents(): void {
       return;
     }
   }
+}
+
 }

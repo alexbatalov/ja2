@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum191 {
   ACTION_ITEM_OPEN_DOOR = 1,
   ACTION_ITEM_CLOSE_DOOR,
@@ -23,4 +25,6 @@ export const enum Enum191 {
   ACTION_ITEM_TOGGLE_PRESSURE_ITEMS,
   ACTION_ITEM_MUSEUM_ALARM,
   ACTION_ITEM_BLOODCAT_ALARM,
+}
+
 }

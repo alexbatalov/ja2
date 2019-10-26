@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // INDIVIDUAL CURSORS
 
 export const enum Enum317 {
@@ -227,3 +229,5 @@ export const enum Enum318 {
 
 const MOUSE_LEVEL_GROUND = 0;
 const MOUSE_LEVEL_ROOF = 1;
+
+}

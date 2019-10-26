@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const BULLET_FLAG_CREATURE_SPIT = 0x0001;
 export const BULLET_FLAG_KNIFE = 0x0002;
 export const BULLET_FLAG_MISSILE = 0x0004;
@@ -49,4 +51,6 @@ export interface BULLET {
   pAniTile: Pointer<ANITILE>;
   pShadowAniTile: Pointer<ANITILE>;
   ubItemStatus: UINT8;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // The maximum size for any team strategically speaking.  For example, we can't have more than 20 enemies, militia, or creatures at a time.
 export const MAX_STRATEGIC_TEAM_SIZE = 20;
 
@@ -44,3 +46,5 @@ export const SECTOR_INFO_TO_STRATEGIC_INDEX = (i) => (CALCULATE_STRATEGIC_INDEX(
 export const STRATEGIC_INDEX_TO_SECTOR_INFO = (i) => (SECTOR(GET_X_FROM_STRATEGIC_INDEX(i), GET_Y_FROM_STRATEGIC_INDEX(i)));
 
 // BOOLEAN IsThereAnyOneInThisTown( UINT8 ubTownId );
+
+}

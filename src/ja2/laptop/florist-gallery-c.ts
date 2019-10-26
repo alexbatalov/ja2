@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const FLOR_GALLERY_TITLE_FONT = () => FONT10ARIAL();
 const FLOR_GALLERY_TITLE_COLOR = FONT_MCOLOR_WHITE;
 
@@ -328,4 +330,6 @@ function ChangingFloristGallerySubPage(ubSubPageNumber: UINT8): void {
     fConnectingToSubPage = true;
     fFastLoadFlag = true;
   }
+}
+
 }

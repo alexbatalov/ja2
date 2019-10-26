@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface SOLDIERINITNODE {
   ubNodeID: UINT8;
   ubSoldierID: UINT8;
@@ -6,4 +8,6 @@ export interface SOLDIERINITNODE {
   pSoldier: Pointer<SOLDIERTYPE>;
   prev: Pointer<SOLDIERINITNODE>;
   next: Pointer<SOLDIERINITNODE>;
+}
+
 }

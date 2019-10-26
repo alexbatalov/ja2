@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bBandaged: INT8;
   let iEffStrength: INT32;
@@ -448,4 +450,6 @@ export function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: 
   }
 
   return bDetectLevel;
+}
+
 }

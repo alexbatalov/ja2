@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const AIM_LINK_TITLE_FONT = () => FONT14ARIAL();
 const AIM_LINK_TITLE_COLOR = AIM_GREEN;
 
@@ -132,4 +134,6 @@ function SelectLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
     GoToWebPage(gNextLaptopPage);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
+}
+
 }

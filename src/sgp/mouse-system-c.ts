@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //=================================================================================================
 //	MouseSystem.c
 //
@@ -1209,4 +1211,6 @@ function DisableMouseFastHelp(): void {
 
 function ResetClickedMode(): void {
   gfClickedModeOn = false;
+}
+
 }

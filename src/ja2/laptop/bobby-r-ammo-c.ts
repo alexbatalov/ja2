@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let guiAmmoBackground: UINT32;
 let guiAmmoGrid: UINT32;
 
@@ -63,4 +65,6 @@ export function RenderBobbyRAmmo(): void {
   MarkButtonsDirty();
   RenderWWWProgramTitleBar();
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
+}
+
 }

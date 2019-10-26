@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#include "vtuneapi.h"
 
 //#define INVULNERABILITY
@@ -3801,4 +3803,6 @@ export function GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(psSectorX
 
 function AutoBandageFinishedCallback(ubResult: UINT8): void {
   SetupDoneInterface();
+}
+
 }

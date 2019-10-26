@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gGameLibaries: LibraryInitHeader[] /* [] */ = [
   // Library Name					Can be	Init at start
   //													on cd
@@ -46,3 +48,5 @@ export let gGameLibaries: LibraryInitHeader[] /* [] */ = [
 //   { "Russian.slf", FALSE, TRUE },
 // #endif
 ];
+
+}

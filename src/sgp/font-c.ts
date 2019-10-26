@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //*******************************************************
 //
 //   Defines
@@ -2354,3 +2356,5 @@ FontTranslationTable *pTransTab;
   UnRegisterDebugTopic(TOPIC_FONT_HANDLER, "Font Manager");
   MemFree(pFManager);
 }	*/
+
+}

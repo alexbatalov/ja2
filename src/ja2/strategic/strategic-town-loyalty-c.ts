@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // the max loyalty rating for any given town
 const MAX_LOYALTY_VALUE = 100;
 
@@ -1560,4 +1562,6 @@ export function MaximizeLoyaltyForDeidrannaKilled(): void {
     // it's possible one of the towns still has creature problems, but it's too much of a pain to worry about it now
     SetTownLoyalty(bTownId, 100);
   }
+}
+
 }

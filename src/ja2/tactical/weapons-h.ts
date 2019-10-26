@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAXCHANCETOHIT = 99;
 export const BAD_DODGE_POSITION_PENALTY = 20;
 
@@ -206,3 +208,5 @@ export interface EXPLOSIVETYPE {
 }
 
 // GLOBALS
+
+}

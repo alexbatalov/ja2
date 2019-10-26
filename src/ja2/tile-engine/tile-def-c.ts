@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#include "editscreen.h"
 
 // GLobals
@@ -706,4 +708,6 @@ function FreeAnimTileData(pTileElem: Pointer<TILE_ELEMENT>): void {
     // Free frames
     MemFree(pTileElem.value.pAnimData);
   }
+}
+
 }

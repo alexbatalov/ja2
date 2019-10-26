@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfWarning: boolean = false;
 
 let gfDoFill: boolean = false;
@@ -1190,4 +1192,6 @@ function EliminateObjectLayerRedundancy(): void {
       AddObjectToHead(i, usIndex);
     }
   }
+}
+
 }

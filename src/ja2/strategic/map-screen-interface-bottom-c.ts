@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAP_BOTTOM_X = 0;
 const MAP_BOTTOM_Y = 359;
 
@@ -1386,4 +1388,6 @@ export function ChangeCurrentMapscreenMessageIndex(ubNewMessageIndex: UINT8): vo
 
   // refresh screen
   fMapScreenBottomDirty = true;
+}
+
 }

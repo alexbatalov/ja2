@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const INS_CTRCT_ORDER_GRID_WIDTH = 132;
 const INS_CTRCT_ORDER_GRID_HEIGHT = 216;
 const INS_CTRCT_ORDER_GRID_OFFSET_X = INS_CTRCT_ORDER_GRID_WIDTH + 2;
@@ -1381,4 +1383,6 @@ function AreAnyAimMercsOnTeam(): boolean {
   }
 
   return fIsThereAnyAimMercs;
+}
+
 }

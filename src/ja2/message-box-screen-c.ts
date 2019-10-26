@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MSGBOX_DEFAULT_WIDTH = 300;
 
 const MSGBOX_BUTTON_WIDTH = 61;
@@ -910,4 +912,6 @@ function DoScreenIndependantMessageBoxWithRect(zString: Pointer<INT16>, usFlags:
 
 function GetMSgBoxButtonWidth(iButtonImage: INT32): UINT16 {
   return GetWidthOfButtonPic(iButtonImage, ButtonPictures[iButtonImage].OnNormal);
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const CANCEL_ICON = 0;
 export const UP_ICON = 1;
 export const DOWN_ICON = 2;
@@ -68,4 +70,6 @@ export interface Selections {
   uiObject: UINT32;
   usIndex: UINT16;
   sCount: INT16;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MINIMAP_X_SIZE = 88;
 const MINIMAP_Y_SIZE = 44;
 
@@ -308,4 +310,6 @@ export function MapUtilScreenHandle(): UINT32 {
 
 export function MapUtilScreenShutdown(): UINT32 {
   return true;
+}
+
 }

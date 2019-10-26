@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum32 {
   // Main Editor tabs
   TAB_TERRAIN,
@@ -271,3 +273,5 @@ export const LAST_MERCS_GETITEM_BUTTON = Enum32.LAST_ITEMS_BUTTON;
 
 const FIRST_MERCS_SCHEDULE_BUTTON = Enum32.MERCS_SCHEDULE_ACTION1;
 const LAST_MERCS_SCHEDULE_BUTTON = Enum32.MERCS_SCHEDULE_CLEAR;
+
+}

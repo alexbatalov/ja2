@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const INS_FONT_COLOR = 2;
 export const INS_FONT_COLOR_RED = FONT_MCOLOR_RED;
 export const INS_FONT_BIG = () => FONT14ARIAL();
@@ -16,3 +18,5 @@ export const INS_INFO_LEFT_ARROW_BUTTON_Y = 354 + LAPTOP_SCREEN_WEB_UL_Y;
 
 export const INS_INFO_RIGHT_ARROW_BUTTON_X = 409 + LAPTOP_SCREEN_UL_X;
 export const INS_INFO_RIGHT_ARROW_BUTTON_Y = INS_INFO_LEFT_ARROW_BUTTON_Y;
+
+}

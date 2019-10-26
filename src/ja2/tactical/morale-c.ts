@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MORALE_MOD_MAX = 50; // morale *mod* range is -50 to 50, if you change this, check the decay formulas!
 
 const DRUG_EFFECT_MORALE_MOD = 150;
@@ -759,4 +761,6 @@ export function DailyMoraleUpdate(pSoldier: Pointer<SOLDIERTYPE>): void {
     // very high morale, merc is cheerleading others
     HandleMoraleEvent(pSoldier, Enum234.MORALE_GREAT_MORALE, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
   }
+}
+
 }

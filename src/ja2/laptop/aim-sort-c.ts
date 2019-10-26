@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#define
 
 const AIM_SORT_FONT_TITLE = () => FONT14ARIAL();
@@ -533,4 +535,6 @@ function CompareValue(Num1: INT32, Num2: INT32): INT32 {
   }
 
   return 0;
+}
+
 }

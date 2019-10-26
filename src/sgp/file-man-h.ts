@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //**************************************************************************
 //
 // Filename :	FileMan.h
@@ -72,4 +74,6 @@ export interface GETFILESTRUCT {
   zFileName: CHAR8[] /* [260] */; // changed from UINT16, Alex Meduna, Mar-20'98
   uiFileSize: UINT32;
   uiFileAttribs: UINT32;
+}
+
 }

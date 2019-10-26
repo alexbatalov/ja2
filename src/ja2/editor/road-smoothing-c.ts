@@ -1,3 +1,5 @@
+namespace ja2 {
+
 interface MACROSTRUCT {
   sMacroID: INT16;
   sOffset: INT16;
@@ -416,4 +418,6 @@ export function ReplaceObsoleteRoads(): void {
       RemoveAllObjectsOfTypeRange(i, Enum313.FIRSTROAD, Enum313.FIRSTROAD);
     }
   }
+}
+
 }

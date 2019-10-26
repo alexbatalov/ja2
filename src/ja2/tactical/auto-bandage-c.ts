@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // max number of merc faces per row in autobandage box
 const NUMBER_MERC_FACES_AUTOBANDAGE_BOX = 4;
 
@@ -938,4 +940,6 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 43, iStartY, sCurrentXPosition + 44, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
 
   return true;
+}
+
 }

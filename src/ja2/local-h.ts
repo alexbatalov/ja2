@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //
 // Make sure the application has a name
 //
@@ -23,3 +25,5 @@ export const FRAME_BUFFER_MUTEX = 1;
 export const MOUSE_BUFFER_MUTEX = 2;
 const DIRTY_BUFFER_MUTEX = 3;
 const SCROLL_MESSAGE_MUTEX = 4;
+
+}

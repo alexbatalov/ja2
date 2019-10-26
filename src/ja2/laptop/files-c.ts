@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const TOP_X = 0 + LAPTOP_SCREEN_UL_X;
 const TOP_Y = LAPTOP_SCREEN_UL_Y;
 const BLOCK_FILE_HEIGHT = 10;
@@ -1458,4 +1460,6 @@ export function AddFileAboutTerrorist(iProfileId: INT32): boolean {
   }
 
   return false;
+}
+
 }

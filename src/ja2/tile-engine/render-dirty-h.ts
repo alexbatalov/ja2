@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // DEFINES
 export const BGND_FLAG_PERMANENT = 0x80000000;
 export const BGND_FLAG_SINGLE = 0x40000000;
@@ -78,3 +80,5 @@ export interface VIDEO_OVERLAY_DESC {
 
 // FUNCTIONS
 ////////////
+
+}

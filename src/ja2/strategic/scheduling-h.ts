@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Merc scheduling actions
 // NOTE:  Any modifications to this enumeration also require updating the text in EditorMercs.c used
 //			 in the editor for merc schedule purposes.
@@ -42,4 +44,6 @@ export interface SCHEDULENODE {
   ubScheduleID: UINT8;
   ubSoldierID: UINT8;
   usFlags: UINT16;
+}
+
 }

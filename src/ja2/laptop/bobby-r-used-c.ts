@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let guiUsedBackground: UINT32;
 let guiUsedGrid: UINT32;
 
@@ -62,4 +64,6 @@ export function RenderBobbyRUsed(): void {
   MarkButtonsDirty();
   RenderWWWProgramTitleBar();
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
+}
+
 }

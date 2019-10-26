@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let ClippingRect: SGPRect = [ 0, 0, 640, 480 ];
 // 555      565
 export let guiTranslucentMask: UINT32 = 0x3def; // 0x7bef;		// mask for halving 5,6,5
@@ -17323,4 +17325,6 @@ export function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Poin
   `);
 
   return true;
+}
+
 }

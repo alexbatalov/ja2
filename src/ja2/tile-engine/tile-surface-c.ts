@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gTileSurfaceArray: Pointer<TILE_IMAGERY>[] /* [NUMBEROFTILETYPES] */;
 export let gbDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
 export let gbSameAsDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
@@ -141,4 +143,6 @@ export function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer
       cnt++;
     }
   }
+}
+
 }

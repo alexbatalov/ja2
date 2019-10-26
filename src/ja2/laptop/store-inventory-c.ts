@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let StoreInventory: UINT8[][] /* [MAXITEMS][BOBBY_RAY_LISTS] */ = [
   //
   // The first column is for Bobby Rays new inventory,					BOBBY_RAY_NEW,
@@ -612,3 +614,5 @@ INT16	CountNumberOfItemsInStoreInventory( UINT8 ubArmsDealerID )
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
+
+}

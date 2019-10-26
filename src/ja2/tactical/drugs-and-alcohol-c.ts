@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let ubDrugTravelRate: UINT8[] /* [] */ = [
   4,
   2,
@@ -368,4 +370,6 @@ export function MercUnderTheInfluence(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 
   return false;
+}
+
 }

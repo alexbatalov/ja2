@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let guiCurrentScreen: UINT32;
 export let guiPendingScreen: UINT32 = NO_PENDING_SCREEN;
 let guiPreviousScreen: UINT32 = NO_PENDING_SCREEN;
@@ -274,4 +276,6 @@ export function EndGameMessageBoxCallBack(bExitValue: UINT8): void {
 
 export function NextLoopCheckForEnoughFreeHardDriveSpace(): void {
   gubCheckForFreeSpaceOnHardDriveCount = 0;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
 
@@ -127,4 +129,6 @@ export function ShutdownJA2(): void {
   RemoveTextMercPopupImages();
 
   ClearOutVehicleList();
+}
+
 }

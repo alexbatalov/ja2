@@ -1,3 +1,5 @@
+namespace ja2 {
+
 ///////////////////////////////////////////////////
 //
 //	Defines
@@ -610,4 +612,6 @@ export function SetSliderValue(uiSliderID: UINT32, uiNewValue: UINT32): void {
     pSlider.value.usCurrentIncrement = uiNewValue;
 
   CalculateNewSliderBoxPosition(pSlider);
+}
+
 }

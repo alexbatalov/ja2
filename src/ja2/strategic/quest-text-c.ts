@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let QuestDescText: STR16[] /* [] */ = [
   "Deliver Letter",
   "Food Route",
@@ -585,3 +587,5 @@ export let FactDescText: STR16[] /* [] */ = [
   "",
   "", // 500
 ];
+
+}

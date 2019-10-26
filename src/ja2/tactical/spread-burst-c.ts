@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAX_BURST_LOCATIONS = 50;
 
 interface BURST_LOCATIONS {
@@ -156,4 +158,6 @@ export function RenderAccumulatedBurstLocations(): void {
       BltVideoObject(FRAME_BUFFER, hVObject, 1, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, null);
     }
   }
+}
+
 }

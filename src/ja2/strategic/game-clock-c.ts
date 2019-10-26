@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#define DEBUG_GAME_CLOCK
 
 // is the clock pause region created currently?
@@ -919,4 +921,6 @@ export function ClearTacticalStuffDueToTimeCompression(): void {
       CencelAllActionsForTimeCompression();
     }
   }
+}
+
 }

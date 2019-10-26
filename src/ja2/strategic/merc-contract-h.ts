@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // enums used for extending contract, etc.
 export const enum Enum161 {
   CONTRACT_EXTEND_1_DAY,
@@ -32,3 +34,5 @@ enum
         REFUSAL_DUE_TO_LACK_OF_FUNDS,
 };
 */
+
+}

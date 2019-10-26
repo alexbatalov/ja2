@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let giCurWinFont: INT32 = 0;
 export let gfUseWinFonts: boolean = false;
 
@@ -307,4 +309,6 @@ export function WFStringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT1
     // return how many Y pixels we used
     return StringPixLength(string, UseFont);
   }
+}
+
 }

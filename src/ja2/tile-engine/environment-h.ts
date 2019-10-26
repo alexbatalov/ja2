@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const ENV_TIME_00 = 0;
 const ENV_TIME_01 = 1;
 const ENV_TIME_02 = 2;
@@ -42,3 +44,5 @@ export const WEATHER_FORECAST_THUNDERSHOWERS = 0x00000020;
 // higher is darker, remember
 export const NORMAL_LIGHTLEVEL_NIGHT = 12;
 export const NORMAL_LIGHTLEVEL_DAY = 3;
+
+}

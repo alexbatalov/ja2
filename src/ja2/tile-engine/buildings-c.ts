@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const ROOF_LOCATION_CHANCE = 8;
 
 export let gubBuildingInfo: UINT8[] /* [WORLD_MAX] */;
@@ -363,4 +365,6 @@ export function SameBuilding(sGridNo1: INT16, sGridNo2: INT16): boolean {
     return false;
   }
   return (gubBuildingInfo[sGridNo1] == gubBuildingInfo[sGridNo2]);
+}
+
 }

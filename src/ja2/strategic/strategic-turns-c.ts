@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_SEC_PER_STRATEGIC_TURN = (NUM_SEC_IN_MIN * 15); // Every fifteen minutes
 
 let guiLastStrategicTime: UINT32 = 0;
@@ -59,4 +61,6 @@ export function HandleStrategicTurn(): void {
 export function HandleStrategicTurnImplicationsOfExitingCombatMode(): void {
   SyncStrategicTurnTimes();
   HandleTacticalEndTurn(GetWorldTotalSeconds());
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // static EmailPtr pEmailList;
 export let pEmailList: EmailPtr;
 /* static */ let pPageList: PagePtr;
@@ -4258,4 +4260,6 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
   }
 
   return true;
+}
+
 }

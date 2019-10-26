@@ -1,3 +1,5 @@
+namespace ja2 {
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Video Surface SGP Module
@@ -142,3 +144,5 @@ export const AddVideoSurface = (a, b) => AddStandardVideoSurface(a, b);
 
 // These blitting functions more-or less encapsolate all of the functionality of DirectDraw
 // Blitting, giving an API layer for portability.
+
+}

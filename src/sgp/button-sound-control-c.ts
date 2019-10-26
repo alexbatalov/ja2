@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
   ButtonList[iButtonID].value.ubSoundSchemeID = bSoundScheme;
   if (bSoundScheme == Enum27.BUTTON_SOUND_SCHEME_GENERIC) {
@@ -156,4 +158,6 @@ export function PlayButtonSound(iButtonID: INT32, iSoundType: INT32): void {
       }
       break;
   }
+}
+
 }

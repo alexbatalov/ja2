@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // GAME BALANCING DEFINITIONS FOR CREATURE SPREADING
 // Hopefully, adjusting these following definitions will ease the balancing of the
 // creature spreading.
@@ -1374,4 +1376,6 @@ export function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Poin
       break;
   }
   return false;
+}
+
 }

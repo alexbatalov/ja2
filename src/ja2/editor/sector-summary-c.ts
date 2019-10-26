@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAP_SIZE = 208;
 const MAP_LEFT = 417;
 const MAP_TOP = 15;
@@ -2651,4 +2653,6 @@ function GetCurrentSummaryVersion(): UINT8 {
     return gpCurrentSectorSummary.value.MapInfo.ubMapVersion;
   }
   return 0;
+}
+
 }

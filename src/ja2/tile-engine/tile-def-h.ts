@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // CATEGORY TYPES
 export const NO_TILE = 64000;
 export const ERASE_TILE = 65000;
@@ -112,4 +114,6 @@ interface land_undo_struct {
   iMapIndex: INT32;
   ubNumLayers: UINT8;
   pIndexValues: Pointer<UINT16>;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let GameScreens: Screens[] /* [MAX_SCREENS] */ = [
   [ EditScreenInit, EditScreenHandle, EditScreenShutdown ],
   [ SavingScreenInitialize, SavingScreenHandle, SavingScreenShutdown ], // Title Screen
@@ -27,3 +29,5 @@ export let GameScreens: Screens[] /* [MAX_SCREENS] */ = [
 
   [ QuestDebugScreenInit, QuestDebugScreenHandle, QuestDebugScreenShutdown ],
 ];
+
+}

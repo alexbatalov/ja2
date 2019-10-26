@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function HandleRPCDescription(): void {
   let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
@@ -177,4 +179,6 @@ export function HandleTacticalEndTurn(): void {
   }
 
   HandleRPCDescription();
+}
+
 }

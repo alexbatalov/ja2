@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const SCRIPT_DELAY = 10;
 const AIR_RAID_SAY_QUOTE_TIME = 3000;
 const AIR_RAID_DIVE_INTERVAL = 10000;
@@ -1154,4 +1156,6 @@ export function EndAirRaid(): void {
   }
 
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Ending Air Raid.");
+}
+
 }

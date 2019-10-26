@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // SO, STEPS IN CREATING A MERC!
 
 // 1 ) Setup the SOLDIERCREATE_STRUCT
@@ -1411,4 +1413,6 @@ export function GetSoldierIDFromMercID(ubMercID: UINT8): INT16 {
   }
 
   return -1;
+}
+
 }

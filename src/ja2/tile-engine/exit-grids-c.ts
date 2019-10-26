@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfLoadingExitGrids: boolean = false;
 
 // used by editor.
@@ -334,4 +336,6 @@ export function FindClosestExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: 
   } else {
     return NOWHERE;
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //
 // This file contains code devoted to the player AI-controlled medical system.  Maybe it
 // can be used or adapted for the enemies too...
@@ -350,4 +352,6 @@ export function DecideAutoBandage(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   // do nothing
   return Enum289.AI_ACTION_NONE;
+}
+
 }

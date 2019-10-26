@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // MODULE FOR SOUND SYSTEM
 
 const SOUND_FAR_VOLUME_MOD = 25;
@@ -931,4 +933,6 @@ export function SetPositionSndsVolumeAndPanning(): void {
       }
     }
   }
+}
+
 }

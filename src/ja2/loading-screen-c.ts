@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gubLastLoadingScreenID: UINT8 = Enum22.LOADINGSCREEN_NOTHING;
 
 // returns the UINT8 ID for the specified sector.
@@ -337,4 +339,6 @@ export function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
   RefreshScreen(null);
+}
+
 }

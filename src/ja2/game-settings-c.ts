@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const GAME_SETTINGS_FILE = "..\\Ja2.set";
 
 const GAME_INI_FILE = "..\\Ja2.ini";
@@ -509,4 +511,6 @@ export function CanGameBeSaved(): boolean {
   } else {
     return true;
   }
+}
+
 }

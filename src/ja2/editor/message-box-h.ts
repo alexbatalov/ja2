@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum52 {
   MESSAGEBOX_NONE,
   MESSAGEBOX_DONE,
@@ -26,3 +28,5 @@ export const enum Enum52 {
 //		else //user selected no
 //		...
 //	}
+
+}

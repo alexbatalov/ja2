@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function MarkMapIndexDirty(iMapIndex: INT32): void {
   gpWorldLevelData[iMapIndex].uiFlags |= MAPELEMENT_REDRAW;
   SetRenderFlags(RENDER_FLAG_MARKED);
@@ -26,4 +28,6 @@ export function CenterScreenAtMapIndex(iMapIndex: INT32): void {
 
 export function MarkWorldDirty(): void {
   SetRenderFlags(RENDER_FLAG_FULL);
+}
+
 }

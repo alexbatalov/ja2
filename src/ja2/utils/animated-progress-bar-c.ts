@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let rStart: double;
 let rEnd: double;
 let rActual: double;
@@ -276,4 +278,6 @@ function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: boolean, fUseS
     // blit everything to the save buffer ( cause the save buffer can bleed through )
     BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, pCurr.value.usBarLeft, pCurr.value.usBarBottom, (pCurr.value.usBarRight - pCurr.value.usBarLeft), usFontHeight);
   }
+}
+
 }

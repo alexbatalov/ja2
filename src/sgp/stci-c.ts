@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
   let hFile: HWFILE;
   let Header: STCIHeader;
@@ -310,4 +312,6 @@ function IsSTCIETRLEFile(ImageFile: Pointer<CHAR8>): boolean {
   } else {
     return false;
   }
+}
+
 }

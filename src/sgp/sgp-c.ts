@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Prototype Declarations
 
 let ghInstance: HINSTANCE;
@@ -432,4 +434,6 @@ function ProcessJa2CommandLineBeforeInitialization(pCommandLine: Pointer<CHAR8>)
   }
 
   MemFree(pCopy);
+}
+
 }

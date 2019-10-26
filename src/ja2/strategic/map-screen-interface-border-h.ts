@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAP_BORDER_START_X = 261;
 const MAP_BORDER_START_Y = 0;
 
@@ -54,3 +56,5 @@ void EnableMapBorderRegion( void );
 */
 
 // void UpdateLevelButtonStates( void );
+
+}

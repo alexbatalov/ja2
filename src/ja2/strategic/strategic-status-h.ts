@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Enemy is allowed to capture the player after certain day
 export const STARTDAY_ALLOW_PLAYER_CAPTURE_FOR_RESCUE = 4;
 
@@ -87,4 +89,6 @@ export interface STRATEGIC_STATUS {
   ubNumberOfDaysOfInactivity: UINT8;
 
   bPadding: INT8[] /* [70] */;
+}
+
 }

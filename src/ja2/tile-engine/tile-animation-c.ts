@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let pAniTileHead: Pointer<ANITILE> = null;
 
 export function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITILE> {
@@ -684,4 +686,6 @@ function PauseAllAniTilesOfType(uiType: UINT32, fPause: boolean): void {
       PauseAniTile(pNode, fPause);
     }
   }
+}
+
 }

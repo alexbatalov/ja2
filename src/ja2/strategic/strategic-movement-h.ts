@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // enemy intentions,
 export const enum Enum184 {
   NO_INTENTIONS, // enemy intentions are undefined.
@@ -118,4 +120,6 @@ export interface GROUP {
   pEnemyGroup: Pointer<ENEMYGROUP>; // a structure containing general enemy info
   /* } */
   next: Pointer<GROUP>; // next group
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // enums for the various destinations that are available in the bobbyR dest drop down box
 export const enum Enum70 {
   BR_AUSTIN,
@@ -32,4 +34,6 @@ export interface NewBobbyRayOrderStruct {
   fDisplayedInShipmentPage: boolean;
 
   ubFiller: UINT8[] /* [7] */;
+}
+
 }

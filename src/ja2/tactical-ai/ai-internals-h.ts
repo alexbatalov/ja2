@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // THIS IS AN ITEM #  - AND FOR NOW JUST COMPLETELY FAKE...
 
 export const MAX_TOSS_SEARCH_DIST = 1; // must throw within this of opponent
@@ -119,3 +121,5 @@ export const FLAG_CAUTIOUS = 0x01;
 export const FLAG_STOPSHORT = 0x02;
 
 export const STOPSHORTDIST = 5;
+
+}

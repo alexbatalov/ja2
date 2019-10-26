@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const ITEM_HANDLE_OK = 1;
 export const ITEM_HANDLE_RELOADING = -1;
 export const ITEM_HANDLE_UNCONSCIOUS = -2;
@@ -60,4 +62,6 @@ export interface ITEM_POOL_LOCATOR {
   Callback: ITEM_POOL_LOCATOR_HOOK;
   fAllocated: boolean;
   ubFlags: UINT8;
+}
+
 }

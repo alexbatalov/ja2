@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const MERC_BUTTON_UP_COLOR = FONT_MCOLOR_WHITE;
 export const MERC_BUTTON_DOWN_COLOR = FONT_MCOLOR_DKWHITE;
 
@@ -43,3 +45,5 @@ export const enum Enum105 {
 
 // extern	UINT32		guiNumberOfMercPaymentsInDays;
 // extern	UINT8			gubNumDaysTillFirstMercArrives;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_MOUSE_LEVELS = 2;
 
 let gsMouseGlobalYOffsets: INT16[] /* [NUM_MOUSE_LEVELS] */ = [
@@ -600,4 +602,6 @@ function GetCursorFileVideoObject(uiCursorFile: UINT32): HVOBJECT {
 }
 
 function SyncPairedCursorFrames(uiSrcIndex: UINT32, uiDestIndex: UINT32): void {
+}
+
 }

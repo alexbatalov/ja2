@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const INS_CMNT_TITLE_Y = 52 + LAPTOP_SCREEN_WEB_UL_Y;
 
 const INS_CMNT_FIRST_BULLET_X = 82 + LAPTOP_SCREEN_UL_X;
@@ -163,4 +165,6 @@ function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT1
   DrawTextToScreen(sText, INS_CMNT_FIRST_BULLET_X + INSURANCE_BULLET_TEXT_OFFSET_X, (usPosY + sNumPixels), INS_CMNT_REDLINE_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   return true;
+}
+
 }

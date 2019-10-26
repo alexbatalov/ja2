@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /*
  * Smell & Blood system
  *
@@ -465,4 +467,6 @@ export function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
     else {
     }
   }
+}
+
 }

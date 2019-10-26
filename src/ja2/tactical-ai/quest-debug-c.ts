@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const QUEST_DEBUG_FILE = "QuestDebug.txt";
 
 // enums used for the current output level flags
@@ -121,4 +123,6 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: STR,
 
   // increment the line number
   uiLineNumber++;
+}
+
 }

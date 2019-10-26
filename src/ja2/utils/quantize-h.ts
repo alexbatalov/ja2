@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface NODE {
   bIsLeaf: boolean; // TRUE if node has no children
   nPixelCount: UINT; // Number of pixels represented by this leaf
@@ -6,4 +8,6 @@ export interface NODE {
   nBlueSum: UINT; // Sum of blue components
   pChild: Pointer<NODE>[] /* [8] */; // Pointers to child nodes
   pNext: Pointer<NODE>; // Pointer to next reducible node
+}
+
 }

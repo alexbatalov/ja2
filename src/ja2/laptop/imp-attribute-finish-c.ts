@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // buttons
 let giIMPAttributeFinishButtonImage: INT32[] /* [2] */;
 let giIMPAttributeFinishButton: INT32[] /* [2] */;
@@ -116,4 +118,6 @@ function BtnIMPAttributeFinishNoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
       fButtonPendingFlag = true;
     }
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NO_JUMP = 0;
 const MAX_ANIFRAMES_PER_FLASH = 2;
 //#define		TIME_FOR_RANDOM_ANIM_CHECK	10
@@ -3358,4 +3360,6 @@ export function KickOutWheelchair(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.ubProfile != NO_PROFILE) {
     gMercProfiles[pSoldier.value.ubProfile].ubBodyType = Enum194.REGMALE;
   }
+}
+
 }

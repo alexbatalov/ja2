@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // COMMON shop keeper quote enums
 export const enum Enum254 {
   // Quotes 0-9 are generic NPC quotes common to everyone and controlled by the normal NPC Dialogue system.
@@ -39,3 +41,5 @@ export const FREDO_QUOTE_CAN_RESET_IMPRINTING = 31;
 export const FREDO_PERKO_SORRY_REPAIR_DELAYED = 29;
 
 export const ARNIE_QUOTE_NOT_REPAIRED_YET = 33;
+
+}

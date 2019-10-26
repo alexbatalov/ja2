@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let guiSplashFrameFade: UINT32 = 10;
 export let guiSplashStartTime: UINT32 = 0;
 
@@ -48,4 +50,6 @@ export function InitJA2SplashScreen(): void {
   RefreshScreen(null);
 
   guiSplashStartTime = GetJA2Clock();
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Defines
 // #######################################################
 const MAX_ANIMATIONS = 320;
@@ -505,4 +507,6 @@ export const enum Enum193 {
   LOCKPICK_CROUCHED,
 
   NUMANIMATIONSTATES,
+}
+
 }

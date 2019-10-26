@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let guiStartupTime: UINT32;
 let guiCurrentTime: UINT32;
 
@@ -40,4 +42,6 @@ function ClockIsTicking(uiTimer: TIMER): UINT32 {
   }
   // Time's up
   return 0;
+}
+
 }

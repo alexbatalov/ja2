@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // IMP personality entrance buttons
 let giIMPPersonalityEntranceButton: INT32[] /* [1] */;
 let giIMPPersonalityEntranceButtonImage: INT32[] /* [1] */;
@@ -73,4 +75,6 @@ function BtnIMPPersonalityEntranceDoneCallback(btn: Pointer<GUI_BUTTON>, reason:
       fButtonPendingFlag = true;
     }
   }
+}
+
 }

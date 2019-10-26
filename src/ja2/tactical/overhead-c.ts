@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const RT_DELAY_BETWEEN_AI_HANDLING = 50;
 const RT_AI_TIMESLICE = 10;
 
@@ -6363,4 +6365,6 @@ function DoCreatureTensionQuote(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (fCanDoQuote) {
     TacticalCharacterDialogue(pSoldier, iQuoteToUse);
   }
+}
+
 }

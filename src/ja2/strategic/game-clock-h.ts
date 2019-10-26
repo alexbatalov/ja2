@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // where the time string itself is rendered
 export const CLOCK_X = 554;
 export const CLOCK_Y = 459;
@@ -47,4 +49,6 @@ export const enum Enum131 {
   WARPTIME_NO_PROCESSING_OF_EVENTS,
   WARPTIME_PROCESS_EVENTS_NORMALLY,
   WARPTIME_PROCESS_TARGET_TIME_FIRST,
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // min time btween frames of animation
 const ANIMATE_MIN_TIME = 200;
 
@@ -490,4 +492,6 @@ function FinishMessageBoxCallBack(bExitValue: UINT8): void {
   }
 
   return;
+}
+
 }

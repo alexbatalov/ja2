@@ -1,3 +1,5 @@
+namespace ja2 {
+
 interface BobbyROrderLocationStruct {
   psCityLoc: Pointer<STR16>;
   usOverNightExpress: UINT16;
@@ -2047,4 +2049,6 @@ export function NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): bo
   }
 
   return true;
+}
+
 }

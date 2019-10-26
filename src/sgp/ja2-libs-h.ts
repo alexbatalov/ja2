@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // enums used for accessing the libraries
 export const enum Enum30 {
   LIBRARY_DATA,
@@ -46,4 +48,6 @@ export const enum Enum30 {
 // #endif
 
   NUMBER_OF_LIBRARIES,
+}
+
 }

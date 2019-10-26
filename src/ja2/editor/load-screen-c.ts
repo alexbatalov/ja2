@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //===========================================================================
 
 export let gfErrorCatch: boolean = false;
@@ -944,4 +946,6 @@ export function ExternalSaveMap(szFilename: Pointer<UINT16>): boolean {
   if (ProcessFileIO() == Enum26.EDIT_SCREEN)
     return true;
   return false;
+}
+
 }

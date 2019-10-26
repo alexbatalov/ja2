@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // FUNCTIONALITY:
 // This popup menu functions IDENTICALLY to Windows95's methodology.  You can use the arrow keys, or the
 // mouse in two methods.  The first method is where you release the mouse button before
@@ -412,4 +414,6 @@ export function ProcessPopupMenuIfActive(): boolean {
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
   return true;
+}
+
 }

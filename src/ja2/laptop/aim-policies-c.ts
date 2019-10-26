@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_AIM_POLICY_PAGES = 11;
 const NUM_AIM_POLICY_TOC_BUTTONS = 9;
 const AIMPOLICYFILE = "BINARYDATA\\AimPol.edt";
@@ -727,4 +729,6 @@ function ChangingAimPoliciesSubPage(ubSubPageNumber: UINT8): void {
     fConnectingToSubPage = true;
     fFastLoadFlag = true;
   }
+}
+
 }

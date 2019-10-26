@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const FILES_DAT_FILE = "TEMP\\files.dat";
 
 export interface FilesUnit {
@@ -45,3 +47,5 @@ export interface FileRecordWidth {
 }
 
 export type FileRecordWidthPtr = Pointer<FileRecordWidth>;
+
+}

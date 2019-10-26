@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MERC_TEXT_FONT = () => FONT12ARIAL();
 const MERC_TEXT_COLOR = FONT_MCOLOR_WHITE;
 
@@ -2149,4 +2151,6 @@ function CalcMercDaysServed(): UINT32 {
     uiDaysServed += gMercProfiles[ubMercID].usTotalDaysServed;
   }
   return uiDaysServed;
+}
+
 }

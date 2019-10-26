@@ -1,3 +1,5 @@
+namespace ja2 {
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Local Defines
@@ -2569,4 +2571,6 @@ function RefreshMovieCache(): void {
 
   strcat(ExecDir, "\\Data");
   SetFileManCurrentDirectory(ExecDir);
+}
+
 }

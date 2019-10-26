@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const ENEMYAMMODROPRATE = 50; // % of time enemies drop ammunition
 const ENEMYGRENADEDROPRATE = 25; // % of time enemies drop grenades
 const ENEMYEQUIPDROPRATE = 15; // % of stuff enemies drop equipment
@@ -1863,4 +1865,6 @@ function EquipTank(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
 
 export function ResetMortarsOnTeamCount(): void {
   guiMortarsRolledByTeam = 0;
+}
+
 }

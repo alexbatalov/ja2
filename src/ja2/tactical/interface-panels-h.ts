@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum220 {
   STANCEUP_BUTTON = 0,
   UPDOWN_BUTTON,
@@ -39,3 +41,5 @@ interface TEAM_PANEL_SLOTS_TYPE {
 }
 
 // void DisableSMPpanelButtonsWhenInShopKeeperInterface( );
+
+}

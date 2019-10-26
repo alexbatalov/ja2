@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // This table controls the order items appear in inventory at BR's and dealers, and which kinds of items are sold used
 let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = [
   //  item class					weapon class	sold used?
@@ -1206,4 +1208,6 @@ export function CanDealerItemBeSoldUsed(usItemIndex: UINT16): boolean {
 
   // certain items, although they're damagable, shouldn't be sold in a used condition
   return DealerItemSortInfo[GetDealerItemCategoryNumber(usItemIndex)].fAllowUsed;
+}
+
 }

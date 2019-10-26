@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Make sure to refer to the translation table which is within one of the following files (depending
 // on the language used). ENGLISH.C, JAPANESE.C, FRENCH.C, GERMAN.C, SPANISH.C, etc...
 
@@ -1312,4 +1314,6 @@ function GetMouseWheelDeltaValue(wParam: UINT32): INT16 {
   let sDelta: INT16 = HIWORD(wParam);
 
   return sDelta / WHEEL_DELTA;
+}
+
 }

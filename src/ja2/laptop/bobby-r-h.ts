@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const BOBBYR_BACKGROUND_WIDTH = 125;
 export const BOBBYR_BACKGROUND_HEIGHT = 100;
 export const BOBBYR_NUM_HORIZONTAL_TILES = 4;
@@ -27,3 +29,5 @@ extern	UINT16  gusFirstUsedIndex;
 extern	UINT16  gusLastUsedIndex;
 extern	UINT8		gubNumUsedPages;
 */
+
+}

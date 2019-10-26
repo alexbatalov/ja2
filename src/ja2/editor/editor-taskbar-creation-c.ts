@@ -1,3 +1,5 @@
+namespace ja2 {
+
 function InitEditorItemStatsButtons(): void {
   iEditorButton[Enum32.ITEMSTATS_PANEL] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 480, 361, 160, 99, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iEditorButton[Enum32.ITEMSTATS_PANEL], Enum29.DISABLED_STYLE_NONE);
@@ -459,4 +461,6 @@ export function CreateEditorTaskbarInternal(): void {
   InitEditorMapInfoToolbar();
   InitEditorOptionsToolbar();
   InitEditorItemStatsButtons();
+}
+
 }

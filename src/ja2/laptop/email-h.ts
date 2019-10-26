@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // defines
 const MAX_EMAIL_LINES = 10; // max number of lines can be shown in a message
 export const MAX_MESSAGES_PAGE = 18; // max number of messages per page
@@ -232,3 +234,5 @@ export const CHECK_Y = 13;
 export const VIEWER_X = 155;
 export const VIEWER_Y = 70 + 21;
 export const MAIL_STRING_SIZE = 640;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gfShowExitGrids: boolean = false;
 
 export function SetEditorItemsTaskbarMode(usNewMode: UINT16): void {
@@ -339,4 +341,6 @@ export function SetEditorSmoothingMode(ubNewMode: UINT8): void {
       break;
   }
   gMapInformation.ubEditorSmoothingType = ubNewMode;
+}
+
 }

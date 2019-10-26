@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // the delay for a group about to arrive
 const ABOUT_TO_ARRIVE_DELAY = 5;
 
@@ -4132,4 +4134,6 @@ function NumberMercsInVehicleGroup(pGroup: Pointer<GROUP>): UINT8 {
     return GetNumberInVehicle(iVehicleID);
   }
   return 0;
+}
+
 }

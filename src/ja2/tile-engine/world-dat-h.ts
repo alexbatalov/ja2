@@ -1,3 +1,5 @@
+namespace ja2 {
+
 type TILESET_CALLBACK = () => void;
 
 export interface TILESET {
@@ -5,4 +7,6 @@ export interface TILESET {
   TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
   ubAmbientID: UINT8;
   MovementCostFnc: TILESET_CALLBACK;
+}
+
 }

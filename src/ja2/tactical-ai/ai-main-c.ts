@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gubAICounter: UINT8;
 
 //
@@ -2119,4 +2121,6 @@ function HandleAITacticalTraversal(pSoldier: Pointer<SOLDIERTYPE>): void {
     TacticalRemoveSoldier(pSoldier.value.ubID);
   }
   CheckForEndOfBattle(true);
+}
+
 }

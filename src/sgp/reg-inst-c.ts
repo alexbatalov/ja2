@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //**************************************************************************
 //
 // Filename :	RegInst.c
@@ -338,4 +340,6 @@ function WriteProfileBinary(lpszSection: STR, lpszEntry: STR, pData: LPBYTE, nBy
   //	delete[] lpsz;
   //	return bResult;
   return true;
+}
+
 }

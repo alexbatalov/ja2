@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // effects whether or not time of day effects the lighting.  Underground
 // maps have an ambient light level that is saved in the map, and doesn't change.
 export let gfBasement: boolean = false;
@@ -479,4 +481,6 @@ export function SectorTemperature(uiTime: UINT32, sSectorX: INT16, sSectorY: INT
   } else {
     return gubGlobalTemperature;
   }
+}
+
 }

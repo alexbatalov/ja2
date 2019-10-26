@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //
 // CJC DG->JA2 conversion notes
 //
@@ -1932,4 +1934,6 @@ export function AdvanceToFiringRange(pSoldier: Pointer<SOLDIERTYPE>, sClosestOpp
   pSoldier.value.bActionPoints = bTrueActionPoints;
 
   return usActionData;
+}
+
 }

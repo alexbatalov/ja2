@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gubDoorUIValue: UINT8 = 0;
 let gubWindowUIValue: UINT8 = 0;
 export let gubWallUIValue: UINT8 = Enum313.FIRSTWALL;
@@ -531,4 +533,6 @@ export function PasteSmartBrokenWall(iMapIndex: UINT32): void {
     }
     // Calculate the new graphic for the window type selected.
   }
+}
+
 }

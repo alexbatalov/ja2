@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // directions of movement for badsector determination ( blocking off of a sector exit from foot or vehicle travel)
 
 // Shortest Path Defines
@@ -32,3 +34,5 @@ UINT32 GetEtaGivenRoute( PathStPtr pPath );
 /*
 BOOLEAN MoveGroupToOriginalSector( UINT8 ubGroupID );
 */
+
+}

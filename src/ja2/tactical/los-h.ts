@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#define LOS_DEBUG
 
 // fixed-point arithmetic definitions start here
@@ -105,3 +107,5 @@ export const CLOSE_TO_FIRER = 25;
 const VERY_CLOSE_TO_FIRER = 21;
 
 // BOOLEAN FireBullet2( SOLDIERTYPE * pFirer, FLOAT dEndX, FLOAT dEndY, FLOAT dEndZ, INT16 sHitBy );
+
+}

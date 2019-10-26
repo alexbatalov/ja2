@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // MACROS
 export const RPC_RECRUITED = (p) => ((p.value.ubProfile == NO_PROFILE) ? false : (gMercProfiles[p.value.ubProfile].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED));
 
@@ -21,3 +23,5 @@ export const CREATURE_OR_BLOODCAT = (p) => ((p.value.uiStatusFlags & SOLDIER_MON
 export const TANK = (p) => (p.value.ubBodyType == Enum194.TANK_NE || p.value.ubBodyType == Enum194.TANK_NW);
 
 export const OK_ENTERABLE_VEHICLE = (p) => ((p.value.uiStatusFlags & SOLDIER_VEHICLE) && !TANK(p) && p.value.bLife >= OKLIFE);
+
+}

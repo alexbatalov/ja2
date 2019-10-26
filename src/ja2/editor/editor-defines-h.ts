@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum35 {
   TBAR_MODE_NONE,
   TBAR_MODE_DRAW,
@@ -213,3 +215,5 @@ export const enum Enum38 {
 
 export const MERCPANEL_X = 177;
 export const MERCPANEL_Y = 361;
+
+}

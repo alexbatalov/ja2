@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export class CQuantizer {
   protected m_pTree: Pointer<NODE>;
   protected m_nLeafCount: UINT;
@@ -185,4 +187,6 @@ export class CQuantizer {
     let nIndex: UINT = 0;
     GetPaletteColors(m_pTree, prgb, addressof(nIndex));
   }
+}
+
 }

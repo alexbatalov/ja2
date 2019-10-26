@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NETWORK_PATH_DATA_SIZE = 6;
 // Enumerate all events for JA2
 export const enum Enum319 {
@@ -190,4 +192,6 @@ interface EV_S_UPDATENETWORKSOLDIER {
   sAtGridNo: INT16; // Owner merc is at this tile when sending packet
   bActionPoints: INT8; // current A.P. value
   bBreath: INT8; // current breath value
+}
+
 }

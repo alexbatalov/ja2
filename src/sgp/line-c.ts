@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //**************************************************************************
 //
 //				Example Usage
@@ -599,4 +601,6 @@ function DrawVerticalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunL
   /* Advance to the next column */
   WorkingScreenPtr += XAdvance;
   ScreenPtr.value = WorkingScreenPtr;
+}
+
 }

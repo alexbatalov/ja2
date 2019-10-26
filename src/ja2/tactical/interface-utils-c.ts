@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const LIFE_BAR_SHADOW = () => FROMRGB(108, 12, 12);
 const LIFE_BAR = () => FROMRGB(200, 0, 0);
 const BANDAGE_BAR_SHADOW = () => FROMRGB(156, 60, 60);
@@ -390,4 +392,6 @@ export function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16,
     //}
     RestoreExternBackgroundRect(sFaceX, sFaceY, FACE_WIDTH, FACE_HEIGHT);
   }
+}
+
 }

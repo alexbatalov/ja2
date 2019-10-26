@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let uiMusicHandle: UINT32 = NO_SAMPLE;
 let uiMusicVolume: UINT32 = 50;
 let fMusicPlaying: boolean = false;
@@ -429,4 +431,6 @@ function DoneFadeOutDueToEndMusic(): void {
   // Quit game....
   InternalLeaveTacticalScreen(Enum26.MAINMENU_SCREEN);
   // SetPendingNewScreen( MAINMENU_SCREEN );
+}
+
 }

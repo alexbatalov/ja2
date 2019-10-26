@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface ScrollStringSt {
   pString16: STR16;
   iVideoOverlay: INT32;
@@ -47,3 +49,5 @@ BOOLEAN IsThisTheLastMessageInTheList( void );
 BOOLEAN IsThisTheFirstMessageInTheList( void );
 void DisplayLastMessage( void );
 */
+
+}

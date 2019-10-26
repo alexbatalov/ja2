@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_ITEMS_LISTED = 8;
 const NUM_ITEM_FLASH_SLOTS = 50;
 const MIN_LOB_RANGE = 6;
@@ -4058,4 +4060,6 @@ export function CanPlayerUseRocketRifle(pSoldier: Pointer<SOLDIERTYPE>, fDisplay
     }
   }
   return true;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // TERRAIN
 export function BtnFgGrndCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -1010,4 +1012,6 @@ export function ItemStatsToggleHideCallback(btn: Pointer<GUI_BUTTON>, reason: IN
 export function ItemStatsDeleteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     ExecuteItemStatsCmd(Enum48.ITEMSTATS_DELETE);
+}
+
 }

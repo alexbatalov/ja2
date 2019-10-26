@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const INSURANCE_TEXT_SINGLE_LINE_SIZE = 80 * 2;
 
 export const INSURANCE_TEXT_MULTI_LINE_SIZE = 5 * 80 * 2;
@@ -80,4 +82,6 @@ export const enum Enum90 {
   INS_MLTI_ALL_AIM_MERCS_ON_SHORT_CONTRACT,
   INS_MLTI_1_HOUR_EXCLUSION_A,
   INS_MLTI_1_HOUR_EXCLUSION_B,
+}
+
 }

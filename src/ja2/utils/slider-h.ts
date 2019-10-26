@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const SLIDER_VERTICAL = 0x00000001;
 export const SLIDER_HORIZONTAL = 0x00000002;
 
@@ -23,3 +25,5 @@ sPriority
 SliderChangeCallback
         void SliderChangeCallBack( INT32 iNewValue )
 */
+
+}

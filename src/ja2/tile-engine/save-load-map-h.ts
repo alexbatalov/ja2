@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Used for the ubType in the MODIFY_MAP struct
 export const enum Enum307 {
   SLM_NONE,
@@ -46,4 +48,6 @@ export interface MODIFY_MAP {
   ubType: UINT8; // the layer it will be applied to
 
   ubExtra: UINT8; // Misc. variable used to strore arbritary values
+}
+
 }

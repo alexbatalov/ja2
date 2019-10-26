@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Used by PickGridNoToWalkIn
 const MAX_ATTEMPTS = 200;
 
@@ -3829,4 +3831,6 @@ function HandlePotentialMoraleHitForSkimmingSectors(pGroup: Pointer<GROUP>): voi
       pPlayer = pPlayer.value.next;
     }
   }
+}
+
 }

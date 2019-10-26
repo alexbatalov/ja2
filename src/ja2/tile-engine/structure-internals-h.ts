@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //
 // If you wish to use the structure database functions, include
 // structure_extern.h, not structure.h!
@@ -221,3 +223,5 @@ export const STRUCTURE_FILE_EXTENSION = "JSD";
 
 export const STRUCTURE_FILE_CONTAINS_AUXIMAGEDATA = 0x01;
 export const STRUCTURE_FILE_CONTAINS_STRUCTUREDATA = 0x02;
+
+}

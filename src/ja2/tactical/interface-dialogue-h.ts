@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Structure used in Tactical display of NPC dialogue
 export interface NPC_DIALOGUE_TYPE {
   iFaceIndex: INT32;
@@ -291,3 +293,5 @@ export const enum Enum213 {
 }
 
 export const HOSPITAL_PATIENT_DISTANCE = 9;
+
+}

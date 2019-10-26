@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): boolean {
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
@@ -315,4 +317,6 @@ export function GetWeightBasedOnMetricOption(uiObjectWeight: UINT32): FLOAT {
   }
 
   return fWeight;
+}
+
 }

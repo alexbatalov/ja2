@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const BORDER_WIDTH = 16;
 const BORDER_HEIGHT = 8;
 const TOP_LEFT_CORNER = 0;
@@ -1376,4 +1378,6 @@ function RemoveCurrentBoxSecondaryText(hStringHandle: INT32): void {
     MemFree(PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle]);
     PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle] = null;
   }
+}
+
 }

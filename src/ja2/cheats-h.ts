@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // GLOBALS FOR CHEAT MODE......
 // FIXME: Language-specific code
 // #ifdef GERMAN
@@ -37,3 +39,5 @@ export const DEBUG_CHEAT_LEVEL = () => (gubCheatLevel >= 6);
 
 export const RESET_CHEAT_LEVEL = () => (gubCheatLevel = 0);
 // #endif
+
+}

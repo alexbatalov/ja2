@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let guiBOTTOMPANEL: UINT32 = 0;
 let guiRIGHTPANEL: UINT32 = 0;
 export let guiRENDERBUFFER: UINT32 = 0;
@@ -31,4 +33,6 @@ export function InitializeGameVideoObjects(): boolean {
   guiRENDERBUFFER = FRAME_BUFFER;
 
   return true;
+}
+
 }

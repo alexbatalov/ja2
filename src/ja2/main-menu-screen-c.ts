@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAINMENU_TEXT_FILE = "LoadScreens\\MainMenu.edt";
 const MAINMENU_RECORD_SIZE = 80 * 2;
 
@@ -503,4 +505,6 @@ function RestoreButtonBackGrounds(): void {
   for (cnt = 0; cnt < Enum23.NUM_MENU_ITEMS; cnt++) {
     RestoreExternBackgroundRect((320 - gusMainMenuButtonWidths[cnt] / 2), (MAINMENU_Y + (cnt * MAINMENU_Y_SPACE) - 1), (gusMainMenuButtonWidths[cnt] + 1), 23);
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // used by editor
 export let gfShowPits: boolean = false;
 
@@ -226,4 +228,6 @@ export function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
   HandleSoldierLeavingSectorByThemSelf(pSoldier);
 
   SetSoldierHeight(pSoldier, 0);
+}
+
 }

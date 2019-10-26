@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Global dynamic array of all of the items in a loaded map.
 export let gWorldItems: Pointer<WORLDITEM> = null;
 export let guiNumWorldItems: UINT32 = 0;
@@ -480,4 +482,6 @@ export function RefreshWorldItemsIntoItemPools(pItemList: Pointer<WORLDITEM>, iN
       AddItemToPool(dummyItem.sGridNo, addressof(dummyItem.o), dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel);
     }
   }
+}
+
 }

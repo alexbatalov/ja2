@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAX_DEBUG_PAGES = 4;
 
 // GLOBAL FOR PAL EDITOR
@@ -708,4 +710,6 @@ export function DemoExitScreenHandle(): UINT32 {
 
 export function DemoExitScreenShutdown(): UINT32 {
   return true;
+}
+
 }

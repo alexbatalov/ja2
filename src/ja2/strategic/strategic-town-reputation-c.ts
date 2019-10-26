@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // init for town reputation at game start
 const INITIAL_TOWN_REPUTATION = 0;
 
@@ -157,3 +159,5 @@ void HandleSpreadOfTownsOpinionForCurrentMercs( void )
         return;
 }
 */
+
+}

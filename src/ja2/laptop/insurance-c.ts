@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const INSURANCE_BACKGROUND_WIDTH = 125;
 const INSURANCE_BACKGROUND_HEIGHT = 100;
 
@@ -322,4 +324,6 @@ function SelectInsuranceTitleLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // BOOLEAN fIMPCompletedFlag = FALSE;
 export let fReDrawCharProfile: boolean = false;
 export let fButtonPendingFlag: boolean = false;
@@ -598,4 +600,6 @@ function HasTheCurrentIMPPageBeenVisited(): boolean {
   Assert(iCurrentImpPage <= Enum71.IMP_NUM_PAGES);
 
   return fVisitedIMPSubPages[iCurrentImpPage];
+}
+
 }

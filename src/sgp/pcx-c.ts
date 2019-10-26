@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Local typedefs
 
 const PCX_NORMAL = 1;
@@ -308,4 +310,6 @@ function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): b
   }
 
   return true;
+}
+
 }

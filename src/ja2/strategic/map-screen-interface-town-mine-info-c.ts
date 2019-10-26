@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const BOX_BUTTON_WIDTH = 100;
 const BOX_BUTTON_HEIGHT = 20;
 
@@ -724,4 +726,6 @@ function MinWidthOfTownMineInfoBox(): void {
   DeleteVideoObjectFromIndex(uiObject);
 
   return;
+}
+
 }

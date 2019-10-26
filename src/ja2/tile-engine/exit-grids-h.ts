@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // for exit grids (object level)
 export interface EXITGRID {
   // if an item pool is also in same gridno, then this would be a separate levelnode
@@ -6,4 +8,6 @@ export interface EXITGRID {
   ubGotoSectorX: UINT8;
   ubGotoSectorY: UINT8;
   ubGotoSectorZ: UINT8;
+}
+
 }

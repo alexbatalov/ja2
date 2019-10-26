@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Sample status flags
 export const SAMPLE_ALLOCATED = 0x00000001;
 export const SAMPLE_LOCKED = 0x00000002;
@@ -179,4 +181,6 @@ const enum Enum31 {
   EAXROOMTYPE_UNDERWATER,
 
   EAXROOMTYPE_NUM_TYPES,
+}
+
 }

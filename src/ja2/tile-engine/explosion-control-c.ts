@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // MODULE FOR EXPLOSIONS
 
 let ubTransKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = [
@@ -2850,4 +2852,6 @@ export function RemoveAllActiveTimedBombs(): void {
       RemoveItemFromWorld(iItemIndex);
     }
   } while (iItemIndex != -1);
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //
 // AIM defines
 //
@@ -71,4 +73,6 @@ export const enum Enum63 {
   AIM_COPYRIGHT_1,
   AIM_COPYRIGHT_2,
   AIM_COPYRIGHT_3,
+}
+
 }

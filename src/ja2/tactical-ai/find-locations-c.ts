@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gubAIPathCosts: INT8[][] /* [19][19] */;
 
 function CalcPercentBetter(iOldValue: INT32, iNewValue: INT32, iOldScale: INT32, iNewScale: INT32): INT32 {
@@ -2001,4 +2003,6 @@ export function FindNearestOpenableNonDoor(sStartGridNo: INT16): INT16 {
   }
 
   return sClosestSpot;
+}
+
 }

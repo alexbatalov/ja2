@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gsBoxerGridNo: INT16[] /* [NUM_BOXERS] */ = [
   11393,
   11233,
@@ -408,4 +410,6 @@ export function ClearAllBoxerFlags(): void {
       MercSlots[uiSlot].value.uiStatusFlags &= ~(SOLDIER_BOXER);
     }
   }
+}
+
 }

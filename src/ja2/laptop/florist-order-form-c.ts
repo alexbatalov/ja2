@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const FLOWER_ORDEER_TINY_FONT = () => FONT10ARIAL();
 const FLOWER_ORDEER_SMALL_FONT = () => FONT12ARIAL();
 const FLOWER_ORDEER_BIG_FONT = () => FONT12ARIAL();
@@ -1084,4 +1086,6 @@ export function InitFloristOrderForm(): void {
 
   gsSentimentTextField[0] = 0;
   gsNameTextField[0] = 0;
+}
+
 }

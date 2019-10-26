@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const EMPTY_SLOT = -1;
 const TO_INIT = 0;
 
@@ -1051,4 +1053,6 @@ export function ZeroAnimSurfaceCounts(): void {
   }
 
   memset(gbAnimUsageHistory, 0, sizeof(gbAnimUsageHistory));
+}
+
 }

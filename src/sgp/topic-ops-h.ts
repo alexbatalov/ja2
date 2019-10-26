@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // debug levels
 
 export const DBG_LEVEL_0 = 0; // for registering and unregistering topics only
@@ -18,3 +20,5 @@ const CLIENT_SHUTDOWN = 4;
 const SYSTEM_SHUTDOWN = 0;
 const MODULE_RESET = 1;
 const SET_DEBUG_LEVEL = 2;
+
+}

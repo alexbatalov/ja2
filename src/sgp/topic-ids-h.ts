@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // YOU MUST KEEP THIS VARIABLE UP TO DATE !!!!
 
 const NUM_TOPIC_IDS = 23;
@@ -26,3 +28,5 @@ const NUM_TOPIC_IDS = 23;
 #define TOPIC_BLIT_QUEUE						21
 #define TOPIC_JA2OPPLIST						22
 */
+
+}

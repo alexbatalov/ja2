@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //*****************************************************************************************************
 //	Button System.h
 //
@@ -166,3 +168,5 @@ export const enum Enum29 {
 }
 
 export const DEFAULT_MOVE_CALLBACK = () => BtnGenericMouseMoveButtonCallback;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const ITEMDESC_FONT = () => BLOCKFONT2();
 const ITEMDESC_FONTSHADOW1 = MILITARY_SHADOW;
 const ITEMDESC_FONTSHADOW2 = 32;
@@ -5849,4 +5851,6 @@ export function UpdateItemHatches(): void {
   if (pSoldier != null) {
     ReevaluateItemHatches(pSoldier, (gpItemPointer == null));
   }
+}
+
 }

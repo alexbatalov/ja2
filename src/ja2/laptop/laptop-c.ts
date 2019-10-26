@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // icons text id's
 const enum Enum91 {
   MAIL = 0,
@@ -5079,4 +5081,6 @@ export function CreateFileAndNewEmailIconFastHelpText(uiHelpTextID: UINT32, fCle
 
 function CreateLaptopButtonHelpText(iButtonIndex: INT32, uiButtonHelpTextID: UINT32): void {
   SetButtonFastHelpText(iButtonIndex, gzLaptopHelpText[uiButtonHelpTextID]);
+}
+
 }

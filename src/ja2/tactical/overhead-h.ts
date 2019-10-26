@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const ADD_SOLDIER_NO_PROFILE_ID = 200;
 
 export const MAX_REALTIME_SPEED_VAL = 10;
@@ -168,3 +170,5 @@ export interface TacticalStatusType {
 
 export const REASON_NORMAL_ATTACK = 1;
 export const REASON_EXPLOSION = 2;
+
+}

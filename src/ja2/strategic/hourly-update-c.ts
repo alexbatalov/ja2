@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function HandleMinuteUpdate(): void {
 }
 
@@ -240,4 +242,6 @@ function HourlyCheckIfSlayAloneSoHeCanLeave(): void {
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP, 0, 0);
     }
   }
+}
+
 }

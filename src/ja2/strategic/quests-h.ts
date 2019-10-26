@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //  Quest.ubStatus values
 export const QUESTNOTSTARTED = 0;
 export const QUESTINPROGRESS = 1;
@@ -525,3 +527,5 @@ export const IN_KINGPIN_HOUSE = (room) => (gWorldSectorX == 5 && gWorldSectorY =
 export const LOYALTY_LOW_THRESHOLD = 30;
 export const LOYALTY_OK_THRESHOLD = 50;
 export const LOYALTY_HIGH_THRESHOLD = 80;
+
+}

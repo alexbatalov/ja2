@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const DEFAULT_MORALE = 50;
 
 export const enum Enum234 {
@@ -47,4 +49,6 @@ export const enum Enum235 {
 export interface MoraleEvent {
   ubType: UINT8;
   bChange: INT8;
+}
+
 }

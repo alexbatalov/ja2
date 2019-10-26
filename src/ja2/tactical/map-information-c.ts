@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Don't mess with this value, unless you want to force update all maps in the game!
 // FIXME: Language-specific code
 // #ifdef RUSSIAN
@@ -251,4 +253,6 @@ export function UpdateSummaryInfo(pSummary: Pointer<SUMMARYFILE>): void {
   if (pSummary.value.MapInfo.ubMapVersion < 16) {
     pSummary.value.MapInfo.sIsolatedGridNo = -1;
   }
+}
+
 }

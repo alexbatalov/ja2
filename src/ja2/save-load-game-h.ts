@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const BYTESINMEGABYTE = 1048576; // 1024*1024
 export const REQUIRED_FREE_SPACE = (20 * BYTESINMEGABYTE);
 
@@ -39,4 +41,6 @@ export interface SAVED_GAME_HEADER {
   uiRandom: UINT32;
 
   ubFiller: UINT8[] /* [110] */;
+}
+
 }

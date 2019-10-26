@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /////////////////////////////////
 //
 //	Defines
@@ -1017,4 +1019,6 @@ function SelectedToggleBoxAreaRegionMovementCallBack(pRegion: Pointer<MOUSE_REGI
 
     InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   }
+}
+
 }

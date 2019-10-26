@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let szClipboard: Pointer<UINT16>;
 export let gfNoScroll: boolean = false;
 
@@ -1463,4 +1465,6 @@ function DoublePercentileCharacterFromStringIntoString(pSrcString: Pointer<UINT1
     iSrcIndex++, iDstIndex++;
   }
   pDstString[iDstIndex] = 0;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const NUM_PROFILES = 170;
 export const FIRST_RPC = 57;
 export const FIRST_NPC = 75;
@@ -343,3 +345,5 @@ export const TIME_BETWEEN_HATED_COMPLAINTS = 24;
 
 export const SUSPICIOUS_DEATH = 1;
 export const VERY_SUSPICIOUS_DEATH = 2;
+
+}

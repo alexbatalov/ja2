@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gubVehicleMovementGroups: INT8[] /* [MAX_VEHICLES] */;
 
 // the list of vehicles
@@ -2051,4 +2053,6 @@ export function DoesVehicleGroupHaveAnyPassengers(pGroup: Pointer<GROUP>): boole
   }
 
   return DoesVehicleHaveAnyPassengers(iVehicleID);
+}
+
 }

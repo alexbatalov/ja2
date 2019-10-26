@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // temp
 interface SKIRGBCOLOR {
   ubRed: UINT8;
@@ -6152,4 +6154,6 @@ function HatchOutInvSlot(usPosX: UINT16, usPosY: UINT16): void {
   // Hatch it out
   DrawHatchOnInventory(guiRENDERBUFFER, usSlotX, usSlotY, usSlotWidth, usSlotHeight);
   InvalidateRegion(usSlotX, usSlotY, usSlotX + usSlotWidth, usSlotY + usSlotHeight);
+}
+
 }

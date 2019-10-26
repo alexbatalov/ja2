@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const HISTORY_DATA_FILE = "TEMP\\History.dat";
 
 // the financial structure
@@ -95,3 +97,5 @@ export const enum Enum83 {
 }
 
 export type HistoryUnitPtr = Pointer<HistoryUnit>;
+
+}

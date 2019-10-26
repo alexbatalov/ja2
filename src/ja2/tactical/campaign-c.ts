@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // give pSoldier usNumChances to improve ubStat.  If it's from training, it doesn't count towards experience level gain
 export function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
   Assert(pSoldier != null);
@@ -1224,4 +1226,6 @@ export function MERCMercWentUpALevelSendEmail(ubMercMercIdValue: UINT8): void {
 
   ubEmailOffset = MERC_UP_LEVEL_BIFF + MERC_UP_LEVEL_LENGTH_BIFF * (ubMercMercIdValue);
   AddEmail(ubEmailOffset, MERC_UP_LEVEL_LENGTH_BIFF, Enum75.SPECK_FROM_MERC, GetWorldTotalMin());
+}
+
 }

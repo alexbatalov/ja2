@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface RGBValues {
   r: UINT8;
   g: UINT8;
@@ -76,4 +78,6 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
       pData.value = bBest;
     }
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // External globals
 export let gubFilename: UINT8[] /* [200] */;
 export let gfEditMode: boolean = false;
@@ -21,4 +23,6 @@ export function SET_ERROR(String: Pointer<char>, ...args: any[]): boolean {
   gfGlobalError = true;
 
   return false;
+}
+
 }

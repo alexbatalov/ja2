@@ -1,3 +1,5 @@
+namespace ja2 {
+
 interface SAVE_SQUAD_INFO_STRUCT {
   uiID: INT16; // The soldiers ID
   sPadding: INT16[] /* [5] */;
@@ -1251,4 +1253,6 @@ export function CheckSquadMovementGroups(): void {
       pGroup.value.fPersistant = true;
     }
   }
+}
+
 }

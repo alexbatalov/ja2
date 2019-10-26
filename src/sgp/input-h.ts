@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const SCAN_CODE_MASK = 0xff0000;
 export const EXT_CODE_MASK = 0x01000000;
 export const TRANSITION_MASK = 0x80000000;
@@ -67,3 +69,5 @@ export const _EvMouseY = (a) => ((((a)).value.uiParam & 0xffff0000) >> 16);
 const _EvShiftDown = (a) => (((a)).value.usKeyState & SHIFT_DOWN);
 const _EvCtrlDown = (a) => (((a)).value.usKeyState & CTRL_DOWN);
 const _EvAltDown = (a) => (((a)).value.usKeyState & ALT_DOWN);
+
+}

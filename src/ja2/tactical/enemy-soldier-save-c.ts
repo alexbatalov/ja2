@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfRestoringEnemySoldiersFromTempFile: boolean = false;
 let gfRestoringCiviliansFromTempFile: boolean = false;
 
@@ -1608,4 +1610,6 @@ FAIL_LOAD:
   // dialog would appear in a non-testversion.
   FileClose(hfile);
   return false;
+}
+
 }

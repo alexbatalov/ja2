@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUMBER_TRIGGERS = 27;
 const PRESSURE_ACTION_ID = (NUMBER_TRIGGERS - 1);
 
@@ -1353,4 +1355,6 @@ export function DisplayItemStatistics(): void {
   mprintf(2, 430, "Status Info Line 3");
   mprintf(2, 440, "Status Info Line 4");
   mprintf(2, 450, "Status Info Line 5");
+}
+
 }

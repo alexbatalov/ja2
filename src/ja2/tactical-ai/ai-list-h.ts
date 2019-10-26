@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface AILIST {
   ubID: UINT8;
   bPriority: INT8;
@@ -6,3 +8,5 @@ export interface AILIST {
 }
 
 export const MAX_AI_PRIORITY = 100;
+
+}

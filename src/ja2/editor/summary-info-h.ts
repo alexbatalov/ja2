@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const GLOBAL_SUMMARY_VERSION = 14;
 export const MINIMUMVERSION = 7;
 
@@ -91,4 +93,6 @@ export interface SUMMARYFILE {
                                     //-----
                                     //	236
   ubPadding: UINT8[] /* [164] */; //	164
+}
+
 }

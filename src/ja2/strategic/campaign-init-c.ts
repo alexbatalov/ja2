@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gpUndergroundSectorInfoTail: Pointer<UNDERGROUND_SECTORINFO> = null;
 
 function NewUndergroundNode(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): Pointer<UNDERGROUND_SECTORINFO> {
@@ -327,4 +329,6 @@ export function InitNewCampaign(): void {
   InitStrategicAI();
 
   InitStrategicStatus();
+}
+
 }

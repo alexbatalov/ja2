@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const HELPSCREEN_FILE = "BINARYDATA\\Help.edt";
 
 export const HELPSCREEN_RECORD_SIZE = 80 * 8 * 2;
@@ -154,4 +156,6 @@ export const enum Enum18 {
   HLP_TXT_SECTOR_INVTRY_OVERVIEW_P2,
 
   //	HLP_TXT_,
+}
+
 }

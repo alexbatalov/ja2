@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // *** SIR-TECH TYPE DEFINITIONS ***
 
 // These two types are defined by VC6 and were causing redefinition
@@ -73,3 +75,5 @@ type MATRIX4 = VECTOR4[] /* [4] */; // 4x4 matrix
 
 export type ANGLE = VECTOR3; // angle return array
 type COLOR = VECTOR4; // rgba color array
+
+}

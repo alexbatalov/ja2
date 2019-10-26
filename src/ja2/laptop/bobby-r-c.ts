@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const BOBBIES_SIGN_FONT = () => FONT14ARIAL();
 const BOBBIES_SIGN_COLOR = 2;
 const BOBBIES_SIGN_BACKCOLOR = FONT_MCOLOR_BLACK;
@@ -730,4 +732,6 @@ export function CancelAllPendingBRPurchaseOrders(): void {
   // do an extra daily update immediately to create new reorders ASAP
   DailyUpdateOfBobbyRaysNewInventory();
   DailyUpdateOfBobbyRaysUsedInventory();
+}
+
 }

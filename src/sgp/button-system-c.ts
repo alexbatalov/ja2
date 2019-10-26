@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /***********************************************************************************************
         Button System.c
 
@@ -3661,4 +3663,6 @@ function GetButtonY(iButtonID: INT32): INT32 {
     return 0;
 
   return b.value.Area.RegionTopLeftY;
+}
+
 }

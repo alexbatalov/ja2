@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /*
         Filename        :       pathai.c
         Author          :       Ray E. Bornert II
@@ -2247,4 +2249,6 @@ export function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: 
 
 export function DoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>): UINT8 {
   return InternalDoorTravelCost(pSoldier, iGridNo, ubMovementCost, fReturnPerceivedValue, piDoorGridNo, false);
+}
+
 }

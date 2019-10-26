@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gStrategicStatus: STRATEGIC_STATUS;
 
 export function InitStrategicStatus(): void {
@@ -309,4 +311,6 @@ export function RankIndexToSoldierClass(ubRankIndex: UINT8): UINT8 {
   }
 
   return ubSoldierClass;
+}
+
 }

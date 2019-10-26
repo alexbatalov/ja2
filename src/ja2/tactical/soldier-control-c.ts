@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const PALETTEFILENAME = "BINARYDATA\\ja2pal.dat";
 
 const LOW_MORALE_BATTLE_SND_THREASHOLD = 35;
@@ -8821,4 +8823,6 @@ function SetSoldierPersonalLightLevel(pSoldier: Pointer<SOLDIERTYPE>): void {
   gpWorldLevelData[pSoldier.value.sGridNo].pMercHead.value.ubSumLights = 5;
   gpWorldLevelData[pSoldier.value.sGridNo].pMercHead.value.ubMaxLights = 5;
   gpWorldLevelData[pSoldier.value.sGridNo].pMercHead.value.ubNaturalShadeLevel = 5;
+}
+
 }

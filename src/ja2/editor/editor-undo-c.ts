@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /*
 Kris -- Notes on how the undo code works:
 
@@ -858,4 +860,6 @@ export function DetermineUndoState(): void {
       ClearUndoMapIndexTree();
     }
   }
+}
+
 }

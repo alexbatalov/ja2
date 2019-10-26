@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // DEFINES FOR ITEM SLOT SIZES IN PIXELS
 export const BIG_INV_SLOT_WIDTH = 61;
 export const BIG_INV_SLOT_HEIGHT = 22;
@@ -38,3 +40,5 @@ export interface INV_REGION_DESC {
 //	pubHighlightCounter - if not null, and == 2 - will display name above item
 //											-	if == 1 will only dirty the name space and then set counter to 0
 //  Last parameter used mainly for when mouse is over item
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const SET_MOVEMENTCOST = (a, b, c, d) => ((gubWorldMovementCosts[a][b][c] < d) ? (gubWorldMovementCosts[a][b][c] = d) : 0);
 const FORCE_SET_MOVEMENTCOST = (a, b, c, d) => (gubWorldMovementCosts[a][b][c] = d);
 const SET_CURRMOVEMENTCOST = (a, b) => SET_MOVEMENTCOST(usGridNo, a, 0, b);
@@ -3427,4 +3429,6 @@ function IsRoofVisibleForWireframe(sMapPos: INT16): boolean {
   }
 
   return false;
+}
+
 }

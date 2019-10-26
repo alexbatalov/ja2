@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const DEFAULT_SHADOW = 2;
 export const MILITARY_SHADOW = 67;
 export const NO_SHADOW = 0;
@@ -49,3 +51,5 @@ const FONT_CODE_RESETCOLOR = 181;
 // make sure the pFontString is terminated by 0
 // extern BOOLEAN   PrintFontString(UINT16 *pFontString, UINT8 *pDestBuffer, UINT16 siDestWidth, UINT16 siDestPixelDepth, UINT16 siDestPitch, UINT16 siDestHeight, UINT16 siX, UINT16 siY, UINT16 siTotalWidth, UINT16 siTotalHeight, BOOLEAN MultiLine, FontBase *pFontBase);
 // extern BOOLEAN   SetFont16BitData(FontBase *pFontBase, UINT16 *pData16);
+
+}

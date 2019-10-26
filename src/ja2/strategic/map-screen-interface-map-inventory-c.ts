@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // status bar colors
 const DESC_STATUS_BAR = () => FROMRGB(201, 172, 133);
 const DESC_STATUS_BAR_SHADOW = () => FROMRGB(140, 136, 119);
@@ -1681,4 +1683,6 @@ function CanPlayerUseSectorInventory(pSelectedSoldier: Pointer<SOLDIERTYPE>): bo
   }
 
   return true;
+}
+
 }

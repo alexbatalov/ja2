@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // GLOBAL HEADER FOR DATA, TYPES FOR TACTICAL ENGINE
 
 export const REFINE_AIM_1 = 0;
@@ -308,3 +310,5 @@ export interface PaletteReplacementType {
 export const SET_PALETTEREP_ID = (a, b) => (strcpy(a, b));
 // strcmp returns 0 if true!
 export const COMPARE_PALETTEREP_ID = (a, b) => (strcmp(a, b) ? false : true);
+
+}

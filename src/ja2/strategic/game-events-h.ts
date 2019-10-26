@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const SEF_PREVENT_DELETION = 0x01;
 export const SEF_DELETION_PENDING = 0x02;
 
@@ -19,4 +21,6 @@ export const enum Enum133 {
   EVERYDAY_EVENT,
   PERIODIC_EVENT,
   QUEUED_EVENT,
+}
+
 }

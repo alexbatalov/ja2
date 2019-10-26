@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // DEFINES
 export const MAXCOL = WORLD_COLS;
 export const MAXROW = WORLD_ROWS;
@@ -18,3 +20,5 @@ const ADJUST_Y_FOR_HEIGHT = (pos, y) => (y -= gpWorldLevelData[pos].sHeight);
 export const MAPROWCOLTOPOS = (r, c) => (((r < 0) || (r >= WORLD_ROWS) || (c < 0) || (c >= WORLD_COLS)) ? (0xffff) : ((r) * WORLD_COLS + (c)));
 
 export const GETWORLDINDEXFROMWORLDCOORDS = (r, c) => ((r / CELL_X_SIZE)) * WORLD_COLS + ((c / CELL_Y_SIZE));
+
+}

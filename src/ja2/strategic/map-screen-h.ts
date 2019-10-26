@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const MAP_WORLD_X = 18;
 export const MAP_WORLD_Y = 18;
 
@@ -21,3 +23,5 @@ export const enum Enum135 {
 
 export const FIRST_TOWN = Enum135.OMERTA;
 //#define PALACE			NUM_TOWNS
+
+}

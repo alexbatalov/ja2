@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // header for squad management system
 export const NUMBER_OF_SOLDIERS_PER_SQUAD = 6;
 
@@ -31,3 +33,5 @@ export const enum Enum275 {
 export const NO_CURRENT_SQUAD = Enum275.NUMBER_OF_SQUADS;
 
 // ptrs to soldier types of squads and their members
+
+}

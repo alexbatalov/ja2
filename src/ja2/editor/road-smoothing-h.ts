@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // There are the 32 macro definitions that make up all of the road pieces.  These enumerations
 // match up exactly to the previous road system order of graphics (FIRSTROAD1 - FIRSTROAD32)
 export const enum Enum54 {
@@ -34,4 +36,6 @@ export const enum Enum54 {
   BE, // bottom edge
   TE, // top edge
   NUM_ROAD_MACROS,
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /****************************************************************************************
  * JA2 Lighting Module
  *
@@ -3143,4 +3145,6 @@ export function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiTyp
   // pSoldier->pGlow=pSoldier->pShades[0];
 
   return true;
+}
+
 }

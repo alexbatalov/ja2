@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const WORLD_TILE_X = 40;
 export const WORLD_TILE_Y = 20;
 export const WORLD_COLS = 160;
@@ -180,4 +182,6 @@ export interface MAP_ELEMENT {
   ubReservedSoldierID: UINT8;
   ubBloodInfo: UINT8;
   ubSmellInfo: UINT8;
+}
+
 }

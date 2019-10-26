@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Defines
 const NUM_FACE_SLOTS = 50;
 
@@ -1803,4 +1805,6 @@ function SetupFinalTalkingDelay(pFace: Pointer<FACETYPE>): void {
 
   // Set final delay!
   pFace.value.fValidSpeech = false;
+}
+
 }

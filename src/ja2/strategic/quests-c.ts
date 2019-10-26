@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gubQuest: UINT8[] /* [MAX_QUESTS] */;
 export let gubFact: UINT8[] /* [NUM_FACTS] */; // this has to be updated when we figure out how many facts we have
 
@@ -1127,4 +1129,6 @@ export function LoadQuestInfoFromSavedGameFile(hFile: HWFILE): boolean {
   }
 
   return true;
+}
+
 }

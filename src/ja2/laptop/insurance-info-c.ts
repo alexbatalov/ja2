@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const INS_INFO_FRAUD_TEXT_COLOR = FONT_MCOLOR_RED;
 
 const INS_INFO_SUBTITLE_X = 86 + LAPTOP_SCREEN_UL_X;
@@ -454,4 +456,6 @@ function DisplayInfoTocPage(): void {
   GetInsuranceText(Enum90.INS_MLTI_QUICKLY_AND_EFFICIENT, sText);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X + INSURANCE_BULLET_TEXT_OFFSET_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
+}
+
 }

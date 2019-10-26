@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // To reduce memory fragmentation from frequent MemRealloc(), we allocate memory for more than one special slot each
 // time we run out of space.  Odds are that if we need one, we'll need another soon.
 const SPECIAL_ITEMS_ALLOCED_AT_ONCE = 3;
@@ -2253,4 +2255,6 @@ export function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: 
   }
 
   return uiMinutesClosed;
+}
+
 }

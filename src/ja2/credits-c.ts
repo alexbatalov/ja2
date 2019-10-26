@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // local Defines
 const enum Enum1 {
   CRDT_RENDER_NONE,
@@ -1141,4 +1143,6 @@ function HandleCreditEyeBlinking(): void {
       RestoreExternBackgroundRect(gCreditFaces[ubCnt].sEyeX, gCreditFaces[ubCnt].sEyeY, CRDT_EYE_WIDTH, CRDT_EYE_HEIGHT);
     }
   }
+}
+
 }

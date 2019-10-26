@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Merc editing modes.  These are used to determine which buttons to show and hide.
 export const enum Enum42 {
   MERC_NOMODE, // used for shutting down mercs tab, to extract any changed information
@@ -53,3 +55,5 @@ export const enum Enum43 {
 export const MERCINV_LGSLOT_WIDTH = 48;
 export const MERCINV_SMSLOT_WIDTH = 24;
 export const MERCINV_SLOT_HEIGHT = 18;
+
+}

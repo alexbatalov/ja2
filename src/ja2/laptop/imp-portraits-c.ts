@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // current and last pages
 export let iCurrentPortrait: INT32 = 0;
 let iLastPicture: INT32 = 7;
@@ -246,4 +248,6 @@ function BtnIMPPortraitDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
       fButtonPendingFlag = true;
     }
   }
+}
+
 }

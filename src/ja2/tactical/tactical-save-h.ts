@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const MAPS_DIR = "Temp\\";
 
 // Defines used for the bUseMercGridNoPlacement contained in the the merc profile struct
@@ -15,3 +17,5 @@ export const ADD_DEAD_SOLDIER__USE_JFK_HEADSHOT_CORPSE = 0x00000040; // Will ue 
 
 export const NEW_ROTATION_ARRAY_SIZE = 49;
 export const BASE_NUMBER_OF_ROTATION_ARRAYS = 19;
+
+}

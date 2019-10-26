@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // gain pts per real loyalty pt
 export const GAIN_PTS_PER_LOYALTY_PT = 500;
 
@@ -75,3 +77,5 @@ UINT32 BuildLoyaltyEventValue( INT8 bTownValue, UINT32 uiValue, BOOLEAN fIncreme
 export const RETREAT_TACTICAL_TRAVERSAL = 0;
 export const RETREAT_PBI = 1;
 export const RETREAT_AUTORESOLVE = 2;
+
+}

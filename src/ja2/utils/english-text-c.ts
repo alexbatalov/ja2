@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /*
 
 ******************************************************************************************************
@@ -3617,3 +3619,5 @@ export let gzLateLocalizedString: STR16[] /* [] */ = [
 
   "%s's ceramic plates have been smashed!",
 ];
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Enum,s for all of specks quotes
 export const enum Enum111 {
   SPECK_QUOTE_FIRST_TIME_IN_0, // 0
@@ -101,4 +103,6 @@ export const enum Enum111 {
           SPECK_QUOTE_,
           SPECK_QUOTE_,
   */
+}
+
 }

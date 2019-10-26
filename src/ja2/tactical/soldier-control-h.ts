@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Kris:  November 10, 1997
 // Please don't change this value from 10.  It will invalidate all of the maps and soldiers.
 export const MAXPATROLGRIDS = 10; // *** THIS IS A DUPLICATION - MUST BE MOVED !
@@ -927,3 +929,5 @@ export const PTR_CIVILIAN = () => (pSoldier.value.bTeam == CIV_TEAM);
 export const PTR_CROUCHED = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_CROUCH);
 export const PTR_STANDING = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND);
 const PTR_PRONE = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_PRONE);
+
+}

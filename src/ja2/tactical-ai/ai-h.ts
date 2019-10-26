@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const AI_PATHCOST_RADIUS = 9;
 
 // AI actions
@@ -122,4 +124,6 @@ export const enum Enum291 {
   EAST_EDGEPOINT_SEARCH,
   SOUTH_EDGEPOINT_SEARCH,
   WEST_EDGEPOINT_SEARCH,
+}
+
 }

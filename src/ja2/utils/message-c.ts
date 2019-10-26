@@ -1,3 +1,5 @@
+namespace ja2 {
+
 interface StringSaveStruct {
   uiFont: UINT32;
   uiTimeOfLastUpdate: UINT32;
@@ -1488,3 +1490,5 @@ void DisplayLastMessage( void )
 }
 
 */
+
+}

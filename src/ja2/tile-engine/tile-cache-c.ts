@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let guiNumTileCacheStructs: UINT32 = 0;
 let guiMaxTileCacheSize: UINT32 = 50;
 let guiCurTileCacheSize: UINT32 = 0;
@@ -286,4 +288,6 @@ export function GetRootName(pDestStr: Pointer<INT8>, pSrcStr: Pointer<INT8>): vo
   if (cEndOfName != null) {
     cEndOfName.value = '\0';
   }
+}
+
 }

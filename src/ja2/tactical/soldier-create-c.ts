@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // THESE 3 DIFFICULTY FACTORS MUST ALWAYS ADD UP TO 100% EXACTLY!!!
 const DIFF_FACTOR_PLAYER_PROGRESS = 50;
 const DIFF_FACTOR_PALACE_DISTANCE = 30;
@@ -2379,4 +2381,6 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
   else if (ubRoll < ubChanceLvl5)
     pbExpLevel.value = 5;
   // else leave it alone
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // If you add any options, MAKE sure you add the corresponding string to the Options Screen string array
 export const enum Enum8 {
   TOPTION_SPEECH,
@@ -85,4 +87,6 @@ export interface GAME_OPTIONS {
   fIronManMode: boolean;
 
   ubFiller: UINT8[] /* [7] */;
+}
+
 }

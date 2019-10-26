@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_BACKGROUND_REPS = 40;
 const BACKGROUND_HEIGHT = 10;
 const BACKGROUND_WIDTH = 125;
@@ -5694,4 +5696,6 @@ function CalcTimeLeftOnMercContract(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   }
 
   return iTimeLeftOnContract;
+}
+
 }

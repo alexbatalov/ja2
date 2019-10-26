@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum95 {
   LAPTOP_MODE_NONE = 0,
   LAPTOP_MODE_FINANCES,
@@ -100,3 +102,5 @@ export const enum Enum98 {
 export const DEAD_MERC_COLOR_RED = 255;
 export const DEAD_MERC_COLOR_GREEN = 55;
 export const DEAD_MERC_COLOR_BLUE = 55;
+
+}

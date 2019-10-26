@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_CIVQUOTE_SECTORS = 20;
 const MINERS_CIV_QUOTE_INDEX = 16;
 
@@ -2684,4 +2686,6 @@ export function ConsiderCivilianQuotes(sSectorX: INT16, sSectorY: INT16, sSector
   }
 
   return -1;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //**************************************************************************
 //
 // Filename :	impTGA.c
@@ -398,3 +400,5 @@ BOOLEAN	ConvertTGAToSystemBPPFormat( HIMAGE hImage )
 
 }
 */
+
+}

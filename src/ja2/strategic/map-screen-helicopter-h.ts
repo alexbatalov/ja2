@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // costs of flying through sectors
 export const COST_AIRSPACE_SAFE = 100;
 export const COST_AIRSPACE_UNSAFE = 1000; // VERY dangerous
@@ -86,3 +88,5 @@ BOOLEAN IsSectorOutOfTheWay( INT16 sX, INT16 sY );
 
 // will a sam site under the players control shoot down an airraid?
 // BOOLEAN WillAirRaidBeStopped( INT16 sSectorX, INT16 sSectorY );
+
+}

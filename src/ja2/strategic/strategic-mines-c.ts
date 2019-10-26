@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // this .c file will handle the strategic level of mines and income from them
 
 const REMOVAL_RATE_INCREMENT = 250; // the smallest increment by which removal rate change during depletion (use round #s)
@@ -1043,4 +1045,6 @@ export function AreThereMinersInsideThisMine(ubMineIndex: UINT8): boolean {
 // returns whether or not we've spoken to the head miner of a particular mine
 export function SpokenToHeadMiner(ubMineIndex: UINT8): boolean {
   return gMineStatus[ubMineIndex].fSpokeToHeadMiner;
+}
+
 }

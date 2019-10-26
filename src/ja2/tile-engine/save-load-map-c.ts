@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_REVEALED_BYTES = 3200;
 
 let gfApplyChangesToTempFile: boolean = false;
@@ -992,4 +994,6 @@ export function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, 
   FileClose(hFile);
 
   return true;
+}
+
 }

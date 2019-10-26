@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export type real = float;
 
 const REAL_MAX = FLT_MAX;
@@ -18,3 +20,5 @@ interface matrix_3x3 {
 // DEFINES
 const RADIANS_FROM = (d) => ((d * Math.PI) / 180);
 const DEGREES_FROM = (r) => ((r * 180) / Math.PI);
+
+}

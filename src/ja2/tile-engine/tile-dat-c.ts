@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gOpenDoorList: INT16[] /* [20] */ = [
   Enum312.FIRSTDOOR1,
   Enum312.SECONDDOOR1,
@@ -931,4 +933,6 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
   if ((usType >= Enum313.FIRSTROOF && usType <= Enum313.SECONDSLANTROOF) || usType == Enum313.FIRSTHIGHROOF || usType == Enum313.SECONDHIGHROOF) {
     TileElement.value.uiFlags |= ROOF_TILE;
   }
+}
+
 }

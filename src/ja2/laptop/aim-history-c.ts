@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Defines
 
 const NUM_AIM_HISTORY_PAGES = 5;
@@ -480,4 +482,6 @@ function ChangingAimHistorySubPage(ubSubPageNumber: UINT8): void {
     fConnectingToSubPage = true;
     fFastLoadFlag = true;
   }
+}
+
 }

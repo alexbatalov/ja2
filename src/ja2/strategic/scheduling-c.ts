@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const FOURPM = 960;
 
 // waketime is the # of minutes in the day minus the sleep time
@@ -1127,3 +1129,5 @@ void SecureSleepSpots( void )
 
 }
 */
+
+}

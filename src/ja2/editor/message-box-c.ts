@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // internal variables.
 let iMsgBoxNum: INT32;
 let iMsgBoxOkImg: INT32;
@@ -115,3 +117,5 @@ function MsgBoxCnclClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
 //----------------------------------------------------------------------------------------------
 //	End of the quick message box callback functions
 //----------------------------------------------------------------------------------------------
+
+}

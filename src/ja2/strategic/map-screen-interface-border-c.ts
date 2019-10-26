@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAP_BORDER_X = 261;
 const MAP_BORDER_Y = 0;
 
@@ -1325,4 +1327,6 @@ function MapBorderButtonOn(ubBorderButtonIndex: UINT8): void {
   Assert(giMapBorderButtons[ubBorderButtonIndex] < MAX_BUTTONS);
 
   ButtonList[giMapBorderButtons[ubBorderButtonIndex]].value.uiFlags |= BUTTON_CLICKED_ON;
+}
+
 }

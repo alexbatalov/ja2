@@ -1,3 +1,5 @@
+namespace ja2 {
+
 interface MERCPLACEMENT {
   pSoldier: Pointer<SOLDIERTYPE>;
   uiVObjectID: UINT32;
@@ -805,4 +807,6 @@ function FastHelpRemoved2Callback(): void {
 function DialogRemoved(ubResult: UINT8): void {
   gfTacticalPlacementGUIDirty = true;
   gfValidLocationsChanged = true;
+}
+
 }

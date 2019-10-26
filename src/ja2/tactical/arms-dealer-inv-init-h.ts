@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const LAST_DEALER_ITEM = -1;
 export const NO_DEALER_ITEM = 0;
 
@@ -20,4 +22,6 @@ export interface ITEM_SORT_ENTRY {
   uiItemClass: UINT32;
   ubWeaponClass: UINT8;
   fAllowUsed: boolean;
+}
+
 }

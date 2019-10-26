@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /*
  *
  * This file contains code for the AI linked list which
@@ -405,3 +407,5 @@ export let gubEncryptionArray1: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3
 
   [ 177, 114, 53, 161, 177, 151, 101, 226, 222, 87, 255, 85, 102, 86, 161, 114, 178, 99, 106, 206, 188, 98, 29, 157, 53, 65, 169, 67, 74, 31, 24, 83, 60, 48, 80, 186, 116, 113, 179, 144, 90, 220, 252, 71, 167, 25, 110, 167, 94 ],
 ];
+
+}

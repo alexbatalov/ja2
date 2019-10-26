@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function CallAvailableEnemiesTo(sGridNo: INT16): void {
   let iLoop: INT32;
   let iLoop2: INT32;
@@ -314,4 +316,6 @@ export function WhatIKnowThatPublicDont(pSoldier: Pointer<SOLDIERTYPE>, ubInSigh
   }
 
   return ubTotal;
+}
+
 }

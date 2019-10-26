@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const STEPS_FOR_BULLET_MOVE_TRAILS = 10;
 const STEPS_FOR_BULLET_MOVE_SMALL_TRAILS = 5;
 const STEPS_FOR_BULLET_MOVE_FIRE_TRAILS = 5;
@@ -4085,4 +4087,6 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
   } else {
     return false;
   }
+}
+
 }

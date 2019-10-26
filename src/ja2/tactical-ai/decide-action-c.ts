@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // global status time counters to determine what takes the most time
 
 const CENTER_OF_RING = 11237;
@@ -3459,4 +3461,6 @@ export function DecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
     }
   }
+}
+
 }

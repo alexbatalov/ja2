@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gsRScreenCenterX: INT16;
 let gsRScreenCenterY: INT16;
 let gsRDistToCenterY: INT16;
@@ -139,3 +141,5 @@ const SoldierZLevel = (pSoldier, sMapX, sMapY) => {
 //		sZOffsetX = pNode->pStructureData->pDBStructureRef->pDBStructure->bZTileOffsetX;\
 ////		sZOffsetY = pNode->pStructureData->pDBStructureRef->pDBStructure->bZTileOffsetY;\
 //#endif
+
+}

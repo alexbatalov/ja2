@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //***********************************************
 //
 // Filename : Container.h
@@ -81,3 +83,5 @@ export type HORDLIST = HCONTAINER;
 //          position where data is to be peeked (0...sizeof(list)-1)
 // OrdListSize(handle to the list) returns the ordered list size
 // DeleteOrdList(handle to the list) Delete the ordered list container
+
+}

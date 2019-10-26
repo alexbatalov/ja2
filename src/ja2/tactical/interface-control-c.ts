@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const CLOCK_X = 554;
 const CLOCK_Y = 459;
 let gOldClippingRect: SGPRect;
@@ -782,4 +784,6 @@ export function InterfaceOKForMeanwhilePopup(): boolean {
   }
 
   return true;
+}
+
 }

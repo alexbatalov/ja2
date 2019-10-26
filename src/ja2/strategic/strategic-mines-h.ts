@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // the .h to the mine management system
 
 // the mines
@@ -83,4 +85,6 @@ export interface HEAD_MINER_TYPE {
   usProfileId: UINT16;
   bQuoteNum: INT8[] /* [NUM_HEAD_MINER_STRATEGIC_QUOTES] */;
   ubExternalFace: UINT8;
+}
+
 }

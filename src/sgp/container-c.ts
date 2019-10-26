@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //*****************************************************************************
 //
 // Filename : Container.c
@@ -1859,4 +1861,6 @@ function Compare(p: Pointer<void>, q: Pointer<void>, size: UINT32): INT8 {
     return ORDLIST_EQUAL;
 
   return ORDLIST_ERROR;
+}
+
 }

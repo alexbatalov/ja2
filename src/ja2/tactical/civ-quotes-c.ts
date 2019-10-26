@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const DIALOGUE_DEFAULT_WIDTH = 200;
 const EXTREAMLY_LOW_TOWN_LOYALTY = 20;
 const HIGH_TOWN_LOYALTY = 80;
@@ -672,4 +674,6 @@ export function LoadCivQuotesFromLoadGameFile(hFile: HWFILE): boolean {
   CopyNumEntriesIntoQuoteStruct();
 
   return true;
+}
+
 }

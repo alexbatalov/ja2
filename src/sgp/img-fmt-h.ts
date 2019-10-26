@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Sir-Tech's Crazy Image (STCI) file format specifications.  Each file is composed of:
 // 1		ImageFileHeader, uncompressed
 // *		Palette (STCI_INDEXED, size = uiNumberOfColours * PALETTE_ELEMENT_SIZE), uncompressed
@@ -77,3 +79,5 @@ export interface STCIPaletteElement {
 
 export const STCI_PALETTE_ELEMENT_SIZE = 3;
 const STCI_8BIT_PALETTE_SIZE = 768;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const FULL_NAME_CURSOR_Y = LAPTOP_SCREEN_WEB_UL_Y + 138;
 const NICK_NAME_CURSOR_Y = LAPTOP_SCREEN_WEB_UL_Y + 195;
 const MALE_BOX_X = 2 + 192 + LAPTOP_SCREEN_UL_X;
@@ -946,4 +948,6 @@ function CheckCharacterInputForEgg(): boolean {
     return true;
   }
   return false;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // ATE: Use this define to enable winfonts in JA2
 // #define     WINFONTS
 
@@ -93,3 +95,5 @@ const FONT_BURGUNDY = 172;
 export const FONT_LTKHAKI = 88;
 const FONT_KHAKI = 198;
 export const FONT_DKKHAKI = 201;
+
+}

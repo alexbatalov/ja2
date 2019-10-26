@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const FUNERAL_SENTENCE_FONT = () => FONT12ARIAL();
 const FUNERAL_SENTENCE_COLOR = 2; // FONT_MCOLOR_WHITE
 const FUNERAL_SENTENCE_SHADOW_COLOR = FONT_MCOLOR_WHITE; // FONT_MCOLOR_DKWHITE
@@ -278,4 +280,6 @@ function SelectRipSignRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
     fPausedReDrawScreenFlag = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
+}
+
 }

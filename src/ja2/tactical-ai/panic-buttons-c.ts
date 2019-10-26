@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function MakeClosestEnemyChosenOne(): void {
   let cnt: UINT32;
   let sPathCost: INT16;
@@ -408,3 +410,5 @@ export function HeadForTheStairCase(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 const WARDEN_ALARM_GRIDNO = 9376;
 const WARDEN_GAS_GRIDNO = 9216;
 // in both cases, direction 6
+
+}

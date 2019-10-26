@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface FASTHELPREGION {
   // the string
   FastHelpText: CHAR16[] /* [256] */;
@@ -205,3 +207,5 @@ export const enum Enum156 {
 // the tactical version
 
 // void HandlePlayerEnteringMapScreenBeforeGoingToTactical( void );
+
+}

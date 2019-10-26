@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gfUseSingleCharWordsForWordWrap: boolean = false;
 
 function UseSingleCharWordsForWordWrap(fUseSingleCharWords: boolean): void {
@@ -1717,4 +1719,6 @@ export function ReduceStringLength(pString: STR16, uiWidthToFitIn: UINT32, uiFon
   swprintf(pString, "%s%s", zTemp, zStrDots);
 
   return true;
+}
+
 }

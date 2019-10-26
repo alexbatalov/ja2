@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /*
 ******************************************************************************************************
 **																	IMPORTANT TRANSLATION NOTES																			**
@@ -3520,3 +3522,5 @@ export let gzLateLocalizedString: STR16[] /* [] */ = [
 
   "Switch Activated.",
 ];
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // The HIMAGE module provides a common interface for managing image data. This module
 // includes:
 // - A set of data structures representing image data. Data can be 8 or 16 bpp and/or
@@ -124,3 +126,5 @@ export const SGPGetGValue = (rgb) => ((((rgb)) >> 8));
 // The following blitters are used by the function above as well as clients
 
 // UTILITY FUNCTIONS
+
+}

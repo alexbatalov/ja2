@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const UICURSOR_FREEFLOWING = 0x00000002;
 export const UICURSOR_SNAPPING = 0x00000004;
 export const UICURSOR_SHOWTILE = 0x00000008;
@@ -187,4 +189,6 @@ export interface UICursor {
   uiFlags: UINT32;
   usFreeCursorName: UINT16;
   usAdditionalData: UINT16;
+}
+
 }

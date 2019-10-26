@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#ifdef JA2BETAVERSION
 
 //*******************************
@@ -3198,3 +3200,5 @@ function GetDebugLocationString(usProfileID: UINT16, pzText: STR16): void {
 }
 
 //#endif
+
+}

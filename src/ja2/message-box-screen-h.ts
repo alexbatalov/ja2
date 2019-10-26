@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Message box flags
 export const MSG_BOX_FLAG_USE_CENTERING_RECT = 0x0001; // Pass in a rect to center in
 export const MSG_BOX_FLAG_OK = 0x0002; // Displays OK button
@@ -67,3 +69,5 @@ export interface MESSAGE_BOX_STRUCT {
 // ReturnCallback	Callback for return. Can be NULL. Returns any above return value
 // pCenteringRect	Rect to send if MSG_BOX_FLAG_USE_CENTERING_RECT set. Can be NULL
 ////////////////////////////////
+
+}

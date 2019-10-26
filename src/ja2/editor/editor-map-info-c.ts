@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gbDefaultLightType: INT8 = Enum39.PRIMETIME_LIGHT;
 
 export let gEditorLightColor: SGPPaletteEntry;
@@ -211,4 +213,6 @@ export function ChangeLightDefault(bLightType: INT8): void {
   UnclickEditorButton(Enum32.MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
   gbDefaultLightType = bLightType;
   ClickEditorButton(Enum32.MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
+}
+
 }

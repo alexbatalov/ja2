@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function TerrainActionPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDir: INT8, bLevel: INT8): INT16 {
   let sAPCost: INT16 = 0;
   let sSwitchValue: INT16;
@@ -1747,4 +1749,6 @@ function GetAPsToUseCan(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
 
 export function GetAPsToJumpOver(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return GetAPsToChangeStance(pSoldier, ANIM_STAND) + AP_JUMP_OVER;
+}
+
 }

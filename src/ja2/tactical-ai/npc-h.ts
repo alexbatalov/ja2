@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const NUM_NPC_QUOTE_RECORDS = 50;
 
 //#define IRRELEVANT 255
@@ -116,3 +118,5 @@ export const NUM_REAL_APPROACHES = Enum296.APPROACH_RECRUIT;
 export const CONVO_DIST = 5;
 
 export const WALTER_BRIBE_AMOUNT = 20000;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let giClockTimer: INT32 = -1;
 export let giTimerDiag: INT32 = 0;
 
@@ -243,4 +245,6 @@ export function ResetJA2ClockGlobalTimers(): void {
   giFlashContractBaseTime = uiCurrentTime;
   guiFlashCursorBaseTime = uiCurrentTime;
   giPotCharPathBaseTime = uiCurrentTime;
+}
+
 }

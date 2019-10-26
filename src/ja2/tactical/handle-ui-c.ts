@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAX_ON_DUTY_SOLDIERS = 6;
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -4820,4 +4822,6 @@ export function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
   }
 
   return false;
+}
+
 }

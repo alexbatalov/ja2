@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_SMOKE_EFFECT_SLOTS = 25;
 
 // GLOBAL FOR SMOKE LISTING
@@ -688,4 +690,6 @@ export function UpdateSmokeEffectGraphics(): void {
       SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, true, bLevel, uiCnt);
     }
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // OK, these are values that are calculated in InitRenderParams( ) with normal view settings.
 // These would be different if we change ANYTHING about the game worlkd map sizes...
 const NORMAL_MAP_SCREEN_WIDTH = 3160;
@@ -1399,4 +1401,6 @@ export function TrashOverheadMap(): void {
     // Force load
     gfSmTileLoaded = false;
   }
+}
+
 }

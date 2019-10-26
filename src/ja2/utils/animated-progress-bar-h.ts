@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAX_PROGRESSBARS = 4;
 
 export interface PROGRESSBAR {
@@ -43,4 +45,6 @@ export interface PROGRESSBAR {
   fDisplayText: boolean;
   fUseSaveBuffer: boolean; // use the save buffer when display the text
   rLastActual: double;
+}
+
 }

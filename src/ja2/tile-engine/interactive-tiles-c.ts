@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAX_INTTILE_STACK = 10;
 
 interface CUR_INTERACTIVE_TILE {
@@ -852,4 +854,6 @@ export function CycleIntTileFindStack(usMapPos: UINT16): void {
   if (gCurIntTileStack.bCur == gCurIntTileStack.bNum) {
     gCurIntTileStack.bCur = 0;
   }
+}
+
 }

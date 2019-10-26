@@ -1,3 +1,5 @@
+namespace ja2 {
+
 ////////////////////////////////////////////
 //
 //	Global Defines
@@ -922,4 +924,6 @@ function ConfirmGioIronManMessageBoxCallBack(bExitValue: UINT8): void {
     ButtonList[guiGameSaveToggles[Enum6.GIO_IRON_MAN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[guiGameSaveToggles[Enum6.GIO_CAN_SAVE]].value.uiFlags |= BUTTON_CLICKED_ON;
   }
+}
+
 }

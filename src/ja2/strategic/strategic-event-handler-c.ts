@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MEDUNA_ITEM_DROP_OFF_GRIDNO = 10959;
 const MEDUNA_ITEM_DROP_OFF_SECTOR_X = 3;
 const MEDUNA_ITEM_DROP_OFF_SECTOR_Y = 14;
@@ -938,4 +940,6 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
 
   // Add an email from kulba telling the user the shipment is there
   AddEmail(BOBBY_R_MEDUNA_SHIPMENT, BOBBY_R_MEDUNA_SHIPMENT_LENGTH, Enum75.BOBBY_R, GetWorldTotalMin());
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfTacticalTraversal: boolean = false;
 export let gpTacticalTraversalGroup: Pointer<GROUP> = null;
 export let gpTacticalTraversalChosenSoldier: Pointer<SOLDIERTYPE> = null;
@@ -1609,4 +1611,6 @@ export function HandlePreBattleInterfaceStates(): void {
   } else if (gfTransitionMapscreenToAutoResolve) {
     gfTransitionMapscreenToAutoResolve = false;
   }
+}
+
 }

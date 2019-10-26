@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const TEXT_POPUP_WINDOW_TEXT_OFFSET_X = 8;
 const TEXT_POPUP_WINDOW_TEXT_OFFSET_Y = 8;
 const TEXT_POPUP_STRING_WIDTH = 296;
@@ -568,4 +570,6 @@ function SetPrepareMercPopUpFlagsFromIndex(uiFlags: UINT32, uiId: UINT32): boole
 
   // now try to remove it
   return SetPrepareMercPopupFlags(uiFlags);
+}
+
 }

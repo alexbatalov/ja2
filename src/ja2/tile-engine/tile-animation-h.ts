@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const ANITILE_DOOR = 0x00000001;
 export const ANITILE_BACKWARD = 0x00000020;
 export const ANITILE_FORWARD = 0x00000040;
@@ -98,4 +100,6 @@ export const enum Enum311 {
   ANI_KEYFRAME_BEGIN_DAMAGE,
   ANI_KEYFRAME_CHAIN_WATER_EXPLOSION,
   ANI_KEYFRAME_DO_SOUND,
+}
+
 }

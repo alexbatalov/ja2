@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // editor icon storage vars
 export let giEditMercDirectionIcons: INT32[] /* [2] */;
 export let guiMercInventoryPanel: UINT32;
@@ -878,4 +880,6 @@ export function ProcessEditorRendering(): void {
   gfRenderHilights = true;
 
   RenderButtonsFastHelp();
+}
+
 }

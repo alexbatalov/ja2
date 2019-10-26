@@ -1,3 +1,5 @@
+namespace ja2 {
+
 function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): boolean {
   let pNewEvent: Pointer<STRATEGICEVENT>;
   if (gTacticalStatus.fEnemyInSector) {
@@ -293,4 +295,6 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
   }
   gfPreventDeletionOfAnyEvent = fOrigPreventFlag;
   return true;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NEXT_TILE_CHECK_DELAY = 700;
 
 export function SetDelayedTileWaiting(pSoldier: Pointer<SOLDIERTYPE>, sCauseGridNo: INT16, bValue: INT8): void {
@@ -618,4 +620,6 @@ export function CanExchangePlaces(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Po
     return false;
   }
   return true;
+}
+
 }

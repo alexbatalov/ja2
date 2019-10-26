@@ -1,3 +1,5 @@
+namespace ja2 {
+
 function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGapList>): void {
   // This procedure will load in the appropriate .gap file, corresponding
   // to the .wav file in szSoundEffects indexed by uiSampleNum
@@ -186,4 +188,6 @@ export function PlayJA2GapSample(zSoundFile: Pointer<CHAR8>, usRate: UINT32, ubV
     AudioGapListInit(zSoundFile, pData);
 
   return SoundPlayStreamedFile(zSoundFile, addressof(spParms));
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfShowTerrainTileButtons: boolean;
 let ubTerrainTileButtonWeight: UINT8[] /* [NUM_TERRAIN_TILE_REGIONS] */;
 let usTotalWeight: UINT16;
@@ -206,4 +208,6 @@ export function TerrainFill(iMapIndex: UINT32): void {
   count = 0;
 
   Fill(sX, sY);
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // enums for the various arms dealers
 export const enum Enum197 {
   ARMS_DEALER_TONY,
@@ -174,4 +176,6 @@ export interface DEALER_ITEM_HEADER {
   fPreviouslyEligible: boolean; // whether or not dealer has been eligible to sell this item in days prior to today
 
   ubPadding: UINT8[] /* [2] */; // filler
+}
+
 }

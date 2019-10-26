@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let Shaded8BPPPalettes: SGPPaletteEntry[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
 export let ubColorTables: UINT8[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
 
@@ -242,4 +244,6 @@ function Set8BitModePalette(pPal: Pointer<SGPPaletteEntry>): boolean {
   ShadesCalculateTables(pPal);
   Set8BPPPalette(pPal);
   return true;
+}
+
 }

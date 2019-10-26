@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // This is the color substituted to keep a 24bpp -> 16bpp color
 // from going transparent (0x0000) -- DB
 
@@ -733,4 +735,6 @@ export function ConvertRGBDistribution565ToAny(p16BPPData: Pointer<UINT16>, uiNu
     pPixel.value = Get16BPPColor(uiTemp);
     pPixel++;
   }
+}
+
 }

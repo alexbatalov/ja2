@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // These are gener
 export const enum Enum27 {
   BUTTON_SOUND_SCHEME_NONE,
@@ -10,4 +12,6 @@ export const enum Enum27 {
   BUTTON_SOUND_SCHEME_BIGSWITCH3,
   BUTTON_SOUND_SCHEME_COMPUTERBEEP2,
   BUTTON_SOUND_SCHEME_COMPUTERSWITCH1,
+}
+
 }

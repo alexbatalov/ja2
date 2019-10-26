@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const INVALIDCURS = 0;
 const QUESTCURS = 1;
 export const PUNCHCURS = 2;
@@ -642,3 +644,5 @@ const LAST_LEGGINGS = Enum225.SPECTRA_LEGGINGS_Y;
 
 const FIRST_HEAD_ITEM = Enum225.EXTENDEDEAR;
 const LAST_HEAD_ITEM = Enum225.SUNGOGGLES;
+
+}

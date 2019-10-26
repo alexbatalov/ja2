@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const SQUARE_STEP = 8;
 
 export let guiExitScreen: UINT32;
@@ -595,4 +597,6 @@ function UpdateSaveBufferWithBackbuffer(): boolean {
   UnLockVideoSurface(guiSAVEBUFFER);
 
   return true;
+}
+
 }

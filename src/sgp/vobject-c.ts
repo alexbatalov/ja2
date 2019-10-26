@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // ******************************************************************************
 //
 // Video Object SGP Module
@@ -1093,4 +1095,6 @@ function BltVideoObjectOutlineShadow(uiDestVSurface: UINT32, hSrcVObject: HVOBJE
 
   UnLockVideoSurface(uiDestVSurface);
   return true;
+}
+
 }

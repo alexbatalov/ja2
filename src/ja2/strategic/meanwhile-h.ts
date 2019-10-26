@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum160 {
   END_OF_PLAYERS_FIRST_BATTLE,
   DRASSEN_LIBERATED,
@@ -26,4 +28,6 @@ export interface MEANWHILE_DEFINITION {
 
   ubMeanwhileID: UINT8;
   ubNPCNumber: UINT8;
+}
+
 }

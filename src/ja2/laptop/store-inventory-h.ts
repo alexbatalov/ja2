@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface STORE_INVENTORY {
   usItemIndex: UINT16; // Index into the item table
   ubQtyOnHand: UINT8;
@@ -17,3 +19,5 @@ export const enum Enum112 {
 }
 
 // INT16	CountNumberOfItemsInStoreInventory( UINT8 ubArmsDealerID );
+
+}

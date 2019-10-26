@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // for use with MAPCREATE_STRUCT.ubEditorSmoothingType
 export const enum Enum231 {
   SMOOTHING_NORMAL,
@@ -25,3 +27,5 @@ export interface MAPCREATE_STRUCT {
   sIsolatedGridNo: INT16;
   bPadding: INT8[] /* [83] */; // I'm sure lots of map info will be added
 } // 99 bytes
+
+}

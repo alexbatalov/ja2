@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const MAX_VEHICLES = 10;
 
 // type of vehicles
@@ -68,3 +70,5 @@ export interface VEHICLETYPE {
 
 // get orig armor values for vehicle in this location
 // INT16 GetOrigInternalArmorValueForVehicleInLocation( UINT8 ubID, UINT8 ubLocation );
+
+}

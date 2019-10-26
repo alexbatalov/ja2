@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const CIV_TYPE_NA = 0;
 export const CIV_TYPE_ADULT = 1;
 export const CIV_TYPE_KID = 2;
@@ -61,4 +63,6 @@ export const enum Enum201 {
   CIV_QUOTE_49,
 
   NUM_CIV_QUOTES,
+}
+
 }

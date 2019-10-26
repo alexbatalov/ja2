@@ -1,3 +1,5 @@
+namespace ja2 {
+
 function RTPlayerDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bAction: INT8 = Enum289.AI_ACTION_NONE;
 
@@ -163,4 +165,6 @@ export function RTHandleAI(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // perform the chosen action
   pSoldier.value.bActionInProgress = ExecuteAction(pSoldier); // if started, mark us as busy
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const EMPTY_CACHE_ENTRY = 65000;
 
 let guiCacheSize: UINT32 = MIN_CACHE_SIZE;
@@ -122,4 +124,6 @@ export function UnLoadCachedAnimationSurfaces(usSoldierID: UINT16, pAnimCache: P
       UnLoadAnimationSurface(usSoldierID, pAnimCache.value.usCachedSurfaces[cnt]);
     }
   }
+}
+
 }

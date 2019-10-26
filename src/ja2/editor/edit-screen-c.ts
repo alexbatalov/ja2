@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gfCorruptMap: boolean = false;
 let gfCorruptSchedules: boolean = false;
 export let gfProfileDataLoaded: boolean = false;
@@ -3399,4 +3401,6 @@ function ReloadMap(): void {
   let szFilename: UINT16[] /* [30] */;
   swprintf(szFilename, "%S", gubFilename);
   ExternalLoadMap(szFilename);
+}
+
 }

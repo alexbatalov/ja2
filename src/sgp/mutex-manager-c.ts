@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#define __MUTEX_TYPE
 
 //
@@ -64,4 +66,6 @@ function LeaveMutex(uiMutexIndex: UINT32, nLine: INT32, szFilename: Pointer<char
   LeaveCriticalSection(addressof(MutexTable[uiMutexIndex]));
 
   return true;
+}
+
 }

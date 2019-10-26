@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // IMP AboutUs buttons
 let giIMPAboutUsButton: INT32[] /* [1] */;
 let giIMPAboutUsButtonImage: INT32[] /* [1] */;
@@ -83,4 +85,6 @@ function BtnIMPBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       iCurrentImpPage = Enum71.IMP_HOME_PAGE;
     }
   }
+}
+
 }

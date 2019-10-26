@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#include "LaptopSave.h"
 
 export const BOBBYRDESCFILE = "BINARYDATA\\BrayDesc.edt";
@@ -17,3 +19,5 @@ export const BOBBYR_GUNS_TEXT_COLOR_OFF = FONT_NEARBLACK;
 export const BOBBYR_GUNS_SHADOW_COLOR = 169;
 
 export const BOBBYR_NO_ITEMS = 65535;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // various reason an assignment can be aborted before completion
 const enum Enum113 {
   NO_MORE_MED_KITS = 40,
@@ -9243,4 +9245,6 @@ function UnjamGunsOnSoldier(pOwnerSoldier: Pointer<SOLDIERTYPE>, pRepairSoldier:
   }
 
   return fAnyGunsWereUnjammed;
+}
+
 }

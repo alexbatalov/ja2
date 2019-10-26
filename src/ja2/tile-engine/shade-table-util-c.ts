@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const SHADE_TABLE_DIR = "ShadeTables";
 
 export let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
@@ -166,4 +168,6 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
 
 export function DeleteShadeTableDir(): boolean {
   return RemoveFileManDirectory(SHADE_TABLE_DIR, true);
+}
+
 }

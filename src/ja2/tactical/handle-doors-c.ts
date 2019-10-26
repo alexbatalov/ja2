@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfSetPerceivedDoorState: boolean = false;
 
 export function HandleDoorChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fNoAnimations: boolean): void {
@@ -1099,4 +1101,6 @@ export function SetDoorString(sGridNo: INT16): void {
 
 // #endif
   }
+}
+
 }

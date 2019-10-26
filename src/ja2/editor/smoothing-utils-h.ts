@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Use these values when specifically replacing a wall with new type.
 // Wall tile types
 export const enum Enum60 {
@@ -27,4 +29,6 @@ export const enum Enum61 {
   EXTERIOR_BOTTOM,
   EXTERIOR_LEFT,
   EXTERIOR_RIGHT,
+}
+
 }

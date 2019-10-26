@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gubEncryptionArray4: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
   [ 177, 131, 58, 218, 175, 130, 210, 59, 25, 190, 170, 189, 227, 245, 104, 118, 7, 168, 136, 178, 184, 4, 27, 64, 199, 101, 160, 24, 83, 177, 178, 232, 185, 40, 122, 109, 38, 253, 160, 14, 133, 106, 190, 206, 58, 102, 244, 229, 124 ],
 
@@ -674,4 +676,6 @@ export function ClearEventQueue(): boolean {
   }
 
   return true;
+}
+
 }

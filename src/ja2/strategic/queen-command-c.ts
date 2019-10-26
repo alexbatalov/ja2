@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Queen Command.c
 
 // The sector information required for the strategic AI.  Contains the number of enemy troops,
@@ -1418,4 +1420,6 @@ export function OnlyHostileCivsInSector(): boolean {
   }
   // We only have hostile civilians, don't allow time compression.
   return true;
+}
+
 }

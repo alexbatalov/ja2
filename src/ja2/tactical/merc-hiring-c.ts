@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MIN_FLIGHT_PREP_TIME = 6;
 
 // ATE: Globals that dictate where the mercs will land once being hired
@@ -514,4 +516,6 @@ function CheckForValidArrivalSector(): void {
 
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // ************************************************************************************
 //
 // Video Object SGP Module
@@ -136,3 +138,5 @@ const VideoObjectsInitialized = () => (gfVideoObjectsInit);
 
 // These blitting functions more-or less encapsolate all of the functionality of DirectDraw
 // Blitting, giving an API layer for portability.
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MERC_NA_TEXT_FONT = () => FONT12ARIAL();
 const MERC_NA_TEXT_COLOR = FONT_MCOLOR_WHITE;
 
@@ -129,4 +131,6 @@ function BtnCancelBoxButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
+}
+
 }

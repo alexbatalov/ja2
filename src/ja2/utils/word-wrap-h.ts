@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Flags for DrawTextToScreen()
 
 // Defines for coded text For use with IanDisplayWrappedString()
@@ -23,4 +25,6 @@ export const NEWLINE_CHAR = 177;
 export interface WRAPPED_STRING {
   sString: STR16;
   pNextWrappedString: Pointer<WRAPPED_STRING>;
+}
+
 }

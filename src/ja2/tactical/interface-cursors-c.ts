@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const DISPLAY_AP_INDEX = Enum312.MOCKFLOOR1;
 
 const SNAPCURSOR_AP_X_STARTVAL = 18;
@@ -631,4 +633,6 @@ export function GetSnapCursorIndex(usAdditionalData: UINT16): UINT16 {
   } else {
     return usAdditionalData;
   }
+}
+
 }

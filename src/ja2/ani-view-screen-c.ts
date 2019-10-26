@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfAniEditMode: boolean = false;
 /* static */ let usStartAnim: UINT16 = 0;
 /* static */ let ubStartHeight: UINT8 = 0;
@@ -285,4 +287,6 @@ function BuildListFile(): void {
       return;
     }
   }
+}
+
 }

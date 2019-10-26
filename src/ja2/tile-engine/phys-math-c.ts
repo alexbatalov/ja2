@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function VSetEqual(a: Pointer<vector_3>): vector_3 {
   let c: vector_3;
 
@@ -100,4 +102,6 @@ export function VGetNormal(a: Pointer<vector_3>): vector_3 {
     c.z = OneOverLength * a.value.z;
   }
   return c;
+}
+
 }

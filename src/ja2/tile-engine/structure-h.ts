@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const NOTHING_BLOCKING = 0;
 export const BLOCKING_REDUCE_RANGE = 1;
 export const BLOCKING_NEXT_TILE = 10;
@@ -49,4 +51,6 @@ export const enum Enum309 {
   MATERIAL_INDESTRUCTABLE_METAL,
   MATERIAL_THICKER_METAL_WITH_SCREEN_WINDOWS,
   NUM_MATERIAL_TYPES,
+}
+
 }

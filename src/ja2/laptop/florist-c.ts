@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const FLORIST_SENTENCE_FONT = () => FONT12ARIAL();
 const FLORIST_SENTENCE_COLOR = FONT_MCOLOR_WHITE;
 
@@ -227,4 +229,6 @@ function SelectFloristTitleHomeLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
+}
+
 }

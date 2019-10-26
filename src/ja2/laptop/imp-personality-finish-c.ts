@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // this is the amount of time, the player waits until booted back to main profileing screen
 
 export let bPersonalityEndState: UINT8 = 0;
@@ -253,4 +255,6 @@ function BtnIMPPersonalityFinishOkCallback(btn: Pointer<GUI_BUTTON>, reason: INT
       iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
     }
   }
+}
+
 }

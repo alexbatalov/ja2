@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // the buttons
 let giIMPAttributeEntranceButtonImage: UINT32[] /* [1] */;
 let giIMPAttributeEntranceButton: UINT32[] /* [1] */;
@@ -67,4 +69,6 @@ function BtnIMPAttributeBeginCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       fButtonPendingFlag = true;
     }
   }
+}
+
 }

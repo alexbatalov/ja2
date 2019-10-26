@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //
 //	Keeps track of the game version
 //
@@ -15,3 +17,5 @@ export let zTrackingNumber: INT16[] /* [16] */ = [ "Z" ];
 const SAVE_GAME_VERSION = 99;
 
 const guiSavedGameVersion: UINT32 = SAVE_GAME_VERSION;
+
+}

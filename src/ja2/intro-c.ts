@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const enum Enum19 {
   INTRO_TXT__CANT_FIND_INTRO,
 }
@@ -368,4 +370,6 @@ function DisplaySirtechSplashScreen(): void {
 
   InvalidateScreen();
   RefreshScreen(null);
+}
+
 }

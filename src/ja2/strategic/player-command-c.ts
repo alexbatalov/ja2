@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString: STR16): void {
   // will build a string stating current facilities present in sector
 
@@ -351,4 +353,6 @@ export function ReplaceSoldierProfileInPlayerGroup(ubGroupID: UINT8, ubOldProfil
     }
     curr = curr.value.next;
   }
+}
+
 }

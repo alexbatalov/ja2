@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MERCBIOFILE = "BINARYDATA\\MercBios.edt";
 
 const MERC_BIO_FONT = () => FONT14ARIAL(); // FONT12ARIAL
@@ -556,4 +558,6 @@ function EnableDisableMercFilesNextPreviousButton(): void {
     EnableButton(guiPrevButton);
   else
     DisableButton(guiPrevButton);
+}
+
 }

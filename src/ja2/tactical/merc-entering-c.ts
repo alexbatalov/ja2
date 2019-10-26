@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAX_MERC_IN_HELI = 20;
 const MAX_HELI_SCRIPT = 30;
 const ME_SCRIPT_DELAY = 100;
@@ -719,4 +721,6 @@ function HandleFirstHeliDropOfGame(): void {
 
   // Send message to turn on ai again....
   CharacterDialogueWithSpecialEvent(0, 0, 0, DIALOGUE_TACTICAL_UI, false, false, DIALOGUE_SPECIAL_EVENT_ENABLE_AI, 0, 0);
+}
+
 }

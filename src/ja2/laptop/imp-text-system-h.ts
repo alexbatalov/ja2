@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum88 {
   IMP_HOME_1,
   IMP_HOME_2,
@@ -121,4 +123,6 @@ export const enum Enum88 {
   IMP_CON_1 = IMP_FIN_10 - 1,
   IMP_CON_2,
   IMP_CON_3,
+}
+
 }

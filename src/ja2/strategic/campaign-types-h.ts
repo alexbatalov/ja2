@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Macro to convert sector coordinates (1-16,1-16) to 0-255
 export const SECTOR = (x, y) => ((y - 1) * 16 + x - 1);
 export const SECTORX = (SectorID) => ((SectorID % 16) + 1);
@@ -497,4 +499,6 @@ export interface UNDERGROUND_SECTORINFO {
 
   uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer: UINT32;
   bPadding: INT8[] /* [36] */;
+}
+
 }

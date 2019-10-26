@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // current and last pages
 export let iCurrentVoices: INT32 = 0;
 let iLastVoice: INT32 = 2;
@@ -339,4 +341,6 @@ function RenderVoiceIndex(): void {
   mprintf(sX, 320, sString);
 
   return;
+}
+
 }

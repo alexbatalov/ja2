@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gfStartLookingForRubberBanding: boolean = false;
 let gusRubberBandX: UINT16 = 0;
 let gusRubberBandY: UINT16 = 0;
@@ -1114,4 +1116,6 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
 
     usOldMapPos = usMapPos;
   }
+}
+
 }

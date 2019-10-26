@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const AIR_RAID_BEGINNING_GAME = 0x00000001;
 export const AIR_RAID_CAN_RANDOMIZE_TEASE_DIVES = 0x00000002;
 
@@ -23,4 +25,6 @@ export const enum Enum192 {
   AIR_RAID_END_BOMBING,
   AIR_RAID_START_END,
   AIR_RAID_END,
+}
+
 }

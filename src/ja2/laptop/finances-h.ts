@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const FINANCES_DATA_FILE = "TEMP\\finances.dat";
 
 // the financial structure
@@ -43,3 +45,5 @@ export const enum Enum80 {
 }
 
 export type FinanceUnitPtr = Pointer<FinanceUnit>;
+
+}

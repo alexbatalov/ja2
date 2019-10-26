@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // void DrawMapIndexSmallMap( BOOLEAN fSelectedCursorIsYellow );
 
 // check if anyone left behind, if not, move selected cursor along with movement group
@@ -59,3 +61,5 @@ export const SHOW_VEHICLES = 2;
 
 // wait time until temp path is drawn, from placing cursor on a map grid
 export const MIN_WAIT_TIME_FOR_TEMP_PATH = 200;
+
+}

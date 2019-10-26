@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // THIS FILE CONTAINS DEFINITIONS FOR TILESET FILES
 
 export let gTilesets: TILESET[] /* [NUM_TILESETS] */;
@@ -184,4 +186,6 @@ function SetTilesetFourTerrainValues(): void {
   gTileSurfaceArray[Enum313.FOURTHFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
 
   // NOW ANY TERRAIN MODIFYING DEBRIS
+}
+
 }

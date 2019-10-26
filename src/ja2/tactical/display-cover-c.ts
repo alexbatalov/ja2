@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //*******  Local Defines **************************************************
 
 const DC_MAX_COVER_RANGE = 31;
@@ -825,4 +827,6 @@ export function ChangeSizeOfLOS(iNewSize: INT32): void {
   // ReDisplay the los
   RemoveVisibleGridNoAtSelectedGridNo();
   DisplayGridNoVisibleToSoldierGrid();
+}
+
 }

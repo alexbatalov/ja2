@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum22 {
   LOADINGSCREEN_NOTHING,
   LOADINGSCREEN_DAYGENERIC,
@@ -42,4 +44,6 @@ export const enum Enum22 {
   LOADINGSCREEN_NIGHTMINE,
   LOADINGSCREEN_DAYBALIME,
   LOADINGSCREEN_NIGHTBALIME,
+}
+
 }

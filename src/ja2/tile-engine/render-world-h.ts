@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // TEMP SELECT STUFF
 export const NO_SELECT = 0;
 const FULL_SELECT = 1;
@@ -61,3 +63,5 @@ export const TILES_DYNAMIC_TOPMOST = 0x00000001;
 
 // Distance around mercs to pixelate walls
 const REVEAL_WALLS_RADIUS = 3;
+
+}

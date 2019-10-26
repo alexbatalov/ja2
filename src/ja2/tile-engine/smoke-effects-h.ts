@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Smoke effect types
 export const enum Enum308 {
   NO_SMOKE_EFFECT,
@@ -24,4 +26,6 @@ export interface SMOKEEFFECT {
   ubOwner: UINT8;
   ubPadding: UINT8;
   uiTimeOfLastUpdate: UINT32;
+}
+
 }

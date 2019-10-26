@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let guiLNCount: UINT32[] /* [9] */;
 /* static */ let gzLevelString: CHAR16[][] /* [9][15] */ = [
   "",
@@ -2934,4 +2936,6 @@ export function SetTreeTopStateForMap(): void {
 
   // FOR THE NEXT RENDER LOOP, RE-EVALUATE REDUNDENT TILES
   InvalidateWorldRedundency();
+}
+
 }

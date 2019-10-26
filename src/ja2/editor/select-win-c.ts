@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gfRenderSquareArea: boolean = false;
 let iStartClickX: INT16;
 let iStartClickY: INT16;
@@ -1449,4 +1451,6 @@ function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBott
   }
 
   return fReturnVal;
+}
+
 }

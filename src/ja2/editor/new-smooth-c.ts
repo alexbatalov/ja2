@@ -1,3 +1,5 @@
+namespace ja2 {
+
 function CaveAtGridNo(iMapIndex: INT32): boolean {
   let pStruct: Pointer<STRUCTURE>;
   let pLevel: Pointer<LEVELNODE>;
@@ -1285,4 +1287,6 @@ export function AnalyseCaveMapForStructureInfo(): void {
       pStruct = pStruct.value.pNext;
     }
   }
+}
+
 }

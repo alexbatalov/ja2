@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface StrategicMapElement {
   UNUSEDuiFootEta: UINT8[] /* [4] */; // eta/mvt costs for feet
   UNUSEDuiVehicleEta: UINT8[] /* [4] */; // eta/mvt costs for vehicles
@@ -26,3 +28,5 @@ export const enum Enum175 {
 
 // PLEASE USE CALCULATE_STRATEGIC_INDEX() macro instead (they're identical).
 //#define			GETWORLDMAPNO( x, y )		( x+(MAP_WORLD_X*y) )
+
+}

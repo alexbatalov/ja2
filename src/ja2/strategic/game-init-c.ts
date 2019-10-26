@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gubScreenCount: UINT8 = 0;
 
 function InitNPCs(): void {
@@ -644,4 +646,6 @@ export function ReStartingGame(): void {
   gpCustomizableTimerCallback = null;
 
   gubCheatLevel = STARTING_CHEAT_LEVEL;
+}
+
 }

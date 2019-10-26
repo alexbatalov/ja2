@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gubCurrentSortMode: UINT8;
 export let gubCurrentListMode: UINT8;
 
@@ -268,4 +270,6 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
   }
 
   return true;
+}
+
 }

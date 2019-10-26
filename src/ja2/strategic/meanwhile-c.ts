@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAX_MEANWHILE_PROFILES = 10;
 
 let gzMeanwhileStr: INT8[][] /* [][30] */ = [
@@ -1106,4 +1108,6 @@ export function HandleFirstMeanWhileSetUpWithTrashWorld(): void {
     HandleFirstBattleVictory();
     gfFirstBattleMeanwhileScenePending = false;
   }
+}
+
 }

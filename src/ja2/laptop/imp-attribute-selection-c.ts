@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // width of the slider bar region
 const BAR_WIDTH = 423 - 197;
 
@@ -1345,4 +1347,6 @@ function StatAtZeroBoxCallBack(bExitValue: UINT8): void {
   }
 
   return;
+}
+
 }

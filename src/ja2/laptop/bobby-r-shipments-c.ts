@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const BOBBYR_SHIPMENT_TITLE_TEXT_FONT = () => FONT14ARIAL();
 const BOBBYR_SHIPMENT_TITLE_TEXT_COLOR = 157;
 
@@ -308,4 +310,6 @@ function CountNumberValidShipmentForTheShipmentsPage(): INT32 {
     return BOBBYR_SHIPMENT_NUM_PREVIOUS_SHIPMENTS;
   else
     return giNumberOfNewBobbyRShipment;
+}
+
 }

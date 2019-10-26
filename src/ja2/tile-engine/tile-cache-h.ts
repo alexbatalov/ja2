@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const TILE_CACHE_START_INDEX = 36000;
 
 export interface TILE_CACHE_ELEMENT {
@@ -18,3 +20,5 @@ export interface TILE_CACHE_STRUCT {
 // OF COURSE, FOR SPEED, WE EXPORT OUR ARRAY
 // ACCESS FUNCTIONS IN RENDERER IS NOT TOO NICE
 // ATE
+
+}

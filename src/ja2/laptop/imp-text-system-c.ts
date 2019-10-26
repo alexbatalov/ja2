@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const IMP_SEEK_AMOUNT = 5 * 80 * 2;
 
 const IMP_LEFT_IDENT_TEXT_X = 116;
@@ -382,4 +384,6 @@ function OffSetQuestionForFemaleSpecificQuestions(iCurrentOffset: Pointer<INT32>
 
     iCurrentOffset.value += iExtraOffSet;
   }
+}
+
 }

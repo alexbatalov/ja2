@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Light effect types
 export const enum Enum305 {
   NO_LIGHT_EFFECT,
@@ -14,4 +16,6 @@ export interface LIGHTEFFECT {
   bType: INT8;
   iLight: INT32;
   uiTimeOfLastUpdate: UINT32;
+}
+
 }

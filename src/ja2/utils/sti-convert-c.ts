@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const CONVERT_ADD_APPDATA = 0x0001;
 const CONVERT_ADD_JA2DATA = 0x0003;
 const CONVERT_ZLIB_COMPRESS = 0x0010;
@@ -667,4 +669,6 @@ function CheckForDataInRowOrColumn(pPixel: Pointer<UINT8>, usIncrement: UINT16, 
     }
   }
   return null;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Video Surface SGP Module
@@ -2081,4 +2083,6 @@ function MakeVSurfaceFromVObject(uiVObject: UINT32, usSubIndex: UINT16, puiVSurf
   }
 
   return false;
+}
+
 }

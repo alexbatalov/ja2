@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // mvt modifier
 //#define FOOT_MVT_MODIFIER 2
 
@@ -1751,4 +1753,6 @@ function AddSectorToFrontOfMercPath(ppMercPath: Pointer<PathStPtr>, ubSectorX: U
   }
 
   ppMercPath.value = pNode;
+}
+
 }

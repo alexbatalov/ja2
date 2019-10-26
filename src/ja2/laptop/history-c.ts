@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const TOP_X = 0 + LAPTOP_SCREEN_UL_X;
 const TOP_Y = LAPTOP_SCREEN_UL_Y;
 const BLOCK_HIST_HEIGHT = 10;
@@ -1437,4 +1439,6 @@ function GetNumberOfHistoryPages(): INT32 {
   FileClose(hFileHandle);
 
   return iNumberOfHistoryPages;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const ANIMATED_CURSOR = 0x02;
 export const USE_EXTERN_VO_CURSOR = 0x04;
 export const USE_OUTLINE_BLITTER = 0x08;
@@ -55,3 +57,5 @@ export interface CursorData {
 }
 
 export type MOUSEBLT_HOOK = () => void;
+
+}

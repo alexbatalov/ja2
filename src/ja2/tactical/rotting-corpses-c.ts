@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const CORPSE_WARNING_MAX = 5;
 const CORPSE_WARNING_DIST = 5;
 
@@ -1567,4 +1569,6 @@ export function GetNearestRottingCorpseAIWarning(sGridNo: INT16): UINT8 {
   }
 
   return ubHighestWarning;
+}
+
 }

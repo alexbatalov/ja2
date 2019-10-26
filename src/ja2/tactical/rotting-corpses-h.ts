@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const NUM_CORPSE_SHADES = 17;
 
 export const enum Enum249 {
@@ -120,3 +122,5 @@ export interface ROTTING_CORPSE {
 }
 
 export const MAX_ROTTING_CORPSES = 100;
+
+}

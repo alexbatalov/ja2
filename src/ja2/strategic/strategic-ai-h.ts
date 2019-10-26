@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // NPC ACTION TRIGGERS SPECIAL CASE AI
 export const enum Enum173 {
   STRATEGIC_AI_ACTION_WAKE_QUEEN = 1,
@@ -68,4 +70,6 @@ export interface GARRISON_GROUP {
   bWeight: INT8;
   ubPendingGroupID: UINT8;
   bPadding: INT8[] /* [10] */;
+}
+
 }

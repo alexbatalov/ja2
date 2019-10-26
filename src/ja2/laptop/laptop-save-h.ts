@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const MAX_BOOKMARKS = 20;
 
 export const MAX_PURCHASE_AMOUNT = 10;
@@ -114,4 +116,6 @@ export interface LaptopSaveInfoStruct {
 
   ubLastMercAvailableId: UINT8;
   bPadding: UINT8[] /* [86] */;
+}
+
 }

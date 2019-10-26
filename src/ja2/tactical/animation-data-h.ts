@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // DEFINES FOR ANIMATION PROFILES
 export const TILE_FLAG_FEET = 0x0001;
 export const TILE_FLAG_MID = 0x0002;
@@ -519,4 +521,6 @@ export interface AnimationSurfaceType {
 export interface AnimationStructureType {
   Filename: CHAR8[] /* [50] */;
   pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const DIRTY_QUEUES = 200;
 const BACKGROUND_BUFFERS = 500;
 const VIDEO_OVERLAYS = 100;
@@ -1116,4 +1118,6 @@ export function EnableVideoOverlay(fEnable: boolean, iOverlayIndex: INT32): void
   VideoOverlayDesc.uiFlags = VOVERLAY_DESC_DISABLED;
 
   UpdateVideoOverlay(addressof(VideoOverlayDesc), iOverlayIndex, false);
+}
+
 }

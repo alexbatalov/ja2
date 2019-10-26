@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export type TIMECOUNTER = INT32;
 
 // typedef void (__stdcall *JA2_TIMERPROC)( UINT32 uiID, UINT32 uiMsg, UINT32 uiUser, UINT32 uiDw1, UINT32 uiDw2 );
@@ -60,3 +62,5 @@ export const TIMECOUNTERDONE = (c, d) => (c == 0) ? true : false;
 
 export const SYNCTIMECOUNTER = () => {};
 export const ZEROTIMECOUNTER = (c) => (c = 0);
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const WORLD_ITEM_DONTRENDER = 0x0001;
 export const WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO = 0x0002;
 export const WORLD_ITEM_ARMED_BOMB = 0x0040;
@@ -27,4 +29,6 @@ export interface WORLDITEM {
 export interface WORLDBOMB {
   fExists: boolean;
   iItemIndex: INT32;
+}
+
 }

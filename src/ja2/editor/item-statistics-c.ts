@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let giBothCheckboxButton: INT32 = -1;
 let giRealisticCheckboxButton: INT32 = -1;
 let giSciFiCheckboxButton: INT32 = -1;
@@ -1338,4 +1340,6 @@ function ReEvaluateAttachmentStatii(): void {
         DisableButton(guiAttachmentButton[i]);
     }
   }
+}
+
 }

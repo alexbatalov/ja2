@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // the amounts of time to wait for hover stuff
 const TIME_DELAY_FOR_HOVER_WAIT = 10; // minutes
 const TIME_DELAY_FOR_HOVER_WAIT_TOO_LONG = 20; // mintues
@@ -1857,4 +1859,6 @@ export function SoldierAboardAirborneHeli(pSoldier: Pointer<SOLDIERTYPE>): boole
 
   // yes, airborne
   return true;
+}
+
 }

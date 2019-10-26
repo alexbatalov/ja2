@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Type of quote
 export const enum Enum299 {
   QD_NPC_MSG,
@@ -11,4 +13,6 @@ const enum Enum300 {
   QD_LEVEL_3,
   QD_LEVEL_4,
   QD_LEVEL_5,
+}
+
 }

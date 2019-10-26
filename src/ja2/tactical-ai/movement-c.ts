@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //
 // CJC's DG->JA2 conversion notes
 //
@@ -883,3 +885,5 @@ UINT16 RunAway( SOLDIERTYPE * pSoldier )
         return( NOWHERE );
 }
 */
+
+}

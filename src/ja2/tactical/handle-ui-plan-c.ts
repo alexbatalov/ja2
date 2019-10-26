@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gubNumUIPlannedMoves: UINT8 = 0;
 let gpUIPlannedSoldier: Pointer<SOLDIERTYPE> = null;
 let gpUIStartPlannedSoldier: Pointer<SOLDIERTYPE> = null;
@@ -239,4 +241,6 @@ function SelectPausedFireAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
       ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_CROUCH, 2, false);
       break;
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // popupmenu.h
 // Author:  Kris Morness
 // Created:  Sept 4, 1997
@@ -80,4 +82,6 @@ export interface CurrentPopupMenuInformation {
 
   usLastMouseX: UINT16;
   usLastMouseY: UINT16;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let giIMPPersonalityQuizButton: UINT32[] /* [2] */;
 let giIMPPersonalityQuizButtonImage: UINT32[] /* [2] */;
 
@@ -1516,4 +1518,6 @@ function NextQuestionButtonCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): v
     }
   }
   return;
+}
+
 }

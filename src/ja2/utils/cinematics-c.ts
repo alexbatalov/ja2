@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //----------------------------------------------------------------------------------
 // Cinematics Module
 //
@@ -228,4 +230,6 @@ function SmkSetupVideo(): void {
 function SmkShutdownVideo(): void {
   // DEF:
   //	CinematicModeOff();
+}
+
 }

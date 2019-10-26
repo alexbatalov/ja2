@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface KEY {
   usItem: UINT16; // index in item table for key
   fFlags: UINT8; // flags...
@@ -111,3 +113,5 @@ export const OPENING_NOT_POSSIBLE = 254;
 
 // File I/O for loading the door information from the map.  This automatically allocates
 // the exact number of slots when loading.
+
+}

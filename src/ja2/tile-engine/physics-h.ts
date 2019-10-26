@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface REAL_OBJECT {
   fAllocated: boolean;
   fAlive: boolean;
@@ -59,3 +61,5 @@ export interface REAL_OBJECT {
 }
 
 export const NUM_OBJECT_SLOTS = 50;
+
+}

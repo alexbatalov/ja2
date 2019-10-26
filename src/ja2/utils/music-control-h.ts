@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum327 {
   MARIMBAD2_MUSIC,
   MENUMIX_MUSIC,
@@ -27,4 +29,6 @@ export const enum Enum328 {
   MUSIC_TACTICAL_VICTORY,
   MUSIC_TACTICAL_DEATH,
   MUSIC_LAPTOP,
+}
+
 }

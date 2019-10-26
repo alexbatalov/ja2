@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const ANY_MAGSIZE = 255;
 
 // weight units are 100g each
@@ -4221,4 +4223,6 @@ export function TurnOffXRayEffects(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
   }
   pSoldier.value.uiXRayActivatedTime = 0;
+}
+
 }

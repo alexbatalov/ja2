@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfInSectorExitMenu: boolean = false;
 
 interface EXIT_DIALOG_STRUCT {
@@ -732,4 +734,6 @@ function LoadRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gExitDialog.fGotoSectorHilighted = false;
   }
+}
+
 }

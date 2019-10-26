@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /////////////////////////////////////////////////////
 //
 // Local Defines
@@ -3723,4 +3725,6 @@ function CalcJA2EncryptionSet(pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): UINT
   }
 
   return uiEncryptionSet;
+}
+
 }

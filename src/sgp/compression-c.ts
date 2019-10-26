@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // mem allocation functions for ZLIB's purposes
 
 function ZAlloc(opaque: voidpf, items: uInt, size: uInt): voidpf {
@@ -143,4 +145,6 @@ function CompressFini(pCompPtr: PTR): void {
 
   deflateEnd(pZStream);
   MemFree(pZStream);
+}
+
 }

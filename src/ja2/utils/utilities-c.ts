@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const DATA_8_BIT_DIR = "8-Bit\\";
 
 //#define	TIME_LIMITED_VERSION
@@ -283,4 +285,6 @@ export function DoJA2FilesExistsOnDrive(zCdLocation: Pointer<CHAR8>): boolean {
   }
 
   return !fFailed;
+}
+
 }

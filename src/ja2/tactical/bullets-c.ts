@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Defines
 const NUM_BULLET_SLOTS = 50;
 
@@ -394,4 +396,6 @@ export function DeleteAllBullets(): void {
   }
 
   RecountBullets();
+}
+
 }

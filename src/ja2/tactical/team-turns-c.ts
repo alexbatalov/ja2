@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const END_OF_INTERRUPTS = 255;
 
 let gubOutOfTurnOrder: UINT8[] /* [MAXMERCS] */ = [
@@ -1604,4 +1606,6 @@ export function NPCFirstDraw(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poi
     }
   }
   return false;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const SIZE_OF_MILITIA_COMPLETED_TRAINING_LIST = 50;
 
 // temporary local global variables
@@ -980,4 +982,6 @@ export function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
   gbGreenToRegPromotions = 0;
   gbRegToElitePromotions = 0;
   gbMilitiaPromotions = 0;
+}
+
 }

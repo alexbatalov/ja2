@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /*
         Filename        :       pathai.h
         Author          :       Ray E. Bornert II
@@ -85,3 +87,5 @@ export const PATH_CLOSE_GOOD_ENOUGH = 0x04;
 export const PATH_CLOSE_RADIUS = 5;
 
 // ------------------------------------------
+
+}

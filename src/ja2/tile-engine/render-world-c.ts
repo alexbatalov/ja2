@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let fLandLayerDirty: boolean = true;
 
 export let gpZBuffer: Pointer<UINT16> = null;
@@ -6186,4 +6188,6 @@ export function SetRenderCenter(sNewX: INT16, sNewY: INT16): void {
   }
 
   gfScrollInertia = false;
+}
+
 }

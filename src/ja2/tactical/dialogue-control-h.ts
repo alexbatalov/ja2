@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // An enumeration for dialog quotes
 export const enum Enum202 {
   // 0
@@ -211,3 +213,5 @@ export const enum Enum204 {
 }
 
 export const NUMBER_VALID_MERC_PRECEDENT_QUOTES = 13;
+
+}

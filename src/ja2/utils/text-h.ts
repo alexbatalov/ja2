@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const STRING_LENGTH = 255;
 
 export const enum Enum332 {
@@ -1041,4 +1043,6 @@ export const enum Enum382 {
   CRDT_JOEY,
 
   NUM_PEOPLE_IN_CREDITS,
+}
+
 }

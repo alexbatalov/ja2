@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_LIGHT_EFFECT_SLOTS = 25;
 
 // GLOBAL FOR LIGHT LISTING
@@ -371,4 +373,6 @@ export function ResetLightEffects(): void {
   // Clear out the old list
   memset(gLightEffectData, 0, sizeof(LIGHTEFFECT) * NUM_LIGHT_EFFECT_SLOTS);
   guiNumLightEffects = 0;
+}
+
 }

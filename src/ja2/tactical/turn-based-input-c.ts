@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gfFirstCycleMovementStarted: boolean = false;
 
 let guiSoldierFlags: UINT32;
@@ -3399,4 +3401,6 @@ export function PopupAssignmentMenuInTactical(pSoldier: Pointer<SOLDIERTYPE>): v
   DetermineWhichAssignmentMenusCanBeShown();
   fFirstClickInAssignmentScreenMask = true;
   gfIgnoreScrolling = true;
+}
+
 }

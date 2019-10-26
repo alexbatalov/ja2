@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const SAI_VERSION = 29;
 
 /*
@@ -4162,4 +4164,6 @@ function FindPendingGroupForGarrisonSector(ubSectorID: UINT8): Pointer<GROUP> {
     }
   }
   return null;
+}
+
 }

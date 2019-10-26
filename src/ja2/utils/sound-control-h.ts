@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const FARLEFT = 0;
 export const LEFTSIDE = 48;
 export const MIDDLE = 64;
@@ -383,3 +385,5 @@ export const enum Enum331 {
 export type SOUND_STOP_CALLBACK = (pData: Pointer<void>) => void;
 
 export const POSITION_SOUND_FROM_SOLDIER = 0x00000001;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MAIN_PAGE_BUTTON_TEXT_WIDTH = 95;
 
 // main page buttons
@@ -499,4 +501,6 @@ function LoadCharacterPortraitForMainPage(): boolean {
   }
 
   return true;
+}
+
 }

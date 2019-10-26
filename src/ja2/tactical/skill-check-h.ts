@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum255 {
   NO_CHECK = 0,
   LOCKPICKING_CHECK,
@@ -15,4 +17,6 @@ export const enum Enum255 {
   ATTACHING_SPECIAL_ITEM_CHECK,
   ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK,
   DISARM_ELECTRONIC_TRAP_CHECK,
+}
+
 }

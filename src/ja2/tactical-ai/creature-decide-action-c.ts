@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const CAN_CALL = (s) => (s.value.ubBodyType != Enum194.BLOODCAT && s.value.ubBodyType != Enum194.LARVAE_MONSTER && s.value.ubBodyType != Enum194.INFANT_MONSTER);
 const CAN_LISTEN_TO_CALL = (s) => (s.value.ubBodyType != Enum194.BLOODCAT && s.value.ubBodyType != Enum194.LARVAE_MONSTER);
 
@@ -1377,4 +1379,6 @@ export function CrowDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       Assert(false);
       return Enum289.AI_ACTION_NONE;
   }
+}
+
 }

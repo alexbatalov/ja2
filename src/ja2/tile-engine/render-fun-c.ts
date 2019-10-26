@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Room Information
 export let gubWorldRoomInfo: UINT8[] /* [WORLD_MAX] */;
 export let gubWorldRoomHidden: UINT8[] /* [MAX_ROOMS] */;
@@ -260,4 +262,6 @@ function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): boolean {
   }
 
   return true;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const HELP_SCREEN_ACTIVE = 0x00000001;
 
 // The defualt size and placement of the screen
@@ -2123,4 +2125,6 @@ function AreWeClickingOnScrollBar(usMousePosY: INT32): boolean {
     return true;
   else
     return false;
+}
+
 }

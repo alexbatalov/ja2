@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NO_TEST_OBJECT = 0;
 const TEST_OBJECT_NO_COLLISIONS = 1;
 const TEST_OBJECT_ANY_COLLISION = 2;
@@ -2104,4 +2106,6 @@ function RandomGridFromRadius(sSweetGridNo: INT16, ubMinRadius: INT8, ubMaxRadiu
   } while (!fFound);
 
   return sGridNo;
+}
+
 }

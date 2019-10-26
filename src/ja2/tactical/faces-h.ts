@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const NO_EXPRESSION = 0;
 export const BLINKING = 1;
 export const ANGRY = 2;
@@ -160,3 +162,5 @@ export interface FACETYPE {
 
 // This can be used to times when you need process the user hitting <ESC> to cancel the speech, etc. It will
 // shutoff any playing sound sample
+
+}

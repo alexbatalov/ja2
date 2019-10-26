@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /*
  * NB:  STRUCTURE_SPECIAL
  *
@@ -1899,4 +1901,6 @@ export function GetStructureOpenSound(pStructure: Pointer<STRUCTURE>, fClose: bo
   }
 
   return uiSoundID;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfPotentialTeamChangeDuringDeath: boolean = false;
 
 const MIN_BLINK_FREQ = 3000;
@@ -1195,4 +1197,6 @@ export function DoesNPCOwnBuilding(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT1
   }
 
   return false;
+}
+
 }

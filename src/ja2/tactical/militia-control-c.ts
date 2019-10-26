@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfStrategicMilitiaChangesMade: boolean = false;
 
 export function ResetMilitia(): void {
@@ -96,4 +98,6 @@ export function HandleMilitiaPromotions(): void {
     // BuildMilitiaPromotionsString( str );
     // DoScreenIndependantMessageBox( str, MSG_BOX_FLAG_OK, NULL );
   }
+}
+
 }

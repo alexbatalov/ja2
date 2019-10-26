@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // globals
 
 // video object handles
@@ -1093,4 +1095,6 @@ export function RenderQtnShort2IndentHighFrame(sX: INT16, sY: INT16): void {
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gfOriginalList: boolean = true;
 
 export let gSoldierInitHead: Pointer<SOLDIERINITNODE> = null;
@@ -1858,4 +1860,6 @@ export function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
     }
     curr = curr.value.next;
   }
+}
+
 }

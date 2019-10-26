@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum26 {
   EDIT_SCREEN,
   SAVING_SCREEN,
@@ -30,4 +32,6 @@ export const enum Enum26 {
   //#endif
 
   MAX_SCREENS,
+}
+
 }

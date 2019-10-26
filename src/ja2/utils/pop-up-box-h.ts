@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const MAX_POPUP_BOX_COUNT = 20;
 export const MAX_POPUP_BOX_STRING_COUNT = 50; // worst case = 45: move menu with 20 soldiers, each on different squad + overhead
 
@@ -45,3 +47,5 @@ export interface PopUpBo {
 }
 
 export type PopUpBoxPt = Pointer<PopUpBo>;
+
+}

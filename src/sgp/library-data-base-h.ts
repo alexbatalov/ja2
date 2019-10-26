@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const FILENAME_SIZE = 256;
 
 //#define	FILENAME_SIZE									40 + PATH_SIZE
@@ -107,3 +109,5 @@ export interface DIRENTRY {
 }
 
 // Function Prototypes
+
+}

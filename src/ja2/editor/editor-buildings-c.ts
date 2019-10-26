@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let fBuildingShowRoofs: boolean;
 export let fBuildingShowWalls: boolean;
 export let fBuildingShowRoomInfo: boolean;
@@ -629,4 +631,6 @@ export function ExtractAndUpdateBuildingInfo(): void {
   swprintf(str, "%d", gubCurrRoomNumber);
   SetInputFieldStringWith16BitString(1, str);
   SetActiveField(0);
+}
+
 }

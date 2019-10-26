@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const enum Enum322 {
   TCTL_MSG__RANGE_TO_TARGET,
   TCTL_MSG__ATTACH_TRANSMITTER_TO_LAPTOP,
@@ -26,4 +28,6 @@ const enum Enum322 {
 
 const enum Enum323 {
   IMM__IRON_MAN_MODE_WARNING_TEXT,
+}
+
 }

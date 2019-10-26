@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const SOLDIER_CREATE_AUTO_TEAM = -1;
 
 // Kris:
@@ -139,3 +141,5 @@ export interface SOLDIERCREATE_STRUCT {
 //  values that work in conjunction with the strategic AI's relative values to generate soldiers.  In no
 //  circumstances will static detailed placements be used outside of the editor.  Note, that this hybrid version
 //  uses the identical structure as detailed placements.  All non-static values are set to -1.
+
+}

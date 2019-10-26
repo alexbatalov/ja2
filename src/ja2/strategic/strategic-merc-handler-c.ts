@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const NUM_DAYS_TILL_UNPAID_RPC_QUITS = 3;
 
 // can you say me too after someone has said thier contract about to end
@@ -860,4 +862,6 @@ export function HourlyCamouflageUpdate(): void {
       }
     }
   }
+}
+
 }

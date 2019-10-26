@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface EditorItemsInfo {
   fGameInit: boolean; // Used for initializing save variables the first time.
                       // This flag is initialize at
@@ -45,4 +47,6 @@ export interface EditorItemsInfo {
   sNumEquipment3: INT16;
   sNumTriggers: INT16;
   sNumKeys: INT16;
+}
+
 }

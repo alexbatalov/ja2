@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Handles the dynamic changing of text input fields and button modes depending on the currently edited
 // item.  Both the merc's inventory panel, and the items tab use the same code to accomplish this.
 
@@ -49,4 +51,6 @@ export const enum Enum49 {
   ACTIONITEM_BLOODCAT_ALARM,
   ACTIONITEM_BIG_TEAR_GAS,
   NUM_ACTIONITEMS,
+}
+
 }

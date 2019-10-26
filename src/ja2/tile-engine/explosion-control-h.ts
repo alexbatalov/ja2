@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const MAX_DISTANCE_EXPLOSIVE_CAN_DESTROY_STRUCTURES = 2;
 
 export const EXPLOSION_FLAG_USEABSPOS = 0x00000001;
@@ -57,3 +59,5 @@ export const REDO_SPREAD_EFFECT = 4;
 const NUM_EXPLOSION_SLOTS = 100;
 
 export const GASMASK_MIN_STATUS = 70;
+
+}

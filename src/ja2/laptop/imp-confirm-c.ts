@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const IMP_MERC_FILE = "IMP.dat";
 
 let giIMPConfirmButton: UINT32[] /* [2] */;
@@ -513,4 +515,6 @@ export function ResetIMPCharactersEyesAndMouthOffsets(ubMercProfileID: UINT8): v
 
   gMercProfiles[ubMercProfileID].usMouthX = uiMouthXPositions[gMercProfiles[ubMercProfileID].ubFaceIndex - 200];
   gMercProfiles[ubMercProfileID].usMouthY = uiMouthYPositions[gMercProfiles[ubMercProfileID].ubFaceIndex - 200];
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // DEFINES
 
 const MAX_SORT_METHODS = 6;
@@ -9834,4 +9836,6 @@ function MapscreenMarkButtonsDirty(): void {
       UnMarkButtonDirty(giMapBorderButtons[Enum141.MAP_BORDER_TOWN_BTN]);
     }
   }
+}
+
 }

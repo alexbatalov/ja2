@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gfSchedulesHosed: boolean = false;
 
 //////////////////////////////////////////////////////
@@ -2021,4 +2023,6 @@ function StartFadeOutForSaveLoadScreen(): void {
   FadeOutNextFrame();
   gfStartedFadingOut = true;
   gfExitAfterMessageBox = true;
+}
+
 }

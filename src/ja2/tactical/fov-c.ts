@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /* view directions */
 const DLEFT = 0;
 const DRIGHT = 1;
@@ -686,3 +688,5 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
 }
 
 //#endif
+
+}

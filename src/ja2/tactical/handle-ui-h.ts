@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // DEFINES
 export const UIEVENT_SINGLEEVENT = 0x00000002;
 export const UIEVENT_SNAPMOUSE = 0x00000008;
@@ -150,3 +152,5 @@ export const enum Enum207 {
 }
 
 export type UIKEYBOARD_HOOK = (pInputEvent: Pointer<InputAtom>) => boolean;
+
+}

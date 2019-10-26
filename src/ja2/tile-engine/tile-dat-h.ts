@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum312 {
   FIRSTTEXTURE1 = 0,
   FIRSTTEXTURE2,
@@ -3502,3 +3504,5 @@ const WALL_AFRAME1 = 31;
 const WALL_AFRAME2 = 32;
 const WALL_AFRAME3 = 33;
 const WALL_AFRAME4 = 34;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // NUMBER_OF_LIBRARIES
 
 // used when doing the binary search of the libraries
@@ -886,4 +888,6 @@ function CompareDirEntryFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer
 
   /* Compare all of both strings: */
   return _stricmp(sSearchKey, sFileNameWithPath);
+}
+
 }

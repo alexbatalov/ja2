@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let guiForceRefreshMousePositionCalculation: UINT32 = 0;
 
 // GLOBALS
@@ -945,4 +947,6 @@ export function RandomGridNo(): INT16 {
     iMapIndex = iMapYPos * WORLD_COLS + iMapXPos;
   } while (!GridNoOnVisibleWorldTile(iMapIndex));
   return iMapIndex;
+}
+
 }

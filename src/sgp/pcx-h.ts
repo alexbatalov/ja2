@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface PcxHeader {
   ubManufacturer: UINT8;
   ubVersion: UINT8;
@@ -30,4 +32,6 @@ export interface PcxObject {
 
   uiBufferSize: UINT32;
   usPcxFlags: UINT16;
+}
+
 }

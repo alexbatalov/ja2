@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const SALARYAMT = 0;
 export const HEALTHAMT = 1;
 export const AGILAMT = 2;
@@ -47,4 +49,6 @@ export const enum Enum200 {
   EXP_BONUS_LARGE,
   EXP_BONUS_MAXIMUM,
   NUM_EXP_BONUS_TYPES,
+}
+
 }

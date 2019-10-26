@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gubEncryptionArray3: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
   [ 250, 224, 3, 197, 156, 209, 110, 159, 75, 119, 221, 42, 212, 180, 223, 115, 13, 246, 173, 221, 211, 148, 3, 78, 214, 195, 102, 155, 5, 128, 5, 204, 42, 72, 240, 65, 177, 242, 226, 81, 255, 139, 70, 150, 95, 124, 203, 83, 248 ],
 
@@ -2269,4 +2271,6 @@ export function GetTraversability(sStartSector: INT16, sEndSector: INT16): UINT8
 export function SectorIsImpassable(sSector: INT16): boolean {
   // returns true if the sector is impassable in all directions
   return SectorInfo[sSector].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] == Enum127.GROUNDBARRIER || SectorInfo[sSector].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] == Enum127.EDGEOFWORLD;
+}
+
 }

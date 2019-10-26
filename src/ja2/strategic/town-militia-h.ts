@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // header for town militia strategic control module
 
 // how many militia of all ranks can be in any one sector at once
@@ -11,3 +13,5 @@ export const MILITIA_TRAINING_COST = 750;
 
 // minimum loyalty rating before training is allowed in a town
 export const MIN_RATING_TO_TRAIN_TOWN = 20;
+
+}

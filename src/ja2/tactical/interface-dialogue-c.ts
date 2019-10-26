@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let sBasementEnterGridNos: INT16[] /* [] */ = [
   13362,
   13363,
@@ -4067,4 +4069,6 @@ function CarmenLeavesSectorCallback(): void {
   } else if (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && gbWorldSectorZ == 0) {
     TriggerNPCRecord(78, 36);
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function IsFencePresentAtGridno(sGridNo: INT16): boolean {
   if (FindStructure(sGridNo, STRUCTURE_ANYFENCE) != null) {
     return true;
@@ -437,4 +439,6 @@ export function SetOpenableStructureToClosed(sGridNo: INT16, ubLevel: UINT8): bo
   }
   // else leave it as is!
   return true;
+}
+
 }

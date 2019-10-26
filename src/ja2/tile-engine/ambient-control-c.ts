@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let gAmbData: AMBIENTDATA_STRUCT[] /* [MAX_AMBIENT_SOUNDS] */;
 export let gsNumAmbData: INT16 = 0;
 
@@ -291,4 +293,6 @@ function SetSteadyStateAmbience(ubAmbience: UINT8): boolean {
   guiCurrentSteadyStateSoundHandle = StartSteadyStateAmbient(LOWVOLUME, 0);
 
   return true;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let sStatueGridNos: INT16[] /* [] */ = [
   13829,
   13830,
@@ -393,4 +395,6 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
     // Increment refrence count...
     giNPCReferenceCount = 0;
   }
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const EVERYBODY = MAXMERCS;
 
 export const MAX_MISC_NOISE_DURATION = 12; // max dur for VERY loud NOBODY noises
@@ -55,3 +57,5 @@ export const BEST_SIGHTING_ARRAY_SIZE = 6;
 export const BEST_SIGHTING_ARRAY_SIZE_ALL_TEAMS_LOOK_FOR_ALL = 6;
 export const BEST_SIGHTING_ARRAY_SIZE_NONCOMBAT = 3;
 export const BEST_SIGHTING_ARRAY_SIZE_INCOMBAT = 0;
+
+}

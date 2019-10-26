@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const enum Enum326 {
   MLG_AIMSYMBOL,
   MLG_BOBBYNAME,
@@ -33,4 +35,6 @@ export const enum Enum326 {
   MLG_TOSTATS,
   MLG_WARNING,
   MLG_YOURAD13,
+}
+
 }

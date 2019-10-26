@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // header for assignment manipulation/updating for characters
 
 // this distinguishes whether we're only looking for patients healable THIS HOUR (those that have been on their assignment
@@ -89,3 +91,5 @@ export const CHARACTER_CANT_JOIN_SQUAD = 0;
 export const CHARACTER_CAN_JOIN_SQUAD = 1;
 
 // extern INT32 ghUpdateBox;
+
+}

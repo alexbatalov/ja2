@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const SKI_NUM_TRADING_INV_SLOTS = 12;
 export const SKI_NUM_TRADING_INV_ROWS = 2;
 export const SKI_NUM_TRADING_INV_COLS = 6;
@@ -40,4 +42,6 @@ export const enum Enum253 {
   SKI_DIRTY_LEVEL0, // no redraw
   SKI_DIRTY_LEVEL1, // redraw only items
   SKI_DIRTY_LEVEL2, // redraw everything
+}
+
 }

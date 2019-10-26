@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MERC_ACCOUNT_TEXT_FONT = () => FONT14ARIAL();
 const MERC_ACCOUNT_TEXT_COLOR = FONT_MCOLOR_WHITE;
 
@@ -431,4 +433,6 @@ export function CalculateHowMuchPlayerOwesSpeck(): UINT32 {
   }
 
   return uiContractCharge;
+}
+
 }

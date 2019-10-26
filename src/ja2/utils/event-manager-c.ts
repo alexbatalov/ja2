@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let hEventQueue: HLIST = null;
 let hDelayEventQueue: HLIST = null;
 let hDemandEventQueue: HLIST = null;
@@ -182,4 +184,6 @@ function SetQueue(ubQueueID: UINT8, hQueue: HQUEUE): void {
       Assert(false);
       break;
   }
+}
+
 }

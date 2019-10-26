@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export interface SMKFLIC {
   cFilename: Pointer<CHAR8>;
   //		HFILE										hFileHandle;
@@ -49,3 +51,5 @@ void SmackShowNextFrame(void);
 void CloseSmackFlic(void);
 void InitPal(HWND wh);
 */
+
+}

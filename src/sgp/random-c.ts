@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let guiPreRandomIndex: UINT32 = 0;
 export let guiPreRandomNums: UINT32[] /* [MAX_PREGENERATED_NUMS] */;
 
@@ -45,4 +47,6 @@ export function PreRandom(uiRange: UINT32): UINT32 {
 
 export function PreChance(uiChance: UINT32): boolean {
   return (PreRandom(100) < uiChance);
+}
+
 }

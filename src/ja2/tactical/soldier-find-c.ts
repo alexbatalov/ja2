@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // This value is used to keep a small static array of uBID's which are stacked
 const MAX_STACKED_MERCS = 10;
 
@@ -800,4 +802,6 @@ export function GetGridNoScreenPos(sGridNo: INT16, ubLevel: UINT8, psScreenX: Po
 
   psScreenX.value = sScreenX;
   psScreenY.value = sScreenY;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // enum used for the different help screens that can come up
 export const enum Enum17 {
   HELP_SCREEN_LAPTOP,
@@ -46,4 +48,6 @@ export interface HELP_SCREEN_STRUCT {
   iLineAtTopOfTextBuffer: INT32;
   usTotalNumberOfLinesInBuffer: UINT16;
   fForceHelpScreenToComeUp: boolean;
+}
+
 }

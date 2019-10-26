@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //**************************************************************************
 //
 // Filename :	Install.c
@@ -47,4 +49,6 @@ function InstallApplication(strAppname: STR, strPath: STR): boolean {
   fRet = fRet && WriteProfileChar("Startup", "InstPath", strPath);
 
   return fRet;
+}
+
 }

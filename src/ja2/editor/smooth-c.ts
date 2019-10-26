@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gbSmoothStruct: INT16[] /* [] */ = [
   3, 2, 12, 27, 12, 0,
   5, 2, 15, 30, 39, 0,
@@ -586,4 +588,6 @@ function SmoothWaterTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT1
   }
   GetTileIndexFromTypeSubIndex(origType, land, addressof(usTileIndex));
   piNewTile.value = usTileIndex;
+}
+
 }

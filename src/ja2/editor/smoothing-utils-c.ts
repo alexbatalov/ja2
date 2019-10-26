@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // This method isn't foolproof, but because erasing large areas of buildings could result in
 // multiple wall types for each building.  When processing the region, it is necessary to
 // calculate the roof type by searching for the nearest roof tile.
@@ -382,4 +384,6 @@ function GetHorizontalWallClass(iMapIndex: UINT16): UINT16 {
   if (pWall = GetVerticalWall(iMapIndex))
     return GetWallClass(pWall);
   return 0xffff;
+}
+
 }

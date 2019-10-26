@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let GlowColorsList: INT32[][] /* [][3] */ = [
   [ 0, 0, 0 ],
   [ 0, 25, 0 ],
@@ -347,4 +349,6 @@ function BtnIMPAboutUsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       fButtonPendingFlag = true;
     }
   }
+}
+
 }

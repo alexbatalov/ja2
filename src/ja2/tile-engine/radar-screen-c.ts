@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // the squad list font
 const SQUAD_FONT = () => COMPFONT();
 
@@ -646,4 +648,6 @@ function TacticalSquadListBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   }
 
   return;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
 
 let fDirtyRectangleMode: boolean = false;
@@ -746,4 +748,6 @@ export function InitHelicopterEntranceByMercs(): void {
 
     gTacticalStatus.fDidGameJustStart = false;
   }
+}
+
 }

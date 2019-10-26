@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //#define UNICODE
 
 let gfEnumSucceed: boolean = false;
@@ -267,4 +269,6 @@ function DoesWinFontExistOnSystem(pTypeFaceName: STR16, iCharSet: INT32): boolea
   ReleaseDC(null, hdc);
 
   return gfEnumSucceed;
+}
+
 }

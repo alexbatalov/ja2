@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // the global defines
 
 // graphical positions
@@ -2297,4 +2299,6 @@ function LoadCurrentBalance(): void {
   FileClose(hFileHandle);
 
   return;
+}
+
 }

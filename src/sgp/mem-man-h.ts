@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //**************************************************************************
 //
 // Filename :	MemMan.h
@@ -38,3 +40,5 @@
 export const MemAlloc = (size) => malloc((size));
 export const MemFree = (ptr) => free((ptr));
 export const MemRealloc = (ptr, size) => realloc((ptr), (size));
+
+}

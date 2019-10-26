@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const DRUG_TYPE_ADRENALINE = 0;
 export const DRUG_TYPE_ALCOHOL = 1;
 export const NO_DRUG = 2;
@@ -12,3 +14,5 @@ export const HUNGOVER = 4;
 
 export const REGEN_POINTS_PER_BOOSTER = 4;
 export const LIFE_GAIN_PER_REGEN_POINT = 10;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let uiContractTimeMode: UINT32 = 0;
 
 let pLeaveSoldier: Pointer<SOLDIERTYPE> = null;
@@ -1148,4 +1150,6 @@ function ContractIsGoingToExpireSoon(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 
   return false;
+}
+
 }

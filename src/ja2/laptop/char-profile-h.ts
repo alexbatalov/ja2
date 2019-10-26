@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // extern BOOLEAN fIMPCompletedFlag;
 
 export const enum Enum71 {
@@ -20,3 +22,5 @@ export const enum Enum71 {
 }
 
 export const COST_OF_PROFILE = 3000;
+
+}

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export const CHECKF = (exp) => {
   if (!(exp)) {
     return (false);
@@ -43,3 +45,5 @@ const CHECKASSERTBI = (exp) => {
     return (-1);
   }
 };
+
+}

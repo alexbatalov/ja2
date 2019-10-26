@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const DIALOGUESIZE = 480;
 const QUOTE_MESSAGE_SIZE = 520;
 
@@ -2261,4 +2263,6 @@ export function UnPauseDialogueQueue(): void {
 export function SetExternMapscreenSpeechPanelXY(sXPos: INT16, sYPos: INT16): void {
   gsExternPanelXPosition = sXPos;
   gsExternPanelYPosition = sYPos;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //**************************************************************************
 //
 // Filename :	FileMan.c
@@ -1872,4 +1874,6 @@ function GetFreeSpaceOnHardDrive(pzDriveLetter: STR): UINT32 {
   uiBytesFree = uiBytesPerSector * uiNumberOfFreeClusters * uiSectorsPerCluster;
 
   return uiBytesFree;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let AimMercArray: UINT8[] /* [MAX_NUMBER_MERCS] */;
 
 let gCurrentAimPage: UINT8[] /* [NUM_AIM_SCREENS] */ = [
@@ -1043,4 +1045,6 @@ function GetNextAimAd(ubCurrentAd: UINT8): UINT8 {
   }
 
   return ubNextAd;
+}
+
 }

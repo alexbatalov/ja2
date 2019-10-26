@@ -1,3 +1,5 @@
+namespace ja2 {
+
 /*********************************************************************************
  * SGP Digital Sound Module
  *
@@ -2856,4 +2858,6 @@ function SoundTotalChannelsInUse(): UINT32 {
   }
 
   return uiUsed;
+}
+
 }

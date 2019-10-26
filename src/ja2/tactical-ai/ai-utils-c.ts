@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //
 // CJC's DG->JA2 conversion notes
 //
@@ -2035,4 +2037,6 @@ export function ArmySeesOpponents(): boolean {
   }
 
   return false;
+}
+
 }

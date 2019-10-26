@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gfWasInMeanwhile: boolean = false;
 
 ///////////////////////////////////////////////////////////////
@@ -2535,4 +2537,6 @@ function UpdateLoadedSectorsItemInventory(sMapX: INT16, sMapY: INT16, bMapZ: INT
 
   // return the number of items
   return uiItemCounter;
+}
+
 }

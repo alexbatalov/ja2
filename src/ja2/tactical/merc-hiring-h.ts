@@ -1,3 +1,5 @@
+namespace ja2 {
+
 //
 // Used with the HireMerc function
 //
@@ -24,4 +26,6 @@ export interface MERC_HIRE_STRUCT {
   ubInsertionCode: UINT8;
   usInsertionData: UINT16;
   fUseLandingZoneForArrival: boolean;
+}
+
 }

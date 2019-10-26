@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export function LoadEncryptedDataFromFile(pFileName: STR, pDestString: STR16, uiSeekFrom: UINT32, uiSeekAmount: UINT32): boolean {
   let hFile: HWFILE;
   let i: UINT16;
@@ -90,4 +92,6 @@ export function LoadEncryptedDataFromFile(pFileName: STR, pDestString: STR16, ui
 
   FileClose(hFile);
   return true;
+}
+
 }

@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // Defines for Anim inst reading, taken from orig Jagged
 const ANIMFILENAME = "BINARYDATA\\ja2bin.dat";
 
@@ -3384,4 +3386,6 @@ export function GetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAni
   }
 
   return usAnimSurface;
+}
+
 }

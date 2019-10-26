@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const BOBBYR_DEFAULT_MENU_COLOR = 255;
 
 const BOBBYR_GRID_PIC_WIDTH = 118;
@@ -1433,4 +1435,6 @@ function CheckPlayersInventoryForGunMatchingGivenAmmoID(sItemID: INT16): UINT8 {
 function BobbyrRGunsHelpTextDoneCallBack(): void {
   fReDrawScreenFlag = true;
   fPausedReDrawScreenFlag = true;
+}
+
 }

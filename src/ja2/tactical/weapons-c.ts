@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const MINCHANCETOHIT = 1;
 const MAXCHANCETOHIT = 99;
 
@@ -3665,4 +3667,6 @@ function WillExplosiveWeaponFail(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
   }
 
   return false;
+}
+
 }

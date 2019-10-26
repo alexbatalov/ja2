@@ -1,3 +1,5 @@
+namespace ja2 {
+
 export let QuoteExp_HeadShotOnly: boolean[] /* [75] */ = [
   // this is for quote 33 (0=generic grossout, 1=headshot specific)
   /* 0	Barry  	*/ 1,
@@ -561,3 +563,5 @@ export let QuoteExp_WitnessQueenBugDeath: boolean[] /* [73] */ = [
   /* 71	unused  */ 0,
   /* 72	Maddog  */ 1,
 ];
+
+}

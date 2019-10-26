@@ -1,3 +1,5 @@
+namespace ja2 {
+
 const ARROWS_X_OFFSET = 10;
 const ARROWS_HEIGHT = 20;
 const ARROWS_WIDTH = 20;
@@ -3130,4 +3132,6 @@ export function RenderTopmostMultiPurposeLocator(): void {
   }
 
   BltVideoObjectFromIndex(FRAME_BUFFER, guiRADIO, gbMultiPurposeLocatorFrame, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, null);
+}
+
 }

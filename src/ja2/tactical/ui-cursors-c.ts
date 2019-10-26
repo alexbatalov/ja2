@@ -1,3 +1,5 @@
+namespace ja2 {
+
 let gfCannotGetThrough: boolean = false;
 let gfDisplayFullCountRing: boolean = false;
 
@@ -1524,4 +1526,6 @@ export function HandleUICursorRTFeedback(pSoldier: Pointer<SOLDIERTYPE>): void {
 
       break;
   }
+}
+
 }

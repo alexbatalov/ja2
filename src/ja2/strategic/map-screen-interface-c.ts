@@ -1,3 +1,5 @@
+namespace ja2 {
+
 // inventory pool position on screen
 const MAP_INVEN_POOL_X = 300;
 const MAP_INVEN_POOL_Y = 300;
@@ -5116,4 +5118,6 @@ export function CheckIfSalaryIncreasedAndSayQuote(pSoldier: Pointer<SOLDIERTYPE>
     // nope, nothing to do
     return false;
   }
+}
+
 }
