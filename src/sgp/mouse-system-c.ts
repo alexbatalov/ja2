@@ -1135,7 +1135,7 @@ function RenderFastHelp(): void {
       if (MSYS_CurrRegion.value.uiFlags & (MSYS_ALLOW_DISABLED_FASTHELP | MSYS_REGION_ENABLED)) {
         if (MSYS_CurrRegion.value.uiFlags & MSYS_MOUSE_IN_AREA && !MSYS_CurrRegion.value.ButtonState) // & (MSYS_LEFT_BUTTON|MSYS_RIGHT_BUTTON)) )
         {
-          MSYS_CurrRegion.value.FastHelpTimer -= max(iTimeDifferential, 0);
+          MSYS_CurrRegion.value.FastHelpTimer -= Math.max(iTimeDifferential, 0);
 
           if (MSYS_CurrRegion.value.FastHelpTimer < 0) {
             MSYS_CurrRegion.value.FastHelpTimer = 0;

@@ -223,12 +223,12 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
     bSearchRange = (DC_MAX_COVER_RANGE / 2);
 
   // determine maximum horizontal limits
-  sMaxLeft = min(bSearchRange, (sTargetGridNo % MAXCOL));
-  sMaxRight = min(bSearchRange, MAXCOL - ((sTargetGridNo % MAXCOL) + 1));
+  sMaxLeft = Math.min(bSearchRange, (sTargetGridNo % MAXCOL));
+  sMaxRight = Math.min(bSearchRange, MAXCOL - ((sTargetGridNo % MAXCOL) + 1));
 
   // determine maximum vertical limits
-  sMaxUp = min(bSearchRange, (sTargetGridNo / MAXROW));
-  sMaxDown = min(bSearchRange, MAXROW - ((sTargetGridNo / MAXROW) + 1));
+  sMaxUp = Math.min(bSearchRange, (sTargetGridNo / MAXROW));
+  sMaxDown = Math.min(bSearchRange, MAXROW - ((sTargetGridNo / MAXROW) + 1));
 
   // Find out which tiles around the location are reachable
   LocalReachableTest(sTargetGridNo, bSearchRange);
@@ -358,7 +358,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
       usMaxRange = Weapon[Enum225.GLOCK_18].usRange;
     }
 
-    iBulletGetThrough = __min(__max((((((usMaxRange - usRange) / (usMaxRange)) + .3) * 100)), 0), 100);
+    iBulletGetThrough = Math.min(Math.max((((((usMaxRange - usRange) / (usMaxRange)) + .3) * 100)), 0), 100);
 
     if (iBulletGetThrough > 5 && iGetThrough > 0) {
       iCover = (iGetThrough * iBulletGetThrough / 100);
@@ -382,7 +382,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
 
     iTemp = iTemp + iHighestValue;
 
-    bPercentCoverForGridno = 100 - (__min(iTemp, 100));
+    bPercentCoverForGridno = 100 - (Math.min(iTemp, 100));
   }
 
   return bPercentCoverForGridno;
@@ -554,12 +554,12 @@ function CalculateVisibleToSoldierAroundGridno(sTargetGridNo: INT16, bSearchRang
     bSearchRange = (DC_MAX_COVER_RANGE / 2);
 
   // determine maximum horizontal limits
-  sMaxLeft = min(bSearchRange, (sTargetGridNo % MAXCOL));
-  sMaxRight = min(bSearchRange, MAXCOL - ((sTargetGridNo % MAXCOL) + 1));
+  sMaxLeft = Math.min(bSearchRange, (sTargetGridNo % MAXCOL));
+  sMaxRight = Math.min(bSearchRange, MAXCOL - ((sTargetGridNo % MAXCOL) + 1));
 
   // determine maximum vertical limits
-  sMaxUp = min(bSearchRange, (sTargetGridNo / MAXROW));
-  sMaxDown = min(bSearchRange, MAXROW - ((sTargetGridNo / MAXROW) + 1));
+  sMaxUp = Math.min(bSearchRange, (sTargetGridNo / MAXROW));
+  sMaxDown = Math.min(bSearchRange, MAXROW - ((sTargetGridNo / MAXROW) + 1));
 
   pSoldier = GetCurrentMercForDisplayCover();
 

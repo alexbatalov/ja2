@@ -192,7 +192,7 @@ function ForceAreaSelectionWidth(): void {
 
   // compare the region with the anchor and determine if we are going to force size via
   // height or width depending on the cursor distance from the anchor.
-  if (abs(sGridX - gSelectAnchor.iX) < abs(sGridY - gSelectAnchor.iY)) {
+  if (Math.abs(sGridX - gSelectAnchor.iX) < Math.abs(sGridY - gSelectAnchor.iY)) {
     // restrict the x axis
     if (sGridX < gSelectAnchor.iX) {
       // to the left
@@ -268,10 +268,10 @@ function HandleAreaSelection(): boolean {
 }
 
 function ValidateSelectionRegionBoundaries(): void {
-  gSelectRegion.iLeft = max(min(159, gSelectRegion.iLeft), 0);
-  gSelectRegion.iRight = max(min(159, gSelectRegion.iRight), 0);
-  gSelectRegion.iTop = max(min(159, gSelectRegion.iTop), 0);
-  gSelectRegion.iBottom = max(min(159, gSelectRegion.iBottom), 0);
+  gSelectRegion.iLeft = Math.max(Math.min(159, gSelectRegion.iLeft), 0);
+  gSelectRegion.iRight = Math.max(Math.min(159, gSelectRegion.iRight), 0);
+  gSelectRegion.iTop = Math.max(Math.min(159, gSelectRegion.iTop), 0);
+  gSelectRegion.iBottom = Math.max(Math.min(159, gSelectRegion.iBottom), 0);
 }
 
 function EnsureSelectionType(): void {

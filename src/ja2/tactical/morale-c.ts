@@ -82,9 +82,9 @@ function DecayTacticalMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.bTacticalMoraleMod != 0) {
     // decay the modifier!
     if (pSoldier.value.bTacticalMoraleMod > 0) {
-      pSoldier.value.bTacticalMoraleMod = __max(0, pSoldier.value.bTacticalMoraleMod - (8 - pSoldier.value.bTacticalMoraleMod / 10));
+      pSoldier.value.bTacticalMoraleMod = Math.max(0, pSoldier.value.bTacticalMoraleMod - (8 - pSoldier.value.bTacticalMoraleMod / 10));
     } else {
-      pSoldier.value.bTacticalMoraleMod = __min(0, pSoldier.value.bTacticalMoraleMod + (6 + pSoldier.value.bTacticalMoraleMod / 10));
+      pSoldier.value.bTacticalMoraleMod = Math.min(0, pSoldier.value.bTacticalMoraleMod + (6 + pSoldier.value.bTacticalMoraleMod / 10));
     }
   }
 }
@@ -92,9 +92,9 @@ function DecayTacticalMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
 function DecayStrategicMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   // decay the modifier!
   if (pSoldier.value.bStrategicMoraleMod > 0) {
-    pSoldier.value.bStrategicMoraleMod = __max(0, pSoldier.value.bStrategicMoraleMod - (8 - pSoldier.value.bStrategicMoraleMod / 10));
+    pSoldier.value.bStrategicMoraleMod = Math.max(0, pSoldier.value.bStrategicMoraleMod - (8 - pSoldier.value.bStrategicMoraleMod / 10));
   } else {
-    pSoldier.value.bStrategicMoraleMod = __min(0, pSoldier.value.bStrategicMoraleMod + (6 + pSoldier.value.bStrategicMoraleMod / 10));
+    pSoldier.value.bStrategicMoraleMod = Math.min(0, pSoldier.value.bStrategicMoraleMod + (6 + pSoldier.value.bStrategicMoraleMod / 10));
   }
 }
 
@@ -208,8 +208,8 @@ function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   iActualMorale += ((pSoldier.value.bDrugEffect[DRUG_TYPE_ADRENALINE] * DRUG_EFFECT_MORALE_MOD) / 100);
   iActualMorale += ((pSoldier.value.bDrugEffect[DRUG_TYPE_ALCOHOL] * ALCOHOL_EFFECT_MORALE_MOD) / 100);
 
-  iActualMorale = __min(100, iActualMorale);
-  iActualMorale = __max(0, iActualMorale);
+  iActualMorale = Math.min(100, iActualMorale);
+  iActualMorale = Math.max(0, iActualMorale);
   pSoldier.value.bMorale = iActualMorale;
 
   // update mapscreen as needed
@@ -276,20 +276,20 @@ function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMor
   // apply change!
   if (ubType == Enum235.TACTICAL_MORALE_EVENT) {
     iMoraleModTotal = pSoldier.value.bTacticalMoraleMod + bMoraleMod;
-    iMoraleModTotal = __min(iMoraleModTotal, MORALE_MOD_MAX);
-    iMoraleModTotal = __max(iMoraleModTotal, -MORALE_MOD_MAX);
+    iMoraleModTotal = Math.min(iMoraleModTotal, MORALE_MOD_MAX);
+    iMoraleModTotal = Math.max(iMoraleModTotal, -MORALE_MOD_MAX);
     pSoldier.value.bTacticalMoraleMod = iMoraleModTotal;
   } else if (gTacticalStatus.fEnemyInSector && !pSoldier.value.bInSector) // delayed strategic
   {
     iMoraleModTotal = pSoldier.value.bDelayedStrategicMoraleMod + bMoraleMod;
-    iMoraleModTotal = __min(iMoraleModTotal, MORALE_MOD_MAX);
-    iMoraleModTotal = __max(iMoraleModTotal, -MORALE_MOD_MAX);
+    iMoraleModTotal = Math.min(iMoraleModTotal, MORALE_MOD_MAX);
+    iMoraleModTotal = Math.max(iMoraleModTotal, -MORALE_MOD_MAX);
     pSoldier.value.bDelayedStrategicMoraleMod = iMoraleModTotal;
   } else // strategic
   {
     iMoraleModTotal = pSoldier.value.bStrategicMoraleMod + bMoraleMod;
-    iMoraleModTotal = __min(iMoraleModTotal, MORALE_MOD_MAX);
-    iMoraleModTotal = __max(iMoraleModTotal, -MORALE_MOD_MAX);
+    iMoraleModTotal = Math.min(iMoraleModTotal, MORALE_MOD_MAX);
+    iMoraleModTotal = Math.max(iMoraleModTotal, -MORALE_MOD_MAX);
     pSoldier.value.bStrategicMoraleMod = iMoraleModTotal;
   }
 
@@ -702,16 +702,16 @@ function HourlyMoraleUpdate(): void {
         bTeamMoraleModChange = 0;
       }
       pSoldier.value.bTeamMoraleMod += bTeamMoraleModChange;
-      pSoldier.value.bTeamMoraleMod = __min(pSoldier.value.bTeamMoraleMod, MORALE_MOD_MAX);
-      pSoldier.value.bTeamMoraleMod = __max(pSoldier.value.bTeamMoraleMod, -MORALE_MOD_MAX);
+      pSoldier.value.bTeamMoraleMod = Math.min(pSoldier.value.bTeamMoraleMod, MORALE_MOD_MAX);
+      pSoldier.value.bTeamMoraleMod = Math.max(pSoldier.value.bTeamMoraleMod, -MORALE_MOD_MAX);
 
       // New, December 3rd, 1998, by CJC --
       // If delayed strategic modifier exists then incorporate it in strategic mod
       if (pSoldier.value.bDelayedStrategicMoraleMod) {
         pSoldier.value.bStrategicMoraleMod += pSoldier.value.bDelayedStrategicMoraleMod;
         pSoldier.value.bDelayedStrategicMoraleMod = 0;
-        pSoldier.value.bStrategicMoraleMod = __min(pSoldier.value.bStrategicMoraleMod, MORALE_MOD_MAX);
-        pSoldier.value.bStrategicMoraleMod = __max(pSoldier.value.bStrategicMoraleMod, -MORALE_MOD_MAX);
+        pSoldier.value.bStrategicMoraleMod = Math.min(pSoldier.value.bStrategicMoraleMod, MORALE_MOD_MAX);
+        pSoldier.value.bStrategicMoraleMod = Math.max(pSoldier.value.bStrategicMoraleMod, -MORALE_MOD_MAX);
       }
 
       // refresh the morale value for the soldier based on the recalculated team modifier

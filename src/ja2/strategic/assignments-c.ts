@@ -2566,7 +2566,7 @@ function FatigueCharacter(pSoldier: Pointer<SOLDIERTYPE>): void {
     iPercentEncumbrance = CalculateCarriedWeight(pSoldier);
     if (iPercentEncumbrance > 100) {
       iBreathLoss = (bMaxBreathLoss * iPercentEncumbrance / 100);
-      bMaxBreathLoss = min(127, iBreathLoss);
+      bMaxBreathLoss = Math.min(127, iBreathLoss);
     }
   }
 
@@ -2970,10 +2970,10 @@ function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8,
   }
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  pusMaxPts.value = __max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  pusMaxPts.value = Math.max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // calculate effective training pts
-  sTrainingPts = __max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  sTrainingPts = Math.max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // get special bonus if we're training marksmanship and we're in the gun range sector in Alma
   if ((bTrainStat == Enum118.MARKSMANSHIP) && fAtGunRange) {
@@ -3044,10 +3044,10 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
   }
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  pusMaxPts.value = __max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  pusMaxPts.value = Math.max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // calculate effective training pts
-  sTrainingPts = __max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  sTrainingPts = Math.max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // get special bonus if we're training marksmanship and we're in the gun range sector in Alma
   if ((bTrainStat == Enum118.MARKSMANSHIP) && fAtGunRange) {

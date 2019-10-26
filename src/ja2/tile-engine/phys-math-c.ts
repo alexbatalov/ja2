@@ -78,7 +78,7 @@ function VGetPerpendicular(a: Pointer<vector_3>): vector_3 {
 }
 
 function VGetLength(a: Pointer<vector_3>): real {
-  return sqrt((a.value.x * a.value.x) + (a.value.y * a.value.y) + (a.value.z * a.value.z));
+  return Math.sqrt((a.value.x * a.value.x) + (a.value.y * a.value.y) + (a.value.z * a.value.z));
 }
 
 function VGetNormal(a: Pointer<vector_3>): vector_3 {

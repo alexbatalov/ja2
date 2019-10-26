@@ -432,12 +432,12 @@ function StrategicPythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   let sCols: INT16;
   let sResult: INT16;
 
-  sRows = abs((sOrigin / MAP_WORLD_X) - (sDest / MAP_WORLD_X));
-  sCols = abs((sOrigin % MAP_WORLD_X) - (sDest % MAP_WORLD_X));
+  sRows = Math.abs((sOrigin / MAP_WORLD_X) - (sDest / MAP_WORLD_X));
+  sCols = Math.abs((sOrigin % MAP_WORLD_X) - (sDest % MAP_WORLD_X));
 
   // apply Pythagoras's theorem for right-handed triangle:
   // dist^2 = rows^2 + cols^2, so use the square root to get the distance
-  sResult = sqrt((sRows * sRows) + (sCols * sCols));
+  sResult = Math.sqrt((sRows * sRows) + (sCols * sCols));
 
   return sResult;
 }

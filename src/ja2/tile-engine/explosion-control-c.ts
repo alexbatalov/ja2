@@ -1019,7 +1019,7 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
   gTacticalStatus.ubAttackBusyCount++;
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Incrementing Attack: Explosion dishing out damage, Count now %d", gTacticalStatus.ubAttackBusyCount));
 
-  sNewWoundAmt = sWoundAmt - __min(sWoundAmt, 35) * ArmourVersusExplosivesPercent(pSoldier) / 100;
+  sNewWoundAmt = sWoundAmt - Math.min(sWoundAmt, 35) * ArmourVersusExplosivesPercent(pSoldier) / 100;
   if (sNewWoundAmt < 0) {
     sNewWoundAmt = 0;
   }
@@ -1253,7 +1253,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
       sBreathAmt = 0;
 
     // damage structures
-    if (uiDist <= __max(1, (pExplosive.value.ubDamage / 30))) {
+    if (uiDist <= Math.max(1, (pExplosive.value.ubDamage / 30))) {
       if (Item[usItem].usItemClass & IC_GRENADE) {
         sStructDmgAmt = sWoundAmt / 3;
       } else // most explosives
@@ -1341,7 +1341,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
   } else {
     // Drop blood ....
     // Get blood quantity....
-    InternalDropBlood(sGridNo, 0, 0, (__max((MAXBLOODQUANTITY - (uiDist * 2)), 0)), 1);
+    InternalDropBlood(sGridNo, 0, 0, (Math.max((MAXBLOODQUANTITY - (uiDist * 2)), 0)), 1);
   }
 
   if (sSubsequent != ERASE_SPREAD_EFFECT && sSubsequent != BLOOD_SPREAD_EFFECT) {

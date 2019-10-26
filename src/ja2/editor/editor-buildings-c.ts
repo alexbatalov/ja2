@@ -468,19 +468,19 @@ function ExtractAndUpdateDoorInfo(): void {
 
   door.sGridNo = iDoorMapIndex;
 
-  num = min(GetNumericStrictValueFromField(0), NUM_LOCKS - 1);
+  num = Math.min(GetNumericStrictValueFromField(0), NUM_LOCKS - 1);
   door.ubLockID = num;
   SetInputFieldStringWithNumericStrictValue(0, num);
   if (num >= 0)
     fCursor = true;
 
-  num = min(max(GetNumericStrictValueFromField(1), 0), 10);
+  num = Math.min(Math.max(GetNumericStrictValueFromField(1), 0), 10);
   door.ubTrapID = num;
   SetInputFieldStringWithNumericStrictValue(1, num);
   if (num)
     fCursor = true;
 
-  num = min(max(GetNumericStrictValueFromField(2), 0), 20);
+  num = Math.min(Math.max(GetNumericStrictValueFromField(2), 0), 20);
   if (door.ubTrapID && !num)
     num = 1; // Can't have a trap without a traplevel!
   door.ubTrapLevel = num;
@@ -620,7 +620,7 @@ function ExtractAndUpdateBuildingInfo(): void {
   let str: UINT16[] /* [4] */;
   let temp: INT32;
   // extract light1 colors
-  temp = min(GetNumericStrictValueFromField(1), 255);
+  temp = Math.min(GetNumericStrictValueFromField(1), 255);
   if (temp != -1) {
     gubCurrRoomNumber = temp;
   } else {

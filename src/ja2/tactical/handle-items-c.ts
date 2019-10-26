@@ -971,7 +971,7 @@ function HandleSoldierDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): 
       // EXPLOSIVES GAIN (25):  Place a bomb, or buried and armed a mine
       StatChange(pSoldier, EXPLODEAMT, 25, false);
 
-      pSoldier.value.inv[Enum261.HANDPOS].bTrap = __min(10, (EffectiveExplosive(pSoldier) / 20) + (EffectiveExpLevel(pSoldier) / 3));
+      pSoldier.value.inv[Enum261.HANDPOS].bTrap = Math.min(10, (EffectiveExplosive(pSoldier) / 20) + (EffectiveExpLevel(pSoldier) / 3));
       pSoldier.value.inv[Enum261.HANDPOS].ubBombOwner = pSoldier.value.ubID + 2;
 
       // we now know there is something nasty here
@@ -3209,7 +3209,7 @@ function BombMessageBoxCallBack(ubExitValue: UINT8): void {
       }
 
       if (ArmBomb(addressof(gpTempSoldier.value.inv[Enum261.HANDPOS]), ubExitValue)) {
-        gpTempSoldier.value.inv[Enum261.HANDPOS].bTrap = __min(10, (EffectiveExplosive(gpTempSoldier) / 20) + (EffectiveExpLevel(gpTempSoldier) / 3));
+        gpTempSoldier.value.inv[Enum261.HANDPOS].bTrap = Math.min(10, (EffectiveExplosive(gpTempSoldier) / 20) + (EffectiveExpLevel(gpTempSoldier) / 3));
         // HACK IMMINENT!
         // value of 1 is stored in maps for SIDE of bomb owner... when we want to use IDs!
         // so we add 2 to all owner IDs passed through here and subtract 2 later

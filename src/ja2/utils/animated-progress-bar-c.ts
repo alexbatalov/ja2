@@ -75,7 +75,7 @@ function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLe
   pCurr.value.usPanelBottom = usBottom;
   pCurr.value.usColor = Get16BPPColor(FROMRGB(r, g, b));
   // Calculate the slightly lighter and darker versions of the same rgb color
-  pCurr.value.usLtColor = Get16BPPColor(FROMRGB(min(255, (r * 1.33)), min(255, (g * 1.33)), min(255, (b * 1.33))));
+  pCurr.value.usLtColor = Get16BPPColor(FROMRGB(Math.min(255, (r * 1.33)), Math.min(255, (g * 1.33)), Math.min(255, (b * 1.33))));
   pCurr.value.usDkColor = Get16BPPColor(FROMRGB((r * 0.75), (g * 0.75), (b * 0.75)));
 }
 

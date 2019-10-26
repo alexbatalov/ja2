@@ -354,11 +354,11 @@ function GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup: Pointer<GR
   // clip the new dx/dy values to +/- 1
   if (newDX) {
     ubNumUnalignedAxes++;
-    newDX /= abs(newDX);
+    newDX /= Math.abs(newDX);
   }
   if (newDY) {
     ubNumUnalignedAxes++;
-    newDY /= abs(newDY);
+    newDY /= Math.abs(newDY);
   }
 
   // error checking
@@ -1555,7 +1555,7 @@ function PrepareGroupsForSimultaneousArrival(): void {
   while (pGroup) {
     // For all of the groups that haven't arrived yet, determine which one is going to take the longest.
     if (pGroup != gpPendingSimultaneousGroup && pGroup.value.fPlayer && pGroup.value.fBetweenSectors && pGroup.value.ubNextX == gpPendingSimultaneousGroup.value.ubSectorX && pGroup.value.ubNextY == gpPendingSimultaneousGroup.value.ubSectorY && !IsGroupTheHelicopterGroup(pGroup)) {
-      uiLatestArrivalTime = max(pGroup.value.uiArrivalTime, uiLatestArrivalTime);
+      uiLatestArrivalTime = Math.max(pGroup.value.uiArrivalTime, uiLatestArrivalTime);
       pGroup.value.uiFlags |= GROUPFLAG_SIMULTANEOUSARRIVAL_APPROVED | GROUPFLAG_MARKER;
     }
     pGroup = pGroup.value.next;
@@ -3582,7 +3582,7 @@ function VehicleFuelRemaining(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 function SpendVehicleFuel(pSoldier: Pointer<SOLDIERTYPE>, sFuelSpent: INT16): boolean {
   Assert(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE);
   pSoldier.value.sBreathRed -= sFuelSpent;
-  pSoldier.value.sBreathRed = max(0, pSoldier.value.sBreathRed);
+  pSoldier.value.sBreathRed = Math.max(0, pSoldier.value.sBreathRed);
   pSoldier.value.bBreath = ((pSoldier.value.sBreathRed + 99) / 100);
   return false;
 }
@@ -3606,7 +3606,7 @@ function AddFuelToVehicle(pSoldier: Pointer<SOLDIERTYPE>, pVehicle: Pointer<SOLD
     // Fill 'er up.
     sFuelNeeded = 10000 - pVehicle.value.sBreathRed;
     sFuelAvailable = pItem.value.bStatus[0] * 50;
-    sFuelAdded = min(sFuelNeeded, sFuelAvailable);
+    sFuelAdded = Math.min(sFuelNeeded, sFuelAvailable);
     // Add to vehicle
     pVehicle.value.sBreathRed += sFuelAdded;
     pVehicle.value.bBreath = (pVehicle.value.sBreathRed / 100);
@@ -3770,7 +3770,7 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): boolean {
       // come back up to the maximum if left long enough.
       let iBloodCatDiff: INT32;
       iBloodCatDiff = pSector.value.bBloodCatPlacements - pSector.value.bBloodCats;
-      pSector.value.bBloodCats += min(iHoursElapsed / 18, iBloodCatDiff);
+      pSector.value.bBloodCats += Math.min(iHoursElapsed / 18, iBloodCatDiff);
     }
     // Once 0, the bloodcats will never recupe.
   } else if (pSector.value.bBloodCats == -1) {
@@ -3780,22 +3780,22 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): boolean {
       bDifficultyMaxCats = (Random(4) + gGameOptions.ubDifficultyLevel * 2 + 3);
 
       // maximum of 3 bloodcats or 1 for every 6%, 5%, 4% progress based on easy, normal, and hard, respectively
-      bProgressMaxCats = max(CurrentPlayerProgressPercentage() / (7 - gGameOptions.ubDifficultyLevel), 3);
+      bProgressMaxCats = Math.max(CurrentPlayerProgressPercentage() / (7 - gGameOptions.ubDifficultyLevel), 3);
 
       // make sure bloodcats don't outnumber mercs by a factor greater than 2
       bNumMercMaxCats = (PlayerMercsInSector(pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ) * 2);
 
       // choose the lowest number of cats calculated by difficulty and progress.
-      pSector.value.bBloodCats = min(bDifficultyMaxCats, bProgressMaxCats);
+      pSector.value.bBloodCats = Math.min(bDifficultyMaxCats, bProgressMaxCats);
 
       if (gGameOptions.ubDifficultyLevel != Enum9.DIF_LEVEL_HARD) {
         // if not hard difficulty, ensure cats never outnumber mercs by a factor of 2 (min 3 bloodcats)
-        pSector.value.bBloodCats = min(pSector.value.bBloodCats, bNumMercMaxCats);
-        pSector.value.bBloodCats = max(pSector.value.bBloodCats, 3);
+        pSector.value.bBloodCats = Math.min(pSector.value.bBloodCats, bNumMercMaxCats);
+        pSector.value.bBloodCats = Math.max(pSector.value.bBloodCats, 3);
       }
 
       // ensure that there aren't more bloodcats than placements
-      pSector.value.bBloodCats = min(pSector.value.bBloodCats, pSector.value.bBloodCatPlacements);
+      pSector.value.bBloodCats = Math.min(pSector.value.bBloodCats, pSector.value.bBloodCatPlacements);
     }
   } else if (ubSectorID != Enum123.SEC_I16) {
     if (!gfAutoAmbush && PreChance(95)) {

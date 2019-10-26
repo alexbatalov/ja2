@@ -275,7 +275,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
   if (ubReason != FROM_TRAINING) {
     // increment counters that track how often stat changes are being awarded
     pProfile.value.usStatChangeChances[ubStat] += usNumChances;
-    pProfile.value.usStatChangeSuccesses[ubStat] += abs(sSubPointChange);
+    pProfile.value.usStatChangeSuccesses[ubStat] += Math.abs(sSubPointChange);
   }
 }
 
@@ -1178,7 +1178,7 @@ function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: boolean,
   Assert(ubStat <= LAST_CHANGEABLE_STAT);
 
   // if just a 1 point change
-  if (abs(sPtsChanged) == 1) {
+  if (Math.abs(sPtsChanged) == 1) {
     // use singular
     ubStringIndex = 2;
   } else {
@@ -1191,7 +1191,7 @@ function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: boolean,
     ubStringIndex += 2;
   }
 
-  swprintf(wString, "%s %s %d %s %s", wName, sPreStatBuildString[fIncrease ? 1 : 0], abs(sPtsChanged), sPreStatBuildString[ubStringIndex], sStatGainStrings[ubStat - FIRST_CHANGEABLE_STAT]);
+  swprintf(wString, "%s %s %d %s %s", wName, sPreStatBuildString[fIncrease ? 1 : 0], Math.abs(sPtsChanged), sPreStatBuildString[ubStringIndex], sStatGainStrings[ubStat - FIRST_CHANGEABLE_STAT]);
 }
 
 function CalcImportantSectorControl(): UINT8 {

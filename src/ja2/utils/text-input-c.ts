@@ -426,7 +426,7 @@ function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT3
       if (iNumber < 0) // negative number converts to blank string
         swprintf(curr.value.szString, "");
       else {
-        let iMax: INT32 = pow(10.0, curr.value.ubMaxChars);
+        let iMax: INT32 = Math.pow(10.0, curr.value.ubMaxChars);
         if (iNumber > iMax) // set string to max value based on number of chars.
           swprintf(curr.value.szString, "%d", iMax - 1);
         else // set string to the number given
@@ -1432,7 +1432,7 @@ function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): void {
     SetInputFieldStringWith16BitString(ubField, "");
     return;
   }
-  usTime = min(1439, usTime);
+  usTime = Math.min(1439, usTime);
   curr = gpTextInputHead;
   while (curr) {
     if (curr.value.ubID == ubField) {

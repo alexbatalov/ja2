@@ -421,7 +421,7 @@ function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier.value.inv[Enum261.VESTPOS].usItem) {
     iVest = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[Enum261.VESTPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iVest = __min(65, 65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection));
+    iVest = Math.min(65, 65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection));
   } else {
     iVest = 0;
   }
@@ -429,7 +429,7 @@ function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier.value.inv[Enum261.HELMETPOS].usItem) {
     iHelmet = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[Enum261.HELMETPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iHelmet = __min(15, 15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection);
+    iHelmet = Math.min(15, 15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection);
   } else {
     iHelmet = 0;
   }
@@ -437,7 +437,7 @@ function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier.value.inv[Enum261.LEGPOS].usItem) {
     iLeg = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[Enum261.LEGPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iLeg = __min(25, 25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
+    iLeg = Math.min(25, 25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
   } else {
     iLeg = 0;
   }
@@ -857,7 +857,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
         if (pSoldier.value.bAimTime && !pSoldier.value.bDoBurst) {
           // gain extra exp for aiming, up to the amount from
           // the difficulty of the shot
-          usExpGain += __min(pSoldier.value.bAimTime, usExpGain);
+          usExpGain += Math.min(pSoldier.value.bAimTime, usExpGain);
         }
 
         // base pts extra for hitting
@@ -914,7 +914,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
         if (pSoldier.value.bAimTime) {
           // gain extra exp for aiming, up to the amount from
           // the difficulty of the throw
-          usExpGain += (2 * __min(pSoldier.value.bAimTime, usExpGain));
+          usExpGain += (2 * Math.min(pSoldier.value.bAimTime, usExpGain));
         }
 
         // base pts extra for hitting
@@ -1085,10 +1085,10 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
         bMaxDrop = (iImpact / 20);
 
         // the duller they get, the slower they get any worse...
-        bMaxDrop = __min(bMaxDrop, pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0] / 10);
+        bMaxDrop = Math.min(bMaxDrop, pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0] / 10);
 
         // as long as its still > USABLE, it drops another point 1/2 the time
-        bMaxDrop = __max(bMaxDrop, 2);
+        bMaxDrop = Math.max(bMaxDrop, 2);
 
         pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0] -= Random(bMaxDrop); // 0 to (maxDrop - 1)
       }
@@ -1128,7 +1128,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
         if (pSoldier.value.bAimTime) {
           // gain extra exp for aiming, up to the amount from
           // the difficulty of the attack
-          usExpGain += (2 * __min(pSoldier.value.bAimTime, usExpGain));
+          usExpGain += (2 * Math.min(pSoldier.value.bAimTime, usExpGain));
         }
 
         // base pts extra for hitting
@@ -2025,7 +2025,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 
       pSoldier2 = GetRobotController(pSoldier);
       if (pSoldier2) {
-        iMarksmanship = __max(iMarksmanship, EffectiveMarksmanship(pSoldier2));
+        iMarksmanship = Math.max(iMarksmanship, EffectiveMarksmanship(pSoldier2));
       }
     }
   }
@@ -2161,7 +2161,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
       // max with 0 to prevent this being a bonus, for JA2 it's just a penalty to make early enemies easy
       // CJC note: IDIOT!  This should have been a min.  It's kind of too late now...
       // CJC 2002-05-17: changed the max to a min to make this work.
-      iChance += __min(0, gbDiff[DIFF_ENEMY_TO_HIT_MOD][SoldierDifficultyLevel(pSoldier)]);
+      iChance += Math.min(0, gbDiff[DIFF_ENEMY_TO_HIT_MOD][SoldierDifficultyLevel(pSoldier)]);
     }
   }
 
@@ -2361,7 +2361,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
           if (iRange > POINT_BLANK_RANGE) {
             // reduce chance to hit with distance to the prone/immersed target
             iPenalty = 3 * ((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
-            iPenalty = __min(iPenalty, AIM_PENALTY_TARGET_PRONE);
+            iPenalty = Math.min(iPenalty, AIM_PENALTY_TARGET_PRONE);
 
             iChance -= iPenalty;
           }
@@ -2387,7 +2387,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
     }
 
     // penalty for amount that enemy has moved
-    iPenalty = __min(((pTarget.value.bTilesMoved * 3) / 2), 30);
+    iPenalty = Math.min(((pTarget.value.bTilesMoved * 3) / 2), 30);
     iChance -= iPenalty;
 
     // if target sees us, he may have a chance to dodge before the gun goes off
@@ -3371,7 +3371,7 @@ function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed
     } else if (Item[usItem].usItemClass == IC_GRENADE) {
       // start with the range based on the soldier's strength and the item's weight
       let iThrowingStrength: INT32 = (EffectiveStrength(pSoldier) * 2 + 100) / 3;
-      iRange = 2 + (iThrowingStrength / __min((3 + (Item[usItem].ubWeight) / 3), 4));
+      iRange = 2 + (iThrowingStrength / Math.min((3 + (Item[usItem].ubWeight) / 3), 4));
     } else {
       // not as aerodynamic!
 

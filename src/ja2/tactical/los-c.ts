@@ -183,11 +183,11 @@ function FixedToFloat(qN: FIXEDPT): FLOAT {
 //
 
 function Distance3D(dDeltaX: FLOAT, dDeltaY: FLOAT, dDeltaZ: FLOAT): FLOAT {
-  return sqrt((dDeltaX * dDeltaX + dDeltaY * dDeltaY + dDeltaZ * dDeltaZ));
+  return Math.sqrt((dDeltaX * dDeltaX + dDeltaY * dDeltaY + dDeltaZ * dDeltaZ));
 }
 
 function Distance2D(dDeltaX: FLOAT, dDeltaY: FLOAT): FLOAT {
-  return sqrt((dDeltaX * dDeltaX + dDeltaY * dDeltaY));
+  return Math.sqrt((dDeltaX * dDeltaX + dDeltaY * dDeltaY));
 }
 
 //#define DEBUGLOS
@@ -248,8 +248,8 @@ function ResolveHitOnWall(pStructure: Pointer<STRUCTURE>, iGridNo: INT32, bLOSIn
   // use cartesian angles for god's sakes -CJC
   ddHorizAngle = -ddHorizAngle;
 
-  fNorthSouth = ((ddHorizAngle < (0) && ddHorizAngle > (-PI * 1 / 2)) || (ddHorizAngle > (PI * 1 / 2) && ddHorizAngle < (PI)));
-  fEastWest = ((ddHorizAngle > (0) && ddHorizAngle < (PI * 1 / 2)) || (ddHorizAngle < (-PI * 1 / 2) && ddHorizAngle > (-PI)));
+  fNorthSouth = ((ddHorizAngle < (0) && ddHorizAngle > (-Math.PI * 1 / 2)) || (ddHorizAngle > (Math.PI * 1 / 2) && ddHorizAngle < (Math.PI)));
+  fEastWest = ((ddHorizAngle > (0) && ddHorizAngle < (Math.PI * 1 / 2)) || (ddHorizAngle < (-Math.PI * 1 / 2) && ddHorizAngle > (-Math.PI)));
 
   fTopLeft = (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT);
   fTopRight = (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT);
@@ -615,7 +615,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
     return 0;
   }
 
-  ddHorizAngle = atan2(dDeltaY, dDeltaX);
+  ddHorizAngle = Math.atan2(dDeltaY, dDeltaX);
 
   qIncrX = FloatToFixed(dDeltaX / iDistance);
   qIncrY = FloatToFixed(dDeltaY / iDistance);
@@ -771,7 +771,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
           iStepsToTravelY = 1000000;
         }
 
-        iStepsToTravel = __min(iStepsToTravelX, iStepsToTravelY) + 1;
+        iStepsToTravel = Math.min(iStepsToTravelX, iStepsToTravelY) + 1;
 
         /*
                                         if (qIncrX > 0)
@@ -1276,7 +1276,7 @@ function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pE
     } else {
       bEffectiveCamo = pEndSoldier.value.bCamo * (100 - pEndSoldier.value.bTilesMoved * 5) / 100;
     }
-    bEffectiveCamo = __max(bEffectiveCamo, 0);
+    bEffectiveCamo = Math.max(bEffectiveCamo, 0);
 
     if (gAnimControl[pEndSoldier.value.usAnimState].ubEndHeight < ANIM_STAND) {
       // reduce visibility by up to a third for camouflage!
@@ -1799,7 +1799,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
     if (iDamage < iImpact) {
       iImpact = iDamage;
     }
-    uiChanceThrough = __max(0, (iImpact - 20));
+    uiChanceThrough = Math.max(0, (iImpact - 20));
     if (PreRandom(100) < uiChanceThrough) {
       // bullet MAY go through
       // adjust for bullet going through person
@@ -2282,7 +2282,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
         }
 
         // add 1 to the # of steps to travel to go INTO the next tile
-        iStepsToTravel = __min(iStepsToTravelX, iStepsToTravelY) + 1;
+        iStepsToTravel = Math.min(iStepsToTravelX, iStepsToTravelY) + 1;
 
         pBullet.value.qCurrX += pBullet.value.qIncrX * iStepsToTravel;
         pBullet.value.qCurrY += pBullet.value.qIncrY * iStepsToTravel;
@@ -2410,7 +2410,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
           iTotalStructureImpact = CTGTHandleBulletStructureInteraction(pBullet, gpLocalStructure[iStructureLoop]) * gubLocalStructureNumTimesHit[iStructureLoop];
 
           // reduce the impact reduction of a structure tile to that of the bullet, since it can't do MORE than stop it.
-          iTotalStructureImpact = __min(iTotalStructureImpact, pBullet.value.iImpact);
+          iTotalStructureImpact = Math.min(iTotalStructureImpact, pBullet.value.iImpact);
 
           // add to "impact reduction" based on strength of structure weighted by probability of hitting it
           pBullet.value.iImpactReduction += (iTotalStructureImpact * guiLocalStructureCTH[iStructureLoop]) / 100;
@@ -2679,13 +2679,13 @@ function CalculateFiringIncrements(ddHorizAngle: DOUBLE, ddVerticAngle: DOUBLE, 
   pddNewHorizAngle.value = ddHorizAngle;
   pddNewVerticAngle.value = ddVerticAngle;
 
-  pBullet.value.qIncrX = FloatToFixed(cos(ddHorizAngle));
-  pBullet.value.qIncrY = FloatToFixed(sin(ddHorizAngle));
+  pBullet.value.qIncrX = FloatToFixed(Math.cos(ddHorizAngle));
+  pBullet.value.qIncrY = FloatToFixed(Math.sin(ddHorizAngle));
 
   // this is the same as multiplying the X and Y increments by the projection of the line in
   // 3-space onto the horizontal plane, without reducing the X/Y increments and thus slowing
   // the LOS code
-  pBullet.value.qIncrZ = FloatToFixed((sin(ddVerticAngle) / sin((PI / 2) - ddVerticAngle) * 2.56));
+  pBullet.value.qIncrZ = FloatToFixed((Math.sin(ddVerticAngle) / Math.sin((Math.PI / 2) - ddVerticAngle) * 2.56));
 }
 
 function FireBullet(pFirer: Pointer<SOLDIERTYPE>, pBullet: Pointer<BULLET>, fFake: boolean): INT8 {
@@ -2802,8 +2802,8 @@ function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY
     d2DDistance = (iDistance);
   }
 
-  ddOrigHorizAngle = atan2(dDeltaY, dDeltaX);
-  ddOrigVerticAngle = atan2(dDeltaZ, (d2DDistance * 2.56));
+  ddOrigHorizAngle = Math.atan2(dDeltaY, dDeltaX);
+  ddOrigVerticAngle = Math.atan2(dDeltaZ, (d2DDistance * 2.56));
 
   ubShots = 1;
 
@@ -3341,12 +3341,12 @@ function MoveBullet(iBullet: INT32): void {
         }
 
         // add 1 to the # of steps to travel to go INTO the next tile
-        iStepsToTravel = __min(iStepsToTravelX, iStepsToTravelY) + 1;
+        iStepsToTravel = Math.min(iStepsToTravelX, iStepsToTravelY) + 1;
 
         // special coding (compared with other versions above) to deal with
         // bullets hitting the ground
         if (pBullet.value.qCurrZ + pBullet.value.qIncrZ * iStepsToTravel < qLandHeight) {
-          iStepsToTravel = __min(iStepsToTravel, abs((pBullet.value.qCurrZ - qLandHeight) / pBullet.value.qIncrZ));
+          iStepsToTravel = Math.min(iStepsToTravel, Math.abs((pBullet.value.qCurrZ - qLandHeight) / pBullet.value.qIncrZ));
           pBullet.value.qCurrX += pBullet.value.qIncrX * iStepsToTravel;
           pBullet.value.qCurrY += pBullet.value.qIncrY * iStepsToTravel;
           pBullet.value.qCurrZ += pBullet.value.qIncrZ * iStepsToTravel;

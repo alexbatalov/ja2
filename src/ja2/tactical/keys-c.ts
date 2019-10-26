@@ -264,7 +264,7 @@ function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOO
   }
 
   // possibly damage crowbar
-  bStress = __min(EffectiveStrength(pSoldier), LockTable[pDoor.value.ubLockID].ubSmashDifficulty + 30);
+  bStress = Math.min(EffectiveStrength(pSoldier), LockTable[pDoor.value.ubLockID].ubSmashDifficulty + 30);
   // reduce crowbar status by random % between 0 and 5%
   DamageObj(addressof(pSoldier.value.inv[bSlot]), PreRandom(bStress / 20));
 

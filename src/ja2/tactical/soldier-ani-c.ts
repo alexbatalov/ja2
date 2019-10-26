@@ -850,7 +850,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): boolean {
           if (pSoldier.value.sHeightAdjustment != pSoldier.value.sDesiredHeight) {
             let sDiff: INT16 = pSoldier.value.sHeightAdjustment - pSoldier.value.sDesiredHeight;
 
-            if (abs(sDiff) > 4) {
+            if (Math.abs(sDiff) > 4) {
               if (sDiff > 0) {
                 // Adjust!
                 SetSoldierHeight(pSoldier, (pSoldier.value.dHeightAdjustment - 2));

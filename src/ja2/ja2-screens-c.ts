@@ -58,12 +58,12 @@ function DisplayFrameRate(): void {
   if (gbFPSDisplay == SHOW_FULL_FPS) {
     // FRAME RATE
     memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
-    swprintf(VideoOverlayDesc.pzText, "%ld", __min(uiFPS, 1000));
+    swprintf(VideoOverlayDesc.pzText, "%ld", Math.min(uiFPS, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
     UpdateVideoOverlay(addressof(VideoOverlayDesc), giFPSOverlay, false);
 
     // TIMER COUNTER
-    swprintf(VideoOverlayDesc.pzText, "%ld", __min(giTimerDiag, 1000));
+    swprintf(VideoOverlayDesc.pzText, "%ld", Math.min(giTimerDiag, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
     UpdateVideoOverlay(addressof(VideoOverlayDesc), giCounterPeriodOverlay, false);
 

@@ -148,10 +148,10 @@ function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16>, sLef
   iTempY = sTop;
 
   // Clip to rect
-  uiLeftSkip = __min(ClipX1 - min(ClipX1, iTempX), usWidth);
-  uiRightSkip = __min(max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
-  uiTopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  uiBottomSkip = __min(__max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
+  uiLeftSkip = Math.min(ClipX1 - Math.min(ClipX1, iTempX), usWidth);
+  uiRightSkip = Math.min(Math.max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+  uiTopSkip = Math.min(ClipY1 - Math.min(ClipY1, iTempY), usHeight);
+  uiBottomSkip = Math.min(Math.max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
 
   // check if whole thing is clipped
   if ((uiLeftSkip >= usWidth) || (uiRightSkip >= usWidth))
@@ -1016,10 +1016,10 @@ function RestoreShiftedVideoOverlays(sShiftX: INT16, sShiftY: INT16): boolean {
         iTempY = sTop + sShiftY;
 
         // Clip to rect
-        uiLeftSkip = __min(ClipX1 - min(ClipX1, iTempX), usWidth);
-        uiRightSkip = __min(max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
-        uiTopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-        uiBottomSkip = __min(__max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
+        uiLeftSkip = Math.min(ClipX1 - Math.min(ClipX1, iTempX), usWidth);
+        uiRightSkip = Math.min(Math.max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+        uiTopSkip = Math.min(ClipY1 - Math.min(ClipY1, iTempY), usHeight);
+        uiBottomSkip = Math.min(Math.max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
 
         // check if whole thing is clipped
         if ((uiLeftSkip >= usWidth) || (uiRightSkip >= usWidth))

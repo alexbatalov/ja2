@@ -686,7 +686,7 @@ function TrackScent(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
       }
       for (iXDiff = -RADIUS; iXDiff < (RADIUS + 1); iXDiff += iXIncr) {
         iGridNo = iStart + iXDiff + iYDiff * WORLD_ROWS;
-        if (abs(iGridNo % WORLD_ROWS - iXStart) > RADIUS) {
+        if (Math.abs(iGridNo % WORLD_ROWS - iXStart) > RADIUS) {
           // wrapped across map!
           continue;
         }
@@ -700,7 +700,7 @@ function TrackScent(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
               ubBestStrength = ubStrength;
               bDir = atan8(iXStart, iYStart, (iXStart + iXDiff), (iYStart + iYDiff));
               // now convert it into a difference in degree between it and our current dir
-              ubBestDirDiff = abs(pSoldier.value.bDirection - bDir);
+              ubBestDirDiff = Math.abs(pSoldier.value.bDirection - bDir);
               if (ubBestDirDiff > 4) // dir 0 compared with dir 6, for instance
               {
                 ubBestDirDiff = 8 - ubBestDirDiff;
@@ -715,7 +715,7 @@ function TrackScent(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
                 // start by calculating direction to the new gridno
                 bDir = atan8(iXStart, iYStart, (iXStart + iXDiff), (iYStart + iYDiff));
                 // now convert it into a difference in degree between it and our current dir
-                ubDirDiff = abs(pSoldier.value.bDirection - bDir);
+                ubDirDiff = Math.abs(pSoldier.value.bDirection - bDir);
                 if (ubDirDiff > 4) // dir 0 compared with dir 6, for instance
                 {
                   ubDirDiff = 8 - ubDirDiff;

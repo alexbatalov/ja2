@@ -1636,8 +1636,8 @@ function MapMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
     gfRenderMap = true;
     return;
   }
-  gsHiSectorX = min((reg.value.RelativeXPos / 13) + 1, 16);
-  gsHiSectorY = min((reg.value.RelativeYPos / 13) + 1, 16);
+  gsHiSectorX = Math.min((reg.value.RelativeXPos / 13) + 1, 16);
+  gsHiSectorY = Math.min((reg.value.RelativeYPos / 13) + 1, 16);
   if (gsPrevX != gsHiSectorX || gsPrevY != gsHiSectorY) {
     gsPrevX = gsHiSectorX;
     gsPrevY = gsHiSectorY;
@@ -1655,8 +1655,8 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
       gsSelSectorX = 0;
       SelectNextField();
     }
-    gsSelSectorX = min((reg.value.RelativeXPos / 13) + 1, 16);
-    gsSelSectorY = min((reg.value.RelativeYPos / 13) + 1, 16);
+    gsSelSectorX = Math.min((reg.value.RelativeXPos / 13) + 1, 16);
+    gsSelSectorY = Math.min((reg.value.RelativeYPos / 13) + 1, 16);
     if (gsSelSectorX != sLastX || gsSelSectorY != sLastY) {
       // clicked in a new sector
       gfOverrideDirty = true;

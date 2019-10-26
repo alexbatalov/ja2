@@ -41,8 +41,6 @@ const BAD_INDEX = -1;
 
 const NULL_HANDLE = 65535;
 
-const PI = 3.1415926;
-
 const ST_EPSILON = 0.00001; // define a sir-tech epsilon value
 
 interface SGPRect {

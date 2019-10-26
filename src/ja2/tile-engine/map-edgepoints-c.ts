@@ -1269,15 +1269,15 @@ function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): boo
   iSearchRange = EDGE_OF_MAP_SEARCH;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
 
   // Call FindBestPath to set flags in all locations that we can
   // walk into within range.  We have to set some things up first...
@@ -1340,15 +1340,15 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
   }
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
 
   // Call FindBestPath to set flags in all locations that we can
   // walk into within range.  We have to set some things up first...

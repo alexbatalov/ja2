@@ -920,7 +920,7 @@ function HandleNPCBeingGivenMoneyByPlayer(ubNPC: UINT8, uiMoneyAmount: UINT32, p
         }
 
         if (giHospitalRefund > 0) {
-          giHospitalRefund = __max(0, giHospitalRefund - iCost + uiMoneyAmount);
+          giHospitalRefund = Math.max(0, giHospitalRefund - iCost + uiMoneyAmount);
         }
         giHospitalTempBalance = 0;
       } else {

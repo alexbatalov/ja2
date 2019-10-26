@@ -1376,7 +1376,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
             // Perform the potential overrun check
             if (sX <= iMinimumX) {
               FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT(), addressof(sX), addressof(sY));
-              sX = max(sX, iMinimumX);
+              sX = Math.max(sX, iMinimumX);
             }
 
             mprintf(sX, pPersonnelScreenPoints[bScreenLocIndex].y, sString);
@@ -1389,7 +1389,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
 
               // KM: April 16, 1999
               // Perform the potential overrun check
-              sX = max(sX, iMinimumX);
+              sX = Math.max(sX, iMinimumX);
 
               mprintf(sX, pPersonnelScreenPoints[bScreenLocIndex].y, sString);
 
@@ -1404,7 +1404,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
 
               // KM: April 16, 1999
               // Perform the potential overrun check
-              sX = max(sX, iMinimumX);
+              sX = Math.max(sX, iMinimumX);
 
               mprintf(sX, pPersonnelScreenPoints[bScreenLocIndex].y, sString);
 
@@ -1900,8 +1900,8 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         usHeight = pTrav.value.usHeight;
         usWidth = pTrav.value.usWidth;
 
-        sCenX = PosX + (abs(57 - usWidth) / 2) - pTrav.value.sOffsetX;
-        sCenY = PosY + (abs(22 - usHeight) / 2) - pTrav.value.sOffsetY;
+        sCenX = PosX + (Math.abs(57 - usWidth) / 2) - pTrav.value.sOffsetX;
+        sCenY = PosY + (Math.abs(22 - usHeight) / 2) - pTrav.value.sOffsetY;
 
         // shadow
         // BltVideoObjectOutlineShadowFromIndex( FRAME_BUFFER, GetInterfaceGraphicForItem( pItem ), pItem->ubGraphicNum, sCenX-2, sCenY+2);

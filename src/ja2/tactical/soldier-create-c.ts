@@ -1170,8 +1170,8 @@ function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
   // Assert( bDiffModifier <= 100 );
 
   // limit the range of the combined factors to between 0 and 100
-  bDiffModifier = __max(0, bDiffModifier);
-  bDiffModifier = __min(100, bDiffModifier);
+  bDiffModifier = Math.max(0, bDiffModifier);
+  bDiffModifier = Math.min(100, bDiffModifier);
 
   // DON'T change this function without carefully considering the impact on GenerateRandomEquipment(),
   // CreateDetailedPlacementGivenBasicPlacementInfo(), and SoldierDifficultyLevel().
@@ -1395,12 +1395,12 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
       break;
   }
 
-  pp.value.bExpLevel = max(1, pp.value.bExpLevel); // minimum exp. level of 1
-  pp.value.bExpLevel = min(9, pp.value.bExpLevel); // maximum exp. level of 9
+  pp.value.bExpLevel = Math.max(1, pp.value.bExpLevel); // minimum exp. level of 1
+  pp.value.bExpLevel = Math.min(9, pp.value.bExpLevel); // maximum exp. level of 9
 
   ubStatsLevel = pp.value.bExpLevel + bStatsModifier;
-  ubStatsLevel = max(0, ubStatsLevel); // minimum stats level of 0
-  ubStatsLevel = min(9, ubStatsLevel); // maximum stats level of 9
+  ubStatsLevel = Math.max(0, ubStatsLevel); // minimum stats level of 0
+  ubStatsLevel = Math.min(9, ubStatsLevel); // maximum stats level of 9
 
   // Set the minimum base attribute
   bBaseAttribute = 49 + (4 * ubStatsLevel);
@@ -1732,8 +1732,8 @@ function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bR
   // Rel level 0: Lvl 1, 1: Lvl 2-3, 2: Lvl 4-5, 3: Lvl 6-7, 4: Lvl 8-9
   s.value.bExpLevel = (2 * bRelativeAttributeLevel + Random(2));
 
-  s.value.bExpLevel = max(1, s.value.bExpLevel); // minimum level of 1
-  s.value.bExpLevel = min(9, s.value.bExpLevel); // maximum level of 9
+  s.value.bExpLevel = Math.max(1, s.value.bExpLevel); // minimum level of 1
+  s.value.bExpLevel = Math.min(9, s.value.bExpLevel); // maximum level of 9
 
   // Set the minimum base attribute
   bBaseAttribute = 49 + (4 * s.value.bExpLevel);
@@ -1981,16 +1981,16 @@ function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8
 
   if (SOLDIER_CLASS_MILITIA(ubSoldierClass)) {
     // Militia never get to roll bad/great results at all (to avoid great equipment drops from them if killed)
-    bAdjustedRoll = __max(1, bAdjustedRoll);
-    bAdjustedRoll = __min(8, bAdjustedRoll);
+    bAdjustedRoll = Math.max(1, bAdjustedRoll);
+    bAdjustedRoll = Math.min(8, bAdjustedRoll);
     if (IsAutoResolveActive()) {
       // Artificially strengthen militia strength for sake of gameplay
       bAdjustedRoll++;
     }
   } else {
     // max-min this to a range of 0-9
-    bAdjustedRoll = __max(0, bAdjustedRoll);
-    bAdjustedRoll = __min(9, bAdjustedRoll);
+    bAdjustedRoll = Math.max(0, bAdjustedRoll);
+    bAdjustedRoll = Math.min(9, bAdjustedRoll);
     if (IsAutoResolveActive()) {
       // Artificially weaken enemy/creature strength for sake of gameplay
       if (bAdjustedRoll > 0) {
@@ -2285,12 +2285,12 @@ function GetPythDistanceFromPalace(sSectorX: INT16, sSectorY: INT16): UINT8 {
   let fValue: float = 0.0;
 
   // grab number of rows and cols
-  sRows = (abs((sSectorX) - (PALACE_SECTOR_X)));
-  sCols = (abs((sSectorY) - (PALACE_SECTOR_Y)));
+  sRows = (Math.abs((sSectorX) - (PALACE_SECTOR_X)));
+  sCols = (Math.abs((sSectorY) - (PALACE_SECTOR_Y)));
 
   // apply Pythagoras's theorem for right-handed triangle:
   // dist^2 = rows^2 + cols^2, so use the square root to get the distance
-  fValue = sqrt((sRows * sRows) + (sCols * sCols));
+  fValue = Math.sqrt((sRows * sRows) + (sCols * sCols));
 
   if (fmod(fValue, 1.0) >= 0.50) {
     ubDistance = (1 + fValue);

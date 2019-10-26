@@ -95,16 +95,16 @@ const NEWQUENODE = () => {
 const ESTIMATE0 = () => ((dx > dy) ? (dx) : (dy));
 const ESTIMATE1 = () => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
 const ESTIMATE2 = () => FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
-const ESTIMATEn = () => ((FLATCOST * sqrt(dx * dx + dy * dy)));
+const ESTIMATEn = () => ((FLATCOST * Math.sqrt(dx * dx + dy * dy)));
 const ESTIMATE = () => ESTIMATE1();
 
-const REMAININGCOST = (ndx) => ((locY = pathQB[ndx].location / MAP_WIDTH), (locX = pathQB[ndx].location % MAP_WIDTH), (dy = abs(iDestY - locY)), (dx = abs(iDestX - locX)), ESTIMATE());
+const REMAININGCOST = (ndx) => ((locY = pathQB[ndx].location / MAP_WIDTH), (locX = pathQB[ndx].location % MAP_WIDTH), (dy = Math.abs(iDestY - locY)), (dx = Math.abs(iDestX - locX)), ESTIMATE());
 
 const MAXCOST = (99900);
 const TOTALCOST = (ndx) => (pathQB[ndx].costSoFar + pathQB[ndx].costToGo);
 const XLOC = (a) => (a % MAP_WIDTH);
 const YLOC = (a) => (a / MAP_WIDTH);
-const LEGDISTANCE = (a, b) => (abs(XLOC(b) - XLOC(a)) + abs(YLOC(b) - YLOC(a)));
+const LEGDISTANCE = (a, b) => (Math.abs(XLOC(b) - XLOC(a)) + Math.abs(YLOC(b) - YLOC(a)));
 const FARTHER = (ndx, NDX) => (LEGDISTANCE(pathQB[ndx].location, sDestination) > LEGDISTANCE(pathQB[NDX].location, sDestination));
 
 const FLAT_STRATEGIC_TRAVEL_TIME = 60;

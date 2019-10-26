@@ -227,7 +227,7 @@ function BeginLoadScreen(): void {
     while (iPercentage < 100) {
       uiCurrTime = GetJA2Clock();
       iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
-      iPercentage = min(iPercentage, 100);
+      iPercentage = Math.min(iPercentage, 100);
 
       // Factor the percentage so that it is modified by a gravity falling acceleration effect.
       iFactor = (iPercentage - 50) * 2;

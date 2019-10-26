@@ -1073,8 +1073,8 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
       usHeight = pTrav.value.usHeight;
       usWidth = pTrav.value.usWidth;
 
-      sCenX = PosX + (abs(WEAPONBOX_SIZE_X - 3 - usWidth) / 2) - pTrav.value.sOffsetX;
-      sCenY = PosY + (abs(WEAPONBOX_SIZE_Y - usHeight) / 2) - pTrav.value.sOffsetY;
+      sCenX = PosX + (Math.abs(WEAPONBOX_SIZE_X - 3 - usWidth) / 2) - pTrav.value.sOffsetX;
+      sCenY = PosY + (Math.abs(WEAPONBOX_SIZE_Y - usHeight) / 2) - pTrav.value.sOffsetY;
 
       // blt the shadow of the item
       BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX - 2, sCenY + 2);

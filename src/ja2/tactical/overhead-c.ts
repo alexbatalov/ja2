@@ -566,15 +566,15 @@ function UnPauseAI(): void {
 }
 
 let gdRadiansForAngle: FLOAT[] /* [] */ = [
-  PI,
-  (3 * PI / 4),
-  (PI / 2),
-  ((PI) / 4),
+  Math.PI,
+  (3 * Math.PI / 4),
+  (Math.PI / 2),
+  ((Math.PI) / 4),
 
   0,
-  ((-PI) / 4),
-  (-PI / 2),
-  (-3 * PI / 4),
+  ((-Math.PI) / 4),
+  (-Math.PI / 2),
+  (-3 * Math.PI / 4),
 ];
 
 function ExecuteOverhead(): boolean {
@@ -688,7 +688,7 @@ function ExecuteOverhead(): boolean {
             // Fade out....
             if (pSoldier.value.fBeginFade == 1) {
               bShadeLevel = (pSoldier.value.ubFadeLevel & 0x0f);
-              bShadeLevel = __min(bShadeLevel + 1, SHADE_MIN);
+              bShadeLevel = Math.min(bShadeLevel + 1, SHADE_MIN);
 
               if (bShadeLevel >= (SHADE_MIN - 3)) {
                 pSoldier.value.fBeginFade = false;
@@ -4352,7 +4352,7 @@ function ExitCombatMode(): void {
 
   // Make sure next opplist decay DOES happen right after we go to RT
   // since this would be the same as what would happen at the end of the turn
-  gTacticalStatus.uiTimeSinceLastOpplistDecay = __max(0, GetWorldTotalSeconds() - TIME_BETWEEN_RT_OPPLIST_DECAYS);
+  gTacticalStatus.uiTimeSinceLastOpplistDecay = Math.max(0, GetWorldTotalSeconds() - TIME_BETWEEN_RT_OPPLIST_DECAYS);
   NonCombatDecayPublicOpplist(GetWorldTotalSeconds());
 }
 

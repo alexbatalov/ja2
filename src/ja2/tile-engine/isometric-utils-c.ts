@@ -547,7 +547,7 @@ function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
   // Convert our grid-not into an XY
   ConvertGridNoToXY(sGridNo2, addressof(sXPos2), addressof(sYPos2));
 
-  uiDist = sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos));
+  uiDist = Math.sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos));
 
   return uiDist;
 }
@@ -564,7 +564,7 @@ function GetRangeInCellCoordsFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): I
   // Convert our grid-not into an XY
   ConvertGridNoToXY(sGridNo2, addressof(sXPos2), addressof(sYPos2));
 
-  return (sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos))) * CELL_X_SIZE;
+  return (Math.sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos))) * CELL_X_SIZE;
 }
 
 function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>): boolean {
@@ -591,12 +591,12 @@ function PythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   let sCols: INT16;
   let sResult: INT16;
 
-  sRows = abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
-  sCols = abs((sOrigin % MAXROW) - (sDest % MAXROW));
+  sRows = Math.abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
+  sCols = Math.abs((sOrigin % MAXROW) - (sDest % MAXROW));
 
   // apply Pythagoras's theorem for right-handed triangle:
   // dist^2 = rows^2 + cols^2, so use the square root to get the distance
-  sResult = sqrt((sRows * sRows) + (sCols * sCols));
+  sResult = Math.sqrt((sRows * sRows) + (sCols * sCols));
 
   return sResult;
 }
@@ -605,10 +605,10 @@ function SpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   let sRows: INT16;
   let sCols: INT16;
 
-  sRows = abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
-  sCols = abs((sOrigin % MAXROW) - (sDest % MAXROW));
+  sRows = Math.abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
+  sCols = Math.abs((sOrigin % MAXROW) - (sDest % MAXROW));
 
-  return __max(sRows, sCols);
+  return Math.max(sRows, sCols);
 }
 
 function CardinalSpacesAway(sOrigin: INT16, sDest: INT16): INT16
@@ -617,8 +617,8 @@ function CardinalSpacesAway(sOrigin: INT16, sDest: INT16): INT16
   let sRows: INT16;
   let sCols: INT16;
 
-  sRows = abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
-  sCols = abs((sOrigin % MAXROW) - (sDest % MAXROW));
+  sRows = Math.abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
+  sCols = Math.abs((sOrigin % MAXROW) - (sDest % MAXROW));
 
   return (sRows + sCols);
 }
@@ -744,17 +744,17 @@ function QuickestDirection(origin: INT16, dest: INT16): INT16 {
   if (origin == dest)
     return 0;
 
-  if ((abs(origin - dest)) == 4)
+  if ((Math.abs(origin - dest)) == 4)
     return (1); // this could be made random
   else if (origin > dest) {
-    v1 = abs(origin - dest);
+    v1 = Math.abs(origin - dest);
     v2 = (8 - origin) + dest;
     if (v1 > v2)
       return 1;
     else
       return -1;
   } else {
-    v1 = abs(origin - dest);
+    v1 = Math.abs(origin - dest);
     v2 = (8 - dest) + origin;
     if (v1 > v2)
       return -1;
@@ -770,17 +770,17 @@ function ExtQuickestDirection(origin: INT16, dest: INT16): INT16 {
   if (origin == dest)
     return 0;
 
-  if ((abs(origin - dest)) == 16)
+  if ((Math.abs(origin - dest)) == 16)
     return (1); // this could be made random
   else if (origin > dest) {
-    v1 = abs(origin - dest);
+    v1 = Math.abs(origin - dest);
     v2 = (32 - origin) + dest;
     if (v1 > v2)
       return 1;
     else
       return -1;
   } else {
-    v1 = abs(origin - dest);
+    v1 = Math.abs(origin - dest);
     v2 = (32 - dest) + origin;
     if (v1 > v2)
       return -1;

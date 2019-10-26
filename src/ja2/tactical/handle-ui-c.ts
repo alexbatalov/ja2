@@ -1594,7 +1594,7 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   }
 
   // Check if delta X has changed alot since last time
-  iPosDiff = abs((usOldMouseY - gusMouseYPos));
+  iPosDiff = Math.abs((usOldMouseY - gusMouseYPos));
 
   // guiShowUPDownArrows = ARROWS_SHOW_DOWN_BESIDE | ARROWS_SHOW_UP_BESIDE;
   guiShowUPDownArrows = uiOldShowUPDownArrows;

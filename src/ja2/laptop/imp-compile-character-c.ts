@@ -176,7 +176,7 @@ function CreatePlayerAttitude(): void {
   for (iCounter = 0; iCounter < Enum271.NUM_ATTITUDES; iCounter++) {
     if (iAttitudeHits[iCounter]) {
       if (iAttitudeHits[iCounter] > iHighestHits) {
-        iHighestHits = __max(iHighestHits, iAttitudeHits[iCounter]);
+        iHighestHits = Math.max(iHighestHits, iAttitudeHits[iCounter]);
         iNumAttitudesWithHighestHits = 1;
       } else if (iAttitudeHits[iCounter] == iHighestHits) {
         iNumAttitudesWithHighestHits++;

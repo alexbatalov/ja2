@@ -384,17 +384,17 @@ function Create16BPPPalette(pPalette: Pointer<SGPPaletteEntry>): Pointer<UINT16>
     b = pPalette[cnt].peBlue;
 
     if (gusRedShift < 0)
-      r16 = (r >> abs(gusRedShift));
+      r16 = (r >> Math.abs(gusRedShift));
     else
       r16 = (r << gusRedShift);
 
     if (gusGreenShift < 0)
-      g16 = (g >> abs(gusGreenShift));
+      g16 = (g >> Math.abs(gusGreenShift));
     else
       g16 = (g << gusGreenShift);
 
     if (gusBlueShift < 0)
-      b16 = (b >> abs(gusBlueShift));
+      b16 = (b >> Math.abs(gusBlueShift));
     else
       b16 = (b << gusBlueShift);
 
@@ -467,9 +467,9 @@ function Create16BPPPaletteShaded(pPalette: Pointer<SGPPaletteEntry>, rscale: UI
       bmod = (bscale * pPalette[cnt].peBlue / 256);
     }
 
-    r = __min(rmod, 255);
-    g = __min(gmod, 255);
-    b = __min(bmod, 255);
+    r = Math.min(rmod, 255);
+    g = Math.min(gmod, 255);
+    b = Math.min(bmod, 255);
 
     if (gusRedShift < 0)
       r16 = (r >> (-gusRedShift));
@@ -515,17 +515,17 @@ function Get16BPPColor(RGBValue: UINT32): UINT16 {
   b = SGPGetBValue(RGBValue);
 
   if (gusRedShift < 0)
-    r16 = (r >> abs(gusRedShift));
+    r16 = (r >> Math.abs(gusRedShift));
   else
     r16 = (r << gusRedShift);
 
   if (gusGreenShift < 0)
-    g16 = (g >> abs(gusGreenShift));
+    g16 = (g >> Math.abs(gusGreenShift));
   else
     g16 = (g << gusGreenShift);
 
   if (gusBlueShift < 0)
-    b16 = (b >> abs(gusBlueShift));
+    b16 = (b >> Math.abs(gusBlueShift));
   else
     b16 = (b << gusBlueShift);
 
@@ -559,17 +559,17 @@ function GetRGBColor(Value16BPP: UINT16): UINT32 {
   b16 = Value16BPP & gusBlueMask;
 
   if (gusRedShift < 0)
-    r = (r16 << abs(gusRedShift));
+    r = (r16 << Math.abs(gusRedShift));
   else
     r = (r16 >> gusRedShift);
 
   if (gusGreenShift < 0)
-    g = (g16 << abs(gusGreenShift));
+    g = (g16 << Math.abs(gusGreenShift));
   else
     g = (g16 >> gusGreenShift);
 
   if (gusBlueShift < 0)
-    b = (b16 << abs(gusBlueShift));
+    b = (b16 << Math.abs(gusBlueShift));
   else
     b = (b16 >> gusBlueShift);
 

@@ -1406,7 +1406,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     let ubShadeLevel: UINT8;
 
                     ubShadeLevel = (pNode.value.ubShadeLevel & 0x0f);
-                    ubShadeLevel = __max(ubShadeLevel - 2, DEFAULT_SHADE_LEVEL);
+                    ubShadeLevel = Math.max(ubShadeLevel - 2, DEFAULT_SHADE_LEVEL);
                     ubShadeLevel |= (pNode.value.ubShadeLevel & 0x30);
 
                     if (pSoldier.value.fBeginFade) {
@@ -1724,10 +1724,10 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     sXPos += pTrav.value.sOffsetX;
                     sYPos += pTrav.value.sOffsetY;
 
-                    RegisterBackgroundRect(uiDirtyFlags, null, sXPos, sYPos, (sXPos + uiBrushWidth), (__min((sYPos + uiBrushHeight), gsVIEWPORT_WINDOW_END_Y)));
+                    RegisterBackgroundRect(uiDirtyFlags, null, sXPos, sYPos, (sXPos + uiBrushWidth), (Math.min((sYPos + uiBrushHeight), gsVIEWPORT_WINDOW_END_Y)));
 
                     if (fSaveZ) {
-                      RegisterBackgroundRect(uiDirtyFlags | BGND_FLAG_SAVE_Z, null, sXPos, sYPos, (sXPos + uiBrushWidth), (__min((sYPos + uiBrushHeight), gsVIEWPORT_WINDOW_END_Y)));
+                      RegisterBackgroundRect(uiDirtyFlags | BGND_FLAG_SAVE_Z, null, sXPos, sYPos, (sXPos + uiBrushWidth), (Math.min((sYPos + uiBrushHeight), gsVIEWPORT_WINDOW_END_Y)));
                     }
                   }
                 } else {
@@ -2019,7 +2019,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               if (iTempPosY_S < 360) {
                 if (!(uiFlags & TILES_DIRTY))
                   UnLockVideoSurface(FRAME_BUFFER);
-                ColorFillVideoSurfaceArea(FRAME_BUFFER, iTempPosX_S, iTempPosY_S, (iTempPosX_S + 40), (min(iTempPosY_S + 20, 360)), Get16BPPColor(FROMRGB(0, 0, 0)));
+                ColorFillVideoSurfaceArea(FRAME_BUFFER, iTempPosX_S, iTempPosY_S, (iTempPosX_S + 40), (Math.min(iTempPosY_S + 20, 360)), Get16BPPColor(FROMRGB(0, 0, 0)));
                 if (!(uiFlags & TILES_DIRTY))
                   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
               }
@@ -3206,12 +3206,12 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
   dOpp = sTopLeftWorldY - gsTLY;
   dAdj = sTopLeftWorldX - gsTLX;
 
-  dAngle = atan2(dAdj, dOpp);
-  at1 = dAngle * 180 / PI;
+  dAngle = Math.atan2(dAdj, dOpp);
+  at1 = dAngle * 180 / Math.PI;
 
   if (dAngle < 0) {
     fOutLeft = true;
-  } else if (dAngle > PI / 2) {
+  } else if (dAngle > Math.PI / 2) {
     fOutTop = true;
   }
 
@@ -3219,12 +3219,12 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
   dOpp = sTopRightWorldY - gsTRY;
   dAdj = gsTRX - sTopRightWorldX;
 
-  dAngle = atan2(dAdj, dOpp);
-  at2 = dAngle * 180 / PI;
+  dAngle = Math.atan2(dAdj, dOpp);
+  at2 = dAngle * 180 / Math.PI;
 
   if (dAngle < 0) {
     fOutRight = true;
-  } else if (dAngle > PI / 2) {
+  } else if (dAngle > Math.PI / 2) {
     fOutTop = true;
   }
 
@@ -3232,12 +3232,12 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
   dOpp = gsBLY - sBottomLeftWorldY;
   dAdj = sBottomLeftWorldX - gsBLX;
 
-  dAngle = atan2(dAdj, dOpp);
-  at3 = dAngle * 180 / PI;
+  dAngle = Math.atan2(dAdj, dOpp);
+  at3 = dAngle * 180 / Math.PI;
 
   if (dAngle < 0) {
     fOutLeft = true;
-  } else if (dAngle > PI / 2) {
+  } else if (dAngle > Math.PI / 2) {
     fOutBottom = true;
   }
 
@@ -3245,12 +3245,12 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
   dOpp = gsBRY - sBottomRightWorldY;
   dAdj = gsBRX - sBottomRightWorldX;
 
-  dAngle = atan2(dAdj, dOpp);
-  at4 = dAngle * 180 / PI;
+  dAngle = Math.atan2(dAdj, dOpp);
+  at4 = dAngle * 180 / Math.PI;
 
   if (dAngle < 0) {
     fOutRight = true;
-  } else if (dAngle > PI / 2) {
+  } else if (dAngle > Math.PI / 2) {
     fOutBottom = true;
   }
 
@@ -3484,10 +3484,10 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = __min(ClipX1 - min(ClipX1, iTempX), usWidth);
-  RightSkip = __min(max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
-  TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  BottomSkip = __min(__max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
+  LeftSkip = Math.min(ClipX1 - Math.min(ClipX1, iTempX), usWidth);
+  RightSkip = Math.min(Math.max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+  TopSkip = Math.min(ClipY1 - Math.min(ClipY1, iTempY), usHeight);
+  BottomSkip = Math.min(Math.max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
 
   // calculate the remaining rows and columns to blit
   BlitLength = (usWidth - LeftSkip - RightSkip);
@@ -3881,10 +3881,10 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = __min(ClipX1 - min(ClipX1, iTempX), usWidth);
-  RightSkip = __min(max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
-  TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  BottomSkip = __min(__max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
+  LeftSkip = Math.min(ClipX1 - Math.min(ClipX1, iTempX), usWidth);
+  RightSkip = Math.min(Math.max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+  TopSkip = Math.min(ClipY1 - Math.min(ClipY1, iTempY), usHeight);
+  BottomSkip = Math.min(Math.max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
 
   // calculate the remaining rows and columns to blit
   BlitLength = (usWidth - LeftSkip - RightSkip);
@@ -4282,10 +4282,10 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = __min(ClipX1 - min(ClipX1, iTempX), usWidth);
-  RightSkip = __min(max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
-  TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  BottomSkip = __min(__max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
+  LeftSkip = Math.min(ClipX1 - Math.min(ClipX1, iTempX), usWidth);
+  RightSkip = Math.min(Math.max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+  TopSkip = Math.min(ClipY1 - Math.min(ClipY1, iTempY), usHeight);
+  BottomSkip = Math.min(Math.max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
 
   uiLineFlag = (iTempY & 1);
 
@@ -4697,10 +4697,10 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = __min(ClipX1 - min(ClipX1, iTempX), usWidth);
-  RightSkip = __min(max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
-  TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  BottomSkip = __min(__max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
+  LeftSkip = Math.min(ClipX1 - Math.min(ClipX1, iTempX), usWidth);
+  RightSkip = Math.min(Math.max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+  TopSkip = Math.min(ClipY1 - Math.min(ClipY1, iTempY), usHeight);
+  BottomSkip = Math.min(Math.max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
 
   uiLineFlag = (iTempY & 1);
 
@@ -5155,10 +5155,10 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
   }
 
   // Calculate rows hanging off each side of the screen
-  LeftSkip = __min(ClipX1 - min(ClipX1, iTempX), usWidth);
-  RightSkip = __min(max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
-  TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
-  BottomSkip = __min(__max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
+  LeftSkip = Math.min(ClipX1 - Math.min(ClipX1, iTempX), usWidth);
+  RightSkip = Math.min(Math.max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+  TopSkip = Math.min(ClipY1 - Math.min(ClipY1, iTempY), usHeight);
+  BottomSkip = Math.min(Math.max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
 
   // calculate the remaining rows and columns to blit
   BlitLength = (usWidth - LeftSkip - RightSkip);
@@ -5728,10 +5728,10 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
   gOldClipRect = gClippingRect;
 
   // Set new clipped rect
-  gClippingRect.iLeft = __max(gsVIEWPORT_START_X, sLeft);
-  gClippingRect.iRight = __min(gsVIEWPORT_END_X, sRight);
-  gClippingRect.iTop = __max(gsVIEWPORT_WINDOW_START_Y, sTop);
-  gClippingRect.iBottom = __min(gsVIEWPORT_WINDOW_END_Y, sBottom);
+  gClippingRect.iLeft = Math.max(gsVIEWPORT_START_X, sLeft);
+  gClippingRect.iRight = Math.min(gsVIEWPORT_END_X, sRight);
+  gClippingRect.iTop = Math.max(gsVIEWPORT_WINDOW_START_Y, sTop);
+  gClippingRect.iBottom = Math.min(gsVIEWPORT_WINDOW_END_Y, sBottom);
 
   gsEndXS = sRight + VIEWPORT_XOFFSET_S;
   gsEndYS = sBottom + VIEWPORT_YOFFSET_S;
@@ -5766,8 +5766,8 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
 
   // STEP 5 - Determine Deltas for center and find screen values
   // Make sure these coordinates are multiples of scroll steps
-  sOffsetX_W = abs(gsStartPointX_W) - (abs((gsStartPointX_M * CELL_X_SIZE)));
-  sOffsetY_W = abs(gsStartPointY_W) - (abs((gsStartPointY_M * CELL_Y_SIZE)));
+  sOffsetX_W = Math.abs(gsStartPointX_W) - (Math.abs((gsStartPointX_M * CELL_X_SIZE)));
+  sOffsetY_W = Math.abs(gsStartPointY_W) - (Math.abs((gsStartPointY_M * CELL_Y_SIZE)));
 
   FromCellToScreenCoordinates(sOffsetX_W, sOffsetY_W, addressof(sOffsetX_S), addressof(sOffsetY_S));
 

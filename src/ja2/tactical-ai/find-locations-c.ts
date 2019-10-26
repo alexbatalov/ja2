@@ -368,7 +368,7 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
   iReductionFactor = ((MAX_THREAT_RANGE - iRange) * Threat[uiThreatIndex].iCertainty) / MAX_THREAT_RANGE;
 
   // divide by a 100 to make the numbers more managable and avoid 32-bit limit
-  iThisScale = max(iMyPosValue, iHisPosValue) / 100;
+  iThisScale = Math.max(iMyPosValue, iHisPosValue) / 100;
   iThisScale = (iThisScale * iReductionFactor) / 100;
   iTotalScale.value += iThisScale;
   // this helps to decide the percent improvement later
@@ -516,7 +516,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     // must be able to reach the cover, so it can't possibly be more than
     // action points left (rounded down) tiles away, since minimum
     // cost to move per tile is 1 points.
-    iMaxMoveTilesLeft = __max(0, pSoldier.value.bActionPoints - MinAPsToStartMovement(pSoldier, usMovementMode));
+    iMaxMoveTilesLeft = Math.max(0, pSoldier.value.bActionPoints - MinAPsToStartMovement(pSoldier, usMovementMode));
     // NumMessage("In BLACK, maximum tiles to move left = ",maxMoveTilesLeft);
 
     // if we can't go as far as the usual full search range
@@ -641,15 +641,15 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
   iCurrentCoverValue -= (iCurrentCoverValue / 10) * NumberOfTeamMatesAdjacent(pSoldier, pSoldier.value.sGridNo);
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
   iRoamRange = RoamingRange(pSoldier, addressof(sOrigin));
@@ -975,7 +975,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     gubNPCAPBudget = pSoldier.value.bActionPoints;
   } else {
     // even if not under pressure, limit to 1 turn's travelling distance
-    gubNPCAPBudget = __min(pSoldier.value.bActionPoints / 2, CalcActionPoints(pSoldier));
+    gubNPCAPBudget = Math.min(pSoldier.value.bActionPoints / 2, CalcActionPoints(pSoldier));
 
     iSearchRange = gubNPCAPBudget / 2;
   }
@@ -993,20 +993,20 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // assume we have to stand up!
   // use the min macro here to make sure we don't wrap the UINT8 to 255...
 
-  gubNPCAPBudget = gubNPCAPBudget = __min(gubNPCAPBudget, gubNPCAPBudget - GetAPsToChangeStance(pSoldier, ANIM_STAND));
+  gubNPCAPBudget = gubNPCAPBudget = Math.min(gubNPCAPBudget, gubNPCAPBudget - GetAPsToChangeStance(pSoldier, ANIM_STAND));
   // NumMessage("Search Range = ",iSearchRange);
   // NumMessage("gubNPCAPBudget = ",gubNPCAPBudget);
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
   // Call FindBestPath to set flags in all locations that we can
@@ -1141,15 +1141,15 @@ function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     // NumMessage("Trying iSearchRange = ", iSearchRange);
 
     // determine maximum horizontal limits
-    sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+    sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
     // NumMessage("sMaxLeft = ",sMaxLeft);
-    sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+    sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
     // NumMessage("sMaxRight = ",sMaxRight);
 
     // determine maximum vertical limits
-    sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+    sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
     // NumMessage("sMaxUp = ",sMaxUp);
-    sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+    sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
     // NumMessage("sMaxDown = ",sMaxDown);
 
     // Call FindBestPath to set flags in all locations that we can
@@ -1252,15 +1252,15 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // this should almost never need to search farther than 5 or 10 squares...
   for (iSearchRange = 5; iSearchRange <= 15; iSearchRange += 5) {
     // determine maximum horizontal limits
-    sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+    sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
     // NumMessage("sMaxLeft = ",sMaxLeft);
-    sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+    sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
     // NumMessage("sMaxRight = ",sMaxRight);
 
     // determine maximum vertical limits
-    sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+    sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
     // NumMessage("sMaxUp = ",sMaxUp);
-    sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+    sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
     // NumMessage("sMaxDown = ",sMaxDown);
 
     // Call FindBestPath to set flags in all locations that we can
@@ -1423,15 +1423,15 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
   iSearchRange /= 2;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
   // Call FindBestPath to set flags in all locations that we can
@@ -1650,15 +1650,15 @@ function FindClosestDoor(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   iSearchRange = 5;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
   // SET UP DOUBLE-LOOP TO STEP THROUGH POTENTIAL GRID #s
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
@@ -1825,15 +1825,15 @@ function FindNearbyPointOnEdgeOfMap(pSoldier: Pointer<SOLDIERTYPE>, pbDirection:
   iSearchRange = EDGE_OF_MAP_SEARCH;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
 
   // reset the "reachable" flags in the region we're looking at
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
@@ -1915,9 +1915,9 @@ function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: bool
   iSearchRange = 7;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   if ((pSoldier.value.bTeam == gbPlayerNum) && (fInRing == false)) {
@@ -1926,9 +1926,9 @@ function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: bool
   }
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
 
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
@@ -1936,7 +1936,7 @@ function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: bool
       sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (InARoom(sGridNo, addressof(ubRoom))) {
         if ((fInRing && ubRoom == BOXING_RING) || (!fInRing && ubRoom != BOXING_RING) && LegalNPCDestination(pSoldier, sGridNo, IGNORE_PATH, NOWATER, 0)) {
-          iDistance = abs(sXOffset) + abs(sYOffset);
+          iDistance = Math.abs(sXOffset) + Math.abs(sYOffset);
           if (iDistance < iClosestDistance && WhoIsThere2(sGridNo, 0) == NOBODY) {
             sClosestSpot = sGridNo;
             iClosestDistance = iDistance;
@@ -1968,15 +1968,15 @@ function FindNearestOpenableNonDoor(sStartGridNo: INT16): INT16 {
   iSearchRange = 7;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (sStartGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (sStartGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((sStartGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((sStartGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (sStartGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (sStartGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((sStartGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((sStartGridNo / MAXROW) + 1));
 
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {

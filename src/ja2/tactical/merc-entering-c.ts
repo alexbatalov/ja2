@@ -458,7 +458,7 @@ function HandleHeliDrop(): void {
       if (fFadingHeliIn) {
         if (uiSoundSample != NO_SAMPLE) {
           iVol = SoundGetVolume(uiSoundSample);
-          iVol = __min(HIGHVOLUME, iVol + 5);
+          iVol = Math.min(HIGHVOLUME, iVol + 5);
           SoundSetVolume(uiSoundSample, iVol);
           if (iVol == HIGHVOLUME)
             fFadingHeliIn = false;
@@ -469,7 +469,7 @@ function HandleHeliDrop(): void {
         if (uiSoundSample != NO_SAMPLE) {
           iVol = SoundGetVolume(uiSoundSample);
 
-          iVol = __max(0, iVol - 5);
+          iVol = Math.max(0, iVol - 5);
 
           SoundSetVolume(uiSoundSample, iVol);
           if (iVol == 0) {

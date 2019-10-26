@@ -413,7 +413,7 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
   while (iPercentage < 100) {
     uiCurrTime = GetJA2Clock();
     iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
-    iPercentage = min(iPercentage, 100);
+    iPercentage = Math.min(iPercentage, 100);
 
     // Factor the percentage so that it is modified by a gravity falling acceleration effect.
     iFactor = (iPercentage - 50) * 2;
@@ -427,9 +427,9 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
     iTop = sStartTop + (sEndTop - sStartTop + 1) * iPercentage / 100;
 
     DstRect.iLeft = iLeft - iWidth * iPercentage / 200;
-    DstRect.iRight = DstRect.iLeft + max(iWidth * iPercentage / 100, 1);
+    DstRect.iRight = DstRect.iLeft + Math.max(iWidth * iPercentage / 100, 1);
     DstRect.iTop = iTop - iHeight * iPercentage / 200;
-    DstRect.iBottom = DstRect.iTop + max(iHeight * iPercentage / 100, 1);
+    DstRect.iBottom = DstRect.iTop + Math.max(iHeight * iPercentage / 100, 1);
 
     BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(SrcRect), addressof(DstRect));
     InvalidateScreen();
@@ -663,7 +663,7 @@ function CalculateSoldierCells(fReset: boolean): void {
   gpAR.value.ubAliveCivs = gpAR.value.ubCivs;
   gpAR.value.ubAliveEnemies = gpAR.value.ubEnemies;
 
-  iMaxTeamSize = max(gpAR.value.ubMercs + gpAR.value.ubCivs, gpAR.value.ubEnemies);
+  iMaxTeamSize = Math.max(gpAR.value.ubMercs + gpAR.value.ubCivs, gpAR.value.ubEnemies);
 
   if (iMaxTeamSize > 12) {
     gpAR.value.ubTimeModifierPercentage = (118 - iMaxTeamSize * 1.5);
@@ -2193,14 +2193,14 @@ function CalculateAutoResolveInfo(): void {
 
   if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
     GetNumberOfEnemiesInSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY, addressof(gpAR.value.ubAdmins), addressof(gpAR.value.ubTroops), addressof(gpAR.value.ubElites));
-    gpAR.value.ubEnemies = min(gpAR.value.ubAdmins + gpAR.value.ubTroops + gpAR.value.ubElites, 32);
+    gpAR.value.ubEnemies = Math.min(gpAR.value.ubAdmins + gpAR.value.ubTroops + gpAR.value.ubElites, 32);
   } else {
     if (gfTransferTacticalOppositionToAutoResolve) {
       DetermineCreatureTownCompositionBasedOnTacticalInformation(addressof(gubNumCreaturesAttackingTown), addressof(gpAR.value.ubYMCreatures), addressof(gpAR.value.ubYFCreatures), addressof(gpAR.value.ubAMCreatures), addressof(gpAR.value.ubAFCreatures));
     } else {
       DetermineCreatureTownComposition(gubNumCreaturesAttackingTown, addressof(gpAR.value.ubYMCreatures), addressof(gpAR.value.ubYFCreatures), addressof(gpAR.value.ubAMCreatures), addressof(gpAR.value.ubAFCreatures));
     }
-    gpAR.value.ubEnemies = min(gpAR.value.ubYMCreatures + gpAR.value.ubYFCreatures + gpAR.value.ubAMCreatures + gpAR.value.ubAFCreatures, 32);
+    gpAR.value.ubEnemies = Math.min(gpAR.value.ubYMCreatures + gpAR.value.ubYFCreatures + gpAR.value.ubAMCreatures + gpAR.value.ubAFCreatures, 32);
   }
   gfTransferTacticalOppositionToAutoResolve = false;
   gpAR.value.ubCivs = CountAllMilitiaInSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
@@ -2420,12 +2420,12 @@ function CalculateRowsAndColumns(): void {
   if (gpAR.value.ubMercCols + gpAR.value.ubEnemyCols == 9)
     gpAR.value.sWidth = 640;
   else
-    gpAR.value.sWidth = 146 + 55 * (max(max(gpAR.value.ubMercCols, gpAR.value.ubCivCols), 2) + max(gpAR.value.ubEnemyCols, 2));
+    gpAR.value.sWidth = 146 + 55 * (Math.max(Math.max(gpAR.value.ubMercCols, gpAR.value.ubCivCols), 2) + Math.max(gpAR.value.ubEnemyCols, 2));
 
-  gpAR.value.sCenterStartX = 323 - gpAR.value.sWidth / 2 + max(max(gpAR.value.ubMercCols, 2), max(gpAR.value.ubCivCols, 2)) * 55;
+  gpAR.value.sCenterStartX = 323 - gpAR.value.sWidth / 2 + Math.max(Math.max(gpAR.value.ubMercCols, 2), Math.max(gpAR.value.ubCivCols, 2)) * 55;
 
   // Anywhere from 48*3 to 48*10
-  gpAR.value.sHeight = 48 * max(3, max(gpAR.value.ubMercRows + gpAR.value.ubCivRows, gpAR.value.ubEnemyRows));
+  gpAR.value.sHeight = 48 * Math.max(3, Math.max(gpAR.value.ubMercRows + gpAR.value.ubCivRows, gpAR.value.ubEnemyRows));
   // Make it an even multiple of 40 (rounding up).
   gpAR.value.sHeight += 39;
   gpAR.value.sHeight /= 40;
@@ -2645,7 +2645,7 @@ function DetermineTeamLeader(fFriendlyTeam: boolean): void {
 }
 
 function ResetNextAttackCounter(pCell: Pointer<SOLDIERCELL>): void {
-  pCell.value.usNextAttack = min(1000 - pCell.value.usAttack, 800);
+  pCell.value.usNextAttack = Math.min(1000 - pCell.value.usAttack, 800);
   pCell.value.usNextAttack = (1000 + pCell.value.usNextAttack * 5 + PreRandom(2000 - pCell.value.usAttack));
   if (pCell.value.uiFlags & CELL_CREATURE) {
     pCell.value.usNextAttack = pCell.value.usNextAttack * 8 / 10;
@@ -2704,8 +2704,8 @@ function CalculateAttackValues(): void {
       pCell.value.usDefence = 1000;
     }
 
-    pCell.value.usAttack = min(pCell.value.usAttack, 1000);
-    pCell.value.usDefence = min(pCell.value.usDefence, 1000);
+    pCell.value.usAttack = Math.min(pCell.value.usAttack, 1000);
+    pCell.value.usDefence = Math.min(pCell.value.usDefence, 1000);
 
     gpAR.value.usPlayerAttack += pCell.value.usAttack;
     gpAR.value.usPlayerDefence += pCell.value.usDefence;
@@ -2732,8 +2732,8 @@ function CalculateAttackValues(): void {
     pCell.value.usAttack = pCell.value.usAttack * usBonus / 100;
     pCell.value.usDefence = pCell.value.usDefence * usBonus / 100;
 
-    pCell.value.usAttack = min(pCell.value.usAttack, 1000);
-    pCell.value.usDefence = min(pCell.value.usDefence, 1000);
+    pCell.value.usAttack = Math.min(pCell.value.usAttack, 1000);
+    pCell.value.usDefence = Math.min(pCell.value.usDefence, 1000);
 
     gpAR.value.usPlayerAttack += pCell.value.usAttack;
     gpAR.value.usPlayerDefence += pCell.value.usDefence;
@@ -2770,8 +2770,8 @@ function CalculateAttackValues(): void {
     pCell.value.usAttack = pCell.value.usAttack * usBonus / 100;
     pCell.value.usDefence = pCell.value.usDefence * usBonus / 100;
 
-    pCell.value.usAttack = min(pCell.value.usAttack, 1000);
-    pCell.value.usDefence = min(pCell.value.usDefence, 1000);
+    pCell.value.usAttack = Math.min(pCell.value.usAttack, 1000);
+    pCell.value.usDefence = Math.min(pCell.value.usDefence, 1000);
 
     gpAR.value.usEnemyAttack += pCell.value.usAttack;
     gpAR.value.usEnemyDefence += pCell.value.usDefence;
@@ -3139,7 +3139,7 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
       }
     }
     // Adjust the soldiers stats based on the damage.
-    pTarget.value.pSoldier.value.bLife = max(iNewLife, 0);
+    pTarget.value.pSoldier.value.bLife = Math.max(iNewLife, 0);
     if (pTarget.value.uiFlags & CELL_MERC && gpAR.value.pRobotCell) {
       UpdateRobotControllerGivenRobot(gpAR.value.pRobotCell.value.pSoldier);
     }
@@ -3299,7 +3299,7 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
     }
   }
   // Adjust the soldiers stats based on the damage.
-  pTarget.value.pSoldier.value.bLife = max(iNewLife, 0);
+  pTarget.value.pSoldier.value.bLife = Math.max(iNewLife, 0);
   if (pTarget.value.uiFlags & CELL_MERC && gpAR.value.pRobotCell) {
     UpdateRobotControllerGivenRobot(gpAR.value.pRobotCell.value.pSoldier);
   }
@@ -3605,7 +3605,7 @@ function ProcessBattleFrame(): void {
   }
 
   while (iTimeSlice > 0) {
-    uiSlice = min(iTimeSlice, 1000);
+    uiSlice = Math.min(iTimeSlice, 1000);
     if (gpAR.value.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS)
       gpAR.value.uiTotalElapsedBattleTimeInMilliseconds += uiSlice;
 

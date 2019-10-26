@@ -1660,23 +1660,23 @@ function ExtractAndUpdateMercAttributes(): void {
   //-1 values in the detailed placement work nicely, because that signifies that specific
   // field isn't static.  Any other value becomes static, and static values override any
   // generated values.
-  gpSelected.value.pDetailedPlacement.value.bExpLevel = min(GetNumericStrictValueFromField(0), 100);
-  gpSelected.value.pDetailedPlacement.value.bLife = min(GetNumericStrictValueFromField(1), 100);
-  gpSelected.value.pDetailedPlacement.value.bLifeMax = min(GetNumericStrictValueFromField(2), 100);
-  gpSelected.value.pDetailedPlacement.value.bMarksmanship = min(GetNumericStrictValueFromField(3), 100);
-  gpSelected.value.pDetailedPlacement.value.bStrength = min(GetNumericStrictValueFromField(4), 100);
-  gpSelected.value.pDetailedPlacement.value.bAgility = min(GetNumericStrictValueFromField(5), 100);
-  gpSelected.value.pDetailedPlacement.value.bDexterity = min(GetNumericStrictValueFromField(6), 100);
-  gpSelected.value.pDetailedPlacement.value.bWisdom = min(GetNumericStrictValueFromField(7), 100);
-  gpSelected.value.pDetailedPlacement.value.bLeadership = min(GetNumericStrictValueFromField(8), 100);
-  gpSelected.value.pDetailedPlacement.value.bExplosive = min(GetNumericStrictValueFromField(9), 100);
-  gpSelected.value.pDetailedPlacement.value.bMedical = min(GetNumericStrictValueFromField(10), 100);
-  gpSelected.value.pDetailedPlacement.value.bMechanical = min(GetNumericStrictValueFromField(11), 100);
-  gpSelected.value.pDetailedPlacement.value.bMorale = min(GetNumericStrictValueFromField(11), 100);
+  gpSelected.value.pDetailedPlacement.value.bExpLevel = Math.min(GetNumericStrictValueFromField(0), 100);
+  gpSelected.value.pDetailedPlacement.value.bLife = Math.min(GetNumericStrictValueFromField(1), 100);
+  gpSelected.value.pDetailedPlacement.value.bLifeMax = Math.min(GetNumericStrictValueFromField(2), 100);
+  gpSelected.value.pDetailedPlacement.value.bMarksmanship = Math.min(GetNumericStrictValueFromField(3), 100);
+  gpSelected.value.pDetailedPlacement.value.bStrength = Math.min(GetNumericStrictValueFromField(4), 100);
+  gpSelected.value.pDetailedPlacement.value.bAgility = Math.min(GetNumericStrictValueFromField(5), 100);
+  gpSelected.value.pDetailedPlacement.value.bDexterity = Math.min(GetNumericStrictValueFromField(6), 100);
+  gpSelected.value.pDetailedPlacement.value.bWisdom = Math.min(GetNumericStrictValueFromField(7), 100);
+  gpSelected.value.pDetailedPlacement.value.bLeadership = Math.min(GetNumericStrictValueFromField(8), 100);
+  gpSelected.value.pDetailedPlacement.value.bExplosive = Math.min(GetNumericStrictValueFromField(9), 100);
+  gpSelected.value.pDetailedPlacement.value.bMedical = Math.min(GetNumericStrictValueFromField(10), 100);
+  gpSelected.value.pDetailedPlacement.value.bMechanical = Math.min(GetNumericStrictValueFromField(11), 100);
+  gpSelected.value.pDetailedPlacement.value.bMorale = Math.min(GetNumericStrictValueFromField(11), 100);
 
   // make sure that experience level ranges between 1 and 9
   if (gpSelected.value.pDetailedPlacement.value.bExpLevel != -1)
-    gpSelected.value.pDetailedPlacement.value.bExpLevel = max(min(gpSelected.value.pDetailedPlacement.value.bExpLevel, 9), 1);
+    gpSelected.value.pDetailedPlacement.value.bExpLevel = Math.max(Math.min(gpSelected.value.pDetailedPlacement.value.bExpLevel, 9), 1);
 
   // no such thing as a life max of 0
   if (!gpSelected.value.pDetailedPlacement.value.bLifeMax)
@@ -1701,7 +1701,7 @@ function ExtractAndUpdateMercProfile(): void {
 
   // if the string is blank, returning -1, then set the value to NO_PROFILE
   // because ubProfile is unsigned.
-  sNum = min(GetNumericStrictValueFromField(0), NUM_PROFILES);
+  sNum = Math.min(GetNumericStrictValueFromField(0), NUM_PROFILES);
   if (sNum == -1) {
     gpSelected.value.pDetailedPlacement.value.ubProfile = NO_PROFILE;
     gpSelected.value.pDetailedPlacement.value.fCopyProfileItemsOver = false;
@@ -2718,7 +2718,7 @@ function AddNewItemToSelectedMercsInventory(fCreate: boolean): void {
   else if (rHeightScalar == 1.0)
     rScalar = rWidthScalar;
   else
-    rScalar = max(rWidthScalar, rHeightScalar);
+    rScalar = Math.max(rWidthScalar, rHeightScalar);
 
   // apply the scalar to the destination width and height
   iDstWidth = (iSrcWidth * rScalar);

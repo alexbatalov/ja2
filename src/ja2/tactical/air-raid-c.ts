@@ -496,13 +496,13 @@ function MoveDiveAirplane(dAngle: FLOAT): void {
   let dDeltaPos: FLOAT;
 
   // Find delta Movement for X pos
-  dDeltaPos = MOVE_X * sin(dAngle);
+  dDeltaPos = MOVE_X * Math.sin(dAngle);
 
   // Find new position
   gsDiveX = (gsDiveX + dDeltaPos);
 
   // Find delta Movement for Y pos
-  dDeltaPos = MOVE_X * cos(dAngle);
+  dDeltaPos = MOVE_X * Math.cos(dAngle);
 
   // Find new pos
   gsDiveY = (gsDiveY + dDeltaPos);
@@ -565,7 +565,7 @@ function DoDive(): void {
       dDeltaY = (sTargetY - gsDiveY);
 
       // Determine angle
-      dAngle = atan2(dDeltaX, dDeltaY);
+      dAngle = Math.atan2(dDeltaX, dDeltaY);
 
       MoveDiveAirplane(dAngle);
 
@@ -587,11 +587,11 @@ function DoDive(): void {
         // Get positions of guns...
 
         // Get target.....
-        dDeltaXPos = STRAFE_DIST * sin(dAngle);
+        dDeltaXPos = STRAFE_DIST * Math.sin(dAngle);
         sStrafeX = (gsDiveX + dDeltaXPos);
 
         // Find delta Movement for Y pos
-        dDeltaYPos = STRAFE_DIST * cos(dAngle);
+        dDeltaYPos = STRAFE_DIST * Math.cos(dAngle);
         sStrafeY = (gsDiveY + dDeltaYPos);
 
         if ((gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -622,8 +622,8 @@ function DoDive(): void {
         }
 
         // Do second one.... ( ll )
-        sX = (gsDiveX + (sin(dAngle + (PI / 2)) * 40));
-        sY = (gsDiveY + (cos(dAngle + (PI / 2)) * 40));
+        sX = (gsDiveX + (Math.sin(dAngle + (Math.PI / 2)) * 40));
+        sY = (gsDiveY + (Math.cos(dAngle + (Math.PI / 2)) * 40));
 
         gpRaidSoldier.value.dXPos = sX;
         gpRaidSoldier.value.sX = sX;
@@ -722,7 +722,7 @@ function DoBombing(): void {
       dDeltaY = (sTargetY - gsDiveY);
 
       // Determine angle
-      dAngle = atan2(dDeltaX, dDeltaY);
+      dAngle = Math.atan2(dDeltaX, dDeltaY);
 
       MoveDiveAirplane(dAngle);
 
@@ -743,11 +743,11 @@ function DoBombing(): void {
 
         if ((gsNumGridNosMoved % 4) == 0) {
           // Get target.....
-          dDeltaXPos = BOMB_DIST * sin(dAngle);
+          dDeltaXPos = BOMB_DIST * Math.sin(dAngle);
           sStrafeX = (gsDiveX + dDeltaXPos);
 
           // Find delta Movement for Y pos
-          dDeltaYPos = BOMB_DIST * cos(dAngle);
+          dDeltaYPos = BOMB_DIST * Math.cos(dAngle);
           sStrafeY = (gsDiveY + dDeltaYPos);
 
           if (GridNoOnVisibleWorldTile((GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)))) {
@@ -816,7 +816,7 @@ function HandleAirRaid(): void {
         if (guiSoundSample != NO_SAMPLE) {
           if ((giNumFrames % 10) == 0) {
             iVol = SoundGetVolume(guiSoundSample);
-            iVol = __min(HIGHVOLUME, iVol + 1);
+            iVol = Math.min(HIGHVOLUME, iVol + 1);
             SoundSetVolume(guiSoundSample, iVol);
             if (iVol == HIGHVOLUME)
               gfFadingRaidIn = false;
@@ -829,7 +829,7 @@ function HandleAirRaid(): void {
           if ((giNumFrames % 10) == 0) {
             iVol = SoundGetVolume(guiSoundSample);
 
-            iVol = __max(0, iVol - 1);
+            iVol = Math.max(0, iVol - 1);
 
             SoundSetVolume(guiSoundSample, iVol);
             if (iVol == 0) {

@@ -1705,7 +1705,7 @@ function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>
         for (bLoop2 = pObj.value.ubNumberOfObjects - 1; bLoop2 >= 0; bLoop2--) {
           if (pObj.value.bStatus[bLoop2] < bMaxPoints) {
             bPointsToMove = bMaxPoints - pObj.value.bStatus[bLoop2];
-            bPointsToMove = __min(bPointsToMove, pCursorObj.value.bStatus[bLoop]);
+            bPointsToMove = Math.min(bPointsToMove, pCursorObj.value.bStatus[bLoop]);
 
             pObj.value.bStatus[bLoop2] += bPointsToMove;
 
@@ -1727,7 +1727,7 @@ function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>
       for (bLoop2 = bLoop - 1; bLoop2 >= 0; bLoop2--) {
         if (pObj.value.bStatus[bLoop2] < bMaxPoints) {
           bPointsToMove = bMaxPoints - pObj.value.bStatus[bLoop2];
-          bPointsToMove = __min(bPointsToMove, pObj.value.bStatus[bLoop]);
+          bPointsToMove = Math.min(bPointsToMove, pObj.value.bStatus[bLoop]);
 
           pObj.value.bStatus[bLoop2] += bPointsToMove;
 
@@ -1836,24 +1836,24 @@ function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pA
       usNewAmmoItem = pAmmo.value.usItem;
 
       if (bReloadType == RELOAD_TOPOFF) {
-        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize - pGun.value.ubGunShotsLeft);
+        ubBulletsToMove = Math.min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize - pGun.value.ubGunShotsLeft);
       } else {
         ubBulletsToMove = pAmmo.value.ubShotsLeft[0];
       }
     } else if (Magazine[Item[pAmmo.value.usItem].ubClassIndex].ubMagSize > Weapon[pGun.value.usItem].ubMagSize) {
       usNewAmmoItem = pAmmo.value.usItem - 1;
       if (bReloadType == RELOAD_TOPOFF) {
-        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize - pGun.value.ubGunShotsLeft);
+        ubBulletsToMove = Math.min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize - pGun.value.ubGunShotsLeft);
       } else {
-        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize);
+        ubBulletsToMove = Math.min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize);
       }
     } else // mag is smaller than weapon mag
     {
       usNewAmmoItem = pAmmo.value.usItem + 1;
       if (bReloadType == RELOAD_TOPOFF) {
-        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize - pGun.value.ubGunShotsLeft);
+        ubBulletsToMove = Math.min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize - pGun.value.ubGunShotsLeft);
       } else {
-        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize);
+        ubBulletsToMove = Math.min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize);
       }
     }
 
@@ -2528,9 +2528,9 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
     // placement in an empty slot
     ubNumberToDrop = pObj.value.ubNumberOfObjects;
 
-    if (ubNumberToDrop > __max(ubSlotLimit, 1)) {
+    if (ubNumberToDrop > Math.max(ubSlotLimit, 1)) {
       // drop as many as possible into pocket
-      ubNumberToDrop = __max(ubSlotLimit, 1);
+      ubNumberToDrop = Math.max(ubSlotLimit, 1);
     }
 
     // could be wrong type of object for slot... need to check...
@@ -2640,7 +2640,7 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
         } else {
           SwapObjs(pObj, pInSlot);
         }
-      } else if (pObj.value.ubNumberOfObjects <= __max(ubSlotLimit, 1)) {
+      } else if (pObj.value.ubNumberOfObjects <= Math.max(ubSlotLimit, 1)) {
         // swapping
         SwapObjs(pObj, pInSlot);
       } else {
@@ -3988,9 +3988,9 @@ function WaterDamage(pSoldier: Pointer<SOLDIERTYPE>): void {
     // reduce camouflage by 2% per tile of deep water
     // and 1% for medium water
     if (pSoldier.value.bOverTerrainType == Enum315.DEEP_WATER) {
-      pSoldier.value.bCamo = __max(0, pSoldier.value.bCamo - 2);
+      pSoldier.value.bCamo = Math.max(0, pSoldier.value.bCamo - 2);
     } else {
-      pSoldier.value.bCamo = __max(0, pSoldier.value.bCamo - 1);
+      pSoldier.value.bCamo = Math.max(0, pSoldier.value.bCamo - 1);
     }
     if (pSoldier.value.bCamo == 0) {
       // Reload palettes....
@@ -4043,8 +4043,8 @@ function ApplyCammo(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, p
   // points are used up at a rate of 50% kit = 100% cammo on guy
   // add 1 to round off
   bPointsToUse = (100 - pSoldier.value.bCamo + 1) / 2;
-  bPointsToUse = __min(bPointsToUse, usTotalKitPoints);
-  pSoldier.value.bCamo = __min(100, pSoldier.value.bCamo + bPointsToUse * 2);
+  bPointsToUse = Math.min(bPointsToUse, usTotalKitPoints);
+  pSoldier.value.bCamo = Math.min(100, pSoldier.value.bCamo + bPointsToUse * 2);
 
   UseKitPoints(pObj, bPointsToUse, pSoldier);
 
@@ -4087,7 +4087,7 @@ function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>,
     }
   }
 
-  sPointsToUse = __min(20, usTotalKitPoints);
+  sPointsToUse = Math.min(20, usTotalKitPoints);
 
   // CJC Feb 9.  Canteens don't seem effective enough, so doubled return from them
   DeductPoints(pSoldier, AP_DRINK, (2 * sPointsToUse * -(100 - pSoldier.value.bBreath)));
@@ -4123,7 +4123,7 @@ function ApplyElixir(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, 
   DeductPoints(pSoldier, AP_CAMOFLAGE, 0);
 
   sPointsToUse = (MAX_HUMAN_CREATURE_SMELL - pSoldier.value.bMonsterSmell) * 2;
-  sPointsToUse = __min(sPointsToUse, usTotalKitPoints);
+  sPointsToUse = Math.min(sPointsToUse, usTotalKitPoints);
 
   UseKitPoints(pObj, sPointsToUse, pSoldier);
 

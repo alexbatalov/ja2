@@ -1009,7 +1009,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): boolean {
               // Add 4 life for every hour that passes.
               let iNewLife: INT32;
               iNewLife = curr.value.pDetailedPlacement.value.bLife + uiTimeSinceLastLoaded / 15;
-              iNewLife = min(curr.value.pDetailedPlacement.value.bLifeMax, iNewLife);
+              iNewLife = Math.min(curr.value.pDetailedPlacement.value.bLifeMax, iNewLife);
               curr.value.pDetailedPlacement.value.bLife = iNewLife;
             }
 

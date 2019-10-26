@@ -2843,7 +2843,7 @@ function BeginAimCubeUI(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel:
   gCubeUIData.fActivePowerBar = false;
   gCubeUIData.fActiveHeightBar = true;
   gCubeUIData.fAtEndHeight = false;
-  gCubeUIData.dDegrees = PI / 4;
+  gCubeUIData.dDegrees = Math.PI / 4;
 
   // Calculate Iniital force....
   CalculateAimCubeUIPhysics();
@@ -2877,7 +2877,7 @@ function IncrementAimCubeUI(): void {
       ubHeight = GET_CUBES_HEIGHT_FROM_UIHEIGHT(gCubeUIData.bHeight);
 
       // Start back to basic7
-      gCubeUIData.dDegrees = (PI / 4);
+      gCubeUIData.dDegrees = (Math.PI / 4);
       gCubeUIData.dInitialForce = gCubeUIData.dForce;
 
       // OK, determine which power to use.....

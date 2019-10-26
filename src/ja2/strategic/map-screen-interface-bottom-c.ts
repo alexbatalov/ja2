@@ -1342,7 +1342,7 @@ function MapScreenMsgScrollDown(ubLinesDown: UINT8): void {
 
   // check if we can go that far, only go as far as we can
   if ((gubFirstMapscreenMessageIndex + MAX_MESSAGES_ON_MAP_BOTTOM + ubLinesDown) > ubNumMessages) {
-    ubLinesDown = ubNumMessages - gubFirstMapscreenMessageIndex - min(ubNumMessages, MAX_MESSAGES_ON_MAP_BOTTOM);
+    ubLinesDown = ubNumMessages - gubFirstMapscreenMessageIndex - Math.min(ubNumMessages, MAX_MESSAGES_ON_MAP_BOTTOM);
   }
 
   if (ubLinesDown > 0) {
@@ -1371,12 +1371,12 @@ function MoveToEndOfMapScreenMessageList(): void {
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 
-  ubDesiredMessageIndex = ubNumMessages - min(ubNumMessages, MAX_MESSAGES_ON_MAP_BOTTOM);
+  ubDesiredMessageIndex = ubNumMessages - Math.min(ubNumMessages, MAX_MESSAGES_ON_MAP_BOTTOM);
   ChangeCurrentMapscreenMessageIndex(ubDesiredMessageIndex);
 }
 
 function ChangeCurrentMapscreenMessageIndex(ubNewMessageIndex: UINT8): void {
-  Assert(ubNewMessageIndex + MAX_MESSAGES_ON_MAP_BOTTOM <= max(MAX_MESSAGES_ON_MAP_BOTTOM, GetRangeOfMapScreenMessages()));
+  Assert(ubNewMessageIndex + MAX_MESSAGES_ON_MAP_BOTTOM <= Math.max(MAX_MESSAGES_ON_MAP_BOTTOM, GetRangeOfMapScreenMessages()));
 
   gubFirstMapscreenMessageIndex = ubNewMessageIndex;
   gubCurrentMapMessageString = (gubStartOfMapScreenMessageList + gubFirstMapscreenMessageIndex) % 256;

@@ -113,17 +113,17 @@ function ExtractAndUpdateMapInfo(): void {
   let temp: INT32;
   let fUpdateLight1: boolean = false;
   // extract light1 colors
-  temp = min(GetNumericStrictValueFromField(1), 255);
+  temp = Math.min(GetNumericStrictValueFromField(1), 255);
   if (temp != -1 && temp != gEditorLightColor.peRed) {
     fUpdateLight1 = true;
     gEditorLightColor.peRed = temp;
   }
-  temp = min(GetNumericStrictValueFromField(2), 255);
+  temp = Math.min(GetNumericStrictValueFromField(2), 255);
   if (temp != -1 && temp != gEditorLightColor.peGreen) {
     fUpdateLight1 = true;
     gEditorLightColor.peGreen = temp;
   }
-  temp = min(GetNumericStrictValueFromField(3), 255);
+  temp = Math.min(GetNumericStrictValueFromField(3), 255);
   if (temp != -1 && temp != gEditorLightColor.peBlue) {
     fUpdateLight1 = true;
     gEditorLightColor.peBlue = temp;
@@ -135,10 +135,10 @@ function ExtractAndUpdateMapInfo(): void {
   }
 
   // extract radius
-  temp = max(min(GetNumericStrictValueFromField(4), 8), 1);
+  temp = Math.max(Math.min(GetNumericStrictValueFromField(4), 8), 1);
   if (temp != -1)
     gsLightRadius = temp;
-  temp = max(min(GetNumericStrictValueFromField(5), 15), 1);
+  temp = Math.max(Math.min(GetNumericStrictValueFromField(5), 15), 1);
   if (temp != -1 && temp != gusLightLevel) {
     gusLightLevel = temp;
     gfRenderWorld = true;
@@ -163,11 +163,11 @@ function ExtractAndUpdateMapInfo(): void {
     gExitGrid.ubGotoSectorX = (str[1] - '0');
     if (str[2] >= '0' && str[2] <= '9')
       gExitGrid.ubGotoSectorX = (gExitGrid.ubGotoSectorX * 10 + str[2] - '0');
-    gExitGrid.ubGotoSectorX = max(min(gExitGrid.ubGotoSectorX, 16), 1);
-    gExitGrid.ubGotoSectorY = max(min(gExitGrid.ubGotoSectorY, 16), 1);
+    gExitGrid.ubGotoSectorX = Math.max(Math.min(gExitGrid.ubGotoSectorX, 16), 1);
+    gExitGrid.ubGotoSectorY = Math.max(Math.min(gExitGrid.ubGotoSectorY, 16), 1);
   }
-  gExitGrid.ubGotoSectorZ = max(min(GetNumericStrictValueFromField(8), 3), 0);
-  gExitGrid.usGridNo = max(min(GetNumericStrictValueFromField(9), 25600), 0);
+  gExitGrid.ubGotoSectorZ = Math.max(Math.min(GetNumericStrictValueFromField(8), 3), 0);
+  gExitGrid.usGridNo = Math.max(Math.min(GetNumericStrictValueFromField(9), 25600), 0);
 
   UpdateMapInfoFields();
 }

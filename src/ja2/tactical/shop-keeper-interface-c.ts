@@ -196,7 +196,7 @@ const SKI_DEALERS_RANDOM_QUOTE_DELAY_INCREASE_RATE = 5000;
 const DELAY_FOR_SHOPKEEPER_IDLE_QUOTE = 20000;
 const CHANCE_FOR_SHOPKEEPER_IDLE_QUOTE = 40;
 
-const MAX_SUBOBJECTS_PER_OBJECT = () => max(MAX_OBJECTS_PER_SLOT, (2 + MAX_ATTACHMENTS)); // (2nd part is main item, ammo/payload, and 4 attachments)
+const MAX_SUBOBJECTS_PER_OBJECT = () => Math.max(MAX_OBJECTS_PER_SLOT, (2 + MAX_ATTACHMENTS)); // (2nd part is main item, ammo/payload, and 4 attachments)
 
 const REALLY_BADLY_DAMAGED_THRESHOLD = 30;
 
@@ -1949,8 +1949,8 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
 
-  sCenX = usPosX + 7 + (abs(SKI_INV_WIDTH - 3 - usWidth) / 2) - pTrav.value.sOffsetX;
-  sCenY = usPosY + (abs(SKI_INV_HEIGHT - usHeight) / 2) - pTrav.value.sOffsetY;
+  sCenX = usPosX + 7 + (Math.abs(SKI_INV_WIDTH - 3 - usWidth) / 2) - pTrav.value.sOffsetX;
+  sCenY = usPosY + (Math.abs(SKI_INV_HEIGHT - usHeight) / 2) - pTrav.value.sOffsetY;
 
   // Restore the background region
   RestoreExternBackgroundRect(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT);
@@ -2216,7 +2216,7 @@ function StoreObjectsInNextFreeDealerInvSlot(usItemIndex: UINT16, pSpclItemInfo:
 
   // Create the item object ( with no more than MAX_OBJECTS_PER_SLOT )
   // can't use the real #, because CreateItems() will blindly set the bStatus for however many we tell it, beyond 8
-  MakeObjectOutOfDealerItems(usItemIndex, pSpclItemInfo, addressof(pDealerInvSlot.value.ItemObject), min(ubHowMany, MAX_OBJECTS_PER_SLOT));
+  MakeObjectOutOfDealerItems(usItemIndex, pSpclItemInfo, addressof(pDealerInvSlot.value.ItemObject), Math.min(ubHowMany, MAX_OBJECTS_PER_SLOT));
 
   if (ubHowMany > MAX_OBJECTS_PER_SLOT) {
     // HACK:  Override ItemObject->ubNumberOfObjects (1-8) with the REAL # of items in this box.
@@ -5397,7 +5397,7 @@ function ShopkeeperAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObject: Poin
 
   while (ubObjectsLeftToPlace > 0) {
     // figure out how many to place during this loop iteration.  Can't do more than MAX_OBJECTS_PER_SLOT at a time
-    pObject.value.ubNumberOfObjects = min(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
+    pObject.value.ubNumberOfObjects = Math.min(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
     ubObjectsLeftToPlace -= pObject.value.ubNumberOfObjects;
 
     if (!AutoPlaceObject(pSoldier, pObject, fNewItem)) {
@@ -5427,7 +5427,7 @@ function ShopkeeperAddItemToPool(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, b
 
   while (ubObjectsLeftToPlace > 0) {
     // figure out how many to place during this loop iteration.  Can't do more than MAX_OBJECTS_PER_SLOT at a time
-    pObject.value.ubNumberOfObjects = min(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
+    pObject.value.ubNumberOfObjects = Math.min(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
     ubObjectsLeftToPlace -= pObject.value.ubNumberOfObjects;
 
     AddItemToPool(sGridNo, pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel);

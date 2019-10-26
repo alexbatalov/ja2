@@ -162,7 +162,7 @@ function ShootingStanceChange(pSoldier: Pointer<SOLDIERTYPE>, pAttack: Pointer<A
       break;
   }
   for (bLoop = 0; bLoop < 3; bLoop++) {
-    bStanceDiff = abs(bLoop - bStanceNum);
+    bStanceDiff = Math.abs(bLoop - bStanceNum);
     if (bStanceDiff == 2 && bAPsAfterAttack < AP_CROUCH + AP_PRONE) {
       // can't consider this!
       continue;
@@ -361,7 +361,7 @@ function IsActionAffordable(pSoldier: Pointer<SOLDIERTYPE>): boolean {
       break;
 
     case Enum289.AI_ACTION_PICKUP_ITEM: // grab things lying on the ground
-      bMinPointsNeeded = __max(MinPtsToMove(pSoldier), AP_PICKUP_ITEM);
+      bMinPointsNeeded = Math.max(MinPtsToMove(pSoldier), AP_PICKUP_ITEM);
       break;
 
     case Enum289.AI_ACTION_OPEN_OR_CLOSE_DOOR:
@@ -607,12 +607,12 @@ function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     sOrigX = usOrigin % MAXCOL;
     sOrigY = usOrigin / MAXCOL;
 
-    sMaxLeft = min(usMaxDist, sOrigX);
-    sMaxRight = min(usMaxDist, MAXCOL - (sOrigX + 1));
+    sMaxLeft = Math.min(usMaxDist, sOrigX);
+    sMaxRight = Math.min(usMaxDist, MAXCOL - (sOrigX + 1));
 
     // determine maximum vertical limits
-    sMaxUp = min(usMaxDist, sOrigY);
-    sMaxDown = min(usMaxDist, MAXROW - (sOrigY + 1));
+    sMaxUp = Math.min(usMaxDist, sOrigY);
+    sMaxDown = Math.min(usMaxDist, MAXROW - (sOrigY + 1));
 
     sXRange = sMaxLeft + sMaxRight + 1;
     sYRange = sMaxUp + sMaxDown + 1;
@@ -1945,8 +1945,8 @@ function SoldierDifficultyLevel(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
       break;
   }
 
-  bDifficulty = __max(bDifficulty, 0);
-  bDifficulty = __min(bDifficulty, 4);
+  bDifficulty = Math.max(bDifficulty, 0);
+  bDifficulty = Math.min(bDifficulty, 4);
 
   return bDifficulty;
 }

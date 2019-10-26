@@ -20,7 +20,7 @@ function SearchForWallType(iMapIndex: UINT32): UINT16 {
     // structure type one tile north, but not one tile south -- so it'll find the correct wall first.
     for (y = sRadius; y >= -sRadius; y--)
       for (x = -sRadius; x <= sRadius; x++) {
-        if (abs(x) == abs(sRadius) || abs(y) == abs(sRadius)) {
+        if (Math.abs(x) == Math.abs(sRadius) || Math.abs(y) == Math.abs(sRadius)) {
           sOffset = y * WORLD_COLS + x;
           if (!GridNoOnVisibleWorldTile((iMapIndex + sOffset))) {
             continue;
@@ -58,7 +58,7 @@ function SearchForRoofType(iMapIndex: UINT32): UINT16 {
   while (sRadius < 32) {
     for (y = -sRadius; y <= sRadius; y++)
       for (x = -sRadius; x <= sRadius; x++) {
-        if (abs(x) == abs(sRadius) || abs(y) == abs(sRadius)) {
+        if (Math.abs(x) == Math.abs(sRadius) || Math.abs(y) == Math.abs(sRadius)) {
           sOffset = y * WORLD_COLS + x;
           if (!GridNoOnVisibleWorldTile((iMapIndex + sOffset))) {
             continue;

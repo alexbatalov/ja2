@@ -731,9 +731,9 @@ function CalcAPsToBurst(bBaseActionPoints: INT8, pObj: Pointer<OBJECTTYPE>): UIN
 
     bAttachPos = FindAttachment(pObj, Enum225.SPRING_AND_BOLT_UPGRADE);
     if (bAttachPos != -1) {
-      return (__max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM) * 100) / (100 + pObj.value.bAttachStatus[bAttachPos] / 5);
+      return (Math.max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM) * 100) / (100 + pObj.value.bAttachStatus[bAttachPos] / 5);
     } else {
-      return __max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM);
+      return Math.max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM);
     }
   }
 }
@@ -1047,7 +1047,7 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
     bAPCost += BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(GrenadeLauncher));
   } else if (IsValidSecondHandShot(pSoldier)) {
     // charge the maximum of the two
-    bAPCost += __max(BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[Enum261.HANDPOS])), BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS])));
+    bAPCost += Math.max(BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[Enum261.HANDPOS])), BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS])));
   } else {
     bAPCost += BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[Enum261.HANDPOS]));
   }

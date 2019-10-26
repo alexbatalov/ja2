@@ -2192,7 +2192,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
     // addition:  if soldier is bleeding then reduce bleeding and do nothing
     if (pSoldier.value.bBleeding > MIN_BLEEDING_THRESHOLD) {
       // reduce bleeding by 1 point per AP (in RT, APs will get recalculated so it's okay)
-      pSoldier.value.bBleeding = __max(0, pSoldier.value.bBleeding - pSoldier.value.bActionPoints);
+      pSoldier.value.bBleeding = Math.max(0, pSoldier.value.bBleeding - pSoldier.value.bActionPoints);
       return (Enum289.AI_ACTION_NONE); // will end-turn/wait depending on whether we're in TB or realtime
     }
 

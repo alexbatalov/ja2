@@ -379,7 +379,7 @@ function CalcNewActionPoints(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // Don't max out if we are drugged....
   if (!GetDrugEffect(pSoldier, DRUG_TYPE_ADRENALINE)) {
-    pSoldier.value.bActionPoints = __min(pSoldier.value.bActionPoints, gubMaxActionPoints[pSoldier.value.ubBodyType]);
+    pSoldier.value.bActionPoints = Math.min(pSoldier.value.bActionPoints, gubMaxActionPoints[pSoldier.value.ubBodyType]);
   }
 
   pSoldier.value.bInitialActionPoints = pSoldier.value.bActionPoints;
@@ -2101,7 +2101,7 @@ function EVENT_FireSoldierWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: 
     if (pSoldier.value.bDoBurst) {
       // Set the TOTAL number of bullets to be fired
       // Can't shoot more bullets than we have in our magazine!
-      pSoldier.value.bBulletsLeft = __min(Weapon[pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem].ubShotsPerBurst, pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubGunShotsLeft);
+      pSoldier.value.bBulletsLeft = Math.min(Weapon[pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem].ubShotsPerBurst, pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubGunShotsLeft);
     } else if (IsValidSecondHandShot(pSoldier)) {
       // two-pistol attack - two bullets!
       pSoldier.value.bBulletsLeft = 2;
@@ -4722,19 +4722,19 @@ function MoveMercFacingDirection(pSoldier: Pointer<SOLDIERTYPE>, fReverse: boole
   // Determine which direction we are in
   switch (pSoldier.value.bDirection) {
     case Enum245.NORTH:
-      dAngle = (-1 * PI);
+      dAngle = (-1 * Math.PI);
       break;
 
     case Enum245.NORTHEAST:
-      dAngle = (PI * .75);
+      dAngle = (Math.PI * .75);
       break;
 
     case Enum245.EAST:
-      dAngle = (PI / 2);
+      dAngle = (Math.PI / 2);
       break;
 
     case Enum245.SOUTHEAST:
-      dAngle = (PI / 4);
+      dAngle = (Math.PI / 4);
       break;
 
     case Enum245.SOUTH:
@@ -4747,11 +4747,11 @@ function MoveMercFacingDirection(pSoldier: Pointer<SOLDIERTYPE>, fReverse: boole
       break;
 
     case Enum245.WEST:
-      dAngle = (PI * -.5);
+      dAngle = (Math.PI * -.5);
       break;
 
     case Enum245.NORTHWEST:
-      dAngle = (PI * -.75);
+      dAngle = (Math.PI * -.75);
       break;
   }
 
@@ -5071,7 +5071,7 @@ function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8, sLifeD
     // reduce breath loss to a smaller degree, except for the queen...
     if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
       // in fact, reduce breath loss by MORE!
-      sReductionFactor = __min(sReductionFactor, 8);
+      sReductionFactor = Math.min(sReductionFactor, 8);
       sReductionFactor *= 2;
     } else {
       sReductionFactor /= 2;
@@ -5184,7 +5184,7 @@ function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8, sLifeD
     let bVisible: INT8 = -1;
 
     sTestOne = EffectiveStrength(pSoldier);
-    sTestTwo = (2 * (__max(sLifeDeduct, (sBreathLoss / 100))));
+    sTestTwo = (2 * (Math.max(sLifeDeduct, (sBreathLoss / 100))));
 
     if (pSoldier.value.ubAttackerID != NOBODY && MercPtrs[pSoldier.value.ubAttackerID].value.ubBodyType == Enum194.BLOODCAT) {
       // bloodcat boost, let them make people drop items more
@@ -5192,7 +5192,7 @@ function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8, sLifeD
     }
 
     // If damage > effective strength....
-    sChanceToDrop = (__max(0, (sTestTwo - sTestOne)));
+    sChanceToDrop = (Math.max(0, (sTestTwo - sTestOne)));
 
     // ATE: Increase odds of NOT dropping an UNDROPPABLE OBJECT
     if ((pSoldier.value.inv[Enum261.HANDPOS].fFlags & OBJECT_UNDROPPABLE)) {
@@ -5744,11 +5744,11 @@ function MoveMerc(pSoldier: Pointer<SOLDIERTYPE>, dMovementChange: FLOAT, dAngle
   let dYPos: FLOAT;
   let fStop: boolean = false;
 
-  dDegAngle = (dAngle * 180 / PI);
+  dDegAngle = (dAngle * 180 / Math.PI);
   // sprintf( gDebugStr, "Move Angle: %d", (int)dDegAngle );
 
   // Find delta Movement for X pos
-  dDeltaPos = (dMovementChange * sin(dAngle));
+  dDeltaPos = (dMovementChange * Math.sin(dAngle));
 
   // Find new position
   dXPos = pSoldier.value.dXPos + dDeltaPos;
@@ -5793,7 +5793,7 @@ function MoveMerc(pSoldier: Pointer<SOLDIERTYPE>, dMovementChange: FLOAT, dAngle
   }
 
   // Find delta Movement for Y pos
-  dDeltaPos = (dMovementChange * cos(dAngle));
+  dDeltaPos = (dMovementChange * Math.cos(dAngle));
 
   // Find new pos
   dYPos = pSoldier.value.dYPos + dDeltaPos;
@@ -5885,42 +5885,42 @@ function atan8(sXPos: INT16, sYPos: INT16, sXPos2: INT16, sYPos2: INT16): UINT8 
     test_x = 0.04;
   }
 
-  angle = atan2(test_x, test_y);
+  angle = Math.atan2(test_x, test_y);
 
-  dDegAngle = (angle * 180 / PI);
+  dDegAngle = (angle * 180 / Math.PI);
   // sprintf( gDebugStr, "Move Angle: %d", (int)dDegAngle );
 
   do {
-    if (angle >= -PI * .375 && angle <= -PI * .125) {
+    if (angle >= -Math.PI * .375 && angle <= -Math.PI * .125) {
       mFacing = Enum245.SOUTHWEST;
       break;
     }
 
-    if (angle <= PI * .375 && angle >= PI * .125) {
+    if (angle <= Math.PI * .375 && angle >= Math.PI * .125) {
       mFacing = Enum245.SOUTHEAST;
       break;
     }
 
-    if (angle >= PI * .623 && angle <= PI * .875) {
+    if (angle >= Math.PI * .623 && angle <= Math.PI * .875) {
       mFacing = Enum245.NORTHEAST;
       break;
     }
 
-    if (angle <= -PI * .623 && angle >= -PI * .875) {
+    if (angle <= -Math.PI * .623 && angle >= -Math.PI * .875) {
       mFacing = Enum245.NORTHWEST;
       break;
     }
 
-    if (angle > -PI * 0.125 && angle < PI * 0.125) {
+    if (angle > -Math.PI * 0.125 && angle < Math.PI * 0.125) {
       mFacing = Enum245.SOUTH;
     }
-    if (angle > PI * 0.375 && angle < PI * 0.623) {
+    if (angle > Math.PI * 0.375 && angle < Math.PI * 0.623) {
       mFacing = Enum245.EAST;
     }
-    if ((angle > PI * 0.875 && angle <= PI) || (angle > -PI && angle < -PI * 0.875)) {
+    if ((angle > Math.PI * 0.875 && angle <= Math.PI) || (angle > -Math.PI && angle < -Math.PI * 0.875)) {
       mFacing = Enum245.NORTH;
     }
-    if (angle > -PI * 0.623 && angle < -PI * 0.375) {
+    if (angle > -Math.PI * 0.623 && angle < -Math.PI * 0.375) {
       mFacing = Enum245.WEST;
     }
   } while (false);
@@ -5931,44 +5931,44 @@ function atan8(sXPos: INT16, sYPos: INT16, sXPos2: INT16, sYPos2: INT16): UINT8 
 function atan8FromAngle(angle: DOUBLE): UINT8 {
   let mFacing: UINT8 = Enum245.WEST;
 
-  if (angle > PI) {
-    angle = (angle - PI) - PI;
+  if (angle > Math.PI) {
+    angle = (angle - Math.PI) - Math.PI;
   }
-  if (angle < -PI) {
-    angle = (PI - (fabs(angle) - PI));
+  if (angle < -Math.PI) {
+    angle = (Math.PI - (fabs(angle) - Math.PI));
   }
 
   do {
-    if (angle >= -PI * .375 && angle <= -PI * .125) {
+    if (angle >= -Math.PI * .375 && angle <= -Math.PI * .125) {
       mFacing = Enum245.SOUTHWEST;
       break;
     }
 
-    if (angle <= PI * .375 && angle >= PI * .125) {
+    if (angle <= Math.PI * .375 && angle >= Math.PI * .125) {
       mFacing = Enum245.SOUTHEAST;
       break;
     }
 
-    if (angle >= PI * .623 && angle <= PI * .875) {
+    if (angle >= Math.PI * .623 && angle <= Math.PI * .875) {
       mFacing = Enum245.NORTHEAST;
       break;
     }
 
-    if (angle <= -PI * .623 && angle >= -PI * .875) {
+    if (angle <= -Math.PI * .623 && angle >= -Math.PI * .875) {
       mFacing = Enum245.NORTHWEST;
       break;
     }
 
-    if (angle > -PI * 0.125 && angle < PI * 0.125) {
+    if (angle > -Math.PI * 0.125 && angle < Math.PI * 0.125) {
       mFacing = Enum245.SOUTH;
     }
-    if (angle > PI * 0.375 && angle < PI * 0.623) {
+    if (angle > Math.PI * 0.375 && angle < Math.PI * 0.623) {
       mFacing = Enum245.EAST;
     }
-    if ((angle > PI * 0.875 && angle <= PI) || (angle > -PI && angle < -PI * 0.875)) {
+    if ((angle > Math.PI * 0.875 && angle <= Math.PI) || (angle > -Math.PI && angle < -Math.PI * 0.875)) {
       mFacing = Enum245.NORTH;
     }
-    if (angle > -PI * 0.623 && angle < -PI * 0.375) {
+    if (angle > -Math.PI * 0.623 && angle < -Math.PI * 0.375) {
       mFacing = Enum245.WEST;
     }
   } while (false);
@@ -7252,15 +7252,15 @@ function CreateEnemyGlow16BPPPalette(pPalette: Pointer<SGPPaletteEntry>, rscale:
     gmod = (pPalette[cnt].peGreen);
     bmod = (pPalette[cnt].peBlue);
 
-    rmod = __max(rscale, (pPalette[cnt].peRed));
+    rmod = Math.max(rscale, (pPalette[cnt].peRed));
 
     if (fAdjustGreen) {
-      gmod = __max(gscale, (pPalette[cnt].peGreen));
+      gmod = Math.max(gscale, (pPalette[cnt].peGreen));
     }
 
-    r = __min(rmod, 255);
-    g = __min(gmod, 255);
-    b = __min(bmod, 255);
+    r = Math.min(rmod, 255);
+    g = Math.min(gmod, 255);
+    b = Math.min(bmod, 255);
 
     if (gusRedShift < 0)
       r16 = (r >> (-gusRedShift));
@@ -7313,15 +7313,15 @@ function CreateEnemyGreyGlow16BPPPalette(pPalette: Pointer<SGPPaletteEntry>, rsc
     gmod = (100 * lumin) / 256;
     bmod = (100 * lumin) / 256;
 
-    rmod = __max(rscale, rmod);
+    rmod = Math.max(rscale, rmod);
 
     if (fAdjustGreen) {
-      gmod = __max(gscale, gmod);
+      gmod = Math.max(gscale, gmod);
     }
 
-    r = __min(rmod, 255);
-    g = __min(gmod, 255);
-    b = __min(bmod, 255);
+    r = Math.min(rmod, 255);
+    g = Math.min(gmod, 255);
+    b = Math.min(bmod, 255);
 
     if (gusRedShift < 0)
       r16 = (r >> (-gusRedShift));

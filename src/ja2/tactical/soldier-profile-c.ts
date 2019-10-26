@@ -592,7 +592,7 @@ function CalcCompetence(pProfile: Pointer<MERCPROFILESTRUCT>): UINT16 {
   uiStats = ((2 * pProfile.value.bLifeMax) + pProfile.value.bStrength + pProfile.value.bAgility + pProfile.value.bDexterity + ((pProfile.value.bLeadership + pProfile.value.bWisdom) / 2)) / 3;
 
   // marksmanship is very important, count it double
-  uiSkills = ((2 * (pow(pProfile.value.bMarksmanship, 3) / 10000)) + 1.5 * (pow(pProfile.value.bMedical, 3) / 10000) + (pow(pProfile.value.bMechanical, 3) / 10000) + (pow(pProfile.value.bExplosive, 3) / 10000));
+  uiSkills = ((2 * (Math.pow(pProfile.value.bMarksmanship, 3) / 10000)) + 1.5 * (Math.pow(pProfile.value.bMedical, 3) / 10000) + (Math.pow(pProfile.value.bMechanical, 3) / 10000) + (Math.pow(pProfile.value.bExplosive, 3) / 10000));
 
   // action points
   uiActionPoints = 5 + (((10 * pProfile.value.bExpLevel + 3 * pProfile.value.bAgility + 2 * pProfile.value.bLifeMax + 2 * pProfile.value.bDexterity) + 20) / 40);
@@ -600,7 +600,7 @@ function CalcCompetence(pProfile: Pointer<MERCPROFILESTRUCT>): UINT16 {
   // count how many he has, don't care what they are
   uiSpecialSkills = ((pProfile.value.bSkillTrait != 0) ? 1 : 0) + ((pProfile.value.bSkillTrait2 != 0) ? 1 : 0);
 
-  usCompetence = ((pow(pProfile.value.bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) * (1 + (0.05 * uiSpecialSkills))) / 1000);
+  usCompetence = ((Math.pow(pProfile.value.bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) * (1 + (0.05 * uiSpecialSkills))) / 1000);
 
   // this currently varies from about 10 (Flo) to 1200 (Gus)
   return usCompetence;

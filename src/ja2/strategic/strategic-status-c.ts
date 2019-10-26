@@ -52,8 +52,8 @@ function ModifyPlayerReputation(bRepChange: INT8): void {
   iNewBadRep = gStrategicStatus.ubBadReputation - bRepChange;
 
   // keep within a 0-100 range (0 = Saint, 100 = Satan)
-  iNewBadRep = __max(0, iNewBadRep);
-  iNewBadRep = __min(100, iNewBadRep);
+  iNewBadRep = Math.max(0, iNewBadRep);
+  iNewBadRep = Math.min(100, iNewBadRep);
 
   gStrategicStatus.ubBadReputation = iNewBadRep;
 }
@@ -247,7 +247,7 @@ function HandleEnricoEmail(): void {
   // reset # of new sectors visited 'today'
   // grant some leeway for the next day, could have started moving
   // at night...
-  gStrategicStatus.ubNumNewSectorsVisitedToday = __min(gStrategicStatus.ubNumNewSectorsVisitedToday, NEW_SECTORS_EQUAL_TO_ACTIVITY) / 3;
+  gStrategicStatus.ubNumNewSectorsVisitedToday = Math.min(gStrategicStatus.ubNumNewSectorsVisitedToday, NEW_SECTORS_EQUAL_TO_ACTIVITY) / 3;
 }
 
 function TrackEnemiesKilled(ubKilledHow: UINT8, ubSoldierClass: UINT8): void {

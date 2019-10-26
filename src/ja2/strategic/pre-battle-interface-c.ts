@@ -554,7 +554,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
   while (iPercentage < 100) {
     uiCurrTime = GetJA2Clock();
     iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
-    iPercentage = min(iPercentage, 100);
+    iPercentage = Math.min(iPercentage, 100);
 
     // Factor the percentage so that it is modified by a gravity falling acceleration effect.
     iFactor = (iPercentage - 50) * 2;
@@ -571,9 +571,9 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
       iTop = sStartTop + (sEndTop - sStartTop + 1) * iPercentage / 100;
 
     DstRect.iLeft = iLeft - iWidth * iPercentage / 200;
-    DstRect.iRight = DstRect.iLeft + max(iWidth * iPercentage / 100, 1);
+    DstRect.iRight = DstRect.iLeft + Math.max(iWidth * iPercentage / 100, 1);
     DstRect.iTop = iTop - iHeight * iPercentage / 200;
-    DstRect.iBottom = DstRect.iTop + max(iHeight * iPercentage / 100, 1);
+    DstRect.iBottom = DstRect.iTop + Math.max(iHeight * iPercentage / 100, 1);
 
     BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(PBIRect), addressof(DstRect));
 
@@ -750,7 +750,7 @@ function RenderPreBattleInterface(): void {
       BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, null);
     }
 
-    y = BOTTOM_Y - ACTUAL_HEIGHT - ROW_HEIGHT * max(guiNumUninvolved, 1);
+    y = BOTTOM_Y - ACTUAL_HEIGHT - ROW_HEIGHT * Math.max(guiNumUninvolved, 1);
     BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.UNINVOLVED_HEADER, 8, y, VO_BLT_SRCTRANSPARENCY, null);
 
     SetFont(BLOCKFONT());
@@ -797,12 +797,12 @@ function RenderPreBattleInterface(): void {
     mprintf(224 - width, 38, str);
 
     // Draw the bottom columns
-    for (i = 0; i < max(guiNumUninvolved, 1); i++) {
+    for (i = 0; i < Math.max(guiNumUninvolved, 1); i++) {
       y = BOTTOM_Y - ROW_HEIGHT * (i + 1) + 1;
       BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.BOTTOM_COLUMN, 161, y, VO_BLT_SRCTRANSPARENCY, null);
     }
 
-    for (i = 0; i < (21 - max(guiNumUninvolved, 1)); i++) {
+    for (i = 0; i < (21 - Math.max(guiNumUninvolved, 1)); i++) {
       y = TOP_Y + ROW_HEIGHT * i;
       BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TOP_COLUMN, 186, y, VO_BLT_SRCTRANSPARENCY, null);
     }

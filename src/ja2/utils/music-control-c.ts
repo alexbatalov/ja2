@@ -106,7 +106,7 @@ function MusicPlay(uiNum: UINT32): boolean {
 function MusicSetVolume(uiVolume: UINT32): boolean {
   let uiOldMusicVolume: INT32 = uiMusicVolume;
 
-  uiMusicVolume = __min(uiVolume, 127);
+  uiMusicVolume = Math.min(uiVolume, 127);
 
   if (uiMusicHandle != NO_SAMPLE) {
     // get volume and if 0 stop music!
@@ -220,7 +220,7 @@ function MusicPoll(fForce: boolean): boolean {
     if (fMusicFadingIn) {
       if (uiMusicHandle != NO_SAMPLE) {
         iVol = SoundGetVolume(uiMusicHandle);
-        iVol = __min(uiMusicVolume, iVol + gbFadeSpeed);
+        iVol = Math.min(uiMusicVolume, iVol + gbFadeSpeed);
         SoundSetVolume(uiMusicHandle, iVol);
         if (iVol == uiMusicVolume) {
           fMusicFadingIn = false;
@@ -232,7 +232,7 @@ function MusicPoll(fForce: boolean): boolean {
         iVol = SoundGetVolume(uiMusicHandle);
         iVol = (iVol >= 1) ? iVol - gbFadeSpeed : 0;
 
-        iVol = __max(iVol, 0);
+        iVol = Math.max(iVol, 0);
 
         SoundSetVolume(uiMusicHandle, iVol);
         if (iVol == 0) {

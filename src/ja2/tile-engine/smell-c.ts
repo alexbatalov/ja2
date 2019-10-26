@@ -267,8 +267,8 @@ function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
       if (ubOldSmell == ubSmell) {
         // same smell; increase the strength to the bigger of the two strengths,
         // plus 1/5 of the smaller
-        ubStrength = __max(ubStrength, ubOldStrength) + __min(ubStrength, ubOldStrength) / 5;
-        ubStrength = __max(ubStrength, SMELL_STRENGTH_MAX);
+        ubStrength = Math.max(ubStrength, ubOldStrength) + Math.min(ubStrength, ubOldStrength) / 5;
+        ubStrength = Math.max(ubStrength, SMELL_STRENGTH_MAX);
       } else {
         // different smell; we muddy the smell by reducing the smell strength
         if (ubOldStrength > ubStrength) {
@@ -313,7 +313,7 @@ function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStreng
   }
 
   // ensure max strength is okay
-  ubStrength = __min(ubStrength, BLOOD_STRENGTH_MAX);
+  ubStrength = Math.min(ubStrength, BLOOD_STRENGTH_MAX);
 
   pMapElement = addressof(gpWorldLevelData[sGridNo]);
   if (bLevel == 0) {
@@ -323,7 +323,7 @@ function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStreng
       // blood already there... we'll leave the decay time as it is
       if (BLOOD_FLOOR_TYPE(pMapElement.value.ubBloodInfo) == ubType) {
         // combine blood strengths!
-        ubNewStrength = __min((ubOldStrength + ubStrength), BLOOD_STRENGTH_MAX);
+        ubNewStrength = Math.min((ubOldStrength + ubStrength), BLOOD_STRENGTH_MAX);
 
         SET_BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo, ubNewStrength);
       } else {
@@ -349,9 +349,9 @@ function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStreng
       // blood already there... we'll leave the decay time as it is
       if (BLOOD_ROOF_TYPE(pMapElement.value.ubSmellInfo) == ubType) {
         // combine blood strengths!
-        ubNewStrength = __max(ubOldStrength, ubStrength) + 1;
+        ubNewStrength = Math.max(ubOldStrength, ubStrength) + 1;
         // make sure the strength is legal
-        ubNewStrength = __max(ubNewStrength, BLOOD_STRENGTH_MAX);
+        ubNewStrength = Math.max(ubNewStrength, BLOOD_STRENGTH_MAX);
         SET_BLOOD_ROOF_STRENGTH(pMapElement.value.ubBloodInfo, ubNewStrength);
       } else {
         // replace the existing blood if more is being dropped than exists

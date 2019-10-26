@@ -708,7 +708,7 @@ function DisplayBigItemImage(usIndex: UINT16, PosY: UINT16): boolean {
   usWidth = pTrav.value.usWidth;
   //	sCenX = PosX + ( abs( BOBBYR_GRID_PIC_WIDTH - usWidth ) / 2 );
   //	sCenY = PosY + 8;
-  sCenX = PosX + (abs(BOBBYR_GRID_PIC_WIDTH - usWidth) / 2) - pTrav.value.sOffsetX;
+  sCenX = PosX + (Math.abs(BOBBYR_GRID_PIC_WIDTH - usWidth) / 2) - pTrav.value.sOffsetX;
   sCenY = PosY + 8;
 
   // blt the shadow of the item

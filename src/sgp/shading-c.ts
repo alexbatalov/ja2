@@ -71,9 +71,9 @@ function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPale
       bmod = (usBlue * pSrcPalette[cnt].peBlue / 255);
     }
 
-    pDestPalette[cnt].peRed = __min(rmod, 255);
-    pDestPalette[cnt].peGreen = __min(gmod, 255);
-    pDestPalette[cnt].peBlue = __min(bmod, 255);
+    pDestPalette[cnt].peRed = Math.min(rmod, 255);
+    pDestPalette[cnt].peGreen = Math.min(gmod, 255);
+    pDestPalette[cnt].peBlue = Math.min(bmod, 255);
   }
 
   return true;

@@ -352,9 +352,9 @@ function PrepareEnemyForSectorBattle(): boolean {
   ubStationaryEnemies = (ubTotalAdmins + ubTotalTroops + ubTotalElites);
 
   if (ubTotalAdmins + ubTotalTroops + ubTotalElites > 32) {
-    ubTotalAdmins = min(32, ubTotalAdmins);
-    ubTotalTroops = min(32 - ubTotalAdmins, ubTotalTroops);
-    ubTotalElites = min(32 - ubTotalAdmins + ubTotalTroops, ubTotalElites);
+    ubTotalAdmins = Math.min(32, ubTotalAdmins);
+    ubTotalTroops = Math.min(32 - ubTotalAdmins, ubTotalTroops);
+    ubTotalElites = Math.min(32 - ubTotalAdmins + ubTotalTroops, ubTotalElites);
   }
 
   pSector.value.ubAdminsInBattle += ubTotalAdmins;

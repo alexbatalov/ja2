@@ -508,7 +508,7 @@ function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVol
 }
 
 function SetSpeechVolume(uiNewVolume: UINT32): void {
-  guiSpeechVolume = __min(uiNewVolume, 127);
+  guiSpeechVolume = Math.min(uiNewVolume, 127);
 }
 
 function GetSpeechVolume(): UINT32 {
@@ -516,7 +516,7 @@ function GetSpeechVolume(): UINT32 {
 }
 
 function SetSoundEffectsVolume(uiNewVolume: UINT32): void {
-  guiSoundEffectsVolume = __min(uiNewVolume, 127);
+  guiSoundEffectsVolume = Math.min(uiNewVolume, 127);
 }
 
 function GetSoundEffectsVolume(): UINT32 {
@@ -555,7 +555,7 @@ function SoundDir(sGridNo: INT16): INT8 {
 
   sDif = sMiddleX - sScreenX;
 
-  if ((sAbsDif = abs(sDif)) > 64) {
+  if ((sAbsDif = Math.abs(sDif)) > 64) {
     // OK, NOT the middle.
 
     // Is it outside the screen?
@@ -607,15 +607,15 @@ function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   sDifX = sMiddleX - sScreenX;
   sDifY = sMiddleY - sScreenY;
 
-  sAbsDifX = abs(sDifX);
-  sAbsDifY = abs(sDifY);
+  sAbsDifX = Math.abs(sDifX);
+  sAbsDifY = Math.abs(sDifY);
 
   if (sAbsDifX > 64 || sAbsDifY > 64) {
     // OK, NOT the middle.
 
     // Is it outside the screen?
     if (sAbsDifX > ((gsBottomRightWorldX - gsTopLeftWorldX) / 2) || sAbsDifY > ((gsBottomRightWorldY - gsTopLeftWorldY) / 2)) {
-      return __max(LOWVOLUME, (bInitialVolume - SOUND_FAR_VOLUME_MOD));
+      return Math.max(LOWVOLUME, (bInitialVolume - SOUND_FAR_VOLUME_MOD));
     }
   }
 
@@ -819,7 +819,7 @@ function PositionSoundDir(sGridNo: INT16): INT8 {
 
   sDif = sMiddleX - sScreenX;
 
-  if ((sAbsDif = abs(sDif)) > 64) {
+  if ((sAbsDif = Math.abs(sDif)) > 64) {
     // OK, NOT the middle.
 
     // Is it outside the screen?
@@ -875,14 +875,14 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   sDifX = sMiddleX - sScreenX;
   sDifY = sMiddleY - sScreenY;
 
-  sAbsDifX = abs(sDifX);
-  sAbsDifY = abs(sDifY);
+  sAbsDifX = Math.abs(sDifX);
+  sAbsDifY = Math.abs(sDifY);
 
   sMaxDistX = ((gsBottomRightWorldX - gsTopLeftWorldX) * 1.5);
   sMaxDistY = ((gsBottomRightWorldY - gsTopLeftWorldY) * 1.5);
 
-  sMaxSoundDist = sqrt((sMaxDistX * sMaxDistX) + (sMaxDistY * sMaxDistY));
-  sSoundDist = sqrt((sAbsDifX * sAbsDifX) + (sAbsDifY * sAbsDifY));
+  sMaxSoundDist = Math.sqrt((sMaxDistX * sMaxDistX) + (sMaxDistY * sMaxDistY));
+  sSoundDist = Math.sqrt((sAbsDifX * sAbsDifX) + (sAbsDifY * sAbsDifY));
 
   if (sSoundDist == 0) {
     return bInitialVolume;

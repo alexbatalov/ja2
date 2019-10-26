@@ -180,7 +180,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
       // bursts aren't aimed
       ubMaxPossibleAimTime = 0;
     } else {
-      ubMaxPossibleAimTime = min(AP_MAX_AIM_ATTACK, pSoldier.value.bActionPoints - ubMinAPcost);
+      ubMaxPossibleAimTime = Math.min(AP_MAX_AIM_ATTACK, pSoldier.value.bActionPoints - ubMinAPcost);
     }
 
     // consider the various aiming times
@@ -823,7 +823,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
         }
 
         // calculate the maximum possible aiming time
-        ubMaxPossibleAimTime = min(AP_MAX_AIM_ATTACK, pSoldier.value.bActionPoints - ubMinAPcost);
+        ubMaxPossibleAimTime = Math.min(AP_MAX_AIM_ATTACK, pSoldier.value.bActionPoints - ubMinAPcost);
         // NumMessage("Max Possible Aim Time = ",ubMaxPossibleAimTime);
 
         // calc next attack's minimum AP cost (excludes readying & turning)
@@ -1011,7 +1011,7 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
     iBestHitRate = 0; // reset best hit rate to minimum
 
     // calculate the maximum possible aiming time
-    ubMaxPossibleAimTime = min(AP_MAX_AIM_ATTACK, pSoldier.value.bActionPoints - ubMinAPCost);
+    ubMaxPossibleAimTime = Math.min(AP_MAX_AIM_ATTACK, pSoldier.value.bActionPoints - ubMinAPCost);
     // NumMessage("Max Possible Aim Time = ",ubMaxPossibleAimTime);
 
     // consider the various aiming times

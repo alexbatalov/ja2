@@ -84,10 +84,6 @@ const SHELLS_PER_10TURNS = 13; // max # of shells   firable  in 10 turns
 
 const SEE_THRU_COVER_THRESHOLD = 5; // min chance to get through
 
-const min = (a, b) => ((a) < (b) ? (a) : (b));
-
-const max = (a, b) => ((a) > (b) ? (a) : (b));
-
 interface THREATTYPE {
   pOpponent: Pointer<SOLDIERTYPE>;
   sGridNo: INT16;

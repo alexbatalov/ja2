@@ -98,7 +98,7 @@ const NOPASS = (TRAVELCOST_BLOCKED);
 const ESTIMATE0 = () => ((dx > dy) ? (dx) : (dy));
 const ESTIMATE1 = () => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
 const ESTIMATE2 = () => FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
-const ESTIMATEn = () => ((FLATCOST * sqrt(dx * dx + dy * dy)));
+const ESTIMATEn = () => ((FLATCOST * Math.sqrt(dx * dx + dy * dy)));
 const ESTIMATEC = () => (((dx < dy) ? (TRAVELCOST_BUMPY * (dx * 14 + dy * 10) / 10) : (TRAVELCOST_BUMPY * (dy * 14 + dx * 10) / 10)));
 //#define ESTIMATEC (((dx<dy) ? ( (TRAVELCOST_FLAT * dx * 14) / 10 + dy) : (TRAVELCOST_FLAT * dy * 14 ) / 10 + dx) ) )
 const ESTIMATE = () => ESTIMATEC();
@@ -110,7 +110,7 @@ const TOTALCOST = (ptr) => (ptr.value.usTotalCost);
 const XLOC = (a) => (a % MAPWIDTH);
 const YLOC = (a) => (a / MAPWIDTH);
 //#define LEGDISTANCE(a,b) ( abs( XLOC(b)-XLOC(a) ) + abs( YLOC(b)-YLOC(a) ) )
-const LEGDISTANCE = (x1, y1, x2, y2) => (abs(x2 - x1) + abs(y2 - y1));
+const LEGDISTANCE = (x1, y1, x2, y2) => (Math.abs(x2 - x1) + Math.abs(y2 - y1));
 //#define FARTHER(ndx,NDX) ( LEGDISTANCE( ndx->sLocation,sDestination) > LEGDISTANCE(NDX->sLocation,sDestination) )
 const FARTHER = (ndx, NDX) => (ndx.value.ubLegDistance > NDX.value.ubLegDistance);
 
@@ -243,7 +243,7 @@ const ClosedListGet = (pNew) => {
 
 const SkipListRemoveHead = () => {
   pDel = pQueueHead.value.pNext[0];
-  for (iLoop = 0; iLoop < __min(bSkipListLevel, pDel.value.bLevel); iLoop++) {
+  for (iLoop = 0; iLoop < Math.min(bSkipListLevel, pDel.value.bLevel); iLoop++) {
     pQueueHead.value.pNext[iLoop] = pDel.value.pNext[iLoop];
   }
   iSkipListSize--;
@@ -294,7 +294,7 @@ const REMQUEHEADNODE = () => SkipListRemoveHead();
 
 const DELQUENODE = (ndx) => SkipListRemoveHead();
 
-const REMAININGCOST = (ptr) => ((dy = abs(iDestY - iLocY)), (dx = abs(iDestX - iLocX)), ESTIMATE());
+const REMAININGCOST = (ptr) => ((dy = Math.abs(iDestY - iLocY)), (dx = Math.abs(iDestX - iLocX)), ESTIMATE());
 /*
 #define REMAININGCOST(ptr)					\
 (								\
@@ -379,9 +379,9 @@ function ShutDownPathAI(): void {
 
 function ReconfigurePathAI(iNewMaxSkipListLevel: INT32, iNewMaxTrailTree: INT32, iNewMaxPathQ: INT32): void {
   // make sure the specified parameters are reasonable
-  iNewMaxSkipListLevel = __max(iNewMaxSkipListLevel, ABSMAX_SKIPLIST_LEVEL);
-  iNewMaxTrailTree = __max(iNewMaxTrailTree, ABSMAX_TRAIL_TREE);
-  iNewMaxPathQ = __max(iNewMaxPathQ, ABSMAX_PATHQ);
+  iNewMaxSkipListLevel = Math.max(iNewMaxSkipListLevel, ABSMAX_SKIPLIST_LEVEL);
+  iNewMaxTrailTree = Math.max(iNewMaxTrailTree, ABSMAX_TRAIL_TREE);
+  iNewMaxPathQ = Math.max(iNewMaxPathQ, ABSMAX_PATHQ);
   // assign them
   iMaxSkipListLevel = iNewMaxSkipListLevel;
   iMaxTrailTree = iNewMaxTrailTree;
@@ -515,7 +515,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
   fPathAroundPeople = ((fFlags & PATH_THROUGH_PEOPLE) == 0);
   fCloseGoodEnough = ((fFlags & PATH_CLOSE_GOOD_ENOUGH) != 0);
   if (fCloseGoodEnough) {
-    sClosePathLimit = __min(PythSpacesAway(s.value.sGridNo, sDestination) - 1, PATH_CLOSE_RADIUS);
+    sClosePathLimit = Math.min(PythSpacesAway(s.value.sGridNo, sDestination) - 1, PATH_CLOSE_RADIUS);
     if (sClosePathLimit <= 0) {
       return 0;
     }

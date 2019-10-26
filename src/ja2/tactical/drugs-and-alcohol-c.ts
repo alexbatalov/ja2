@@ -156,7 +156,7 @@ function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>
       bRegenPointsGained -= pSoldier.value.bRegenBoostersUsedToday;
       if (bRegenPointsGained > 0) {
         // can't go above the points you get for a full boost
-        pSoldier.value.bRegenerationCounter = __min(pSoldier.value.bRegenerationCounter + bRegenPointsGained, REGEN_POINTS_PER_BOOSTER);
+        pSoldier.value.bRegenerationCounter = Math.min(pSoldier.value.bRegenerationCounter + bRegenPointsGained, REGEN_POINTS_PER_BOOSTER);
       }
       pSoldier.value.bRegenBoostersUsedToday++;
     }
@@ -249,7 +249,7 @@ function HandleEndTurnDrugAdjustments(pSoldier: Pointer<SOLDIERTYPE>): void {
     //		bBandaged = BANDAGED( pSoldier );
 
     // increase life
-    pSoldier.value.bLife = __min(pSoldier.value.bLife + LIFE_GAIN_PER_REGEN_POINT, pSoldier.value.bLifeMax);
+    pSoldier.value.bLife = Math.min(pSoldier.value.bLife + LIFE_GAIN_PER_REGEN_POINT, pSoldier.value.bLifeMax);
 
     if (pSoldier.value.bLife == pSoldier.value.bLifeMax) {
       pSoldier.value.bBleeding = 0;

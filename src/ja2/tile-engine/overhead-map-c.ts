@@ -1341,13 +1341,13 @@ function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, ps
       psX1.value = 0;
       psX2.value = sEndXS;
       psY1.value = 0;
-      psY2.value = (abs(NORMAL_MAP_SCREEN_TY - gsTLY) / 5);
+      psY2.value = (Math.abs(NORMAL_MAP_SCREEN_TY - gsTLY) / 5);
       break;
 
     case Enum245.WEST:
 
       psX1.value = 0;
-      psX2.value = (abs(-NORMAL_MAP_SCREEN_X - gsTLX) / 5);
+      psX2.value = (Math.abs(-NORMAL_MAP_SCREEN_X - gsTLX) / 5);
       psY1.value = 0;
       psY2.value = sEndYS;
       break;
@@ -1356,13 +1356,13 @@ function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, ps
 
       psX1.value = 0;
       psX2.value = sEndXS;
-      psY1.value = (NORMAL_MAP_SCREEN_HEIGHT - abs(NORMAL_MAP_SCREEN_BY - gsBLY)) / 5;
+      psY1.value = (NORMAL_MAP_SCREEN_HEIGHT - Math.abs(NORMAL_MAP_SCREEN_BY - gsBLY)) / 5;
       psY2.value = sEndYS;
       break;
 
     case Enum245.EAST:
 
-      psX1.value = (NORMAL_MAP_SCREEN_WIDTH - abs(NORMAL_MAP_SCREEN_X - gsTRX)) / 5;
+      psX1.value = (NORMAL_MAP_SCREEN_WIDTH - Math.abs(NORMAL_MAP_SCREEN_X - gsTRX)) / 5;
       psX2.value = sEndXS;
       psY1.value = 0;
       psY2.value = sEndYS;

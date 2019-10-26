@@ -778,7 +778,7 @@ function RenderSelectionWindow(): void {
     if (button == null)
       return;
 
-    if ((abs(iStartClickX - button.value.Area.MouseXPos) > 9) || (abs(iStartClickY - (button.value.Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY)) > 9)) {
+    if ((Math.abs(iStartClickX - button.value.Area.MouseXPos) > 9) || (Math.abs(iStartClickY - (button.value.Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY)) > 9)) {
       //			iSX = (INT32)iStartClickX;
       //			iEX = (INT32)button->Area.MouseXPos;
       //			iSY = (INT32)iStartClickY;
@@ -801,10 +801,10 @@ function RenderSelectionWindow(): void {
         iEY ^= iSY;
       }
 
-      iEX = min(iEX, 600);
-      iSY = max(SelWinStartPoint.iY, iSY);
-      iEY = min(359, iEY);
-      iEY = max(SelWinStartPoint.iY, iEY);
+      iEX = Math.min(iEX, 600);
+      iSY = Math.max(SelWinStartPoint.iY, iSY);
+      iEY = Math.min(359, iEY);
+      iEY = Math.max(SelWinStartPoint.iY, iEY);
 
       usFillColor = Get16BPPColor(FROMRGB(255, usFillGreen, 0));
       usFillGreen += usDir;

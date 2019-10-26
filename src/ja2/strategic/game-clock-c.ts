@@ -394,7 +394,7 @@ function SetClockResolutionToCompressMode(iCompressMode: INT32): void {
   if (guiGameSecondsPerRealSecond == 0) {
     SetClockResolutionPerSecond(0);
   } else {
-    SetClockResolutionPerSecond(max(1, (guiGameSecondsPerRealSecond / 60)));
+    SetClockResolutionPerSecond(Math.max(1, (guiGameSecondsPerRealSecond / 60)));
   }
 
   // if the compress mode is X0 or X1
@@ -433,7 +433,7 @@ function SetGameSecondsPerSecond(uiGameSecondsPerSecond: UINT32): void {
   if (guiGameSecondsPerRealSecond == 0) {
     SetClockResolutionPerSecond(0);
   } else {
-    SetClockResolutionPerSecond(max(1, (guiGameSecondsPerRealSecond / 60)));
+    SetClockResolutionPerSecond(Math.max(1, (guiGameSecondsPerRealSecond / 60)));
   }
 }
 
@@ -511,7 +511,7 @@ function SetClockResolutionToDefault(): void {
 
 // Valid range is 0 - 60 times per second.
 function SetClockResolutionPerSecond(ubNumTimesPerSecond: UINT8): void {
-  ubNumTimesPerSecond = (max(0, min(60, ubNumTimesPerSecond)));
+  ubNumTimesPerSecond = (Math.max(0, Math.min(60, ubNumTimesPerSecond)));
   gubClockResolution = ubNumTimesPerSecond;
 }
 
@@ -559,7 +559,7 @@ function UpdateClock(): void {
   // Because we debug so much, breakpoints tend to break the game, and cause unnecessary headaches.
   // This line ensures that no more than 1 real-second passes between frames.  This otherwise has
   // no effect on anything else.
-  uiLastSecondTime = max(uiNewTime - 1000, uiLastSecondTime);
+  uiLastSecondTime = Math.max(uiNewTime - 1000, uiLastSecondTime);
 
   // 1000's of a second difference since last second.
   uiThousandthsOfThisSecondProcessed = uiNewTime - uiLastSecondTime;
@@ -580,7 +580,7 @@ function UpdateClock(): void {
       guiTimesThisSecondProcessed = uiThousandthsOfThisSecondProcessed * 1000 / uiTimeSlice;
       uiNewTimeProcessed = guiGameSecondsPerRealSecond * guiTimesThisSecondProcessed / gubClockResolution;
 
-      uiNewTimeProcessed = max(uiNewTimeProcessed, uiLastTimeProcessed);
+      uiNewTimeProcessed = Math.max(uiNewTimeProcessed, uiLastTimeProcessed);
 
       uiAmountToAdvanceTime = uiNewTimeProcessed - uiLastTimeProcessed;
 

@@ -161,7 +161,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                     gusRubberBandY = gusMouseYPos;
                   } else {
                     // Have we moved....?
-                    if (abs(gusMouseXPos - gusRubberBandX) > 10 || abs(gusMouseYPos - gusRubberBandY) > 10) {
+                    if (Math.abs(gusMouseXPos - gusRubberBandX) > 10 || Math.abs(gusMouseYPos - gusRubberBandY) > 10) {
                       gfStartLookingForRubberBanding = false;
 
                       // Stop scrolling:

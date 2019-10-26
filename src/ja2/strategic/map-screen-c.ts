@@ -4154,7 +4154,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
               sDeltaX = sMapX - pSoldier.value.sSectorX;
               sDeltaY = sMapY - pSoldier.value.sSectorY;
 
-              if (abs(sDeltaX) >= abs(sDeltaY)) {
+              if (Math.abs(sDeltaX) >= Math.abs(sDeltaY)) {
                 // use East or West
                 if (sDeltaX > 0) {
                   // came in from the West

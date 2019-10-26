@@ -100,7 +100,7 @@ const TopmostZLevel = (sMapX, sMapY) => {
 
 const ShadowZLevel = (sMapX, sMapY) => {
   GetMapXYWorldY(sMapX, sMapY, sWorldY);
-  sZLevel = __max(((sWorldY - 80) * Z_SUBLAYERS) + SHADOW_Z_LEVEL, 0);
+  sZLevel = Math.max(((sWorldY - 80) * Z_SUBLAYERS) + SHADOW_Z_LEVEL, 0);
 };
 
 const SoldierZLevel = (pSoldier, sMapX, sMapY) => {

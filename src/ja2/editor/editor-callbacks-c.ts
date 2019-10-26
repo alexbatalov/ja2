@@ -555,7 +555,7 @@ function ItemsRightScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
     gfRenderTaskbar = true;
     eInfo.sScrollIndex++;
     EnableButton(iEditorButton[Enum32.ITEMS_LEFTSCROLL]);
-    if (eInfo.sScrollIndex == max(((eInfo.sNumItems + 1) / 2) - 6, 0))
+    if (eInfo.sScrollIndex == Math.max(((eInfo.sNumItems + 1) / 2) - 6, 0))
       DisableButton(iEditorButton[Enum32.ITEMS_RIGHTSCROLL]);
   }
 }

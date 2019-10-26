@@ -547,7 +547,7 @@ function SoundSetDigitalVolume(uiVolume: UINT32): boolean {
   let uiVolClip: UINT32;
 
   if (fSoundSystemInit) {
-    uiVolClip = __min(uiVolume, 127);
+    uiVolClip = Math.min(uiVolume, 127);
     AIL_set_digital_master_volume(hSoundDriver, uiVolClip);
   }
   return true;
@@ -580,7 +580,7 @@ function SoundGetDigitalVolume(uiVolume: UINT32): UINT32 {
 // Created:  3/28/00 Derek Beland
 //*****************************************************************************************
 function SoundSetDefaultVolume(uiVolume: UINT32): void {
-  guiSoundDefaultVolume = __min(uiVolume, 127);
+  guiSoundDefaultVolume = Math.min(uiVolume, 127);
 }
 
 //*****************************************************************************************
@@ -638,10 +638,10 @@ function SoundSetFadeVolume(uiSoundID: UINT32, uiVolume: UINT32, uiRate: UINT32,
   let uiVolumeDiff: UINT32;
 
   if (fSoundSystemInit) {
-    uiVolCap = __min(uiVolume, 127);
+    uiVolCap = Math.min(uiVolume, 127);
 
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      uiVolumeDiff = abs(uiVolCap - SoundGetVolumeIndex(uiSound));
+      uiVolumeDiff = Math.abs(uiVolCap - SoundGetVolumeIndex(uiSound));
 
       if (!uiVolumeDiff)
         return false;
@@ -672,7 +672,7 @@ function SoundSetVolume(uiSoundID: UINT32, uiVolume: UINT32): boolean {
   let uiVolCap: UINT32;
 
   if (fSoundSystemInit) {
-    uiVolCap = __min(uiVolume, 127);
+    uiVolCap = Math.min(uiVolume, 127);
 
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
       pSoundList[uiSound].uiFadeVolume = uiVolume;
@@ -699,7 +699,7 @@ function SoundSetVolumeIndex(uiChannel: UINT32, uiVolume: UINT32): boolean {
   let uiVolCap: UINT32;
 
   if (fSoundSystemInit) {
-    uiVolCap = __min(uiVolume, 127);
+    uiVolCap = Math.min(uiVolume, 127);
 
     if (pSoundList[uiChannel].hMSS != null)
       AIL_set_sample_volume(pSoundList[uiChannel].hMSS, uiVolCap);
@@ -730,7 +730,7 @@ function SoundSetPan(uiSoundID: UINT32, uiPan: UINT32): boolean {
   let uiPanCap: UINT32;
 
   if (fSoundSystemInit) {
-    uiPanCap = __min(uiPan, 127);
+    uiPanCap = Math.min(uiPan, 127);
 
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
       if (pSoundList[uiSound].hMSS != null)
@@ -760,7 +760,7 @@ function SoundSetFrequency(uiSoundID: UINT32, uiFreq: UINT32): boolean {
   let uiFreqCap: UINT32;
 
   if (fSoundSystemInit) {
-    uiFreqCap = __min(uiFreq, 44100);
+    uiFreqCap = Math.min(uiFreq, 44100);
 
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
       if (pSoundList[uiSound].hMSS != null)
@@ -793,7 +793,7 @@ function SoundSetLoop(uiSoundID: UINT32, uiLoop: UINT32): boolean {
   let uiLoopCap: UINT32;
 
   if (fSoundSystemInit) {
-    uiLoopCap = __min(uiLoop, 10000);
+    uiLoopCap = Math.min(uiLoop, 10000);
 
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
       if (pSoundList[uiSound].hMSS != null)

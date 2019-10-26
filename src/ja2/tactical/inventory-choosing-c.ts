@@ -191,7 +191,7 @@ function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClas
     case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
     case Enum262.SOLDIER_CLASS_GREEN_MILITIA:
       bRating = Enum223.BAD_ADMINISTRATOR_EQUIPMENT_RATING + bEquipmentModifier;
-      bRating = max(MIN_EQUIPMENT_CLASS, min(MAX_EQUIPMENT_CLASS, bRating));
+      bRating = Math.max(MIN_EQUIPMENT_CLASS, Math.min(MAX_EQUIPMENT_CLASS, bRating));
 
       bWeaponClass = bRating;
 
@@ -234,7 +234,7 @@ function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClas
     case Enum262.SOLDIER_CLASS_REG_MILITIA:
       // army guys tend to have a broad range of equipment
       bRating = Enum223.BAD_ARMY_EQUIPMENT_RATING + bEquipmentModifier;
-      bRating = max(MIN_EQUIPMENT_CLASS, min(MAX_EQUIPMENT_CLASS, bRating));
+      bRating = Math.max(MIN_EQUIPMENT_CLASS, Math.min(MAX_EQUIPMENT_CLASS, bRating));
 
       bWeaponClass = bRating;
       bVestClass = bRating;
@@ -331,7 +331,7 @@ function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClas
     case Enum262.SOLDIER_CLASS_ELITE:
     case Enum262.SOLDIER_CLASS_ELITE_MILITIA:
       bRating = Enum223.BAD_ELITE_EQUIPMENT_RATING + bEquipmentModifier;
-      bRating = max(MIN_EQUIPMENT_CLASS, min(MAX_EQUIPMENT_CLASS, bRating));
+      bRating = Math.max(MIN_EQUIPMENT_CLASS, Math.min(MAX_EQUIPMENT_CLASS, bRating));
 
       bWeaponClass = bRating;
       bHelmetClass = bRating;
@@ -608,21 +608,21 @@ function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
         // Admins/Troops: 60-75% + 1% every 4% progress
         bStatus = (60 + Random(16));
         bStatus += (HighestPlayerProgressPercentage() / 4);
-        bStatus = min(100, bStatus);
+        bStatus = Math.min(100, bStatus);
         break;
       case Enum262.SOLDIER_CLASS_ELITE:
       case Enum262.SOLDIER_CLASS_ELITE_MILITIA:
         // 85-90% +  1% every 10% progress
         bStatus = (85 + Random(6));
         bStatus += (HighestPlayerProgressPercentage() / 10);
-        bStatus = min(100, bStatus);
+        bStatus = Math.min(100, bStatus);
         break;
       default:
         bStatus = (50 + Random(51));
         break;
     }
     // don't allow it to be lower than marksmanship, we don't want it to affect their chances of hitting
-    bStatus = max(pp.value.bMarksmanship, bStatus);
+    bStatus = Math.max(pp.value.bMarksmanship, bStatus);
 
     CreateItem(usGunIndex, bStatus, addressof(pp.value.Inv[Enum261.HANDPOS]));
     pp.value.Inv[Enum261.HANDPOS].fFlags |= OBJECT_UNDROPPABLE;
@@ -682,7 +682,7 @@ function ChooseGrenadesForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>,
 
   // determine the quality of grenades.  The elite guys get the best quality, while the others
   // get progressively worse.
-  ubBaseQuality = min(45 + bGrenadeClass * 5, 90);
+  ubBaseQuality = Math.min(45 + bGrenadeClass * 5, 90);
   ubQualityVariation = 101 - ubBaseQuality;
 
   // now, purchase the grenades.
@@ -1315,7 +1315,7 @@ function PlaceObjectInSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, pOb
     }
     return false;
   } else {
-    pObject.value.ubNumberOfObjects = min(Item[pObject.value.usItem].ubPerPocket, pObject.value.ubNumberOfObjects);
+    pObject.value.ubNumberOfObjects = Math.min(Item[pObject.value.usItem].ubPerPocket, pObject.value.ubNumberOfObjects);
     // try to get it into a small pocket first
     for (i = Enum261.SMALLPOCK1POS; i <= Enum261.SMALLPOCK8POS; i++) {
       if (!(pp.value.Inv[i].usItem) && !(pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {

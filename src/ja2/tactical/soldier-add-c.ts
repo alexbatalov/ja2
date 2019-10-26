@@ -589,7 +589,7 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
               uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo) + GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
             } else {
               // uiRange = GetRangeInCellCoordsFromGridNoDiff( sSweetGridNo, sGridNo );
-              uiRange = abs((sSweetGridNo / MAXCOL) - (sGridNo / MAXCOL)) + abs((sSweetGridNo % MAXROW) - (sGridNo % MAXROW));
+              uiRange = Math.abs((sSweetGridNo / MAXCOL) - (sGridNo / MAXCOL)) + Math.abs((sSweetGridNo % MAXROW) - (sGridNo % MAXROW));
             }
 
             if (uiRange < uiLowestRange || (uiRange == uiLowestRange && PythSpacesAway(pSoldier.value.sGridNo, sGridNo) < PythSpacesAway(pSoldier.value.sGridNo, sLowestGridNo))) {

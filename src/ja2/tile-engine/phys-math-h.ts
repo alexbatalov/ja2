@@ -3,7 +3,6 @@ type real = float;
 const REAL_MAX = FLT_MAX;
 const REAL_MIN = FLT_MIN;
 
-const PI2 = 3.14159265358979323846;
 const Epsilon2 = 0.00001;
 
 interface vector_3 {
@@ -17,5 +16,5 @@ interface matrix_3x3 {
 }
 
 // DEFINES
-const RADIANS_FROM = (d) => ((d * PI2) / 180);
-const DEGREES_FROM = (r) => ((r * 180) / PI2);
+const RADIANS_FROM = (d) => ((d * Math.PI) / 180);
+const DEGREES_FROM = (r) => ((r * 180) / Math.PI);

@@ -214,7 +214,7 @@ function IncrementTownLoyalty(bTownId: INT8, uiLoyaltyIncrease: UINT32): void {
   // only do a maximum of 10000 pts at a time...
   uiRemainingIncrement = uiLoyaltyIncrease;
   while (uiRemainingIncrement) {
-    sThisIncrement = min(uiRemainingIncrement, 10000);
+    sThisIncrement = Math.min(uiRemainingIncrement, 10000);
 
     // up the gain value
     gTownLoyalty[bTownId].sChange += sThisIncrement;
@@ -248,7 +248,7 @@ function DecrementTownLoyalty(bTownId: INT8, uiLoyaltyDecrease: UINT32): void {
   // only do a maximum of 10000 pts at a time...
   uiRemainingDecrement = uiLoyaltyDecrease;
   while (uiRemainingDecrement) {
-    sThisDecrement = min(uiRemainingDecrement, 10000);
+    sThisDecrement = Math.min(uiRemainingDecrement, 10000);
 
     // down the gain value
     gTownLoyalty[bTownId].sChange -= sThisDecrement;

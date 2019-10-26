@@ -3607,7 +3607,7 @@ function CalcMedicalCost(ubId: UINT8): UINT32 {
   uiCostSoFar *= 10;
 
   // always ask for at least $10
-  uiCostSoFar = __max(10, uiCostSoFar);
+  uiCostSoFar = Math.max(10, uiCostSoFar);
 
   return uiCostSoFar;
 }

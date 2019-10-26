@@ -200,7 +200,7 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     } else {
       while (ubItemsDelivered) {
         // treat 0s as 1s :-)
-        ubTempNumItems = __min(ubItemsDelivered, __max(1, Item[usItem].ubPerPocket));
+        ubTempNumItems = Math.min(ubItemsDelivered, Math.max(1, Item[usItem].ubPerPocket));
         CreateItems(usItem, gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].bItemQuality, ubTempNumItems, addressof(Object));
 
         // stack as many as possible
@@ -905,7 +905,7 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
 
     while (ubItemsDelivered) {
       // treat 0s as 1s :-)
-      ubTempNumItems = __min(ubItemsDelivered, __max(1, Item[usItem].ubPerPocket));
+      ubTempNumItems = Math.min(ubItemsDelivered, Math.max(1, Item[usItem].ubPerPocket));
       CreateItems(usItem, gpNewBobbyrShipments[ubOrderNum].BobbyRayPurchase[i].bItemQuality, ubTempNumItems, addressof(Object));
 
       // stack as many as possible

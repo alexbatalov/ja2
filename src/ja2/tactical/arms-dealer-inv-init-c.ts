@@ -840,8 +840,8 @@ function GetCurrentSuitabilityForItem(bArmsDealer: INT8, usItemIndex: UINT16): U
     }
   }
 
-  ubMinCoolness = max(1, min(9, ubMinCoolness));
-  ubMaxCoolness = max(2, min(10, ubMaxCoolness));
+  ubMinCoolness = Math.max(1, Math.min(9, ubMinCoolness));
+  ubMaxCoolness = Math.max(2, Math.min(10, ubMaxCoolness));
 
   // if item is too cool for current level of progress
   if (ubItemCoolness > ubMaxCoolness) {

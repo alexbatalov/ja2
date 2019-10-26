@@ -3,11 +3,11 @@ const TEST_OBJECT_NO_COLLISIONS = 1;
 const TEST_OBJECT_ANY_COLLISION = 2;
 const TEST_OBJECT_NOTWALLROOF_COLLISIONS = 3;
 
-const OUTDOORS_START_ANGLE = (PI / 4);
-const INDOORS_START_ANGLE = (PI / 30);
+const OUTDOORS_START_ANGLE = (Math.PI / 4);
+const INDOORS_START_ANGLE = (Math.PI / 30);
 //#define INDOORS_START_ANGLE									(FLOAT)( 0 )
-const GLAUNCHER_START_ANGLE = (PI / 8);
-const GLAUNCHER_HIGHER_LEVEL_START_ANGLE = (PI / 6);
+const GLAUNCHER_START_ANGLE = (Math.PI / 8);
+const GLAUNCHER_HIGHER_LEVEL_START_ANGLE = (Math.PI / 6);
 
 const GET_THROW_HEIGHT = (l) => ((l * 256));
 const GET_SOLDIER_THROW_HEIGHT = (l) => ((l * 256) + STANDING_HEIGHT);
@@ -1046,13 +1046,13 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = sin(dzDegrees);
+  vDirNormal.z = Math.sin(dzDegrees);
 
   // Get range
   dRange = GetRangeInCellCoordsFromGridNoDiff(sGridNo, sSrcGridNo);
 
   // calculate force needed
-  { dForce = (12 * (sqrt((GRAVITY * dRange) / sin(2 * dzDegrees)))); }
+  { dForce = (12 * (Math.sqrt((GRAVITY * dRange) / Math.sin(2 * dzDegrees)))); }
 
   do {
     // This first force is just an estimate...
@@ -1128,7 +1128,7 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
   vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = sin(dzDegrees);
+  vDirNormal.z = Math.sin(dzDegrees);
 
   // Get range
   dRange = GetRangeInCellCoordsFromGridNoDiff(sGridNo, sSrcGridNo);
@@ -1152,7 +1152,7 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   let sSrcX: INT16;
   let sSrcY: INT16;
   let dRange: real;
-  let dzDegrees: real = (PI / 8);
+  let dzDegrees: real = (Math.PI / 8);
   let dPercentDiff: real = 0;
   let dTestRange: real;
   let dTestDiff: real;
@@ -1176,7 +1176,7 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = sin(dzDegrees);
+  vDirNormal.z = Math.sin(dzDegrees);
 
   // Get range
   dRange = GetRangeInCellCoordsFromGridNoDiff(sGridNo, sSrcGridNo);
@@ -1213,11 +1213,11 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
     dzDegrees = dzDegrees - (dPercentDiff / 2);
 
     // OK, If our angle is too far either way, giveup!
-    if (fabs(dzDegrees) >= (PI / 2) || fabs(dzDegrees) <= 0.005) {
+    if (fabs(dzDegrees) >= (Math.PI / 2) || fabs(dzDegrees) <= 0.005) {
       // Use 0.....
       dzDegrees = 0;
       // From degrees, calculate Z portion of normal
-      vDirNormal.z = sin(dzDegrees);
+      vDirNormal.z = Math.sin(dzDegrees);
       // Now use a force
       vForce.x = dForce * vDirNormal.x;
       vForce.y = dForce * vDirNormal.y;
@@ -1227,7 +1227,7 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
     }
 
     // From degrees, calculate Z portion of normal
-    vDirNormal.z = sin(dzDegrees);
+    vDirNormal.z = Math.sin(dzDegrees);
   } while (true);
 
   // OK, we have our force, calculate change to get through without collide
@@ -1266,7 +1266,7 @@ function FindTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ
   vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = sin(dzDegrees);
+  vDirNormal.z = Math.sin(dzDegrees);
 
   // Now use a force
   vForce.x = dForce * vDirNormal.x;
@@ -1323,7 +1323,7 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
     (psFinalGridNo.value) = sGridNo;
   }
 
-  return sqrt((dDiffX * dDiffX) + (dDiffY * dDiffY));
+  return Math.sqrt((dDiffX * dDiffX) + (dDiffY * dDiffY));
 }
 
 function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, vPosition: Pointer<vector_3>, vForce: Pointer<vector_3>, psNewGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>, fFromUI: boolean): INT32 {
@@ -1485,7 +1485,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
     // ATE: If we are a mortar, make sure we are at min.
     if (fMortar || fGLauncher) {
       // find min force
-      dMinForce = CalculateForceFromRange((sMinRange / 10), (PI / 4));
+      dMinForce = CalculateForceFromRange((sMinRange / 10), (Math.PI / 4));
 
       if (dMagForce < dMinForce) {
         dMagForce = dMinForce;
@@ -1561,7 +1561,7 @@ function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, p
   vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = sin(dDegrees);
+  vDirNormal.z = Math.sin(dDegrees);
 
   // Do force....
   vForce.x = dForce * vDirNormal.x;
@@ -1608,7 +1608,7 @@ function CalculateSoldierMaxForce(pSoldier: Pointer<SOLDIERTYPE>, dDegrees: FLOA
   let uiMaxRange: INT32;
   let dMagForce: FLOAT;
 
-  dDegrees = (PI / 4);
+  dDegrees = (Math.PI / 4);
 
   uiMaxRange = CalcMaxTossRange(pSoldier, pItem.value.usItem, fArmed);
 
@@ -1712,7 +1712,7 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
   vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = sin(dDegrees);
+  vDirNormal.z = Math.sin(dDegrees);
 
   // Do force....
   vForce.x = dForce * vDirNormal.x;

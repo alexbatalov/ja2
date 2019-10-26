@@ -190,10 +190,10 @@ function HourlyLarryUpdate(): void {
       } else {
         // NB store all drunkenness info in LARRY_NORMAL profile (to use same values)
         // so long as he keeps consuming, keep number above level at which he cracked
-        gMercProfiles[Enum268.LARRY_NORMAL].bNPCData = __max(gMercProfiles[Enum268.LARRY_NORMAL].bNPCData, LARRY_FALLS_OFF_WAGON);
+        gMercProfiles[Enum268.LARRY_NORMAL].bNPCData = Math.max(gMercProfiles[Enum268.LARRY_NORMAL].bNPCData, LARRY_FALLS_OFF_WAGON);
         gMercProfiles[Enum268.LARRY_NORMAL].bNPCData += Random(usTemptation);
         // allow value to keep going up to 24 (about 2 days since we subtract Random( 2 ) when he has no access )
-        gMercProfiles[Enum268.LARRY_NORMAL].bNPCData = __min(gMercProfiles[Enum268.LARRY_NORMAL].bNPCData, 24);
+        gMercProfiles[Enum268.LARRY_NORMAL].bNPCData = Math.min(gMercProfiles[Enum268.LARRY_NORMAL].bNPCData, 24);
         if (fBar) {
           // take $ from player's account
           usCashAmount = Item[Enum225.ALCOHOL].usPrice;

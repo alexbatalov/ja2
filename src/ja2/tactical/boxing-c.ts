@@ -57,7 +57,7 @@ function ExitBoxing(): void {
 
           // if necessary, revive boxer so he can leave ring
           if (pSoldier.value.bLife > 0 && (pSoldier.value.bLife < OKLIFE || pSoldier.value.bBreath < OKBREATH)) {
-            pSoldier.value.bLife = __max(OKLIFE * 2, pSoldier.value.bLife);
+            pSoldier.value.bLife = Math.max(OKLIFE * 2, pSoldier.value.bLife);
             if (pSoldier.value.bBreath < 100) {
               // deduct -ve BPs to grant some BPs back (properly)
               DeductPoints(pSoldier, 0,  - ((100 - pSoldier.value.bBreath) * 100));
@@ -286,10 +286,10 @@ function PickABoxer(): boolean {
           RESETTIMECOUNTER(pBoxer.value.AICounter, 0);
           gfBoxerFought[uiLoop] = true;
           // improve stats based on the # of rests these guys have had
-          pBoxer.value.bStrength = __min(100, pBoxer.value.bStrength += gubBoxersRests * 5);
-          pBoxer.value.bDexterity = __min(100, pBoxer.value.bDexterity + gubBoxersRests * 5);
-          pBoxer.value.bAgility = __min(100, pBoxer.value.bAgility + gubBoxersRests * 5);
-          pBoxer.value.bLifeMax = __min(100, pBoxer.value.bLifeMax + gubBoxersRests * 5);
+          pBoxer.value.bStrength = Math.min(100, pBoxer.value.bStrength += gubBoxersRests * 5);
+          pBoxer.value.bDexterity = Math.min(100, pBoxer.value.bDexterity + gubBoxersRests * 5);
+          pBoxer.value.bAgility = Math.min(100, pBoxer.value.bAgility + gubBoxersRests * 5);
+          pBoxer.value.bLifeMax = Math.min(100, pBoxer.value.bLifeMax + gubBoxersRests * 5);
           // give the 3rd boxer martial arts
           if ((uiLoop == NUM_BOXERS - 1) && pBoxer.value.ubBodyType == Enum194.REGMALE) {
             pBoxer.value.ubSkillTrait1 = Enum269.MARTIALARTS;

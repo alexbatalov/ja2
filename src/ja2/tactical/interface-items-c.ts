@@ -1493,8 +1493,8 @@ function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject
 
     // CENTER IN SLOT!
     // CANCEL OFFSETS!
-    sCenX = sX + (abs(sWidth - usWidth) / 2) - pTrav.value.sOffsetX;
-    sCenY = sY + (abs(sHeight - usHeight) / 2) - pTrav.value.sOffsetY;
+    sCenX = sX + (Math.abs(sWidth - usWidth) / 2) - pTrav.value.sOffsetX;
+    sCenY = sY + (Math.abs(sHeight - usHeight) / 2) - pTrav.value.sOffsetY;
 
     // Shadow area
     BltVideoObjectOutlineShadowFromIndex(uiBuffer, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX - 2, sCenY + 2);
@@ -1829,7 +1829,7 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
 
   if (ITEM_PROS_AND_CONS(gpItemDescObject.value.usItem)) {
     if (guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) {
-      sProsConsIndent = __max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
+      sProsConsIndent = Math.max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
       for (cnt = 0; cnt < 2; cnt++) {
         // Add region for pros/cons help text
         MSYS_DefineRegion(addressof(gProsAndConsRegions[cnt]), (ITEMDESC_PROS_START_X() + sProsConsIndent), (gsInvDescY + gMapItemDescProsConsRects[cnt].iTop), (gsInvDescX + gMapItemDescProsConsRects[cnt].iRight), (gsInvDescY + gMapItemDescProsConsRects[cnt].iBottom), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
@@ -1854,7 +1854,7 @@ function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16,
         SetRegionHelpEndCallback(addressof(gProsAndConsRegions[cnt]), HelpTextDoneCallback);
       }
     } else {
-      sProsConsIndent = __max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
+      sProsConsIndent = Math.max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
       for (cnt = 0; cnt < 2; cnt++) {
         // Add region for pros/cons help text
         MSYS_DefineRegion(addressof(gProsAndConsRegions[cnt]), (ITEMDESC_PROS_START_X() + sProsConsIndent), (gsInvDescY + gItemDescProsConsRects[cnt].iTop), (gsInvDescX + gItemDescProsConsRects[cnt].iRight), (gsInvDescY + gItemDescProsConsRects[cnt].iBottom), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
@@ -2281,8 +2281,8 @@ function RenderItemDescriptionBox(): void {
 
     // CENTER IN SLOT!
     // REMOVE OFFSETS!
-    sCenX = MAP_ITEMDESC_ITEM_X() + (abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.value.sOffsetX;
-    sCenY = MAP_ITEMDESC_ITEM_Y() + (abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.value.sOffsetY;
+    sCenX = MAP_ITEMDESC_ITEM_X() + (Math.abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.value.sOffsetX;
+    sCenY = MAP_ITEMDESC_ITEM_Y() + (Math.abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.value.sOffsetY;
 
     BltVideoObjectFromIndex(guiSAVEBUFFER, guiMapItemDescBox, 0, gsInvDescX, gsInvDescY, VO_BLT_SRCTRANSPARENCY, null);
 
@@ -2381,7 +2381,7 @@ function RenderItemDescriptionBox(): void {
       SetFontShadow(ITEMDESC_FONTSHADOW3);
       mprintf(MAP_ITEMDESC_PROS_START_X(), MAP_ITEMDESC_PROS_START_Y(), gzProsLabel);
 
-      sProsConsIndent = __max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
+      sProsConsIndent = Math.max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
 
       GenerateProsString(gzItemPros, gpItemDescObject, MAP_ITEMDESC_DESC_WIDTH - sProsConsIndent - StringPixLength(DOTDOTDOT, ITEMDESC_FONT()));
       if (gzItemPros[0] != 0) {
@@ -2669,8 +2669,8 @@ function RenderItemDescriptionBox(): void {
     usWidth = pTrav.value.usWidth;
 
     // CENTER IN SLOT!
-    sCenX = ITEMDESC_ITEM_X() + (abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.value.sOffsetX;
-    sCenY = ITEMDESC_ITEM_Y() + (abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.value.sOffsetY;
+    sCenX = ITEMDESC_ITEM_X() + (Math.abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.value.sOffsetX;
+    sCenY = ITEMDESC_ITEM_Y() + (Math.abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.value.sOffsetY;
 
     BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemDescBox, 0, gsInvDescX, gsInvDescY, VO_BLT_SRCTRANSPARENCY, null);
 
@@ -2764,7 +2764,7 @@ function RenderItemDescriptionBox(): void {
       SetFontShadow(ITEMDESC_FONTSHADOW3);
       mprintf(ITEMDESC_PROS_START_X(), ITEMDESC_PROS_START_Y(), gzProsLabel);
 
-      sProsConsIndent = __max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
+      sProsConsIndent = Math.max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
 
       gzItemPros[0] = 0;
       GenerateProsString(gzItemPros, gpItemDescObject, ITEMDESC_DESC_WIDTH - sProsConsIndent - StringPixLength(DOTDOTDOT, ITEMDESC_FONT()));

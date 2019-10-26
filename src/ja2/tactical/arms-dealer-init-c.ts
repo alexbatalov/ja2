@@ -234,7 +234,7 @@ function SimulateArmsDealerCustomer(): void {
         // first, try to sell all the new (perfect) ones
         if (usItemIndex == Enum225.JAR_ELIXIR) {
           // only allow selling of standard # of items so those converted from blood given by player will be available
-          ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, __min(3, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems), false);
+          ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, Math.min(3, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems), false);
         } else {
           ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems, false);
         }
@@ -1323,7 +1323,7 @@ function AddItemToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
       // if we didn't find any inactive elements already allocated
       if (!fFoundOne) {
         // then we're going to have to allocate some more space...
-        ubElementsToAdd = max(SPECIAL_ITEMS_ALLOCED_AT_ONCE, ubHowMany);
+        ubElementsToAdd = Math.max(SPECIAL_ITEMS_ALLOCED_AT_ONCE, ubHowMany);
 
         // if there aren't any allocated at all right now
         if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced == 0) {
@@ -1536,7 +1536,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): boolean {
         // ATE: While it IS leagal here to use pSoldier->sInitialGridNo, cause of where this
         // function is called, there are times when we're not guarenteed that sGridNo is good
         while (ubLeftToDrop > 0) {
-          ubNowDropping = min(ubLeftToDrop, ubHowManyMaxAtATime);
+          ubNowDropping = Math.min(ubLeftToDrop, ubHowManyMaxAtATime);
 
           MakeObjectOutOfDealerItems(usItemIndex, addressof(SpclItemInfo), addressof(TempObject), ubNowDropping);
           AddItemToPool(pSoldier.value.sInitialGridNo, addressof(TempObject), INVISIBLE, 0, 0, 0);
@@ -2038,7 +2038,7 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
 
   if (!fDealerSelling) {
     // junk dealer won't buy expensive stuff at all, expensive dealer won't buy junk at all
-    if (abs(ubDealerPriceClass - ubItemPriceClass) == 2) {
+    if (Math.abs(ubDealerPriceClass - ubItemPriceClass) == 2) {
       return 0;
     }
   }
@@ -2237,12 +2237,12 @@ function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: UINT32,
   if (uiStartTime < uiEndTime) {
     if (uiStartTime < uiOpeningTime) {
       // add how many minutes in the time range BEFORE the store opened that day
-      uiMinutesClosed += (min(uiOpeningTime, uiEndTime) - uiStartTime);
+      uiMinutesClosed += (Math.min(uiOpeningTime, uiEndTime) - uiStartTime);
     }
 
     if (uiEndTime > uiClosingTime) {
       // add how many minutes in the time range AFTER the store closed that day
-      uiMinutesClosed += (uiEndTime - max(uiClosingTime, uiStartTime));
+      uiMinutesClosed += (uiEndTime - Math.max(uiClosingTime, uiStartTime));
     }
   } else {
     Assert(uiEndTime < uiStartTime);

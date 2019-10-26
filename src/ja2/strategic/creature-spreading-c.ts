@@ -414,10 +414,10 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
       // Calculate the desired max population percentage based purely on current distant to creature range.
       // The closer we are to the lair, the closer this value will be to 100.
       iMaxPopulation = 100 - iDistance * 100 / giHabitatedDistance;
-      iMaxPopulation = max(iMaxPopulation, 25);
+      iMaxPopulation = Math.max(iMaxPopulation, 25);
       // Now, convert the previous value into a numeric population.
       iMaxPopulation = iAbsoluteMaxPopulation * iMaxPopulation / 100;
-      iMaxPopulation = max(iMaxPopulation, 4);
+      iMaxPopulation = Math.max(iMaxPopulation, 4);
 
       // The chance to populate a sector is higher for lower populations.  This is calculated on
       // the ratio of current population to the max population.

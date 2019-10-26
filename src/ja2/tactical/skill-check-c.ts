@@ -10,7 +10,7 @@ function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   iEffStrength += (pSoldier.value.bStrength / 2) * (pSoldier.value.bLife + bBandaged / 2) / (pSoldier.value.bLifeMax);
 
   // ATE: Make sure at least 2...
-  iEffStrength = __max(iEffStrength, 2);
+  iEffStrength = Math.max(iEffStrength, 2);
 
   return iEffStrength;
 }
@@ -262,7 +262,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
 
       fForceDamnSound = true;
 
-      iSkill = __max(EffectiveMechanical(pSoldier), EffectiveExplosive(pSoldier)) * 7;
+      iSkill = Math.max(EffectiveMechanical(pSoldier), EffectiveExplosive(pSoldier)) * 7;
       if (iSkill == 0) {
         break;
       }

@@ -198,8 +198,8 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
   sY = (MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS))));
 
   // CENTER IN SLOT!
-  sCenX = sX + (abs(MAP_INVEN_SPACE_BTWN_SLOTS - usWidth) / 2) - pTrav.value.sOffsetX;
-  sCenY = sY + (abs(MAP_INVEN_SLOT_HEIGHT - 5 - usHeight) / 2) - pTrav.value.sOffsetY;
+  sCenX = sX + (Math.abs(MAP_INVEN_SPACE_BTWN_SLOTS - usWidth) / 2) - pTrav.value.sOffsetX;
+  sCenY = sY + (Math.abs(MAP_INVEN_SLOT_HEIGHT - 5 - usHeight) / 2) - pTrav.value.sOffsetY;
 
   if (fMapInventoryItemCompatable[iCurrentSlot]) {
     sOutLine = Get16BPPColor(FROMRGB(255, 255, 255));
