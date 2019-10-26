@@ -111,7 +111,7 @@ function DeleteWinFont(iFont: INT32): void {
   }
 }
 
-function SetWinFontForeColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
+export function SetWinFontForeColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
   let pWinFont: Pointer<HWINFONT>;
 
   pWinFont = GetWinFont(iFont);
@@ -173,7 +173,7 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
   IDirectDrawSurface2_ReleaseDC(pDDSurface, hdc);
 }
 
-function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
+export function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   let pWinFont: Pointer<HWINFONT>;
   let hdc: HDC;
   let RectSize: SIZE;
@@ -195,7 +195,7 @@ function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   return RectSize.cx;
 }
 
-function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
+export function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   let pWinFont: Pointer<HWINFONT>;
   let hdc: HDC;
   let RectSize: SIZE;
@@ -217,7 +217,7 @@ function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   return RectSize.cy;
 }
 
-function WinFont_mprintf(iFont: INT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
+export function WinFont_mprintf(iFont: INT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
   let argptr: va_list;
   let string: wchar_t[] /* [512] */;
 

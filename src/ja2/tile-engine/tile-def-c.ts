@@ -1,14 +1,14 @@
 //#include "editscreen.h"
 
 // GLobals
-let gTileDatabase: TILE_ELEMENT[] /* [NUMBEROFTILES] */;
-let gTileDatabaseSize: UINT16;
-let gusNumAnimatedTiles: UINT16 = 0;
-let gusAnimatedTiles: UINT16[] /* [MAX_ANIMATED_TILES] */;
+export let gTileDatabase: TILE_ELEMENT[] /* [NUMBEROFTILES] */;
+export let gTileDatabaseSize: UINT16;
+export let gusNumAnimatedTiles: UINT16 = 0;
+export let gusAnimatedTiles: UINT16[] /* [MAX_ANIMATED_TILES] */;
 
-let gTileTypeStartIndex: UINT16[] /* [NUMBEROFTILETYPES] */;
+export let gTileTypeStartIndex: UINT16[] /* [NUMBEROFTILETYPES] */;
 
-let gubEncryptionArray2: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
+export let gubEncryptionArray2: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
   [ 81, 168, 102, 49, 61, 70, 172, 127, 7, 148, 115, 179, 10, 117, 253, 35, 30, 218, 76, 63, 116, 210, 241, 65, 169, 157, 4, 9, 29, 205, 160, 111, 41, 213, 193, 190, 86, 19, 207, 133, 25, 190, 187, 131, 66, 196, 253, 227, 163 ],
 
   [ 236, 81, 128, 26, 96, 137, 92, 120, 243, 71, 33, 141, 55, 2, 185, 185, 187, 33, 230, 72, 146, 143, 226, 21, 110, 155, 226, 150, 111, 124, 165, 242, 4, 76, 201, 34, 223, 227, 29, 202, 119, 86, 172, 219, 8, 121, 183, 148, 142 ],
@@ -125,7 +125,7 @@ let gubEncryptionArray2: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_R
 ];
 
 // These values coorespond to TerrainTypeDefines order
-let gTileTypeMovementCost: UINT8[] /* [NUM_TERRAIN_TYPES] */ = [
+export let gTileTypeMovementCost: UINT8[] /* [NUM_TERRAIN_TYPES] */ = [
   TRAVELCOST_FLAT, // NO_TERRAIN
   TRAVELCOST_FLAT, // FLAT GROUND
   TRAVELCOST_FLATFLOOR, // FLAT FLOOR
@@ -139,7 +139,7 @@ let gTileTypeMovementCost: UINT8[] /* [NUM_TERRAIN_TYPES] */ = [
   TRAVELCOST_SHORE, // DEEP WATER
 ];
 
-function CreateTileDatabase(): void {
+export function CreateTileDatabase(): void {
   let cnt1: UINT32;
   let cnt2: UINT32;
   let ubLoop: UINT8;
@@ -282,7 +282,7 @@ function CreateTileDatabase(): void {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Item Total Mem:		%d", gSurfaceMemUsage));
 }
 
-function DeallocateTileDatabase(): void {
+export function DeallocateTileDatabase(): void {
   let cnt: INT32;
 
   for (cnt = 0; cnt < Enum312.NUMBEROFTILES; cnt++) {
@@ -297,7 +297,7 @@ function DeallocateTileDatabase(): void {
   gusNumAnimatedTiles = 0;
 }
 
-function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): boolean {
+export function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): boolean {
   let usIndex: UINT16;
 
   Assert(puiType != null);
@@ -311,7 +311,7 @@ function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): boolean {
   return true;
 }
 
-function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDelete: boolean): boolean {
+export function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDelete: boolean): boolean {
   let usTempIndex: UINT16;
   let ubLastHighLevel: UINT8 = 0;
 
@@ -387,7 +387,7 @@ function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UI
   return true;
 }
 
-function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointer<UINT8>): boolean {
+export function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointer<UINT8>): boolean {
   let level: UINT8 = 0;
   let pLand: Pointer<LEVELNODE>;
   let fTileType: UINT32 = 0;
@@ -425,7 +425,7 @@ function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
   return level;
 }
 
-function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT16>): boolean {
+export function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT16>): boolean {
   let uiType: UINT32 = 0;
   if (GetTileType(usTileIndex, addressof(uiType))) {
     pusSubIndex.value = usTileIndex - gTileTypeStartIndex[uiType] + 1;
@@ -434,7 +434,7 @@ function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT
   return false;
 }
 
-function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusSubIndex: Pointer<UINT16>): boolean {
+export function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusSubIndex: Pointer<UINT16>): boolean {
   // Tile database is zero-based, Type indecies are 1-based!
 
   CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
@@ -444,7 +444,7 @@ function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusS
   return true;
 }
 
-function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, pubSubIndex: Pointer<UINT8>): boolean {
+export function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, pubSubIndex: Pointer<UINT8>): boolean {
   // Tile database is zero-based, Type indecies are 1-based!
 
   CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
@@ -454,7 +454,7 @@ function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, 
   return true;
 }
 
-function GetTileIndexFromTypeSubIndex(uiCheckType: UINT32, usSubIndex: UINT16, pusTileIndex: Pointer<UINT16>): boolean {
+export function GetTileIndexFromTypeSubIndex(uiCheckType: UINT32, usSubIndex: UINT16, pusTileIndex: Pointer<UINT16>): boolean {
   // Tile database is zero-based, Type indecies are 1-based!
 
   CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
@@ -474,7 +474,7 @@ function MoveLandIndexToTop(iMapIndex: UINT32, usIndex: UINT16): boolean {
 }
 
 // Database access functions
-function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): boolean {
+export function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): boolean {
   let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
@@ -487,7 +487,7 @@ function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): boolean {
   return true;
 }
 
-function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): boolean {
+export function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): boolean {
   let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
@@ -501,7 +501,7 @@ function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): boolean {
   return true;
 }
 
-function GetTileTypeLogicalHeight(fType: UINT32, pubLogHeight: Pointer<UINT8>): boolean {
+export function GetTileTypeLogicalHeight(fType: UINT32, pubLogHeight: Pointer<UINT8>): boolean {
   pubLogHeight.value = gTileTypeLogicalHeight[fType];
 
   return true;
@@ -518,7 +518,7 @@ function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): boolean {
   return ubDestLogHeight > ubSrcLogHeight;
 }
 
-function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): boolean {
+export function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): boolean {
   let pLand: Pointer<LEVELNODE> = null;
   let ubSrcLogHeight: UINT8 = 0;
   let fTileType: UINT32 = 0;
@@ -600,7 +600,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
   return false;
 }
 
-function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>): boolean {
+export function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>): boolean {
   let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
@@ -683,7 +683,7 @@ function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
   return ubFinalWallOrientation;
 }
 
-function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UINT8): boolean {
+export function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UINT8): boolean {
   pTileElem.value.pAnimData = MemAlloc(sizeof(TILE_ANIMATION_DATA));
 
   CHECKF(pTileElem.value.pAnimData != null);

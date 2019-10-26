@@ -1,4 +1,4 @@
-let gfRestoringEnemySoldiersFromTempFile: boolean = false;
+export let gfRestoringEnemySoldiersFromTempFile: boolean = false;
 let gfRestoringCiviliansFromTempFile: boolean = false;
 
 function RemoveEnemySoldierTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
@@ -34,7 +34,7 @@ function RemoveCivilianTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8
 }
 
 // OLD SAVE METHOD:  This is the old way of loading the enemies and civilians
-function LoadEnemySoldiersFromTempFile(): boolean {
+export function LoadEnemySoldiersFromTempFile(): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
   let i: INT32;
@@ -550,7 +550,7 @@ FAIL_SAVE:
   return false;
 }
 
-function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
+export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
   let i: INT32;
@@ -852,7 +852,7 @@ FAIL_LOAD:
   return false;
 }
 
-function NewWayOfLoadingCiviliansFromTempFile(): boolean {
+export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let temp: Pointer<SOLDIERINITNODE>;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
@@ -1077,7 +1077,7 @@ FAIL_LOAD:
 
 // If we are saving a game and we are in the sector, we will need to preserve the links between the
 // soldiers and the soldier init list.  Otherwise, the temp file will be deleted.
-function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fEnemy: boolean, fValidateOnly: boolean): boolean {
+export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fEnemy: boolean, fValidateOnly: boolean): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;

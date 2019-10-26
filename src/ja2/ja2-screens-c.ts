@@ -4,12 +4,12 @@ const MAX_DEBUG_PAGES = 4;
 let CurrentPalette: UINT8 = 0;
 let guiBackgroundRect: UINT32;
 let gfExitPalEditScreen: boolean = false;
-let gfExitDebugScreen: boolean = false;
+export let gfExitDebugScreen: boolean = false;
 let gfInitRect: boolean = true;
 /* static */ let FirstTime: boolean = true;
-let gfDoneWithSplashScreen: boolean = false;
+export let gfDoneWithSplashScreen: boolean = false;
 
-let gCurDebugPage: INT8 = 0;
+export let gCurDebugPage: INT8 = 0;
 
 let hVAnims: HVSURFACE[] /* [7] */;
 let bTitleAnimFrame: INT8 = 0;
@@ -25,7 +25,7 @@ let gDebugRenderOverride: RENDER_HOOK[] /* [MAX_DEBUG_PAGES] */ = [
   DefaultDebugPage4,
 ];
 
-function DisplayFrameRate(): void {
+export function DisplayFrameRate(): void {
   /* static */ let uiFPS: UINT32 = 0;
   /* static */ let uiFrameCount: UINT32 = 0;
   let usMapPos: UINT16;
@@ -94,31 +94,31 @@ function DisplayFrameRate(): void {
 }
 
 // USELESS!!!!!!!!!!!!!!!!!!
-function SavingScreenInitialize(): UINT32 {
+export function SavingScreenInitialize(): UINT32 {
   return true;
 }
-function SavingScreenHandle(): UINT32 {
+export function SavingScreenHandle(): UINT32 {
   return Enum26.SAVING_SCREEN;
 }
-function SavingScreenShutdown(): UINT32 {
+export function SavingScreenShutdown(): UINT32 {
   return true;
 }
 
-function LoadingScreenInitialize(): UINT32 {
+export function LoadingScreenInitialize(): UINT32 {
   return true;
 }
-function LoadingScreenHandle(): UINT32 {
+export function LoadingScreenHandle(): UINT32 {
   return Enum26.LOADING_SCREEN;
 }
-function LoadingScreenShutdown(): UINT32 {
+export function LoadingScreenShutdown(): UINT32 {
   return true;
 }
 
-function ErrorScreenInitialize(): UINT32 {
+export function ErrorScreenInitialize(): UINT32 {
   return true;
 }
 
-function ErrorScreenHandle(): UINT32 {
+export function ErrorScreenHandle(): UINT32 {
   let InputEvent: InputAtom;
   /* static */ let fFirstTime: boolean = false;
 
@@ -164,15 +164,15 @@ function ErrorScreenHandle(): UINT32 {
   return Enum26.ERROR_SCREEN;
 }
 
-function ErrorScreenShutdown(): UINT32 {
+export function ErrorScreenShutdown(): UINT32 {
   return true;
 }
 
-function InitScreenInitialize(): UINT32 {
+export function InitScreenInitialize(): UINT32 {
   return true;
 }
 
-function InitScreenHandle(): UINT32 {
+export function InitScreenHandle(): UINT32 {
   let vs_desc: VSURFACE_DESC;
   /* static */ let hVSurface: HVSURFACE;
   /* static */ let ubCurrentScreen: UINT8 = 255;
@@ -262,15 +262,15 @@ function InitScreenHandle(): UINT32 {
   return Enum26.INIT_SCREEN;
 }
 
-function InitScreenShutdown(): UINT32 {
+export function InitScreenShutdown(): UINT32 {
   return true;
 }
 
-function PalEditScreenInit(): UINT32 {
+export function PalEditScreenInit(): UINT32 {
   return true;
 }
 
-function PalEditScreenHandle(): UINT32 {
+export function PalEditScreenHandle(): UINT32 {
   /* static */ let FirstTime: boolean = true;
 
   if (gfExitPalEditScreen) {
@@ -296,7 +296,7 @@ function PalEditScreenHandle(): UINT32 {
   return Enum26.PALEDIT_SCREEN;
 }
 
-function PalEditScreenShutdown(): UINT32 {
+export function PalEditScreenShutdown(): UINT32 {
   return true;
 }
 
@@ -442,7 +442,7 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
   return false;
 }
 
-function DebugScreenInit(): UINT32 {
+export function DebugScreenInit(): UINT32 {
   return true;
 }
 
@@ -469,7 +469,7 @@ function ExitDebugScreen(): void {
   CheckForAndExitTacticalDebug();
 }
 
-function DebugScreenHandle(): UINT32 {
+export function DebugScreenHandle(): UINT32 {
   if (CheckForAndExitTacticalDebug()) {
     return Enum26.GAME_SCREEN;
   }
@@ -491,7 +491,7 @@ function DebugScreenHandle(): UINT32 {
   return Enum26.DEBUG_SCREEN;
 }
 
-function DebugScreenShutdown(): UINT32 {
+export function DebugScreenShutdown(): UINT32 {
   return true;
 }
 
@@ -532,7 +532,7 @@ function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
   return false;
 }
 
-function SetDebugRenderHook(pDebugRenderOverride: RENDER_HOOK, ubPage: INT8): void {
+export function SetDebugRenderHook(pDebugRenderOverride: RENDER_HOOK, ubPage: INT8): void {
   gDebugRenderOverride[ubPage] = pDebugRenderOverride;
 }
 
@@ -556,14 +556,14 @@ function DefaultDebugPage4(): void {
   gprintf(0, 0, "DEBUG PAGE FOUR");
 }
 
-function SexScreenInit(): UINT32 {
+export function SexScreenInit(): UINT32 {
   return true;
 }
 
 const SMILY_DELAY = 100;
 const SMILY_END_DELAY = 1000;
 
-function SexScreenHandle(): UINT32 {
+export function SexScreenHandle(): UINT32 {
   /* static */ let ubCurrentScreen: UINT8 = 0;
   let VObjectDesc: VOBJECT_DESC;
   /* static */ let guiSMILY: UINT32;
@@ -653,11 +653,11 @@ function SexScreenHandle(): UINT32 {
   return Enum26.SEX_SCREEN;
 }
 
-function SexScreenShutdown(): UINT32 {
+export function SexScreenShutdown(): UINT32 {
   return true;
 }
 
-function DemoExitScreenInit(): UINT32 {
+export function DemoExitScreenInit(): UINT32 {
   return true;
 }
 
@@ -701,11 +701,11 @@ function DoneFadeOutForDemoExitScreen(): void {
 // }
 // #endif
 
-function DemoExitScreenHandle(): UINT32 {
+export function DemoExitScreenHandle(): UINT32 {
   gfProgramIsRunning = false;
   return Enum26.DEMO_EXIT_SCREEN;
 }
 
-function DemoExitScreenShutdown(): UINT32 {
+export function DemoExitScreenShutdown(): UINT32 {
   return true;
 }

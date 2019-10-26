@@ -68,7 +68,7 @@ let gbSmoothWaterStruct: INT16[] /* [] */ = [
   -1,
 ];
 
-function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
+export function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
   let temp: int = 0;
   let type: int = 0;
   let FullTile: int = false;
@@ -349,7 +349,7 @@ function SmoothTerrainWorld(uiCheckType: UINT32): void {
   }
 }
 
-function SmoothAllTerrainWorld(): void {
+export function SmoothAllTerrainWorld(): void {
   let cnt: int;
   let usIndex: UINT16;
   let NewTile: UINT16;
@@ -369,7 +369,7 @@ function SmoothAllTerrainWorld(): void {
   }
 }
 
-function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: UINT8, fForceSmooth: boolean): void {
+export function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: UINT8, fForceSmooth: boolean): void {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -407,7 +407,7 @@ function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: U
   }
 }
 
-function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, fForceSmooth: boolean): void {
+export function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, fForceSmooth: boolean): void {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;

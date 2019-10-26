@@ -1,6 +1,6 @@
 let gfOriginalList: boolean = true;
 
-let gSoldierInitHead: Pointer<SOLDIERINITNODE> = null;
+export let gSoldierInitHead: Pointer<SOLDIERINITNODE> = null;
 let gSoldierInitTail: Pointer<SOLDIERINITNODE> = null;
 
 let gOriginalSoldierInitListHead: Pointer<SOLDIERINITNODE> = null;
@@ -19,14 +19,14 @@ function CountNumberOfNodesWithSoldiers(): UINT32 {
   return num;
 }
 
-function InitSoldierInitList(): void {
+export function InitSoldierInitList(): void {
   if (gSoldierInitHead)
     KillSoldierInitList();
   gSoldierInitHead = null;
   gSoldierInitTail = null;
 }
 
-function KillSoldierInitList(): void {
+export function KillSoldierInitList(): void {
   while (gSoldierInitHead)
     RemoveSoldierNodeFromInitList(gSoldierInitTail);
   if (gfOriginalList)
@@ -35,7 +35,7 @@ function KillSoldierInitList(): void {
     gAlternateSoldierInitListHead = null;
 }
 
-function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDIERCREATE_STRUCT>): Pointer<SOLDIERINITNODE> {
+export function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDIERCREATE_STRUCT>): Pointer<SOLDIERINITNODE> {
   let curr: Pointer<SOLDIERINITNODE>;
   // Allocate memory for node
   curr = MemAlloc(sizeof(SOLDIERINITNODE));
@@ -80,7 +80,7 @@ function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDI
   return curr;
 }
 
-function RemoveSoldierNodeFromInitList(pNode: Pointer<SOLDIERINITNODE>): void {
+export function RemoveSoldierNodeFromInitList(pNode: Pointer<SOLDIERINITNODE>): void {
   if (!pNode)
     return;
   if (gfOriginalList)
@@ -121,7 +121,7 @@ function RemoveSoldierNodeFromInitList(pNode: Pointer<SOLDIERINITNODE>): void {
 // These serialization functions are assuming the passing of a valid file
 // pointer to the beginning of the save/load area, which is not necessarily at
 // the beginning of the file.  This is just a part of the whole map serialization.
-function SaveSoldiersToMap(fp: HWFILE): boolean {
+export function SaveSoldiersToMap(fp: HWFILE): boolean {
   let i: UINT32;
   let uiBytesWritten: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
@@ -159,7 +159,7 @@ function SaveSoldiersToMap(fp: HWFILE): boolean {
   return true;
 }
 
-function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
+export function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
   let i: UINT32;
   let ubNumIndividuals: UINT8;
   let tempBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
@@ -405,7 +405,7 @@ function SortSoldierInitList(): void {
   }
 }
 
-function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): boolean {
+export function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): boolean {
   let ubProfile: UINT8;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -553,7 +553,7 @@ function AddPlacementToWorldByProfileID(ubProfile: UINT8): void {
   }
 }
 
-function AddSoldierInitListTeamToWorld(bTeam: INT8, ubMaxNum: UINT8): UINT8 {
+export function AddSoldierInitListTeamToWorld(bTeam: INT8, ubMaxNum: UINT8): UINT8 {
   let ubNumAdded: UINT8 = 0;
   let mark: Pointer<SOLDIERINITNODE>;
   let ubSlotsToFill: UINT8;
@@ -647,7 +647,7 @@ function AddSoldierInitListTeamToWorld(bTeam: INT8, ubMaxNum: UINT8): UINT8 {
   return ubNumAdded;
 }
 
-function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroops: UINT8, ubTotalElite: UINT8): void {
+export function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroops: UINT8, ubTotalElite: UINT8): void {
   let mark: Pointer<SOLDIERINITNODE>;
   let curr: Pointer<SOLDIERINITNODE>;
   let iRandom: INT32;
@@ -1007,7 +1007,7 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
 // sector, then they get to use the enemy placements.  However, we remove any orders from
 // placements containing RNDPTPATROL or POINTPATROL orders, as well as remove any detailed
 // placement information.
-function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumElites: UINT8): void {
+export function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumElites: UINT8): void {
   let mark: Pointer<SOLDIERINITNODE>;
   let curr: Pointer<SOLDIERINITNODE>;
   let iRandom: INT32;
@@ -1207,7 +1207,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
   }
 }
 
-function AddSoldierInitListCreatures(fQueen: boolean, ubNumLarvae: UINT8, ubNumInfants: UINT8, ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): void {
+export function AddSoldierInitListCreatures(fQueen: boolean, ubNumLarvae: UINT8, ubNumInfants: UINT8, ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): void {
   let curr: Pointer<SOLDIERINITNODE>;
   let iRandom: INT32;
   let ubFreeSlots: UINT8;
@@ -1337,7 +1337,7 @@ function FindSoldierInitNodeWithProfileID(usProfile: UINT16): Pointer<SOLDIERINI
   return null;
 }
 
-function FindSoldierInitNodeWithID(usID: UINT16): Pointer<SOLDIERINITNODE> {
+export function FindSoldierInitNodeWithID(usID: UINT16): Pointer<SOLDIERINITNODE> {
   let curr: Pointer<SOLDIERINITNODE>;
   curr = gSoldierInitHead;
   while (curr) {
@@ -1348,7 +1348,7 @@ function FindSoldierInitNodeWithID(usID: UINT16): Pointer<SOLDIERINITNODE> {
   return null;
 }
 
-function UseEditorOriginalList(): void {
+export function UseEditorOriginalList(): void {
   let curr: Pointer<SOLDIERINITNODE>;
   gfOriginalList = true;
   gSoldierInitHead = gOriginalSoldierInitListHead;
@@ -1361,7 +1361,7 @@ function UseEditorOriginalList(): void {
     gSoldierInitTail = curr;
 }
 
-function UseEditorAlternateList(): void {
+export function UseEditorAlternateList(): void {
   let curr: Pointer<SOLDIERINITNODE>;
   gfOriginalList = false;
   gSoldierInitHead = gAlternateSoldierInitListHead;
@@ -1377,7 +1377,7 @@ function UseEditorAlternateList(): void {
 // Any killed people that used detailed placement information must prevent that from occurring
 // again in the future.  Otherwise, the sniper guy with 99 marksmanship could appear again
 // if the map was loaded again!
-function EvaluateDeathEffectsToSoldierInitList(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function EvaluateDeathEffectsToSoldierInitList(pSoldier: Pointer<SOLDIERTYPE>): void {
   let curr: Pointer<SOLDIERINITNODE>;
   let ubNodeID: UINT8;
   curr = gSoldierInitHead;
@@ -1422,7 +1422,7 @@ function RemoveDetailedPlacementInfo(ubNodeID: UINT8): void {
 // For the purpose of keeping track of which soldier belongs to which placement within the game,
 // the only way we can do this properly is to save the soldier ID from the list and reconnect the
 // soldier pointer whenever we load the game.
-function SaveSoldierInitListLinks(hfile: HWFILE): boolean {
+export function SaveSoldierInitListLinks(hfile: HWFILE): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let uiNumBytesWritten: UINT32;
   let ubSlots: UINT8 = 0;
@@ -1457,7 +1457,7 @@ function SaveSoldierInitListLinks(hfile: HWFILE): boolean {
   return true;
 }
 
-function LoadSoldierInitListLinks(hfile: HWFILE): boolean {
+export function LoadSoldierInitListLinks(hfile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
   let ubSlots: UINT8;
@@ -1495,7 +1495,7 @@ function LoadSoldierInitListLinks(hfile: HWFILE): boolean {
   return true;
 }
 
-function AddSoldierInitListBloodcats(): void {
+export function AddSoldierInitListBloodcats(): void {
   let pSector: Pointer<SECTORINFO>;
   let curr: Pointer<SOLDIERINITNODE>;
   let ubSectorID: UINT8;
@@ -1631,7 +1631,7 @@ function FindSoldierInitListNodeByProfile(ubProfile: UINT8): Pointer<SOLDIERINIT
 
 // This is the code that loops through the profiles starting at the RPCs, and adds them using strategic insertion
 // information, and not editor placements.  The key flag involved for doing it this way is the gMercProfiles[i].fUseProfileInsertionInfo.
-function AddProfilesUsingProfileInsertionData(): void {
+export function AddProfilesUsingProfileInsertionData(): void {
   let i: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let curr: Pointer<SOLDIERINITNODE>;
@@ -1698,7 +1698,7 @@ function AddProfilesUsingProfileInsertionData(): void {
   }
 }
 
-function AddProfilesNotUsingProfileInsertionData(): void {
+export function AddProfilesNotUsingProfileInsertionData(): void {
   let curr: Pointer<SOLDIERINITNODE>;
   // Count the current number of soldiers of the specified team
   curr = gSoldierInitHead;
@@ -1710,7 +1710,7 @@ function AddProfilesNotUsingProfileInsertionData(): void {
   }
 }
 
-function NewWayOfLoadingEnemySoldierInitListLinks(hfile: HWFILE): boolean {
+export function NewWayOfLoadingEnemySoldierInitListLinks(hfile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
   let ubSlots: UINT8;
@@ -1748,7 +1748,7 @@ function NewWayOfLoadingEnemySoldierInitListLinks(hfile: HWFILE): boolean {
   return true;
 }
 
-function NewWayOfLoadingCivilianInitListLinks(hfile: HWFILE): boolean {
+export function NewWayOfLoadingCivilianInitListLinks(hfile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
   let ubSlots: UINT8;
@@ -1786,7 +1786,7 @@ function NewWayOfLoadingCivilianInitListLinks(hfile: HWFILE): boolean {
   return true;
 }
 
-function LookAtButDontProcessEnemySoldierInitListLinks(hfile: HWFILE): boolean {
+export function LookAtButDontProcessEnemySoldierInitListLinks(hfile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let curr: Pointer<SOLDIERINITNODE>;
   let ubSlots: UINT8;
@@ -1824,7 +1824,7 @@ function LookAtButDontProcessEnemySoldierInitListLinks(hfile: HWFILE): boolean {
   return true;
 }
 
-function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
+export function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
   let pSector: Pointer<SECTORINFO>;
   let curr: Pointer<SOLDIERINITNODE>;
 

@@ -2,7 +2,7 @@ const DATA_8_BIT_DIR = "8-Bit\\";
 
 //#define	TIME_LIMITED_VERSION
 
-function FilenameForBPP(pFilename: STR, pDestination: STR): void {
+export function FilenameForBPP(pFilename: STR, pDestination: STR): void {
   let Drive: UINT8[] /* [128] */;
   let Dir: UINT8[] /* [128] */;
   let Name: UINT8[] /* [128] */;
@@ -24,7 +24,7 @@ function FilenameForBPP(pFilename: STR, pDestination: STR): void {
   }
 }
 
-function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile: SGPFILENAME): boolean {
+export function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile: SGPFILENAME): boolean {
   let hFileHandle: HWFILE;
   let bColHeader: BYTE[] /* [8] */;
   let cnt: UINT32;
@@ -59,7 +59,7 @@ function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile
   return true;
 }
 
-function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, uiDestSurface: UINT32): boolean {
+export function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, uiDestSurface: UINT32): boolean {
   let us16BPPColor: UINT16;
   let cnt1: UINT32;
   let ubSize: UINT8;
@@ -94,7 +94,7 @@ function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, 
   return true;
 }
 
-function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16, uiFont: INT32): boolean {
+export function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16, uiFont: INT32): boolean {
   let Cur: UINT32;
   let uiLet: UINT32;
   let uiNewLet: UINT32;
@@ -231,7 +231,7 @@ function HandleLimitedNumExecutions(): void {
   FileClose(hFileHandle);
 }
 
-let gCheckFilenames: SGPFILENAME[] /* [] */ = [
+export let gCheckFilenames: SGPFILENAME[] /* [] */ = [
   "DATA\\INTRO.SLF",
   "DATA\\LOADSCREENS.SLF",
   "DATA\\MAPS.SLF",
@@ -247,7 +247,7 @@ let gCheckFileMinSizes: UINT32[] /* [] */ = [
   236000000,
 ];
 
-function HandleJA2CDCheck(): boolean {
+export function HandleJA2CDCheck(): boolean {
   return true;
 }
 
@@ -261,7 +261,7 @@ function PerformTimeLimitedCheck(): boolean {
   return true;
 }
 
-function DoJA2FilesExistsOnDrive(zCdLocation: Pointer<CHAR8>): boolean {
+export function DoJA2FilesExistsOnDrive(zCdLocation: Pointer<CHAR8>): boolean {
   let fFailed: boolean = false;
   let zCdFile: CHAR8[] /* [SGPFILENAME_LEN] */;
   let cnt: INT32;

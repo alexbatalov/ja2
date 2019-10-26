@@ -1,4 +1,4 @@
-function MakeClosestEnemyChosenOne(): void {
+export function MakeClosestEnemyChosenOne(): void {
   let cnt: UINT32;
   let sPathCost: INT16;
   let sShortestPath: INT16 = 1000;
@@ -129,7 +129,7 @@ function MakeClosestEnemyChosenOne(): void {
   }
 }
 
-function PossiblyMakeThisEnemyChosenOne(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function PossiblyMakeThisEnemyChosenOne(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iAPCost: INT32;
   let iPathCost: INT32;
   // INT8		bOldKeys;
@@ -184,7 +184,7 @@ function PossiblyMakeThisEnemyChosenOne(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bHasKeys = (pSoldier.value.bHasKeys >> 1);
 }
 
-function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
+export function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
   let fFoundRoute: boolean = false;
   let bSlot: INT8;
   let iPathCost: INT32;
@@ -304,13 +304,13 @@ function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
   return -1;
 }
 
-function InitPanicSystem(): void {
+export function InitPanicSystem(): void {
   // start by assuming there is no panic bombs or triggers here
   gTacticalStatus.ubTheChosenOne = NOBODY;
   FindPanicBombsAndTriggers();
 }
 
-function ClosestPanicTrigger(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function ClosestPanicTrigger(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bLoop: INT8;
   let sDistance: INT16;
   let sClosestDistance: INT16 = 1000;
@@ -350,7 +350,7 @@ function ClosestPanicTrigger(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return bClosestTrigger;
 }
 
-function NeedToRadioAboutPanicTrigger(): boolean {
+export function NeedToRadioAboutPanicTrigger(): boolean {
   let uiPercentEnemiesKilled: UINT32;
   let bLoop: INT8;
 
@@ -386,7 +386,7 @@ function NeedToRadioAboutPanicTrigger(): boolean {
 const STAIRCASE_GRIDNO = 12067;
 const STAIRCASE_DIRECTION = 0;
 
-function HeadForTheStairCase(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function HeadForTheStairCase(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let pBasementInfo: Pointer<UNDERGROUND_SECTORINFO>;
 
   pBasementInfo = FindUnderGroundSector(3, MAP_ROW_P, 1);

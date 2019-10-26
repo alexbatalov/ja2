@@ -1,6 +1,6 @@
 let gfCorruptMap: boolean = false;
 let gfCorruptSchedules: boolean = false;
-let gfProfileDataLoaded: boolean = false;
+export let gfProfileDataLoaded: boolean = false;
 
 let gpPersistantButton: Pointer<GUI_BUTTON>;
 
@@ -8,24 +8,24 @@ let gpPersistantButton: Pointer<GUI_BUTTON>;
 
 let guiSaveTacticalStatusFlags: UINT32; // saves the tactical status flags when entering the editor.
 
-let gfAutoLoadA9: boolean = false;
+export let gfAutoLoadA9: boolean = false;
 // new vars added by Kris
-let gfRenderWorld: boolean = false;
-let gfRenderTaskbar: boolean = false;
-let gfRenderDrawingMode: boolean = false;
+export let gfRenderWorld: boolean = false;
+export let gfRenderTaskbar: boolean = false;
+export let gfRenderDrawingMode: boolean = false;
 let gfFirstPlacement: boolean = true;
-let gfPendingBasement: boolean = false;
-let gfPendingCaves: boolean = false;
+export let gfPendingBasement: boolean = false;
+export let gfPendingCaves: boolean = false;
 let gfNeedToInitGame: boolean = false;
 let gfScheduleReversalPending: boolean = false;
 let gfRemoveLightsPending: boolean = false;
 let gfScheduleClearPending: boolean = false;
-let gfConfirmExitFirst: boolean = true;
+export let gfConfirmExitFirst: boolean = true;
 let gfConfirmExitPending: boolean = false;
-let gfIntendOnEnteringEditor: boolean = false;
+export let gfIntendOnEnteringEditor: boolean = false;
 
 // original
-let gubFilename: UINT8[] /* [200] */;
+export let gubFilename: UINT8[] /* [200] */;
 let gsBanksSubIndex: INT16 = 0;
 let gsOldBanksSubIndex: INT16 = 1;
 let gsCliffsSubIndex: INT16 = 0;
@@ -36,19 +36,19 @@ let gDoTest2: boolean = false;
 let gShadePercent: FLOAT = 0.65;
 let gusCurrentRoofType: INT16 = ONELEVELTYPEONEROOF;
 
-let gusLightLevel: UINT16 = 0;
+export let gusLightLevel: UINT16 = 0;
 let gusGameLightLevel: UINT16 = 0;
 let gusSavedLightLevel: UINT16 = 0;
-let gfFakeLights: boolean = false;
+export let gfFakeLights: boolean = false;
 
-let gsLightRadius: INT16 = 5;
+export let gsLightRadius: INT16 = 5;
 
 let gfOldDoVideoScroll: boolean; // Saved for returning to previous settings
 let gubOldCurScrollSpeedID: UINT8; // Saved for returning to previous settings
 
-let iOldTaskMode: INT32 = Enum36.TASK_OPTIONS;
+export let iOldTaskMode: INT32 = Enum36.TASK_OPTIONS;
 
-let iTaskMode: INT32 = Enum36.TASK_NONE;
+export let iTaskMode: INT32 = Enum36.TASK_NONE;
 
 let iEditorTBarButton: INT32[] /* [NUMBER_EDITOR_BUTTONS] */; // For Toolbars
 
@@ -56,7 +56,7 @@ let gfMercResetUponEditorEntry: boolean;
 
 let fHelpScreen: boolean = false;
 
-let fDontUseRandom: boolean = false;
+export let fDontUseRandom: boolean = false;
 
 let TestButtons: INT32[] /* [10] */;
 
@@ -70,16 +70,16 @@ let gfEditorDirty: boolean = true;
 
 let fRaiseHeight: boolean = false;
 
-let iDrawMode: INT32 = Enum38.DRAW_MODE_NOTHING;
-let iCurrentAction: INT32;
-let iActionParam: INT32;
+export let iDrawMode: INT32 = Enum38.DRAW_MODE_NOTHING;
+export let iCurrentAction: INT32;
+export let iActionParam: INT32;
 let iEditAction: INT32 = Enum37.ACTION_NULL;
 
-let iEditorButton: INT32[] /* [NUMBER_EDITOR_BUTTONS] */;
-let iEditorToolbarState: INT32;
+export let iEditorButton: INT32[] /* [NUMBER_EDITOR_BUTTONS] */;
+export let iEditorToolbarState: INT32;
 let iJA2ToolbarLastWallState: INT32;
 
-let iCurrentTaskbar: INT32;
+export let iCurrentTaskbar: INT32;
 
 let iCurBankMapIndex: UINT16;
 
@@ -90,8 +90,8 @@ let fFirstTimeInEditModeInit: boolean = true;
 let fSelectionWindow: boolean = false;
 let gfRealGunNut: boolean = true;
 
-let sGridX: INT16;
-let sGridY: INT16;
+export let sGridX: INT16;
+export let sGridY: INT16;
 let iMapIndex: UINT32;
 let fNewMap: boolean = false;
 
@@ -101,11 +101,11 @@ let gPrevCurrentBackground: INT32 = Enum313.FIRSTTEXTURE;
 let iPrevJA2ToolbarState: INT32 = Enum35.TBAR_MODE_NONE;
 let PrevTerrainTileDrawMode: INT32 = TERRAIN_TILES_NODRAW;
 
-let gusEditorTaskbarColor: UINT16;
-let gusEditorTaskbarHiColor: UINT16;
-let gusEditorTaskbarLoColor: UINT16;
+export let gusEditorTaskbarColor: UINT16;
+export let gusEditorTaskbarHiColor: UINT16;
+export let gusEditorTaskbarLoColor: UINT16;
 
-let gfGotoGridNoUI: boolean = false;
+export let gfGotoGridNoUI: boolean = false;
 let guiGotoGridNoUIButtonID: INT32;
 let GotoGridNoUIRegion: MOUSE_REGION;
 
@@ -114,7 +114,7 @@ let GotoGridNoUIRegion: MOUSE_REGION;
 //
 //	This function is called once at SGP (and game) startup
 //
-function EditScreenInit(): UINT32 {
+export function EditScreenInit(): UINT32 {
   gfFakeLights = false;
 
   eInfo.fGameInit = true;
@@ -145,7 +145,7 @@ function EditScreenInit(): UINT32 {
 //
 //	This function is called once at shutdown of the game
 //
-function EditScreenShutdown(): UINT32 {
+export function EditScreenShutdown(): UINT32 {
   GameShutdownEditorMercsInfo();
   RemoveAllFromUndoList();
   KillClipboard();
@@ -610,7 +610,7 @@ function DrawTempMouseCursorObject(): boolean {
 }
 
 // Displays the current drawing object in the small, lower left window of the editor's toolbar.
-function ShowCurrentDrawingMode(): void {
+export function ShowCurrentDrawingMode(): void {
   let ClipRect: SGPRect;
   let NewRect: SGPRect;
   let iShowMode: INT32;
@@ -2044,7 +2044,7 @@ function PerformSelectedAction(): UINT32 {
   return uiRetVal;
 }
 
-function CreateNewMap(): void {
+export function CreateNewMap(): void {
   if (gfSummaryWindowActive)
     DestroySummaryWindow();
 
@@ -2430,7 +2430,7 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
 //
 //	Creates and places a light of selected radius and color into the world.
 //
-function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): boolean {
+export function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): boolean {
   let iLightHandle: INT32;
   let ubIntensity: UINT8;
   let Filename: STRING512;
@@ -2503,7 +2503,7 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): b
 //	Returns TRUE if deleted the light, otherwise, returns FALSE.
 //	i.e. FALSE is not an error condition!
 //
-function RemoveLight(iMapX: INT16, iMapY: INT16): boolean {
+export function RemoveLight(iMapX: INT16, iMapY: INT16): boolean {
   let iCount: INT32;
   let cnt: UINT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -2559,7 +2559,7 @@ function RemoveLight(iMapX: INT16, iMapY: INT16): boolean {
 //	For all lights that are in the world (except lights attached to mercs), this function places
 //	a marker at it's location for editing purposes.
 //
-function ShowLightPositionHandles(): void {
+export function ShowLightPositionHandles(): void {
   let iCount: INT32;
   let iMapIndex: INT32;
   let cnt: UINT16;
@@ -3051,7 +3051,7 @@ function DoIRenderASpecialMouseCursor(): boolean {
   return false;
 }
 
-function ShowEntryPoints(): void {
+export function ShowEntryPoints(): void {
   // make entry points visible
   if (gMapInformation.sNorthGridNo != -1)
     AddTopmostToTail(gMapInformation.sNorthGridNo, Enum312.FIRSTPOINTERS2);
@@ -3075,43 +3075,43 @@ function HideEntryPoints(): void {
     RemoveAllTopmostsOfTypeRange(gMapInformation.sWestGridNo, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
 }
 
-function TaskOptionsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskOptionsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_OPTIONS;
   }
 }
 
-function TaskTerrainCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskTerrainCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_TERRAIN;
   }
 }
 
-function TaskBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_BUILDINGS;
   }
 }
 
-function TaskItemsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskItemsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_ITEMS;
   }
 }
 
-function TaskMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_MERCS;
   }
 }
 
-function TaskMapInfoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskMapInfoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_MAPINFO;
   }
 }
 
-function ProcessAreaSelection(fWithLeftButton: boolean): void {
+export function ProcessAreaSelection(fWithLeftButton: boolean): void {
   let fPrevState: boolean = gfRenderWorld;
   gfRenderWorld = true;
   switch (iDrawMode) {
@@ -3219,7 +3219,7 @@ function DrawObjectsBasedOnSelectionRegion(): void {
 }
 
 // The main loop of the editor.
-function EditScreenHandle(): UINT32 {
+export function EditScreenHandle(): UINT32 {
   let uiRetVal: UINT32;
   let fShowingCursor: boolean;
   StartFrameBufferRender();

@@ -48,26 +48,26 @@ const MAP_INVEN_SLOT_HEIGHT = 32;
 const MAP_INVEN_SLOT_IMAGE_HEIGHT = 24;
 
 // the current highlighted item
-let iCurrentlyHighLightedItem: INT32 = -1;
-let fFlashHighLightInventoryItemOnradarMap: boolean = false;
+export let iCurrentlyHighLightedItem: INT32 = -1;
+export let fFlashHighLightInventoryItemOnradarMap: boolean = false;
 
 // whether we are showing the inventory pool graphic
-let fShowMapInventoryPool: boolean = false;
+export let fShowMapInventoryPool: boolean = false;
 
 // the v-object index value for the background
 let guiMapInventoryPoolBackground: UINT32;
 
 // inventory pool list
-let pInventoryPoolList: Pointer<WORLDITEM> = null;
+export let pInventoryPoolList: Pointer<WORLDITEM> = null;
 
 // current page of inventory
-let iCurrentInventoryPoolPage: INT32 = 0;
+export let iCurrentInventoryPoolPage: INT32 = 0;
 let iLastInventoryPoolPage: INT32 = 0;
 
 // total number of slots allocated
 let iTotalNumberOfSlots: INT32 = 0;
 
-let sObjectSourceGridNo: INT16 = 0;
+export let sObjectSourceGridNo: INT16 = 0;
 
 // number of unseen items in sector
 let uiNumberOfUnSeenItems: UINT32 = 0;
@@ -75,7 +75,7 @@ let uiNumberOfUnSeenItems: UINT32 = 0;
 // the inventory slots
 let MapInventoryPoolSlots: MOUSE_REGION[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
 let MapInventoryPoolMask: MOUSE_REGION;
-let fMapInventoryItemCompatable: boolean[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
+export let fMapInventoryItemCompatable: boolean[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
 let fChangedInventorySlots: boolean = false;
 
 // the unseen items list...have to save this
@@ -84,8 +84,8 @@ let pUnSeenItems: Pointer<WORLDITEM> = null;
 // save list to write to temp file
 let pSaveList: Pointer<WORLDITEM> = null;
 
-let giFlashHighlightedItemBaseTime: INT32 = 0;
-let giCompatibleItemBaseTime: INT32 = 0;
+export let giFlashHighlightedItemBaseTime: INT32 = 0;
+export let giCompatibleItemBaseTime: INT32 = 0;
 
 // the buttons and images
 let guiMapInvenButtonImage: UINT32[] /* [3] */;
@@ -94,7 +94,7 @@ let guiMapInvenButton: UINT32[] /* [3] */;
 let gfCheckForCursorOverMapSectorInventoryItem: boolean = false;
 
 // load the background panel graphics for inventory
-function LoadInventoryPoolGraphic(): boolean {
+export function LoadInventoryPoolGraphic(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the file
@@ -108,7 +108,7 @@ function LoadInventoryPoolGraphic(): boolean {
 }
 
 // remove background panel graphics for inventory
-function RemoveInventoryPoolGraphic(): void {
+export function RemoveInventoryPoolGraphic(): void {
   // remove from v-object index
   if (guiMapInventoryPoolBackground) {
     DeleteVideoObjectFromIndex(guiMapInventoryPoolBackground);
@@ -119,7 +119,7 @@ function RemoveInventoryPoolGraphic(): void {
 }
 
 // blit the background panel for the inventory
-function BlitInventoryPoolGraphic(): void {
+export function BlitInventoryPoolGraphic(): void {
   let hHandle: HVOBJECT;
 
   // blit inventory pool graphic to the screen
@@ -304,7 +304,7 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
 }
 
 // create and remove buttons for inventory
-function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: boolean): void {
+export function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: boolean): void {
   /* static */ let fCreated: boolean = false;
 
   /* player can leave items underground, no?
@@ -377,7 +377,7 @@ function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: boolean): void
   HandleMapSectorInventory();
 }
 
-function CancelSectorInventoryDisplayIfOn(fExitFromMapScreen: boolean): void {
+export function CancelSectorInventoryDisplayIfOn(fExitFromMapScreen: boolean): void {
   if (fShowMapInventoryPool) {
     // get rid of sector inventory mode & buttons
     fShowMapInventoryPool = false;
@@ -1177,7 +1177,7 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
   return true;
 }
 
-function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): boolean {
+export function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): boolean {
   let ubNumberToDrop: UINT8;
   let ubSlotLimit: UINT8;
   let ubLoop: UINT8;
@@ -1297,7 +1297,7 @@ function GetTotalNumberOfItemsInSectorStash(): INT32 {
   return iCount;
 }
 
-function GetTotalNumberOfItems(): INT32 {
+export function GetTotalNumberOfItems(): INT32 {
   let iCounter: INT32;
   let iCount: INT32 = 0;
 
@@ -1425,7 +1425,7 @@ function DrawTextOnMapInventoryBackground(): void {
   return;
 }
 
-function HandleButtonStatesWhileMapInventoryActive(): void {
+export function HandleButtonStatesWhileMapInventoryActive(): void {
   // are we even showing the amp inventory pool graphic?
   if (fShowMapInventoryPool == false) {
     return;
@@ -1474,7 +1474,7 @@ function DrawTextOnSectorInventory(): void {
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 }
 
-function HandleFlashForHighLightedItem(): void {
+export function HandleFlashForHighLightedItem(): void {
   let iCurrentTime: INT32 = 0;
   let iDifference: INT32 = 0;
 
@@ -1597,7 +1597,7 @@ function HandleMapSectorInventory(): void {
 }
 
 // CJC look here to add/remove checks for the sector inventory
-function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): boolean {
+export function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): boolean {
   if (pWorldItem.value.bVisible == 1 && pWorldItem.value.fExists && pWorldItem.value.o.usItem != Enum225.SWITCH && pWorldItem.value.o.usItem != Enum225.ACTION_ITEM && pWorldItem.value.o.bTrap <= 0) {
     return true;
   }

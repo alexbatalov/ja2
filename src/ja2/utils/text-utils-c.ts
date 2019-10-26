@@ -1,4 +1,4 @@
-function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): boolean {
+export function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): boolean {
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
   let i: UINT16;
@@ -180,7 +180,7 @@ function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): 
   return true;
 }
 
-function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): boolean {
+export function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): boolean {
   let hFile: HWFILE;
   //  wchar_t		DestString[ SIZE_MERC_BIO_INFO ];
   let uiBytesRead: UINT32;
@@ -287,11 +287,11 @@ function LoadAllItemNames(): void {
   }
 }
 
-function LoadAllExternalText(): void {
+export function LoadAllExternalText(): void {
   LoadAllItemNames();
 }
 
-function GetWeightUnitString(): Pointer<INT16> {
+export function GetWeightUnitString(): Pointer<INT16> {
   if (gGameSettings.fOptions[Enum8.TOPTION_USE_METRIC_SYSTEM]) // metric
   {
     return pMessageStrings[Enum333.MSG_KILOGRAM_ABBREVIATION];
@@ -300,7 +300,7 @@ function GetWeightUnitString(): Pointer<INT16> {
   }
 }
 
-function GetWeightBasedOnMetricOption(uiObjectWeight: UINT32): FLOAT {
+export function GetWeightBasedOnMetricOption(uiObjectWeight: UINT32): FLOAT {
   let fWeight: FLOAT = 0.0;
 
   // if the user is smart and wants things displayed in 'metric'

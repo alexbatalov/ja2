@@ -17,17 +17,17 @@ const enum Enum310 {
 }
 let iTPButtons: UINT32[] /* [NUM_TP_BUTTONS] */;
 
-let gubDefaultButton: UINT8 = Enum310.CLEAR_BUTTON;
-let gfTacticalPlacementGUIActive: boolean = false;
+export let gubDefaultButton: UINT8 = Enum310.CLEAR_BUTTON;
+export let gfTacticalPlacementGUIActive: boolean = false;
 let gfTacticalPlacementFirstTime: boolean = false;
-let gfEnterTacticalPlacementGUI: boolean = false;
+export let gfEnterTacticalPlacementGUI: boolean = false;
 let gfKillTacticalGUI: boolean = false;
 let giOverheadPanelImage: INT32 = 0;
 let giOverheadButtonImages: INT32[] /* [NUM_TP_BUTTONS] */;
-let giMercPanelImage: INT32 = 0;
+export let giMercPanelImage: INT32 = 0;
 let giPlacements: INT32 = 0;
-let gfTacticalPlacementGUIDirty: boolean = false;
-let gfValidLocationsChanged: boolean = false;
+export let gfTacticalPlacementGUIDirty: boolean = false;
+export let gfValidLocationsChanged: boolean = false;
 let gTPClipRect: SGPRect = [ 0, 0, 0, 0 ];
 let gfValidCursor: boolean = false;
 let gfEveryonePlaced: boolean = false;
@@ -38,15 +38,15 @@ let gubCursorGroupID: UINT8 = 0;
 let gbSelectedMercID: INT8 = -1;
 let gbHilightedMercID: INT8 = -1;
 let gbCursorMercID: INT8 = -1;
-let gpTacticalPlacementSelectedSoldier: Pointer<SOLDIERTYPE> = null;
-let gpTacticalPlacementHilightedSoldier: Pointer<SOLDIERTYPE> = null;
+export let gpTacticalPlacementSelectedSoldier: Pointer<SOLDIERTYPE> = null;
+export let gpTacticalPlacementHilightedSoldier: Pointer<SOLDIERTYPE> = null;
 
 let gfNorth: boolean;
 let gfEast: boolean;
 let gfSouth: boolean;
 let gfWest: boolean;
 
-function InitTacticalPlacementGUI(): void {
+export function InitTacticalPlacementGUI(): void {
   let VObjectDesc: VOBJECT_DESC;
   let i: INT32;
   let xp: INT32;
@@ -370,7 +370,7 @@ function EnsureDoneButtonStatus(): void {
   }
 }
 
-function TacticalPlacementHandle(): void {
+export function TacticalPlacementHandle(): void {
   let InputEvent: InputAtom;
 
   EnsureDoneButtonStatus();
@@ -663,7 +663,7 @@ function SelectNextUnplacedUnit(): void {
   }
 }
 
-function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   let i: INT32;
   let sGridNo: INT16;
   let fInvalidArea: boolean = false;

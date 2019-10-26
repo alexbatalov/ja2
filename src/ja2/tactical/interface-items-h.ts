@@ -1,17 +1,17 @@
 // DEFINES FOR ITEM SLOT SIZES IN PIXELS
-const BIG_INV_SLOT_WIDTH = 61;
-const BIG_INV_SLOT_HEIGHT = 22;
-const SM_INV_SLOT_WIDTH = 30;
-const SM_INV_SLOT_HEIGHT = 23;
-const VEST_INV_SLOT_WIDTH = 43;
-const VEST_INV_SLOT_HEIGHT = 24;
-const LEGS_INV_SLOT_WIDTH = 43;
-const LEGS_INV_SLOT_HEIGHT = 24;
-const HEAD_INV_SLOT_WIDTH = 43;
-const HEAD_INV_SLOT_HEIGHT = 24;
+export const BIG_INV_SLOT_WIDTH = 61;
+export const BIG_INV_SLOT_HEIGHT = 22;
+export const SM_INV_SLOT_WIDTH = 30;
+export const SM_INV_SLOT_HEIGHT = 23;
+export const VEST_INV_SLOT_WIDTH = 43;
+export const VEST_INV_SLOT_HEIGHT = 24;
+export const LEGS_INV_SLOT_WIDTH = 43;
+export const LEGS_INV_SLOT_HEIGHT = 24;
+export const HEAD_INV_SLOT_WIDTH = 43;
+export const HEAD_INV_SLOT_HEIGHT = 24;
 
 // A STRUCT USED INTERNALLY FOR INV SLOT REGIONS
-interface INV_REGIONS {
+export interface INV_REGIONS {
   fBigPocket: boolean;
   sBarDx: INT16;
   sBarDy: INT16;
@@ -22,7 +22,7 @@ interface INV_REGIONS {
 }
 
 // USED TO SETUP REGION POSITIONS, ETC
-interface INV_REGION_DESC {
+export interface INV_REGION_DESC {
   sX: INT16;
   sY: INT16;
 }

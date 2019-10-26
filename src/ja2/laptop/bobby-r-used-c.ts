@@ -1,10 +1,10 @@
 let guiUsedBackground: UINT32;
 let guiUsedGrid: UINT32;
 
-function GameInitBobbyRUsed(): void {
+export function GameInitBobbyRUsed(): void {
 }
 
-function EnterBobbyRUsed(): boolean {
+export function EnterBobbyRUsed(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
@@ -30,7 +30,7 @@ function EnterBobbyRUsed(): boolean {
   return true;
 }
 
-function ExitBobbyRUsed(): void {
+export function ExitBobbyRUsed(): void {
   DeleteVideoObjectFromIndex(guiUsedBackground);
   DeleteVideoObjectFromIndex(guiUsedGrid);
   DeleteBobbyMenuBar();
@@ -41,10 +41,10 @@ function ExitBobbyRUsed(): void {
   guiLastBobbyRayPage = Enum95.LAPTOP_MODE_BOBBY_R_USED;
 }
 
-function HandleBobbyRUsed(): void {
+export function HandleBobbyRUsed(): void {
 }
 
-function RenderBobbyRUsed(): void {
+export function RenderBobbyRUsed(): void {
   let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiUsedBackground);

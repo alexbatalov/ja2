@@ -12,7 +12,7 @@ function Clock(hWindow: HWND, uMessage: UINT, idEvent: UINT, dwTime: DWORD): voi
   }
 }
 
-function InitializeClockManager(): boolean {
+export function InitializeClockManager(): boolean {
   // Register the start time (use WIN95 API call)
   guiCurrentTime = guiStartupTime = GetTickCount();
   SetTimer(ghWindow, MAIN_TIMER_ID, 10, Clock);
@@ -20,12 +20,12 @@ function InitializeClockManager(): boolean {
   return true;
 }
 
-function ShutdownClockManager(): void {
+export function ShutdownClockManager(): void {
   // Make sure we kill the timer
   KillTimer(ghWindow, MAIN_TIMER_ID);
 }
 
-function GetClock(): TIMER {
+export function GetClock(): TIMER {
   return guiCurrentTime;
 }
 

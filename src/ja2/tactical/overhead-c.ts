@@ -1,7 +1,7 @@
 const RT_DELAY_BETWEEN_AI_HANDLING = 50;
 const RT_AI_TIMESLICE = 10;
 
-let giRTAILastUpdateTime: INT32 = 0;
+export let giRTAILastUpdateTime: INT32 = 0;
 let guiAISlotToHandle: UINT32 = 0;
 const HANDLE_OFF_MAP_MERC = 0xFFFF;
 const RESET_HANDLE_OF_OFF_MAP_MERCS = 0xFFFF;
@@ -16,12 +16,12 @@ let giPauseAllAITimer: INT32 = 0;
 const START_DEMO_SCENE = 3;
 const NUM_RANDOM_SCENES = 4;
 
-let gDebugStr: INT8[] /* [128] */;
+export let gDebugStr: INT8[] /* [128] */;
 
 const NEW_FADE_DELAY = 60;
 
 // ATE: GLOBALS FOR E3
-let gubCurrentScene: UINT8 = 0;
+export let gubCurrentScene: UINT8 = 0;
 let gzLevelFilenames: CHAR8[][] /* [][50] */ = [
   "A9.dat",
   "ScotTBMines.dat",
@@ -46,32 +46,32 @@ let ubLevelMoveLink: INT8[] /* [10] */ = [
 ];
 
 // Soldier List used for all soldier overhead interaction
-let Menptr: SOLDIERTYPE[] /* [TOTAL_SOLDIERS] */;
-let MercPtrs: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;
+export let Menptr: SOLDIERTYPE[] /* [TOTAL_SOLDIERS] */;
+export let MercPtrs: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;
 
-let MercSlots: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;
-let guiNumMercSlots: UINT32 = 0;
+export let MercSlots: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;
+export let guiNumMercSlots: UINT32 = 0;
 
 let AwaySlots: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;
 let guiNumAwaySlots: UINT32 = 0;
 
 // DEF: changed to have client wait for gPlayerNum assigned from host
-let gbPlayerNum: UINT8 = 0;
+export let gbPlayerNum: UINT8 = 0;
 
 // Global for current selected soldier
-let gusSelectedSoldier: UINT16 = NO_SOLDIER;
-let gbShowEnemies: INT8 = false;
+export let gusSelectedSoldier: UINT16 = NO_SOLDIER;
+export let gbShowEnemies: INT8 = false;
 
 let gfMovingAnimation: boolean = false;
 
-let gzAlertStr: CHAR8[][] /* [][30] */ = [
+export let gzAlertStr: CHAR8[][] /* [][30] */ = [
   "GREEN",
   "YELLOW",
   "RED",
   "BLACK",
 ];
 
-let gzActionStr: CHAR8[][] /* [][30] */ = [
+export let gzActionStr: CHAR8[][] /* [][30] */ = [
   "NONE",
 
   "RANDOM PATROL",
@@ -130,7 +130,7 @@ let gzActionStr: CHAR8[][] /* [][30] */ = [
   "OFFER SURRENDER",
 ];
 
-let gzDirectionStr: CHAR8[][] /* [][30] */ = [
+export let gzDirectionStr: CHAR8[][] /* [][30] */ = [
   "NORTHEAST",
   "EAST",
   "SOUTHEAST",
@@ -166,11 +166,11 @@ let bDefaultTeamColors: COLORVAL[] /* [MAXTEAMS] */ = [
   FROMRGB(0, 0, 255),
 ];
 
-let gubWaitingForAllMercsToExitCode: UINT8 = 0;
+export let gubWaitingForAllMercsToExitCode: UINT8 = 0;
 let gbNumMercsUntilWaitingOver: INT8 = 0;
 let guiWaitingForAllMercsToExitData: UINT32[] /* [3] */;
 let guiWaitingForAllMercsToExitTimer: UINT32 = 0;
-let gfKillingGuysForLosingBattle: boolean = false;
+export let gfKillingGuysForLosingBattle: boolean = false;
 
 function GetFreeMercSlot(): INT32 {
   let uiCount: UINT32;
@@ -202,7 +202,7 @@ function RecountMercSlots(): void {
   }
 }
 
-function AddMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+export function AddMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let iMercIndex: INT32;
 
   if ((iMercIndex = GetFreeMercSlot()) == (-1))
@@ -213,7 +213,7 @@ function AddMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return iMercIndex;
 }
 
-function RemoveMercSlot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function RemoveMercSlot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let uiCount: UINT32;
 
   CHECKF(pSoldier != null);
@@ -259,7 +259,7 @@ function RecountAwaySlots(): void {
   }
 }
 
-function AddAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+export function AddAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let iAwayIndex: INT32;
 
   if ((iAwayIndex = GetFreeAwaySlot()) == (-1))
@@ -270,7 +270,7 @@ function AddAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return iAwayIndex;
 }
 
-function RemoveAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function RemoveAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let uiCount: UINT32;
 
   CHECKF(pSoldier != null);
@@ -287,7 +287,7 @@ function RemoveAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function MoveSoldierFromMercToAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+export function MoveSoldierFromMercToAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let fRet: boolean;
 
   fRet = RemoveMercSlot(pSoldier);
@@ -304,7 +304,7 @@ function MoveSoldierFromMercToAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return AddAwaySlot(pSoldier);
 }
 
-function MoveSoldierFromAwayToMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+export function MoveSoldierFromAwayToMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let fRet: boolean;
 
   fRet = RemoveAwaySlot(pSoldier);
@@ -319,7 +319,7 @@ function MoveSoldierFromAwayToMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return AddMercSlot(pSoldier);
 }
 
-function InitTacticalEngine(): boolean {
+export function InitTacticalEngine(): boolean {
   // Init renderer
   InitRenderParams(0);
 
@@ -358,7 +358,7 @@ function InitTacticalEngine(): boolean {
   return true;
 }
 
-function ShutdownTacticalEngine(): void {
+export function ShutdownTacticalEngine(): void {
   DeletePaletteData();
 
   ShutdownStaticExternalNPCFaces();
@@ -370,7 +370,7 @@ function ShutdownTacticalEngine(): void {
   ShutdownNPCQuotes();
 }
 
-function InitOverhead(): boolean {
+export function InitOverhead(): boolean {
   let cnt: UINT32;
   let cnt2: UINT8;
 
@@ -464,7 +464,7 @@ function InitOverhead(): boolean {
   return true;
 }
 
-function ShutdownOverhead(): boolean {
+export function ShutdownOverhead(): boolean {
   let cnt: UINT32;
 
   // Delete any soldiers which have been created!
@@ -479,7 +479,7 @@ function ShutdownOverhead(): boolean {
   return true;
 }
 
-function GetSoldier(ppSoldier: Pointer<Pointer<SOLDIERTYPE>>, usSoldierIndex: UINT16): boolean {
+export function GetSoldier(ppSoldier: Pointer<Pointer<SOLDIERTYPE>>, usSoldierIndex: UINT16): boolean {
   // Check range of index given
   ppSoldier.value = null;
 
@@ -549,17 +549,17 @@ function NextAIToHandle(uiCurrAISlot: UINT32): boolean {
   return false;
 }
 
-function PauseAITemporarily(): void {
+export function PauseAITemporarily(): void {
   gfPauseAllAI = true;
   giPauseAllAITimer = GetJA2Clock();
 }
 
-function PauseAIUntilManuallyUnpaused(): void {
+export function PauseAIUntilManuallyUnpaused(): void {
   gfPauseAllAI = true;
   giPauseAllAITimer = 0;
 }
 
-function UnPauseAI(): void {
+export function UnPauseAI(): void {
   // overrides any timer too
   gfPauseAllAI = false;
   giPauseAllAITimer = 0;
@@ -577,7 +577,7 @@ let gdRadiansForAngle: FLOAT[] /* [] */ = [
   (-3 * Math.PI / 4),
 ];
 
-function ExecuteOverhead(): boolean {
+export function ExecuteOverhead(): boolean {
   let cnt: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let sAPCost: INT16;
@@ -1295,7 +1295,7 @@ function HandleLocateToGuyAsHeWalks(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer<boolean>, fInitialMove: boolean, usAnimState: UINT16): boolean {
+export function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer<boolean>, fInitialMove: boolean, usAnimState: UINT16): boolean {
   let sAPCost: INT16;
   let sBPCost: INT16;
   let usNewGridNo: UINT16;
@@ -1996,7 +1996,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
   return true;
 }
 
-function SelectNextAvailSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SelectNextAvailSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let fSoldierFound: boolean = false;
@@ -2021,7 +2021,7 @@ function SelectNextAvailSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: boolean, fForceReselect: boolean, fFromUI: boolean): void {
+export function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: boolean, fForceReselect: boolean, fFromUI: boolean): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pOldSoldier: Pointer<SOLDIERTYPE>;
 
@@ -2146,7 +2146,7 @@ function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: boolean, fForc
   BeginCurInteractiveTileCheck(INTILE_CHECK_SELECTIVE);
 }
 
-function SelectSoldier(usSoldierID: UINT16, fAcknowledge: boolean, fForceReselect: boolean): void {
+export function SelectSoldier(usSoldierID: UINT16, fAcknowledge: boolean, fForceReselect: boolean): void {
   InternalSelectSoldier(usSoldierID, fAcknowledge, fForceReselect, false);
 }
 
@@ -2164,7 +2164,7 @@ function ResetAllAnimationCache(): boolean {
   return true;
 }
 
-function LocateSoldier(usID: UINT16, fSetLocator: boolean): void {
+export function LocateSoldier(usID: UINT16, fSetLocator: boolean): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let sNewCenterWorldX: INT16;
   let sNewCenterWorldY: INT16;
@@ -2198,7 +2198,7 @@ function LocateSoldier(usID: UINT16, fSetLocator: boolean): void {
   }
 }
 
-function InternalLocateGridNo(sGridNo: UINT16, fForce: boolean): void {
+export function InternalLocateGridNo(sGridNo: UINT16, fForce: boolean): void {
   let sNewCenterWorldX: INT16;
   let sNewCenterWorldY: INT16;
 
@@ -2212,11 +2212,11 @@ function InternalLocateGridNo(sGridNo: UINT16, fForce: boolean): void {
   SetRenderCenter(sNewCenterWorldX, sNewCenterWorldY);
 }
 
-function LocateGridNo(sGridNo: UINT16): void {
+export function LocateGridNo(sGridNo: UINT16): void {
   InternalLocateGridNo(sGridNo, false);
 }
 
-function SlideTo(sGridno: INT16, usSoldierID: UINT16, usReasonID: UINT16, fSetLocator: boolean): void {
+export function SlideTo(sGridno: INT16, usSoldierID: UINT16, usReasonID: UINT16, fSetLocator: boolean): void {
   let cnt: INT32;
 
   if (usSoldierID == NOBODY) {
@@ -2249,7 +2249,7 @@ function SlideTo(sGridno: INT16, usSoldierID: UINT16, usReasonID: UINT16, fSetLo
   gfPlotNewMovement = true;
 }
 
-function SlideToLocation(usReasonID: UINT16, sDestGridNo: INT16): void {
+export function SlideToLocation(usReasonID: UINT16, sDestGridNo: INT16): void {
   if (sDestGridNo == NOWHERE) {
     return;
   }
@@ -2267,7 +2267,7 @@ function SlideToLocation(usReasonID: UINT16, sDestGridNo: INT16): void {
   gfPlotNewMovement = true;
 }
 
-function RebuildAllSoldierShadeTables(): void {
+export function RebuildAllSoldierShadeTables(): void {
   let cnt: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -2279,7 +2279,7 @@ function RebuildAllSoldierShadeTables(): void {
   }
 }
 
-function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   let cnt: INT32;
   let iNewSelectedSoldier: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -2369,7 +2369,7 @@ function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
+export function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
   let pKiller: Pointer<SOLDIERTYPE> = null;
   let bVisible: boolean;
 
@@ -2647,7 +2647,7 @@ function LastActiveTeamMember(ubTeam: UINT8): UINT8 {
   return gTacticalStatus.Team[ubTeam].bLastID;
 }
 
-function CheckForPotentialAddToBattleIncrement(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CheckForPotentialAddToBattleIncrement(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Check if we are a threat!
   if (!pSoldier.value.bNeutral && (pSoldier.value.bSide != gbPlayerNum)) {
     // if ( FindObjClass( pSoldier, IC_WEAPON ) != NO_SLOT )
@@ -2674,7 +2674,7 @@ function CheckForPotentialAddToBattleIncrement(pSoldier: Pointer<SOLDIERTYPE>): 
 }
 
 // internal function for turning neutral to FALSE
-function SetSoldierNonNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SetSoldierNonNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bNeutral = false;
 
   if (gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) {
@@ -2684,7 +2684,7 @@ function SetSoldierNonNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 // internal function for turning neutral to TRUE
-function SetSoldierNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SetSoldierNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bNeutral = true;
 
   if (gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) {
@@ -2695,7 +2695,7 @@ function SetSoldierNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
   }
 }
-function MakeCivHostile(pSoldier: Pointer<SOLDIERTYPE>, bNewSide: INT8): void {
+export function MakeCivHostile(pSoldier: Pointer<SOLDIERTYPE>, bNewSide: INT8): void {
   if (pSoldier.value.ubBodyType == Enum194.COW) {
     return;
   }
@@ -2771,7 +2771,7 @@ function MakeCivHostile(pSoldier: Pointer<SOLDIERTYPE>, bNewSide: INT8): void {
   }
 }
 
-function CivilianGroupMembersChangeSidesWithinProximity(pAttacked: Pointer<SOLDIERTYPE>): UINT8 {
+export function CivilianGroupMembersChangeSidesWithinProximity(pAttacked: Pointer<SOLDIERTYPE>): UINT8 {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let ubFirstProfile: UINT8 = NO_PROFILE;
   let cnt: UINT8;
@@ -2802,7 +2802,7 @@ function CivilianGroupMembersChangeSidesWithinProximity(pAttacked: Pointer<SOLDI
   return ubFirstProfile;
 }
 
-function CivilianGroupMemberChangesSides(pAttacked: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
+export function CivilianGroupMemberChangesSides(pAttacked: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   let pNew: Pointer<SOLDIERTYPE>;
   let pNewAttacked: Pointer<SOLDIERTYPE> = pAttacked;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -2862,7 +2862,7 @@ function CivilianGroupMemberChangesSides(pAttacked: Pointer<SOLDIERTYPE>): Point
   return pNewAttacked;
 }
 
-function CivilianGroupChangesSides(ubCivilianGroup: UINT8): void {
+export function CivilianGroupChangesSides(ubCivilianGroup: UINT8): void {
   // change civ group side due to external event (wall blowing up)
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -2967,7 +2967,7 @@ function NumActiveAndConsciousTeamMembers(ubTeam: UINT8): INT8 {
   return ubCount;
 }
 
-function FindNextActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: boolean, fOnlyRegularMercs: boolean): UINT8 {
+export function FindNextActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: boolean, fOnlyRegularMercs: boolean): UINT8 {
   let bLastTeamID: UINT8;
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -3021,7 +3021,7 @@ function FindNextActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLess
   return pSoldier.value.ubID;
 }
 
-function FindNextActiveSquad(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
+export function FindNextActiveSquad(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   let cnt: INT32;
   let cnt2: INT32;
 
@@ -3047,7 +3047,7 @@ function FindNextActiveSquad(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYP
   return pSoldier;
 }
 
-function FindPrevActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: boolean, fOnlyRegularMercs: boolean): UINT8 {
+export function FindPrevActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: boolean, fOnlyRegularMercs: boolean): UINT8 {
   let bLastTeamID: UINT8;
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -3139,7 +3139,7 @@ function EndTacticalDemo(): void {
   gTacticalStatus.fGoingToEnterDemo = false;
 }
 
-function EnterTacticalDemoMode(): UINT32 {
+export function EnterTacticalDemoMode(): UINT32 {
   let ubNewScene: UINT8 = gubCurrentScene;
   let ubNumScenes: UINT8 = NUM_RANDOM_SCENES;
 
@@ -3184,7 +3184,7 @@ function GetSceneFilename(): Pointer<CHAR8> {
 }
 
 // NB if making changes don't forget to update NewOKDestinationAndDirection
-function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fPeopleToo: boolean, bLevel: INT8): INT16 {
+export function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fPeopleToo: boolean, bLevel: INT8): INT16 {
   let bPerson: UINT8;
   let pStructure: Pointer<STRUCTURE>;
   let sDesiredLevel: INT16;
@@ -3383,7 +3383,7 @@ function NewOKDestinationAndDirection(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridN
 }
 
 // Kris:
-function FlatRoofAboveGridNo(iMapIndex: INT32): boolean {
+export function FlatRoofAboveGridNo(iMapIndex: INT32): boolean {
   let pRoof: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   pRoof = gpWorldLevelData[iMapIndex].pRoofHead;
@@ -3405,7 +3405,7 @@ function FlatRoofAboveGridNo(iMapIndex: INT32): boolean {
 // to know is whether or not I can put a merc here.  In most cases, I won't be dealing with multi-tiled
 // mercs, and the rarity doesn't justify the needs.  I just wrote this to be quick and dirty, and I don't
 // expect it to perform perfectly in all situations.
-function IsLocationSittable(iMapIndex: INT32, fOnRoof: boolean): boolean {
+export function IsLocationSittable(iMapIndex: INT32, fOnRoof: boolean): boolean {
   let pStructure: Pointer<STRUCTURE>;
   let sDesiredLevel: INT16;
   if (WhoIsThere2(iMapIndex, 0) != NO_SOLDIER)
@@ -3428,7 +3428,7 @@ function IsLocationSittable(iMapIndex: INT32, fOnRoof: boolean): boolean {
   return true;
 }
 
-function IsLocationSittableExcludingPeople(iMapIndex: INT32, fOnRoof: boolean): boolean {
+export function IsLocationSittableExcludingPeople(iMapIndex: INT32, fOnRoof: boolean): boolean {
   let pStructure: Pointer<STRUCTURE>;
   let sDesiredLevel: INT16;
 
@@ -3450,7 +3450,7 @@ function IsLocationSittableExcludingPeople(iMapIndex: INT32, fOnRoof: boolean): 
   return true;
 }
 
-function TeamMemberNear(bTeam: INT8, sGridNo: INT16, iRange: INT32): boolean {
+export function TeamMemberNear(bTeam: INT8, sGridNo: INT16, iRange: INT32): boolean {
   let bLoop: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -3465,7 +3465,7 @@ function TeamMemberNear(bTeam: INT8, sGridNo: INT16, iRange: INT32): boolean {
   return false;
 }
 
-function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubDirection: Pointer<UINT8>, psAdjustedGridNo: Pointer<INT16>, fForceToPerson: boolean, fDoor: boolean): INT16 {
+export function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubDirection: Pointer<UINT8>, psAdjustedGridNo: Pointer<INT16>, fForceToPerson: boolean, fDoor: boolean): INT16 {
   // psAdjustedGridNo gets the original gridno or the new one if updated
   // It will ONLY be updated IF we were over a merc, ( it's updated to their gridno )
   // pubDirection gets the direction to the final gridno
@@ -3707,7 +3707,7 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
     return -1;
 }
 
-function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubDirection: Pointer<UINT8>, psAdjustedGridNo: Pointer<INT16>, fForceToPerson: boolean, fDoor: boolean): INT16 {
+export function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubDirection: Pointer<UINT8>, psAdjustedGridNo: Pointer<INT16>, fForceToPerson: boolean, fDoor: boolean): INT16 {
   // This function works in a similar way as FindAdjacentGridEx, but looks for a location 2 tiles away
 
   // psAdjustedGridNo gets the original gridno or the new one if updated
@@ -3939,7 +3939,7 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   */
 }
 
-function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, psAdjustedTargetGridNo: Pointer<INT16>, pubDirection: Pointer<UINT8>): INT16 {
+export function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, psAdjustedTargetGridNo: Pointer<INT16>, pubDirection: Pointer<UINT8>): INT16 {
   let cnt: INT16;
   let sSpot: INT16;
   let ubGuyThere: UINT8;
@@ -3967,7 +3967,7 @@ function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier:
   return NOWHERE;
 }
 
-function UIOKMoveDestination(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): boolean {
+export function UIOKMoveDestination(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): boolean {
   let fVisible: boolean;
 
   // Check if a hidden tile exists but is not revealed
@@ -3999,7 +3999,7 @@ function UIOKMoveDestination(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): 
   return true;
 }
 
-function HandleTeamServices(ubTeamNum: UINT8): void {
+export function HandleTeamServices(ubTeamNum: UINT8): void {
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let pTargetSoldier: Pointer<SOLDIERTYPE>;
@@ -4077,7 +4077,7 @@ function HandleTeamServices(ubTeamNum: UINT8): void {
   }
 }
 
-function HandlePlayerServices(pTeamSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandlePlayerServices(pTeamSoldier: Pointer<SOLDIERTYPE>): void {
   let pTargetSoldier: Pointer<SOLDIERTYPE>;
   let uiPointsUsed: UINT32;
   let usSoldierIndex: UINT16;
@@ -4148,7 +4148,7 @@ function HandlePlayerServices(pTeamSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function CommonEnterCombatModeCode(): void {
+export function CommonEnterCombatModeCode(): void {
   let cnt: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -4234,7 +4234,7 @@ function CommonEnterCombatModeCode(): void {
   SetMusicMode(Enum328.MUSIC_TACTICAL_BATTLE);
 }
 
-function EnterCombatMode(ubStartingTeam: UINT8): void {
+export function EnterCombatMode(ubStartingTeam: UINT8): void {
   let cnt: UINT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
@@ -4282,7 +4282,7 @@ function EnterCombatMode(ubStartingTeam: UINT8): void {
   }
 }
 
-function ExitCombatMode(): void {
+export function ExitCombatMode(): void {
   let cnt: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -4356,7 +4356,7 @@ function ExitCombatMode(): void {
   NonCombatDecayPublicOpplist(GetWorldTotalSeconds());
 }
 
-function SetEnemyPresence(): void {
+export function SetEnemyPresence(): void {
   // We have an ememy present....
 
   // Check if we previously had no enemys present and we are in a virgin secotr ( no enemys spotted yet )
@@ -4488,7 +4488,7 @@ function SayBattleSoundFromAnyBodyInSector(iBattleSnd: INT32): void {
   }
 }
 
-function CheckForEndOfCombatMode(fIncrementTurnsNotSeen: boolean): boolean {
+export function CheckForEndOfCombatMode(fIncrementTurnsNotSeen: boolean): boolean {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: UINT32 = 0;
   let fWeSeeNoOne: boolean;
@@ -4613,7 +4613,7 @@ function DeathNoMessageTimerCallback(): void {
 //!!!!
 // IMPORTANT NEW NOTE:
 // Whenever returning TRUE, make sure you clear gfBlitBattleSectorLocator;
-function CheckForEndOfBattle(fAnEnemyRetreated: boolean): boolean {
+export function CheckForEndOfBattle(fAnEnemyRetreated: boolean): boolean {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let fBattleWon: boolean = true;
   let fBattleLost: boolean = false;
@@ -4888,7 +4888,7 @@ function CheckForEndOfBattle(fAnEnemyRetreated: boolean): boolean {
   return false;
 }
 
-function CycleThroughKnownEnemies(): void {
+export function CycleThroughKnownEnemies(): void {
   // static to indicate last position we were at:
   let pSoldier: Pointer<SOLDIERTYPE>;
   /* static */ let fFirstTime: boolean = true;
@@ -4939,7 +4939,7 @@ function CycleThroughKnownEnemies(): void {
   }
 }
 
-function CycleVisibleEnemies(pSrcSoldier: Pointer<SOLDIERTYPE>): void {
+export function CycleVisibleEnemies(pSrcSoldier: Pointer<SOLDIERTYPE>): void {
   // static to indicate last position we were at:
   let pSoldier: Pointer<SOLDIERTYPE>;
   let usStartToLook: UINT16;
@@ -5002,7 +5002,7 @@ function CountNonVehiclesOnPlayerTeam(): INT8 {
   return bNumber;
 }
 
-function PlayerTeamFull(): boolean {
+export function PlayerTeamFull(): boolean {
   // last ID for the player team is 19, so long as we have at most 17 non-vehicles...
   if (CountNonVehiclesOnPlayerTeam() <= gTacticalStatus.Team[gbPlayerNum].bLastID - 2) {
     return false;
@@ -5011,7 +5011,7 @@ function PlayerTeamFull(): boolean {
   return true;
 }
 
-function NumPCsInSector(): UINT8 {
+export function NumPCsInSector(): UINT8 {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: UINT32 = 0;
   let ubNumPlayers: UINT8 = 0;
@@ -5030,7 +5030,7 @@ function NumPCsInSector(): UINT8 {
   return ubNumPlayers;
 }
 
-function NumEnemyInSector(): UINT8 {
+export function NumEnemyInSector(): UINT8 {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32 = 0;
   let ubNumEnemies: UINT8 = 0;
@@ -5126,7 +5126,7 @@ function NumBloodcatsInSectorNotDeadOrDying(): UINT8 {
   return ubNumEnemies;
 }
 
-function NumCapableEnemyInSector(): UINT8 {
+export function NumCapableEnemyInSector(): UINT8 {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32 = 0;
   let ubNumEnemies: UINT8 = 0;
@@ -5536,7 +5536,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
   } // end of loop
 }
 
-function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget: Pointer<Pointer<SOLDIERTYPE>>, bReason: INT8): boolean {
+export function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget: Pointer<Pointer<SOLDIERTYPE>>, bReason: INT8): boolean {
   let sTargetXPos: INT16;
   let sTargetYPos: INT16;
   let fEnterCombat: boolean = true;
@@ -5904,7 +5904,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: boolean, 
   return pTarget;
 }
 
-function ReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: boolean): Pointer<SOLDIERTYPE> {
+export function ReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: boolean): Pointer<SOLDIERTYPE> {
   if (ubID == NOBODY) {
     return InternalReduceAttackBusyCount(ubID, fCalledByAttacker, NOBODY);
   } else {
@@ -5912,7 +5912,7 @@ function ReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: boolean): Pointer
   }
 }
 
-function FreeUpAttacker(ubID: UINT8): Pointer<SOLDIERTYPE> {
+export function FreeUpAttacker(ubID: UINT8): Pointer<SOLDIERTYPE> {
   // Strange as this may seem, this function returns a pointer to
   // the *target* in case the target has changed sides as a result
   // of being attacked
@@ -5920,7 +5920,7 @@ function FreeUpAttacker(ubID: UINT8): Pointer<SOLDIERTYPE> {
   return ReduceAttackBusyCount(ubID, true);
 }
 
-function FreeUpAttackerGivenTarget(ubID: UINT8, ubTargetID: UINT8): Pointer<SOLDIERTYPE> {
+export function FreeUpAttackerGivenTarget(ubID: UINT8, ubTargetID: UINT8): Pointer<SOLDIERTYPE> {
   // Strange as this may seem, this function returns a pointer to
   // the *target* in case the target has changed sides as a result
   // of being attacked
@@ -5928,7 +5928,7 @@ function FreeUpAttackerGivenTarget(ubID: UINT8, ubTargetID: UINT8): Pointer<SOLD
   return InternalReduceAttackBusyCount(ubID, true, ubTargetID);
 }
 
-function ReduceAttackBusyGivenTarget(ubID: UINT8, ubTargetID: UINT8): Pointer<SOLDIERTYPE> {
+export function ReduceAttackBusyGivenTarget(ubID: UINT8, ubTargetID: UINT8): Pointer<SOLDIERTYPE> {
   // Strange as this may seem, this function returns a pointer to
   // the *target* in case the target has changed sides as a result
   // of being attacked
@@ -5959,7 +5959,7 @@ function StopMercAnimation(fStop: boolean): void {
   }
 }
 
-function ResetAllMercSpeeds(): void {
+export function ResetAllMercSpeeds(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: UINT32;
 
@@ -5972,7 +5972,7 @@ function ResetAllMercSpeeds(): void {
   }
 }
 
-function SetActionToDoOnceMercsGetToLocation(ubActionCode: UINT8, bNumMercsWaiting: INT8, uiData1: UINT32, uiData2: UINT32, uiData3: UINT32): void {
+export function SetActionToDoOnceMercsGetToLocation(ubActionCode: UINT8, bNumMercsWaiting: INT8, uiData1: UINT32, uiData2: UINT32, uiData3: UINT32): void {
   gubWaitingForAllMercsToExitCode = ubActionCode;
   gbNumMercsUntilWaitingOver = bNumMercsWaiting;
   guiWaitingForAllMercsToExitData[0] = uiData1;
@@ -6008,7 +6008,7 @@ function HandleBloodForNewGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function CencelAllActionsForTimeCompression(): void {
+export function CencelAllActionsForTimeCompression(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
 
@@ -6025,7 +6025,7 @@ function CencelAllActionsForTimeCompression(): void {
   }
 }
 
-function AddManToTeam(bTeam: INT8): void {
+export function AddManToTeam(bTeam: INT8): void {
   // ATE: If not loading game!
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // Increment men in sector number!
@@ -6039,7 +6039,7 @@ function AddManToTeam(bTeam: INT8): void {
   }
 }
 
-function RemoveManFromTeam(bTeam: INT8): void {
+export function RemoveManFromTeam(bTeam: INT8): void {
   // ATE; if not loading game!
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // Decrement men in sector number!
@@ -6053,7 +6053,7 @@ function RemoveManFromTeam(bTeam: INT8): void {
   }
 }
 
-function RemoveSoldierFromTacticalSector(pSoldier: Pointer<SOLDIERTYPE>, fAdjustSelected: boolean): void {
+export function RemoveSoldierFromTacticalSector(pSoldier: Pointer<SOLDIERTYPE>, fAdjustSelected: boolean): void {
   let ubID: UINT8;
   let pNewSoldier: Pointer<SOLDIERTYPE>;
 
@@ -6112,7 +6112,7 @@ function EndBattleWithUnconsciousGuysCallback(bExitValue: UINT8): void {
   CheckAndHandleUnloadingOfCurrentWorld();
 }
 
-function InitializeTacticalStatusAtBattleStart(): void {
+export function InitializeTacticalStatusAtBattleStart(): void {
   let bLoop: INT8;
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -6171,7 +6171,7 @@ function DeathTimerCallback(): void {
   }
 }
 
-function CaptureTimerCallback(): void {
+export function CaptureTimerCallback(): void {
   if (gfSurrendered) {
     DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[3], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, null);
   } else {
@@ -6180,7 +6180,7 @@ function CaptureTimerCallback(): void {
   gfSurrendered = false;
 }
 
-function DoPOWPathChecks(): void {
+export function DoPOWPathChecks(): void {
   let iLoop: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -6211,7 +6211,7 @@ function DoPOWPathChecks(): void {
   }
 }
 
-function HostileCiviliansPresent(): boolean {
+export function HostileCiviliansPresent(): boolean {
   let iLoop: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -6251,7 +6251,7 @@ function HostileCiviliansWithGunsPresent(): boolean {
   return false;
 }
 
-function HostileBloodcatsPresent(): boolean {
+export function HostileBloodcatsPresent(): boolean {
   let iLoop: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 

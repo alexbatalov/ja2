@@ -6,15 +6,15 @@
 const MAJOR_MAP_VERSION = 5.00;
 // #endif
 
-let gdMajorMapVersion: FLOAT = MAJOR_MAP_VERSION;
+export let gdMajorMapVersion: FLOAT = MAJOR_MAP_VERSION;
 
-let gfWorldLoaded: boolean;
+export let gfWorldLoaded: boolean;
 
-let gMapInformation: MAPCREATE_STRUCT;
+export let gMapInformation: MAPCREATE_STRUCT;
 
 // Current minor map version updater.
 const MINOR_MAP_VERSION = 25;
-let gubMinorMapVersion: UINT8 = MINOR_MAP_VERSION;
+export let gubMinorMapVersion: UINT8 = MINOR_MAP_VERSION;
 
 /*
 MINOR_MAP_VERSION Log -- Created by Kris Morness, November 14, 1997
@@ -54,7 +54,7 @@ Version 11 -- Kris -- obsolete May 2, 1998
 
 // EntryPoints can't be placed on the top two gridnos in a map.  So all we do in this case
 // is return the closest gridno.  Returns TRUE if the mapindex changes.
-function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): boolean {
+export function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): boolean {
   let sXMapPos: INT16;
   let sYMapPos: INT16;
   let sWorldX: INT16;
@@ -88,14 +88,14 @@ function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): boolean {
   return true; // modified
 }
 
-function SaveMapInformation(fp: HWFILE): void {
+export function SaveMapInformation(fp: HWFILE): void {
   let uiBytesWritten: UINT32;
 
   gMapInformation.ubMapVersion = MINOR_MAP_VERSION;
   FileWrite(fp, addressof(gMapInformation), sizeof(MAPCREATE_STRUCT), addressof(uiBytesWritten));
 }
 
-function LoadMapInformation(hBuffer: Pointer<Pointer<INT8>>): void {
+export function LoadMapInformation(hBuffer: Pointer<Pointer<INT8>>): void {
   LOADDATA(addressof(gMapInformation), hBuffer.value, sizeof(MAPCREATE_STRUCT));
   // FileRead( hfile, &gMapInformation, sizeof( MAPCREATE_STRUCT ), &uiBytesRead);
 
@@ -222,7 +222,7 @@ function AutoCalculateItemNoOverwriteStatus(): void {
   }
 }
 
-function ValidateAndUpdateMapVersionIfNecessary(): void {
+export function ValidateAndUpdateMapVersionIfNecessary(): void {
   // Older versions of mercs may require updating due to past bug fixes, new changes, etc.
   if (gMapInformation.ubMapVersion < MINOR_MAP_VERSION) {
     SetRelativeStartAndEndPercentage(0, 92, 93, "Updating older map version...");
@@ -238,7 +238,7 @@ function ValidateAndUpdateMapVersionIfNecessary(): void {
 // This function is used to avoid conflicts between minor version updates and sector summary info.
 // By updating the summary info in conjunction with minor version updates, we can avoid these conflicts
 // and really prevent major map updates.
-function UpdateSummaryInfo(pSummary: Pointer<SUMMARYFILE>): void {
+export function UpdateSummaryInfo(pSummary: Pointer<SUMMARYFILE>): void {
   if (pSummary.value.MapInfo.ubMapVersion == MINOR_MAP_VERSION)
     return;
   if (pSummary.value.MapInfo.ubMapVersion < 9) {

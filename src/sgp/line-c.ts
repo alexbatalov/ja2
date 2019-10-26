@@ -23,7 +23,7 @@ let giClipXMax: int = 0;
 let giClipYMin: int = 0;
 let giClipYMax: int = 0;
 
-function SetClippingRegionAndImageWidth(iImageWidth: int, iClipStartX: int, iClipStartY: int, iClipWidth: int, iClipHeight: int): void {
+export function SetClippingRegionAndImageWidth(iImageWidth: int, iClipStartX: int, iClipStartY: int, iClipWidth: int, iClipHeight: int): void {
   giImageWidth = iImageWidth;
   giClipXMin = iClipStartX;
   giClipXMax = iClipStartX + iClipWidth - 1;
@@ -112,7 +112,7 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
 }
 
 /* Draws a line between the specified endpoints in color Color. */
-function LineDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
+export function LineDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   let Temp: int;
   let AdjUp: int;
   let AdjDown: int;
@@ -303,7 +303,7 @@ function LineDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int
 }
 
 // Draws a pixel in the specified color
-function PixelDraw(fClip: boolean, xp: INT32, yp: INT32, sColor: INT16, pScreen: Pointer<INT8>): void {
+export function PixelDraw(fClip: boolean, xp: INT32, yp: INT32, sColor: INT16, pScreen: Pointer<INT8>): void {
   let col2: INT8 = sColor >> 8;
   let col1: INT8 = sColor & 0x00ff;
 
@@ -356,7 +356,7 @@ function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLe
 }
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-function RectangleDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
+export function RectangleDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   LineDraw(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);
@@ -372,7 +372,7 @@ function RectangleDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd
  ***********************************************************************************/
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-function RectangleDraw8(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
+export function RectangleDraw8(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   LineDraw8(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);

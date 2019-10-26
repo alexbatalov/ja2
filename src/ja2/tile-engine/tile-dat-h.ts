@@ -1,4 +1,4 @@
-const enum Enum312 {
+export const enum Enum312 {
   FIRSTTEXTURE1 = 0,
   FIRSTTEXTURE2,
   FIRSTTEXTURE3,
@@ -3265,10 +3265,10 @@ const enum Enum312 {
   NUMBEROFTILES,
 }
 
-const BLUEFLAG_GRAPHIC = Enum312.FIRSTSWITCHES21;
+export const BLUEFLAG_GRAPHIC = Enum312.FIRSTSWITCHES21;
 
 // Defines for tile type identification
-const enum Enum313 {
+export const enum Enum313 {
   FIRSTTEXTURE = 0,
   SECONDTEXTURE,
   THIRDTEXTURE,
@@ -3469,35 +3469,35 @@ const enum Enum313 {
 //==========================================================================
 // Quick defines for finding last type entry in tile types
 const LASTTEXTURE = (Enum313.DEEPWATERTEXTURE - 1);
-const LASTBANKS = (Enum313.FIRSTCLIFFSHADOW - 1);
-const LASTCLIFFHANG = (Enum313.FIRSTCLIFF - 1);
-const LASTCLIFFSHADOW = (Enum313.FIRSTOSTRUCT - 1);
-const LASTOSTRUCT = (Enum313.THIRDFULLSTRUCT - 1);
-const LASTSHADOW = (Enum313.FIRSTWALL - 1);
-const LASTWALL = (Enum313.FIRSTDOOR - 1);
-const LASTDOOR = (Enum313.FIRSTDOORSHADOW - 1);
-const LASTDOORSHADOW = (Enum313.SLANTROOFCEILING - 1);
-const LASTDECORATIONS = (Enum313.FIRSTWALLDECAL - 1);
-const LASTWALLDECAL = (Enum313.FIRSTFLOOR - 1);
-const LASTFLOOR = (Enum313.FIRSTROOF - 1);
-const LASTROOF = (Enum313.FIRSTSLANTROOF - 1);
-const LASTSLANTROOF = (Enum313.FIRSTONROOF - 1);
+export const LASTBANKS = (Enum313.FIRSTCLIFFSHADOW - 1);
+export const LASTCLIFFHANG = (Enum313.FIRSTCLIFF - 1);
+export const LASTCLIFFSHADOW = (Enum313.FIRSTOSTRUCT - 1);
+export const LASTOSTRUCT = (Enum313.THIRDFULLSTRUCT - 1);
+export const LASTSHADOW = (Enum313.FIRSTWALL - 1);
+export const LASTWALL = (Enum313.FIRSTDOOR - 1);
+export const LASTDOOR = (Enum313.FIRSTDOORSHADOW - 1);
+export const LASTDOORSHADOW = (Enum313.SLANTROOFCEILING - 1);
+export const LASTDECORATIONS = (Enum313.FIRSTWALLDECAL - 1);
+export const LASTWALLDECAL = (Enum313.FIRSTFLOOR - 1);
+export const LASTFLOOR = (Enum313.FIRSTROOF - 1);
+export const LASTROOF = (Enum313.FIRSTSLANTROOF - 1);
+export const LASTSLANTROOF = (Enum313.FIRSTONROOF - 1);
 const LASTMOCKFLOOR = (Enum313.FIRSTISTRUCT - 1);
-const LASTISTRUCT = (Enum313.FIRSTROAD - 1);
-const LASTROAD = (Enum313.DEBRISROCKS - 1);
-const LASTDEBRIS = (Enum313.ANIOSTRUCT - 1);
-const LASTITEM = (Enum313.WINDOWSHATTER - 1);
+export const LASTISTRUCT = (Enum313.FIRSTROAD - 1);
+export const LASTROAD = (Enum313.DEBRISROCKS - 1);
+export const LASTDEBRIS = (Enum313.ANIOSTRUCT - 1);
+export const LASTITEM = (Enum313.WINDOWSHATTER - 1);
 //#define LASTDEBRIS				(FOOTPRINTS - 1)
 const LASTFOOTPRINTS = (Enum313.FIRSTPOINTERS - 1);
-const LASTPOINTERS = (Enum313.SELRING - 1);
-const LASTUIELEM = (Enum313.WIREFRAMES - 1); // Change this entry if adding new types to the end
+export const LASTPOINTERS = (Enum313.SELRING - 1);
+export const LASTUIELEM = (Enum313.WIREFRAMES - 1); // Change this entry if adding new types to the end
 const LASTTIELSETELEM = (Enum313.GUNS - 1);
 
 //===========================================================================
 
 // DEFINES FOR SPECIFIC SPECIAL TILE SLOTS
-const WALL_AFRAME_START = 31;
-const WALL_AFRAME_END = 34;
+export const WALL_AFRAME_START = 31;
+export const WALL_AFRAME_END = 34;
 const WALL_AFRAME1 = 31;
 const WALL_AFRAME2 = 32;
 const WALL_AFRAME3 = 33;

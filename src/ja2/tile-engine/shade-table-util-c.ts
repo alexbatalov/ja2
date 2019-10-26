@@ -1,9 +1,9 @@
 const SHADE_TABLE_DIR = "ShadeTables";
 
-let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
-let gfForceBuildShadeTables: boolean = false;
+export let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
+export let gfForceBuildShadeTables: boolean = false;
 
-function DetermineRGBDistributionSettings(): void {
+export function DetermineRGBDistributionSettings(): void {
   let DataDir: STRING512;
   let ExecDir: STRING512;
   let ShadeTableDir: STRING512;
@@ -94,7 +94,7 @@ function DetermineRGBDistributionSettings(): void {
   SetFileManCurrentDirectory(DataDir);
 }
 
-function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
+export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
   let hfile: HWFILE;
   let i: INT32;
   let uiNumBytesRead: UINT32;
@@ -132,7 +132,7 @@ function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
   return true;
 }
 
-function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
+export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
   let hfile: HWFILE;
   let i: INT32;
   let uiNumBytesWritten: UINT32;
@@ -164,6 +164,6 @@ function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
   return true;
 }
 
-function DeleteShadeTableDir(): boolean {
+export function DeleteShadeTableDir(): boolean {
   return RemoveFileManDirectory(SHADE_TABLE_DIR, true);
 }

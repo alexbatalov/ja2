@@ -1,4 +1,4 @@
-let gpUndergroundSectorInfoTail: Pointer<UNDERGROUND_SECTORINFO> = null;
+export let gpUndergroundSectorInfoTail: Pointer<UNDERGROUND_SECTORINFO> = null;
 
 function NewUndergroundNode(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): Pointer<UNDERGROUND_SECTORINFO> {
   let curr: Pointer<UNDERGROUND_SECTORINFO>;
@@ -133,7 +133,7 @@ function GeneratePatrolGroups(): void {
   pGroup.value.ubTransportationMask = CAR;
 }
 
-function TrashUndergroundSectorInfo(): void {
+export function TrashUndergroundSectorInfo(): void {
   let curr: Pointer<UNDERGROUND_SECTORINFO>;
   while (gpUndergroundSectorInfoHead) {
     curr = gpUndergroundSectorInfoHead;
@@ -148,7 +148,7 @@ function TrashUndergroundSectorInfo(): void {
 // contains the network of cave connections critical for strategic creature spreading, as we can't
 // know how the levels connect without loading the maps.  This is completely hardcoded, and any
 // changes to the maps, require changes accordingly.
-function BuildUndergroundSectorInfoList(): void {
+export function BuildUndergroundSectorInfoList(): void {
   let curr: Pointer<UNDERGROUND_SECTORINFO>;
   let pSector: Pointer<SECTORINFO> = null;
 
@@ -307,7 +307,7 @@ function BuildUndergroundSectorInfoList(): void {
 // This is the function that is called only once, when the player begins a new game.  This will calculate
 // starting numbers of the queen's army in various parts of the map, which will vary from campaign to campaign.
 // This is also highly effected by the game's difficulty setting.
-function InitNewCampaign(): void {
+export function InitNewCampaign(): void {
   // First clear all the sector information of all enemy existance.  Conveniently, the
   // ubGroupType is also cleared, which is perceived to be an empty group.
   memset(addressof(SectorInfo), 0, sizeof(SECTORINFO) * 256);

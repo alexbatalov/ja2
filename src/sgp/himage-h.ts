@@ -8,41 +8,41 @@
 //   image header.
 
 // Defines for type of file readers
-const PCX_FILE_READER = 0x1;
-const TGA_FILE_READER = 0x2;
-const STCI_FILE_READER = 0x4;
+export const PCX_FILE_READER = 0x1;
+export const TGA_FILE_READER = 0x2;
+export const STCI_FILE_READER = 0x4;
 const TRLE_FILE_READER = 0x8;
-const UNKNOWN_FILE_READER = 0x200;
+export const UNKNOWN_FILE_READER = 0x200;
 
 // Defines for buffer bit depth
-const BUFFER_8BPP = 0x1;
-const BUFFER_16BPP = 0x2;
+export const BUFFER_8BPP = 0x1;
+export const BUFFER_16BPP = 0x2;
 
 // Defines for image charactoristics
-const IMAGE_COMPRESSED = 0x0001;
-const IMAGE_TRLECOMPRESSED = 0x0002;
-const IMAGE_PALETTE = 0x0004;
-const IMAGE_BITMAPDATA = 0x0008;
-const IMAGE_APPDATA = 0x0010;
-const IMAGE_ALLIMAGEDATA = 0x000C;
-const IMAGE_ALLDATA = 0x001C;
+export const IMAGE_COMPRESSED = 0x0001;
+export const IMAGE_TRLECOMPRESSED = 0x0002;
+export const IMAGE_PALETTE = 0x0004;
+export const IMAGE_BITMAPDATA = 0x0008;
+export const IMAGE_APPDATA = 0x0010;
+export const IMAGE_ALLIMAGEDATA = 0x000C;
+export const IMAGE_ALLDATA = 0x001C;
 
 // Palette structure, mimics that of Win32
-interface SGPPaletteEntry {
+export interface SGPPaletteEntry {
   peRed: UINT8;
   peGreen: UINT8;
   peBlue: UINT8;
   peFlags: UINT8;
 }
 
-const AUX_FULL_TILE = 0x01;
-const AUX_ANIMATED_TILE = 0x02;
+export const AUX_FULL_TILE = 0x01;
+export const AUX_ANIMATED_TILE = 0x02;
 const AUX_DYNAMIC_TILE = 0x04;
 const AUX_INTERACTIVE_TILE = 0x08;
 const AUX_IGNORES_HEIGHT = 0x10;
 const AUX_USES_LAND_Z = 0x20;
 
-interface AuxObjectData {
+export interface AuxObjectData {
   ubWallOrientation: UINT8;
   ubNumberOfTiles: UINT8;
   usTileLocIndex: UINT16;
@@ -53,13 +53,13 @@ interface AuxObjectData {
   ubUnused: UINT8[] /* [6] */;
 }
 
-interface RelTileLoc {
+export interface RelTileLoc {
   bTileOffsetX: INT8;
   bTileOffsetY: INT8;
 } // relative tile location
 
 // TRLE subimage structure, mirroring that of ST(C)I
-interface ETRLEObject {
+export interface ETRLEObject {
   uiDataOffset: UINT32;
   uiDataLength: UINT32;
   sOffsetX: INT16;
@@ -68,7 +68,7 @@ interface ETRLEObject {
   usWidth: UINT16;
 }
 
-interface ETRLEData {
+export interface ETRLEData {
   pPixData: PTR;
   uiSizePixData: UINT32;
   pETRLEObject: Pointer<ETRLEObject>;
@@ -76,7 +76,7 @@ interface ETRLEData {
 }
 
 // Image header structure
-interface image_type {
+export interface image_type {
   usWidth: UINT16;
   usHeight: UINT16;
   ubBitDepth: UINT8;
@@ -109,11 +109,11 @@ interface image_type {
   /* } */
 }
 
-type HIMAGE = Pointer<image_type>;
+export type HIMAGE = Pointer<image_type>;
 
-const SGPGetRValue = (rgb) => ((rgb));
-const SGPGetBValue = (rgb) => (((rgb) >> 16));
-const SGPGetGValue = (rgb) => ((((rgb)) >> 8));
+export const SGPGetRValue = (rgb) => ((rgb));
+export const SGPGetBValue = (rgb) => (((rgb) >> 16));
+export const SGPGetGValue = (rgb) => ((((rgb)) >> 8));
 
 // *****************************************************************************
 //

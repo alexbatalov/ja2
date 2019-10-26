@@ -1,15 +1,15 @@
 // the delay for a group about to arrive
 const ABOUT_TO_ARRIVE_DELAY = 5;
 
-let gpGroupList: Pointer<GROUP>;
+export let gpGroupList: Pointer<GROUP>;
 
 let gpPendingSimultaneousGroup: Pointer<GROUP> = null;
 
-let gfDelayAutoResolveStart: boolean = false;
+export let gfDelayAutoResolveStart: boolean = false;
 
 let gfRandomizingPatrolGroup: boolean = false;
 
-let gubNumGroupsArrivedSimultaneously: UINT8 = 0;
+export let gubNumGroupsArrivedSimultaneously: UINT8 = 0;
 
 // Doesn't require text localization.  This is for debug strings only.
 let gszTerrain: UINT8[][] /* [NUM_TRAVTERRAIN_TYPES][15] */ = [
@@ -28,7 +28,7 @@ let gszTerrain: UINT8[][] /* [NUM_TRAVTERRAIN_TYPES][15] */ = [
   "EDGEOFWORLD",
 ];
 
-let gfUndergroundTacticalTraversal: boolean = false;
+export let gfUndergroundTacticalTraversal: boolean = false;
 
 // remembers which player group is the Continue/Stop prompt about?  No need to save as long as you can't save while prompt ON
 let gpGroupPrompting: Pointer<GROUP> = null;
@@ -55,7 +55,7 @@ let gfWaitingForInput: boolean = false;
 //.........................
 // Creates a new player group, returning the unique ID of that group.  This is the first
 // step before adding waypoints and members to the player group.
-function CreateNewPlayerGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UINT8): UINT8 {
+export function CreateNewPlayerGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UINT8): UINT8 {
   let pNew: Pointer<GROUP>;
   AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, String("CreateNewPlayerGroup with out of range sectorX value of %d", ubSectorX));
   AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, String("CreateNewPlayerGroup with out of range sectorY value of %d", ubSectorY));
@@ -80,7 +80,7 @@ function CreateNewPlayerGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UI
   return AddGroupToList(pNew);
 }
 
-function CreateNewVehicleGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UINT8, uiUNISEDVehicleId: UINT32): UINT8 {
+export function CreateNewVehicleGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UINT8, uiUNISEDVehicleId: UINT32): UINT8 {
   let pNew: Pointer<GROUP>;
   AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, String("CreateNewVehicleGroup with out of range sectorX value of %d", ubSectorX));
   AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, String("CreateNewVehicleGroup with out of range sectorY value of %d", ubSectorY));
@@ -108,7 +108,7 @@ function CreateNewVehicleGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: U
 }
 
 // Allows you to add players to the group.
-function AddPlayerToGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function AddPlayerToGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pGroup: Pointer<GROUP>;
   let pPlayer: Pointer<PLAYERGROUP>;
   let curr: Pointer<PLAYERGROUP>;
@@ -259,7 +259,7 @@ function RemovePlayerFromPGroup(pGroup: Pointer<GROUP>, pSoldier: Pointer<SOLDIE
   return false;
 }
 
-function RemovePlayerFromGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function RemovePlayerFromGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pGroup: Pointer<GROUP>;
   pGroup = GetGroup(ubGroupID);
 
@@ -276,7 +276,7 @@ function RemovePlayerFromGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>)
   return RemovePlayerFromPGroup(pGroup, pSoldier);
 }
 
-function GroupReversingDirectionsBetweenSectors(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8, fBuildingWaypoints: boolean): boolean {
+export function GroupReversingDirectionsBetweenSectors(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8, fBuildingWaypoints: boolean): boolean {
   // if we're not between sectors, or we are but we're continuing in the same direction as before
   if (!GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, ubSectorX, ubSectorY)) {
     // then there's no need to reverse directions
@@ -333,7 +333,7 @@ function GroupReversingDirectionsBetweenSectors(pGroup: Pointer<GROUP>, ubSector
   return true;
 }
 
-function GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): boolean {
+export function GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): boolean {
   let currDX: INT32;
   let currDY: INT32;
   let newDX: INT32;
@@ -380,7 +380,7 @@ function GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup: Pointer<GR
 
 // Appends a waypoint to the end of the list.  Waypoint MUST be on the
 // same horizontal or vertical level as the last waypoint added.
-function AddWaypointToPGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): boolean // Same, but overloaded
+export function AddWaypointToPGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): boolean // Same, but overloaded
 {
   let pWay: Pointer<WAYPOINT>;
   let ubNumAlignedAxes: UINT8 = 0;
@@ -499,7 +499,7 @@ function AddWaypointIDToGroup(ubGroupID: UINT8, ubSectorID: UINT8): boolean {
 }
 
 // NOTE: This does NOT expect a strategic sector ID
-function AddWaypointIDToPGroup(pGroup: Pointer<GROUP>, ubSectorID: UINT8): boolean {
+export function AddWaypointIDToPGroup(pGroup: Pointer<GROUP>, ubSectorID: UINT8): boolean {
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
   ubSectorX = SECTORX(ubSectorID);
@@ -513,7 +513,7 @@ function AddWaypointStrategicIDToGroup(ubGroupID: UINT8, uiSectorID: UINT32): bo
   return AddWaypointStrategicIDToPGroup(pGroup, uiSectorID);
 }
 
-function AddWaypointStrategicIDToPGroup(pGroup: Pointer<GROUP>, uiSectorID: UINT32): boolean {
+export function AddWaypointStrategicIDToPGroup(pGroup: Pointer<GROUP>, uiSectorID: UINT32): boolean {
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
   ubSectorX = GET_X_FROM_STRATEGIC_INDEX(uiSectorID);
@@ -523,7 +523,7 @@ function AddWaypointStrategicIDToPGroup(pGroup: Pointer<GROUP>, uiSectorID: UINT
 
 // Enemy grouping functions -- private use by the strategic AI.
 //............................................................
-function CreateNewEnemyGroupDepartingFromSector(uiSector: UINT32, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8): Pointer<GROUP> {
+export function CreateNewEnemyGroupDepartingFromSector(uiSector: UINT32, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8): Pointer<GROUP> {
   let pNew: Pointer<GROUP>;
   AssertMsg(uiSector >= 0 && uiSector <= 255, String("CreateNewEnemyGroup with out of range value of %d", uiSector));
   pNew = MemAlloc(sizeof(GROUP));
@@ -610,7 +610,7 @@ function RemoveGroupIdFromList(ubId: UINT8): void {
   RemoveGroupFromList(pGroup);
 }
 // Destroys the waypoint list, detaches group from list, then deallocated the memory for the group
-function RemoveGroupFromList(pGroup: Pointer<GROUP>): void {
+export function RemoveGroupFromList(pGroup: Pointer<GROUP>): void {
   let curr: Pointer<GROUP>;
   let temp: Pointer<GROUP>;
   curr = gpGroupList;
@@ -656,7 +656,7 @@ function RemoveGroupFromList(pGroup: Pointer<GROUP>): void {
   }
 }
 
-function GetGroup(ubGroupID: UINT8): Pointer<GROUP> {
+export function GetGroup(ubGroupID: UINT8): Pointer<GROUP> {
   let curr: Pointer<GROUP>;
   curr = gpGroupList;
   while (curr) {
@@ -937,7 +937,7 @@ function DeployGroupToSector(pGroup: Pointer<GROUP>): void {
 
 // This will get called after a battle is auto-resolved or automatically after arriving
 // at the next sector during a move and the area is clear.
-function CalculateNextMoveIntention(pGroup: Pointer<GROUP>): void {
+export function CalculateNextMoveIntention(pGroup: Pointer<GROUP>): void {
   let i: INT32;
   let wp: Pointer<WAYPOINT>;
 
@@ -1017,7 +1017,7 @@ function CalculateNextMoveIntention(pGroup: Pointer<GROUP>): void {
   InitiateGroupMovementToNextSector(pGroup);
 }
 
-function AttemptToMergeSeparatedGroups(pGroup: Pointer<GROUP>, fDecrementTraversals: boolean): boolean {
+export function AttemptToMergeSeparatedGroups(pGroup: Pointer<GROUP>, fDecrementTraversals: boolean): boolean {
   let curr: Pointer<GROUP> = null;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let pCharacter: Pointer<SOLDIERTYPE> = null;
@@ -1122,7 +1122,7 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
 // This is called whenever any group arrives in the next sector (player or enemy)
 // This function will first check to see if a battle should start, or if they
 // aren't at the final destination, they will move to the next sector.
-function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: boolean, fNeverLeft: boolean): void {
+export function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: boolean, fNeverLeft: boolean): void {
   let pGroup: Pointer<GROUP>;
   let iVehId: INT32 = -1;
   let curr: Pointer<PLAYERGROUP>;
@@ -1874,14 +1874,14 @@ function InitiateGroupMovementToNextSector(pGroup: Pointer<GROUP>): void {
   }
 }
 
-function RemoveGroupWaypoints(ubGroupID: UINT8): void {
+export function RemoveGroupWaypoints(ubGroupID: UINT8): void {
   let pGroup: Pointer<GROUP>;
   pGroup = GetGroup(ubGroupID);
   Assert(pGroup);
   RemovePGroupWaypoints(pGroup);
 }
 
-function RemovePGroupWaypoints(pGroup: Pointer<GROUP>): void {
+export function RemovePGroupWaypoints(pGroup: Pointer<GROUP>): void {
   let wp: Pointer<WAYPOINT>;
   // if there aren't any waypoints to delete, then return.  This also avoids setting
   // the fWaypointsCancelled flag.
@@ -1924,7 +1924,7 @@ function SetGroupPrevSectors(ubGroupID: UINT8, ubX: UINT8, ubY: UINT8): void {
   pGroup.value.ubPrevY = ubY;
 }
 
-function RemoveGroup(ubGroupID: UINT8): void {
+export function RemoveGroup(ubGroupID: UINT8): void {
   let pGroup: Pointer<GROUP>;
   pGroup = GetGroup(ubGroupID);
 
@@ -1938,7 +1938,7 @@ function RemoveGroup(ubGroupID: UINT8): void {
 
 let gfRemovingAllGroups: boolean = false;
 
-function RemovePGroup(pGroup: Pointer<GROUP>): void {
+export function RemovePGroup(pGroup: Pointer<GROUP>): void {
   let bit: UINT32;
   let index: UINT32;
   let mask: UINT32;
@@ -1996,7 +1996,7 @@ function RemovePGroup(pGroup: Pointer<GROUP>): void {
   pGroup = null;
 }
 
-function RemoveAllGroups(): void {
+export function RemoveAllGroups(): void {
   gfRemovingAllGroups = true;
   while (gpGroupList) {
     RemovePGroup(gpGroupList);
@@ -2004,7 +2004,7 @@ function RemoveAllGroups(): void {
   gfRemovingAllGroups = false;
 }
 
-function SetGroupSectorValue(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubGroupID: UINT8): void {
+export function SetGroupSectorValue(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubGroupID: UINT8): void {
   let pGroup: Pointer<GROUP>;
   let pPlayer: Pointer<PLAYERGROUP>;
 
@@ -2041,7 +2041,7 @@ function SetGroupSectorValue(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, 
   CheckAndHandleUnloadingOfCurrentWorld();
 }
 
-function SetEnemyGroupSector(pGroup: Pointer<GROUP>, ubSectorID: UINT8): void {
+export function SetEnemyGroupSector(pGroup: Pointer<GROUP>, ubSectorID: UINT8): void {
   // make sure it is valid
   Assert(pGroup);
   DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
@@ -2081,7 +2081,7 @@ function SetGroupNextSectorValue(sSectorX: INT16, sSectorY: INT16, ubGroupID: UI
 }
 
 // get eta of the group with this id
-function CalculateTravelTimeOfGroupId(ubId: UINT8): INT32 {
+export function CalculateTravelTimeOfGroupId(ubId: UINT8): INT32 {
   let pGroup: Pointer<GROUP>;
 
   // get the group
@@ -2152,7 +2152,7 @@ function CalculateTravelTimeOfGroup(pGroup: Pointer<GROUP>): INT32 {
   return uiEtaTime;
 }
 
-function FindTravelTimeBetweenWaypoints(pSource: Pointer<WAYPOINT>, pDest: Pointer<WAYPOINT>, pGroup: Pointer<GROUP>): INT32 {
+export function FindTravelTimeBetweenWaypoints(pSource: Pointer<WAYPOINT>, pDest: Pointer<WAYPOINT>, pGroup: Pointer<GROUP>): INT32 {
   let ubStart: UINT8 = 0;
   let ubEnd: UINT8 = 0;
   let iDelta: INT32 = 0;
@@ -2220,7 +2220,7 @@ const TRACKED_TRAVEL_TIME = 46;
 const AIR_TRAVEL_TIME = 10;
 
 // CHANGES:  ubDirection contains the strategic move value, not the delta value.
-function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: Pointer<GROUP>): INT32 {
+export function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: Pointer<GROUP>): INT32 {
   let iTraverseTime: INT32;
   let iBestTraverseTime: INT32 = 1000000;
   let iEncumbrance: INT32;
@@ -2404,7 +2404,7 @@ function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: P
 }
 
 // Counts the number of live mercs in any given sector.
-function PlayerMercsInSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): UINT8 {
+export function PlayerMercsInSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): UINT8 {
   let pGroup: Pointer<GROUP>;
   let pPlayer: Pointer<PLAYERGROUP>;
   let ubNumMercs: UINT8 = 0;
@@ -2428,7 +2428,7 @@ function PlayerMercsInSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT
   return ubNumMercs;
 }
 
-function PlayerGroupsInSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): UINT8 {
+export function PlayerGroupsInSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): UINT8 {
   let pGroup: Pointer<GROUP>;
   let pPlayer: Pointer<PLAYERGROUP>;
   let ubNumGroups: UINT8 = 0;
@@ -2453,7 +2453,7 @@ function PlayerGroupsInSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UIN
 }
 
 // is the player group with this id in motion?
-function PlayerIDGroupInMotion(ubID: UINT8): boolean {
+export function PlayerIDGroupInMotion(ubID: UINT8): boolean {
   let pGroup: Pointer<GROUP>;
 
   // get the group
@@ -2475,7 +2475,7 @@ function PlayerGroupInMotion(pGroup: Pointer<GROUP>): boolean {
 }
 
 // get travel time for this group
-function GetTravelTimeForGroup(ubSector: UINT8, ubDirection: UINT8, ubGroup: UINT8): INT32 {
+export function GetTravelTimeForGroup(ubSector: UINT8, ubDirection: UINT8, ubGroup: UINT8): INT32 {
   let pGroup: Pointer<GROUP>;
 
   // get the group
@@ -2487,7 +2487,7 @@ function GetTravelTimeForGroup(ubSector: UINT8, ubDirection: UINT8, ubGroup: UIN
   return GetSectorMvtTimeForGroup(ubSector, ubDirection, pGroup);
 }
 
-function GetTravelTimeForFootTeam(ubSector: UINT8, ubDirection: UINT8): INT32 {
+export function GetTravelTimeForFootTeam(ubSector: UINT8, ubDirection: UINT8): INT32 {
   let Group: GROUP;
 
   // group going on foot
@@ -2500,7 +2500,7 @@ function GetTravelTimeForFootTeam(ubSector: UINT8, ubDirection: UINT8): INT32 {
 // NOTE:  For enemies, only MAX_STRATEGIC_TEAM_SIZE at a time can be in a battle, so
 // if it ever gets past that, god help the player, but we'll have to insert them
 // as those slots free up.
-function HandleArrivalOfReinforcements(pGroup: Pointer<GROUP>): void {
+export function HandleArrivalOfReinforcements(pGroup: Pointer<GROUP>): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pSector: Pointer<SECTORINFO>;
   let iNumEnemiesInSector: INT32;
@@ -2560,7 +2560,7 @@ function HandleArrivalOfReinforcements(pGroup: Pointer<GROUP>): void {
   }
 }
 
-function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountEnter: Pointer<INT32>, iCountExit: Pointer<INT32>, fAboutToArriveEnter: Pointer<boolean>): boolean {
+export function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountEnter: Pointer<INT32>, iCountExit: Pointer<INT32>, fAboutToArriveEnter: Pointer<boolean>): boolean {
   let curr: Pointer<GROUP> = gpGroupList;
   let sBattleSector: INT16 = -1;
   let fMayRetreatFromBattle: boolean = false;
@@ -2652,7 +2652,7 @@ function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountEnter: P
   }
 }
 
-function MoveAllGroupsInCurrentSectorToSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): void {
+export function MoveAllGroupsInCurrentSectorToSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): void {
   let pGroup: Pointer<GROUP>;
   let pPlayer: Pointer<PLAYERGROUP>;
   pGroup = gpGroupList;
@@ -2676,7 +2676,7 @@ function MoveAllGroupsInCurrentSectorToSector(ubSectorX: UINT8, ubSectorY: UINT8
   CheckAndHandleUnloadingOfCurrentWorld();
 }
 
-function GetGroupPosition(ubNextX: Pointer<UINT8>, ubNextY: Pointer<UINT8>, ubPrevX: Pointer<UINT8>, ubPrevY: Pointer<UINT8>, uiTraverseTime: Pointer<UINT32>, uiArriveTime: Pointer<UINT32>, ubGroupId: UINT8): void {
+export function GetGroupPosition(ubNextX: Pointer<UINT8>, ubNextY: Pointer<UINT8>, ubPrevX: Pointer<UINT8>, ubPrevY: Pointer<UINT8>, uiTraverseTime: Pointer<UINT32>, uiArriveTime: Pointer<UINT32>, ubGroupId: UINT8): void {
   let pGroup: Pointer<GROUP>;
 
   // get the group
@@ -2707,7 +2707,7 @@ function GetGroupPosition(ubNextX: Pointer<UINT8>, ubNextY: Pointer<UINT8>, ubPr
 }
 
 // this is only for grunts who were in mvt groups between sectors and are set to a new squad...NOTHING ELSE!!!!!
-function SetGroupPosition(ubNextX: UINT8, ubNextY: UINT8, ubPrevX: UINT8, ubPrevY: UINT8, uiTraverseTime: UINT32, uiArriveTime: UINT32, ubGroupId: UINT8): void {
+export function SetGroupPosition(ubNextX: UINT8, ubNextY: UINT8, ubPrevX: UINT8, ubPrevY: UINT8, uiTraverseTime: UINT32, uiArriveTime: UINT32, ubGroupId: UINT8): void {
   let pGroup: Pointer<GROUP>;
   let pPlayer: Pointer<PLAYERGROUP>;
 
@@ -2741,7 +2741,7 @@ function SetGroupPosition(ubNextX: UINT8, ubNextY: UINT8, ubPrevX: UINT8, ubPrev
   return;
 }
 
-function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): boolean {
   let pGroup: Pointer<GROUP> = null;
   let uiNumberOfGroups: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
@@ -2808,7 +2808,7 @@ function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): boolean {
+export function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): boolean {
   let pGroup: Pointer<GROUP> = null;
   let pTemp: Pointer<GROUP> = null;
   let uiNumberOfGroups: UINT32 = 0;
@@ -3189,7 +3189,7 @@ function LoadWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): boolean {
   return true;
 }
 
-function CalculateGroupRetreatSector(pGroup: Pointer<GROUP>): void {
+export function CalculateGroupRetreatSector(pGroup: Pointer<GROUP>): void {
   let pSector: Pointer<SECTORINFO>;
   let uiSectorID: UINT32;
 
@@ -3225,7 +3225,7 @@ function CalculateGroupRetreatSector(pGroup: Pointer<GROUP>): void {
 
 // Called when all checks have been made for the group (if possible to retreat, etc.)  This function
 // blindly determines where to move the group.
-function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
+export function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
   let ubSector: UINT8;
   let ubDirection: UINT8 = 255;
   let iVehId: INT32;
@@ -3306,7 +3306,7 @@ function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
   }
 }
 
-function FindMovementGroupInSector(ubSectorX: UINT8, ubSectorY: UINT8, fPlayer: boolean): Pointer<GROUP> {
+export function FindMovementGroupInSector(ubSectorX: UINT8, ubSectorY: UINT8, fPlayer: boolean): Pointer<GROUP> {
   let pGroup: Pointer<GROUP>;
   pGroup = gpGroupList;
   while (pGroup) {
@@ -3323,7 +3323,7 @@ function FindMovementGroupInSector(ubSectorX: UINT8, ubSectorY: UINT8, fPlayer: 
   return null;
 }
 
-function GroupAtFinalDestination(pGroup: Pointer<GROUP>): boolean {
+export function GroupAtFinalDestination(pGroup: Pointer<GROUP>): boolean {
   let wp: Pointer<WAYPOINT>;
 
   if (pGroup.value.ubMoveType != Enum185.ONE_WAY)
@@ -3347,7 +3347,7 @@ function GroupAtFinalDestination(pGroup: Pointer<GROUP>): boolean {
   return false;
 }
 
-function GetFinalWaypoint(pGroup: Pointer<GROUP>): Pointer<WAYPOINT> {
+export function GetFinalWaypoint(pGroup: Pointer<GROUP>): Pointer<WAYPOINT> {
   let wp: Pointer<WAYPOINT>;
 
   Assert(pGroup);
@@ -3367,7 +3367,7 @@ function GetFinalWaypoint(pGroup: Pointer<GROUP>): Pointer<WAYPOINT> {
 
 // The sector supplied resets ALL enemy groups in the sector specified.  See comments in
 // ResetMovementForEnemyGroup() for more details on what the resetting does.
-function ResetMovementForEnemyGroupsInLocation(ubSectorX: UINT8, ubSectorY: UINT8): void {
+export function ResetMovementForEnemyGroupsInLocation(ubSectorX: UINT8, ubSectorY: UINT8): void {
   let pGroup: Pointer<GROUP>;
   let next: Pointer<GROUP>;
   let sSectorX: INT16;
@@ -3418,7 +3418,7 @@ function ResetMovementForEnemyGroup(pGroup: Pointer<GROUP>): void {
   AddStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID);
 }
 
-function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
+export function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
   let pGroup: Pointer<GROUP> = null;
   let fDone: boolean = false;
   let cnt: INT32;
@@ -3479,7 +3479,7 @@ function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
 // Determines if any particular group WILL be moving through a given sector given it's current
 // position in the route and the pGroup->ubMoveType must be ONE_WAY.  If the group is currently
 // IN the sector, or just left the sector, it will return FALSE.
-function GroupWillMoveThroughSector(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): boolean {
+export function GroupWillMoveThroughSector(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): boolean {
   let wp: Pointer<WAYPOINT>;
   let i: INT32;
   let dx: INT32;
@@ -3566,7 +3566,7 @@ function CalculateFuelCostBetweenSectors(ubSectorID1: UINT8, ubSectorID2: UINT8)
   return 0;
 }
 
-function VehicleHasFuel(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function VehicleHasFuel(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   Assert(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE);
   if (pSoldier.value.sBreathRed) {
     return true;
@@ -3587,7 +3587,7 @@ function SpendVehicleFuel(pSoldier: Pointer<SOLDIERTYPE>, sFuelSpent: INT16): bo
   return false;
 }
 
-function AddFuelToVehicle(pSoldier: Pointer<SOLDIERTYPE>, pVehicle: Pointer<SOLDIERTYPE>): void {
+export function AddFuelToVehicle(pSoldier: Pointer<SOLDIERTYPE>, pVehicle: Pointer<SOLDIERTYPE>): void {
   let pItem: Pointer<OBJECTTYPE>;
   let sFuelNeeded: INT16;
   let sFuelAvailable: INT16;
@@ -3670,7 +3670,7 @@ function SetLocationOfAllPlayerSoldiersInGroup(pGroup: Pointer<GROUP>, sSectorX:
   }
 }
 
-function RandomizePatrolGroupLocation(pGroup: Pointer<GROUP>): void {
+export function RandomizePatrolGroupLocation(pGroup: Pointer<GROUP>): void {
   // Make sure this is an enemy patrol group
   let wp: Pointer<WAYPOINT>;
   let ubMaxWaypointID: UINT8 = 0;
@@ -3839,7 +3839,7 @@ function NotifyPlayerOfBloodcatBattle(ubSectorX: UINT8, ubSectorY: UINT8): void 
   DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, TriggerPrebattleInterface);
 }
 
-function PlaceGroupInSector(ubGroupID: UINT8, sPrevX: INT16, sPrevY: INT16, sNextX: INT16, sNextY: INT16, bZ: INT8, fCheckForBattle: boolean): void {
+export function PlaceGroupInSector(ubGroupID: UINT8, sPrevX: INT16, sPrevY: INT16, sNextX: INT16, sNextY: INT16, bZ: INT8, fCheckForBattle: boolean): void {
   ClearMercPathsAndWaypointsForAllInGroup(GetGroup(ubGroupID));
 
   // change where they are and where they're going
@@ -3852,7 +3852,7 @@ function PlaceGroupInSector(ubGroupID: UINT8, sPrevX: INT16, sPrevY: INT16, sNex
 }
 
 // ARM: centralized it so we can do a comprehensive Assert on it.  Causing problems with helicopter group!
-function SetGroupArrivalTime(pGroup: Pointer<GROUP>, uiArrivalTime: UINT32): void {
+export function SetGroupArrivalTime(pGroup: Pointer<GROUP>, uiArrivalTime: UINT32): void {
   // PLEASE CENTRALIZE ALL CHANGES TO THE ARRIVAL TIMES OF GROUPS THROUGH HERE, ESPECIALLY THE HELICOPTER GROUP!!!
 
   // if this group is the helicopter group, we have to make sure that its arrival time is never greater than the sum
@@ -3906,7 +3906,7 @@ function CancelEmptyPersistentGroupMovement(pGroup: Pointer<GROUP>): void {
 }
 
 // look for NPCs to stop for, anyone is too tired to keep going, if all OK rebuild waypoints & continue movement
-function PlayerGroupArrivedSafelyInSector(pGroup: Pointer<GROUP>, fCheckForNPCs: boolean): void {
+export function PlayerGroupArrivedSafelyInSector(pGroup: Pointer<GROUP>, fCheckForNPCs: boolean): void {
   let fPlayerPrompted: boolean = false;
 
   Assert(pGroup);
@@ -4078,7 +4078,7 @@ function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNoteCallback(ubExitValue
   return;
 }
 
-function DoesPlayerExistInPGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function DoesPlayerExistInPGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pGroup: Pointer<GROUP>;
   let curr: Pointer<PLAYERGROUP>;
 
@@ -4105,7 +4105,7 @@ function DoesPlayerExistInPGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE
   return false;
 }
 
-function GroupHasInTransitDeadOrPOWMercs(pGroup: Pointer<GROUP>): boolean {
+export function GroupHasInTransitDeadOrPOWMercs(pGroup: Pointer<GROUP>): boolean {
   let pPlayer: Pointer<PLAYERGROUP>;
 
   pPlayer = pGroup.value.pPlayerList;

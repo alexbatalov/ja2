@@ -21,7 +21,7 @@ function InitPopUpBox(hBoxHandle: INT32): void {
   memset(PopUpBoxList[hBoxHandle], 0, sizeof(PopUpBo));
 }
 
-function SetLineSpace(hBoxHandle: INT32, uiLineSpace: UINT32): void {
+export function SetLineSpace(hBoxHandle: INT32, uiLineSpace: UINT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -30,7 +30,7 @@ function SetLineSpace(hBoxHandle: INT32, uiLineSpace: UINT32): void {
   return;
 }
 
-function GetLineSpace(hBoxHandle: INT32): UINT32 {
+export function GetLineSpace(hBoxHandle: INT32): UINT32 {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return 0;
 
@@ -39,7 +39,7 @@ function GetLineSpace(hBoxHandle: INT32): UINT32 {
   return PopUpBoxList[hBoxHandle].value.uiLineSpace;
 }
 
-function SpecifyBoxMinWidth(hBoxHandle: INT32, iMinWidth: INT32): void {
+export function SpecifyBoxMinWidth(hBoxHandle: INT32, iMinWidth: INT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -55,7 +55,7 @@ function SpecifyBoxMinWidth(hBoxHandle: INT32, iMinWidth: INT32): void {
   return;
 }
 
-function CreatePopUpBox(phBoxHandle: Pointer<INT32>, Dimensions: SGPRect, Position: SGPPoint, uiFlags: UINT32): boolean {
+export function CreatePopUpBox(phBoxHandle: Pointer<INT32>, Dimensions: SGPRect, Position: SGPPoint, uiFlags: UINT32): boolean {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
   let pBox: PopUpBoxPt = null;
@@ -111,7 +111,7 @@ function SetBoxFlags(hBoxHandle: INT32, uiFlags: UINT32): void {
   return;
 }
 
-function SetMargins(hBoxHandle: INT32, uiLeft: UINT32, uiTop: UINT32, uiBottom: UINT32, uiRight: UINT32): void {
+export function SetMargins(hBoxHandle: INT32, uiLeft: UINT32, uiTop: UINT32, uiBottom: UINT32, uiRight: UINT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -127,7 +127,7 @@ function SetMargins(hBoxHandle: INT32, uiLeft: UINT32, uiTop: UINT32, uiBottom: 
   return;
 }
 
-function GetTopMarginSize(hBoxHandle: INT32): UINT32 {
+export function GetTopMarginSize(hBoxHandle: INT32): UINT32 {
   // return size of top margin, for mouse region offsets
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -138,7 +138,7 @@ function GetTopMarginSize(hBoxHandle: INT32): UINT32 {
   return PopUpBoxList[hBoxHandle].value.uiTopMargin;
 }
 
-function ShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
+export function ShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
   // shade iLineNumber Line in box indexed by hBoxHandle
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -157,7 +157,7 @@ function ShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
   return;
 }
 
-function UnShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
+export function UnShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
   // unshade iLineNumber in box indexed by hBoxHandle
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -176,7 +176,7 @@ function UnShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
   return;
 }
 
-function SecondaryShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
+export function SecondaryShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
   // shade iLineNumber Line in box indexed by hBoxHandle
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -195,7 +195,7 @@ function SecondaryShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void 
   return;
 }
 
-function UnSecondaryShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
+export function UnSecondaryShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
   // unshade iLineNumber in box indexed by hBoxHandle
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -214,7 +214,7 @@ function UnSecondaryShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): voi
   return;
 }
 
-function SetBoxBuffer(hBoxHandle: INT32, uiBuffer: UINT32): void {
+export function SetBoxBuffer(hBoxHandle: INT32, uiBuffer: UINT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -227,7 +227,7 @@ function SetBoxBuffer(hBoxHandle: INT32, uiBuffer: UINT32): void {
   return;
 }
 
-function SetBoxPosition(hBoxHandle: INT32, Position: SGPPoint): void {
+export function SetBoxPosition(hBoxHandle: INT32, Position: SGPPoint): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -241,7 +241,7 @@ function SetBoxPosition(hBoxHandle: INT32, Position: SGPPoint): void {
   return;
 }
 
-function GetBoxPosition(hBoxHandle: INT32, Position: Pointer<SGPPoint>): void {
+export function GetBoxPosition(hBoxHandle: INT32, Position: Pointer<SGPPoint>): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -253,7 +253,7 @@ function GetBoxPosition(hBoxHandle: INT32, Position: Pointer<SGPPoint>): void {
   return;
 }
 
-function SetBoxSize(hBoxHandle: INT32, Dimensions: SGPRect): void {
+export function SetBoxSize(hBoxHandle: INT32, Dimensions: SGPRect): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -269,7 +269,7 @@ function SetBoxSize(hBoxHandle: INT32, Dimensions: SGPRect): void {
   return;
 }
 
-function GetBoxSize(hBoxHandle: INT32, Dimensions: Pointer<SGPRect>): void {
+export function GetBoxSize(hBoxHandle: INT32, Dimensions: Pointer<SGPRect>): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -283,7 +283,7 @@ function GetBoxSize(hBoxHandle: INT32, Dimensions: Pointer<SGPRect>): void {
   return;
 }
 
-function SetBorderType(hBoxHandle: INT32, iBorderObjectIndex: INT32): void {
+export function SetBorderType(hBoxHandle: INT32, iBorderObjectIndex: INT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -292,7 +292,7 @@ function SetBorderType(hBoxHandle: INT32, iBorderObjectIndex: INT32): void {
   return;
 }
 
-function SetBackGroundSurface(hBoxHandle: INT32, iBackGroundSurfaceIndex: INT32): void {
+export function SetBackGroundSurface(hBoxHandle: INT32, iBackGroundSurfaceIndex: INT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -302,7 +302,7 @@ function SetBackGroundSurface(hBoxHandle: INT32, iBackGroundSurfaceIndex: INT32)
 }
 
 // adds a FIRST column string to the CURRENT popup box
-function AddMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
+export function AddMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
   let pLocalString: STR16 = null;
   let pStringSt: POPUPSTRINGPTR = null;
   let iCounter: INT32 = 0;
@@ -349,7 +349,7 @@ function AddMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
 }
 
 // adds a SECOND column string to the CURRENT popup box
-function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
+export function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
   let pLocalString: STR16 = null;
   let pStringSt: POPUPSTRINGPTR = null;
   let iCounter: INT32 = 0;
@@ -462,7 +462,7 @@ function ResizeBoxForSecondStrings(hBoxHandle: INT32): void {
   }
 }
 
-function GetNumberOfLinesOfTextInBox(hBoxHandle: INT32): UINT32 {
+export function GetNumberOfLinesOfTextInBox(hBoxHandle: INT32): UINT32 {
   let iCounter: INT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -479,7 +479,7 @@ function GetNumberOfLinesOfTextInBox(hBoxHandle: INT32): UINT32 {
   return iCounter;
 }
 
-function SetBoxFont(hBoxHandle: INT32, uiFont: UINT32): void {
+export function SetBoxFont(hBoxHandle: INT32, uiFont: UINT32): void {
   let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -499,7 +499,7 @@ function SetBoxFont(hBoxHandle: INT32, uiFont: UINT32): void {
   return;
 }
 
-function SetBoxSecondColumnMinimumOffset(hBoxHandle: INT32, uiWidth: UINT32): void {
+export function SetBoxSecondColumnMinimumOffset(hBoxHandle: INT32, uiWidth: UINT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -515,7 +515,7 @@ function SetBoxSecondColumnCurrentOffset(hBoxHandle: INT32, uiCurrentOffset: UIN
   return;
 }
 
-function SetBoxSecondColumnFont(hBoxHandle: INT32, uiFont: UINT32): void {
+export function SetBoxSecondColumnFont(hBoxHandle: INT32, uiFont: UINT32): void {
   let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -532,7 +532,7 @@ function SetBoxSecondColumnFont(hBoxHandle: INT32, uiFont: UINT32): void {
   return;
 }
 
-function GetBoxFont(hBoxHandle: INT32): UINT32 {
+export function GetBoxFont(hBoxHandle: INT32): UINT32 {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return 0;
 
@@ -544,7 +544,7 @@ function GetBoxFont(hBoxHandle: INT32): UINT32 {
 }
 
 // set the foreground color of this string in this pop up box
-function SetBoxLineForeground(iBox: INT32, iStringValue: INT32, ubColor: UINT8): void {
+export function SetBoxLineForeground(iBox: INT32, iStringValue: INT32, ubColor: UINT8): void {
   if ((iBox < 0) || (iBox >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -555,7 +555,7 @@ function SetBoxLineForeground(iBox: INT32, iStringValue: INT32, ubColor: UINT8):
   return;
 }
 
-function SetBoxSecondaryShade(iBox: INT32, ubColor: UINT8): void {
+export function SetBoxSecondaryShade(iBox: INT32, ubColor: UINT8): void {
   let uiCounter: UINT32;
 
   if ((iBox < 0) || (iBox >= MAX_POPUP_BOX_COUNT))
@@ -694,7 +694,7 @@ function SetStringSecondColumnShade(hStringHandle: INT32, ubShade: UINT8): void 
   return;
 }
 
-function SetBoxForeground(hBoxHandle: INT32, ubColor: UINT8): void {
+export function SetBoxForeground(hBoxHandle: INT32, ubColor: UINT8): void {
   let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -710,7 +710,7 @@ function SetBoxForeground(hBoxHandle: INT32, ubColor: UINT8): void {
   return;
 }
 
-function SetBoxBackground(hBoxHandle: INT32, ubColor: UINT8): void {
+export function SetBoxBackground(hBoxHandle: INT32, ubColor: UINT8): void {
   let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -726,7 +726,7 @@ function SetBoxBackground(hBoxHandle: INT32, ubColor: UINT8): void {
   return;
 }
 
-function SetBoxHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
+export function SetBoxHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
   let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -742,7 +742,7 @@ function SetBoxHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
   return;
 }
 
-function SetBoxShade(hBoxHandle: INT32, ubColor: UINT8): void {
+export function SetBoxShade(hBoxHandle: INT32, ubColor: UINT8): void {
   let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -758,7 +758,7 @@ function SetBoxShade(hBoxHandle: INT32, ubColor: UINT8): void {
   return;
 }
 
-function SetBoxSecondColumnForeground(hBoxHandle: INT32, ubColor: UINT8): void {
+export function SetBoxSecondColumnForeground(hBoxHandle: INT32, ubColor: UINT8): void {
   let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -775,7 +775,7 @@ function SetBoxSecondColumnForeground(hBoxHandle: INT32, ubColor: UINT8): void {
   return;
 }
 
-function SetBoxSecondColumnBackground(hBoxHandle: INT32, ubColor: UINT8): void {
+export function SetBoxSecondColumnBackground(hBoxHandle: INT32, ubColor: UINT8): void {
   let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -792,7 +792,7 @@ function SetBoxSecondColumnBackground(hBoxHandle: INT32, ubColor: UINT8): void {
   return;
 }
 
-function SetBoxSecondColumnHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
+export function SetBoxSecondColumnHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
   let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -809,7 +809,7 @@ function SetBoxSecondColumnHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
   return;
 }
 
-function SetBoxSecondColumnShade(hBoxHandle: INT32, ubColor: UINT8): void {
+export function SetBoxSecondColumnShade(hBoxHandle: INT32, ubColor: UINT8): void {
   let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -861,7 +861,7 @@ function GetSecondaryShadeFlag(hStringHandle: INT32): boolean {
   return PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.fSecondaryShadeFlag;
 }
 
-function HighLightBoxLine(hBoxHandle: INT32, iLineNumber: INT32): void {
+export function HighLightBoxLine(hBoxHandle: INT32, iLineNumber: INT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -878,7 +878,7 @@ function HighLightBoxLine(hBoxHandle: INT32, iLineNumber: INT32): void {
   return;
 }
 
-function GetBoxShadeFlag(hBoxHandle: INT32, iLineNumber: INT32): boolean {
+export function GetBoxShadeFlag(hBoxHandle: INT32, iLineNumber: INT32): boolean {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return false;
 
@@ -900,7 +900,7 @@ function GetBoxSecondaryShadeFlag(hBoxHandle: INT32, iLineNumber: INT32): boolea
   return false;
 }
 
-function UnHighLightLine(hStringHandle: INT32): void {
+export function UnHighLightLine(hStringHandle: INT32): void {
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -912,7 +912,7 @@ function UnHighLightLine(hStringHandle: INT32): void {
   return;
 }
 
-function UnHighLightBox(hBoxHandle: INT32): void {
+export function UnHighLightBox(hBoxHandle: INT32): void {
   let iCounter: INT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -972,7 +972,7 @@ function RemoveOneCurrentBoxString(hStringHandle: INT32, fFillGaps: boolean): vo
   PopUpBoxList[guiCurrentBox].value.fUpdated = false;
 }
 
-function RemoveAllCurrentBoxStrings(): void {
+export function RemoveAllCurrentBoxStrings(): void {
   let uiCounter: UINT32;
 
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
@@ -982,7 +982,7 @@ function RemoveAllCurrentBoxStrings(): void {
     RemoveOneCurrentBoxString(uiCounter, false);
 }
 
-function RemoveBox(hBoxHandle: INT32): void {
+export function RemoveBox(hBoxHandle: INT32): void {
   let hOldBoxHandle: INT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
@@ -1002,7 +1002,7 @@ function RemoveBox(hBoxHandle: INT32): void {
   return;
 }
 
-function ShowBox(hBoxHandle: INT32): void {
+export function ShowBox(hBoxHandle: INT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -1014,7 +1014,7 @@ function ShowBox(hBoxHandle: INT32): void {
   }
 }
 
-function HideBox(hBoxHandle: INT32): void {
+export function HideBox(hBoxHandle: INT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -1026,7 +1026,7 @@ function HideBox(hBoxHandle: INT32): void {
   }
 }
 
-function SetCurrentBox(hBoxHandle: INT32): void {
+export function SetCurrentBox(hBoxHandle: INT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -1037,7 +1037,7 @@ function GetCurrentBox(hBoxHandle: Pointer<INT32>): void {
   hBoxHandle.value = guiCurrentBox;
 }
 
-function DisplayBoxes(uiBuffer: UINT32): void {
+export function DisplayBoxes(uiBuffer: UINT32): void {
   let uiCounter: UINT32;
 
   for (uiCounter = 0; uiCounter < MAX_POPUP_BOX_COUNT; uiCounter++) {
@@ -1046,7 +1046,7 @@ function DisplayBoxes(uiBuffer: UINT32): void {
   return;
 }
 
-function DisplayOnePopupBox(uiIndex: UINT32, uiBuffer: UINT32): void {
+export function DisplayOnePopupBox(uiIndex: UINT32, uiBuffer: UINT32): void {
   if ((uiIndex < 0) || (uiIndex >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -1059,7 +1059,7 @@ function DisplayOnePopupBox(uiIndex: UINT32, uiBuffer: UINT32): void {
 }
 
 // force an update of this box
-function ForceUpDateOfBox(uiIndex: UINT32): void {
+export function ForceUpDateOfBox(uiIndex: UINT32): void {
   if ((uiIndex < 0) || (uiIndex >= MAX_POPUP_BOX_COUNT))
     return;
 
@@ -1270,7 +1270,7 @@ function DrawBoxText(uiCounter: UINT32): boolean {
   return true;
 }
 
-function ResizeBoxToText(hBoxHandle: INT32): void {
+export function ResizeBoxToText(hBoxHandle: INT32): void {
   // run through lines of text in box and size box width to longest line plus margins
   // height is sum of getfontheight of each line+ spacing
   let iWidth: INT32 = 0;
@@ -1311,7 +1311,7 @@ function ResizeBoxToText(hBoxHandle: INT32): void {
   PopUpBoxList[hBoxHandle].value.Dimensions.iRight = iWidth;
 }
 
-function IsBoxShown(uiHandle: UINT32): boolean {
+export function IsBoxShown(uiHandle: UINT32): boolean {
   if ((uiHandle < 0) || (uiHandle >= MAX_POPUP_BOX_COUNT))
     return false;
 
@@ -1322,7 +1322,7 @@ function IsBoxShown(uiHandle: UINT32): boolean {
   return PopUpBoxList[uiHandle].value.fShowBox;
 }
 
-function MarkAllBoxesAsAltered(): void {
+export function MarkAllBoxesAsAltered(): void {
   let iCounter: INT32 = 0;
 
   // mark all boxes as altered
@@ -1333,7 +1333,7 @@ function MarkAllBoxesAsAltered(): void {
   return;
 }
 
-function HideAllBoxes(): void {
+export function HideAllBoxes(): void {
   let iCounter: INT32 = 0;
 
   // hide all the boxes that are shown

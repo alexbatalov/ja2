@@ -36,11 +36,11 @@ doesn't use the undo methodology.
 
 let gfUndoEnabled: boolean = false;
 
-function EnableUndo(): void {
+export function EnableUndo(): void {
   gfUndoEnabled = true;
 }
 
-function DisableUndo(): void {
+export function DisableUndo(): void {
   gfUndoEnabled = false;
 }
 
@@ -294,7 +294,7 @@ function CropStackToMaxLength(iMaxCmds: INT32): void {
 // this will handle the way the undo command is handled.  If there is no lightradius in
 // our saved light, then we intend on erasing the light upon undo execution, otherwise, we
 // save the light radius and light ID, so that we place it during undo execution.
-function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UINT8): void {
+export function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UINT8): void {
   let pNode: Pointer<undo_stack>;
   let pUndoInfo: Pointer<undo_struct>;
 
@@ -335,7 +335,7 @@ function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UI
   CropStackToMaxLength(MAX_UNDO_COMMAND_LENGTH);
 }
 
-function AddToUndoList(iMapIndex: INT32): boolean {
+export function AddToUndoList(iMapIndex: INT32): boolean {
   /* static */ let iCount: INT32 = 1;
 
   if (!gfUndoEnabled)
@@ -467,7 +467,7 @@ function CheckForMultiTilesInTreeAndAddToUndoList(node: Pointer<MapIndexBinaryTr
     CheckForMultiTilesInTreeAndAddToUndoList(node.value.right);
 }
 
-function RemoveAllFromUndoList(): boolean {
+export function RemoveAllFromUndoList(): boolean {
   ClearUndoMapIndexTree();
 
   while (gpTileUndoStack != null)
@@ -476,7 +476,7 @@ function RemoveAllFromUndoList(): boolean {
   return true;
 }
 
-function ExecuteUndoList(): boolean {
+export function ExecuteUndoList(): boolean {
   let iCmdCount: INT32;
   let iCurCount: INT32;
   let iUndoMapIndex: INT32;
@@ -849,7 +849,7 @@ function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_
   return true;
 }
 
-function DetermineUndoState(): void {
+export function DetermineUndoState(): void {
   // Reset the undo command mode if we released the left button.
   if (!fNewUndoCmd) {
     if (!gfLeftButtonState && !gfCurrentSelectionWithRightButton || !gfRightButtonState && gfCurrentSelectionWithRightButton) {

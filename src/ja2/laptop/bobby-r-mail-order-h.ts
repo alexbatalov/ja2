@@ -1,5 +1,5 @@
 // enums for the various destinations that are available in the bobbyR dest drop down box
-const enum Enum70 {
+export const enum Enum70 {
   BR_AUSTIN,
   BR_BAGHDAD,
   BR_DRASSEN,
@@ -19,7 +19,7 @@ const enum Enum70 {
   BR_VANCOUVER,
 }
 
-interface NewBobbyRayOrderStruct {
+export interface NewBobbyRayOrderStruct {
   fActive: boolean;
   ubDeliveryLoc: UINT8; // the city the shipment is going to
   ubDeliveryMethod: UINT8; // type of delivery: next day, 2 days ...

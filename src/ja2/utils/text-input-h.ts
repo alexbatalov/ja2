@@ -21,27 +21,27 @@
 // NOTE:  Uppercase/lowercase filters ensures that all input is either all uppercase or lowercase
 // NOTE:  Feel free to expand this to your needs, though you also need to support it in the filter
 //			 section.
-const INPUTTYPE_NUMERICSTRICT = 0x0001; // 0-9 only, no minus signs.
-const INPUTTYPE_ALPHA = 0x0002; // a-z A-Z
-const INPUTTYPE_SPACES = 0x0004; // allows spaces in input
-const INPUTTYPE_SPECIAL = 0x0008; //  !@#$%^&*()_+`|\[]{};':"<>,./? (spaces not included)
-const INPUTTYPE_UPPERCASE = 0x0010; // converts all lowercase to uppercase
-const INPUTTYPE_LOWERCASE = 0x0020; // converts all uppercase to lowercase
-const INPUTTYPE_FIRSTPOSMINUS = 0x0002; // allows '-' at beginning of field only
+export const INPUTTYPE_NUMERICSTRICT = 0x0001; // 0-9 only, no minus signs.
+export const INPUTTYPE_ALPHA = 0x0002; // a-z A-Z
+export const INPUTTYPE_SPACES = 0x0004; // allows spaces in input
+export const INPUTTYPE_SPECIAL = 0x0008; //  !@#$%^&*()_+`|\[]{};':"<>,./? (spaces not included)
+export const INPUTTYPE_UPPERCASE = 0x0010; // converts all lowercase to uppercase
+export const INPUTTYPE_LOWERCASE = 0x0020; // converts all uppercase to lowercase
+export const INPUTTYPE_FIRSTPOSMINUS = 0x0002; // allows '-' at beginning of field only
 const INPUTTYPE_NUMERIC = (INPUTTYPE_NUMERIC | INPUTTYPE_FIRSTPOSMINUS);
 const INPUTTYPE_SPECIALCHARS = (INPUTTYPE_SPECIAL | INPUTTYPE_SPACES);
 const INPUTTYPE_ALPHANUMERIC = (INPUTTYPE_ALPHA | INPUTTYPE_NUMERICSTRICT);
-const INPUTTYPE_ASCII = (INPUTTYPE_ALPHANUMERIC | INPUTTYPE_SPECIALCHARS);
+export const INPUTTYPE_ASCII = (INPUTTYPE_ALPHANUMERIC | INPUTTYPE_SPECIALCHARS);
 
 // DON'T GO ABOVE INPUTTYPE_EXCLUSIVE_BASEVALUE FOR INPUTTYPE MASKED VALUES LISTED ABOVE!!!
-const INPUTTYPE_EXCLUSIVE_BASEVALUE = 0x1000; // increase this value if necessary
+export const INPUTTYPE_EXCLUSIVE_BASEVALUE = 0x1000; // increase this value if necessary
 
 // Exclusive handlers
 // The dosfilename inputtype is a perfect example of what is a exclusive handler.
 // In this method, the input accepts only alphas and an underscore as the first character,
 // then alphanumerics afterwards.  For further support, chances are you'll want to treat it
 // as an exclusive handler, and you'll have to process it in the filter input function.
-const enum Enum383 {
+export const enum Enum383 {
   INPUTTYPE_EXCLUSIVE_DOSFILENAME = INPUTTYPE_EXCLUSIVE_BASEVALUE,
   INPUTTYPE_EXCLUSIVE_COORDINATE,
   INPUTTYPE_EXCLUSIVE_24HOURCLOCK,
@@ -50,7 +50,7 @@ const enum Enum383 {
 
 // A hybrid version of InitTextInput() which uses a specific scheme.  JA2's editor uses scheme 1, so
 // feel free to add new color/font schemes.
-const enum Enum384 {
+export const enum Enum384 {
   DEFAULT_SCHEME,
 }
 
@@ -61,7 +61,7 @@ const enum Enum384 {
 // would be used to jump to the file starting with that letter, and setting the field in the text input
 // field.  Pressing TAB again would place you back in the text input field.  All of that stuff would be handled
 // externally, except for the TAB keys.
-type INPUT_CALLBACK = (a: UINT8, b: boolean) => void;
+export type INPUT_CALLBACK = (a: UINT8, b: boolean) => void;
 // INPUT_CALLBACK explanation:
 // The function must use this signature:  void FunctionName( UINT8 ubFieldID, BOOLEAN fEntering );
 // ubFieldID contains the fieldID of that field

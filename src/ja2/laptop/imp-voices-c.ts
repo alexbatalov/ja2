@@ -1,5 +1,5 @@
 // current and last pages
-let iCurrentVoices: INT32 = 0;
+export let iCurrentVoices: INT32 = 0;
 let iLastVoice: INT32 = 2;
 
 // INT32 iVoiceId = 0;
@@ -20,7 +20,7 @@ let fReDrawVoicesScreenFlag: boolean = false;
 // the portrait region, for player to click on and re-hear voice
 let gVoicePortraitRegion: MOUSE_REGION;
 
-function EnterIMPVoices(): void {
+export function EnterIMPVoices(): void {
   fVoiceAVisited = false;
   fVoiceBVisited = false;
   fVoiceCVisited = false;
@@ -40,7 +40,7 @@ function EnterIMPVoices(): void {
   return;
 }
 
-function RenderIMPVoices(): void {
+export function RenderIMPVoices(): void {
   // render background
   RenderProfileBackGround();
 
@@ -62,7 +62,7 @@ function RenderIMPVoices(): void {
   return;
 }
 
-function ExitIMPVoices(): void {
+export function ExitIMPVoices(): void {
   // destroy buttons for IMP Voices page
   DestroyIMPVoicesButtons();
 
@@ -72,7 +72,7 @@ function ExitIMPVoices(): void {
   return;
 }
 
-function HandleIMPVoices(): void {
+export function HandleIMPVoices(): void {
   // do we need to re write screen
   if (fReDrawVoicesScreenFlag == true) {
     RenderIMPVoices();
@@ -252,7 +252,7 @@ function BtnIMPVoicesDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   }
 }
 
-function PlayVoice(): UINT32 {
+export function PlayVoice(): UINT32 {
   //	CHAR16 sString[ 64 ];
 
   // gender?

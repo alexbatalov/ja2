@@ -1,4 +1,4 @@
-interface KEY {
+export interface KEY {
   usItem: UINT16; // index in item table for key
   fFlags: UINT8; // flags...
   usSectorFound: UINT16; // where and
@@ -7,15 +7,15 @@ interface KEY {
 
 const KEY_USED = 0x01;
 
-const LOCK_UNOPENABLE = 255;
+export const LOCK_UNOPENABLE = 255;
 const NO_KEY = 255;
 
-const MAX_KEYS_PER_LOCK = 4;
+export const MAX_KEYS_PER_LOCK = 4;
 
 const LOCK_REGULAR = 1;
 const LOCK_PADLOCK = 2;
-const LOCK_CARD = 3;
-const LOCK_ELECTRONIC = 4;
+export const LOCK_CARD = 3;
+export const LOCK_ELECTRONIC = 4;
 const LOCK_SPECIAL = 5;
 
 /*
@@ -29,7 +29,7 @@ typedef struct
 */
 
 const MAXLOCKDESCLENGTH = 40;
-interface LOCK {
+export interface LOCK {
   ubEditorName: UINT8[] /* [MAXLOCKDESCLENGTH] */; // name to display in editor
   usKeyItem: UINT16; // key for this door uses which graphic (item #)?
   ubLockType: UINT8; // regular, padlock, electronic, etc
@@ -39,15 +39,15 @@ interface LOCK {
 }
 
 // Defines below for the perceived value of the door
-const DOOR_PERCEIVED_UNKNOWN = 0;
-const DOOR_PERCEIVED_LOCKED = 1;
-const DOOR_PERCEIVED_UNLOCKED = 2;
-const DOOR_PERCEIVED_BROKEN = 3;
+export const DOOR_PERCEIVED_UNKNOWN = 0;
+export const DOOR_PERCEIVED_LOCKED = 1;
+export const DOOR_PERCEIVED_UNLOCKED = 2;
+export const DOOR_PERCEIVED_BROKEN = 3;
 
-const DOOR_PERCEIVED_TRAPPED = 1;
-const DOOR_PERCEIVED_UNTRAPPED = 2;
+export const DOOR_PERCEIVED_TRAPPED = 1;
+export const DOOR_PERCEIVED_UNTRAPPED = 2;
 
-interface DOOR {
+export interface DOOR {
   sGridNo: INT16;
   fLocked: boolean; // is the door locked
   ubTrapLevel: UINT8; // difficulty of finding the trap, 0-10
@@ -61,7 +61,7 @@ interface DOOR {
   bPadding: INT8[] /* [4] */; // extra bytes
 }
 
-const enum Enum227 {
+export const enum Enum227 {
   NO_TRAP = 0,
   EXPLOSION,
   ELECTRIC,
@@ -72,24 +72,24 @@ const enum Enum227 {
   NUM_DOOR_TRAPS,
 }
 
-const DOOR_TRAP_STOPS_ACTION = 0x01;
-const DOOR_TRAP_RECURRING = 0x02;
-const DOOR_TRAP_SILENT = 0x04;
+export const DOOR_TRAP_STOPS_ACTION = 0x01;
+export const DOOR_TRAP_RECURRING = 0x02;
+export const DOOR_TRAP_SILENT = 0x04;
 
-interface DOORTRAP {
+export interface DOORTRAP {
   fFlags: UINT8; // stops action?  recurring trap?
 }
 
 // The status of the door, either open or closed
-const DOOR_OPEN = 0x01;
-const DOOR_PERCEIVED_OPEN = 0x02;
-const DOOR_PERCEIVED_NOTSET = 0x04;
-const DOOR_BUSY = 0x08;
-const DOOR_HAS_TIN_CAN = 0x10;
+export const DOOR_OPEN = 0x01;
+export const DOOR_PERCEIVED_OPEN = 0x02;
+export const DOOR_PERCEIVED_NOTSET = 0x04;
+export const DOOR_BUSY = 0x08;
+export const DOOR_HAS_TIN_CAN = 0x10;
 
-const DONTSETDOORSTATUS = 2;
+export const DONTSETDOORSTATUS = 2;
 
-interface DOOR_STATUS {
+export interface DOOR_STATUS {
   sGridNo: INT16;
   ubFlags: UINT8;
 }
@@ -97,13 +97,13 @@ interface DOOR_STATUS {
 // This is the number of different types of doors we can have
 // in one map at a time...
 
-const NUM_KEYS = 64;
-const NUM_LOCKS = 64;
-const INVALID_KEY_NUMBER = 255;
+export const NUM_KEYS = 64;
+export const NUM_LOCKS = 64;
+export const INVALID_KEY_NUMBER = 255;
 
-const ANYKEY = 252;
+export const ANYKEY = 252;
 const AUTOUNLOCK = 253;
-const OPENING_NOT_POSSIBLE = 254;
+export const OPENING_NOT_POSSIBLE = 254;
 
 /**********************************
  * Door utils add by Kris Morness *

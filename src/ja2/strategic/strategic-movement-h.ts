@@ -1,5 +1,5 @@
 // enemy intentions,
-const enum Enum184 {
+export const enum Enum184 {
   NO_INTENTIONS, // enemy intentions are undefined.
   PURSUIT, // enemy group has spotted a player group and is pursuing them.  If they lose the player group, they
            // will get reassigned.
@@ -11,14 +11,14 @@ const enum Enum184 {
 }
 
 // move types
-const enum Enum185 {
+export const enum Enum185 {
   ONE_WAY, // from first waypoint to last, deleting each waypoint as they are reached.
   CIRCULAR, // from first to last, recycling forever.
   ENDTOEND_FORWARDS, // from first to last -- when reaching last, change to backwards.
   ENDTOEND_BACKWARDS, // from last to first -- when reaching first, change to forwards.
 }
 
-const enum Enum186 {
+export const enum Enum186 {
   NORTH_STRATEGIC_MOVE,
   EAST_STRATEGIC_MOVE,
   SOUTH_STRATEGIC_MOVE,
@@ -29,7 +29,7 @@ const enum Enum186 {
 // This structure contains all of the information about a group moving in the strategic
 // layer.  This includes all troops, equipment, and waypoints, and location.
 // NOTE:  This is used for groups that are initiating a movement to another sector.
-interface WAYPOINT {
+export interface WAYPOINT {
   x: UINT8; // sector x position of waypoint
   y: UINT8; // sector y position of waypoint
   next: Pointer<WAYPOINT>; // next waypoint in list
@@ -37,7 +37,7 @@ interface WAYPOINT {
 
 const PG_INDIVIDUAL_MERGED = 0x01;
 
-interface PLAYERGROUP {
+export interface PLAYERGROUP {
   ubProfileID: UINT8; // SAVE THIS VALUE ONLY.  The others are temp (for quick access)
   ubID: UINT8; // index in the Menptr array
   pSoldier: Pointer<SOLDIERTYPE>; // direct access to the soldier pointer
@@ -45,7 +45,7 @@ interface PLAYERGROUP {
   next: Pointer<PLAYERGROUP>; // next player in list
 }
 
-interface ENEMYGROUP {
+export interface ENEMYGROUP {
   ubNumTroops: UINT8; // number of regular troops in the group
   ubNumElites: UINT8; // number of elite troops in the group
   ubNumAdmins: UINT8; // number of administrators in the group
@@ -60,20 +60,20 @@ interface ENEMYGROUP {
 
 // NOTE:  ALL FLAGS ARE CLEARED WHENEVER A GROUP ARRIVES IN A SECTOR, OR ITS WAYPOINTS ARE
 //       DELETED!!!
-const GROUPFLAG_SIMULTANEOUSARRIVAL_APPROVED = 0x00000001;
-const GROUPFLAG_SIMULTANEOUSARRIVAL_CHECKED = 0x00000002;
+export const GROUPFLAG_SIMULTANEOUSARRIVAL_APPROVED = 0x00000001;
+export const GROUPFLAG_SIMULTANEOUSARRIVAL_CHECKED = 0x00000002;
 // I use this flag when traversing through a list to determine which groups meet whatever conditions,
 // then add this marker flag.  The second time I traverse the list, I simply check for this flag,
 // apply my modifications to the group, and remove the flag.  If you decide to use it, make sure the
 // flag is cleared.
-const GROUPFLAG_MARKER = 0x00000004;
+export const GROUPFLAG_MARKER = 0x00000004;
 // Set whenever a group retreats from battle.  If the group arrives in the next sector and enemies are there
 // retreat will not be an option.
-const GROUPFLAG_JUST_RETREATED_FROM_BATTLE = 0x00000008;
-const GROUPFLAG_HIGH_POTENTIAL_FOR_AMBUSH = 0x00000010;
-const GROUPFLAG_GROUP_ARRIVED_SIMULTANEOUSLY = 0x00000020;
+export const GROUPFLAG_JUST_RETREATED_FROM_BATTLE = 0x00000008;
+export const GROUPFLAG_HIGH_POTENTIAL_FOR_AMBUSH = 0x00000010;
+export const GROUPFLAG_GROUP_ARRIVED_SIMULTANEOUSLY = 0x00000020;
 
-interface GROUP {
+export interface GROUP {
   fDebugGroup: boolean; // for testing purposes -- handled differently in certain cases.
   fPlayer: boolean; // set if this is a player controlled group.
   fVehicle: boolean; // vehicle controlled group?

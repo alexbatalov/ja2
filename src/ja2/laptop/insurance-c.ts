@@ -61,10 +61,10 @@ let gSelectedInsuranceLinkRegion: MOUSE_REGION[] /* [3] */;
 // link to the home page by clicking on the small title
 let gSelectedInsuranceTitleLinkRegion: MOUSE_REGION;
 
-function GameInitInsurance(): void {
+export function GameInitInsurance(): void {
 }
 
-function EnterInsurance(): boolean {
+export function EnterInsurance(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosX: UINT16;
   let i: UINT16;
@@ -100,7 +100,7 @@ function EnterInsurance(): boolean {
   return true;
 }
 
-function ExitInsurance(): void {
+export function ExitInsurance(): void {
   let i: UINT8;
 
   RemoveInsuranceDefaults();
@@ -112,10 +112,10 @@ function ExitInsurance(): void {
     MSYS_RemoveRegion(addressof(gSelectedInsuranceLinkRegion[i]));
 }
 
-function HandleInsurance(): void {
+export function HandleInsurance(): void {
 }
 
-function RenderInsurance(): void {
+export function RenderInsurance(): void {
   let sText: wchar_t[] /* [800] */;
   let hPixHandle: HVOBJECT;
 
@@ -180,7 +180,7 @@ function RenderInsurance(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function InitInsuranceDefaults(): boolean {
+export function InitInsuranceDefaults(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the Flower Account Box graphic and add it
@@ -213,7 +213,7 @@ function InitInsuranceDefaults(): boolean {
   return true;
 }
 
-function DisplayInsuranceDefaults(): void {
+export function DisplayInsuranceDefaults(): void {
   let hPixHandle: HVOBJECT;
   let i: UINT8;
   let usPosY: UINT16;
@@ -257,7 +257,7 @@ function DisplayInsuranceDefaults(): void {
   }
 }
 
-function RemoveInsuranceDefaults(): void {
+export function RemoveInsuranceDefaults(): void {
   DeleteVideoObjectFromIndex(guiInsuranceBackGround);
   DeleteVideoObjectFromIndex(guiInsuranceRedBarImage);
   DeleteVideoObjectFromIndex(guiInsuranceBigRedLineImage);
@@ -269,7 +269,7 @@ function RemoveInsuranceDefaults(): void {
   }
 }
 
-function DisplaySmallRedLineWithShadow(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: UINT16): void {
+export function DisplaySmallRedLineWithShadow(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: UINT16): void {
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
@@ -287,7 +287,7 @@ function DisplaySmallRedLineWithShadow(usStartX: UINT16, usStartY: UINT16, EndX:
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-function GetInsuranceText(ubNumber: UINT8, pString: STR16): void {
+export function GetInsuranceText(ubNumber: UINT8, pString: STR16): void {
   let uiStartLoc: UINT32 = 0;
 
   if (ubNumber < Enum90.INS_MULTI_LINE_BEGINS) {

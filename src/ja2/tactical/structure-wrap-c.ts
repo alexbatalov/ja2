@@ -1,4 +1,4 @@
-function IsFencePresentAtGridno(sGridNo: INT16): boolean {
+export function IsFencePresentAtGridno(sGridNo: INT16): boolean {
   if (FindStructure(sGridNo, STRUCTURE_ANYFENCE) != null) {
     return true;
   }
@@ -6,7 +6,7 @@ function IsFencePresentAtGridno(sGridNo: INT16): boolean {
   return false;
 }
 
-function IsRoofPresentAtGridno(sGridNo: INT16): boolean {
+export function IsRoofPresentAtGridno(sGridNo: INT16): boolean {
   if (FindStructure(sGridNo, STRUCTURE_ROOF) != null) {
     return true;
   }
@@ -14,7 +14,7 @@ function IsRoofPresentAtGridno(sGridNo: INT16): boolean {
   return false;
 }
 
-function IsJumpableFencePresentAtGridno(sGridNo: INT16): boolean {
+export function IsJumpableFencePresentAtGridno(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_OBSTACLE);
@@ -39,7 +39,7 @@ function IsDoorPresentAtGridno(sGridNo: INT16): boolean {
   return false;
 }
 
-function IsTreePresentAtGridno(sGridNo: INT16): boolean {
+export function IsTreePresentAtGridno(sGridNo: INT16): boolean {
   if (FindStructure(sGridNo, STRUCTURE_TREE) != null) {
     return true;
   }
@@ -78,7 +78,7 @@ function GetWallLevelNodeOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation
   return null;
 }
 
-function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation: INT8, ppStructure: Pointer<Pointer<STRUCTURE>>): Pointer<LEVELNODE> {
+export function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation: INT8, ppStructure: Pointer<Pointer<STRUCTURE>>): Pointer<LEVELNODE> {
   let pNode: Pointer<LEVELNODE> = null;
   let pStructure: Pointer<STRUCTURE>;
   let pBaseStructure: Pointer<STRUCTURE>;
@@ -103,7 +103,7 @@ function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOr
   return null;
 }
 
-function IsDoorVisibleAtGridNo(sGridNo: INT16): boolean {
+export function IsDoorVisibleAtGridNo(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
   let sNewGridNo: INT16;
 
@@ -150,7 +150,7 @@ function IsDoorVisibleAtGridNo(sGridNo: INT16): boolean {
   return true;
 }
 
-function DoesGridnoContainHiddenStruct(sGridNo: INT16, pfVisible: Pointer<boolean>): boolean {
+export function DoesGridnoContainHiddenStruct(sGridNo: INT16, pfVisible: Pointer<boolean>): boolean {
   // ATE: These are ignored now - always return false
 
   // STRUCTURE *pStructure;
@@ -174,7 +174,7 @@ function DoesGridnoContainHiddenStruct(sGridNo: INT16, pfVisible: Pointer<boolea
   return false;
 }
 
-function IsHiddenStructureVisible(sGridNo: INT16, usIndex: UINT16): boolean {
+export function IsHiddenStructureVisible(sGridNo: INT16, usIndex: UINT16): boolean {
   // Check if it's a hidden struct and we have not revealed anything!
   if (gTileDatabase[usIndex].uiFlags & HIDDEN_TILE) {
     if (!(gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
@@ -186,7 +186,7 @@ function IsHiddenStructureVisible(sGridNo: INT16, usIndex: UINT16): boolean {
   return true;
 }
 
-function WallExistsOfTopLeftOrientation(sGridNo: INT16): boolean {
+export function WallExistsOfTopLeftOrientation(sGridNo: INT16): boolean {
   // CJC: changing to search only for normal walls, July 16, 1998
   let pStructure: Pointer<STRUCTURE>;
 
@@ -204,7 +204,7 @@ function WallExistsOfTopLeftOrientation(sGridNo: INT16): boolean {
   return false;
 }
 
-function WallExistsOfTopRightOrientation(sGridNo: INT16): boolean {
+export function WallExistsOfTopRightOrientation(sGridNo: INT16): boolean {
   // CJC: changing to search only for normal walls, July 16, 1998
   let pStructure: Pointer<STRUCTURE>;
 
@@ -222,7 +222,7 @@ function WallExistsOfTopRightOrientation(sGridNo: INT16): boolean {
   return false;
 }
 
-function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): boolean {
+export function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
@@ -242,7 +242,7 @@ function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): boolean {
   return false;
 }
 
-function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): boolean {
+export function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
@@ -262,7 +262,7 @@ function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): boolean {
   return false;
 }
 
-function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): boolean {
+export function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
@@ -281,7 +281,7 @@ function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): boole
   return false;
 }
 
-function OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(sGridNo: INT16): boolean {
+export function OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
@@ -310,7 +310,7 @@ function FindCuttableWireFenceAtGridNo(sGridNo: INT16): Pointer<STRUCTURE> {
   return null;
 }
 
-function CutWireFence(sGridNo: INT16): boolean {
+export function CutWireFence(sGridNo: INT16): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindCuttableWireFenceAtGridNo(sGridNo);
@@ -325,11 +325,11 @@ function CutWireFence(sGridNo: INT16): boolean {
   return false;
 }
 
-function IsCuttableWireFenceAtGridNo(sGridNo: INT16): boolean {
+export function IsCuttableWireFenceAtGridNo(sGridNo: INT16): boolean {
   return FindCuttableWireFenceAtGridNo(sGridNo) != null;
 }
 
-function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): boolean {
+export function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): boolean {
   let ubMerc: UINT8;
 
   // OK, first look for a vehicle....
@@ -354,7 +354,7 @@ function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): bool
   return false;
 }
 
-function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): boolean {
+export function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): boolean {
   let ubMerc: UINT8;
 
   // OK, first look for a vehicle....
@@ -382,7 +382,7 @@ function IsCutWireFenceAtGridNo(sGridNo: INT16): boolean {
   return false;
 }
 
-function FindDoorAtGridNoOrAdjacent(sGridNo: INT16): INT16 {
+export function FindDoorAtGridNoOrAdjacent(sGridNo: INT16): INT16 {
   let pStructure: Pointer<STRUCTURE>;
   let pBaseStructure: Pointer<STRUCTURE>;
   let sTestGridNo: INT16;
@@ -411,7 +411,7 @@ function FindDoorAtGridNoOrAdjacent(sGridNo: INT16): INT16 {
   return NOWHERE;
 }
 
-function IsCorpseAtGridNo(sGridNo: INT16, ubLevel: UINT8): boolean {
+export function IsCorpseAtGridNo(sGridNo: INT16, ubLevel: UINT8): boolean {
   if (GetCorpseAtGridNo(sGridNo, ubLevel) != null) {
     return true;
   } else {
@@ -419,7 +419,7 @@ function IsCorpseAtGridNo(sGridNo: INT16, ubLevel: UINT8): boolean {
   }
 }
 
-function SetOpenableStructureToClosed(sGridNo: INT16, ubLevel: UINT8): boolean {
+export function SetOpenableStructureToClosed(sGridNo: INT16, ubLevel: UINT8): boolean {
   let pStructure: Pointer<STRUCTURE>;
   let pNewStructure: Pointer<STRUCTURE>;
 

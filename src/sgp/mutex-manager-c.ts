@@ -6,7 +6,7 @@
 
 let MutexTable: CRITICAL_SECTION[] /* [MAX_MUTEX_HANDLES] */;
 
-function InitializeMutexManager(): boolean {
+export function InitializeMutexManager(): boolean {
   let uiIndex: UINT32;
 
   //
@@ -22,7 +22,7 @@ function InitializeMutexManager(): boolean {
   return true;
 }
 
-function ShutdownMutexManager(): void {
+export function ShutdownMutexManager(): void {
   let uiIndex: UINT32;
 
   DbgMessage(TOPIC_MUTEX, DBG_LEVEL_0, "Shutting down the Mutex Manager");
@@ -38,7 +38,7 @@ function ShutdownMutexManager(): void {
   UnRegisterDebugTopic(TOPIC_MUTEX, "Mutex Manager");
 }
 
-function InitializeMutex(uiMutexIndex: UINT32, ubMutexName: Pointer<UINT8>): boolean {
+export function InitializeMutex(uiMutexIndex: UINT32, ubMutexName: Pointer<UINT8>): boolean {
   // InitializeCriticalSection(&MutexTable[uiMutexIndex]);
 
   return true;

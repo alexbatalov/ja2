@@ -1,24 +1,24 @@
-const ANIMATED_CURSOR = 0x02;
-const USE_EXTERN_VO_CURSOR = 0x04;
-const USE_OUTLINE_BLITTER = 0x08;
+export const ANIMATED_CURSOR = 0x02;
+export const USE_EXTERN_VO_CURSOR = 0x04;
+export const USE_OUTLINE_BLITTER = 0x08;
 
-const EXTERN_CURSOR = 0xFFF0;
-const EXTERN2_CURSOR = 0xFFE0;
+export const EXTERN_CURSOR = 0xFFF0;
+export const EXTERN2_CURSOR = 0xFFE0;
 const MAX_COMPOSITES = 5;
-const CENTER_SUBCURSOR = 31000;
-const HIDE_SUBCURSOR = 32000;
+export const CENTER_SUBCURSOR = 31000;
+export const HIDE_SUBCURSOR = 32000;
 
-const CENTER_CURSOR = 32000;
-const RIGHT_CURSOR = 32001;
-const LEFT_CURSOR = 32002;
-const TOP_CURSOR = 32003;
-const BOTTOM_CURSOR = 32004;
+export const CENTER_CURSOR = 32000;
+export const RIGHT_CURSOR = 32001;
+export const LEFT_CURSOR = 32002;
+export const TOP_CURSOR = 32003;
+export const BOTTOM_CURSOR = 32004;
 
-const CURSOR_TO_FLASH = 0x01;
-const CURSOR_TO_FLASH2 = 0x02;
-const CURSOR_TO_SUB_CONDITIONALLY = 0x04;
-const DELAY_START_CURSOR = 0x08;
-const CURSOR_TO_PLAY_SOUND = 0x10;
+export const CURSOR_TO_FLASH = 0x01;
+export const CURSOR_TO_FLASH2 = 0x02;
+export const CURSOR_TO_SUB_CONDITIONALLY = 0x04;
+export const DELAY_START_CURSOR = 0x08;
+export const CURSOR_TO_PLAY_SOUND = 0x10;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -26,7 +26,7 @@ const CURSOR_TO_PLAY_SOUND = 0x10;
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-interface CursorFileData {
+export interface CursorFileData {
   ubFilename: UINT8[] /* [MAX_FILENAME_LEN] */;
   fLoaded: boolean;
   uiIndex: UINT32;
@@ -35,7 +35,7 @@ interface CursorFileData {
   hVObject: HVOBJECT;
 }
 
-interface CursorImage {
+export interface CursorImage {
   uiFileIndex: UINT32;
   uiSubIndex: UINT16;
   uiCurrentFrame: UINT32;
@@ -43,7 +43,7 @@ interface CursorImage {
   usPosY: INT16;
 }
 
-interface CursorData {
+export interface CursorData {
   Composites: CursorImage[] /* [MAX_COMPOSITES] */;
   usNumComposites: UINT16;
   sOffsetX: INT16;
@@ -54,4 +54,4 @@ interface CursorData {
   bFlashIndex: UINT8;
 }
 
-type MOUSEBLT_HOOK = () => void;
+export type MOUSEBLT_HOOK = () => void;

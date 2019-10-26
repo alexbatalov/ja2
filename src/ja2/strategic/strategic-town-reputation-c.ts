@@ -16,7 +16,7 @@ const TOWN_OPINION_START_TIME = (9 * 60);
 // how often the town opinion events occur...right now every 3 hours
 const TOWN_OPINION_PERIOD = (3 * 60);
 
-function InitializeProfilesForTownReputation(): void {
+export function InitializeProfilesForTownReputation(): void {
   let uiProfileId: UINT32 = 0;
 
   // initialize the town opinion values in each recruitable merc's profile structure
@@ -25,7 +25,7 @@ function InitializeProfilesForTownReputation(): void {
   }
 }
 
-function PostEventsForSpreadOfTownOpinion(): void {
+export function PostEventsForSpreadOfTownOpinion(): void {
   /* ARM - Do nothing, this system has been scrapped because it is so marginal and it's too late to bother with it now
 
           INT32 iCounter = 0;
@@ -86,7 +86,7 @@ function UpdateTownOpinionOfThisMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, u
   UpdateTownOpinionOfThisMerc(pSoldier.value.ubProfile, ubTownId, bAmount);
 }
 
-function HandleSpreadOfAllTownsOpinion(): void {
+export function HandleSpreadOfAllTownsOpinion(): void {
   let ubProfileId: UINT8;
 
   // debug message

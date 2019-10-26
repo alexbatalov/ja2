@@ -1,6 +1,6 @@
 const NETWORK_PATH_DATA_SIZE = 6;
 // Enumerate all events for JA2
-const enum Enum319 {
+export const enum Enum319 {
   E_PLAYSOUND,
   S_CHANGEDEST,
   //	S_GETNEWPATH,
@@ -34,10 +34,10 @@ const enum Enum319 {
 // This definition is used to denote events with a special delay value;
 // it indicates that these events will not be processed until specifically
 // called for in a special loop.
-const DEMAND_EVENT_DELAY = 0xFFFF;
+export const DEMAND_EVENT_DELAY = 0xFFFF;
 
 // Enumerate all structures for events
-interface EV_E_PLAYSOUND {
+export interface EV_E_PLAYSOUND {
   usIndex: UINT16;
   usRate: UINT16;
   ubVolume: UINT8;
@@ -45,7 +45,7 @@ interface EV_E_PLAYSOUND {
   uiPan: UINT32;
 }
 
-interface EV_S_CHANGESTATE {
+export interface EV_S_CHANGESTATE {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   usNewState: UINT16;
@@ -55,32 +55,32 @@ interface EV_S_CHANGESTATE {
   fForce: boolean;
 }
 
-interface EV_S_CHANGEDEST {
+export interface EV_S_CHANGEDEST {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   usNewDestination: UINT16;
 }
 
-interface EV_S_SETPOSITION {
+export interface EV_S_SETPOSITION {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   dNewXPos: FLOAT;
   dNewYPos: FLOAT;
 }
 
-interface EV_S_GETNEWPATH {
+export interface EV_S_GETNEWPATH {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   sDestGridNo: INT16;
   usMovementAnim: UINT16;
 }
 
-interface EV_S_BEGINTURN {
+export interface EV_S_BEGINTURN {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
 }
 
-interface EV_S_CHANGESTANCE {
+export interface EV_S_CHANGESTANCE {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   ubNewStance: UINT8;
@@ -88,19 +88,19 @@ interface EV_S_CHANGESTANCE {
   sYPos: INT16;
 }
 
-interface EV_S_SETDIRECTION {
+export interface EV_S_SETDIRECTION {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   usNewDirection: UINT16;
 }
 
-interface EV_S_SETDESIREDDIRECTION {
+export interface EV_S_SETDESIREDDIRECTION {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   usDesiredDirection: UINT16;
 }
 
-interface EV_S_BEGINFIREWEAPON {
+export interface EV_S_BEGINFIREWEAPON {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   sTargetGridNo: INT16;
@@ -108,7 +108,7 @@ interface EV_S_BEGINFIREWEAPON {
   bTargetCubeLevel: INT8;
 }
 
-interface EV_S_FIREWEAPON {
+export interface EV_S_FIREWEAPON {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   sTargetGridNo: INT16;
@@ -116,7 +116,7 @@ interface EV_S_FIREWEAPON {
   bTargetCubeLevel: INT8;
 }
 
-interface EV_S_WEAPONHIT {
+export interface EV_S_WEAPONHIT {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   usWeaponIndex: UINT16;
@@ -133,7 +133,7 @@ interface EV_S_WEAPONHIT {
   ubLocation: UINT8;
 }
 
-interface EV_S_STRUCTUREHIT {
+export interface EV_S_STRUCTUREHIT {
   sXPos: INT16;
   sYPos: INT16;
   sZPos: INT16;
@@ -145,18 +145,18 @@ interface EV_S_STRUCTUREHIT {
   iBullet: INT32;
 }
 
-interface EV_S_WINDOWHIT {
+export interface EV_S_WINDOWHIT {
   sGridNo: INT16;
   usStructureID: UINT16;
   fBlowWindowSouth: boolean;
   fLargeForce: boolean;
 }
 
-interface EV_S_MISS {
+export interface EV_S_MISS {
   ubAttackerID: UINT8;
 }
 
-interface EV_S_NOISE {
+export interface EV_S_NOISE {
   ubNoiseMaker: UINT8;
   sGridNo: INT16;
   bLevel: UINT8;
@@ -165,7 +165,7 @@ interface EV_S_NOISE {
   ubNoiseType: UINT8;
 }
 
-interface EV_S_STOP_MERC {
+export interface EV_S_STOP_MERC {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   bDirection: INT8;
@@ -174,7 +174,7 @@ interface EV_S_STOP_MERC {
   sYPos: INT16;
 }
 
-interface EV_S_SENDPATHTONETWORK {
+export interface EV_S_SENDPATHTONETWORK {
   usSoldierID: UINT8;
   uiUniqueId: UINT32;
   usPathDataSize: UINT8; // Size of Path

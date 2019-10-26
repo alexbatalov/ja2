@@ -4,7 +4,7 @@ let hDemandEventQueue: HLIST = null;
 
 const QUEUE_RESIZE = 20;
 
-function InitializeEventManager(): boolean {
+export function InitializeEventManager(): boolean {
   // Create Queue
   hEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
@@ -30,7 +30,7 @@ function InitializeEventManager(): boolean {
   return true;
 }
 
-function ShutdownEventManager(): boolean {
+export function ShutdownEventManager(): boolean {
   if (hEventQueue != null) {
     DeleteList(hEventQueue);
   }
@@ -46,7 +46,7 @@ function ShutdownEventManager(): boolean {
   return true;
 }
 
-function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize: UINT32, ubQueueID: UINT8): boolean {
+export function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize: UINT32, ubQueueID: UINT8): boolean {
   let pEvent: Pointer<EVENT>;
   let uiEventSize: UINT32 = sizeof(EVENT);
   let hQueue: HLIST;
@@ -75,7 +75,7 @@ function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize:
   return true;
 }
 
-function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): boolean {
+export function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): boolean {
   let uiQueueSize: UINT32;
   let hQueue: HLIST;
 
@@ -97,7 +97,7 @@ function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueI
   return true;
 }
 
-function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): boolean {
+export function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): boolean {
   let uiQueueSize: UINT32;
   let hQueue: HLIST;
 
@@ -119,7 +119,7 @@ function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID:
   return true;
 }
 
-function FreeEvent(pEvent: Pointer<EVENT>): boolean {
+export function FreeEvent(pEvent: Pointer<EVENT>): boolean {
   CHECKF(pEvent != null);
 
   // Delete event
@@ -128,7 +128,7 @@ function FreeEvent(pEvent: Pointer<EVENT>): boolean {
   return true;
 }
 
-function EventQueueSize(ubQueueID: UINT8): UINT32 {
+export function EventQueueSize(ubQueueID: UINT8): UINT32 {
   let uiQueueSize: UINT32;
   let hQueue: HLIST;
 

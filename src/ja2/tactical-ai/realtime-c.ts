@@ -32,7 +32,7 @@ function RTDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 }
 
-function RealtimeDelay(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
+export function RealtimeDelay(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   if (PTR_CIV_OR_MILITIA() && !(pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP)) {
     return REALTIME_CIV_AI_DELAY();
   } else if (CREATURE_OR_BLOODCAT(pSoldier) && !(pSoldier.value.bHunting)) {
@@ -50,7 +50,7 @@ function RealtimeDelay(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   }
 }
 
-function RTHandleAI(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RTHandleAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   if ((pSoldier.value.bAction != Enum289.AI_ACTION_NONE) && pSoldier.value.bActionInProgress) {
     // if action should remain in progress
     if (ActionInProgress(pSoldier)) {

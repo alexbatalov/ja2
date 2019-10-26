@@ -1,4 +1,4 @@
-let uiMusicHandle: UINT32 = NO_SAMPLE;
+export let uiMusicHandle: UINT32 = NO_SAMPLE;
 let uiMusicVolume: UINT32 = 50;
 let fMusicPlaying: boolean = false;
 let fMusicFadingOut: boolean = false;
@@ -6,7 +6,7 @@ let fMusicFadingIn: boolean = false;
 
 let gfMusicEnded: boolean = false;
 
-let gubMusicMode: UINT8 = 0;
+export let gubMusicMode: UINT8 = 0;
 let gubOldMusicMode: UINT8 = 0;
 
 let gbVictorySongCount: INT8 = 0;
@@ -18,7 +18,7 @@ let bBattleModeSong: INT8;
 
 let gbFadeSpeed: INT8 = 1;
 
-let szMusicList: Pointer<CHAR8>[] /* [NUM_MUSIC] */ = [
+export let szMusicList: Pointer<CHAR8>[] /* [NUM_MUSIC] */ = [
   "MUSIC\\marimbad 2.wav",
   "MUSIC\\menumix1.wav",
   "MUSIC\\nothing A.wav",
@@ -36,7 +36,7 @@ let szMusicList: Pointer<CHAR8>[] /* [NUM_MUSIC] */ = [
   "MUSIC\\creature battle.wav",
 ];
 
-let gfForceMusicToTense: boolean = false;
+export let gfForceMusicToTense: boolean = false;
 let gfDontRestartSong: boolean = false;
 
 function NoEnemiesInSight(): boolean {
@@ -67,7 +67,7 @@ function NoEnemiesInSight(): boolean {
 //	Returns:	TRUE if the music was started, FALSE if an error occurred
 //
 //********************************************************************************
-function MusicPlay(uiNum: UINT32): boolean {
+export function MusicPlay(uiNum: UINT32): boolean {
   let spParms: SOUNDPARMS;
 
   if (fMusicPlaying)
@@ -103,7 +103,7 @@ function MusicPlay(uiNum: UINT32): boolean {
 //	Returns:	TRUE if the volume was set, FALSE if an error occurred
 //
 //********************************************************************************
-function MusicSetVolume(uiVolume: UINT32): boolean {
+export function MusicSetVolume(uiVolume: UINT32): boolean {
   let uiOldMusicVolume: INT32 = uiMusicVolume;
 
   uiMusicVolume = Math.min(uiVolume, 127);
@@ -138,7 +138,7 @@ function MusicSetVolume(uiVolume: UINT32): boolean {
 //	Returns:	TRUE if the volume was set, FALSE if an error occurred
 //
 //********************************************************************************
-function MusicGetVolume(): UINT32 {
+export function MusicGetVolume(): UINT32 {
   return uiMusicVolume;
 }
 
@@ -206,7 +206,7 @@ function MusicFadeIn(): boolean {
 //	Returns:	TRUE always
 //
 //********************************************************************************
-function MusicPoll(fForce: boolean): boolean {
+export function MusicPoll(fForce: boolean): boolean {
   let iVol: INT32;
 
   SoundServiceStreams();
@@ -272,7 +272,7 @@ function MusicPoll(fForce: boolean): boolean {
   return true;
 }
 
-function SetMusicMode(ubMusicMode: UINT8): boolean {
+export function SetMusicMode(ubMusicMode: UINT8): boolean {
   /* static */ let bPreviousMode: INT8 = 0;
 
   // OK, check if we want to restore
@@ -407,7 +407,7 @@ function MusicStopCallback(pData: Pointer<void>): void {
   uiMusicHandle = NO_SAMPLE;
 }
 
-function SetMusicFadeSpeed(bFadeSpeed: INT8): void {
+export function SetMusicFadeSpeed(bFadeSpeed: INT8): void {
   gbFadeSpeed = bFadeSpeed;
 }
 

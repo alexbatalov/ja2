@@ -1,16 +1,16 @@
 let gfFirstCycleMovementStarted: boolean = false;
 
 let guiSoldierFlags: UINT32;
-let guiUITargetSoldierId: UINT32 = NOBODY;
+export let guiUITargetSoldierId: UINT32 = NOBODY;
 
 let gpExchangeSoldier1: Pointer<SOLDIERTYPE>;
 let gpExchangeSoldier2: Pointer<SOLDIERTYPE>;
 
-let gfNextFireJam: boolean = false;
+export let gfNextFireJam: boolean = false;
 
-let gubCheatLevel: UINT8 = STARTING_CHEAT_LEVEL;
+export let gubCheatLevel: UINT8 = STARTING_CHEAT_LEVEL;
 
-function GetTBMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
+export function GetTBMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
   QueryTBLeftButton(puiNewEvent);
   QueryTBRightButton(puiNewEvent);
 }
@@ -577,7 +577,7 @@ function QueryTBRightButton(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-function GetTBMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
+export function GetTBMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
   let usMapPos: UINT16;
   /* static */ let usOldMapPos: UINT16 = 0;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -803,7 +803,7 @@ function GetTBMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-function GetPolledKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
+export function GetPolledKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   /* static */ let fShifted: boolean = false;
   /* static */ let fShifted2: boolean = false;
   /* static */ let fCtrlDown: boolean = false;
@@ -925,7 +925,7 @@ function GetPolledKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
+export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   let InputEvent: InputAtom;
   let fKeyTaken: boolean = false;
   let MousePos: POINT;
@@ -2251,7 +2251,7 @@ function HandleItemMenuKeys(pInputEvent: Pointer<InputAtom>, puiNewEvent: Pointe
   }
 }
 
-function HandleCheckForExitArrowsInput(fAdjustConfirm: boolean): boolean {
+export function HandleCheckForExitArrowsInput(fAdjustConfirm: boolean): boolean {
   let sMapPos: INT16;
 
   // If not in move mode, return!
@@ -2938,7 +2938,7 @@ function CheckForAndHandleHandleVehicleInteractiveClick(pSoldier: Pointer<SOLDIE
   return 0;
 }
 
-function HandleHandCursorClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): void {
+export function HandleHandCursorClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pIntTile: Pointer<LEVELNODE>;
   let sIntTileGridNo: INT16;
@@ -3063,7 +3063,7 @@ function ExchangeMessageBoxCallBack(bExitValue: UINT8): void {
   }
 }
 
-function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): INT8 {
+export function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): INT8 {
   // Look for an item pool
   let pItemPool: Pointer<ITEM_POOL>;
   let fContinue: boolean = true;
@@ -3169,7 +3169,7 @@ function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Pointer<U
   return bReturnCode;
 }
 
-function HandleUIReloading(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function HandleUIReloading(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bAPs: INT8 = 0;
 
   // CHECK OUR CURRENT CURSOR...
@@ -3203,7 +3203,7 @@ function HandleUIReloading(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function ConfirmActionCancel(usMapPos: UINT16, usOldMapPos: UINT16): boolean {
+export function ConfirmActionCancel(usMapPos: UINT16, usOldMapPos: UINT16): boolean {
   // OK, most times we want to leave confirm mode if our
   // gridno is different... but if we are in the grenade throw
   // confirm UI, we want a bigger radius...
@@ -3290,7 +3290,7 @@ function EscapeUILock(): void {
   UIHandleLUIEndLock(null);
 }
 
-function HandleStanceChangeFromUIKeys(ubAnimHeight: UINT8): void {
+export function HandleStanceChangeFromUIKeys(ubAnimHeight: UINT8): void {
   // If we have multiple guys selected, make all change stance!
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
@@ -3390,7 +3390,7 @@ function TestCapture(): void {
   EndCaptureSequence();
 }
 
-function PopupAssignmentMenuInTactical(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function PopupAssignmentMenuInTactical(pSoldier: Pointer<SOLDIERTYPE>): void {
   // do something
   fShowAssignmentMenu = true;
   CreateDestroyAssignmentPopUpBoxes();

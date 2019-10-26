@@ -121,7 +121,7 @@ const SET_BLOOD_ROOF_TYPE = (s, ntr) => {
   (s) = BLOOD_ROOF_TYPE(ntr) | (s & 0xFD);
 };
 
-function RemoveBlood(sGridNo: INT16, bLevel: INT8): void {
+export function RemoveBlood(sGridNo: INT16, bLevel: INT8): void {
   gpWorldLevelData[sGridNo].ubBloodInfo = 0;
 
   gpWorldLevelData[sGridNo].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
@@ -129,7 +129,7 @@ function RemoveBlood(sGridNo: INT16, bLevel: INT8): void {
   UpdateBloodGraphics(sGridNo, bLevel);
 }
 
-function DecaySmells(): void {
+export function DecaySmells(): void {
   let uiLoop: UINT32;
   let pMapElement: Pointer<MAP_ELEMENT>;
 
@@ -195,7 +195,7 @@ function DecayBlood(): void {
   }
 }
 
-function DecayBloodAndSmells(uiTime: UINT32): void {
+export function DecayBloodAndSmells(uiTime: UINT32): void {
   let uiCheckTime: UINT32;
 
   if (!gfWorldLoaded) {
@@ -228,7 +228,7 @@ function DecayBloodAndSmells(uiTime: UINT32): void {
   }
 }
 
-function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pMapElement: Pointer<MAP_ELEMENT>;
   let ubOldSmell: UINT8;
   let ubOldStrength: UINT8;
@@ -292,7 +292,7 @@ function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
   // otherwise skip dropping smell
 }
 
-function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStrength: UINT8, bVisible: INT8): void {
+export function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStrength: UINT8, bVisible: INT8): void {
   let pMapElement: Pointer<MAP_ELEMENT>;
   let ubOldStrength: UINT8 = 0;
   let ubNewStrength: UINT8 = 0;
@@ -378,7 +378,7 @@ function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStreng
   }
 }
 
-function DropBlood(pSoldier: Pointer<SOLDIERTYPE>, ubStrength: UINT8, bVisible: INT8): void {
+export function DropBlood(pSoldier: Pointer<SOLDIERTYPE>, ubStrength: UINT8, bVisible: INT8): void {
   let ubType: UINT8;
   let ubOldStrength: UINT8 = 0;
   let ubNewStrength: UINT8 = 0;
@@ -402,7 +402,7 @@ function DropBlood(pSoldier: Pointer<SOLDIERTYPE>, ubStrength: UINT8, bVisible: 
   InternalDropBlood(pSoldier.value.sGridNo, pSoldier.value.bLevel, ubType, ubStrength, bVisible);
 }
 
-function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
+export function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
   let pMapElement: Pointer<MAP_ELEMENT>;
   let bValue: INT8;
   let usIndex: UINT16;

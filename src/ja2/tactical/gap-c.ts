@@ -87,7 +87,7 @@ function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGap
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Gap List Started From File %s and has %d gaps", pDestFileName, pGapList.value.size));
 }
 
-function AudioGapListDone(pGapList: Pointer<AudioGapList>): void {
+export function AudioGapListDone(pGapList: Pointer<AudioGapList>): void {
   // This procedure will go through the  AudioGapList and free space/nullify pointers
   // for any allocated elements
 
@@ -113,7 +113,7 @@ function AudioGapListDone(pGapList: Pointer<AudioGapList>): void {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Audio Gap List Deleted"));
 }
 
-function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList>): void {
+export function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList>): void {
   // This procedure will access the AudioGapList pertaining to the .wav about
   // to be played and sets the audio_gap_active flag. This is done by
   // going to the current AUDIO_GAP element in the AudioGapList, comparing to see if
@@ -170,7 +170,7 @@ function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList>): voi
   }
 }
 
-function PlayJA2GapSample(zSoundFile: Pointer<CHAR8>, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: Pointer<AudioGapList>): UINT32 {
+export function PlayJA2GapSample(zSoundFile: Pointer<CHAR8>, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: Pointer<AudioGapList>): UINT32 {
   let spParms: SOUNDPARMS;
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));

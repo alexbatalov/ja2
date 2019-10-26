@@ -1,4 +1,4 @@
-const enum Enum220 {
+export const enum Enum220 {
   STANCEUP_BUTTON = 0,
   UPDOWN_BUTTON,
   CLIMB_BUTTON,
@@ -16,22 +16,22 @@ const enum Enum220 {
   NUM_SM_BUTTONS,
 }
 
-const enum Enum221 {
+export const enum Enum221 {
   TEAM_DONE_BUTTON = 0,
   TEAM_MAP_SCREEN_BUTTON,
   CHANGE_SQUAD_BUTTON,
   NUM_TEAM_BUTTONS,
 }
 
-const NEW_ITEM_CYCLE_COUNT = 19;
-const NEW_ITEM_CYCLES = 4;
-const NUM_TEAM_SLOTS = 6;
+export const NEW_ITEM_CYCLE_COUNT = 19;
+export const NEW_ITEM_CYCLES = 4;
+export const NUM_TEAM_SLOTS = 6;
 
-const PASSING_ITEM_DISTANCE_OKLIFE = 3;
-const PASSING_ITEM_DISTANCE_NOTOKLIFE = 2;
+export const PASSING_ITEM_DISTANCE_OKLIFE = 3;
+export const PASSING_ITEM_DISTANCE_NOTOKLIFE = 2;
 
-const SHOW_LOCATOR_NORMAL = 1;
-const SHOW_LOCATOR_FAST = 2;
+export const SHOW_LOCATOR_NORMAL = 1;
+export const SHOW_LOCATOR_FAST = 2;
 
 interface TEAM_PANEL_SLOTS_TYPE {
   ubID: UINT8;

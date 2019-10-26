@@ -1,10 +1,10 @@
 let guiArmourBackground: UINT32;
 let guiArmourGrid: UINT32;
 
-function GameInitBobbyRArmour(): void {
+export function GameInitBobbyRArmour(): void {
 }
 
-function EnterBobbyRArmour(): boolean {
+export function EnterBobbyRArmour(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
@@ -29,7 +29,7 @@ function EnterBobbyRArmour(): boolean {
   return true;
 }
 
-function ExitBobbyRArmour(): void {
+export function ExitBobbyRArmour(): void {
   DeleteVideoObjectFromIndex(guiArmourBackground);
   DeleteVideoObjectFromIndex(guiArmourGrid);
   DeleteBobbyMenuBar();
@@ -41,10 +41,10 @@ function ExitBobbyRArmour(): void {
   guiLastBobbyRayPage = Enum95.LAPTOP_MODE_BOBBY_R_ARMOR;
 }
 
-function HandleBobbyRArmour(): void {
+export function HandleBobbyRArmour(): void {
 }
 
-function RenderBobbyRArmour(): void {
+export function RenderBobbyRArmour(): void {
   let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiArmourBackground);

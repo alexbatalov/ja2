@@ -384,7 +384,7 @@ let AmbientVols: UINT8[] /* [NUM_AMBIENTS] */ = [
 let gDelayedSoundParms: SOUNDPARMS;
 let guiDelayedSoundNum: UINT32;
 
-function InitJA2Sound(): boolean {
+export function InitJA2Sound(): boolean {
   // UINT32 uiCount;
 
   // for(uiCount=0; uiCount < NUM_SAMPLES; uiCount++)
@@ -395,7 +395,7 @@ function InitJA2Sound(): boolean {
   return true;
 }
 
-function ShutdownJA2Sound(): boolean {
+export function ShutdownJA2Sound(): boolean {
   // UINT32 uiCount;
 
   SoundStopAll();
@@ -409,7 +409,7 @@ function ShutdownJA2Sound(): boolean {
   return true;
 }
 
-function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
+export function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   let spParms: SOUNDPARMS;
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
@@ -423,7 +423,7 @@ function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops:
   return SoundPlay(szSoundEffects[usNum], addressof(spParms));
 }
 
-function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
+export function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   let spParms: SOUNDPARMS;
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
@@ -437,7 +437,7 @@ function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32,
   return SoundPlayStreamedFile(szSoundEffects[usNum], addressof(spParms));
 }
 
-function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
+export function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
   let spParms: SOUNDPARMS;
@@ -453,7 +453,7 @@ function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT3
   return SoundPlay(szFileName, addressof(spParms));
 }
 
-function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
+export function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
   let spParms: SOUNDPARMS;
@@ -470,7 +470,7 @@ function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolu
   return SoundPlayStreamedFile(szFileName, addressof(spParms));
 }
 
-function PlayJA2Ambient(usNum: UINT32, ubVolume: UINT32, ubLoops: UINT32): UINT32 {
+export function PlayJA2Ambient(usNum: UINT32, ubVolume: UINT32, ubLoops: UINT32): UINT32 {
   let spParms: SOUNDPARMS;
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
@@ -496,7 +496,7 @@ function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT3
   return SoundPlayRandom(szAmbientEffects[usNum], addressof(rpParms));
 }
 
-function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, fCheck: boolean): UINT32 {
+export function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, fCheck: boolean): UINT32 {
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // CHECK IF GUY IS ON SCREEN BEFORE PLAYING!
     if ((MercPtrs[usID].value.bVisible != -1) || !fCheck) {
@@ -507,31 +507,31 @@ function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVol
   return 0;
 }
 
-function SetSpeechVolume(uiNewVolume: UINT32): void {
+export function SetSpeechVolume(uiNewVolume: UINT32): void {
   guiSpeechVolume = Math.min(uiNewVolume, 127);
 }
 
-function GetSpeechVolume(): UINT32 {
+export function GetSpeechVolume(): UINT32 {
   return guiSpeechVolume;
 }
 
-function SetSoundEffectsVolume(uiNewVolume: UINT32): void {
+export function SetSoundEffectsVolume(uiNewVolume: UINT32): void {
   guiSoundEffectsVolume = Math.min(uiNewVolume, 127);
 }
 
-function GetSoundEffectsVolume(): UINT32 {
+export function GetSoundEffectsVolume(): UINT32 {
   return guiSoundEffectsVolume;
 }
 
-function CalculateSpeechVolume(uiVolume: UINT32): UINT32 {
+export function CalculateSpeechVolume(uiVolume: UINT32): UINT32 {
   return ((uiVolume / HIGHVOLUME) * guiSpeechVolume + .5);
 }
 
-function CalculateSoundEffectsVolume(uiVolume: UINT32): UINT32 {
+export function CalculateSoundEffectsVolume(uiVolume: UINT32): UINT32 {
   return ((uiVolume / HIGHVOLUME) * guiSoundEffectsVolume + .5);
 }
 
-function SoundDir(sGridNo: INT16): INT8 {
+export function SoundDir(sGridNo: INT16): INT8 {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sScreenX: INT16;
@@ -578,7 +578,7 @@ function SoundDir(sGridNo: INT16): INT8 {
     return MIDDLE;
 }
 
-function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
+export function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sScreenX: INT16;
@@ -691,7 +691,7 @@ function RecountPositionSnds(): void {
   }
 }
 
-function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundToPlay: UINT32): INT32 {
+export function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundToPlay: UINT32): INT32 {
   let pPositionSnd: Pointer<POSITIONSND>;
   let iPositionSndIndex: INT32;
 
@@ -721,7 +721,7 @@ function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundT
   return iPositionSndIndex;
 }
 
-function DeletePositionSnd(iPositionSndIndex: INT32): void {
+export function DeletePositionSnd(iPositionSndIndex: INT32): void {
   let pPositionSnd: Pointer<POSITIONSND>;
 
   pPositionSnd = addressof(gPositionSndData[iPositionSndIndex]);
@@ -741,7 +741,7 @@ function DeletePositionSnd(iPositionSndIndex: INT32): void {
   }
 }
 
-function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): void {
+export function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): void {
   let pPositionSnd: Pointer<POSITIONSND>;
 
   pPositionSnd = addressof(gPositionSndData[iPositionSndIndex]);
@@ -753,7 +753,7 @@ function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): void {
   }
 }
 
-function SetPositionSndsActive(): void {
+export function SetPositionSndsActive(): void {
   let cnt: UINT32;
   let pPositionSnd: Pointer<POSITIONSND>;
 
@@ -774,7 +774,7 @@ function SetPositionSndsActive(): void {
   }
 }
 
-function SetPositionSndsInActive(): void {
+export function SetPositionSndsInActive(): void {
   let cnt: UINT32;
   let pPositionSnd: Pointer<POSITIONSND>;
 
@@ -896,7 +896,7 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   return (bInitialVolume * ((sMaxSoundDist - sSoundDist) / sMaxSoundDist));
 }
 
-function SetPositionSndsVolumeAndPanning(): void {
+export function SetPositionSndsVolumeAndPanning(): void {
   let cnt: UINT32;
   let pPositionSnd: Pointer<POSITIONSND>;
   let bVolume: INT8;

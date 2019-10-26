@@ -25,18 +25,18 @@
 // cubes (rather than, as it were, groups of 4 vertical
 // cubes)
 
-const PROFILE_X_SIZE = 5;
-const PROFILE_Y_SIZE = 5;
-const PROFILE_Z_SIZE = 4;
+export const PROFILE_X_SIZE = 5;
+export const PROFILE_Y_SIZE = 5;
+export const PROFILE_Z_SIZE = 4;
 
 // these values should be compared for less than rather than less
 // than or equal to
-const STRUCTURE_ON_GROUND = 0;
-const STRUCTURE_ON_ROOF = PROFILE_Z_SIZE;
-const STRUCTURE_ON_GROUND_MAX = PROFILE_Z_SIZE;
-const STRUCTURE_ON_ROOF_MAX = PROFILE_Z_SIZE * 2;
+export const STRUCTURE_ON_GROUND = 0;
+export const STRUCTURE_ON_ROOF = PROFILE_Z_SIZE;
+export const STRUCTURE_ON_GROUND_MAX = PROFILE_Z_SIZE;
+export const STRUCTURE_ON_ROOF_MAX = PROFILE_Z_SIZE * 2;
 
-type PROFILE = UINT8[][] /* [PROFILE_X_SIZE][PROFILE_Y_SIZE] */;
+export type PROFILE = UINT8[][] /* [PROFILE_X_SIZE][PROFILE_Y_SIZE] */;
 
 // MAP_ELEMENT may get later:
 // PROFILE *		CombinedLOSProfile;
@@ -57,65 +57,65 @@ type PROFILE = UINT8[][] /* [PROFILE_X_SIZE][PROFILE_Y_SIZE] */;
 // how to handle explodable structures
 
 // NOT used in DB structures!
-const STRUCTURE_BASE_TILE = 0x00000001;
-const STRUCTURE_OPEN = 0x00000002;
-const STRUCTURE_OPENABLE = 0x00000004;
+export const STRUCTURE_BASE_TILE = 0x00000001;
+export const STRUCTURE_OPEN = 0x00000002;
+export const STRUCTURE_OPENABLE = 0x00000004;
 // synonyms for STRUCTURE_OPENABLE
 const STRUCTURE_CLOSEABLE = 0x00000004;
 const STRUCTURE_SEARCHABLE = 0x00000004;
-const STRUCTURE_HIDDEN = 0x00000008;
+export const STRUCTURE_HIDDEN = 0x00000008;
 
-const STRUCTURE_MOBILE = 0x00000010;
+export const STRUCTURE_MOBILE = 0x00000010;
 // STRUCTURE_PASSABLE is set for each structure instance where
 // the tile flag TILE_PASSABLE is set
-const STRUCTURE_PASSABLE = 0x00000020;
-const STRUCTURE_EXPLOSIVE = 0x00000040;
-const STRUCTURE_TRANSPARENT = 0x00000080;
+export const STRUCTURE_PASSABLE = 0x00000020;
+export const STRUCTURE_EXPLOSIVE = 0x00000040;
+export const STRUCTURE_TRANSPARENT = 0x00000080;
 
-const STRUCTURE_GENERIC = 0x00000100;
-const STRUCTURE_TREE = 0x00000200;
-const STRUCTURE_FENCE = 0x00000400;
-const STRUCTURE_WIREFENCE = 0x00000800;
+export const STRUCTURE_GENERIC = 0x00000100;
+export const STRUCTURE_TREE = 0x00000200;
+export const STRUCTURE_FENCE = 0x00000400;
+export const STRUCTURE_WIREFENCE = 0x00000800;
 
-const STRUCTURE_HASITEMONTOP = 0x00001000; // ATE: HASITEM: struct has item on top of it
-const STRUCTURE_SPECIAL = 0x00002000;
+export const STRUCTURE_HASITEMONTOP = 0x00001000; // ATE: HASITEM: struct has item on top of it
+export const STRUCTURE_SPECIAL = 0x00002000;
 const STRUCTURE_LIGHTSOURCE = 0x00004000;
-const STRUCTURE_VEHICLE = 0x00008000;
+export const STRUCTURE_VEHICLE = 0x00008000;
 
-const STRUCTURE_WALL = 0x00010000;
-const STRUCTURE_WALLNWINDOW = 0x00020000;
-const STRUCTURE_SLIDINGDOOR = 0x00040000;
-const STRUCTURE_DOOR = 0x00080000;
+export const STRUCTURE_WALL = 0x00010000;
+export const STRUCTURE_WALLNWINDOW = 0x00020000;
+export const STRUCTURE_SLIDINGDOOR = 0x00040000;
+export const STRUCTURE_DOOR = 0x00080000;
 
 // a "multi" structure (as opposed to multitiled) is composed of multiple graphics & structures
-const STRUCTURE_MULTI = 0x00100000;
-const STRUCTURE_CAVEWALL = 0x00200000;
-const STRUCTURE_DDOOR_LEFT = 0x00400000;
-const STRUCTURE_DDOOR_RIGHT = 0x00800000;
+export const STRUCTURE_MULTI = 0x00100000;
+export const STRUCTURE_CAVEWALL = 0x00200000;
+export const STRUCTURE_DDOOR_LEFT = 0x00400000;
+export const STRUCTURE_DDOOR_RIGHT = 0x00800000;
 
-const STRUCTURE_NORMAL_ROOF = 0x01000000;
-const STRUCTURE_SLANTED_ROOF = 0x02000000;
+export const STRUCTURE_NORMAL_ROOF = 0x01000000;
+export const STRUCTURE_SLANTED_ROOF = 0x02000000;
 const STRUCTURE_TALL_ROOF = 0x04000000;
-const STRUCTURE_SWITCH = 0x08000000;
+export const STRUCTURE_SWITCH = 0x08000000;
 
-const STRUCTURE_ON_LEFT_WALL = 0x10000000;
-const STRUCTURE_ON_RIGHT_WALL = 0x20000000;
-const STRUCTURE_CORPSE = 0x40000000;
-const STRUCTURE_PERSON = 0x80000000;
+export const STRUCTURE_ON_LEFT_WALL = 0x10000000;
+export const STRUCTURE_ON_RIGHT_WALL = 0x20000000;
+export const STRUCTURE_CORPSE = 0x40000000;
+export const STRUCTURE_PERSON = 0x80000000;
 
 // COMBINATION FLAGS
-const STRUCTURE_ANYFENCE = 0x00000C00;
-const STRUCTURE_ANYDOOR = 0x00CC0000;
-const STRUCTURE_OBSTACLE = 0x00008F00;
-const STRUCTURE_WALLSTUFF = 0x00CF0000;
-const STRUCTURE_BLOCKSMOVES = 0x00208F00;
+export const STRUCTURE_ANYFENCE = 0x00000C00;
+export const STRUCTURE_ANYDOOR = 0x00CC0000;
+export const STRUCTURE_OBSTACLE = 0x00008F00;
+export const STRUCTURE_WALLSTUFF = 0x00CF0000;
+export const STRUCTURE_BLOCKSMOVES = 0x00208F00;
 const STRUCTURE_TYPE_DEFINED = 0x8FEF8F00;
-const STRUCTURE_ROOF = 0x07000000;
+export const STRUCTURE_ROOF = 0x07000000;
 
-const TILE_ON_ROOF = 0x01;
-const TILE_PASSABLE = 0x02;
+export const TILE_ON_ROOF = 0x01;
+export const TILE_PASSABLE = 0x02;
 
-interface DB_STRUCTURE_TILE {
+export interface DB_STRUCTURE_TILE {
   sPosRelToBase: INT16; // "single-axis"
   bXPosRelToBase: INT8;
   bYPosRelToBase: INT8;
@@ -125,11 +125,11 @@ interface DB_STRUCTURE_TILE {
   bUnused: BYTE[] /* [1] */;
 } // 32 bytes
 
-const BASE_TILE = 0;
+export const BASE_TILE = 0;
 
-const NO_PARTNER_STRUCTURE = 0;
+export const NO_PARTNER_STRUCTURE = 0;
 
-interface DB_STRUCTURE {
+export interface DB_STRUCTURE {
   ubArmour: UINT8;
   ubHitPoints: UINT8;
   ubDensity: UINT8;
@@ -144,12 +144,12 @@ interface DB_STRUCTURE {
   bUnused: BYTE[] /* [1] */;
 } // 16 bytes
 
-interface DB_STRUCTURE_REF {
+export interface DB_STRUCTURE_REF {
   pDBStructure: Pointer<DB_STRUCTURE>;
   ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>; // dynamic array
 } // 8 bytes
 
-interface STRUCTURE {
+export interface STRUCTURE {
   pPrev: Pointer<STRUCTURE>;
   pNext: Pointer<STRUCTURE>;
   sGridNo: INT16;
@@ -173,7 +173,7 @@ interface STRUCTURE {
   ubUnused: UINT8[] /* [1] */;
 } // 32 bytes
 
-interface STRUCTURE_FILE_REF {
+export interface STRUCTURE_FILE_REF {
   pPrev: Pointer<STRUCTURE_FILE_REF>;
   pNext: Pointer<STRUCTURE_FILE_REF>;
   pAuxData: Pointer<AuxObjectData>;
@@ -195,7 +195,7 @@ interface STRUCTURE_FILE_REF {
 // For image information, however, an array is stored with every entry
 // filled regardless of whether there is non-zero data defined for
 // that graphic!
-interface STRUCTURE_FILE_HEADER {
+export interface STRUCTURE_FILE_HEADER {
   szId: CHAR8[] /* [4] */;
   /* union { */
   /*   struct { */
@@ -213,11 +213,11 @@ interface STRUCTURE_FILE_HEADER {
 } // 16 bytes
 
 // "J2SD" = Jagged 2 Structure Data
-const STRUCTURE_FILE_ID = "J2SD";
-const STRUCTURE_FILE_ID_LEN = 4;
+export const STRUCTURE_FILE_ID = "J2SD";
+export const STRUCTURE_FILE_ID_LEN = 4;
 
 const STRUCTURE_SCRIPT_FILE_EXTENSION = "JSS";
-const STRUCTURE_FILE_EXTENSION = "JSD";
+export const STRUCTURE_FILE_EXTENSION = "JSD";
 
-const STRUCTURE_FILE_CONTAINS_AUXIMAGEDATA = 0x01;
-const STRUCTURE_FILE_CONTAINS_STRUCTUREDATA = 0x02;
+export const STRUCTURE_FILE_CONTAINS_AUXIMAGEDATA = 0x01;
+export const STRUCTURE_FILE_CONTAINS_STRUCTUREDATA = 0x02;

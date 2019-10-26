@@ -1,12 +1,12 @@
-const WORLD_ITEM_DONTRENDER = 0x0001;
-const WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO = 0x0002;
-const WORLD_ITEM_ARMED_BOMB = 0x0040;
-const WORLD_ITEM_SCIFI_ONLY = 0x0080;
-const WORLD_ITEM_REALISTIC_ONLY = 0x0100;
-const WORLD_ITEM_REACHABLE = 0x0200;
-const WORLD_ITEM_GRIDNO_NOT_SET_USE_ENTRY_POINT = 0x0400;
+export const WORLD_ITEM_DONTRENDER = 0x0001;
+export const WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO = 0x0002;
+export const WORLD_ITEM_ARMED_BOMB = 0x0040;
+export const WORLD_ITEM_SCIFI_ONLY = 0x0080;
+export const WORLD_ITEM_REALISTIC_ONLY = 0x0100;
+export const WORLD_ITEM_REACHABLE = 0x0200;
+export const WORLD_ITEM_GRIDNO_NOT_SET_USE_ENTRY_POINT = 0x0400;
 
-interface WORLDITEM {
+export interface WORLDITEM {
   fExists: boolean;
   sGridNo: INT16;
   ubLevel: UINT8;
@@ -24,7 +24,7 @@ interface WORLDITEM {
   ubNonExistChance: UINT8;
 }
 
-interface WORLDBOMB {
+export interface WORLDBOMB {
   fExists: boolean;
   iItemIndex: INT32;
 }

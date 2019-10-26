@@ -46,7 +46,7 @@ let guiVSurfaceIndex: UINT32 = 0;
 let guiVSurfaceSize: UINT32 = 0;
 let guiVSurfaceTotalAdded: UINT32 = 0;
 
-let giMemUsedInSurfaces: INT32;
+export let giMemUsedInSurfaces: INT32;
 
 // OBSOLETE!!!!!!!!!
 let ghVideoSurfaces: HLIST = null;
@@ -54,7 +54,7 @@ let ghVideoSurfaces: HLIST = null;
 
 let ghPrimary: HVSURFACE = null;
 let ghBackBuffer: HVSURFACE = null;
-let ghFrameBuffer: HVSURFACE = null;
+export let ghFrameBuffer: HVSURFACE = null;
 let ghMouseBuffer: HVSURFACE = null;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ let ghMouseBuffer: HVSURFACE = null;
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function InitializeVideoSurfaceManager(): boolean {
+export function InitializeVideoSurfaceManager(): boolean {
   // Shouldn't be calling this if the video surface manager already exists.
   // Call shutdown first...
   Assert(!gpVSurfaceHead);
@@ -82,7 +82,7 @@ function InitializeVideoSurfaceManager(): boolean {
   return true;
 }
 
-function ShutdownVideoSurfaceManager(): boolean {
+export function ShutdownVideoSurfaceManager(): boolean {
   let curr: Pointer<VSURFACE_NODE>;
 
   DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_0, "Shutting down the Video Surface manager");
@@ -105,7 +105,7 @@ function ShutdownVideoSurfaceManager(): boolean {
   return true;
 }
 
-function RestoreVideoSurfaces(): boolean {
+export function RestoreVideoSurfaces(): boolean {
   let curr: Pointer<VSURFACE_NODE>;
 
   //
@@ -121,7 +121,7 @@ function RestoreVideoSurfaces(): boolean {
   return true;
 }
 
-function AddStandardVideoSurface(pVSurfaceDesc: Pointer<VSURFACE_DESC>, puiIndex: Pointer<UINT32>): boolean {
+export function AddStandardVideoSurface(pVSurfaceDesc: Pointer<VSURFACE_DESC>, puiIndex: Pointer<UINT32>): boolean {
   let hVSurface: HVSURFACE;
 
   // Assertions
@@ -166,7 +166,7 @@ function AddStandardVideoSurface(pVSurfaceDesc: Pointer<VSURFACE_DESC>, puiIndex
   return true;
 }
 
-function LockVideoSurface(uiVSurface: UINT32, puiPitch: Pointer<UINT32>): Pointer<BYTE> {
+export function LockVideoSurface(uiVSurface: UINT32, puiPitch: Pointer<UINT32>): Pointer<BYTE> {
   let curr: Pointer<VSURFACE_NODE>;
 
   //
@@ -210,7 +210,7 @@ function LockVideoSurface(uiVSurface: UINT32, puiPitch: Pointer<UINT32>): Pointe
   return LockVideoSurfaceBuffer(curr.value.hVSurface, puiPitch);
 }
 
-function UnLockVideoSurface(uiVSurface: UINT32): void {
+export function UnLockVideoSurface(uiVSurface: UINT32): void {
   let curr: Pointer<VSURFACE_NODE>;
 
   //
@@ -254,7 +254,7 @@ function UnLockVideoSurface(uiVSurface: UINT32): void {
   UnLockVideoSurfaceBuffer(curr.value.hVSurface);
 }
 
-function SetVideoSurfaceTransparency(uiIndex: UINT32, TransColor: COLORVAL): boolean {
+export function SetVideoSurfaceTransparency(uiIndex: UINT32, TransColor: COLORVAL): boolean {
   let hVSurface: HVSURFACE;
 
   //
@@ -310,7 +310,7 @@ function GetVideoSurfaceDescription(uiIndex: UINT32, usWidth: Pointer<UINT16>, u
   return true;
 }
 
-function GetVideoSurface(hVSurface: Pointer<HVSURFACE>, uiIndex: UINT32): boolean {
+export function GetVideoSurface(hVSurface: Pointer<HVSURFACE>, uiIndex: UINT32): boolean {
   let curr: Pointer<VSURFACE_NODE>;
 
   if (uiIndex == PRIMARY_SURFACE) {
@@ -426,7 +426,7 @@ function DeletePrimaryVideoSurfaces(): void {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_vs_fx>): boolean {
+export function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_vs_fx>): boolean {
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
 
@@ -449,7 +449,7 @@ function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, usRegion
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, Color16BPP: UINT16): boolean {
+export function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, Color16BPP: UINT16): boolean {
   let BltFx: blt_vs_fx;
   let hDestVSurface: HVSURFACE;
   let Clip: SGPRect;
@@ -508,7 +508,7 @@ function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDest
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, BkgrndImg: HVOBJECT, Index: UINT16, Ox: INT16, Oy: INT16): boolean {
+export function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, BkgrndImg: HVOBJECT, Index: UINT16, Ox: INT16, Oy: INT16): boolean {
   let xc: INT16;
   let yc: INT16;
   let hblits: INT16;
@@ -623,7 +623,7 @@ function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDest
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURFACE {
+export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURFACE {
   let lpDD2Object: LPDIRECTDRAW2;
   let SurfaceDescription: DDSURFACEDESC;
   let PixelFormat: DDPIXELFORMAT;
@@ -1084,7 +1084,7 @@ function SetVideoSurfaceDataFromHImage(hVSurface: HVSURFACE, hImage: HIMAGE, usX
 }
 
 // Palette setting is expensive, need to set both DDPalette and create 16BPP palette
-function SetVideoSurfacePalette(hVSurface: HVSURFACE, pSrcPalette: Pointer<SGPPaletteEntry>): boolean {
+export function SetVideoSurfacePalette(hVSurface: HVSURFACE, pSrcPalette: Pointer<SGPPaletteEntry>): boolean {
   Assert(hVSurface != null);
 
   // Create palette object if not already done so
@@ -1153,7 +1153,7 @@ function SetVideoSurfaceTransparencyColor(hVSurface: HVSURFACE, TransColor: COLO
   return true;
 }
 
-function GetVSurfacePaletteEntries(hVSurface: HVSURFACE, pPalette: Pointer<SGPPaletteEntry>): boolean {
+export function GetVSurfacePaletteEntries(hVSurface: HVSURFACE, pPalette: Pointer<SGPPaletteEntry>): boolean {
   CHECKF(hVSurface.value.pPalette != null);
 
   DDGetPaletteEntries(hVSurface.value.pPalette, 0, 0, 256, pPalette);
@@ -1161,7 +1161,7 @@ function GetVSurfacePaletteEntries(hVSurface: HVSURFACE, pPalette: Pointer<SGPPa
   return true;
 }
 
-function DeleteVideoSurfaceFromIndex(uiIndex: UINT32): boolean {
+export function DeleteVideoSurfaceFromIndex(uiIndex: UINT32): boolean {
   let curr: Pointer<VSURFACE_NODE>;
 
   curr = gpVSurfaceHead;
@@ -1201,7 +1201,7 @@ function DeleteVideoSurfaceFromIndex(uiIndex: UINT32): boolean {
 }
 
 // Deletes all palettes, surfaces and region data
-function DeleteVideoSurface(hVSurface: HVSURFACE): boolean {
+export function DeleteVideoSurface(hVSurface: HVSURFACE): boolean {
   let lpDDSurface: LPDIRECTDRAWSURFACE2;
 
   // Assertions
@@ -1434,7 +1434,7 @@ function AddVSurfaceRegionAtIndex(hVSurface: HVSURFACE, usIndex: UINT16, pNewReg
 // Blt  will use DD Blt or BltFast depending on flags.
 // Will drop down into user-defined blitter if 8->16 BPP blitting is being done
 
-function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, usIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: INT32, pBltFx: Pointer<blt_vs_fx>): boolean {
+export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, usIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: INT32, pBltFx: Pointer<blt_vs_fx>): boolean {
   let aRegion: VSURFACE_REGION;
   let SrcRect: RECT;
   let DestRect: RECT;
@@ -1644,7 +1644,7 @@ function UpdateBackupSurface(hVSurface: HVSURFACE): boolean {
 //
 // *****************************************************************************
 
-function GetVideoSurfaceDDSurface(hVSurface: HVSURFACE): LPDIRECTDRAWSURFACE2 {
+export function GetVideoSurfaceDDSurface(hVSurface: HVSURFACE): LPDIRECTDRAWSURFACE2 {
   Assert(hVSurface != null);
 
   return hVSurface.value.pSurfaceData;
@@ -1836,7 +1836,7 @@ function FillSurfaceRect(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): 
   return true;
 }
 
-function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, fBltFlags: UINT32, iDestX: INT32, iDestY: INT32, SrcRect: Pointer<RECT>): boolean {
+export function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, fBltFlags: UINT32, iDestX: INT32, iDestY: INT32, SrcRect: Pointer<RECT>): boolean {
   let uiDDFlags: UINT32;
   let DestRect: RECT;
 
@@ -1987,11 +1987,11 @@ function InternalShadowVideoSurfaceRect(uiDestVSurface: UINT32, X1: INT32, Y1: I
   return true;
 }
 
-function ShadowVideoSurfaceRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X2: INT32, Y2: INT32): boolean {
+export function ShadowVideoSurfaceRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X2: INT32, Y2: INT32): boolean {
   return InternalShadowVideoSurfaceRect(uiDestVSurface, X1, Y1, X2, Y2, false);
 }
 
-function ShadowVideoSurfaceRectUsingLowPercentTable(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X2: INT32, Y2: INT32): boolean {
+export function ShadowVideoSurfaceRectUsingLowPercentTable(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X2: INT32, Y2: INT32): boolean {
   return InternalShadowVideoSurfaceRect(uiDestVSurface, X1, Y1, X2, Y2, true);
 }
 
@@ -2023,7 +2023,7 @@ function BltVSurfaceUsingDDBlt(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE
 //
 // If the 2 images are not 16 Bpp, it returns false.
 //
-function BltStretchVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, SrcRect: Pointer<SGPRect>, DestRect: Pointer<SGPRect>): boolean {
+export function BltStretchVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, SrcRect: Pointer<SGPRect>, DestRect: Pointer<SGPRect>): boolean {
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
 
@@ -2049,7 +2049,7 @@ function BltStretchVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, i
   return true;
 }
 
-function ShadowVideoSurfaceImage(uiDestVSurface: UINT32, hImageHandle: HVOBJECT, iPosX: INT32, iPosY: INT32): boolean {
+export function ShadowVideoSurfaceImage(uiDestVSurface: UINT32, hImageHandle: HVOBJECT, iPosX: INT32, iPosY: INT32): boolean {
   // Horizontal shadow
   ShadowVideoSurfaceRect(uiDestVSurface, iPosX + 3, iPosY + hImageHandle.value.pETRLEObject.value.usHeight, iPosX + hImageHandle.value.pETRLEObject.value.usWidth, iPosY + hImageHandle.value.pETRLEObject.value.usHeight + 3);
 

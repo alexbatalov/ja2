@@ -4,7 +4,7 @@
 // The gfKeyState table is used to track which of the keys is up or down at any one time. This is used while polling
 // the interface.
 
-let gfKeyState: boolean[] /* [256] */; // TRUE = Pressed, FALSE = Not Pressed
+export let gfKeyState: boolean[] /* [256] */; // TRUE = Pressed, FALSE = Not Pressed
 let fCursorWasClipped: boolean = false;
 let gCursorClipRect: RECT;
 
@@ -29,10 +29,10 @@ let guiLeftButtonRepeatTimer: UINT32;
 let guiRightButtonRepeatTimer: UINT32;
 
 let gfTrackMousePos: boolean; // TRUE = queue mouse movement events, FALSE = don't
-let gfLeftButtonState: boolean; // TRUE = Pressed, FALSE = Not Pressed
-let gfRightButtonState: boolean; // TRUE = Pressed, FALSE = Not Pressed
-let gusMouseXPos: UINT16; // X position of the mouse on screen
-let gusMouseYPos: UINT16; // y position of the mouse on screen
+export let gfLeftButtonState: boolean; // TRUE = Pressed, FALSE = Not Pressed
+export let gfRightButtonState: boolean; // TRUE = Pressed, FALSE = Not Pressed
+export let gusMouseXPos: UINT16; // X position of the mouse on screen
+export let gusMouseYPos: UINT16; // y position of the mouse on screen
 
 // The queue structures are used to track input events using queued events
 
@@ -42,7 +42,7 @@ let gusHeadIndex: UINT16;
 let gusTailIndex: UINT16;
 
 // ATE: Added to signal if we have had input this frame - cleared by the SGP main loop
-let gfSGPInputReceived: boolean = false;
+export let gfSGPInputReceived: boolean = false;
 
 // This is the WIN95 hook specific data and defines used to handle the keyboard and
 // mouse hook
@@ -159,7 +159,7 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
   return true;
 }
 
-function InitializeInputManager(): boolean {
+export function InitializeInputManager(): boolean {
   // Link to debugger
   RegisterDebugTopic(TOPIC_INPUT, "Input Manager");
   // Initialize the gfKeyState table to FALSE everywhere
@@ -200,7 +200,7 @@ function InitializeInputManager(): boolean {
   return true;
 }
 
-function ShutdownInputManager(): void {
+export function ShutdownInputManager(): void {
   // There's very little to do when shutting down the input manager. In the future, this is where the keyboard and
   // mouse hooks will be destroyed
   UnRegisterDebugTopic(TOPIC_INPUT, "Input Manager");
@@ -241,7 +241,7 @@ function QueuePureEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32):
   }
 }
 
-function QueueEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): void {
+export function QueueEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): void {
   let uiTimer: UINT32;
   let usKeyState: UINT16;
 
@@ -340,7 +340,7 @@ function QueueEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): voi
   }
 }
 
-function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): boolean {
+export function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): boolean {
   // Is there an event to dequeue
   if (gusQueueCount > 0) {
     memcpy(Event, addressof(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
@@ -354,7 +354,7 @@ function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): b
   return false;
 }
 
-function DequeueEvent(Event: Pointer<InputAtom>): boolean {
+export function DequeueEvent(Event: Pointer<InputAtom>): boolean {
   HandleSingleClicksAndButtonRepeats();
 
   // Is there an event to dequeue
@@ -823,7 +823,7 @@ function DisableDoubleClk(): void {
   // Obsolete
 }
 
-function GetMousePos(Point: Pointer<SGPPoint>): void {
+export function GetMousePos(Point: Pointer<SGPPoint>): void {
   let MousePos: POINT;
 
   GetCursorPos(addressof(MousePos));
@@ -1190,7 +1190,7 @@ function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
 // Miscellaneous input-related utility functions:
 //
 
-function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, usY2: UINT16): void {
+export function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, usY2: UINT16): void {
   let TempRect: SGPRect;
 
   TempRect.iLeft = usX1;
@@ -1201,33 +1201,33 @@ function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, usY2: UIN
   RestrictMouseCursor(addressof(TempRect));
 }
 
-function RestrictMouseCursor(pRectangle: Pointer<SGPRect>): void {
+export function RestrictMouseCursor(pRectangle: Pointer<SGPRect>): void {
   // Make a copy of our rect....
   memcpy(addressof(gCursorClipRect), pRectangle, sizeof(gCursorClipRect));
   ClipCursor(pRectangle);
   fCursorWasClipped = true;
 }
 
-function FreeMouseCursor(): void {
+export function FreeMouseCursor(): void {
   ClipCursor(null);
   fCursorWasClipped = false;
 }
 
-function RestoreCursorClipRect(): void {
+export function RestoreCursorClipRect(): void {
   if (fCursorWasClipped) {
     ClipCursor(addressof(gCursorClipRect));
   }
 }
 
-function GetRestrictedClipCursor(pRectangle: Pointer<SGPRect>): void {
+export function GetRestrictedClipCursor(pRectangle: Pointer<SGPRect>): void {
   GetClipCursor(pRectangle);
 }
 
-function IsCursorRestricted(): boolean {
+export function IsCursorRestricted(): boolean {
   return fCursorWasClipped;
 }
 
-function SimulateMouseMovement(uiNewXPos: UINT32, uiNewYPos: UINT32): void {
+export function SimulateMouseMovement(uiNewXPos: UINT32, uiNewYPos: UINT32): void {
   let flNewXPos: FLOAT;
   let flNewYPos: FLOAT;
 
@@ -1258,7 +1258,7 @@ function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32,
   return (uiEventX >= uiX1) && (uiEventX <= uiX2) && (uiEventY >= uiY1) && (uiEventY <= uiY2);
 }
 
-function DequeueAllKeyBoardEvents(): void {
+export function DequeueAllKeyBoardEvents(): void {
   let InputEvent: InputAtom;
   let KeyMessage: MSG;
 

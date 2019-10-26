@@ -10,7 +10,7 @@ let gsGridNo: INT16;
 let gbLevel: INT8;
 
 // This function checks if our statue exists in the current sector at given gridno
-function DoesO3SectorStatueExistHere(sGridNo: INT16): boolean {
+export function DoesO3SectorStatueExistHere(sGridNo: INT16): boolean {
   let cnt: INT32;
   let ExitGrid: EXITGRID;
 
@@ -31,7 +31,7 @@ function DoesO3SectorStatueExistHere(sGridNo: INT16): boolean {
 }
 
 // This function changes the graphic of the statue and adds the exit grid...
-function ChangeO3SectorStatue(fFromExplosion: boolean): void {
+export function ChangeO3SectorStatue(fFromExplosion: boolean): void {
   let ExitGrid: EXITGRID;
   let usTileIndex: UINT16;
   let sX: INT16;
@@ -84,7 +84,7 @@ function DeidrannaTimerCallback(): void {
   HandleDeidrannaDeath(gpKillerSoldier, gsGridNo, gbLevel);
 }
 
-function BeginHandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
+export function BeginHandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   gpKillerSoldier = pKillerSoldier;
   gsGridNo = sGridNo;
   gbLevel = bLevel;
@@ -248,13 +248,13 @@ function DoneFadeOutKilledQueen(): void {
 }
 
 // Called after all player quotes are done....
-function HandleDoneLastKilledQueenQuote(): void {
+export function HandleDoneLastKilledQueenQuote(): void {
   gFadeOutDoneCallback = DoneFadeOutKilledQueen;
 
   FadeOutGameScreen();
 }
 
-function EndQueenDeathEndgameBeginEndCimenatic(): void {
+export function EndQueenDeathEndgameBeginEndCimenatic(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -276,7 +276,7 @@ function EndQueenDeathEndgameBeginEndCimenatic(): void {
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_MULTIPURPOSE, MULTIPURPOSE_SPECIAL_EVENT_TEAM_MEMBERS_DONE_TALKING, 0, 0, 0, 0);
 }
 
-function EndQueenDeathEndgame(): void {
+export function EndQueenDeathEndgame(): void {
   // Unset flags...
   gTacticalStatus.uiFlags &= (~ENGAGED_IN_CONV);
   // Increment refrence count...
@@ -300,7 +300,7 @@ function DoneFadeOutEndCinematic(): void {
 }
 
 // OK, end death UI - fade to smaker....
-function HandleDoneLastEndGameQuote(): void {
+export function HandleDoneLastEndGameQuote(): void {
   EndQueenDeathEndgame();
 
   gFadeOutDoneCallback = DoneFadeOutEndCinematic;
@@ -312,7 +312,7 @@ function QueenBitchTimerCallback(): void {
   HandleQueenBitchDeath(gpKillerSoldier, gsGridNo, gbLevel);
 }
 
-function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
+export function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
 

@@ -15,14 +15,14 @@ let guiMapBorder: UINT32;
 let giScrollButtonState: INT32 = -1;
 
 // flags
-let fShowTownFlag: boolean = false;
-let fShowMineFlag: boolean = false;
-let fShowTeamFlag: boolean = false;
-let fShowMilitia: boolean = false;
-let fShowAircraftFlag: boolean = false;
-let fShowItemsFlag: boolean = false;
+export let fShowTownFlag: boolean = false;
+export let fShowMineFlag: boolean = false;
+export let fShowTeamFlag: boolean = false;
+export let fShowMilitia: boolean = false;
+export let fShowAircraftFlag: boolean = false;
+export let fShowItemsFlag: boolean = false;
 
-let fZoomFlag: boolean = false;
+export let fZoomFlag: boolean = false;
 // BOOLEAN fShowVehicleFlag = FALSE;
 
 // BOOLEAN fMapScrollDueToPanelButton = FALSE;
@@ -30,7 +30,7 @@ let fZoomFlag: boolean = false;
 // BOOLEAN fDisabledMapBorder = FALSE;
 
 // buttons & button images
-let giMapBorderButtons: INT32[] /* [6] */ = [
+export let giMapBorderButtons: INT32[] /* [6] */ = [
   -1,
   -1,
   -1,
@@ -69,7 +69,7 @@ void BtnLowerLevelBtnCallback(GUI_BUTTON *btn,INT32 reason);
 void BtnRaiseLevelBtnCallback(GUI_BUTTON *btn,INT32 reason);
 */
 
-function LoadMapBorderGraphics(): boolean {
+export function LoadMapBorderGraphics(): boolean {
   // this procedure will load the graphics needed for the map border
   let VObjectDesc: VOBJECT_DESC;
 
@@ -90,7 +90,7 @@ function LoadMapBorderGraphics(): boolean {
   return true;
 }
 
-function DeleteMapBorderGraphics(): void {
+export function DeleteMapBorderGraphics(): void {
   // procedure will delete graphics loaded for map border
 
   DeleteVideoObjectFromIndex(guiMapBorder);
@@ -99,7 +99,7 @@ function DeleteMapBorderGraphics(): void {
   return;
 }
 
-function RenderMapBorder(): void {
+export function RenderMapBorder(): void {
   // renders the actual border to the guiSAVEBUFFER
   let hHandle: HVOBJECT;
 
@@ -153,7 +153,7 @@ void RenderMapBorderCorner( void )
 }
 */
 
-function RenderMapBorderEtaPopUp(): void {
+export function RenderMapBorderEtaPopUp(): void {
   // renders map border corner to the FRAME_BUFFER
   let hHandle: HVOBJECT;
 
@@ -182,7 +182,7 @@ function RenderMapBorderEtaPopUp(): void {
   return;
 }
 
-function CreateButtonsForMapBorder(): boolean {
+export function CreateButtonsForMapBorder(): boolean {
   // will create the buttons needed for the map screen border region
 
   /*
@@ -283,7 +283,7 @@ function CreateButtonsForMapBorder(): boolean {
   return true;
 }
 
-function DeleteMapBorderButtons(): void {
+export function DeleteMapBorderButtons(): void {
   let ubCnt: UINT8;
 
   /*
@@ -492,7 +492,7 @@ void BtnZoomCallback(GUI_BUTTON *btn,INT32 reason)
 }
 */
 
-function ToggleShowTownsMode(): void {
+export function ToggleShowTownsMode(): void {
   if (fShowTownFlag == true) {
     fShowTownFlag = false;
     MapBorderButtonOff(Enum141.MAP_BORDER_TOWN_BTN);
@@ -519,7 +519,7 @@ function ToggleShowTownsMode(): void {
   fMapPanelDirty = true;
 }
 
-function ToggleShowMinesMode(): void {
+export function ToggleShowMinesMode(): void {
   if (fShowMineFlag == true) {
     fShowMineFlag = false;
     MapBorderButtonOff(Enum141.MAP_BORDER_MINE_BTN);
@@ -546,7 +546,7 @@ function ToggleShowMinesMode(): void {
   fMapPanelDirty = true;
 }
 
-function ToggleShowMilitiaMode(): void {
+export function ToggleShowMilitiaMode(): void {
   if (fShowMilitia == true) {
     fShowMilitia = false;
     MapBorderButtonOff(Enum141.MAP_BORDER_MILITIA_BTN);
@@ -597,7 +597,7 @@ function ToggleShowMilitiaMode(): void {
   fMapPanelDirty = true;
 }
 
-function ToggleShowTeamsMode(): void {
+export function ToggleShowTeamsMode(): void {
   if (fShowTeamFlag == true) {
     // turn show teams OFF
     fShowTeamFlag = false;
@@ -613,7 +613,7 @@ function ToggleShowTeamsMode(): void {
   }
 }
 
-function ToggleAirspaceMode(): void {
+export function ToggleAirspaceMode(): void {
   if (fShowAircraftFlag == true) {
     // turn airspace OFF
     fShowAircraftFlag = false;
@@ -633,7 +633,7 @@ function ToggleAirspaceMode(): void {
   }
 }
 
-function ToggleItemsFilter(): void {
+export function ToggleItemsFilter(): void {
   if (fShowItemsFlag == true) {
     // turn items OFF
     fShowItemsFlag = false;
@@ -957,7 +957,7 @@ function DisplayCurrentLevelMarker(): void {
   return;
 }
 
-function CreateMouseRegionsForLevelMarkers(): void {
+export function CreateMouseRegionsForLevelMarkers(): void {
   let sCounter: INT16 = 0;
   let sString: CHAR16[] /* [64] */;
 
@@ -971,7 +971,7 @@ function CreateMouseRegionsForLevelMarkers(): void {
   }
 }
 
-function DeleteMouseRegionsForLevelMarkers(): void {
+export function DeleteMouseRegionsForLevelMarkers(): void {
   let sCounter: INT16 = 0;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
@@ -1026,7 +1026,7 @@ void EnableMapBorderRegion( void )
 }
 */
 
-function TurnOnShowTeamsMode(): void {
+export function TurnOnShowTeamsMode(): void {
   // if mode already on, leave, else set and redraw
 
   if (fShowTeamFlag == false) {
@@ -1058,7 +1058,7 @@ function TurnOnShowTeamsMode(): void {
   }
 }
 
-function TurnOnAirSpaceMode(): void {
+export function TurnOnAirSpaceMode(): void {
   // if mode already on, leave, else set and redraw
 
   if (fShowAircraftFlag == false) {
@@ -1282,7 +1282,7 @@ function CommonBtnCallbackBtnDownChecks(): void {
   }
 }
 
-function InitMapScreenFlags(): void {
+export function InitMapScreenFlags(): void {
   fShowTownFlag = true;
   fShowMineFlag = false;
 

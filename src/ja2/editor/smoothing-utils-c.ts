@@ -1,7 +1,7 @@
 // This method isn't foolproof, but because erasing large areas of buildings could result in
 // multiple wall types for each building.  When processing the region, it is necessary to
 // calculate the roof type by searching for the nearest roof tile.
-function SearchForWallType(iMapIndex: UINT32): UINT16 {
+export function SearchForWallType(iMapIndex: UINT32): UINT16 {
   let uiTileType: UINT32;
   let pWall: Pointer<LEVELNODE>;
   let sOffset: INT16;
@@ -48,7 +48,7 @@ function SearchForWallType(iMapIndex: UINT32): UINT16 {
 // This method isn't foolproof, but because erasing large areas of buildings could result in
 // multiple roof types for each building.  When processing the region, it is necessary to
 // calculate the roof type by searching for the nearest roof tile.
-function SearchForRoofType(iMapIndex: UINT32): UINT16 {
+export function SearchForRoofType(iMapIndex: UINT32): UINT16 {
   let uiTileType: UINT32;
   let pRoof: Pointer<LEVELNODE>;
   let x: INT16;
@@ -95,7 +95,7 @@ function RoofAtGridNo(iMapIndex: UINT32): boolean {
   return false;
 }
 
-function BuildingAtGridNo(iMapIndex: UINT32): boolean {
+export function BuildingAtGridNo(iMapIndex: UINT32): boolean {
   if (RoofAtGridNo(iMapIndex))
     return true;
   if (FloorAtGridNo(iMapIndex))
@@ -103,13 +103,13 @@ function BuildingAtGridNo(iMapIndex: UINT32): boolean {
   return false;
 }
 
-function ValidDecalPlacement(iMapIndex: UINT32): boolean {
+export function ValidDecalPlacement(iMapIndex: UINT32): boolean {
   if (GetVerticalWall(iMapIndex) || GetHorizontalWall(iMapIndex) || GetVerticalFence(iMapIndex) || GetHorizontalFence(iMapIndex))
     return true;
   return false;
 }
 
-function GetVerticalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
+export function GetVerticalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
   let pStruct: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
@@ -129,7 +129,7 @@ function GetVerticalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
   return null;
 }
 
-function GetHorizontalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
+export function GetHorizontalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
   let pStruct: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
@@ -149,7 +149,7 @@ function GetHorizontalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
   return null;
 }
 
-function GetVerticalWallType(iMapIndex: UINT32): UINT16 {
+export function GetVerticalWallType(iMapIndex: UINT32): UINT16 {
   let pWall: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   pWall = GetVerticalWall(iMapIndex);
@@ -162,7 +162,7 @@ function GetVerticalWallType(iMapIndex: UINT32): UINT16 {
   return 0;
 }
 
-function GetHorizontalWallType(iMapIndex: UINT32): UINT16 {
+export function GetHorizontalWallType(iMapIndex: UINT32): UINT16 {
   let pWall: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   pWall = GetHorizontalWall(iMapIndex);
@@ -215,7 +215,7 @@ function GetHorizontalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
   return null;
 }
 
-function EraseHorizontalWall(iMapIndex: UINT32): void {
+export function EraseHorizontalWall(iMapIndex: UINT32): void {
   let pWall: Pointer<LEVELNODE>;
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
@@ -225,7 +225,7 @@ function EraseHorizontalWall(iMapIndex: UINT32): void {
   }
 }
 
-function EraseVerticalWall(iMapIndex: UINT32): void {
+export function EraseVerticalWall(iMapIndex: UINT32): void {
   let pWall: Pointer<LEVELNODE>;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
@@ -253,7 +253,7 @@ function ChangeHorizontalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
   }
 }
 
-function ChangeVerticalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
+export function ChangeVerticalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
   let pWall: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   let usTileIndex: UINT16;
@@ -271,7 +271,7 @@ function ChangeVerticalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
   }
 }
 
-function RestoreWalls(iMapIndex: UINT32): void {
+export function RestoreWalls(iMapIndex: UINT32): void {
   let pWall: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallType: UINT16;

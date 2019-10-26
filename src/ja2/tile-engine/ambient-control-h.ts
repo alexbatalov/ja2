@@ -1,7 +1,7 @@
 const SOUND_NAME_SIZE = 256;
-const NUM_SOUNDS_PER_TIMEFRAME = 8;
+export const NUM_SOUNDS_PER_TIMEFRAME = 8;
 
-const enum Enum301 {
+export const enum Enum301 {
   SSA_NONE,
   SSA_COUNTRYSIZE,
   SSA_NEAR_WATER,
@@ -16,6 +16,6 @@ const enum Enum301 {
   NUM_STEADY_STATE_AMBIENCES,
 }
 
-interface STEADY_STATE_AMBIENCE {
+export interface STEADY_STATE_AMBIENCE {
   zSoundNames: CHAR8[][] /* [NUM_SOUNDS_PER_TIMEFRAME][SOUND_NAME_SIZE] */;
 }

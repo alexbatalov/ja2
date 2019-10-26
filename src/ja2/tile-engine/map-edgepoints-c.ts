@@ -1,13 +1,13 @@
 // dynamic arrays that contain the valid gridno's for each edge
-let gps1stNorthEdgepointArray: Pointer<INT16> = null;
-let gps1stEastEdgepointArray: Pointer<INT16> = null;
-let gps1stSouthEdgepointArray: Pointer<INT16> = null;
-let gps1stWestEdgepointArray: Pointer<INT16> = null;
+export let gps1stNorthEdgepointArray: Pointer<INT16> = null;
+export let gps1stEastEdgepointArray: Pointer<INT16> = null;
+export let gps1stSouthEdgepointArray: Pointer<INT16> = null;
+export let gps1stWestEdgepointArray: Pointer<INT16> = null;
 // contains the size for each array
-let gus1stNorthEdgepointArraySize: UINT16 = 0;
-let gus1stEastEdgepointArraySize: UINT16 = 0;
-let gus1stSouthEdgepointArraySize: UINT16 = 0;
-let gus1stWestEdgepointArraySize: UINT16 = 0;
+export let gus1stNorthEdgepointArraySize: UINT16 = 0;
+export let gus1stEastEdgepointArraySize: UINT16 = 0;
+export let gus1stSouthEdgepointArraySize: UINT16 = 0;
+export let gus1stWestEdgepointArraySize: UINT16 = 0;
 // contains the index value for the first array index of the second row of each edgepoint array.
 // Because each edgepoint side has two rows, the outside most row is calculated first, then the inside row.
 // For purposes of AI, it may become necessary to avoid this.
@@ -35,14 +35,14 @@ let gus2ndSouthEdgepointMiddleIndex: UINT16 = 0;
 let gus2ndWestEdgepointMiddleIndex: UINT16 = 0;
 
 let gfEdgepointsExist: boolean = false;
-let gfGeneratingMapEdgepoints: boolean = false;
+export let gfGeneratingMapEdgepoints: boolean = false;
 
 let gsTLGridNo: INT16 = 13286;
 let gsTRGridNo: INT16 = 1043;
 let gsBLGridNo: INT16 = 24878;
 let gsBRGridNo: INT16 = 12635;
 
-function TrashMapEdgepoints(): void {
+export function TrashMapEdgepoints(): void {
   // Primary edgepoints
   if (gps1stNorthEdgepointArray)
     MemFree(gps1stNorthEdgepointArray);
@@ -386,7 +386,7 @@ function ClassifyEdgepoints(): void {
   }
 }
 
-function GenerateMapEdgepoints(): void {
+export function GenerateMapEdgepoints(): void {
   let i: INT32 = -1;
   let sGridNo: INT16 = -1;
   let sVGridNo: INT16[] /* [400] */;
@@ -707,7 +707,7 @@ function GenerateMapEdgepoints(): void {
   gfGeneratingMapEdgepoints = false;
 }
 
-function SaveMapEdgepoints(fp: HWFILE): void {
+export function SaveMapEdgepoints(fp: HWFILE): void {
   // 1st priority edgepoints -- for common entry -- tactical placement gui uses only these points.
   FileWrite(fp, addressof(gus1stNorthEdgepointArraySize), 2, null);
   FileWrite(fp, addressof(gus1stNorthEdgepointMiddleIndex), 2, null);
@@ -775,7 +775,7 @@ function OldLoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): void {
   }
 }
 
-function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): boolean {
+export function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): boolean {
   TrashMapEdgepoints();
   if (gMapInformation.ubMapVersion < 17) {
     // To prevent invalidation of older maps, which only used one layer of edgepoints, and a UINT8 for
@@ -851,7 +851,7 @@ function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): boolean {
   return true;
 }
 
-function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
+export function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
   let psArray: Pointer<INT16> = null;
   let usArraySize: UINT16 = 0;
   /* static */ let randomVal: INT32 = 0;
@@ -885,7 +885,7 @@ function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
   return psArray[Random(usArraySize)];
 }
 
-function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStrategicInsertionCode: UINT8, ubNumDesiredPoints: UINT8): void {
+export function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStrategicInsertionCode: UINT8, ubNumDesiredPoints: UINT8): void {
   let psArray: Pointer<INT16> = null;
   let usArraySize: UINT16 = 0;
   let i: INT32 = -1;
@@ -975,7 +975,7 @@ function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStr
 let gpReservedGridNos: Pointer<INT16> = null;
 let gsReservedIndex: INT16 = 0;
 
-function BeginMapEdgepointSearch(): void {
+export function BeginMapEdgepointSearch(): void {
   let sGridNo: INT16;
 
   // Create the reserved list
@@ -1000,7 +1000,7 @@ function BeginMapEdgepointSearch(): void {
   // Now, we have the path values calculated.  Now, we can check for closest edgepoints.
 }
 
-function EndMapEdgepointSearch(): void {
+export function EndMapEdgepointSearch(): void {
   AssertMsg(gpReservedGridNos, "Attempting to EndMapEdgepointSearch that has already been removed.");
   MemFree(gpReservedGridNos);
   gpReservedGridNos = null;
@@ -1008,7 +1008,7 @@ function EndMapEdgepointSearch(): void {
 }
 
 // THIS CODE ISN'T RECOMMENDED FOR TIME CRITICAL AREAS.
-function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
+export function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
   let i: INT32;
   let iDirectionLoop: INT32;
   let psArray: Pointer<INT16> = null;
@@ -1130,7 +1130,7 @@ function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UI
   return NOWHERE;
 }
 
-function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
+export function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
   let i: INT32;
   let iDirectionLoop: INT32;
   let psArray: Pointer<INT16> = null;
@@ -1370,7 +1370,7 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
   return false;
 }
 
-function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
+export function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
   let Soldier: SOLDIERTYPE;
   let iLoop: INT32;
   let psEdgepointArray1: Pointer<INT16>;

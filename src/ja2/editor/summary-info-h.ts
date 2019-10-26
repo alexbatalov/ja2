@@ -1,7 +1,7 @@
-const GLOBAL_SUMMARY_VERSION = 14;
-const MINIMUMVERSION = 7;
+export const GLOBAL_SUMMARY_VERSION = 14;
+export const MINIMUMVERSION = 7;
 
-interface TEAMSUMMARY {
+export interface TEAMSUMMARY {
   ubTotal: UINT8;
   ubDetailed: UINT8;
   ubProfile: UINT8;
@@ -23,7 +23,7 @@ interface TEAMSUMMARY {
   ubGreatE: UINT8;
 } // 15 bytes
 
-interface SUMMARYFILE {
+export interface SUMMARYFILE {
   // start version 1
   ubSummaryVersion: UINT8;
   ubSpecial: UINT8;

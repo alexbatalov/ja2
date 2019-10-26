@@ -5,26 +5,26 @@ let ghInstance: HINSTANCE;
 // Global Variable Declarations
 
 // moved from header file: 24mar98:HJH
-let giStartMem: UINT32;
-let gbPixelDepth: UINT8; // GLOBAL RUN-TIME SETTINGS
+export let giStartMem: UINT32;
+export let gbPixelDepth: UINT8; // GLOBAL RUN-TIME SETTINGS
 
 let guiMouseWheelMsg: UINT32; // For mouse wheel messages
 
 let gfApplicationActive: boolean;
-let gfProgramIsRunning: boolean;
+export let gfProgramIsRunning: boolean;
 let gfGameInitialized: boolean = false;
-let giStartMem: UINT32;
-let gfDontUseDDBlits: boolean = false;
+export let giStartMem: UINT32;
+export let gfDontUseDDBlits: boolean = false;
 
 // There were TWO of them??!?! -- DB
 // CHAR8		gzCommandLine[ 100 ];
-let gzCommandLine: CHAR8[] /* [100] */; // Command line given
+export let gzCommandLine: CHAR8[] /* [100] */; // Command line given
 
 let gzErrorMsg: CHAR8[] /* [2048] */ = "";
 let gfIgnoreMessages: boolean = false;
 
 // GLOBAL VARIBLE, SET TO DEFAULT BUT CAN BE CHANGED BY THE GAME IF INIT FILE READ
-let gbPixelDepth: UINT8 = PIXEL_DEPTH;
+export let gbPixelDepth: UINT8 = PIXEL_DEPTH;
 
 function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam: LPARAM): INT32 {
   /* static */ let fRestore: boolean = false;
@@ -398,7 +398,7 @@ function GetRuntimeSettings(): void {
   gbPixelDepth = GetPrivateProfileInt("SGP", "PIXEL_DEPTH", PIXEL_DEPTH, INIFile);
 }
 
-function ShutdownWithErrorBox(pcMessage: Pointer<CHAR8>): void {
+export function ShutdownWithErrorBox(pcMessage: Pointer<CHAR8>): void {
   strncpy(gzErrorMsg, pcMessage, 255);
   gzErrorMsg[255] = '\0';
   gfIgnoreMessages = true;

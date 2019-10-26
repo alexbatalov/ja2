@@ -6,63 +6,63 @@
 
 // Moved here from Button System.c by DB 99/01/07
 // Names of the default generic button image files.
-const DEFAULT_GENERIC_BUTTON_OFF = "GENBUTN.STI";
-const DEFAULT_GENERIC_BUTTON_ON = "GENBUTN2.STI";
-const DEFAULT_GENERIC_BUTTON_OFF_HI = "GENBUTN3.STI";
-const DEFAULT_GENERIC_BUTTON_ON_HI = "GENBUTN4.STI";
+export const DEFAULT_GENERIC_BUTTON_OFF = "GENBUTN.STI";
+export const DEFAULT_GENERIC_BUTTON_ON = "GENBUTN2.STI";
+export const DEFAULT_GENERIC_BUTTON_OFF_HI = "GENBUTN3.STI";
+export const DEFAULT_GENERIC_BUTTON_ON_HI = "GENBUTN4.STI";
 
-const BUTTON_TEXT_LEFT = -1;
-const BUTTON_TEXT_CENTER = 0;
-const BUTTON_TEXT_RIGHT = 1;
+export const BUTTON_TEXT_LEFT = -1;
+export const BUTTON_TEXT_CENTER = 0;
+export const BUTTON_TEXT_RIGHT = 1;
 
-const TEXT_LJUSTIFIED = BUTTON_TEXT_LEFT;
-const TEXT_CJUSTIFIED = BUTTON_TEXT_CENTER;
+export const TEXT_LJUSTIFIED = BUTTON_TEXT_LEFT;
+export const TEXT_CJUSTIFIED = BUTTON_TEXT_CENTER;
 const TEXT_RJUSTIFIED = BUTTON_TEXT_RIGHT;
 
 // Some GUI_BUTTON system defines
-const BUTTON_USE_DEFAULT = -1;
-const BUTTON_NO_FILENAME = null;
-const BUTTON_NO_CALLBACK = null;
-const BUTTON_NO_IMAGE = -1;
-const BUTTON_NO_SLOT = -1;
+export const BUTTON_USE_DEFAULT = -1;
+export const BUTTON_NO_FILENAME = null;
+export const BUTTON_NO_CALLBACK = null;
+export const BUTTON_NO_IMAGE = -1;
+export const BUTTON_NO_SLOT = -1;
 
 const BUTTON_INIT = 1;
 const BUTTON_WAS_CLICKED = 2;
 
 // effects how the button is rendered.
-const BUTTON_TYPES = (BUTTON_QUICK | BUTTON_GENERIC | BUTTON_HOT_SPOT | BUTTON_CHECKBOX);
+export const BUTTON_TYPES = (BUTTON_QUICK | BUTTON_GENERIC | BUTTON_HOT_SPOT | BUTTON_CHECKBOX);
 // effects how the button is processed
-const BUTTON_TYPE_MASK = (BUTTON_NO_TOGGLE | BUTTON_ALLOW_DISABLED_CALLBACK | BUTTON_CHECKBOX | BUTTON_IGNORE_CLICKS);
+export const BUTTON_TYPE_MASK = (BUTTON_NO_TOGGLE | BUTTON_ALLOW_DISABLED_CALLBACK | BUTTON_CHECKBOX | BUTTON_IGNORE_CLICKS);
 
 // button flags
-const BUTTON_TOGGLE = 0x00000000;
-const BUTTON_QUICK = 0x00000000;
-const BUTTON_ENABLED = 0x00000001;
-const BUTTON_CLICKED_ON = 0x00000002;
-const BUTTON_NO_TOGGLE = 0x00000004;
-const BUTTON_CLICK_CALLBACK = 0x00000008;
-const BUTTON_MOVE_CALLBACK = 0x00000010;
-const BUTTON_GENERIC = 0x00000020;
-const BUTTON_HOT_SPOT = 0x00000040;
-const BUTTON_SELFDELETE_IMAGE = 0x00000080;
-const BUTTON_DELETION_PENDING = 0x00000100;
-const BUTTON_ALLOW_DISABLED_CALLBACK = 0x00000200;
-const BUTTON_DIRTY = 0x00000400;
-const BUTTON_SAVEBACKGROUND = 0x00000800;
-const BUTTON_CHECKBOX = 0x00001000;
-const BUTTON_NEWTOGGLE = 0x00002000;
-const BUTTON_FORCE_UNDIRTY = 0x00004000; // no matter what happens this buttons does NOT get marked dirty
-const BUTTON_IGNORE_CLICKS = 0x00008000; // Ignore any clicks on this button
-const BUTTON_DISABLED_CALLBACK = 0x80000000;
+export const BUTTON_TOGGLE = 0x00000000;
+export const BUTTON_QUICK = 0x00000000;
+export const BUTTON_ENABLED = 0x00000001;
+export const BUTTON_CLICKED_ON = 0x00000002;
+export const BUTTON_NO_TOGGLE = 0x00000004;
+export const BUTTON_CLICK_CALLBACK = 0x00000008;
+export const BUTTON_MOVE_CALLBACK = 0x00000010;
+export const BUTTON_GENERIC = 0x00000020;
+export const BUTTON_HOT_SPOT = 0x00000040;
+export const BUTTON_SELFDELETE_IMAGE = 0x00000080;
+export const BUTTON_DELETION_PENDING = 0x00000100;
+export const BUTTON_ALLOW_DISABLED_CALLBACK = 0x00000200;
+export const BUTTON_DIRTY = 0x00000400;
+export const BUTTON_SAVEBACKGROUND = 0x00000800;
+export const BUTTON_CHECKBOX = 0x00001000;
+export const BUTTON_NEWTOGGLE = 0x00002000;
+export const BUTTON_FORCE_UNDIRTY = 0x00004000; // no matter what happens this buttons does NOT get marked dirty
+export const BUTTON_IGNORE_CLICKS = 0x00008000; // Ignore any clicks on this button
+export const BUTTON_DISABLED_CALLBACK = 0x80000000;
 
 const BUTTON_SOUND_NONE = 0x00;
-const BUTTON_SOUND_CLICKED_ON = 0x01;
-const BUTTON_SOUND_CLICKED_OFF = 0x02;
-const BUTTON_SOUND_MOVED_ONTO = 0x04;
-const BUTTON_SOUND_MOVED_OFF_OF = 0x08;
-const BUTTON_SOUND_DISABLED_CLICK = 0x10;
-const BUTTON_SOUND_DISABLED_MOVED_ONTO = 0x20;
-const BUTTON_SOUND_DISABLED_MOVED_OFF_OF = 0x40;
+export const BUTTON_SOUND_CLICKED_ON = 0x01;
+export const BUTTON_SOUND_CLICKED_OFF = 0x02;
+export const BUTTON_SOUND_MOVED_ONTO = 0x04;
+export const BUTTON_SOUND_MOVED_OFF_OF = 0x08;
+export const BUTTON_SOUND_DISABLED_CLICK = 0x10;
+export const BUTTON_SOUND_DISABLED_MOVED_ONTO = 0x20;
+export const BUTTON_SOUND_DISABLED_MOVED_OFF_OF = 0x40;
 const BUTTON_SOUND_ALREADY_PLAYED = 0X80;
 
 const BUTTON_SOUND_ALL_EVENTS = 0xff;
@@ -76,10 +76,10 @@ const GUI_SND_DCLK = BUTTON_SOUND_DISABLED_CLICK;
 const GUI_SND_DMOV = BUTTON_SOUND_DISABLED_MOVED_ONTO;
 
 // GUI_BUTTON callback function type
-type GUI_CALLBACK = (a: Pointer<GUI_BUTTON>, b: INT32) => void;
+export type GUI_CALLBACK = (a: Pointer<GUI_BUTTON>, b: INT32) => void;
 
 // GUI_BUTTON structure definitions.
-interface GUI_BUTTON {
+export interface GUI_BUTTON {
   IDNum: INT32; // ID Number, contains it's own button number
   ImageNum: UINT32; // Image number to use (see DOCs for details)
   Area: MOUSE_REGION; // Mouse System's mouse region to use for this button
@@ -126,12 +126,12 @@ interface GUI_BUTTON {
   ubSoundSchemeID: UINT8;
 }
 
-const MAX_BUTTONS = 400;
+export const MAX_BUTTONS = 400;
 
 const GetButtonPtr = (x) => (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonList[x] : null);
 
 // Struct definition for the QuickButton pictures.
-interface BUTTON_PICS {
+export interface BUTTON_PICS {
   vobj: HVOBJECT; // The Image itself
   Grayed: INT32; // Index to use for a "Grayed-out" button
   OffNormal: INT32; // Index to use when button is OFF
@@ -143,14 +143,14 @@ interface BUTTON_PICS {
   fFlags: UINT32; // Special image flags
 }
 
-const MAX_BUTTON_PICS = 256;
+export const MAX_BUTTON_PICS = 256;
 
-const RenderButtonsFastHelp = () => RenderFastHelp();
+export const RenderButtonsFastHelp = () => RenderFastHelp();
 
 const EnableHilightsAndHelpText = () => gfRenderHilights = true;
 const DisableHilightsAndHelpText = () => gfRenderHilights = false;
 
-const enum Enum28 {
+export const enum Enum28 {
   DEFAULT_STATUS_NONE,
   DEFAULT_STATUS_DARKBORDER, // shades the borders 2 pixels deep
   DEFAULT_STATUS_DOTTEDINTERIOR, // draws the familiar dotted line in the interior portion of the button.
@@ -158,11 +158,11 @@ const enum Enum28 {
 }
 
 // for use with SpecifyDisabledButtonStyle
-const enum Enum29 {
+export const enum Enum29 {
   DISABLED_STYLE_NONE, // for dummy buttons, panels, etc.  Always displays normal state.
   DISABLED_STYLE_DEFAULT, // if button has text then shade, else hatch
   DISABLED_STYLE_HATCHED, // always hatches the disabled button
   DISABLED_STYLE_SHADED, // always shades the disabled button 25% darker
 }
 
-const DEFAULT_MOVE_CALLBACK = () => BtnGenericMouseMoveButtonCallback;
+export const DEFAULT_MOVE_CALLBACK = () => BtnGenericMouseMoveButtonCallback;

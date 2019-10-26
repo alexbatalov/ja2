@@ -52,7 +52,7 @@ let fNewCharInString: boolean = false;
 // mouse regions
 let gIMPBeginScreenMouseRegions: MOUSE_REGION[] /* [4] */;
 
-function EnterIMPBeginScreen(): void {
+export function EnterIMPBeginScreen(): void {
   // reset all variables
 
   memset(pFullNameString, 0, sizeof(pFullNameString));
@@ -100,7 +100,7 @@ function EnterIMPBeginScreen(): void {
   return;
 }
 
-function RenderIMPBeginScreen(): void {
+export function RenderIMPBeginScreen(): void {
   // the background
   RenderProfileBackGround();
 
@@ -137,7 +137,7 @@ function RenderIMPBeginScreen(): void {
   return;
 }
 
-function ExitIMPBeginScreen(): void {
+export function ExitIMPBeginScreen(): void {
   // remove buttons
   RemoveIMPBeginScreenButtons();
 
@@ -160,7 +160,7 @@ function ExitIMPBeginScreen(): void {
   return;
 }
 
-function HandleIMPBeginScreen(): void {
+export function HandleIMPBeginScreen(): void {
   GetPlayerKeyBoardInputForIMPBeginScreen();
 
   // has a new char been added to activation string

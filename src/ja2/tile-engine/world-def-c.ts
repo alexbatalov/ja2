@@ -20,35 +20,35 @@ let gzForceLoadFile: CHAR8[] /* [100] */;
 let gfForceLoad: boolean = false;
 
 let gubCurrentLevel: UINT8;
-let giCurrentTilesetID: INT32 = 0;
+export let giCurrentTilesetID: INT32 = 0;
 let gzLastLoadedFile: CHAR8[] /* [260] */;
 
-let gCurrentBackground: UINT32 = Enum313.FIRSTTEXTURE;
+export let gCurrentBackground: UINT32 = Enum313.FIRSTTEXTURE;
 
-let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
+export let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
 let gbNewTileSurfaceLoaded: INT8[] /* [NUMBEROFTILETYPES] */;
 
-function SetAllNewTileSurfacesLoaded(fNew: boolean): void {
+export function SetAllNewTileSurfacesLoaded(fNew: boolean): void {
   memset(gbNewTileSurfaceLoaded, fNew, sizeof(gbNewTileSurfaceLoaded));
 }
 
 let gfInitAnimateLoading: boolean = false;
 
 // Global Variables
-let gpWorldLevelData: Pointer<MAP_ELEMENT>;
+export let gpWorldLevelData: Pointer<MAP_ELEMENT>;
 let gpDirtyData: Pointer<INT32>;
-let gSurfaceMemUsage: UINT32;
-let gubWorldMovementCosts: UINT8[][][] /* [WORLD_MAX][MAXDIR][2] */;
+export let gSurfaceMemUsage: UINT32;
+export let gubWorldMovementCosts: UINT8[][][] /* [WORLD_MAX][MAXDIR][2] */;
 
 // set to nonzero (locs of base gridno of structure are good) to have it defined by structure code
-let gsRecompileAreaTop: INT16 = 0;
-let gsRecompileAreaLeft: INT16 = 0;
-let gsRecompileAreaRight: INT16 = 0;
-let gsRecompileAreaBottom: INT16 = 0;
+export let gsRecompileAreaTop: INT16 = 0;
+export let gsRecompileAreaLeft: INT16 = 0;
+export let gsRecompileAreaRight: INT16 = 0;
+export let gsRecompileAreaBottom: INT16 = 0;
 
 // TIMER TESTING STUFF
 
-function DoorAtGridNo(iMapIndex: UINT32): boolean {
+export function DoorAtGridNo(iMapIndex: UINT32): boolean {
   let pStruct: Pointer<STRUCTURE>;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
@@ -59,7 +59,7 @@ function DoorAtGridNo(iMapIndex: UINT32): boolean {
   return false;
 }
 
-function OpenableAtGridNo(iMapIndex: UINT32): boolean {
+export function OpenableAtGridNo(iMapIndex: UINT32): boolean {
   let pStruct: Pointer<STRUCTURE>;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
@@ -70,7 +70,7 @@ function OpenableAtGridNo(iMapIndex: UINT32): boolean {
   return false;
 }
 
-function FloorAtGridNo(iMapIndex: UINT32): boolean {
+export function FloorAtGridNo(iMapIndex: UINT32): boolean {
   let pLand: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
@@ -87,7 +87,7 @@ function FloorAtGridNo(iMapIndex: UINT32): boolean {
   return false;
 }
 
-function GridNoIndoors(iMapIndex: UINT32): boolean {
+export function GridNoIndoors(iMapIndex: UINT32): boolean {
   if (gfBasement || gfCaves)
     return true;
   if (FloorAtGridNo(iMapIndex))
@@ -121,7 +121,7 @@ function DOIT(): void {
   }
 }
 
-function InitializeWorld(): boolean {
+export function InitializeWorld(): boolean {
   gTileDatabaseSize = 0;
   gSurfaceMemUsage = 0;
   giCurrentTilesetID = -1;
@@ -164,7 +164,7 @@ function InitializeWorld(): boolean {
   return true;
 }
 
-function DeinitializeWorld(): void {
+export function DeinitializeWorld(): void {
   TrashWorld();
 
   if (gpWorldLevelData != null) {
@@ -336,7 +336,7 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
   return true;
 }
 
-function BuildTileShadeTables(): void {
+export function BuildTileShadeTables(): void {
   let hfile: HWFILE;
   let DataDir: STRING512;
   let ShadeTableDir: STRING512;
@@ -407,7 +407,7 @@ function BuildTileShadeTables(): void {
   ubLastBlue = gpLightColors[0].peBlue;
 }
 
-function DestroyTileShadeTables(): void {
+export function DestroyTileShadeTables(): void {
   let uiLoop: UINT32;
 
   for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
@@ -1070,7 +1070,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
 
 const LOCAL_RADIUS = 4;
 
-function RecompileLocalMovementCosts(sCentreGridNo: INT16): void {
+export function RecompileLocalMovementCosts(sCentreGridNo: INT16): void {
   let usGridNo: INT16;
   let sGridX: INT16;
   let sGridY: INT16;
@@ -1105,7 +1105,7 @@ function RecompileLocalMovementCosts(sCentreGridNo: INT16): void {
   }
 }
 
-function RecompileLocalMovementCostsFromRadius(sCentreGridNo: INT16, bRadius: INT8): void {
+export function RecompileLocalMovementCostsFromRadius(sCentreGridNo: INT16, bRadius: INT8): void {
   let usGridNo: INT16;
   let sGridX: INT16;
   let sGridY: INT16;
@@ -1149,7 +1149,7 @@ function RecompileLocalMovementCostsFromRadius(sCentreGridNo: INT16, bRadius: IN
   }
 }
 
-function AddTileToRecompileArea(sGridNo: INT16): void {
+export function AddTileToRecompileArea(sGridNo: INT16): void {
   let sCheckGridNo: INT16;
   let sCheckX: INT16;
   let sCheckY: INT16;
@@ -1184,7 +1184,7 @@ function AddTileToRecompileArea(sGridNo: INT16): void {
   }
 }
 
-function RecompileLocalMovementCostsInAreaWithFlags(): void {
+export function RecompileLocalMovementCostsInAreaWithFlags(): void {
   let usGridNo: INT16;
   let sGridX: INT16;
   let sGridY: INT16;
@@ -1215,7 +1215,7 @@ function RecompileLocalMovementCostsInAreaWithFlags(): void {
   }
 }
 
-function RecompileLocalMovementCostsForWall(sGridNo: INT16, ubOrientation: UINT8): void {
+export function RecompileLocalMovementCostsForWall(sGridNo: INT16, ubOrientation: UINT8): void {
   let bDirLoop: INT8;
   let sUp: INT16;
   let sDown: INT16;
@@ -1258,7 +1258,7 @@ function RecompileLocalMovementCostsForWall(sGridNo: INT16, ubOrientation: UINT8
 }
 
 // GLOBAL WORLD MANIPULATION FUNCTIONS
-function CompileWorldMovementCosts(): void {
+export function CompileWorldMovementCosts(): void {
   let usGridNo: UINT16;
 
   memset(gubWorldMovementCosts, 0, sizeof(gubWorldMovementCosts));
@@ -1270,7 +1270,7 @@ function CompileWorldMovementCosts(): void {
 }
 
 // SAVING CODE
-function SaveWorld(puiFilename: Pointer<UINT8>): boolean {
+export function SaveWorld(puiFilename: Pointer<UINT8>): boolean {
   let cnt: INT32;
   let uiSoldierSize: UINT32;
   let uiType: UINT32;
@@ -1741,7 +1741,7 @@ function SetBlueFlagFlags(): void {
   }
 }
 
-function InitLoadedWorld(): void {
+export function InitLoadedWorld(): void {
   // if the current sector is not valid, dont init the world
   if (gWorldSectorX == 0 || gWorldSectorY == 0) {
     return;
@@ -1768,7 +1768,7 @@ function InitLoadedWorld(): void {
   SetBlueFlagFlags();
 }
 
-function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): boolean {
+export function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): boolean {
   let dMajorMapVersion: FLOAT;
   let pSummary: Pointer<SUMMARYFILE>;
   let hfile: HWFILE;
@@ -2145,7 +2145,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): boolean {
   return true;
 }
 
-function LoadWorld(puiFilename: Pointer<UINT8>): boolean {
+export function LoadWorld(puiFilename: Pointer<UINT8>): boolean {
   let hfile: HWFILE;
   let dMajorMapVersion: FLOAT;
   let uiFlags: UINT32;
@@ -2627,7 +2627,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): boolean {
 //	Deletes everything then re-creates the world with simple ground tiles
 //
 //****************************************************************************************
-function NewWorld(): boolean {
+export function NewWorld(): boolean {
   let NewIndex: UINT16;
   let cnt: INT32;
 
@@ -2651,7 +2651,7 @@ function NewWorld(): boolean {
   return true;
 }
 
-function TrashWorld(): void {
+export function TrashWorld(): void {
   let pMapTile: Pointer<MAP_ELEMENT>;
   let pLandNode: Pointer<LEVELNODE>;
   let pObjectNode: Pointer<LEVELNODE>;
@@ -2884,7 +2884,7 @@ function TrashMapTile(MapTile: INT16): void {
   pMapTile.value.pStructureHead = pMapTile.value.pStructureTail = null;
 }
 
-function LoadMapTileset(iTilesetID: INT32): boolean {
+export function LoadMapTileset(iTilesetID: INT32): boolean {
   if (iTilesetID >= Enum316.NUM_TILESETS) {
     return false;
   }
@@ -2949,7 +2949,7 @@ function SaveMapTileset(iTilesetID: INT32): boolean {
   return true;
 }
 
-function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, zLoadName: Pointer<CHAR8>): void {
+export function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, zLoadName: Pointer<CHAR8>): void {
   gfForceLoadPlayers = fForceLoad;
   gfForceLoad = fForceFile;
 
@@ -3033,7 +3033,7 @@ function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<
   return usValue;
 }
 
-function CalculateWorldWireFrameTiles(fForce: boolean): void {
+export function CalculateWorldWireFrameTiles(fForce: boolean): void {
   let cnt: INT32;
   let pStructure: Pointer<STRUCTURE>;
   let sGridNo: INT16;
@@ -3258,7 +3258,7 @@ function IsHiddenTileMarkerThere(sGridNo: INT16): INT8 {
   return -1;
 }
 
-function ReloadTileset(ubID: UINT8): void {
+export function ReloadTileset(ubID: UINT8): void {
   let aFilename: CHAR8[] /* [255] */;
   let iCurrTilesetID: INT32 = giCurrentTilesetID;
 

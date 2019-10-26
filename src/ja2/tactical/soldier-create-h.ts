@@ -1,4 +1,4 @@
-const SOLDIER_CREATE_AUTO_TEAM = -1;
+export const SOLDIER_CREATE_AUTO_TEAM = -1;
 
 // Kris:
 // This value is the total maximum number of slots in a map.
@@ -8,7 +8,7 @@ const SOLDIER_CREATE_AUTO_TEAM = -1;
 // Rebels		32
 // Civilians 32
 // Total			148
-const MAX_INDIVIDUALS = 148;
+export const MAX_INDIVIDUALS = 148;
 
 // Kris:  SERIALIZING INFORMATION
 // All maps must have:
@@ -20,7 +20,7 @@ const MAX_INDIVIDUALS = 148;
 // These are the placement slots used by the editor to define where characters are in a map, what
 // they are, what team they are on, personality traits, etc.  The Merc section of the editor is
 // what is used to define these values.
-interface BASIC_SOLDIERCREATE_STRUCT {
+export interface BASIC_SOLDIERCREATE_STRUCT {
   fDetailedPlacement: boolean; // Specialized information.  Has a counterpart containing all info.
   usStartingGridNo: UINT16; // Where the placement position is.
   bTeam: INT8; // The team this individual is part of.
@@ -40,7 +40,7 @@ interface BASIC_SOLDIERCREATE_STRUCT {
   PADDINGSLOTS: INT8[] /* [14] */;
 } // 50 bytes
 
-interface SOLDIERCREATE_STRUCT {
+export interface SOLDIERCREATE_STRUCT {
   // Bulletproofing so static detailed placements aren't used to tactically create soldiers.
   // Used by editor for validation purposes.
   fStatic: boolean;

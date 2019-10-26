@@ -6,13 +6,13 @@ const WAKETIME = (x) => (NUM_SEC_IN_DAY / NUM_SEC_IN_MIN - x);
 //#define DISABLESCHEDULES
 
 let gpScheduleList: Pointer<SCHEDULENODE> = null;
-let gubScheduleID: UINT8 = 0;
+export let gubScheduleID: UINT8 = 0;
 
 // IMPORTANT:
 // This function adds a NEWLY allocated schedule to the list.  The pointer passed is totally
 // separate.  So make sure that you delete the pointer if you don't need it anymore.  The editor
 // uses a single static node to copy data from, hence this method.
-function CopyScheduleToList(pSchedule: Pointer<SCHEDULENODE>, pNode: Pointer<SOLDIERINITNODE>): void {
+export function CopyScheduleToList(pSchedule: Pointer<SCHEDULENODE>, pNode: Pointer<SOLDIERINITNODE>): void {
   let curr: Pointer<SCHEDULENODE>;
   curr = gpScheduleList;
   gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
@@ -33,7 +33,7 @@ function CopyScheduleToList(pSchedule: Pointer<SCHEDULENODE>, pNode: Pointer<SOL
   }
 }
 
-function GetSchedule(ubScheduleID: UINT8): Pointer<SCHEDULENODE> {
+export function GetSchedule(ubScheduleID: UINT8): Pointer<SCHEDULENODE> {
   let curr: Pointer<SCHEDULENODE>;
   curr = gpScheduleList;
   while (curr) {
@@ -45,7 +45,7 @@ function GetSchedule(ubScheduleID: UINT8): Pointer<SCHEDULENODE> {
 }
 
 // Removes all schedules from the event list, and cleans out the list.
-function DestroyAllSchedules(): void {
+export function DestroyAllSchedules(): void {
   let curr: Pointer<SCHEDULENODE>;
   // First remove all of the events.
   DeleteAllStrategicEventsOfType(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE);
@@ -60,7 +60,7 @@ function DestroyAllSchedules(): void {
 }
 
 // cleans out the schedule list without touching events, for saving & loading games
-function DestroyAllSchedulesWithoutDestroyingEvents(): void {
+export function DestroyAllSchedulesWithoutDestroyingEvents(): void {
   let curr: Pointer<SCHEDULENODE>;
 
   // delete all of the schedules.
@@ -73,7 +73,7 @@ function DestroyAllSchedulesWithoutDestroyingEvents(): void {
   gubScheduleID = 0;
 }
 
-function DeleteSchedule(ubScheduleID: UINT8): void {
+export function DeleteSchedule(ubScheduleID: UINT8): void {
   let curr: Pointer<SCHEDULENODE>;
   let temp: Pointer<SCHEDULENODE> = null;
 
@@ -103,7 +103,7 @@ function DeleteSchedule(ubScheduleID: UINT8): void {
   }
 }
 
-function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
+export function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
   let pSchedule: Pointer<SCHEDULENODE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let iScheduleIndex: INT32 = 0;
@@ -180,7 +180,7 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
 
 // Called before leaving the editor, or saving the map.  This recalculates
 // all of the schedule IDs from scratch and adjusts the effected structures accordingly.
-function OptimizeSchedules(): void {
+export function OptimizeSchedules(): void {
   let pSchedule: Pointer<SCHEDULENODE>;
   let pNode: Pointer<SOLDIERINITNODE>;
   let ubOldScheduleID: UINT8;
@@ -219,7 +219,7 @@ function OptimizeSchedules(): void {
 }
 
 // Called when transferring from the game to the editor.
-function PrepareSchedulesForEditorEntry(): void {
+export function PrepareSchedulesForEditorEntry(): void {
   let curr: Pointer<SCHEDULENODE>;
   let prev: Pointer<SCHEDULENODE>;
   let temp: Pointer<SCHEDULENODE>;
@@ -256,11 +256,11 @@ function PrepareSchedulesForEditorEntry(): void {
 }
 
 // Called when leaving the editor to enter the game.  This posts all of the events that apply.
-function PrepareSchedulesForEditorExit(): void {
+export function PrepareSchedulesForEditorExit(): void {
   PostSchedules();
 }
 
-function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
+export function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
   let pSchedule: Pointer<SCHEDULENODE> = null;
   let temp: SCHEDULENODE;
   let ubNum: UINT8;
@@ -295,7 +295,7 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
   // Schedules are posted when the soldier is added...
 }
 
-function LoadSchedulesFromSave(hFile: HWFILE): boolean {
+export function LoadSchedulesFromSave(hFile: HWFILE): boolean {
   let pSchedule: Pointer<SCHEDULENODE> = null;
   let temp: SCHEDULENODE;
   let ubNum: UINT8;
@@ -353,7 +353,7 @@ function LoadSchedulesFromSave(hFile: HWFILE): boolean {
 
 // used to fix a bug in the editor where the schedules were reversed.  Because only
 // some maps were effected, this feature was required.
-function ReverseSchedules(): void {
+export function ReverseSchedules(): void {
   let pReverseHead: Pointer<SCHEDULENODE>;
   let pPrevReverseHead: Pointer<SCHEDULENODE>;
   let pPrevScheduleHead: Pointer<SCHEDULENODE>;
@@ -381,7 +381,7 @@ function ReverseSchedules(): void {
 }
 
 // Another debug feature.
-function ClearAllSchedules(): void {
+export function ClearAllSchedules(): void {
   let pNode: Pointer<SOLDIERINITNODE>;
   DestroyAllSchedules();
   pNode = gSoldierInitHead;
@@ -396,7 +396,7 @@ function ClearAllSchedules(): void {
   }
 }
 
-function SaveSchedules(hFile: HWFILE): boolean {
+export function SaveSchedules(hFile: HWFILE): boolean {
   let curr: Pointer<SCHEDULENODE>;
   let uiBytesWritten: UINT32;
   let ubNum: UINT8;
@@ -440,7 +440,7 @@ function SaveSchedules(hFile: HWFILE): boolean {
 
 // Each schedule has upto four parts to it, so sort them chronologically.
 // Happily, the fields with no times actually are the highest.
-function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): boolean {
+export function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): boolean {
   let index: INT32;
   let i: INT32;
   let iBestIndex: INT32;
@@ -482,7 +482,7 @@ function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): boolean {
   return fSorted;
 }
 
-function BumpAnyExistingMerc(sGridNo: INT16): boolean {
+export function BumpAnyExistingMerc(sGridNo: INT16): boolean {
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>; // NB this is the person already in the location,
   let sNewGridNo: INT16;
@@ -816,7 +816,7 @@ function PostDefaultSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   PostSchedule(pSoldier);
 }
 
-function PostSchedules(): void {
+export function PostSchedules(): void {
   let curr: Pointer<SOLDIERINITNODE>;
   let fDefaultSchedulesPossible: boolean = false;
 
@@ -873,7 +873,7 @@ function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: 
 
 // Assumes that a schedule has just been processed.  This takes the current time, and compares it to the
 // schedule, and looks for the next schedule action that would get processed and posts it.
-function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pSchedule: Pointer<SCHEDULENODE>;
   let i: INT32;
   let iBestIndex: INT32;
@@ -942,7 +942,7 @@ function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntr
 }
 
 // This is for determining shopkeeper's opening/closing hours
-function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): boolean {
+export function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): boolean {
   let iLoop: INT32;
   let fFoundOpeningTime: boolean = false;
   let fFoundClosingTime: boolean = false;

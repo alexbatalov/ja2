@@ -30,7 +30,7 @@ function RecountSmokeEffects(): void {
 }
 
 // Returns NO_SMOKE_EFFECT if none there...
-function GetSmokeEffectOnTile(sGridNo: INT16, bLevel: INT8): INT8 {
+export function GetSmokeEffectOnTile(sGridNo: INT16, bLevel: INT8): INT8 {
   let ubExtFlags: UINT8;
 
   ubExtFlags = gpWorldLevelData[sGridNo].ubExtFlags[bLevel];
@@ -86,7 +86,7 @@ function FromSmokeTypeToWorldFlags(bType: INT8): UINT8 {
   }
 }
 
-function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: UINT8): INT32 {
+export function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: UINT8): INT32 {
   let pSmoke: Pointer<SMOKEEFFECT>;
   let iSmokeIndex: INT32;
   let bSmokeEffectType: INT8 = 0;
@@ -183,7 +183,7 @@ function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: U
 
 // Add smoke to gridno
 // ( Replacement algorithm uses distance away )
-function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16, bLevel: INT8): void {
+export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16, bLevel: INT8): void {
   let AniParams: ANITILE_PARAMS;
   let pAniTile: Pointer<ANITILE>;
   let pSmoke: Pointer<SMOKEEFFECT>;
@@ -301,7 +301,7 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
+export function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
   let pAniTile: Pointer<ANITILE>;
   let ubLevelID: UINT8;
 
@@ -327,7 +327,7 @@ function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
   }
 }
 
-function DecaySmokeEffects(uiTime: UINT32): void {
+export function DecaySmokeEffects(uiTime: UINT32): void {
   let pSmoke: Pointer<SMOKEEFFECT>;
   let cnt: UINT32;
   let cnt2: UINT32;
@@ -437,7 +437,7 @@ function DecaySmokeEffects(uiTime: UINT32): void {
   AllTeamsLookForAll(true);
 }
 
-function SaveSmokeEffectsToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveSmokeEffectsToSaveGameFile(hFile: HWFILE): boolean {
   /*
           UINT32	uiNumBytesWritten;
           UINT32	uiCnt=0;
@@ -481,7 +481,7 @@ function SaveSmokeEffectsToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): boolean {
+export function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
   let uiCnt: UINT32 = 0;
@@ -537,7 +537,7 @@ function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
+export function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let uiNumSmokeEffects: UINT32 = 0;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
@@ -603,7 +603,7 @@ function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
   return true;
 }
 
-function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
+export function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
   let uiCnt: UINT32 = 0;
@@ -660,13 +660,13 @@ function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   return true;
 }
 
-function ResetSmokeEffects(): void {
+export function ResetSmokeEffects(): void {
   // Clear out the old list
   memset(gSmokeEffectData, 0, sizeof(SMOKEEFFECT) * NUM_SMOKE_EFFECT_SLOTS);
   guiNumSmokeEffects = 0;
 }
 
-function UpdateSmokeEffectGraphics(): void {
+export function UpdateSmokeEffectGraphics(): void {
   let uiCnt: UINT32;
   let pSmoke: Pointer<SMOKEEFFECT>;
   let bLevel: INT8;

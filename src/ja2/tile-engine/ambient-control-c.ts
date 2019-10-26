@@ -1,5 +1,5 @@
-let gAmbData: AMBIENTDATA_STRUCT[] /* [MAX_AMBIENT_SOUNDS] */;
-let gsNumAmbData: INT16 = 0;
+export let gAmbData: AMBIENTDATA_STRUCT[] /* [MAX_AMBIENT_SOUNDS] */;
+export let gsNumAmbData: INT16 = 0;
 
 let gubCurrentSteadyStateAmbience: UINT8 = Enum301.SSA_NONE;
 let gubCurrentSteadyStateSound: UINT8 = 0;
@@ -199,11 +199,11 @@ function GetAmbientDataPtr(ppAmbData: Pointer<Pointer<AMBIENTDATA_STRUCT>>, pusN
   pusNumData.value = gsNumAmbData;
 }
 
-function StopAmbients(): void {
+export function StopAmbients(): void {
   SoundStopAllRandom();
 }
 
-function HandleNewSectorAmbience(ubAmbientID: UINT8): void {
+export function HandleNewSectorAmbience(ubAmbientID: UINT8): void {
   // OK, we could have just loaded a sector, erase all ambient sounds from queue, shutdown all ambient groupings
   SoundStopAllRandom();
 
@@ -219,13 +219,13 @@ function HandleNewSectorAmbience(ubAmbientID: UINT8): void {
   }
 }
 
-function DeleteAllAmbients(): void {
+export function DeleteAllAmbients(): void {
   // JA2Gold: it seems that ambient sounds don't get unloaded when we exit a sector!?
   SoundStopAllRandom();
   DeleteAllStrategicEventsOfType(Enum132.EVENT_AMBIENT);
 }
 
-function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
+export function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
   let rpParms: RANDOMPARMS;
 
   memset(addressof(rpParms), 0xff, sizeof(RANDOMPARMS));

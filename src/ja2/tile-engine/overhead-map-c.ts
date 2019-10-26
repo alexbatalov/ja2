@@ -28,13 +28,13 @@ let OverheadRegion: MOUSE_REGION;
 let OverheadBackgroundRegion: MOUSE_REGION;
 let uiOVERMAP: UINT32;
 let uiPERSONS: UINT32;
-let gfOverheadMapDirty: boolean = false;
+export let gfOverheadMapDirty: boolean = false;
 let gsStartRestrictedX: INT16;
 let gsStartRestrictedY: INT16;
 let gfOverItemPool: boolean = false;
 let gsOveritemPoolGridNo: INT16;
 
-function InitNewOverheadDB(ubTilesetID: UINT8): void {
+export function InitNewOverheadDB(ubTilesetID: UINT8): void {
   let uiLoop: UINT32;
   let VObjectDesc: VOBJECT_DESC;
   let hVObject: HVOBJECT;
@@ -261,7 +261,7 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   mprintf(sX, sY, pSoldier.value.name);
 }
 
-function HandleOverheadMap(): void {
+export function HandleOverheadMap(): void {
   /* static */ let fFirst: boolean = true;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -399,11 +399,11 @@ function HandleOverheadMap(): void {
   fInterfacePanelDirty = false;
 }
 
-function InOverheadMap(): boolean {
+export function InOverheadMap(): boolean {
   return gfInOverheadMap;
 }
 
-function GoIntoOverheadMap(): void {
+export function GoIntoOverheadMap(): void {
   let VObjectDesc: VOBJECT_DESC;
   let hVObject: HVOBJECT;
 
@@ -491,7 +491,7 @@ function HandleOverheadUI(): void {
   }
 }
 
-function KillOverheadMap(): void {
+export function KillOverheadMap(): void {
   gfInOverheadMap = false;
   SetRenderFlags(RENDER_FLAG_FULL);
   RenderWorld();
@@ -529,7 +529,7 @@ function GetModifiedOffsetLandHeight(sGridNo: INT32): INT16 {
   return sModifiedTileHeight;
 }
 
-function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16, fFromMapUtility: boolean): void {
+export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16, fFromMapUtility: boolean): void {
   let bXOddFlag: INT8 = 0;
   let sModifiedHeight: INT16 = 0;
   let sAnchorPosX_M: INT16;
@@ -1272,7 +1272,7 @@ function GetOverheadScreenXYFromGridNo(sGridNo: INT16, psScreenX: Pointer<INT16>
   //*psScreenY -= gpWorldLevelData[ sGridNo ].sHeight / 5;
 }
 
-function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): boolean {
+export function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): boolean {
   let uiCellX: UINT32;
   let uiCellY: UINT32;
   let sWorldScreenX: INT16;
@@ -1334,7 +1334,7 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
   }
 }
 
-function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, psY1: Pointer<INT16>, psX2: Pointer<INT16>, psY2: Pointer<INT16>, sEndXS: INT16, sEndYS: INT16): void {
+export function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, psY1: Pointer<INT16>, psX2: Pointer<INT16>, psY2: Pointer<INT16>, sEndXS: INT16, sEndYS: INT16): void {
   switch (bDirection) {
     case Enum245.NORTH:
 
@@ -1390,7 +1390,7 @@ function CopyOverheadDBShadetablesFromTileset(): void {
   }
 }
 
-function TrashOverheadMap(): void {
+export function TrashOverheadMap(): void {
   // If loaded, unload!
   if (gfSmTileLoaded) {
     // Unload

@@ -43,9 +43,9 @@ const FLOR_GALLERY_FLOWER_DESC_OFFSET_Y = FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y + 1
 
 let guiFlowerImages: UINT32[] /* [3] */;
 
-let guiCurrentlySelectedFlower: UINT32 = 0;
+export let guiCurrentlySelectedFlower: UINT32 = 0;
 
-let gubCurFlowerIndex: UINT8 = 0;
+export let gubCurFlowerIndex: UINT8 = 0;
 let gubCurNumberOfFlowers: UINT8 = 0;
 let gubPrevNumberOfFlowers: UINT8 = 0;
 let gfRedrawFloristGallery: boolean = false;
@@ -53,8 +53,8 @@ let gfRedrawFloristGallery: boolean = false;
 let FloristGallerySubPagesVisitedFlag: boolean[] /* [4] */;
 
 // Floral buttons
-let guiGalleryButtonImage: INT32;
-let guiGalleryButton: UINT32[] /* [FLOR_GALLERY_NUMBER_FLORAL_BUTTONS] */;
+export let guiGalleryButtonImage: INT32;
+export let guiGalleryButton: UINT32[] /* [FLOR_GALLERY_NUMBER_FLORAL_BUTTONS] */;
 
 // Next Previous buttons
 let guiFloralGalleryButtonImage: INT32;
@@ -63,11 +63,11 @@ let guiFloralGalleryButton: UINT32[] /* [2] */;
 function GameInitFloristGallery(): void {
 }
 
-function EnterInitFloristGallery(): void {
+export function EnterInitFloristGallery(): void {
   memset(addressof(FloristGallerySubPagesVisitedFlag), 0, 4);
 }
 
-function EnterFloristGallery(): boolean {
+export function EnterFloristGallery(): boolean {
   InitFloristDefaults();
 
   // the next previous buttons
@@ -86,7 +86,7 @@ function EnterFloristGallery(): boolean {
   return true;
 }
 
-function ExitFloristGallery(): void {
+export function ExitFloristGallery(): void {
   let i: UINT16;
 
   RemoveFloristDefaults();
@@ -99,7 +99,7 @@ function ExitFloristGallery(): void {
   DeleteFlowerButtons();
 }
 
-function HandleFloristGallery(): void {
+export function HandleFloristGallery(): void {
   if (gfRedrawFloristGallery) {
     gfRedrawFloristGallery = false;
 
@@ -111,7 +111,7 @@ function HandleFloristGallery(): void {
   }
 }
 
-function RenderFloristGallery(): void {
+export function RenderFloristGallery(): void {
   DisplayFloristDefaults();
 
   DrawTextToScreen(sFloristGalleryText[Enum347.FLORIST_GALLERY_CLICK_TO_ORDER], FLOR_GALLERY_TITLE_TEXT_X, FLOR_GALLERY_TITLE_TEXT_Y, FLOR_GALLERY_TITLE_TEXT_WIDTH, FLOR_GALLERY_TITLE_FONT(), FLOR_GALLERY_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);

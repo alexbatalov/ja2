@@ -13,9 +13,9 @@ const PALACE_SECTOR_Y = 16;
 
 const MAX_PALACE_DISTANCE = 20;
 
-let gfProfiledEnemyAdded: boolean = false;
+export let gfProfiledEnemyAdded: boolean = false;
 
-let guiCurrentUniqueSoldierId: UINT32 = 1;
+export let guiCurrentUniqueSoldierId: UINT32 = 1;
 
 // CJC note: trust me, it's easiest just to put this here; this is the only
 // place it should need to be used
@@ -41,7 +41,7 @@ let gubItemDroppableFlag: UINT8[] /* [NUM_INV_SLOTS] */ = [
   0,
 ];
 
-function RandomizeNewSoldierStats(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): void {
+export function RandomizeNewSoldierStats(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): void {
   pCreateStruct.value.bLifeMax = Random(50) + 50;
   pCreateStruct.value.bLife = pCreateStruct.value.bLifeMax;
   pCreateStruct.value.bAgility = Random(50) + 50;
@@ -62,7 +62,7 @@ function RandomizeNewSoldierStats(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>):
   pCreateStruct.value.bAIMorale = Enum244.MORALE_FEARLESS;
 }
 
-function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pubID: Pointer<UINT8>): Pointer<SOLDIERTYPE> {
+export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pubID: Pointer<UINT8>): Pointer<SOLDIERTYPE> {
   let Soldier: SOLDIERTYPE;
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -1024,7 +1024,7 @@ function InitSoldierStruct(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bVehicleUnderRepairID = -1;
 }
 
-function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVehicle: boolean): boolean {
+export function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVehicle: boolean): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Check range of index given
@@ -1048,7 +1048,7 @@ function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVehicle: b
   return TacticalRemoveSoldierPointer(pSoldier, fRemoveVehicle);
 }
 
-function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVehicle: boolean): boolean {
+export function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVehicle: boolean): boolean {
   if (!pSoldier.value.bActive)
     return false;
 
@@ -1104,13 +1104,13 @@ function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVeh
   return true;
 }
 
-function TacticalRemoveSoldier(usSoldierIndex: UINT16): boolean {
+export function TacticalRemoveSoldier(usSoldierIndex: UINT16): boolean {
   return InternalTacticalRemoveSoldier(usSoldierIndex, true);
 }
 
 // returns a soldier difficulty modifier from 0 to 100 based on player's progress, distance from the Palace, mining income, and
 // playing difficulty level.  Used for generating soldier stats, equipment, and AI skill level.
-function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
+export function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
   let bDiffModifier: INT8 = 0;
   let ubProgress: UINT8;
   let ubProgressModifier: UINT8;
@@ -1184,7 +1184,7 @@ function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
 // Used to generate a detailed placement from a basic placement.  This assumes that the detailed placement
 // doesn't exist, meaning there are no static attributes.  This is called when you wish to convert a basic
 // placement into a detailed placement just before creating a soldier.
-function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
+export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
   let bBaseAttribute: INT8;
   let ubSoldierClass: UINT8;
   let ubDiffFactor: UINT8;
@@ -1445,7 +1445,7 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
 // are defaulted to -1.  When an attribute is made to be static, that value in replaced by the new static value.
 // This information is NOT compatible with TacticalCreateSoldier.  Before doing so, you must first convert the
 // static detailed placement to a regular detailed placement.
-function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
+export function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
   let i: INT32;
   if (!spp || !bp)
     return;
@@ -1512,7 +1512,7 @@ function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: Pointer<SOLDI
 // When you are ready to generate a soldier with a static detailed placement slot, this function will generate
 // the proper detailed placement slot given the static detailed placement and it's accompanying basic placement.
 // For the purposes of merc editing, the static detailed placement is preserved.
-function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
+export function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
   let i: INT32;
 
   memset(pp, 0, sizeof(SOLDIERCREATE_STRUCT));
@@ -1605,7 +1605,7 @@ function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInf
 // by the editor upon exiting the editor into the game, to update the existing soldiers with new information.
 // This gives flexibility of testing mercs.  Upon entering the editor again, this call will reset all the
 // mercs to their original states.
-function UpdateSoldierWithStaticDetailedInformation(s: Pointer<SOLDIERTYPE>, spp: Pointer<SOLDIERCREATE_STRUCT>): void {
+export function UpdateSoldierWithStaticDetailedInformation(s: Pointer<SOLDIERTYPE>, spp: Pointer<SOLDIERCREATE_STRUCT>): void {
   // First, check to see if the soldier has a profile.  If so, then it'll extract the information
   // and update the soldier with the profile information instead.  This has complete override
   // authority.
@@ -1724,7 +1724,7 @@ function UpdateStaticDetailedPlacementWithProfileInformation(spp: Pointer<SOLDIE
 
 // When the editor modifies the soldier's relative attribute level,
 // this function is called to update that information.
-function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bRelativeAttributeLevel: INT8): void {
+export function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bRelativeAttributeLevel: INT8): void {
   let bBaseAttribute: INT8;
   // Set the experience level based on the relative attribute level
   // NOTE OF WARNING: THIS CURRENTLY IGNORES THE ENEMY CLASS (ADMIN/REG/ELITE) FOR CALCULATING LEVEL & ATTRIBUTES
@@ -1754,7 +1754,7 @@ function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bR
   s.value.bMorale = (bBaseAttribute + Random(9) + Random(8));
 }
 
-function ForceSoldierProfileID(pSoldier: Pointer<SOLDIERTYPE>, ubProfileID: UINT8): void {
+export function ForceSoldierProfileID(pSoldier: Pointer<SOLDIERTYPE>, ubProfileID: UINT8): void {
   let CreateStruct: SOLDIERCREATE_STRUCT;
 
   memset(addressof(CreateStruct), 0, sizeof(CreateStruct));
@@ -1818,7 +1818,7 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
-function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
+export function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
   let pp: SOLDIERCREATE_STRUCT;
   let ubID: UINT8;
@@ -1848,7 +1848,7 @@ function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
-function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
+export function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
   let pp: SOLDIERCREATE_STRUCT;
   let ubID: UINT8;
@@ -1878,7 +1878,7 @@ function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
-function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
+export function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
   let pp: SOLDIERCREATE_STRUCT;
   let ubID: UINT8;
@@ -1916,7 +1916,7 @@ function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
   return pSoldier;
 }
 
-function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
+export function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
   let pp: SOLDIERCREATE_STRUCT;
   let ubID: UINT8;
@@ -1935,7 +1935,7 @@ function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
   return TacticalCreateSoldier(addressof(pp), addressof(ubID));
 }
 
-function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
+export function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
   let pp: SOLDIERCREATE_STRUCT;
   let ubID: UINT8;
@@ -1957,7 +1957,7 @@ function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
   return TacticalCreateSoldier(addressof(pp), addressof(ubID));
 }
 
-function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8): void {
+export function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8): void {
   let ubLocationModifier: UINT8;
   let bRollModifier: INT8;
   let bRoll: INT8;
@@ -2048,7 +2048,7 @@ function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8
 }
 
 // This function shouldn't be called outside of tactical
-function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
+export function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
   // Create guy # X
   let MercCreateStruct: SOLDIERCREATE_STRUCT;
   let sWorldX: INT16;
@@ -2206,7 +2206,7 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
 // the associated facts are done elsewhere.  The function will set the profile for the SOLDIERCREATE_STRUCT
 // and the rest will be handled automatically so long the ubProfile field doesn't get changed.
 // NOTE:  We don't want to add Mike or Iggy if this is being called from autoresolve!
-function OkayToUpgradeEliteToSpecialProfiledEnemy(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
+export function OkayToUpgradeEliteToSpecialProfiledEnemy(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
   if (!gfProfiledEnemyAdded && gubEnemyEncounterCode != Enum164.ENEMY_ENCOUNTER_CODE && gubEnemyEncounterCode != Enum164.ENEMY_INVASION_CODE) {
     if (gubFact[Enum170.FACT_MIKE_AVAILABLE_TO_ARMY] == 1 && !pp.value.fOnRoof) {
       gubFact[Enum170.FACT_MIKE_AVAILABLE_TO_ARMY] = 2; // so it fails all subsequent checks
@@ -2220,7 +2220,7 @@ function OkayToUpgradeEliteToSpecialProfiledEnemy(pp: Pointer<SOLDIERCREATE_STRU
   }
 }
 
-function TrashAllSoldiers(): void {
+export function TrashAllSoldiers(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 

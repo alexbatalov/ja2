@@ -1,7 +1,7 @@
-const SEF_PREVENT_DELETION = 0x01;
-const SEF_DELETION_PENDING = 0x02;
+export const SEF_PREVENT_DELETION = 0x01;
+export const SEF_DELETION_PENDING = 0x02;
 
-interface STRATEGICEVENT {
+export interface STRATEGICEVENT {
   next: Pointer<STRATEGICEVENT>;
   uiTimeStamp: UINT32;
   uiParam: UINT32;
@@ -12,7 +12,7 @@ interface STRATEGICEVENT {
   bPadding: INT8[] /* [6] */;
 }
 
-const enum Enum133 {
+export const enum Enum133 {
   ONETIME_EVENT,
   RANGED_EVENT,
   ENDRANGED_EVENT,

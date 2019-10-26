@@ -1,13 +1,13 @@
-let gStrategicStatus: STRATEGIC_STATUS;
+export let gStrategicStatus: STRATEGIC_STATUS;
 
-function InitStrategicStatus(): void {
+export function InitStrategicStatus(): void {
   memset(addressof(gStrategicStatus), 0, sizeof(STRATEGIC_STATUS));
   // Add special non-zero start conditions here...
 
   InitArmyGunTypes();
 }
 
-function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // Save the Strategic Status structure to the saved game file
@@ -19,7 +19,7 @@ function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): boolean {
+export function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   // Load the Strategic Status structure from the saved game file
@@ -33,7 +33,7 @@ function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): boolean {
 
 const DEATH_RATE_SEVERITY = 1.0; // increase to make death rates higher for same # of deaths/time
 
-function CalcDeathRate(): UINT8 {
+export function CalcDeathRate(): UINT8 {
   let uiDeathRate: UINT32 = 0;
 
   // give the player a grace period of 1 day
@@ -45,7 +45,7 @@ function CalcDeathRate(): UINT8 {
   return uiDeathRate;
 }
 
-function ModifyPlayerReputation(bRepChange: INT8): void {
+export function ModifyPlayerReputation(bRepChange: INT8): void {
   let iNewBadRep: INT32;
 
   // subtract, so that a negative reputation change results in an increase in bad reputation
@@ -58,7 +58,7 @@ function ModifyPlayerReputation(bRepChange: INT8): void {
   gStrategicStatus.ubBadReputation = iNewBadRep;
 }
 
-function MercThinksDeathRateTooHigh(ubProfileID: UINT8): boolean {
+export function MercThinksDeathRateTooHigh(ubProfileID: UINT8): boolean {
   let bDeathRateTolerance: INT8;
 
   bDeathRateTolerance = gMercProfiles[ubProfileID].bDeathRate;
@@ -78,7 +78,7 @@ function MercThinksDeathRateTooHigh(ubProfileID: UINT8): boolean {
   }
 }
 
-function MercThinksBadReputationTooHigh(ubProfileID: UINT8): boolean {
+export function MercThinksBadReputationTooHigh(ubProfileID: UINT8): boolean {
   let bRepTolerance: INT8;
 
   bRepTolerance = gMercProfiles[ubProfileID].bReputationTolerance;
@@ -99,7 +99,7 @@ function MercThinksBadReputationTooHigh(ubProfileID: UINT8): boolean {
 }
 
 // only meaningful for already hired mercs
-function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bRepTolerance: INT8;
   let bMoraleTolerance: INT8;
 
@@ -124,7 +124,7 @@ function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 }
 
-function UpdateLastDayOfPlayerActivity(usDay: UINT16): void {
+export function UpdateLastDayOfPlayerActivity(usDay: UINT16): void {
   if (usDay > gStrategicStatus.usLastDayOfPlayerActivity) {
     gStrategicStatus.usLastDayOfPlayerActivity = usDay;
     gStrategicStatus.ubNumberOfDaysOfInactivity = 0;
@@ -141,7 +141,7 @@ function LackOfProgressTolerance(): UINT8 {
 }
 
 // called once per day in the morning, decides whether Enrico should send any new E-mails to the player
-function HandleEnricoEmail(): void {
+export function HandleEnricoEmail(): void {
   let ubCurrentProgress: UINT8 = CurrentPlayerProgressPercentage();
   let ubHighestProgress: UINT8 = HighestPlayerProgressPercentage();
 
@@ -250,7 +250,7 @@ function HandleEnricoEmail(): void {
   gStrategicStatus.ubNumNewSectorsVisitedToday = Math.min(gStrategicStatus.ubNumNewSectorsVisitedToday, NEW_SECTORS_EQUAL_TO_ACTIVITY) / 3;
 }
 
-function TrackEnemiesKilled(ubKilledHow: UINT8, ubSoldierClass: UINT8): void {
+export function TrackEnemiesKilled(ubKilledHow: UINT8, ubSoldierClass: UINT8): void {
   let bRankIndex: INT8;
 
   bRankIndex = SoldierClassToRankIndex(ubSoldierClass);
@@ -291,7 +291,7 @@ function SoldierClassToRankIndex(ubSoldierClass: UINT8): INT8 {
   return bRankIndex;
 }
 
-function RankIndexToSoldierClass(ubRankIndex: UINT8): UINT8 {
+export function RankIndexToSoldierClass(ubRankIndex: UINT8): UINT8 {
   let ubSoldierClass: UINT8 = 0;
 
   Assert(ubRankIndex < Enum188.NUM_ENEMY_RANKS);

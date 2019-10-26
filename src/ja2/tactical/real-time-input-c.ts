@@ -2,12 +2,12 @@ let gfStartLookingForRubberBanding: boolean = false;
 let gusRubberBandX: UINT16 = 0;
 let gusRubberBandY: UINT16 = 0;
 
-let gfBeginBurstSpreadTracking: boolean = false;
+export let gfBeginBurstSpreadTracking: boolean = false;
 
-let gfRTClickLeftHoldIntercepted: boolean = false;
+export let gfRTClickLeftHoldIntercepted: boolean = false;
 let gfRTHaveClickedRightWhileLeftDown: boolean = false;
 
-function GetRTMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
+export function GetRTMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
   QueryRTLeftButton(puiNewEvent);
   QueryRTRightButton(puiNewEvent);
 }
@@ -862,7 +862,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
+export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
   let usMapPos: UINT16;
   /* static */ let usOldMapPos: UINT16 = 0;
   /* static */ let uiMoveTargetSoldierId: UINT32 = NO_SOLDIER;

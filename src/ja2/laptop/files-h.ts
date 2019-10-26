@@ -1,6 +1,6 @@
-const FILES_DAT_FILE = "TEMP\\files.dat";
+export const FILES_DAT_FILE = "TEMP\\files.dat";
 
-interface FilesUnit {
+export interface FilesUnit {
   ubCode: UINT8; // the code index in the files code table
   ubFormat: UINT8; // layout format
   uiIdNumber: UINT32; // unique id number
@@ -11,12 +11,12 @@ interface FilesUnit {
   Next: Pointer<FilesUnit>; // next unit in the list
 }
 
-interface FileString {
+export interface FileString {
   pString: STR16;
   Next: Pointer<FileString>;
 }
 
-type FileStringPtr = Pointer<FileString>;
+export type FileStringPtr = Pointer<FileString>;
 
 // files codes
 const enum Enum77 {
@@ -24,7 +24,7 @@ const enum Enum77 {
 }
 
 // special codes for special files
-const enum Enum78 {
+export const enum Enum78 {
   ENRICO_BACKGROUND = 0,
   SLAY_BACKGROUND,
   MATRON_BACKGROUND,
@@ -34,9 +34,9 @@ const enum Enum78 {
   ELGIN_BACKGROUND,
 }
 
-type FilesUnitPtr = Pointer<FilesUnit>;
+export type FilesUnitPtr = Pointer<FilesUnit>;
 
-interface FileRecordWidth {
+export interface FileRecordWidth {
   iRecordNumber: INT32;
   iRecordWidth: INT32;
   iRecordHeightAdjustment: INT32;
@@ -44,4 +44,4 @@ interface FileRecordWidth {
   Next: Pointer<FileRecordWidth>;
 }
 
-type FileRecordWidthPtr = Pointer<FileRecordWidth>;
+export type FileRecordWidthPtr = Pointer<FileRecordWidth>;

@@ -85,7 +85,7 @@ let gubNumberofDisplayedInsuranceGrids: UINT8;
 let gfChangeInsuranceFormButtons: boolean = false;
 
 let gubInsuranceMercArray: UINT8[] /* [20] */;
-let gsCurrentInsuranceMercIndex: INT16;
+export let gsCurrentInsuranceMercIndex: INT16;
 let gsMaxPlayersOnTeam: INT16;
 
 // link to the varios pages
@@ -107,7 +107,7 @@ let guiInsuranceAcceptClearForm3Button: UINT32;
 
 // ppp
 
-function GameInitInsuranceContract(): void {
+export function GameInitInsuranceContract(): void {
   gsCurrentInsuranceMercIndex = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 }
 
@@ -120,7 +120,7 @@ function EnterLaptopInitInsuranceContract(): void {
   SetInputFieldStringWith16BitString(3, zTextField);
 }
 
-function EnterInsuranceContract(): boolean {
+export function EnterInsuranceContract(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosX: UINT16;
   let i: UINT16;
@@ -172,7 +172,7 @@ function EnterInsuranceContract(): boolean {
   return true;
 }
 
-function ExitInsuranceContract(): void {
+export function ExitInsuranceContract(): void {
   let i: UINT8;
 
   RemoveInsuranceDefaults();
@@ -195,7 +195,7 @@ function ExitInsuranceContract(): void {
   CreateDestroyInsuranceContractFormButtons(false);
 }
 
-function HandleInsuranceContract(): void {
+export function HandleInsuranceContract(): void {
   if (gfChangeInsuranceFormButtons) {
     // remove the old buttons from the page
     CreateDestroyInsuranceContractFormButtons(false);
@@ -221,7 +221,7 @@ function HandleInsuranceContract(): void {
   EnableDisableInsuranceContractAcceptButtons();
 }
 
-function RenderInsuranceContract(): void {
+export function RenderInsuranceContract(): void {
   let hPixHandle: HVOBJECT;
   let sText: wchar_t[] /* [800] */;
   let ubCount: UINT8 = 0;
@@ -828,7 +828,7 @@ function HandleAcceptButton(ubSoldierID: UINT8, ubFormID: UINT8): void {
 }
 
 // determines if a merc will run out of their insurance contract
-function DailyUpdateOfInsuredMercs(): void {
+export function DailyUpdateOfInsuredMercs(): void {
   let cnt: INT16;
   let bLastTeamID: INT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -861,7 +861,7 @@ function DailyUpdateOfInsuredMercs(): void {
 const MIN_INSURANCE_RATIO = 0.1;
 const MAX_INSURANCE_RATIO = 10.0;
 
-function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 {
+export function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 {
   let pProfile: Pointer<MERCPROFILESTRUCT>;
   let sTotalSkill: INT16 = 0;
   let flSkillFactor: FLOAT;
@@ -976,7 +976,7 @@ function BuildInsuranceArray(): void {
   }
 }
 
-function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let ubPayoutID: UINT8;
   let uiTimeInMinutes: UINT32;
   let pProfile: Pointer<MERCPROFILESTRUCT>;
@@ -1053,7 +1053,7 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function StartInsuranceInvestigation(ubPayoutID: UINT8): void {
+export function StartInsuranceInvestigation(ubPayoutID: UINT8): void {
   let ubDays: UINT8;
 
   // send an email telling player an investigation is taking place
@@ -1080,7 +1080,7 @@ function StartInsuranceInvestigation(ubPayoutID: UINT8): void {
   gStrategicStatus.ubInsuranceInvestigationsCnt++;
 }
 
-function EndInsuranceInvestigation(ubPayoutID: UINT8): void {
+export function EndInsuranceInvestigation(ubPayoutID: UINT8): void {
   // send an email telling player the investigation is over
   if (gMercProfiles[LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID].ubSuspiciousDeath == VERY_SUSPICIOUS_DEATH) {
     // fraud, no payout!
@@ -1094,7 +1094,7 @@ function EndInsuranceInvestigation(ubPayoutID: UINT8): void {
 }
 
 // void InsuranceContractPayLifeInsuranceForDeadMerc( LIFE_INSURANCE_PAYOUT *pPayoutStruct )
-function InsuranceContractPayLifeInsuranceForDeadMerc(ubPayoutID: UINT8): void {
+export function InsuranceContractPayLifeInsuranceForDeadMerc(ubPayoutID: UINT8): void {
   // if the mercs id number is the same what is in the soldier array
   if (LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubSoldierID == Menptr[LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubSoldierID].ubID) {
     // and if the soldier is still active ( player hasn't removed carcass yet ), reset insurance flag
@@ -1120,7 +1120,7 @@ function InsuranceContractPayLifeInsuranceForDeadMerc(ubPayoutID: UINT8): void {
 }
 
 // Gets called at the very end of the game
-function InsuranceContractEndGameShutDown(): void {
+export function InsuranceContractEndGameShutDown(): void {
   // Free up the memory allocated to the insurance payouts
   if (LaptopSaveInfo.pLifeInsurancePayouts) {
     MemFree(LaptopSaveInfo.pLifeInsurancePayouts);
@@ -1242,7 +1242,7 @@ function GetTimeRemainingOnSoldiersContract(pSoldier: Pointer<SOLDIERTYPE>): UIN
   //	return( ( pSoldier->iEndofContractTime - (INT32)GetWorldTotalMin( ) ) / 1440 );
 }
 
-function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiInsuranceLength: UINT32): void {
+export function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiInsuranceLength: UINT32): void {
   let iAmountOfMoneyTransfer: INT32 = -1;
 
   if (pSoldier == null)

@@ -576,7 +576,7 @@ let gFredoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 
 // prototypes
 
-function GetDealersMaxItemAmount(ubDealerID: UINT8, usItemIndex: UINT16): INT8 {
+export function GetDealersMaxItemAmount(ubDealerID: UINT8, usItemIndex: UINT16): INT8 {
   switch (ubDealerID) {
     case Enum197.ARMS_DEALER_TONY:
       return GetMaxItemAmount(gTonyInventory, usItemIndex);
@@ -677,7 +677,7 @@ function GetMaxItemAmount(pInv: Pointer<DEALER_POSSIBLE_INV>, usItemIndex: UINT1
   return NO_DEALER_ITEM;
 }
 
-function GetPointerToDealersPossibleInventory(ubArmsDealerID: UINT8): Pointer<DEALER_POSSIBLE_INV> {
+export function GetPointerToDealersPossibleInventory(ubArmsDealerID: UINT8): Pointer<DEALER_POSSIBLE_INV> {
   switch (ubArmsDealerID) {
     case Enum197.ARMS_DEALER_TONY:
       return gTonyInventory;
@@ -862,7 +862,7 @@ function GetCurrentSuitabilityForItem(bArmsDealer: INT8, usItemIndex: UINT16): U
   return ITEM_SUITABILITY_LOW;
 }
 
-function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: boolean, fUsed: boolean): UINT8 {
+export function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: boolean, fUsed: boolean): UINT8 {
   let ubItemCoolness: UINT8;
   let ubChance: UINT8 = 0;
   let fBobbyRay: boolean = false;
@@ -937,7 +937,7 @@ function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, fDealer
   return ubChance;
 }
 
-function ItemTransactionOccurs(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: boolean, fUsed: boolean): boolean {
+export function ItemTransactionOccurs(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: boolean, fUsed: boolean): boolean {
   let ubChance: UINT8;
   let sInventorySlot: INT16;
 
@@ -967,7 +967,7 @@ function ItemTransactionOccurs(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIs
   }
 }
 
-function DetermineInitialInvItems(bArmsDealerID: INT8, usItemIndex: UINT16, ubChances: UINT8, fUsed: boolean): UINT8 {
+export function DetermineInitialInvItems(bArmsDealerID: INT8, usItemIndex: UINT16, ubChances: UINT8, fUsed: boolean): UINT8 {
   let ubNumBought: UINT8;
   let ubCnt: UINT8;
 
@@ -982,7 +982,7 @@ function DetermineInitialInvItems(bArmsDealerID: INT8, usItemIndex: UINT16, ubCh
   return ubNumBought;
 }
 
-function HowManyItemsAreSold(bArmsDealerID: INT8, usItemIndex: UINT16, ubNumInStock: UINT8, fUsed: boolean): UINT8 {
+export function HowManyItemsAreSold(bArmsDealerID: INT8, usItemIndex: UINT16, ubNumInStock: UINT8, fUsed: boolean): UINT8 {
   let ubNumSold: UINT8;
   let ubCnt: UINT8;
 
@@ -997,7 +997,7 @@ function HowManyItemsAreSold(bArmsDealerID: INT8, usItemIndex: UINT16, ubNumInSt
   return ubNumSold;
 }
 
-function HowManyItemsToReorder(ubWanted: UINT8, ubStillHave: UINT8): UINT8 {
+export function HowManyItemsToReorder(ubWanted: UINT8, ubStillHave: UINT8): UINT8 {
   let ubNumReordered: UINT8;
 
   Assert(ubStillHave <= ubWanted);
@@ -1017,7 +1017,7 @@ function HowManyItemsToReorder(ubWanted: UINT8, ubStillHave: UINT8): UINT8 {
   return ubNumReordered;
 }
 
-function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
+export function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
   let usItem1Index: UINT16;
   let usItem2Index: UINT16;
   let ubItem1Quality: UINT8;
@@ -1032,7 +1032,7 @@ function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): i
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
 
-function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
+export function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
   let usItem1Index: UINT16;
   let usItem2Index: UINT16;
   let ubItem1Quality: UINT8;
@@ -1047,7 +1047,7 @@ function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>):
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
 
-function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
+export function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
   let pInvSlot1: Pointer<INVENTORY_IN_SLOT>;
   let pInvSlot2: Pointer<INVENTORY_IN_SLOT>;
   let uiRepairTime1: UINT32;
@@ -1072,7 +1072,7 @@ function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): 
   }
 }
 
-function CompareItemsForSorting(usItem1Index: UINT16, usItem2Index: UINT16, ubItem1Quality: UINT8, ubItem2Quality: UINT8): int {
+export function CompareItemsForSorting(usItem1Index: UINT16, usItem2Index: UINT16, ubItem1Quality: UINT8, ubItem2Quality: UINT8): int {
   let ubItem1Category: UINT8;
   let ubItem2Category: UINT8;
   let usItem1Price: UINT16;
@@ -1200,7 +1200,7 @@ function GetDealerItemCategoryNumber(usItemIndex: UINT16): UINT8 {
   return 0;
 }
 
-function CanDealerItemBeSoldUsed(usItemIndex: UINT16): boolean {
+export function CanDealerItemBeSoldUsed(usItemIndex: UINT16): boolean {
   if (!(Item[usItemIndex].fFlags & ITEM_DAMAGEABLE))
     return false;
 

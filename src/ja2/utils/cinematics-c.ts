@@ -33,7 +33,7 @@ let guiSmackPixelFormat: UINT32 = SMACKBUFFER565;
 let lpVideoPlayback: LPDIRECTDRAWSURFACE = null;
 let lpVideoPlayback2: LPDIRECTDRAWSURFACE2 = null;
 
-function SmkPollFlics(): boolean {
+export function SmkPollFlics(): boolean {
   let uiCount: UINT32;
   let fFlicStatus: boolean = false;
   let SurfaceDescription: DDSURFACEDESC;
@@ -69,7 +69,7 @@ function SmkPollFlics(): boolean {
   return fFlicStatus;
 }
 
-function SmkInitialize(hWindow: HWND, uiWidth: UINT32, uiHeight: UINT32): void {
+export function SmkInitialize(hWindow: HWND, uiWidth: UINT32, uiHeight: UINT32): void {
   let pSoundDriver: HDIGDRIVER = null;
 
   // Wipe the flic list clean
@@ -91,7 +91,7 @@ function SmkInitialize(hWindow: HWND, uiWidth: UINT32, uiHeight: UINT32): void {
     SmackSoundUseMSS(pSoundDriver);
 }
 
-function SmkShutdown(): void {
+export function SmkShutdown(): void {
   let uiCount: UINT32;
 
   // Close and deallocate any open flics
@@ -101,7 +101,7 @@ function SmkShutdown(): void {
   }
 }
 
-function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, fClose: boolean): Pointer<SMKFLIC> {
+export function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, fClose: boolean): Pointer<SMKFLIC> {
   let pSmack: Pointer<SMKFLIC>;
 
   // Open the flic
@@ -169,7 +169,7 @@ function SmkSetBlitPosition(pSmack: Pointer<SMKFLIC>, uiLeft: UINT32, uiTop: UIN
   pSmack.value.uiTop = uiTop;
 }
 
-function SmkCloseFlic(pSmack: Pointer<SMKFLIC>): void {
+export function SmkCloseFlic(pSmack: Pointer<SMKFLIC>): void {
   // Attempt opening the filename
   FileClose(pSmack.value.hFileHandle);
 

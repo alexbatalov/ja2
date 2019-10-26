@@ -1,12 +1,12 @@
 let giClockTimer: INT32 = -1;
-let giTimerDiag: INT32 = 0;
+export let giTimerDiag: INT32 = 0;
 
-let guiBaseJA2Clock: UINT32 = 0;
+export let guiBaseJA2Clock: UINT32 = 0;
 let guiBaseJA2NoPauseClock: UINT32 = 0;
 
 let gfPauseClock: boolean = false;
 
-let giTimerIntervals: INT32[] /* [NUMTIMERS] */ = [
+export let giTimerIntervals: INT32[] /* [NUMTIMERS] */ = [
   5, // Tactical Overhead
   20, // NEXTSCROLL
   200, // Start Scroll
@@ -36,15 +36,15 @@ let giTimerIntervals: INT32[] /* [NUMTIMERS] */ = [
 ];
 
 // TIMER COUNTERS
-let giTimerCounters: INT32[] /* [NUMTIMERS] */;
+export let giTimerCounters: INT32[] /* [NUMTIMERS] */;
 
-let giTimerAirRaidQuote: INT32 = 0;
-let giTimerAirRaidDiveStarted: INT32 = 0;
-let giTimerAirRaidUpdate: INT32 = 0;
+export let giTimerAirRaidQuote: INT32 = 0;
+export let giTimerAirRaidDiveStarted: INT32 = 0;
+export let giTimerAirRaidUpdate: INT32 = 0;
 let giTimerCustomizable: INT32 = 0;
-let giTimerTeamTurnUpdate: INT32 = 0;
+export let giTimerTeamTurnUpdate: INT32 = 0;
 
-let gpCustomizableTimerCallback: CUSTOMIZABLE_TIMER_CALLBACK = null;
+export let gpCustomizableTimerCallback: CUSTOMIZABLE_TIMER_CALLBACK = null;
 
 // Clock Callback event ID
 let gTimerID: MMRESULT;
@@ -117,7 +117,7 @@ function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD):
   }
 }
 
-function InitializeJA2Clock(): boolean {
+export function InitializeJA2Clock(): boolean {
   let mmResult: MMRESULT;
   let tc: TIMECAPS;
   let cnt: INT32;
@@ -144,7 +144,7 @@ function InitializeJA2Clock(): boolean {
   return true;
 }
 
-function ShutdownJA2Clock(): void {
+export function ShutdownJA2Clock(): void {
   // Make sure we kill the timer
 
   timeKillEvent(gTimerID);
@@ -195,11 +195,11 @@ function InitializeJA2TimerID(uiDelay: UINT32, uiCallbackID: UINT32, uiUser: UIN
 function FlashItem(uiID: UINT, uiMsg: UINT, uiUser: DWORD, uiDw1: DWORD, uiDw2: DWORD): void {
 }
 
-function PauseTime(fPaused: boolean): void {
+export function PauseTime(fPaused: boolean): void {
   gfPauseClock = fPaused;
 }
 
-function SetCustomizableTimerCallbackAndDelay(iDelay: INT32, pCallback: CUSTOMIZABLE_TIMER_CALLBACK, fReplace: boolean): void {
+export function SetCustomizableTimerCallbackAndDelay(iDelay: INT32, pCallback: CUSTOMIZABLE_TIMER_CALLBACK, fReplace: boolean): void {
   if (gpCustomizableTimerCallback) {
     if (!fReplace) {
       // replace callback but call the current callback first
@@ -211,7 +211,7 @@ function SetCustomizableTimerCallbackAndDelay(iDelay: INT32, pCallback: CUSTOMIZ
   gpCustomizableTimerCallback = pCallback;
 }
 
-function CheckCustomizableTimer(): void {
+export function CheckCustomizableTimer(): void {
   if (gpCustomizableTimerCallback) {
     if (TIMECOUNTERDONE(giTimerCustomizable, 0)) {
       // set the callback to a temp variable so we can reset the global variable
@@ -226,7 +226,7 @@ function CheckCustomizableTimer(): void {
   }
 }
 
-function ResetJA2ClockGlobalTimers(): void {
+export function ResetJA2ClockGlobalTimers(): void {
   let uiCurrentTime: UINT32 = GetJA2Clock();
 
   guiCompressionStringBaseTime = uiCurrentTime;

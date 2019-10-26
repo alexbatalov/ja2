@@ -1,76 +1,76 @@
-const NUM_PROFILES = 170;
-const FIRST_RPC = 57;
-const FIRST_NPC = 75;
+export const NUM_PROFILES = 170;
+export const FIRST_RPC = 57;
+export const FIRST_NPC = 75;
 
 const NAME_LENGTH = 30;
-const NICKNAME_LENGTH = 10;
+export const NICKNAME_LENGTH = 10;
 
 // ONLY HAVE 8 MISC FLAGS.. SHOULD BE ENOUGH
-const PROFILE_MISC_FLAG_RECRUITED = 0x01;
-const PROFILE_MISC_FLAG_HAVESEENCREATURE = 0x02;
-const PROFILE_MISC_FLAG_FORCENPCQUOTE = 0x04;
-const PROFILE_MISC_FLAG_WOUNDEDBYPLAYER = 0x08;
-const PROFILE_MISC_FLAG_TEMP_NPC_QUOTE_DATA_EXISTS = 0x10;
-const PROFILE_MISC_FLAG_SAID_HOSTILE_QUOTE = 0x20;
-const PROFILE_MISC_FLAG_EPCACTIVE = 0x40;
-const PROFILE_MISC_FLAG_ALREADY_USED_ITEMS = 0x80; // The player has already purchased the mercs items.
+export const PROFILE_MISC_FLAG_RECRUITED = 0x01;
+export const PROFILE_MISC_FLAG_HAVESEENCREATURE = 0x02;
+export const PROFILE_MISC_FLAG_FORCENPCQUOTE = 0x04;
+export const PROFILE_MISC_FLAG_WOUNDEDBYPLAYER = 0x08;
+export const PROFILE_MISC_FLAG_TEMP_NPC_QUOTE_DATA_EXISTS = 0x10;
+export const PROFILE_MISC_FLAG_SAID_HOSTILE_QUOTE = 0x20;
+export const PROFILE_MISC_FLAG_EPCACTIVE = 0x40;
+export const PROFILE_MISC_FLAG_ALREADY_USED_ITEMS = 0x80; // The player has already purchased the mercs items.
 
-const PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR = 0x01;
-const PROFILE_MISC_FLAG2_LEFT_COUNTRY = 0x02;
-const PROFILE_MISC_FLAG2_BANDAGED_TODAY = 0x04;
-const PROFILE_MISC_FLAG2_SAID_FIRSTSEEN_QUOTE = 0x08;
-const PROFILE_MISC_FLAG2_NEEDS_TO_SAY_HOSTILE_QUOTE = 0x10;
-const PROFILE_MISC_FLAG2_MARRIED_TO_HICKS = 0x20;
-const PROFILE_MISC_FLAG2_ASKED_BY_HICKS = 0x40;
+export const PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR = 0x01;
+export const PROFILE_MISC_FLAG2_LEFT_COUNTRY = 0x02;
+export const PROFILE_MISC_FLAG2_BANDAGED_TODAY = 0x04;
+export const PROFILE_MISC_FLAG2_SAID_FIRSTSEEN_QUOTE = 0x08;
+export const PROFILE_MISC_FLAG2_NEEDS_TO_SAY_HOSTILE_QUOTE = 0x10;
+export const PROFILE_MISC_FLAG2_MARRIED_TO_HICKS = 0x20;
+export const PROFILE_MISC_FLAG2_ASKED_BY_HICKS = 0x40;
 
-const PROFILE_MISC_FLAG3_PLAYER_LEFT_MSG_FOR_MERC_AT_AIM = 0x01; // In the aimscreen, the merc was away and the player left a message
-const PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE = 0x02;
-const PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE = 0x04; // player's had a chance to hire this merc
-const PROFILE_MISC_FLAG3_HANDLE_DONE_TRAVERSAL = 0x08;
+export const PROFILE_MISC_FLAG3_PLAYER_LEFT_MSG_FOR_MERC_AT_AIM = 0x01; // In the aimscreen, the merc was away and the player left a message
+export const PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE = 0x02;
+export const PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE = 0x04; // player's had a chance to hire this merc
+export const PROFILE_MISC_FLAG3_HANDLE_DONE_TRAVERSAL = 0x08;
 
-const PROFILE_MISC_FLAG3_NPC_PISSED_OFF = 0x10;
-const PROFILE_MISC_FLAG3_MERC_MERC_IS_DEAD_AND_QUOTE_SAID = 0x20; // In the merc site, the merc has died and Speck quote for the dead merc has been said
+export const PROFILE_MISC_FLAG3_NPC_PISSED_OFF = 0x10;
+export const PROFILE_MISC_FLAG3_MERC_MERC_IS_DEAD_AND_QUOTE_SAID = 0x20; // In the merc site, the merc has died and Speck quote for the dead merc has been said
 
-const PROFILE_MISC_FLAG3_TOWN_DOESNT_CARE_ABOUT_DEATH = 0x40;
-const PROFILE_MISC_FLAG3_GOODGUY = 0x80;
+export const PROFILE_MISC_FLAG3_TOWN_DOESNT_CARE_ABOUT_DEATH = 0x40;
+export const PROFILE_MISC_FLAG3_GOODGUY = 0x80;
 //
 // The following variables are used with the 'bMercStatus' variable
 //
 //
 
 // Merc is ready
-const MERC_OK = 0;
+export const MERC_OK = 0;
 
 // if the merc doesnt have a EDT file
-const MERC_HAS_NO_TEXT_FILE = -1;
+export const MERC_HAS_NO_TEXT_FILE = -1;
 
 // used in the aim video conferencing screen
-const MERC_ANNOYED_BUT_CAN_STILL_CONTACT = -2;
-const MERC_ANNOYED_WONT_CONTACT = -3;
-const MERC_HIRED_BUT_NOT_ARRIVED_YET = -4;
+export const MERC_ANNOYED_BUT_CAN_STILL_CONTACT = -2;
+export const MERC_ANNOYED_WONT_CONTACT = -3;
+export const MERC_HIRED_BUT_NOT_ARRIVED_YET = -4;
 
 // self explanatory
-const MERC_IS_DEAD = -5;
+export const MERC_IS_DEAD = -5;
 
 // set when the merc is returning home.  A delay for 1,2 or 3 days
-const MERC_RETURNING_HOME = -6;
+export const MERC_RETURNING_HOME = -6;
 
 // used when merc starts game on assignment, goes on assignment later, or leaves to go on another contract
-const MERC_WORKING_ELSEWHERE = -7;
+export const MERC_WORKING_ELSEWHERE = -7;
 
 // When the merc was fired, they were a POW, make sure they dont show up in AIM, or MERC as available
-const MERC_FIRED_AS_A_POW = -8;
+export const MERC_FIRED_AS_A_POW = -8;
 
 // the values for categories of stats
-const SUPER_STAT_VALUE = 80;
-const NEEDS_TRAINING_STAT_VALUE = 50;
-const NO_CHANCE_IN_HELL_STAT_VALUE = 40;
+export const SUPER_STAT_VALUE = 80;
+export const NEEDS_TRAINING_STAT_VALUE = 50;
+export const NO_CHANCE_IN_HELL_STAT_VALUE = 40;
 
-const SUPER_SKILL_VALUE = 80;
-const NEEDS_TRAINING_SKILL_VALUE = 50;
-const NO_CHANCE_IN_HELL_SKILL_VALUE = 0;
+export const SUPER_SKILL_VALUE = 80;
+export const NEEDS_TRAINING_SKILL_VALUE = 50;
+export const NO_CHANCE_IN_HELL_SKILL_VALUE = 0;
 
-const enum Enum269 {
+export const enum Enum269 {
   NO_SKILLTRAIT = 0,
   LOCKPICKING,
   HANDTOHAND,
@@ -90,7 +90,7 @@ const enum Enum269 {
   NUM_SKILLTRAITS,
 }
 
-const enum Enum270 {
+export const enum Enum270 {
   NO_PERSONALITYTRAIT = 0,
   HEAT_INTOLERANT,
   NERVOUS,
@@ -101,9 +101,9 @@ const enum Enum270 {
   PSYCHO,
 }
 
-const NERVOUS_RADIUS = 10;
+export const NERVOUS_RADIUS = 10;
 
-const enum Enum271 {
+export const enum Enum271 {
   ATT_NORMAL = 0,
   ATT_FRIENDLY,
   ATT_LONER,
@@ -117,12 +117,12 @@ const enum Enum271 {
   NUM_ATTITUDES,
 }
 
-const enum Enum272 {
+export const enum Enum272 {
   MALE = 0,
   FEMALE,
 }
 
-const enum Enum273 {
+export const enum Enum273 {
   NOT_SEXIST = 0,
   SOMEWHAT_SEXIST,
   VERY_SEXIST,
@@ -130,19 +130,19 @@ const enum Enum273 {
 }
 
 // training defines for evolution, no stat increase, stat decrease( de-evolve )
-const enum Enum274 {
+export const enum Enum274 {
   NORMAL_EVOLUTION = 0,
   NO_EVOLUTION,
   DEVOLVE,
 }
 
-const BUDDY_MERC = (prof, bud) => ((prof).value.bBuddy[0] == (bud) || (prof).value.bBuddy[1] == (bud) || (prof).value.bBuddy[2] == (bud));
-const HATED_MERC = (prof, hat) => ((prof).value.bHated[0] == (hat) || (prof).value.bHated[1] == (hat) || (prof).value.bHated[2] == (hat));
+export const BUDDY_MERC = (prof, bud) => ((prof).value.bBuddy[0] == (bud) || (prof).value.bBuddy[1] == (bud) || (prof).value.bBuddy[2] == (bud));
+export const HATED_MERC = (prof, hat) => ((prof).value.bHated[0] == (hat) || (prof).value.bHated[1] == (hat) || (prof).value.bHated[2] == (hat));
 
-const BUDDY_OPINION = +25;
-const HATED_OPINION = -25;
+export const BUDDY_OPINION = +25;
+export const HATED_OPINION = -25;
 
-interface MERCPROFILESTRUCT {
+export interface MERCPROFILESTRUCT {
   zName: UINT16[] /* [NAME_LENGTH] */;
   zNickname: UINT16[] /* [NICKNAME_LENGTH] */;
   uiAttnSound: UINT32;
@@ -339,7 +339,7 @@ interface MERCPROFILESTRUCT {
   ubBuffer: UINT8[] /* [4] */;
 }
 
-const TIME_BETWEEN_HATED_COMPLAINTS = 24;
+export const TIME_BETWEEN_HATED_COMPLAINTS = 24;
 
-const SUSPICIOUS_DEATH = 1;
-const VERY_SUSPICIOUS_DEATH = 2;
+export const SUSPICIOUS_DEATH = 1;
+export const VERY_SUSPICIOUS_DEATH = 2;

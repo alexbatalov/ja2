@@ -51,7 +51,7 @@ let guiMercBackBoxButton: UINT32;
 function GameInitMercsAccount(): void {
 }
 
-function EnterMercsAccount(): boolean {
+export function EnterMercsAccount(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   InitMercBackGround();
@@ -84,7 +84,7 @@ function EnterMercsAccount(): boolean {
   return true;
 }
 
-function ExitMercsAccount(): void {
+export function ExitMercsAccount(): void {
   DeleteVideoObjectFromIndex(guiMercOrderGrid);
   DeleteVideoObjectFromIndex(guiAccountNumberGrid);
 
@@ -95,7 +95,7 @@ function ExitMercsAccount(): void {
   RemoveMercBackGround();
 }
 
-function HandleMercsAccount(): void {
+export function HandleMercsAccount(): void {
   // if true, will display a msgbox telling user that they dont have enough funds
   if (gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning) {
     gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = false;
@@ -104,7 +104,7 @@ function HandleMercsAccount(): void {
   }
 }
 
-function RenderMercsAccount(): void {
+export function RenderMercsAccount(): void {
   let sText: wchar_t[] /* [100] */;
   let hPixHandle: HVOBJECT;
 
@@ -412,7 +412,7 @@ function MercAuthorizePaymentMessageBoxCallBack(bExitValue: UINT8): void {
   }
 }
 
-function CalculateHowMuchPlayerOwesSpeck(): UINT32 {
+export function CalculateHowMuchPlayerOwesSpeck(): UINT32 {
   let i: UINT8 = 0;
   let uiContractCharge: UINT32 = 0;
   let usMercID: UINT16;

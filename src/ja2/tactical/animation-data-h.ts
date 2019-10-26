@@ -1,16 +1,16 @@
 // DEFINES FOR ANIMATION PROFILES
-const TILE_FLAG_FEET = 0x0001;
-const TILE_FLAG_MID = 0x0002;
-const TILE_FLAG_HEAD = 0x0004;
+export const TILE_FLAG_FEET = 0x0001;
+export const TILE_FLAG_MID = 0x0002;
+export const TILE_FLAG_HEAD = 0x0004;
 const TILE_FLAG_CANMOVE = 0x0008;
-const TILE_FLAG_NORTH_HALF = 0x0010;
-const TILE_FLAG_SOUTH_HALF = 0x0020;
-const TILE_FLAG_WEST_HALF = 0x0040;
-const TILE_FLAG_EAST_HALF = 0x0080;
-const TILE_FLAG_TOP_HALF = 0x0100;
-const TILE_FLAG_BOTTOM_HALF = 0x0200;
+export const TILE_FLAG_NORTH_HALF = 0x0010;
+export const TILE_FLAG_SOUTH_HALF = 0x0020;
+export const TILE_FLAG_WEST_HALF = 0x0040;
+export const TILE_FLAG_EAST_HALF = 0x0080;
+export const TILE_FLAG_TOP_HALF = 0x0100;
+export const TILE_FLAG_BOTTOM_HALF = 0x0200;
 
-const ANIM_DATA_FLAG_NOFRAMES = 0x01;
+export const ANIM_DATA_FLAG_NOFRAMES = 0x01;
 
 // ENUMERATIONS
 
@@ -18,12 +18,12 @@ const ANIM_DATA_FLAG_NOFRAMES = 0x01;
 // RGM = Regular Male
 // (RG) = Body desc ( Regular - RG, Short Stocky ( SS ), etc
 // (M) = Sex, Male, female
-const IS_MERC_BODY_TYPE = (p) => ((p.value.ubBodyType <= Enum194.REGFEMALE) ? (true) : (false));
-const IS_CIV_BODY_TYPE = (p) => ((p.value.ubBodyType >= Enum194.FATCIV) && (p.value.ubBodyType <= Enum194.CRIPPLECIV));
+export const IS_MERC_BODY_TYPE = (p) => ((p.value.ubBodyType <= Enum194.REGFEMALE) ? (true) : (false));
+export const IS_CIV_BODY_TYPE = (p) => ((p.value.ubBodyType >= Enum194.FATCIV) && (p.value.ubBodyType <= Enum194.CRIPPLECIV));
 
 const NUMSOLDIERBODYTYPES = 4;
 
-const enum Enum194 {
+export const enum Enum194 {
   REGMALE = 0,
   BIGMALE,
   STOCKYMALE,
@@ -65,7 +65,7 @@ const enum Enum194 {
 // RGM = Regular Male
 // (RG) = Body desc ( Regular - RG, Short Stocky ( SS ), etc
 // (M) = Sex, Male, female
-const enum Enum195 {
+export const enum Enum195 {
   RGMBASICWALKING = 0,
   RGMSTANDING,
   RGMCROUCHING,
@@ -491,7 +491,7 @@ const enum Enum195 {
 }
 
 // Enumerations for struct data
-const enum Enum196 {
+export const enum Enum196 {
   S_STRUCT,
   C_STRUCT,
   P_STRUCT,
@@ -503,7 +503,7 @@ const enum Enum196 {
 }
 
 // Struct for animation 'surface' information
-interface AnimationSurfaceType {
+export interface AnimationSurfaceType {
   ubName: UINT16;
   Filename: CHAR8[] /* [50] */;
   bStructDataType: CHAR8;
@@ -516,7 +516,7 @@ interface AnimationSurfaceType {
   bProfile: INT8;
 }
 
-interface AnimationStructureType {
+export interface AnimationStructureType {
   Filename: CHAR8[] /* [50] */;
   pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 }

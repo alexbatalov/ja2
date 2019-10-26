@@ -42,7 +42,7 @@
 //
 //**************************************************************************
 
-function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
+export function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
   let hFile: HWFILE;
   let uiImgID: UINT8;
   let uiColMap: UINT8;

@@ -1,6 +1,6 @@
-let StrategicMap: StrategicMapElement[] /* [MAP_WORLD_X * MAP_WORLD_Y] */;
+export let StrategicMap: StrategicMapElement[] /* [MAP_WORLD_X * MAP_WORLD_Y] */;
 
-function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // add the guy to the dead list
   // AddCharacterToDeadList( pSoldier );
 

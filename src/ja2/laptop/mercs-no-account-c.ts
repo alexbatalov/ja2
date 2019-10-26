@@ -24,7 +24,7 @@ let guiCancelBoxButton: UINT32;
 function GameInitMercsNoAccount(): void {
 }
 
-function EnterMercsNoAccount(): boolean {
+export function EnterMercsNoAccount(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   InitMercBackGround();
@@ -50,7 +50,7 @@ function EnterMercsNoAccount(): boolean {
   return true;
 }
 
-function ExitMercsNoAccount(): void {
+export function ExitMercsNoAccount(): void {
   DeleteVideoObjectFromIndex(guiNoAccountImage);
 
   UnloadButtonImage(guiOpenAccountBoxButtonImage);
@@ -60,10 +60,10 @@ function ExitMercsNoAccount(): void {
   RemoveMercBackGround();
 }
 
-function HandleMercsNoAccount(): void {
+export function HandleMercsNoAccount(): void {
 }
 
-function RenderMercsNoAccount(): void {
+export function RenderMercsNoAccount(): void {
   let hPixHandle: HVOBJECT;
 
   DrawMecBackGround();

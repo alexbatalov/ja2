@@ -8,14 +8,14 @@ let gfCursorDatabaseInit: boolean = false;
 
 let gpCursorFileDatabase: Pointer<CursorFileData>;
 let gpCursorDatabase: Pointer<CursorData>;
-let gsGlobalCursorYOffset: INT16 = 0;
+export let gsGlobalCursorYOffset: INT16 = 0;
 let gsCurMouseOffsetX: INT16 = 0;
 let gsCurMouseOffsetY: INT16 = 0;
-let gsCurMouseHeight: UINT16 = 0;
-let gsCurMouseWidth: UINT16 = 0;
+export let gsCurMouseHeight: UINT16 = 0;
+export let gsCurMouseWidth: UINT16 = 0;
 let gusNumDataFiles: UINT16 = 0;
-let guiExternVo: UINT32;
-let gusExternVoSubIndex: UINT16;
+export let guiExternVo: UINT32;
+export let gusExternVoSubIndex: UINT16;
 let guiExtern2Vo: UINT32;
 let gusExtern2VoSubIndex: UINT16;
 let guiOldSetCursor: UINT32 = 0;
@@ -57,7 +57,7 @@ function BltToMouseCursorFromVObjectWithOutline(hVObject: HVOBJECT, usVideoObjec
 }
 
 // THESE TWO PARAMETERS MUST POINT TO STATIC OR GLOBAL DATA, NOT AUTOMATIC VARIABLES
-function InitCursorDatabase(pCursorFileData: Pointer<CursorFileData>, pCursorData: Pointer<CursorData>, suNumDataFiles: UINT16): void {
+export function InitCursorDatabase(pCursorFileData: Pointer<CursorFileData>, pCursorData: Pointer<CursorData>, suNumDataFiles: UINT16): void {
   // Set global values!
 
   gpCursorFileDatabase = pCursorFileData;
@@ -231,7 +231,7 @@ function UnLoadCursorData(uiCursorIndex: UINT32): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function CursorDatabaseClear(): void {
+export function CursorDatabaseClear(): void {
   let uiIndex: UINT32;
 
   for (uiIndex = 0; uiIndex < gusNumDataFiles; uiIndex++) {
@@ -248,7 +248,7 @@ function CursorDatabaseClear(): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): boolean {
+export function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): boolean {
   let ReturnValue: boolean = true;
   let usSubIndex: UINT16;
   let pCurData: Pointer<CursorData>;
@@ -452,12 +452,12 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): boolean {
   return ReturnValue;
 }
 
-function SetMouseBltHook(pMouseBltOverride: MOUSEBLT_HOOK): void {
+export function SetMouseBltHook(pMouseBltOverride: MOUSEBLT_HOOK): void {
   gMouseBltOverride = pMouseBltOverride;
 }
 
 // Sets an external video object as cursor file data....
-function SetExternVOData(uiCursorIndex: UINT32, hVObject: HVOBJECT, usSubIndex: UINT16): void {
+export function SetExternVOData(uiCursorIndex: UINT32, hVObject: HVOBJECT, usSubIndex: UINT16): void {
   let pCurData: Pointer<CursorData>;
   let pCurImage: Pointer<CursorImage>;
   let cnt: UINT32;

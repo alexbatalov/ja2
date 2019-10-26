@@ -1,10 +1,10 @@
-const CIV_TYPE_NA = 0;
-const CIV_TYPE_ADULT = 1;
-const CIV_TYPE_KID = 2;
-const CIV_TYPE_MARRIED_PC = 3;
-const CIV_TYPE_ENEMY = 4;
+export const CIV_TYPE_NA = 0;
+export const CIV_TYPE_ADULT = 1;
+export const CIV_TYPE_KID = 2;
+export const CIV_TYPE_MARRIED_PC = 3;
+export const CIV_TYPE_ENEMY = 4;
 
-const enum Enum201 {
+export const enum Enum201 {
   CIV_QUOTE_ADULTS_BEGGING,
   CIV_QUOTE_KIDS_BEGGING,
   CIV_QUOTE_ADULTS_RECENT_BUG_ATTACK,

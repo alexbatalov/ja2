@@ -2,7 +2,7 @@
 let giIMPAttributeFinishButtonImage: INT32[] /* [2] */;
 let giIMPAttributeFinishButton: INT32[] /* [2] */;
 
-function EnterIMPAttributeFinish(): void {
+export function EnterIMPAttributeFinish(): void {
   // create the needed buttons
   CreateAttributeFinishButtons();
 
@@ -12,7 +12,7 @@ function EnterIMPAttributeFinish(): void {
   return;
 }
 
-function RenderIMPAttributeFinish(): void {
+export function RenderIMPAttributeFinish(): void {
   // render background
   RenderProfileBackGround();
 
@@ -22,14 +22,14 @@ function RenderIMPAttributeFinish(): void {
   return;
 }
 
-function ExitIMPAttributeFinish(): void {
+export function ExitIMPAttributeFinish(): void {
   // destroy the buttons for this screen
   DestroyAttributeFinishButtons();
 
   return;
 }
 
-function HandleIMPAttributeFinish(): void {
+export function HandleIMPAttributeFinish(): void {
   return;
 }
 

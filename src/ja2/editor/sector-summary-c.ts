@@ -38,13 +38,13 @@ let giCurrLevel: INT32;
 let gfOutdatedDenied: boolean;
 let gusNumEntriesWithOutdatedOrNoSummaryInfo: UINT16;
 
-let gfUpdatingNow: boolean;
+export let gfUpdatingNow: boolean;
 let gusTotal: UINT16;
 let gusCurrent: UINT16;
 
 let gfMustForceUpdateAllMaps: boolean = false;
 let gusNumberOfMapsToBeForceUpdated: UINT16 = 0;
-let gfMajorUpdate: boolean = false;
+export let gfMajorUpdate: boolean = false;
 
 let giCurrentViewLevel: INT32 = ALL_LEVELS_MASK;
 
@@ -58,14 +58,14 @@ let MapRegion: MOUSE_REGION;
 
 // Set if there is an existing global summary.  The first time this is run on your computer, it
 // will not exist, and will have to be generated before this will be set.
-let gfGlobalSummaryExists: boolean;
+export let gfGlobalSummaryExists: boolean;
 // If you don't wish to create a global summary, you can deny it.  This safely locks the system
 // from generating one.
 let gfDeniedSummaryCreation: boolean;
 // Set whenever the entire display is to be marked dirty.
 let gfRenderSummary: boolean;
 // Used externally to determine if the summary window is up or not.
-let gfSummaryWindowActive: boolean;
+export let gfSummaryWindowActive: boolean;
 // When set, the summary window stays up until told otherwise.  When clear, the summary will disappear
 // when the assigned key (F5) is released.  The latter mode is initiated when F5 is held down for longer
 // than .4 seconds, and is useful for quickly looking at the information in the current map being edited.
@@ -112,7 +112,7 @@ let gusNEnemyItemsSummaryArraySize: UINT16 = 0;
 
 let gfSetupItemDetailsMode: boolean = true;
 
-let gfUpdateSummaryInfo: boolean;
+export let gfUpdateSummaryInfo: boolean;
 
 let usNumSummaryFilesOutOfDate: UINT16;
 
@@ -175,7 +175,7 @@ const enum Enum58 {
 }
 let iSummaryButton: INT32[] /* [NUM_SUMMARY_BUTTONS] */;
 
-function CreateSummaryWindow(): void {
+export function CreateSummaryWindow(): void {
   let i: INT32;
 
   if (!gfGlobalSummaryLoaded) {
@@ -290,7 +290,7 @@ function CreateSummaryWindow(): void {
   }
 }
 
-function AutoLoadMap(): void {
+export function AutoLoadMap(): void {
   SummaryLoadMapCallback(ButtonList[iSummaryButton[Enum58.SUMMARY_LOAD]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   if (gfWorldLoaded)
     DestroySummaryWindow();
@@ -322,7 +322,7 @@ function ReleaseSummaryWindow(): void {
   }
 }
 
-function DestroySummaryWindow(): void {
+export function DestroySummaryWindow(): void {
   let i: INT32;
   if (!gfSummaryWindowActive)
     return;
@@ -791,7 +791,7 @@ function RenderItemDetails(): void {
   }
 }
 
-function RenderSummaryWindow(): void {
+export function RenderSummaryWindow(): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
   let ClipRect: SGPRect;
@@ -1300,7 +1300,7 @@ function RenderSummaryWindow(): void {
   }
 }
 
-function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: boolean): void {
+export function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: boolean): void {
   let str: UINT16[] /* [50] */;
   let szCoord: UINT8[] /* [40] */;
   let ptr: Pointer<UINT16>;
@@ -1482,7 +1482,7 @@ function SummaryToggleProgressCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 function PerformTest(): void {
 }
 
-function HandleSummaryInput(pEvent: Pointer<InputAtom>): boolean {
+export function HandleSummaryInput(pEvent: Pointer<InputAtom>): boolean {
   if (!gfSummaryWindowActive)
     return false;
   gfCtrlPressed = pEvent.value.usKeyState & CTRL_DOWN;
@@ -2091,7 +2091,7 @@ function GenerateSummaryList(): void {
   SetFileManCurrentDirectory(Dir);
 }
 
-function WriteSectorSummaryUpdate(puiFilename: Pointer<UINT8>, ubLevel: UINT8, pSummaryFileInfo: Pointer<SUMMARYFILE>): void {
+export function WriteSectorSummaryUpdate(puiFilename: Pointer<UINT8>, ubLevel: UINT8, pSummaryFileInfo: Pointer<SUMMARYFILE>): void {
   let fp: Pointer<FILE>;
   let ExecDir: STRING512;
   let Dir: STRING512;
@@ -2207,8 +2207,8 @@ function LoadSummary(pSector: Pointer<UINT8>, ubLevel: UINT8, dMajorMapVersion: 
   fclose(fp);
 }
 
-let MasterStart: double;
-let MasterEnd: double;
+export let MasterStart: double;
+export let MasterEnd: double;
 
 function UpdateMasterProgress(): void {
   if (gfUpdatingNow && gusTotal) {

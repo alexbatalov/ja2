@@ -1,5 +1,5 @@
 // NPC ACTION TRIGGERS SPECIAL CASE AI
-const enum Enum173 {
+export const enum Enum173 {
   STRATEGIC_AI_ACTION_WAKE_QUEEN = 1,
   STRATEGIC_AI_ACTION_KINGPIN_DEAD,
   STRATEGIC_AI_ACTION_QUEEN_DEAD,
@@ -7,7 +7,7 @@ const enum Enum173 {
 
 // These enumerations define all of the various types of stationary garrison
 // groups, and index their compositions for forces, etc.
-const enum Enum174 {
+export const enum Enum174 {
   QUEEN_DEFENCE, // The most important sector, the queen's palace.
   MEDUNA_DEFENCE, // The town surrounding the queen's palace.
   MEDUNA_SAMSITE, // A sam site within Meduna (higher priority)
@@ -38,7 +38,7 @@ const enum Enum174 {
   NUM_ARMY_COMPOSITIONS,
 }
 
-interface ARMY_COMPOSITION {
+export interface ARMY_COMPOSITION {
   iReadability: INT32; // contains the enumeration which is useless, but helps readability.
   bPriority: INT8;
   bElitePercentage: INT8;
@@ -50,7 +50,7 @@ interface ARMY_COMPOSITION {
 }
 
 // Defines the patrol groups -- movement groups.
-interface PATROL_GROUP {
+export interface PATROL_GROUP {
   bSize: INT8;
   bPriority: INT8;
   ubSectorID: UINT8[] /* [4] */;
@@ -62,7 +62,7 @@ interface PATROL_GROUP {
 }
 
 // Defines all stationary defence forces.
-interface GARRISON_GROUP {
+export interface GARRISON_GROUP {
   ubSectorID: UINT8;
   ubComposition: UINT8;
   bWeight: INT8;

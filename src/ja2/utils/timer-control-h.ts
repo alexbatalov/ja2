@@ -1,17 +1,17 @@
-type TIMECOUNTER = INT32;
+export type TIMECOUNTER = INT32;
 
 // typedef void (__stdcall *JA2_TIMERPROC)( UINT32 uiID, UINT32 uiMsg, UINT32 uiUser, UINT32 uiDw1, UINT32 uiDw2 );
 
-type CUSTOMIZABLE_TIMER_CALLBACK = () => void;
+export type CUSTOMIZABLE_TIMER_CALLBACK = () => void;
 
 // CALLBACK TIMER DEFINES
-const enum Enum385 {
+export const enum Enum385 {
   ITEM_LOCATOR_CALLBACK,
   NUM_TIMER_CALLBACKS,
 }
 
 // TIMER DEFINES
-const enum Enum386 {
+export const enum Enum386 {
   TOVERHEAD = 0, // Overhead time slice
   NEXTSCROLL, // Scroll Speed timer
   STARTSCROLL, // Scroll Start timer
@@ -42,21 +42,21 @@ const enum Enum386 {
 }
 
 // Base resultion of callback timer
-const BASETIMESLICE = 10;
+export const BASETIMESLICE = 10;
 
-const GetJA2Clock = () => guiBaseJA2Clock;
+export const GetJA2Clock = () => guiBaseJA2Clock;
 
 // MACROS
 //																CHeck if new counter < 0														 | set to 0 |										 Decrement
 
-const UPDATECOUNTER = (c) => ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) : (giTimerCounters[c] -= BASETIMESLICE);
-const RESETCOUNTER = (c) => (giTimerCounters[c] = giTimerIntervals[c]);
-const COUNTERDONE = (c) => (giTimerCounters[c] == 0) ? true : false;
+export const UPDATECOUNTER = (c) => ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) : (giTimerCounters[c] -= BASETIMESLICE);
+export const RESETCOUNTER = (c) => (giTimerCounters[c] = giTimerIntervals[c]);
+export const COUNTERDONE = (c) => (giTimerCounters[c] == 0) ? true : false;
 
-const UPDATETIMECOUNTER = (c) => ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE);
-const RESETTIMECOUNTER = (c, d) => (c = d);
+export const UPDATETIMECOUNTER = (c) => ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE);
+export const RESETTIMECOUNTER = (c, d) => (c = d);
 
-const TIMECOUNTERDONE = (c, d) => (c == 0) ? true : false;
+export const TIMECOUNTERDONE = (c, d) => (c == 0) ? true : false;
 
-const SYNCTIMECOUNTER = () => {};
-const ZEROTIMECOUNTER = (c) => (c = 0);
+export const SYNCTIMECOUNTER = () => {};
+export const ZEROTIMECOUNTER = (c) => (c = 0);

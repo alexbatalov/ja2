@@ -1,4 +1,4 @@
-interface SMKFLIC {
+export interface SMKFLIC {
   cFilename: Pointer<CHAR8>;
   //		HFILE										hFileHandle;
   hFileHandle: HWFILE;

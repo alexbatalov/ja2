@@ -1,13 +1,13 @@
 // Macro to convert sector coordinates (1-16,1-16) to 0-255
-const SECTOR = (x, y) => ((y - 1) * 16 + x - 1);
-const SECTORX = (SectorID) => ((SectorID % 16) + 1);
-const SECTORY = (SectorID) => ((SectorID / 16) + 1);
+export const SECTOR = (x, y) => ((y - 1) * 16 + x - 1);
+export const SECTORX = (SectorID) => ((SectorID % 16) + 1);
+export const SECTORY = (SectorID) => ((SectorID / 16) + 1);
 
 // Sector enumerations
 //
 // NOTE: These use the 0-255 SectorInfo[] numbering system, and CAN'T be used as indexes into the StrategicMap[] array
 // Use SECTOR_INFO_TO_STRATEGIC_INDEX() macro to convert...
-const enum Enum123 {
+export const enum Enum123 {
   SEC_A1,
   SEC_A2,
   SEC_A3,
@@ -286,38 +286,38 @@ const enum Enum125 {
 
 // Various flag definitions
 
-const SF_USE_MAP_SETTINGS = 0x00000001;
-const SF_ENEMY_AMBUSH_LOCATION = 0x00000002;
+export const SF_USE_MAP_SETTINGS = 0x00000001;
+export const SF_ENEMY_AMBUSH_LOCATION = 0x00000002;
 
 // Special case flag used when players encounter enemies in a sector, then retreat.  The number of enemies
 // will display on mapscreen until time is compressed.  When time is compressed, the flag is cleared, and
 // a question mark is displayed to reflect that the player no longer knows.
-const SF_PLAYER_KNOWS_ENEMIES_ARE_HERE = 0x00000004;
+export const SF_PLAYER_KNOWS_ENEMIES_ARE_HERE = 0x00000004;
 
-const SF_SAM_SITE = 0x00000008;
-const SF_MINING_SITE = 0x00000010;
-const SF_ALREADY_VISITED = 0x00000020;
-const SF_USE_ALTERNATE_MAP = 0x00000040;
-const SF_PENDING_ALTERNATE_MAP = 0x00000080;
-const SF_ALREADY_LOADED = 0x00000100;
-const SF_HAS_ENTERED_TACTICAL = 0x00000200;
-const SF_SKYRIDER_NOTICED_ENEMIES_HERE = 0x00000400;
-const SF_HAVE_USED_GUIDE_QUOTE = 0x00000800;
+export const SF_SAM_SITE = 0x00000008;
+export const SF_MINING_SITE = 0x00000010;
+export const SF_ALREADY_VISITED = 0x00000020;
+export const SF_USE_ALTERNATE_MAP = 0x00000040;
+export const SF_PENDING_ALTERNATE_MAP = 0x00000080;
+export const SF_ALREADY_LOADED = 0x00000100;
+export const SF_HAS_ENTERED_TACTICAL = 0x00000200;
+export const SF_SKYRIDER_NOTICED_ENEMIES_HERE = 0x00000400;
+export const SF_HAVE_USED_GUIDE_QUOTE = 0x00000800;
 
-const SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS = 0x00100000; // Temp File starts with sm_
-const SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS = 0x00200000; // Temp File starts with l_
+export const SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS = 0x00100000; // Temp File starts with sm_
+export const SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS = 0x00200000; // Temp File starts with l_
 
-const SF_REVEALED_STATUS_TEMP_FILE_EXISTS = 0x01000000; // Temp File starts with v_
-const SF_DOOR_STATUS_TEMP_FILE_EXISTS = 0x02000000; // Temp File starts with ds_
-const SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS = 0x04000000; // Temp File starts with e_
-const SF_CIV_PRESERVED_TEMP_FILE_EXISTS = 0x08000000; // Temp File starts with c_
-const SF_ITEM_TEMP_FILE_EXISTS = 0x10000000; // Temp File starts with i_
-const SF_ROTTING_CORPSE_TEMP_FILE_EXISTS = 0x20000000; // Temp File starts with r_
-const SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS = 0x40000000; // Temp File starts with m_
-const SF_DOOR_TABLE_TEMP_FILES_EXISTS = 0x80000000; // Temp File starts with d_
+export const SF_REVEALED_STATUS_TEMP_FILE_EXISTS = 0x01000000; // Temp File starts with v_
+export const SF_DOOR_STATUS_TEMP_FILE_EXISTS = 0x02000000; // Temp File starts with ds_
+export const SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS = 0x04000000; // Temp File starts with e_
+export const SF_CIV_PRESERVED_TEMP_FILE_EXISTS = 0x08000000; // Temp File starts with c_
+export const SF_ITEM_TEMP_FILE_EXISTS = 0x10000000; // Temp File starts with i_
+export const SF_ROTTING_CORPSE_TEMP_FILE_EXISTS = 0x20000000; // Temp File starts with r_
+export const SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS = 0x40000000; // Temp File starts with m_
+export const SF_DOOR_TABLE_TEMP_FILES_EXISTS = 0x80000000; // Temp File starts with d_
 
 // town militia experience categories
-const enum Enum126 {
+export const enum Enum126 {
   GREEN_MILITIA = 0,
   REGULAR_MILITIA,
   ELITE_MILITIA,
@@ -325,27 +325,27 @@ const enum Enum126 {
 }
 
 // facilities flags
-const SFCF_HOSPITAL = 0x00000001;
-const SFCF_INDUSTRY = 0x00000002;
-const SFCF_PRISON = 0x00000004;
+export const SFCF_HOSPITAL = 0x00000001;
+export const SFCF_INDUSTRY = 0x00000002;
+export const SFCF_PRISON = 0x00000004;
 const SFCF_MILITARY = 0x00000008;
-const SFCF_AIRPORT = 0x00000010;
-const SFCF_GUN_RANGE = 0x00000020;
+export const SFCF_AIRPORT = 0x00000010;
+export const SFCF_GUN_RANGE = 0x00000020;
 
 // coordinates of shooting range sector
-const GUN_RANGE_X = 13;
-const GUN_RANGE_Y = MAP_ROW_H;
-const GUN_RANGE_Z = 0;
+export const GUN_RANGE_X = 13;
+export const GUN_RANGE_Y = MAP_ROW_H;
+export const GUN_RANGE_Z = 0;
 
 // Vehicle types
-const FOOT = 0x01; // anywhere
-const CAR = 0x02; // roads
-const TRUCK = 0x04; // roads, plains, sparse
-const TRACKED = 0x08; // roads, plains, sand, sparse
-const AIR = 0x10; // can traverse all terrains at 100%
+export const FOOT = 0x01; // anywhere
+export const CAR = 0x02; // roads
+export const TRUCK = 0x04; // roads, plains, sparse
+export const TRACKED = 0x08; // roads, plains, sand, sparse
+export const AIR = 0x10; // can traverse all terrains at 100%
 
 // Traversability ratings
-const enum Enum127 {
+export const enum Enum127 {
   TOWN, // instant
   ROAD, // everything travels at 100%
   PLAINS, // foot 90%, truck 75%, tracked 100%
@@ -400,9 +400,9 @@ const TRAVELRATING_HIGH = 75;
 const TRAVELRATING_EXTREME = 100;
 
 // Used by ubGarrisonID when a sector doesn't point to a garrison.  Used by strategic AI only.
-const NO_GARRISON = 255;
+export const NO_GARRISON = 255;
 
-interface SECTORINFO {
+export interface SECTORINFO {
   // information pertaining to this sector
   uiFlags: UINT32; // various special conditions
   ubInvestigativeState: UINT8; // When the sector is attacked by the player, the state increases by 1 permanently.
@@ -463,12 +463,12 @@ interface SECTORINFO {
 }
 
 const NO_ADJACENT_SECTOR = 0x00;
-const NORTH_ADJACENT_SECTOR = 0x01;
-const EAST_ADJACENT_SECTOR = 0x02;
-const SOUTH_ADJACENT_SECTOR = 0x04;
-const WEST_ADJACENT_SECTOR = 0x08;
+export const NORTH_ADJACENT_SECTOR = 0x01;
+export const EAST_ADJACENT_SECTOR = 0x02;
+export const SOUTH_ADJACENT_SECTOR = 0x04;
+export const WEST_ADJACENT_SECTOR = 0x08;
 
-interface UNDERGROUND_SECTORINFO {
+export interface UNDERGROUND_SECTORINFO {
   uiFlags: UINT32;
 
   ubSectorX: UINT8;

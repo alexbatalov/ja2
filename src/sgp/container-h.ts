@@ -20,16 +20,16 @@
 //  Defines and typedefs
 //
 //***********************************************
-const ORDLIST_ERROR = -1;
-const ORDLIST_EQUAL = 0;
-const ORDLIST_LEFT_LESS = 1;
-const ORDLIST_RIGHT_LESS = 2;
+export const ORDLIST_ERROR = -1;
+export const ORDLIST_EQUAL = 0;
+export const ORDLIST_LEFT_LESS = 1;
+export const ORDLIST_RIGHT_LESS = 2;
 
-type HCONTAINER = Pointer<void>;
-type HSTACK = HCONTAINER;
-type HQUEUE = HCONTAINER;
-type HLIST = HCONTAINER;
-type HORDLIST = HCONTAINER;
+export type HCONTAINER = Pointer<void>;
+export type HSTACK = HCONTAINER;
+export type HQUEUE = HCONTAINER;
+export type HLIST = HCONTAINER;
+export type HORDLIST = HCONTAINER;
 
 //***********************************************
 //

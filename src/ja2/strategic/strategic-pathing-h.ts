@@ -1,13 +1,13 @@
 // directions of movement for badsector determination ( blocking off of a sector exit from foot or vehicle travel)
 
 // Shortest Path Defines
-const NORTH_MOVE = -18;
-const EAST_MOVE = 1;
-const WEST_MOVE = -1;
-const SOUTH_MOVE = 18;
+export const NORTH_MOVE = -18;
+export const EAST_MOVE = 1;
+export const WEST_MOVE = -1;
+export const SOUTH_MOVE = 18;
 
 // Movement speed defines
-const NORMAL_MVT = 1;
+export const NORMAL_MVT = 1;
 const SLOW_MVT = 0;
 
 // movment modes

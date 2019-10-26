@@ -1,17 +1,17 @@
 let fValidCursor: boolean = false;
 let fAnchored: boolean = false;
 let gfBrushEnabled: boolean = true;
-let gusSelectionWidth: UINT16 = 1;
-let gusPreserveSelectionWidth: UINT16 = 1;
-let gusSelectionType: UINT16 = Enum33.SMALLSELECTION;
-let gusSelectionDensity: UINT16 = 2;
-let gusSavedSelectionType: UINT16 = Enum33.SMALLSELECTION;
-let gusSavedBuildingSelectionType: UINT16 = Enum33.AREASELECTION;
-let sGridX: INT16;
-let sGridY: INT16;
+export let gusSelectionWidth: UINT16 = 1;
+export let gusPreserveSelectionWidth: UINT16 = 1;
+export let gusSelectionType: UINT16 = Enum33.SMALLSELECTION;
+export let gusSelectionDensity: UINT16 = 2;
+export let gusSavedSelectionType: UINT16 = Enum33.SMALLSELECTION;
+export let gusSavedBuildingSelectionType: UINT16 = Enum33.AREASELECTION;
+export let sGridX: INT16;
+export let sGridY: INT16;
 let sBadMarker: INT16 = -1;
 
-let wszSelType: Pointer<UINT16>[] /* [6] */ = [
+export let wszSelType: Pointer<UINT16>[] /* [6] */ = [
   "Small",
   "Medium",
   "Large",
@@ -21,7 +21,7 @@ let wszSelType: Pointer<UINT16>[] /* [6] */ = [
 ];
 
 let gfAllowRightButtonSelections: boolean = false;
-let gfCurrentSelectionWithRightButton: boolean = false;
+export let gfCurrentSelectionWithRightButton: boolean = false;
 
 // Used for offseting cursor to show that it is on the roof rather than on the ground.
 // This can be conveniently executed by moving the cursor up and right 3 gridnos for a
@@ -31,13 +31,13 @@ let gfUsingOffset: boolean;
 
 // Based on the density level setting and the selection type, this test will
 // randomly choose TRUE or FALSE to reflect the *odds*.
-function PerformDensityTest(): boolean {
+export function PerformDensityTest(): boolean {
   if (Random(100) < gusSelectionDensity)
     return true;
   return false;
 }
 
-function IncreaseSelectionDensity(): void {
+export function IncreaseSelectionDensity(): void {
   if (gusSelectionDensity == 100)
     gusSelectionDensity = 2;
   else if (gusSelectionDensity == 2)
@@ -48,7 +48,7 @@ function IncreaseSelectionDensity(): void {
     gusSelectionDensity += 10;
 }
 
-function DecreaseSelectionDensity(): void {
+export function DecreaseSelectionDensity(): void {
   if (gusSelectionDensity == 10)
     gusSelectionDensity = 5;
   else if (gusSelectionDensity == 5)
@@ -59,7 +59,7 @@ function DecreaseSelectionDensity(): void {
     gusSelectionDensity -= 10;
 }
 
-function RemoveCursors(): void {
+export function RemoveCursors(): void {
   let x: INT32;
   let y: INT32;
   let iMapIndex: INT32;
@@ -103,7 +103,7 @@ function RemoveBadMarker(): void {
   }
 }
 
-function UpdateCursorAreas(): void {
+export function UpdateCursorAreas(): void {
   let x: INT32;
   let y: INT32;
   let iMapIndex: INT32;
@@ -361,7 +361,7 @@ function DrawBuildingLayout(iMapIndex: INT32): void {
   }
 }
 
-function RemoveBuildingLayout(): void {
+export function RemoveBuildingLayout(): void {
   let curr: Pointer<BUILDINGLAYOUTNODE>;
   let iOffset: INT32;
   let iMapIndex: INT32;

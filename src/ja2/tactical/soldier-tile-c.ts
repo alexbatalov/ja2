@@ -1,6 +1,6 @@
 const NEXT_TILE_CHECK_DELAY = 700;
 
-function SetDelayedTileWaiting(pSoldier: Pointer<SOLDIERTYPE>, sCauseGridNo: INT16, bValue: INT8): void {
+export function SetDelayedTileWaiting(pSoldier: Pointer<SOLDIERTYPE>, sCauseGridNo: INT16, bValue: INT8): void {
   let ubPerson: UINT8;
 
   // Cancel AI Action
@@ -64,7 +64,7 @@ function MarkMovementReserved(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): v
   pSoldier.value.sReservedMovementGridNo = sGridNo;
 }
 
-function UnMarkMovementReserved(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function UnMarkMovementReserved(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sNewGridNo: INT16;
 
   sNewGridNo = GETWORLDINDEXFROMWORLDCOORDS(pSoldier.value.dYPos, pSoldier.value.dXPos);
@@ -208,7 +208,7 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
   return MOVE_TILE_CLEAR;
 }
 
-function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: INT16, sFinalDestTile: INT16): boolean {
+export function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: INT16, sFinalDestTile: INT16): boolean {
   let bBlocked: INT8;
   let bOverTerrainType: INT16;
 
@@ -302,7 +302,7 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
   return true;
 }
 
-function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // Buddy is waiting to continue his path
   let bBlocked: INT8;
   let bPathBlocked: INT8;
@@ -512,7 +512,7 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce: boolean): boolean {
+export function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce: boolean): boolean {
   let sX: INT16;
   let sY: INT16;
 
@@ -549,7 +549,7 @@ function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce:
 }
 
 // Swaps 2 soldier positions...
-function SwapMercPositions(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<SOLDIERTYPE>): void {
+export function SwapMercPositions(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<SOLDIERTYPE>): void {
   let sGridNo1: INT16;
   let sGridNo2: INT16;
 
@@ -573,7 +573,7 @@ function SwapMercPositions(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<S
   }
 }
 
-function CanExchangePlaces(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<SOLDIERTYPE>, fShow: boolean): boolean {
+export function CanExchangePlaces(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<SOLDIERTYPE>, fShow: boolean): boolean {
   // NB checks outside of this function
   if (EnoughPoints(pSoldier1, AP_EXCHANGE_PLACES, 0, fShow)) {
     if (EnoughPoints(pSoldier2, AP_EXCHANGE_PLACES, 0, fShow)) {

@@ -12,10 +12,10 @@ const PRICE_CLASS_JUNK = 0;
 const PRICE_CLASS_CHEAP = 1;
 const PRICE_CLASS_EXPENSIVE = 2;
 
-let gubLastSpecialItemAddedAtElement: UINT8 = 255;
+export let gubLastSpecialItemAddedAtElement: UINT8 = 255;
 
 // THIS STRUCTURE HAS UNCHANGING INFO THAT DOESN'T GET SAVED/RESTORED/RESET
-let ArmsDealerInfo: ARMS_DEALER_INFO[] /* [NUM_ARMS_DEALERS] */ = [
+export let ArmsDealerInfo: ARMS_DEALER_INFO[] /* [NUM_ARMS_DEALERS] */ = [
   // Buying		Selling	Merc ID#	Type									Initial						Flags
   // Price			Price							Of											Cash
   // Modifier	Modifier					Dealer
@@ -49,12 +49,12 @@ let ArmsDealerInfo: ARMS_DEALER_INFO[] /* [NUM_ARMS_DEALERS] */ = [
 ];
 
 // THESE GET SAVED/RESTORED/RESET
-let gArmsDealerStatus: ARMS_DEALER_STATUS[] /* [NUM_ARMS_DEALERS] */;
-let gArmsDealersInventory: DEALER_ITEM_HEADER[][] /* [NUM_ARMS_DEALERS][MAXITEMS] */;
+export let gArmsDealerStatus: ARMS_DEALER_STATUS[] /* [NUM_ARMS_DEALERS] */;
+export let gArmsDealersInventory: DEALER_ITEM_HEADER[][] /* [NUM_ARMS_DEALERS][MAXITEMS] */;
 
 // INT16 GetSpecialItemFromArmsDealerInventory( UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo );
 
-function InitAllArmsDealers(): void {
+export function InitAllArmsDealers(): void {
   let ubArmsDealer: UINT8;
 
   // Memset all dealers' status tables to zeroes
@@ -102,7 +102,7 @@ function InitializeOneArmsDealer(ubArmsDealer: UINT8): void {
   }
 }
 
-function ShutDownArmsDealers(): void {
+export function ShutDownArmsDealers(): void {
   let ubArmsDealer: UINT8;
   let usItemIndex: UINT16;
 
@@ -117,7 +117,7 @@ function ShutDownArmsDealers(): void {
   }
 }
 
-function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let ubArmsDealer: UINT8;
   let usItemIndex: UINT16;
@@ -148,7 +148,7 @@ function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin: boolean, fIncludesManny: boolean): boolean {
+export function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin: boolean, fIncludesManny: boolean): boolean {
   let uiNumBytesRead: UINT32;
   let ubArmsDealer: UINT8;
   let usItemIndex: UINT16;
@@ -196,7 +196,7 @@ function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin:
   return true;
 }
 
-function DailyUpdateOfArmsDealersInventory(): void {
+export function DailyUpdateOfArmsDealersInventory(): void {
   // if Gabby has creature blood, start turning it into extra elixir
   ConvertCreatureBloodToElixir();
 
@@ -576,7 +576,7 @@ function GuaranteeAtLeastOneItemOfType(ubArmsDealer: UINT8, uiDealerItemType: UI
   // internal logic failure!
 }
 
-function GuaranteeAtLeastXItemsOfIndex(ubArmsDealer: UINT8, usItemIndex: UINT16, ubHowMany: UINT8): void {
+export function GuaranteeAtLeastXItemsOfIndex(ubArmsDealer: UINT8, usItemIndex: UINT16, ubHowMany: UINT8): void {
   // not permitted for repair dealers - would take extra code to avoid counting items under repair!
   Assert(!DoesDealerDoRepairs(ubArmsDealer));
 
@@ -748,7 +748,7 @@ function GetArmsDealerItemTypeFromItemNumber(usItem: UINT16): UINT32 {
   return 0;
 }
 
-function IsMercADealer(ubMercID: UINT8): boolean {
+export function IsMercADealer(ubMercID: UINT8): boolean {
   let cnt: UINT8;
 
   // Manny is not actually a valid dealer unless a particular event sets that fact
@@ -764,7 +764,7 @@ function IsMercADealer(ubMercID: UINT8): boolean {
   return false;
 }
 
-function GetArmsDealerIDFromMercID(ubMercID: UINT8): INT8 {
+export function GetArmsDealerIDFromMercID(ubMercID: UINT8): INT8 {
   let cnt: INT8;
 
   // loop through the list of arms dealers
@@ -776,11 +776,11 @@ function GetArmsDealerIDFromMercID(ubMercID: UINT8): INT8 {
   return -1;
 }
 
-function GetTypeOfArmsDealer(ubDealerID: UINT8): UINT8 {
+export function GetTypeOfArmsDealer(ubDealerID: UINT8): UINT8 {
   return ArmsDealerInfo[ubDealerID].ubTypeOfArmsDealer;
 }
 
-function DoesDealerDoRepairs(ubArmsDealer: UINT8): boolean {
+export function DoesDealerDoRepairs(ubArmsDealer: UINT8): boolean {
   if (ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS)
     return true;
   else
@@ -809,7 +809,7 @@ INT16 GetSpecialItemFromArmsDealerInventory( UINT8 ubArmsDealer, UINT16 usItemIn
 }
 */
 
-function RepairmanIsFixingItemsButNoneAreDoneYet(ubProfileID: UINT8): boolean {
+export function RepairmanIsFixingItemsButNoneAreDoneYet(ubProfileID: UINT8): boolean {
   let bArmsDealer: INT8;
   let fHaveOnlyUnRepairedItems: boolean = false;
   let ubElement: UINT8;
@@ -866,7 +866,7 @@ function GetTimeToFixItemBeingRepaired(ubArmsDealer: UINT8, usItemIndex: UINT16,
   return gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].uiRepairDoneTime - GetWorldTotalMin();
 }
 
-function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: boolean): boolean {
+export function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: boolean): boolean {
   switch (ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer) {
     case Enum198.ARMS_DEALER_SELLS_ONLY:
       if (fPurchaseFromPlayer) {
@@ -913,7 +913,7 @@ function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurcha
   return DoesItemAppearInDealerInventoryList(ubArmsDealer, usItemIndex, fPurchaseFromPlayer);
 }
 
-function CanDealerRepairItem(ubArmsDealer: UINT8, usItemIndex: UINT16): boolean {
+export function CanDealerRepairItem(ubArmsDealer: UINT8, usItemIndex: UINT16): boolean {
   let uiFlags: UINT32;
 
   uiFlags = Item[usItemIndex].fFlags;
@@ -1085,7 +1085,7 @@ UINT32 CountTotalItemsInArmsDealersInventory( UINT8 ubArmsDealer )
 }
 */
 
-function CountDistinctItemsInArmsDealersInventory(ubArmsDealer: UINT8): UINT32 {
+export function CountDistinctItemsInArmsDealersInventory(ubArmsDealer: UINT8): UINT32 {
   let uiNumOfItems: UINT32 = 0;
   let usItemIndex: UINT16;
 
@@ -1130,7 +1130,7 @@ function CountActiveSpecialItemsInArmsDealersInventory(ubArmsDealer: UINT8, usIt
   return ubActiveSpecialItems;
 }
 
-function CountTotalItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8): UINT16 {
+export function CountTotalItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8): UINT16 {
   let usItemIndex: UINT16;
   let usHowManyInForRepairs: UINT16 = 0;
 
@@ -1170,7 +1170,7 @@ function CountSpecificItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8, usIt
   return ubHowManyInForRepairs;
 }
 
-function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>): void {
+export function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>): void {
   let ubCnt: UINT8;
   let SpclItemInfo: SPECIAL_ITEM_INFO;
 
@@ -1372,7 +1372,7 @@ function AddSpecialItemToArmsDealerInventoryAtElement(ubArmsDealer: UINT8, usIte
 }
 
 // removes ubHowMany items of usItemIndex with the matching Info from dealer ubArmsDealer
-function RemoveItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, ubHowMany: UINT8): void {
+export function RemoveItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, ubHowMany: UINT8): void {
   let pSpecialItem: Pointer<DEALER_SPECIAL_ITEM>;
   let ubElement: UINT8;
 
@@ -1470,7 +1470,7 @@ function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemInde
   }
 }
 
-function RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer: UINT8, usItemIndex: UINT16, ubElement: UINT8): void {
+export function RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer: UINT8, usItemIndex: UINT16, ubElement: UINT8): void {
   Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems > 0);
   Assert(ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced);
   Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive == true);
@@ -1482,7 +1482,7 @@ function RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer: UINT8, 
   gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems--;
 }
 
-function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): boolean {
+export function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): boolean {
   let bArmsDealer: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let usItemIndex: UINT16;
@@ -1583,7 +1583,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): boolean {
   return true;
 }
 
-function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>, ubHowMany: UINT8): void {
+export function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>, ubHowMany: UINT8): void {
   let bItemCondition: INT8;
   let ubCnt: UINT8;
 
@@ -1621,7 +1621,7 @@ function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<
   }
 }
 
-function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>, ubOwnerProfileId: UINT8): void {
+export function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>, ubOwnerProfileId: UINT8): void {
   //	UINT8 ubCnt;
   let SpclItemInfo: SPECIAL_ITEM_INFO;
 
@@ -1754,7 +1754,7 @@ function CalculateSpecialItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16
   return uiRepairTime;
 }
 
-function CalculateObjectItemRepairTime(ubArmsDealer: UINT8, pItemObject: Pointer<OBJECTTYPE>): UINT32 {
+export function CalculateObjectItemRepairTime(ubArmsDealer: UINT8, pItemObject: Pointer<OBJECTTYPE>): UINT32 {
   let uiRepairTime: UINT32;
   let ubCnt: UINT8;
 
@@ -1822,7 +1822,7 @@ function CalculateSpecialItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16
   return uiRepairCost;
 }
 
-function CalculateObjectItemRepairCost(ubArmsDealer: UINT8, pItemObject: Pointer<OBJECTTYPE>): UINT32 {
+export function CalculateObjectItemRepairCost(ubArmsDealer: UINT8, pItemObject: Pointer<OBJECTTYPE>): UINT32 {
   let uiRepairCost: UINT32;
   let ubCnt: UINT8;
 
@@ -1884,7 +1884,7 @@ function CalculateSimpleItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16,
   return uiRepairCost;
 }
 
-function SetSpecialItemInfoToDefaults(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): void {
+export function SetSpecialItemInfoToDefaults(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): void {
   let ubCnt: UINT8;
 
   memset(pSpclItemInfo, 0, sizeof(SPECIAL_ITEM_INFO));
@@ -1898,7 +1898,7 @@ function SetSpecialItemInfoToDefaults(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>)
   }
 }
 
-function SetSpecialItemInfoFromObject(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>): void {
+export function SetSpecialItemInfoFromObject(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>): void {
   let ubCnt: UINT8;
 
   memset(pSpclItemInfo, 0, sizeof(SPECIAL_ITEM_INFO));
@@ -1979,7 +1979,7 @@ function DoesItemAppearInDealerInventoryList(ubArmsDealer: UINT8, usItemIndex: U
   return false;
 }
 
-function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDealerSelling: boolean): UINT16 {
+export function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDealerSelling: boolean): UINT16 {
   let usBasePrice: UINT16;
   let ubItemPriceClass: UINT8;
   let ubDealerPriceClass: UINT8;
@@ -2107,7 +2107,7 @@ function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: boolean,
   return true;
 }
 
-function DealerItemIsSafeToStack(usItemIndex: UINT16): boolean {
+export function DealerItemIsSafeToStack(usItemIndex: UINT16): boolean {
   // basically any item type with nothing unique about it besides its status can be stacked in dealer's inventory boxes...
   // NOTE: This test is only applied to items already KNOWN to be perfect - special items are obviously not-stackable
 
@@ -2131,7 +2131,7 @@ function GuaranteeMinimumAlcohol(ubArmsDealer: UINT8): void {
   GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.ALCOHOL, (GetDealersMaxItemAmount(ubArmsDealer, Enum225.ALCOHOL) / 3));
 }
 
-function ItemIsARocketRifle(sItemIndex: INT16): boolean {
+export function ItemIsARocketRifle(sItemIndex: INT16): boolean {
   if ((sItemIndex == Enum225.ROCKET_RIFLE) || (sItemIndex == Enum225.AUTO_ROCKET_RIFLE)) {
     return true;
   } else {
@@ -2156,7 +2156,7 @@ function GetArmsDealerShopHours(ubArmsDealer: UINT8, puiOpeningTime: Pointer<UIN
   return true;
 }
 
-function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStartIt: UINT32, uiMinutesToFix: UINT32): UINT32 {
+export function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStartIt: UINT32, uiMinutesToFix: UINT32): UINT32 {
   let uiOpeningTime: UINT32;
   let uiClosingTime: UINT32;
   let uiMinutesClosedOvernight: UINT32;
@@ -2193,7 +2193,7 @@ function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStar
   return uiDelayInDays * uiMinutesClosedOvernight;
 }
 
-function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: UINT32, uiEndTime: UINT32): UINT32 {
+export function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: UINT32, uiEndTime: UINT32): UINT32 {
   let uiOpeningTime: UINT32;
   let uiClosingTime: UINT32;
   let uiMinutesClosedOvernight: UINT32;

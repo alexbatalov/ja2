@@ -1,4 +1,4 @@
-const enum Enum326 {
+export const enum Enum326 {
   MLG_AIMSYMBOL,
   MLG_BOBBYNAME,
   MLG_BOBBYRAYAD21,

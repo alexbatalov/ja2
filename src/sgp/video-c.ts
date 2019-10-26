@@ -62,7 +62,7 @@ let gfVideoCapture: boolean = false;
 let guiFramePeriod: UINT32 = (1000 / 15);
 let guiLastFrame: UINT32;
 let gpFrameData: Pointer<UINT16>[] /* [MAX_NUM_FRAMES] */;
-let giNumFrames: INT32 = 0;
+export let giNumFrames: INT32 = 0;
 
 //
 // Direct Draw objects for both the Primary and Backbuffer surfaces
@@ -106,14 +106,14 @@ let gFatalErrorString: char[] /* [512] */;
 
 // 8-bit palette stuff
 
-let gSgpPalette: SGPPaletteEntry[] /* [256] */;
+export let gSgpPalette: SGPPaletteEntry[] /* [256] */;
 let gpDirectDrawPalette: LPDIRECTDRAWPALETTE;
 
 //
 // Make sure we record the value of the hWindow (main window frame for the application)
 //
 
-let ghWindow: HWND;
+export let ghWindow: HWND;
 
 //
 // Refresh thread based variables
@@ -162,7 +162,7 @@ let guiPrintFrameBufferIndex: UINT32;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, WindowProc: Pointer<void>): boolean {
+export function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, WindowProc: Pointer<void>): boolean {
   let uiIndex: UINT32;
   let uiPitch: UINT32;
   let ReturnCode: HRESULT;
@@ -471,7 +471,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-function ShutdownVideoManager(): void {
+export function ShutdownVideoManager(): void {
   // UINT32  uiRefreshThreadState;
 
   DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Shutting down the video manager");
@@ -509,7 +509,7 @@ function ShutdownVideoManager(): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function SuspendVideoManager(): void {
+export function SuspendVideoManager(): void {
   guiVideoManagerState = VIDEO_SUSPENDED;
 }
 
@@ -521,7 +521,7 @@ function DoTester(): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function RestoreVideoManager(): boolean {
+export function RestoreVideoManager(): boolean {
   let ReturnCode: HRESULT;
 
   //
@@ -579,7 +579,7 @@ function RestoreVideoManager(): boolean {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function GetCurrentVideoSettings(usWidth: Pointer<UINT16>, usHeight: Pointer<UINT16>, ubBitDepth: Pointer<UINT8>): void {
+export function GetCurrentVideoSettings(usWidth: Pointer<UINT16>, usHeight: Pointer<UINT16>, ubBitDepth: Pointer<UINT8>): void {
   usWidth.value = gusScreenWidth;
   usHeight.value = gusScreenHeight;
   ubBitDepth.value = gubScreenPixelDepth;
@@ -623,7 +623,7 @@ function CanBlitToMouseBuffer(): boolean {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function InvalidateRegion(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32): void {
+export function InvalidateRegion(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32): void {
   if (gfForceFullScreenRefresh == true) {
     //
     // There's no point in going on since we are forcing a full screen refresh
@@ -675,7 +675,7 @@ function InvalidateRegion(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT
   }
 }
 
-function InvalidateRegionEx(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32, uiFlags: UINT32): void {
+export function InvalidateRegionEx(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32, uiFlags: UINT32): void {
   let iOldBottom: INT32;
 
   iOldBottom = iBottom;
@@ -765,7 +765,7 @@ function InvalidateRegions(pArrayOfRegions: Pointer<SGPRect>, uiRegionCount: UIN
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function InvalidateScreen(): void {
+export function InvalidateScreen(): void {
   //
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
   //
@@ -1212,7 +1212,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
   // SaveBackgroundRects();
 }
 
-function RefreshScreen(DummyVariable: Pointer<void>): void {
+export function RefreshScreen(DummyVariable: Pointer<void>): void {
   /* static */ let uiRefreshThreadState: UINT32;
   /* static */ let uiIndex: UINT32;
   let usScreenWidth: UINT16;
@@ -1873,7 +1873,7 @@ ENDOFLOOP:
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function GetDirectDraw2Object(): LPDIRECTDRAW2 {
+export function GetDirectDraw2Object(): LPDIRECTDRAW2 {
   Assert(gpDirectDrawObject != null);
 
   return gpDirectDrawObject;
@@ -1881,7 +1881,7 @@ function GetDirectDraw2Object(): LPDIRECTDRAW2 {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function GetPrimarySurfaceObject(): LPDIRECTDRAWSURFACE2 {
+export function GetPrimarySurfaceObject(): LPDIRECTDRAWSURFACE2 {
   Assert(gpPrimarySurface != null);
 
   return gpPrimarySurface;
@@ -1889,7 +1889,7 @@ function GetPrimarySurfaceObject(): LPDIRECTDRAWSURFACE2 {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function GetBackBufferObject(): LPDIRECTDRAWSURFACE2 {
+export function GetBackBufferObject(): LPDIRECTDRAWSURFACE2 {
   Assert(gpPrimarySurface != null);
 
   return gpBackBuffer;
@@ -1897,7 +1897,7 @@ function GetBackBufferObject(): LPDIRECTDRAWSURFACE2 {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function GetFrameBufferObject(): LPDIRECTDRAWSURFACE2 {
+export function GetFrameBufferObject(): LPDIRECTDRAWSURFACE2 {
   Assert(gpPrimarySurface != null);
 
   return gpFrameBuffer;
@@ -1905,7 +1905,7 @@ function GetFrameBufferObject(): LPDIRECTDRAWSURFACE2 {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function GetMouseBufferObject(): LPDIRECTDRAWSURFACE2 {
+export function GetMouseBufferObject(): LPDIRECTDRAWSURFACE2 {
   Assert(gpPrimarySurface != null);
 
   return gpMouseCursor;
@@ -1917,7 +1917,7 @@ function GetMouseBufferObject(): LPDIRECTDRAWSURFACE2 {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function LockPrimarySurface(uiPitch: Pointer<UINT32>): PTR {
+export function LockPrimarySurface(uiPitch: Pointer<UINT32>): PTR {
   let ReturnCode: HRESULT;
   let SurfaceDescription: DDSURFACEDESC;
 
@@ -1939,7 +1939,7 @@ function LockPrimarySurface(uiPitch: Pointer<UINT32>): PTR {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function UnlockPrimarySurface(): void {
+export function UnlockPrimarySurface(): void {
   let SurfaceDescription: DDSURFACEDESC;
   let ReturnCode: HRESULT;
 
@@ -1953,7 +1953,7 @@ function UnlockPrimarySurface(): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function LockBackBuffer(uiPitch: Pointer<UINT32>): PTR {
+export function LockBackBuffer(uiPitch: Pointer<UINT32>): PTR {
   let ReturnCode: HRESULT;
   let SurfaceDescription: DDSURFACEDESC;
 
@@ -1983,7 +1983,7 @@ function LockBackBuffer(uiPitch: Pointer<UINT32>): PTR {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function UnlockBackBuffer(): void {
+export function UnlockBackBuffer(): void {
   let SurfaceDescription: DDSURFACEDESC;
   let ReturnCode: HRESULT;
 
@@ -2005,7 +2005,7 @@ function UnlockBackBuffer(): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function LockFrameBuffer(uiPitch: Pointer<UINT32>): PTR {
+export function LockFrameBuffer(uiPitch: Pointer<UINT32>): PTR {
   let ReturnCode: HRESULT;
   let SurfaceDescription: DDSURFACEDESC;
 
@@ -2028,7 +2028,7 @@ function LockFrameBuffer(uiPitch: Pointer<UINT32>): PTR {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function UnlockFrameBuffer(): void {
+export function UnlockFrameBuffer(): void {
   let SurfaceDescription: DDSURFACEDESC;
   let ReturnCode: HRESULT;
 
@@ -2042,7 +2042,7 @@ function UnlockFrameBuffer(): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function LockMouseBuffer(uiPitch: Pointer<UINT32>): PTR {
+export function LockMouseBuffer(uiPitch: Pointer<UINT32>): PTR {
   let ReturnCode: HRESULT;
   let SurfaceDescription: DDSURFACEDESC;
 
@@ -2061,7 +2061,7 @@ function LockMouseBuffer(uiPitch: Pointer<UINT32>): PTR {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function UnlockMouseBuffer(): void {
+export function UnlockMouseBuffer(): void {
   let SurfaceDescription: DDSURFACEDESC;
   let ReturnCode: HRESULT;
 
@@ -2141,7 +2141,7 @@ function GetRGBDistribution(): boolean {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function GetPrimaryRGBDistributionMasks(RedBitMask: Pointer<UINT32>, GreenBitMask: Pointer<UINT32>, BlueBitMask: Pointer<UINT32>): boolean {
+export function GetPrimaryRGBDistributionMasks(RedBitMask: Pointer<UINT32>, GreenBitMask: Pointer<UINT32>, BlueBitMask: Pointer<UINT32>): boolean {
   RedBitMask.value = gusRedMask;
   GreenBitMask.value = gusGreenMask;
   BlueBitMask.value = gusBlueMask;
@@ -2188,7 +2188,7 @@ function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubI
   return ReturnValue;
 }
 
-function EraseMouseCursor(): boolean {
+export function EraseMouseCursor(): boolean {
   let pTmpPointer: PTR;
   let uiPitch: UINT32;
 
@@ -2204,7 +2204,7 @@ function EraseMouseCursor(): boolean {
   return true;
 }
 
-function SetMouseCursorProperties(sOffsetX: INT16, sOffsetY: INT16, usCursorHeight: UINT16, usCursorWidth: UINT16): boolean {
+export function SetMouseCursorProperties(sOffsetX: INT16, sOffsetY: INT16, usCursorHeight: UINT16, usCursorWidth: UINT16): boolean {
   gsMouseCursorXOffset = sOffsetX;
   gsMouseCursorYOffset = sOffsetY;
   gusMouseCursorWidth = usCursorWidth;
@@ -2220,7 +2220,7 @@ function BltToMouseCursor(uiVideoObjectHandle: UINT32, usVideoObjectSubIndex: UI
   return ReturnValue;
 }
 
-function DirtyCursor(): void {
+export function DirtyCursor(): void {
   guiMouseBufferState = BUFFER_DIRTY;
 }
 
@@ -2275,7 +2275,7 @@ function LoadCursorFile(pFilename: PTR): boolean {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): boolean {
+export function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): boolean {
   let ReturnValue: boolean;
   let pTmpPointer: PTR;
   let uiPitch: UINT32;
@@ -2326,13 +2326,13 @@ function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOf
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function StartFrameBufferRender(): void {
+export function StartFrameBufferRender(): void {
   return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function EndFrameBufferRender(): void {
+export function EndFrameBufferRender(): void {
   guiFrameBufferState = BUFFER_DIRTY;
 
   return;
@@ -2340,12 +2340,12 @@ function EndFrameBufferRender(): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function PrintScreen(): void {
+export function PrintScreen(): void {
   gfPrintFrameBuffer = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): boolean {
+export function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): boolean {
   let ReturnCode: HRESULT;
 
   // If we are in 256 colors, then we have to initialize the palette system to 0 (faded out)
@@ -2378,7 +2378,7 @@ function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): boolean {
   return true;
 }
 
-function FatalError(pError: Pointer<UINT8>, ...args: any[]): void {
+export function FatalError(pError: Pointer<UINT8>, ...args: any[]): void {
   let argptr: va_list;
 
   va_start(argptr, pError); // Set up variable argument pointer
@@ -2494,7 +2494,7 @@ function SnapshotSmall(): void {
   //	fclose(disk);
 }
 
-function VideoCaptureToggle(): void {
+export function VideoCaptureToggle(): void {
 }
 
 function VideoMovieCapture(fEnable: boolean): void {

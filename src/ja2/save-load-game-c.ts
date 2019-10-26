@@ -10,9 +10,9 @@ let gMusicModeToPlay: boolean = false;
 
 let gfUseConsecutiveQuickSaveSlots: boolean = false;
 let guiCurrentQuickSaveNumber: UINT32 = 0;
-let guiLastSaveGameNum: UINT32;
+export let guiLastSaveGameNum: UINT32;
 
-let guiJA2EncryptionSet: UINT32 = 0;
+export let guiJA2EncryptionSet: UINT32 = 0;
 
 interface GENERAL_SAVE_INFO {
   // The screen that the gaem was saved from
@@ -215,7 +215,7 @@ interface GENERAL_SAVE_INFO {
   ubFiller: UINT8[] /* [550] */; // This structure should be 1024 bytes
 }
 
-let guiSaveGameVersion: UINT32 = 0;
+export let guiSaveGameVersion: UINT32 = 0;
 
 /////////////////////////////////////////////////////
 //
@@ -227,7 +227,7 @@ let guiSaveGameVersion: UINT32 = 0;
 
 let gubSaveGameLoc: UINT8 = 0;
 
-let guiScreenToGotoAfterLoadingSavedGame: UINT32 = 0;
+export let guiScreenToGotoAfterLoadingSavedGame: UINT32 = 0;
 
 /////////////////////////////////////////////////////
 //
@@ -246,7 +246,7 @@ let guiScreenToGotoAfterLoadingSavedGame: UINT32 = 0;
 //
 /////////////////////////////////////////////////////
 
-function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): boolean {
+export function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let hFile: HWFILE = 0;
   let SaveGameHeader: SAVED_GAME_HEADER;
@@ -740,9 +740,9 @@ FAILED_TO_SAVE:
   return false;
 }
 
-let guiBrokenSaveGameVersion: UINT32 = 0;
+export let guiBrokenSaveGameVersion: UINT32 = 0;
 
-function LoadSavedGame(ubSavedGameID: UINT8): boolean {
+export function LoadSavedGame(ubSavedGameID: UINT8): boolean {
   let hFile: HWFILE;
   let SaveGameHeader: SAVED_GAME_HEADER;
   let uiNumBytesRead: UINT32 = 0;
@@ -2097,7 +2097,7 @@ BOOLEAN LoadPtrInfo( PTR *pData, UINT32 uiSizeOfObject, HWFILE hFile )
 }
 */
 
-function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean {
+export function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean {
   let uiFileSize: UINT32;
   let uiNumBytesWritten: UINT32 = 0;
   let hSrcFile: HWFILE;
@@ -2154,7 +2154,7 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean {
+export function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean {
   let uiFileSize: UINT32;
   let uiNumBytesWritten: UINT32 = 0;
   let hSrcFile: HWFILE;
@@ -2471,7 +2471,7 @@ function LoadTacticalStatusFromSavedGame(hFile: HWFILE): boolean {
   return true;
 }
 
-function CopySavedSoldierInfoToNewSoldier(pDestSourceInfo: Pointer<SOLDIERTYPE>, pSourceInfo: Pointer<SOLDIERTYPE>): boolean {
+export function CopySavedSoldierInfoToNewSoldier(pDestSourceInfo: Pointer<SOLDIERTYPE>, pSourceInfo: Pointer<SOLDIERTYPE>): boolean {
   // Copy the old soldier information over to the new structure
   memcpy(pDestSourceInfo, pSourceInfo, sizeof(SOLDIERTYPE));
 
@@ -2693,7 +2693,7 @@ function LoadWatchedLocsFromSavedGame(hFile: HWFILE): boolean {
   return true;
 }
 
-function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: STR): void {
+export function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: STR): void {
   // if we are creating the QuickSave file
   if (ubSaveGameID == 0) {
       sprintf(pzNewFileName, "%S\\%S.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_QUICKSAVE_NAME], pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
@@ -3334,7 +3334,7 @@ function SaveMeanwhileDefsFromSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function DoesUserHaveEnoughHardDriveSpace(): boolean {
+export function DoesUserHaveEnoughHardDriveSpace(): boolean {
   let uiBytesFree: UINT32 = 0;
 
   uiBytesFree = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
@@ -3347,7 +3347,7 @@ function DoesUserHaveEnoughHardDriveSpace(): boolean {
   return true;
 }
 
-function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>): void {
+export function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>): void {
   // if the current sector is valid
   if (gfWorldLoaded) {
     psSectorX.value = gWorldSectorX;
@@ -3562,7 +3562,7 @@ function UpdateMercMercContractInfo(): void {
   }
 }
 
-function GetNumberForAutoSave(fLatestAutoSave: boolean): INT8 {
+export function GetNumberForAutoSave(fLatestAutoSave: boolean): INT8 {
   let zFileName1: CHAR[] /* [256] */;
   let zFileName2: CHAR[] /* [256] */;
   let hFile: HWFILE;

@@ -1,6 +1,6 @@
 // extern BOOLEAN fIMPCompletedFlag;
 
-const enum Enum71 {
+export const enum Enum71 {
   IMP_HOME_PAGE,
   IMP_BEGIN,
   IMP_FINISH,
@@ -19,4 +19,4 @@ const enum Enum71 {
   IMP_NUM_PAGES,
 }
 
-const COST_OF_PROFILE = 3000;
+export const COST_OF_PROFILE = 3000;

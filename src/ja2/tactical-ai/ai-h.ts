@@ -1,8 +1,8 @@
-const AI_PATHCOST_RADIUS = 9;
+export const AI_PATHCOST_RADIUS = 9;
 
 // AI actions
 
-const enum Enum288 {
+export const enum Enum288 {
   CALL_NONE = 0,
   CALL_1_PREY,
   CALL_MULTIPLE_PREY,
@@ -11,13 +11,13 @@ const enum Enum288 {
   NUM_CREATURE_CALLS,
 }
 
-const DONTFORCE = 0;
-const FORCE = 1;
+export const DONTFORCE = 0;
+export const FORCE = 1;
 
 // ANY NEW ACTIONS ADDED - UPDATE OVERHEAD.C ARRAY WITH ACTION'S STRING VALUE
-const FIRST_MOVEMENT_ACTION = Enum289.AI_ACTION_RANDOM_PATROL;
-const LAST_MOVEMENT_ACTION = Enum289.AI_ACTION_MOVE_TO_CLIMB;
-const enum Enum289 {
+export const FIRST_MOVEMENT_ACTION = Enum289.AI_ACTION_RANDOM_PATROL;
+export const LAST_MOVEMENT_ACTION = Enum289.AI_ACTION_MOVE_TO_CLIMB;
+export const enum Enum289 {
   AI_ACTION_NONE = 0, // maintain current position & facing
 
   // actions that involve a move to another tile
@@ -79,7 +79,7 @@ const enum Enum289 {
   AI_ACTION_OFFER_SURRENDER, // offer surrender to the player
 }
 
-const enum Enum290 {
+export const enum Enum290 {
   QUOTE_ACTION_ID_CHECKFORDEST = 1,
   QUOTE_ACTION_ID_TURNTOWARDSPLAYER,
   QUOTE_ACTION_ID_DRAWGUN,
@@ -90,34 +90,34 @@ const enum Enum290 {
   QUOTE_ACTION_ID_TRAVERSE_NORTH,
 }
 
-const RTP_COMBAT_AGGRESSIVE = 1;
-const RTP_COMBAT_CONSERVE = 2;
-const RTP_COMBAT_REFRAIN = 3;
+export const RTP_COMBAT_AGGRESSIVE = 1;
+export const RTP_COMBAT_CONSERVE = 2;
+export const RTP_COMBAT_REFRAIN = 3;
 
 // NB THESE THREE FLAGS SHOULD BE REMOVED FROM CODE
-const AI_RTP_OPTION_CAN_RETREAT = 0x01;
-const AI_RTP_OPTION_CAN_SEEK_COVER = 0x02;
+export const AI_RTP_OPTION_CAN_RETREAT = 0x01;
+export const AI_RTP_OPTION_CAN_SEEK_COVER = 0x02;
 const AI_RTP_OPTION_CAN_HELP = 0x04;
 
-const AI_CAUTIOUS = 0x08;
-const AI_HANDLE_EVERY_FRAME = 0x10;
-const AI_ASLEEP = 0x20;
-const AI_LOCK_DOOR_INCLUDES_CLOSE = 0x40;
-const AI_CHECK_SCHEDULE = 0x80;
+export const AI_CAUTIOUS = 0x08;
+export const AI_HANDLE_EVERY_FRAME = 0x10;
+export const AI_ASLEEP = 0x20;
+export const AI_LOCK_DOOR_INCLUDES_CLOSE = 0x40;
+export const AI_CHECK_SCHEDULE = 0x80;
 
-const NOT_NEW_SITUATION = 0;
-const WAS_NEW_SITUATION = 1;
-const IS_NEW_SITUATION = 2;
+export const NOT_NEW_SITUATION = 0;
+export const WAS_NEW_SITUATION = 1;
+export const IS_NEW_SITUATION = 2;
 
 const DIFF_ENEMY_EQUIP_MOD = 0;
-const DIFF_ENEMY_TO_HIT_MOD = 1;
+export const DIFF_ENEMY_TO_HIT_MOD = 1;
 const DIFF_ENEMY_INTERRUPT_MOD = 2;
-const DIFF_RADIO_RED_ALERT = 3;
-const DIFF_MAX_COVER_RANGE = 4;
+export const DIFF_RADIO_RED_ALERT = 3;
+export const DIFF_MAX_COVER_RANGE = 4;
 const MAX_DIFF_PARMS = 5; // how many different difficulty variables?
 
 // Kris:  Added these as I need specific searches on certain sides.
-const enum Enum291 {
+export const enum Enum291 {
   NORTH_EDGEPOINT_SEARCH,
   EAST_EDGEPOINT_SEARCH,
   SOUTH_EDGEPOINT_SEARCH,

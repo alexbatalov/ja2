@@ -10,15 +10,15 @@ let guiNumFlashItemSlots: UINT32 = 0;
 /* static */ let gsTempGridno: INT16;
 /* static */ let bTempFrequency: INT8;
 
-let gpBoobyTrapSoldier: Pointer<SOLDIERTYPE>;
+export let gpBoobyTrapSoldier: Pointer<SOLDIERTYPE>;
 let gpBoobyTrapItemPool: Pointer<ITEM_POOL>;
-let gsBoobyTrapGridNo: INT16;
+export let gsBoobyTrapGridNo: INT16;
 let gbBoobyTrapLevel: INT8;
 let gfDisarmingBuriedBomb: boolean;
 let gbTrapDifficulty: INT8;
 let gfJustFoundBoobyTrap: boolean = false;
 
-function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, bLevel: INT8): boolean {
+export function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, bLevel: INT8): boolean {
   let fBadChangeToGetThrough: boolean = false;
 
   if (pTargetSoldier != null) {
@@ -64,7 +64,7 @@ function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTa
   return true;
 }
 
-function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: INT8, usHandItem: UINT16, fFromUI: boolean): INT32 {
+export function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: INT8, usHandItem: UINT16, fFromUI: boolean): INT32 {
   let pTargetSoldier: Pointer<SOLDIERTYPE> = null;
   let usSoldierIndex: UINT16;
   let sTargetGridNo: INT16;
@@ -961,7 +961,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   return ITEM_HANDLE_OK;
 }
 
-function HandleSoldierDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function HandleSoldierDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   // Does this have detonator that needs info?
   if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.DETONATOR) != ITEM_NOT_FOUND || FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.REMDETONATOR) != ITEM_NOT_FOUND) {
     StartBombMessageBox(pSoldier, sGridNo);
@@ -983,11 +983,11 @@ function HandleSoldierDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): 
   }
 }
 
-function HandleSoldierUseRemote(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function HandleSoldierUseRemote(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   StartBombMessageBox(pSoldier, sGridNo);
 }
 
-function SoldierHandleDropItem(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SoldierHandleDropItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   // LOOK IN PANDING DATA FOR ITEM TO DROP, AND LOCATION
   if (pSoldier.value.pTempObject != null) {
     if (pSoldier.value.bVisible != -1) {
@@ -1002,7 +1002,7 @@ function SoldierHandleDropItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   // Determine what to do
   let ubDirection: UINT8;
 
@@ -1057,7 +1057,7 @@ function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
   }
 }
 
-function SoldierGiveItem(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): void {
+export function SoldierGiveItem(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): void {
   let sActionGridNo: INT16;
   let sAdjustedGridNo: INT16;
   let ubDirection: UINT8;
@@ -1103,7 +1103,7 @@ function SoldierGiveItem(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer
   }
 }
 
-function SoldierDropItem(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>): boolean {
+export function SoldierDropItem(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>): boolean {
   pSoldier.value.pTempObject = MemAlloc(sizeof(OBJECTTYPE));
   if (pSoldier.value.pTempObject == null) {
     // OUT OF MEMORY! YIKES!
@@ -1114,7 +1114,7 @@ function SoldierDropItem(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYP
   return true;
 }
 
-function SoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8): void {
+export function SoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8): void {
   let sActionGridNo: INT16;
 
   // Remove any previous actions
@@ -1170,7 +1170,7 @@ function HandleAutoPlaceFail(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, 
   }
 }
 
-function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8, pfSelectionList: Pointer<boolean>): void {
+export function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8, pfSelectionList: Pointer<boolean>): void {
   let pItemPool: Pointer<ITEM_POOL>;
   let pItemPoolToDelete: Pointer<ITEM_POOL> = null;
   let Object: OBJECTTYPE;
@@ -1357,7 +1357,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
   SetCustomizableTimerCallbackAndDelay(1000, CheckForPickedOwnership, true);
 }
 
-function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8): void {
+export function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8): void {
   let pItemPool: Pointer<ITEM_POOL>;
   let usNum: UINT16;
 
@@ -1491,15 +1491,15 @@ function RemoveItemGraphicFromWorld(pItem: Pointer<INVTYPE>, sGridNo: INT16, ubL
 }
 
 // INVENTORY POOL STUFF
-function AddItemToPool(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8): Pointer<OBJECTTYPE> {
+export function AddItemToPool(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8): Pointer<OBJECTTYPE> {
   return InternalAddItemToPool(addressof(sGridNo), pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel, null);
 }
 
-function AddItemToPoolAndGetIndex(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, piItemIndex: Pointer<INT32>): Pointer<OBJECTTYPE> {
+export function AddItemToPoolAndGetIndex(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, piItemIndex: Pointer<INT32>): Pointer<OBJECTTYPE> {
   return InternalAddItemToPool(addressof(sGridNo), pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel, piItemIndex);
 }
 
-function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, piItemIndex: Pointer<INT32>): Pointer<OBJECTTYPE> {
+export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, piItemIndex: Pointer<INT32>): Pointer<OBJECTTYPE> {
   let pItemPool: Pointer<ITEM_POOL>;
   let pItemPoolTemp: Pointer<ITEM_POOL>;
   let iWorldItem: INT32;
@@ -1759,7 +1759,7 @@ function ItemExistsAtLocation(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8)
   return false;
 }
 
-function ItemTypeExistsAtLocation(sGridNo: INT16, usItem: UINT16, ubLevel: UINT8, piItemIndex: Pointer<INT32>): boolean {
+export function ItemTypeExistsAtLocation(sGridNo: INT16, usItem: UINT16, ubLevel: UINT8, piItemIndex: Pointer<INT32>): boolean {
   let pItemPool: Pointer<ITEM_POOL>;
   let pItemPoolTemp: Pointer<ITEM_POOL>;
   let fItemFound: boolean = false;
@@ -1822,7 +1822,7 @@ function GetItemPoolForIndex(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8):
   return null;
 }
 
-function DoesItemPoolContainAnyHiddenItems(pItemPool: Pointer<ITEM_POOL>): boolean {
+export function DoesItemPoolContainAnyHiddenItems(pItemPool: Pointer<ITEM_POOL>): boolean {
   // LOOP THROUGH LIST TO FIND NODE WE WANT
   while (pItemPool != null) {
     if (gWorldItems[pItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM) {
@@ -1876,7 +1876,7 @@ function LookForHiddenItems(sGridNo: INT16, ubLevel: INT8, fSetLocator: boolean,
   return fFound;
 }
 
-function GetZLevelOfItemPoolGivenStructure(sGridNo: INT16, ubLevel: UINT8, pStructure: Pointer<STRUCTURE>): INT8 {
+export function GetZLevelOfItemPoolGivenStructure(sGridNo: INT16, ubLevel: UINT8, pStructure: Pointer<STRUCTURE>): INT8 {
   let pItemPool: Pointer<ITEM_POOL>;
 
   if (pStructure == null) {
@@ -1890,7 +1890,7 @@ function GetZLevelOfItemPoolGivenStructure(sGridNo: INT16, ubLevel: UINT8, pStru
   return 0;
 }
 
-function GetLargestZLevelOfItemPool(pItemPool: Pointer<ITEM_POOL>): INT8 {
+export function GetLargestZLevelOfItemPool(pItemPool: Pointer<ITEM_POOL>): INT8 {
   // OK, loop through pools and get any height != 0........
   while (pItemPool != null) {
     if (pItemPool.value.bRenderZHeightAboveLevel > 0) {
@@ -1938,7 +1938,7 @@ function RemoveItemPool(sGridNo: INT16, ubLevel: UINT8): void {
   }
 }
 
-function RemoveAllUnburiedItems(sGridNo: INT16, ubLevel: UINT8): void {
+export function RemoveAllUnburiedItems(sGridNo: INT16, ubLevel: UINT8): void {
   let pItemPool: Pointer<ITEM_POOL>;
 
   // Check for and existing pool on the object layer
@@ -1986,7 +1986,7 @@ function HandleItemObscuredFlag(sGridNo: INT16, ubLevel: UINT8): void {
   }
 }
 
-function SetItemPoolVisibilityOn(pItemPool: Pointer<ITEM_POOL>, bAllGreaterThan: INT8, fSetLocator: boolean): boolean {
+export function SetItemPoolVisibilityOn(pItemPool: Pointer<ITEM_POOL>, bAllGreaterThan: INT8, fSetLocator: boolean): boolean {
   let pItemPoolTemp: Pointer<ITEM_POOL>;
   let fAtLeastModified: boolean = false;
   let fDeleted: boolean = false;
@@ -2083,7 +2083,7 @@ function SetItemPoolVisibilityOn(pItemPool: Pointer<ITEM_POOL>, bAllGreaterThan:
   return true;
 }
 
-function SetItemPoolVisibilityHidden(pItemPool: Pointer<ITEM_POOL>): void {
+export function SetItemPoolVisibilityHidden(pItemPool: Pointer<ITEM_POOL>): void {
   let pItemPoolTemp: Pointer<ITEM_POOL>;
 
   pItemPoolTemp = pItemPool;
@@ -2136,7 +2136,7 @@ function AdjustItemPoolVisibility(pItemPool: Pointer<ITEM_POOL>): void {
   HandleItemObscuredFlag(pItemPool.value.sGridNo, pItemPool.value.ubLevel);
 }
 
-function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): boolean {
+export function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): boolean {
   let pItemPool: Pointer<ITEM_POOL>;
   let pItemPoolTemp: Pointer<ITEM_POOL>;
   let fItemFound: boolean = false;
@@ -2238,7 +2238,7 @@ function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): 
   return false;
 }
 
-function MoveItemPools(sStartPos: INT16, sEndPos: INT16): boolean {
+export function MoveItemPools(sStartPos: INT16, sEndPos: INT16): boolean {
   // note, only works between locations on the ground
   let pItemPool: Pointer<ITEM_POOL>;
   let TempWorldItem: WORLDITEM;
@@ -2252,7 +2252,7 @@ function MoveItemPools(sStartPos: INT16, sEndPos: INT16): boolean {
   return true;
 }
 
-function GetItemPool(usMapPos: UINT16, ppItemPool: Pointer<Pointer<ITEM_POOL>>, ubLevel: UINT8): boolean {
+export function GetItemPool(usMapPos: UINT16, ppItemPool: Pointer<Pointer<ITEM_POOL>>, ubLevel: UINT8): boolean {
   let pObject: Pointer<LEVELNODE>;
 
   if (ubLevel == 0) {
@@ -2281,7 +2281,7 @@ function GetItemPool(usMapPos: UINT16, ppItemPool: Pointer<Pointer<ITEM_POOL>>, 
   return false;
 }
 
-function NotifySoldiersToLookforItems(): void {
+export function NotifySoldiersToLookforItems(): void {
   let cnt: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -2294,7 +2294,7 @@ function NotifySoldiersToLookforItems(): void {
   }
 }
 
-function AllSoldiersLookforItems(fShowLocators: boolean): void {
+export function AllSoldiersLookforItems(fShowLocators: boolean): void {
   let cnt: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -2323,7 +2323,7 @@ function GetNumOkForDisplayItemsInPool(pItemPool: Pointer<ITEM_POOL>, bZLevel: I
   return cnt;
 }
 
-function AnyItemsVisibleOnLevel(pItemPool: Pointer<ITEM_POOL>, bZLevel: INT8): boolean {
+export function AnyItemsVisibleOnLevel(pItemPool: Pointer<ITEM_POOL>, bZLevel: INT8): boolean {
   if ((gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
     return true;
   }
@@ -2342,7 +2342,7 @@ function AnyItemsVisibleOnLevel(pItemPool: Pointer<ITEM_POOL>, bZLevel: INT8): b
   return false;
 }
 
-function ItemPoolOKForDisplay(pItemPool: Pointer<ITEM_POOL>, bZLevel: INT8): boolean {
+export function ItemPoolOKForDisplay(pItemPool: Pointer<ITEM_POOL>, bZLevel: INT8): boolean {
   if (gTacticalStatus.uiFlags & SHOW_ALL_ITEMS) {
     return true;
   }
@@ -2380,7 +2380,7 @@ function ItemPoolOKForPickup(pSoldier: Pointer<SOLDIERTYPE>, pItemPool: Pointer<
   return true;
 }
 
-function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bCommand: UINT8, bZLevel: INT8, sXPos: INT16, sYPos: INT16): boolean {
+export function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bCommand: UINT8, bZLevel: INT8, sXPos: INT16, sYPos: INT16): boolean {
   let sY: INT16;
   let pItem: Pointer<INVTYPE>;
   let pTempItemPool: Pointer<ITEM_POOL>;
@@ -2681,7 +2681,7 @@ function AddFlashItemSlot(pItemPool: Pointer<ITEM_POOL>, Callback: ITEM_POOL_LOC
   return iFlashItemIndex;
 }
 
-function RemoveFlashItemSlot(pItemPool: Pointer<ITEM_POOL>): boolean {
+export function RemoveFlashItemSlot(pItemPool: Pointer<ITEM_POOL>): boolean {
   let uiCount: UINT32;
 
   CHECKF(pItemPool != null);
@@ -2704,7 +2704,7 @@ function RemoveFlashItemSlot(pItemPool: Pointer<ITEM_POOL>): boolean {
   return true;
 }
 
-function HandleFlashingItems(): void {
+export function HandleFlashingItems(): void {
   let cnt: UINT32;
   let pItemPool: Pointer<ITEM_POOL>;
   let pObject: Pointer<LEVELNODE>;
@@ -2790,7 +2790,7 @@ function HandleFlashingItems(): void {
   }
 }
 
-function RenderTopmostFlashingItems(): void {
+export function RenderTopmostFlashingItems(): void {
   let cnt: UINT32;
   let pItemPool: Pointer<ITEM_POOL>;
   let pLocator: Pointer<ITEM_POOL_LOCATOR>;
@@ -2856,7 +2856,7 @@ function RenderTopmostFlashingItems(): void {
   }
 }
 
-function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer<Pointer<SOLDIERTYPE>>): boolean {
+export function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer<Pointer<SOLDIERTYPE>>): boolean {
   let pTSoldier: Pointer<SOLDIERTYPE>;
   let usSoldierIndex: UINT16;
   let pObject: Pointer<OBJECTTYPE>;
@@ -2913,7 +2913,7 @@ function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer
   return false;
 }
 
-function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pTSoldier: Pointer<SOLDIERTYPE>;
   let bInvPos: INT8;
   let TempObject: OBJECTTYPE;
@@ -3087,7 +3087,7 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   pTSoldier.value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
 }
 
-function AdjustGridNoForItemPlacement(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): INT16 {
+export function AdjustGridNoForItemPlacement(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): INT16 {
   let pStructure: Pointer<STRUCTURE>;
   let sDesiredLevel: INT16;
   let sActionGridNo: INT16;
@@ -3546,7 +3546,7 @@ function SwitchMessageBoxCallBack(ubExitValue: UINT8): void {
   }
 }
 
-function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fCheckAroundGridno: boolean, psProblemGridNo: Pointer<INT16>): boolean {
+export function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fCheckAroundGridno: boolean, psProblemGridNo: Pointer<INT16>): boolean {
   let sNextGridNo: INT16;
   // BOOLEAN fWorthChecking = FALSE, fProblemExists = FALSE, fDetectedProblem = FALSE;
   let ubDetectLevel: UINT8;
@@ -3698,7 +3698,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
   }
 }
 
-function MineSpottedDialogueCallBack(): void {
+export function MineSpottedDialogueCallBack(): void {
   let pItemPool: Pointer<ITEM_POOL>;
 
   // ATE: REALLY IMPORTANT - ALL CALLBACK ITEMS SHOULD UNLOCK
@@ -3749,7 +3749,7 @@ function AddBlueFlag(sGridNo: INT16, bLevel: INT8): void {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-function RemoveBlueFlag(sGridNo: INT16, bLevel: INT8): void {
+export function RemoveBlueFlag(sGridNo: INT16, bLevel: INT8): void {
   ApplyMapChangesToMapTempFile(true);
   gpWorldLevelData[sGridNo].uiFlags &= ~(MAPELEMENT_PLAYER_MINE_PRESENT);
 
@@ -3764,7 +3764,7 @@ function RemoveBlueFlag(sGridNo: INT16, bLevel: INT8): void {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-function MakeNPCGrumpyForMinorOffense(pSoldier: Pointer<SOLDIERTYPE>, pOffendingSoldier: Pointer<SOLDIERTYPE>): void {
+export function MakeNPCGrumpyForMinorOffense(pSoldier: Pointer<SOLDIERTYPE>, pOffendingSoldier: Pointer<SOLDIERTYPE>): void {
   CancelAIAction(pSoldier, true);
 
   switch (pSoldier.value.ubProfile) {
@@ -3869,7 +3869,7 @@ function HandleItemGlowFlag(sGridNo: INT16, ubLevel: UINT8, fOn: boolean): void 
   }
 }
 
-function ToggleItemGlow(fOn: boolean): void {
+export function ToggleItemGlow(fOn: boolean): void {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -3886,7 +3886,7 @@ function ToggleItemGlow(fOn: boolean): void {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-function ContinuePastBoobyTrapInMapScreen(pObject: Pointer<OBJECTTYPE>, pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function ContinuePastBoobyTrapInMapScreen(pObject: Pointer<OBJECTTYPE>, pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let fBoobyTrapKnowledge: boolean;
   let bTrapDifficulty: INT8;
   let bTrapDetectLevel: INT8;
@@ -3946,13 +3946,13 @@ function ClearAllItemPools(): void {
 }
 
 // Refresh item pools
-function RefreshItemPools(pItemList: Pointer<WORLDITEM>, iNumberOfItems: INT32): void {
+export function RefreshItemPools(pItemList: Pointer<WORLDITEM>, iNumberOfItems: INT32): void {
   ClearAllItemPools();
 
   RefreshWorldItemsIntoItemPools(pItemList, iNumberOfItems);
 }
 
-function FindNearestAvailableGridNoForItem(sSweetGridNo: INT16, ubRadius: INT8): INT16 {
+export function FindNearestAvailableGridNoForItem(sSweetGridNo: INT16, ubRadius: INT8): INT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -4035,7 +4035,7 @@ function FindNearestAvailableGridNoForItem(sSweetGridNo: INT16, ubRadius: INT8):
   return NOWHERE;
 }
 
-function CanPlayerUseRocketRifle(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: boolean): boolean {
+export function CanPlayerUseRocketRifle(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: boolean): boolean {
   if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem == Enum225.ROCKET_RIFLE || pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem == Enum225.AUTO_ROCKET_RIFLE) {
     // check imprint ID
     // NB not-imprinted value is NO_PROFILE

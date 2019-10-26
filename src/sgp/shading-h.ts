@@ -1,1 +1,1 @@
-const DEFAULT_SHADE_LEVEL = 4;
+export const DEFAULT_SHADE_LEVEL = 4;

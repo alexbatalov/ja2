@@ -1,7 +1,7 @@
 // the .h to the mine management system
 
 // the mines
-const enum Enum179 {
+export const enum Enum179 {
   MINE_SAN_MONA = 0,
   MINE_DRASSEN,
   MINE_ALMA,
@@ -11,7 +11,7 @@ const enum Enum179 {
   MAX_NUMBER_OF_MINES,
 }
 
-const enum Enum180 {
+export const enum Enum180 {
   MINER_FRED = 0,
   MINER_MATT,
   MINER_OSWALD,
@@ -21,7 +21,7 @@ const enum Enum180 {
 }
 
 // different types of mines
-const enum Enum181 {
+export const enum Enum181 {
   SILVER_MINE = 0,
   GOLD_MINE,
   NUM_MINE_TYPES,
@@ -39,7 +39,7 @@ const enum Enum182 {
 }
 
 // head miner quote types
-const enum Enum183 {
+export const enum Enum183 {
   HEAD_MINER_STRATEGIC_QUOTE_RUNNING_OUT = 0,
   HEAD_MINER_STRATEGIC_QUOTE_CREATURES_ATTACK,
   HEAD_MINER_STRATEGIC_QUOTE_CREATURES_GONE,
@@ -48,13 +48,13 @@ const enum Enum183 {
 }
 
 // the strategic mine structures
-interface MINE_LOCATION_TYPE {
+export interface MINE_LOCATION_TYPE {
   sSectorX: INT16; // x value of sector mine is in
   sSectorY: INT16; // y value of sector mine is in
   bAssociatedTown: INT8; // associated town of this mine
 }
 
-interface MINE_STATUS_TYPE {
+export interface MINE_STATUS_TYPE {
   ubMineType: UINT8; // type of mine (silver or gold)
   filler1: BYTE[] /* [3] */;
   uiMaxRemovalRate: UINT32; // fastest rate we can move ore from this mine in period
@@ -79,7 +79,7 @@ interface MINE_STATUS_TYPE {
   filler: BYTE[] /* [11] */; // reserved for expansion
 }
 
-interface HEAD_MINER_TYPE {
+export interface HEAD_MINER_TYPE {
   usProfileId: UINT16;
   bQuoteNum: INT8[] /* [NUM_HEAD_MINER_STRATEGIC_QUOTES] */;
   ubExternalFace: UINT8;

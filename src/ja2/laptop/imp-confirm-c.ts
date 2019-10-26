@@ -79,15 +79,15 @@ let uiMouthYPositions: UINT16[] /* [] */ = [
   26,
 ];
 
-let fLoadingCharacterForPreviousImpProfile: boolean = false;
+export let fLoadingCharacterForPreviousImpProfile: boolean = false;
 
-function EnterIMPConfirm(): void {
+export function EnterIMPConfirm(): void {
   // create buttons
   CreateConfirmButtons();
   return;
 }
 
-function RenderIMPConfirm(): void {
+export function RenderIMPConfirm(): void {
   // the background
   RenderProfileBackGround();
 
@@ -100,13 +100,13 @@ function RenderIMPConfirm(): void {
   return;
 }
 
-function ExitIMPConfirm(): void {
+export function ExitIMPConfirm(): void {
   // destroy buttons
   DestroyConfirmButtons();
   return;
 }
 
-function HandleIMPConfirm(): void {
+export function HandleIMPConfirm(): void {
   return;
 }
 
@@ -502,7 +502,7 @@ function LoadInCurrentImpCharacter(): void {
   return;
 }
 
-function ResetIMPCharactersEyesAndMouthOffsets(ubMercProfileID: UINT8): void {
+export function ResetIMPCharactersEyesAndMouthOffsets(ubMercProfileID: UINT8): void {
   // ATE: Check boundary conditions!
   if (((gMercProfiles[ubMercProfileID].ubFaceIndex - 200) > 16) || (ubMercProfileID >= Enum268.PROF_HUMMER)) {
     return;

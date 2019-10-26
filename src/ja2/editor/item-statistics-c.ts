@@ -4,7 +4,7 @@ let giSciFiCheckboxButton: INT32 = -1;
 let giAlarmTriggerButton: INT32 = -1;
 let giOwnershipGroupButton: INT32 = -1;
 
-let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
+export let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
   "Klaxon Mine",
   "Flare Mine",
   "Teargas Explosion",
@@ -41,7 +41,7 @@ let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
   "Big teargas",
 ];
 
-function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
+export function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
   if (!pItem || pItem.value.usItem != Enum225.ACTION_ITEM)
     return null;
   if (pItem.value.bActionValue != Enum191.ACTION_ITEM_BLOW_UP) {
@@ -143,8 +143,8 @@ let guiDetonatorButton: UINT32;
 let gfDetonator: boolean;
 
 let guiActionItemButton: UINT32;
-let gbActionItemIndex: INT8 = Enum49.ACTIONITEM_MEDIUM;
-let gbDefaultBombTrapLevel: INT8 = 9;
+export let gbActionItemIndex: INT8 = Enum49.ACTIONITEM_MEDIUM;
+export let gbDefaultBombTrapLevel: INT8 = 9;
 
 const enum Enum47 {
   EDITING_NOTHING,
@@ -164,20 +164,20 @@ const enum Enum47 {
 
 let gbEditingMode: INT8 = Enum47.EDITING_NOTHING;
 
-let gpItem: Pointer<OBJECTTYPE> = null;
-let gfShowItemStatsPanel: boolean;
-let gsItemGridNo: INT16;
+export let gpItem: Pointer<OBJECTTYPE> = null;
+export let gfShowItemStatsPanel: boolean;
+export let gsItemGridNo: INT16;
 
-let gpEditingItemPool: Pointer<ITEM_POOL> = null;
+export let gpEditingItemPool: Pointer<ITEM_POOL> = null;
 
-function ShowItemStatsPanel(): void {
+export function ShowItemStatsPanel(): void {
   ShowEditorButtons(Enum32.FIRST_ITEMSTATS_BUTTON, Enum32.LAST_ITEMSTATS_BUTTON);
   if (iCurrentTaskbar == Enum36.TASK_MERCS || !gpItem)
     HideEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
   gfShowItemStatsPanel = true;
 }
 
-function HideItemStatsPanel(): void {
+export function HideItemStatsPanel(): void {
   HideEditorButtons(Enum32.FIRST_ITEMSTATS_BUTTON, Enum32.LAST_ITEMSTATS_BUTTON);
   SpecifyItemToEdit(null, -1);
   gfShowItemStatsPanel = false;
@@ -189,7 +189,7 @@ function EnableItemStatsPanel(): void {
 function DisableItemStatsPanel(): void {
 }
 
-function ExecuteItemStatsCmd(ubAction: UINT8): void {
+export function ExecuteItemStatsCmd(ubAction: UINT8): void {
   switch (ubAction) {
     case Enum48.ITEMSTATS_APPLY:
       if (gpItem && gpItem.value.usItem == Enum225.ACTION_ITEM) {
@@ -282,7 +282,7 @@ function RemoveItemGUI(): void {
     }
 }
 
-function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
+export function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
   // Set the global item pointer to point to the new item
   if (gpItem == pItem)
     return;
@@ -396,7 +396,7 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
 }
 
 // called from the taskbar renderer.
-function UpdateItemStatsPanel(): void {
+export function UpdateItemStatsPanel(): void {
   SetFont(FONT10ARIAL());
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
@@ -906,7 +906,7 @@ function OwnershipGroupButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   }
 }
 
-function SetOwnershipGroup(ubNewGroup: UINT8): void {
+export function SetOwnershipGroup(ubNewGroup: UINT8): void {
   gpItem.value.ubOwnerCivGroup = ubNewGroup;
   SpecifyButtonText(giOwnershipGroupButton, gszCivGroupNames[ubNewGroup]);
 }
@@ -1148,7 +1148,7 @@ function ActionItemCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function ChangeActionItem(pItem: Pointer<OBJECTTYPE>, bActionItemIndex: INT8): void {
+export function ChangeActionItem(pItem: Pointer<OBJECTTYPE>, bActionItemIndex: INT8): void {
   pItem.value.usItem = Enum225.ACTION_ITEM;
   pItem.value.bActionValue = Enum191.ACTION_ITEM_BLOW_UP;
   switch (bActionItemIndex) {
@@ -1280,7 +1280,7 @@ function ChangeActionItem(pItem: Pointer<OBJECTTYPE>, bActionItemIndex: INT8): v
   }
 }
 
-function UpdateActionItem(bActionItemIndex: INT8): void {
+export function UpdateActionItem(bActionItemIndex: INT8): void {
   gbActionItemIndex = bActionItemIndex; // used for future new actionitems as the default.
 
   if (!gpItemPool || !gpItem)

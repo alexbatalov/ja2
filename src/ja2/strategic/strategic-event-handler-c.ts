@@ -5,9 +5,9 @@ const MEDUNA_ITEM_DROP_OFF_SECTOR_Z = 0;
 
 let guiPabloExtraDaysBribed: UINT32 = 0;
 
-let gubCambriaMedicalObjects: UINT8;
+export let gubCambriaMedicalObjects: UINT8;
 
-function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
+export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   let i: UINT8;
   let j: UINT8;
   let usItem: UINT16;
@@ -373,7 +373,7 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
   }
 }
 
-function AddSecondAirportAttendant(): void {
+export function AddSecondAirportAttendant(): void {
   // add the second airport attendant to the Drassen airport...
   gMercProfiles[99].sSectorX = BOBBYR_SHIPPING_DEST_SECTOR_X;
   gMercProfiles[99].sSectorY = BOBBYR_SHIPPING_DEST_SECTOR_Y;
@@ -402,7 +402,7 @@ function HandlePossiblyDamagedPackage(): void {
   SetFactFalse(Enum170.FACT_SHIPMENT_DELAYED_24_HOURS);
 }
 
-function CheckForKingpinsMoneyMissing(fFirstCheck: boolean): void {
+export function CheckForKingpinsMoneyMissing(fFirstCheck: boolean): void {
   let uiLoop: UINT32;
   let uiTotalCash: UINT32 = 0;
   let fKingpinWillDiscover: boolean = false;
@@ -469,7 +469,7 @@ function CheckForKingpinsMoneyMissing(fFirstCheck: boolean): void {
   }
 }
 
-function HandleNPCSystemEvent(uiEvent: UINT32): void {
+export function HandleNPCSystemEvent(uiEvent: UINT32): void {
   if (uiEvent < NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS) {
     switch (uiEvent) {
       case Enum170.FACT_PABLOS_BRIBED:
@@ -595,7 +595,7 @@ function HandleNPCSystemEvent(uiEvent: UINT32): void {
   }
 }
 
-function HandleEarlyMorningEvents(): void {
+export function HandleEarlyMorningEvents(): void {
   let cnt: UINT32;
   let uiAmount: UINT32;
 
@@ -789,7 +789,7 @@ function HandleEarlyMorningEvents(): void {
   }
 }
 
-function MakeCivGroupHostileOnNextSectorEntrance(ubCivGroup: UINT8): void {
+export function MakeCivGroupHostileOnNextSectorEntrance(ubCivGroup: UINT8): void {
   // if it's the rebels that will become hostile, reduce town loyalties NOW, not later
   if (ubCivGroup == Enum246.REBEL_CIV_GROUP && gTacticalStatus.fCivGroupHostile[ubCivGroup] == CIV_GROUP_NEUTRAL) {
     ReduceLoyaltyForRebelsBetrayed();
@@ -798,13 +798,13 @@ function MakeCivGroupHostileOnNextSectorEntrance(ubCivGroup: UINT8): void {
   gTacticalStatus.fCivGroupHostile[ubCivGroup] = CIV_GROUP_WILL_BECOME_HOSTILE;
 }
 
-function RemoveAssassin(ubProfile: UINT8): void {
+export function RemoveAssassin(ubProfile: UINT8): void {
   gMercProfiles[ubProfile].sSectorX = 0;
   gMercProfiles[ubProfile].sSectorY = 0;
   gMercProfiles[ubProfile].bLife = gMercProfiles[ubProfile].bLifeMax;
 }
 
-function CheckForMissingHospitalSupplies(): void {
+export function CheckForMissingHospitalSupplies(): void {
   let uiLoop: UINT32;
   let pItemPool: Pointer<ITEM_POOL>;
   let pObj: Pointer<OBJECTTYPE>;

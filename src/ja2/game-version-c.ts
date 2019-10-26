@@ -3,10 +3,10 @@
 //
 
 // RELEASE BUILD VERSION
-let zVersionLabel: INT16[] /* [16] */ = [ "Release v1.12" ];
+export let zVersionLabel: INT16[] /* [16] */ = [ "Release v1.12" ];
 
-let czVersionNumber: INT8[] /* [16] */ = [ "Build 04.12.02" ];
-let zTrackingNumber: INT16[] /* [16] */ = [ "Z" ];
+export let czVersionNumber: INT8[] /* [16] */ = [ "Build 04.12.02" ];
+export let zTrackingNumber: INT16[] /* [16] */ = [ "Z" ];
 
 //
 //		Keeps track of the saved game version.  Increment the saved game version whenever

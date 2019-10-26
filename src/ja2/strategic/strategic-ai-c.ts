@@ -109,7 +109,7 @@ const EASY_NUM_AWARE_BATTLES = 1;
 const NORMAL_NUM_AWARE_BATTLES = 2;
 const HARD_NUM_AWARE_BATTLES = 3;
 
-let gfAutoAIAware: boolean = false;
+export let gfAutoAIAware: boolean = false;
 
 // Saved vars
 let gbPadding2: INT8[] /* [3] */ = [
@@ -123,7 +123,7 @@ let giPatrolArraySize: INT32 = 0;
 let giForcePercentage: INT32 = 0; // Modifies the starting group sizes relative by percentage
 let giArmyAlertness: INT32 = 0; // The chance the group will spot an adjacent player/militia
 let giArmyAlertnessDecay: INT32 = 0; // How much the spotting chance decreases when spot check succeeds
-let gubNumAwareBattles: UINT8 = 0; // When non-zero, this means the queen is very aware and searching for players.  Every time
+export let gubNumAwareBattles: UINT8 = 0; // When non-zero, this means the queen is very aware and searching for players.  Every time
                               // there is an enemy initiated battle, this counter decrements until zero.  Until that point,
                               // all adjacent sector checks automatically succeed.
 let gfQueenAIAwake: boolean = false; // This flag turns on/off the strategic decisions.  If it's off, no reinforcements
@@ -139,7 +139,7 @@ let gubQueenPriorityPhase: UINT8 = 0; // Defines how far into defence the queen 
                                  // 10 is the most defensive
 // Used for authorizing the use of the first battle meanwhile scene AFTER the battle is complete.  This is the case used when
 // the player attacks a town, and is set once militia are sent to investigate.
-let gfFirstBattleMeanwhileScenePending: boolean = false;
+export let gfFirstBattleMeanwhileScenePending: boolean = false;
 
 // After the first battle meanwhile scene is finished, this flag is set, and the queen orders patrol groups to immediately fortify all towns.
 let gfMassFortificationOrdered: boolean = false;
@@ -147,7 +147,7 @@ let gfMassFortificationOrdered: boolean = false;
 let gubMinEnemyGroupSize: UINT8 = 0;
 let gubHoursGracePeriod: UINT8 = 0;
 let gusPlayerBattleVictories: UINT16 = 0;
-let gfUseAlternateQueenPosition: boolean = false;
+export let gfUseAlternateQueenPosition: boolean = false;
 
 // padding for generic globals
 const SAI_PADDING_BYTES = 97;
@@ -160,7 +160,7 @@ const SAVED_ARMY_COMPOSITIONS = 60;
 let gArmyComp: ARMY_COMPOSITION[] /* [NUM_ARMY_COMPOSITIONS] */;
 // garrison info plus padding
 const SAVED_GARRISON_GROUPS = 100;
-let gGarrisonGroup: Pointer<GARRISON_GROUP> = null;
+export let gGarrisonGroup: Pointer<GARRISON_GROUP> = null;
 
 // This refers to the number of force points that are *saved* for the AI to use.  This is basically an array of each
 // group.  When the queen wants to send forces to attack a town that is defended, the initial number of forces that
@@ -479,7 +479,7 @@ function ValidateGroup(pGroup: Pointer<GROUP>): void {
 function ValidateLargeGroup(pGroup: Pointer<GROUP>): void {
 }
 
-function InitStrategicAI(): void {
+export function InitStrategicAI(): void {
   let i: INT32;
   let cnt: INT32;
   let iRandom: INT32;
@@ -790,7 +790,7 @@ function InitStrategicAI(): void {
   ValidateWeights(1);
 }
 
-function KillStrategicAI(): void {
+export function KillStrategicAI(): void {
   if (gPatrolGroup) {
     MemFree(gPatrolGroup);
     gPatrolGroup = null;
@@ -810,7 +810,7 @@ function KillStrategicAI(): void {
   DeleteAllStrategicEventsOfType(Enum132.EVENT_EVALUATE_QUEEN_SITUATION);
 }
 
-function OkayForEnemyToMoveThroughSector(ubSectorID: UINT8): boolean {
+export function OkayForEnemyToMoveThroughSector(ubSectorID: UINT8): boolean {
   let pSector: Pointer<SECTORINFO>;
   pSector = addressof(SectorInfo[ubSectorID]);
   if (pSector.value.uiTimeLastPlayerLiberated && pSector.value.uiTimeLastPlayerLiberated + (gubHoursGracePeriod * 3600) > GetWorldTotalSeconds()) {
@@ -1243,7 +1243,7 @@ function EvaluateGroupSituation(pGroup: Pointer<GROUP>): boolean {
 }
 
 // returns TRUE if the group was deleted.
-function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): boolean {
+export function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): boolean {
   let pSector: Pointer<SECTORINFO>;
   let pEnemyGroup: Pointer<GROUP>;
   let pPlayerGroup: Pointer<GROUP>;
@@ -1397,7 +1397,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): boolean {
 }
 
 // This is called periodically for each enemy occupied sector containing garrisons.
-function CheckEnemyControlledSector(ubSectorID: UINT8): void {
+export function CheckEnemyControlledSector(ubSectorID: UINT8): void {
   let pSector: Pointer<SECTORINFO>;
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
@@ -1504,7 +1504,7 @@ function CheckEnemyControlledSector(ubSectorID: UINT8): void {
   }
 }
 
-function RemoveGroupFromStrategicAILists(ubGroupID: UINT8): void {
+export function RemoveGroupFromStrategicAILists(ubGroupID: UINT8): void {
   let i: INT32;
   for (i = 0; i < giPatrolArraySize; i++) {
     if (gPatrolGroup[i].ubGroupID == ubGroupID) {
@@ -1606,7 +1606,7 @@ function RecalculateGarrisonWeight(iGarrisonID: INT32): void {
   ValidateWeights(7);
 }
 
-function RecalculateSectorWeight(ubSectorID: UINT8): void {
+export function RecalculateSectorWeight(ubSectorID: UINT8): void {
   let i: INT32;
   for (i = 0; i < giGarrisonArraySize; i++) {
     if (gGarrisonGroup[i].ubSectorID == ubSectorID) {
@@ -1616,7 +1616,7 @@ function RecalculateSectorWeight(ubSectorID: UINT8): void {
   }
 }
 
-function RecalculateGroupWeight(pGroup: Pointer<GROUP>): void {
+export function RecalculateGroupWeight(pGroup: Pointer<GROUP>): void {
   let i: INT32;
   for (i = 0; i < giPatrolArraySize; i++) {
     if (gPatrolGroup[i].ubGroupID == pGroup.value.ubGroupID) {
@@ -2009,7 +2009,7 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<P
 
 // Periodically does a general poll and check on each of the groups and garrisons, determines
 // reinforcements, new patrol groups, planned assaults, etc.
-function EvaluateQueenSituation(): void {
+export function EvaluateQueenSituation(): void {
   let i: INT32;
   let iRandom: INT32;
   let iWeight: INT32;
@@ -2112,7 +2112,7 @@ function EvaluateQueenSituation(): void {
   ValidateWeights(27);
 }
 
-function SaveStrategicAI(hFile: HWFILE): boolean {
+export function SaveStrategicAI(hFile: HWFILE): boolean {
   let gTempGarrisonGroup: GARRISON_GROUP;
   let gTempPatrolGroup: PATROL_GROUP;
   let gTempArmyComp: ARMY_COMPOSITION;
@@ -2230,7 +2230,7 @@ function SaveStrategicAI(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadStrategicAI(hFile: HWFILE): boolean {
+export function LoadStrategicAI(hFile: HWFILE): boolean {
   let pGroup: Pointer<GROUP>;
   let next: Pointer<GROUP>;
   let gTempGarrisonGroup: GARRISON_GROUP;
@@ -2819,7 +2819,7 @@ function EvolveQueenPriorityPhase(fForceChange: boolean): void {
   }
 }
 
-function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSectorY: INT16): void {
+export function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSectorY: INT16): void {
   let pGroup: Pointer<GROUP>;
   let pPendingGroup: Pointer<GROUP> = null;
   let pSector: Pointer<SECTORINFO>;
@@ -2978,7 +2978,7 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
   }
 }
 
-function InvestigateSector(ubSectorID: UINT8): void {
+export function InvestigateSector(ubSectorID: UINT8): void {
   /*
           INT32 i;
           SECTORINFO *pSector;
@@ -3098,7 +3098,7 @@ function InvestigateSector(ubSectorID: UINT8): void {
   */
 }
 
-function StrategicHandleQueenLosingControlOfSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
+export function StrategicHandleQueenLosingControlOfSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   let pSector: Pointer<SECTORINFO>;
   let ubSectorID: UINT8;
   if (sSectorZ) {
@@ -3428,7 +3428,7 @@ function RenderAIViewerGarrisonInfo(x: INT32, y: INT32, pSector: Pointer<SECTORI
   }
 }
 
-function StrategicHandleMineThatRanOut(ubSectorID: UINT8): void {
+export function StrategicHandleMineThatRanOut(ubSectorID: UINT8): void {
   switch (ubSectorID) {
     case Enum123.SEC_B2:
       gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_A2].ubGarrisonID].ubComposition].bPriority /= 4;
@@ -3870,7 +3870,7 @@ function PermittedToFillPatrolGroup(iPatrolID: INT32): boolean {
   return iDay >= iDayAllowed;
 }
 
-function RepollSAIGroup(pGroup: Pointer<GROUP>): void {
+export function RepollSAIGroup(pGroup: Pointer<GROUP>): void {
   let i: INT32;
   Assert(!pGroup.value.fPlayer);
   if (GroupAtFinalDestination(pGroup)) {
@@ -3897,7 +3897,7 @@ function RepollSAIGroup(pGroup: Pointer<GROUP>): void {
   }
 }
 
-function ClearPreviousAIGroupAssignment(pGroup: Pointer<GROUP>): void {
+export function ClearPreviousAIGroupAssignment(pGroup: Pointer<GROUP>): void {
   let i: INT32;
   for (i = 0; i < giPatrolArraySize; i++) {
     if (gPatrolGroup[i].ubGroupID == pGroup.value.ubGroupID) {

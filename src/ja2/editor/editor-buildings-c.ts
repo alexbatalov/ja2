@@ -1,13 +1,13 @@
-let fBuildingShowRoofs: boolean;
-let fBuildingShowWalls: boolean;
-let fBuildingShowRoomInfo: boolean;
-let usCurrentMode: UINT16;
-let gubCurrRoomNumber: UINT8;
-let gubMaxRoomNumber: UINT8;
-let gfEditingDoor: boolean;
+export let fBuildingShowRoofs: boolean;
+export let fBuildingShowWalls: boolean;
+export let fBuildingShowRoomInfo: boolean;
+export let usCurrentMode: UINT16;
+export let gubCurrRoomNumber: UINT8;
+export let gubMaxRoomNumber: UINT8;
+export let gfEditingDoor: boolean;
 
 // BEGINNNING OF BUILDING INITIALIZATION FUNCTIONS
-function GameInitEditorBuildingInfo(): void {
+export function GameInitEditorBuildingInfo(): void {
   fBuildingShowRoofs = true;
   fBuildingShowWalls = true;
   fBuildingShowRoomInfo = false;
@@ -16,7 +16,7 @@ function GameInitEditorBuildingInfo(): void {
 }
 
 // BEGINNING OF BUILDING UTILITY FUNCTIONS
-function UpdateRoofsView(): void {
+export function UpdateRoofsView(): void {
   let x: INT32;
   let usType: UINT16;
   for (x = 0; x < WORLD_MAX; x++) {
@@ -27,7 +27,7 @@ function UpdateRoofsView(): void {
   gfRenderWorld = true;
 }
 
-function UpdateWallsView(): void {
+export function UpdateWallsView(): void {
   let cnt: INT32;
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (fBuildingShowWalls) {
@@ -39,7 +39,7 @@ function UpdateWallsView(): void {
   gfRenderWorld = true;
 }
 
-function UpdateBuildingsInfo(): void {
+export function UpdateBuildingsInfo(): void {
   // print the headers on top of the columns
   SetFont(SMALLCOMPFONT());
   SetFontForeground(FONT_RED);
@@ -63,7 +63,7 @@ function UpdateBuildingsInfo(): void {
 // 4) KillBuilding at x  , y-1.
 // 5) KillBuilding at x+1, y.
 // 6) KillBuilding at x  , y+1.
-function KillBuilding(iMapIndex: UINT32): void {
+export function KillBuilding(iMapIndex: UINT32): void {
   let fFound: boolean = false;
 
   if (!gfBasement)
@@ -92,10 +92,10 @@ function KillBuilding(iMapIndex: UINT32): void {
     RebuildRoof(iMapIndex, 0);
 }
 
-let gpBuildingLayoutList: Pointer<BUILDINGLAYOUTNODE> = null;
-let gsBuildingLayoutAnchorGridNo: INT16 = -1;
+export let gpBuildingLayoutList: Pointer<BUILDINGLAYOUTNODE> = null;
+export let gsBuildingLayoutAnchorGridNo: INT16 = -1;
 
-function DeleteBuildingLayout(): void {
+export function DeleteBuildingLayout(): void {
   let curr: Pointer<BUILDINGLAYOUTNODE>;
   // Erases the cursors associated with them.
   RemoveBuildingLayout();
@@ -147,7 +147,7 @@ function BuildLayout(iMapIndex: INT32, iOffset: INT32): void {
 }
 
 // The first step is copying a building.  After that, it either must be pasted or moved.
-function CopyBuilding(iMapIndex: INT32): void {
+export function CopyBuilding(iMapIndex: INT32): void {
   AssertMsg(!gpBuildingLayoutList, "Error:  Attempting to copy building multiple times.");
 
   // First step is to determine if we have a building in the area that we click.  If not, do nothing.
@@ -294,7 +294,7 @@ function PasteMapElementToNewMapElement(iSrcGridNo: INT32, iDstGridNo: INT32): v
   }
 }
 
-function MoveBuilding(iMapIndex: INT32): void {
+export function MoveBuilding(iMapIndex: INT32): void {
   let curr: Pointer<BUILDINGLAYOUTNODE>;
   let iOffset: INT32;
   if (!gpBuildingLayoutList)
@@ -318,7 +318,7 @@ function MoveBuilding(iMapIndex: INT32): void {
   MarkWorldDirty();
 }
 
-function PasteBuilding(iMapIndex: INT32): void {
+export function PasteBuilding(iMapIndex: INT32): void {
   let curr: Pointer<BUILDINGLAYOUTNODE>;
   let iOffset: INT32;
   if (!gpBuildingLayoutList)
@@ -379,7 +379,7 @@ function ReplaceRoof(iMapIndex: INT32, usRoofType: UINT16): void {
   ReplaceRoof(iMapIndex + 1, usRoofType);
 }
 
-function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
+export function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
   let usRoofType: UINT16;
   let curr: Pointer<ROOFNODE>;
   // Not in normal editor mode, then can't do it.
@@ -425,7 +425,7 @@ const enum Enum34 {
 let iDoorButton: INT32[] /* [NUM_DOOR_BUTTONS] */;
 let DoorRegion: MOUSE_REGION;
 
-function InitDoorEditing(iMapIndex: INT32): void {
+export function InitDoorEditing(iMapIndex: INT32): void {
   let pDoor: Pointer<DOOR>;
   if (!DoorAtGridNo(iMapIndex) && !OpenableAtGridNo(iMapIndex))
     return;
@@ -457,7 +457,7 @@ function InitDoorEditing(iMapIndex: INT32): void {
   }
 }
 
-function ExtractAndUpdateDoorInfo(): void {
+export function ExtractAndUpdateDoorInfo(): void {
   let pNode: Pointer<LEVELNODE>;
   let num: INT32;
   let door: DOOR;
@@ -517,7 +517,7 @@ function ExtractAndUpdateDoorInfo(): void {
   }
 }
 
-function FindNextLockedDoor(): void {
+export function FindNextLockedDoor(): void {
   let pDoor: Pointer<DOOR>;
   let i: INT32;
   for (i = iDoorMapIndex + 1; i < WORLD_MAX; i++) {
@@ -538,7 +538,7 @@ function FindNextLockedDoor(): void {
   }
 }
 
-function RenderDoorEditingWindow(): void {
+export function RenderDoorEditingWindow(): void {
   InvalidateRegion(200, 130, 440, 230);
   SetFont(FONT10ARIAL());
   SetFontForeground(FONT_YELLOW);
@@ -553,7 +553,7 @@ function RenderDoorEditingWindow(): void {
   mprintf(238, 218, "Locked");
 }
 
-function KillDoorEditing(): void {
+export function KillDoorEditing(): void {
   let i: INT32;
   EnableEditorTaskbar();
   MSYS_RemoveRegion(addressof(DoorRegion));
@@ -580,7 +580,7 @@ function DoorToggleLockedCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   // handled in ExtractAndUpdateDoorInfo();
 }
 
-function AddLockedDoorCursors(): void {
+export function AddLockedDoorCursors(): void {
   let pDoor: Pointer<DOOR>;
   let i: INT;
   for (i = 0; i < gubNumDoors; i++) {
@@ -589,7 +589,7 @@ function AddLockedDoorCursors(): void {
   }
 }
 
-function RemoveLockedDoorCursors(): void {
+export function RemoveLockedDoorCursors(): void {
   let pDoor: Pointer<DOOR>;
   let i: INT;
   let pNode: Pointer<LEVELNODE>;
@@ -608,7 +608,7 @@ function RemoveLockedDoorCursors(): void {
   }
 }
 
-function SetupTextInputForBuildings(): void {
+export function SetupTextInputForBuildings(): void {
   let str: UINT16[] /* [4] */;
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddUserInputField(null); // just so we can use short cut keys while not typing.
@@ -616,7 +616,7 @@ function SetupTextInputForBuildings(): void {
   AddTextInputField(410, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
 }
 
-function ExtractAndUpdateBuildingInfo(): void {
+export function ExtractAndUpdateBuildingInfo(): void {
   let str: UINT16[] /* [4] */;
   let temp: INT32;
   // extract light1 colors

@@ -1,34 +1,34 @@
 //  Quest.ubStatus values
-const QUESTNOTSTARTED = 0;
-const QUESTINPROGRESS = 1;
-const QUESTDONE = 2;
+export const QUESTNOTSTARTED = 0;
+export const QUESTINPROGRESS = 1;
+export const QUESTDONE = 2;
 
-const MAX_QUESTS = 30;
-const MAX_FACTS = 65536;
-const NUM_FACTS = 500; // If you increase this number, add entries to the fact text list in QuestText.c
+export const MAX_QUESTS = 30;
+export const MAX_FACTS = 65536;
+export const NUM_FACTS = 500; // If you increase this number, add entries to the fact text list in QuestText.c
 
-const MAP_ROW_A = 1;
-const MAP_ROW_B = 2;
-const MAP_ROW_C = 3;
-const MAP_ROW_D = 4;
-const MAP_ROW_E = 5;
-const MAP_ROW_F = 6;
-const MAP_ROW_G = 7;
-const MAP_ROW_H = 8;
-const MAP_ROW_I = 9;
-const MAP_ROW_J = 10;
-const MAP_ROW_K = 11;
-const MAP_ROW_L = 12;
-const MAP_ROW_M = 13;
-const MAP_ROW_N = 14;
-const MAP_ROW_O = 15;
-const MAP_ROW_P = 16;
+export const MAP_ROW_A = 1;
+export const MAP_ROW_B = 2;
+export const MAP_ROW_C = 3;
+export const MAP_ROW_D = 4;
+export const MAP_ROW_E = 5;
+export const MAP_ROW_F = 6;
+export const MAP_ROW_G = 7;
+export const MAP_ROW_H = 8;
+export const MAP_ROW_I = 9;
+export const MAP_ROW_J = 10;
+export const MAP_ROW_K = 11;
+export const MAP_ROW_L = 12;
+export const MAP_ROW_M = 13;
+export const MAP_ROW_N = 14;
+export const MAP_ROW_O = 15;
+export const MAP_ROW_P = 16;
 
 // --------------------------------------------------------------------------------------
 //  Q U E S T     D E F I N E S
 // --------------------------------------------------------------------------------------
 
-const enum Enum169 {
+export const enum Enum169 {
   QUEST_DELIVER_LETTER = 0,
   QUEST_FOOD_ROUTE,
   QUEST_KILL_TERRORISTS,
@@ -182,7 +182,7 @@ const enum Enum169 {
 
 // FACTS
 
-const enum Enum170 {
+export const enum Enum170 {
   // city liberations
   FACT_OMERTA_LIBERATED = 0,
   FACT_DRASSEN_LIBERATED, //																1
@@ -503,25 +503,25 @@ const enum Enum170 {
 }
 //**  END FACTS *************************
 
-const BOBBYR_SHIPPING_DEST_SECTOR_X = 13;
-const BOBBYR_SHIPPING_DEST_SECTOR_Y = 2;
-const BOBBYR_SHIPPING_DEST_SECTOR_Z = 0;
-const BOBBYR_SHIPPING_DEST_GRIDNO = 10112;
-const PABLOS_STOLEN_DEST_GRIDNO = 1;
-const LOST_SHIPMENT_GRIDNO = 2;
+export const BOBBYR_SHIPPING_DEST_SECTOR_X = 13;
+export const BOBBYR_SHIPPING_DEST_SECTOR_Y = 2;
+export const BOBBYR_SHIPPING_DEST_SECTOR_Z = 0;
+export const BOBBYR_SHIPPING_DEST_GRIDNO = 10112;
+export const PABLOS_STOLEN_DEST_GRIDNO = 1;
+export const LOST_SHIPMENT_GRIDNO = 2;
 
 // omerta positions
-const OMERTA_LEAVE_EQUIP_SECTOR_X = 9;
-const OMERTA_LEAVE_EQUIP_SECTOR_Y = 1;
-const OMERTA_LEAVE_EQUIP_SECTOR_Z = 0;
-const OMERTA_LEAVE_EQUIP_GRIDNO = 4868;
+export const OMERTA_LEAVE_EQUIP_SECTOR_X = 9;
+export const OMERTA_LEAVE_EQUIP_SECTOR_Y = 1;
+export const OMERTA_LEAVE_EQUIP_SECTOR_Z = 0;
+export const OMERTA_LEAVE_EQUIP_GRIDNO = 4868;
 
 // NB brothel rooms 88-90 removed because they are the antechamber
-const IN_BROTHEL = (room) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && (room) >= 91 && (room) <= 119);
-const IN_BROTHEL_GUARD_ROOM = (room) => (room == 110);
+export const IN_BROTHEL = (room) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && (room) >= 91 && (room) <= 119);
+export const IN_BROTHEL_GUARD_ROOM = (room) => (room == 110);
 
-const IN_KINGPIN_HOUSE = (room) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && (room) >= 30 && (room) <= 39);
+export const IN_KINGPIN_HOUSE = (room) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && (room) >= 30 && (room) <= 39);
 
-const LOYALTY_LOW_THRESHOLD = 30;
-const LOYALTY_OK_THRESHOLD = 50;
-const LOYALTY_HIGH_THRESHOLD = 80;
+export const LOYALTY_LOW_THRESHOLD = 30;
+export const LOYALTY_OK_THRESHOLD = 50;
+export const LOYALTY_HIGH_THRESHOLD = 80;

@@ -283,12 +283,12 @@ let ghFile: HWFILE;
 //	VSURFACE_DESC		vs_desc;
 //	HVSURFACE hVSurface;
 
-function CreditScreenInit(): UINT32 {
+export function CreditScreenInit(): UINT32 {
   gfCreditsScreenEntry = true;
   return 1;
 }
 
-function CreditScreenHandle(): UINT32 {
+export function CreditScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfCreditsScreenEntry) {
@@ -326,7 +326,7 @@ function CreditScreenHandle(): UINT32 {
   return guiCreditsExitScreen;
 }
 
-function CreditScreenShutdown(): UINT32 {
+export function CreditScreenShutdown(): UINT32 {
   return 1;
 }
 

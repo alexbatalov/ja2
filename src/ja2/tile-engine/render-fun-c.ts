@@ -1,14 +1,14 @@
 // Room Information
-let gubWorldRoomInfo: UINT8[] /* [WORLD_MAX] */;
-let gubWorldRoomHidden: UINT8[] /* [MAX_ROOMS] */;
+export let gubWorldRoomInfo: UINT8[] /* [WORLD_MAX] */;
+export let gubWorldRoomHidden: UINT8[] /* [MAX_ROOMS] */;
 
-function InitRoomDatabase(): boolean {
+export function InitRoomDatabase(): boolean {
   memset(gubWorldRoomInfo, NO_ROOM, sizeof(gubWorldRoomInfo));
   memset(gubWorldRoomHidden, true, sizeof(gubWorldRoomHidden));
   return true;
 }
 
-function ShutdownRoomDatabase(): void {
+export function ShutdownRoomDatabase(): void {
 }
 
 function SetTileRoomNum(sGridNo: INT16, ubRoomNum: UINT8): void {
@@ -27,7 +27,7 @@ function SetTileRangeRoomNum(pSelectRegion: Pointer<SGPRect>, ubRoomNum: UINT8):
   }
 }
 
-function InARoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
+export function InARoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if (pubRoomNo) {
       pubRoomNo.value = gubWorldRoomInfo[sGridNo];
@@ -38,7 +38,7 @@ function InARoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
   return false;
 }
 
-function InAHiddenRoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
+export function InAHiddenRoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if ((gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]])) {
       pubRoomNo.value = gubWorldRoomInfo[sGridNo];
@@ -50,7 +50,7 @@ function InAHiddenRoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
 }
 
 // @@ATECLIP TO WORLD!
-function SetRecalculateWireFrameFlagRadius(sX: INT16, sY: INT16, sRadius: INT16): void {
+export function SetRecalculateWireFrameFlagRadius(sX: INT16, sY: INT16, sRadius: INT16): void {
   let sCountX: INT16;
   let sCountY: INT16;
   let uiTile: UINT32;
@@ -64,7 +64,7 @@ function SetRecalculateWireFrameFlagRadius(sX: INT16, sY: INT16, sRadius: INT16)
   }
 }
 
-function SetGridNoRevealedFlag(sGridNo: UINT16): void {
+export function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   //	UINT32 cnt;
   //  ITEM_POOL					*pItemPool;
   //	INT16							sX, sY;
@@ -125,7 +125,7 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]] = false;
 }
 
-function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
+export function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
   let pNode: Pointer<LEVELNODE> = null;
   let pStructure: Pointer<STRUCTURE>;
   let pBase: Pointer<STRUCTURE>;
@@ -183,7 +183,7 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
   }
 }
 
-function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>): void {
   let cnt: UINT32;
   let pItemPool: Pointer<ITEM_POOL>;
   let sX: INT16;

@@ -5,7 +5,7 @@
 //	SANMONA_ARMS_GROUP,
 //	ANGELS_GROUP,
 //	NUM_CIV_GROUPS
-let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = [
+export let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = [
   "NONE",
   "REBEL",
   "KINGPIN",
@@ -42,7 +42,7 @@ let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = [
 //	SCHEDULE_ACTION_ENTERSECTOR,
 //	SCHEDULE_ACTION_STAYINSECTOR,
 //  SCHEDULE_ACTION_SLEEP,
-let gszScheduleActions: UINT16[][] /* [NUM_SCHEDULE_ACTIONS][20] */ = [
+export let gszScheduleActions: UINT16[][] /* [NUM_SCHEDULE_ACTIONS][20] */ = [
   "No action",
   "Lock door",
   "Unlock door",
@@ -65,10 +65,10 @@ const enum Enum40 {
   NUM_SCHEDULE_INSTRUCTIONS,
 }
 
-let gfSingleAction: boolean = false;
-let gfUseScheduleData2: boolean = false;
-let gubCurrentScheduleActionIndex: UINT8 = 0;
-let gCurrSchedule: SCHEDULENODE;
+export let gfSingleAction: boolean = false;
+export let gfUseScheduleData2: boolean = false;
+export let gubCurrentScheduleActionIndex: UINT8 = 0;
+export let gCurrSchedule: SCHEDULENODE;
 let gubScheduleInstructions: UINT8 = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
 
 // array which keeps track of which item is in which slot.  This is dependant on the selected merc, so
@@ -87,7 +87,7 @@ let gpMercSlotItem: Pointer<OBJECTTYPE>[] /* [9] */ = [
 ];
 // Because we only support these nine slots, they aren't continuous values, so this array helps
 // processing functions by referring to this array to get the appropriate slot.
-let gbMercSlotTypes: INT8[] /* [9] */ = [
+export let gbMercSlotTypes: INT8[] /* [9] */ = [
   Enum261.HELMETPOS,
   Enum261.VESTPOS,
   Enum261.LEGPOS,
@@ -103,17 +103,17 @@ const GetSelectedMercSlotItemIndex = (x) => (gpSelected.value.pDetailedPlacement
 const GetSelectedMercSlot = (x) => (addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]]));
 // values indicating which merc inventory slot is hilited and which slot is selected.
 let gbCurrHilite: INT8 = -1;
-let gbCurrSelect: INT8 = -1;
+export let gbCurrSelect: INT8 = -1;
 
 // internal merc variables
 let gTempBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
 let gTempDetailedPlacement: SOLDIERCREATE_STRUCT;
 
-let gsSelectedMercID: INT16;
-let gsSelectedMercGridNo: INT16;
-let gpSelected: Pointer<SOLDIERINITNODE>;
+export let gsSelectedMercID: INT16;
+export let gsSelectedMercGridNo: INT16;
+export let gpSelected: Pointer<SOLDIERINITNODE>;
 
-let gubCurrMercMode: UINT8 = Enum42.MERC_TEAMMODE;
+export let gubCurrMercMode: UINT8 = Enum42.MERC_TEAMMODE;
 let gubPrevMercMode: UINT8 = Enum42.MERC_NOMODE;
 let gubLastDetailedMercMode: UINT8 = Enum42.MERC_GENERALMODE;
 let gbDefaultOrders: INT8 = Enum241.STATIONARY;
@@ -125,7 +125,7 @@ let gubSoldierClass: INT8 = Enum262.SOLDIER_CLASS_ARMY;
 let gubCivGroup: UINT8 = Enum246.NON_CIV_GROUP;
 
 let pTempSoldier: Pointer<SOLDIERTYPE>;
-let gfRoofPlacement: boolean;
+export let gfRoofPlacement: boolean;
 
 // Below are all flags that have to do with editing detailed placement mercs:
 
@@ -135,7 +135,7 @@ let gfRoofPlacement: boolean;
 let gfCanEditMercColors: boolean = false;
 // A rendering flag that is set whenever a full update of the merc editing information
 // needs to be done.
-let gfRenderMercInfo: boolean = false;
+export let gfRenderMercInfo: boolean = false;
 // When the user specifies a profile index for the merc, all editing is disabled.  This is
 // because the profile contains all of the information.  When this happens, all of the editing
 // buttons are disabled, but you are allowed to view stats, inventory, etc., as well as specify
@@ -144,11 +144,11 @@ let gfCanEditMercs: boolean = true;
 // When in inventory mode, this flag is set when the user wishes to get an item, which requires hooking
 // into the item editing features.  This is processed during the editor update, which in turn, sets the
 // new mode.
-let gfMercGetItem: boolean = false;
+export let gfMercGetItem: boolean = false;
 // As soon as an item is selected, the items index is stored here, so the item can be copied into the
 // slot for editing and rendering purposes.  This is a temp store value only when leaving the editor items
 // mode.
-let gusMercsNewItemIndex: UINT16 = 0xffff;
+export let gusMercsNewItemIndex: UINT16 = 0xffff;
 
 // old and probably obsolete
 // BOOLEAN	fMercEdUseLeftSide = FALSE;
@@ -167,11 +167,11 @@ let iEditMercFindButton: INT32 = -1;
 let iEditMercSlotNumber: INT32;
 let iEditColorStart: INT32[] /* [EDIT_NUM_COLORS] */;
 
-let gfShowPlayers: boolean = true;
-let gfShowEnemies: boolean = true;
-let gfShowCreatures: boolean = true;
-let gfShowRebels: boolean = true;
-let gfShowCivilians: boolean = true;
+export let gfShowPlayers: boolean = true;
+export let gfShowEnemies: boolean = true;
+export let gfShowCreatures: boolean = true;
+export let gfShowRebels: boolean = true;
+export let gfShowCivilians: boolean = true;
 
 const BASE_STAT_DEVIATION = 7;
 const BASE_EXPLVL_DEVIATION = 1;
@@ -179,7 +179,7 @@ const BASE_PROTLVL_DEVIATION = 0;
 const BASE_GUNTYPE_DEVIATION = 4;
 const DEFAULT_DIFF = 2;
 
-let sCurBaseDiff: INT16 = DEFAULT_DIFF;
+export let sCurBaseDiff: INT16 = DEFAULT_DIFF;
 let fAskForBaseDifficulty: boolean = true;
 let zDiffNames: Pointer<UINT16>[] /* [NUM_DIFF_LVLS] */ = [
   "Wimp",
@@ -298,10 +298,10 @@ let bCivArray: INT8[] /* [MAX_CIVTYPES] */ = [
 let gbCurrCreature: INT8 = Enum194.BLOODCAT;
 
 let gfSaveBuffer: boolean = false;
-let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
-let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
+export let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
+export let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
 
-function GameInitEditorMercsInfo(): void {
+export function GameInitEditorMercsInfo(): void {
   let i: INT32;
   // Initialize the placement list
   InitSoldierInitList();
@@ -314,14 +314,14 @@ function GameInitEditorMercsInfo(): void {
   }
 }
 
-function GameShutdownEditorMercsInfo(): void {
+export function GameShutdownEditorMercsInfo(): void {
   UseEditorAlternateList();
   KillSoldierInitList();
   UseEditorOriginalList();
   KillSoldierInitList();
 }
 
-function EntryInitEditorMercsInfo(): void {
+export function EntryInitEditorMercsInfo(): void {
   let x: INT32;
   let iCurStart: INT32 = 0;
   iEditColorStart[0] = 0;
@@ -342,7 +342,7 @@ const enum Enum41 {
   PANTS_PAL,
 }
 
-function ProcessMercEditing(): void {
+export function ProcessMercEditing(): void {
   let ubType: UINT8;
   let ubPaletteRep: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -461,7 +461,7 @@ function ProcessMercEditing(): void {
   }
 }
 
-function AddMercToWorld(iMapIndex: INT32): void {
+export function AddMercToWorld(iMapIndex: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
 
@@ -549,7 +549,7 @@ function AddMercToWorld(iMapIndex: INT32): void {
   }
 }
 
-function HandleRightClickOnMerc(iMapIndex: INT32): void {
+export function HandleRightClickOnMerc(iMapIndex: INT32): void {
   let pNode: Pointer<SOLDIERINITNODE>;
   let sThisMercID: INT16;
   let sCellX: INT16;
@@ -591,7 +591,7 @@ function HandleRightClickOnMerc(iMapIndex: INT32): void {
   }
 }
 
-function ResetAllMercPositions(): void {
+export function ResetAllMercPositions(): void {
   let curr: Pointer<SOLDIERINITNODE>;
   // Remove all of the alternate placements (editor takes precedence)
   UseEditorAlternateList();
@@ -628,7 +628,7 @@ function ResetAllMercPositions(): void {
   gsSelectedMercID = -1;
 }
 
-function AddMercWaypoint(iMapIndex: UINT32): void {
+export function AddMercWaypoint(iMapIndex: UINT32): void {
   let iNum: INT32;
   // index 0 isn't used
   if (iActionParam == 0)
@@ -661,7 +661,7 @@ function AddMercWaypoint(iMapIndex: UINT32): void {
   gfRenderWorld = true;
 }
 
-function EraseMercWaypoint(): void {
+export function EraseMercWaypoint(): void {
   let iNum: INT32;
   // index 0 isn't used
   if (iActionParam == 0)
@@ -1006,7 +1006,7 @@ function EditMercColorDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   }
 }
 
-function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
     {
@@ -1026,7 +1026,7 @@ function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   }
 }
 
-function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let iBtn: INT32;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
@@ -1042,7 +1042,7 @@ function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function MercsSetBodyTypeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsSetBodyTypeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderMercInfo = true;
     if (btn.value.IDNum == iEditorButton[Enum32.MERCS_BODYTYPE_DOWN])
@@ -1173,7 +1173,7 @@ function ShowEditMercColorSet(ubPaletteRep: UINT8, sSet: INT16): void {
 //
 //	Displays the way points of the currently selected merc.
 //
-function DisplayWayPoints(): void {
+export function DisplayWayPoints(): void {
   let sX: INT16;
   let sY: INT16;
   let sXMapPos: INT16;
@@ -1315,7 +1315,7 @@ function CreateEditMercWindow(): void {
     SetButtonFastHelpText(iEditorButton[x + 1], "Increase merc stat");
   }
 }
-function SetMercOrders(bOrders: INT8): void {
+export function SetMercOrders(bOrders: INT8): void {
   gpSelected.value.pSoldier.value.bOrders = bOrders;
   gpSelected.value.pBasicPlacement.value.bOrders = bOrders;
   UnclickEditorButtons(FIRST_MERCS_ORDERS_BUTTON, LAST_MERCS_ORDERS_BUTTON);
@@ -1323,7 +1323,7 @@ function SetMercOrders(bOrders: INT8): void {
   gbDefaultOrders = bOrders;
 }
 
-function SetMercAttitude(bAttitude: INT8): void {
+export function SetMercAttitude(bAttitude: INT8): void {
   gpSelected.value.pSoldier.value.bAttitude = bAttitude;
   gpSelected.value.pBasicPlacement.value.bAttitude = bAttitude;
   UnclickEditorButtons(FIRST_MERCS_ATTITUDE_BUTTON, LAST_MERCS_ATTITUDE_BUTTON);
@@ -1331,7 +1331,7 @@ function SetMercAttitude(bAttitude: INT8): void {
   gbDefaultAttitude = bAttitude;
 }
 
-function SetMercDirection(bDirection: INT8): void {
+export function SetMercDirection(bDirection: INT8): void {
   UnclickEditorButtons(FIRST_MERCS_DIRECTION_BUTTON, LAST_MERCS_DIRECTION_BUTTON);
   ClickEditorButton(FIRST_MERCS_DIRECTION_BUTTON + bDirection);
 
@@ -1345,7 +1345,7 @@ function SetMercDirection(bDirection: INT8): void {
   ConvertAniCodeToAniFrame(gpSelected.value.pSoldier, 0);
 }
 
-function SetMercRelativeEquipment(bLevel: INT8): void {
+export function SetMercRelativeEquipment(bLevel: INT8): void {
   gpSelected.value.pBasicPlacement.value.bRelativeEquipmentLevel = bLevel;
 
   UnclickEditorButtons(FIRST_MERCS_REL_EQUIPMENT_BUTTON, LAST_MERCS_REL_EQUIPMENT_BUTTON);
@@ -1353,7 +1353,7 @@ function SetMercRelativeEquipment(bLevel: INT8): void {
   gbDefaultRelativeEquipmentLevel = bLevel;
 }
 
-function SetMercRelativeAttributes(bLevel: INT8): void {
+export function SetMercRelativeAttributes(bLevel: INT8): void {
   gpSelected.value.pBasicPlacement.value.bRelativeAttributeLevel = bLevel;
   // We also have to modify the existing soldier incase the user wishes to enter game.
   ModifySoldierAttributesWithNewRelativeLevel(gpSelected.value.pSoldier, bLevel);
@@ -1363,7 +1363,7 @@ function SetMercRelativeAttributes(bLevel: INT8): void {
   gbDefaultRelativeAttributeLevel = bLevel;
 }
 
-function IndicateSelectedMerc(sID: INT16): void {
+export function IndicateSelectedMerc(sID: INT16): void {
   let prev: Pointer<SOLDIERINITNODE>;
   let bTeam: INT8;
 
@@ -1576,7 +1576,7 @@ function IndicateSelectedMerc(sID: INT16): void {
   }
 }
 
-function DeleteSelectedMerc(): void {
+export function DeleteSelectedMerc(): void {
   if (gsSelectedMercID != -1) {
     RemoveSoldierNodeFromInitList(gpSelected);
     gpSelected = null;
@@ -1734,7 +1734,7 @@ function SetupTextInputForMercSchedule(): void {
   SetExclusive24HourTimeValue(4, gCurrSchedule.usTime[3]);
 }
 
-function ExtractAndUpdateMercSchedule(): void {
+export function ExtractAndUpdateMercSchedule(): void {
   let i: INT32;
   let fValidSchedule: boolean = false;
   let fScheduleNeedsUpdate: boolean = false;
@@ -1794,7 +1794,7 @@ function ExtractAndUpdateMercSchedule(): void {
   SetActiveField(0);
 }
 
-function ExtractCurrentMercModeInfo(fKillTextInputMode: boolean): void {
+export function ExtractCurrentMercModeInfo(fKillTextInputMode: boolean): void {
   // This happens if we deleted a merc
   if (gsSelectedMercID == -1)
     return;
@@ -1817,7 +1817,7 @@ function ExtractCurrentMercModeInfo(fKillTextInputMode: boolean): void {
     KillTextInputMode();
 }
 
-function InitDetailedPlacementForMerc(): void {
+export function InitDetailedPlacementForMerc(): void {
   Assert(!gpSelected.value.pDetailedPlacement);
 
   gpSelected.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
@@ -1834,7 +1834,7 @@ function InitDetailedPlacementForMerc(): void {
   UpdateSoldierWithStaticDetailedInformation(gpSelected.value.pSoldier, gpSelected.value.pDetailedPlacement);
 }
 
-function KillDetailedPlacementForMerc(): void {
+export function KillDetailedPlacementForMerc(): void {
   Assert(gpSelected.value.pDetailedPlacement);
   MemFree(gpSelected.value.pDetailedPlacement);
   gpSelected.value.pDetailedPlacement = null;
@@ -1960,7 +1960,7 @@ function SetMercEditability(fEditable: boolean): void {
 // points together.  If one of the points is isolated, then the map will be rejected.  It
 // isn't necessary to specify all four points.  You wouldn't want to specify a north point if
 // there isn't going to be any traversing to adjacent maps from that side.
-function SpecifyEntryPoint(iMapIndex: UINT32): void {
+export function SpecifyEntryPoint(iMapIndex: UINT32): void {
   let psEntryGridNo: Pointer<INT16>;
   let fErasing: boolean = false;
   if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
@@ -2010,7 +2010,7 @@ function SpecifyEntryPoint(iMapIndex: UINT32): void {
   }
 }
 
-function SetMercEditingMode(ubNewMode: UINT8): void {
+export function SetMercEditingMode(ubNewMode: UINT8): void {
   // We need to update the taskbar for the buttons that were erased.
   gfRenderTaskbar = true;
 
@@ -2294,7 +2294,7 @@ function DisplayBodyTypeInfo(): void {
   DrawEditorInfoBox(str, FONT10ARIAL(), 490, 364, 70, 20);
 }
 
-function UpdateMercsInfo(): void {
+export function UpdateMercsInfo(): void {
   if (!gfRenderMercInfo)
     return;
 
@@ -2578,7 +2578,7 @@ function RenderSelectedMercsInventory(): void {
   }
 }
 
-function DeleteSelectedMercsItem(): void {
+export function DeleteSelectedMercsItem(): void {
   if (gbCurrSelect != -1) {
     gusMercsNewItemIndex = 0;
     AddNewItemToSelectedMercsInventory(true);
@@ -2767,7 +2767,7 @@ function RenderMercInventoryPanel(): void {
 // 9 slots in the inventory panel.  It passes the event type as well as the relative x and y positions
 // which are processed here.  This basically checks for new changes in hilighting and selections, which
 // will set the rendering flag, and getitem flag if the user wishes to choose an item.
-function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
+export function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
   let x: INT8;
   if (!gfCanEditMercs && bEvent == Enum44.GUI_RCLICK_EVENT) {
     // if we are dealing with a profile merc, we can't allow editing
@@ -2856,7 +2856,7 @@ function SetDroppableCheckboxesBasedOnMercsInventory(): void {
   }
 }
 
-function SetEnemyColorCode(ubColorCode: UINT8): void {
+export function SetEnemyColorCode(ubColorCode: UINT8): void {
   if (gpSelected.value.pDetailedPlacement && gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE)
     return;
 
@@ -2905,7 +2905,7 @@ function SetEnemyColorCode(ubColorCode: UINT8): void {
   CreateSoldierPalettes(gpSelected.value.pSoldier);
 }
 
-function SetEnemyDroppableStatus(uiSlot: UINT32, fDroppable: boolean): void {
+export function SetEnemyDroppableStatus(uiSlot: UINT32, fDroppable: boolean): void {
   if (gpSelected) {
     if (fDroppable) {
       if (gpSelected.value.pDetailedPlacement)
@@ -2925,7 +2925,7 @@ function SetEnemyDroppableStatus(uiSlot: UINT32, fDroppable: boolean): void {
   }
 }
 
-function ChangeCivGroup(ubNewCivGroup: UINT8): void {
+export function ChangeCivGroup(ubNewCivGroup: UINT8): void {
   Assert(ubNewCivGroup < Enum246.NUM_CIV_GROUPS);
   if (gubCivGroup == ubNewCivGroup)
     return;
@@ -2940,7 +2940,7 @@ function ChangeCivGroup(ubNewCivGroup: UINT8): void {
   SpecifyButtonText(iEditorButton[Enum32.MERCS_CIVILIAN_GROUP], gszCivGroupNames[gubCivGroup]);
 }
 
-function RenderMercStrings(): void {
+export function RenderMercStrings(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -3048,7 +3048,7 @@ function RenderMercStrings(): void {
   }
 }
 
-function SetMercTeamVisibility(bTeam: INT8, fVisible: boolean): void {
+export function SetMercTeamVisibility(bTeam: INT8, fVisible: boolean): void {
   let curr: Pointer<SOLDIERINITNODE>;
   let bVisible: INT8;
   curr = gSoldierInitHead;
@@ -3111,12 +3111,12 @@ function DetermineScheduleEditability(): void {
   }
 }
 
-function CancelCurrentScheduleAction(): void {
+export function CancelCurrentScheduleAction(): void {
   UpdateScheduleAction(Enum171.SCHEDULE_ACTION_NONE);
   DetermineScheduleEditability();
 }
 
-function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
+export function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
   let str: UINT16[] /* [6] */;
   MarkWorldDirty();
   swprintf(str, "%d", iMapIndex);
@@ -3168,7 +3168,7 @@ function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
   }
 }
 
-function StartScheduleAction(): void {
+export function StartScheduleAction(): void {
   switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
     case Enum171.SCHEDULE_ACTION_NONE:
       EnableEditorButtons(Enum32.MERCS_SCHEDULE_ACTION1, Enum32.MERCS_SCHEDULE_DATA4B);
@@ -3218,7 +3218,7 @@ function StartScheduleAction(): void {
   MarkWorldDirty();
 }
 
-function UpdateScheduleAction(ubNewAction: UINT8): void {
+export function UpdateScheduleAction(ubNewAction: UINT8): void {
   gCurrSchedule.ubAction[gubCurrentScheduleActionIndex] = ubNewAction;
   SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + gubCurrentScheduleActionIndex], gszScheduleActions[ubNewAction]);
   MSYS_SetBtnUserData(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + gubCurrentScheduleActionIndex], 0, ubNewAction);
@@ -3228,7 +3228,7 @@ function UpdateScheduleAction(ubNewAction: UINT8): void {
 }
 
 // 0:1A, 1:1B, 2:2A, 3:2B, ...
-function FindScheduleGridNo(ubScheduleData: UINT8): void {
+export function FindScheduleGridNo(ubScheduleData: UINT8): void {
   let iMapIndex: INT32;
   switch (ubScheduleData) {
     case 0: // 1a
@@ -3263,7 +3263,7 @@ function FindScheduleGridNo(ubScheduleData: UINT8): void {
   }
 }
 
-function ClearCurrentSchedule(): void {
+export function ClearCurrentSchedule(): void {
   let i: UINT8;
   memset(addressof(gCurrSchedule), 0, sizeof(SCHEDULENODE));
   for (i = 0; i < 4; i++) {
@@ -3383,10 +3383,10 @@ function UpdateScheduleInfo(): void {
   }
 }
 
-let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
-let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
+export let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
+export let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
 
-function CopyMercPlacement(iMapIndex: INT32): void {
+export function CopyMercPlacement(iMapIndex: INT32): void {
   if (gsSelectedMercID == -1) {
     ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, "Placement not copied because no placement selected.");
     return;
@@ -3399,7 +3399,7 @@ function CopyMercPlacement(iMapIndex: INT32): void {
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Placement copied.");
 }
 
-function PasteMercPlacement(iMapIndex: INT32): void {
+export function PasteMercPlacement(iMapIndex: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
   let i: INT32;

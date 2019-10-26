@@ -1,6 +1,6 @@
-let gfSetPerceivedDoorState: boolean = false;
+export let gfSetPerceivedDoorState: boolean = false;
 
-function HandleDoorChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fNoAnimations: boolean): void {
+export function HandleDoorChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fNoAnimations: boolean): void {
   let pStructure: Pointer<STRUCTURE>;
   let pDoorStatus: Pointer<DOOR_STATUS>;
   let fDoorsAnimated: boolean = false;
@@ -28,7 +28,7 @@ function HandleDoorChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
   }
 }
 
-function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor: boolean, usAnimState: UINT16): UINT16 {
+export function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor: boolean, usAnimState: UINT16): UINT16 {
   switch (usAnimState) {
     case Enum193.OPEN_DOOR:
 
@@ -131,7 +131,7 @@ function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor: boole
   }
 }
 
-function InteractWithClosedDoor(pSoldier: Pointer<SOLDIERTYPE>, ubHandleCode: UINT8): void {
+export function InteractWithClosedDoor(pSoldier: Pointer<SOLDIERTYPE>, ubHandleCode: UINT8): void {
   pSoldier.value.ubDoorHandleCode = ubHandleCode;
 
   switch (ubHandleCode) {
@@ -176,7 +176,7 @@ function DoTrapCheckOnStartingMenu(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointe
   return false;
 }
 
-function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fDoor: boolean): void {
+export function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fDoor: boolean): void {
   let pBaseStructure: Pointer<STRUCTURE>;
   let fDoMenu: boolean = false;
   let pDoor: Pointer<DOOR>;
@@ -293,7 +293,7 @@ function ProcessImplicationsOfPCMessingWithDoor(pSoldier: Pointer<SOLDIERTYPE>):
   }
 }
 
-function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pStructure: Pointer<STRUCTURE>): boolean {
+export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pStructure: Pointer<STRUCTURE>): boolean {
   let fHandleDoor: boolean = false;
   let sAPCost: INT16 = 0;
   let sBPCost: INT16 = 0;
@@ -973,7 +973,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
   return fDoAnimation;
 }
 
-function SetDoorString(sGridNo: INT16): void {
+export function SetDoorString(sGridNo: INT16): void {
   let pDoor: Pointer<DOOR>;
   let pDoorStatus: Pointer<DOOR_STATUS>;
   let pStructure: Pointer<STRUCTURE>;

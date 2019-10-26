@@ -1,11 +1,11 @@
-type real = float;
+export type real = float;
 
 const REAL_MAX = FLT_MAX;
 const REAL_MIN = FLT_MIN;
 
 const Epsilon2 = 0.00001;
 
-interface vector_3 {
+export interface vector_3 {
   x: real;
   y: real;
   z: real;

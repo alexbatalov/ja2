@@ -1,4 +1,4 @@
-function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bBandaged: INT8;
   let iEffStrength: INT32;
 
@@ -15,7 +15,7 @@ function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffStrength;
 }
 
-function EffectiveWisdom(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveWisdom(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffWisdom: INT32;
 
   iEffWisdom = pSoldier.value.bWisdom;
@@ -25,7 +25,7 @@ function EffectiveWisdom(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffWisdom;
 }
 
-function EffectiveAgility(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveAgility(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffAgility: INT32;
 
   iEffAgility = pSoldier.value.bAgility;
@@ -39,7 +39,7 @@ function EffectiveAgility(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffAgility;
 }
 
-function EffectiveMechanical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveMechanical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffMechanical: INT32;
 
   iEffMechanical = pSoldier.value.bMechanical;
@@ -49,7 +49,7 @@ function EffectiveMechanical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffMechanical;
 }
 
-function EffectiveExplosive(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveExplosive(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffExplosive: INT32;
 
   iEffExplosive = pSoldier.value.bExplosive;
@@ -59,7 +59,7 @@ function EffectiveExplosive(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffExplosive;
 }
 
-function EffectiveMedical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveMedical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffMedical: INT32;
 
   iEffMedical = pSoldier.value.bMedical;
@@ -69,7 +69,7 @@ function EffectiveMedical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffMedical;
 }
 
-function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffLeadership: INT32;
   let bDrunkLevel: INT8;
 
@@ -85,7 +85,7 @@ function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffLeadership;
 }
 
-function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffExpLevel: INT32;
   let bDrunkLevel: INT8;
   let iExpModifier: INT32[] /* [] */ = [
@@ -117,7 +117,7 @@ function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 }
 
-function EffectiveMarksmanship(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveMarksmanship(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffMarksmanship: INT32;
 
   iEffMarksmanship = pSoldier.value.bMarksmanship;
@@ -127,7 +127,7 @@ function EffectiveMarksmanship(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffMarksmanship;
 }
 
-function EffectiveDexterity(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveDexterity(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffDexterity: INT32;
 
   iEffDexterity = pSoldier.value.bDexterity;
@@ -158,16 +158,16 @@ function GetPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   return ubPercentPenalty;
 }
 
-function ReducePointsForFatigue(pSoldier: Pointer<SOLDIERTYPE>, pusPoints: Pointer<UINT16>): void {
+export function ReducePointsForFatigue(pSoldier: Pointer<SOLDIERTYPE>, pusPoints: Pointer<UINT16>): void {
   pusPoints.value -= (pusPoints.value * GetPenaltyForFatigue(pSoldier)) / 100;
 }
 
-function GetSkillCheckPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>, iSkill: INT32): INT32 {
+export function GetSkillCheckPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>, iSkill: INT32): INT32 {
   // use only half the full effect of fatigue for skill checks
   return ((iSkill * GetPenaltyForFatigue(pSoldier)) / 100) / 2;
 }
 
-function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: INT8): INT32 {
+export function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: INT8): INT32 {
   let iSkill: INT32;
   let iChance: INT32;
   let iReportChance: INT32;
@@ -419,7 +419,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
   return iMadeItBy;
 }
 
-function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: boolean): INT8 {
+export function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: boolean): INT8 {
   // return the level of trap which the guy is able to detect
 
   let bDetectLevel: INT8;

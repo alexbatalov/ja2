@@ -1,5 +1,5 @@
 // Type of quote
-const enum Enum299 {
+export const enum Enum299 {
   QD_NPC_MSG,
   QD_QUEST_MSG,
 }

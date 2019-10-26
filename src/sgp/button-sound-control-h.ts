@@ -1,5 +1,5 @@
 // These are gener
-const enum Enum27 {
+export const enum Enum27 {
   BUTTON_SOUND_SCHEME_NONE,
   BUTTON_SOUND_SCHEME_GENERIC,
   BUTTON_SOUND_SCHEME_VERYSMALLSWITCH1,

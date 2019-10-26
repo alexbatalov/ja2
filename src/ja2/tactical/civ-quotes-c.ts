@@ -8,7 +8,7 @@ interface CIV_QUOTE {
   ubUnusedCurrentEntry: UINT8;
 }
 
-let gfSurrendered: boolean = false;
+export let gfSurrendered: boolean = false;
 
 let gCivQuotes: CIV_QUOTE[] /* [NUM_CIV_QUOTES] */;
 
@@ -177,7 +177,7 @@ function ShutDownQuoteBox(fForce: boolean): void {
   }
 }
 
-function ShutDownQuoteBoxIfActive(): boolean {
+export function ShutDownQuoteBoxIfActive(): boolean {
   if (gCivQuoteData.bActive) {
     ShutDownQuoteBox(true);
 
@@ -187,7 +187,7 @@ function ShutDownQuoteBoxIfActive(): boolean {
   return false;
 }
 
-function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
+export function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
   if (pCiv.value.ubProfile != NO_PROFILE) {
     return CIV_TYPE_NA;
   }
@@ -271,7 +271,7 @@ function QuoteOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 }
 
-function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryID: UINT8, sX: INT16, sY: INT16): void {
+export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryID: UINT8, sX: INT16, sY: INT16): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
   let zQuote: INT16[] /* [320] */;
 
@@ -571,7 +571,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 }
 
-function HandleCivQuote(): void {
+export function HandleCivQuote(): void {
   if (gCivQuoteData.bActive) {
     // Check for min time....
     if ((GetJA2Clock() - gCivQuoteData.uiTimeOfCreation) > gCivQuoteData.uiDelayTime) {
@@ -581,7 +581,7 @@ function HandleCivQuote(): void {
   }
 }
 
-function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
+export function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
   let ubCivQuoteID: UINT8;
   let sX: INT16;
   let sY: INT16;
@@ -640,7 +640,7 @@ function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function InitCivQuoteSystem(): void {
+export function InitCivQuoteSystem(): void {
   memset(addressof(gCivQuotes), 0, sizeof(gCivQuotes));
   CopyNumEntriesIntoQuoteStruct();
 
@@ -650,7 +650,7 @@ function InitCivQuoteSystem(): void {
   gCivQuoteData.iDialogueBox = -1;
 }
 
-function SaveCivQuotesToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveCivQuotesToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   FileWrite(hFile, addressof(gCivQuotes), sizeof(gCivQuotes), addressof(uiNumBytesWritten));
@@ -661,7 +661,7 @@ function SaveCivQuotesToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadCivQuotesFromLoadGameFile(hFile: HWFILE): boolean {
+export function LoadCivQuotesFromLoadGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   FileRead(hFile, addressof(gCivQuotes), sizeof(gCivQuotes), addressof(uiNumBytesRead));

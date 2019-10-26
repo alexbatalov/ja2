@@ -26,8 +26,8 @@ const DELTA_T = (1.0 * TIME_MULTI);
 const GRAVITY = (9.8 * 2.5);
 //#define					GRAVITY						( 9.8 * 2.8 )
 
-let ObjectSlots: REAL_OBJECT[] /* [NUM_OBJECT_SLOTS] */;
-let guiNumObjectSlots: UINT32 = 0;
+export let ObjectSlots: REAL_OBJECT[] /* [NUM_OBJECT_SLOTS] */;
+export let guiNumObjectSlots: UINT32 = 0;
 let fDampingActive: boolean = false;
 // real						Kdl	= (float)0.5;					// LINEAR DAMPENING ( WIND RESISTANCE )
 let Kdl: real = (0.1 * TIME_MULTI); // LINEAR DAMPENING ( WIND RESISTANCE )
@@ -68,7 +68,7 @@ function RecountObjectSlots(): void {
   guiNumObjectSlots = 0;
 }
 
-function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, xPos: real, yPos: real, zPos: real, xForce: real, yForce: real, zForce: real, ubOwner: UINT8, ubActionCode: UINT8, uiActionData: UINT32): INT32 {
+export function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, xPos: real, yPos: real, zPos: real, xForce: real, yForce: real, zForce: real, ubOwner: UINT8, ubActionCode: UINT8, uiActionData: UINT32): INT32 {
   let iObjectIndex: INT32;
   let mass: FLOAT;
   let pObject: Pointer<REAL_OBJECT>;
@@ -151,7 +151,7 @@ function RemoveObjectSlot(iObject: INT32): boolean {
   return true;
 }
 
-function SimulateWorld(): void {
+export function SimulateWorld(): void {
   let cnt: UINT32;
   let pObject: Pointer<REAL_OBJECT>;
 
@@ -170,7 +170,7 @@ function SimulateWorld(): void {
   }
 }
 
-function RemoveAllPhysicsObjects(): void {
+export function RemoveAllPhysicsObjects(): void {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < guiNumObjectSlots; cnt++) {
@@ -1373,7 +1373,7 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJE
   return 100;
 }
 
-function CalculateLaunchItemAngle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubHeight: UINT8, dForce: real, pItem: Pointer<OBJECTTYPE>, psGridNo: Pointer<INT16>): FLOAT {
+export function CalculateLaunchItemAngle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubHeight: UINT8, dForce: real, pItem: Pointer<OBJECTTYPE>, psGridNo: Pointer<INT16>): FLOAT {
   let dAngle: real;
   let sSrcX: INT16;
   let sSrcY: INT16;
@@ -1529,7 +1529,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
   (pdDegrees.value) = dDegrees;
 }
 
-function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pItem: Pointer<OBJECTTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, psFinalGridNo: Pointer<INT16>, fArmed: boolean, pbLevel: Pointer<INT8>, fFromUI: boolean): boolean {
+export function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pItem: Pointer<OBJECTTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, psFinalGridNo: Pointer<INT16>, fArmed: boolean, pbLevel: Pointer<INT8>, fFromUI: boolean): boolean {
   let dForce: FLOAT;
   let dDegrees: FLOAT;
   let sDestX: INT16;
@@ -1621,7 +1621,7 @@ const MAX_MISS_BY = 30;
 const MIN_MISS_BY = 1;
 const MAX_MISS_RADIUS = 5;
 
-function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, pItem: Pointer<OBJECTTYPE>, bMissBy: INT8, ubActionCode: UINT8, uiActionData: UINT32): void {
+export function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, pItem: Pointer<OBJECTTYPE>, bMissBy: INT8, ubActionCode: UINT8, uiActionData: UINT32): void {
   let dForce: FLOAT;
   let dDegrees: FLOAT;
   let sDestX: INT16;
@@ -1993,7 +1993,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
   }
 }
 
-function SavePhysicsTableToSaveGameFile(hFile: HWFILE): boolean {
+export function SavePhysicsTableToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let usCnt: UINT16 = 0;
   let usPhysicsCount: UINT32 = 0;
@@ -2027,7 +2027,7 @@ function SavePhysicsTableToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): boolean {
+export function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let usCnt: UINT16 = 0;
 

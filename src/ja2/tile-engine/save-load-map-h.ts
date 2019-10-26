@@ -1,5 +1,5 @@
 // Used for the ubType in the MODIFY_MAP struct
-const enum Enum307 {
+export const enum Enum307 {
   SLM_NONE,
 
   // Adding a map graphic
@@ -38,7 +38,7 @@ const enum Enum307 {
   SLM_WINDOW_HIT,
 }
 
-interface MODIFY_MAP {
+export interface MODIFY_MAP {
   usGridNo: UINT16; // The gridno the graphic will be applied to
   usImageType: UINT16; // graphic index
   usSubImageIndex: UINT16; //

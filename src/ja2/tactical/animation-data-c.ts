@@ -3,12 +3,12 @@ const TO_INIT = 0;
 
 const ANIMPROFILEFILENAME = "BINARYDATA\\JA2PROF.DAT";
 
-let gpAnimProfiles: Pointer<ANIM_PROF> = null;
+export let gpAnimProfiles: Pointer<ANIM_PROF> = null;
 let gubNumAnimProfiles: UINT8 = 0;
 
 let gbAnimUsageHistory: INT8[][] /* [NUMANIMATIONSURFACETYPES][MAX_NUM_SOLDIERS] */;
 
-let gAnimSurfaceDatabase: AnimationSurfaceType[] /* [NUMANIMATIONSURFACETYPES] */ = [
+export let gAnimSurfaceDatabase: AnimationSurfaceType[] /* [NUMANIMATIONSURFACETYPES] */ = [
   [ Enum195.RGMBASICWALKING, "ANIMS\\S_MERC\\S_R_WALK.STI", Enum196.S_STRUCT, 0, 8, TO_INIT, null, null, 0, -1 ],
   [ Enum195.RGMSTANDING, "ANIMS\\S_MERC\\S_R_STD.STI", Enum196.S_STRUCT, 0, 8, TO_INIT, null, null, 0, -1 ],
   [ Enum195.RGMCROUCHING, "ANIMS\\S_MERC\\S_R_C.STI", Enum196.C_STRUCT, 0, 8, TO_INIT, null, null, 0, -1 ],
@@ -713,7 +713,7 @@ let gAnimStructureDatabase: AnimationStructureType[][] /* [TOTALBODYTYPES][NUM_S
   ],
 ];
 
-function InitAnimationSystem(): boolean {
+export function InitAnimationSystem(): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
   let sFilename: CHAR8[] /* [50] */;
@@ -745,7 +745,7 @@ function InitAnimationSystem(): boolean {
   return true;
 }
 
-function DeInitAnimationSystem(): boolean {
+export function DeInitAnimationSystem(): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
 
@@ -795,7 +795,7 @@ function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: U
   return gAnimStructureDatabase[MercPtrs[usSoldierID].value.ubBodyType][bStructDataType].pStructureFileRef;
 }
 
-function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): Pointer<STRUCTURE_FILE_REF> {
+export function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): Pointer<STRUCTURE_FILE_REF> {
   return InternalGetAnimationStructureRef(usSoldierID, usSurfaceIndex, usAnimState, false);
 }
 
@@ -804,7 +804,7 @@ function GetDefaultStructureRef(usSoldierID: UINT16): Pointer<STRUCTURE_FILE_REF
 }
 
 // Surface mamagement functions
-function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): boolean {
+export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): boolean {
   let pAuxData: Pointer<AuxObjectData>;
 
   // Check for valid surface
@@ -904,7 +904,7 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
   return true;
 }
 
-function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16): boolean {
+export function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16): boolean {
   // Decrement usage flag, only if this soldier has it currently tagged
   if (gbAnimUsageHistory[usSurfaceIndex][usSoldierID] > 0) {
     // Decrement usage count
@@ -938,7 +938,7 @@ function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16): bo
   return true;
 }
 
-function ClearAnimationSurfacesUsageHistory(usSoldierID: UINT16): void {
+export function ClearAnimationSurfacesUsageHistory(usSoldierID: UINT16): void {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < Enum195.NUMANIMATIONSURFACETYPES; cnt++) {
@@ -1042,7 +1042,7 @@ function DeleteAnimationProfiles(): void {
   MemFree(gpAnimProfiles);
 }
 
-function ZeroAnimSurfaceCounts(): void {
+export function ZeroAnimSurfaceCounts(): void {
   let cnt: INT32;
 
   for (cnt = 0; cnt < Enum195.NUMANIMATIONSURFACETYPES; cnt++) {

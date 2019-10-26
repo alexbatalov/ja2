@@ -1,4 +1,4 @@
-let gfSchedulesHosed: boolean = false;
+export let gfSchedulesHosed: boolean = false;
 
 //////////////////////////////////////////////////////
 //
@@ -94,7 +94,7 @@ const enum Enum25 {
 
 let gfSaveLoadScreenEntry: boolean = true;
 let gfSaveLoadScreenExit: boolean = false;
-let gfRedrawSaveLoadScreen: boolean = true;
+export let gfRedrawSaveLoadScreen: boolean = true;
 
 let gfExitAfterMessageBox: boolean = false;
 let giSaveLoadMessageBox: INT32 = -1; // SaveLoad pop up messages index value
@@ -102,16 +102,16 @@ let giSaveLoadMessageBox: INT32 = -1; // SaveLoad pop up messages index value
 let guiSaveLoadExitScreen: UINT32 = Enum26.SAVE_LOAD_SCREEN;
 
 // Contains the array of valid save game locations
-let gbSaveGameArray: boolean[] /* [NUM_SAVE_GAMES] */;
+export let gbSaveGameArray: boolean[] /* [NUM_SAVE_GAMES] */;
 
 let gfDoingQuickLoad: boolean = false;
 
-let gfFailedToSaveGameWhenInsideAMessageBox: boolean = false;
+export let gfFailedToSaveGameWhenInsideAMessageBox: boolean = false;
 
 // This flag is used to diferentiate between loading a game and saveing a game.
 // gfSaveGame=TRUE		For saving a game
 // gfSaveGame=FALSE		For loading a game
-let gfSaveGame: boolean = true;
+export let gfSaveGame: boolean = true;
 
 let gfSaveLoadScreenButtonsCreated: boolean = false;
 
@@ -132,15 +132,15 @@ let gubSaveGameNextPass: UINT8 = 0;
 
 let gfStartedFadingOut: boolean = false;
 
-let gfCameDirectlyFromGame: boolean = false;
+export let gfCameDirectlyFromGame: boolean = false;
 
-let gfLoadedGame: boolean = false; // Used to know when a game has been loaded, the flag in gtacticalstatus might have been reset already
+export let gfLoadedGame: boolean = false; // Used to know when a game has been loaded, the flag in gtacticalstatus might have been reset already
 
-let gfLoadGameUponEntry: boolean = false;
+export let gfLoadGameUponEntry: boolean = false;
 
 let gfHadToMakeBasementLevels: boolean = false;
 
-let gfGettingNameFromSaveLoadScreen: boolean = false;
+export let gfGettingNameFromSaveLoadScreen: boolean = false;
 
 // ggg
 
@@ -173,7 +173,7 @@ let gSLSEntireScreenRegion: MOUSE_REGION;
 //
 //////////////////////////////////////////////////////
 
-function SaveLoadScreenInit(): UINT32 {
+export function SaveLoadScreenInit(): UINT32 {
   // Set so next time we come in, we can set up
   gfSaveLoadScreenEntry = true;
 
@@ -186,7 +186,7 @@ function SaveLoadScreenInit(): UINT32 {
   return true;
 }
 
-function SaveLoadScreenHandle(): UINT32 {
+export function SaveLoadScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfSaveLoadScreenEntry) {
@@ -269,7 +269,7 @@ function SaveLoadScreenHandle(): UINT32 {
   return guiSaveLoadExitScreen;
 }
 
-function SaveLoadScreenShutdown(): UINT32 {
+export function SaveLoadScreenShutdown(): UINT32 {
   return true;
 }
 
@@ -848,7 +848,7 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
   }
 }
 
-function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
+export function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
   // do message box and return
   giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 
@@ -866,7 +866,7 @@ function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScr
   return giSaveLoadMessageBox != -1;
 }
 
-function InitSaveGameArray(): boolean {
+export function InitSaveGameArray(): boolean {
   let cnt: INT8;
   let zSaveGameName: CHAR8[] /* [512] */;
   let SaveGameHeader: SAVED_GAME_HEADER;
@@ -1614,7 +1614,7 @@ function DeleteAllSaveGameFile(): void {
   InitSaveGameArray();
 }
 
-function DeleteSaveGameNumber(ubSaveGameSlotID: UINT8): void {
+export function DeleteSaveGameNumber(ubSaveGameSlotID: UINT8): void {
   let zSaveGameName: CHAR8[] /* [512] */;
 
   // Create the name of the file
@@ -1790,7 +1790,7 @@ function FailedLoadingGameCallBack(bExitValue: UINT8): void {
   }
 }
 
-function DoQuickSave(): boolean {
+export function DoQuickSave(): boolean {
   gzGameDescTextField[0] = '\0';
 
   /*
@@ -1833,7 +1833,7 @@ function DoQuickSave(): boolean {
   return true;
 }
 
-function DoQuickLoad(): boolean {
+export function DoQuickLoad(): boolean {
   // Build the save game array
   InitSaveGameArray();
 
@@ -1859,7 +1859,7 @@ function DoQuickLoad(): boolean {
   return true;
 }
 
-function IsThereAnySavedGameFiles(): boolean {
+export function IsThereAnySavedGameFiles(): boolean {
   let cnt: INT8;
   let zSaveGameName: CHAR8[] /* [512] */;
 

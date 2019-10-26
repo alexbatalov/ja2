@@ -1,6 +1,6 @@
 let fLandLayerDirty: boolean = true;
 
-let gpZBuffer: Pointer<UINT16> = null;
+export let gpZBuffer: Pointer<UINT16> = null;
 let gfTagAnimatedTiles: boolean = true;
 
 let gsCurrentGlowFrame: INT16 = 0;
@@ -74,8 +74,8 @@ let gsGiveOutline: INT16;
 let gusNormalItemOutlineColor: INT16;
 let gusYellowItemOutlineColor: INT16;
 
-let gsRenderHeight: INT16 = 0;
-let gfRenderFullThisFrame: boolean = 0;
+export let gsRenderHeight: INT16 = 0;
+export let gfRenderFullThisFrame: boolean = 0;
 
 // UINT8		gubIntTileCheckFlags	 = INTILE_CHECK_FULL;
 let gubIntTileCheckFlags: UINT8 = INTILE_CHECK_SELECTIVE;
@@ -308,12 +308,12 @@ let gubNewScrollIDSpeeds: UINT8[] /* [] */ = [
 let gubScrollSpeedStartID: UINT8 = 2;
 let gubScrollSpeedEndID: UINT8 = 4;
 
-let gubCurScrollSpeedID: UINT8 = 1;
+export let gubCurScrollSpeedID: UINT8 = 1;
 
-let gfDoVideoScroll: boolean = true;
+export let gfDoVideoScroll: boolean = true;
 let gfDoSubtileScroll: boolean = false;
 
-let gfScrollPending: boolean = false;
+export let gfScrollPending: boolean = false;
 
 let uiLayerUsedFlags: UINT32 = 0xffffffff;
 let uiAdditiveLayerUsedFlags: UINT32 = 0xffffffff;
@@ -406,27 +406,27 @@ let gScrollDirectionFlags: UINT32[] /* [NUM_WORLD_DIRECTIONS] */ = [
   SCROLL_UP,
 ];
 
-let SCROLL_X_STEP: INT16 = (WORLD_TILE_X);
-let SCROLL_Y_STEP: INT16 = (WORLD_TILE_Y * 2);
+export let SCROLL_X_STEP: INT16 = (WORLD_TILE_X);
+export let SCROLL_Y_STEP: INT16 = (WORLD_TILE_Y * 2);
 
-let gsVIEWPORT_START_X: INT16 = 0;
-let gsVIEWPORT_START_Y: INT16 = 0;
-let gsVIEWPORT_END_Y: INT16 = 360;
-let gsVIEWPORT_WINDOW_END_Y: INT16 = 360;
-let gsVIEWPORT_WINDOW_START_Y: INT16 = 0;
-let gsVIEWPORT_END_X: INT16 = 640;
+export let gsVIEWPORT_START_X: INT16 = 0;
+export let gsVIEWPORT_START_Y: INT16 = 0;
+export let gsVIEWPORT_END_Y: INT16 = 360;
+export let gsVIEWPORT_WINDOW_END_Y: INT16 = 360;
+export let gsVIEWPORT_WINDOW_START_Y: INT16 = 0;
+export let gsVIEWPORT_END_X: INT16 = 640;
 
-let gsTopLeftWorldX: INT16;
-let gsTopLeftWorldY: INT16;
+export let gsTopLeftWorldX: INT16;
+export let gsTopLeftWorldY: INT16;
 let gsTopRightWorldX: INT16;
 let gsTopRightWorldY: INT16;
 let gsBottomLeftWorldX: INT16;
 let gsBottomLeftWorldY: INT16;
-let gsBottomRightWorldX: INT16;
-let gsBottomRightWorldY: INT16;
-let gfIgnoreScrolling: boolean = false;
+export let gsBottomRightWorldX: INT16;
+export let gsBottomRightWorldY: INT16;
+export let gfIgnoreScrolling: boolean = false;
 
-let gfIgnoreScrollDueToCenterAdjust: boolean = false;
+export let gfIgnoreScrollDueToCenterAdjust: boolean = false;
 
 // GLOBAL SCROLLING PARAMS
 let gTopLeftWorldLimitX: INT16;
@@ -438,23 +438,23 @@ let gBottomLeftWorldLimitY: INT16;
 let gBottomRightWorldLimitX: INT16;
 let gBottomRightWorldLimitY: INT16;
 let Slide: INT16;
-let gCenterWorldY: INT16;
-let gsTLX: INT16;
-let gsTLY: INT16;
-let gsTRX: INT16;
-let gsTRY: INT16;
+export let gCenterWorldY: INT16;
+export let gsTLX: INT16;
+export let gsTLY: INT16;
+export let gsTRX: INT16;
+export let gsTRY: INT16;
 let gsBLX: INT16;
-let gsBLY: INT16;
-let gsBRX: INT16;
-let gsBRY: INT16;
-let gsCX: INT16;
-let gsCY: INT16;
-let gdScaleX: DOUBLE;
-let gdScaleY: DOUBLE;
+export let gsBLY: INT16;
+export let gsBRX: INT16;
+export let gsBRY: INT16;
+export let gsCX: INT16;
+export let gsCY: INT16;
+export let gdScaleX: DOUBLE;
+export let gdScaleY: DOUBLE;
 
 const FASTMAPROWCOLTOPOS = (r, c) => ((r) * WORLD_COLS + (c));
 
-let gfScrollInertia: boolean = false;
+export let gfScrollInertia: boolean = false;
 
 // GLOBALS FOR CALCULATING STARTING PARAMETERS
 let gsStartPointX_W: INT16;
@@ -475,24 +475,24 @@ let gsLStartPointY_M: INT16;
 let gsLEndXS: INT16;
 let gsLEndYS: INT16;
 
-let gfRenderScroll: boolean = false;
-let gfScrollStart: boolean = false;
-let gsScrollXIncrement: INT16;
-let gsScrollYIncrement: INT16;
-let guiScrollDirection: INT32;
+export let gfRenderScroll: boolean = false;
+export let gfScrollStart: boolean = false;
+export let gsScrollXIncrement: INT16;
+export let gsScrollYIncrement: INT16;
+export let guiScrollDirection: INT32;
 
 // Rendering flags (full, partial, etc.)
-let gRenderFlags: UINT32 = 0;
+export let gRenderFlags: UINT32 = 0;
 
 let gClippingRect: SGPRect = [ 0, 0, 640, 360 ];
-let gOldClipRect: SGPRect;
-let gsRenderCenterX: INT16;
-let gsRenderCenterY: INT16;
-let gsRenderWorldOffsetX: INT16 = -1;
-let gsRenderWorldOffsetY: INT16 = -1;
-let gSelectRegion: SGPRect;
+export let gOldClipRect: SGPRect;
+export let gsRenderCenterX: INT16;
+export let gsRenderCenterY: INT16;
+export let gsRenderWorldOffsetX: INT16 = -1;
+export let gsRenderWorldOffsetY: INT16 = -1;
+export let gSelectRegion: SGPRect;
 let fSelectMode: UINT32 = NO_SELECT;
-let gSelectAnchor: SGPPoint;
+export let gSelectAnchor: SGPPoint;
 
 interface RenderFXType {
   fDynamic: boolean;
@@ -667,7 +667,7 @@ function ResetLayerOptimizing(): void {
   uiAdditiveLayerUsedFlags = 0;
 }
 
-function ResetSpecificLayerOptimizing(uiRowFlag: UINT32): void {
+export function ResetSpecificLayerOptimizing(uiRowFlag: UINT32): void {
   uiLayerUsedFlags |= uiRowFlag;
 }
 
@@ -675,11 +675,11 @@ function SumAddiviveLayerOptimization(): void {
   uiLayerUsedFlags = uiAdditiveLayerUsedFlags;
 }
 
-function SetRenderFlags(uiFlags: UINT32): void {
+export function SetRenderFlags(uiFlags: UINT32): void {
   gRenderFlags |= uiFlags;
 }
 
-function ClearRenderFlags(uiFlags: UINT32): void {
+export function ClearRenderFlags(uiFlags: UINT32): void {
   gRenderFlags &= (~uiFlags);
 }
 
@@ -687,7 +687,7 @@ function GetRenderFlags(): UINT32 {
   return gRenderFlags;
 }
 
-function RenderSetShadows(fShadows: boolean): void {
+export function RenderSetShadows(fShadows: boolean): void {
   if (fShadows)
     gRenderFlags |= RENDER_FLAG_SHADOWS;
   else
@@ -2123,7 +2123,7 @@ function ScrollBackground(uiDirection: UINT32, sScrollXIncrement: INT16, sScroll
 // Coordinates for the window from that using the following functions
 // For coordinate transformations
 
-function RenderWorld(): void {
+export function RenderWorld(): void {
   let TileElem: Pointer<TILE_ELEMENT>;
   let pAnimData: Pointer<TILE_ANIMATION_DATA>;
   let cnt: UINT32 = 0;
@@ -2259,7 +2259,7 @@ function RenderWorld(): void {
 // Start with a center X,Y,Z world coordinate and render direction
 // Determine WorldIntersectionPoint and the starting block from these
 // Then render away!
-function RenderStaticWorldRect(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16, fDynamicsToo: boolean): void {
+export function RenderStaticWorldRect(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16, fDynamicsToo: boolean): void {
   let uiLevelFlags: UINT32[] /* [10] */;
   let sLevelIDs: UINT16[] /* [10] */;
 
@@ -2806,7 +2806,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
   return fAGoodMove;
 }
 
-function ScrollWorld(): void {
+export function ScrollWorld(): void {
   let ScrollFlags: UINT32 = 0;
   let fDoScroll: boolean = false;
   let fMovedPos: boolean = false;
@@ -3033,7 +3033,7 @@ function ScrollWorld(): void {
   }
 }
 
-function InitRenderParams(ubRestrictionID: UINT8): void {
+export function InitRenderParams(ubRestrictionID: UINT8): void {
   let gsTilesX: INT16;
   let gsTilesY: INT16;
   let cnt: UINT32;
@@ -3402,7 +3402,7 @@ function InvalidateWorldRedundencyRadius(sX: INT16, sY: INT16, sRadius: INT16): 
   }
 }
 
-function InvalidateWorldRedundency(): void {
+export function InvalidateWorldRedundency(): void {
   let uiCount: UINT32;
 
   SetRenderFlags(RENDER_FLAG_CHECKZ);
@@ -6149,15 +6149,15 @@ function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObjec
   return fHidden;
 }
 
-function SetMercGlowFast(): void {
+export function SetMercGlowFast(): void {
   // gpGlowFramePointer	= gsFastGlowFrames;
 }
 
-function SetMercGlowNormal(): void {
+export function SetMercGlowNormal(): void {
   gpGlowFramePointer = gsGlowFrames;
 }
 
-function SetRenderCenter(sNewX: INT16, sNewY: INT16): void {
+export function SetRenderCenter(sNewX: INT16, sNewY: INT16): void {
   if (gfIgnoreScrolling == 1) {
     return;
   }

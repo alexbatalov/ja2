@@ -1,6 +1,6 @@
 // There are the 32 macro definitions that make up all of the road pieces.  These enumerations
 // match up exactly to the previous road system order of graphics (FIRSTROAD1 - FIRSTROAD32)
-const enum Enum54 {
+export const enum Enum54 {
   L1, // left 1 -- this is a left straight-away edge
   R1, // right 1
   B1, // bottom 1

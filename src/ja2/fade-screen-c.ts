@@ -1,7 +1,7 @@
 const SQUARE_STEP = 8;
 
-let guiExitScreen: UINT32;
-let gfFadeInitialized: boolean = false;
+export let guiExitScreen: UINT32;
+export let gfFadeInitialized: boolean = false;
 let gbFadeValue: INT8;
 let gsFadeLimit: INT16;
 let guiTime: UINT32;
@@ -9,37 +9,37 @@ let guiFadeDelay: UINT32;
 let gfFirstTimeInFade: boolean = false;
 let gsFadeCount: INT16;
 let gbFadeType: INT8;
-let gfFadeIn: boolean;
+export let gfFadeIn: boolean;
 let giX1: INT32;
 let giX2: INT32;
 let giY1: INT32;
 let giY2: INT32;
 let gsFadeRealCount: INT16;
-let gfFadeInVideo: boolean;
+export let gfFadeInVideo: boolean;
 
 let uiOldMusicMode: UINT32;
 
-let gFadeFunction: FADE_FUNCTION = null;
+export let gFadeFunction: FADE_FUNCTION = null;
 
-let gFadeInDoneCallback: FADE_HOOK = null;
-let gFadeOutDoneCallback: FADE_HOOK = null;
+export let gFadeInDoneCallback: FADE_HOOK = null;
+export let gFadeOutDoneCallback: FADE_HOOK = null;
 
-let gfFadeIn: boolean = false;
-let gfFadeOut: boolean = false;
-let gfFadeOutDone: boolean = false;
+export let gfFadeIn: boolean = false;
+export let gfFadeOut: boolean = false;
+export let gfFadeOutDone: boolean = false;
 let gfFadeInDone: boolean = false;
 
-function FadeInNextFrame(): void {
+export function FadeInNextFrame(): void {
   gfFadeIn = true;
   gfFadeInDone = false;
 }
 
-function FadeOutNextFrame(): void {
+export function FadeOutNextFrame(): void {
   gfFadeOut = true;
   gfFadeOutDone = false;
 }
 
-function HandleBeginFadeIn(uiScreenExit: UINT32): boolean {
+export function HandleBeginFadeIn(uiScreenExit: UINT32): boolean {
   if (gfFadeIn) {
     BeginFade(uiScreenExit, 35, FADE_IN_REALFADE, 5);
 
@@ -53,7 +53,7 @@ function HandleBeginFadeIn(uiScreenExit: UINT32): boolean {
   return false;
 }
 
-function HandleBeginFadeOut(uiScreenExit: UINT32): boolean {
+export function HandleBeginFadeOut(uiScreenExit: UINT32): boolean {
   if (gfFadeOut) {
     BeginFade(uiScreenExit, 35, FADE_OUT_REALFADE, 5);
 
@@ -67,7 +67,7 @@ function HandleBeginFadeOut(uiScreenExit: UINT32): boolean {
   return false;
 }
 
-function HandleFadeOutCallback(): boolean {
+export function HandleFadeOutCallback(): boolean {
   if (gfFadeOutDone) {
     gfFadeOutDone = false;
 
@@ -83,7 +83,7 @@ function HandleFadeOutCallback(): boolean {
   return false;
 }
 
-function HandleFadeInCallback(): boolean {
+export function HandleFadeInCallback(): boolean {
   if (gfFadeInDone) {
     gfFadeInDone = false;
 
@@ -200,11 +200,11 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
   SetPendingNewScreen(Enum26.FADE_SCREEN);
 }
 
-function FadeScreenInit(): UINT32 {
+export function FadeScreenInit(): UINT32 {
   return true;
 }
 
-function FadeScreenHandle(): UINT32 {
+export function FadeScreenHandle(): UINT32 {
   let uiTime: UINT32;
 
   if (!gfFadeInitialized) {
@@ -261,7 +261,7 @@ function FadeScreenHandle(): UINT32 {
   return Enum26.FADE_SCREEN;
 }
 
-function FadeScreenShutdown(): UINT32 {
+export function FadeScreenShutdown(): UINT32 {
   return false;
 }
 

@@ -16,9 +16,9 @@
 
 //#define PATHAI_SKIPLIST_DEBUG
 
-let gfPlotPathToExitGrid: boolean = false;
+export let gfPlotPathToExitGrid: boolean = false;
 let gfRecalculatingExistingPathCost: boolean = false;
-let gubGlobalPathFlags: UINT8 = 0;
+export let gubGlobalPathFlags: UINT8 = 0;
 
 let gubBuildingInfoToSet: UINT8;
 
@@ -78,9 +78,9 @@ const NOPASS = (TRAVELCOST_BLOCKED);
 //#define ISVEIN(v) ((v==TRAVELCOST_VEINMID) || (v==TRAVELCOST_VEINEND))
 
 /* static */ let pathQ: Pointer<path_t>;
-/* static */ let gusPathShown: UINT16;
-/* static */ let gusAPtsToMove: UINT16;
-/* static */ let queRequests: INT32;
+/* static */ export let gusPathShown: UINT16;
+/* static */ export let gusAPtsToMove: UINT16;
+/* static */ export let queRequests: INT32;
 /* static */ let iSkipListSize: INT32;
 /* static */ let iClosedListSize: INT32;
 /* static */ let bSkipListLevel: INT8;
@@ -316,18 +316,18 @@ const PURPLESTEPSTART = 32;
 const BLUESTEPSTART = 48;
 const ORANGESTEPSTART = 64;
 
-let gubNPCAPBudget: UINT8 = 0;
-let gusNPCMovementMode: UINT16;
-let gubNPCDistLimit: UINT8 = 0;
-let gfNPCCircularDistLimit: boolean = false;
-let gubNPCPathCount: UINT8;
+export let gubNPCAPBudget: UINT8 = 0;
+export let gusNPCMovementMode: UINT16;
+export let gubNPCDistLimit: UINT8 = 0;
+export let gfNPCCircularDistLimit: boolean = false;
+export let gubNPCPathCount: UINT8;
 
 let gfPlotDirectPath: boolean = false;
-let gfEstimatePath: boolean = false;
-let gfPathAroundObstacles: boolean = true;
+export let gfEstimatePath: boolean = false;
+export let gfPathAroundObstacles: boolean = true;
 
 /* static */ let guiPlottedPath: UINT32[] /* [256] */;
-let guiPathingData: UINT32[] /* [256] */;
+export let guiPathingData: UINT32[] /* [256] */;
 /* static */ let giPathDataSize: INT32;
 /* static */ let giPlotCnt: INT32;
 /* static */ let guiEndPlotGridNo: UINT32;
@@ -356,7 +356,7 @@ function RandomSkipListLevel(): INT8 {
   return bLevel;
 }
 
-function InitPathAI(): boolean {
+export function InitPathAI(): boolean {
   pathQ = MemAlloc(ABSMAX_PATHQ * sizeof(path_t));
   trailCost = MemAlloc(MAPLENGTH * sizeof(TRAILCELLTYPE));
   trailCostUsed = MemAlloc(MAPLENGTH);
@@ -370,7 +370,7 @@ function InitPathAI(): boolean {
   return true;
 }
 
-function ShutDownPathAI(): void {
+export function ShutDownPathAI(): void {
   MemFree(pathQ);
   MemFree(trailCostUsed);
   MemFree(trailCost);
@@ -403,7 +403,7 @@ function RestorePathAIToDefaults(): void {
 ///////////////////////////////////////////////////////////////////////
 //	FINDBESTPATH                                                   /
 ////////////////////////////////////////////////////////////////////////
-function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT8, usMovementMode: INT16, bCopy: INT8, fFlags: UINT8): INT32 {
+export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT8, usMovementMode: INT16, bCopy: INT8, fFlags: UINT8): INT32 {
   let iDestination: INT32 = sDestination;
   let iOrigination: INT32;
   let iCnt: INT32 = -1;
@@ -1546,7 +1546,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
   return 0;
 }
 
-function GlobalReachableTest(sStartGridNo: INT16): void {
+export function GlobalReachableTest(sStartGridNo: INT16): void {
   let s: SOLDIERTYPE;
   let iCurrentGridNo: INT32 = 0;
 
@@ -1565,7 +1565,7 @@ function GlobalReachableTest(sStartGridNo: INT16): void {
   RestorePathAIToDefaults();
 }
 
-function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
+export function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
   let s: SOLDIERTYPE;
   let iCurrentGridNo: INT32 = 0;
   let iX: INT32;
@@ -1601,7 +1601,7 @@ function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
   gubNPCDistLimit = 0;
 }
 
-function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): void {
+export function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): void {
   let s: SOLDIERTYPE;
   let iCurrentGridNo: INT32 = 0;
 
@@ -1624,7 +1624,7 @@ function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): v
   RestorePathAIToDefaults();
 }
 
-function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
+export function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
   let s: SOLDIERTYPE;
 
   memset(addressof(s), 0, sizeof(SOLDIERTYPE));
@@ -1645,7 +1645,7 @@ function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
   gubBuildingInfoToSet = 0;
 }
 
-function ErasePath(bEraseOldOne: char): void {
+export function ErasePath(bEraseOldOne: char): void {
   let iCnt: INT16;
 
   // NOTE: This routine must be called BEFORE anything happens that changes
@@ -1695,7 +1695,7 @@ function ErasePath(bEraseOldOne: char): void {
   memset(guiPlottedPath, 0, 256 * sizeof(UINT32));
 }
 
-function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
+export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   let sTileCost: INT16;
   let sPoints: INT16 = 0;
   let sTempGrid: INT16;
@@ -2034,7 +2034,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
   return sPoints;
 }
 
-function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
+export function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   // This function is specifically for UI calls to the pathing routine, to
   // check whether the shift key is pressed, etc.
   let sRet: INT16;
@@ -2057,7 +2057,7 @@ function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute:
   return sRet;
 }
 
-function RecalculatePathCost(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UINT16): INT16 {
+export function RecalculatePathCost(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UINT16): INT16 {
   // AI function for a soldier already with a path; this will return the cost of that path using the given movement mode
   let sRet: INT16;
 
@@ -2071,7 +2071,7 @@ function RecalculatePathCost(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UIN
   return sRet;
 }
 
-function EstimatePlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
+export function EstimatePlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   // This function is specifically for AI calls to estimate path cost to a location
   // It sets stuff up to ignore all people
   let sRet: INT16;
@@ -2085,7 +2085,7 @@ function EstimatePlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopy
   return sRet;
 }
 
-function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>, fReturnDoorCost: boolean): UINT8 {
+export function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>, fReturnDoorCost: boolean): UINT8 {
   // This function will return either TRAVELCOST_DOOR (in place of closed door cost),
   // TRAVELCOST_OBSTACLE, or the base ground terrain
   // travel cost, depending on whether or not the door is open or closed etc.
@@ -2245,6 +2245,6 @@ function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, 
   return ubMovementCost;
 }
 
-function DoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>): UINT8 {
+export function DoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>): UINT8 {
   return InternalDoorTravelCost(pSoldier, iGridNo, ubMovementCost, fReturnPerceivedValue, piDoorGridNo, false);
 }

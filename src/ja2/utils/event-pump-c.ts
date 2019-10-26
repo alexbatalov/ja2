@@ -1,4 +1,4 @@
-let gubEncryptionArray4: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
+export let gubEncryptionArray4: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
   [ 177, 131, 58, 218, 175, 130, 210, 59, 25, 190, 170, 189, 227, 245, 104, 118, 7, 168, 136, 178, 184, 4, 27, 64, 199, 101, 160, 24, 83, 177, 178, 232, 185, 40, 122, 109, 38, 253, 160, 14, 133, 106, 190, 206, 58, 102, 244, 229, 124 ],
 
   [ 201, 183, 24, 153, 17, 111, 47, 19, 116, 248, 160, 215, 143, 180, 195, 122, 74, 29, 158, 193, 73, 159, 193, 93, 140, 172, 31, 38, 129, 181, 96, 183, 56, 29, 172, 191, 252, 183, 91, 214, 254, 247, 135, 66, 76, 87, 1, 112, 214 ],
@@ -136,7 +136,7 @@ let SNoise: EV_S_NOISE;
 let SStopMerc: EV_S_STOP_MERC;
 let SUpdateNetworkSoldier: EV_S_SENDPATHTONETWORK;
 
-function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): boolean {
+export function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): boolean {
   if (usDelay == DEMAND_EVENT_DELAY) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local and network #%d", uiEvent));
     return AddGameEventToQueue(uiEvent, 0, pEventData, DEMAND_EVENT_QUEUE);
@@ -273,7 +273,7 @@ function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, 
   return true;
 }
 
-function DequeAllGameEvents(fExecute: boolean): boolean {
+export function DequeAllGameEvents(fExecute: boolean): boolean {
   let pEvent: Pointer<EVENT>;
   let uiQueueSize: UINT32;
   let cnt: UINT32;
@@ -344,7 +344,7 @@ function DequeAllGameEvents(fExecute: boolean): boolean {
   return true;
 }
 
-function DequeueAllDemandGameEvents(fExecute: boolean): boolean {
+export function DequeueAllDemandGameEvents(fExecute: boolean): boolean {
   let pEvent: Pointer<EVENT>;
   let fCompleteLoop: boolean = false;
 
@@ -663,7 +663,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
   return true;
 }
 
-function ClearEventQueue(): boolean {
+export function ClearEventQueue(): boolean {
   // clear out the event queue
   let pEvent: Pointer<EVENT>;
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {

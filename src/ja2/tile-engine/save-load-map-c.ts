@@ -8,7 +8,7 @@ let gpRevealedMap: Pointer<UINT8>;
 
 // ppp
 
-function ApplyMapChangesToMapTempFile(fAddToMap: boolean): void {
+export function ApplyMapChangesToMapTempFile(fAddToMap: boolean): void {
   gfApplyChangesToTempFile = fAddToMap;
 }
 
@@ -49,7 +49,7 @@ function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX:
   return true;
 }
 
-function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
+export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
@@ -244,7 +244,7 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
   return true;
 }
 
-function AddStructToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
+export function AddStructToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
   let Map: MODIFY_MAP;
   let uiType: UINT32;
   let usSubIndex: UINT16;
@@ -274,7 +274,7 @@ function AddStructFromMapTempFileToMap(uiMapIndex: UINT32, usIndex: UINT16): voi
   AddStructToTailCommon(uiMapIndex, usIndex, true);
 }
 
-function AddObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
+export function AddObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
   let Map: MODIFY_MAP;
   let uiType: UINT32;
   let usSubIndex: UINT16;
@@ -304,7 +304,7 @@ function AddObjectFromMapTempFileToMap(uiMapIndex: UINT32, usIndex: UINT16): voi
   AddObjectToHead(uiMapIndex, usIndex);
 }
 
-function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
+export function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
   let Map: MODIFY_MAP;
   let uiType: UINT32;
   let usSubIndex: UINT16;
@@ -330,7 +330,7 @@ function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void
   SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
 
-function RemoveStructFromMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
+export function RemoveStructFromMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
   let Map: MODIFY_MAP;
   let uiType: UINT32;
   let usSubIndex: UINT16;
@@ -360,7 +360,7 @@ function RemoveSavedStructFromMap(uiMapIndex: UINT32, usIndex: UINT16): void {
   RemoveStruct(uiMapIndex, usIndex);
 }
 
-function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
+export function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
   let Map: MODIFY_MAP;
   let cnt: UINT16;
   let pStructure: Pointer<STRUCTURE>;
@@ -462,7 +462,7 @@ function AddBloodOrSmellFromMapTempFileToMap(pMap: Pointer<MODIFY_MAP>): void {
   gpWorldLevelData[pMap.value.usGridNo].ubSmellInfo = pMap.value.usSubImageIndex;
 }
 
-function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
+export function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
@@ -502,7 +502,7 @@ function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: IN
   return true;
 }
 
-function LoadRevealedStatusArrayFromRevealedTempFile(): boolean {
+export function LoadRevealedStatusArrayFromRevealedTempFile(): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
@@ -621,7 +621,7 @@ function DamageStructsFromMapTempFile(pMap: Pointer<MODIFY_MAP>): void {
 
 //////////////
 
-function AddStructToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
+export function AddStructToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
   let Map: MODIFY_MAP;
   let uiType: UINT32;
   let usSubIndex: UINT16;
@@ -667,7 +667,7 @@ function AddObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSe
   SaveModifiedMapStructToMapTempFile(addressof(Map), sSectorX, sSectorY, ubSectorZ);
 }
 
-function RemoveStructFromUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
+export function RemoveStructFromUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
   let Map: MODIFY_MAP;
   let uiType: UINT32;
   let usSubIndex: UINT16;
@@ -713,7 +713,7 @@ function AddRemoveObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT1
   SaveModifiedMapStructToMapTempFile(addressof(Map), sSectorX, sSectorY, ubSectorZ);
 }
 
-function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
+export function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
   let Map: MODIFY_MAP;
 
   if (!gfApplyChangesToTempFile) {
@@ -738,7 +738,7 @@ function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>
   SaveModifiedMapStructToMapTempFile(addressof(Map), sSectorX, sSectorY, ubSectorZ);
 }
 
-function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): boolean {
+export function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
@@ -831,7 +831,7 @@ function AddOpenableStructStatusToMapTempFile(uiMapIndex: UINT32, fOpened: boole
   SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
 
-function AddWindowHitToMapTempFile(uiMapIndex: UINT32): void {
+export function AddWindowHitToMapTempFile(uiMapIndex: UINT32): void {
   let Map: MODIFY_MAP;
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
@@ -898,7 +898,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: boo
   }
 }
 
-function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSectorY: UINT16, bSectorZ: INT8, usGridNo: UINT16, fChangeToOpen: boolean): boolean {
+export function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSectorY: UINT16, bSectorZ: INT8, usGridNo: UINT16, fChangeToOpen: boolean): boolean {
   //	STRUCTURE * pStructure;
   //	MODIFY_MAP Map;
   let zMapName: CHAR8[] /* [128] */;

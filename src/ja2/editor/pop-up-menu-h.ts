@@ -32,7 +32,7 @@ will choose a selection in one of three ways:
                  region doesn't kill the menu, but in MacOS, it does.
 */
 
-const enum Enum53 {
+export const enum Enum53 {
   CHANGETSET_POPUP,
   CHANGECIVGROUP_POPUP,
   SCHEDULEACTION_POPUP,
@@ -47,20 +47,20 @@ const UPMASK = 0x00;
 const DNMASK = 0x10;
 const RTMASK = 0x00;
 const LTMASK = 0x01;
-const DIR_UPRIGHT = (UPMASK + RTMASK);
-const DIR_UPLEFT = (UPMASK + LTMASK);
-const DIR_DOWNRIGHT = (DNMASK + RTMASK);
-const DIR_DOWNLEFT = (DNMASK + LTMASK);
+export const DIR_UPRIGHT = (UPMASK + RTMASK);
+export const DIR_UPLEFT = (UPMASK + LTMASK);
+export const DIR_DOWNRIGHT = (DNMASK + RTMASK);
+export const DIR_DOWNLEFT = (DNMASK + LTMASK);
 
-const POPUP_ACTIVETYPE_NOT_YET_DETERMINED = 0;
-const POPUP_ACTIVETYPE_PERSISTANT = 1;
-const POPUP_ACTIVETYPE_NONPERSISTANT = 2;
+export const POPUP_ACTIVETYPE_NOT_YET_DETERMINED = 0;
+export const POPUP_ACTIVETYPE_PERSISTANT = 1;
+export const POPUP_ACTIVETYPE_NONPERSISTANT = 2;
 
-const MAX_COLUMNS = 8;
+export const MAX_COLUMNS = 8;
 
 // This structure contains all the required information for rendering
 // the popup menu while in
-interface CurrentPopupMenuInformation {
+export interface CurrentPopupMenuInformation {
   ubPopupMenuID: UINT8;
   ubSelectedIndex: UINT8; // current popup menu index hilited.
   ubNumEntries: UINT8;

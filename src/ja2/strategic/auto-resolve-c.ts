@@ -2,7 +2,7 @@
 
 //#define INVULNERABILITY
 
-let gfTransferTacticalOppositionToAutoResolve: boolean = false;
+export let gfTransferTacticalOppositionToAutoResolve: boolean = false;
 
 // button images
 const enum Enum119 {
@@ -223,8 +223,8 @@ const enum Enum122 {
 }
 
 // Autoresolve sets this variable which defaults to -1 when not needed.
-let gsEnemyGainedControlOfSectorID: INT16 = -1;
-let gsCiviliansEatenByMonsters: INT16 = -1;
+export let gsEnemyGainedControlOfSectorID: INT16 = -1;
+export let gsCiviliansEatenByMonsters: INT16 = -1;
 
 // Dynamic globals -- to conserve memory, all global variables are allocated upon entry
 // and deleted before we leave.
@@ -285,7 +285,7 @@ function EliminateAllFriendlies(): void {
   }
 }
 
-function EliminateAllEnemies(ubSectorX: UINT8, ubSectorY: UINT8): void {
+export function EliminateAllEnemies(ubSectorX: UINT8, ubSectorY: UINT8): void {
   let pGroup: Pointer<GROUP>;
   let pDeleteGroup: Pointer<GROUP>;
   let pSector: Pointer<SECTORINFO>;
@@ -441,7 +441,7 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
   // BlitBufferToBuffer( FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480 );
 }
 
-function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
+export function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
   // Set up mapscreen for removal
   SetPendingNewScreen(Enum26.AUTORESOLVE_SCREEN);
   CreateDestroyMapInvButton();
@@ -492,16 +492,16 @@ function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
   }
 }
 
-function AutoResolveScreenInit(): UINT32 {
+export function AutoResolveScreenInit(): UINT32 {
   return true;
 }
 
-function AutoResolveScreenShutdown(): UINT32 {
+export function AutoResolveScreenShutdown(): UINT32 {
   gpBattleGroup = null;
   return true;
 }
 
-function AutoResolveScreenHandle(): UINT32 {
+export function AutoResolveScreenHandle(): UINT32 {
   RestoreBackgroundRects();
 
   if (!gpAR) {
@@ -1024,7 +1024,7 @@ function ExpandWindow(): void {
   InvalidateRegion(gpAR.value.ExRect.iLeft, gpAR.value.ExRect.iBottom, gpAR.value.ExRect.iRight + 1, gpAR.value.ExRect.iBottom + 1);
 }
 
-function VirtualSoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Pointer<SOLDIERTYPE>, pKit: Pointer<OBJECTTYPE>, sKitPts: INT16, sStatus: INT16): UINT32 {
+export function VirtualSoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Pointer<SOLDIERTYPE>, pKit: Pointer<OBJECTTYPE>, sKitPts: INT16, sStatus: INT16): UINT32 {
   let uiDressSkill: UINT32;
   let uiPossible: UINT32;
   let uiActual: UINT32;
@@ -3731,7 +3731,7 @@ function ProcessBattleFrame(): void {
   }
 }
 
-function IsAutoResolveActive(): boolean {
+export function IsAutoResolveActive(): boolean {
   // is the autoresolve up or not?
   if (gpAR) {
     return true;
@@ -3739,7 +3739,7 @@ function IsAutoResolveActive(): boolean {
   return false;
 }
 
-function GetAutoResolveSectorID(): UINT8 {
+export function GetAutoResolveSectorID(): UINT8 {
   if (gpAR) {
     return SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
   }
@@ -3747,7 +3747,7 @@ function GetAutoResolveSectorID(): UINT8 {
 }
 
 // Returns TRUE if a battle is happening or sector is loaded
-function GetCurrentBattleSectorXYZ(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): boolean {
+export function GetCurrentBattleSectorXYZ(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): boolean {
   if (gpAR) {
     psSectorX.value = gpAR.value.ubSectorX;
     psSectorY.value = gpAR.value.ubSectorY;
@@ -3772,7 +3772,7 @@ function GetCurrentBattleSectorXYZ(psSectorX: Pointer<INT16>, psSectorY: Pointer
 }
 
 // Returns TRUE if a battle is happening ONLY
-function GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): boolean {
+export function GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): boolean {
   if (gpAR) {
     psSectorX.value = gpAR.value.ubSectorX;
     psSectorY.value = gpAR.value.ubSectorY;

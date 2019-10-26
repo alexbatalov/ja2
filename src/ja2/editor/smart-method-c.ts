@@ -1,24 +1,24 @@
 let gubDoorUIValue: UINT8 = 0;
 let gubWindowUIValue: UINT8 = 0;
-let gubWallUIValue: UINT8 = Enum313.FIRSTWALL;
+export let gubWallUIValue: UINT8 = Enum313.FIRSTWALL;
 let gubBrokenWallUIValue: UINT8 = 0;
 
-function CalcSmartWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
+export function CalcSmartWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   pusUseIndex.value = 0;
   pusObjIndex.value = gubWallUIValue;
 }
 
-function CalcSmartDoorDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
+export function CalcSmartDoorDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   pusUseIndex.value = 4 * (gubDoorUIValue % 2); // open or closed -- odd or even
   pusObjIndex.value = Enum313.FIRSTDOOR + gubDoorUIValue / 2;
 }
 
-function CalcSmartWindowDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
+export function CalcSmartWindowDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   pusUseIndex.value = 44 + gubWindowUIValue; // first exterior top right oriented window
   pusObjIndex.value = Enum313.FIRSTWALL;
 }
 
-function CalcSmartBrokenWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
+export function CalcSmartBrokenWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   switch (gubBrokenWallUIValue) {
     case 0:
     case 1:
@@ -75,43 +75,43 @@ function CalcSmartBrokenWallIndex(usWallOrientation: UINT16): UINT16 {
   return (usWallOrientation + 57);
 }
 
-function IncSmartWallUIValue(): void {
+export function IncSmartWallUIValue(): void {
   gubWallUIValue += gubWallUIValue < LASTWALL ? 1 : -3;
 }
 
-function DecSmartWallUIValue(): void {
+export function DecSmartWallUIValue(): void {
   gubWallUIValue -= gubWallUIValue > Enum313.FIRSTWALL ? 1 : -3;
 }
 
-function IncSmartDoorUIValue(): void {
+export function IncSmartDoorUIValue(): void {
   gubDoorUIValue += gubDoorUIValue < 7 ? 1 : -7;
 }
 
-function DecSmartDoorUIValue(): void {
+export function DecSmartDoorUIValue(): void {
   gubDoorUIValue -= gubDoorUIValue > 0 ? 1 : -7;
 }
 
-function IncSmartWindowUIValue(): void {
+export function IncSmartWindowUIValue(): void {
   gubWindowUIValue += gubWindowUIValue < 2 ? 1 : -2;
 }
 
-function DecSmartWindowUIValue(): void {
+export function DecSmartWindowUIValue(): void {
   gubWindowUIValue -= gubWindowUIValue > 0 ? 1 : -2;
 }
 
-function IncSmartBrokenWallUIValue(): void {
+export function IncSmartBrokenWallUIValue(): void {
   gubBrokenWallUIValue += gubBrokenWallUIValue < 4 ? 1 : -4;
 }
 
-function DecSmartBrokenWallUIValue(): void {
+export function DecSmartBrokenWallUIValue(): void {
   gubBrokenWallUIValue -= gubBrokenWallUIValue > 0 ? 1 : -4;
 }
 
-function CalcWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
+export function CalcWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
   return false;
 }
 
-function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
+export function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
   let pWall: Pointer<LEVELNODE> = null;
   let usWallOrientation: UINT16;
   pWall = GetVerticalWall(iMapIndex);
@@ -131,7 +131,7 @@ function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UI
   return false;
 }
 
-function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
+export function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
   let pWall: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
@@ -165,7 +165,7 @@ function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<
   return false;
 }
 
-function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
+export function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): boolean {
   let pWall: Pointer<LEVELNODE> = null;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
@@ -226,7 +226,7 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
 //		type, there are two more cases.  When there is a bottom wall in the y+1 position or a right wall in
 //		the x+1 position.  If there are matching walls, there, then we draw two pieces to connect the current
 //		gridno with the respective position.
-function PasteSmartWall(iMapIndex: UINT32): void {
+export function PasteSmartWall(iMapIndex: UINT32): void {
   /* static */ let fWallAlone: boolean = false;
   /* static */ let iAloneMapIndex: UINT32 = 0x8000;
   let usWallType: UINT16;
@@ -414,7 +414,7 @@ function PasteSmartWall(iMapIndex: UINT32): void {
   // Check for the highest weight value.
 }
 
-function PasteSmartDoor(iMapIndex: UINT32): void {
+export function PasteSmartDoor(iMapIndex: UINT32): void {
   let pWall: Pointer<LEVELNODE> = null;
   let usTileIndex: UINT16;
   let usDoorType: UINT16;
@@ -439,7 +439,7 @@ function PasteSmartDoor(iMapIndex: UINT32): void {
   }
 }
 
-function PasteSmartWindow(iMapIndex: UINT32): void {
+export function PasteSmartWindow(iMapIndex: UINT32): void {
   let usNewWallIndex: UINT16;
 
   let pWall: Pointer<LEVELNODE> = null;
@@ -483,7 +483,7 @@ function PasteSmartWindow(iMapIndex: UINT32): void {
   }
 }
 
-function PasteSmartBrokenWall(iMapIndex: UINT32): void {
+export function PasteSmartBrokenWall(iMapIndex: UINT32): void {
   let usNewWallIndex: UINT16;
 
   let pWall: Pointer<LEVELNODE>;

@@ -4,25 +4,25 @@
 // *		SubRectInfo's (usNumberOfRects > 0, size = usNumberOfSubRects * sizeof(SubRectInfo) ), uncompressed
 // *		Bytes of image data, possibly compressed
 
-const STCI_ID_STRING = "STCI";
-const STCI_ID_LEN = 4;
+export const STCI_ID_STRING = "STCI";
+export const STCI_ID_LEN = 4;
 
-const STCI_ETRLE_COMPRESSED = 0x0020;
-const STCI_ZLIB_COMPRESSED = 0x0010;
-const STCI_INDEXED = 0x0008;
-const STCI_RGB = 0x0004;
+export const STCI_ETRLE_COMPRESSED = 0x0020;
+export const STCI_ZLIB_COMPRESSED = 0x0010;
+export const STCI_INDEXED = 0x0008;
+export const STCI_RGB = 0x0004;
 const STCI_ALPHA = 0x0002;
 const STCI_TRANSPARENT = 0x0001;
 
 // ETRLE defines
-const COMPRESS_TRANSPARENT = 0x80;
-const COMPRESS_NON_TRANSPARENT = 0x00;
-const COMPRESS_RUN_LIMIT = 0x7F;
+export const COMPRESS_TRANSPARENT = 0x80;
+export const COMPRESS_NON_TRANSPARENT = 0x00;
+export const COMPRESS_RUN_LIMIT = 0x7F;
 
 // NB if you're going to change the header definition:
 // - make sure that everything in this header is nicely aligned
 // - don't exceed the 64-byte maximum
-interface STCIHeader {
+export interface STCIHeader {
   cID: UINT8[] /* [STCI_ID_LEN] */;
   uiOriginalSize: UINT32;
   uiStoredSize: UINT32; // equal to uiOriginalSize if data uncompressed
@@ -56,9 +56,9 @@ interface STCIHeader {
   cUnused: UINT8[] /* [15] */;
 }
 
-const STCI_HEADER_SIZE = 64;
+export const STCI_HEADER_SIZE = 64;
 
-interface STCISubImage {
+export interface STCISubImage {
   uiDataOffset: UINT32;
   uiDataLength: UINT32;
   sOffsetX: INT16;
@@ -67,13 +67,13 @@ interface STCISubImage {
   usWidth: UINT16;
 }
 
-const STCI_SUBIMAGE_SIZE = 16;
+export const STCI_SUBIMAGE_SIZE = 16;
 
-interface STCIPaletteElement {
+export interface STCIPaletteElement {
   ubRed: UINT8;
   ubGreen: UINT8;
   ubBlue: UINT8;
 }
 
-const STCI_PALETTE_ELEMENT_SIZE = 3;
+export const STCI_PALETTE_ELEMENT_SIZE = 3;
 const STCI_8BIT_PALETTE_SIZE = 768;

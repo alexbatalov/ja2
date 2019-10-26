@@ -8,7 +8,7 @@ let fTimeCompressHasOccured: boolean = false;
 // This value represents the time that the sector was loaded.  If you are in sector A9, and leave
 // the game clock at that moment will get saved into the temp file associated with it.  The next time you
 // enter A9, this value will contain that time.  Used for scheduling purposes.
-let guiTimeCurrentSectorWasLastLoaded: UINT32 = 0;
+export let guiTimeCurrentSectorWasLastLoaded: UINT32 = 0;
 
 // did we JUST finish up a game pause by the player
 let gfJustFinishedAPause: boolean = false;
@@ -26,22 +26,22 @@ const CLOCK_FONT = () => COMPFONT();
 
 // These contain all of the information about the game time, rate of time, etc.
 // All of these get saved and loaded.
-let giTimeCompressMode: INT32 = Enum130.TIME_COMPRESS_X0;
+export let giTimeCompressMode: INT32 = Enum130.TIME_COMPRESS_X0;
 let gubClockResolution: UINT8 = 1;
-let gfGamePaused: boolean = true;
-let gfTimeInterrupt: boolean = false;
+export let gfGamePaused: boolean = true;
+export let gfTimeInterrupt: boolean = false;
 let gfTimeInterruptPause: boolean = false;
 let fSuperCompression: boolean = false;
-let guiGameClock: UINT32 = STARTING_TIME;
+export let guiGameClock: UINT32 = STARTING_TIME;
 let guiPreviousGameClock: UINT32 = 0; // used only for error-checking purposes
 let guiGameSecondsPerRealSecond: UINT32;
 let guiTimesThisSecondProcessed: UINT32 = 0;
 let iPausedPopUpBox: INT32 = -1;
-let guiDay: UINT32;
-let guiHour: UINT32;
-let guiMin: UINT32;
-let gswzWorldTimeStr: UINT16[] /* [20] */;
-let giTimeCompressSpeeds: INT32[] /* [NUM_TIME_COMPRESS_SPEEDS] */ = [
+export let guiDay: UINT32;
+export let guiHour: UINT32;
+export let guiMin: UINT32;
+export let gswzWorldTimeStr: UINT16[] /* [20] */;
+export let giTimeCompressSpeeds: INT32[] /* [NUM_TIME_COMPRESS_SPEEDS] */ = [
   0,
   1,
   5 * 60,
@@ -50,10 +50,10 @@ let giTimeCompressSpeeds: INT32[] /* [NUM_TIME_COMPRESS_SPEEDS] */ = [
 ];
 let usPausedActualWidth: UINT16;
 let usPausedActualHeight: UINT16;
-let guiTimeOfLastEventQuery: UINT32 = 0;
-let gfLockPauseState: boolean = false;
-let gfPauseDueToPlayerGamePause: boolean = false;
-let gfResetAllPlayerKnowsEnemiesFlags: boolean = false;
+export let guiTimeOfLastEventQuery: UINT32 = 0;
+export let gfLockPauseState: boolean = false;
+export let gfPauseDueToPlayerGamePause: boolean = false;
+export let gfResetAllPlayerKnowsEnemiesFlags: boolean = false;
 let gfTimeCompressionOn: boolean = false;
 let guiLockPauseStateLastReasonId: UINT32 = 0;
 //***When adding new saved time variables, make sure you remove the appropriate amount from the paddingbytes and
@@ -61,7 +61,7 @@ let guiLockPauseStateLastReasonId: UINT32 = 0;
 const TIME_PADDINGBYTES = 20;
 let gubUnusedTimePadding: UINT8[] /* [TIME_PADDINGBYTES] */;
 
-function InitNewGameClock(): void {
+export function InitNewGameClock(): void {
   guiGameClock = STARTING_TIME;
   guiPreviousGameClock = STARTING_TIME;
   guiDay = (guiGameClock / NUM_SEC_IN_DAY);
@@ -74,45 +74,45 @@ function InitNewGameClock(): void {
   memset(gubUnusedTimePadding, 0, TIME_PADDINGBYTES);
 }
 
-function GetWorldTotalMin(): UINT32 {
+export function GetWorldTotalMin(): UINT32 {
   return guiGameClock / NUM_SEC_IN_MIN;
 }
 
-function GetWorldTotalSeconds(): UINT32 {
+export function GetWorldTotalSeconds(): UINT32 {
   return guiGameClock;
 }
 
-function GetWorldHour(): UINT32 {
+export function GetWorldHour(): UINT32 {
   return guiHour;
 }
 
-function GetWorldMinutesInDay(): UINT32 {
+export function GetWorldMinutesInDay(): UINT32 {
   return (guiHour * 60) + guiMin;
 }
 
-function GetWorldDay(): UINT32 {
+export function GetWorldDay(): UINT32 {
   return guiDay;
 }
 
-function GetWorldDayInSeconds(): UINT32 {
+export function GetWorldDayInSeconds(): UINT32 {
   return guiDay * NUM_SEC_IN_DAY;
 }
 
-function GetWorldDayInMinutes(): UINT32 {
+export function GetWorldDayInMinutes(): UINT32 {
   return (guiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN;
 }
 
-function GetFutureDayInMinutes(uiDay: UINT32): UINT32 {
+export function GetFutureDayInMinutes(uiDay: UINT32): UINT32 {
   return (uiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN;
 }
 
 // this function returns the amount of minutes there has been from start of game to midnight of the uiDay.
-function GetMidnightOfFutureDayInMinutes(uiDay: UINT32): UINT32 {
+export function GetMidnightOfFutureDayInMinutes(uiDay: UINT32): UINT32 {
   return GetWorldTotalMin() + (uiDay * 1440) - GetWorldMinutesInDay();
 }
 
 // Not to be used too often by things other than internally
-function WarpGameTime(uiAdjustment: UINT32, ubWarpCode: UINT8): void {
+export function WarpGameTime(uiAdjustment: UINT32, ubWarpCode: UINT8): void {
   let uiSaveTimeRate: UINT32;
   uiSaveTimeRate = guiGameSecondsPerRealSecond;
   guiGameSecondsPerRealSecond = uiAdjustment;
@@ -195,17 +195,17 @@ function SetFactTimeCompressHasOccured(): void {
 }
 
 // reset fact the time compress has occured
-function ResetTimeCompressHasOccured(): void {
+export function ResetTimeCompressHasOccured(): void {
   fTimeCompressHasOccured = false;
   return;
 }
 
 // has time compress occured?
-function HasTimeCompressOccured(): boolean {
+export function HasTimeCompressOccured(): boolean {
   return fTimeCompressHasOccured;
 }
 
-function RenderClock(sX: INT16, sY: INT16): void {
+export function RenderClock(sX: INT16, sY: INT16): void {
   SetFont(CLOCK_FONT());
   SetFontBackground(FONT_MCOLOR_BLACK);
 
@@ -251,21 +251,21 @@ function ToggleSuperCompression(): void {
   }
 }
 
-function DidGameJustStart(): boolean {
+export function DidGameJustStart(): boolean {
   if (gTacticalStatus.fDidGameJustStart)
     return true;
   else
     return false;
 }
 
-function StopTimeCompression(): void {
+export function StopTimeCompression(): void {
   if (gfTimeCompressionOn) {
     // change the clock resolution to no time passage, but don't actually change the compress mode (remember it)
     SetClockResolutionToCompressMode(Enum130.TIME_COMPRESS_X0);
   }
 }
 
-function StartTimeCompression(): void {
+export function StartTimeCompression(): void {
   if (!gfTimeCompressionOn) {
     if (GamePaused()) {
       // first have to be allowed to unpause the game
@@ -303,7 +303,7 @@ function StartTimeCompression(): void {
 }
 
 // returns FALSE if time isn't currently being compressed for ANY reason (various pauses, etc.)
-function IsTimeBeingCompressed(): boolean {
+export function IsTimeBeingCompressed(): boolean {
   if (!gfTimeCompressionOn || (giTimeCompressMode == Enum130.TIME_COMPRESS_X0) || gfGamePaused)
     return false;
   else
@@ -311,11 +311,11 @@ function IsTimeBeingCompressed(): boolean {
 }
 
 // returns TRUE if the player currently doesn't want time to be compressing
-function IsTimeCompressionOn(): boolean {
+export function IsTimeCompressionOn(): boolean {
   return gfTimeCompressionOn;
 }
 
-function IncreaseGameTimeCompressionRate(): void {
+export function IncreaseGameTimeCompressionRate(): void {
   // if not already at maximum time compression rate
   if (giTimeCompressMode < Enum130.TIME_COMPRESS_60MINS) {
     // check that we can
@@ -336,7 +336,7 @@ function IncreaseGameTimeCompressionRate(): void {
   }
 }
 
-function DecreaseGameTimeCompressionRate(): void {
+export function DecreaseGameTimeCompressionRate(): void {
   // if not already at minimum time compression rate
   if (giTimeCompressMode > Enum130.TIME_COMPRESS_X0) {
     // check that we can
@@ -357,7 +357,7 @@ function DecreaseGameTimeCompressionRate(): void {
   }
 }
 
-function SetGameTimeCompressionLevel(uiCompressionRate: UINT32): void {
+export function SetGameTimeCompressionLevel(uiCompressionRate: UINT32): void {
   Assert(uiCompressionRate < Enum130.NUM_TIME_COMPRESS_SPEEDS);
 
   if (guiCurrentScreen == Enum26.GAME_SCREEN) {
@@ -439,7 +439,7 @@ function SetGameSecondsPerSecond(uiGameSecondsPerSecond: UINT32): void {
 
 // call this to prevent player from changing the time compression state via the interface
 
-function LockPauseState(uiUniqueReasonId: UINT32): void {
+export function LockPauseState(uiUniqueReasonId: UINT32): void {
   gfLockPauseState = true;
 
   // if adding a new call, please choose a new uiUniqueReasonId, this helps track down the cause when it's left locked
@@ -448,16 +448,16 @@ function LockPauseState(uiUniqueReasonId: UINT32): void {
 }
 
 // call this to allow player to change the time compression state via the interface once again
-function UnLockPauseState(): void {
+export function UnLockPauseState(): void {
   gfLockPauseState = false;
 }
 
 // tells you whether the player is currently locked out from messing with the time compression state
-function PauseStateLocked(): boolean {
+export function PauseStateLocked(): boolean {
   return gfLockPauseState;
 }
 
-function PauseGame(): void {
+export function PauseGame(): void {
   // always allow pausing, even if "locked".  Locking applies only to trying to compress time, not to pausing it
   if (!gfGamePaused) {
     gfGamePaused = true;
@@ -465,7 +465,7 @@ function PauseGame(): void {
   }
 }
 
-function UnPauseGame(): void {
+export function UnPauseGame(): void {
   // if we're paused
   if (gfGamePaused) {
     // ignore request if locked
@@ -487,16 +487,16 @@ function TogglePause(): void {
   }
 }
 
-function GamePaused(): boolean {
+export function GamePaused(): boolean {
   return gfGamePaused;
 }
 
 // ONLY APPLICABLE INSIDE EVENT CALLBACKS!
-function InterruptTime(): void {
+export function InterruptTime(): void {
   gfTimeInterrupt = true;
 }
 
-function PauseTimeForInterupt(): void {
+export function PauseTimeForInterupt(): void {
   gfTimeInterruptPause = true;
 }
 
@@ -526,7 +526,7 @@ function ClockResolution(): UINT8 {
 //-Resolution:  The higher the resolution, the more often per second the clock is actually updated.
 //				 This value doesn't affect how much game time passes per real second, but allows for
 //				 a more accurate representation of faster time flows.
-function UpdateClock(): void {
+export function UpdateClock(): void {
   let uiNewTime: UINT32;
   let uiThousandthsOfThisSecondProcessed: UINT32;
   let uiTimeSlice: UINT32;
@@ -603,7 +603,7 @@ function UpdateClock(): void {
   }
 }
 
-function SaveGameClock(hFile: HWFILE, fGamePaused: boolean, fLockPauseState: boolean): boolean {
+export function SaveGameClock(hFile: HWFILE, fGamePaused: boolean, fLockPauseState: boolean): boolean {
   let uiNumBytesWritten: UINT32 = 0;
 
   FileWrite(hFile, addressof(giTimeCompressMode), sizeof(INT32), addressof(uiNumBytesWritten));
@@ -684,7 +684,7 @@ function SaveGameClock(hFile: HWFILE, fGamePaused: boolean, fLockPauseState: boo
   return true;
 }
 
-function LoadGameClock(hFile: HWFILE): boolean {
+export function LoadGameClock(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   FileRead(hFile, addressof(giTimeCompressMode), sizeof(INT32), addressof(uiNumBytesRead));
@@ -776,7 +776,7 @@ function LoadGameClock(hFile: HWFILE): boolean {
   return true;
 }
 
-function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
+export function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
   if (fClockMouseRegionCreated == false) {
     // create a mouse region for pausing of game clock
     MSYS_DefineRegion(addressof(gClockMouseRegion), (sX), (sY), (sX + CLOCK_REGION_WIDTH), (sY + CLOCK_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, PauseOfClockBtnCallback);
@@ -791,7 +791,7 @@ function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
   }
 }
 
-function RemoveMouseRegionForPauseOfClock(): void {
+export function RemoveMouseRegionForPauseOfClock(): void {
   // remove pause region
   if (fClockMouseRegionCreated == true) {
     MSYS_RemoveRegion(addressof(gClockMouseRegion));
@@ -805,7 +805,7 @@ function PauseOfClockBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   }
 }
 
-function HandlePlayerPauseUnPauseOfGame(): void {
+export function HandlePlayerPauseUnPauseOfGame(): void {
   if (gTacticalStatus.uiFlags & ENGAGED_IN_CONV) {
     return;
   }
@@ -885,7 +885,7 @@ function ScreenMaskForGamePauseBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
   }
 }
 
-function RenderPausedGameBox(): void {
+export function RenderPausedGameBox(): void {
   if ((gfPauseDueToPlayerGamePause == true) && (gfGamePaused == true) && (iPausedPopUpBox != -1)) {
     RenderMercPopUpBoxFromIndex(iPausedPopUpBox, (320 - usPausedActualWidth / 2), (200 - usPausedActualHeight / 2), FRAME_BUFFER);
     InvalidateRegion((320 - usPausedActualWidth / 2), (200 - usPausedActualHeight / 2), (320 - usPausedActualWidth / 2 + usPausedActualWidth), (200 - usPausedActualHeight / 2 + usPausedActualHeight));
@@ -895,17 +895,17 @@ function RenderPausedGameBox(): void {
   gfJustFinishedAPause = false;
 }
 
-function DayTime(): boolean {
+export function DayTime(): boolean {
   // between 7AM and 9PM
   return guiHour >= 7 && guiHour < 21;
 }
 
-function NightTime(): boolean {
+export function NightTime(): boolean {
   // before 7AM or after 9PM
   return guiHour < 7 || guiHour >= 21;
 }
 
-function ClearTacticalStuffDueToTimeCompression(): void {
+export function ClearTacticalStuffDueToTimeCompression(): void {
   // is this test the right thing?  ARM
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
     // clear tactical event queue

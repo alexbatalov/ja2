@@ -1,6 +1,6 @@
-let ClippingRect: SGPRect = [ 0, 0, 640, 480 ];
+export let ClippingRect: SGPRect = [ 0, 0, 640, 480 ];
 // 555      565
-let guiTranslucentMask: UINT32 = 0x3def; // 0x7bef;		// mask for halving 5,6,5
+export let guiTranslucentMask: UINT32 = 0x3def; // 0x7bef;		// mask for halving 5,6,5
 
 // GLOBALS for pre-calculating skip values
 let gLeftSkip: INT32;
@@ -548,7 +548,7 @@ function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDe
         Blits every second pixel ("Translucents").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
@@ -812,7 +812,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16
         Blits every second pixel ("Translucents").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let usHeight: UINT32;
   let usWidth: UINT32;
   let uiOffset: UINT32;
@@ -1204,7 +1204,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
         Blits every second pixel ("Translucents").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let usHeight: UINT32;
   let usWidth: UINT32;
   let uiOffset: UINT32;
@@ -1591,7 +1591,7 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
         much except allocate a chunk of memory, and zero it.
 
 **********************************************************************************************/
-function InitZBuffer(uiPitch: UINT32, uiHeight: UINT32): Pointer<UINT16> {
+export function InitZBuffer(uiPitch: UINT32, uiHeight: UINT32): Pointer<UINT16> {
   let pBuffer: Pointer<UINT16>;
 
   if ((pBuffer = MemAlloc(uiPitch * uiHeight)) == null)
@@ -1607,7 +1607,7 @@ function InitZBuffer(uiPitch: UINT32, uiHeight: UINT32): Pointer<UINT16> {
         Frees up the memory allocated for the Z buffer.
 
 **********************************************************************************************/
-function ShutdownZBuffer(pBuffer: Pointer<UINT16>): boolean {
+export function ShutdownZBuffer(pBuffer: Pointer<UINT16>): boolean {
   MemFree(pBuffer);
   return true;
 }
@@ -1900,7 +1900,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
         transparency is used for the background.
 
         **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, ubForeground: UINT8, ubBackground: UINT8): boolean {
+export function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, ubForeground: UINT8, ubBackground: UINT8): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -2419,7 +2419,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -2692,7 +2692,7 @@ function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiD
         dimensions as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -2959,7 +2959,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, u
         buffer as a destination. Clips the brush.
 
 *******************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -3233,7 +3233,7 @@ function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDest
         buffer as a destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -3378,7 +3378,7 @@ function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitc
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -3605,7 +3605,7 @@ function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
         must be the same dimensions as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -3837,7 +3837,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4093,7 +4093,7 @@ function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitch
         dimensions as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4605,7 +4605,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
         updates the Z buffer with the new Z level.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4716,7 +4716,7 @@ function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
         The Z buffer is NOT updated with the new information.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4826,7 +4826,7 @@ function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
         must be the same dimensions as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -5842,7 +5842,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
         254 are shaded instead of blitted.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -6100,7 +6100,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiD
         image as a mask. Any Non-zero index pixels are used to darken destination pixels.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let pPal8BPP: Pointer<UINT8>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -6240,7 +6240,7 @@ function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
         clips brush if it doesn't fit on the viewport.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let pPal8BPP: Pointer<UINT8>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -6521,7 +6521,7 @@ function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitch
         transparency is used for the background.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, usForeground: UINT16, usBackground: UINT16, usShadow: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, usForeground: UINT16, usBackground: UINT16, usShadow: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -6789,7 +6789,7 @@ function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDest
         etc. to their unblit buffer, for later reblitting. Does NOT clip.
 
 **********************************************************************************************/
-function Blt16BPPTo16BPP(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Pointer<UINT16>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): boolean {
+export function Blt16BPPTo16BPP(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Pointer<UINT16>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): boolean {
   let pSrcPtr: Pointer<UINT16>;
   let pDestPtr: Pointer<UINT16>;
   let uiLineSkipDest: UINT32;
@@ -6855,7 +6855,7 @@ function Blt16BPPTo16BPP(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Poin
         not copied.
 
 **********************************************************************************************/
-function Blt16BPPTo16BPPTrans(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Pointer<UINT16>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32, usTrans: UINT16): boolean {
+export function Blt16BPPTo16BPPTrans(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Pointer<UINT16>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32, usTrans: UINT16): boolean {
   let pSrcPtr: Pointer<UINT16>;
   let pDestPtr: Pointer<UINT16>;
   let uiLineSkipDest: UINT32;
@@ -6908,7 +6908,7 @@ function Blt16BPPTo16BPPTrans(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc:
         etc. to their unblit buffer, for later reblitting. Does NOT clip.
 
 **********************************************************************************************/
-function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Pointer<UINT16>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): boolean {
+export function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Pointer<UINT16>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): boolean {
   let pSrcPtr: Pointer<UINT16>;
   let pDestPtr: Pointer<UINT16>;
   let uiLineSkipDest: UINT32;
@@ -7013,7 +7013,7 @@ function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc
         etc. to their unblit buffer, for later reblitting. Does NOT clip.
 
 **********************************************************************************************/
-function Blt8BPPTo8BPP(pDest: Pointer<UINT8>, uiDestPitch: UINT32, pSrc: Pointer<UINT8>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): boolean {
+export function Blt8BPPTo8BPP(pDest: Pointer<UINT8>, uiDestPitch: UINT32, pSrc: Pointer<UINT8>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): boolean {
   let pSrcPtr: Pointer<UINT8>;
   let pDestPtr: Pointer<UINT8>;
   let uiLineSkipDest: UINT32;
@@ -7077,7 +7077,7 @@ function Blt8BPPTo8BPP(pDest: Pointer<UINT8>, uiDestPitch: UINT32, pSrc: Pointer
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let usHeight: UINT32;
   let usWidth: UINT32;
   let uiOffset: UINT32;
@@ -7207,7 +7207,7 @@ function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDest
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let usHeight: UINT32;
   let usWidth: UINT32;
   let uiOffset: UINT32;
@@ -7623,7 +7623,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let usHeight: UINT32;
   let usWidth: UINT32;
   let uiOffset: UINT32;
@@ -7752,7 +7752,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDe
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
@@ -8021,7 +8021,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, 
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -8136,7 +8136,7 @@ function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
         (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -8367,7 +8367,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestP
         The Z-buffer is 16 bit, and	must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -8473,7 +8473,7 @@ function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, uiDestPit
         The Z-buffer is 16 bit, and	must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -8592,7 +8592,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPi
         dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -8712,7 +8712,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDest
         dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -8857,7 +8857,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<UINT16>
         254 are shaded instead of blitted.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -9119,7 +9119,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDe
         254 are shaded instead of blitted.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -9367,7 +9367,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDes
         NOT updated.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -9630,7 +9630,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, ui
         NOT updated.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -10177,7 +10177,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
         updates the Z buffer with the new Z level.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -10287,7 +10287,7 @@ function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBY
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -10539,7 +10539,7 @@ function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPit
         NOT update the Z buffer with the new Z value.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -10647,7 +10647,7 @@ function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitch
         same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -10898,7 +10898,7 @@ function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestP
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -11151,7 +11151,7 @@ function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitc
         updated in this version. The Z-buffer is 16 bit, and must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -11658,7 +11658,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
         Blits a subrect from a flat 8 bit surface to a 16-bit buffer.
 
 **********************************************************************************************/
-function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, uiSrcPitch: UINT32, iX: INT32, iY: INT32, pRect: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, uiSrcPitch: UINT32, iX: INT32, iY: INT32, pRect: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -11747,7 +11747,7 @@ function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES:
         Blits from a flat surface to a 16-bit buffer.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, iX: INT32, iY: INT32): boolean {
+export function Blt8BPPDataTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, iX: INT32, iY: INT32): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   //	UINT32 uiOffset;
   let usHeight: UINT32;
@@ -11883,7 +11883,7 @@ function Blt8BPPDataTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UI
 exactly half the size.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferHalf(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, uiSrcPitch: UINT32, iX: INT32, iY: INT32): boolean {
+export function Blt8BPPDataTo16BPPBufferHalf(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, uiSrcPitch: UINT32, iX: INT32, iY: INT32): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -11971,7 +11971,7 @@ exactly half the size, from a sub-region.
                 number of pixels blitted to the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferHalfRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, uiSrcPitch: UINT32, iX: INT32, iY: INT32, pRect: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferHalfRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, uiSrcPitch: UINT32, iX: INT32, iY: INT32, pRect: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -12205,7 +12205,7 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   return true;
 }
 
-function SetClippingRect(clip: Pointer<SGPRect>): void {
+export function SetClippingRect(clip: Pointer<SGPRect>): void {
   Assert(clip != null);
   Assert(clip.value.iLeft < clip.value.iRight);
   Assert(clip.value.iTop < clip.value.iBottom);
@@ -12213,7 +12213,7 @@ function SetClippingRect(clip: Pointer<SGPRect>): void {
   memcpy(addressof(ClippingRect), clip, sizeof(SGPRect));
 }
 
-function GetClippingRect(clip: Pointer<SGPRect>): void {
+export function GetClippingRect(clip: Pointer<SGPRect>): void {
   Assert(clip != null);
 
   memcpy(clip, addressof(ClippingRect), sizeof(SGPRect));
@@ -12305,7 +12305,7 @@ function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPit
 // Original prototype (this function) didn't have a color field.  I've added the color field to
 // Blt16BPPBufferPixelateRectWithColor(), moved the previous implementation of this function there, and added
 // the modification to allow a specific color.
-function Blt16BPPBufferPixelateRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, Pattern: UINT8[][] /* [8][8] */): boolean {
+export function Blt16BPPBufferPixelateRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, Pattern: UINT8[][] /* [8][8] */): boolean {
   return Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, 0);
 }
 
@@ -12331,7 +12331,7 @@ function Blt16BPPBufferHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchB
 }
 
 // Uses black hatch color
-function Blt16BPPBufferHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): boolean {
+export function Blt16BPPBufferHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): boolean {
   let Pattern: UINT8[][] /* [8][8] */ = [
     [ 1, 0, 1, 0, 1, 0, 1, 0 ],
     [ 0, 1, 0, 1, 0, 1, 0, 1 ],
@@ -12345,7 +12345,7 @@ function Blt16BPPBufferHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UIN
   return Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, 0);
 }
 
-function Blt16BPPBufferLooseHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, usColor: UINT16): boolean {
+export function Blt16BPPBufferLooseHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, usColor: UINT16): boolean {
   let Pattern: UINT8[][] /* [8][8] */ = [
     [ 1, 0, 0, 0, 1, 0, 0, 0 ],
     [ 0, 0, 0, 0, 0, 0, 0, 0 ],
@@ -12380,7 +12380,7 @@ function Blt16BPPBufferLooseHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
         image as a mask. Any Non-zero index pixels are used to darken destination pixels.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -12520,7 +12520,7 @@ function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYT
 
 **********************************************************************************************/
 
-function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -12824,7 +12824,7 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
         buffer as a destination. Clips the brush.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -13105,7 +13105,7 @@ function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDes
         Determines whether a given blit will need clipping or not. Returns TRUE/FALSE.
 
 **********************************************************************************************/
-function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let usHeight: UINT32;
   let usWidth: UINT32;
   let pTrav: Pointer<ETRLEObject>;
@@ -13164,7 +13164,7 @@ function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT
         clips brush if it doesn't fit on the viewport.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -13441,7 +13441,7 @@ function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitc
         area							An SGPRect, the area to darken
 
 *********************************************************************************************/
-function Blt16BPPBufferShadowRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): boolean {
+export function Blt16BPPBufferShadowRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): boolean {
   let width: INT32;
   let height: INT32;
   let LineSkip: UINT32;
@@ -13508,7 +13508,7 @@ function Blt16BPPBufferShadowRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UI
         area							An SGPRect, the area to darken
 
 *********************************************************************************************/
-function Blt16BPPBufferShadowRectAlternateTable(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): boolean {
+export function Blt16BPPBufferShadowRectAlternateTable(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): boolean {
   let width: INT32;
   let height: INT32;
   let LineSkip: UINT32;
@@ -14190,7 +14190,7 @@ function FillRect16BPP(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, x1: I
         Determines whether a given blit will need clipping or not. Returns TRUE/FALSE.
 
 **********************************************************************************************/
-function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): CHAR8 {
+export function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): CHAR8 {
   let usHeight: UINT32;
   let usWidth: UINT32;
   let pTrav: Pointer<ETRLEObject>;
@@ -14258,7 +14258,7 @@ function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, us
 
 // Blt8BPPDataTo16BPPBufferOutline
 // ATE New blitter for rendering a differrent color for value 254. Can be transparent if fDoOutline is FALSE
-function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean): boolean {
+export function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -14361,7 +14361,7 @@ function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDestPitchBY
 }
 
 // ATE New blitter for rendering a differrent color for value 254. Can be transparent if fDoOutline is FALSE
-function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: Pointer<SGPRect>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -14605,7 +14605,7 @@ function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPit
   return true;
 }
 
-function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: Pointer<SGPRect>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -14868,7 +14868,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPi
   return true;
 }
 
-function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: Pointer<SGPRect>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -15157,7 +15157,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<U
   return true;
 }
 
-function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -15249,7 +15249,7 @@ function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, uiDestP
   return true;
 }
 
-function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -15522,7 +15522,7 @@ function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiD
   return true;
 }
 
-function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -15645,7 +15645,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDestPitchB
   return true;
 }
 
-function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -15792,7 +15792,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointer<UINT1
 }
 
 // This is the same as above, but DONOT WRITE to Z!
-function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -15923,7 +15923,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiDestPitc
         updates the Z buffer with the new Z level.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -16033,7 +16033,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiDestPitc
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -16285,7 +16285,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDest
         NOT update the Z buffer with the new Z value.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -16642,7 +16642,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
         clips brush if it doesn't fit on the viewport.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -16916,7 +16916,7 @@ function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestP
         image as a mask. Any Non-zero index pixels are used to darken destination pixels.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -17060,7 +17060,7 @@ function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDestPitch
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;

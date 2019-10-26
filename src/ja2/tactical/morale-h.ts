@@ -1,6 +1,6 @@
-const DEFAULT_MORALE = 50;
+export const DEFAULT_MORALE = 50;
 
-const enum Enum234 {
+export const enum Enum234 {
   MORALE_KILLED_ENEMY = 0,
   MORALE_SQUADMATE_DIED,
   MORALE_SUPPRESSED,
@@ -39,12 +39,12 @@ const enum Enum234 {
   NUM_MORALE_EVENTS,
 }
 
-const enum Enum235 {
+export const enum Enum235 {
   TACTICAL_MORALE_EVENT = 0,
   STRATEGIC_MORALE_EVENT,
 }
 
-interface MoraleEvent {
+export interface MoraleEvent {
   ubType: UINT8;
   bChange: INT8;
 }

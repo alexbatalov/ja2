@@ -1,9 +1,9 @@
-const MERC_POPUP_PREPARE_FLAGS_TRANS_BACK = 0x00000001;
-const MERC_POPUP_PREPARE_FLAGS_MARGINS = 0x00000002;
-const MERC_POPUP_PREPARE_FLAGS_STOPICON = 0x00000004;
-const MERC_POPUP_PREPARE_FLAGS_SKULLICON = 0x00000008;
+export const MERC_POPUP_PREPARE_FLAGS_TRANS_BACK = 0x00000001;
+export const MERC_POPUP_PREPARE_FLAGS_MARGINS = 0x00000002;
+export const MERC_POPUP_PREPARE_FLAGS_STOPICON = 0x00000004;
+export const MERC_POPUP_PREPARE_FLAGS_SKULLICON = 0x00000008;
 
-interface MercPopUpBox {
+export interface MercPopUpBox {
   uiSourceBufferIndex: UINT32;
   sWidth: UINT16;
   sHeight: UINT16;
@@ -17,7 +17,7 @@ interface MercPopUpBox {
 }
 
 // background enumeration
-const enum Enum324 {
+export const enum Enum324 {
   BASIC_MERC_POPUP_BACKGROUND = 0,
   WHITE_MERC_POPUP_BACKGROUND,
   GREY_MERC_POPUP_BACKGROUND,
@@ -27,7 +27,7 @@ const enum Enum324 {
 }
 
 // border enumeration
-const enum Enum325 {
+export const enum Enum325 {
   BASIC_MERC_POPUP_BORDER = 0,
   RED_MERC_POPUP_BORDER,
   BLUE_MERC_POPUP_BORDER,

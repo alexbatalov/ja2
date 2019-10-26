@@ -1,6 +1,6 @@
 const ADD_SOLDIER_NO_PROFILE_ID = 200;
 
-const MAX_REALTIME_SPEED_VAL = 10;
+export const MAX_REALTIME_SPEED_VAL = 10;
 
 /*
 enum
@@ -21,7 +21,7 @@ enum
 */
 
 // Enums for waiting for mercs to finish codes
-const enum Enum238 {
+export const enum Enum238 {
   NO_WAIT_EVENT = 0,
   WAIT_FOR_MERCS_TO_WALKOFF_SCREEN,
   WAIT_FOR_MERCS_TO_WALKON_SCREEN,
@@ -29,7 +29,7 @@ const enum Enum238 {
 }
 
 // TACTICAL ENGINE STATUS FLAGS
-interface TacticalTeamType {
+export interface TacticalTeamType {
   bFirstID: UINT8;
   bLastID: UINT8;
   RadarColor: COLORVAL;
@@ -58,14 +58,14 @@ const enum Enum240 {
   RETREAT_WEST,
 }
 
-const PANIC_BOMBS_HERE = 0x01;
-const PANIC_TRIGGERS_HERE = 0x02;
+export const PANIC_BOMBS_HERE = 0x01;
+export const PANIC_TRIGGERS_HERE = 0x02;
 
-const NUM_PANIC_TRIGGERS = 3;
+export const NUM_PANIC_TRIGGERS = 3;
 
-const ENEMY_OFFERED_SURRENDER = 0x01;
+export const ENEMY_OFFERED_SURRENDER = 0x01;
 
-interface TacticalStatusType {
+export interface TacticalStatusType {
   uiFlags: UINT32;
   Team: TacticalTeamType[] /* [MAXTEAMS] */;
   ubCurrentTeam: UINT8;
@@ -166,5 +166,5 @@ interface TacticalStatusType {
   uiCreatureTenseQuoteLastUpdate: UINT32;
 }
 
-const REASON_NORMAL_ATTACK = 1;
-const REASON_EXPLOSION = 2;
+export const REASON_NORMAL_ATTACK = 1;
+export const REASON_EXPLOSION = 2;

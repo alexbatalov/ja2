@@ -87,7 +87,7 @@ let guiOldAim: UINT32;
 let guiPageButtons: UINT32;
 let guiAlumniPopUp: UINT32;
 let guiPopUpPic: UINT32;
-let guiDoneButton: UINT32;
+export let guiDoneButton: UINT32;
 
 let gubPageNum: UINT8;
 let gunAlumniButtonDown: UINT8 = 255;
@@ -116,10 +116,10 @@ let gDoneRegion: MOUSE_REGION;
 let guiAlumniPageButton: UINT32[] /* [3] */;
 let guiAlumniPageButtonImage: INT32;
 
-function GameInitAimArchives(): void {
+export function GameInitAimArchives(): void {
 }
 
-function EnterInitAimArchives(): void {
+export function EnterInitAimArchives(): void {
   gfDrawPopUpBox = false;
   gfDestroyPopUpBox = false;
 
@@ -127,7 +127,7 @@ function EnterInitAimArchives(): void {
   AimArchivesSubPagesVisitedFlag[0] = true;
 }
 
-function EnterAimArchives(): boolean {
+export function EnterAimArchives(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosX: UINT16;
   let i: UINT16;
@@ -191,7 +191,7 @@ function EnterAimArchives(): boolean {
   return true;
 }
 
-function ExitAimArchives(): void {
+export function ExitAimArchives(): void {
   let i: UINT16;
 
   gfExitingAimArchives = true;
@@ -217,7 +217,7 @@ function ExitAimArchives(): void {
   gfDrawPopUpBox = false;
 }
 
-function HandleAimArchives(): void {
+export function HandleAimArchives(): void {
   if (gfReDrawScreen) {
     //		RenderAimArchives();
     fPausedReDrawScreenFlag = true;
@@ -233,7 +233,7 @@ function HandleAimArchives(): void {
   }
 }
 
-function RenderAimArchives(): void {
+export function RenderAimArchives(): void {
   let hFrameHandle: HVOBJECT;
   let hFaceHandle: HVOBJECT;
   //  HVOBJECT	hBottomButtonHandle;

@@ -39,7 +39,7 @@ let MovementMode: UINT16[][] /* [LAST_MOVEMENT_ACTION + 1][NUM_URGENCY_STATES] *
   [ Enum193.RUNNING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_MOVE_TO_CLIMB
 ];
 
-function OKToAttack(pSoldier: Pointer<SOLDIERTYPE>, target: int): INT8 {
+export function OKToAttack(pSoldier: Pointer<SOLDIERTYPE>, target: int): INT8 {
   // can't shoot yourself
   if (target == pSoldier.value.sGridNo)
     return NOSHOOT_MYSELF;
@@ -94,7 +94,7 @@ function ConsiderProne(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 }
 
-function StanceChange(pSoldier: Pointer<SOLDIERTYPE>, ubAttackAPCost: UINT8): UINT8 {
+export function StanceChange(pSoldier: Pointer<SOLDIERTYPE>, ubAttackAPCost: UINT8): UINT8 {
   // consider crouching or going prone
 
   if (PTR_STANDING()) {
@@ -113,7 +113,7 @@ function StanceChange(pSoldier: Pointer<SOLDIERTYPE>, ubAttackAPCost: UINT8): UI
   return 0;
 }
 
-function ShootingStanceChange(pSoldier: Pointer<SOLDIERTYPE>, pAttack: Pointer<ATTACKTYPE>, bDesiredDirection: INT8): UINT8 {
+export function ShootingStanceChange(pSoldier: Pointer<SOLDIERTYPE>, pAttack: Pointer<ATTACKTYPE>, bDesiredDirection: INT8): UINT8 {
   // Figure out the best stance for this attack
 
   // We don't want to go through a lot of complex calculations here,
@@ -241,7 +241,7 @@ function ShootingStanceChange(pSoldier: Pointer<SOLDIERTYPE>, pAttack: Pointer<A
   }
 }
 
-function DetermineMovementMode(pSoldier: Pointer<SOLDIERTYPE>, bAction: INT8): UINT16 {
+export function DetermineMovementMode(pSoldier: Pointer<SOLDIERTYPE>, bAction: INT8): UINT16 {
   if (pSoldier.value.fUIMovementFast) {
     return Enum193.RUNNING;
   } else if (CREATURE_OR_BLOODCAT(pSoldier)) {
@@ -265,7 +265,7 @@ function DetermineMovementMode(pSoldier: Pointer<SOLDIERTYPE>, bAction: INT8): U
   }
 }
 
-function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
+export function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
   // ATE: Setting sDestination? Tis does not make sense...
   // pSoldier->sDestination = usGridNo;
   let fSet: boolean = false;
@@ -326,7 +326,7 @@ function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
   EVENT_InternalGetNewSoldierPath(pSoldier, usGridNo, pSoldier.value.usUIMovementMode, false, pSoldier.value.fNoAPToFinishMove);
 }
 
-function IsActionAffordable(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function IsActionAffordable(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bMinPointsNeeded: INT8 = 0;
 
   // NumMessage("AffordableAction - Guy#",pSoldier->ubID);
@@ -434,7 +434,7 @@ function IsActionAffordable(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 }
 
-function RandomFriendWithin(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function RandomFriendWithin(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let uiLoop: UINT32;
   let usMaxDist: UINT16;
   let ubFriendCount: UINT8;
@@ -556,7 +556,7 @@ function RandomFriendWithin(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   return fFound;
 }
 
-function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let sRandDest: INT16 = NOWHERE;
   let usOrigin: UINT16;
   let usMaxDist: UINT16;
@@ -679,7 +679,7 @@ function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   return (sRandDest); // defaults to NOWHERE
 }
 
-function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8, pfChangeLevel: Pointer<boolean>): INT16 {
+export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8, pfChangeLevel: Pointer<boolean>): INT16 {
   let psLastLoc: Pointer<INT16>;
   let pusNoiseGridNo: Pointer<INT16>;
   let pbLastLevel: Pointer<INT8>;
@@ -856,7 +856,7 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
   return sClosestDisturbance;
 }
 
-function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
+export function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
   let psLastLoc: Pointer<INT16>;
   let sGridNo: INT16;
   let sClosestOpponent: INT16 = NOWHERE;
@@ -949,7 +949,7 @@ function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<
   return sClosestOpponent;
 }
 
-function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
+export function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
   let sGridNo: INT16;
   let sClosestOpponent: INT16 = NOWHERE;
   let uiLoop: UINT32;
@@ -1024,7 +1024,7 @@ function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<I
   return sClosestOpponent;
 }
 
-function ClosestPC(pSoldier: Pointer<SOLDIERTYPE>, psDistance: Pointer<INT16>): INT16 {
+export function ClosestPC(pSoldier: Pointer<SOLDIERTYPE>, psDistance: Pointer<INT16>): INT16 {
   // used by NPCs... find the closest PC
 
   // NOTE: skips EPCs!
@@ -1099,7 +1099,7 @@ function FindClosestClimbPointAvailableToAI(pSoldier: Pointer<SOLDIERTYPE>, sSta
   }
 }
 
-function ClimbingNecessary(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, bDestLevel: INT8): boolean {
+export function ClimbingNecessary(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, bDestLevel: INT8): boolean {
   if (pSoldier.value.bLevel == bDestLevel) {
     if ((pSoldier.value.bLevel == 0) || (gubBuildingInfo[pSoldier.value.sGridNo] == gubBuildingInfo[sDestGridNo])) {
       return false;
@@ -1112,7 +1112,7 @@ function ClimbingNecessary(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, b
   }
 }
 
-function GetInterveningClimbingLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, bDestLevel: INT8, pfClimbingNecessary: Pointer<boolean>): INT16 {
+export function GetInterveningClimbingLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, bDestLevel: INT8, pfClimbingNecessary: Pointer<boolean>): INT16 {
   if (pSoldier.value.bLevel == bDestLevel) {
     if ((pSoldier.value.bLevel == 0) || (gubBuildingInfo[pSoldier.value.sGridNo] == gubBuildingInfo[sDestGridNo])) {
       // on ground or same building... normal!
@@ -1137,7 +1137,7 @@ function GetInterveningClimbingLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGri
   }
 }
 
-function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, bDestLevel: INT8, fAddCostAfterClimbingUp: boolean, pfClimbingNecessary: Pointer<boolean>, psClimbGridNo: Pointer<INT16>): INT16 {
+export function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, bDestLevel: INT8, fAddCostAfterClimbingUp: boolean, pfClimbingNecessary: Pointer<boolean>, psClimbGridNo: Pointer<INT16>): INT16 {
   let sPathCost: INT16;
   let sClimbGridNo: INT16;
 
@@ -1231,7 +1231,7 @@ function GuySawEnemyThisTurnOrBefore(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, pfClimbingNecessary: Pointer<boolean>): INT16 {
+export function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, pfClimbingNecessary: Pointer<boolean>): INT16 {
   let uiLoop: UINT32;
   let sPathCost: INT16;
   let sClosestFriend: INT16 = NOWHERE;
@@ -1302,7 +1302,7 @@ function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, pfClimb
   return sClosestFriend;
 }
 
-function DistanceToClosestFriend(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function DistanceToClosestFriend(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // find the distance to the closest person on the same team
   let ubLoop: UINT8;
   let pTargetSoldier: Pointer<SOLDIERTYPE>;
@@ -1350,7 +1350,7 @@ function DistanceToClosestFriend(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   return sMinDist;
 }
 
-function InWaterGasOrSmoke(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
+export function InWaterGasOrSmoke(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   if (WaterTooDeepForAttacks(sGridNo)) {
     return true;
   }
@@ -1368,7 +1368,7 @@ function InWaterGasOrSmoke(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): bool
   return false;
 }
 
-function InGasOrSmoke(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
+export function InGasOrSmoke(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   // smoke
   if (gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & MAPELEMENT_EXT_SMOKE) {
     return true;
@@ -1382,7 +1382,7 @@ function InGasOrSmoke(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   return false;
 }
 
-function InWaterOrGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): INT16 {
+export function InWaterOrGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): INT16 {
   if (WaterTooDeepForAttacks(sGridNo)) {
     return true;
   }
@@ -1395,7 +1395,7 @@ function InWaterOrGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): INT16 {
   return false;
 }
 
-function InGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
+export function InGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   // tear/mustard gas
   if ((gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) && (pSoldier.value.inv[Enum261.HEAD1POS].usItem != Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD2POS].usItem != Enum225.GASMASK)) {
     return true;
@@ -1404,7 +1404,7 @@ function InGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   return false;
 }
 
-function WearGasMaskIfAvailable(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function WearGasMaskIfAvailable(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bSlot: INT8;
   let bNewSlot: INT8;
 
@@ -1428,7 +1428,7 @@ function WearGasMaskIfAvailable(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function InLightAtNight(sGridNo: INT16, bLevel: INT8): boolean {
+export function InLightAtNight(sGridNo: INT16, bLevel: INT8): boolean {
   let ubBackgroundLightLevel: UINT8;
 
   // do not consider us to be "in light" if we're in an underground sector
@@ -1458,7 +1458,7 @@ function InLightAtNight(sGridNo: INT16, bLevel: INT8): boolean {
   return false;
 }
 
-function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let uiLoop: UINT32;
   let uiLoop2: UINT32;
   let iOurTotalThreat: INT32 = 0;
@@ -1696,7 +1696,7 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return bMoraleCategory;
 }
 
-function CalcManThreatValue(pEnemy: Pointer<SOLDIERTYPE>, sMyGrid: INT16, ubReduceForCover: UINT8, pMe: Pointer<SOLDIERTYPE>): INT32 {
+export function CalcManThreatValue(pEnemy: Pointer<SOLDIERTYPE>, sMyGrid: INT16, ubReduceForCover: UINT8, pMe: Pointer<SOLDIERTYPE>): INT32 {
   let iThreatValue: INT32 = 0;
   let fForCreature: boolean = CREATURE_OR_BLOODCAT(pMe);
 
@@ -1797,7 +1797,7 @@ function CalcManThreatValue(pEnemy: Pointer<SOLDIERTYPE>, sMyGrid: INT16, ubRedu
   return iThreatValue;
 }
 
-function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Pointer<INT16>): INT16 {
+export function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Pointer<INT16>): INT16 {
   if (CREATURE_OR_BLOODCAT(pSoldier)) {
     if (pSoldier.value.bAlertStatus == Enum243.STATUS_BLACK) {
       pusFromGridNo.value = pSoldier.value.sGridNo; // from current position!
@@ -1848,12 +1848,12 @@ function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Pointer<INT
   }
 }
 
-function RearrangePocket(pSoldier: Pointer<SOLDIERTYPE>, bPocket1: INT8, bPocket2: INT8, bPermanent: UINT8): void {
+export function RearrangePocket(pSoldier: Pointer<SOLDIERTYPE>, bPocket1: INT8, bPocket2: INT8, bPermanent: UINT8): void {
   // NB there's no such thing as a temporary swap for now...
   SwapObjs(addressof(pSoldier.value.inv[bPocket1]), addressof(pSoldier.value.inv[bPocket2]));
 }
 
-function FindBetterSpotForItem(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): boolean {
+export function FindBetterSpotForItem(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): boolean {
   // looks for a place in the slots to put an item in a hand or armour
   // position, and moves it there.
   if (bSlot >= Enum261.BIGPOCK1POS) {
@@ -1881,7 +1881,7 @@ function FindBetterSpotForItem(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): boo
   return true;
 }
 
-function GetTraversalQuoteActionID(bDirection: INT8): UINT8 {
+export function GetTraversalQuoteActionID(bDirection: INT8): UINT8 {
   switch (bDirection) {
     case Enum245.NORTHEAST: // east
       return Enum290.QUOTE_ACTION_ID_TRAVERSE_EAST;
@@ -1900,7 +1900,7 @@ function GetTraversalQuoteActionID(bDirection: INT8): UINT8 {
   }
 }
 
-function SoldierDifficultyLevel(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+export function SoldierDifficultyLevel(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   let bDifficultyBase: INT8;
   let bDifficulty: INT8;
 
@@ -1951,7 +1951,7 @@ function SoldierDifficultyLevel(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   return bDifficulty;
 }
 
-function ValidCreatureTurn(pCreature: Pointer<SOLDIERTYPE>, bNewDirection: INT8): boolean {
+export function ValidCreatureTurn(pCreature: Pointer<SOLDIERTYPE>, bNewDirection: INT8): boolean {
   let bDirChange: INT8;
   let bTempDir: INT8;
   let bLoop: INT8;
@@ -1991,7 +1991,7 @@ function ValidCreatureTurn(pCreature: Pointer<SOLDIERTYPE>, bNewDirection: INT8)
   return true;
 }
 
-function RangeChangeDesire(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+export function RangeChangeDesire(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let iRangeFactorMultiplier: INT32;
 
   iRangeFactorMultiplier = pSoldier.value.bAIMorale - 1;
@@ -2022,7 +2022,7 @@ function RangeChangeDesire(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return iRangeFactorMultiplier;
 }
 
-function ArmySeesOpponents(): boolean {
+export function ArmySeesOpponents(): boolean {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 

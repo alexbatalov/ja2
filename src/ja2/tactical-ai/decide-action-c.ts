@@ -1335,7 +1335,7 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return Enum289.AI_ACTION_NONE;
 }
 
-function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8): INT8 {
+export function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8): INT8 {
   let bActionReturned: INT8;
   let iDummy: INT32;
   let iChance: INT16;
@@ -3300,7 +3300,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return Enum289.AI_ACTION_NONE;
 }
 
-function DecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function DecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bAction: INT8 = Enum289.AI_ACTION_NONE;
 
   // turn off cautious flag
@@ -3352,7 +3352,7 @@ function DecideActionEscort(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     return Enum289.AI_ACTION_NONE;
 }
 
-function DecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bOldStatus: INT8;
   let iDummy: INT32;
   let fClimbDummy: boolean;

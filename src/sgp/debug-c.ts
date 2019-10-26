@@ -17,10 +17,10 @@ let gfRecordToFile: boolean = false;
 let gfRecordToDebugger: boolean = true;
 
 // moved from header file: 24mar98:HJH
-let guiProfileStart: UINT32;
-let guiExecutions: UINT32;
-let guiProfileTime: UINT32;
-let giProfileCount: INT32;
+export let guiProfileStart: UINT32;
+export let guiExecutions: UINT32;
+export let guiProfileTime: UINT32;
+export let giProfileCount: INT32;
 
 // Had to move these outside the ifdef SGP_DEBUG below, because
 // they are required for the String() function, which is NOT a
@@ -34,7 +34,7 @@ let gubStringIndex: UINT8 = 0;
 
 // This is NOT a _DEBUG only function! It is also needed in
 // release mode builds. -- DB
-function String(String: Pointer<char>, ...args: any[]): Pointer<UINT8> {
+export function String(String: Pointer<char>, ...args: any[]): Pointer<UINT8> {
   let ArgPtr: va_list;
   let usIndex: UINT8;
 

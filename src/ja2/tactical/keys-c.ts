@@ -1,7 +1,7 @@
 let gpDoorStatus: Pointer<DOOR_STATUS> = null;
 let gubNumDoorStatus: UINT8 = 0;
 
-let KeyTable: KEY[] /* [NUM_KEYS] */ = [
+export let KeyTable: KEY[] /* [NUM_KEYS] */ = [
   // Item #			Flags		Sector, Date Found
   //
   [ Enum225.KEY_1, 0, 0, 0 ],
@@ -42,7 +42,7 @@ let KeyTable: KEY[] /* [NUM_KEYS] */ = [
 ];
 
 // Current number of doors in world.
-let gubNumDoors: UINT8 = 0;
+export let gubNumDoors: UINT8 = 0;
 
 // Current max number of doors.  This is only used by the editor.  When adding doors to the
 // world, we may run out of space in the DoorTable, so we will allocate a new array with extra slots,
@@ -50,7 +50,7 @@ let gubNumDoors: UINT8 = 0;
 // the current number (gubNumDoors) will be <= to it.
 let gubMaxDoors: UINT8 = 0;
 
-let LockTable: LOCK[] /* [NUM_LOCKS] */ = [ 0 ];
+export let LockTable: LOCK[] /* [NUM_LOCKS] */ = [ 0 ];
 
 /*
 LOCK LockTable[NUM_LOCKS] =
@@ -72,7 +72,7 @@ LOCK LockTable[NUM_LOCKS] =
 };
 */
 
-let DoorTrapTable: DOORTRAP[] /* [NUM_DOOR_TRAPS] */ = [
+export let DoorTrapTable: DOORTRAP[] /* [NUM_DOOR_TRAPS] */ = [
   [ 0 ], // nothing
   [ DOOR_TRAP_STOPS_ACTION ], // explosion
   [ DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING ], // electric
@@ -85,9 +85,9 @@ let DoorTrapTable: DOORTRAP[] /* [NUM_DOOR_TRAPS] */ = [
 // Dynamic array of Doors.  For general game purposes, the doors that are locked and/or trapped
 // are permanently saved within the map, and are loaded and allocated when the map is loaded.  Because
 // the editor allows more doors to be added, or removed, the actual size of the DoorTable may change.
-let DoorTable: Pointer<DOOR> = null;
+export let DoorTable: Pointer<DOOR> = null;
 
-function LoadLockTable(): boolean {
+export function LoadLockTable(): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let uiBytesToRead: UINT32;
   let pFileName: Pointer<CHAR8> = "BINARYDATA\\Locks.bin";
@@ -113,7 +113,7 @@ function LoadLockTable(): boolean {
   return true;
 }
 
-function SoldierHasKey(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): boolean {
+export function SoldierHasKey(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): boolean {
   if (KeyExistsInKeyRing(pSoldier, ubKeyID, null) || KeyExistsInInventory(pSoldier, ubKeyID)) {
     return true;
   }
@@ -121,7 +121,7 @@ function SoldierHasKey(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): boolean 
   return false;
 }
 
-function KeyExistsInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8, pubPos: Pointer<UINT8>): boolean {
+export function KeyExistsInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8, pubPos: Pointer<UINT8>): boolean {
   // returns the index into the key ring where the key can be found
   let ubLoop: UINT8;
 
@@ -188,7 +188,7 @@ function DoUnlockDoor(pDoor: Pointer<DOOR>, ubKeyID: UINT8): boolean {
   }
 }
 
-function AttemptToUnlockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToUnlockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
   let ubLoop: UINT8;
   let ubKeyID: UINT8;
 
@@ -211,7 +211,7 @@ function AttemptToUnlockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
   return false;
 }
 
-function AttemptToLockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToLockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
   let ubLoop: UINT8;
   let ubKeyID: UINT8;
 
@@ -231,7 +231,7 @@ function AttemptToLockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>)
   return false;
 }
 
-function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
   let iResult: INT32;
   let bStress: INT8;
   let bSlot: INT8;
@@ -305,7 +305,7 @@ function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOO
   }
 }
 
-function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
   let iResult: INT32;
 
   let pLock: Pointer<LOCK>;
@@ -368,7 +368,7 @@ function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>
   }
 }
 
-function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
   let iResult: INT32;
   let bReason: INT8;
   let pLock: Pointer<LOCK>;
@@ -418,7 +418,7 @@ function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>)
   }
 }
 
-function AttemptToUntrapDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToUntrapDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
   let iResult: INT32;
 
   // See if we measure up to the task.
@@ -439,7 +439,7 @@ function AttemptToUntrapDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
   }
 }
 
-function ExamineDoorForTraps(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function ExamineDoorForTraps(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
   // Check to see if there is a trap or not on this door
   let bDetectLevel: INT8;
 
@@ -462,7 +462,7 @@ function ExamineDoorForTraps(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
   return false;
 }
 
-function HasDoorTrapGoneOff(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function HasDoorTrapGoneOff(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
   // Check to see if the soldier causes the trap to go off
   let bDetectLevel: INT8;
 
@@ -477,7 +477,7 @@ function HasDoorTrapGoneOff(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>
   return false;
 }
 
-function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): void {
+export function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): void {
   if (!(DoorTrapTable[pDoor.value.ubTrapID].fFlags & DOOR_TRAP_SILENT)) {
     switch (pDoor.value.ubTrapID) {
       case Enum227.BROTHEL_SIREN:
@@ -549,7 +549,7 @@ function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): v
   }
 }
 
-function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
   let iResult: INT32;
   let bSlot: INT8 = NO_SLOT;
 
@@ -625,7 +625,7 @@ function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 
 // File I/O for loading the door information from the map.  This automatically allocates
 // the exact number of slots when loading.
-function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
+export function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   let cnt: INT32;
 
   TrashDoorTable();
@@ -646,7 +646,7 @@ function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
 // Saves the existing door information to the map.  Before it actually saves, it'll verify that the
 // door still exists.  Otherwise, it'll ignore it.  It is possible in the editor to delete doors in
 // many different ways, so I opted to put it in the saving routine.
-function SaveDoorTableToMap(fp: HWFILE): void {
+export function SaveDoorTableToMap(fp: HWFILE): void {
   let i: INT32 = 0;
   let uiBytesWritten: UINT32;
 
@@ -662,7 +662,7 @@ function SaveDoorTableToMap(fp: HWFILE): void {
 
 // The editor adds locks to the world.  If the gridno already exists, then the currently existing door
 // information is overwritten.
-function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
+export function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
   let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == pDoor.value.sGridNo) {
@@ -696,7 +696,7 @@ function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
 // When the editor removes a door from the world, this function looks for and removes accompanying door
 // information.  If the entry is not the last entry, the last entry is move to it's current slot, to keep
 // everything contiguous.
-function RemoveDoorInfoFromTable(iMapIndex: INT32): void {
+export function RemoveDoorInfoFromTable(iMapIndex: INT32): void {
   let i: INT32;
   let iNumDoorsToCopy: INT32;
   for (i = 0; i < gubNumDoors; i++) {
@@ -712,7 +712,7 @@ function RemoveDoorInfoFromTable(iMapIndex: INT32): void {
 }
 
 // This is the link to see if a door exists at a gridno.
-function FindDoorInfoAtGridNo(iMapIndex: INT32): Pointer<DOOR> {
+export function FindDoorInfoAtGridNo(iMapIndex: INT32): Pointer<DOOR> {
   let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == iMapIndex)
@@ -723,7 +723,7 @@ function FindDoorInfoAtGridNo(iMapIndex: INT32): Pointer<DOOR> {
 
 // Upon world deallocation, the door table needs to be deallocated.  Remember, this function
 // resets the values, so make sure you do this before you change gubNumDoors or gubMaxDoors.
-function TrashDoorTable(): void {
+export function TrashDoorTable(): void {
   if (DoorTable)
     MemFree(DoorTable);
   DoorTable = null;
@@ -731,7 +731,7 @@ function TrashDoorTable(): void {
   gubMaxDoors = 0;
 }
 
-function UpdateDoorPerceivedValue(pDoor: Pointer<DOOR>): void {
+export function UpdateDoorPerceivedValue(pDoor: Pointer<DOOR>): void {
   if (pDoor.value.fLocked) {
     pDoor.value.bPerceivedLocked = DOOR_PERCEIVED_LOCKED;
   } else if (!pDoor.value.fLocked) {
@@ -745,7 +745,7 @@ function UpdateDoorPerceivedValue(pDoor: Pointer<DOOR>): void {
   }
 }
 
-function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
+export function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let uiNumBytesWritten: UINT32;
   let uiSizeToSave: UINT32 = 0;
   let zMapName: CHAR8[] /* [128] */;
@@ -803,7 +803,7 @@ function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT16, bSec
   return true;
 }
 
-function LoadDoorTableFromDoorTableTempFile(): boolean {
+export function LoadDoorTableFromDoorTableTempFile(): boolean {
   let uiNumBytesRead: UINT32;
   let hFile: HWFILE;
   let zMapName: CHAR8[] /* [128] */;
@@ -866,7 +866,7 @@ function LoadDoorTableFromDoorTableTempFile(): boolean {
 }
 
 // fOpen is True if the door is open, false if it is closed
-function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean, fPerceivedOpen: boolean): boolean {
+export function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean, fPerceivedOpen: boolean): boolean {
   let ubCnt: UINT8;
   let pStructure: Pointer<STRUCTURE>;
   let pBaseStructure: Pointer<STRUCTURE>;
@@ -959,7 +959,7 @@ function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean, fPerceivedOpen: boolea
   return true;
 }
 
-function TrashDoorStatusArray(): void {
+export function TrashDoorStatusArray(): void {
   if (gpDoorStatus) {
     MemFree(gpDoorStatus);
     gpDoorStatus = null;
@@ -1003,7 +1003,7 @@ function IsDoorOpen(sGridNo: INT16): boolean {
 }
 
 // Returns a doors status value, NULL if not found
-function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
+export function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
   let ubCnt: UINT8;
   let pStructure: Pointer<STRUCTURE>;
   let pBaseStructure: Pointer<STRUCTURE>;
@@ -1034,7 +1034,7 @@ function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
   return null;
 }
 
-function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: boolean): boolean {
+export function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: boolean): boolean {
   let cnt: INT32;
   let cnt2: INT32;
   let bDirs: INT8[] /* [8] */ = [
@@ -1104,7 +1104,7 @@ function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: boolean): boolean {
   return false;
 }
 
-function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: boolean): boolean {
+export function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: boolean): boolean {
   let cnt: INT32;
   let cnt2: INT32;
   let sDistVisible: INT16;
@@ -1220,7 +1220,7 @@ function SyncronizeDoorStatusToStructureData(pDoorStatus: Pointer<DOOR_STATUS>):
   }
 }
 
-function UpdateDoorGraphicsFromStatus(fUsePerceivedStatus: boolean, fDirty: boolean): void {
+export function UpdateDoorGraphicsFromStatus(fUsePerceivedStatus: boolean, fDirty: boolean): void {
   let cnt: INT32;
   let pDoorStatus: Pointer<DOOR_STATUS>;
 
@@ -1465,7 +1465,7 @@ function SetDoorOpenStatus(sGridNo: INT16, fOpen: boolean): boolean {
   }
 }
 
-function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
+export function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
@@ -1518,7 +1518,7 @@ function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSectorY: INT1
   return true;
 }
 
-function LoadDoorStatusArrayFromDoorStatusTempFile(): boolean {
+export function LoadDoorStatusArrayFromDoorStatusTempFile(): boolean {
   let zMapName: CHAR8[] /* [128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
@@ -1581,7 +1581,7 @@ function LoadDoorStatusArrayFromDoorStatusTempFile(): boolean {
   return true;
 }
 
-function SaveKeyTableToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveKeyTableToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
 
   // Save the KeyTable
@@ -1593,7 +1593,7 @@ function SaveKeyTableToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadKeyTableFromSaveedGameFile(hFile: HWFILE): boolean {
+export function LoadKeyTableFromSaveedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32 = 0;
 
   // Load the KeyTable
@@ -1605,7 +1605,7 @@ function LoadKeyTableFromSaveedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function ExamineDoorsOnEnteringSector(): void {
+export function ExamineDoorsOnEnteringSector(): void {
   let cnt: INT32;
   let pDoorStatus: Pointer<DOOR_STATUS>;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1721,7 +1721,7 @@ function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
   }
 }
 
-function DropKeysInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bVisible: INT8, fAddToDropList: boolean, iDropListSlot: INT32, fUseUnLoaded: boolean): void {
+export function DropKeysInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bVisible: INT8, fAddToDropList: boolean, iDropListSlot: INT32, fUseUnLoaded: boolean): void {
   let ubLoop: UINT8;
   let ubItem: UINT8;
   let Object: OBJECTTYPE;

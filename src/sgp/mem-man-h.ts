@@ -35,6 +35,6 @@
 //**************************************************************************
 
 // Creates and adds a video object to list
-const MemAlloc = (size) => malloc((size));
-const MemFree = (ptr) => free((ptr));
-const MemRealloc = (ptr, size) => realloc((ptr), (size));
+export const MemAlloc = (size) => malloc((size));
+export const MemFree = (ptr) => free((ptr));
+export const MemRealloc = (ptr, size) => realloc((ptr), (size));

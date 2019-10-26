@@ -1,2 +1,2 @@
-const UIPLAN_ACTION_MOVETO = 1;
-const UIPLAN_ACTION_FIRE = 2;
+export const UIPLAN_ACTION_MOVETO = 1;
+export const UIPLAN_ACTION_FIRE = 2;

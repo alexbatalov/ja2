@@ -2,14 +2,14 @@
 let giIMPPersonalityEntranceButton: INT32[] /* [1] */;
 let giIMPPersonalityEntranceButtonImage: INT32[] /* [1] */;
 
-function EnterIMPPersonalityEntrance(): void {
+export function EnterIMPPersonalityEntrance(): void {
   // create buttons needed
   CreateIMPPersonalityEntranceButtons();
 
   return;
 }
 
-function RenderIMPPersonalityEntrance(): void {
+export function RenderIMPPersonalityEntrance(): void {
   // the background
   RenderProfileBackGround();
 
@@ -21,14 +21,14 @@ function RenderIMPPersonalityEntrance(): void {
   return;
 }
 
-function ExitIMPPersonalityEntrance(): void {
+export function ExitIMPPersonalityEntrance(): void {
   // destroy buttons needed
   DestroyIMPPersonalityEntranceButtons();
 
   return;
 }
 
-function HandleIMPPersonalityEntrance(): void {
+export function HandleIMPPersonalityEntrance(): void {
   return;
 }
 

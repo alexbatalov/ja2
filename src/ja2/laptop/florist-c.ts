@@ -49,16 +49,16 @@ let gfHomePageActive: boolean = false; // Specifies whether or not the home page
 // Buttons
 
 // Graphic for button
-let guiGalleryButtonImage: INT32;
-let guiGalleryButton: UINT32;
+export let guiGalleryButtonImage: INT32;
+export let guiGalleryButton: UINT32;
 
 // link to the flower home page by clicking on the flower title
 let gSelectedFloristTitleHomeLinkRegion: MOUSE_REGION;
 
-function GameInitFlorist(): void {
+export function GameInitFlorist(): void {
 }
 
-function EnterFlorist(): boolean {
+export function EnterFlorist(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   SetBookMark(Enum98.FLORIST_BOOKMARK);
@@ -93,7 +93,7 @@ function EnterFlorist(): boolean {
   return true;
 }
 
-function ExitFlorist(): void {
+export function ExitFlorist(): void {
   DeleteVideoObjectFromIndex(guiHandBullet);
 
   RemoveFloristDefaults();
@@ -103,10 +103,10 @@ function ExitFlorist(): void {
   RemoveButton(guiGalleryButton);
 }
 
-function HandleFlorist(): void {
+export function HandleFlorist(): void {
 }
 
-function RenderFlorist(): void {
+export function RenderFlorist(): void {
   let hPixHandle: HVOBJECT;
   let i: UINT16;
   let usPosY: UINT16;
@@ -141,7 +141,7 @@ function RenderFlorist(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_UL_Y);
 }
 
-function InitFloristDefaults(): boolean {
+export function InitFloristDefaults(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the Florist background graphic and add it
@@ -169,7 +169,7 @@ function InitFloristDefaults(): boolean {
   return true;
 }
 
-function DisplayFloristDefaults(): void {
+export function DisplayFloristDefaults(): void {
   let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(4, 4, FLORIST_BACKGROUND_WIDTH, FLORIST_BACKGROUND_HEIGHT, guiFloristBackground);
@@ -186,7 +186,7 @@ function DisplayFloristDefaults(): void {
   }
 }
 
-function RemoveFloristDefaults(): void {
+export function RemoveFloristDefaults(): void {
   DeleteVideoObjectFromIndex(guiFloristBackground);
 
   // if its the first page

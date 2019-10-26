@@ -11,7 +11,7 @@ let iScrollUp: INT32;
 let iScrollDown: INT32;
 let iOkWin: INT32;
 
-let fAllDone: boolean = false;
+export let fAllDone: boolean = false;
 let fButtonsPresent: boolean = false;
 
 let SelWinSpacing: SGPPoint;
@@ -82,54 +82,54 @@ let Room: DisplaySpec[] /* [ROOM_NUMELEMENTS] */;
 // These are all of the different selection lists.  Changing the max_selections will
 // change the number of selections values you can have at a time.  This is Bret's gay code,
 // though I've cleaned it up a lot.
-let SelOStructs: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTFULLSTRUCT, 0, 1 ] ]; // Default selections
-let SelOStructs1: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FOURTHOSTRUCT, 0, 1 ] ]; // Default selections
-let SelOStructs2: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.THIRDOSTRUCT, 0, 1 ] ]; // Default selections
-let SelBanks: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTCLIFF, 0, 1 ] ];
-let SelRoads: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTROAD, 0, 1 ] ];
-let SelDebris: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.DEBRISROCKS, 0, 1 ] ];
-let SelSingleWall: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALL, 0, 1 ] ];
-let SelSingleDoor: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTDOOR, 0, 1 ] ];
-let SelSingleWindow: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALL, 44, 1 ] ];
-let SelSingleRoof: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTROOF, 0, 1 ] ];
-let SelSingleNewRoof: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTROOF, 0, 1 ] ];
-let SelSingleBrokenWall: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTDECORATIONS, 0, 1 ] ];
-let SelSingleDecor: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTISTRUCT, 0, 1 ] ];
-let SelSingleDecal: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALLDECAL, 0, 1 ] ];
-let SelSingleFloor: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTFLOOR, 0, 1 ] ];
-let SelSingleToilet: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIFTHISTRUCT, 0, 1 ] ];
-let SelRoom: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALL, 0, 1 ] ];
+export let SelOStructs: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTFULLSTRUCT, 0, 1 ] ]; // Default selections
+export let SelOStructs1: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FOURTHOSTRUCT, 0, 1 ] ]; // Default selections
+export let SelOStructs2: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.THIRDOSTRUCT, 0, 1 ] ]; // Default selections
+export let SelBanks: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTCLIFF, 0, 1 ] ];
+export let SelRoads: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTROAD, 0, 1 ] ];
+export let SelDebris: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.DEBRISROCKS, 0, 1 ] ];
+export let SelSingleWall: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALL, 0, 1 ] ];
+export let SelSingleDoor: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTDOOR, 0, 1 ] ];
+export let SelSingleWindow: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALL, 44, 1 ] ];
+export let SelSingleRoof: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTROOF, 0, 1 ] ];
+export let SelSingleNewRoof: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTROOF, 0, 1 ] ];
+export let SelSingleBrokenWall: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTDECORATIONS, 0, 1 ] ];
+export let SelSingleDecor: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTISTRUCT, 0, 1 ] ];
+export let SelSingleDecal: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALLDECAL, 0, 1 ] ];
+export let SelSingleFloor: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTFLOOR, 0, 1 ] ];
+export let SelSingleToilet: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIFTHISTRUCT, 0, 1 ] ];
+export let SelRoom: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALL, 0, 1 ] ];
 
 // Number of objects currently in the selection list
-let iNumOStructsSelected: INT32 = 1;
-let iNumOStructs1Selected: INT32 = 1;
-let iNumOStructs2Selected: INT32 = 1;
-let iNumBanksSelected: INT32 = 1;
-let iNumRoadsSelected: INT32 = 1;
-let iNumDebrisSelected: INT32 = 1;
+export let iNumOStructsSelected: INT32 = 1;
+export let iNumOStructs1Selected: INT32 = 1;
+export let iNumOStructs2Selected: INT32 = 1;
+export let iNumBanksSelected: INT32 = 1;
+export let iNumRoadsSelected: INT32 = 1;
+export let iNumDebrisSelected: INT32 = 1;
 
-let iNumWallsSelected: INT32 = 1;
-let iNumDoorsSelected: INT32 = 1;
-let iNumWindowsSelected: INT32 = 1;
-let iNumDecorSelected: INT32 = 1;
-let iNumDecalsSelected: INT32 = 1;
-let iNumBrokenWallsSelected: INT32 = 1;
-let iNumFloorsSelected: INT32 = 1;
-let iNumToiletsSelected: INT32 = 1;
-let iNumRoofsSelected: INT32 = 1;
-let iNumNewRoofsSelected: INT32 = 1;
-let iNumRoomsSelected: INT32 = 1;
+export let iNumWallsSelected: INT32 = 1;
+export let iNumDoorsSelected: INT32 = 1;
+export let iNumWindowsSelected: INT32 = 1;
+export let iNumDecorSelected: INT32 = 1;
+export let iNumDecalsSelected: INT32 = 1;
+export let iNumBrokenWallsSelected: INT32 = 1;
+export let iNumFloorsSelected: INT32 = 1;
+export let iNumToiletsSelected: INT32 = 1;
+export let iNumRoofsSelected: INT32 = 1;
+export let iNumNewRoofsSelected: INT32 = 1;
+export let iNumRoomsSelected: INT32 = 1;
 
 // Holds the previous selection list when a selection window is up. Used for canceling the selection window
 let OldSelList: Selections[] /* [MAX_SELECTIONS] */;
 let iOldNumSelList: INT32;
 
 // Global pointers for selection list
-let pSelList: Pointer<Selections>;
-let pNumSelList: Pointer<INT32>;
+export let pSelList: Pointer<Selections>;
+export let pNumSelList: Pointer<INT32>;
 
 // Global used to indicate which selection to use (changes with the PGUP/PGDWN keys in editor)
-let iCurBank: INT32 = 0;
+export let iCurBank: INT32 = 0;
 
 let pDispList: Pointer<DisplayList>;
 let iTopWinCutOff: INT16;
@@ -144,7 +144,7 @@ let SelWinHilightFillColor: UINT16 = 0x000d; // a kind of medium dark blue
 //
 //	Creates a selection window of the given type.
 //
-function CreateJA2SelectionWindow(sWhat: INT16): void {
+export function CreateJA2SelectionWindow(sWhat: INT16): void {
   let pDSpec: Pointer<DisplaySpec>;
   let usNSpecs: UINT16;
 
@@ -305,7 +305,7 @@ function CreateJA2SelectionWindow(sWhat: INT16): void {
 // the categories are organized and loaded.  If you wish to move things around, then this is
 // where the initialization part is done.  I have also changed this from previously being loaded
 // every single time you go into a selection window which was redundant and CPU consuming.
-function InitJA2SelectionWindow(): void {
+export function InitJA2SelectionWindow(): void {
   let iCount: INT32;
   let iCount2: INT32;
   let iCount3: INT32;
@@ -697,7 +697,7 @@ function InitJA2SelectionWindow(): void {
 //	Unloads selection window button images and makes sure any display list that may remain in memory
 //	is removed.
 //
-function ShutdownJA2SelectionWindow(): void {
+export function ShutdownJA2SelectionWindow(): void {
   let x: INT16;
 
   for (x = 0; x < 4; x++)
@@ -714,7 +714,7 @@ function ShutdownJA2SelectionWindow(): void {
 //
 //	Removes the selection window from the screen.
 //
-function RemoveJA2SelectionWindow(): void {
+export function RemoveJA2SelectionWindow(): void {
   RemoveButton(iSelectWin);
   RemoveButton(iCancelWin);
   RemoveButton(iScrollUp);
@@ -755,7 +755,7 @@ function TrashList(pNode: Pointer<DisplayList>): Pointer<DisplayList> {
 //
 //	Displays the current selection window
 //
-function RenderSelectionWindow(): void {
+export function RenderSelectionWindow(): void {
   let button: Pointer<GUI_BUTTON>;
   let iSX: INT32;
   let iSY: INT32;
@@ -919,7 +919,7 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 // When a selection window is up, the file information of the picture will display
 // at the top of the screen.
-function DisplaySelectionWindowGraphicalInformation(): void {
+export function DisplaySelectionWindowGraphicalInformation(): void {
   let pNode: Pointer<DisplayList>;
   let fDone: boolean;
   // UINT16 usObjIndex, usIndex;
@@ -994,7 +994,7 @@ function AddToSelectionList(pNode: Pointer<DisplayList>): void {
 //
 //	Removes everything from the current selection list
 //
-function ClearSelectionList(): boolean {
+export function ClearSelectionList(): boolean {
   let iIndex: INT32;
   let pNode: Pointer<DisplayList>;
 
@@ -1062,7 +1062,7 @@ function RemoveFromSelectionList(pNode: Pointer<DisplayList>): boolean {
 //	Randomly selects an item in the selection list. The object counts are taken into account so
 //	that objects with higher counts will be chosen more often.
 //
-function GetRandomSelection(): INT32 {
+export function GetRandomSelection(): INT32 {
   let iRandNum: INT32;
   let iTotalCounts: INT32;
   let iIndex: INT32;
@@ -1154,7 +1154,7 @@ function SaveSelectionList(): void {
 //
 //	Copies the selection list in the save buffer back to the current selection list.
 //
-function RestoreSelectionList(): void {
+export function RestoreSelectionList(): void {
   let iIndex: INT32;
 
   for (iIndex = 0; iIndex < MAX_SELECTIONS; iIndex++)
@@ -1210,7 +1210,7 @@ function UpClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 //
 //	Performs the calculations required to actually scroll a selection window up by one line.
 //
-function ScrollSelWinUp(): void {
+export function ScrollSelWinUp(): void {
   let pNode: Pointer<DisplayList>;
   let iCutOff: INT16;
   let iBotCutOff: INT16;
@@ -1240,7 +1240,7 @@ function ScrollSelWinUp(): void {
 //
 //	Performs the actual calculations for scrolling a selection window down.
 //
-function ScrollSelWinDown(): void {
+export function ScrollSelWinDown(): void {
   let pNode: Pointer<DisplayList>;
   let iCutOff: INT16;
   let iBotCutOff: INT16;

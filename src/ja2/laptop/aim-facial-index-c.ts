@@ -1,5 +1,5 @@
-let gubCurrentSortMode: UINT8;
-let gubCurrentListMode: UINT8;
+export let gubCurrentSortMode: UINT8;
+export let gubCurrentListMode: UINT8;
 
 let guiMugShotBorder: UINT32;
 let guiAimFiFace: UINT32[] /* [MAX_NUMBER_MERCS] */;
@@ -36,10 +36,10 @@ let gMercFaceMouseRegions: MOUSE_REGION[] /* [MAX_NUMBER_MERCS] */;
 // Screen region, used to right click to go back to previous page
 let gScreenMouseRegions: MOUSE_REGION;
 
-function GameInitAimFacialIndex(): void {
+export function GameInitAimFacialIndex(): void {
 }
 
-function EnterAimFacialIndex(): boolean {
+export function EnterAimFacialIndex(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT8;
   let usPosX: UINT16;
@@ -89,7 +89,7 @@ function EnterAimFacialIndex(): boolean {
   return true;
 }
 
-function ExitAimFacialIndex(): void {
+export function ExitAimFacialIndex(): void {
   let i: UINT8;
 
   RemoveAimDefaults();
@@ -105,12 +105,12 @@ function ExitAimFacialIndex(): void {
   MSYS_RemoveRegion(addressof(gScreenMouseRegions));
 }
 
-function HandleAimFacialIndex(): void {
+export function HandleAimFacialIndex(): void {
   //	if( fShowBookmarkInfo )
   //		fPausedReDrawScreenFlag = TRUE;
 }
 
-function RenderAimFacialIndex(): boolean {
+export function RenderAimFacialIndex(): boolean {
   let usPosX: UINT16;
   let usPosY: UINT16;
   let x: UINT16;

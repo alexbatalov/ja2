@@ -1,4 +1,4 @@
-interface EditorItemsInfo {
+export interface EditorItemsInfo {
   fGameInit: boolean; // Used for initializing save variables the first time.
                       // This flag is initialize at
   fKill: boolean; // flagged for deallocation.

@@ -2,13 +2,13 @@ let uiContractTimeMode: UINT32 = 0;
 
 let pLeaveSoldier: Pointer<SOLDIERTYPE> = null;
 
-let fEnterMapDueToContract: boolean = false;
-let ubQuitType: UINT8 = 0;
+export let fEnterMapDueToContract: boolean = false;
+export let ubQuitType: UINT8 = 0;
 let gfFirstMercSayQuote: boolean = false;
 
-let pContractReHireSoldier: Pointer<SOLDIERTYPE> = null;
+export let pContractReHireSoldier: Pointer<SOLDIERTYPE> = null;
 
-let gubContractLength: UINT8 = 0; // used when extending a mercs insurance contract
+export let gubContractLength: UINT8 = 0; // used when extending a mercs insurance contract
 let gpInsuranceSoldier: Pointer<SOLDIERTYPE> = null;
 
 // The values need to be saved!
@@ -17,14 +17,14 @@ let ubNumContractRenewals: UINT8 = 0;
 // end
 let ubCurrentContractRenewal: UINT8 = 0;
 let ubCurrentContractRenewalInProgress: UINT8 = false;
-let gfContractRenewalSquenceOn: boolean = false;
-let gfInContractMenuFromRenewSequence: boolean = false;
+export let gfContractRenewalSquenceOn: boolean = false;
+export let gfInContractMenuFromRenewSequence: boolean = false;
 
 // the airport sector
 const AIRPORT_X = 13;
 const AIRPORT_Y = 2;
 
-function SaveContractRenewalDataToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveContractRenewalDataToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   FileWrite(hFile, ContractRenewalList, sizeof(ContractRenewalList), addressof(uiNumBytesWritten));
@@ -40,7 +40,7 @@ function SaveContractRenewalDataToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadContractRenewalDataFromSaveGameFile(hFile: HWFILE): boolean {
+export function LoadContractRenewalDataFromSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   FileRead(hFile, ContractRenewalList, sizeof(ContractRenewalList), addressof(uiNumBytesRead));
@@ -56,7 +56,7 @@ function LoadContractRenewalDataFromSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function BeginContractRenewalSequence(): void {
+export function BeginContractRenewalSequence(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let fFoundAtLeastOne: boolean = false;
@@ -98,7 +98,7 @@ function BeginContractRenewalSequence(): void {
   }
 }
 
-function HandleContractRenewalSequence(): void {
+export function HandleContractRenewalSequence(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gfContractRenewalSquenceOn) {
@@ -171,7 +171,7 @@ function EndCurrentContractRenewal(): void {
   }
 }
 
-function HandleMercIsWillingToRenew(ubID: UINT8): void {
+export function HandleMercIsWillingToRenew(ubID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubID];
 
   // We wish to lock interface
@@ -189,7 +189,7 @@ function HandleMercIsWillingToRenew(ubID: UINT8): void {
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, Enum26.MAP_SCREEN, 0, 0, 0);
 }
 
-function HandleMercIsNotWillingToRenew(ubID: UINT8): void {
+export function HandleMercIsNotWillingToRenew(ubID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubID];
 
   // We wish to lock interface
@@ -206,7 +206,7 @@ function HandleMercIsNotWillingToRenew(ubID: UINT8): void {
 }
 
 // This is used only to EXTEND the contract of an AIM merc already on the team
-function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAction: UINT8): boolean {
+export function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAction: UINT8): boolean {
   let iContractCharge: INT32 = 0;
   let iContractLength: INT32 = 0;
   let ubHistoryContractType: UINT8 = 0;
@@ -337,7 +337,7 @@ function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAction: U
   return true;
 }
 
-function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean): boolean {
+export function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean): boolean {
   let i: UINT8;
   let bMercID: INT8;
   let fBuddyAround: boolean = false;
@@ -589,7 +589,7 @@ BOOLEAN SoldierWantsToDelayRenewalOfContract( SOLDIERTYPE *pSoldier )
 */
 
 // this is called once a day (daily update) for every merc working for the player
-function CheckIfMercGetsAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CheckIfMercGetsAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): void {
   let uiFullDaysRemaining: UINT32 = 0;
   let iChance: INT32 = 0;
 
@@ -633,7 +633,7 @@ function CheckIfMercGetsAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 // for ubRemoveType pass in the enum from the .h, 	( MERC_QUIT, MERC_FIRED  )
-function BeginStrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>, fAddRehireButton: boolean): boolean {
+export function BeginStrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>, fAddRehireButton: boolean): boolean {
   InterruptTime();
   PauseGame();
   LockPauseState(8);
@@ -651,7 +651,7 @@ function BeginStrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>, fAddRehireButt
   return true;
 }
 
-function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let ubHistoryCode: UINT8 = 0;
 
   if (gfInContractMenuFromRenewSequence) {
@@ -966,7 +966,7 @@ function HandleExtendMercsContract(pSoldier: Pointer<SOLDIERTYPE>): void {
   return;
 }
 
-function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
+export function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
   // find out is something was said
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let pSoldierWhoWillQuit: Pointer<SOLDIERTYPE> = null;
@@ -1106,7 +1106,7 @@ function HandleUniqueEventWhenPlayerLeavesTeam(pSoldier: Pointer<SOLDIERTYPE>): 
   }
 }
 
-function GetHourWhenContractDone(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
+export function GetHourWhenContractDone(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   let uiArriveHour: UINT32;
 
   // Get the arrival hour - that will give us when they arrived....

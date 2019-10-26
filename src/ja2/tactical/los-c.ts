@@ -1052,7 +1052,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
   return (iDistance + (iSightLimit - iAdjSightLimit)) * (MaxDistanceVisible() * CELL_X_SIZE) / iSightLimit;
 }
 
-function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, pdZPos: Pointer<FLOAT>): boolean {
+export function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, pdZPos: Pointer<FLOAT>): boolean {
   let ubHeight: UINT8;
 
   if (pSoldier.value.ubBodyType == Enum194.CROW) {
@@ -1212,7 +1212,7 @@ function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, 
   return true;
 }
 
-function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let fOk: boolean;
@@ -1305,7 +1305,7 @@ function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pE
   return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, CenterX(pEndSoldier.value.sGridNo), CenterY(pEndSoldier.value.sGridNo), dEndZPos, ubTileSightLimit, ubTreeReduction, bAware, bEffectiveCamo, fSmell, null);
 }
 
-function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>, sEndGridNo: INT16): INT16 {
+export function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>, sEndGridNo: INT16): INT16 {
   // figure out if there is a SINGLE window between the looker and target
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
@@ -1354,7 +1354,7 @@ function SoldierToSoldierLineOfSightTimingTest(pStartSoldier: Pointer<SOLDIERTYP
   return true;
 }
 
-function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let sXPos: INT16;
@@ -1391,7 +1391,7 @@ function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>,
   return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
 
-function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, ubAimLocation: UINT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, ubAimLocation: UINT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   let pEndSoldier: Pointer<SOLDIERTYPE>;
   let ubTargetID: UINT8;
   let dStartZPos: FLOAT;
@@ -1440,7 +1440,7 @@ function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, s
   return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
 
-function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bStance: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bStance: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let sXPos: INT16;
@@ -1479,11 +1479,11 @@ function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTY
   return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
 
-function SoldierToLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierToLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   return SoldierTo3DLocationLineOfSightTest(pStartSoldier, sGridNo, 0, 0, ubTileSightLimit, bAware);
 }
 
-function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLevel: INT8, sEndGridNo: INT16, bEndLevel: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLevel: INT8, sEndGridNo: INT16, bEndLevel: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let sStartXPos: INT16;
@@ -2454,7 +2454,7 @@ function SoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>,
   return ChanceToGetThrough(pStartSoldier, CenterX(pEndSoldier.value.sGridNo), CenterY(pEndSoldier.value.sGridNo), dEndZPos);
 }
 
-function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubAimLocation: UINT8): UINT8 {
+export function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubAimLocation: UINT8): UINT8 {
   // does like StS-CTGT but with a particular body part in mind
   let dEndZPos: FLOAT;
   let fOk: boolean;
@@ -2491,7 +2491,7 @@ function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: Pointer<SOLDI
   return ChanceToGetThrough(pStartSoldier, CenterX(pEndSoldier.value.sGridNo), CenterY(pEndSoldier.value.sGridNo), dEndZPos);
 }
 
-function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTargetID: UINT8): UINT8 {
+export function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTargetID: UINT8): UINT8 {
   let dEndZPos: FLOAT;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -2533,7 +2533,7 @@ function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>
   }
 }
 
-function AISoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+export function AISoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   // Like a standard CTGT algorithm BUT fakes the start soldier at standing height
   let dEndZPos: FLOAT;
   let fOk: boolean;
@@ -2561,7 +2561,7 @@ function AISoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE
   return ubChance;
 }
 
-function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8): UINT8 {
+export function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8): UINT8 {
   let dEndZPos: FLOAT;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -2752,7 +2752,7 @@ DOUBLE CalculateVerticalAngle( SOLDIERTYPE * pFirer, SOLDIERTYPE * pTarget )
 }
 */
 
-function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT, usHandItem: UINT16, sHitBy: INT16, fBuckshot: boolean, fFake: boolean): INT8 {
+export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT, usHandItem: UINT16, sHitBy: INT16, fBuckshot: boolean, fFake: boolean): INT8 {
   // fFake indicates that we should set things up for a call to ChanceToGetThrough
   let dStartZ: FLOAT;
 
@@ -2970,7 +2970,7 @@ function ChanceToGetThrough(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY: F
   }
 }
 
-function MoveBullet(iBullet: INT32): void {
+export function MoveBullet(iBullet: INT32): void {
   let pBullet: Pointer<BULLET>;
 
   let qLandHeight: FIXEDPT;
@@ -3622,7 +3622,7 @@ function MoveBullet(iBullet: INT32): void {
   // but we shouldn't(?) need to check it because the target is there!
 }
 
-function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDeltaY: FLOAT, dDeltaZ: FLOAT, pusStructureID: Pointer<INT16>, pdNormalX: Pointer<FLOAT>, pdNormalY: Pointer<FLOAT>, pdNormalZ: Pointer<FLOAT>): INT32 {
+export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDeltaY: FLOAT, dDeltaZ: FLOAT, pusStructureID: Pointer<INT16>, pdNormalX: Pointer<FLOAT>, pdNormalY: Pointer<FLOAT>, pdNormalZ: Pointer<FLOAT>): INT32 {
   let iLandHeight: INT32;
   let iCurrAboveLevelZ: INT32;
   let iCurrCubesAboveLevelZ: INT32;

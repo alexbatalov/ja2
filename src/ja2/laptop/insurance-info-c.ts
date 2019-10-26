@@ -56,11 +56,11 @@ let gSelectedInsuranceInfoHomeLinkRegion: MOUSE_REGION;
 function GameInitInsuranceInfo(): void {
 }
 
-function EnterInitInsuranceInfo(): void {
+export function EnterInitInsuranceInfo(): void {
   memset(addressof(InsuranceInfoSubPagesVisitedFlag), 0, Enum89.INS_INFO_LAST_PAGE - 1);
 }
 
-function EnterInsuranceInfo(): boolean {
+export function EnterInsuranceInfo(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosX: UINT16;
 
@@ -100,7 +100,7 @@ function EnterInsuranceInfo(): boolean {
   return true;
 }
 
-function ExitInsuranceInfo(): void {
+export function ExitInsuranceInfo(): void {
   RemoveInsuranceDefaults();
 
   UnloadButtonImage(guiInsPrevButtonImage);
@@ -115,10 +115,10 @@ function ExitInsuranceInfo(): void {
   DeleteVideoObjectFromIndex(guiBulletImage);
 }
 
-function HandleInsuranceInfo(): void {
+export function HandleInsuranceInfo(): void {
 }
 
-function RenderInsuranceInfo(): void {
+export function RenderInsuranceInfo(): void {
   let sText: wchar_t[] /* [800] */;
   let usNewLineOffset: UINT16 = 0;
   let usPosX: UINT16;

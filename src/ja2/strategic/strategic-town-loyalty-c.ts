@@ -69,11 +69,11 @@ const DIVISOR_FOR_REBEL_BUILDING_DMG = 2;
 */
 
 // town loyalty table
-let gTownLoyalty: TOWN_LOYALTY[] /* [NUM_TOWNS] */;
+export let gTownLoyalty: TOWN_LOYALTY[] /* [NUM_TOWNS] */;
 
 // town name and locations arrays, for town theft and what not
-let pTownNamesList: INT32[] /* [40] */;
-let pTownLocationsList: INT32[] /* [40] */;
+export let pTownNamesList: INT32[] /* [40] */;
+export let pTownLocationsList: INT32[] /* [40] */;
 
 let iTownDistances: INT32[][] /* [NUM_TOWNS][NUM_TOWNS] */;
 
@@ -109,7 +109,7 @@ let gubTownRebelSentiment: UINT8[] /* [NUM_TOWNS] */ = [
   35, // CHITZENA, - Artificially high 'cause there's not enough fights near it to get the loyalty up otherwise
 ];
 
-let gfTownUsesLoyalty: boolean[] /* [NUM_TOWNS] */ = [
+export let gfTownUsesLoyalty: boolean[] /* [NUM_TOWNS] */ = [
   false, // not a town - blank sector index
   true, // OMERTA
   true, // DRASSEN
@@ -126,7 +126,7 @@ let gfTownUsesLoyalty: boolean[] /* [NUM_TOWNS] */ = [
 ];
 
 // location of first enocunter with enemy
-let sWorldSectorLocationOfFirstBattle: INT16 = 0;
+export let sWorldSectorLocationOfFirstBattle: INT16 = 0;
 
 /* ARM: Civilian theft of items was removed
 // handle theft by civi in a town sector
@@ -136,7 +136,7 @@ void HandleTheftByCiviliansInSector( INT16 sX, INT16 sY, INT32 iLoyalty );
 void HandleTownTheft( void );
 */
 
-function InitTownLoyalty(): void {
+export function InitTownLoyalty(): void {
   let ubTown: UINT8 = 0;
 
   // set up town loyalty table
@@ -151,7 +151,7 @@ function InitTownLoyalty(): void {
   return;
 }
 
-function StartTownLoyaltyIfFirstTime(bTownId: INT8): void {
+export function StartTownLoyaltyIfFirstTime(bTownId: INT8): void {
   Assert((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS));
 
   // if loyalty tracking hasn't yet been started for this town, and the town does use loyalty
@@ -195,7 +195,7 @@ function SetTownLoyalty(bTownId: INT8, ubNewLoyaltyRating: UINT8): void {
 }
 
 // increments the town's loyalty rating by that many HUNDREDTHS of loyalty pts
-function IncrementTownLoyalty(bTownId: INT8, uiLoyaltyIncrease: UINT32): void {
+export function IncrementTownLoyalty(bTownId: INT8, uiLoyaltyIncrease: UINT32): void {
   let uiRemainingIncrement: UINT32;
   let sThisIncrement: INT16;
 
@@ -229,7 +229,7 @@ function IncrementTownLoyalty(bTownId: INT8, uiLoyaltyIncrease: UINT32): void {
 
 // decrements the town's loyalty rating by that many HUNDREDTHS of loyalty pts
 // NOTE: This function expects a POSITIVE number for a decrease!!!
-function DecrementTownLoyalty(bTownId: INT8, uiLoyaltyDecrease: UINT32): void {
+export function DecrementTownLoyalty(bTownId: INT8, uiLoyaltyDecrease: UINT32): void {
   let uiRemainingDecrement: UINT32;
   let sThisDecrement: INT16;
 
@@ -319,7 +319,7 @@ function UpdateTownLoyaltyRating(bTownId: INT8): void {
 }
 
 // strategic handler, goes through and handles all strategic events for town loyalty updates...player controlled, monsters
-function HandleTownLoyalty(): void {
+export function HandleTownLoyalty(): void {
   let bTownId: INT8 = 0;
 
   /* ARM: removed to experiment with keeping loyalty from drifing without any direct causes from the player
@@ -548,7 +548,7 @@ void UpdateTownLoyaltyBasedOnBadGuysInTown( INT8 bTownId )
 }
 */
 
-function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: boolean): void {
+export function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: boolean): void {
   // handle the impact on loyalty of the murder of a civilian
   let bTownId: INT8 = 0;
   let iLoyaltyChange: INT32 = 0;
@@ -794,7 +794,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: bo
 }
 
 // check town and raise loyalty value for hiring a merc from a town...not a lot of a gain, but some
-function HandleTownLoyaltyForNPCRecruitment(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleTownLoyaltyForNPCRecruitment(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bTownId: INT8 = 0;
   let uiLoyaltyValue: UINT32 = 0;
   let iRating: INT32 = 0;
@@ -885,7 +885,7 @@ function HandleLoyaltyForDemolitionOfBuilding(pSoldier: Pointer<SOLDIERTYPE>, sP
   return;
 }
 
-function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubChance: UINT8): void {
+export function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubChance: UINT8): void {
   // remove random items in sector
   let uiNumberOfItems: UINT32 = 0;
   let iCounter: UINT32 = 0;
@@ -1009,7 +1009,7 @@ void HandleTownTheft( void )
 }
 */
 
-function BuildListOfTownSectors(): void {
+export function BuildListOfTownSectors(): void {
   let iCounterX: INT32 = 0;
   let iCounterY: INT32 = 0;
   let iCounter: INT32 = 0;
@@ -1034,7 +1034,7 @@ function BuildListOfTownSectors(): void {
   }
 }
 
-function ReadInDistancesBetweenTowns(): void {
+export function ReadInDistancesBetweenTowns(): void {
   let hFileHandle: HWFILE;
 
   hFileHandle = FileOpen("BinaryData\\TownDistances.dat", FILE_ACCESS_READ, false);
@@ -1047,7 +1047,7 @@ function ReadInDistancesBetweenTowns(): void {
   return;
 }
 
-function GetTownDistances(ubTown: UINT8, ubTownA: UINT8): INT32 {
+export function GetTownDistances(ubTown: UINT8, ubTownA: UINT8): INT32 {
   return iTownDistances[ubTown][ubTownA];
 }
 
@@ -1102,7 +1102,7 @@ UINT32 BuildLoyaltyEventValue( INT8 bTownValue, UINT32 uiValue, BOOLEAN fIncreme
 }
 */
 
-function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // Save the Town Loyalty
@@ -1114,7 +1114,7 @@ function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadStrategicTownLoyaltyFromSavedGameFile(hFile: HWFILE): boolean {
+export function LoadStrategicTownLoyaltyFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   // Restore the Town Loyalty
@@ -1126,7 +1126,7 @@ function LoadStrategicTownLoyaltyFromSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function ReduceLoyaltyForRebelsBetrayed(): void {
+export function ReduceLoyaltyForRebelsBetrayed(): void {
   let bTownId: INT8;
 
   // reduce loyalty to player all across Arulco
@@ -1145,7 +1145,7 @@ function ReduceLoyaltyForRebelsBetrayed(): void {
   }
 }
 
-function GetNumberOfWholeTownsUnderControl(): INT32 {
+export function GetNumberOfWholeTownsUnderControl(): INT32 {
   let iNumber: INT32 = 0;
   let bTownId: INT8 = 0;
 
@@ -1161,7 +1161,7 @@ function GetNumberOfWholeTownsUnderControl(): INT32 {
   return iNumber;
 }
 
-function GetNumberOfWholeTownsUnderControlButExcludeCity(bCityToExclude: INT8): INT32 {
+export function GetNumberOfWholeTownsUnderControlButExcludeCity(bCityToExclude: INT8): INT32 {
   let iNumber: INT32 = 0;
   let bTownId: INT8 = 0;
 
@@ -1176,7 +1176,7 @@ function GetNumberOfWholeTownsUnderControlButExcludeCity(bCityToExclude: INT8): 
 }
 
 // is the ENTIRE town under player control?
-function IsTownUnderCompleteControlByPlayer(bTownId: INT8): INT32 {
+export function IsTownUnderCompleteControlByPlayer(bTownId: INT8): INT32 {
   let iNumber: INT32 = 0;
 
   if (GetTownSectorSize(bTownId) == GetTownSectorsUnderControl(bTownId)) {
@@ -1197,7 +1197,7 @@ function IsTownUnderCompleteControlByEnemy(bTownId: INT8): INT32 {
   return false;
 }
 
-function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: INT16, ubHowMany: UINT8): void {
+export function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: INT16, ubHowMany: UINT8): void {
   let bTownId: INT8 = 0;
   let uiLoyaltyChange: UINT32 = 0;
   let str: UINT16[] /* [256] */;
@@ -1222,7 +1222,7 @@ function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: INT16, u
 }
 
 // this applies the SAME change to every town equally, regardless of distance from the event
-function IncrementTownLoyaltyEverywhere(uiLoyaltyIncrease: UINT32): void {
+export function IncrementTownLoyaltyEverywhere(uiLoyaltyIncrease: UINT32): void {
   let bTownId: INT8;
 
   for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
@@ -1230,7 +1230,7 @@ function IncrementTownLoyaltyEverywhere(uiLoyaltyIncrease: UINT32): void {
   }
 }
 
-function DecrementTownLoyaltyEverywhere(uiLoyaltyDecrease: UINT32): void {
+export function DecrementTownLoyaltyEverywhere(uiLoyaltyDecrease: UINT32): void {
   let bTownId: INT8;
 
   for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
@@ -1238,7 +1238,7 @@ function DecrementTownLoyaltyEverywhere(uiLoyaltyDecrease: UINT32): void {
   }
 }
 // this applies the change to every town differently, depending on the distance from the event
-function HandleGlobalLoyaltyEvent(ubEventType: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
+export function HandleGlobalLoyaltyEvent(ubEventType: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   let iLoyaltyChange: INT32;
   let bTownId: INT8 = 0;
 
@@ -1397,7 +1397,7 @@ function AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange: INT32, sSectorX: IN
 }
 
 // to be called whenever player gains control of a sector in any way
-function CheckIfEntireTownHasBeenLiberated(bTownId: INT8, sSectorX: INT16, sSectorY: INT16): void {
+export function CheckIfEntireTownHasBeenLiberated(bTownId: INT8, sSectorX: INT16, sSectorY: INT16): void {
   // the whole town is under our control, check if we never libed this town before
   if (!gTownLoyalty[bTownId].fLiberatedAlready && IsTownUnderCompleteControlByPlayer(bTownId)) {
     if (MilitiaTrainingAllowedInSector(sSectorX, sSectorY, 0)) {
@@ -1422,7 +1422,7 @@ function CheckIfEntireTownHasBeenLiberated(bTownId: INT8, sSectorX: INT16, sSect
   }
 }
 
-function CheckIfEntireTownHasBeenLost(bTownId: INT8, sSectorX: INT16, sSectorY: INT16): void {
+export function CheckIfEntireTownHasBeenLost(bTownId: INT8, sSectorX: INT16, sSectorY: INT16): void {
   // NOTE:  only towns which allow you to train militia are important enough to get
   // reported here (and they're the only ones you can protect)
   if (MilitiaTrainingAllowedInSector(sSectorX, sSectorY, 0) && IsTownUnderCompleteControlByEnemy(bTownId)) {
@@ -1433,7 +1433,7 @@ function CheckIfEntireTownHasBeenLost(bTownId: INT8, sSectorX: INT16, sSectorY: 
   }
 }
 
-function HandleLoyaltyChangeForNPCAction(ubNPCProfileId: UINT8): void {
+export function HandleLoyaltyChangeForNPCAction(ubNPCProfileId: UINT8): void {
   switch (ubNPCProfileId) {
     case Enum268.MIGUEL:
       // Omerta loyalty increases when Miguel receives letter from Enrico
@@ -1477,7 +1477,7 @@ function HandleLoyaltyChangeForNPCAction(ubNPCProfileId: UINT8): void {
 }
 
 // set the location of the first encounter with enemy
-function SetTheFirstBattleSector(sSectorValue: INT16): void {
+export function SetTheFirstBattleSector(sSectorValue: INT16): void {
   if (sWorldSectorLocationOfFirstBattle == 0) {
     sWorldSectorLocationOfFirstBattle = sSectorValue;
   }
@@ -1486,7 +1486,7 @@ function SetTheFirstBattleSector(sSectorValue: INT16): void {
 }
 
 // did first battle take place here
-function DidFirstBattleTakePlaceInThisTown(bTownId: INT8): boolean {
+export function DidFirstBattleTakePlaceInThisTown(bTownId: INT8): boolean {
   let bTownBattleId: INT8 = 0;
 
   // get town id for sector
@@ -1535,7 +1535,7 @@ function EnemyStrength(): UINT32 {
 // Function assumes that mercs have retreated already.  Handles two cases, one for general merc retreat
 // which slightly demoralizes the mercs, the other handles abandonment of militia forces which poses
 // as a serious loyalty penalty.
-function HandleLoyaltyImplicationsOfMercRetreat(bRetreatCode: INT8, sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
+export function HandleLoyaltyImplicationsOfMercRetreat(bRetreatCode: INT8, sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   if (CountAllMilitiaInSector(sSectorX, sSectorY)) {
     // Big morale penalty!
     HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_ABANDON_MILITIA, sSectorX, sSectorY, sSectorZ);
@@ -1552,7 +1552,7 @@ function HandleLoyaltyImplicationsOfMercRetreat(bRetreatCode: INT8, sSectorX: IN
   }
 }
 
-function MaximizeLoyaltyForDeidrannaKilled(): void {
+export function MaximizeLoyaltyForDeidrannaKilled(): void {
   let bTownId: INT8;
 
   // max out loyalty to player all across Arulco

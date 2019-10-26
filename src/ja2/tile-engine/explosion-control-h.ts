@@ -1,10 +1,10 @@
-const MAX_DISTANCE_EXPLOSIVE_CAN_DESTROY_STRUCTURES = 2;
+export const MAX_DISTANCE_EXPLOSIVE_CAN_DESTROY_STRUCTURES = 2;
 
-const EXPLOSION_FLAG_USEABSPOS = 0x00000001;
-const EXPLOSION_FLAG_DISPLAYONLY = 0x00000002;
+export const EXPLOSION_FLAG_USEABSPOS = 0x00000001;
+export const EXPLOSION_FLAG_DISPLAYONLY = 0x00000002;
 
 // Explosion Data
-interface EXPLOSION_PARAMS {
+export interface EXPLOSION_PARAMS {
   uiFlags: UINT32;
 
   ubOwner: UINT8;
@@ -21,7 +21,7 @@ interface EXPLOSION_PARAMS {
   ubUnsed: UINT8[] /* [1] */;
 }
 
-interface EXPLOSIONTYPE {
+export interface EXPLOSIONTYPE {
   Params: EXPLOSION_PARAMS;
   fAllocated: boolean;
   sCurrentFrame: INT16;
@@ -30,7 +30,7 @@ interface EXPLOSIONTYPE {
   ubUnsed: UINT8[] /* [2] */;
 }
 
-const enum Enum304 {
+export const enum Enum304 {
   NO_BLAST,
   BLAST_1,
   BLAST_2,
@@ -44,16 +44,16 @@ const enum Enum304 {
   NUM_EXP_TYPES,
 }
 
-interface ExplosionQueueElement {
+export interface ExplosionQueueElement {
   uiWorldBombIndex: UINT32;
   uiTimeStamp: UINT32;
   fExists: UINT8;
 }
 
-const ERASE_SPREAD_EFFECT = 2;
-const BLOOD_SPREAD_EFFECT = 3;
-const REDO_SPREAD_EFFECT = 4;
+export const ERASE_SPREAD_EFFECT = 2;
+export const BLOOD_SPREAD_EFFECT = 3;
+export const REDO_SPREAD_EFFECT = 4;
 
 const NUM_EXPLOSION_SLOTS = 100;
 
-const GASMASK_MIN_STATUS = 70;
+export const GASMASK_MIN_STATUS = 70;

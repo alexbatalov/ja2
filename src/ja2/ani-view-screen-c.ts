@@ -1,7 +1,7 @@
-let gfAniEditMode: boolean = false;
+export let gfAniEditMode: boolean = false;
 /* static */ let usStartAnim: UINT16 = 0;
 /* static */ let ubStartHeight: UINT8 = 0;
-/* static */ let pSoldier: Pointer<SOLDIERTYPE>;
+/* static */ export let pSoldier: Pointer<SOLDIERTYPE>;
 
 /* static */ let fOKFiles: boolean = false;
 /* static */ let ubNumStates: UINT8 = 0;
@@ -24,18 +24,18 @@ function CycleAnimations(): void {
   EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, true);
 }
 
-function AniEditScreenInit(): UINT32 {
+export function AniEditScreenInit(): UINT32 {
   return true;
 }
 
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
 // It will also be responsible to making sure that all Gaming Engine tasks exit properly
 
-function AniEditScreenShutdown(): UINT32 {
+export function AniEditScreenShutdown(): UINT32 {
   return true;
 }
 
-function AniEditScreenHandle(): UINT32 {
+export function AniEditScreenHandle(): UINT32 {
   let InputEvent: InputAtom;
   /* static */ let fFirstTime: boolean = true;
   /* static */ let usOldState: UINT16;

@@ -42,21 +42,21 @@ const enum Enum143 {
 // GLOBALS
 
 // the dirty state of the mapscreen interface bottom
-let fMapScreenBottomDirty: boolean = true;
+export let fMapScreenBottomDirty: boolean = true;
 
 let fMapBottomDirtied: boolean = false;
 
 // Used to flag the transition animation from mapscreen to laptop.
-let gfStartMapScreenToLaptopTransition: boolean = false;
+export let gfStartMapScreenToLaptopTransition: boolean = false;
 
 // leaving map screen
-let fLeavingMapScreen: boolean = false;
+export let fLeavingMapScreen: boolean = false;
 
 // don't start transition from laptop to tactical stuff
-let gfDontStartTransitionFromLaptop: boolean = false;
+export let gfDontStartTransitionFromLaptop: boolean = false;
 
 // exiting to laptop?
-let fLapTop: boolean = false;
+export let fLapTop: boolean = false;
 
 let gfOneFramePauseOnExit: boolean = false;
 
@@ -68,7 +68,7 @@ let gbExitingMapScreenToWhere: INT8 = -1;
 
 let gubFirstMapscreenMessageIndex: UINT8 = 0;
 
-let guiCompressionStringBaseTime: UINT32 = 0;
+export let guiCompressionStringBaseTime: UINT32 = 0;
 
 // graphics
 let guiMAPBOTTOMPANEL: UINT32;
@@ -76,7 +76,7 @@ let guiSliderBar: UINT32;
 
 // buttons
 let guiMapMessageScrollButtons: UINT32[] /* [2] */;
-let guiMapBottomExitButtons: UINT32[] /* [3] */;
+export let guiMapBottomExitButtons: UINT32[] /* [3] */;
 let guiMapBottomTimeButtons: UINT32[] /* [2] */;
 
 // buttons images
@@ -98,7 +98,7 @@ let gTimeCompressionMask: MOUSE_REGION[] /* [3] */;
 
 // FUNCTIONS
 
-function HandleLoadOfMapBottomGraphics(): void {
+export function HandleLoadOfMapBottomGraphics(): void {
   // will load the graphics needed for the mapscreen interface bottom
   let VObjectDesc: VOBJECT_DESC;
 
@@ -114,7 +114,7 @@ function HandleLoadOfMapBottomGraphics(): void {
   return;
 }
 
-function LoadMapScreenInterfaceBottom(): boolean {
+export function LoadMapScreenInterfaceBottom(): boolean {
   CreateButtonsForMapScreenInterfaceBottom();
   CreateMapScreenBottomMessageScrollBarRegion();
 
@@ -124,7 +124,7 @@ function LoadMapScreenInterfaceBottom(): boolean {
   return true;
 }
 
-function DeleteMapBottomGraphics(): void {
+export function DeleteMapBottomGraphics(): void {
   DeleteVideoObjectFromIndex(guiMAPBOTTOMPANEL);
 
   // delete slider bar icon
@@ -133,7 +133,7 @@ function DeleteMapBottomGraphics(): void {
   return;
 }
 
-function DeleteMapScreenInterfaceBottom(): void {
+export function DeleteMapScreenInterfaceBottom(): void {
   // will delete graphics loaded for the mapscreen interface bottom
 
   DestroyButtonsForMapScreenInterfaceBottom();
@@ -145,7 +145,7 @@ function DeleteMapScreenInterfaceBottom(): void {
   return;
 }
 
-function RenderMapScreenInterfaceBottom(): void {
+export function RenderMapScreenInterfaceBottom(): void {
   // will render the map screen bottom interface
   let hHandle: HVOBJECT;
   let bFilename: CHAR8[] /* [32] */;
@@ -890,7 +890,7 @@ function EnableDisableTimeCompressButtons(): void {
   }
 }
 
-function EnableDisAbleMapScreenOptionsButton(fEnable: boolean): void {
+export function EnableDisAbleMapScreenOptionsButton(fEnable: boolean): void {
   if (fEnable) {
     EnableButton(guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_OPTIONS]);
   } else {
@@ -898,7 +898,7 @@ function EnableDisAbleMapScreenOptionsButton(fEnable: boolean): void {
   }
 }
 
-function AllowedToTimeCompress(): boolean {
+export function AllowedToTimeCompress(): boolean {
   // if already leaving, disallow any other attempts to exit
   if (fLeavingMapScreen) {
     return false;
@@ -1056,7 +1056,7 @@ function DisplayCurrentBalanceForMapBottom(): void {
   return;
 }
 
-function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
+export function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
   let fDisabled: boolean = false;
   /* static */ let fCreated: boolean = false;
 
@@ -1139,7 +1139,7 @@ function DisplayProjectedDailyMineIncome(): void {
   return;
 }
 
-function CommonTimeCompressionChecks(): boolean {
+export function CommonTimeCompressionChecks(): boolean {
   if (IsMapScreenHelpTextUp()) {
     // stop mapscreen text
     StopMapScreenHelpText();
@@ -1155,7 +1155,7 @@ function CommonTimeCompressionChecks(): boolean {
   return false;
 }
 
-function AnyUsableRealMercenariesOnTeam(): boolean {
+export function AnyUsableRealMercenariesOnTeam(): boolean {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
   let iNumberOnTeam: INT32 = 0;
@@ -1175,7 +1175,7 @@ function AnyUsableRealMercenariesOnTeam(): boolean {
   return false;
 }
 
-function RequestTriggerExitFromMapscreen(bExitToWhere: INT8): void {
+export function RequestTriggerExitFromMapscreen(bExitToWhere: INT8): void {
   Assert((bExitToWhere >= Enum144.MAP_EXIT_TO_LAPTOP) && (bExitToWhere <= Enum144.MAP_EXIT_TO_SAVE));
 
   // if allowed to do so
@@ -1198,7 +1198,7 @@ function RequestTriggerExitFromMapscreen(bExitToWhere: INT8): void {
   }
 }
 
-function AllowedToExitFromMapscreenTo(bExitToWhere: INT8): boolean {
+export function AllowedToExitFromMapscreenTo(bExitToWhere: INT8): boolean {
   Assert((bExitToWhere >= Enum144.MAP_EXIT_TO_LAPTOP) && (bExitToWhere <= Enum144.MAP_EXIT_TO_SAVE));
 
   // if already leaving, disallow any other attempts to exit
@@ -1277,7 +1277,7 @@ function AllowedToExitFromMapscreenTo(bExitToWhere: INT8): boolean {
   return true;
 }
 
-function HandleExitsFromMapScreen(): void {
+export function HandleExitsFromMapScreen(): void {
   // if going somewhere
   if (gbExitingMapScreenToWhere != -1) {
     // delay all exits by one frame...
@@ -1335,7 +1335,7 @@ function HandleExitsFromMapScreen(): void {
   }
 }
 
-function MapScreenMsgScrollDown(ubLinesDown: UINT8): void {
+export function MapScreenMsgScrollDown(ubLinesDown: UINT8): void {
   let ubNumMessages: UINT8;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
@@ -1350,7 +1350,7 @@ function MapScreenMsgScrollDown(ubLinesDown: UINT8): void {
   }
 }
 
-function MapScreenMsgScrollUp(ubLinesUp: UINT8): void {
+export function MapScreenMsgScrollUp(ubLinesUp: UINT8): void {
   let ubNumMessages: UINT8;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
@@ -1365,7 +1365,7 @@ function MapScreenMsgScrollUp(ubLinesUp: UINT8): void {
   }
 }
 
-function MoveToEndOfMapScreenMessageList(): void {
+export function MoveToEndOfMapScreenMessageList(): void {
   let ubDesiredMessageIndex: UINT8;
   let ubNumMessages: UINT8;
 
@@ -1375,7 +1375,7 @@ function MoveToEndOfMapScreenMessageList(): void {
   ChangeCurrentMapscreenMessageIndex(ubDesiredMessageIndex);
 }
 
-function ChangeCurrentMapscreenMessageIndex(ubNewMessageIndex: UINT8): void {
+export function ChangeCurrentMapscreenMessageIndex(ubNewMessageIndex: UINT8): void {
   Assert(ubNewMessageIndex + MAX_MESSAGES_ON_MAP_BOTTOM <= Math.max(MAX_MESSAGES_ON_MAP_BOTTOM, GetRangeOfMapScreenMessages()));
 
   gubFirstMapscreenMessageIndex = ubNewMessageIndex;

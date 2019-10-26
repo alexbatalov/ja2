@@ -52,7 +52,7 @@ function UpdateLightingSprite(pLight: Pointer<LIGHTEFFECT>): void {
   LightSpritePosition(pLight.value.iLight, (CenterX(pLight.value.sGridNo) / CELL_X_SIZE), (CenterY(pLight.value.sGridNo) / CELL_Y_SIZE));
 }
 
-function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
+export function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
   let pLight: Pointer<LIGHTEFFECT>;
   let iLightIndex: INT32;
   let ubDuration: UINT8 = 0;
@@ -114,7 +114,7 @@ function RemoveLightEffectFromTile(sGridNo: INT16): void {
   }
 }
 
-function DecayLightEffects(uiTime: UINT32): void {
+export function DecayLightEffects(uiTime: UINT32): void {
   let pLight: Pointer<LIGHTEFFECT>;
   let cnt: UINT32;
   let cnt2: UINT32;
@@ -173,7 +173,7 @@ function DecayLightEffects(uiTime: UINT32): void {
   }
 }
 
-function SaveLightEffectsToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveLightEffectsToSaveGameFile(hFile: HWFILE): boolean {
   /*
   UINT32	uiNumBytesWritten;
   UINT32	uiNumberOfLights=0;
@@ -217,7 +217,7 @@ function SaveLightEffectsToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): boolean {
+export function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
 
@@ -253,7 +253,7 @@ function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
+export function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let uiNumLightEffects: UINT32 = 0;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
@@ -319,7 +319,7 @@ function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
   return true;
 }
 
-function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
+export function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
   let uiCnt: UINT32 = 0;
@@ -367,7 +367,7 @@ function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   return true;
 }
 
-function ResetLightEffects(): void {
+export function ResetLightEffects(): void {
   // Clear out the old list
   memset(gLightEffectData, 0, sizeof(LIGHTEFFECT) * NUM_LIGHT_EFFECT_SLOTS);
   guiNumLightEffects = 0;

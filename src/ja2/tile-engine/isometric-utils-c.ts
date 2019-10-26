@@ -1,7 +1,7 @@
-let guiForceRefreshMousePositionCalculation: UINT32 = 0;
+export let guiForceRefreshMousePositionCalculation: UINT32 = 0;
 
 // GLOBALS
-let DirIncrementer: INT16[] /* [8] */ = [
+export let DirIncrementer: INT16[] /* [8] */ = [
   -MAPWIDTH, // N
   1 - MAPWIDTH, // NE
   1, // E
@@ -13,7 +13,7 @@ let DirIncrementer: INT16[] /* [8] */ = [
 ];
 
 // Opposite directions
-let gOppositeDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
+export let gOppositeDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   Enum245.SOUTH,
   Enum245.SOUTHWEST,
   Enum245.WEST,
@@ -24,7 +24,7 @@ let gOppositeDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   Enum245.SOUTHEAST,
 ];
 
-let gTwoCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
+export let gTwoCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   Enum245.WEST,
   Enum245.NORTHWEST,
   Enum245.NORTH,
@@ -35,7 +35,7 @@ let gTwoCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   Enum245.SOUTHWEST,
 ];
 
-let gTwoCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
+export let gTwoCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   Enum245.EAST,
   Enum245.SOUTHEAST,
   Enum245.SOUTH,
@@ -46,7 +46,7 @@ let gTwoCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   Enum245.NORTHEAST,
 ];
 
-let gOneCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
+export let gOneCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   Enum245.NORTHEAST,
   Enum245.EAST,
   Enum245.SOUTHEAST,
@@ -57,7 +57,7 @@ let gOneCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   Enum245.NORTH,
 ];
 
-let gOneCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
+export let gOneCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   Enum245.NORTHWEST,
   Enum245.NORTH,
   Enum245.NORTHEAST,
@@ -69,7 +69,7 @@ let gOneCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
 ];
 
 //														DIRECTION FACING			 DIRECTION WE WANT TO GOTO
-let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIRECTIONS] */ = [
+export let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIRECTIONS] */ = [
   // NORTH
   [
     Enum245.WEST, // EITHER
@@ -167,12 +167,12 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
   ],
 ];
 
-function FromCellToScreenCoordinates(sCellX: INT16, sCellY: INT16, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
+export function FromCellToScreenCoordinates(sCellX: INT16, sCellY: INT16, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
   psScreenX.value = (2 * sCellX) - (2 * sCellY);
   psScreenY.value = sCellX + sCellY;
 }
 
-function FromScreenToCellCoordinates(sScreenX: INT16, sScreenY: INT16, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): void {
+export function FromScreenToCellCoordinates(sScreenX: INT16, sScreenY: INT16, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): void {
   psCellX.value = ((sScreenX + (2 * sScreenY)) / 4);
   psCellY.value = ((2 * sScreenY) - sScreenX) / 4;
 }
@@ -181,7 +181,7 @@ function FromScreenToCellCoordinates(sScreenX: INT16, sScreenY: INT16, psCellX: 
 // to the screen (0,0) in a specific way, and we MUSt take that into account then
 // determining screen coords
 
-function FloatFromCellToScreenCoordinates(dCellX: FLOAT, dCellY: FLOAT, pdScreenX: Pointer<FLOAT>, pdScreenY: Pointer<FLOAT>): void {
+export function FloatFromCellToScreenCoordinates(dCellX: FLOAT, dCellY: FLOAT, pdScreenX: Pointer<FLOAT>, pdScreenY: Pointer<FLOAT>): void {
   let dScreenX: FLOAT;
   let dScreenY: FLOAT;
 
@@ -203,7 +203,7 @@ function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT, pdCe
   pdCellY.value = dCellY;
 }
 
-function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
+export function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
 
@@ -220,7 +220,7 @@ function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean
   return true;
 }
 
-function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): boolean {
+export function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
 
@@ -238,7 +238,7 @@ function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT
   return true;
 }
 
-function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
+export function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
   let sOffsetX: INT16;
   let sOffsetY: INT16;
   let sTempPosX_W: INT16;
@@ -283,7 +283,7 @@ function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>)
   return true;
 }
 
-function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
+export function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
   let sMouseX: INT16;
   let sMouseY: INT16;
 
@@ -299,7 +299,7 @@ function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer
   return true;
 }
 
-function GetMouseMapPos(psMapPos: Pointer<INT16>): boolean {
+export function GetMouseMapPos(psMapPos: Pointer<INT16>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
   /* static */ let sSameCursorPos: INT16;
@@ -329,7 +329,7 @@ function GetMouseMapPos(psMapPos: Pointer<INT16>): boolean {
   }
 }
 
-function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer<INT16>, psYPos: Pointer<INT16>): boolean {
+export function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer<INT16>, psYPos: Pointer<INT16>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sCellX: INT16;
@@ -386,7 +386,7 @@ function GetScreenXYWorldCell(sScreenX: INT16, sScreenY: INT16, psWorldCellX: Po
   (psWorldCellY.value) = (sWorldY / CELL_Y_SIZE);
 }
 
-function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16, psMapPos: Pointer<INT16>): void {
+export function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16, psMapPos: Pointer<INT16>): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
 
@@ -395,7 +395,7 @@ function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16, psMapPos: Pointer<I
   psMapPos.value = MAPROWCOLTOPOS(sWorldY, sWorldX);
 }
 
-function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT32, psWorldScreenX: Pointer<INT16>, psWorldScreenY: Pointer<INT16>): void {
+export function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT32, psWorldScreenX: Pointer<INT16>, psWorldScreenY: Pointer<INT16>): void {
   let sScreenCenterX: INT16;
   let sScreenCenterY: INT16;
   let sDistToCenterY: INT16;
@@ -417,7 +417,7 @@ function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT32, psWo
   psWorldScreenY.value = sScreenCenterY + gsCY - gsTLY;
 }
 
-function GetFromAbsoluteScreenXYWorldXY(psWorldCellX: Pointer<INT32>, psWorldCellY: Pointer<INT32>, sWorldScreenX: INT16, sWorldScreenY: INT16): void {
+export function GetFromAbsoluteScreenXYWorldXY(psWorldCellX: Pointer<INT32>, psWorldCellY: Pointer<INT32>, sWorldScreenX: INT16, sWorldScreenY: INT16): void {
   let sWorldCenterX: INT16;
   let sWorldCenterY: INT16;
   let sDistToCenterY: INT16;
@@ -441,7 +441,7 @@ function GetFromAbsoluteScreenXYWorldXY(psWorldCellX: Pointer<INT32>, psWorldCel
 
 // UTILITY FUNTIONS
 
-function OutOfBounds(sGridno: INT16, sProposedGridno: INT16): INT32 {
+export function OutOfBounds(sGridno: INT16, sProposedGridno: INT16): INT32 {
   let sMod: INT16;
   let sPropMod: INT16;
 
@@ -472,7 +472,7 @@ function OutOfBounds(sGridno: INT16, sProposedGridno: INT16): INT32 {
     return false;
 }
 
-function NewGridNo(sGridno: INT16, sDirInc: INT16): INT16 {
+export function NewGridNo(sGridno: INT16, sDirInc: INT16): INT16 {
   let sProposedGridno: INT16 = sGridno + sDirInc;
 
   // now check for out-of-bounds
@@ -483,7 +483,7 @@ function NewGridNo(sGridno: INT16, sDirInc: INT16): INT16 {
   return sProposedGridno;
 }
 
-function DirectionInc(sDirection: INT16): INT16 {
+export function DirectionInc(sDirection: INT16): INT16 {
   if ((sDirection < 0) || (sDirection > 7)) {
     //#ifdef BETAVERSION
     //   NumMessage("DirectionInc: Invalid direction received, = ",direction);
@@ -496,7 +496,7 @@ function DirectionInc(sDirection: INT16): INT16 {
   return DirIncrementer[sDirection];
 }
 
-function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>, sScreenY: Pointer<INT16>): boolean {
+export function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>, sScreenY: Pointer<INT16>): boolean {
   let sDeltaCellX: INT16;
   let sDeltaCellY: INT16;
   let sDeltaScreenX: INT16;
@@ -513,12 +513,12 @@ function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>
   return true;
 }
 
-function ConvertGridNoToXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
+export function ConvertGridNoToXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
   sYPos.value = sGridNo / WORLD_COLS;
   sXPos.value = (sGridNo - (sYPos.value * WORLD_COLS));
 }
 
-function ConvertGridNoToCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
+export function ConvertGridNoToCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
   sYPos.value = (sGridNo / WORLD_COLS);
   sXPos.value = sGridNo - (sYPos.value * WORLD_COLS);
 
@@ -526,7 +526,7 @@ function ConvertGridNoToCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Poi
   sXPos.value = (sXPos.value * CELL_X_SIZE);
 }
 
-function ConvertGridNoToCenterCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
+export function ConvertGridNoToCenterCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
   sYPos.value = (sGridNo / WORLD_COLS);
   sXPos.value = (sGridNo - (sYPos.value * WORLD_COLS));
 
@@ -534,7 +534,7 @@ function ConvertGridNoToCenterCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPo
   sXPos.value = (sXPos.value * CELL_X_SIZE) + (CELL_X_SIZE / 2);
 }
 
-function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
+export function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
   let uiDist: INT32;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -552,7 +552,7 @@ function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
   return uiDist;
 }
 
-function GetRangeInCellCoordsFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
+export function GetRangeInCellCoordsFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
   let sXPos: INT16;
   let sYPos: INT16;
   let sXPos2: INT16;
@@ -567,7 +567,7 @@ function GetRangeInCellCoordsFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): I
   return (Math.sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos))) * CELL_X_SIZE;
 }
 
-function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>): boolean {
+export function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>): boolean {
   if ((sXPos >= pRect.value.iLeft) && (sXPos <= pRect.value.iRight) && (sYPos >= pRect.value.iTop) && (sYPos <= pRect.value.iBottom)) {
     return true;
   } else {
@@ -575,7 +575,7 @@ function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>
   }
 }
 
-function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>, sXRel: Pointer<INT16>, sYRel: Pointer<INT16>): boolean {
+export function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>, sXRel: Pointer<INT16>, sYRel: Pointer<INT16>): boolean {
   if ((sXPos >= pRect.value.iLeft) && (sXPos <= pRect.value.iRight) && (sYPos >= pRect.value.iTop) && (sYPos <= pRect.value.iBottom)) {
     (sXRel.value) = pRect.value.iLeft - sXPos;
     (sYRel.value) = sYPos - pRect.value.iTop;
@@ -586,7 +586,7 @@ function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: Poin
   }
 }
 
-function PythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
+export function PythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   let sRows: INT16;
   let sCols: INT16;
   let sResult: INT16;
@@ -601,7 +601,7 @@ function PythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   return sResult;
 }
 
-function SpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
+export function SpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   let sRows: INT16;
   let sCols: INT16;
 
@@ -611,7 +611,7 @@ function SpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   return Math.max(sRows, sCols);
 }
 
-function CardinalSpacesAway(sOrigin: INT16, sDest: INT16): INT16
+export function CardinalSpacesAway(sOrigin: INT16, sDest: INT16): INT16
 // distance away, ignoring diagonals!
 {
   let sRows: INT16;
@@ -656,7 +656,7 @@ function FindNumTurnsBetweenDirs(sDir1: INT8, sDir2: INT8): INT8 {
   return sNumTurns;
 }
 
-function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
+export function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
   let fFound: boolean = false;
@@ -698,7 +698,7 @@ function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStart
   return false;
 }
 
-function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
+export function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
   let fFound: boolean = false;
@@ -737,7 +737,7 @@ function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartin
   return false;
 }
 
-function QuickestDirection(origin: INT16, dest: INT16): INT16 {
+export function QuickestDirection(origin: INT16, dest: INT16): INT16 {
   let v1: INT16;
   let v2: INT16;
 
@@ -763,7 +763,7 @@ function QuickestDirection(origin: INT16, dest: INT16): INT16 {
   }
 }
 
-function ExtQuickestDirection(origin: INT16, dest: INT16): INT16 {
+export function ExtQuickestDirection(origin: INT16, dest: INT16): INT16 {
   let v1: INT16;
   let v2: INT16;
 
@@ -790,7 +790,7 @@ function ExtQuickestDirection(origin: INT16, dest: INT16): INT16 {
 }
 
 // Returns the (center ) cell coordinates in X
-function CenterX(sGridNo: INT16): INT16 {
+export function CenterX(sGridNo: INT16): INT16 {
   let sYPos: INT16;
   let sXPos: INT16;
 
@@ -801,7 +801,7 @@ function CenterX(sGridNo: INT16): INT16 {
 }
 
 // Returns the (center ) cell coordinates in Y
-function CenterY(sGridNo: INT16): INT16 {
+export function CenterY(sGridNo: INT16): INT16 {
   let sYPos: INT16;
   let sXPos: INT16;
 
@@ -831,7 +831,7 @@ function MapY(sGridNo: INT16): INT16 {
   return sYPos;
 }
 
-function GridNoOnVisibleWorldTile(sGridNo: INT16): boolean {
+export function GridNoOnVisibleWorldTile(sGridNo: INT16): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sXMapPos: INT16;
@@ -872,7 +872,7 @@ function GridNoOnVisibleWorldTileGivenYLimits(sGridNo: INT16): boolean {
   return false;
 }
 
-function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): boolean {
+export function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): boolean {
   let bDir: INT8;
 
   // check NE, SE, SW, NW because of tilt of isometric display
@@ -888,7 +888,7 @@ function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): boolean 
   return false;
 }
 
-function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
+export function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
   let sOtherSideOfFence: INT16;
@@ -935,7 +935,7 @@ function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
 }
 
 // Simply chooses a random gridno within valid boundaries (for dropping things in unloaded sectors)
-function RandomGridNo(): INT16 {
+export function RandomGridNo(): INT16 {
   let iMapXPos: INT32;
   let iMapYPos: INT32;
   let iMapIndex: INT32;

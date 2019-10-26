@@ -1,6 +1,6 @@
 let gfShowExitGrids: boolean = false;
 
-function SetEditorItemsTaskbarMode(usNewMode: UINT16): void {
+export function SetEditorItemsTaskbarMode(usNewMode: UINT16): void {
   UnclickEditorButtons(Enum32.ITEMS_WEAPONS, Enum32.ITEMS_KEYS);
   switch (usNewMode) {
     case Enum32.ITEMS_WEAPONS:
@@ -44,7 +44,7 @@ function SetEditorItemsTaskbarMode(usNewMode: UINT16): void {
 
 const NO_EFFECT = 2;
 
-function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
+export function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
   let fNewGroup: boolean = false;
   let fNewRoofs: boolean;
   let fNewWalls: boolean;
@@ -154,7 +154,7 @@ function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
   }
 }
 
-function SetEditorTerrainTaskbarMode(usNewMode: UINT16): void {
+export function SetEditorTerrainTaskbarMode(usNewMode: UINT16): void {
   UnclickEditorButton(Enum32.TERRAIN_FGROUND_TEXTURES);
   UnclickEditorButton(Enum32.TERRAIN_BGROUND_TEXTURES);
   UnclickEditorButton(Enum32.TERRAIN_PLACE_CLIFFS);
@@ -228,7 +228,7 @@ function ShowExitGrids(): void {
   }
 }
 
-function HideExitGrids(): void {
+export function HideExitGrids(): void {
   let i: UINT16;
   let pLevelNode: Pointer<LEVELNODE>;
   if (!gfShowExitGrids)
@@ -248,7 +248,7 @@ function HideExitGrids(): void {
   }
 }
 
-function SetEditorMapInfoTaskbarMode(usNewMode: UINT16): void {
+export function SetEditorMapInfoTaskbarMode(usNewMode: UINT16): void {
   let fShowExitGrids: boolean = false;
   UnclickEditorButton(Enum32.MAPINFO_ADD_LIGHT1_SOURCE);
   UnclickEditorButton(Enum32.MAPINFO_DRAW_EXITGRIDS);
@@ -306,7 +306,7 @@ function SetEditorMapInfoTaskbarMode(usNewMode: UINT16): void {
   }
 }
 
-function SetEditorSmoothingMode(ubNewMode: UINT8): void {
+export function SetEditorSmoothingMode(ubNewMode: UINT8): void {
   UnclickEditorButtons(Enum32.MAPINFO_RADIO_NORMAL, Enum32.MAPINFO_RADIO_CAVES);
   if (iCurrentTaskbar == Enum36.TASK_BUILDINGS)
     HideEditorButtons(Enum32.BUILDING_NEW_ROOM, Enum32.BUILDING_CAVE_DRAWING);

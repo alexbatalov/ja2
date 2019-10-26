@@ -2,9 +2,9 @@ const BOX_BUTTON_WIDTH = 100;
 const BOX_BUTTON_HEIGHT = 20;
 
 // flag to say if we are showing town/mine box at all
-let fShowTownInfo: boolean = false;
+export let fShowTownInfo: boolean = false;
 
-let ghTownMineBox: INT32 = -1;
+export let ghTownMineBox: INT32 = -1;
 let TownMinePosition: SGPPoint = [ 300, 150 ];
 let TownMineDimensions: SGPRect = [ 0, 0, 240, 60 ];
 
@@ -20,7 +20,7 @@ let sTotalButtonWidth: UINT16 = 0;
 
 // extern UINT8 gubMonsterMineInfestation[];
 
-function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
+export function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
   // will display town info for a particular town
 
   // set current sector
@@ -34,7 +34,7 @@ function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
   CreateDestroyTownInfoBox();
 }
 
-function CreateDestroyTownInfoBox(): void {
+export function CreateDestroyTownInfoBox(): void {
   // create destroy pop up box for town/mine info
   /* static */ let fCreated: boolean = false;
   let pDimensions: SGPRect;

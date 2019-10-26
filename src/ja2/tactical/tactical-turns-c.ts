@@ -1,4 +1,4 @@
-function HandleRPCDescription(): void {
+export function HandleRPCDescription(): void {
   let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
@@ -66,7 +66,7 @@ function HandleRPCDescription(): void {
   }
 }
 
-function HandleTacticalEndTurn(): void {
+export function HandleTacticalEndTurn(): void {
   let cnt: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiTime: UINT32;

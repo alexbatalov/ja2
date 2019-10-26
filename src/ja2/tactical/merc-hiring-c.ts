@@ -3,10 +3,10 @@ const MIN_FLIGHT_PREP_TIME = 6;
 // ATE: Globals that dictate where the mercs will land once being hired
 // Default to Omerta
 // Saved in general saved game structure
-let gsMercArriveSectorX: INT16 = 9;
-let gsMercArriveSectorY: INT16 = 1;
+export let gsMercArriveSectorX: INT16 = 9;
+export let gsMercArriveSectorY: INT16 = 1;
 
-function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
+export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let iNewIndex: UINT8;
   let ubCount: UINT8 = 0;
@@ -181,7 +181,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   return MERC_HIRE_OK;
 }
 
-function MercArrivesCallback(ubSoldierID: UINT8): void {
+export function MercArrivesCallback(ubSoldierID: UINT8): void {
   let pMerc: Pointer<MERCPROFILESTRUCT>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiTimeOfPost: UINT32;
@@ -292,7 +292,7 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
   return;
 }
 
-function IsMercHireable(ubMercID: UINT8): boolean {
+export function IsMercHireable(ubMercID: UINT8): boolean {
   // If the merc has an .EDT file, is not away on assignment, and isnt already hired (but not arrived yet), he is not DEAD and he isnt returning home
   if ((gMercProfiles[ubMercID].bMercStatus == MERC_HAS_NO_TEXT_FILE) || (gMercProfiles[ubMercID].bMercStatus > 0) || (gMercProfiles[ubMercID].bMercStatus == MERC_HIRED_BUT_NOT_ARRIVED_YET) || (gMercProfiles[ubMercID].bMercStatus == MERC_IS_DEAD) || (gMercProfiles[ubMercID].uiDayBecomesAvailable > 0) || (gMercProfiles[ubMercID].bMercStatus == MERC_WORKING_ELSEWHERE) || (gMercProfiles[ubMercID].bMercStatus == MERC_FIRED_AS_A_POW) || (gMercProfiles[ubMercID].bMercStatus == MERC_RETURNING_HOME))
     return false;
@@ -300,21 +300,21 @@ function IsMercHireable(ubMercID: UINT8): boolean {
     return true;
 }
 
-function IsMercDead(ubMercID: UINT8): boolean {
+export function IsMercDead(ubMercID: UINT8): boolean {
   if (gMercProfiles[ubMercID].bMercStatus == MERC_IS_DEAD)
     return true;
   else
     return false;
 }
 
-function IsTheSoldierAliveAndConcious(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function IsTheSoldierAliveAndConcious(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (pSoldier.value.bLife >= CONSCIOUSNESS)
     return true;
   else
     return false;
 }
 
-function NumberOfMercsOnPlayerTeam(): UINT8 {
+export function NumberOfMercsOnPlayerTeam(): UINT8 {
   let cnt: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let bLastTeamID: INT16;
@@ -334,7 +334,7 @@ function NumberOfMercsOnPlayerTeam(): UINT8 {
   return ubCount;
 }
 
-function HandleMercArrivesQuotes(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleMercArrivesQuotes(pSoldier: Pointer<SOLDIERTYPE>): void {
   let cnt: INT8;
   let bHated: INT8;
   let bLastTeamID: INT8;
@@ -376,7 +376,7 @@ function HandleMercArrivesQuotes(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function GetMercArrivalTimeOfDay(): UINT32 {
+export function GetMercArrivalTimeOfDay(): UINT32 {
   let uiCurrHour: UINT32;
   let uiMinHour: UINT32;
 
@@ -407,7 +407,7 @@ function GetMercArrivalTimeOfDay(): UINT32 {
   }
 }
 
-function UpdateAnyInTransitMercsWithGlobalArrivalSector(): void {
+export function UpdateAnyInTransitMercsWithGlobalArrivalSector(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 

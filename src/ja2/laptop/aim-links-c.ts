@@ -40,10 +40,10 @@ let gubLinkPages: UINT8[] /* [] */ = [
 // Clicking on guys Face
 let gSelectedLinkRegion: MOUSE_REGION[] /* [AIM_LINK_NUM_LINKS] */;
 
-function GameInitAimLinks(): void {
+export function GameInitAimLinks(): void {
 }
 
-function EnterAimLinks(): boolean {
+export function EnterAimLinks(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosY: UINT16;
   let i: INT16;
@@ -78,7 +78,7 @@ function EnterAimLinks(): boolean {
   return true;
 }
 
-function ExitAimLinks(): void {
+export function ExitAimLinks(): void {
   let i: INT16;
 
   RemoveAimDefaults();
@@ -93,10 +93,10 @@ function ExitAimLinks(): void {
   ExitAimMenuBar();
 }
 
-function HandleAimLinks(): void {
+export function HandleAimLinks(): void {
 }
 
-function RenderAimLinks(): void {
+export function RenderAimLinks(): void {
   let hPixHandle: HVOBJECT;
 
   DrawAimDefaults();

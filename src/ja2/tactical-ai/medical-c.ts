@@ -71,7 +71,7 @@ function FullPatientCheck(pPatient: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function CanAutoBandage(fDoFullCheck: boolean): boolean {
+export function CanAutoBandage(fDoFullCheck: boolean): boolean {
   // returns false if we should stop being in auto-bandage mode
   let cnt: UINT8;
   let ubMedics: UINT8 = 0;
@@ -129,7 +129,7 @@ function CanAutoBandage(fDoFullCheck: boolean): boolean {
   }
 }
 
-function CanCharacterAutoBandageTeammate(pSoldier: Pointer<SOLDIERTYPE>): boolean
+export function CanCharacterAutoBandageTeammate(pSoldier: Pointer<SOLDIERTYPE>): boolean
 // can this soldier autobandage others in sector
 {
   // if the soldier isn't active or in sector, we have problems..leave
@@ -146,7 +146,7 @@ function CanCharacterAutoBandageTeammate(pSoldier: Pointer<SOLDIERTYPE>): boolea
 }
 
 // can this soldier autobandage others in sector
-function CanCharacterBeAutoBandagedByTeammate(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CanCharacterBeAutoBandagedByTeammate(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // if the soldier isn't active or in sector, we have problems..leave
   if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
     return false;
@@ -301,7 +301,7 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<bool
   }
 }
 
-function DecideAutoBandage(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function DecideAutoBandage(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bSlot: INT8;
   let fDoClimb: boolean;
 

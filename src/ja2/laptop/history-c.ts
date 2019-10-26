@@ -33,13 +33,13 @@ const PREV_BTN_X = 553;
 const BTN_Y = 53;
 
 // graphics handles
-let guiTITLE: UINT32;
+export let guiTITLE: UINT32;
 // UINT32 guiGREYFRAME;
-let guiTOP: UINT32;
+export let guiTOP: UINT32;
 // UINT32 guiMIDDLE;
 // UINT32 guiBOTTOM;
 // UINT32 guiLINE;
-let guiLONGLINE: UINT32;
+export let guiLONGLINE: UINT32;
 let guiSHADELINE: UINT32;
 // UINT32 guiVERTLINE;
 // UINT32 guiBIGBOX;
@@ -66,7 +66,7 @@ let pCurrentHistory: HistoryUnitPtr = null;
 // last page in list
 let guiLastPageInHistoryRecordsList: UINT32 = 0;
 
-function SetHistoryFact(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSectorX: INT16, sSectorY: INT16): UINT32 {
+export function SetHistoryFact(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSectorX: INT16, sSectorY: INT16): UINT32 {
   // adds History item to player's log(History List), returns unique id number of it
   // outside of the History system(the code in this .c file), this is the only function you'll ever need
   let uiId: UINT32 = 0;
@@ -103,7 +103,7 @@ function SetHistoryFact(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSec
   return uiId;
 }
 
-function AddHistoryToPlayersLog(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSectorX: INT16, sSectorY: INT16): UINT32 {
+export function AddHistoryToPlayersLog(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSectorX: INT16, sSectorY: INT16): UINT32 {
   // adds History item to player's log(History List), returns unique id number of it
   // outside of the History system(the code in this .c file), this is the only function you'll ever need
   let uiId: UINT32 = 0;
@@ -134,7 +134,7 @@ function AddHistoryToPlayersLog(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT
   return uiId;
 }
 
-function GameInitHistory(): void {
+export function GameInitHistory(): void {
   if ((FileExists(HISTORY_DATA_FILE))) {
     // unlink history file
     FileClearAttributes(HISTORY_DATA_FILE);
@@ -144,7 +144,7 @@ function GameInitHistory(): void {
   AddHistoryToPlayersLog(Enum83.HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO, 0, GetWorldTotalMin(), -1, -1);
 }
 
-function EnterHistory(): void {
+export function EnterHistory(): void {
   // load the graphics
   LoadHistory();
 
@@ -178,7 +178,7 @@ function EnterHistory(): void {
   return;
 }
 
-function ExitHistory(): void {
+export function ExitHistory(): void {
   LaptopSaveInfo.iCurrentHistoryPage = iCurrentHistoryPage;
 
   // not in History system anymore
@@ -198,13 +198,13 @@ function ExitHistory(): void {
   return;
 }
 
-function HandleHistory(): void {
+export function HandleHistory(): void {
   // DEF 2/5/99 Dont need to update EVERY FRAME!!!!
   // check and update status of buttons
   //  SetHistoryButtonStates( );
 }
 
-function RenderHistory(): void {
+export function RenderHistory(): void {
   // render the background to the display
   RenderHistoryBackGround();
 
@@ -579,7 +579,7 @@ function OpenAndWriteHistoryFile(): boolean {
   return true;
 }
 
-function ClearHistoryList(): void {
+export function ClearHistoryList(): void {
   // remove each element from list of transactions
 
   let pHistoryList: HistoryUnitPtr = pHistoryListHead;
@@ -1315,7 +1315,7 @@ function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): boolean {
   return true;
 }
 
-function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void {
+export function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void {
   // run through history list
   let iOldHistoryPage: INT32 = iCurrentHistoryPage;
   let pList: HistoryUnitPtr = pHistoryListHead;
@@ -1357,7 +1357,7 @@ function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void
   return;
 }
 
-function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
+export function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   // run through history list
   let iOldHistoryPage: INT32 = iCurrentHistoryPage;
   let pList: HistoryUnitPtr = pHistoryListHead;

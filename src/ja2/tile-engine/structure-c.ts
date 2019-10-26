@@ -8,7 +8,7 @@
  *    starting with the deletion of a MULTI SPECIAL structure
  */
 
-let AtHeight: UINT8[] /* [PROFILE_Z_SIZE] */ = [
+export let AtHeight: UINT8[] /* [PROFILE_Z_SIZE] */ = [
   0x01,
   0x02,
   0x04,
@@ -70,7 +70,7 @@ index 23, really heavy metal
 index 24, indestructable stone
 index 25, indestructable metal
 */
-let gubMaterialArmour: UINT8[] /* [] */ = [
+export let gubMaterialArmour: UINT8[] /* [] */ = [
   // note: must increase; r.c. should block *AP* 7.62mm rounds
   0, // nothing
   25, // dry timber; wood wall +1/2
@@ -156,7 +156,7 @@ function FreeStructureFileRef(pFileRef: Pointer<STRUCTURE_FILE_REF>): void {
   MemFree(pFileRef);
 }
 
-function FreeAllStructureFiles(): void {
+export function FreeAllStructureFiles(): void {
   // Frees all of the structure database!
   let pFileRef: Pointer<STRUCTURE_FILE_REF>;
   let pNextRef: Pointer<STRUCTURE_FILE_REF>;
@@ -169,7 +169,7 @@ function FreeAllStructureFiles(): void {
   }
 }
 
-function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): boolean {
+export function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): boolean {
   CHECKF(pStructureFile);
 
   // unlink the file ref
@@ -342,7 +342,7 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
   return true;
 }
 
-function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
+export function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
   // NB should be passed in expected number of structures so we can check equality
   let uiDataSize: UINT32 = 0;
   let fOk: boolean;
@@ -611,7 +611,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
   return true;
 }
 
-function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16, fIgnorePeople: boolean): boolean {
+export function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16, fIgnorePeople: boolean): boolean {
   let ubLoop: UINT8;
   let sCubeOffset: INT16;
 
@@ -645,7 +645,7 @@ function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDB
   return true;
 }
 
-function OkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16): boolean {
+export function OkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16): boolean {
   return InternalOkayToAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, sExclusionID, (sExclusionID == IGNORE_PEOPLE_STRUCTURE_ID));
 }
 
@@ -807,7 +807,7 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
   return pBaseStructure;
 }
 
-function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelN: PTR): boolean {
+export function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelN: PTR): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = InternalAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, pLevelN);
@@ -852,7 +852,7 @@ function DeleteStructureFromTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: 
   MemFree(pStructure);
 }
 
-function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): boolean {
+export function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): boolean {
   // removes all of the STRUCTURE elements for a structure from the world
   let pBaseMapElement: Pointer<MAP_ELEMENT>;
   let pBaseStructure: Pointer<STRUCTURE>;
@@ -991,19 +991,19 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
   return pNewBaseStructure;
 }
 
-function SwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
+export function SwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   return InternalSwapStructureForPartner(sGridNo, pStructure, true, false);
 }
 
-function SwapStructureForPartnerWithoutTriggeringSwitches(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
+export function SwapStructureForPartnerWithoutTriggeringSwitches(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   return InternalSwapStructureForPartner(sGridNo, pStructure, false, false);
 }
 
-function SwapStructureForPartnerAndStoreChangeInMap(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
+export function SwapStructureForPartnerAndStoreChangeInMap(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   return InternalSwapStructureForPartner(sGridNo, pStructure, true, true);
 }
 
-function FindStructure(sGridNo: INT16, fFlags: UINT32): Pointer<STRUCTURE> {
+export function FindStructure(sGridNo: INT16, fFlags: UINT32): Pointer<STRUCTURE> {
   // finds a structure that matches any of the given flags
   let pCurrent: Pointer<STRUCTURE>;
 
@@ -1017,7 +1017,7 @@ function FindStructure(sGridNo: INT16, fFlags: UINT32): Pointer<STRUCTURE> {
   return null;
 }
 
-function FindNextStructure(pStructure: Pointer<STRUCTURE>, fFlags: UINT32): Pointer<STRUCTURE> {
+export function FindNextStructure(pStructure: Pointer<STRUCTURE>, fFlags: UINT32): Pointer<STRUCTURE> {
   let pCurrent: Pointer<STRUCTURE>;
 
   CHECKF(pStructure);
@@ -1031,7 +1031,7 @@ function FindNextStructure(pStructure: Pointer<STRUCTURE>, fFlags: UINT32): Poin
   return null;
 }
 
-function FindStructureByID(sGridNo: INT16, usStructureID: UINT16): Pointer<STRUCTURE> {
+export function FindStructureByID(sGridNo: INT16, usStructureID: UINT16): Pointer<STRUCTURE> {
   // finds a structure that matches any of the given flags
   let pCurrent: Pointer<STRUCTURE>;
 
@@ -1045,7 +1045,7 @@ function FindStructureByID(sGridNo: INT16, usStructureID: UINT16): Pointer<STRUC
   return null;
 }
 
-function FindBaseStructure(pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
+export function FindBaseStructure(pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   // finds the base structure for any structure
   CHECKF(pStructure);
   if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
@@ -1076,7 +1076,7 @@ function GetBaseTile(pStructure: Pointer<STRUCTURE>): INT16 {
   }
 }
 
-function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
+export function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
   // return the height of an object from 1-4
   let ubLoopX: UINT8;
   let ubLoopY: UINT8;
@@ -1119,7 +1119,7 @@ function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
   return bGreatestHeight + 1;
 }
 
-function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: boolean): INT8 {
+export function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: boolean): INT8 {
   let pCurrent: Pointer<STRUCTURE>;
   let iHeight: INT8;
   let iTallest: INT8 = 0;
@@ -1143,7 +1143,7 @@ function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: boolean): INT8 {
   return iTallest;
 }
 
-function GetStructureTargetHeight(sGridNo: INT16, fOnRoof: boolean): INT8 {
+export function GetStructureTargetHeight(sGridNo: INT16, fOnRoof: boolean): INT8 {
   let pCurrent: Pointer<STRUCTURE>;
   let iHeight: INT8;
   let iTallest: INT8 = 0;
@@ -1180,7 +1180,7 @@ function GetStructureTargetHeight(sGridNo: INT16, fOnRoof: boolean): INT8 {
   return iTallest;
 }
 
-function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
+export function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
   // return the bottom level of an object, from 1-4
   let ubLoopX: UINT8;
   let ubLoopY: UINT8;
@@ -1214,7 +1214,7 @@ function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
   return bLowestHeight + 1;
 }
 
-function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UINT8>, pubLevel1: Pointer<UINT8>, pubLevel2: Pointer<UINT8>, pubLevel3: Pointer<UINT8>): boolean {
+export function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UINT8>, pubLevel1: Pointer<UINT8>, pubLevel2: Pointer<UINT8>, pubLevel3: Pointer<UINT8>): boolean {
   let ubLoopX: UINT8;
   let ubLoopY: UINT8;
   let ubShapeValue: UINT8;
@@ -1257,7 +1257,7 @@ function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UIN
   return true;
 }
 
-function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReason: UINT8, sGridNo: INT16, sX: INT16, sY: INT16, ubOwner: UINT8): boolean {
+export function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReason: UINT8, sGridNo: INT16, sX: INT16, sY: INT16, ubOwner: UINT8): boolean {
   // do damage to a structure; returns TRUE if the structure should be removed
 
   let pBase: Pointer<STRUCTURE>;
@@ -1353,7 +1353,7 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
 }
 
 const LINE_HEIGHT = 20;
-function DebugStructurePage1(): void {
+export function DebugStructurePage1(): void {
   let pStructure: Pointer<STRUCTURE>;
   let pBase: Pointer<STRUCTURE>;
   // LEVELNODE *		pLand;
@@ -1450,7 +1450,7 @@ function DebugStructurePage1(): void {
   gprintf(0, LINE_HEIGHT * 16, "Adj soldiers %d", gpWorldLevelData[sGridNo].ubAdjacentSoldierCnt);
 }
 
-function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<STRUCTURE_FILE_REF>, fFromAnimation: boolean, sSTIStartIndex: INT16): boolean {
+export function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<STRUCTURE_FILE_REF>, fFromAnimation: boolean, sSTIStartIndex: INT16): boolean {
   let uiLoop: UINT32;
   let ubLoop2: UINT8;
   let ubNumIncreasing: UINT8 = 0;
@@ -1707,7 +1707,7 @@ function FiniStructureDB(): boolean {
   return true;
 }
 
-function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bLevel: INT8, pStructHeight: Pointer<INT8>, ppTallestStructure: Pointer<Pointer<STRUCTURE>>, fWallsBlock: boolean): INT8 {
+export function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bLevel: INT8, pStructHeight: Pointer<INT8>, ppTallestStructure: Pointer<Pointer<STRUCTURE>>, fWallsBlock: boolean): INT8 {
   let pCurrent: Pointer<STRUCTURE>;
   let pStructure: Pointer<STRUCTURE>;
   let sDesiredLevel: INT16;
@@ -1837,7 +1837,7 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
   }
 }
 
-function StructureFlagToType(uiFlag: UINT32): UINT8 {
+export function StructureFlagToType(uiFlag: UINT32): UINT8 {
   let ubLoop: UINT8;
   let uiBit: UINT32 = STRUCTURE_GENERIC;
 
@@ -1857,7 +1857,7 @@ function StructureTypeToFlag(ubType: UINT8): UINT32 {
   return uiFlag;
 }
 
-function FindStructureBySavedInfo(sGridNo: INT16, ubType: UINT8, ubWallOrientation: UINT8, bLevel: INT8): Pointer<STRUCTURE> {
+export function FindStructureBySavedInfo(sGridNo: INT16, ubType: UINT8, ubWallOrientation: UINT8, bLevel: INT8): Pointer<STRUCTURE> {
   let pCurrent: Pointer<STRUCTURE>;
   let uiTypeFlag: UINT32;
 
@@ -1873,7 +1873,7 @@ function FindStructureBySavedInfo(sGridNo: INT16, ubType: UINT8, ubWallOrientati
   return null;
 }
 
-function GetStructureOpenSound(pStructure: Pointer<STRUCTURE>, fClose: boolean): UINT32 {
+export function GetStructureOpenSound(pStructure: Pointer<STRUCTURE>, fClose: boolean): UINT32 {
   let uiSoundID: UINT32;
 
   switch (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour) {

@@ -1,17 +1,17 @@
 // TERRAIN
-function BtnFgGrndCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnFgGrndCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorTerrainTaskbarMode(Enum32.TERRAIN_FGROUND_TEXTURES);
   }
 }
 
-function BtnBkGrndCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnBkGrndCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorTerrainTaskbarMode(Enum32.TERRAIN_BGROUND_TEXTURES);
   }
 }
 
-function BtnObjectCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnObjectCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorTerrainTaskbarMode(Enum32.TERRAIN_PLACE_TREES);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
@@ -20,7 +20,7 @@ function BtnObjectCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnObject1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnObject1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorTerrainTaskbarMode(Enum32.TERRAIN_PLACE_ROCKS);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
@@ -29,7 +29,7 @@ function BtnObject1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnObject2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnObject2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorTerrainTaskbarMode(Enum32.TERRAIN_PLACE_MISC);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
@@ -38,7 +38,7 @@ function BtnObject2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnBanksCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnBanksCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorTerrainTaskbarMode(Enum32.TERRAIN_PLACE_CLIFFS);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
@@ -47,7 +47,7 @@ function BtnBanksCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnRoadsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnRoadsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorTerrainTaskbarMode(Enum32.TERRAIN_PLACE_ROADS);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
@@ -56,7 +56,7 @@ function BtnRoadsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnDebrisCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnDebrisCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorTerrainTaskbarMode(Enum32.TERRAIN_PLACE_DEBRIS);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
@@ -65,32 +65,32 @@ function BtnDebrisCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnBrushCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnBrushCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_CHANGE_BRUSH;
   }
 }
 
-function BtnFillCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnFillCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorTerrainTaskbarMode(Enum32.TERRAIN_FILL_AREA);
   }
 }
 
-function BtnIncBrushDensityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnIncBrushDensityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_DENS_UP;
   }
 }
 
-function BtnDecBrushDensityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnDecBrushDensityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_DENS_DWN;
   }
 }
 
 // BUILDINGS
-function BuildingWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_PLACE_WALLS);
     iDrawMode = Enum38.DRAW_MODE_WALLS;
@@ -100,7 +100,7 @@ function BuildingWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BuildingDoorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingDoorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_PLACE_DOORS);
     iDrawMode = Enum38.DRAW_MODE_DOORS;
@@ -110,7 +110,7 @@ function BuildingDoorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BuildingWindowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingWindowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_PLACE_WINDOWS);
     iDrawMode = Enum38.DRAW_MODE_WINDOWS;
@@ -120,7 +120,7 @@ function BuildingWindowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BuildingRoofCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingRoofCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_PLACE_ROOFS);
     iDrawMode = Enum38.DRAW_MODE_ROOFS;
@@ -130,7 +130,7 @@ function BuildingRoofCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BuildingCrackWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingCrackWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_PLACE_BROKEN_WALLS);
     iDrawMode = Enum38.DRAW_MODE_BROKEN_WALLS;
@@ -140,7 +140,7 @@ function BuildingCrackWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   }
 }
 
-function BuildingFloorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingFloorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_PLACE_FLOORS);
     iDrawMode = Enum38.DRAW_MODE_FLOORS;
@@ -150,7 +150,7 @@ function BuildingFloorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BuildingToiletCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingToiletCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_PLACE_TOILETS);
     iDrawMode = Enum38.DRAW_MODE_TOILET;
@@ -160,7 +160,7 @@ function BuildingToiletCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BuildingFurnitureCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingFurnitureCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_PLACE_FURNITURE);
     iDrawMode = Enum38.DRAW_MODE_DECOR;
@@ -170,7 +170,7 @@ function BuildingFurnitureCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   }
 }
 
-function BuildingDecalCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingDecalCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_PLACE_DECALS);
     iDrawMode = Enum38.DRAW_MODE_DECALS;
@@ -180,35 +180,35 @@ function BuildingDecalCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BuildingSmartWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingSmartWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_SMART_WALLS);
     iDrawMode = Enum38.DRAW_MODE_SMART_WALLS;
   }
 }
 
-function BuildingSmartWindowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingSmartWindowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_SMART_WINDOWS);
     iDrawMode = Enum38.DRAW_MODE_SMART_WINDOWS;
   }
 }
 
-function BuildingSmartDoorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingSmartDoorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_SMART_DOORS);
     iDrawMode = Enum38.DRAW_MODE_SMART_DOORS;
   }
 }
 
-function BuildingSmartCrackWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingSmartCrackWallCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_SMART_BROKEN_WALLS);
     iDrawMode = Enum38.DRAW_MODE_SMART_BROKEN_WALLS;
   }
 }
 
-function BuildingDoorKeyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingDoorKeyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_DOORKEY);
     iDrawMode = Enum38.DRAW_MODE_DOORKEYS;
@@ -219,7 +219,7 @@ function BuildingDoorKeyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function BuildingNewRoomCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingNewRoomCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_NEW_ROOM);
     gusSelectionType = gusSavedBuildingSelectionType;
@@ -232,7 +232,7 @@ function BuildingNewRoomCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function BuildingNewRoofCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingNewRoofCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_NEW_ROOF);
     iDrawMode = Enum38.DRAW_MODE_NEWROOF;
@@ -243,7 +243,7 @@ function BuildingNewRoofCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function BuildingCaveDrawingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingCaveDrawingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_CAVE_DRAWING);
     gusSelectionType = gusSavedBuildingSelectionType;
@@ -251,7 +251,7 @@ function BuildingCaveDrawingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function BuildingSawRoomCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingSawRoomCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_SAW_ROOM);
     gusSelectionType = gusSavedBuildingSelectionType;
@@ -259,28 +259,28 @@ function BuildingSawRoomCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function BuildingKillBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingKillBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_KILL_BUILDING);
     iDrawMode = Enum38.DRAW_MODE_KILL_BUILDING;
   }
 }
 
-function BuildingCopyBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingCopyBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_COPY_BUILDING);
     iDrawMode = Enum38.DRAW_MODE_COPY_BUILDING;
   }
 }
 
-function BuildingMoveBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingMoveBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_MOVE_BUILDING);
     iDrawMode = Enum38.DRAW_MODE_MOVE_BUILDING;
   }
 }
 
-function BuildingDrawRoomNumCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingDrawRoomNumCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_DRAW_ROOMNUM);
     iDrawMode = Enum38.DRAW_MODE_ROOMNUM;
@@ -288,14 +288,14 @@ function BuildingDrawRoomNumCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function BuildingEraseRoomNumCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingEraseRoomNumCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SetEditorBuildingTaskbarMode(Enum32.BUILDING_ERASE_ROOMNUM);
     iDrawMode = Enum38.DRAW_MODE_ROOMNUM + Enum38.DRAW_MODE_ERASE;
   }
 }
 
-function BuildingToggleRoofViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingToggleRoofViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fBuildingShowRoofs ^= 1) {
       ClickEditorButton(Enum32.BUILDING_TOGGLE_ROOF_VIEW);
@@ -308,7 +308,7 @@ function BuildingToggleRoofViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function BuildingToggleWallViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingToggleWallViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fBuildingShowWalls ^= 1) {
       ClickEditorButton(Enum32.BUILDING_TOGGLE_WALL_VIEW);
@@ -321,7 +321,7 @@ function BuildingToggleWallViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function BuildingToggleInfoViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BuildingToggleInfoViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fBuildingShowRoomInfo ^= 1) {
       ClickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
@@ -333,7 +333,7 @@ function BuildingToggleInfoViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 }
 
 // MAPINFO
-function BtnFakeLightCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnFakeLightCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
@@ -344,12 +344,12 @@ function BtnFakeLightCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnDrawLightsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnDrawLightsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorMapInfoTaskbarMode(Enum32.MAPINFO_ADD_LIGHT1_SOURCE);
 }
 
-function MapInfoDrawExitGridCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MapInfoDrawExitGridCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorMapInfoTaskbarMode(Enum32.MAPINFO_DRAW_EXITGRIDS);
   else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
@@ -358,7 +358,7 @@ function MapInfoDrawExitGridCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function MapInfoEntryPointsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MapInfoEntryPointsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP | MSYS_CALLBACK_REASON_RBUTTON_UP)) {
     let x: INT16;
     let sGridNo: INT16;
@@ -396,38 +396,38 @@ function MapInfoEntryPointsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   }
 }
 
-function MapInfoNormalRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MapInfoNormalRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorMapInfoTaskbarMode(Enum32.MAPINFO_RADIO_NORMAL);
 }
 
-function MapInfoBasementRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MapInfoBasementRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorMapInfoTaskbarMode(Enum32.MAPINFO_RADIO_BASEMENT);
 }
 
-function MapInfoCavesRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MapInfoCavesRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorMapInfoTaskbarMode(Enum32.MAPINFO_RADIO_CAVES);
 }
 
-function MapInfoPrimeTimeRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MapInfoPrimeTimeRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     ChangeLightDefault(Enum39.PRIMETIME_LIGHT);
 }
 
-function MapInfoNightTimeRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MapInfoNightTimeRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     ChangeLightDefault(Enum39.NIGHTTIME_LIGHT);
 }
 
-function MapInfo24HourTimeRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MapInfo24HourTimeRadioCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     ChangeLightDefault(Enum39.ALWAYSON_LIGHT);
 }
 
 // OPTIONS
-function BtnNewMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnNewMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_NEW_MAP;
     gfPendingBasement = false;
@@ -435,7 +435,7 @@ function BtnNewMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnNewBasementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnNewBasementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_NEW_MAP;
     gfPendingBasement = true;
@@ -443,7 +443,7 @@ function BtnNewBasementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnNewCavesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnNewCavesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_NEW_MAP;
     gfPendingBasement = false;
@@ -451,95 +451,95 @@ function BtnNewCavesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnSaveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnSaveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_SAVE;
   }
 }
 
-function BtnLoadCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnLoadCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_LOAD;
   }
 }
 
-function BtnChangeTilesetCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnChangeTilesetCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
     iEditorToolbarState = Enum35.TBAR_MODE_CHANGE_TILESET;
   }
 }
 
-function BtnCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_EXIT_EDIT;
   }
 }
 
-function BtnQuitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnQuitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_QUIT_GAME;
   }
 }
 
 // ITEMS
-function MouseMovedInItemsRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function MouseMovedInItemsRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   HandleItemsPanel(gusMouseXPos, gusMouseYPos, Enum44.GUI_MOVE_EVENT);
 }
 
-function MouseClickedInItemsRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function MouseClickedInItemsRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     HandleItemsPanel(gusMouseXPos, gusMouseYPos, Enum44.GUI_LCLICK_EVENT);
   else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP)
     HandleItemsPanel(gusMouseXPos, gusMouseYPos, Enum44.GUI_RCLICK_EVENT);
 }
 
-function ItemsWeaponsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsWeaponsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorItemsTaskbarMode(Enum32.ITEMS_WEAPONS);
 }
 
-function ItemsAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorItemsTaskbarMode(Enum32.ITEMS_AMMO);
 }
 
-function ItemsArmourCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsArmourCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorItemsTaskbarMode(Enum32.ITEMS_ARMOUR);
 }
 
-function ItemsExplosivesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsExplosivesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorItemsTaskbarMode(Enum32.ITEMS_EXPLOSIVES);
 }
 
-function ItemsEquipment1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsEquipment1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorItemsTaskbarMode(Enum32.ITEMS_EQUIPMENT1);
 }
 
-function ItemsEquipment2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsEquipment2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorItemsTaskbarMode(Enum32.ITEMS_EQUIPMENT2);
 }
 
-function ItemsEquipment3Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsEquipment3Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorItemsTaskbarMode(Enum32.ITEMS_EQUIPMENT3);
 }
 
-function ItemsTriggersCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsTriggersCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorItemsTaskbarMode(Enum32.ITEMS_TRIGGERS);
 }
 
-function ItemsKeysCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsKeysCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetEditorItemsTaskbarMode(Enum32.ITEMS_KEYS);
 }
 
-function ItemsLeftScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsLeftScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderTaskbar = true;
     eInfo.sScrollIndex--;
@@ -550,7 +550,7 @@ function ItemsLeftScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function ItemsRightScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemsRightScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderTaskbar = true;
     eInfo.sScrollIndex++;
@@ -561,42 +561,42 @@ function ItemsRightScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 }
 
 // MERCS
-function MercsTogglePlayers(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsTogglePlayers(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfShowPlayers = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(OUR_TEAM, gfShowCivilians);
   }
 }
 
-function MercsToggleEnemies(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsToggleEnemies(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfShowEnemies = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(ENEMY_TEAM, gfShowEnemies);
   }
 }
 
-function MercsToggleCreatures(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsToggleCreatures(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfShowCreatures = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(CREATURE_TEAM, gfShowCreatures);
   }
 }
 
-function MercsToggleRebels(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsToggleRebels(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfShowRebels = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(MILITIA_TEAM, gfShowRebels);
   }
 }
 
-function MercsToggleCivilians(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsToggleCivilians(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfShowCivilians = btn.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
     SetMercTeamVisibility(CIV_TEAM, gfShowCivilians);
   }
 }
 
-function MercsPlayerTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsPlayerTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ClickEditorButton(Enum32.MERCS_PLAYER);
     UnclickEditorButton(Enum32.MERCS_ENEMY);
@@ -608,7 +608,7 @@ function MercsPlayerTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function MercsEnemyTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsEnemyTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UnclickEditorButton(Enum32.MERCS_PLAYER);
     ClickEditorButton(Enum32.MERCS_ENEMY);
@@ -622,7 +622,7 @@ function MercsEnemyTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function MercsCreatureTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsCreatureTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UnclickEditorButton(Enum32.MERCS_PLAYER);
     UnclickEditorButton(Enum32.MERCS_ENEMY);
@@ -636,7 +636,7 @@ function MercsCreatureTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   }
 }
 
-function MercsRebelTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsRebelTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UnclickEditorButton(Enum32.MERCS_PLAYER);
     UnclickEditorButton(Enum32.MERCS_ENEMY);
@@ -650,7 +650,7 @@ function MercsRebelTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function MercsCivilianTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsCivilianTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UnclickEditorButton(Enum32.MERCS_PLAYER);
     UnclickEditorButton(Enum32.MERCS_ENEMY);
@@ -664,20 +664,20 @@ function MercsCivilianTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   }
 }
 
-function MercsNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     IndicateSelectedMerc(Enum43.SELECT_NEXT_MERC);
   }
 }
 
-function MercsDeleteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsDeleteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DeleteSelectedMerc();
     SetMercEditingMode(Enum42.MERC_TEAMMODE);
   }
 }
 
-function MercsInventorySlotCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsInventorySlotCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let uiSlot: INT32;
     uiSlot = MSYS_GetBtnUserData(btn, 0);
@@ -688,7 +688,7 @@ function MercsInventorySlotCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   }
 }
 
-function MercsSetEnemyColorCodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsSetEnemyColorCodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubColorCode: UINT8;
     ubColorCode = MSYS_GetBtnUserData(btn, 0);
@@ -696,42 +696,42 @@ function MercsSetEnemyColorCodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function MercsCivilianGroupCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsCivilianGroupCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
     iEditorToolbarState = Enum35.TBAR_MODE_CIVILIAN_GROUP;
   }
 }
 
-function MercsScheduleAction1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleAction1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     gubCurrentScheduleActionIndex = 0;
     InitPopupMenu(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1], Enum53.SCHEDULEACTION_POPUP, DIR_UPRIGHT);
   }
 }
 
-function MercsScheduleAction2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleAction2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     gubCurrentScheduleActionIndex = 1;
     InitPopupMenu(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION2], Enum53.SCHEDULEACTION_POPUP, DIR_UPRIGHT);
   }
 }
 
-function MercsScheduleAction3Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleAction3Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     gubCurrentScheduleActionIndex = 2;
     InitPopupMenu(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION3], Enum53.SCHEDULEACTION_POPUP, DIR_UPRIGHT);
   }
 }
 
-function MercsScheduleAction4Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleAction4Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     gubCurrentScheduleActionIndex = 3;
     InitPopupMenu(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION4], Enum53.SCHEDULEACTION_POPUP, DIR_UPRIGHT);
   }
 }
 
-function MercsScheduleToggleVariance1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleToggleVariance1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       gCurrSchedule.usFlags |= SCHEDULE_FLAGS_VARIANCE1;
@@ -740,7 +740,7 @@ function MercsScheduleToggleVariance1Callback(btn: Pointer<GUI_BUTTON>, reason: 
   }
 }
 
-function MercsScheduleToggleVariance2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleToggleVariance2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       gCurrSchedule.usFlags |= SCHEDULE_FLAGS_VARIANCE2;
@@ -749,7 +749,7 @@ function MercsScheduleToggleVariance2Callback(btn: Pointer<GUI_BUTTON>, reason: 
   }
 }
 
-function MercsScheduleToggleVariance3Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleToggleVariance3Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       gCurrSchedule.usFlags |= SCHEDULE_FLAGS_VARIANCE3;
@@ -758,7 +758,7 @@ function MercsScheduleToggleVariance3Callback(btn: Pointer<GUI_BUTTON>, reason: 
   }
 }
 
-function MercsScheduleToggleVariance4Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleToggleVariance4Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       gCurrSchedule.usFlags |= SCHEDULE_FLAGS_VARIANCE4;
@@ -767,7 +767,7 @@ function MercsScheduleToggleVariance4Callback(btn: Pointer<GUI_BUTTON>, reason: 
   }
 }
 
-function MercsScheduleData1ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleData1ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 0;
     StartScheduleAction();
@@ -777,7 +777,7 @@ function MercsScheduleData1ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function MercsScheduleData1BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleData1BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 0;
     gfUseScheduleData2 = false;
@@ -787,7 +787,7 @@ function MercsScheduleData1BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function MercsScheduleData2ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleData2ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 1;
     StartScheduleAction();
@@ -797,7 +797,7 @@ function MercsScheduleData2ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function MercsScheduleData2BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleData2BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 1;
     gfUseScheduleData2 = false;
@@ -807,7 +807,7 @@ function MercsScheduleData2BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function MercsScheduleData3ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleData3ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 2;
     StartScheduleAction();
@@ -817,7 +817,7 @@ function MercsScheduleData3ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function MercsScheduleData3BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleData3BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 2;
     gfUseScheduleData2 = false;
@@ -827,7 +827,7 @@ function MercsScheduleData3BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function MercsScheduleData4ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleData4ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 3;
     StartScheduleAction();
@@ -837,7 +837,7 @@ function MercsScheduleData4ACallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function MercsScheduleData4BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleData4BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentScheduleActionIndex = 3;
     gfUseScheduleData2 = false;
@@ -847,14 +847,14 @@ function MercsScheduleData4BCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function MercsScheduleClearCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleClearCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ClearCurrentSchedule();
     ExtractAndUpdateMercSchedule();
   }
 }
 
-function MercsDetailedPlacementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsDetailedPlacementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
     {
@@ -868,7 +868,7 @@ function MercsDetailedPlacementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function MercsPriorityExistanceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsPriorityExistanceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gpSelected) {
       if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
@@ -882,7 +882,7 @@ function MercsPriorityExistanceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function MercsHasKeysCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsHasKeysCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gpSelected) {
       if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
@@ -899,55 +899,55 @@ function MercsHasKeysCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function MercsGeneralModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsGeneralModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercEditingMode(Enum42.MERC_GENERALMODE);
 }
 
-function MercsAttributesModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsAttributesModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercEditingMode(Enum42.MERC_ATTRIBUTEMODE);
 }
 
-function MercsInventoryModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsInventoryModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercEditingMode(Enum42.MERC_INVENTORYMODE);
 }
 
-function MercsAppearanceModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsAppearanceModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercEditingMode(Enum42.MERC_APPEARANCEMODE);
 }
 
-function MercsProfileModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsProfileModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercEditingMode(Enum42.MERC_PROFILEMODE);
 }
 
-function MercsScheduleModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsScheduleModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercEditingMode(Enum42.MERC_SCHEDULEMODE);
 }
 
 // multiple orders buttons
-function MercsSetOrdersCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsSetOrdersCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercOrders(MSYS_GetBtnUserData(btn, 0));
 }
 
 // multiple attitude buttons
-function MercsSetAttitudeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsSetAttitudeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercAttitude(MSYS_GetBtnUserData(btn, 0));
 }
 
 // multiple direction buttons
-function MercsDirectionSetCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsDirectionSetCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercDirection(MSYS_GetBtnUserData(btn, 0));
 }
 
-function MercsFindSelectedMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsFindSelectedMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gsSelectedMercID == -1)
@@ -959,21 +959,21 @@ function MercsFindSelectedMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
 }
 
-function MercsSetRelativeEquipmentCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsSetRelativeEquipmentCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercRelativeEquipment(MSYS_GetBtnUserData(btn, 0));
 }
 
-function MercsSetRelativeAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsSetRelativeAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     SetMercRelativeAttributes(MSYS_GetBtnUserData(btn, 0));
 }
 
-function MouseMovedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function MouseMovedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   HandleMercInventoryPanel(reg.value.RelativeXPos, reg.value.RelativeYPos, Enum44.GUI_MOVE_EVENT);
 }
 
-function MouseClickedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function MouseClickedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     HandleMercInventoryPanel(reg.value.RelativeXPos, reg.value.RelativeYPos, Enum44.GUI_LCLICK_EVENT);
   else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP)
@@ -981,13 +981,13 @@ function MouseClickedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 }
 
 // VARIOUS
-function BtnUndoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnUndoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditorToolbarState = Enum35.TBAR_MODE_UNDO;
   }
 }
 
-function BtnEraseCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnEraseCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (iDrawMode >= Enum38.DRAW_MODE_ERASE)
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
@@ -998,7 +998,7 @@ function BtnEraseCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 // ITEM STATS
-function ItemStatsToggleHideCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemStatsToggleHideCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       ExecuteItemStatsCmd(Enum48.ITEMSTATS_HIDE);
@@ -1007,7 +1007,7 @@ function ItemStatsToggleHideCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function ItemStatsDeleteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function ItemStatsDeleteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     ExecuteItemStatsCmd(Enum48.ITEMSTATS_DELETE);
 }

@@ -1,6 +1,6 @@
 // Use these values when specifically replacing a wall with new type.
 // Wall tile types
-const enum Enum60 {
+export const enum Enum60 {
   INTERIOR_L, // interior wall with a top left orientation
   INTERIOR_R, // interior wall with a top right orientation
   EXTERIOR_L, // exterior wall with a top left orientation
@@ -17,7 +17,7 @@ const enum Enum60 {
 }
 
 // Use these values when passing a ubWallPiece to BuildWallPieces.
-const enum Enum61 {
+export const enum Enum61 {
   NO_WALLS,
   INTERIOR_TOP,
   INTERIOR_BOTTOM,

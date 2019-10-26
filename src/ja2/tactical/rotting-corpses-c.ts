@@ -135,7 +135,7 @@ let zNoBloodCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = [
   "ANIMS\\CORPSES\\S_EXPLD.STI",
 ];
 
-let gb4DirectionsFrom8: UINT8[] /* [8] */ = [
+export let gb4DirectionsFrom8: UINT8[] /* [8] */ = [
   7, // NORTH
   0, // NE
   0, // E
@@ -281,8 +281,8 @@ let gDecapitatedCorpse: INT8[] /* [NUM_CORPSES] */ = [
   0,
 ];
 
-let gRottingCorpse: ROTTING_CORPSE[] /* [MAX_ROTTING_CORPSES] */;
-let giNumRottingCorpse: INT32 = 0;
+export let gRottingCorpse: ROTTING_CORPSE[] /* [MAX_ROTTING_CORPSES] */;
+export let giNumRottingCorpse: INT32 = 0;
 
 function GetFreeRottingCorpse(): INT32 {
   let iCount: INT32;
@@ -311,7 +311,7 @@ function RecountRottingCorpses(): void {
   }
 }
 
-function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fForImage: boolean): UINT16 {
+export function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fForImage: boolean): UINT16 {
   let bDirection: INT8;
 
   switch (pCorpseDef.value.ubType) {
@@ -361,7 +361,7 @@ function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fF
   return bDirection;
 }
 
-function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32 {
+export function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32 {
   let iIndex: INT32;
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let AniParams: ANITILE_PARAMS;
@@ -542,7 +542,7 @@ function FreeCorpsePalettes(pCorpse: Pointer<ROTTING_CORPSE>): void {
   }
 }
 
-function RemoveCorpses(): void {
+export function RemoveCorpses(): void {
   let iCount: INT32;
 
   for (iCount = 0; iCount < giNumRottingCorpse; iCount++) {
@@ -613,7 +613,7 @@ function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): boolean {
   return true;
 }
 
-function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: boolean, fCheckForLOS: boolean): boolean {
+export function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: boolean, fCheckForLOS: boolean): boolean {
   let Corpse: ROTTING_CORPSE_DEFINITION;
   let ubType: UINT8;
   let cnt: INT32;
@@ -773,7 +773,7 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: bool
   return true;
 }
 
-function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let uiRange: INT32;
   let uiLowestRange: INT32 = 999999;
   let sLowestGridNo: INT16 = NOWHERE;
@@ -855,7 +855,7 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
   }
 }
 
-function HandleCrowLeave(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleCrowLeave(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // Check if this crow is still referencing the same corpse...
@@ -873,7 +873,7 @@ function HandleCrowLeave(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function HandleCrowFlyAway(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleCrowFlyAway(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubDirection: UINT8;
   let sGridNo: INT16;
 
@@ -886,7 +886,7 @@ function HandleCrowFlyAway(pSoldier: Pointer<SOLDIERTYPE>): void {
   SendGetNewSoldierPathEvent(pSoldier, sGridNo, pSoldier.value.usUIMovementMode);
 }
 
-function HandleRottingCorpses(): void {
+export function HandleRottingCorpses(): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let bNumCrows: INT8 = 0;
   let uiChosenCorpseID: UINT32;
@@ -1065,7 +1065,7 @@ function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function RebuildAllCorpseShadeTables(): void {
+export function RebuildAllCorpseShadeTables(): void {
   let cnt: INT32;
   let pCorpse: Pointer<ROTTING_CORPSE>;
 
@@ -1138,10 +1138,10 @@ function FindCorpseBasedOnStructure(sGridNo: INT16, pStructure: Pointer<STRUCTUR
   return pCorpse;
 }
 
-function CorpseHit(sGridNo: INT16, usStructureID: UINT16): void {
+export function CorpseHit(sGridNo: INT16, usStructureID: UINT16): void {
 }
 
-function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
+export function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
   let pStructure: Pointer<STRUCTURE>;
   let pBaseStructure: Pointer<STRUCTURE>;
   let pCorpse: Pointer<ROTTING_CORPSE> = null;
@@ -1196,7 +1196,7 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
   PlayJA2Sample((Enum330.BODY_EXPLODE_1), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 }
 
-function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINITION>, ubRadius: INT8): INT16 {
+export function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINITION>, ubRadius: INT8): INT16 {
   let sSweetGridNo: INT16;
   let sTop: INT16;
   let sBottom: INT16;
@@ -1317,7 +1317,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
   return NOWHERE;
 }
 
-function IsValidDecapitationCorpse(pCorpse: Pointer<ROTTING_CORPSE>): boolean {
+export function IsValidDecapitationCorpse(pCorpse: Pointer<ROTTING_CORPSE>): boolean {
   if (pCorpse.value.def.fHeadTaken) {
     return false;
   }
@@ -1325,7 +1325,7 @@ function IsValidDecapitationCorpse(pCorpse: Pointer<ROTTING_CORPSE>): boolean {
   return gbCorpseValidForDecapitation[pCorpse.value.def.ubType];
 }
 
-function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING_CORPSE> {
+export function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING_CORPSE> {
   let pStructure: Pointer<STRUCTURE>;
   let pBaseStructure: Pointer<STRUCTURE>;
   let sBaseGridNo: INT16;
@@ -1347,7 +1347,7 @@ function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING_CORPSE
   return null;
 }
 
-function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
+export function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   let Object: OBJECTTYPE;
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let CorpseDef: ROTTING_CORPSE_DEFINITION;
@@ -1413,7 +1413,7 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
   }
 }
 
-function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let bObjSlot: INT8;
   let Object: OBJECTTYPE;
@@ -1447,7 +1447,7 @@ function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iInvSlot: INT32): void {
+export function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iInvSlot: INT32): void {
   let pObj: Pointer<OBJECTTYPE>;
 
   Assert(pSoldier);
@@ -1467,7 +1467,7 @@ function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iI
   }
 }
 
-function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: UINT8): void {
+export function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: UINT8): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let bToleranceThreshold: INT8 = 0;
   let cnt: INT32;
@@ -1518,7 +1518,7 @@ function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGri
   }
 }
 
-function GetGridNoOfCorpseGivenProfileID(ubProfileID: UINT8): INT16 {
+export function GetGridNoOfCorpseGivenProfileID(ubProfileID: UINT8): INT16 {
   let cnt: INT32;
   let pCorpse: Pointer<ROTTING_CORPSE>;
 
@@ -1536,7 +1536,7 @@ function GetGridNoOfCorpseGivenProfileID(ubProfileID: UINT8): INT16 {
   return NOWHERE;
 }
 
-function DecayRottingCorpseAIWarnings(): void {
+export function DecayRottingCorpseAIWarnings(): void {
   let cnt: INT32;
   let pCorpse: Pointer<ROTTING_CORPSE>;
 
@@ -1549,7 +1549,7 @@ function DecayRottingCorpseAIWarnings(): void {
   }
 }
 
-function GetNearestRottingCorpseAIWarning(sGridNo: INT16): UINT8 {
+export function GetNearestRottingCorpseAIWarning(sGridNo: INT16): UINT8 {
   let cnt: INT32;
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let ubHighestWarning: UINT8 = 0;

@@ -1,5 +1,5 @@
 // give pSoldier usNumChances to improve ubStat.  If it's from training, it doesn't count towards experience level gain
-function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
+export function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
   Assert(pSoldier != null);
   Assert(pSoldier.value.bActive);
 
@@ -797,7 +797,7 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
   return;
 }
 
-function HandleAnyStatChangesAfterAttack(): void {
+export function HandleAnyStatChangesAfterAttack(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -906,7 +906,7 @@ function SubpointsPerPoint(ubStat: UINT8, bExpLevel: INT8): UINT16 {
 }
 
 // handles stat changes for mercs not currently working for the player
-function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): void {
+export function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): void {
   let ubNumStats: UINT8;
   let ubStat: UINT8;
   let usNumChances: UINT16;
@@ -953,7 +953,7 @@ function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): voi
 }
 
 // handles possible death of mercs not currently working for the player
-function HandleUnhiredMercDeaths(iProfileID: INT32): void {
+export function HandleUnhiredMercDeaths(iProfileID: INT32): void {
   let ubMaxDeaths: UINT8;
   let sChance: INT16;
   let pProfile: Pointer<MERCPROFILESTRUCT> = addressof(gMercProfiles[iProfileID]);
@@ -1028,7 +1028,7 @@ const PROGRESS_PORTION_CONTROL = 25;
 const PROGRESS_PORTION_INCOME = 50;
 
 // returns a number between 0-100, this is an estimate of how far a player has progressed through the game
-function CurrentPlayerProgressPercentage(): UINT8 {
+export function CurrentPlayerProgressPercentage(): UINT8 {
   let uiCurrentIncome: UINT32;
   let uiPossibleIncome: UINT32;
   let ubCurrentProgress: UINT8;
@@ -1096,7 +1096,7 @@ function CurrentPlayerProgressPercentage(): UINT8 {
   return ubCurrentProgress;
 }
 
-function HighestPlayerProgressPercentage(): UINT8 {
+export function HighestPlayerProgressPercentage(): UINT8 {
   if (gfEditMode)
     return 0;
 
@@ -1105,7 +1105,7 @@ function HighestPlayerProgressPercentage(): UINT8 {
 
 // monitors the highest level of progress that player has achieved so far (checking hourly),
 // as opposed to his immediate situation (which may be worse if he's suffered a setback).
-function HourlyProgressUpdate(): void {
+export function HourlyProgressUpdate(): void {
   let ubCurrentProgress: UINT8;
 
   ubCurrentProgress = CurrentPlayerProgressPercentage();
@@ -1137,7 +1137,7 @@ function HourlyProgressUpdate(): void {
   }
 }
 
-function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
+export function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
   let usXPs: UINT16 = 0;
   let ubGuynum: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1170,7 +1170,7 @@ function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
   }
 }
 
-function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: boolean, sPtsChanged: INT16, ubStat: UINT8): void {
+export function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: boolean, sPtsChanged: INT16, ubStat: UINT8): void {
   let ubStringIndex: UINT8;
 
   Assert(sPtsChanged != 0);
@@ -1219,7 +1219,7 @@ function CalcImportantSectorControl(): UINT8 {
   return ubSectorControlPts;
 }
 
-function MERCMercWentUpALevelSendEmail(ubMercMercIdValue: UINT8): void {
+export function MERCMercWentUpALevelSendEmail(ubMercMercIdValue: UINT8): void {
   let ubEmailOffset: UINT8 = 0;
 
   ubEmailOffset = MERC_UP_LEVEL_BIFF + MERC_UP_LEVEL_LENGTH_BIFF * (ubMercMercIdValue);

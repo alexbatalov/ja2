@@ -9,7 +9,7 @@ const LOOSE_CURSOR_DELAY = 300;
 /* static */ let guiLooseCursorID: UINT32 = 0;
 /* static */ let guiLooseCursorTimeOfLastUpdate: UINT32 = 0;
 
-let gUICursors: UICursor[] /* [NUM_UI_CURSORS] */ = [
+export let gUICursors: UICursor[] /* [NUM_UI_CURSORS] */ = [
   [ Enum210.NO_UICURSOR, 0, 0, 0 ],
   [ Enum210.NORMAL_FREEUICURSOR, UICURSOR_FREEFLOWING, Enum317.CURSOR_NORMAL, 0 ],
   [ Enum210.NORMAL_SNAPUICURSOR, UICURSOR_SNAPPING, 0, 0 ],
@@ -179,18 +179,18 @@ let gUICursors: UICursor[] /* [NUM_UI_CURSORS] */ = [
 
 let guiCurUICursor: UINT32 = Enum210.NO_UICURSOR;
 let guiOldUICursor: UINT32 = Enum210.NO_UICURSOR;
-let gusCurMousePos: UINT16;
+export let gusCurMousePos: UINT16;
 let gusTargetDropPos: UINT16;
 let gfTargetDropPos: boolean = false;
 
-function SetUICursor(uiNewCursor: UINT32): boolean {
+export function SetUICursor(uiNewCursor: UINT32): boolean {
   guiOldUICursor = guiCurUICursor;
   guiCurUICursor = uiNewCursor;
 
   return true;
 }
 
-function DrawUICursor(): boolean {
+export function DrawUICursor(): boolean {
   let usMapPos: UINT16;
   /* static */ let fHideCursor: boolean = false;
   let pNode: Pointer<LEVELNODE>;
@@ -358,7 +358,7 @@ function DrawUICursor(): boolean {
   return true;
 }
 
-function HideUICursor(): boolean {
+export function HideUICursor(): boolean {
   HandleLooseCursorHide();
 
   // OK, WE OVERRIDE HERE CURSOR DRAWING FOR THINGS LIKE
@@ -580,7 +580,7 @@ function HandleLooseCursorHide(): void {
   }
 }
 
-function GetSnapCursorIndex(usAdditionalData: UINT16): UINT16 {
+export function GetSnapCursorIndex(usAdditionalData: UINT16): UINT16 {
   // OK, this function will get the 'true' index for drawing the cursor....
   if (gGameSettings.fOptions[Enum8.TOPTION_3D_CURSOR]) {
     switch (usAdditionalData) {

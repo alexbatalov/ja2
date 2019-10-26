@@ -1,5 +1,5 @@
 // Merc editing modes.  These are used to determine which buttons to show and hide.
-const enum Enum42 {
+export const enum Enum42 {
   MERC_NOMODE, // used for shutting down mercs tab, to extract any changed information
 
   MERC_GETITEMMODE, // when selecting a specific piece of inventory from inventorymode
@@ -15,31 +15,31 @@ const enum Enum42 {
   MERC_SCHEDULEMODE, // specifying a schedule for that particular individual
 }
 
-const EDIT_NUM_COLORS = 4;
-const EDIT_COLOR_HEAD = 0;
-const EDIT_COLOR_PANTS = 1;
-const EDIT_COLOR_SKIN = 2;
-const EDIT_COLOR_VEST = 3;
-const EDIT_MERC_NONE = 0;
-const EDIT_MERC_DEC_STAT = 1;
-const EDIT_MERC_INC_STAT = 2;
-const EDIT_MERC_PREV_ORDER = 3;
-const EDIT_MERC_NEXT_ORDER = 4;
-const EDIT_MERC_PREV_ATT = 5;
-const EDIT_MERC_NEXT_ATT = 6;
-const EDIT_MERC_SET_DIR = 7;
-const EDIT_MERC_FIND = 8;
-const EDIT_MERC_DONE = 9;
-const EDIT_MERC_TO_COLOR = 10;
-const EDIT_MERC_TO_STATS = 11;
-const EDIT_MERC_PREV_COLOR = 12;
-const EDIT_MERC_NEXT_COLOR = 13;
+export const EDIT_NUM_COLORS = 4;
+export const EDIT_COLOR_HEAD = 0;
+export const EDIT_COLOR_PANTS = 1;
+export const EDIT_COLOR_SKIN = 2;
+export const EDIT_COLOR_VEST = 3;
+export const EDIT_MERC_NONE = 0;
+export const EDIT_MERC_DEC_STAT = 1;
+export const EDIT_MERC_INC_STAT = 2;
+export const EDIT_MERC_PREV_ORDER = 3;
+export const EDIT_MERC_NEXT_ORDER = 4;
+export const EDIT_MERC_PREV_ATT = 5;
+export const EDIT_MERC_NEXT_ATT = 6;
+export const EDIT_MERC_SET_DIR = 7;
+export const EDIT_MERC_FIND = 8;
+export const EDIT_MERC_DONE = 9;
+export const EDIT_MERC_TO_COLOR = 10;
+export const EDIT_MERC_TO_STATS = 11;
+export const EDIT_MERC_PREV_COLOR = 12;
+export const EDIT_MERC_NEXT_COLOR = 13;
 
 const NUM_MERC_BUTTONS = 40;
 
 const NUM_DIFF_LVLS = 5;
 
-const enum Enum43 {
+export const enum Enum43 {
   SELECT_NEXT_CREATURE = -7,
   SELECT_NEXT_REBEL = -6,
   SELECT_NEXT_CIV = -5,
@@ -50,6 +50,6 @@ const enum Enum43 {
   // >= 0 select merc with matching ID
 }
 
-const MERCINV_LGSLOT_WIDTH = 48;
-const MERCINV_SMSLOT_WIDTH = 24;
-const MERCINV_SLOT_HEIGHT = 18;
+export const MERCINV_LGSLOT_WIDTH = 48;
+export const MERCINV_SMSLOT_WIDTH = 24;
+export const MERCINV_SLOT_HEIGHT = 18;

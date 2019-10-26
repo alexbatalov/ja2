@@ -1,6 +1,6 @@
-const TILE_CACHE_START_INDEX = 36000;
+export const TILE_CACHE_START_INDEX = 36000;
 
-interface TILE_CACHE_ELEMENT {
+export interface TILE_CACHE_ELEMENT {
   zName: CHAR8[] /* [128] */; // Name of tile ( filename and directory here )
   zRootName: CHAR8[] /* [30] */; // Root name
   pImagery: Pointer<TILE_IMAGERY>; // Tile imagery
@@ -9,7 +9,7 @@ interface TILE_CACHE_ELEMENT {
   sStructRefID: INT16;
 }
 
-interface TILE_CACHE_STRUCT {
+export interface TILE_CACHE_STRUCT {
   Filename: CHAR8[] /* [150] */;
   zRootName: CHAR8[] /* [30] */; // Root name
   pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;

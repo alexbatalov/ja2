@@ -1,1 +1,1 @@
-const GETPIXELDEPTH = () => (gbPixelDepth);
+export const GETPIXELDEPTH = () => (gbPixelDepth);

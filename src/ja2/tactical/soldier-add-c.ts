@@ -18,7 +18,7 @@
 
 // Kris:  modified to actually path from sweetspot to gridno.  Previously, it only checked if the
 // destination was sittable (though it was possible that that location would be trapped.
-function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -111,7 +111,7 @@ function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: I
   }
 }
 
-function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -201,7 +201,7 @@ function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sS
 
 // Kris:  modified to actually path from sweetspot to gridno.  Previously, it only checked if the
 // destination was sittable (though it was possible that that location would be trapped.
-function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: boolean): UINT16 {
+export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: boolean): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -485,7 +485,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
   }
 }
 
-function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: boolean, pSrcSoldier: Pointer<SOLDIERTYPE>): UINT16 {
+export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: boolean, pSrcSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -615,7 +615,7 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
   }
 }
 
-function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -672,7 +672,7 @@ function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE
   }
 }
 
-function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, ubQuardentDir: INT8): UINT16 {
+export function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, ubQuardentDir: INT8): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -734,7 +734,7 @@ function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Pointer<S
   }
 }
 
-function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, sMaxTiles: INT16, bLevel: INT8): boolean {
+export function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, sMaxTiles: INT16, bLevel: INT8): boolean {
   let iNumTiles: INT32;
   let sActionGridNo: INT16;
   let ubDirection: UINT8;
@@ -762,7 +762,7 @@ function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERTYPE>, s
   }
 }
 
-function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sX: INT16;
   let sY: INT16;
   let sGridNo: INT16;
@@ -894,7 +894,7 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDI
   return sGridNo;
 }
 
-function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: boolean, fUseAnimation: boolean, usAnimState: UINT16, usAnimCode: UINT16): boolean {
+export function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: boolean, fUseAnimation: boolean, usAnimState: UINT16, usAnimCode: UINT16): boolean {
   let ubDirection: UINT8;
   let ubCalculatedDirection: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1001,15 +1001,15 @@ function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: boolean, f
   return false;
 }
 
-function AddSoldierToSector(ubID: UINT8): boolean {
+export function AddSoldierToSector(ubID: UINT8): boolean {
   return InternalAddSoldierToSector(ubID, true, false, 0, 0);
 }
 
-function AddSoldierToSectorNoCalculateDirection(ubID: UINT8): boolean {
+export function AddSoldierToSectorNoCalculateDirection(ubID: UINT8): boolean {
   return InternalAddSoldierToSector(ubID, false, false, 0, 0);
 }
 
-function AddSoldierToSectorNoCalculateDirectionUseAnimation(ubID: UINT8, usAnimState: UINT16, usAnimCode: UINT16): boolean {
+export function AddSoldierToSectorNoCalculateDirectionUseAnimation(ubID: UINT8, usAnimState: UINT16, usAnimCode: UINT16): boolean {
   return InternalAddSoldierToSector(ubID, false, true, usAnimState, usAnimCode);
 }
 
@@ -1085,7 +1085,7 @@ void SoldierInSectorSleep( SOLDIERTYPE *pSoldier, INT16 sGridNo )
 }
 */
 
-function SoldierInSectorPatient(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function SoldierInSectorPatient(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let ubNewDirection: UINT8;
@@ -1115,7 +1115,7 @@ function SoldierInSectorPatient(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
   }
 }
 
-function SoldierInSectorDoctor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function SoldierInSectorDoctor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let ubNewDirection: UINT8;
@@ -1145,7 +1145,7 @@ function SoldierInSectorDoctor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): 
   }
 }
 
-function SoldierInSectorRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function SoldierInSectorRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let ubNewDirection: UINT8;
@@ -1305,7 +1305,7 @@ function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
 }
 
 // IsMercOnTeam() checks to see if the passed in Merc Profile ID is currently on the player's team
-function IsMercOnTeam(ubMercID: UINT8): boolean {
+export function IsMercOnTeam(ubMercID: UINT8): boolean {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -1326,7 +1326,7 @@ function IsMercOnTeam(ubMercID: UINT8): boolean {
 }
 
 // ATE: Added this new function for contract renewals
-function IsMercOnTeamAndAlive(ubMercID: UINT8): boolean {
+export function IsMercOnTeamAndAlive(ubMercID: UINT8): boolean {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -1349,7 +1349,7 @@ function IsMercOnTeamAndAlive(ubMercID: UINT8): boolean {
   return false;
 }
 
-function IsMercOnTeamAndInOmertaAlready(ubMercID: UINT8): boolean {
+export function IsMercOnTeamAndInOmertaAlready(ubMercID: UINT8): boolean {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -1369,7 +1369,7 @@ function IsMercOnTeamAndInOmertaAlready(ubMercID: UINT8): boolean {
   return false;
 }
 
-function IsMercOnTeamAndInOmertaAlreadyAndAlive(ubMercID: UINT8): boolean {
+export function IsMercOnTeamAndInOmertaAlreadyAndAlive(ubMercID: UINT8): boolean {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -1393,7 +1393,7 @@ function IsMercOnTeamAndInOmertaAlreadyAndAlive(ubMercID: UINT8): boolean {
 }
 
 // GetSoldierIDFromMercID() Gets the Soldier ID from the Merc Profile ID, else returns -1
-function GetSoldierIDFromMercID(ubMercID: UINT8): INT16 {
+export function GetSoldierIDFromMercID(ubMercID: UINT8): INT16 {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;

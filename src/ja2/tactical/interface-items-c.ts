@@ -149,18 +149,18 @@ const enum Enum217 {
 // AN ARRAY OF MOUSE REGIONS, ONE FOR EACH OBJECT POSITION ON BUDDY
 let gInvRegions: MOUSE_REGION[] /* [NUM_INV_SLOTS] */;
 
-let gInvDesc: MOUSE_REGION;
+export let gInvDesc: MOUSE_REGION;
 
-let gpItemPointer: Pointer<OBJECTTYPE> = null;
-let gItemPointer: OBJECTTYPE;
-let gfItemPointerDifferentThanDefault: boolean = false;
-let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
-let gbItemPointerSrcSlot: INT8;
+export let gpItemPointer: Pointer<OBJECTTYPE> = null;
+export let gItemPointer: OBJECTTYPE;
+export let gfItemPointerDifferentThanDefault: boolean = false;
+export let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
+export let gbItemPointerSrcSlot: INT8;
 let gusItemPointer: UINT16 = 255;
 let usItemSnapCursor: UINT16;
 let guiNewlyPlacedItemTimer: UINT32 = 0;
 let gfBadThrowItemCTGH: boolean;
-let gfDontChargeAPsToPickup: boolean = false;
+export let gfDontChargeAPsToPickup: boolean = false;
 let gbItemPointerLocateGood: boolean = false;
 
 // ITEM DESCRIPTION BOX STUFF
@@ -169,9 +169,9 @@ let guiMapItemDescBox: UINT32;
 let guiItemGraphic: UINT32;
 let guiMoneyGraphicsForDescBox: UINT32;
 let guiBullet: UINT32;
-let gfInItemDescBox: boolean = false;
+export let gfInItemDescBox: boolean = false;
 let guiCurrentItemDescriptionScreen: UINT32 = 0;
-let gpItemDescObject: Pointer<OBJECTTYPE> = null;
+export let gpItemDescObject: Pointer<OBJECTTYPE> = null;
 let gfItemDescObjectIsAttachment: boolean = false;
 let gzItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
 let gzItemDesc: UINT16[] /* [SIZE_ITEM_INFO] */;
@@ -188,7 +188,7 @@ let giItemDescAmmoButton: INT32;
 let gfItemAmmoDown: boolean = false;
 let gpItemDescSoldier: Pointer<SOLDIERTYPE>;
 let fItemDescDelete: boolean = false;
-let gItemDescAttachmentRegions: MOUSE_REGION[] /* [4] */;
+export let gItemDescAttachmentRegions: MOUSE_REGION[] /* [4] */;
 let gProsAndConsRegions: MOUSE_REGION[] /* [2] */;
 
 let guiMoneyButtonBtn: UINT32[] /* [MAX_ATTACHMENTS] */;
@@ -229,7 +229,7 @@ let gsItemPopupX: INT16;
 let gsItemPopupY: INT16;
 let gItemPopupRegions: MOUSE_REGION[] /* [8] */;
 let gKeyRingRegions: MOUSE_REGION[] /* [NUMBER_KEYS_ON_KEYRING] */;
-let gfInKeyRingPopup: boolean = false;
+export let gfInKeyRingPopup: boolean = false;
 let gubNumItemPopups: UINT8 = 0;
 let gItemPopupRegion: MOUSE_REGION;
 let gsItemPopupInvX: INT16;
@@ -242,11 +242,11 @@ let gsKeyRingPopupInvY: INT16;
 let gsKeyRingPopupInvWidth: INT16;
 let gsKeyRingPopupInvHeight: INT16;
 
-let gpItemPopupSoldier: Pointer<SOLDIERTYPE>;
+export let gpItemPopupSoldier: Pointer<SOLDIERTYPE>;
 
 // inventory description done button for mapscreen
 let giMapInvDescButtonImage: INT32;
-let giMapInvDescButton: INT32 = -1;
+export let giMapInvDescButton: INT32 = -1;
 
 let gfItemPopupRegionCallbackEndFix: boolean = false;
 
@@ -408,11 +408,11 @@ let gSMInvRegion: MOUSE_REGION[] /* [NUM_INV_SLOTS] */;
 let gKeyRingPanel: MOUSE_REGION;
 let gSMInvCamoRegion: MOUSE_REGION;
 let gbCompatibleAmmo: INT8[] /* [NUM_INV_SLOTS] */;
-let gbInvalidPlacementSlot: INT8[] /* [NUM_INV_SLOTS] */;
-let us16BPPItemCyclePlacedItemColors: UINT16[] /* [20] */;
+export let gbInvalidPlacementSlot: INT8[] /* [NUM_INV_SLOTS] */;
+export let us16BPPItemCyclePlacedItemColors: UINT16[] /* [20] */;
 let guiBodyInvVO: UINT32[][] /* [4][2] */;
 let guiGoldKeyVO: UINT32;
-let gbCompatibleApplyItem: INT8 = false;
+export let gbCompatibleApplyItem: INT8 = false;
 
 function AttemptToAddSubstring(zDest: STR16, zTemp: STR16, puiStringLength: Pointer<UINT32>, uiPixLimit: UINT32): boolean {
   let uiRequiredStringLength: UINT32;
@@ -599,7 +599,7 @@ function GenerateConsString(zItemCons: Pointer<UINT16>, pObject: Pointer<OBJECTT
   }
 }
 
-function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCamoRegion: Pointer<INV_REGION_DESC>, INVMoveCallback: MOUSE_CALLBACK, INVClickCallback: MOUSE_CALLBACK, INVMoveCammoCallback: MOUSE_CALLBACK, INVClickCammoCallback: MOUSE_CALLBACK, fSetHighestPrioity: boolean): boolean {
+export function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCamoRegion: Pointer<INV_REGION_DESC>, INVMoveCallback: MOUSE_CALLBACK, INVClickCallback: MOUSE_CALLBACK, INVMoveCammoCallback: MOUSE_CALLBACK, INVClickCammoCallback: MOUSE_CALLBACK, fSetHighestPrioity: boolean): boolean {
   let cnt: INT32;
   let VObjectDesc: VOBJECT_DESC;
 
@@ -663,13 +663,13 @@ function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCamoRegion
   return true;
 }
 
-function InitKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
+export function InitKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
   MSYS_DefineRegion(addressof(gKeyRingPanel), KEYRING_X, KEYRING_Y, KEYRING_X + KEYRING_WIDTH, KEYRING_X + KEYRING_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingClickCallback);
 
   SetRegionFastHelpText(addressof(gKeyRingPanel), TacticalStr[Enum335.KEYRING_HELP_TEXT]);
 }
 
-function InitMapKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
+export function InitMapKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
   MSYS_DefineRegion(addressof(gKeyRingPanel), MAP_KEYRING_X, MAP_KEYRING_Y, MAP_KEYRING_X + KEYRING_WIDTH, MAP_KEYRING_Y + KEYRING_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingClickCallback);
 
   SetRegionFastHelpText(addressof(gKeyRingPanel), TacticalStr[Enum335.KEYRING_HELP_TEXT]);
@@ -683,12 +683,12 @@ function EnableKeyRing(fEnable: boolean): void {
   }
 }
 
-function ShutdownKeyRingInterface(): void {
+export function ShutdownKeyRingInterface(): void {
   MSYS_RemoveRegion(addressof(gKeyRingPanel));
   return;
 }
 
-function DisableInvRegions(fDisable: boolean): void {
+export function DisableInvRegions(fDisable: boolean): void {
   let cnt: INT32;
 
   for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
@@ -712,7 +712,7 @@ function DisableInvRegions(fDisable: boolean): void {
   }
 }
 
-function ShutdownInvSlotInterface(): void {
+export function ShutdownInvSlotInterface(): void {
   let cnt: UINT32;
 
   // Remove all body type panels
@@ -738,14 +738,14 @@ function ShutdownInvSlotInterface(): void {
   MSYS_RemoveRegion(addressof(gSMInvCamoRegion));
 }
 
-function RenderInvBodyPanel(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): void {
+export function RenderInvBodyPanel(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): void {
   // Blit body inv, based on body type
   let bSubImageIndex: INT8 = gbCompatibleApplyItem;
 
   BltVideoObjectFromIndex(guiSAVEBUFFER, guiBodyInvVO[pSoldier.value.ubBodyType][bSubImageIndex], 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 }
 
-function HandleRenderInvSlots(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: UINT8): void {
+export function HandleRenderInvSlots(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: UINT8): void {
   let cnt: INT32;
   /* static */ let pStr: INT16[] /* [150] */;
 
@@ -952,7 +952,7 @@ function SoldierContainsAnyCompatibleStuff(pSoldier: Pointer<SOLDIERTYPE>, pTest
   return false;
 }
 
-function HandleAnyMercInSquadHasCompatibleStuff(ubSquad: UINT8, pObject: Pointer<OBJECTTYPE>, fReset: boolean): void {
+export function HandleAnyMercInSquadHasCompatibleStuff(ubSquad: UINT8, pObject: Pointer<OBJECTTYPE>, fReset: boolean): void {
   let iCounter: INT32 = 0;
 
   if (ubSquad == Enum275.NUMBER_OF_SQUADS) {
@@ -973,7 +973,7 @@ function HandleAnyMercInSquadHasCompatibleStuff(ubSquad: UINT8, pObject: Pointer
   }
 }
 
-function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, fOn: boolean, fFromMerc: boolean): boolean {
+export function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, fOn: boolean, fFromMerc: boolean): boolean {
   let fFound: boolean = false;
   let cnt: INT32;
   let pObject: Pointer<OBJECTTYPE>;
@@ -1084,7 +1084,7 @@ function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInv
   return fFound;
 }
 
-function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, iStartSlotNumber: INT32, fOn: boolean, fFromMerc: boolean): boolean {
+export function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, iStartSlotNumber: INT32, fOn: boolean, fFromMerc: boolean): boolean {
   // CJC: ATE, needs fixing here!
 
   let fFound: boolean = false;
@@ -1158,7 +1158,7 @@ function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, b
   return fFound;
 }
 
-function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObject: Pointer<OBJECTTYPE>, fOn: boolean): boolean {
+export function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObject: Pointer<OBJECTTYPE>, fOn: boolean): boolean {
   let fFound: boolean = false;
   let cnt: INT32;
   let pObject: Pointer<OBJECTTYPE>;
@@ -1286,7 +1286,7 @@ function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObj
   return fFound;
 }
 
-function ResetCompatibleItemArray(): void {
+export function ResetCompatibleItemArray(): void {
   let cnt: INT32 = 0;
 
   for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
@@ -1296,7 +1296,7 @@ function ResetCompatibleItemArray(): void {
   }
 }
 
-function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, fOn: boolean): boolean {
+export function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, fOn: boolean): boolean {
   let cnt: INT32;
   let pTestObject: Pointer<OBJECTTYPE>;
   let fFound: boolean = false;
@@ -1358,7 +1358,7 @@ function GetSlotInvHeightWidth(ubPos: UINT8, psWidth: Pointer<INT16>, psHeight: 
   psHeight.value = gSMInvData[ubPos].sHeight;
 }
 
-function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Pointer<boolean>): void {
+export function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Pointer<boolean>): void {
   let cnt: UINT32;
   let sX: INT16;
   let sY: INT16;
@@ -1392,7 +1392,7 @@ function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Poin
   }
 }
 
-function CheckForAnyNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CheckForAnyNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>): void {
   let cnt: UINT32;
 
   // OK, l0ok for any new...
@@ -1403,7 +1403,7 @@ function CheckForAnyNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function DegradeNewlyAddedItems(): void {
+export function DegradeNewlyAddedItems(): void {
   let uiTime: UINT32;
   let cnt: UINT32;
   let cnt2: UINT32;
@@ -1445,7 +1445,7 @@ function DegradeNewlyAddedItems(): void {
   }
 }
 
-function InitItemInterface(): void {
+export function InitItemInterface(): void {
   let cnt: UINT32;
   let cnt2: UINT32;
 
@@ -1454,7 +1454,7 @@ function InitItemInterface(): void {
   }
 }
 
-function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, sWidth: INT16, sHeight: INT16, fDirtyLevel: UINT8, pubHighlightCounter: Pointer<UINT8>, ubStatusIndex: UINT8, fOutline: boolean, sOutlineColor: INT16): void {
+export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, sWidth: INT16, sHeight: INT16, fDirtyLevel: UINT8, pubHighlightCounter: Pointer<UINT8>, ubStatusIndex: UINT8, fOutline: boolean, sOutlineColor: INT16): void {
   let uiStringLength: UINT16;
   let pItem: Pointer<INVTYPE>;
   let pTrav: Pointer<ETRLEObject>;
@@ -1678,11 +1678,11 @@ function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject
   }
 }
 
-function InItemDescriptionBox(): boolean {
+export function InItemDescriptionBox(): boolean {
   return gfInItemDescBox;
 }
 
-function CycleItemDescriptionItem(): void {
+export function CycleItemDescriptionItem(): void {
   let usOldItem: INT16;
 
   // Delete old box...
@@ -1710,7 +1710,7 @@ function CycleItemDescriptionItem(): void {
   InternalInitItemDescriptionBox(addressof(gpItemDescSoldier.value.inv[Enum261.HANDPOS]), 214, (INV_INTERFACE_START_Y + 1), gubItemDescStatusIndex, gpItemDescSoldier);
 }
 
-function InitItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): boolean {
+export function InitItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): boolean {
   let pObject: Pointer<OBJECTTYPE>;
 
   // DEF:
@@ -1727,7 +1727,7 @@ function InitItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT
   return InternalInitItemDescriptionBox(pObject, sX, sY, ubStatusIndex, pSoldier);
 }
 
-function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): boolean {
+export function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): boolean {
   let pObject: Pointer<OBJECTTYPE>;
 
   AllocateObject(addressof(pObject));
@@ -1736,7 +1736,7 @@ function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: U
   return InternalInitItemDescriptionBox(pObject, sX, sY, ubStatusIndex, pSoldier);
 }
 
-function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let ubString: UINT8[] /* [48] */;
   let cnt: INT32;
@@ -2251,7 +2251,7 @@ function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
   }
 }
 
-function RenderItemDescriptionBox(): void {
+export function RenderItemDescriptionBox(): void {
   let pTrav: Pointer<ETRLEObject>;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -3031,7 +3031,7 @@ function RenderItemDescriptionBox(): void {
   }
 }
 
-function HandleItemDescriptionBox(pfDirty: Pointer<boolean>): void {
+export function HandleItemDescriptionBox(pfDirty: Pointer<boolean>): void {
   if (fItemDescDelete) {
     DeleteItemDescriptionBox();
     fItemDescDelete = false;
@@ -3039,7 +3039,7 @@ function HandleItemDescriptionBox(pfDirty: Pointer<boolean>): void {
   }
 }
 
-function DeleteItemDescriptionBox(): void {
+export function DeleteItemDescriptionBox(): void {
   let cnt: INT32;
   let cnt2: INT32;
   let fFound: boolean;
@@ -3176,7 +3176,7 @@ function DeleteItemDescriptionBox(): void {
   gfItemDescObjectIsAttachment = false;
 }
 
-function InternalBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, bHandPos: INT8): void {
+export function InternalBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, bHandPos: INT8): void {
   //	BOOLEAN fOk;
 
   // If not null return
@@ -3204,7 +3204,7 @@ function InternalBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, pObject: Point
   gfReEvaluateEveryonesNothingToDo = true;
 }
 
-function BeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
+export function BeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
   let fOk: boolean;
   let pObject: OBJECTTYPE;
 
@@ -3222,7 +3222,7 @@ function BeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): voi
   }
 }
 
-function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRingPosition: UINT8): void {
+export function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRingPosition: UINT8): void {
   let fOk: boolean;
 
   // If not null return
@@ -3262,7 +3262,7 @@ function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRingPositi
   gfItemPointerDifferentThanDefault = false;
 }
 
-function EndItemPointer(): void {
+export function EndItemPointer(): void {
   if (gpItemPointer != null) {
     gpItemPointer = null;
     gbItemPointerSrcSlot = NO_SLOT;
@@ -3283,7 +3283,7 @@ function EndItemPointer(): void {
   }
 }
 
-function DrawItemFreeCursor(): void {
+export function DrawItemFreeCursor(): void {
   // OBJECTTYPE		*gpItemPointer;
   // UINT16				usItemSnapCursor;
 
@@ -3295,7 +3295,7 @@ function DrawItemFreeCursor(): void {
   MSYS_SetCurrentCursor(EXTERN_CURSOR);
 }
 
-function HideItemTileCursor(): void {
+export function HideItemTileCursor(): void {
   //	RemoveTopmost( gusCurMousePos, gusItemPointer );
 }
 
@@ -3338,7 +3338,7 @@ function SoldierCanSeeCatchComing(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: IN
   -*/
 }
 
-function DrawItemTileCursor(): void {
+export function DrawItemTileCursor(): void {
   let usMapPos: UINT16;
   let usIndex: UINT16;
   let ubSoldierID: UINT8;
@@ -3586,7 +3586,7 @@ function IsValidAmmoToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pObject: Point
   return true;
 }
 
-function HandleItemPointerClick(usMapPos: UINT16): boolean {
+export function HandleItemPointerClick(usMapPos: UINT16): boolean {
   // Determine what to do
   let ubDirection: UINT8;
   let ubSoldierID: UINT8;
@@ -3977,15 +3977,15 @@ function ItemCursorInLobRange(usMapPos: UINT16): boolean {
   }
 }
 
-function InItemStackPopup(): boolean {
+export function InItemStackPopup(): boolean {
   return gfInItemStackPopup;
 }
 
-function InKeyRingPopup(): boolean {
+export function InKeyRingPopup(): boolean {
   return gfInKeyRingPopup;
 }
 
-function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): boolean {
+export function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let sX: INT16;
   let sY: INT16;
@@ -4112,7 +4112,7 @@ function EndItemStackPopupWithItemInHand(): void {
   }
 }
 
-function RenderItemStackPopup(fFullRender: boolean): void {
+export function RenderItemStackPopup(fFullRender: boolean): void {
   let pTrav: Pointer<ETRLEObject>;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4187,7 +4187,7 @@ function DeleteItemStackPopup(): void {
   FreeMouseCursor();
 }
 
-function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): boolean {
+export function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let aRect: SGPRect;
   let pTrav: Pointer<ETRLEObject>;
@@ -4277,7 +4277,7 @@ function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: I
   return true;
 }
 
-function RenderKeyRingPopup(fFullRender: boolean): void {
+export function RenderKeyRingPopup(fFullRender: boolean): void {
   let pTrav: Pointer<ETRLEObject>;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4347,7 +4347,7 @@ function RenderKeyRingPopup(fFullRender: boolean): void {
   InvalidateRegion(gsKeyRingPopupInvX, gsKeyRingPopupInvY, gsKeyRingPopupInvX + gsKeyRingPopupInvWidth, gsKeyRingPopupInvY + gsKeyRingPopupInvHeight);
 }
 
-function DeleteKeyRingPopup(): void {
+export function DeleteKeyRingPopup(): void {
   let cnt: INT32;
 
   if (gfInKeyRingPopup == false) {
@@ -4378,7 +4378,7 @@ function DeleteKeyRingPopup(): void {
   FreeMouseCursor();
 }
 
-function GetInterfaceGraphicForItem(pItem: Pointer<INVTYPE>): UINT32 {
+export function GetInterfaceGraphicForItem(pItem: Pointer<INVTYPE>): UINT32 {
   // CHECK SUBCLASS
   if (pItem.value.ubGraphicType == 0) {
     return guiGUNSM;
@@ -4391,7 +4391,7 @@ function GetInterfaceGraphicForItem(pItem: Pointer<INVTYPE>): UINT32 {
   }
 }
 
-function GetTileGraphicForItem(pItem: Pointer<INVTYPE>): UINT16 {
+export function GetTileGraphicForItem(pItem: Pointer<INVTYPE>): UINT16 {
   let usIndex: UINT16;
 
   // CHECK SUBCLASS
@@ -4407,7 +4407,7 @@ function GetTileGraphicForItem(pItem: Pointer<INVTYPE>): UINT16 {
   return usIndex;
 }
 
-function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<UINT32>): boolean {
+export function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<UINT32>): boolean {
   let zName: CHAR8[] /* [100] */;
   let uiVo: UINT32;
   let VObjectDesc: VOBJECT_DESC;
@@ -4695,14 +4695,14 @@ const ITEMPICK_TEXT_WIDTH = 109;
 const ITEMPICK_TEXT_HEIGHT = 17;
 
 let gItemPickupMenu: ITEM_PICKUP_MENU_STRUCT;
-let gfInItemPickupMenu: boolean = false;
+export let gfInItemPickupMenu: boolean = false;
 
 // STUFF FOR POPUP ITEM INFO BOX
-function SetItemPickupMenuDirty(fDirtyLevel: boolean): void {
+export function SetItemPickupMenuDirty(fDirtyLevel: boolean): void {
   gItemPickupMenu.fDirtyLevel = fDirtyLevel;
 }
 
-function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pItemPool: Pointer<ITEM_POOL>, sScreenX: INT16, sScreenY: INT16, bZLevel: INT8): boolean {
+export function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pItemPool: Pointer<ITEM_POOL>, sScreenX: INT16, sScreenY: INT16, bZLevel: INT8): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let ubString: UINT8[] /* [48] */;
   let pTempItemPool: Pointer<ITEM_POOL>;
@@ -5018,13 +5018,13 @@ function CalculateItemPickupMenuDimensions(): void {
 }
 
 // set pick up menu dirty level
-function SetPickUpMenuDirtyLevel(fDirtyLevel: boolean): void {
+export function SetPickUpMenuDirtyLevel(fDirtyLevel: boolean): void {
   gItemPickupMenu.fDirtyLevel = fDirtyLevel;
 
   return;
 }
 
-function RenderItemPickupMenu(): void {
+export function RenderItemPickupMenu(): void {
   let cnt: INT32;
   let usItemTileIndex: UINT16;
   let sX: INT16;
@@ -5203,7 +5203,7 @@ function RenderItemPickupMenu(): void {
   }
 }
 
-function RemoveItemPickupMenu(): void {
+export function RemoveItemPickupMenu(): void {
   let cnt: INT32;
 
   if (gfInItemPickupMenu) {
@@ -5449,7 +5449,7 @@ function ItemPickMenuMouseClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
   }
 }
 
-function HandleItemPickupMenu(): boolean {
+export function HandleItemPickupMenu(): boolean {
   if (!gfInItemPickupMenu) {
     return false;
   }
@@ -5645,7 +5645,7 @@ function AttemptToApplyCamo(pSoldier: Pointer<SOLDIERTYPE>, usItemIndex: UINT16)
   return false;
 }
 
-function GetHelpTextForItem(pzStr: Pointer<INT16>, pObject: Pointer<OBJECTTYPE>, pSoldier: Pointer<SOLDIERTYPE>): void {
+export function GetHelpTextForItem(pzStr: Pointer<INT16>, pObject: Pointer<OBJECTTYPE>, pSoldier: Pointer<SOLDIERTYPE>): void {
   let pStr: INT16[] /* [250] */;
   let usItem: UINT16 = pObject.value.usItem;
   let cnt: INT32 = 0;
@@ -5726,7 +5726,7 @@ function GetPrefferedItemSlotGraphicNum(usItem: UINT16): UINT8 {
   return 0;
 }
 
-function CancelItemPointer(): void {
+export function CancelItemPointer(): void {
   // ATE: If we have an item pointer end it!
   if (gpItemPointer != null) {
     if (gbItemPointerSrcSlot != NO_SLOT) {
@@ -5759,7 +5759,7 @@ interface ITEM_CURSOR_SAVE_INFO {
   bPadding: INT8[] /* [5] */;
 }
 
-function LoadItemCursorFromSavedGame(hFile: HWFILE): boolean {
+export function LoadItemCursorFromSavedGame(hFile: HWFILE): boolean {
   let uiLoadSize: UINT32 = 0;
   let uiNumBytesRead: UINT32 = 0;
   let SaveStruct: ITEM_CURSOR_SAVE_INFO;
@@ -5796,7 +5796,7 @@ function LoadItemCursorFromSavedGame(hFile: HWFILE): boolean {
   return true;
 }
 
-function SaveItemCursorToSavedGame(hFile: HWFILE): boolean {
+export function SaveItemCursorToSavedGame(hFile: HWFILE): boolean {
   let uiSaveSize: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
 
@@ -5835,7 +5835,7 @@ function SaveItemCursorToSavedGame(hFile: HWFILE): boolean {
   return true;
 }
 
-function UpdateItemHatches(): void {
+export function UpdateItemHatches(): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {

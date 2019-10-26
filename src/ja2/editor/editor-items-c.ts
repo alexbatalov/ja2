@@ -1,7 +1,7 @@
 const NUMBER_TRIGGERS = 27;
 const PRESSURE_ACTION_ID = (NUMBER_TRIGGERS - 1);
 
-let giDefaultExistChance: INT32 = 100;
+export let giDefaultExistChance: INT32 = 100;
 
 interface IPListNode {
   sGridNo: INT16;
@@ -11,9 +11,9 @@ interface IPListNode {
 let pIPHead: Pointer<IPListNode> = null;
 
 let gpCurrItemPoolNode: Pointer<IPListNode> = null;
-let gpItemPool: Pointer<ITEM_POOL> = null;
+export let gpItemPool: Pointer<ITEM_POOL> = null;
 
-function BuildItemPoolList(): void {
+export function BuildItemPoolList(): void {
   let temp: Pointer<ITEM_POOL>;
   let tail: Pointer<IPListNode>;
   let i: UINT16;
@@ -38,7 +38,7 @@ function BuildItemPoolList(): void {
   SpecifyItemToEdit(null, -1);
 }
 
-function KillItemPoolList(): void {
+export function KillItemPoolList(): void {
   let pIPCurr: Pointer<IPListNode>;
   pIPCurr = pIPHead;
   while (pIPCurr) {
@@ -52,11 +52,11 @@ function KillItemPoolList(): void {
 
 // Contains global information about the editor items
 // May be expanded to encapsulate the entire editor later.
-let eInfo: EditorItemsInfo;
+export let eInfo: EditorItemsInfo;
 
 // Does some precalculations regarding the number of each item type, so that it
 // isn't calculated every time a player changes categories.
-function EntryInitEditorItemsInfo(): void {
+export function EntryInitEditorItemsInfo(): void {
   let i: INT32;
   let item: Pointer<INVTYPE>;
   eInfo.uiBuffer = 0;
@@ -126,7 +126,7 @@ function EntryInitEditorItemsInfo(): void {
   }
 }
 
-function InitEditorItemsInfo(uiItemType: UINT32): void {
+export function InitEditorItemsInfo(uiItemType: UINT32): void {
   let vs_desc: VSURFACE_DESC;
   let pDestBuf: Pointer<UINT8>;
   let pSrcBuf: Pointer<UINT8>;
@@ -420,7 +420,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
   gfRenderTaskbar = true;
 }
 
-function DetermineItemsScrolling(): void {
+export function DetermineItemsScrolling(): void {
   if (!eInfo.sScrollIndex)
     DisableEditorButton(Enum32.ITEMS_LEFTSCROLL);
   else
@@ -434,7 +434,7 @@ function DetermineItemsScrolling(): void {
     EnableEditorButton(Enum32.ITEMS_RIGHTSCROLL);
 }
 
-function RenderEditorItemsInfo(): void {
+export function RenderEditorItemsInfo(): void {
   let pDestBuf: Pointer<UINT8>;
   let pSrcBuf: Pointer<UINT8>;
   let uiSrcPitchBYTES: UINT32;
@@ -524,7 +524,7 @@ function RenderEditorItemsInfo(): void {
   }
 }
 
-function ClearEditorItemsInfo(): void {
+export function ClearEditorItemsInfo(): void {
   if (eInfo.uiBuffer) {
     DeleteVideoSurfaceFromIndex(eInfo.uiBuffer);
     eInfo.uiBuffer = 0;
@@ -580,7 +580,7 @@ function ClearEditorItemsInfo(): void {
   }
 }
 
-function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): void {
+export function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): void {
   let sIndex: INT16;
   let usQuantity: UINT16;
   // Calc base index from scrolling index
@@ -660,7 +660,7 @@ function TriggerAtGridNo(sGridNo: INT16): boolean {
   return false;
 }
 
-function AddSelectedItemToWorld(sGridNo: INT16): void {
+export function AddSelectedItemToWorld(sGridNo: INT16): void {
   let tempObject: OBJECTTYPE;
   let pObject: Pointer<OBJECTTYPE>;
   let pItem: Pointer<INVTYPE>;
@@ -817,7 +817,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
   }
 }
 
-function HandleRightClickOnItem(sGridNo: INT16): void {
+export function HandleRightClickOnItem(sGridNo: INT16): void {
   let pItemPool: Pointer<ITEM_POOL>;
   let pIPCurr: Pointer<IPListNode>;
 
@@ -850,7 +850,7 @@ function HandleRightClickOnItem(sGridNo: INT16): void {
   SpecifyItemToEdit(addressof(gWorldItems[gpItemPool.value.iItemIndex].o), gpItemPool.value.sGridNo);
 }
 
-function DeleteSelectedItem(): void {
+export function DeleteSelectedItem(): void {
   SpecifyItemToEdit(null, -1);
   // First, check to see if there even is a currently selected item.
   if (iCurrentTaskbar == Enum36.TASK_MERCS) {
@@ -911,21 +911,21 @@ function DeleteSelectedItem(): void {
   }
 }
 
-function ShowSelectedItem(): void {
+export function ShowSelectedItem(): void {
   if (gpItemPool) {
     gpItemPool.value.bVisible = INVISIBLE;
     gWorldItems[gpItemPool.value.iItemIndex].bVisible = INVISIBLE;
   }
 }
 
-function HideSelectedItem(): void {
+export function HideSelectedItem(): void {
   if (gpItemPool) {
     gpItemPool.value.bVisible = HIDDEN_ITEM;
     gWorldItems[gpItemPool.value.iItemIndex].bVisible = HIDDEN_ITEM;
   }
 }
 
-function SelectNextItemPool(): void {
+export function SelectNextItemPool(): void {
   if (!gpCurrItemPoolNode)
     return;
   // remove the current hilight.
@@ -947,7 +947,7 @@ function SelectNextItemPool(): void {
   }
 }
 
-function SelectNextItemInPool(): void {
+export function SelectNextItemInPool(): void {
   if (gpItemPool) {
     if (gpItemPool.value.pNext) {
       gpItemPool = gpItemPool.value.pNext;
@@ -959,7 +959,7 @@ function SelectNextItemInPool(): void {
   }
 }
 
-function SelectPrevItemInPool(): void {
+export function SelectPrevItemInPool(): void {
   if (gpItemPool) {
     if (gpItemPool.value.pPrev) {
       gpItemPool = gpItemPool.value.pPrev;
@@ -1324,7 +1324,7 @@ function CountNumberOfKeysOfTypeInWorld(ubKeyID: UINT8): UINT16 {
   return num;
 }
 
-function DisplayItemStatistics(): void {
+export function DisplayItemStatistics(): void {
   let fUseSelectedItem: boolean;
   let usItemIndex: INT16;
   let pItemName: UINT16[] /* [SIZE_ITEM_NAME] */;

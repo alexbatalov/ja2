@@ -64,8 +64,8 @@ const BOMB_QUEUE_DELAY = () => (1000 + Random(500));
 
 const MAX_BOMB_QUEUE = 40;
 let gExplosionQueue: ExplosionQueueElement[] /* [MAX_BOMB_QUEUE] */;
-let gubElementsOnExplosionQueue: UINT8 = 0;
-let gfExplosionQueueActive: boolean = false;
+export let gubElementsOnExplosionQueue: UINT8 = 0;
+export let gfExplosionQueueActive: boolean = false;
 
 let gfExplosionQueueMayHaveChangedSight: boolean = false;
 let gubPersonToSetOffExplosions: UINT8 = NOBODY;
@@ -75,7 +75,7 @@ let gsTempActionGridNo: INT16 = NOWHERE;
 const NUM_EXPLOSION_SLOTS = 100;
 
 // GLOBAL FOR SMOKE LISTING
-let gExplosionData: EXPLOSIONTYPE[] /* [NUM_EXPLOSION_SLOTS] */;
+export let gExplosionData: EXPLOSIONTYPE[] /* [NUM_EXPLOSION_SLOTS] */;
 let guiNumExplosions: UINT32 = 0;
 
 function GetFreeExplosion(): INT32 {
@@ -104,7 +104,7 @@ function RecountExplosions(): void {
 }
 
 // GENERATE EXPLOSION
-function InternalIgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridNo: INT16, usItem: UINT16, fLocate: boolean, bLevel: INT8): void {
+export function InternalIgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridNo: INT16, usItem: UINT16, fLocate: boolean, bLevel: INT8): void {
   let ExpParams: EXPLOSION_PARAMS;
 
   // Double check that we are using an explosive!
@@ -139,11 +139,11 @@ function InternalIgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16
   GenerateExplosion(addressof(ExpParams));
 }
 
-function IgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridNo: INT16, usItem: UINT16, bLevel: INT8): void {
+export function IgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridNo: INT16, usItem: UINT16, bLevel: INT8): void {
   InternalIgniteExplosion(ubOwner, sX, sY, sZ, sGridNo, usItem, true, bLevel);
 }
 
-function GenerateExplosion(pExpParams: Pointer<EXPLOSION_PARAMS>): void {
+export function GenerateExplosion(pExpParams: Pointer<EXPLOSION_PARAMS>): void {
   let pExplosion: Pointer<EXPLOSIONTYPE>;
   let uiFlags: UINT32;
   let ubOwner: UINT8;
@@ -296,11 +296,11 @@ function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE
   PlayJA2Sample(uiSoundID, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 }
 
-function UpdateExplosionFrame(iIndex: INT32, sCurrentFrame: INT16): void {
+export function UpdateExplosionFrame(iIndex: INT32, sCurrentFrame: INT16): void {
   gExplosionData[iIndex].sCurrentFrame = sCurrentFrame;
 }
 
-function RemoveExplosionData(iIndex: INT32): void {
+export function RemoveExplosionData(iIndex: INT32): void {
   gExplosionData[iIndex].fAllocated = false;
 
   if (gExplosionData[iIndex].iLightID != -1) {
@@ -1034,7 +1034,7 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
   return true;
 }
 
-function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EXPLOSIVETYPE>, sSubsequent: INT16, fRecompileMovementCosts: boolean, sWoundAmt: INT16, sBreathAmt: INT16, ubOwner: UINT8): boolean {
+export function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EXPLOSIVETYPE>, sSubsequent: INT16, fRecompileMovementCosts: boolean, sWoundAmt: INT16, sBreathAmt: INT16, ubOwner: UINT8): boolean {
   let bPosOfMask: INT8 = NO_SLOT;
 
   if (!pSoldier.value.bActive || !pSoldier.value.bInSector || !pSoldier.value.bLife || AM_A_ROBOT(pSoldier)) {
@@ -1680,7 +1680,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
   }
 }
 
-function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: UINT8, fSubsequent: boolean, bLevel: INT8, iSmokeEffectID: INT32): void {
+export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: UINT8, fSubsequent: boolean, bLevel: INT8, iSmokeEffectID: INT32): void {
   let uiNewSpot: INT32;
   let uiTempSpot: INT32;
   let uiBranchSpot: INT32;
@@ -2300,7 +2300,7 @@ function AddBombToQueue(uiWorldBombIndex: UINT32, uiTimeStamp: UINT32): void {
   gfExplosionQueueActive = true;
 }
 
-function HandleExplosionQueue(): void {
+export function HandleExplosionQueue(): void {
   let uiIndex: UINT32;
   let uiWorldBombIndex: UINT32;
   let uiCurrentTime: UINT32;
@@ -2408,7 +2408,7 @@ function HandleExplosionQueue(): void {
   }
 }
 
-function DecayBombTimers(): void {
+export function DecayBombTimers(): void {
   let uiWorldBombIndex: UINT32;
   let uiTimeStamp: UINT32;
   let pObj: Pointer<OBJECTTYPE>;
@@ -2441,7 +2441,7 @@ function DecayBombTimers(): void {
   }
 }
 
-function SetOffBombsByFrequency(ubID: UINT8, bFrequency: INT8): void {
+export function SetOffBombsByFrequency(ubID: UINT8, bFrequency: INT8): void {
   let uiWorldBombIndex: UINT32;
   let uiTimeStamp: UINT32;
   let pObj: Pointer<OBJECTTYPE>;
@@ -2468,7 +2468,7 @@ function SetOffBombsByFrequency(ubID: UINT8, bFrequency: INT8): void {
   }
 }
 
-function SetOffPanicBombs(ubID: UINT8, bPanicTrigger: INT8): void {
+export function SetOffPanicBombs(ubID: UINT8, bPanicTrigger: INT8): void {
   // need to turn off gridnos & flags in gTacticalStatus
   gTacticalStatus.sPanicTriggerGridNo[bPanicTrigger] = NOWHERE;
   if ((gTacticalStatus.sPanicTriggerGridNo[0] == NOWHERE) && (gTacticalStatus.sPanicTriggerGridNo[1] == NOWHERE) && (gTacticalStatus.sPanicTriggerGridNo[2] == NOWHERE)) {
@@ -2499,7 +2499,7 @@ function SetOffPanicBombs(ubID: UINT8, bPanicTrigger: INT8): void {
   }
 }
 
-function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: boolean, bLevel: INT8): boolean {
+export function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: boolean, bLevel: INT8): boolean {
   let uiWorldBombIndex: UINT32;
   let uiTimeStamp: UINT32;
   let pObj: Pointer<OBJECTTYPE>;
@@ -2550,7 +2550,7 @@ function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: boolean, bL
   return fFoundMine;
 }
 
-function ActivateSwitchInGridNo(ubID: UINT8, sGridNo: INT16): void {
+export function ActivateSwitchInGridNo(ubID: UINT8, sGridNo: INT16): void {
   let uiWorldBombIndex: UINT32;
   let pObj: Pointer<OBJECTTYPE>;
 
@@ -2572,7 +2572,7 @@ function ActivateSwitchInGridNo(ubID: UINT8, sGridNo: INT16): void {
   }
 }
 
-function SaveExplosionTableToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveExplosionTableToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let uiExplosionCount: UINT32 = 0;
   let uiCnt: UINT32;
@@ -2630,7 +2630,7 @@ function SaveExplosionTableToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadExplosionTableFromSavedGameFile(hFile: HWFILE): boolean {
+export function LoadExplosionTableFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let uiExplosionCount: UINT32 = 0;
   let uiCnt: UINT32;
@@ -2681,7 +2681,7 @@ function LoadExplosionTableFromSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function DoesSAMExistHere(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGridNo: INT16): boolean {
+export function DoesSAMExistHere(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGridNo: INT16): boolean {
   let cnt: INT32;
   let sSectorNo: INT16;
 
@@ -2705,7 +2705,7 @@ function DoesSAMExistHere(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGr
   return false;
 }
 
-function UpdateAndDamageSAMIfFound(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGridNo: INT16, ubDamage: UINT8): void {
+export function UpdateAndDamageSAMIfFound(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGridNo: INT16, ubDamage: UINT8): void {
   let sSectorNo: INT16;
 
   // OK, First check if SAM exists, and if not, return
@@ -2728,7 +2728,7 @@ function UpdateAndDamageSAMIfFound(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
   // ATE: GRAPHICS UPDATE WILL GET DONE VIA NORMAL EXPLOSION CODE.....
 }
 
-function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
+export function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   let cnt: INT32;
   let sSectorNo: INT16;
   let fInSector: boolean = false;
@@ -2833,7 +2833,7 @@ function FindActiveTimedBomb(): INT32 {
   return -1;
 }
 
-function ActiveTimedBombExists(): boolean {
+export function ActiveTimedBombExists(): boolean {
   if (gfWorldLoaded) {
     return FindActiveTimedBomb() != -1;
   } else {
@@ -2841,7 +2841,7 @@ function ActiveTimedBombExists(): boolean {
   }
 }
 
-function RemoveAllActiveTimedBombs(): void {
+export function RemoveAllActiveTimedBombs(): void {
   let iItemIndex: INT32;
 
   do {

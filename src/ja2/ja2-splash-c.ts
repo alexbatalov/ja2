@@ -1,8 +1,8 @@
-let guiSplashFrameFade: UINT32 = 10;
-let guiSplashStartTime: UINT32 = 0;
+export let guiSplashFrameFade: UINT32 = 10;
+export let guiSplashStartTime: UINT32 = 0;
 
 // Simply create videosurface, load image, and draw it to the screen.
-function InitJA2SplashScreen(): void {
+export function InitJA2SplashScreen(): void {
   let uiLogoID: UINT32 = 0;
   let CurrentDir: STRING512;
   let DataDir: STRING512;

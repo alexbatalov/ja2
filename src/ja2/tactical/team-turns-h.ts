@@ -1,1 +1,1 @@
-const INTERRUPT_QUEUED = () => (gubOutOfTurnPersons > 0);
+export const INTERRUPT_QUEUED = () => (gubOutOfTurnPersons > 0);

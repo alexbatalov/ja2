@@ -3,7 +3,7 @@
 // #ifdef GERMAN
 // #define STARTING_CHEAT_LEVEL 0
 // #else
-const STARTING_CHEAT_LEVEL = 0;
+export const STARTING_CHEAT_LEVEL = 0;
 // #endif
 
 // FIXME: Language-specific code
@@ -26,14 +26,14 @@ const STARTING_CHEAT_LEVEL = 0;
 
 // ATE: remove cheats unless we're doing a debug build
 //#ifdef JA2TESTVERSION
-const INFORMATION_CHEAT_LEVEL = () => (gubCheatLevel >= 3);
-const CHEATER_CHEAT_LEVEL = () => (gubCheatLevel >= 5);
-const DEBUG_CHEAT_LEVEL = () => (gubCheatLevel >= 6);
+export const INFORMATION_CHEAT_LEVEL = () => (gubCheatLevel >= 3);
+export const CHEATER_CHEAT_LEVEL = () => (gubCheatLevel >= 5);
+export const DEBUG_CHEAT_LEVEL = () => (gubCheatLevel >= 6);
 //#else
 //	#define						INFORMATION_CHEAT_LEVEL( )			( FALSE )
 //	#define						CHEATER_CHEAT_LEVEL( )					( FALSE )
 //	#define						DEBUG_CHEAT_LEVEL( )					  ( FALSE )
 //#endif
 
-const RESET_CHEAT_LEVEL = () => (gubCheatLevel = 0);
+export const RESET_CHEAT_LEVEL = () => (gubCheatLevel = 0);
 // #endif

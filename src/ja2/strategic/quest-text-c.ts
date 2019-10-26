@@ -1,4 +1,4 @@
-let QuestDescText: STR16[] /* [] */ = [
+export let QuestDescText: STR16[] /* [] */ = [
   "Deliver Letter",
   "Food Route",
   "Terrorists",
@@ -33,7 +33,7 @@ let QuestDescText: STR16[] /* [] */ = [
   "No 29 Yet",
 ];
 
-let FactDescText: STR16[] /* [] */ = [
+export let FactDescText: STR16[] /* [] */ = [
   "Omerta Liberated",
   "Drassen Liberated",
   "Sanmona Liberated",

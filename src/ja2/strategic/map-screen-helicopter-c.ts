@@ -14,31 +14,31 @@ const REFUEL_HELICOPTER_DELAY = 30; // minutes
 const MAX_SAM_SITE_ACCURACY = 33;
 
 // whether helicopted variables have been set up
-let fSkyRiderSetUp: boolean = false;
+export let fSkyRiderSetUp: boolean = false;
 
 // plotting for a helicopter
-let fPlotForHelicopter: boolean = false;
+export let fPlotForHelicopter: boolean = false;
 
 // is the helicopter available to player?
-let fHelicopterAvailable: boolean = false;
+export let fHelicopterAvailable: boolean = false;
 
 // helicopter vehicle id
-let iHelicopterVehicleId: INT32 = -1;
+export let iHelicopterVehicleId: INT32 = -1;
 
 // helicopter icon
-let guiHelicopterIcon: UINT32;
+export let guiHelicopterIcon: UINT32;
 
 // total distance travelled
 // INT32 iTotalHeliDistanceSinceRefuel = 0;
 
 // total owed to player
-let iTotalAccumulatedCostByPlayer: INT32 = 0;
+export let iTotalAccumulatedCostByPlayer: INT32 = 0;
 
 // whether or not skyrider is alive and well? and on our side yet?
-let fSkyRiderAvailable: boolean = false;
+export let fSkyRiderAvailable: boolean = false;
 
 // helicopter destroyed
-let fHelicopterDestroyed: boolean = false;
+export let fHelicopterDestroyed: boolean = false;
 
 // list of sector locations where SkyRider can be refueled
 let ubRefuelList: UINT8[][] /* [NUMBER_OF_REFUEL_SITES][2] */ = [
@@ -52,45 +52,45 @@ let sRefuelStartGridNo: INT16[] /* [NUMBER_OF_REFUEL_SITES] */ = [
 ];
 
 // whether or not helicopter can refuel at this site
-let fRefuelingSiteAvailable: boolean[] /* [NUMBER_OF_REFUEL_SITES] */ = [
+export let fRefuelingSiteAvailable: boolean[] /* [NUMBER_OF_REFUEL_SITES] */ = [
   false,
   false,
 ];
 
 // is the heli in the air?
-let fHelicopterIsAirBorne: boolean = false;
+export let fHelicopterIsAirBorne: boolean = false;
 
 // is the pilot returning straight to base?
-let fHeliReturnStraightToBase: boolean = false;
+export let fHeliReturnStraightToBase: boolean = false;
 
 // heli hovering
-let fHoveringHelicopter: boolean = false;
+export let fHoveringHelicopter: boolean = false;
 
 // time started hovering
-let uiStartHoverTime: UINT32 = 0;
+export let uiStartHoverTime: UINT32 = 0;
 
 // what state are skyrider's monologues in in?
-let guiHelicopterSkyriderTalkState: UINT32 = 0;
+export let guiHelicopterSkyriderTalkState: UINT32 = 0;
 
 // the flags for skyrider events
-let fShowEstoniRefuelHighLight: boolean = false;
-let fShowOtherSAMHighLight: boolean = false;
-let fShowDrassenSAMHighLight: boolean = false;
-let fShowCambriaHospitalHighLight: boolean = false;
+export let fShowEstoniRefuelHighLight: boolean = false;
+export let fShowOtherSAMHighLight: boolean = false;
+export let fShowDrassenSAMHighLight: boolean = false;
+export let fShowCambriaHospitalHighLight: boolean = false;
 
-let guiTimeOfLastSkyriderMonologue: UINT32 = 0;
+export let guiTimeOfLastSkyriderMonologue: UINT32 = 0;
 
-let gubHelicopterHitsTaken: UINT8 = 0;
+export let gubHelicopterHitsTaken: UINT8 = 0;
 
-let gfSkyriderSaidCongratsOnTakingSAM: boolean = false;
-let gubPlayerProgressSkyriderLastCommentedOn: UINT8 = 0;
+export let gfSkyriderSaidCongratsOnTakingSAM: boolean = false;
+export let gubPlayerProgressSkyriderLastCommentedOn: UINT8 = 0;
 
 // skyrider placeholder
 let SoldierSkyRider: SOLDIERTYPE;
 
 let pSkyRider: Pointer<SOLDIERTYPE>;
 
-function InitializeHelicopter(): void {
+export function InitializeHelicopter(): void {
   // must be called whenever a new game starts up!
   fHelicopterAvailable = false;
   iHelicopterVehicleId = -1;
@@ -151,7 +151,7 @@ function AddSoldierToHelicopter(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return PutSoldierInVehicle(pSoldier, iHelicopterVehicleId);
 }
 
-function RemoveSoldierFromHelicopter(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function RemoveSoldierFromHelicopter(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // attempt to add soldier to helicopter
   if (iHelicopterVehicleId == -1) {
     // no heli yet
@@ -179,7 +179,7 @@ function RemoveSoldierFromHelicopter(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return TakeSoldierOutOfVehicle(pSoldier);
 }
 
-function HandleHeliEnteringSector(sX: INT16, sY: INT16): boolean {
+export function HandleHeliEnteringSector(sX: INT16, sY: INT16): boolean {
   let ubNumEnemies: UINT8;
 
   // check for SAM attack upon the chopper.  If it's destroyed by the attack, do nothing else here
@@ -417,7 +417,7 @@ function SkyriderDestroyed(): void {
   return;
 }
 
-function CanHelicopterFly(): boolean {
+export function CanHelicopterFly(): boolean {
   // check if heli is available for flight?
 
   // is the heli available
@@ -455,7 +455,7 @@ function CanHelicopterFly(): boolean {
   return true;
 }
 
-function IsHelicopterPilotAvailable(): boolean {
+export function IsHelicopterPilotAvailable(): boolean {
   // what is state of skyrider?
   if (fSkyRiderAvailable == false) {
     return false;
@@ -497,7 +497,7 @@ function LandHelicopter(): void {
   }
 }
 
-function TakeOffHelicopter(): void {
+export function TakeOffHelicopter(): void {
   // heli in the air
   fHelicopterIsAirBorne = true;
 
@@ -521,7 +521,7 @@ function StartHoverTime(): void {
   return;
 }
 
-function HandleHeliHoverLong(): void {
+export function HandleHeliHoverLong(): void {
   // post message about hovering too long
   if (fHoveringHelicopter) {
     // proper event, post next one
@@ -538,7 +538,7 @@ function HandleHeliHoverLong(): void {
   }
 }
 
-function HandleHeliHoverTooLong(): void {
+export function HandleHeliHoverTooLong(): void {
   // reset hover time
   uiStartHoverTime = 0;
 
@@ -584,7 +584,7 @@ function DoesSkyriderNoticeEnemiesInSector(ubNumEnemies: UINT8): boolean {
 }
 
 // if the heli is on the move, what is the distance it will move..the length of the merc path, less the first node
-function DistanceOfIntendedHelicopterPath(): INT32 {
+export function DistanceOfIntendedHelicopterPath(): INT32 {
   let pNode: PathStPtr = null;
   let iLength: INT32 = 0;
 
@@ -632,7 +632,7 @@ function CheckForArrivalAtRefuelPoint(): boolean {
   return true;
 }
 
-function SetUpHelicopterForMovement(): void {
+export function SetUpHelicopterForMovement(): void {
   // check if helicopter vehicle has a mvt group, if not, assign one in this sector
   let iCounter: INT32 = 0;
 
@@ -658,7 +658,7 @@ function HeliCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT1
   return CharacterDialogue(Enum268.SKYRIDER, usQuoteNum, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, false, false);
 }
 
-function GetNumberOfPassengersInHelicopter(): INT32 {
+export function GetNumberOfPassengersInHelicopter(): INT32 {
   let iNumber: INT32 = 0;
 
   if (iHelicopterVehicleId != -1) {
@@ -668,7 +668,7 @@ function GetNumberOfPassengersInHelicopter(): INT32 {
   return iNumber;
 }
 
-function IsRefuelSiteInSector(sMapX: INT16, sMapY: INT16): boolean {
+export function IsRefuelSiteInSector(sMapX: INT16, sMapY: INT16): boolean {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < Enum137.NUMBER_OF_REFUEL_SITES; iCounter++) {
@@ -680,7 +680,7 @@ function IsRefuelSiteInSector(sMapX: INT16, sMapY: INT16): boolean {
   return false;
 }
 
-function UpdateRefuelSiteAvailability(): void {
+export function UpdateRefuelSiteAvailability(): void {
   let iCounter: INT32 = 0;
 
   // Generally, only Drassen is initially available for refuelling
@@ -706,7 +706,7 @@ function UpdateRefuelSiteAvailability(): void {
   }
 }
 
-function SetUpHelicopterForPlayer(sX: INT16, sY: INT16): void {
+export function SetUpHelicopterForPlayer(sX: INT16, sY: INT16): void {
   if (fSkyRiderSetUp == false) {
     fHelicopterAvailable = true;
     fSkyRiderAvailable = true;
@@ -733,7 +733,7 @@ function SetUpHelicopterForPlayer(sX: INT16, sY: INT16): void {
   return;
 }
 
-function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
+export function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
   // take everyone out of heli and add to movement group
   let iCounter: INT32 = 0;
   let ubGroupId: UINT8 = 0;
@@ -789,7 +789,7 @@ function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
   return ubGroupId;
 }
 
-function SkyRiderTalk(usQuoteNum: UINT16): void {
+export function SkyRiderTalk(usQuoteNum: UINT16): void {
   // have skyrider talk to player
   HeliCharacterDialogue(pSkyRider, usQuoteNum);
 
@@ -798,7 +798,7 @@ function SkyRiderTalk(usQuoteNum: UINT16): void {
   return;
 }
 
-function HandleSkyRiderMonologueEvent(uiEventCode: UINT32, uiSpecialCode: UINT32): void {
+export function HandleSkyRiderMonologueEvent(uiEventCode: UINT32, uiSpecialCode: UINT32): void {
   // will handle the skyrider monologue about where the SAM sites are and what not
 
   TurnOnAirSpaceMode();
@@ -941,7 +941,7 @@ function HandleSkyRiderMonologueAboutOtherSAMSites(uiSpecialCode: UINT32): void 
   return;
 }
 
-function CheckAndHandleSkyriderMonologues(): void {
+export function CheckAndHandleSkyriderMonologues(): void {
   // wait at least this many days between Skyrider monologues
   if ((GetWorldTotalMin() - guiTimeOfLastSkyriderMonologue) >= (MIN_DAYS_BETWEEN_SKYRIDER_MONOLOGUES * 24 * 60)) {
     if (guiHelicopterSkyriderTalkState == 0) {
@@ -970,7 +970,7 @@ function CheckAndHandleSkyriderMonologues(): void {
   }
 }
 
-function HandleAnimationOfSectors(): void {
+export function HandleAnimationOfSectors(): void {
   let fSkipSpeakersLocator: boolean = false;
   // these don't need to be saved, they merely turn off the highlights after they stop flashing
   /* static */ let fOldShowDrassenSAMHighLight: boolean = false;
@@ -1241,7 +1241,7 @@ INT32 GetTotalCostOfHelicopterTrip( void )
 }
 */
 
-function HandleHelicopterOnGroundGraphic(): void {
+export function HandleHelicopterOnGroundGraphic(): void {
   let ubSite: UINT8 = 0;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1289,7 +1289,7 @@ function HandleHelicopterOnGroundGraphic(): void {
   }
 }
 
-function HandleHelicopterOnGroundSkyriderProfile(): void {
+export function HandleHelicopterOnGroundSkyriderProfile(): void {
   let ubSite: UINT8 = 0;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1516,7 +1516,7 @@ function EndOfHelicoptersPath(): boolean {
 }
 
 // check if helicopter can take off?
-function CanHelicopterTakeOff(): boolean {
+export function CanHelicopterTakeOff(): boolean {
   let sHelicopterSector: INT16 = 0;
 
   // if it's already in the air
@@ -1598,7 +1598,7 @@ function AddHelicopterToMaps(fAdd: boolean, ubSite: UINT8): void {
   }
 }
 
-function IsSkyriderIsFlyingInSector(sSectorX: INT16, sSectorY: INT16): boolean {
+export function IsSkyriderIsFlyingInSector(sSectorX: INT16, sSectorY: INT16): boolean {
   let pGroup: Pointer<GROUP>;
 
   // up and about?
@@ -1614,7 +1614,7 @@ function IsSkyriderIsFlyingInSector(sSectorX: INT16, sSectorY: INT16): boolean {
   return false;
 }
 
-function IsGroupTheHelicopterGroup(pGroup: Pointer<GROUP>): boolean {
+export function IsGroupTheHelicopterGroup(pGroup: Pointer<GROUP>): boolean {
   if ((iHelicopterVehicleId != -1) && VehicleIdIsValid(iHelicopterVehicleId) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup != 0) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup == pGroup.value.ubGroupID)) {
     return true;
   }
@@ -1622,7 +1622,7 @@ function IsGroupTheHelicopterGroup(pGroup: Pointer<GROUP>): boolean {
   return false;
 }
 
-function GetNumSafeSectorsInPath(): INT16 {
+export function GetNumSafeSectorsInPath(): INT16 {
   // get the last sector value in the helictoper's path
   let pNode: PathStPtr = null;
   let uiLocation: UINT32 = 0;
@@ -1687,7 +1687,7 @@ function GetNumSafeSectorsInPath(): INT16 {
   return uiCount;
 }
 
-function GetNumUnSafeSectorsInPath(): INT16 {
+export function GetNumUnSafeSectorsInPath(): INT16 {
   // get the last sector value in the helictoper's path
   let pNode: PathStPtr = null;
   let uiLocation: UINT32 = 0;
@@ -1785,7 +1785,7 @@ function PaySkyriderBill(): void {
   }
 }
 
-function PayOffSkyriderDebtIfAny(): void {
+export function PayOffSkyriderDebtIfAny(): void {
   let iAmountOwed: INT32;
   let iPayAmount: INT32;
 
@@ -1841,7 +1841,7 @@ function MakeHeliReturnToBase(): void {
   StopTimeCompression();
 }
 
-function SoldierAboardAirborneHeli(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function SoldierAboardAirborneHeli(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   Assert(pSoldier);
 
   // if not in a vehicle, or not aboard the helicopter

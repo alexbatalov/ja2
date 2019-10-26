@@ -83,9 +83,9 @@ let AimSortCheckBoxLoc: UINT16[] /* [] */ = [
   (AIM_SORT_SORT_BY_X + 172), (AIM_SORT_SORT_BY_Y + 17),
 ];
 
-let gubCurrentSortMode: UINT8;
+export let gubCurrentSortMode: UINT8;
 let gubOldSortMode: UINT8;
-let gubCurrentListMode: UINT8;
+export let gubCurrentListMode: UINT8;
 let gubOldListMode: UINT8;
 
 // Mouse stuff
@@ -121,14 +121,14 @@ let guiToMugShots: UINT32;
 let guiToStats: UINT32;
 let guiSelectLight: UINT32;
 
-function GameInitAimSort(): void {
+export function GameInitAimSort(): void {
   gubCurrentSortMode = 0;
   gubOldSortMode = 0;
   gubCurrentListMode = AIM_DESCEND;
   gubOldListMode = AIM_DESCEND;
 }
 
-function EnterAimSort(): boolean {
+export function EnterAimSort(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let ubCurNumber: UINT8 = 0;
   let ubWidth: UINT16;
@@ -238,7 +238,7 @@ function EnterAimSort(): boolean {
   return true;
 }
 
-function ExitAimSort(): void {
+export function ExitAimSort(): void {
   // Sort the merc array
   SortMercArray();
   RemoveAimDefaults();
@@ -264,10 +264,10 @@ function ExitAimSort(): void {
   ExitAimMenuBar();
 }
 
-function HandleAimSort(): void {
+export function HandleAimSort(): void {
 }
 
-function RenderAimSort(): void {
+export function RenderAimSort(): void {
   let hSortByHandle: HVOBJECT;
   let hToAlumniHandle: HVOBJECT;
   let hToMugShotHandle: HVOBJECT;

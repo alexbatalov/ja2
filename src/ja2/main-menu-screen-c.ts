@@ -37,7 +37,7 @@ let gfMainMenuScreenExit: boolean = false;
 
 let guiMainMenuExitScreen: UINT32 = Enum26.MAINMENU_SCREEN;
 
-function MainMenuScreenInit(): UINT32 {
+export function MainMenuScreenInit(): UINT32 {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version Label: %S", zVersionLabel));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version #:     %s", czVersionNumber));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Tracking #:    %S", zTrackingNumber));
@@ -45,7 +45,7 @@ function MainMenuScreenInit(): UINT32 {
   return true;
 }
 
-function MainMenuScreenHandle(): UINT32 {
+export function MainMenuScreenHandle(): UINT32 {
   let cnt: UINT32;
   let uiTime: UINT32;
 
@@ -126,7 +126,7 @@ function MainMenuScreenHandle(): UINT32 {
   return guiMainMenuExitScreen;
 }
 
-function MainMenuScreenShutdown(): UINT32 {
+export function MainMenuScreenShutdown(): UINT32 {
   return false;
 }
 
@@ -174,7 +174,7 @@ function HandleMainMenuScreen(): void {
   }
 }
 
-function InitMainMenu(): boolean {
+export function InitMainMenu(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   //	gfDoHelpScreen = 0;
@@ -338,7 +338,7 @@ function HandleHelpScreenInput(): void {
   }
 }
 
-function ClearMainMenu(): void {
+export function ClearMainMenu(): void {
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 

@@ -1,5 +1,5 @@
 // enum used for the different help screens that can come up
-const enum Enum17 {
+export const enum Enum17 {
   HELP_SCREEN_LAPTOP,
   HELP_SCREEN_MAPSCREEN,
   HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED,
@@ -12,7 +12,7 @@ const enum Enum17 {
   HELP_SCREEN_NUMBER_OF_HELP_SCREENS,
 }
 
-interface HELP_SCREEN_STRUCT {
+export interface HELP_SCREEN_STRUCT {
   bCurrentHelpScreen: INT8;
   uiFlags: UINT32;
 

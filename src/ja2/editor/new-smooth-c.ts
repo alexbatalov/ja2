@@ -420,7 +420,7 @@ function CalcNewCavePerimeterValue(iMapIndex: INT32): UINT8 {
   return ubTotal;
 }
 
-function AddCave(iMapIndex: INT32, usIndex: UINT16): void {
+export function AddCave(iMapIndex: INT32, usIndex: UINT16): void {
   let pStruct: Pointer<LEVELNODE>;
 
   if (iMapIndex < 0 || iMapIndex >= NOWHERE)
@@ -441,7 +441,7 @@ const EXTERIOR_L_SHADOW_INDEX = 30;
 const INTERIOR_BOTTOMEND_SHADOW_INDEX = 31;
 
 // Wall Look Up Table containing variants and indices with each row being a different walltype.
-let gbWallTileLUT: INT8[][] /* [NUM_WALL_TYPES][7] */ = [
+export let gbWallTileLUT: INT8[][] /* [NUM_WALL_TYPES][7] */ = [
   //	The number of variants of this tile type.
   //  |			The first relative index of the wall type (FIRSTWALL, SECONDWALL, etc. )  walltype + 10
   //	|			|		The 2nd relative index  ( walltype + 11 )
@@ -553,7 +553,7 @@ function BuildSlantRoof(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32
   }
 }
 
-function PickAWallPiece(usWallPieceType: UINT16): UINT16 {
+export function PickAWallPiece(usWallPieceType: UINT16): UINT16 {
   let usVariants: UINT16;
   let usVariantChosen: UINT16;
   let usWallPieceChosen: UINT16 = 0;
@@ -575,7 +575,7 @@ function PickAWallPiece(usWallPieceType: UINT16): UINT16 {
 // NOTE:  Passing NULL for usWallType will force it to calculate the closest existing wall type, and
 //  use that for building this new wall.  It is necessary for restructuring a building, but not for
 //  adding on to an existing building, where the type is already known.
-function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT16): void {
+export function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT16): void {
   let sIndex: INT16;
   let usTileIndex: UINT16;
   let ubWallClass: UINT16;
@@ -727,7 +727,7 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
   AddWallToStructLayer(iMapIndex, usTileIndex, false);
 }
 
-function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16): void {
+export function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16): void {
   let usRoofIndex: UINT16;
   let usTileIndex: UINT16;
   let fTop: boolean = false;
@@ -778,7 +778,7 @@ function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16): void {
 // wall orientions giving priority to the top and left walls before anything else.
 // NOTE:  passing NULL for usRoofType will force the function to calculate the nearest roof type,
 //  and use that for the new roof.  This is needed when erasing parts of multiple buildings simultaneously.
-function RebuildRoof(iMapIndex: UINT32, usRoofType: UINT16): void {
+export function RebuildRoof(iMapIndex: UINT32, usRoofType: UINT16): void {
   let usRoofIndex: UINT16;
   let usTileIndex: UINT16;
   let fTop: boolean;
@@ -848,7 +848,7 @@ function EraseFloor(iMapIndex: UINT32): void {
   RemoveAllLandsOfTypeRange(iMapIndex, Enum313.FIRSTFLOOR, LASTFLOOR);
 }
 
-function EraseWalls(iMapIndex: UINT32): void {
+export function EraseWalls(iMapIndex: UINT32): void {
   AddToUndoList(iMapIndex);
   RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
   RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
@@ -859,7 +859,7 @@ function EraseWalls(iMapIndex: UINT32): void {
   RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.ANOTHERDEBRIS, Enum313.ANOTHERDEBRIS);
 }
 
-function EraseBuilding(iMapIndex: UINT32): void {
+export function EraseBuilding(iMapIndex: UINT32): void {
   EraseRoof(iMapIndex);
   EraseFloor(iMapIndex);
   EraseWalls(iMapIndex);
@@ -922,7 +922,7 @@ UINT8 CalcNewCavePerimeterValue( INT32 iMapIndex );
 void AddCave( INT32 iMapIndex, UINT16 usIndex );
 */
 
-function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
+export function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
   let top: UINT32;
   let left: UINT32;
   let right: UINT32;
@@ -961,7 +961,7 @@ function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
     }
 }
 
-function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
+export function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
   let top: INT32;
   let left: INT32;
   let right: INT32;
@@ -1016,7 +1016,7 @@ function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
 // When the user removes a section from a building, it will not only erase the
 // entire highlighted area, it'll repair the building itself so there are no
 // outside walls missing from the new building.
-function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
+export function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
   let top: UINT32;
   let left: UINT32;
   let right: UINT32;
@@ -1088,7 +1088,7 @@ function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
     }
 }
 
-function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
+export function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
   let top: INT32;
   let left: INT32;
   let right: INT32;
@@ -1265,7 +1265,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
     }
 }
 
-function AnalyseCaveMapForStructureInfo(): void {
+export function AnalyseCaveMapForStructureInfo(): void {
   let pStruct: Pointer<LEVELNODE>;
   let uiTileType: UINT32;
   let iMapIndex: INT32;

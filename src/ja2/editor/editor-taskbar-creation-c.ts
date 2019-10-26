@@ -436,7 +436,7 @@ function InitEditorTerrainToolbar(): void {
   SetButtonFastHelpText(iEditorButton[Enum32.TERRAIN_LOWER_DENSITY], "Lower brush density");
 }
 
-function CreateEditorTaskbarInternal(): void {
+export function CreateEditorTaskbarInternal(): void {
   // Create the tabs for the editor taskbar
   iEditorButton[Enum32.TAB_TERRAIN] = CreateTextButton("Terrain", SMALLFONT1(), FONT_LTKHAKI, FONT_DKKHAKI, BUTTON_USE_DEFAULT, 100, 460, 90, 20, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BUTTON_NO_CALLBACK, TaskTerrainCallback);
   SpecifyButtonDownTextColors(iEditorButton[Enum32.TAB_TERRAIN], FONT_YELLOW, FONT_ORANGE);

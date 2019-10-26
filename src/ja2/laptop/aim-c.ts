@@ -1,4 +1,4 @@
-let AimMercArray: UINT8[] /* [MAX_NUMBER_MERCS] */;
+export let AimMercArray: UINT8[] /* [MAX_NUMBER_MERCS] */;
 
 let gCurrentAimPage: UINT8[] /* [NUM_AIM_SCREENS] */ = [
   Enum95.LAPTOP_MODE_AIM,
@@ -116,8 +116,8 @@ let guiPolicies: UINT32;
 let guiHistory: UINT32;
 let guiLinks: UINT32;
 let guiWarning: UINT32;
-let guiBottomButton: UINT32;
-let guiBottomButton2: UINT32;
+export let guiBottomButton: UINT32;
+export let guiBottomButton2: UINT32;
 let guiFlowerAdvertisement: UINT32;
 let guiAdForAdsImages: UINT32;
 let guiInsuranceAdImages: UINT32;
@@ -157,11 +157,11 @@ let fFirstTimeIn: boolean = true;
 // ***********************  Functions		*************************
 //
 
-function GameInitAIM(): void {
+export function GameInitAIM(): void {
   LaptopInitAim();
 }
 
-function EnterAIM(): boolean {
+export function EnterAIM(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   gubWarningTimer = 0;
@@ -257,7 +257,7 @@ function LaptopInitAim(): void {
   gfInitAdArea = true;
 }
 
-function ExitAIM(): void {
+export function ExitAIM(): void {
   RemoveAimDefaults();
 
   DeleteVideoObjectFromIndex(guiMemberCard);
@@ -279,12 +279,12 @@ function ExitAIM(): void {
   MSYS_RemoveRegion(addressof(gSelectedBannerRegion));
 }
 
-function HandleAIM(): void {
+export function HandleAIM(): void {
   HandleAdAndWarningArea(gfInitAdArea, false);
   gfInitAdArea = false;
 }
 
-function RenderAIM(): void {
+export function RenderAIM(): void {
   let hMemberCardHandle: HVOBJECT;
   let hPoliciesHandle: HVOBJECT;
   let hLinksHandle: HVOBJECT;
@@ -364,7 +364,7 @@ function SelectLinksRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 }
 
-function InitAimDefaults(): boolean {
+export function InitAimDefaults(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the Rust bacground graphic and add it
@@ -384,7 +384,7 @@ function InitAimDefaults(): boolean {
   return true;
 }
 
-function RemoveAimDefaults(): boolean {
+export function RemoveAimDefaults(): boolean {
   DeleteVideoObjectFromIndex(guiRustBackGround);
   DeleteVideoObjectFromIndex(guiAimSymbol);
   MSYS_RemoveRegion(addressof(gSelectedAimLogo));
@@ -392,7 +392,7 @@ function RemoveAimDefaults(): boolean {
   return true;
 }
 
-function DrawAimDefaults(): boolean {
+export function DrawAimDefaults(): boolean {
   let hRustBackGroundHandle: HVOBJECT;
   let hAimSymbolHandle: HVOBJECT;
   let x: UINT16;
@@ -428,7 +428,7 @@ function SelectAimLogoRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
   }
 }
 
-function DisplayAimSlogan(): boolean {
+export function DisplayAimSlogan(): boolean {
   let sSlogan: wchar_t[] /* [400] */;
 
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, 0, AIM_HISTORY_LINE_SIZE);
@@ -438,7 +438,7 @@ function DisplayAimSlogan(): boolean {
   return true;
 }
 
-function DisplayAimCopyright(): boolean {
+export function DisplayAimCopyright(): boolean {
   let sSlogan: wchar_t[] /* [400] */;
   let uiStartLoc: UINT32 = 0;
 
@@ -460,7 +460,7 @@ function DisplayAimCopyright(): boolean {
 }
 
 // Buttons
-function InitAimMenuBar(): boolean {
+export function InitAimMenuBar(): boolean {
   let i: UINT8;
   let usPosX: UINT16;
 
@@ -478,7 +478,7 @@ function InitAimMenuBar(): boolean {
   }
   return true;
 }
-function ExitAimMenuBar(): boolean {
+export function ExitAimMenuBar(): boolean {
   let i: UINT8;
 
   UnloadButtonImage(guiBottomButtonImage);
@@ -524,7 +524,7 @@ function ResetAimButtons(Buttons: Pointer<UINT32>, uNumberOfButtons: UINT16): vo
   }
 }
 
-function DisableAimButton(): void {
+export function DisableAimButton(): void {
   let i: int = 0;
 
   for (i = 0; i < NUM_AIM_BOTTOMBUTTONS; i++) {

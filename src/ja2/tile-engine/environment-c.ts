@@ -1,7 +1,7 @@
 // effects whether or not time of day effects the lighting.  Underground
 // maps have an ambient light level that is saved in the map, and doesn't change.
-let gfBasement: boolean = false;
-let gfCaves: boolean = false;
+export let gfBasement: boolean = false;
+export let gfCaves: boolean = false;
 
 const ENV_TOD_FLAGS_DAY = 0x00000001;
 const ENV_TOD_FLAGS_DAWN = 0x00000002;
@@ -26,8 +26,8 @@ const DAY_TO_DUSK = (DUSK_START - DAY_START);
 const DUSK_TO_NIGHT = (NIGHT_START - DUSK_START);
 const NIGHT_TO_DAWN = (24 * 60 - NIGHT_START + DAWN_START);
 
-let guiEnvWeather: UINT32 = 0;
-let guiRainLoop: UINT32 = NO_SAMPLE;
+export let guiEnvWeather: UINT32 = 0;
+export let guiRainLoop: UINT32 = NO_SAMPLE;
 
 // frame cues for lightning
 let ubLightningTable: UINT8[][][] /* [3][10][2] */ = [
@@ -127,16 +127,16 @@ const GLOBAL_WARM_END = (17 * 60);
 const HOT_DAY_LIGHTLEVEL = 2;
 
 let fTimeOfDayControls: boolean = true;
-let guiEnvTime: UINT32 = 0;
-let guiEnvDay: UINT32 = 0;
-let gubEnvLightValue: UINT8 = 0;
-let gfDoLighting: boolean = false;
+export let guiEnvTime: UINT32 = 0;
+export let guiEnvDay: UINT32 = 0;
+export let gubEnvLightValue: UINT8 = 0;
+export let gfDoLighting: boolean = false;
 
-let gubDesertTemperature: UINT8 = 0;
-let gubGlobalTemperature: UINT8 = 0;
+export let gubDesertTemperature: UINT8 = 0;
+export let gubGlobalTemperature: UINT8 = 0;
 
 // polled by the game to handle time/atmosphere changes from gamescreen
-function EnvironmentController(fCheckForLights: boolean): void {
+export function EnvironmentController(fCheckForLights: boolean): void {
   let uiOldWorldHour: UINT32;
   let ubLightAdjustFromWeather: UINT8 = 0;
 
@@ -192,7 +192,7 @@ function EnvironmentController(fCheckForLights: boolean): void {
   }
 }
 
-function BuildDayLightLevels(): void {
+export function BuildDayLightLevels(): void {
   let uiLoop: UINT32;
   let uiHour: UINT32;
 
@@ -250,7 +250,7 @@ function BuildDayLightLevels(): void {
   AddEveryDayStrategicEvent(Enum132.EVENT_TURN_OFF_PRIME_LIGHTS, uiHour * 60, 0);
 }
 
-function BuildDayAmbientSounds(): void {
+export function BuildDayAmbientSounds(): void {
   let cnt: INT32;
 
   // Add events!
@@ -274,7 +274,7 @@ function BuildDayAmbientSounds(): void {
   guiRainLoop = NO_SAMPLE;
 }
 
-function ForecastDayEvents(): void {
+export function ForecastDayEvents(): void {
   let uiOldDay: UINT32;
   let uiStartTime: UINT32;
   let uiEndTime: UINT32;
@@ -381,7 +381,7 @@ function EnvDoLightning(): void {
   }
 }
 
-function GetTimeOfDayAmbientLightLevel(): UINT8 {
+export function GetTimeOfDayAmbientLightLevel(): UINT8 {
   if (SectorTemperature(GetWorldMinutesInDay(), gWorldSectorX, gWorldSectorY, gbWorldSectorZ) == Enum302.HOT) {
     return HOT_DAY_LIGHTLEVEL;
   } else {
@@ -409,7 +409,7 @@ function EnvEndRainStorm(): void {
   guiEnvWeather &= (~WEATHER_FORECAST_SHOWERS);
 }
 
-function TurnOnNightLights(): void {
+export function TurnOnNightLights(): void {
   let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_NIGHTTIME && !(LightSprites[i].uiFlags & (LIGHT_SPR_ON | MERC_LIGHT))) {
@@ -418,7 +418,7 @@ function TurnOnNightLights(): void {
   }
 }
 
-function TurnOffNightLights(): void {
+export function TurnOffNightLights(): void {
   let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_NIGHTTIME && LightSprites[i].uiFlags & LIGHT_SPR_ON && !(LightSprites[i].uiFlags & MERC_LIGHT)) {
@@ -427,7 +427,7 @@ function TurnOffNightLights(): void {
   }
 }
 
-function TurnOnPrimeLights(): void {
+export function TurnOnPrimeLights(): void {
   let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_PRIMETIME && !(LightSprites[i].uiFlags & (LIGHT_SPR_ON | MERC_LIGHT))) {
@@ -436,7 +436,7 @@ function TurnOnPrimeLights(): void {
   }
 }
 
-function TurnOffPrimeLights(): void {
+export function TurnOffPrimeLights(): void {
   let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_PRIMETIME && LightSprites[i].uiFlags & LIGHT_SPR_ON && !(LightSprites[i].uiFlags & MERC_LIGHT)) {
@@ -445,7 +445,7 @@ function TurnOffPrimeLights(): void {
   }
 }
 
-function UpdateTemperature(ubTemperatureCode: UINT8): void {
+export function UpdateTemperature(ubTemperatureCode: UINT8): void {
   switch (ubTemperatureCode) {
     case Enum303.TEMPERATURE_DESERT_COOL:
       gubDesertTemperature = 0;
@@ -469,7 +469,7 @@ function UpdateTemperature(ubTemperatureCode: UINT8): void {
   gfDoLighting = true;
 }
 
-function SectorTemperature(uiTime: UINT32, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT8 {
+export function SectorTemperature(uiTime: UINT32, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT8 {
   if (bSectorZ > 0) {
     // cool underground
     return 0;

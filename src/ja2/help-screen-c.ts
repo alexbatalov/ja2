@@ -147,7 +147,7 @@ const enum Enum16 {
 
 // ddd
 
-let gHelpScreen: HELP_SCREEN_STRUCT;
+export let gHelpScreen: HELP_SCREEN_STRUCT;
 
 interface HELP_SCREEN_BTN_TEXT_RECORD {
   iButtonTextNum: INT32[] /* [HELP_SCREEN_NUM_BTNS] */;
@@ -299,7 +299,7 @@ let guiHelpScreenScrollArrowImage: UINT32[] /* [2] */;
 
 // ppp
 
-function InitHelpScreenSystem(): void {
+export function InitHelpScreenSystem(): void {
   // set some values
   memset(addressof(gHelpScreen), 0, sizeof(gHelpScreen));
 
@@ -312,7 +312,7 @@ function InitHelpScreenSystem(): void {
   gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = false;
 }
 
-function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: boolean): boolean {
+export function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: boolean): boolean {
   // if the screen is being forsced to come up ( user pressed 'h' )
   if (fForceHelpScreenToComeUp) {
     // Set thefact that the user broughtthe help screen up
@@ -377,7 +377,7 @@ HELP_SCREEN_SHOULD_COME_UP:
   return true;
 }
 
-function HelpScreenHandler(): void {
+export function HelpScreenHandler(): void {
   // if we are just entering the help screen
   if (gfHelpScreenEntry) {
     // setup the help screen
@@ -1249,7 +1249,7 @@ void HelpScreenDontShowHelpAgainToggleTextRegionCallBack(MOUSE_REGION * pRegion,
 */
 
 // set the fact the we have chmaged to a new screen
-function NewScreenSoResetHelpScreen(): void {
+export function NewScreenSoResetHelpScreen(): void {
   gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = false;
   gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount = 0;
 }
@@ -1743,7 +1743,7 @@ function RefreshAllHelpScreenButtons(): void {
   ButtonList[giHelpScreenScrollArrows[1]].value.uiFlags |= BUTTON_DIRTY;
 }
 
-function HelpScreenDetermineWhichMapScreenHelpToShow(): INT8 {
+export function HelpScreenDetermineWhichMapScreenHelpToShow(): INT8 {
   if (fShowMapInventoryPool) {
     return Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY;
   }

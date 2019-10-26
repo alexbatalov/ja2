@@ -374,13 +374,13 @@ let CursorDatabase: CursorData[] /* [] */ = [
   [ [ Enum318.C_TRINGS, 6, 0, HIDE_SUBCURSOR, HIDE_SUBCURSOR ], [ Enum318.C_FUEL_RED, 0, 0, CENTER_SUBCURSOR, CENTER_SUBCURSOR ], [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0 ], 2, CENTER_CURSOR, CENTER_CURSOR, 0, 0, 0, 0 ],
 ];
 
-function InitCursors(): void {
+export function InitCursors(): void {
   InitCursorDatabase(CursorFileDatabase, CursorDatabase, Enum318.NUM_CURSOR_FILES);
 
   SetMouseBltHook(BltJA2CursorData);
 }
 
-function HandleAnimatedCursors(): void {
+export function HandleAnimatedCursors(): void {
   if (COUNTERDONE(Enum386.CURSORCOUNTER)) {
     RESETCOUNTER(Enum386.CURSORCOUNTER);
 
@@ -542,7 +542,7 @@ function DrawMouseText(): void {
   }
 }
 
-function UpdateAnimatedCursorFrames(uiCursorIndex: UINT32): void {
+export function UpdateAnimatedCursorFrames(uiCursorIndex: UINT32): void {
   let pCurData: Pointer<CursorData>;
   let pCurImage: Pointer<CursorImage>;
   let cnt: UINT32;
@@ -583,15 +583,15 @@ function UpdateFlashingCursorFrames(uiCursorIndex: UINT32): void {
   }
 }
 
-function SetCursorSpecialFrame(uiCursor: UINT32, ubFrame: UINT8): void {
+export function SetCursorSpecialFrame(uiCursor: UINT32, ubFrame: UINT8): void {
   CursorDatabase[uiCursor].bFlashIndex = ubFrame;
 }
 
-function SetCursorFlags(uiCursor: UINT32, ubFlags: UINT8): void {
+export function SetCursorFlags(uiCursor: UINT32, ubFlags: UINT8): void {
   CursorDatabase[uiCursor].bFlags |= ubFlags;
 }
 
-function RemoveCursorFlags(uiCursor: UINT32, ubFlags: UINT8): void {
+export function RemoveCursorFlags(uiCursor: UINT32, ubFlags: UINT8): void {
   CursorDatabase[uiCursor].bFlags &= (~ubFlags);
 }
 

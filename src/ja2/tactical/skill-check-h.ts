@@ -1,4 +1,4 @@
-const enum Enum255 {
+export const enum Enum255 {
   NO_CHECK = 0,
   LOCKPICKING_CHECK,
   ELECTRONIC_LOCKPICKING_CHECK,

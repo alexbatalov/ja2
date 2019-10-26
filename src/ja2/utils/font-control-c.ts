@@ -1,81 +1,81 @@
-let giCurWinFont: INT32 = 0;
-let gfUseWinFonts: boolean = false;
+export let giCurWinFont: INT32 = 0;
+export let gfUseWinFonts: boolean = false;
 
 // Global variables for video objects
-let gpLargeFontType1: INT32;
-let gvoLargeFontType1: HVOBJECT;
+export let gpLargeFontType1: INT32;
+export let gvoLargeFontType1: HVOBJECT;
 
-let gpSmallFontType1: INT32;
+export let gpSmallFontType1: INT32;
 let gvoSmallFontType1: HVOBJECT;
 
-let gpTinyFontType1: INT32;
+export let gpTinyFontType1: INT32;
 let gvoTinyFontType1: HVOBJECT;
 
-let gp12PointFont1: INT32;
+export let gp12PointFont1: INT32;
 let gvo12PointFont1: HVOBJECT;
 
-let gpClockFont: INT32;
+export let gpClockFont: INT32;
 let gvoClockFont: HVOBJECT;
 
-let gpCompFont: INT32;
+export let gpCompFont: INT32;
 let gvoCompFont: HVOBJECT;
 
-let gpSmallCompFont: INT32;
+export let gpSmallCompFont: INT32;
 let gvoSmallCompFont: HVOBJECT;
 
-let gp10PointRoman: INT32;
+export let gp10PointRoman: INT32;
 let gvo10PointRoman: HVOBJECT;
 
-let gp12PointRoman: INT32;
+export let gp12PointRoman: INT32;
 let gvo12PointRoman: HVOBJECT;
 
-let gp14PointSansSerif: INT32;
+export let gp14PointSansSerif: INT32;
 let gvo14PointSansSerif: HVOBJECT;
 
 // INT32						gpMilitaryFont1;
 // HVOBJECT				gvoMilitaryFont1;
 
-let gp10PointArial: INT32;
+export let gp10PointArial: INT32;
 let gvo10PointArial: HVOBJECT;
 
-let gp10PointArialBold: INT32;
+export let gp10PointArialBold: INT32;
 let gvo10PointArialBold: HVOBJECT;
 
-let gp14PointArial: INT32;
+export let gp14PointArial: INT32;
 let gvo14PointArial: HVOBJECT;
 
-let gp12PointArial: INT32;
+export let gp12PointArial: INT32;
 let gvo12PointArial: HVOBJECT;
 
-let gpBlockyFont: INT32;
+export let gpBlockyFont: INT32;
 let gvoBlockyFont: HVOBJECT;
 
-let gpBlockyFont2: INT32;
+export let gpBlockyFont2: INT32;
 let gvoBlockyFont2: HVOBJECT;
 
-let gp12PointArialFixedFont: INT32;
+export let gp12PointArialFixedFont: INT32;
 let gvo12PointArialFixedFont: HVOBJECT;
 
-let gp16PointArial: INT32;
+export let gp16PointArial: INT32;
 let gvo16PointArial: HVOBJECT;
 
-let gpBlockFontNarrow: INT32;
+export let gpBlockFontNarrow: INT32;
 let gvoBlockFontNarrow: HVOBJECT;
 
-let gp14PointHumanist: INT32;
+export let gp14PointHumanist: INT32;
 let gvo14PointHumanist: HVOBJECT;
 
 // FIXME: Language-specific code
 // #ifdef ENGLISH
-let gpHugeFont: INT32;
+export let gpHugeFont: INT32;
 let gvoHugeFont: HVOBJECT;
 // #endif
 
-let giSubTitleWinFont: INT32;
+export let giSubTitleWinFont: INT32;
 
 let gfFontsInit: boolean = false;
 
-function InitializeFonts(): boolean {
+export function InitializeFonts(): boolean {
   let zWinFontName: INT16[] /* [128] */;
   let Color: COLORVAL;
 
@@ -199,7 +199,7 @@ function InitializeFonts(): boolean {
   return true;
 }
 
-function ShutdownFonts(): void {
+export function ShutdownFonts(): void {
   UnloadFont(gpLargeFontType1);
   UnloadFont(gpSmallFontType1);
   UnloadFont(gpTinyFontType1);
@@ -225,7 +225,7 @@ function ShutdownFonts(): void {
 }
 
 // Set shades for fonts
-function SetFontShade(uiFontID: UINT32, bColorID: INT8): boolean {
+export function SetFontShade(uiFontID: UINT32, bColorID: INT8): boolean {
   let pFont: HVOBJECT;
 
   CHECKF(bColorID > 0);
@@ -289,7 +289,7 @@ function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
   return true;
 }
 
-function WFGetFontHeight(FontNum: INT32): UINT16 {
+export function WFGetFontHeight(FontNum: INT32): UINT16 {
   if (USE_WINFONTS()) {
     // return how many Y pixels we used
     return GetWinFontHeight("a\0", GET_WINFONT());
@@ -299,7 +299,7 @@ function WFGetFontHeight(FontNum: INT32): UINT16 {
   }
 }
 
-function WFStringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
+export function WFStringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
   if (USE_WINFONTS()) {
     // return how many Y pixels we used
     return WinFontStringPixLength(string, GET_WINFONT());

@@ -1,10 +1,10 @@
 const STRING_LENGTH = 255;
 
-const enum Enum332 {
+export const enum Enum332 {
   ANTIHACKERSTR_EXITGAME,
 }
 
-const enum Enum333 {
+export const enum Enum333 {
   MSG_EXITGAME,
   MSG_OK,
   MSG_YES,
@@ -84,7 +84,7 @@ const enum Enum333 {
   MSG_HISTORY_UPDATED,
 }
 
-const enum Enum334 {
+export const enum Enum334 {
   STR_EMPTY,
   STR_LOSES_1_WISDOM,
   STR_LOSES_1_DEX,
@@ -154,7 +154,7 @@ const LARGE_STRING_LENGTH = 200;
 const MED_STRING_LENGTH = 80;
 const SMALL_STRING_LENGTH = 20;
 
-const enum Enum335 {
+export const enum Enum335 {
   AIR_RAID_TURN_STR,
   BEGIN_AUTOBANDAGE_PROMPT_STR,
   NOTICING_MISSING_ITEMS_FROM_SHIPMENT_STR,
@@ -305,7 +305,7 @@ const enum Enum335 {
   NO_LOS_TO_TALK_TARGET,
 }
 
-const enum Enum336 {
+export const enum Enum336 {
   EXIT_GUI_LOAD_ADJACENT_SECTOR_HELPTEXT,
   EXIT_GUI_GOTO_MAPSCREEN_HELPTEXT,
   EXIT_GUI_CANT_LEAVE_HOSTILE_SECTOR_HELPTEXT,
@@ -323,14 +323,14 @@ const enum Enum336 {
   EXIT_GUI_ESCORTED_CHARACTERS_CANT_LEAVE_SECTOR_ALONE_STR,
 }
 
-const enum Enum337 {
+export const enum Enum337 {
   LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_STR,
   LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_AGAINST_CREATURES_STR,
   LARGESTR_HAVE_BEEN_CAPTURED,
 }
 
 // Insurance Contract.c
-const enum Enum338 {
+export const enum Enum338 {
   INS_CONTRACT_PREVIOUS,
   INS_CONTRACT_NEXT,
   INS_CONTRACT_ACCEPT,
@@ -338,13 +338,13 @@ const enum Enum338 {
 }
 
 // Insurance Info
-const enum Enum339 {
+export const enum Enum339 {
   INS_INFO_PREVIOUS,
   INS_INFO_NEXT,
 }
 
 // Merc Account.c
-const enum Enum340 {
+export const enum Enum340 {
   MERC_ACCOUNT_AUTHORIZE,
   MERC_ACCOUNT_HOME,
   MERC_ACCOUNT_ACCOUNT,
@@ -358,7 +358,7 @@ const enum Enum340 {
 }
 
 // MercFile.c
-const enum Enum341 {
+export const enum Enum341 {
   MERC_FILES_HEALTH,
   MERC_FILES_AGILITY,
   MERC_FILES_DEXTERITY,
@@ -387,14 +387,14 @@ const enum Enum341 {
 }
 
 // MercNoAccount.c
-const enum Enum342 {
+export const enum Enum342 {
   MERC_NO_ACC_OPEN_ACCOUNT,
   MERC_NO_ACC_CANCEL,
   MERC_NO_ACC_NO_ACCOUNT_OPEN_ONE,
 }
 
 // Merc HomePage
-const enum Enum343 {
+export const enum Enum343 {
   MERC_SPECK_OWNER,
   MERC_OPEN_ACCOUNT,
   MERC_VIEW_ACCOUNT,
@@ -403,7 +403,7 @@ const enum Enum343 {
 }
 
 // Funerl.c
-const enum Enum344 {
+export const enum Enum344 {
   FUNERAL_INTRO_1,
   FUNERAL_INTRO_2,
   FUNERAL_INTRO_3,
@@ -419,7 +419,7 @@ const enum Enum344 {
 }
 
 // Florist.c
-const enum Enum345 {
+export const enum Enum345 {
   FLORIST_GALLERY,
   FLORIST_DROP_ANYWHERE,
   FLORIST_PHONE_NUMBER,
@@ -436,7 +436,7 @@ const enum Enum345 {
 }
 
 // Florist Order Form
-const enum Enum346 {
+export const enum Enum346 {
   FLORIST_ORDER_BACK,
   FLORIST_ORDER_SEND,
   FLORIST_ORDER_CLEAR,
@@ -462,7 +462,7 @@ const enum Enum346 {
 }
 
 // Florist Gallery.c
-const enum Enum347 {
+export const enum Enum347 {
   FLORIST_GALLERY_PREV,
   FLORIST_GALLERY_NEXT,
   FLORIST_GALLERY_CLICK_TO_ORDER,
@@ -471,13 +471,13 @@ const enum Enum347 {
 }
 
 // Florist Cards
-const enum Enum348 {
+export const enum Enum348 {
   FLORIST_CARDS_CLICK_SELECTION,
   FLORIST_CARDS_BACK,
 }
 
 // Bobbyr Mail Order.c
-const enum Enum349 {
+export const enum Enum349 {
   BOBBYR_ORDER_FORM,
   BOBBYR_QTY,
   BOBBYR_WEIGHT,
@@ -507,7 +507,7 @@ const enum Enum349 {
 }
 
 // BobbyRGuns.c
-const enum Enum350 {
+export const enum Enum350 {
   BOBBYR_GUNS_TO_ORDER,
   BOBBYR_GUNS_CLICK_ON_ITEMS,
   BOBBYR_GUNS_PREVIOUS_ITEMS,
@@ -542,7 +542,7 @@ const enum Enum350 {
 }
 
 // BobbyR.c
-const enum Enum351 {
+export const enum Enum351 {
   BOBBYR_ADVERTISMENT_1,
   BOBBYR_ADVERTISMENT_2,
   BOBBYR_USED,
@@ -555,7 +555,7 @@ const enum Enum351 {
 }
 
 // Aim Sort.c
-const enum Enum352 {
+export const enum Enum352 {
   AIM_AIMMEMBERS,
   SORT_BY,
   PRICE,
@@ -572,7 +572,7 @@ const enum Enum352 {
 }
 
 // Aim Policies.c
-const enum Enum353 {
+export const enum Enum353 {
   AIM_POLICIES_PREVIOUS,
   AIM_POLICIES_HOMEPAGE,
   AIM_POLICIES_POLICY,
@@ -587,7 +587,7 @@ const enum Enum354 {
 }
 
 // Aim Member.c
-const enum Enum355 {
+export const enum Enum355 {
   AIM_MEMBER_HEALTH,
   AIM_MEMBER_AGILITY,
   AIM_MEMBER_DEXTERITY,
@@ -614,7 +614,7 @@ const enum Enum355 {
 }
 
 // Aim Member.c
-const enum Enum356 {
+export const enum Enum356 {
   AIM_MEMBER_CONTRACT_CHARGE,
   AIM_MEMBER_ONE_DAY,
   AIM_MEMBER_ONE_WEEK,
@@ -633,7 +633,7 @@ const enum Enum356 {
 }
 
 // Aim Member.c
-const enum Enum357 {
+export const enum Enum357 {
   AIM_MEMBER_FUNDS_TRANSFER_SUCCESFUL,
   AIM_MEMBER_FUNDS_TRANSFER_FAILED,
   AIM_MEMBER_NOT_ENOUGH_FUNDS,
@@ -649,12 +649,12 @@ const enum Enum357 {
 }
 
 // AIM Link.c
-const enum Enum358 {
+export const enum Enum358 {
   AIM_LINK_TITLE,
 }
 
 // Aim History
-const enum Enum359 {
+export const enum Enum359 {
   AIM_HISTORY_TITLE,
   AIM_HISTORY_PREVIOUS,
   AIM_HISTORY_HOME,
@@ -663,7 +663,7 @@ const enum Enum359 {
 }
 
 // Aim Facial Index
-const enum Enum360 {
+export const enum Enum360 {
   AIM_FI_PRICE,
   AIM_FI_EXP,
   AIM_FI_MARKSMANSHIP,
@@ -681,7 +681,7 @@ const enum Enum360 {
 }
 
 // AimArchives.
-const enum Enum361 {
+export const enum Enum361 {
   AIM_ALUMNI_PAGE_1,
   AIM_ALUMNI_PAGE_2,
   AIM_ALUMNI_PAGE_3,
@@ -690,7 +690,7 @@ const enum Enum361 {
 }
 
 // Aim Home Page
-const enum Enum362 {
+export const enum Enum362 {
   //	AIM_INFO_1,
   //	AIM_INFO_2,
   //	AIM_POLICIES,
@@ -707,7 +707,7 @@ const enum Enum362 {
 }
 
 // Aim Home Page
-const enum Enum363 {
+export const enum Enum363 {
   AIM_HOME,
   AIM_MEMBERS,
   AIM_ALUMNI,
@@ -723,14 +723,14 @@ const enum Enum364 {
 }
 
 // Weapon Name and Description size
-const ITEMSTRINGFILENAME = "BINARYDATA\\ITEMDESC.EDT";
-const SIZE_ITEM_NAME = 160;
-const SIZE_SHORT_ITEM_NAME = 160;
-const SIZE_ITEM_INFO = 480;
+export const ITEMSTRINGFILENAME = "BINARYDATA\\ITEMDESC.EDT";
+export const SIZE_ITEM_NAME = 160;
+export const SIZE_SHORT_ITEM_NAME = 160;
+export const SIZE_ITEM_INFO = 480;
 const SIZE_ITEM_PROS = 160;
 const SIZE_ITEM_CONS = 160;
 
-const enum Enum365 {
+export const enum Enum365 {
   // Coordinating simultaneous arrival dialog strings
   STR_DETECTED_SIMULTANEOUS_ARRIVAL,
   STR_DETECTED_SINGULAR,
@@ -815,12 +815,12 @@ const enum Enum365 {
   STR_DIALOG_CREATURES_ATTACK_UNCONCIOUSMERCS,
 }
 
-const enum Enum366 {
+export const enum Enum366 {
   STR_GAMECLOCK_DAY_NAME,
 }
 
 // enums for the Shopkeeper Interface
-const enum Enum367 {
+export const enum Enum367 {
   SKI_TEXT_MERCHADISE_IN_STOCK,
   SKI_TEXT_PAGE,
   SKI_TEXT_TOTAL_COST,
@@ -838,7 +838,7 @@ const enum Enum367 {
 }
 
 // ShopKeeper Interface
-const enum Enum368 {
+export const enum Enum368 {
   SKI_ATM_0,
   SKI_ATM_1,
   SKI_ATM_2,
@@ -859,7 +859,7 @@ const enum Enum368 {
 }
 
 // ShopKeeper Interface
-const enum Enum369 {
+export const enum Enum369 {
   SKI_ATM_MODE_TEXT_SELECT_MODE,
   SKI_ATM_MODE_TEXT_ENTER_AMOUNT,
   SKI_ATM_MODE_TEXT_SELECT_TO_MERC,
@@ -869,7 +869,7 @@ const enum Enum369 {
 }
 
 // ShopKeeperInterface Message Box defines
-const enum Enum370 {
+export const enum Enum370 {
   SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_DIFFERENCE,
   SKI_SHORT_FUNDS_TEXT,
   SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_COST,
@@ -882,7 +882,7 @@ const enum Enum370 {
 }
 
 // enums for the above text
-const enum Enum371 {
+export const enum Enum371 {
   SLG_SAVE_GAME,
   SLG_LOAD_GAME,
   SLG_CANCEL,
@@ -910,7 +910,7 @@ const enum Enum371 {
 
 // OptionScreen.h
 // defines used for the zOptionsText
-const enum Enum372 {
+export const enum Enum372 {
   OPT_SAVE_GAME,
   OPT_LOAD_GAME,
   OPT_MAIN_MENU,
@@ -923,7 +923,7 @@ const enum Enum372 {
 }
 
 // used with the gMoneyStatsDesc[]
-const enum Enum373 {
+export const enum Enum373 {
   MONEY_DESC_AMOUNT,
   MONEY_DESC_REMAINING,
   MONEY_DESC_AMOUNT_2_SPLIT,
@@ -936,13 +936,13 @@ const enum Enum373 {
 }
 
 // used with gzMoneyWithdrawMessageText
-const enum Enum374 {
+export const enum Enum374 {
   MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM,
   CONFIRMATION_TO_DEPOSIT_MONEY_TO_ACCOUNT,
 }
 
 // Game init option screen
-const enum Enum375 {
+export const enum Enum375 {
   GIO_INITIAL_GAME_SETTINGS,
 
   GIO_GAME_STYLE_TEXT,
@@ -967,7 +967,7 @@ const enum Enum375 {
   GIO_DISABLED_FOR_THE_DEMO_TEXT,
 }
 
-const enum Enum376 {
+export const enum Enum376 {
   LAPTOP_BN_HLP_TXT_VIEW_EMAIL,
   LAPTOP_BN_HLP_TXT_BROWSE_VARIOUS_WEB_SITES,
   LAPTOP_BN_HLP_TXT_VIEW_FILES_AND_EMAIL_ATTACHMENTS,
@@ -989,7 +989,7 @@ const enum Enum376 {
 }
 
 // enums for the help screen
-const enum Enum377 {
+export const enum Enum377 {
   HLP_SCRN_TXT__EXIT_SCREEN,
 }
 
@@ -1004,26 +1004,26 @@ const enum Enum378 {
 }
 
 // the laptop broken link site
-const enum Enum379 {
+export const enum Enum379 {
   BROKEN_LINK_TXT_ERROR_404,
   BROKEN_LINK_TXT_SITE_NOT_FOUND,
 }
 
 // Bobby rays page for recent shipments
-const enum Enum380 {
+export const enum Enum380 {
   BOBBYR_SHIPMENT__TITLE,
   BOBBYR_SHIPMENT__ORDER_NUM,
   BOBBYR_SHIPMENT__NUM_ITEMS,
   BOBBYR_SHIPMENT__ORDERED_ON,
 }
 
-const enum Enum381 {
+export const enum Enum381 {
   GIO_CFS_NOVICE,
   GIO_CFS_EXPERIENCED,
   GIO_CFS_EXPERT,
 }
 
-const enum Enum382 {
+export const enum Enum382 {
   CRDT_CAMFIELD,
   CRDT_SHAWN,
   CRDT_KRIS,

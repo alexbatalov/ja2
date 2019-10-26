@@ -68,7 +68,7 @@ let gSelectedPreviousShipmentsRegion: MOUSE_REGION[] /* [BOBBYR_SHIPMENT_NUM_PRE
 function GameInitBobbyRShipments(): void {
 }
 
-function EnterBobbyRShipments(): boolean {
+export function EnterBobbyRShipments(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   InitBobbyRWoodBackground();
@@ -106,7 +106,7 @@ function EnterBobbyRShipments(): boolean {
   return true;
 }
 
-function ExitBobbyRShipments(): void {
+export function ExitBobbyRShipments(): void {
   DeleteBobbyRWoodBackground();
   DestroyBobbyROrderTitle();
 
@@ -120,7 +120,7 @@ function ExitBobbyRShipments(): void {
   RemovePreviousShipmentsMouseRegions();
 }
 
-function HandleBobbyRShipments(): void {
+export function HandleBobbyRShipments(): void {
   if (gfBobbyRShipmentsDirty) {
     gfBobbyRShipmentsDirty = false;
 
@@ -128,7 +128,7 @@ function HandleBobbyRShipments(): void {
   }
 }
 
-function RenderBobbyRShipments(): void {
+export function RenderBobbyRShipments(): void {
   //  HVOBJECT hPixHandle;
 
   DrawBobbyRWoodBackground();

@@ -3,26 +3,26 @@ const BACKGROUND_BUFFERS = 500;
 const VIDEO_OVERLAYS = 100;
 
 let gBackSaves: BACKGROUND_SAVE[] /* [BACKGROUND_BUFFERS] */;
-let guiNumBackSaves: UINT32 = 0;
+export let guiNumBackSaves: UINT32 = 0;
 
-let gVideoOverlays: VIDEO_OVERLAY[] /* [VIDEO_OVERLAYS] */;
+export let gVideoOverlays: VIDEO_OVERLAY[] /* [VIDEO_OVERLAYS] */;
 let guiNumVideoOverlays: UINT32 = 0;
 
 // BACKGROUND_SAVE	gTopmostSaves[BACKGROUND_BUFFERS];
 // UINT32 guiNumTopmostSaves=0;
 
-let gDirtyClipRect: SGPRect = [ 0, 0, 640, 480 ];
+export let gDirtyClipRect: SGPRect = [ 0, 0, 640, 480 ];
 
 let gfViewportDirty: boolean = false;
 
-function InitializeBaseDirtyRectQueue(): boolean {
+export function InitializeBaseDirtyRectQueue(): boolean {
   return true;
 }
 
-function ShutdownBaseDirtyRectQueue(): void {
+export function ShutdownBaseDirtyRectQueue(): void {
 }
 
-function AddBaseDirtyRect(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32): void {
+export function AddBaseDirtyRect(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32): void {
   let aRect: SGPRect;
 
   if (iLeft < 0) {
@@ -71,7 +71,7 @@ function AddBaseDirtyRect(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT
   InvalidateRegionEx(aRect.iLeft, aRect.iTop, aRect.iRight, aRect.iBottom, 0);
 }
 
-function ExecuteBaseDirtyRectQueue(): boolean {
+export function ExecuteBaseDirtyRectQueue(): boolean {
   if (gfViewportDirty) {
     // InvalidateRegion(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y);
     InvalidateScreen();
@@ -112,7 +112,7 @@ function RecountBackgrounds(): void {
   }
 }
 
-function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16>, sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): INT32 {
+export function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16>, sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): INT32 {
   let uiBufSize: UINT32;
   let iBackIndex: INT32;
   let ClipX1: INT32;
@@ -214,13 +214,13 @@ function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16>, sLef
   return iBackIndex;
 }
 
-function SetBackgroundRectFilled(uiBackgroundID: UINT32): void {
+export function SetBackgroundRectFilled(uiBackgroundID: UINT32): void {
   gBackSaves[uiBackgroundID].fFilled = true;
 
   AddBaseDirtyRect(gBackSaves[uiBackgroundID].sLeft, gBackSaves[uiBackgroundID].sTop, gBackSaves[uiBackgroundID].sRight, gBackSaves[uiBackgroundID].sBottom);
 }
 
-function RestoreBackgroundRects(): boolean {
+export function RestoreBackgroundRects(): boolean {
   let uiCount: UINT32;
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
@@ -258,7 +258,7 @@ function RestoreBackgroundRects(): boolean {
   return true;
 }
 
-function EmptyBackgroundRects(): boolean {
+export function EmptyBackgroundRects(): boolean {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
@@ -310,7 +310,7 @@ function EmptyBackgroundRects(): boolean {
   return true;
 }
 
-function SaveBackgroundRects(): boolean {
+export function SaveBackgroundRects(): boolean {
   let uiCount: UINT32;
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
@@ -342,7 +342,7 @@ function SaveBackgroundRects(): boolean {
   return true;
 }
 
-function FreeBackgroundRect(iIndex: INT32): boolean {
+export function FreeBackgroundRect(iIndex: INT32): boolean {
   if (iIndex != -1) {
     gBackSaves[iIndex].fAllocated = false;
 
@@ -352,7 +352,7 @@ function FreeBackgroundRect(iIndex: INT32): boolean {
   return true;
 }
 
-function FreeBackgroundRectPending(iIndex: INT32): boolean {
+export function FreeBackgroundRectPending(iIndex: INT32): boolean {
   gBackSaves[iIndex].fPendingDelete = true;
 
   return true;
@@ -375,7 +375,7 @@ function FreeBackgroundRectNow(uiCount: INT32): boolean {
   return true;
 }
 
-function FreeBackgroundRectType(uiFlags: UINT32): boolean {
+export function FreeBackgroundRectType(uiFlags: UINT32): boolean {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
@@ -399,12 +399,12 @@ function FreeBackgroundRectType(uiFlags: UINT32): boolean {
   return true;
 }
 
-function InitializeBackgroundRects(): boolean {
+export function InitializeBackgroundRects(): boolean {
   guiNumBackSaves = 0;
   return true;
 }
 
-function InvalidateBackgroundRects(): boolean {
+export function InvalidateBackgroundRects(): boolean {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++)
@@ -413,7 +413,7 @@ function InvalidateBackgroundRects(): boolean {
   return true;
 }
 
-function ShutdownBackgroundRects(): boolean {
+export function ShutdownBackgroundRects(): boolean {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
@@ -428,7 +428,7 @@ function DisableBackgroundRect(iIndex: INT32, fDisabled: boolean): void {
   gBackSaves[iIndex].fDisabled = fDisabled;
 }
 
-function UpdateSaveBuffer(): boolean {
+export function UpdateSaveBuffer(): boolean {
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
@@ -457,7 +457,7 @@ function UpdateSaveBuffer(): boolean {
   return true;
 }
 
-function RestoreExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16): boolean {
+export function RestoreExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16): boolean {
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
@@ -482,7 +482,7 @@ function RestoreExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, s
   return true;
 }
 
-function RestoreExternBackgroundRectGivenID(iBack: INT32): boolean {
+export function RestoreExternBackgroundRectGivenID(iBack: INT32): boolean {
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
   let sLeft: INT16;
@@ -551,7 +551,7 @@ function CopyExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
 // to the video buffer.
 //
 //*****************************************************************************
-function gprintfdirty(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
+export function gprintfdirty(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
   let argptr: va_list;
   let string: wchar_t[] /* [512] */;
   let uiStringLength: UINT16;
@@ -583,7 +583,7 @@ function gprintfdirty(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args:
   return uiStringLength;
 }
 
-function gprintfinvalidate(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
+export function gprintfinvalidate(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
   let argptr: va_list;
   let string: wchar_t[] /* [512] */;
   let uiStringLength: UINT16;
@@ -604,7 +604,7 @@ function gprintfinvalidate(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...
   return uiStringLength;
 }
 
-function gprintfRestore(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
+export function gprintfRestore(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
   let argptr: va_list;
   let string: wchar_t[] /* [512] */;
   let uiStringLength: UINT16;
@@ -652,7 +652,7 @@ function RecountVideoOverlays(): void {
   }
 }
 
-function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>): INT32 {
+export function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>): INT32 {
   let iBlitterIndex: UINT32;
   let iBackIndex: UINT32;
   let uiStringLength: UINT16;
@@ -714,7 +714,7 @@ function SetVideoOverlayPendingDelete(iVideoOverlay: INT32): void {
   }
 }
 
-function RemoveVideoOverlay(iVideoOverlay: INT32): void {
+export function RemoveVideoOverlay(iVideoOverlay: INT32): void {
   if (iVideoOverlay != -1 && gVideoOverlays[iVideoOverlay].fAllocated) {
     // Check if we are actively scrolling
     if (gVideoOverlays[iVideoOverlay].fActivelySaving) {
@@ -741,7 +741,7 @@ function RemoveVideoOverlay(iVideoOverlay: INT32): void {
   }
 }
 
-function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterIndex: UINT32, fForceAll: boolean): boolean {
+export function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterIndex: UINT32, fForceAll: boolean): boolean {
   let uiFlags: UINT32;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
@@ -801,7 +801,7 @@ function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterI
 }
 
 // FUnctions for entrie array of blitters
-function ExecuteVideoOverlays(): void {
+export function ExecuteVideoOverlays(): void {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
@@ -830,7 +830,7 @@ function ExecuteVideoOverlays(): void {
   }
 }
 
-function ExecuteVideoOverlaysToAlternateBuffer(uiNewDestBuffer: UINT32): void {
+export function ExecuteVideoOverlaysToAlternateBuffer(uiNewDestBuffer: UINT32): void {
   let uiCount: UINT32;
   let uiOldDestBuffer: UINT32;
 
@@ -850,7 +850,7 @@ function ExecuteVideoOverlaysToAlternateBuffer(uiNewDestBuffer: UINT32): void {
   }
 }
 
-function AllocateVideoOverlaysArea(): void {
+export function AllocateVideoOverlaysArea(): void {
   let uiCount: UINT32;
   let uiBufSize: UINT32;
   let iBackIndex: UINT32;
@@ -894,7 +894,7 @@ function AllocateVideoOverlayArea(uiCount: UINT32): void {
   }
 }
 
-function SaveVideoOverlaysArea(uiSrcBuffer: UINT32): void {
+export function SaveVideoOverlaysArea(uiSrcBuffer: UINT32): void {
   let uiCount: UINT32;
   let iBackIndex: UINT32;
   let uiSrcPitchBYTES: UINT32;
@@ -945,7 +945,7 @@ function SaveVideoOverlayArea(uiSrcBuffer: UINT32, uiCount: UINT32): void {
   UnLockVideoSurface(uiSrcBuffer);
 }
 
-function DeleteVideoOverlaysArea(): void {
+export function DeleteVideoOverlaysArea(): void {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
@@ -968,7 +968,7 @@ function DeleteVideoOverlaysArea(): void {
   }
 }
 
-function RestoreShiftedVideoOverlays(sShiftX: INT16, sShiftY: INT16): boolean {
+export function RestoreShiftedVideoOverlays(sShiftX: INT16, sShiftY: INT16): boolean {
   let uiCount: UINT32;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
@@ -1071,7 +1071,7 @@ function SetOverlayUserData(iVideoOverlay: INT32, ubNum: UINT8, uiData: UINT32):
 }
 
 // Common callbacks for topmost blitters
-function BlitMFont(pBlitter: Pointer<VIDEO_OVERLAY>): void {
+export function BlitMFont(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
 
@@ -1086,7 +1086,7 @@ function BlitMFont(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   UnLockVideoSurface(pBlitter.value.uiDestBuff);
 }
 
-function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, usSrcX: UINT16, usSrcY: UINT16, usWidth: UINT16, usHeight: UINT16): boolean {
+export function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, usSrcX: UINT16, usSrcY: UINT16, usWidth: UINT16, usHeight: UINT16): boolean {
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
@@ -1104,7 +1104,7 @@ function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, usSrcX: U
   return fRetVal;
 }
 
-function EnableVideoOverlay(fEnable: boolean, iOverlayIndex: INT32): void {
+export function EnableVideoOverlay(fEnable: boolean, iOverlayIndex: INT32): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));

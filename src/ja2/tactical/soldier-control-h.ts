@@ -1,69 +1,69 @@
 // Kris:  November 10, 1997
 // Please don't change this value from 10.  It will invalidate all of the maps and soldiers.
-const MAXPATROLGRIDS = 10; // *** THIS IS A DUPLICATION - MUST BE MOVED !
+export const MAXPATROLGRIDS = 10; // *** THIS IS A DUPLICATION - MUST BE MOVED !
 
 // TEMP VALUES FOR NAMES
 const MAXCIVLASTNAMES = 30;
 
 // ANDREW: these are defines for OKDestanation usage - please move to approprite file
-const IGNOREPEOPLE = 0;
-const PEOPLETOO = 1;
+export const IGNOREPEOPLE = 0;
+export const PEOPLETOO = 1;
 const ALLPEOPLE = 2;
 const FALLINGTEST = 3;
 
-const LOCKED_NO_NEWGRIDNO = 2;
+export const LOCKED_NO_NEWGRIDNO = 2;
 
-const NO_PROFILE = 200;
+export const NO_PROFILE = 200;
 
-const BATTLE_SND_LOWER_VOLUME = 1;
+export const BATTLE_SND_LOWER_VOLUME = 1;
 
-const TAKE_DAMAGE_GUNFIRE = 1;
-const TAKE_DAMAGE_BLADE = 2;
-const TAKE_DAMAGE_HANDTOHAND = 3;
-const TAKE_DAMAGE_FALLROOF = 4;
-const TAKE_DAMAGE_BLOODLOSS = 5;
-const TAKE_DAMAGE_EXPLOSION = 6;
-const TAKE_DAMAGE_ELECTRICITY = 7;
-const TAKE_DAMAGE_GAS = 8;
-const TAKE_DAMAGE_TENTACLES = 9;
-const TAKE_DAMAGE_STRUCTURE_EXPLOSION = 10;
-const TAKE_DAMAGE_OBJECT = 11;
+export const TAKE_DAMAGE_GUNFIRE = 1;
+export const TAKE_DAMAGE_BLADE = 2;
+export const TAKE_DAMAGE_HANDTOHAND = 3;
+export const TAKE_DAMAGE_FALLROOF = 4;
+export const TAKE_DAMAGE_BLOODLOSS = 5;
+export const TAKE_DAMAGE_EXPLOSION = 6;
+export const TAKE_DAMAGE_ELECTRICITY = 7;
+export const TAKE_DAMAGE_GAS = 8;
+export const TAKE_DAMAGE_TENTACLES = 9;
+export const TAKE_DAMAGE_STRUCTURE_EXPLOSION = 10;
+export const TAKE_DAMAGE_OBJECT = 11;
 
 const SOLDIER_UNBLIT_SIZE = (75 * 75 * 2);
 
-const SOLDIER_IS_TACTICALLY_VALID = 0x00000001;
-const SOLDIER_SHOULD_BE_TACTICALLY_VALID = 0x00000002;
-const SOLDIER_MULTI_SELECTED = 0x00000004;
-const SOLDIER_PC = 0x00000008;
-const SOLDIER_ATTACK_NOTICED = 0x00000010;
-const SOLDIER_PCUNDERAICONTROL = 0x00000020;
-const SOLDIER_UNDERAICONTROL = 0x00000040;
-const SOLDIER_DEAD = 0x00000080;
-const SOLDIER_GREEN_RAY = 0x00000100;
-const SOLDIER_LOOKFOR_ITEMS = 0x00000200;
-const SOLDIER_ENEMY = 0x00000400;
-const SOLDIER_ENGAGEDINACTION = 0x00000800;
-const SOLDIER_ROBOT = 0x00001000;
-const SOLDIER_MONSTER = 0x00002000;
-const SOLDIER_ANIMAL = 0x00004000;
-const SOLDIER_VEHICLE = 0x00008000;
+export const SOLDIER_IS_TACTICALLY_VALID = 0x00000001;
+export const SOLDIER_SHOULD_BE_TACTICALLY_VALID = 0x00000002;
+export const SOLDIER_MULTI_SELECTED = 0x00000004;
+export const SOLDIER_PC = 0x00000008;
+export const SOLDIER_ATTACK_NOTICED = 0x00000010;
+export const SOLDIER_PCUNDERAICONTROL = 0x00000020;
+export const SOLDIER_UNDERAICONTROL = 0x00000040;
+export const SOLDIER_DEAD = 0x00000080;
+export const SOLDIER_GREEN_RAY = 0x00000100;
+export const SOLDIER_LOOKFOR_ITEMS = 0x00000200;
+export const SOLDIER_ENEMY = 0x00000400;
+export const SOLDIER_ENGAGEDINACTION = 0x00000800;
+export const SOLDIER_ROBOT = 0x00001000;
+export const SOLDIER_MONSTER = 0x00002000;
+export const SOLDIER_ANIMAL = 0x00004000;
+export const SOLDIER_VEHICLE = 0x00008000;
 const SOLDIER_MULTITILE_NZ = 0x00010000;
-const SOLDIER_MULTITILE_Z = 0x00020000;
-const SOLDIER_MULTITILE = (SOLDIER_MULTITILE_Z | SOLDIER_MULTITILE_NZ);
-const SOLDIER_RECHECKLIGHT = 0x00040000;
-const SOLDIER_TURNINGFROMHIT = 0x00080000;
-const SOLDIER_BOXER = 0x00100000;
-const SOLDIER_LOCKPENDINGACTIONCOUNTER = 0x00200000;
-const SOLDIER_COWERING = 0x00400000;
-const SOLDIER_MUTE = 0x00800000;
-const SOLDIER_GASSED = 0x01000000;
-const SOLDIER_OFF_MAP = 0x02000000;
-const SOLDIER_PAUSEANIMOVE = 0x04000000;
-const SOLDIER_DRIVER = 0x08000000;
-const SOLDIER_PASSENGER = 0x10000000;
-const SOLDIER_NPC_DOING_PUNCH = 0x20000000;
-const SOLDIER_NPC_SHOOTING = 0x40000000;
-const SOLDIER_LOOK_NEXT_TURNSOLDIER = 0x80000000;
+export const SOLDIER_MULTITILE_Z = 0x00020000;
+export const SOLDIER_MULTITILE = (SOLDIER_MULTITILE_Z | SOLDIER_MULTITILE_NZ);
+export const SOLDIER_RECHECKLIGHT = 0x00040000;
+export const SOLDIER_TURNINGFROMHIT = 0x00080000;
+export const SOLDIER_BOXER = 0x00100000;
+export const SOLDIER_LOCKPENDINGACTIONCOUNTER = 0x00200000;
+export const SOLDIER_COWERING = 0x00400000;
+export const SOLDIER_MUTE = 0x00800000;
+export const SOLDIER_GASSED = 0x01000000;
+export const SOLDIER_OFF_MAP = 0x02000000;
+export const SOLDIER_PAUSEANIMOVE = 0x04000000;
+export const SOLDIER_DRIVER = 0x08000000;
+export const SOLDIER_PASSENGER = 0x10000000;
+export const SOLDIER_NPC_DOING_PUNCH = 0x20000000;
+export const SOLDIER_NPC_SHOOTING = 0x40000000;
+export const SOLDIER_LOOK_NEXT_TURNSOLDIER = 0x80000000;
 
 /*
 #define	SOLDIER_TRAIT_LOCKPICKING		0x0001
@@ -80,70 +80,70 @@ const SOLDIER_LOOK_NEXT_TURNSOLDIER = 0x80000000;
 #define	SOLDIER_TRAIT_MARTIALARTS		0x0800
 #define	SOLDIER_TRAIT_KNIFING				0x1000
 */
-const HAS_SKILL_TRAIT = (s, t) => (s.value.ubSkillTrait1 == t || s.value.ubSkillTrait2 == t);
-const NUM_SKILL_TRAITS = (s, t) => ((s.value.ubSkillTrait1 == t) ? ((s.value.ubSkillTrait2 == t) ? 2 : 1) : ((s.value.ubSkillTrait2 == t) ? 1 : 0));
+export const HAS_SKILL_TRAIT = (s, t) => (s.value.ubSkillTrait1 == t || s.value.ubSkillTrait2 == t);
+export const NUM_SKILL_TRAITS = (s, t) => ((s.value.ubSkillTrait1 == t) ? ((s.value.ubSkillTrait2 == t) ? 2 : 1) : ((s.value.ubSkillTrait2 == t) ? 1 : 0));
 
-const SOLDIER_QUOTE_SAID_IN_SHIT = 0x0001;
-const SOLDIER_QUOTE_SAID_LOW_BREATH = 0x0002;
-const SOLDIER_QUOTE_SAID_BEING_PUMMELED = 0x0004;
+export const SOLDIER_QUOTE_SAID_IN_SHIT = 0x0001;
+export const SOLDIER_QUOTE_SAID_LOW_BREATH = 0x0002;
+export const SOLDIER_QUOTE_SAID_BEING_PUMMELED = 0x0004;
 const SOLDIER_QUOTE_SAID_NEED_SLEEP = 0x0008;
-const SOLDIER_QUOTE_SAID_LOW_MORAL = 0x0010;
-const SOLDIER_QUOTE_SAID_MULTIPLE_CREATURES = 0x0020;
-const SOLDIER_QUOTE_SAID_ANNOYING_MERC = 0x0040;
-const SOLDIER_QUOTE_SAID_LIKESGUN = 0x0080;
-const SOLDIER_QUOTE_SAID_DROWNING = 0x0100;
-const SOLDIER_QUOTE_SAID_ROTTINGCORPSE = 0x0200;
-const SOLDIER_QUOTE_SAID_SPOTTING_CREATURE_ATTACK = 0x0400;
-const SOLDIER_QUOTE_SAID_SMELLED_CREATURE = 0x0800;
+export const SOLDIER_QUOTE_SAID_LOW_MORAL = 0x0010;
+export const SOLDIER_QUOTE_SAID_MULTIPLE_CREATURES = 0x0020;
+export const SOLDIER_QUOTE_SAID_ANNOYING_MERC = 0x0040;
+export const SOLDIER_QUOTE_SAID_LIKESGUN = 0x0080;
+export const SOLDIER_QUOTE_SAID_DROWNING = 0x0100;
+export const SOLDIER_QUOTE_SAID_ROTTINGCORPSE = 0x0200;
+export const SOLDIER_QUOTE_SAID_SPOTTING_CREATURE_ATTACK = 0x0400;
+export const SOLDIER_QUOTE_SAID_SMELLED_CREATURE = 0x0800;
 const SOLDIER_QUOTE_SAID_ANTICIPATING_DANGER = 0x1000;
-const SOLDIER_QUOTE_SAID_WORRIED_ABOUT_CREATURES = 0x2000;
-const SOLDIER_QUOTE_SAID_PERSONALITY = 0x4000;
-const SOLDIER_QUOTE_SAID_FOUND_SOMETHING_NICE = 0x8000;
+export const SOLDIER_QUOTE_SAID_WORRIED_ABOUT_CREATURES = 0x2000;
+export const SOLDIER_QUOTE_SAID_PERSONALITY = 0x4000;
+export const SOLDIER_QUOTE_SAID_FOUND_SOMETHING_NICE = 0x8000;
 
 const SOLDIER_QUOTE_SAID_EXT_HEARD_SOMETHING = 0x0001;
 const SOLDIER_QUOTE_SAID_EXT_SEEN_CREATURE_ATTACK = 0x0002;
 const SOLDIER_QUOTE_SAID_EXT_USED_BATTLESOUND_HIT = 0x0004;
-const SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL = 0x0008;
-const SOLDIER_QUOTE_SAID_EXT_MIKE = 0x0010;
-const SOLDIER_QUOTE_SAID_DONE_ASSIGNMENT = 0x0020;
-const SOLDIER_QUOTE_SAID_BUDDY_1_WITNESSED = 0x0040;
-const SOLDIER_QUOTE_SAID_BUDDY_2_WITNESSED = 0x0080;
-const SOLDIER_QUOTE_SAID_BUDDY_3_WITNESSED = 0x0100;
+export const SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL = 0x0008;
+export const SOLDIER_QUOTE_SAID_EXT_MIKE = 0x0010;
+export const SOLDIER_QUOTE_SAID_DONE_ASSIGNMENT = 0x0020;
+export const SOLDIER_QUOTE_SAID_BUDDY_1_WITNESSED = 0x0040;
+export const SOLDIER_QUOTE_SAID_BUDDY_2_WITNESSED = 0x0080;
+export const SOLDIER_QUOTE_SAID_BUDDY_3_WITNESSED = 0x0100;
 
-const SOLDIER_CONTRACT_RENEW_QUOTE_NOT_USED = 0;
-const SOLDIER_CONTRACT_RENEW_QUOTE_89_USED = 1;
-const SOLDIER_CONTRACT_RENEW_QUOTE_115_USED = 2;
+export const SOLDIER_CONTRACT_RENEW_QUOTE_NOT_USED = 0;
+export const SOLDIER_CONTRACT_RENEW_QUOTE_89_USED = 1;
+export const SOLDIER_CONTRACT_RENEW_QUOTE_115_USED = 2;
 
-const SOLDIER_MISC_HEARD_GUNSHOT = 0x01;
+export const SOLDIER_MISC_HEARD_GUNSHOT = 0x01;
 // make sure soldiers (esp tanks) are not hurt multiple times by explosions
-const SOLDIER_MISC_HURT_BY_EXPLOSION = 0x02;
+export const SOLDIER_MISC_HURT_BY_EXPLOSION = 0x02;
 // should be revealed due to xrays
-const SOLDIER_MISC_XRAYED = 0x04;
+export const SOLDIER_MISC_XRAYED = 0x04;
 
 const MAXBLOOD = 40;
-const NOBLOOD = MAXBLOOD;
+export const NOBLOOD = MAXBLOOD;
 const BLOODTIME = 5;
 const FOOTPRINTTIME = 2;
-const MIN_BLEEDING_THRESHOLD = 12; // you're OK while <4 Yellow life bars
+export const MIN_BLEEDING_THRESHOLD = 12; // you're OK while <4 Yellow life bars
 
 const BANDAGED = (s) => (s.value.bLifeMax - s.value.bLife - s.value.bBleeding);
 
 // amount of time a stats is to be displayed differently, due to change
-const CHANGE_STAT_RECENTLY_DURATION = 60000;
+export const CHANGE_STAT_RECENTLY_DURATION = 60000;
 
 // MACROS
 // #######################################################
 
-const NO_PENDING_ACTION = 255;
-const NO_PENDING_ANIMATION = 32001;
-const NO_PENDING_DIRECTION = 253;
-const NO_PENDING_STANCE = 254;
-const NO_DESIRED_HEIGHT = 255;
+export const NO_PENDING_ACTION = 255;
+export const NO_PENDING_ANIMATION = 32001;
+export const NO_PENDING_DIRECTION = 253;
+export const NO_PENDING_STANCE = 254;
+export const NO_DESIRED_HEIGHT = 255;
 
-const MAX_FULLTILE_DIRECTIONS = 3;
+export const MAX_FULLTILE_DIRECTIONS = 3;
 
 // ENUMERATIONS FOR ACTIONS
-const enum Enum257 {
+export const enum Enum257 {
   MERC_OPENDOOR,
   MERC_OPENSTRUCT,
   MERC_PICKUPITEM,
@@ -165,14 +165,14 @@ const enum Enum257 {
 }
 
 // ENUMERATIONS FOR THROW ACTIONS
-const enum Enum258 {
+export const enum Enum258 {
   NO_THROW_ACTION,
   THROW_ARM_ITEM,
   THROW_TARGET_MERC_CATCH,
 }
 
 // An enumeration for playing battle sounds
-const enum Enum259 {
+export const enum Enum259 {
   BATTLE_SOUND_OK1,
   BATTLE_SOUND_OK2,
   BATTLE_SOUND_COOL1,
@@ -194,7 +194,7 @@ const enum Enum259 {
 }
 
 // different kinds of merc
-const enum Enum260 {
+export const enum Enum260 {
   MERC_TYPE__PLAYER_CHARACTER,
   MERC_TYPE__AIM_MERC,
   MERC_TYPE__MERC,
@@ -206,10 +206,10 @@ const enum Enum260 {
 
 // I don't care if this isn't intuitive!  The hand positions go right
 // before the big pockets so we can loop through them that way. --CJC
-const NO_SLOT = -1;
+export const NO_SLOT = -1;
 
 // vehicle/human path structure
-interface PathSt {
+export interface PathSt {
   uiSectorId: UINT32;
   uiEta: UINT32;
   fSpeed: boolean;
@@ -217,8 +217,8 @@ interface PathSt {
   pPrev: Pointer<PathSt>;
 }
 
-type PathStPtr = Pointer<PathSt>;
-const enum Enum261 {
+export type PathStPtr = Pointer<PathSt>;
+export const enum Enum261 {
   HELMETPOS = 0,
   VESTPOS,
   LEGPOS,
@@ -243,7 +243,7 @@ const enum Enum261 {
 }
 
 // used for color codes, but also shows the enemy type for debugging purposes
-const enum Enum262 {
+export const enum Enum262 {
   SOLDIER_CLASS_NONE,
   SOLDIER_CLASS_ADMINISTRATOR,
   SOLDIER_CLASS_ELITE,
@@ -255,20 +255,20 @@ const enum Enum262 {
   SOLDIER_CLASS_MINER,
 }
 
-const SOLDIER_CLASS_ENEMY = (bSoldierClass) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_ADMINISTRATOR) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ARMY));
-const SOLDIER_CLASS_MILITIA = (bSoldierClass) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_GREEN_MILITIA) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ELITE_MILITIA));
+export const SOLDIER_CLASS_ENEMY = (bSoldierClass) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_ADMINISTRATOR) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ARMY));
+export const SOLDIER_CLASS_MILITIA = (bSoldierClass) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_GREEN_MILITIA) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ELITE_MILITIA));
 
 // This macro should be used whenever we want to see if someone is neutral
 // IF WE ARE CONSIDERING ATTACKING THEM.  Creatures & bloodcats will attack neutrals
 // but they can't attack empty vehicles!!
-const CONSIDERED_NEUTRAL = (me, them) => ((them.value.bNeutral) && (me.value.bTeam != CREATURE_TEAM || (them.value.uiStatusFlags & SOLDIER_VEHICLE)));
+export const CONSIDERED_NEUTRAL = (me, them) => ((them.value.bNeutral) && (me.value.bTeam != CREATURE_TEAM || (them.value.uiStatusFlags & SOLDIER_VEHICLE)));
 
-interface KEY_ON_RING {
+export interface KEY_ON_RING {
   ubKeyID: UINT8;
   ubNumber: UINT8;
 }
 
-interface THROW_PARAMS {
+export interface THROW_PARAMS {
   dX: float;
   dY: float;
   dZ: float;
@@ -280,21 +280,21 @@ interface THROW_PARAMS {
   uiActionData: UINT32;
 }
 
-const DELAYED_MOVEMENT_FLAG_PATH_THROUGH_PEOPLE = 0x01;
+export const DELAYED_MOVEMENT_FLAG_PATH_THROUGH_PEOPLE = 0x01;
 
 // reasons for being unable to continue movement
-const enum Enum263 {
+export const enum Enum263 {
   REASON_STOPPED_NO_APS,
   REASON_STOPPED_SIGHT,
 }
 
-const enum Enum264 {
+export const enum Enum264 {
   HIT_BY_TEARGAS = 0x01,
   HIT_BY_MUSTARDGAS = 0x02,
   HIT_BY_CREATUREGAS = 0x04,
 }
 
-interface SOLDIERTYPE {
+export interface SOLDIERTYPE {
   // ID
   ubID: UINT8;
   bReserved1: UINT8;
@@ -880,21 +880,21 @@ interface SOLDIERTYPE {
   bFiller: UINT8[] /* [39] */;
 }
 
-const HEALTH_INCREASE = 0x0001;
-const STRENGTH_INCREASE = 0x0002;
-const DEX_INCREASE = 0x0004;
-const AGIL_INCREASE = 0x0008;
-const WIS_INCREASE = 0x0010;
-const LDR_INCREASE = 0x0020;
+export const HEALTH_INCREASE = 0x0001;
+export const STRENGTH_INCREASE = 0x0002;
+export const DEX_INCREASE = 0x0004;
+export const AGIL_INCREASE = 0x0008;
+export const WIS_INCREASE = 0x0010;
+export const LDR_INCREASE = 0x0020;
 
-const MRK_INCREASE = 0x0040;
-const MED_INCREASE = 0x0080;
-const EXP_INCREASE = 0x0100;
-const MECH_INCREASE = 0x0200;
+export const MRK_INCREASE = 0x0040;
+export const MED_INCREASE = 0x0080;
+export const EXP_INCREASE = 0x0100;
+export const MECH_INCREASE = 0x0200;
 
-const LVL_INCREASE = 0x0400;
+export const LVL_INCREASE = 0x0400;
 
-const enum Enum265 {
+export const enum Enum265 {
   WM_NORMAL = 0,
   WM_BURST,
   WM_ATTACHED,
@@ -902,18 +902,18 @@ const enum Enum265 {
 }
 
 // TYPEDEFS FOR ANIMATION PROFILES
-interface ANIM_PROF_TILE {
+export interface ANIM_PROF_TILE {
   usTileFlags: UINT16;
   bTileX: INT8;
   bTileY: INT8;
 }
 
-interface ANIM_PROF_DIR {
+export interface ANIM_PROF_DIR {
   ubNumTiles: UINT8;
   pTiles: Pointer<ANIM_PROF_TILE>;
 }
 
-interface ANIM_PROF {
+export interface ANIM_PROF {
   Dirs: ANIM_PROF_DIR[] /* [8] */;
 }
 
@@ -923,7 +923,7 @@ interface ANIM_PROF {
 // Functions
 ////////////
 
-const PTR_CIVILIAN = () => (pSoldier.value.bTeam == CIV_TEAM);
-const PTR_CROUCHED = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_CROUCH);
-const PTR_STANDING = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND);
+export const PTR_CIVILIAN = () => (pSoldier.value.bTeam == CIV_TEAM);
+export const PTR_CROUCHED = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_CROUCH);
+export const PTR_STANDING = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND);
 const PTR_PRONE = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_PRONE);

@@ -1,6 +1,6 @@
 const MAX_PROGRESSBARS = 4;
 
-interface PROGRESSBAR {
+export interface PROGRESSBAR {
   ubProgressBarID: UINT8;
 
   usBarLeft: UINT16;

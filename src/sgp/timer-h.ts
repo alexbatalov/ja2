@@ -1,6 +1,6 @@
-type TIMER = UINT32;
+export type TIMER = UINT32;
 
-const MAIN_TIMER_ID = 1;
+export const MAIN_TIMER_ID = 1;
 
 const MILLISECONDS = (a) => (a);
 const SECONDS = (a) => ((a) / 1000);

@@ -9,13 +9,13 @@ let pBar: Pointer<PROGRESSBAR>[] /* [MAX_PROGRESSBARS] */;
 let gfUseLoadScreenProgressBar: boolean = false;
 let gusLeftmostShaded: UINT16 = 0;
 
-function CreateLoadingScreenProgressBar(): void {
+export function CreateLoadingScreenProgressBar(): void {
   gusLeftmostShaded = 162;
   gfUseLoadScreenProgressBar = true;
   CreateProgressBar(0, 162, 427, 480, 443);
 }
 
-function RemoveLoadingScreenProgressBar(): void {
+export function RemoveLoadingScreenProgressBar(): void {
   gfUseLoadScreenProgressBar = false;
   RemoveProgressBar(0);
   SetFontShadow(DEFAULT_SHADOW);
@@ -23,7 +23,7 @@ function RemoveLoadingScreenProgressBar(): void {
 
 // This creates a single progress bar given the coordinates without a panel (containing a title and background).
 // A panel is automatically created if you specify a title using SetProgressBarTitle
-function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): boolean {
+export function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): boolean {
   let pNew: Pointer<PROGRESSBAR>;
   // Allocate new progress bar
   pNew = MemAlloc(sizeof(PROGRESSBAR));
@@ -61,7 +61,7 @@ function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16
 
 // You may also define a panel to go in behind the progress bar.  You can now assign a title to go with
 // the panel.
-function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): void {
+export function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): void {
   let pCurr: Pointer<PROGRESSBAR>;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
@@ -81,7 +81,7 @@ function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLe
 
 // Assigning a title for the panel will automatically position the text horizontally centered on the
 // panel and vertically centered from the top of the panel, to the top of the progress bar.
-function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
+export function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
   let pCurr: Pointer<PROGRESSBAR>;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
@@ -102,7 +102,7 @@ function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UIN
 
 // Unless you set up the attributes, any text you pass to SetRelativeStartAndEndPercentage will
 // default to FONT12POINT1 in a black color.
-function SetProgressBarMsgAttributes(ubID: UINT32, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
+export function SetProgressBarMsgAttributes(ubID: UINT32, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
   let pCurr: Pointer<PROGRESSBAR>;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
@@ -114,7 +114,7 @@ function SetProgressBarMsgAttributes(ubID: UINT32, usFont: UINT32, ubForeColor: 
 }
 
 // When finished, the progress bar needs to be removed.
-function RemoveProgressBar(ubID: UINT8): void {
+export function RemoveProgressBar(ubID: UINT8): void {
   Assert(ubID < MAX_PROGRESSBARS);
   if (pBar[ubID]) {
     if (pBar[ubID].value.swzTitle)
@@ -132,7 +132,7 @@ function RemoveProgressBar(ubID: UINT8): void {
 // As the process animates using UpdateProgressBar( 0 to 100 ), the total progress bar will only reach 30%
 // at the 100% mark within UpdateProgressBar.  At that time, you would go onto the next step, resetting the
 // relative start and end percentage from 30 to whatever, until your done.
-function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, uiRelEndPerc: UINT32, str: Pointer<UINT16>): void {
+export function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, uiRelEndPerc: UINT32, str: Pointer<UINT16>): void {
   let pCurr: Pointer<PROGRESSBAR>;
   let usStartX: UINT16;
   let usStartY: UINT16;
@@ -188,7 +188,7 @@ function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, u
 // This part renders the progress bar at the percentage level that you specify.  If you have set relative
 // percentage values in the above function, then the uiPercentage will be reflected based off of the relative
 // percentages.
-function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
+export function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
   /* static */ let uiLastTime: UINT32 = 0;
   let uiCurTime: UINT32 = GetJA2Clock();
   let rActual: double;
@@ -242,7 +242,7 @@ function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
   }
 }
 
-function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGreen: UINT8, ubColorFillBlue: UINT8): void {
+export function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGreen: UINT8, ubColorFillBlue: UINT8): void {
   let pCurr: Pointer<PROGRESSBAR> = null;
 
   Assert(ubID < MAX_PROGRESSBARS);

@@ -1,7 +1,7 @@
-const HISTORY_DATA_FILE = "TEMP\\History.dat";
+export const HISTORY_DATA_FILE = "TEMP\\History.dat";
 
 // the financial structure
-interface HistoryUnit {
+export interface HistoryUnit {
   ubCode: UINT8; // the code index in the finance code table
   uiIdNumber: UINT32; // unique id number
   ubSecondCode: UINT8; // secondary code
@@ -13,7 +13,7 @@ interface HistoryUnit {
   Next: Pointer<HistoryUnit>; // next unit in the list
 }
 
-const enum Enum83 {
+export const enum Enum83 {
   HISTORY_ENTERED_HISTORY_MODE = 0,
   HISTORY_HIRED_MERC_FROM_AIM,
   HISTORY_HIRED_MERC_FROM_MERC,
@@ -94,4 +94,4 @@ const enum Enum83 {
   HISTORY_MERC_KILLED_CHARACTER,
 }
 
-type HistoryUnitPtr = Pointer<HistoryUnit>;
+export type HistoryUnitPtr = Pointer<HistoryUnit>;

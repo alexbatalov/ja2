@@ -1,6 +1,6 @@
-const NUM_CORPSE_SHADES = 17;
+export const NUM_CORPSE_SHADES = 17;
 
-const enum Enum249 {
+export const enum Enum249 {
   NO_CORPSE,
   SMERC_JFK,
   SMERC_BCK,
@@ -64,15 +64,15 @@ const enum Enum249 {
   NUM_CORPSES,
 }
 
-const ROTTING_CORPSE_FIND_SWEETSPOT_FROM_GRIDNO = 0x01; // Find the closest spot to the given gridno
-const ROTTING_CORPSE_USE_NORTH_ENTRY_POINT = 0x02; // Find the spot closest to the north entry grid
-const ROTTING_CORPSE_USE_SOUTH_ENTRY_POINT = 0x04; // Find the spot closest to the south entry grid
-const ROTTING_CORPSE_USE_EAST_ENTRY_POINT = 0x08; // Find the spot closest to the east entry grid
-const ROTTING_CORPSE_USE_WEST_ENTRY_POINT = 0x10; // Find the spot closest to the west entry grid
-const ROTTING_CORPSE_USE_CAMMO_PALETTE = 0x20; // We use cammo palette here....
-const ROTTING_CORPSE_VEHICLE = 0x40; // Vehicle Corpse
+export const ROTTING_CORPSE_FIND_SWEETSPOT_FROM_GRIDNO = 0x01; // Find the closest spot to the given gridno
+export const ROTTING_CORPSE_USE_NORTH_ENTRY_POINT = 0x02; // Find the spot closest to the north entry grid
+export const ROTTING_CORPSE_USE_SOUTH_ENTRY_POINT = 0x04; // Find the spot closest to the south entry grid
+export const ROTTING_CORPSE_USE_EAST_ENTRY_POINT = 0x08; // Find the spot closest to the east entry grid
+export const ROTTING_CORPSE_USE_WEST_ENTRY_POINT = 0x10; // Find the spot closest to the west entry grid
+export const ROTTING_CORPSE_USE_CAMMO_PALETTE = 0x20; // We use cammo palette here....
+export const ROTTING_CORPSE_VEHICLE = 0x40; // Vehicle Corpse
 
-interface ROTTING_CORPSE_DEFINITION {
+export interface ROTTING_CORPSE_DEFINITION {
   ubType: UINT8;
   ubBodyType: UINT8;
   sGridNo: INT16;
@@ -101,7 +101,7 @@ interface ROTTING_CORPSE_DEFINITION {
   ubFiller: UINT8[] /* [12] */;
 }
 
-interface ROTTING_CORPSE {
+export interface ROTTING_CORPSE {
   def: ROTTING_CORPSE_DEFINITION;
   fActivated: boolean;
 
@@ -119,4 +119,4 @@ interface ROTTING_CORPSE {
   iID: INT32;
 }
 
-const MAX_ROTTING_CORPSES = 100;
+export const MAX_ROTTING_CORPSES = 100;

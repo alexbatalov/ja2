@@ -1,11 +1,11 @@
-const MORTAR_GRENADE_CLASS = 100;
+export const MORTAR_GRENADE_CLASS = 100;
 
-interface ARMY_GUN_CHOICE_TYPE {
+export interface ARMY_GUN_CHOICE_TYPE {
   ubChoices: UINT8; // how many valid choices there are in this category
   bItemNo: INT8[] /* [5] */; // room for up to 5 choices of gun in each category
 }
 
-const enum Enum223 {
+export const enum Enum223 {
   // administrator ratings (1-5)
   BAD_ADMINISTRATOR_EQUIPMENT_RATING = 1,
   POOR_ADMINISTRATOR_EQUIPMENT_RATING,
@@ -33,5 +33,5 @@ const enum Enum223 {
   GREAT_MILITIA_EQUIPMENT_RATING,
 }
 
-const MIN_EQUIPMENT_CLASS = 1;
-const MAX_EQUIPMENT_CLASS = 11;
+export const MIN_EQUIPMENT_CLASS = 1;
+export const MAX_EQUIPMENT_CLASS = 11;

@@ -1,4 +1,4 @@
-const ONELEVELTYPEONEROOF = 1;
+export const ONELEVELTYPEONEROOF = 1;
 const ONELEVELTYPETWOROOF = 2;
 
 //   Area (pointer to SGP rect) +

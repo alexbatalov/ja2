@@ -1,24 +1,24 @@
-let gsBoxerGridNo: INT16[] /* [NUM_BOXERS] */ = [
+export let gsBoxerGridNo: INT16[] /* [NUM_BOXERS] */ = [
   11393,
   11233,
   11073,
 ];
-let gubBoxerID: UINT8[] /* [NUM_BOXERS] */ = [
+export let gubBoxerID: UINT8[] /* [NUM_BOXERS] */ = [
   NOBODY,
   NOBODY,
   NOBODY,
 ];
-let gfBoxerFought: boolean[] /* [NUM_BOXERS] */ = [
+export let gfBoxerFought: boolean[] /* [NUM_BOXERS] */ = [
   false,
   false,
   false,
 ];
-let gfLastBoxingMatchWonByPlayer: boolean = false;
-let gubBoxingMatchesWon: UINT8 = 0;
-let gubBoxersRests: UINT8 = 0;
-let gfBoxersResting: boolean = false;
+export let gfLastBoxingMatchWonByPlayer: boolean = false;
+export let gubBoxingMatchesWon: UINT8 = 0;
+export let gubBoxersRests: UINT8 = 0;
+export let gfBoxersResting: boolean = false;
 
-function ExitBoxing(): void {
+export function ExitBoxing(): void {
   let ubRoom: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiLoop: UINT32;
@@ -84,7 +84,7 @@ function ExitBoxing(): void {
 
 // in both these cases we're going to want the AI to take over and move the boxers
 // out of the ring!
-function EndBoxingMatch(pLoser: Pointer<SOLDIERTYPE>): void {
+export function EndBoxingMatch(pLoser: Pointer<SOLDIERTYPE>): void {
   if (pLoser.value.bTeam == gbPlayerNum) {
     SetBoxingState(Enum247.LOST_ROUND);
   } else {
@@ -95,7 +95,7 @@ function EndBoxingMatch(pLoser: Pointer<SOLDIERTYPE>): void {
   TriggerNPCRecord(Enum268.DARREN, 22);
 }
 
-function BoxingPlayerDisqualified(pOffender: Pointer<SOLDIERTYPE>, bReason: INT8): void {
+export function BoxingPlayerDisqualified(pOffender: Pointer<SOLDIERTYPE>, bReason: INT8): void {
   if (bReason == Enum199.BOXER_OUT_OF_RING || bReason == Enum199.NON_BOXER_IN_RING) {
     EVENT_StopMerc(pOffender, pOffender.value.sGridNo, pOffender.value.bDirection);
   }
@@ -104,7 +104,7 @@ function BoxingPlayerDisqualified(pOffender: Pointer<SOLDIERTYPE>, bReason: INT8
   // ExitBoxing();
 }
 
-function TriggerEndOfBoxingRecord(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function TriggerEndOfBoxingRecord(pSoldier: Pointer<SOLDIERTYPE>): void {
   // unlock UI
   guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
 
@@ -128,7 +128,7 @@ function TriggerEndOfBoxingRecord(pSoldier: Pointer<SOLDIERTYPE>): void {
   SetBoxingState(Enum247.NOT_BOXING);
 }
 
-function CountPeopleInBoxingRing(): UINT8 {
+export function CountPeopleInBoxingRing(): UINT8 {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiLoop: UINT32;
   let ubRoom: UINT8;
@@ -232,7 +232,7 @@ function CountPeopleInBoxingRingAndDoActions(): void {
   */
 }
 
-function CheckOnBoxers(): boolean {
+export function CheckOnBoxers(): boolean {
   let uiLoop: UINT32;
   let ubID: UINT8;
 
@@ -255,7 +255,7 @@ function CheckOnBoxers(): boolean {
   return true;
 }
 
-function BoxerExists(): boolean {
+export function BoxerExists(): boolean {
   let uiLoop: UINT32;
 
   for (uiLoop = 0; uiLoop < NUM_BOXERS; uiLoop++) {
@@ -303,7 +303,7 @@ function PickABoxer(): boolean {
   return false;
 }
 
-function BoxerAvailable(): boolean {
+export function BoxerAvailable(): boolean {
   let ubLoop: UINT8;
 
   // No way around this, BoxerAvailable will have to go find boxer IDs if they aren't set.
@@ -335,7 +335,7 @@ function BoxersAvailable(): UINT8 {
   return ubCount;
 }
 
-function AnotherFightPossible(): boolean {
+export function AnotherFightPossible(): boolean {
   // Check that and a boxer is still available and
   // a player has at least OKLIFE + 5 life
 
@@ -362,7 +362,7 @@ function AnotherFightPossible(): boolean {
   return false;
 }
 
-function BoxingMovementCheck(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function BoxingMovementCheck(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubRoom: UINT8;
 
   if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == BOXING_RING) {
@@ -379,7 +379,7 @@ function BoxingMovementCheck(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function SetBoxingState(bNewState: INT8): void {
+export function SetBoxingState(bNewState: INT8): void {
   if (gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) {
     if (bNewState != Enum247.NOT_BOXING) {
       // pause time
@@ -400,7 +400,7 @@ function SetBoxingState(bNewState: INT8): void {
   gTacticalStatus.bBoxingState = bNewState;
 }
 
-function ClearAllBoxerFlags(): void {
+export function ClearAllBoxerFlags(): void {
   let uiSlot: UINT32;
 
   for (uiSlot = 0; uiSlot < guiNumMercSlots; uiSlot++) {

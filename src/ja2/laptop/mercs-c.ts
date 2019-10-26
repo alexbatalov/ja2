@@ -127,7 +127,7 @@ let guiMercVideoFaceBackground: UINT32;
 let guiMercVideoPopupBackground: UINT32;
 
 let gubMercArray: UINT8[] /* [NUMBER_OF_MERCS] */;
-let gubCurMercIndex: UINT8;
+export let gubCurMercIndex: UINT8;
 
 let iMercPopUpBox: INT32 = -1;
 
@@ -149,17 +149,17 @@ const enum Enum103 {
 let gubCurrentMercVideoMode: UINT8;
 let gfMercVideoIsBeingDisplayed: boolean;
 let giVideoSpeckFaceIndex: INT32;
-let gusMercVideoSpeckSpeech: UINT16;
+export let gusMercVideoSpeckSpeech: UINT16;
 
 let gfDisplaySpeckTextBox: boolean = false;
 
 let gfJustEnteredMercSite: boolean = false;
-let gubArrivedFromMercSubSite: UINT8 = Enum105.MERC_CAME_FROM_OTHER_PAGE; // the merc is arriving from one of the merc sub pages
+export let gubArrivedFromMercSubSite: UINT8 = Enum105.MERC_CAME_FROM_OTHER_PAGE; // the merc is arriving from one of the merc sub pages
 let gfDoneIntroSpeech: boolean = true;
 
 let gfMercSiteScreenIsReDrawn: boolean = false;
 
-let gfJustHiredAMercMerc: boolean = false;
+export let gfJustHiredAMercMerc: boolean = false;
 
 let gfRedrawMercSite: boolean = false;
 
@@ -212,7 +212,7 @@ let gMercSiteSubTitleMouseRegion: MOUSE_REGION;
 
 // ppp
 
-function GameInitMercs(): void {
+export function GameInitMercs(): void {
   //	for(i=0; i<NUMBER_OF_MERCS; i++)
   //		gubMercArray[ i ] = i+BIFF;
 
@@ -248,7 +248,7 @@ function GameInitMercs(): void {
   */
 }
 
-function EnterMercs(): boolean {
+export function EnterMercs(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let vs_desc: VSURFACE_DESC;
 
@@ -353,7 +353,7 @@ function EnterMercs(): boolean {
   return true;
 }
 
-function ExitMercs(): void {
+export function ExitMercs(): void {
   StopSpeckFromTalking();
 
   if (gfMercVideoIsBeingDisplayed) {
@@ -404,7 +404,7 @@ function ExitMercs(): void {
   EmptyDialogueQueue();
 }
 
-function HandleMercs(): void {
+export function HandleMercs(): void {
   if (gfRedrawMercSite) {
     RenderMercs();
     gfRedrawMercSite = false;
@@ -450,7 +450,7 @@ function HandleMercs(): void {
   }
 }
 
-function RenderMercs(): void {
+export function RenderMercs(): void {
   let hPixHandle: HVOBJECT;
 
   DrawMecBackGround();
@@ -502,7 +502,7 @@ function RenderMercs(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function InitMercBackGround(): boolean {
+export function InitMercBackGround(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the Merc background graphic and add it
@@ -513,12 +513,12 @@ function InitMercBackGround(): boolean {
   return true;
 }
 
-function DrawMecBackGround(): boolean {
+export function DrawMecBackGround(): boolean {
   WebPageTileBackground(4, 4, MERC_BACKGROUND_WIDTH, MERC_BACKGROUND_HEIGHT, guiMercBackGround);
   return true;
 }
 
-function RemoveMercBackGround(): boolean {
+export function RemoveMercBackGround(): boolean {
   DeleteVideoObjectFromIndex(guiMercBackGround);
 
   return true;
@@ -573,7 +573,7 @@ function BtnFileBoxButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   }
 }
 
-function DailyUpdateOfMercSite(usDate: UINT16): void {
+export function DailyUpdateOfMercSite(usDate: UINT16): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let sSoldierID: INT16;
   let i: INT16;
@@ -782,7 +782,7 @@ function DailyUpdateOfMercSite(usDate: UINT16): void {
 }
 
 // Gets the actual merc id from the array
-function GetMercIDFromMERCArray(ubMercID: UINT8): UINT8 {
+export function GetMercIDFromMERCArray(ubMercID: UINT8): UINT8 {
   // if it is one of the regular MERCS
   if (ubMercID <= 6) {
     return gubMercArray[ubMercID];
@@ -1273,7 +1273,7 @@ function HandleTalkingSpeck(): void {
   }
 }
 
-function DisplayTextForSpeckVideoPopUp(pString: STR16): void {
+export function DisplayTextForSpeckVideoPopUp(pString: STR16): void {
   let usActualHeight: UINT16;
   let iOldMercPopUpBoxId: INT32 = iMercPopUpBox;
 
@@ -1876,7 +1876,7 @@ function HasLarryRelapsed(): boolean {
 }
 
 // Gets Called on each enter into laptop.
-function EnterInitMercSite(): void {
+export function EnterInitMercSite(): void {
   gfFirstTimeIntoMERCSiteSinceEnteringLaptop = true;
   gubCurMercIndex = 0;
 }
@@ -1898,7 +1898,7 @@ function ShouldTheMercSiteServerGoDown(): boolean {
   return false;
 }
 
-function GetMercSiteBackOnline(): void {
+export function GetMercSiteBackOnline(): void {
   // Add an email telling the user the site is back up
   AddEmail(MERC_NEW_SITE_ADDRESS, MERC_NEW_SITE_ADDRESS_LENGTH, Enum75.SPECK_FROM_MERC, GetWorldTotalMin());
 
@@ -1917,7 +1917,7 @@ function DrawMercVideoBackGround(): void {
   InvalidateRegion(MERC_VIDEO_BACKGROUND_X, MERC_VIDEO_BACKGROUND_Y, (MERC_VIDEO_BACKGROUND_X + MERC_VIDEO_BACKGROUND_WIDTH), (MERC_VIDEO_BACKGROUND_Y + MERC_VIDEO_BACKGROUND_HEIGHT));
 }
 
-function DisableMercSiteButton(): void {
+export function DisableMercSiteButton(): void {
   if (iMercPopUpBox != -1) {
     ButtonList[guiAccountBoxButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
   }
@@ -1982,7 +1982,7 @@ function CanMercQuoteBeSaid(uiQuoteID: UINT32): boolean {
   return fRetVal;
 }
 
-function InitializeNumDaysMercArrive(): void {
+export function InitializeNumDaysMercArrive(): void {
   /*
           LaptopSaveInfo.gbNumDaysTillFirstMercArrives = MERC_NUM_DAYS_TILL_FIRST_MERC_AVAILABLE;
           LaptopSaveInfo.gbNumDaysTillSecondMercArrives = MERC_NUM_DAYS_TILL_SECOND_MERC_AVAILABLE;
@@ -2072,7 +2072,7 @@ function CanMercBeAvailableYet(ubMercToCheck: UINT8): boolean {
   return false;
 }
 
-function NewMercsAvailableAtMercSiteCallBack(): void {
+export function NewMercsAvailableAtMercSiteCallBack(): void {
   let fSendEmail: boolean = false;
   //	if( GetMercIDFromMERCArray( LaptopSaveInfo.gubLastMercIndex ) == BUBBA )
   {
@@ -2122,7 +2122,7 @@ function NewMercsAvailableAtMercSiteCallBack(): void {
 }
 
 // used for older saves
-function CalcAproximateAmountPaidToSpeck(): void {
+export function CalcAproximateAmountPaidToSpeck(): void {
   let i: UINT8;
   let ubMercID: UINT8;
 

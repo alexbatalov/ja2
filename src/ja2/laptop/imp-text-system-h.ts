@@ -1,4 +1,4 @@
-const enum Enum88 {
+export const enum Enum88 {
   IMP_HOME_1,
   IMP_HOME_2,
   IMP_HOME_3,

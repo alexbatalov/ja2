@@ -1,44 +1,44 @@
-const NO_EXPRESSION = 0;
-const BLINKING = 1;
-const ANGRY = 2;
-const SURPRISED = 3;
+export const NO_EXPRESSION = 0;
+export const BLINKING = 1;
+export const ANGRY = 2;
+export const SURPRISED = 3;
 
 // Defines
 const NUM_FACE_SLOTS = 50;
 
-interface AUDIO_GAP {
+export interface AUDIO_GAP {
   uiStart: UINT32;
   uiEnd: UINT32;
   pNext: Pointer<AUDIO_GAP>;
 }
 
-const FACE_AUTO_DISPLAY_BUFFER = 0xFFFFF000;
-const FACE_AUTO_RESTORE_BUFFER = 0xFFFFFF00;
-const FACE_NO_RESTORE_BUFFER = 0xFFFFFFF0;
+export const FACE_AUTO_DISPLAY_BUFFER = 0xFFFFF000;
+export const FACE_AUTO_RESTORE_BUFFER = 0xFFFFFF00;
+export const FACE_NO_RESTORE_BUFFER = 0xFFFFFFF0;
 
 // FLAGS....
-const FACE_DESTROY_OVERLAY = 0x00000000; // A face may contain a video overlay
-const FACE_BIGFACE = 0x00000001; // A BIGFACE instead of small face
-const FACE_POTENTIAL_KEYWAIT = 0x00000002; // If the option is set, will not stop face until key pressed
-const FACE_PCTRIGGER_NPC = 0x00000004; // This face has to trigger an NPC after being done
-const FACE_INACTIVE_HANDLED_ELSEWHERE = 0x00000008; // This face has been setup and any disable should be done
+export const FACE_DESTROY_OVERLAY = 0x00000000; // A face may contain a video overlay
+export const FACE_BIGFACE = 0x00000001; // A BIGFACE instead of small face
+export const FACE_POTENTIAL_KEYWAIT = 0x00000002; // If the option is set, will not stop face until key pressed
+export const FACE_PCTRIGGER_NPC = 0x00000004; // This face has to trigger an NPC after being done
+export const FACE_INACTIVE_HANDLED_ELSEWHERE = 0x00000008; // This face has been setup and any disable should be done
                                                     // Externally
-const FACE_TRIGGER_PREBATTLE_INT = 0x00000010;
-const FACE_SHOW_WHITE_HILIGHT = 0x00000020; // Show highlight around face
-const FACE_FORCE_SMALL = 0x00000040; // force to small face
-const FACE_MODAL = 0x00000080; // make game modal
-const FACE_MAKEACTIVE_ONCE_DONE = 0x00000100;
-const FACE_SHOW_MOVING_HILIGHT = 0x00000200;
-const FACE_REDRAW_WHOLE_FACE_NEXT_FRAME = 0x00000400; // Redraw the complete face next frame
+export const FACE_TRIGGER_PREBATTLE_INT = 0x00000010;
+export const FACE_SHOW_WHITE_HILIGHT = 0x00000020; // Show highlight around face
+export const FACE_FORCE_SMALL = 0x00000040; // force to small face
+export const FACE_MODAL = 0x00000080; // make game modal
+export const FACE_MAKEACTIVE_ONCE_DONE = 0x00000100;
+export const FACE_SHOW_MOVING_HILIGHT = 0x00000200;
+export const FACE_REDRAW_WHOLE_FACE_NEXT_FRAME = 0x00000400; // Redraw the complete face next frame
 
-const FACE_DRAW_TEXT_OVER = 2;
-const FACE_ERASE_TEXT_OVER = 1;
-const FACE_NO_TEXT_OVER = 0;
+export const FACE_DRAW_TEXT_OVER = 2;
+export const FACE_ERASE_TEXT_OVER = 1;
+export const FACE_NO_TEXT_OVER = 0;
 
 // duration for talking
-const FINAL_TALKING_DURATION = 2000;
+export const FINAL_TALKING_DURATION = 2000;
 
-interface AudioGapList {
+export interface AudioGapList {
   size: UINT32;
   current_time: UINT32;
   // Pointer to head and current entry of gap list
@@ -48,7 +48,7 @@ interface AudioGapList {
   audio_gap_active: boolean;
 }
 
-interface FACETYPE {
+export interface FACETYPE {
   uiFlags: UINT32; // Basic flags
   iID: INT32;
   fAllocated: boolean; // Allocated or not

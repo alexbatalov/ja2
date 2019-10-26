@@ -1,7 +1,7 @@
-const FINANCES_DATA_FILE = "TEMP\\finances.dat";
+export const FINANCES_DATA_FILE = "TEMP\\finances.dat";
 
 // the financial structure
-interface FinanceUnit {
+export interface FinanceUnit {
   ubCode: UINT8; // the code index in the finance code table
   uiIdNumber: UINT32; // unique id number
   ubSecondCode: UINT8; // secondary code
@@ -11,7 +11,7 @@ interface FinanceUnit {
   Next: Pointer<FinanceUnit>; // next unit in the list
 }
 
-const enum Enum80 {
+export const enum Enum80 {
   ACCRUED_INTEREST,
   ANONYMOUS_DEPOSIT,
   TRANSACTION_FEE,
@@ -42,4 +42,4 @@ const enum Enum80 {
   MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT,
 }
 
-type FinanceUnitPtr = Pointer<FinanceUnit>;
+export type FinanceUnitPtr = Pointer<FinanceUnit>;

@@ -106,7 +106,7 @@ let gBattleSndsData: BATTLESNDS_STRUCT[] /* [] */ = [
   [ "enem", 0, 1, 1, 1, 0 ],
 ];
 
-let bHealthStrRanges: UINT8[] /* [] */ = [
+export let bHealthStrRanges: UINT8[] /* [] */ = [
   15,
   30,
   45,
@@ -148,7 +148,7 @@ let guipPaletteSubRanges: Pointer<PaletteSubRangeType> = null;
 let guiNumReplacements: UINT32;
 let guipPaletteReplacements: Pointer<PaletteReplacementType> = null;
 
-let gfGetNewPathThroughPeople: boolean = false;
+export let gfGetNewPathThroughPeople: boolean = false;
 
 function HandleVehicleMovementSound(pSoldier: Pointer<SOLDIERTYPE>, fOn: boolean): void {
   let pVehicle: Pointer<VEHICLETYPE> = addressof(pVehicleList[pSoldier.value.bVehicleID]);
@@ -165,7 +165,7 @@ function HandleVehicleMovementSound(pSoldier: Pointer<SOLDIERTYPE>, fOn: boolean
   }
 }
 
-function AdjustNoAPToFinishMove(pSoldier: Pointer<SOLDIERTYPE>, fSet: boolean): void {
+export function AdjustNoAPToFinishMove(pSoldier: Pointer<SOLDIERTYPE>, fSet: boolean): void {
   if (pSoldier.value.ubBodyType == Enum194.CROW) {
     return;
   }
@@ -194,7 +194,7 @@ function AdjustNoAPToFinishMove(pSoldier: Pointer<SOLDIERTYPE>, fSet: boolean): 
   }
 }
 
-function HandleCrowShadowVisibility(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleCrowShadowVisibility(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.ubBodyType == Enum194.CROW) {
     if (pSoldier.value.usAnimState == Enum193.CROW_FLY) {
       if (pSoldier.value.pAniTile != null) {
@@ -273,7 +273,7 @@ function HandleCrowShadowNewPosition(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function CalcActionPoints(pSold: Pointer<SOLDIERTYPE>): INT8 {
+export function CalcActionPoints(pSold: Pointer<SOLDIERTYPE>): INT8 {
   let ubPoints: UINT8;
   let ubMaxAPs: UINT8;
   let bBandage: INT8;
@@ -363,7 +363,7 @@ function CalcActionPoints(pSold: Pointer<SOLDIERTYPE>): INT8 {
   return ubPoints;
 }
 
-function CalcNewActionPoints(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CalcNewActionPoints(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (gTacticalStatus.bBoxingState == Enum247.BOXING || gTacticalStatus.bBoxingState == Enum247.PRE_BOXING) {
     // if we are in boxing mode, carry 1/2 as many points
     if (pSoldier.value.bActionPoints > MAX_AP_CARRIED / 2) {
@@ -385,7 +385,7 @@ function CalcNewActionPoints(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bInitialActionPoints = pSoldier.value.bActionPoints;
 }
 
-function DoNinjaAttack(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DoNinjaAttack(pSoldier: Pointer<SOLDIERTYPE>): void {
   // UINT32						uiMercFlags;
   let usSoldierIndex: UINT16;
   let pTSoldier: Pointer<SOLDIERTYPE>;
@@ -478,7 +478,7 @@ function DoNinjaAttack(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function CreateSoldierCommon(ubBodyType: UINT8, pSoldier: Pointer<SOLDIERTYPE>, usSoldierID: UINT16, usState: UINT16): boolean {
+export function CreateSoldierCommon(ubBodyType: UINT8, pSoldier: Pointer<SOLDIERTYPE>, usSoldierID: UINT16, usState: UINT16): boolean {
   let fSuccess: boolean = false;
   let iCounter: INT32 = 0;
 
@@ -578,7 +578,7 @@ function CreateSoldierCommon(ubBodyType: UINT8, pSoldier: Pointer<SOLDIERTYPE>, 
   return fSuccess;
 }
 
-function DeleteSoldier(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function DeleteSoldier(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let cnt: UINT32;
   let iGridNo: INT32;
   let bDir: INT8;
@@ -711,7 +711,7 @@ function CreateSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function ReCreateSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function ReCreateSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (pSoldier.value.bTeam != gbPlayerNum) {
     return false;
   }
@@ -746,7 +746,7 @@ function ReCreateSelectedSoldierLight(): boolean {
   return ReCreateSoldierLight(pSoldier);
 }
 
-function DeleteSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function DeleteSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (pSoldier.value.iLight != (-1)) {
     LightSpriteDestroy(pSoldier.value.iLight);
     pSoldier.value.iLight = -1;
@@ -758,7 +758,7 @@ function DeleteSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): boolean {
 // FUNCTIONS CALLED BY EVENT PUMP
 /////////////////////////////////
 
-function ChangeSoldierState(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16, usStartingAniCode: UINT16, fForce: boolean): boolean {
+export function ChangeSoldierState(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16, usStartingAniCode: UINT16, fForce: boolean): boolean {
   let SChangeState: EV_S_CHANGESTATE;
 
   // Send message that we have changed states
@@ -778,7 +778,7 @@ function ChangeSoldierState(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16, 
 }
 
 // This function reevaluates the stance if the guy sees us!
-function ReevaluateEnemyStance(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): boolean {
+export function ReevaluateEnemyStance(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): boolean {
   let cnt: INT32;
   let iClosestEnemy: INT32 = NOBODY;
   let sTargetXPos: INT16;
@@ -881,7 +881,7 @@ function CheckForFreeupFromHit(pSoldier: Pointer<SOLDIERTYPE>, uiOldAnimFlags: U
 }
 
 // THIS IS CALLED FROM AN EVENT ( S_CHANGESTATE )!
-function EVENT_InitNewSoldierAnim(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16, usStartingAniCode: UINT16, fForce: boolean): boolean {
+export function EVENT_InitNewSoldierAnim(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16, usStartingAniCode: UINT16, fForce: boolean): boolean {
   let usNewGridNo: UINT16 = 0;
   let sAPCost: INT16 = 0;
   let sBPCost: INT16 = 0;
@@ -1712,11 +1712,11 @@ function InternalRemoveSoldierFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, fForce:
   }
 }
 
-function RemoveSoldierFromGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RemoveSoldierFromGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   InternalRemoveSoldierFromGridNo(pSoldier, false);
 }
 
-function EVENT_InternalSetSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT, fUpdateDest: boolean, fUpdateFinalDest: boolean, fForceRemove: boolean): void {
+export function EVENT_InternalSetSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT, fUpdateDest: boolean, fUpdateFinalDest: boolean, fForceRemove: boolean): void {
   let sNewGridNo: INT16;
 
   // Not if we're dead!
@@ -1760,11 +1760,11 @@ function EVENT_InternalSetSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, dNewXP
   UpdateAllVehiclePassengersGridNo(pSoldier);
 }
 
-function EVENT_SetSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT): void {
+export function EVENT_SetSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT): void {
   EVENT_InternalSetSoldierPosition(pSoldier, dNewXPos, dNewYPos, true, true, false);
 }
 
-function EVENT_SetSoldierPositionForceDelete(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT): void {
+export function EVENT_SetSoldierPositionForceDelete(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT): void {
   EVENT_InternalSetSoldierPosition(pSoldier, dNewXPos, dNewYPos, true, true, true);
 }
 
@@ -1772,7 +1772,7 @@ function EVENT_SetSoldierPositionAndMaybeFinalDest(pSoldier: Pointer<SOLDIERTYPE
   EVENT_InternalSetSoldierPosition(pSoldier, dNewXPos, dNewYPos, true, fUpdateFinalDest, false);
 }
 
-function EVENT_SetSoldierPositionAndMaybeFinalDestAndMaybeNotDestination(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT, fUpdateDest: boolean, fUpdateFinalDest: boolean): void {
+export function EVENT_SetSoldierPositionAndMaybeFinalDestAndMaybeNotDestination(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT, fUpdateDest: boolean, fUpdateFinalDest: boolean): void {
   EVENT_InternalSetSoldierPosition(pSoldier, dNewXPos, dNewYPos, fUpdateDest, fUpdateFinalDest, false);
 }
 
@@ -1813,7 +1813,7 @@ function InternalSetSoldierHeight(pSoldier: Pointer<SOLDIERTYPE>, dNewHeight: FL
   }
 }
 
-function SetSoldierHeight(pSoldier: Pointer<SOLDIERTYPE>, dNewHeight: FLOAT): void {
+export function SetSoldierHeight(pSoldier: Pointer<SOLDIERTYPE>, dNewHeight: FLOAT): void {
   InternalSetSoldierHeight(pSoldier, dNewHeight, true);
 }
 
@@ -2069,7 +2069,7 @@ function SetSoldierGridNo(pSoldier: Pointer<SOLDIERTYPE>, sNewGridNo: INT16, fFo
   }
 }
 
-function EVENT_FireSoldierWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
+export function EVENT_FireSoldierWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
   let sTargetXPos: INT16;
   let sTargetYPos: INT16;
   let fDoFireRightAway: boolean = false;
@@ -2337,7 +2337,7 @@ function SelectFireAnimation(pSoldier: Pointer<SOLDIERTYPE>, ubHeight: UINT8): U
   return 0;
 }
 
-function GetMoveStateBasedOnStance(pSoldier: Pointer<SOLDIERTYPE>, ubStanceHeight: UINT8): UINT16 {
+export function GetMoveStateBasedOnStance(pSoldier: Pointer<SOLDIERTYPE>, ubStanceHeight: UINT8): UINT16 {
   // Determine which animation to do...depending on stance and gun in hand...
   switch (ubStanceHeight) {
     case ANIM_STAND:
@@ -2387,7 +2387,7 @@ function SelectFallAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function SoldierReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetXPos: INT16, sTargetYPos: INT16, fEndReady: boolean): boolean {
+export function SoldierReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetXPos: INT16, sTargetYPos: INT16, fEndReady: boolean): boolean {
   let sFacingDir: INT16;
 
   sFacingDir = GetDirectionFromXY(sTargetXPos, sTargetYPos, pSoldier);
@@ -2395,7 +2395,7 @@ function SoldierReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetXPos: INT16, 
   return InternalSoldierReadyWeapon(pSoldier, sFacingDir, fEndReady);
 }
 
-function InternalSoldierReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, sFacingDir: UINT8, fEndReady: boolean): boolean {
+export function InternalSoldierReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, sFacingDir: UINT8, fEndReady: boolean): boolean {
   let usAnimState: UINT16;
   let fReturnVal: boolean = false;
 
@@ -2432,7 +2432,7 @@ function InternalSoldierReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, sFacingDir: 
   return fReturnVal;
 }
 
-function PickSoldierReadyAnimation(pSoldier: Pointer<SOLDIERTYPE>, fEndReady: boolean): UINT16 {
+export function PickSoldierReadyAnimation(pSoldier: Pointer<SOLDIERTYPE>, fEndReady: boolean): UINT16 {
   // Invalid animation if nothing in our hands
   if (pSoldier.value.inv[Enum261.HANDPOS].usItem == NOTHING) {
     return INVALID_ANIMATION;
@@ -2538,7 +2538,7 @@ function PickSoldierReadyAnimation(pSoldier: Pointer<SOLDIERTYPE>, fEndReady: bo
 }
 
 // ATE: THIS FUNCTION IS USED FOR ALL SOLDIER TAKE DAMAGE FUNCTIONS!
-function EVENT_SoldierGotHit(pSoldier: Pointer<SOLDIERTYPE>, usWeaponIndex: UINT16, sDamage: INT16, sBreathLoss: INT16, bDirection: UINT16, sRange: UINT16, ubAttackerID: UINT8, ubSpecial: UINT8, ubHitLocation: UINT8, sSubsequent: INT16, sLocationGrid: INT16): void {
+export function EVENT_SoldierGotHit(pSoldier: Pointer<SOLDIERTYPE>, usWeaponIndex: UINT16, sDamage: INT16, sBreathLoss: INT16, bDirection: UINT16, sRange: UINT16, ubAttackerID: UINT8, ubSpecial: UINT8, ubHitLocation: UINT8, sSubsequent: INT16, sLocationGrid: INT16): void {
   let ubCombinedLoss: UINT8;
   let ubVolume: UINT8;
   let ubReason: UINT8;
@@ -3175,7 +3175,7 @@ function SoldierGotHitPunch(pSoldier: Pointer<SOLDIERTYPE>, usWeaponIndex: UINT1
   }
 }
 
-function EVENT_InternalGetNewSoldierPath(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: UINT16, usMovementAnim: UINT16, fFromUI: boolean, fForceRestartAnim: boolean): boolean {
+export function EVENT_InternalGetNewSoldierPath(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: UINT16, usMovementAnim: UINT16, fFromUI: boolean, fForceRestartAnim: boolean): boolean {
   let iDest: INT32;
   let sNewGridNo: INT16;
   let fContinue: boolean;
@@ -3328,13 +3328,13 @@ function EVENT_InternalGetNewSoldierPath(pSoldier: Pointer<SOLDIERTYPE>, sDestGr
   return false;
 }
 
-function EVENT_GetNewSoldierPath(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: UINT16, usMovementAnim: UINT16): void {
+export function EVENT_GetNewSoldierPath(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: UINT16, usMovementAnim: UINT16): void {
   // ATE: Default restart of animation to TRUE
   EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, usMovementAnim, false, true);
 }
 
 // Change our state based on stance, to stop!
-function StopSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function StopSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   ReceivingSoldierCancelServices(pSoldier);
   GivingSoldierCancelServices(pSoldier);
 
@@ -3347,7 +3347,7 @@ function StopSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.sFinalDestination = pSoldier.value.sGridNo;
 }
 
-function SoldierGotoStationaryStance(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SoldierGotoStationaryStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   // ATE: This is to turn off fast movement, that us used to change movement mode
   // for ui display on stance changes....
   if (pSoldier.value.bTeam == gbPlayerNum) {
@@ -3398,7 +3398,7 @@ function SoldierGotoStationaryStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function ChangeSoldierStance(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredStance: UINT8): void {
+export function ChangeSoldierStance(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredStance: UINT8): void {
   let usNewState: UINT16;
 
   // Check if they are the same!
@@ -3429,7 +3429,7 @@ function ChangeSoldierStance(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredStance: UI
   }
 }
 
-function EVENT_InternalSetSoldierDestination(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16, fFromMove: boolean, usAnimState: UINT16): void {
+export function EVENT_InternalSetSoldierDestination(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16, fFromMove: boolean, usAnimState: UINT16): void {
   let usNewGridNo: UINT16;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -3463,7 +3463,7 @@ function EVENT_InternalSetSoldierDestination(pSoldier: Pointer<SOLDIERTYPE>, usN
   }
 }
 
-function EVENT_SetSoldierDestination(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
+export function EVENT_SetSoldierDestination(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
   EVENT_InternalSetSoldierDestination(pSoldier, usNewDirection, false, pSoldier.value.usAnimState);
 }
 
@@ -3532,7 +3532,7 @@ function MultiTiledTurnDirection(pSoldier: Pointer<SOLDIERTYPE>, bStartDirection
   return bTurningIncrement;
 }
 
-function EVENT_InternalSetSoldierDesiredDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16, fInitalMove: boolean, usAnimState: UINT16): void {
+export function EVENT_InternalSetSoldierDesiredDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16, fInitalMove: boolean, usAnimState: UINT16): void {
   // if ( usAnimState == WALK_BACKWARDS )
   if (pSoldier.value.bReverse && usAnimState != Enum193.SIDE_STEP) {
     // OK, check if we are going to go in the exact opposite than our facing....
@@ -3617,11 +3617,11 @@ function EVENT_InternalSetSoldierDesiredDirection(pSoldier: Pointer<SOLDIERTYPE>
   }
 }
 
-function EVENT_SetSoldierDesiredDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
+export function EVENT_SetSoldierDesiredDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
   EVENT_InternalSetSoldierDesiredDirection(pSoldier, usNewDirection, false, pSoldier.value.usAnimState);
 }
 
-function EVENT_SetSoldierDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
+export function EVENT_SetSoldierDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
   // Remove old location data
   HandleAnimationProfile(pSoldier, pSoldier.value.usAnimState, true);
 
@@ -3653,7 +3653,7 @@ function EVENT_SetSoldierDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirectio
   SetSoldierLocatorOffsets(pSoldier);
 }
 
-function EVENT_BeginMercTurn(pSoldier: Pointer<SOLDIERTYPE>, fFromRealTime: boolean, iRealTimeCounter: INT32): void {
+export function EVENT_BeginMercTurn(pSoldier: Pointer<SOLDIERTYPE>, fFromRealTime: boolean, iRealTimeCounter: INT32): void {
   // NB realtimecounter is not used, always passed in as 0 now!
 
   let iBlood: INT32;
@@ -3849,7 +3849,7 @@ let gDirectionFrom8to2: UINT8[] /* [] */ = [
   0,
 ];
 
-function ConvertAniCodeToAniFrame(pSoldier: Pointer<SOLDIERTYPE>, usAniFrame: UINT16): boolean {
+export function ConvertAniCodeToAniFrame(pSoldier: Pointer<SOLDIERTYPE>, usAniFrame: UINT16): boolean {
   let usAnimSurface: UINT16;
   let ubTempDir: UINT8;
   // Given ani code, adjust for facing direction
@@ -3910,7 +3910,7 @@ function ConvertAniCodeToAniFrame(pSoldier: Pointer<SOLDIERTYPE>, usAniFrame: UI
   return true;
 }
 
-function TurnSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function TurnSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sDirection: INT16;
   let fDoDirectionChange: boolean = true;
   let cnt: INT32;
@@ -4215,7 +4215,7 @@ let gOrangeGlowG: UINT8[] /* [] */ = [
   180,
 ];
 
-function CreateSoldierPalettes(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CreateSoldierPalettes(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let usAnimSurface: UINT16;
   let usPaletteAnimSurface: UINT16;
   let zColFilename: CHAR8[] /* [100] */;
@@ -4485,7 +4485,7 @@ function CalculateSoldierAniSpeed(pSoldier: Pointer<SOLDIERTYPE>, pStatsSoldier:
   }
 }
 
-function SetSoldierAniSpeed(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SetSoldierAniSpeed(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pStatsSoldier: Pointer<SOLDIERTYPE>;
 
   // ATE: If we are an enemy and are not visible......
@@ -4520,7 +4520,7 @@ function SetSoldierAniSpeed(pSoldier: Pointer<SOLDIERTYPE>): void {
 ///////////////////////////////////////////////////////
 // PALETTE REPLACEMENT FUNCTIONS
 ///////////////////////////////////////////////////////
-function LoadPaletteData(): boolean {
+export function LoadPaletteData(): boolean {
   let hFile: HWFILE;
   let cnt: UINT32;
   let cnt2: UINT32;
@@ -4603,7 +4603,7 @@ function LoadPaletteData(): boolean {
   return true;
 }
 
-function SetPaletteReplacement(p8BPPPalette: Pointer<SGPPaletteEntry>, aPalRep: PaletteRepID): boolean {
+export function SetPaletteReplacement(p8BPPPalette: Pointer<SGPPaletteEntry>, aPalRep: PaletteRepID): boolean {
   let cnt2: UINT32;
   let ubType: UINT8;
   let ubPalIndex: UINT8;
@@ -4622,7 +4622,7 @@ function SetPaletteReplacement(p8BPPPalette: Pointer<SGPPaletteEntry>, aPalRep: 
   return true;
 }
 
-function DeletePaletteData(): boolean {
+export function DeletePaletteData(): boolean {
   let cnt: UINT32;
 
   // Free!
@@ -4661,7 +4661,7 @@ function DeletePaletteData(): boolean {
   return true;
 }
 
-function GetPaletteRepIndexFromID(aPalRep: PaletteRepID, pubPalIndex: Pointer<UINT8>): boolean {
+export function GetPaletteRepIndexFromID(aPalRep: PaletteRepID, pubPalIndex: Pointer<UINT8>): boolean {
   let cnt: UINT32;
 
   // Check if type exists
@@ -4716,7 +4716,7 @@ function GetNewSoldierStateFromNewStance(pSoldier: Pointer<SOLDIERTYPE>, ubDesir
   return usNewState;
 }
 
-function MoveMercFacingDirection(pSoldier: Pointer<SOLDIERTYPE>, fReverse: boolean, dMovementDist: FLOAT): void {
+export function MoveMercFacingDirection(pSoldier: Pointer<SOLDIERTYPE>, fReverse: boolean, dMovementDist: FLOAT): void {
   let dAngle: FLOAT = 0;
 
   // Determine which direction we are in
@@ -4762,7 +4762,7 @@ function MoveMercFacingDirection(pSoldier: Pointer<SOLDIERTYPE>, fReverse: boole
   MoveMerc(pSoldier, dMovementDist, dAngle, false);
 }
 
-function BeginSoldierClimbUpRoof(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function BeginSoldierClimbUpRoof(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bNewDirection: INT8;
 
   if (FindHeigherLevel(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection, addressof(bNewDirection)) && (pSoldier.value.bLevel == 0)) {
@@ -4784,7 +4784,7 @@ function BeginSoldierClimbUpRoof(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function BeginSoldierClimbFence(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function BeginSoldierClimbFence(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bDirection: INT8;
 
   if (FindFenceJumpDirection(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection, addressof(bDirection))) {
@@ -4821,7 +4821,7 @@ function SleepDartSuccumbChance(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   return uiChance;
 }
 
-function BeginSoldierGetup(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function BeginSoldierGetup(pSoldier: Pointer<SOLDIERTYPE>): void {
   // RETURN IF WE ARE BEING SERVICED
   if (pSoldier.value.ubServiceCount > 0) {
     return;
@@ -4952,7 +4952,7 @@ function HandleTakeDamageDeath(pSoldier: Pointer<SOLDIERTYPE>, bOldLife: UINT8, 
   }
 }
 
-function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8, sLifeDeduct: INT16, sBreathLoss: INT16, ubReason: UINT8, ubAttacker: UINT8, sSourceGrid: INT16, sSubsequent: INT16, fShowDamage: boolean): UINT8 {
+export function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8, sLifeDeduct: INT16, sBreathLoss: INT16, ubReason: UINT8, ubAttacker: UINT8, sSourceGrid: INT16, sSubsequent: INT16, fShowDamage: boolean): UINT8 {
   let bOldLife: INT8;
   let ubCombinedLoss: UINT8;
   let bBandage: INT8;
@@ -5305,7 +5305,7 @@ function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8, sLifeD
   return ubCombinedLoss;
 }
 
-function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSoundID: UINT8, bSpecialCode: INT8): boolean {
+export function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSoundID: UINT8, bSpecialCode: INT8): boolean {
   let zFilename: SGPFILENAME;
   let spParms: SOUNDPARMS;
   let ubSoundID: UINT8;
@@ -5601,7 +5601,7 @@ function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSound
   }
 }
 
-function DoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSoundID: UINT8): boolean {
+export function DoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSoundID: UINT8): boolean {
   // We WANT to play some RIGHT AWAY.....
   if (gBattleSndsData[ubBattleSoundID].fStopDialogue == 1 || (pSoldier.value.ubProfile == NO_PROFILE) || InOverheadMap()) {
     return InternalDoMercBattleSound(pSoldier, ubBattleSoundID, 0);
@@ -5647,7 +5647,7 @@ function PreloadSoldierBattleSounds(pSoldier: Pointer<SOLDIERTYPE>, fRemove: boo
   return true;
 }
 
-function CheckSoldierHitRoof(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CheckSoldierHitRoof(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // Check if we are near a lower level
   let bNewDirection: INT8;
   let fReturnVal: boolean = false;
@@ -5714,7 +5714,7 @@ function CheckSoldierHitRoof(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return fReturnVal;
 }
 
-function BeginSoldierClimbDownRoof(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function BeginSoldierClimbDownRoof(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bNewDirection: INT8;
 
   if (FindLowerLevel(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection, addressof(bNewDirection)) && (pSoldier.value.bLevel > 0)) {
@@ -5737,7 +5737,7 @@ function BeginSoldierClimbDownRoof(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function MoveMerc(pSoldier: Pointer<SOLDIERTYPE>, dMovementChange: FLOAT, dAngle: FLOAT, fCheckRange: boolean): void {
+export function MoveMerc(pSoldier: Pointer<SOLDIERTYPE>, dMovementChange: FLOAT, dAngle: FLOAT, fCheckRange: boolean): void {
   let dDegAngle: INT16;
   let dDeltaPos: FLOAT;
   let dXPos: FLOAT;
@@ -5843,7 +5843,7 @@ function MoveMerc(pSoldier: Pointer<SOLDIERTYPE>, dMovementChange: FLOAT, dAngle
   //	DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("X: %f Y: %f", dXPos, dYPos ) );
 }
 
-function GetDirectionFromGridNo(sGridNo: INT16, pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function GetDirectionFromGridNo(sGridNo: INT16, pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let sXPos: INT16;
   let sYPos: INT16;
 
@@ -5852,7 +5852,7 @@ function GetDirectionFromGridNo(sGridNo: INT16, pSoldier: Pointer<SOLDIERTYPE>):
   return GetDirectionFromXY(sXPos, sYPos, pSoldier);
 }
 
-function GetDirectionToGridNoFromGridNo(sGridNoDest: INT16, sGridNoSrc: INT16): INT16 {
+export function GetDirectionToGridNoFromGridNo(sGridNoDest: INT16, sGridNoSrc: INT16): INT16 {
   let sXPos2: INT16;
   let sYPos2: INT16;
   let sXPos: INT16;
@@ -5864,7 +5864,7 @@ function GetDirectionToGridNoFromGridNo(sGridNoDest: INT16, sGridNoSrc: INT16): 
   return atan8(sXPos2, sYPos2, sXPos, sYPos);
 }
 
-function GetDirectionFromXY(sXPos: INT16, sYPos: INT16, pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function GetDirectionFromXY(sXPos: INT16, sYPos: INT16, pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let sXPos2: INT16;
   let sYPos2: INT16;
 
@@ -5874,7 +5874,7 @@ function GetDirectionFromXY(sXPos: INT16, sYPos: INT16, pSoldier: Pointer<SOLDIE
 }
 
 //#if 0
-function atan8(sXPos: INT16, sYPos: INT16, sXPos2: INT16, sYPos2: INT16): UINT8 {
+export function atan8(sXPos: INT16, sYPos: INT16, sXPos2: INT16, sYPos2: INT16): UINT8 {
   let test_x: DOUBLE = sXPos2 - sXPos;
   let test_y: DOUBLE = sYPos2 - sYPos;
   let mFacing: UINT8 = Enum245.WEST;
@@ -6132,7 +6132,7 @@ function SendSoldierSetDirectionEvent(pSoldier: Pointer<SOLDIERTYPE>, usNewDirec
   AddGameEvent(Enum319.S_SETDIRECTION, 0, addressof(SSetDirection));
 }
 
-function SendSoldierSetDesiredDirectionEvent(pSoldier: Pointer<SOLDIERTYPE>, usDesiredDirection: UINT16): void {
+export function SendSoldierSetDesiredDirectionEvent(pSoldier: Pointer<SOLDIERTYPE>, usDesiredDirection: UINT16): void {
   // Sent event for position update
   let SSetDesiredDirection: EV_S_SETDESIREDDIRECTION;
 
@@ -6143,7 +6143,7 @@ function SendSoldierSetDesiredDirectionEvent(pSoldier: Pointer<SOLDIERTYPE>, usD
   AddGameEvent(Enum319.S_SETDESIREDDIRECTION, 0, addressof(SSetDesiredDirection));
 }
 
-function SendGetNewSoldierPathEvent(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: UINT16, usMovementAnim: UINT16): void {
+export function SendGetNewSoldierPathEvent(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: UINT16, usMovementAnim: UINT16): void {
   let SGetNewPath: EV_S_GETNEWPATH;
 
   SGetNewPath.usSoldierID = pSoldier.value.ubID;
@@ -6154,11 +6154,11 @@ function SendGetNewSoldierPathEvent(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo:
   AddGameEvent(Enum319.S_GETNEWPATH, 0, addressof(SGetNewPath));
 }
 
-function SendChangeSoldierStanceEvent(pSoldier: Pointer<SOLDIERTYPE>, ubNewStance: UINT8): void {
+export function SendChangeSoldierStanceEvent(pSoldier: Pointer<SOLDIERTYPE>, ubNewStance: UINT8): void {
   ChangeSoldierStance(pSoldier, ubNewStance);
 }
 
-function SendBeginFireWeaponEvent(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
+export function SendBeginFireWeaponEvent(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
   let SBeginFireWeapon: EV_S_BEGINFIREWEAPON;
 
   SBeginFireWeapon.usSoldierID = pSoldier.value.ubID;
@@ -6171,7 +6171,7 @@ function SendBeginFireWeaponEvent(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo:
 }
 
 // This function just encapolates the check for turnbased and having an attacker in the first place
-function ReleaseSoldiersAttacker(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ReleaseSoldiersAttacker(pSoldier: Pointer<SOLDIERTYPE>): void {
   let cnt: INT32;
   let ubNumToFree: UINT8;
 
@@ -6208,7 +6208,7 @@ function ReleaseSoldiersAttacker(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function MercInWater(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function MercInWater(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // Our water texture , for now is of a given type
   if (pSoldier.value.bOverTerrainType == Enum315.LOW_WATER || pSoldier.value.bOverTerrainType == Enum315.MED_WATER || pSoldier.value.bOverTerrainType == Enum315.DEEP_WATER) {
     return true;
@@ -6230,7 +6230,7 @@ function RevivePlayerTeam(): void {
   }
 }
 
-function ReviveSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ReviveSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sX: INT16;
   let sY: INT16;
 
@@ -6317,7 +6317,7 @@ function HandleAnimationProfile(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UIN
   //#endif
 }
 
-function GetAnimProfileFlags(sGridNo: UINT16, usFlags: Pointer<UINT16>, ppTargSoldier: Pointer<Pointer<SOLDIERTYPE>>, pGivenNode: Pointer<LEVELNODE>): Pointer<LEVELNODE> {
+export function GetAnimProfileFlags(sGridNo: UINT16, usFlags: Pointer<UINT16>, ppTargSoldier: Pointer<Pointer<SOLDIERTYPE>>, pGivenNode: Pointer<LEVELNODE>): Pointer<LEVELNODE> {
   let pNode: Pointer<LEVELNODE>;
 
   (ppTargSoldier.value) = null;
@@ -6388,7 +6388,7 @@ function GetProfileFlagsFromGridno(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: 
   return false;
 }
 
-function EVENT_SoldierBeginGiveItem(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function EVENT_SoldierBeginGiveItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pTSoldier: Pointer<SOLDIERTYPE>;
 
   if (VerifyGiveItem(pSoldier, addressof(pTSoldier))) {
@@ -6405,7 +6405,7 @@ function EVENT_SoldierBeginGiveItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function EVENT_SoldierBeginBladeAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierBeginBladeAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   let pTSoldier: Pointer<SOLDIERTYPE>;
   // UINT32 uiMercFlags;
   let usSoldierIndex: UINT16;
@@ -6535,7 +6535,7 @@ function EVENT_SoldierBeginBladeAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: 
   pSoldier.value.ubTargetID = WhoIsThere2(sGridNo, pSoldier.value.bTargetLevel);
 }
 
-function EVENT_SoldierBeginPunchAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierBeginPunchAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   let fMartialArtist: boolean = false;
   let pTSoldier: Pointer<SOLDIERTYPE>;
   // UINT32 uiMercFlags;
@@ -6641,7 +6641,7 @@ function EVENT_SoldierBeginPunchAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: 
   pSoldier.value.ubTargetID = WhoIsThere2(sGridNo, pSoldier.value.bTargetLevel);
 }
 
-function EVENT_SoldierBeginKnifeThrowAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierBeginKnifeThrowAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   // Increment the number of people busy doing stuff because of an attack
   // if ( (gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) )
   //{
@@ -6665,7 +6665,7 @@ function EVENT_SoldierBeginKnifeThrowAttack(pSoldier: Pointer<SOLDIERTYPE>, sGri
   pSoldier.value.ubTargetID = WhoIsThere2(sGridNo, pSoldier.value.bTargetLevel);
 }
 
-function EVENT_SoldierBeginDropBomb(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function EVENT_SoldierBeginDropBomb(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Increment the number of people busy doing stuff because of an attack
   switch (gAnimControl[pSoldier.value.usAnimState].ubHeight) {
     case ANIM_STAND:
@@ -6682,7 +6682,7 @@ function EVENT_SoldierBeginDropBomb(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function EVENT_SoldierBeginUseDetonator(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function EVENT_SoldierBeginUseDetonator(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Increment the number of people busy doing stuff because of an attack
   switch (gAnimControl[pSoldier.value.usAnimState].ubHeight) {
     case ANIM_STAND:
@@ -6698,7 +6698,7 @@ function EVENT_SoldierBeginUseDetonator(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function EVENT_SoldierBeginFirstAid(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierBeginFirstAid(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   let pTSoldier: Pointer<SOLDIERTYPE>;
   // UINT32 uiMercFlags;
   let usSoldierIndex: UINT16;
@@ -6768,7 +6768,7 @@ function EVENT_SoldierBeginFirstAid(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
   }
 }
 
-function EVENT_SoldierEnterVehicle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierEnterVehicle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   let pTSoldier: Pointer<SOLDIERTYPE>;
   let uiMercFlags: UINT32;
   let usSoldierIndex: UINT16;
@@ -6783,7 +6783,7 @@ function EVENT_SoldierEnterVehicle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT1
   UnSetUIBusy(pSoldier.value.ubID);
 }
 
-function SoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Pointer<SOLDIERTYPE>, sKitPts: INT16, sStatus: INT16): UINT32 {
+export function SoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Pointer<SOLDIERTYPE>, sKitPts: INT16, sStatus: INT16): UINT32 {
   let uiDressSkill: UINT32;
   let uiPossible: UINT32;
   let uiActual: UINT32;
@@ -6995,11 +6995,11 @@ function InternalReceivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>, 
   }
 }
 
-function ReceivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ReceivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>): void {
   InternalReceivingSoldierCancelServices(pSoldier, true);
 }
 
-function InternalGivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>, fPlayEndAnim: boolean): void {
+export function InternalGivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>, fPlayEndAnim: boolean): void {
   let pTSoldier: Pointer<SOLDIERTYPE>;
 
   // GET TARGET SOLDIER
@@ -7024,11 +7024,11 @@ function InternalGivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>, fPl
   }
 }
 
-function GivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function GivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>): void {
   InternalGivingSoldierCancelServices(pSoldier, true);
 }
 
-function HaultSoldierFromSighting(pSoldier: Pointer<SOLDIERTYPE>, fFromSightingEnemy: boolean): void {
+export function HaultSoldierFromSighting(pSoldier: Pointer<SOLDIERTYPE>, fFromSightingEnemy: boolean): void {
   // SEND HUALT EVENT!
   // EV_S_STOP_MERC				SStopMerc;
 
@@ -7111,7 +7111,7 @@ function HaultSoldierFromSighting(pSoldier: Pointer<SOLDIERTYPE>, fFromSightingE
 }
 
 // HUALT EVENT IS USED TO STOP A MERC - NETWORKING SHOULD CHECK / ADJUST TO GRIDNO?
-function EVENT_StopMerc(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDirection: INT8): void {
+export function EVENT_StopMerc(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDirection: INT8): void {
   let sX: INT16;
   let sY: INT16;
 
@@ -7168,7 +7168,7 @@ function EVENT_StopMerc(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDirecti
   UnMarkMovementReserved(pSoldier);
 }
 
-function ReLoadSoldierAnimationDueToHandItemChange(pSoldier: Pointer<SOLDIERTYPE>, usOldItem: UINT16, usNewItem: UINT16): void {
+export function ReLoadSoldierAnimationDueToHandItemChange(pSoldier: Pointer<SOLDIERTYPE>, usOldItem: UINT16, usNewItem: UINT16): void {
   // DON'T continue aiming!
   // GOTO STANCE
   // CHECK FOR AIMING ANIMATIONS
@@ -7349,7 +7349,7 @@ function CreateEnemyGreyGlow16BPPPalette(pPalette: Pointer<SGPPaletteEntry>, rsc
   return p16BPPPalette;
 }
 
-function ContinueMercMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ContinueMercMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sAPCost: INT16;
   let sGridNo: INT16;
 
@@ -7388,7 +7388,7 @@ function ContinueMercMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function CheckForBreathCollapse(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CheckForBreathCollapse(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // Check if we are out of breath!
   // Only check if > 70
   if (pSoldier.value.bBreathMax > 70) {
@@ -7426,7 +7426,7 @@ function CheckForBreathCollapse(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function InternalIsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, bNewStance: INT8): boolean {
+export function InternalIsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, bNewStance: INT8): boolean {
   let usOKToAddStructID: UINT16 = 0;
   let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
   let usAnimSurface: UINT16 = 0;
@@ -7510,11 +7510,11 @@ function InternalIsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8,
   return true;
 }
 
-function IsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bNewStance: INT8): boolean {
+export function IsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bNewStance: INT8): boolean {
   return InternalIsValidStance(pSoldier, pSoldier.value.bDirection, bNewStance);
 }
 
-function IsValidMovementMode(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: INT16): boolean {
+export function IsValidMovementMode(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: INT16): boolean {
   // Check, if dest is prone, we can actually do this!
 
   // Check if we are in water?
@@ -7527,7 +7527,7 @@ function IsValidMovementMode(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: INT
   return true;
 }
 
-function SelectMoveAnimationFromStance(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SelectMoveAnimationFromStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Determine which animation to do...depending on stance and gun in hand...
   switch (gAnimControl[pSoldier.value.usAnimState].ubEndHeight) {
     case ANIM_STAND:
@@ -7741,7 +7741,7 @@ function SoldierBleed(pSoldier: Pointer<SOLDIERTYPE>, fBandagedBleed: boolean): 
   }
 }
 
-function SoldierCollapse(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SoldierCollapse(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fMerc: boolean = false;
 
   if (pSoldier.value.ubBodyType <= Enum194.REGFEMALE) {
@@ -7865,7 +7865,7 @@ function CalcSoldierNextUnmovingBleed(pSoldier: Pointer<SOLDIERTYPE>): FLOAT {
   return (1 + ((pSoldier.value.bLife + bBandaged / 2) / 10)); // min = 1
 }
 
-function HandlePlacingRoofMarker(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fSet: boolean, fForce: boolean): void {
+export function HandlePlacingRoofMarker(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fSet: boolean, fForce: boolean): void {
   let pRoofNode: Pointer<LEVELNODE>;
   let pNode: Pointer<LEVELNODE>;
 
@@ -7919,7 +7919,7 @@ function HandlePlacingRoofMarker(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
   }
 }
 
-function PositionSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function PositionSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): void {
   // DO ONLY IF WE'RE AT A GOOD LEVEL
   if (ubAmbientLightLevel < MIN_AMB_LEVEL_FOR_MERC_LIGHTS) {
     return;
@@ -7955,12 +7955,12 @@ function PositionSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function SetCheckSoldierLightFlag(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SetCheckSoldierLightFlag(pSoldier: Pointer<SOLDIERTYPE>): void {
   PositionSoldierLight(pSoldier);
   // pSoldier->uiStatusFlags |= SOLDIER_RECHECKLIGHT;
 }
 
-function PickPickupAnimation(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8): void {
+export function PickPickupAnimation(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8): void {
   let bDirection: INT8;
   let pStructure: Pointer<STRUCTURE>;
   let fDoNormalPickup: boolean = true;
@@ -8058,7 +8058,7 @@ function PickPickupAnimation(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, 
   }
 }
 
-function PickDropItemAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function PickDropItemAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Don't show animation of getting item, if we are not standing
   switch (gAnimControl[pSoldier.value.usAnimState].ubHeight) {
     case ANIM_STAND:
@@ -8075,7 +8075,7 @@ function PickDropItemAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function EVENT_SoldierBeginCutFence(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierBeginCutFence(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   // Make sure we have a structure here....
   if (IsCuttableWireFenceAtGridNo(sGridNo)) {
     // CHANGE DIRECTION AND GOTO ANIMATION NOW
@@ -8092,7 +8092,7 @@ function EVENT_SoldierBeginCutFence(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
   }
 }
 
-function EVENT_SoldierBeginRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierBeginRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   let bRepairItem: INT8;
   let ubID: UINT8;
 
@@ -8123,7 +8123,7 @@ function EVENT_SoldierBeginRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   }
 }
 
-function EVENT_SoldierBeginRefuel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierBeginRefuel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   let bRefuelItem: INT8;
   let ubID: UINT8;
 
@@ -8146,7 +8146,7 @@ function EVENT_SoldierBeginRefuel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   }
 }
 
-function EVENT_SoldierBeginTakeBlood(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierBeginTakeBlood(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // See if these is a corpse here....
@@ -8166,7 +8166,7 @@ function EVENT_SoldierBeginTakeBlood(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
   }
 }
 
-function EVENT_SoldierBeginAttachCan(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
+export function EVENT_SoldierBeginAttachCan(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   let pStructure: Pointer<STRUCTURE>;
   let pDoorStatus: Pointer<DOOR_STATUS>;
 
@@ -8212,7 +8212,7 @@ function EVENT_SoldierBeginAttachCan(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
   fInterfacePanelDirty = DIRTYLEVEL2;
 }
 
-function EVENT_SoldierBeginReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8, ubMercSlot: UINT8): void {
+export function EVENT_SoldierBeginReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8, ubMercSlot: UINT8): void {
   let ubPerson: UINT8;
 
   // Make sure we have a robot here....
@@ -8268,7 +8268,7 @@ function ChangeToFlybackAnimation(pSoldier: Pointer<SOLDIERTYPE>, bDirection: IN
   EVENT_InitNewSoldierAnim(pSoldier, Enum193.FLYBACK_HIT, 0, false);
 }
 
-function ChangeToFallbackAnimation(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): void {
+export function ChangeToFallbackAnimation(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): void {
   let usNewGridNo: UINT16;
 
   // Get dest gridno, convert to center coords
@@ -8290,7 +8290,7 @@ function ChangeToFallbackAnimation(pSoldier: Pointer<SOLDIERTYPE>, bDirection: I
   EVENT_InitNewSoldierAnim(pSoldier, Enum193.FALLBACK_HIT_STAND, 0, false);
 }
 
-function SetSoldierCowerState(pSoldier: Pointer<SOLDIERTYPE>, fOn: boolean): void {
+export function SetSoldierCowerState(pSoldier: Pointer<SOLDIERTYPE>, fOn: boolean): void {
   // Robot's don't cower!
   if (pSoldier.value.ubBodyType == Enum194.ROBOTNOWEAPON) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("ERROR: Robot was told to cower!"));
@@ -8317,7 +8317,7 @@ function SetSoldierCowerState(pSoldier: Pointer<SOLDIERTYPE>, fOn: boolean): voi
   }
 }
 
-function MercStealFromMerc(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>): void {
+export function MercStealFromMerc(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>): void {
   let sActionGridNo: INT16;
   let sGridNo: INT16;
   let sAdjustedGridNo: INT16;
@@ -8354,7 +8354,7 @@ function MercStealFromMerc(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLD
   }
 }
 
-function PlayerSoldierStartTalking(pSoldier: Pointer<SOLDIERTYPE>, ubTargetID: UINT8, fValidate: boolean): boolean {
+export function PlayerSoldierStartTalking(pSoldier: Pointer<SOLDIERTYPE>, ubTargetID: UINT8, fValidate: boolean): boolean {
   let sFacingDir: INT16;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -8440,7 +8440,7 @@ function PlayerSoldierStartTalking(pSoldier: Pointer<SOLDIERTYPE>, ubTargetID: U
   return true;
 }
 
-function IsValidSecondHandShot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function IsValidSecondHandShot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (Item[pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem].usItemClass == IC_GUN && !(Item[pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem].fFlags & ITEM_TWO_HANDED) && !pSoldier.value.bDoBurst && pSoldier.value.inv[Enum261.HANDPOS].usItem != Enum225.GLAUNCHER && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_GUN && pSoldier.value.inv[Enum261.SECONDHANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[Enum261.SECONDHANDPOS].ubGunShotsLeft > 0) {
     return true;
   }
@@ -8448,7 +8448,7 @@ function IsValidSecondHandShot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function IsValidSecondHandShotForReloadingPurposes(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function IsValidSecondHandShotForReloadingPurposes(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // should be maintained as same as function above with line
   // about ammo taken out!
   if (Item[pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem].usItemClass == IC_GUN && !pSoldier.value.bDoBurst && pSoldier.value.inv[Enum261.HANDPOS].usItem != Enum225.GLAUNCHER && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_GUN && pSoldier.value.inv[Enum261.SECONDHANDPOS].bGunStatus >= USABLE //&&
@@ -8461,7 +8461,7 @@ function IsValidSecondHandShotForReloadingPurposes(pSoldier: Pointer<SOLDIERTYPE
   return false;
 }
 
-function CanRobotBeControlled(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CanRobotBeControlled(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pController: Pointer<SOLDIERTYPE>;
 
   if (!(pSoldier.value.uiStatusFlags & SOLDIER_ROBOT)) {
@@ -8484,7 +8484,7 @@ function CanRobotBeControlled(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function ControllingRobot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function ControllingRobot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pRobot: Pointer<SOLDIERTYPE>;
   let bPos: INT8;
 
@@ -8549,7 +8549,7 @@ function ControllingRobot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function GetRobotController(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
+export function GetRobotController(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   if (pSoldier.value.ubRobotRemoteHolderID == NOBODY) {
     return null;
   } else {
@@ -8557,7 +8557,7 @@ function GetRobotController(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE
   }
 }
 
-function UpdateRobotControllerGivenRobot(pRobot: Pointer<SOLDIERTYPE>): void {
+export function UpdateRobotControllerGivenRobot(pRobot: Pointer<SOLDIERTYPE>): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32 = 0;
 
@@ -8579,7 +8579,7 @@ function UpdateRobotControllerGivenRobot(pRobot: Pointer<SOLDIERTYPE>): void {
   pRobot.value.ubRobotRemoteHolderID = NOBODY;
 }
 
-function UpdateRobotControllerGivenController(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function UpdateRobotControllerGivenController(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32 = 0;
 
@@ -8599,7 +8599,7 @@ function UpdateRobotControllerGivenController(pSoldier: Pointer<SOLDIERTYPE>): v
   }
 }
 
-function HandleSoldierTakeDamageFeedback(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleSoldierTakeDamageFeedback(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Do sound.....
   // if ( pSoldier->bLife >= CONSCIOUSNESS )
   {
@@ -8617,7 +8617,7 @@ function HandleSoldierTakeDamageFeedback(pSoldier: Pointer<SOLDIERTYPE>): void {
   RESETTIMECOUNTER(pSoldier.value.PortraitFlashCounter, FLASH_PORTRAIT_DELAY);
 }
 
-function HandleSystemNewAISituation(pSoldier: Pointer<SOLDIERTYPE>, fResetABC: boolean): void {
+export function HandleSystemNewAISituation(pSoldier: Pointer<SOLDIERTYPE>, fResetABC: boolean): void {
   // Are we an AI guy?
   if (gTacticalStatus.ubCurrentTeam != gbPlayerNum && pSoldier.value.bTeam != gbPlayerNum) {
     if (pSoldier.value.bNewSituation == IS_NEW_SITUATION) {
@@ -8714,19 +8714,19 @@ function InternalPlaySoldierFootstepSound(pSoldier: Pointer<SOLDIERTYPE>): void 
   }
 }
 
-function PlaySoldierFootstepSound(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function PlaySoldierFootstepSound(pSoldier: Pointer<SOLDIERTYPE>): void {
   // normally, not in stealth mode
   if (!pSoldier.value.bStealthMode) {
     InternalPlaySoldierFootstepSound(pSoldier);
   }
 }
 
-function PlayStealthySoldierFootstepSound(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function PlayStealthySoldierFootstepSound(pSoldier: Pointer<SOLDIERTYPE>): void {
   // even if in stealth mode
   InternalPlaySoldierFootstepSound(pSoldier);
 }
 
-function CrowsFlyAway(ubTeam: UINT8): void {
+export function CrowsFlyAway(ubTeam: UINT8): void {
   let cnt: UINT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
@@ -8740,7 +8740,7 @@ function CrowsFlyAway(ubTeam: UINT8): void {
   }
 }
 
-function BeginTyingToFall(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function BeginTyingToFall(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bStartFallDir = pSoldier.value.bDirection;
   pSoldier.value.fTryingToFall = true;
 
@@ -8752,7 +8752,7 @@ function BeginTyingToFall(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function SetSoldierAsUnderAiControl(pSoldierToSet: Pointer<SOLDIERTYPE>): void {
+export function SetSoldierAsUnderAiControl(pSoldierToSet: Pointer<SOLDIERTYPE>): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let cnt: INT32;
 
@@ -8771,7 +8771,7 @@ function SetSoldierAsUnderAiControl(pSoldierToSet: Pointer<SOLDIERTYPE>): void {
   pSoldierToSet.value.uiStatusFlags |= SOLDIER_UNDERAICONTROL;
 }
 
-function HandlePlayerTogglingLightEffects(fToggleValue: boolean): void {
+export function HandlePlayerTogglingLightEffects(fToggleValue: boolean): void {
   if (fToggleValue) {
     // Toggle light status
     gGameSettings.fOptions[Enum8.TOPTION_MERC_CASTS_LIGHT] ^= true;

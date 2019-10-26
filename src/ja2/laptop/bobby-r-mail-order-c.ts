@@ -193,7 +193,7 @@ let guiBobbyRLocationGraphic: UINT32;
 let guiDeliverySpeedGraphic: UINT32;
 let guiConfirmGraphic: UINT32;
 let guiTotalSaveArea: UINT32; // used as a savebuffer for the subtotal, s&h, and grand total values
-let guiDropDownBorder: UINT32;
+export let guiDropDownBorder: UINT32;
 let guiGoldArrowImages: UINT32;
 let guiPackageWeightImage: UINT32;
 
@@ -216,8 +216,8 @@ let gubCityAtTopOfList: UINT8;
 
 let gfRemoveItemsFromStock: boolean = false;
 
-let gpNewBobbyrShipments: Pointer<NewBobbyRayOrderStruct>;
-let giNumberOfNewBobbyRShipment: INT32;
+export let gpNewBobbyrShipments: Pointer<NewBobbyRayOrderStruct>;
+export let giNumberOfNewBobbyRShipment: INT32;
 
 //
 // Buttons
@@ -232,8 +232,8 @@ let guiBobbyRAcceptOrderImage: INT32;
 let guiBobbyRBack: UINT32;
 let guiBobbyRBackImage: INT32;
 
-let guiBobbyRHome: UINT32;
-let guiBobbyRHomeImage: INT32;
+export let guiBobbyRHome: UINT32;
+export let guiBobbyRHomeImage: INT32;
 
 let guiBobbyRGotoShipmentPage: UINT32;
 let giBobbyRGotoShipmentPageImage: INT32;
@@ -264,14 +264,14 @@ let gSelectedUpDownArrowOnScrollAreaRegion: MOUSE_REGION[] /* [2] */;
 
 // ppp
 
-function GameInitBobbyRMailOrder(): void {
+export function GameInitBobbyRMailOrder(): void {
   gubSelectedLight = 0;
 
   gpNewBobbyrShipments = null;
   giNumberOfNewBobbyRShipment = 0;
 }
 
-function EnterBobbyRMailOrder(): boolean {
+export function EnterBobbyRMailOrder(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT16;
 
@@ -394,7 +394,7 @@ function EnterBobbyRMailOrder(): boolean {
   return true;
 }
 
-function ExitBobbyRMailOrder(): void {
+export function ExitBobbyRMailOrder(): void {
   let i: UINT16;
 
   // if we are to remove the items from stock
@@ -444,7 +444,7 @@ function ExitBobbyRMailOrder(): void {
   CreateDestroyBobbyRDropDown(Enum69.BR_DROP_DOWN_DESTROY);
 }
 
-function HandleBobbyRMailOrder(): void {
+export function HandleBobbyRMailOrder(): void {
   if (gfReDrawBobbyOrder) {
     //		RenderBobbyRMailOrder();
     fPausedReDrawScreenFlag = true;
@@ -481,7 +481,7 @@ function HandleBobbyRMailOrder(): void {
   }
 }
 
-function RenderBobbyRMailOrder(): void {
+export function RenderBobbyRMailOrder(): void {
   let usPosY: UINT16;
   let hPixHandle: HVOBJECT;
   let usHeight: UINT16; // usWidth,
@@ -743,7 +743,7 @@ function BtnBobbyRAcceptOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   }
 }
 
-function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UINT16, usGridY: UINT16, pBobbyRayPurchase: Pointer<BobbyRayPurchaseStruct>, fJustDisplayTitles: boolean, iOrderNum: INT32): void {
+export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UINT16, usGridY: UINT16, pBobbyRayPurchase: Pointer<BobbyRayPurchaseStruct>, fJustDisplayTitles: boolean, iOrderNum: INT32): void {
   let i: UINT16;
   let j: UINT16;
   let sText: wchar_t[] /* [400] */;
@@ -1619,7 +1619,7 @@ function CalcCostFromWeightOfPackage(ubTypeOfService: UINT8): UINT32 {
   return uiTotalCost;
 }
 
-function BobbyRayMailOrderEndGameShutDown(): void {
+export function BobbyRayMailOrderEndGameShutDown(): void {
   ShutDownBobbyRNewMailOrders();
   /*
           if( LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray )
@@ -1741,7 +1741,7 @@ function PurchaseBobbyOrder(): void {
   gbSelectedCity = -1;
 }
 
-function AddJohnsGunShipment(): void {
+export function AddJohnsGunShipment(): void {
   let Temp: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
   //	UINT8	cnt;
   let bDaysAhead: INT8;
@@ -1809,7 +1809,7 @@ function ConfirmBobbyRPurchaseMessageBoxCallBack(bExitValue: UINT8): void {
   }
 }
 
-function EnterInitBobbyRayOrder(): void {
+export function EnterInitBobbyRayOrder(): void {
   memset(addressof(BobbyRayPurchases), 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
   gubSelectedLight = 0;
   gfReDrawBobbyOrder = true;
@@ -1869,7 +1869,7 @@ function BtnBobbyRGotoShipmentPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   }
 }
 
-function CreateBobbyRayOrderTitle(): boolean {
+export function CreateBobbyRayOrderTitle(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load BobbyRayTitle graphic and add it
@@ -1884,12 +1884,12 @@ function CreateBobbyRayOrderTitle(): boolean {
   return true;
 }
 
-function DestroyBobbyROrderTitle(): void {
+export function DestroyBobbyROrderTitle(): void {
   MSYS_RemoveRegion(addressof(gSelectedTitleLinkRegion));
   DeleteVideoObjectFromIndex(guiBobbyRayTitle);
 }
 
-function DrawBobbyROrderTitle(): void {
+export function DrawBobbyROrderTitle(): void {
   let hPixHandle: HVOBJECT;
 
   // Bobbyray title
@@ -1974,7 +1974,7 @@ function AddNewBobbyRShipment(pPurchaseStruct: Pointer<BobbyRayPurchaseStruct>, 
   return true;
 }
 
-function CountNumberOfBobbyPurchasesThatAreInTransit(): UINT16 {
+export function CountNumberOfBobbyPurchasesThatAreInTransit(): UINT16 {
   let usItemCount: UINT16 = 0;
   let iCnt: INT32;
 
@@ -1987,7 +1987,7 @@ function CountNumberOfBobbyPurchasesThatAreInTransit(): UINT16 {
   return usItemCount;
 }
 
-function NewWayOfSavingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): boolean {
+export function NewWayOfSavingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): boolean {
   let iCnt: INT32;
   let uiNumBytesWritten: UINT32;
 
@@ -2011,7 +2011,7 @@ function NewWayOfSavingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): boolean {
+export function NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): boolean {
   let iCnt: INT32;
   let uiNumBytesRead: UINT32;
 

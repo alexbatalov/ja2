@@ -28,28 +28,28 @@ let str: UINT8[] /* [128] */;
 // When you click on a button, it get's anchored, until you release the mouse button.
 // When you move around, you don't want to select other buttons, even when you release
 // it.  This follows the Windows 95 convention.
-let gpAnchoredButton: Pointer<GUI_BUTTON>;
+export let gpAnchoredButton: Pointer<GUI_BUTTON>;
 let gpPrevAnchoredButton: Pointer<GUI_BUTTON>;
-let gfAnchoredState: boolean;
+export let gfAnchoredState: boolean;
 
 let gbDisabledButtonStyle: INT8;
 
 let gpCurrentFastHelpButton: Pointer<GUI_BUTTON>;
 
-let gfRenderHilights: boolean = true;
+export let gfRenderHilights: boolean = true;
 
-let ButtonPictures: BUTTON_PICS[] /* [MAX_BUTTON_PICS] */;
+export let ButtonPictures: BUTTON_PICS[] /* [MAX_BUTTON_PICS] */;
 let ButtonPicsLoaded: INT32;
 
-let ButtonDestBuffer: UINT32 = BACKBUFFER;
+export let ButtonDestBuffer: UINT32 = BACKBUFFER;
 let ButtonDestPitch: UINT32 = 640 * 2;
 let ButtonDestBPP: UINT32 = 16;
 
-let ButtonList: Pointer<GUI_BUTTON>[] /* [MAX_BUTTONS] */;
+export let ButtonList: Pointer<GUI_BUTTON>[] /* [MAX_BUTTONS] */;
 
 let ButtonsInList: INT32 = 0;
 
-function GetWidthOfButtonPic(usButtonPicID: UINT16, iSlot: INT32): UINT16 {
+export function GetWidthOfButtonPic(usButtonPicID: UINT16, iSlot: INT32): UINT16 {
   return ButtonPictures[usButtonPicID].vobj.value.pETRLEObject[iSlot].usWidth;
 }
 
@@ -59,7 +59,7 @@ let GenericButtonOffHilite: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
 let GenericButtonOnNormal: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
 let GenericButtonOnHilite: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
 let GenericButtonBackground: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
-let GenericButtonFillColors: UINT16[] /* [MAX_GENERIC_PICS] */;
+export let GenericButtonFillColors: UINT16[] /* [MAX_GENERIC_PICS] */;
 let GenericButtonBackgroundIndex: UINT16[] /* [MAX_GENERIC_PICS] */;
 let GenericButtonOffsetX: INT16[] /* [MAX_GENERIC_PICS] */;
 let GenericButtonOffsetY: INT16[] /* [MAX_GENERIC_PICS] */;
@@ -99,7 +99,7 @@ function FindFreeButtonSlot(): INT32 {
 //
 //	Load images for use with QuickButtons.
 //
-function LoadButtonImage(filename: Pointer<UINT8>, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
+export function LoadButtonImage(filename: Pointer<UINT8>, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   let vo_desc: VOBJECT_DESC;
   let UseSlot: UINT32;
   let pTrav: Pointer<ETRLEObject>;
@@ -218,7 +218,7 @@ function LoadButtonImage(filename: Pointer<UINT8>, Grayed: INT32, OffNormal: INT
 //	Uses a previously loaded quick button image for use with QuickButtons.
 //	The function simply duplicates the vobj!
 //
-function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
+export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   let UseSlot: UINT32;
   let pTrav: Pointer<ETRLEObject>;
   let MaxHeight: UINT32;
@@ -450,7 +450,7 @@ function SetButtonDestBuffer(DestBuffer: UINT32): boolean {
 }
 
 // Removes a QuickButton image from the system.
-function UnloadButtonImage(Index: INT32): void {
+export function UnloadButtonImage(Index: INT32): void {
   let x: INT32;
   let fDone: boolean;
 
@@ -503,7 +503,7 @@ function UnloadButtonImage(Index: INT32): void {
 //
 //	Enables an already created button.
 //
-function EnableButton(iButtonID: INT32): boolean {
+export function EnableButton(iButtonID: INT32): boolean {
   let b: Pointer<GUI_BUTTON>;
   let OldState: UINT32;
 
@@ -534,7 +534,7 @@ function EnableButton(iButtonID: INT32): boolean {
 //	Diabled buttons will appear "grayed out" on the screen (unless the
 //	graphics for such are not available).
 //
-function DisableButton(iButtonID: INT32): boolean {
+export function DisableButton(iButtonID: INT32): boolean {
   let b: Pointer<GUI_BUTTON>;
   let OldState: UINT32;
 
@@ -697,7 +697,7 @@ function FindFreeIconSlot(): INT16 {
 //
 //	Loads an image file for use as a button icon.
 //
-function LoadGenericButtonIcon(filename: Pointer<UINT8>): INT16 {
+export function LoadGenericButtonIcon(filename: Pointer<UINT8>): INT16 {
   let ImgSlot: INT16;
   let vo_desc: VOBJECT_DESC;
 
@@ -727,7 +727,7 @@ function LoadGenericButtonIcon(filename: Pointer<UINT8>): INT16 {
 //
 //	Removes a button icon graphic from the system
 //
-function UnloadGenericButtonIcon(GenImg: INT16): boolean {
+export function UnloadGenericButtonIcon(GenImg: INT16): boolean {
   if (GenImg < 0 || GenImg >= MAX_BUTTON_ICONS) {
     sprintf(str, "Attempting to UnloadGenericButtonIcon with out of range index %d.", GenImg);
     AssertMsg(0, str);
@@ -975,7 +975,7 @@ function ShutdownButtonImageManager(): void {
 //	Initializes the GUI button system for use. Must be called before using
 //	any other button functions.
 //
-function InitButtonSystem(): boolean {
+export function InitButtonSystem(): boolean {
   let x: INT32;
 
   RegisterDebugTopic(TOPIC_BUTTON_HANDLER, "Button System & Button Image Manager");
@@ -1003,7 +1003,7 @@ function InitButtonSystem(): boolean {
 //	exiting the program. Button functions should not be used after calling
 //	this function.
 //
-function ShutdownButtonSystem(): void {
+export function ShutdownButtonSystem(): void {
   let x: int;
 
   // Kill off all buttons in the system
@@ -1032,7 +1032,7 @@ function RemoveButtonsMarkedForDeletion(): void {
 //	Removes a button from the system's list. All memory associated with the
 //	button is released.
 //
-function RemoveButton(iButtonID: INT32): void {
+export function RemoveButton(iButtonID: INT32): void {
   let b: Pointer<GUI_BUTTON>;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
@@ -1249,7 +1249,7 @@ function SetButtonIcon(iButtonID: INT32, Icon: INT16, IconIndex: INT16): INT32 {
 //
 //	Creates an Iconic type button.
 //
-function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   let b: Pointer<GUI_BUTTON>;
   let ButtonNum: INT32;
   let BType: INT32;
@@ -1362,7 +1362,7 @@ function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: IN
 }
 
 // Creates a generic button with text on it.
-function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   let b: Pointer<GUI_BUTTON>;
   let ButtonNum: INT32;
   let BType: INT32;
@@ -1486,7 +1486,7 @@ function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: I
 //	Creates a button like HotSpot. HotSpots have no graphics associated with
 //	them.
 //
-function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   let b: Pointer<GUI_BUTTON>;
   let ButtonNum: INT32;
   let BType: INT16;
@@ -1561,7 +1561,7 @@ function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Pr
 // Addition Oct15/97, Carter
 // SetButtonCursor
 // will simply set the cursor for the mouse region the button occupies
-function SetButtonCursor(iBtnId: INT32, crsr: UINT16): boolean {
+export function SetButtonCursor(iBtnId: INT32, crsr: UINT16): boolean {
   let b: Pointer<GUI_BUTTON>;
   b = ButtonList[iBtnId];
   if (!b)
@@ -1576,7 +1576,7 @@ function SetButtonCursor(iBtnId: INT32, crsr: UINT16): boolean {
 //	Creates a QuickButton. QuickButtons only have graphics associated with
 //	them. They cannot be re-sized, nor can the graphic be changed.
 //
-function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
+export function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   let b: Pointer<GUI_BUTTON>;
   let ButtonNum: INT32;
   let BType: INT32;
@@ -1699,11 +1699,11 @@ function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32,
 // loading, and deleting of the image.  The size of the image determines the size of the button.  It also uses
 // the default move callback which emulates Win95.  Finally, it sets the priority to normal.  The function you
 // choose also determines the type of button (toggle, notoggle, or newtoggle)
-function CreateEasyNoToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateEasyNoToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
-function CreateEasyToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateEasyToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
@@ -1717,7 +1717,7 @@ function CreateEasyButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: IN
 }
 
 // Same as above, but accepts priority specification.
-function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: INT32, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: INT32, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
   let ButPic: INT32;
   let ButNum: INT32;
 
@@ -1740,7 +1740,7 @@ function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: 
   return ButNum;
 }
 
-function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   let b: Pointer<GUI_BUTTON>;
   let iButtonID: INT32;
   let BType: INT32;
@@ -1851,7 +1851,7 @@ function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: 
 }
 
 // New functions
-function SpecifyButtonText(iButtonID: INT32, string: Pointer<UINT16>): void {
+export function SpecifyButtonText(iButtonID: INT32, string: Pointer<UINT16>): void {
   let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
@@ -1884,7 +1884,7 @@ function SpecifyButtonMultiColorFont(iButtonID: INT32, fMultiColor: boolean): vo
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-function SpecifyButtonFont(iButtonID: INT32, uiFont: UINT32): void {
+export function SpecifyButtonFont(iButtonID: INT32, uiFont: UINT32): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1894,7 +1894,7 @@ function SpecifyButtonFont(iButtonID: INT32, uiFont: UINT32): void {
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-function SpecifyButtonUpTextColors(iButtonID: INT32, sForeColor: INT16, sShadowColor: INT16): void {
+export function SpecifyButtonUpTextColors(iButtonID: INT32, sForeColor: INT16, sShadowColor: INT16): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1905,7 +1905,7 @@ function SpecifyButtonUpTextColors(iButtonID: INT32, sForeColor: INT16, sShadowC
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-function SpecifyButtonDownTextColors(iButtonID: INT32, sForeColorDown: INT16, sShadowColorDown: INT16): void {
+export function SpecifyButtonDownTextColors(iButtonID: INT32, sForeColorDown: INT16, sShadowColorDown: INT16): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1916,7 +1916,7 @@ function SpecifyButtonDownTextColors(iButtonID: INT32, sForeColorDown: INT16, sS
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-function SpecifyButtonHilitedTextColors(iButtonID: INT32, sForeColorHilited: INT16, sShadowColorHilited: INT16): void {
+export function SpecifyButtonHilitedTextColors(iButtonID: INT32, sForeColorHilited: INT16, sShadowColorHilited: INT16): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1927,7 +1927,7 @@ function SpecifyButtonHilitedTextColors(iButtonID: INT32, sForeColorHilited: INT
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-function SpecifyButtonTextJustification(iButtonID: INT32, bJustification: INT8): void {
+export function SpecifyButtonTextJustification(iButtonID: INT32, bJustification: INT8): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1940,7 +1940,7 @@ function SpecifyButtonTextJustification(iButtonID: INT32, bJustification: INT8):
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8): void {
+export function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1960,7 +1960,7 @@ function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT1
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-function SpecifyGeneralButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16): void {
+export function SpecifyGeneralButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1974,7 +1974,7 @@ function SpecifyGeneralButtonTextAttributes(iButtonID: INT32, string: Pointer<UI
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-function SpecifyButtonTextOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: boolean): void {
+export function SpecifyButtonTextOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: boolean): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1986,7 +1986,7 @@ function SpecifyButtonTextOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOf
   b.value.fShiftText = fShiftText;
 }
 
-function SpecifyButtonTextSubOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: boolean): void {
+export function SpecifyButtonTextSubOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: boolean): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1998,7 +1998,7 @@ function SpecifyButtonTextSubOffsets(iButtonID: INT32, bTextXOffset: INT8, bText
   b.value.fShiftText = fShiftText;
 }
 
-function SpecifyButtonTextWrappedWidth(iButtonID: INT32, sWrappedWidth: INT16): void {
+export function SpecifyButtonTextWrappedWidth(iButtonID: INT32, sWrappedWidth: INT16): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2008,7 +2008,7 @@ function SpecifyButtonTextWrappedWidth(iButtonID: INT32, sWrappedWidth: INT16): 
   b.value.sWrappedWidth = sWrappedWidth;
 }
 
-function SpecifyDisabledButtonStyle(iButtonID: INT32, bStyle: INT8): void {
+export function SpecifyDisabledButtonStyle(iButtonID: INT32, bStyle: INT8): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2023,7 +2023,7 @@ function SpecifyDisabledButtonStyle(iButtonID: INT32, bStyle: INT8): void {
 // Note:  Text is always on top
 // If fShiftImage is true, then the image will shift down one pixel and right one pixel
 // just like the text does.
-function SpecifyButtonIcon(iButtonID: INT32, iVideoObjectID: INT32, usVideoObjectIndex: UINT16, bXOffset: INT8, bYOffset: INT8, fShiftImage: boolean): boolean {
+export function SpecifyButtonIcon(iButtonID: INT32, iVideoObjectID: INT32, usVideoObjectIndex: UINT16, bXOffset: INT8, bYOffset: INT8, fShiftImage: boolean): boolean {
   let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
@@ -2088,7 +2088,7 @@ function RemoveIconFromButton(iButtonID: INT32): void {
   b.value.fShiftImage = true;
 }
 
-function AllowDisabledButtonFastHelp(iButtonID: INT32, fAllow: boolean): void {
+export function AllowDisabledButtonFastHelp(iButtonID: INT32, fAllow: boolean): void {
   let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
@@ -2104,7 +2104,7 @@ function AllowDisabledButtonFastHelp(iButtonID: INT32, fAllow: boolean): void {
 //
 //	Set the text that will be displayed as the FastHelp
 //
-function SetButtonFastHelpText(iButton: INT32, Text: Pointer<UINT16>): void {
+export function SetButtonFastHelpText(iButton: INT32, Text: Pointer<UINT16>): void {
   let b: Pointer<GUI_BUTTON>;
   if (iButton < 0 || iButton > MAX_BUTTONS)
     return;
@@ -2113,7 +2113,7 @@ function SetButtonFastHelpText(iButton: INT32, Text: Pointer<UINT16>): void {
   SetRegionFastHelpText(addressof(b.value.Area), Text);
 }
 
-function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEXT_DONE_CALLBACK): void {
+export function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEXT_DONE_CALLBACK): void {
   let b: Pointer<GUI_BUTTON>;
   if (iButton < 0 || iButton > MAX_BUTTONS)
     return;
@@ -2345,7 +2345,7 @@ function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
   }
 }
 
-function RenderButtons(): void {
+export function RenderButtons(): void {
   let iButtonID: INT32;
   let fOldButtonDown: boolean;
   let fOldEnabled: boolean;
@@ -2411,7 +2411,7 @@ function RenderButtons(): void {
 //*****************************************************************************
 // MarkAButtonDirty
 //
-function MarkAButtonDirty(iButtonNum: INT32): void {
+export function MarkAButtonDirty(iButtonNum: INT32): void {
   // surgical dirtying -> marks a user specified button dirty, without dirty the whole lot of them
 
   // If the button exists, and it's not owned by another object, draw it
@@ -2424,7 +2424,7 @@ function MarkAButtonDirty(iButtonNum: INT32): void {
 //=============================================================================
 //	MarkButtonsDirty
 //
-function MarkButtonsDirty(): void {
+export function MarkButtonsDirty(): void {
   let x: INT32;
   for (x = 0; x < MAX_BUTTONS; x++) {
     // If the button exists, and it's not owned by another object, draw it
@@ -2435,13 +2435,13 @@ function MarkButtonsDirty(): void {
   }
 }
 
-function UnMarkButtonDirty(iButtonIndex: INT32): void {
+export function UnMarkButtonDirty(iButtonIndex: INT32): void {
   if (ButtonList[iButtonIndex]) {
     ButtonList[iButtonIndex].value.uiFlags &= ~(BUTTON_DIRTY);
   }
 }
 
-function UnmarkButtonsDirty(): void {
+export function UnmarkButtonsDirty(): void {
   let x: INT32;
   for (x = 0; x < MAX_BUTTONS; x++) {
     // If the button exists, and it's not owned by another object, draw it
@@ -2451,7 +2451,7 @@ function UnmarkButtonsDirty(): void {
   }
 }
 
-function ForceButtonUnDirty(iButtonIndex: INT32): void {
+export function ForceButtonUnDirty(iButtonIndex: INT32): void {
   ButtonList[iButtonIndex].value.uiFlags &= ~(BUTTON_DIRTY);
   ButtonList[iButtonIndex].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
 }
@@ -2472,7 +2472,7 @@ function PausedMarkButtonsDirty(): void {
 //
 //	Draws a single button on the screen.
 //
-function DrawButton(iButtonID: INT32): boolean {
+export function DrawButton(iButtonID: INT32): boolean {
   // Fail if button handle out of range
   if (iButtonID < 0 || iButtonID > MAX_BUTTONS)
     return false;
@@ -2633,7 +2633,7 @@ function DrawDefaultOnButton(b: Pointer<GUI_BUTTON>): void {
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
-function DrawCheckBoxButtonOn(iButtonID: INT32): void {
+export function DrawCheckBoxButtonOn(iButtonID: INT32): void {
   let b: Pointer<GUI_BUTTON>;
   let fLeftButtonState: boolean = gfLeftButtonState;
 
@@ -2650,7 +2650,7 @@ function DrawCheckBoxButtonOn(iButtonID: INT32): void {
   gfLeftButtonState = fLeftButtonState;
 }
 
-function DrawCheckBoxButtonOff(iButtonID: INT32): void {
+export function DrawCheckBoxButtonOff(iButtonID: INT32): void {
   let b: Pointer<GUI_BUTTON>;
   let fLeftButtonState: boolean = gfLeftButtonState;
 
@@ -3394,7 +3394,7 @@ function DrawDialogBox(iDlgBox: INT32): void {
 
 //------------------------------------------------------------------------------------------------------
 
-function CreateCheckBoxButton(x: INT16, y: INT16, filename: Pointer<UINT8>, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateCheckBoxButton(x: INT16, y: INT16, filename: Pointer<UINT8>, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
   let b: Pointer<GUI_BUTTON>;
   let ButPic: INT32;
   let iButtonID: INT32;
@@ -3419,7 +3419,7 @@ function CreateCheckBoxButton(x: INT16, y: INT16, filename: Pointer<UINT8>, Prio
 }
 
 // Added Oct17, 97 Carter - kind of mindless, but might as well have it
-function MSYS_SetBtnUserData(iButtonNum: INT32, index: INT32, userdata: INT32): void {
+export function MSYS_SetBtnUserData(iButtonNum: INT32, index: INT32, userdata: INT32): void {
   let b: Pointer<GUI_BUTTON>;
   b = ButtonList[iButtonNum];
   if (index < 0 || index > 3)
@@ -3427,7 +3427,7 @@ function MSYS_SetBtnUserData(iButtonNum: INT32, index: INT32, userdata: INT32): 
   b.value.UserData[index] = userdata;
 }
 
-function MSYS_GetBtnUserData(b: Pointer<GUI_BUTTON>, index: INT32): INT32 {
+export function MSYS_GetBtnUserData(b: Pointer<GUI_BUTTON>, index: INT32): INT32 {
   if (index < 0 || index > 3)
     return 0;
 
@@ -3436,7 +3436,7 @@ function MSYS_GetBtnUserData(b: Pointer<GUI_BUTTON>, index: INT32): INT32 {
 
 // Generic Button Movement Callback to reset the mouse button if the mouse is no longer
 // in the button region.
-function BtnGenericMouseMoveButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnGenericMouseMoveButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // If the button isn't the anchored button, then we don't want to modify the button state.
   if (btn != gpAnchoredButton)
     return;
@@ -3457,7 +3457,7 @@ function BtnGenericMouseMoveButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   }
 }
 
-function ReleaseAnchorMode(): void {
+export function ReleaseAnchorMode(): void {
   if (!gpAnchoredButton)
     return;
 
@@ -3516,7 +3516,7 @@ function FreeButtonSavedRect(iButton: INT32): void {
 
 // Kris:
 // Yet new logical additions to the winbart library.
-function HideButton(iButtonNum: INT32): void {
+export function HideButton(iButtonNum: INT32): void {
   let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonNum >= 0);
@@ -3531,7 +3531,7 @@ function HideButton(iButtonNum: INT32): void {
   InvalidateRegion(b.value.Area.RegionTopLeftX, b.value.Area.RegionTopLeftY, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY);
 }
 
-function ShowButton(iButtonNum: INT32): void {
+export function ShowButton(iButtonNum: INT32): void {
   let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonNum >= 0);
@@ -3546,11 +3546,11 @@ function ShowButton(iButtonNum: INT32): void {
   InvalidateRegion(b.value.Area.RegionTopLeftX, b.value.Area.RegionTopLeftY, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY);
 }
 
-function DisableButtonHelpTextRestore(): void {
+export function DisableButtonHelpTextRestore(): void {
   fDisableHelpTextRestoreFlag = true;
 }
 
-function EnableButtonHelpTextRestore(): void {
+export function EnableButtonHelpTextRestore(): void {
   fDisableHelpTextRestoreFlag = true;
 }
 

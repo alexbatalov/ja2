@@ -1,5 +1,5 @@
 // COMMON shop keeper quote enums
-const enum Enum254 {
+export const enum Enum254 {
   // Quotes 0-9 are generic NPC quotes common to everyone and controlled by the normal NPC Dialogue system.
   // 10
   SK_QUOTES_DEALER_OFFERED_MONEY_AS_A_GIFT = 10,
@@ -30,12 +30,12 @@ const enum Enum254 {
 }
 
 // Common quotes needed by SKI
-const SK_QUOTES_NOT_INTERESTED_IN_THIS_ITEM = 4;
+export const SK_QUOTES_NOT_INTERESTED_IN_THIS_ITEM = 4;
 
 // NPC SPECIFIC shopkeeper_quotes
 
-const FREDO_QUOTE_CAN_RESET_IMPRINTING = 31;
+export const FREDO_QUOTE_CAN_RESET_IMPRINTING = 31;
 
-const FREDO_PERKO_SORRY_REPAIR_DELAYED = 29;
+export const FREDO_PERKO_SORRY_REPAIR_DELAYED = 29;
 
-const ARNIE_QUOTE_NOT_REPAIRED_YET = 33;
+export const ARNIE_QUOTE_NOT_REPAIRED_YET = 33;

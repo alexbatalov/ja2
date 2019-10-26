@@ -73,19 +73,19 @@ let pFinanceListHead: FinanceUnitPtr = null;
 // INT32 iCurrentBalance=0;
 
 // current page displayed
-let iCurrentPage: INT32 = 0;
+export let iCurrentPage: INT32 = 0;
 
 // current financial record (the one at the top of the current page)
 let pCurrentFinance: FinanceUnitPtr = null;
 
 // video object id's
-let guiTITLE: UINT32;
+export let guiTITLE: UINT32;
 let guiGREYFRAME: UINT32;
-let guiTOP: UINT32;
+export let guiTOP: UINT32;
 let guiMIDDLE: UINT32;
 let guiBOTTOM: UINT32;
 let guiLINE: UINT32;
-let guiLONGLINE: UINT32;
+export let guiLONGLINE: UINT32;
 let guiLISTCOLUMNS: UINT32;
 
 // are in the financial system right now?
@@ -101,7 +101,7 @@ let guiLastPageInRecordsList: UINT32 = 0;
 let giFinanceButton: INT32[] /* [4] */;
 let giFinanceButtonImage: INT32[] /* [4] */;
 
-function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, iAmount: INT32): UINT32 {
+export function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, iAmount: INT32): UINT32 {
   // adds transaction to player's book(Financial List), returns unique id number of it
   // outside of the financial system(the code in this .c file), this is the only function you'll ever need
 
@@ -267,7 +267,7 @@ function GetYesterdaysIncome(): INT32 {
   return GetDayDebits(((GetWorldTotalMin() - (24 * 60)) / (24 * 60))) + GetDayCredits(((GetWorldTotalMin() - (24 * 60)) / (24 * 60)));
 }
 
-function GetCurrentBalance(): INT32 {
+export function GetCurrentBalance(): INT32 {
   // get balance to this minute
   return LaptopSaveInfo.iCurrentBalance;
 
@@ -279,7 +279,7 @@ function GetTodaysIncome(): INT32 {
   return GetCurrentBalance() - GetTotalToDay(GetWorldTotalMin() - (24 * 60));
 }
 
-function GetProjectedTotalDailyIncome(): INT32 {
+export function GetProjectedTotalDailyIncome(): INT32 {
   // return total  projected income, including what is earned today already
 
   // CJC: I DON'T THINK SO!
@@ -309,7 +309,7 @@ function GetConfidenceValue(): INT32 {
   return (GetWorldMinutesInDay() * 100) / (60 * 24);
 }
 
-function GameInitFinances(): void {
+export function GameInitFinances(): void {
   // initialize finances on game start up
   // unlink Finances data file
   if ((FileExists(FINANCES_DATA_FILE))) {
@@ -319,7 +319,7 @@ function GameInitFinances(): void {
   GetBalanceFromDisk();
 }
 
-function EnterFinances(): void {
+export function EnterFinances(): void {
   // entry into finanacial system, load graphics, set variables..draw screen once
   // set the fact we are in the financial display system
 
@@ -363,7 +363,7 @@ function EnterFinances(): void {
   return;
 }
 
-function ExitFinances(): void {
+export function ExitFinances(): void {
   LaptopSaveInfo.iCurrentFinancesPage = iCurrentPage;
 
   // not in finance system anymore
@@ -380,10 +380,10 @@ function ExitFinances(): void {
   return;
 }
 
-function HandleFinances(): void {
+export function HandleFinances(): void {
 }
 
-function RenderFinances(): void {
+export function RenderFinances(): void {
   let hHandle: HVOBJECT;
 
   // draw background
@@ -1607,7 +1607,7 @@ function LoadInRecords(uiPage: UINT32): boolean {
   return true;
 }
 
-function InsertCommasForDollarFigure(pString: STR16): void {
+export function InsertCommasForDollarFigure(pString: STR16): void {
   let sCounter: INT16 = 0;
   let sZeroCount: INT16 = 0;
   let sTempCounter: INT16 = 0;
@@ -1662,7 +1662,7 @@ function InsertCommasForDollarFigure(pString: STR16): void {
   return;
 }
 
-function InsertDollarSignInToString(pString: STR16): void {
+export function InsertDollarSignInToString(pString: STR16): void {
   // run to end of string, copy everything in string 2 places right, insert a space at pString[ 1 ] and a L'$' at pString[ 0 ]
 
   let iCounter: INT32 = 0;

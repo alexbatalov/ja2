@@ -1,4 +1,4 @@
-interface REAL_OBJECT {
+export interface REAL_OBJECT {
   fAllocated: boolean;
   fAlive: boolean;
   fApplyFriction: boolean;
@@ -58,4 +58,4 @@ interface REAL_OBJECT {
   ubPadding: UINT8[] /* [1] */;
 }
 
-const NUM_OBJECT_SLOTS = 50;
+export const NUM_OBJECT_SLOTS = 50;

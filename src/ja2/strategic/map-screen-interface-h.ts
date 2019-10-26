@@ -1,4 +1,4 @@
-interface FASTHELPREGION {
+export interface FASTHELPREGION {
   // the string
   FastHelpText: CHAR16[] /* [256] */;
 
@@ -16,31 +16,31 @@ const MAX_ASSIGN_SIZE = 10;
 const MAX_TIME_REMAINING_SIZE = 8;
 
 // char breath and life position
-const BAR_INFO_X = 66;
-const BAR_INFO_Y = 61;
+export const BAR_INFO_X = 66;
+export const BAR_INFO_Y = 61;
 
 // merc icon position
-const CHAR_ICON_CONTRACT_Y = 64;
-const CHAR_ICON_X = 187;
-const CHAR_ICON_WIDTH = 10;
-const CHAR_ICON_HEIGHT = 10;
-const CHAR_ICON_SPACING = 13;
+export const CHAR_ICON_CONTRACT_Y = 64;
+export const CHAR_ICON_X = 187;
+export const CHAR_ICON_WIDTH = 10;
+export const CHAR_ICON_HEIGHT = 10;
+export const CHAR_ICON_SPACING = 13;
 
 // max number of characters and vehicles
 // Character List Length
-const MAX_CHARACTER_COUNT = 20;
+export const MAX_CHARACTER_COUNT = 20;
 const MAX_VEHICLE_COUNT = 20;
 
 // map screen font
-const MAP_SCREEN_FONT = () => BLOCKFONT2();
+export const MAP_SCREEN_FONT = () => BLOCKFONT2();
 
 // characterlist regions
-const Y_START = 146;
-const MAP_START_KEYRING_Y = 107;
-const Y_SIZE = () => GetFontHeight(MAP_SCREEN_FONT());
+export const Y_START = 146;
+export const MAP_START_KEYRING_Y = 107;
+export const Y_SIZE = () => GetFontHeight(MAP_SCREEN_FONT());
 
 // attribute menu defines (must match NUM_TRAINABLE_STATS defines, and pAttributeMenuStrings )
-const enum Enum146 {
+export const enum Enum146 {
   ATTRIB_MENU_STR = 0,
   ATTRIB_MENU_DEX,
   ATTRIB_MENU_AGI,
@@ -55,7 +55,7 @@ const enum Enum146 {
 }
 
 // the epc assignment menu
-const enum Enum147 {
+export const enum Enum147 {
   EPC_MENU_ON_DUTY = 0,
   EPC_MENU_PATIENT,
   EPC_MENU_VEHICLE,
@@ -65,7 +65,7 @@ const enum Enum147 {
 }
 
 // assignment menu defines
-const enum Enum148 {
+export const enum Enum148 {
   ASSIGN_MENU_ON_DUTY = 0,
   ASSIGN_MENU_DOCTOR,
   ASSIGN_MENU_PATIENT,
@@ -77,7 +77,7 @@ const enum Enum148 {
 }
 
 // training assignment menu defines
-const enum Enum149 {
+export const enum Enum149 {
   TRAIN_MENU_SELF,
   TRAIN_MENU_TOWN,
   TRAIN_MENU_TEAMMATES,
@@ -87,14 +87,14 @@ const enum Enum149 {
 }
 
 // the remove merc from team pop up box strings
-const enum Enum150 {
+export const enum Enum150 {
   REMOVE_MERC = 0,
   REMOVE_MERC_CANCEL,
   MAX_REMOVE_MERC_COUNT,
 }
 
 // squad menu defines
-const enum Enum151 {
+export const enum Enum151 {
   SQUAD_MENU_1,
   SQUAD_MENU_2,
   SQUAD_MENU_3,
@@ -120,7 +120,7 @@ const enum Enum151 {
 }
 
 // contract menu defines
-const enum Enum152 {
+export const enum Enum152 {
   CONTRACT_MENU_CURRENT_FUNDS = 0,
   CONTRACT_MENU_SPACE,
   CONTRACT_MENU_DAY,
@@ -138,7 +138,7 @@ const enum Enum153 {
   CONTRACT_POPUP,
 }
 
-const enum Enum154 {
+export const enum Enum154 {
   NO_REASON_FOR_UPDATE = 0,
   CONTRACT_FINISHED_FOR_UPDATE,
   ASSIGNMENT_FINISHED_FOR_UPDATE,
@@ -147,7 +147,7 @@ const enum Enum154 {
   CONTRACT_EXPIRE_WARNING_REASON,
 }
 
-const enum Enum155 {
+export const enum Enum155 {
   START_RED_SECTOR_LOCATOR = 0,
   STOP_RED_SECTOR_LOCATOR,
   START_YELLOW_SECTOR_LOCATOR,
@@ -165,25 +165,25 @@ const UPDATE_MERC_Y_OFFSET = 4;
 const UPDATE_MERC_X_OFFSET = 4;
 
 // dimensions and offset for merc update box
-const TACT_UPDATE_MERC_FACE_X_WIDTH = 70;
-const TACT_UPDATE_MERC_FACE_X_HEIGHT = 49;
-const TACT_UPDATE_MERC_FACE_X_OFFSET = 8;
-const TACT_UPDATE_MERC_FACE_Y_OFFSET = 6;
-const TACT_WIDTH_OF_UPDATE_PANEL_BLOCKS = 70;
-const TACT_HEIGHT_OF_UPDATE_PANEL_BLOCKS = 49;
+export const TACT_UPDATE_MERC_FACE_X_WIDTH = 70;
+export const TACT_UPDATE_MERC_FACE_X_HEIGHT = 49;
+export const TACT_UPDATE_MERC_FACE_X_OFFSET = 8;
+export const TACT_UPDATE_MERC_FACE_Y_OFFSET = 6;
+export const TACT_WIDTH_OF_UPDATE_PANEL_BLOCKS = 70;
+export const TACT_HEIGHT_OF_UPDATE_PANEL_BLOCKS = 49;
 const TACT_UPDATE_MERC_Y_OFFSET = 4;
 const TACT_UPDATE_MERC_X_OFFSET = 4;
 
 // the first vehicle slot int he list
-const FIRST_VEHICLE = 18;
+export const FIRST_VEHICLE = 18;
 
-interface MERC_LEAVE_ITEM {
+export interface MERC_LEAVE_ITEM {
   o: OBJECTTYPE;
   pNext: Pointer<MERC_LEAVE_ITEM>;
 }
 
 // The character data structure
-interface MapScreenCharacterSt {
+export interface MapScreenCharacterSt {
   usSolID: UINT16; // soldier ID in MenPtrs
   fValid: boolean; // is the current soldier a valid soldier
 }
@@ -196,7 +196,7 @@ void PlotPathForSelectedCharacterList( INT16 sX, INT16 sY );
 // remove item from leave index
 // BOOLEAN RemoveItemFromLeaveIndex( MERC_LEAVE_ITEM *pItem, UINT32 uiIndex );
 
-const enum Enum156 {
+export const enum Enum156 {
   LOCATOR_COLOR_NONE,
   LOCATOR_COLOR_RED,
   LOCATOR_COLOR_YELLOW,

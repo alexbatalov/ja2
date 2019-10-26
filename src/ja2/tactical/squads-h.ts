@@ -1,8 +1,8 @@
 // header for squad management system
-const NUMBER_OF_SOLDIERS_PER_SQUAD = 6;
+export const NUMBER_OF_SOLDIERS_PER_SQUAD = 6;
 
 // enums for squads
-const enum Enum275 {
+export const enum Enum275 {
   FIRST_SQUAD = 0,
   SECOND_SQUAD,
   THIRD_SQUAD,
@@ -28,6 +28,6 @@ const enum Enum275 {
 
 // ATE: Added so we can have no current squad
 // happens in we move off sector via tactical, but nobody is left!
-const NO_CURRENT_SQUAD = Enum275.NUMBER_OF_SQUADS;
+export const NO_CURRENT_SQUAD = Enum275.NUMBER_OF_SQUADS;
 
 // ptrs to soldier types of squads and their members

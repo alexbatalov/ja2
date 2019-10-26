@@ -1,21 +1,21 @@
 // Sample status flags
-const SAMPLE_ALLOCATED = 0x00000001;
-const SAMPLE_LOCKED = 0x00000002;
-const SAMPLE_RANDOM = 0x00000004;
-const SAMPLE_RANDOM_MANUAL = 0x00000008;
+export const SAMPLE_ALLOCATED = 0x00000001;
+export const SAMPLE_LOCKED = 0x00000002;
+export const SAMPLE_RANDOM = 0x00000004;
+export const SAMPLE_RANDOM_MANUAL = 0x00000008;
 const SAMPLE_3D = 0x00000010;
 
 // Sound error values (they're all the same)
-const NO_SAMPLE = 0xffffffff;
-const SOUND_ERROR = 0xffffffff;
+export const NO_SAMPLE = 0xffffffff;
+export const SOUND_ERROR = 0xffffffff;
 
 // Maximum allowable priority value
-const PRIORITY_MAX = 0xfffffffe;
-const PRIORITY_RANDOM = PRIORITY_MAX - 1;
+export const PRIORITY_MAX = 0xfffffffe;
+export const PRIORITY_RANDOM = PRIORITY_MAX - 1;
 
 // Structure definition for 3D sound positional information used by
 // various other structs and functions
-interface SOUND3DPOS {
+export interface SOUND3DPOS {
   flX: FLOAT;
   flY: FLOAT;
   flZ: FLOAT;
@@ -42,7 +42,7 @@ interface SOUND3DPOS {
 //		Holds the regular sample data, as well as the
 //		data for the random samples
 
-interface SAMPLETAG {
+export interface SAMPLETAG {
   pName: CHAR8[] /* [128] */; // Path to sample data
   uiSize: UINT32; // Size of sample data
   uiSoundSize: UINT32; // Playable sound size
@@ -79,7 +79,7 @@ interface SAMPLETAG {
 // Structure definition for slots in the sound output
 //		These are used for both the cached and double-buffered
 //		streams
-interface SOUNDTAG {
+export interface SOUNDTAG {
   pSample: Pointer<SAMPLETAG>;
   uiSample: UINT32;
   hMSS: HSAMPLE;
@@ -104,7 +104,7 @@ interface SOUNDTAG {
 
 // Structure definition for sound parameters being passed down to
 //		the sample playing function
-interface SOUNDPARMS {
+export interface SOUNDPARMS {
   uiSpeed: UINT32;
   uiPitchBend: UINT32; // Random pitch bend range +/-
   uiVolume: UINT32;
@@ -117,7 +117,7 @@ interface SOUNDPARMS {
 
 // Structure definition for 3D sound parameters being passed down to
 //		the sample playing function
-interface SOUND3DPARMS {
+export interface SOUND3DPARMS {
   uiSpeed: UINT32;
   uiPitchBend: UINT32; // Random pitch bend range +/-
   uiVolume: UINT32; // volume at distance zero
@@ -131,7 +131,7 @@ interface SOUND3DPARMS {
 
 // Structure definition for parameters to the random sample playing
 //		function
-interface RANDOMPARMS {
+export interface RANDOMPARMS {
   uiTimeMin: UINT32;
   uiTimeMax: UINT32;
 

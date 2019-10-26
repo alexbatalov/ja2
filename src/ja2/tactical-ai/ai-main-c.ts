@@ -1,4 +1,4 @@
-let gubAICounter: UINT8;
+export let gubAICounter: UINT8;
 
 //
 // Commented out/ to fix:
@@ -28,9 +28,9 @@ let GameOption: INT8[] /* [MAXGAMEOPTIONS] */ = [
 
 const AI_LIMIT_PER_UPDATE = 1;
 
-let gfTurnBasedAI: boolean;
+export let gfTurnBasedAI: boolean;
 
-let gbDiff: INT8[][] /* [MAX_DIFF_PARMS][5] */ = [
+export let gbDiff: INT8[][] /* [MAX_DIFF_PARMS][5] */ = [
   //       AI DIFFICULTY SETTING
   // WIMPY  EASY  NORMAL  TOUGH  ELITE
   [ -20, -10, 0, 10, 20 ], // DIFF_ENEMY_EQUIP_MOD
@@ -40,10 +40,10 @@ let gbDiff: INT8[][] /* [MAX_DIFF_PARMS][5] */ = [
   [ 4, 6, 8, 10, 13 ] // DIFF_MAX_COVER_RANGE
 ];
 
-function DebugAI(szOutput: STR): void {
+export function DebugAI(szOutput: STR): void {
 }
 
-function InitAI(): boolean {
+export function InitAI(): boolean {
   let DebugFile: Pointer<FILE>;
 
   // If we are not loading a saved game ( if we are, this has already been called )
@@ -55,11 +55,11 @@ function InitAI(): boolean {
   return true;
 }
 
-function AimingGun(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function AimingGun(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   let uiCurrTime: UINT32 = GetJA2Clock();
 
   // ATE
@@ -395,7 +395,7 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 const NOSCORE = 99;
 
-function EndAIGuysTurn(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function EndAIGuysTurn(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubID: UINT8;
 
   if (gfTurnBasedAI) {
@@ -459,7 +459,7 @@ function EndAIGuysTurn(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function EndAIDeadlock(): void {
+export function EndAIDeadlock(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let bFound: INT8 = false;
@@ -489,7 +489,7 @@ function EndAIDeadlock(): void {
   }
 }
 
-function StartNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function StartNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fInValidSoldier: boolean = false;
 
   // pSoldier->uiStatusFlags |= SOLDIER_UNDERAICONTROL;
@@ -639,7 +639,7 @@ function GetMostThreateningOpponent(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   return ubTargetSoldier;
 }
 
-function FreeUpNPCFromPendingAction(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function FreeUpNPCFromPendingAction(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier) {
     if (pSoldier.value.bAction == Enum289.AI_ACTION_PENDING_ACTION || pSoldier.value.bAction == Enum289.AI_ACTION_OPEN_OR_CLOSE_DOOR || pSoldier.value.bAction == Enum289.AI_ACTION_CREATURE_CALL || pSoldier.value.bAction == Enum289.AI_ACTION_YELLOW_ALERT || pSoldier.value.bAction == Enum289.AI_ACTION_RED_ALERT || pSoldier.value.bAction == Enum289.AI_ACTION_UNLOCK_DOOR || pSoldier.value.bAction == Enum289.AI_ACTION_PULL_TRIGGER || pSoldier.value.bAction == Enum289.AI_ACTION_LOCK_DOOR) {
       if (pSoldier.value.ubProfile != NO_PROFILE) {
@@ -659,7 +659,7 @@ function FreeUpNPCFromPendingAction(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function FreeUpNPCFromAttacking(ubID: UINT8): void {
+export function FreeUpNPCFromAttacking(ubID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = MercPtrs[ubID];
@@ -729,7 +729,7 @@ function FreeUpNPCFromLoweringGun(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function FreeUpNPCFromTurning(pSoldier: Pointer<SOLDIERTYPE>, bLook: INT8): void {
+export function FreeUpNPCFromTurning(pSoldier: Pointer<SOLDIERTYPE>, bLook: INT8): void {
   // if NPC is in the process of changing facing, mark him as being done!
   if ((pSoldier.value.bAction == Enum289.AI_ACTION_CHANGE_FACING) && pSoldier.value.bActionInProgress) {
     ActionDone(pSoldier);
@@ -740,7 +740,7 @@ function FreeUpNPCFromTurning(pSoldier: Pointer<SOLDIERTYPE>, bLook: INT8): void
   }
 }
 
-function FreeUpNPCFromStanceChange(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function FreeUpNPCFromStanceChange(pSoldier: Pointer<SOLDIERTYPE>): void {
   // are we/were we doing something?
   if (pSoldier.value.bActionInProgress) {
     // check and see if we were changing stance
@@ -754,7 +754,7 @@ function FreeUpNPCFromStanceChange(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function FreeUpNPCFromRoofClimb(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function FreeUpNPCFromRoofClimb(pSoldier: Pointer<SOLDIERTYPE>): void {
   // are we/were we doing something?
   if (pSoldier.value.bActionInProgress) {
     // check and see if we were climbing
@@ -765,7 +765,7 @@ function FreeUpNPCFromRoofClimb(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function ActionDone(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ActionDone(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if an action is currently selected
   if (pSoldier.value.bAction != Enum289.AI_ACTION_NONE) {
     if (pSoldier.value.uiStatusFlags & SOLDIER_MONSTER) {
@@ -833,12 +833,12 @@ function ActionDone(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 // GLOBALS:
 
-let SkipCoverCheck: UINT8 = false;
-let Threat: THREATTYPE[] /* [MAXMERCS] */;
+export let SkipCoverCheck: UINT8 = false;
+export let Threat: THREATTYPE[] /* [MAXMERCS] */;
 
 // threat percentage is based on the certainty of opponent knowledge:
 // opplist value:        -4  -3  -2  -1 SEEN  1    2   3   4   5
-let ThreatPercent: int[] /* [10] */ = [
+export let ThreatPercent: int[] /* [10] */ = [
   20,
   40,
   60,
@@ -851,7 +851,7 @@ let ThreatPercent: int[] /* [10] */ = [
   45,
 ];
 
-function NPCDoesAct(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function NPCDoesAct(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if the action is visible and we're in a hidden turnbased mode, go to turnbased
   if (gTacticalStatus.uiFlags & TURNBASED && !(gTacticalStatus.uiFlags & INCOMBAT) && (pSoldier.value.bAction == Enum289.AI_ACTION_FIRE_GUN || pSoldier.value.bAction == Enum289.AI_ACTION_TOSS_PROJECTILE || pSoldier.value.bAction == Enum289.AI_ACTION_KNIFE_MOVE || pSoldier.value.bAction == Enum289.AI_ACTION_KNIFE_STAB || pSoldier.value.bAction == Enum289.AI_ACTION_THROW_KNIFE)) {
     DisplayHiddenTurnbased(pSoldier);
@@ -879,7 +879,7 @@ function NPCDoesNothing(pSoldier: Pointer<SOLDIERTYPE>): void {
   // *** IAN deleted lots of interrupt related code here to simplify JA2	development
 }
 
-function CancelAIAction(pSoldier: Pointer<SOLDIERTYPE>, ubForce: UINT8): void {
+export function CancelAIAction(pSoldier: Pointer<SOLDIERTYPE>, ubForce: UINT8): void {
   // re-enable cover checking, something is new or something strange happened
   SkipCoverCheck = false;
 
@@ -1024,7 +1024,7 @@ void ActionTimeoutExceeded(SOLDIERTYPE *pSoldier, UCHAR alreadyFreedUp)
 }
 */
 
-function ActionInProgress(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function ActionInProgress(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // if NPC has a desired destination, but isn't currently going there
   if ((pSoldier.value.sFinalDestination != NOWHERE) && (pSoldier.value.sDestination != pSoldier.value.sFinalDestination)) {
     // return success (TRUE) if we successfully resume the movement
@@ -1418,7 +1418,7 @@ function TurnBasedHandleNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function RefreshAI(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RefreshAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   // produce our own private "mine map" so we can avoid the ones we can detect
   // MarkDetectableMines(pSoldier);
 
@@ -1483,7 +1483,7 @@ function AIDecideRadioAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iRetCode: INT32;
   // NumMessage("ExecuteAction - Guy#",pSoldier->ubID);
 
@@ -1939,7 +1939,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return true;
 }
 
-function CheckForChangingOrders(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CheckForChangingOrders(pSoldier: Pointer<SOLDIERTYPE>): void {
   switch (pSoldier.value.bAlertStatus) {
     case Enum243.STATUS_GREEN:
       if (!CREATURE_OR_BLOODCAT(pSoldier)) {
@@ -1980,7 +1980,7 @@ function CheckForChangingOrders(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function InitAttackType(pAttack: Pointer<ATTACKTYPE>): void {
+export function InitAttackType(pAttack: Pointer<ATTACKTYPE>): void {
   // initialize the given bestAttack structure fields to their default values
   pAttack.value.ubPossible = false;
   pAttack.value.ubOpponent = NOBODY;
@@ -1991,7 +1991,7 @@ function InitAttackType(pAttack: Pointer<ATTACKTYPE>): void {
   pAttack.value.ubAPCost = 0;
 }
 
-function HandleInitialRedAlert(bTeam: INT8, ubCommunicate: UINT8): void {
+export function HandleInitialRedAlert(bTeam: INT8, ubCommunicate: UINT8): void {
   /*
    if (ubCommunicate)
     {
@@ -2082,7 +2082,7 @@ function ManChecksOnFriends(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function SetNewSituation(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SetNewSituation(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.bTeam != gbPlayerNum) {
     if (pSoldier.value.ubQuoteRecord == 0 && !gTacticalStatus.fAutoBandageMode && !(pSoldier.value.bNeutral && gTacticalStatus.uiFlags & ENGAGED_IN_CONV)) {
       // allow new situation to be set

@@ -1,4 +1,4 @@
-function TerrainActionPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDir: INT8, bLevel: INT8): INT16 {
+export function TerrainActionPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDir: INT8, bLevel: INT8): INT16 {
   let sAPCost: INT16 = 0;
   let sSwitchValue: INT16;
   let fHiddenStructVisible: boolean; // Used for hidden struct visiblity
@@ -117,7 +117,7 @@ function BreathPointAdjustmentForCarriedWeight(pSoldier: Pointer<SOLDIERTYPE>): 
   return uiPercentCost;
 }
 
-function TerrainBreathPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDir: INT8, usMovementMode: UINT16): INT16 {
+export function TerrainBreathPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDir: INT8, usMovementMode: UINT16): INT16 {
   let iPoints: INT32 = 0;
   let ubMovementCost: UINT8;
 
@@ -206,7 +206,7 @@ function TerrainBreathPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDi
   return iPoints;
 }
 
-function ActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDir: INT8, usMovementMode: UINT16): INT16 {
+export function ActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDir: INT8, usMovementMode: UINT16): INT16 {
   let sTileCost: INT16;
   let sPoints: INT16;
   let sSwitchValue: INT16;
@@ -285,7 +285,7 @@ function ActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDir: I
   return sPoints;
 }
 
-function EstimateActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDir: INT8, usMovementMode: UINT16, bPathIndex: INT8, bPathLength: INT8): INT16 {
+export function EstimateActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDir: INT8, usMovementMode: UINT16, bPathIndex: INT8, bPathLength: INT8): INT16 {
   // This action point cost code includes the penalty for having to change
   // stance after jumping a fence IF our path continues...
   let sTileCost: INT16;
@@ -384,7 +384,7 @@ function EstimateActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
   return sPoints;
 }
 
-function EnoughPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: INT16, fDisplayMsg: boolean): boolean {
+export function EnoughPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: INT16, fDisplayMsg: boolean): boolean {
   let sNewAP: INT16 = 0;
 
   // If this guy is on a special move... don't care about APS, OR BPSs!
@@ -417,7 +417,7 @@ function EnoughPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: I
   return true;
 }
 
-function DeductPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: INT16): void {
+export function DeductPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: INT16): void {
   let sNewAP: INT16 = 0;
   let sNewBP: INT16 = 0;
   let bNewBreath: INT8;
@@ -552,7 +552,7 @@ function AdjustBreathPts(pSold: Pointer<SOLDIERTYPE>, sBPCost: INT16): INT16 {
   return sBPCost;
 }
 
-function UnusedAPsToBreath(pSold: Pointer<SOLDIERTYPE>): void {
+export function UnusedAPsToBreath(pSold: Pointer<SOLDIERTYPE>): void {
   let sUnusedAPs: INT16;
   let sBreathPerAP: INT16 = 0;
   let sBreathChange: INT16;
@@ -720,7 +720,7 @@ function GetBreathPerAP(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): IN
 }
 
 // UINT8 CalcAPsToBurst( INT8 bBaseActionPoints, UINT16 usItem )
-function CalcAPsToBurst(bBaseActionPoints: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
+export function CalcAPsToBurst(bBaseActionPoints: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
   // base APs is what you'd get from CalcActionPoints();
   if (pObj.value.usItem == Enum225.G11) {
     return 1;
@@ -738,7 +738,7 @@ function CalcAPsToBurst(bBaseActionPoints: INT8, pObj: Pointer<OBJECTTYPE>): UIN
   }
 }
 
-function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8, bAimTime: INT8): UINT8 {
+export function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8, bAimTime: INT8): UINT8 {
   let sAPCost: UINT16 = 0;
   let usItemNum: UINT16;
   let sActionGridNo: INT16;
@@ -843,7 +843,7 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
   return sAPCost;
 }
 
-function MinAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubAddTurningCost: UINT8): UINT8 {
+export function MinAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubAddTurningCost: UINT8): UINT8 {
   let sAPCost: UINT16 = 0;
   let uiItemClass: UINT32;
 
@@ -892,7 +892,7 @@ function CalcAimSkill(pSoldier: Pointer<SOLDIERTYPE>, usWeapon: UINT16): INT8 {
   return bAimSkill;
 }
 
-function BaseAPsToShootOrStab(bAPs: INT8, bAimSkill: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
+export function BaseAPsToShootOrStab(bAPs: INT8, bAimSkill: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
   let sTop: INT16;
   let sBottom: INT16;
   let bAttachPos: INT8;
@@ -919,7 +919,7 @@ function BaseAPsToShootOrStab(bAPs: INT8, bAimSkill: INT8, pObj: Pointer<OBJECTT
   return (((100 * sTop) / sBottom) + 1) / 2;
 }
 
-function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8, pfChargeTurning: Pointer<boolean>, pfChargeRaise: Pointer<boolean>): void {
+export function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8, pfChargeTurning: Pointer<boolean>, pfChargeRaise: Pointer<boolean>): void {
   let ubDirection: UINT8;
   let uiMercFlags: UINT32;
   let usTargID: UINT16;
@@ -960,7 +960,7 @@ function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, s
   (pfChargeRaise.value) = fAddingRaiseGunCost;
 }
 
-function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8): UINT8 {
+export function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8): UINT8 {
   let uiMercFlags: UINT32;
   let usTargID: UINT16;
   let bFullAPs: INT8;
@@ -1108,7 +1108,7 @@ function MinAPsToPunch(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurn
   return bAPCost;
 }
 
-function MinPtsToMove(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function MinPtsToMove(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // look around all 8 directions and return lowest terrain cost
   let cnt: INT32;
   let sLowest: INT16 = 127;
@@ -1130,7 +1130,7 @@ function MinPtsToMove(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return sLowest;
 }
 
-function PtsToMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): INT8 {
+export function PtsToMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): INT8 {
   let sGridno: INT16;
   let sCost: INT16;
   let bOverTerrainType: INT8;
@@ -1158,7 +1158,7 @@ function PtsToMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): I
   return sCost;
 }
 
-function MinAPsToStartMovement(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UINT16): INT8 {
+export function MinAPsToStartMovement(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UINT16): INT8 {
   let bAPs: INT8 = 0;
 
   switch (usMovementMode) {
@@ -1194,7 +1194,7 @@ function MinAPsToStartMovement(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: U
   return bAPs;
 }
 
-function EnoughAmmo(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: boolean, bInvPos: INT8): boolean {
+export function EnoughAmmo(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: boolean, bInvPos: INT8): boolean {
   if (pSoldier.value.inv[bInvPos].usItem != NOTHING) {
     if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
       return true;
@@ -1235,7 +1235,7 @@ function EnoughAmmo(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: boolean, bInvPos: 
   return false;
 }
 
-function DeductAmmo(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8): void {
+export function DeductAmmo(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8): void {
   let pObj: Pointer<OBJECTTYPE>;
 
   // tanks never run out of MG ammo!
@@ -1274,7 +1274,7 @@ function DeductAmmo(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8): void {
   }
 }
 
-function GetAPsToPickupItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): UINT16 {
+export function GetAPsToPickupItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): UINT16 {
   let pItemPool: Pointer<ITEM_POOL>;
   let sAPCost: UINT16 = 0;
   let sActionGridNo: INT16;
@@ -1300,7 +1300,7 @@ function GetAPsToPickupItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): U
   return sAPCost;
 }
 
-function GetAPsToGiveItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): UINT16 {
+export function GetAPsToGiveItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): UINT16 {
   let sAPCost: UINT16 = 0;
 
   sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
@@ -1314,7 +1314,7 @@ function GetAPsToGiveItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): UIN
   return sAPCost;
 }
 
-function GetAPsToReloadGunWithAmmo(pGun: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): INT8 {
+export function GetAPsToReloadGunWithAmmo(pGun: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): INT8 {
   if (Item[pGun.value.usItem].usItemClass == IC_LAUNCHER) {
     // always standard AP cost
     return AP_RELOAD_GUN;
@@ -1328,7 +1328,7 @@ function GetAPsToReloadGunWithAmmo(pGun: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJ
   }
 }
 
-function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let pObj: Pointer<OBJECTTYPE>;
   let bSlot: INT8;
   let bSlot2: INT8;
@@ -1381,7 +1381,7 @@ function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return bAPCost;
 }
 
-function GetAPsToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pRobot: Pointer<SOLDIERTYPE>): UINT16 {
+export function GetAPsToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pRobot: Pointer<SOLDIERTYPE>): UINT16 {
   let sAPCost: UINT16 = 0;
   let sActionGridNo: INT16;
   let ubDirection: UINT8;
@@ -1400,7 +1400,7 @@ function GetAPsToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pRobot: Pointer<SOL
   return sAPCost;
 }
 
-function GetAPsToChangeStance(pSoldier: Pointer<SOLDIERTYPE>, bDesiredHeight: INT8): UINT16 {
+export function GetAPsToChangeStance(pSoldier: Pointer<SOLDIERTYPE>, bDesiredHeight: INT8): UINT16 {
   let sAPCost: UINT16 = 0;
   let bCurrentHeight: INT8;
 
@@ -1464,7 +1464,7 @@ function GetBPsToChangeStance(pSoldier: Pointer<SOLDIERTYPE>, bDesiredHeight: IN
   return sBPCost;
 }
 
-function GetAPsToLook(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
+export function GetAPsToLook(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   // Set # of APs
   switch (gAnimControl[pSoldier.value.usAnimState].ubEndHeight) {
     // Now change to appropriate animation
@@ -1490,7 +1490,7 @@ function GetAPsToLook(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   }
 }
 
-function CheckForMercContMove(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CheckForMercContMove(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let sAPCost: INT16;
   let sGridNo: INT16;
 
@@ -1532,7 +1532,7 @@ function CheckForMercContMove(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function GetAPsToReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): INT16 {
+export function GetAPsToReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): INT16 {
   let usItem: UINT16;
 
   // If this is a dwel pistol anim
@@ -1560,7 +1560,7 @@ function GetAPsToReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16
   return 0;
 }
 
-function GetAPsToClimbRoof(pSoldier: Pointer<SOLDIERTYPE>, fClimbDown: boolean): INT8 {
+export function GetAPsToClimbRoof(pSoldier: Pointer<SOLDIERTYPE>, fClimbDown: boolean): INT8 {
   if (!fClimbDown) {
     // OK, add aps to goto stand stance...
     return (AP_CLIMBROOF + GetAPsToChangeStance(pSoldier, ANIM_STAND));
@@ -1578,22 +1578,22 @@ function GetBPsToClimbRoof(pSoldier: Pointer<SOLDIERTYPE>, fClimbDown: boolean):
   }
 }
 
-function GetAPsToCutFence(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function GetAPsToCutFence(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // OK, it's normally just cost, but add some if different stance...
   return GetAPsToChangeStance(pSoldier, ANIM_CROUCH) + AP_USEWIRECUTTERS;
 }
 
-function GetAPsToBeginFirstAid(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function GetAPsToBeginFirstAid(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // OK, it's normally just cost, but add some if different stance...
   return GetAPsToChangeStance(pSoldier, ANIM_CROUCH) + AP_START_FIRST_AID;
 }
 
-function GetAPsToBeginRepair(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function GetAPsToBeginRepair(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // OK, it's normally just cost, but add some if different stance...
   return GetAPsToChangeStance(pSoldier, ANIM_CROUCH) + AP_START_REPAIR;
 }
 
-function GetAPsToRefuelVehicle(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function GetAPsToRefuelVehicle(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // OK, it's normally just cost, but add some if different stance...
   return GetAPsToChangeStance(pSoldier, ANIM_CROUCH) + AP_REFUEL_VEHICLE;
 }
@@ -1602,7 +1602,7 @@ const TOSSES_PER_10TURNS = 18; // max # of grenades tossable in 10 turns
 const AP_MIN_AIM_ATTACK = 0; // minimum permitted extra aiming
 const AP_MAX_AIM_ATTACK = 4; // maximum permitted extra aiming
 
-function MinAPsToThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8): INT16 {
+export function MinAPsToThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8): INT16 {
   let iTop: INT32;
   let iBottom: INT32;
   let iFullAPs: INT32;
@@ -1677,11 +1677,11 @@ function MinAPsToThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurn
   return iAPCost;
 }
 
-function GetAPsToDropBomb(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
+export function GetAPsToDropBomb(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   return AP_DROP_BOMB;
 }
 
-function GetTotalAPsToDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): UINT16 {
+export function GetTotalAPsToDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): UINT16 {
   let sAPs: INT16 = 0;
 
   sAPs = PlotPath(pSoldier, sGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
@@ -1693,11 +1693,11 @@ function GetTotalAPsToDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): 
   return sAPs;
 }
 
-function GetAPsToUseRemote(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
+export function GetAPsToUseRemote(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   return AP_USE_REMOTE;
 }
 
-function GetAPsToStealItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
+export function GetAPsToStealItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
   let sAPCost: UINT16 = 0;
 
   sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
@@ -1717,7 +1717,7 @@ function GetBPsToStealItem(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return BP_STEAL_ITEM;
 }
 
-function GetAPsToUseJar(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
+export function GetAPsToUseJar(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
   let sAPCost: UINT16 = 0;
 
   sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
@@ -1745,6 +1745,6 @@ function GetAPsToUseCan(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
   return sAPCost;
 }
 
-function GetAPsToJumpOver(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function GetAPsToJumpOver(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return GetAPsToChangeStance(pSoldier, ANIM_STAND) + AP_JUMP_OVER;
 }

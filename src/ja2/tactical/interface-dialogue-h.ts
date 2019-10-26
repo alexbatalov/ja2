@@ -1,5 +1,5 @@
 // Structure used in Tactical display of NPC dialogue
-interface NPC_DIALOGUE_TYPE {
+export interface NPC_DIALOGUE_TYPE {
   iFaceIndex: INT32;
   sX: INT16;
   sY: INT16;
@@ -31,7 +31,7 @@ interface NPC_DIALOGUE_TYPE {
   zQuoteStr: INT16[] /* [480] */; // QIALOGUE_SIZE is in dialog control which includes this file...
 }
 
-const enum Enum213 {
+export const enum Enum213 {
   NPC_ACTION_NONE = 0,
   NPC_ACTION_DONT_ACCEPT_ITEM,
   NPC_ACTION_FACE_CLOSEST_PLAYER,
@@ -290,4 +290,4 @@ const enum Enum213 {
   NPC_ACTION_LAST_TURN_TO_FACE_PROFILE = 650,
 }
 
-const HOSPITAL_PATIENT_DISTANCE = 9;
+export const HOSPITAL_PATIENT_DISTANCE = 9;

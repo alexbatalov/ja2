@@ -338,16 +338,16 @@ let gSCamoXY: INV_REGION_DESC = [
 // GLOBAL VARIABLES (OURS)
 
 let fFlashAssignDone: boolean = false;
-let fInMapMode: boolean = false;
-let fMapPanelDirty: boolean = true;
-let fTeamPanelDirty: boolean = true;
-let fCharacterInfoPanelDirty: boolean = true;
+export let fInMapMode: boolean = false;
+export let fMapPanelDirty: boolean = true;
+export let fTeamPanelDirty: boolean = true;
+export let fCharacterInfoPanelDirty: boolean = true;
 let gfLoadPending: boolean = false;
-let fReDrawFace: boolean = false;
-let fFirstTimeInMapScreen: boolean = true;
-let fShowInventoryFlag: boolean = false;
-let fMapInventoryItem: boolean = false;
-let fShowDescriptionFlag: boolean = false;
+export let fReDrawFace: boolean = false;
+export let fFirstTimeInMapScreen: boolean = true;
+export let fShowInventoryFlag: boolean = false;
+export let fMapInventoryItem: boolean = false;
+export let fShowDescriptionFlag: boolean = false;
 
 // are the graphics for mapscreen preloaded?
 let fPreLoadedMapGraphics: boolean = false;
@@ -367,11 +367,11 @@ let fShowTrashCanHighLight: boolean = false;
 // the flags for display of pop up boxes/menus
 let fEndPlotting: boolean = false;
 
-let gfInConfirmMapMoveMode: boolean = false;
-let gfInChangeArrivalSectorMode: boolean = false;
+export let gfInConfirmMapMoveMode: boolean = false;
+export let gfInChangeArrivalSectorMode: boolean = false;
 
 // redraw character list
-let fDrawCharacterList: boolean = true;
+export let fDrawCharacterList: boolean = true;
 
 // was the cursor set to the checkmark?
 let fCheckCursorWasSet: boolean = false;
@@ -390,9 +390,9 @@ let gfGlowTimerExpired: boolean = false;
 
 // not required to be saved.  The flag is set to allow mapscreen to render once, then transition the
 // current tactical battle into autoresolve.
-let gfTransitionMapscreenToAutoResolve: boolean = false;
+export let gfTransitionMapscreenToAutoResolve: boolean = false;
 
-let gfSkyriderEmptyHelpGiven: boolean = false;
+export let gfSkyriderEmptyHelpGiven: boolean = false;
 
 let gfRequestGiveSkyriderNewDestination: boolean = false;
 
@@ -403,7 +403,7 @@ let gfMapPanelWasRedrawn: boolean = false;
 let gubMAP_HandInvDispText: UINT8[] /* [NUM_INV_SLOTS] */;
 
 // currently selected character's list index
-let bSelectedInfoChar: INT8 = -1;
+export let bSelectedInfoChar: INT8 = -1;
 
 // map sort button images
 let giMapSortButtonImage: INT32[] /* [MAX_SORT_METHODS] */ = [
@@ -424,42 +424,42 @@ let giMapSortButton: INT32[] /* [MAX_SORT_METHODS] */ = [
 ];
 
 let giCharInfoButtonImage: INT32[] /* [2] */;
-let giCharInfoButton: INT32[] /* [2] */ = [
+export let giCharInfoButton: INT32[] /* [2] */ = [
   -1,
   -1,
 ];
 
 let giMapInvButtonDoneImage: INT32;
-let giMapInvDoneButton: INT32 = -1;
+export let giMapInvDoneButton: INT32 = -1;
 
-let giMapContractButton: INT32 = -1;
+export let giMapContractButton: INT32 = -1;
 let giMapContractButtonImage: INT32;
 
 // INT32 giMapInvButton = -1;
 // INT32 giMapInvButtonImage;
 
-let giSortStateForMapScreenList: INT32 = 0;
+export let giSortStateForMapScreenList: INT32 = 0;
 
-let giCommonGlowBaseTime: INT32 = 0;
-let giFlashAssignBaseTime: INT32 = 0;
-let giFlashContractBaseTime: INT32 = 0;
-let guiFlashCursorBaseTime: UINT32 = 0;
-let giPotCharPathBaseTime: INT32 = 0;
+export let giCommonGlowBaseTime: INT32 = 0;
+export let giFlashAssignBaseTime: INT32 = 0;
+export let giFlashContractBaseTime: INT32 = 0;
+export let guiFlashCursorBaseTime: UINT32 = 0;
+export let giPotCharPathBaseTime: INT32 = 0;
 
 let guiCHARLIST: UINT32;
 let guiCHARINFO: UINT32;
 let guiSleepIcon: UINT32;
 let guiCROSS: UINT32;
 let guiMAPINV: UINT32;
-let guiMapInvSecondHandBlockout: UINT32;
+export let guiMapInvSecondHandBlockout: UINT32;
 let guiULICONS: UINT32;
 let guiNewMailIcons: UINT32;
-let guiLEVELMARKER: UINT32; // the white rectangle highlighting the current level on the map border
+export let guiLEVELMARKER: UINT32; // the white rectangle highlighting the current level on the map border
 
 // misc mouse regions
 let gCharInfoFaceRegion: MOUSE_REGION;
-let gCharInfoHandRegion: MOUSE_REGION;
-let gMPanelRegion: MOUSE_REGION;
+export let gCharInfoHandRegion: MOUSE_REGION;
+export let gMPanelRegion: MOUSE_REGION;
 let gMapViewRegion: MOUSE_REGION;
 let gMapScreenMaskRegion: MOUSE_REGION;
 let gTrashCanRegion: MOUSE_REGION;
@@ -472,8 +472,8 @@ let gTeamListLocationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
 let gTeamListDestinationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
 let gTeamListContractRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
 
-let gItemPointer: OBJECTTYPE;
-let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
+export let gItemPointer: OBJECTTYPE;
+export let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
 
 let gpCharacterPreviousMercPath: PathStPtr[] /* [MAX_CHARACTER_COUNT] */;
 let gpHelicopterPreviousMercPath: PathStPtr = null;
@@ -489,7 +489,7 @@ let gpHelicopterPreviousMercPath: PathStPtr = null;
 // Mouse Region Callbacks
 
 // the tries to select a mapscreen character by his soldier ID
-function SetInfoChar(ubID: UINT8): boolean {
+export function SetInfoChar(ubID: UINT8): boolean {
   let bCounter: INT8;
 
   for (bCounter = 0; bCounter < MAX_CHARACTER_COUNT; bCounter++) {
@@ -794,7 +794,7 @@ function GlowTrashCan(): void {
     RestoreExternBackgroundRect(TRASH_CAN_X, TRASH_CAN_Y, (TRASH_CAN_WIDTH + 2), (TRASH_CAN_HEIGHT + 2));
 }
 
-function DrawFace(sCharNumber: INT16): void {
+export function DrawFace(sCharNumber: INT16): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   /* static */ let sOldId: INT16 = -1;
 
@@ -1530,7 +1530,7 @@ function DisplayCharacterInfo(): void {
   MarkAllBoxesAsAltered();
 }
 
-function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
+export function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
   let iTravelTime: INT32 = 0;
   let pCurrent: WAYPOINT;
   let pNext: WAYPOINT;
@@ -2036,7 +2036,7 @@ function DisplayCharacterList(): void {
 }
 
 // THIS IS STUFF THAT RUNS *ONCE* DURING APPLICATION EXECUTION, AT INITIAL STARTUP
-function MapScreenInit(): UINT32 {
+export function MapScreenInit(): UINT32 {
   let VObjectDesc: VOBJECT_DESC;
 
   SetUpBadSectorsList();
@@ -2064,7 +2064,7 @@ function MapScreenInit(): UINT32 {
   return true;
 }
 
-function MapScreenShutdown(): UINT32 {
+export function MapScreenShutdown(): UINT32 {
   // free up alloced mapscreen messages
   FreeGlobalMessageList();
 
@@ -2079,7 +2079,7 @@ function MapScreenShutdown(): UINT32 {
   return true;
 }
 
-function MapScreenHandle(): UINT32 {
+export function MapScreenHandle(): UINT32 {
   let uiNewScreen: UINT32;
   let found: INT32 = false;
   let uiMins: UINT32 = 0;
@@ -4267,7 +4267,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-function EndMapScreen(fDuringFade: boolean): void {
+export function EndMapScreen(fDuringFade: boolean): void {
   if (fInMapMode == false) {
     // shouldn't be here
     return;
@@ -4517,7 +4517,7 @@ function EndMapScreen(fDuringFade: boolean): void {
   gfRequestGiveSkyriderNewDestination = false;
 }
 
-function GetMouseMapXY(psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<INT16>): boolean {
+export function GetMouseMapXY(psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<INT16>): boolean {
   let MousePos: POINT;
 
   if (IsMapScreenHelpTextUp()) {
@@ -4907,7 +4907,7 @@ void BtnINVCallback(GUI_BUTTON *btn,INT32 reason)
 }
 */
 
-function CreateDestroyMapInvButton(): void {
+export function CreateDestroyMapInvButton(): void {
   /* static */ let fOldShowInventoryFlag: boolean = false;
 
   if (fShowInventoryFlag && !fOldShowInventoryFlag) {
@@ -5104,7 +5104,7 @@ function MAPInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
 }
 
 // mapscreen wrapper to init the item description box
-function MAPInternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function MAPInternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let fRet: boolean;
 
   fRet = InternalInitItemDescriptionBox(pObject, MAP_ITEMDESC_START_X, MAP_ITEMDESC_START_Y, ubStatusIndex, pSoldier);
@@ -5294,7 +5294,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
   }
 }
 
-function InternalMAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function InternalMAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>): void {
   // If not null return
   if (gpItemPointer != null) {
     return;
@@ -5357,7 +5357,7 @@ function MAPBeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, uiKeySlot: U
   fTeamPanelDirty = true;
 }
 
-function MAPEndItemPointer(): void {
+export function MAPEndItemPointer(): void {
   if (gpItemPointer != null) {
     gpItemPointer = null;
     MSYS_ChangeRegionCursor(addressof(gMPanelRegion), Enum317.CURSOR_NORMAL);
@@ -5469,7 +5469,7 @@ function DisplayThePotentialPathForCurrentDestinationCharacterForMapScreenInterf
   return;
 }
 
-function SetUpCursorForStrategicMap(): void {
+export function SetUpCursorForStrategicMap(): void {
   if (gfInChangeArrivalSectorMode == false) {
     // check if character is in destination plotting mode
     if (fPlotForHelicopter == false) {
@@ -5504,7 +5504,7 @@ function HandleAnimatedCursorsForMapScreen(): void {
   }
 }
 
-function AbortMovementPlottingMode(): void {
+export function AbortMovementPlottingMode(): void {
   // invalid if we're not plotting movement
   Assert((bSelectedDestChar != -1) || (fPlotForHelicopter == true));
 
@@ -6414,7 +6414,7 @@ function PlotTemporaryPaths(): void {
   }
 }
 
-function RenderMapRegionBackground(): void {
+export function RenderMapRegionBackground(): void {
   // renders to save buffer when dirty flag set
 
   if (fMapPanelDirty == false) {
@@ -6743,7 +6743,7 @@ function HandleShadingOfLinesForContractMenu(): void {
   }
 }
 
-function ReBuildCharactersList(): void {
+export function ReBuildCharactersList(): void {
   // rebuild character's list
   let sCount: INT16 = 0;
 
@@ -6802,7 +6802,7 @@ function HandleChangeOfInfoChar(): void {
   }
 }
 
-function RebuildContractBoxForMerc(pCharacter: Pointer<SOLDIERTYPE>): void {
+export function RebuildContractBoxForMerc(pCharacter: Pointer<SOLDIERTYPE>): void {
   // rebuild contractbox for this merc
   RemoveBox(ghContractBox);
   ghContractBox = -1;
@@ -6947,7 +6947,7 @@ function UpdatePausedStatesDueToTimeCompression(): void {
   return;
 }
 
-function ContinueDialogue(pSoldier: Pointer<SOLDIERTYPE>, fDone: boolean): boolean {
+export function ContinueDialogue(pSoldier: Pointer<SOLDIERTYPE>, fDone: boolean): boolean {
   // continue this grunts dialogue, restore when done
   /* static */ let bOldSelectedInfoChar: INT8 = -1;
   /* static */ let fTalkingingGuy: boolean = false;
@@ -7613,13 +7613,13 @@ function StartConfirmMapMoveMode(sMapY: INT16): void {
   gfInConfirmMapMoveMode = true;
 }
 
-function EndConfirmMapMoveMode(): void {
+export function EndConfirmMapMoveMode(): void {
   CancelMapUIMessage();
 
   gfInConfirmMapMoveMode = false;
 }
 
-function CancelMapUIMessage(): void {
+export function CancelMapUIMessage(): void {
   // and kill the message overlay
   EndUIMessage();
 
@@ -7717,7 +7717,7 @@ function AnyMercsLeavingRealSoon(): boolean {
   return fFoundOne;
 }
 
-function HandlePreloadOfMapGraphics(): boolean {
+export function HandlePreloadOfMapGraphics(): boolean {
   // check amt of memory, if above required amt...use it
   let vs_desc: VSURFACE_DESC;
   let VObjectDesc: VOBJECT_DESC;
@@ -7884,7 +7884,7 @@ function HandlePreloadOfMapGraphics(): boolean {
   return true;
 }
 
-function HandleRemovalOfPreLoadedMapGraphics(): void {
+export function HandleRemovalOfPreLoadedMapGraphics(): void {
   if (fPreLoadedMapGraphics == true) {
     DeleteMapBottomGraphics();
     DeleteVideoObjectFromIndex(guiMAPCURSORS);
@@ -8062,7 +8062,7 @@ function CreateDestroyMapCharacterScrollButtons(): void {
   }
 }
 
-function TellPlayerWhyHeCantCompressTime(): void {
+export function TellPlayerWhyHeCantCompressTime(): void {
   // if we're locked into paused time compression by some event that enforces that
   if (PauseStateLocked()) {
   } else if (gfAtLeastOneMercWasHired == false) {
@@ -8099,7 +8099,7 @@ function TellPlayerWhyHeCantCompressTime(): void {
   }
 }
 
-function MapScreenDefaultOkBoxCallback(bExitValue: UINT8): void {
+export function MapScreenDefaultOkBoxCallback(bExitValue: UINT8): void {
   // yes, load the game
   if (bExitValue == MSG_BOX_RETURN_OK) {
     fMapPanelDirty = true;
@@ -8504,7 +8504,7 @@ function CheckForAndRenderNewMailOverlay(): void {
   }
 }
 
-function CanToggleSelectedCharInventory(): boolean {
+export function CanToggleSelectedCharInventory(): boolean {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (gfPreBattleInterfaceActive == true) {
@@ -8540,7 +8540,7 @@ function CanToggleSelectedCharInventory(): boolean {
   return true;
 }
 
-function MapCharacterHasAccessibleInventory(bCharNumber: INT8): boolean {
+export function MapCharacterHasAccessibleInventory(bCharNumber: INT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   Assert(bCharNumber >= 0);
@@ -8583,7 +8583,7 @@ function CheckForInventoryModeCancellation(): void {
   }
 }
 
-function ChangeSelectedMapSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
+export function ChangeSelectedMapSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
   // ignore while map inventory pool is showing, or else items can be replicated, since sector inventory always applies
   // only to the currently selected sector!!!
   if (fShowMapInventoryPool)
@@ -8645,7 +8645,7 @@ function CanChangeDestinationForCharSlot(bCharNumber: INT8, fShowErrorMessage: b
   }
 }
 
-function CanExtendContractForCharSlot(bCharNumber: INT8): boolean {
+export function CanExtendContractForCharSlot(bCharNumber: INT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (bCharNumber == -1)
@@ -8672,7 +8672,7 @@ function CanExtendContractForCharSlot(bCharNumber: INT8): boolean {
   return true;
 }
 
-function CanChangeSleepStatusForCharSlot(bCharNumber: INT8): boolean {
+export function CanChangeSleepStatusForCharSlot(bCharNumber: INT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (bCharNumber == -1)
@@ -8686,7 +8686,7 @@ function CanChangeSleepStatusForCharSlot(bCharNumber: INT8): boolean {
   return CanChangeSleepStatusForSoldier(pSoldier);
 }
 
-function CanChangeSleepStatusForSoldier(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CanChangeSleepStatusForSoldier(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // valid soldier?
   Assert(pSoldier);
   Assert(pSoldier.value.bActive);
@@ -8832,7 +8832,7 @@ function GetContractExpiryTime(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   }
 }
 
-function ChangeSelectedInfoChar(bCharNumber: INT8, fResetSelectedList: boolean): void {
+export function ChangeSelectedInfoChar(bCharNumber: INT8, fResetSelectedList: boolean): void {
   Assert((bCharNumber >= -1) && (bCharNumber < MAX_CHARACTER_COUNT));
 
   if ((bCharNumber != -1) && (gCharactersList[bCharNumber].fValid == false))
@@ -8888,7 +8888,7 @@ function ChangeSelectedInfoChar(bCharNumber: INT8, fResetSelectedList: boolean):
   fTeamPanelDirty = true;
 }
 
-function CopyPathToAllSelectedCharacters(pPath: PathStPtr): void {
+export function CopyPathToAllSelectedCharacters(pPath: PathStPtr): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -8913,7 +8913,7 @@ function CopyPathToAllSelectedCharacters(pPath: PathStPtr): void {
   }
 }
 
-function CancelPathsOfAllSelectedCharacters(): void {
+export function CancelPathsOfAllSelectedCharacters(): void {
   let bCounter: INT8 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let fSkyriderMsgShown: boolean = false;
@@ -9123,7 +9123,7 @@ function RequestGiveSkyriderNewDestination(): boolean {
   }
 }
 
-function ExplainWhySkyriderCantFly(): void {
+export function ExplainWhySkyriderCantFly(): void {
   // do we owe him money?
   if (gMercProfiles[Enum268.SKYRIDER].iBalance < 0) {
     // overdue cash
@@ -9402,7 +9402,7 @@ function HandlePostAutoresolveMessages(): void {
   }
 }
 
-function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
+export function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
   if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
     wcscpy(sString, pAssignmentStrings[pSoldier.value.bAssignment]);
   } else {
@@ -9410,7 +9410,7 @@ function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>, sStrin
   }
 }
 
-function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
+export function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
   let pTempString: wchar_t[] /* [32] */;
 
   if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
@@ -9433,7 +9433,7 @@ function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, sString:
   }
 }
 
-function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
+export function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
   let iSectorX: INT32;
   let iSectorY: INT32;
   let sSector: INT16 = 0;
@@ -9477,7 +9477,7 @@ function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>, sStri
   swprintf(sString, "%s%s", pMapVertIndex[iSectorY], pMapHortIndex[iSectorX]);
 }
 
-function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */, pubFontColor: Pointer<UINT8>): void {
+export function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */, pubFontColor: Pointer<UINT8>): void {
   let iMinsRemaining: INT32 = 0;
   let iDaysRemaining: INT32 = 0;
   let iHoursRemaining: INT32 = 0;
@@ -9534,7 +9534,7 @@ function InitPreviousPaths(): void {
   gpHelicopterPreviousMercPath = null;
 }
 
-function RememberPreviousPathForAllSelectedChars(): void {
+export function RememberPreviousPathForAllSelectedChars(): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -9695,7 +9695,7 @@ function SelectAllCharactersInSquad(bSquadNumber: INT8): void {
   }
 }
 
-function CanDrawSectorCursor(): boolean {
+export function CanDrawSectorCursor(): boolean {
   if (/*( fCursorIsOnMapScrollButtons == FALSE ) && */
       (fShowTownInfo == false) && (ghTownMineBox == -1) && (fShowUpdateBox == false) && (GetNumberOfMercsInUpdateList() == 0) && (sSelectedMilitiaTown == 0) && (gfMilitiaPopupCreated == false) && (gfStartedFromMapScreen == false) && (fShowMapScreenMovementList == false) && (ghMoveBox == -1) && (fMapInventoryItem == false)) {
     return true;

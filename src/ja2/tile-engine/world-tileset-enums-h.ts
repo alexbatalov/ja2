@@ -1,4 +1,4 @@
-const enum Enum316 {
+export const enum Enum316 {
   GENERIC_1,
   CAVES_1,
   DESERT_1,

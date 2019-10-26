@@ -1,25 +1,25 @@
 const FARLEFT = 0;
-const LEFTSIDE = 48;
-const MIDDLE = 64;
-const MIDDLEPAN = 64;
-const RIGHTSIDE = 80;
+export const LEFTSIDE = 48;
+export const MIDDLE = 64;
+export const MIDDLEPAN = 64;
+export const RIGHTSIDE = 80;
 const FARRIGHT = 127;
 
-const LOWVOLUME = 25;
-const BTNVOLUME = 40;
-const MIDVOLUME = 65;
-const HIGHVOLUME = 127;
+export const LOWVOLUME = 25;
+export const BTNVOLUME = 40;
+export const MIDVOLUME = 65;
+export const HIGHVOLUME = 127;
 
-const RATE_11025 = 0xffffffff;
+export const RATE_11025 = 0xffffffff;
 
 const LOOPING = 0;
 
 // sound group priorities (higher = more important)
-const GROUP_PLAYER = 1000;
-const GROUP_AMBIENT = 0;
+export const GROUP_PLAYER = 1000;
+export const GROUP_AMBIENT = 0;
 
 // SOUNDS ENUMERATION
-const enum Enum330 {
+export const enum Enum330 {
   MISS_1 = 0,
   MISS_2,
   MISS_3,
@@ -361,7 +361,7 @@ const enum Enum330 {
   NUM_SAMPLES,
 }
 
-const enum Enum331 {
+export const enum Enum331 {
   LIGHTNING_1 = 0,
   LIGHTNING_2,
   RAIN_1,
@@ -380,6 +380,6 @@ const enum Enum331 {
   NUM_AMBIENTS,
 }
 
-type SOUND_STOP_CALLBACK = (pData: Pointer<void>) => void;
+export type SOUND_STOP_CALLBACK = (pData: Pointer<void>) => void;
 
-const POSITION_SOUND_FROM_SOLDIER = 0x00000001;
+export const POSITION_SOUND_FROM_SOLDIER = 0x00000001;

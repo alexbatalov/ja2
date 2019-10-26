@@ -1,4 +1,4 @@
-const enum Enum327 {
+export const enum Enum327 {
   MARIMBAD2_MUSIC,
   MENUMIX_MUSIC,
   NOTHING_A_MUSIC,
@@ -17,7 +17,7 @@ const enum Enum327 {
   NUM_MUSIC,
 }
 
-const enum Enum328 {
+export const enum Enum328 {
   MUSIC_NONE,
   MUSIC_RESTORE,
   MUSIC_MAIN_MENU,

@@ -32,7 +32,7 @@ let sFacePositions: INT16[][] /* [NUMBER_OF_PLAYER_PORTRAITS][4] */ = [
   [ 0, 0, 0, 0 ],
 ];
 
-let pPlayerSelectedFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = [
+export let pPlayerSelectedFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = [
   "Faces\\200.sti",
   "Faces\\201.sti",
   "Faces\\202.sti",
@@ -51,7 +51,7 @@ let pPlayerSelectedFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = [
   "Faces\\215.sti",
 ];
 
-let pPlayerSelectedBigFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = [
+export let pPlayerSelectedBigFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = [
   "Faces\\BigFaces\\200.sti",
   "Faces\\BigFaces\\201.sti",
   "Faces\\BigFaces\\202.sti",
@@ -70,7 +70,7 @@ let pPlayerSelectedBigFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ =
   "Faces\\BigFaces\\215.sti",
 ];
 
-function CreateACharacterFromPlayerEnteredStats(): void {
+export function CreateACharacterFromPlayerEnteredStats(): void {
   // copy over full name
   wcscpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName, pFullName);
 
@@ -224,7 +224,7 @@ function CreatePlayerAttitude(): void {
           */
 }
 
-function AddAnAttitudeToAttitudeList(bAttitude: INT8): void {
+export function AddAnAttitudeToAttitudeList(bAttitude: INT8): void {
   // adds an attitude to attitude list
 
   if (iLastElementInAttitudeList < ATTITUDE_LIST_SIZE) {
@@ -238,7 +238,7 @@ function AddAnAttitudeToAttitudeList(bAttitude: INT8): void {
   return;
 }
 
-function AddSkillToSkillList(bSkill: INT8): void {
+export function AddSkillToSkillList(bSkill: INT8): void {
   // adds a skill to skills list
 
   if (iLastElementInSkillsList < ATTITUDE_LIST_SIZE) {
@@ -394,7 +394,7 @@ iSkillB = NO_SKILLTRAIT;
   */
 }
 
-function AddAPersonalityToPersonalityList(bPersonlity: INT8): void {
+export function AddAPersonalityToPersonalityList(bPersonlity: INT8): void {
   // CJC, Oct 26 98: prevent personality list from being generated
   // because no dialogue was written to support PC personality quotes
 
@@ -465,7 +465,7 @@ function CreatePlayerPersonality(): void {
   */
 }
 
-function CreatePlayersPersonalitySkillsAndAttitude(): void {
+export function CreatePlayersPersonalitySkillsAndAttitude(): void {
   // creates personality, skills and attitudes from curretly built list
 
   // personality
@@ -480,7 +480,7 @@ function CreatePlayersPersonalitySkillsAndAttitude(): void {
   return;
 }
 
-function ResetSkillsAttributesAndPersonality(): void {
+export function ResetSkillsAttributesAndPersonality(): void {
   // reset count of skills attributes and personality
 
   iLastElementInPersonalityList = 0;
@@ -490,7 +490,7 @@ function ResetSkillsAttributesAndPersonality(): void {
   iLastElementInAttitudeList = 0;
 }
 
-function ResetIncrementCharacterAttributes(): void {
+export function ResetIncrementCharacterAttributes(): void {
   // this resets any increments due to character generation
 
   // attributes
@@ -640,7 +640,7 @@ function SetMercSkinAndHairColors(): void {
   strcpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].SKIN, sSkinStrings[sSkinColor]);
 }
 
-function HandleMercStatsForChangesInFace(): void {
+export function HandleMercStatsForChangesInFace(): void {
   if (fLoadingCharacterForPreviousImpProfile) {
     return;
   }

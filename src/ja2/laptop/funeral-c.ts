@@ -82,10 +82,10 @@ let gSelectedFuneralLinkRegion: MOUSE_REGION[] /* [FUNERAL_NUMBER_OF_LINKS] */;
 // Clicking on rip sign to make it disappear
 let gSelectedRipSignRegion: MOUSE_REGION;
 
-function GameInitFuneral(): void {
+export function GameInitFuneral(): void {
 }
 
-function EnterFuneral(): boolean {
+export function EnterFuneral(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let usPosX: UINT16;
   let i: UINT16;
@@ -145,7 +145,7 @@ function EnterFuneral(): boolean {
   return true;
 }
 
-function ExitFuneral(): void {
+export function ExitFuneral(): void {
   let i: UINT8;
 
   DeleteVideoObjectFromIndex(guiClosedSign);
@@ -163,10 +163,10 @@ function ExitFuneral(): void {
   MSYS_RemoveRegion(addressof(gSelectedRipSignRegion));
 }
 
-function HandleFuneral(): void {
+export function HandleFuneral(): void {
 }
 
-function RenderFuneral(): void {
+export function RenderFuneral(): void {
   let hPixHandle: HVOBJECT;
   let i: UINT16;
   let usPosX: UINT16;

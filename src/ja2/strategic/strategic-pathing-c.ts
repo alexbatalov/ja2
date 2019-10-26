@@ -44,8 +44,8 @@ const TRAILCELLTYPE = UINT32;
 
 /* static */ let pathQB: path_t[] /* [MAXpathQ] */;
 /* static */ let totAPCostB: UINT16[] /* [MAXpathQ] */;
-/* static */ let gusPathShown: UINT16;
-/* static */ let gusAPtsToMove: UINT16;
+/* static */ export let gusPathShown: UINT16;
+/* static */ export let gusAPtsToMove: UINT16;
 /* static */ let gusMapMovementCostsB: UINT16[][] /* [MAP_LENGTH][MAXDIR] */;
 /* static */ let trailCostB: TRAILCELLTYPE[] /* [MAP_LENGTH] */;
 /* static */ let trailStratTreeB: trail_t[] /* [MAXTRAILTREE] */;
@@ -118,7 +118,7 @@ const QUESEARCH = (ndx, NDX) => {
     NDX = pathQB[NDX].nextLink;
 };
 
-let queRequests: INT32;
+export let queRequests: INT32;
 
 let diStratDelta: INT16[] /* [8] */ = [
   -MAP_WIDTH, // N
@@ -133,7 +133,7 @@ let diStratDelta: INT16[] /* [8] */ = [
 
 // this will find if a shortest strategic path
 
-function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: boolean): INT32 {
+export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: boolean): INT32 {
   let iCnt: INT32;
   let ndx: INT32;
   let insertNdx: INT32;
@@ -379,7 +379,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
   return 0;
 }
 
-function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSectorNum: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: boolean): PathStPtr {
+export function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSectorNum: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: boolean): PathStPtr {
   let iCurrentSectorNum: INT32;
   let iDelta: INT32 = 0;
   let iPathLength: INT32;
@@ -687,7 +687,7 @@ void SetThisMercsSectorXYToTheseValues( SOLDIERTYPE *pSoldier ,INT16 sX, INT16 s
 }
 */
 
-function AppendStrategicPath(pNewSection: PathStPtr, pHeadOfPathList: PathStPtr): PathStPtr {
+export function AppendStrategicPath(pNewSection: PathStPtr, pHeadOfPathList: PathStPtr): PathStPtr {
   // will append a new section onto the end of the head of list, then return the head of the new list
 
   let pNode: PathStPtr = pHeadOfPathList;
@@ -725,7 +725,7 @@ function AppendStrategicPath(pNewSection: PathStPtr, pHeadOfPathList: PathStPtr)
   return pHeadOfPathList;
 }
 
-function ClearStrategicPathList(pHeadOfPath: PathStPtr, sMvtGroup: INT16): PathStPtr {
+export function ClearStrategicPathList(pHeadOfPath: PathStPtr, sMvtGroup: INT16): PathStPtr {
   // will clear out a strategic path and return head of list as NULL
   let pNode: PathStPtr = pHeadOfPath;
   let pDeleteNode: PathStPtr = pHeadOfPath;
@@ -762,7 +762,7 @@ function ClearStrategicPathList(pHeadOfPath: PathStPtr, sMvtGroup: INT16): PathS
   return pNode;
 }
 
-function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX: INT16, sY: INT16, sMvtGroup: INT16): PathStPtr {
+export function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX: INT16, sY: INT16, sMvtGroup: INT16): PathStPtr {
   // will clear out a strategic path and return head of list as NULL
   let pNode: PathStPtr = pHeadOfPath;
   let pDeleteNode: PathStPtr = pHeadOfPath;
@@ -847,7 +847,7 @@ function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX: INT16
   return pHeadOfPath;
 }
 
-function MoveToBeginningOfPathList(pList: PathStPtr): PathStPtr {
+export function MoveToBeginningOfPathList(pList: PathStPtr): PathStPtr {
   // move to beginning of this list
 
   // no list, return
@@ -906,7 +906,7 @@ function RemoveTailFromStrategicPath(pHeadOfList: PathStPtr): PathStPtr {
   return pHeadOfList;
 }
 
-function RemoveHeadFromStrategicPath(pList: PathStPtr): PathStPtr {
+export function RemoveHeadFromStrategicPath(pList: PathStPtr): PathStPtr {
   // move to head of list
   let pNode: PathStPtr = pList;
   let pNewHead: PathStPtr = pList;
@@ -990,7 +990,7 @@ function RemoveSectorFromStrategicPathList(pList: PathStPtr, sX: INT16, sY: INT1
   return pPastNode;
 }
 
-function GetLastSectorIdInCharactersPath(pCharacter: Pointer<SOLDIERTYPE>): INT16 {
+export function GetLastSectorIdInCharactersPath(pCharacter: Pointer<SOLDIERTYPE>): INT16 {
   // will return the last sector of the current path, or the current sector if there's no path
   let sLastSector: INT16 = (pCharacter.value.sSectorX) + (pCharacter.value.sSectorY) * (MAP_WORLD_X);
   let pNode: PathStPtr = null;
@@ -1006,7 +1006,7 @@ function GetLastSectorIdInCharactersPath(pCharacter: Pointer<SOLDIERTYPE>): INT1
 }
 
 // get id of last sector in vehicle path list
-function GetLastSectorIdInVehiclePath(iId: INT32): INT16 {
+export function GetLastSectorIdInVehiclePath(iId: INT32): INT16 {
   let sLastSector: INT16 = -1;
   let pNode: PathStPtr = null;
 
@@ -1031,7 +1031,7 @@ function GetLastSectorIdInVehiclePath(iId: INT32): INT16 {
   return sLastSector;
 }
 
-function CopyPaths(pSourcePath: PathStPtr, pDestPath: PathStPtr): PathStPtr {
+export function CopyPaths(pSourcePath: PathStPtr, pDestPath: PathStPtr): PathStPtr {
   let pDestNode: PathStPtr = pDestPath;
   let pCurNode: PathStPtr = pSourcePath;
   // copies path from source to dest
@@ -1307,7 +1307,7 @@ UINT32 GetEtaGivenRoute( PathStPtr pPath )
 }
 */
 
-function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16): void {
+export function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16): void {
   let iDelta: INT32 = 0;
   let iOldDelta: INT32 = 0;
   let fFirstNode: boolean = true;
@@ -1397,7 +1397,7 @@ function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16):
 }
 
 // clear strategic movement (mercpaths and waypoints) for this soldier, and his group (including its vehicles)
-function ClearMvtForThisSoldierAndGang(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ClearMvtForThisSoldierAndGang(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pGroup: Pointer<GROUP> = null;
 
   // check if valid grunt
@@ -1410,7 +1410,7 @@ function ClearMvtForThisSoldierAndGang(pSoldier: Pointer<SOLDIERTYPE>): void {
   ClearMercPathsAndWaypointsForAllInGroup(pGroup);
 }
 
-function MoveGroupFromSectorToSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
+export function MoveGroupFromSectorToSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
   let pNode: PathStPtr = null;
 
   // build the path
@@ -1455,7 +1455,7 @@ function MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID: UINT8, sStartX
   return true;
 }
 
-function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
+export function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
   let pNode: PathStPtr = null;
 
   // init sectors with soldiers in them
@@ -1492,7 +1492,7 @@ function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: U
   return true;
 }
 
-function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
+export function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
   let pNode: PathStPtr = null;
 
   // init sectors with soldiers in them
@@ -1546,7 +1546,7 @@ BOOLEAN MoveGroupToOriginalSector( UINT8 ubGroupID )
 }
 */
 
-function GetLengthOfPath(pHeadPath: PathStPtr): INT32 {
+export function GetLengthOfPath(pHeadPath: PathStPtr): INT32 {
   let iLength: INT32 = 0;
   let pNode: PathStPtr = pHeadPath;
 
@@ -1558,7 +1558,7 @@ function GetLengthOfPath(pHeadPath: PathStPtr): INT32 {
   return iLength;
 }
 
-function GetLengthOfMercPath(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+export function GetLengthOfMercPath(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let pNode: PathStPtr = null;
   let iLength: INT32 = 0;
 
@@ -1581,7 +1581,7 @@ function CheckIfPathIsEmpty(pHeadPath: PathStPtr): boolean {
   return false;
 }
 
-function GetSoldierMercPathPtr(pSoldier: Pointer<SOLDIERTYPE>): PathStPtr {
+export function GetSoldierMercPathPtr(pSoldier: Pointer<SOLDIERTYPE>): PathStPtr {
   let pMercPath: PathStPtr = null;
 
   Assert(pSoldier);
@@ -1601,7 +1601,7 @@ function GetSoldierMercPathPtr(pSoldier: Pointer<SOLDIERTYPE>): PathStPtr {
   return pMercPath;
 }
 
-function GetGroupMercPathPtr(pGroup: Pointer<GROUP>): PathStPtr {
+export function GetGroupMercPathPtr(pGroup: Pointer<GROUP>): PathStPtr {
   let pMercPath: PathStPtr = null;
   let iVehicledId: INT32 = -1;
 
@@ -1625,7 +1625,7 @@ function GetGroupMercPathPtr(pGroup: Pointer<GROUP>): PathStPtr {
   return pMercPath;
 }
 
-function GetSoldierGroupId(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+export function GetSoldierGroupId(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   let ubGroupId: UINT8 = 0;
 
   // IN a vehicle?
@@ -1644,7 +1644,7 @@ function GetSoldierGroupId(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
 }
 
 // clears this groups strategic movement (mercpaths and waypoints), include those in the vehicle structs(!)
-function ClearMercPathsAndWaypointsForAllInGroup(pGroup: Pointer<GROUP>): void {
+export function ClearMercPathsAndWaypointsForAllInGroup(pGroup: Pointer<GROUP>): void {
   let pPlayer: Pointer<PLAYERGROUP> = null;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -1702,7 +1702,7 @@ function ClearPathForSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function AddSectorToFrontOfMercPathForAllSoldiersInGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): void {
+export function AddSectorToFrontOfMercPathForAllSoldiersInGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): void {
   let pPlayer: Pointer<PLAYERGROUP> = null;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 

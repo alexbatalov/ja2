@@ -2,13 +2,13 @@
 let giIMPAttributeEntranceButtonImage: UINT32[] /* [1] */;
 let giIMPAttributeEntranceButton: UINT32[] /* [1] */;
 
-function EnterIMPAttributeEntrance(): void {
+export function EnterIMPAttributeEntrance(): void {
   CreateIMPAttributeEntranceButtons();
 
   return;
 }
 
-function RenderIMPAttributeEntrance(): void {
+export function RenderIMPAttributeEntrance(): void {
   // the background
   RenderProfileBackGround();
 
@@ -18,14 +18,14 @@ function RenderIMPAttributeEntrance(): void {
   return;
 }
 
-function ExitIMPAttributeEntrance(): void {
+export function ExitIMPAttributeEntrance(): void {
   // destroy the finish buttons
   DestroyIMPAttributeEntranceButtons();
 
   return;
 }
 
-function HandleIMPAttributeEntrance(): void {
+export function HandleIMPAttributeEntrance(): void {
   return;
 }
 

@@ -15,21 +15,21 @@ let MessageBoxRestrictedCursorRegion: SGPRect;
 
 // if the cursor was locked to a region
 let fCursorLockedToArea: boolean = false;
-let gfInMsgBox: boolean = false;
+export let gfInMsgBox: boolean = false;
 
 let gOldCursorLimitRectangle: SGPRect;
 
-let gMsgBox: MESSAGE_BOX_STRUCT;
+export let gMsgBox: MESSAGE_BOX_STRUCT;
 let gfNewMessageBox: boolean = false;
 let gfStartedFromGameScreen: boolean = false;
-let gfStartedFromMapScreen: boolean = false;
-let fRestoreBackgroundForMessageBox: boolean = false;
-let gfDontOverRideSaveBuffer: boolean = true; // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
+export let gfStartedFromMapScreen: boolean = false;
+export let fRestoreBackgroundForMessageBox: boolean = false;
+export let gfDontOverRideSaveBuffer: boolean = true; // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
 
-let gzUserDefinedButton1: CHAR16[] /* [128] */;
-let gzUserDefinedButton2: CHAR16[] /* [128] */;
+export let gzUserDefinedButton1: CHAR16[] /* [128] */;
+export let gzUserDefinedButton2: CHAR16[] /* [128] */;
 
-function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
+export function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
   let vs_desc: VSURFACE_DESC;
   let usTextBoxWidth: UINT16;
   let usTextBoxHeight: UINT16;
@@ -664,11 +664,11 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   return gMsgBox.uiExitScreen;
 }
 
-function MessageBoxScreenInit(): UINT32 {
+export function MessageBoxScreenInit(): UINT32 {
   return true;
 }
 
-function MessageBoxScreenHandle(): UINT32 {
+export function MessageBoxScreenHandle(): UINT32 {
   let InputEvent: InputAtom;
 
   if (gfNewMessageBox) {
@@ -849,12 +849,12 @@ function MessageBoxScreenHandle(): UINT32 {
   return Enum26.MSG_BOX_SCREEN;
 }
 
-function MessageBoxScreenShutdown(): UINT32 {
+export function MessageBoxScreenShutdown(): UINT32 {
   return false;
 }
 
 // a basic box that don't care what screen we came from
-function DoScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
+export function DoScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
 }
@@ -866,7 +866,7 @@ function DoUpperScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UI
 }
 
 // a basic box that don't care what screen we came from
-function DoLowerScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
+export function DoLowerScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   let CenteringRect: SGPRect = [ 0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y ];
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
 }

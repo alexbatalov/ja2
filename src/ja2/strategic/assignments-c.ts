@@ -47,16 +47,16 @@ let gRepairPassSlotList: REPAIR_PASS_SLOTS_TYPE[] /* [NUM_REPAIR_PASS_TYPES] */ 
 ];
 
 // PopUp Box Handles
-let ghAssignmentBox: INT32 = -1;
-let ghEpcBox: INT32 = -1;
-let ghSquadBox: INT32 = -1;
-let ghVehicleBox: INT32 = -1;
-let ghRepairBox: INT32 = -1;
-let ghTrainingBox: INT32 = -1;
-let ghAttributeBox: INT32 = -1;
-let ghRemoveMercAssignBox: INT32 = -1;
-let ghContractBox: INT32 = -1;
-let ghMoveBox: INT32 = -1;
+export let ghAssignmentBox: INT32 = -1;
+export let ghEpcBox: INT32 = -1;
+export let ghSquadBox: INT32 = -1;
+export let ghVehicleBox: INT32 = -1;
+export let ghRepairBox: INT32 = -1;
+export let ghTrainingBox: INT32 = -1;
+export let ghAttributeBox: INT32 = -1;
+export let ghRemoveMercAssignBox: INT32 = -1;
+export let ghContractBox: INT32 = -1;
+export let ghMoveBox: INT32 = -1;
 // INT32 ghUpdateBox = -1;
 
 // the x,y position of assignment pop up in tactical
@@ -78,12 +78,12 @@ let gVehicleMenuRegion: MOUSE_REGION[] /* [20] */;
 
 let gAssignmentScreenMaskRegion: MOUSE_REGION;
 
-let fShownAssignmentMenu: boolean = false;
+export let fShownAssignmentMenu: boolean = false;
 let fShowVehicleMenu: boolean = false;
-let fShowRepairMenu: boolean = false;
-let fShownContractMenu: boolean = false;
+export let fShowRepairMenu: boolean = false;
+export let fShownContractMenu: boolean = false;
 
-let fFirstClickInAssignmentScreenMask: boolean = false;
+export let fFirstClickInAssignmentScreenMask: boolean = false;
 
 // we are in fact training?..then who temmates, or self?
 let gbTrainingMode: INT8 = -1;
@@ -92,7 +92,7 @@ let gfAddDisplayBoxToWaitingQueue: boolean = false;
 
 let gpDismissSoldier: Pointer<SOLDIERTYPE> = null;
 
-let gfReEvaluateEveryonesNothingToDo: boolean = false;
+export let gfReEvaluateEveryonesNothingToDo: boolean = false;
 
 // the amount time must be on assignment before it can have any effect
 const MINUTES_FOR_ASSIGNMENT_TO_COUNT = 45;
@@ -181,7 +181,7 @@ BOOLEAN AutoSleepMerc( SOLDIERTYPE *pSoldier );
 */
 
 // glow area for contract region?
-let fGlowContractRegion: boolean = false;
+export let fGlowContractRegion: boolean = false;
 
 /*
 // get how fast the person regains sleep
@@ -199,14 +199,14 @@ BOOLEAN IsSoldierCloseEnoughToSAMControlPanel( SOLDIERTYPE *pSoldier );
 BOOLEAN IsSoldierCloseEnoughToADoctor( SOLDIERTYPE *pPatient );
 */
 
-function InitSectorsWithSoldiersList(): void {
+export function InitSectorsWithSoldiersList(): void {
   // init list of sectors
   memset(addressof(fSectorsWithSoldiers), 0, sizeof(fSectorsWithSoldiers));
 
   return;
 }
 
-function BuildSectorsWithSoldiersList(): void {
+export function BuildSectorsWithSoldiersList(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32 = 0;
@@ -221,7 +221,7 @@ function BuildSectorsWithSoldiersList(): void {
   }
 }
 
-function ChangeSoldiersAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8): void {
+export function ChangeSoldiersAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8): void {
   // This is the most basic assignment-setting function.  It must be called before setting any subsidiary
   // values like fFixingRobot.  It will clear all subsidiary values so we don't leave the merc in a messed
   // up state!
@@ -710,7 +710,7 @@ function BasicCanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): boolean 
   return true;
 }
 
-function CanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (BasicCanCharacterTrainMilitia(pSoldier) && MilitiaTrainingAllowedInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) && DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier) && (IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier) == false) && (CountMilitiaTrainersInSoldiersSector(pSoldier) < MAX_MILITIA_TRAINERS_PER_SECTOR)) {
     return true;
   } else {
@@ -728,7 +728,7 @@ function DoesTownHaveRatingToTrainMilitia(bTownId: INT8): boolean {
   return true;
 }
 
-function DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bTownId: INT8 = 0;
   let fSamSitePresent: boolean = false;
 
@@ -775,7 +775,7 @@ function CountMilitiaTrainersInSoldiersSector(pSoldier: Pointer<SOLDIERTYPE>): I
   return bCount;
 }
 
-function IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bTownId: INT8 = 0;
   let fSamSitePresent: boolean = false;
 
@@ -1309,7 +1309,7 @@ function CanCharacterSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): I
   return CHARACTER_CAN_JOIN_SQUAD;
 }
 
-function IsCharacterInTransit(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function IsCharacterInTransit(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // valid character?
   if (pSoldier == null) {
     return false;
@@ -1325,7 +1325,7 @@ function IsCharacterInTransit(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function UpdateAssignments(): void {
+export function UpdateAssignments(): void {
   let sX: INT8;
   let sY: INT8;
   let bZ: INT8;
@@ -1435,7 +1435,7 @@ function GetNumberThatCanBeDoctored(pDoctor: Pointer<SOLDIERTYPE>, fThisHour: bo
   return ubNumberOfPeople;
 }
 
-function AnyDoctorWhoCanHealThisPatient(pPatient: Pointer<SOLDIERTYPE>, fThisHour: boolean): Pointer<SOLDIERTYPE> {
+export function AnyDoctorWhoCanHealThisPatient(pPatient: Pointer<SOLDIERTYPE>, fThisHour: boolean): Pointer<SOLDIERTYPE> {
   let cnt: int;
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
   let pTeamSoldier: Pointer<SOLDIERTYPE> = null;
@@ -1455,7 +1455,7 @@ function AnyDoctorWhoCanHealThisPatient(pPatient: Pointer<SOLDIERTYPE>, fThisHou
   return null;
 }
 
-function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT16 {
+export function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT16 {
   let usHealPts: UINT16 = 0;
   let usKitPts: UINT16 = 0;
   let bMedFactor: INT8;
@@ -1501,7 +1501,7 @@ function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPt
   return usHealPts;
 }
 
-function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT8 {
+export function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT8 {
   let usRepairPts: UINT16;
   let usKitPts: UINT16;
   let ubKitEffectiveness: UINT8;
@@ -2759,7 +2759,7 @@ function TownTrainerQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): in
   }
 }
 
-function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, pStudent: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
+export function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, pStudent: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
   // return the bonus training pts of this instructor with this student,...if student null, simply assignment student skill of 0 and student wisdom of 100
   let sTrainingPts: INT16 = 0;
   let bTraineeEffWisdom: INT8 = 0;
@@ -2922,7 +2922,7 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
   return sTrainingPts;
 }
 
-function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
+export function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
   let sTrainingPts: INT16 = 0;
   let bTrainingBonus: INT8 = 0;
   let bSkill: INT8 = 0;
@@ -2989,7 +2989,7 @@ function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8,
   return sTrainingPts;
 }
 
-function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
+export function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
   let sTrainingPts: INT16 = 0;
   let bTrainingBonus: INT8 = 0;
   let bSkill: INT8 = 0;
@@ -3186,7 +3186,7 @@ function TrainTownInSector(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: 
   }
 }
 
-function GetTownTrainPtsForCharacter(pTrainer: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>): INT16 {
+export function GetTownTrainPtsForCharacter(pTrainer: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>): INT16 {
   let sTotalTrainingPts: INT16 = 0;
   let bTrainingBonus: INT8 = 0;
   //	UINT8 ubTownId = 0;
@@ -3231,7 +3231,7 @@ function GetTownTrainPtsForCharacter(pTrainer: Pointer<SOLDIERTYPE>, pusMaxPts: 
   return sTotalTrainingPts;
 }
 
-function MakeSoldiersTacticalAnimationReflectAssignment(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function MakeSoldiersTacticalAnimationReflectAssignment(pSoldier: Pointer<SOLDIERTYPE>): void {
   // soldier is in tactical, world loaded, he's OKLIFE
   if ((pSoldier.value.bInSector) && gfWorldLoaded && (pSoldier.value.bLife >= OKLIFE)) {
     // Set animation based on his assignment
@@ -3263,7 +3263,7 @@ function AssignmentAborted(pSoldier: Pointer<SOLDIERTYPE>, ubReason: UINT8): voi
   fMapScreenBottomDirty = true;
 }
 
-function AssignmentDone(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean, fMeToo: boolean): void {
+export function AssignmentDone(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean, fMeToo: boolean): void {
   if ((pSoldier.value.bInSector) && (gfWorldLoaded)) {
     if (pSoldier.value.bAssignment == Enum117.DOCTOR) {
       if (guiCurrentScreen == Enum26.GAME_SCREEN) {
@@ -3500,7 +3500,7 @@ BOOLEAN AutoSleepMerc( SOLDIERTYPE *pSoldier )
 }
 */
 
-function CheckIfSoldierUnassigned(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CheckIfSoldierUnassigned(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.bAssignment == NO_ASSIGNMENT) {
     // unassigned
     AddCharacterToAnySquad(pSoldier);
@@ -4305,7 +4305,7 @@ function MakeSureMedKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function HandleShadingOfLinesForAssignmentMenus(): void {
+export function HandleShadingOfLinesForAssignmentMenus(): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // updates which menus are selectable based on character status
@@ -4426,7 +4426,7 @@ function HandleShadingOfLinesForAssignmentMenus(): void {
   return;
 }
 
-function DetermineWhichAssignmentMenusCanBeShown(): void {
+export function DetermineWhichAssignmentMenusCanBeShown(): void {
   let fCharacterNoLongerValid: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -4610,7 +4610,7 @@ function DetermineWhichAssignmentMenusCanBeShown(): void {
   return;
 }
 
-function CreateDestroyScreenMaskForAssignmentAndContractMenus(): void {
+export function CreateDestroyScreenMaskForAssignmentAndContractMenus(): void {
   /* static */ let fCreated: boolean = false;
   // will create a screen mask to catch mouse input to disable assignment menus
 
@@ -4670,7 +4670,7 @@ function AssignmentScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason
   return;
 }
 
-function ClearScreenMaskForMapScreenExit(): void {
+export function ClearScreenMaskForMapScreenExit(): void {
   // reset show assignment menu
   fShowAssignmentMenu = false;
 
@@ -4766,7 +4766,7 @@ function CreateDestroyMouseRegions(): void {
   }
 }
 
-function CreateDestroyMouseRegionsForContractMenu(): void {
+export function CreateDestroyMouseRegionsForContractMenu(): void {
   /* static */ let fCreated: boolean = false;
   let iCounter: UINT32 = 0;
   let iFontHeight: INT32 = 0;
@@ -6501,7 +6501,7 @@ function CreateRepairBox(): void {
   SetLineSpace(ghRepairBox, 2);
 }
 
-function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
+export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
   let hStringHandle: UINT32;
   let uiCounter: UINT32;
   let sString: CHAR16[] /* [50] */;
@@ -6802,7 +6802,7 @@ function CreateAssignmentsBox(): void {
   DetermineBoxPositions();
 }
 
-function CreateMercRemoveAssignBox(): void {
+export function CreateMercRemoveAssignBox(): void {
   // will create remove mercbox to be placed in assignment area
 
   let hStringHandle: UINT32;
@@ -6855,7 +6855,7 @@ function CreateMercRemoveAssignBox(): void {
   ResizeBoxToText(ghRemoveMercAssignBox);
 }
 
-function CreateDestroyAssignmentPopUpBoxes(): boolean {
+export function CreateDestroyAssignmentPopUpBoxes(): boolean {
   /* static */ let fCreated: boolean = false;
   let vs_desc: VSURFACE_DESC;
   let VObjectDesc: VOBJECT_DESC;
@@ -6910,7 +6910,7 @@ function CreateDestroyAssignmentPopUpBoxes(): boolean {
   return true;
 }
 
-function DetermineBoxPositions(): void {
+export function DetermineBoxPositions(): void {
   // depending on how many boxes there are, reposition as needed
   let pPoint: SGPPoint;
   let pNewPoint: SGPPoint;
@@ -6981,7 +6981,7 @@ function DetermineBoxPositions(): void {
   return;
 }
 
-function SetTacticalPopUpAssignmentBoxXY(): void {
+export function SetTacticalPopUpAssignmentBoxXY(): void {
   let sX: INT16;
   let sY: INT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -7511,7 +7511,7 @@ function RepairRobot(pRobot: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothing
   return ubPointsUsed;
 }
 
-function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8, iParam1: INT32, iParam2: INT32, iParam3: INT32): void {
+export function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8, iParam1: INT32, iParam2: INT32, iParam3: INT32): void {
   switch (bAssignment) {
     case (Enum117.ASSIGNMENT_HOSPITAL):
       if (CanCharacterPatient(pSoldier)) {
@@ -8152,7 +8152,7 @@ function ReportTrainersTraineesWithoutPartners(): void {
   return;
 }
 
-function SetMercAsleep(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: boolean): boolean {
+export function SetMercAsleep(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: boolean): boolean {
   if (CanCharacterSleep(pSoldier, fGiveWarning)) {
     // put him to sleep
     PutMercInAsleepState(pSoldier);
@@ -8186,7 +8186,7 @@ function PutMercInAsleepState(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function SetMercAwake(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: boolean, fForceHim: boolean): boolean {
+export function SetMercAwake(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: boolean, fForceHim: boolean): boolean {
   // forcing him skips all normal checks!
   if (!fForceHim) {
     if (!CanCharacterBeAwakened(pSoldier, fGiveWarning)) {
@@ -8198,7 +8198,7 @@ function SetMercAwake(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: boolean, fFo
   return true;
 }
 
-function PutMercInAwakeState(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function PutMercInAwakeState(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (pSoldier.value.fMercAsleep) {
     if ((gfWorldLoaded) && (pSoldier.value.bInSector)) {
       if (guiCurrentScreen == Enum26.GAME_SCREEN) {
@@ -8226,7 +8226,7 @@ function PutMercInAwakeState(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function IsThereASoldierInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
+export function IsThereASoldierInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   if (fSectorsWithSoldiers[sSectorX + sSectorY * MAP_WORLD_X][bSectorZ] == true) {
     return true;
   }
@@ -8235,7 +8235,7 @@ function IsThereASoldierInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ:
 }
 
 // set the time this soldier's assignment changed
-function SetTimeOfAssignmentChangeForMerc(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SetTimeOfAssignmentChangeForMerc(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if someone is being taken off of HOSPITAL then track how much
   // of payment wasn't used up
   if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL) {
@@ -8262,7 +8262,7 @@ function EnoughTimeOnAssignment(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function AnyMercInGroupCantContinueMoving(pGroup: Pointer<GROUP>): boolean {
+export function AnyMercInGroupCantContinueMoving(pGroup: Pointer<GROUP>): boolean {
   let pPlayer: Pointer<PLAYERGROUP>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let fMeToo: boolean = false;
@@ -8304,7 +8304,7 @@ function AnyMercInGroupCantContinueMoving(pGroup: Pointer<GROUP>): boolean {
   return fGroupMustStop;
 }
 
-function PlayerSoldierTooTiredToTravel(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function PlayerSoldierTooTiredToTravel(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   Assert(pSoldier);
 
   // if this guy ever needs sleep at all
@@ -8378,7 +8378,7 @@ function NotifyPlayerOfAssignmentAttemptFailure(bAssignment: INT8): void {
   }
 }
 
-function HandleSelectedMercsBeingPutAsleep(fWakeUp: boolean, fDisplayWarning: boolean): boolean {
+export function HandleSelectedMercsBeingPutAsleep(fWakeUp: boolean, fDisplayWarning: boolean): boolean {
   let fSuccess: boolean = true;
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -8447,7 +8447,7 @@ function HandleSelectedMercsBeingPutAsleep(fWakeUp: boolean, fDisplayWarning: bo
   return fSuccess;
 }
 
-function IsAnyOneOnPlayersTeamOnThisAssignment(bAssignment: INT8): boolean {
+export function IsAnyOneOnPlayersTeamOnThisAssignment(bAssignment: INT8): boolean {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -8468,7 +8468,7 @@ function IsAnyOneOnPlayersTeamOnThisAssignment(bAssignment: INT8): boolean {
   return false;
 }
 
-function RebuildAssignmentsBox(): void {
+export function RebuildAssignmentsBox(): void {
   // destroy and recreate assignments box
   if (ghAssignmentBox != -1) {
     RemoveBox(ghAssignmentBox);
@@ -8478,7 +8478,7 @@ function RebuildAssignmentsBox(): void {
   CreateAssignmentsBox();
 }
 
-function BandageBleedingDyingPatientsBeingTreated(): void {
+export function BandageBleedingDyingPatientsBeingTreated(): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let pDoctor: Pointer<SOLDIERTYPE> = null;
@@ -8545,7 +8545,7 @@ function BandageBleedingDyingPatientsBeingTreated(): void {
   }
 }
 
-function ReEvaluateEveryonesNothingToDo(): void {
+export function ReEvaluateEveryonesNothingToDo(): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let fNothingToDo: boolean;
@@ -8616,7 +8616,7 @@ function ReEvaluateEveryonesNothingToDo(): void {
   fMapPanelDirty = true;
 }
 
-function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
+export function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
   let iCounter: INT32 = 0;
   let pSelectedSoldier: Pointer<SOLDIERTYPE> = null;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -8887,7 +8887,7 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: Point
   return false;
 }
 
-function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
     let fGotInfo: boolean;
     let usQuoteNum: UINT16;
@@ -9087,7 +9087,7 @@ function GetSelectedAssignSoldier(fNullOK: boolean): Pointer<SOLDIERTYPE> {
   return pSoldier;
 }
 
-function ResumeOldAssignment(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ResumeOldAssignment(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fOldAssignmentInvalid: boolean = false;
 
   // ARM: I don't think the whole "old assignment" idea is a very good one, and I doubt the code that maintains that

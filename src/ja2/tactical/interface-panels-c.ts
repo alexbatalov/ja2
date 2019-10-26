@@ -205,28 +205,28 @@ let iBurstButtonImages: INT32[] /* [NUM_WEAPON_MODES] */;
 let iTEAMPanelImages: INT32[] /* [NUM_TEAM_BUTTON_IMAGES] */;
 
 let giSMStealthImages: INT32 = -1;
-let giSMStealthButton: INT32 = -1;
+export let giSMStealthButton: INT32 = -1;
 
-let gfSwitchPanel: boolean = false;
-let gbNewPanel: UINT8 = Enum215.SM_PANEL;
-let gubNewPanelParam: UINT8 = 0;
+export let gfSwitchPanel: boolean = false;
+export let gbNewPanel: UINT8 = Enum215.SM_PANEL;
+export let gubNewPanelParam: UINT8 = 0;
 
-let gfUIStanceDifferent: boolean = false;
+export let gfUIStanceDifferent: boolean = false;
 let gfAllDisabled: boolean = false;
 
-let gfSMDisableForItems: boolean = false;
+export let gfSMDisableForItems: boolean = false;
 
-let gfDisableTacticalPanelButtons: boolean = false;
+export let gfDisableTacticalPanelButtons: boolean = false;
 
-let gfAddingMoneyToMercFromPlayersAccount: boolean = false;
+export let gfAddingMoneyToMercFromPlayersAccount: boolean = false;
 
-let gfCheckForMouseOverItem: boolean = false;
-let guiMouseOverItemTime: UINT32 = 0;
-let gbCheckForMouseOverItemPos: INT8 = 0;
-let gubSelectSMPanelToMerc: UINT8 = NOBODY;
+export let gfCheckForMouseOverItem: boolean = false;
+export let guiMouseOverItemTime: UINT32 = 0;
+export let gbCheckForMouseOverItemPos: INT8 = 0;
+export let gubSelectSMPanelToMerc: UINT8 = NOBODY;
 let gfReEvaluateDisabledINVPanelButtons: boolean = false;
 
-let guiBrownBackgroundForTeamPanel: UINT32;
+export let guiBrownBackgroundForTeamPanel: UINT32;
 let guiGoldBackgroundForTeamPanel: UINT32;
 
 let gubHandPos: UINT8;
@@ -351,14 +351,14 @@ let sTEAMHandInvXY: INT16[] /* [] */ = [
   TM_INV_HAND1STARTX + (5 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
 ];
 
-let iSMPanelButtons: INT32[] /* [NUM_SM_BUTTONS] */;
-let iTEAMPanelButtons: INT32[] /* [NUM_TEAM_BUTTONS] */;
+export let iSMPanelButtons: INT32[] /* [NUM_SM_BUTTONS] */;
+export let iTEAMPanelButtons: INT32[] /* [NUM_TEAM_BUTTONS] */;
 
 // Video Surface for Single Merc Panel
 let guiSMPanel: UINT32;
 let guiSMObjects: UINT32;
 let guiSMObjects2: UINT32;
-let guiSecItemHiddenVO: UINT32;
+export let guiSecItemHiddenVO: UINT32;
 
 let guiTEAMPanel: UINT32;
 let guiTEAMObjects: UINT32;
@@ -366,7 +366,7 @@ let guiTEAMObjects: UINT32;
 // Globals for various mouse regions
 let gSM_SELMERCPanelRegion: MOUSE_REGION;
 let gSM_SELMERCBarsRegion: MOUSE_REGION;
-let gSM_SELMERCMoneyRegion: MOUSE_REGION;
+export let gSM_SELMERCMoneyRegion: MOUSE_REGION;
 let gSM_SELMERCEnemyIndicatorRegion: MOUSE_REGION;
 let gTEAM_PanelRegion: MOUSE_REGION;
 let gTEAM_FaceRegions: MOUSE_REGION[] /* [6] */;
@@ -380,8 +380,8 @@ let gfTEAM_HandInvDispText: boolean[][] /* [6][NUM_INV_SLOTS] */;
 let gfSM_HandInvDispText: boolean[] /* [NUM_INV_SLOTS] */;
 
 // Globals - for one - the current merc here
-let gusSMCurrentMerc: UINT16 = 0;
-let gpSMCurrentMerc: Pointer<SOLDIERTYPE> = null;
+export let gusSMCurrentMerc: UINT16 = 0;
+export let gpSMCurrentMerc: Pointer<SOLDIERTYPE> = null;
 let gbSMCurStanceObj: INT8;
 
 let gbStanceButPos: INT8[][][] /* [2][3][3] */ = [
@@ -421,7 +421,7 @@ function GetUIApsToDisplay(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 }
 
-function CheckForDisabledForGiveItem(): void {
+export function CheckForDisabledForGiveItem(): void {
   let sDist: INT16;
   let sDistVisible: INT16;
   let sDestGridNo: INT16;
@@ -498,7 +498,7 @@ function CheckForDisabledForGiveItem(): void {
   }
 }
 
-function SetSMPanelCurrentMerc(ubNewID: UINT8): void {
+export function SetSMPanelCurrentMerc(ubNewID: UINT8): void {
   gubSelectSMPanelToMerc = NOBODY;
 
   gusSMCurrentMerc = ubNewID;
@@ -554,7 +554,7 @@ function SetSMPanelCurrentMerc(ubNewID: UINT8): void {
   UpdateSMPanel();
 }
 
-function UpdateForContOverPortrait(pSoldier: Pointer<SOLDIERTYPE>, fOn: boolean): void {
+export function UpdateForContOverPortrait(pSoldier: Pointer<SOLDIERTYPE>, fOn: boolean): void {
   let cnt: INT32;
 
   if (gsCurInterfacePanel == Enum215.SM_PANEL) {
@@ -802,7 +802,7 @@ function UpdateSMPanel(): void {
   }
 }
 
-function ReevaluateItemHatches(pSoldier: Pointer<SOLDIERTYPE>, fAllValid: boolean): void {
+export function ReevaluateItemHatches(pSoldier: Pointer<SOLDIERTYPE>, fAllValid: boolean): void {
   let cnt: INT32;
 
   // if there's an item in the cursor and we're not supposed to just make them all valid
@@ -835,7 +835,7 @@ function ReevaluateItemHatches(pSoldier: Pointer<SOLDIERTYPE>, fAllValid: boolea
   fInterfacePanelDirty = DIRTYLEVEL2;
 }
 
-function EnableSMPanelButtons(fEnable: boolean, fFromItemPickup: boolean): void {
+export function EnableSMPanelButtons(fEnable: boolean, fFromItemPickup: boolean): void {
   if (fFromItemPickup) {
     // If we have the item pointer up...
     // CJC Dec 4 2002: or if item pickup menu is up
@@ -942,11 +942,11 @@ function EnableSMPanelButtons(fEnable: boolean, fFromItemPickup: boolean): void 
   }
 }
 
-function GetSMPanelCurrentMerc(): UINT16 {
+export function GetSMPanelCurrentMerc(): UINT16 {
   return gusSMCurrentMerc;
 }
 
-function InitializeSMPanel(): boolean {
+export function InitializeSMPanel(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // failing the CHECKF after this will cause you to lose your mouse
@@ -1033,7 +1033,7 @@ function InitializeSMPanel(): boolean {
   return true;
 }
 
-function CreateSMPanelButtons(): boolean {
+export function CreateSMPanelButtons(): boolean {
   let ubString: UINT8[] /* [48] */;
 
   giSMStealthImages = -1;
@@ -1189,7 +1189,7 @@ function CreateSMPanelButtons(): boolean {
   return true;
 }
 
-function RemoveSMPanelButtons(): void {
+export function RemoveSMPanelButtons(): void {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < Enum220.NUM_SM_BUTTONS; cnt++) {
@@ -1215,7 +1215,7 @@ function RemoveSMPanelButtons(): void {
   UnloadButtonImage(iBurstButtonImages[Enum265.WM_ATTACHED]);
 }
 
-function ShutdownSMPanel(): boolean {
+export function ShutdownSMPanel(): boolean {
   // All buttons and regions and video objects and video surfaces will be deleted at shutddown of SGM
   // We may want to delete them at the interm as well, to free up room for other panels
   DeleteVideoObjectFromIndex(guiSMPanel);
@@ -1255,7 +1255,7 @@ function ShutdownSMPanel(): boolean {
   return true;
 }
 
-function RenderSMPanel(pfDirty: Pointer<boolean>): void {
+export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
   let sFontX: INT16;
   let sFontY: INT16;
   let usX: UINT16;
@@ -1726,7 +1726,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   }
 }
 
-function HandleNailsVestFetish(pSoldier: Pointer<SOLDIERTYPE>, uiHandPos: UINT32, usReplaceItem: UINT16): boolean {
+export function HandleNailsVestFetish(pSoldier: Pointer<SOLDIERTYPE>, uiHandPos: UINT32, usReplaceItem: UINT16): boolean {
   let fRefuse: boolean = false;
 
   // OK are we nails?
@@ -2537,7 +2537,7 @@ function BtnPositionShowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 }
 
 // TEAM PANEL!!!!!!!!!!!!!!
-function InitializeTEAMPanel(): boolean {
+export function InitializeTEAMPanel(): boolean {
   let vs_desc: VSURFACE_DESC;
   let VObjectDesc: VOBJECT_DESC;
   let cnt: UINT32;
@@ -2629,7 +2629,7 @@ function InitializeTEAMPanel(): boolean {
   return true;
 }
 
-function ShutdownTEAMPanel(): boolean {
+export function ShutdownTEAMPanel(): boolean {
   let cnt: UINT32;
 
   // All buttons and regions and video objects and video surfaces will be deleted at shutddown of SGM
@@ -2671,7 +2671,7 @@ function ShutdownTEAMPanel(): boolean {
   return true;
 }
 
-function RenderTEAMPanel(fDirty: boolean): void {
+export function RenderTEAMPanel(fDirty: boolean): void {
   let sFontX: INT16;
   let sFontY: INT16;
   let cnt: UINT32;
@@ -2892,7 +2892,7 @@ function RenderTEAMPanel(fDirty: boolean): void {
   }
 }
 
-function CreateTEAMPanelButtons(): boolean {
+export function CreateTEAMPanelButtons(): boolean {
   let ubString: UINT8[] /* [48] */;
 
   FilenameForBPP("INTERFACE\\bottom_bar_buttons.sti", ubString);
@@ -2927,7 +2927,7 @@ function CreateTEAMPanelButtons(): boolean {
   return true;
 }
 
-function RemoveTEAMPanelButtons(): void {
+export function RemoveTEAMPanelButtons(): void {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < Enum221.NUM_TEAM_BUTTONS; cnt++) {
@@ -2979,7 +2979,7 @@ function BtnSquadCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function SetTEAMPanelCurrentMerc(ubNewID: UINT8): void {
+export function SetTEAMPanelCurrentMerc(ubNewID: UINT8): void {
   // Ignore ther ID given!
   // ALWYAS USE CURRENT MERC!
 
@@ -3211,7 +3211,7 @@ function MercFacePanelCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   }
 }
 
-function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
+export function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
   let fSelect: boolean = false;
 
   if (!MercPtrs[ubID].value.bActive) {
@@ -3293,7 +3293,7 @@ function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
   HandleMouseOverSoldierFaceForContMove(MercPtrs[ubID], true);
 }
 
-function ShowRadioLocator(ubID: UINT8, ubLocatorSpeed: UINT8): void {
+export function ShowRadioLocator(ubID: UINT8, ubLocatorSpeed: UINT8): void {
   RESETTIMECOUNTER(MercPtrs[ubID].value.FlashSelCounter, FLASH_SELECTOR_DELAY);
 
   // LocateSoldier( ubID, FALSE );	// IC - this is already being done outside of this function :)
@@ -3316,7 +3316,7 @@ function ShowRadioLocator(ubID: UINT8, ubLocatorSpeed: UINT8): void {
   }
 }
 
-function EndRadioLocator(ubID: UINT8): void {
+export function EndRadioLocator(ubID: UINT8): void {
   MercPtrs[ubID].value.fFlashLocator = false;
   MercPtrs[ubID].value.fShowLocator = false;
 }
@@ -3332,7 +3332,7 @@ function CheckForFacePanelStartAnims(pSoldier: Pointer<SOLDIERTYPE>, sPanelX: IN
   }
 }
 
-function FinishAnySkullPanelAnimations(): void {
+export function FinishAnySkullPanelAnimations(): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt2: INT32;
 
@@ -3351,7 +3351,7 @@ function FinishAnySkullPanelAnimations(): void {
   }
 }
 
-function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.bTeam != gbPlayerNum) {
     return;
   }
@@ -3650,7 +3650,7 @@ function GetTeamSlotFromPlayerID(ubID: UINT8): INT8 {
   return -1;
 }
 
-function RemovePlayerFromTeamSlotGivenMercID(ubMercID: UINT8): boolean {
+export function RemovePlayerFromTeamSlotGivenMercID(ubMercID: UINT8): boolean {
   let cnt: INT32;
 
   for (cnt = 0; cnt < NUM_TEAM_SLOTS; cnt++) {
@@ -3665,7 +3665,7 @@ function RemovePlayerFromTeamSlotGivenMercID(ubMercID: UINT8): boolean {
   return false;
 }
 
-function AddPlayerToInterfaceTeamSlot(ubID: UINT8): void {
+export function AddPlayerToInterfaceTeamSlot(ubID: UINT8): void {
   let cnt: INT32;
 
   // If we are a vehicle don't ever add.....
@@ -3695,7 +3695,7 @@ function AddPlayerToInterfaceTeamSlot(ubID: UINT8): void {
   }
 }
 
-function InitTEAMSlots(): boolean {
+export function InitTEAMSlots(): boolean {
   let cnt: INT32;
 
   for (cnt = 0; cnt < NUM_TEAM_SLOTS; cnt++) {
@@ -3706,7 +3706,7 @@ function InitTEAMSlots(): boolean {
   return true;
 }
 
-function GetPlayerIDFromInterfaceTeamSlot(ubPanelSlot: UINT8, pubID: Pointer<UINT8>): boolean {
+export function GetPlayerIDFromInterfaceTeamSlot(ubPanelSlot: UINT8, pubID: Pointer<UINT8>): boolean {
   if (ubPanelSlot >= NUM_TEAM_SLOTS) {
     return false;
   }
@@ -3719,7 +3719,7 @@ function GetPlayerIDFromInterfaceTeamSlot(ubPanelSlot: UINT8, pubID: Pointer<UIN
   }
 }
 
-function RemoveAllPlayersFromSlot(): void {
+export function RemoveAllPlayersFromSlot(): void {
   let cnt: int;
 
   for (cnt = 0; cnt < NUM_TEAM_SLOTS; cnt++) {
@@ -3756,7 +3756,7 @@ function RemovePlayerFromInterfaceTeamSlot(ubPanelSlot: UINT8): boolean {
   }
 }
 
-function RenderTownIDString(): void {
+export function RenderTownIDString(): void {
   let zTownIDString: CHAR16[] /* [80] */;
   let sFontX: INT16;
   let sFontY: INT16;
@@ -3772,7 +3772,7 @@ function RenderTownIDString(): void {
   mprintf(sFontX, sFontY, "%s", zTownIDString);
 }
 
-function CheckForAndAddMercToTeamPanel(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CheckForAndAddMercToTeamPanel(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.bActive) {
     // Add to interface if the are ours
     if (pSoldier.value.bTeam == gbPlayerNum) {
@@ -3806,7 +3806,7 @@ function CheckForAndAddMercToTeamPanel(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: boolean, fOnlyRegularMercs: boolean): UINT8 {
+export function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: boolean, fOnlyRegularMercs: boolean): UINT8 {
   let cnt: INT32;
   let bFirstID: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -3868,18 +3868,18 @@ function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKL
   return pSoldier.value.ubID;
 }
 
-function HelpTextDoneCallback(): void {
+export function HelpTextDoneCallback(): void {
   gfRerenderInterfaceFromHelpText = true;
 
   // To redraw the Store Keeper Interface
   gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
-function DisableTacticalTeamPanelButtons(fDisable: boolean): void {
+export function DisableTacticalTeamPanelButtons(fDisable: boolean): void {
   gfDisableTacticalPanelButtons = fDisable;
 }
 
-function BeginKeyPanelFromKeyShortcut(): void {
+export function BeginKeyPanelFromKeyShortcut(): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let sStartYPosition: INT16 = 0;
   let sWidth: INT16 = 0;
@@ -3909,7 +3909,7 @@ function BeginKeyPanelFromKeyShortcut(): void {
   InitKeyRingPopup(pSoldier, 0, sStartYPosition, sWidth, sHeight);
 }
 
-function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+export function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let sStartYPosition: INT16 = 0;
   let sWidth: INT16 = 0;
@@ -3960,7 +3960,7 @@ function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
   }
 }
 
-function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+export function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let uiKeyRing: UINT32;
   // Copyies of values
   let usOldItemIndex: UINT16;
@@ -4161,7 +4161,7 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
   }
 }
 
-function DisableSMPpanelButtonsWhenInShopKeeperInterface(fDontDrawButtons: boolean): void {
+export function DisableSMPpanelButtonsWhenInShopKeeperInterface(fDontDrawButtons: boolean): void {
   // Go through the buttons that will be under the ShopKeepers ATM panel and disable them
   DisableButton(iSMPanelButtons[Enum220.STANCEUP_BUTTON]);
   DisableButton(iSMPanelButtons[Enum220.UPDOWN_BUTTON]);
@@ -4319,7 +4319,7 @@ function ConfirmationToDepositMoneyToPlayersAccount(ubExitValue: UINT8): void {
   }
 }
 
-function ReEvaluateDisabledINVPanelButtons(): void {
+export function ReEvaluateDisabledINVPanelButtons(): void {
   gfReEvaluateDisabledINVPanelButtons = true;
 }
 
@@ -4345,7 +4345,7 @@ function AbandonBoxingCallback(ubExitValue: UINT8): void {
   // otherwise do nothing
 }
 
-function GoToMapScreenFromTactical(): void {
+export function GoToMapScreenFromTactical(): void {
   if (gTacticalStatus.bBoxingState != Enum247.NOT_BOXING) {
     // pop up dialogue asking whether the player wants to abandon the fight
     DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_ABANDON_FIGHT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, AbandonBoxingCallback, null);
@@ -4355,7 +4355,7 @@ function GoToMapScreenFromTactical(): void {
   gfEnteringMapScreen = true;
 }
 
-function HandleTacticalEffectsOfEquipmentChange(pSoldier: Pointer<SOLDIERTYPE>, uiInvPos: UINT32, usOldItem: UINT16, usNewItem: UINT16): void {
+export function HandleTacticalEffectsOfEquipmentChange(pSoldier: Pointer<SOLDIERTYPE>, uiInvPos: UINT32, usOldItem: UINT16, usNewItem: UINT16): void {
   // if in attached weapon mode and don't have weapon with GL attached in hand, reset weapon mode
   if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED && FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER) == NO_SLOT) {
     pSoldier.value.bWeaponMode = Enum265.WM_NORMAL;

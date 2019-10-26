@@ -1,10 +1,10 @@
-let gbDefaultLightType: INT8 = Enum39.PRIMETIME_LIGHT;
+export let gbDefaultLightType: INT8 = Enum39.PRIMETIME_LIGHT;
 
-let gEditorLightColor: SGPPaletteEntry;
+export let gEditorLightColor: SGPPaletteEntry;
 
-let gfEditorForceShadeTableRebuild: boolean = false;
+export let gfEditorForceShadeTableRebuild: boolean = false;
 
-function SetupTextInputForMapInfo(): void {
+export function SetupTextInputForMapInfo(): void {
   let str: UINT16[] /* [10] */;
 
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
@@ -40,7 +40,7 @@ function SetupTextInputForMapInfo(): void {
   AddTextInputField(338, 403, 40, 18, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
 }
 
-function UpdateMapInfo(): void {
+export function UpdateMapInfo(): void {
   SetFont(FONT10ARIAL());
   SetFontShadow(FONT_NEARBLACK);
 
@@ -83,7 +83,7 @@ function UpdateMapInfo(): void {
   SetFontForeground(FONT_RED);
 }
 
-function UpdateMapInfoFields(): void {
+export function UpdateMapInfoFields(): void {
   let str: UINT16[] /* [10] */;
   // Update the text fields to reflect the validated values.
   // light rgb fields
@@ -108,7 +108,7 @@ function UpdateMapInfoFields(): void {
   ApplyNewExitGridValuesToTextFields();
 }
 
-function ExtractAndUpdateMapInfo(): void {
+export function ExtractAndUpdateMapInfo(): void {
   let str: UINT16[] /* [10] */;
   let temp: INT32;
   let fUpdateLight1: boolean = false;
@@ -172,7 +172,7 @@ function ExtractAndUpdateMapInfo(): void {
   UpdateMapInfoFields();
 }
 
-function ApplyNewExitGridValuesToTextFields(): boolean {
+export function ApplyNewExitGridValuesToTextFields(): boolean {
   let str: UINT16[] /* [10] */;
   // exit grid input fields
   if (iCurrentTaskbar != Enum36.TASK_MAPINFO)
@@ -188,7 +188,7 @@ function ApplyNewExitGridValuesToTextFields(): boolean {
 }
 
 let usCurrentExitGridNo: UINT16 = 0;
-function LocateNextExitGrid(): void {
+export function LocateNextExitGrid(): void {
   let ExitGrid: EXITGRID;
   let i: UINT16;
   for (i = usCurrentExitGridNo + 1; i < WORLD_MAX; i++) {
@@ -207,7 +207,7 @@ function LocateNextExitGrid(): void {
   }
 }
 
-function ChangeLightDefault(bLightType: INT8): void {
+export function ChangeLightDefault(bLightType: INT8): void {
   UnclickEditorButton(Enum32.MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
   gbDefaultLightType = bLightType;
   ClickEditorButton(Enum32.MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);

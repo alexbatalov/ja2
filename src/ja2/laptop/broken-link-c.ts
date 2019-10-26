@@ -7,18 +7,18 @@ const BROKEN_LINK__MESSAGE_WIDTH = (LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X);
 
 const BROKEN_LINK__SITE_NOT_FOUND_Y = LAPTOP_SCREEN_UL_Y + 65;
 
-function EnterBrokenLink(): boolean {
+export function EnterBrokenLink(): boolean {
   //	RenderBrokenLink();
   return true;
 }
 
-function ExitBrokenLink(): void {
+export function ExitBrokenLink(): void {
 }
 
-function HandleBrokenLink(): void {
+export function HandleBrokenLink(): void {
 }
 
-function RenderBrokenLink(): void {
+export function RenderBrokenLink(): void {
   // Color fill the laptop white
   DrawBrokenLinkWhiteBackground();
 

@@ -9,7 +9,7 @@ function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): boolean 
   return false;
 }
 
-function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean {
+export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean {
   let fOrigPreventFlag: boolean;
 
   fOrigPreventFlag = gfPreventDeletionOfAnyEvent;

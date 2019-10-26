@@ -11,14 +11,14 @@ let gsRadarX: INT16;
 let gsRadarY: INT16;
 let gusRadarImage: UINT32;
 let fImageLoaded: boolean = false;
-let fRenderRadarScreen: boolean = true;
+export let fRenderRadarScreen: boolean = true;
 let sSelectedSquadLine: INT16 = -1;
 
-let gfRadarCurrentGuyFlash: boolean = false;
+export let gfRadarCurrentGuyFlash: boolean = false;
 
 let gRadarRegionSquadList: MOUSE_REGION[] /* [NUMBER_OF_SQUADS] */;
 
-function InitRadarScreen(): boolean {
+export function InitRadarScreen(): boolean {
   // Add region for radar
   MSYS_DefineRegion(addressof(gRadarRegion), RADAR_WINDOW_X, RADAR_WINDOW_TM_Y, RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, RADAR_WINDOW_TM_Y + RADAR_WINDOW_HEIGHT, MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
 
@@ -34,7 +34,7 @@ function InitRadarScreen(): boolean {
   return true;
 }
 
-function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): boolean {
+export function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let zFilename: CHAR8[] /* [260] */;
   let cnt: INT32;
@@ -82,7 +82,7 @@ function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): boolean {
   return true;
 }
 
-function ClearOutRadarMapImage(): void {
+export function ClearOutRadarMapImage(): void {
   // If we have loaded, remove old one
   if (fImageLoaded) {
     DeleteVideoObjectFromIndex(gusRadarImage);
@@ -90,7 +90,7 @@ function ClearOutRadarMapImage(): void {
   }
 }
 
-function MoveRadarScreen(): void {
+export function MoveRadarScreen(): void {
   // check if we are allowed to do anything?
   if (fRenderRadarScreen == false) {
     return;
@@ -165,7 +165,7 @@ function RadarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 }
 
-function RenderRadarScreen(): void {
+export function RenderRadarScreen(): void {
   let sRadarTLX: INT16;
   let sRadarTLY: INT16;
   let sRadarBRX: INT16;
@@ -487,7 +487,7 @@ function EnableRadarScreenRender(): void {
   return;
 }
 
-function ToggleRadarScreenRender(): void {
+export function ToggleRadarScreenRender(): void {
   fRenderRadarScreen = !fRenderRadarScreen;
   return;
 }

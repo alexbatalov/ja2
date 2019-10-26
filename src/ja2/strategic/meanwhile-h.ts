@@ -1,4 +1,4 @@
-const enum Enum160 {
+export const enum Enum160 {
   END_OF_PLAYERS_FIRST_BATTLE,
   DRASSEN_LIBERATED,
   CAMBRIA_LIBERATED,
@@ -19,7 +19,7 @@ const enum Enum160 {
   NUM_MEANWHILES,
 }
 
-interface MEANWHILE_DEFINITION {
+export interface MEANWHILE_DEFINITION {
   sSectorX: INT16;
   sSectorY: INT16;
   usTriggerEvent: UINT16;

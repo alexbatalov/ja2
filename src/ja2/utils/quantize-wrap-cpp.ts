@@ -1,10 +1,10 @@
-interface RGBValues {
+export interface RGBValues {
   r: UINT8;
   g: UINT8;
   b: UINT8;
 }
 
-function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, pPalette: Pointer<SGPPaletteEntry>): boolean {
+export function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, pPalette: Pointer<SGPPaletteEntry>): boolean {
   let sNumColors: INT16;
 
   // FIRST CREATE PALETTE

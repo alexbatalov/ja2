@@ -54,7 +54,7 @@ let gzJA2ScreenNames: STR16[] /* [] */ = [
 
 /* static */ let gfMemDebug: boolean = true;
 // debug variable for total memory currently allocated
-let guiMemTotal: UINT32 = 0;
+export let guiMemTotal: UINT32 = 0;
 let guiMemAlloced: UINT32 = 0;
 let guiMemFreed: UINT32 = 0;
 let MemDebugCounter: UINT32 = 0;
@@ -86,7 +86,7 @@ let fMemManagerInit: boolean = false;
 //
 //**************************************************************************
 
-function InitializeMemoryManager(): boolean {
+export function InitializeMemoryManager(): boolean {
   // Register the memory manager with the debugger
   RegisterDebugTopic(TOPIC_MEMORY_MANAGER, "Memory Manager");
   MemDebugCounter = 0;
@@ -130,7 +130,7 @@ function MemDebug(f: boolean): void {
 //
 //**************************************************************************
 
-function ShutdownMemoryManager(): void {
+export function ShutdownMemoryManager(): void {
   if (MemDebugCounter != 0) {
     DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String(" "));
     DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("***** WARNING - WARNING - WARNING *****"));
@@ -210,7 +210,7 @@ function MemFreeLocked(ptr: PTR, uiSize: UINT32): void {
 //
 //**************************************************************************
 
-function MemGetFree(): UINT32 {
+export function MemGetFree(): UINT32 {
   let ms: MEMORYSTATUS;
 
   ms.dwLength = sizeof(MEMORYSTATUS);

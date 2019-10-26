@@ -132,7 +132,7 @@ let pEAXRoomTypes: Pointer<CHAR8>[] /* [EAXROOMTYPE_NUM_TYPES] */ = [
 //	Returns:	Nothing.
 //
 //*******************************************************************************
-function SoundEnableSound(fEnable: boolean): void {
+export function SoundEnableSound(fEnable: boolean): void {
   gfEnableStartup = fEnable;
 }
 
@@ -144,7 +144,7 @@ function SoundEnableSound(fEnable: boolean): void {
 //	Returns:	TRUE always
 //
 //*******************************************************************************
-function InitializeSoundManager(): boolean {
+export function InitializeSoundManager(): boolean {
   let uiCount: UINT32;
 
   if (fSoundSystemInit)
@@ -175,7 +175,7 @@ function InitializeSoundManager(): boolean {
 //	and releases the sound hardware.
 //
 //*******************************************************************************
-function ShutdownSoundManager(): void {
+export function ShutdownSoundManager(): void {
   if (gh3DProvider)
     Sound3DShutdownProvider();
 
@@ -205,7 +205,7 @@ function ShutdownSoundManager(): void {
 //
 //*******************************************************************************
 
-function SoundPlay(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
+export function SoundPlay(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
   let uiSample: UINT32;
   let uiChannel: UINT32;
 
@@ -244,7 +244,7 @@ function SoundPlay(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
 //						If an error occured, SOUND_ERROR will be returned
 //
 //*******************************************************************************
-function SoundPlayStreamedFile(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
+export function SoundPlayStreamedFile(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
   let uiChannel: UINT32;
   let hRealFileHandle: HANDLE;
   let pFileHandlefileName: CHAR8[] /* [128] */;
@@ -309,7 +309,7 @@ function SoundPlayStreamedFile(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UIN
 //						SOUND_ERROR is returned.
 //
 //*******************************************************************************
-function SoundPlayRandom(pFilename: STR, pParms: Pointer<RANDOMPARMS>): UINT32 {
+export function SoundPlayRandom(pFilename: STR, pParms: Pointer<RANDOMPARMS>): UINT32 {
   let uiSample: UINT32;
   let uiTicks: UINT32;
 
@@ -408,7 +408,7 @@ function SoundStreamCallback(pFilename: STR, pParms: Pointer<SOUNDPARMS>, pCallb
 //		Returns TRUE/FALSE that an instance of a sound is still playing.
 //
 //*******************************************************************************
-function SoundIsPlaying(uiSoundID: UINT32): boolean {
+export function SoundIsPlaying(uiSoundID: UINT32): boolean {
   let uiSound: UINT32;
 
   if (fSoundSystemInit) {
@@ -459,7 +459,7 @@ function SoundIndexIsPlaying(uiSound: UINT32): boolean {
 //						found, or was not playing.
 //
 //*******************************************************************************
-function SoundStop(uiSoundID: UINT32): boolean {
+export function SoundStop(uiSoundID: UINT32): boolean {
   let uiSound: UINT32;
 
   if (fSoundSystemInit) {
@@ -606,7 +606,7 @@ function SoundGetDefaultVolume(): UINT32 {
 //	Returns:	TRUE, always
 //
 //*******************************************************************************
-function SoundStopAll(): boolean {
+export function SoundStopAll(): boolean {
   let uiCount: UINT32;
 
   if (fSoundSystemInit) {
@@ -667,7 +667,7 @@ function SoundSetFadeVolume(uiSoundID: UINT32, uiVolume: UINT32, uiRate: UINT32,
 //						sample had already expired or couldn't be found
 //
 //*******************************************************************************
-function SoundSetVolume(uiSoundID: UINT32, uiVolume: UINT32): boolean {
+export function SoundSetVolume(uiSoundID: UINT32, uiVolume: UINT32): boolean {
   let uiSound: UINT32;
   let uiVolCap: UINT32;
 
@@ -725,7 +725,7 @@ function SoundSetVolumeIndex(uiChannel: UINT32, uiVolume: UINT32): boolean {
 //						sample had already expired or couldn't be found
 //
 //*******************************************************************************
-function SoundSetPan(uiSoundID: UINT32, uiPan: UINT32): boolean {
+export function SoundSetPan(uiSoundID: UINT32, uiPan: UINT32): boolean {
   let uiSound: UINT32;
   let uiPanCap: UINT32;
 
@@ -819,7 +819,7 @@ function SoundSetLoop(uiSoundID: UINT32, uiLoop: UINT32): boolean {
 //	has expired, or could not be found, SOUND_ERROR is returned.
 //
 //*******************************************************************************
-function SoundGetVolume(uiSoundID: UINT32): UINT32 {
+export function SoundGetVolume(uiSoundID: UINT32): UINT32 {
   let uiSound: UINT32;
 
   if (fSoundSystemInit) {
@@ -944,7 +944,7 @@ function SoundGetLoop(uiSoundID: UINT32): UINT32 {
 //	Returns:	TRUE if a new random sound was created, FALSE if nothing was done.
 //
 //*******************************************************************************
-function SoundServiceRandom(): boolean {
+export function SoundServiceRandom(): boolean {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++) {
@@ -1019,7 +1019,7 @@ function SoundStartRandom(uiSample: UINT32): UINT32 {
 //	Returns:	TRUE if a new random sound was created, FALSE if nothing was done.
 //
 //*******************************************************************************
-function SoundStopAllRandom(): boolean {
+export function SoundStopAllRandom(): boolean {
   let uiChannel: UINT32;
   let uiSample: UINT32;
 
@@ -1057,7 +1057,7 @@ function SoundStopAllRandom(): boolean {
 //	Returns:	TRUE always.
 //
 //*******************************************************************************
-function SoundServiceStreams(): boolean {
+export function SoundServiceStreams(): boolean {
   let uiCount: UINT32;
   let uiSpeed: UINT32;
   let uiBuffLen: UINT32;
@@ -1121,7 +1121,7 @@ function SoundServiceStreams(): boolean {
 //	Returns:	The current time of the sample in milliseconds.
 //
 //*******************************************************************************
-function SoundGetPosition(uiSoundID: UINT32): UINT32 {
+export function SoundGetPosition(uiSoundID: UINT32): UINT32 {
   // UINT32 uiSound, uiFreq=0, uiPosition=0, uiBytesPerSample=0, uiFormat=0;
   let uiSound: UINT32;
   let uiTime: UINT32;
@@ -1290,7 +1290,7 @@ function SoundEmptyCache(): boolean {
 //	Returns: TRUE, always
 //
 //*******************************************************************************
-function SoundLoadSample(pFilename: STR): UINT32 {
+export function SoundLoadSample(pFilename: STR): UINT32 {
   let uiSample: UINT32 = NO_SAMPLE;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE)
@@ -1309,7 +1309,7 @@ function SoundLoadSample(pFilename: STR): UINT32 {
 //						in the cache.
 //
 //*******************************************************************************
-function SoundLockSample(pFilename: STR): UINT32 {
+export function SoundLockSample(pFilename: STR): UINT32 {
   let uiSample: UINT32;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE) {
@@ -1329,7 +1329,7 @@ function SoundLockSample(pFilename: STR): UINT32 {
 //						in the cache.
 //
 //*******************************************************************************
-function SoundUnlockSample(pFilename: STR): UINT32 {
+export function SoundUnlockSample(pFilename: STR): UINT32 {
   let uiSample: UINT32;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE) {
@@ -2101,7 +2101,7 @@ function SoundStopIndex(uiChannel: UINT32): boolean {
 //	Returns:	Pointer to the current sound driver
 //
 //*******************************************************************************
-function SoundGetDriverHandle(): HDIGDRIVER {
+export function SoundGetDriverHandle(): HDIGDRIVER {
   return hSoundDriver;
 }
 
@@ -2114,7 +2114,7 @@ function SoundSetSampleFlags(uiSample: UINT32, uiFlags: UINT32): void {
   }
 }
 
-function SoundRemoveSampleFlags(uiSample: UINT32, uiFlags: UINT32): void {
+export function SoundRemoveSampleFlags(uiSample: UINT32, uiFlags: UINT32): void {
   // CHECK FOR VALID SAMPLE
   if ((pSampleList[uiSample].uiFlags & SAMPLE_ALLOCATED)) {
     // REMOVE

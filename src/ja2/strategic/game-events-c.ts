@@ -1,14 +1,14 @@
-let gpEventList: Pointer<STRATEGICEVENT> = null;
+export let gpEventList: Pointer<STRATEGICEVENT> = null;
 
-let gfPreventDeletionOfAnyEvent: boolean = false;
+export let gfPreventDeletionOfAnyEvent: boolean = false;
 let gfEventDeletionPending: boolean = false;
 
 let gfProcessingGameEvents: boolean = false;
-let guiTimeStampOfCurrentlyExecutingEvent: UINT32 = 0;
+export let guiTimeStampOfCurrentlyExecutingEvent: UINT32 = 0;
 
 // Determines if there are any events that will be processed between the current global time,
 // and the beginning of the next global time.
-function GameEventsPending(uiAdjustment: UINT32): boolean {
+export function GameEventsPending(uiAdjustment: UINT32): boolean {
   if (!gpEventList)
     return false;
   if (gpEventList.value.uiTimeStamp <= GetWorldTotalSeconds() + uiAdjustment)
@@ -73,7 +73,7 @@ function AdjustClockToEventStamp(pEvent: Pointer<STRATEGICEVENT>, puiAdjustment:
 
 // If there are any events pending, they are processed, until the time limit is reached, or
 // a major event is processed (one that requires the player's attention).
-function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void {
+export function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void {
   let curr: Pointer<STRATEGICEVENT>;
   let pEvent: Pointer<STRATEGICEVENT>;
   let prev: Pointer<STRATEGICEVENT>;
@@ -168,7 +168,7 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
     guiGameClock += uiAdjustment;
 }
 
-function AddSameDayStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32): boolean {
+export function AddSameDayStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32): boolean {
   return AddStrategicEvent(ubCallbackID, uiMinStamp + GetWorldDayInMinutes(), uiParam);
 }
 
@@ -176,7 +176,7 @@ function AddSameDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp
   return AddStrategicEventUsingSeconds(ubCallbackID, uiSecondStamp + GetWorldDayInSeconds(), uiParam);
 }
 
-function AddFutureDayStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): boolean {
+export function AddFutureDayStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): boolean {
   let uiDay: UINT32;
   uiDay = GetWorldDay();
   return AddStrategicEvent(ubCallbackID, uiMinStamp + GetFutureDayInMinutes(uiDay + uiNumDaysFromPresent), uiParam);
@@ -188,7 +188,7 @@ function AddFutureDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondSta
   return AddStrategicEventUsingSeconds(ubCallbackID, uiSecondStamp + GetFutureDayInMinutes(uiDay + uiNumDaysFromPresent) * 60, uiParam);
 }
 
-function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTimeStamp: UINT32, uiParam: UINT32): Pointer<STRATEGICEVENT> {
+export function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTimeStamp: UINT32, uiParam: UINT32): Pointer<STRATEGICEVENT> {
   let pNode: Pointer<STRATEGICEVENT>;
   let pNewNode: Pointer<STRATEGICEVENT>;
   let pPrevNode: Pointer<STRATEGICEVENT>;
@@ -246,13 +246,13 @@ function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTi
   return pNewNode;
 }
 
-function AddStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32): boolean {
+export function AddStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32): boolean {
   if (AddAdvancedStrategicEvent(Enum133.ONETIME_EVENT, ubCallbackID, uiMinStamp * 60, uiParam))
     return true;
   return false;
 }
 
-function AddStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32): boolean {
+export function AddStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32): boolean {
   if (AddAdvancedStrategicEvent(Enum133.ONETIME_EVENT, ubCallbackID, uiSecondStamp, uiParam))
     return true;
   return false;
@@ -268,7 +268,7 @@ function AddRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLeng
   return false;
 }
 
-function AddSameDayRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32): boolean {
+export function AddSameDayRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32): boolean {
   return AddRangedStrategicEvent(ubCallbackID, uiStartMin + GetWorldDayInMinutes(), uiLengthMin, uiParam);
 }
 
@@ -294,7 +294,7 @@ function AddFutureDayRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSta
   return AddRangedStrategicEventUsingSeconds(ubCallbackID, uiStartSeconds + GetFutureDayInMinutes(GetWorldDay() + uiNumDaysFromPresent) * 60, uiLengthSeconds, uiParam);
 }
 
-function AddEveryDayStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiParam: UINT32): boolean {
+export function AddEveryDayStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiParam: UINT32): boolean {
   if (AddAdvancedStrategicEvent(Enum133.EVERYDAY_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiStartMin * 60, uiParam))
     return true;
   return false;
@@ -308,7 +308,7 @@ function AddEveryDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSecon
 
 // NEW:  Period Events
 // Event will get processed automatically once every X minutes.
-function AddPeriodStrategicEvent(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiParam: UINT32): boolean {
+export function AddPeriodStrategicEvent(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiParam: UINT32): boolean {
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXMinutes * 60, uiParam);
   if (pEvent) {
@@ -328,7 +328,7 @@ function AddPeriodStrategicEventUsingSeconds(ubCallbackID: UINT8, uiOnceEveryXSe
   return false;
 }
 
-function AddPeriodStrategicEventWithOffset(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): boolean {
+export function AddPeriodStrategicEventWithOffset(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): boolean {
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent * 60, uiParam);
   if (pEvent) {
@@ -348,7 +348,7 @@ function AddPeriodStrategicEventUsingSecondsWithOffset(ubCallbackID: UINT8, uiOn
   return false;
 }
 
-function DeleteAllStrategicEventsOfType(ubCallbackID: UINT8): void {
+export function DeleteAllStrategicEventsOfType(ubCallbackID: UINT8): void {
   let curr: Pointer<STRATEGICEVENT>;
   let prev: Pointer<STRATEGICEVENT>;
   let temp: Pointer<STRATEGICEVENT>;
@@ -382,7 +382,7 @@ function DeleteAllStrategicEventsOfType(ubCallbackID: UINT8): void {
   }
 }
 
-function DeleteAllStrategicEvents(): void {
+export function DeleteAllStrategicEvents(): void {
   let temp: Pointer<STRATEGICEVENT>;
   while (gpEventList) {
     temp = gpEventList;
@@ -397,7 +397,7 @@ function DeleteAllStrategicEvents(): void {
 // Searches for and removes the first event matching the supplied information.  There may very well be a need
 // for more specific event removal, so let me know (Kris), of any support needs.  Function returns FALSE if
 // no events were found or if the event wasn't deleted due to delete lock,
-function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): boolean {
+export function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): boolean {
   let curr: Pointer<STRATEGICEVENT>;
   let prev: Pointer<STRATEGICEVENT>;
   curr = gpEventList;
@@ -428,7 +428,7 @@ function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): boolean {
 }
 
 // part of the game.sav files (not map files)
-function SaveStrategicEventsToSavedGame(hFile: HWFILE): boolean {
+export function SaveStrategicEventsToSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let sGameEvent: STRATEGICEVENT;
 
@@ -465,7 +465,7 @@ function SaveStrategicEventsToSavedGame(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadStrategicEventsFromSavedGame(hFile: HWFILE): boolean {
+export function LoadStrategicEventsFromSavedGame(hFile: HWFILE): boolean {
   let uiNumGameEvents: UINT32;
   let sGameEvent: STRATEGICEVENT;
   let cnt: UINT32;

@@ -1,7 +1,7 @@
-const AIR_RAID_BEGINNING_GAME = 0x00000001;
-const AIR_RAID_CAN_RANDOMIZE_TEASE_DIVES = 0x00000002;
+export const AIR_RAID_BEGINNING_GAME = 0x00000001;
+export const AIR_RAID_CAN_RANDOMIZE_TEASE_DIVES = 0x00000002;
 
-interface AIR_RAID_DEFINITION {
+export interface AIR_RAID_DEFINITION {
   sSectorX: INT16;
   sSectorY: INT16;
   sSectorZ: INT16;
@@ -11,7 +11,7 @@ interface AIR_RAID_DEFINITION {
   ubFiller: UINT8[] /* [8] */;
 }
 
-const enum Enum192 {
+export const enum Enum192 {
   AIR_RAID_TRYING_TO_START,
   AIR_RAID_START,
   AIR_RAID_LOOK_FOR_DIVE,

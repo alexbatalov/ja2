@@ -5,52 +5,52 @@
 
 // HEY WIZARDRY DUDES, JA2 ISN'T THE ONLY PROGRAM WE COMPILE! :-)
 
-type UINT32 = unsigned_int;
-type INT32 = signed_int;
+export type UINT32 = unsigned_int;
+export type INT32 = signed_int;
 
 // integers
-type UINT8 = unsigned_char;
-type INT8 = signed_char;
-type UINT16 = unsigned_short;
-type INT16 = signed_short;
+export type UINT8 = unsigned_char;
+export type INT8 = signed_char;
+export type UINT16 = unsigned_short;
+export type INT16 = signed_short;
 // floats
-type FLOAT = float;
-type DOUBLE = double;
+export type FLOAT = float;
+export type DOUBLE = double;
 // strings
-type CHAR8 = char;
-type CHAR16 = wchar_t;
-type STR = Pointer<char>;
-type STR8 = Pointer<char>;
-type STR16 = Pointer<wchar_t>;
+export type CHAR8 = char;
+export type CHAR16 = wchar_t;
+export type STR = Pointer<char>;
+export type STR8 = Pointer<char>;
+export type STR16 = Pointer<wchar_t>;
 // flags (individual bits used)
 type FLAGS8 = unsigned_char;
 type FLAGS16 = unsigned_short;
 type FLAGS32 = unsigned_long;
 // other
-type PTR = Pointer<void>;
+export type PTR = Pointer<void>;
 type HNDL = unsigned_short;
-type BYTE = UINT8;
-type STRING512 = CHAR8[] /* [512] */;
-type HWFILE = UINT32;
-const SGPFILENAME_LEN = 100;
-type SGPFILENAME = CHAR8[] /* [SGPFILENAME_LEN] */;
+export type BYTE = UINT8;
+export type STRING512 = CHAR8[] /* [512] */;
+export type HWFILE = UINT32;
+export const SGPFILENAME_LEN = 100;
+export type SGPFILENAME = CHAR8[] /* [SGPFILENAME_LEN] */;
 
 // *** SIR-TECH TYPE DEFINITIONS ***
 
-const BAD_INDEX = -1;
+export const BAD_INDEX = -1;
 
 const NULL_HANDLE = 65535;
 
 const ST_EPSILON = 0.00001; // define a sir-tech epsilon value
 
-interface SGPRect {
+export interface SGPRect {
   iLeft: INT32;
   iTop: INT32;
   iRight: INT32;
   iBottom: INT32;
 }
 
-interface SGPPoint {
+export interface SGPPoint {
   iX: INT32;
   iY: INT32;
 }
@@ -71,5 +71,5 @@ type IVECTOR4 = INT32[] /* [4] */; // 4d vector (4x1 matrix)
 type MATRIX3 = VECTOR3[] /* [3] */; // 3x3 matrix
 type MATRIX4 = VECTOR4[] /* [4] */; // 4x4 matrix
 
-type ANGLE = VECTOR3; // angle return array
+export type ANGLE = VECTOR3; // angle return array
 type COLOR = VECTOR4; // rgba color array

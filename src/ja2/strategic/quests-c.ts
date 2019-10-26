@@ -1,10 +1,10 @@
-let gubQuest: UINT8[] /* [MAX_QUESTS] */;
-let gubFact: UINT8[] /* [NUM_FACTS] */; // this has to be updated when we figure out how many facts we have
+export let gubQuest: UINT8[] /* [MAX_QUESTS] */;
+export let gubFact: UINT8[] /* [NUM_FACTS] */; // this has to be updated when we figure out how many facts we have
 
 let gsFoodQuestSectorX: INT16;
 let gsFoodQuestSectorY: INT16;
 
-function SetFactTrue(usFact: UINT16): void {
+export function SetFactTrue(usFact: UINT16): void {
   // This function is here just for control flow purposes (debug breakpoints)
   // and code is more readable that way
 
@@ -17,7 +17,7 @@ function SetFactTrue(usFact: UINT16): void {
   gubFact[usFact] = true;
 }
 
-function SetFactFalse(usFact: UINT16): void {
+export function SetFactFalse(usFact: UINT16): void {
   gubFact[usFact] = false;
 }
 
@@ -223,7 +223,7 @@ function CheckNPCIsEPC(ubProfileID: UINT8): boolean {
   return pNPC.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC;
 }
 
-function NPCInRoom(ubProfileID: UINT8, ubRoomID: UINT8): boolean {
+export function NPCInRoom(ubProfileID: UINT8, ubRoomID: UINT8): boolean {
   let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
@@ -456,7 +456,7 @@ function InTownSectorWithTrainingLoyalty(sSectorX: INT16, sSectorY: INT16): bool
   }
 }
 
-function CheckFact(usFact: UINT16, ubProfileID: UINT8): boolean {
+export function CheckFact(usFact: UINT16, ubProfileID: UINT8): boolean {
   let bTown: INT8 = -1;
 
   switch (usFact) {
@@ -1016,11 +1016,11 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
   return gubFact[usFact];
 }
 
-function StartQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16): void {
+export function StartQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16): void {
   InternalStartQuest(ubQuest, sSectorX, sSectorY, true);
 }
 
-function InternalStartQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16, fUpdateHistory: boolean): void {
+export function InternalStartQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16, fUpdateHistory: boolean): void {
   if (gubQuest[ubQuest] == QUESTNOTSTARTED) {
     gubQuest[ubQuest] = QUESTINPROGRESS;
 
@@ -1032,11 +1032,11 @@ function InternalStartQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16, fU
   }
 }
 
-function EndQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16): void {
+export function EndQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16): void {
   InternalEndQuest(ubQuest, sSectorX, sSectorY, true);
 }
 
-function InternalEndQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16, fUpdateHistory: boolean): void {
+export function InternalEndQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16, fUpdateHistory: boolean): void {
   if (gubQuest[ubQuest] == QUESTINPROGRESS) {
     gubQuest[ubQuest] = QUESTDONE;
 
@@ -1055,7 +1055,7 @@ function InternalEndQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16, fUpd
   }
 };
 
-function InitQuestEngine(): void {
+export function InitQuestEngine(): void {
   memset(gubQuest, 0, sizeof(gubQuest));
   memset(gubFact, 0, sizeof(gubFact));
 
@@ -1074,7 +1074,7 @@ function InitQuestEngine(): void {
   gfBoxersResting = false;
 }
 
-function CheckForQuests(uiDay: UINT32): void {
+export function CheckForQuests(uiDay: UINT32): void {
   // This function gets called at 8:00 AM time of the day
 
   ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Checking For Quests, Day %d", uiDay);
@@ -1093,7 +1093,7 @@ function CheckForQuests(uiDay: UINT32): void {
   // Miguel the letter
 }
 
-function SaveQuestInfoToSavedGameFile(hFile: HWFILE): boolean {
+export function SaveQuestInfoToSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // Save all the states if the Quests
@@ -1111,7 +1111,7 @@ function SaveQuestInfoToSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadQuestInfoFromSavedGameFile(hFile: HWFILE): boolean {
+export function LoadQuestInfoFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   // Save all the states if the Quests

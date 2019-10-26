@@ -1,9 +1,9 @@
 // used by editor
-let gfShowPits: boolean = false;
+export let gfShowPits: boolean = false;
 
-let gfLoadPitsWithoutArming: boolean = false;
+export let gfLoadPitsWithoutArming: boolean = false;
 
-function Add3X3Pit(iMapIndex: INT32): void {
+export function Add3X3Pit(iMapIndex: INT32): void {
   let ExitGrid: EXITGRID;
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(true);
@@ -39,7 +39,7 @@ function Add3X3Pit(iMapIndex: INT32): void {
     ApplyMapChangesToMapTempFile(false);
 }
 
-function Add5X5Pit(iMapIndex: INT32): void {
+export function Add5X5Pit(iMapIndex: INT32): void {
   let ExitGrid: EXITGRID;
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(true);
@@ -106,7 +106,7 @@ function Add5X5Pit(iMapIndex: INT32): void {
     ApplyMapChangesToMapTempFile(false);
 }
 
-function Remove3X3Pit(iMapIndex: INT32): void {
+export function Remove3X3Pit(iMapIndex: INT32): void {
   RemoveAllObjectsOfTypeRange(iMapIndex + 159, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
   RemoveAllObjectsOfTypeRange(iMapIndex - 1, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
   RemoveAllObjectsOfTypeRange(iMapIndex - 161, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
@@ -119,7 +119,7 @@ function Remove3X3Pit(iMapIndex: INT32): void {
   MarkWorldDirty();
 }
 
-function Remove5X5Pit(iMapIndex: INT32): void {
+export function Remove5X5Pit(iMapIndex: INT32): void {
   RemoveAllObjectsOfTypeRange(iMapIndex + 318, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
   RemoveAllObjectsOfTypeRange(iMapIndex + 158, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
   RemoveAllObjectsOfTypeRange(iMapIndex - 2, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
@@ -148,7 +148,7 @@ function Remove5X5Pit(iMapIndex: INT32): void {
   MarkWorldDirty();
 }
 
-function AddAllPits(): void {
+export function AddAllPits(): void {
   let i: UINT32;
   for (i = 0; i < guiNumWorldItems; i++) {
     if (gWorldItems[i].o.usItem == Enum225.ACTION_ITEM) {
@@ -160,7 +160,7 @@ function AddAllPits(): void {
   }
 }
 
-function RemoveAllPits(): void {
+export function RemoveAllPits(): void {
   let i: UINT32;
   for (i = 0; i < guiNumWorldItems; i++) {
     if (gWorldItems[i].o.usItem == Enum225.ACTION_ITEM) {
@@ -172,7 +172,7 @@ function RemoveAllPits(): void {
   }
 }
 
-function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRadius: INT16): void {
+export function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRadius: INT16): void {
   let x: INT16;
   let y: INT16;
   let sNewGridNo: INT16;
@@ -202,7 +202,7 @@ function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRa
     }
 }
 
-function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
+export function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubID];
   let ExitGrid: EXITGRID;
   let sPitGridNo: INT16;

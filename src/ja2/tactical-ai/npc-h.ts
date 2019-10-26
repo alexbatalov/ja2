@@ -1,33 +1,33 @@
-const NUM_NPC_QUOTE_RECORDS = 50;
+export const NUM_NPC_QUOTE_RECORDS = 50;
 
 //#define IRRELEVANT 255
 //#define NO_QUEST 255
 //#define NO_FACT 255
 //#define NO_QUOTE 255
-const MUST_BE_NEW_DAY = 254;
-const INITIATING_FACTOR = 30;
+export const MUST_BE_NEW_DAY = 254;
+export const INITIATING_FACTOR = 30;
 
-const TURN_FLAG_ON = (a, b) => (a |= b);
-const TURN_FLAG_OFF = (a, b) => (a &= ~(b));
-const CHECK_FLAG = (a, b) => (a & b);
+export const TURN_FLAG_ON = (a, b) => (a |= b);
+export const TURN_FLAG_OFF = (a, b) => (a &= ~(b));
+export const CHECK_FLAG = (a, b) => (a & b);
 
-const QUOTE_FLAG_SAID = 0x0001;
-const QUOTE_FLAG_ERASE_ONCE_SAID = 0x0002;
-const QUOTE_FLAG_SAY_ONCE_PER_CONVO = 0x0004;
+export const QUOTE_FLAG_SAID = 0x0001;
+export const QUOTE_FLAG_ERASE_ONCE_SAID = 0x0002;
+export const QUOTE_FLAG_SAY_ONCE_PER_CONVO = 0x0004;
 
-const NPC_TALK_RADIUS = 4;
+export const NPC_TALK_RADIUS = 4;
 
-const TURN_UI_OFF = 65000;
-const TURN_UI_ON = 65001;
-const SPECIAL_TURN_UI_OFF = 65002;
-const SPECIAL_TURN_UI_ON = 65003;
+export const TURN_UI_OFF = 65000;
+export const TURN_UI_ON = 65001;
+export const SPECIAL_TURN_UI_OFF = 65002;
+export const SPECIAL_TURN_UI_ON = 65003;
 
-const LARGE_AMOUNT_MONEY = 1000;
+export const LARGE_AMOUNT_MONEY = 1000;
 
-const ACCEPT_ANY_ITEM = 1000;
-const ANY_RIFLE = 1001;
+export const ACCEPT_ANY_ITEM = 1000;
+export const ANY_RIFLE = 1001;
 
-interface NPCQuoteInfo {
+export interface NPCQuoteInfo {
   fFlags: UINT16;
 
   /* union { */
@@ -60,7 +60,7 @@ interface NPCQuoteInfo {
   ubUnused: UINT8[] /* [4] */;
 } // 32 bytes
 
-const enum Enum296 {
+export const enum Enum296 {
   APPROACH_FRIENDLY = 1,
   APPROACH_DIRECT,
   APPROACH_THREATEN,
@@ -98,7 +98,7 @@ const enum Enum296 {
   APPROACH_FRIENDLY_DIRECT_OR_RECRUIT, // 30
 }
 
-const enum Enum297 {
+export const enum Enum297 {
   QUOTE_INTRO = 0,
   QUOTE_SUBS_INTRO,
   QUOTE_FRIENDLY_DEFAULT1,
@@ -111,8 +111,8 @@ const enum Enum297 {
   QUOTE_GETLOST,
 }
 
-const NUM_REAL_APPROACHES = Enum296.APPROACH_RECRUIT;
+export const NUM_REAL_APPROACHES = Enum296.APPROACH_RECRUIT;
 
-const CONVO_DIST = 5;
+export const CONVO_DIST = 5;
 
-const WALTER_BRIBE_AMOUNT = 20000;
+export const WALTER_BRIBE_AMOUNT = 20000;

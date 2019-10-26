@@ -22,10 +22,10 @@
 //
 // *****************************************************************************
 
-type MOUSE_CALLBACK = (a: Pointer<MOUSE_REGION>, b: INT32) => void; // Define MOUSE_CALLBACK type as pointer to void
-type MOUSE_HELPTEXT_DONE_CALLBACK = () => void; // the help is done callback
+export type MOUSE_CALLBACK = (a: Pointer<MOUSE_REGION>, b: INT32) => void; // Define MOUSE_CALLBACK type as pointer to void
+export type MOUSE_HELPTEXT_DONE_CALLBACK = () => void; // the help is done callback
 
-interface MOUSE_REGION {
+export interface MOUSE_REGION {
   IDNumber: UINT16; // Region's ID number, set by mouse system
   PriorityLevel: INT8; // Region's Priority, set by system and/or caller
   uiFlags: UINT32; // Region's state flags
@@ -60,69 +60,69 @@ interface MOUSE_REGION {
 // *****************************************************************************
 
 // Mouse Region Flags
-const MSYS_NO_FLAGS = 0x00000000;
-const MSYS_MOUSE_IN_AREA = 0x00000001;
-const MSYS_SET_CURSOR = 0x00000002;
-const MSYS_MOVE_CALLBACK = 0x00000004;
-const MSYS_BUTTON_CALLBACK = 0x00000008;
-const MSYS_REGION_EXISTS = 0x00000010;
+export const MSYS_NO_FLAGS = 0x00000000;
+export const MSYS_MOUSE_IN_AREA = 0x00000001;
+export const MSYS_SET_CURSOR = 0x00000002;
+export const MSYS_MOVE_CALLBACK = 0x00000004;
+export const MSYS_BUTTON_CALLBACK = 0x00000008;
+export const MSYS_REGION_EXISTS = 0x00000010;
 const MSYS_SYSTEM_INIT = 0x00000020;
-const MSYS_REGION_ENABLED = 0x00000040;
-const MSYS_FASTHELP = 0x00000080;
-const MSYS_GOT_BACKGROUND = 0x00000100;
-const MSYS_HAS_BACKRECT = 0x00000200;
-const MSYS_FASTHELP_RESET = 0x00000400;
-const MSYS_ALLOW_DISABLED_FASTHELP = 0x00000800;
+export const MSYS_REGION_ENABLED = 0x00000040;
+export const MSYS_FASTHELP = 0x00000080;
+export const MSYS_GOT_BACKGROUND = 0x00000100;
+export const MSYS_HAS_BACKRECT = 0x00000200;
+export const MSYS_FASTHELP_RESET = 0x00000400;
+export const MSYS_ALLOW_DISABLED_FASTHELP = 0x00000800;
 
 // Mouse region IDs
-const MSYS_ID_BASE = 1;
-const MSYS_ID_MAX = 0xfffffff; // ( INT32 max )
-const MSYS_ID_SYSTEM = 0;
+export const MSYS_ID_BASE = 1;
+export const MSYS_ID_MAX = 0xfffffff; // ( INT32 max )
+export const MSYS_ID_SYSTEM = 0;
 
 // Mouse region priorities
-const MSYS_PRIORITY_LOWEST = 0;
-const MSYS_PRIORITY_LOW = 15;
-const MSYS_PRIORITY_BASE = 31;
-const MSYS_PRIORITY_NORMAL = 31;
-const MSYS_PRIORITY_HIGH = 63;
-const MSYS_PRIORITY_HIGHEST = 127;
-const MSYS_PRIORITY_SYSTEM = -1;
-const MSYS_PRIORITY_AUTO = -1;
+export const MSYS_PRIORITY_LOWEST = 0;
+export const MSYS_PRIORITY_LOW = 15;
+export const MSYS_PRIORITY_BASE = 31;
+export const MSYS_PRIORITY_NORMAL = 31;
+export const MSYS_PRIORITY_HIGH = 63;
+export const MSYS_PRIORITY_HIGHEST = 127;
+export const MSYS_PRIORITY_SYSTEM = -1;
+export const MSYS_PRIORITY_AUTO = -1;
 
 // Mouse system defines used during updates
-const MSYS_NO_ACTION = 0;
-const MSYS_DO_MOVE = 1;
-const MSYS_DO_LBUTTON_DWN = 2;
-const MSYS_DO_LBUTTON_UP = 4;
-const MSYS_DO_RBUTTON_DWN = 8;
-const MSYS_DO_RBUTTON_UP = 16;
-const MSYS_DO_LBUTTON_REPEAT = 32;
-const MSYS_DO_RBUTTON_REPEAT = 64;
+export const MSYS_NO_ACTION = 0;
+export const MSYS_DO_MOVE = 1;
+export const MSYS_DO_LBUTTON_DWN = 2;
+export const MSYS_DO_LBUTTON_UP = 4;
+export const MSYS_DO_RBUTTON_DWN = 8;
+export const MSYS_DO_RBUTTON_UP = 16;
+export const MSYS_DO_LBUTTON_REPEAT = 32;
+export const MSYS_DO_RBUTTON_REPEAT = 64;
 
-const MSYS_DO_BUTTONS = (MSYS_DO_LBUTTON_DWN | MSYS_DO_LBUTTON_UP | MSYS_DO_RBUTTON_DWN | MSYS_DO_RBUTTON_UP | MSYS_DO_RBUTTON_REPEAT | MSYS_DO_LBUTTON_REPEAT);
+export const MSYS_DO_BUTTONS = (MSYS_DO_LBUTTON_DWN | MSYS_DO_LBUTTON_UP | MSYS_DO_RBUTTON_DWN | MSYS_DO_RBUTTON_UP | MSYS_DO_RBUTTON_REPEAT | MSYS_DO_LBUTTON_REPEAT);
 
 // Mouse system button masks
-const MSYS_LEFT_BUTTON = 1;
-const MSYS_RIGHT_BUTTON = 2;
+export const MSYS_LEFT_BUTTON = 1;
+export const MSYS_RIGHT_BUTTON = 2;
 
 // Mouse system special values
-const MSYS_NO_CALLBACK = null;
-const MSYS_NO_CURSOR = 65534;
+export const MSYS_NO_CALLBACK = null;
+export const MSYS_NO_CURSOR = 65534;
 
 // Mouse system callback reasons
-const MSYS_CALLBACK_REASON_NONE = 0;
-const MSYS_CALLBACK_REASON_INIT = 1;
-const MSYS_CALLBACK_REASON_MOVE = 2;
-const MSYS_CALLBACK_REASON_LBUTTON_DWN = 4;
-const MSYS_CALLBACK_REASON_LBUTTON_UP = 8;
-const MSYS_CALLBACK_REASON_RBUTTON_DWN = 16;
-const MSYS_CALLBACK_REASON_RBUTTON_UP = 32;
+export const MSYS_CALLBACK_REASON_NONE = 0;
+export const MSYS_CALLBACK_REASON_INIT = 1;
+export const MSYS_CALLBACK_REASON_MOVE = 2;
+export const MSYS_CALLBACK_REASON_LBUTTON_DWN = 4;
+export const MSYS_CALLBACK_REASON_LBUTTON_UP = 8;
+export const MSYS_CALLBACK_REASON_RBUTTON_DWN = 16;
+export const MSYS_CALLBACK_REASON_RBUTTON_UP = 32;
 const MSYS_CALLBACK_REASON_BUTTONS = (MSYS_CALLBACK_REASON_LBUTTON_DWN | MSYS_CALLBACK_REASON_LBUTTON_UP | MSYS_CALLBACK_REASON_RBUTTON_DWN | MSYS_CALLBACK_REASON_RBUTTON_UP);
-const MSYS_CALLBACK_REASON_LOST_MOUSE = 64;
-const MSYS_CALLBACK_REASON_GAIN_MOUSE = 128;
+export const MSYS_CALLBACK_REASON_LOST_MOUSE = 64;
+export const MSYS_CALLBACK_REASON_GAIN_MOUSE = 128;
 
-const MSYS_CALLBACK_REASON_LBUTTON_REPEAT = 256;
-const MSYS_CALLBACK_REASON_RBUTTON_REPEAT = 512;
+export const MSYS_CALLBACK_REASON_LBUTTON_REPEAT = 256;
+export const MSYS_CALLBACK_REASON_RBUTTON_REPEAT = 512;
 
 // Kris:  Nov 31, 1999
 // Added support for double clicks.  The DOUBLECLICK event is passed combined with
@@ -130,12 +130,12 @@ const MSYS_CALLBACK_REASON_RBUTTON_REPEAT = 512;
 // within the delay defined by MSYS_DOUBLECLICK_DELAY (in milliseconds).  If your button/region
 // supports double clicks and single clicks, make sure the DOUBLECLICK event is checked first (rejecting
 // the LBUTTON_DWN event if detected)
-const MSYS_CALLBACK_REASON_LBUTTON_DOUBLECLICK = 1024;
+export const MSYS_CALLBACK_REASON_LBUTTON_DOUBLECLICK = 1024;
 
 // Mouse grabbing return codes
-const MSYS_GRABBED_OK = 0;
-const MSYS_ALREADY_GRABBED = 1;
-const MSYS_REGION_NOT_IN_LIST = 2;
+export const MSYS_GRABBED_OK = 0;
+export const MSYS_ALREADY_GRABBED = 1;
+export const MSYS_REGION_NOT_IN_LIST = 2;
 
 // *****************************************************************************
 //

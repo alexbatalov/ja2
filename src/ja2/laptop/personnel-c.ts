@@ -238,7 +238,7 @@ let pPersonnelScreenPoints: POINT[] /* [] */ = [
 ];
 
 let guiSCREEN: UINT32;
-let guiTITLE: UINT32;
+export let guiTITLE: UINT32;
 let guiFACE: UINT32;
 let guiDEPARTEDTEAM: UINT32;
 let guiCURRENTTEAM: UINT32;
@@ -276,7 +276,7 @@ let fCurrentTeamMode: boolean = true;
 
 // show the atm panel?
 let fShowAtmPanel: boolean = false;
-let fShowAtmPanelStartButton: boolean = true;
+export let fShowAtmPanelStartButton: boolean = true;
 
 // create buttons for scrolling departures
 let fCreatePeronnelDepartureButton: boolean = false;
@@ -301,13 +301,13 @@ let fCreateRegionsForPastCurrentToggle: boolean = false;
 
 // atm misc functions
 
-function GameInitPersonnel(): void {
+export function GameInitPersonnel(): void {
   // init past characters lists
   let iCounter: INT32 = 0;
   InitPastCharactersList();
 }
 
-function EnterPersonnel(): void {
+export function EnterPersonnel(): void {
   fReDrawScreenFlag = true;
   iStartPersonId = -1;
 
@@ -357,7 +357,7 @@ function EnterPersonnel(): void {
   return;
 }
 
-function ExitPersonnel(): void {
+export function ExitPersonnel(): void {
   if (fCurrentTeamMode == false) {
     fCurrentTeamMode = true;
     CreateDestroyButtonsForDepartedTeamList();
@@ -398,7 +398,7 @@ function ExitPersonnel(): void {
   return;
 }
 
-function HandlePersonnel(): void {
+export function HandlePersonnel(): void {
   // RenderButtonsFastHelp( );
   CreateDestroyButtonsForPersonnelDepartures();
 
@@ -455,7 +455,7 @@ function RemovePersonnelGraphics(): void {
   return;
 }
 
-function RenderPersonnel(): void {
+export function RenderPersonnel(): void {
   let hHandle: HVOBJECT;
   let iCounter: INT32 = 0;
   // re-renders personnel screen
@@ -4317,7 +4317,7 @@ function DisplayHighLightBox(): boolean {
 }
 
 // add to dead list
-function AddCharacterToDeadList(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddCharacterToDeadList(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -4336,7 +4336,7 @@ function AddCharacterToDeadList(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function AddCharacterToFiredList(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddCharacterToFiredList(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -4355,7 +4355,7 @@ function AddCharacterToFiredList(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function AddCharacterToOtherList(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddCharacterToOtherList(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -4377,7 +4377,7 @@ function AddCharacterToOtherList(pSoldier: Pointer<SOLDIERTYPE>): void {
 // If you have hired a merc before, then the they left for whatever reason, and now you are hiring them again,
 // we must get rid of them from the departed section in the personnel screen.  ( wouldnt make sense for them
 // to be on your team list, and departed list )
-function RemoveNewlyHiredMercFromPersonnelDepartedList(ubProfile: UINT8): boolean {
+export function RemoveNewlyHiredMercFromPersonnelDepartedList(ubProfile: UINT8): boolean {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -5088,7 +5088,7 @@ function HandleStateOfATMButtons(): void {
   }
 }
 
-function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+export function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let iCurrentAmount: INT32 = 0;
   let iCurrentPocket: INT32 = 0;
   // run through mercs pockets, if any money in them, add to total
@@ -5108,7 +5108,7 @@ function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return iCurrentAmount;
 }
 
-function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
+export function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
   let iCurrentPocket: INT32 = 0;
   let iAmountLeftToTake: INT32 = iCurrentBalance;
   let ObjectToRemove: OBJECTTYPE;
@@ -5147,7 +5147,7 @@ function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
   }
 }
 
-function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
+export function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
   let pMoneyObject: OBJECTTYPE;
 
   // move this amount of money from the grunt to the bank

@@ -1,6 +1,6 @@
 // zoom x and y coords for map scrolling
-let iZoomX: INT32 = 0;
-let iZoomY: INT32 = 0;
+export let iZoomX: INT32 = 0;
+export let iZoomY: INT32 = 0;
 
 // Scroll region width
 const SCROLL_REGION = 4;
@@ -215,17 +215,17 @@ const enum Enum157 {
   MAP_SHADE_DK_RED,
 }
 // the big map .pcx
-let guiBIGMAP: UINT32;
+export let guiBIGMAP: UINT32;
 
 // orta .sti icon
-let guiORTAICON: UINT32;
-let guiTIXAICON: UINT32;
+export let guiORTAICON: UINT32;
+export let guiTIXAICON: UINT32;
 
 // boxes for characters on the map
-let guiCHARICONS: UINT32;
+export let guiCHARICONS: UINT32;
 
 // the merc arrival sector landing zone icon
-let guiBULLSEYE: UINT32;
+export let guiBULLSEYE: UINT32;
 
 // the max allowable towns militia in a sector
 const MAP_MILITIA_MAP_X = 4;
@@ -278,35 +278,35 @@ let gsMilitiaSectorButtonColors: INT16[] /* [] */ = [
 ];
 
 // track number of townspeople picked up
-let sGreensOnCursor: INT16 = 0;
-let sRegularsOnCursor: INT16 = 0;
-let sElitesOnCursor: INT16 = 0;
+export let sGreensOnCursor: INT16 = 0;
+export let sRegularsOnCursor: INT16 = 0;
+export let sElitesOnCursor: INT16 = 0;
 
 // the current militia town id
-let sSelectedMilitiaTown: INT16 = 0;
+export let sSelectedMilitiaTown: INT16 = 0;
 
 // sublevel graphics
-let guiSubLevel1: UINT32;
-let guiSubLevel2: UINT32;
-let guiSubLevel3: UINT32;
+export let guiSubLevel1: UINT32;
+export let guiSubLevel2: UINT32;
+export let guiSubLevel3: UINT32;
 
 // the between sector icons
-let guiCHARBETWEENSECTORICONS: UINT32;
-let guiCHARBETWEENSECTORICONSCLOSE: UINT32;
+export let guiCHARBETWEENSECTORICONS: UINT32;
+export let guiCHARBETWEENSECTORICONSCLOSE: UINT32;
 
 // tixa found
-let fFoundTixa: boolean = false;
+export let fFoundTixa: boolean = false;
 
 // selected sector
-let sSelMapX: UINT16 = 9;
-let sSelMapY: UINT16 = 1;
+export let sSelMapX: UINT16 = 9;
+export let sSelMapY: UINT16 = 1;
 
 // highlighted sector
-let gsHighlightSectorX: INT16 = -1;
-let gsHighlightSectorY: INT16 = -1;
+export let gsHighlightSectorX: INT16 = -1;
+export let gsHighlightSectorY: INT16 = -1;
 
 // the current sector Z value of the map being displayed
-let iCurrentMapSectorZ: INT32 = 0;
+export let iCurrentMapSectorZ: INT32 = 0;
 
 // the palettes
 let pMapLTRedPalette: Pointer<UINT16>;
@@ -315,10 +315,10 @@ let pMapLTGreenPalette: Pointer<UINT16>;
 let pMapDKGreenPalette: Pointer<UINT16>;
 
 // the map border eta pop up
-let guiMapBorderEtaPopUp: UINT32;
+export let guiMapBorderEtaPopUp: UINT32;
 
 // heli pop up
-let guiMapBorderHeliSectors: UINT32;
+export let guiMapBorderHeliSectors: UINT32;
 
 // list of map sectors that player isn't allowed to even highlight
 let sBadSectorsList: boolean[][] /* [WORLD_MAP_X][WORLD_MAP_X] */;
@@ -371,43 +371,43 @@ let gpSamSectorY: INT16[] /* [] */ = [
 ];
 
 // map region
-let MapScreenRect: SGPRect = [ (MAP_VIEW_START_X + MAP_GRID_X - 2), (MAP_VIEW_START_Y + MAP_GRID_Y - 1), MAP_VIEW_START_X + MAP_VIEW_WIDTH - 1 + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 10 + MAP_GRID_Y ];
+export let MapScreenRect: SGPRect = [ (MAP_VIEW_START_X + MAP_GRID_X - 2), (MAP_VIEW_START_Y + MAP_GRID_Y - 1), MAP_VIEW_START_X + MAP_VIEW_WIDTH - 1 + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 10 + MAP_GRID_Y ];
 
-let gOldClipRect: SGPRect;
+export let gOldClipRect: SGPRect;
 
 // screen region
 let FullScreenRect: SGPRect = [ 0, 0, 640, 480 ];
 
 // temp helicopter path
-let pTempHelicopterPath: PathStPtr = null;
+export let pTempHelicopterPath: PathStPtr = null;
 
 // character temp path
-let pTempCharacterPath: PathStPtr = null;
+export let pTempCharacterPath: PathStPtr = null;
 
 // draw temp path?
-let fDrawTempHeliPath: boolean = false;
+export let fDrawTempHeliPath: boolean = false;
 
 // the map arrows graphics
-let guiMAPCURSORS: UINT32;
+export let guiMAPCURSORS: UINT32;
 
 // destination plotting character
-let bSelectedDestChar: INT8 = -1;
+export let bSelectedDestChar: INT8 = -1;
 
 // assignment selection character
-let bSelectedAssignChar: INT8 = -1;
+export let bSelectedAssignChar: INT8 = -1;
 
 // current contract char
-let bSelectedContractChar: INT8 = -1;
+export let bSelectedContractChar: INT8 = -1;
 
 // has the temp path for character or helicopter been already drawn?
-let fTempPathAlreadyDrawn: boolean = false;
+export let fTempPathAlreadyDrawn: boolean = false;
 
 // the regions for the mapscreen militia box
 let gMapScreenMilitiaBoxRegions: MOUSE_REGION[] /* [9] */;
 let gMapScreenMilitiaRegion: MOUSE_REGION;
 
 // the mine icon
-let guiMINEICON: UINT32;
+export let guiMINEICON: UINT32;
 
 // militia graphics
 let guiMilitia: UINT32;
@@ -421,20 +421,20 @@ let fMilitiaMapButtonsCreated: boolean = false;
 let sSectorMilitiaMapSectorOutline: INT16 = -1;
 
 // have any nodes in the current path list been deleted?
-let fDeletedNode: boolean = false;
+export let fDeletedNode: boolean = false;
 
 let gusUndergroundNearBlack: UINT16;
 
-let gfMilitiaPopupCreated: boolean = false;
+export let gfMilitiaPopupCreated: boolean = false;
 
-let giAnimateRouteBaseTime: INT32 = 0;
-let giPotHeliPathBaseTime: INT32 = 0;
-let giClickHeliIconBaseTime: INT32 = 0;
+export let giAnimateRouteBaseTime: INT32 = 0;
+export let giPotHeliPathBaseTime: INT32 = 0;
+export let giClickHeliIconBaseTime: INT32 = 0;
 
 // UINT8 NumActiveCharactersInSector( INT16 sSectorX, INT16 sSectorY, INT16 bSectorZ );
 // UINT8 NumFriendlyInSector( INT16 sX, INT16 sY, INT8 bZ );
 
-function DrawMapIndexBigMap(fSelectedCursorIsYellow: boolean): void {
+export function DrawMapIndexBigMap(fSelectedCursorIsYellow: boolean): void {
   // this procedure will draw the coord indexes on the zoomed out map
   let usX: INT16;
   let usY: INT16;
@@ -547,7 +547,7 @@ function HandleShowingOfEnemiesWithMilitiaOn(): void {
   return;
 }
 
-function DrawMap(): UINT32 {
+export function DrawMap(): UINT32 {
   let hSrcVSurface: HVSURFACE;
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
@@ -726,7 +726,7 @@ function DrawMap(): UINT32 {
   return true;
 }
 
-function GetScreenXYFromMapXY(sMapX: INT16, sMapY: INT16, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
+export function GetScreenXYFromMapXY(sMapX: INT16, sMapY: INT16, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
   let sXTempOff: INT16 = 1;
   let sYTempOff: INT16 = 1;
   if (fZoomFlag) {
@@ -1353,7 +1353,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   return true;
 }
 
-function InitializePalettesForMap(): boolean {
+export function InitializePalettesForMap(): boolean {
   // init palettes
   let hSrcVSurface: HVSURFACE;
   let pPalette: SGPPaletteEntry[] /* [256] */;
@@ -1381,7 +1381,7 @@ function InitializePalettesForMap(): boolean {
   return true;
 }
 
-function ShutDownPalettesForMap(): void {
+export function ShutDownPalettesForMap(): void {
   MemFree(pMapLTRedPalette);
   MemFree(pMapDKRedPalette);
   MemFree(pMapLTGreenPalette);
@@ -1395,7 +1395,7 @@ function ShutDownPalettesForMap(): void {
   return;
 }
 
-function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, fTacticalTraversal: boolean): void {
+export function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, fTacticalTraversal: boolean): void {
   // will plot a path for this character
 
   // is cursor allowed here?..if not..don't build path
@@ -1442,7 +1442,7 @@ function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: I
   }
 }
 
-function PlotATemporaryPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): void {
+export function PlotATemporaryPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): void {
   // make sure we're at the beginning
   pTempCharacterPath = MoveToBeginningOfPathList(pTempCharacterPath);
 
@@ -1461,7 +1461,7 @@ function PlotATemporaryPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: IN
 }
 
 // clear out character path list, after and including this sector
-function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): UINT32 {
+export function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): UINT32 {
   let iOrigLength: INT32 = 0;
   let pVehicle: Pointer<VEHICLETYPE> = null;
 
@@ -1514,7 +1514,7 @@ function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, 
   }
 }
 
-function CancelPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
+export function CancelPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
   // clear out character's entire path list, he and his squad will stay/return to his current sector.
   pCharacter.value.pMercPath = ClearStrategicPathList(pCharacter.value.pMercPath, pCharacter.value.ubGroupID);
   // NOTE: This automatically calls RemoveGroupWaypoints() internally for valid movement groups
@@ -1539,7 +1539,7 @@ function CancelPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
   fCharacterInfoPanelDirty = true; // to update ETA
 }
 
-function CancelPathForVehicle(pVehicle: Pointer<VEHICLETYPE>, fAlreadyReversed: boolean): void {
+export function CancelPathForVehicle(pVehicle: Pointer<VEHICLETYPE>, fAlreadyReversed: boolean): void {
   // we're clearing everything beyond the *current* sector, that's quite different.  Since we're basically cancelling
   // his movement completely, we must also make sure his next X,Y are changed and he officially "returns" to his sector
   pVehicle.value.pMercPath = ClearStrategicPathList(pVehicle.value.pMercPath, pVehicle.value.ubMovementGroup);
@@ -1612,7 +1612,7 @@ function CopyPathToCharactersSquadIfInOne(pCharacter: Pointer<SOLDIERTYPE>): voi
   }
 }
 
-function DisplaySoldierPath(pCharacter: Pointer<SOLDIERTYPE>): void {
+export function DisplaySoldierPath(pCharacter: Pointer<SOLDIERTYPE>): void {
   let pPath: PathStPtr = null;
 
   /* ARM: Hopefully no longer required once using GetSoldierMercPathPtr() ???
@@ -1633,14 +1633,14 @@ function DisplaySoldierPath(pCharacter: Pointer<SOLDIERTYPE>): void {
   return;
 }
 
-function DisplaySoldierTempPath(pCharacter: Pointer<SOLDIERTYPE>): void {
+export function DisplaySoldierTempPath(pCharacter: Pointer<SOLDIERTYPE>): void {
   // now render temp route
   TracePathRoute(false, true, pTempCharacterPath);
 
   return;
 }
 
-function DisplayHelicopterPath(): void {
+export function DisplayHelicopterPath(): void {
   // move to beginning of path list
   pVehicleList[iHelicopterVehicleId].pMercPath = MoveToBeginningOfPathList(pVehicleList[iHelicopterVehicleId].pMercPath);
 
@@ -1657,7 +1657,7 @@ function DisplayHelicopterPath(): void {
   return;
 }
 
-function DisplayHelicopterTempPath(): void {
+export function DisplayHelicopterTempPath(): void {
   // should we draw temp path?
   if (fDrawTempHeliPath) {
     TracePathRoute(true, true, pTempHelicopterPath);
@@ -1666,7 +1666,7 @@ function DisplayHelicopterTempPath(): void {
   return;
 }
 
-function PlotPathForHelicopter(sX: INT16, sY: INT16): void {
+export function PlotPathForHelicopter(sX: INT16, sY: INT16): void {
   // will plot the path for the helicopter
 
   // no heli...go back
@@ -1698,7 +1698,7 @@ function PlotPathForHelicopter(sX: INT16, sY: INT16): void {
   return;
 }
 
-function PlotATemporaryPathForHelicopter(sX: INT16, sY: INT16): void {
+export function PlotATemporaryPathForHelicopter(sX: INT16, sY: INT16): void {
   // clear old temp path
   pTempHelicopterPath = ClearStrategicPathList(pTempHelicopterPath, 0);
 
@@ -1714,7 +1714,7 @@ function PlotATemporaryPathForHelicopter(sX: INT16, sY: INT16): void {
 }
 
 // clear out helicopter path list, after and including this sector
-function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
+export function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
   let pVehicle: Pointer<VEHICLETYPE> = null;
   let iOrigLength: INT32 = 0;
 
@@ -1755,7 +1755,7 @@ function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
   }
 }
 
-function GetLastSectorOfHelicoptersPath(): INT16 {
+export function GetLastSectorOfHelicoptersPath(): INT16 {
   // will return the last sector of the helicopter's current path
   let sLastSector: INT16 = pVehicleList[iHelicopterVehicleId].sSectorX + pVehicleList[iHelicopterVehicleId].sSectorY * MAP_WORLD_X;
   let pNode: PathStPtr = null;
@@ -3079,7 +3079,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   return false;
 }
 
-function DisplayThePotentialPathForHelicopter(sMapX: INT16, sMapY: INT16): void {
+export function DisplayThePotentialPathForHelicopter(sMapX: INT16, sMapY: INT16): void {
   // simply check if we want to refresh the screen to display path
   /* static */ let fOldShowAirCraft: boolean = false;
   /* static */ let sOldMapX: INT16;
@@ -3126,7 +3126,7 @@ function DisplayThePotentialPathForHelicopter(sMapX: INT16, sMapY: INT16): void 
   return;
 }
 
-function IsTheCursorAllowedToHighLightThisSector(sSectorX: INT16, sSectorY: INT16): boolean {
+export function IsTheCursorAllowedToHighLightThisSector(sSectorX: INT16, sSectorY: INT16): boolean {
   // check to see if this sector is a blocked out sector?
 
   if (sBadSectorsList[sSectorX][sSectorY]) {
@@ -3137,7 +3137,7 @@ function IsTheCursorAllowedToHighLightThisSector(sSectorX: INT16, sSectorY: INT1
   }
 }
 
-function SetUpBadSectorsList(): void {
+export function SetUpBadSectorsList(): void {
   // initalizes all sectors to highlighable and then the ones non highlightable are marked as such
   let bY: INT8;
 
@@ -3175,7 +3175,7 @@ function SetUpBadSectorsList(): void {
   return;
 }
 
-function RestoreBackgroundForMapGrid(sMapX: INT16, sMapY: INT16): void {
+export function RestoreBackgroundForMapGrid(sMapX: INT16, sMapY: INT16): void {
   let sX: INT16;
   let sY: INT16;
 
@@ -3202,7 +3202,7 @@ function RestoreBackgroundForMapGrid(sMapX: INT16, sMapY: INT16): void {
   }
 }
 
-function ClipBlitsToMapViewRegion(): void {
+export function ClipBlitsToMapViewRegion(): void {
   // the standard mapscreen rectangle doesn't work for clipping while zoomed...
   let ZoomedMapScreenClipRect: SGPRect = [ MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + MAP_GRID_Y - 10 ];
   let pRectToUse: Pointer<SGPRect>;
@@ -3217,12 +3217,12 @@ function ClipBlitsToMapViewRegion(): void {
   memcpy(addressof(gDirtyClipRect), pRectToUse, sizeof(gDirtyClipRect));
 }
 
-function RestoreClipRegionToFullScreen(): void {
+export function RestoreClipRegionToFullScreen(): void {
   SetClippingRect(addressof(FullScreenRect));
   memcpy(addressof(gDirtyClipRect), addressof(gOldClipRect), sizeof(gDirtyClipRect));
 }
 
-function ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES: UINT32): void {
+export function ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES: UINT32): void {
   // clip blits to map view region
   // because MC's map coordinates system is so screwy, these had to be hand-tuned to work right...  ARM
   if (fZoomFlag)
@@ -3233,7 +3233,7 @@ function ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES: UINT32): 
   return;
 }
 
-function RestoreClipRegionToFullScreenForRectangle(uiDestPitchBYTES: UINT32): void {
+export function RestoreClipRegionToFullScreenForRectangle(uiDestPitchBYTES: UINT32): void {
   // clip blits to map view region
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
@@ -3476,7 +3476,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 }
 
-function DisplayDistancesForHelicopter(): void {
+export function DisplayDistancesForHelicopter(): void {
   // calculate the distance travelled, the proposed distance, and total distance one can go
   // display these on screen
   let sDistanceToGo: INT16 = 0; //, sDistanceSoFar = 0, sTotalCanTravel = 0;
@@ -3597,7 +3597,7 @@ function DisplayDistancesForHelicopter(): void {
 }
 
 // grab position of helicopter and blt to screen
-function DisplayPositionOfHelicopter(): void {
+export function DisplayPositionOfHelicopter(): void {
   /* static */ let sOldMapX: INT16 = 0;
   /* static */ let sOldMapY: INT16 = 0;
   //	INT16 sX =0, sY = 0;
@@ -3781,7 +3781,7 @@ function DisplayDestinationOfHelicopter(): void {
   }
 }
 
-function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClickedSectorY: INT16): boolean {
+export function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClickedSectorY: INT16): boolean {
   let iDeltaTime: INT32 = 0;
   let fIgnoreClick: boolean = false;
   let pGroup: Pointer<GROUP> = null;
@@ -4244,7 +4244,7 @@ function DropAPersonInASector(ubType: UINT8, sX: INT16, sY: INT16): boolean {
   return true;
 }
 
-function LoadMilitiaPopUpBox(): boolean {
+export function LoadMilitiaPopUpBox(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the militia pop up box
@@ -4267,7 +4267,7 @@ function LoadMilitiaPopUpBox(): boolean {
   return true;
 }
 
-function RemoveMilitiaPopUpBox(): void {
+export function RemoveMilitiaPopUpBox(): void {
   // delete the militia pop up box graphic
   DeleteVideoObjectFromIndex(guiMilitia);
   DeleteVideoObjectFromIndex(guiMilitiaMaps);
@@ -4277,7 +4277,7 @@ function RemoveMilitiaPopUpBox(): void {
   return;
 }
 
-function DrawMilitiaPopUpBox(): boolean {
+export function DrawMilitiaPopUpBox(): boolean {
   let hVObject: HVOBJECT;
   let pTrav: Pointer<ETRLEObject>;
 
@@ -4338,7 +4338,7 @@ function DrawMilitiaPopUpBox(): boolean {
   return true;
 }
 
-function CreateDestroyMilitiaPopUPRegions(): void {
+export function CreateDestroyMilitiaPopUPRegions(): void {
   /* static */ let sOldTown: INT16 = 0;
   let iCounter: INT32 = 0;
 
@@ -4547,7 +4547,7 @@ function MilitiaRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 }
 
-function CreateDestroyMilitiaSectorButtons(): void {
+export function CreateDestroyMilitiaSectorButtons(): void {
   /* static */ let fCreated: boolean = false;
   /* static */ let sOldSectorValue: INT16 = -1;
   let sX: INT16 = 0;
@@ -5307,7 +5307,7 @@ function MilitiaBoxMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   return;
 }
 
-function GetNumberOfMilitiaInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT32 {
+export function GetNumberOfMilitiaInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT32 {
   let iNumberInSector: INT32 = 0;
 
   if (!bSectorZ) {
@@ -5321,7 +5321,7 @@ function GetNumberOfMilitiaInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: 
 // will display on mapscreen until time is compressed.  When time is compressed, the flag is cleared, and
 // a question mark is displayed to reflect that the player no longer knows.  This is the function that clears that
 // flag.
-function ClearAnySectorsFlashingNumberOfEnemies(): void {
+export function ClearAnySectorsFlashingNumberOfEnemies(): void {
   let i: INT32;
   for (i = 0; i < 256; i++) {
     SectorInfo[i].uiFlags &= ~SF_PLAYER_KNOWS_ENEMIES_ARE_HERE;
@@ -5331,7 +5331,7 @@ function ClearAnySectorsFlashingNumberOfEnemies(): void {
   fMapPanelDirty = true;
 }
 
-function WhatPlayerKnowsAboutEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT32 {
+export function WhatPlayerKnowsAboutEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT32 {
   let uiSectorFlags: UINT32 = SectorInfo[SECTOR(sSectorX, sSectorY)].uiFlags;
 
   // if player has militia close enough to scout this sector out, if there are mercs who can scout here, OR
@@ -5844,7 +5844,7 @@ function HideExistenceOfUndergroundMapSector(ubSectorX: UINT8, ubSectorY: UINT8)
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, sScreenX + 1, sScreenY, sScreenX + MAP_GRID_X, sScreenY + MAP_GRID_Y - 1, gusUndergroundNearBlack);
 }
 
-function InitMapSecrets(): void {
+export function InitMapSecrets(): void {
   let ubSamIndex: UINT8;
 
   fFoundTixa = false;
@@ -5855,7 +5855,7 @@ function InitMapSecrets(): void {
   }
 }
 
-function CanRedistributeMilitiaInSector(sClickedSectorX: INT16, sClickedSectorY: INT16, bClickedTownId: INT8): boolean {
+export function CanRedistributeMilitiaInSector(sClickedSectorX: INT16, sClickedSectorY: INT16, bClickedTownId: INT8): boolean {
   let iCounter: INT32 = 0;
   let sBaseSectorValue: INT16 = 0;
   let sCurrentSectorValue: INT16 = 0;

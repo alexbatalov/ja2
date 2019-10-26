@@ -33,13 +33,13 @@ const NO_QUOTE = 255;
 const IRRELEVANT = 255;
 const NO_MOVE = 65535;
 
-let gpNPCQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_PROFILES] */ = [ null ];
+export let gpNPCQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_PROFILES] */ = [ null ];
 let gpBackupNPCQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_PROFILES] */ = [ null ];
 let gpCivQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_CIVQUOTE_SECTORS] */ = [ null ];
 
 let gubTeamPenalty: UINT8;
 
-let gbFirstApproachFlags: INT8[] /* [4] */ = [
+export let gbFirstApproachFlags: INT8[] /* [4] */ = [
   0x01,
   0x02,
   0x04,
@@ -192,7 +192,7 @@ function EnsureQuoteFileLoaded(ubNPC: UINT8): boolean {
   return true;
 }
 
-function ReloadQuoteFile(ubNPC: UINT8): boolean {
+export function ReloadQuoteFile(ubNPC: UINT8): boolean {
   if (gpNPCQuoteInfoArray[ubNPC] != null) {
     MemFree(gpNPCQuoteInfoArray[ubNPC]);
     gpNPCQuoteInfoArray[ubNPC] = null;
@@ -320,7 +320,7 @@ function ReloadCivQuoteFileIfLoaded(ubIndex: UINT8): boolean {
   }
 }
 
-function ShutdownNPCQuotes(): void {
+export function ShutdownNPCQuotes(): void {
   let ubLoop: UINT8;
 
   for (ubLoop = 0; ubLoop < NUM_PROFILES; ubLoop++) {
@@ -347,7 +347,7 @@ function ShutdownNPCQuotes(): void {
 // GENERAL LOW LEVEL ROUTINES
 //
 
-function ReloadAllQuoteFiles(): boolean {
+export function ReloadAllQuoteFiles(): boolean {
   let ubProfile: UINT8;
   let ubLoop: UINT8;
 
@@ -371,7 +371,7 @@ function ReloadAllQuoteFiles(): boolean {
 // THE REST
 //
 
-function SetQuoteRecordAsUsed(ubNPC: UINT8, ubRecord: UINT8): void {
+export function SetQuoteRecordAsUsed(ubNPC: UINT8, ubRecord: UINT8): void {
   if (EnsureQuoteFileLoaded(ubNPC)) {
     gpNPCQuoteInfoArray[ubNPC][ubRecord].fFlags |= QUOTE_FLAG_SAID;
   }
@@ -406,7 +406,7 @@ function CalcThreateningEffectiveness(ubMerc: UINT8): INT32 {
   return (EffectiveLeadership(pSoldier) + iStrength + iDeadliness) / 2;
 }
 
-function CalcDesireToTalk(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8): UINT8 {
+export function CalcDesireToTalk(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8): UINT8 {
   let iWillingness: INT32;
   let iPersonalVal: INT32;
   let iTownVal: INT32;
@@ -1096,7 +1096,7 @@ function ReplaceLocationInNPCData(pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>, sOl
   }
 }
 
-function ReplaceLocationInNPCDataFromProfileID(ubNPC: UINT8, sOldGridNo: INT16, sNewGridNo: INT16): void {
+export function ReplaceLocationInNPCDataFromProfileID(ubNPC: UINT8, sOldGridNo: INT16, sNewGridNo: INT16): void {
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
 
   if (EnsureQuoteFileLoaded(ubNPC) == false) {
@@ -1119,7 +1119,7 @@ function ResetOncePerConvoRecords(pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>): vo
   }
 }
 
-function ResetOncePerConvoRecordsForNPC(ubNPC: UINT8): void {
+export function ResetOncePerConvoRecordsForNPC(ubNPC: UINT8): void {
   if (EnsureQuoteFileLoaded(ubNPC) == false) {
     // error!!!
     return;
@@ -1127,7 +1127,7 @@ function ResetOncePerConvoRecordsForNPC(ubNPC: UINT8): void {
   ResetOncePerConvoRecords(gpNPCQuoteInfoArray[ubNPC]);
 }
 
-function ResetOncePerConvoRecordsForAllNPCsInLoadedSector(): void {
+export function ResetOncePerConvoRecordsForAllNPCsInLoadedSector(): void {
   let ubLoop: UINT8;
 
   if (gWorldSectorX == 0 || gWorldSectorY == 0) {
@@ -1161,7 +1161,7 @@ function ReturnItemToPlayerIfNecessary(ubMerc: UINT8, bApproach: INT8, uiApproac
   }
 }
 
-function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: UINT32): void {
+export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: UINT32): void {
   let QuoteInfo: NPCQuoteInfo;
   let pQuotePtr: Pointer<NPCQuoteInfo> = addressof(QuoteInfo);
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo> = null;
@@ -1658,7 +1658,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
   }
 }
 
-function NPCConsiderInitiatingConv(pNPC: Pointer<SOLDIERTYPE>, pubDesiredMerc: Pointer<UINT8>): INT16 {
+export function NPCConsiderInitiatingConv(pNPC: Pointer<SOLDIERTYPE>, pubDesiredMerc: Pointer<UINT8>): INT16 {
   let sMyGridNo: INT16;
   let sDist: INT16;
   let sDesiredMercDist: INT16 = 100;
@@ -1775,7 +1775,7 @@ BOOLEAN NPCOkToGiveItem( UINT8 ubNPC, UINT8 ubMerc, UINT16 usItem )
         }
 }
 */
-function NPCReachedDestination(pNPC: Pointer<SOLDIERTYPE>, fAlreadyThere: boolean): void {
+export function NPCReachedDestination(pNPC: Pointer<SOLDIERTYPE>, fAlreadyThere: boolean): void {
   // perform action or whatever after reaching our destination
   let ubNPC: UINT8;
   let pQuotePtr: Pointer<NPCQuoteInfo>;
@@ -1833,7 +1833,7 @@ function NPCReachedDestination(pNPC: Pointer<SOLDIERTYPE>, fAlreadyThere: boolea
   }
 }
 
-function TriggerNPCRecord(ubTriggerNPC: UINT8, ubTriggerNPCRec: UINT8): void {
+export function TriggerNPCRecord(ubTriggerNPC: UINT8, ubTriggerNPCRec: UINT8): void {
   // Check if we have a quote to trigger...
   let pQuotePtr: Pointer<NPCQuoteInfo>;
   let fDisplayDialogue: boolean = true;
@@ -1855,7 +1855,7 @@ function TriggerNPCRecord(ubTriggerNPC: UINT8, ubTriggerNPCRec: UINT8): void {
   }
 }
 
-function TriggerNPCRecordImmediately(ubTriggerNPC: UINT8, ubTriggerNPCRec: UINT8): void {
+export function TriggerNPCRecordImmediately(ubTriggerNPC: UINT8, ubTriggerNPCRec: UINT8): void {
   // Check if we have a quote to trigger...
   let pQuotePtr: Pointer<NPCQuoteInfo>;
   let fDisplayDialogue: boolean = true;
@@ -1878,7 +1878,7 @@ function TriggerNPCRecordImmediately(ubTriggerNPC: UINT8, ubTriggerNPCRec: UINT8
   }
 }
 
-function PCsNearNPC(ubNPC: UINT8): void {
+export function PCsNearNPC(ubNPC: UINT8): void {
   let ubLoop: UINT8;
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1913,7 +1913,7 @@ function PCsNearNPC(ubNPC: UINT8): void {
   SetFactFalse(Enum170.FACT_PC_NEAR);
 }
 
-function PCDoesFirstAidOnNPC(ubNPC: UINT8): boolean {
+export function PCDoesFirstAidOnNPC(ubNPC: UINT8): boolean {
   let ubLoop: UINT8;
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1988,7 +1988,7 @@ function TriggerClosestMercWhoCanSeeNPC(ubNPC: UINT8, pQuotePtr: Pointer<NPCQuot
   }
 }
 
-function TriggerNPCWithIHateYouQuote(ubTriggerNPC: UINT8): boolean {
+export function TriggerNPCWithIHateYouQuote(ubTriggerNPC: UINT8): boolean {
   // Check if we have a quote to trigger...
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
   let pQuotePtr: Pointer<NPCQuoteInfo>;
@@ -2016,7 +2016,7 @@ function TriggerNPCWithIHateYouQuote(ubTriggerNPC: UINT8): boolean {
   return false;
 }
 
-function NPCHasUnusedRecordWithGivenApproach(ubNPC: UINT8, ubApproach: UINT8): boolean {
+export function NPCHasUnusedRecordWithGivenApproach(ubNPC: UINT8, ubApproach: UINT8): boolean {
   // Check if we have a quote that could be used
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
   let pQuotePtr: Pointer<NPCQuoteInfo>;
@@ -2038,7 +2038,7 @@ function NPCHasUnusedRecordWithGivenApproach(ubNPC: UINT8, ubApproach: UINT8): b
   return false;
 }
 
-function NPCHasUnusedHostileRecord(ubNPC: UINT8, ubApproach: UINT8): boolean {
+export function NPCHasUnusedHostileRecord(ubNPC: UINT8, ubApproach: UINT8): boolean {
   // this is just like the standard check BUT we must skip any
   // records using fact 289 and print debug msg for any records which can't be marked as used
   // Check if we have a quote that could be used
@@ -2065,7 +2065,7 @@ function NPCHasUnusedHostileRecord(ubNPC: UINT8, ubApproach: UINT8): boolean {
   return false;
 }
 
-function NPCWillingToAcceptItem(ubNPC: UINT8, ubMerc: UINT8, pObj: Pointer<OBJECTTYPE>): boolean {
+export function NPCWillingToAcceptItem(ubNPC: UINT8, ubMerc: UINT8, pObj: Pointer<OBJECTTYPE>): boolean {
   // Check if we have a quote that could be used, that applies to this item
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
   let pQuotePtr: Pointer<NPCQuoteInfo>;
@@ -2088,7 +2088,7 @@ function NPCWillingToAcceptItem(ubNPC: UINT8, ubMerc: UINT8, pObj: Pointer<OBJEC
   return false;
 }
 
-function GetInfoForAbandoningEPC(ubNPC: UINT8, pusQuoteNum: Pointer<UINT16>, pusFactToSetTrue: Pointer<UINT16>): boolean {
+export function GetInfoForAbandoningEPC(ubNPC: UINT8, pusQuoteNum: Pointer<UINT16>, pusFactToSetTrue: Pointer<UINT16>): boolean {
   // Check if we have a quote that could be used
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
   let pQuotePtr: Pointer<NPCQuoteInfo>;
@@ -2112,7 +2112,7 @@ function GetInfoForAbandoningEPC(ubNPC: UINT8, pusQuoteNum: Pointer<UINT16>, pus
   return false;
 }
 
-function TriggerNPCWithGivenApproach(ubTriggerNPC: UINT8, ubApproach: UINT8, fShowPanel: boolean): boolean {
+export function TriggerNPCWithGivenApproach(ubTriggerNPC: UINT8, ubApproach: UINT8, fShowPanel: boolean): boolean {
   // Check if we have a quote to trigger...
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
   let pQuotePtr: Pointer<NPCQuoteInfo>;
@@ -2145,7 +2145,7 @@ function TriggerNPCWithGivenApproach(ubTriggerNPC: UINT8, ubApproach: UINT8, fSh
   return false;
 }
 
-function SaveNPCInfoToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveNPCInfoToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let cnt: UINT32;
   let ubOne: UINT8 = 1;
@@ -2201,7 +2201,7 @@ function SaveNPCInfoToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UINT32): boolean {
+export function LoadNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UINT32): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let cnt: UINT32;
   let ubLoadQuote: UINT8 = 0;
@@ -2344,7 +2344,7 @@ function LoadNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UINT32):
   return true;
 }
 
-function SaveBackupNPCInfoToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveBackupNPCInfoToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let cnt: UINT32;
   let ubOne: UINT8 = 1;
@@ -2377,7 +2377,7 @@ function SaveBackupNPCInfoToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadBackupNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UINT32): boolean {
+export function LoadBackupNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UINT32): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let cnt: UINT32;
   let ubLoadQuote: UINT8 = 0;
@@ -2423,7 +2423,7 @@ function LoadBackupNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UI
   return true;
 }
 
-function TriggerFriendWithHostileQuote(ubNPC: UINT8): void {
+export function TriggerFriendWithHostileQuote(ubNPC: UINT8): void {
   let ubMercsAvailable: UINT8[] /* [40] */ = [ 0 ];
   let ubNumMercsAvailable: UINT8 = 0;
   let ubChosenMerc: UINT8;
@@ -2474,7 +2474,7 @@ function TriggerFriendWithHostileQuote(ubNPC: UINT8): void {
   }
 }
 
-function ActionIDForMovementRecord(ubNPC: UINT8, ubRecord: UINT8): UINT8 {
+export function ActionIDForMovementRecord(ubNPC: UINT8, ubRecord: UINT8): UINT8 {
   // Check if we have a quote to trigger...
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
   let pQuotePtr: Pointer<NPCQuoteInfo>;
@@ -2507,7 +2507,7 @@ function ActionIDForMovementRecord(ubNPC: UINT8, ubRecord: UINT8): UINT8 {
   }
 }
 
-function HandleNPCChangesForTacticalTraversal(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleNPCChangesForTacticalTraversal(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (!pSoldier || pSoldier.value.ubProfile == NO_PROFILE || (pSoldier.value.fAIFlags & AI_CHECK_SCHEDULE)) {
     return;
   }
@@ -2542,7 +2542,7 @@ function HandleNPCChangesForTacticalTraversal(pSoldier: Pointer<SOLDIERTYPE>): v
   }
 }
 
-function HandleVictoryInNPCSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
+export function HandleVictoryInNPCSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   // handle special cases of victory in certain sector
   let sSector: INT16 = 0;
 
@@ -2572,7 +2572,7 @@ function HandleVictoryInNPCSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: IN
   return;
 }
 
-function HandleShopKeepHasBeenShutDown(ubCharNum: UINT8): boolean {
+export function HandleShopKeepHasBeenShutDown(ubCharNum: UINT8): boolean {
   // check if shopkeep has been shutdown, if so handle
   switch (ubCharNum) {
     case (Enum268.KEITH): {
@@ -2593,7 +2593,7 @@ function HandleShopKeepHasBeenShutDown(ubCharNum: UINT8): boolean {
   return false;
 }
 
-function UpdateDarrelScriptToGoTo(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function UpdateDarrelScriptToGoTo(pSoldier: Pointer<SOLDIERTYPE>): void {
   // change destination in Darrel record 10 to go to a gridno adjacent to the
   // soldier's gridno, and destination in record 11
   let sAdjustedGridNo: INT16;
@@ -2622,7 +2622,7 @@ function UpdateDarrelScriptToGoTo(pSoldier: Pointer<SOLDIERTYPE>): void {
   gpNPCQuoteInfoArray[Enum268.DARREL][11].ubTriggerNPC = pSoldier.value.ubProfile;
 }
 
-function RecordHasDialogue(ubNPC: UINT8, ubRecord: UINT8): boolean {
+export function RecordHasDialogue(ubNPC: UINT8, ubRecord: UINT8): boolean {
   if (EnsureQuoteFileLoaded(ubNPC) == false) {
     // error!!!
     return false;
@@ -2650,7 +2650,7 @@ function FindCivQuoteFileIndex(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16
   return -1;
 }
 
-function ConsiderCivilianQuotes(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, fSetAsUsed: boolean): INT8 {
+export function ConsiderCivilianQuotes(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, fSetAsUsed: boolean): INT8 {
   let bLoop: INT8;
   let bCivQuoteSectorIndex: INT8;
   let pCivQuoteInfoArray: Pointer<NPCQuoteInfo>;

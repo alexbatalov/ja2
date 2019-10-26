@@ -4,7 +4,7 @@
 let gsCurrentLibrary: INT16 = -1;
 
 // The location of the cdrom drive
-let gzCdDirectory: CHAR8[] /* [SGPFILENAME_LEN] */;
+export let gzCdDirectory: CHAR8[] /* [SGPFILENAME_LEN] */;
 
 //************************************************************************
 //
@@ -15,7 +15,7 @@ let gzCdDirectory: CHAR8[] /* [SGPFILENAME_LEN] */;
 //	will be initialized and game start.
 //
 //************************************************************************
-function InitializeFileDatabase(): boolean {
+export function InitializeFileDatabase(): boolean {
   let i: INT16;
   let uiSize: UINT32;
   let fLibraryInited: boolean = false;
@@ -100,7 +100,7 @@ function ReopenCDLibraries(): boolean {
 //
 //************************************************************************
 
-function ShutDownFileDatabase(): boolean {
+export function ShutDownFileDatabase(): boolean {
   let sLoop1: UINT16;
 
   // Free up the memory used for each library
@@ -278,7 +278,7 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   return true;
 }
 
-function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, uiBytesToRead: UINT32, pBytesRead: Pointer<UINT32>): boolean {
+export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, uiBytesToRead: UINT32, pBytesRead: Pointer<UINT32>): boolean {
   let uiOffsetInLibrary: UINT32;
   let uiLength: UINT32;
   let hLibraryFile: HANDLE;
@@ -328,7 +328,7 @@ function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, u
 //
 //************************************************************************
 
-function CheckIfFileExistInLibrary(pFileName: STR): boolean {
+export function CheckIfFileExistInLibrary(pFileName: STR): boolean {
   let sLibraryID: INT16;
   let pFileHeader: Pointer<FileHeaderStruct>;
 
@@ -468,7 +468,7 @@ function AddSlashToPath(pName: STR): void {
 //
 //************************************************************************
 
-function OpenFileFromLibrary(pName: STR): HWFILE {
+export function OpenFileFromLibrary(pName: STR): HWFILE {
   let pFileHeader: Pointer<FileHeaderStruct>;
   let hLibFile: HWFILE;
   let sLibraryID: INT16;
@@ -568,7 +568,7 @@ function CreateLibraryFileHandle(sLibraryID: INT16, uiFileNum: UINT32): HWFILE {
   return hLibFile;
 }
 
-function CreateRealFileHandle(hFile: HANDLE): HWFILE {
+export function CreateRealFileHandle(hFile: HANDLE): HWFILE {
   let hLibFile: HWFILE;
   let iLoop1: INT32;
   let uiFileNum: UINT32 = 0;
@@ -611,7 +611,7 @@ function CreateRealFileHandle(hFile: HANDLE): HWFILE {
   return hLibFile;
 }
 
-function GetLibraryAndFileIDFromLibraryFileHandle(hlibFile: HWFILE, pLibraryID: Pointer<INT16>, pFileNum: Pointer<UINT32>): boolean {
+export function GetLibraryAndFileIDFromLibraryFileHandle(hlibFile: HWFILE, pLibraryID: Pointer<INT16>, pFileNum: Pointer<UINT32>): boolean {
   pFileNum.value = DB_EXTRACT_FILE_ID(hlibFile);
   pLibraryID.value = DB_EXTRACT_LIBRARY(hlibFile);
 
@@ -630,7 +630,7 @@ function GetLibraryAndFileIDFromLibraryFileHandle(hlibFile: HWFILE, pLibraryID: 
 //
 //************************************************************************
 
-function CloseLibraryFile(sLibraryID: INT16, uiFileID: UINT32): boolean {
+export function CloseLibraryFile(sLibraryID: INT16, uiFileID: UINT32): boolean {
   if (IsLibraryOpened(sLibraryID)) {
     // if the uiFileID is invalid
     if ((uiFileID >= gFileDataBase.pLibraries[sLibraryID].iSizeOfOpenFileArray))
@@ -658,7 +658,7 @@ function CloseLibraryFile(sLibraryID: INT16, uiFileID: UINT32): boolean {
   return true;
 }
 
-function LibraryFileSeek(sLibraryID: INT16, uiFileNum: UINT32, uiDistance: UINT32, uiHowToSeek: UINT8): boolean {
+export function LibraryFileSeek(sLibraryID: INT16, uiFileNum: UINT32, uiDistance: UINT32, uiHowToSeek: UINT8): boolean {
   let uiCurPos: UINT32;
   let uiSize: UINT32;
 
@@ -760,7 +760,7 @@ function CloseLibrary(sLibraryID: INT16): boolean {
   return true;
 }
 
-function IsLibraryOpened(sLibraryID: INT16): boolean {
+export function IsLibraryOpened(sLibraryID: INT16): boolean {
   // if the database is not initialized
   if (!gFileDataBase.fInitialized)
     return false;
@@ -803,7 +803,7 @@ function CheckIfFileIsAlreadyOpen(pFileName: STR, sLibraryID: INT16): boolean {
   return false;
 }
 
-function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime: Pointer<SGP_FILETIME>): boolean {
+export function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime: Pointer<SGP_FILETIME>): boolean {
   let usNumEntries: UINT16 = 0;
   let uiNumBytesRead: UINT32;
   let pDirEntry: Pointer<DIRENTRY>;

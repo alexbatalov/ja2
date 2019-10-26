@@ -17,11 +17,11 @@ const CALLER_UNKNOWN = 6;
 // this variable is a flag used in HandleSight to determine whether (while in non-combat RT)
 // someone has just been seen, EITHER THE MOVER OR SOMEONE THE MOVER SEES
 let gfPlayerTeamSawCreatures: boolean = false;
-let gfPlayerTeamSawJoey: boolean = false;
-let gfMikeShouldSayHi: boolean = false;
+export let gfPlayerTeamSawJoey: boolean = false;
+export let gfMikeShouldSayHi: boolean = false;
 
 let gubBestToMakeSighting: UINT8[] /* [BEST_SIGHTING_ARRAY_SIZE] */;
-let gubBestToMakeSightingSize: UINT8 = 0;
+export let gubBestToMakeSightingSize: UINT8 = 0;
 // BOOLEAN		gfHumanSawSomeoneInRealtime;
 
 let gfDelayResolvingBestSightingDueToDoor: boolean = false;
@@ -32,19 +32,19 @@ let gubShouldBecomeHostileOrSayQuote: UINT8[] /* [SHOULD_BECOME_HOSTILE_SIZE] */
 let gubNumShouldBecomeHostileOrSayQuote: UINT8;
 
 // NB this ID is set for someone opening a door
-let gubInterruptProvoker: UINT8 = NOBODY;
+export let gubInterruptProvoker: UINT8 = NOBODY;
 
-let gbPublicOpplist: INT8[][] /* [MAXTEAMS][TOTAL_SOLDIERS] */;
-let gbSeenOpponents: INT8[][] /* [TOTAL_SOLDIERS][TOTAL_SOLDIERS] */;
-let gsLastKnownOppLoc: INT16[][] /* [TOTAL_SOLDIERS][TOTAL_SOLDIERS] */; // merc vs. merc
-let gbLastKnownOppLevel: INT8[][] /* [TOTAL_SOLDIERS][TOTAL_SOLDIERS] */;
-let gsPublicLastKnownOppLoc: INT16[][] /* [MAXTEAMS][TOTAL_SOLDIERS] */; // team vs. merc
-let gbPublicLastKnownOppLevel: INT8[][] /* [MAXTEAMS][TOTAL_SOLDIERS] */;
-let gubPublicNoiseVolume: UINT8[] /* [MAXTEAMS] */;
-let gsPublicNoiseGridno: INT16[] /* [MAXTEAMS] */;
-let gbPublicNoiseLevel: INT8[] /* [MAXTEAMS] */;
+export let gbPublicOpplist: INT8[][] /* [MAXTEAMS][TOTAL_SOLDIERS] */;
+export let gbSeenOpponents: INT8[][] /* [TOTAL_SOLDIERS][TOTAL_SOLDIERS] */;
+export let gsLastKnownOppLoc: INT16[][] /* [TOTAL_SOLDIERS][TOTAL_SOLDIERS] */; // merc vs. merc
+export let gbLastKnownOppLevel: INT8[][] /* [TOTAL_SOLDIERS][TOTAL_SOLDIERS] */;
+export let gsPublicLastKnownOppLoc: INT16[][] /* [MAXTEAMS][TOTAL_SOLDIERS] */; // team vs. merc
+export let gbPublicLastKnownOppLevel: INT8[][] /* [MAXTEAMS][TOTAL_SOLDIERS] */;
+export let gubPublicNoiseVolume: UINT8[] /* [MAXTEAMS] */;
+export let gsPublicNoiseGridno: INT16[] /* [MAXTEAMS] */;
+export let gbPublicNoiseLevel: INT8[] /* [MAXTEAMS] */;
 
-let gubKnowledgeValue: UINT8[][] /* [10][10] */ = [
+export let gubKnowledgeValue: UINT8[][] /* [10][10] */ = [
   //   P E R S O N A L   O P P L I S T  //
   // -4   -3   -2   -1   0   1   2   3   4   5   //
   [ 0, 1, 2, 3, 0, 5, 4, 3, 2, 1 ], // -4
@@ -75,10 +75,10 @@ let gubKnowledgeValue: UINT8[][] /* [10][10] */ = [
 const MAX_WATCHED_LOC_POINTS = 4;
 const WATCHED_LOC_RADIUS = 1;
 
-let gsWatchedLoc: INT16[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
-let gbWatchedLocLevel: INT8[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
-let gubWatchedLocPoints: UINT8[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
-let gfWatchedLocReset: boolean[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
+export let gsWatchedLoc: INT16[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
+export let gbWatchedLocLevel: INT8[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
+export let gubWatchedLocPoints: UINT8[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
+export let gfWatchedLocReset: boolean[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
 let gfWatchedLocHasBeenIncremented: boolean[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
 
 let gbLookDistance: INT8[][] /* [8][8] */ = [
@@ -109,14 +109,14 @@ let gbSmellStrength: INT8[] /* [3] */ = [
   NORMAL_HUMAN_SMELL_STRENGTH - 1 // snob
 ];
 
-let gsWhoThrewRock: UINT16 = NOBODY;
+export let gsWhoThrewRock: UINT16 = NOBODY;
 
 const NIGHTSIGHTGOGGLES_BONUS = 2;
 const UVGOGGLES_BONUS = 4;
 
 // % values of sighting distance at various light levels
 
-let gbLightSighting: INT8[][] /* [1][16] */ = [
+export let gbLightSighting: INT8[][] /* [1][16] */ = [
   // human
   [
     80, // brightest
@@ -160,7 +160,7 @@ let gbLightSighting: INT8[][] /* [1][16] */ = [
 };
 */
 
-let gubSightFlags: UINT8 = 0;
+export let gubSightFlags: UINT8 = 0;
 
 const DECAY_OPPLIST_VALUE = (value) => {
   if ((value) >= SEEN_THIS_TURN) {
@@ -178,7 +178,7 @@ const DECAY_OPPLIST_VALUE = (value) => {
   }
 };
 
-function AdjustMaxSightRangeForEnvEffects(pSoldier: Pointer<SOLDIERTYPE>, bLightLevel: INT8, sDistVisible: INT16): INT16 {
+export function AdjustMaxSightRangeForEnvEffects(pSoldier: Pointer<SOLDIERTYPE>, bLightLevel: INT8, sDistVisible: INT16): INT16 {
   let sNewDist: INT16 = 0;
 
   sNewDist = sDistVisible * gbLightSighting[0][bLightLevel] / 100;
@@ -399,7 +399,7 @@ function InitSightArrays(): void {
   // gfHumanSawSomeoneInRealtime = FALSE;
 }
 
-function AddToShouldBecomeHostileOrSayQuoteList(ubID: UINT8): void {
+export function AddToShouldBecomeHostileOrSayQuoteList(ubID: UINT8): void {
   let ubLoop: UINT8;
 
   Assert(gubNumShouldBecomeHostileOrSayQuote < SHOULD_BECOME_HOSTILE_SIZE);
@@ -448,7 +448,7 @@ function SelectSpeakerFromHostileOrSayQuoteList(): UINT8 {
   }
 }
 
-function CheckHostileOrSayQuoteList(): void {
+export function CheckHostileOrSayQuoteList(): void {
   if (gubNumShouldBecomeHostileOrSayQuote == 0 || !DialogueQueueIsEmpty() || gfInTalkPanel || gfWaitingForTriggerTimer) {
     return;
   } else {
@@ -495,7 +495,7 @@ function CheckHostileOrSayQuoteList(): void {
   }
 }
 
-function HandleSight(pSoldier: Pointer<SOLDIERTYPE>, ubSightFlags: UINT8): void {
+export function HandleSight(pSoldier: Pointer<SOLDIERTYPE>, ubSightFlags: UINT8): void {
   let uiLoop: UINT32;
   let pThem: Pointer<SOLDIERTYPE>;
   let bTempNewSituation: INT8;
@@ -739,11 +739,11 @@ function DistanceSmellable(pSoldier: Pointer<SOLDIERTYPE>, pSubject: Pointer<SOL
   return sDistVisible;
 }
 
-function MaxDistanceVisible(): INT16 {
+export function MaxDistanceVisible(): INT16 {
   return STRAIGHT * 2;
 }
 
-function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubjectDir: INT8, sSubjectGridNo: INT16, bLevel: INT8): INT16 {
+export function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubjectDir: INT8, sSubjectGridNo: INT16, bLevel: INT8): INT16 {
   let sDistVisible: INT16;
   let bLightLevel: INT8;
   let pSubject: Pointer<SOLDIERTYPE>;
@@ -860,7 +860,7 @@ function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubj
   return sDistVisible;
 }
 
-function EndMuzzleFlash(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function EndMuzzleFlash(pSoldier: Pointer<SOLDIERTYPE>): void {
   let uiLoop: UINT32;
   let pOtherSoldier: Pointer<SOLDIERTYPE>;
 
@@ -893,7 +893,7 @@ function EndMuzzleFlash(pSoldier: Pointer<SOLDIERTYPE>): void {
   DecideTrueVisibility(pSoldier, false);
 }
 
-function TurnOffEveryonesMuzzleFlashes(): void {
+export function TurnOffEveryonesMuzzleFlashes(): void {
   let uiLoop: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -906,7 +906,7 @@ function TurnOffEveryonesMuzzleFlashes(): void {
   }
 }
 
-function TurnOffTeamsMuzzleFlashes(ubTeam: UINT8): void {
+export function TurnOffTeamsMuzzleFlashes(ubTeam: UINT8): void {
   let ubLoop: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -975,7 +975,7 @@ function DecideHearing(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return bHearing;
 }
 
-function InitOpplistForDoorOpening(): void {
+export function InitOpplistForDoorOpening(): void {
   // this is called before generating a noise for opening a door so that
   // the results of hearing the noise are lumped in with the results from AllTeamsLookForAll
   gubBestToMakeSightingSize = BEST_SIGHTING_ARRAY_SIZE_ALL_TEAMS_LOOK_FOR_ALL;
@@ -985,7 +985,7 @@ function InitOpplistForDoorOpening(): void {
   InitSightArrays();
 }
 
-function AllTeamsLookForAll(ubAllowInterrupts: UINT8): void {
+export function AllTeamsLookForAll(ubAllowInterrupts: UINT8): void {
   let uiLoop: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1934,7 +1934,7 @@ function RemoveOneOpponent(pSoldier: Pointer<SOLDIERTYPE>): void {
     pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
 }
 
-function RemoveManAsTarget(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RemoveManAsTarget(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pOpponent: Pointer<SOLDIERTYPE>;
   let ubTarget: UINT8;
   let ubLoop: UINT8;
@@ -2191,7 +2191,7 @@ HandleSight(pSoldier,SIGHT_LOOK);
 
 */
 
-function InitOpponentKnowledgeSystem(): void {
+export function InitOpponentKnowledgeSystem(): void {
   let iTeam: INT32;
   let cnt: INT32;
   let cnt2: INT32;
@@ -2224,14 +2224,14 @@ function InitOpponentKnowledgeSystem(): void {
   gubNumShouldBecomeHostileOrSayQuote = 0;
 }
 
-function InitSoldierOppList(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function InitSoldierOppList(pSoldier: Pointer<SOLDIERTYPE>): void {
   memset(pSoldier.value.bOppList, NOT_HEARD_OR_SEEN, sizeof(pSoldier.value.bOppList));
   pSoldier.value.bOppCnt = 0;
   ResetLastKnownLocs(pSoldier);
   memset(gbSeenOpponents[pSoldier.value.ubID], 0, MAXMERCS);
 }
 
-function BetweenTurnsVisibilityAdjustments(): void {
+export function BetweenTurnsVisibilityAdjustments(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -2414,7 +2414,7 @@ function OurTeamSeesSomeone(pSoldier: Pointer<SOLDIERTYPE>, bNumReRevealed: INT8
   }
 }
 
-function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, ubTeamToRadioTo: UINT8): void {
+export function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, ubTeamToRadioTo: UINT8): void {
   let pOpponent: Pointer<SOLDIERTYPE>;
   let iLoop: INT32;
   let start: UINT8;
@@ -2606,7 +2606,7 @@ const COLOR2 = FONT_MCOLOR_BLACK << 8 | FONT_MCOLOR_LTGRAY2;
 
 const LINE_HEIGHT = 15;
 
-function DebugSoldierPage1(): void {
+export function DebugSoldierPage1(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let usSoldierIndex: UINT16;
   let uiMercFlags: UINT32;
@@ -2782,7 +2782,7 @@ function DebugSoldierPage1(): void {
   }
 }
 
-function DebugSoldierPage2(): void {
+export function DebugSoldierPage2(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let usSoldierIndex: UINT16;
   let uiMercFlags: UINT32;
@@ -3026,7 +3026,7 @@ function DebugSoldierPage2(): void {
   }
 }
 
-function DebugSoldierPage3(): void {
+export function DebugSoldierPage3(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let usSoldierIndex: UINT16;
   let uiMercFlags: UINT32;
@@ -3356,7 +3356,7 @@ function WriteQuantityAndAttachments(pObject: Pointer<OBJECTTYPE>, yp: INT32): v
   }
 }
 
-function DebugSoldierPage4(): void {
+export function DebugSoldierPage4(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiMercFlags: UINT32;
   let szOrders: UINT16[] /* [20] */;
@@ -3646,7 +3646,7 @@ function DebugSoldierPage4(): void {
 
 const MAX_MOVEMENT_NOISE = 9;
 
-function MovementNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+export function MovementNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   let iStealthSkill: INT32;
   let iRoll: INT32;
   let ubMaxVolume: UINT8;
@@ -3773,7 +3773,7 @@ function MovementNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   return ubVolume;
 }
 
-function DoorOpeningNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+export function DoorOpeningNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   let sGridNo: INT16;
   let pDoorStatus: Pointer<DOOR_STATUS>;
   let ubDoorNoise: UINT8;
@@ -3797,7 +3797,7 @@ function DoorOpeningNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   }
 }
 
-function MakeNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrType: UINT8, ubVolume: UINT8, ubNoiseType: UINT8): void {
+export function MakeNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrType: UINT8, ubVolume: UINT8, ubNoiseType: UINT8): void {
   let SNoise: EV_S_NOISE;
 
   SNoise.ubNoiseMaker = ubNoiseMaker;
@@ -3887,7 +3887,7 @@ function MakeNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrType
   */
 }
 
-function OurNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrType: UINT8, ubVolume: UINT8, ubNoiseType: UINT8): void {
+export function OurNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrType: UINT8, ubVolume: UINT8, ubNoiseType: UINT8): void {
   let bSendNoise: INT8 = false;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -4693,7 +4693,7 @@ function TellPlayerAboutNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT
   // flag soldier as having reported noise in a particular direction
 }
 
-function VerifyAndDecayOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function VerifyAndDecayOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
   let uiLoop: UINT32;
   let pPersOL: Pointer<INT8>; // pointer into soldier's opponent list
   let pOpponent: Pointer<SOLDIERTYPE>;
@@ -4780,7 +4780,7 @@ if (*pPersOL < HEARD_2_TURNS_AGO)
   }
 }
 
-function DecayIndividualOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DecayIndividualOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
   let uiLoop: UINT32;
   let pPersOL: Pointer<INT8>; // pointer into soldier's opponent list
   let pOpponent: Pointer<SOLDIERTYPE>;
@@ -4827,7 +4827,7 @@ function DecayIndividualOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function VerifyPublicOpplistDueToDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function VerifyPublicOpplistDueToDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   let uiLoop: UINT32;
   let uiTeamMateLoop: UINT32;
   let pPersOL: Pointer<INT8>;
@@ -4901,7 +4901,7 @@ function VerifyPublicOpplistDueToDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function DecayPublicOpplist(bTeam: INT8): void {
+export function DecayPublicOpplist(bTeam: INT8): void {
   let uiLoop: UINT32;
   let bNoPubliclyKnownOpponents: INT8 = true;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -4971,7 +4971,7 @@ function DecayPublicOpplist(bTeam: INT8): void {
 }
 
 // bit of a misnomer; this is now decay all opplists
-function NonCombatDecayPublicOpplist(uiTime: UINT32): void {
+export function NonCombatDecayPublicOpplist(uiTime: UINT32): void {
   let cnt: UINT32;
 
   if (uiTime - gTacticalStatus.uiTimeSinceLastOpplistDecay >= TIME_BETWEEN_RT_OPPLIST_DECAYS) {
@@ -4993,7 +4993,7 @@ function NonCombatDecayPublicOpplist(uiTime: UINT32): void {
   }
 }
 
-function RecalculateOppCntsDueToNoLongerNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RecalculateOppCntsDueToNoLongerNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
   let uiLoop: UINT32;
   let pOpponent: Pointer<SOLDIERTYPE>;
 
@@ -5017,7 +5017,7 @@ function RecalculateOppCntsDueToNoLongerNeutral(pSoldier: Pointer<SOLDIERTYPE>):
   }
 }
 
-function RecalculateOppCntsDueToBecomingNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RecalculateOppCntsDueToBecomingNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
   let uiLoop: UINT32;
   let pOpponent: Pointer<SOLDIERTYPE>;
 
@@ -5038,7 +5038,7 @@ function RecalculateOppCntsDueToBecomingNeutral(pSoldier: Pointer<SOLDIERTYPE>):
   }
 }
 
-function NoticeUnseenAttacker(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, bReason: INT8): void {
+export function NoticeUnseenAttacker(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, bReason: INT8): void {
   let bOldOppList: INT8;
   let ubTileSightLimit: UINT8;
   let fSeesAttacker: boolean = false;
@@ -5154,7 +5154,7 @@ function NoticeUnseenAttacker(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointe
   }
 }
 
-function CheckForAlertWhenEnemyDies(pDyingSoldier: Pointer<SOLDIERTYPE>): void {
+export function CheckForAlertWhenEnemyDies(pDyingSoldier: Pointer<SOLDIERTYPE>): void {
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let bDir: INT8;
@@ -5202,7 +5202,7 @@ function ArmyKnowsOfPlayersPresence(): boolean {
   return false;
 }
 
-function MercSeesCreature(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function MercSeesCreature(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let fSeesCreature: boolean = false;
   let ubID: UINT8;
 
@@ -5251,7 +5251,7 @@ function FindWatchedLoc(ubID: UINT8, sGridNo: INT16, bLevel: INT8): INT8 {
   return -1;
 }
 
-function GetWatchedLocPoints(ubID: UINT8, sGridNo: INT16, bLevel: INT8): INT8 {
+export function GetWatchedLocPoints(ubID: UINT8, sGridNo: INT16, bLevel: INT8): INT8 {
   let bLoc: INT8;
 
   bLoc = FindWatchedLoc(ubID, sGridNo, bLevel);
@@ -5265,7 +5265,7 @@ function GetWatchedLocPoints(ubID: UINT8, sGridNo: INT16, bLevel: INT8): INT8 {
   return 0;
 }
 
-function GetHighestVisibleWatchedLoc(ubID: UINT8): INT8 {
+export function GetHighestVisibleWatchedLoc(ubID: UINT8): INT8 {
   let bLoop: INT8;
   let bHighestLoc: INT8 = -1;
   let bHighestPoints: INT8 = 0;
@@ -5284,7 +5284,7 @@ function GetHighestVisibleWatchedLoc(ubID: UINT8): INT8 {
   return bHighestLoc;
 }
 
-function GetHighestWatchedLocPoints(ubID: UINT8): INT8 {
+export function GetHighestWatchedLocPoints(ubID: UINT8): INT8 {
   let bLoop: INT8;
   let bHighestPoints: INT8 = 0;
 

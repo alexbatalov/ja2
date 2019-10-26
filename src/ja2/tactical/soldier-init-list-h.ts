@@ -1,4 +1,4 @@
-interface SOLDIERINITNODE {
+export interface SOLDIERINITNODE {
   ubNodeID: UINT8;
   ubSoldierID: UINT8;
   pBasicPlacement: Pointer<BASIC_SOLDIERCREATE_STRUCT>;

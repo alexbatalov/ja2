@@ -51,7 +51,7 @@ function CreateNewAIListEntry(ubNewEntry: UINT8, ubID: UINT8, bPriority: INT8): 
   return addressof(gAIList[ubNewEntry]);
 }
 
-function RemoveFirstAIListEntry(): UINT8 {
+export function RemoveFirstAIListEntry(): UINT8 {
   let pOldFirstEntry: Pointer<AILIST>;
   let ubID: UINT8;
 
@@ -215,7 +215,7 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
   return true;
 }
 
-function MoveToFrontOfAIList(ubID: UINT8): boolean {
+export function MoveToFrontOfAIList(ubID: UINT8): boolean {
   // we'll have to fake this guy's alert status (in the list) to be the same as the current
   // front of the list
   let bPriority: INT8;
@@ -243,7 +243,7 @@ function MoveToFrontOfAIList(ubID: UINT8): boolean {
   }
 }
 
-function BuildAIListForTeam(bTeam: INT8): boolean {
+export function BuildAIListForTeam(bTeam: INT8): boolean {
   // loop through all non-player-team guys and add to list
   let uiLoop: UINT32;
   let fInsertRet: boolean;
@@ -290,7 +290,7 @@ function BuildAIListForTeam(bTeam: INT8): boolean {
   return fRet;
 }
 
-let gubEncryptionArray1: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
+export let gubEncryptionArray1: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
   [ 11, 129, 18, 136, 163, 80, 128, 53, 174, 146, 188, 240, 208, 162, 127, 192, 251, 6, 52, 128, 119, 123, 234, 131, 60, 66, 171, 237, 89, 192, 17, 37, 139, 20, 185, 48, 218, 176, 116, 87, 91, 156, 166, 224, 215, 100, 237, 71, 157 ],
 
   [ 99, 93, 179, 25, 113, 109, 38, 135, 144, 248, 17, 108, 178, 84, 210, 254, 54, 240, 209, 92, 35, 121, 166, 153, 203, 239, 27, 134, 231, 193, 97, 73, 188, 59, 87, 146, 111, 103, 48, 161, 25, 196, 84, 201, 179, 208, 220, 189, 113 ],

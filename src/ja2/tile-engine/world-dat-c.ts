@@ -1,8 +1,8 @@
 // THIS FILE CONTAINS DEFINITIONS FOR TILESET FILES
 
-let gTilesets: TILESET[] /* [NUM_TILESETS] */;
+export let gTilesets: TILESET[] /* [NUM_TILESETS] */;
 
-function InitEngineTilesets(): void {
+export function InitEngineTilesets(): void {
   let ubNumSets: UINT8;
   let cnt: UINT32;
   let cnt2: UINT32;
@@ -84,7 +84,7 @@ function InitEngineTilesets(): void {
   gTilesets[Enum316.TEMP_20].MovementCostFnc = SetTilesetFourTerrainValues;
 }
 
-function SetTilesetOneTerrainValues(): void {
+export function SetTilesetOneTerrainValues(): void {
   // FIRST TEXUTRES
   gTileSurfaceArray[Enum313.FIRSTTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
   gTileSurfaceArray[Enum313.SECONDTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;

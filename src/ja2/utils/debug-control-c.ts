@@ -1,4 +1,4 @@
-function LiveMessage(strMessage: Pointer<CHAR8>): void {
+export function LiveMessage(strMessage: Pointer<CHAR8>): void {
   let OutFile: Pointer<FILE>;
 
   if ((OutFile = fopen("Log.txt", "a+t")) != null) {

@@ -343,7 +343,7 @@ let gusQuestDebugBlue: UINT16;
 let gusQuestDebugLtBlue: UINT16;
 let gusQuestDebugDkBlue: UINT16;
 
-let gusFactAtTopOfList: UINT16;
+export let gusFactAtTopOfList: UINT16;
 
 // INT16		gsCurScrollBoxY=0;
 
@@ -352,7 +352,7 @@ let gItemListBox: SCROLL_BOX; // The Npc Scroll box
 
 let gpActiveListBox: Pointer<SCROLL_BOX>; // Only 1 scroll box is active at a time, this is set to it.
 
-let gsQdsEnteringGridNo: INT16 = 0;
+export let gsQdsEnteringGridNo: INT16 = 0;
 
 let gubTextEntryAction: UINT8 = Enum166.QD_DROP_DOWN_NO_ACTION;
 let gfTextEntryActive: boolean = false;
@@ -367,7 +367,7 @@ let gubNumNPCinSector: UINT8;
 
 let gubCurQuestSelected: UINT8;
 let gusCurFactSelected: UINT16;
-let gusFactAtTopOfList: UINT16;
+export let gusFactAtTopOfList: UINT16;
 
 // INT16				gsCurrentNPCLog=-1;						//If this is set, the value will be set to the
 let gfNpcLogButton: boolean = false;
@@ -471,7 +471,7 @@ let guiQDPgDownButtonButton: UINT32;
 //
 //*******************************
 
-function QuestDebugScreenInit(): UINT32 {
+export function QuestDebugScreenInit(): UINT32 {
   let usListBoxFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT()) + 2;
 
   // Set so next time we come in, we can set up
@@ -540,7 +540,7 @@ function QuestDebugScreenInit(): UINT32 {
   return true;
 }
 
-function QuestDebugScreenHandle(): UINT32 {
+export function QuestDebugScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfQuestDebugEntry) {
@@ -616,7 +616,7 @@ function QuestDebugScreenHandle(): UINT32 {
   return Enum26.QUEST_DEBUG_SCREEN;
 }
 
-function QuestDebugScreenShutdown(): UINT32 {
+export function QuestDebugScreenShutdown(): UINT32 {
   return true;
 }
 

@@ -6,7 +6,7 @@ let giIMPFinishButton: INT32[] /* [6] */;
 let giIMPFinishButtonImage: INT32[] /* [6] */;
 
 // we are in fact done
-let fFinishedCharGeneration: boolean = false;
+export let fFinishedCharGeneration: boolean = false;
 
 // portrait position
 let sFaceX: INT16 = 253;
@@ -18,7 +18,7 @@ let uiVoiceSound: UINT32 = 0;
 // image handle
 let guiCHARACTERPORTRAIT: UINT32;
 
-function EnterIMPFinish(): void {
+export function EnterIMPFinish(): void {
   // load graphic for portrait
   LoadCharacterPortrait();
 
@@ -35,7 +35,7 @@ function EnterIMPFinish(): void {
   return;
 }
 
-function RenderIMPFinish(): void {
+export function RenderIMPFinish(): void {
   // the background
   RenderProfileBackGround();
 
@@ -48,7 +48,7 @@ function RenderIMPFinish(): void {
   return;
 }
 
-function ExitIMPFinish(): void {
+export function ExitIMPFinish(): void {
   // remove buttons for IMP finish screen
   DeleteIMPFinishButtons();
 
@@ -58,7 +58,7 @@ function ExitIMPFinish(): void {
   return;
 }
 
-function HandleIMPFinish(): void {
+export function HandleIMPFinish(): void {
   return;
 }
 

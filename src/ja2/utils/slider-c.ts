@@ -73,7 +73,7 @@ let guiSliderBoxImage: UINT32 = 0;
 //
 ///////////////////////////////////////////////////
 
-function InitSlider(): boolean {
+export function InitSlider(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load Slider Box Graphic graphic and add it
@@ -86,7 +86,7 @@ function InitSlider(): boolean {
   return true;
 }
 
-function ShutDownSlider(): void {
+export function ShutDownSlider(): void {
   let pRemove: Pointer<SLIDER> = null;
   let pTemp: Pointer<SLIDER> = null;
 
@@ -107,7 +107,7 @@ function ShutDownSlider(): void {
   DeleteVideoObjectFromIndex(guiSliderBoxImage);
 }
 
-function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usNumberOfIncrements: UINT16, sPriority: INT8, SliderChangeCallback: SLIDER_CHANGE_CALLBACK, uiFlags: UINT32): INT32 {
+export function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usNumberOfIncrements: UINT16, sPriority: INT8, SliderChangeCallback: SLIDER_CHANGE_CALLBACK, uiFlags: UINT32): INT32 {
   let pTemp: Pointer<SLIDER> = null;
   let pNewSlider: Pointer<SLIDER> = null;
   let iNewID: INT32 = 0;
@@ -204,7 +204,7 @@ function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UIN
   return pNewSlider.value.uiSliderID;
 }
 
-function RenderAllSliderBars(): void {
+export function RenderAllSliderBars(): void {
   let pTemp: Pointer<SLIDER> = null;
 
   // set the currently selectd slider bar
@@ -316,7 +316,7 @@ function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
   }
 }
 
-function RemoveSliderBar(uiSliderID: UINT32): void {
+export function RemoveSliderBar(uiSliderID: UINT32): void {
   let pTemp: Pointer<SLIDER> = null;
   let pNodeToRemove: Pointer<SLIDER> = null;
   //	UINT32	cnt;
@@ -594,7 +594,7 @@ function GetSliderFromID(uiSliderID: UINT32): Pointer<SLIDER> {
   return pTemp;
 }
 
-function SetSliderValue(uiSliderID: UINT32, uiNewValue: UINT32): void {
+export function SetSliderValue(uiSliderID: UINT32, uiNewValue: UINT32): void {
   let pSlider: Pointer<SLIDER> = null;
 
   pSlider = GetSliderFromID(uiSliderID);

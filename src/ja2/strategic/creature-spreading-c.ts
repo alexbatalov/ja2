@@ -56,8 +56,8 @@ const HARD_QUEEN_REPRODUCTION_BONUS = 3;
 // When either in a cave level with blue lights or there is a creature presence, then
 // we override the normal music with the creature music.  The conditions are maintained
 // inside the function PrepareCreaturesForBattle() in this module.
-let gfUseCreatureMusic: boolean = false;
-let gfCreatureMeanwhileScenePlayed: boolean = false;
+export let gfUseCreatureMusic: boolean = false;
+export let gfCreatureMeanwhileScenePlayed: boolean = false;
 const enum Enum128 {
   QUEEN_LAIR, // where the queen lives.  Highly protected
   LAIR, // part of the queen's lair -- lots of babies and defending mothers
@@ -83,13 +83,13 @@ let giDestroyedLairID: INT32 = 0;
 // prebattle interface, autoresolve, etc.
 let gsCreatureInsertionCode: INT16 = 0;
 let gsCreatureInsertionGridNo: INT16 = 0;
-let gubNumCreaturesAttackingTown: UINT8 = 0;
+export let gubNumCreaturesAttackingTown: UINT8 = 0;
 let gubYoungMalesAttackingTown: UINT8 = 0;
 let gubYoungFemalesAttackingTown: UINT8 = 0;
 let gubAdultMalesAttackingTown: UINT8 = 0;
 let gubAdultFemalesAttackingTown: UINT8 = 0;
 let gubCreatureBattleCode: UINT8 = Enum129.CREATURE_BATTLE_CODE_NONE;
-let gubSectorIDOfCreatureAttack: UINT8 = 0;
+export let gubSectorIDOfCreatureAttack: UINT8 = 0;
 
 function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UINT8): Pointer<CREATURE_DIRECTIVE> {
   let curr: Pointer<CREATURE_DIRECTIVE>;
@@ -197,7 +197,7 @@ function InitLairGrumm(): void {
   curr.value.next = NewDirective(Enum123.SEC_H3, 1, Enum128.MINE_EXIT);
 }
 
-function InitCreatureQuest(): void {
+export function InitCreatureQuest(): void {
   let curr: Pointer<UNDERGROUND_SECTORINFO>;
   let fPlayMeanwhile: boolean = false;
   let i: INT32 = -1;
@@ -439,7 +439,7 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
   return false;
 }
 
-function SpreadCreatures(): void {
+export function SpreadCreatures(): void {
   let usNewCreatures: UINT16 = 0;
 
   if (giLairID == -1) {
@@ -468,7 +468,7 @@ function SpreadCreatures(): void {
   }
 }
 
-function DecayCreatures(): void {
+export function DecayCreatures(): void {
   // when the queen dies, we need to kill off the creatures over a period of time.
 }
 
@@ -680,7 +680,7 @@ function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: boolean): vo
   gubSectorIDOfCreatureAttack = ubSectorID;
 }
 
-function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: boolean): void {
+export function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: boolean): void {
   // This is the launching point of the creature attack.
   let pSector: Pointer<UNDERGROUND_SECTORINFO>;
   let ubSectorX: UINT8;
@@ -795,7 +795,7 @@ function DeleteDirectiveNode(node: Pointer<Pointer<CREATURE_DIRECTIVE>>): void {
 }
 
 // Recursively delete all nodes (from the top down).
-function DeleteCreatureDirectives(): void {
+export function DeleteCreatureDirectives(): void {
   if (lair)
     DeleteDirectiveNode(addressof(lair));
   giLairID = 0;
@@ -809,7 +809,7 @@ function ClearCreatureQuest(): void {
   DeleteCreatureDirectives();
 }
 
-function EndCreatureQuest(): void {
+export function EndCreatureQuest(): void {
   let curr: Pointer<CREATURE_DIRECTIVE>;
   let pSector: Pointer<UNDERGROUND_SECTORINFO>;
   let i: INT32;
@@ -857,7 +857,7 @@ function CreaturesInUndergroundSector(ubSectorID: UINT8, ubSectorZ: UINT8): UINT
   return 0;
 }
 
-function MineClearOfMonsters(ubMineIndex: UINT8): boolean {
+export function MineClearOfMonsters(ubMineIndex: UINT8): boolean {
   Assert((ubMineIndex >= 0) && (ubMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   if (!gMineStatus[ubMineIndex].fPrevInvadedByMonsters) {
@@ -909,7 +909,7 @@ function MineClearOfMonsters(ubMineIndex: UINT8): boolean {
   return true;
 }
 
-function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
+export function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
   let i: INT32;
   let iRandom: INT32;
   let ubYoungMalePercentage: UINT8 = 10;
@@ -939,7 +939,7 @@ function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYoungMale
   }
 }
 
-function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatures: Pointer<UINT8>, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
+export function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatures: Pointer<UINT8>, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
   let pSector: Pointer<SECTORINFO>;
   let i: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -973,7 +973,7 @@ function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatu
   }
 }
 
-function PrepareCreaturesForBattle(): boolean {
+export function PrepareCreaturesForBattle(): boolean {
   let pSector: Pointer<UNDERGROUND_SECTORINFO>;
   let i: INT32;
   let iRandom: INT32;
@@ -1140,7 +1140,7 @@ function PrepareCreaturesForBattle(): boolean {
   return true;
 }
 
-function CreatureNightPlanning(): void {
+export function CreatureNightPlanning(): void {
   // Check the populations of the mine exits, and factor a chance for them to attack at night.
   let ubNumCreatures: UINT8;
   ubNumCreatures = CreaturesInUndergroundSector(Enum123.SEC_H3, 1);
@@ -1165,7 +1165,7 @@ function CreatureNightPlanning(): void {
   }
 }
 
-function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
+export function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   let ubValidMines: UINT8 = 0;
   if (!gGameOptions.fSciFi)
     return; // No scifi, no creatures...
@@ -1191,7 +1191,7 @@ function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSectorY: IN
   }
 }
 
-function SaveCreatureDirectives(hFile: HWFILE): boolean {
+export function SaveCreatureDirectives(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   FileWrite(hFile, addressof(giHabitatedDistance), 4, addressof(uiNumBytesWritten));
@@ -1219,7 +1219,7 @@ function SaveCreatureDirectives(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): boolean {
+export function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): boolean {
   let uiNumBytesRead: UINT32;
   FileRead(hFile, addressof(giHabitatedDistance), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT32)) {
@@ -1273,11 +1273,11 @@ function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): bool
   return true;
 }
 
-function ForceCreaturesToAvoidMineTemporarily(ubMineIndex: UINT8): void {
+export function ForceCreaturesToAvoidMineTemporarily(ubMineIndex: UINT8): void {
   gMineStatus[Enum179.MINE_GRUMM].usValidDayCreaturesCanInfest = (GetWorldDay() + 2);
 }
 
-function PlayerGroupIsInACreatureInfestedMine(): boolean {
+export function PlayerGroupIsInACreatureInfestedMine(): boolean {
   let curr: Pointer<CREATURE_DIRECTIVE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
@@ -1313,7 +1313,7 @@ function PlayerGroupIsInACreatureInfestedMine(): boolean {
 }
 
 // Returns TRUE if valid and creature quest over, FALSE if creature quest active or not yet started
-function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>, psInsertionGridNo: Pointer<INT16>): boolean {
+export function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>, psInsertionGridNo: Pointer<INT16>): boolean {
   let iSwitchValue: INT32;
 
   if (!gfWorldLoaded) {

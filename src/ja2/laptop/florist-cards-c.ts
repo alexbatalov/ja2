@@ -21,7 +21,7 @@ const FLORIST_CARD_BACK_BUTTON_Y = LAPTOP_SCREEN_WEB_UL_Y + 12;
 
 let guiCardBackground: UINT32;
 
-let gbCurrentlySelectedCard: INT8;
+export let gbCurrentlySelectedCard: INT8;
 
 // link to the card gallery
 let gSelectedFloristCardsRegion: MOUSE_REGION[] /* [9] */;
@@ -32,7 +32,7 @@ let guiFlowerCardsBackButton: UINT32;
 function GameInitFloristCards(): void {
 }
 
-function EnterFloristCards(): boolean {
+export function EnterFloristCards(): boolean {
   let i: UINT16;
   let j: UINT16;
   let usPosX: UINT16;
@@ -73,7 +73,7 @@ function EnterFloristCards(): boolean {
   return true;
 }
 
-function ExitFloristCards(): void {
+export function ExitFloristCards(): void {
   let i: UINT8;
 
   RemoveFloristDefaults();
@@ -87,10 +87,10 @@ function ExitFloristCards(): void {
   RemoveButton(guiFlowerCardsBackButton);
 }
 
-function HandleFloristCards(): void {
+export function HandleFloristCards(): void {
 }
 
-function RenderFloristCards(): void {
+export function RenderFloristCards(): void {
   let i: UINT8;
   let j: UINT8;
   let ubCount: UINT8;

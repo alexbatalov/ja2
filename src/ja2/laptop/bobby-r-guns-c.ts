@@ -104,7 +104,7 @@ const BOBBYR_ORDER_SUBTOTAL_Y = BOBBYR_ORDER_FORM_Y + 2; // BOBBYR_HOME_BUTTON_Y
 const BOBBYR_PERCENT_FUNTCIONAL_X = BOBBYR_ORDER_SUBTOTAL_X;
 const BOBBYR_PERCENT_FUNTCIONAL_Y = BOBBYR_ORDER_SUBTOTAL_Y + 15;
 
-let BobbyRayPurchases: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
+export let BobbyRayPurchases: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
 
 // BobbyRayOrderStruct *BobbyRayOrdersOnDeliveryArray=NULL;
 // UINT8	usNumberOfBobbyRayOrderItems = 0;
@@ -113,7 +113,7 @@ let BobbyRayPurchases: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
 let guiGunBackground: UINT32;
 let guiGunsGrid: UINT32;
 let guiBrTitle: UINT32;
-let gusCurWeaponIndex: UINT16;
+export let gusCurWeaponIndex: UINT16;
 let gubCurPage: UINT8;
 let ubCatalogueButtonValues: UINT8[] /* [] */ = [
   Enum95.LAPTOP_MODE_BOBBY_R_GUNS,
@@ -150,8 +150,8 @@ let gSelectedBigImageRegion: MOUSE_REGION[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */;
 let guiBobbyROrderForm: UINT32;
 let guiBobbyROrderFormImage: INT32;
 
-let guiBobbyRHome: UINT32;
-let guiBobbyRHomeImage: INT32;
+export let guiBobbyRHome: UINT32;
+export let guiBobbyRHomeImage: INT32;
 
 // Link from the title
 let gSelectedTitleImageLinkRegion: MOUSE_REGION;
@@ -160,7 +160,7 @@ let guiTempCurrentMode: UINT32;
 
 // ppp
 
-function GameInitBobbyRGuns(): void {
+export function GameInitBobbyRGuns(): void {
   guiTempCurrentMode = 0;
 
   memset(addressof(BobbyRayPurchases), 0, MAX_PURCHASE_AMOUNT);
@@ -172,7 +172,7 @@ function EnterInitBobbyRGuns(): void {
   memset(addressof(BobbyRayPurchases), 0, MAX_PURCHASE_AMOUNT);
 }
 
-function EnterBobbyRGuns(): boolean {
+export function EnterBobbyRGuns(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   gfBigImageMouseRegionCreated = false;
@@ -207,7 +207,7 @@ function EnterBobbyRGuns(): boolean {
   return true;
 }
 
-function ExitBobbyRGuns(): void {
+export function ExitBobbyRGuns(): void {
   DeleteVideoObjectFromIndex(guiGunBackground);
   DeleteVideoObjectFromIndex(guiGunsGrid);
   DeleteBobbyBrTitle();
@@ -219,10 +219,10 @@ function ExitBobbyRGuns(): void {
   guiLastBobbyRayPage = Enum95.LAPTOP_MODE_BOBBY_R_GUNS;
 }
 
-function HandleBobbyRGuns(): void {
+export function HandleBobbyRGuns(): void {
 }
 
-function RenderBobbyRGuns(): void {
+export function RenderBobbyRGuns(): void {
   let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiGunBackground);
@@ -242,7 +242,7 @@ function RenderBobbyRGuns(): void {
   InvalidateRegion(0, 0, 640, 480);
 }
 
-function DisplayBobbyRBrTitle(): boolean {
+export function DisplayBobbyRBrTitle(): boolean {
   let hPixHandle: HVOBJECT;
 
   // BR title
@@ -261,7 +261,7 @@ function DisplayBobbyRBrTitle(): boolean {
   return true;
 }
 
-function InitBobbyBrTitle(): boolean {
+export function InitBobbyBrTitle(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the br title graphic and add it
@@ -278,7 +278,7 @@ function InitBobbyBrTitle(): boolean {
   return true;
 }
 
-function DeleteBobbyBrTitle(): boolean {
+export function DeleteBobbyBrTitle(): boolean {
   DeleteVideoObjectFromIndex(guiBrTitle);
 
   MSYS_RemoveRegion(addressof(gSelectedTitleImageLinkRegion));
@@ -295,7 +295,7 @@ function SelectTitleImageLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iRea
   }
 }
 
-function InitBobbyMenuBar(): boolean {
+export function InitBobbyMenuBar(): boolean {
   let i: UINT8;
   let usPosX: UINT16;
   let bCurMode: UINT8;
@@ -345,7 +345,7 @@ function InitBobbyMenuBar(): boolean {
   return true;
 }
 
-function DeleteBobbyMenuBar(): boolean {
+export function DeleteBobbyMenuBar(): boolean {
   let i: UINT8;
 
   UnloadButtonImage(guiBobbyRNextPageImage);
@@ -430,7 +430,7 @@ function BtnBobbyRNextPreviousPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   }
 }
 
-function DisplayItemInfo(uiItemClass: UINT32): boolean {
+export function DisplayItemInfo(uiItemClass: UINT32): boolean {
   let i: UINT16;
   let ubCount: UINT8 = 0;
   let PosY: UINT16;
@@ -989,7 +989,7 @@ void CalculateFirstAndLastIndexs()
 */
 
 // Loops through Bobby Rays Inventory to find the first and last index
-function SetFirstLastPagesForNew(uiClassMask: UINT32): void {
+export function SetFirstLastPagesForNew(uiClassMask: UINT32): void {
   let i: UINT16;
   let sFirst: INT16 = -1;
   let sLast: INT16 = -1;
@@ -1027,7 +1027,7 @@ function SetFirstLastPagesForNew(uiClassMask: UINT32): void {
 }
 
 // Loops through Bobby Rays Used Inventory to find the first and last index
-function SetFirstLastPagesForUsed(): void {
+export function SetFirstLastPagesForUsed(): void {
   let i: UINT16;
   let sFirst: INT16 = -1;
   let sLast: INT16 = -1;
@@ -1096,7 +1096,7 @@ function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbe
   gfBigImageMouseRegionCreated = true;
 }
 
-function DeleteMouseRegionForBigImage(): void {
+export function DeleteMouseRegionForBigImage(): void {
   let i: UINT8;
 
   if (!gfBigImageMouseRegionCreated)
@@ -1271,7 +1271,7 @@ function BtnBobbyRHomeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function UpdateButtonText(uiCurPage: UINT32): void {
+export function UpdateButtonText(uiCurPage: UINT32): void {
   switch (uiCurPage) {
     case Enum95.LAPTOP_MODE_BOBBY_R_GUNS:
       DisableButton(guiBobbyRPageMenu[0]);
@@ -1295,7 +1295,7 @@ function UpdateButtonText(uiCurPage: UINT32): void {
   }
 }
 
-function CalcBobbyRayCost(usIndex: UINT16, usBobbyIndex: UINT16, fUsed: boolean): UINT16 {
+export function CalcBobbyRayCost(usIndex: UINT16, usBobbyIndex: UINT16, fUsed: boolean): UINT16 {
   let value: DOUBLE;
   if (fUsed)
     value = Item[LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].usItemIndex].usPrice * (.5 + .5 * (LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].ubItemQuality) / 100) + .5;

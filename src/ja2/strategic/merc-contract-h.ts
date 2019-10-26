@@ -1,11 +1,11 @@
 // enums used for extending contract, etc.
-const enum Enum161 {
+export const enum Enum161 {
   CONTRACT_EXTEND_1_DAY,
   CONTRACT_EXTEND_1_WEEK,
   CONTRACT_EXTEND_2_WEEK,
 }
 
-interface CONTRACT_NEWAL_LIST_NODE {
+export interface CONTRACT_NEWAL_LIST_NODE {
   ubProfileID: UINT8;
   ubFiller: UINT8[] /* [3] */;
 }

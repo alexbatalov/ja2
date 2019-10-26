@@ -1,4 +1,4 @@
-class CQuantizer {
+export class CQuantizer {
   protected m_pTree: Pointer<NODE>;
   protected m_nLeafCount: UINT;
   protected m_pReducibleNodes: Pointer<NODE>[] /* [9] */;

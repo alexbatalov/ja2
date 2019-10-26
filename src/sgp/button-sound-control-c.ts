@@ -1,4 +1,4 @@
-function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
+export function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
   ButtonList[iButtonID].value.ubSoundSchemeID = bSoundScheme;
   if (bSoundScheme == Enum27.BUTTON_SOUND_SCHEME_GENERIC) {
     switch (guiCurrentScreen) {
@@ -41,7 +41,7 @@ function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
   }
 }
 
-function PlayButtonSound(iButtonID: INT32, iSoundType: INT32): void {
+export function PlayButtonSound(iButtonID: INT32, iSoundType: INT32): void {
   if (ButtonList[iButtonID] == null) {
     return;
   }

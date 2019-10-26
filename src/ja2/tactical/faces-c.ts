@@ -4,7 +4,7 @@ const NUM_FACE_SLOTS = 50;
 const END_FACE_OVERLAY_DELAY = 2000;
 
 // GLOBAL FOR FACES LISTING
-let gFacesData: FACETYPE[] /* [NUM_FACE_SLOTS] */;
+export let gFacesData: FACETYPE[] /* [NUM_FACE_SLOTS] */;
 let guiNumFaces: UINT32 = 0;
 
 interface RPC_SMALL_FACE_VALUES {
@@ -107,7 +107,7 @@ function RecountFaces(): void {
   }
 }
 
-function InitSoldierFace(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+export function InitSoldierFace(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let iFaceIndex: INT32;
 
   // Check if we have a face init already
@@ -120,7 +120,7 @@ function InitSoldierFace(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return InitFace(pSoldier.value.ubProfile, pSoldier.value.ubID, 0);
 }
 
-function InitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlags: UINT32): INT32 {
+export function InitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlags: UINT32): INT32 {
   let uiBlinkFrequency: UINT32;
   let uiExpressionFrequency: UINT32;
 
@@ -290,13 +290,13 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   return iFaceIndex;
 }
 
-function DeleteSoldierFace(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DeleteSoldierFace(pSoldier: Pointer<SOLDIERTYPE>): void {
   DeleteFace(pSoldier.value.iFaceIndex);
 
   pSoldier.value.iFaceIndex = -1;
 }
 
-function DeleteFace(iFaceIndex: INT32): void {
+export function DeleteFace(iFaceIndex: INT32): void {
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
@@ -330,7 +330,7 @@ function DeleteFace(iFaceIndex: INT32): void {
   RecountFaces();
 }
 
-function SetAutoFaceActiveFromSoldier(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, ubSoldierID: UINT8, usFaceX: UINT16, usFaceY: UINT16): void {
+export function SetAutoFaceActiveFromSoldier(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, ubSoldierID: UINT8, usFaceX: UINT16, usFaceY: UINT16): void {
   if (ubSoldierID == NOBODY) {
     return;
   }
@@ -377,7 +377,7 @@ function GetFaceRelativeCoordinates(pFace: Pointer<FACETYPE>, pusEyesX: Pointer<
   (pusMouthY.value) = usMouthY;
 }
 
-function SetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, iFaceIndex: INT32, usFaceX: UINT16, usFaceY: UINT16): void {
+export function SetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, iFaceIndex: INT32, usFaceX: UINT16, usFaceY: UINT16): void {
   let usEyesX: UINT16;
   let usEyesY: UINT16;
   let usMouthX: UINT16;
@@ -487,14 +487,14 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
   }
 }
 
-function SetAutoFaceInActiveFromSoldier(ubSoldierID: UINT8): void {
+export function SetAutoFaceInActiveFromSoldier(ubSoldierID: UINT8): void {
   // Check for valid soldier
   CHECKV(ubSoldierID != NOBODY);
 
   SetAutoFaceInActive(MercPtrs[ubSoldierID].value.iFaceIndex);
 }
 
-function SetAutoFaceInActive(iFaceIndex: INT32): void {
+export function SetAutoFaceInActive(iFaceIndex: INT32): void {
   let pFace: Pointer<FACETYPE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -547,7 +547,7 @@ function SetAutoFaceInActive(iFaceIndex: INT32): void {
   pFace.value.fDisabled = true;
 }
 
-function SetAllAutoFacesInactive(): void {
+export function SetAllAutoFacesInactive(): void {
   let uiCount: UINT32;
   let pFace: Pointer<FACETYPE>;
 
@@ -867,7 +867,7 @@ function SetFaceShade(pSoldier: Pointer<SOLDIERTYPE>, pFace: Pointer<FACETYPE>, 
   }
 }
 
-function RenderAutoFaceFromSoldier(ubSoldierID: UINT8): boolean {
+export function RenderAutoFaceFromSoldier(ubSoldierID: UINT8): boolean {
   // Check for valid soldier
   CHECKF(ubSoldierID != NOBODY);
 
@@ -1216,7 +1216,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: b
   }
 }
 
-function RenderAutoFace(iFaceIndex: INT32): boolean {
+export function RenderAutoFace(iFaceIndex: INT32): boolean {
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
@@ -1256,7 +1256,7 @@ function RenderAutoFace(iFaceIndex: INT32): boolean {
   return true;
 }
 
-function ExternRenderFaceFromSoldier(uiBuffer: UINT32, ubSoldierID: UINT8, sX: INT16, sY: INT16): boolean {
+export function ExternRenderFaceFromSoldier(uiBuffer: UINT32, ubSoldierID: UINT8, sX: INT16, sY: INT16): boolean {
   // Check for valid soldier
   CHECKF(ubSoldierID != NOBODY);
 
@@ -1423,7 +1423,7 @@ function NewMouth(pFace: Pointer<FACETYPE>): void {
   } while (!OK);
 }
 
-function HandleAutoFaces(): void {
+export function HandleAutoFaces(): void {
   let uiCount: UINT32;
   let pFace: Pointer<FACETYPE>;
   let bLife: INT8;
@@ -1617,7 +1617,7 @@ function HandleAutoFaces(): void {
   }
 }
 
-function HandleTalkingAutoFaces(): void {
+export function HandleTalkingAutoFaces(): void {
   let uiCount: UINT32;
   let pFace: Pointer<FACETYPE>;
 
@@ -1663,7 +1663,7 @@ function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDe
   return true;
 }
 
-function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextString: STR16, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): boolean {
+export function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextString: STR16, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): boolean {
   let pFace: Pointer<FACETYPE>;
 
   pFace = addressof(gFacesData[iFaceIndex]);
@@ -1699,7 +1699,7 @@ function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextStri
   return true;
 }
 
-function ExternSetFaceTalking(iFaceIndex: INT32, uiSoundID: UINT32): boolean {
+export function ExternSetFaceTalking(iFaceIndex: INT32, uiSoundID: UINT32): boolean {
   let pFace: Pointer<FACETYPE>;
 
   pFace = addressof(gFacesData[iFaceIndex]);
@@ -1715,7 +1715,7 @@ function ExternSetFaceTalking(iFaceIndex: INT32, uiSoundID: UINT32): boolean {
   return true;
 }
 
-function InternalShutupaYoFace(iFaceIndex: INT32, fForce: boolean): void {
+export function InternalShutupaYoFace(iFaceIndex: INT32, fForce: boolean): void {
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
@@ -1761,7 +1761,7 @@ function InternalShutupaYoFace(iFaceIndex: INT32, fForce: boolean): void {
   }
 }
 
-function ShutupaYoFace(iFaceIndex: INT32): void {
+export function ShutupaYoFace(iFaceIndex: INT32): void {
   InternalShutupaYoFace(iFaceIndex, true);
 }
 

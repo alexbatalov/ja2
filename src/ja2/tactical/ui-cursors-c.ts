@@ -1,7 +1,7 @@
 let gfCannotGetThrough: boolean = false;
 let gfDisplayFullCountRing: boolean = false;
 
-function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs: Pointer<boolean>): boolean {
+export function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs: Pointer<boolean>): boolean {
   let uiCursorFlags: UINT32;
   /* static */ let fDoNewTile: boolean = false;
   let fRecalc: boolean = false;
@@ -53,7 +53,7 @@ function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs
 }
 
 // FUNCTIONS FOR CURSOR DETERMINATION!
-function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: UINT16, fActivated: boolean): UINT8 {
+export function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: UINT16, fActivated: boolean): UINT8 {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiCursorFlags: UINT32;
   let fShowAPs: boolean = false;
@@ -1193,7 +1193,7 @@ function HandleBombCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fActi
   }
 }
 
-function HandleEndConfirmCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleEndConfirmCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
   let usInHand: UINT16;
   let ubItemCursor: UINT8;
 
@@ -1207,7 +1207,7 @@ function HandleEndConfirmCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
   let usInHand: UINT16;
   let ubItemCursor: UINT8;
   let sGridNo: INT16;
@@ -1287,7 +1287,7 @@ function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): void {
+export function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): void {
   let usInHand: UINT16;
   let sAPCosts: INT16;
   let bFutureAim: INT8;
@@ -1439,7 +1439,7 @@ function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: 
   }
 }
 
-function GetActionModeCursor(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+export function GetActionModeCursor(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   let ubCursor: UINT8;
   let usInHand: UINT16;
 
@@ -1501,7 +1501,7 @@ function GetActionModeCursor(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
 }
 
 // Switch on item, display appropriate feedback cursor for a click....
-function HandleUICursorRTFeedback(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleUICursorRTFeedback(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubItemCursor: UINT8;
 
   ubItemCursor = GetActionModeCursor(pSoldier);

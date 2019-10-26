@@ -316,9 +316,9 @@ let guiVideoTitleBar: UINT32;
 let iAimMembersBoxId: INT32 = -1;
 
 let gbCurrentSoldier: UINT8 = 0;
-let gbCurrentIndex: UINT8 = 0;
+export let gbCurrentIndex: UINT8 = 0;
 
-let gubVideoConferencingMode: UINT8;
+export let gubVideoConferencingMode: UINT8;
 let gubVideoConferencingPreviousMode: UINT8;
 let gfJustSwitchedVideoConferenceMode: boolean;
 
@@ -327,7 +327,7 @@ let gfVideoFaceActive: boolean = false;
 
 let gubPopUpBoxAction: UINT8 = Enum66.AIM_POPUP_NOTHING;
 let gfRedrawScreen: boolean = false;
-let gubContractLength: UINT8;
+export let gubContractLength: UINT8;
 let gfBuyEquipment: boolean;
 let giContractAmount: INT32 = 0;
 let giMercFaceIndex: INT32;
@@ -418,10 +418,10 @@ let gSelectedShutUpMercRegion: MOUSE_REGION;
 //
 //*******************************************
 
-function GameInitAIMMembers(): void {
+export function GameInitAIMMembers(): void {
 }
 
-function EnterInitAimMembers(): void {
+export function EnterInitAimMembers(): void {
   gubVideoConferencingMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
   gubVideoConferencingPreviousMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
   gfVideoFaceActive = false;
@@ -441,7 +441,7 @@ function EnterInitAimMembers(): void {
   LaptopSaveInfo.sLastHiredMerc.iIdOfMerc = -1;
 }
 
-function EnterAIMMembers(): boolean {
+export function EnterAIMMembers(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let vs_desc: VSURFACE_DESC;
 
@@ -563,7 +563,7 @@ function EnterAIMMembers(): boolean {
   return true;
 }
 
-function ExitAIMMembers(): void {
+export function ExitAIMMembers(): void {
   RemoveAimDefaults();
 
   // if we are exiting and the transfer of funds popup is enable, make sure we dont come back to it
@@ -606,7 +606,7 @@ function ExitAIMMembers(): void {
   RemoveTextMercPopupImages();
 }
 
-function HandleAIMMembers(): void {
+export function HandleAIMMembers(): void {
   // determine if the merc has a quote that is waiting to be said
   DelayMercSpeech(0, 0, 0, false, false);
 
@@ -684,13 +684,13 @@ function HandleAIMMembers(): void {
   MarkButtonsDirty();
 }
 
-function RenderAIMMembersTopLevel(): boolean {
+export function RenderAIMMembersTopLevel(): boolean {
   InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DISPLAY, null, null, 0, 0, 0);
 
   return true;
 }
 
-function RenderAIMMembers(): boolean {
+export function RenderAIMMembers(): boolean {
   let hStatsHandle: HVOBJECT;
   let hPriceHandle: HVOBJECT;
   let hWeaponBoxHandle: HVOBJECT;
@@ -778,7 +778,7 @@ function RenderAIMMembers(): boolean {
   return true;
 }
 
-function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): boolean {
+export function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): boolean {
   let sStr: wchar_t[] /* [10] */;
 
   swprintf(sStr, "%d", iNumber);
@@ -2092,7 +2092,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): boolean {
   return fIsTheMercTalking;
 }
 
-function DisplayTextForMercFaceVideoPopUp(pString: STR16): void {
+export function DisplayTextForMercFaceVideoPopUp(pString: STR16): void {
   swprintf(gsTalkingMercText, "\"%s\"", pString);
 
   // Set the minimum time for the dialogue text to be present
@@ -3213,7 +3213,7 @@ BOOLEAN DisplayAnimatedAnsweringMachineMsg( BOOLEAN fInit, UINT8 ubNumSubImages)
 }
 */
 
-function ResetMercAnnoyanceAtPlayer(ubMercID: UINT8): void {
+export function ResetMercAnnoyanceAtPlayer(ubMercID: UINT8): void {
   // if merc is still annoyed, reset back to 0
 
   if (ubMercID == Enum268.LARRY_NORMAL) {
@@ -3229,7 +3229,7 @@ function ResetMercAnnoyanceAtPlayer(ubMercID: UINT8): void {
     gMercProfiles[ubMercID].bMercStatus = 0;
 }
 
-function DisableNewMailMessage(): boolean {
+export function DisableNewMailMessage(): boolean {
   if (fNewMailFlag && gubVideoConferencingMode) {
     gfIsNewMailFlagSet = true;
     fNewMailFlag = false;
@@ -3433,7 +3433,7 @@ BOOLEAN DisplayShadedStretchedMercFace( UINT8 ubMercID, UINT16 usPosX, UINT16 us
 }
 */
 
-function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
+export function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   let szLocAndTime: CHAR16[] /* [512] */;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let zTimeString: CHAR16[] /* [128] */;

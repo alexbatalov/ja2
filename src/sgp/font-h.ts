@@ -1,12 +1,12 @@
-const DEFAULT_SHADOW = 2;
-const MILITARY_SHADOW = 67;
-const NO_SHADOW = 0;
+export const DEFAULT_SHADOW = 2;
+export const MILITARY_SHADOW = 67;
+export const NO_SHADOW = 0;
 
 // these are bogus! No palette is set yet!
 // font foreground color symbols
-const FONT_FCOLOR_WHITE = 208;
+export const FONT_FCOLOR_WHITE = 208;
 const FONT_FCOLOR_RED = 162;
-const FONT_FCOLOR_NICERED = 164;
+export const FONT_FCOLOR_NICERED = 164;
 const FONT_FCOLOR_BLUE = 203;
 const FONT_FCOLOR_GREEN = 184;
 const FONT_FCOLOR_YELLOW = 144;
@@ -26,7 +26,7 @@ const FONT_BCOLOR_PURPLE = 160;
 
 // typedefs
 
-interface FontTranslationTable {
+export interface FontTranslationTable {
   usNumberOfSymbols: UINT16;
   DynamicArrayOf16BitValues: Pointer<UINT16>;
 }

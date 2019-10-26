@@ -1,8 +1,8 @@
-let guiCurrentScreen: UINT32;
-let guiPendingScreen: UINT32 = NO_PENDING_SCREEN;
+export let guiCurrentScreen: UINT32;
+export let guiPendingScreen: UINT32 = NO_PENDING_SCREEN;
 let guiPreviousScreen: UINT32 = NO_PENDING_SCREEN;
 
-let giStartingMemValue: INT32 = 0;
+export let giStartingMemValue: INT32 = 0;
 
 const DONT_CHECK_FOR_FREE_SPACE = 255;
 let gubCheckForFreeSpaceOnHardDriveCount: UINT8 = DONT_CHECK_FOR_FREE_SPACE;
@@ -10,7 +10,7 @@ let gubCheckForFreeSpaceOnHardDriveCount: UINT8 = DONT_CHECK_FOR_FREE_SPACE;
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
 
-function InitializeGame(): boolean {
+export function InitializeGame(): boolean {
   let uiIndex: UINT32;
 
   giStartingMemValue = MemGetFree();
@@ -62,7 +62,7 @@ function InitializeGame(): boolean {
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
 // It will also be responsible to making sure that all Gaming Engine tasks exit properly
 
-function ShutdownGame(): void {
+export function ShutdownGame(): void {
   // handle shutdown of game with respect to preloaded mapscreen graphics
   HandleRemovalOfPreLoadedMapGraphics();
 
@@ -82,7 +82,7 @@ function ShutdownGame(): void {
 // the state of the game (i.e. Main Menu, PC Generation, Combat loop, etc....)
 // This function exits constantly and reenters constantly
 
-function GameLoop(): void {
+export function GameLoop(): void {
   let InputEvent: InputAtom;
   let MousePos: POINT;
   let uiOldScreen: UINT32 = guiCurrentScreen;
@@ -204,7 +204,7 @@ function SetCurrentScreen(uiNewScreen: UINT32): void {
   ((GameScreens[guiCurrentScreen].HandleScreen).value)();
 }
 
-function SetPendingNewScreen(uiNewScreen: UINT32): void {
+export function SetPendingNewScreen(uiNewScreen: UINT32): void {
   guiPendingScreen = uiNewScreen;
 }
 
@@ -217,7 +217,7 @@ function HandleNewScreenChange(uiNewScreen: UINT32, uiOldScreen: UINT32): void {
   }
 }
 
-function HandleShortCutExitState(): void {
+export function HandleShortCutExitState(): void {
   // look at the state of fGameIsRunning, if set false, then prompt user for confirmation
 
   // use YES/NO Pop up box, settup for particular screen
@@ -257,7 +257,7 @@ function HandleShortCutExitState(): void {
   }
 }
 
-function EndGameMessageBoxCallBack(bExitValue: UINT8): void {
+export function EndGameMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
     gfProgramIsRunning = false;
@@ -272,6 +272,6 @@ function EndGameMessageBoxCallBack(bExitValue: UINT8): void {
   return;
 }
 
-function NextLoopCheckForEnoughFreeHardDriveSpace(): void {
+export function NextLoopCheckForEnoughFreeHardDriveSpace(): void {
   gubCheckForFreeSpaceOnHardDriveCount = 0;
 }

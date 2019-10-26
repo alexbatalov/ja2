@@ -7,10 +7,10 @@ let iMsgBoxOk: INT32;
 let iMsgBoxCancel: INT32;
 let MsgBoxRect: SGPRect;
 
-let gfMessageBoxResult: boolean = false;
-let gubMessageBoxStatus: UINT8 = Enum52.MESSAGEBOX_NONE;
+export let gfMessageBoxResult: boolean = false;
+export let gubMessageBoxStatus: UINT8 = Enum52.MESSAGEBOX_NONE;
 
-function CreateMessageBox(wzString: Pointer<UINT16>): void {
+export function CreateMessageBox(wzString: Pointer<UINT16>): void {
   let sPixLen: INT16;
   let sStartX: INT16;
   let sStartY: INT16;
@@ -46,7 +46,7 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
   gubMessageBoxStatus = Enum52.MESSAGEBOX_WAIT;
 }
 
-function MessageBoxHandled(): boolean {
+export function MessageBoxHandled(): boolean {
   let DummyEvent: InputAtom;
 
   while (DequeueEvent(addressof(DummyEvent))) {
@@ -80,7 +80,7 @@ function MessageBoxHandled(): boolean {
   return gubMessageBoxStatus == Enum52.MESSAGEBOX_DONE;
 }
 
-function RemoveMessageBox(): void {
+export function RemoveMessageBox(): void {
   FreeMouseCursor();
   RemoveButton(iMsgBoxCancel);
   RemoveButton(iMsgBoxOk);

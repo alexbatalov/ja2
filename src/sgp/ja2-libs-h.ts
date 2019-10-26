@@ -1,5 +1,5 @@
 // enums used for accessing the libraries
-const enum Enum30 {
+export const enum Enum30 {
   LIBRARY_DATA,
   LIBRARY_AMBIENT,
   LIBRARY_ANIMS,

@@ -1,55 +1,55 @@
 // BOOLEAN fIMPCompletedFlag = FALSE;
-let fReDrawCharProfile: boolean = false;
-let fButtonPendingFlag: boolean = false;
+export let fReDrawCharProfile: boolean = false;
+export let fButtonPendingFlag: boolean = false;
 let fAddCreatedCharToPlayersTeam: boolean = false;
 let fReEnterIMP: boolean = false;
 
-let iCurrentImpPage: INT32 = Enum71.IMP_HOME_PAGE;
+export let iCurrentImpPage: INT32 = Enum71.IMP_HOME_PAGE;
 let iPreviousImpPage: INT32 = -1;
 
 // attributes
-let iStrength: INT32 = 55;
-let iDexterity: INT32 = 55;
-let iAgility: INT32 = 55;
-let iWisdom: INT32 = 55;
-let iLeadership: INT32 = 55;
-let iHealth: INT32 = 55;
+export let iStrength: INT32 = 55;
+export let iDexterity: INT32 = 55;
+export let iAgility: INT32 = 55;
+export let iWisdom: INT32 = 55;
+export let iLeadership: INT32 = 55;
+export let iHealth: INT32 = 55;
 
 // skills
-let iMarksmanship: INT32 = 55;
-let iMedical: INT32 = 55;
-let iExplosives: INT32 = 55;
-let iMechanical: INT32 = 55;
+export let iMarksmanship: INT32 = 55;
+export let iMedical: INT32 = 55;
+export let iExplosives: INT32 = 55;
+export let iMechanical: INT32 = 55;
 
 // gender
-let fCharacterIsMale: boolean = true;
+export let fCharacterIsMale: boolean = true;
 
 // name and nick name
-let pFullName: CHAR16[] /* [32] */;
-let pNickName: CHAR16[] /* [32] */;
+export let pFullName: CHAR16[] /* [32] */;
+export let pNickName: CHAR16[] /* [32] */;
 
 // skills
-let iSkillA: INT32 = 0;
-let iSkillB: INT32 = 0;
+export let iSkillA: INT32 = 0;
+export let iSkillB: INT32 = 0;
 
 // personality
-let iPersonality: INT32 = 0;
+export let iPersonality: INT32 = 0;
 
 // attitude
-let iAttitude: INT32 = 0;
+export let iAttitude: INT32 = 0;
 
 // additives, but no preservatives
-let iAddStrength: INT32 = 0;
-let iAddDexterity: INT32 = 0;
-let iAddAgility: INT32 = 0;
-let iAddWisdom: INT32 = 0;
-let iAddHealth: INT32 = 0;
-let iAddLeadership: INT32 = 0;
+export let iAddStrength: INT32 = 0;
+export let iAddDexterity: INT32 = 0;
+export let iAddAgility: INT32 = 0;
+export let iAddWisdom: INT32 = 0;
+export let iAddHealth: INT32 = 0;
+export let iAddLeadership: INT32 = 0;
 
-let iAddMarksmanship: INT32 = 0;
-let iAddMedical: INT32 = 0;
-let iAddExplosives: INT32 = 0;
-let iAddMechanical: INT32 = 0;
+export let iAddMarksmanship: INT32 = 0;
+export let iAddMedical: INT32 = 0;
+export let iAddExplosives: INT32 = 0;
+export let iAddMechanical: INT32 = 0;
 
 // IMP global buttons
 let giIMPButton: INT32[] /* [1] */;
@@ -58,7 +58,7 @@ let giIMPButtonImage: INT32[] /* [1] */;
 // visted subpages
 let fVisitedIMPSubPages: boolean[] /* [IMP_NUM_PAGES] */;
 
-function GameInitCharProfile(): void {
+export function GameInitCharProfile(): void {
   LaptopSaveInfo.iVoiceId = 0;
   iCurrentPortrait = 0;
   iCurrentVoices = 0;
@@ -67,7 +67,7 @@ function GameInitCharProfile(): void {
   return;
 }
 
-function EnterCharProfile(): void {
+export function EnterCharProfile(): void {
   // reset previous page
   iPreviousImpPage = -1;
 
@@ -75,7 +75,7 @@ function EnterCharProfile(): void {
   LoadImpGraphics();
 }
 
-function ExitCharProfile(): void {
+export function ExitCharProfile(): void {
   // get rid of graphics
   RemoveImpGraphics();
 
@@ -83,7 +83,7 @@ function ExitCharProfile(): void {
   ExitOldIMPMode();
 }
 
-function HandleCharProfile(): void {
+export function HandleCharProfile(): void {
   if (fReDrawCharProfile) {
     // re draw
     RenderCharProfile();
@@ -186,7 +186,7 @@ function HandleCharProfile(): void {
   return;
 }
 
-function RenderCharProfile(): void {
+export function RenderCharProfile(): void {
   // button is waiting to go up?...do nothing,
 
   if (fButtonPendingFlag) {
@@ -381,7 +381,7 @@ function EnterNewIMPMode(): void {
   return;
 }
 
-function ResetCharacterStats(): void {
+export function ResetCharacterStats(): void {
   // attributes
   iStrength = 55;
   iDexterity = 55;
@@ -581,7 +581,7 @@ function BtnIMPCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   return;
 }
 
-function InitIMPSubPageList(): void {
+export function InitIMPSubPageList(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < Enum71.IMP_CONFIRM; iCounter++) {

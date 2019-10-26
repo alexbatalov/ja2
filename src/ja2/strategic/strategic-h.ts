@@ -1,4 +1,4 @@
-interface StrategicMapElement {
+export interface StrategicMapElement {
   UNUSEDuiFootEta: UINT8[] /* [4] */; // eta/mvt costs for feet
   UNUSEDuiVehicleEta: UINT8[] /* [4] */; // eta/mvt costs for vehicles
   uiBadFootSector: UINT8[] /* [4] */; // blocking mvt for foot
@@ -11,7 +11,7 @@ interface StrategicMapElement {
   bPadding: INT8[] /* [20] */;
 }
 
-const enum Enum175 {
+export const enum Enum175 {
   INSERTION_CODE_NORTH,
   INSERTION_CODE_SOUTH,
   INSERTION_CODE_EAST,

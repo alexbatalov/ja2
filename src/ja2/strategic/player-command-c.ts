@@ -1,4 +1,4 @@
-function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString: STR16): void {
+export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString: STR16): void {
   // will build a string stating current facilities present in sector
 
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags == 0) {
@@ -58,7 +58,7 @@ function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString:
 }
 
 // ALL changes of control to player must be funneled through here!
-function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: boolean): boolean {
+export function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: boolean): boolean {
   // NOTE: MapSector must be 16-bit, cause MAX_WORLD_X is actually 18, so the sector numbers exceed 256 although we use only 16x16
   let usMapSector: UINT16 = 0;
   let fWasEnemyControlled: boolean = false;
@@ -201,7 +201,7 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
 }
 
 // ALL changes of control to enemy must be funneled through here!
-function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: boolean): boolean {
+export function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: boolean): boolean {
   let usMapSector: UINT16 = 0;
   let fWasPlayerControlled: boolean = false;
   let bTownId: INT8 = 0;
@@ -331,7 +331,7 @@ void MakePlayerPerceptionOfSectorControlCorrect( INT16 sMapX, INT16 sMapY, INT8 
 }
 */
 
-function ReplaceSoldierProfileInPlayerGroup(ubGroupID: UINT8, ubOldProfile: UINT8, ubNewProfile: UINT8): void {
+export function ReplaceSoldierProfileInPlayerGroup(ubGroupID: UINT8, ubOldProfile: UINT8, ubNewProfile: UINT8): void {
   let pGroup: Pointer<GROUP>;
   let curr: Pointer<PLAYERGROUP>;
 

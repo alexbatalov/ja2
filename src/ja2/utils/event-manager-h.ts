@@ -1,4 +1,4 @@
-interface EVENT {
+export interface EVENT {
   TimeStamp: TIMER;
   uiFlags: UINT32;
   usDelay: UINT16;
@@ -7,8 +7,8 @@ interface EVENT {
   pData: Pointer<BYTE>;
 }
 
-const PRIMARY_EVENT_QUEUE = 0;
-const SECONDARY_EVENT_QUEUE = 1;
-const DEMAND_EVENT_QUEUE = 2;
+export const PRIMARY_EVENT_QUEUE = 0;
+export const SECONDARY_EVENT_QUEUE = 1;
+export const DEMAND_EVENT_QUEUE = 2;
 
-const EVENT_EXPIRED = 0x00000002;
+export const EVENT_EXPIRED = 0x00000002;

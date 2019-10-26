@@ -1,4 +1,4 @@
-function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
+export function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
   let hFile: HWFILE;
   let Header: STCIHeader;
   let uiBytesRead: UINT32;

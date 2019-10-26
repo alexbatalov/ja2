@@ -1,6 +1,6 @@
-let gfStrategicMilitiaChangesMade: boolean = false;
+export let gfStrategicMilitiaChangesMade: boolean = false;
 
-function ResetMilitia(): void {
+export function ResetMilitia(): void {
   if (gfStrategicMilitiaChangesMade || gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
     gfStrategicMilitiaChangesMade = false;
     RemoveMilitiaFromTactical();
@@ -25,7 +25,7 @@ function RemoveMilitiaFromTactical(): void {
   }
 }
 
-function PrepareMilitiaForTactical(): void {
+export function PrepareMilitiaForTactical(): void {
   let pSector: Pointer<SECTORINFO>;
   //	INT32 i;
   let ubGreen: UINT8;
@@ -54,7 +54,7 @@ function PrepareMilitiaForTactical(): void {
   */
 }
 
-function HandleMilitiaPromotions(): void {
+export function HandleMilitiaPromotions(): void {
   let cnt: UINT8;
   let ubMilitiaRank: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;

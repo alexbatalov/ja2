@@ -12,7 +12,7 @@ let guiAutoBandageSeconds: UINT32 = 0;
 let fAutoBandageComplete: boolean = false;
 let fEndAutoBandage: boolean = false;
 
-let gfAutoBandageFailed: boolean;
+export let gfAutoBandageFailed: boolean;
 
 // the button and associated image for ending autobandage
 let iEndAutoBandageButton: INT32[] /* [2] */;
@@ -30,7 +30,7 @@ let giAutoBandagesSoldierFaces: INT32[] /* [2 * MAX_CHARACTER_COUNT] */;
 // has the button for autobandage end been setup yet
 let fAutoEndBandageButtonCreated: boolean = false;
 
-function BeginAutoBandage(): void {
+export function BeginAutoBandage(): void {
   let cnt: INT32;
   let fFoundAGuy: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -79,7 +79,7 @@ function BeginAutoBandage(): void {
   }
 }
 
-function HandleAutoBandagePending(): void {
+export function HandleAutoBandagePending(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -121,12 +121,12 @@ function HandleAutoBandagePending(): void {
   }
 }
 
-function SetAutoBandagePending(fSet: boolean): void {
+export function SetAutoBandagePending(fSet: boolean): void {
   gTacticalStatus.fAutoBandagePending = fSet;
 }
 
 // Should we ask buddy ti auto bandage...?
-function ShouldBeginAutoBandage(): void {
+export function ShouldBeginAutoBandage(): void {
   // If we are in combat, we con't...
   if (gTacticalStatus.uiFlags & INCOMBAT) {
     return;
@@ -143,7 +143,7 @@ function ShouldBeginAutoBandage(): void {
   }
 }
 
-function HandleAutoBandage(): boolean {
+export function HandleAutoBandage(): boolean {
   let InputEvent: InputAtom;
 
   if (gTacticalStatus.fAutoBandageMode) {
@@ -257,14 +257,14 @@ function CreateAutoBandageString(): boolean {
   return true;
 }
 
-function SetAutoBandageComplete(): void {
+export function SetAutoBandageComplete(): void {
   // this will set the fact autobandage is complete
   fAutoBandageComplete = true;
 
   return;
 }
 
-function AutoBandage(fStart: boolean): void {
+export function AutoBandage(fStart: boolean): void {
   let aRect: SGPRect;
   let ubLoop: UINT8;
   let cnt: INT32;

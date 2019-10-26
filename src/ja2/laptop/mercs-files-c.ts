@@ -94,7 +94,7 @@ let guiMercBackButton: UINT32;
 function GameInitMercsFiles(): void {
 }
 
-function EnterMercsFiles(): boolean {
+export function EnterMercsFiles(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   InitMercBackGround();
@@ -142,7 +142,7 @@ function EnterMercsFiles(): boolean {
   return true;
 }
 
-function ExitMercsFiles(): void {
+export function ExitMercsFiles(): void {
   DeleteVideoObjectFromIndex(guiPortraitBox);
   DeleteVideoObjectFromIndex(guiStatsBox);
   DeleteVideoObjectFromIndex(guiBioBox);
@@ -156,10 +156,10 @@ function ExitMercsFiles(): void {
   RemoveMercBackGround();
 }
 
-function HandleMercsFiles(): void {
+export function HandleMercsFiles(): void {
 }
 
-function RenderMercsFiles(): void {
+export function RenderMercsFiles(): void {
   let hPixHandle: HVOBJECT;
 
   DrawMecBackGround();

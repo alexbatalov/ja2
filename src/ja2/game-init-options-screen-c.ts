@@ -161,11 +161,11 @@ let guiGameSaveToggles: UINT32[] /* [NUM_SAVE_OPTIONS] */;
 
 // ppp
 
-function GameInitOptionsScreenInit(): UINT32 {
+export function GameInitOptionsScreenInit(): UINT32 {
   return 1;
 }
 
-function GameInitOptionsScreenHandle(): UINT32 {
+export function GameInitOptionsScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfGIOScreenEntry) {
@@ -216,7 +216,7 @@ function GameInitOptionsScreenHandle(): UINT32 {
   return gubGIOExitScreen;
 }
 
-function GameInitOptionsScreenShutdown(): UINT32 {
+export function GameInitOptionsScreenShutdown(): UINT32 {
   return 1;
 }
 

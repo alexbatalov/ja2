@@ -54,7 +54,7 @@ Returns 0 if nothing in menu was selected, else
 returns the menu entry number starting from 1.
 */
 
-function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT8): void {
+export function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT8): void {
   let usX: UINT16;
   let usY: UINT16;
   let usMenuHeight: UINT16;
@@ -396,7 +396,7 @@ function ProcessPopupMenuSelection(): void {
   }
 }
 
-function ProcessPopupMenuIfActive(): boolean {
+export function ProcessPopupMenuIfActive(): boolean {
   if (!gPopup.fActive && !fWaitingForLButtonRelease)
     return false;
   if (fWaitingForLButtonRelease) {

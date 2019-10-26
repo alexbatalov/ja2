@@ -1,13 +1,13 @@
-let gfTacticalTraversal: boolean = false;
-let gpTacticalTraversalGroup: Pointer<GROUP> = null;
-let gpTacticalTraversalChosenSoldier: Pointer<SOLDIERTYPE> = null;
+export let gfTacticalTraversal: boolean = false;
+export let gpTacticalTraversalGroup: Pointer<GROUP> = null;
+export let gpTacticalTraversalChosenSoldier: Pointer<SOLDIERTYPE> = null;
 
-let gfAutomaticallyStartAutoResolve: boolean = false;
-let gfAutoAmbush: boolean = false;
-let gfHighPotentialForAmbush: boolean = false;
-let gfGotoSectorTransition: boolean = false;
+export let gfAutomaticallyStartAutoResolve: boolean = false;
+export let gfAutoAmbush: boolean = false;
+export let gfHighPotentialForAmbush: boolean = false;
+export let gfGotoSectorTransition: boolean = false;
 let gfEnterAutoResolveMode: boolean = false;
-let gfEnteringMapScreenToEnterPreBattleInterface: boolean = false;
+export let gfEnteringMapScreenToEnterPreBattleInterface: boolean = false;
 let gfIgnoreAllInput: boolean = true;
 
 // GraphicIDs for the panel
@@ -30,13 +30,13 @@ const ACTUAL_HEIGHT = 34;
 // The height of each row
 const ROW_HEIGHT = 10;
 
-let gfDisplayPotentialRetreatPaths: boolean = false;
+export let gfDisplayPotentialRetreatPaths: boolean = false;
 let gusRetreatButtonLeft: UINT16;
 let gusRetreatButtonTop: UINT16;
 let gusRetreatButtonRight: UINT16;
 let gusRetreatButtonBottom: UINT16;
 
-let gpBattleGroup: Pointer<GROUP> = null;
+export let gpBattleGroup: Pointer<GROUP> = null;
 
 /*
 void InvolvedMoveCallback( MOUSE_REGION *reg, INT32 reason );
@@ -49,13 +49,13 @@ SOLDIERTYPE* UninvolvedSoldier( INT32 index );
 */
 
 let PBInterfaceBlanket: MOUSE_REGION;
-let gfPreBattleInterfaceActive: boolean = false;
+export let gfPreBattleInterfaceActive: boolean = false;
 let iPBButton: UINT32[] /* [3] */;
 let iPBButtonImage: UINT32[] /* [3] */;
 let uiInterfaceImages: UINT32;
-let gfRenderPBInterface: boolean;
+export let gfRenderPBInterface: boolean;
 let gfPBButtonsHidden: boolean;
-let fDisableMapInterfaceDueToBattle: boolean = false;
+export let fDisableMapInterfaceDueToBattle: boolean = false;
 
 let gfBlinkHeader: boolean;
 
@@ -66,37 +66,37 @@ let guiNumUninvolved: UINT32;
 
 // Using the ESC key in the PBI will get rid of the PBI and go back to mapscreen, but
 // only if the PBI isn't persistant (!gfPersistantPBI).
-let gfPersistantPBI: boolean = false;
+export let gfPersistantPBI: boolean = false;
 
 // Contains general information about the type of encounter the player is faced with.  This
 // determines whether or not you can autoresolve the battle or even retreat.  This code
 // dictates the header that is used at the top of the PBI.
-let gubEnemyEncounterCode: UINT8 = Enum164.NO_ENCOUNTER_CODE;
+export let gubEnemyEncounterCode: UINT8 = Enum164.NO_ENCOUNTER_CODE;
 
 // The autoresolve during tactical battle option needs more detailed information than the
 // gubEnemyEncounterCode can provide.  The explicit version contains possibly unique codes
 // for reasons not normally used in the PBI.  For example, if we were fighting the enemy
 // in a normal situation, then shot at a civilian, the civilians associated with the victim
 // would turn hostile, which would disable the ability to autoresolve the battle.
-let gubExplicitEnemyEncounterCode: boolean = Enum164.NO_ENCOUNTER_CODE;
+export let gubExplicitEnemyEncounterCode: boolean = Enum164.NO_ENCOUNTER_CODE;
 
 // Location of the current battle (determines where the animated icon is blitted) and if the
 // icon is to be blitted.
-let gfBlitBattleSectorLocator: boolean = false;
+export let gfBlitBattleSectorLocator: boolean = false;
 
-let gubPBSectorX: UINT8 = 0;
-let gubPBSectorY: UINT8 = 0;
-let gubPBSectorZ: UINT8 = 0;
+export let gubPBSectorX: UINT8 = 0;
+export let gubPBSectorY: UINT8 = 0;
+export let gubPBSectorZ: UINT8 = 0;
 
-let gfCantRetreatInPBI: boolean = false;
+export let gfCantRetreatInPBI: boolean = false;
 // SAVE END
 
-let gfUsePersistantPBI: boolean;
+export let gfUsePersistantPBI: boolean;
 
 let giHilitedInvolved: INT32;
 let giHilitedUninvolved: INT32;
 
-function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: boolean): void {
+export function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: boolean): void {
   let VObjectDesc: VOBJECT_DESC;
   let i: INT32;
   let ubGroupID: UINT8 = 0;
@@ -586,7 +586,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
   BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
 }
 
-function KillPreBattleInterface(): void {
+export function KillPreBattleInterface(): void {
   if (!gfPreBattleInterfaceActive)
     return;
 
@@ -690,7 +690,7 @@ function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
   piWidth.value = width;
 }
 
-function RenderPreBattleInterface(): void {
+export function RenderPreBattleInterface(): void {
   let pGroup: Pointer<GROUP>;
   let hVObject: HVOBJECT;
   let i: INT32;
@@ -1252,21 +1252,21 @@ SOLDIERTYPE* UninvolvedSoldier( INT32 index )
 }
 */
 
-function ActivatePreBattleAutoresolveAction(): void {
+export function ActivatePreBattleAutoresolveAction(): void {
   if (ButtonList[iPBButton[0]].value.uiFlags & BUTTON_ENABLED) {
     // Feign call the autoresolve button using the callback
     AutoResolveBattleCallback(ButtonList[iPBButton[0]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
-function ActivatePreBattleEnterSectorAction(): void {
+export function ActivatePreBattleEnterSectorAction(): void {
   if (ButtonList[iPBButton[1]].value.uiFlags & BUTTON_ENABLED) {
     // Feign call the enter sector button using the callback
     GoToSectorCallback(ButtonList[iPBButton[1]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
-function ActivatePreBattleRetreatAction(): void {
+export function ActivatePreBattleRetreatAction(): void {
   if (ButtonList[iPBButton[2]].value.uiFlags & BUTTON_ENABLED) {
     // Feign call the retreat button using the callback
     RetreatMercsCallback(ButtonList[iPBButton[2]], MSYS_CALLBACK_REASON_LBUTTON_UP);
@@ -1279,7 +1279,7 @@ function ActivateAutomaticAutoResolveStart(): void {
   AutoResolveBattleCallback(ButtonList[iPBButton[0]], MSYS_CALLBACK_REASON_LBUTTON_UP);
 }
 
-function CalculateNonPersistantPBIInfo(): void {
+export function CalculateNonPersistantPBIInfo(): void {
   // We need to set up the non-persistant PBI
   if (!gfBlitBattleSectorLocator || gubPBSectorX != gWorldSectorX || gubPBSectorY != gWorldSectorY || gubPBSectorZ != gbWorldSectorZ) {
     // Either the locator isn't on or the locator info is in a different sector
@@ -1413,7 +1413,7 @@ function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehi
   }
 }
 
-function WakeUpAllMercsInSectorUnderAttack(): void {
+export function WakeUpAllMercsInSectorUnderAttack(): void {
   let iCounter: INT32 = 0;
   let iNumberOfMercsOnTeam: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -1449,7 +1449,7 @@ function ClearMovementForAllInvolvedPlayerGroups(): void {
   }
 }
 
-function RetreatAllInvolvedPlayerGroups(): void {
+export function RetreatAllInvolvedPlayerGroups(): void {
   let pGroup: Pointer<GROUP>;
 
   // make sure guys stop their off duty assignments, like militia training!
@@ -1469,7 +1469,7 @@ function RetreatAllInvolvedPlayerGroups(): void {
   }
 }
 
-function PlayerMercInvolvedInThisCombat(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function PlayerMercInvolvedInThisCombat(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   Assert(pSoldier);
   Assert(pSoldier.value.bActive);
 
@@ -1486,7 +1486,7 @@ function PlayerMercInvolvedInThisCombat(pSoldier: Pointer<SOLDIERTYPE>): boolean
   return false;
 }
 
-function PlayerGroupInvolvedInThisCombat(pGroup: Pointer<GROUP>): boolean {
+export function PlayerGroupInvolvedInThisCombat(pGroup: Pointer<GROUP>): boolean {
   Assert(pGroup);
 
   // player group, non-empty, not between sectors, in the right sector, isn't a group of in transit, dead, or POW mercs,
@@ -1539,7 +1539,7 @@ function CheckForRobotAndIfItsControlled(): void {
   }
 }
 
-function LogBattleResults(ubVictoryCode: UINT8): void {
+export function LogBattleResults(ubVictoryCode: UINT8): void {
   let sSectorX: INT16;
   let sSectorY: INT16;
   let sSectorZ: INT16;
@@ -1591,7 +1591,7 @@ function LogBattleResults(ubVictoryCode: UINT8): void {
   }
 }
 
-function HandlePreBattleInterfaceStates(): void {
+export function HandlePreBattleInterfaceStates(): void {
   if (gfEnteringMapScreenToEnterPreBattleInterface && !gfEnteringMapScreen) {
     gfEnteringMapScreenToEnterPreBattleInterface = false;
     if (!gfUsePersistantPBI) {

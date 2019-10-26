@@ -75,7 +75,7 @@ function InitializeImpRecordLengthList(): void {
   return;
 }
 
-function PrintImpText(): void {
+export function PrintImpText(): void {
   let sWidth: INT16 = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X + 1;
 
   // looks at current page and prints text needed
@@ -261,7 +261,7 @@ function PrintImpTextPostButtonRender(): void {
   }
 }
 
-function PrintIMPPersonalityQuizQuestionAndAnsers(): void {
+export function PrintIMPPersonalityQuizQuestionAndAnsers(): void {
   let iCounter: INT32 = 0;
   let iOffset: INT32 = 0;
 

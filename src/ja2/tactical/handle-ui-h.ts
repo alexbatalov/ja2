@@ -1,32 +1,32 @@
 // DEFINES
-const UIEVENT_SINGLEEVENT = 0x00000002;
-const UIEVENT_SNAPMOUSE = 0x00000008;
+export const UIEVENT_SINGLEEVENT = 0x00000002;
+export const UIEVENT_SNAPMOUSE = 0x00000008;
 
-const NO_GUY_SELECTION = 0;
-const SELECTED_GUY_SELECTION = 1;
-const NONSELECTED_GUY_SELECTION = 2;
-const ENEMY_GUY_SELECTION = 3;
+export const NO_GUY_SELECTION = 0;
+export const SELECTED_GUY_SELECTION = 1;
+export const NONSELECTED_GUY_SELECTION = 2;
+export const ENEMY_GUY_SELECTION = 3;
 
-const MOUSE_MOVING_IN_TILE = 0x00000001;
-const MOUSE_MOVING = 0x00000002;
-const MOUSE_MOVING_NEW_TILE = 0x00000004;
-const MOUSE_STATIONARY = 0x00000008;
+export const MOUSE_MOVING_IN_TILE = 0x00000001;
+export const MOUSE_MOVING = 0x00000002;
+export const MOUSE_MOVING_NEW_TILE = 0x00000004;
+export const MOUSE_STATIONARY = 0x00000008;
 
-const MOVEUI_TARGET_INTTILES = 1;
-const MOVEUI_TARGET_ITEMS = 2;
-const MOVEUI_TARGET_MERCS = 3;
-const MOVEUI_TARGET_MERCSFORAID = 5;
-const MOVEUI_TARGET_WIREFENCE = 6;
-const MOVEUI_TARGET_BOMB = 7;
-const MOVEUI_TARGET_STEAL = 8;
-const MOVEUI_TARGET_REPAIR = 9;
-const MOVEUI_TARGET_JAR = 10;
-const MOVEUI_TARGET_CAN = 11;
-const MOVEUI_TARGET_REFUEL = 12;
+export const MOVEUI_TARGET_INTTILES = 1;
+export const MOVEUI_TARGET_ITEMS = 2;
+export const MOVEUI_TARGET_MERCS = 3;
+export const MOVEUI_TARGET_MERCSFORAID = 5;
+export const MOVEUI_TARGET_WIREFENCE = 6;
+export const MOVEUI_TARGET_BOMB = 7;
+export const MOVEUI_TARGET_STEAL = 8;
+export const MOVEUI_TARGET_REPAIR = 9;
+export const MOVEUI_TARGET_JAR = 10;
+export const MOVEUI_TARGET_CAN = 11;
+export const MOVEUI_TARGET_REFUEL = 12;
 
 const MOVEUI_RETURN_ON_TARGET_MERC = 1;
 
-const enum Enum206 {
+export const enum Enum206 {
   DONT_CHANGEMODE,
   IDLE_MODE,
   MOVE_MODE,
@@ -52,7 +52,7 @@ const enum Enum206 {
 
 type UI_HANDLEFNC = (a: Pointer<UI_EVENT>) => UINT32;
 
-interface UI_EVENT {
+export interface UI_EVENT {
   uiFlags: UINT32;
   ChangeToUIMode: UI_MODE;
   HandleEvent: UI_HANDLEFNC;
@@ -63,7 +63,7 @@ interface UI_EVENT {
 }
 
 // EVENT ENUMERATION
-const enum Enum207 {
+export const enum Enum207 {
   I_DO_NOTHING,
   I_EXIT,
   I_NEW_MERC,
@@ -149,4 +149,4 @@ const enum Enum207 {
   NUM_UI_EVENTS,
 }
 
-type UIKEYBOARD_HOOK = (pInputEvent: Pointer<InputAtom>) => boolean;
+export type UIKEYBOARD_HOOK = (pInputEvent: Pointer<InputAtom>) => boolean;

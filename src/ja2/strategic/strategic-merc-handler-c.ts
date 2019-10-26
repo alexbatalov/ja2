@@ -3,11 +3,11 @@ const NUM_DAYS_TILL_UNPAID_RPC_QUITS = 3;
 // can you say me too after someone has said thier contract about to end
 let fContractOverMeTooFlag: boolean = false;
 let fContractOverAndIWontRenewMeTooFlag: boolean = false;
-let fProcessingAMerc: boolean = false;
-let pProcessingSoldier: Pointer<SOLDIERTYPE> = null;
+export let fProcessingAMerc: boolean = false;
+export let pProcessingSoldier: Pointer<SOLDIERTYPE> = null;
 let gfFirstMercSayingQuoteWillLeaveNoMatterWhat: boolean = false;
 
-function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pKiller: Pointer<SOLDIERTYPE> = null;
   let sSectorX: INT16;
   let sSectorY: INT16;
@@ -99,7 +99,7 @@ function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
 }
 
 // MercDailyUpdate() gets called every day at midnight.  If something is to happen to a merc that day, add an event for it.
-function MercDailyUpdate(): void {
+export function MercDailyUpdate(): void {
   let cnt: INT32;
   let bLastTeamID: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -486,7 +486,7 @@ void HandleMercsAboutToLeave( SOLDIERTYPE *pMercList )
 
 // ATE: This function deals with MERC MERC and NPC's leaving because of not getting paid...
 // NOT AIM renewals....
-function MercsContractIsFinished(ubID: UINT8): void {
+export function MercsContractIsFinished(ubID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = addressof(Menptr[ubID]);
@@ -532,7 +532,7 @@ function MercsContractIsFinished(ubID: UINT8): void {
 }
 
 // ATE: Called for RPCs who should now complain about no pay...
-function RPCWhineAboutNoPay(ubID: UINT8): void {
+export function RPCWhineAboutNoPay(ubID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = addressof(Menptr[ubID]);
@@ -548,7 +548,7 @@ function RPCWhineAboutNoPay(ubID: UINT8): void {
 }
 
 // OK loop through and check!
-function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let cnt: INT32;
   let usItem: UINT16;
   let bBestArmour: INT8 = -1;
@@ -597,7 +597,7 @@ function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): boo
   return false;
 }
 
-function MercComplainAboutEquipment(ubProfile: UINT8): void {
+export function MercComplainAboutEquipment(ubProfile: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (ubProfile == Enum268.LARRY_NORMAL) {
@@ -623,7 +623,7 @@ function MercComplainAboutEquipment(ubProfile: UINT8): void {
   }
 }
 
-function UpdateBuddyAndHatedCounters(): void {
+export function UpdateBuddyAndHatedCounters(): void {
   let bMercID: INT8;
   let iLoop: INT32;
   let bOtherID: INT8;
@@ -814,7 +814,7 @@ function UpdateBuddyAndHatedCounters(): void {
   }
 }
 
-function HourlyCamouflageUpdate(): void {
+export function HourlyCamouflageUpdate(): void {
   let bMercID: INT8;
   let bLastTeamID: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;

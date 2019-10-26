@@ -1,4 +1,4 @@
-let StoreInventory: UINT8[][] /* [MAXITEMS][BOBBY_RAY_LISTS] */ = [
+export let StoreInventory: UINT8[][] /* [MAXITEMS][BOBBY_RAY_LISTS] */ = [
   //
   // The first column is for Bobby Rays new inventory,					BOBBY_RAY_NEW,
   // The second column is for Bobby Rays used inventory,				BOBBY_RAY_USED,
@@ -433,7 +433,7 @@ let StoreInventory: UINT8[][] /* [MAXITEMS][BOBBY_RAY_LISTS] */ = [
   [ 0, 0 ], /* nothing */
 ];
 
-let WeaponROF: INT16[] /* [MAX_WEAPONS] */ = [
+export let WeaponROF: INT16[] /* [MAX_WEAPONS] */ = [
   0, /* Nothing */
 
   40, /* Glock 17        */
@@ -510,7 +510,7 @@ let WeaponROF: INT16[] /* [MAX_WEAPONS] */ = [
 ];
 
 // SetupStoreInventory sets up the initial quantity on hand for all of Bobby Ray's inventory items
-function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: boolean): void {
+export function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: boolean): void {
   let i: UINT16;
   let usItemIndex: UINT16;
   let ubNumBought: UINT8;

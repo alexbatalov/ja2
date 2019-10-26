@@ -146,7 +146,7 @@ let guiCurrentlySelectedFlowerImage: UINT32;
 let guiNameBox: UINT32;
 let guiPersonalSentiments: UINT32;
 let guiFlowerOrderCheckBoxButtonImage: UINT32;
-let guiDropDownBorder: UINT32;
+export let guiDropDownBorder: UINT32;
 
 let gfFLoristCheckBox0Down: boolean = false; // next day delviery
 let gfFLoristCheckBox1Down: boolean = true; // when it gets there delivery
@@ -214,7 +214,7 @@ let gSelectedFlowerDropDownRegion: MOUSE_REGION[] /* [FLOWER_ORDER_NUMBER_OF_DRO
 function GameInitFloristOrderForm(): void {
 }
 
-function EnterFloristOrderForm(): boolean {
+export function EnterFloristOrderForm(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT8;
   let sTemp: char[] /* [40] */;
@@ -345,13 +345,13 @@ function EnterFloristOrderForm(): boolean {
   return true;
 }
 
-function InitFloristOrderFormVariables(): void {
+export function InitFloristOrderFormVariables(): void {
   guiFlowerPrice = 0;
   gubFlowerDestDropDownMode = Enum81.FLOWER_ORDER_DROP_DOWN_NO_ACTION;
   gubCurrentlySelectedFlowerLocation = 0;
 }
 
-function ExitFloristOrderForm(): void {
+export function ExitFloristOrderForm(): void {
   let i: UINT8;
   RemoveFloristDefaults();
 
@@ -396,7 +396,7 @@ function ExitFloristOrderForm(): void {
   DestroyFlowerOrderTextInputBoxes();
 }
 
-function HandleFloristOrderForm(): void {
+export function HandleFloristOrderForm(): void {
   if (gubFlowerDestDropDownMode != Enum81.FLOWER_ORDER_DROP_DOWN_NO_ACTION) {
     CreateDestroyFlowerOrderDestDropDown(gubFlowerDestDropDownMode);
   }
@@ -405,7 +405,7 @@ function HandleFloristOrderForm(): void {
   RenderAllTextFields();
 }
 
-function RenderFloristOrderForm(): void {
+export function RenderFloristOrderForm(): void {
   let hPixHandle: HVOBJECT;
   let usPosX: UINT16;
   let sTemp: wchar_t[] /* [640] */;
@@ -1067,7 +1067,7 @@ function FlowerOrderUserTextFieldCallBack(ubID: UINT8, fEntering: boolean): void
 }
 
 // Initialize the Florsit Order Page (reset some variables)
-function InitFloristOrderForm(): void {
+export function InitFloristOrderForm(): void {
   gsSentimentTextField[0] = 0;
 
   gfFLoristCheckBox0Down = false; // next day delviery

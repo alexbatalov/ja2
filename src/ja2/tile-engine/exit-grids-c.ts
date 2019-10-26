@@ -1,9 +1,9 @@
-let gfLoadingExitGrids: boolean = false;
+export let gfLoadingExitGrids: boolean = false;
 
 // used by editor.
-let gExitGrid: EXITGRID = [ 0, 1, 1, 0 ];
+export let gExitGrid: EXITGRID = [ 0, 1, 1, 0 ];
 
-let gfOverrideInsertionWithExitGrid: boolean = false;
+export let gfOverrideInsertionWithExitGrid: boolean = false;
 
 function ConvertExitGridToINT32(pExitGrid: Pointer<EXITGRID>): INT32 {
   let iExitGridInfo: INT32;
@@ -22,7 +22,7 @@ function ConvertINT32ToExitGrid(iExitGridInfo: INT32, pExitGrid: Pointer<EXITGRI
   pExitGrid.value.usGridNo = (iExitGridInfo & 0x0000ffff);
 }
 
-function GetExitGrid(usMapIndex: UINT16, pExitGrid: Pointer<EXITGRID>): boolean {
+export function GetExitGrid(usMapIndex: UINT16, pExitGrid: Pointer<EXITGRID>): boolean {
   let pShadow: Pointer<LEVELNODE>;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
@@ -40,7 +40,7 @@ function GetExitGrid(usMapIndex: UINT16, pExitGrid: Pointer<EXITGRID>): boolean 
   return false;
 }
 
-function ExitGridAtGridNo(usMapIndex: UINT16): boolean {
+export function ExitGridAtGridNo(usMapIndex: UINT16): boolean {
   let pShadow: Pointer<LEVELNODE>;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
@@ -53,7 +53,7 @@ function ExitGridAtGridNo(usMapIndex: UINT16): boolean {
   return false;
 }
 
-function GetExitGridLevelNode(usMapIndex: UINT16, ppLevelNode: Pointer<Pointer<LEVELNODE>>): boolean {
+export function GetExitGridLevelNode(usMapIndex: UINT16, ppLevelNode: Pointer<Pointer<LEVELNODE>>): boolean {
   let pShadow: Pointer<LEVELNODE>;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
@@ -67,7 +67,7 @@ function GetExitGridLevelNode(usMapIndex: UINT16, ppLevelNode: Pointer<Pointer<L
   return false;
 }
 
-function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID>): void {
+export function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID>): void {
   let pShadow: Pointer<LEVELNODE>;
   let tail: Pointer<LEVELNODE>;
   pShadow = gpWorldLevelData[iMapIndex].pShadowHead;
@@ -99,14 +99,14 @@ function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID>): voi
   }
 }
 
-function RemoveExitGridFromWorld(iMapIndex: INT32): void {
+export function RemoveExitGridFromWorld(iMapIndex: INT32): void {
   let usDummy: UINT16;
   if (TypeExistsInShadowLayer(iMapIndex, Enum313.MOCKFLOOR, addressof(usDummy))) {
     RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.MOCKFLOOR, Enum313.MOCKFLOOR);
   }
 }
 
-function SaveExitGrids(fp: HWFILE, usNumExitGrids: UINT16): void {
+export function SaveExitGrids(fp: HWFILE, usNumExitGrids: UINT16): void {
   let exitGrid: EXITGRID;
   let usNumSaved: UINT16 = 0;
   let x: UINT16;
@@ -123,7 +123,7 @@ function SaveExitGrids(fp: HWFILE, usNumExitGrids: UINT16): void {
   Assert(usNumExitGrids == usNumSaved);
 }
 
-function LoadExitGrids(hBuffer: Pointer<Pointer<INT8>>): void {
+export function LoadExitGrids(hBuffer: Pointer<Pointer<INT8>>): void {
   let exitGrid: EXITGRID;
   let x: UINT16;
   let usNumSaved: UINT16;
@@ -141,7 +141,7 @@ function LoadExitGrids(hBuffer: Pointer<Pointer<INT8>>): void {
   gfLoadingExitGrids = false;
 }
 
-function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
+export function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
   let ubLookForLevel: UINT8 = 0;
   let i: UINT16;
   if (bRelativeZLevel != 1 && bRelativeZLevel != -1)
@@ -177,7 +177,7 @@ function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
   }
 }
 
-function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -287,7 +287,7 @@ function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, 
   }
 }
 
-function FindClosestExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: INT16, ubRadius: INT8): UINT16 {
+export function FindClosestExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: INT16, ubRadius: INT8): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;

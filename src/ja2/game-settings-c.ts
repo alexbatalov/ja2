@@ -4,13 +4,13 @@ const GAME_INI_FILE = "..\\Ja2.ini";
 
 const CD_ROOT_DIR = "DATA\\";
 
-let gGameSettings: GAME_SETTINGS;
-let gGameOptions: GAME_OPTIONS;
+export let gGameSettings: GAME_SETTINGS;
+export let gGameOptions: GAME_OPTIONS;
 
 // Change this number when we want any who gets the new build to reset the options
 const GAME_SETTING_CURRENT_VERSION = 522;
 
-function LoadGameSettings(): boolean {
+export function LoadGameSettings(): boolean {
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
 
@@ -90,7 +90,7 @@ function LoadGameSettings(): boolean {
   return true;
 }
 
-function SaveGameSettings(): boolean {
+export function SaveGameSettings(): boolean {
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
 
@@ -172,7 +172,7 @@ function InitGameSettings(): void {
   SaveGameSettings();
 }
 
-function InitGameOptions(): void {
+export function InitGameOptions(): void {
   memset(addressof(gGameOptions), 0, sizeof(GAME_OPTIONS));
 
   // Init the game options
@@ -183,7 +183,7 @@ function InitGameOptions(): void {
   gGameOptions.fIronManMode = false;
 }
 
-function GetCDLocation(): boolean {
+export function GetCDLocation(): boolean {
   let uiStrngLength: UINT32 = 0;
   let zCdLocation: CHAR8[] /* [SGPFILENAME_LEN] */;
   let uiDriveType: UINT32 = 0;
@@ -330,7 +330,7 @@ function GetCDromDriveLetter(pString: STR8): boolean {
 
 */
 
-function CheckIfGameCdromIsInCDromDrive(): boolean {
+export function CheckIfGameCdromIsInCDromDrive(): boolean {
   let zVolumeNameBuffer: CHAR8[] /* [512] */;
   let uiVolumeSerialNumber: UINT32 = 0;
   let uiMaxComponentLength: UINT32 = 0;
@@ -401,7 +401,7 @@ function GetCdromLocationFromIniFile(pRootOfCdromDrive: STR): boolean {
   }
 }
 
-function CDromEjectionErrorMessageBoxCallBack(bExitValue: UINT8): void {
+export function CDromEjectionErrorMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_OK) {
     guiPreviousOptionScreen = Enum26.GAME_SCREEN;
 
@@ -433,7 +433,7 @@ function IsDriveLetterACDromDrive(pDriveLetter: STR): boolean {
   return false;
 }
 
-function DisplayGameSettings(): void {
+export function DisplayGameSettings(): void {
   // Display the version number
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s (%S)", pMessageStrings[Enum333.MSG_VERSION], zVersionLabel, czVersionNumber);
 
@@ -461,7 +461,7 @@ function DisplayGameSettings(): void {
   }
 }
 
-function MeanwhileSceneSeen(ubMeanwhile: UINT8): boolean {
+export function MeanwhileSceneSeen(ubMeanwhile: UINT8): boolean {
   let uiCheckFlag: UINT32;
 
   if (ubMeanwhile > 32 || ubMeanwhile > Enum160.NUM_MEANWHILES) {
@@ -477,7 +477,7 @@ function MeanwhileSceneSeen(ubMeanwhile: UINT8): boolean {
   }
 }
 
-function SetMeanwhileSceneSeen(ubMeanwhile: UINT8): boolean {
+export function SetMeanwhileSceneSeen(ubMeanwhile: UINT8): boolean {
   let uiCheckFlag: UINT32;
 
   if (ubMeanwhile > 32 || ubMeanwhile > Enum160.NUM_MEANWHILES) {
@@ -489,7 +489,7 @@ function SetMeanwhileSceneSeen(ubMeanwhile: UINT8): boolean {
   return true;
 }
 
-function CanGameBeSaved(): boolean {
+export function CanGameBeSaved(): boolean {
   // if the iron man mode is on
   if (gGameOptions.fIronManMode) {
     // if we are in turn based combat

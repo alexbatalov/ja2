@@ -1,6 +1,6 @@
 let pAniTileHead: Pointer<ANITILE> = null;
 
-function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITILE> {
+export function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITILE> {
   let pAniNode: Pointer<ANITILE>;
   let pNewAniNode: Pointer<ANITILE>;
   let pNode: Pointer<LEVELNODE>;
@@ -225,7 +225,7 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
 }
 
 // Loop throug all ani tiles and remove...
-function DeleteAniTiles(): void {
+export function DeleteAniTiles(): void {
   let pAniNode: Pointer<ANITILE> = null;
   let pNode: Pointer<ANITILE> = null;
 
@@ -241,7 +241,7 @@ function DeleteAniTiles(): void {
   }
 }
 
-function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
+export function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
   let pAniNode: Pointer<ANITILE> = null;
   let pOldAniNode: Pointer<ANITILE> = null;
   let TileElem: Pointer<TILE_ELEMENT>;
@@ -357,7 +357,7 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
   }
 }
 
-function UpdateAniTiles(): void {
+export function UpdateAniTiles(): void {
   let pAniNode: Pointer<ANITILE> = null;
   let pNode: Pointer<ANITILE> = null;
   let uiClock: UINT32 = GetJA2Clock();
@@ -601,7 +601,7 @@ function SetAniTileFrame(pAniTile: Pointer<ANITILE>, sFrame: INT16): void {
   pAniTile.value.sCurrentFrame = sStartFrame;
 }
 
-function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT32): Pointer<ANITILE> {
+export function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT32): Pointer<ANITILE> {
   let pNode: Pointer<LEVELNODE> = null;
 
   switch (ubLevelID) {
@@ -653,7 +653,7 @@ function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT3
   return null;
 }
 
-function HideAniTile(pAniTile: Pointer<ANITILE>, fHide: boolean): void {
+export function HideAniTile(pAniTile: Pointer<ANITILE>, fHide: boolean): void {
   if (fHide) {
     pAniTile.value.pLevelNode.value.uiFlags |= LEVELNODE_HIDDEN;
   } else {

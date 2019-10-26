@@ -1,8 +1,8 @@
-let gTileSurfaceArray: Pointer<TILE_IMAGERY>[] /* [NUMBEROFTILETYPES] */;
-let gbDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
-let gbSameAsDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
+export let gTileSurfaceArray: Pointer<TILE_IMAGERY>[] /* [NUMBEROFTILETYPES] */;
+export let gbDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
+export let gbSameAsDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
 
-function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
+export function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
   // Add tile surface
   let pTileSurf: PTILE_IMAGERY = null;
   let VObjectDesc: VOBJECT_DESC;
@@ -95,7 +95,7 @@ function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
   return pTileSurf;
 }
 
-function DeleteTileSurface(pTileSurf: PTILE_IMAGERY): void {
+export function DeleteTileSurface(pTileSurf: PTILE_IMAGERY): void {
   if (pTileSurf.value.pStructureFileRef != null) {
     FreeStructureFile(pTileSurf.value.pStructureFileRef);
   } else {
@@ -111,7 +111,7 @@ function DeleteTileSurface(pTileSurf: PTILE_IMAGERY): void {
   MemFree(pTileSurf);
 }
 
-function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer<TILE_IMAGERY>): void {
+export function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer<TILE_IMAGERY>): void {
   let cnt: INT32 = 0;
   let cRootFile: CHAR8[] /* [128] */;
   let ubRaisedObjectFiles: UINT8[][] /* [][80] */ = [

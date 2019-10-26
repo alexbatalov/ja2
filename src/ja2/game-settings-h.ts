@@ -1,5 +1,5 @@
 // If you add any options, MAKE sure you add the corresponding string to the Options Screen string array
-const enum Enum8 {
+export const enum Enum8 {
   TOPTION_SPEECH,
   TOPTION_MUTE_CONFIRMATIONS,
   TOPTION_SUBTITLES,
@@ -44,7 +44,7 @@ const enum Enum8 {
   NUM_ALL_GAME_OPTIONS,
 }
 
-interface GAME_SETTINGS {
+export interface GAME_SETTINGS {
   bLastSavedGameSlot: INT8; // The last saved game number goes in here
 
   ubMusicVolumeSetting: UINT8;
@@ -69,7 +69,7 @@ interface GAME_SETTINGS {
 }
 
 // Enums for the difficulty levels
-const enum Enum9 {
+export const enum Enum9 {
   DIF_LEVEL_ZERO,
   DIF_LEVEL_EASY,
   DIF_LEVEL_MEDIUM,
@@ -77,7 +77,7 @@ const enum Enum9 {
   DIF_LEVEL_FOUR,
 }
 
-interface GAME_OPTIONS {
+export interface GAME_OPTIONS {
   fGunNut: boolean;
   fSciFi: boolean;
   ubDifficultyLevel: UINT8;

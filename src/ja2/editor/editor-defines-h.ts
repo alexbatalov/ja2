@@ -1,4 +1,4 @@
-const enum Enum35 {
+export const enum Enum35 {
   TBAR_MODE_NONE,
   TBAR_MODE_DRAW,
   TBAR_MODE_ERASE,
@@ -72,7 +72,7 @@ const enum Enum35 {
   TBAR_MODE_ITEM_KEYS,
 }
 
-const enum Enum36 {
+export const enum Enum36 {
   TASK_NONE,
   TASK_TERRAIN,
   TASK_BUILDINGS,
@@ -82,7 +82,7 @@ const enum Enum36 {
   TASK_OPTIONS,
 }
 
-const enum Enum37 {
+export const enum Enum37 {
   ACTION_NULL,
   ACTION_SUB_INDEX_UP,
   ACTION_SUB_INDEX_DWN,
@@ -147,7 +147,7 @@ const enum Enum37 {
   ACTION_PASTE_MERC_PLACEMENT,
 }
 
-const enum Enum38 {
+export const enum Enum38 {
   DRAW_MODE_NOTHING,
   // Terrain
   DRAW_MODE_GROUND,
@@ -211,5 +211,5 @@ const enum Enum38 {
   DRAW_MODE_ERASE = 1000,
 }
 
-const MERCPANEL_X = 177;
-const MERCPANEL_Y = 361;
+export const MERCPANEL_X = 177;
+export const MERCPANEL_Y = 361;

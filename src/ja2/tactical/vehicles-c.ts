@@ -1,10 +1,10 @@
-let gubVehicleMovementGroups: INT8[] /* [MAX_VEHICLES] */;
+export let gubVehicleMovementGroups: INT8[] /* [MAX_VEHICLES] */;
 
 // the list of vehicles
-let pVehicleList: Pointer<VEHICLETYPE> = null;
+export let pVehicleList: Pointer<VEHICLETYPE> = null;
 
 // number of vehicle slots on the list
-let ubNumberOfVehicles: UINT8 = 0;
+export let ubNumberOfVehicles: UINT8 = 0;
 
 // ATE: These arrays below should all be in a large LUT which contains
 // static info for each vehicle....
@@ -20,7 +20,7 @@ let iMvtTypes: INT32[] /* [] */ = [
   AIR, // helicopter
 ];
 
-let iSeatingCapacities: INT32[] /* [] */ = [
+export let iSeatingCapacities: INT32[] /* [] */ = [
   6, // eldorado
   6, // hummer
   6, // ice cream truck
@@ -114,7 +114,7 @@ const COST_PER_TIRE_HIT = 5;
 // void RemoveSoldierFromVehicleBetweenSectors( pSoldier, iId );
 
 // Loop through and create a few soldier squad ID's for vehicles ( max # 3 )
-function InitVehicles(): void {
+export function InitVehicles(): void {
   let cnt: INT32;
   let pGroup: Pointer<GROUP> = null;
 
@@ -128,7 +128,7 @@ function InitVehicles(): void {
   }
 }
 
-function SetVehicleValuesIntoSoldierType(pVehicle: Pointer<SOLDIERTYPE>): void {
+export function SetVehicleValuesIntoSoldierType(pVehicle: Pointer<SOLDIERTYPE>): void {
   wcscpy(pVehicle.value.name, zVehicleName[pVehicleList[pVehicle.value.bVehicleID].ubVehicleType]);
 
   pVehicle.value.ubProfile = pVehicleList[pVehicle.value.bVehicleID].ubProfileID;
@@ -140,7 +140,7 @@ function SetVehicleValuesIntoSoldierType(pVehicle: Pointer<SOLDIERTYPE>): void {
   pVehicle.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__VEHICLE;
 }
 
-function AddVehicleToList(sMapX: INT16, sMapY: INT16, sGridNo: INT16, ubType: UINT8): INT32 {
+export function AddVehicleToList(sMapX: INT16, sMapY: INT16, sGridNo: INT16, ubType: UINT8): INT32 {
   // insert this vehicle into the list
   // how many vehicles are there?
   let iVehicleIdValue: INT32 = -1;
@@ -245,7 +245,7 @@ function AddVehicleToList(sMapX: INT16, sMapY: INT16, sGridNo: INT16, ubType: UI
   return iVehicleIdValue;
 }
 
-function RemoveVehicleFromList(iId: INT32): boolean {
+export function RemoveVehicleFromList(iId: INT32): boolean {
   // remove this vehicle from the list
 
   // error check
@@ -264,7 +264,7 @@ function RemoveVehicleFromList(iId: INT32): boolean {
   return true;
 }
 
-function ClearOutVehicleList(): void {
+export function ClearOutVehicleList(): void {
   let iCounter: INT32;
 
   // empty out the vehicle list
@@ -296,7 +296,7 @@ function ClearOutVehicleList(): void {
   */
 }
 
-function IsThisVehicleAccessibleToSoldier(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): boolean {
+export function IsThisVehicleAccessibleToSoldier(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): boolean {
   if (pSoldier == null) {
     return false;
   }
@@ -464,7 +464,7 @@ function AddSoldierToVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): boolea
   return false;
 }
 
-function SetSoldierExitVehicleInsertionData(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): void {
+export function SetSoldierExitVehicleInsertionData(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): void {
   if (iId == iHelicopterVehicleId && !pSoldier.value.bInSector) {
     if (pSoldier.value.sSectorX != BOBBYR_SHIPPING_DEST_SECTOR_X || pSoldier.value.sSectorY != BOBBYR_SHIPPING_DEST_SECTOR_Y || pSoldier.value.bSectorZ != BOBBYR_SHIPPING_DEST_SECTOR_Z) {
       // Not anything different here - just use center gridno......
@@ -695,7 +695,7 @@ void RemoveSoldierFromVehicleBetweenSectors( pSoldier, iId )
 }
 */
 
-function MoveCharactersPathToVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function MoveCharactersPathToVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iId: INT32;
   // valid soldier?
   if (pSoldier == null) {
@@ -805,7 +805,7 @@ function CopyVehiclePathToSoldier(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function SetUpMvtGroupForVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function SetUpMvtGroupForVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // given this grunt, find out if asscoiated vehicle has a mvt group, if so, set this grunts mvt group tho the vehicle
   // for pathing purposes, will be reset to zero in copying of path
   let iId: INT32 = 0;
@@ -854,7 +854,7 @@ function SetUpMvtGroupForVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
 
   return true;
 }
-function VehicleIdIsValid(iId: INT32): boolean {
+export function VehicleIdIsValid(iId: INT32): boolean {
   // check if vehicle has mvt group, if not, get one for it
   if ((iId >= ubNumberOfVehicles) || (iId < 0)) {
     return false;
@@ -891,7 +891,7 @@ function GetTravelTimeOfVehicle(iId: INT32): INT32 {
   return CalculateTravelTimeOfGroupId(pVehicleList[iId].ubMovementGroup);
 }
 
-function UpdatePositionOfMercsInVehicle(iId: INT32): void {
+export function UpdatePositionOfMercsInVehicle(iId: INT32): void {
   let iCounter: INT32 = 0;
 
   // update the position of all the grunts in the vehicle
@@ -911,7 +911,7 @@ function UpdatePositionOfMercsInVehicle(iId: INT32): void {
   return;
 }
 
-function GivenMvtGroupIdFindVehicleId(ubGroupId: UINT8): INT32 {
+export function GivenMvtGroupIdFindVehicleId(ubGroupId: UINT8): INT32 {
   let iCounter: INT32 = 0;
 
   // given the id of a mvt group, find a vehicle in this group
@@ -1007,7 +1007,7 @@ function KillPersonInVehicle(iId: INT32, pSoldier: Pointer<SOLDIERTYPE>): boolea
   return true;
 }
 
-function KillAllInVehicle(iId: INT32): boolean {
+export function KillAllInVehicle(iId: INT32): boolean {
   let iCounter: INT32 = 0;
 
   // find if vehicle is valid
@@ -1027,7 +1027,7 @@ function KillAllInVehicle(iId: INT32): boolean {
   return true;
 }
 
-function GetNumberInVehicle(iId: INT32): INT32 {
+export function GetNumberInVehicle(iId: INT32): INT32 {
   // go through list of occupants in vehicles and count them
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
@@ -1046,7 +1046,7 @@ function GetNumberInVehicle(iId: INT32): INT32 {
   return iCount;
 }
 
-function GetNumberOfNonEPCsInVehicle(iId: INT32): INT32 {
+export function GetNumberOfNonEPCsInVehicle(iId: INT32): INT32 {
   // go through list of occupants in vehicles and count them
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
@@ -1065,7 +1065,7 @@ function GetNumberOfNonEPCsInVehicle(iId: INT32): INT32 {
   return iCount;
 }
 
-function IsRobotControllerInVehicle(iId: INT32): boolean {
+export function IsRobotControllerInVehicle(iId: INT32): boolean {
   // go through list of occupants in vehicles and count them
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1085,7 +1085,7 @@ function IsRobotControllerInVehicle(iId: INT32): boolean {
   return false;
 }
 
-function AnyAccessibleVehiclesInSoldiersSector(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function AnyAccessibleVehiclesInSoldiersSector(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < ubNumberOfVehicles; iCounter++) {
@@ -1107,7 +1107,7 @@ function SetDriver(iID: INT32, ubID: UINT8): void {
   pVehicleList[iID].ubDriver = ubID;
 }
 
-function IsEnoughSpaceInVehicle(iID: INT32): boolean {
+export function IsEnoughSpaceInVehicle(iID: INT32): boolean {
   // find if vehicle is valid
   if (VehicleIdIsValid(iID) == false) {
     return false;
@@ -1120,7 +1120,7 @@ function IsEnoughSpaceInVehicle(iID: INT32): boolean {
   return true;
 }
 
-function PutSoldierInVehicle(pSoldier: Pointer<SOLDIERTYPE>, bVehicleId: INT8): boolean {
+export function PutSoldierInVehicle(pSoldier: Pointer<SOLDIERTYPE>, bVehicleId: INT8): boolean {
   let pVehicleSoldier: Pointer<SOLDIERTYPE> = null;
 
   if ((pSoldier.value.sSectorX != gWorldSectorX) || (pSoldier.value.sSectorY != gWorldSectorY) || (pSoldier.value.bSectorZ != 0) || (bVehicleId == iHelicopterVehicleId)) {
@@ -1135,7 +1135,7 @@ function PutSoldierInVehicle(pSoldier: Pointer<SOLDIERTYPE>, bVehicleId: INT8): 
   }
 }
 
-function TakeSoldierOutOfVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function TakeSoldierOutOfVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // if not in vehicle, don't take out, not much point, now is there?
   if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
     return false;
@@ -1155,7 +1155,7 @@ function TakeSoldierOutOfVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 }
 
-function EnterVehicle(pVehicle: Pointer<SOLDIERTYPE>, pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function EnterVehicle(pVehicle: Pointer<SOLDIERTYPE>, pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let sOldGridNo: INT16 = 0;
 
   // TEST IF IT'S VALID...
@@ -1197,7 +1197,7 @@ function GetVehicleSoldierPointerFromPassenger(pSrcSoldier: Pointer<SOLDIERTYPE>
   return null;
 }
 
-function ExitVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function ExitVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pVehicle: Pointer<SOLDIERTYPE>;
   let ubDirection: UINT8;
   let sGridNo: INT16;
@@ -1253,7 +1253,7 @@ function ExitVehicle(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function AddPassangersToTeamPanel(iId: INT32): void {
+export function AddPassangersToTeamPanel(iId: INT32): void {
   let cnt: INT32;
 
   for (cnt = 0; cnt < iSeatingCapacities[pVehicleList[iId].ubVehicleType]; cnt++) {
@@ -1264,7 +1264,7 @@ function AddPassangersToTeamPanel(iId: INT32): void {
   }
 }
 
-function VehicleTakeDamage(ubID: UINT8, ubReason: UINT8, sDamage: INT16, sGridNo: INT16, ubAttackerID: UINT8): void {
+export function VehicleTakeDamage(ubID: UINT8, ubReason: UINT8, sDamage: INT16, sGridNo: INT16, ubAttackerID: UINT8): void {
   let sOldDmgValue: INT16 = 0;
 
   if (ubReason != TAKE_DAMAGE_GAS) {
@@ -1358,7 +1358,7 @@ function HandleCriticalHitForVehicleInLocation(ubID: UINT8, sDmg: INT16, sGridNo
   return;
 }
 
-function DoesVehicleNeedAnyRepairs(iVehicleId: INT32): boolean {
+export function DoesVehicleNeedAnyRepairs(iVehicleId: INT32): boolean {
   let pVehicleSoldier: Pointer<SOLDIERTYPE> = null;
 
   // is the vehicle in fact a valid vehicle
@@ -1383,7 +1383,7 @@ function DoesVehicleNeedAnyRepairs(iVehicleId: INT32): boolean {
   return false;
 }
 
-function RepairVehicle(iVehicleId: INT32, bRepairPtsLeft: INT8, pfNothingToRepair: Pointer<boolean>): INT8 {
+export function RepairVehicle(iVehicleId: INT32, bRepairPtsLeft: INT8, pfNothingToRepair: Pointer<boolean>): INT8 {
   let pVehicleSoldier: Pointer<SOLDIERTYPE> = null;
   let bRepairPtsUsed: INT8 = 0;
   let bOldLife: INT8;
@@ -1437,7 +1437,7 @@ INT16 GetOrigInternalArmorValueForVehicleInLocation( UINT8 ubID, UINT8 ubLocatio
 }
 */
 
-function GetSoldierStructureForVehicle(iId: INT32): Pointer<SOLDIERTYPE> {
+export function GetSoldierStructureForVehicle(iId: INT32): Pointer<SOLDIERTYPE> {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let pFoundSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
@@ -1485,7 +1485,7 @@ function SetUpArmorForVehicle(ubID: UINT8): void {
   return;
 }
 
-function AdjustVehicleAPs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UINT8>): void {
+export function AdjustVehicleAPs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UINT8>): void {
   let pubDeducations: UINT8 = 0;
   let iCounter: INT32 = 0;
 
@@ -1512,7 +1512,7 @@ function AdjustVehicleAPs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UIN
   (pubPoints.value) -= pubDeducations;
 }
 
-function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let pTempPathPtr: PathStPtr;
   let uiNodeCount: UINT32 = 0;
@@ -1590,7 +1590,7 @@ function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadVehicleInformationFromSavedGameFile(hFile: HWFILE, uiSavedGameVersion: UINT32): boolean {
+export function LoadVehicleInformationFromSavedGameFile(hFile: HWFILE, uiSavedGameVersion: UINT32): boolean {
   let uiNumBytesRead: UINT32;
   let uiTotalNodeCount: UINT32 = 0;
   let cnt: UINT8;
@@ -1706,7 +1706,7 @@ function LoadVehicleInformationFromSavedGameFile(hFile: HWFILE, uiSavedGameVersi
   return true;
 }
 
-function SetVehicleSectorValues(iVehId: INT32, ubSectorX: UINT8, ubSectorY: UINT8): void {
+export function SetVehicleSectorValues(iVehId: INT32, ubSectorX: UINT8, ubSectorY: UINT8): void {
   pVehicleList[iVehId].sSectorX = ubSectorX;
   pVehicleList[iVehId].sSectorY = ubSectorY;
 
@@ -1714,7 +1714,7 @@ function SetVehicleSectorValues(iVehId: INT32, ubSectorX: UINT8, ubSectorY: UINT
   gMercProfiles[pVehicleList[iVehId].ubProfileID].sSectorY = ubSectorY;
 }
 
-function UpdateAllVehiclePassengersGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function UpdateAllVehiclePassengersGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iCounter: INT32;
   let iId: INT32;
   let pPassenger: Pointer<SOLDIERTYPE>;
@@ -1750,7 +1750,7 @@ function SaveVehicleMovementInfoToSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): boolean {
+export function LoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): boolean {
   let cnt: INT32;
   let pGroup: Pointer<GROUP> = null;
   let uiNumBytesRead: UINT32 = 0;
@@ -1774,7 +1774,7 @@ function LoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function NewSaveVehicleMovementInfoToSavedGameFile(hFile: HWFILE): boolean {
+export function NewSaveVehicleMovementInfoToSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let uiSaveSize: UINT32 = 0;
 
@@ -1787,7 +1787,7 @@ function NewSaveVehicleMovementInfoToSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function NewLoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): boolean {
+export function NewLoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let uiSaveSize: UINT32 = 0;
 
@@ -1800,7 +1800,7 @@ function NewLoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function OKUseVehicle(ubProfile: UINT8): boolean {
+export function OKUseVehicle(ubProfile: UINT8): boolean {
   if (ubProfile == Enum268.PROF_HUMMER) {
     return CheckFact(Enum170.FACT_OK_USE_HUMMER, NO_PROFILE);
   } else if (ubProfile == Enum268.PROF_ICECREAM) {
@@ -1857,7 +1857,7 @@ function TeleportVehicleToItsClosestSector(iVehicleId: INT32, ubGroupID: UINT8):
   PlaceGroupInSector(ubGroupID, sPrevX, sPrevY, sNextX, sNextY, 0, false);
 }
 
-function AddVehicleFuelToSave(): void {
+export function AddVehicleFuelToSave(): void {
   let iCounter: INT32;
   let pVehicleSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -1918,7 +1918,7 @@ function CanSoldierDriveVehicle(pSoldier: Pointer<SOLDIERTYPE>, iVehicleId: INT3
   return true;
 }
 
-function SoldierMustDriveVehicle(pSoldier: Pointer<SOLDIERTYPE>, iVehicleId: INT32, fTryingToTravel: boolean): boolean {
+export function SoldierMustDriveVehicle(pSoldier: Pointer<SOLDIERTYPE>, iVehicleId: INT32, fTryingToTravel: boolean): boolean {
   Assert(pSoldier);
 
   // error check
@@ -1970,7 +1970,7 @@ function OnlyThisSoldierCanDriveVehicle(pThisSoldier: Pointer<SOLDIERTYPE>, iVeh
   return true;
 }
 
-function IsSoldierInThisVehicleSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadNumber: INT8): boolean {
+export function IsSoldierInThisVehicleSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadNumber: INT8): boolean {
   let iVehicleId: INT32;
   let pVehicleSoldier: Pointer<SOLDIERTYPE>;
 
@@ -2003,7 +2003,7 @@ function IsSoldierInThisVehicleSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadNumbe
   return true;
 }
 
-function PickRandomPassengerFromVehicle(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
+export function PickRandomPassengerFromVehicle(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
@@ -2042,7 +2042,7 @@ function DoesVehicleHaveAnyPassengers(iVehicleID: INT32): boolean {
   return true;
 }
 
-function DoesVehicleGroupHaveAnyPassengers(pGroup: Pointer<GROUP>): boolean {
+export function DoesVehicleGroupHaveAnyPassengers(pGroup: Pointer<GROUP>): boolean {
   let iVehicleID: INT32;
 
   iVehicleID = GivenMvtGroupIdFindVehicleId(pGroup.value.ubGroupID);

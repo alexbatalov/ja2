@@ -1,11 +1,11 @@
 // for use with MAPCREATE_STRUCT.ubEditorSmoothingType
-const enum Enum231 {
+export const enum Enum231 {
   SMOOTHING_NORMAL,
   SMOOTHING_BASEMENT,
   SMOOTHING_CAVES,
 }
 
-interface MAPCREATE_STRUCT {
+export interface MAPCREATE_STRUCT {
   // These are the mandatory entry points for a map.  If any of the values are -1, then that means that
   // the point has been specifically not used and that the map is not traversable to or from an adjacent
   // sector in that direction.  The >0 value points must be validated before saving the map.  This is

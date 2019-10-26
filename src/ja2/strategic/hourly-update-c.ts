@@ -1,11 +1,11 @@
-function HandleMinuteUpdate(): void {
+export function HandleMinuteUpdate(): void {
 }
 
 // This function gets called every hour, on the hour.
 // It spawns the handling of all sorts of stuff:
 // Morale changes, assignment progress, town loyalties, etc.
 
-function HandleHourlyUpdate(): void {
+export function HandleHourlyUpdate(): void {
   // if the game hasnt even started yet ( we havent arrived in the sector ) dont process this
   if (DidGameJustStart())
     return;
@@ -56,7 +56,7 @@ function UpdateRegenCounters(): void {
   }
 }
 
-function HandleQuarterHourUpdate(): void {
+export function HandleQuarterHourUpdate(): void {
   // if the game hasnt even started yet ( we havent arrived in the sector ) dont process this
   if (DidGameJustStart())
     return;

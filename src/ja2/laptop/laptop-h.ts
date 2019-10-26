@@ -1,4 +1,4 @@
-const enum Enum95 {
+export const enum Enum95 {
   LAPTOP_MODE_NONE = 0,
   LAPTOP_MODE_FINANCES,
   LAPTOP_MODE_PERSONNEL,
@@ -48,11 +48,11 @@ const enum Enum95 {
 
 // bookamrks for WWW bookmark list
 
-const enum Enum96 {
+export const enum Enum96 {
   FIRST_SIDE_PANEL = 1,
   SECOND_SIDE_PANEL,
 }
-const enum Enum97 {
+export const enum Enum97 {
   LAPTOP_NO_CURSOR = 0,
   LAPTOP_PANEL_CURSOR,
   LAPTOP_SCREEN_CURSOR,
@@ -63,22 +63,22 @@ const LAPTOP_SIDE_PANEL_X = 0;
 const LAPTOP_SIDE_PANEL_Y = 0;
 const LAPTOP_SIDE_PANEL_WIDTH = 640;
 const LAPTOP_SIDE_PANEL_HEIGHT = 480;
-const LAPTOP_X = 0;
-const LAPTOP_Y = 0;
+export const LAPTOP_X = 0;
+export const LAPTOP_Y = 0;
 
-const LAPTOP_SCREEN_UL_X = 111;
-const LAPTOP_SCREEN_UL_Y = 27;
-const LAPTOP_SCREEN_LR_X = 613;
-const LAPTOP_SCREEN_LR_Y = 427;
-const LAPTOP_UL_X = 24;
-const LAPTOP_UL_Y = 27;
-const LAPTOP_SCREEN_WIDTH = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X;
-const LAPTOP_SCREEN_HEIGHT = LAPTOP_SCREEN_LR_Y - LAPTOP_SCREEN_UL_Y;
+export const LAPTOP_SCREEN_UL_X = 111;
+export const LAPTOP_SCREEN_UL_Y = 27;
+export const LAPTOP_SCREEN_LR_X = 613;
+export const LAPTOP_SCREEN_LR_Y = 427;
+export const LAPTOP_UL_X = 24;
+export const LAPTOP_UL_Y = 27;
+export const LAPTOP_SCREEN_WIDTH = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X;
+export const LAPTOP_SCREEN_HEIGHT = LAPTOP_SCREEN_LR_Y - LAPTOP_SCREEN_UL_Y;
 
 // new positions for web browser
-const LAPTOP_SCREEN_WEB_UL_Y = LAPTOP_SCREEN_UL_Y + 19;
-const LAPTOP_SCREEN_WEB_LR_Y = LAPTOP_SCREEN_WEB_UL_Y + LAPTOP_SCREEN_HEIGHT;
-const LAPTOP_SCREEN_WEB_DELTA_Y = LAPTOP_SCREEN_WEB_UL_Y - LAPTOP_SCREEN_UL_Y;
+export const LAPTOP_SCREEN_WEB_UL_Y = LAPTOP_SCREEN_UL_Y + 19;
+export const LAPTOP_SCREEN_WEB_LR_Y = LAPTOP_SCREEN_WEB_UL_Y + LAPTOP_SCREEN_HEIGHT;
+export const LAPTOP_SCREEN_WEB_DELTA_Y = LAPTOP_SCREEN_WEB_UL_Y - LAPTOP_SCREEN_UL_Y;
 
 // the laptop on/off button
 const ON_X = 113;
@@ -86,7 +86,7 @@ const ON_Y = 445;
 
 // the bookmark values, move cancel down as bookmarks added
 
-const enum Enum98 {
+export const enum Enum98 {
   AIM_BOOKMARK = 0,
   BOBBYR_BOOKMARK,
   IMP_BOOKMARK,
@@ -97,6 +97,6 @@ const enum Enum98 {
   CANCEL_STRING,
 }
 
-const DEAD_MERC_COLOR_RED = 255;
-const DEAD_MERC_COLOR_GREEN = 55;
-const DEAD_MERC_COLOR_BLUE = 55;
+export const DEAD_MERC_COLOR_RED = 255;
+export const DEAD_MERC_COLOR_GREEN = 55;
+export const DEAD_MERC_COLOR_BLUE = 55;

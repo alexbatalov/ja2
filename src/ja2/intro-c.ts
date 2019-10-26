@@ -62,18 +62,18 @@ let gbIntroScreenMode: INT8 = -1;
 
 // ppp
 
-function IntroScreenInit(): UINT32 {
+export function IntroScreenInit(): UINT32 {
   // Set so next time we come in, we can set up
   gfIntroScreenEntry = true;
 
   return 1;
 }
 
-function IntroScreenShutdown(): UINT32 {
+export function IntroScreenShutdown(): UINT32 {
   return 1;
 }
 
-function IntroScreenHandle(): UINT32 {
+export function IntroScreenHandle(): UINT32 {
   if (gfIntroScreenEntry) {
     EnterIntroScreen();
     gfIntroScreenEntry = false;
@@ -326,7 +326,7 @@ function StartPlayingIntroFlic(iIndexOfFlicToPlay: INT32): void {
   }
 }
 
-function SetIntroType(bIntroType: INT8): void {
+export function SetIntroType(bIntroType: INT8): void {
   if (bIntroType == Enum21.INTRO_BEGINING) {
     gbIntroScreenMode = Enum21.INTRO_BEGINING;
   } else if (bIntroType == Enum21.INTRO_ENDING) {

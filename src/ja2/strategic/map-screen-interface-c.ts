@@ -55,22 +55,22 @@ let gMoveMenuRegion: MOUSE_REGION[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
 
 let gMapScreenHelpTextMask: MOUSE_REGION;
 
-let fShowMapScreenHelpText: boolean = false;
+export let fShowMapScreenHelpText: boolean = false;
 let fScreenMaskForMoveCreated: boolean = false;
-let fLockOutMapScreenInterface: boolean = false;
+export let fLockOutMapScreenInterface: boolean = false;
 
 let gsCustomErrorString: CHAR16[] /* [128] */;
 
-let fShowUpdateBox: boolean = false;
+export let fShowUpdateBox: boolean = false;
 let fInterfaceFastHelpTextActive: boolean = false;
-let fReBuildCharacterList: boolean = false;
+export let fReBuildCharacterList: boolean = false;
 let giSizeOfInterfaceFastHelpTextList: INT32 = 0;
 
 // Animated sector locator icon variables.
-let gsSectorLocatorX: INT16;
-let gsSectorLocatorY: INT16;
-let gubBlitSectorLocatorCode: UINT8; // color
-let guiSectorLocatorGraphicID: UINT32; // icon graphic ID
+export let gsSectorLocatorX: INT16;
+export let gsSectorLocatorY: INT16;
+export let gubBlitSectorLocatorCode: UINT8; // color
+export let guiSectorLocatorGraphicID: UINT32; // icon graphic ID
 // the animate time per frame in milliseconds
 const ANIMATED_BATTLEICON_FRAME_TIME = 80;
 const MAX_FRAME_COUNT_FOR_ANIMATED_BATTLE_ICON = 12;
@@ -133,30 +133,30 @@ let gMoveBoxScreenMask: MOUSE_REGION;
 
 // has the inventory pool been selected to be on or off?
 let fMapInventoryPoolInited: boolean = false;
-let fShowMapScreenMovementList: boolean = false;
+export let fShowMapScreenMovementList: boolean = false;
 
-let gCharactersList: MapScreenCharacterSt[] /* [MAX_CHARACTER_COUNT + 1] */;
+export let gCharactersList: MapScreenCharacterSt[] /* [MAX_CHARACTER_COUNT + 1] */;
 
-let gMapStatusBarsRegion: MOUSE_REGION;
+export let gMapStatusBarsRegion: MOUSE_REGION;
 
 let MovePosition: SGPPoint = [ 450, 100 ];
 
 // which lines are selected? .. for assigning groups of mercs to the same thing
-let fSelectedListOfMercsForMapScreen: boolean[] /* [MAX_CHARACTER_COUNT] */;
-let fResetTimerForFirstEntryIntoMapScreen: boolean = false;
+export let fSelectedListOfMercsForMapScreen: boolean[] /* [MAX_CHARACTER_COUNT] */;
+export let fResetTimerForFirstEntryIntoMapScreen: boolean = false;
 let iReasonForSoldierUpDate: INT32 = Enum154.NO_REASON_FOR_UPDATE;
 
 // sam and mine icons
-let guiSAMICON: UINT32;
+export let guiSAMICON: UINT32;
 
 // disable team info panels due to battle roster
-let fDisableDueToBattleRoster: boolean = false;
+export let fDisableDueToBattleRoster: boolean = false;
 
 // track old contract times
 let iOldContractTimes: INT32[] /* [MAX_CHARACTER_COUNT] */;
 
 // position of pop up box
-let giBoxY: INT32 = 0;
+export let giBoxY: INT32 = 0;
 
 // screen mask for inventory pop up
 let gInventoryScreenMask: MOUSE_REGION;
@@ -166,33 +166,33 @@ let gInsuranceIconRegion: MOUSE_REGION;
 let gDepositIconRegion: MOUSE_REGION;
 
 // general line..current and old
-let giHighLine: INT32 = -1;
+export let giHighLine: INT32 = -1;
 
 // assignment's line...glow box
-let giAssignHighLine: INT32 = -1;
+export let giAssignHighLine: INT32 = -1;
 
 // destination plot line....glow box
-let giDestHighLine: INT32 = -1;
+export let giDestHighLine: INT32 = -1;
 
 // contract selection glow box
-let giContractHighLine: INT32 = -1;
+export let giContractHighLine: INT32 = -1;
 
 // the sleep column glow box
-let giSleepHighLine: INT32 = -1;
+export let giSleepHighLine: INT32 = -1;
 
 // pop up box textures
-let guiPOPUPTEX: UINT32;
-let guiPOPUPBORDERS: UINT32;
+export let guiPOPUPTEX: UINT32;
+export let guiPOPUPBORDERS: UINT32;
 
 // the currently selected character arrow
-let guiSelectedCharArrow: UINT32;
+export let guiSelectedCharArrow: UINT32;
 
 let guiUpdatePanelButtonsImage: INT32[] /* [2] */;
 let guiUpdatePanelButtons: INT32[] /* [2] */;
 
 // the update panel
-let guiUpdatePanel: UINT32;
-let guiUpdatePanelTactical: UINT32;
+export let guiUpdatePanel: UINT32;
+export let guiUpdatePanelTactical: UINT32;
 
 // the leave item list
 let gpLeaveListHead: Pointer<MERC_LEAVE_ITEM>[] /* [NUM_LEAVE_LIST_SLOTS] */;
@@ -201,65 +201,65 @@ let gpLeaveListHead: Pointer<MERC_LEAVE_ITEM>[] /* [NUM_LEAVE_LIST_SLOTS] */;
 let guiLeaveListOwnerProfileId: UINT32[] /* [NUM_LEAVE_LIST_SLOTS] */;
 
 // flag to reset contract region glow
-let fResetContractGlow: boolean = false;
+export let fResetContractGlow: boolean = false;
 
 // timers for double click
 let giDblClickTimersForMoveBoxMouseRegions: INT32[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
 
-let giExitToTactBaseTime: INT32 = 0;
-let guiSectorLocatorBaseTime: UINT32 = 0;
+export let giExitToTactBaseTime: INT32 = 0;
+export let guiSectorLocatorBaseTime: UINT32 = 0;
 
 // which menus are we showing
-let fShowAssignmentMenu: boolean = false;
-let fShowTrainingMenu: boolean = false;
-let fShowAttributeMenu: boolean = false;
-let fShowSquadMenu: boolean = false;
-let fShowContractMenu: boolean = false;
-let fShowRemoveMenu: boolean = false;
+export let fShowAssignmentMenu: boolean = false;
+export let fShowTrainingMenu: boolean = false;
+export let fShowAttributeMenu: boolean = false;
+export let fShowSquadMenu: boolean = false;
+export let fShowContractMenu: boolean = false;
+export let fShowRemoveMenu: boolean = false;
 
 let fRebuildMoveBox: boolean = false;
 
 // positions for all the pop up boxes
-let ContractDimensions: SGPRect = [ 0, 0, 140, 60 ];
-let ContractPosition: SGPPoint = [ 120, 50 ];
-let AttributeDimensions: SGPRect = [ 0, 0, 100, 95 ];
-let AttributePosition: SGPPoint = [ 220, 150 ];
-let TrainDimensions: SGPRect = [ 0, 0, 100, 95 ];
-let TrainPosition: SGPPoint = [ 160, 150 ];
-let VehicleDimensions: SGPRect = [ 0, 0, 80, 60 ];
-let VehiclePosition: SGPPoint = [ 160, 150 ];
+export let ContractDimensions: SGPRect = [ 0, 0, 140, 60 ];
+export let ContractPosition: SGPPoint = [ 120, 50 ];
+export let AttributeDimensions: SGPRect = [ 0, 0, 100, 95 ];
+export let AttributePosition: SGPPoint = [ 220, 150 ];
+export let TrainDimensions: SGPRect = [ 0, 0, 100, 95 ];
+export let TrainPosition: SGPPoint = [ 160, 150 ];
+export let VehicleDimensions: SGPRect = [ 0, 0, 80, 60 ];
+export let VehiclePosition: SGPPoint = [ 160, 150 ];
 
-let RepairPosition: SGPPoint = [ 160, 150 ];
-let RepairDimensions: SGPRect = [ 0, 0, 80, 80 ];
+export let RepairPosition: SGPPoint = [ 160, 150 ];
+export let RepairDimensions: SGPRect = [ 0, 0, 80, 80 ];
 
-let AssignmentDimensions: SGPRect = [ 0, 0, 100, 95 ];
-let AssignmentPosition: SGPPoint = [ 120, 150 ];
-let SquadPosition: SGPPoint = [ 160, 150 ];
-let SquadDimensions: SGPRect = [ 0, 0, 140, 60 ];
+export let AssignmentDimensions: SGPRect = [ 0, 0, 100, 95 ];
+export let AssignmentPosition: SGPPoint = [ 120, 150 ];
+export let SquadPosition: SGPPoint = [ 160, 150 ];
+export let SquadDimensions: SGPRect = [ 0, 0, 140, 60 ];
 
-let OrigContractPosition: SGPPoint = [ 120, 50 ];
-let OrigAttributePosition: SGPPoint = [ 220, 150 ];
-let OrigSquadPosition: SGPPoint = [ 160, 150 ];
-let OrigAssignmentPosition: SGPPoint = [ 120, 150 ];
-let OrigTrainPosition: SGPPoint = [ 160, 150 ];
-let OrigVehiclePosition: SGPPoint = [ 160, 150 ];
+export let OrigContractPosition: SGPPoint = [ 120, 50 ];
+export let OrigAttributePosition: SGPPoint = [ 220, 150 ];
+export let OrigSquadPosition: SGPPoint = [ 160, 150 ];
+export let OrigAssignmentPosition: SGPPoint = [ 120, 150 ];
+export let OrigTrainPosition: SGPPoint = [ 160, 150 ];
+export let OrigVehiclePosition: SGPPoint = [ 160, 150 ];
 
 // extern BOOLEAN fMapExitDueToMessageBox;
 
 // at least one merc was hired at some time
-let gfAtLeastOneMercWasHired: boolean = false;
+export let gfAtLeastOneMercWasHired: boolean = false;
 
 // how many people does the player have?
 // INT32 GetNumberOfCharactersOnPlayersTeam( void );
 
-function InitalizeVehicleAndCharacterList(): void {
+export function InitalizeVehicleAndCharacterList(): void {
   // will init the vehicle and character lists to zero
   memset(addressof(gCharactersList), 0, sizeof(gCharactersList));
 
   return;
 }
 
-function SetEntryInSelectedCharacterList(bEntry: INT8): void {
+export function SetEntryInSelectedCharacterList(bEntry: INT8): void {
   Assert((bEntry >= 0) && (bEntry < MAX_CHARACTER_COUNT));
 
   // set this entry to selected
@@ -268,7 +268,7 @@ function SetEntryInSelectedCharacterList(bEntry: INT8): void {
   return;
 }
 
-function ResetEntryForSelectedList(bEntry: INT8): void {
+export function ResetEntryForSelectedList(bEntry: INT8): void {
   Assert((bEntry >= 0) && (bEntry < MAX_CHARACTER_COUNT));
 
   // set this entry to selected
@@ -277,7 +277,7 @@ function ResetEntryForSelectedList(bEntry: INT8): void {
   return;
 }
 
-function ResetSelectedListForMapScreen(): void {
+export function ResetSelectedListForMapScreen(): void {
   // set all the entries int he selected list to false
   memset(addressof(fSelectedListOfMercsForMapScreen), false, MAX_CHARACTER_COUNT * sizeof(BOOLEAN));
 
@@ -290,7 +290,7 @@ function ResetSelectedListForMapScreen(): void {
   return;
 }
 
-function IsEntryInSelectedListSet(bEntry: INT8): boolean {
+export function IsEntryInSelectedListSet(bEntry: INT8): boolean {
   Assert((bEntry >= 0) && (bEntry < MAX_CHARACTER_COUNT));
 
   // is this entry in the selected list set?
@@ -298,7 +298,7 @@ function IsEntryInSelectedListSet(bEntry: INT8): boolean {
   return fSelectedListOfMercsForMapScreen[bEntry];
 }
 
-function ToggleEntryInSelectedList(bEntry: INT8): void {
+export function ToggleEntryInSelectedList(bEntry: INT8): void {
   Assert((bEntry >= 0) && (bEntry < MAX_CHARACTER_COUNT));
 
   // toggle the value in the selected list
@@ -307,7 +307,7 @@ function ToggleEntryInSelectedList(bEntry: INT8): void {
   return;
 }
 
-function BuildSelectedListFromAToB(bA: INT8, bB: INT8): void {
+export function BuildSelectedListFromAToB(bA: INT8, bB: INT8): void {
   let bStart: INT8 = 0;
   let bEnd: INT8 = 0;
 
@@ -330,7 +330,7 @@ function BuildSelectedListFromAToB(bA: INT8, bB: INT8): void {
   return;
 }
 
-function MultipleCharacterListEntriesSelected(): boolean {
+export function MultipleCharacterListEntriesSelected(): boolean {
   let ubSelectedCnt: UINT8 = 0;
   let iCounter: INT32 = 0;
 
@@ -348,7 +348,7 @@ function MultipleCharacterListEntriesSelected(): boolean {
   }
 }
 
-function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAssignment: INT8): void {
+export function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAssignment: INT8): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -373,7 +373,7 @@ function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAssignment
   }
 }
 
-function ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(sSectorX: INT16, sSectorY: INT16): void {
+export function ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(sSectorX: INT16, sSectorY: INT16): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -415,7 +415,7 @@ void PlotPathForSelectedCharacterList( INT16 sX, INT16 sY )
 */
 
 // check if the members of the selected list move with this guy... are they in the same mvt group?
-function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iCounter: INT32 = 0;
   let pSoldier2: Pointer<SOLDIERTYPE> = null;
 
@@ -486,7 +486,7 @@ function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointer<SOLDI
   return;
 }
 
-function SelectUnselectedMercsWhoMustMoveWithThisGuy(): void {
+export function SelectUnselectedMercsWhoMustMoveWithThisGuy(): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -548,7 +548,7 @@ function AnyMercInSameSquadOrVehicleIsSelected(pSoldier: Pointer<SOLDIERTYPE>): 
   return false;
 }
 
-function RestoreBackgroundForAssignmentGlowRegionList(): void {
+export function RestoreBackgroundForAssignmentGlowRegionList(): void {
   /* static */ let iOldAssignmentLine: INT32 = -1;
 
   // will restore the background region of the assignment list after a glow has ceased
@@ -585,7 +585,7 @@ function RestoreBackgroundForAssignmentGlowRegionList(): void {
   return;
 }
 
-function RestoreBackgroundForDestinationGlowRegionList(): void {
+export function RestoreBackgroundForDestinationGlowRegionList(): void {
   /* static */ let iOldDestinationLine: INT32 = -1;
 
   // will restore the background region of the destinationz list after a glow has ceased
@@ -610,7 +610,7 @@ function RestoreBackgroundForDestinationGlowRegionList(): void {
   return;
 }
 
-function RestoreBackgroundForContractGlowRegionList(): void {
+export function RestoreBackgroundForContractGlowRegionList(): void {
   /* static */ let iOldContractLine: INT32 = -1;
 
   // will restore the background region of the destinationz list after a glow has ceased
@@ -638,7 +638,7 @@ function RestoreBackgroundForContractGlowRegionList(): void {
   return;
 }
 
-function RestoreBackgroundForSleepGlowRegionList(): void {
+export function RestoreBackgroundForSleepGlowRegionList(): void {
   /* static */ let iOldSleepHighLine: INT32 = -1;
 
   // will restore the background region of the destinations list after a glow has ceased
@@ -666,7 +666,7 @@ function RestoreBackgroundForSleepGlowRegionList(): void {
   return;
 }
 
-function PlayGlowRegionSound(): void {
+export function PlayGlowRegionSound(): void {
   // play a new message sound, if there is one playing, do nothing
   /* static */ let uiSoundId: UINT32 = 0;
 
@@ -683,7 +683,7 @@ function PlayGlowRegionSound(): void {
   return;
 }
 
-function CharacterIsGettingPathPlotted(sCharNumber: INT16): INT16 {
+export function CharacterIsGettingPathPlotted(sCharNumber: INT16): INT16 {
   // valid character number?
   if ((sCharNumber < 0) || (sCharNumber >= MAX_CHARACTER_COUNT)) {
     return false;
@@ -715,7 +715,7 @@ function CharacterIsGettingPathPlotted(sCharNumber: INT16): INT16 {
   return false;
 }
 
-function IsCharacterSelectedForAssignment(sCharNumber: INT16): boolean {
+export function IsCharacterSelectedForAssignment(sCharNumber: INT16): boolean {
   // valid character number?
   if ((sCharNumber < 0) || (sCharNumber >= MAX_CHARACTER_COUNT)) {
     return false;
@@ -742,7 +742,7 @@ function IsCharacterSelectedForAssignment(sCharNumber: INT16): boolean {
   return false;
 }
 
-function IsCharacterSelectedForSleep(sCharNumber: INT16): boolean {
+export function IsCharacterSelectedForSleep(sCharNumber: INT16): boolean {
   // valid character number?
   if ((sCharNumber < 0) || (sCharNumber >= MAX_CHARACTER_COUNT)) {
     return false;
@@ -769,14 +769,14 @@ function IsCharacterSelectedForSleep(sCharNumber: INT16): boolean {
   return false;
 }
 
-function DisableTeamInfoPanels(): void {
+export function DisableTeamInfoPanels(): void {
   // disable team info panel
   fDisableDueToBattleRoster = true;
 
   return;
 }
 
-function EnableTeamInfoPanels(): void {
+export function EnableTeamInfoPanels(): void {
   // enable team info panel
   fDisableDueToBattleRoster = false;
 
@@ -856,13 +856,13 @@ void ActivateSoldierPopup( SOLDIERTYPE *pSoldier, UINT8 ubPopupType, INT16 xp, I
 }
 */
 
-function DoMapMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
+export function DoMapMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
   // reset the highlighted line
   giHighLine = -1;
   return DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 }
 
-function DoMapMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): INT32 {
+export function DoMapMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): INT32 {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
 
   // reset the highlighted line
@@ -872,15 +872,15 @@ function DoMapMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: 
   return DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
 }
 
-function GoDownOneLevelInMap(): void {
+export function GoDownOneLevelInMap(): void {
   JumpToLevel(iCurrentMapSectorZ + 1);
 }
 
-function GoUpOneLevelInMap(): void {
+export function GoUpOneLevelInMap(): void {
   JumpToLevel(iCurrentMapSectorZ - 1);
 }
 
-function JumpToLevel(iLevel: INT32): void {
+export function JumpToLevel(iLevel: INT32): void {
   if (IsMapScreenHelpTextUp()) {
     // stop mapscreen text
     StopMapScreenHelpText();
@@ -912,7 +912,7 @@ function JumpToLevel(iLevel: INT32): void {
 }
 
 // check against old contract times, update as nessacary
-function CheckAndUpdateBasedOnContractTimes(): void {
+export function CheckAndUpdateBasedOnContractTimes(): void {
   let iCounter: INT32 = 0;
   let iTimeRemaining: INT32 = 0;
 
@@ -961,7 +961,7 @@ function CheckAndUpdateBasedOnContractTimes(): void {
   }
 }
 
-function HandleDisplayOfSelectedMercArrows(): void {
+export function HandleDisplayOfSelectedMercArrows(): void {
   let sYPosition: INT16 = 0;
   let hHandle: HVOBJECT;
   let ubCount: UINT8 = 0;
@@ -1006,7 +1006,7 @@ function HandleDisplayOfSelectedMercArrows(): void {
   return;
 }
 
-function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): void {
+export function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): void {
   // handle display of item pop up for this sector
   // check if anyone alive in this sector
   let pItemPool: Pointer<ITEM_POOL> = null;
@@ -1066,7 +1066,7 @@ function InventoryScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
   }
 }
 
-function GetMoraleString(pSoldier: Pointer<SOLDIERTYPE>, sString: STR16): void {
+export function GetMoraleString(pSoldier: Pointer<SOLDIERTYPE>, sString: STR16): void {
   let bMorale: INT8 = pSoldier.value.bMorale;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_DEAD) {
@@ -1085,7 +1085,7 @@ function GetMoraleString(pSoldier: Pointer<SOLDIERTYPE>, sString: STR16): void {
 }
 
 // NOTE: This doesn't use the "LeaveList" system at all!
-function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void {
+export function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void {
   // just drop the stuff in the current sector
   let iCounter: INT32 = 0;
   let sGridNo: INT16;
@@ -1132,7 +1132,7 @@ function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void {
   DropKeysInKeyRing(MercPtrs[uiMercId], sGridNo, MercPtrs[uiMercId].value.bLevel, 1, false, 0, false);
 }
 
-function HandleMercLeavingEquipmentInOmerta(uiMercId: UINT32): void {
+export function HandleMercLeavingEquipmentInOmerta(uiMercId: UINT32): void {
   let iSlotIndex: INT32 = 0;
 
   // stash the items into a linked list hanging of a free "leave item list" slot
@@ -1145,7 +1145,7 @@ function HandleMercLeavingEquipmentInOmerta(uiMercId: UINT32): void {
   }
 }
 
-function HandleMercLeavingEquipmentInDrassen(uiMercId: UINT32): void {
+export function HandleMercLeavingEquipmentInDrassen(uiMercId: UINT32): void {
   let iSlotIndex: INT32 = 0;
 
   // stash the items into a linked list hanging of a free "leave item list" slot
@@ -1158,7 +1158,7 @@ function HandleMercLeavingEquipmentInDrassen(uiMercId: UINT32): void {
   }
 }
 
-function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
+export function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
   let pItem: Pointer<MERC_LEAVE_ITEM>;
   let sString: CHAR16[] /* [128] */;
 
@@ -1189,7 +1189,7 @@ function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
   FreeLeaveListSlot(uiSlotIndex);
 }
 
-function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
+export function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
   let pItem: Pointer<MERC_LEAVE_ITEM>;
   let sString: CHAR16[] /* [128] */;
 
@@ -1220,7 +1220,7 @@ function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
   FreeLeaveListSlot(uiSlotIndex);
 }
 
-function InitLeaveList(): void {
+export function InitLeaveList(): void {
   let iCounter: INT32 = 0;
 
   // init leave list with NULLS/zeroes
@@ -1230,7 +1230,7 @@ function InitLeaveList(): void {
   }
 }
 
-function ShutDownLeaveList(): void {
+export function ShutDownLeaveList(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
@@ -1241,7 +1241,7 @@ function ShutDownLeaveList(): void {
   }
 }
 
-function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32): boolean {
+export function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32): boolean {
   let pItem: Pointer<MERC_LEAVE_ITEM>;
   let pCurrentItem: Pointer<MERC_LEAVE_ITEM>;
 
@@ -1397,7 +1397,7 @@ BOOLEAN RemoveItemFromLeaveIndex( MERC_LEAVE_ITEM *pItem, UINT32 uiSlotIndex )
 }
 */
 
-function HandleGroupAboutToArrive(): void {
+export function HandleGroupAboutToArrive(): void {
   // reblit map to change the color of the "people in motion" marker
   fMapPanelDirty = true;
 
@@ -1512,21 +1512,21 @@ INT32 GetNumberOfCharactersOnPlayersTeam( void )
 }
 */
 
-function CreateMapStatusBarsRegion(): void {
+export function CreateMapStatusBarsRegion(): void {
   // create the status region over the bSelectedCharacter info region, to get quick rundown of merc's status
   MSYS_DefineRegion(addressof(gMapStatusBarsRegion), BAR_INFO_X - 3, BAR_INFO_Y - 42, (BAR_INFO_X + 17), (BAR_INFO_Y), MSYS_PRIORITY_HIGH + 5, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   return;
 }
 
-function RemoveMapStatusBarsRegion(): void {
+export function RemoveMapStatusBarsRegion(): void {
   // remove the bSelectedInfoCharacter helath, breath and morale bars info region
   MSYS_RemoveRegion(addressof(gMapStatusBarsRegion));
 
   return;
 }
 
-function UpdateCharRegionHelpText(): void {
+export function UpdateCharRegionHelpText(): void {
   let sString: CHAR16[] /* [128] */;
   let pMoraleStr: CHAR16[] /* [128] */;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -1589,7 +1589,7 @@ function UpdateCharRegionHelpText(): void {
 }
 
 // find this merc in the mapscreen list and set as selected
-function FindAndSetThisContractSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function FindAndSetThisContractSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iCounter: INT32 = 0;
 
   fShowContractMenu = false;
@@ -1611,7 +1611,7 @@ function FindAndSetThisContractSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function HandleMAPUILoseCursorFromOtherScreen(): void {
+export function HandleMAPUILoseCursorFromOtherScreen(): void {
   // rerender map without cursors
   fMapPanelDirty = true;
 
@@ -1621,7 +1621,7 @@ function HandleMAPUILoseCursorFromOtherScreen(): void {
   return;
 }
 
-function UpdateMapScreenAssignmentPositions(): void {
+export function UpdateMapScreenAssignmentPositions(): void {
   // set the position of the pop up boxes
   let pPoint: SGPPoint;
 
@@ -1692,7 +1692,7 @@ function UpdateMapScreenAssignmentPositions(): void {
   return;
 }
 
-function RandomMercInGroupSaysQuote(pGroup: Pointer<GROUP>, usQuoteNum: UINT16): void {
+export function RandomMercInGroupSaysQuote(pGroup: Pointer<GROUP>, usQuoteNum: UINT16): void {
   let pPlayer: Pointer<PLAYERGROUP>;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let ubMercsInGroup: UINT8[] /* [20] */;
@@ -1728,7 +1728,7 @@ function RandomMercInGroupSaysQuote(pGroup: Pointer<GROUP>, usQuoteNum: UINT16):
   }
 }
 
-function GetNumberOfPeopleInCharacterList(): INT32 {
+export function GetNumberOfPeopleInCharacterList(): INT32 {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
 
@@ -1766,7 +1766,7 @@ function ValidSelectableCharForNextOrPrev(iNewCharSlot: INT32): boolean {
   }
 }
 
-function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): boolean {
+export function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): boolean {
   let pNewSoldier: Pointer<SOLDIERTYPE>;
   let pOldSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1839,7 +1839,7 @@ function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): boolean {
   return true;
 }
 
-function GoToNextCharacterInList(): void {
+export function GoToNextCharacterInList(): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
 
@@ -1872,7 +1872,7 @@ function GoToNextCharacterInList(): void {
   }
 }
 
-function GoToPrevCharacterInList(): void {
+export function GoToPrevCharacterInList(): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
 
@@ -1907,7 +1907,7 @@ function GoToPrevCharacterInList(): void {
   }
 }
 
-function HandleMinerEvent(bMinerNumber: UINT8, sSectorX: INT16, sSectorY: INT16, sQuoteNumber: INT16, fForceMapscreen: boolean): void {
+export function HandleMinerEvent(bMinerNumber: UINT8, sSectorX: INT16, sSectorY: INT16, sQuoteNumber: INT16, fForceMapscreen: boolean): void {
   let fFromMapscreen: boolean = false;
 
   if (guiCurrentScreen == Enum26.MAP_SCREEN) {
@@ -1945,7 +1945,7 @@ function HandleMinerEvent(bMinerNumber: UINT8, sSectorX: INT16, sSectorY: INT16,
   }
 }
 
-function SetUpAnimationOfMineSectors(iEvent: INT32): void {
+export function SetUpAnimationOfMineSectors(iEvent: INT32): void {
   // set up the animation of mine sectors
   switch (iEvent) {
     case Enum155.START_RED_SECTOR_LOCATOR:
@@ -1963,7 +1963,7 @@ function SetUpAnimationOfMineSectors(iEvent: INT32): void {
   }
 }
 
-function ShutDownUserDefineHelpTextRegions(): void {
+export function ShutDownUserDefineHelpTextRegions(): void {
   // dirty the tactical panel
   fInterfacePanelDirty = DIRTYLEVEL2;
   SetRenderFlags(RENDER_FLAG_FULL);
@@ -1977,7 +1977,7 @@ function ShutDownUserDefineHelpTextRegions(): void {
 
 // thsi will setup the fast help text regions that are unrelated to mouse regions
 // user is to pass in the x,y position of the box, the width to wrap the strings and the string itself
-function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPosition: INT32[] /* [] */, iWidth: INT32[] /* [] */, sString: STR16[] /* [] */, iSize: INT32): boolean {
+export function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPosition: INT32[] /* [] */, iWidth: INT32[] /* [] */, sString: STR16[] /* [] */, iSize: INT32): boolean {
   let iCounter: INT32 = 0;
 
   // reset the size
@@ -2003,7 +2003,7 @@ function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPosition: INT3
 }
 
 // handle the actual showing of the interface fast help text
-function HandleShowingOfTacticalInterfaceFastHelpText(): void {
+export function HandleShowingOfTacticalInterfaceFastHelpText(): void {
   /* static */ let fTextActive: boolean = false;
 
   if (fInterfaceFastHelpTextActive) {
@@ -2031,7 +2031,7 @@ function HandleShowingOfTacticalInterfaceFastHelpText(): void {
 }
 
 // start showing fast help text
-function StartShowingInterfaceFastHelpText(): void {
+export function StartShowingInterfaceFastHelpText(): void {
   fInterfaceFastHelpTextActive = true;
 }
 
@@ -2041,7 +2041,7 @@ function StopShowingInterfaceFastHelpText(): void {
 }
 
 // is the interface text up?
-function IsTheInterfaceFastHelpTextActive(): boolean {
+export function IsTheInterfaceFastHelpTextActive(): boolean {
   return fInterfaceFastHelpTextActive;
 }
 
@@ -2139,7 +2139,7 @@ function DisplayFastHelpForInitialTripInToMapScreen(pRegion: Pointer<FASTHELPREG
   return;
 }
 
-function DisplayMapScreenFastHelpList(): void {
+export function DisplayMapScreenFastHelpList(): void {
   let iCounter: INT32 = 0;
 
   DisplayFastHelpForInitialTripInToMapScreen(addressof(pFastHelpMapScreenList[iCounter]));
@@ -2147,7 +2147,7 @@ function DisplayMapScreenFastHelpList(): void {
   return;
 }
 
-function SetUpMapScreenFastHelpText(): void {
+export function SetUpMapScreenFastHelpText(): void {
   let iCounter: INT32 = 0;
 
   // now run through and display all the fast help text for the mapscreen functional regions
@@ -2168,7 +2168,7 @@ function SetUpMapScreenFastHelpText(): void {
   return;
 }
 
-function StopMapScreenHelpText(): void {
+export function StopMapScreenHelpText(): void {
   fShowMapScreenHelpText = false;
   fTeamPanelDirty = true;
   fMapPanelDirty = true;
@@ -2179,7 +2179,7 @@ function StopMapScreenHelpText(): void {
   return;
 }
 
-function IsMapScreenHelpTextUp(): boolean {
+export function IsMapScreenHelpTextUp(): boolean {
   return fShowMapScreenHelpText;
 }
 
@@ -2601,7 +2601,7 @@ function IsAnythingSelectedForMoving(): boolean {
   return false;
 }
 
-function CreateDestroyMovementBox(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
+export function CreateDestroyMovementBox(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   /* static */ let fCreated: boolean = false;
 
   // not allowed for underground movement!
@@ -2628,7 +2628,7 @@ function CreateDestroyMovementBox(sSectorX: INT16, sSectorY: INT16, sSectorZ: IN
   }
 }
 
-function SetUpMovingListsForSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
+export function SetUpMovingListsForSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -3438,7 +3438,7 @@ function FindSquadThatSoldierCanJoin(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return -1;
 }
 
-function ReBuildMoveBox(): void {
+export function ReBuildMoveBox(): void {
   // check to see if we need to rebuild the movement box and mouse regions
   if (fRebuildMoveBox == false) {
     return;
@@ -3461,7 +3461,7 @@ function ReBuildMoveBox(): void {
   MarkAllBoxesAsAltered();
 }
 
-function CreateScreenMaskForMoveBox(): void {
+export function CreateScreenMaskForMoveBox(): void {
   if (fScreenMaskForMoveCreated == false) {
     // set up the screen mask
     MSYS_DefineRegion(addressof(gMoveBoxScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MoveScreenMaskBtnCallback);
@@ -3470,7 +3470,7 @@ function CreateScreenMaskForMoveBox(): void {
   }
 }
 
-function RemoveScreenMaskForMoveBox(): void {
+export function RemoveScreenMaskForMoveBox(): void {
   if (fScreenMaskForMoveCreated == true) {
     // remove the screen mask
     MSYS_RemoveRegion(addressof(gMoveBoxScreenMask));
@@ -3516,7 +3516,7 @@ function ResetSoldierUpdateBox(): void {
   return;
 }
 
-function GetNumberOfMercsInUpdateList(): INT32 {
+export function GetNumberOfMercsInUpdateList(): INT32 {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
 
@@ -3546,7 +3546,7 @@ function IsThePopUpBoxEmpty(): boolean {
   return fEmpty;
 }
 
-function AddSoldierToWaitingListQueue(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddSoldierToWaitingListQueue(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iSoldierId: INT32 = 0;
 
   // get soldier profile
@@ -3556,23 +3556,23 @@ function AddSoldierToWaitingListQueue(pSoldier: Pointer<SOLDIERTYPE>): void {
   return;
 }
 
-function AddReasonToWaitingListQueue(iReason: INT32): void {
+export function AddReasonToWaitingListQueue(iReason: INT32): void {
   SpecialCharacterDialogueEvent(DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX, Enum204.UPDATE_BOX_REASON_SET_REASON, iReason, 0, 0, 0);
   return;
 }
 
-function AddDisplayBoxToWaitingQueue(): void {
+export function AddDisplayBoxToWaitingQueue(): void {
   SpecialCharacterDialogueEvent(DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX, Enum204.UPDATE_BOX_REASON_SHOW_BOX, 0, 0, 0, 0);
 
   return;
 }
 
-function ShowUpdateBox(): void {
+export function ShowUpdateBox(): void {
   // we want to show the box
   fShowUpdateBox = true;
 }
 
-function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iCounter: INT32 = 0;
   let VObjectDesc: VOBJECT_DESC;
 
@@ -3619,14 +3619,14 @@ function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
   return;
 }
 
-function SetSoldierUpdateBoxReason(iReason: INT32): void {
+export function SetSoldierUpdateBoxReason(iReason: INT32): void {
   // set the reason for the update
   iReasonForSoldierUpDate = iReason;
 
   return;
 }
 
-function DisplaySoldierUpdateBox(): void {
+export function DisplaySoldierUpdateBox(): void {
   let iNumberOfMercsOnUpdatePanel: INT32 = 0;
   let iNumberHigh: INT32 = 0;
   let iNumberWide: INT32 = 0;
@@ -3990,7 +3990,7 @@ void DisplayUpdateBox( void )
 }
 */
 
-function CreateDestroyTheUpdateBox(): void {
+export function CreateDestroyTheUpdateBox(): void {
   /* static */ let fCreated: boolean = false;
 
   if ((fCreated == false) && (fShowUpdateBox == true)) {
@@ -4126,7 +4126,7 @@ function StopUpdateButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   return;
 }
 
-function EndUpdateBox(fContinueTimeCompression: boolean): void {
+export function EndUpdateBox(fContinueTimeCompression: boolean): void {
   fShowUpdateBox = false;
 
   CreateDestroyTheUpdateBox();
@@ -4138,32 +4138,32 @@ function EndUpdateBox(fContinueTimeCompression: boolean): void {
   }
 }
 
-function SetUpdateBoxFlag(fFlag: boolean): void {
+export function SetUpdateBoxFlag(fFlag: boolean): void {
   // set the flag
   fShowUpdateBox = fFlag;
   return;
 }
 
-function SetTixaAsFound(): void {
+export function SetTixaAsFound(): void {
   // set the town of Tixa as found by the player
   fFoundTixa = true;
   fMapPanelDirty = true;
 }
 
-function SetOrtaAsFound(): void {
+export function SetOrtaAsFound(): void {
   // set the town of Orta as found by the player
   fFoundOrta = true;
   fMapPanelDirty = true;
 }
 
-function SetSAMSiteAsFound(uiSamIndex: UINT8): void {
+export function SetSAMSiteAsFound(uiSamIndex: UINT8): void {
   // set this SAM site as being found by the player
   fSamSiteFound[uiSamIndex] = true;
   fMapPanelDirty = true;
 }
 
 // ste up the timers for move menu in mapscreen for double click detection
-function InitTimersForMoveMenuMouseRegions(): void {
+export function InitTimersForMoveMenuMouseRegions(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
@@ -4171,7 +4171,7 @@ function InitTimersForMoveMenuMouseRegions(): void {
   }
 }
 
-function UpdateHelpTextForMapScreenMercIcons(): void {
+export function UpdateHelpTextForMapScreenMercIcons(): void {
   if ((bSelectedInfoChar == -1) || (gCharactersList[bSelectedInfoChar].fValid == false)) {
     SetRegionFastHelpText(addressof(gContractIconRegion), "");
     SetRegionFastHelpText(addressof(gInsuranceIconRegion), "");
@@ -4200,7 +4200,7 @@ function UpdateHelpTextForMapScreenMercIcons(): void {
   }
 }
 
-function CreateDestroyInsuranceMouseRegionForMercs(fCreate: boolean): void {
+export function CreateDestroyInsuranceMouseRegionForMercs(fCreate: boolean): void {
   /* static */ let fCreated: boolean = false;
 
   if ((fCreated == false) && (fCreate == true)) {
@@ -4268,7 +4268,7 @@ void DoneHandlePlayerFirstEntryToMapScreen(  UINT8 bExitValue )
 }
 */
 
-function HandleTimeCompressWithTeamJackedInAndGearedToGo(): boolean {
+export function HandleTimeCompressWithTeamJackedInAndGearedToGo(): boolean {
   // check a team is ready to go
   if (!(AnyMercsHired())) {
     // no mercs, leave
@@ -4346,7 +4346,7 @@ function HandleDisplayOfExitToTacticalMessageForFirstEntryToMapScreen(): void {
   return;
 }
 
-function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fContested: boolean): boolean {
+export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fContested: boolean): boolean {
   let sString: CHAR16[] /* [128] */;
   let sStringA: CHAR16[] /* [64] */;
   let sStringB: CHAR16[] /* [256] */;
@@ -4431,7 +4431,7 @@ function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSe
   return true;
 }
 
-function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ReturnCallback: MSGBOX_CALLBACK): void {
+export function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ReturnCallback: MSGBOX_CALLBACK): void {
   let sSector: INT16 = 0;
   let bTownId: INT8 = 0;
   let sString: CHAR16[] /* [128] */;
@@ -4659,7 +4659,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   return true;
 }
 
-function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumber: Pointer<INT8>): boolean {
+export function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumber: Pointer<INT8>): boolean {
   let pCurrentSoldier: Pointer<SOLDIERTYPE> = null;
   let iCounter: INT32 = 0;
   let ubGroup: UINT8 = 0;
@@ -4728,7 +4728,7 @@ function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbEr
   return true;
 }
 
-function ReportMapScreenMovementError(bErrorNumber: INT8): void {
+export function ReportMapScreenMovementError(bErrorNumber: INT8): void {
   if (bErrorNumber == -99) {
     // - 99 is a special message # indicating a customized message
     DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gsCustomErrorString, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
@@ -4738,7 +4738,7 @@ function ReportMapScreenMovementError(bErrorNumber: INT8): void {
 }
 
 // we are checking to see if we need to in fact rebuild the characterlist for mapscreen
-function HandleRebuildingOfMapScreenCharacterList(): void {
+export function HandleRebuildingOfMapScreenCharacterList(): void {
   // check if we need to rebuild the list?
   if (fReBuildCharacterList) {
     // do the actual rebuilding
@@ -4749,7 +4749,7 @@ function HandleRebuildingOfMapScreenCharacterList(): void {
   }
 }
 
-function RequestToggleTimeCompression(): void {
+export function RequestToggleTimeCompression(): void {
   if (!IsTimeBeingCompressed()) {
     StartTimeCompression();
   } else // currently compressing
@@ -4758,7 +4758,7 @@ function RequestToggleTimeCompression(): void {
   }
 }
 
-function RequestIncreaseInTimeCompression(): void {
+export function RequestIncreaseInTimeCompression(): void {
   if (IsTimeBeingCompressed()) {
     IncreaseGameTimeCompressionRate();
   } else {
@@ -4771,7 +4771,7 @@ function RequestIncreaseInTimeCompression(): void {
   }
 }
 
-function RequestDecreaseInTimeCompression(): void {
+export function RequestDecreaseInTimeCompression(): void {
   if (IsTimeBeingCompressed()) {
     DecreaseGameTimeCompressionRate();
   } else {
@@ -4834,7 +4834,7 @@ function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id
   return false;
 }
 
-function SaveLeaveItemList(hFile: HWFILE): boolean {
+export function SaveLeaveItemList(hFile: HWFILE): boolean {
   let iCounter: INT32 = 0;
   let pCurrentItem: Pointer<MERC_LEAVE_ITEM>;
   let uiCount: UINT32 = 0;
@@ -4901,7 +4901,7 @@ function SaveLeaveItemList(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadLeaveItemList(hFile: HWFILE): boolean {
+export function LoadLeaveItemList(hFile: HWFILE): boolean {
   let iCounter: INT32 = 0;
   let pCurrentItem: Pointer<MERC_LEAVE_ITEM>;
   let pItem: Pointer<MERC_LEAVE_ITEM>;
@@ -4980,7 +4980,7 @@ function LoadLeaveItemList(hFile: HWFILE): boolean {
   return true;
 }
 
-function TurnOnSectorLocator(ubProfileID: UINT8): void {
+export function TurnOnSectorLocator(ubProfileID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   Assert(ubProfileID != NO_PROFILE);
@@ -5010,12 +5010,12 @@ function TurnOnSectorLocator(ubProfileID: UINT8): void {
   gubBlitSectorLocatorCode = Enum156.LOCATOR_COLOR_YELLOW;
 }
 
-function TurnOffSectorLocator(): void {
+export function TurnOffSectorLocator(): void {
   gubBlitSectorLocatorCode = Enum156.LOCATOR_COLOR_NONE;
   fMapPanelDirty = true;
 }
 
-function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubLocatorID: UINT8): void {
+export function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubLocatorID: UINT8): void {
   /* static */ let ubFrame: UINT8 = 0;
   let ubBaseFrame: UINT8 = 0;
   let uiTimer: UINT32 = 0;
@@ -5093,7 +5093,7 @@ function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSector
   InvalidateRegion(sScreenX, sScreenY - 1, sScreenX + MAP_GRID_X, sScreenY + MAP_GRID_Y);
 }
 
-function CheckIfSalaryIncreasedAndSayQuote(pSoldier: Pointer<SOLDIERTYPE>, fTriggerContractMenu: boolean): boolean {
+export function CheckIfSalaryIncreasedAndSayQuote(pSoldier: Pointer<SOLDIERTYPE>, fTriggerContractMenu: boolean): boolean {
   Assert(pSoldier);
 
   // OK, check if their price has gone up

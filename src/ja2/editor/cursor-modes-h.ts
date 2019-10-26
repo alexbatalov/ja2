@@ -1,4 +1,4 @@
-const enum Enum33 {
+export const enum Enum33 {
   SMALLSELECTION, // 1x1
   MEDIUMSELECTION, // 3x3
   LARGESELECTION, // 5x5

@@ -1,7 +1,7 @@
-let gubLastLoadingScreenID: UINT8 = Enum22.LOADINGSCREEN_NOTHING;
+export let gubLastLoadingScreenID: UINT8 = Enum22.LOADINGSCREEN_NOTHING;
 
 // returns the UINT8 ID for the specified sector.
-function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT8 {
+export function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT8 {
   let pSector: Pointer<SECTORINFO>;
   let ubSectorID: UINT8;
   let fNight: boolean = false;
@@ -170,7 +170,7 @@ function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT
 
 // sets up the loadscreen with specified ID, and draws it to the FRAME_BUFFER,
 // and refreshing the screen with it.
-function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
+export function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   let vs_desc: VSURFACE_DESC;
   let hVSurface: HVSURFACE;
   let uiLoadScreen: UINT32;

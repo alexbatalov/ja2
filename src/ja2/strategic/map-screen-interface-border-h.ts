@@ -15,7 +15,7 @@ const enum Enum140 {
   NORTH_DIR,
   SOUTH_DIR,
 }
-const enum Enum141 {
+export const enum Enum141 {
   MAP_BORDER_TOWN_BTN = 0,
   MAP_BORDER_MINE_BTN,
   MAP_BORDER_TEAMS_BTN,
@@ -31,10 +31,10 @@ enum{
 };
 */
 
-const MAP_LEVEL_MARKER_X = 565;
-const MAP_LEVEL_MARKER_Y = 323;
-const MAP_LEVEL_MARKER_DELTA = 8;
-const MAP_LEVEL_MARKER_WIDTH = (620 - MAP_LEVEL_MARKER_X);
+export const MAP_LEVEL_MARKER_X = 565;
+export const MAP_LEVEL_MARKER_Y = 323;
+export const MAP_LEVEL_MARKER_DELTA = 8;
+export const MAP_LEVEL_MARKER_WIDTH = (620 - MAP_LEVEL_MARKER_X);
 
 // extern BOOLEAN fShowVehicleFlag;
 

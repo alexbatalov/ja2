@@ -1,4 +1,4 @@
-const enum Enum52 {
+export const enum Enum52 {
   MESSAGEBOX_NONE,
   MESSAGEBOX_DONE,
   MESSAGEBOX_WAIT,

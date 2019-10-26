@@ -1,25 +1,25 @@
-const FILENAME_SIZE = 256;
+export const FILENAME_SIZE = 256;
 
 //#define	FILENAME_SIZE									40 + PATH_SIZE
 const PATH_SIZE = 80;
 
-const NUM_FILES_TO_ADD_AT_A_TIME = 20;
-const INITIAL_NUM_HANDLES = 20;
+export const NUM_FILES_TO_ADD_AT_A_TIME = 20;
+export const INITIAL_NUM_HANDLES = 20;
 
-const REAL_FILE_LIBRARY_ID = 1022;
+export const REAL_FILE_LIBRARY_ID = 1022;
 
 const DB_BITS_FOR_LIBRARY = 10;
 const DB_BITS_FOR_FILE_ID = 22;
 
-const DB_EXTRACT_LIBRARY = (exp) => (exp >> DB_BITS_FOR_FILE_ID);
-const DB_EXTRACT_FILE_ID = (exp) => (exp & 0x3FFFFF);
+export const DB_EXTRACT_LIBRARY = (exp) => (exp >> DB_BITS_FOR_FILE_ID);
+export const DB_EXTRACT_FILE_ID = (exp) => (exp & 0x3FFFFF);
 
-const DB_ADD_LIBRARY_ID = (exp) => (exp << DB_BITS_FOR_FILE_ID);
+export const DB_ADD_LIBRARY_ID = (exp) => (exp << DB_BITS_FOR_FILE_ID);
 const DB_ADD_FILE_ID = (exp) => (exp & 0xC00000);
 
-type HWFILE = UINT32;
+export type HWFILE = UINT32;
 
-interface LibraryInitHeader {
+export interface LibraryInitHeader {
   sLibraryName: CHAR8[] /* [FILENAME_SIZE] */; // The name of the library file on the disk
   fOnCDrom: boolean; // A flag specifying if its a cdrom library ( not implemented yet )
   fInitOnStart: boolean; // Flag specifying if the library is to Initialized at the begining of the game
@@ -27,25 +27,25 @@ interface LibraryInitHeader {
 
 const REAL_LIBRARY_FILE = "RealFiles.slf";
 
-interface RealFileOpenStruct {
+export interface RealFileOpenStruct {
   uiFileID: UINT32; // id of the file ( they start at 1 )
   hRealFileHandle: HANDLE; // if the file is a Real File, this its handle
 }
 
-interface FileHeaderStruct {
+export interface FileHeaderStruct {
   pFileName: STR;
   uiFileLength: UINT32;
   uiFileOffset: UINT32;
 }
 
-interface FileOpenStruct {
+export interface FileOpenStruct {
   uiFileID: UINT32; // id of the file ( they start at 1 )
   uiFilePosInFile: UINT32; // current position in the file
   uiActualPositionInLibrary: UINT32; // Current File pointer position in actuall library
   pFileHeader: Pointer<FileHeaderStruct>;
 }
 
-interface LibraryHeaderStruct {
+export interface LibraryHeaderStruct {
   sLibraryPath: STR;
   hLibraryHandle: HANDLE;
   usNumberOfEntries: UINT16;
@@ -58,13 +58,13 @@ interface LibraryHeaderStruct {
   pOpenFiles: Pointer<FileOpenStruct>;
 }
 
-interface RealFileHeaderStruct {
+export interface RealFileHeaderStruct {
   iNumFilesOpen: INT32;
   iSizeOfOpenFileArray: INT32;
   pRealFilesOpen: Pointer<RealFileOpenStruct>;
 }
 
-interface DatabaseManagerHeaderStruct {
+export interface DatabaseManagerHeaderStruct {
   sManagerName: STR;
   pLibraries: Pointer<LibraryHeaderStruct>;
   usNumberOfLibraries: UINT16;
@@ -80,12 +80,12 @@ interface DatabaseManagerHeaderStruct {
 //
 //*************************************************************************
 
-const FILE_OK = 0;
+export const FILE_OK = 0;
 const FILE_DELETED = 0xff;
 const FILE_OLD = 1;
 const FILE_DOESNT_EXIST = 0xfe;
 
-interface LIBHEADER {
+export interface LIBHEADER {
   sLibName: CHAR8[] /* [FILENAME_SIZE] */;
   sPathToLibrary: CHAR8[] /* [FILENAME_SIZE] */;
   iEntries: INT32;
@@ -96,7 +96,7 @@ interface LIBHEADER {
   iReserved: INT32;
 }
 
-interface DIRENTRY {
+export interface DIRENTRY {
   sFileName: CHAR8[] /* [FILENAME_SIZE] */;
   uiOffset: UINT32;
   uiLength: UINT32;

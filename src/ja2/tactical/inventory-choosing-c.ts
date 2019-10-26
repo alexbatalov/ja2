@@ -63,7 +63,7 @@ let gExtendedArmyGunChoices: ARMY_GUN_CHOICE_TYPE[] /* [ARMY_GUN_LEVELS] */ = [
    /* 10- rocket rifle		*/ 4, Enum225.ROCKET_RIFLE, Enum225.ROCKET_RIFLE, Enum225.RPK74, Enum225.HK21E, -1 ],
 ];
 
-function InitArmyGunTypes(): void {
+export function InitArmyGunTypes(): void {
   let pGunChoiceTable: Pointer<ARMY_GUN_CHOICE_TYPE>;
   let uiGunLevel: UINT32;
   let uiChoice: UINT32;
@@ -134,7 +134,7 @@ function MarkAllWeaponsOfSameGunClassAsDropped(usWeapon: UINT16): void {
 // of equipment to choose from.
 // NOTE:  I'm just winging it for the decisions on which items that different groups can have.  Basically,
 // there are variations, so a guy at a certain level may get a better gun and worse armour or vice versa.
-function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: INT8, bEquipmentRating: INT8): void {
+export function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: INT8, bEquipmentRating: INT8): void {
   let pItem: Pointer<OBJECTTYPE>;
   // general rating information
   let bRating: INT8 = 0;
@@ -1655,7 +1655,7 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   }
 }
 
-function AssignCreatureInventory(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AssignCreatureInventory(pSoldier: Pointer<SOLDIERTYPE>): void {
   let uiChanceToDrop: UINT32 = 0;
   let fMaleCreature: boolean = false;
   let fBloodcat: boolean = false;
@@ -1746,7 +1746,7 @@ function AssignCreatureInventory(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function ReplaceExtendedGuns(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: INT8): void {
+export function ReplaceExtendedGuns(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: INT8): void {
   let uiLoop: UINT32;
   let uiLoop2: UINT32;
   let uiAttachDestIndex: UINT32;
@@ -1861,6 +1861,6 @@ function EquipTank(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
   pp.value.Inv[Enum261.LEGPOS].fFlags |= OBJECT_UNDROPPABLE;
 }
 
-function ResetMortarsOnTeamCount(): void {
+export function ResetMortarsOnTeamCount(): void {
   guiMortarsRolledByTeam = 0;
 }

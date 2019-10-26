@@ -1,7 +1,7 @@
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
 
-function InitializeJA2(): UINT32 {
+export function InitializeJA2(): UINT32 {
   HandleJA2CDCheck();
 
   gfWorldLoaded = false;
@@ -73,7 +73,7 @@ function InitializeJA2(): UINT32 {
   return Enum26.INIT_SCREEN;
 }
 
-function ShutdownJA2(): void {
+export function ShutdownJA2(): void {
   let uiIndex: UINT32;
 
   // Clear screen....

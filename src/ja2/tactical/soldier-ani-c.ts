@@ -3,7 +3,7 @@ const MAX_ANIFRAMES_PER_FLASH = 2;
 //#define		TIME_FOR_RANDOM_ANIM_CHECK	10
 const TIME_FOR_RANDOM_ANIM_CHECK = 2;
 
-let gfLastMercTalkedAboutKillingID: boolean = NOBODY;
+export let gfLastMercTalkedAboutKillingID: boolean = NOBODY;
 
 let gHopFenceForwardSEDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   2.2,
@@ -60,7 +60,7 @@ let gClimbUpRoofDistGoingLower: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   1,
 ];
 
-function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let SFireWeapon: EV_S_FIREWEAPON;
 
   let sNewAniFrame: UINT16;
@@ -2502,7 +2502,7 @@ function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sG
   }
 }
 
-function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
+export function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
   let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
@@ -2633,7 +2633,7 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
   }
 }
 
-function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointer<boolean>): boolean {
+export function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointer<boolean>): boolean {
   let fBuddyJustDead: boolean = false;
 
   pfMadeCorpse.value = false;
@@ -2775,7 +2775,7 @@ function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointe
   return fBuddyJustDead;
 }
 
-function HandlePlayerTeamMemberDeathAfterSkullAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandlePlayerTeamMemberDeathAfterSkullAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Release attacker
   if (!pSoldier.value.fDoingExternalDeath) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Releasesoldierattacker, code 497 = handle soldier death"));
@@ -2788,7 +2788,7 @@ function HandlePlayerTeamMemberDeathAfterSkullAnimation(pSoldier: Pointer<SOLDIE
   RemoveCharacterFromSquads(pSoldier);
 }
 
-function CheckForAndHandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointer<boolean>): boolean {
+export function CheckForAndHandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointer<boolean>): boolean {
   if (HandleSoldierDeath(pSoldier, pfMadeCorpse)) {
     // Select approriate death
     switch (pSoldier.value.usAnimState) {
@@ -2992,7 +2992,7 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
   }
 }
 
-function CheckForAndHandleSoldierDyingNotFromHit(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CheckForAndHandleSoldierDyingNotFromHit(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (pSoldier.value.bLife == 0) {
     DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_DIE1);
     pSoldier.value.fDeadSoundPlayed = true;
@@ -3169,7 +3169,7 @@ function HandleUnjamAnimation(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function OKFallDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bTestDirection: INT8, usAnimState: UINT16): boolean {
+export function OKFallDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bTestDirection: INT8, usAnimState: UINT16): boolean {
   let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
   let usAnimSurface: UINT16;
 
@@ -3214,7 +3214,7 @@ function OKFallDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel:
   return true;
 }
 
-function HandleCheckForDeathCommonCode(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function HandleCheckForDeathCommonCode(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // Do we have a primary pending animation?
   if (pSoldier.value.usPendingAnimation2 != NO_PENDING_ANIMATION) {
     ChangeSoldierState(pSoldier, pSoldier.value.usPendingAnimation2, 0, false);
@@ -3334,7 +3334,7 @@ function HandleCheckForDeathCommonCode(pSoldier: Pointer<SOLDIERTYPE>): boolean 
   return true;
 }
 
-function KickOutWheelchair(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function KickOutWheelchair(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sNewGridNo: INT16;
 
   // Move forward one gridno....

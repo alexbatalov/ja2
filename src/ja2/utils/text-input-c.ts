@@ -1,5 +1,5 @@
 let szClipboard: Pointer<UINT16>;
-let gfNoScroll: boolean = false;
+export let gfNoScroll: boolean = false;
 
 interface TextInputColors {
   // internal values that contain all of the colors for the text editing fields.
@@ -111,7 +111,7 @@ let gszClipboardString: UINT16[] /* [256] */;
 // flag is set else process your regular input handler.  Note that this doesn't mean you are necessarily typing,
 // just that there are text fields in your screen and may be inactive.  The TAB key cycles through your text fields,
 // and special fields can be defined which will call a void functionName( UINT16 usFieldNum )
-function InitTextInputMode(): void {
+export function InitTextInputMode(): void {
   if (gpTextInputHead) {
     // Instead of killing all of the currently existing text input fields, they will now (Jan16 '97)
     // be pushed onto a stack, and preserved until we are finished with the new mode when they will
@@ -131,7 +131,7 @@ function InitTextInputMode(): void {
 
 // A hybrid version of InitTextInput() which uses a specific scheme.  JA2's editor uses scheme 1, so
 // feel free to add new schemes.
-function InitTextInputModeWithScheme(ubSchemeID: UINT8): void {
+export function InitTextInputModeWithScheme(ubSchemeID: UINT8): void {
   InitTextInputMode();
   switch (ubSchemeID) {
     case Enum384.DEFAULT_SCHEME: // yellow boxes with black text, with bluish bevelling
@@ -145,7 +145,7 @@ function InitTextInputModeWithScheme(ubSchemeID: UINT8): void {
 }
 
 // Clears any existing fields, and ends text input mode.
-function KillTextInputMode(): void {
+export function KillTextInputMode(): void {
   let curr: Pointer<TEXTINPUTNODE>;
   if (!gpTextInputHead)
     //		AssertMsg( 0, "Called KillTextInputMode() without any text input mode defined.");
@@ -180,7 +180,7 @@ function KillTextInputMode(): void {
 // first removing them, the existing mode will be preserved.  This function removes all of them in one
 // call, though doing so "may" reflect poor coding style, though I haven't thought about any really
 // just uses for it :(
-function KillAllTextInputModes(): void {
+export function KillAllTextInputModes(): void {
   while (gpTextInputHead)
     KillTextInputMode();
 }
@@ -188,7 +188,7 @@ function KillAllTextInputModes(): void {
 // After calling InitTextInputMode, you want to define one or more text input fields.  The order
 // of calls to this function dictate the TAB order from traversing from one field to the next.  This
 // function adds mouse regions and processes them for you, as well as deleting them when you are done.
-function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, bPriority: INT8, szInitText: Pointer<UINT16>, ubMaxChars: UINT8, usInputType: UINT16): void {
+export function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, bPriority: INT8, szInitText: Pointer<UINT16>, ubMaxChars: UINT8, usInputType: UINT16): void {
   let pNode: Pointer<TEXTINPUTNODE>;
   pNode = MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
@@ -247,7 +247,7 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
 // would be used to jump to the file starting with that letter, and setting the field in the text input
 // field.  Pressing TAB again would place you back in the text input field.  All of that stuff would be handled
 // externally, except for the TAB keys.
-function AddUserInputField(userFunction: INPUT_CALLBACK): void {
+export function AddUserInputField(userFunction: INPUT_CALLBACK): void {
   let pNode: Pointer<TEXTINPUTNODE>;
   pNode = MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
@@ -309,7 +309,7 @@ function RemoveTextInputField(ubField: UINT8): void {
 }
 
 // Returns the gpActive field ID number.  It'll return -1 if no field is active.
-function GetActiveFieldID(): INT16 {
+export function GetActiveFieldID(): INT16 {
   if (gpActive)
     return gpActive.value.ubID;
   return -1;
@@ -318,7 +318,7 @@ function GetActiveFieldID(): INT16 {
 // This is a useful call made from an external user input field.  Using the previous file dialog example, this
 // call would be made when the user selected a different filename in the list via clicking or scrolling with
 // the arrows, or even using alpha chars to jump to the appropriate filename.
-function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Pointer<UINT16>): void {
+export function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Pointer<UINT16>): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -339,7 +339,7 @@ function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Pointer<U
   }
 }
 
-function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: Pointer<UINT8>): void {
+export function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: Pointer<UINT8>): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -374,7 +374,7 @@ function Get8BitStringFromField(ubField: UINT8, szString: Pointer<UINT8>): void 
   szString[0] = '\0';
 }
 
-function Get16BitStringFromField(ubField: UINT8, szString: Pointer<UINT16>): void {
+export function Get16BitStringFromField(ubField: UINT8, szString: Pointer<UINT16>): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -389,7 +389,7 @@ function Get16BitStringFromField(ubField: UINT8, szString: Pointer<UINT16>): voi
 
 // Converts the field's string into a number, then returns that number
 // returns -1 if blank or invalid.  Only works for positive numbers.
-function GetNumericStrictValueFromField(ubField: UINT8): INT32 {
+export function GetNumericStrictValueFromField(ubField: UINT8): INT32 {
   let ptr: Pointer<UINT16>;
   let str: UINT16[] /* [20] */;
   let total: INT32;
@@ -416,7 +416,7 @@ function GetNumericStrictValueFromField(ubField: UINT8): INT32 {
 
 // Converts a number to a numeric strict value.  If the number is negative, the
 // field will be blank.
-function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT32): void {
+export function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT32): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -440,7 +440,7 @@ function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT3
 }
 
 // Sets the active field to the specified ID passed.
-function SetActiveField(ubField: UINT8): void {
+export function SetActiveField(ubField: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -464,7 +464,7 @@ function SetActiveField(ubField: UINT8): void {
   }
 }
 
-function SelectNextField(): void {
+export function SelectNextField(): void {
   let fDone: boolean = false;
   let pStart: Pointer<TEXTINPUTNODE>;
 
@@ -542,20 +542,20 @@ function SelectPrevField(): void {
 // under no circumstances would a user want a different color for each field.  It follows the Win95 convention
 // that all text input boxes are exactly the same color scheme.  However, these colors can be set at anytime,
 // but will effect all of the colors.
-function SetTextInputFont(usFont: UINT16): void {
+export function SetTextInputFont(usFont: UINT16): void {
   pColors.value.usFont = usFont;
 }
 
-function Set16BPPTextFieldColor(usTextFieldColor: UINT16): void {
+export function Set16BPPTextFieldColor(usTextFieldColor: UINT16): void {
   pColors.value.usTextFieldColor = usTextFieldColor;
 }
 
-function SetTextInputRegularColors(ubForeColor: UINT8, ubShadowColor: UINT8): void {
+export function SetTextInputRegularColors(ubForeColor: UINT8, ubShadowColor: UINT8): void {
   pColors.value.ubForeColor = ubForeColor;
   pColors.value.ubShadowColor = ubShadowColor;
 }
 
-function SetTextInputHilitedColors(ubForeColor: UINT8, ubShadowColor: UINT8, ubBackColor: UINT8): void {
+export function SetTextInputHilitedColors(ubForeColor: UINT8, ubShadowColor: UINT8, ubBackColor: UINT8): void {
   pColors.value.ubHiForeColor = ubForeColor;
   pColors.value.ubHiShadowColor = ubShadowColor;
   pColors.value.ubHiBackColor = ubBackColor;
@@ -568,13 +568,13 @@ function SetDisabledTextFieldColors(ubForeColor: UINT8, ubShadowColor: UINT8, us
   pColors.value.usDisabledTextFieldColor = usTextFieldColor;
 }
 
-function SetBevelColors(usBrighterColor: UINT16, usDarkerColor: UINT16): void {
+export function SetBevelColors(usBrighterColor: UINT16, usDarkerColor: UINT16): void {
   pColors.value.fBevelling = true;
   pColors.value.usBrighterColor = usBrighterColor;
   pColors.value.usDarkerColor = usDarkerColor;
 }
 
-function SetCursorColor(usCursorColor: UINT16): void {
+export function SetCursorColor(usCursorColor: UINT16): void {
   pColors.value.usCursorColor = usCursorColor;
 }
 
@@ -593,7 +593,7 @@ function SetCursorColor(usCursorColor: UINT16): void {
 //	}
 //}
 // It is only necessary for event loops that contain text input fields.
-function HandleTextInput(Event: Pointer<InputAtom>): boolean {
+export function HandleTextInput(Event: Pointer<InputAtom>): boolean {
   // Check the multitude of terminating conditions...
 
   // not in text input mode
@@ -1086,7 +1086,7 @@ function RenderActiveTextField(): void {
   RestoreFontSettings();
 }
 
-function RenderInactiveTextField(ubID: UINT8): void {
+export function RenderInactiveTextField(ubID: UINT8): void {
   let usOffset: UINT16;
   let pNode: Pointer<TEXTINPUTNODE>;
   let curr: Pointer<TEXTINPUTNODE>;
@@ -1149,7 +1149,7 @@ function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
 }
 
 // Use when you do a full interface update.
-function RenderAllTextFields(): void {
+export function RenderAllTextFields(): void {
   let stackCurr: Pointer<STACKTEXTINPUTNODE>;
   let curr: Pointer<TEXTINPUTNODE>;
   // Render all of the other text input levels first,
@@ -1191,7 +1191,7 @@ function EnableTextField(ubID: UINT8): void {
   }
 }
 
-function DisableTextField(ubID: UINT8): void {
+export function DisableTextField(ubID: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -1208,7 +1208,7 @@ function DisableTextField(ubID: UINT8): void {
   }
 }
 
-function EnableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
+export function EnableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -1224,7 +1224,7 @@ function EnableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
   }
 }
 
-function DisableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
+export function DisableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -1240,7 +1240,7 @@ function DisableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
   }
 }
 
-function EnableAllTextFields(): void {
+export function EnableAllTextFields(): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -1254,7 +1254,7 @@ function EnableAllTextFields(): void {
     gpActive = gpTextInputHead;
 }
 
-function DisableAllTextFields(): void {
+export function DisableAllTextFields(): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -1267,20 +1267,20 @@ function DisableAllTextFields(): void {
   gpActive = null;
 }
 
-function EditingText(): boolean {
+export function EditingText(): boolean {
   return gfEditingText;
 }
 
-function TextInputMode(): boolean {
+export function TextInputMode(): boolean {
   return gfTextInputMode;
 }
 
 // copy, cut, and paste hilighted text code
-function InitClipboard(): void {
+export function InitClipboard(): void {
   szClipboard = null;
 }
 
-function KillClipboard(): void {
+export function KillClipboard(): void {
   if (szClipboard) {
     MemFree(szClipboard);
     szClipboard = null;
@@ -1335,7 +1335,7 @@ function ExecuteCutCommand(): void {
 // Saves the current text input mode, then removes it and activates the previous text input mode,
 // if applicable.  The second function restores the settings.  Doesn't currently support nested
 // calls.
-function SaveAndRemoveCurrentTextInputMode(): void {
+export function SaveAndRemoveCurrentTextInputMode(): void {
   if (pSavedHead)
     AssertMsg(0, "Attempting to save text input stack head, when one already exists.");
   pSavedHead = gpTextInputHead;
@@ -1349,7 +1349,7 @@ function SaveAndRemoveCurrentTextInputMode(): void {
   }
 }
 
-function RestoreSavedTextInputMode(): void {
+export function RestoreSavedTextInputMode(): void {
   if (!pSavedHead)
     AssertMsg(0, "Attempting to restore saved text input stack head, when one doesn't exist.");
   gpTextInputHead = pSavedHead;
@@ -1362,7 +1362,7 @@ function GetTextInputCursor(): UINT16 {
   return gusTextInputCursor;
 }
 
-function SetTextInputCursor(usNewCursor: UINT16): void {
+export function SetTextInputCursor(usNewCursor: UINT16): void {
   let stackCurr: Pointer<STACKTEXTINPUTNODE>;
   let curr: Pointer<TEXTINPUTNODE>;
   if (gusTextInputCursor == usNewCursor) {
@@ -1389,7 +1389,7 @@ function SetTextInputCursor(usNewCursor: UINT16): void {
 }
 
 // Utility functions for the INPUTTYPE_EXCLUSIVE_24HOURCLOCK input type.
-function GetExclusive24HourTimeValueFromField(ubField: UINT8): UINT16 {
+export function GetExclusive24HourTimeValueFromField(ubField: UINT8): UINT16 {
   let curr: Pointer<TEXTINPUTNODE>;
   let usTime: UINT16;
   curr = gpTextInputHead;
@@ -1425,7 +1425,7 @@ function GetExclusive24HourTimeValueFromField(ubField: UINT8): UINT16 {
 }
 
 // Utility functions for the INPUTTYPE_EXCLUSIVE_24HOURCLOCK input type.
-function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): void {
+export function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): void {
   let curr: Pointer<TEXTINPUTNODE>;
   // First make sure the time is a valid time.  If not, then use 23:59
   if (usTime == 0xffff) {

@@ -5,28 +5,28 @@ let gpFPSBuffer: Pointer<UINT16> = null;
 // MarkNote
 // extern ScrollStringStPtr pStringS=NULL;
 let counter: UINT32 = 0;
-let count: UINT32 = 0;
-let gfTacticalDoHeliRun: boolean = false;
+export let count: UINT32 = 0;
+export let gfTacticalDoHeliRun: boolean = false;
 let gfPlayAttnAfterMapLoad: boolean = false;
 
 // VIDEO OVERLAYS
-let giFPSOverlay: INT32 = 0;
-let giCounterPeriodOverlay: INT32 = 0;
+export let giFPSOverlay: INT32 = 0;
+export let giCounterPeriodOverlay: INT32 = 0;
 
 let gfExitToNewSector: boolean = false;
 // UINT8		gubNewSectorExitDirection;
 
-let gfGameScreenLocateToSoldier: boolean = false;
-let gfEnteringMapScreen: boolean = false;
+export let gfGameScreenLocateToSoldier: boolean = false;
+export let gfEnteringMapScreen: boolean = false;
 let uiOldMouseCursor: UINT32;
-let gubPreferredInitialSelectedGuy: UINT8 = NOBODY;
+export let gubPreferredInitialSelectedGuy: UINT8 = NOBODY;
 
 let gfTacticalIsModal: boolean = false;
 let gTacticalDisableRegion: MOUSE_REGION;
 let gfTacticalDisableRegionActive: boolean = false;
 let gbTacticalDisableMode: INT8 = false;
-let gModalDoneCallback: MODAL_HOOK;
-let gfBeginEndTurn: boolean = false;
+export let gModalDoneCallback: MODAL_HOOK;
+export let gfBeginEndTurn: boolean = false;
 
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
@@ -39,7 +39,7 @@ const RESTART_DELAY = 6000;
 let guiTacticalLeaveScreenID: UINT32;
 let guiTacticalLeaveScreen: boolean = false;
 
-function MainGameScreenInit(): UINT32 {
+export function MainGameScreenInit(): UINT32 {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   gpZBuffer = InitZBuffer(1280, 480);
@@ -81,7 +81,7 @@ function MainGameScreenInit(): UINT32 {
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
 // It will also be responsible to making sure that all Gaming Engine tasks exit properly
 
-function MainGameScreenShutdown(): UINT32 {
+export function MainGameScreenShutdown(): UINT32 {
   ShutdownZBuffer(gpZBuffer);
   ShutdownBackgroundRects();
 
@@ -91,17 +91,17 @@ function MainGameScreenShutdown(): UINT32 {
   return true;
 }
 
-function FadeInGameScreen(): void {
+export function FadeInGameScreen(): void {
   fFirstTimeInGameScreen = true;
 
   FadeInNextFrame();
 }
 
-function FadeOutGameScreen(): void {
+export function FadeOutGameScreen(): void {
   FadeOutNextFrame();
 }
 
-function EnterTacticalScreen(): void {
+export function EnterTacticalScreen(): void {
   guiTacticalLeaveScreen = false;
 
   SetPositionSndsActive();
@@ -185,12 +185,12 @@ function EnterTacticalScreen(): void {
   EnableScrollMessages();
 }
 
-function LeaveTacticalScreen(uiNewScreen: UINT32): void {
+export function LeaveTacticalScreen(uiNewScreen: UINT32): void {
   guiTacticalLeaveScreenID = uiNewScreen;
   guiTacticalLeaveScreen = true;
 }
 
-function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
+export function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
   gpCustomizableTimerCallback = null;
 
   // unload the sector they teleported out of
@@ -247,7 +247,7 @@ function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
   FinishAnySkullPanelAnimations();
 }
 
-function MainGameScreenHandle(): UINT32 {
+export function MainGameScreenHandle(): UINT32 {
   let uiNewScreen: UINT32 = Enum26.GAME_SCREEN;
   let fEnterDemoMode: boolean = false;
 
@@ -590,11 +590,11 @@ function MainGameScreenHandle(): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
+export function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
   gRenderOverride = pRenderOverride;
 }
 
-function DisableFPSOverlay(fEnable: boolean): void {
+export function DisableFPSOverlay(fEnable: boolean): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
@@ -636,14 +636,14 @@ function TacticalScreenLocateToSoldier(): void {
   }
 }
 
-function EnterMapScreen(): void {
+export function EnterMapScreen(): void {
   // ATE: These flags well get set later on in mapscreen....
   // SetTacticalInterfaceFlags( INTERFACE_MAPSCREEN );
   // fInterfacePanelDirty = DIRTYLEVEL2;
   LeaveTacticalScreen(Enum26.MAP_SCREEN);
 }
 
-function UpdateTeamPanelAssignments(): void {
+export function UpdateTeamPanelAssignments(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let bLastTeamID: INT16;
@@ -660,7 +660,7 @@ function UpdateTeamPanelAssignments(): void {
   }
 }
 
-function EnterModalTactical(bMode: INT8): void {
+export function EnterModalTactical(bMode: INT8): void {
   gbTacticalDisableMode = bMode;
   gfTacticalIsModal = true;
 
@@ -677,7 +677,7 @@ function EnterModalTactical(bMode: INT8): void {
   UpdateSaveBuffer();
 }
 
-function EndModalTactical(): void {
+export function EndModalTactical(): void {
   if (gfTacticalDisableRegionActive) {
     MSYS_RemoveRegion(addressof(gTacticalDisableRegion));
 
@@ -725,7 +725,7 @@ function HandleModalTactical(): void {
   EndFrameBufferRender();
 }
 
-function InitHelicopterEntranceByMercs(): void {
+export function InitHelicopterEntranceByMercs(): void {
   if (DidGameJustStart()) {
     let AirRaidDef: AIR_RAID_DEFINITION;
 

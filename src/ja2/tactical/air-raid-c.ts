@@ -9,7 +9,7 @@ const MOVE_Y = 5;
 const STRAFE_DIST = 80;
 const BOMB_DIST = 150;
 
-let gfInAirRaid: boolean = false;
+export let gfInAirRaid: boolean = false;
 let gfAirRaidScheduled: boolean = false;
 let gubAirRaidMode: UINT8;
 let guiSoundSample: UINT32;
@@ -31,7 +31,7 @@ let gfAirRaidHasHadTurn: boolean = false;
 let gubBeginTeamTurn: UINT8 = 0;
 let gfHaveTBBatton: boolean = false;
 let gsNotLocatedYet: INT16 = false;
-let giNumFrames: INT32;
+export let giNumFrames: INT32;
 
 let gAirRaidDef: AIR_RAID_DEFINITION;
 
@@ -126,7 +126,7 @@ function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
   gfAirRaidScheduled = true;
 }
 
-function BeginAirRaid(): boolean {
+export function BeginAirRaid(): boolean {
   let cnt: INT32;
   let fOK: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -790,7 +790,7 @@ function DoBombing(): void {
   }
 }
 
-function HandleAirRaid(): void {
+export function HandleAirRaid(): void {
   let iVol: INT32;
   let uiClock: UINT32;
 
@@ -940,11 +940,11 @@ function HandleAirRaid(): void {
   }
 }
 
-function InAirRaid(): boolean {
+export function InAirRaid(): boolean {
   return gfInAirRaid;
 }
 
-function HandleAirRaidEndTurn(ubTeam: UINT8): boolean {
+export function HandleAirRaidEndTurn(ubTeam: UINT8): boolean {
   if (!gfInAirRaid) {
     return true;
   }
@@ -988,7 +988,7 @@ function HandleAirRaidEndTurn(ubTeam: UINT8): boolean {
   return false;
 }
 
-function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT;
 
@@ -1046,7 +1046,7 @@ function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): boolean {
+export function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): boolean {
   let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT;
   let uiNumBytesRead: UINT32;
 
@@ -1103,7 +1103,7 @@ function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function EndAirRaid(): void {
+export function EndAirRaid(): void {
   gfInAirRaid = false;
 
   // Stop sound

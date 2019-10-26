@@ -128,27 +128,27 @@ let guiPoliciesButtonImage: INT32;
 let guiPoliciesMenuButton: UINT32[] /* [AIM_POLICY_MENU_BUTTON_AMOUNT] */;
 let guiPoliciesMenuButtonImage: INT32;
 
-let guiBottomButton: UINT32;
-let guiBottomButton2: UINT32;
-let gubCurPageNum: UINT8;
+export let guiBottomButton: UINT32;
+export let guiBottomButton2: UINT32;
+export let gubCurPageNum: UINT8;
 let gfInPolicyToc: boolean = false;
 let gfInAgreementPage: boolean = false;
 let gfAimPolicyMenuBarLoaded: boolean = false;
-let guiContentButton: UINT32;
+export let guiContentButton: UINT32;
 let gfExitingPolicesAgreeButton: boolean;
 let gubPoliciesAgreeButtonDown: UINT8;
 let gubAimPolicyMenuButtonDown: UINT8 = 255;
 let gfExitingAimPolicy: boolean;
 let AimPoliciesSubPagesVisitedFlag: boolean[] /* [NUM_AIM_POLICY_PAGES] */;
 
-function GameInitAimPolicies(): void {
+export function GameInitAimPolicies(): void {
 }
 
-function EnterInitAimPolicies(): void {
+export function EnterInitAimPolicies(): void {
   memset(addressof(AimPoliciesSubPagesVisitedFlag), 0, NUM_AIM_POLICY_PAGES);
 }
 
-function EnterAimPolicies(): boolean {
+export function EnterAimPolicies(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   InitAimDefaults();
@@ -184,7 +184,7 @@ function EnterAimPolicies(): boolean {
   return true;
 }
 
-function ExitAimPolicies(): void {
+export function ExitAimPolicies(): void {
   gfExitingAimPolicy = true;
 
   DeleteVideoObjectFromIndex(guiBottomButton);
@@ -204,7 +204,7 @@ function ExitAimPolicies(): void {
   giCurrentSubPage = gubCurPageNum;
 }
 
-function HandleAimPolicies(): void {
+export function HandleAimPolicies(): void {
   if ((gfAimPolicyMenuBarLoaded != true) && gubCurPageNum != 0) {
     InitAimPolicyMenuBar();
     //		RenderAimPolicies();
@@ -212,7 +212,7 @@ function HandleAimPolicies(): void {
   }
 }
 
-function RenderAimPolicies(): void {
+export function RenderAimPolicies(): void {
   let usNumPixles: UINT16;
 
   DrawAimDefaults();

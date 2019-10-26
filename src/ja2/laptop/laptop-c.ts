@@ -164,69 +164,69 @@ const LAPTOP__NEW_EMAIL_ICON_X = (83 - 16);
 const LAPTOP__NEW_EMAIL_ICON_Y = LAPTOP__NEW_FILE_ICON_Y;
 
 // Mode values
-let guiCurrentLaptopMode: UINT32;
-let guiPreviousLaptopMode: UINT32;
+export let guiCurrentLaptopMode: UINT32;
+export let guiPreviousLaptopMode: UINT32;
 let guiCurrentWWWMode: UINT32 = Enum95.LAPTOP_MODE_NONE;
-let giCurrentSubPage: INT32;
+export let giCurrentSubPage: INT32;
 let guiCurrentLapTopCursor: UINT32;
 let guiPreviousLapTopCursor: UINT32;
 let guiCurrentSidePanel: UINT32; // the current navagation panel on the leftside of the laptop screen
 let guiPreviousSidePanel: UINT32;
 
 let iHighLightBookLine: INT32 = -1;
-let fFastLoadFlag: boolean = false;
+export let fFastLoadFlag: boolean = false;
 let gfSideBarFlag: boolean;
 let gfEnterLapTop: boolean = true;
-let gfShowBookmarks: boolean = false;
+export let gfShowBookmarks: boolean = false;
 
 // in progress of loading a page?
-let fLoadPendingFlag: boolean = false;
+export let fLoadPendingFlag: boolean = false;
 let fErrorFlag: boolean;
 
 // mark buttons dirty?
-let fMarkButtonsDirtyFlag: boolean = true;
+export let fMarkButtonsDirtyFlag: boolean = true;
 
 // redraw afer rendering buttons?
-let fReDrawPostButtonRender: boolean = false;
+export let fReDrawPostButtonRender: boolean = false;
 
 // intermediate refresh flag
 let fIntermediateReDrawFlag: boolean = false;
 
 // in laptop right now?
-let fCurrentlyInLaptop: boolean = false;
+export let fCurrentlyInLaptop: boolean = false;
 
 // exit due to a message box pop up?..don't really leave LAPTOP
-let fExitDueToMessageBox: boolean = false;
+export let fExitDueToMessageBox: boolean = false;
 
 // have we visited IMP yety?
-let fNotVistedImpYet: boolean = true;
+export let fNotVistedImpYet: boolean = true;
 
 // exit laptop during a load?
 let fExitDuringLoad: boolean = false;
 
 // done loading?
-let fDoneLoadPending: boolean = false;
+export let fDoneLoadPending: boolean = false;
 
 // re connecting to a web page?
 let fReConnectingFlag: boolean = false;
 
 // going a subpage of a web page?..faster access time
-let fConnectingToSubPage: boolean = false;
+export let fConnectingToSubPage: boolean = false;
 
 // is this our first time in laptop?
 let fFirstTimeInLaptop: boolean = true;
 
 // redraw the book mark info panel .. for blitting on top of animations
-let fReDrawBookMarkInfo: boolean = false;
+export let fReDrawBookMarkInfo: boolean = false;
 
 // show the 2 second info about bookmarks being accessed by clicking on web
-let fShowBookmarkInfo: boolean = false;
+export let fShowBookmarkInfo: boolean = false;
 
 // TEMP!	Disables the loadpending delay when switching b/n www pages
 let gfTemporaryDisablingOfLoadPendingFlag: boolean = false;
 
 // GLOBAL FOR WHICH SCREEN TO EXIT TO FOR LAPTOP
-let guiExitScreen: UINT32 = Enum26.MAP_SCREEN;
+export let guiExitScreen: UINT32 = Enum26.MAP_SCREEN;
 
 let gLaptopRegion: MOUSE_REGION;
 // Laptop screen graphic handle
@@ -254,13 +254,13 @@ let guiBOOKBOT: UINT32;
 let guiBOOKMARK: UINT32;
 let guiGRAPHWINDOW: UINT32;
 let guiGRAPHBAR: UINT32;
-let guiLaptopBACKGROUND: UINT32;
+export let guiLaptopBACKGROUND: UINT32;
 let guiDOWNLOADTOP: UINT32;
 let guiDOWNLOADMID: UINT32;
 let guiDOWNLOADBOT: UINT32;
 let guiTITLEBARLAPTOP: UINT32;
 let guiLIGHTS: UINT32;
-let guiTITLEBARICONS: UINT32;
+export let guiTITLEBARICONS: UINT32;
 let guiDESKTOP: UINT32;
 
 // email notification
@@ -319,7 +319,7 @@ let gLaptopProgramQueueList: INT32[] /* [6] */;
 // state of createion of minimize button
 let fCreateMinimizeButton: boolean = false;
 
-let fExitingLaptopFlag: boolean = false;
+export let fExitingLaptopFlag: boolean = false;
 
 // HD and power lights on
 let fPowerLightOn: boolean = true;
@@ -345,7 +345,7 @@ let gHistoryRegion: MOUSE_REGION;
 let gFilesRegion: MOUSE_REGION;
 let gLapTopScreenRegion: MOUSE_REGION;
 let gBookmarkMouseRegions: MOUSE_REGION[] /* [MAX_BOOKMARKS] */;
-let pScreenMask: MOUSE_REGION;
+export let pScreenMask: MOUSE_REGION;
 let gLapTopProgramMinIcon: MOUSE_REGION;
 let gNewMailIconRegion: MOUSE_REGION;
 let gNewFileIconRegion: MOUSE_REGION;
@@ -358,18 +358,18 @@ let giCurrentRegion: INT32 = Enum92.NO_REGION;
 let giOldRegion: INT32 = Enum92.NO_REGION;
 
 // used for global variables that need to be saved
-let LaptopSaveInfo: LaptopSaveInfoStruct;
+export let LaptopSaveInfo: LaptopSaveInfoStruct;
 
-let fReDrawScreenFlag: boolean = false;
-let fPausedReDrawScreenFlag: boolean = false; // used in the handler functions to redraw the screen, after the current frame
+export let fReDrawScreenFlag: boolean = false;
+export let fPausedReDrawScreenFlag: boolean = false; // used in the handler functions to redraw the screen, after the current frame
 
 // ppp
 
-function SetLaptopExitScreen(uiExitScreen: UINT32): void {
+export function SetLaptopExitScreen(uiExitScreen: UINT32): void {
   guiExitScreen = uiExitScreen;
 }
 
-function SetLaptopNewGameFlag(): void {
+export function SetLaptopNewGameFlag(): void {
   LaptopSaveInfo.gfNewGameLaptop = true;
 }
 
@@ -425,7 +425,7 @@ function GetLaptopKeyboardInput(): void {
 }
 
 // This is called only once at game initialization.
-function LaptopScreenInit(): UINT32 {
+export function LaptopScreenInit(): UINT32 {
   // Memset the whole structure, to make sure of no 'JUNK'
   memset(addressof(LaptopSaveInfo), 0, sizeof(LaptopSaveInfoStruct));
 
@@ -485,7 +485,7 @@ function LaptopScreenInit(): UINT32 {
   return 1;
 }
 
-function InitLaptopAndLaptopScreens(): boolean {
+export function InitLaptopAndLaptopScreens(): boolean {
   GameInitFinances();
   GameInitHistory();
 
@@ -498,11 +498,11 @@ function InitLaptopAndLaptopScreens(): boolean {
   return true;
 }
 
-function DrawLapTopIcons(): UINT32 {
+export function DrawLapTopIcons(): UINT32 {
   return true;
 }
 
-function DrawLapTopText(): UINT32 {
+export function DrawLapTopText(): UINT32 {
   // show balance
   DisplayPlayersBalanceToDate();
 
@@ -510,7 +510,7 @@ function DrawLapTopText(): UINT32 {
 }
 
 // This is only called once at game shutdown.
-function LaptopScreenShutdown(): UINT32 {
+export function LaptopScreenShutdown(): UINT32 {
   InsuranceContractEndGameShutDown();
   BobbyRayMailOrderEndGameShutDown();
   ShutDownEmailList();
@@ -690,7 +690,7 @@ function EnterLaptop(): INT32 {
   return true;
 }
 
-function ExitLaptop(): void {
+export function ExitLaptop(): void {
   // exit is called due to message box, leave
   if (fExitDueToMessageBox) {
     fExitDueToMessageBox = false;
@@ -798,7 +798,7 @@ function RenderLapTopImage(): void {
 
   MarkButtonsDirty();
 }
-function RenderLaptop(): void {
+export function RenderLaptop(): void {
   let uiTempMode: UINT32 = 0;
 
   if ((fMaximizingProgram == true) || (fMinizingProgram == true)) {
@@ -1384,7 +1384,7 @@ function HandleLapTopHandles(): void {
   }
 }
 
-function LaptopScreenHandle(): UINT32 {
+export function LaptopScreenHandle(): UINT32 {
   // User just changed modes.  This is determined by the button callbacks
   // created in LaptopScreenInit()
 
@@ -1944,7 +1944,7 @@ function BtnOnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function LeaveLapTopScreen(): boolean {
+export function LeaveLapTopScreen(): boolean {
   if (ExitLaptopDone()) {
     // exit screen is set
     // set new screen
@@ -2110,7 +2110,7 @@ function HandleExit(): boolean {
   return true;
 }
 
-function HaventMadeImpMercEmailCallBack(): void {
+export function HaventMadeImpMercEmailCallBack(): void {
   // if the player STILL hasnt made an imp merc yet
   if ((LaptopSaveInfo.fIMPCompletedFlag == false) && (LaptopSaveInfo.fSentImpWarningAlready == false)) {
     LaptopSaveInfo.fSentImpWarningAlready = true;
@@ -2544,7 +2544,7 @@ CheckIfMouseLeaveScreen();
   */
 }
 
-function ReDrawHighLight(): void {
+export function ReDrawHighLight(): void {
   HighLightRegion(giCurrentRegion);
   return;
 }
@@ -2566,7 +2566,7 @@ function InitBookMarkList(): void {
   return;
 }
 
-function SetBookMark(iBookId: INT32): void {
+export function SetBookMark(iBookId: INT32): void {
   // find first empty spot, set to iBookId
   let iCounter: INT32 = 0;
   if (iBookId != -2) {
@@ -2876,7 +2876,7 @@ function BookmarkCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
   return;
 }
 
-function GoToWebPage(iPageId: INT32): void {
+export function GoToWebPage(iPageId: INT32): void {
   // if it is raining, popup a warning first saying connection time may be slow
   if (IsItRaining()) {
     if (giRainDelayInternetSite == -1) {
@@ -3456,7 +3456,7 @@ function HandleLapTopESCKey(): void {
   return;
 }
 
-function HandleRightButtonUpEvent(): void {
+export function HandleRightButtonUpEvent(): void {
   // will handle the right button up event
   if (fNewMailFlag) {
     // get rid of new mail warning box
@@ -3520,7 +3520,7 @@ function HandleLeftButtonUpEvent(): void {
   }
 }
 
-function LapTopScreenCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+export function LapTopScreenCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -3537,7 +3537,7 @@ function LapTopScreenCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   return;
 }
 
-function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
+export function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let pCenteringRect: SGPRect = [ LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y ];
 
   // reset exit mode
@@ -3550,7 +3550,7 @@ function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScree
   return iLaptopMessageBox != -1;
 }
 
-function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
+export function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
   // reset exit mode
   fExitDueToMessageBox = true;
 
@@ -3561,7 +3561,7 @@ function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16
   return iLaptopMessageBox != -1;
 }
 
-function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
+export function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
   // reset exit mode
   fExitDueToMessageBox = true;
@@ -3574,7 +3574,7 @@ function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExi
 }
 
 // places a tileable pattern down
-function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UINT16, usHeight: UINT16, uiBackgroundIdentifier: UINT32): boolean {
+export function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UINT16, usHeight: UINT16, uiBackgroundIdentifier: UINT32): boolean {
   let hBackGroundHandle: HVOBJECT;
   let x: UINT16;
   let y: UINT16;
@@ -4166,7 +4166,7 @@ function SetCurrentToLastProgramOpened(): void {
   }
 }
 
-function BlitTitleBarIcons(): void {
+export function BlitTitleBarIcons(): void {
   let hHandle: HVOBJECT;
   // will blit the icons for the title bar of the program we are in
   switch (guiCurrentLaptopMode) {
@@ -4247,7 +4247,7 @@ function DeleteDesktopBackground(): void {
   return;
 }
 
-function PrintBalance(): void {
+export function PrintBalance(): void {
   let pString: CHAR16[] /* [32] */;
   //	UINT16 usX, usY;
 
@@ -4271,7 +4271,7 @@ function PrintBalance(): void {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-function PrintNumberOnTeam(): void {
+export function PrintNumberOnTeam(): void {
   let pString: CHAR16[] /* [32] */;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -4322,7 +4322,7 @@ function PrintNumberOnTeam(): void {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-function PrintDate(): void {
+export function PrintDate(): void {
   SetFont(FONT10ARIAL());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
@@ -4378,7 +4378,7 @@ function DisplayTaskBarIcons(): void {
   }
 }
 
-function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKeyState: UINT16): void {
+export function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKeyState: UINT16): void {
   // will handle keyboard shortcuts for the laptop ... to be added to later
 
   if ((fExitingLaptopFlag == true) || (fTabHandled)) {
@@ -4437,7 +4437,7 @@ function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKe
   return;
 }
 
-function RenderWWWProgramTitleBar(): boolean {
+export function RenderWWWProgramTitleBar(): boolean {
   // will render the title bar for the www program
   let uiTITLEFORWWW: UINT32;
   let hHandle: HVOBJECT;
@@ -4570,7 +4570,7 @@ function LaptopProgramIconMinimizeCallback(pRegion: Pointer<MOUSE_REGION>, iReas
   return;
 }
 
-function DisplayProgramBoundingBox(fMarkButtons: boolean): void {
+export function DisplayProgramBoundingBox(fMarkButtons: boolean): void {
   // the border fot eh program
   let hHandle: HVOBJECT;
 
@@ -4883,7 +4883,7 @@ function HandleWebBookMarkNotifyTimer(): void {
   return;
 }
 
-function ClearOutTempLaptopFiles(): void {
+export function ClearOutTempLaptopFiles(): void {
   // clear out all temp files from laptop
 
   // file file
@@ -4911,7 +4911,7 @@ function ClearOutTempLaptopFiles(): void {
   }
 }
 
-function SaveLaptopInfoToSavedGame(hFile: HWFILE): boolean {
+export function SaveLaptopInfoToSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let uiSize: UINT32;
 
@@ -4948,7 +4948,7 @@ function SaveLaptopInfoToSavedGame(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadLaptopInfoFromSavedGame(hFile: HWFILE): boolean {
+export function LoadLaptopInfoFromSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let uiSize: UINT32;
 
@@ -5051,7 +5051,7 @@ function CreateBookMarkHelpText(pRegion: Pointer<MOUSE_REGION>, uiBookMarkID: UI
   SetRegionFastHelpText(pRegion, gzLaptopHelpText[Enum376.BOOKMARK_TEXT_ASSOCIATION_OF_INTERNATION_MERCENARIES + uiBookMarkID]);
 }
 
-function CreateFileAndNewEmailIconFastHelpText(uiHelpTextID: UINT32, fClearHelpText: boolean): void {
+export function CreateFileAndNewEmailIconFastHelpText(uiHelpTextID: UINT32, fClearHelpText: boolean): void {
   let pRegion: Pointer<MOUSE_REGION>;
 
   switch (uiHelpTextID) {

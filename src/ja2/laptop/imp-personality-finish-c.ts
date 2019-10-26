@@ -1,6 +1,6 @@
 // this is the amount of time, the player waits until booted back to main profileing screen
 
-let bPersonalityEndState: UINT8 = 0;
+export let bPersonalityEndState: UINT8 = 0;
 
 const PERSONALITY_CONFIRM_FINISH_DELAY = 2500;
 
@@ -17,7 +17,7 @@ let fCreateFinishOkButton: boolean = false;
 let giIMPPersonalityFinishButton: UINT32[] /* [2] */;
 let giIMPPersonalityFinishButtonImage: UINT32[] /* [2] */;
 
-function EnterIMPPersonalityFinish(): void {
+export function EnterIMPPersonalityFinish(): void {
   // reset states
   fCreateFinishOkButton = false;
   bPersonalityEndState = 0;
@@ -29,7 +29,7 @@ function EnterIMPPersonalityFinish(): void {
   return;
 }
 
-function RenderIMPPersonalityFinish(): void {
+export function RenderIMPPersonalityFinish(): void {
   // the background
   RenderProfileBackGround();
 
@@ -50,7 +50,7 @@ function RenderIMPPersonalityFinish(): void {
   return;
 }
 
-function ExitIMPPersonalityFinish(): void {
+export function ExitIMPPersonalityFinish(): void {
   // exit at IMP Ok button
   if (fExitIMPPerFinAtOk) {
     // destroy the finish ok buttons
@@ -69,7 +69,7 @@ function ExitIMPPersonalityFinish(): void {
   return;
 }
 
-function HandleIMPPersonalityFinish(): void {
+export function HandleIMPPersonalityFinish(): void {
   // check if confirm and delay
   CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed();
 

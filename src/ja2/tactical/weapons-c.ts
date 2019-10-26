@@ -29,8 +29,8 @@ const HTH_MODE_STEAL = 3;
 // JA2 GOLD: for weapons and attachments, give penalties only for status values below 85
 const WEAPON_STATUS_MOD = (x) => ((x) >= 85 ? 100 : (((x) * 100) / 85));
 
-let gfNextShotKills: boolean = false;
-let gfReportHitChances: boolean = false;
+export let gfNextShotKills: boolean = false;
+export let gfReportHitChances: boolean = false;
 
 // GLOBALS
 
@@ -75,7 +75,7 @@ const MONSTSPIT = (impact, rof, deadl, clip, range, av, hv, sd) =>
 // from Compendium of Modern Firearms (Edge of the Sword Vol 1)
 
 // JA2 GOLD: reduced pistol ready time to 0, tweaked sniper rifle values and G11 range
-let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = [
+export let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = [
   //          Description			  Ammo      Bullet	Ready	 4xSng Burst	Burst	Deadl	Accu	Clip	Range Attack Impact		Fire
   //										   Spd  Imp	Time	 ROF	 ROF		penal	iness	racy	Size					Vol   Vol			Sounds
   [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0 ], // nada!  must have min range of 10
@@ -155,7 +155,7 @@ let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = [
   ASRIFLE(/* auto rckt rifle */ Enum285.AMMOROCKET, 20, 38, 2, 12, 5, 10, 97, 0, 5, 600, 80, 10, Enum330.S_SMALL_ROCKET_LAUNCHER, Enum330.S_BURSTTYPE1),
 ];
 
-let Magazine: MAGTYPE[] /* [] */ = [
+export let Magazine: MAGTYPE[] /* [] */ = [
   // calibre,			 mag size,			ammo type
   [ Enum285.AMMO9, 15, Enum286.AMMO_REGULAR ],
   [ Enum285.AMMO9, 30, Enum286.AMMO_REGULAR ],
@@ -205,7 +205,7 @@ let Magazine: MAGTYPE[] /* [] */ = [
   [ Enum285.NOAMMO, 0, 0 ],
 ];
 
-let Armour: ARMOURTYPE[] /* [] */ = [
+export let Armour: ARMOURTYPE[] /* [] */ = [
   //	Class					      Protection	Degradation%			Description
   //  -------------       ----------  ------------      ----------------
   [ Enum284.ARMOURCLASS_VEST, 10, 25 ], /* Flak jacket     */
@@ -250,7 +250,7 @@ let Armour: ARMOURTYPE[] /* [] */ = [
   [ Enum284.ARMOURCLASS_VEST, 32, 10 ], /* Kevlar 2 jack w Y */
 ];
 
-let Explosive: EXPLOSIVETYPE[] /* [] */ = [
+export let Explosive: EXPLOSIVETYPE[] /* [] */ = [
   //	Type							Yield		Yield2		Radius		Volume		Volatility	Animation			Description
   //										-----		-------		------		------		----------	--------- 		------------------
   [ Enum287.EXPLOSV_STUN, 1, 70, 4, 0, 0, Enum304.STUN_BLAST /* stun grenade       */ ],
@@ -316,7 +316,7 @@ let BodyImpactReduction: UINT8[] /* [4] */ = [
   23,
 ];
 
-function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
+export function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
   let bAttachPos: INT8;
 
   if (Item[pObj.value.usItem].usItemClass & IC_WEAPON) {
@@ -333,7 +333,7 @@ function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
   }
 }
 
-function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
+export function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
   let iValue: INT32;
   let bPlate: INT8;
 
@@ -355,7 +355,7 @@ function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
   return iValue;
 }
 
-function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iVest: INT32;
   let iHelmet: INT32;
   let iLeg: INT32;
@@ -412,7 +412,7 @@ function ExplosiveEffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
   return iValue;
 }
 
-function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // returns the % damage reduction from grenades
   let iVest: INT32;
   let iHelmet: INT32;
@@ -466,7 +466,7 @@ function AdjustImpactByHitLocation(iImpact: INT32, ubHitLocation: UINT8, piNewIm
 
 // #define	TESTGUNJAM
 
-function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pObj: Pointer<OBJECTTYPE>;
   let iChance: INT32;
   let iResult: INT32;
@@ -532,7 +532,7 @@ function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function OKFireWeapon(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function OKFireWeapon(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bGunJamVal: boolean;
 
   // 1) Are we attacking with our second hand?
@@ -558,7 +558,7 @@ function OKFireWeapon(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function FireWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
+export function FireWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
   // ignore passed in target gridno for now
 
   // If realtime and we are reloading - do not fire until counter is done!
@@ -623,7 +623,7 @@ function FireWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boole
   return true;
 }
 
-function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, pdXPos: Pointer<FLOAT>, pdYPos: Pointer<FLOAT>, pdZPos: Pointer<FLOAT>): void {
+export function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, pdXPos: Pointer<FLOAT>, pdYPos: Pointer<FLOAT>, pdZPos: Pointer<FLOAT>): void {
   let dTargetX: FLOAT;
   let dTargetY: FLOAT;
   let dTargetZ: FLOAT;
@@ -1161,7 +1161,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
   return true;
 }
 
-function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fStealing: boolean): boolean {
+export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fStealing: boolean): boolean {
   let pTargetSoldier: Pointer<SOLDIERTYPE>;
   let iHitChance: INT32;
   let iDiceRoll: INT32;
@@ -1570,7 +1570,7 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
   return false;
 }
 
-function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: INT16, sBreathLoss: INT16, usDirection: UINT16, sXPos: INT16, sYPos: INT16, sZPos: INT16, sRange: INT16, ubAttackerID: UINT8, fHit: boolean, ubSpecial: UINT8, ubHitLocation: UINT8): void {
+export function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: INT16, sBreathLoss: INT16, usDirection: UINT16, sXPos: INT16, sYPos: INT16, sZPos: INT16, sRange: INT16, ubAttackerID: UINT8, fHit: boolean, ubSpecial: UINT8, ubHitLocation: UINT8): void {
   let pTargetSoldier: Pointer<SOLDIERTYPE>;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1610,7 +1610,7 @@ function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: INT16, s
   }
 }
 
-function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8, ubAttackerID: UINT8, sXPos: UINT16, sYPos: INT16, sZPos: INT16, usStructureID: UINT16, iImpact: INT32, fStopped: boolean): void {
+export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8, ubAttackerID: UINT8, sXPos: UINT16, sYPos: INT16, sZPos: INT16, usStructureID: UINT16, iImpact: INT32, fStopped: boolean): void {
   let fDoMissForGun: boolean = false;
   let pNode: Pointer<ANITILE>;
   let sGridNo: INT16;
@@ -1847,7 +1847,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
   }
 }
 
-function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: boolean, fLargeForce: boolean): void {
+export function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: boolean, fLargeForce: boolean): void {
   let pWallAndWindow: Pointer<STRUCTURE>;
   let pWallAndWindowInDB: Pointer<DB_STRUCTURE>;
   let sShatterGridNo: INT16;
@@ -1953,7 +1953,7 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: bool
   PlayJA2Sample(Enum330.GLASS_SHATTER1 + Random(2), RATE_11025, MIDVOLUME, 1, SoundDir(sGridNo));
 }
 
-function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
+export function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   let sRange: INT16;
   let usInHand: UINT16;
 
@@ -1978,7 +1978,7 @@ function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   return false;
 }
 
-function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
+export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   // SOLDIERTYPE *vicpSoldier;
   let pTarget: Pointer<SOLDIERTYPE>;
   let iChance: INT32;
@@ -2472,7 +2472,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
   return iChance;
 }
 
-function AICalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
+export function AICalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   let usTrueState: UINT16;
   let uiChance: UINT32;
 
@@ -2484,7 +2484,7 @@ function AICalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, u
   return uiChance;
 }
 
-function CalcBodyImpactReduction(ubAmmoType: UINT8, ubHitLocation: UINT8): INT32 {
+export function CalcBodyImpactReduction(ubAmmoType: UINT8, ubHitLocation: UINT8): INT32 {
   // calculate how much bullets are slowed by passing through someone
   let iReduction: INT32 = BodyImpactReduction[ubHitLocation];
 
@@ -2571,7 +2571,7 @@ function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pb
   return iProtection;
 }
 
-function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iImpact: INT32, ubAmmoType: UINT8): INT32 {
+export function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iImpact: INT32, ubAmmoType: UINT8): INT32 {
   let iTotalProtection: INT32 = 0;
   let iSlot: INT32;
   let pArmour: Pointer<OBJECTTYPE>;
@@ -2639,7 +2639,7 @@ function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SO
   return iTotalProtection;
 }
 
-function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iOrigImpact: INT32, sHitBy: INT16, pubSpecial: Pointer<UINT8>): INT32 {
+export function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iOrigImpact: INT32, sHitBy: INT16, pubSpecial: Pointer<UINT8>): INT32 {
   let iImpact: INT32;
   let iFluke: INT32;
   let iBonus: INT32;
@@ -2925,7 +2925,7 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
   return iImpact;
 }
 
-function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, iHitBy: INT32, fBladeAttack: boolean): INT32 {
+export function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, iHitBy: INT32, fBladeAttack: boolean): INT32 {
   let iImpact: INT32;
   let iFluke: INT32;
   let iBonus: INT32;
@@ -2981,7 +2981,7 @@ function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>
   return iImpact;
 }
 
-function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
+export function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
   let fDoMissForGun: boolean = false;
   let pAttacker: Pointer<SOLDIERTYPE>;
   let pBullet: Pointer<BULLET>;
@@ -3304,11 +3304,11 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
   return iChance;
 }
 
-function CalcChanceToStab(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
+export function CalcChanceToStab(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
   return CalcChanceHTH(pAttacker, pDefender, ubAimTime, HTH_MODE_STAB);
 }
 
-function CalcChanceToPunch(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
+export function CalcChanceToPunch(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
   return CalcChanceHTH(pAttacker, pDefender, ubAimTime, HTH_MODE_PUNCH);
 }
 
@@ -3316,7 +3316,7 @@ function CalcChanceToSteal(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<S
   return CalcChanceHTH(pAttacker, pDefender, ubAimTime, HTH_MODE_STEAL);
 }
 
-function ReloadWeapon(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
+export function ReloadWeapon(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
   // NB this is a cheat function, don't award experience
 
   if (pSoldier.value.inv[ubHandPos].usItem != NOTHING) {
@@ -3326,7 +3326,7 @@ function ReloadWeapon(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
   }
 }
 
-function IsGunBurstCapable(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8, fNotify: boolean): boolean {
+export function IsGunBurstCapable(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8, fNotify: boolean): boolean {
   let fCapable: boolean = false;
 
   if (pSoldier.value.inv[ubHandPos].usItem != NOTHING) {
@@ -3345,7 +3345,7 @@ function IsGunBurstCapable(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8, fNo
   return fCapable;
 }
 
-function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed: boolean): INT32 {
+export function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed: boolean): INT32 {
   let iRange: INT32;
   let usSubItem: UINT16;
 
@@ -3395,7 +3395,7 @@ function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed
   return iRange;
 }
 
-function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
+export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   let iChance: INT32;
   let iMaxRange: INT32;
   let iRange: INT32;
@@ -3558,7 +3558,7 @@ function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, u
   return iChance;
 }
 
-function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
   // ATE: Don't do this if in a fire amimation.....
   if (gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_FIRE) {
     return;
@@ -3601,7 +3601,7 @@ function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
   gfUIForceReExamineCursorData = true;
 }
 
-function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
+export function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
   let bValidDishoutDirs: INT8[][] /* [3][3] */ = [
     [ Enum245.NORTH, Enum245.NORTHEAST, -1 ],
     [ Enum245.EAST, Enum245.SOUTHEAST, -1 ],

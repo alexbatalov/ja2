@@ -15,18 +15,18 @@
  *
  ***************************************************************************************/
 
-const DISTANCE_SCALE = 4;
-const LIGHT_DUSK_CUTOFF = 8;
-const LIGHT_DECAY = 0.9; // shade level decay per tile distance
+export const DISTANCE_SCALE = 4;
+export const LIGHT_DUSK_CUTOFF = 8;
+export const LIGHT_DECAY = 0.9; // shade level decay per tile distance
 
 // lightlist node flags
-const LIGHT_NODE_DRAWN = 0x00000001; // light node duplicate marker
-const LIGHT_ROOF_ONLY = 0x00001000; // light only rooftops
-const LIGHT_IGNORE_WALLS = 0x00002000; // doesn't take walls into account
-const LIGHT_BACKLIGHT = 0x00004000; // light does not light objs, trees
-const LIGHT_NEW_RAY = 0x00008000; // start of new ray in linked list
-const LIGHT_EVERYTHING = 0x00010000; // light up everything
-const LIGHT_FAKE = 0x10000000; // "fake" light	for display only
+export const LIGHT_NODE_DRAWN = 0x00000001; // light node duplicate marker
+export const LIGHT_ROOF_ONLY = 0x00001000; // light only rooftops
+export const LIGHT_IGNORE_WALLS = 0x00002000; // doesn't take walls into account
+export const LIGHT_BACKLIGHT = 0x00004000; // light does not light objs, trees
+export const LIGHT_NEW_RAY = 0x00008000; // start of new ray in linked list
+export const LIGHT_EVERYTHING = 0x00010000; // light up everything
+export const LIGHT_FAKE = 0x10000000; // "fake" light	for display only
 
 // standard light file symbols
 
@@ -39,26 +39,26 @@ const LIGHT_OMNI_R6 = "LTO6.LHT";
 const LIGHT_OMNI_R7 = "LTO7.LHT";
 const LIGHT_OMNI_R8 = "LTO8.LHT";
 
-const MAX_LIGHT_TEMPLATES = 32; // maximum number of light types
-const MAX_LIGHT_SPRITES = 256; // maximum number of light types
-const SHADE_MIN = 15; // DARKEST shade value
-const SHADE_MAX = 1; // LIGHTEST shade value
+export const MAX_LIGHT_TEMPLATES = 32; // maximum number of light types
+export const MAX_LIGHT_SPRITES = 256; // maximum number of light types
+export const SHADE_MIN = 15; // DARKEST shade value
+export const SHADE_MAX = 1; // LIGHTEST shade value
 
 // light sprite flags
-const LIGHT_SPR_ACTIVE = 0x0001;
-const LIGHT_SPR_ON = 0x0002;
+export const LIGHT_SPR_ACTIVE = 0x0001;
+export const LIGHT_SPR_ON = 0x0002;
 const LIGHT_SPR_ANIMATE = 0x0004;
-const LIGHT_SPR_ERASE = 0x0008;
-const LIGHT_SPR_REDRAW = 0x0010;
-const LIGHT_SPR_ONROOF = 0x0020;
-const MERC_LIGHT = 0x0040;
-const LIGHT_PRIMETIME = 0x0080; // light turns goes on in evening, turns off at bedtime.
-const LIGHT_NIGHTTIME = 0x0100; // light stays on when dark outside
+export const LIGHT_SPR_ERASE = 0x0008;
+export const LIGHT_SPR_REDRAW = 0x0010;
+export const LIGHT_SPR_ONROOF = 0x0020;
+export const MERC_LIGHT = 0x0040;
+export const LIGHT_PRIMETIME = 0x0080; // light turns goes on in evening, turns off at bedtime.
+export const LIGHT_NIGHTTIME = 0x0100; // light stays on when dark outside
 
-const COLOR_RED = 162;
-const COLOR_BLUE = 203;
+export const COLOR_RED = 162;
+export const COLOR_BLUE = 203;
 const COLOR_YELLOW = 144;
-const COLOR_GREEN = 184;
+export const COLOR_GREEN = 184;
 const COLOR_LTGREY = 134;
 const COLOR_DKGREY = 136;
 const COLOR_BROWN = 80;
@@ -68,7 +68,7 @@ const COLOR_WHITE = 208;
 const COLOR_BLACK = 72;
 
 // stucture of node in linked list for lights
-interface LIGHT_NODE {
+export interface LIGHT_NODE {
   iDX: INT16;
   iDY: INT16;
 
@@ -77,7 +77,7 @@ interface LIGHT_NODE {
 }
 
 // structure of light instance, or sprite (a copy of the template)
-interface LIGHT_SPRITE {
+export interface LIGHT_SPRITE {
   iX: INT16;
   iY: INT16;
 
@@ -96,5 +96,5 @@ interface LIGHT_SPRITE {
 
 // macros
 const LightSpriteGetType = (x) => (LightSprites[x].uiLightType);
-const LightSpriteGetTypeName = (x) => (pLightNames[LightSprites[x].iTemplate]);
-const LightGetAmbient = () => (ubAmbientLightLevel);
+export const LightSpriteGetTypeName = (x) => (pLightNames[LightSprites[x].iTemplate]);
+export const LightGetAmbient = () => (ubAmbientLightLevel);

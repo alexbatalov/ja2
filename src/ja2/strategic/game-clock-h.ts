@@ -1,20 +1,20 @@
 // where the time string itself is rendered
-const CLOCK_X = 554;
-const CLOCK_Y = 459;
+export const CLOCK_X = 554;
+export const CLOCK_Y = 459;
 
 // the mouse region around the clock (bigger)
-const CLOCK_REGION_START_X = 552;
-const CLOCK_REGION_START_Y = 456;
-const CLOCK_REGION_WIDTH = (620 - CLOCK_REGION_START_X);
-const CLOCK_REGION_HEIGHT = (468 - CLOCK_REGION_START_Y);
+export const CLOCK_REGION_START_X = 552;
+export const CLOCK_REGION_START_Y = 456;
+export const CLOCK_REGION_WIDTH = (620 - CLOCK_REGION_START_X);
+export const CLOCK_REGION_HEIGHT = (468 - CLOCK_REGION_START_Y);
 
-const NUM_SEC_IN_DAY = 86400;
-const NUM_SEC_IN_HOUR = 3600;
-const NUM_SEC_IN_MIN = 60;
+export const NUM_SEC_IN_DAY = 86400;
+export const NUM_SEC_IN_HOUR = 3600;
+export const NUM_SEC_IN_MIN = 60;
 const ROUNDTO_MIN = 5;
 
-const NUM_MIN_IN_DAY = 1440;
-const NUM_MIN_IN_HOUR = 60;
+export const NUM_MIN_IN_DAY = 1440;
+export const NUM_MIN_IN_HOUR = 60;
 
 // Kris:
 // This is the plan for game time...
@@ -27,7 +27,7 @@ const NUM_MIN_IN_HOUR = 60;
 // is much simpler to handle in the overall scheme of things.
 
 // time compression defines
-const enum Enum130 {
+export const enum Enum130 {
   NOT_USING_TIME_COMPRESSION = -1,
   TIME_COMPRESS_X0,
   TIME_COMPRESS_X1,
@@ -38,12 +38,12 @@ const enum Enum130 {
   NUM_TIME_COMPRESS_SPEEDS,
 }
 
-const STARTING_TIME = ((1 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN) + NUM_SEC_IN_DAY); // 1am
-const FIRST_ARRIVAL_DELAY = ((6 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN)); // 7am ( 6hours later)
+export const STARTING_TIME = ((1 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN) + NUM_SEC_IN_DAY); // 1am
+export const FIRST_ARRIVAL_DELAY = ((6 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN)); // 7am ( 6hours later)
 
-const WORLDTIMESTR = () => gswzWorldTimeStr;
+export const WORLDTIMESTR = () => gswzWorldTimeStr;
 
-const enum Enum131 {
+export const enum Enum131 {
   WARPTIME_NO_PROCESSING_OF_EVENTS,
   WARPTIME_PROCESS_EVENTS_NORMALLY,
   WARPTIME_PROCESS_TARGET_TIME_FIRST,

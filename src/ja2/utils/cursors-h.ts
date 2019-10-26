@@ -1,6 +1,6 @@
 // INDIVIDUAL CURSORS
 
-const enum Enum317 {
+export const enum Enum317 {
   CURSOR_NORMAL,
   CURSOR_TARGET,
   CURSOR_TARGETON1,
@@ -152,7 +152,7 @@ const enum Enum317 {
   CURSOR_FUEL_RED,
 }
 
-const enum Enum318 {
+export const enum Enum318 {
   C_MISC,
   C_ACTIONMODE,
   C_ACTIONMODERED,

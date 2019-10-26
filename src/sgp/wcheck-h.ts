@@ -1,14 +1,14 @@
-const CHECKF = (exp) => {
+export const CHECKF = (exp) => {
   if (!(exp)) {
     return (false);
   }
 };
-const CHECKV = (exp) => {
+export const CHECKV = (exp) => {
   if (!(exp)) {
     return;
   }
 };
-const CHECKN = (exp) => {
+export const CHECKN = (exp) => {
   if (!(exp)) {
     return (null);
   }

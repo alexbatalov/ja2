@@ -1,22 +1,22 @@
-const CANCEL_ICON = 0;
-const UP_ICON = 1;
-const DOWN_ICON = 2;
-const OK_ICON = 3;
+export const CANCEL_ICON = 0;
+export const UP_ICON = 1;
+export const DOWN_ICON = 2;
+export const OK_ICON = 3;
 
 // defines for DisplaySpec.ubType
 
 const DISPLAY_TEXT = 1;
-const DISPLAY_GRAPHIC = 2;
+export const DISPLAY_GRAPHIC = 2;
 
-const ONE_COLUMN = 0x0001;
-const ONE_ROW = 0x0002;
-const CLEAR_BACKGROUND = 0x0004;
+export const ONE_COLUMN = 0x0001;
+export const ONE_ROW = 0x0002;
+export const CLEAR_BACKGROUND = 0x0004;
 
-const DISPLAY_ALL_OBJECTS = 0xffff;
+export const DISPLAY_ALL_OBJECTS = 0xffff;
 
-const MAX_SELECTIONS = 120;
+export const MAX_SELECTIONS = 120;
 
-const enum Enum59 {
+export const enum Enum59 {
   SELWIN_SINGLEWALL,
   SELWIN_SINGLEDOOR,
   SELWIN_SINGLEWINDOW,
@@ -37,7 +37,7 @@ const enum Enum59 {
   SELWIN_OSTRUCTS2,
 }
 
-interface DisplaySpec {
+export interface DisplaySpec {
   ubType: UINT8;
   /* union { */
   /*   struct { */
@@ -52,7 +52,7 @@ interface DisplaySpec {
   /* } */
 }
 
-interface DisplayList {
+export interface DisplayList {
   hObj: HVOBJECT;
   uiIndex: UINT16;
   iX: INT16;
@@ -64,7 +64,7 @@ interface DisplayList {
   pNext: Pointer<DisplayList>;
 }
 
-interface Selections {
+export interface Selections {
   uiObject: UINT32;
   usIndex: UINT16;
   sCount: INT16;

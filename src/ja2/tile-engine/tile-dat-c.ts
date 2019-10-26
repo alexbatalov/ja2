@@ -1,4 +1,4 @@
-let gOpenDoorList: INT16[] /* [20] */ = [
+export let gOpenDoorList: INT16[] /* [20] */ = [
   Enum312.FIRSTDOOR1,
   Enum312.SECONDDOOR1,
   Enum312.THIRDDOOR1,
@@ -38,7 +38,7 @@ let gOpenDoorShadowList: INT16[] /* [20] */ = [
   -1,
 ];
 
-let gClosedDoorList: INT16[] /* [20] */ = [
+export let gClosedDoorList: INT16[] /* [20] */ = [
   Enum312.FIRSTDOOR5,
   Enum312.SECONDDOOR5,
   Enum312.THIRDDOOR5,
@@ -309,7 +309,7 @@ let gFullBaseTileValues: UINT8[] /* [] */ = [
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Water2 Texture
 ];
 
-let gTileSurfaceName: STR[] /* [NUMBEROFTILETYPES] */ = [
+export let gTileSurfaceName: STR[] /* [NUMBEROFTILETYPES] */ = [
   "TEXTURE1",
   "TEXTURE2",
   "TEXTURE3",
@@ -483,7 +483,7 @@ let gTileSurfaceName: STR[] /* [NUMBEROFTILETYPES] */ = [
   "WIREFRAME",
 ];
 
-let gNumTilesPerType: UINT16[] /* [NUMBEROFTILETYPES] */ = [
+export let gNumTilesPerType: UINT16[] /* [NUMBEROFTILETYPES] */ = [
   Enum312.FIRSTTEXTURE35 - Enum312.FIRSTTEXTURE1 + 1,
   Enum312.SECONDTEXTURE35 - Enum312.SECONDTEXTURE1 + 1,
   Enum312.THIRDTEXTURE35 - Enum312.THIRDTEXTURE1 + 1,
@@ -668,7 +668,7 @@ let gNumTilesPerType: UINT16[] /* [NUMBEROFTILETYPES] */ = [
   Enum312.WIREFRAMES15 - Enum312.WIREFRAMES1 + 1,
 ];
 
-let gTileTypeLogicalHeight: UINT8[] /* [NUMBEROFTILETYPES] */ = [
+export let gTileTypeLogicalHeight: UINT8[] /* [NUMBEROFTILETYPES] */ = [
   2, // First texture
   2, // Second texture
   2, // Third texture
@@ -680,7 +680,7 @@ let gTileTypeLogicalHeight: UINT8[] /* [NUMBEROFTILETYPES] */ = [
   10, // Second water
 ];
 
-function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileElement: Pointer<TILE_ELEMENT>, fUseRaisedObjectType: boolean): void {
+export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileElement: Pointer<TILE_ELEMENT>, fUseRaisedObjectType: boolean): void {
   let ubLoop: UINT8;
   let sIndexDiff: INT16;
   let cnt: UINT32;

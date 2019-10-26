@@ -1,14 +1,14 @@
-const BYTESINMEGABYTE = 1048576; // 1024*1024
-const REQUIRED_FREE_SPACE = (20 * BYTESINMEGABYTE);
+export const BYTESINMEGABYTE = 1048576; // 1024*1024
+export const REQUIRED_FREE_SPACE = (20 * BYTESINMEGABYTE);
 
-const SIZE_OF_SAVE_GAME_DESC = 128;
+export const SIZE_OF_SAVE_GAME_DESC = 128;
 
-const GAME_VERSION_LENGTH = 16;
+export const GAME_VERSION_LENGTH = 16;
 
-const SAVE__ERROR_NUM = 99;
-const SAVE__END_TURN_NUM = 98;
+export const SAVE__ERROR_NUM = 99;
+export const SAVE__END_TURN_NUM = 98;
 
-interface SAVED_GAME_HEADER {
+export interface SAVED_GAME_HEADER {
   uiSavedGameVersion: UINT32;
   zGameVersionNumber: INT8[] /* [GAME_VERSION_LENGTH] */;
 

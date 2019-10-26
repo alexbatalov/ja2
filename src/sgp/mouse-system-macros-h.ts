@@ -8,4 +8,4 @@
 //	Written by Bret Rowdon. Jan 30 '97
 //=================================================================================================
 
-const MouseSystemHook = (t, x, y, l, r) => MSYS_SGP_Mouse_Handler_Hook(t, x, y, l, r);
+export const MouseSystemHook = (t, x, y, l, r) => MSYS_SGP_Mouse_Handler_Hook(t, x, y, l, r);

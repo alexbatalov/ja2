@@ -36,7 +36,7 @@ const COMPRESS_RUN_MASK = 0x7F;
 // *******************************************************************************
 
 let ghVideoObjects: HLIST = null;
-let gfVideoObjectsInit: boolean = false;
+export let gfVideoObjectsInit: boolean = false;
 
 interface VOBJECT_NODE {
   hVObject: HVOBJECT;
@@ -58,7 +58,7 @@ let guiVObjectTotalAdded: UINT32 = 0;
 //
 // **************************************************************
 
-function InitializeVideoObjectManager(): boolean {
+export function InitializeVideoObjectManager(): boolean {
   // Shouldn't be calling this if the video object manager already exists.
   // Call shutdown first...
   Assert(!gpVObjectHead);
@@ -69,7 +69,7 @@ function InitializeVideoObjectManager(): boolean {
   return true;
 }
 
-function ShutdownVideoObjectManager(): boolean {
+export function ShutdownVideoObjectManager(): boolean {
   let curr: Pointer<VOBJECT_NODE>;
   while (gpVObjectHead) {
     curr = gpVObjectHead;
@@ -98,7 +98,7 @@ function CountVideoObjectNodes(): UINT32 {
   return i;
 }
 
-function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiIndex: Pointer<UINT32>): boolean {
+export function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiIndex: Pointer<UINT32>): boolean {
   let hVObject: HVOBJECT;
 
   // Assertions
@@ -155,7 +155,7 @@ function SetVideoObjectTransparency(uiIndex: UINT32, TransColor: COLORVAL): bool
   return true;
 }
 
-function GetVideoObject(hVObject: Pointer<HVOBJECT>, uiIndex: UINT32): boolean {
+export function GetVideoObject(hVObject: Pointer<HVOBJECT>, uiIndex: UINT32): boolean {
   let curr: Pointer<VOBJECT_NODE>;
 
   curr = gpVObjectHead;
@@ -169,7 +169,7 @@ function GetVideoObject(hVObject: Pointer<HVOBJECT>, uiIndex: UINT32): boolean {
   return false;
 }
 
-function BltVideoObjectFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_fx>): boolean {
+export function BltVideoObjectFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_fx>): boolean {
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
   let hSrcVObject: HVOBJECT;
@@ -198,7 +198,7 @@ function BltVideoObjectFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, u
   return true;
 }
 
-function DeleteVideoObjectFromIndex(uiVObject: UINT32): boolean {
+export function DeleteVideoObjectFromIndex(uiVObject: UINT32): boolean {
   let curr: Pointer<VOBJECT_NODE>;
 
   curr = gpVObjectHead;
@@ -241,7 +241,7 @@ function DeleteVideoObjectFromIndex(uiVObject: UINT32): boolean {
 // Based on flags, blit accordingly
 // There are two types, a BltFast and a Blt. BltFast is 10% faster, uses no
 // clipping lists
-function BltVideoObject(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_fx>): boolean {
+export function BltVideoObject(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_fx>): boolean {
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
 
@@ -267,7 +267,7 @@ function BltVideoObject(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usRegionI
 // Video Object Manipulation Functions
 // *******************************************************************************
 
-function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT {
+export function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT {
   let hVObject: HVOBJECT;
   let hImage: HIMAGE;
   let TempETRLEData: ETRLEData;
@@ -399,7 +399,7 @@ function SetVideoObjectTransparencyColor(hVObject: HVOBJECT, TransColor: COLORVA
 }
 
 // Deletes all palettes, surfaces and region data
-function DeleteVideoObject(hVObject: HVOBJECT): boolean {
+export function DeleteVideoObject(hVObject: HVOBJECT): boolean {
   let usLoop: UINT16;
 
   // Assertions
@@ -644,7 +644,7 @@ function PixelateVideoObjectRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X
         tables are calculated, or things WILL go boom.
 
 **********************************************************************************************/
-function DestroyObjectPaletteTables(hVObject: HVOBJECT): boolean {
+export function DestroyObjectPaletteTables(hVObject: HVOBJECT): boolean {
   let x: UINT32;
   let f16BitPal: boolean;
 
@@ -676,7 +676,7 @@ function DestroyObjectPaletteTables(hVObject: HVOBJECT): boolean {
   return true;
 }
 
-function SetObjectShade(pObj: HVOBJECT, uiShade: UINT32): UINT16 {
+export function SetObjectShade(pObj: HVOBJECT, uiShade: UINT32): UINT16 {
   Assert(pObj != null);
   Assert(uiShade >= 0);
   Assert(uiShade < HVOBJECT_SHADE_TABLES);
@@ -690,7 +690,7 @@ function SetObjectShade(pObj: HVOBJECT, uiShade: UINT32): UINT16 {
   return true;
 }
 
-function SetObjectHandleShade(uiHandle: UINT32, uiShade: UINT32): UINT16 {
+export function SetObjectHandleShade(uiHandle: UINT32, uiShade: UINT32): UINT16 {
   let hObj: HVOBJECT;
 
   if (!GetVideoObject(addressof(hObj), uiHandle)) {
@@ -732,7 +732,7 @@ UINT32	uiPitch;
         Given a VOBJECT and ETRLE image index, retrieves the value of the pixel located at the
         given image coordinates. The value returned is an 8-bit palette index
 ********************************************************************************************/
-function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIndex: UINT16, usX: UINT16, usY: UINT16): boolean {
+export function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIndex: UINT16, usX: UINT16, usY: UINT16): boolean {
   let pCurrent: Pointer<UINT8>;
   let usLoopX: UINT16 = 0;
   let usLoopY: UINT16 = 0;
@@ -790,7 +790,7 @@ function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIn
   return false;
 }
 
-function GetVideoObjectETRLEProperties(hVObject: HVOBJECT, pETRLEObject: Pointer<ETRLEObject>, usIndex: UINT16): boolean {
+export function GetVideoObjectETRLEProperties(hVObject: HVOBJECT, pETRLEObject: Pointer<ETRLEObject>, usIndex: UINT16): boolean {
   CHECKF(usIndex >= 0);
   CHECKF(usIndex < hVObject.value.usNumberOfObjects);
 
@@ -799,7 +799,7 @@ function GetVideoObjectETRLEProperties(hVObject: HVOBJECT, pETRLEObject: Pointer
   return true;
 }
 
-function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, usIndex: UINT16, pusWidth: Pointer<UINT16>, pusHeight: Pointer<UINT16>): boolean {
+export function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, usIndex: UINT16, pusWidth: Pointer<UINT16>, pusHeight: Pointer<UINT16>): boolean {
   let hVObject: HVOBJECT;
   let ETRLEObject: ETRLEObject;
 
@@ -814,7 +814,7 @@ function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, usIndex: 
   return true;
 }
 
-function GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject: UINT32, pETRLEObject: Pointer<ETRLEObject>, usIndex: UINT16): boolean {
+export function GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject: UINT32, pETRLEObject: Pointer<ETRLEObject>, usIndex: UINT16): boolean {
   let hVObject: HVOBJECT;
 
 // Get video object
@@ -997,7 +997,7 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
   return true;
 }
 
-function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usIndex: UINT16, iDestX: INT32, iDestY: INT32, s16BPPColor: INT16, fDoOutline: boolean): boolean {
+export function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usIndex: UINT16, iDestX: INT32, iDestY: INT32, s16BPPColor: INT16, fDoOutline: boolean): boolean {
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
   let hSrcVObject: HVOBJECT;
@@ -1024,7 +1024,7 @@ function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UI
   return true;
 }
 
-function BltVideoObjectOutline(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usIndex: UINT16, iDestX: INT32, iDestY: INT32, s16BPPColor: INT16, fDoOutline: boolean): boolean {
+export function BltVideoObjectOutline(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usIndex: UINT16, iDestX: INT32, iDestY: INT32, s16BPPColor: INT16, fDoOutline: boolean): boolean {
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
   // Lock video surface
@@ -1046,7 +1046,7 @@ function BltVideoObjectOutline(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, us
   return true;
 }
 
-function BltVideoObjectOutlineShadowFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usIndex: UINT16, iDestX: INT32, iDestY: INT32): boolean {
+export function BltVideoObjectOutlineShadowFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usIndex: UINT16, iDestX: INT32, iDestY: INT32): boolean {
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
   let hSrcVObject: HVOBJECT;

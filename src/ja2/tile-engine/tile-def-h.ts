@@ -1,35 +1,35 @@
 // CATEGORY TYPES
-const NO_TILE = 64000;
-const ERASE_TILE = 65000;
-const REQUIRES_SMOOTHING_TILE = 19;
+export const NO_TILE = 64000;
+export const ERASE_TILE = 65000;
+export const REQUIRES_SMOOTHING_TILE = 19;
 const NUM_WALL_ORIENTATIONS = 40;
 
-const WALL_TILE = 0x00000001;
-const ANIMATED_TILE = 0x00000002;
-const DYNAMIC_TILE = 0x00000004;
-const IGNORE_WORLD_HEIGHT = 0x00000008;
-const ROAD_TILE = 0x00000010;
-const FULL3D_TILE = 0x00000020;
-const MULTI_Z_TILE = 0x00000080;
-const OBJECTLAYER_USEZHEIGHT = 0x00000100;
-const ROOFSHADOW_TILE = 0x00000200;
-const ROOF_TILE = 0x00000400;
+export const WALL_TILE = 0x00000001;
+export const ANIMATED_TILE = 0x00000002;
+export const DYNAMIC_TILE = 0x00000004;
+export const IGNORE_WORLD_HEIGHT = 0x00000008;
+export const ROAD_TILE = 0x00000010;
+export const FULL3D_TILE = 0x00000020;
+export const MULTI_Z_TILE = 0x00000080;
+export const OBJECTLAYER_USEZHEIGHT = 0x00000100;
+export const ROOFSHADOW_TILE = 0x00000200;
+export const ROOF_TILE = 0x00000400;
 const TRANSLUCENT_TILE = 0x00000800;
-const HAS_SHADOW_BUDDY = 0x00001000;
-const AFRAME_TILE = 0x00002000;
-const HIDDEN_TILE = 0x00004000;
-const CLIFFHANG_TILE = 0x00008000;
-const UNDERFLOW_FILLER = 0x00010000;
+export const HAS_SHADOW_BUDDY = 0x00001000;
+export const AFRAME_TILE = 0x00002000;
+export const HIDDEN_TILE = 0x00004000;
+export const CLIFFHANG_TILE = 0x00008000;
+export const UNDERFLOW_FILLER = 0x00010000;
 
-const MAX_ANIMATED_TILES = 200;
-const WALL_HEIGHT = 50;
+export const MAX_ANIMATED_TILES = 200;
+export const WALL_HEIGHT = 50;
 
 // Kris:  Added the last two bottom corner orientation values.  This won't effect
 // current code, but there is new code that makes use of this.  A function called
 // UINT8 CalculateWallOrientationsAtGridNo( INT32 iMapIndex ) that will look at all
 // of the walls and return the last two wall orientations for tiles with two proper
 // wall pieces.
-const enum Enum314 {
+export const enum Enum314 {
   NO_ORIENTATION,
   INSIDE_TOP_LEFT,
   INSIDE_TOP_RIGHT,
@@ -40,7 +40,7 @@ const enum Enum314 {
 }
 
 // TERRAIN ID VALUES.
-const enum Enum315 {
+export const enum Enum315 {
   NO_TERRAIN,
   FLAT_GROUND,
   FLAT_FLOOR,
@@ -56,7 +56,7 @@ const enum Enum315 {
 }
 
 // These structures are placed in a list and used for all tile imagery
-interface TILE_IMAGERY {
+export interface TILE_IMAGERY {
   vo: HVOBJECT;
   fType: UINT32;
   pAuxData: Pointer<AuxObjectData>;
@@ -69,16 +69,16 @@ interface TILE_IMAGERY {
   bReserved: BYTE[] /* [2] */;
 }
 
-type PTILE_IMAGERY = Pointer<TILE_IMAGERY>;
+export type PTILE_IMAGERY = Pointer<TILE_IMAGERY>;
 
-interface TILE_ANIMATION_DATA {
+export interface TILE_ANIMATION_DATA {
   pusFrames: Pointer<UINT16>;
   bCurrentFrame: INT8;
   ubNumFrames: UINT8;
 }
 
 // Tile data element
-interface TILE_ELEMENT {
+export interface TILE_ELEMENT {
   fType: UINT16;
   hTileSurface: HVOBJECT;
   pDBStructureRef: Pointer<DB_STRUCTURE_REF>;

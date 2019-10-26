@@ -4,6 +4,6 @@
 // so feel free to correct me...
 
 // Range of Xray device
-const XRAY_RANGE = 40;
+export const XRAY_RANGE = 40;
 // Seconds that Xray lasts
-const XRAY_TIME = 5;
+export const XRAY_TIME = 5;

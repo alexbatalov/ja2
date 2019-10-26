@@ -12,15 +12,15 @@ let giPreviousQuestionButtonImage: INT32;
 let giNextQuestionButtonImage: INT32;
 
 // this the currently highlighted answer
-let iCurrentAnswer: INT32 = -1;
+export let iCurrentAnswer: INT32 = -1;
 
 // the current quiz question
-let giCurrentPersonalityQuizQuestion: INT32 = 0;
+export let giCurrentPersonalityQuizQuestion: INT32 = 0;
 let giPreviousPersonalityQuizQuestion: INT32 = -1;
-let giMaxPersonalityQuizQuestion: INT32 = 0;
+export let giMaxPersonalityQuizQuestion: INT32 = 0;
 
 // start over flag
-let fStartOverFlag: boolean = false;
+export let fStartOverFlag: boolean = false;
 
 const BTN_FIRST_COLUMN_X = 15;
 const BTN_SECOND_COLUMN_X = 256;
@@ -35,7 +35,7 @@ let iQuizAnswerList: INT32[] /* [MAX_NUMBER_OF_IMP_QUESTIONS] */;
 // current number of buttons being shown
 let iNumberOfPersonaButtons: INT32 = 0;
 
-function EnterIMPPersonalityQuiz(): void {
+export function EnterIMPPersonalityQuiz(): void {
   // void answers out the quiz
   memset(addressof(iQuizAnswerList), -1, sizeof(INT32) * MAX_NUMBER_OF_IMP_QUESTIONS);
 
@@ -61,7 +61,7 @@ function EnterIMPPersonalityQuiz(): void {
   return;
 }
 
-function RenderIMPPersonalityQuiz(): void {
+export function RenderIMPPersonalityQuiz(): void {
   // the background
   RenderProfileBackGround();
 
@@ -77,7 +77,7 @@ function RenderIMPPersonalityQuiz(): void {
   return;
 }
 
-function ExitIMPPersonalityQuiz(): void {
+export function ExitIMPPersonalityQuiz(): void {
   // set previous to current, we want it's buttons gone!
   giPreviousPersonalityQuizQuestion = giCurrentPersonalityQuizQuestion;
 
@@ -94,7 +94,7 @@ function ExitIMPPersonalityQuiz(): void {
   return;
 }
 
-function HandleIMPPersonalityQuiz(): void {
+export function HandleIMPPersonalityQuiz(): void {
   // create/destroy buttons for  questions, if needed
   CreateIMPPersonalityQuizAnswerButtons();
 
@@ -1120,7 +1120,7 @@ function CompileQuestionsInStatsAndWhatNot(): void {
   }
 }
 
-function BltAnswerIndents(iNumberOfIndents: INT32): void {
+export function BltAnswerIndents(iNumberOfIndents: INT32): void {
   let iCounter: INT32 = 0;
 
   // the question indent

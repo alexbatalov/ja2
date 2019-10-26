@@ -113,7 +113,7 @@ function CreateStack(uiNum_items: UINT32, uiSiz_each: UINT32): HSTACK {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function CreateQueue(uiNum_items: UINT32, uiSiz_each: UINT32): HQUEUE {
+export function CreateQueue(uiNum_items: UINT32, uiSiz_each: UINT32): HQUEUE {
   let uiAmount: UINT32;
   let hQueue: HQUEUE;
   let pQueue: Pointer<QueueHeader>;
@@ -158,7 +158,7 @@ function CreateQueue(uiNum_items: UINT32, uiSiz_each: UINT32): HQUEUE {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function CreateList(uiNum_items: UINT32, uiSiz_each: UINT32): HLIST {
+export function CreateList(uiNum_items: UINT32, uiSiz_each: UINT32): HLIST {
   let uiAmount: UINT32;
   let hList: HLIST;
   let pList: Pointer<ListHeader>;
@@ -255,7 +255,7 @@ function CreateOrdList(uiNum_items: UINT32, uiSiz_each: UINT32, compare: (a: Poi
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
+export function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
   let pTemp_cont: Pointer<StackHeader>;
   let uiOffset: UINT32;
   let uiNew_size: UINT32;
@@ -431,7 +431,7 @@ function DeleteStack(hStack: HSTACK): boolean {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function DeleteQueue(hQueue: HQUEUE): boolean {
+export function DeleteQueue(hQueue: HQUEUE): boolean {
   if (hQueue == null) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the queue");
     return false;
@@ -452,7 +452,7 @@ function DeleteQueue(hQueue: HQUEUE): boolean {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function DeleteList(hList: HLIST): boolean {
+export function DeleteList(hList: HLIST): boolean {
   if (hList == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the list");
     return false;
@@ -495,7 +495,7 @@ function DeleteOrdList(hOrdList: HORDLIST): boolean {
 //
 //*****************************************************************************
 
-function InitializeContainers(): void {
+export function InitializeContainers(): void {
   // register the appropriate debug topics
   RegisterDebugTopic(TOPIC_STACK_CONTAINERS, "Stack Container");
   RegisterDebugTopic(TOPIC_LIST_CONTAINERS, "List Container");
@@ -516,7 +516,7 @@ function InitializeContainers(): void {
 //
 //*****************************************************************************
 
-function ShutdownContainers(): void {
+export function ShutdownContainers(): void {
   UnRegisterDebugTopic(TOPIC_STACK_CONTAINERS, "Stack Container");
   UnRegisterDebugTopic(TOPIC_LIST_CONTAINERS, "List Container");
   UnRegisterDebugTopic(TOPIC_QUEUE_CONTAINERS, "Queue Container");
@@ -587,7 +587,7 @@ function PeekQueue(hQueue: HQUEUE, pdata: Pointer<void>): boolean {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function PeekList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): boolean {
+export function PeekList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): boolean {
   let pTemp_cont: Pointer<ListHeader>;
   let pvoid: Pointer<void>;
   let uiOffsetSrc: UINT32;
@@ -828,7 +828,7 @@ function PeekOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): b
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function RemfromQueue(hQueue: HQUEUE, pdata: Pointer<void>): boolean {
+export function RemfromQueue(hQueue: HQUEUE, pdata: Pointer<void>): boolean {
   let pTemp_cont: Pointer<QueueHeader>;
   let pvoid: Pointer<void>;
   let pbyte: Pointer<BYTE>;
@@ -891,7 +891,7 @@ function RemfromQueue(hQueue: HQUEUE, pdata: Pointer<void>): boolean {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function AddtoQueue(hQueue: HQUEUE, pdata: Pointer<void>): HQUEUE {
+export function AddtoQueue(hQueue: HQUEUE, pdata: Pointer<void>): HQUEUE {
   let pTemp_cont: Pointer<QueueHeader>;
   let uiMax_size: UINT32;
   let uiSize_of_each: UINT32;
@@ -1061,7 +1061,7 @@ function StackSize(hStack: HSTACK): UINT32 {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function QueueSize(hQueue: HQUEUE): UINT32 {
+export function QueueSize(hQueue: HQUEUE): UINT32 {
   let pTemp_cont: Pointer<QueueHeader>;
   if (hQueue == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Queue pointer is NULL");
@@ -1083,7 +1083,7 @@ function QueueSize(hQueue: HQUEUE): UINT32 {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function ListSize(hList: HLIST): UINT32 {
+export function ListSize(hList: HLIST): UINT32 {
   let pTemp_cont: Pointer<ListHeader>;
   if (hList == null) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "List pointer is NULL");
@@ -1130,7 +1130,7 @@ function OrdListSize(hOrdList: HORDLIST): UINT32 {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
+export function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
   let pTemp_cont: Pointer<ListHeader>;
   let uiMax_size: UINT32;
   let uiSize_of_each: UINT32;
@@ -1290,7 +1290,7 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-function RemfromList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): boolean {
+export function RemfromList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): boolean {
   let pTemp_cont: Pointer<ListHeader>;
   let uiMax_size: UINT32;
   let uiSize_of_each: UINT32;

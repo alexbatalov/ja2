@@ -1,4 +1,4 @@
-let gubEncryptionArray3: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
+export let gubEncryptionArray3: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
   [ 250, 224, 3, 197, 156, 209, 110, 159, 75, 119, 221, 42, 212, 180, 223, 115, 13, 246, 173, 221, 211, 148, 3, 78, 214, 195, 102, 155, 5, 128, 5, 204, 42, 72, 240, 65, 177, 242, 226, 81, 255, 139, 70, 150, 95, 124, 203, 83, 248 ],
 
   [ 234, 33, 49, 205, 144, 43, 212, 44, 249, 86, 116, 150, 112, 80, 244, 150, 120, 207, 182, 110, 50, 179, 160, 41, 114, 31, 130, 253, 243, 221, 106, 120, 118, 181, 252, 103, 30, 238, 119, 10, 242, 187, 99, 99, 210, 197, 153, 71, 176 ],
@@ -2227,7 +2227,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] = Enum127.EDGEOFWORLD;
 }
 
-function InitStrategicMovementCosts(): void {
+export function InitStrategicMovementCosts(): void {
   InitStrategicRowA();
   InitStrategicRowB();
   InitStrategicRowC();
@@ -2246,7 +2246,7 @@ function InitStrategicMovementCosts(): void {
   InitStrategicRowP();
 }
 
-function GetTraversability(sStartSector: INT16, sEndSector: INT16): UINT8 {
+export function GetTraversability(sStartSector: INT16, sEndSector: INT16): UINT8 {
   let ubDirection: UINT8 = 0;
   let sDifference: INT16 = 0;
 
@@ -2266,7 +2266,7 @@ function GetTraversability(sStartSector: INT16, sEndSector: INT16): UINT8 {
   return SectorInfo[sStartSector].ubTraversability[ubDirection];
 }
 
-function SectorIsImpassable(sSector: INT16): boolean {
+export function SectorIsImpassable(sSector: INT16): boolean {
   // returns true if the sector is impassable in all directions
   return SectorInfo[sSector].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] == Enum127.GROUNDBARRIER || SectorInfo[sSector].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] == Enum127.EDGEOFWORLD;
 }

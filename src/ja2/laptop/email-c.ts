@@ -1,29 +1,29 @@
 // static EmailPtr pEmailList;
-let pEmailList: EmailPtr;
+export let pEmailList: EmailPtr;
 /* static */ let pPageList: PagePtr;
 /* static */ let iLastPage: INT32 = -1;
-/* static */ let iCurrentPage: INT32 = 0;
+/* static */ export let iCurrentPage: INT32 = 0;
 let iDeleteId: INT32 = 0;
-let fUnReadMailFlag: boolean = false;
-let fOldUnreadFlag: boolean = true;
-let fNewMailFlag: boolean = false;
-let fOldNewMailFlag: boolean = false;
-let fDisplayMessageFlag: boolean = false;
+export let fUnReadMailFlag: boolean = false;
+export let fOldUnreadFlag: boolean = true;
+export let fNewMailFlag: boolean = false;
+export let fOldNewMailFlag: boolean = false;
+export let fDisplayMessageFlag: boolean = false;
 let fOldDisplayMessageFlag: boolean = false;
 let fReDraw: boolean = false;
-let fDeleteMailFlag: boolean = false;
+export let fDeleteMailFlag: boolean = false;
 let fReDrawMessageFlag: boolean = false;
 let fOnLastPageFlag: boolean = false;
 let fJustStartedEmail: boolean = false;
 let fDeleteInternal: boolean = false;
-let fOpenMostRecentUnReadFlag: boolean = false;
+export let fOpenMostRecentUnReadFlag: boolean = false;
 let iViewerPositionY: INT32 = 0;
 
 let giMessageId: INT32 = -1;
 let giPrevMessageId: INT32 = -1;
 let giMessagePage: INT32 = -1;
 let giNumberOfPagesToCurrentEmail: INT32 = -1;
-let guiEmailWarning: UINT32;
+export let guiEmailWarning: UINT32;
 
 const EMAIL_TOP_BAR_HEIGHT = 22;
 
@@ -173,7 +173,7 @@ let gfPageButtonsWereCreated: boolean = false;
 
 // mouse regions
 let pEmailRegions: MOUSE_REGION[] /* [MAX_MESSAGES_PAGE] */;
-let pScreenMask: MOUSE_REGION;
+export let pScreenMask: MOUSE_REGION;
 let pDeleteScreenMask: MOUSE_REGION;
 
 // the email info struct to speed up email
@@ -231,7 +231,7 @@ const NEXT_HEIGHT = () => GetFontHeight(TRAVERSE_EMAIL_FONT());
 let iHighLightLine: INT32 = -1;
 
 // whther or not we need to redraw the new mail box
-let fReDrawNewMailFlag: boolean = false;
+export let fReDrawNewMailFlag: boolean = false;
 let giNumberOfMessageToEmail: INT32 = 0;
 let iTotalHeight: INT32 = 0;
 
@@ -262,7 +262,7 @@ function DeleteEmailMouseRegions(): void {
   // DeleteSortRegions();
   CreateDestroyNextPreviousRegions();
 }
-function GameInitEmail(): void {
+export function GameInitEmail(): void {
   pEmailList = null;
   pPageList = null;
 
@@ -278,7 +278,7 @@ function GameInitEmail(): void {
   giMessagePage = 0;
 }
 
-function EnterEmail(): boolean {
+export function EnterEmail(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   // load graphics
 
@@ -337,7 +337,7 @@ function EnterEmail(): boolean {
   return true;
 }
 
-function ExitEmail(): void {
+export function ExitEmail(): void {
   LaptopSaveInfo.iCurrentEmailPage = iCurrentPage;
 
   // clear out message record list
@@ -376,7 +376,7 @@ function ExitEmail(): void {
   DestroyMailScreenButtons();
 }
 
-function HandleEmail(): void {
+export function HandleEmail(): void {
   let iViewerY: INT32 = 0;
   /* static */ let fEmailListBeenDrawAlready: boolean = false;
   // RenderButtonsFastHelp( );
@@ -447,7 +447,7 @@ function HandleEmail(): void {
   return;
 }
 
-function DisplayEmailHeaders(): void {
+export function DisplayEmailHeaders(): void {
   // draw the text at the top of the screen
 
   // font stuff
@@ -473,7 +473,7 @@ function DisplayEmailHeaders(): void {
   return;
 }
 
-function RenderEmail(): void {
+export function RenderEmail(): void {
   let hHandle: HVOBJECT;
   let iCounter: INT32 = 0;
 
@@ -519,7 +519,7 @@ function RenderEmail(): void {
   return;
 }
 
-function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32, iFirstData: INT32, uiSecondData: UINT32): void {
+export function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32, iFirstData: INT32, uiSecondData: UINT32): void {
   let pSubject: wchar_t[] /* [320] */;
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
@@ -551,7 +551,7 @@ function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: INT32, u
   return;
 }
 
-function AddEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
+export function AddEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
   let pSubject: wchar_t[] /* [320] */;
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
@@ -575,7 +575,7 @@ function AddEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8,
   return;
 }
 
-function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
+export function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
   let pSubject: wchar_t[] /* [320] */;
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
@@ -865,7 +865,7 @@ function RemoveEmailPage(iPageId: INT32): void {
     iLastPage--;
 }
 
-function AddMessageToPages(iMessageId: INT32): void {
+export function AddMessageToPages(iMessageId: INT32): void {
   // go to end of page list
   let pPage: PagePtr = pPageList;
   let iCounter: INT32 = 0;
@@ -1254,7 +1254,7 @@ function DisplayEmailList(): void {
   return;
 }
 
-function LookForUnread(): void {
+export function LookForUnread(): void {
   let fStatusOfNewEmailFlag: boolean = fUnReadMailFlag;
 
   // simply runrs through list of messages, if any unread, set unread flag
@@ -1697,7 +1697,7 @@ function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
   }
 }
 
-function CreateDestroyNewMailButton(): void {
+export function CreateDestroyNewMailButton(): void {
   /* static */ let fOldNewMailFlag: boolean = false;
 
   // check if we are video conferencing, if so, do nothing
@@ -1742,7 +1742,7 @@ function CreateDestroyNewMailButton(): void {
   }
 }
 
-function DisplayNewMailBox(): boolean {
+export function DisplayNewMailBox(): boolean {
   let hHandle: HVOBJECT;
   /* static */ let fOldNewMailFlag: boolean = false;
   // will display a new mail box whenever new mail has arrived
@@ -1809,7 +1809,7 @@ function DisplayNewMailBox(): boolean {
   return true;
 }
 
-function ReDrawNewMailBox(): void {
+export function ReDrawNewMailBox(): void {
   // this function will check to see if the new mail region needs to be redrawn
   if (fReDrawNewMailFlag == true) {
     if (fNewMailFlag) {
@@ -2061,7 +2061,7 @@ function ReDraw(): void {
   }
 }
 
-function CreateDestroyDeleteNoticeMailButton(): void {
+export function CreateDestroyDeleteNoticeMailButton(): void {
   /* static */ let fOldDeleteMailFlag: boolean = false;
   if ((fDeleteMailFlag) && (!fOldDeleteMailFlag)) {
     // confirm delete email buttons
@@ -3922,7 +3922,7 @@ function GetNumberOfPagesToEmail(): INT32 {
   return iNumberOfPagesToEmail;
 }
 
-function ShutDownEmailList(): void {
+export function ShutDownEmailList(): void {
   let pEmail: EmailPtr = pEmailList;
   let pTempEmail: EmailPtr = null;
 

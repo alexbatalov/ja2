@@ -1,21 +1,21 @@
-let gfShowTerrainTileButtons: boolean;
+export let gfShowTerrainTileButtons: boolean;
 let ubTerrainTileButtonWeight: UINT8[] /* [NUM_TERRAIN_TILE_REGIONS] */;
 let usTotalWeight: UINT16;
 let fPrevShowTerrainTileButtons: boolean = true;
-let fUseTerrainWeights: boolean = false;
+export let fUseTerrainWeights: boolean = false;
 let TerrainTileSelected: INT32 = 0;
 let TerrainForegroundTile: INT32;
-let TerrainBackgroundTile: INT32;
-let TerrainTileDrawMode: INT32 = TERRAIN_TILES_NODRAW;
+export let TerrainBackgroundTile: INT32;
+export let TerrainTileDrawMode: INT32 = TERRAIN_TILES_NODRAW;
 
-function EntryInitEditorTerrainInfo(): void {
+export function EntryInitEditorTerrainInfo(): void {
   // ResetTerrainTileWeights();
   if (!fUseTerrainWeights) {
     ResetTerrainTileWeights();
   }
 }
 
-function ResetTerrainTileWeights(): void {
+export function ResetTerrainTileWeights(): void {
   let x: INT8;
   for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
     ubTerrainTileButtonWeight[x] = 0;
@@ -25,7 +25,7 @@ function ResetTerrainTileWeights(): void {
   gfRenderTaskbar = true;
 }
 
-function HideTerrainTileButtons(): void {
+export function HideTerrainTileButtons(): void {
   let x: INT8;
   if (gfShowTerrainTileButtons) {
     for (x = Enum45.BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
@@ -35,7 +35,7 @@ function HideTerrainTileButtons(): void {
   }
 }
 
-function ShowTerrainTileButtons(): void {
+export function ShowTerrainTileButtons(): void {
   let x: INT8;
   if (!gfShowTerrainTileButtons) {
     for (x = Enum45.BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
@@ -45,7 +45,7 @@ function ShowTerrainTileButtons(): void {
   }
 }
 
-function RenderTerrainTileButtons(): void {
+export function RenderTerrainTileButtons(): void {
   // If needed, display the ground tile images
   if (gfShowTerrainTileButtons) {
     let usFillColorDark: UINT16;
@@ -91,7 +91,7 @@ function RenderTerrainTileButtons(): void {
 
 // This callback is used for each of the terrain tile buttons.  The userData[0] field
 // contains the terrain button's index value.
-function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderTaskbar = true;
     TerrainTileSelected = MSYS_GetRegionUserData(reg, 0);
@@ -132,7 +132,7 @@ function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT
   }
 }
 
-function ChooseWeightedTerrainTile(): void {
+export function ChooseWeightedTerrainTile(): void {
   let x: UINT16;
   let usWeight: UINT16;
   let sRandomNum: INT16;
@@ -153,7 +153,7 @@ function ChooseWeightedTerrainTile(): void {
 }
 
 let guiSearchType: UINT32;
-let count: UINT32;
+export let count: UINT32;
 let maxCount: UINT32 = 0;
 let calls: UINT32 = 0;
 
@@ -191,7 +191,7 @@ function Fill(x: INT32, y: INT32): void {
   count--;
 }
 
-function TerrainFill(iMapIndex: UINT32): void {
+export function TerrainFill(iMapIndex: UINT32): void {
   let sX: INT16;
   let sY: INT16;
   // determine what we should be looking for to replace...

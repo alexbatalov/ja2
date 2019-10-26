@@ -1,12 +1,12 @@
-const MAX_POPUP_BOX_COUNT = 20;
-const MAX_POPUP_BOX_STRING_COUNT = 50; // worst case = 45: move menu with 20 soldiers, each on different squad + overhead
+export const MAX_POPUP_BOX_COUNT = 20;
+export const MAX_POPUP_BOX_STRING_COUNT = 50; // worst case = 45: move menu with 20 soldiers, each on different squad + overhead
 
 // PopUpBox Flags
-const POPUP_BOX_FLAG_CLIP_TEXT = 1;
-const POPUP_BOX_FLAG_CENTER_TEXT = 2;
-const POPUP_BOX_FLAG_RESIZE = 4;
+export const POPUP_BOX_FLAG_CLIP_TEXT = 1;
+export const POPUP_BOX_FLAG_CENTER_TEXT = 2;
+export const POPUP_BOX_FLAG_RESIZE = 4;
 const POPUP_BOX_FLAG_CAN_HIGHLIGHT_SHADED_LINES = 8;
-interface POPUPSTRING {
+export interface POPUPSTRING {
   pString: STR16;
   ubForegroundColor: UINT8;
   ubBackgroundColor: UINT8;
@@ -20,9 +20,9 @@ interface POPUPSTRING {
   fSecondaryShadeFlag: boolean;
 }
 
-type POPUPSTRINGPTR = Pointer<POPUPSTRING>;
+export type POPUPSTRINGPTR = Pointer<POPUPSTRING>;
 
-interface PopUpBo {
+export interface PopUpBo {
   Dimensions: SGPRect;
   Position: SGPPoint;
   uiLeftMargin: UINT32;
@@ -44,4 +44,4 @@ interface PopUpBo {
   pSecondColumnString: POPUPSTRINGPTR[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
 }
 
-type PopUpBoxPt = Pointer<PopUpBo>;
+export type PopUpBoxPt = Pointer<PopUpBo>;

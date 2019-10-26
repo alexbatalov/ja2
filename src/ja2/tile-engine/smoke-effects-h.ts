@@ -1,5 +1,5 @@
 // Smoke effect types
-const enum Enum308 {
+export const enum Enum308 {
   NO_SMOKE_EFFECT,
   NORMAL_SMOKE_EFFECT,
   TEARGAS_SMOKE_EFFECT,
@@ -7,11 +7,11 @@ const enum Enum308 {
   CREATURE_SMOKE_EFFECT,
 }
 
-const SMOKE_EFFECT_INDOORS = 0x01;
-const SMOKE_EFFECT_ON_ROOF = 0x02;
-const SMOKE_EFFECT_MARK_FOR_UPDATE = 0x04;
+export const SMOKE_EFFECT_INDOORS = 0x01;
+export const SMOKE_EFFECT_ON_ROOF = 0x02;
+export const SMOKE_EFFECT_MARK_FOR_UPDATE = 0x04;
 
-interface SMOKEEFFECT {
+export interface SMOKEEFFECT {
   sGridNo: INT16; // gridno at which the tear gas cloud is centered
 
   ubDuration: UINT8; // the number of turns gas will remain effective

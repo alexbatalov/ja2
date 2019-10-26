@@ -3,7 +3,7 @@ let gpUIPlannedSoldier: Pointer<SOLDIERTYPE> = null;
 let gpUIStartPlannedSoldier: Pointer<SOLDIERTYPE> = null;
 let gfInUIPlanMode: boolean = false;
 
-function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   gubNumUIPlannedMoves = 0;
   gpUIPlannedSoldier = pSoldier;
   gpUIStartPlannedSoldier = pSoldier;
@@ -16,7 +16,7 @@ function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
+export function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
   let pPlanSoldier: Pointer<SOLDIERTYPE>;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -191,7 +191,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
   return true;
 }
 
-function EndUIPlan(): void {
+export function EndUIPlan(): void {
   let cnt: int;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -214,7 +214,7 @@ function EndUIPlan(): void {
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Leaving Planning Mode");
 }
 
-function InUIPlanMode(): boolean {
+export function InUIPlanMode(): boolean {
   return gfInUIPlanMode;
 }
 

@@ -1,6 +1,6 @@
 const ROOF_LOCATION_CHANCE = 8;
 
-let gubBuildingInfo: UINT8[] /* [WORLD_MAX] */;
+export let gubBuildingInfo: UINT8[] /* [WORLD_MAX] */;
 let gBuildings: BUILDING[] /* [MAX_BUILDINGS] */;
 let gubNumberOfBuildings: UINT8;
 
@@ -250,7 +250,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   return pBuilding;
 }
 
-function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
+export function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
   let ubBuildingID: UINT8;
   // UINT8					ubRoomNo;
 
@@ -320,7 +320,7 @@ function GenerateBuildings(): void {
   }
 }
 
-function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClimbUp: boolean): INT16 {
+export function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClimbUp: boolean): INT16 {
   let pBuilding: Pointer<BUILDING>;
   let ubNumClimbSpots: UINT8;
   let psClimbSpots: Pointer<INT16>;
@@ -355,7 +355,7 @@ function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClim
   return sClosestSpot;
 }
 
-function SameBuilding(sGridNo1: INT16, sGridNo2: INT16): boolean {
+export function SameBuilding(sGridNo1: INT16, sGridNo2: INT16): boolean {
   if (gubBuildingInfo[sGridNo1] == NO_BUILDING) {
     return false;
   }

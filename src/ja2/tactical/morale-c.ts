@@ -51,7 +51,7 @@ let gbMoraleEvent: MoraleEvent[] /* [NUM_MORALE_EVENTS] */ = [
 
 let gfSomeoneSaidMoraleQuote: boolean = false;
 
-function GetMoraleModifier(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function GetMoraleModifier(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
     if (pSoldier.value.bMorale > 50) {
       // give +1 at 55, +3 at 65, up to +5 at 95 and above
@@ -98,7 +98,7 @@ function DecayStrategicMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function DecayTacticalMoraleModifiers(): void {
+export function DecayTacticalMoraleModifiers(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let ubLoop: UINT8;
   let ubLoop2: UINT8;
@@ -193,7 +193,7 @@ function DecayStrategicMoraleModifiers(): void {
   }
 }
 
-function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iActualMorale: INT32;
 
   if (pSoldier.value.fMercAsleep) {
@@ -321,7 +321,7 @@ function HandleMoraleEventForSoldier(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEven
   UpdateSoldierMorale(pSoldier, gbMoraleEvent[bMoraleEvent].ubType, gbMoraleEvent[bMoraleEvent].bChange);
 }
 
-function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
+export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
   let ubLoop: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let pProfile: Pointer<MERCPROFILESTRUCT>;
@@ -575,7 +575,7 @@ function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, s
   }
 }
 
-function HourlyMoraleUpdate(): void {
+export function HourlyMoraleUpdate(): void {
   let bMercID: INT8;
   let bOtherID: INT8;
   let bActualTeamOpinion: INT8;
@@ -727,7 +727,7 @@ function HourlyMoraleUpdate(): void {
   }
 }
 
-function DailyMoraleUpdate(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DailyMoraleUpdate(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.ubProfile == NO_PROFILE) {
     return;
   }

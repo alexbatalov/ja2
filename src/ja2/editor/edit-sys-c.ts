@@ -1,7 +1,7 @@
-let gfWarning: boolean = false;
+export let gfWarning: boolean = false;
 
 let gfDoFill: boolean = false;
-let CurrentPaste: UINT16 = NO_TILE;
+export let CurrentPaste: UINT16 = NO_TILE;
 let gDebrisPaste: UINT16 = NO_TILE;
 let gChangeElevation: UINT16 = false;
 let CurrentStruct: UINT16 = NO_TILE;
@@ -13,7 +13,7 @@ let gDoCliffs: UINT32 = NO_CLIFFS;
 //
 //	Performs ersing operation when the DEL key is hit in the editor
 //
-function QuickEraseMapTile(iMapIndex: UINT32): void {
+export function QuickEraseMapTile(iMapIndex: UINT32): void {
   if (iMapIndex >= 0x8000)
     return;
   AddToUndoList(iMapIndex);
@@ -26,7 +26,7 @@ function QuickEraseMapTile(iMapIndex: UINT32): void {
 //
 //	Common delete function for both QuickEraseMapTile and EraseMapTile
 //
-function DeleteStuffFromMapTile(iMapIndex: UINT32): void {
+export function DeleteStuffFromMapTile(iMapIndex: UINT32): void {
   // UINT16		usUseIndex;
   // UINT16		usType;
   // UINT32		uiCheckType;
@@ -52,7 +52,7 @@ function DeleteStuffFromMapTile(iMapIndex: UINT32): void {
 //
 //	Generic tile erasing function. Erases things from the world depending on the current drawing mode
 //
-function EraseMapTile(iMapIndex: UINT32): void {
+export function EraseMapTile(iMapIndex: UINT32): void {
   let iEraseMode: INT32;
   let uiCheckType: UINT32;
   if (iMapIndex >= 0x8000)
@@ -171,7 +171,7 @@ function EraseMapTile(iMapIndex: UINT32): void {
 //	Place some "debris" on the map at the current mouse coordinates. This function is called repeatedly if
 //	the current brush size is larger than 1 tile.
 //
-function PasteDebris(iMapIndex: UINT32): void {
+export function PasteDebris(iMapIndex: UINT32): void {
   let usUseIndex: UINT16;
   let usUseObjIndex: UINT16;
   let iRandSelIndex: INT32;
@@ -200,38 +200,38 @@ function PasteDebris(iMapIndex: UINT32): void {
   }
 }
 
-function PasteSingleWall(iMapIndex: UINT32): void {
+export function PasteSingleWall(iMapIndex: UINT32): void {
   pSelList = SelSingleWall;
   pNumSelList = addressof(iNumWallsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
-function PasteSingleDoor(iMapIndex: UINT32): void {
+export function PasteSingleDoor(iMapIndex: UINT32): void {
   pSelList = SelSingleDoor;
   pNumSelList = addressof(iNumDoorsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
-function PasteSingleWindow(iMapIndex: UINT32): void {
+export function PasteSingleWindow(iMapIndex: UINT32): void {
   pSelList = SelSingleWindow;
   pNumSelList = addressof(iNumWindowsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
-function PasteSingleRoof(iMapIndex: UINT32): void {
+export function PasteSingleRoof(iMapIndex: UINT32): void {
   pSelList = SelSingleRoof;
   pNumSelList = addressof(iNumRoofsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
-function PasteRoomNumber(iMapIndex: UINT32, ubRoomNumber: UINT8): void {
+export function PasteRoomNumber(iMapIndex: UINT32, ubRoomNumber: UINT8): void {
   if (gubWorldRoomInfo[iMapIndex] != ubRoomNumber) {
     AddToUndoList(iMapIndex);
     gubWorldRoomInfo[iMapIndex] = ubRoomNumber;
   }
 }
 
-function PasteSingleBrokenWall(iMapIndex: UINT32): void {
+export function PasteSingleBrokenWall(iMapIndex: UINT32): void {
   let usIndex: UINT16;
   let usObjIndex: UINT16;
   let usTileIndex: UINT16;
@@ -252,25 +252,25 @@ function PasteSingleBrokenWall(iMapIndex: UINT32): void {
   PasteSingleWallCommon(iMapIndex);
 }
 
-function PasteSingleDecoration(iMapIndex: UINT32): void {
+export function PasteSingleDecoration(iMapIndex: UINT32): void {
   pSelList = SelSingleDecor;
   pNumSelList = addressof(iNumDecorSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
-function PasteSingleDecal(iMapIndex: UINT32): void {
+export function PasteSingleDecal(iMapIndex: UINT32): void {
   pSelList = SelSingleDecal;
   pNumSelList = addressof(iNumDecalsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
-function PasteSingleFloor(iMapIndex: UINT32): void {
+export function PasteSingleFloor(iMapIndex: UINT32): void {
   pSelList = SelSingleFloor;
   pNumSelList = addressof(iNumFloorsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
-function PasteSingleToilet(iMapIndex: UINT32): void {
+export function PasteSingleToilet(iMapIndex: UINT32): void {
   pSelList = SelSingleToilet;
   pNumSelList = addressof(iNumToiletsSelected);
   PasteSingleWallCommon(iMapIndex);
@@ -360,7 +360,7 @@ function PasteSingleWallCommon(iMapIndex: UINT32): void {
 //
 //	Returns a randomly picked object index given the current selection list, and the type or types of objects we want
 //	from that list. If no such objects are in the list, we return 0xffff (-1).
-function GetRandomIndexByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 {
+export function GetRandomIndexByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 {
   let usPickList: UINT16[] /* [50] */;
   let usNumInPickList: UINT16;
   let usWhich: UINT16;
@@ -401,7 +401,7 @@ function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 
 //
 //	Puts a structure (trees, trucks, etc.) into the world
 //
-function PasteStructure(iMapIndex: UINT32): void {
+export function PasteStructure(iMapIndex: UINT32): void {
   pSelList = SelOStructs;
   pNumSelList = addressof(iNumOStructsSelected);
 
@@ -413,7 +413,7 @@ function PasteStructure(iMapIndex: UINT32): void {
 //
 //	Puts a structure (trees, trucks, etc.) into the world
 //
-function PasteStructure1(iMapIndex: UINT32): void {
+export function PasteStructure1(iMapIndex: UINT32): void {
   pSelList = SelOStructs1;
   pNumSelList = addressof(iNumOStructs1Selected);
 
@@ -425,7 +425,7 @@ function PasteStructure1(iMapIndex: UINT32): void {
 //
 //	Puts a structure (trees, trucks, etc.) into the world
 //
-function PasteStructure2(iMapIndex: UINT32): void {
+export function PasteStructure2(iMapIndex: UINT32): void {
   pSelList = SelOStructs2;
   pNumSelList = addressof(iNumOStructs2Selected);
 
@@ -491,7 +491,7 @@ function PasteStructureCommon(iMapIndex: UINT32): void {
 //
 //	Places a river bank or cliff into the world
 //
-function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: boolean): void {
+export function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: boolean): void {
   let fDoPaste: boolean = false;
   let usUseIndex: UINT16;
   let usUseObjIndex: UINT16;
@@ -537,7 +537,7 @@ function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: boolean)
   }
 }
 
-function PasteRoads(iMapIndex: UINT32): void {
+export function PasteRoads(iMapIndex: UINT32): void {
   let usUseIndex: UINT16;
 
   pSelList = SelRoads;
@@ -554,7 +554,7 @@ function PasteRoads(iMapIndex: UINT32): void {
 //	Puts a ground texture in the world. Ground textures are then "smoothed" in order to blend the edges with one
 //	another. The current drawing brush also affects this function.
 //
-function PasteTexture(iMapIndex: UINT32): void {
+export function PasteTexture(iMapIndex: UINT32): void {
   ChooseWeightedTerrainTile(); // Kris
   PasteTextureCommon(iMapIndex);
 }
@@ -566,7 +566,7 @@ function PasteTexture(iMapIndex: UINT32): void {
 //	one tile, then the above function will call this one and indicate that they should all be placed into the undo
 //	stack as the same undo command.
 //
-function PasteTextureCommon(iMapIndex: UINT32): void {
+export function PasteTextureCommon(iMapIndex: UINT32): void {
   let ubLastHighLevel: UINT8;
   let usTileIndex: UINT16;
   // UINT16					Dummy;
@@ -947,7 +947,7 @@ const LAND_DROP_2 = Enum312.FIRSTCLIFF11;
 const LAND_DROP_3 = Enum312.FIRSTCLIFF12;
 const LAND_DROP_4 = Enum312.FIRSTCLIFF15;
 const LAND_DROP_5 = Enum312.FIRSTCLIFF8;
-function RaiseWorldLand(): void {
+export function RaiseWorldLand(): void {
   let cnt: INT32;
   let sTempGridNo: UINT32;
   let pStruct: Pointer<LEVELNODE>;

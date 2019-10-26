@@ -36,11 +36,11 @@ const AIM_HISTORY_TOC_GAP_Y = 25;
 
 const AIM_HISTORY_SPACE_BETWEEN_PARAGRAPHS = 8;
 
-let guiBottomButton: UINT32;
-let guiBottomButton2: UINT32;
-let guiContentButton: UINT32;
+export let guiBottomButton: UINT32;
+export let guiBottomButton2: UINT32;
+export let guiContentButton: UINT32;
 
-let gubCurPageNum: UINT8;
+export let gubCurPageNum: UINT8;
 let gfInToc: boolean = false;
 let gubAimHistoryMenuButtonDown: UINT8 = 255;
 let gfExitingAimHistory: boolean;
@@ -76,14 +76,14 @@ const enum Enum64 {
   INCORPORATION_3,
 }
 
-function GameInitAimHistory(): void {
+export function GameInitAimHistory(): void {
 }
 
-function EnterInitAimHistory(): void {
+export function EnterInitAimHistory(): void {
   memset(addressof(AimHistorySubPagesVisitedFlag), 0, NUM_AIM_HISTORY_PAGES);
 }
 
-function EnterAimHistory(): boolean {
+export function EnterAimHistory(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   gfExitingAimHistory = false;
@@ -104,7 +104,7 @@ function EnterAimHistory(): boolean {
   return true;
 }
 
-function ExitAimHistory(): void {
+export function ExitAimHistory(): void {
   gfExitingAimHistory = true;
   RemoveAimDefaults();
   ExitAimHistoryMenuBar();
@@ -116,10 +116,10 @@ function ExitAimHistory(): void {
     ExitTocMenu();
 }
 
-function HandleAimHistory(): void {
+export function HandleAimHistory(): void {
 }
 
-function RenderAimHistory(): void {
+export function RenderAimHistory(): void {
   let sText: wchar_t[] /* [400] */;
   let uiStartLoc: UINT32 = 0;
   let usPosY: UINT16;

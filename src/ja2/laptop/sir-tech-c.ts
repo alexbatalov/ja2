@@ -1,14 +1,14 @@
-function GameInitSirTech(): void {
+export function GameInitSirTech(): void {
 }
 
-function EnterSirTech(): void {
+export function EnterSirTech(): void {
 }
 
-function ExitSirTech(): void {
+export function ExitSirTech(): void {
 }
 
-function HandleSirTech(): void {
+export function HandleSirTech(): void {
 }
 
-function RenderSirTech(): void {
+export function RenderSirTech(): void {
 }

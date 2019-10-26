@@ -1,2 +1,2 @@
 // Undo command flags
-const MAX_UNDO_COMMAND_LENGTH = 10;
+export const MAX_UNDO_COMMAND_LENGTH = 10;

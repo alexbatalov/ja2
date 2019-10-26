@@ -1,4 +1,4 @@
-const enum Enum164 {
+export const enum Enum164 {
   // General encounter codes (gubEnemyEncounterCode)
   NO_ENCOUNTER_CODE, // when there is no encounter
   ENEMY_INVASION_CODE,
@@ -20,7 +20,7 @@ const enum Enum164 {
 
 // SAVE END
 
-const enum Enum165 {
+export const enum Enum165 {
   LOG_DEFEAT,
   LOG_VICTORY,
 }

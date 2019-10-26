@@ -47,16 +47,16 @@ let fInFilesMode: boolean = false;
 let fOnLastFilesPageFlag: boolean = false;
 
 //. did we enter due to new file icon?
-let fEnteredFileViewerFromNewFileIcon: boolean = false;
+export let fEnteredFileViewerFromNewFileIcon: boolean = false;
 let fWaitAFrame: boolean = false;
 
 // are there any new files
-let fNewFilesInFileViewer: boolean = false;
+export let fNewFilesInFileViewer: boolean = false;
 
 // graphics handles
-let guiTITLE: UINT32;
+export let guiTITLE: UINT32;
 let guiFileBack: UINT32;
-let guiTOP: UINT32;
+export let guiTOP: UINT32;
 let guiHIGHLIGHT: UINT32;
 
 // currewnt page of multipage files we are on
@@ -131,7 +131,7 @@ function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pF
   // return unique id of this transaction
   return uiId;
 }
-function GameInitFiles(): void {
+export function GameInitFiles(): void {
   if ((FileExists(FILES_DAT_FILE) == true)) {
     FileClearAttributes(FILES_DAT_FILE);
     FileDelete(FILES_DAT_FILE);
@@ -143,7 +143,7 @@ function GameInitFiles(): void {
   AddFilesToPlayersLog(Enum78.ENRICO_BACKGROUND, 0, 255, null, null);
 }
 
-function EnterFiles(): void {
+export function EnterFiles(): void {
   // load grpahics for files system
   LoadFiles();
 
@@ -175,7 +175,7 @@ function EnterFiles(): void {
   }
 }
 
-function ExitFiles(): void {
+export function ExitFiles(): void {
   // write files list out to disk
   OpenAndWriteFilesFile();
 
@@ -191,11 +191,11 @@ function ExitFiles(): void {
   RemoveFiles();
 }
 
-function HandleFiles(): void {
+export function HandleFiles(): void {
   CheckForUnreadFiles();
 }
 
-function RenderFiles(): void {
+export function RenderFiles(): void {
   let hHandle: HVOBJECT;
 
   // render the background
@@ -1446,7 +1446,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): bool
 }
 
 // add a file about this terrorist
-function AddFileAboutTerrorist(iProfileId: INT32): boolean {
+export function AddFileAboutTerrorist(iProfileId: INT32): boolean {
   let iCounter: INT32 = 0;
 
   for (iCounter = 1; iCounter < 7; iCounter++) {

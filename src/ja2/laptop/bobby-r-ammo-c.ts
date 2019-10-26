@@ -1,10 +1,10 @@
 let guiAmmoBackground: UINT32;
 let guiAmmoGrid: UINT32;
 
-function GameInitBobbyRAmmo(): void {
+export function GameInitBobbyRAmmo(): void {
 }
 
-function EnterBobbyRAmmo(): boolean {
+export function EnterBobbyRAmmo(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
@@ -30,7 +30,7 @@ function EnterBobbyRAmmo(): boolean {
   return true;
 }
 
-function ExitBobbyRAmmo(): void {
+export function ExitBobbyRAmmo(): void {
   DeleteVideoObjectFromIndex(guiAmmoBackground);
   DeleteVideoObjectFromIndex(guiAmmoGrid);
   DeleteBobbyMenuBar();
@@ -42,10 +42,10 @@ function ExitBobbyRAmmo(): void {
   guiLastBobbyRayPage = Enum95.LAPTOP_MODE_BOBBY_R_AMMO;
 }
 
-function HandleBobbyRAmmo(): void {
+export function HandleBobbyRAmmo(): void {
 }
 
-function RenderBobbyRAmmo(): void {
+export function RenderBobbyRAmmo(): void {
   let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiAmmoBackground);

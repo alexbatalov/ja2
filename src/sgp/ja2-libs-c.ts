@@ -1,4 +1,4 @@
-let gGameLibaries: LibraryInitHeader[] /* [] */ = [
+export let gGameLibaries: LibraryInitHeader[] /* [] */ = [
   // Library Name					Can be	Init at start
   //													on cd
   [ "Data.slf", false, true ],

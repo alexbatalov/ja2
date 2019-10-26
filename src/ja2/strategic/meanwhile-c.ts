@@ -50,10 +50,10 @@ interface NPC_SAVE_INFO {
 }
 
 // BEGIN SERALIZATION
-let gCurrentMeanwhileDef: MEANWHILE_DEFINITION;
-let gMeanwhileDef: MEANWHILE_DEFINITION[] /* [NUM_MEANWHILES] */;
-let gfMeanwhileTryingToStart: boolean = false;
-let gfInMeanwhile: boolean = false;
+export let gCurrentMeanwhileDef: MEANWHILE_DEFINITION;
+export let gMeanwhileDef: MEANWHILE_DEFINITION[] /* [NUM_MEANWHILES] */;
+export let gfMeanwhileTryingToStart: boolean = false;
+export let gfInMeanwhile: boolean = false;
 // END SERIALIZATION
 let gsOldSectorX: INT16;
 let gsOldSectorY: INT16;
@@ -70,7 +70,7 @@ let gsOldCurInterfacePanel: INT16 = 0;
 let gfWorldWasLoaded: boolean = false;
 let ubCurrentMeanWhileId: UINT8 = 0;
 
-let uiMeanWhileFlags: UINT32 = 0;
+export let uiMeanWhileFlags: UINT32 = 0;
 
 // meanwhile flag defines
 const END_OF_PLAYERS_FIRST_BATTLE_FLAG = 0x00000001;
@@ -237,7 +237,7 @@ function RecountNPCSaves(): void {
   }
 }
 
-function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, uiTime: UINT32): void {
+export function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, uiTime: UINT32): void {
   // event scheduled to happen before, ignore
   if (GetMeanWhileFlag(pMeanwhileDef.value.ubMeanwhileID) == true) {
     return;
@@ -263,7 +263,7 @@ function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, ui
   AddStrategicEvent(Enum132.EVENT_MEANWHILE, uiTime, pMeanwhileDef.value.ubMeanwhileID);
 }
 
-function BeginMeanwhile(ubMeanwhileID: UINT8): boolean {
+export function BeginMeanwhile(ubMeanwhileID: UINT8): boolean {
   let cnt: INT32;
 
   // copy meanwhile data from array to structure for current
@@ -295,7 +295,7 @@ function BringupMeanwhileBox(): void {
   }
 }
 
-function CheckForMeanwhileOKStart(): void {
+export function CheckForMeanwhileOKStart(): void {
   if (gfMeanwhileTryingToStart) {
     // Are we in prebattle interface?
     if (gfPreBattleInterfaceActive) {
@@ -518,7 +518,7 @@ function BeginMeanwhileCallBack(bExitValue: UINT8): void {
   }
 }
 
-function AreInMeanwhile(): boolean {
+export function AreInMeanwhile(): boolean {
   let curr: Pointer<STRATEGICEVENT>;
 
   // KM:  April 6, 1999
@@ -616,7 +616,7 @@ function ProcessImplicationsOfMeanwhile(): void {
   }
 }
 
-function EndMeanwhile(): void {
+export function EndMeanwhile(): void {
   let cnt: UINT32;
   let ubProfile: UINT8;
 
@@ -736,7 +736,7 @@ function LocateMeanWhileGrid(): void {
   return;
 }
 
-function LocateToMeanwhileCharacter(): void {
+export function LocateToMeanwhileCharacter(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gfInMeanwhile) {
@@ -748,15 +748,15 @@ function LocateToMeanwhileCharacter(): void {
   }
 }
 
-function AreReloadingFromMeanwhile(): boolean {
+export function AreReloadingFromMeanwhile(): boolean {
   return gfReloadingScreenFromMeanwhile;
 }
 
-function GetMeanwhileID(): UINT8 {
+export function GetMeanwhileID(): UINT8 {
   return gCurrentMeanwhileDef.ubMeanwhileID;
 }
 
-function HandleCreatureRelease(): void {
+export function HandleCreatureRelease(): void {
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
 
@@ -773,7 +773,7 @@ function HandleCreatureRelease(): void {
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
-function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
+export function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
   // post event for meanwhile whithin the next 6 hours if it still will be daylight, otherwise the next morning
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
@@ -823,7 +823,7 @@ function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
   }
 }
 
-function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
+export function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
 
@@ -845,7 +845,7 @@ function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
-function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
+export function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
   let ubId: UINT8 = 0;
@@ -893,7 +893,7 @@ function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
   }
 }
 
-function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
+export function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
   let ubId: UINT8 = 0;
@@ -923,7 +923,7 @@ function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
-function HandleOutskirtsOfMedunaMeanwhileScene(): void {
+export function HandleOutskirtsOfMedunaMeanwhileScene(): void {
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
   let ubId: UINT8 = 0;
@@ -946,7 +946,7 @@ function HandleOutskirtsOfMedunaMeanwhileScene(): void {
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
-function HandleKillChopperMeanwhileScene(): void {
+export function HandleKillChopperMeanwhileScene(): void {
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
   let ubId: UINT8 = 0;
@@ -969,7 +969,7 @@ function HandleKillChopperMeanwhileScene(): void {
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
-function HandleScientistAWOLMeanwhileScene(): void {
+export function HandleScientistAWOLMeanwhileScene(): void {
   let uiTime: UINT32 = 0;
   let MeanwhileDef: MEANWHILE_DEFINITION;
   let ubId: UINT8 = 0;
@@ -1068,7 +1068,7 @@ function HandleDelayedFirstBattleVictory(): void {
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
-function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT16, fFromAutoResolve: boolean): void {
+export function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT16, fFromAutoResolve: boolean): void {
   let bTownId: INT8 = 0;
   let sSector: INT16 = 0;
 
@@ -1100,7 +1100,7 @@ function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bS
   return;
 }
 
-function HandleFirstMeanWhileSetUpWithTrashWorld(): void {
+export function HandleFirstMeanWhileSetUpWithTrashWorld(): void {
   // exiting sector after first battle fought
   if (gfFirstBattleMeanwhileScenePending) {
     HandleFirstBattleVictory();

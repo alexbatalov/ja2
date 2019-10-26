@@ -37,17 +37,17 @@ let LightMapLeft: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
 let LightMapTop: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
 let LightMapRight: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
 let LightMapBottom: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
-let pLightNames: STR[] /* [MAX_LIGHT_TEMPLATES] */;
+export let pLightNames: STR[] /* [MAX_LIGHT_TEMPLATES] */;
 
 // Sprite data
-let LightSprites: LIGHT_SPRITE[] /* [MAX_LIGHT_SPRITES] */;
+export let LightSprites: LIGHT_SPRITE[] /* [MAX_LIGHT_SPRITES] */;
 
 // Lighting system general data
-let ubAmbientLightLevel: UINT8 = DEFAULT_SHADE_LEVEL;
+export let ubAmbientLightLevel: UINT8 = DEFAULT_SHADE_LEVEL;
 let gubNumLightColors: UINT8 = 1;
 
 // Externed in Rotting Corpses.c
-let gpLightColors: SGPPaletteEntry[] /* [3] */ = [
+export let gpLightColors: SGPPaletteEntry[] /* [3] */ = [
   [ 0, 0, 0, 0 ],
   [ 0, 0, 255, 0 ],
   [ 0, 0, 0, 0 ],
@@ -122,7 +122,7 @@ UINT16 gusShadeLevels[16][3] =
 */
 
 // JA2 Gold:
-let gusShadeLevels: UINT16[][] /* [16][3] */ = [
+export let gusShadeLevels: UINT16[][] /* [16][3] */ = [
   [ 500, 500, 500 ],
   [ 450, 450, 450 ], // bright
   [ 350, 350, 350 ],
@@ -142,9 +142,9 @@ let gusShadeLevels: UINT16[][] /* [16][3] */ = [
 ];
 
 // Set this true if you want the shadetables to be loaded from the text file.
-let gfLoadShadeTablesFromTextFile: boolean = false;
+export let gfLoadShadeTablesFromTextFile: boolean = false;
 
-function LoadShadeTablesFromTextFile(): void {
+export function LoadShadeTablesFromTextFile(): void {
   let fp: Pointer<FILE>;
   let i: INT32;
   let j: INT32;
@@ -175,7 +175,7 @@ let gNodesAdded: UINT32 = 0;
         Initializes the lighting system.
 
 ***************************************************************************************/
-function InitLightingSystem(): boolean {
+export function InitLightingSystem(): boolean {
   let uiCount: UINT32;
 
   LoadShadeTablesFromTextFile();
@@ -202,7 +202,7 @@ function InitLightingSystem(): boolean {
 }
 
 // THIS MUST BE CALLED ONCE ALL SURFACE VIDEO OBJECTS HAVE BEEN LOADED!
-function SetDefaultWorldLightingColors(): boolean {
+export function SetDefaultWorldLightingColors(): boolean {
   let pPal: SGPPaletteEntry[] /* [2] */;
 
   pPal[0].peRed = 0;
@@ -224,7 +224,7 @@ function SetDefaultWorldLightingColors(): boolean {
         memory attached to them freed up.
 
 ***************************************************************************************/
-function ShutdownLightingSystem(): boolean {
+export function ShutdownLightingSystem(): boolean {
   let uiCount: UINT32;
 
   // free up all allocated light nodes
@@ -241,7 +241,7 @@ function ShutdownLightingSystem(): boolean {
         Removes all currently active lights, without undrawing them.
 
 ***************************************************************************************/
-function LightReset(): boolean {
+export function LightReset(): boolean {
   let uiCount: UINT32;
 
   // reset all light lists
@@ -575,7 +575,7 @@ function LinearDistanceDouble(iX1: INT16, iY1: INT16, iX2: INT16, iY2: INT16): D
                 Returns the light level at a particular level without fake lights
 
 ***************************************************************************************/
-function LightTrueLevel(sGridNo: INT16, bLevel: INT8): UINT8 {
+export function LightTrueLevel(sGridNo: INT16, bLevel: INT8): UINT8 {
   let pNode: Pointer<LEVELNODE>;
   let iSum: INT32;
 
@@ -1680,7 +1680,7 @@ function LightGenerateBeam(iLight: INT32, iIntensity: UINT8, iLength: INT16, iRa
                 Sets the current and natural light settings for all tiles in the world.
 
 ***************************************************************************************/
-function LightSetBaseLevel(iIntensity: UINT8): boolean {
+export function LightSetBaseLevel(iIntensity: UINT8): boolean {
   let iCountY: INT16;
   let iCountX: INT16;
   let cnt: UINT32;
@@ -1722,7 +1722,7 @@ function LightSetBaseLevel(iIntensity: UINT8): boolean {
                 Adds a light value to all the tiles in the world
 
 ***************************************************************************************/
-function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): boolean {
+export function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): boolean {
   let iCountY: INT16;
   let iCountX: INT16;
 
@@ -1746,7 +1746,7 @@ function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): boolean {
                 Sets the current and natural light settings for all tiles in the world.
 
 ***************************************************************************************/
-function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): boolean {
+export function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): boolean {
   let iCountY: INT16;
   let iCountX: INT16;
 
@@ -1770,7 +1770,7 @@ function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): boolean
                 Creates a circular light.
 
 ***************************************************************************************/
-function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
+export function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
   let iLight: INT32;
   let usName: UINT8[] /* [14] */;
 
@@ -1847,7 +1847,7 @@ function LightIlluminateWall(iSourceX: INT16, iSourceY: INT16, iTileX: INT16, iT
                 Renders a light template at the specified X,Y coordinates.
 
 ***************************************************************************************/
-function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): boolean {
+export function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   let uiCount: UINT16;
   let usNodeIndex: UINT16;
@@ -2185,7 +2185,7 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): boole
 each tile drawn to facilitate animating the drawing process for debugging.
 
 ***************************************************************************************/
-function LightShowRays(iX: INT16, iY: INT16, fReset: boolean): boolean {
+export function LightShowRays(iX: INT16, iY: INT16, fReset: boolean): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   /* static */ let uiCount: UINT16 = 0;
   let usNodeIndex: UINT16;
@@ -2281,7 +2281,7 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): boole
                 Hides walls that were revealed by CalcTranslucentWalls.
 
 ***************************************************************************************/
-function LightHideRays(iX: INT16, iY: INT16): boolean {
+export function LightHideRays(iX: INT16, iY: INT16): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   let uiCount: UINT16;
   let usNodeIndex: UINT16;
@@ -2311,7 +2311,7 @@ function LightHideRays(iX: INT16, iY: INT16): boolean {
                 Hides walls that were revealed by CalcTranslucentWalls.
 
 ***************************************************************************************/
-function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): boolean {
+export function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): boolean {
   let pLight: Pointer<LIGHT_NODE>;
   let uiCount: UINT16;
   let usNodeIndex: UINT16;
@@ -2560,7 +2560,7 @@ function LightCalcRect(iLight: INT32): boolean {
         filename forces the system to save the light with the internal filename (recommended).
 
 ***************************************************************************************/
-function LightSave(iLight: INT32, pFilename: STR): boolean {
+export function LightSave(iLight: INT32, pFilename: STR): boolean {
   let hFile: HWFILE;
   let pName: STR;
 
@@ -2647,7 +2647,7 @@ function LightLoadCachedTemplate(pFilename: STR): INT32 {
   return LightLoad(pFilename);
 }
 
-function LightGetColors(pPal: Pointer<SGPPaletteEntry>): UINT8 {
+export function LightGetColors(pPal: Pointer<SGPPaletteEntry>): UINT8 {
   if (pPal != null)
     memcpy(pPal, addressof(gpOrigLights[0]), sizeof(SGPPaletteEntry) * gubNumLightColors);
 
@@ -2662,7 +2662,7 @@ function LightGetColors(pPal: Pointer<SGPPaletteEntry>): UINT8 {
 ***************************************************************************************/
 let gfEditorForceRebuildAllColors: boolean = false;
 
-function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): boolean {
+export function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): boolean {
   let sRed: INT16;
   let sGreen: INT16;
   let sBlue: INT16;
@@ -2745,7 +2745,7 @@ function LightSpriteGetFree(): INT32 {
  * If this function fails (out of sprites, or bad template name) it returns (-1).
  *
  ********************************************************************************/
-function LightSpriteCreate(pName: STR, uiLightType: UINT32): INT32 {
+export function LightSpriteCreate(pName: STR, uiLightType: UINT32): INT32 {
   let iSprite: INT32;
 
   if ((iSprite = LightSpriteGetFree()) != (-1)) {
@@ -2771,7 +2771,7 @@ function LightSpriteCreate(pName: STR, uiLightType: UINT32): INT32 {
  *		Sets the flag of a light sprite to "fake" (in game for merc navig purposes)
  *
  ********************************************************************************/
-function LightSpriteFake(iSprite: INT32): boolean {
+export function LightSpriteFake(iSprite: INT32): boolean {
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     LightSprites[iSprite].uiFlags |= MERC_LIGHT;
     return true;
@@ -2786,7 +2786,7 @@ function LightSpriteFake(iSprite: INT32): boolean {
  *		Removes an instance of a light. If it was on, it is erased from the scene.
  *
  ********************************************************************************/
-function LightSpriteDestroy(iSprite: INT32): boolean {
+export function LightSpriteDestroy(iSprite: INT32): boolean {
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ERASE) {
       if ((LightSprites[iSprite].iX < WORLD_COLS) && (LightSprites[iSprite].iY < WORLD_ROWS)) {
@@ -2862,7 +2862,7 @@ function LightSpriteRender(): boolean {
  * active lights.
  *
  ********************************************************************************/
-function LightSpriteRenderAll(): boolean {
+export function LightSpriteRenderAll(): boolean {
   let iCount: INT32;
   let fRenderLights: boolean = false;
 
@@ -2889,7 +2889,7 @@ function LightSpriteRenderAll(): boolean {
  *		Sets the X,Y position (IN TILES) of a light instance.
  *
  ********************************************************************************/
-function LightSpritePosition(iSprite: INT32, iX: INT16, iY: INT16): boolean {
+export function LightSpritePosition(iSprite: INT32, iX: INT16, iY: INT16): boolean {
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     if ((LightSprites[iSprite].iX == iX) && (LightSprites[iSprite].iY == iY))
       return true;
@@ -2926,7 +2926,7 @@ function LightSpritePosition(iSprite: INT32, iX: INT16, iY: INT16): boolean {
  *		Determines whether a light is on a roof or not.
  *
  ********************************************************************************/
-function LightSpriteRoofStatus(iSprite: INT32, fOnRoof: boolean): boolean {
+export function LightSpriteRoofStatus(iSprite: INT32, fOnRoof: boolean): boolean {
   if (fOnRoof && (LightSprites[iSprite].uiFlags & LIGHT_SPR_ONROOF))
     return false;
 
@@ -2965,7 +2965,7 @@ function LightSpriteRoofStatus(iSprite: INT32, fOnRoof: boolean): boolean {
  *		Turns on or off a light, based on the BOOLEAN.
  *
  ********************************************************************************/
-function LightSpritePower(iSprite: INT32, fOn: boolean): boolean {
+export function LightSpritePower(iSprite: INT32, fOn: boolean): boolean {
   if (fOn) {
     LightSprites[iSprite].uiFlags |= (LIGHT_SPR_ON | LIGHT_SPR_REDRAW);
     LightSprites[iSprite].iOldX = WORLD_COLS;
@@ -3043,7 +3043,7 @@ function CreateSoldierShadedPalette(pSoldier: Pointer<SOLDIERTYPE>, uiBase: UINT
 
 **********************************************************************************************/
 
-function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: boolean): UINT16 {
+export function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: boolean): UINT16 {
   let uiCount: UINT32;
   let LightPal: SGPPaletteEntry[] /* [256] */;
   let fLoaded: boolean = false;
@@ -3104,7 +3104,7 @@ function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: bo
   return true;
 }
 
-function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiType: UINT32): UINT16 {
+export function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiType: UINT32): UINT16 {
   let LightPal: SGPPaletteEntry[] /* [256] */;
   let uiCount: UINT32;
 

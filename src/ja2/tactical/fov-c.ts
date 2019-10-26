@@ -163,7 +163,7 @@ function RecountSlantRoofs(): void {
   }
 }
 
-function ClearSlantRoofs(): void {
+export function ClearSlantRoofs(): void {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
@@ -189,7 +189,7 @@ function FindSlantRoofSlot(sGridNo: INT16): boolean {
   return false;
 }
 
-function AddSlantRoofFOVSlot(sGridNo: INT16): void {
+export function AddSlantRoofFOVSlot(sGridNo: INT16): void {
   let iSlantRoofSlot: INT32;
   let pSlantRoof: Pointer<SLANT_ROOF_FOV_TYPE>;
 
@@ -207,7 +207,7 @@ function AddSlantRoofFOVSlot(sGridNo: INT16): void {
   }
 }
 
-function ExamineSlantRoofFOVSlots(): void {
+export function ExamineSlantRoofFOVSlots(): void {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
@@ -219,7 +219,7 @@ function ExamineSlantRoofFOVSlots(): void {
   ClearSlantRoofs();
 }
 
-function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, fShowLocators: boolean, ubLevel: UINT8, fForce: boolean): void {
+export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, fShowLocators: boolean, ubLevel: UINT8, fForce: boolean): void {
   let maincnt: UINT32;
   let markercnt: UINT32;
   let marker: UINT32;

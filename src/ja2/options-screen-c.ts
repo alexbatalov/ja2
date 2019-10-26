@@ -104,7 +104,7 @@ let gzSavedGameName: CHAR8[] /* [128] */;
 let gfEnteredFromMapScreen: boolean = false;
 
 let guiOptionsScreen: UINT32 = Enum26.OPTIONS_SCREEN;
-let guiPreviousOptionScreen: UINT32 = Enum26.OPTIONS_SCREEN;
+export let guiPreviousOptionScreen: UINT32 = Enum26.OPTIONS_SCREEN;
 
 let gfExitOptionsDueToMessageBox: boolean = false;
 let gfExitOptionsAfterMessageBox: boolean = false;
@@ -132,7 +132,7 @@ let giGotoLoadBtnImage: INT32;
 let guiQuitButton: UINT32;
 let giQuitBtnImage: INT32;
 
-let guiDoneButton: UINT32;
+export let guiDoneButton: UINT32;
 let giDoneBtnImage: INT32;
 
 // checkbox to toggle tracking mode on or off
@@ -158,14 +158,14 @@ let gSelectedToggleBoxAreaRegion: MOUSE_REGION;
 //
 /////////////////////////////////
 
-function OptionsScreenInit(): UINT32 {
+export function OptionsScreenInit(): UINT32 {
   // Set so next time we come in, we can set up
   gfOptionsScreenEntry = true;
 
   return true;
 }
 
-function OptionsScreenHandle(): UINT32 {
+export function OptionsScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfOptionsScreenEntry) {
@@ -219,7 +219,7 @@ function OptionsScreenHandle(): UINT32 {
   return guiOptionsScreen;
 }
 
-function OptionsScreenShutdown(): UINT32 {
+export function OptionsScreenShutdown(): UINT32 {
   return true;
 }
 
@@ -801,7 +801,7 @@ function MusicSliderChangeCallBack(iNewValue: INT32): void {
   MusicSetVolume(iNewValue);
 }
 
-function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
+export function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
   // reset exit mode
   gfExitOptionsDueToMessageBox = true;
 

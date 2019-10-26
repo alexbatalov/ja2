@@ -1,4 +1,4 @@
-let gfInSectorExitMenu: boolean = false;
+export let gfInSectorExitMenu: boolean = false;
 
 interface EXIT_DIALOG_STRUCT {
   BackRegion: MOUSE_REGION;
@@ -322,7 +322,7 @@ function WarpToSurfaceCallback(bExitValue: UINT8): void {
   }
 }
 
-function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): boolean {
+export function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): boolean {
   gubExitGUIDirection = ubDirection;
   gsExitGUIAdditionalData = sAdditionalData;
 
@@ -448,7 +448,7 @@ function UpdateSectorExitMenu(): void {
   }
 }
 
-function RenderSectorExitMenu(): void {
+export function RenderSectorExitMenu(): void {
   let Event: InputAtom;
 
   RestoreBackgroundRects();
@@ -521,11 +521,11 @@ function RenderSectorExitMenu(): void {
   MarkAButtonDirty(gExitDialog.uiCancelButton);
 }
 
-function HandleSectorExitMenu(): boolean {
+export function HandleSectorExitMenu(): boolean {
   return (false); // Why???
 }
 
-function RemoveSectorExitMenu(fOk: boolean): void {
+export function RemoveSectorExitMenu(fOk: boolean): void {
   let Str: INT16[] /* [50] */;
 
   if (gfInSectorExitMenu) {

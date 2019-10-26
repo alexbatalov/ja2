@@ -1,4 +1,4 @@
-const enum Enum191 {
+export const enum Enum191 {
   ACTION_ITEM_OPEN_DOOR = 1,
   ACTION_ITEM_CLOSE_DOOR,
   ACTION_ITEM_BLOW_UP,

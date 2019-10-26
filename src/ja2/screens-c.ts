@@ -1,4 +1,4 @@
-let GameScreens: Screens[] /* [MAX_SCREENS] */ = [
+export let GameScreens: Screens[] /* [MAX_SCREENS] */ = [
   [ EditScreenInit, EditScreenHandle, EditScreenShutdown ],
   [ SavingScreenInitialize, SavingScreenHandle, SavingScreenShutdown ], // Title Screen
   [ LoadingScreenInitialize, LoadingScreenHandle, LoadingScreenShutdown ], // Title Screen

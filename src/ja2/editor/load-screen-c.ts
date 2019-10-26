@@ -1,7 +1,7 @@
 //===========================================================================
 
-let gfErrorCatch: boolean = false;
-let gzErrorCatchString: UINT16[] /* [256] */ = "";
+export let gfErrorCatch: boolean = false;
+export let gzErrorCatchString: UINT16[] /* [256] */ = "";
 let giErrorCatchMessageBox: INT32 = 0;
 
 const enum Enum50 {
@@ -52,13 +52,13 @@ const enum Enum51 {
 }
 let gbCurrentFileIOStatus: INT8; // 1 init saving message, 2 save, 3 init loading message, 4 load, 0 none
 
-function LoadSaveScreenInit(): UINT32 {
+export function LoadSaveScreenInit(): UINT32 {
   gfUpdateSummaryInfo = true;
   fEnteringLoadSaveScreen = true;
   return true;
 }
 
-function LoadSaveScreenShutdown(): UINT32 {
+export function LoadSaveScreenShutdown(): UINT32 {
   return true;
 }
 
@@ -196,7 +196,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
   return Enum26.LOADSAVE_SCREEN;
 }
 
-function LoadSaveScreenHandle(): UINT32 {
+export function LoadSaveScreenHandle(): UINT32 {
   let FListNode: Pointer<FDLG_LIST>;
   let x: INT32;
   let DialogEvent: InputAtom;
@@ -489,7 +489,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
   }
 }
 
-function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>): Pointer<FDLG_LIST> {
+export function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>): Pointer<FDLG_LIST> {
   let pNode: Pointer<FDLG_LIST>;
 
   // Add to start of list
@@ -911,7 +911,7 @@ function ValidFilename(): boolean {
   return false;
 }
 
-function ExternalLoadMap(szFilename: Pointer<UINT16>): boolean {
+export function ExternalLoadMap(szFilename: Pointer<UINT16>): boolean {
   Assert(szFilename);
   if (!wcslen(szFilename))
     return false;
@@ -928,7 +928,7 @@ function ExternalLoadMap(szFilename: Pointer<UINT16>): boolean {
   return false;
 }
 
-function ExternalSaveMap(szFilename: Pointer<UINT16>): boolean {
+export function ExternalSaveMap(szFilename: Pointer<UINT16>): boolean {
   Assert(szFilename);
   if (!wcslen(szFilename))
     return false;

@@ -1,4 +1,4 @@
-function GetMLGFilename(filename: SGPFILENAME, usMLGGraphicID: UINT16): boolean {
+export function GetMLGFilename(filename: SGPFILENAME, usMLGGraphicID: UINT16): boolean {
 // FIXME: Language-specific code
 // #if defined(ENGLISH) || defined(FRENCH)
   switch (usMLGGraphicID) {

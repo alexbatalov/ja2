@@ -19,11 +19,11 @@ interface RGBValues {
   b: INT8;
 }
 
-function MapUtilScreenInit(): UINT32 {
+export function MapUtilScreenInit(): UINT32 {
   return true;
 }
 
-function MapUtilScreenHandle(): UINT32 {
+export function MapUtilScreenHandle(): UINT32 {
   /* static */ let fNewMap: INT16 = true;
   /* static */ let sFileNum: INT16 = 0;
   let InputEvent: InputAtom;
@@ -306,6 +306,6 @@ function MapUtilScreenHandle(): UINT32 {
   return Enum26.MAPUTILITY_SCREEN;
 }
 
-function MapUtilScreenShutdown(): UINT32 {
+export function MapUtilScreenShutdown(): UINT32 {
   return true;
 }

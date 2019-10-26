@@ -15,10 +15,10 @@ const MINE_PRODUCTION_PERIOD = (3 * 60); // time seperating daily mine productio
 // DATA TABLES
 
 // this table holds mine values that change during the course of the game and must be saved
-let gMineStatus: MINE_STATUS_TYPE[] /* [MAX_NUMBER_OF_MINES] */;
+export let gMineStatus: MINE_STATUS_TYPE[] /* [MAX_NUMBER_OF_MINES] */;
 
 // this table holds mine values that never change and don't need to be saved
-let gMineLocation: MINE_LOCATION_TYPE[] /* [MAX_NUMBER_OF_MINES] */ = [
+export let gMineLocation: MINE_LOCATION_TYPE[] /* [MAX_NUMBER_OF_MINES] */ = [
   [ 4, 4, Enum135.SAN_MONA ],
   [ 13, 4, Enum135.DRASSEN ],
   [ 14, 9, Enum135.ALMA ],
@@ -70,7 +70,7 @@ UINT8 gubMonsterMineInfestation[]={
 };
 */
 
-function InitializeMines(): void {
+export function InitializeMines(): void {
   let ubMineIndex: UINT8;
   let pMineStatus: Pointer<MINE_STATUS_TYPE>;
   let ubMineProductionIncreases: UINT8;
@@ -159,7 +159,7 @@ function InitializeMines(): void {
   }
 }
 
-function HourlyMinesUpdate(): void {
+export function HourlyMinesUpdate(): void {
   let ubMineIndex: UINT8;
   let pMineStatus: Pointer<MINE_STATUS_TYPE>;
   let ubQuoteType: UINT8;
@@ -223,7 +223,7 @@ function HourlyMinesUpdate(): void {
   }
 }
 
-function GetTotalLeftInMine(bMineIndex: INT8): INT32 {
+export function GetTotalLeftInMine(bMineIndex: INT8): INT32 {
   // returns the value of the mine
 
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
@@ -231,7 +231,7 @@ function GetTotalLeftInMine(bMineIndex: INT8): INT32 {
   return gMineStatus[bMineIndex].uiRemainingOreSupply;
 }
 
-function GetMaxPeriodicRemovalFromMine(bMineIndex: INT8): UINT32 {
+export function GetMaxPeriodicRemovalFromMine(bMineIndex: INT8): UINT32 {
   // returns max amount that can be mined in a time period
 
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
@@ -244,7 +244,7 @@ function GetMaxPeriodicRemovalFromMine(bMineIndex: INT8): UINT32 {
   return gMineStatus[bMineIndex].uiMaxRemovalRate;
 }
 
-function GetMaxDailyRemovalFromMine(bMineIndex: INT8): UINT32 {
+export function GetMaxDailyRemovalFromMine(bMineIndex: INT8): UINT32 {
   let uiAmtExtracted: UINT32;
 
   // returns max amount that can be mined in one day
@@ -267,7 +267,7 @@ function GetMaxDailyRemovalFromMine(bMineIndex: INT8): UINT32 {
   return uiAmtExtracted;
 }
 
-function GetTownAssociatedWithMine(bMineIndex: INT8): INT8 {
+export function GetTownAssociatedWithMine(bMineIndex: INT8): INT8 {
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   return gMineLocation[bMineIndex].bAssociatedTown;
@@ -494,7 +494,7 @@ function MineAMine(bMineIndex: INT8): INT32 {
   return iAmtExtracted;
 }
 
-function PostEventsForMineProduction(): void {
+export function PostEventsForMineProduction(): void {
   let ubShift: UINT8;
 
   for (ubShift = 0; ubShift < MINE_PRODUCTION_NUMBER_OF_PERIODS; ubShift++) {
@@ -502,7 +502,7 @@ function PostEventsForMineProduction(): void {
   }
 }
 
-function HandleIncomeFromMines(): void {
+export function HandleIncomeFromMines(): void {
   let iIncome: INT32 = 0;
   let bCounter: INT8 = 0;
 
@@ -516,7 +516,7 @@ function HandleIncomeFromMines(): void {
   }
 }
 
-function PredictDailyIncomeFromAMine(bMineIndex: INT8): UINT32 {
+export function PredictDailyIncomeFromAMine(bMineIndex: INT8): UINT32 {
   // predict income from this mine, estimate assumes mining situation will not change during next 4 income periods
   // (miner loyalty, % town controlled, monster infestation level, and current max removal rate may all in fact change)
   let uiAmtExtracted: UINT32 = 0;
@@ -535,7 +535,7 @@ function PredictDailyIncomeFromAMine(bMineIndex: INT8): UINT32 {
   return uiAmtExtracted;
 }
 
-function PredictIncomeFromPlayerMines(): INT32 {
+export function PredictIncomeFromPlayerMines(): INT32 {
   let iTotal: INT32 = 0;
   let bCounter: INT8 = 0;
 
@@ -547,7 +547,7 @@ function PredictIncomeFromPlayerMines(): INT32 {
   return iTotal;
 }
 
-function CalcMaxPlayerIncomeFromMines(): INT32 {
+export function CalcMaxPlayerIncomeFromMines(): INT32 {
   let iTotal: INT32 = 0;
   let bCounter: INT8 = 0;
 
@@ -561,7 +561,7 @@ function CalcMaxPlayerIncomeFromMines(): INT32 {
 }
 
 // get index of this mine, return -1 if no mine found
-function GetMineIndexForSector(sX: INT16, sY: INT16): INT8 {
+export function GetMineIndexForSector(sX: INT16, sY: INT16): INT8 {
   let ubMineIndex: UINT8 = 0;
 
   for (ubMineIndex = 0; ubMineIndex < Enum179.MAX_NUMBER_OF_MINES; ubMineIndex++) {
@@ -574,7 +574,7 @@ function GetMineIndexForSector(sX: INT16, sY: INT16): INT8 {
   return -1;
 }
 
-function GetMineSector(ubMineIndex: UINT8, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
+export function GetMineSector(ubMineIndex: UINT8, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
   Assert((ubMineIndex >= 0) && (ubMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   psX.value = gMineLocation[ubMineIndex].sSectorX;
@@ -596,7 +596,7 @@ function GetMineIndexForTown(bTownId: INT8): INT8 {
 }
 
 // get the sector value for the mine associated with this town
-function GetMineSectorForTown(bTownId: INT8): INT16 {
+export function GetMineSectorForTown(bTownId: INT8): INT16 {
   let ubMineIndex: INT8;
   let sMineSector: INT16 = -1;
 
@@ -612,7 +612,7 @@ function GetMineSectorForTown(bTownId: INT8): INT16 {
   return sMineSector;
 }
 
-function IsThereAMineInThisSector(sX: INT16, sY: INT16): boolean {
+export function IsThereAMineInThisSector(sX: INT16, sY: INT16): boolean {
   let ubMineIndex: UINT8;
 
   // run through the list...if a mine here, great
@@ -624,7 +624,7 @@ function IsThereAMineInThisSector(sX: INT16, sY: INT16): boolean {
   return false;
 }
 
-function PlayerControlsMine(bMineIndex: INT8): boolean {
+export function PlayerControlsMine(bMineIndex: INT8): boolean {
   // a value of TRUE is from the enemy's point of view
   if (StrategicMap[(gMineLocation[bMineIndex].sSectorX) + (MAP_WORLD_X * (gMineLocation[bMineIndex].sSectorY))].fEnemyControlled == true)
     return false;
@@ -638,7 +638,7 @@ function PlayerControlsMine(bMineIndex: INT8): boolean {
   }
 }
 
-function SaveMineStatusToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveMineStatusToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
   // Save the MineStatus
@@ -650,7 +650,7 @@ function SaveMineStatusToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadMineStatusFromSavedGameFile(hFile: HWFILE): boolean {
+export function LoadMineStatusFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
   // Load the MineStatus
@@ -662,7 +662,7 @@ function LoadMineStatusFromSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function ShutOffMineProduction(bMineIndex: INT8): void {
+export function ShutOffMineProduction(bMineIndex: INT8): void {
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   if (!gMineStatus[bMineIndex].fShutDown) {
@@ -671,7 +671,7 @@ function ShutOffMineProduction(bMineIndex: INT8): void {
   }
 }
 
-function RestartMineProduction(bMineIndex: INT8): void {
+export function RestartMineProduction(bMineIndex: INT8): void {
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   if (!gMineStatus[bMineIndex].fShutDownIsPermanent) {
@@ -688,7 +688,7 @@ function MineShutdownIsPermanent(bMineIndex: INT8): void {
   gMineStatus[bMineIndex].fShutDownIsPermanent = true;
 }
 
-function IsMineShutDown(bMineIndex: INT8): boolean {
+export function IsMineShutDown(bMineIndex: INT8): boolean {
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   return gMineStatus[bMineIndex].fShutDown;
@@ -786,7 +786,7 @@ function IssueHeadMinerQuote(bMineIndex: INT8, ubQuoteType: UINT8): void {
   StopTimeCompression();
 }
 
-function GetHeadMinersMineIndex(ubMinerProfileId: UINT8): UINT8 {
+export function GetHeadMinersMineIndex(ubMinerProfileId: UINT8): UINT8 {
   let ubMineIndex: UINT8;
 
   // find which mine this guy represents
@@ -801,7 +801,7 @@ function GetHeadMinersMineIndex(ubMinerProfileId: UINT8): UINT8 {
   return 0;
 }
 
-function PlayerSpokeToHeadMiner(ubMinerProfileId: UINT8): void {
+export function PlayerSpokeToHeadMiner(ubMinerProfileId: UINT8): void {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
@@ -813,21 +813,21 @@ function PlayerSpokeToHeadMiner(ubMinerProfileId: UINT8): void {
   }
 }
 
-function IsHisMineRunningOut(ubMinerProfileId: UINT8): boolean {
+export function IsHisMineRunningOut(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
   return gMineStatus[ubMineIndex].fRunningOut;
 }
 
-function IsHisMineEmpty(ubMinerProfileId: UINT8): boolean {
+export function IsHisMineEmpty(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
   return gMineStatus[ubMineIndex].fEmpty;
 }
 
-function IsHisMineDisloyal(ubMinerProfileId: UINT8): boolean {
+export function IsHisMineDisloyal(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
@@ -841,14 +841,14 @@ function IsHisMineDisloyal(ubMinerProfileId: UINT8): boolean {
   }
 }
 
-function IsHisMineInfested(ubMinerProfileId: UINT8): boolean {
+export function IsHisMineInfested(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
   return !MineClearOfMonsters(ubMineIndex);
 }
 
-function IsHisMineLostAndRegained(ubMinerProfileId: UINT8): boolean {
+export function IsHisMineLostAndRegained(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
@@ -860,7 +860,7 @@ function IsHisMineLostAndRegained(ubMinerProfileId: UINT8): boolean {
   }
 }
 
-function ResetQueenRetookMine(ubMinerProfileId: UINT8): void {
+export function ResetQueenRetookMine(ubMinerProfileId: UINT8): void {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
@@ -868,7 +868,7 @@ function ResetQueenRetookMine(ubMinerProfileId: UINT8): void {
   gMineStatus[ubMineIndex].fQueenRetookProducingMine = false;
 }
 
-function IsHisMineAtMaxProduction(ubMinerProfileId: UINT8): boolean {
+export function IsHisMineAtMaxProduction(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
@@ -882,7 +882,7 @@ function IsHisMineAtMaxProduction(ubMinerProfileId: UINT8): boolean {
   }
 }
 
-function QueenHasRegainedMineSector(bMineIndex: INT8): void {
+export function QueenHasRegainedMineSector(bMineIndex: INT8): void {
   Assert((bMineIndex >= 0) && (bMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   if (gMineStatus[bMineIndex].fMineHasProducedForPlayer) {
@@ -890,7 +890,7 @@ function QueenHasRegainedMineSector(bMineIndex: INT8): void {
   }
 }
 
-function HasAnyMineBeenAttackedByMonsters(): boolean {
+export function HasAnyMineBeenAttackedByMonsters(): boolean {
   let ubMineIndex: UINT8;
 
   // find which mine this guy represents
@@ -903,7 +903,7 @@ function HasAnyMineBeenAttackedByMonsters(): boolean {
   return false;
 }
 
-function PlayerAttackedHeadMiner(ubMinerProfileId: UINT8): void {
+export function PlayerAttackedHeadMiner(ubMinerProfileId: UINT8): void {
   let ubMineIndex: UINT8;
   let bTownId: INT8;
 
@@ -926,7 +926,7 @@ function PlayerAttackedHeadMiner(ubMinerProfileId: UINT8): void {
   }
 }
 
-function HasHisMineBeenProducingForPlayerForSomeTime(ubMinerProfileId: UINT8): boolean {
+export function HasHisMineBeenProducingForPlayerForSomeTime(ubMinerProfileId: UINT8): boolean {
   let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
@@ -939,7 +939,7 @@ function HasHisMineBeenProducingForPlayerForSomeTime(ubMinerProfileId: UINT8): b
 }
 
 // gte the id of the mine for this sector x,y,z...-1 is invalid
-function GetIdOfMineForSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT8 {
+export function GetIdOfMineForSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT8 {
   let bMineIndex: INT8 = -1;
   let sSectorValue: INT16;
 
@@ -1023,7 +1023,7 @@ function PlayerForgotToTakeOverMine(ubMineIndex: UINT8): boolean {
 }
 
 // use this to determine whether or not to place miners into a underground mine level
-function AreThereMinersInsideThisMine(ubMineIndex: UINT8): boolean {
+export function AreThereMinersInsideThisMine(ubMineIndex: UINT8): boolean {
   let pMineStatus: Pointer<MINE_STATUS_TYPE>;
 
   Assert((ubMineIndex >= 0) && (ubMineIndex < Enum179.MAX_NUMBER_OF_MINES));
@@ -1041,6 +1041,6 @@ function AreThereMinersInsideThisMine(ubMineIndex: UINT8): boolean {
 }
 
 // returns whether or not we've spoken to the head miner of a particular mine
-function SpokenToHeadMiner(ubMineIndex: UINT8): boolean {
+export function SpokenToHeadMiner(ubMineIndex: UINT8): boolean {
   return gMineStatus[ubMineIndex].fSpokeToHeadMiner;
 }

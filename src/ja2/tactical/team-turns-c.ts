@@ -4,7 +4,7 @@ let gubOutOfTurnOrder: UINT8[] /* [MAXMERCS] */ = [
   END_OF_INTERRUPTS,
   0,
 ];
-let gubOutOfTurnPersons: UINT8 = 0;
+export let gubOutOfTurnPersons: UINT8 = 0;
 
 const LATEST_INTERRUPT_GUY = () => (gubOutOfTurnOrder[gubOutOfTurnPersons]);
 const REMOVE_LATEST_INTERRUPT_GUY = () => (DeleteFromIntList((gubOutOfTurnPersons), true));
@@ -12,7 +12,7 @@ const INTERRUPTS_OVER = () => (gubOutOfTurnPersons == 1);
 
 let InterruptOnlyGuynum: INT16 = NOBODY;
 let InterruptsAllowed: boolean = true;
-let gfHiddenInterrupt: boolean = false;
+export let gfHiddenInterrupt: boolean = false;
 let gubLastInterruptedGuy: UINT8 = 0;
 
 interface TEAM_TURN_SAVE_STRUCT {
@@ -29,7 +29,7 @@ interface TEAM_TURN_SAVE_STRUCT {
 
 const MIN_APS_TO_INTERRUPT = 4;
 
-function ClearIntList(): void {
+export function ClearIntList(): void {
   memset(addressof(gubOutOfTurnOrder), 0, MAXMERCS);
   gubOutOfTurnOrder[0] = END_OF_INTERRUPTS;
   gubOutOfTurnPersons = 0;
@@ -54,7 +54,7 @@ function BloodcatsPresent(): boolean {
   return false;
 }
 
-function StartPlayerTeamTurn(fDoBattleSnd: boolean, fEnteringCombatMode: boolean): void {
+export function StartPlayerTeamTurn(fDoBattleSnd: boolean, fEnteringCombatMode: boolean): void {
   let cnt: INT32;
   //	SOLDIERTYPE		*pSoldier;
   //	EV_S_BEGINTURN	SBeginTurn;
@@ -156,7 +156,7 @@ function FreezeInterfaceForEnemyTurn(): void {
   }
 }
 
-function EndTurn(ubNextTeam: UINT8): void {
+export function EndTurn(ubNextTeam: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
 
@@ -197,7 +197,7 @@ function EndTurn(ubNextTeam: UINT8): void {
   }
 }
 
-function EndAITurn(): void {
+export function EndAITurn(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
 
@@ -221,7 +221,7 @@ function EndAITurn(): void {
   }
 }
 
-function EndAllAITurns(): void {
+export function EndAllAITurns(): void {
   // warp turn to the player's turn
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
@@ -265,7 +265,7 @@ function EndTurnEvents(): void {
   DecayRottingCorpseAIWarnings();
 }
 
-function BeginTeamTurn(ubTeam: UINT8): void {
+export function BeginTeamTurn(ubTeam: UINT8): void {
   let cnt: INT32;
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -342,7 +342,7 @@ function BeginTeamTurn(ubTeam: UINT8): void {
   }
 }
 
-function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
   // If the AI got an interrupt but this has been hidden from the player until this point,
   // this code will display the interrupt
 
@@ -381,7 +381,7 @@ function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
   gfHiddenInterrupt = false;
 }
 
-function DisplayHiddenTurnbased(pActingSoldier: Pointer<SOLDIERTYPE>): void {
+export function DisplayHiddenTurnbased(pActingSoldier: Pointer<SOLDIERTYPE>): void {
   // This code should put the game in turn-based and give control to the AI-controlled soldier
   // whose pointer has been passed in as an argument (we were in non-combat and the AI is doing
   // something visible, i.e. making an attack)
@@ -833,7 +833,7 @@ function EndInterrupt(fMarkInterruptOccurred: boolean): void {
   }
 }
 
-function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, bOldOppList: INT8): boolean {
+export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, bOldOppList: INT8): boolean {
   //	UINT8 ubAniType;
   let ubMinPtsNeeded: UINT8;
   let bDir: INT8;
@@ -1049,7 +1049,7 @@ function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOppone
   return true;
 }
 
-function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, fUseWatchSpots: boolean): INT8 {
+export function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, fUseWatchSpots: boolean): INT8 {
   let bPoints: INT8;
   let bLightLevel: INT8;
   let ubDistance: UINT8;
@@ -1180,7 +1180,7 @@ function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT
   return bPoints;
 }
 
-function InterruptDuel(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>): boolean {
+export function InterruptDuel(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>): boolean {
   let fResult: boolean = false;
 
   // if opponent can't currently see us and we can see them
@@ -1234,7 +1234,7 @@ function DeleteFromIntList(ubIndex: UINT8, fCommunicate: boolean): void {
   */
 }
 
-function AddToIntList(ubID: UINT8, fGainControl: boolean, fCommunicate: boolean): void {
+export function AddToIntList(ubID: UINT8, fGainControl: boolean, fCommunicate: boolean): void {
   let ubLoop: UINT8;
 
   //	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%d added to int list", ubID );
@@ -1373,7 +1373,7 @@ function VerifyOutOfTurnOrderArray(): void {
   }
 }
 
-function DoneAddingToIntList(pSoldier: Pointer<SOLDIERTYPE>, fChange: boolean, ubInterruptType: UINT8): void {
+export function DoneAddingToIntList(pSoldier: Pointer<SOLDIERTYPE>, fChange: boolean, ubInterruptType: UINT8): void {
   if (fChange) {
     VerifyOutOfTurnOrderArray();
     if (EveryoneInInterruptListOnSameTeam()) {
@@ -1384,7 +1384,7 @@ function DoneAddingToIntList(pSoldier: Pointer<SOLDIERTYPE>, fChange: boolean, u
   }
 }
 
-function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptType: UINT8): void {
+export function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptType: UINT8): void {
   let ubTeam: UINT8;
   let ubOpp: UINT8;
   let ubIntCnt: UINT8;
@@ -1523,7 +1523,7 @@ function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptType: UI
   }
 }
 
-function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): boolean {
+export function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT;
 
@@ -1550,7 +1550,7 @@ function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadTeamTurnsFromTheSavedGameFile(hFile: HWFILE): boolean {
+export function LoadTeamTurnsFromTheSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT;
 
@@ -1577,7 +1577,7 @@ function LoadTeamTurnsFromTheSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function NPCFirstDraw(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function NPCFirstDraw(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>): boolean {
   // if attacking an NPC check to see who draws first!
 
   if (pTargetSoldier.value.ubProfile != NO_PROFILE && pTargetSoldier.value.ubProfile != Enum268.SLAY && pTargetSoldier.value.bNeutral && pTargetSoldier.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY && (FindAIUsableObjClass(pTargetSoldier, IC_WEAPON) != NO_SLOT)) {

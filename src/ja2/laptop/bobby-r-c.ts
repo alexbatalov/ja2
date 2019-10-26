@@ -130,7 +130,7 @@ UINT16  gusLastUsedIndex;
 UINT8		gubNumUsedPages;
 */
 
-let guiLastBobbyRayPage: UINT32;
+export let guiLastBobbyRayPage: UINT32;
 
 let gubBobbyRPages: UINT8[] /* [] */ = [
   Enum95.LAPTOP_MODE_BOBBY_R_USED,
@@ -143,10 +143,10 @@ let gubBobbyRPages: UINT8[] /* [] */ = [
 // Bobby's Sign menu mouse regions
 let gSelectedBobbiesSignMenuRegion: MOUSE_REGION[] /* [BOBBIES_NUMBER_SIGNS] */;
 
-function GameInitBobbyR(): void {
+export function GameInitBobbyR(): void {
 }
 
-function EnterBobbyR(): boolean {
+export function EnterBobbyR(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT8;
 
@@ -219,7 +219,7 @@ function EnterBobbyR(): boolean {
   return true;
 }
 
-function ExitBobbyR(): void {
+export function ExitBobbyR(): void {
   DeleteVideoObjectFromIndex(guiBobbyName);
   DeleteVideoObjectFromIndex(guiPlaque);
   DeleteVideoObjectFromIndex(guiTopHinge);
@@ -238,11 +238,11 @@ function ExitBobbyR(): void {
   guiLastBobbyRayPage = Enum95.LAPTOP_MODE_BOBBY_R;
 }
 
-function HandleBobbyR(): void {
+export function HandleBobbyR(): void {
   HandleBobbyRUnderConstructionAni(false);
 }
 
-function RenderBobbyR(): void {
+export function RenderBobbyR(): void {
   let hPixHandle: HVOBJECT;
   let hStorePlaqueHandle: HVOBJECT;
 
@@ -323,7 +323,7 @@ function RenderBobbyR(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function InitBobbyRWoodBackground(): boolean {
+export function InitBobbyRWoodBackground(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the Wood bacground graphic and add it
@@ -334,12 +334,12 @@ function InitBobbyRWoodBackground(): boolean {
   return true;
 }
 
-function DeleteBobbyRWoodBackground(): boolean {
+export function DeleteBobbyRWoodBackground(): boolean {
   DeleteVideoObjectFromIndex(guiWoodBackground);
   return true;
 }
 
-function DrawBobbyRWoodBackground(): boolean {
+export function DrawBobbyRWoodBackground(): boolean {
   let hWoodBackGroundHandle: HVOBJECT;
   let x: UINT16;
   let y: UINT16;
@@ -458,7 +458,7 @@ function HandleBobbyRUnderConstructionAni(fReset: boolean): void {
   }
 }
 
-function InitBobbyRayInventory(): void {
+export function InitBobbyRayInventory(): void {
   // Initializes which NEW items can be bought at Bobby Rays
   InitBobbyRayNewInventory();
 
@@ -532,7 +532,7 @@ function InitBobbyRayUsedInventory(): boolean {
   return true;
 }
 
-function DailyUpdateOfBobbyRaysNewInventory(): void {
+export function DailyUpdateOfBobbyRaysNewInventory(): void {
   let i: INT16;
   let usItemIndex: UINT16;
   let fPrevElig: boolean;
@@ -578,7 +578,7 @@ function DailyUpdateOfBobbyRaysNewInventory(): void {
   }
 }
 
-function DailyUpdateOfBobbyRaysUsedInventory(): void {
+export function DailyUpdateOfBobbyRaysUsedInventory(): void {
   let i: INT16;
   let usItemIndex: UINT16;
   let fPrevElig: boolean;
@@ -656,7 +656,7 @@ function OrderBobbyRItem(usItemIndex: UINT16): void {
   AddStrategicEvent(Enum132.EVENT_UPDATE_BOBBY_RAY_INVENTORY, uiArrivalTime, usItemIndex);
 }
 
-function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
+export function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   let sInventorySlot: INT16;
   let pInventoryArray: Pointer<STORE_INVENTORY>;
   let fUsed: boolean;
@@ -687,7 +687,7 @@ function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   pInventoryArray[sInventorySlot].ubQtyOnOrder = 0;
 }
 
-function GetInventorySlotForItem(pInventoryArray: Pointer<STORE_INVENTORY>, usItemIndex: UINT16, fUsed: boolean): INT16 {
+export function GetInventorySlotForItem(pInventoryArray: Pointer<STORE_INVENTORY>, usItemIndex: UINT16, fUsed: boolean): INT16 {
   let i: INT16;
 
   for (i = 0; i < LaptopSaveInfo.usInventoryListLength[fUsed]; i++) {
@@ -715,7 +715,7 @@ function SimulateBobbyRayCustomer(pInventoryArray: Pointer<STORE_INVENTORY>, fUs
   }
 }
 
-function CancelAllPendingBRPurchaseOrders(): void {
+export function CancelAllPendingBRPurchaseOrders(): void {
   let i: INT16;
 
   // remove all the BR-Order events off the event queue

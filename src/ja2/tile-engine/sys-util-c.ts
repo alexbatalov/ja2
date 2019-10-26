@@ -1,16 +1,16 @@
 let guiBOTTOMPANEL: UINT32 = 0;
 let guiRIGHTPANEL: UINT32 = 0;
-let guiRENDERBUFFER: UINT32 = 0;
-let guiSAVEBUFFER: UINT32 = 0;
-let guiEXTRABUFFER: UINT32 = 0;
+export let guiRENDERBUFFER: UINT32 = 0;
+export let guiSAVEBUFFER: UINT32 = 0;
+export let guiEXTRABUFFER: UINT32 = 0;
 
-let gfExtraBuffer: boolean = false;
+export let gfExtraBuffer: boolean = false;
 
-function InitializeSystemVideoObjects(): boolean {
+export function InitializeSystemVideoObjects(): boolean {
   return true;
 }
 
-function InitializeGameVideoObjects(): boolean {
+export function InitializeGameVideoObjects(): boolean {
   let vs_desc: VSURFACE_DESC;
   let usWidth: UINT16;
   let usHeight: UINT16;

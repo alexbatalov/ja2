@@ -1,9 +1,9 @@
 // Global dynamic array of all of the items in a loaded map.
-let gWorldItems: Pointer<WORLDITEM> = null;
-let guiNumWorldItems: UINT32 = 0;
+export let gWorldItems: Pointer<WORLDITEM> = null;
+export let guiNumWorldItems: UINT32 = 0;
 
-let gWorldBombs: Pointer<WORLDBOMB> = null;
-let guiNumWorldBombs: UINT32 = 0;
+export let gWorldBombs: Pointer<WORLDBOMB> = null;
+export let guiNumWorldBombs: UINT32 = 0;
 
 function GetFreeWorldBombIndex(): INT32 {
   let uiCount: UINT32;
@@ -79,7 +79,7 @@ function RemoveBombFromWorldByItemIndex(iItemIndex: INT32): void {
   }
 }
 
-function FindWorldItemForBombInGridNo(sGridNo: INT16, bLevel: INT8): INT32 {
+export function FindWorldItemForBombInGridNo(sGridNo: INT16, bLevel: INT8): INT32 {
   let uiBombIndex: UINT32;
 
   for (uiBombIndex = 0; uiBombIndex < guiNumWorldBombs; uiBombIndex++) {
@@ -90,7 +90,7 @@ function FindWorldItemForBombInGridNo(sGridNo: INT16, bLevel: INT8): INT32 {
   return -1;
 }
 
-function FindPanicBombsAndTriggers(): void {
+export function FindPanicBombsAndTriggers(): void {
   // This function searches the bomb table to find panic-trigger-tuned bombs and triggers
 
   let uiBombIndex: UINT32;
@@ -202,7 +202,7 @@ function GetNumUsedWorldItems(): UINT32 {
   return uiNumItems;
 }
 
-function AddItemToWorld(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, bVisible: INT8): INT32 {
+export function AddItemToWorld(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, bVisible: INT8): INT32 {
   let iItemIndex: UINT32;
   let iReturn: INT32;
 
@@ -235,7 +235,7 @@ function AddItemToWorld(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, ubLevel: U
   return iItemIndex;
 }
 
-function RemoveItemFromWorld(iItemIndex: INT32): void {
+export function RemoveItemFromWorld(iItemIndex: INT32): void {
   // Ensure the item still exists, then if it's a bomb,
   // remove the appropriate entry from the bomb table
   if (gWorldItems[iItemIndex].fExists) {
@@ -246,7 +246,7 @@ function RemoveItemFromWorld(iItemIndex: INT32): void {
   }
 }
 
-function TrashWorldItems(): void {
+export function TrashWorldItems(): void {
   let i: UINT32;
   if (gWorldItems) {
     for (i = 0; i < guiNumWorldItems; i++) {
@@ -265,7 +265,7 @@ function TrashWorldItems(): void {
   }
 }
 
-function SaveWorldItemsToMap(fp: HWFILE): void {
+export function SaveWorldItemsToMap(fp: HWFILE): void {
   let i: UINT32;
   let uiBytesWritten: UINT32;
   let uiActualNumWorldItems: UINT32;
@@ -280,7 +280,7 @@ function SaveWorldItemsToMap(fp: HWFILE): void {
   }
 }
 
-function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
+export function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   // Start loading itmes...
 
   let i: UINT32;
@@ -469,7 +469,7 @@ function DeleteWorldItemsBelongingToQueenIfThere(): void {
 }
 
 // Refresh item pools
-function RefreshWorldItemsIntoItemPools(pItemList: Pointer<WORLDITEM>, iNumberOfItems: INT32): void {
+export function RefreshWorldItemsIntoItemPools(pItemList: Pointer<WORLDITEM>, iNumberOfItems: INT32): void {
   let i: INT32;
   let dummyItem: WORLDITEM;
 

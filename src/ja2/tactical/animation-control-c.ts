@@ -11,12 +11,12 @@ interface ANIMSUBTYPE {
 }
 
 // Block for anim file
-let gusAnimInst: UINT16[][] /* [MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM] */;
+export let gusAnimInst: UINT16[][] /* [MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM] */;
 
 // OK, this array contains definitions for random animations based on bodytype, total # allowed, and what is in their hand....
-let gRandomAnimDefs: RANDOM_ANI_DEF[][] /* [TOTALBODYTYPES][MAX_RANDOM_ANIMS_PER_BODYTYPE] */;
+export let gRandomAnimDefs: RANDOM_ANI_DEF[][] /* [TOTALBODYTYPES][MAX_RANDOM_ANIMS_PER_BODYTYPE] */;
 
-let gAnimControl: ANIMCONTROLTYPE[] /* [NUMANIMATIONSTATES] */ = [
+export let gAnimControl: ANIMCONTROLTYPE[] /* [NUMANIMATIONSTATES] */ = [
   // NAME								//AP		//SPEED	  // MOVE	// FLAGS						// HEIGHT
 
   // WALKING
@@ -891,7 +891,7 @@ let gAnimControl: ANIMCONTROLTYPE[] /* [NUMANIMATIONSTATES] */ = [
   [ "CROUCH PICK LOCK", 0, 70, 0, ANIM_STATIONARY | ANIM_TURNING | ANIM_FASTTURN | ANIM_NORESTART | ANIM_LOWER_WEAPON | ANIM_LIGHT_EFFORT, ANIM_CROUCH, ANIM_CROUCH, -1 ],
 ];
 
-let gubAnimWalkSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
+export let gubAnimWalkSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
   [ -5, 1.6 ], // REGMALE
   [ -10, 1.6 ], // BIGMALE
   [ -5, 1.6 ], // STOCKYMALE
@@ -923,7 +923,7 @@ let gubAnimWalkSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
   [ -10, 4.0 ], // JEEP
 ];
 
-let gubMaxActionPoints: UINT8[] /* [TOTALBODYTYPES] */ = [
+export let gubMaxActionPoints: UINT8[] /* [TOTALBODYTYPES] */ = [
   AP_MAXIMUM, // REGMALE
   AP_MAXIMUM, // BIGMALE
   AP_MAXIMUM, // STOCKYMALE
@@ -954,7 +954,7 @@ let gubMaxActionPoints: UINT8[] /* [TOTALBODYTYPES] */ = [
   AP_VEHICLE_MAXIMUM, // JEEP
 ];
 
-let gubAnimRunSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
+export let gubAnimRunSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
   [ 0, 2.6 ], // REGMALE
   [ 5, 2.6 ], // BIGMALE
   [ 0, 2.6 ], // STOCKYMALE
@@ -977,7 +977,7 @@ let gubAnimRunSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
 ];
 
 // Really only the first mercs are using any of these values....
-let gubAnimSwatSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
+export let gubAnimSwatSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
   [ 0, 2.2 ], // REGMALE
   [ 20, 2.2 ], // BIGMALE
   [ 0, 2.2 ], // STOCKYMALE
@@ -1002,7 +1002,7 @@ let gusNothingBreath: UINT16[] /* [] */ = [
 let gubAnimSurfaceIndex: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
 let gubAnimSurfaceMidWaterSubIndex: UINT16[][][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES][2] */;
 let gubAnimSurfaceItemSubIndex: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
-let gubAnimSurfaceCorpseID: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
+export let gubAnimSurfaceCorpseID: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
 
 let gRifleInjuredSub: ANIMSUBTYPE[] /* [] */ = [
   Enum193.WALKING,
@@ -1022,7 +1022,7 @@ let gNothingInjuredSub: ANIMSUBTYPE[] /* [] */ = [
 
 let gDoubleHandledSub: ANIMSUBTYPE = [ Enum193.STANDING, Enum195.RGMDBLBREATH, Enum195.BGMDBLBREATH, Enum195.RGMDBLBREATH, Enum195.RGFDBLBREATH ];
 
-function InitAnimationSurfacesPerBodytype(): void {
+export function InitAnimationSurfacesPerBodytype(): void {
   let cnt1: INT32;
   let cnt2: INT32;
 
@@ -2930,7 +2930,7 @@ function InitAnimationSurfacesPerBodytype(): void {
   gubAnimSurfaceIndex[Enum194.JEEP][Enum193.VEHICLE_DIE] = Enum195.HUMVEE_DIE;
 }
 
-function LoadAnimationStateInstructions(): boolean {
+export function LoadAnimationStateInstructions(): boolean {
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
 
@@ -2951,7 +2951,7 @@ function LoadAnimationStateInstructions(): boolean {
   return true;
 }
 
-function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16): boolean {
+export function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16): boolean {
   let usAnimSurface: UINT16;
 
   // From animation control, get surface
@@ -2966,7 +2966,7 @@ function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState:
   return true;
 }
 
-function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState: UINT16, pusSubState: Pointer<UINT16>): boolean {
+export function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState: UINT16, pusSubState: Pointer<UINT16>): boolean {
   let fSubFound: boolean = false;
 
   pusSubState.value = usTestState;
@@ -3085,7 +3085,7 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
   return fSubFound;
 }
 
-function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBodyType: UINT8, zColFilename: Pointer<CHAR8>): INT8 {
+export function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBodyType: UINT8, zColFilename: Pointer<CHAR8>): INT8 {
   switch (ubBodyType) {
     case Enum194.REGMALE:
     case Enum194.BIGMALE:
@@ -3144,7 +3144,7 @@ function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBo
   return -1;
 }
 
-function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): boolean {
+export function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): boolean {
   let usAnimSurface: UINT16;
 
   // Delete any structure info!
@@ -3170,7 +3170,7 @@ function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState:
   return true;
 }
 
-function LoadSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
+export function LoadSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
   let usAnimSurface: UINT16;
 
   usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);
@@ -3196,7 +3196,7 @@ let gusQueenMonsterSpitAnimPerDir: UINT16[] /* [] */ = [
   Enum195.QUEENMONSTERSPIT_NE,
 ];
 
-function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
+export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
   let usAnimSurface: UINT16;
   let usAltAnimSurface: UINT16;
   let ubBodyType: UINT8;
@@ -3369,7 +3369,7 @@ function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnim
   return usAnimSurface;
 }
 
-function GetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
+export function GetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
   let usAnimSurface: UINT16;
 
   usAnimSurface = pSoldier.value.usAnimSurface;

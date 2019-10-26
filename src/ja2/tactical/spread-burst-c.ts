@@ -9,11 +9,11 @@ interface BURST_LOCATIONS {
 let gsBurstLocations: BURST_LOCATIONS[] /* [MAX_BURST_LOCATIONS] */;
 let gbNumBurstLocations: INT8 = 0;
 
-function ResetBurstLocations(): void {
+export function ResetBurstLocations(): void {
   gbNumBurstLocations = 0;
 }
 
-function AccumulateBurstLocation(sGridNo: INT16): void {
+export function AccumulateBurstLocation(sGridNo: INT16): void {
   let cnt: INT32;
 
   if (gbNumBurstLocations < MAX_BURST_LOCATIONS) {
@@ -33,7 +33,7 @@ function AccumulateBurstLocation(sGridNo: INT16): void {
   }
 }
 
-function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubShotsPerBurst: UINT8;
   let dAccululator: FLOAT = 0;
   let dStep: FLOAT = 0;
@@ -63,7 +63,7 @@ function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
   // OK, they have been added
 }
 
-function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pTargets: Pointer<SOLDIERTYPE>[] /* [5] */): void {
+export function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pTargets: Pointer<SOLDIERTYPE>[] /* [5] */): void {
   let ubShotsPerBurst: UINT8;
   let dAccululator: FLOAT = 0;
   let dStep: FLOAT = 0;
@@ -95,7 +95,7 @@ function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pT
   // OK, they have been added
 }
 
-function RenderAccumulatedBurstLocations(): void {
+export function RenderAccumulatedBurstLocations(): void {
   let cnt: INT32;
   let sGridNo: INT16;
   let hVObject: HVOBJECT;

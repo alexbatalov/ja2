@@ -1,21 +1,21 @@
-const SHIFT = 16;
-const CTRL = 17;
-const ALT = 18;
+export const SHIFT = 16;
+export const CTRL = 17;
+export const ALT = 18;
 
-const F1 = 124;
-const F2 = 125;
-const F3 = 126;
-const F4 = 127;
-const F5 = 128;
-const F6 = 129;
-const F7 = 130;
-const F8 = 131;
-const F9 = 132;
-const F10 = 133;
-const F11 = 134;
-const F12 = 135;
+export const F1 = 124;
+export const F2 = 125;
+export const F3 = 126;
+export const F4 = 127;
+export const F5 = 128;
+export const F6 = 129;
+export const F7 = 130;
+export const F8 = 131;
+export const F9 = 132;
+export const F10 = 133;
+export const F11 = 134;
+export const F12 = 135;
 
-const SHIFT_F1 = 368;
+export const SHIFT_F1 = 368;
 const SHIFT_F2 = 369;
 const SHIFT_F3 = 370;
 const SHIFT_F4 = 371;
@@ -26,7 +26,7 @@ const SHIFT_F8 = 375;
 const SHIFT_F9 = 376;
 const SHIFT_F10 = 377;
 const SHIFT_F11 = 378;
-const SHIFT_F12 = 379;
+export const SHIFT_F12 = 379;
 
 const ALT_F1 = 624;
 const ALT_F2 = 625;
@@ -54,38 +54,38 @@ const CTRL_F10 = 889;
 const CTRL_F11 = 890;
 const CTRL_F12 = 891;
 
-const ESC = 27;
-const TAB = 9;
+export const ESC = 27;
+export const TAB = 9;
 const CAPS = 20;
 const SCRL_LOCK = 145; //*** this may be incorrect! DB
-const SNAPSHOT = 44;
-const PAUSE = 19;
+export const SNAPSHOT = 44;
+export const PAUSE = 19;
 const NUM_LOCK = 144;
-const BACKSPACE = 8;
+export const BACKSPACE = 8;
 
-const INSERT = 245;
-const DEL = 246;
+export const INSERT = 245;
+export const DEL = 246;
 
-const END = 247;
+export const END = 247;
 
-const DNARROW = 248;
-const PGDN = 249;
-const LEFTARROW = 250;
-const RIGHTARROW = 251;
-const HOME = 252;
-const UPARROW = 253;
-const PGUP = 254;
+export const DNARROW = 248;
+export const PGDN = 249;
+export const LEFTARROW = 250;
+export const RIGHTARROW = 251;
+export const HOME = 252;
+export const UPARROW = 253;
+export const PGUP = 254;
 
-const SHIFT_TAB = 265;
+export const SHIFT_TAB = 265;
 
 const SHIFT_INSERT = 501;
 const SHIFT_DELETE = 502;
-const SHIFT_END = 503;
+export const SHIFT_END = 503;
 const SHIFT_DNARROW = 504;
 const SHIFT_PGDN = 505;
-const SHIFT_LEFTARROW = 506;
-const SHIFT_RIGHTARROW = 507;
-const SHIFT_HOME = 508;
+export const SHIFT_LEFTARROW = 506;
+export const SHIFT_RIGHTARROW = 507;
+export const SHIFT_HOME = 508;
 const SHIFT_UPARROW = 509;
 const SHIFT_PGUP = 510;
 
@@ -106,16 +106,16 @@ const CTRL_TAB = 777;
 
 const CTRL_INSERT = 1013;
 const CTRL_DELETE = 1014;
-const CTRL_END = 1015;
+export const CTRL_END = 1015;
 const CTRL_DNARROW = 1016;
 const CTRL_PGDN = 1017;
 const CTRL_LEFTARROW = 1018;
 const CTRL_RIGHTARROW = 1019;
-const CTRL_HOME = 1020;
+export const CTRL_HOME = 1020;
 const CTRL_UPARROW = 1021;
 const CTRL_PGUP = 1022;
 
 const CURSOR = 1023;
 
-const ENTER = 13;
-const SPACE = 32;
+export const ENTER = 13;
+export const SPACE = 32;

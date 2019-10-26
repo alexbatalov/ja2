@@ -358,7 +358,7 @@ let gsRoadMacroStartIndex: INT16[] /* [NUM_ROAD_MACROS] */;
 
 // A simple optimization function that calculates the first index in the large database for
 // the particular macro ID.
-function InitializeRoadMacros(): void {
+export function InitializeRoadMacros(): void {
   let i: INT16;
   let end: INT16;
   let sMacro: INT16 = 0;
@@ -378,7 +378,7 @@ function InitializeRoadMacros(): void {
 // Road macros vary in size from 3 gridnos to 18 gridnos.  Using the anchor gridno based off of the original
 // road system, this function will place the new macro (consisting of multiple road pieces in multiple
 // gridnos).
-function PlaceRoadMacroAtGridNo(iMapIndex: INT32, iMacroID: INT32): void {
+export function PlaceRoadMacroAtGridNo(iMapIndex: INT32, iMacroID: INT32): void {
   let i: INT32;
   let usTileIndex: UINT16;
   i = gsRoadMacroStartIndex[iMacroID];
@@ -396,7 +396,7 @@ function PlaceRoadMacroAtGridNo(iMapIndex: INT32, iMacroID: INT32): void {
 // road pieces turned into 18 smaller pieces.  So this function will go analyse the world, and replaces any
 // locations containing the original road tile information, delete it, and replace it by inserting it's
 // equivalent macro.
-function ReplaceObsoleteRoads(): void {
+export function ReplaceObsoleteRoads(): void {
   let i: INT32;
   let iMacro: INT32;
   let pObject: Pointer<LEVELNODE>;

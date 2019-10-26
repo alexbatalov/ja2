@@ -1,8 +1,8 @@
-const MAP_WORLD_X = 18;
-const MAP_WORLD_Y = 18;
+export const MAP_WORLD_X = 18;
+export const MAP_WORLD_Y = 18;
 
 // Sector name identifiers
-const enum Enum135 {
+export const enum Enum135 {
   BLANK_SECTOR = 0,
   OMERTA,
   DRASSEN,
@@ -19,5 +19,5 @@ const enum Enum135 {
   NUM_TOWNS,
 }
 
-const FIRST_TOWN = Enum135.OMERTA;
+export const FIRST_TOWN = Enum135.OMERTA;
 //#define PALACE			NUM_TOWNS

@@ -6,7 +6,7 @@ const ANY_MAGSIZE = 255;
 // ATE: When adding new items, make sure to update text.c with text description
 ///////////////////////////////////////////////////////////////////////////
 
-let Item: INVTYPE[] /* [MAXITEMS] */ = [
+export let Item: INVTYPE[] /* [MAXITEMS] */ = [
   //  							CLASS								SOUND			GRPH	GRA-			PER
   // CLASS						INDEX		CURSOR			TYPE			TYPE	PHIC	WT	PCKT	PRICE COOL	DESCRIPTION							REL		REPAIR	FLAGS
   //---------				-----		-------     -------		----	--	  --  ----  -----	----	-----------							---		------		-----
@@ -819,7 +819,7 @@ let ReplacementAmmo: UINT16[][] /* [][2] */ = [
   [ 0, 0 ],
 ];
 
-function ItemIsLegal(usItemIndex: UINT16): boolean {
+export function ItemIsLegal(usItemIndex: UINT16): boolean {
   // if the user has selected the reduced gun list
   if (!gGameOptions.fGunNut) {
     // if the item is a gun, or ammo
@@ -835,11 +835,11 @@ function ItemIsLegal(usItemIndex: UINT16): boolean {
 }
 
 // also used for ammo
-function ExtendedGunListGun(usGun: UINT16): boolean {
+export function ExtendedGunListGun(usGun: UINT16): boolean {
   return (Item[usGun].fFlags & ITEM_BIGGUNLIST) != 0;
 }
 
-function StandardGunListReplacement(usGun: UINT16): UINT16 {
+export function StandardGunListReplacement(usGun: UINT16): UINT16 {
   let ubLoop: UINT8;
 
   if (ExtendedGunListGun(usGun)) {
@@ -858,7 +858,7 @@ function StandardGunListReplacement(usGun: UINT16): UINT16 {
   }
 }
 
-function StandardGunListAmmoReplacement(usAmmo: UINT16): UINT16 {
+export function StandardGunListAmmoReplacement(usAmmo: UINT16): UINT16 {
   let ubLoop: UINT8;
 
   if (ExtendedGunListGun(usAmmo)) {
@@ -877,7 +877,7 @@ function StandardGunListAmmoReplacement(usAmmo: UINT16): UINT16 {
   }
 }
 
-function WeaponInHand(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function WeaponInHand(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   if (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass & (IC_WEAPON | IC_THROWN)) {
     if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.ROCKET_RIFLE || pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.AUTO_ROCKET_RIFLE) {
       if (pSoldier.value.inv[Enum261.HANDPOS].ubImprintID != NO_PROFILE) {
@@ -900,7 +900,7 @@ function WeaponInHand(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function ItemSlotLimit(usItem: UINT16, bSlot: INT8): UINT8 {
+export function ItemSlotLimit(usItem: UINT16, bSlot: INT8): UINT8 {
   let ubSlotLimit: UINT8;
 
   if (bSlot < Enum261.BIGPOCK1POS) {
@@ -914,7 +914,7 @@ function ItemSlotLimit(usItem: UINT16, bSlot: INT8): UINT8 {
   }
 }
 
-function MoneySlotLimit(bSlot: INT8): UINT32 {
+export function MoneySlotLimit(bSlot: INT8): UINT32 {
   if (bSlot >= Enum261.SMALLPOCK1POS) {
     return MAX_MONEY_PER_SLOT / 2;
   } else {
@@ -922,7 +922,7 @@ function MoneySlotLimit(bSlot: INT8): UINT32 {
   }
 }
 
-function FindObj(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): INT8 {
+export function FindObj(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < Enum261.NUM_INV_SLOTS; bLoop++) {
@@ -933,7 +933,7 @@ function FindObj(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): INT8 {
   return NO_SLOT;
 }
 
-function FindUsableObj(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): INT8 {
+export function FindUsableObj(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < Enum261.NUM_INV_SLOTS; bLoop++) {
@@ -958,7 +958,7 @@ function FindObjExcludingSlot(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, bE
   return NO_SLOT;
 }
 
-function FindExactObj(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>): INT8 {
+export function FindExactObj(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < Enum261.NUM_INV_SLOTS; bLoop++) {
@@ -969,7 +969,7 @@ function FindExactObj(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>)
   return NO_SLOT;
 }
 
-function FindObjWithin(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, bLower: INT8, bUpper: INT8): INT8 {
+export function FindObjWithin(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, bLower: INT8, bUpper: INT8): INT8 {
   let bLoop: INT8;
 
   for (bLoop = bLower; bLoop <= bUpper; bLoop++) {
@@ -980,7 +980,7 @@ function FindObjWithin(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, bLower: I
   return ITEM_NOT_FOUND;
 }
 
-function FindObjInObjRange(pSoldier: Pointer<SOLDIERTYPE>, usItem1: UINT16, usItem2: UINT16): INT8 {
+export function FindObjInObjRange(pSoldier: Pointer<SOLDIERTYPE>, usItem1: UINT16, usItem2: UINT16): INT8 {
   let bLoop: INT8;
   let usTemp: UINT16;
 
@@ -1001,7 +1001,7 @@ function FindObjInObjRange(pSoldier: Pointer<SOLDIERTYPE>, usItem1: UINT16, usIt
   return ITEM_NOT_FOUND;
 }
 
-function FindObjClass(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32): INT8 {
+export function FindObjClass(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < Enum261.NUM_INV_SLOTS; bLoop++) {
@@ -1023,7 +1023,7 @@ function FindObjClassAfterSlot(pSoldier: Pointer<SOLDIERTYPE>, bStartAfter: INT8
   return NO_SLOT;
 }
 
-function FindAIUsableObjClass(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32): INT8 {
+export function FindAIUsableObjClass(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32): INT8 {
   // finds the first object of the specified class which does NOT have
   // the "unusable by AI" flag set.
 
@@ -1045,7 +1045,7 @@ function FindAIUsableObjClass(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT3
   return NO_SLOT;
 }
 
-function FindAIUsableObjClassWithin(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32, bLower: INT8, bUpper: INT8): INT8 {
+export function FindAIUsableObjClassWithin(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32, bLower: INT8, bUpper: INT8): INT8 {
   let bLoop: INT8;
 
   // This is for the AI only so:
@@ -1062,7 +1062,7 @@ function FindAIUsableObjClassWithin(pSoldier: Pointer<SOLDIERTYPE>, usItemClass:
   return NO_SLOT;
 }
 
-function FindEmptySlotWithin(pSoldier: Pointer<SOLDIERTYPE>, bLower: INT8, bUpper: INT8): INT8 {
+export function FindEmptySlotWithin(pSoldier: Pointer<SOLDIERTYPE>, bLower: INT8, bUpper: INT8): INT8 {
   let bLoop: INT8;
 
   for (bLoop = bLower; bLoop <= bUpper; bLoop++) {
@@ -1090,7 +1090,7 @@ function GLGrenadeInSlot(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): boolean {
 }
 
 // for grenade launchers
-function FindGLGrenade(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function FindGLGrenade(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < Enum261.NUM_INV_SLOTS; bLoop++) {
@@ -1101,7 +1101,7 @@ function FindGLGrenade(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return NO_SLOT;
 }
 
-function FindThrowableGrenade(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function FindThrowableGrenade(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bLoop: INT8;
   let fCheckForFlares: boolean = false;
 
@@ -1129,7 +1129,7 @@ function FindThrowableGrenade(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return NO_SLOT;
 }
 
-function FindAttachment(pObj: Pointer<OBJECTTYPE>, usItem: UINT16): INT8 {
+export function FindAttachment(pObj: Pointer<OBJECTTYPE>, usItem: UINT16): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
@@ -1140,7 +1140,7 @@ function FindAttachment(pObj: Pointer<OBJECTTYPE>, usItem: UINT16): INT8 {
   return ITEM_NOT_FOUND;
 }
 
-function FindAttachmentByClass(pObj: Pointer<OBJECTTYPE>, uiItemClass: UINT32): INT8 {
+export function FindAttachmentByClass(pObj: Pointer<OBJECTTYPE>, uiItemClass: UINT32): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
@@ -1151,7 +1151,7 @@ function FindAttachmentByClass(pObj: Pointer<OBJECTTYPE>, uiItemClass: UINT32): 
   return ITEM_NOT_FOUND;
 }
 
-function FindLaunchable(pSoldier: Pointer<SOLDIERTYPE>, usWeapon: UINT16): INT8 {
+export function FindLaunchable(pSoldier: Pointer<SOLDIERTYPE>, usWeapon: UINT16): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < Enum261.NUM_INV_SLOTS; bLoop++) {
@@ -1162,7 +1162,7 @@ function FindLaunchable(pSoldier: Pointer<SOLDIERTYPE>, usWeapon: UINT16): INT8 
   return ITEM_NOT_FOUND;
 }
 
-function FindLaunchableAttachment(pObj: Pointer<OBJECTTYPE>, usWeapon: UINT16): INT8 {
+export function FindLaunchableAttachment(pObj: Pointer<OBJECTTYPE>, usWeapon: UINT16): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
@@ -1175,7 +1175,7 @@ function FindLaunchableAttachment(pObj: Pointer<OBJECTTYPE>, usWeapon: UINT16): 
 }
 
 // Simple check to see if the item has any attachments
-function ItemHasAttachments(pObj: Pointer<OBJECTTYPE>): boolean {
+export function ItemHasAttachments(pObj: Pointer<OBJECTTYPE>): boolean {
   if ((pObj.value.usAttachItem[0] == NOTHING) && (pObj.value.usAttachItem[1] == NOTHING) && (pObj.value.usAttachItem[2] == NOTHING) && (pObj.value.usAttachItem[3] == NOTHING)) {
     return false;
   }
@@ -1221,7 +1221,7 @@ function GetAttachmentInfoIndex(usItem: UINT16): INT8 {
 }
 
 // Determine if it is possible to add this attachment to the item.
-function ValidAttachment(usAttachment: UINT16, usItem: UINT16): boolean {
+export function ValidAttachment(usAttachment: UINT16, usItem: UINT16): boolean {
   let iLoop: INT32 = 0;
 
   // look for the section of the array pertaining to this attachment...
@@ -1252,7 +1252,7 @@ function ValidAttachment(usAttachment: UINT16, usItem: UINT16): boolean {
 // Determine if this item can receive this attachment.  This is different, in that it may
 // be possible to have this attachment on this item, but may already have an attachment on
 // it which doesn't work simultaneously with the new attachment (like a silencer and duckbill).
-function ValidItemAttachment(pObj: Pointer<OBJECTTYPE>, usAttachment: UINT16, fAttemptingAttachment: boolean): boolean {
+export function ValidItemAttachment(pObj: Pointer<OBJECTTYPE>, usAttachment: UINT16, fAttemptingAttachment: boolean): boolean {
   let fSameItem: boolean = false;
   let fSimilarItems: boolean = false;
   let usSimilarItem: UINT16 = NOTHING;
@@ -1352,7 +1352,7 @@ function ValidItemAttachment(pObj: Pointer<OBJECTTYPE>, usAttachment: UINT16, fA
 }
 
 // Determines if it is possible to equip this weapon with this ammo.
-function ValidAmmoType(usItem: UINT16, usAmmoType: UINT16): boolean {
+export function ValidAmmoType(usItem: UINT16, usAmmoType: UINT16): boolean {
   if (Item[usItem].usItemClass == IC_GUN && Item[usAmmoType].usItemClass == IC_AMMO) {
     if (Weapon[usItem].ubCalibre == Magazine[Item[usAmmoType].ubClassIndex].ubCalibre) {
       return true;
@@ -1361,7 +1361,7 @@ function ValidAmmoType(usItem: UINT16, usAmmoType: UINT16): boolean {
   return false;
 }
 
-function CompatibleFaceItem(usItem1: UINT16, usItem2: UINT16): boolean {
+export function CompatibleFaceItem(usItem1: UINT16, usItem2: UINT16): boolean {
   let iLoop: INT32 = 0;
 
   // look for the section of the array pertaining to this attachment...
@@ -1397,7 +1397,7 @@ function TwoHandedItem(usItem: UINT16): boolean {
   return false;
 }
 
-function ValidLaunchable(usLaunchable: UINT16, usItem: UINT16): boolean {
+export function ValidLaunchable(usLaunchable: UINT16, usItem: UINT16): boolean {
   let iLoop: INT32 = 0;
 
   // look for the section of the array pertaining to this launchable item...
@@ -1436,7 +1436,7 @@ function ValidItemLaunchable(pObj: Pointer<OBJECTTYPE>, usAttachment: UINT16): b
   return true;
 }
 
-function GetLauncherFromLaunchable(usLaunchable: UINT16): UINT16 {
+export function GetLauncherFromLaunchable(usLaunchable: UINT16): UINT16 {
   let iLoop: INT32 = 0;
   let usItem: UINT16 = NOTHING;
 
@@ -1492,13 +1492,13 @@ function EvaluateValidMerge(usMerge: UINT16, usItem: UINT16, pusResult: Pointer<
   return true;
 }
 
-function ValidMerge(usMerge: UINT16, usItem: UINT16): boolean {
+export function ValidMerge(usMerge: UINT16, usItem: UINT16): boolean {
   let usIgnoreResult: UINT16;
   let ubIgnoreType: UINT8;
   return EvaluateValidMerge(usMerge, usItem, addressof(usIgnoreResult), addressof(ubIgnoreType));
 }
 
-function CalculateObjectWeight(pObject: Pointer<OBJECTTYPE>): UINT8 {
+export function CalculateObjectWeight(pObject: Pointer<OBJECTTYPE>): UINT8 {
   let cnt: INT32;
   let usWeight: UINT16;
   let pItem: Pointer<INVTYPE>;
@@ -1528,7 +1528,7 @@ function CalculateObjectWeight(pObject: Pointer<OBJECTTYPE>): UINT8 {
   return usWeight;
 }
 
-function CalculateCarriedWeight(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
+export function CalculateCarriedWeight(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   let uiTotalWeight: UINT32 = 0;
   let uiPercent: UINT32;
   let ubLoop: UINT8;
@@ -1554,15 +1554,15 @@ function CalculateCarriedWeight(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   return uiPercent;
 }
 
-function DeleteObj(pObj: Pointer<OBJECTTYPE>): void {
+export function DeleteObj(pObj: Pointer<OBJECTTYPE>): void {
   memset(pObj, 0, sizeof(OBJECTTYPE));
 }
 
-function CopyObj(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>): void {
+export function CopyObj(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>): void {
   memcpy(pTargetObj, pSourceObj, sizeof(OBJECTTYPE));
 }
 
-function SwapObjs(pObj1: Pointer<OBJECTTYPE>, pObj2: Pointer<OBJECTTYPE>): void {
+export function SwapObjs(pObj1: Pointer<OBJECTTYPE>, pObj2: Pointer<OBJECTTYPE>): void {
   let Temp: OBJECTTYPE;
 
   memcpy(addressof(Temp), pObj1, sizeof(OBJECTTYPE));
@@ -1586,7 +1586,7 @@ function SwapObjs(pObj1: Pointer<OBJECTTYPE>, pObj2: Pointer<OBJECTTYPE>): void 
   */
 }
 
-function RemoveObjFrom(pObj: Pointer<OBJECTTYPE>, ubRemoveIndex: UINT8): void {
+export function RemoveObjFrom(pObj: Pointer<OBJECTTYPE>, ubRemoveIndex: UINT8): void {
   // remove 1 object from an OBJECTTYPE, starting at index bRemoveIndex
   let ubLoop: UINT8;
 
@@ -1608,7 +1608,7 @@ function RemoveObjFrom(pObj: Pointer<OBJECTTYPE>, ubRemoveIndex: UINT8): void {
   }
 }
 
-function RemoveObjs(pObj: Pointer<OBJECTTYPE>, ubNumberToRemove: UINT8): void {
+export function RemoveObjs(pObj: Pointer<OBJECTTYPE>, ubNumberToRemove: UINT8): void {
   // remove a certain number of objects from an OBJECTTYPE, starting at index 0
   let ubLoop: UINT8;
 
@@ -1626,7 +1626,7 @@ function RemoveObjs(pObj: Pointer<OBJECTTYPE>, ubNumberToRemove: UINT8): void {
   }
 }
 
-function GetObjFrom(pObj: Pointer<OBJECTTYPE>, ubGetIndex: UINT8, pDest: Pointer<OBJECTTYPE>): void {
+export function GetObjFrom(pObj: Pointer<OBJECTTYPE>, ubGetIndex: UINT8, pDest: Pointer<OBJECTTYPE>): void {
   if (!pDest || ubGetIndex >= pObj.value.ubNumberOfObjects) {
     return;
   }
@@ -1655,7 +1655,7 @@ function SwapWithinObj(pObj: Pointer<OBJECTTYPE>, ubIndex1: UINT8, ubIndex2: UIN
   pObj.value.bStatus[ubIndex2] = bTemp;
 }
 
-function DamageObj(pObj: Pointer<OBJECTTYPE>, bAmount: INT8): void {
+export function DamageObj(pObj: Pointer<OBJECTTYPE>, bAmount: INT8): void {
   if (bAmount >= pObj.value.bStatus[0]) {
     pObj.value.bStatus[0] = 1;
   } else {
@@ -1663,7 +1663,7 @@ function DamageObj(pObj: Pointer<OBJECTTYPE>, bAmount: INT8): void {
   }
 }
 
-function StackObjs(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>, ubNumberToCopy: UINT8): void {
+export function StackObjs(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>, ubNumberToCopy: UINT8): void {
   let ubLoop: UINT8;
 
   // copy over N status values
@@ -1682,7 +1682,7 @@ function StackObjs(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTY
   pTargetObj.value.ubWeight = CalculateObjectWeight(pTargetObj);
 }
 
-function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>): void {
+export function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>): void {
   let bLoop: INT8;
   let bLoop2: INT8;
   let bMaxPoints: INT8;
@@ -1743,7 +1743,7 @@ function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>
   }
 }
 
-function PlaceObjectAtObjectIndex(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>, ubIndex: UINT8): boolean {
+export function PlaceObjectAtObjectIndex(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>, ubIndex: UINT8): boolean {
   let bTemp: INT8;
 
   if (pSourceObj.value.usItem != pTargetObj.value.usItem) {
@@ -1768,7 +1768,7 @@ const RELOAD_SWAP = 2;
 const RELOAD_TOPOFF = 3;
 const RELOAD_AUTOPLACE_OLD = 4;
 
-function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): boolean {
+export function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): boolean {
   let OldAmmo: OBJECTTYPE;
   let ubBulletsToMove: UINT8;
   let bAPs: INT8;
@@ -1944,7 +1944,7 @@ function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pA
   return true;
 }
 
-function EmptyWeaponMagazine(pWeapon: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): boolean {
+export function EmptyWeaponMagazine(pWeapon: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): boolean {
   let usReloadSound: UINT16;
 
   CHECKF(pAmmo != null);
@@ -2022,7 +2022,7 @@ BOOLEAN ReloadLauncher( OBJECTTYPE * pLauncher, OBJECTTYPE * pAmmo )
 }
 */
 
-function FindAmmo(pSoldier: Pointer<SOLDIERTYPE>, ubCalibre: UINT8, ubMagSize: UINT8, bExcludeSlot: INT8): INT8 {
+export function FindAmmo(pSoldier: Pointer<SOLDIERTYPE>, ubCalibre: UINT8, ubMagSize: UINT8, bExcludeSlot: INT8): INT8 {
   let bLoop: INT8;
   let pItem: Pointer<INVTYPE>;
 
@@ -2040,7 +2040,7 @@ function FindAmmo(pSoldier: Pointer<SOLDIERTYPE>, ubCalibre: UINT8, ubMagSize: U
   return NO_SLOT;
 }
 
-function FindAmmoToReload(pSoldier: Pointer<SOLDIERTYPE>, bWeaponIn: INT8, bExcludeSlot: INT8): INT8 {
+export function FindAmmoToReload(pSoldier: Pointer<SOLDIERTYPE>, bWeaponIn: INT8, bExcludeSlot: INT8): INT8 {
   let pObj: Pointer<OBJECTTYPE>;
   let bSlot: INT8;
 
@@ -2078,7 +2078,7 @@ function FindAmmoToReload(pSoldier: Pointer<SOLDIERTYPE>, bWeaponIn: INT8, bExcl
   }
 }
 
-function AutoReload(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function AutoReload(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pObj: Pointer<OBJECTTYPE>;
   let bSlot: INT8;
   let bAPCost: INT8;
@@ -2180,7 +2180,7 @@ function PerformAttachmentComboMerge(pObj: Pointer<OBJECTTYPE>, bAttachmentCombo
   pObj.value.bStatus[0] = (uiStatusTotal / bNumStatusContributors);
 }
 
-function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECTTYPE>, pAttachment: Pointer<OBJECTTYPE>): boolean {
+export function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECTTYPE>, pAttachment: Pointer<OBJECTTYPE>): boolean {
   let bAttachPos: INT8;
   let bSecondAttachPos: INT8; //, bAbility, bSuccess;
   let usResult: UINT16;
@@ -2387,7 +2387,7 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
   return false;
 }
 
-function CanItemFitInPosition(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, bPos: INT8, fDoingPlacement: boolean): boolean {
+export function CanItemFitInPosition(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, bPos: INT8, fDoingPlacement: boolean): boolean {
   let ubSlotLimit: UINT8;
   let bNewPos: INT8;
 
@@ -2475,7 +2475,7 @@ function DropObjIfThereIsRoom(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: 
   }
 }
 
-function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
+export function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
   // returns object to have in hand after placement... same as original in the
   // case of error
 
@@ -2835,11 +2835,11 @@ function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
   return false;
 }
 
-function AutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, fNewItem: boolean): boolean {
+export function AutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, fNewItem: boolean): boolean {
   return InternalAutoPlaceObject(pSoldier, pObj, fNewItem, NO_SLOT);
 }
 
-function RemoveObjectFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
+export function RemoveObjectFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
   CHECKF(pObj);
   if (pSoldier.value.inv[bPos].ubNumberOfObjects == 0) {
     return false;
@@ -2850,7 +2850,7 @@ function RemoveObjectFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: 
   }
 }
 
-function RemoveKeyFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
+export function RemoveKeyFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
   let ubItem: UINT8 = 0;
 
   CHECKF(pObj);
@@ -2876,7 +2876,7 @@ function RemoveKeyFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT
   return false;
 }
 
-function RemoveKeysFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, ubNumberOfKeys: UINT8, pObj: Pointer<OBJECTTYPE>): boolean {
+export function RemoveKeysFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, ubNumberOfKeys: UINT8, pObj: Pointer<OBJECTTYPE>): boolean {
   let ubItems: UINT8 = 0;
 
   CHECKF(pObj);
@@ -2904,7 +2904,7 @@ function RemoveKeysFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: IN
 }
 
 // return number added
-function AddKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
+export function AddKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
   let ubNumberNotAdded: UINT8 = 0;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_PC) // redundant but what the hey
@@ -2941,7 +2941,7 @@ function AddKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, p
   return pObj.value.ubNumberOfObjects;
 }
 
-function SwapKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
+export function SwapKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
   // swap keys in keyring slot and keys in pocket
   let ubNumberNotAdded: UINT8 = 0;
   let TempObj: OBJECTTYPE;
@@ -2958,7 +2958,7 @@ function SwapKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, 
   return 1;
 }
 
-function CreateKeyObject(pObj: Pointer<OBJECTTYPE>, ubNumberOfKeys: UINT8, ubKeyID: UINT8): boolean {
+export function CreateKeyObject(pObj: Pointer<OBJECTTYPE>, ubNumberOfKeys: UINT8, ubKeyID: UINT8): boolean {
   let fRet: boolean;
 
   fRet = CreateItems((FIRST_KEY + LockTable[ubKeyID].usKeyItem), 100, ubNumberOfKeys, pObj);
@@ -2970,7 +2970,7 @@ function CreateKeyObject(pObj: Pointer<OBJECTTYPE>, ubNumberOfKeys: UINT8, ubKey
   return fRet;
 }
 
-function AllocateObject(pObj: Pointer<Pointer<OBJECTTYPE>>): boolean {
+export function AllocateObject(pObj: Pointer<Pointer<OBJECTTYPE>>): boolean {
   // create a key object
   pObj.value = MemAlloc(sizeof(OBJECTTYPE));
   Assert(pObj);
@@ -2978,7 +2978,7 @@ function AllocateObject(pObj: Pointer<Pointer<OBJECTTYPE>>): boolean {
   return true;
 }
 
-function DeleteKeyObject(pObj: Pointer<OBJECTTYPE>): boolean {
+export function DeleteKeyObject(pObj: Pointer<OBJECTTYPE>): boolean {
   if (pObj == false) {
     return false;
   }
@@ -2989,7 +2989,7 @@ function DeleteKeyObject(pObj: Pointer<OBJECTTYPE>): boolean {
   return true;
 }
 
-function TotalPoints(pObj: Pointer<OBJECTTYPE>): UINT16 {
+export function TotalPoints(pObj: Pointer<OBJECTTYPE>): UINT16 {
   let usPoints: UINT16 = 0;
   let ubLoop: UINT8;
 
@@ -2999,7 +2999,7 @@ function TotalPoints(pObj: Pointer<OBJECTTYPE>): UINT16 {
   return usPoints;
 }
 
-function UseKitPoints(pObj: Pointer<OBJECTTYPE>, usPoints: UINT16, pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
+export function UseKitPoints(pObj: Pointer<OBJECTTYPE>, usPoints: UINT16, pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   // start consuming from the last kit in, so we end up with fewer fuller kits rather than
   // lots of half-empty ones.
   let bLoop: INT8;
@@ -3030,7 +3030,7 @@ function UseKitPoints(pObj: Pointer<OBJECTTYPE>, usPoints: UINT16, pSoldier: Poi
   return usOriginalPoints - usPoints;
 }
 
-function DoChrisTest(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DoChrisTest(pSoldier: Pointer<SOLDIERTYPE>): void {
   /*
   UINT32 uiLoop;
 
@@ -3172,7 +3172,7 @@ function MagazineClassIndexToItemType(usMagIndex: UINT16): UINT16 {
   return Enum225.NONE;
 }
 
-function DefaultMagazine(usItem: UINT16): UINT16 {
+export function DefaultMagazine(usItem: UINT16): UINT16 {
   let pWeapon: Pointer<WEAPONTYPE>;
   let usLoop: UINT16;
 
@@ -3216,7 +3216,7 @@ function FindReplacementMagazine(ubCalibre: UINT8, ubMagSize: UINT8, ubAmmoType:
   return usDefault;
 }
 
-function FindReplacementMagazineIfNecessary(usOldGun: UINT16, usOldAmmo: UINT16, usNewGun: UINT16): UINT16 {
+export function FindReplacementMagazineIfNecessary(usOldGun: UINT16, usOldAmmo: UINT16, usNewGun: UINT16): UINT16 {
   let usNewAmmo: UINT16 = NOTHING;
 
   if ((Magazine[Item[usOldAmmo].ubClassIndex].ubCalibre == Weapon[usOldGun].ubCalibre) && (Magazine[Item[usOldAmmo].ubClassIndex].ubMagSize == Weapon[usOldGun].ubMagSize)) {
@@ -3230,7 +3230,7 @@ function FindReplacementMagazineIfNecessary(usOldGun: UINT16, usOldAmmo: UINT16,
 // increase this if any gun can have more types that this
 const MAX_AMMO_TYPES_PER_GUN = 3;
 
-function RandomMagazine(usItem: UINT16, ubPercentStandard: UINT8): UINT16 {
+export function RandomMagazine(usItem: UINT16, ubPercentStandard: UINT8): UINT16 {
   // Note: if any ammo items in the item table are separated from the main group,
   // this function will have to be rewritten to scan the item table for an item
   // with item class ammo, which has class index ubLoop
@@ -3345,7 +3345,7 @@ function CreateMagazine(usItem: UINT16, pObj: Pointer<OBJECTTYPE>): boolean {
   return true;
 }
 
-function CreateItem(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
+export function CreateItem(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
   let fRet: boolean;
 
   memset(pObj, 0, sizeof(OBJECTTYPE));
@@ -3378,7 +3378,7 @@ function CreateItem(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): b
   return fRet;
 }
 
-function CreateItems(usItem: UINT16, bStatus: INT8, ubNumber: UINT8, pObj: Pointer<OBJECTTYPE>): boolean {
+export function CreateItems(usItem: UINT16, bStatus: INT8, ubNumber: UINT8, pObj: Pointer<OBJECTTYPE>): boolean {
   let fOk: boolean;
   let ubLoop: UINT8;
 
@@ -3405,7 +3405,7 @@ function CreateItems(usItem: UINT16, bStatus: INT8, ubNumber: UINT8, pObj: Point
   return false;
 }
 
-function CreateMoney(uiMoney: UINT32, pObj: Pointer<OBJECTTYPE>): boolean {
+export function CreateMoney(uiMoney: UINT32, pObj: Pointer<OBJECTTYPE>): boolean {
   let fOk: boolean;
 
   fOk = CreateItem(Enum225.MONEY, 100, pObj);
@@ -3415,7 +3415,7 @@ function CreateMoney(uiMoney: UINT32, pObj: Pointer<OBJECTTYPE>): boolean {
   return fOk;
 }
 
-function ArmBomb(pObj: Pointer<OBJECTTYPE>, bSetting: INT8): boolean {
+export function ArmBomb(pObj: Pointer<OBJECTTYPE>, bSetting: INT8): boolean {
   let fRemote: boolean = false;
   let fPressure: boolean = false;
   let fTimed: boolean = false;
@@ -3511,7 +3511,7 @@ function RenumberAttachments(pObj: Pointer<OBJECTTYPE>): void {
   }
 }
 
-function RemoveAttachment(pObj: Pointer<OBJECTTYPE>, bAttachPos: INT8, pNewObj: Pointer<OBJECTTYPE>): boolean {
+export function RemoveAttachment(pObj: Pointer<OBJECTTYPE>, bAttachPos: INT8, pNewObj: Pointer<OBJECTTYPE>): boolean {
   let bGrenade: INT8;
 
   CHECKF(pObj);
@@ -3554,7 +3554,7 @@ function RemoveAttachment(pObj: Pointer<OBJECTTYPE>, bAttachPos: INT8, pNewObj: 
   return true;
 }
 
-function SetNewItem(pSoldier: Pointer<SOLDIERTYPE>, ubInvPos: UINT8, fNewItem: boolean): void {
+export function SetNewItem(pSoldier: Pointer<SOLDIERTYPE>, ubInvPos: UINT8, fNewItem: boolean): void {
   if (fNewItem) {
     pSoldier.value.bNewItemCount[ubInvPos] = -1;
     pSoldier.value.bNewItemCycleCount[ubInvPos] = NEW_ITEM_CYCLE_COUNT;
@@ -3562,7 +3562,7 @@ function SetNewItem(pSoldier: Pointer<SOLDIERTYPE>, ubInvPos: UINT8, fNewItem: b
   }
 }
 
-function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<OBJECTTYPE>): boolean {
+export function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<OBJECTTYPE>): boolean {
   let bLoop: INT8;
   let bLoop2: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -3630,7 +3630,7 @@ function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<OBJECTTY
   return fReturnVal;
 }
 
-function RemoveObjectFromSoldierProfile(ubProfile: UINT8, usItem: UINT16): boolean {
+export function RemoveObjectFromSoldierProfile(ubProfile: UINT8, usItem: UINT16): boolean {
   let bLoop: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let fReturnVal: boolean = false;
@@ -3662,7 +3662,7 @@ function RemoveObjectFromSoldierProfile(ubProfile: UINT8, usItem: UINT16): boole
   return fReturnVal;
 }
 
-function SetMoneyInSoldierProfile(ubProfile: UINT8, uiMoney: UINT32): void {
+export function SetMoneyInSoldierProfile(ubProfile: UINT8, uiMoney: UINT32): void {
   // INT8						bSlot;
   let Object: OBJECTTYPE;
   // SOLDIERTYPE *		pSoldier;
@@ -3682,7 +3682,7 @@ function SetMoneyInSoldierProfile(ubProfile: UINT8, uiMoney: UINT32): void {
   }
 }
 
-function FindObjectInSoldierProfile(ubProfile: UINT8, usItem: UINT16): INT8 {
+export function FindObjectInSoldierProfile(ubProfile: UINT8, usItem: UINT16): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < 19; bLoop++) {
@@ -3695,7 +3695,7 @@ function FindObjectInSoldierProfile(ubProfile: UINT8, usItem: UINT16): INT8 {
   return NO_SLOT;
 }
 
-function ObjectExistsInSoldierProfile(ubProfile: UINT8, usItem: UINT16): boolean {
+export function ObjectExistsInSoldierProfile(ubProfile: UINT8, usItem: UINT16): boolean {
   let bSlot: INT8;
 
   bSlot = FindObjectInSoldierProfile(ubProfile, usItem);
@@ -3824,7 +3824,7 @@ function DamageItem(pObject: Pointer<OBJECTTYPE>, iDamage: INT32, fOnGround: boo
   return false;
 }
 
-function CheckEquipmentForDamage(pSoldier: Pointer<SOLDIERTYPE>, iDamage: INT32): void {
+export function CheckEquipmentForDamage(pSoldier: Pointer<SOLDIERTYPE>, iDamage: INT32): void {
   let bSlot: INT8;
   let fBlowsUp: boolean;
   let ubNumberOfObjects: UINT8;
@@ -3854,7 +3854,7 @@ function CheckEquipmentForDamage(pSoldier: Pointer<SOLDIERTYPE>, iDamage: INT32)
   }
 }
 
-function CheckEquipmentForFragileItemDamage(pSoldier: Pointer<SOLDIERTYPE>, iDamage: INT32): void {
+export function CheckEquipmentForFragileItemDamage(pSoldier: Pointer<SOLDIERTYPE>, iDamage: INT32): void {
   // glass jars etc can be damaged by falling over
   let bSlot: INT8;
   let ubNumberOfObjects: UINT8;
@@ -3881,7 +3881,7 @@ function CheckEquipmentForFragileItemDamage(pSoldier: Pointer<SOLDIERTYPE>, iDam
   }
 }
 
-function DamageItemOnGround(pObject: Pointer<OBJECTTYPE>, sGridNo: INT16, bLevel: INT8, iDamage: INT32, ubOwner: UINT8): boolean {
+export function DamageItemOnGround(pObject: Pointer<OBJECTTYPE>, sGridNo: INT16, bLevel: INT8, iDamage: INT32, ubOwner: UINT8): boolean {
   let fBlowsUp: boolean;
 
   fBlowsUp = DamageItem(pObject, iDamage, true);
@@ -3899,7 +3899,7 @@ function DamageItemOnGround(pObject: Pointer<OBJECTTYPE>, sGridNo: INT16, bLevel
 }
 
 // is the item a medical kit/first aid kit item?
-function IsMedicalKitItem(pObject: Pointer<OBJECTTYPE>): INT8 {
+export function IsMedicalKitItem(pObject: Pointer<OBJECTTYPE>): INT8 {
   // check item id against current medical kits
   switch (pObject.value.usItem) {
     case (Enum225.MEDICKIT):
@@ -3911,7 +3911,7 @@ function IsMedicalKitItem(pObject: Pointer<OBJECTTYPE>): INT8 {
   return 0;
 }
 
-function SwapHandItems(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function SwapHandItems(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fOk: boolean;
 
   CHECKV(pSoldier);
@@ -3956,7 +3956,7 @@ function SwapOutHandItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function WaterDamage(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function WaterDamage(pSoldier: Pointer<SOLDIERTYPE>): void {
   // damage guy's equipment and camouflage due to water
   let bLoop: INT8;
   let bDamage: INT8;
@@ -4014,7 +4014,7 @@ function WaterDamage(pSoldier: Pointer<SOLDIERTYPE>): void {
   DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 }
 
-function ApplyCammo(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pfGoodAPs: Pointer<boolean>): boolean {
+export function ApplyCammo(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pfGoodAPs: Pointer<boolean>): boolean {
   let bPointsToUse: INT8;
   let usTotalKitPoints: UINT16;
 
@@ -4058,7 +4058,7 @@ function ApplyCammo(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, p
   return true;
 }
 
-function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pfGoodAPs: Pointer<boolean>): boolean {
+export function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pfGoodAPs: Pointer<boolean>): boolean {
   let sPointsToUse: INT16;
   let usTotalKitPoints: UINT16;
 
@@ -4099,7 +4099,7 @@ function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>,
 
 const MAX_HUMAN_CREATURE_SMELL = (NORMAL_HUMAN_SMELL_STRENGTH - 1);
 
-function ApplyElixir(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pfGoodAPs: Pointer<boolean>): boolean {
+export function ApplyElixir(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pfGoodAPs: Pointer<boolean>): boolean {
   let sPointsToUse: INT16;
   let usTotalKitPoints: UINT16;
 
@@ -4140,7 +4140,7 @@ function ConvertObjectTypeMoneyValueToProfileMoneyValue(uiMoneyAmount: UINT32): 
   return (uiMoneyAmount / 50);
 }
 
-function ItemIsCool(pObj: Pointer<OBJECTTYPE>): boolean {
+export function ItemIsCool(pObj: Pointer<OBJECTTYPE>): boolean {
   if (pObj.value.bStatus[0] < 60) {
     return false;
   }
@@ -4157,7 +4157,7 @@ function ItemIsCool(pObj: Pointer<OBJECTTYPE>): boolean {
   return false;
 }
 
-function ActivateXRayDevice(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ActivateXRayDevice(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pSoldier2: Pointer<SOLDIERTYPE>;
   let uiSlot: UINT32;
   let bBatteries: INT8;
@@ -4201,7 +4201,7 @@ function ActivateXRayDevice(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.uiXRayActivatedTime = GetWorldTotalSeconds();
 }
 
-function TurnOffXRayEffects(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function TurnOffXRayEffects(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pSoldier2: Pointer<SOLDIERTYPE>;
   let uiSlot: UINT32;
 

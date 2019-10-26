@@ -15,7 +15,7 @@ const PCX_INVALIDFORMAT = 2;
 const PCX_INVALIDLEN = 4;
 const PCX_OUTOFMEMORY = 8;
 
-function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
+export function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
   let pPcxObject: Pointer<PcxObject>;
 
   // First Load a PCX Image

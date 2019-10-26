@@ -51,10 +51,10 @@ let fSkillAtZeroWarning: boolean = false;
 let fSlideIsActive: boolean = true;
 
 // first time in game
-let fFirstIMPAttribTime: boolean = true;
+export let fFirstIMPAttribTime: boolean = true;
 
 // review mode
-let fReviewStats: boolean = false;
+export let fReviewStats: boolean = false;
 
 // buttons
 let giIMPAttributeSelectionButton: UINT32[] /* [1] */;
@@ -78,9 +78,9 @@ let fHasAnySlidingBarMoved: boolean = false;
 let uiBarToReRender: INT32 = -1;
 
 // are we actually coming back to edit, or are we restarting?
-let fReturnStatus: boolean = false;
+export let fReturnStatus: boolean = false;
 
-function EnterIMPAttributeSelection(): void {
+export function EnterIMPAttributeSelection(): void {
   // set attributes and skills
   if ((fReturnStatus == false) && (fFirstIMPAttribTime == true)) {
     // re starting
@@ -121,7 +121,7 @@ if( DoesCharacterHaveAPersoanlity( ) )
 
 function RenderIMPAlteredAttribute(): void {
 }
-function RenderIMPAttributeSelection(): void {
+export function RenderIMPAttributeSelection(): void {
   // the background
   RenderProfileBackGround();
 
@@ -149,7 +149,7 @@ function RenderIMPAttributeSelection(): void {
   return;
 }
 
-function ExitIMPAttributeSelection(): void {
+export function ExitIMPAttributeSelection(): void {
   // get rid of slider buttons
   DestroyAttributeSliderButtons();
 
@@ -165,7 +165,7 @@ function ExitIMPAttributeSelection(): void {
   return;
 }
 
-function HandleIMPAttributeSelection(): void {
+export function HandleIMPAttributeSelection(): void {
   // review mode, do not allow changes
   if (fReviewStats) {
     return;
@@ -669,7 +669,7 @@ function BtnIMPAttributeFinishCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
 }
 
-function RenderAttributeBoxes(): void {
+export function RenderAttributeBoxes(): void {
   // this function will render the boxes in the sliding attribute bar, based on position
   let iCnt: INT32 = Enum84.STRENGTH_ATTRIBUTE;
   let sX: INT16 = 0;
@@ -1251,7 +1251,7 @@ function GetCurrentAttributeValue(iAttribute: INT32): INT32 {
   return iValue;
 }
 
-function SetAttributes(): void {
+export function SetAttributes(): void {
   /*
     // set attributes and skills based on what is in charprofile.c
 
@@ -1294,7 +1294,7 @@ function SetAttributes(): void {
   return;
 }
 
-function DrawBonusPointsRemaining(): void {
+export function DrawBonusPointsRemaining(): void {
   // draws the amount of points remaining player has
   let sString: CHAR16[] /* [64] */;
 
@@ -1316,7 +1316,7 @@ function DrawBonusPointsRemaining(): void {
   return;
 }
 
-function SetGeneratedCharacterAttributes(): void {
+export function SetGeneratedCharacterAttributes(): void {
   // copies over the attributes of the player generated character
   iStrength = iCurrentStrength;
   iDexterity = iCurrentDexterity;

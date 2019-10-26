@@ -1,5 +1,5 @@
 // current and last pages
-let iCurrentPortrait: INT32 = 0;
+export let iCurrentPortrait: INT32 = 0;
 let iLastPicture: INT32 = 7;
 
 // buttons needed for the IMP portrait screen
@@ -10,11 +10,11 @@ let giIMPPortraitButtonImage: INT32[] /* [3] */;
 let fReDrawPortraitScreenFlag: boolean = false;
 
 // face index
-let iPortraitNumber: INT32 = 0;
+export let iPortraitNumber: INT32 = 0;
 
 // function definitions
 
-function EnterIMPPortraits(): void {
+export function EnterIMPPortraits(): void {
   // create buttons
   CreateIMPPortraitButtons();
 
@@ -24,7 +24,7 @@ function EnterIMPPortraits(): void {
   return;
 }
 
-function RenderIMPPortraits(): void {
+export function RenderIMPPortraits(): void {
   // render background
   RenderProfileBackGround();
 
@@ -43,14 +43,14 @@ function RenderIMPPortraits(): void {
   return;
 }
 
-function ExitIMPPortraits(): void {
+export function ExitIMPPortraits(): void {
   // destroy buttons for IMP portrait page
   DestroyIMPPortraitButtons();
 
   return;
 }
 
-function HandleIMPPortraits(): void {
+export function HandleIMPPortraits(): void {
   // do we need to re write screen
   if (fReDrawPortraitScreenFlag == true) {
     RenderIMPPortraits();

@@ -1,10 +1,10 @@
 let guiMiscBackground: UINT32;
 let guiMiscGrid: UINT32;
 
-function GameInitBobbyRMisc(): void {
+export function GameInitBobbyRMisc(): void {
 }
 
-function EnterBobbyRMisc(): boolean {
+export function EnterBobbyRMisc(): boolean {
   let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
@@ -29,7 +29,7 @@ function EnterBobbyRMisc(): boolean {
   return true;
 }
 
-function ExitBobbyRMisc(): void {
+export function ExitBobbyRMisc(): void {
   DeleteVideoObjectFromIndex(guiMiscBackground);
   DeleteVideoObjectFromIndex(guiMiscGrid);
   DeleteBobbyBrTitle();
@@ -39,10 +39,10 @@ function ExitBobbyRMisc(): void {
   guiLastBobbyRayPage = Enum95.LAPTOP_MODE_BOBBY_R_MISC;
 }
 
-function HandleBobbyRMisc(): void {
+export function HandleBobbyRMisc(): void {
 }
 
-function RenderBobbyRMisc(): void {
+export function RenderBobbyRMisc(): void {
   let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiMiscBackground);

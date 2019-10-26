@@ -18,9 +18,9 @@ let guiCHARACTERPORTRAITFORMAINPAGE: UINT32;
         4 - Voice
         5 - Done
         */
-let iCurrentProfileMode: INT32 = 0;
+export let iCurrentProfileMode: INT32 = 0;
 
-function EnterIMPMainPage(): void {
+export function EnterIMPMainPage(): void {
   // turn off review mode
   fReviewStats = false;
 
@@ -42,7 +42,7 @@ function EnterIMPMainPage(): void {
   return;
 }
 
-function ExitIMPMainPage(): void {
+export function ExitIMPMainPage(): void {
   // exit from IMP About us page
 
   // delete Buttons
@@ -52,7 +52,7 @@ function ExitIMPMainPage(): void {
   return;
 }
 
-function RenderIMPMainPage(): void {
+export function RenderIMPMainPage(): void {
   // rneders the IMP about us page
 
   // the background
@@ -66,7 +66,7 @@ function RenderIMPMainPage(): void {
   return;
 }
 
-function HandleIMPMainPage(): void {
+export function HandleIMPMainPage(): void {
   // handles the IMP about main page
 
   if (CheckIfFinishedCharacterGeneration()) {
@@ -294,7 +294,7 @@ function BtnIMPMainPageAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
   }
 }
 
-function BtnIMPMainPagePortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnIMPMainPagePortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn.value.uiFlags & BUTTON_ENABLED))
@@ -316,7 +316,7 @@ function BtnIMPMainPagePortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function BtnIMPMainPageVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnIMPMainPageVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn.value.uiFlags & BUTTON_ENABLED))

@@ -73,11 +73,11 @@ const enum Enum211 {
 }
 
 // GLOBAL NPC STRUCT
-let gTalkPanel: NPC_DIALOGUE_TYPE;
-let gfInTalkPanel: boolean = false;
-let gpSrcSoldier: Pointer<SOLDIERTYPE> = null;
-let gpDestSoldier: Pointer<SOLDIERTYPE> = null;
-let gubSrcSoldierProfile: UINT8;
+export let gTalkPanel: NPC_DIALOGUE_TYPE;
+export let gfInTalkPanel: boolean = false;
+export let gpSrcSoldier: Pointer<SOLDIERTYPE> = null;
+export let gpDestSoldier: Pointer<SOLDIERTYPE> = null;
+export let gubSrcSoldierProfile: UINT8;
 let gubNiceNPCProfile: UINT8 = NO_PROFILE;
 let gubNastyNPCProfile: UINT8 = NO_PROFILE;
 
@@ -85,9 +85,9 @@ let gubTargetNPC: UINT8;
 let gubTargetRecord: UINT8;
 let gubTargetApproach: UINT8;
 let gfShowDialogueMenu: boolean;
-let gfWaitingForTriggerTimer: boolean;
+export let gfWaitingForTriggerTimer: boolean;
 let guiWaitingForTriggerTime: UINT32;
-let iInterfaceDialogueBox: INT32 = -1;
+export let iInterfaceDialogueBox: INT32 = -1;
 let ubRecordThatTriggeredLiePrompt: UINT8;
 let gfConversationPending: boolean = false;
 let gpPendingDestSoldier: Pointer<SOLDIERTYPE>;
@@ -95,9 +95,9 @@ let gpPendingSrcSoldier: Pointer<SOLDIERTYPE>;
 let gbPendingApproach: INT8;
 let guiPendingApproachData: UINT32;
 
-let giHospitalTempBalance: INT32; // stores amount of money for current doctoring
-let giHospitalRefund: INT32; // stores amount of money given to hospital for doctoring that wasn't used
-let gbHospitalPriceModifier: INT8; // stores discount being offered
+export let giHospitalTempBalance: INT32; // stores amount of money for current doctoring
+export let giHospitalRefund: INT32; // stores amount of money given to hospital for doctoring that wasn't used
+export let gbHospitalPriceModifier: INT8; // stores discount being offered
 
 const enum Enum212 {
   HOSPITAL_UNSET = 0,
@@ -108,7 +108,7 @@ const enum Enum212 {
   HOSPITAL_RANDOM_FREEBIE,
 }
 
-function InitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: Pointer<SOLDIERTYPE>, bApproach: INT8, uiApproachData: UINT32): boolean {
+export function InitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: Pointer<SOLDIERTYPE>, bApproach: INT8, uiApproachData: UINT32): boolean {
   // ATE: OK, let's check the status of the Q
   // If it has something in it....delay this until after....
   if (DialogueQueueIsEmptyOrSomebodyTalkingNow()) {
@@ -140,7 +140,7 @@ function InitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: P
   }
 }
 
-function HandlePendingInitConv(): void {
+export function HandlePendingInitConv(): void {
   if (gfConversationPending) {
     // OK, if pending, remove and now call........
     InternalInitiateConversation(gpPendingDestSoldier, gpPendingSrcSoldier, gbPendingApproach, guiPendingApproachData);
@@ -236,7 +236,7 @@ function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): boolean {
   }
 }
 
-function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): boolean {
+export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): boolean {
   let iFaceIndex: INT32;
   let cnt: INT32;
   let vs_desc: VSURFACE_DESC;
@@ -402,7 +402,7 @@ function DoneTalkingButtonClickCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function DeleteTalkingMenu(): void {
+export function DeleteTalkingMenu(): void {
   let cnt: INT32;
 
   if (!gfInTalkPanel)
@@ -506,7 +506,7 @@ function DeleteTalkingMenu(): void {
   gTacticalStatus.uiTimeCounterForGiveItemSrc = GetJA2Clock();
 }
 
-function RenderTalkingMenu(): void {
+export function RenderTalkingMenu(): void {
   let cnt: INT32;
   let pFace: Pointer<FACETYPE>;
   let sFontX: INT16;
@@ -824,11 +824,11 @@ function TalkPanelNameRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason
 }
 
 // Dirty menu
-function SetTalkingMenuDirty(fDirtyLevel: boolean): void {
+export function SetTalkingMenuDirty(fDirtyLevel: boolean): void {
   gTalkPanel.fDirtyLevel = fDirtyLevel;
 }
 
-function HandleTalkingMenu(): boolean {
+export function HandleTalkingMenu(): boolean {
   if (!gfInTalkPanel) {
     return false;
   }
@@ -840,7 +840,7 @@ function HandleTalkingMenu(): boolean {
   return false;
 }
 
-function TalkingMenuDialogue(usQuoteNum: UINT16): boolean {
+export function TalkingMenuDialogue(usQuoteNum: UINT16): boolean {
   // Set back current select....
   gTalkPanel.bCurSelect = -1;
   gTalkPanel.fOnName = false;
@@ -850,7 +850,7 @@ function TalkingMenuDialogue(usQuoteNum: UINT16): boolean {
   return true;
 }
 
-function ProfileCurrentlyTalkingInDialoguePanel(ubProfile: UINT8): boolean {
+export function ProfileCurrentlyTalkingInDialoguePanel(ubProfile: UINT8): boolean {
   if (gfInTalkPanel) {
     if (gpDestSoldier != null) {
       if (gpDestSoldier.value.ubProfile == ubProfile) {
@@ -862,7 +862,7 @@ function ProfileCurrentlyTalkingInDialoguePanel(ubProfile: UINT8): boolean {
   return false;
 }
 
-function HandleTalkingMenuEscape(fCanDelete: boolean, fFromEscKey: boolean): boolean {
+export function HandleTalkingMenuEscape(fCanDelete: boolean, fFromEscKey: boolean): boolean {
   let pFace: Pointer<FACETYPE>;
   let fTalking: boolean = false;
 
@@ -909,7 +909,7 @@ function HandleTalkingMenuEscape(fCanDelete: boolean, fFromEscKey: boolean): boo
   return false;
 }
 
-function HandleTalkingMenuBackspace(): void {
+export function HandleTalkingMenuBackspace(): void {
   let pFace: Pointer<FACETYPE>;
   let fTalking: boolean = false;
 
@@ -1042,32 +1042,32 @@ function CalculatePopupTextPosition(sWidth: INT16, sHeight: INT16): void {
   }
 }
 
-function TalkingMenuGiveItem(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): boolean {
+export function TalkingMenuGiveItem(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): boolean {
   CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GIVE_ITEM, ubNPC, pObject, bInvPos, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
 
   return true;
 }
 
-function NPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, ubTargetApproach: UINT8, fShowDialogueMenu: boolean): boolean {
+export function NPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, ubTargetApproach: UINT8, fShowDialogueMenu: boolean): boolean {
   // CHECKF( SpecialCharacterDialogueEvent( DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI ) != FALSE );
   CHECKF(SpecialCharacterDialogueEventWithExtraParam(DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, ubTargetApproach, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
 
   return true;
 }
 
-function NPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubRecordNum: UINT8): boolean {
+export function NPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubRecordNum: UINT8): boolean {
   CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GOTO_GRIDNO, ubTargetNPC, usGridNo, ubRecordNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
 
   return true;
 }
 
-function NPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): boolean {
+export function NPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): boolean {
   CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_DO_ACTION, ubTargetNPC, usActionCode, ubQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
 
   return true;
 }
 
-function NPCClosePanel(): boolean {
+export function NPCClosePanel(): boolean {
   CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CLOSE_PANEL, 0, 0, 0, 0, DIALOGUE_NPC_UI) != false);
 
   return true;
@@ -1103,7 +1103,7 @@ function SourceSoldierPointerIsValidAndReachableForGive(pGiver: Pointer<SOLDIERT
   return true;
 }
 
-function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): void {
+export function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): void {
   // Give it to the NPC soldier
   //	AutoPlaceObject( gpDestSoldier, pObject, FALSE );
 
@@ -1129,7 +1129,7 @@ function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos:
   }
 }
 
-function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDialogueMenu: boolean, ubTargetApproach: UINT8): void {
+export function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDialogueMenu: boolean, ubTargetApproach: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
@@ -1238,7 +1238,7 @@ function HandleNPCTrigger(): void {
   }
 }
 
-function HandleWaitTimerForNPCTrigger(): void {
+export function HandleWaitTimerForNPCTrigger(): void {
   if (gfWaitingForTriggerTimer) {
     if ((GetJA2Clock() - guiWaitingForTriggerTime) > 500) {
       guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
@@ -1252,7 +1252,7 @@ function HandleWaitTimerForNPCTrigger(): void {
   }
 }
 
-function HandleNPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubQuoteNum: UINT8): void {
+export function HandleNPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubQuoteNum: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   // OK, Move to gridNo!
 
@@ -1301,7 +1301,7 @@ function HandleNPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubQuoteNum: U
   pSoldier.value.fAIFlags |= AI_HANDLE_EVERY_FRAME;
 }
 
-function HandleNPCClosePanel(): void {
+export function HandleNPCClosePanel(): void {
   // Remove dialogue!
   DeleteTalkingMenu();
 }
@@ -1349,7 +1349,7 @@ function HandleStuffForNPCEscorted(ubNPC: UINT8): void {
   }
 }
 
-function HandleFactForNPCUnescorted(ubNPC: UINT8): void {
+export function HandleFactForNPCUnescorted(ubNPC: UINT8): void {
   // obsolete!
   /*
   switch( ubNPC )
@@ -1373,7 +1373,7 @@ function HandleFactForNPCUnescorted(ubNPC: UINT8): void {
   */
 }
 
-function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): void {
+export function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pSoldier2: Pointer<SOLDIERTYPE>;
@@ -3533,7 +3533,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
   }
 }
 
-function CalcPatientMedicalCost(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
+export function CalcPatientMedicalCost(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   let uiCost: UINT32;
 
   if (!pSoldier) {
@@ -3574,7 +3574,7 @@ function CalcPatientMedicalCost(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   return uiCost;
 }
 
-function CalcMedicalCost(ubId: UINT8): UINT32 {
+export function CalcMedicalCost(ubId: UINT8): UINT32 {
   let cnt: INT32;
   let uiCostSoFar: UINT32;
   let sGridNo: INT16 = 0;

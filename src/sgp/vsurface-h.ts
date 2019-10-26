@@ -8,31 +8,31 @@
 // Defines for special video object handles given to blit function
 //
 
-const PRIMARY_SURFACE = 0xFFFFFFF0;
-const BACKBUFFER = 0xFFFFFFF1;
-const FRAME_BUFFER = 0xFFFFFFF2;
-const MOUSE_BUFFER = 0xFFFFFFF3;
+export const PRIMARY_SURFACE = 0xFFFFFFF0;
+export const BACKBUFFER = 0xFFFFFFF1;
+export const FRAME_BUFFER = 0xFFFFFFF2;
+export const MOUSE_BUFFER = 0xFFFFFFF3;
 
 //
 // Defines for blitting
 //
 
-const VS_BLT_COLORFILL = 0x000000020;
-const VS_BLT_USECOLORKEY = 0x000000002;
-const VS_BLT_USEDESTCOLORKEY = 0x000000200;
-const VS_BLT_FAST = 0x000000004;
-const VS_BLT_CLIPPED = 0x000000008;
-const VS_BLT_SRCREGION = 0x000000010;
-const VS_BLT_DESTREGION = 0x000000080;
-const VS_BLT_SRCSUBRECT = 0x000000040;
-const VS_BLT_COLORFILLRECT = 0x000000100;
-const VS_BLT_MIRROR_Y = 0x000001000;
+export const VS_BLT_COLORFILL = 0x000000020;
+export const VS_BLT_USECOLORKEY = 0x000000002;
+export const VS_BLT_USEDESTCOLORKEY = 0x000000200;
+export const VS_BLT_FAST = 0x000000004;
+export const VS_BLT_CLIPPED = 0x000000008;
+export const VS_BLT_SRCREGION = 0x000000010;
+export const VS_BLT_DESTREGION = 0x000000080;
+export const VS_BLT_SRCSUBRECT = 0x000000040;
+export const VS_BLT_COLORFILLRECT = 0x000000100;
+export const VS_BLT_MIRROR_Y = 0x000001000;
 
 //
 // Effects structure for specialized blitting
 //
 
-interface blt_vs_fx {
+export interface blt_vs_fx {
   ColorFill: COLORVAL; // Used for fill effect
   SrcRect: SGPRect; // Given SRC subrect instead of srcregion
   FillRect: SGPRect; // Given SRC subrect instead of srcregion
@@ -44,25 +44,25 @@ interface blt_vs_fx {
 // Used to describe the memory usage of a video Surface
 //
 
-const VSURFACE_DEFAULT_MEM_USAGE = 0x00000001; // Default mem usage is same as DD, try video and then try system. Will usually work
-const VSURFACE_VIDEO_MEM_USAGE = 0x00000002; // Will force surface into video memory and will fail if it can't
-const VSURFACE_SYSTEM_MEM_USAGE = 0x00000004; // Will force surface into system memory and will fail if it can't
-const VSURFACE_RESERVED_SURFACE = 0x00000100; // Reserved for special purposes, like a primary surface
+export const VSURFACE_DEFAULT_MEM_USAGE = 0x00000001; // Default mem usage is same as DD, try video and then try system. Will usually work
+export const VSURFACE_VIDEO_MEM_USAGE = 0x00000002; // Will force surface into video memory and will fail if it can't
+export const VSURFACE_SYSTEM_MEM_USAGE = 0x00000004; // Will force surface into system memory and will fail if it can't
+export const VSURFACE_RESERVED_SURFACE = 0x00000100; // Reserved for special purposes, like a primary surface
 
 //
 // Video Surface creation flags
 // Used in the VSurface_DESC structure to describe creation flags
 //
 
-const VSURFACE_CREATE_DEFAULT = 0x00000020; // Creates and empty Surface of given width, height and BPP
-const VSURFACE_CREATE_FROMFILE = 0x00000040; // Creates a video Surface from a file ( using HIMAGE )
+export const VSURFACE_CREATE_DEFAULT = 0x00000020; // Creates and empty Surface of given width, height and BPP
+export const VSURFACE_CREATE_FROMFILE = 0x00000040; // Creates a video Surface from a file ( using HIMAGE )
 
 //
 // The following structure is used to define a region of the video Surface
 // These regions are stored via a HLIST
 //
 
-interface VSURFACE_REGION {
+export interface VSURFACE_REGION {
   RegionCoords: SGPRect; // Rectangle describing coordinates of region
   Origin: SGPPoint; // Origin used for hot spots, etc
   ubHitMask: UINT8; // Byte flags for hit detection
@@ -72,7 +72,7 @@ interface VSURFACE_REGION {
 // This structure is a video Surface. Contains a HLIST of regions
 //
 
-interface SGPVSurface {
+export interface SGPVSurface {
   usHeight: UINT16; // Height of Video Surface
   usWidth: UINT16; // Width of Video Surface
   ubBitDepth: UINT8; // BPP ALWAYS 16!
@@ -90,13 +90,13 @@ interface SGPVSurface {
   RegionList: HLIST; // A List of regions within the video Surface
 }
 
-type HVSURFACE = Pointer<SGPVSurface>;
+export type HVSURFACE = Pointer<SGPVSurface>;
 
 //
 // This structure describes the creation parameters for a Video Surface
 //
 
-interface VSURFACE_DESC {
+export interface VSURFACE_DESC {
   fCreateFlags: UINT32; // Specifies creation flags like from file or not
   ImageFile: SGPFILENAME; // Filename of image data to use
   usWidth: UINT16; // Width, ignored if given from file
@@ -111,7 +111,7 @@ interface VSURFACE_DESC {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Creates and adds a video Surface to list
-const AddVideoSurface = (a, b) => AddStandardVideoSurface(a, b);
+export const AddVideoSurface = (a, b) => AddStandardVideoSurface(a, b);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //

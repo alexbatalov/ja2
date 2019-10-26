@@ -38,7 +38,7 @@ const PRIORITY_DECR_DISTANCE = 30;
 const CALL_1_OPPONENT = Enum288.CALL_1_PREY;
 const CALL_MULTIPLE_OPPONENT = Enum288.CALL_MULTIPLE_PREY;
 
-function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
+export function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
   let ubCallerType: UINT8 = 0;
   let ubReceiver: UINT8;
   let bFullPriority: INT8;
@@ -1160,7 +1160,7 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return Enum289.AI_ACTION_NONE;
 }
 
-function CreatureDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function CreatureDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bAction: INT8 = Enum289.AI_ACTION_NONE;
 
   switch (pSoldier.value.bAlertStatus) {
@@ -1184,7 +1184,7 @@ function CreatureDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return bAction;
 }
 
-function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bOldStatus: INT8;
   let iDummy: INT32;
   let fClimbDummy: boolean;
@@ -1359,7 +1359,7 @@ function CrowDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return Enum289.AI_ACTION_NONE;
 }
 
-function CrowDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function CrowDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier.value.usAnimState == Enum193.CROW_FLY) {
     return Enum289.AI_ACTION_NONE;
   }

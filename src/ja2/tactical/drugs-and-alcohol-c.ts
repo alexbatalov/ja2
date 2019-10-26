@@ -46,7 +46,7 @@ function GetDrugType(usItem: UINT16): UINT8 {
   return NO_DRUG;
 }
 
-function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>): boolean {
+export function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>): boolean {
   let ubDrugType: UINT8;
   let ubKitPoints: UINT8;
   let bRegenPointsGained: INT8;
@@ -177,7 +177,7 @@ function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>
   return true;
 }
 
-function HandleEndTurnDrugAdjustments(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleEndTurnDrugAdjustments(pSoldier: Pointer<SOLDIERTYPE>): void {
   let cnt: INT32;
   let cnt2: INT32;
   let iNumLoops: INT32;
@@ -263,7 +263,7 @@ function HandleEndTurnDrugAdjustments(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function GetDrugEffect(pSoldier: Pointer<SOLDIERTYPE>, ubDrugType: UINT8): INT8 {
+export function GetDrugEffect(pSoldier: Pointer<SOLDIERTYPE>, ubDrugType: UINT8): INT8 {
   return pSoldier.value.bDrugEffect[ubDrugType];
 }
 
@@ -276,7 +276,7 @@ function GetDrugSideEffect(pSoldier: Pointer<SOLDIERTYPE>, ubDrugType: UINT8): I
   }
 }
 
-function HandleAPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UINT8>): void {
+export function HandleAPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UINT8>): void {
   let bDrunkLevel: INT8;
   let sPoints: INT16 = (pubPoints.value);
 
@@ -307,7 +307,7 @@ function HandleAPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Poi
   (pubPoints.value) = sPoints;
 }
 
-function HandleBPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, psPointReduction: Pointer<INT16>): void {
+export function HandleBPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, psPointReduction: Pointer<INT16>): void {
   let bDrunkLevel: INT8;
 
   // Are we in a side effect or good effect?
@@ -327,7 +327,7 @@ function HandleBPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, psPointReducti
   }
 }
 
-function GetDrunkLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function GetDrunkLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bNumDrinks: INT8;
 
   // If we have a -ve effect ...
@@ -351,11 +351,11 @@ function GetDrunkLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 }
 
-function EffectStatForBeingDrunk(pSoldier: Pointer<SOLDIERTYPE>, iStat: INT32): INT32 {
+export function EffectStatForBeingDrunk(pSoldier: Pointer<SOLDIERTYPE>, iStat: INT32): INT32 {
   return iStat * giDrunkModifier[GetDrunkLevel(pSoldier)] / 100;
 }
 
-function MercUnderTheInfluence(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function MercUnderTheInfluence(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // Are we in a side effect or good effect?
   if (pSoldier.value.bDrugEffect[DRUG_TYPE_ADRENALINE]) {
     return true;

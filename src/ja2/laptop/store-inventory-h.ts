@@ -1,4 +1,4 @@
-interface STORE_INVENTORY {
+export interface STORE_INVENTORY {
   usItemIndex: UINT16; // Index into the item table
   ubQtyOnHand: UINT8;
   ubQtyOnOrder: UINT8; // The number of items on order
@@ -9,7 +9,7 @@ interface STORE_INVENTORY {
 }
 
 // Enums used for the access the MAX dealers array
-const enum Enum112 {
+export const enum Enum112 {
   BOBBY_RAY_NEW,
   BOBBY_RAY_USED,
 

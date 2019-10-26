@@ -1,10 +1,10 @@
-const INVALIDCURS = 0;
+export const INVALIDCURS = 0;
 const QUESTCURS = 1;
-const PUNCHCURS = 2;
-const TARGETCURS = 3;
-const KNIFECURS = 4;
-const AIDCURS = 5;
-const TOSSCURS = 6;
+export const PUNCHCURS = 2;
+export const TARGETCURS = 3;
+export const KNIFECURS = 4;
+export const AIDCURS = 5;
+export const TOSSCURS = 6;
 const MINECURS = 8;
 const LPICKCURS = 9;
 const MDETECTCURS = 10;
@@ -13,54 +13,54 @@ const SURVCAMCURS = 12;
 const CAMERACURS = 13;
 const KEYCURS = 14;
 const SAWCURS = 15;
-const WIRECUTCURS = 16;
-const REMOTECURS = 17;
-const BOMBCURS = 18; // ( only calculated, not set item table )
-const REPAIRCURS = 19;
-const TRAJECTORYCURS = 20;
-const JARCURS = 21;
-const TINCANCURS = 22;
-const REFUELCURS = 23;
+export const WIRECUTCURS = 16;
+export const REMOTECURS = 17;
+export const BOMBCURS = 18; // ( only calculated, not set item table )
+export const REPAIRCURS = 19;
+export const TRAJECTORYCURS = 20;
+export const JARCURS = 21;
+export const TINCANCURS = 22;
+export const REFUELCURS = 23;
 
 const CAMERARANGE = 10;
 
-const CONDBUL = 0;
-const COND = 0;
+export const CONDBUL = 0;
+export const COND = 0;
 const SINGLE = 0;
 const LIQ = 0;
-const USAGE = 0;
+export const USAGE = 0;
 const BUCKS = 0;
 
-const ITEM_NOT_FOUND = -1;
+export const ITEM_NOT_FOUND = -1;
 
-const USABLE = 10; // minimum work% of items to still be usable
+export const USABLE = 10; // minimum work% of items to still be usable
 
-const MAX_OBJECTS_PER_SLOT = 8;
-const MAX_ATTACHMENTS = 4;
-const MAX_MONEY_PER_SLOT = 20000;
+export const MAX_OBJECTS_PER_SLOT = 8;
+export const MAX_ATTACHMENTS = 4;
+export const MAX_MONEY_PER_SLOT = 20000;
 
-const enum Enum224 {
+export const enum Enum224 {
   BOMB_TIMED = 1,
   BOMB_REMOTE,
   BOMB_PRESSURE,
   BOMB_SWITCH,
 }
 
-const FIRST_MAP_PLACED_FREQUENCY = 50;
-const PANIC_FREQUENCY = 127;
-const PANIC_FREQUENCY_2 = 126;
-const PANIC_FREQUENCY_3 = 125;
+export const FIRST_MAP_PLACED_FREQUENCY = 50;
+export const PANIC_FREQUENCY = 127;
+export const PANIC_FREQUENCY_2 = 126;
+export const PANIC_FREQUENCY_3 = 125;
 
-const OBJECT_UNDROPPABLE = 0x01;
+export const OBJECT_UNDROPPABLE = 0x01;
 const OBJECT_MODIFIED = 0x02;
-const OBJECT_AI_UNUSABLE = 0x04;
-const OBJECT_ARMED_BOMB = 0x08;
-const OBJECT_KNOWN_TO_BE_TRAPPED = 0x10;
-const OBJECT_DISABLED_BOMB = 0x20;
-const OBJECT_ALARM_TRIGGER = 0x40;
-const OBJECT_NO_OVERWRITE = 0x80;
+export const OBJECT_AI_UNUSABLE = 0x04;
+export const OBJECT_ARMED_BOMB = 0x08;
+export const OBJECT_KNOWN_TO_BE_TRAPPED = 0x10;
+export const OBJECT_DISABLED_BOMB = 0x20;
+export const OBJECT_ALARM_TRIGGER = 0x40;
+export const OBJECT_NO_OVERWRITE = 0x80;
 
-interface OBJECTTYPE {
+export interface OBJECTTYPE {
   usItem: UINT16;
   ubNumberOfObjects: UINT8;
   /* union { */
@@ -155,84 +155,84 @@ interface INVTYPE {
 */
 
 // SUBTYPES
-const IC_NONE = 0x00000001;
-const IC_GUN = 0x00000002;
-const IC_BLADE = 0x00000004;
-const IC_THROWING_KNIFE = 0x00000008;
+export const IC_NONE = 0x00000001;
+export const IC_GUN = 0x00000002;
+export const IC_BLADE = 0x00000004;
+export const IC_THROWING_KNIFE = 0x00000008;
 
-const IC_LAUNCHER = 0x00000010;
-const IC_TENTACLES = 0x00000020;
+export const IC_LAUNCHER = 0x00000010;
+export const IC_TENTACLES = 0x00000020;
 
-const IC_THROWN = 0x00000040;
-const IC_PUNCH = 0x00000080;
+export const IC_THROWN = 0x00000040;
+export const IC_PUNCH = 0x00000080;
 
-const IC_GRENADE = 0x00000100;
-const IC_BOMB = 0x00000200;
-const IC_AMMO = 0x00000400;
-const IC_ARMOUR = 0x00000800;
+export const IC_GRENADE = 0x00000100;
+export const IC_BOMB = 0x00000200;
+export const IC_AMMO = 0x00000400;
+export const IC_ARMOUR = 0x00000800;
 
-const IC_MEDKIT = 0x00001000;
-const IC_KIT = 0x00002000;
+export const IC_MEDKIT = 0x00001000;
+export const IC_KIT = 0x00002000;
 const IC_APPLIABLE = 0x00004000;
-const IC_FACE = 0x00008000;
+export const IC_FACE = 0x00008000;
 
-const IC_KEY = 0x00010000;
+export const IC_KEY = 0x00010000;
 
-const IC_MISC = 0x10000000;
-const IC_MONEY = 0x20000000;
+export const IC_MISC = 0x10000000;
+export const IC_MONEY = 0x20000000;
 
 // PARENT TYPES
-const IC_WEAPON = (IC_GUN | IC_BLADE | IC_THROWING_KNIFE | IC_LAUNCHER | IC_TENTACLES);
-const IC_EXPLOSV = (IC_GRENADE | IC_BOMB);
+export const IC_WEAPON = (IC_GUN | IC_BLADE | IC_THROWING_KNIFE | IC_LAUNCHER | IC_TENTACLES);
+export const IC_EXPLOSV = (IC_GRENADE | IC_BOMB);
 
-const IC_BOBBY_GUN = (IC_GUN | IC_LAUNCHER);
-const IC_BOBBY_MISC = (IC_GRENADE | IC_BOMB | IC_MISC | IC_MEDKIT | IC_KIT | IC_BLADE | IC_THROWING_KNIFE | IC_PUNCH | IC_FACE);
+export const IC_BOBBY_GUN = (IC_GUN | IC_LAUNCHER);
+export const IC_BOBBY_MISC = (IC_GRENADE | IC_BOMB | IC_MISC | IC_MEDKIT | IC_KIT | IC_BLADE | IC_THROWING_KNIFE | IC_PUNCH | IC_FACE);
 
 // replaces candamage
-const ITEM_DAMAGEABLE = 0x0001;
+export const ITEM_DAMAGEABLE = 0x0001;
 // replaces canrepair
-const ITEM_REPAIRABLE = 0x0002;
+export const ITEM_REPAIRABLE = 0x0002;
 // replaces waterdamage
-const ITEM_WATER_DAMAGES = 0x0004;
+export const ITEM_WATER_DAMAGES = 0x0004;
 // replaces metal
-const ITEM_METAL = 0x0008;
+export const ITEM_METAL = 0x0008;
 // replaces sinkable
-const ITEM_SINKS = 0x0010;
+export const ITEM_SINKS = 0x0010;
 // replaces seemeter
-const ITEM_SHOW_STATUS = 0x0020;
+export const ITEM_SHOW_STATUS = 0x0020;
 // for attachers/merges, hidden
-const ITEM_HIDDEN_ADDON = 0x0040;
+export const ITEM_HIDDEN_ADDON = 0x0040;
 // needs two hands
-const ITEM_TWO_HANDED = 0x0080;
+export const ITEM_TWO_HANDED = 0x0080;
 // can't be found for sale
-const ITEM_NOT_BUYABLE = 0x0100;
+export const ITEM_NOT_BUYABLE = 0x0100;
 // item is an attachment for something
-const ITEM_ATTACHMENT = 0x0200;
+export const ITEM_ATTACHMENT = 0x0200;
 // item only belongs in the "big gun list"
-const ITEM_BIGGUNLIST = 0x0400;
+export const ITEM_BIGGUNLIST = 0x0400;
 // item should not be placed via the editor
-const ITEM_NOT_EDITOR = 0x0800;
+export const ITEM_NOT_EDITOR = 0x0800;
 // item defaults to undroppable
-const ITEM_DEFAULT_UNDROPPABLE = 0x1000;
+export const ITEM_DEFAULT_UNDROPPABLE = 0x1000;
 // item is terrible for throwing
-const ITEM_UNAERODYNAMIC = 0x2000;
+export const ITEM_UNAERODYNAMIC = 0x2000;
 // item is electronic for repair (etc) purposes
-const ITEM_ELECTRONIC = 0x4000;
+export const ITEM_ELECTRONIC = 0x4000;
 // item is a PERMANENT attachment
-const ITEM_INSEPARABLE = 0x8000;
+export const ITEM_INSEPARABLE = 0x8000;
 
 // item flag combinations
 
-const IF_STANDARD_GUN = ITEM_DAMAGEABLE | ITEM_WATER_DAMAGES | ITEM_REPAIRABLE | ITEM_SHOW_STATUS | ITEM_METAL | ITEM_SINKS;
-const IF_TWOHANDED_GUN = IF_STANDARD_GUN | ITEM_TWO_HANDED;
-const IF_STANDARD_BLADE = ITEM_DAMAGEABLE | ITEM_WATER_DAMAGES | ITEM_REPAIRABLE | ITEM_SHOW_STATUS | ITEM_METAL | ITEM_SINKS;
-const IF_STANDARD_ARMOUR = ITEM_DAMAGEABLE | ITEM_REPAIRABLE | ITEM_SHOW_STATUS | ITEM_SINKS;
-const IF_STANDARD_KIT = ITEM_DAMAGEABLE | ITEM_SHOW_STATUS | ITEM_SINKS;
-const IF_STANDARD_CLIP = ITEM_SINKS | ITEM_METAL;
+export const IF_STANDARD_GUN = ITEM_DAMAGEABLE | ITEM_WATER_DAMAGES | ITEM_REPAIRABLE | ITEM_SHOW_STATUS | ITEM_METAL | ITEM_SINKS;
+export const IF_TWOHANDED_GUN = IF_STANDARD_GUN | ITEM_TWO_HANDED;
+export const IF_STANDARD_BLADE = ITEM_DAMAGEABLE | ITEM_WATER_DAMAGES | ITEM_REPAIRABLE | ITEM_SHOW_STATUS | ITEM_METAL | ITEM_SINKS;
+export const IF_STANDARD_ARMOUR = ITEM_DAMAGEABLE | ITEM_REPAIRABLE | ITEM_SHOW_STATUS | ITEM_SINKS;
+export const IF_STANDARD_KIT = ITEM_DAMAGEABLE | ITEM_SHOW_STATUS | ITEM_SINKS;
+export const IF_STANDARD_CLIP = ITEM_SINKS | ITEM_METAL;
 
-const EXPLOSIVE_GUN = (x) => (x == Enum225.ROCKET_LAUNCHER || x == Enum225.TANK_CANNON);
+export const EXPLOSIVE_GUN = (x) => (x == Enum225.ROCKET_LAUNCHER || x == Enum225.TANK_CANNON);
 
-interface INVTYPE {
+export interface INVTYPE {
   usItemClass: UINT32;
   ubClassIndex: UINT8;
   ubCursor: UINT8;
@@ -249,14 +249,14 @@ interface INVTYPE {
 }
 
 const FIRST_WEAPON = 1;
-const FIRST_AMMO = 71;
+export const FIRST_AMMO = 71;
 const FIRST_EXPLOSIVE = 131;
 const FIRST_ARMOUR = 161;
 const FIRST_MISC = 201;
-const FIRST_KEY = 271;
+export const FIRST_KEY = 271;
 
-const NOTHING = Enum225.NONE;
-const enum Enum225 {
+export const NOTHING = Enum225.NONE;
+export const enum Enum225 {
   NONE = 0,
 
   // weapons

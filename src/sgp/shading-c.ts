@@ -1,9 +1,9 @@
 let Shaded8BPPPalettes: SGPPaletteEntry[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
-let ubColorTables: UINT8[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
+export let ubColorTables: UINT8[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
 
 let IntensityTable: UINT16[] /* [65536] */;
 let ShadeTable: UINT16[] /* [65536] */;
-let White16BPPPalette: UINT16[] /* [256] */;
+export let White16BPPPalette: UINT16[] /* [256] */;
 let guiShadePercent: FLOAT = 0.48;
 let guiBrightPercent: FLOAT = 1.1;
 
@@ -173,7 +173,7 @@ function FindIndecies(pSrcPalette: Pointer<SGPPaletteEntry>, pMapPalette: Pointe
         the table and the entry at that point will be a pixel that is 25% darker.
 
 **********************************************************************************************/
-function BuildShadeTable(): void {
+export function BuildShadeTable(): void {
   let red: UINT16;
   let green: UINT16;
   let blue: UINT16;
@@ -200,7 +200,7 @@ function BuildShadeTable(): void {
 
 
 **********************************************************************************************/
-function BuildIntensityTable(): void {
+export function BuildIntensityTable(): void {
   let red: UINT16;
   let green: UINT16;
   let blue: UINT16;
@@ -215,7 +215,7 @@ function BuildIntensityTable(): void {
       }
 }
 
-function SetShadeTablePercent(uiShadePercent: FLOAT): void {
+export function SetShadeTablePercent(uiShadePercent: FLOAT): void {
   guiShadePercent = uiShadePercent;
   BuildShadeTable();
 }

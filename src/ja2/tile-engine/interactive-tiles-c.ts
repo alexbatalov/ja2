@@ -31,18 +31,18 @@ let gsINTOldRenderCenterY: INT16 = 0;
 let gusINTOldMousePosX: UINT16 = 0;
 let gusINTOldMousePosY: UINT16 = 0;
 
-function InitInteractiveTileManagement(): boolean {
+export function InitInteractiveTileManagement(): boolean {
   return true;
 }
 
-function ShutdownInteractiveTileManagement(): void {
+export function ShutdownInteractiveTileManagement(): void {
 }
 
 function AddInteractiveTile(sGridNo: INT16, pLevelNode: Pointer<LEVELNODE>, uiFlags: UINT32, usType: UINT16): boolean {
   return true;
 }
 
-function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier: Pointer<SOLDIERTYPE>, ubDirection: UINT8): boolean {
+export function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier: Pointer<SOLDIERTYPE>, ubDirection: UINT8): boolean {
   let pStructure: Pointer<STRUCTURE>;
 
   // ATE: Patch fix: Don't allow if alreay in animation
@@ -73,7 +73,7 @@ function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier:
   return true;
 }
 
-function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>, psAPCost: Pointer<INT16>, psBPCost: Pointer<INT16>): boolean {
+export function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>, psAPCost: Pointer<INT16>, psBPCost: Pointer<INT16>): boolean {
   if (pStructure == null) {
     return false;
   }
@@ -98,7 +98,7 @@ function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>
   return true;
 }
 
-function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8): boolean {
+export function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8): boolean {
   let fDoor: boolean = false;
 
   if (pStructure == null) {
@@ -114,7 +114,7 @@ function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pStructur
   return true;
 }
 
-function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pStructure: Pointer<STRUCTURE>;
   let usStructureID: UINT16;
   let sGridNo: INT16;
@@ -132,7 +132,7 @@ function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): boolean
   return HandleOpenableStruct(pSoldier, sGridNo, pStructure);
 }
 
-function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   let pStructure: Pointer<STRUCTURE>;
   let pNewStructure: Pointer<STRUCTURE>;
   let sAPCost: INT16 = 0;
@@ -231,7 +231,7 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 }
 
-function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean): UINT32 {
+export function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean): UINT32 {
   let pIntNode: Pointer<LEVELNODE>;
   let pStructure: Pointer<STRUCTURE>;
   let sGridNo: INT16;
@@ -265,7 +265,7 @@ function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean): UINT3
   return uiOldCursor;
 }
 
-function SetActionModeDoorCursorText(): void {
+export function SetActionModeDoorCursorText(): void {
   let pIntNode: Pointer<LEVELNODE>;
   let pStructure: Pointer<STRUCTURE>;
   let sGridNo: INT16;
@@ -354,10 +354,10 @@ function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRec
   pRect.value.iRight = sScreenX + usWidth;
 }
 
-function CompileInteractiveTiles(): void {
+export function CompileInteractiveTiles(): void {
 }
 
-function LogMouseOverInteractiveTile(sGridNo: INT16): void {
+export function LogMouseOverInteractiveTile(sGridNo: INT16): void {
   let aRect: SGPRect;
   let sXMapPos: INT16;
   let sYMapPos: INT16;
@@ -465,11 +465,11 @@ function InternalGetCurInteractiveTile(fRejectItemsOnTop: boolean): Pointer<LEVE
   return null;
 }
 
-function GetCurInteractiveTile(): Pointer<LEVELNODE> {
+export function GetCurInteractiveTile(): Pointer<LEVELNODE> {
   return InternalGetCurInteractiveTile(true);
 }
 
-function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<LEVELNODE> {
+export function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<LEVELNODE> {
   let pNode: Pointer<LEVELNODE>;
 
   pNode = GetCurInteractiveTile();
@@ -483,7 +483,7 @@ function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<LEVELNOD
   return pNode;
 }
 
-function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>, fRejectOnTopItems: boolean): Pointer<LEVELNODE> {
+export function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>, fRejectOnTopItems: boolean): Pointer<LEVELNODE> {
   let pNode: Pointer<LEVELNODE>;
   let pStructure: Pointer<STRUCTURE>;
 
@@ -512,11 +512,11 @@ function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<IN
   return pNode;
 }
 
-function GetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>): Pointer<LEVELNODE> {
+export function GetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>): Pointer<LEVELNODE> {
   return ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo, ppStructure, true);
 }
 
-function BeginCurInteractiveTileCheck(bCheckFlags: UINT8): void {
+export function BeginCurInteractiveTileCheck(bCheckFlags: UINT8): void {
   gfOverIntTile = false;
 
   // OK, release our stack, stuff could be different!
@@ -531,7 +531,7 @@ function BeginCurInteractiveTileCheck(bCheckFlags: UINT8): void {
   gCurIntTileStack.bNum = 0;
 }
 
-function EndCurInteractiveTileCheck(): void {
+export function EndCurInteractiveTileCheck(): void {
   let pCurIntTile: Pointer<CUR_INTERACTIVE_TILE>;
 
   if (gCurIntTile.fFound) {
@@ -686,7 +686,7 @@ function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT
 
 // This function will check the video object at SrcX and SrcY for the lack of transparency
 // will return true if data found, else false
-function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: UINT16, iTestX: INT32, iTestY: INT32): boolean {
+export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: UINT16, iTestX: INT32, iTestY: INT32): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -823,7 +823,7 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
   return fDataFound;
 }
 
-function ShouldCheckForMouseDetections(): boolean {
+export function ShouldCheckForMouseDetections(): boolean {
   let fOK: boolean = false;
 
   if (gsINTOldRenderCenterX != gsRenderCenterX || gsINTOldRenderCenterY != gsRenderCenterY || gusINTOldMousePosX != gusMouseXPos || gusINTOldMousePosY != gusMouseYPos) {
@@ -840,7 +840,7 @@ function ShouldCheckForMouseDetections(): boolean {
   return fOK;
 }
 
-function CycleIntTileFindStack(usMapPos: UINT16): void {
+export function CycleIntTileFindStack(usMapPos: UINT16): void {
   gfCycleIntTile = true;
 
   // Cycle around!

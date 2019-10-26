@@ -17,7 +17,7 @@ let gubQuestDebugOutPutLevel: UINT8 = Enum298.QD_OUTPUT_LEVEL_ALL;
 let gubNPCDebugOutPutLevel: UINT8 = Enum298.QD_OUTPUT_LEVEL_ALL;
 
 // set the current output mode for either the NPC or the quest output
-function ToggleQuestDebugModes(ubType: UINT8): void {
+export function ToggleQuestDebugModes(ubType: UINT8): void {
   let sType: wchar_t[] /* [16] */;
   let ubLevel: UINT8;
 

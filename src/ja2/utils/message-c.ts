@@ -23,17 +23,17 @@ const INTERFACE_COLOR = FONT_YELLOW;
 
 const MAP_SCREEN_MESSAGE_FONT = () => TINYFONT1();
 
-let gubStartOfMapScreenMessageList: UINT8 = 0;
+export let gubStartOfMapScreenMessageList: UINT8 = 0;
 let gubEndOfMapScreenMessageList: UINT8 = 0;
 
 // index of the current string we are looking at
-let gubCurrentMapMessageString: UINT8 = 0;
+export let gubCurrentMapMessageString: UINT8 = 0;
 
 // temp position for display of marker
 // UINT8 ubTempPosition = 0;
 
 // are allowed to beep on message scroll?
-let fOkToBeepNewMessage: boolean = true;
+export let fOkToBeepNewMessage: boolean = true;
 
 /* static */ let gpDisplayList: ScrollStringStPtr[] /* [MAX_LINE_COUNT] */;
 /* static */ let gMapScreenMessageList: ScrollStringStPtr[] /* [256] */;
@@ -201,7 +201,7 @@ function EnableStringVideoOverlay(pStringSt: ScrollStringStPtr, fEnable: boolean
   }
 }
 
-function ClearDisplayedListOfTacticalStrings(): void {
+export function ClearDisplayedListOfTacticalStrings(): void {
   // this function will go through list of display strings and clear them all out
   let cnt: UINT32;
 
@@ -222,7 +222,7 @@ function ClearDisplayedListOfTacticalStrings(): void {
   return;
 }
 
-function ScrollString(): void {
+export function ScrollString(): void {
   let pStringSt: ScrollStringStPtr = pStringS;
   let suiTimer: UINT32 = 0;
   let cnt: UINT32;
@@ -339,19 +339,19 @@ function ScrollString(): void {
   }
 }
 
-function DisableScrollMessages(): void {
+export function DisableScrollMessages(): void {
   // will stop the scroll of messages in tactical and hide them during an NPC's dialogue
   // disble video overlay for tatcitcal scroll messages
   EnableDisableScrollStringVideoOverlay(false);
   return;
 }
 
-function EnableScrollMessages(): void {
+export function EnableScrollMessages(): void {
   EnableDisableScrollStringVideoOverlay(true);
   return;
 }
 
-function HideMessagesDuringNPCDialogue(): void {
+export function HideMessagesDuringNPCDialogue(): void {
   // will stop the scroll of messages in tactical and hide them during an NPC's dialogue
   let cnt: INT32;
 
@@ -375,7 +375,7 @@ function HideMessagesDuringNPCDialogue(): void {
   return;
 }
 
-function UnHideMessagesDuringNPCDialogue(): void {
+export function UnHideMessagesDuringNPCDialogue(): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
   let cnt: INT32 = 0;
 
@@ -396,7 +396,7 @@ function UnHideMessagesDuringNPCDialogue(): void {
 }
 
 // new screen message
-function ScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
+export function ScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
   let DestString: wchar_t[] /* [512] */;
   let argptr: va_list;
 
@@ -599,7 +599,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
   return;
 }
 
-function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
+export function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
   // this function sets up the string into several single line structures
 
   let pStringSt: ScrollStringStPtr;
@@ -788,7 +788,7 @@ function AddStringToMapScreenMessageList(pString: STR16, usColor: UINT16, uiFont
   }
 }
 
-function DisplayStringsInMapScreenMessageList(): void {
+export function DisplayStringsInMapScreenMessageList(): void {
   let ubCurrentStringIndex: UINT8;
   let ubLinesPrinted: UINT8;
   let sY: INT16;
@@ -831,7 +831,7 @@ function DisplayStringsInMapScreenMessageList(): void {
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 }
 
-function EnableDisableScrollStringVideoOverlay(fEnable: boolean): void {
+export function EnableDisableScrollStringVideoOverlay(fEnable: boolean): void {
   // will go through the list of video overlays for the tactical scroll message system, and enable/disable
   // video overlays depending on fEnable
   let bCounter: INT8 = 0;
@@ -863,7 +863,7 @@ function PlayNewMessageSound(): void {
   return;
 }
 
-function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): boolean {
+export function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let uiCount: UINT32;
   let uiSizeOfString: UINT32;
@@ -925,7 +925,7 @@ function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): boolean {
+export function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
   let uiSizeOfString: UINT32;
@@ -1066,7 +1066,7 @@ function GetMessageQueueSize(): INT32 {
   return iCounter;
 }
 
-function ClearTacticalMessageQueue(): void {
+export function ClearTacticalMessageQueue(): void {
   let pStringSt: ScrollStringStPtr = pStringS;
   let pOtherStringSt: ScrollStringStPtr = pStringS;
 
@@ -1088,7 +1088,7 @@ function ClearTacticalMessageQueue(): void {
 function WriteMessageToFile(pString: STR16): void {
 }
 
-function InitGlobalMessageList(): void {
+export function InitGlobalMessageList(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -1103,7 +1103,7 @@ function InitGlobalMessageList(): void {
   return;
 }
 
-function FreeGlobalMessageList(): void {
+export function FreeGlobalMessageList(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -1119,7 +1119,7 @@ function FreeGlobalMessageList(): void {
   return;
 }
 
-function GetRangeOfMapScreenMessages(): UINT8 {
+export function GetRangeOfMapScreenMessages(): UINT8 {
   let ubRange: UINT8 = 0;
 
   // NOTE: End is non-inclusive, so start/end 0/0 means no messages, 0/1 means 1 message, etc.

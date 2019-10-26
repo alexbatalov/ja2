@@ -1,4 +1,4 @@
-interface PcxHeader {
+export interface PcxHeader {
   ubManufacturer: UINT8;
   ubVersion: UINT8;
   ubEncoding: UINT8;
@@ -21,7 +21,7 @@ interface PcxHeader {
   ubFiller: UINT8[] /* [58] */;
 }
 
-interface PcxObject {
+export interface PcxObject {
   pPcxBuffer: Pointer<UINT8>;
   ubPalette: UINT8[] /* [768] */;
 

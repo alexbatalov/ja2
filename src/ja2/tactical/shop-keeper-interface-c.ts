@@ -217,24 +217,24 @@ let guiCornerWhereTacticalIsStillSeenImage: UINT32; // This image is for where t
 // UINT32		guiSkiAtmImage;
 
 let gfSKIScreenEntry: boolean = true;
-let gfSKIScreenExit: boolean = false;
+export let gfSKIScreenExit: boolean = false;
 let gfUserHasRequestedToLeave: boolean = false;
 // BOOLEAN		gfRedrawSkiScreen = TRUE;
 
 let gfRenderScreenOnNextLoop: boolean = false;
 
-let gubSkiDirtyLevel: UINT8 = Enum253.SKI_DIRTY_LEVEL0;
+export let gubSkiDirtyLevel: UINT8 = Enum253.SKI_DIRTY_LEVEL0;
 let giSKIMessageBox: INT32 = -1;
 
-let gbSelectedArmsDealerID: INT8 = -1; // Contains the enum value for the currently selected arms dealer
+export let gbSelectedArmsDealerID: INT8 = -1; // Contains the enum value for the currently selected arms dealer
 
 // the quote that is in progress, in certain circumstances, we don't want queuing of related but different quotes
-let giShopKeepDialogueEventinProgress: INT32 = -1;
+export let giShopKeepDialogueEventinProgress: INT32 = -1;
 
 // OBJECTTYPE				gpSkiItemPointer;
-let gMoveingItem: INVENTORY_IN_SLOT;
+export let gMoveingItem: INVENTORY_IN_SLOT;
 
-let gpHighLightedItemObject: Pointer<OBJECTTYPE> = null;
+export let gpHighLightedItemObject: Pointer<OBJECTTYPE> = null;
 
 let gfResetShopKeepIdleQuote: boolean = false;
 let gfDoEvaluationAfterOpening: boolean = false;
@@ -257,7 +257,7 @@ let PlayersOfferArea: INVENTORY_IN_SLOT[] /* [SKI_NUM_TRADING_INV_SLOTS] */;
 
 let gSubObject: OBJECTTYPE[] /* [MAX_SUBOBJECTS_PER_OBJECT] */;
 
-let gfHavePurchasedItemsFromTony: boolean = false;
+export let gfHavePurchasedItemsFromTony: boolean = false;
 
 let gfDealerHasSaidTheEvaluateQuoteOnceThisSession: boolean = false;
 let gfAlreadySaidTooMuchToRepair: boolean = false;
@@ -295,7 +295,7 @@ let gzSkiAtmTransferString: CHAR16[] /* [32] */;
 
 let gfExitSKIDueToMessageBox: boolean = false;
 
-let pShopKeeperItemDescObject: Pointer<OBJECTTYPE> = null;
+export let pShopKeeperItemDescObject: Pointer<OBJECTTYPE> = null;
 
 let guiNextFreeInvSlot: UINT32;
 
@@ -357,7 +357,7 @@ UINT32	guiSKI_EvaluateButton;
 INT32		guiSKI_EvaluateButtonImage;
 */
 
-let guiSKI_TransactionButton: UINT32;
+export let guiSKI_TransactionButton: UINT32;
 let guiSKI_TransactionButtonImage: INT32;
 
 let guiSKI_DoneButton: UINT32;
@@ -414,14 +414,14 @@ let gArmsDealersDropItemToGroundMouseRegions: MOUSE_REGION;
 // screen handler functions
 //
 
-function ShopKeeperScreenInit(): UINT32 {
+export function ShopKeeperScreenInit(): UINT32 {
   // Set so next time we come in, we can set up
   gfSKIScreenEntry = true;
 
   return true;
 }
 
-function ShopKeeperScreenHandle(): UINT32 {
+export function ShopKeeperScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfSKIScreenEntry) {
@@ -500,7 +500,7 @@ function ShopKeeperScreenHandle(): UINT32 {
   return Enum26.SHOPKEEPER_SCREEN;
 }
 
-function ShopKeeperScreenShutdown(): UINT32 {
+export function ShopKeeperScreenShutdown(): UINT32 {
   ShutDownArmsDealers();
 
   return true;
@@ -1729,7 +1729,7 @@ function SelectSkiInventoryMovementAreaRegionCallBack(pRegion: Pointer<MOUSE_REG
   }
 }
 
-function EnterShopKeeperInterfaceScreen(ubArmsDealer: UINT8): void {
+export function EnterShopKeeperInterfaceScreen(ubArmsDealer: UINT8): void {
   // Get Dealer ID from from merc Id
   gbSelectedArmsDealerID = GetArmsDealerIDFromMercID(ubArmsDealer);
 
@@ -2292,7 +2292,7 @@ function RepairIsDone(usItemIndex: UINT16, ubElement: UINT8): boolean {
   return true;
 }
 
-function DrawHatchOnInventory(uiSurface: UINT32, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): void {
+export function DrawHatchOnInventory(uiSurface: UINT32, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
   let ClipRect: SGPRect;
@@ -2615,7 +2615,7 @@ function SetSkiFaceRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Poi
   SetRegionHelpEndCallback(pRegion, SkiHelpTextDoneCallBack);
 }
 
-function SkiHelpTextDoneCallBack(): void {
+export function SkiHelpTextDoneCallBack(): void {
   gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
@@ -2784,7 +2784,7 @@ function GetPtrToOfferSlotWhereThisItemIs(ubProfileID: UINT8, bInvPocket: INT8):
   return null;
 }
 
-function ShouldSoldierDisplayHatchOnItem(ubProfileID: UINT8, sSlotNum: INT16): boolean {
+export function ShouldSoldierDisplayHatchOnItem(ubProfileID: UINT8, sSlotNum: INT16): boolean {
   let pInvSlot: Pointer<INVENTORY_IN_SLOT> = null;
 
   pInvSlot = GetPtrToOfferSlotWhereThisItemIs(ubProfileID, sSlotNum);
@@ -3105,7 +3105,7 @@ function MovePlayerOfferedItemsOfValueToArmsDealersInventory(): void {
   gfResetShopKeepIdleQuote = true;
 }
 
-function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirst: boolean): void {
+export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirst: boolean): void {
   let Rect: SGPRect;
   let TempObject: OBJECTTYPE;
 
@@ -3272,7 +3272,7 @@ function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirs
   gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
-function RestrictSkiMouseCursor(): void {
+export function RestrictSkiMouseCursor(): void {
   let Rect: SGPRect;
 
   Rect.iLeft = 0; // SKI_ITEM_MOVEMENT_AREA_X;
@@ -3283,7 +3283,7 @@ function RestrictSkiMouseCursor(): void {
   RestrictMouseCursor(addressof(Rect));
 }
 
-function SetSkiCursor(usCursor: UINT16): void {
+export function SetSkiCursor(usCursor: UINT16): void {
   let ubCnt: UINT8;
 
   // if we are setting up an item as a cursor
@@ -3670,7 +3670,7 @@ function IsGunOrAmmoOfSameTypeSelected(pItemObject: Pointer<OBJECTTYPE>): boolea
   return false;
 }
 
-function InitShopKeeperSubTitledText(pString: STR16): void {
+export function InitShopKeeperSubTitledText(pString: STR16): void {
   // Clear the contents of the subtitle text
   memset(gsShopKeeperTalkingText, 0, SKI_SUBTITLE_TEXT_SIZE);
 
@@ -4423,7 +4423,7 @@ function EnableDisableEvaluateAndTransactionButtons(): void {
   }
 }
 
-function AddItemToPlayersOfferAreaAfterShopKeeperOpen(pItemObject: Pointer<OBJECTTYPE>, bPreviousInvPos: INT8): void {
+export function AddItemToPlayersOfferAreaAfterShopKeeperOpen(pItemObject: Pointer<OBJECTTYPE>, bPreviousInvPos: INT8): void {
   gItemToAdd.fActive = true;
   memcpy(addressof(gItemToAdd.ItemObject), pItemObject, sizeof(OBJECTTYPE));
   gItemToAdd.bPreviousInvPos = bPreviousInvPos;
@@ -4765,7 +4765,7 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: boolean):
   }
 }
 
-function DoSkiMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
+export function DoSkiMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let pCenteringRect: SGPRect = [ 0, 0, 639, 339 ];
 
   // reset exit mode
@@ -4778,7 +4778,7 @@ function DoSkiMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: 
   return giSKIMessageBox != -1;
 }
 
-function ConfirmDontHaveEnoughForTheDealerMessageBoxCallBack(bExitValue: UINT8): void {
+export function ConfirmDontHaveEnoughForTheDealerMessageBoxCallBack(bExitValue: UINT8): void {
   // simply redraw the panel
   if (bExitValue == MSG_BOX_RETURN_OK) {
     gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
@@ -4790,7 +4790,7 @@ function ConfirmDontHaveEnoughForTheDealerMessageBoxCallBack(bExitValue: UINT8):
   return;
 }
 
-function ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack(bExitValue: UINT8): void {
+export function ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, deduct the money
   if (bExitValue == MSG_BOX_RETURN_YES) {
     let uiPlayersOfferAreaValue: UINT32 = CalculateTotalPlayersValue();
@@ -5015,7 +5015,7 @@ function InitShopKeeperItemDescBox(pObject: Pointer<OBJECTTYPE>, ubPocket: UINT8
   StartSKIDescriptionBox();
 }
 
-function StartSKIDescriptionBox(): void {
+export function StartSKIDescriptionBox(): void {
   let iCnt: INT32;
 
   // shadow the entire screen
@@ -5064,7 +5064,7 @@ function StartSKIDescriptionBox(): void {
   RenderItemDescriptionBox();
 }
 
-function DeleteShopKeeperItemDescBox(): void {
+export function DeleteShopKeeperItemDescBox(): void {
   let iCnt: INT32;
 
   pShopKeeperItemDescObject = null;
@@ -5558,7 +5558,7 @@ function SKITryToAddInvToMercsInventory(pInv: Pointer<INVENTORY_IN_SLOT>, pSoldi
   return true;
 }
 
-function CanMercInteractWithSelectedShopkeeper(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function CanMercInteractWithSelectedShopkeeper(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pShopkeeper: Pointer<SOLDIERTYPE>;
   let sDestGridNo: INT16;
   let bDestLevel: INT8;

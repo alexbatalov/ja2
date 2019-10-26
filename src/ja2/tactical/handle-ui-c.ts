@@ -47,14 +47,14 @@ let guiUIInterfaceBusyTime: UINT32 = 0;
 
 let gfTacticalForceNoCursor: UINT32 = false;
 let gpInvTileThatCausedMoveConfirm: Pointer<LEVELNODE> = null;
-let gfResetUIMovementOptimization: boolean = false;
+export let gfResetUIMovementOptimization: boolean = false;
 let gfResetUIItemCursorOptimization: boolean = false;
 let gfBeginVehicleCursor: boolean = false;
 let gsOutOfRangeGridNo: UINT16 = NOWHERE;
 let gubOutOfRangeMerc: UINT8 = NOBODY;
 let gfOKForExchangeCursor: boolean = false;
 let guiUIInterfaceSwapCursorsTime: UINT32 = 0;
-let gsJumpOverGridNo: INT16 = 0;
+export let gsJumpOverGridNo: INT16 = 0;
 
 let gEvents: UI_EVENT[] /* [NUM_UI_EVENTS] */ = [
   [ 0, Enum206.IDLE_MODE, UIHandleIDoNothing, false, false, 0, [ 0, 0, 0 ] ],
@@ -124,51 +124,51 @@ let gEvents: UI_EVENT[] /* [NUM_UI_EVENTS] */ = [
   [ 0, Enum206.MOVE_MODE, UIHandleJumpOver, false, false, 0, [ 0, 0, 0 ] ],
 ];
 
-let gCurrentUIMode: UI_MODE = Enum206.IDLE_MODE;
+export let gCurrentUIMode: UI_MODE = Enum206.IDLE_MODE;
 let gOldUIMode: UI_MODE = Enum206.IDLE_MODE;
-let guiCurrentEvent: UINT32 = Enum207.I_DO_NOTHING;
+export let guiCurrentEvent: UINT32 = Enum207.I_DO_NOTHING;
 let guiOldEvent: UINT32 = Enum207.I_DO_NOTHING;
-let guiCurrentUICursor: UINT32 = Enum210.NO_UICURSOR;
+export let guiCurrentUICursor: UINT32 = Enum210.NO_UICURSOR;
 let guiNewUICursor: UINT32 = Enum210.NORMAL_SNAPUICURSOR;
-let guiPendingOverrideEvent: UINT32 = Enum207.I_DO_NOTHING;
+export let guiPendingOverrideEvent: UINT32 = Enum207.I_DO_NOTHING;
 let gusSavedMouseX: UINT16;
 let gusSavedMouseY: UINT16;
-let gUIKeyboardHook: UIKEYBOARD_HOOK = null;
-let gUIActionModeChangeDueToMouseOver: boolean = false;
+export let gUIKeyboardHook: UIKEYBOARD_HOOK = null;
+export let gUIActionModeChangeDueToMouseOver: boolean = false;
 
 let gfDisplayTimerCursor: boolean = false;
 let guiTimerCursorID: UINT32 = 0;
 let guiTimerLastUpdate: UINT32 = 0;
 let guiTimerCursorDelay: UINT32 = 0;
 
-let gzLocation: INT16[] /* [20] */;
+export let gzLocation: INT16[] /* [20] */;
 let gfLocation: boolean = false;
 
-let gzIntTileLocation: INT16[] /* [20] */;
-let gfUIIntTileLocation: boolean;
+export let gzIntTileLocation: INT16[] /* [20] */;
+export let gfUIIntTileLocation: boolean;
 
-let gzIntTileLocation2: INT16[] /* [20] */;
-let gfUIIntTileLocation2: boolean;
+export let gzIntTileLocation2: INT16[] /* [20] */;
+export let gfUIIntTileLocation2: boolean;
 
-let gDisableRegion: MOUSE_REGION;
-let gfDisableRegionActive: boolean = false;
+export let gDisableRegion: MOUSE_REGION;
+export let gfDisableRegionActive: boolean = false;
 
-let gUserTurnRegion: MOUSE_REGION;
-let gfUserTurnRegionActive: boolean = false;
+export let gUserTurnRegion: MOUSE_REGION;
+export let gfUserTurnRegionActive: boolean = false;
 
 // For use with mouse button query routines
-let fRightButtonDown: boolean = false;
-let fLeftButtonDown: boolean = false;
-let fIgnoreLeftUp: boolean = false;
+export let fRightButtonDown: boolean = false;
+export let fLeftButtonDown: boolean = false;
+export let fIgnoreLeftUp: boolean = false;
 
 let gUITargetReady: boolean = false;
-let gUITargetShotWaiting: boolean = false;
+export let gUITargetShotWaiting: boolean = false;
 let gsUITargetShotGridNo: UINT16 = NOWHERE;
-let gUIUseReverse: boolean = false;
+export let gUIUseReverse: boolean = false;
 
-let gRubberBandRect: SGPRect = [ 0, 0, 0, 0 ];
-let gRubberBandActive: boolean = false;
-let gfIgnoreOnSelectedGuy: boolean = false;
+export let gRubberBandRect: SGPRect = [ 0, 0, 0, 0 ];
+export let gRubberBandActive: boolean = false;
+export let gfIgnoreOnSelectedGuy: boolean = false;
 let gfViewPortAdjustedForSouth: boolean = false;
 
 let guiCreateGuyIndex: INT16 = 0;
@@ -177,65 +177,65 @@ let guiCreateBadGuyIndex: INT16 = 8;
 
 // FLAGS
 // These flags are set for a single frame execution and then are reset for the next iteration.
-let gfUIDisplayActionPoints: boolean = false;
-let gfUIDisplayActionPointsInvalid: boolean = false;
-let gfUIDisplayActionPointsBlack: boolean = false;
-let gfUIDisplayActionPointsCenter: boolean = false;
+export let gfUIDisplayActionPoints: boolean = false;
+export let gfUIDisplayActionPointsInvalid: boolean = false;
+export let gfUIDisplayActionPointsBlack: boolean = false;
+export let gfUIDisplayActionPointsCenter: boolean = false;
 
-let gUIDisplayActionPointsOffY: INT16 = 0;
-let gUIDisplayActionPointsOffX: INT16 = 0;
+export let gUIDisplayActionPointsOffY: INT16 = 0;
+export let gUIDisplayActionPointsOffX: INT16 = 0;
 let gfUIDoNotHighlightSelMerc: boolean = false;
-let gfUIHandleSelection: boolean = false;
-let gfUIHandleSelectionAboveGuy: boolean = false;
-let gfUIInDeadlock: boolean = false;
-let gUIDeadlockedSoldier: UINT8 = NOBODY;
-let gfUIHandleShowMoveGrid: boolean = false;
-let gsUIHandleShowMoveGridLocation: UINT16 = NOWHERE;
-let gfUIOverItemPool: boolean = false;
-let gfUIOverItemPoolGridNo: INT16 = 0;
-let gsCurrentActionPoints: INT16 = 1;
-let gfUIHandlePhysicsTrajectory: boolean = false;
-let gfUIMouseOnValidCatcher: boolean = false;
-let gubUIValidCatcherID: UINT8 = 0;
+export let gfUIHandleSelection: boolean = false;
+export let gfUIHandleSelectionAboveGuy: boolean = false;
+export let gfUIInDeadlock: boolean = false;
+export let gUIDeadlockedSoldier: UINT8 = NOBODY;
+export let gfUIHandleShowMoveGrid: boolean = false;
+export let gsUIHandleShowMoveGridLocation: UINT16 = NOWHERE;
+export let gfUIOverItemPool: boolean = false;
+export let gfUIOverItemPoolGridNo: INT16 = 0;
+export let gsCurrentActionPoints: INT16 = 1;
+export let gfUIHandlePhysicsTrajectory: boolean = false;
+export let gfUIMouseOnValidCatcher: boolean = false;
+export let gubUIValidCatcherID: UINT8 = 0;
 
-let gfUIConfirmExitArrows: boolean = false;
+export let gfUIConfirmExitArrows: boolean = false;
 
-let gfUIShowCurIntTile: boolean = false;
+export let gfUIShowCurIntTile: boolean = false;
 
-let gfUIWaitingForUserSpeechAdvance: boolean = false; // Waiting for key input/mouse click to advance speech
+export let gfUIWaitingForUserSpeechAdvance: boolean = false; // Waiting for key input/mouse click to advance speech
 let gfUIKeyCheatModeOn: boolean = false; // Sets cool cheat keys on
-let gfUIAllMoveOn: boolean = false; // Sets to all move
-let gfUICanBeginAllMoveCycle: boolean = false; // GEts set so we know that the next right-click is a move-call inc\stead of a movement cycle through
+export let gfUIAllMoveOn: boolean = false; // Sets to all move
+export let gfUICanBeginAllMoveCycle: boolean = false; // GEts set so we know that the next right-click is a move-call inc\stead of a movement cycle through
 
-let gsSelectedGridNo: INT16 = 0;
-let gsSelectedLevel: INT16 = Enum214.I_GROUND_LEVEL;
-let gsSelectedGuy: INT16 = NO_SOLDIER;
+export let gsSelectedGridNo: INT16 = 0;
+export let gsSelectedLevel: INT16 = Enum214.I_GROUND_LEVEL;
+export let gsSelectedGuy: INT16 = NO_SOLDIER;
 
 let gfUIDisplayDamage: boolean = false;
 let gbDamage: INT8 = 0;
 let gsDamageGridNo: UINT16 = 0;
 
-let gfUIRefreshArrows: boolean = false;
+export let gfUIRefreshArrows: boolean = false;
 
 // Thse flags are not re-set after each frame
-let gfPlotNewMovement: boolean = false;
+export let gfPlotNewMovement: boolean = false;
 let gfPlotNewMovementNOCOST: boolean = false;
-let guiShowUPDownArrows: UINT32 = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
+export let guiShowUPDownArrows: UINT32 = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
 let gbAdjustStanceDiff: INT8 = 0;
 let gbClimbID: INT8 = 0;
 
-let gfUIShowExitEast: boolean = false;
-let gfUIShowExitWest: boolean = false;
-let gfUIShowExitNorth: boolean = false;
-let gfUIShowExitSouth: boolean = false;
+export let gfUIShowExitEast: boolean = false;
+export let gfUIShowExitWest: boolean = false;
+export let gfUIShowExitNorth: boolean = false;
+export let gfUIShowExitSouth: boolean = false;
 let gfUIShowExitExitGrid: boolean = false;
 
 let gfUINewStateForIntTile: boolean = false;
 
-let gfUIForceReExamineCursorData: boolean = false;
+export let gfUIForceReExamineCursorData: boolean = false;
 
 // MAIN TACTICAL UI HANDLER
-function HandleTacticalUI(): UINT32 {
+export function HandleTacticalUI(): UINT32 {
   let ReturnVal: UINT32 = Enum26.GAME_SCREEN;
   let uiNewEvent: UINT32;
   let usMapPos: UINT16;
@@ -637,7 +637,7 @@ function SetUIMouseCursor(): void {
   }
 }
 
-function SetUIKeyboardHook(KeyboardHookFnc: UIKEYBOARD_HOOK): void {
+export function SetUIKeyboardHook(KeyboardHookFnc: UIKEYBOARD_HOOK): void {
   gUIKeyboardHook = KeyboardHookFnc;
 }
 
@@ -648,7 +648,7 @@ function ClearEvent(pUIEvent: Pointer<UI_EVENT>): void {
   pUIEvent.value.uiMenuPreviousMode = 0;
 }
 
-function EndMenuEvent(uiEvent: UINT32): void {
+export function EndMenuEvent(uiEvent: UINT32): void {
   gEvents[uiEvent].fDoneMenu = true;
 }
 
@@ -786,7 +786,7 @@ function UIHandleEnterPalEditMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.PALEDIT_SCREEN;
 }
 
-function UIHandleEndTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+export function UIHandleEndTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   // CANCEL FROM PLANNING MODE!
   if (InUIPlanMode()) {
     EndUIPlan();
@@ -844,7 +844,7 @@ function UIHandleTestHit(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function ChangeInterfaceLevel(sLevel: INT16): void {
+export function ChangeInterfaceLevel(sLevel: INT16): void {
   // Only if different!
   if (sLevel == gsInterfaceLevel) {
     return;
@@ -869,7 +869,7 @@ function ChangeInterfaceLevel(sLevel: INT16): void {
   ErasePath(false);
 }
 
-function UIHandleChangeLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+export function UIHandleChangeLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   if (gsInterfaceLevel == 0) {
     ChangeInterfaceLevel(1);
   } else if (gsInterfaceLevel == 1) {
@@ -2017,7 +2017,7 @@ function GetAdjustedAnimHeight(ubAnimHeight: UINT8, bChange: INT8): UINT8 {
   return ubNewAnimHeight;
 }
 
-function HandleObjectHighlighting(): void {
+export function HandleObjectHighlighting(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let usMapPos: UINT16;
 
@@ -2055,7 +2055,7 @@ function HandleObjectHighlighting(): void {
   }
 }
 
-function AdjustSoldierCreationStartValues(): void {
+export function AdjustSoldierCreationStartValues(): void {
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -2080,7 +2080,7 @@ function AdjustSoldierCreationStartValues(): void {
   }
 }
 
-function SelectedMercCanAffordAttack(): boolean {
+export function SelectedMercCanAffordAttack(): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pTargetSoldier: Pointer<SOLDIERTYPE>;
   let usMapPos: UINT16;
@@ -2142,7 +2142,7 @@ function SelectedMercCanAffordAttack(): boolean {
   return false;
 }
 
-function SelectedMercCanAffordMove(): boolean {
+export function SelectedMercCanAffordMove(): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let sAPCost: UINT16 = 0;
   let sBPCost: INT16 = 0;
@@ -2184,7 +2184,7 @@ function SelectedMercCanAffordMove(): boolean {
   return false;
 }
 
-function GetMercClimbDirection(ubSoldierID: UINT8, pfGoDown: Pointer<boolean>, pfGoUp: Pointer<boolean>): void {
+export function GetMercClimbDirection(ubSoldierID: UINT8, pfGoDown: Pointer<boolean>, pfGoUp: Pointer<boolean>): void {
   let bNewDirection: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -2272,7 +2272,7 @@ function UIHandleOpenDoorMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function ToggleHandCursorMode(puiNewEvent: Pointer<UINT32>): void {
+export function ToggleHandCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
   if (gCurrentUIMode == Enum206.HANDCURSOR_MODE) {
     puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
@@ -2281,7 +2281,7 @@ function ToggleHandCursorMode(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-function ToggleTalkCursorMode(puiNewEvent: Pointer<UINT32>): void {
+export function ToggleTalkCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
   if (gCurrentUIMode == Enum206.TALKCURSOR_MODE) {
     puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
@@ -2290,7 +2290,7 @@ function ToggleTalkCursorMode(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-function ToggleLookCursorMode(puiNewEvent: Pointer<UINT32>): void {
+export function ToggleLookCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
   if (gCurrentUIMode == Enum206.LOOKCURSOR_MODE) {
     guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
@@ -2301,7 +2301,7 @@ function ToggleLookCursorMode(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-function UIHandleOnMerc(fMovementMode: boolean): boolean {
+export function UIHandleOnMerc(fMovementMode: boolean): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let usSoldierIndex: UINT16;
   let uiMercFlags: UINT32;
@@ -2465,7 +2465,7 @@ function UIHandleIETOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8): void {
+export function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = MercPtrs[ubSoldierID];
@@ -2573,7 +2573,7 @@ function UIHandleILoadFifthLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.INIT_SCREEN;
 }
 
-function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
+export function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
   let usMapPos: UINT16;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -2620,7 +2620,7 @@ function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
   uiSameFrameCursorFlags = (puiCursorFlags.value);
 }
 
-function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorFlags: UINT32, usMapPos: UINT16, uiFlags: UINT32): boolean {
+export function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorFlags: UINT32, usMapPos: UINT16, uiFlags: UINT32): boolean {
   let fSetCursor: boolean = false;
   let fCalculated: boolean = false;
   /* static */ let usTargetID: UINT16 = NOBODY;
@@ -3044,7 +3044,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
   return bReturnCode;
 }
 
-function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let usInHand: UINT16;
   let fGuyHere: boolean = false;
   let pTSoldier: Pointer<SOLDIERTYPE>;
@@ -3175,7 +3175,7 @@ function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function UIOkForItemPickup(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
+export function UIOkForItemPickup(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   let sAPCost: INT16;
   let pItemPool: Pointer<ITEM_POOL>;
 
@@ -3609,7 +3609,7 @@ function UIHandleLUIBeginLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleLUIEndLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+export function UIHandleLUIEndLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   if (gfDisableRegionActive) {
     gfDisableRegionActive = false;
 
@@ -3640,7 +3640,7 @@ function UIHandleLUIEndLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function CheckForDisabledRegionRemove(): void {
+export function CheckForDisabledRegionRemove(): void {
   if (gfDisableRegionActive) {
     gfDisableRegionActive = false;
 
@@ -3709,7 +3709,7 @@ function GetGridNoScreenXY(sGridNo: INT16, pScreenX: Pointer<INT16>, pScreenY: P
   (pScreenY.value) = sScreenY;
 }
 
-function EndMultiSoldierSelection(fAcknowledge: boolean): void {
+export function EndMultiSoldierSelection(fAcknowledge: boolean): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
   let pFirstSoldier: Pointer<SOLDIERTYPE> = null;
@@ -3750,7 +3750,7 @@ function EndMultiSoldierSelection(fAcknowledge: boolean): void {
   }
 }
 
-function StopRubberBandedMercFromMoving(): void {
+export function StopRubberBandedMercFromMoving(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
   let pFirstSoldier: Pointer<SOLDIERTYPE> = null;
@@ -3774,7 +3774,7 @@ function StopRubberBandedMercFromMoving(): void {
   }
 }
 
-function EndRubberBanding(): void {
+export function EndRubberBanding(): void {
   if (gRubberBandActive) {
     FreeMouseCursor();
     gfIgnoreScrolling = false;
@@ -3849,7 +3849,7 @@ function HandleMultiSelectionMove(sDestGridNo: INT16): boolean {
   return fAtLeastOneMultiSelect;
 }
 
-function ResetMultiSelection(): void {
+export function ResetMultiSelection(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
 
@@ -4076,7 +4076,7 @@ function UIHandleLAEndLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function IsValidTalkableNPCFromMouse(pubSoldierID: Pointer<UINT8>, fGive: boolean, fAllowMercs: boolean, fCheckCollapsed: boolean): boolean {
+export function IsValidTalkableNPCFromMouse(pubSoldierID: Pointer<UINT8>, fGive: boolean, fAllowMercs: boolean, fCheckCollapsed: boolean): boolean {
   // Check if there is a guy here to talk to!
   if (gfUIFullTargetFound) {
     pubSoldierID.value = gusUIFullTargetID;
@@ -4086,7 +4086,7 @@ function IsValidTalkableNPCFromMouse(pubSoldierID: Pointer<UINT8>, fGive: boolea
   return false;
 }
 
-function IsValidTalkableNPC(ubSoldierID: UINT8, fGive: boolean, fAllowMercs: boolean, fCheckCollapsed: boolean): boolean {
+export function IsValidTalkableNPC(ubSoldierID: UINT8, fGive: boolean, fAllowMercs: boolean, fCheckCollapsed: boolean): boolean {
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubSoldierID];
   let fValidGuy: boolean = false;
 
@@ -4160,7 +4160,7 @@ function IsValidTalkableNPC(ubSoldierID: UINT8, fGive: boolean, fAllowMercs: boo
   return false;
 }
 
-function HandleTalkInit(): boolean {
+export function HandleTalkInit(): boolean {
   let sAPCost: INT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pTSoldier: Pointer<SOLDIERTYPE>;
@@ -4342,7 +4342,7 @@ function HandleTalkInit(): boolean {
   return false;
 }
 
-function SetUIBusy(ubID: UINT8): void {
+export function SetUIBusy(ubID: UINT8): void {
   if ((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.ubCurrentTeam == gbPlayerNum)) {
     if (gusSelectedSoldier == ubID) {
       guiPendingOverrideEvent = Enum207.LA_BEGINUIOURTURNLOCK;
@@ -4351,7 +4351,7 @@ function SetUIBusy(ubID: UINT8): void {
   }
 }
 
-function UnSetUIBusy(ubID: UINT8): void {
+export function UnSetUIBusy(ubID: UINT8): void {
   if ((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.ubCurrentTeam == gbPlayerNum)) {
     if (!gTacticalStatus.fUnLockUIAfterHiddenInterrupt) {
       if (gusSelectedSoldier == ubID) {
@@ -4366,7 +4366,7 @@ function UnSetUIBusy(ubID: UINT8): void {
   }
 }
 
-function BeginDisplayTimedCursor(uiCursorID: UINT32, uiDelay: UINT32): void {
+export function BeginDisplayTimedCursor(uiCursorID: UINT32, uiDelay: UINT32): void {
   gfDisplayTimerCursor = true;
   guiTimerCursorID = uiCursorID;
   guiTimerLastUpdate = GetJA2Clock();
@@ -4570,7 +4570,7 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
   }
 }
 
-function HandleTacticalUILoseCursorFromOtherScreen(): void {
+export function HandleTacticalUILoseCursorFromOtherScreen(): void {
   SetUICursor(0);
 
   gfTacticalForceNoCursor = true;
@@ -4584,7 +4584,7 @@ function HandleTacticalUILoseCursorFromOtherScreen(): void {
   SetUICursor(guiCurrentUICursor);
 }
 
-function SelectedGuyInBusyAnimation(): boolean {
+export function SelectedGuyInBusyAnimation(): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gusSelectedSoldier != NOBODY) {
@@ -4600,7 +4600,7 @@ function SelectedGuyInBusyAnimation(): boolean {
   return false;
 }
 
-function GotoHeigherStance(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function GotoHeigherStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fNearHeigherLevel: boolean;
   let fNearLowerLevel: boolean;
 
@@ -4628,7 +4628,7 @@ function GotoHeigherStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function GotoLowerStance(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function GotoLowerStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fNearHeigherLevel: boolean;
   let fNearLowerLevel: boolean;
 
@@ -4656,7 +4656,7 @@ function GotoLowerStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function SetInterfaceHeightLevel(): void {
+export function SetInterfaceHeightLevel(): void {
   let sHeight: INT16;
   /* static */ let sOldHeight: INT16 = 0;
   let sGridNo: INT16;
@@ -4698,7 +4698,7 @@ function SetInterfaceHeightLevel(): void {
   }
 }
 
-function ValidQuickExchangePosition(): boolean {
+export function ValidQuickExchangePosition(): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pOverSoldier: Pointer<SOLDIERTYPE>;
   let sDistVisible: INT16 = false;
@@ -4753,7 +4753,7 @@ function ValidQuickExchangePosition(): boolean {
 
 // This function contains the logic for allowing the player
 // to jump over people.
-function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fCheckForPath: boolean): boolean {
+export function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fCheckForPath: boolean): boolean {
   let sFourGrids: INT16[] /* [4] */;
   let sDistance: INT16 = 0;
   let sSpot: INT16;

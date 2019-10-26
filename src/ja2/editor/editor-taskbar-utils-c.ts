@@ -1,12 +1,12 @@
 // editor icon storage vars
-let giEditMercDirectionIcons: INT32[] /* [2] */;
-let guiMercInventoryPanel: UINT32;
-let guiOmertaMap: UINT32;
-let guiMercInvPanelBuffers: UINT32[] /* [9] */;
-let guiMercTempBuffer: UINT32;
-let giEditMercImage: INT32[] /* [2] */;
-let guiExclamation: UINT32;
-let guiKeyImage: UINT32;
+export let giEditMercDirectionIcons: INT32[] /* [2] */;
+export let guiMercInventoryPanel: UINT32;
+export let guiOmertaMap: UINT32;
+export let guiMercInvPanelBuffers: UINT32[] /* [9] */;
+export let guiMercTempBuffer: UINT32;
+export let giEditMercImage: INT32[] /* [2] */;
+export let guiExclamation: UINT32;
+export let guiKeyImage: UINT32;
 
 // editor Mouseregion storage vars
 let TerrainTileButtonRegion: MOUSE_REGION[] /* [NUM_TERRAIN_TILE_REGIONS] */;
@@ -14,7 +14,7 @@ let ItemsRegion: MOUSE_REGION;
 let MercRegion: MOUSE_REGION;
 let EditorRegion: MOUSE_REGION;
 
-function EnableEditorRegion(bRegionID: INT8): void {
+export function EnableEditorRegion(bRegionID: INT8): void {
   switch (bRegionID) {
     case Enum45.BASE_TERRAIN_TILE_REGION_ID:
     case 1:
@@ -36,7 +36,7 @@ function EnableEditorRegion(bRegionID: INT8): void {
   }
 }
 
-function DisableEditorRegion(bRegionID: INT8): void {
+export function DisableEditorRegion(bRegionID: INT8): void {
   switch (bRegionID) {
     case Enum45.BASE_TERRAIN_TILE_REGION_ID:
     case 1:
@@ -229,7 +229,7 @@ function HideEditorToolbar(iOldTaskMode: INT32): void {
   }
 }
 
-function CreateEditorTaskbar(): void {
+export function CreateEditorTaskbar(): void {
   InitEditorRegions();
   LoadEditorImages();
   CreateEditorBuffers();
@@ -237,7 +237,7 @@ function CreateEditorTaskbar(): void {
   HideItemStatsPanel();
 }
 
-function DeleteEditorTaskbar(): void {
+export function DeleteEditorTaskbar(): void {
   let x: INT32;
 
   iOldTaskMode = iCurrentTaskbar;
@@ -250,7 +250,7 @@ function DeleteEditorTaskbar(): void {
   DeleteEditorBuffers();
 }
 
-function DoTaskbar(): void {
+export function DoTaskbar(): void {
   if (!iTaskMode || iTaskMode == iCurrentTaskbar) {
     return;
   }
@@ -361,13 +361,13 @@ function DoTaskbar(): void {
 }
 
 // Disables the task bar, but leaves it on screen. Used when a selection window is up.
-function DisableEditorTaskbar(): void {
+export function DisableEditorTaskbar(): void {
   let x: INT32;
   for (x = 0; x < Enum32.NUMBER_EDITOR_BUTTONS; x++)
     DisableButton(iEditorButton[x]);
 }
 
-function EnableEditorTaskbar(): void {
+export function EnableEditorTaskbar(): void {
   let x: INT32;
 
   for (x = 0; x < Enum32.NUMBER_EDITOR_BUTTONS; x++)
@@ -386,7 +386,7 @@ function EnableEditorTaskbar(): void {
 // A specialized mprint function that'll restore the editor panel underneath the
 // string before rendering the string.  This is obviously only useful for drawing text
 // in the editor taskbar.
-function mprintfEditor(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): void {
+export function mprintfEditor(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): void {
   let argptr: va_list;
   let string: wchar_t[] /* [512] */;
   let uiStringLength: UINT16;
@@ -405,7 +405,7 @@ function mprintfEditor(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args
   mprintf(x, y, string);
 }
 
-function ClearTaskbarRegion(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): void {
+export function ClearTaskbarRegion(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): void {
   ColorFillVideoSurfaceArea(ButtonDestBuffer, sLeft, sTop, sRight, sBottom, gusEditorTaskbarColor);
 
   if (!sLeft) {
@@ -428,7 +428,7 @@ function ClearTaskbarRegion(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: I
 // This is a new function which duplicates the older "yellow info boxes" that
 // are common throughout the editor.  This draws the yellow box with the indentation
 // look.
-function DrawEditorInfoBox(str: Pointer<UINT16>, uiFont: UINT32, x: UINT16, y: UINT16, w: UINT16, h: UINT16): void {
+export function DrawEditorInfoBox(str: Pointer<UINT16>, uiFont: UINT32, x: UINT16, y: UINT16, w: UINT16, h: UINT16): void {
   let usFillColorDark: UINT16;
   let usFillColorLight: UINT16;
   let usFillColorBack: UINT16;
@@ -464,7 +464,7 @@ function DrawEditorInfoBox(str: Pointer<UINT16>, uiFont: UINT32, x: UINT16, y: U
   InvalidateRegion(x, y, x2, y2);
 }
 
-function ClickEditorButton(iEditorButtonID: INT32): void {
+export function ClickEditorButton(iEditorButtonID: INT32): void {
   let butn: Pointer<GUI_BUTTON>;
   if (iEditorButtonID < 0 || iEditorButtonID >= Enum32.NUMBER_EDITOR_BUTTONS)
     return;
@@ -475,7 +475,7 @@ function ClickEditorButton(iEditorButtonID: INT32): void {
   }
 }
 
-function UnclickEditorButton(iEditorButtonID: INT32): void {
+export function UnclickEditorButton(iEditorButtonID: INT32): void {
   let butn: Pointer<GUI_BUTTON>;
   if (iEditorButtonID < 0 || iEditorButtonID >= Enum32.NUMBER_EDITOR_BUTTONS)
     return;
@@ -486,19 +486,19 @@ function UnclickEditorButton(iEditorButtonID: INT32): void {
   }
 }
 
-function HideEditorButton(iEditorButtonID: INT32): void {
+export function HideEditorButton(iEditorButtonID: INT32): void {
   HideButton(iEditorButton[iEditorButtonID]);
 }
 
-function ShowEditorButton(iEditorButtonID: INT32): void {
+export function ShowEditorButton(iEditorButtonID: INT32): void {
   ShowButton(iEditorButton[iEditorButtonID]);
 }
 
-function DisableEditorButton(iEditorButtonID: INT32): void {
+export function DisableEditorButton(iEditorButtonID: INT32): void {
   DisableButton(iEditorButton[iEditorButtonID]);
 }
 
-function EnableEditorButton(iEditorButtonID: INT32): void {
+export function EnableEditorButton(iEditorButtonID: INT32): void {
   EnableButton(iEditorButton[iEditorButtonID]);
 }
 
@@ -513,7 +513,7 @@ function ClickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: IN
   }
 }
 
-function UnclickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
+export function UnclickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   let i: INT32;
   let b: Pointer<GUI_BUTTON>;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) {
@@ -524,25 +524,25 @@ function UnclickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: 
   }
 }
 
-function HideEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
+export function HideEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   let i: INT32;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     HideButton(iEditorButton[i]);
 }
 
-function ShowEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
+export function ShowEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   let i: INT32;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     ShowButton(iEditorButton[i]);
 }
 
-function DisableEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
+export function DisableEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   let i: INT32;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     DisableButton(iEditorButton[i]);
 }
 
-function EnableEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
+export function EnableEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   let i: INT32;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     EnableButton(iEditorButton[i]);
@@ -826,7 +826,7 @@ function RenderEditorInfo(): void {
   }
 }
 
-function ProcessEditorRendering(): void {
+export function ProcessEditorRendering(): void {
   let fSaveBuffer: boolean = false;
   if (gfRenderTaskbar) // do a full taskbar render.
   {

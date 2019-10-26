@@ -46,7 +46,7 @@ let gsLastVisibleToSoldierGridNo: INT16 = NOWHERE;
 
 //*******  Functions **************************************************
 
-function DisplayCoverOfSelectedGridNo(): void {
+export function DisplayCoverOfSelectedGridNo(): void {
   let sGridNo: INT16;
   let bStance: INT8;
 
@@ -137,7 +137,7 @@ function AddCoverTileToEachGridNo(): void {
   }
 }
 
-function RemoveCoverOfSelectedGridNo(): void {
+export function RemoveCoverOfSelectedGridNo(): void {
   let uiCntX: UINT32;
   let uiCntY: UINT32;
   let fRoof: boolean = (gsInterfaceLevel != Enum214.I_GROUND_LEVEL);
@@ -458,7 +458,7 @@ function GetCurrentMercForDisplayCoverStance(): INT8 {
   return bStance;
 }
 
-function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
+export function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
   let usRange: UINT16 = 0;
   let zOutputString: CHAR16[] /* [512] */;
 
@@ -493,7 +493,7 @@ function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
   // gJa25SaveStruct.uiDisplayGunRangeCounter++;
 }
 
-function DisplayGridNoVisibleToSoldierGrid(): void {
+export function DisplayGridNoVisibleToSoldierGrid(): void {
   let sGridNo: INT16;
   //	INT8	bStance;
 
@@ -672,7 +672,7 @@ function AddVisibleToSoldierToEachGridNo(): void {
   }
 }
 
-function RemoveVisibleGridNoAtSelectedGridNo(): void {
+export function RemoveVisibleGridNoAtSelectedGridNo(): void {
   let uiCntX: UINT32;
   let uiCntY: UINT32;
   let bVisibleToSoldier: INT8;
@@ -795,7 +795,7 @@ function IsTheRoofVisible(sGridNo: INT16): boolean {
   return false;
 }
 
-function ChangeSizeOfDisplayCover(iNewSize: INT32): void {
+export function ChangeSizeOfDisplayCover(iNewSize: INT32): void {
   // if the new size is smaller or greater, scale it
   if (iNewSize < DC__MIN_SIZE) {
     iNewSize = DC__MIN_SIZE;
@@ -811,7 +811,7 @@ function ChangeSizeOfDisplayCover(iNewSize: INT32): void {
   DisplayCoverOfSelectedGridNo();
 }
 
-function ChangeSizeOfLOS(iNewSize: INT32): void {
+export function ChangeSizeOfLOS(iNewSize: INT32): void {
   // if the new size is smaller or greater, scale it
   if (iNewSize < DC__MIN_SIZE) {
     iNewSize = DC__MIN_SIZE;

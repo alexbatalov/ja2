@@ -3,24 +3,24 @@ const CLOCK_Y = 459;
 let gOldClippingRect: SGPRect;
 let gOldDirtyClippingRect: SGPRect;
 
-let guiTacticalInterfaceFlags: UINT32;
+export let guiTacticalInterfaceFlags: UINT32;
 
 let gusUICurIntTileEffectIndex: UINT16;
 let gsUICurIntTileEffectGridNo: INT16;
 let gsUICurIntTileOldShade: UINT8;
 
-let gfRerenderInterfaceFromHelpText: boolean = false;
+export let gfRerenderInterfaceFromHelpText: boolean = false;
 
 let gLockPanelOverlayRegion: MOUSE_REGION;
 
-let gfPausedTacticalRenderInterfaceFlags: boolean = false;
-let gfPausedTacticalRenderFlags: boolean = false;
+export let gfPausedTacticalRenderInterfaceFlags: boolean = false;
+export let gfPausedTacticalRenderFlags: boolean = false;
 
-function SetTacticalInterfaceFlags(uiFlags: UINT32): void {
+export function SetTacticalInterfaceFlags(uiFlags: UINT32): void {
   guiTacticalInterfaceFlags = uiFlags;
 }
 
-function HandleTacticalPanelSwitch(): void {
+export function HandleTacticalPanelSwitch(): void {
   if (gfSwitchPanel) {
     SetCurrentInterfacePanel(gbNewPanel);
     SetCurrentTacticalPanelCurrentMerc(gubNewPanelParam);
@@ -32,7 +32,7 @@ function HandleTacticalPanelSwitch(): void {
   }
 }
 
-function RenderTacticalInterface(): void {
+export function RenderTacticalInterface(): void {
   // handle paused render of tactical
   HandlePausedTacticalRender();
 
@@ -75,7 +75,7 @@ function HandlePausedTacticalRender(): void {
   return;
 }
 
-function RenderTacticalInterfaceWhileScrolling(): void {
+export function RenderTacticalInterfaceWhileScrolling(): void {
   RenderButtons();
 
   switch (gsCurInterfacePanel) {
@@ -92,7 +92,7 @@ function RenderTacticalInterfaceWhileScrolling(): void {
   HandleAutoFaces();
 }
 
-function SetUpInterface(): void {
+export function SetUpInterface(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pIntTile: Pointer<LEVELNODE>;
 
@@ -206,7 +206,7 @@ function SetUpInterface(): void {
   }
 }
 
-function ResetInterface(): void {
+export function ResetInterface(): void {
   let pNode: Pointer<LEVELNODE>;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
@@ -375,7 +375,7 @@ function RenderRubberBanding(): void {
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-function RenderTopmostTacticalInterface(): void {
+export function RenderTopmostTacticalInterface(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: UINT32;
   /* static */ let uiBogTarget: UINT32 = 0;
@@ -732,7 +732,7 @@ function UnLockTacticalInterface(): void {
   }
 }
 
-function EraseInterfaceMenus(fIgnoreUIUnLock: boolean): void {
+export function EraseInterfaceMenus(fIgnoreUIUnLock: boolean): void {
   // ATE: If we are currently talking, setup this flag so that the
   // automatic handler in handledialogue doesn't adjust the UI setting
   if ((gTacticalStatus.uiFlags & ENGAGED_IN_CONV) && fIgnoreUIUnLock) {
@@ -748,7 +748,7 @@ function EraseInterfaceMenus(fIgnoreUIUnLock: boolean): void {
   DeleteTalkingMenu();
 }
 
-function AreWeInAUIMenu(): boolean {
+export function AreWeInAUIMenu(): boolean {
   if (gfInMovementMenu || gfInOpenDoorMenu || gfInItemPickupMenu || gfInSectorExitMenu || gfInTalkPanel) {
     return true;
   } else {
@@ -756,7 +756,7 @@ function AreWeInAUIMenu(): boolean {
   }
 }
 
-function ResetInterfaceAndUI(): void {
+export function ResetInterfaceAndUI(): void {
   // Erase menus
   EraseInterfaceMenus(false);
 
@@ -776,7 +776,7 @@ function ResetInterfaceAndUI(): void {
   HandleTacticalUI();
 }
 
-function InterfaceOKForMeanwhilePopup(): boolean {
+export function InterfaceOKForMeanwhilePopup(): boolean {
   if (gfSwitchPanel) {
     return false;
   }

@@ -1,7 +1,7 @@
 // Handles the dynamic changing of text input fields and button modes depending on the currently edited
 // item.  Both the merc's inventory panel, and the items tab use the same code to accomplish this.
 
-const enum Enum48 {
+export const enum Enum48 {
   ITEMSTATS_APPLY,
   ITEMSTATS_CANCEL,
   ITEMSTATS_DEFAULT,
@@ -13,7 +13,7 @@ const enum Enum48 {
 // enumerations for all of the different action items.  Used by the popup menu for
 // changing the type of action item.  When modified, an equivalent text array must be
 // changed as well.
-const enum Enum49 {
+export const enum Enum49 {
   ACTIONITEM_TRIP_KLAXON,
   ACTIONITEM_FLARE,
   ACTIONITEM_TEARGAS,

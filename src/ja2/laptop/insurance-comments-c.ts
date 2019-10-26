@@ -24,7 +24,7 @@ let gSelectedInsuranceCommentLinkRegion: MOUSE_REGION[] /* [3] */;
 function GameInitInsuranceComments(): void {
 }
 
-function EnterInsuranceComments(): boolean {
+export function EnterInsuranceComments(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT8;
   let usPosX: UINT16;
@@ -50,7 +50,7 @@ function EnterInsuranceComments(): boolean {
   return true;
 }
 
-function ExitInsuranceComments(): void {
+export function ExitInsuranceComments(): void {
   let i: UINT8;
   RemoveInsuranceDefaults();
   DeleteVideoObjectFromIndex(guiInsCmntBulletImage);
@@ -59,10 +59,10 @@ function ExitInsuranceComments(): void {
     MSYS_RemoveRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]));
 }
 
-function HandleInsuranceComments(): void {
+export function HandleInsuranceComments(): void {
 }
 
-function RenderInsuranceComments(): void {
+export function RenderInsuranceComments(): void {
   //  HVOBJECT hPixHandle;
   let sText: wchar_t[] /* [800] */;
   let usPosX: UINT16;

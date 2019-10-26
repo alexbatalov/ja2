@@ -1,18 +1,18 @@
 // DEFINES
-const BGND_FLAG_PERMANENT = 0x80000000;
-const BGND_FLAG_SINGLE = 0x40000000;
-const BGND_FLAG_SAVE_Z = 0x20000000;
-const BGND_FLAG_MERC = 0x10000000;
-const BGND_FLAG_SAVERECT = 0x08000000;
+export const BGND_FLAG_PERMANENT = 0x80000000;
+export const BGND_FLAG_SINGLE = 0x40000000;
+export const BGND_FLAG_SAVE_Z = 0x20000000;
+export const BGND_FLAG_MERC = 0x10000000;
+export const BGND_FLAG_SAVERECT = 0x08000000;
 const BGND_FLAG_TOPMOST = 0x04000000;
-const BGND_FLAG_ANIMATED = 0x00000001;
+export const BGND_FLAG_ANIMATED = 0x00000001;
 
-const VOVERLAY_DIRTYBYTEXT = 0x00000001;
-const VOVERLAY_STARTDISABLED = 0x00000002;
+export const VOVERLAY_DIRTYBYTEXT = 0x00000001;
+export const VOVERLAY_STARTDISABLED = 0x00000002;
 
-const VOVERLAY_DESC_TEXT = 0x00001000;
-const VOVERLAY_DESC_DISABLED = 0x00002000;
-const VOVERLAY_DESC_POSITION = 0x00004000;
+export const VOVERLAY_DESC_TEXT = 0x00001000;
+export const VOVERLAY_DESC_DISABLED = 0x00002000;
+export const VOVERLAY_DESC_POSITION = 0x00004000;
 
 // STRUCTURES
 
@@ -20,7 +20,7 @@ const VOVERLAY_DESC_POSITION = 0x00004000;
 type OVERLAY_CALLBACK = (a: Pointer<VIDEO_OVERLAY>) => void;
 
 // Struct for backgrounds
-interface BACKGROUND_SAVE {
+export interface BACKGROUND_SAVE {
   fAllocated: boolean;
   fFilled: boolean;
   fFreeMemory: boolean;
@@ -39,7 +39,7 @@ interface BACKGROUND_SAVE {
 }
 
 // Struct for topmost blitters
-interface VIDEO_OVERLAY {
+export interface VIDEO_OVERLAY {
   uiFlags: UINT32;
   fAllocated: boolean;
   fDisabled: boolean;
@@ -60,7 +60,7 @@ interface VIDEO_OVERLAY {
 }
 
 // Struct for init topmost blitter
-interface VIDEO_OVERLAY_DESC {
+export interface VIDEO_OVERLAY_DESC {
   uiFlags: UINT32;
   fDisabled: boolean;
   sLeft: INT16;

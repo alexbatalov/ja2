@@ -1,4 +1,4 @@
-let GlowColorsList: INT32[][] /* [][3] */ = [
+export let GlowColorsList: INT32[][] /* [][3] */ = [
   [ 0, 0, 0 ],
   [ 0, 25, 0 ],
   [ 0, 50, 0 ],
@@ -32,7 +32,7 @@ let uiCursorPosition: UINT16 = IMP_PLAYER_ACTIVATION_STRING_X;
 // has a new char been added or deleted?
 let fNewCharInActivationString: boolean = false;
 
-function EnterImpHomePage(): void {
+export function EnterImpHomePage(): void {
   // upon entry to Imp home page
   memset(pPlayerActivationString, 0, sizeof(pPlayerActivationString));
 
@@ -53,7 +53,7 @@ function EnterImpHomePage(): void {
   return;
 }
 
-function RenderImpHomePage(): void {
+export function RenderImpHomePage(): void {
   // the background
   RenderProfileBackGround();
 
@@ -78,14 +78,14 @@ function RenderImpHomePage(): void {
   return;
 }
 
-function ExitImpHomePage(): void {
+export function ExitImpHomePage(): void {
   // remove buttons
   RemoveIMPHomePageButtons();
 
   return;
 }
 
-function HandleImpHomePage(): void {
+export function HandleImpHomePage(): void {
   // handle keyboard input for this screen
   GetPlayerKeyBoardInputForIMPHomePage();
 

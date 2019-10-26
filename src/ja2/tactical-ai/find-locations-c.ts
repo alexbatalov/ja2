@@ -1,4 +1,4 @@
-let gubAIPathCosts: INT8[][] /* [19][19] */;
+export let gubAIPathCosts: INT8[][] /* [19][19] */;
 
 function CalcPercentBetter(iOldValue: INT32, iNewValue: INT32, iOldScale: INT32, iNewScale: INT32): INT32 {
   let iValueChange: INT32;
@@ -405,7 +405,7 @@ function NumberOfTeamMatesAdjacent(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT1
   return ubCount;
 }
 
-function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPercentBetter: Pointer<INT32>): INT16 {
+export function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPercentBetter: Pointer<INT32>): INT16 {
   // all 32-bit integers for max. speed
   let uiLoop: UINT32;
   let iCurrentCoverValue: INT32;
@@ -852,7 +852,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
   return (NOWHERE); // return that no suitable cover was found
 }
 
-function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let sGridNo: INT16;
   let sBestSpot: INT16 = NOWHERE;
   let uiLoop: UINT32;
@@ -1120,7 +1120,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   return sBestSpot;
 }
 
-function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let sGridNo: INT16;
   let sClosestLand: INT16 = NOWHERE;
   let sPathCost: INT16;
@@ -1225,7 +1225,7 @@ function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   return sClosestLand;
 }
 
-function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let sGridNo: INT16;
   let sClosestSpot: INT16 = NOWHERE;
   let sPathCost: INT16;
@@ -1356,7 +1356,7 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
 const MINIMUM_REQUIRED_STATUS = 70;
 
-function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: UINT16): INT8 {
+export function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: UINT16): INT8 {
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
   let sMaxRight: INT16;
@@ -1634,7 +1634,7 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
   return Enum289.AI_ACTION_NONE;
 }
 
-function FindClosestDoor(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
+export function FindClosestDoor(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let sClosestDoor: INT16 = NOWHERE;
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
@@ -1678,7 +1678,7 @@ function FindClosestDoor(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   return sClosestDoor;
 }
 
-function FindNearestEdgepointOnSpecifiedEdge(sGridNo: INT16, bEdgeCode: INT8): INT16 {
+export function FindNearestEdgepointOnSpecifiedEdge(sGridNo: INT16, bEdgeCode: INT8): INT16 {
   let iLoop: INT32;
   let psEdgepointArray: Pointer<INT16>;
   let iEdgepointArraySize: INT32;
@@ -1722,7 +1722,7 @@ function FindNearestEdgepointOnSpecifiedEdge(sGridNo: INT16, bEdgeCode: INT8): I
   return sClosestSpot;
 }
 
-function FindNearestEdgePoint(sGridNo: INT16): INT16 {
+export function FindNearestEdgePoint(sGridNo: INT16): INT16 {
   let sGridX: INT16;
   let sGridY: INT16;
   let sScreenX: INT16;
@@ -1798,7 +1798,7 @@ function FindNearestEdgePoint(sGridNo: INT16): INT16 {
 
 const EDGE_OF_MAP_SEARCH = 5;
 
-function FindNearbyPointOnEdgeOfMap(pSoldier: Pointer<SOLDIERTYPE>, pbDirection: Pointer<INT8>): INT16 {
+export function FindNearbyPointOnEdgeOfMap(pSoldier: Pointer<SOLDIERTYPE>, pbDirection: Pointer<INT8>): INT16 {
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
   let sMaxRight: INT16;
@@ -1896,7 +1896,7 @@ function FindRouteBackOntoMap(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16
   }
 }
 
-function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: boolean): INT16 {
+export function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: boolean): INT16 {
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
   let sMaxRight: INT16;
@@ -1949,7 +1949,7 @@ function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: bool
   return sClosestSpot;
 }
 
-function FindNearestOpenableNonDoor(sStartGridNo: INT16): INT16 {
+export function FindNearestOpenableNonDoor(sStartGridNo: INT16): INT16 {
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
   let sMaxRight: INT16;

@@ -3,7 +3,7 @@ let giIMPAboutUsButton: INT32[] /* [1] */;
 let giIMPAboutUsButtonImage: INT32[] /* [1] */;
 ;
 
-function EnterIMPAboutUs(): void {
+export function EnterIMPAboutUs(): void {
   // create buttons
   CreateIMPAboutUsButtons();
 
@@ -13,7 +13,7 @@ function EnterIMPAboutUs(): void {
   return;
 }
 
-function ExitIMPAboutUs(): void {
+export function ExitIMPAboutUs(): void {
   // exit from IMP About us page
 
   // delete Buttons
@@ -22,7 +22,7 @@ function ExitIMPAboutUs(): void {
   return;
 }
 
-function RenderIMPAboutUs(): void {
+export function RenderIMPAboutUs(): void {
   // rneders the IMP about us page
 
   // the background
@@ -39,7 +39,7 @@ function RenderIMPAboutUs(): void {
   return;
 }
 
-function HandleIMPAboutUs(): void {
+export function HandleIMPAboutUs(): void {
   // handles the IMP about us page
 
   return;

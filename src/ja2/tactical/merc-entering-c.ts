@@ -329,16 +329,16 @@ let gbHeliRound: INT8;
 let fFadingHeliIn: boolean = false;
 let fFadingHeliOut: boolean = false;
 
-let gfIngagedInDrop: boolean = false;
+export let gfIngagedInDrop: boolean = false;
 
 let gpHeli: Pointer<ANITILE>;
-let gfFirstHeliRun: boolean;
+export let gfFirstHeliRun: boolean;
 
-function ResetHeliSeats(): void {
+export function ResetHeliSeats(): void {
   gbNumHeliSeatsOccupied = 0;
 }
 
-function AddMercToHeli(ubID: UINT8): void {
+export function AddMercToHeli(ubID: UINT8): void {
   let cnt: INT32;
 
   if (gbNumHeliSeatsOccupied < MAX_MERC_IN_HELI) {
@@ -354,7 +354,7 @@ function AddMercToHeli(ubID: UINT8): void {
   }
 }
 
-function StartHelicopterRun(sGridNoSweetSpot: INT16): void {
+export function StartHelicopterRun(sGridNoSweetSpot: INT16): void {
   let sX: INT16;
   let sY: INT16;
 
@@ -394,7 +394,7 @@ function StartHelicopterRun(sGridNoSweetSpot: INT16): void {
   guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
 }
 
-function HandleHeliDrop(): void {
+export function HandleHeliDrop(): void {
   let ubScriptCode: UINT8;
   let uiClock: UINT32;
   // INT16 sWorldX, sWorldY;

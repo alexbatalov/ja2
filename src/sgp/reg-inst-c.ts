@@ -43,7 +43,7 @@ const REG_KEY_SIZE = 50;
 //
 //**************************************************************************
 
-function InitializeRegistryKeys(lpszAppName: STR, lpszRegistryKey: STR): boolean {
+export function InitializeRegistryKeys(lpszAppName: STR, lpszRegistryKey: STR): boolean {
   CHECKF(lpszAppName != null);
   CHECKF(lpszRegistryKey != null);
   // CHECKF(gpszRegistryKey == NULL);
@@ -64,7 +64,7 @@ function InitializeRegistryKeys(lpszAppName: STR, lpszRegistryKey: STR): boolean
 // returns key for HKEY_CURRENT_USER\"Software"\RegistryKey\ProfileName
 // creating it if it doesn't exist
 // responsibility of the caller to call RegCloseKey() on the returned HKEY
-function GetAppRegistryKey(): HKEY {
+export function GetAppRegistryKey(): HKEY {
   let hAppKey: HKEY = null;
   let hSoftKey: HKEY = null;
   let hCompanyKey: HKEY = null;
@@ -270,7 +270,7 @@ function WriteProfileInt(lpszSection: STR, lpszEntry: STR, nValue: int): boolean
   return true;
 }
 
-function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): boolean {
+export function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): boolean {
   assert(lpszSection != null);
 
   if (gszRegistryKey[0] != '\0') {

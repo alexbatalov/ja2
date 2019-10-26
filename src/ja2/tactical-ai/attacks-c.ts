@@ -10,7 +10,7 @@
 
 // this define should go in soldier control.h
 
-function LoadWeaponIfNeeded(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function LoadWeaponIfNeeded(pSoldier: Pointer<SOLDIERTYPE>): void {
   let usInHand: UINT16;
   let bPayloadPocket: INT8;
 
@@ -56,7 +56,7 @@ function LoadWeaponIfNeeded(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKTYPE>): void {
+export function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKTYPE>): void {
   let uiLoop: UINT32;
   let iAttackValue: INT32;
   let iThreatValue: INT32;
@@ -908,7 +908,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
   }
 }
 
-function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>, fBladeAttack: boolean): void {
+export function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>, fBladeAttack: boolean): void {
   let uiLoop: UINT32;
   let iAttackValue: INT32;
   let iThreatValue: INT32;
@@ -1103,7 +1103,7 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
   pSoldier.value.usUIMovementMode = usTrueMovementMode;
 }
 
-function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>): void {
+export function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>): void {
   let uiLoop: UINT32;
   let iAttackValue: INT32;
   let iThreatValue: INT32;
@@ -1545,7 +1545,7 @@ INT8 TryToReloadLauncher( SOLDIERTYPE * pSoldier )
 }
 */
 
-function CanNPCAttack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function CanNPCAttack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bCanAttack: INT8;
   let bWeaponIn: INT8;
 
@@ -1585,7 +1585,7 @@ function CanNPCAttack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return bCanAttack;
 }
 
-function CheckIfTossPossible(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTACKTYPE>): void {
+export function CheckIfTossPossible(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTACKTYPE>): void {
   let ubMinAPcost: UINT8;
 
   if (TANK(pSoldier)) {
@@ -1751,7 +1751,7 @@ function CountAdjacentSpreadTargets(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget
   return bTargets - 1;
 }
 
-function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bTargetLevel: INT8): INT16 {
+export function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bTargetLevel: INT8): INT16 {
   let bDirLoop: INT8;
   let bDir: INT8;
   let bCheckDir: INT8;
@@ -1908,7 +1908,7 @@ function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bT
   return sFirstTarget;
 }
 
-function AdvanceToFiringRange(pSoldier: Pointer<SOLDIERTYPE>, sClosestOpponent: INT16): INT16 {
+export function AdvanceToFiringRange(pSoldier: Pointer<SOLDIERTYPE>, sClosestOpponent: INT16): INT16 {
   // see how far we can go down a path and still shoot
 
   let bAttackCost: INT8;

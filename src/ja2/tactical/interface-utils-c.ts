@@ -42,7 +42,7 @@ let pbCarPortraitFileNames: STR[] /* [] */ = [
 ];
 
 // load int he portraits for the car faces that will be use in mapscreen
-function LoadCarPortraitValues(): boolean {
+export function LoadCarPortraitValues(): boolean {
   let iCounter: INT32 = 0;
   let VObjectDesc: VOBJECT_DESC;
 
@@ -58,7 +58,7 @@ function LoadCarPortraitValues(): boolean {
 }
 
 // get rid of the images we loaded for the mapscreen car portraits
-function UnLoadCarPortraits(): void {
+export function UnLoadCarPortraits(): void {
   let iCounter: INT32 = 0;
 
   // car protraits loaded?
@@ -72,7 +72,7 @@ function UnLoadCarPortraits(): void {
   return;
 }
 
-function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
+export function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -149,7 +149,7 @@ function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
   UnLockVideoSurface(uiBuffer);
 }
 
-function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
+export function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -241,7 +241,7 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   UnLockVideoSurface(uiBuffer);
 }
 
-function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
+export function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -281,7 +281,7 @@ function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   UnLockVideoSurface(uiBuffer);
 }
 
-function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, sColor1: INT16, sColor2: INT16, fErase: boolean, uiBuffer: UINT32): void {
+export function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, sColor1: INT16, sColor2: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -345,7 +345,7 @@ function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: I
   }
 }
 
-function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY: INT16, fAutoFace: boolean): void {
+export function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY: INT16, fAutoFace: boolean): void {
   let fDoFace: boolean = false;
   let iFaceIndex: INT32 = -1;
   let ubVehicleType: UINT8 = 0;

@@ -1,7 +1,7 @@
-const MAX_VEHICLES = 10;
+export const MAX_VEHICLES = 10;
 
 // type of vehicles
-const enum Enum279 {
+export const enum Enum279 {
   ELDORADO_CAR = 0,
   HUMMER,
   ICE_CREAM_TRUCK,
@@ -23,7 +23,7 @@ const enum Enum280 {
 }
 
 // internal critical hit locations
-const enum Enum281 {
+export const enum Enum281 {
   ENGINE_HIT_LOCATION,
   CREW_COMPARTMENT_HIT_LOCATION,
   RF_TIRE_HIT_LOCATION,
@@ -39,7 +39,7 @@ const enum Enum281 {
 // extern INT8 bInternalCritHitsByLocation[NUMBER_OF_EXTERNAL_HIT_LOCATIONS_ON_VEHICLE][ NUMBER_OF_INTERNAL_HIT_LOCATIONS_IN_VEHICLE ];
 
 // struct for vehicles
-interface VEHICLETYPE {
+export interface VEHICLETYPE {
   pMercPath: PathStPtr; // vehicle's stategic path list
   ubMovementGroup: UINT8; // the movement group this vehicle belongs to
   ubVehicleType: UINT8; // type of vehicle

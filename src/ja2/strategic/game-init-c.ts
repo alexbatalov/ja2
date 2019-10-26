@@ -1,4 +1,4 @@
-let gubScreenCount: UINT8 = 0;
+export let gubScreenCount: UINT8 = 0;
 
 function InitNPCs(): void {
   let pProfile: Pointer<MERCPROFILESTRUCT>;
@@ -127,7 +127,7 @@ function InitNPCs(): void {
   gMercProfiles[Enum268.DEVIN].bNPCData = 3;
 }
 
-function InitBloodCatSectors(): void {
+export function InitBloodCatSectors(): void {
   let i: INT32;
   // Hard coded table of bloodcat populations.  We don't have
   // access to the real population (if different) until we physically
@@ -186,7 +186,7 @@ function InitBloodCatSectors(): void {
   }
 }
 
-function InitStrategicLayer(): void {
+export function InitStrategicLayer(): void {
   // Clear starategic layer!
   SetupNewStrategicGame();
   InitQuestEngine();
@@ -233,7 +233,7 @@ function InitStrategicLayer(): void {
   fDisableMapInterfaceDueToBattle = false;
 }
 
-function ShutdownStrategicLayer(): void {
+export function ShutdownStrategicLayer(): void {
   DeleteAllStrategicEvents();
   RemoveAllGroups();
   TrashUndergroundSectorInfo();
@@ -241,7 +241,7 @@ function ShutdownStrategicLayer(): void {
   KillStrategicAI();
 }
 
-function InitNewGame(fReset: boolean): boolean {
+export function InitNewGame(fReset: boolean): boolean {
   let iStartingCash: INT32;
 
   //	static fScreenCount = 0;
@@ -387,7 +387,7 @@ function InitNewGame(fReset: boolean): boolean {
   return true;
 }
 
-function AnyMercsHired(): boolean {
+export function AnyMercsHired(): boolean {
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let bLastTeamID: INT16;
@@ -577,7 +577,7 @@ function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): boolean {
 }
 
 // This function is called when the game is REstarted.  Things that need to be reinited are placed in here
-function ReStartingGame(): void {
+export function ReStartingGame(): void {
   let cnt: UINT16;
 
   // Pause the game

@@ -112,7 +112,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
   return FirstWrappedString.pNextWrappedString;
 }
 
-function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordIsWiderThenWidth: Pointer<UINT16>, pString: STR16, ...args: any[]): Pointer<WRAPPED_STRING> {
+export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordIsWiderThenWidth: Pointer<UINT16>, pString: STR16, ...args: any[]): Pointer<WRAPPED_STRING> {
   let FirstWrappedString: WRAPPED_STRING;
   let pWrappedString: Pointer<WRAPPED_STRING> = null;
   let TempString: wchar_t[] /* [1024] */;
@@ -305,7 +305,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
 //					the gap in between the lines
 //
 
-function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: boolean, uiFlags: UINT32): UINT16 {
+export function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: boolean, uiFlags: UINT32): UINT16 {
   let pFirstWrappedString: Pointer<WRAPPED_STRING>;
   let pTempWrappedString: Pointer<WRAPPED_STRING>;
   let uiCounter: UINT16 = 0;
@@ -371,7 +371,7 @@ function DeleteWrappedString(pWrappedString: Pointer<WRAPPED_STRING>): UINT16 {
 //			do you want to display it using dirty rects, TRUE or FALSE
 //			flags for either LEFT_JUSTIFIED, CENTER_JUSTIFIED, RIGHT_JUSTIFIED
 
-function DrawTextToScreen(pStr: STR16, usLocX: UINT16, usLocY: UINT16, usWidth: UINT16, ulFont: UINT32, ubColor: UINT8, ubBackGroundColor: UINT8, fDirty: boolean, ulFlags: UINT32): boolean {
+export function DrawTextToScreen(pStr: STR16, usLocX: UINT16, usLocY: UINT16, usWidth: UINT16, ulFont: UINT32, ubColor: UINT8, ubBackGroundColor: UINT8, fDirty: boolean, ulFlags: UINT32): boolean {
   let usPosX: UINT16;
   let usPosY: UINT16;
   let usFontHeight: UINT16 = 0;
@@ -443,7 +443,7 @@ function DrawTextToScreen(pStr: STR16, usLocX: UINT16, usLocY: UINT16, usWidth: 
 //					the gap in between the lines
 //
 
-function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: boolean, uiFlags: UINT32): UINT16 {
+export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: boolean, uiFlags: UINT32): UINT16 {
   let usHeight: UINT16;
   let usSourceCounter: UINT16 = 0;
   let usDestCounter: UINT16 = 0;
@@ -848,7 +848,7 @@ function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16
   return (usLinesUsed * (WFGetFontHeight(uiFont) + ubGap)); // +ubGap
 }
 
-function CleanOutControlCodesFromString(pSourceString: STR16, pDestString: STR16): void {
+export function CleanOutControlCodesFromString(pSourceString: STR16, pDestString: STR16): void {
   let iSourceCounter: INT32 = 0;
   let iDestCounter: INT32 = 0;
 
@@ -1223,7 +1223,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
 }
 
 // now variant for grabbing height
-function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: boolean, uiFlags: UINT32): UINT16 {
+export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: boolean, uiFlags: UINT32): UINT16 {
   let usHeight: UINT16;
   let usSourceCounter: UINT16 = 0;
   let usDestCounter: UINT16 = 0;
@@ -1540,7 +1540,7 @@ function ShadowText(uiDestVSurface: UINT32, pString: STR16, uiFont: UINT32, usPo
 }
 
 // for email
-function GetFirstRecordOnThisPage(RecordList: RecordPtr, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32): RecordPtr {
+export function GetFirstRecordOnThisPage(RecordList: RecordPtr, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32): RecordPtr {
   // get the first record on this page - build pages up until this point
 
   let CurrentRecord: RecordPtr = null;
@@ -1582,7 +1582,7 @@ function GetFirstRecordOnThisPage(RecordList: RecordPtr, uiFont: UINT32, usWidth
 }
 
 // for file viewer
-function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32, WidthList: FileRecordWidthPtr): FileStringPtr {
+export function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32, WidthList: FileRecordWidthPtr): FileStringPtr {
   // get the first record on this page - build pages up until this point
 
   let CurrentRecord: FileStringPtr = null;
@@ -1655,7 +1655,7 @@ function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT32, usW
   return CurrentRecord;
 }
 
-function ReduceStringLength(pString: STR16, uiWidthToFitIn: UINT32, uiFont: UINT32): boolean {
+export function ReduceStringLength(pString: STR16, uiWidthToFitIn: UINT32, uiFont: UINT32): boolean {
   let OneChar: wchar_t[] /* [2] */;
   let zTemp: UINT16[] /* [1024] */;
   let zStrDots: wchar_t[] /* [16] */;

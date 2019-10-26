@@ -7,7 +7,7 @@ function DetermineOptimumAnimationCacheSize(): void {
   guiCacheSize = MIN_CACHE_SIZE;
 }
 
-function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): boolean {
+export function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): boolean {
   let cnt: UINT32;
 
   // Allocate entries
@@ -32,7 +32,7 @@ function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSu
   return true;
 }
 
-function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {
+export function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {
   // Allocate entries
   if (pAnimCache.value.usCachedSurfaces != null) {
     AnimDebugMsg(String("*** Removing Anim Cache surface for soldier %d", usSoldierID));
@@ -45,7 +45,7 @@ function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<Animation
   }
 }
 
-function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>, usSurfaceIndex: UINT16, usCurrentAnimation: UINT16): boolean {
+export function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>, usSurfaceIndex: UINT16, usCurrentAnimation: UINT16): boolean {
   let cnt: UINT8;
   let ubLowestIndex: UINT8 = 0;
   let sMostHits: INT16 = 32000;
@@ -113,7 +113,7 @@ function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<Anim
   return true;
 }
 
-function UnLoadCachedAnimationSurfaces(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {
+export function UnLoadCachedAnimationSurfaces(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {
   let cnt: UINT8;
 
   // Check to see if surface exists already
