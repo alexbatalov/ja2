@@ -12,7 +12,7 @@ let MsgBoxRect: SGPRect;
 export let gfMessageBoxResult: boolean = false;
 export let gubMessageBoxStatus: UINT8 = Enum52.MESSAGEBOX_NONE;
 
-export function CreateMessageBox(wzString: Pointer<UINT16>): void {
+export function CreateMessageBox(wzString: string /* Pointer<UINT16> */): void {
   let sPixLen: INT16;
   let sStartX: INT16;
   let sStartY: INT16;

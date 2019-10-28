@@ -178,7 +178,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
   let sY: INT16;
   let hHandle: HVOBJECT;
   let pTrav: Pointer<ETRLEObject>;
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
   let sWidth: INT16 = 0;
   let sHeight: INT16 = 0;
   let sOutLine: INT16 = 0;
@@ -274,7 +274,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
 }
 
 function UpdateHelpTextForInvnentoryStashSlots(): void {
-  let pStr: CHAR16[] /* [512] */;
+  let pStr: string /* CHAR16[512] */;
   let iCounter: INT32 = 0;
   let iFirstSlotOnPage: INT32 = (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT);
 
@@ -558,7 +558,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
   let iOldNumberOfObjects: INT32 = 0;
   let sDistanceFromObject: INT16 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   iCounter = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -1263,7 +1263,7 @@ function MapInventoryPoolDoneBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 function DisplayPagesForMapInventoryPool(): void {
   // get the current and last pages and display them
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sX: INT16;
   let sY: INT16;
 
@@ -1315,7 +1315,7 @@ export function GetTotalNumberOfItems(): INT32 {
 
 function DrawNumberOfIventoryPoolItems(): void {
   let iNumberOfItems: INT32 = 0;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sX: INT16;
   let sY: INT16;
 
@@ -1361,7 +1361,7 @@ function DestroyInventoryPoolDoneButton(): void {
 
 function DisplayCurrentSector(): void {
   // grab current sector being displayed
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sX: INT16;
   let sY: INT16;
 
@@ -1458,7 +1458,7 @@ export function HandleButtonStatesWhileMapInventoryActive(): void {
 function DrawTextOnSectorInventory(): void {
   let sX: INT16 = 0;
   let sY: INT16 = 0;
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
 
   // parse the string
   swprintf(sString, zMarksMapScreenText[11]);

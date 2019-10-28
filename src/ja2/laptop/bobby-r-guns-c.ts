@@ -439,8 +439,8 @@ export function DisplayItemInfo(uiItemClass: UINT32): boolean {
   let usTextPosY: UINT16;
   let ubFirstIndex: UINT16 = 0;
   let usItemIndex: UINT16;
-  let sDollarTemp: wchar_t[] /* [60] */;
-  let sTemp: wchar_t[] /* [60] */;
+  let sDollarTemp: string /* wchar_t[60] */;
+  let sTemp: string /* wchar_t[60] */;
   let pItemNumbers: INT16[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */;
 
   PosY = BOBBYR_GRID_PIC_Y;
@@ -759,7 +759,7 @@ function DisplayMiscInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: boolean, us
 } // DisplayMiscInfo
 
 function DisplayCostAndQty(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16, usBobbyIndex: UINT16, fUsed: boolean): UINT16 {
-  let sTemp: wchar_t[] /* [20] */;
+  let sTemp: string /* wchar_t[20] */;
   //	UINT8	ubPurchaseNumber;
 
   //
@@ -815,7 +815,7 @@ function DisplayCostAndQty(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16
 }
 
 function DisplayRof(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  let sTemp: wchar_t[] /* [20] */;
+  let sTemp: string /* wchar_t[20] */;
 
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_ROF], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
@@ -830,7 +830,7 @@ function DisplayRof(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT
 }
 
 function DisplayDamage(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  let sTemp: wchar_t[] /* [20] */;
+  let sTemp: string /* wchar_t[20] */;
 
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_DAMAGE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   swprintf(sTemp, "%4d", Weapon[usIndex].ubImpact);
@@ -840,7 +840,7 @@ function DisplayDamage(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): U
 }
 
 function DisplayRange(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  let sTemp: wchar_t[] /* [20] */;
+  let sTemp: string /* wchar_t[20] */;
 
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_RANGE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   swprintf(sTemp, "%3d %s", Weapon[usIndex].usRange, pMessageStrings[Enum333.MSG_METER_ABBREVIATION]);
@@ -850,7 +850,7 @@ function DisplayRange(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UI
 }
 
 function DisplayMagazine(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  let sTemp: wchar_t[] /* [20] */;
+  let sTemp: string /* wchar_t[20] */;
 
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_MAGAZINE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   swprintf(sTemp, "%3d %s", Weapon[usIndex].ubMagSize, pMessageStrings[Enum333.MSG_ROUNDS_ABBREVIATION]);
@@ -860,7 +860,7 @@ function DisplayMagazine(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16):
 }
 
 function DisplayCaliber(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  let zTemp: CHAR16[] /* [128] */;
+  let zTemp: string /* CHAR16[128] */;
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_CALIBRE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   //	if ammo is begin drawn
@@ -883,7 +883,7 @@ function DisplayCaliber(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): 
 }
 
 function DisplayWeight(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  let sTemp: wchar_t[] /* [20] */;
+  let sTemp: string /* wchar_t[20] */;
 
   // display the 'weight' string
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_WEIGHT], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
@@ -895,8 +895,8 @@ function DisplayWeight(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): U
 }
 
 function DisplayItemNameAndInfo(usPosY: UINT16, usIndex: UINT16, usBobbyIndex: UINT16, fUsed: boolean): void {
-  let sText: wchar_t[] /* [400] */;
-  let sTemp: wchar_t[] /* [20] */;
+  let sText: string /* wchar_t[400] */;
+  let sTemp: string /* wchar_t[20] */;
   let uiStartLoc: UINT32 = 0;
 
   let ubPurchaseNumber: UINT8;
@@ -1065,7 +1065,7 @@ export function SetFirstLastPagesForUsed(): void {
 
 function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbers: Pointer<INT16>): void {
   let i: UINT8;
-  let zItemName: CHAR16[] /* [SIZE_ITEM_NAME] */;
+  let zItemName: string /* CHAR16[SIZE_ITEM_NAME] */;
   let ubItemCount: UINT8 = 0;
 
   if (gfBigImageMouseRegionCreated)

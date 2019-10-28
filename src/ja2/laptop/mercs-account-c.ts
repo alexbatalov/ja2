@@ -107,7 +107,7 @@ export function HandleMercsAccount(): void {
 }
 
 export function RenderMercsAccount(): void {
-  let sText: wchar_t[] /* [100] */;
+  let sText: string /* wchar_t[100] */;
   let hPixHandle: HVOBJECT;
 
   DrawMecBackGround();
@@ -150,8 +150,8 @@ function BtnMercAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      let wzAuthorizeString: CHAR16[] /* [512] */;
-      let wzDollarAmount: CHAR16[] /* [128] */;
+      let wzAuthorizeString: string /* CHAR16[512] */;
+      let wzDollarAmount: string /* CHAR16[128] */;
 
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
@@ -198,7 +198,7 @@ function BtnMercBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 function DisplayHiredMercs(): void {
   let usPosY: UINT16;
   let uiContractCharge: UINT32;
-  let sTemp: wchar_t[] /* [20] */;
+  let sTemp: string /* wchar_t[20] */;
   let i: UINT8;
   let usMercID: UINT8;
   let ubFontColor: UINT8;

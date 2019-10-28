@@ -611,7 +611,7 @@ export function RemoveLockedDoorCursors(): void {
 }
 
 export function SetupTextInputForBuildings(): void {
-  let str: UINT16[] /* [4] */;
+  let str: string /* UINT16[4] */;
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddUserInputField(null); // just so we can use short cut keys while not typing.
   swprintf(str, "%d", gubMaxRoomNumber);
@@ -619,7 +619,7 @@ export function SetupTextInputForBuildings(): void {
 }
 
 export function ExtractAndUpdateBuildingInfo(): void {
-  let str: UINT16[] /* [4] */;
+  let str: string /* UINT16[4] */;
   let temp: INT32;
   // extract light1 colors
   temp = Math.min(GetNumericStrictValueFromField(1), 255);

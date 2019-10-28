@@ -92,7 +92,7 @@ export let DoorTable: Pointer<DOOR> = null;
 export function LoadLockTable(): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let uiBytesToRead: UINT32;
-  let pFileName: Pointer<CHAR8> = "BINARYDATA\\Locks.bin";
+  let pFileName: string /* Pointer<CHAR8> */ = "BINARYDATA\\Locks.bin";
   let hFile: HWFILE;
 
   // Load the Lock Table
@@ -750,7 +750,7 @@ export function UpdateDoorPerceivedValue(pDoor: Pointer<DOOR>): void {
 export function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let uiNumBytesWritten: UINT32;
   let uiSizeToSave: UINT32 = 0;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
 
   //	return( TRUE );
@@ -808,7 +808,7 @@ export function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT1
 export function LoadDoorTableFromDoorTableTempFile(): boolean {
   let uiNumBytesRead: UINT32;
   let hFile: HWFILE;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
 
   //	return( TRUE );
 
@@ -1468,7 +1468,7 @@ function SetDoorOpenStatus(sGridNo: INT16, fOpen: boolean): boolean {
 }
 
 export function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
   let ubCnt: UINT8;
@@ -1521,7 +1521,7 @@ export function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSector
 }
 
 export function LoadDoorStatusArrayFromDoorStatusTempFile(): boolean {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
   let ubLoop: UINT8;

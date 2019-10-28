@@ -114,7 +114,7 @@ export function GameInitInsuranceContract(): void {
 }
 
 function EnterLaptopInitInsuranceContract(): void {
-  let zTextField: wchar_t[] /* [14] */;
+  let zTextField: string /* wchar_t[14] */;
 
   swprintf(zTextField, "%d", 0);
   SetInputFieldStringWith16BitString(1, zTextField);
@@ -225,7 +225,7 @@ export function HandleInsuranceContract(): void {
 
 export function RenderInsuranceContract(): void {
   let hPixHandle: HVOBJECT;
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let ubCount: UINT8 = 0;
   let sMercID: INT16;
   let sNextMercID: INT16;
@@ -365,8 +365,8 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   let usPosY: UINT16;
   let uiInsMercFaceImage: UINT32;
   let iCostOfContract: INT32 = 0;
-  let sTemp: char[] /* [100] */;
-  let sText: wchar_t[] /* [800] */;
+  let sTemp: string /* char[100] */;
+  let sText: string /* wchar_t[800] */;
   let fDisplayMercContractStateTextColorInRed: boolean = false;
 
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1277,7 +1277,7 @@ export function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYP
   } else {
     // if the player doesnt have enough money, tell him
     if (LaptopSaveInfo.iCurrentBalance < iAmountOfMoneyTransfer) {
-      let sText: wchar_t[] /* [800] */;
+      let sText: string /* wchar_t[800] */;
 
       GetInsuranceText(Enum90.INS_MLTI_NOT_ENOUGH_FUNDS, sText);
       if (guiCurrentScreen == Enum26.LAPTOP_SCREEN)

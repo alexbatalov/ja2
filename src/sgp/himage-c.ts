@@ -24,11 +24,11 @@ interface SplitUINT32 {
   /* } */
 }
 
-export function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
+export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT16): HIMAGE {
   let hImage: HIMAGE = null;
-  let Extension: SGPFILENAME;
-  let ExtensionSep: CHAR8[] /* [] */ = ".";
-  let StrPtr: STR;
+  let Extension: string /* SGPFILENAME */;
+  let ExtensionSep: string /* CHAR8[] */ = ".";
+  let StrPtr: string /* STR */;
   let iFileLoader: UINT32;
 
   // Depending on extension of filename, use different image readers

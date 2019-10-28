@@ -36,7 +36,7 @@ namespace ja2 {
 //
 //**************************************************************************
 
-function InstallApplication(strAppname: STR, strPath: STR): boolean {
+function InstallApplication(strAppname: string /* STR */, strPath: string /* STR */): boolean {
   let hKey: HKEY;
   let fRet: boolean = true;
 

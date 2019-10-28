@@ -99,7 +99,7 @@ export interface SOLDIERCREATE_STRUCT {
 
   // Kris:  Additions November 16, 1997 (padding down to 129 from 150)
   fVisible: boolean;
-  name: UINT16[] /* [10] */;
+  name: string /* UINT16[10] */;
 
   ubSoldierClass: UINT8; // army, administrator, elite
 

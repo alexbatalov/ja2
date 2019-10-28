@@ -190,7 +190,7 @@ let uiCurrentInventoryIndex: UINT8 = 0;
 let guiSliderPosition: UINT32;
 
 // the transfer funds string
-let sTransferString: CHAR16[] /* [32] */;
+let sTransferString: string /* CHAR16[32] */;
 
 let giPersonnelATMSideButton: INT32[] /* [NUMBER_ATM_BUTTONS] */;
 let giPersonnelATMSideButtonImage: INT32[] /* [NUMBER_ATM_BUTTONS] */;
@@ -618,7 +618,7 @@ function RenderPersonnelStats(iId: INT32, iSlot: INT32): void {
 }
 
 function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: boolean, fOther: boolean): boolean {
-  let sTemp: char[] /* [100] */;
+  let sTemp: string /* char[100] */;
   let hFaceHandle: HVOBJECT;
   let VObjectDesc: VOBJECT_DESC;
   let iCounter: INT32 = 7;
@@ -958,8 +958,8 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
   let sX: INT16;
   let sY: INT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let sString: CHAR16[] /* [64] */;
-  let sTownName: CHAR16[] /* [256] */;
+  let sString: string /* CHAR16[64] */;
+  let sTownName: string /* CHAR16[256] */;
   let bTownId: INT8 = -1;
   let iHeightOfText: INT32;
 
@@ -1063,7 +1063,7 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
 
 function DisplayCharStats(iId: INT32, iSlot: INT32): void {
   let iCounter: INT32 = 0;
-  let sString: wchar_t[] /* [50] */;
+  let sString: string /* wchar_t[50] */;
   //	wchar_t sStringA[ 50 ];
   let sX: INT16;
   let sY: INT16;
@@ -1464,7 +1464,7 @@ function GetLastMercId(): INT32 {
 function DrawPageNumber(): void {
   // draws the page number
 
-  let sString: wchar_t[] /* [10] */;
+  let sString: string /* wchar_t[10] */;
   let sX: INT16;
   let sY: INT16;
   let iPageNumber: INT32;
@@ -1654,7 +1654,7 @@ function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
 function DisplayPicturesOfCurrentTeam(): boolean {
   let iCounter: INT32 = 0;
   let iTotalOnTeam: INT32 = 0;
-  let sTemp: char[] /* [100] */;
+  let sTemp: string /* char[100] */;
   let hFaceHandle: HVOBJECT;
   let VObjectDesc: VOBJECT_DESC;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1859,7 +1859,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   let ubUpToCount: UINT8 = 0;
   let sX: INT16;
   let sY: INT16;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   let cnt: INT32 = 0;
   let iTotalAmmo: INT32 = 0;
 
@@ -2142,7 +2142,7 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
 
 function DisplayNumberOnCurrentTeam(): void {
   // display number on team
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
 
@@ -2169,7 +2169,7 @@ function DisplayNumberOnCurrentTeam(): void {
 
 function DisplayNumberDeparted(): void {
   // display number departed from team
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
 
@@ -2337,7 +2337,7 @@ function GetHighestDailyCostOfCurrentTeam(): INT32 {
 
 function DisplayCostOfCurrentTeam(): void {
   // display number on team
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sX: INT16;
   let sY: INT16;
 
@@ -3140,7 +3140,7 @@ function DisplayAverageStatValuesForCurrentTeam(): void {
   let sX: INT16;
   let sY: INT16;
   let iCounter: INT32 = 0;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
 
   // set up font
   SetFont(FONT10ARIAL());
@@ -3197,7 +3197,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
   let sX: INT16;
   let sY: INT16;
   let iCounter: INT32 = 0;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let iStat: INT32 = 0;
   let iDepartedId: INT32 = 0;
   let iId: INT32 = 0;
@@ -3370,7 +3370,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
   let sX: INT16;
   let sY: INT16;
   let iCounter: INT32 = 0;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let iStat: INT32 = 0;
   let iId: INT32 = 0;
 
@@ -3625,7 +3625,7 @@ function GetNumberOfOtherOnPastTeam(): INT32 {
 function DisplayStateOfPastTeamMembers(): void {
   let sX: INT16;
   let sY: INT16;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
 
   // font stuff
   SetFont(FONT10ARIAL());
@@ -3947,7 +3947,7 @@ function GetIdOfPastMercInSlot(iSlot: INT32): INT32 {
 }
 
 function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, fFired: boolean, fOther: boolean): boolean {
-  let sTemp: char[] /* [100] */;
+  let sTemp: string /* char[100] */;
   let hFaceHandle: HVOBJECT;
   let VObjectDesc: VOBJECT_DESC;
 
@@ -4002,7 +4002,7 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, 
 
 function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void {
   let iCounter: INT32 = 0;
-  let sString: wchar_t[] /* [50] */;
+  let sString: string /* wchar_t[50] */;
   let sX: INT16;
   let sY: INT16;
   let uiHits: UINT32 = 0;
@@ -4181,7 +4181,7 @@ function DisplayDepartedCharName(iId: INT32, iSlot: INT32, iState: INT32): void 
   // get merc's nickName, assignment, and sector location info
   let sX: INT16;
   let sY: INT16;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
 
   SetFont(CHAR_NAME_FONT());
   SetFontForeground(PERS_TEXT_FONT_COLOR);
@@ -4995,7 +4995,7 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let iValue: INT32 = 0;
   let iCounter: INT32 = 0;
-  let sZero: CHAR16[] /* [2] */ = "0";
+  let sZero: string /* CHAR16[2] */ = "0";
 
   if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
@@ -5028,8 +5028,8 @@ function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 function DisplayATMAmount(): void {
   let sX: INT16 = 0;
   let sY: INT16 = 0;
-  let sTempString: CHAR16[] /* [32] */;
-  let sZero: CHAR16[] /* [2] */ = "0";
+  let sTempString: string /* CHAR16[32] */;
+  let sZero: string /* CHAR16[2] */ = "0";
   let iCounter: INT32 = 0;
 
   if (fShowAtmPanel == false) {
@@ -5299,7 +5299,7 @@ function DisplayAmountOnCurrentMerc(): void {
   let iId: INT32;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iFunds: INT32;
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
   let sX: INT16;
   let sY: INT16;
 
@@ -5339,7 +5339,7 @@ function DisplayAmountOnCurrentMerc(): void {
 function HandlePersonnelKeyboard(): void {
   let iCounter: INT32 = 0;
   let iValue: INT32 = 0;
-  let sZero: CHAR16[] /* [2] */ = "0";
+  let sZero: string /* CHAR16[2] */ = "0";
 
   let InputEvent: InputAtom;
   let MousePos: POINT;
@@ -5373,8 +5373,8 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
   let iHeight: INT32 = GetFontHeight(ATM_FONT());
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
-  let sTempString: CHAR16[] /* [32] */;
-  let sZero: CHAR16[] /* [2] */ = "0";
+  let sTempString: string /* CHAR16[32] */;
+  let sZero: string /* CHAR16[2] */ = "0";
   let iCounter: INT32 = 0;
 
   wcscpy(sTempString, sTransferString);
@@ -5457,8 +5457,8 @@ function IsPastMercOther(iId: INT32): boolean {
 
 function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
   let iCounter: INT32 = 0;
-  let sString: wchar_t[] /* [50] */;
-  let sStringA: wchar_t[] /* [50] */;
+  let sString: string /* wchar_t[50] */;
+  let sStringA: string /* wchar_t[50] */;
   let sX: INT16;
   let sY: INT16;
   let uiHits: UINT32 = 0;

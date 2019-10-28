@@ -115,7 +115,7 @@ const FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS = 75;
 const FLOWER_ORDER_NAME_FIELD_NUM_CHARS = 35;
 
 interface FlowerOrderLocationStruct {
-  psCityLoc: Pointer<STR16>;
+  psCityLoc: string /* Pointer<STR16> */;
   ubNextDayDeliveryCost: UINT8;
   ubWhenItGetsThereCost: UINT8;
 }
@@ -170,8 +170,8 @@ const enum Enum81 {
 let gubFlowerDestDropDownMode: UINT8;
 let gubCurrentlySelectedFlowerLocation: UINT8;
 
-let gsSentimentTextField: wchar_t[] /* [FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS] */ = [ 0 ];
-let gsNameTextField: wchar_t[] /* [FLOWER_ORDER_NAME_FIELD_NUM_CHARS] */ = [ 0 ];
+let gsSentimentTextField: string /* wchar_t[FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS] */ = [ 0 ];
+let gsNameTextField: string /* wchar_t[FLOWER_ORDER_NAME_FIELD_NUM_CHARS] */ = [ 0 ];
 
 // buttons
 let guiFlowerOrderButtonImage: INT32;
@@ -219,7 +219,7 @@ function GameInitFloristOrderForm(): void {
 export function EnterFloristOrderForm(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let i: UINT8;
-  let sTemp: char[] /* [40] */;
+  let sTemp: string /* char[40] */;
   let usPosX: UINT16;
   let usWidth: UINT16;
   let usHeight: UINT16;
@@ -410,7 +410,7 @@ export function HandleFloristOrderForm(): void {
 export function RenderFloristOrderForm(): void {
   let hPixHandle: HVOBJECT;
   let usPosX: UINT16;
-  let sTemp: wchar_t[] /* [640] */;
+  let sTemp: string /* wchar_t[640] */;
   let uiStartLoc: UINT32 = 0;
 
   DisplayFloristDefaults();
@@ -719,7 +719,7 @@ function SelectFloristCardGalleryLinkRegionCallBack(pRegion: Pointer<MOUSE_REGIO
 function DisplayFlowerDynamicItems(): void {
   let uiStartLoc: UINT32 = 0;
   let usPosX: UINT16;
-  let sTemp: wchar_t[] /* [640] */;
+  let sTemp: string /* wchar_t[640] */;
   //	wchar_t	sText[ 640 ];
   let usPrice: UINT16;
   /*
@@ -987,8 +987,8 @@ function FlowerOrderDisplayShippingLocationCity(): void {
 
 function InitFlowerOrderTextInputBoxes(): void {
   let uiStartLoc: UINT32 = 0;
-  let sTemp: wchar_t[] /* [640] */;
-  let sText: wchar_t[] /* [640] */;
+  let sTemp: string /* wchar_t[640] */;
+  let sText: string /* wchar_t[640] */;
 
   InitTextInputMode();
   SetTextInputFont(FONT12ARIAL());

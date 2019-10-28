@@ -121,7 +121,7 @@ export function HandleInsuranceInfo(): void {
 }
 
 export function RenderInsuranceInfo(): void {
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let usNewLineOffset: UINT16 = 0;
   let usPosX: UINT16;
 
@@ -242,7 +242,7 @@ function SelectInsuranceInfoHomeLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION
 }
 
 function DisplaySubmitClaimPage(): void {
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let usNewLineOffset: UINT16 = 0;
   let usPosX: UINT16;
 
@@ -279,7 +279,7 @@ function DisplaySubmitClaimPage(): void {
 }
 
 function DisplayPremiumPage(): void {
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let usNewLineOffset: UINT16 = 0;
   let hPixHandle: HVOBJECT;
 
@@ -319,7 +319,7 @@ function DisplayPremiumPage(): void {
 }
 
 function DisplayRenewingPremiumPage(): void {
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let usNewLineOffset: UINT16 = 0;
   //  HVOBJECT hPixHandle;
 
@@ -354,7 +354,7 @@ function DisplayRenewingPremiumPage(): void {
 }
 
 function DisplayCancelationPagePage(): void {
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let usNewLineOffset: UINT16 = 0;
 
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
@@ -403,7 +403,7 @@ function ChangingInsuranceInfoSubPage(ubSubPageNumber: UINT8): void {
 }
 
 function DisplayInfoTocPage(): void {
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let usNewLineOffset: UINT16 = 0;
   let hPixHandle: HVOBJECT;
   let usPosY: UINT16;

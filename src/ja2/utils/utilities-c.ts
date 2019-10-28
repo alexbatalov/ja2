@@ -4,11 +4,11 @@ const DATA_8_BIT_DIR = "8-Bit\\";
 
 //#define	TIME_LIMITED_VERSION
 
-export function FilenameForBPP(pFilename: STR, pDestination: STR): void {
-  let Drive: UINT8[] /* [128] */;
-  let Dir: UINT8[] /* [128] */;
-  let Name: UINT8[] /* [128] */;
-  let Ext: UINT8[] /* [128] */;
+export function FilenameForBPP(pFilename: string /* STR */, pDestination: Pointer<string> /* STR */): void {
+  let Drive: string /* UINT8[128] */;
+  let Dir: string /* UINT8[128] */;
+  let Name: string /* UINT8[128] */;
+  let Ext: string /* UINT8[128] */;
 
   if (GETPIXELDEPTH() == 16) {
     // no processing for 16 bit names
@@ -26,7 +26,7 @@ export function FilenameForBPP(pFilename: STR, pDestination: STR): void {
   }
 }
 
-export function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile: SGPFILENAME): boolean {
+export function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile: string /* SGPFILENAME */): boolean {
   let hFileHandle: HWFILE;
   let bColHeader: BYTE[] /* [8] */;
   let cnt: UINT32;
@@ -96,12 +96,12 @@ export function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: 
   return true;
 }
 
-export function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16, uiFont: INT32): boolean {
+export function WrapString(pStr: string /* Pointer<INT16> */, pStr2: Pointer<string> /* Pointer<INT16> */, usWidth: UINT16, uiFont: INT32): boolean {
   let Cur: UINT32;
   let uiLet: UINT32;
   let uiNewLet: UINT32;
   let uiHyphenLet: UINT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
   let fLineSplit: boolean = false;
   let hFont: HVOBJECT;
@@ -188,7 +188,7 @@ function IfWin95(): boolean {
 function HandleLimitedNumExecutions(): void {
   // Get system directory
   let hFileHandle: HWFILE;
-  let ubSysDir: UINT8[] /* [512] */;
+  let ubSysDir: string /* UINT8[512] */;
   let bNumRuns: INT8;
 
   GetSystemDirectory(ubSysDir, sizeof(ubSysDir));
@@ -233,7 +233,7 @@ function HandleLimitedNumExecutions(): void {
   FileClose(hFileHandle);
 }
 
-export let gCheckFilenames: SGPFILENAME[] /* [] */ = [
+export let gCheckFilenames: string[] /* SGPFILENAME[] */ = [
   "DATA\\INTRO.SLF",
   "DATA\\LOADSCREENS.SLF",
   "DATA\\MAPS.SLF",
@@ -263,9 +263,9 @@ function PerformTimeLimitedCheck(): boolean {
   return true;
 }
 
-export function DoJA2FilesExistsOnDrive(zCdLocation: Pointer<CHAR8>): boolean {
+export function DoJA2FilesExistsOnDrive(zCdLocation: string /* Pointer<CHAR8> */): boolean {
   let fFailed: boolean = false;
-  let zCdFile: CHAR8[] /* [SGPFILENAME_LEN] */;
+  let zCdFile: string /* CHAR8[SGPFILENAME_LEN] */;
   let cnt: INT32;
   let hFile: HWFILE;
 

@@ -60,7 +60,7 @@ function GetStringFont(pStringSt: ScrollStringStPtr): UINT32 {
   return pStringSt.value.uiFont;
 }
 
-function AddString(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewString: boolean, ubPriority: UINT8): ScrollStringStPtr {
+function AddString(pString: string /* STR16 */, usColor: UINT16, uiFont: UINT32, fStartOfNewString: boolean, ubPriority: UINT8): ScrollStringStPtr {
   // add a new string to the list of strings
   let pStringSt: ScrollStringStPtr = null;
   pStringSt = MemAlloc(sizeof(ScrollStringSt));
@@ -81,7 +81,7 @@ function AddString(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewS
   return pStringSt;
 }
 
-function SetString(pStringSt: ScrollStringStPtr, pString: STR16): void {
+function SetString(pStringSt: ScrollStringStPtr, pString: string /* STR16 */): void {
   // ARM: Why x2 + 4 ???
   pStringSt.value.pString16 = MemAlloc((wcslen(pString) * 2) + 4);
   wcsncpy(pStringSt.value.pString16, pString, wcslen(pString));
@@ -398,8 +398,8 @@ export function UnHideMessagesDuringNPCDialogue(): void {
 }
 
 // new screen message
-export function ScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
-  let DestString: wchar_t[] /* [512] */;
+export function ScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: string /* STR16 */, ...args: any[]): void {
+  let DestString: string /* wchar_t[512] */;
   let argptr: va_list;
 
   if (fDisableJustForIan == true) {
@@ -480,7 +480,7 @@ function ClearWrappedStrings(pStringWrapperHead: Pointer<WRAPPED_STRING>): void 
 }
 
 // new tactical and mapscreen message system
-function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
+function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: string /* STR16 */, ...args: any[]): void {
   // this function sets up the string into several single line structures
 
   let pStringSt: ScrollStringStPtr;
@@ -494,8 +494,8 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
   let fLastLine: boolean = false;
   let argptr: va_list;
 
-  let DestString: wchar_t[] /* [512] */;
-  let DestStringA: wchar_t[] /* [512] */;
+  let DestString: string /* wchar_t[512] */;
+  let DestStringA: string /* wchar_t[512] */;
   // wchar_t *pStringBuffer;
   let fMultiLine: boolean = false;
   let pTempStringSt: ScrollStringStPtr = null;
@@ -601,7 +601,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
   return;
 }
 
-export function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
+export function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: string /* STR16 */, ...args: any[]): void {
   // this function sets up the string into several single line structures
 
   let pStringSt: ScrollStringStPtr;
@@ -614,8 +614,8 @@ export function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: S
   // wchar_t *pString;
   let fLastLine: boolean = false;
   let argptr: va_list;
-  let DestString: wchar_t[] /* [512] */;
-  let DestStringA: wchar_t[] /* [512] */;
+  let DestString: string /* wchar_t[512] */;
+  let DestStringA: string /* wchar_t[512] */;
   // wchar_t *pStringBuffer;
   let fMultiLine: boolean = false;
   let pStringWrapper: Pointer<WRAPPED_STRING> = null;
@@ -748,7 +748,7 @@ export function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: S
 }
 
 // add string to the map screen message list
-function AddStringToMapScreenMessageList(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewString: boolean, ubPriority: UINT8): void {
+function AddStringToMapScreenMessageList(pString: string /* STR16 */, usColor: UINT16, uiFont: UINT32, fStartOfNewString: boolean, ubPriority: UINT8): void {
   let ubSlotIndex: UINT8 = 0;
   let pStringSt: ScrollStringStPtr = null;
 
@@ -932,7 +932,7 @@ export function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): boolean {
   let uiCount: UINT32;
   let uiSizeOfString: UINT32;
   let StringSave: StringSaveStruct;
-  let SavedString: CHAR16[] /* [512] */;
+  let SavedString: string /* CHAR16[512] */;
 
   // clear tactical message queue
   ClearTacticalMessageQueue();
@@ -1087,7 +1087,7 @@ export function ClearTacticalMessageQueue(): void {
   return;
 }
 
-function WriteMessageToFile(pString: STR16): void {
+function WriteMessageToFile(pString: string /* STR16 */): void {
 }
 
 export function InitGlobalMessageList(): void {

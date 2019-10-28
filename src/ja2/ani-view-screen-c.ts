@@ -226,7 +226,7 @@ export function AniEditScreenHandle(): UINT32 {
   return Enum26.ANIEDIT_SCREEN;
 }
 
-function GetAnimStateFromName(zName: Pointer<INT8>): UINT16 {
+function GetAnimStateFromName(zName: string /* Pointer<INT8> */): UINT16 {
   let cnt: INT32;
 
   // FInd the next animation with start height the same...
@@ -241,11 +241,11 @@ function GetAnimStateFromName(zName: Pointer<INT8>): UINT16 {
 
 function BuildListFile(): void {
   let infoFile: Pointer<FILE>;
-  let currFilename: char[] /* [128] */;
+  let currFilename: string /* char[128] */;
   let numEntries: int = 0;
   let cnt: int;
   let usState: UINT16;
-  let zError: INT16[] /* [128] */;
+  let zError: string /* INT16[128] */;
 
   // Verify the existance of the header text file.
   infoFile = fopen("ANITEST.DAT", "rb");

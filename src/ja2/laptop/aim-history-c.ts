@@ -122,7 +122,7 @@ export function HandleAimHistory(): void {
 }
 
 export function RenderAimHistory(): void {
-  let sText: wchar_t[] /* [400] */;
+  let sText: string /* wchar_t[400] */;
   let uiStartLoc: UINT32 = 0;
   let usPosY: UINT16;
 
@@ -278,7 +278,7 @@ function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
 }
 
 function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): boolean {
-  let sText: wchar_t[] /* [400] */;
+  let sText: string /* wchar_t[400] */;
   let uiStartLoc: UINT32 = 0;
   let usPosY: UINT16 = 0;
   let usNumPixels: UINT16 = 0;
@@ -322,7 +322,7 @@ function InitTocMenu(): boolean {
   let usHeight: UINT16;
   let usWidth: UINT16 = 0;
   let uiStartLoc: UINT32 = 0;
-  let sText: wchar_t[] /* [400] */;
+  let sText: string /* wchar_t[400] */;
   let ubLocInFile: UINT8[] /* [] */ = [
     Enum64.IN_THE_BEGINNING,
     Enum64.THE_ISLAND_METAVIRA,

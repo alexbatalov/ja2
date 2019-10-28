@@ -65,7 +65,7 @@ export function HandleIMPFinish(): void {
 }
 
 function CreateIMPFinishButtons(): void {
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   // this function will create the buttons needed for th IMP about us page
   // the start over button button
@@ -442,7 +442,7 @@ function RenderCharProfileFinishFace(): boolean {
 }
 
 function RenderCharFullName(): void {
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
   let sX: INT16;
   let sY: INT16;
 

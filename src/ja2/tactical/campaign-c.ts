@@ -486,7 +486,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
         TacticalCharacterDialogueWithSpecialEventEx(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DISPLAY_STAT_CHANGE, fChangeTypeIncrease, sPtsChanged, ubStat);
         TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_EXPERIENCE_GAIN);
       } else {
-        let wTempString: CHAR16[] /* [128] */;
+        let wTempString: string /* CHAR16[128] */;
 
         // tell player about it
         BuildStatChangeString(wTempString, pSoldier.value.name, fChangeTypeIncrease, sPtsChanged, ubStat);
@@ -1172,7 +1172,7 @@ export function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
   }
 }
 
-export function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: boolean, sPtsChanged: INT16, ubStat: UINT8): void {
+export function BuildStatChangeString(wString: Pointer<string> /* STR16 */, wName: string /* STR16 */, fIncrease: boolean, sPtsChanged: INT16, ubStat: UINT8): void {
   let ubStringIndex: UINT8;
 
   Assert(sPtsChanged != 0);

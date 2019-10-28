@@ -40,8 +40,8 @@ export function InitNewOverheadDB(ubTilesetID: UINT8): void {
   let uiLoop: UINT32;
   let VObjectDesc: VOBJECT_DESC;
   let hVObject: HVOBJECT;
-  let cFileBPP: CHAR8[] /* [128] */;
-  let cAdjustedFile: CHAR8[] /* [128] */;
+  let cFileBPP: string /* CHAR8[128] */;
+  let cAdjustedFile: string /* CHAR8[128] */;
   let cnt1: UINT32;
   let cnt2: UINT32;
   let s: SMALL_TILE_SURF;

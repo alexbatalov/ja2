@@ -749,8 +749,8 @@ function GetScreenXYFromMapXYStationary(sMapX: INT16, sMapY: INT16, psX: Pointer
 }
 
 function ShowTownText(): void {
-  let sString: CHAR16[] /* [32] */;
-  let sStringA: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
+  let sStringA: string /* CHAR16[32] */;
   let bTown: INT8 = 0;
   let usX: UINT16;
   let usY: UINT16;
@@ -798,7 +798,7 @@ function ShowTownText(): void {
   }
 }
 
-function DrawTownLabels(pString: STR16, pStringA: STR16, usFirstX: UINT16, usFirstY: UINT16): void {
+function DrawTownLabels(pString: string /* STR16 */, pStringA: string /* STR16 */, usFirstX: UINT16, usFirstY: UINT16): void {
   // this procedure will draw the given strings on the screen centered around the given x and at the given y
 
   let sSecondX: INT16;
@@ -3293,7 +3293,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
   let iCounter: INT32 = 0;
   let hIconHandle: HVOBJECT;
   let fAboutToEnter: boolean = false;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sTextXOffset: INT16 = 0;
   let sTextYOffset: INT16 = 0;
   let usX: INT16;
@@ -3484,7 +3484,7 @@ export function DisplayDistancesForHelicopter(): void {
   let sDistanceToGo: INT16 = 0; //, sDistanceSoFar = 0, sTotalCanTravel = 0;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let hHandle: HVOBJECT;
   let sTotalOfTrip: INT16 = 0;
   let iTime: INT32 = 0;
@@ -3613,7 +3613,7 @@ export function DisplayPositionOfHelicopter(): void {
   let pGroup: Pointer<GROUP>;
   let hHandle: HVOBJECT;
   let iNumberOfPeopleInHelicopter: INT32 = 0;
-  let sString: CHAR16[] /* [4] */;
+  let sString: string /* CHAR16[4] */;
 
   AssertMsg((sOldMapX >= 0) && (sOldMapX < 640), String("DisplayPositionOfHelicopter: Invalid sOldMapX = %d", sOldMapX));
   AssertMsg((sOldMapY >= 0) && (sOldMapY < 480), String("DisplayPositionOfHelicopter: Invalid sOldMapY = %d", sOldMapY));
@@ -3872,8 +3872,8 @@ function BlitMineIcon(sMapX: INT16, sMapY: INT16): void {
 function BlitMineText(sMapX: INT16, sMapY: INT16): void {
   let sScreenX: INT16;
   let sScreenY: INT16;
-  let wString: CHAR16[] /* [32] */;
-  let wSubString: CHAR16[] /* [32] */;
+  let wString: string /* CHAR16[32] */;
+  let wSubString: string /* CHAR16[32] */;
   let ubMineIndex: UINT8;
   let ubLineCnt: UINT8 = 0;
 
@@ -3955,7 +3955,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
   SetFontDestBuffer(FRAME_BUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, false);
 }
 
-function AdjustXForLeftMapEdge(wString: STR16, psX: Pointer<INT16>): void {
+function AdjustXForLeftMapEdge(wString: string /* STR16 */, psX: Pointer<INT16>): void {
   let sStartingX: INT16;
   let sPastEdge: INT16;
 
@@ -4128,7 +4128,7 @@ UINT8 NumFriendlyInSector( INT16 sX, INT16 sY, INT8 bZ )
 */
 
 function DisplayLevelString(): void {
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
 
   // given the current level being displayed on the map, show a sub level message
 
@@ -4390,7 +4390,7 @@ function RenderIconsPerSectorForSelectedTown(): void {
   let iCurrentIcon: INT32 = 0;
   let sX: INT16;
   let sY: INT16;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sSectorX: INT16 = 0;
   let sSectorY: INT16 = 0;
 
@@ -4627,7 +4627,7 @@ export function CreateDestroyMilitiaSectorButtons(): void {
 
 function SetMilitiaMapButtonsText(): void {
   // now set the militia map button text
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
   let iNumberOfGreens: INT32 = 0;
   let iNumberOfRegulars: INT32 = 0;
   let iNumberOfElites: INT32 = 0;
@@ -4762,7 +4762,7 @@ function IsThisMilitiaTownSectorAllowable(sSectorIndexValue: INT16): boolean {
 }
 
 function DrawTownMilitiaName(): void {
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
   let sX: INT16;
   let sY: INT16;
 
@@ -5497,7 +5497,7 @@ function ShowSAMSitesOnStrategicMap(): void {
   let ubVidObjIndex: INT8 = 0;
   let pDestBuf2: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
-  let wString: CHAR16[] /* [40] */;
+  let wString: string /* CHAR16[40] */;
 
   if (fShowAircraftFlag) {
     BlitSAMGridMarkers();
@@ -5684,7 +5684,7 @@ function ShowItemsOnMap(): void {
   let usXPos: UINT16;
   let usYPos: UINT16;
   let uiItemCnt: UINT32;
-  let sString: CHAR16[] /* [10] */;
+  let sString: string /* CHAR16[10] */;
 
   // clip blits to mapscreen region
   ClipBlitsToMapViewRegion();

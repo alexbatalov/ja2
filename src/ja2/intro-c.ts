@@ -41,7 +41,7 @@ const enum Enum20 {
 
 let giCurrentIntroBeingPlayed: INT32 = SMKINTRO_NO_VIDEO;
 
-let gpzSmackerFileNames: Pointer<CHAR>[] /* [] */ = [
+let gpzSmackerFileNames: string[] /* Pointer<CHAR>[] */ = [
   // begining of the game
   "INTRO\\Rebel_cr.smk",
   "INTRO\\Omerta.smk",

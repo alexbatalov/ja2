@@ -27,8 +27,8 @@ export let iMechanical: INT32 = 55;
 export let fCharacterIsMale: boolean = true;
 
 // name and nick name
-export let pFullName: CHAR16[] /* [32] */;
-export let pNickName: CHAR16[] /* [32] */;
+export let pFullName: string /* CHAR16[32] */;
+export let pNickName: string /* CHAR16[32] */;
 
 // skills
 export let iSkillA: INT32 = 0;

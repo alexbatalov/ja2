@@ -553,9 +553,9 @@ function CopyExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
 // to the video buffer.
 //
 //*****************************************************************************
-export function gprintfdirty(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
+export function gprintfdirty(x: INT16, y: INT16, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT16 {
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
   let iBack: INT32;
@@ -585,9 +585,9 @@ export function gprintfdirty(x: INT16, y: INT16, pFontString: Pointer<UINT16>, .
   return uiStringLength;
 }
 
-export function gprintfinvalidate(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
+export function gprintfinvalidate(x: INT16, y: INT16, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT16 {
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
 
@@ -606,9 +606,9 @@ export function gprintfinvalidate(x: INT16, y: INT16, pFontString: Pointer<UINT1
   return uiStringLength;
 }
 
-export function gprintfRestore(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
+export function gprintfRestore(x: INT16, y: INT16, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT16 {
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
 

@@ -21,7 +21,7 @@ export interface PROGRESSBAR {
   usLtColor: UINT16;
   usDkColor: UINT16;
 
-  swzTitle: Pointer<UINT16>;
+  swzTitle: string /* Pointer<UINT16> */;
   usTitleFont: UINT16;
 
   ubTitleFontForeColor: UINT8;

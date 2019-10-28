@@ -100,7 +100,7 @@ export type HVSURFACE = Pointer<SGPVSurface>;
 
 export interface VSURFACE_DESC {
   fCreateFlags: UINT32; // Specifies creation flags like from file or not
-  ImageFile: SGPFILENAME; // Filename of image data to use
+  ImageFile: string /* SGPFILENAME */; // Filename of image data to use
   usWidth: UINT16; // Width, ignored if given from file
   usHeight: UINT16; // Height, ignored if given from file
   ubBitDepth: UINT8; // BPP, ignored if given from file

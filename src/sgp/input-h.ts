@@ -39,9 +39,9 @@ const GETYPOS = (a) => HIWORD(((a).value.uiParam));
 const GETXPOS = (a) => LOWORD(((a).value.uiParam));
 
 export interface StringInput {
-  pString: Pointer<UINT16>;
-  pOriginalString: Pointer<UINT16>;
-  pFilter: Pointer<UINT16>;
+  pString: string /* Pointer<UINT16> */;
+  pOriginalString: string /* Pointer<UINT16> */;
+  pFilter: string /* Pointer<UINT16> */;
   usMaxStringLength: UINT16;
   usCurrentStringLength: UINT16;
   usStringOffset: UINT16;

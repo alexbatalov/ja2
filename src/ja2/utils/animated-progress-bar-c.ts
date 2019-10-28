@@ -83,7 +83,7 @@ export function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT
 
 // Assigning a title for the panel will automatically position the text horizontally centered on the
 // panel and vertically centered from the top of the panel, to the top of the progress bar.
-export function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
+export function SetProgressBarTitle(ubID: UINT32, pString: string /* Pointer<UINT16> */, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
   let pCurr: Pointer<PROGRESSBAR>;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
@@ -134,7 +134,7 @@ export function RemoveProgressBar(ubID: UINT8): void {
 // As the process animates using UpdateProgressBar( 0 to 100 ), the total progress bar will only reach 30%
 // at the 100% mark within UpdateProgressBar.  At that time, you would go onto the next step, resetting the
 // relative start and end percentage from 30 to whatever, until your done.
-export function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, uiRelEndPerc: UINT32, str: Pointer<UINT16>): void {
+export function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, uiRelEndPerc: UINT32, str: string /* Pointer<UINT16> */): void {
   let pCurr: Pointer<PROGRESSBAR>;
   let usStartX: UINT16;
   let usStartY: UINT16;

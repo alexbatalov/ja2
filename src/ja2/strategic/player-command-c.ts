@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString: STR16): void {
+export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString: Pointer<string> /* STR16 */): void {
   // will build a string stating current facilities present in sector
 
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags == 0) {

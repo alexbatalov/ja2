@@ -289,7 +289,7 @@ export let Explosive: EXPLOSIVETYPE[] /* [] */ = [
   [ Enum287.EXPLOSV_CREATUREGAS, 0, 0, 0, 0, 0, Enum304.NO_BLAST /* vry sm creature gas*/ ],
 ];
 
-let gzBurstSndStrings: INT8[][] /* [][30] */ = [
+let gzBurstSndStrings: string[] /* INT8[][30] */ = [
   "", // NOAMMO
   "", // 38
   "9mm Burst ", // 9mm
@@ -723,7 +723,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
   let fBuckshot: boolean;
   let ubVolume: UINT8;
   let bSilencerPos: INT8;
-  let zBurstString: INT8[] /* [50] */;
+  let zBurstString: string /* INT8[50] */;
   let ubDirection: UINT8;
   let sNewGridNo: INT16;
   let ubMerc: UINT8;

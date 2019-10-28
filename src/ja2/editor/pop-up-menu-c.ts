@@ -19,7 +19,7 @@ let fWaitingForLButtonRelease: boolean = false;
 
 // Finds the string for any popup menu in JA2 -- the strings are stored
 // in different ways in each instance.
-function GetPopupMenuString(ubIndex: UINT8): Pointer<INT16> {
+function GetPopupMenuString(ubIndex: UINT8): string /* Pointer<INT16> */ {
   switch (gPopup.ubPopupMenuID) {
     case Enum53.CHANGETSET_POPUP: // tile sets
       return gTilesets[ubIndex].zName;

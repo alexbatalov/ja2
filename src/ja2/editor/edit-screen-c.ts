@@ -27,7 +27,7 @@ let gfConfirmExitPending: boolean = false;
 export let gfIntendOnEnteringEditor: boolean = false;
 
 // original
-export let gubFilename: UINT8[] /* [200] */;
+export let gubFilename: string /* UINT8[200] */;
 let gsBanksSubIndex: INT16 = 0;
 let gsOldBanksSubIndex: INT16 = 1;
 let gsCliffsSubIndex: INT16 = 0;
@@ -2435,7 +2435,7 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
 export function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): boolean {
   let iLightHandle: INT32;
   let ubIntensity: UINT8;
-  let Filename: STRING512;
+  let Filename: string /* STRING512 */;
   let iMapIndex: INT32;
   let usTmpIndex: UINT16;
 
@@ -2513,7 +2513,7 @@ export function RemoveLight(iMapX: INT16, iMapY: INT16): boolean {
   let fRemovedLight: boolean;
   let iMapIndex: INT32;
   let uiLastLightType: UINT32;
-  let pLastLightName: Pointer<UINT8>;
+  let pLastLightName: string /* Pointer<UINT8> */;
 
   fRemovedLight = false;
 
@@ -3136,7 +3136,7 @@ export function ProcessAreaSelection(fWithLeftButton: boolean): void {
         gubCurrRoomNumber++;
         gubMaxRoomNumber++;
         if (iCurrentTaskbar == Enum36.TASK_BUILDINGS && TextInputMode()) {
-          let str: UINT16[] /* [4] */;
+          let str: string /* UINT16[4] */;
           swprintf(str, "%d", gubCurrRoomNumber);
           SetInputFieldStringWith16BitString(1, str);
           SetActiveField(0);
@@ -3398,7 +3398,7 @@ function UpdateLastActionBeforeLeaving(): void {
 }
 
 function ReloadMap(): void {
-  let szFilename: UINT16[] /* [30] */;
+  let szFilename: string /* UINT16[30] */;
   swprintf(szFilename, "%S", gubFilename);
   ExternalLoadMap(szFilename);
 }

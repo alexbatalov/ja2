@@ -107,7 +107,7 @@ export interface TacticalStatusType {
   usTactialTurnLimitCounter: UINT16;
   fInTopMessage: boolean;
   ubTopMessageType: UINT8;
-  zTopMessageString: INT16[] /* [20] */;
+  zTopMessageString: string /* INT16[20] */;
   usTactialTurnLimitMax: UINT16;
   uiTactialTurnLimitClock: UINT32;
   fTactialTurnLimitStartedBeep: boolean;

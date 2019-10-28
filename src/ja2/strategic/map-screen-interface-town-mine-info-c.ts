@@ -182,7 +182,7 @@ function CreateTownInfoBox(): void {
 // adds text to town info box
 function AddTextToTownBox(): void {
   let hStringHandle: UINT32 = 0;
-  let wString: CHAR16[] /* [64] */;
+  let wString: string /* CHAR16[64] */;
   let ubTownId: UINT8 = 0;
   let usTownSectorIndex: UINT16;
   let sMineSector: INT16 = 0;
@@ -279,7 +279,7 @@ function AddTextToMineBox(): void {
   let ubMineIndex: UINT8;
   let ubTown: UINT8;
   let hStringHandle: UINT32;
-  let wString: CHAR16[] /* [64] */;
+  let wString: string /* CHAR16[64] */;
 
   ubMineIndex = GetMineIndexForSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
 
@@ -413,8 +413,8 @@ function AddTextToBlankSectorBox(): void {
 }
 
 function AddSectorToBox(): void {
-  let wString: CHAR16[] /* [64] */;
-  let wString2: CHAR16[] /* [10] */;
+  let wString: string /* CHAR16[64] */;
+  let wString2: string /* CHAR16[10] */;
   let hStringHandle: UINT32 = 0;
 
   // sector
@@ -431,7 +431,7 @@ function AddSectorToBox(): void {
 }
 
 function AddCommonInfoToBox(): void {
-  let wString: CHAR16[] /* [64] */;
+  let wString: string /* CHAR16[64] */;
   let hStringHandle: UINT32 = 0;
   let fUnknownSAMSite: boolean = false;
   let ubMilitiaTotal: UINT8 = 0;
@@ -522,7 +522,7 @@ function AddCommonInfoToBox(): void {
 }
 
 function AddItemsInSectorToBox(): void {
-  let wString: CHAR16[] /* [64] */;
+  let wString: string /* CHAR16[64] */;
   let hStringHandle: UINT32 = 0;
 
   // items in sector (this works even for underground)

@@ -98,7 +98,7 @@ export interface VOBJECT_DESC {
   fCreateFlags: UINT32; // Specifies creation flags like from file or not
   /* union { */
   /*   struct { */
-  ImageFile: SGPFILENAME; // Filename of image data to use
+  ImageFile: string /* SGPFILENAME */; // Filename of image data to use
   /*   } */
   /*   struct { */
   hImage: HIMAGE;

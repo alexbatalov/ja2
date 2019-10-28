@@ -431,7 +431,7 @@ function SelectAimLogoRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 }
 
 export function DisplayAimSlogan(): boolean {
-  let sSlogan: wchar_t[] /* [400] */;
+  let sSlogan: string /* wchar_t[400] */;
 
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, 0, AIM_HISTORY_LINE_SIZE);
   // Display Aim Text under the logo
@@ -441,7 +441,7 @@ export function DisplayAimSlogan(): boolean {
 }
 
 export function DisplayAimCopyright(): boolean {
-  let sSlogan: wchar_t[] /* [400] */;
+  let sSlogan: string /* wchar_t[400] */;
   let uiStartLoc: UINT32 = 0;
 
   // Load and Display the copyright notice
@@ -699,7 +699,7 @@ function DrawWarningBox(fInit: boolean, fRedraw: boolean): boolean {
   let uiCurTime: UINT32 = GetJA2Clock();
 
   if (fInit || fRedraw) {
-    let sText: wchar_t[] /* [400] */;
+    let sText: string /* wchar_t[400] */;
     let uiStartLoc: UINT32 = 0;
     let usLocY: UINT16 = AIM_WARNING_TEXT_Y + (GetFontHeight(AIM_WARNING_FONT()) + 2) * 2;
     let hWarningHandle: HVOBJECT;

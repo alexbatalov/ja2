@@ -118,7 +118,7 @@ export function HandleInsurance(): void {
 }
 
 export function RenderInsurance(): void {
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let hPixHandle: HVOBJECT;
 
   DisplayInsuranceDefaults();
@@ -289,7 +289,7 @@ export function DisplaySmallRedLineWithShadow(usStartX: UINT16, usStartY: UINT16
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-export function GetInsuranceText(ubNumber: UINT8, pString: STR16): void {
+export function GetInsuranceText(ubNumber: UINT8, pString: Pointer<string> /* STR16 */): void {
   let uiStartLoc: UINT32 = 0;
 
   if (ubNumber < Enum90.INS_MULTI_LINE_BEGINS) {

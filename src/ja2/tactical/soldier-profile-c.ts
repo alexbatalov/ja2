@@ -137,7 +137,7 @@ let gbAssassinTown: INT8[][] /* [NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] */ 
 export function LoadMercProfiles(): boolean {
   //	FILE *fptr;
   let fptr: HWFILE;
-  let pFileName: Pointer<char> = "BINARYDATA\\Prof.dat";
+  let pFileName: string /* Pointer<char> */ = "BINARYDATA\\Prof.dat";
   let uiLoop: UINT32;
   let uiLoop2: UINT32;
   let uiLoop3: UINT32;

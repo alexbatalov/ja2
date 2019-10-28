@@ -83,7 +83,7 @@ export interface image_type {
   usHeight: UINT16;
   ubBitDepth: UINT8;
   fFlags: UINT16;
-  ImageFile: SGPFILENAME;
+  ImageFile: string /* SGPFILENAME */;
   iFileLoader: UINT32;
   pPalette: Pointer<SGPPaletteEntry>;
   pui16BPPPalette: Pointer<UINT16>;

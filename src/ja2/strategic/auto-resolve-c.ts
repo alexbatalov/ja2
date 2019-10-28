@@ -242,7 +242,7 @@ function PlayAutoResolveSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, 
   }
 }
 
-function PlayAutoResolveSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): void {
+function PlayAutoResolveSampleFromFile(szFileName: string /* STR8 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): void {
   if (gpAR.value.fSound) {
     PlayJA2SampleFromFile(szFileName, usRate, ubVolume, ubLoops, uiPan);
   }
@@ -1282,7 +1282,7 @@ function RenderAutoResolve(): void {
   let yp: INT32;
   let pCell: Pointer<SOLDIERCELL> = null;
   let index: INT32 = 0;
-  let str: UINT16[] /* [100] */;
+  let str: string /* UINT16[100] */;
   let bTownId: UINT8 = 0;
   let ubGood: UINT8;
   let ubBad: UINT8;
@@ -2480,8 +2480,8 @@ function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
   let cntStart: INT32;
   let xp: INT32;
   let yp: INT32;
-  let pStr: Pointer<UINT16>;
-  let str: UINT16[] /* [20] */;
+  let pStr: string /* Pointer<UINT16> */;
+  let str: string /* UINT16[20] */;
   let pDestBuf: Pointer<UINT8>;
   let pSrcBuf: Pointer<UINT8>;
   let uiSrcPitchBYTES: UINT32;

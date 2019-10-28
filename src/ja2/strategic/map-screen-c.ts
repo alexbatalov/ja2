@@ -239,7 +239,7 @@ interface RGBCOLOR {
 }
 
 interface LineText {
-  pLineText: STR16;
+  pLineText: string /* STR16 */;
   uiFont: UINT32;
   pNext: Pointer<LineText>;
 }
@@ -509,7 +509,7 @@ export function SetInfoChar(ubID: UINT8): boolean {
 
 function DisplayDestinationOfCurrentDestMerc(): void {
   // will display the dest of the current dest merc
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sX: INT16;
   let sY: INT16;
   let sSector: INT16;
@@ -889,7 +889,7 @@ function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
 function DrawPay(sCharNumber: INT16): void {
   // will draw the pay
   let uiSalary: INT32;
-  let sString: wchar_t[] /* [7] */;
+  let sString: string /* wchar_t[7] */;
   let usX: UINT16;
   let usY: UINT16;
   let usMercProfileID: INT16;
@@ -965,7 +965,7 @@ function DrawCharBars(): void {
 
 function DrawCharStats(sCharNum: INT16): void {
   // will draw the characters stats, max life, strength, dex, and skills
-  let sString: wchar_t[] /* [9] */;
+  let sString: string /* wchar_t[9] */;
   let usX: UINT16;
   let usY: UINT16;
   // HVOBJECT hCrossHandle;
@@ -1155,7 +1155,7 @@ function DrawCharStats(sCharNum: INT16): void {
 
 function DrawCharHealth(sCharNum: INT16): void {
   let uiHealthPercent: UINT32 = 0;
-  let sString: wchar_t[] /* [9] */;
+  let sString: string /* wchar_t[9] */;
   let usX: UINT16;
   let usY: UINT16;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -1223,7 +1223,7 @@ function DrawCharHealth(sCharNum: INT16): void {
 
 // "character" refers to hired people AND vehicles
 function DrawCharacterInfo(sCharNumber: INT16): void {
-  let sString: wchar_t[] /* [80] */;
+  let sString: string /* wchar_t[80] */;
   let usX: UINT16;
   let usY: UINT16;
   let usMercProfileID: INT16;
@@ -2976,18 +2976,18 @@ export function MapScreenHandle(): UINT32 {
   return Enum26.MAP_SCREEN;
 }
 
-function DrawString(pString: STR16, uiX: UINT16, uiY: UINT16, uiFont: UINT32): void {
+function DrawString(pString: string /* STR16 */, uiX: UINT16, uiY: UINT16, uiFont: UINT32): void {
   // draw monochrome string
   SetFont(uiFont);
   gprintfdirty(uiX, uiY, pString);
   mprintf(uiX, uiY, pString);
 }
 
-function SetDayAlternate(pStringA: STR16, ...args: any[]): void {
+function SetDayAlternate(pStringA: string /* STR16 */, ...args: any[]): void {
   // this sets the clock counter, unwind loop
   let uiX: UINT16 = 0;
   let uiY: UINT16 = 0;
-  let String: wchar_t[] /* [80] */;
+  let String: string /* wchar_t[80] */;
   let argptr: va_list;
 
   va_start(argptr, pStringA); // Set up variable argument pointer
@@ -3013,11 +3013,11 @@ function SetDayAlternate(pStringA: STR16, ...args: any[]): void {
   mprintf(uiX, uiY, String);
 }
 
-function SetHourAlternate(pStringA: STR16, ...args: any[]): void {
+function SetHourAlternate(pStringA: string /* STR16 */, ...args: any[]): void {
   // this sets the clock counter, unwind loop
   let uiX: UINT16 = 0;
   let uiY: UINT16 = 0;
-  let String: wchar_t[] /* [80] */;
+  let String: string /* wchar_t[80] */;
   let argptr: va_list;
 
   va_start(argptr, pStringA); // Set up variable argument pointer
@@ -3044,11 +3044,11 @@ function SetHourAlternate(pStringA: STR16, ...args: any[]): void {
   mprintf(uiX, uiY, String);
 }
 
-function SetClockHour(pStringA: STR16, ...args: any[]): void {
+function SetClockHour(pStringA: string /* STR16 */, ...args: any[]): void {
   // this sets the clock counter, unwind loop
   let uiX: UINT16 = 0;
   let uiY: UINT16 = 0;
-  let String: wchar_t[] /* [80] */;
+  let String: string /* wchar_t[80] */;
   let argptr: va_list;
 
   va_start(argptr, pStringA); // Set up variable argument pointer
@@ -3072,9 +3072,9 @@ function SetClockHour(pStringA: STR16, ...args: any[]): void {
   mprintf(uiX, uiY, String);
 }
 
-function SetClockMin(pStringA: STR16, ...args: any[]): void {
+function SetClockMin(pStringA: string /* STR16 */, ...args: any[]): void {
   // this sets the clock counter, unwind loop
-  let String: wchar_t[] /* [10] */;
+  let String: string /* wchar_t[10] */;
   let argptr: va_list;
 
   va_start(argptr, pStringA); // Set up variable argument pointer
@@ -3097,7 +3097,7 @@ function SetClockMin(pStringA: STR16, ...args: any[]): void {
   mprintf(CLOCK_MIN_X_START - 5, CLOCK_Y_START, String);
 }
 
-function DrawName(pName: STR16, sRowIndex: INT16, iFont: INT32): void {
+function DrawName(pName: string /* STR16 */, sRowIndex: INT16, iFont: INT32): void {
   let usX: UINT16 = 0;
   let usY: UINT16 = 0;
 
@@ -3114,7 +3114,7 @@ function DrawName(pName: STR16, sRowIndex: INT16, iFont: INT32): void {
 function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void {
   let usX: UINT16 = 0;
   let usY: UINT16 = 0;
-  let sString: wchar_t[] /* [32] */;
+  let sString: string /* wchar_t[32] */;
 
   GetMapscreenMercAssignmentString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
@@ -3137,7 +3137,7 @@ function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): voi
 function DrawLocation(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void {
   let usX: UINT16 = 0;
   let usY: UINT16 = 0;
-  let sString: wchar_t[] /* [32] */;
+  let sString: string /* wchar_t[32] */;
 
   GetMapscreenMercLocationString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
@@ -3157,7 +3157,7 @@ function DrawLocation(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void 
 function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void {
   let usX: UINT16 = 0;
   let usY: UINT16 = 0;
-  let sString: wchar_t[] /* [32] */;
+  let sString: string /* wchar_t[32] */;
 
   GetMapscreenMercDestinationString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
@@ -3179,7 +3179,7 @@ function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): vo
 function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8): void {
   let usX: UINT16 = 0;
   let usY: UINT16 = 0;
-  let sString: wchar_t[] /* [32] */;
+  let sString: string /* wchar_t[32] */;
 
   GetMapscreenMercDepartureString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString, addressof(ubFontColor));
 
@@ -3490,8 +3490,8 @@ function HandleMapUI(): UINT32 {
           if (SectorInfo[(SECTOR(sMapX, sMapY))].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] != Enum127.GROUNDBARRIER) {
             // if it's not enemy air controlled
             if (StrategicMap[CALCULATE_STRATEGIC_INDEX(sMapX, sMapY)].fEnemyAirControlled == false) {
-              let sMsgString: CHAR16[] /* [128] */;
-              let sMsgSubString: CHAR16[] /* [64] */;
+              let sMsgString: string /* CHAR16[128] */;
+              let sMsgSubString: string /* CHAR16[64] */;
 
               // move the landing zone over here
               gsMercArriveSectorX = sMapX;
@@ -4837,13 +4837,13 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-function PopupText(pFontString: Pointer<UINT16>, ...args: any[]): void {
+function PopupText(pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
   let argptr: va_list;
   let sX: INT16;
   let sY: INT16;
-  let PopupString: wchar_t[] /* [512] */;
+  let PopupString: string /* wchar_t[512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(PopupString, pFontString, argptr); // process gprintf string (get output str)
@@ -4955,7 +4955,7 @@ function BltCharInvPanel(): void {
   let pDestBuf: Pointer<UINT16>;
   let hCharListHandle: HVOBJECT;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let usX: UINT16;
   let usY: UINT16;
   let iCounter: INT32 = 0;
@@ -8087,8 +8087,8 @@ export function TellPlayerWhyHeCantCompressTime(): void {
   // KM:  Except if we are in a creature lair and haven't loaded the sector yet (no battle yet)
   else if (gTacticalStatus.uiFlags & INCOMBAT || gTacticalStatus.fEnemyInSector) {
     if (OnlyHostileCivsInSector()) {
-      let str: UINT16[] /* [256] */;
-      let pSectorString: UINT16[] /* [128] */;
+      let str: string /* UINT16[256] */;
+      let pSectorString: string /* UINT16[128] */;
       GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, pSectorString, true);
       swprintf(str, gzLateLocalizedString[27], pSectorString);
       DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, str, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
@@ -8137,7 +8137,7 @@ function MapSortBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function AddTeamPanelSortButtonsForMapScreen(): void {
   let iCounter: INT32 = 0;
-  let filename: SGPFILENAME;
+  let filename: string /* SGPFILENAME */;
   let iImageIndex: INT32[] /* [MAX_SORT_METHODS] */ = [
     0,
     1,
@@ -8951,7 +8951,7 @@ export function CancelPathsOfAllSelectedCharacters(): void {
   }
 }
 
-function ConvertMinTimeToETADayHourMinString(uiTimeInMin: UINT32, sString: STR16): void {
+function ConvertMinTimeToETADayHourMinString(uiTimeInMin: UINT32, sString: Pointer<string> /* STR16 */): void {
   let uiDay: UINT32;
   let uiHour: UINT32;
   let uiMin: UINT32;
@@ -9266,7 +9266,7 @@ function DestinationPlottingCompleted(): void {
 function HandleMilitiaRedistributionClick(): void {
   let bTownId: INT8;
   let fTownStillHidden: boolean;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   // if on the surface
   if (iCurrentMapSectorZ == 0) {
@@ -9398,13 +9398,13 @@ function HandlePostAutoresolveMessages(): void {
     fMapPanelDirty = true;
     gsEnemyGainedControlOfSectorID = -1;
   } else if (gbMilitiaPromotions) {
-    let str: UINT16[] /* [512] */;
+    let str: string /* UINT16[512] */;
     BuildMilitiaPromotionsString(str);
     DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   }
 }
 
-export function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
+export function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer<string> /* wchar_t[] */ /* [] */): void {
   if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
     wcscpy(sString, pAssignmentStrings[pSoldier.value.bAssignment]);
   } else {
@@ -9412,8 +9412,8 @@ export function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>,
   }
 }
 
-export function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
-  let pTempString: wchar_t[] /* [32] */;
+export function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer<string> /* wchar_t[] */ /* [] */): void {
+  let pTempString: string /* wchar_t[32] */;
 
   if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
     // show blank
@@ -9435,7 +9435,7 @@ export function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, s
   }
 }
 
-export function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
+export function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer<string> /* wchar_t[] */ /* [] */): void {
   let iSectorX: INT32;
   let iSectorY: INT32;
   let sSector: INT16 = 0;
@@ -9479,7 +9479,7 @@ export function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>
   swprintf(sString, "%s%s", pMapVertIndex[iSectorY], pMapHortIndex[iSectorX]);
 }
 
-export function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */, pubFontColor: Pointer<UINT8>): void {
+export function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer<string> /* wchar_t[] */ /* [] */, pubFontColor: Pointer<UINT8>): void {
   let iMinsRemaining: INT32 = 0;
   let iDaysRemaining: INT32 = 0;
   let iHoursRemaining: INT32 = 0;

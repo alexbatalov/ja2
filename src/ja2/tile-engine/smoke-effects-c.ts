@@ -543,7 +543,7 @@ export function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   let uiNumSmokeEffects: UINT32 = 0;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let uiCnt: UINT32;
 
   // get the name of the map
@@ -611,7 +611,7 @@ export function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
   let uiCnt: UINT32 = 0;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let bLevel: INT8;
 
   GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);

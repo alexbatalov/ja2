@@ -394,7 +394,7 @@ function UpdateSectorExitMenu(): void {
     MSYS_DisableRegion(addressof(gExitDialog.SingleRegion));
     if (gExitDialog.fSelectedMercIsEPC) {
       // EPCs cannot leave the sector alone and must be escorted
-      let str: UINT16[] /* [256] */;
+      let str: string /* UINT16[256] */;
       swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_ESCORTED_CHARACTERS_MUST_BE_ESCORTED_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
       SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
       SetRegionFastHelpText(addressof(gExitDialog.SingleRegion), str);
@@ -402,7 +402,7 @@ function UpdateSectorExitMenu(): void {
       // It has been previously determined that there are only two mercs in the squad, the selected merc
       // isn't an EPC, but the other merc is.  That means that this merc cannot leave the sector alone
       // as he would isolate the EPC.
-      let str: UINT16[] /* [256] */;
+      let str: string /* UINT16[256] */;
       if (!gExitDialog.fSquadHasMultipleEPCs) {
         if (gMercProfiles[MercPtrs[gusSelectedSoldier].value.ubProfile].bSex == Enum272.MALE) {
           // male singular
@@ -424,7 +424,7 @@ function UpdateSectorExitMenu(): void {
       SetRegionFastHelpText(addressof(gExitDialog.SingleRegion), str);
     }
   } else {
-    let str: UINT16[] /* [256] */;
+    let str: string /* UINT16[256] */;
     EnableButton(gExitDialog.uiSingleMoveButton);
     MSYS_EnableRegion(addressof(gExitDialog.SingleRegion));
     swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_SINGLE_TRAVERSAL_WILL_SEPARATE_SQUADS_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
@@ -528,7 +528,7 @@ export function HandleSectorExitMenu(): boolean {
 }
 
 export function RemoveSectorExitMenu(fOk: boolean): void {
-  let Str: INT16[] /* [50] */;
+  let Str: string /* INT16[50] */;
 
   if (gfInSectorExitMenu) {
     guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;

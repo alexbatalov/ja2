@@ -248,13 +248,13 @@ export let guiScreenToGotoAfterLoadingSavedGame: UINT32 = 0;
 //
 /////////////////////////////////////////////////////
 
-export function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): boolean {
+export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR16 */): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let hFile: HWFILE = 0;
   let SaveGameHeader: SAVED_GAME_HEADER;
-  let zSaveGameName: CHAR8[] /* [512] */;
+  let zSaveGameName: string /* CHAR8[512] */;
   let uiSizeOfGeneralInfo: UINT32 = sizeof(GENERAL_SAVE_INFO);
-  let saveDir: UINT8[] /* [100] */;
+  let saveDir: string /* UINT8[100] */;
   let fPausedStateBeforeSaving: boolean = gfGamePaused;
   let fLockPauseStateBeforeSaving: boolean = gfLockPauseState;
   let iSaveLoadGameMessageBoxID: INT32 = -1;
@@ -752,7 +752,7 @@ export function LoadSavedGame(ubSavedGameID: UINT8): boolean {
   let sLoadSectorX: INT16;
   let sLoadSectorY: INT16;
   let bLoadSectorZ: INT8;
-  let zSaveGameName: CHAR8[] /* [512] */;
+  let zSaveGameName: string /* CHAR8[512] */;
   let uiSizeOfGeneralInfo: UINT32 = sizeof(GENERAL_SAVE_INFO);
 
   let uiRelStartPerc: UINT32;
@@ -2099,7 +2099,7 @@ BOOLEAN LoadPtrInfo( PTR *pData, UINT32 uiSizeOfObject, HWFILE hFile )
 }
 */
 
-export function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean {
+export function SaveFilesToSavedGame(pSrcFileName: string /* STR */, hFile: HWFILE): boolean {
   let uiFileSize: UINT32;
   let uiNumBytesWritten: UINT32 = 0;
   let hSrcFile: HWFILE;
@@ -2156,7 +2156,7 @@ export function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean 
   return true;
 }
 
-export function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): boolean {
+export function LoadFilesFromSavedGame(pSrcFileName: string /* STR */, hFile: HWFILE): boolean {
   let uiFileSize: UINT32;
   let uiNumBytesWritten: UINT32 = 0;
   let hSrcFile: HWFILE;
@@ -2695,7 +2695,7 @@ function LoadWatchedLocsFromSavedGame(hFile: HWFILE): boolean {
   return true;
 }
 
-export function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: STR): void {
+export function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: Pointer<string> /* STR */): void {
   // if we are creating the QuickSave file
   if (ubSaveGameID == 0) {
       sprintf(pzNewFileName, "%S\\%S.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_QUICKSAVE_NAME], pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
@@ -3565,8 +3565,8 @@ function UpdateMercMercContractInfo(): void {
 }
 
 export function GetNumberForAutoSave(fLatestAutoSave: boolean): INT8 {
-  let zFileName1: CHAR[] /* [256] */;
-  let zFileName2: CHAR[] /* [256] */;
+  let zFileName1: string /* CHAR[256] */;
+  let zFileName2: string /* CHAR[256] */;
   let hFile: HWFILE;
   let fFile1Exist: boolean;
   let fFile2Exist: boolean;

@@ -304,8 +304,8 @@ export function SetBackGroundSurface(hBoxHandle: INT32, iBackGroundSurfaceIndex:
 }
 
 // adds a FIRST column string to the CURRENT popup box
-export function AddMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
-  let pLocalString: STR16 = null;
+export function AddMonoString(hStringHandle: Pointer<INT32>, pString: string /* STR16 */): void {
+  let pLocalString: string /* STR16 */ = null;
   let pStringSt: POPUPSTRINGPTR = null;
   let iCounter: INT32 = 0;
 
@@ -351,8 +351,8 @@ export function AddMonoString(hStringHandle: Pointer<INT32>, pString: STR16): vo
 }
 
 // adds a SECOND column string to the CURRENT popup box
-export function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
-  let pLocalString: STR16 = null;
+export function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString: string /* STR16 */): void {
+  let pLocalString: string /* STR16 */ = null;
   let pStringSt: POPUPSTRINGPTR = null;
   let iCounter: INT32 = 0;
 
@@ -395,8 +395,8 @@ export function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString
 }
 
 // Adds a COLORED first column string to the CURRENT box
-function AddColorString(hStringHandle: Pointer<INT32>, pString: STR16): void {
-  let pLocalString: STR16;
+function AddColorString(hStringHandle: Pointer<INT32>, pString: string /* STR16 */): void {
+  let pLocalString: string /* STR16 */;
   let pStringSt: POPUPSTRINGPTR = null;
   let iCounter: INT32 = 0;
 
@@ -1175,7 +1175,7 @@ function DrawBoxText(uiCounter: UINT32): boolean {
   let uiCount: UINT32 = 0;
   let uX: INT16;
   let uY: INT16;
-  let sString: wchar_t[] /* [100] */;
+  let sString: string /* wchar_t[100] */;
 
   if ((uiCounter < 0) || (uiCounter >= MAX_POPUP_BOX_COUNT))
     return false;

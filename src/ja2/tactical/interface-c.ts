@@ -481,7 +481,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   let iMenuAnchorX: INT32;
   let iMenuAnchorY: INT32;
   let uiActionImages: UINT32;
-  let zActionString: INT16[] /* [50] */;
+  let zActionString: string /* INT16[50] */;
   let fDisableAction: boolean = false;
 
   // Erase other menus....
@@ -1133,8 +1133,8 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   let sY: INT16;
   let iBack: INT32;
   let TileElem: TILE_ELEMENT;
-  let pStr: Pointer<UINT16>;
-  let NameStr: UINT16[] /* [50] */;
+  let pStr: string /* Pointer<UINT16> */;
+  let NameStr: string /* UINT16[50] */;
   let usGraphicToUse: UINT16 = Enum312.THIRDPOINTERS1;
   let fRaiseName: boolean = false;
   let fDoName: boolean = true;
@@ -1398,10 +1398,10 @@ function RenderOverlayMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   InvalidateRegion(pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.sX + gusOverlayPopupBoxWidth, pBlitter.value.sY + gusOverlayPopupBoxHeight);
 }
 
-function BeginOverlayMessage(uiFont: UINT32, pFontString: Pointer<UINT16>, ...args: any[]): void {
+function BeginOverlayMessage(uiFont: UINT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
   let argptr: va_list;
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
-  let SlideString: wchar_t[] /* [512] */;
+  let SlideString: string /* wchar_t[512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(SlideString, pFontString, argptr); // process gprintf string (get output str)
@@ -1711,7 +1711,7 @@ export function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Poi
 function PopupDoorOpenMenu(fClosingDoor: boolean): void {
   let iMenuAnchorX: INT32;
   let iMenuAnchorY: INT32;
-  let zDisp: INT16[] /* [100] */;
+  let zDisp: string /* INT16[100] */;
 
   iMenuAnchorX = gOpenDoorMenu.sX;
   iMenuAnchorY = gOpenDoorMenu.sY;
@@ -2116,10 +2116,10 @@ function RenderUIMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   InvalidateRegion(pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.sX + gusUIMessageWidth, pBlitter.value.sY + gusUIMessageHeight);
 }
 
-export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: Pointer<UINT16>, ...args: any[]): void {
+export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
   let argptr: va_list;
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
-  let MsgString: wchar_t[] /* [512] */;
+  let MsgString: string /* wchar_t[512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(MsgString, pFontString, argptr); // process gprintf string (get output str)
@@ -2169,9 +2169,9 @@ export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: Poin
   gfUseSkullIconMessage = fUseSkullIcon;
 }
 
-export function BeginUIMessage(pFontString: Pointer<UINT16>, ...args: any[]): void {
+export function BeginUIMessage(pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
   let argptr: va_list;
-  let MsgString: wchar_t[] /* [512] */;
+  let MsgString: string /* wchar_t[512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(MsgString, pFontString, argptr); // process gprintf string (get output str)
@@ -2180,10 +2180,10 @@ export function BeginUIMessage(pFontString: Pointer<UINT16>, ...args: any[]): vo
   InternalBeginUIMessage(false, MsgString);
 }
 
-export function BeginMapUIMessage(ubPosition: UINT8, pFontString: Pointer<UINT16>, ...args: any[]): void {
+export function BeginMapUIMessage(ubPosition: UINT8, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
   let argptr: va_list;
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
-  let MsgString: wchar_t[] /* [512] */;
+  let MsgString: string /* wchar_t[512] */;
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
@@ -2261,7 +2261,7 @@ const PLAYER_TEAM_TIMER_TICKS_FROM_END_TO_START_BEEP = (5000 / PLAYER_TEAM_TIMER
 const PLAYER_TEAM_TIMER_TIME_BETWEEN_BEEPS = (500);
 const PLAYER_TEAM_TIMER_TICKS_PER_ENEMY = (2000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
-export function AddTopMessage(ubType: UINT8, pzString: Pointer<UINT16>): boolean {
+export function AddTopMessage(ubType: UINT8, pzString: string /* Pointer<UINT16> */): boolean {
   let cnt: UINT32;
   let fFound: boolean = false;
 
@@ -2296,7 +2296,7 @@ export function AddTopMessage(ubType: UINT8, pzString: Pointer<UINT16>): boolean
   return false;
 }
 
-function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UINT16>): void {
+function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: string /* Pointer<UINT16> */): void {
   let uiBAR: UINT32;
   let uiPLAYERBAR: UINT32;
   let uiINTBAR: UINT32;
@@ -2743,7 +2743,7 @@ function DoorMenuBackregionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   }
 }
 
-export function GetSoldierHealthString(pSoldier: Pointer<SOLDIERTYPE>): Pointer<UINT16> {
+export function GetSoldierHealthString(pSoldier: Pointer<SOLDIERTYPE>): string /* Pointer<UINT16> */ {
   let cnt: INT32;
   let cntStart: INT32;
   if (pSoldier.value.bLife == pSoldier.value.bLifeMax) {
@@ -3020,7 +3020,7 @@ export function DirtyTopMessage(): void {
   gTopMessage.fCreated = false;
 }
 
-function CalcUIMessageDuration(wString: STR16): UINT32 {
+function CalcUIMessageDuration(wString: string /* STR16 */): UINT32 {
   // base + X per letter
   return 1000 + 50 * wcslen(wString);
 }

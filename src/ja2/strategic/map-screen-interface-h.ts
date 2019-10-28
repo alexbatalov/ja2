@@ -2,7 +2,7 @@ namespace ja2 {
 
 export interface FASTHELPREGION {
   // the string
-  FastHelpText: CHAR16[] /* [256] */;
+  FastHelpText: string /* CHAR16[256] */;
 
   // the x and y position values
   iX: INT32;

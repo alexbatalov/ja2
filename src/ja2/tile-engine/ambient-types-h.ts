@@ -11,7 +11,7 @@ export interface AMBIENTDATA_STRUCT {
   uiMinTime: UINT32;
   uiMaxTime: UINT32;
   ubTimeCatagory: UINT8;
-  zFilename: SGPFILENAME;
+  zFilename: string /* SGPFILENAME */;
   uiVol: UINT32;
 }
 

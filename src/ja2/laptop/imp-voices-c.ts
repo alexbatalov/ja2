@@ -325,7 +325,7 @@ function IMPPortraitRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason
 }
 
 function RenderVoiceIndex(): void {
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sX: INT16;
   let sY: INT16;
 

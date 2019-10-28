@@ -102,7 +102,7 @@ let gfOptionsScreenEntry: boolean = true;
 let gfOptionsScreenExit: boolean = false;
 let gfRedrawOptionsScreen: boolean = true;
 
-let gzSavedGameName: CHAR8[] /* [128] */;
+let gzSavedGameName: string /* CHAR8[128] */;
 let gfEnteredFromMapScreen: boolean = false;
 
 let guiOptionsScreen: UINT32 = Enum26.OPTIONS_SCREEN;
@@ -803,7 +803,7 @@ function MusicSliderChangeCallBack(iNewValue: INT32): void {
   MusicSetVolume(iNewValue);
 }
 
-export function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
+export function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
   // reset exit mode
   gfExitOptionsDueToMessageBox = true;
 
@@ -814,7 +814,7 @@ export function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT
   return giOptionsMessageBox != -1;
 }
 
-function DoOptionsMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
+function DoOptionsMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // reset exit mode

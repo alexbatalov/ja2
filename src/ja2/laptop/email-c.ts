@@ -522,7 +522,7 @@ export function RenderEmail(): void {
 }
 
 export function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32, iFirstData: INT32, uiSecondData: UINT32): void {
-  let pSubject: wchar_t[] /* [320] */;
+  let pSubject: string /* wchar_t[320] */;
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
   // wchar_t pMessageString[320];
@@ -554,7 +554,7 @@ export function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: I
 }
 
 export function AddEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
-  let pSubject: wchar_t[] /* [320] */;
+  let pSubject: string /* wchar_t[320] */;
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
   // wchar_t pMessageString[320];
@@ -578,7 +578,7 @@ export function AddEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender:
 }
 
 export function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
-  let pSubject: wchar_t[] /* [320] */;
+  let pSubject: string /* wchar_t[320] */;
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
   // wchar_t pMessageString[320];
@@ -601,7 +601,7 @@ export function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ub
   return;
 }
 
-function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject: STR16, iDate: INT32, ubSender: UINT8, fAlreadyRead: boolean, iFirstData: INT32, uiSecondData: UINT32): void {
+function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject: string /* STR16 */, iDate: INT32, ubSender: UINT8, fAlreadyRead: boolean, iFirstData: INT32, uiSecondData: UINT32): void {
   // will add a message to the list of messages
   let pEmail: EmailPtr = pEmailList;
   let pTempEmail: EmailPtr = null;
@@ -895,8 +895,8 @@ export function AddMessageToPages(iMessageId: INT32): void {
 function SortMessages(iCriteria: INT32): void {
   let pA: EmailPtr = pEmailList;
   let pB: EmailPtr = pEmailList;
-  let pSubjectA: CHAR16[] /* [256] */;
-  let pSubjectB: CHAR16[] /* [256] */;
+  let pSubjectA: string /* CHAR16[256] */;
+  let pSubjectB: string /* CHAR16[256] */;
   let iId: INT32 = 0;
 
   // no messages to sort?
@@ -1117,8 +1117,8 @@ function DrawLetterIcon(iCounter: INT32, fRead: boolean): void {
   return;
 }
 
-function DrawSubject(iCounter: INT32, pSubject: STR16, fRead: boolean): void {
-  let pTempSubject: wchar_t[] /* [320] */;
+function DrawSubject(iCounter: INT32, pSubject: string /* STR16 */, fRead: boolean): void {
+  let pTempSubject: string /* wchar_t[320] */;
 
   // draw subject line of mail being viewed in viewer
 
@@ -1176,7 +1176,7 @@ function DrawSender(iCounter: INT32, ubSender: UINT8, fRead: boolean): void {
 }
 
 function DrawDate(iCounter: INT32, iDate: INT32, fRead: boolean): void {
-  let sString: wchar_t[] /* [20] */;
+  let sString: string /* wchar_t[20] */;
 
   SetFontShadow(NO_SHADOW);
   SetFontForeground(FONT_BLACK);
@@ -1415,7 +1415,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   let iHeight: INT32 = 0;
   let iCounter: INT32 = 1;
   //	wchar_t pString[MAIL_STRING_SIZE/2 + 1];
-  let pString: wchar_t[] /* [MAIL_STRING_SIZE] */;
+  let pString: string /* wchar_t[MAIL_STRING_SIZE] */;
   let iOffSet: INT32 = 0;
   let iHeightTemp: INT32 = 0;
   let iHeightSoFar: INT32 = 0;
@@ -2388,7 +2388,7 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
   // message box
   let usX: UINT16;
   let usY: UINT16;
-  let sString: wchar_t[] /* [100] */;
+  let sString: string /* wchar_t[100] */;
 
   // font stuff
   SetFont(MESSAGE_FONT());
@@ -2480,7 +2480,7 @@ function ClearOutEmailMessageRecordsList(): void {
   return;
 }
 
-function AddEmailRecordToList(pString: STR16): void {
+function AddEmailRecordToList(pString: string /* STR16 */): void {
   let pTempRecord: RecordPtr;
 
   // set to head of list
@@ -2728,7 +2728,7 @@ function HandleIMPCharProfileResultsMessage(): void {
   let iHeight: INT32 = 0;
   let iCounter: INT32 = 0;
   //	wchar_t pString[MAIL_STRING_SIZE/2 + 1];
-  let pString: wchar_t[] /* [MAIL_STRING_SIZE] */;
+  let pString: string /* wchar_t[MAIL_STRING_SIZE] */;
   let iOffSet: INT32 = 0;
   let iViewerY: INT32 = 0;
   let iHeightTemp: INT32 = 0;
@@ -2766,7 +2766,7 @@ function HandleIMPCharProfileResultsMessage(): void {
 
       // have to place players name into string for first record
       if (iCounter == 0) {
-        let zTemp: wchar_t[] /* [512] */;
+        let zTemp: string /* wchar_t[512] */;
 
         swprintf(zTemp, " %s", gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName);
         wcscat(pString, zTemp);
@@ -3817,7 +3817,7 @@ function UpdateStatusOfNextPreviousButtons(): void {
 
 function DisplayWhichPageOfEmailProgramIsDisplayed(): void {
   // will draw the number of the email program we are viewing right now
-  let sString: CHAR16[] /* [10] */;
+  let sString: string /* CHAR16[10] */;
 
   // font stuff
   SetFont(MESSAGE_FONT());
@@ -3874,7 +3874,7 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): boolean {
   let iCounter: INT32 = 0;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
 
   // get and blt the email list background
   // load, blt and delete graphics
@@ -3950,7 +3950,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
   let pCurrentRecord: RecordPtr;
   let pLastRecord: RecordPtr;
   let pTempList: RecordPtr;
-  let pString: CHAR16[] /* [512] */;
+  let pString: string /* CHAR16[512] */;
   let iCounter: INT32 = 0;
   let iHeight: INT32 = 0;
   let iOffSet: INT32 = 0;
@@ -4145,7 +4145,7 @@ function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pM
   let iHeight: INT32 = 0;
   let pTempRecord: RecordPtr;
   //	wchar_t pString[MAIL_STRING_SIZE/2 + 1];
-  let pString: wchar_t[] /* [MAIL_STRING_SIZE] */;
+  let pString: string /* wchar_t[MAIL_STRING_SIZE] */;
   let ubCnt: UINT8;
 
   // Replace the name in the subject line
@@ -4174,20 +4174,20 @@ function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pM
   giPrevMessageId = giMessageId;
 }
 
-function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>, pMail: EmailPtr): boolean {
+function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string> /* Pointer<CHAR16> */, pMail: EmailPtr): boolean {
   //	wchar_t		pTempString[MAIL_STRING_SIZE/2 + 1];
-  let pTempString: wchar_t[] /* [MAIL_STRING_SIZE] */;
+  let pTempString: string /* wchar_t[MAIL_STRING_SIZE] */;
   let iLength: INT32 = 0;
   let iCurLocInSourceString: INT32 = 0;
   let iLengthOfSourceString: INT32 = wcslen(pFinishedString); // Get the length of the source string
-  let pMercNameString: Pointer<CHAR16> = null;
-  let pAmountString: Pointer<CHAR16> = null;
-  let pSubString: Pointer<CHAR16> = null;
+  let pMercNameString: string /* Pointer<CHAR16> */ = null;
+  let pAmountString: string /* Pointer<CHAR16> */ = null;
+  let pSubString: string /* Pointer<CHAR16> */ = null;
   let fReplacingMercName: boolean = true;
 
-  let sMercName: CHAR16[] /* [32] */ = "$MERCNAME$"; // Doesnt need to be translated, inside Email.txt and will be replaced by the mercs name
-  let sAmount: CHAR16[] /* [32] */ = "$AMOUN$"; // Doesnt need to be translated, inside Email.txt and will be replaced by a dollar amount
-  let sSearchString: CHAR16[] /* [32] */;
+  let sMercName: string /* CHAR16[32] */ = "$MERCNAME$"; // Doesnt need to be translated, inside Email.txt and will be replaced by the mercs name
+  let sAmount: string /* CHAR16[32] */ = "$AMOUN$"; // Doesnt need to be translated, inside Email.txt and will be replaced by a dollar amount
+  let sSearchString: string /* CHAR16[32] */;
 
   // Copy the original string over to the temp string
   wcscpy(pTempString, pFinishedString);
@@ -4241,7 +4241,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
         // add the mercs name to the string
         wcscat(pFinishedString, gMercProfiles[pMail.value.uiSecondData].zName);
       } else {
-        let sDollarAmount: CHAR16[] /* [64] */;
+        let sDollarAmount: string /* CHAR16[64] */;
 
         swprintf(sDollarAmount, "%d", pMail.value.iFirstData);
 

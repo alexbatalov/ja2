@@ -175,13 +175,13 @@ export let gfInItemDescBox: boolean = false;
 let guiCurrentItemDescriptionScreen: UINT32 = 0;
 export let gpItemDescObject: Pointer<OBJECTTYPE> = null;
 let gfItemDescObjectIsAttachment: boolean = false;
-let gzItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
-let gzItemDesc: UINT16[] /* [SIZE_ITEM_INFO] */;
-let gzItemPros: UINT16[] /* [SIZE_ITEM_PROS] */;
-let gzItemCons: UINT16[] /* [SIZE_ITEM_CONS] */;
-let gzFullItemPros: UINT16[] /* [SIZE_ITEM_PROS] */;
-let gzFullItemCons: UINT16[] /* [SIZE_ITEM_PROS] */;
-let gzFullItemTemp: UINT16[] /* [SIZE_ITEM_PROS] */; // necessary, unfortunately
+let gzItemName: string /* UINT16[SIZE_ITEM_NAME] */;
+let gzItemDesc: string /* UINT16[SIZE_ITEM_INFO] */;
+let gzItemPros: string /* UINT16[SIZE_ITEM_PROS] */;
+let gzItemCons: string /* UINT16[SIZE_ITEM_CONS] */;
+let gzFullItemPros: string /* UINT16[SIZE_ITEM_PROS] */;
+let gzFullItemCons: string /* UINT16[SIZE_ITEM_PROS] */;
+let gzFullItemTemp: string /* UINT16[SIZE_ITEM_PROS] */; // necessary, unfortunately
 let gsInvDescX: INT16;
 let gsInvDescY: INT16;
 let gubItemDescStatusIndex: UINT8;
@@ -297,8 +297,8 @@ interface INV_HELPTEXT {
   iXPosition: INT32[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
   iYPosition: INT32[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
   iWidth: INT32[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
-  sString1: STR16[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
-  sString2: STR16[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
+  sString1: string[] /* STR16[NUM_INV_HELPTEXT_ENTRIES] */;
+  sString2: string[] /* STR16[NUM_INV_HELPTEXT_ENTRIES] */;
 }
 
 let gWeaponStats: INV_DESC_STATS[] /* [] */ = [
@@ -416,7 +416,7 @@ let guiBodyInvVO: UINT32[][] /* [4][2] */;
 let guiGoldKeyVO: UINT32;
 export let gbCompatibleApplyItem: INT8 = false;
 
-function AttemptToAddSubstring(zDest: STR16, zTemp: STR16, puiStringLength: Pointer<UINT32>, uiPixLimit: UINT32): boolean {
+function AttemptToAddSubstring(zDest: Pointer<string> /* STR16 */, zTemp: string /* STR16 */, puiStringLength: Pointer<UINT32>, uiPixLimit: UINT32): boolean {
   let uiRequiredStringLength: UINT32;
   let uiTempStringLength: UINT32;
 
@@ -438,9 +438,9 @@ function AttemptToAddSubstring(zDest: STR16, zTemp: STR16, puiStringLength: Poin
   }
 }
 
-function GenerateProsString(zItemPros: Pointer<UINT16>, pObject: Pointer<OBJECTTYPE>, uiPixLimit: UINT32): void {
+function GenerateProsString(zItemPros: Pointer<string> /* Pointer<UINT16> */, pObject: Pointer<OBJECTTYPE>, uiPixLimit: UINT32): void {
   let uiStringLength: UINT32 = 0;
-  let zTemp: Pointer<UINT16>;
+  let zTemp: string /* Pointer<UINT16> */;
   let usItem: UINT16 = pObject.value.usItem;
   let ubWeight: UINT8;
 
@@ -523,9 +523,9 @@ function GenerateProsString(zItemPros: Pointer<UINT16>, pObject: Pointer<OBJECTT
   }
 }
 
-function GenerateConsString(zItemCons: Pointer<UINT16>, pObject: Pointer<OBJECTTYPE>, uiPixLimit: UINT32): void {
+function GenerateConsString(zItemCons: Pointer<string> /* Pointer<UINT16> */, pObject: Pointer<OBJECTTYPE>, uiPixLimit: UINT32): void {
   let uiStringLength: UINT32 = 0;
-  let zTemp: Pointer<UINT16>;
+  let zTemp: string /* Pointer<UINT16> */;
   let ubWeight: UINT8;
   let usItem: UINT16 = pObject.value.usItem;
 
@@ -749,7 +749,7 @@ export function RenderInvBodyPanel(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY
 
 export function HandleRenderInvSlots(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: UINT8): void {
   let cnt: INT32;
-  /* static */ let pStr: INT16[] /* [150] */;
+  /* static */ let pStr: string /* INT16[150] */;
 
   if (InItemDescriptionBox() || InItemStackPopup() || InKeyRingPopup()) {
   } else {
@@ -1473,8 +1473,8 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, 
   let sFontX: INT16;
   let sFontY: INT16;
 
-  /* static */ let pStr: INT16[] /* [100] */;
-  /* static */ let pStr2: INT16[] /* [100] */;
+  /* static */ let pStr: string /* INT16[100] */;
+  /* static */ let pStr2: string /* INT16[100] */;
 
   if (pObject.value.usItem == NOTHING) {
     return;
@@ -1740,9 +1740,9 @@ export function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosi
 
 export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let VObjectDesc: VOBJECT_DESC;
-  let ubString: UINT8[] /* [48] */;
+  let ubString: string /* UINT8[48] */;
   let cnt: INT32;
-  let pStr: INT16[] /* [10] */;
+  let pStr: string /* INT16[10] */;
   let usX: UINT16;
   let usY: UINT16;
   let sForeColour: INT16;
@@ -2045,7 +2045,7 @@ function ReloadItemDesc(): boolean {
 
 function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   /* static */ let fRightDown: boolean = false;
-  let pStr: INT16[] /* [10] */;
+  let pStr: string /* INT16[10] */;
 
   /*	region gets disabled in SKI for shopkeeper boxes.  It now works normally for merc's inventory boxes!
           //if we are currently in the shopkeeper interface, return;
@@ -2261,11 +2261,11 @@ export function RenderItemDescriptionBox(): void {
   let sCenY: INT16;
   let sStrX: INT16;
   let hVObject: HVOBJECT;
-  let sTempString: CHAR16[] /* [128] */;
+  let sTempString: string /* CHAR16[128] */;
 
   let uiStringLength: UINT16;
   let uiRightLength: UINT16;
-  /* static */ let pStr: INT16[] /* [100] */;
+  /* static */ let pStr: string /* INT16[100] */;
   let cnt: INT32;
   let fWeight: FLOAT;
   let usX: UINT16;
@@ -4410,7 +4410,7 @@ export function GetTileGraphicForItem(pItem: Pointer<INVTYPE>): UINT16 {
 }
 
 export function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<UINT32>): boolean {
-  let zName: CHAR8[] /* [100] */;
+  let zName: string /* CHAR8[100] */;
   let uiVo: UINT32;
   let VObjectDesc: VOBJECT_DESC;
   let ubGraphic: UINT8;
@@ -4706,7 +4706,7 @@ export function SetItemPickupMenuDirty(fDirtyLevel: boolean): void {
 
 export function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pItemPool: Pointer<ITEM_POOL>, sScreenX: INT16, sScreenY: INT16, bZLevel: INT8): boolean {
   let VObjectDesc: VOBJECT_DESC;
-  let ubString: UINT8[] /* [48] */;
+  let ubString: string /* UINT8[48] */;
   let pTempItemPool: Pointer<ITEM_POOL>;
   let cnt: INT32;
   let sCenX: INT16;
@@ -4897,7 +4897,7 @@ function SetupPickupPage(bPage: INT8): void {
   let pTempItemPool: Pointer<ITEM_POOL>;
   let sValue: INT16;
   let pObject: Pointer<OBJECTTYPE>;
-  /* static */ let pStr: INT16[] /* [200] */;
+  /* static */ let pStr: string /* INT16[200] */;
 
   // Zero out page slots
   memset(gItemPickupMenu.ItemPoolSlots, 0, sizeof(gItemPickupMenu.ItemPoolSlots));
@@ -5039,7 +5039,7 @@ export function RenderItemPickupMenu(): void {
   let sNewY: INT16;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
-  let pStr: INT16[] /* [100] */;
+  let pStr: string /* INT16[100] */;
   let usSubRegion: UINT16;
   let usHeight: UINT16;
   let usWidth: UINT16;
@@ -5179,7 +5179,7 @@ export function RenderItemPickupMenu(): void {
 
         // If we are money...
         if (Item[pObject.value.usItem].usItemClass == IC_MONEY) {
-          let pStr2: INT16[] /* [20] */;
+          let pStr2: string /* INT16[20] */;
           swprintf(pStr2, "%ld", pObject.value.uiMoneyAmount);
           InsertCommasForDollarFigure(pStr2);
           InsertDollarSignInToString(pStr2);
@@ -5647,8 +5647,8 @@ function AttemptToApplyCamo(pSoldier: Pointer<SOLDIERTYPE>, usItemIndex: UINT16)
   return false;
 }
 
-export function GetHelpTextForItem(pzStr: Pointer<INT16>, pObject: Pointer<OBJECTTYPE>, pSoldier: Pointer<SOLDIERTYPE>): void {
-  let pStr: INT16[] /* [250] */;
+export function GetHelpTextForItem(pzStr: Pointer<string> /* Pointer<INT16> */, pObject: Pointer<OBJECTTYPE>, pSoldier: Pointer<SOLDIERTYPE>): void {
+  let pStr: string /* INT16[250] */;
   let usItem: UINT16 = pObject.value.usItem;
   let cnt: INT32 = 0;
   let iNumAttachments: INT32 = 0;
@@ -5667,7 +5667,7 @@ export function GetHelpTextForItem(pzStr: Pointer<INT16>, pObject: Pointer<OBJEC
     InsertDollarSignInToString(pStr);
   } else if (Item[usItem].usItemClass == IC_MONEY) {
     // alternate money like silver or gold
-    let pStr2: INT16[] /* [20] */;
+    let pStr2: string /* INT16[20] */;
     swprintf(pStr2, "%ld", pObject.value.uiMoneyAmount);
     InsertCommasForDollarFigure(pStr2);
     InsertDollarSignInToString(pStr2);
@@ -5681,7 +5681,7 @@ export function GetHelpTextForItem(pzStr: Pointer<INT16>, pObject: Pointer<OBJEC
     }
 
     if ((pObject.value.usItem == Enum225.ROCKET_RIFLE || pObject.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && pObject.value.ubImprintID < NO_PROFILE) {
-      let pStr2: INT16[] /* [20] */;
+      let pStr2: string /* INT16[20] */;
       swprintf(pStr2, " [%s]", gMercProfiles[pObject.value.ubImprintID].zNickname);
       wcscat(pStr, pStr2);
     }

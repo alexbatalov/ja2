@@ -3365,7 +3365,7 @@ function ShouldNewMailBeDisplayed(): void {
 
 function DisplayPlayersBalanceToDate(): void {
   // print players balance to date
-  let sString: CHAR16[] /* [100] */;
+  let sString: string /* CHAR16[100] */;
   let sX: INT16;
   let sY: INT16;
 
@@ -3539,7 +3539,7 @@ export function LapTopScreenCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
   return;
 }
 
-export function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
+export function DoLapTopMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let pCenteringRect: SGPRect = [ LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y ];
 
   // reset exit mode
@@ -3552,7 +3552,7 @@ export function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiEx
   return iLaptopMessageBox != -1;
 }
 
-export function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
+export function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
   // reset exit mode
   fExitDueToMessageBox = true;
 
@@ -3563,7 +3563,7 @@ export function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointe
   return iLaptopMessageBox != -1;
 }
 
-export function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
+export function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
   // reset exit mode
   fExitDueToMessageBox = true;
@@ -3598,7 +3598,7 @@ export function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UIN
   return true;
 }
 
-function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: STR16, uiIconGraphic: UINT32, usIconGraphicIndex: UINT16): boolean {
+function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: string /* STR16 */, uiIconGraphic: UINT32, usIconGraphicIndex: UINT16): boolean {
   let vs_desc: VSURFACE_DESC;
   let hImageHandle: HVOBJECT;
 
@@ -4250,7 +4250,7 @@ function DeleteDesktopBackground(): void {
 }
 
 export function PrintBalance(): void {
-  let pString: CHAR16[] /* [32] */;
+  let pString: string /* CHAR16[32] */;
   //	UINT16 usX, usY;
 
   SetFont(FONT10ARIAL());
@@ -4274,7 +4274,7 @@ export function PrintBalance(): void {
 }
 
 export function PrintNumberOnTeam(): void {
-  let pString: CHAR16[] /* [32] */;
+  let pString: string /* CHAR16[32] */;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32 = 0;
@@ -4445,7 +4445,7 @@ export function RenderWWWProgramTitleBar(): boolean {
   let hHandle: HVOBJECT;
   let VObjectDesc: VOBJECT_DESC;
   let iIndex: INT32 = 0;
-  let sString: CHAR16[] /* [256] */;
+  let sString: string /* CHAR16[256] */;
 
   // title bar - load
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

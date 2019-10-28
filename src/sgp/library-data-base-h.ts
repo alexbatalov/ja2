@@ -22,7 +22,7 @@ const DB_ADD_FILE_ID = (exp) => (exp & 0xC00000);
 export type HWFILE = UINT32;
 
 export interface LibraryInitHeader {
-  sLibraryName: CHAR8[] /* [FILENAME_SIZE] */; // The name of the library file on the disk
+  sLibraryName: string /* CHAR8[FILENAME_SIZE] */; // The name of the library file on the disk
   fOnCDrom: boolean; // A flag specifying if its a cdrom library ( not implemented yet )
   fInitOnStart: boolean; // Flag specifying if the library is to Initialized at the begining of the game
 }
@@ -35,7 +35,7 @@ export interface RealFileOpenStruct {
 }
 
 export interface FileHeaderStruct {
-  pFileName: STR;
+  pFileName: string /* STR */;
   uiFileLength: UINT32;
   uiFileOffset: UINT32;
 }
@@ -48,7 +48,7 @@ export interface FileOpenStruct {
 }
 
 export interface LibraryHeaderStruct {
-  sLibraryPath: STR;
+  sLibraryPath: string /* STR */;
   hLibraryHandle: HANDLE;
   usNumberOfEntries: UINT16;
   fLibraryOpen: boolean;
@@ -67,7 +67,7 @@ export interface RealFileHeaderStruct {
 }
 
 export interface DatabaseManagerHeaderStruct {
-  sManagerName: STR;
+  sManagerName: string /* STR */;
   pLibraries: Pointer<LibraryHeaderStruct>;
   usNumberOfLibraries: UINT16;
   fInitialized: boolean;
@@ -88,8 +88,8 @@ const FILE_OLD = 1;
 const FILE_DOESNT_EXIST = 0xfe;
 
 export interface LIBHEADER {
-  sLibName: CHAR8[] /* [FILENAME_SIZE] */;
-  sPathToLibrary: CHAR8[] /* [FILENAME_SIZE] */;
+  sLibName: string /* CHAR8[FILENAME_SIZE] */;
+  sPathToLibrary: string /* CHAR8[FILENAME_SIZE] */;
   iEntries: INT32;
   iUsed: INT32;
   iSort: UINT16;
@@ -99,7 +99,7 @@ export interface LIBHEADER {
 }
 
 export interface DIRENTRY {
-  sFileName: CHAR8[] /* [FILENAME_SIZE] */;
+  sFileName: string /* CHAR8[FILENAME_SIZE] */;
   uiOffset: UINT32;
   uiLength: UINT32;
   ubState: UINT8;

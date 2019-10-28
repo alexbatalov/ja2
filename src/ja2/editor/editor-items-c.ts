@@ -148,8 +148,8 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
   let x: INT16;
   let y: INT16;
   let usCounter: UINT16;
-  let pStr: INT16[] /* [100] */; //, pStr2[ 100 ];
-  let pItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
+  let pStr: string /* INT16[100] */; //, pStr2[ 100 ];
+  let pItemName: string /* UINT16[SIZE_ITEM_NAME] */;
   let ubBitDepth: UINT8;
   let fTypeMatch: boolean;
   let iEquipCount: INT32 = 0;
@@ -1329,7 +1329,7 @@ function CountNumberOfKeysOfTypeInWorld(ubKeyID: UINT8): UINT16 {
 export function DisplayItemStatistics(): void {
   let fUseSelectedItem: boolean;
   let usItemIndex: INT16;
-  let pItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
+  let pItemName: string /* UINT16[SIZE_ITEM_NAME] */;
   let pItem: Pointer<INVTYPE>;
 
   if (!eInfo.fActive) {

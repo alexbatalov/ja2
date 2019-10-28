@@ -579,7 +579,7 @@ export function ToggleShowMilitiaMode(): void {
 
     // check if player has any militia
     if (DoesPlayerHaveAnyMilitia() == false) {
-      let pwString: STR16 = null;
+      let pwString: string /* STR16 */ = null;
 
       // no - so put up a message explaining how it works
 
@@ -961,7 +961,7 @@ function DisplayCurrentLevelMarker(): void {
 
 export function CreateMouseRegionsForLevelMarkers(): void {
   let sCounter: INT16 = 0;
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
     MSYS_DefineRegion(addressof(LevelMouseRegions[sCounter]), MAP_LEVEL_MARKER_X, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * sCounter)), MAP_LEVEL_MARKER_X + MAP_LEVEL_MARKER_WIDTH, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * (sCounter + 1))), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, LevelMarkerBtnCallback);

@@ -134,7 +134,7 @@ export let gubCurMercIndex: UINT8;
 let iMercPopUpBox: INT32 = -1;
 
 let gusPositionOfSpecksDialogBox_X: UINT16;
-let gsSpeckDialogueTextPopUp: wchar_t[] /* [900] */;
+let gsSpeckDialogueTextPopUp: string /* wchar_t[900] */;
 let gusSpeckDialogueX: UINT16;
 let gusSpeckDialogueActualWidth: UINT16;
 
@@ -1275,7 +1275,7 @@ function HandleTalkingSpeck(): void {
   }
 }
 
-export function DisplayTextForSpeckVideoPopUp(pString: STR16): void {
+export function DisplayTextForSpeckVideoPopUp(pString: string /* STR16 */): void {
   let usActualHeight: UINT16;
   let iOldMercPopUpBoxId: INT32 = iMercPopUpBox;
 

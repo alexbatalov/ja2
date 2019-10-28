@@ -25,7 +25,7 @@ export const COMPRESS_RUN_LIMIT = 0x7F;
 // - make sure that everything in this header is nicely aligned
 // - don't exceed the 64-byte maximum
 export interface STCIHeader {
-  cID: UINT8[] /* [STCI_ID_LEN] */;
+  cID: string /* UINT8[STCI_ID_LEN] */;
   uiOriginalSize: UINT32;
   uiStoredSize: UINT32; // equal to uiOriginalSize if data uncompressed
   uiTransparentValue: UINT32;

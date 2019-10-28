@@ -30,7 +30,7 @@ export interface NPC_DIALOGUE_TYPE {
   fHandledCanDeleteVal: boolean;
   fRenderSubTitlesNow: boolean;
   fSetupSubTitles: boolean;
-  zQuoteStr: INT16[] /* [480] */; // QIALOGUE_SIZE is in dialog control which includes this file...
+  zQuoteStr: string /* INT16[480] */; // QIALOGUE_SIZE is in dialog control which includes this file...
 }
 
 export const enum Enum213 {

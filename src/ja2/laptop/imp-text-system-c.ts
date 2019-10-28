@@ -45,7 +45,7 @@ const QTN_SECOND_COLUMN_X = 320;
 function LoadAndDisplayIMPText(sStartX: INT16, sStartY: INT16, sLineLength: INT16, sIMPTextRecordNumber: INT16, uiFont: UINT32, ubColor: UINT8, fShadow: boolean, uiFlags: UINT32): void {
   // this procedure will load and display to the screen starting at postion X, Y relative to the start of the laptop screen
   // it will access record sIMPTextRecordNumber and go until all records following it but before the next IMP record are displayed in font uiFont
-  let sString: CHAR16[] /* [1024] */;
+  let sString: string /* CHAR16[1024] */;
   let iCounter: INT32 = 0;
   let fNotDonePrintingFlag: boolean = true;
   let iRecordPosition: INT32 = 0;

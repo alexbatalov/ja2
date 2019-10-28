@@ -2,13 +2,13 @@ namespace ja2 {
 
 const SHADE_TABLE_DIR = "ShadeTables";
 
-export let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
+export let TileSurfaceFilenames: string[] /* CHAR8[NUMBEROFTILETYPES][32] */;
 export let gfForceBuildShadeTables: boolean = false;
 
 export function DetermineRGBDistributionSettings(): void {
-  let DataDir: STRING512;
-  let ExecDir: STRING512;
-  let ShadeTableDir: STRING512;
+  let DataDir: string /* STRING512 */;
+  let ExecDir: string /* STRING512 */;
+  let ShadeTableDir: string /* STRING512 */;
   let uiRBitMask: UINT32;
   let uiGBitMask: UINT32;
   let uiBBitMask: UINT32;
@@ -100,8 +100,8 @@ export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   let hfile: HWFILE;
   let i: INT32;
   let uiNumBytesRead: UINT32;
-  let ShadeFileName: UINT8[] /* [100] */;
-  let ptr: Pointer<UINT8>;
+  let ShadeFileName: string /* UINT8[100] */;
+  let ptr: string /* Pointer<UINT8> */;
   // ASSUMPTIONS:
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem
@@ -138,8 +138,8 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   let hfile: HWFILE;
   let i: INT32;
   let uiNumBytesWritten: UINT32;
-  let ShadeFileName: UINT8[] /* [100] */;
-  let ptr: Pointer<UINT8>;
+  let ShadeFileName: string /* UINT8[100] */;
+  let ptr: string /* Pointer<UINT8> */;
   // ASSUMPTIONS:
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem

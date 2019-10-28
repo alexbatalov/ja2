@@ -12,9 +12,9 @@ export const SAVE__END_TURN_NUM = 98;
 
 export interface SAVED_GAME_HEADER {
   uiSavedGameVersion: UINT32;
-  zGameVersionNumber: INT8[] /* [GAME_VERSION_LENGTH] */;
+  zGameVersionNumber: string /* INT8[GAME_VERSION_LENGTH] */;
 
-  sSavedGameDesc: CHAR16[] /* [SIZE_OF_SAVE_GAME_DESC] */;
+  sSavedGameDesc: string /* CHAR16[SIZE_OF_SAVE_GAME_DESC] */;
 
   uiFlags: UINT32;
 

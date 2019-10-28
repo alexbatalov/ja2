@@ -210,7 +210,7 @@ function InitFlowerButtons(): boolean {
   let j: UINT16;
   let count: UINT16;
   let usPosY: UINT16;
-  let sTemp: char[] /* [40] */;
+  let sTemp: string /* char[40] */;
   let VObjectDesc: VOBJECT_DESC;
 
   if ((FLOR_GALLERY_NUMBER_FLORAL_IMAGES - gubCurFlowerIndex) >= 3)
@@ -276,7 +276,7 @@ function DeleteFlowerButtons(): void {
 }
 
 function DisplayFloralDescriptions(): boolean {
-  let sTemp: wchar_t[] /* [640] */;
+  let sTemp: string /* wchar_t[640] */;
   let uiStartLoc: UINT32 = 0;
   let i: UINT32;
   let usPosY: UINT16;

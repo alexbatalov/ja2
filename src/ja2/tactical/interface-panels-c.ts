@@ -1036,7 +1036,7 @@ export function InitializeSMPanel(): boolean {
 }
 
 export function CreateSMPanelButtons(): boolean {
-  let ubString: UINT8[] /* [48] */;
+  let ubString: string /* UINT8[48] */;
 
   giSMStealthImages = -1;
   giSMStealthButton = -1;
@@ -1262,10 +1262,10 @@ export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
   let sFontY: INT16;
   let usX: UINT16;
   let usY: UINT16;
-  let sString: wchar_t[] /* [9] */;
+  let sString: string /* wchar_t[9] */;
   let cnt: UINT32;
-  /* static */ let pStr: INT16[] /* [200] */;
-  /* static */ let pMoraleStr: INT16[] /* [20] */;
+  /* static */ let pStr: string /* INT16[200] */;
+  /* static */ let pMoraleStr: string /* INT16[20] */;
 
   if (gubSelectSMPanelToMerc != NOBODY) {
     // Give him the panel!
@@ -2679,8 +2679,8 @@ export function RenderTEAMPanel(fDirty: boolean): void {
   let cnt: UINT32;
   let posIndex: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  /* static */ let pStr: INT16[] /* [200] */;
-  /* static */ let pMoraleStr: INT16[] /* [20] */;
+  /* static */ let pStr: string /* INT16[200] */;
+  /* static */ let pMoraleStr: string /* INT16[20] */;
 
   if (fDirty == DIRTYLEVEL2) {
     MarkAButtonDirty(iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON]);
@@ -2895,7 +2895,7 @@ export function RenderTEAMPanel(fDirty: boolean): void {
 }
 
 export function CreateTEAMPanelButtons(): boolean {
-  let ubString: UINT8[] /* [48] */;
+  let ubString: string /* UINT8[48] */;
 
   FilenameForBPP("INTERFACE\\bottom_bar_buttons.sti", ubString);
 
@@ -3759,7 +3759,7 @@ function RemovePlayerFromInterfaceTeamSlot(ubPanelSlot: UINT8): boolean {
 }
 
 export function RenderTownIDString(): void {
-  let zTownIDString: CHAR16[] /* [80] */;
+  let zTownIDString: string /* CHAR16[80] */;
   let sFontX: INT16;
   let sFontY: INT16;
 
@@ -4266,8 +4266,8 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
     if (gpItemPointer != null) {
       // and the item is money
       if (Item[gpItemPointer.value.usItem].usItemClass == IC_MONEY) {
-        let zText: CHAR16[] /* [512] */;
-        let zMoney: CHAR16[] /* [64] */;
+        let zText: string /* CHAR16[512] */;
+        let zMoney: string /* CHAR16[64] */;
 
         // Make sure we go back to movement mode...
         guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;

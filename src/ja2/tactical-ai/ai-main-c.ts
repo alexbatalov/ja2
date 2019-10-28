@@ -42,7 +42,7 @@ export let gbDiff: INT8[][] /* [MAX_DIFF_PARMS][5] */ = [
   [ 4, 6, 8, 10, 13 ] // DIFF_MAX_COVER_RANGE
 ];
 
-export function DebugAI(szOutput: STR): void {
+export function DebugAI(szOutput: string /* STR */): void {
 }
 
 export function InitAI(): boolean {

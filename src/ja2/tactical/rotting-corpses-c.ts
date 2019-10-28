@@ -12,7 +12,7 @@ const DELAY_UNTIL_DONE_ROTTING = (3 * NUM_SEC_IN_DAY / 60);
 const MAX_NUM_CROWS = 6;
 
 // When adding a corpse, add struct data...
-let zCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = [
+let zCorpseFilenames: string[] /* CHAR8[NUM_CORPSES][70] */ = [
   "",
   "ANIMS\\CORPSES\\S_D_JFK.STI",
   "ANIMS\\CORPSES\\S_D_BCK.STI",
@@ -75,7 +75,7 @@ let zCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = [
 ];
 
 // When adding a corpse, add struct data...
-let zNoBloodCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = [
+let zNoBloodCorpseFilenames: string[] /* CHAR8[NUM_CORPSES][70] */ = [
   "",
   "ANIMS\\CORPSES\\M_D_JFK_NB.STI",
   "ANIMS\\CORPSES\\S_D_BCK_NB.STI",
@@ -369,7 +369,7 @@ export function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>)
   let AniParams: ANITILE_PARAMS;
   let ubLevelID: UINT8;
   let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;
-  let zFilename: INT8[] /* [150] */;
+  let zFilename: string /* INT8[150] */;
   let pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
   let ubLoop: UINT8;
   let sTileGridNo: INT16;
@@ -566,7 +566,7 @@ function RemoveCorpse(iCorpseID: INT32): void {
 }
 
 function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): boolean {
-  let zColFilename: CHAR8[] /* [100] */;
+  let zColFilename: string /* CHAR8[100] */;
   let bBodyTypePalette: INT8;
   let Temp8BPPPalette: SGPPaletteEntry[] /* [256] */;
 
@@ -1217,7 +1217,7 @@ export function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
   let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;
-  let zFilename: INT8[] /* [150] */;
+  let zFilename: string /* INT8[150] */;
   let ubBestDirection: UINT8 = 0;
   let fSetDirection: boolean = false;
 

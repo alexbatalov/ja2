@@ -1,7 +1,7 @@
 namespace ja2 {
 
 interface BobbyROrderLocationStruct {
-  psCityLoc: Pointer<STR16>;
+  psCityLoc: string /* Pointer<STR16> */;
   usOverNightExpress: UINT16;
   us2DaysService: UINT16;
   usStandardService: UINT16;
@@ -487,7 +487,7 @@ export function RenderBobbyRMailOrder(): void {
   let usPosY: UINT16;
   let hPixHandle: HVOBJECT;
   let usHeight: UINT16; // usWidth,
-  let sTemp: CHAR16[] /* [128] */;
+  let sTemp: string /* CHAR16[128] */;
 
   DrawBobbyRWoodBackground();
 
@@ -625,7 +625,7 @@ function BtnBobbyRAcceptOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       if (LaptopSaveInfo.iCurrentBalance < giGrandTotal) {
         DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyROrderFormText[Enum349.BOBBYR_CANT_AFFORD_PURCHASE], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
       } else {
-        let zTemp: wchar_t[] /* [128] */;
+        let zTemp: string /* wchar_t[128] */;
 
         // if the city is Drassen, and the airport sector is player controlled
         if (gbSelectedCity == Enum70.BR_DRASSEN && !StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_B13)].fEnemyControlled) {
@@ -748,15 +748,15 @@ function BtnBobbyRAcceptOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UINT16, usGridY: UINT16, pBobbyRayPurchase: Pointer<BobbyRayPurchaseStruct>, fJustDisplayTitles: boolean, iOrderNum: INT32): void {
   let i: UINT16;
   let j: UINT16;
-  let sText: wchar_t[] /* [400] */;
-  let sBack: wchar_t[] /* [400] */;
-  let sTemp: wchar_t[] /* [20] */;
+  let sText: string /* wchar_t[400] */;
+  let sBack: string /* wchar_t[400] */;
+  let sTemp: string /* wchar_t[20] */;
   let usPosY: UINT16;
   let uiStartLoc: UINT32 = 0;
   let uiTotal: UINT32;
   let usStringLength: UINT16;
   let usPixLength: UINT16;
-  let OneChar: wchar_t[] /* [2] */;
+  let OneChar: string /* wchar_t[2] */;
   let iGrandTotal: INT32;
   let iSubTotal: INT32;
 
@@ -876,7 +876,7 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
 }
 
 function DisplayShippingCosts(fCalledFromOrderPage: boolean, iSubTotal: INT32, usGridX: UINT16, usGridY: UINT16, iOrderNum: INT32): void {
-  let sTemp: wchar_t[] /* [20] */;
+  let sTemp: string /* wchar_t[20] */;
   let hPixHandle: HVOBJECT;
   let iShippingCost: INT32 = 0;
   //	INT32 iTotal;
@@ -1318,7 +1318,7 @@ function DrawSelectedCity(ubCityNumber: UINT8): void {
 }
 
 function DisplayShippingLocationCity(): void {
-  let sTemp: wchar_t[] /* [40] */;
+  let sTemp: string /* wchar_t[40] */;
   let usPosY: UINT16;
 
   // display the name on the title bar
@@ -1842,7 +1842,7 @@ function CalcPackageTotalWeight(): UINT32 {
 }
 
 function DisplayPackageWeight(): void {
-  let zTemp: CHAR16[] /* [32] */;
+  let zTemp: string /* CHAR16[32] */;
   let uiTotalWeight: UINT32 = CalcPackageTotalWeight();
   //	FLOAT			fWeight = (FLOAT)(uiTotalWeight / 10.0);
 

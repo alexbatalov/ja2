@@ -3288,7 +3288,7 @@ export function DebugSoldierPage3(): void {
   }
 }
 
-function AppendAttachmentCode(usItem: UINT16, str: Pointer<UINT16>): void {
+function AppendAttachmentCode(usItem: UINT16, str: Pointer<string> /* Pointer<UINT16> */): void {
   switch (usItem) {
     case Enum225.SILENCER:
       wcscat(str, " Sil");
@@ -3306,7 +3306,7 @@ function AppendAttachmentCode(usItem: UINT16, str: Pointer<UINT16>): void {
 }
 
 function WriteQuantityAndAttachments(pObject: Pointer<OBJECTTYPE>, yp: INT32): void {
-  let szAttach: UINT16[] /* [30] */;
+  let szAttach: string /* UINT16[30] */;
   let fAttachments: boolean;
   // 100%  Qty: 2  Attach:
   // 100%  Qty: 2
@@ -3329,8 +3329,8 @@ function WriteQuantityAndAttachments(pObject: Pointer<OBJECTTYPE>, yp: INT32): v
   if (Item[pObject.value.usItem].usItemClass == IC_AMMO) {
     // ammo
     if (pObject.value.ubNumberOfObjects > 1) {
-      let str: UINT16[] /* [50] */;
-      let temp: UINT16[] /* [5] */;
+      let str: string /* UINT16[50] */;
+      let temp: string /* UINT16[5] */;
       let i: UINT8;
       swprintf(str, "Clips:  %d  (%d", pObject.value.ubNumberOfObjects, pObject.value.bStatus[0]);
       for (i = 1; i < pObject.value.ubNumberOfObjects; i++) {
@@ -3361,8 +3361,8 @@ function WriteQuantityAndAttachments(pObject: Pointer<OBJECTTYPE>, yp: INT32): v
 export function DebugSoldierPage4(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiMercFlags: UINT32;
-  let szOrders: UINT16[] /* [20] */;
-  let szAttitude: UINT16[] /* [20] */;
+  let szOrders: string /* UINT16[20] */;
+  let szAttitude: string /* UINT16[20] */;
   let usSoldierIndex: UINT16;
   let ubLine: UINT8;
 

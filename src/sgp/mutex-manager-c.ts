@@ -40,7 +40,7 @@ export function ShutdownMutexManager(): void {
   UnRegisterDebugTopic(TOPIC_MUTEX, "Mutex Manager");
 }
 
-export function InitializeMutex(uiMutexIndex: UINT32, ubMutexName: Pointer<UINT8>): boolean {
+export function InitializeMutex(uiMutexIndex: UINT32, ubMutexName: string /* Pointer<UINT8> */): boolean {
   // InitializeCriticalSection(&MutexTable[uiMutexIndex]);
 
   return true;
@@ -52,17 +52,17 @@ function DeleteMutex(uiMutexIndex: UINT32): boolean {
   return true;
 }
 
-function EnterMutex(uiMutexIndex: UINT32, nLine: INT32, szFilename: Pointer<char>): boolean {
+function EnterMutex(uiMutexIndex: UINT32, nLine: INT32, szFilename: string /* Pointer<char> */): boolean {
   EnterCriticalSection(addressof(MutexTable[uiMutexIndex]));
   return true;
 }
 
-function EnterMutexWithTimeout(uiMutexIndex: UINT32, uiTimeout: UINT32, nLine: INT32, szFilename: Pointer<char>): boolean {
+function EnterMutexWithTimeout(uiMutexIndex: UINT32, uiTimeout: UINT32, nLine: INT32, szFilename: string /* Pointer<char> */): boolean {
   EnterCriticalSection(addressof(MutexTable[uiMutexIndex]));
   return true;
 }
 
-function LeaveMutex(uiMutexIndex: UINT32, nLine: INT32, szFilename: Pointer<char>): boolean {
+function LeaveMutex(uiMutexIndex: UINT32, nLine: INT32, szFilename: string /* Pointer<char> */): boolean {
   LeaveCriticalSection(addressof(MutexTable[uiMutexIndex]));
 
   return true;

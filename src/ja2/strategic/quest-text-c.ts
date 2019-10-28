@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export let QuestDescText: STR16[] /* [] */ = [
+export let QuestDescText: string[] /* STR16[] */ = [
   "Deliver Letter",
   "Food Route",
   "Terrorists",
@@ -35,7 +35,7 @@ export let QuestDescText: STR16[] /* [] */ = [
   "No 29 Yet",
 ];
 
-export let FactDescText: STR16[] /* [] */ = [
+export let FactDescText: string[] /* STR16[] */ = [
   "Omerta Liberated",
   "Drassen Liberated",
   "Sanmona Liberated",

@@ -11,7 +11,7 @@ export function InitEngineTilesets(): void {
   let uiNumFiles: UINT32;
   //	FILE					*hfile;
   let hfile: HWFILE;
-  let zName: CHAR8[] /* [32] */;
+  let zName: string /* CHAR8[32] */;
   let uiNumBytesRead: UINT32;
 
   // OPEN FILE

@@ -248,7 +248,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   let VObjectDesc: VOBJECT_DESC;
   let sCenterYVal: INT16;
   let sCenterXVal: INT16;
-  let ubString: UINT8[] /* [48] */;
+  let ubString: string /* UINT8[48] */;
 
   // disable scroll messages
   HideMessagesDuringNPCDialogue();
@@ -522,7 +522,7 @@ export function RenderTalkingMenu(): void {
   let pSrcBuf: Pointer<UINT8>;
   let usTextBoxWidth: UINT16;
   let usTextBoxHeight: UINT16;
-  let zTempString: CHAR16[] /* [128] */;
+  let zTempString: string /* CHAR16[128] */;
 
   if (!gfInTalkPanel) {
     return;
@@ -3634,8 +3634,8 @@ function PlayerTeamHasTwoSpotsLeft(): boolean {
 
 function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): void {
   let iTemp: INT32;
-  let zTemp: UINT16[] /* [256] */;
-  let zTemp2: UINT16[] /* [256] */;
+  let zTemp: string /* UINT16[256] */;
+  let zTemp2: string /* UINT16[256] */;
 
   gusDialogueMessageBoxType = usMessageBoxType;
   switch (gusDialogueMessageBoxType) {

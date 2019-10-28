@@ -36,9 +36,9 @@ export function InitRadarScreen(): boolean {
   return true;
 }
 
-export function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): boolean {
+export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): boolean {
   let VObjectDesc: VOBJECT_DESC;
-  let zFilename: CHAR8[] /* [260] */;
+  let zFilename: string /* CHAR8[260] */;
   let cnt: INT32;
   let hVObject: HVOBJECT;
 

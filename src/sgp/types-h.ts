@@ -20,10 +20,6 @@ export type FLOAT = float;
 export type DOUBLE = double;
 // strings
 export type CHAR8 = char;
-export type CHAR16 = wchar_t;
-export type STR = Pointer<char>;
-export type STR8 = Pointer<char>;
-export type STR16 = Pointer<wchar_t>;
 // flags (individual bits used)
 type FLAGS8 = unsigned_char;
 type FLAGS16 = unsigned_short;
@@ -32,10 +28,8 @@ type FLAGS32 = unsigned_long;
 export type PTR = Pointer<void>;
 type HNDL = unsigned_short;
 export type BYTE = UINT8;
-export type STRING512 = CHAR8[] /* [512] */;
 export type HWFILE = UINT32;
 export const SGPFILENAME_LEN = 100;
-export type SGPFILENAME = CHAR8[] /* [SGPFILENAME_LEN] */;
 
 // *** SIR-TECH TYPE DEFINITIONS ***
 

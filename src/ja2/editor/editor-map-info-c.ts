@@ -7,7 +7,7 @@ export let gEditorLightColor: SGPPaletteEntry;
 export let gfEditorForceShadeTableRebuild: boolean = false;
 
 export function SetupTextInputForMapInfo(): void {
-  let str: UINT16[] /* [10] */;
+  let str: string /* UINT16[10] */;
 
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
 
@@ -86,7 +86,7 @@ export function UpdateMapInfo(): void {
 }
 
 export function UpdateMapInfoFields(): void {
-  let str: UINT16[] /* [10] */;
+  let str: string /* UINT16[10] */;
   // Update the text fields to reflect the validated values.
   // light rgb fields
   swprintf(str, "%d", gEditorLightColor.peRed);
@@ -111,7 +111,7 @@ export function UpdateMapInfoFields(): void {
 }
 
 export function ExtractAndUpdateMapInfo(): void {
-  let str: UINT16[] /* [10] */;
+  let str: string /* UINT16[10] */;
   let temp: INT32;
   let fUpdateLight1: boolean = false;
   // extract light1 colors
@@ -175,7 +175,7 @@ export function ExtractAndUpdateMapInfo(): void {
 }
 
 export function ApplyNewExitGridValuesToTextFields(): boolean {
-  let str: UINT16[] /* [10] */;
+  let str: string /* UINT16[10] */;
   // exit grid input fields
   if (iCurrentTaskbar != Enum36.TASK_MAPINFO)
     return false;

@@ -33,11 +33,11 @@ const REG_KEY_SIZE = 50;
 //**************************************************************************
 
 // INI strings are not localized
-/* static */ const szSoftware: TCHAR[] /* [] */ = _T("Software");
+/* static */ const szSoftware: string /* TCHAR[] */ = _T("Software");
 
-/* static */ let gszRegistryKey: CHAR[] /* [REG_KEY_SIZE] */;
-/* static */ let gszAppName: CHAR[] /* [REG_KEY_SIZE] */;
-/* static */ let gszProfileName: CHAR[] /* [REG_KEY_SIZE] */;
+/* static */ let gszRegistryKey: string /* CHAR[REG_KEY_SIZE] */;
+/* static */ let gszAppName: string /* CHAR[REG_KEY_SIZE] */;
+/* static */ let gszProfileName: string /* CHAR[REG_KEY_SIZE] */;
 
 //**************************************************************************
 //
@@ -45,7 +45,7 @@ const REG_KEY_SIZE = 50;
 //
 //**************************************************************************
 
-export function InitializeRegistryKeys(lpszAppName: STR, lpszRegistryKey: STR): boolean {
+export function InitializeRegistryKeys(lpszAppName: string /* STR */, lpszRegistryKey: string /* STR */): boolean {
   CHECKF(lpszAppName != null);
   CHECKF(lpszRegistryKey != null);
   // CHECKF(gpszRegistryKey == NULL);
@@ -92,7 +92,7 @@ export function GetAppRegistryKey(): HKEY {
 //      HKEY_CURRENT_USER\"Software"\RegistryKey\AppName\lpszSection
 // creating it if it doesn't exist.
 // responsibility of the caller to call RegCloseKey() on the returned HKEY
-function GetSectionKey(lpszSection: STR): HKEY {
+function GetSectionKey(lpszSection: string /* STR */): HKEY {
   let hSectionKey: HKEY = null;
   let hAppKey: HKEY = GetAppRegistryKey();
   let dw: DWORD;
@@ -107,7 +107,7 @@ function GetSectionKey(lpszSection: STR): HKEY {
   return hSectionKey;
 }
 
-function GetProfileInteger(lpszSection: STR, lpszEntry: STR, nDefault: int): UINT {
+function GetProfileInteger(lpszSection: string /* STR */, lpszEntry: string /* STR */, nDefault: int): UINT {
   let dwValue: DWORD;
   let dwType: DWORD;
   let dwCount: DWORD = sizeof(DWORD);
@@ -135,12 +135,12 @@ function GetProfileInteger(lpszSection: STR, lpszEntry: STR, nDefault: int): UIN
   }
 }
 
-function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpszValue: STR): boolean {
+function GetProfileChar(lpszSection: string /* STR */, lpszEntry: string /* STR */, lpszDefault: string /* STR */, lpszValue: Pointer<string> /* STR */): boolean {
   let dwType: DWORD;
   let dwCount: DWORD;
   let lResult: LONG;
   let fRet: boolean = true;
-  let strValue: CHAR[] /* [200] */;
+  let strValue: string /* CHAR[200] */;
 
   assert(lpszSection != null);
   assert(lpszEntry != null);
@@ -182,7 +182,7 @@ function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpsz
   return fRet;
 }
 
-function GetProfileBinary(lpszSection: STR, lpszEntry: STR, ppData: Pointer<Pointer<BYTE>>, pBytes: Pointer<UINT>): boolean {
+function GetProfileBinary(lpszSection: string /* STR */, lpszEntry: string /* STR */, ppData: Pointer<Pointer<BYTE>>, pBytes: Pointer<UINT>): boolean {
   //	DWORD dwType, dwCount;
   //	LONG lResult;
   //
@@ -244,7 +244,7 @@ function GetProfileBinary(lpszSection: STR, lpszEntry: STR, ppData: Pointer<Poin
   return true;
 }
 
-function WriteProfileInt(lpszSection: STR, lpszEntry: STR, nValue: int): boolean {
+function WriteProfileInt(lpszSection: string /* STR */, lpszEntry: string /* STR */, nValue: int): boolean {
   //	LONG lResult;
   //	TCHAR szT[16];
   //
@@ -272,7 +272,7 @@ function WriteProfileInt(lpszSection: STR, lpszEntry: STR, nValue: int): boolean
   return true;
 }
 
-export function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): boolean {
+export function WriteProfileChar(lpszSection: string /* STR */, lpszEntry: string /* STR */, lpszValue: string /* STR */): boolean {
   assert(lpszSection != null);
 
   if (gszRegistryKey[0] != '\0') {
@@ -310,7 +310,7 @@ export function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: ST
   return true;
 }
 
-function WriteProfileBinary(lpszSection: STR, lpszEntry: STR, pData: LPBYTE, nBytes: UINT): boolean {
+function WriteProfileBinary(lpszSection: string /* STR */, lpszEntry: string /* STR */, pData: LPBYTE, nBytes: UINT): boolean {
   //	assert(lpszSection != NULL);
   //
   //	if (gpszRegistryKey != NULL)

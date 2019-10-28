@@ -5,10 +5,10 @@ namespace ja2 {
 //
 
 // RELEASE BUILD VERSION
-export let zVersionLabel: INT16[] /* [16] */ = [ "Release v1.12" ];
+export let zVersionLabel: string /* INT16[16] */ = "Release v1.12";
 
-export let czVersionNumber: INT8[] /* [16] */ = [ "Build 04.12.02" ];
-export let zTrackingNumber: INT16[] /* [16] */ = [ "Z" ];
+export let czVersionNumber: string /* INT8[16] */ = "Build 04.12.02";
+export let zTrackingNumber: string /* INT16[16] */ = "Z";
 
 //
 //		Keeps track of the saved game version.  Increment the saved game version whenever

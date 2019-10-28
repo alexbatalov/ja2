@@ -143,13 +143,13 @@ let guiTimerCursorID: UINT32 = 0;
 let guiTimerLastUpdate: UINT32 = 0;
 let guiTimerCursorDelay: UINT32 = 0;
 
-export let gzLocation: INT16[] /* [20] */;
+export let gzLocation: string /* INT16[20] */;
 let gfLocation: boolean = false;
 
-export let gzIntTileLocation: INT16[] /* [20] */;
+export let gzIntTileLocation: string /* INT16[20] */;
 export let gfUIIntTileLocation: boolean;
 
-export let gzIntTileLocation2: INT16[] /* [20] */;
+export let gzIntTileLocation2: string /* INT16[20] */;
 export let gfUIIntTileLocation2: boolean;
 
 export let gDisableRegion: MOUSE_REGION;
@@ -1865,7 +1865,7 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       if (pTSoldier != null) {
         // If this is one of our own guys.....pop up requiester...
         if ((pTSoldier.value.bTeam == gbPlayerNum || pTSoldier.value.bTeam == MILITIA_TEAM) && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass != IC_MEDKIT && pSoldier.value.inv[Enum261.HANDPOS].usItem != Enum225.GAS_CAN && gTacticalStatus.ubLastRequesterTargetID != pTSoldier.value.ubProfile && (pTSoldier.value.ubID != pSoldier.value.ubID)) {
-          let zStr: INT16[] /* [200] */;
+          let zStr: string /* INT16[200] */;
 
           gpRequesterMerc = pSoldier;
           gpRequesterTargetMerc = pTSoldier;

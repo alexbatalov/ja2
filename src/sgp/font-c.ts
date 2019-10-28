@@ -282,7 +282,7 @@ function FindFreeFont(): INT32 {
 //  This function returns (-1) if it fails, and debug msgs for a reason.
 //  Otherwise the font number is returned.
 //*****************************************************************************
-export function LoadFontFile(filename: Pointer<UINT8>): INT32 {
+export function LoadFontFile(filename: string /* Pointer<UINT8> */): INT32 {
   let vo_desc: VOBJECT_DESC;
   let LoadIndex: UINT32;
 
@@ -355,9 +355,9 @@ export function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
 // evaluate to is 512.
 //    'uiCharCount' specifies how many characters of the string are counted.
 //*****************************************************************************
-export function StringPixLengthArg(usUseFont: INT32, uiCharCount: UINT32, pFontString: Pointer<UINT16>, ...args: any[]): INT16 {
+export function StringPixLengthArg(usUseFont: INT32, uiCharCount: UINT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): INT16 {
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
 
   Assert(pFontString != null);
 
@@ -388,12 +388,12 @@ export function StringPixLengthArg(usUseFont: INT32, uiCharCount: UINT32, pFontS
 // 'uiCharCount' specifies how many characters of the string are counted.
 // YOU HAVE TO PREBUILD THE FAST HELP STRING!
 //*****************************************************************************
-export function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, uiCharCount: UINT32, pFontString: Pointer<UINT16>): INT16 {
-  let string: wchar_t[] /* [512] */;
+export function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, uiCharCount: UINT32, pFontString: string /* Pointer<UINT16> */): INT16 {
+  let string: string /* wchar_t[512] */;
   let i: UINT32;
   let index: UINT32;
   let sBoldDiff: INT16 = 0;
-  let str: UINT16[] /* [2] */;
+  let str: string /* UINT16[2] */;
 
   Assert(pFontString != null);
 
@@ -440,10 +440,10 @@ export function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, 
 //  Created on:     12/1/99
 //
 //*****************************************************************************************
-function StringNPixLength(string: Pointer<UINT16>, uiMaxCount: UINT32, UseFont: INT32): INT16 {
+function StringNPixLength(string: string /* Pointer<UINT16> */, uiMaxCount: UINT32, UseFont: INT32): INT16 {
   let Cur: UINT32;
   let uiCharCount: UINT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
 
   Cur = 0;
@@ -465,9 +465,9 @@ function StringNPixLength(string: Pointer<UINT16>, uiMaxCount: UINT32, UseFont: 
 //	Returns the length of a string in pixels, depending on the font given.
 //
 //*****************************************************************************
-export function StringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
+export function StringPixLength(string: string /* Pointer<UINT16> */, UseFont: INT32): INT16 {
   let Cur: UINT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
 
   if (string == null) {
@@ -633,13 +633,13 @@ export function SetFontDestBuffer(DestBuffer: UINT32, x1: INT32, y1: INT32, x2: 
 // the parameters are identical to printf. The resulting string may be no longer
 // than 512 word-characters. Uses monochrome font color settings
 //*****************************************************************************
-export function mprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
+export function mprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
@@ -680,8 +680,8 @@ export function mprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...arg
   return 0;
 }
 
-export function VarFindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, pFontString: Pointer<UINT16>, ...args: any[]): void {
-  let string: wchar_t[] /* [512] */;
+export function VarFindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
+  let string: string /* wchar_t[512] */;
   let argptr: va_list;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
@@ -691,8 +691,8 @@ export function VarFindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: I
   FindFontRightCoordinates(sLeft, sTop, sWidth, sHeight, string, iFontIndex, psNewX, psNewY);
 }
 
-export function VarFindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, pFontString: Pointer<UINT16>, ...args: any[]): void {
-  let string: wchar_t[] /* [512] */;
+export function VarFindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
+  let string: string /* wchar_t[512] */;
   let argptr: va_list;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
@@ -702,7 +702,7 @@ export function VarFindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: 
   FindFontCenterCoordinates(sLeft, sTop, sWidth, sHeight, string, iFontIndex, psNewX, psNewY);
 }
 
-export function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: Pointer<UINT16>, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>): void {
+export function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: string /* Pointer<UINT16> */, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>): void {
   let xp: INT16;
   let yp: INT16;
 
@@ -714,7 +714,7 @@ export function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT1
   psNewY.value = yp;
 }
 
-export function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: Pointer<UINT16>, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>): void {
+export function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: string /* Pointer<UINT16> */, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>): void {
   let xp: INT16;
   let yp: INT16;
 
@@ -734,13 +734,13 @@ export function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT
 // the parameters are identical to printf. The resulting string may be no longer
 // than 512 word-characters.
 //*****************************************************************************
-export function gprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
+export function gprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
@@ -781,13 +781,13 @@ export function gprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...arg
   return 0;
 }
 
-function gprintfDirty(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
+function gprintfDirty(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
@@ -837,13 +837,13 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args:
 // the parameters are identical to printf. The resulting string may be no longer
 // than 512 word-characters.
 //*****************************************************************************
-function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
+function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
 
   Assert(pFontString != null);
 
@@ -877,13 +877,13 @@ function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
   return 0;
 }
 
-export function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
+export function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
 
   Assert(pFontString != null);
 
@@ -916,13 +916,13 @@ export function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT3
   return 0;
 }
 
-export function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
+export function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
   let usOldForeColor: UINT16;
 
   Assert(pFontString != null);
@@ -967,13 +967,13 @@ export function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES:
   return 0;
 }
 
-export function mprintf_coded(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
+export function mprintf_coded(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: Pointer<UINT16>;
+  let curletter: string /* Pointer<UINT16> */;
   let transletter: UINT16;
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
   let usOldForeColor: UINT16;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
@@ -1124,7 +1124,7 @@ export function DestroyEnglishTransTable(): void {
 //*****************************************************************************
 export function CreateEnglishTransTable(): Pointer<FontTranslationTable> {
   let pTable: Pointer<FontTranslationTable> = null;
-  let temp: Pointer<UINT16>;
+  let temp: string /* Pointer<UINT16> */;
 
   pTable = MemAlloc(sizeof(FontTranslationTable));
   // ha ha, we have more than Wizardry now (again)

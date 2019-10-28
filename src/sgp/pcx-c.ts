@@ -58,7 +58,7 @@ export function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
   return true;
 }
 
-function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
+function LoadPcx(pFilename: string /* Pointer<UINT8> */): Pointer<PcxObject> {
   let Header: PcxHeader;
   let pCurrentPcxObject: Pointer<PcxObject>;
   let hFileHandle: HWFILE;

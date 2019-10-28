@@ -311,7 +311,7 @@ let gFullBaseTileValues: UINT8[] /* [] */ = [
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Water2 Texture
 ];
 
-export let gTileSurfaceName: STR[] /* [NUMBEROFTILETYPES] */ = [
+export let gTileSurfaceName: string[] /* STR[NUMBEROFTILETYPES] */ = [
   "TEXTURE1",
   "TEXTURE2",
   "TEXTURE3",

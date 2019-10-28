@@ -92,7 +92,7 @@ let gubAlternateNPCFileNumsForElliotMeanwhiles: UINT8[] /* [] */ = [
 //
 
 function LoadQuoteFile(ubNPC: UINT8): Pointer<NPCQuoteInfo> {
-  let zFileName: CHAR8[] /* [255] */;
+  let zFileName: string /* CHAR8[255] */;
   let hFile: HWFILE;
   let pFileData: Pointer<NPCQuoteInfo>;
   let uiBytesRead: UINT32;
@@ -256,7 +256,7 @@ function RefreshNPCScriptRecord(ubNPC: UINT8, ubRecord: UINT8): boolean {
 //
 
 function LoadCivQuoteFile(ubIndex: UINT8): Pointer<NPCQuoteInfo> {
-  let zFileName: CHAR8[] /* [255] */;
+  let zFileName: string /* CHAR8[255] */;
   let hFile: HWFILE;
   let pFileData: Pointer<NPCQuoteInfo>;
   let uiBytesRead: UINT32;
@@ -926,7 +926,7 @@ function HandleNPCBeingGivenMoneyByPlayer(ubNPC: UINT8, uiMoneyAmount: UINT32, p
         }
         giHospitalTempBalance = 0;
       } else {
-        let sTempString: INT16[] /* [100] */;
+        let sTempString: string /* INT16[100] */;
 
         swprintf(sTempString, "%ld", iCost - uiMoneyAmount - giHospitalTempBalance);
         InsertDollarSignInToString(sTempString);

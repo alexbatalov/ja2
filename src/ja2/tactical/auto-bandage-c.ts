@@ -3,7 +3,7 @@ namespace ja2 {
 // max number of merc faces per row in autobandage box
 const NUMBER_MERC_FACES_AUTOBANDAGE_BOX = 4;
 
-let sAutoBandageString: STR16 = null;
+let sAutoBandageString: string /* STR16 */ = null;
 let giBoxId: INT32 = -1;
 let gusTextBoxWidth: UINT16 = 0;
 let gusTextBoxHeight: UINT16 = 0;
@@ -205,7 +205,7 @@ function CreateAutoBandageString(): boolean {
   let ubDoctor: UINT8[] /* [20] */;
   let ubDoctors: UINT8 = 0;
   let uiDoctorNameStringLength: UINT32 = 1; // for end-of-string character
-  let sTemp: STR16;
+  let sTemp: string /* STR16 */;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
@@ -458,7 +458,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   let iIndex: INT32 = 0;
   let sCurrentXPosition: INT16 = 0;
   let sCurrentYPosition: INT16 = 0;
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
 

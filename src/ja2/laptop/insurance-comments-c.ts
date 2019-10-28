@@ -66,7 +66,7 @@ export function HandleInsuranceComments(): void {
 
 export function RenderInsuranceComments(): void {
   //  HVOBJECT hPixHandle;
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let usPosX: UINT16;
   let usPosY: UINT16;
 
@@ -143,7 +143,7 @@ function SelectInsuranceCommentLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>
 }
 
 function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT16): boolean {
-  let sText: wchar_t[] /* [800] */;
+  let sText: string /* wchar_t[800] */;
   let hPixHandle: HVOBJECT;
   let sNumPixels: UINT16 = 0;
 

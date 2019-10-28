@@ -338,7 +338,7 @@ export interface SOLDIERTYPE {
   bScientific: INT8;
   // traits
   sWeightCarriedAtTurnStart: INT16;
-  name: UINT16[] /* [10] */;
+  name: string /* UINT16[10] */;
 
   bVisible: INT8; // to render or not to render...
 

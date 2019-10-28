@@ -150,7 +150,7 @@ export function DeleteMapScreenInterfaceBottom(): void {
 export function RenderMapScreenInterfaceBottom(): void {
   // will render the map screen bottom interface
   let hHandle: HVOBJECT;
-  let bFilename: CHAR8[] /* [32] */;
+  let bFilename: string /* CHAR8[32] */;
 
   // render whole panel
   if (fMapScreenBottomDirty == true) {
@@ -378,7 +378,7 @@ function BtnOptionsFromMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 }
 
 function DrawNameOfLoadedSector(): void {
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   let sFontX: INT16;
   let sFontY: INT16;
 
@@ -633,7 +633,7 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
 function DisplayCompressMode(): void {
   let sX: INT16;
   let sY: INT16;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   /* static */ let usColor: UINT8 = FONT_LTGREEN;
 
   // get compress speed
@@ -996,7 +996,7 @@ export function AllowedToTimeCompress(): boolean {
 }
 
 function DisplayCurrentBalanceTitleForMapBottom(): void {
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   let sFontX: INT16;
   let sFontY: INT16;
 
@@ -1030,7 +1030,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
 
 function DisplayCurrentBalanceForMapBottom(): void {
   // show the current balance for the player on the map panel bottom
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   let sFontX: INT16;
   let sFontY: INT16;
 
@@ -1102,7 +1102,7 @@ function CompressMaskClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 function DisplayProjectedDailyMineIncome(): void {
   let iRate: INT32 = 0;
   /* static */ let iOldRate: INT32 = -1;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   let sFontX: INT16;
   let sFontY: INT16;
 

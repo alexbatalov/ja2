@@ -81,7 +81,7 @@ export function HandleIMPMainPage(): void {
 
 function CreateIMPMainPageButtons(): void {
   // this function will create the buttons needed for th IMP about us page
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   // the back button button
   giIMPMainPageButtonImage[0] = LoadButtonImage("LAPTOP\\button_3.sti", -1, 0, -1, 1, -1);

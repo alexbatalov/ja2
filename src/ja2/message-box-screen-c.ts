@@ -28,10 +28,10 @@ export let gfStartedFromMapScreen: boolean = false;
 export let fRestoreBackgroundForMessageBox: boolean = false;
 export let gfDontOverRideSaveBuffer: boolean = true; // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
 
-export let gzUserDefinedButton1: CHAR16[] /* [128] */;
-export let gzUserDefinedButton2: CHAR16[] /* [128] */;
+export let gzUserDefinedButton1: string /* CHAR16[128] */;
+export let gzUserDefinedButton2: string /* CHAR16[128] */;
 
-export function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
+export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
   let vs_desc: VSURFACE_DESC;
   let usTextBoxWidth: UINT16;
   let usTextBoxHeight: UINT16;
@@ -856,24 +856,24 @@ export function MessageBoxScreenShutdown(): UINT32 {
 }
 
 // a basic box that don't care what screen we came from
-export function DoScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
+export function DoScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
 }
 
 // a basic box that don't care what screen we came from
-function DoUpperScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
+function DoUpperScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y / 2 ];
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
 }
 
 // a basic box that don't care what screen we came from
-export function DoLowerScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
+export function DoLowerScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   let CenteringRect: SGPRect = [ 0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y ];
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
 }
 
-function DoScreenIndependantMessageBoxWithRect(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): void {
+function DoScreenIndependantMessageBoxWithRect(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): void {
   /// which screen are we in?
 
   // Map Screen (excluding AI Viewer)

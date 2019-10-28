@@ -333,7 +333,7 @@ export let gubContractLength: UINT8;
 let gfBuyEquipment: boolean;
 let giContractAmount: INT32 = 0;
 let giMercFaceIndex: INT32;
-let gsTalkingMercText: wchar_t[] /* [TEXT_POPUP_STRING_SIZE] */;
+let gsTalkingMercText: string /* wchar_t[TEXT_POPUP_STRING_SIZE] */;
 let guiTimeThatMercStartedTalking: UINT32;
 let guiLastHandleMercTime: UINT32;
 let gfFirstTimeInContactScreen: boolean;
@@ -698,7 +698,7 @@ export function RenderAIMMembers(): boolean {
   let hWeaponBoxHandle: HVOBJECT;
   let x: UINT16;
   let uiPosX: UINT16;
-  let wTemp: wchar_t[] /* [50] */;
+  let wTemp: string /* wchar_t[50] */;
 
   DrawAimDefaults();
 
@@ -781,7 +781,7 @@ export function RenderAIMMembers(): boolean {
 }
 
 export function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): boolean {
-  let sStr: wchar_t[] /* [10] */;
+  let sStr: string /* wchar_t[10] */;
 
   swprintf(sStr, "%d", iNumber);
 
@@ -791,7 +791,7 @@ export function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT1
 }
 
 function DrawMoneyToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): boolean {
-  let sStr: wchar_t[] /* [10] */;
+  let sStr: string /* wchar_t[10] */;
 
   swprintf(sStr, "%d", iNumber);
   InsertCommasForDollarFigure(sStr);
@@ -829,8 +829,8 @@ function SelectFaceMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
 
 function UpdateMercInfo(): boolean {
   let PosY: UINT16 = 300;
-  let MercInfoString: wchar_t[] /* [SIZE_MERC_BIO_INFO] */;
-  let AdditionalInfoString: wchar_t[] /* [SIZE_MERC_BIO_INFO] */;
+  let MercInfoString: string /* wchar_t[SIZE_MERC_BIO_INFO] */;
+  let AdditionalInfoString: string /* wchar_t[SIZE_MERC_BIO_INFO] */;
 
   // Display the salaries
   DrawMoneyToScreen(gMercProfiles[gbCurrentSoldier].sSalary, FEE_WIDTH, FEE_X, HEALTH_Y, AIM_M_NUMBER_FONT(), AIM_M_COLOR_DYNAMIC_TEXT);
@@ -839,8 +839,8 @@ function UpdateMercInfo(): boolean {
 
   // if medical deposit is required
   if (gMercProfiles[gbCurrentSoldier].bMedicalDeposit) {
-    let zTemp: wchar_t[] /* [40] */;
-    let sMedicalString: wchar_t[] /* [40] */;
+    let zTemp: string /* wchar_t[40] */;
+    let sMedicalString: string /* wchar_t[40] */;
 
     // Display the medical cost
     swprintf(zTemp, "%d", gMercProfiles[gbCurrentSoldier].sMedicalDepositAmount);
@@ -868,7 +868,7 @@ function UpdateMercInfo(): boolean {
   return true;
 }
 
-function LoadMercBioInfo(ubIndex: UINT8, pInfoString: STR16, pAddInfo: STR16): boolean {
+function LoadMercBioInfo(ubIndex: UINT8, pInfoString: Pointer<string> /* STR16 */, pAddInfo: Pointer<string> /* STR16 */): boolean {
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
   let i: UINT16;
@@ -1050,7 +1050,7 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
   let usHeight: UINT32;
   let usWidth: UINT32;
   let pTrav: Pointer<ETRLEObject>;
-  let gzItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
+  let gzItemName: string /* UINT16[SIZE_ITEM_NAME] */;
   let ubItemCount: UINT8 = 0;
   //	UINT16			gzTempItemName[ SIZE_ITEM_INFO ];
 
@@ -1085,7 +1085,7 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
 
       // if there are more then 1 piece of equipment in the current slot, display how many there are
       if (gMercProfiles[ubMercID].bInvNumber[i] > 1) {
-        let zTempStr: wchar_t[] /* [32] */;
+        let zTempStr: string /* wchar_t[32] */;
         //				UINT16	usWidthOfNumber;
 
         swprintf(zTempStr, "x%d", gMercProfiles[ubMercID].bInvNumber[i]);
@@ -1199,8 +1199,8 @@ function BtnNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function DisplayMercsFace(): boolean {
   let hFaceHandle: HVOBJECT;
   let hPortraitHandle: HVOBJECT;
-  let sFaceLoc: STR = "FACES\\BIGFACES\\";
-  let sTemp: char[] /* [100] */;
+  let sFaceLoc: string /* STR */ = "FACES\\BIGFACES\\";
+  let sTemp: string /* char[100] */;
   let VObjectDesc: VOBJECT_DESC;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -1359,7 +1359,7 @@ function GetStatColor(bStat: INT8): UINT8 {
 }
 
 // displays the dots between the stats and the stat name
-function DisplayDots(usNameX: UINT16, usNameY: UINT16, usStatX: UINT16, pString: STR16): void {
+function DisplayDots(usNameX: UINT16, usNameY: UINT16, usStatX: UINT16, pString: string /* STR16 */): void {
   let sNumberOfDots: INT16;
   let usStringLength: UINT16 = StringPixLength(pString, AIM_M_FONT_STATIC_TEXT());
   let i: INT16;
@@ -1581,7 +1581,7 @@ function AimMemberHireMerc(): INT8 {
 }
 
 function DisplayVideoConferencingDisplay(): boolean {
-  let sMercName: wchar_t[] /* [128] */;
+  let sMercName: string /* wchar_t[128] */;
 
   if ((gubVideoConferencingMode == Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE) || (gubVideoConferencingMode == Enum65.AIM_VIDEO_POPUP_MODE))
     return false;
@@ -1634,7 +1634,7 @@ function DisplayVideoConferencingDisplay(): boolean {
 
 function DisplayMercsVideoFace(): boolean {
   let hTerminalHandle: HVOBJECT;
-  let sFaceLoc: STR = "FACES\\";
+  let sFaceLoc: string /* STR */ = "FACES\\";
 
   // Get and Blt Terminal Frame
   GetVideoObject(addressof(hTerminalHandle), guiVideoConfTerminal);
@@ -1693,8 +1693,8 @@ function DisplaySelectLights(fContractDown: boolean, fBuyEquipDown: boolean): vo
 }
 
 function DisplayMercChargeAmount(): UINT32 {
-  let wTemp: wchar_t[] /* [50] */;
-  let wDollarTemp: wchar_t[] /* [50] */;
+  let wTemp: string /* wchar_t[50] */;
+  let wDollarTemp: string /* wchar_t[50] */;
   let hImageHandle: HVOBJECT;
 
   if (gubVideoConferencingMode != Enum65.AIM_VIDEO_HIRE_MERC_MODE)
@@ -1748,13 +1748,13 @@ function DisplayMercChargeAmount(): UINT32 {
   return giContractAmount;
 }
 
-function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: STR16, usPosX: UINT16, usPosY: UINT16, ubData: UINT8): boolean {
+function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */, sString2: string /* STR16 */, usPosX: UINT16, usPosY: UINT16, ubData: UINT8): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let hPopupBoxHandle: HVOBJECT;
   /* static */ let usPopUpBoxPosX: UINT16;
   /* static */ let usPopUpBoxPosY: UINT16;
-  /* static */ let sPopUpString1: wchar_t[] /* [400] */;
-  /* static */ let sPopUpString2: wchar_t[] /* [400] */;
+  /* static */ let sPopUpString1: string /* wchar_t[400] */;
+  /* static */ let sPopUpString2: string /* wchar_t[400] */;
   /* static */ let fPopUpBoxActive: boolean = false;
   ;
 
@@ -2094,7 +2094,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): boolean {
   return fIsTheMercTalking;
 }
 
-export function DisplayTextForMercFaceVideoPopUp(pString: STR16): void {
+export function DisplayTextForMercFaceVideoPopUp(pString: string /* STR16 */): void {
   swprintf(gsTalkingMercText, "\"%s\"", pString);
 
   // Set the minimum time for the dialogue text to be present
@@ -3436,10 +3436,10 @@ BOOLEAN DisplayShadedStretchedMercFace( UINT8 ubMercID, UINT16 usPosX, UINT16 us
 */
 
 export function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
-  let szLocAndTime: CHAR16[] /* [512] */;
+  let szLocAndTime: string /* CHAR16[512] */;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let zTimeString: CHAR16[] /* [128] */;
-  let zSectorIDString: CHAR16[] /* [512] */;
+  let zTimeString: string /* CHAR16[128] */;
+  let zSectorIDString: string /* CHAR16[512] */;
   let uiHour: UINT32;
 
   // if the id of the merc is invalid, dont display the pop up

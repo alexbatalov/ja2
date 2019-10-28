@@ -762,7 +762,7 @@ function SetSizeAndPropertiesOfHelpScreen(): void {
 function CreateHelpScreenButtons(): void {
   let usPosX: UINT16;
   let usPosY: UINT16;
-  let sText: CHAR16[] /* [1024] */;
+  let sText: string /* CHAR16[1024] */;
   let i: INT32;
 
   // if there are buttons to create
@@ -1019,7 +1019,7 @@ function GetHelpScreenTextPositions(pusPosX: Pointer<UINT16>, pusPosY: Pointer<U
 
 function DisplayCurrentScreenTitleAndFooter(): void {
   let iStartLoc: INT32 = -1;
-  let zText: CHAR16[] /* [1024] */;
+  let zText: string /* CHAR16[1024] */;
   let usPosX: UINT16 = 0;
   let usPosY: UINT16 = 0;
   let usWidth: UINT16 = 0;
@@ -1177,7 +1177,7 @@ function ChangeToHelpScreenSubPage(bNewPage: INT8): void {
   ChangeHelpScreenSubPage();
 }
 
-function GetHelpScreenText(uiRecordToGet: UINT32, pText: STR16): void {
+function GetHelpScreenText(uiRecordToGet: UINT32, pText: Pointer<string> /* STR16 */): void {
   let iStartLoc: INT32 = -1;
 
   iStartLoc = HELPSCREEN_RECORD_SIZE * uiRecordToGet;
@@ -1186,7 +1186,7 @@ function GetHelpScreenText(uiRecordToGet: UINT32, pText: STR16): void {
 
 // returns the number of vertical pixels printed
 function GetAndDisplayHelpScreenText(uiRecord: UINT32, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16): UINT16 {
-  let zText: CHAR16[] /* [1024] */;
+  let zText: string /* CHAR16[1024] */;
   let usNumVertPixels: UINT16 = 0;
   let uiStartLoc: UINT32;
 

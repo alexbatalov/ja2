@@ -145,8 +145,8 @@ export const BUDDY_OPINION = +25;
 export const HATED_OPINION = -25;
 
 export interface MERCPROFILESTRUCT {
-  zName: UINT16[] /* [NAME_LENGTH] */;
-  zNickname: UINT16[] /* [NICKNAME_LENGTH] */;
+  zName: string /* UINT16[NAME_LENGTH] */;
+  zNickname: string /* UINT16[NICKNAME_LENGTH] */;
   uiAttnSound: UINT32;
   uiCurseSound: UINT32;
   uiDieSound: UINT32;

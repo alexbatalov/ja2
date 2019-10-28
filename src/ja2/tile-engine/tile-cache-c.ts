@@ -85,7 +85,7 @@ export function DeleteTileCache(): void {
   guiCurTileCacheSize = 0;
 }
 
-function FindCacheStructDataIndex(cFilename: Pointer<INT8>): INT16 {
+function FindCacheStructDataIndex(cFilename: string /* Pointer<INT8> */): INT16 {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < guiNumTileCacheStructs; cnt++) {
@@ -97,7 +97,7 @@ function FindCacheStructDataIndex(cFilename: Pointer<INT8>): INT16 {
   return -1;
 }
 
-export function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
+export function GetCachedTile(cFilename: string /* Pointer<INT8> */): INT32 {
   let cnt: UINT32;
   let ubLowestIndex: UINT32 = 0;
   let sMostHits: INT16 = 15000;
@@ -225,7 +225,7 @@ function GetCachedTileStructureRef(iIndex: INT32): Pointer<STRUCTURE_FILE_REF> {
   return gpTileCacheStructInfo[gpTileCache[iIndex].sStructRefID].pStructureFileRef;
 }
 
-export function GetCachedTileStructureRefFromFilename(cFilename: Pointer<INT8>): Pointer<STRUCTURE_FILE_REF> {
+export function GetCachedTileStructureRefFromFilename(cFilename: string /* Pointer<INT8> */): Pointer<STRUCTURE_FILE_REF> {
   let sStructDataIndex: INT16;
 
   // Given filename, look for index
@@ -268,10 +268,10 @@ export function CheckForAndDeleteTileCacheStructInfo(pNode: Pointer<LEVELNODE>, 
   }
 }
 
-export function GetRootName(pDestStr: Pointer<INT8>, pSrcStr: Pointer<INT8>): void {
+export function GetRootName(pDestStr: Pointer<string> /* Pointer<INT8> */, pSrcStr: string /* Pointer<INT8> */): void {
   // Remove path and extension
-  let cTempFilename: INT8[] /* [120] */;
-  let cEndOfName: STR;
+  let cTempFilename: string /* INT8[120] */;
+  let cEndOfName: string /* STR */;
 
   // Remove path
   strcpy(cTempFilename, pSrcStr);

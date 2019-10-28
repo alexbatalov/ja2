@@ -206,7 +206,7 @@ function RenderTacticalPlacementGUI(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiDestPitchBYTES: UINT32;
   let usHatchColor: UINT16;
-  let str: UINT16[] /* [128] */;
+  let str: string /* UINT16[128] */;
   let pDestBuf: Pointer<UINT8>;
   let ubColor: UINT8;
   if (gfTacticalPlacementFirstTime) {

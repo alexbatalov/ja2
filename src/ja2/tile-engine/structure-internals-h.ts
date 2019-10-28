@@ -198,7 +198,7 @@ export interface STRUCTURE_FILE_REF {
 // filled regardless of whether there is non-zero data defined for
 // that graphic!
 export interface STRUCTURE_FILE_HEADER {
-  szId: CHAR8[] /* [4] */;
+  szId: string /* CHAR8[4] */;
   /* union { */
   /*   struct { */
   usNumberOfStructures: UINT16;

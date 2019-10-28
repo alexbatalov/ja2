@@ -1,6 +1,6 @@
 namespace ja2 {
 
-let szClipboard: Pointer<UINT16>;
+let szClipboard: string /* Pointer<UINT16> */;
 export let gfNoScroll: boolean = false;
 
 interface TextInputColors {
@@ -37,7 +37,7 @@ interface TEXTINPUTNODE {
   ubID: UINT8;
   usInputType: UINT16;
   ubMaxChars: UINT8;
-  szString: Pointer<UINT16>;
+  szString: string /* Pointer<UINT16> */;
   ubStrLen: UINT8;
   fEnabled: boolean;
   fUserField: boolean;
@@ -105,7 +105,7 @@ let gubStartHilite: UINT8 = 0;
 let gubEndHilite: UINT8 = 0;
 
 // allow the user to cut, copy, and paste just like windows.
-let gszClipboardString: UINT16[] /* [256] */;
+let gszClipboardString: string /* UINT16[256] */;
 
 // Simply initiates that you wish to begin inputting text.  This should only apply to screen
 // initializations that contain fields that edit text.  It also verifies and clears any existing
@@ -190,7 +190,7 @@ export function KillAllTextInputModes(): void {
 // After calling InitTextInputMode, you want to define one or more text input fields.  The order
 // of calls to this function dictate the TAB order from traversing from one field to the next.  This
 // function adds mouse regions and processes them for you, as well as deleting them when you are done.
-export function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, bPriority: INT8, szInitText: Pointer<UINT16>, ubMaxChars: UINT8, usInputType: UINT16): void {
+export function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, bPriority: INT8, szInitText: string /* Pointer<UINT16> */, ubMaxChars: UINT8, usInputType: UINT16): void {
   let pNode: Pointer<TEXTINPUTNODE>;
   pNode = MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
@@ -320,7 +320,7 @@ export function GetActiveFieldID(): INT16 {
 // This is a useful call made from an external user input field.  Using the previous file dialog example, this
 // call would be made when the user selected a different filename in the list via clicking or scrolling with
 // the arrows, or even using alpha chars to jump to the appropriate filename.
-export function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Pointer<UINT16>): void {
+export function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: string /* Pointer<UINT16> */): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -341,7 +341,7 @@ export function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Po
   }
 }
 
-export function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: Pointer<UINT8>): void {
+export function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: string /* Pointer<UINT8> */): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -376,7 +376,7 @@ function Get8BitStringFromField(ubField: UINT8, szString: Pointer<UINT8>): void 
   szString[0] = '\0';
 }
 
-export function Get16BitStringFromField(ubField: UINT8, szString: Pointer<UINT16>): void {
+export function Get16BitStringFromField(ubField: UINT8, szString: Pointer<string> /* Pointer<UINT16> */): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
@@ -393,7 +393,7 @@ export function Get16BitStringFromField(ubField: UINT8, szString: Pointer<UINT16
 // returns -1 if blank or invalid.  Only works for positive numbers.
 export function GetNumericStrictValueFromField(ubField: UINT8): INT32 {
   let ptr: Pointer<UINT16>;
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   let total: INT32;
   Get16BitStringFromField(ubField, str);
   // Blank string, so return -1
@@ -1028,7 +1028,7 @@ function RenderBackgroundField(pNode: Pointer<TEXTINPUTNODE>): void {
 function RenderActiveTextField(): void {
   let uiCursorXPos: UINT32;
   let usOffset: UINT16;
-  let str: UINT16[] /* [256] */;
+  let str: string /* UINT16[256] */;
   if (!gpActive || !gpActive.value.szString)
     return;
 
@@ -1092,7 +1092,7 @@ export function RenderInactiveTextField(ubID: UINT8): void {
   let usOffset: UINT16;
   let pNode: Pointer<TEXTINPUTNODE>;
   let curr: Pointer<TEXTINPUTNODE>;
-  let str: UINT16[] /* [256] */;
+  let str: string /* UINT16[256] */;
   curr = gpTextInputHead;
   pNode = null;
   while (curr) {
@@ -1117,7 +1117,7 @@ export function RenderInactiveTextField(ubID: UINT8): void {
 
 function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
   let usOffset: UINT16;
-  let str: UINT16[] /* [256] */;
+  let str: string /* UINT16[256] */;
   if (!pNode || !pNode.value.szString)
     return;
   SaveFontSettings();
@@ -1453,7 +1453,7 @@ export function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): voi
   }
 }
 
-function DoublePercentileCharacterFromStringIntoString(pSrcString: Pointer<UINT16>, pDstString: Pointer<UINT16>): void {
+function DoublePercentileCharacterFromStringIntoString(pSrcString: string /* Pointer<UINT16> */, pDstString: string /* Pointer<UINT16> */): void {
   let iSrcIndex: INT32 = 0;
   let iDstIndex: INT32 = 0;
   while (pSrcString[iSrcIndex] != 0) {

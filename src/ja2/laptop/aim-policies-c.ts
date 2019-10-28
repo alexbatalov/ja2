@@ -383,7 +383,7 @@ function DrawAimPolicyMenu(): boolean {
   let usPosY: UINT16;
   let usHeight: UINT16;
   let uiStartLoc: UINT32 = 0;
-  let sText: wchar_t[] /* [400] */;
+  let sText: string /* wchar_t[400] */;
   let hContentButtonHandle: HVOBJECT;
   let ubLocInFile: UINT8[] /* [] */ = [
     Enum68.DEFINITIONS,
@@ -466,7 +466,7 @@ function SelectPolicyTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
 }
 
 function DisplayAimPolicyTitleText(): boolean {
-  let sText: wchar_t[] /* [400] */;
+  let sText: string /* wchar_t[400] */;
   let uiStartLoc: UINT32 = 0;
 
   // Load anfd display title
@@ -482,7 +482,7 @@ function DisplayAimPolicyTitleText(): boolean {
 }
 
 function DisplayAimPolicyStatement(): boolean {
-  let sText: wchar_t[] /* [400] */;
+  let sText: string /* wchar_t[400] */;
   let uiStartLoc: UINT32 = 0;
   let usNumPixels: UINT16;
 
@@ -542,7 +542,7 @@ function ExitAgreementButton(): boolean {
 }
 
 function DisplayAimPolicyTitle(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT): boolean {
-  let sText: wchar_t[] /* [400] */;
+  let sText: string /* wchar_t[400] */;
   let uiStartLoc: UINT32 = 0;
 
   // Load and display title
@@ -554,8 +554,8 @@ function DisplayAimPolicyTitle(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT)
 }
 
 function DisplayAimPolicyParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT): UINT16 {
-  let sText: wchar_t[] /* [400] */;
-  let sTemp: wchar_t[] /* [20] */;
+  let sText: string /* wchar_t[400] */;
+  let sTemp: string /* wchar_t[20] */;
   let uiStartLoc: UINT32 = 0;
   let usNumPixels: UINT16;
 
@@ -575,8 +575,8 @@ function DisplayAimPolicyParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber: FL
 }
 
 function DisplayAimPolicySubParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT): UINT16 {
-  let sText: wchar_t[] /* [400] */;
-  let sTemp: wchar_t[] /* [20] */;
+  let sText: string /* wchar_t[400] */;
+  let sTemp: string /* wchar_t[20] */;
   let uiStartLoc: UINT32 = 0;
   let usNumPixels: UINT16;
 

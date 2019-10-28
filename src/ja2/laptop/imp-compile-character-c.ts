@@ -34,7 +34,7 @@ let sFacePositions: INT16[][] /* [NUMBER_OF_PLAYER_PORTRAITS][4] */ = [
   [ 0, 0, 0, 0 ],
 ];
 
-export let pPlayerSelectedFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = [
+export let pPlayerSelectedFaceFileNames: string[] /* STR8[NUMBER_OF_PLAYER_PORTRAITS] */ = [
   "Faces\\200.sti",
   "Faces\\201.sti",
   "Faces\\202.sti",
@@ -53,7 +53,7 @@ export let pPlayerSelectedFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] 
   "Faces\\215.sti",
 ];
 
-export let pPlayerSelectedBigFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = [
+export let pPlayerSelectedBigFaceFileNames: string[] /* STR8[NUMBER_OF_PLAYER_PORTRAITS] */ = [
   "Faces\\BigFaces\\200.sti",
   "Faces\\BigFaces\\201.sti",
   "Faces\\BigFaces\\202.sti",
@@ -550,7 +550,7 @@ function SetMercSkinAndHairColors(): void {
   };
 
   // skin strings
-  let sSkinStrings: STR[] /* [] */ = [
+  let sSkinStrings: string[] /* STR[] */ = [
     "PINKSKIN",
     "TANSKIN",
     "DARKSKIN",
@@ -558,7 +558,7 @@ function SetMercSkinAndHairColors(): void {
   ];
 
   // the hair colors
-  let sHairStrings: STR[] /* [] */ = [
+  let sHairStrings: string[] /* STR[] */ = [
     "BROWNHEAD",
     "BLACKHEAD",
     "WHITEHEAD",

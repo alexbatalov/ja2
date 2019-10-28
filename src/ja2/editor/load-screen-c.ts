@@ -3,7 +3,7 @@ namespace ja2 {
 //===========================================================================
 
 export let gfErrorCatch: boolean = false;
-export let gzErrorCatchString: UINT16[] /* [256] */ = "";
+export let gzErrorCatchString: string /* UINT16[256] */ = "";
 let giErrorCatchMessageBox: INT32 = 0;
 
 const enum Enum50 {
@@ -20,7 +20,7 @@ let iCurrFileShown: INT32;
 let iLastFileClicked: INT32;
 let iLastClickTime: INT32;
 
-let gzFilename: UINT16[] /* [31] */;
+let gzFilename: string /* UINT16[31] */;
 
 let FileList: Pointer<FDLG_LIST> = null;
 
@@ -35,7 +35,7 @@ let gfIllegalName: boolean;
 let gfDeleteFile: boolean;
 let gfNoFiles: boolean;
 
-let zOrigName: UINT16[] /* [60] */;
+let zOrigName: string /* UINT16[60] */;
 let FileInfo: GETFILESTRUCT;
 
 let fEnteringLoadSaveScreen: boolean = true;
@@ -43,7 +43,7 @@ let gfPassedSaveCheck: boolean = false;
 
 let BlanketRegion: MOUSE_REGION;
 
-let gszCurrFilename: CHAR8[] /* [80] */;
+let gszCurrFilename: string /* CHAR8[80] */;
 
 const enum Enum51 {
   IOSTATUS_NONE,
@@ -271,7 +271,7 @@ export function LoadSaveScreenHandle(): UINT32 {
     case Enum50.DIALOG_DELETE:
       sprintf(gszCurrFilename, "MAPS\\%S", gzFilename);
       if (GetFileFirst(gszCurrFilename, addressof(FileInfo))) {
-        let str: UINT16[] /* [40] */;
+        let str: string /* UINT16[40] */;
         if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_HIDDEN | FILE_IS_SYSTEM)) {
           swprintf(str, " Delete READ-ONLY file %s? ", gzFilename);
           gfReadOnly = true;
@@ -327,7 +327,7 @@ export function LoadSaveScreenHandle(): UINT32 {
   return Enum26.LOADSAVE_SCREEN;
 }
 
-function CreateFileDialog(zTitle: Pointer<UINT16>): void {
+function CreateFileDialog(zTitle: string /* Pointer<UINT16> */): void {
   iFDlgState = Enum50.DIALOG_NONE;
 
   DisableEditorTaskbar();
@@ -662,8 +662,8 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
 }
 
 // editor doesn't care about the z value.  It uses it's own methods.
-function SetGlobalSectorValues(szFilename: Pointer<UINT16>): void {
-  let pStr: Pointer<UINT16>;
+function SetGlobalSectorValues(szFilename: string /* Pointer<UINT16> */): void {
+  let pStr: string /* Pointer<UINT16> */;
   if (ValidCoordinate()) {
     // convert the coordinate string into into the actual global sector coordinates.
     if (gzFilename[0] >= 'A' && gzFilename[0] <= 'P')
@@ -702,7 +702,7 @@ function InitErrorCatchDialog(): void {
 function ProcessFileIO(): UINT32 {
   let usStartX: INT16;
   let usStartY: INT16;
-  let ubNewFilename: UINT8[] /* [50] */;
+  let ubNewFilename: string /* UINT8[50] */;
   switch (gbCurrentFileIOStatus) {
     case Enum51.INITIATE_MAP_SAVE: // draw save message
       StartFrameBufferRender();
@@ -913,7 +913,7 @@ function ValidFilename(): boolean {
   return false;
 }
 
-export function ExternalLoadMap(szFilename: Pointer<UINT16>): boolean {
+export function ExternalLoadMap(szFilename: string /* Pointer<UINT16> */): boolean {
   Assert(szFilename);
   if (!wcslen(szFilename))
     return false;
@@ -930,7 +930,7 @@ export function ExternalLoadMap(szFilename: Pointer<UINT16>): boolean {
   return false;
 }
 
-export function ExternalSaveMap(szFilename: Pointer<UINT16>): boolean {
+export function ExternalSaveMap(szFilename: string /* Pointer<UINT16> */): boolean {
   Assert(szFilename);
   if (!wcslen(szFilename))
     return false;

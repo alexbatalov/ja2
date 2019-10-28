@@ -84,7 +84,7 @@ export interface FACETYPE {
   fDisplayTextOver: boolean; // Boolean indicating to display text on face
   fOldDisplayTextOver: boolean; // OLD Boolean indicating to display text on face
   fCanHandleInactiveNow: boolean;
-  zDisplayText: INT16[] /* [30] */; // String of text that can be displayed
+  zDisplayText: string /* INT16[30] */; // String of text that can be displayed
 
   usEyesX: UINT16;
   usEyesY: UINT16;

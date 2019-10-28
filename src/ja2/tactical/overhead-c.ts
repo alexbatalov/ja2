@@ -18,13 +18,13 @@ let giPauseAllAITimer: INT32 = 0;
 const START_DEMO_SCENE = 3;
 const NUM_RANDOM_SCENES = 4;
 
-export let gDebugStr: INT8[] /* [128] */;
+export let gDebugStr: string /* INT8[128] */;
 
 const NEW_FADE_DELAY = 60;
 
 // ATE: GLOBALS FOR E3
 export let gubCurrentScene: UINT8 = 0;
-let gzLevelFilenames: CHAR8[][] /* [][50] */ = [
+let gzLevelFilenames: string[] /* CHAR8[][50] */ = [
   "A9.dat",
   "ScotTBMines.dat",
   "LindaTBCaves.dat",
@@ -66,14 +66,14 @@ export let gbShowEnemies: INT8 = false;
 
 let gfMovingAnimation: boolean = false;
 
-export let gzAlertStr: CHAR8[][] /* [][30] */ = [
+export let gzAlertStr: string[] /* CHAR8[][30] */ = [
   "GREEN",
   "YELLOW",
   "RED",
   "BLACK",
 ];
 
-export let gzActionStr: CHAR8[][] /* [][30] */ = [
+export let gzActionStr: string[] /* CHAR8[][30] */ = [
   "NONE",
 
   "RANDOM PATROL",
@@ -132,7 +132,7 @@ export let gzActionStr: CHAR8[][] /* [][30] */ = [
   "OFFER SURRENDER",
 ];
 
-export let gzDirectionStr: CHAR8[][] /* [][30] */ = [
+export let gzDirectionStr: string[] /* CHAR8[][30] */ = [
   "NORTHEAST",
   "EAST",
   "SOUTHEAST",
@@ -3181,7 +3181,7 @@ export function EnterTacticalDemoMode(): UINT32 {
   return Enum26.INIT_SCREEN;
 }
 
-function GetSceneFilename(): Pointer<CHAR8> {
+function GetSceneFilename(): string /* Pointer<CHAR8> */ {
   return gzLevelFilenames[gubCurrentScene];
 }
 

@@ -310,8 +310,8 @@ function BtnMercHireButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 function DisplayMercFace(ubMercID: UINT8): boolean {
   let hFaceHandle: HVOBJECT;
   let hPortraitHandle: HVOBJECT;
-  let sFaceLoc: STR = "FACES\\BIGFACES\\";
-  let sTemp: char[] /* [100] */;
+  let sFaceLoc: string /* STR */ = "FACES\\BIGFACES\\";
+  let sTemp: string /* char[100] */;
   let pMerc: Pointer<MERCPROFILESTRUCT>;
   let VObjectDesc: VOBJECT_DESC;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -381,7 +381,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
 }
 
 function LoadAndDisplayMercBio(ubMercID: UINT8): void {
-  let sText: wchar_t[] /* [400] */;
+  let sText: string /* wchar_t[400] */;
   let uiStartLoc: UINT32 = 0;
 
   // load and display the merc bio
@@ -401,7 +401,7 @@ function LoadAndDisplayMercBio(ubMercID: UINT8): void {
 function DisplayMercsStats(ubMercID: UINT8): void {
   let usPosY: UINT16;
   let usPosX: UINT16;
-  let sString: wchar_t[] /* [128] */;
+  let sString: string /* wchar_t[128] */;
 
   usPosY = MERC_HEALTH_Y;
 

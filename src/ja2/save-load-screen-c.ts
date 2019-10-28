@@ -127,7 +127,7 @@ let guiSlgBackGroundImage: UINT32;
 let guiBackGroundAddOns: UINT32;
 
 // The string that will contain the game desc text
-let gzGameDescTextField: wchar_t[] /* [SIZE_OF_SAVE_GAME_DESC] */ = [ 0 ];
+let gzGameDescTextField: string /* wchar_t[SIZE_OF_SAVE_GAME_DESC] */ = [ 0 ];
 
 let gfUserInTextInputMode: boolean = false;
 let gubSaveGameNextPass: UINT8 = 0;
@@ -813,7 +813,7 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
 
     // if there is save game in the slot, ask for confirmation before overwriting
     if (gbSaveGameArray[bSaveGameID]) {
-      let sText: CHAR16[] /* [512] */;
+      let sText: string /* CHAR16[512] */;
 
       swprintf(sText, zSaveLoadText[Enum371.SLG_CONFIRM_SAVE], bSaveGameID);
 
@@ -850,7 +850,7 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
   }
 }
 
-export function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
+export function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
   // do message box and return
   giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 
@@ -858,7 +858,7 @@ export function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<IN
   return giSaveLoadMessageBox != -1;
 }
 
-function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
+function DoSaveLoadMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
@@ -870,7 +870,7 @@ function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScr
 
 export function InitSaveGameArray(): boolean {
   let cnt: INT8;
-  let zSaveGameName: CHAR8[] /* [512] */;
+  let zSaveGameName: string /* CHAR8[512] */;
   let SaveGameHeader: SAVED_GAME_HEADER;
 
   for (cnt = 0; cnt < NUM_SAVE_GAMES; cnt++) {
@@ -906,10 +906,10 @@ function DisplaySaveGameList(): boolean {
 
 function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
 {
-  let zDateString: CHAR16[] /* [128] */;
-  let zLocationString: CHAR16[] /* [128] */;
-  let zNumMercsString: CHAR16[] /* [128] */;
-  let zBalanceString: CHAR16[] /* [128] */;
+  let zDateString: string /* CHAR16[128] */;
+  let zLocationString: string /* CHAR16[128] */;
+  let zNumMercsString: string /* CHAR16[128] */;
+  let zBalanceString: string /* CHAR16[128] */;
   let SaveGameHeader: SAVED_GAME_HEADER;
   let hPixHandle: HVOBJECT;
   let usPosX: UINT16 = SLG_FIRST_SAVED_SPOT_X;
@@ -1024,8 +1024,8 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
 
     // if the user is LOADING and holding down the CTRL key, display the additional info
     if (!gfSaveGame && gfKeyState[CTRL] && gbSelectedSaveLocation == bEntryID) {
-      let zMouseHelpTextString: CHAR16[] /* [256] */;
-      let zDifString: CHAR16[] /* [256] */;
+      let zMouseHelpTextString: string /* CHAR16[256] */;
+      let zDifString: string /* CHAR16[256] */;
 
       // Create a string for difficulty level
       swprintf(zDifString, "%s %s", gzGIOScreenText[Enum375.GIO_EASY_TEXT + SaveGameHeader.sInitialGameOptions.ubDifficultyLevel - 1], zSaveLoadText[Enum371.SLG_DIFF]);
@@ -1126,7 +1126,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
 
 function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): boolean {
   let hFile: HWFILE;
-  let zSavedGameName: CHAR8[] /* [512] */;
+  let zSavedGameName: string /* CHAR8[512] */;
   let uiNumBytesRead: UINT32;
 
   // make sure the entry is valid
@@ -1617,7 +1617,7 @@ function DeleteAllSaveGameFile(): void {
 }
 
 export function DeleteSaveGameNumber(ubSaveGameSlotID: UINT8): void {
-  let zSaveGameName: CHAR8[] /* [512] */;
+  let zSaveGameName: string /* CHAR8[512] */;
 
   // Create the name of the file
   CreateSavedGameFileNameFromNumber(ubSaveGameSlotID, zSaveGameName);
@@ -1627,7 +1627,7 @@ export function DeleteSaveGameNumber(ubSaveGameSlotID: UINT8): void {
 }
 
 function DisplayOnScreenNumber(fErase: boolean): void {
-  let zTempString: wchar_t[] /* [16] */;
+  let zTempString: string /* wchar_t[16] */;
   let usPosX: UINT16 = 6;
   let usPosY: UINT16;
   let bLoopNum: INT8;
@@ -1863,7 +1863,7 @@ export function DoQuickLoad(): boolean {
 
 export function IsThereAnySavedGameFiles(): boolean {
   let cnt: INT8;
-  let zSaveGameName: CHAR8[] /* [512] */;
+  let zSaveGameName: string /* CHAR8[512] */;
 
   for (cnt = 0; cnt < NUM_SAVE_GAMES; cnt++) {
     CreateSavedGameFileNameFromNumber(cnt, zSaveGameName);

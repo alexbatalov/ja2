@@ -29,7 +29,7 @@ export const CURSOR_TO_PLAY_SOUND = 0x10;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface CursorFileData {
-  ubFilename: UINT8[] /* [MAX_FILENAME_LEN] */;
+  ubFilename: string /* UINT8[MAX_FILENAME_LEN] */;
   fLoaded: boolean;
   uiIndex: UINT32;
   ubFlags: UINT8;

@@ -14,7 +14,7 @@ let gfRandomizingPatrolGroup: boolean = false;
 export let gubNumGroupsArrivedSimultaneously: UINT8 = 0;
 
 // Doesn't require text localization.  This is for debug strings only.
-let gszTerrain: UINT8[][] /* [NUM_TRAVTERRAIN_TYPES][15] */ = [
+let gszTerrain: string[] /* UINT8[NUM_TRAVTERRAIN_TYPES][15] */ = [
   "TOWN",
   "ROAD",
   "PLAINS",
@@ -906,8 +906,8 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): boolean {
       if (fMilitiaPresent) {
         NotifyPlayerOfInvasionByEnemyForces(pGroup.value.ubSectorX, pGroup.value.ubSectorY, 0, TriggerPrebattleInterface);
       } else {
-        let str: UINT16[] /* [256] */;
-        let pSectorStr: UINT16[] /* [128] */;
+        let str: string /* UINT16[256] */;
+        let pSectorStr: string /* UINT16[128] */;
         GetSectorIDString(pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ, pSectorStr, true);
         swprintf(str, gpStrategicString[Enum365.STR_DIALOG_ENEMIES_ATTACK_UNCONCIOUSMERCS], pSectorStr);
         DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, TriggerPrebattleInterface);
@@ -1648,8 +1648,8 @@ function PossibleToCoordinateSimultaneousGroupArrivals(pFirstGroup: Pointer<GROU
 
   if (ubNumNearbyGroups) {
     // postpone the battle until the user answers the dialog.
-    let str: UINT16[] /* [255] */;
-    let pStr: Pointer<UINT16>;
+    let str: string /* UINT16[255] */;
+    let pStr: string /* Pointer<UINT16> */;
     let pEnemyType: Pointer<UINT16>;
     InterruptTime();
     PauseGame();
@@ -3622,7 +3622,7 @@ export function AddFuelToVehicle(pSoldier: Pointer<SOLDIERTYPE>, pVehicle: Point
 }
 
 function ReportVehicleOutOfGas(iVehicleID: INT32, ubSectorX: UINT8, ubSectorY: UINT8): void {
-  let str: UINT16[] /* [255] */;
+  let str: string /* UINT16[255] */;
   // Report that the vehicle that just arrived is out of gas.
   swprintf(str, gzLateLocalizedString[5], pVehicleStrings[pVehicleList[iVehicleID].ubVehicleType], ubSectorY + 'A' - 1, ubSectorX);
   DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, null);
@@ -3820,8 +3820,8 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): boolean {
 }
 
 function NotifyPlayerOfBloodcatBattle(ubSectorX: UINT8, ubSectorY: UINT8): void {
-  let str: UINT16[] /* [256] */;
-  let zTempString: UINT16[] /* [128] */;
+  let str: string /* UINT16[256] */;
+  let zTempString: string /* UINT16[128] */;
   if (gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE) {
     GetSectorIDString(ubSectorX, ubSectorY, 0, zTempString, true);
     swprintf(str, pMapErrorString[12], zTempString);
@@ -3948,8 +3948,8 @@ function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(pGroup: Pointer<GRO
   let sSectorX: INT16 = 0;
   let sSectorY: INT16 = 0;
   let bSectorZ: INT8 = 0;
-  let sString: CHAR16[] /* [128] */;
-  let wSectorName: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
+  let wSectorName: string /* CHAR16[128] */;
   let sStrategicSector: INT16;
 
   Assert(pGroup);

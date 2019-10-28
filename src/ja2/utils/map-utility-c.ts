@@ -34,8 +34,8 @@ export function MapUtilScreenHandle(): UINT32 {
   /* static */ let sFiles: INT16 = 0;
   /* static */ let sCurFile: INT16 = 0;
   /* static */ let FileList: Pointer<FDLG_LIST> = null;
-  let zFilename: INT8[] /* [260] */;
-  let zFilename2: INT8[] /* [260] */;
+  let zFilename: string /* INT8[260] */;
+  let zFilename2: string /* INT8[260] */;
   let vs_desc: VSURFACE_DESC;
   let usWidth: UINT16;
   let usHeight: UINT16;

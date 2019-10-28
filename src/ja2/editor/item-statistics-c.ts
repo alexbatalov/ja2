@@ -6,7 +6,7 @@ let giSciFiCheckboxButton: INT32 = -1;
 let giAlarmTriggerButton: INT32 = -1;
 let giOwnershipGroupButton: INT32 = -1;
 
-export let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
+export let gszActionItemDesc: string[] /* UINT16[NUM_ACTIONITEMS][30] */ = [
   "Klaxon Mine",
   "Flare Mine",
   "Teargas Explosion",
@@ -43,7 +43,7 @@ export let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
   "Big teargas",
 ];
 
-export function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
+export function GetActionItemName(pItem: Pointer<OBJECTTYPE>): string /* Pointer<UINT16> */ {
   if (!pItem || pItem.value.usItem != Enum225.ACTION_ITEM)
     return null;
   if (pItem.value.bActionValue != Enum191.ACTION_ITEM_BLOW_UP) {
@@ -549,7 +549,7 @@ function RemoveGameTypeFlags(): void {
 }
 
 function SetupGunGUI(): void {
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   let yp: INT16;
   memset(gfAttachment, 0, Enum46.NUM_ATTACHMENT_BUTTONS);
   swprintf(str, "%d", gpItem.value.bGunStatus);
@@ -664,7 +664,7 @@ function ExtractAndUpdateGunGUI(): void {
 }
 
 function SetupAmmoGUI(): void {
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   swprintf(str, "%d", gpItem.value.ubNumberOfObjects);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, "%d", gpItem.value.bTrap);
@@ -704,7 +704,7 @@ function ExtractAndUpdateAmmoGUI(): void {
 }
 
 function SetupArmourGUI(): void {
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   swprintf(str, "%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, "%d", gpItem.value.bTrap);
@@ -755,7 +755,7 @@ function ExtractAndUpdateArmourGUI(): void {
 }
 
 function SetupEquipGUI(): void {
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   swprintf(str, "%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, "%d", gpItem.value.bTrap);
@@ -794,7 +794,7 @@ function ExtractAndUpdateEquipGUI(): void {
 }
 
 function SetupExplosivesGUI(): void {
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   let yp: INT16;
   swprintf(str, "%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -864,7 +864,7 @@ function ExtractAndUpdateExplosivesGUI(): void {
 }
 
 function SetupMoneyGUI(): void {
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   swprintf(str, "%d", gpItem.value.uiMoneyAmount);
   AddTextInputField(485, 380, 45, 15, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
@@ -896,7 +896,7 @@ function RemoveMoneyGUI(): void {
 }
 
 function SetupOwnershipGUI(): void {
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   swprintf(str, "%d", gpItem.value.ubOwnerProfile);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem.value.ubOwnerCivGroup], SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), OwnershipGroupButtonCallback);
@@ -933,7 +933,7 @@ function RemoveOwnershipGUI(): void {
 }
 
 function SetupKeysGUI(): void {
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   if (gpEditingItemPool) {
     swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -953,8 +953,8 @@ function RemoveKeysGUI(): void {
 }
 
 function SetupActionItemsGUI(): void {
-  let str: UINT16[] /* [4] */;
-  let pStr: Pointer<UINT16>;
+  let str: string /* UINT16[4] */;
+  let pStr: string /* Pointer<UINT16> */;
   swprintf(str, "%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, "%d", gpItem.value.bTrap);
@@ -1010,7 +1010,7 @@ function AlarmTriggerCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 }
 
 function SetupTriggersGUI(): void {
-  let str: UINT16[] /* [4] */;
+  let str: string /* UINT16[4] */;
   swprintf(str, "%d", gpItem.value.bTrap);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, "%d", gpItem.value.ubTolerance);

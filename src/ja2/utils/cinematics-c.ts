@@ -103,7 +103,7 @@ export function SmkShutdown(): void {
   }
 }
 
-export function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, fClose: boolean): Pointer<SMKFLIC> {
+export function SmkPlayFlic(cFilename: string /* Pointer<CHAR8> */, uiLeft: UINT32, uiTop: UINT32, fClose: boolean): Pointer<SMKFLIC> {
   let pSmack: Pointer<SMKFLIC>;
 
   // Open the flic
@@ -121,7 +121,7 @@ export function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UI
   return pSmack;
 }
 
-function SmkOpenFlic(cFilename: Pointer<CHAR8>): Pointer<SMKFLIC> {
+function SmkOpenFlic(cFilename: string /* Pointer<CHAR8> */): Pointer<SMKFLIC> {
   let pSmack: Pointer<SMKFLIC>;
   let hFile: HANDLE;
 

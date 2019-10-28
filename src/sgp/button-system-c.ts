@@ -17,7 +17,7 @@ const GUI_BTN_NONE = 0;
 const GUI_BTN_DUPLICATE_VOBJ = 1;
 const GUI_BTN_EXTERNAL_VOBJ = 2;
 
-let str: UINT8[] /* [128] */;
+let str: string /* UINT8[128] */;
 
 // Kris:  December 2, 1997
 // Special internal debugging utilities that will ensure that you don't attempt to delete
@@ -101,7 +101,7 @@ function FindFreeButtonSlot(): INT32 {
 //
 //	Load images for use with QuickButtons.
 //
-export function LoadButtonImage(filename: Pointer<UINT8>, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
+export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   let vo_desc: VOBJECT_DESC;
   let UseSlot: UINT32;
   let pTrav: Pointer<ETRLEObject>;
@@ -699,7 +699,7 @@ function FindFreeIconSlot(): INT16 {
 //
 //	Loads an image file for use as a button icon.
 //
-export function LoadGenericButtonIcon(filename: Pointer<UINT8>): INT16 {
+export function LoadGenericButtonIcon(filename: string /* Pointer<UINT8> */): INT16 {
   let ImgSlot: INT16;
   let vo_desc: VOBJECT_DESC;
 
@@ -810,7 +810,7 @@ function UnloadGenericButtonImage(GenImg: INT16): boolean {
 //
 //	Loads the image files required for displaying a generic button.
 //
-function LoadGenericButtonImages(GrayName: Pointer<UINT8>, OffNormName: Pointer<UINT8>, OffHiliteName: Pointer<UINT8>, OnNormName: Pointer<UINT8>, OnHiliteName: Pointer<UINT8>, BkGrndName: Pointer<UINT8>, Index: INT16, OffsetX: INT16, OffsetY: INT16): INT16 {
+function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormName: string /* Pointer<UINT8> */, OffHiliteName: string /* Pointer<UINT8> */, OnNormName: string /* Pointer<UINT8> */, OnHiliteName: string /* Pointer<UINT8> */, BkGrndName: string /* Pointer<UINT8> */, Index: INT16, OffsetX: INT16, OffsetY: INT16): INT16 {
   let ImgSlot: INT16;
   let vo_desc: VOBJECT_DESC;
   let Pix: UINT8;
@@ -1364,7 +1364,7 @@ export function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, x
 }
 
 // Creates a generic button with text on it.
-export function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateTextButton(string: string /* Pointer<UINT16> */, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   let b: Pointer<GUI_BUTTON>;
   let ButtonNum: INT32;
   let BType: INT32;
@@ -1701,25 +1701,25 @@ export function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type:
 // loading, and deleting of the image.  The size of the image determines the size of the button.  It also uses
 // the default move callback which emulates Win95.  Finally, it sets the priority to normal.  The function you
 // choose also determines the type of button (toggle, notoggle, or newtoggle)
-export function CreateEasyNoToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateEasyNoToggleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
-export function CreateEasyToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateEasyToggleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
-function CreateEasyNewToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
+function CreateEasyNewToggleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_NEWTOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
 // Same as above, but accepts specify toggle type
-function CreateEasyButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: INT32, ClickCallback: GUI_CALLBACK): INT32 {
+function CreateEasyButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, Type: INT32, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, Type, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
 // Same as above, but accepts priority specification.
-export function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: INT32, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateSimpleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, Type: INT32, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
   let ButPic: INT32;
   let ButNum: INT32;
 
@@ -1742,7 +1742,7 @@ export function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>,
   return ButNum;
 }
 
-export function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateIconAndTextButton(Image: INT32, string: string /* Pointer<UINT16> */, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   let b: Pointer<GUI_BUTTON>;
   let iButtonID: INT32;
   let BType: INT32;
@@ -1853,7 +1853,7 @@ export function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, u
 }
 
 // New functions
-export function SpecifyButtonText(iButtonID: INT32, string: Pointer<UINT16>): void {
+export function SpecifyButtonText(iButtonID: INT32, string: string /* Pointer<UINT16> */): void {
   let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
@@ -1942,7 +1942,7 @@ export function SpecifyButtonTextJustification(iButtonID: INT32, bJustification:
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-export function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8): void {
+export function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: string /* Pointer<UINT16> */, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1962,7 +1962,7 @@ export function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: Pointe
   b.value.uiFlags |= BUTTON_DIRTY;
 }
 
-export function SpecifyGeneralButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16): void {
+export function SpecifyGeneralButtonTextAttributes(iButtonID: INT32, string: string /* Pointer<UINT16> */, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16): void {
   let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2106,7 +2106,7 @@ export function AllowDisabledButtonFastHelp(iButtonID: INT32, fAllow: boolean): 
 //
 //	Set the text that will be displayed as the FastHelp
 //
-export function SetButtonFastHelpText(iButton: INT32, Text: Pointer<UINT16>): void {
+export function SetButtonFastHelpText(iButton: INT32, Text: string /* Pointer<UINT16> */): void {
   let b: Pointer<GUI_BUTTON>;
   if (iButton < 0 || iButton > MAX_BUTTONS)
     return;
@@ -3180,7 +3180,7 @@ interface CreateDlgInfo {
   iAreaOffsetX: INT32; // only)
   iAreaOffsetY: INT32;
 
-  zDlgText: Pointer<UINT16>; // Text to be displayed (if any)
+  zDlgText: string /* Pointer<UINT16> */; // Text to be displayed (if any)
   iTextFont: INT32; // Font to be used for text (if any)
   usTextCols: UINT16; // Font colors (for mono fonts only)
 
@@ -3256,7 +3256,7 @@ function SetDialogAttributes(pDlgInfo: Pointer<CreateDlgInfo>, iAttrib: INT32, .
   let arg: va_list;
   let iFont: INT32;
   let iFontOptions: INT32;
-  let zString: Pointer<UINT16>;
+  let zString: string /* Pointer<UINT16> */;
   let iX: INT32;
   let iY: INT32;
   let iW: INT32;
@@ -3396,7 +3396,7 @@ function DrawDialogBox(iDlgBox: INT32): void {
 
 //------------------------------------------------------------------------------------------------------
 
-export function CreateCheckBoxButton(x: INT16, y: INT16, filename: Pointer<UINT8>, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateCheckBoxButton(x: INT16, y: INT16, filename: string /* Pointer<UINT8> */, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
   let b: Pointer<GUI_BUTTON>;
   let ButPic: INT32;
   let iButtonID: INT32;

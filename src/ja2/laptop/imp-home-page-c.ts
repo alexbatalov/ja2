@@ -25,7 +25,7 @@ let giIMPHomePageButton: INT32[] /* [1] */;
 let giIMPHomePageButtonImage: INT32[] /* [1] */;
 
 // the player activation string
-let pPlayerActivationString: CHAR16[] /* [32] */;
+let pPlayerActivationString: string /* CHAR16[32] */;
 
 // position within player activation string
 let iStringPos: INT32 = 0;

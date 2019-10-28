@@ -39,7 +39,7 @@ let LightMapLeft: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
 let LightMapTop: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
 let LightMapRight: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
 let LightMapBottom: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
-export let pLightNames: STR[] /* [MAX_LIGHT_TEMPLATES] */;
+export let pLightNames: string[] /* STR[MAX_LIGHT_TEMPLATES] */;
 
 // Sprite data
 export let LightSprites: LIGHT_SPRITE[] /* [MAX_LIGHT_SPRITES] */;
@@ -151,7 +151,7 @@ export function LoadShadeTablesFromTextFile(): void {
   let i: INT32;
   let j: INT32;
   let num: INT32;
-  let str: UINT8[] /* [10] */;
+  let str: string /* UINT8[10] */;
   if (gfLoadShadeTablesFromTextFile) {
     fp = fopen("ShadeTables.txt", "r");
     Assert(fp);
@@ -1774,7 +1774,7 @@ export function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): 
 ***************************************************************************************/
 export function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
   let iLight: INT32;
-  let usName: UINT8[] /* [14] */;
+  let usName: string /* UINT8[14] */;
 
   iLight = LightGetFree();
   if (iLight != (-1)) {
@@ -1796,7 +1796,7 @@ export function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
 ***************************************************************************************/
 function LightCreateSquare(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16): INT32 {
   let iLight: INT32;
-  let usName: UINT8[] /* [14] */;
+  let usName: string /* UINT8[14] */;
 
   iLight = LightGetFree();
   if (iLight != (-1)) {
@@ -1818,7 +1818,7 @@ function LightCreateSquare(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16)
 ***************************************************************************************/
 function LightCreateElliptical(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16): INT32 {
   let iLight: INT32;
-  let usName: UINT8[] /* [14] */;
+  let usName: string /* UINT8[14] */;
 
   iLight = LightGetFree();
   if (iLight != (-1))
@@ -2562,9 +2562,9 @@ function LightCalcRect(iLight: INT32): boolean {
         filename forces the system to save the light with the internal filename (recommended).
 
 ***************************************************************************************/
-export function LightSave(iLight: INT32, pFilename: STR): boolean {
+export function LightSave(iLight: INT32, pFilename: string /* STR */): boolean {
   let hFile: HWFILE;
-  let pName: STR;
+  let pName: string /* STR */;
 
   if (pLightList[iLight] == null)
     return false;
@@ -2594,7 +2594,7 @@ export function LightSave(iLight: INT32, pFilename: STR): boolean {
         if the file wasn't loaded.
 
 ***************************************************************************************/
-function LightLoad(pFilename: STR): INT32 {
+function LightLoad(pFilename: string /* STR */): INT32 {
   let hFile: HWFILE;
   let pNewLight: Pointer<LIGHT_NODE> = null;
   let pLastLight: Pointer<LIGHT_NODE> = null;
@@ -2638,7 +2638,7 @@ function LightLoad(pFilename: STR): INT32 {
         disk. Returns the index of the template, or (-1) if it couldn't be loaded.
 
 ***************************************************************************************/
-function LightLoadCachedTemplate(pFilename: STR): INT32 {
+function LightLoadCachedTemplate(pFilename: string /* STR */): INT32 {
   let iCount: INT32;
 
   for (iCount = 0; iCount < MAX_LIGHT_TEMPLATES; iCount++) {
@@ -2747,7 +2747,7 @@ function LightSpriteGetFree(): INT32 {
  * If this function fails (out of sprites, or bad template name) it returns (-1).
  *
  ********************************************************************************/
-export function LightSpriteCreate(pName: STR, uiLightType: UINT32): INT32 {
+export function LightSpriteCreate(pName: string /* STR */, uiLightType: UINT32): INT32 {
   let iSprite: INT32;
 
   if ((iSprite = LightSpriteGetFree()) != (-1)) {

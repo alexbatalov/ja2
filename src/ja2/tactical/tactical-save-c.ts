@@ -234,7 +234,7 @@ export function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): boolean {
       if (SectorInfo[SECTOR(sMapX, sMapY)].uiFlags & SF_CIV_PRESERVED_TEMP_FILE_EXISTS) {
         RetrieveTempFileFromSavedGame(hFile, SF_CIV_PRESERVED_TEMP_FILE_EXISTS, sMapX, sMapY, 0);
         if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiSaveGameVersion < 78) {
-          let pMapName: INT8[] /* [128] */;
+          let pMapName: string /* INT8[128] */;
 
           // KILL IT!!! KILL KIT!!!! IT IS CORRUPTED!!!
           GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, pMapName, sMapX, sMapY, 0);
@@ -302,7 +302,7 @@ export function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): boolean {
     if (TempNode.value.uiFlags & SF_CIV_PRESERVED_TEMP_FILE_EXISTS) {
       RetrieveTempFileFromSavedGame(hFile, SF_CIV_PRESERVED_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
       if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiSaveGameVersion < 78) {
-        let pMapName: INT8[] /* [128] */;
+        let pMapName: string /* INT8[128] */;
 
         // KILL IT!!! KILL KIT!!!! IT IS CORRUPTED!!!
         GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, pMapName, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
@@ -330,7 +330,7 @@ export function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): boolean {
 export function SaveWorldItemsToTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, uiNumberOfItems: UINT32, pData: Pointer<WORLDITEM>): boolean {
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
 
   GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 
@@ -372,7 +372,7 @@ export function SaveWorldItemsToTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: 
 export function LoadWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, pData: Pointer<WORLDITEM>): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let hFile: HWFILE;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let uiNumberOfItems: UINT32 = 0;
 
   GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
@@ -414,7 +414,7 @@ export function LoadWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ
 export function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, pSizeOfData: Pointer<UINT32>, fIfEmptyCreate: boolean): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let hFile: HWFILE;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let uiNumberOfItems: UINT32 = 0;
 
   GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
@@ -1031,7 +1031,7 @@ function LoadAndAddWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT
 }
 
 function AddTempFileToSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
 
   GetMapTempFileName(uiType, zMapName, sMapX, sMapY, bMapZ);
 
@@ -1043,7 +1043,7 @@ function AddTempFileToSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT16, sMa
 }
 
 function RetrieveTempFileFromSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
 
   GetMapTempFileName(uiType, zMapName, sMapX, sMapY, bMapZ);
 
@@ -1086,7 +1086,7 @@ function SaveRottingCorpsesToTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ: I
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
   //	CHAR8		zTempName[ 128 ];
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let uiNumberOfCorpses: UINT32 = 0;
   let iCount: INT32;
 
@@ -1146,7 +1146,7 @@ function SaveRottingCorpsesToTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ: I
 function DeleteTempItemMapFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let bSectorId: UINT8 = 0;
   //	CHAR8		zTempName[ 128 ];
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
 
   // grab the sector id
   bSectorId = SECTOR(sMapX, sMapY);
@@ -1174,7 +1174,7 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32 = 0;
   //	CHAR8		zTempName[ 128 ];
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let uiNumberOfCorpses: UINT32 = 0;
   let cnt: UINT32;
   let def: ROTTING_CORPSE_DEFINITION;
@@ -1762,7 +1762,7 @@ export function AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sMapX: INT16,
   let hFile: HWFILE;
   let uiNumberOfCorpses: UINT32;
   //	CHAR8		zTempName[ 128 ];
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let uiNumBytesRead: UINT32;
   let uiNumBytesWritten: UINT32;
 
@@ -2370,8 +2370,8 @@ export function JA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite:
   return fRet;
 }
 
-export function GetMapTempFileName(uiType: UINT32, pMapName: STR, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
-  let zTempName: CHAR[] /* [512] */;
+export function GetMapTempFileName(uiType: UINT32, pMapName: Pointer<string> /* STR */, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
+  let zTempName: string /* CHAR[512] */;
 
   // Convert the current sector location into a file name
   GetMapFileName(sMapX, sMapY, bMapZ, zTempName, false, false);

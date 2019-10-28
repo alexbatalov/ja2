@@ -678,7 +678,7 @@ export function RenderAttributeBoxes(): void {
   let sY: INT16 = 0;
   let sTempY: INT16 = 0;
   let sTempX: INT16 = 0;
-  let sString: CHAR16[] /* [3] */;
+  let sString: string /* CHAR16[3] */;
 
   // set last char to null
   sString[2] = 0;
@@ -1298,7 +1298,7 @@ export function SetAttributes(): void {
 
 export function DrawBonusPointsRemaining(): void {
   // draws the amount of points remaining player has
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
 
   // just reviewing, don't blit stats
   if (fReviewStats == true) {

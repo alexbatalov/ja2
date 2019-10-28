@@ -294,7 +294,7 @@ export interface PaletteSubRangeType {
   ubEnd: UINT8;
 }
 
-export type PaletteRepID = CHAR8[] /* [30] */;
+export type PaletteRepID = string /* CHAR8[30] */;
 
 export interface PaletteReplacementType {
   ubType: UINT8;

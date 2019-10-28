@@ -187,7 +187,7 @@ export function InitGameOptions(): void {
 
 export function GetCDLocation(): boolean {
   let uiStrngLength: UINT32 = 0;
-  let zCdLocation: CHAR8[] /* [SGPFILENAME_LEN] */;
+  let zCdLocation: string /* CHAR8[SGPFILENAME_LEN] */;
   let uiDriveType: UINT32 = 0;
   let uiRetVal: UINT32 = 0;
 
@@ -203,7 +203,7 @@ export function GetCDLocation(): boolean {
 
     // Get the location of the cdrom drive
     if (GetCDromDriveLetter(zCdLocation)) {
-      let pTemp: Pointer<CHAR8>;
+      let pTemp: string /* Pointer<CHAR8> */;
 
       // if it succeeded
       pTemp = strrchr(zCdLocation, ':');
@@ -237,11 +237,11 @@ export function GetCDLocation(): boolean {
   return true;
 }
 
-function GetCDromDriveLetter(pString: STR8): boolean {
+function GetCDromDriveLetter(pString: Pointer<string> /* STR8 */): boolean {
   let uiSize: UINT32 = 0;
   let ubCnt: UINT8 = 0;
-  let zDriveLetters: CHAR8[] /* [512] */;
-  let zDriveLetter: CHAR8[] /* [16] */;
+  let zDriveLetters: string /* CHAR8[512] */;
+  let zDriveLetter: string /* CHAR8[16] */;
   let uiDriveType: UINT32;
 
   uiSize = GetLogicalDriveStrings(512, zDriveLetters);
@@ -333,15 +333,15 @@ function GetCDromDriveLetter(pString: STR8): boolean {
 */
 
 export function CheckIfGameCdromIsInCDromDrive(): boolean {
-  let zVolumeNameBuffer: CHAR8[] /* [512] */;
+  let zVolumeNameBuffer: string /* CHAR8[512] */;
   let uiVolumeSerialNumber: UINT32 = 0;
   let uiMaxComponentLength: UINT32 = 0;
   let uiFileSystemFlags: UINT32 = 0;
-  let zFileSystemNameBuffer: CHAR8[] /* [512] */;
-  let zCdLocation: CHAR8[] /* [SGPFILENAME_LEN] */;
-  let zCdFile: CHAR8[] /* [SGPFILENAME_LEN] */;
+  let zFileSystemNameBuffer: string /* CHAR8[512] */;
+  let zCdLocation: string /* CHAR8[SGPFILENAME_LEN] */;
+  let zCdFile: string /* CHAR8[SGPFILENAME_LEN] */;
 
-  let zCdromRootDrive: CHAR8[] /* [512] */;
+  let zCdromRootDrive: string /* CHAR8[512] */;
   let fFailed: boolean = false;
   let uiVolumeReturnValue: UINT32;
   let uiLastError: UINT32 = ERROR_SUCCESS;
@@ -360,7 +360,7 @@ export function CheckIfGameCdromIsInCDromDrive(): boolean {
 
   // If the cdrom drive is no longer in the drive
   if (uiLastError == ERROR_NOT_READY || (!FileExists(zCdFile))) {
-    let sString: CHAR8[] /* [512] */;
+    let sString: string /* CHAR8[512] */;
 
     // if a game has been started, add the msg about saving the game to a different entry
     if (gTacticalStatus.fHasAGameBeenStarted) {
@@ -387,7 +387,7 @@ export function CheckIfGameCdromIsInCDromDrive(): boolean {
   return true;
 }
 
-function GetCdromLocationFromIniFile(pRootOfCdromDrive: STR): boolean {
+function GetCdromLocationFromIniFile(pRootOfCdromDrive: Pointer<string> /* STR */): boolean {
   let uiRetVal: UINT32 = 0;
 
   // Do a crude check to make sure the Ja2.ini file is the right on
@@ -417,9 +417,9 @@ export function CDromEjectionErrorMessageBoxCallBack(bExitValue: UINT8): void {
   }
 }
 
-function IsDriveLetterACDromDrive(pDriveLetter: STR): boolean {
+function IsDriveLetterACDromDrive(pDriveLetter: string /* STR */): boolean {
   let uiDriveType: UINT32;
-  let zRootName: CHAR8[] /* [512] */;
+  let zRootName: string /* CHAR8[512] */;
 
   sprintf(zRootName, "%s:\\", pDriveLetter);
 

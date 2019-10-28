@@ -464,9 +464,9 @@ function CheckForValidArrivalSector(): void {
   let uiRange: INT32;
   let uiLowestRange: INT32 = 999999;
   let fFound: boolean = false;
-  let sString: CHAR16[] /* [1024] */;
-  let zShortTownIDString1: CHAR16[] /* [50] */;
-  let zShortTownIDString2: CHAR16[] /* [50] */;
+  let sString: string /* CHAR16[1024] */;
+  let zShortTownIDString1: string /* CHAR16[50] */;
+  let zShortTownIDString2: string /* CHAR16[50] */;
 
   sSectorGridNo = gsMercArriveSectorX + (MAP_WORLD_X * gsMercArriveSectorY);
 

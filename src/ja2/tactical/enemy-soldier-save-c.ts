@@ -4,7 +4,7 @@ export let gfRestoringEnemySoldiersFromTempFile: boolean = false;
 let gfRestoringCiviliansFromTempFile: boolean = false;
 
 function RemoveEnemySoldierTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   if (GetSectorFlagStatus(sSectorX, sSectorY, bSectorZ, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS)) {
     // Delete any temp file that is here and toast the flag that say's one exists.
     ReSetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS);
@@ -22,7 +22,7 @@ function RemoveEnemySoldierTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: 
 
 function RemoveCivilianTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   // CHAR8		zTempName[ 128 ];
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   if (GetSectorFlagStatus(sSectorX, sSectorY, bSectorZ, SF_CIV_PRESERVED_TEMP_FILE_EXISTS)) {
     // Delete any temp file that is here and toast the flag that say's one exists.
     ReSetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_CIV_PRESERVED_TEMP_FILE_EXISTS);
@@ -48,7 +48,7 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
   let sSectorY: INT16;
   let usCheckSum: UINT16;
   let usFileCheckSum: UINT16;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let bSectorZ: INT8;
   let ubSectorID: UINT8;
   let ubNumElites: UINT8 = 0;
@@ -296,7 +296,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
   let hfile: HWFILE;
   let pSchedule: Pointer<SCHEDULENODE>;
   let usCheckSum: UINT16;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let ubSectorID: UINT8;
 
   // STEP ONE:  Prep the soldiers for saving...
@@ -564,7 +564,7 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
   let sSectorY: INT16;
   let usCheckSum: UINT16;
   let usFileCheckSum: UINT16;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let bSectorZ: INT8;
   let ubSectorID: UINT8;
   let ubNumElites: UINT8 = 0;
@@ -869,7 +869,7 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
   let usCheckSum: UINT16;
   let usFileCheckSum: UINT16;
   //	CHAR8		zTempName[ 128 ];
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let bSectorZ: INT8;
   let ubSectorID: UINT8;
   let ubNumElites: UINT8 = 0;
@@ -1088,7 +1088,7 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
   let uiTimeStamp: UINT32;
   let hfile: HWFILE;
   //	CHAR8		zTempName[ 128 ];
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let ubSectorID: UINT8;
   let usCheckSum: UINT16;
 
@@ -1344,7 +1344,7 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
   let sSectorX: INT16;
   let sSectorY: INT16;
   let usCheckSum: UINT16;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let bSectorZ: INT8;
   let ubSectorID: UINT8;
   //	UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;

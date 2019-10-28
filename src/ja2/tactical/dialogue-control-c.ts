@@ -89,7 +89,7 @@ let gusSubtitleBoxHeight: UINT16;
 let giTextBoxOverlay: INT32 = -1;
 export let gfFacePanelActive: boolean = false;
 let guiScreenIDUsedWhenUICreated: UINT32;
-let gzQuoteStr: INT16[] /* [QUOTE_MESSAGE_SIZE] */;
+let gzQuoteStr: string /* INT16[QUOTE_MESSAGE_SIZE] */;
 let gTextBoxMouseRegion: MOUSE_REGION;
 let gFacePopupMouseRegion: MOUSE_REGION;
 let gfUseAlternateDialogueFile: boolean = false;
@@ -313,8 +313,8 @@ export function HandleDialogue(): void {
   /* static */ let fOldEngagedInConvFlagOn: boolean = false;
   let fDoneTalking: boolean = false;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let zText: CHAR16[] /* [512] */;
-  let zMoney: CHAR16[] /* [128] */;
+  let zText: string /* CHAR16[512] */;
+  let zMoney: string /* CHAR16[128] */;
 
   // we don't want to just delay action of some events, we want to pause the whole queue, regardless of the event
   if (gfDialogueQueuePaused) {
@@ -778,7 +778,7 @@ export function HandleDialogue(): void {
       pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, false);
 
       if (pSoldier) {
-        let wTempString: CHAR16[] /* [128] */;
+        let wTempString: string /* CHAR16[128] */;
 
         // tell player about stat increase
         BuildStatChangeString(wTempString, pSoldier.value.name, QItem.value.uiSpecialEventData, QItem.value.uiSpecialEventData2, QItem.value.uiSpecialEventData3);
@@ -1195,7 +1195,7 @@ export function SpecialCharacterDialogueEventWithExtraParam(uiSpecialEventFlag: 
 }
 
 function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: boolean): boolean {
-  let zSoundString: CHAR8[] /* [164] */;
+  let zSoundString: string /* CHAR8[164] */;
   let uiSoundID: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1303,7 +1303,7 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
   return true;
 }
 
-function CreateTalkingUI(bUIHandlerID: INT8, iFaceIndex: INT32, ubCharacterNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>, zQuoteStr: Pointer<INT16>): void {
+function CreateTalkingUI(bUIHandlerID: INT8, iFaceIndex: INT32, ubCharacterNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>, zQuoteStr: string /* Pointer<INT16> */): void {
   // Show text, if on
   if (gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] || !gFacesData[iFaceIndex].fValidSpeech) {
     switch (bUIHandlerID) {
@@ -1354,8 +1354,8 @@ function CreateTalkingUI(bUIHandlerID: INT8, iFaceIndex: INT32, ubCharacterNum: 
   }
 }
 
-function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWavFile: boolean): Pointer<INT8> {
-  /* static */ let zFileName: UINT8[] /* [164] */;
+function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWavFile: boolean): string /* Pointer<INT8> */ {
+  /* static */ let zFileName: string /* UINT8[164] */;
   let ubFileNumID: UINT8;
 
   // Are we an NPC OR an RPC that has not been recruited?
@@ -1415,7 +1415,7 @@ function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWav
 
 // Used to see if the dialog text file exists
 export function DialogueDataFileExistsForProfile(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWavFile: boolean, ppStr: Pointer<Pointer<UINT8>>): boolean {
-  let pFilename: Pointer<UINT8>;
+  let pFilename: string /* Pointer<UINT8> */;
 
   pFilename = GetDialogueDataFilename(ubCharacterNum, usQuoteNum, fWavFile);
 
@@ -1426,8 +1426,8 @@ export function DialogueDataFileExistsForProfile(ubCharacterNum: UINT8, usQuoteN
   return FileExists(pFilename);
 }
 
-function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT32, zDialogueText: Pointer<UINT16>, puiSoundID: Pointer<UINT32>, zSoundString: Pointer<CHAR8>): boolean {
-  let pFilename: Pointer<UINT8>;
+function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT32, zDialogueText: Pointer<string> /* Pointer<UINT16> */, puiSoundID: Pointer<UINT32>, zSoundString: Pointer<string> /* Pointer<CHAR8> */): boolean {
+  let pFilename: string /* Pointer<UINT8> */;
 
   // first things first  - grab the text (if player has SUBTITLE PREFERENCE ON)
   // if ( gGameSettings.fOptions[ TOPTION_SUBTITLES ] )
@@ -1480,8 +1480,8 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
 }
 
 // Handlers for tactical UI stuff
-function HandleTacticalNPCTextUI(ubCharacterNum: UINT8, zQuoteStr: Pointer<INT16>): void {
-  let zText: INT16[] /* [QUOTE_MESSAGE_SIZE] */;
+function HandleTacticalNPCTextUI(ubCharacterNum: UINT8, zQuoteStr: string /* Pointer<INT16> */): void {
+  let zText: string /* INT16[QUOTE_MESSAGE_SIZE] */;
 
   // Setup dialogue text box
   if (guiCurrentScreen != Enum26.MAP_SCREEN) {
@@ -1496,8 +1496,8 @@ function HandleTacticalNPCTextUI(ubCharacterNum: UINT8, zQuoteStr: Pointer<INT16
 }
 
 // Handlers for tactical UI stuff
-function DisplayTextForExternalNPC(ubCharacterNum: UINT8, zQuoteStr: STR16): void {
-  let zText: INT16[] /* [QUOTE_MESSAGE_SIZE] */;
+function DisplayTextForExternalNPC(ubCharacterNum: UINT8, zQuoteStr: string /* STR16 */): void {
+  let zText: string /* INT16[QUOTE_MESSAGE_SIZE] */;
   let sLeft: INT16;
 
   // Setup dialogue text box
@@ -1523,8 +1523,8 @@ function DisplayTextForExternalNPC(ubCharacterNum: UINT8, zQuoteStr: STR16): voi
   return;
 }
 
-function HandleTacticalTextUI(iFaceIndex: INT32, pSoldier: Pointer<SOLDIERTYPE>, zQuoteStr: Pointer<INT16>): void {
-  let zText: INT16[] /* [QUOTE_MESSAGE_SIZE] */;
+function HandleTacticalTextUI(iFaceIndex: INT32, pSoldier: Pointer<SOLDIERTYPE>, zQuoteStr: string /* Pointer<INT16> */): void {
+  let zText: string /* INT16[QUOTE_MESSAGE_SIZE] */;
   let sLeft: INT16 = 0;
 
   // BUild text
@@ -1542,7 +1542,7 @@ function HandleTacticalTextUI(iFaceIndex: INT32, pSoldier: Pointer<SOLDIERTYPE>,
   MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", zText);
 }
 
-function ExecuteTacticalTextBoxForLastQuote(sLeftPosition: INT16, pString: STR16): void {
+function ExecuteTacticalTextBoxForLastQuote(sLeftPosition: INT16, pString: string /* STR16 */): void {
   let uiDelay: UINT32 = FindDelayForString(pString);
 
   fDialogueBoxDueToLastMessage = true;
@@ -1555,7 +1555,7 @@ function ExecuteTacticalTextBoxForLastQuote(sLeftPosition: INT16, pString: STR16
   ExecuteTacticalTextBox(sLeftPosition, pString);
 }
 
-function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: STR16): void {
+function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: string /* STR16 */): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   // check if mouse region created, if so, do not recreate
@@ -1821,7 +1821,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   let sFontX: INT16;
   let sFontY: INT16;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let zTownIDString: INT16[] /* [50] */;
+  let zTownIDString: string /* INT16[50] */;
 
   if (gpCurrentTalkingFace == null) {
     return;
@@ -2109,7 +2109,7 @@ export function ShutDownLastQuoteTacticalTextBox(): void {
   }
 }
 
-export function FindDelayForString(sString: STR16): UINT32 {
+export function FindDelayForString(sString: string /* STR16 */): UINT32 {
   return wcslen(sString) * TEXT_DELAY_MODIFIER;
 }
 

@@ -48,8 +48,8 @@ export function EnterAimFacialIndex(): boolean {
   let usPosY: UINT16;
   let x: UINT16;
   let y: UINT16;
-  let sFaceLoc: STR = "FACES\\";
-  let sTemp: char[] /* [100] */;
+  let sFaceLoc: string /* STR */ = "FACES\\";
+  let sTemp: string /* char[100] */;
 
   // load the Portait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -117,7 +117,7 @@ export function RenderAimFacialIndex(): boolean {
   let usPosY: UINT16;
   let x: UINT16;
   let y: UINT16;
-  let sString: wchar_t[] /* [150] */;
+  let sString: string /* wchar_t[150] */;
   let i: UINT8;
 
   DrawAimDefaults();

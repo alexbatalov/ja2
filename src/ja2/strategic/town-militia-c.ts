@@ -375,7 +375,7 @@ function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY:
 }
 
 export function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: Pointer<SOLDIERTYPE>): void {
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   let pCenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
   let iNumberOfSectors: INT32 = 0;
 
@@ -415,7 +415,7 @@ export function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: Pointer
   return;
 }
 
-function DoContinueMilitiaTrainingMessageBox(sSectorX: INT16, sSectorY: INT16, str: Pointer<UINT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
+function DoContinueMilitiaTrainingMessageBox(sSectorX: INT16, sSectorY: INT16, str: string /* Pointer<UINT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   if (sSectorX <= 10 && sSectorY >= 6 && sSectorY <= 11) {
     DoLowerScreenIndependantMessageBox(str, usFlags, ReturnCallback);
   } else {
@@ -424,10 +424,10 @@ function DoContinueMilitiaTrainingMessageBox(sSectorX: INT16, sSectorY: INT16, s
 }
 
 export function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Pointer<SOLDIERTYPE>): void {
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   let sSectorX: INT16 = 0;
   let sSectorY: INT16 = 0;
-  let sStringB: CHAR16[] /* [128] */;
+  let sStringB: string /* CHAR16[128] */;
   let bTownId: INT8;
 
   sSectorX = pSoldier.value.sSectorX;
@@ -486,7 +486,7 @@ export function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Poi
 // IMPORTANT: This same callback is used both for initial training and for continue training prompt
 // use 'gfYesNoPromptIsForContinue' flag to tell them apart
 function PayMilitiaTrainingYesNoBoxCallback(bExitValue: UINT8): void {
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   Assert(giTotalCostOfTraining > 0);
 
@@ -931,8 +931,8 @@ export function MilitiaTrainingAllowedInTown(bTownId: INT8): boolean {
   }
 }
 
-export function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
-  let pStr: UINT16[] /* [256] */;
+export function BuildMilitiaPromotionsString(str: Pointer<string> /* Pointer<UINT16> */): void {
+  let pStr: string /* UINT16[256] */;
   let fAddSpace: boolean = false;
   swprintf(str, "");
 

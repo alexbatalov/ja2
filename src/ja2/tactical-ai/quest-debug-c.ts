@@ -20,7 +20,7 @@ let gubNPCDebugOutPutLevel: UINT8 = Enum298.QD_OUTPUT_LEVEL_ALL;
 
 // set the current output mode for either the NPC or the quest output
 export function ToggleQuestDebugModes(ubType: UINT8): void {
-  let sType: wchar_t[] /* [16] */;
+  let sType: string /* wchar_t[16] */;
   let ubLevel: UINT8;
 
   if (ubType == Enum299.QD_NPC_MSG) {
@@ -58,14 +58,14 @@ export function ToggleQuestDebugModes(ubType: UINT8): void {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "%s Level %d", sType, ubLevel);
 }
 
-function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: STR, ...args: any[]): void {
+function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: string /* STR */, ...args: any[]): void {
   /* static */ let fFirstTimeIn: boolean = true;
   /* static */ let uiLineNumber: UINT32 = 1;
   let hFile: HWFILE;
   let uiByteWritten: UINT32;
   let argptr: va_list;
-  let TempString: char[] /* [1024] */;
-  let DestString: char[] /* [1024] */;
+  let TempString: string /* char[1024] */;
+  let DestString: string /* char[1024] */;
 
   TempString[0] = '\0';
   DestString[0] = '\0';

@@ -2,7 +2,7 @@ namespace ja2 {
 
 // VERY TRUNCATED FILE COPIED FROM JA2.5 FOR ITS FEATURES FOR JA2 GOLD
 
-export let zNewTacticalMessages: STR16[] /* [] */ = [
+export let zNewTacticalMessages: string[] /* STR16[] */ = [
   "Entfernung zum Ziel: %d Felder",
   "Verbinden Sie den Transmitter mit Ihrem Laptop-Computer.",
   "Sie haben nicht genug Geld, um %s anzuheuern",
@@ -29,7 +29,7 @@ export let zNewTacticalMessages: STR16[] /* [] */ = [
 ];
 
 //@@@:  New string as of March 3, 2000.
-export let gzIronManModeWarningText: STR16[] /* [] */ = [
+export let gzIronManModeWarningText: string[] /* STR16[] */ = [
   "You have chosen IRON MAN mode. This setting makes the game considerably more challenging as you will not be able to save your game when in a sector occupied by enemies. This setting will affect the entire course of the game.  Are you sure want to play in IRON MAN mode?",
 ];
 

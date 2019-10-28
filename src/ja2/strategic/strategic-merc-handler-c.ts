@@ -214,7 +214,7 @@ export function MercDailyUpdate(): void {
               gMercProfiles[pSoldier.value.ubProfile].iBalance = 0;
             }
           } else {
-            let zMoney: CHAR16[] /* [128] */;
+            let zMoney: string /* CHAR16[128] */;
 
             // create a string for the salary owed to the npc
             swprintf(zMoney, "%d", sSalary);

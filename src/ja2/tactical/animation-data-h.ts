@@ -507,7 +507,7 @@ export const enum Enum196 {
 // Struct for animation 'surface' information
 export interface AnimationSurfaceType {
   ubName: UINT16;
-  Filename: CHAR8[] /* [50] */;
+  Filename: string /* CHAR8[50] */;
   bStructDataType: CHAR8;
   ubFlags: UINT8;
   uiNumDirections: UINT32;
@@ -519,7 +519,7 @@ export interface AnimationSurfaceType {
 }
 
 export interface AnimationStructureType {
-  Filename: CHAR8[] /* [50] */;
+  Filename: string /* CHAR8[50] */;
   pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 }
 

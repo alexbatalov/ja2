@@ -81,7 +81,7 @@ export interface ANITILE_PARAMS {
   sGridNo: INT16; // World GridNo
 
   pGivenLevelNode: Pointer<LEVELNODE>; // Levelnode for existing tile ( optional )
-  zCachedFile: CHAR8[] /* [100] */; // Filename for cached tile name ( optional )
+  zCachedFile: string /* CHAR8[100] */; // Filename for cached tile name ( optional )
 
   ubOwner: UINT8; // UBID for the owner
   ubKeyFrame1: UINT8; // Key frame 1

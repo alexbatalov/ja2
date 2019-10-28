@@ -76,7 +76,7 @@ const MAX_ANIM_STR_SIZE = 30;
 // ###################################################################
 
 export interface ANIMCONTROLTYPE {
-  zAnimStr: CHAR8[] /* [MAX_ANIM_STR_SIZE] */;
+  zAnimStr: string /* CHAR8[MAX_ANIM_STR_SIZE] */;
   sAP: INT16;
   sSpeed: INT16;
   dMovementChange: FLOAT;
@@ -98,7 +98,7 @@ export interface RANDOM_ANI_DEF {
   ubEndRoll: UINT8;
   ubFlags: UINT8;
   ubAnimHeight: UINT8;
-  zSoundFile: INT8[] /* [30] */;
+  zSoundFile: string /* INT8[30] */;
 }
 
 // Enumeration of animation states

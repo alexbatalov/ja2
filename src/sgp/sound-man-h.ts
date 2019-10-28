@@ -45,7 +45,7 @@ export interface SOUND3DPOS {
 //		data for the random samples
 
 export interface SAMPLETAG {
-  pName: CHAR8[] /* [128] */; // Path to sample data
+  pName: string /* CHAR8[128] */; // Path to sample data
   uiSize: UINT32; // Size of sample data
   uiSoundSize: UINT32; // Playable sound size
   uiFlags: UINT32; // Status flags

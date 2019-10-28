@@ -419,7 +419,7 @@ function BltJA2CursorData(): void {
 }
 
 function DrawMouseText(): void {
-  let pStr: INT16[] /* [512] */;
+  let pStr: string /* INT16[512] */;
   let sX: INT16;
   let sY: INT16;
   /* static */ let fShow: boolean = false;

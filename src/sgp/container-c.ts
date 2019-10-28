@@ -257,7 +257,7 @@ function CreateOrdList(uiNum_items: UINT32, uiSiz_each: UINT32, compare: (a: Poi
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-export function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
+export function Push(hStack: HSTACK, pdata: string /* Pointer<void> */): HSTACK {
   let pTemp_cont: Pointer<StackHeader>;
   let uiOffset: UINT32;
   let uiNew_size: UINT32;

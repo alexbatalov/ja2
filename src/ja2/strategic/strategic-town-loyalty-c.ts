@@ -893,7 +893,7 @@ export function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSec
   let iCounter: UINT32 = 0;
   let pItemList: Pointer<WORLDITEM>;
   let uiNewTotal: UINT32 = 0;
-  let wSectorName: CHAR16[] /* [128] */;
+  let wSectorName: string /* CHAR16[128] */;
 
   // stealing should fail anyway 'cause there shouldn't be a temp file for unvisited sectors, but let's check anyway
   Assert(GetSectorFlagStatus(sSectorX, sSectorY, sSectorZ, SF_ALREADY_VISITED) == true);
@@ -1202,8 +1202,8 @@ function IsTownUnderCompleteControlByEnemy(bTownId: INT8): INT32 {
 export function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: INT16, ubHowMany: UINT8): void {
   let bTownId: INT8 = 0;
   let uiLoyaltyChange: UINT32 = 0;
-  let str: UINT16[] /* [256] */;
-  let pSectorString: UINT16[] /* [128] */;
+  let str: string /* UINT16[256] */;
+  let pSectorString: string /* UINT16[128] */;
 
   // get town id
   bTownId = GetTownIdForSector(sSectorX, sSectorY);

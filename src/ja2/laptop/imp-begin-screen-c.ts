@@ -27,8 +27,8 @@ const enum Enum87 {
 }
 
 // beginning character stats
-let pFullNameString: CHAR16[] /* [128] */;
-let pNickNameString: CHAR16[] /* [128] */;
+let pFullNameString: string /* CHAR16[128] */;
+let pNickNameString: string /* CHAR16[128] */;
 
 // positions in name strings
 let uiFullNameCharacterPosition: UINT32 = 0;

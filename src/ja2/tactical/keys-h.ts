@@ -32,7 +32,7 @@ typedef struct
 
 const MAXLOCKDESCLENGTH = 40;
 export interface LOCK {
-  ubEditorName: UINT8[] /* [MAXLOCKDESCLENGTH] */; // name to display in editor
+  ubEditorName: string /* UINT8[MAXLOCKDESCLENGTH] */; // name to display in editor
   usKeyItem: UINT16; // key for this door uses which graphic (item #)?
   ubLockType: UINT8; // regular, padlock, electronic, etc
   ubPickDifficulty: UINT8; // difficulty to pick such a lock

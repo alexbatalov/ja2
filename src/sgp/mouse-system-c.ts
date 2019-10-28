@@ -836,7 +836,7 @@ function MSYS_ChangeRegionPriority(region: Pointer<MOUSE_REGION>, priority: INT8
 //
 export function MSYS_SetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT32, userdata: INT32): void {
   if (index < 0 || index > 3) {
-    let str: UINT8[] /* [80] */;
+    let str: string /* UINT8[80] */;
       return;
     sprintf(str, "Attempting MSYS_SetRegionUserData() with out of range index %d.", index);
     AssertMsg(0, str);
@@ -851,7 +851,7 @@ export function MSYS_SetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT
 //
 export function MSYS_GetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT32): INT32 {
   if (index < 0 || index > 3) {
-    let str: UINT8[] /* [80] */;
+    let str: string /* UINT8[80] */;
       return 0;
     sprintf(str, "Attempting MSYS_GetRegionUserData() with out of range index %d", index);
     AssertMsg(0, str);
@@ -945,7 +945,7 @@ export function RefreshMouseRegions(): void {
   MSYS_UpdateMouseRegion();
 }
 
-export function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: Pointer<UINT16>): void {
+export function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: string /* Pointer<UINT16> */): void {
   Assert(region);
 
   if (region.value.FastHelpText)
@@ -981,10 +981,10 @@ export function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: Poi
   // region->FastHelpTimer = gsFastHelpDelay;
 }
 
-function GetNumberOfLinesInHeight(pStringA: STR16): INT16 {
-  let pToken: STR16;
+function GetNumberOfLinesInHeight(pStringA: string /* STR16 */): INT16 {
+  let pToken: string /* STR16 */;
   let sCounter: INT16 = 0;
-  let pString: CHAR16[] /* [512] */;
+  let pString: string /* CHAR16[512] */;
 
   wcscpy(pString, pStringA);
 
@@ -1055,9 +1055,9 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
   }
 }
 
-function GetWidthOfString(pStringA: STR16): INT16 {
-  let pString: CHAR16[] /* [512] */;
-  let pToken: STR16;
+function GetWidthOfString(pStringA: string /* STR16 */): INT16 {
+  let pString: string /* CHAR16[512] */;
+  let pToken: string /* STR16 */;
   let sWidth: INT16 = 0;
   wcscpy(pString, pStringA);
 
@@ -1075,12 +1075,12 @@ function GetWidthOfString(pStringA: STR16): INT16 {
   return sWidth;
 }
 
-function DisplayHelpTokenizedString(pStringA: STR16, sX: INT16, sY: INT16): void {
-  let pToken: STR16;
+function DisplayHelpTokenizedString(pStringA: string /* STR16 */, sX: INT16, sY: INT16): void {
+  let pToken: string /* STR16 */;
   let iCounter: INT32 = 0;
   let i: INT32;
   let uiCursorXPos: UINT32;
-  let pString: CHAR16[] /* [512] */;
+  let pString: string /* CHAR16[512] */;
   let iLength: INT32;
 
   wcscpy(pString, pStringA);

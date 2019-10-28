@@ -718,7 +718,7 @@ let gAnimStructureDatabase: AnimationStructureType[][] /* [TOTALBODYTYPES][NUM_S
 export function InitAnimationSystem(): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
-  let sFilename: CHAR8[] /* [50] */;
+  let sFilename: string /* CHAR8[50] */;
   let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 
   CHECKF(LoadAnimationStateInstructions());
@@ -821,7 +821,7 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
     let VObjectDesc: VOBJECT_DESC;
     let hVObject: HVOBJECT;
     let hImage: HIMAGE;
-    let sFilename: CHAR8[] /* [48] */;
+    let sFilename: string /* CHAR8[48] */;
     let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 
     AnimDebugMsg(String("Surface Database: Loading %d", usSurfaceIndex));

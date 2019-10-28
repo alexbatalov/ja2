@@ -78,7 +78,7 @@ export let giSubTitleWinFont: INT32;
 let gfFontsInit: boolean = false;
 
 export function InitializeFonts(): boolean {
-  let zWinFontName: INT16[] /* [128] */;
+  let zWinFontName: string /* INT16[128] */;
   let Color: COLORVAL;
 
   // Initialize fonts
@@ -301,7 +301,7 @@ export function WFGetFontHeight(FontNum: INT32): UINT16 {
   }
 }
 
-export function WFStringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
+export function WFStringPixLength(string: string /* Pointer<UINT16> */, UseFont: INT32): INT16 {
   if (USE_WINFONTS()) {
     // return how many Y pixels we used
     return WinFontStringPixLength(string, GET_WINFONT());

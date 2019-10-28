@@ -641,7 +641,7 @@ export function KillPreBattleInterface(): void {
 }
 
 function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
-  let str: UINT16[] /* [100] */;
+  let str: string /* UINT16[100] */;
   let x: INT32;
   let width: INT32;
   SetFont(FONT10ARIALBOLD());
@@ -700,8 +700,8 @@ export function RenderPreBattleInterface(): void {
   let y: INT32;
   let line: INT32;
   let width: INT32;
-  let str: UINT16[] /* [100] */;
-  let pSectorName: UINT16[] /* [128] */;
+  let str: string /* UINT16[100] */;
+  let pSectorName: string /* UINT16[128] */;
   let ubHPPercent: UINT8;
   let ubBPPercent: UINT8;
   let fMouseInRetreatButtonArea: boolean;
@@ -1085,7 +1085,7 @@ const enum Enum163 {
   COND_DEAD,
 }
 
-function GetSoldierConditionInfo(pSoldier: Pointer<SOLDIERTYPE>, szCondition: Pointer<UINT16>, pubHPPercent: Pointer<UINT8>, pubBPPercent: Pointer<UINT8>): void {
+function GetSoldierConditionInfo(pSoldier: Pointer<SOLDIERTYPE>, szCondition: Pointer<string> /* Pointer<UINT16> */, pubHPPercent: Pointer<UINT8>, pubBPPercent: Pointer<UINT8>): void {
   Assert(pSoldier);
   pubHPPercent.value = (pSoldier.value.bLife * 100 / pSoldier.value.bLifeMax);
   pubBPPercent.value = pSoldier.value.bBreath;

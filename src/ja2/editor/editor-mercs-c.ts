@@ -7,7 +7,7 @@ namespace ja2 {
 //	SANMONA_ARMS_GROUP,
 //	ANGELS_GROUP,
 //	NUM_CIV_GROUPS
-export let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = [
+export let gszCivGroupNames: string[] /* UINT16[NUM_CIV_GROUPS][20] */ = [
   "NONE",
   "REBEL",
   "KINGPIN",
@@ -44,7 +44,7 @@ export let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = [
 //	SCHEDULE_ACTION_ENTERSECTOR,
 //	SCHEDULE_ACTION_STAYINSECTOR,
 //  SCHEDULE_ACTION_SLEEP,
-export let gszScheduleActions: UINT16[][] /* [NUM_SCHEDULE_ACTIONS][20] */ = [
+export let gszScheduleActions: string[] /* UINT16[NUM_SCHEDULE_ACTIONS][20] */ = [
   "No action",
   "Lock door",
   "Unlock door",
@@ -183,7 +183,7 @@ const DEFAULT_DIFF = 2;
 
 export let sCurBaseDiff: INT16 = DEFAULT_DIFF;
 let fAskForBaseDifficulty: boolean = true;
-let zDiffNames: Pointer<UINT16>[] /* [NUM_DIFF_LVLS] */ = [
+let zDiffNames: string[] /* Pointer<UINT16>[NUM_DIFF_LVLS] */ = [
   "Wimp",
   "Easy",
   "Average",
@@ -205,7 +205,7 @@ let sBaseExpLvl: INT16[] /* [NUM_DIFF_LVLS] */ = [
   9,
 ];
 
-let EditMercStat: Pointer<UINT16>[] /* [12] */ = [
+let EditMercStat: string[] /* Pointer<UINT16>[12] */ = [
   "Max Health",
   "Cur Health",
   "Strength",
@@ -221,7 +221,7 @@ let EditMercStat: Pointer<UINT16>[] /* [12] */ = [
 ];
 
 const NUM_MERC_ORDERS = 8;
-let EditMercOrders: Pointer<UINT16>[] /* [8] */ = [
+let EditMercOrders: string[] /* Pointer<UINT16>[8] */ = [
   "Stationary",
   "On Guard",
   "Close Patrol",
@@ -232,7 +232,7 @@ let EditMercOrders: Pointer<UINT16>[] /* [8] */ = [
   "Random Point Patrol",
 ];
 
-let EditMercAttitudes: Pointer<UINT16>[] /* [6] */ = [
+let EditMercAttitudes: string[] /* Pointer<UINT16>[6] */ = [
   "Defensive",
   "Brave Loner",
   "Brave Buddy",
@@ -741,7 +741,7 @@ function DisplayEditMercWindow(): void {
   let usFillColorTextBk: UINT16;
   let x: INT32;
   let iXOff: INT32;
-  let TempString: INT16[] /* [30] */;
+  let TempString: string /* INT16[30] */;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let iEditStat: INT8[] /* [12] */;
 
@@ -1591,7 +1591,7 @@ export function DeleteSelectedMerc(): void {
 }
 
 function SetupTextInputForMercProfile(): void {
-  let str: UINT16[] /* [4] */;
+  let str: string /* UINT16[4] */;
   let sNum: INT16;
 
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
@@ -1605,7 +1605,7 @@ function SetupTextInputForMercProfile(): void {
 }
 
 function SetupTextInputForMercAttributes(): void {
-  let str: UINT16[] /* [4] */;
+  let str: string /* UINT16[4] */;
 
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
 
@@ -1643,7 +1643,7 @@ function SetupTextInputForMercAttributes(): void {
 // In the merc editing, all detailed placement values for generated attributes are set to -1.
 // When making a generated attribute static, we then set the value to its applicable value.
 // This function is similar to the itoa function except that -1 is converted to a null string.
-function CalcStringForValue(str: Pointer<UINT16>, iValue: INT32, uiMax: UINT32): void {
+function CalcStringForValue(str: Pointer<string> /* Pointer<UINT16> */, iValue: INT32, uiMax: UINT32): void {
   if (iValue < 0) // a blank string is determined by a negative value.
     str[0] = '\0';
   else if (iValue > uiMax) // higher than max attribute value, so convert it to the max.
@@ -2206,7 +2206,7 @@ export function SetMercEditingMode(ubNewMode: UINT8): void {
 }
 
 function DisplayBodyTypeInfo(): void {
-  let str: UINT16[] /* [20] */;
+  let str: string /* UINT16[20] */;
   switch (gpSelected.value.pBasicPlacement.value.bBodyType) {
     case RANDOM:
       swprintf(str, "Random");
@@ -2399,7 +2399,7 @@ export function UpdateMercsInfo(): void {
       SetFontShadow(FONT_NEARBLACK);
       {
         // scope trick
-        let tempStr: UINT16[] /* [500] */;
+        let tempStr: string /* UINT16[500] */;
         swprintf(tempStr, "%s%s%s%s%s%d.", "By specifying a profile index, all of the information will be extracted from the profile ", "and override any values that you have edited.  It will also disable the editing features ", "though, you will still be able to view stats, etc.  Pressing ENTER will automatically ", "extract the number you have typed.  A blank field will clear the profile.  The current ", "number of profiles range from 0 to ", NUM_PROFILES);
         DisplayWrappedString(180, 370, 400, 2, FONT10ARIAL(), 146, tempStr, FONT_BLACK, false, LEFT_JUSTIFIED);
         SetFont(FONT12POINT1());
@@ -2454,8 +2454,8 @@ export function UpdateMercsInfo(): void {
       mprintf(172, 418, "3)");
       mprintf(172, 439, "4)");
       if (gubScheduleInstructions) {
-        let str: UINT16[] /* [255] */;
-        let keyword: UINT16[] /* [10] */ = "";
+        let str: string /* UINT16[255] */;
+        let keyword: string /* UINT16[10] */ = "";
         ColorFillVideoSurfaceArea(FRAME_BUFFER, 431, 388, 590, 450, Get16BPPColor(FROMRGB(32, 45, 72)));
         switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
           case Enum171.SCHEDULE_ACTION_LOCKDOOR:
@@ -2532,7 +2532,7 @@ function RenderSelectedMercsInventory(): void {
   let yp: INT32;
   let uiSrcPitchBYTES: UINT32;
   let uiDstPitchBYTES: UINT32;
-  let pItemName: UINT16[] /* [100] */;
+  let pItemName: string /* UINT16[100] */;
   let ubFontColor: UINT8;
   if (gsSelectedMercID == -1)
     return;
@@ -2948,9 +2948,9 @@ export function RenderMercStrings(): void {
   let sYPos: INT16;
   let sX: INT16;
   let sY: INT16;
-  let pStr: Pointer<UINT16>;
+  let pStr: string /* Pointer<UINT16> */;
   let curr: Pointer<SOLDIERINITNODE>;
-  let str: UINT16[] /* [50] */;
+  let str: string /* UINT16[50] */;
 
   curr = gSoldierInitHead;
   while (curr) {
@@ -3119,7 +3119,7 @@ export function CancelCurrentScheduleAction(): void {
 }
 
 export function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
-  let str: UINT16[] /* [6] */;
+  let str: string /* UINT16[6] */;
   MarkWorldDirty();
   swprintf(str, "%d", iMapIndex);
   if (gfUseScheduleData2) {
@@ -3301,7 +3301,7 @@ function RenderCurrentSchedule(): void {
   let sScreenY: INT16;
   let sX: INT16;
   let sY: INT16;
-  let str: UINT16[] /* [3] */;
+  let str: string /* UINT16[3] */;
   for (i = 0; i < 8; i++) {
     if (i % 2)
       iMapIndex = gCurrSchedule.usData2[i / 2];
@@ -3342,7 +3342,7 @@ function RenderCurrentSchedule(): void {
 function UpdateScheduleInfo(): void {
   let i: INT32;
   let pSchedule: Pointer<SCHEDULENODE>;
-  let str: UINT16[] /* [6] */;
+  let str: string /* UINT16[6] */;
   if (gpSelected.value.pSoldier.value.ubScheduleID) {
     pSchedule = GetSchedule(gpSelected.value.pSoldier.value.ubScheduleID);
     if (!pSchedule) {

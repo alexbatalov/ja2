@@ -2,7 +2,7 @@ namespace ja2 {
 
 const MAX_MEANWHILE_PROFILES = 10;
 
-let gzMeanwhileStr: INT8[][] /* [][30] */ = [
+let gzMeanwhileStr: string[] /* INT8[][30] */ = [
   "End of player's first battle",
   "Drassen Lib. ",
   "Cambria Lib.",
@@ -285,7 +285,7 @@ export function BeginMeanwhile(ubMeanwhileID: UINT8): boolean {
 }
 
 function BringupMeanwhileBox(): void {
-  let zStr: INT16[] /* [256] */;
+  let zStr: string /* INT16[256] */;
 
   swprintf(zStr, "%s.....", pMessageStrings[Enum333.MSG_MEANWHILE]);
 

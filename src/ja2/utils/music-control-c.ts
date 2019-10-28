@@ -20,7 +20,7 @@ let bBattleModeSong: INT8;
 
 let gbFadeSpeed: INT8 = 1;
 
-export let szMusicList: Pointer<CHAR8>[] /* [NUM_MUSIC] */ = [
+export let szMusicList: string[] /* Pointer<CHAR8>[NUM_MUSIC] */ = [
   "MUSIC\\marimbad 2.wav",
   "MUSIC\\menumix1.wav",
   "MUSIC\\nothing A.wav",

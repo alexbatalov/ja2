@@ -18,16 +18,16 @@ const MAP_NPCSCHEDULES_SAVED = 0x00000100;
 
 // TEMP
 let gfForceLoadPlayers: boolean = false;
-let gzForceLoadFile: CHAR8[] /* [100] */;
+let gzForceLoadFile: string /* CHAR8[100] */;
 let gfForceLoad: boolean = false;
 
 let gubCurrentLevel: UINT8;
 export let giCurrentTilesetID: INT32 = 0;
-let gzLastLoadedFile: CHAR8[] /* [260] */;
+let gzLastLoadedFile: string /* CHAR8[260] */;
 
 export let gCurrentBackground: UINT32 = Enum313.FIRSTTEXTURE;
 
-export let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
+export let TileSurfaceFilenames: string[] /* CHAR8[NUMBEROFTILETYPES][32] */;
 let gbNewTileSurfaceLoaded: INT8[] /* [NUMBEROFTILETYPES] */;
 
 export function SetAllNewTileSurfacesLoaded(fNew: boolean): void {
@@ -191,14 +191,14 @@ function ReloadTilesetSlot(iSlot: INT32): boolean {
 }
 
 function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTilesetID: UINT8): boolean {
-  let cTemp: SGPFILENAME;
+  let cTemp: string /* SGPFILENAME */;
   let uiLoop: UINT32;
 
   let uiPercentage: UINT32;
   // UINT32					uiLength;
   // UINT16					uiFillColor;
-  let ExeDir: STRING512;
-  let INIFile: STRING512;
+  let ExeDir: string /* STRING512 */;
+  let INIFile: string /* STRING512 */;
 
   // Get Executable Directory
   GetExecutableDirectory(ExeDir);
@@ -290,11 +290,11 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
   return true;
 }
 
-function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: UINT8, fGetFromRoot: boolean): boolean {
+function AddTileSurface(cFilename: string /* Pointer<char> */, ubType: UINT32, ubTilesetID: UINT8, fGetFromRoot: boolean): boolean {
   // Add tile surface
   let TileSurf: PTILE_IMAGERY;
-  let cFileBPP: CHAR8[] /* [128] */;
-  let cAdjustedFile: CHAR8[] /* [128] */;
+  let cFileBPP: string /* CHAR8[128] */;
+  let cAdjustedFile: string /* CHAR8[128] */;
 
   // Delete the surface first!
   if (gTileSurfaceArray[ubType] != null) {
@@ -340,10 +340,10 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
 
 export function BuildTileShadeTables(): void {
   let hfile: HWFILE;
-  let DataDir: STRING512;
-  let ShadeTableDir: STRING512;
+  let DataDir: string /* STRING512 */;
+  let ShadeTableDir: string /* STRING512 */;
   let uiLoop: UINT32;
-  let cRootFile: CHAR8[] /* [128] */;
+  let cRootFile: string /* CHAR8[128] */;
   let fForceRebuildForSlot: boolean = false;
 
   /* static */ let ubLastRed: UINT8 = 255;
@@ -1272,7 +1272,7 @@ export function CompileWorldMovementCosts(): void {
 }
 
 // SAVING CODE
-export function SaveWorld(puiFilename: Pointer<UINT8>): boolean {
+export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   let cnt: INT32;
   let uiSoldierSize: UINT32;
   let uiType: UINT32;
@@ -1298,7 +1298,7 @@ export function SaveWorld(puiFilename: Pointer<UINT8>): boolean {
   let ubType: UINT8;
   let ubTypeSubIndex: UINT8;
   let ubTest: UINT8 = 1;
-  let aFilename: CHAR8[] /* [255] */;
+  let aFilename: string /* CHAR8[255] */;
   let ubCombine: UINT8;
   let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
 
@@ -1770,7 +1770,7 @@ export function InitLoadedWorld(): void {
   SetBlueFlagFlags();
 }
 
-export function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): boolean {
+export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8): boolean {
   let dMajorMapVersion: FLOAT;
   let pSummary: Pointer<SUMMARYFILE>;
   let hfile: HWFILE;
@@ -1783,17 +1783,17 @@ export function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): boolean 
   let cnt: INT32;
   let i: INT32;
   let iTilesetID: INT32;
-  let str: UINT16[] /* [40] */;
+  let str: string /* UINT16[40] */;
   let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
   let ubCombine: UINT8;
-  let szDirFilename: UINT8[] /* [50] */;
-  let szFilename: UINT8[] /* [40] */;
+  let szDirFilename: string /* UINT8[50] */;
+  let szFilename: string /* UINT8[40] */;
   let ubMinorMapVersion: UINT8;
 
   // Make sure the file exists... if not, then return false
   sprintf(szFilename, pSector);
   if (ubLevel % 4) {
-    let str: UINT8[] /* [4] */;
+    let str: string /* UINT8[4] */;
     sprintf(str, "_b%d", ubLevel % 4);
     strcat(szFilename, str);
   }
@@ -2147,7 +2147,7 @@ export function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): boolean 
   return true;
 }
 
-export function LoadWorld(puiFilename: Pointer<UINT8>): boolean {
+export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   let hfile: HWFILE;
   let dMajorMapVersion: FLOAT;
   let uiFlags: UINT32;
@@ -2163,7 +2163,7 @@ export function LoadWorld(puiFilename: Pointer<UINT8>): boolean {
   let usTypeSubIndex: UINT16;
   let ubType: UINT8;
   let ubSubIndex: UINT8;
-  let aFilename: CHAR8[] /* [50] */;
+  let aFilename: string /* CHAR8[50] */;
   let ubCombine: UINT8;
   let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
   let pBuffer: Pointer<INT8>;
@@ -2926,7 +2926,7 @@ export function LoadMapTileset(iTilesetID: INT32): boolean {
 function SaveMapTileset(iTilesetID: INT32): boolean {
   //	FILE *hTSet;
   let hTSet: HWFILE;
-  let zTilesetName: char[] /* [65] */;
+  let zTilesetName: string /* char[65] */;
   let cnt: int;
   let uiBytesWritten: UINT32;
 
@@ -2951,7 +2951,7 @@ function SaveMapTileset(iTilesetID: INT32): boolean {
   return true;
 }
 
-export function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, zLoadName: Pointer<CHAR8>): void {
+export function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, zLoadName: string /* Pointer<CHAR8> */): void {
   gfForceLoadPlayers = fForceLoad;
   gfForceLoad = fForceFile;
 
@@ -3261,7 +3261,7 @@ function IsHiddenTileMarkerThere(sGridNo: INT16): INT8 {
 }
 
 export function ReloadTileset(ubID: UINT8): void {
-  let aFilename: CHAR8[] /* [255] */;
+  let aFilename: string /* CHAR8[255] */;
   let iCurrTilesetID: INT32 = giCurrentTilesetID;
 
   // Set gloabal
@@ -3346,7 +3346,7 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
   let ubNumColors: UINT8;
   let usNumLights: UINT16;
   let cnt: INT32;
-  let str: INT8[] /* [30] */;
+  let str: string /* INT8[30] */;
   let ubStrLen: UINT8;
   let TmpLight: LIGHT_SPRITE;
   let iLSprite: INT32;

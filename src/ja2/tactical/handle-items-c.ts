@@ -2386,7 +2386,7 @@ export function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, 
   let sY: INT16;
   let pItem: Pointer<INVTYPE>;
   let pTempItemPool: Pointer<ITEM_POOL>;
-  let pStr: INT16[] /* [100] */;
+  let pStr: string /* INT16[100] */;
   let cnt: INT16 = 0;
   let sHeight: INT16 = 0;
   let sLargeLineWidth: INT16 = 0;

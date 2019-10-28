@@ -26,7 +26,7 @@ namespace ja2 {
 //
 //**************************************************************************
 
-let gzJA2ScreenNames: STR16[] /* [] */ = [
+let gzJA2ScreenNames: string[] /* STR16[] */ = [
   "EDIT_SCREEN",
   "SAVING_SCREEN",
   "LOADING_SCREEN",

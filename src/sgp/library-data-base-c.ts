@@ -6,7 +6,7 @@ namespace ja2 {
 let gsCurrentLibrary: INT16 = -1;
 
 // The location of the cdrom drive
-export let gzCdDirectory: CHAR8[] /* [SGPFILENAME_LEN] */;
+export let gzCdDirectory: string /* CHAR8[SGPFILENAME_LEN] */;
 
 //************************************************************************
 //
@@ -130,7 +130,7 @@ export function ShutDownFileDatabase(): boolean {
   return true;
 }
 
-function CheckForLibraryExistence(pLibraryName: STR): boolean {
+function CheckForLibraryExistence(pLibraryName: string /* STR */): boolean {
   let fRetVal: boolean = false;
   let hFile: HANDLE;
 
@@ -149,7 +149,7 @@ function CheckForLibraryExistence(pLibraryName: STR): boolean {
   return fRetVal;
 }
 
-function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderStruct>, fCanBeOnCDrom: boolean): boolean {
+function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: Pointer<LibraryHeaderStruct>, fCanBeOnCDrom: boolean): boolean {
   let hFile: HANDLE;
   let usNumEntries: UINT16 = 0;
   let uiNumBytesRead: UINT32;
@@ -157,7 +157,7 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   let DirEntry: DIRENTRY;
   let LibFileHeader: LIBHEADER;
   let uiCount: UINT32 = 0;
-  let zTempPath: CHAR8[] /* [SGPFILENAME_LEN] */;
+  let zTempPath: string /* CHAR8[SGPFILENAME_LEN] */;
 
   // open the library for reading ( if it exists )
   hFile = CreateFile(pLibraryName, GENERIC_READ, 0, null, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, null);
@@ -171,7 +171,7 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
       hFile = CreateFile(zTempPath, GENERIC_READ, 0, null, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, null);
       if (hFile == INVALID_HANDLE_VALUE) {
         let uiLastError: UINT32 = GetLastError();
-        let zString: char[] /* [1024] */;
+        let zString: string /* char[1024] */;
         FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
 
         return false;
@@ -330,7 +330,7 @@ export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData:
 //
 //************************************************************************
 
-export function CheckIfFileExistInLibrary(pFileName: STR): boolean {
+export function CheckIfFileExistInLibrary(pFileName: string /* STR */): boolean {
   let sLibraryID: INT16;
   let pFileHeader: Pointer<FileHeaderStruct>;
 
@@ -354,7 +354,7 @@ export function CheckIfFileExistInLibrary(pFileName: STR): boolean {
 //	( eg. File is  Laptop\Test.sti, if the Laptop\ library is open, it returns true
 //
 //************************************************************************
-function GetLibraryIDFromFileName(pFileName: STR): INT16 {
+function GetLibraryIDFromFileName(pFileName: string /* STR */): INT16 {
   let sLoop1: INT16;
   let sBestMatch: INT16 = -1;
 
@@ -396,9 +396,9 @@ function GetLibraryIDFromFileName(pFileName: STR): INT16 {
 //
 //************************************************************************
 
-function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: STR, pFileHeader: Pointer<Pointer<FileHeaderStruct>>): boolean {
+function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: string /* STR */, pFileHeader: Pointer<Pointer<FileHeaderStruct>>): boolean {
   let ppFileHeader: Pointer<Pointer<FileHeaderStruct>>;
-  let sFileNameWithPath: CHAR8[] /* [FILENAME_SIZE] */;
+  let sFileNameWithPath: string /* CHAR8[FILENAME_SIZE] */;
 
   // combine the library path to the file name (need it for the search of the library )
   strcpy(sFileNameWithPath, pstrFileName);
@@ -423,9 +423,9 @@ function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: STR, pFileHea
 //
 //************************************************************************
 
-function CompareFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer<Pointer<FileHeaderStruct>>): INT {
-  let sSearchKey: CHAR8[] /* [FILENAME_SIZE] */;
-  let sFileNameWithPath: CHAR8[] /* [FILENAME_SIZE] */;
+function CompareFileNames(arg1: string[] /* Pointer<CHAR8>[] */, arg2: Pointer<Pointer<FileHeaderStruct>>): INT {
+  let sSearchKey: string /* CHAR8[FILENAME_SIZE] */;
+  let sFileNameWithPath: string /* CHAR8[FILENAME_SIZE] */;
   let TempFileHeader: Pointer<FileHeaderStruct>;
 
   TempFileHeader = arg2;
@@ -438,12 +438,12 @@ function CompareFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer<Pointer
   return _stricmp(sSearchKey, sFileNameWithPath);
 }
 
-function AddSlashToPath(pName: STR): void {
+function AddSlashToPath(pName: Pointer<string> /* STR */): void {
   let uiLoop: UINT32;
   let uiCounter: UINT32;
   let fDone: boolean = false;
   let fFound: boolean = false;
-  let sNewName: CHAR8[] /* [FILENAME_SIZE] */;
+  let sNewName: string /* CHAR8[FILENAME_SIZE] */;
 
   // find out if there is a '\' in the file name
 
@@ -470,7 +470,7 @@ function AddSlashToPath(pName: STR): void {
 //
 //************************************************************************
 
-export function OpenFileFromLibrary(pName: STR): HWFILE {
+export function OpenFileFromLibrary(pName: string /* STR */): HWFILE {
   let pFileHeader: Pointer<FileHeaderStruct>;
   let hLibFile: HWFILE;
   let sLibraryID: INT16;
@@ -778,15 +778,15 @@ export function IsLibraryOpened(sLibraryID: INT16): boolean {
     return false;
 }
 
-function CheckIfFileIsAlreadyOpen(pFileName: STR, sLibraryID: INT16): boolean {
+function CheckIfFileIsAlreadyOpen(pFileName: string /* STR */, sLibraryID: INT16): boolean {
   let usLoop1: UINT16 = 0;
 
-  let sName: CHAR8[] /* [60] */;
-  let sPath: CHAR8[] /* [90] */;
-  let sDrive: CHAR8[] /* [60] */;
-  let sExt: CHAR8[] /* [6] */;
+  let sName: string /* CHAR8[60] */;
+  let sPath: string /* CHAR8[90] */;
+  let sDrive: string /* CHAR8[60] */;
+  let sExt: string /* CHAR8[6] */;
 
-  let sTempName: CHAR8[] /* [70] */;
+  let sTempName: string /* CHAR8[70] */;
 
   _splitpath(pFileName, sDrive, sPath, sName, sExt);
 
@@ -875,9 +875,9 @@ export function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWr
 //
 //************************************************************************
 
-function CompareDirEntryFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer<Pointer<DIRENTRY>>): INT32 {
-  let sSearchKey: CHAR8[] /* [FILENAME_SIZE] */;
-  let sFileNameWithPath: CHAR8[] /* [FILENAME_SIZE] */;
+function CompareDirEntryFileNames(arg1: string[] /* Pointer<CHAR8>[] */, arg2: Pointer<Pointer<DIRENTRY>>): INT32 {
+  let sSearchKey: string /* CHAR8[FILENAME_SIZE] */;
+  let sFileNameWithPath: string /* CHAR8[FILENAME_SIZE] */;
   let TempDirEntry: Pointer<DIRENTRY>;
 
   TempDirEntry = arg2;

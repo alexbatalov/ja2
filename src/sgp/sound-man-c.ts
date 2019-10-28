@@ -14,20 +14,20 @@ namespace ja2 {
 // WAV file chunk definitions
 interface WAVCHUNK {
   // General chunk header
-  cTag: CHAR8[] /* [4] */;
+  cTag: string /* CHAR8[4] */;
   uiChunkSize: UINT32;
 }
 
 interface WAVRIFF {
   // WAV header
-  cRiff: CHAR8[] /* [4] */; // "RIFF"
+  cRiff: string /* CHAR8[4] */; // "RIFF"
   uiChunkSize: UINT32; // Chunk length
-  cFileType: CHAR8[] /* [4] */; // "WAVE"
+  cFileType: string /* CHAR8[4] */; // "WAVE"
 }
 
 interface WAVFMT {
   // FMT chunk
-  cFormat: CHAR8[] /* [4] */; // "FMT "
+  cFormat: string /* CHAR8[4] */; // "FMT "
   uiChunkSize: UINT32; // Chunk length
   uiStereo: UINT16; // 1 if stereo, 0 if mono (Not reliable, use channels instead)
   uiChannels: UINT16; // number of channels used 1=mono, 2=stereo, etc.
@@ -40,7 +40,7 @@ interface WAVFMT {
 
 interface WAVDATA {
   // Data chunk
-  cName: CHAR8[] /* [4] */; // "DATA"
+  cName: string /* CHAR8[4] */; // "DATA"
   uiChunkSize: UINT32; // Chunk length
 }
 
@@ -50,7 +50,7 @@ const WAV_CHUNK_DATA = 2;
 
 const NUM_WAV_CHUNKS = 3;
 
-let cWAVChunks: Pointer<CHAR8>[] /* [3] */ = [
+let cWAVChunks: string[] /* Pointer<CHAR8>[3] */ = [
   "RIFF",
   "FMT ",
   "DATA",
@@ -94,13 +94,13 @@ let pSampleList: SAMPLETAG[] /* [SOUND_MAX_CACHED] */;
 let pSoundList: SOUNDTAG[] /* [SOUND_MAX_CHANNELS] */;
 
 // 3D sound globals
-let gpProviderName: Pointer<CHAR8> = null;
+let gpProviderName: string /* Pointer<CHAR8> */ = null;
 let gh3DProvider: HPROVIDER = 0;
 let gh3DListener: H3DPOBJECT = 0;
 let gfUsingEAX: boolean = true;
 let guiRoomTypeIndex: UINT32 = 0;
 
-let pEAXRoomTypes: Pointer<CHAR8>[] /* [EAXROOMTYPE_NUM_TYPES] */ = [
+let pEAXRoomTypes: string[] /* Pointer<CHAR8>[EAXROOMTYPE_NUM_TYPES] */ = [
   // None
   "PLAIN",
 
@@ -207,7 +207,7 @@ export function ShutdownSoundManager(): void {
 //
 //*******************************************************************************
 
-export function SoundPlay(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
+export function SoundPlay(pFilename: string /* STR */, pParms: Pointer<SOUNDPARMS>): UINT32 {
   let uiSample: UINT32;
   let uiChannel: UINT32;
 
@@ -246,10 +246,10 @@ export function SoundPlay(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
 //						If an error occured, SOUND_ERROR will be returned
 //
 //*******************************************************************************
-export function SoundPlayStreamedFile(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
+export function SoundPlayStreamedFile(pFilename: string /* STR */, pParms: Pointer<SOUNDPARMS>): UINT32 {
   let uiChannel: UINT32;
   let hRealFileHandle: HANDLE;
-  let pFileHandlefileName: CHAR8[] /* [128] */;
+  let pFileHandlefileName: string /* CHAR8[128] */;
   let hFile: HWFILE;
   let uiRetVal: UINT32 = false;
 
@@ -311,7 +311,7 @@ export function SoundPlayStreamedFile(pFilename: STR, pParms: Pointer<SOUNDPARMS
 //						SOUND_ERROR is returned.
 //
 //*******************************************************************************
-export function SoundPlayRandom(pFilename: STR, pParms: Pointer<RANDOMPARMS>): UINT32 {
+export function SoundPlayRandom(pFilename: string /* STR */, pParms: Pointer<RANDOMPARMS>): UINT32 {
   let uiSample: UINT32;
   let uiTicks: UINT32;
 
@@ -384,7 +384,7 @@ export function SoundPlayRandom(pFilename: STR, pParms: Pointer<RANDOMPARMS>): U
 //						SOUND_ERROR is returned.
 //
 //*******************************************************************************
-function SoundStreamCallback(pFilename: STR, pParms: Pointer<SOUNDPARMS>, pCallback: (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: Pointer<void>) => void, pData: Pointer<void>): UINT32 {
+function SoundStreamCallback(pFilename: string /* STR */, pParms: Pointer<SOUNDPARMS>, pCallback: (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: Pointer<void>) => void, pData: Pointer<void>): UINT32 {
   let uiChannel: UINT32;
   let uiSoundID: UINT32;
 
@@ -1292,7 +1292,7 @@ function SoundEmptyCache(): boolean {
 //	Returns: TRUE, always
 //
 //*******************************************************************************
-export function SoundLoadSample(pFilename: STR): UINT32 {
+export function SoundLoadSample(pFilename: string /* STR */): UINT32 {
   let uiSample: UINT32 = NO_SAMPLE;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE)
@@ -1311,7 +1311,7 @@ export function SoundLoadSample(pFilename: STR): UINT32 {
 //						in the cache.
 //
 //*******************************************************************************
-export function SoundLockSample(pFilename: STR): UINT32 {
+export function SoundLockSample(pFilename: string /* STR */): UINT32 {
   let uiSample: UINT32;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE) {
@@ -1331,7 +1331,7 @@ export function SoundLockSample(pFilename: STR): UINT32 {
 //						in the cache.
 //
 //*******************************************************************************
-export function SoundUnlockSample(pFilename: STR): UINT32 {
+export function SoundUnlockSample(pFilename: string /* STR */): UINT32 {
   let uiSample: UINT32;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE) {
@@ -1351,7 +1351,7 @@ export function SoundUnlockSample(pFilename: STR): UINT32 {
 //						in the cache.
 //
 //*******************************************************************************
-function SoundFreeSample(pFilename: STR): UINT32 {
+function SoundFreeSample(pFilename: string /* STR */): UINT32 {
   let uiSample: UINT32;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE) {
@@ -1394,7 +1394,7 @@ function SoundFreeGroup(uiPriority: UINT32): boolean {
 //						in the cache.
 //
 //*******************************************************************************
-function SoundGetCached(pFilename: STR): UINT32 {
+function SoundGetCached(pFilename: string /* STR */): UINT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++) {
@@ -1416,7 +1416,7 @@ function SoundGetCached(pFilename: STR): UINT32 {
 //						in the cache.
 //
 //*******************************************************************************
-function SoundLoadDisk(pFilename: STR): UINT32 {
+function SoundLoadDisk(pFilename: string /* STR */): UINT32 {
   let hFile: HWFILE;
   let uiSize: UINT32;
   let uiSample: UINT32;
@@ -1634,7 +1634,7 @@ function SoundGetIndexByID(uiSoundID: UINT32): UINT32 {
 //*******************************************************************************
 function SoundInitHardware(): boolean {
   let uiCount: UINT32;
-  let cDriverName: CHAR8[] /* [128] */;
+  let cDriverName: string /* CHAR8[128] */;
 
   // Try to start up the Miles Sound System
   if (!AIL_startup())
@@ -1743,7 +1743,7 @@ function SoundShutdownHardware(): boolean {
 function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGDRIVER {
   /* static */ let sPCMWF: PCMWAVEFORMAT;
   let DIG: HDIGDRIVER;
-  let cBuf: CHAR8[] /* [128] */;
+  let cBuf: string /* CHAR8[128] */;
 
   memset(addressof(sPCMWF), 0, sizeof(PCMWAVEFORMAT));
   sPCMWF.wf.wFormatTag = WAVE_FORMAT_PCM;
@@ -1771,7 +1771,7 @@ function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGD
 //	Returns:	TRUE or FALSE if the string was filled.
 //
 //*******************************************************************************
-function SoundGetDriverName(DIG: HDIGDRIVER, cBuf: Pointer<CHAR8>): boolean {
+function SoundGetDriverName(DIG: HDIGDRIVER, cBuf: Pointer<string> /* Pointer<CHAR8> */): boolean {
   if (DIG) {
     cBuf[0] = '\0';
     AIL_digital_configuration(DIG, null, null, cBuf);
@@ -1815,7 +1815,7 @@ function SoundGetFreeChannel(): UINT32 {
 //*******************************************************************************
 function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<SOUNDPARMS>): UINT32 {
   let uiSoundID: UINT32;
-  let AILString: CHAR8[] /* [200] */;
+  let AILString: string /* CHAR8[200] */;
 
   if (!fSoundSystemInit)
     return SOUND_ERROR;
@@ -1914,10 +1914,10 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
 //	Returns:	Unique sound ID if successful, SOUND_ERROR if not.
 //
 //*******************************************************************************
-function SoundStartStream(pFilename: STR, uiChannel: UINT32, pParms: Pointer<SOUNDPARMS>): UINT32 {
+function SoundStartStream(pFilename: string /* STR */, uiChannel: UINT32, pParms: Pointer<SOUNDPARMS>): UINT32 {
   let uiSoundID: UINT32;
   let uiSpeed: UINT32;
-  let AILString: CHAR8[] /* [200] */;
+  let AILString: string /* CHAR8[200] */;
 
   if (!fSoundSystemInit)
     return SOUND_ERROR;
@@ -2007,7 +2007,7 @@ function SoundGetUniqueID(): UINT32 {
 //	Returns:	TRUE if it should be streamed, FALSE if loaded.
 //
 //*******************************************************************************
-function SoundPlayStreamed(pFilename: STR): boolean {
+function SoundPlayStreamed(pFilename: string /* STR */): boolean {
   let hDisk: HWFILE;
   let uiFilesize: UINT32;
 
@@ -2153,7 +2153,7 @@ function SoundSampleIsInUse(uiSample: UINT32): boolean {
 //
 // Created:  2/24/00 Derek Beland
 //*****************************************************************************************
-function SoundFileIsPlaying(pFilename: Pointer<CHAR8>): boolean {
+function SoundFileIsPlaying(pFilename: string /* Pointer<CHAR8> */): boolean {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
@@ -2273,7 +2273,7 @@ function SoundStopMusic(): boolean {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-function Sound3DSetProvider(pProviderName: Pointer<CHAR8>): void {
+function Sound3DSetProvider(pProviderName: string /* Pointer<CHAR8> */): void {
   Assert(pProviderName);
 
   if (pProviderName) {
@@ -2293,11 +2293,11 @@ function Sound3DSetProvider(pProviderName: Pointer<CHAR8>): void {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-function Sound3DInitProvider(pProviderName: Pointer<CHAR8>): boolean {
+function Sound3DInitProvider(pProviderName: string /* Pointer<CHAR8> */): boolean {
   let hEnum: HPROENUM = HPROENUM_FIRST;
   let hProvider: HPROVIDER = 0;
   let fDone: boolean = false;
-  let pName: Pointer<CHAR8>;
+  let pName: string /* Pointer<CHAR8> */;
   let iResult: INT32;
 
   // 3D sound providers depend on the 2D sound system being initialized first
@@ -2556,7 +2556,7 @@ function Sound3DSetEnvironment(iEnvironment: INT32): void {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-function Sound3DPlay(pFilename: STR, pParms: Pointer<SOUND3DPARMS>): UINT32 {
+function Sound3DPlay(pFilename: string /* STR */, pParms: Pointer<SOUND3DPARMS>): UINT32 {
   let uiSample: UINT32;
   let uiChannel: UINT32;
 
@@ -2585,7 +2585,7 @@ function Sound3DPlay(pFilename: STR, pParms: Pointer<SOUND3DPARMS>): UINT32 {
 //*******************************************************************************
 function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<SOUND3DPARMS>): UINT32 {
   let uiSoundID: UINT32;
-  let AILString: CHAR8[] /* [200] */;
+  let AILString: string /* CHAR8[200] */;
 
   if (!fSoundSystemInit || !gh3DProvider)
     return SOUND_ERROR;
@@ -2763,7 +2763,7 @@ function Sound3DStartRandom(uiSample: UINT32, pPos: Pointer<SOUND3DPOS>): UINT32
 //*****************************************************************************************
 function Sound3DSetRoomType(uiRoomType: UINT32): void {
   if (gh3DProvider && gfUsingEAX && (guiRoomTypeIndex != uiRoomType)) {
-    let cName: CHAR8[] /* [128] */;
+    let cName: string /* CHAR8[128] */;
 
     sprintf(cName, "EAX_ENVIRONMENT_%s", pEAXRoomTypes[uiRoomType]);
 

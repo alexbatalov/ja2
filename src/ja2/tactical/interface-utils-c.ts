@@ -36,7 +36,7 @@ let giCarPortraits: INT32[] /* [4] */ = [
 ];
 
 // the car portrait file names
-let pbCarPortraitFileNames: STR[] /* [] */ = [
+let pbCarPortraitFileNames: string[] /* STR[] */ = [
   "INTERFACE\\eldorado.sti",
   "INTERFACE\\Hummer.sti",
   "INTERFACE\\ice Cream Truck.sti",

@@ -71,7 +71,7 @@ export type SGP_FILETIME = FILETIME;
 
 export interface GETFILESTRUCT {
   iFindHandle: INT32;
-  zFileName: CHAR8[] /* [260] */; // changed from UINT16, Alex Meduna, Mar-20'98
+  zFileName: string /* CHAR8[260] */; // changed from UINT16, Alex Meduna, Mar-20'98
   uiFileSize: UINT32;
   uiFileAttribs: UINT32;
 }

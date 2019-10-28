@@ -104,7 +104,7 @@ export let giNumFrames: INT32 = 0;
 /* static */ let gpCursorStore: HVOBJECT;
 
 let gfFatalError: boolean = false;
-let gFatalErrorString: char[] /* [512] */;
+let gFatalErrorString: string /* char[512] */;
 
 // 8-bit palette stuff
 
@@ -170,7 +170,7 @@ export function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT
   let ReturnCode: HRESULT;
   let hWindow: HWND;
   let WindowClass: WNDCLASS;
-  let ClassName: UINT8[] /* [] */ = APPLICATION_NAME;
+  let ClassName: string /* UINT8[] */ = APPLICATION_NAME;
   let SurfaceDescription: DDSURFACEDESC;
   let ColorKey: DDCOLORKEY;
   let pTmpPointer: PTR;
@@ -1423,9 +1423,9 @@ export function RefreshScreen(DummyVariable: Pointer<void>): void {
     let pTmpBuffer: LPDIRECTDRAWSURFACE2;
     let SurfaceDescription: DDSURFACEDESC;
     let OutputFile: Pointer<FILE>;
-    let FileName: UINT8[] /* [64] */;
+    let FileName: string /* UINT8[64] */;
     let iIndex: INT32;
-    let ExecDir: STRING512;
+    let ExecDir: string /* STRING512 */;
     let p16BPPData: Pointer<UINT16>;
 
     GetExecutableDirectory(ExecDir);
@@ -2244,7 +2244,7 @@ function HideMouseCursor(): boolean {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-function LoadCursorFile(pFilename: PTR): boolean {
+function LoadCursorFile(pFilename: string /* PTR */): boolean {
   let VideoObjectDescription: VOBJECT_DESC;
 
   //
@@ -2528,11 +2528,11 @@ function RefreshMovieCache(): void {
   let iCountX: INT32;
   let iCountY: INT32;
   let disk: Pointer<FILE>;
-  let cFilename: CHAR8[] /* [_MAX_PATH] */;
+  let cFilename: string /* CHAR8[_MAX_PATH] */;
   /* static */ let uiPicNum: UINT32 = 0;
   let pDest: Pointer<UINT16>;
   let cnt: INT32;
-  let ExecDir: STRING512;
+  let ExecDir: string /* STRING512 */;
 
   PauseTime(true);
 

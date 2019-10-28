@@ -280,7 +280,7 @@ function DestroyPersonalityQuizButtons(): void {
 function AddIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
   // will add iNumberofbuttons to the answer button list
   let iCounter: INT32 = 0;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
 
   for (iCounter = 0; iCounter < iNumberOfButtons; iCounter++) {
     switch (iCounter) {
@@ -1270,7 +1270,7 @@ export function BltAnswerIndents(iNumberOfIndents: INT32): void {
 function PrintQuizQuestionNumber(): void {
   // this function will print the number of the current question and the numebr of questions
 
-  let sString: CHAR16[] /* [10] */;
+  let sString: string /* CHAR16[10] */;
 
   // setup font
   SetFont(FONT12ARIAL());

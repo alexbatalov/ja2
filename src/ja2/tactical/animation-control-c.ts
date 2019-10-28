@@ -3087,7 +3087,7 @@ export function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTe
   return fSubFound;
 }
 
-export function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBodyType: UINT8, zColFilename: Pointer<CHAR8>): INT8 {
+export function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBodyType: UINT8, zColFilename: Pointer<string> /* Pointer<CHAR8> */): INT8 {
   switch (ubBodyType) {
     case Enum194.REGMALE:
     case Enum194.BIGMALE:

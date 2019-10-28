@@ -462,7 +462,7 @@ function GetCurrentMercForDisplayCoverStance(): INT8 {
 
 export function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
   let usRange: UINT16 = 0;
-  let zOutputString: CHAR16[] /* [512] */;
+  let zOutputString: string /* CHAR16[512] */;
 
   if (sTargetGridNo == NOWHERE || sTargetGridNo == 0) {
     return;

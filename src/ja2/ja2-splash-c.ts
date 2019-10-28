@@ -6,8 +6,8 @@ export let guiSplashStartTime: UINT32 = 0;
 // Simply create videosurface, load image, and draw it to the screen.
 export function InitJA2SplashScreen(): void {
   let uiLogoID: UINT32 = 0;
-  let CurrentDir: STRING512;
-  let DataDir: STRING512;
+  let CurrentDir: string /* STRING512 */;
+  let DataDir: string /* STRING512 */;
   let hVSurface: HVSURFACE;
   let VSurfaceDesc: VSURFACE_DESC;
   let i: INT32 = 0;

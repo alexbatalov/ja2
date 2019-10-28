@@ -163,7 +163,7 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
 ];
 
 function LoadAmbientControlFile(ubAmbientID: UINT8): boolean {
-  let zFilename: SGPFILENAME;
+  let zFilename: string /* SGPFILENAME */;
   let hFile: HWFILE;
   let cnt: INT32;
 

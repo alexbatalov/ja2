@@ -135,7 +135,7 @@ let DirYIncrementer: INT16[] /* [8] */ = [
   -1 // NW
 ];
 
-let pVertStrings: STR8[] /* [] */ = [
+let pVertStrings: string[] /* STR8[] */ = [
   "X",
   "A",
   "B",
@@ -157,7 +157,7 @@ let pVertStrings: STR8[] /* [] */ = [
   "R",
 ];
 
-let pHortStrings: STR8[] /* [] */ = [
+let pHortStrings: string[] /* STR8[] */ = [
   "X",
   "1",
   "2",
@@ -380,16 +380,16 @@ export function InitializeSAMSites(): void {
 }
 
 // get short sector name without town name
-export function GetShortSectorString(sMapX: INT16, sMapY: INT16, sString: STR16): void {
+export function GetShortSectorString(sMapX: INT16, sMapY: INT16, sString: Pointer<string> /* STR16 */): void {
   // OK, build string id like J11
   swprintf(sString, "%S%S", pVertStrings[sMapY], pHortStrings[sMapX]);
 
   return;
 }
 
-export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bString: STR8, fUsePlaceholder: boolean, fAddAlternateMapLetter: boolean): void {
-  let bTestString: CHAR8[] /* [150] */;
-  let bExtensionString: CHAR8[] /* [15] */;
+export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bString: Pointer<string> /* STR8 */, fUsePlaceholder: boolean, fAddAlternateMapLetter: boolean): void {
+  let bTestString: string /* CHAR8[150] */;
+  let bExtensionString: string /* CHAR8[15] */;
 
   if (bSectorZ != 0) {
     sprintf(bExtensionString, "_b%d", bSectorZ);
@@ -703,8 +703,8 @@ export function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): 
   return true;
 }
 
-function MapExists(szFilename: Pointer<UINT8>): boolean {
-  let str: UINT8[] /* [50] */;
+function MapExists(szFilename: string /* Pointer<UINT8> */): boolean {
+  let str: string /* UINT8[50] */;
   let fp: HWFILE;
   sprintf(str, "MAPS\\%s", szFilename);
   fp = FileOpen(str, FILE_ACCESS_READ, false);
@@ -1005,7 +1005,7 @@ function HandleQuestCodeOnSectorExit(sOldSectorX: INT16, sOldSectorY: INT16, bOl
 function EnterSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
   let i: INT32;
   let pNode: Pointer<UNDERGROUND_SECTORINFO> = null;
-  let bFilename: CHAR8[] /* [50] */;
+  let bFilename: string /* CHAR8[50] */;
 
   // pause game
   PauseGame();
@@ -1299,8 +1299,8 @@ export function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT
       if (fError) {
         // strategic insertion failed because it expected to find an entry point.  This is likely
         // a missing part of the map or possible fault in strategic movement costs, traversal logic, etc.
-        let szEntry: UINT16[] /* [10] */;
-        let szSector: UINT16[] /* [10] */;
+        let szEntry: string /* UINT16[10] */;
+        let szSector: string /* UINT16[10] */;
         let sGridNo: INT16;
         GetLoadedSectorString(szSector);
         if (gMapInformation.sNorthGridNo != -1) {
@@ -1372,7 +1372,7 @@ function InitializeStrategicMapSectorTownNames(): void {
 }
 
 // Get sector ID string makes a string like 'A9 - OMERTA', or just J11 if no town....
-export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zString: Pointer<CHAR16>, fDetailed: boolean): void {
+export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zString: Pointer<string> /* Pointer<CHAR16> */, fDetailed: boolean): void {
   let pSector: Pointer<SECTORINFO> = null;
   let pUnderground: Pointer<UNDERGROUND_SECTORINFO>;
   let bTownNameID: INT8;
@@ -2772,9 +2772,9 @@ export function UpdateAirspaceControl(): void {
   // if it's not enemy air controlled
   if (StrategicMap[CALCULATE_STRATEGIC_INDEX(gsMercArriveSectorX, gsMercArriveSectorY)].fEnemyAirControlled == true) {
     // NOPE!
-    let sMsgString: CHAR16[] /* [256] */;
-    let sMsgSubString1: CHAR16[] /* [64] */;
-    let sMsgSubString2: CHAR16[] /* [64] */;
+    let sMsgString: string /* CHAR16[256] */;
+    let sMsgSubString1: string /* CHAR16[64] */;
+    let sMsgSubString2: string /* CHAR16[64] */;
 
     // get the name of the old sector
     GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, sMsgSubString1, false);
@@ -3496,7 +3496,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
   return NOWHERE;
 }
 
-function GetLoadedSectorString(pString: Pointer<UINT16>): void {
+function GetLoadedSectorString(pString: Pointer<string> /* Pointer<UINT16> */): void {
   if (!gfWorldLoaded) {
     swprintf(pString, "");
     return;

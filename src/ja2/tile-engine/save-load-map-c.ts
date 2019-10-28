@@ -15,7 +15,7 @@ export function ApplyMapChangesToMapTempFile(fAddToMap: boolean): void {
 }
 
 function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
 
@@ -52,7 +52,7 @@ function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX:
 }
 
 export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
   let uiFileSize: UINT32;
@@ -465,7 +465,7 @@ function AddBloodOrSmellFromMapTempFileToMap(pMap: Pointer<MODIFY_MAP>): void {
 }
 
 export function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
 
@@ -505,7 +505,7 @@ export function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSect
 }
 
 export function LoadRevealedStatusArrayFromRevealedTempFile(): boolean {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
 
@@ -741,7 +741,7 @@ export function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EX
 }
 
 export function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): boolean {
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
   let pTempArrayOfMaps: Pointer<MODIFY_MAP> = null;
@@ -903,7 +903,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: boo
 export function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSectorY: UINT16, bSectorZ: INT8, usGridNo: UINT16, fChangeToOpen: boolean): boolean {
   //	STRUCTURE * pStructure;
   //	MODIFY_MAP Map;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
   let uiNumBytesWritten: UINT32;

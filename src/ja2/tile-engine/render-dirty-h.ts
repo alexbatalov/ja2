@@ -56,7 +56,7 @@ export interface VIDEO_OVERLAY {
   sY: INT16;
   ubFontBack: UINT8;
   ubFontFore: UINT8;
-  zText: INT16[] /* [200] */;
+  zText: string /* INT16[200] */;
   uiDestBuff: UINT32;
   BltCallback: OVERLAY_CALLBACK;
 }
@@ -74,7 +74,7 @@ export interface VIDEO_OVERLAY_DESC {
   sY: INT16;
   ubFontBack: UINT8;
   ubFontFore: UINT8;
-  pzText: INT16[] /* [200] */;
+  pzText: string /* INT16[200] */;
   BltCallback: OVERLAY_CALLBACK;
 }
 

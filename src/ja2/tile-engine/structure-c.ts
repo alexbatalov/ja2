@@ -193,7 +193,7 @@ export function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): 
   return true;
 }
 
-function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF>, puiStructureDataSize: Pointer<UINT32>): boolean
+function LoadStructureData(szFileName: string /* STR */, pFileRef: Pointer<STRUCTURE_FILE_REF>, puiStructureDataSize: Pointer<UINT32>): boolean
 // UINT8 **ppubStructureData, UINT32 * puiDataSize, STRUCTURE_FILE_HEADER * pHeader )
 { // Loads a structure file's data as a honking chunk o' memory
   let hInput: HWFILE;
@@ -344,7 +344,7 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
   return true;
 }
 
-export function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
+export function LoadStructureFile(szFileName: string /* STR */): Pointer<STRUCTURE_FILE_REF> {
   // NB should be passed in expected number of structures so we can check equality
   let uiDataSize: UINT32 = 0;
   let fOk: boolean;
@@ -1368,7 +1368,7 @@ export function DebugStructurePage1(): void {
   let bDens3: INT8;
   let bStructures: INT8;
 
-  /* static */ let WallOrientationString: CHAR16[][] /* [5][15] */ = [
+  /* static */ let WallOrientationString: string[] /* CHAR16[5][15] */ = [
     "None",
     "Inside left",
     "Inside right",

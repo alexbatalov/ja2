@@ -13,7 +13,7 @@ UINT32 HIGHVOLUME								START_HIGHVOLUME;
 let guiSpeechVolume: UINT32 = MIDVOLUME;
 let guiSoundEffectsVolume: UINT32 = MIDVOLUME;
 
-let szSoundEffects: char[][] /* [NUM_SAMPLES][255] */ = [
+let szSoundEffects: string[] /* char[NUM_SAMPLES][255] */ = [
   "SOUNDS\\RICOCHET 01.WAV",
   "SOUNDS\\RICOCHET 02.WAV",
   "SOUNDS\\RICOCHET 01.WAV",
@@ -349,7 +349,7 @@ let szSoundEffects: char[][] /* [NUM_SAMPLES][255] */ = [
   "SOUNDS\\fence open.wav",
 ];
 
-let szAmbientEffects: char[][] /* [NUM_AMBIENTS][255] */ = [
+let szAmbientEffects: string[] /* char[NUM_AMBIENTS][255] */ = [
   "SOUNDS\\storm1.wav",
   "SOUNDS\\storm2.wav",
   "SOUNDS\\rain_loop_22k.wav",
@@ -439,7 +439,7 @@ export function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: 
   return SoundPlayStreamedFile(szSoundEffects[usNum], addressof(spParms));
 }
 
-export function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
+export function PlayJA2SampleFromFile(szFileName: string /* STR8 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
   let spParms: SOUNDPARMS;
@@ -455,7 +455,7 @@ export function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume
   return SoundPlay(szFileName, addressof(spParms));
 }
 
-export function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
+export function PlayJA2StreamingSampleFromFile(szFileName: string /* STR8 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
   let spParms: SOUNDPARMS;

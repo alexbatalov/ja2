@@ -533,7 +533,7 @@ function PrepareEnemyForUndergroundBattle(): boolean {
 export function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iNumEnemiesInSector: INT32;
   let pSector: Pointer<SECTORINFO>;
-  let str: UINT16[] /* [128] */;
+  let str: string /* UINT16[128] */;
   EvaluateDeathEffectsToSoldierInitList(pSoldier);
 
   switch (pSoldier.value.ubProfile) {

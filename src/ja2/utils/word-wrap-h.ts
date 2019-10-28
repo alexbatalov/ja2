@@ -23,7 +23,7 @@ export const IAN_WRAP_NO_SHADOW = 32;
 export const NEWLINE_CHAR = 177;
 
 export interface WRAPPED_STRING {
-  sString: STR16;
+  sString: string /* STR16 */;
   pNextWrappedString: Pointer<WRAPPED_STRING>;
 }
 

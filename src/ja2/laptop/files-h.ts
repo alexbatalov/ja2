@@ -8,13 +8,13 @@ export interface FilesUnit {
   uiIdNumber: UINT32; // unique id number
   uiDate: UINT32; // time in the world in global time (resolution, minutes)
   fRead: boolean;
-  pPicFileNameList: STR8[] /* [2] */;
+  pPicFileNameList: string[] /* STR8[2] */;
 
   Next: Pointer<FilesUnit>; // next unit in the list
 }
 
 export interface FileString {
-  pString: STR16;
+  pString: string /* STR16 */;
   Next: Pointer<FileString>;
 }
 

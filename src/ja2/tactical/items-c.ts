@@ -1282,7 +1282,7 @@ export function ValidItemAttachment(pObj: Pointer<OBJECTTYPE>, usAttachment: UIN
     } else {
       if (fAttemptingAttachment && ValidAttachmentClass(usAttachment, pObj.value.usItem)) {
         // well, maybe the player thought he could
-        let zTemp: UINT16[] /* [100] */;
+        let zTemp: string /* UINT16[100] */;
 
         swprintf(zTemp, Message[Enum334.STR_CANT_ATTACH], ItemNames[usAttachment], ItemNames[pObj.value.usItem]);
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, zTemp);
@@ -2499,7 +2499,7 @@ export function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Po
   // CanItemFitInPosition).
   if (bPos == Enum261.HEAD1POS) {
     if (!CompatibleFaceItem(pObj.value.usItem, pSoldier.value.inv[Enum261.HEAD2POS].usItem)) {
-      let zTemp: UINT16[] /* [150] */;
+      let zTemp: string /* UINT16[150] */;
 
       swprintf(zTemp, Message[Enum334.STR_CANT_USE_TWO_ITEMS], ItemNames[pObj.value.usItem], ItemNames[pSoldier.value.inv[Enum261.HEAD2POS].usItem]);
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, zTemp);
@@ -2507,7 +2507,7 @@ export function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Po
     }
   } else if (bPos == Enum261.HEAD2POS) {
     if (!CompatibleFaceItem(pObj.value.usItem, pSoldier.value.inv[Enum261.HEAD1POS].usItem)) {
-      let zTemp: UINT16[] /* [150] */;
+      let zTemp: string /* UINT16[150] */;
 
       swprintf(zTemp, Message[Enum334.STR_CANT_USE_TWO_ITEMS], ItemNames[pObj.value.usItem], ItemNames[pSoldier.value.inv[Enum261.HEAD1POS].usItem]);
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, zTemp);

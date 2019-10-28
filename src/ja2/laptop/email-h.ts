@@ -131,7 +131,7 @@ export const BOBBY_R_MEDUNA_SHIPMENT = (AIM_MEDICAL_DEPOSIT_NO_REFUND + AIM_MEDI
 export const BOBBY_R_MEDUNA_SHIPMENT_LENGTH = 4;
 
 export interface EmailMessage {
-  pString: STR16;
+  pString: string /* STR16 */;
   Next: Pointer<EmailMessage>;
   Prev: Pointer<EmailMessage>;
 }
@@ -139,7 +139,7 @@ export interface EmailMessage {
 type MessagePtr = Pointer<EmailMessage>;
 
 export interface Email {
-  pSubject: STR16;
+  pSubject: string /* STR16 */;
   usOffset: UINT16;
   usLength: UINT16;
   ubSender: UINT8;
@@ -191,7 +191,7 @@ export type PagePtr = Pointer<Page>;
 
 export interface Record {
   //  CHAR16 pRecord[ 320 ];
-  pRecord: CHAR16[] /* [640] */;
+  pRecord: string /* CHAR16[640] */;
   Next: Pointer<Record>;
 }
 

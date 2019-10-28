@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): boolean {
+export function LoadItemInfo(ubIndex: UINT16, pNameString: Pointer<string> /* STR16 */, pInfoString: Pointer<string> /* STR16 */): boolean {
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
   let i: UINT16;
@@ -182,7 +182,7 @@ export function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: S
   return true;
 }
 
-export function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): boolean {
+export function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: Pointer<string> /* STR16 */): boolean {
   let hFile: HWFILE;
   //  wchar_t		DestString[ SIZE_MERC_BIO_INFO ];
   let uiBytesRead: UINT32;
@@ -293,7 +293,7 @@ export function LoadAllExternalText(): void {
   LoadAllItemNames();
 }
 
-export function GetWeightUnitString(): Pointer<INT16> {
+export function GetWeightUnitString(): string /* Pointer<INT16> */ {
   if (gGameSettings.fOptions[Enum8.TOPTION_USE_METRIC_SYSTEM]) // metric
   {
     return pMessageStrings[Enum333.MSG_KILOGRAM_ABBREVIATION];

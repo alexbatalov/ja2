@@ -32,7 +32,7 @@ function RecountLightEffects(): void {
 }
 
 function UpdateLightingSprite(pLight: Pointer<LIGHTEFFECT>): void {
-  let LightName: CHAR8[] /* [20] */;
+  let LightName: string /* CHAR8[20] */;
   // Build light....
 
   sprintf(LightName, "Light%d", pLight.value.bRadius);
@@ -259,7 +259,7 @@ export function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   let uiNumLightEffects: UINT32 = 0;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
   let uiCnt: UINT32;
 
   // get the name of the map
@@ -327,7 +327,7 @@ export function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
   let uiCnt: UINT32 = 0;
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
-  let zMapName: CHAR8[] /* [128] */;
+  let zMapName: string /* CHAR8[128] */;
 
   GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 

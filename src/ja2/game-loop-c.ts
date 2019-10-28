@@ -131,10 +131,10 @@ export function GameLoop(): void {
       } else {
         // Make sure the user has enough hard drive space
         if (!DoesUserHaveEnoughHardDriveSpace()) {
-          let zText: CHAR16[] /* [512] */;
-          let zSpaceOnDrive: CHAR16[] /* [512] */;
+          let zText: string /* CHAR16[512] */;
+          let zSpaceOnDrive: string /* CHAR16[512] */;
           let uiSpaceOnDrive: UINT32;
-          let zSizeNeeded: CHAR16[] /* [512] */;
+          let zSizeNeeded: string /* CHAR16[512] */;
 
           swprintf(zSizeNeeded, "%d", REQUIRED_FREE_SPACE / BYTESINMEGABYTE);
           InsertCommasForDollarFigure(zSizeNeeded);

@@ -47,7 +47,7 @@ export interface MOUSE_REGION {
 
   // Fast help vars.
   FastHelpTimer: INT16; // Countdown timer for FastHelp text
-  FastHelpText: Pointer<UINT16>; // Text string for the FastHelp (describes buttons if left there a while)
+  FastHelpText: string /* Pointer<UINT16> */; // Text string for the FastHelp (describes buttons if left there a while)
   FastHelpRect: INT32;
   HelpDoneCallback: MOUSE_HELPTEXT_DONE_CALLBACK;
 

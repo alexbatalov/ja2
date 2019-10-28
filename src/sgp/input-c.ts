@@ -848,7 +848,7 @@ export function GetMousePos(Point: Pointer<SGPPoint>): void {
 // at the same time. Use the SetStringFocus() function to manager the focus for multiple
 // string inputs
 
-function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilter: Pointer<UINT16>): Pointer<StringInput> {
+function InitStringInput(pInputString: string /* Pointer<UINT16> */, usLength: UINT16, pFilter: string /* Pointer<UINT16> */): Pointer<StringInput> {
   let pStringDescriptor: Pointer<StringInput>;
 
   if ((pStringDescriptor = MemAlloc(sizeof(StringInput))) == null) {
@@ -933,7 +933,7 @@ function LinkNextString(pCurrentString: Pointer<StringInput>, pNextString: Point
   }
 }
 
-function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): boolean {
+function CharacterIsValid(usCharacter: UINT16, pFilter: string /* Pointer<UINT16> */): boolean {
   let uiIndex: UINT32;
   let uiEndIndex: UINT32;
 

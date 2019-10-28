@@ -9,7 +9,7 @@ export const POPUP_BOX_FLAG_CENTER_TEXT = 2;
 export const POPUP_BOX_FLAG_RESIZE = 4;
 const POPUP_BOX_FLAG_CAN_HIGHLIGHT_SHADED_LINES = 8;
 export interface POPUPSTRING {
-  pString: STR16;
+  pString: string /* STR16 */;
   ubForegroundColor: UINT8;
   ubBackgroundColor: UINT8;
   ubHighLight: UINT8;

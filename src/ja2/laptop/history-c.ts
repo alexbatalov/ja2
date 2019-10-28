@@ -654,7 +654,7 @@ function DrawHistoryRecordsText(): void {
   // draws the text of the records
   let pCurHistory: HistoryUnitPtr = pHistoryListHead;
   let pTempHistory: HistoryUnitPtr = pHistoryListHead;
-  let sString: wchar_t[] /* [512] */;
+  let sString: string /* wchar_t[512] */;
   let iCounter: INT32 = 0;
   let usX: UINT16;
   let usY: UINT16;
@@ -760,7 +760,7 @@ function DisplayPageNumberAndDateRange(): void {
   let iCounter: INT32 = 0;
   let uiLastDate: UINT32;
   let pTempHistory: HistoryUnitPtr = pHistoryListHead;
-  let sString: wchar_t[] /* [50] */;
+  let sString: string /* wchar_t[50] */;
 
   // setup the font stuff
   SetFont(HISTORY_TEXT_FONT());
@@ -825,8 +825,8 @@ function DisplayPageNumberAndDateRange(): void {
   return;
 }
 
-function ProcessHistoryTransactionString(pString: STR16, pHistory: HistoryUnitPtr): void {
-  let sString: CHAR16[] /* [128] */;
+function ProcessHistoryTransactionString(pString: Pointer<string> /* STR16 */, pHistory: HistoryUnitPtr): void {
+  let sString: string /* CHAR16[128] */;
 
   switch (pHistory.value.ubCode) {
     case Enum83.HISTORY_ENTERED_HISTORY_MODE:
@@ -1398,12 +1398,12 @@ export function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   return uiTime;
 }
 
-function GetQuestStartedString(ubQuestValue: UINT8, sQuestString: STR16): void {
+function GetQuestStartedString(ubQuestValue: UINT8, sQuestString: Pointer<string> /* STR16 */): void {
   // open the file and copy the string
   LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", sQuestString, 160 * (ubQuestValue * 2), 160);
 }
 
-function GetQuestEndedString(ubQuestValue: UINT8, sQuestString: STR16): void {
+function GetQuestEndedString(ubQuestValue: UINT8, sQuestString: Pointer<string> /* STR16 */): void {
   // open the file and copy the string
   LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", sQuestString, 160 * ((ubQuestValue * 2) + 1), 160);
 }

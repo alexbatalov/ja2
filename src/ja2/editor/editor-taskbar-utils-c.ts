@@ -388,9 +388,9 @@ export function EnableEditorTaskbar(): void {
 // A specialized mprint function that'll restore the editor panel underneath the
 // string before rendering the string.  This is obviously only useful for drawing text
 // in the editor taskbar.
-export function mprintfEditor(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): void {
+export function mprintfEditor(x: INT16, y: INT16, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
   let argptr: va_list;
-  let string: wchar_t[] /* [512] */;
+  let string: string /* wchar_t[512] */;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
 
@@ -430,7 +430,7 @@ export function ClearTaskbarRegion(sLeft: INT16, sTop: INT16, sRight: INT16, sBo
 // This is a new function which duplicates the older "yellow info boxes" that
 // are common throughout the editor.  This draws the yellow box with the indentation
 // look.
-export function DrawEditorInfoBox(str: Pointer<UINT16>, uiFont: UINT32, x: UINT16, y: UINT16, w: UINT16, h: UINT16): void {
+export function DrawEditorInfoBox(str: string /* Pointer<UINT16> */, uiFont: UINT32, x: UINT16, y: UINT16, w: UINT16, h: UINT16): void {
   let usFillColorDark: UINT16;
   let usFillColorLight: UINT16;
   let usFillColorBack: UINT16;
@@ -619,7 +619,7 @@ function RenderMapEntryPointsAndLights(): void {
   }
 }
 
-function BuildTriggerName(pItem: Pointer<OBJECTTYPE>, szItemName: Pointer<UINT16>): void {
+function BuildTriggerName(pItem: Pointer<OBJECTTYPE>, szItemName: Pointer<string> /* Pointer<UINT16> */): void {
   if (pItem.value.usItem == Enum225.SWITCH) {
     if (pItem.value.bFrequency == PANIC_FREQUENCY)
       swprintf(szItemName, "Panic Trigger1");
@@ -650,7 +650,7 @@ function RenderDoorLockInfo(): void {
   let yp: INT16;
   let sScreenX: INT16;
   let sScreenY: INT16;
-  let str: UINT16[] /* [50] */;
+  let str: string /* UINT16[50] */;
   for (i = 0; i < gubNumDoors; i++) {
     GetGridNoScreenPos(DoorTable[i].sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
     if (sScreenY > 390)
@@ -701,7 +701,7 @@ function RenderSelectedItemBlownUp(): void {
   let xp: INT16;
   let yp: INT16;
   let pItemPool: Pointer<ITEM_POOL>;
-  let szItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
+  let szItemName: string /* UINT16[SIZE_ITEM_NAME] */;
   let i: INT32;
   let sWidth: INT16;
   let sHeight: INT16;
@@ -743,7 +743,7 @@ function RenderSelectedItemBlownUp(): void {
   mprintf(xp, yp, szItemName);
 
   if (gpItem.value.usItem == Enum225.ACTION_ITEM) {
-    let pStr: Pointer<UINT16>;
+    let pStr: string /* Pointer<UINT16> */;
     pStr = GetActionItemName(gpItem);
     xp = sScreenX - (StringPixLength(pStr, FONT10ARIALBOLD()) - 40) / 2;
     yp += 10;
@@ -777,7 +777,7 @@ function RenderSelectedItemBlownUp(): void {
 }
 
 function RenderEditorInfo(): void {
-  let FPSText: wchar_t[] /* [50] */;
+  let FPSText: string /* wchar_t[50] */;
   /* static */ let iSpewWarning: INT32 = 0;
   let iMapIndex: INT16;
 

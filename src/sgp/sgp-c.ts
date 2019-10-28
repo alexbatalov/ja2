@@ -20,9 +20,9 @@ export let gfDontUseDDBlits: boolean = false;
 
 // There were TWO of them??!?! -- DB
 // CHAR8		gzCommandLine[ 100 ];
-export let gzCommandLine: CHAR8[] /* [100] */; // Command line given
+export let gzCommandLine: string /* CHAR8[100] */; // Command line given
 
-let gzErrorMsg: CHAR8[] /* [2048] */ = "";
+let gzErrorMsg: string /* CHAR8[2048] */ = "";
 let gfIgnoreMessages: boolean = false;
 
 // GLOBAL VARIBLE, SET TO DEFAULT BUT CAN BE CHANGED BY THE GAME IF INIT FILE READ
@@ -389,8 +389,8 @@ function SGPExit(): void {
 
 function GetRuntimeSettings(): void {
   // Runtime settings - for now use INI file - later use registry
-  let ExeDir: STRING512;
-  let INIFile: STRING512;
+  let ExeDir: string /* STRING512 */;
+  let INIFile: string /* STRING512 */;
 
   // Get Executable Directory
   GetExecutableDirectory(ExeDir);
@@ -400,7 +400,7 @@ function GetRuntimeSettings(): void {
   gbPixelDepth = GetPrivateProfileInt("SGP", "PIXEL_DEPTH", PIXEL_DEPTH, INIFile);
 }
 
-export function ShutdownWithErrorBox(pcMessage: Pointer<CHAR8>): void {
+export function ShutdownWithErrorBox(pcMessage: string /* Pointer<CHAR8> */): void {
   strncpy(gzErrorMsg, pcMessage, 255);
   gzErrorMsg[255] = '\0';
   gfIgnoreMessages = true;
@@ -408,10 +408,10 @@ export function ShutdownWithErrorBox(pcMessage: Pointer<CHAR8>): void {
   exit(0);
 }
 
-function ProcessJa2CommandLineBeforeInitialization(pCommandLine: Pointer<CHAR8>): void {
-  let cSeparators: CHAR8[] /* [] */ = "\t =";
-  let pCopy: Pointer<CHAR8> = null;
-  let pToken: Pointer<CHAR8>;
+function ProcessJa2CommandLineBeforeInitialization(pCommandLine: string /* Pointer<CHAR8> */): void {
+  let cSeparators: string /* CHAR8[] */ = "\t =";
+  let pCopy: string /* Pointer<CHAR8> */ = null;
+  let pToken: string /* Pointer<CHAR8> */;
 
   pCopy = MemAlloc(strlen(pCommandLine) + 1);
 

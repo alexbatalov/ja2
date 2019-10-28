@@ -1,7 +1,7 @@
 namespace ja2 {
 
 export interface ScrollStringSt {
-  pString16: STR16;
+  pString16: string /* STR16 */;
   iVideoOverlay: INT32;
   uiFont: UINT32;
   usColor: UINT16;

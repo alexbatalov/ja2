@@ -80,7 +80,7 @@ let gExtOneCDirection: UINT8[] /* [EX_NUM_WORLD_DIRECTIONS] */ = [
 ];
 
 interface BATTLESNDS_STRUCT {
-  zName: CHAR8[] /* [20] */;
+  zName: string /* CHAR8[20] */;
   ubRandomVal: UINT8;
   fPreload: boolean;
   fBadGuy: boolean;
@@ -4220,7 +4220,7 @@ let gOrangeGlowG: UINT8[] /* [] */ = [
 export function CreateSoldierPalettes(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let usAnimSurface: UINT16;
   let usPaletteAnimSurface: UINT16;
-  let zColFilename: CHAR8[] /* [100] */;
+  let zColFilename: string /* CHAR8[100] */;
   let iWhich: INT32;
   let cnt: INT32;
   let bBodyTypePalette: INT8;
@@ -5308,7 +5308,7 @@ export function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8,
 }
 
 export function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSoundID: UINT8, bSpecialCode: INT8): boolean {
-  let zFilename: SGPFILENAME;
+  let zFilename: string /* SGPFILENAME */;
   let spParms: SOUNDPARMS;
   let ubSoundID: UINT8;
   let uiSoundID: UINT32;

@@ -1073,7 +1073,7 @@ function CanCharacterBeTrainedByOther(pSoldier: Pointer<SOLDIERTYPE>): boolean {
 
 // can character sleep right now?
 function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: boolean): boolean {
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   // dead or dying?
   if (pSoldier.value.bLife < OKLIFE) {
@@ -1160,7 +1160,7 @@ function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: boole
 }
 
 function CanCharacterBeAwakened(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: boolean): boolean {
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   // if dead tired
   if ((pSoldier.value.bBreathMax <= BREATHMAX_ABSOLUTE_MINIMUM) && !pSoldier.value.fMercCollapsedFlag) {
@@ -5612,7 +5612,7 @@ function SquadMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   // btn callback handler for assignment region
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   let bCanJoinSquad: INT8;
   /* ARM: Squad menu is now disabled for anyone between sectors
           UINT8 ubNextX, ubNextY, ubPrevX, ubPrevY;
@@ -5752,8 +5752,8 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let bTownId: INT8;
-  let sString: CHAR16[] /* [128] */;
-  let sStringA: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
+  let sStringA: string /* CHAR16[128] */;
 
   pSoldier = GetSelectedAssignSoldier(false);
 
@@ -5972,7 +5972,7 @@ function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // btn callback handler for assignment region
   let iValue: INT32 = -1;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -6264,7 +6264,7 @@ function CreateSquadBox(): void {
   let pDimensions: SGPRect;
   let hStringHandle: UINT32;
   let uiCounter: UINT32;
-  let sString: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[64] */;
   let uiMaxSquad: UINT32;
 
   // create basic box
@@ -6506,8 +6506,8 @@ function CreateRepairBox(): void {
 export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
   let hStringHandle: UINT32;
   let uiCounter: UINT32;
-  let sString: CHAR16[] /* [50] */;
-  let sDollarString: CHAR16[] /* [50] */;
+  let sString: string /* CHAR16[50] */;
+  let sDollarString: string /* CHAR16[50] */;
 
   ContractPosition.iX = OrigContractPosition.iX;
 
@@ -6731,7 +6731,7 @@ function CreateTrainingBox(): void {
 function CreateAssignmentsBox(): void {
   let hStringHandle: UINT32;
   let uiCounter: UINT32;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // will create attribute pop up menu for mapscreen assignments
@@ -8385,7 +8385,7 @@ export function HandleSelectedMercsBeingPutAsleep(fWakeUp: boolean, fDisplayWarn
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let ubNumberOfSelectedSoldiers: UINT8 = 0;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     pSoldier = null;

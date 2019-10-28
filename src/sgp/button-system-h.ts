@@ -98,7 +98,7 @@ export interface GUI_BUTTON {
   // Button disabled style
   bDisabledStyle: INT8;
   // For buttons with text
-  string: Pointer<UINT16>; // the string
+  string: string /* Pointer<UINT16> */; // the string
   usFont: UINT16; // font for text
   fMultiColor: boolean; // font is a multi-color font
   sForeColor: INT16; // text colors if there is text

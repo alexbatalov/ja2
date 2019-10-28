@@ -3,8 +3,8 @@ namespace ja2 {
 export const TILE_CACHE_START_INDEX = 36000;
 
 export interface TILE_CACHE_ELEMENT {
-  zName: CHAR8[] /* [128] */; // Name of tile ( filename and directory here )
-  zRootName: CHAR8[] /* [30] */; // Root name
+  zName: string /* CHAR8[128] */; // Name of tile ( filename and directory here )
+  zRootName: string /* CHAR8[30] */; // Root name
   pImagery: Pointer<TILE_IMAGERY>; // Tile imagery
   sHits: INT16;
   ubNumFrames: UINT8;
@@ -12,8 +12,8 @@ export interface TILE_CACHE_ELEMENT {
 }
 
 export interface TILE_CACHE_STRUCT {
-  Filename: CHAR8[] /* [150] */;
-  zRootName: CHAR8[] /* [30] */; // Root name
+  Filename: string /* CHAR8[150] */;
+  zRootName: string /* CHAR8[30] */; // Root name
   pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 }
 

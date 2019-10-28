@@ -61,7 +61,7 @@ export let fShowMapScreenHelpText: boolean = false;
 let fScreenMaskForMoveCreated: boolean = false;
 export let fLockOutMapScreenInterface: boolean = false;
 
-let gsCustomErrorString: CHAR16[] /* [128] */;
+let gsCustomErrorString: string /* CHAR16[128] */;
 
 export let fShowUpdateBox: boolean = false;
 let fInterfaceFastHelpTextActive: boolean = false;
@@ -858,13 +858,13 @@ void ActivateSoldierPopup( SOLDIERTYPE *pSoldier, UINT8 ubPopupType, INT16 xp, I
 }
 */
 
-export function DoMapMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
+export function DoMapMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
   // reset the highlighted line
   giHighLine = -1;
   return DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 }
 
-export function DoMapMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): INT32 {
+export function DoMapMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): INT32 {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
 
   // reset the highlighted line
@@ -1068,7 +1068,7 @@ function InventoryScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
   }
 }
 
-export function GetMoraleString(pSoldier: Pointer<SOLDIERTYPE>, sString: STR16): void {
+export function GetMoraleString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer<string> /* STR16 */): void {
   let bMorale: INT8 = pSoldier.value.bMorale;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_DEAD) {
@@ -1162,7 +1162,7 @@ export function HandleMercLeavingEquipmentInDrassen(uiMercId: UINT32): void {
 
 export function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
   let pItem: Pointer<MERC_LEAVE_ITEM>;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   Assert(uiSlotIndex < NUM_LEAVE_LIST_SLOTS);
 
@@ -1193,7 +1193,7 @@ export function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
 
 export function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
   let pItem: Pointer<MERC_LEAVE_ITEM>;
-  let sString: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
 
   Assert(uiSlotIndex < NUM_LEAVE_LIST_SLOTS);
 
@@ -1529,8 +1529,8 @@ export function RemoveMapStatusBarsRegion(): void {
 }
 
 export function UpdateCharRegionHelpText(): void {
-  let sString: CHAR16[] /* [128] */;
-  let pMoraleStr: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
+  let pMoraleStr: string /* CHAR16[128] */;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid == true)) {
@@ -1979,7 +1979,7 @@ export function ShutDownUserDefineHelpTextRegions(): void {
 
 // thsi will setup the fast help text regions that are unrelated to mouse regions
 // user is to pass in the x,y position of the box, the width to wrap the strings and the string itself
-export function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPosition: INT32[] /* [] */, iWidth: INT32[] /* [] */, sString: STR16[] /* [] */, iSize: INT32): boolean {
+export function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPosition: INT32[] /* [] */, iWidth: INT32[] /* [] */, sString: string[] /* STR16[] */, iSize: INT32): boolean {
   let iCounter: INT32 = 0;
 
   // reset the size
@@ -2752,8 +2752,8 @@ function CreatePopUpBoxForMovementBox(): void {
 function AddStringsToMoveBox(): void {
   let iCount: INT32 = 0;
   let iCountB: INT32 = 0;
-  let sString: CHAR16[] /* [128] */;
-  let sStringB: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
+  let sStringB: string /* CHAR16[128] */;
   let hStringHandle: UINT32;
   let fFirstOne: boolean = true;
 
@@ -3641,7 +3641,7 @@ export function DisplaySoldierUpdateBox(): void {
   let fFourWideMode: boolean = false;
   let hBackGroundHandle: HVOBJECT;
   let iCounter: INT32 = 0;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
   let iHeightOfString: INT32 = 0;
@@ -4349,10 +4349,10 @@ function HandleDisplayOfExitToTacticalMessageForFirstEntryToMapScreen(): void {
 }
 
 export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fContested: boolean): boolean {
-  let sString: CHAR16[] /* [128] */;
-  let sStringA: CHAR16[] /* [64] */;
-  let sStringB: CHAR16[] /* [256] */;
-  let sStringC: CHAR16[] /* [64] */;
+  let sString: string /* CHAR16[128] */;
+  let sStringA: string /* CHAR16[64] */;
+  let sStringB: string /* CHAR16[256] */;
+  let sStringC: string /* CHAR16[64] */;
   let iValue: INT32 = 0;
   let bTownId: INT8 = 0;
   let sSector: INT16 = 0;
@@ -4436,8 +4436,8 @@ export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT
 export function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ReturnCallback: MSGBOX_CALLBACK): void {
   let sSector: INT16 = 0;
   let bTownId: INT8 = 0;
-  let sString: CHAR16[] /* [128] */;
-  let sStringA: CHAR16[] /* [128] */;
+  let sString: string /* CHAR16[128] */;
+  let sStringA: string /* CHAR16[128] */;
 
   // check if below ground
   if (bSectorZ != 0) {

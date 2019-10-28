@@ -38,7 +38,7 @@ let uiExplosionSoundID: UINT32[] /* [NUM_EXP_TYPES] */ = [
   Enum330.AIR_ESCAPING_1,
 ];
 
-let zBlastFilenames: CHAR8[][] /* [][70] */ = [
+let zBlastFilenames: string[] /* CHAR8[][70] */ = [
   "",
   "TILECACHE\\ZGRAV_D.STI",
   "TILECACHE\\ZGRAV_C.STI",
@@ -50,7 +50,7 @@ let zBlastFilenames: CHAR8[][] /* [][70] */ = [
   "TILECACHE\\MUST_EXP.STI",
 ];
 
-let sBlastSpeeds: CHAR8[] /* [] */ = [
+let sBlastSpeeds: string /* CHAR8[] */ = [
   0,
   80,
   80,

@@ -13,7 +13,7 @@ export let sGridX: INT16;
 export let sGridY: INT16;
 let sBadMarker: INT16 = -1;
 
-export let wszSelType: Pointer<UINT16>[] /* [6] */ = [
+export let wszSelType: string[] /* Pointer<UINT16>[6] */ = [
   "Small",
   "Medium",
   "Large",

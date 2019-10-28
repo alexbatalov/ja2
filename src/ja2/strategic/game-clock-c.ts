@@ -42,7 +42,7 @@ let iPausedPopUpBox: INT32 = -1;
 export let guiDay: UINT32;
 export let guiHour: UINT32;
 export let guiMin: UINT32;
-export let gswzWorldTimeStr: UINT16[] /* [20] */;
+export let gswzWorldTimeStr: string /* UINT16[20] */;
 export let giTimeCompressSpeeds: INT32[] /* [NUM_TIME_COMPRESS_SPEEDS] */ = [
   0,
   1,

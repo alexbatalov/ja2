@@ -10,7 +10,7 @@ const enum Enum1 {
 interface CRDT_NODE {
   uiType: UINT32; // the type of node
 
-  pString: Pointer<CHAR16>; // string for the node if the node contains a string
+  pString: string /* Pointer<CHAR16> */; // string for the node if the node contains a string
 
   uiFlags: UINT32; // various flags
 
@@ -592,7 +592,7 @@ function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): boolean {
 }
 
 // aaa
-function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): boolean {
+function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: string /* STR16 */): boolean {
   let pNodeToAdd: Pointer<CRDT_NODE> = null;
   let pTemp: Pointer<CRDT_NODE> = null;
   let uiSizeOfString: UINT32 = (wcslen(pString) + 2) * 2;
@@ -849,10 +849,10 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): boolean {
 function GetNextCreditFromTextFile(): boolean {
   let fDone: boolean = false;
   let uiStringWidth: UINT32 = 20;
-  let zOriginalString: CHAR16[] /* [512] */;
-  let zString: CHAR16[] /* [512] */;
-  let zCodes: CHAR16[] /* [512] */;
-  let pzNewCode: STR16 = null;
+  let zOriginalString: string /* CHAR16[512] */;
+  let zString: string /* CHAR16[512] */;
+  let zCodes: string /* CHAR16[512] */;
+  let pzNewCode: string /* STR16 */ = null;
   let uiCodeType: UINT32 = 0;
   let uiNodeType: UINT32 = 0;
   let uiStartLoc: UINT32 = 0;
@@ -876,7 +876,7 @@ function GetNextCreditFromTextFile(): boolean {
   } else {
     let uiSizeOfCodes: UINT32 = 0;
     let uiSizeOfSubCode: UINT32 = 0;
-    let pzEndCode: STR16 = null;
+    let pzEndCode: string /* STR16 */ = null;
     let uiDistanceIntoCodes: UINT32 = 0;
 
     // Retrive all the codes from the string
@@ -944,7 +944,7 @@ function GetNextCreditFromTextFile(): boolean {
 }
 
 // return any flags that need to be set in the node
-function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
+function GetAndHandleCreditCodeFromCodeString(pzCode: string /* STR16 */): UINT32 {
   // new codes:
 
   // if the code is to change the delay between strings
@@ -1058,8 +1058,8 @@ function CountNumberOfCreditNodes(): UINT32 {
   return uiNumNodes;
 }
 
-function GetNextCreditCode(pString: STR16, pSizeOfCode: Pointer<UINT32>): STR16 {
-  let pzNewCode: STR16 = null;
+function GetNextCreditCode(pString: string /* STR16 */, pSizeOfCode: Pointer<UINT32>): string /* STR16 */ {
+  let pzNewCode: string /* STR16 */ = null;
   let uiSizeOfCode: UINT32 = 0;
 
   // get the new subcode out

@@ -59,7 +59,7 @@ const PRINT_DEBUG_INFO = () => FileDebugPrint();
 //**************************************************************************
 
 interface FMFileInfo {
-  strFilename: CHAR[] /* [FILENAME_LENGTH] */;
+  strFilename: string /* CHAR[FILENAME_LENGTH] */;
   uiFileAccess: UINT8;
   uiFilePosition: UINT32;
   hFileHandle: HANDLE;
@@ -72,7 +72,7 @@ interface FileSystem {
   fDebug: boolean;
   fDBInitialized: boolean;
 
-  pcFileNames: Pointer<CHAR>;
+  pcFileNames: string[] /* Pointer<CHAR> */;
   uiNumFilesInDirectory: UINT32;
 }
 
@@ -159,7 +159,7 @@ let hFindInfoHandle: HANDLE[] /* [20] */ = [
 //
 //**************************************************************************
 
-export function InitializeFileManager(strIndexFilename: STR): boolean {
+export function InitializeFileManager(strIndexFilename: string /* STR */): boolean {
   RegisterDebugTopic(TOPIC_FILE_MANAGER, "File Manager");
   return true;
 }
@@ -225,7 +225,7 @@ function FileDebug(f: boolean): void {
 //
 //**************************************************************************
 
-export function FileExists(strFilename: STR): boolean {
+export function FileExists(strFilename: string /* STR */): boolean {
   let fExists: boolean = false;
   let file: Pointer<FILE>;
   // HANDLE	hRealFile;
@@ -273,7 +273,7 @@ export function FileExists(strFilename: STR): boolean {
 //
 //**************************************************************************
 
-export function FileExistsNoDB(strFilename: STR): boolean {
+export function FileExistsNoDB(strFilename: string /* STR */): boolean {
   let fExists: boolean = false;
   let file: Pointer<FILE>;
   // HANDLE	hRealFile;
@@ -314,7 +314,7 @@ export function FileExistsNoDB(strFilename: STR): boolean {
 //
 //**************************************************************************
 
-export function FileDelete(strFilename: STR): boolean {
+export function FileDelete(strFilename: string /* STR */): boolean {
   return DeleteFile(strFilename);
 }
 
@@ -342,7 +342,7 @@ export function FileDelete(strFilename: STR): boolean {
 //
 //**************************************************************************
 
-export function FileOpen(strFilename: STR, uiOptions: UINT32, fDeleteOnClose: boolean): HWFILE {
+export function FileOpen(strFilename: string /* STR */, uiOptions: UINT32, fDeleteOnClose: boolean): HWFILE {
   let hFile: HWFILE;
   let hRealFile: HANDLE;
   let dwAccess: DWORD;
@@ -432,7 +432,7 @@ export function FileOpen(strFilename: STR, uiOptions: UINT32, fDeleteOnClose: bo
     hRealFile = CreateFile(strFilename, dwAccess, 0, null, dwCreationFlags, dwFlagsAndAttributes, null);
     if (hRealFile == INVALID_HANDLE_VALUE) {
       let uiLastError: UINT32 = GetLastError();
-      let zString: char[] /* [1024] */;
+      let zString: string /* char[1024] */;
       FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
 
       return 0;
@@ -542,7 +542,7 @@ export function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBy
       fRet = ReadFile(hRealFile, pDest, dwNumBytesToRead, addressof(dwNumBytesRead), null);
       if (dwNumBytesToRead != dwNumBytesRead) {
         let uiLastError: UINT32 = GetLastError();
-        let zString: char[] /* [1024] */;
+        let zString: string /* char[1024] */;
         FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
 
         fRet = false;
@@ -653,7 +653,7 @@ export function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, pui
 //
 //**************************************************************************
 
-function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): boolean {
+function FileLoad(strFilename: string /* STR */, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): boolean {
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
   let fRet: boolean;
@@ -700,8 +700,8 @@ function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesR
 //
 //**************************************************************************
 
-function FilePrintf(hFile: HWFILE, strFormatted: Pointer<UINT8>, ...args: any[]): boolean {
-  let strToSend: UINT8[] /* [80] */;
+function FilePrintf(hFile: HWFILE, strFormatted: string /* Pointer<UINT8> */, ...args: any[]): boolean {
+  let strToSend: string /* UINT8[80] */;
   let argptr: va_list;
   let fRetVal: boolean = false;
 
@@ -1150,12 +1150,12 @@ function BuildFileDirectory(): void {
 //
 //**************************************************************************
 
-function GetFilesInDirectory(hStack: HCONTAINER, pcDir: Pointer<CHAR>, hFile: HANDLE, pFind: Pointer<WIN32_FIND_DATA>): INT32 {
+function GetFilesInDirectory(hStack: HCONTAINER, pcDir: string /* Pointer<CHAR> */, hFile: HANDLE, pFind: Pointer<WIN32_FIND_DATA>): INT32 {
   let iNumFiles: INT32;
   let inFind: WIN32_FIND_DATA;
   let fMore: boolean;
-  let cName: CHAR[] /* [FILENAME_LENGTH] */;
-  let cDir: CHAR[] /* [FILENAME_LENGTH] */;
+  let cName: string /* CHAR[FILENAME_LENGTH] */;
+  let cDir: string /* CHAR[FILENAME_LENGTH] */;
   let hFileIn: HANDLE;
 
   fMore = true;
@@ -1188,18 +1188,18 @@ function GetFilesInDirectory(hStack: HCONTAINER, pcDir: Pointer<CHAR>, hFile: HA
   return iNumFiles;
 }
 
-export function SetFileManCurrentDirectory(pcDirectory: STR): boolean {
+export function SetFileManCurrentDirectory(pcDirectory: string /* STR */): boolean {
   return SetCurrentDirectory(pcDirectory);
 }
 
-export function GetFileManCurrentDirectory(pcDirectory: STRING512): boolean {
+export function GetFileManCurrentDirectory(pcDirectory: Pointer<string> /* STRING512 */): boolean {
   if (GetCurrentDirectory(512, pcDirectory) == 0) {
     return false;
   }
   return true;
 }
 
-function DirectoryExists(pcDirectory: STRING512): boolean {
+function DirectoryExists(pcDirectory: string /* STRING512 */): boolean {
   let uiAttribs: UINT32;
   let uiLastError: DWORD;
 
@@ -1223,7 +1223,7 @@ function DirectoryExists(pcDirectory: STRING512): boolean {
   return false;
 }
 
-export function MakeFileManDirectory(pcDirectory: STRING512): boolean {
+export function MakeFileManDirectory(pcDirectory: string /* STRING512 */): boolean {
   return CreateDirectory(pcDirectory, null);
 }
 
@@ -1231,14 +1231,14 @@ export function MakeFileManDirectory(pcDirectory: STRING512): boolean {
 // Removes ALL FILES in the specified directory (and all subdirectories with their files if fRecursive is TRUE)
 // Use EraseDirectory() to simply delete directory contents without deleting the directory itself
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: boolean): boolean {
+export function RemoveFileManDirectory(pcDirectory: string /* STRING512 */, fRecursive: boolean): boolean {
   let sFindData: WIN32_FIND_DATA;
   let SearchHandle: HANDLE;
-  const pFileSpec: Pointer<CHAR8> = "*.*";
+  const pFileSpec: string /* Pointer<CHAR8> */ = "*.*";
   let fDone: boolean = false;
   let fRetval: boolean = false;
-  let zOldDir: CHAR8[] /* [512] */;
-  let zSubdirectory: CHAR8[] /* [512] */;
+  let zOldDir: string /* CHAR8[512] */;
+  let zSubdirectory: string /* CHAR8[512] */;
 
   GetFileManCurrentDirectory(zOldDir);
 
@@ -1300,12 +1300,12 @@ export function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: boole
 // Removes ALL FILES in the specified directory but leaves the directory alone.  Does not affect any subdirectories!
 // Use RemoveFilemanDirectory() to also delete the directory itself, or to recursively delete subdirectories.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export function EraseDirectory(pcDirectory: STRING512): boolean {
+export function EraseDirectory(pcDirectory: string /* STRING512 */): boolean {
   let sFindData: WIN32_FIND_DATA;
   let SearchHandle: HANDLE;
-  const pFileSpec: Pointer<CHAR8> = "*.*";
+  const pFileSpec: string /* Pointer<CHAR8> */ = "*.*";
   let fDone: boolean = false;
-  let zOldDir: CHAR8[] /* [512] */;
+  let zOldDir: string /* CHAR8[512] */;
 
   GetFileManCurrentDirectory(zOldDir);
 
@@ -1342,8 +1342,8 @@ export function EraseDirectory(pcDirectory: STRING512): boolean {
   return true;
 }
 
-export function GetExecutableDirectory(pcDirectory: STRING512): boolean {
-  let ModuleFilename: SGPFILENAME;
+export function GetExecutableDirectory(pcDirectory: Pointer<string> /* STRING512 */): boolean {
+  let ModuleFilename: string /* SGPFILENAME */;
   let cnt: UINT32;
 
   if (GetModuleFileName(null, ModuleFilename, sizeof(ModuleFilename)) == 0) {
@@ -1363,7 +1363,7 @@ export function GetExecutableDirectory(pcDirectory: STRING512): boolean {
   return true;
 }
 
-export function GetFileFirst(pSpec: Pointer<CHAR8>, pGFStruct: Pointer<GETFILESTRUCT>): boolean {
+export function GetFileFirst(pSpec: string /* Pointer<CHAR8> */, pGFStruct: Pointer<GETFILESTRUCT>): boolean {
   let x: INT32;
   let iWhich: INT32 = 0;
   let fFound: boolean;
@@ -1472,7 +1472,7 @@ function W32toSGPFileFind(pGFStruct: Pointer<GETFILESTRUCT>, pW32Struct: Pointer
   }
 }
 
-function FileCopy(strSrcFile: STR, strDstFile: STR, fFailIfExists: boolean): boolean {
+function FileCopy(strSrcFile: string /* STR */, strDstFile: string /* STR */, fFailIfExists: boolean): boolean {
   return CopyFile(strSrcFile, strDstFile, fFailIfExists);
 
   // Not needed, use Windows CopyFile
@@ -1547,13 +1547,13 @@ function FileCopy(strSrcFile: STR, strDstFile: STR, fFailIfExists: boolean): boo
   */
 }
 
-function FileMove(strOldName: STR, strNewName: STR): boolean {
+function FileMove(strOldName: string /* STR */, strNewName: string /* STR */): boolean {
   // rename
   return MoveFile(strOldName, strNewName);
 }
 
 // Additions by Kris Morness
-function FileSetAttributes(strFilename: STR, uiNewAttribs: UINT32): boolean {
+function FileSetAttributes(strFilename: string /* STR */, uiNewAttribs: UINT32): boolean {
   let uiFileAttrib: UINT32 = 0;
 
   if (uiNewAttribs & FILE_ATTRIBUTES_ARCHIVE)
@@ -1580,7 +1580,7 @@ function FileSetAttributes(strFilename: STR, uiNewAttribs: UINT32): boolean {
   return SetFileAttributes(strFilename, uiFileAttrib);
 }
 
-export function FileGetAttributes(strFilename: STR): UINT32 {
+export function FileGetAttributes(strFilename: string /* STR */): UINT32 {
   let uiAttribs: UINT32 = 0;
   let uiFileAttrib: UINT32 = 0;
 
@@ -1616,7 +1616,7 @@ export function FileGetAttributes(strFilename: STR): UINT32 {
   return uiFileAttrib;
 }
 
-export function FileClearAttributes(strFilename: STR): boolean {
+export function FileClearAttributes(strFilename: string /* STR */): boolean {
   return SetFileAttributes(strFilename, FILE_ATTRIBUTE_NORMAL);
 }
 
@@ -1736,7 +1736,7 @@ export function CompareSGPFileTimes(pFirstFileTime: Pointer<SGP_FILETIME>, pSeco
   return CompareFileTime(pFirstFileTime, pSecondFileTime);
 }
 
-export function FileSize(strFilename: STR): UINT32 {
+export function FileSize(strFilename: string /* STR */): UINT32 {
   let hFile: HWFILE;
   let uiSize: UINT32;
 
@@ -1784,9 +1784,9 @@ export function GetRealFileHandleFromFileManFileHandle(hFile: HWFILE): HANDLE {
 //		10June98:DB		-> creation
 //
 //**************************************************************************
-function AddSubdirectoryToPath(pDirectory: Pointer<CHAR8>): boolean {
-  let pSystemPath: Pointer<CHAR8>;
-  let pPath: Pointer<CHAR8>;
+function AddSubdirectoryToPath(pDirectory: string /* Pointer<CHAR8> */): boolean {
+  let pSystemPath: string /* Pointer<CHAR8> */;
+  let pPath: string /* Pointer<CHAR8> */;
   let uiPathLen: UINT32;
 
   // Check for NULL
@@ -1835,11 +1835,11 @@ function AddSubdirectoryToPath(pDirectory: Pointer<CHAR8>): boolean {
 }
 
 export function GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(): UINT32 {
-  let zExecDir: STRING512;
-  let zDrive: STRING512;
-  let zDir: STRING512;
-  let zFileName: STRING512;
-  let zExt: STRING512;
+  let zExecDir: string /* STRING512 */;
+  let zDrive: string /* STRING512 */;
+  let zDir: string /* STRING512 */;
+  let zFileName: string /* STRING512 */;
+  let zExt: string /* STRING512 */;
 
   let uiFreeSpace: UINT32 = 0;
 
@@ -1855,7 +1855,7 @@ export function GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(): UINT32 {
   return uiFreeSpace;
 }
 
-function GetFreeSpaceOnHardDrive(pzDriveLetter: STR): UINT32 {
+function GetFreeSpaceOnHardDrive(pzDriveLetter: string /* STR */): UINT32 {
   let uiBytesFree: UINT32 = 0;
 
   let uiSectorsPerCluster: UINT32 = 0;
@@ -1865,7 +1865,7 @@ function GetFreeSpaceOnHardDrive(pzDriveLetter: STR): UINT32 {
 
   if (!GetDiskFreeSpace(pzDriveLetter, addressof(uiSectorsPerCluster), addressof(uiBytesPerSector), addressof(uiNumberOfFreeClusters), addressof(uiTotalNumberOfClusters))) {
     let uiLastError: UINT32 = GetLastError();
-    let zString: char[] /* [1024] */;
+    let zString: string /* char[1024] */;
     FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
 
     return true;

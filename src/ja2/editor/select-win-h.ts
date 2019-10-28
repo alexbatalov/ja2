@@ -49,7 +49,7 @@ export interface DisplaySpec {
   uiObjIndx: UINT32;
   /*   } */
   /*   struct { */
-  pString: Pointer<UINT16>;
+  pString: string /* Pointer<UINT16> */;
   /*   } */
   /* } */
 }

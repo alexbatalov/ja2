@@ -56,7 +56,7 @@ export interface GAME_SETTINGS {
   // The following are set from the status of the toggle boxes in the Options Screen
   fOptions: UINT8[] /* [NUM_ALL_GAME_OPTIONS] */;
 
-  zVersionNumber: CHAR8[] /* [14] */;
+  zVersionNumber: string /* CHAR8[14] */;
 
   uiSettingsVersionNumber: UINT32;
   uiMeanwhileScenesSeenFlags: UINT32;

@@ -1,7 +1,7 @@
 namespace ja2 {
 
 export interface SMKFLIC {
-  cFilename: Pointer<CHAR8>;
+  cFilename: string /* Pointer<CHAR8> */;
   //		HFILE										hFileHandle;
   hFileHandle: HWFILE;
   SmackHandle: Pointer<Smack>;

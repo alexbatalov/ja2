@@ -795,10 +795,10 @@ function CalculateMedicalDepositRefund(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointer<SOLDIERTYPE>, fAddRehireButton: boolean): void {
   // will tell player this character is leaving and ask where they want the equipment left
-  let sString: CHAR16[] /* [1024] */;
+  let sString: string /* CHAR16[1024] */;
   let fInSector: boolean = false;
   //	INT16					zTownIDString[50];
-  let zShortTownIDString: CHAR16[] /* [50] */;
+  let zShortTownIDString: string /* CHAR16[50] */;
 
   // use YES/NO Pop up box, settup for particular screen
   let pCenteringRect: SGPRect = [ 0, 0, 640, 480 ];
@@ -1057,8 +1057,8 @@ function HandleNotifyPlayerCantAffordInsurance(): void {
 }
 
 function HandleNotifyPlayerCanAffordInsurance(pSoldier: Pointer<SOLDIERTYPE>, ubLength: UINT8, iCost: INT32): void {
-  let sString: CHAR16[] /* [128] */;
-  let sStringA: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[128] */;
+  let sStringA: string /* CHAR16[32] */;
 
   // parse the cost
   swprintf(sStringA, "%d", iCost);

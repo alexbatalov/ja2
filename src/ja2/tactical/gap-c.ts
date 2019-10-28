@@ -1,6 +1,6 @@
 namespace ja2 {
 
-function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGapList>): void {
+function AudioGapListInit(zSoundFile: string /* Pointer<CHAR8> */, pGapList: Pointer<AudioGapList>): void {
   // This procedure will load in the appropriate .gap file, corresponding
   // to the .wav file in szSoundEffects indexed by uiSampleNum
   // The procedure will then allocate and load in the AUDIO_GAP information,
@@ -8,9 +8,9 @@ function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGap
 
   //	FILE *pFile;
   let pFile: HWFILE;
-  let pSourceFileName: STR;
-  let pDestFileName: STR;
-  let sFileName: char[] /* [256] */;
+  let pSourceFileName: string /* STR */;
+  let pDestFileName: string /* STR */;
+  let sFileName: string /* char[256] */;
   let counter: UINT8 = 0;
   let pCurrentGap: Pointer<AUDIO_GAP>;
   let pPreviousGap: Pointer<AUDIO_GAP>;
@@ -172,7 +172,7 @@ export function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList
   }
 }
 
-export function PlayJA2GapSample(zSoundFile: Pointer<CHAR8>, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: Pointer<AudioGapList>): UINT32 {
+export function PlayJA2GapSample(zSoundFile: string /* Pointer<CHAR8> */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: Pointer<AudioGapList>): UINT32 {
   let spParms: SOUNDPARMS;
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));

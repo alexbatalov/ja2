@@ -216,7 +216,7 @@ function DisplayShipmentTitles(): void {
 
 function DisplayPreviousShipments(): void {
   let uiCnt: UINT32;
-  let zText: CHAR16[] /* [512] */;
+  let zText: string /* CHAR16[512] */;
   let usPosY: UINT16 = BOBBYR_SHIPMENT_ORDER_NUM_START_Y;
   let uiNumItems: UINT32 = CountNumberValidShipmentForTheShipmentsPage();
   let uiNumberItemsInShipments: UINT32 = 0;

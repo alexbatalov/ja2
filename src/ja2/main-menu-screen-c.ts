@@ -404,10 +404,10 @@ function CreateDestroyBackGroundMouseMask(fCreate: boolean): void {
 function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
   /* static */ let fButtonsCreated: boolean = false;
   let cnt: INT32;
-  let filename: SGPFILENAME;
+  let filename: string /* SGPFILENAME */;
   let sSlot: INT16;
   let iStartLoc: INT32 = 0;
-  let zText: CHAR16[] /* [512] */;
+  let zText: string /* CHAR16[512] */;
 
   if (fCreate) {
     if (fButtonsCreated)

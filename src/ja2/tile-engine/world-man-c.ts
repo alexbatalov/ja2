@@ -1,7 +1,7 @@
 namespace ja2 {
 
 let guiLNCount: UINT32[] /* [9] */;
-/* static */ let gzLevelString: CHAR16[][] /* [9][15] */ = [
+/* static */ let gzLevelString: string[] /* CHAR16[9][15] */ = [
   "",
   "Land    %d",
   "Object  %d",

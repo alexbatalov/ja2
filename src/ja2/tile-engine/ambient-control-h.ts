@@ -19,7 +19,7 @@ export const enum Enum301 {
 }
 
 export interface STEADY_STATE_AMBIENCE {
-  zSoundNames: CHAR8[][] /* [NUM_SOUNDS_PER_TIMEFRAME][SOUND_NAME_SIZE] */;
+  zSoundNames: string[] /* CHAR8[NUM_SOUNDS_PER_TIMEFRAME][SOUND_NAME_SIZE] */;
 }
 
 }

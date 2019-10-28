@@ -585,7 +585,7 @@ function DrawRecordsText(): void {
   // draws the text of the records
   let pCurFinance: FinanceUnitPtr = pCurrentFinance;
   let pTempFinance: FinanceUnitPtr = pFinanceListHead;
-  let sString: wchar_t[] /* [512] */;
+  let sString: string /* wchar_t[512] */;
   let iCounter: INT32 = 0;
   let usX: UINT16;
   let usY: UINT16;
@@ -718,7 +718,7 @@ function InvalidateLapTopScreen(): void {
 function DrawSummaryText(): void {
   let usX: INT16;
   let usY: INT16;
-  let pString: wchar_t[] /* [100] */;
+  let pString: string /* wchar_t[100] */;
   let iBalance: INT32 = 0;
 
   // setup the font stuff
@@ -1169,7 +1169,7 @@ function IncrementCurrentPageFinancialDisplay(): void {
   return;
 }
 
-function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): void {
+function ProcessTransactionString(pString: Pointer<string> /* STR16 */, pFinance: FinanceUnitPtr): void {
   switch (pFinance.value.ubCode) {
     case Enum80.ACCRUED_INTEREST:
       swprintf(pString, "%s", pTransactionText[Enum80.ACCRUED_INTEREST]);
@@ -1266,7 +1266,7 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       swprintf(pString, pTransactionText[Enum80.PAYMENT_TO_NPC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
     case (Enum80.TRAIN_TOWN_MILITIA): {
-      let str: UINT16[] /* [128] */;
+      let str: string /* UINT16[128] */;
       let ubSectorX: UINT8;
       let ubSectorY: UINT8;
       ubSectorX = SECTORX(pFinance.value.ubSecondCode);
@@ -1292,7 +1292,7 @@ function DisplayFinancePageNumberAndDateRange(): void {
   let iCounter: INT32 = 0;
   let uiLastDate: UINT32;
   let pTempFinance: FinanceUnitPtr = pFinanceListHead;
-  let sString: wchar_t[] /* [50] */;
+  let sString: string /* wchar_t[50] */;
 
   // setup the font stuff
   SetFont(FINANCE_TEXT_FONT());
@@ -1609,7 +1609,7 @@ function LoadInRecords(uiPage: UINT32): boolean {
   return true;
 }
 
-export function InsertCommasForDollarFigure(pString: STR16): void {
+export function InsertCommasForDollarFigure(pString: string /* STR16 */): void {
   let sCounter: INT16 = 0;
   let sZeroCount: INT16 = 0;
   let sTempCounter: INT16 = 0;
@@ -1664,7 +1664,7 @@ export function InsertCommasForDollarFigure(pString: STR16): void {
   return;
 }
 
-export function InsertDollarSignInToString(pString: STR16): void {
+export function InsertDollarSignInToString(pString: string /* STR16 */): void {
   // run to end of string, copy everything in string 2 places right, insert a space at pString[ 1 ] and a L'$' at pString[ 0 ]
 
   let iCounter: INT32 = 0;

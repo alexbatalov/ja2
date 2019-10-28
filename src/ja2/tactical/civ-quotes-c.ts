@@ -83,7 +83,7 @@ interface QUOTE_SYSTEM_STRUCT {
 
 let gCivQuoteData: QUOTE_SYSTEM_STRUCT;
 
-let gzCivQuote: INT16[] /* [320] */;
+let gzCivQuote: string /* INT16[320] */;
 let gusCivQuoteBoxWidth: UINT16;
 let gusCivQuoteBoxHeight: UINT16;
 
@@ -95,8 +95,8 @@ function CopyNumEntriesIntoQuoteStruct(): void {
   }
 }
 
-function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<INT16>): boolean {
-  let zFileName: UINT8[] /* [164] */;
+function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<string> /* Pointer<INT16> */): boolean {
+  let zFileName: string /* UINT8[164] */;
 
   // Build filename....
   if (ubCivQuoteID == CIV_QUOTE_HINT) {
@@ -275,7 +275,7 @@ function QuoteOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
 export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryID: UINT8, sX: INT16, sY: INT16): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
-  let zQuote: INT16[] /* [320] */;
+  let zQuote: string /* INT16[320] */;
 
   // OK, do we have another on?
   if (gCivQuoteData.bActive) {

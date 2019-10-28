@@ -28,15 +28,15 @@ export let giProfileCount: INT32;
 // they are required for the String() function, which is NOT a
 // debug-mode only function, it's used in release-mode as well! -- DB
 
-let gubAssertString: UINT8[] /* [128] */;
+let gubAssertString: string /* UINT8[128] */;
 
 const MAX_MSG_LENGTH2 = 512;
-let gbTmpDebugString: UINT8[][] /* [8][MAX_MSG_LENGTH2] */;
+let gbTmpDebugString: string[] /* UINT8[8][MAX_MSG_LENGTH2] */;
 let gubStringIndex: UINT8 = 0;
 
 // This is NOT a _DEBUG only function! It is also needed in
 // release mode builds. -- DB
-export function String(String: Pointer<char>, ...args: any[]): Pointer<UINT8> {
+export function String(String: string /* Pointer<char> */, ...args: any[]): string /* Pointer<UINT8> */ {
   let ArgPtr: va_list;
   let usIndex: UINT8;
 

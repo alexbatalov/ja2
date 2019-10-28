@@ -9,8 +9,8 @@ function InitEditorItemStatsButtons(): void {
 }
 
 function InitEditorMercsToolbar(): void {
-  let TempString: INT16[] /* [30] */;
-  let FaceDirs: Pointer<INT16>[] /* [8] */ = [
+  let TempString: string /* INT16[30] */;
+  let FaceDirs: string[] /* Pointer<INT16>[8] */ = [
     "north",
     "northeast",
     "east",

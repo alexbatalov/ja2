@@ -290,7 +290,7 @@ function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): boolean {
   return true;
 }
 
-function IsSTCIETRLEFile(ImageFile: Pointer<CHAR8>): boolean {
+function IsSTCIETRLEFile(ImageFile: string /* Pointer<CHAR8> */): boolean {
   let hFile: HWFILE;
   let Header: STCIHeader;
   let uiBytesRead: UINT32;

@@ -288,12 +288,12 @@ let guiSmallSoldiersFace: UINT32[] /* [MAX_CHARACTER_COUNT] */;
 let gubNumberMercsInArray: UINT8;
 
 // The subutitled text for what the merc is saying
-let gsShopKeeperTalkingText: wchar_t[] /* [SKI_SUBTITLE_TEXT_SIZE] */;
+let gsShopKeeperTalkingText: string /* wchar_t[SKI_SUBTITLE_TEXT_SIZE] */;
 
 let gusPositionOfSubTitlesX: UINT16 = 0;
 
 // the transfer funds string
-let gzSkiAtmTransferString: CHAR16[] /* [32] */;
+let gzSkiAtmTransferString: string /* CHAR16[32] */;
 
 let gfExitSKIDueToMessageBox: boolean = false;
 
@@ -515,7 +515,7 @@ export function ShopKeeperScreenShutdown(): UINT32 {
 function EnterShopKeeperInterface(): boolean {
   let VObjectDesc: VOBJECT_DESC;
   let ubCnt: UINT8;
-  let zTemp: CHAR8[] /* [32] */;
+  let zTemp: string /* CHAR8[32] */;
   let vs_desc: VSURFACE_DESC;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -971,7 +971,7 @@ function HandleShopKeeperInterface(): void {
 
 function RenderShopKeeperInterface(): boolean {
   let hPixHandle: HVOBJECT;
-  let zMoney: CHAR16[] /* [128] */;
+  let zMoney: string /* CHAR16[128] */;
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
   let SrcRect: SGPRect;
@@ -1808,7 +1808,7 @@ function CalculateFirstItemIndexOnPage(): void {
 }
 
 function DisplayArmsDealerCurrentInventoryPage(): void {
-  let zTemp: CHAR16[] /* [32] */;
+  let zTemp: string /* CHAR16[32] */;
   let uiFontHeight: UINT16;
   let usCnt: UINT16 = 0;
   let usPosX: UINT16;
@@ -1919,7 +1919,7 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
 }
 
 function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, usPosY: UINT16, pItemObject: Pointer<OBJECTTYPE>, fHatchedOut: boolean, ubItemArea: UINT8): UINT32 {
-  let zTemp: CHAR16[] /* [64] */;
+  let zTemp: string /* CHAR16[64] */;
   let hVObject: HVOBJECT;
   let hPixHandle: HVOBJECT;
   let pItem: Pointer<INVTYPE>;
@@ -2463,7 +2463,7 @@ function ItemConditionModifier(usItemIndex: UINT16, bStatus: INT8): FLOAT {
 function DisplayArmsDealerOfferArea(): void {
   let sCnt: INT16;
   let sCount: INT16;
-  let zTemp: CHAR16[] /* [32] */;
+  let zTemp: string /* CHAR16[32] */;
   let uiTotalCost: UINT32;
   let usPosX: UINT16;
   let usPosY: UINT16;
@@ -2588,7 +2588,7 @@ function RemoveItemFromArmsDealerOfferArea(bSlotId: INT8, fKeepItem: boolean): b
 }
 
 function SetSkiRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Pointer<MOUSE_REGION>, ubScreenArea: UINT8): void {
-  let zHelpText: CHAR16[] /* [512] */;
+  let zHelpText: string /* CHAR16[512] */;
 
   Assert(pRegion);
 
@@ -2599,8 +2599,8 @@ function SetSkiRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Pointer
 }
 
 function SetSkiFaceRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Pointer<MOUSE_REGION>, ubScreenArea: UINT8): void {
-  let zTempText: CHAR16[] /* [512] */;
-  let zHelpText: CHAR16[] /* [512] */;
+  let zTempText: string /* CHAR16[512] */;
+  let zHelpText: string /* CHAR16[512] */;
 
   Assert(pRegion);
 
@@ -2684,7 +2684,7 @@ function RemoveItemFromPlayersOfferArea(bSlot: INT8): boolean {
 function DisplayPlayersOfferArea(): void {
   let sCnt: INT16;
   let sCount: INT16;
-  let zTemp: CHAR16[] /* [32] */;
+  let zTemp: string /* CHAR16[32] */;
   let uiTotalCost: UINT32;
   let usPosX: UINT16;
   let usPosY: UINT16;
@@ -3672,7 +3672,7 @@ function IsGunOrAmmoOfSameTypeSelected(pItemObject: Pointer<OBJECTTYPE>): boolea
   return false;
 }
 
-export function InitShopKeeperSubTitledText(pString: STR16): void {
+export function InitShopKeeperSubTitledText(pString: string /* STR16 */): void {
   // Clear the contents of the subtitle text
   memset(gsShopKeeperTalkingText, 0, SKI_SUBTITLE_TEXT_SIZE);
 
@@ -4066,7 +4066,7 @@ function HandleAtmOK(): void {
 }
 
 function AddNumberToSkiAtm(ubNumber: UINT8): void {
-  let zTemp: CHAR16[] /* [16] */;
+  let zTemp: string /* CHAR16[16] */;
 
   // make sure to durt the panel
   gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
@@ -4101,7 +4101,7 @@ function AddNumberToSkiAtm(ubNumber: UINT8): void {
 }
 
 function DisplaySkiAtmTransferString(): void {
-  let zSkiAtmTransferString: CHAR16[] /* [32] */;
+  let zSkiAtmTransferString: string /* CHAR16[32] */;
   let uiMoney: UINT32;
 
   // Erase the background behind the string
@@ -4178,8 +4178,8 @@ function EnableDisableSkiAtmButtons(): void {
 }
 
 function HandleCurrentModeText(ubMode: UINT8): void {
-  let zTemp: CHAR16[] /* [128] */;
-  let zMoney: CHAR16[] /* [128] */;
+  let zTemp: string /* CHAR16[128] */;
+  let zMoney: string /* CHAR16[128] */;
   /* static */ let uiLastTime: UINT32 = 0;
   let uiCurTime: UINT32 = GetJA2Clock();
   /* static */ let ubLastMode: UINT8 = 0;
@@ -4767,7 +4767,7 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: boolean):
   }
 }
 
-export function DoSkiMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
+export function DoSkiMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let pCenteringRect: SGPRect = [ 0, 0, 639, 339 ];
 
   // reset exit mode
@@ -5989,7 +5989,7 @@ function EvaluateInvSlot(pInvSlot: Pointer<INVENTORY_IN_SLOT>): UINT32 {
 // round off reapir times shown to the near quarter-hour
 const REPAIR_MINUTES_INTERVAL = 15;
 
-function BuildRepairTimeString(sString: wchar_t[] /* [] */, uiTimeInMinutesToFixItem: UINT32): void {
+function BuildRepairTimeString(sString: Pointer<string> /* wchar_t[] */ /* [] */, uiTimeInMinutesToFixItem: UINT32): void {
   let usNumberOfHoursToFixItem: UINT16 = 0;
 
   // if it's 0, it shouldn't be up here any more!
@@ -6022,7 +6022,7 @@ function BuildRepairTimeString(sString: wchar_t[] /* [] */, uiTimeInMinutesToFix
   }
 }
 
-function BuildDoneWhenTimeString(sString: wchar_t[] /* [] */, ubArmsDealer: UINT8, usItemIndex: UINT16, ubElement: UINT8): void {
+function BuildDoneWhenTimeString(sString: Pointer<string> /* wchar_t[] */ /* [] */, ubArmsDealer: UINT8, usItemIndex: UINT16, ubElement: UINT8): void {
   let uiDoneTime: UINT32;
   let uiDay: UINT32;
   let uiHour: UINT32;
@@ -6063,9 +6063,9 @@ function BuildDoneWhenTimeString(sString: wchar_t[] /* [] */, ubArmsDealer: UINT
   }
 }
 
-function BuildItemHelpTextString(sString: wchar_t[] /* [] */, pInv: Pointer<INVENTORY_IN_SLOT>, ubScreenArea: UINT8): void {
-  let zHelpText: CHAR16[] /* [512] */;
-  let zRepairTime: CHAR16[] /* [64] */;
+function BuildItemHelpTextString(sString: Pointer<string> /* wchar_t[] */ /* [] */, pInv: Pointer<INVENTORY_IN_SLOT>, ubScreenArea: UINT8): void {
+  let zHelpText: string /* CHAR16[512] */;
+  let zRepairTime: string /* CHAR16[64] */;
 
   if (pInv != null) {
     GetHelpTextForItem(zHelpText, addressof(pInv.value.ItemObject), null);

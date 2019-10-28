@@ -935,7 +935,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: b
   let uiRenderBuffer: UINT32;
   let sPtsAvailable: INT16 = 0;
   let usMaximumPts: UINT16 = 0;
-  let sString: CHAR16[] /* [32] */;
+  let sString: string /* CHAR16[32] */;
   let usTextWidth: UINT16;
   let fAtGunRange: boolean = false;
   let fShowNumber: boolean = false;
@@ -1665,7 +1665,7 @@ function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDe
   return true;
 }
 
-export function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextString: STR16, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): boolean {
+export function SetFaceTalking(iFaceIndex: INT32, zSoundFile: string /* Pointer<CHAR8> */, zTextString: string /* STR16 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): boolean {
   let pFace: Pointer<FACETYPE>;
 
   pFace = addressof(gFacesData[iFaceIndex]);

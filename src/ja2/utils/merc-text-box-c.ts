@@ -24,7 +24,7 @@ const MAX_NUMBER_OF_POPUP_BOXES = 10;
 // MercTextBox.h
 
 // filenames for border popup .sti's
-let zMercBorderPopupFilenames: STR8[] /* [] */ = [
+let zMercBorderPopupFilenames: string[] /* STR8[] */ = [
   "INTERFACE\\TactPopUp.sti",
   "INTERFACE\\TactRedPopUp.sti",
   "INTERFACE\\TactBluePopUp.sti",
@@ -33,7 +33,7 @@ let zMercBorderPopupFilenames: STR8[] /* [] */ = [
 ];
 
 // filenames for background popup .pcx's
-let zMercBackgroundPopupFilenames: STR8[] /* [] */ = [
+let zMercBackgroundPopupFilenames: string[] /* STR8[] */ = [
   "INTERFACE\\TactPopupBackground.pcx",
   "INTERFACE\\TactPopupWhiteBackground.pcx",
   "INTERFACE\\TactPopupGreyBackground.pcx",
@@ -252,7 +252,7 @@ function GetPopUpBoxIndex(iId: INT32): Pointer<MercPopUpBox> {
   return gpPopUpBoxList[iId];
 }
 
-export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIndex: UINT8, pString: STR16, usWidth: UINT16, usMarginX: UINT16, usMarginTopY: UINT16, usMarginBottomY: UINT16, pActualWidth: Pointer<UINT16>, pActualHeight: Pointer<UINT16>): INT32 {
+export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIndex: UINT8, pString: string /* STR16 */, usWidth: UINT16, usMarginX: UINT16, usMarginTopY: UINT16, usMarginBottomY: UINT16, pActualWidth: Pointer<UINT16>, pActualHeight: Pointer<UINT16>): INT32 {
   let usNumberVerticalPixels: UINT16;
   let usNumberOfLines: UINT16;
   let usTextWidth: UINT16;

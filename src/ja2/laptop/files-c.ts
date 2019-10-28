@@ -111,7 +111,7 @@ const enum Enum76 {
 // mouse regions
 let pFilesRegions: MOUSE_REGION[] /* [MAX_FILES_PAGE] */;
 
-function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: STR8, pSecondPicFile: STR8): UINT32 {
+function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: string /* STR8 */, pSecondPicFile: string /* STR8 */): UINT32 {
   // adds Files item to player's log(Files List), returns unique id number of it
   // outside of the Files system(the code in this .c file), this is the only function you'll ever need
   let uiId: UINT32 = 0;
@@ -293,7 +293,7 @@ function RemoveFiles(): void {
   return;
 }
 
-function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: STR8, pSecondPicFile: STR8, fRead: boolean): UINT32 {
+function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: string /* STR8 */, pSecondPicFile: string /* STR8 */, fRead: boolean): UINT32 {
   let uiId: UINT32 = 0;
   let pFiles: FilesUnitPtr = pFilesListHead;
 
@@ -381,8 +381,8 @@ function OpenAndReadFilesFile(): void {
   let uiDate: UINT32;
   let iBytesRead: INT32 = 0;
   let uiByteCount: UINT32 = 0;
-  let pFirstFilePath: CHAR8[] /* [128] */;
-  let pSecondFilePath: CHAR8[] /* [128] */;
+  let pFirstFilePath: string /* CHAR8[128] */;
+  let pSecondFilePath: string /* CHAR8[128] */;
   let ubFormat: UINT8;
   let fRead: boolean;
 
@@ -439,8 +439,8 @@ function OpenAndWriteFilesFile(): boolean {
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
   let pFilesList: FilesUnitPtr = pFilesListHead;
-  let pFirstFilePath: CHAR8[] /* [128] */;
-  let pSecondFilePath: CHAR8[] /* [128] */;
+  let pFirstFilePath: string /* CHAR8[128] */;
+  let pSecondFilePath: string /* CHAR8[128] */;
 
   memset(addressof(pFirstFilePath), 0, sizeof(pFirstFilePath));
   memset(addressof(pSecondFilePath), 0, sizeof(pSecondFilePath));
@@ -640,7 +640,7 @@ function DisplayFormattedText(): boolean {
   let iHeight: INT32 = 0;
   let iOffSet: INT32 = 0;
   let iMessageCode: INT32;
-  let sString: wchar_t[] /* [2048] */;
+  let sString: string /* wchar_t[2048] */;
   let hHandle: HVOBJECT;
   let uiFirstTempPicture: UINT32;
   let uiSecondTempPicture: UINT32;
@@ -817,7 +817,7 @@ function DisplayFormattedText(): boolean {
 
 function HandleSpecialFiles(ubFormat: UINT8): boolean {
   let iCounter: INT32 = 0;
-  let sString: wchar_t[] /* [2048] */;
+  let sString: string /* wchar_t[2048] */;
   let pTempString: FileStringPtr = null;
   let pLocatorString: FileStringPtr = null;
   let iTotalYPosition: INT32 = 0;
@@ -997,7 +997,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
   return true;
 }
 
-function AddStringToFilesList(pString: STR16): void {
+function AddStringToFilesList(pString: string /* STR16 */): void {
   let pFileString: FileStringPtr;
   let pTempString: FileStringPtr = pFileStringList;
 
@@ -1306,9 +1306,9 @@ function CheckForUnreadFiles(): void {
   }
 }
 
-function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): boolean {
+function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* STR */): boolean {
   let iCounter: INT32 = 0;
-  let sString: wchar_t[] /* [2048] */;
+  let sString: string /* wchar_t[2048] */;
   let pTempString: FileStringPtr = null;
   let pLocatorString: FileStringPtr = null;
   let iTotalYPosition: INT32 = 0;
@@ -1323,7 +1323,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): bool
   let uiPicture: UINT32;
   let hHandle: HVOBJECT;
   let VObjectDesc: VOBJECT_DESC;
-  let sTemp: CHAR[] /* [128] */;
+  let sTemp: string /* CHAR[128] */;
 
   iOffset = ubFileOffsets[iFileNumber];
 

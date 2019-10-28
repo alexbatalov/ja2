@@ -471,7 +471,7 @@ function StartInterrupt(): void {
 
   if (pSoldier.value.bTeam == OUR_TEAM) {
     // start interrupts for everyone on our side at once
-    let sTemp: INT16[] /* [255] */;
+    let sTemp: string /* INT16[255] */;
     let ubInterrupters: UINT8 = 0;
     let iSquad: INT32;
     let iCounter: INT32;

@@ -246,7 +246,7 @@ export function RenderAimArchives(): void {
   let i: UINT16 = 0;
   let ubNumRows: UINT8 = 0;
   let uiStartLoc: UINT32 = 0;
-  let sText: wchar_t[] /* [400] */;
+  let sText: string /* wchar_t[400] */;
 
   DrawAimDefaults();
   DisableAimButton();
@@ -413,8 +413,8 @@ function DisplayAlumniOldMercPopUp(): void {
   let hFaceHandle: HVOBJECT;
   //	WRAPPED_STRING *pFirstWrappedString, *pTempWrappedString;
   let usHeight: UINT16 = GetFontHeight(AIM_ALUMNI_POPUP_FONT());
-  let sName: wchar_t[] /* [AIM_ALUMNI_NAME_SIZE] */;
-  let sDesc: wchar_t[] /* [AIM_ALUMNI_DECRIPTION_SIZE] */;
+  let sName: string /* wchar_t[AIM_ALUMNI_NAME_SIZE] */;
+  let sDesc: string /* wchar_t[AIM_ALUMNI_DECRIPTION_SIZE] */;
   let uiStartLoc: UINT32;
   let usStringPixLength: UINT16;
 

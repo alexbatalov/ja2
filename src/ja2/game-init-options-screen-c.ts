@@ -869,7 +869,7 @@ function DoneFadeInForExitGameInitOptionScreen(): void {
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 }
 
-function DoGioMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
+function DoGioMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // reset exit mode

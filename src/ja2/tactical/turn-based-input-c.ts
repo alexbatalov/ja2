@@ -2282,7 +2282,7 @@ export function HandleCheckForExitArrowsInput(fAdjustConfirm: boolean): boolean 
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pExitingSectorHelpText[Enum336.EXIT_GUI_ESCORTED_CHARACTERS_CANT_LEAVE_SECTOR_ALONE_STR], MercPtrs[gusSelectedSoldier].value.name);
       gfLoneEPCAttemptingTraversal = false;
     } else if (gubLoneMercAttemptingToAbandonEPCs) {
-      let str: UINT16[] /* [256] */;
+      let str: string /* UINT16[256] */;
       if (gubLoneMercAttemptingToAbandonEPCs == 1) {
         // Use the singular version of the string
         if (gMercProfiles[MercPtrs[gusSelectedSoldier].value.ubProfile].bSex == Enum272.MALE) {
