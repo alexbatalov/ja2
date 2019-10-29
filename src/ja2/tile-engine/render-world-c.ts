@@ -3131,9 +3131,9 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
   let fOutTop: boolean = false;
   let fOutBottom: boolean = false;
 
-  let dOpp: double;
-  let dAdj: double;
-  let dAngle: double;
+  let dOpp: DOUBLE;
+  let dAdj: DOUBLE;
+  let dAngle: DOUBLE;
 
   let sTopLeftWorldX: INT16;
   let sTopLeftWorldY: INT16;
@@ -3148,10 +3148,10 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
   let sTempPosY_W: INT16;
 
   // For debug text for all 4 angles
-  let at1: double;
-  let at2: double;
-  let at3: double;
-  let at4: double;
+  let at1: DOUBLE;
+  let at2: DOUBLE;
+  let at3: DOUBLE;
+  let at4: DOUBLE;
 
   let sX_S: INT16;
   let sY_S: INT16;

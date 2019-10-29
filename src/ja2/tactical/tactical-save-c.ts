@@ -1940,7 +1940,7 @@ export function GetSectorFlagStatus(sMapX: INT16, sMapY: INT16, bMapZ: UINT8, ui
 export function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8, pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, uiFlags: UINT32): boolean {
   let uiNumberOfItems: UINT32;
   let pWorldItems: Pointer<WORLDITEM> = null;
-  let i: UINT;
+  let i: UINT32;
   let bCount: UINT8 = 0;
   let uiFlagsForWorldItems: UINT16 = 0;
   let usFlagsForRottingCorpse: UINT16 = 0;

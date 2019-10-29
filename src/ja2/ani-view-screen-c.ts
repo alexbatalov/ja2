@@ -242,8 +242,8 @@ function GetAnimStateFromName(zName: string /* Pointer<INT8> */): UINT16 {
 function BuildListFile(): void {
   let infoFile: Pointer<FILE>;
   let currFilename: string /* char[128] */;
-  let numEntries: int = 0;
-  let cnt: int;
+  let numEntries: number = 0;
+  let cnt: number;
   let usState: UINT16;
   let zError: string /* INT16[128] */;
 

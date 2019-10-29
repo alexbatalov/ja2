@@ -423,7 +423,7 @@ function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: string /* STR
 //
 //************************************************************************
 
-function CompareFileNames(arg1: string[] /* Pointer<CHAR8>[] */, arg2: Pointer<Pointer<FileHeaderStruct>>): INT {
+function CompareFileNames(arg1: string[] /* Pointer<CHAR8>[] */, arg2: Pointer<Pointer<FileHeaderStruct>>): INT32 {
   let sSearchKey: string /* CHAR8[FILENAME_SIZE] */;
   let sFileNameWithPath: string /* CHAR8[FILENAME_SIZE] */;
   let TempFileHeader: Pointer<FileHeaderStruct>;

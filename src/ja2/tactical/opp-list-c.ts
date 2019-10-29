@@ -2521,7 +2521,7 @@ export function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, u
               fContactSeen = true;
             } else {
               if (MercPtrs[0].value.bLife < 10) {
-                let i: int = 0;
+                let i: number = 0;
               }
             }
           }

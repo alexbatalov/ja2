@@ -271,13 +271,13 @@ export interface KEY_ON_RING {
 }
 
 export interface THROW_PARAMS {
-  dX: float;
-  dY: float;
-  dZ: float;
-  dForceX: float;
-  dForceY: float;
-  dForceZ: float;
-  dLifeSpan: float;
+  dX: FLOAT;
+  dY: FLOAT;
+  dZ: FLOAT;
+  dForceX: FLOAT;
+  dForceY: FLOAT;
+  dForceZ: FLOAT;
+  dLifeSpan: FLOAT;
   ubActionCode: UINT8;
   uiActionData: UINT32;
 }

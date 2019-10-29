@@ -55,7 +55,7 @@ interface OrdListHeader {
 
 interface TEST {
   me: UINT32;
-  you: long;
+  you: number;
   k: Pointer<char>;
   p: Pointer<char>;
 }

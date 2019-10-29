@@ -186,7 +186,7 @@ export function CreateTileDatabase(): void {
             }
           } else {
             // Ate test to see if problems is gone
-            let i: int = 0;
+            let i: number = 0;
           }
         }
 

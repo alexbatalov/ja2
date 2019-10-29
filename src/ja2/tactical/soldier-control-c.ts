@@ -2067,7 +2067,7 @@ function SetSoldierGridNo(pSoldier: Pointer<SOLDIERTYPE>, sNewGridNo: INT16, fFo
     // Adjust speed based on terrain, etc
     SetSoldierAniSpeed(pSoldier);
   } else {
-    let i: int = 0;
+    let i: number = 0;
   }
 }
 
@@ -2082,7 +2082,7 @@ export function EVENT_FireSoldierWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetG
   }
 
   if (pSoldier.value.ubID == 33) {
-    let i: int = 0;
+    let i: number = 0;
   }
 
   // Increment the number of people busy doing stuff because of an attack
@@ -7570,7 +7570,7 @@ function GetActualSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Poin
   // uses of this function, we should be able to use just the first frame...
 
   if (pSoldier.value.usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.usNumberOfObjects) {
-    let i: int = 0;
+    let i: number = 0;
   }
 
   pTrav = addressof(gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.pETRLEObject[pSoldier.value.usAniFrame]);

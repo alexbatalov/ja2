@@ -363,7 +363,7 @@ function InitAimPolicyMenuBar(): boolean {
 }
 
 function ExitAimPolicyMenuBar(): boolean {
-  let i: int;
+  let i: number;
 
   if (!gfAimPolicyMenuBarLoaded)
     return false;
@@ -698,7 +698,7 @@ function BtnPoliciesMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 }
 
 function ResetAimPolicyButtons(): void {
-  let i: int = 0;
+  let i: number = 0;
 
   for (i = 0; i < AIM_POLICY_MENU_BUTTON_AMOUNT; i++) {
     ButtonList[guiPoliciesMenuButton[i]].value.uiFlags &= ~BUTTON_CLICKED_ON;

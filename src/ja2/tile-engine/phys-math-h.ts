@@ -1,20 +1,18 @@
 namespace ja2 {
 
-export type real = float;
-
 const REAL_MAX = FLT_MAX;
 const REAL_MIN = FLT_MIN;
 
 const Epsilon2 = 0.00001;
 
 export interface vector_3 {
-  x: real;
-  y: real;
-  z: real;
+  x: FLOAT;
+  y: FLOAT;
+  z: FLOAT;
 }
 
 interface matrix_3x3 {
-  aElements: real[][] /* [3][3] */;
+  aElements: FLOAT[][] /* [3][3] */;
 }
 
 // DEFINES

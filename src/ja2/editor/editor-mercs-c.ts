@@ -2606,9 +2606,9 @@ function AddNewItemToSelectedMercsInventory(fCreate: boolean): void {
   let iSrcHeight: INT32;
   let iDstWidth: INT32;
   let iDstHeight: INT32;
-  let rScalar: float;
-  let rWidthScalar: float;
-  let rHeightScalar: float;
+  let rScalar: FLOAT;
+  let rWidthScalar: FLOAT;
+  let rHeightScalar: FLOAT;
   let fUnDroppable: boolean;
 
   if (fCreate) {

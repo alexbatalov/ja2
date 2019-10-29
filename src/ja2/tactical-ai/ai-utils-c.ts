@@ -41,7 +41,7 @@ let MovementMode: UINT16[][] /* [LAST_MOVEMENT_ACTION + 1][NUM_URGENCY_STATES] *
   [ Enum193.RUNNING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_MOVE_TO_CLIMB
 ];
 
-export function OKToAttack(pSoldier: Pointer<SOLDIERTYPE>, target: int): INT8 {
+export function OKToAttack(pSoldier: Pointer<SOLDIERTYPE>, target: number): INT8 {
   // can't shoot yourself
   if (target == pSoldier.value.sGridNo)
     return NOSHOOT_MYSELF;

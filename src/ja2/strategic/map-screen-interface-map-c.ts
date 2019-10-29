@@ -1794,7 +1794,7 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
   let pNode: PathStPtr = null;
   let pPastNode: PathStPtr = null;
   let pNextNode: PathStPtr = null;
-  let ubCounter: UINT = 1;
+  let ubCounter: UINT32 = 1;
   let hMapHandle: HVOBJECT;
 
   if (pPath == null) {

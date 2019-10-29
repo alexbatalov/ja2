@@ -8,7 +8,7 @@ namespace ja2 {
 // GoAsFarAsPossibleTowards - C.O. stuff related to current animation esp first aid
 // SetCivilianDestination - C.O. stuff for if we don't control the civ
 
-export function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubPathMode: UINT8, ubWaterOK: UINT8, fFlags: UINT8): int {
+export function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubPathMode: UINT8, ubWaterOK: UINT8, fFlags: UINT8): number {
   let fSkipTilesWithMercs: boolean;
 
   if ((sGridno < 0) || (sGridno >= GRIDSIZE)) {
@@ -73,7 +73,7 @@ export function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT
     return (false); // illegal destination
 }
 
-export function TryToResumeMovement(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): int {
+export function TryToResumeMovement(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): number {
   let ubGottaCancel: UINT8 = false;
   let ubSuccess: UINT8 = false;
 

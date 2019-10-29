@@ -527,7 +527,7 @@ function ResetAimButtons(Buttons: Pointer<UINT32>, uNumberOfButtons: UINT16): vo
 }
 
 export function DisableAimButton(): void {
-  let i: int = 0;
+  let i: number = 0;
 
   for (i = 0; i < NUM_AIM_BOTTOMBUTTONS; i++) {
     if (gCurrentAimPage[i] == guiCurrentLaptopMode)

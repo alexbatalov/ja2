@@ -70,10 +70,10 @@ let gbSmoothWaterStruct: INT16[] /* [] */ = [
   -1,
 ];
 
-export function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
-  let temp: int = 0;
-  let type: int = 0;
-  let FullTile: int = false;
+export function SmoothTerrain(gridno: number, origType: number, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
+  let temp: number = 0;
+  let type: number = 0;
+  let FullTile: number = false;
   let usOldIndex: UINT16;
   let usTempIndex: UINT16;
   let cnt: UINT32;
@@ -219,10 +219,10 @@ function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
   }
 }
 
-function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
-  let temp: int = 0;
-  let type: int = 0;
-  let FullTile: int = false;
+function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
+  let temp: number = 0;
+  let type: number = 0;
+  let FullTile: number = false;
   let usOldIndex: UINT16;
   let usTempIndex: UINT16;
   let cnt: UINT32;
@@ -335,7 +335,7 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: b
 }
 
 function SmoothTerrainWorld(uiCheckType: UINT32): void {
-  let cnt: int;
+  let cnt: number;
   let usIndex: UINT16;
   let NewTile: UINT16;
   // Smooth out entire world surrounding tiles
@@ -352,7 +352,7 @@ function SmoothTerrainWorld(uiCheckType: UINT32): void {
 }
 
 export function SmoothAllTerrainWorld(): void {
-  let cnt: int;
+  let cnt: number;
   let usIndex: UINT16;
   let NewTile: UINT16;
   let uiCheckType: UINT32;
@@ -445,13 +445,13 @@ export function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, f
   }
 }
 
-function SmoothWaterTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
+function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
   // This procedure will calculate the approriate smooth texture for a water texture
   // based on the surrounding water textures. This is done via masking bits within
   // a temp variable, then searching for the right texture and inserting it
-  let temp: int = 0;
-  let type: int = 0;
-  let FullTile: int = false;
+  let temp: number = 0;
+  let type: number = 0;
+  let FullTile: number = false;
   let usOldIndex: UINT16;
   let usTempIndex: UINT16;
   let cnt: UINT32;

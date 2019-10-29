@@ -266,7 +266,7 @@ export function GetFontObject(iFont: INT32): HVOBJECT {
 //
 //*****************************************************************************
 function FindFreeFont(): INT32 {
-  let count: int;
+  let count: number;
 
   for (count = 0; count < MAX_FONTS; count++)
     if (FontObjs[count] == null)
@@ -339,7 +339,7 @@ export function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
   Assert(hSrcVObject != null);
 
   if (ssIndex < 0 || ssIndex > 92) {
-    let i: int = 0;
+    let i: number = 0;
   }
 
   // Get Offsets from Index into structure
@@ -1034,7 +1034,7 @@ export function mprintf_coded(x: INT32, y: INT32, pFontString: string /* Pointer
 //*****************************************************************************
 export function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer<FontTranslationTable>): boolean {
   let pTransTab: Pointer<FontTranslationTable>;
-  let count: int;
+  let count: number;
   let uiRight: UINT16;
   let uiBottom: UINT16;
   let uiPixelDepth: UINT8;

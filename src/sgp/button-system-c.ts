@@ -81,7 +81,7 @@ let gfPendingButtonDeletion: boolean = false;
 //	Finds an available slot for loading button pictures
 //
 function FindFreeButtonSlot(): INT32 {
-  let slot: int;
+  let slot: number;
 
   // Are there any slots available?
   if (ButtonPicsLoaded >= MAX_BUTTON_PICS)
@@ -568,7 +568,7 @@ export function DisableButton(iButtonID: INT32): boolean {
 function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32, DefaultBPP: INT32): boolean {
   let vo_desc: VOBJECT_DESC;
   let Pix: UINT8;
-  let x: int;
+  let x: number;
 
   // Set up the default settings
   if (DefaultBuffer != BUTTON_USE_DEFAULT)
@@ -920,7 +920,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
 //	This function is called by ShutdownButtonSystem.
 //
 function ShutdownButtonImageManager(): void {
-  let x: int;
+  let x: number;
 
   // Remove all QuickButton images
   for (x = 0; x < MAX_BUTTON_PICS; x++)
@@ -1006,7 +1006,7 @@ export function InitButtonSystem(): boolean {
 //	this function.
 //
 export function ShutdownButtonSystem(): void {
-  let x: int;
+  let x: number;
 
   // Kill off all buttons in the system
   for (x = 0; x < MAX_BUTTONS; x++) {

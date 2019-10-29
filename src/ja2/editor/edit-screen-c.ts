@@ -426,7 +426,7 @@ function EditModeShutdown(): boolean {
 //	Forces all land on the map to have the same ground texture.
 //
 function SetBackgroundTexture(): void {
-  let cnt: int;
+  let cnt: number;
   let usIndex: UINT16;
   let Dummy: UINT16;
 

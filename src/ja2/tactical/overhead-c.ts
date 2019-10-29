@@ -748,7 +748,7 @@ export function ExecuteOverhead(): boolean {
             if (pSoldier.value.sGridNo != NOWHERE) {
               pSoldier.value.ubFadeLevel = gpWorldLevelData[pSoldier.value.sGridNo].pLandHead.value.ubShadeLevel;
             } else {
-              let i: int = 0;
+              let i: number = 0;
             }
             pSoldier.value.fBeginFade = true;
             pSoldier.value.sLocationOfFadeStart = pSoldier.value.sGridNo;

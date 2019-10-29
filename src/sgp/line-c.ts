@@ -19,13 +19,13 @@ namespace ja2 {
 //
 //**************************************************************************
 
-let giImageWidth: int = 0;
-let giClipXMin: int = 0;
-let giClipXMax: int = 0;
-let giClipYMin: int = 0;
-let giClipYMax: int = 0;
+let giImageWidth: number = 0;
+let giClipXMin: number = 0;
+let giClipXMax: number = 0;
+let giClipYMin: number = 0;
+let giClipYMax: number = 0;
 
-export function SetClippingRegionAndImageWidth(iImageWidth: int, iClipStartX: int, iClipStartY: int, iClipWidth: int, iClipHeight: int): void {
+export function SetClippingRegionAndImageWidth(iImageWidth: number, iClipStartX: number, iClipStartY: number, iClipWidth: number, iClipHeight: number): void {
   giImageWidth = iImageWidth;
   giClipXMin = iClipStartX;
   giClipXMax = iClipStartX + iClipWidth - 1;
@@ -57,11 +57,11 @@ function Clipt(denom: FLOAT, num: FLOAT, tE: Pointer<FLOAT>, tL: Pointer<FLOAT>)
   return accept;
 }
 
-function ClipPoint(x: int, y: int): boolean {
+function ClipPoint(x: number, y: number): boolean {
   return x <= giClipXMax && x >= giClipXMin && y <= giClipYMax && y >= giClipYMin;
 }
 
-function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Pointer<int>): boolean {
+function Clip2D(ix0: Pointer<number>, iy0: Pointer<number>, ix1: Pointer<number>, iy1: Pointer<number>): boolean {
   let visible: boolean;
   let te: FLOAT;
   let tl: FLOAT;
@@ -114,20 +114,20 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
 }
 
 /* Draws a line between the specified endpoints in color Color. */
-export function LineDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
-  let Temp: int;
-  let AdjUp: int;
-  let AdjDown: int;
-  let ErrorTerm: int;
-  let XAdvance: int;
-  let XDelta: int;
-  let YDelta: int;
-  let WholeStep: int;
-  let InitialPixelCount: int;
-  let FinalPixelCount: int;
-  let i: int;
-  let RunLength: int;
-  let ScreenWidth: int = giImageWidth / 2;
+export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Pointer<char>): void {
+  let Temp: number;
+  let AdjUp: number;
+  let AdjDown: number;
+  let ErrorTerm: number;
+  let XAdvance: number;
+  let XDelta: number;
+  let YDelta: number;
+  let WholeStep: number;
+  let InitialPixelCount: number;
+  let FinalPixelCount: number;
+  let i: number;
+  let RunLength: number;
+  let ScreenWidth: number = giImageWidth / 2;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;
 
@@ -323,8 +323,8 @@ export function PixelDraw(fClip: boolean, xp: INT32, yp: INT32, sColor: INT16, p
 
 /* Draws a horizontal run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-function DrawHorizontalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
-  let i: int;
+function DrawHorizontalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): void {
+  let i: number;
   let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;
@@ -341,8 +341,8 @@ function DrawHorizontalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, Run
 
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
-  let i: int;
+function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): void {
+  let i: number;
   let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;
@@ -358,7 +358,7 @@ function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLe
 }
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-export function RectangleDraw(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
+export function RectangleDraw(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Pointer<char>): void {
   LineDraw(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);
@@ -374,7 +374,7 @@ export function RectangleDraw(fClip: boolean, XStart: int, YStart: int, XEnd: in
  ***********************************************************************************/
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-export function RectangleDraw8(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
+export function RectangleDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Pointer<char>): void {
   LineDraw8(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);
@@ -382,20 +382,20 @@ export function RectangleDraw8(fClip: boolean, XStart: int, YStart: int, XEnd: i
 }
 
 /* Draws a line between the specified endpoints in color Color. */
-function LineDraw8(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
-  let Temp: int;
-  let AdjUp: int;
-  let AdjDown: int;
-  let ErrorTerm: int;
-  let XAdvance: int;
-  let XDelta: int;
-  let YDelta: int;
-  let WholeStep: int;
-  let InitialPixelCount: int;
-  let FinalPixelCount: int;
-  let i: int;
-  let RunLength: int;
-  let ScreenWidth: int = giImageWidth;
+function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Pointer<char>): void {
+  let Temp: number;
+  let AdjUp: number;
+  let AdjDown: number;
+  let ErrorTerm: number;
+  let XAdvance: number;
+  let XDelta: number;
+  let YDelta: number;
+  let WholeStep: number;
+  let InitialPixelCount: number;
+  let FinalPixelCount: number;
+  let i: number;
+  let RunLength: number;
+  let ScreenWidth: number = giImageWidth;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;
 
@@ -571,8 +571,8 @@ function LineDraw8(fClip: boolean, XStart: int, YStart: int, XEnd: int, YEnd: in
 
 /* Draws a horizontal run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-function DrawHorizontalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
-  let i: int;
+function DrawHorizontalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): void {
+  let i: number;
   let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;
@@ -588,8 +588,8 @@ function DrawHorizontalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, Ru
 
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-function DrawVerticalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
-  let i: int;
+function DrawVerticalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): void {
+  let i: number;
   let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;

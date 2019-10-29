@@ -222,7 +222,7 @@ function InitAimHistoryMenuBar(): boolean {
 }
 
 function ExitAimHistoryMenuBar(): boolean {
-  let i: int;
+  let i: number;
 
   //	DeleteVideoObjectFromIndex(guiHistoryMenuButtonImage);
   UnloadButtonImage(guiHistoryMenuButtonImage);
@@ -452,7 +452,7 @@ function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 }
 
 function ResetAimHistoryButtons(): void {
-  let i: int = 0;
+  let i: number = 0;
 
   for (i = 0; i < AIM_HISTORY_MENU_BUTTON_AMOUNT; i++) {
     ButtonList[guiHistoryMenuButton[i]].value.uiFlags &= ~BUTTON_CLICKED_ON;

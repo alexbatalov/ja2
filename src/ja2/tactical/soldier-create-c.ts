@@ -2284,7 +2284,7 @@ function GetPythDistanceFromPalace(sSectorX: INT16, sSectorY: INT16): UINT8 {
   let ubDistance: UINT8 = 0;
   let sRows: INT16 = 0;
   let sCols: INT16 = 0;
-  let fValue: float = 0.0;
+  let fValue: FLOAT = 0.0;
 
   // grab number of rows and cols
   sRows = (Math.abs((sSectorX) - (PALACE_SECTOR_X)));

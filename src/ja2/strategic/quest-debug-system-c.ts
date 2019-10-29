@@ -3128,7 +3128,7 @@ function WhichPanelShouldTalkingMercUse(): UINT8 {
 }
 
 function DisableFactMouseRegions(): void {
-  let i: UINT;
+  let i: UINT32;
 
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_FACTS; i++) {
     MSYS_DisableRegion(addressof(gFactListRegion[i]));
@@ -3136,7 +3136,7 @@ function DisableFactMouseRegions(): void {
 }
 
 function EnableFactMouseRegions(): void {
-  let i: UINT;
+  let i: UINT32;
 
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_FACTS; i++) {
     MSYS_EnableRegion(addressof(gFactListRegion[i]));

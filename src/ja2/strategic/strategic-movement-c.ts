@@ -1931,7 +1931,7 @@ export function RemoveGroup(ubGroupID: UINT8): void {
   pGroup = GetGroup(ubGroupID);
 
   if (ubGroupID == 51) {
-    let i: int = 0;
+    let i: number = 0;
   }
 
   Assert(pGroup);

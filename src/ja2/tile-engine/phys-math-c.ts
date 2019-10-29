@@ -31,7 +31,7 @@ export function VAdd(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
   return c;
 }
 
-export function VMultScalar(a: Pointer<vector_3>, b: real): vector_3 {
+export function VMultScalar(a: Pointer<vector_3>, b: FLOAT): vector_3 {
   let c: vector_3;
 
   c.x = a.value.x * b;
@@ -41,7 +41,7 @@ export function VMultScalar(a: Pointer<vector_3>, b: real): vector_3 {
   return c;
 }
 
-export function VDivScalar(a: Pointer<vector_3>, b: real): vector_3 {
+export function VDivScalar(a: Pointer<vector_3>, b: FLOAT): vector_3 {
   let c: vector_3;
 
   c.x = a.value.x / b;
@@ -51,11 +51,11 @@ export function VDivScalar(a: Pointer<vector_3>, b: real): vector_3 {
   return c;
 }
 
-export function VDotProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): real {
+export function VDotProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): FLOAT {
   return (a.value.x * b.value.x) + (a.value.y * b.value.y) + (a.value.z * b.value.z);
 }
 
-function VPerpDotProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): real {
+function VPerpDotProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): FLOAT {
   return (a.value.x * b.value.x) - (a.value.y * b.value.y) - (a.value.z * b.value.z);
 }
 
@@ -79,14 +79,14 @@ function VGetPerpendicular(a: Pointer<vector_3>): vector_3 {
   return c;
 }
 
-export function VGetLength(a: Pointer<vector_3>): real {
+export function VGetLength(a: Pointer<vector_3>): FLOAT {
   return Math.sqrt((a.value.x * a.value.x) + (a.value.y * a.value.y) + (a.value.z * a.value.z));
 }
 
 export function VGetNormal(a: Pointer<vector_3>): vector_3 {
   let c: vector_3;
-  let OneOverLength: real;
-  let Length: real;
+  let OneOverLength: FLOAT;
+  let Length: FLOAT;
 
   Length = VGetLength(a);
 

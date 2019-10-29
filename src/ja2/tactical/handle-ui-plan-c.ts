@@ -194,7 +194,7 @@ export function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
 }
 
 export function EndUIPlan(): void {
-  let cnt: int;
+  let cnt: number;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Zero out any planned soldiers

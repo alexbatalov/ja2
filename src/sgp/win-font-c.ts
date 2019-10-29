@@ -142,7 +142,7 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
   let hdc: HDC;
   let rc: RECT;
   let pWinFont: Pointer<HWINFONT>;
-  let len: int;
+  let len: number;
   let RectSize: SIZE;
 
   pWinFont = GetWinFont(iFont);
@@ -232,13 +232,13 @@ export function WinFont_mprintf(iFont: INT32, x: INT32, y: INT32, pFontString: s
   return 1;
 }
 
-function EnumFontFamProc(lplf: Pointer<LOGFONT>, lptm: Pointer<TEXTMETRIC>, dwType: DWORD, lpData: LPARAM): int {
+function EnumFontFamProc(lplf: Pointer<LOGFONT>, lptm: Pointer<TEXTMETRIC>, dwType: number, lpData: LPARAM): number {
   gfEnumSucceed = true;
 
   return true;
 }
 
-function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTEXTMETRICEX>, FontType: int, lParam: LPARAM): int {
+function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTEXTMETRICEX>, FontType: number, lParam: LPARAM): number {
   let szFontName: string /* UINT8[32] */;
 
   sprintf(szFontName, "%S", gzFontName);

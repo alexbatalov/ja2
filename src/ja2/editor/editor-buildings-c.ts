@@ -584,7 +584,7 @@ function DoorToggleLockedCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 
 export function AddLockedDoorCursors(): void {
   let pDoor: Pointer<DOOR>;
-  let i: INT;
+  let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
     pDoor = addressof(DoorTable[i]);
     AddTopmostToHead(pDoor.value.sGridNo, Enum312.ROTATINGKEY1);
@@ -593,7 +593,7 @@ export function AddLockedDoorCursors(): void {
 
 export function RemoveLockedDoorCursors(): void {
   let pDoor: Pointer<DOOR>;
-  let i: INT;
+  let i: INT32;
   let pNode: Pointer<LEVELNODE>;
   let pTemp: Pointer<LEVELNODE>;
   for (i = 0; i < gubNumDoors; i++) {

@@ -840,7 +840,7 @@ export let Threat: THREATTYPE[] /* [MAXMERCS] */;
 
 // threat percentage is based on the certainty of opponent knowledge:
 // opplist value:        -4  -3  -2  -1 SEEN  1    2   3   4   5
-export let ThreatPercent: int[] /* [10] */ = [
+export let ThreatPercent: number[] /* [10] */ = [
   20,
   40,
   60,

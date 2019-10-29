@@ -965,7 +965,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
     if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
       if (pSoldier.value.sGridNo == NOWHERE) {
-        let i: int = 0;
+        let i: number = 0;
       }
 
       if (GetExitGrid(usMapPos, addressof(ExitGrid)) && pSoldier.value.bLevel == 0) {

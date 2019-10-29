@@ -32,8 +32,8 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
   let cY: INT32;
   let cnt: INT32;
   let bBest: INT32;
-  let dLowestDist: real;
-  let dCubeDist: real;
+  let dLowestDist: FLOAT;
+  let dCubeDist: FLOAT;
   let vTableVal: vector_3;
   let vSrcVal: vector_3;
   let vDiffVal: vector_3;

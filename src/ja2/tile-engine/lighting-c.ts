@@ -466,7 +466,7 @@ function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): boo
   bDirection = atan8(iSrcX, iSrcY, iX, iY);
 
   if (usTileNo == 20415 && bDirection == 3) {
-    let i: int = 0;
+    let i: number = 0;
   }
 
   ubTravelCost = gubWorldMovementCosts[usTileNo][bDirection][0];

@@ -12,9 +12,9 @@ export interface REAL_OBJECT {
   fTestEndedWithCollision: boolean;
   fTestPositionNotSet: boolean;
 
-  TestZTarget: real;
-  OneOverMass: real;
-  AppliedMu: real;
+  TestZTarget: FLOAT;
+  OneOverMass: FLOAT;
+  AppliedMu: FLOAT;
 
   Position: vector_3;
   TestTargetPosition: vector_3;
@@ -25,7 +25,7 @@ export interface REAL_OBJECT {
   Force: vector_3;
   CollisionNormal: vector_3;
   CollisionVelocity: vector_3;
-  CollisionElasticity: real;
+  CollisionElasticity: FLOAT;
 
   sGridNo: INT16;
   iID: INT32;

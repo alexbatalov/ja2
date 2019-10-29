@@ -345,11 +345,11 @@ export function FileDelete(strFilename: string /* STR */): boolean {
 export function FileOpen(strFilename: string /* STR */, uiOptions: UINT32, fDeleteOnClose: boolean): HWFILE {
   let hFile: HWFILE;
   let hRealFile: HANDLE;
-  let dwAccess: DWORD;
-  let dwFlagsAndAttributes: DWORD;
+  let dwAccess: number;
+  let dwFlagsAndAttributes: number;
   let hDBFile: HDBFILE;
   let fExists: boolean;
-  let dwCreationFlags: DWORD;
+  let dwCreationFlags: number;
   let hLibFile: HWFILE;
 
   hFile = 0;
@@ -520,8 +520,8 @@ export function FileClose(hFile: HWFILE): void {
 
 export function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): boolean {
   let hRealFile: HANDLE;
-  let dwNumBytesToRead: DWORD;
-  let dwNumBytesRead: DWORD;
+  let dwNumBytesToRead: number;
+  let dwNumBytesRead: number;
   let fRet: boolean = false;
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
@@ -600,8 +600,8 @@ export function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBy
 
 export function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWritten: Pointer<UINT32>): boolean {
   let hRealFile: HANDLE;
-  let dwNumBytesToWrite: DWORD;
-  let dwNumBytesWritten: DWORD;
+  let dwNumBytesToWrite: number;
+  let dwNumBytesWritten: number;
   let fRet: boolean;
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
@@ -752,8 +752,8 @@ function FilePrintf(hFile: HWFILE, strFormatted: string /* Pointer<UINT8> */, ..
 
 export function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): boolean {
   let hRealFile: HANDLE;
-  let lDistanceToMove: LONG;
-  let dwMoveMethod: DWORD;
+  let lDistanceToMove: number;
+  let dwMoveMethod: number;
   let iDistance: INT32 = 0;
 
   let sLibraryID: INT16;
@@ -1201,7 +1201,7 @@ export function GetFileManCurrentDirectory(pcDirectory: Pointer<string> /* STRIN
 
 function DirectoryExists(pcDirectory: string /* STRING512 */): boolean {
   let uiAttribs: UINT32;
-  let uiLastError: DWORD;
+  let uiLastError: number;
 
   uiAttribs = GetFileAttributes(pcDirectory);
 

@@ -2,15 +2,15 @@ namespace ja2 {
 
 export class CQuantizer {
   protected m_pTree: Pointer<NODE>;
-  protected m_nLeafCount: UINT;
+  protected m_nLeafCount: UINT32;
   protected m_pReducibleNodes: Pointer<NODE>[] /* [9] */;
-  protected m_nMaxColors: UINT;
-  protected m_nColorBits: UINT;
+  protected m_nMaxColors: UINT32;
+  protected m_nColorBits: UINT32;
 
-  constructor(nMaxColors: UINT, nColorBits: UINT) {
+  constructor(nMaxColors: UINT32, nColorBits: UINT32) {
     m_pTree = null;
     m_nLeafCount = 0;
-    for (let i: int = 0; i <= nColorBits; i++)
+    for (let i: number = 0; i <= nColorBits; i++)
       m_pReducibleNodes[i] = null;
     m_nMaxColors = nMaxColors;
     m_nColorBits = nColorBits;
@@ -21,13 +21,13 @@ export class CQuantizer {
       DeleteTree(addressof(m_pTree));
   }
 
-  ProcessImage(pData: Pointer<BYTE>, iWidth: int, iHeight: int): boolean {
+  ProcessImage(pData: Pointer<BYTE>, iWidth: number, iHeight: number): boolean {
     let pbBits: Pointer<BYTE>;
     let r: BYTE;
     let g: BYTE;
     let b: BYTE;
-    let i: int;
-    let j: int;
+    let i: number;
+    let j: number;
 
     pbBits = pData;
     for (i = 0; i < iHeight; i++) {
@@ -45,9 +45,9 @@ export class CQuantizer {
     return true;
   }
 
-  GetLeftShiftCount(dwVal: DWORD): int {
-    let nCount: int = 0;
-    for (let i: int = 0; i < sizeof(DWORD) * 8; i++) {
+  GetLeftShiftCount(dwVal: number): number {
+    let nCount: number = 0;
+    for (let i: number = 0; i < sizeof(DWORD) * 8; i++) {
       if (dwVal & 1)
         nCount++;
       dwVal >>= 1;
@@ -55,8 +55,8 @@ export class CQuantizer {
     return 8 - nCount;
   }
 
-  GetRightShiftCount(dwVal: DWORD): int {
-    for (let i: int = 0; i < sizeof(DWORD) * 8; i++) {
+  GetRightShiftCount(dwVal: number): number {
+    for (let i: number = 0; i < sizeof(DWORD) * 8; i++) {
       if (dwVal & 1)
         return i;
       dwVal >>= 1;
@@ -64,7 +64,7 @@ export class CQuantizer {
     return -1;
   }
 
-  AddColor(ppNode: Pointer<Pointer<NODE>>, r: BYTE, g: BYTE, b: BYTE, nColorBits: UINT, nLevel: UINT, pLeafCount: Pointer<UINT>, pReducibleNodes: Pointer<Pointer<NODE>>): void {
+  AddColor(ppNode: Pointer<Pointer<NODE>>, r: BYTE, g: BYTE, b: BYTE, nColorBits: UINT32, nLevel: UINT32, pLeafCount: Pointer<UINT32>, pReducibleNodes: Pointer<Pointer<NODE>>): void {
     /* static */ let mask: BYTE[] /* [8] */ = [
       0x80,
       0x40,
@@ -96,13 +96,13 @@ export class CQuantizer {
     // Recurse a level deeper if the node is not a leaf.
     //
     else {
-      let shift: int = 7 - nLevel;
-      let nIndex: int = (((r & mask[nLevel]) >> shift) << 2) | (((g & mask[nLevel]) >> shift) << 1) | ((b & mask[nLevel]) >> shift);
+      let shift: number = 7 - nLevel;
+      let nIndex: number = (((r & mask[nLevel]) >> shift) << 2) | (((g & mask[nLevel]) >> shift) << 1) | ((b & mask[nLevel]) >> shift);
       AddColor(addressof((ppNode.value).value.pChild[nIndex]), r, g, b, nColorBits, nLevel + 1, pLeafCount, pReducibleNodes);
     }
   }
 
-  CreateNode(nLevel: UINT, nColorBits: UINT, pLeafCount: Pointer<UINT>, pReducibleNodes: Pointer<Pointer<NODE>>): Pointer<NODE> {
+  CreateNode(nLevel: UINT32, nColorBits: UINT32, pLeafCount: Pointer<UINT32>, pReducibleNodes: Pointer<Pointer<NODE>>): Pointer<NODE> {
     let pNode: Pointer<NODE>;
 
     if ((pNode = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(NODE))) == null)
@@ -118,11 +118,11 @@ export class CQuantizer {
     return pNode;
   }
 
-  ReduceTree(nColorBits: UINT, pLeafCount: Pointer<UINT>, pReducibleNodes: Pointer<Pointer<NODE>>): void {
+  ReduceTree(nColorBits: UINT32, pLeafCount: Pointer<UINT32>, pReducibleNodes: Pointer<Pointer<NODE>>): void {
     //
     // Find the deepest level containing at least one reducible node.
     //
-    for (let i: int = nColorBits - 1; (i > 0) && (pReducibleNodes[i] == null); i--)
+    for (let i: number = nColorBits - 1; (i > 0) && (pReducibleNodes[i] == null); i--)
       ;
 
     //
@@ -131,10 +131,10 @@ export class CQuantizer {
     let pNode: Pointer<NODE> = pReducibleNodes[i];
     pReducibleNodes[i] = pNode.value.pNext;
 
-    let nRedSum: UINT = 0;
-    let nGreenSum: UINT = 0;
-    let nBlueSum: UINT = 0;
-    let nChildren: UINT = 0;
+    let nRedSum: UINT32 = 0;
+    let nGreenSum: UINT32 = 0;
+    let nBlueSum: UINT32 = 0;
+    let nChildren: UINT32 = 0;
 
     for (i = 0; i < 8; i++) {
       if (pNode.value.pChild[i] != null) {
@@ -156,7 +156,7 @@ export class CQuantizer {
   }
 
   DeleteTree(ppNode: Pointer<Pointer<NODE>>): void {
-    for (let i: int = 0; i < 8; i++) {
+    for (let i: number = 0; i < 8; i++) {
       if ((ppNode.value).value.pChild[i] != null)
         DeleteTree(addressof((ppNode.value).value.pChild[i]));
     }
@@ -164,7 +164,7 @@ export class CQuantizer {
     ppNode.value = null;
   }
 
-  GetPaletteColors(pTree: Pointer<NODE>, prgb: Pointer<RGBQUAD>, pIndex: Pointer<UINT>): void {
+  GetPaletteColors(pTree: Pointer<NODE>, prgb: Pointer<RGBQUAD>, pIndex: Pointer<UINT32>): void {
     if (pTree.value.bIsLeaf) {
       prgb[pIndex.value].rgbRed = ((pTree.value.nRedSum) / (pTree.value.nPixelCount));
       prgb[pIndex.value].rgbGreen = ((pTree.value.nGreenSum) / (pTree.value.nPixelCount));
@@ -172,19 +172,19 @@ export class CQuantizer {
       prgb[pIndex.value].rgbReserved = 0;
       (pIndex.value)++;
     } else {
-      for (let i: int = 0; i < 8; i++) {
+      for (let i: number = 0; i < 8; i++) {
         if (pTree.value.pChild[i] != null)
           GetPaletteColors(pTree.value.pChild[i], prgb, pIndex);
       }
     }
   }
 
-  GetColorCount(): UINT {
+  GetColorCount(): UINT32 {
     return m_nLeafCount;
   }
 
   GetColorTable(prgb: Pointer<RGBQUAD>): void {
-    let nIndex: UINT = 0;
+    let nIndex: UINT32 = 0;
     GetPaletteColors(m_pTree, prgb, addressof(nIndex));
   }
 }

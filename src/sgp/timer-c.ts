@@ -3,7 +3,7 @@ namespace ja2 {
 let guiStartupTime: UINT32;
 let guiCurrentTime: UINT32;
 
-function Clock(hWindow: HWND, uMessage: UINT, idEvent: UINT, dwTime: DWORD): void {
+function Clock(hWindow: HWND, uMessage: UINT32, idEvent: UINT32, dwTime: number): void {
   guiCurrentTime = GetTickCount();
   if (guiCurrentTime < guiStartupTime) {
     // Adjust guiCurrentTime because of loopback on the timer value

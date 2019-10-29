@@ -28,8 +28,8 @@ interface path_t {
 }
 
 interface trail_t {
-  nextLink: short;
-  diStratDelta: short;
+  nextLink: number;
+  diStratDelta: number;
 }
 
 const MAXTRAILTREE = (4096);
@@ -51,7 +51,7 @@ const TRAILCELLTYPE = UINT32;
 /* static */ let gusMapMovementCostsB: UINT16[][] /* [MAP_LENGTH][MAXDIR] */;
 /* static */ let trailCostB: TRAILCELLTYPE[] /* [MAP_LENGTH] */;
 /* static */ let trailStratTreeB: trail_t[] /* [MAXTRAILTREE] */;
-let trailStratTreedxB: short = 0;
+let trailStratTreedxB: number = 0;
 
 const QHEADNDX = (0);
 const QPOOLNDX = () => (MAXpathQ - 1);

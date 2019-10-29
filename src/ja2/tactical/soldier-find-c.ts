@@ -472,7 +472,7 @@ export function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Poi
   // uses of this function, we should be able to use just the first frame...
 
   if (pSoldier.value.usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.usNumberOfObjects) {
-    let i: int = 0;
+    let i: number = 0;
   }
 
   psHeight.value = pSoldier.value.sBoundingBoxHeight;

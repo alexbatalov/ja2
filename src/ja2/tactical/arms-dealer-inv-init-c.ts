@@ -1019,7 +1019,7 @@ export function HowManyItemsToReorder(ubWanted: UINT8, ubStillHave: UINT8): UINT
   return ubNumReordered;
 }
 
-export function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
+export function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): number {
   let usItem1Index: UINT16;
   let usItem2Index: UINT16;
   let ubItem1Quality: UINT8;
@@ -1034,7 +1034,7 @@ export function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<vo
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
 
-export function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
+export function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): number {
   let usItem1Index: UINT16;
   let usItem2Index: UINT16;
   let ubItem1Quality: UINT8;
@@ -1049,7 +1049,7 @@ export function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
 
-export function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
+export function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): number {
   let pInvSlot1: Pointer<INVENTORY_IN_SLOT>;
   let pInvSlot2: Pointer<INVENTORY_IN_SLOT>;
   let uiRepairTime1: UINT32;
@@ -1074,7 +1074,7 @@ export function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<v
   }
 }
 
-export function CompareItemsForSorting(usItem1Index: UINT16, usItem2Index: UINT16, ubItem1Quality: UINT8, ubItem2Quality: UINT8): int {
+export function CompareItemsForSorting(usItem1Index: UINT16, usItem2Index: UINT16, ubItem1Quality: UINT8, ubItem2Quality: UINT8): number {
   let ubItem1Category: UINT8;
   let ubItem2Category: UINT8;
   let usItem1Price: UINT16;

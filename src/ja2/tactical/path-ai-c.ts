@@ -125,7 +125,7 @@ const SETLOC = (str, loc) => {
 /* static */ let gubGlobalPathCount: UINT8 = 0;
 /* static */ let trailTree: Pointer<trail_t>;
 
-/* static */ let trailTreeNdx: short = 0;
+/* static */ let trailTreeNdx: number = 0;
 
 const QHEADNDX = (0);
 const QPOOLNDX = () => (iMaxPathQ - 1);

@@ -170,7 +170,7 @@ export function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16
   sBottom = sBottom - uiBottomSkip;
 
   if (sLeft == 192 || sLeft == 188) {
-    let i: int = 0;
+    let i: number = 0;
   }
 
   if ((iBackIndex = GetFreeBackgroundBuffer()) == (-1))

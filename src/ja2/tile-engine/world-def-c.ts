@@ -2927,7 +2927,7 @@ function SaveMapTileset(iTilesetID: INT32): boolean {
   //	FILE *hTSet;
   let hTSet: HWFILE;
   let zTilesetName: string /* char[65] */;
-  let cnt: int;
+  let cnt: number;
   let uiBytesWritten: UINT32;
 
   // Are we trying to save the default tileset?
@@ -3048,7 +3048,7 @@ export function CalculateWorldWireFrameTiles(fForce: boolean): void {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (gpWorldLevelData[cnt].uiFlags & MAPELEMENT_RECALCULATE_WIREFRAMES || fForce) {
       if (cnt == 8377) {
-        let i: int = 0;
+        let i: number = 0;
       }
 
       // Turn off flag

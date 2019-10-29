@@ -75,7 +75,7 @@ export function GetAppRegistryKey(): HKEY {
   // assert(gpszProfileName != NULL);
 
   if (RegOpenKeyEx(HKEY_CURRENT_USER, szSoftware, 0, KEY_WRITE | KEY_READ, addressof(hSoftKey)) == ERROR_SUCCESS) {
-    let dw: DWORD;
+    let dw: number;
     if (RegCreateKeyEx(hSoftKey, gszRegistryKey, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, null, addressof(hCompanyKey), addressof(dw)) == ERROR_SUCCESS) {
       RegCreateKeyEx(hCompanyKey, gszProfileName, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, null, addressof(hAppKey), addressof(dw));
     }
@@ -95,7 +95,7 @@ export function GetAppRegistryKey(): HKEY {
 function GetSectionKey(lpszSection: string /* STR */): HKEY {
   let hSectionKey: HKEY = null;
   let hAppKey: HKEY = GetAppRegistryKey();
-  let dw: DWORD;
+  let dw: number;
 
   assert(lpszSection != null);
 
@@ -107,11 +107,11 @@ function GetSectionKey(lpszSection: string /* STR */): HKEY {
   return hSectionKey;
 }
 
-function GetProfileInteger(lpszSection: string /* STR */, lpszEntry: string /* STR */, nDefault: int): UINT {
-  let dwValue: DWORD;
-  let dwType: DWORD;
-  let dwCount: DWORD = sizeof(DWORD);
-  let lResult: LONG;
+function GetProfileInteger(lpszSection: string /* STR */, lpszEntry: string /* STR */, nDefault: number): UINT32 {
+  let dwValue: number;
+  let dwType: number;
+  let dwCount: number = sizeof(DWORD);
+  let lResult: number;
 
   assert(lpszSection != null);
   assert(lpszEntry != null);
@@ -136,9 +136,9 @@ function GetProfileInteger(lpszSection: string /* STR */, lpszEntry: string /* S
 }
 
 function GetProfileChar(lpszSection: string /* STR */, lpszEntry: string /* STR */, lpszDefault: string /* STR */, lpszValue: Pointer<string> /* STR */): boolean {
-  let dwType: DWORD;
-  let dwCount: DWORD;
-  let lResult: LONG;
+  let dwType: number;
+  let dwCount: number;
+  let lResult: number;
   let fRet: boolean = true;
   let strValue: string /* CHAR[200] */;
 
@@ -182,7 +182,7 @@ function GetProfileChar(lpszSection: string /* STR */, lpszEntry: string /* STR 
   return fRet;
 }
 
-function GetProfileBinary(lpszSection: string /* STR */, lpszEntry: string /* STR */, ppData: Pointer<Pointer<BYTE>>, pBytes: Pointer<UINT>): boolean {
+function GetProfileBinary(lpszSection: string /* STR */, lpszEntry: string /* STR */, ppData: Pointer<Pointer<BYTE>>, pBytes: Pointer<UINT32>): boolean {
   //	DWORD dwType, dwCount;
   //	LONG lResult;
   //
@@ -244,7 +244,7 @@ function GetProfileBinary(lpszSection: string /* STR */, lpszEntry: string /* ST
   return true;
 }
 
-function WriteProfileInt(lpszSection: string /* STR */, lpszEntry: string /* STR */, nValue: int): boolean {
+function WriteProfileInt(lpszSection: string /* STR */, lpszEntry: string /* STR */, nValue: number): boolean {
   //	LONG lResult;
   //	TCHAR szT[16];
   //
@@ -276,7 +276,7 @@ export function WriteProfileChar(lpszSection: string /* STR */, lpszEntry: strin
   assert(lpszSection != null);
 
   if (gszRegistryKey[0] != '\0') {
-    let lResult: LONG;
+    let lResult: number;
     if (lpszEntry == null) // delete whole section
     {
       let hAppKey: HKEY = GetAppRegistryKey();
@@ -310,7 +310,7 @@ export function WriteProfileChar(lpszSection: string /* STR */, lpszEntry: strin
   return true;
 }
 
-function WriteProfileBinary(lpszSection: string /* STR */, lpszEntry: string /* STR */, pData: LPBYTE, nBytes: UINT): boolean {
+function WriteProfileBinary(lpszSection: string /* STR */, lpszEntry: string /* STR */, pData: LPBYTE, nBytes: UINT32): boolean {
   //	assert(lpszSection != NULL);
   //
   //	if (gpszRegistryKey != NULL)

@@ -857,8 +857,8 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   let sAbsDifY: INT16;
   let sMaxDistX: INT16;
   let sMaxDistY: INT16;
-  let sMaxSoundDist: double;
-  let sSoundDist: double;
+  let sMaxSoundDist: DOUBLE;
+  let sSoundDist: DOUBLE;
 
   if (sGridNo == NOWHERE) {
     return bInitialVolume;

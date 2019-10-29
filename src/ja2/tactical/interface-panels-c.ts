@@ -3722,7 +3722,7 @@ export function GetPlayerIDFromInterfaceTeamSlot(ubPanelSlot: UINT8, pubID: Poin
 }
 
 export function RemoveAllPlayersFromSlot(): void {
-  let cnt: int;
+  let cnt: number;
 
   for (cnt = 0; cnt < NUM_TEAM_SLOTS; cnt++) {
     RemovePlayerFromInterfaceTeamSlot(cnt);

@@ -540,7 +540,7 @@ function BltVideoObjectToBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT
   Assert(pBuffer != null);
 
   if (hSrcVObject == null) {
-    let i: int = 0;
+    let i: number = 0;
   }
 
   Assert(hSrcVObject != null);

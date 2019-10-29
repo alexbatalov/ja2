@@ -2209,8 +2209,8 @@ function LoadSummary(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8, dMajo
   fclose(fp);
 }
 
-export let MasterStart: double;
-export let MasterEnd: double;
+export let MasterStart: DOUBLE;
+export let MasterEnd: DOUBLE;
 
 function UpdateMasterProgress(): void {
   if (gfUpdatingNow && gusTotal) {

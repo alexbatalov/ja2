@@ -1419,7 +1419,7 @@ function FindNumberInSectorWithAssignment(sX: INT16, sY: INT16, bAssignment: INT
 }
 
 function GetNumberThatCanBeDoctored(pDoctor: Pointer<SOLDIERTYPE>, fThisHour: boolean, fSkipKitCheck: boolean, fSkipSkillCheck: boolean): UINT8 {
-  let cnt: int;
+  let cnt: number;
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
   let pTeamSoldier: Pointer<SOLDIERTYPE> = null;
   let ubNumberOfPeople: UINT8 = 0;
@@ -1438,7 +1438,7 @@ function GetNumberThatCanBeDoctored(pDoctor: Pointer<SOLDIERTYPE>, fThisHour: bo
 }
 
 export function AnyDoctorWhoCanHealThisPatient(pPatient: Pointer<SOLDIERTYPE>, fThisHour: boolean): Pointer<SOLDIERTYPE> {
-  let cnt: int;
+  let cnt: number;
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
   let pTeamSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -2751,7 +2751,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
   }
 }
 
-function TownTrainerQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
+function TownTrainerQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): number {
   if ((pArg1).value.sTrainingPts > (pArg2).value.sTrainingPts) {
     return -1;
   } else if ((pArg1).value.sTrainingPts < (pArg2).value.sTrainingPts) {

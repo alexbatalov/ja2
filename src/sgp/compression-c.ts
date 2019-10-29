@@ -12,7 +12,7 @@ function ZFree(opaque: voidpf, address: voidpf): void {
 
 function DecompressInit(pCompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR {
   let pZStream: Pointer<z_stream>;
-  let iZRetCode: int;
+  let iZRetCode: number;
 
   // allocate memory for the z_stream struct
   pZStream = MemAlloc(sizeof(z_stream));
@@ -41,7 +41,7 @@ function DecompressInit(pCompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
 }
 
 function Decompress(pDecompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): UINT32 {
-  let iZRetCode: int;
+  let iZRetCode: number;
   let pZStream: Pointer<z_stream> = pDecompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
@@ -84,7 +84,7 @@ function CompressedBufferSize(uiDataSize: UINT32): UINT32 {
 
 function CompressInit(pUncompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR {
   let pZStream: Pointer<z_stream>;
-  let iZRetCode: int;
+  let iZRetCode: number;
 
   // allocate memory for the z_stream struct
   pZStream = MemAlloc(sizeof(z_stream));
@@ -113,7 +113,7 @@ function CompressInit(pUncompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
 }
 
 function Compress(pCompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): UINT32 {
-  let iZRetCode: int;
+  let iZRetCode: number;
   let pZStream: Pointer<z_stream> = pCompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer

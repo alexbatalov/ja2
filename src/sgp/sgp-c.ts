@@ -113,7 +113,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
   return 0;
 }
 
-function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: int): boolean {
+function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: number): boolean {
   let pFontTable: Pointer<FontTranslationTable>;
 
   // now required by all (even JA2) in order to call ShutdownSGP
@@ -280,7 +280,7 @@ function ShutdownStandardGamingPlatform(): void {
   ShutdownDebugManager();
 }
 
-function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: LPSTR, sCommandShow: int): int {
+function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: LPSTR, sCommandShow: number): number {
   let Message: MSG;
   let hPrevInstanceWindow: HWND;
 

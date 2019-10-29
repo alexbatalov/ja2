@@ -62,7 +62,7 @@ let gpCurrentStringDescriptor: Pointer<StringInput>;
 
 // These are the hook functions for both keyboard and mouse
 
-function KeyboardHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
+function KeyboardHandler(Code: number, wParam: WPARAM, lParam: LPARAM): LRESULT {
   if (Code < 0)
   {
     // Do not handle this message, pass it on to another window
@@ -82,7 +82,7 @@ function KeyboardHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
   return true;
 }
 
-function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
+function MouseHandler(Code: number, wParam: WPARAM, lParam: LPARAM): LRESULT {
   let uiParam: UINT32;
 
   if (Code < 0)

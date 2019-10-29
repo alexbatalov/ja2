@@ -384,7 +384,7 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
       marker = NewGridNo(marker, Inc[markerDir]);
 
       if (marker == 12426) {
-        let i: int = 0;
+        let i: number = 0;
       }
 
       // End if this is a no view...
@@ -635,7 +635,7 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
               // 1 ) there is a roof over us and
               // 2 ) we are not in a room
               if (gubWorldRoomInfo[marker] == NO_ROOM && TypeRangeExistsInRoofLayer(marker, Enum313.FIRSTROOF, Enum313.FOURTHROOF, addressof(usIndex))) {
-                let i: int = 0;
+                let i: number = 0;
               } else {
                 gpWorldLevelData[marker].uiFlags |= MAPELEMENT_REVEALED;
                 if (gfCaves) {

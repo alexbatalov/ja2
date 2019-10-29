@@ -7,26 +7,21 @@ namespace ja2 {
 
 // HEY WIZARDRY DUDES, JA2 ISN'T THE ONLY PROGRAM WE COMPILE! :-)
 
-export type UINT32 = unsigned_int;
-export type INT32 = signed_int;
+export type UINT32 = number;
+export type INT32 = number;
 
 // integers
-export type UINT8 = unsigned_char;
-export type INT8 = signed_char;
-export type UINT16 = unsigned_short;
-export type INT16 = signed_short;
+export type UINT8 = number;
+export type INT8 = number;
+export type UINT16 = number;
+export type INT16 = number;
 // floats
-export type FLOAT = float;
-export type DOUBLE = double;
+export type FLOAT = number;
+export type DOUBLE = number;
 // strings
-export type CHAR8 = char;
-// flags (individual bits used)
-type FLAGS8 = unsigned_char;
-type FLAGS16 = unsigned_short;
-type FLAGS32 = unsigned_long;
+export type CHAR8 = number;
 // other
 export type PTR = Pointer<void>;
-type HNDL = unsigned_short;
 export type BYTE = UINT8;
 export type HWFILE = UINT32;
 export const SGPFILENAME_LEN = 100;

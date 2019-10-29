@@ -380,7 +380,7 @@ function BtnAlumniPageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 }
 
 function ResetAimArchiveButtons(): void {
-  let i: int = 0;
+  let i: number = 0;
 
   for (i = 0; i < 3; i++) {
     ButtonList[guiAlumniPageButton[i]].value.uiFlags &= ~BUTTON_CLICKED_ON;

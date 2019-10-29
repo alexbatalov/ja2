@@ -987,7 +987,7 @@ function LockVideoSurfaceBuffer(hVSurface: HVSURFACE, pPitch: Pointer<UINT32>): 
 
   // Assertions
   if (hVSurface == null) {
-    let i: int = 0;
+    let i: number = 0;
   }
 
   Assert(hVSurface != null);
@@ -1117,7 +1117,7 @@ export function SetVideoSurfacePalette(hVSurface: HVSURFACE, pSrcPalette: Pointe
 // colorkey value.
 function SetVideoSurfaceTransparencyColor(hVSurface: HVSURFACE, TransColor: COLORVAL): boolean {
   let ColorKey: DDCOLORKEY;
-  let fFlags: DWORD = CLR_INVALID;
+  let fFlags: number = CLR_INVALID;
   let lpDDSurface: LPDIRECTDRAWSURFACE2;
 
   // Assertions

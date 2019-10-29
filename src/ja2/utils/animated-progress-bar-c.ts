@@ -1,8 +1,8 @@
 namespace ja2 {
 
-let rStart: double;
-let rEnd: double;
-let rActual: double;
+let rStart: DOUBLE;
+let rEnd: DOUBLE;
+let rActual: DOUBLE;
 
 const MAX_PROGRESSBARS = 4;
 
@@ -193,7 +193,7 @@ export function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UI
 export function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
   /* static */ let uiLastTime: UINT32 = 0;
   let uiCurTime: UINT32 = GetJA2Clock();
-  let rActual: double;
+  let rActual: DOUBLE;
   let pCurr: Pointer<PROGRESSBAR> = null;
   // UINT32 r, g;
   let end: INT32;

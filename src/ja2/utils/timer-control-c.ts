@@ -59,7 +59,7 @@ let gPSOLDIER: Pointer<SOLDIERTYPE>;
 let guiClockDiff: UINT32 = 0;
 let guiClockStart: UINT32 = 0;
 
-function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD): void {
+function TimeProc(uID: UINT32, uMsg: UINT32, dwUser: number, dw1: number, dw2: number): void {
   /* static */ let fInFunction: boolean = false;
   // SOLDIERTYPE		*pSoldier;
 
@@ -194,7 +194,7 @@ function InitializeJA2TimerID(uiDelay: UINT32, uiCallbackID: UINT32, uiUser: UIN
 //////////////////////////////////////////////////////////////////////////////////////////////
 // TIMER CALLBACK S
 //////////////////////////////////////////////////////////////////////////////////////////////
-function FlashItem(uiID: UINT, uiMsg: UINT, uiUser: DWORD, uiDw1: DWORD, uiDw2: DWORD): void {
+function FlashItem(uiID: UINT32, uiMsg: UINT32, uiUser: number, uiDw1: number, uiDw2: number): void {
 }
 
 export function PauseTime(fPaused: boolean): void {

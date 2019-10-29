@@ -39,12 +39,12 @@ export interface PROGRESSBAR {
   ubColorFillGreen: UINT8;
   ubColorFillBlue: UINT8;
 
-  rStart: double;
-  rEnd: double;
+  rStart: DOUBLE;
+  rEnd: DOUBLE;
 
   fDisplayText: boolean;
   fUseSaveBuffer: boolean; // use the save buffer when display the text
-  rLastActual: double;
+  rLastActual: DOUBLE;
 }
 
 }
