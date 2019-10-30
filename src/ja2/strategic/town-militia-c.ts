@@ -941,39 +941,39 @@ export function BuildMilitiaPromotionsString(str: Pointer<string> /* Pointer<UIN
   }
   if (gbGreenToElitePromotions > 1) {
     pStr = swprintf(gzLateLocalizedString[22], gbGreenToElitePromotions);
-    wcscat(str, pStr);
+    str += pStr;
     fAddSpace = true;
   } else if (gbGreenToElitePromotions == 1) {
-    wcscat(str, gzLateLocalizedString[29]);
+    str += gzLateLocalizedString[29];
     fAddSpace = true;
   }
 
   if (gbGreenToRegPromotions > 1) {
     if (fAddSpace) {
-      wcscat(str, " ");
+      str += " ";
     }
     pStr = swprintf(gzLateLocalizedString[23], gbGreenToRegPromotions);
-    wcscat(str, pStr);
+    str += pStr;
     fAddSpace = true;
   } else if (gbGreenToRegPromotions == 1) {
     if (fAddSpace) {
-      wcscat(str, " ");
+      str += " ";
     }
-    wcscat(str, gzLateLocalizedString[30]);
+    str += gzLateLocalizedString[30];
     fAddSpace = true;
   }
 
   if (gbRegToElitePromotions > 1) {
     if (fAddSpace) {
-      wcscat(str, " ");
+      str += " ";
     }
     pStr = swprintf(gzLateLocalizedString[24], gbRegToElitePromotions);
-    wcscat(str, pStr);
+    str += pStr;
   } else if (gbRegToElitePromotions == 1) {
     if (fAddSpace) {
-      wcscat(str, " ");
+      str += " ";
     }
-    wcscat(str, gzLateLocalizedString[31]);
+    str += gzLateLocalizedString[31];
     fAddSpace = true;
   }
 

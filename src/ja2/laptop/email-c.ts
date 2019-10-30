@@ -2769,7 +2769,7 @@ function HandleIMPCharProfileResultsMessage(): void {
         let zTemp: string /* wchar_t[512] */;
 
         zTemp = swprintf(" %s", gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName);
-        wcscat(pString, zTemp);
+        pString += zTemp;
       }
 
       // add to list
@@ -4239,7 +4239,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
 
       if (fReplacingMercName) {
         // add the mercs name to the string
-        wcscat(pFinishedString, gMercProfiles[pMail.value.uiSecondData].zName);
+        pFinishedString += gMercProfiles[pMail.value.uiSecondData].zName;
       } else {
         let sDollarAmount: string /* CHAR16[64] */;
 
@@ -4249,11 +4249,11 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
         InsertDollarSignInToString(sDollarAmount);
 
         // add the mercs name to the string
-        wcscat(pFinishedString, sDollarAmount);
+        pFinishedString += sDollarAmount;
       }
     } else {
       // add the rest of the string
-      wcscat(pFinishedString, addressof(pTempString[iCurLocInSourceString]));
+      pFinishedString += addressof(pTempString[iCurLocInSourceString]);
 
       iCurLocInSourceString += wcslen(addressof(pTempString[iCurLocInSourceString]));
     }

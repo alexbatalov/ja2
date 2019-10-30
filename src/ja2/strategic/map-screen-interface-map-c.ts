@@ -3944,7 +3944,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
     // if potential is not nil, show percentage of the two
     if (GetMaxPeriodicRemovalFromMine(ubMineIndex) > 0) {
       wSubString = swprintf(" (%d%%%%)", (PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex));
-      wcscat(wString, wSubString);
+      wString += wSubString;
     }
 
     AdjustXForLeftMapEdge(wString, addressof(sScreenX));

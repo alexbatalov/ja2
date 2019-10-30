@@ -784,7 +784,7 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
           usDestCounter = 0;
 
           // add the word (with the space) to the line
-          wcscat(zLineString, zWordString);
+          zLineString += zWordString;
         } else {
           // can't fit this word!
 
@@ -829,7 +829,7 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
   } while (pString[usSourceCounter++] != 0);
 
   // terminate the entire paragraph with a null string (null character guaranteed)
-  wcscat(zLineString, "");
+  zLineString += "";
 
   // shadow control
   if (IAN_WRAP_NO_SHADOW & uiFlags) {
@@ -1184,7 +1184,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
           usDestCounter = 0;
 
           // add the word (with the space) to the line
-          wcscat(zLineString, zWordString);
+          zLineString += zWordString;
         } else {
           // Display what we have up to now
           DrawTextToScreen(zLineString, usLocalPosX, usPosY, usLocalWidth, uiLocalFont, ubLocalColor, ubBackGroundColor, fDirty, usJustification);
@@ -1215,7 +1215,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
   } while (pString[usSourceCounter++] != 0);
 
   // terminate the entire paragraph with a null string (null character guaranteed)
-  wcscat(zLineString, "");
+  zLineString += "";
 
   // draw the paragraph
   DrawTextToScreen(zLineString, usLocalPosX, usPosY, usLocalWidth, uiLocalFont, ubLocalColor, ubBackGroundColor, fDirty, usJustification);
@@ -1463,7 +1463,7 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
           usDestCounter = 0;
 
           // add the word (with the space) to the line
-          wcscat(zLineString, zWordString);
+          zLineString += zWordString;
         } else {
           // can't fit this word!
 
@@ -1699,7 +1699,7 @@ export function ReduceStringLength(pString: Pointer<string> /* STR16 */, uiWidth
     // will the new char + the old string be too wide for the width
     if ((uiTempStringPixWidth + uiOneCharWidth) <= uiWidthToFitIn) {
       // add the new char to the string
-      wcscat(zTemp, OneChar);
+      zTemp += OneChar;
 
       // add the new char width to the string width
       uiTempStringPixWidth += uiOneCharWidth;

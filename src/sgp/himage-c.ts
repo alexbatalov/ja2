@@ -38,7 +38,7 @@ export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT
   if (StrPtr == null) {
     // No extension given, use default internal loader extension
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, "No extension given, using default");
-    strcat(ImageFile, ".PCX");
+    ImageFile += ".PCX";
     Extension = ".PCX";
   } else {
     Extension = StrPtr + 1;

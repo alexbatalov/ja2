@@ -244,12 +244,12 @@ function CreateAutoBandageString(): boolean {
     }
     sTemp = "";
     for (cnt = 0; cnt < ubDoctors - 1; cnt++) {
-      wcscat(sTemp, MercPtrs[ubDoctor[cnt]].value.name);
+      sTemp += MercPtrs[ubDoctor[cnt]].value.name;
       if (ubDoctors > 2) {
         if (cnt == ubDoctors - 2) {
-          wcscat(sTemp, ",");
+          sTemp += ",";
         } else {
-          wcscat(sTemp, ", ");
+          sTemp += ", ";
         }
       }
     }

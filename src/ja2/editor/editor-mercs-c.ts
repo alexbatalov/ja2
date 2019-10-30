@@ -2486,7 +2486,7 @@ export function UpdateMercsInfo(): void {
           default:
             return;
         }
-        wcscat(str, "  Hit ESC to abort entering this line in the schedule.");
+        str += "  Hit ESC to abort entering this line in the schedule.";
         DisplayWrappedString(436, 392, 149, 2, FONT10ARIAL(), FONT_YELLOW, str, FONT_BLACK, false, LEFT_JUSTIFIED);
       }
       break;

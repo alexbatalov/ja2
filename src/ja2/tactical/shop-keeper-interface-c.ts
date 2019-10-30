@@ -4097,7 +4097,7 @@ function AddNumberToSkiAtm(ubNumber: UINT8): void {
   zTemp = swprintf("%d", ubNumber);
 
   // add the number to the current amount
-  wcscat(gzSkiAtmTransferString, zTemp);
+  gzSkiAtmTransferString += zTemp;
 }
 
 function DisplaySkiAtmTransferString(): void {

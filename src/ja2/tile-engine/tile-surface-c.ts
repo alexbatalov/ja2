@@ -43,9 +43,9 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): Pointer<
     cEndOfName++;
     cEndOfName.value = '\0';
   } else {
-    strcat(cStructureFilename, ".");
+    cStructureFilename += ".";
   }
-  strcat(cStructureFilename, STRUCTURE_FILE_EXTENSION);
+  cStructureFilename += STRUCTURE_FILE_EXTENSION;
   if (FileExists(cStructureFilename)) {
     pStructureFileRef = LoadStructureFile(cStructureFilename);
     if (pStructureFileRef == null || hVObject.value.usNumberOfObjects != pStructureFileRef.value.usNumberOfStructures) {

@@ -1783,12 +1783,12 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   if (ubLevel % 4) {
     let str: string /* UINT8[4] */;
     str = sprintf("_b%d", ubLevel % 4);
-    strcat(szFilename, str);
+    szFilename += str;
   }
   if (ubLevel >= 4) {
-    strcat(szFilename, "_a");
+    szFilename += "_a";
   }
-  strcat(szFilename, ".dat");
+  szFilename += ".dat";
   szDirFilename = sprintf("MAPS\\%s", szFilename);
 
   if (gfMajorUpdate) {

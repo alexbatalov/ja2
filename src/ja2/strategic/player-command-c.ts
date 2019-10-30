@@ -19,8 +19,8 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
     if (wcslen(sFacilitiesString) == 0) {
       sFacilitiesString = swprintf("%s", sFacilitiesStrings[2]);
     } else {
-      wcscat(sFacilitiesString, ",");
-      wcscat(sFacilitiesString, sFacilitiesStrings[2]);
+      sFacilitiesString += ",";
+      sFacilitiesString += sFacilitiesStrings[2];
     }
   }
 
@@ -29,8 +29,8 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
     if (wcslen(sFacilitiesString) == 0) {
       sFacilitiesString = swprintf("%s", sFacilitiesStrings[3]);
     } else {
-      wcscat(sFacilitiesString, ",");
-      wcscat(sFacilitiesString, sFacilitiesStrings[3]);
+      sFacilitiesString += ",";
+      sFacilitiesString += sFacilitiesStrings[3];
     }
   }
 
@@ -39,8 +39,8 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
     if (wcslen(sFacilitiesString) == 0) {
       sFacilitiesString = swprintf("%s", sFacilitiesStrings[5]);
     } else {
-      wcscat(sFacilitiesString, ",");
-      wcscat(sFacilitiesString, sFacilitiesStrings[5]);
+      sFacilitiesString += ",";
+      sFacilitiesString += sFacilitiesStrings[5];
     }
   }
 
@@ -49,8 +49,8 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
     if (wcslen(sFacilitiesString) == 0) {
       sFacilitiesString = swprintf("%s", sFacilitiesStrings[6]);
     } else {
-      wcscat(sFacilitiesString, ",");
-      wcscat(sFacilitiesString, sFacilitiesStrings[6]);
+      sFacilitiesString += ",";
+      sFacilitiesString += sFacilitiesStrings[6];
     }
   }
 

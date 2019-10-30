@@ -1815,14 +1815,14 @@ function AddSubdirectoryToPath(pDirectory: string /* Pointer<CHAR8> */): boolean
   if (uiPathLen)
     uiPathLen--;
   if (pPath[uiPathLen] != '\\')
-    strcat(pPath, "\\");
+    pPath += "\\";
 
-  strcat(pPath, pDirectory);
+  pPath += pDirectory;
 
   // Appends it to the path for the current task
   if (GetEnvironmentVariable("PATH", pSystemPath, _MAX_PATH)) {
-    strcat(pSystemPath, ";");
-    strcat(pSystemPath, pPath);
+    pSystemPath += ";";
+    pSystemPath += pPath;
     SetEnvironmentVariable("PATH", pSystemPath);
     MemFree(pSystemPath);
     MemFree(pPath);

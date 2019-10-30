@@ -427,13 +427,13 @@ function AttemptToAddSubstring(zDest: Pointer<string> /* STR16 */, zTemp: string
   }
   if (uiRequiredStringLength < uiPixLimit) {
     if (zDest[0] != 0) {
-      wcscat(zDest, COMMA_AND_SPACE);
+      zDest += COMMA_AND_SPACE;
     }
-    wcscat(zDest, zTemp);
+    zDest += zTemp;
     puiStringLength.value = uiRequiredStringLength;
     return true;
   } else {
-    wcscat(zDest, DOTDOTDOT);
+    zDest += DOTDOTDOT;
     return false;
   }
 }
@@ -1840,17 +1840,17 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
 
         if (cnt == 0) {
           gzFullItemPros = gzProsLabel;
-          wcscat(gzFullItemPros, " ");
+          gzFullItemPros += " ";
           // use temp variable to prevent an initial comma from being displayed
           GenerateProsString(gzFullItemTemp, gpItemDescObject, 1000);
-          wcscat(gzFullItemPros, gzFullItemTemp);
+          gzFullItemPros += gzFullItemTemp;
           SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemPros);
         } else {
           gzFullItemCons = gzConsLabel;
-          wcscat(gzFullItemCons, " ");
+          gzFullItemCons += " ";
           // use temp variable to prevent an initial comma from being displayed
           GenerateConsString(gzFullItemTemp, gpItemDescObject, 1000);
-          wcscat(gzFullItemCons, gzFullItemTemp);
+          gzFullItemCons += gzFullItemTemp;
           SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemCons);
         }
         SetRegionHelpEndCallback(addressof(gProsAndConsRegions[cnt]), HelpTextDoneCallback);
@@ -1865,17 +1865,17 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
 
         if (cnt == 0) {
           gzFullItemPros = gzProsLabel;
-          wcscat(gzFullItemPros, " ");
+          gzFullItemPros += " ";
           // use temp variable to prevent an initial comma from being displayed
           GenerateProsString(gzFullItemTemp, gpItemDescObject, 1000);
-          wcscat(gzFullItemPros, gzFullItemTemp);
+          gzFullItemPros += gzFullItemTemp;
           SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemPros);
         } else {
           gzFullItemCons = gzConsLabel;
-          wcscat(gzFullItemCons, " ");
+          gzFullItemCons += " ";
           // use temp variable to prevent an initial comma from being displayed
           GenerateConsString(gzFullItemTemp, gpItemDescObject, 1000);
-          wcscat(gzFullItemCons, gzFullItemTemp);
+          gzFullItemCons += gzFullItemTemp;
           SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemCons);
         }
         SetRegionHelpEndCallback(addressof(gProsAndConsRegions[cnt]), HelpTextDoneCallback);
@@ -2465,7 +2465,7 @@ export function RenderItemDescriptionBox(): void {
       // This is gross, but to get the % to work out right...
       pStr = swprintf("%2d%%", gpItemDescObject.value.bStatus[gubItemDescStatusIndex]);
       FindFontRightCoordinates((gMapWeaponStats[1].sX + gsInvDescX + gMapWeaponStats[1].sValDx + 6), (gMapWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
-      wcscat(pStr, "%%");
+      pStr += "%%";
       mprintf(usX, usY, pStr);
 
       // Values
@@ -2630,7 +2630,7 @@ export function RenderItemDescriptionBox(): void {
         uiStringLength = StringPixLength(pStr, ITEMDESC_FONT());
         //			sStrX =  gMapWeaponStats[ 1 ].sX + gsInvDescX + gMapWeaponStats[ 1 ].sValDx + ( uiRightLength - uiStringLength );
         FindFontRightCoordinates((gMapWeaponStats[1].sX + gsInvDescX + gMapWeaponStats[1].sValDx + 6), (gMapWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(sStrX), addressof(usY));
-        wcscat(pStr, "%%");
+        pStr += "%%";
         mprintf(sStrX, gMapWeaponStats[1].sY + gsInvDescY, pStr);
       }
 
@@ -2838,7 +2838,7 @@ export function RenderItemDescriptionBox(): void {
       // Status
       pStr = swprintf("%2d%%", gpItemDescObject.value.bGunStatus);
       FindFontRightCoordinates((gWeaponStats[1].sX + gsInvDescX + gWeaponStats[1].sValDx), (gWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
-      wcscat(pStr, "%%");
+      pStr += "%%";
       mprintf(usX, usY, pStr);
 
       // Wieght
@@ -2999,7 +2999,7 @@ export function RenderItemDescriptionBox(): void {
         // Status
         pStr = swprintf("%2d%%", gpItemDescObject.value.bStatus[gubItemDescStatusIndex]);
         FindFontRightCoordinates((gWeaponStats[1].sX + gsInvDescX + gWeaponStats[1].sValDx), (gWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
-        wcscat(pStr, "%%");
+        pStr += "%%";
         mprintf(usX, usY, pStr);
       }
 
@@ -5683,7 +5683,7 @@ export function GetHelpTextForItem(pzStr: Pointer<string> /* Pointer<INT16> */, 
     if ((pObject.value.usItem == Enum225.ROCKET_RIFLE || pObject.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && pObject.value.ubImprintID < NO_PROFILE) {
       let pStr2: string /* INT16[20] */;
       pStr2 = swprintf(" [%s]", gMercProfiles[pObject.value.ubImprintID].zNickname);
-      wcscat(pStr, pStr2);
+      pStr += pStr2;
     }
 
     // Add attachment string....
@@ -5692,17 +5692,17 @@ export function GetHelpTextForItem(pzStr: Pointer<string> /* Pointer<INT16> */, 
         iNumAttachments++;
 
         if (iNumAttachments == 1) {
-          wcscat(pStr, " ( ");
+          pStr += " ( ";
         } else {
-          wcscat(pStr, ", \n");
+          pStr += ", \n";
         }
 
-        wcscat(pStr, ItemNames[pObject.value.usAttachItem[cnt]]);
+        pStr += ItemNames[pObject.value.usAttachItem[cnt]];
       }
     }
 
     if (iNumAttachments > 0) {
-      wcscat(pStr, pMessageStrings[Enum333.MSG_END_ATTACHMENT_LIST]);
+      pStr += pMessageStrings[Enum333.MSG_END_ATTACHMENT_LIST];
     }
   } else {
     pStr = "";

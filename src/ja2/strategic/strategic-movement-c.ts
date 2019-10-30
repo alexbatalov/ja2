@@ -1670,8 +1670,8 @@ function PossibleToCoordinateSimultaneousGroupArrivals(pFirstGroup: Pointer<GROU
     // Ex:  Enemies have been detected in sector J9 and another squad is
     //     about to arrive.  Do you wish to coordinate a simultaneous arrival?
     str = swprintf(pStr, pEnemyType, 'A' + gpPendingSimultaneousGroup.value.ubSectorY - 1, gpPendingSimultaneousGroup.value.ubSectorX); // Sector location
-    wcscat(str, "  ");
-    wcscat(str, gpStrategicString[Enum365.STR_COORDINATE]);
+    str += "  ";
+    str += gpStrategicString[Enum365.STR_COORDINATE];
     // Setup the dialog
 
     // Kris August 03, 1999 Bug fix:  Changed 1st line to 2nd line to fix game breaking if this dialog came up while in tactical.

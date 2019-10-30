@@ -16,13 +16,13 @@ export function FilenameForBPP(pFilename: string /* STR */, pDestination: Pointe
   } else {
     _splitpath(pFilename, Drive, Dir, Name, Ext);
 
-    strcat(Name, "_8");
+    Name += "_8";
 
     pDestination = Drive;
     // strcat(pDestination, Dir);
-    strcat(pDestination, DATA_8_BIT_DIR);
-    strcat(pDestination, Name);
-    strcat(pDestination, Ext);
+    pDestination += DATA_8_BIT_DIR;
+    pDestination += Name;
+    pDestination += Ext;
   }
 }
 
@@ -194,7 +194,7 @@ function HandleLimitedNumExecutions(): void {
   GetSystemDirectory(ubSysDir, sizeof(ubSysDir));
 
   // Append filename
-  strcat(ubSysDir, "\\winaese.dll");
+  ubSysDir += "\\winaese.dll";
 
   // Open file and check # runs...
   if (FileExists(ubSysDir)) {

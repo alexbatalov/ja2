@@ -424,7 +424,7 @@ function AddSectorToBox(): void {
   GetShortSectorString(bCurrentTownMineSectorX, bCurrentTownMineSectorY, wString);
   if (bCurrentTownMineSectorZ != 0) {
     wString2 = swprintf("-%d", bCurrentTownMineSectorZ);
-    wcscat(wString, wString2);
+    wString += wString2;
   }
 
   AddSecondColumnMonoString(addressof(hStringHandle), wString);

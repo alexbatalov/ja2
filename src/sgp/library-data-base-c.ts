@@ -791,7 +791,7 @@ function CheckIfFileIsAlreadyOpen(pFileName: string /* STR */, sLibraryID: INT16
   _splitpath(pFileName, sDrive, sPath, sName, sExt);
 
   sTempName = sName;
-  strcat(sTempName, sExt);
+  sTempName += sExt;
 
   // loop through all the open files to see if 'new' file to open is already open
   for (usLoop1 = 1; usLoop1 < gFileDataBase.pLibraries[sLibraryID].iSizeOfOpenFileArray; usLoop1++) {

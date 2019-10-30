@@ -404,7 +404,7 @@ export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bStri
 
     // if we ARE to use the a map, or if we are saving AND the save game version is before 80, add the a
     if (fAddAlternateMapLetter) {
-      strcat(bExtensionString, "_a");
+      bExtensionString += "_a";
     }
   }
 
@@ -412,7 +412,7 @@ export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bStri
   if (AreInMeanwhile() && sMapX == 3 && sMapY == 16 && !bSectorZ) // GetMeanwhileID() != INTERROGATION )
   {
     if (fAddAlternateMapLetter) {
-      strcat(bExtensionString, "_m");
+      bExtensionString += "_m";
     }
   }
 
@@ -1426,74 +1426,74 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
       switch (ubSectorID) {
         case Enum123.SEC_D2: // Chitzena SAM
           if (!fSamSiteFound[Enum138.SAM_SITE_ONE])
-            wcscat(zString, pLandTypeStrings[Enum127.TROPICS]);
+            zString += pLandTypeStrings[Enum127.TROPICS];
           else if (fDetailed)
-            wcscat(zString, pLandTypeStrings[Enum127.TROPICS_SAM_SITE]);
+            zString += pLandTypeStrings[Enum127.TROPICS_SAM_SITE];
           else
-            wcscat(zString, pLandTypeStrings[Enum127.SAM_SITE]);
+            zString += pLandTypeStrings[Enum127.SAM_SITE];
           break;
         case Enum123.SEC_D15: // Drassen SAM
           if (!fSamSiteFound[Enum138.SAM_SITE_TWO])
-            wcscat(zString, pLandTypeStrings[Enum127.SPARSE]);
+            zString += pLandTypeStrings[Enum127.SPARSE];
           else if (fDetailed)
-            wcscat(zString, pLandTypeStrings[Enum127.SPARSE_SAM_SITE]);
+            zString += pLandTypeStrings[Enum127.SPARSE_SAM_SITE];
           else
-            wcscat(zString, pLandTypeStrings[Enum127.SAM_SITE]);
+            zString += pLandTypeStrings[Enum127.SAM_SITE];
           break;
         case Enum123.SEC_I8: // Cambria SAM
           if (!fSamSiteFound[Enum138.SAM_SITE_THREE])
-            wcscat(zString, pLandTypeStrings[Enum127.SAND]);
+            zString += pLandTypeStrings[Enum127.SAND];
           else if (fDetailed)
-            wcscat(zString, pLandTypeStrings[Enum127.SAND_SAM_SITE]);
+            zString += pLandTypeStrings[Enum127.SAND_SAM_SITE];
           else
-            wcscat(zString, pLandTypeStrings[Enum127.SAM_SITE]);
+            zString += pLandTypeStrings[Enum127.SAM_SITE];
           break;
         default:
-          wcscat(zString, pLandTypeStrings[ubLandType]);
+          zString += pLandTypeStrings[ubLandType];
           break;
       }
     } else {
       switch (ubSectorID) {
         case Enum123.SEC_B13:
           if (fDetailed)
-            wcscat(zString, pLandTypeStrings[Enum127.DRASSEN_AIRPORT_SITE]);
+            zString += pLandTypeStrings[Enum127.DRASSEN_AIRPORT_SITE];
           else
-            wcscat(zString, pTownNames[Enum135.DRASSEN]);
+            zString += pTownNames[Enum135.DRASSEN];
           break;
         case Enum123.SEC_F8:
           if (fDetailed)
-            wcscat(zString, pLandTypeStrings[Enum127.CAMBRIA_HOSPITAL_SITE]);
+            zString += pLandTypeStrings[Enum127.CAMBRIA_HOSPITAL_SITE];
           else
-            wcscat(zString, pTownNames[Enum135.CAMBRIA]);
+            zString += pTownNames[Enum135.CAMBRIA];
           break;
         case Enum123.SEC_J9: // Tixa
           if (!fFoundTixa)
-            wcscat(zString, pLandTypeStrings[Enum127.SAND]);
+            zString += pLandTypeStrings[Enum127.SAND];
           else
-            wcscat(zString, pTownNames[Enum135.TIXA]);
+            zString += pTownNames[Enum135.TIXA];
           break;
         case Enum123.SEC_K4: // Orta
           if (!fFoundOrta)
-            wcscat(zString, pLandTypeStrings[Enum127.SWAMP]);
+            zString += pLandTypeStrings[Enum127.SWAMP];
           else
-            wcscat(zString, pTownNames[Enum135.ORTA]);
+            zString += pTownNames[Enum135.ORTA];
           break;
         case Enum123.SEC_N3:
           if (fDetailed)
-            wcscat(zString, pLandTypeStrings[Enum127.MEDUNA_AIRPORT_SITE]);
+            zString += pLandTypeStrings[Enum127.MEDUNA_AIRPORT_SITE];
           else
-            wcscat(zString, pTownNames[Enum135.MEDUNA]);
+            zString += pTownNames[Enum135.MEDUNA];
           break;
         default:
           if (ubSectorID == Enum123.SEC_N4 && fSamSiteFound[Enum138.SAM_SITE_FOUR]) {
             // Meduna's SAM site
             if (fDetailed)
-              wcscat(zString, pLandTypeStrings[Enum127.MEDUNA_SAM_SITE]);
+              zString += pLandTypeStrings[Enum127.MEDUNA_SAM_SITE];
             else
-              wcscat(zString, pLandTypeStrings[Enum127.SAM_SITE]);
+              zString += pLandTypeStrings[Enum127.SAM_SITE];
           } else {
             // All other towns that are known since beginning of the game.
-            wcscat(zString, pTownNames[bTownNameID]);
+            zString += pTownNames[bTownNameID];
             if (fDetailed) {
               switch (ubSectorID) {
                 // Append the word, "mine" for town sectors containing a mine.
@@ -1503,8 +1503,8 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
                 case Enum123.SEC_H3:
                 case Enum123.SEC_H8:
                 case Enum123.SEC_I14:
-                  wcscat(zString, " "); // space
-                  wcscat(zString, pwMineStrings[0]); // then "Mine"
+                  zString += " "; // space
+                  zString += pwMineStrings[0]; // then "Mine"
                   break;
               }
             }

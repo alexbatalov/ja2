@@ -3291,16 +3291,16 @@ export function DebugSoldierPage3(): void {
 function AppendAttachmentCode(usItem: UINT16, str: Pointer<string> /* Pointer<UINT16> */): void {
   switch (usItem) {
     case Enum225.SILENCER:
-      wcscat(str, " Sil");
+      str += " Sil";
       break;
     case Enum225.SNIPERSCOPE:
-      wcscat(str, " Scp");
+      str += " Scp";
       break;
     case Enum225.BIPOD:
-      wcscat(str, " Bip");
+      str += " Bip";
       break;
     case Enum225.LASERSCOPE:
-      wcscat(str, " Las");
+      str += " Las";
       break;
   }
 }
@@ -3323,7 +3323,7 @@ function WriteQuantityAndAttachments(pObject: Pointer<OBJECTTYPE>, yp: INT32): v
     AppendAttachmentCode(pObject.value.usAttachItem[1], szAttach);
     AppendAttachmentCode(pObject.value.usAttachItem[2], szAttach);
     AppendAttachmentCode(pObject.value.usAttachItem[3], szAttach);
-    wcscat(szAttach, " )");
+    szAttach += " )";
   }
 
   if (Item[pObject.value.usItem].usItemClass == IC_AMMO) {
@@ -3335,9 +3335,9 @@ function WriteQuantityAndAttachments(pObject: Pointer<OBJECTTYPE>, yp: INT32): v
       str = swprintf("Clips:  %d  (%d", pObject.value.ubNumberOfObjects, pObject.value.bStatus[0]);
       for (i = 1; i < pObject.value.ubNumberOfObjects; i++) {
         temp = swprintf(", %d", pObject.value.bStatus[0]);
-        wcscat(str, temp);
+        str += temp;
       }
-      wcscat(str, ")");
+      str += ")";
       gprintf(320, yp, str);
     } else
       gprintf(320, yp, "%d rounds", pObject.value.bStatus[0]);

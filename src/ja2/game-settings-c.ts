@@ -398,7 +398,7 @@ function GetCdromLocationFromIniFile(pRootOfCdromDrive: Pointer<string> /* STR *
     return false;
   } else {
     // add the :\ to the dir
-    strcat(pRootOfCdromDrive, ":\\");
+    pRootOfCdromDrive += ":\\";
     return true;
   }
 }

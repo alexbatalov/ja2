@@ -872,12 +872,12 @@ export function RenderPreBattleInterface(): void {
           // HP
           str = swprintf("%d%%", ubHPPercent);
           x = 189 + (25 - StringPixLength(str, BLOCKFONT2())) / 2;
-          wcscat(str, "%");
+          str += "%";
           mprintf(x, y, str);
           // BP
           str = swprintf("%d%%", ubBPPercent);
           x = 217 + (25 - StringPixLength(str, BLOCKFONT2())) / 2;
-          wcscat(str, "%");
+          str += "%";
           mprintf(x, y, str);
 
           line++;

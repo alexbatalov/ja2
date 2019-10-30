@@ -933,42 +933,42 @@ export function RenderSummaryWindow(): void {
           switch (giCurrLevel) {
             case GROUND_LEVEL_MASK:
               giCurrLevel = 0;
-              wcscat(str, ", ground level");
+              str += ", ground level";
               gpCurrentSectorSummary = gpSectorSummary[x][y][0];
               break;
             case BASEMENT1_LEVEL_MASK:
               giCurrLevel = 1;
-              wcscat(str, ", underground level 1");
+              str += ", underground level 1";
               gpCurrentSectorSummary = gpSectorSummary[x][y][1];
               break;
             case BASEMENT2_LEVEL_MASK:
               giCurrLevel = 2;
-              wcscat(str, ", underground level 2");
+              str += ", underground level 2";
               gpCurrentSectorSummary = gpSectorSummary[x][y][2];
               break;
             case BASEMENT3_LEVEL_MASK:
               giCurrLevel = 3;
-              wcscat(str, ", underground level 3");
+              str += ", underground level 3";
               gpCurrentSectorSummary = gpSectorSummary[x][y][3];
               break;
             case ALTERNATE_GROUND_MASK:
               giCurrLevel = 4;
-              wcscat(str, ", alternate G level");
+              str += ", alternate G level";
               gpCurrentSectorSummary = gpSectorSummary[x][y][4];
               break;
             case ALTERNATE_B1_MASK:
               giCurrLevel = 5;
-              wcscat(str, ", alternate B1 level");
+              str += ", alternate B1 level";
               gpCurrentSectorSummary = gpSectorSummary[x][y][5];
               break;
             case ALTERNATE_B2_MASK:
               giCurrLevel = 6;
-              wcscat(str, ", alternate B2 level");
+              str += ", alternate B2 level";
               gpCurrentSectorSummary = gpSectorSummary[x][y][6];
               break;
             case ALTERNATE_B3_MASK:
               giCurrLevel = 7;
-              wcscat(str, ", alternate B3 level");
+              str += ", alternate B3 level";
               gpCurrentSectorSummary = gpSectorSummary[x][y][7];
               break;
           }
@@ -978,28 +978,28 @@ export function RenderSummaryWindow(): void {
         if (fSectorSummaryExists) {
           switch (giCurrLevel) {
             case 0:
-              wcscat(gszFilename, ".dat");
+              gszFilename += ".dat";
               break;
             case 1:
-              wcscat(gszFilename, "_b1.dat");
+              gszFilename += "_b1.dat";
               break;
             case 2:
-              wcscat(gszFilename, "_b2.dat");
+              gszFilename += "_b2.dat";
               break;
             case 3:
-              wcscat(gszFilename, "_b3.dat");
+              gszFilename += "_b3.dat";
               break;
             case 4:
-              wcscat(gszFilename, "_a.dat");
+              gszFilename += "_a.dat";
               break;
             case 5:
-              wcscat(gszFilename, "_b1_a.dat");
+              gszFilename += "_b1_a.dat";
               break;
             case 6:
-              wcscat(gszFilename, "_b2_a.dat");
+              gszFilename += "_b2_a.dat";
               break;
             case 7:
-              wcscat(gszFilename, "_b3_a.dat");
+              gszFilename += "_b3_a.dat";
               break;
           }
           gszDisplayName = gszFilename;
@@ -1054,29 +1054,29 @@ export function RenderSummaryWindow(): void {
           switch (giCurrentViewLevel) {
             case ALL_LEVELS_MASK:
             case GROUND_LEVEL_MASK:
-              wcscat(gszFilename, ".dat");
+              gszFilename += ".dat";
               break;
             case BASEMENT1_LEVEL_MASK:
-              wcscat(gszFilename, "_b1.dat");
+              gszFilename += "_b1.dat";
               break;
             case BASEMENT2_LEVEL_MASK:
-              wcscat(gszFilename, "_b2.dat");
+              gszFilename += "_b2.dat";
               break;
             case BASEMENT3_LEVEL_MASK:
-              wcscat(gszFilename, "_b3.dat");
+              gszFilename += "_b3.dat";
               break;
             case ALTERNATE_LEVELS_MASK:
             case ALTERNATE_GROUND_MASK:
-              wcscat(gszFilename, "_a.dat");
+              gszFilename += "_a.dat";
               break;
             case ALTERNATE_B1_MASK:
-              wcscat(gszFilename, "_b1_a.dat");
+              gszFilename += "_b1_a.dat";
               break;
             case ALTERNATE_B2_MASK:
-              wcscat(gszFilename, "_b2_a.dat");
+              gszFilename += "_b2_a.dat";
               break;
             case ALTERNATE_B3_MASK:
-              wcscat(gszFilename, "_b3_a.dat");
+              gszFilename += "_b3_a.dat";
               break;
           }
           gszDisplayName = gszFilename;
@@ -1868,10 +1868,10 @@ function CalculateOverrideStatus(): void {
     let ptr: string /* Pointer<UINT8> */;
     szFilename = sprintf("MAPS\\%S", gszTempFilename);
     if (strlen(szFilename) == 5)
-      strcat(szFilename, "test.dat");
+      szFilename += "test.dat";
     ptr = strstr(szFilename, ".");
     if (!ptr)
-      strcat(szFilename, ".dat");
+      szFilename += ".dat";
     else
       ptr = ".dat";
   } else
@@ -2170,12 +2170,12 @@ function LoadSummary(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8, dMajo
   if (ubLevel % 4) {
     let str: string /* UINT8[4] */;
     str = sprintf("_b%d", ubLevel % 4);
-    strcat(filename, str);
+    filename += str;
   }
   if (ubLevel >= 4) {
-    strcat(filename, "_a");
+    filename += "_a";
   }
-  strcat(filename, ".sum");
+  filename += ".sum";
 
   fp = fopen(filename, "rb");
   if (!fp) {
@@ -2234,7 +2234,7 @@ function ReportError(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8): void
   str = swprintf("%S", pSector);
   if (ubLevel % 4) {
     temp = swprintf("_b%d.dat", ubLevel % 4);
-    wcscat(str, temp);
+    str += temp;
   }
   mprintf(10, yp, "Skipping update for %s.  Probably due to tileset conflicts...", str);
   InvalidateScreen();

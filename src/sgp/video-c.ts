@@ -1539,7 +1539,7 @@ export function RefreshScreen(DummyVariable: Pointer<void>): void {
     gfPrintFrameBuffer = false;
     IDirectDrawSurface2_Release(pTmpBuffer);
 
-    strcat(ExecDir, "\\Data");
+    ExecDir += "\\Data";
     SetFileManCurrentDirectory(ExecDir);
   }
 
@@ -2569,7 +2569,7 @@ function RefreshMovieCache(): void {
 
   giNumFrames = 0;
 
-  strcat(ExecDir, "\\Data");
+  ExecDir += "\\Data";
   SetFileManCurrentDirectory(ExecDir);
 }
 
