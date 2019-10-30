@@ -4,29 +4,28 @@ namespace ja2 {
 
 const NUM_TOPIC_IDS = 23;
 
-/* #define TOPIC_MEMORY_MANAGER        0
-#define TOPIC_FILE_MANAGER          1
-#define TOPIC_DATABASE_MANAGER      2
-#define TOPIC_GAME                  3
-#define TOPIC_SGP                   4
-#define TOPIC_VIDEO                 5
-#define TOPIC_INPUT                 6
-#define TOPIC_STACK_CONTAINERS      7
-#define TOPIC_LIST_CONTAINERS       8
-#define TOPIC_QUEUE_CONTAINERS      9
-#define TOPIC_PRILIST_CONTAINERS    10
-#define TOPIC_HIMAGE                11
-#define TOPIC_ORDLIST_CONTAINERS		12
-#define TOPIC_3DENGINE              13
-#define TOPIC_VIDEOOBJECT           14
-#define TOPIC_FONT_HANDLER          15
-#define TOPIC_VIDEOSURFACE          16
-#define TOPIC_MOUSE_SYSTEM          17
-#define TOPIC_BUTTON_HANDLER        18
-#define TOPIC_MUTEX                 19
-#define TOPIC_JA2										20
-#define TOPIC_BLIT_QUEUE						21
-#define TOPIC_JA2OPPLIST						22
-*/
+export const TOPIC_MEMORY_MANAGER = 0;
+export const TOPIC_FILE_MANAGER = 1;
+export const TOPIC_DATABASE_MANAGER = 2;
+export const TOPIC_GAME = 3;
+export const TOPIC_SGP = 4;
+export const TOPIC_VIDEO = 5;
+export const TOPIC_INPUT = 6;
+export const TOPIC_STACK_CONTAINERS = 7;
+export const TOPIC_LIST_CONTAINERS = 8;
+export const TOPIC_QUEUE_CONTAINERS = 9;
+export const TOPIC_PRILIST_CONTAINERS = 10;
+export const TOPIC_HIMAGE = 11;
+export const TOPIC_ORDLIST_CONTAINERS = 12;
+export const TOPIC_3DENGINE = 13;
+export const TOPIC_VIDEOOBJECT = 14;
+export const TOPIC_FONT_HANDLER = 15;
+export const TOPIC_VIDEOSURFACE = 16;
+export const TOPIC_MOUSE_SYSTEM = 17;
+export const TOPIC_BUTTON_HANDLER = 18;
+export const TOPIC_MUTEX = 19;
+export const TOPIC_JA2 = 20;
+export const TOPIC_BLIT_QUEUE = 21;
+export const TOPIC_JA2OPPLIST = 22;
 
 }
