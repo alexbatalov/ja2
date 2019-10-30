@@ -80,7 +80,7 @@ function CreateWinFont(iHeight: INT32, iWidth: INT32, iEscapement: INT32, iWeigh
   }
 
   // SET UP FONT WE WANT TO LOAD HERE
-  wcscpy(gzFontName, szFontName);
+  gzFontName = szFontName;
 
   // ATTEMPT TO LOAD THE FONT NOW
   szCharFontName = sprintf("%S", szFontName);

@@ -2530,7 +2530,7 @@ function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
       usColor = FONT_GRAY1;
     pStr = zHealthStr[cnt];
   } else {
-    wcscpy(str, pCell.value.pSoldier.value.name);
+    str = pCell.value.pSoldier.value.name;
     pStr = _wcsupr(str);
     usColor = FONT_BLACK;
   }

@@ -42,7 +42,7 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
   let cnt: INT32;
   let hVObject: HVOBJECT;
 
-  strcpy(zFilename, aFilename);
+  zFilename = aFilename;
 
   // If we have loaded, remove old one
   if (fImageLoaded) {

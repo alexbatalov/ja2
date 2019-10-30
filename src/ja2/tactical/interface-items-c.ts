@@ -1839,14 +1839,14 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
         MSYS_AddRegion(addressof(gProsAndConsRegions[cnt]));
 
         if (cnt == 0) {
-          wcscpy(gzFullItemPros, gzProsLabel);
+          gzFullItemPros = gzProsLabel;
           wcscat(gzFullItemPros, " ");
           // use temp variable to prevent an initial comma from being displayed
           GenerateProsString(gzFullItemTemp, gpItemDescObject, 1000);
           wcscat(gzFullItemPros, gzFullItemTemp);
           SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemPros);
         } else {
-          wcscpy(gzFullItemCons, gzConsLabel);
+          gzFullItemCons = gzConsLabel;
           wcscat(gzFullItemCons, " ");
           // use temp variable to prevent an initial comma from being displayed
           GenerateConsString(gzFullItemTemp, gpItemDescObject, 1000);
@@ -1864,14 +1864,14 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
         MSYS_AddRegion(addressof(gProsAndConsRegions[cnt]));
 
         if (cnt == 0) {
-          wcscpy(gzFullItemPros, gzProsLabel);
+          gzFullItemPros = gzProsLabel;
           wcscat(gzFullItemPros, " ");
           // use temp variable to prevent an initial comma from being displayed
           GenerateProsString(gzFullItemTemp, gpItemDescObject, 1000);
           wcscat(gzFullItemPros, gzFullItemTemp);
           SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemPros);
         } else {
-          wcscpy(gzFullItemCons, gzConsLabel);
+          gzFullItemCons = gzConsLabel;
           wcscat(gzFullItemCons, " ");
           // use temp variable to prevent an initial comma from being displayed
           GenerateConsString(gzFullItemTemp, gpItemDescObject, 1000);
@@ -1885,15 +1885,15 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
 
   // Load graphic
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(VObjectDesc.ImageFile, "INTERFACE\\infobox.sti");
+  VObjectDesc.ImageFile = "INTERFACE\\infobox.sti";
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiItemDescBox)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(VObjectDesc.ImageFile, "INTERFACE\\iteminfoc.STI");
+  VObjectDesc.ImageFile = "INTERFACE\\iteminfoc.STI";
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapItemDescBox)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(VObjectDesc.ImageFile, "INTERFACE\\bullet.STI");
+  VObjectDesc.ImageFile = "INTERFACE\\bullet.STI";
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBullet)));
 
   if (gpItemDescObject.value.usItem != Enum225.MONEY) {
@@ -1924,7 +1924,7 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
 
     // Load graphic
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    strcpy(VObjectDesc.ImageFile, "INTERFACE\\info_bil.sti");
+    VObjectDesc.ImageFile = "INTERFACE\\info_bil.sti";
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMoneyGraphicsForDescBox)));
 
     // Create buttons for the money
@@ -3500,7 +3500,7 @@ export function DrawItemTileCursor(): void {
         // OK, we want to drop.....
 
         // Write the word 'drop' on cursor...
-        wcscpy(gzIntTileLocation, pMessageStrings[Enum333.MSG_DROP]);
+        gzIntTileLocation = pMessageStrings[Enum333.MSG_DROP];
         gfUIIntTileLocation = true;
       } else {
         if (usMapPos == gpItemPointerSoldier.value.sGridNo) {
@@ -3512,7 +3512,7 @@ export function DrawItemTileCursor(): void {
         {
           // Write the word 'drop' on cursor...
           if (gfUIMouseOnValidCatcher == 0) {
-            wcscpy(gzIntTileLocation, pMessageStrings[Enum333.MSG_THROW]);
+            gzIntTileLocation = pMessageStrings[Enum333.MSG_THROW];
             gfUIIntTileLocation = true;
           }
 
@@ -4027,7 +4027,7 @@ export function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: U
 
   // Load graphics
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(VObjectDesc.ImageFile, "INTERFACE\\extra_inventory.STI");
+  VObjectDesc.ImageFile = "INTERFACE\\extra_inventory.STI";
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiItemPopupBoxes)));
 
   // Get size
@@ -4222,7 +4222,7 @@ export function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, s
 
   // Load graphics
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(VObjectDesc.ImageFile, "INTERFACE\\extra_inventory.STI");
+  VObjectDesc.ImageFile = "INTERFACE\\extra_inventory.STI";
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiItemPopupBoxes)));
 
   // Get size

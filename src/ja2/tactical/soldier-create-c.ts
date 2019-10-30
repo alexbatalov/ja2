@@ -521,7 +521,7 @@ function TacticalCopySoldierFromProfile(pSoldier: Pointer<SOLDIERTYPE>, pCreateS
   pSoldier.value.ubScheduleID = pCreateStruct.value.ubScheduleID;
   pSoldier.value.bHasKeys = pCreateStruct.value.fHasKeys;
 
-  wcscpy(pSoldier.value.name, pProfile.value.zNickname);
+  pSoldier.value.name = pProfile.value.zNickname;
 
   pSoldier.value.bLife = pProfile.value.bLife;
   pSoldier.value.bLifeMax = pProfile.value.bLifeMax;
@@ -1701,7 +1701,7 @@ function UpdateStaticDetailedPlacementWithProfileInformation(spp: Pointer<SOLDIE
   SET_PALETTEREP_ID(spp.value.SkinPal, pProfile.value.SKIN);
   SET_PALETTEREP_ID(spp.value.PantsPal, pProfile.value.PANTS);
 
-  wcscpy(spp.value.name, pProfile.value.zNickname);
+  spp.value.name = pProfile.value.zNickname;
 
   spp.value.bLife = pProfile.value.bLife;
   spp.value.bLifeMax = pProfile.value.bLifeMax;

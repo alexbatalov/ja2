@@ -231,7 +231,7 @@ function HandleCrowShadowNewGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
         AniParams.sX = pSoldier.value.sX;
         AniParams.sY = pSoldier.value.sY;
         AniParams.sZ = 0;
-        strcpy(AniParams.zCachedFile, "TILECACHE\\FLY_SHDW.STI");
+        AniParams.zCachedFile = "TILECACHE\\FLY_SHDW.STI";
 
         AniParams.uiUserData3 = pSoldier.value.bDirection;
 

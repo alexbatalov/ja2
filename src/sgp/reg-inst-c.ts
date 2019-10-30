@@ -56,9 +56,9 @@ export function InitializeRegistryKeys(lpszAppName: string /* STR */, lpszRegist
   //  will be freed when the application exits.  No assumptions
   //  can be made on how gpszProfileName was allocated.
 
-  strcpy(gszAppName, lpszAppName);
-  strcpy(gszRegistryKey, lpszRegistryKey);
-  strcpy(gszProfileName, gszAppName);
+  gszAppName = lpszAppName;
+  gszRegistryKey = lpszRegistryKey;
+  gszProfileName = gszAppName;
 
   return true;
 }
@@ -149,7 +149,7 @@ function GetProfileChar(lpszSection: string /* STR */, lpszEntry: string /* STR 
   if (gszRegistryKey[0] != '\0') {
     let hSecKey: HKEY = GetSectionKey(lpszSection);
     if (hSecKey == null) {
-      strcpy(lpszValue, lpszDefault);
+      lpszValue = lpszDefault;
       return true;
     }
     lResult = RegQueryValueEx(hSecKey, lpszEntry, null, addressof(dwType), null, addressof(dwCount));
@@ -160,10 +160,10 @@ function GetProfileChar(lpszSection: string /* STR */, lpszEntry: string /* STR 
     RegCloseKey(hSecKey);
     if (lResult == ERROR_SUCCESS) {
       assert(dwType == REG_SZ);
-      strcpy(lpszValue, strValue);
+      lpszValue = strValue;
       return true;
     }
-    strcpy(lpszValue, lpszDefault);
+    lpszValue = lpszDefault;
     return true;
   }
   //	else

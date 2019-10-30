@@ -12,13 +12,13 @@ export function FilenameForBPP(pFilename: string /* STR */, pDestination: Pointe
 
   if (GETPIXELDEPTH() == 16) {
     // no processing for 16 bit names
-    strcpy(pDestination, pFilename);
+    pDestination = pFilename;
   } else {
     _splitpath(pFilename, Drive, Dir, Name, Ext);
 
     strcat(Name, "_8");
 
-    strcpy(pDestination, Drive);
+    pDestination = Drive;
     // strcat(pDestination, Dir);
     strcat(pDestination, DATA_8_BIT_DIR);
     strcat(pDestination, Name);
@@ -131,7 +131,7 @@ export function WrapString(pStr: string /* Pointer<INT16> */, pStr2: Pointer<str
 
           pStr[uiNewLet] = '\0';
 
-          wcscpy(pStr2, addressof(pStr[uiNewLet + 1]));
+          pStr2 = addressof(pStr[uiNewLet + 1]);
         }
 
         if (fLineSplit)

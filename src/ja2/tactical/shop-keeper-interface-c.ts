@@ -4107,7 +4107,7 @@ function DisplaySkiAtmTransferString(): void {
   // Erase the background behind the string
   ColorFillVideoSurfaceArea(FRAME_BUFFER, SKI_TRANSFER_STRING_X, SKI_TRANSFER_STRING_Y, SKI_TRANSFER_STRING_X + SKI_TRANSFER_STRING_WIDTH, SKI_TRANSFER_STRING_Y + SKI_TRANSFER_STRING_HEIGHT, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-  wcscpy(zSkiAtmTransferString, gzSkiAtmTransferString);
+  zSkiAtmTransferString = gzSkiAtmTransferString;
   InsertCommasForDollarFigure(zSkiAtmTransferString);
   InsertDollarSignInToString(zSkiAtmTransferString);
 
@@ -4225,28 +4225,28 @@ function HandleCurrentModeText(ubMode: UINT8): void {
 
   switch (ubMode) {
     case Enum250.SKI_ATM_DISABLED_MODE:
-      wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_MODE]);
+      zTemp = gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_MODE];
       break;
 
     case Enum250.SKI_ATM_TAKE_MODE:
       // if the player has selected any money yet
       if (gzSkiAtmTransferString[0] == '\0')
-        wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_ENTER_AMOUNT]);
+        zTemp = gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_ENTER_AMOUNT];
       else
-        wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_FROM_MERC]);
+        zTemp = gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_FROM_MERC];
       break;
 
     case Enum250.SKI_ATM_GIVE_MODE:
       // if the player has selected any money yet
       if (gzSkiAtmTransferString[0] == '\0')
-        wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_ENTER_AMOUNT]);
+        zTemp = gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_ENTER_AMOUNT];
       else
-        wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_TO_MERC]);
+        zTemp = gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_TO_MERC];
       break;
 
     case Enum250.SKI_ATM_ERR_TAKE_MODE:
     case Enum250.SKI_ATM_ERR_GIVE_MODE:
-      wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_INUSUFFICIENT_FUNDS]);
+      zTemp = gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_INUSUFFICIENT_FUNDS];
       break;
 
     case Enum250.SKI_ATM_DISPLAY_PLAYERS_BALANCE:
@@ -6017,7 +6017,7 @@ function BuildRepairTimeString(sString: Pointer<string> /* wchar_t[] */ /* [] */
     if (usNumberOfHoursToFixItem > 1) {
       sString = swprintf(SKI_Text[Enum367.SKI_TEXT_PLURAL_HOURS], usNumberOfHoursToFixItem);
     } else {
-      wcscpy(sString, SKI_Text[Enum367.SKI_TEXT_ONE_HOUR]);
+      sString = SKI_Text[Enum367.SKI_TEXT_ONE_HOUR];
     }
   }
 }
@@ -6039,7 +6039,7 @@ function BuildDoneWhenTimeString(sString: Pointer<string> /* wchar_t[] */ /* [] 
 
   // if the item has already been repaired
   if (gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].uiRepairDoneTime <= GetWorldTotalMin()) {
-    wcscpy(sString, "");
+    sString = "";
     return;
   }
 
@@ -6075,7 +6075,7 @@ function BuildItemHelpTextString(sString: Pointer<string> /* wchar_t[] */ /* [] 
       BuildRepairTimeString(zRepairTime, CalculateObjectItemRepairTime(gbSelectedArmsDealerID, addressof(pInv.value.ItemObject)));
       sString = swprintf("%s\n(%s: %s)", zHelpText, gzLateLocalizedString[44], zRepairTime);
     } else {
-      wcscpy(sString, zHelpText);
+      sString = zHelpText;
     }
   } else {
     sString[0] = '\0';

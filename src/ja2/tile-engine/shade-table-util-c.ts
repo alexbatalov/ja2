@@ -106,7 +106,7 @@ export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem
   // and should be fixed.  Also assumes that the directory is set to Data\ShadeTables.
-  strcpy(ShadeFileName, TileSurfaceFilenames[uiTileTypeIndex]);
+  ShadeFileName = TileSurfaceFilenames[uiTileTypeIndex];
   ptr = strstr(ShadeFileName, ".");
   if (!ptr) {
     return false;
@@ -144,7 +144,7 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem
   // and should be fixed.  Also assumes that the directory is set to Data\ShadeTables.
-  strcpy(ShadeFileName, TileSurfaceFilenames[uiTileTypeIndex]);
+  ShadeFileName = TileSurfaceFilenames[uiTileTypeIndex];
   ptr = strstr(ShadeFileName, ".");
   if (!ptr) {
     return false;

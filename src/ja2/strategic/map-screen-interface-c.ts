@@ -1072,17 +1072,17 @@ export function GetMoraleString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer
   let bMorale: INT8 = pSoldier.value.bMorale;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_DEAD) {
-    wcscpy(sString, pMoralStrings[5]);
+    sString = pMoralStrings[5];
   } else if (bMorale > 80) {
-    wcscpy(sString, pMoralStrings[0]);
+    sString = pMoralStrings[0];
   } else if (bMorale > 65) {
-    wcscpy(sString, pMoralStrings[1]);
+    sString = pMoralStrings[1];
   } else if (bMorale > 35) {
-    wcscpy(sString, pMoralStrings[2]);
+    sString = pMoralStrings[2];
   } else if (bMorale > 20) {
-    wcscpy(sString, pMoralStrings[3]);
+    sString = pMoralStrings[3];
   } else {
-    wcscpy(sString, pMoralStrings[4]);
+    sString = pMoralStrings[4];
   }
 }
 
@@ -1552,7 +1552,7 @@ export function UpdateCharRegionHelpText(): void {
           sString = swprintf("%s: %d/%d, %s: %d/%d, %s: %s", pMapScreenStatusStrings[0], pSoldier.value.bLife, pSoldier.value.bLifeMax, pMapScreenStatusStrings[1], pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMapScreenStatusStrings[2], pMoraleStr);
         }
       } else {
-        wcscpy(sString, "");
+        sString = "";
       }
     } else {
       // POW - stats unknown
@@ -1995,7 +1995,7 @@ export function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPositio
     pFastHelpMapScreenList[iCounter].iW = iWidth[iCounter];
 
     // copy string
-    wcscpy(pFastHelpMapScreenList[iCounter].FastHelpText, sString[iCounter]);
+    pFastHelpMapScreenList[iCounter].FastHelpText = sString[iCounter];
 
     // update the size
     giSizeOfInterfaceFastHelpTextList = iCounter + 1;
@@ -2157,7 +2157,7 @@ export function SetUpMapScreenFastHelpText(): void {
     pFastHelpMapScreenList[iCounter].iX = pMapScreenFastHelpLocationList[iCounter].iX;
     pFastHelpMapScreenList[iCounter].iY = pMapScreenFastHelpLocationList[iCounter].iY;
     pFastHelpMapScreenList[iCounter].iW = pMapScreenFastHelpWidthList[iCounter];
-    wcscpy(pFastHelpMapScreenList[iCounter].FastHelpText, pMapScreenFastHelpTextList[iCounter]);
+    pFastHelpMapScreenList[iCounter].FastHelpText = pMapScreenFastHelpTextList[iCounter];
   }
 
   // DEF: removed cause the help screen will replace the help screen

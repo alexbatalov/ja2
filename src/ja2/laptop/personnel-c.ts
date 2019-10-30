@@ -5036,7 +5036,7 @@ function DisplayATMAmount(): void {
     return;
   }
 
-  wcscpy(sTempString, sTransferString);
+  sTempString = sTransferString;
 
   if ((sTempString[0] == 48) && (sTempString[1] != 0)) {
     // strip the zero from the beginning
@@ -5377,7 +5377,7 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
   let sZero: string /* CHAR16[2] */ = "0";
   let iCounter: INT32 = 0;
 
-  wcscpy(sTempString, sTransferString);
+  sTempString = sTransferString;
 
   if ((sTempString[0] == 48) && (sTempString[1] != 0)) {
     // strip the zero from the beginning
@@ -5502,10 +5502,10 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
         } else if (Menptr[iId].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
           //					swprintf(sString, L"%d%s / %d%s",Menptr[iId].iTotalContractLength, gpStrategicString[ STR_PB_DAYS_ABBREVIATION ], ( GetWorldTotalMin( ) -Menptr[iId].iStartContractTime ) / ( 24 * 60 ), gpStrategicString[ STR_PB_DAYS_ABBREVIATION ] );
 
-          wcscpy(sString, gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          sString = gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION];
           mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_CURRENT_CONTRACT]);
         } else {
-          wcscpy(sString, gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          sString = gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION];
           mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_CURRENT_CONTRACT]);
         }
 

@@ -135,7 +135,7 @@ function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8)
 
   // the background
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
-  strcpy(vs_desc.ImageFile, zMercBackgroundPopupFilenames[ubBackgroundIndex]);
+  vs_desc.ImageFile = zMercBackgroundPopupFilenames[ubBackgroundIndex];
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(gPopUpTextBox.value.uiMercTextPopUpBackground)));
 
   // border

@@ -2344,7 +2344,7 @@ function ExtractTempFilename(): void {
   let str: string /* UINT16[40] */;
   Get16BitStringFromField(1, str);
   if (wcscmp(gszTempFilename, str)) {
-    wcscpy(gszTempFilename, str);
+    gszTempFilename = str;
     gfRenderSummary = true;
     gfOverrideDirty = true;
   }

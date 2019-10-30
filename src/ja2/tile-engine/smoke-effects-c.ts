@@ -241,12 +241,12 @@ export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo
     case Enum308.NORMAL_SMOKE_EFFECT:
 
       if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
-        strcpy(AniParams.zCachedFile, "TILECACHE\\smkechze.STI");
+        AniParams.zCachedFile = "TILECACHE\\smkechze.STI";
       } else {
         if (fDissipating) {
-          strcpy(AniParams.zCachedFile, "TILECACHE\\smalsmke.STI");
+          AniParams.zCachedFile = "TILECACHE\\smalsmke.STI";
         } else {
-          strcpy(AniParams.zCachedFile, "TILECACHE\\SMOKE.STI");
+          AniParams.zCachedFile = "TILECACHE\\SMOKE.STI";
         }
       }
       break;
@@ -254,12 +254,12 @@ export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo
     case Enum308.TEARGAS_SMOKE_EFFECT:
 
       if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
-        strcpy(AniParams.zCachedFile, "TILECACHE\\tearchze.STI");
+        AniParams.zCachedFile = "TILECACHE\\tearchze.STI";
       } else {
         if (fDissipating) {
-          strcpy(AniParams.zCachedFile, "TILECACHE\\smaltear.STI");
+          AniParams.zCachedFile = "TILECACHE\\smaltear.STI";
         } else {
-          strcpy(AniParams.zCachedFile, "TILECACHE\\TEARGAS.STI");
+          AniParams.zCachedFile = "TILECACHE\\TEARGAS.STI";
         }
       }
       break;
@@ -267,12 +267,12 @@ export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo
     case Enum308.MUSTARDGAS_SMOKE_EFFECT:
 
       if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
-        strcpy(AniParams.zCachedFile, "TILECACHE\\mustchze.STI");
+        AniParams.zCachedFile = "TILECACHE\\mustchze.STI";
       } else {
         if (fDissipating) {
-          strcpy(AniParams.zCachedFile, "TILECACHE\\smalmust.STI");
+          AniParams.zCachedFile = "TILECACHE\\smalmust.STI";
         } else {
-          strcpy(AniParams.zCachedFile, "TILECACHE\\MUSTARD2.STI");
+          AniParams.zCachedFile = "TILECACHE\\MUSTARD2.STI";
         }
       }
       break;
@@ -280,12 +280,12 @@ export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo
     case Enum308.CREATURE_SMOKE_EFFECT:
 
       if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
-        strcpy(AniParams.zCachedFile, "TILECACHE\\spit_gas.STI");
+        AniParams.zCachedFile = "TILECACHE\\spit_gas.STI";
       } else {
         if (fDissipating) {
-          strcpy(AniParams.zCachedFile, "TILECACHE\\spit_gas.STI");
+          AniParams.zCachedFile = "TILECACHE\\spit_gas.STI";
         } else {
-          strcpy(AniParams.zCachedFile, "TILECACHE\\spit_gas.STI");
+          AniParams.zCachedFile = "TILECACHE\\spit_gas.STI";
         }
       }
       break;

@@ -641,7 +641,7 @@ function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject:
   // copy subject
   pTempEmail.value.pSubject = MemAlloc(128 * 2);
   memset(pTempEmail.value.pSubject, 0, sizeof(CHAR16) * 128);
-  wcscpy(pTempEmail.value.pSubject, pSubject);
+  pTempEmail.value.pSubject = pSubject;
 
   // copy offset and length of the actual message in email.edt
   pTempEmail.value.usOffset = iMessageOffset;
@@ -1028,7 +1028,7 @@ function SwapMessages(iIdA: INT32, iIdB: INT32): void {
   pTemp.value.usLength = pA.value.usLength;
   pTemp.value.iDate = pA.value.iDate;
   pTemp.value.ubSender = pA.value.ubSender;
-  wcscpy(pTemp.value.pSubject, pA.value.pSubject);
+  pTemp.value.pSubject = pA.value.pSubject;
 
   // pA becomes pB
   pA.value.iId = pB.value.iId;
@@ -1038,7 +1038,7 @@ function SwapMessages(iIdA: INT32, iIdB: INT32): void {
   pA.value.usLength = pB.value.usLength;
   pA.value.iDate = pB.value.iDate;
   pA.value.ubSender = pB.value.ubSender;
-  wcscpy(pA.value.pSubject, pB.value.pSubject);
+  pA.value.pSubject = pB.value.pSubject;
 
   // pB becomes pTemp
   pB.value.iId = pTemp.value.iId;
@@ -1048,7 +1048,7 @@ function SwapMessages(iIdA: INT32, iIdB: INT32): void {
   pB.value.usLength = pTemp.value.usLength;
   pB.value.iDate = pTemp.value.iDate;
   pB.value.ubSender = pTemp.value.ubSender;
-  wcscpy(pB.value.pSubject, pTemp.value.pSubject);
+  pB.value.pSubject = pTemp.value.pSubject;
 
   // free up memory
   MemFree(pTemp.value.pSubject);
@@ -1128,7 +1128,7 @@ function DrawSubject(iCounter: INT32, pSubject: string /* STR16 */, fRead: boole
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
 
-  wcscpy(pTempSubject, pSubject);
+  pTempSubject = pSubject;
 
   if (fRead) {
     // if the subject will be too long, cap it, and add the '...'
@@ -1521,7 +1521,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   if (pTempRecord) {
     while (fDonePrintingMessage == false) {
       // copy over string
-      wcscpy(pString, pTempRecord.value.pRecord);
+      pString = pTempRecord.value.pRecord;
 
       // get the height of the string, ONLY!...must redisplay ON TOP OF background graphic
       iHeight += IanDisplayWrappedString(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, false, IAN_WRAP_NO_SHADOW);
@@ -2507,7 +2507,7 @@ function AddEmailRecordToList(pString: string /* STR16 */): void {
   pTempRecord.value.Next = null;
 
   // copy in string
-  wcscpy(pTempRecord.value.pRecord, pString);
+  pTempRecord.value.pRecord = pString;
 
   // done return
 
@@ -3995,7 +3995,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
 
   while (pTempRecord) {
     // copy over string
-    wcscpy(pString, pTempRecord.value.pRecord);
+    pString = pTempRecord.value.pRecord;
 
     // get the height of the string, ONLY!...must redisplay ON TOP OF background graphic
     iHeight += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + GetFontHeight(MESSAGE_FONT())), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, false, 0);
@@ -4098,7 +4098,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
       // go to the right record
       while (pTempRecord) {
         // copy over string
-        wcscpy(pString, pTempRecord.value.pRecord);
+        pString = pTempRecord.value.pRecord;
 
         if (pString[0] == 0) {
           // on last page
@@ -4190,7 +4190,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
   let sSearchString: string /* CHAR16[32] */;
 
   // Copy the original string over to the temp string
-  wcscpy(pTempString, pFinishedString);
+  pTempString = pFinishedString;
 
   // Null out the string
   pFinishedString[0] = '\0';
@@ -4209,20 +4209,20 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
       if (pMercNameString < pAmountString) {
         fReplacingMercName = true;
         pSubString = pMercNameString;
-        wcscpy(sSearchString, sMercName);
+        sSearchString = sMercName;
       } else {
         fReplacingMercName = false;
         pSubString = pAmountString;
-        wcscpy(sSearchString, sAmount);
+        sSearchString = sAmount;
       }
     } else if (pMercNameString != null) {
       fReplacingMercName = true;
       pSubString = pMercNameString;
-      wcscpy(sSearchString, sMercName);
+      sSearchString = sMercName;
     } else if (pAmountString != null) {
       fReplacingMercName = false;
       pSubString = pAmountString;
-      wcscpy(sSearchString, sAmount);
+      sSearchString = sAmount;
     } else {
       pSubString = null;
     }

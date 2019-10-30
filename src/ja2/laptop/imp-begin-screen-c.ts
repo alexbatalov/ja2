@@ -62,8 +62,8 @@ export function EnterIMPBeginScreen(): void {
 
   // if we are not restarting...then copy over name, set cursor and array positions
   if (iCurrentProfileMode != 0) {
-    wcscpy(pFullNameString, pFullName);
-    wcscpy(pNickNameString, pNickName);
+    pFullNameString = pFullName;
+    pNickNameString = pNickName;
     uiFullNameCharacterPosition = wcslen(pFullNameString);
     uiNickNameCharacterPosition = wcslen(pNickNameString);
     uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL());
@@ -146,7 +146,7 @@ export function ExitIMPBeginScreen(): void {
   // remove mouse regions
   DestroyIMPBeginScreenMouseRegions();
 
-  wcscpy(pFullName, pFullNameString);
+  pFullName = pFullNameString;
 
   // is nick name too long?..shorten
   if (wcslen(pNickNameString) > 8) {
@@ -154,7 +154,7 @@ export function ExitIMPBeginScreen(): void {
     pNickNameString[8] = 0;
   }
 
-  wcscpy(pNickName, pNickNameString);
+  pNickName = pNickNameString;
 
   // set gender
   fCharacterIsMale = bGenderFlag;
@@ -922,8 +922,8 @@ function CheckCharacterInputForEgg(): boolean {
 
   return false;
   if ((wcscmp(pFullNameString, "Test Female") == 0) && (wcscmp(pNickNameString, "Test") == 0)) {
-    wcscpy(pFullNameString, "Test Female");
-    wcscpy(pNickNameString, "Test");
+    pFullNameString = "Test Female";
+    pNickNameString = "Test";
     bGenderFlag = Enum86.IMP_FEMALE;
     iHealth = 55;
     iAgility = 55;

@@ -442,9 +442,9 @@ export function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>)
   AniParams.uiUserData3 = pCorpse.value.def.bDirection;
 
   if (!gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE]) {
-    strcpy(AniParams.zCachedFile, zNoBloodCorpseFilenames[pCorpse.value.def.ubType]);
+    AniParams.zCachedFile = zNoBloodCorpseFilenames[pCorpse.value.def.ubType];
   } else {
-    strcpy(AniParams.zCachedFile, zCorpseFilenames[pCorpse.value.def.ubType]);
+    AniParams.zCachedFile = zCorpseFilenames[pCorpse.value.def.ubType];
   }
 
   pCorpse.value.pAniTile = CreateAnimationTile(addressof(AniParams));
@@ -580,7 +580,7 @@ function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): boolean {
   if (pCorpse.value.def.ubType == Enum249.ROTTING_STAGE2) {
     bBodyTypePalette = 0;
   } else if (pCorpse.value.def.usFlags & ROTTING_CORPSE_USE_CAMMO_PALETTE) {
-    strcpy(zColFilename, "ANIMS\\camo.COL");
+    zColFilename = "ANIMS\\camo.COL";
     bBodyTypePalette = 1;
   }
 
@@ -1181,7 +1181,7 @@ export function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
     AniParams.sY = CenterY(sBaseGridNo);
     AniParams.sZ = pCorpse.value.def.sHeightAdjustment;
 
-    strcpy(AniParams.zCachedFile, "TILECACHE\\GEN_BLOW.STI");
+    AniParams.zCachedFile = "TILECACHE\\GEN_BLOW.STI";
     CreateAnimationTile(addressof(AniParams));
 
     // Remove....

@@ -181,136 +181,136 @@ export function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
 
   switch (ubLoadScreenID) {
     case Enum22.LOADINGSCREEN_NOTHING:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Heli.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_Heli.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYGENERIC:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayGeneric.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayGeneric.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYTOWN1:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayTown1.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayTown1.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYTOWN2:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayTown2.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayTown2.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYWILD:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayWild.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayWild.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYTROPICAL:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayTropical.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayTropical.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYFOREST:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayForest.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayForest.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYDESERT:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayDesert.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayDesert.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYPALACE:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayPalace.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayPalace.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTGENERIC:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightGeneric.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightGeneric.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTWILD:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightWild.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightWild.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTTOWN1:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightTown1.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightTown1.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTTOWN2:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightTown2.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightTown2.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTFOREST:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightForest.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightForest.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTTROPICAL:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightTropical.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightTropical.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTDESERT:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightDesert.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightDesert.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTPALACE:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightPalace.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightPalace.sti";
       break;
     case Enum22.LOADINGSCREEN_HELI:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Heli.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_Heli.sti";
       break;
     case Enum22.LOADINGSCREEN_BASEMENT:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Basement.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_Basement.sti";
       break;
     case Enum22.LOADINGSCREEN_MINE:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Mine.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_Mine.sti";
       break;
     case Enum22.LOADINGSCREEN_CAVE:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Cave.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_Cave.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYPINE:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayPine.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayPine.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTPINE:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightPine.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightPine.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYMILITARY:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayMilitary.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayMilitary.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTMILITARY:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightMilitary.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightMilitary.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYSAM:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DaySAM.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DaySAM.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTSAM:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightSAM.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightSAM.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYPRISON:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayPrison.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayPrison.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTPRISON:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightPrison.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightPrison.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYHOSPITAL:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayHospital.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayHospital.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTHOSPITAL:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightHospital.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightHospital.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYAIRPORT:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayAirport.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayAirport.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTAIRPORT:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightAirport.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightAirport.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYLAB:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayLab.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayLab.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTLAB:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightLab.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightLab.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYOMERTA:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayOmerta.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayOmerta.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTOMERTA:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightOmerta.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightOmerta.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYCHITZENA:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayChitzena.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayChitzena.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTCHITZENA:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightChitzena.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightChitzena.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYMINE:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayMine.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayMine.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTMINE:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightMine.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightMine.sti";
       break;
     case Enum22.LOADINGSCREEN_DAYBALIME:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayBalime.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_DayBalime.sti";
       break;
     case Enum22.LOADINGSCREEN_NIGHTBALIME:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightBalime.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_NightBalime.sti";
       break;
     default:
-      strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Heli.sti");
+      vs_desc.ImageFile = "LOADSCREENS\\LS_Heli.sti";
       break;
   }
 

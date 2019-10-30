@@ -720,7 +720,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
       if (pTargetSoldier.value.ubBodyType == Enum194.CROW) {
         pSoldier.value.bAimShotLocation = AIM_SHOT_LEGS;
 
-        wcscpy(gzLocation, TacticalStr[Enum335.CROW_HIT_LOCATION_STR]);
+        gzLocation = TacticalStr[Enum335.CROW_HIT_LOCATION_STR];
 
         gfUIBodyHitLocation = true;
         return;
@@ -735,20 +735,20 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
 
           // If we have a knife in hand, change string
           if (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_BLADE) {
-            wcscpy(gzLocation, TacticalStr[Enum335.NECK_HIT_LOCATION_STR]);
+            gzLocation = TacticalStr[Enum335.NECK_HIT_LOCATION_STR];
           } else {
-            wcscpy(gzLocation, TacticalStr[Enum335.HEAD_HIT_LOCATION_STR]);
+            gzLocation = TacticalStr[Enum335.HEAD_HIT_LOCATION_STR];
           }
           gfUIBodyHitLocation = true;
           break;
 
         case AIM_SHOT_TORSO:
-          wcscpy(gzLocation, TacticalStr[Enum335.TORSO_HIT_LOCATION_STR]);
+          gzLocation = TacticalStr[Enum335.TORSO_HIT_LOCATION_STR];
           gfUIBodyHitLocation = true;
           break;
 
         case AIM_SHOT_LEGS:
-          wcscpy(gzLocation, TacticalStr[Enum335.LEGS_HIT_LOCATION_STR]);
+          gzLocation = TacticalStr[Enum335.LEGS_HIT_LOCATION_STR];
           gfUIBodyHitLocation = true;
           break;
       }

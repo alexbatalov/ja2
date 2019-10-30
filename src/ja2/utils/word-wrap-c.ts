@@ -70,7 +70,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
       if (pWrappedString.value.pNextWrappedString.value.sString == null)
         return null;
 
-      wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+      pWrappedString.value.pNextWrappedString.value.sString = DestString;
       pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
 
       return FirstWrappedString.pNextWrappedString;
@@ -95,7 +95,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
       pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
 
       // Copy the string into the new struct
-      wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+      pWrappedString.value.pNextWrappedString.value.sString = DestString;
       pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
 
       fNewLine = false;
@@ -184,7 +184,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
       if (pWrappedString.value.pNextWrappedString.value.sString == null)
         return null;
 
-      wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+      pWrappedString.value.pNextWrappedString.value.sString = DestString;
       pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
 
       return FirstWrappedString.pNextWrappedString;
@@ -225,7 +225,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
         if (pWrappedString.value.pNextWrappedString.value.sString == null)
           return null;
 
-        wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+        pWrappedString.value.pNextWrappedString.value.sString = DestString;
         pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
 
         usCurrentWidthPixels = 0;
@@ -237,7 +237,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
         // if last line, put line into string structure
         if (WFStringPixLength(pCurrentStringLoc, ulFont) < usLineWidthPixels) {
           // run until end of DestString
-          wcscpy(DestString, pCurrentStringLoc);
+          DestString = pCurrentStringLoc;
           iCounter = 0;
           while (DestString[iCounter] != 0) {
             if (DestString[iCounter] == NEWLINE_CHAR) {
@@ -259,7 +259,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
           if (pWrappedString.value.pNextWrappedString.value.sString == null)
             return null;
 
-          wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+          pWrappedString.value.pNextWrappedString.value.sString = DestString;
           pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
           if (fNewLine) {
             pWrappedString = addressof(FirstWrappedString);
@@ -269,7 +269,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
             // allocate memory for the string
             pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
             pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(pNullString) + 2) * 2);
-            wcscpy(pWrappedString.value.pNextWrappedString.value.sString, pNullString);
+            pWrappedString.value.pNextWrappedString.value.sString = pNullString;
             pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
           }
 
@@ -813,7 +813,7 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
           usLinesUsed++;
 
           // start off next line string with the word we couldn't fit
-          wcscpy(zLineString, zWordString);
+          zLineString = zWordString;
 
           // remeasure the line length
           usLineLengthPixels = WFStringPixLength(zLineString, uiLocalFont);
@@ -1199,7 +1199,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
           usLinesUsed++;
 
           // start off next line string with the word we couldn't fit
-          wcscpy(zLineString, zWordString);
+          zLineString = zWordString;
 
           // remeasure the line length
           usLineLengthPixels = WFStringPixLength(zLineString, uiLocalFont);
@@ -1477,7 +1477,7 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
           usLinesUsed++;
 
           // start off next line string with the word we couldn't fit
-          wcscpy(zLineString, zWordString);
+          zLineString = zWordString;
 
           // remeasure the line length
           usLineLengthPixels = WFStringPixLength(zLineString, uiLocalFont);
@@ -1680,7 +1680,7 @@ export function ReduceStringLength(pString: Pointer<string> /* STR16 */, uiWidth
   }
 
   // addd the '...' to the string
-  wcscpy(zStrDots, "...");
+  zStrDots = "...";
 
   // get the width of the '...'
   uiDotWidth = StringPixLength(zStrDots, uiFont);

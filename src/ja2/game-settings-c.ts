@@ -109,7 +109,7 @@ export function SaveGameSettings(): boolean {
   gGameSettings.ubSpeechVolume = GetSpeechVolume();
   gGameSettings.ubMusicVolumeSetting = MusicGetVolume();
 
-  strcpy(gGameSettings.zVersionNumber, czVersionNumber);
+  gGameSettings.zVersionNumber = czVersionNumber;
 
   gGameSettings.uiSettingsVersionNumber = GAME_SETTING_CURRENT_VERSION;
 
@@ -263,7 +263,7 @@ function GetCDromDriveLetter(pString: Pointer<string> /* STR8 */): boolean {
       switch (uiDriveType) {
         // The drive is a CD-ROM drive.
         case DRIVE_CDROM:
-          strcpy(pString, zDriveLetter);
+          pString = zDriveLetter;
 
           if (DoJA2FilesExistsOnDrive(pString)) {
             return true;

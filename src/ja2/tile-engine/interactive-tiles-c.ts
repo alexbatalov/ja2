@@ -252,7 +252,7 @@ export function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean)
       }
     } else {
       if (pStructure.value.fFlags & STRUCTURE_SWITCH) {
-        wcscpy(gzIntTileLocation, gzLateLocalizedString[25]);
+        gzIntTileLocation = gzLateLocalizedString[25];
         gfUIIntTileLocation = true;
       }
 

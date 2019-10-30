@@ -143,14 +143,14 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
         if (!temp)
           temp = curr.value.pPrev;
         if (!temp)
-          wcscpy(gzFilename, "");
+          gzFilename = "";
         else
           gzFilename = swprintf("%S", temp.value.FileInfo.zFileName);
         if (ValidFilename()) {
           SetInputFieldStringWith16BitString(0, gzFilename);
         } else {
           SetInputFieldStringWith16BitString(0, "");
-          wcscpy(gzFilename, "");
+          gzFilename = "";
         }
         RemoveFromFDlgList(addressof(FileList), curr);
         iTotalFiles--;
@@ -472,7 +472,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
         SetInputFieldStringWith16BitString(0, gzFilename);
       } else {
         SetInputFieldStringWith16BitString(0, "");
-        wcscpy(gzFilename, "");
+        gzFilename = "";
       }
 
       RenderInactiveTextField(0);
@@ -917,7 +917,7 @@ export function ExternalLoadMap(szFilename: string /* Pointer<UINT16> */): boole
   Assert(szFilename);
   if (!wcslen(szFilename))
     return false;
-  wcscpy(gzFilename, szFilename);
+  gzFilename = szFilename;
   if (!ValidFilename())
     return false;
   gbCurrentFileIOStatus = Enum51.INITIATE_MAP_LOAD;
@@ -934,7 +934,7 @@ export function ExternalSaveMap(szFilename: string /* Pointer<UINT16> */): boole
   Assert(szFilename);
   if (!wcslen(szFilename))
     return false;
-  wcscpy(gzFilename, szFilename);
+  gzFilename = szFilename;
   if (!ValidFilename())
     return false;
   gbCurrentFileIOStatus = Enum51.INITIATE_MAP_SAVE;

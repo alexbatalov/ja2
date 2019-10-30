@@ -74,10 +74,10 @@ export let pPlayerSelectedBigFaceFileNames: string[] /* STR8[NUMBER_OF_PLAYER_PO
 
 export function CreateACharacterFromPlayerEnteredStats(): void {
   // copy over full name
-  wcscpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName, pFullName);
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName = pFullName;
 
   // the nickname
-  wcscpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zNickname, pNickName);
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zNickname = pNickName;
 
   // gender
   if (fCharacterIsMale == true) {
@@ -638,8 +638,8 @@ function SetMercSkinAndHairColors(): void {
   }
 
   // now set them
-  strcpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].HAIR, sHairStrings[sHairColor]);
-  strcpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].SKIN, sSkinStrings[sSkinColor]);
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].HAIR = sHairStrings[sHairColor];
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].SKIN = sSkinStrings[sSkinColor];
 }
 
 export function HandleMercStatsForChangesInFace(): void {

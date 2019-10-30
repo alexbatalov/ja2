@@ -545,7 +545,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: string 
   if (ubPriority == MSG_DEBUG) {
     return;
     usColor = DEBUG_COLOR;
-    wcscpy(DestStringA, DestString);
+    DestStringA = DestString;
     DestString = swprintf("Debug: %s", DestStringA);
     WriteMessageToFile(DestStringA);
   }
@@ -708,7 +708,7 @@ export function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: s
   if (ubPriority == MSG_DEBUG) {
     return;
     usColor = DEBUG_COLOR;
-    wcscpy(DestStringA, DestString);
+    DestStringA = DestString;
     DestString = swprintf("Debug: %s", DestStringA);
   }
 
@@ -1002,7 +1002,7 @@ export function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): boolean {
       memset(gMapScreenMessageList[uiCount].value.pString16, 0, uiSizeOfString);
 
       // copy the string over
-      wcscpy(gMapScreenMessageList[uiCount].value.pString16, SavedString);
+      gMapScreenMessageList[uiCount].value.pString16 = SavedString;
 
       // Read the rest of the message information to the saved game file
       FileRead(hFile, addressof(StringSave), sizeof(StringSaveStruct), addressof(uiNumBytesRead));

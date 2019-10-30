@@ -242,7 +242,7 @@ function CreateAutoBandageString(): boolean {
     if (!sTemp) {
       return false;
     }
-    wcscpy(sTemp, "");
+    sTemp = "";
     for (cnt = 0; cnt < ubDoctors - 1; cnt++) {
       wcscat(sTemp, MercPtrs[ubDoctor[cnt]].value.name);
       if (ubDoctors > 2) {

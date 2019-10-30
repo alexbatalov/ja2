@@ -63,7 +63,7 @@ export function InitEngineTilesets(): void {
       FileRead(hfile, addressof(zName), sizeof(zName), addressof(uiNumBytesRead));
 
       // Set into database
-      strcpy(gTilesets[cnt].TileSurfaceFilenames[cnt2], zName);
+      gTilesets[cnt].TileSurfaceFilenames[cnt2] = zName;
     }
   }
 

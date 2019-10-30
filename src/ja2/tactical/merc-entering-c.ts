@@ -616,7 +616,7 @@ export function HandleHeliDrop(): void {
           AniParams.sX = gsHeliXPos;
           AniParams.sY = gsHeliYPos;
           AniParams.sZ = gdHeliZPos;
-          strcpy(AniParams.zCachedFile, "TILECACHE\\HELI_SH.STI");
+          AniParams.zCachedFile = "TILECACHE\\HELI_SH.STI";
 
           gpHeli = CreateAnimationTile(addressof(AniParams));
           break;

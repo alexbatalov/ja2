@@ -143,7 +143,7 @@ export function GetCachedTile(cFilename: string /* Pointer<INT8> */): INT32 {
         return -1;
       }
 
-      strcpy(gpTileCache[cnt].zName, cFilename);
+      gpTileCache[cnt].zName = cFilename;
       gpTileCache[cnt].sHits = 1;
 
       // Get root name
@@ -274,13 +274,13 @@ export function GetRootName(pDestStr: Pointer<string> /* Pointer<INT8> */, pSrcS
   let cEndOfName: string /* STR */;
 
   // Remove path
-  strcpy(cTempFilename, pSrcStr);
+  cTempFilename = pSrcStr;
   cEndOfName = strrchr(cTempFilename, '\\');
   if (cEndOfName != null) {
     cEndOfName++;
-    strcpy(pDestStr, cEndOfName);
+    pDestStr = cEndOfName;
   } else {
-    strcpy(pDestStr, cTempFilename);
+    pDestStr = cTempFilename;
   }
 
   // Now remove extension...

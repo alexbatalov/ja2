@@ -216,7 +216,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
     return false;
   } else {
     for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++)
-      strcpy(TileSurfaceFilenames[uiLoop], ppTileSurfaceFilenames[uiLoop]); //(char *)(ppTileSurfaceFilenames + (65 * uiLoop)) );
+      TileSurfaceFilenames[uiLoop] = ppTileSurfaceFilenames[uiLoop]; //(char *)(ppTileSurfaceFilenames + (65 * uiLoop)) );
   }
 
   // uiFillColor = Get16BPPColor(FROMRGB(223, 223, 223));
@@ -243,7 +243,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
     if (ppTileSurfaceFilenames == null) {
       GetPrivateProfileString("TileSurface Filenames", gTileSurfaceName[uiLoop], "", cTemp, SGPFILENAME_LEN, INIFile);
       if (cTemp.value != '\0') {
-        strcpy(TileSurfaceFilenames[uiLoop], cTemp);
+        TileSurfaceFilenames[uiLoop] = cTemp;
         if (AddTileSurface(cTemp, uiLoop, ubTilesetID, true) == false) {
           DestroyTileSurfaces();
           return false;
@@ -258,7 +258,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
     } else {
       GetPrivateProfileString("TileSurface Filenames", gTileSurfaceName[uiLoop], "", cTemp, SGPFILENAME_LEN, INIFile);
       if (cTemp.value != '\0') {
-        strcpy(TileSurfaceFilenames[uiLoop], cTemp);
+        TileSurfaceFilenames[uiLoop] = cTemp;
         if (AddTileSurface(cTemp, uiLoop, ubTilesetID, true) == false) {
           DestroyTileSurfaces();
           return false;
@@ -274,7 +274,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
 
           // ATE: If here, don't load default surface if already loaded...
           if (!gbDefaultSurfaceUsed[uiLoop]) {
-            strcpy(TileSurfaceFilenames[uiLoop], gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop]); //(char *)(ppTileSurfaceFilenames + (65 * uiLoop)) );
+            TileSurfaceFilenames[uiLoop] = gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop]; //(char *)(ppTileSurfaceFilenames + (65 * uiLoop)) );
             if (AddTileSurface(gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop], uiLoop, Enum316.GENERIC_1, false) == false) {
               DestroyTileSurfaces();
               return false;
@@ -2593,7 +2593,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   InvalidateWorldRedundency();
 
   // SAVE FILENAME
-  strcpy(gzLastLoadedFile, puiFilename);
+  gzLastLoadedFile = puiFilename;
   LoadRadarScreenBitmap(puiFilename);
 
   RenderProgressBar(0, 80);
@@ -2944,7 +2944,7 @@ export function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, 
   gfForceLoad = fForceFile;
 
   if (zLoadName != null) {
-    strcpy(gzForceLoadFile, zLoadName);
+    gzForceLoadFile = zLoadName;
   }
 }
 

@@ -1167,17 +1167,17 @@ function GetFilesInDirectory(hStack: HCONTAINER, pcDir: string /* Pointer<CHAR> 
         // a valid directory - recurse and find the files in that directory
 
         inFind.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_DIRECTORY;
-        strcpy(cDir, pcDir);
-        strcpy(addressof(cDir[strlen(cDir) - 3]), pFind.value.cFileName);
-        strcpy(addressof(cDir[strlen(cDir)]), "\\*.*\0");
+        cDir = pcDir;
+        addressof(cDir[strlen(cDir) - 3]) = pFind.value.cFileName;
+        addressof(cDir[strlen(cDir)]) = "\\*.*\0";
         hFileIn = FindFirstFile(cDir, addressof(inFind));
         iNumFiles += GetFilesInDirectory(hStack, cDir, hFileIn, addressof(inFind));
         FindClose(hFileIn);
       }
     } else {
       iNumFiles++;
-      strcpy(cName, pcDir);
-      strcpy(addressof(cName[strlen(cName) - 3]), pFind.value.cFileName);
+      cName = pcDir;
+      addressof(cName[strlen(cName) - 3]) = pFind.value.cFileName;
       CharLower(cName);
       hStack = Push(hStack, cName);
     }
@@ -1351,7 +1351,7 @@ export function GetExecutableDirectory(pcDirectory: Pointer<string> /* STRING512
   }
 
   // Now get directory
-  strcpy(pcDirectory, ModuleFilename);
+  pcDirectory = ModuleFilename;
 
   for (cnt = strlen(pcDirectory) - 1; cnt >= 0; cnt--) {
     if (pcDirectory[cnt] == '\\') {
@@ -1420,7 +1420,7 @@ function W32toSGPFileFind(pGFStruct: Pointer<GETFILESTRUCT>, pW32Struct: Pointer
   let uiAttribMask: UINT32;
 
   // Copy the filename
-  strcpy(pGFStruct.value.zFileName, pW32Struct.value.cFileName);
+  pGFStruct.value.zFileName = pW32Struct.value.cFileName;
 
   // Get file size
   if (pW32Struct.value.nFileSizeHigh != 0)

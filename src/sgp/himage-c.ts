@@ -39,9 +39,9 @@ export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT
     // No extension given, use default internal loader extension
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, "No extension given, using default");
     strcat(ImageFile, ".PCX");
-    strcpy(Extension, ".PCX");
+    Extension = ".PCX";
   } else {
-    strcpy(Extension, StrPtr + 1);
+    Extension = StrPtr + 1;
   }
 
   // Determine type from Extension
@@ -84,7 +84,7 @@ export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT
   // hImage->pui16BPPPalette = NULL;
 
   // Set filename and loader
-  strcpy(hImage.value.ImageFile, ImageFile);
+  hImage.value.ImageFile = ImageFile;
   hImage.value.iFileLoader = iFileLoader;
 
   if (!LoadImageData(hImage, fContents)) {

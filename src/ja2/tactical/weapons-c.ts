@@ -1526,7 +1526,7 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
       AniParams.sY = sYPos;
       AniParams.sZ = sZPos;
 
-      strcpy(AniParams.zCachedFile, "TILECACHE\\MINIBOOM.STI");
+      AniParams.zCachedFile = "TILECACHE\\MINIBOOM.STI";
 
       CreateAnimationTile(addressof(AniParams));
 

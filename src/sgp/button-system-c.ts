@@ -130,7 +130,7 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
 
   // Load the image
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(vo_desc.ImageFile, filename);
+  vo_desc.ImageFile = filename;
 
   MemBefore = MemGetFree();
   if ((ButtonPictures[UseSlot].vobj = CreateVideoObject(addressof(vo_desc))) == null) {
@@ -618,7 +618,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
 
   // Load the default generic button images
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(vo_desc.ImageFile, DEFAULT_GENERIC_BUTTON_OFF);
+  vo_desc.ImageFile = DEFAULT_GENERIC_BUTTON_OFF;
 
   if ((GenericButtonOffNormal[0] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " + DEFAULT_GENERIC_BUTTON_OFF);
@@ -626,7 +626,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
   }
 
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(vo_desc.ImageFile, DEFAULT_GENERIC_BUTTON_ON);
+  vo_desc.ImageFile = DEFAULT_GENERIC_BUTTON_ON;
 
   if ((GenericButtonOnNormal[0] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " + DEFAULT_GENERIC_BUTTON_ON);
@@ -637,11 +637,11 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
   // doesn't exists, the system simply ignores that file. These are only here as extra images, they
   // aren't required for operation (only OFF Normal and ON Normal are required).
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(vo_desc.ImageFile, DEFAULT_GENERIC_BUTTON_OFF_HI);
+  vo_desc.ImageFile = DEFAULT_GENERIC_BUTTON_OFF_HI;
   GenericButtonOffHilite[0] = CreateVideoObject(addressof(vo_desc));
 
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(vo_desc.ImageFile, DEFAULT_GENERIC_BUTTON_ON_HI);
+  vo_desc.ImageFile = DEFAULT_GENERIC_BUTTON_ON_HI;
   GenericButtonOnHilite[0] = CreateVideoObject(addressof(vo_desc));
 
   Pix = 0;
@@ -713,7 +713,7 @@ export function LoadGenericButtonIcon(filename: string /* Pointer<UINT8> */): IN
 
   // Load the icon
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(vo_desc.ImageFile, filename);
+  vo_desc.ImageFile = filename;
 
   if ((GenericButtonIcons[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonIcon: Couldn't create VOBJECT for %s", filename));
@@ -829,7 +829,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
 
   // Load the image for the Off-Normal button state (required)
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(vo_desc.ImageFile, OffNormName);
+  vo_desc.ImageFile = OffNormName;
 
   if ((GenericButtonOffNormal[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffNormName));
@@ -838,7 +838,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
 
   // Load the image for the On-Normal button state (required)
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(vo_desc.ImageFile, OnNormName);
+  vo_desc.ImageFile = OnNormName;
 
   if ((GenericButtonOnNormal[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnNormName));
@@ -850,7 +850,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
 
   if (GrayName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    strcpy(vo_desc.ImageFile, GrayName);
+    vo_desc.ImageFile = GrayName;
 
     if ((GenericButtonGrayed[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", GrayName));
@@ -861,7 +861,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
 
   if (OffHiliteName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    strcpy(vo_desc.ImageFile, OffHiliteName);
+    vo_desc.ImageFile = OffHiliteName;
 
     if ((GenericButtonOffHilite[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffHiliteName));
@@ -872,7 +872,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
 
   if (OnHiliteName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    strcpy(vo_desc.ImageFile, OnHiliteName);
+    vo_desc.ImageFile = OnHiliteName;
 
     if ((GenericButtonOnHilite[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnHiliteName));
@@ -883,7 +883,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
 
   if (BkGrndName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    strcpy(vo_desc.ImageFile, BkGrndName);
+    vo_desc.ImageFile = BkGrndName;
 
     if ((GenericButtonBackground[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", BkGrndName));
@@ -1405,7 +1405,7 @@ export function CreateTextButton(string: string /* Pointer<UINT16> */, uiFont: U
   if (string && wcslen(string)) {
     b.value.string = MemAlloc((wcslen(string) + 1) * sizeof(UINT16));
     AssertMsg(b.value.string, "Out of memory error:  Couldn't allocate string in CreateTextButton.");
-    wcscpy(b.value.string, string);
+    b.value.string = string;
   }
 
   // Init the button structure variables
@@ -1796,7 +1796,7 @@ export function CreateIconAndTextButton(Image: INT32, string: string /* Pointer<
   if (string) {
     b.value.string = MemAlloc((wcslen(string) + 1) * sizeof(UINT16));
     AssertMsg(b.value.string, "Out of memory error:  Couldn't allocate string in CreateIconAndTextButton.");
-    wcscpy(b.value.string, string);
+    b.value.string = string;
   }
 
   b.value.bJustification = bJustification;
@@ -1871,7 +1871,7 @@ export function SpecifyButtonText(iButtonID: INT32, string: string /* Pointer<UI
     b.value.string = MemAlloc((wcslen(string) + 1) * sizeof(UINT16));
     Assert(b.value.string);
     // copy the string to the button
-    wcscpy(b.value.string, string);
+    b.value.string = string;
     b.value.uiFlags |= BUTTON_DIRTY;
   }
 }

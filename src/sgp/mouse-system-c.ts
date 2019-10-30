@@ -965,7 +965,7 @@ export function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: str
   region.value.FastHelpText = MemAlloc((wcslen(szText) + 1) * sizeof(UINT16));
   Assert(region.value.FastHelpText);
 
-  wcscpy(region.value.FastHelpText, szText);
+  region.value.FastHelpText = szText;
 
   // ATE: We could be replacing already existing, active text
   // so let's remove the region so it be rebuilt...
@@ -986,7 +986,7 @@ function GetNumberOfLinesInHeight(pStringA: string /* STR16 */): INT16 {
   let sCounter: INT16 = 0;
   let pString: string /* CHAR16[512] */;
 
-  wcscpy(pString, pStringA);
+  pString = pStringA;
 
   // tokenize
   pToken = wcstok(pString, "\n");
@@ -1059,7 +1059,7 @@ function GetWidthOfString(pStringA: string /* STR16 */): INT16 {
   let pString: string /* CHAR16[512] */;
   let pToken: string /* STR16 */;
   let sWidth: INT16 = 0;
-  wcscpy(pString, pStringA);
+  pString = pStringA;
 
   // tokenize
   pToken = wcstok(pString, "\n");
@@ -1083,7 +1083,7 @@ function DisplayHelpTokenizedString(pStringA: string /* STR16 */, sX: INT16, sY:
   let pString: string /* CHAR16[512] */;
   let iLength: INT32;
 
-  wcscpy(pString, pStringA);
+  pString = pStringA;
 
   // tokenize
   pToken = wcstok(pString, "\n");

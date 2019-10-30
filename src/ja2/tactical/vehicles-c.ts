@@ -131,7 +131,7 @@ export function InitVehicles(): void {
 }
 
 export function SetVehicleValuesIntoSoldierType(pVehicle: Pointer<SOLDIERTYPE>): void {
-  wcscpy(pVehicle.value.name, zVehicleName[pVehicleList[pVehicle.value.bVehicleID].ubVehicleType]);
+  pVehicle.value.name = zVehicleName[pVehicleList[pVehicle.value.bVehicleID].ubVehicleType];
 
   pVehicle.value.ubProfile = pVehicleList[pVehicle.value.bVehicleID].ubProfileID;
 

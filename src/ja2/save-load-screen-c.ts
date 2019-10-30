@@ -454,7 +454,7 @@ function EnterSaveLoadScreen(): boolean {
             gbSelectedSaveLocation = gGameSettings.bLastSavedGameSlot = -1;
           }
 
-          wcscpy(gzGameDescTextField, SaveGameHeader.sSavedGameDesc);
+          gzGameDescTextField = SaveGameHeader.sSavedGameDesc;
         }
       }
     }
@@ -1004,7 +1004,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
       //			SaveGameHeader.bSectorZ = gbWorldSectorZ;
       SaveGameHeader.ubNumOfMercsOnPlayersTeam = NumberOfMercsOnPlayerTeam();
       SaveGameHeader.iCurrentBalance = LaptopSaveInfo.iCurrentBalance;
-      wcscpy(SaveGameHeader.sSavedGameDesc, gzGameDescTextField);
+      SaveGameHeader.sSavedGameDesc = gzGameDescTextField;
 
       // copy over the initial game options
       memcpy(addressof(SaveGameHeader.sInitialGameOptions), addressof(gGameOptions), sizeof(GAME_OPTIONS));
@@ -1441,7 +1441,7 @@ function InitSaveLoadScreenTextInputBoxes(): void {
     } else {
       // Get the header for the specified saved game
       LoadSavedGameHeader(gbSelectedSaveLocation, addressof(SaveGameHeader));
-      wcscpy(gzGameDescTextField, SaveGameHeader.sSavedGameDesc);
+      gzGameDescTextField = SaveGameHeader.sSavedGameDesc;
     }
   } else
     gzGameDescTextField[0] = '\0';

@@ -3824,7 +3824,7 @@ function NotifyPlayerOfBloodcatBattle(ubSectorX: UINT8, ubSectorY: UINT8): void 
     GetSectorIDString(ubSectorX, ubSectorY, 0, zTempString, true);
     str = swprintf(pMapErrorString[12], zTempString);
   } else if (gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
-    wcscpy(str, pMapErrorString[13]);
+    str = pMapErrorString[13];
   }
 
   if (guiCurrentScreen == Enum26.MAP_SCREEN) {

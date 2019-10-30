@@ -1094,7 +1094,7 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
       } else {
       }
 
-      wcscpy(gzItemName, ShortItemNames[usItem]);
+      gzItemName = ShortItemNames[usItem];
 
       // if this will only be a single line, center it in the box
       if ((DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_M_WEAPON_TEXT_FONT())) == 1)
@@ -1767,12 +1767,12 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
       DisableButton(giXToCloseVideoConfButton);
 
       if (sString1 != null)
-        wcscpy(sPopUpString1, sString1);
+        sPopUpString1 = sString1;
       else
         sPopUpString1[0] = '\0';
 
       if (sString2 != null)
-        wcscpy(sPopUpString2, sString2);
+        sPopUpString2 = sString2;
       else
         sPopUpString2[0] = '\0';
 

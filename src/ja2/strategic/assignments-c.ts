@@ -6868,7 +6868,7 @@ export function CreateDestroyAssignmentPopUpBoxes(): boolean {
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPOPUPBORDERS)));
 
     vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
-    strcpy(vs_desc.ImageFile, "INTERFACE\\popupbackground.pcx");
+    vs_desc.ImageFile = "INTERFACE\\popupbackground.pcx";
     CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiPOPUPTEX)));
 
     // these boxes are always created while in mapscreen...

@@ -732,7 +732,7 @@ export function InitAnimationSystem(): boolean {
   // OK, Load all animation structures.....
   for (cnt1 = 0; cnt1 < Enum194.TOTALBODYTYPES; cnt1++) {
     for (cnt2 = 0; cnt2 < Enum196.NUM_STRUCT_IDS; cnt2++) {
-      strcpy(sFilename, gAnimStructureDatabase[cnt1][cnt2].Filename);
+      sFilename = gAnimStructureDatabase[cnt1][cnt2].Filename;
 
       if (FileExists(sFilename)) {
         pStructureFileRef = LoadStructureFile(sFilename);

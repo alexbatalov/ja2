@@ -659,9 +659,9 @@ export function RenderTalkingMenu(): void {
                 // determine the 'kind' of arms dealer
                 ubType = GetTypeOfArmsDealer(GetArmsDealerIDFromMercID(ubCharacterNum));
 
-                wcscpy(zTempString, zDealerStrings[ubType]);
+                zTempString = zDealerStrings[ubType];
               } else
-                wcscpy(zTempString, zTalkMenuStrings[cnt]);
+                zTempString = zTalkMenuStrings[cnt];
 
               VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1(), addressof(sFontX), addressof(sFontY), "%s", zTempString);
               mprintf(sFontX, sFontY, "%s", zTempString);
@@ -680,9 +680,9 @@ export function RenderTalkingMenu(): void {
               // determine the 'kind' of arms dealer
               ubType = GetTypeOfArmsDealer(GetArmsDealerIDFromMercID(ubCharacterNum));
 
-              wcscpy(zTempString, zDealerStrings[ubType]);
+              zTempString = zDealerStrings[ubType];
             } else
-              wcscpy(zTempString, zTalkMenuStrings[cnt]);
+              zTempString = zTalkMenuStrings[cnt];
 
             VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1(), addressof(sFontX), addressof(sFontY), "%s", zTempString);
             mprintf(sFontX, sFontY, "%s", zTempString);

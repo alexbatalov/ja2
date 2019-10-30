@@ -84,9 +84,9 @@ export function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
       AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(pBullet.value.qCurrZ));
 
       if (pBullet.value.usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
-        strcpy(AniParams.zCachedFile, "TILECACHE\\SPIT2.STI");
+        AniParams.zCachedFile = "TILECACHE\\SPIT2.STI";
       } else if (pBullet.value.usFlags & (BULLET_FLAG_KNIFE)) {
-        strcpy(AniParams.zCachedFile, "TILECACHE\\KNIFING.STI");
+        AniParams.zCachedFile = "TILECACHE\\KNIFING.STI";
         pBullet.value.ubItemStatus = pBullet.value.pFirer.value.inv[Enum261.HANDPOS].bStatus[0];
       }
 
@@ -292,13 +292,13 @@ export function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurr
   AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(qCurrZ));
 
   if (pBullet.value.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_TANK_CANNON)) {
-    strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SMK.STI");
+    AniParams.zCachedFile = "TILECACHE\\MSLE_SMK.STI";
   } else if (pBullet.value.usFlags & (BULLET_FLAG_SMALL_MISSILE)) {
-    strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SMA.STI");
+    AniParams.zCachedFile = "TILECACHE\\MSLE_SMA.STI";
   } else if (pBullet.value.usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
-    strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SPT.STI");
+    AniParams.zCachedFile = "TILECACHE\\MSLE_SPT.STI";
   } else if (pBullet.value.usFlags & (BULLET_FLAG_FLAME)) {
-    strcpy(AniParams.zCachedFile, "TILECACHE\\FLMTHR2.STI");
+    AniParams.zCachedFile = "TILECACHE\\FLMTHR2.STI";
     AniParams.sDelay = (100);
   }
 

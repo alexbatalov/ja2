@@ -953,7 +953,7 @@ export function InitializeSMPanel(): boolean {
 
   // failing the CHECKF after this will cause you to lose your mouse
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(VObjectDesc.ImageFile, "INTERFACE\\inventory_bottom_panel.STI");
+  VObjectDesc.ImageFile = "INTERFACE\\inventory_bottom_panel.STI";
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMPanel)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -2108,7 +2108,7 @@ function HandleMouseOverSoldierFaceForContMove(pSoldier: Pointer<SOLDIERTYPE>, f
       pFace = addressof(gFacesData[pSoldier.value.iFaceIndex]);
 
       pFace.value.fDisplayTextOver = FACE_DRAW_TEXT_OVER;
-      wcscpy(pFace.value.zDisplayText, TacticalStr[Enum335.CONTINUE_OVER_FACE_STR]);
+      pFace.value.zDisplayText = TacticalStr[Enum335.CONTINUE_OVER_FACE_STR];
 
       sGridNo = pSoldier.value.sFinalDestination;
 
@@ -3051,7 +3051,7 @@ function HandleMouseOverTeamFaceForContMove(fOn: boolean): void {
       pFace = addressof(gFacesData[gpSMCurrentMerc.value.iFaceIndex]);
 
       pFace.value.fDisplayTextOver = FACE_DRAW_TEXT_OVER;
-      wcscpy(pFace.value.zDisplayText, TacticalStr[Enum335.CONTINUE_OVER_FACE_STR]);
+      pFace.value.zDisplayText = TacticalStr[Enum335.CONTINUE_OVER_FACE_STR];
 
       // While our mouse is here, draw a path!
       PlotPath(gpSMCurrentMerc, gpSMCurrentMerc.value.sFinalDestination, NO_COPYROUTE, PLOT, TEMPORARY, gpSMCurrentMerc.value.usUIMovementMode, NOT_STEALTH, FORWARD, gpSMCurrentMerc.value.bActionPoints);

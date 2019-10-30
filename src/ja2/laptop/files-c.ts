@@ -355,7 +355,7 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
   if (pFirstPicFile) {
     if ((pFirstPicFile[0]) != 0) {
       pFiles.value.pPicFileNameList[0] = MemAlloc(strlen(pFirstPicFile) + 1);
-      strcpy(pFiles.value.pPicFileNameList[0], pFirstPicFile);
+      pFiles.value.pPicFileNameList[0] = pFirstPicFile;
       pFiles.value.pPicFileNameList[0][strlen(pFirstPicFile)] = 0;
     }
   }
@@ -365,7 +365,7 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
   if (pSecondPicFile) {
     if ((pSecondPicFile[0]) != 0) {
       pFiles.value.pPicFileNameList[1] = MemAlloc(strlen(pSecondPicFile) + 1);
-      strcpy(pFiles.value.pPicFileNameList[1], pSecondPicFile);
+      pFiles.value.pPicFileNameList[1] = pSecondPicFile;
       pFiles.value.pPicFileNameList[1][strlen(pSecondPicFile)] = 0;
     }
   }
@@ -447,10 +447,10 @@ function OpenAndWriteFilesFile(): boolean {
 
   if (pFilesList != null) {
     if (pFilesList.value.pPicFileNameList[0]) {
-      strcpy(pFirstFilePath, pFilesList.value.pPicFileNameList[0]);
+      pFirstFilePath = pFilesList.value.pPicFileNameList[0];
     }
     if (pFilesList.value.pPicFileNameList[1]) {
-      strcpy(pSecondFilePath, pFilesList.value.pPicFileNameList[1]);
+      pSecondFilePath = pFilesList.value.pPicFileNameList[1];
     }
   }
 
@@ -865,7 +865,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
       while (pTempString) {
         uiFlags = IAN_WRAP_NO_SHADOW;
         // copy over string
-        wcscpy(sString, pTempString.value.pString);
+        sString = pTempString.value.pString;
 
         if (sString[0] == 0) {
           // on last page
@@ -1006,7 +1006,7 @@ function AddStringToFilesList(pString: string /* STR16 */): void {
 
   // alloc string and copy
   pFileString.value.pString = MemAlloc((wcslen(pString) * 2) + 2);
-  wcscpy(pFileString.value.pString, pString);
+  pFileString.value.pString = pString;
   pFileString.value.pString[wcslen(pString)] = 0;
 
   // set Next to NULL
@@ -1354,7 +1354,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
   while (pTempString) {
     uiFlags = IAN_WRAP_NO_SHADOW;
     // copy over string
-    wcscpy(sString, pTempString.value.pString);
+    sString = pTempString.value.pString;
 
     if (sString[0] == 0) {
       // on last page

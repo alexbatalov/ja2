@@ -1450,7 +1450,7 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
   pFilename = GetDialogueDataFilename(ubCharacterNum, usQuoteNum, true);
 
   // Copy
-  strcpy(zSoundString, pFilename);
+  zSoundString = pFilename;
 
   // Double check it exists....
 

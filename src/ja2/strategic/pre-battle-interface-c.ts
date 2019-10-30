@@ -858,7 +858,7 @@ export function RenderPreBattleInterface(): void {
           else
             SetFontForeground(FONT_YELLOW);
           // NAME
-          wcscpy(str, MercPtrs[i].value.name);
+          str = MercPtrs[i].value.name;
           x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
           mprintf(x, y, str);
           // ASSIGN
@@ -890,7 +890,7 @@ export function RenderPreBattleInterface(): void {
     // |  NAME  | ASSIGN |  LOC   |  DEST  |  DEP   |
     if (!guiNumUninvolved) {
       SetFontForeground(FONT_YELLOW);
-      wcscpy(str, gpStrategicString[Enum365.STR_PB_NONE]);
+      str = gpStrategicString[Enum365.STR_PB_NONE];
       x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
       y = BOTTOM_Y - ROW_HEIGHT + 2;
       mprintf(x, y, str);
@@ -906,7 +906,7 @@ export function RenderPreBattleInterface(): void {
             else
               SetFontForeground(FONT_YELLOW);
             // NAME
-            wcscpy(str, MercPtrs[i].value.name);
+            str = MercPtrs[i].value.name;
             x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
             mprintf(x, y, str);
             // ASSIGN

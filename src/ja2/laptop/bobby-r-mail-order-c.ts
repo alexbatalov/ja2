@@ -1338,7 +1338,7 @@ function DisplayShippingLocationCity(): void {
   // Display the shipping cost
   usPosY = BOBBYR_OVERNIGHT_EXPRESS_Y;
 
-  wcscpy(sTemp, "$0");
+  sTemp = "$0";
 
   if (gbSelectedCity != -1) {
     sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].usOverNightExpress / GetWeightBasedOnMetricOption(1)));

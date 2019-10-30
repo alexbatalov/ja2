@@ -329,7 +329,7 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
 
   // If there was no string, add one
   if (pGameDesc[0] == '\0')
-    wcscpy(pGameDesc, pMessageStrings[Enum333.MSG_NODESC]);
+    pGameDesc = pMessageStrings[Enum333.MSG_NODESC];
 
   // Check to see if the save directory exists
   if (FileGetAttributes(saveDir) == 0xFFFFFFFF) {
@@ -367,8 +367,8 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
   //
 
   SaveGameHeader.uiSavedGameVersion = guiSavedGameVersion;
-  wcscpy(SaveGameHeader.sSavedGameDesc, pGameDesc);
-  strcpy(SaveGameHeader.zGameVersionNumber, czVersionNumber);
+  SaveGameHeader.sSavedGameDesc = pGameDesc;
+  SaveGameHeader.zGameVersionNumber = czVersionNumber;
 
   SaveGameHeader.uiFlags;
 

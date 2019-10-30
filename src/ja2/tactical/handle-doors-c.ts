@@ -987,17 +987,17 @@ export function SetDoorString(sGridNo: INT16): void {
 
   if (gfUIIntTileLocation == false) {
     if (pDoor == null) {
-      wcscpy(gzIntTileLocation, TacticalStr[Enum335.DOOR_DOOR_MOUSE_DESCRIPTION]);
+      gzIntTileLocation = TacticalStr[Enum335.DOOR_DOOR_MOUSE_DESCRIPTION];
       gfUIIntTileLocation = true;
     } else {
-      wcscpy(gzIntTileLocation, TacticalStr[Enum335.DOOR_DOOR_MOUSE_DESCRIPTION]);
+      gzIntTileLocation = TacticalStr[Enum335.DOOR_DOOR_MOUSE_DESCRIPTION];
       gfUIIntTileLocation = true;
 
       // CHECK PERCEIVED VALUE
       switch (pDoor.value.bPerceivedTrapped) {
         case DOOR_PERCEIVED_TRAPPED:
 
-          wcscpy(gzIntTileLocation2, TacticalStr[Enum335.DOOR_TRAPPED_MOUSE_DESCRIPTION]);
+          gzIntTileLocation2 = TacticalStr[Enum335.DOOR_TRAPPED_MOUSE_DESCRIPTION];
           gfUIIntTileLocation2 = true;
           fTrapped = true;
           break;
@@ -1012,19 +1012,19 @@ export function SetDoorString(sGridNo: INT16): void {
 
           case DOOR_PERCEIVED_LOCKED:
 
-            wcscpy(gzIntTileLocation2, TacticalStr[Enum335.DOOR_LOCKED_MOUSE_DESCRIPTION]);
+            gzIntTileLocation2 = TacticalStr[Enum335.DOOR_LOCKED_MOUSE_DESCRIPTION];
             gfUIIntTileLocation2 = true;
             break;
 
           case DOOR_PERCEIVED_UNLOCKED:
 
-            wcscpy(gzIntTileLocation2, TacticalStr[Enum335.DOOR_UNLOCKED_MOUSE_DESCRIPTION]);
+            gzIntTileLocation2 = TacticalStr[Enum335.DOOR_UNLOCKED_MOUSE_DESCRIPTION];
             gfUIIntTileLocation2 = true;
             break;
 
           case DOOR_PERCEIVED_BROKEN:
 
-            wcscpy(gzIntTileLocation2, TacticalStr[Enum335.DOOR_BROKEN_MOUSE_DESCRIPTION]);
+            gzIntTileLocation2 = TacticalStr[Enum335.DOOR_BROKEN_MOUSE_DESCRIPTION];
             gfUIIntTileLocation2 = true;
             break;
         }
@@ -1078,11 +1078,11 @@ export function SetDoorString(sGridNo: INT16): void {
       if (pStructure) {
         if (pStructure.value.fFlags & STRUCTURE_OPEN) {
           // Door is opened....
-          wcscpy(gzIntTileLocation2, pMessageStrings[Enum333.MSG_OPENED]);
+          gzIntTileLocation2 = pMessageStrings[Enum333.MSG_OPENED];
           gfUIIntTileLocation2 = true;
         } else {
           // Door is closed
-          wcscpy(gzIntTileLocation2, pMessageStrings[Enum333.MSG_CLOSED]);
+          gzIntTileLocation2 = pMessageStrings[Enum333.MSG_CLOSED];
           gfUIIntTileLocation2 = true;
         }
       }
@@ -1090,11 +1090,11 @@ export function SetDoorString(sGridNo: INT16): void {
       // Use percived value
       if (pDoorStatus.value.ubFlags & DOOR_PERCEIVED_OPEN) {
         // Door is opened....
-        wcscpy(gzIntTileLocation2, pMessageStrings[Enum333.MSG_OPENED]);
+        gzIntTileLocation2 = pMessageStrings[Enum333.MSG_OPENED];
         gfUIIntTileLocation2 = true;
       } else {
         // Door is closed
-        wcscpy(gzIntTileLocation2, pMessageStrings[Enum333.MSG_CLOSED]);
+        gzIntTileLocation2 = pMessageStrings[Enum333.MSG_CLOSED];
         gfUIIntTileLocation2 = true;
       }
     }

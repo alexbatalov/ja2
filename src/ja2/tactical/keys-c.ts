@@ -589,7 +589,7 @@ export function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Point
       AniParams.sY = sY;
       AniParams.sZ = sZ;
 
-      strcpy(AniParams.zCachedFile, "TILECACHE\\MINIBOOM.STI");
+      AniParams.zCachedFile = "TILECACHE\\MINIBOOM.STI";
 
       CreateAnimationTile(addressof(AniParams));
 

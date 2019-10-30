@@ -193,9 +193,9 @@ export function InitializeTacticalInterface(): boolean {
   // failing the CHECKF after this will cause you to lose your mouse
 
   if (GETPIXELDEPTH() == 8) {
-    strcpy(vs_desc.ImageFile, "INTERFACE\\IN_TEXT_8.pcx");
+    vs_desc.ImageFile = "INTERFACE\\IN_TEXT_8.pcx";
   } else if (GETPIXELDEPTH() == 16) {
-    strcpy(vs_desc.ImageFile, "INTERFACE\\IN_TEXT.STI");
+    vs_desc.ImageFile = "INTERFACE\\IN_TEXT.STI";
   }
 
   if (!AddVideoSurface(addressof(vs_desc), addressof(guiINTEXT)))
@@ -2286,7 +2286,7 @@ export function AddTopMessage(ubType: UINT8, pzString: string /* Pointer<UINT16>
     gTacticalStatus.fInTopMessage = true;
 
     // Copy string
-    wcscpy(gTacticalStatus.zTopMessageString, pzString);
+    gTacticalStatus.zTopMessageString = pzString;
 
     CreateTopMessage(gTopMessage.uiSurface, ubType, pzString);
 

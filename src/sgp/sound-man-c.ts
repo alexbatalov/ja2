@@ -1466,7 +1466,7 @@ function SoundLoadDisk(pFilename: string /* STR */): UINT32 {
     FileRead(hFile, pSampleList[uiSample].pData, uiSize, null);
     FileClose(hFile);
 
-    strcpy(pSampleList[uiSample].pName, pFilename);
+    pSampleList[uiSample].pName = pFilename;
     strupr(pSampleList[uiSample].pName);
     pSampleList[uiSample].uiSize = uiSize;
     pSampleList[uiSample].uiFlags |= SAMPLE_ALLOCATED;
@@ -2278,7 +2278,7 @@ function Sound3DSetProvider(pProviderName: string /* Pointer<CHAR8> */): void {
 
   if (pProviderName) {
     gpProviderName = MemAlloc(strlen(pProviderName) + 1);
-    strcpy(gpProviderName, pProviderName);
+    gpProviderName = pProviderName;
   }
 }
 

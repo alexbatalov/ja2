@@ -58,7 +58,7 @@ export function InitNewOverheadDB(ubTilesetID: UINT8): void {
     cAdjustedFile = sprintf("TILESETS\\%d\\T\\%s", ubTilesetID, cFileBPP);
 
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    strcpy(VObjectDesc.ImageFile, cAdjustedFile);
+    VObjectDesc.ImageFile = cAdjustedFile;
     hVObject = CreateVideoObject(addressof(VObjectDesc));
 
     if (hVObject == null) {
@@ -69,13 +69,13 @@ export function InitNewOverheadDB(ubTilesetID: UINT8): void {
 
       // LOAD ONE WE KNOW ABOUT!
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      strcpy(VObjectDesc.ImageFile, cAdjustedFile);
+      VObjectDesc.ImageFile = cAdjustedFile;
       hVObject = CreateVideoObject(addressof(VObjectDesc));
 
       if (hVObject == null) {
         // LOAD ONE WE KNOW ABOUT!
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-        strcpy(VObjectDesc.ImageFile, "TILESETS\\0\\T\\grass.sti");
+        VObjectDesc.ImageFile = "TILESETS\\0\\T\\grass.sti";
         hVObject = CreateVideoObject(addressof(VObjectDesc));
       }
     }

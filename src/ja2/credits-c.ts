@@ -652,7 +652,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: string /* STR16
     return false;
 
   // copy the string into the node
-  wcscpy(pNodeToAdd.value.pString, pString);
+  pNodeToAdd.value.pString = pString;
 
   // Calculate the height of the string
   pNodeToAdd.value.sHeightOfString = DisplayWrappedString(0, 0, CRDT_WIDTH_OF_TEXT_AREA, 2, uiFontToUse, uiColorToUse, pNodeToAdd.value.pString, 0, false, DONT_DISPLAY_TEXT) + 1;
@@ -871,7 +871,7 @@ function GetNextCreditFromTextFile(): boolean {
   // if there are no codes in the string
   if (zOriginalString[0] != CRDT_START_CODE) {
     // copy the string
-    wcscpy(zString, zOriginalString);
+    zString = zOriginalString;
     uiNodeType = Enum2.CRDT_NODE_DEFAULT;
   } else {
     let uiSizeOfCodes: UINT32 = 0;
@@ -883,7 +883,7 @@ function GetNextCreditFromTextFile(): boolean {
     pzEndCode = wcsstr(zOriginalString, CRDT_END_CODE);
 
     // Make a string for the codes
-    wcscpy(zCodes, zOriginalString);
+    zCodes = zOriginalString;
 
     // end the setence after the codes
     zCodes[pzEndCode - zOriginalString + 1] = '\0';
@@ -904,7 +904,7 @@ function GetNextCreditFromTextFile(): boolean {
     // else there is a string aswell
     else {
       // copy the main string
-      wcscpy(zString, addressof(zOriginalString[uiSizeOfCodes]));
+      zString = addressof(zOriginalString[uiSizeOfCodes]);
 
       uiNodeType = Enum2.CRDT_NODE_DEFAULT;
     }

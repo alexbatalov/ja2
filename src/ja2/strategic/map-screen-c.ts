@@ -1193,7 +1193,7 @@ function DrawCharHealth(sCharNum: INT16): void {
 
     // slash
     SetFontForeground(CHAR_TEXT_FONT_COLOR);
-    wcscpy(sString, "/");
+    sString = "/";
     DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT());
     usX += StringPixLength(sString, CHAR_FONT());
 
@@ -1256,10 +1256,10 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   // Nickname (beneath Picture)
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     // vehicle
-    wcscpy(sString, pShortVehicleStrings[pVehicleList[pSoldier.value.bVehicleID].ubVehicleType]);
+    sString = pShortVehicleStrings[pVehicleList[pSoldier.value.bVehicleID].ubVehicleType];
   } else {
     // soldier
-    wcscpy(sString, gMercProfiles[usMercProfileID].zNickname);
+    sString = gMercProfiles[usMercProfileID].zNickname;
   }
 
   FindFontCenterCoordinates(PIC_NAME_X, PIC_NAME_Y, PIC_NAME_WID, PIC_NAME_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
@@ -1268,10 +1268,10 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   // Full name (Top Box)
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     // vehicle
-    wcscpy(sString, pVehicleStrings[pVehicleList[pSoldier.value.bVehicleID].ubVehicleType]);
+    sString = pVehicleStrings[pVehicleList[pSoldier.value.bVehicleID].ubVehicleType];
   } else {
     // soldier
-    wcscpy(sString, gMercProfiles[usMercProfileID].zName);
+    sString = gMercProfiles[usMercProfileID].zName;
   }
 
   FindFontCenterCoordinates(CHAR_NAME_X, CHAR_NAME_Y, CHAR_NAME_WID, CHAR_NAME_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
@@ -1280,9 +1280,9 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   // Assignment
   if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     // show vehicle type
-    wcscpy(sString, pShortVehicleStrings[pVehicleList[pSoldier.value.iVehicleId].ubVehicleType]);
+    sString = pShortVehicleStrings[pVehicleList[pSoldier.value.iVehicleId].ubVehicleType];
   } else {
-    wcscpy(sString, pAssignmentStrings[pSoldier.value.bAssignment]);
+    sString = pAssignmentStrings[pSoldier.value.bAssignment];
   }
 
   FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN1_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
@@ -1292,17 +1292,17 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
 
   // train self / teammate / by other ?
   if ((pSoldier.value.bAssignment == Enum117.TRAIN_SELF) || (pSoldier.value.bAssignment == Enum117.TRAIN_TEAMMATE) || (pSoldier.value.bAssignment == Enum117.TRAIN_BY_OTHER)) {
-    wcscpy(sString, pAttributeMenuStrings[pSoldier.value.bTrainStat]);
+    sString = pAttributeMenuStrings[pSoldier.value.bTrainStat];
   }
   // train town?
   else if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
-    wcscpy(sString, pTownNames[GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY)]);
+    sString = pTownNames[GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY)];
   }
   // repairing?
   else if (pSoldier.value.bAssignment == Enum117.REPAIR) {
     if (pSoldier.value.fFixingRobot) {
       // robot
-      wcscpy(sString, pRepairStrings[3]);
+      sString = pRepairStrings[3];
     }
     /*
                     else if ( pSoldier->fFixingSAMSite )
@@ -1313,10 +1313,10 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     */
     else if (pSoldier.value.bVehicleUnderRepairID != -1) {
       // vehicle
-      wcscpy(sString, pShortVehicleStrings[pVehicleList[pSoldier.value.bVehicleUnderRepairID].ubVehicleType]);
+      sString = pShortVehicleStrings[pVehicleList[pSoldier.value.bVehicleUnderRepairID].ubVehicleType];
     } else {
       // items
-      wcscpy(sString, pRepairStrings[0]);
+      sString = pRepairStrings[0];
     }
   }
   // in transit?
@@ -1471,7 +1471,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     if (pSoldier.value.bLife != 0) {
       GetMoraleString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
     } else {
-      wcscpy(sString, "");
+      sString = "";
     }
   } else {
     // POW - morale unknown
@@ -2180,10 +2180,10 @@ export function MapScreenHandle(): UINT32 {
       vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
       // Grab the Map image
 
-      strcpy(vs_desc.ImageFile, "INTERFACE\\b_map.pcx");
+      vs_desc.ImageFile = "INTERFACE\\b_map.pcx";
       CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiBIGMAP)));
 
-      strcpy(vs_desc.ImageFile, "INTERFACE\\popupbackground.pcx");
+      vs_desc.ImageFile = "INTERFACE\\popupbackground.pcx";
       CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiPOPUPTEX)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -7727,7 +7727,7 @@ export function HandlePreloadOfMapGraphics(): boolean {
   fPreLoadedMapGraphics = true;
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
-  strcpy(vs_desc.ImageFile, "INTERFACE\\b_map.pcx");
+  vs_desc.ImageFile = "INTERFACE\\b_map.pcx";
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiBIGMAP)));
   // strcpy(vs_desc.ImageFile, "INTERFACE\\popupbackground.pcx");
   // CHECKF(AddVideoSurface(&vs_desc, &guiPOPUPTEX));
@@ -9330,8 +9330,8 @@ function CanMoveBullseyeAndClickedOnIt(sMapX: INT16, sMapY: INT16): boolean {
 }
 
 function CreateBullsEyeOrChopperSelectionPopup(): void {
-  wcscpy(gzUserDefinedButton1, pHelicopterEtaStrings[8]);
-  wcscpy(gzUserDefinedButton2, pHelicopterEtaStrings[9]);
+  gzUserDefinedButton1 = pHelicopterEtaStrings[8];
+  gzUserDefinedButton2 = pHelicopterEtaStrings[9];
 
   // do a BULLSEYE/CHOPPER message box
   DoScreenIndependantMessageBox(pHelicopterEtaStrings[7], MSG_BOX_FLAG_GENERIC, BullsEyeOrChopperSelectionPopupCallback);
@@ -9406,9 +9406,9 @@ function HandlePostAutoresolveMessages(): void {
 
 export function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer<string> /* wchar_t[] */ /* [] */): void {
   if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
-    wcscpy(sString, pAssignmentStrings[pSoldier.value.bAssignment]);
+    sString = pAssignmentStrings[pSoldier.value.bAssignment];
   } else {
-    wcscpy(sString, pShortVehicleStrings[pVehicleList[pSoldier.value.iVehicleId].ubVehicleType]);
+    sString = pShortVehicleStrings[pVehicleList[pSoldier.value.iVehicleId].ubVehicleType];
   }
 }
 
@@ -9417,7 +9417,7 @@ export function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, s
 
   if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
     // show blank
-    wcscpy(sString, "--");
+    sString = "--";
   } else {
     if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
       // POW - location unknown
@@ -9429,7 +9429,7 @@ export function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, s
         // put brackets around it when he's between sectors!
         sString = swprintf("(%s)", pTempString);
       } else {
-        wcscpy(sString, pTempString);
+        sString = pTempString;
       }
     }
   }
@@ -9442,7 +9442,7 @@ export function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>
   let pGroup: Pointer<GROUP> = null;
 
   // by default, show nothing
-  wcscpy(sString, "");
+  sString = "";
 
   // if dead or POW - has no destination (no longer part of a group, for that matter)
   if ((pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bLife == 0)) {

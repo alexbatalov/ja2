@@ -30,7 +30,7 @@ function AudioGapListInit(zSoundFile: string /* Pointer<CHAR8> */, pGapList: Poi
   pPreviousGap = pCurrentGap = 0;
   // DebugMsg(TOPIC_JA2, DBG_LEVEL_3,String("File is %s", szSoundEffects[uiSampleNum]));
   // Get filename
-  strcpy(pDestFileName, pSourceFileName);
+  pDestFileName = pSourceFileName;
   // strip .wav and change to .gap
 
   while (pDestFileName[counter] != '.') {

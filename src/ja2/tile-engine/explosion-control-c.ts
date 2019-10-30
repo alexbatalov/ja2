@@ -270,7 +270,7 @@ function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE
   AniParams.ubUserData2 = ubOwner;
   AniParams.uiUserData3 = pExplosion.value.iID;
 
-  strcpy(AniParams.zCachedFile, zBlastFilenames[ubTypeID]);
+  AniParams.zCachedFile = zBlastFilenames[ubTypeID];
 
   CreateAnimationTile(addressof(AniParams));
 

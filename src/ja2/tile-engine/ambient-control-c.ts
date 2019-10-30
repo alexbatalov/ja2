@@ -188,7 +188,7 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): boolean {
     }
 
     zFilename = sprintf("AMBIENT\\%s", gAmbData[cnt].zFilename);
-    strcpy(gAmbData[cnt].zFilename, zFilename);
+    gAmbData[cnt].zFilename = zFilename;
   }
 
   FileClose(hFile);

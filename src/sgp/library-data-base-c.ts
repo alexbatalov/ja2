@@ -235,7 +235,7 @@ function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: Pointer<L
       }
 
       // copy the file name, offset and length into the header
-      strcpy(pLibHeader.value.pFileHeader[uiCount].pFileName, DirEntry.sFileName);
+      pLibHeader.value.pFileHeader[uiCount].pFileName = DirEntry.sFileName;
       pLibHeader.value.pFileHeader[uiCount].uiFileOffset = DirEntry.uiOffset;
       pLibHeader.value.pFileHeader[uiCount].uiFileLength = DirEntry.uiLength;
 
@@ -255,7 +255,7 @@ function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: Pointer<L
   // if the library has a path
   if (strlen(LibFileHeader.sPathToLibrary) != 0) {
     pLibHeader.value.sLibraryPath = MemAlloc(strlen(LibFileHeader.sPathToLibrary) + 1);
-    strcpy(pLibHeader.value.sLibraryPath, LibFileHeader.sPathToLibrary);
+    pLibHeader.value.sLibraryPath = LibFileHeader.sPathToLibrary;
   } else {
     // else the library name does not contain a path ( most likely either an error or it is the default path )
     pLibHeader.value.sLibraryPath = MemAlloc(1);
@@ -401,7 +401,7 @@ function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: string /* STR
   let sFileNameWithPath: string /* CHAR8[FILENAME_SIZE] */;
 
   // combine the library path to the file name (need it for the search of the library )
-  strcpy(sFileNameWithPath, pstrFileName);
+  sFileNameWithPath = pstrFileName;
 
   gsCurrentLibrary = sLibraryID;
 
@@ -460,7 +460,7 @@ function AddSlashToPath(pName: Pointer<string> /* STR */): void {
   }
   sNewName[uiCounter] = '\0';
 
-  strcpy(pName, sNewName);
+  pName = sNewName;
 }
 
 //************************************************************************
@@ -790,7 +790,7 @@ function CheckIfFileIsAlreadyOpen(pFileName: string /* STR */, sLibraryID: INT16
 
   _splitpath(pFileName, sDrive, sPath, sName, sExt);
 
-  strcpy(sTempName, sName);
+  sTempName = sName;
   strcat(sTempName, sExt);
 
   // loop through all the open files to see if 'new' file to open is already open

@@ -777,7 +777,7 @@ function ShowTownText(): void {
           fLoyaltyTooLowToTrainMilitia = true;
         }
       } else {
-        wcscpy(sStringA, "");
+        sStringA = "";
       }
 
       if (!fZoomFlag) {
@@ -1364,7 +1364,7 @@ export function InitializePalettesForMap(): boolean {
 
   // load image
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
-  strcpy(vs_desc.ImageFile, "INTERFACE\\b_map.pcx");
+  vs_desc.ImageFile = "INTERFACE\\b_map.pcx";
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(uiTempMap)));
 
   // get video surface
@@ -3930,7 +3930,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
     wSubString = swprintf("%d", PredictDailyIncomeFromAMine(ubMineIndex));
     InsertCommasForDollarFigure(wSubString);
     InsertDollarSignInToString(wSubString);
-    wcscpy(wString, wSubString);
+    wString = wSubString;
 
     /*
                     // show maximum potential production
@@ -5544,7 +5544,7 @@ function ShowSAMSitesOnStrategicMap(): void {
         sY += 16;
       }
 
-      wcscpy(wString, pLandTypeStrings[Enum127.SAM_SITE]);
+      wString = pLandTypeStrings[Enum127.SAM_SITE];
 
       // we're CENTERING the first string AROUND sX, so calculate the starting X value
       sX -= StringPixLength(wString, MAP_FONT()) / 2;

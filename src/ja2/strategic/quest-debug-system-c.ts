@@ -767,7 +767,7 @@ function EnterQuestDebugSystem(): boolean {
     let zItemName: string /* UINT16[SIZE_ITEM_NAME] */;
     let zItemDesc: string /* UINT16[SIZE_ITEM_INFO] */;
 
-    wcscpy(zItemName, ShortItemNames[giHaveSelectedItem]);
+    zItemName = ShortItemNames[giHaveSelectedItem];
 
     zItemDesc = swprintf("%d - %s", giHaveSelectedItem, zItemName);
     SpecifyButtonText(guiQuestDebugCurItemButton, zItemDesc);
@@ -1239,7 +1239,7 @@ function DisplayFactList(): void {
       sTemp = swprintf("No Fact %03d Yet", usLoop1);
       DisplayWrappedString(QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, sTemp, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     } else {
-      wcscpy(sTemp, FactDescText[usLoop1]);
+      sTemp = FactDescText[usLoop1];
 
       if (StringPixLength(sTemp, QUEST_DBS_FONT_DYNAMIC_TEXT()) > QUEST_DBS_SECOND_TITLE_COL_WIDTH) {
         ReduceStringLength(sTemp, QUEST_DBS_SECOND_TITLE_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT());
@@ -1591,10 +1591,10 @@ function DisplaySelectedItem(): void {
   for (i = gpActiveListBox.value.usItemDisplayedOnTopOfList; i < gpActiveListBox.value.usItemDisplayedOnTopOfList + gpActiveListBox.value.usNumDisplayedItems; i++) {
     //		if ( !LoadItemInfo( i, zItemName, zItemDesc ) )
     //			Assert(0);
-    wcscpy(zItemName, ShortItemNames[i]);
+    zItemName = ShortItemNames[i];
 
     if (zItemName[0] == '\0')
-      wcscpy(zItemName, QuestDebugText[Enum167.QUEST_DBS_NO_ITEM]);
+      zItemName = QuestDebugText[Enum167.QUEST_DBS_NO_ITEM];
 
     DrawTextToScreen(zItemName, usPosX, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     usPosY += usFontHeight;
@@ -1611,10 +1611,10 @@ function DisplaySelectedItem(): void {
 
     //		if ( !LoadItemInfo( gpActiveListBox->sCurSelectedItem, zItemName, zItemDesc ) )
     //			Assert(0);
-    wcscpy(zItemName, ShortItemNames[gpActiveListBox.value.sCurSelectedItem]);
+    zItemName = ShortItemNames[gpActiveListBox.value.sCurSelectedItem];
 
     if (zItemName[0] == '\0')
-      wcscpy(zItemName, QuestDebugText[Enum167.QUEST_DBS_NO_ITEM]);
+      zItemName = QuestDebugText[Enum167.QUEST_DBS_NO_ITEM];
 
     DrawTextToScreen(zItemName, gpActiveListBox.value.usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     SetFontShadow(DEFAULT_SHADOW);
@@ -1919,7 +1919,7 @@ function BtnQuestDebugAddItemToLocationButtonCallback(btn: Pointer<GUI_BUTTON>, 
 
     //		if ( !LoadItemInfo( gItemListBox.sCurSelectedItem, zItemName, zItemDesc ) )
     //			Assert(0);
-    wcscpy(zItemName, ShortItemNames[gItemListBox.sCurSelectedItem]);
+    zItemName = ShortItemNames[gItemListBox.sCurSelectedItem];
 
     zTemp = swprintf("%s where the %s will be added.", QuestDebugText[Enum167.QUEST_DBS_ENTER_GRID_NUM], zItemName);
     TextEntryBox(zTemp, AddItemToGridNo);
@@ -2143,7 +2143,7 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: string /* ST
       guiQuestDebugTextEntryOkBtn = CreateTextButton("OK", QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_TEB_X + QUEST_DBS_TEB_WIDTH / 2 - 12, QUEST_DBS_TEB_Y + QUEST_DBS_TEB_HEIGHT - 30, 30, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 50, BUTTON_NO_CALLBACK, BtnQuestDebugTextEntryOkBtnButtonCallback);
       SetButtonCursor(guiQuestDebugTextEntryOkBtn, Enum317.CURSOR_WWW);
 
-      wcscpy(zString, pString);
+      zString = pString;
 
       gfTextEntryActive = true;
 
@@ -2470,7 +2470,7 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
         for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
           //					if ( !LoadItemInfo( pSoldier->inv[ i ].usItem, zItemName, zItemDesc ) )
           //						Assert(0);
-          wcscpy(zItemName, ShortItemNames[pSoldier.value.inv[i].usItem]);
+          zItemName = ShortItemNames[pSoldier.value.inv[i].usItem];
 
           // Display Name of the pocket
           DrawTextToScreen(PocketText[i], QUEST_DBS_NPC_INV_POPUP_X + 10, usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_SUBTITLE, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);

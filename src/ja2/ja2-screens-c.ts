@@ -204,7 +204,7 @@ export function InitScreenHandle(): UINT32 {
     // Load init screen and blit!
     vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
 
-    strcpy(vs_desc.ImageFile, "ja2_logo.STI");
+    vs_desc.ImageFile = "ja2_logo.STI";
 
     hVSurface = CreateVideoSurface(addressof(vs_desc));
     if (!hVSurface)

@@ -493,7 +493,7 @@ function StartInterrupt(): void {
       }
     }
 
-    wcscpy(sTemp, Message[Enum334.STR_INTERRUPT_FOR]);
+    sTemp = Message[Enum334.STR_INTERRUPT_FOR];
 
     // build string in separate loop here, want to linearly process squads...
     for (iSquad = 0; iSquad < Enum275.NUMBER_OF_SQUADS; iSquad++) {
@@ -507,7 +507,7 @@ function StartInterrupt(): void {
             // add comma to end, we know we have another person after this...
             wcscat(sTemp, ", ");
             ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sTemp);
-            wcscpy(sTemp, "");
+            sTemp = "";
             ubInterrupters = 1;
           }
 

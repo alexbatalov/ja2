@@ -1783,7 +1783,7 @@ export function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
 
   usName = sprintf("LTO%d.LHT", iRadius);
   pLightNames[iLight] = MemAlloc(strlen(usName) + 1);
-  strcpy(pLightNames[iLight], usName);
+  pLightNames[iLight] = usName;
 
   return iLight;
 }
@@ -1805,7 +1805,7 @@ function LightCreateSquare(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16)
 
   usName = sprintf("LTS%d-%d.LHT", iRadius1, iRadius2);
   pLightNames[iLight] = MemAlloc(strlen(usName) + 1);
-  strcpy(pLightNames[iLight], usName);
+  pLightNames[iLight] = usName;
 
   return iLight;
 }
@@ -1826,7 +1826,7 @@ function LightCreateElliptical(ubIntensity: UINT8, iRadius1: INT16, iRadius2: IN
 
   usName = sprintf("LTE%d-%d.LHT", iRadius1, iRadius2);
   pLightNames[iLight] = MemAlloc(strlen(usName) + 1);
-  strcpy(pLightNames[iLight], usName);
+  pLightNames[iLight] = usName;
 
   return iLight;
 }
@@ -2623,7 +2623,7 @@ function LightLoad(pFilename: string /* STR */): INT32 {
       FileClose(hFile);
 
       pLightNames[iLight] = MemAlloc(strlen(pFilename) + 1);
-      strcpy(pLightNames[iLight], pFilename);
+      pLightNames[iLight] = pFilename;
     } else
       return -1;
   }

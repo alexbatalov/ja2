@@ -241,7 +241,7 @@ function AddTextToTownBox(): void {
   // main facilities
   wString = swprintf("%s:", pwTownInfoStrings[8]);
   AddMonoString(addressof(hStringHandle), wString);
-  wcscpy(wString, "");
+  wString = "";
   GetSectorFacilitiesFlags(bCurrentTownMineSectorX, bCurrentTownMineSectorY, wString);
   AddSecondColumnMonoString(addressof(hStringHandle), wString);
 
@@ -300,16 +300,16 @@ function AddTextToMineBox(): void {
   // check if mine is empty (abandoned) or running out
   if (gMineStatus[ubMineIndex].fEmpty) {
     // abandonded
-    wcscpy(wString, pwMineStrings[5]);
+    wString = pwMineStrings[5];
   } else if (gMineStatus[ubMineIndex].fShutDown) {
     // shut down
-    wcscpy(wString, pwMineStrings[6]);
+    wString = pwMineStrings[6];
   } else if (gMineStatus[ubMineIndex].fRunningOut) {
     // running out
-    wcscpy(wString, pwMineStrings[7]);
+    wString = pwMineStrings[7];
   } else {
     // producing
-    wcscpy(wString, pwMineStrings[8]);
+    wString = pwMineStrings[8];
   }
   AddSecondColumnMonoString(addressof(hStringHandle), wString);
 
@@ -477,7 +477,7 @@ function AddCommonInfoToBox(): void {
       AddSecondColumnMonoString(addressof(hStringHandle), wString);
     } else {
       // no militia: don't bother displaying level breakdown
-      wcscpy(wString, "0");
+      wString = "0";
       AddSecondColumnMonoString(addressof(hStringHandle), wString);
     }
 
@@ -498,17 +498,17 @@ function AddCommonInfoToBox(): void {
   switch (WhatPlayerKnowsAboutEnemiesInSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY)) {
     case Enum159.KNOWS_NOTHING:
       // show "Unknown"
-      wcscpy(wString, pwMiscSectorStrings[3]);
+      wString = pwMiscSectorStrings[3];
       break;
 
     case Enum159.KNOWS_THEYRE_THERE:
       // if there are any there
       if (ubNumEnemies > 0) {
         // show "?", but not exactly how many
-        wcscpy(wString, "?");
+        wString = "?";
       } else {
         // we know there aren't any (or we'd be seing them on map, too)
-        wcscpy(wString, "0");
+        wString = "0";
       }
       break;
 

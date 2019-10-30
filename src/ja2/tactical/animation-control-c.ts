@@ -2826,21 +2826,21 @@ export function InitAnimationSurfacesPerBodytype(): void {
   gRandomAnimDefs[Enum194.COW][1].ubStartRoll = 0;
   gRandomAnimDefs[Enum194.COW][1].ubEndRoll = 1;
   gRandomAnimDefs[Enum194.COW][1].ubAnimHeight = ANIM_STAND;
-  strcpy(gRandomAnimDefs[Enum194.COW][1].zSoundFile, "SOUNDS\\COWMOO1.WAV");
+  gRandomAnimDefs[Enum194.COW][1].zSoundFile = "SOUNDS\\COWMOO1.WAV";
 
   gRandomAnimDefs[Enum194.COW][2].ubHandRestriction = RANDOM_ANIM_IRRELEVENTINHAND;
   gRandomAnimDefs[Enum194.COW][2].sAnimID = RANDOM_ANIM_SOUND;
   gRandomAnimDefs[Enum194.COW][2].ubStartRoll = 2;
   gRandomAnimDefs[Enum194.COW][2].ubEndRoll = 3;
   gRandomAnimDefs[Enum194.COW][2].ubAnimHeight = ANIM_STAND;
-  strcpy(gRandomAnimDefs[Enum194.COW][2].zSoundFile, "SOUNDS\\COWMOO2.WAV");
+  gRandomAnimDefs[Enum194.COW][2].zSoundFile = "SOUNDS\\COWMOO2.WAV";
 
   gRandomAnimDefs[Enum194.COW][3].ubHandRestriction = RANDOM_ANIM_IRRELEVENTINHAND;
   gRandomAnimDefs[Enum194.COW][3].sAnimID = RANDOM_ANIM_SOUND;
   gRandomAnimDefs[Enum194.COW][3].ubStartRoll = 4;
   gRandomAnimDefs[Enum194.COW][3].ubEndRoll = 5;
   gRandomAnimDefs[Enum194.COW][3].ubAnimHeight = ANIM_STAND;
-  strcpy(gRandomAnimDefs[Enum194.COW][3].zSoundFile, "SOUNDS\\COWMOO3.WAV");
+  gRandomAnimDefs[Enum194.COW][3].zSoundFile = "SOUNDS\\COWMOO3.WAV";
 
   gubAnimSurfaceIndex[Enum194.CROW][Enum193.STANDING] = Enum195.CROWWALKING;
   gubAnimSurfaceIndex[Enum194.CROW][Enum193.WALKING] = Enum195.CROWWALKING;
@@ -2856,14 +2856,14 @@ export function InitAnimationSurfacesPerBodytype(): void {
   gRandomAnimDefs[Enum194.CROW][0].ubStartRoll = 0;
   gRandomAnimDefs[Enum194.CROW][0].ubEndRoll = 50;
   gRandomAnimDefs[Enum194.CROW][0].ubAnimHeight = ANIM_STAND;
-  strcpy(gRandomAnimDefs[Enum194.CROW][0].zSoundFile, "SOUNDS\\CROW3.WAV");
+  gRandomAnimDefs[Enum194.CROW][0].zSoundFile = "SOUNDS\\CROW3.WAV";
 
   gRandomAnimDefs[Enum194.CROW][1].ubHandRestriction = RANDOM_ANIM_IRRELEVENTINHAND;
   gRandomAnimDefs[Enum194.CROW][1].sAnimID = RANDOM_ANIM_SOUND;
   gRandomAnimDefs[Enum194.CROW][1].ubStartRoll = 51;
   gRandomAnimDefs[Enum194.CROW][1].ubEndRoll = 70;
   gRandomAnimDefs[Enum194.CROW][1].ubAnimHeight = ANIM_STAND;
-  strcpy(gRandomAnimDefs[Enum194.CROW][1].zSoundFile, "SOUNDS\\CROW2.WAV");
+  gRandomAnimDefs[Enum194.CROW][1].zSoundFile = "SOUNDS\\CROW2.WAV";
 
   // BLOOD CAT
   gubAnimSurfaceIndex[Enum194.BLOODCAT][Enum193.STANDING] = Enum195.CATBREATH;
@@ -3102,7 +3102,7 @@ export function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE
 
         // Check for cammo...
         if (pSoldier.value.bCamo != 0) {
-          strcpy(zColFilename, "ANIMS\\camo.COL");
+          zColFilename = "ANIMS\\camo.COL";
           return 1;
         }
       }
@@ -3110,22 +3110,22 @@ export function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE
 
     case Enum194.YAF_MONSTER:
 
-      strcpy(zColFilename, "ANIMS\\MONSTERS\\fm_brite.COL");
+      zColFilename = "ANIMS\\MONSTERS\\fm_brite.COL";
       return 1;
 
     case Enum194.YAM_MONSTER:
 
-      strcpy(zColFilename, "ANIMS\\MONSTERS\\mn_brite.COL");
+      zColFilename = "ANIMS\\MONSTERS\\mn_brite.COL";
       return 1;
 
     case Enum194.ADULTFEMALEMONSTER:
 
-      strcpy(zColFilename, "ANIMS\\MONSTERS\\femmon.COL");
+      zColFilename = "ANIMS\\MONSTERS\\femmon.COL";
       return 1;
 
     case Enum194.AM_MONSTER:
 
-      strcpy(zColFilename, "ANIMS\\MONSTERS\\monster.COL");
+      zColFilename = "ANIMS\\MONSTERS\\monster.COL";
       return 1;
 
     case Enum194.QUEENMONSTER:

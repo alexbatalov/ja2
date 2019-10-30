@@ -296,7 +296,7 @@ export function LoadFontFile(filename: string /* Pointer<UINT8> */): INT32 {
   }
 
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(vo_desc.ImageFile, filename);
+  vo_desc.ImageFile = filename;
 
   if ((FontObjs[LoadIndex] = CreateVideoObject(addressof(vo_desc))) == null) {
     DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Error creating VOBJECT (%s)", filename));
@@ -397,7 +397,7 @@ export function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, 
 
   Assert(pFontString != null);
 
-  wcscpy(string, pFontString);
+  string = pFontString;
 
   // make sure the character count is legal
   if (uiCharCount > wcslen(string)) {

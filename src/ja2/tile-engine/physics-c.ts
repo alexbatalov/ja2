@@ -912,7 +912,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): boolean {
           AniParams.sY = pObject.value.Position.y;
           AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(pObject.value.Position.z);
 
-          strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SMK.STI");
+          AniParams.zCachedFile = "TILECACHE\\MSLE_SMK.STI";
 
           CreateAnimationTile(addressof(AniParams));
         }

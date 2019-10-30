@@ -763,12 +763,12 @@ export function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iB
       gVideoOverlays[iBlitterIndex].ubFontFore = pTopmostDesc.value.ubFontFore;
 
       if (pTopmostDesc.value.pzText != null) {
-        wcscpy(gVideoOverlays[iBlitterIndex].zText, pTopmostDesc.value.pzText);
+        gVideoOverlays[iBlitterIndex].zText = pTopmostDesc.value.pzText;
       }
     } else {
       if (uiFlags & VOVERLAY_DESC_TEXT) {
         if (pTopmostDesc.value.pzText != null) {
-          wcscpy(gVideoOverlays[iBlitterIndex].zText, pTopmostDesc.value.pzText);
+          gVideoOverlays[iBlitterIndex].zText = pTopmostDesc.value.pzText;
         }
       }
 

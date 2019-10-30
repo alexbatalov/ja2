@@ -332,7 +332,7 @@ export function AddMonoString(hStringHandle: Pointer<INT32>, pString: string /* 
   if (pLocalString == null)
     return;
 
-  wcscpy(pLocalString, pString);
+  pLocalString = pString;
 
   RemoveCurrentBoxPrimaryText(iCounter);
 
@@ -379,7 +379,7 @@ export function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString
   if (pLocalString == null)
     return;
 
-  wcscpy(pLocalString, pString);
+  pLocalString = pString;
 
   RemoveCurrentBoxSecondaryText(iCounter);
 
@@ -423,7 +423,7 @@ function AddColorString(hStringHandle: Pointer<INT32>, pString: string /* STR16 
   if (pLocalString == null)
     return;
 
-  wcscpy(pLocalString, pString);
+  pLocalString = pString;
 
   RemoveCurrentBoxPrimaryText(iCounter);
 

@@ -37,7 +37,7 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): Pointer<
 
   // Load structure data, if any.
   // Start by hacking the image filename into that for the structure data
-  strcpy(cStructureFilename, cFilename);
+  cStructureFilename = cFilename;
   cEndOfName = strchr(cStructureFilename, '.');
   if (cEndOfName != null) {
     cEndOfName++;

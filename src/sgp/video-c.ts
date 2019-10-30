@@ -2261,7 +2261,7 @@ function LoadCursorFile(pFilename: string /* PTR */): boolean {
   //
 
   VideoObjectDescription.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  strcpy(VideoObjectDescription.ImageFile, pFilename);
+  VideoObjectDescription.ImageFile = pFilename;
   gpCursorStore = CreateVideoObject(addressof(VideoObjectDescription));
 
   //

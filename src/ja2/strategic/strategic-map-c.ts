@@ -394,7 +394,7 @@ export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bStri
   if (bSectorZ != 0) {
     bExtensionString = sprintf("_b%d", bSectorZ);
   } else {
-    strcpy(bExtensionString, "");
+    bExtensionString = "";
   }
 
   // the gfUseAlternateMap flag is set in the loading saved games.  When starting a new game the underground sector
@@ -1411,7 +1411,7 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
         }
     } else {
       // Display nothing
-      wcscpy(zString, "");
+      zString = "";
     }
   } else {
     bTownNameID = StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].bNameId;

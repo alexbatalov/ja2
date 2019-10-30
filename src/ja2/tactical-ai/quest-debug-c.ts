@@ -24,7 +24,7 @@ export function ToggleQuestDebugModes(ubType: UINT8): void {
   let ubLevel: UINT8;
 
   if (ubType == Enum299.QD_NPC_MSG) {
-    wcscpy(sType, "NPC Debug:");
+    sType = "NPC Debug:";
 
     // check to see if its out of range
     if (gubNPCDebugOutPutLevel <= Enum298.QD_OUTPUT_NONE + 1)
@@ -36,7 +36,7 @@ export function ToggleQuestDebugModes(ubType: UINT8): void {
 
     ubLevel = gubNPCDebugOutPutLevel;
   } else {
-    wcscpy(sType, "QUEST Debug:");
+    sType = "QUEST Debug:";
 
     // check to see if its out of range
     if (gubQuestDebugOutPutLevel <= Enum298.QD_OUTPUT_NONE)
