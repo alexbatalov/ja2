@@ -2098,7 +2098,7 @@ export function DisplayTextForMercFaceVideoPopUp(pString: string /* STR16 */): v
   gsTalkingMercText = swprintf("\"%s\"", pString);
 
   // Set the minimum time for the dialogue text to be present
-  usAimMercSpeechDuration = wcslen(gsTalkingMercText) * AIM_TEXT_SPEECH_MODIFIER;
+  usAimMercSpeechDuration = gsTalkingMercText.length * AIM_TEXT_SPEECH_MODIFIER;
 
   if (usAimMercSpeechDuration < MINIMUM_TALKING_TIME_FOR_MERC)
     usAimMercSpeechDuration = MINIMUM_TALKING_TIME_FOR_MERC;

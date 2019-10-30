@@ -2277,7 +2277,7 @@ function Sound3DSetProvider(pProviderName: string /* Pointer<CHAR8> */): void {
   Assert(pProviderName);
 
   if (pProviderName) {
-    gpProviderName = MemAlloc(strlen(pProviderName) + 1);
+    gpProviderName = MemAlloc(pProviderName.length + 1);
     gpProviderName = pProviderName;
   }
 }

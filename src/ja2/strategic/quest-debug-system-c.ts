@@ -2684,7 +2684,7 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
   DestString = sprintf("\n\n\nNew Approach for NPC ID: %d '%S' against Merc: %d '%S'", ubNpcID, gMercProfiles[ubNpcID].zNickname, ubMercID, gMercProfiles[ubMercID].zNickname);
   //	sprintf( DestString, "\n\n\nNew Approach for NPC ID: %d  against Merc: %d ", ubNpcID, ubMercID );
 
-  if (!FileWrite(hFile, DestString, strlen(DestString), addressof(uiByteWritten))) {
+  if (!FileWrite(hFile, DestString, DestString.length, addressof(uiByteWritten))) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;
@@ -2694,7 +2694,7 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
   DestString = sprintf("\n\tTesting Record #: %d", ubQuoteNum);
 
   // append to file
-  if (!FileWrite(hFile, DestString, strlen(DestString), addressof(uiByteWritten))) {
+  if (!FileWrite(hFile, DestString, DestString.length, addressof(uiByteWritten))) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;
@@ -2745,7 +2745,7 @@ function NpcRecordLogging(ubApproach: UINT8, pStringA: string /* STR */, ...args
   DestString = sprintf("\n\t\t%s", TempString);
 
   // append to file
-  if (!FileWrite(hFile, DestString, strlen(DestString), addressof(uiByteWritten))) {
+  if (!FileWrite(hFile, DestString, DestString.length, addressof(uiByteWritten))) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;

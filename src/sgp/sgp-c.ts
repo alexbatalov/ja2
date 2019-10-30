@@ -382,7 +382,7 @@ function SGPExit(): void {
 
   ShutdownStandardGamingPlatform();
   ShowCursor(true);
-  if (strlen(gzErrorMsg)) {
+  if (gzErrorMsg.length) {
     MessageBox(null, gzErrorMsg, "Error", MB_OK | MB_ICONERROR);
   }
 }
@@ -413,13 +413,13 @@ function ProcessJa2CommandLineBeforeInitialization(pCommandLine: string /* Point
   let pCopy: string /* Pointer<CHAR8> */ = null;
   let pToken: string /* Pointer<CHAR8> */;
 
-  pCopy = MemAlloc(strlen(pCommandLine) + 1);
+  pCopy = MemAlloc(pCommandLine.length + 1);
 
   Assert(pCopy);
   if (!pCopy)
     return;
 
-  memcpy(pCopy, pCommandLine, strlen(pCommandLine) + 1);
+  memcpy(pCopy, pCommandLine, pCommandLine.length + 1);
 
   pToken = strtok(pCopy, cSeparators);
   while (pToken) {

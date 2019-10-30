@@ -114,7 +114,7 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
   let MemUsed: UINT32;
 
   AssertMsg(filename != BUTTON_NO_FILENAME, "Attempting to LoadButtonImage() with null filename.");
-  AssertMsg(strlen(filename), "Attempting to LoadButtonImage() with empty filename string.");
+  AssertMsg(filename.length, "Attempting to LoadButtonImage() with empty filename string.");
 
   // is there ANY file to open?
   if ((Grayed == BUTTON_NO_IMAGE) && (OffNormal == BUTTON_NO_IMAGE) && (OffHilite == BUTTON_NO_IMAGE) && (OnNormal == BUTTON_NO_IMAGE) && (OnHilite == BUTTON_NO_IMAGE)) {
@@ -1402,8 +1402,8 @@ export function CreateTextButton(string: string /* Pointer<UINT16> */, uiFont: U
 
   // Allocate memory for the button's text string...
   b.value.string = null;
-  if (string && wcslen(string)) {
-    b.value.string = MemAlloc((wcslen(string) + 1) * sizeof(UINT16));
+  if (string && string.length) {
+    b.value.string = MemAlloc((string.length + 1) * sizeof(UINT16));
     AssertMsg(b.value.string, "Out of memory error:  Couldn't allocate string in CreateTextButton.");
     b.value.string = string;
   }
@@ -1723,7 +1723,7 @@ export function CreateSimpleButton(x: INT32, y: INT32, filename: string /* Point
   let ButPic: INT32;
   let ButNum: INT32;
 
-  if (!filename || !strlen(filename))
+  if (!filename || !filename.length)
     AssertMsg(0, "Attempting to CreateSimpleButton with null filename.");
 
   if ((ButPic = LoadButtonImage(filename, -1, 1, 2, 3, 4)) == -1) {
@@ -1794,7 +1794,7 @@ export function CreateIconAndTextButton(Image: INT32, string: string /* Pointer<
   // Allocate memory for the button's text string...
   b.value.string = null;
   if (string) {
-    b.value.string = MemAlloc((wcslen(string) + 1) * sizeof(UINT16));
+    b.value.string = MemAlloc((string.length + 1) * sizeof(UINT16));
     AssertMsg(b.value.string, "Out of memory error:  Couldn't allocate string in CreateIconAndTextButton.");
     b.value.string = string;
   }
@@ -1866,9 +1866,9 @@ export function SpecifyButtonText(iButtonID: INT32, string: string /* Pointer<UI
     MemFree(b.value.string);
   b.value.string = null;
 
-  if (string && wcslen(string)) {
+  if (string && string.length) {
     // allocate memory for the new string
-    b.value.string = MemAlloc((wcslen(string) + 1) * sizeof(UINT16));
+    b.value.string = MemAlloc((string.length + 1) * sizeof(UINT16));
     Assert(b.value.string);
     // copy the string to the button
     b.value.string = string;
@@ -3401,7 +3401,7 @@ export function CreateCheckBoxButton(x: INT16, y: INT16, filename: string /* Poi
   let ButPic: INT32;
   let iButtonID: INT32;
   Assert(filename != null);
-  Assert(strlen(filename));
+  Assert(filename.length);
   if ((ButPic = LoadButtonImage(filename, -1, 0, 1, 2, 3)) == -1) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "CreateCheckBoxButton: Can't load button image");
     return -1;

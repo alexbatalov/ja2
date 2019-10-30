@@ -919,7 +919,7 @@ export function RenderPreBattleInterface(): void {
             mprintf(x, y, str);
             // DEST
             GetMapscreenMercDestinationString(MercPtrs[i], str);
-            if (wcslen(str) > 0) {
+            if (str.length > 0) {
               x = 164 + (41 - StringPixLength(str, BLOCKFONT2())) / 2;
               mprintf(x, y, str);
             }

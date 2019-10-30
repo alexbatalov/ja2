@@ -648,7 +648,7 @@ function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject:
   pTempEmail.value.usLength = iMessageLength;
 
   // null out last byte of subject
-  pTempEmail.value.pSubject[wcslen(pSubject) + 1] = 0;
+  pTempEmail.value.pSubject[pSubject.length + 1] = 0;
 
   // set date and sender, Id
   if (pEmail)
@@ -4179,7 +4179,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
   let pTempString: string /* wchar_t[MAIL_STRING_SIZE] */;
   let iLength: INT32 = 0;
   let iCurLocInSourceString: INT32 = 0;
-  let iLengthOfSourceString: INT32 = wcslen(pFinishedString); // Get the length of the source string
+  let iLengthOfSourceString: INT32 = pFinishedString.length; // Get the length of the source string
   let pMercNameString: string /* Pointer<CHAR16> */ = null;
   let pAmountString: string /* Pointer<CHAR16> */ = null;
   let pSubString: string /* Pointer<CHAR16> */ = null;
@@ -4235,7 +4235,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
       wcsncat(pFinishedString, addressof(pTempString[iCurLocInSourceString]), iLength);
 
       // increment the source string counter by how far in the keyword is and by the length of the keyword
-      iCurLocInSourceString += iLength + wcslen(sSearchString);
+      iCurLocInSourceString += iLength + sSearchString.length;
 
       if (fReplacingMercName) {
         // add the mercs name to the string
@@ -4255,7 +4255,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
       // add the rest of the string
       pFinishedString += addressof(pTempString[iCurLocInSourceString]);
 
-      iCurLocInSourceString += wcslen(addressof(pTempString[iCurLocInSourceString]));
+      iCurLocInSourceString += addressof(pTempString[iCurLocInSourceString]).length;
     }
   }
 

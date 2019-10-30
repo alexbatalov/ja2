@@ -64,8 +64,8 @@ export function EnterIMPBeginScreen(): void {
   if (iCurrentProfileMode != 0) {
     pFullNameString = pFullName;
     pNickNameString = pNickName;
-    uiFullNameCharacterPosition = wcslen(pFullNameString);
-    uiNickNameCharacterPosition = wcslen(pNickNameString);
+    uiFullNameCharacterPosition = pFullNameString.length;
+    uiNickNameCharacterPosition = pNickNameString.length;
     uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL());
     uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL());
 
@@ -149,7 +149,7 @@ export function ExitIMPBeginScreen(): void {
   pFullName = pFullNameString;
 
   // is nick name too long?..shorten
-  if (wcslen(pNickNameString) > 8) {
+  if (pNickNameString.length > 8) {
     // null out char 9
     pNickNameString[8] = 0;
   }

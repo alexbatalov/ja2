@@ -832,7 +832,7 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
 
       // if the name is bigger then can fit into the slot, reduce the size
       if (StringPixLength(sText, BOBBYR_ORDER_DYNAMIC_TEXT_FONT()) > BOBBYR_GRID_THIRD_COLUMN_WIDTH - 4) {
-        usStringLength = wcslen(sText);
+        usStringLength = sText.length;
         usPixLength = 0;
         OneChar[1] = '\0';
         for (j = 0; (i < usStringLength) && (usPixLength < BOBBYR_GRID_THIRD_COLUMN_WIDTH - 16); j++) {

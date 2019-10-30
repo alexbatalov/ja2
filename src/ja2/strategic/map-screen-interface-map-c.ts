@@ -3948,7 +3948,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
     }
 
     AdjustXForLeftMapEdge(wString, addressof(sScreenX));
-    mprintf((sScreenX - StringPixLengthArg(MAP_FONT(), wcslen(wString), wString) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
+    mprintf((sScreenX - StringPixLengthArg(MAP_FONT(), wString.length, wString) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   }
 
@@ -3963,7 +3963,7 @@ function AdjustXForLeftMapEdge(wString: string /* STR16 */, psX: Pointer<INT16>)
     // it's ok to cut strings off in zoomed mode
     return;
 
-  sStartingX = psX.value - (StringPixLengthArg(MAP_FONT(), wcslen(wString), wString) / 2);
+  sStartingX = psX.value - (StringPixLengthArg(MAP_FONT(), wString.length, wString) / 2);
   sPastEdge = (MAP_VIEW_START_X + 23) - sStartingX;
 
   if (sPastEdge > 0)

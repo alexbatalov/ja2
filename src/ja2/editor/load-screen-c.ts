@@ -915,7 +915,7 @@ function ValidFilename(): boolean {
 
 export function ExternalLoadMap(szFilename: string /* Pointer<UINT16> */): boolean {
   Assert(szFilename);
-  if (!wcslen(szFilename))
+  if (!szFilename.length)
     return false;
   gzFilename = szFilename;
   if (!ValidFilename())
@@ -932,7 +932,7 @@ export function ExternalLoadMap(szFilename: string /* Pointer<UINT16> */): boole
 
 export function ExternalSaveMap(szFilename: string /* Pointer<UINT16> */): boolean {
   Assert(szFilename);
-  if (!wcslen(szFilename))
+  if (!szFilename.length)
     return false;
   gzFilename = szFilename;
   if (!ValidFilename())

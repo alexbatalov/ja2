@@ -219,7 +219,7 @@ export function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
   pNode.value.szString = MemAlloc((ubMaxChars + 1) * sizeof(UINT16));
   Assert(pNode.value.szString);
   if (szInitText) {
-    pNode.value.ubStrLen = wcslen(szInitText);
+    pNode.value.ubStrLen = szInitText.length;
     Assert(pNode.value.ubStrLen <= ubMaxChars);
     pNode.value.szString = szInitText;
   } else {
@@ -326,7 +326,7 @@ export function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: st
   while (curr) {
     if (curr.value.ubID == ubField) {
       if (szNewText) {
-        curr.value.ubStrLen = wcslen(szNewText);
+        curr.value.ubStrLen = szNewText.length;
         Assert(curr.value.ubStrLen <= curr.value.ubMaxChars);
         curr.value.szString = szNewText;
       } else if (!curr.value.fUserField) {
@@ -347,7 +347,7 @@ export function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: str
   while (curr) {
     if (curr.value.ubID == ubField) {
       if (szNewText) {
-        curr.value.ubStrLen = strlen(szNewText);
+        curr.value.ubStrLen = szNewText.length;
         Assert(curr.value.ubStrLen <= curr.value.ubMaxChars);
         curr.value.szString = swprintf("%S", szNewText);
       } else if (!curr.value.fUserField) {
@@ -434,7 +434,7 @@ export function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumbe
         else // set string to the number given
           curr.value.szString = swprintf("%d", iNumber);
       }
-      curr.value.ubStrLen = wcslen(curr.value.szString);
+      curr.value.ubStrLen = curr.value.szString.length;
       return;
     }
     curr = curr.value.next;

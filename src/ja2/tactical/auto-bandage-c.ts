@@ -215,7 +215,7 @@ function CreateAutoBandageString(): boolean {
       ubDoctors++;
       // increase the length of the string by the size of the name
       // plus 2, one for the comma and one for the space after that
-      uiDoctorNameStringLength += wcslen(pSoldier.value.name) + 2;
+      uiDoctorNameStringLength += pSoldier.value.name.length + 2;
     }
   }
   if (ubDoctors == 0) {
@@ -223,9 +223,9 @@ function CreateAutoBandageString(): boolean {
   }
 
   if (ubDoctors == 1) {
-    uiDoctorNameStringLength += wcslen(Message[Enum334.STR_IS_APPLYING_FIRST_AID]);
+    uiDoctorNameStringLength += Message[Enum334.STR_IS_APPLYING_FIRST_AID].length;
   } else {
-    uiDoctorNameStringLength += wcslen(Message[Enum334.STR_ARE_APPLYING_FIRST_AID]);
+    uiDoctorNameStringLength += Message[Enum334.STR_ARE_APPLYING_FIRST_AID].length;
   }
 
   sAutoBandageString = MemRealloc(sAutoBandageString, uiDoctorNameStringLength * sizeof(CHAR16));

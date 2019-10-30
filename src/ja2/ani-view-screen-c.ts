@@ -271,8 +271,8 @@ function BuildListFile(): void {
     fgets(currFilename, 128, infoFile);
 
     // Remove newline
-    currFilename[strlen(currFilename) - 1] = '\0';
-    currFilename[strlen(currFilename) - 1] = '\0';
+    currFilename[currFilename.length - 1] = '\0';
+    currFilename[currFilename.length - 1] = '\0';
 
     usState = GetAnimStateFromName(currFilename);
 

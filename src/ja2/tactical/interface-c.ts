@@ -3022,7 +3022,7 @@ export function DirtyTopMessage(): void {
 
 function CalcUIMessageDuration(wString: string /* STR16 */): UINT32 {
   // base + X per letter
-  return 1000 + 50 * wcslen(wString);
+  return 1000 + 50 * wString.length;
 }
 
 let gfMultipurposeLocatorOn: boolean = false;

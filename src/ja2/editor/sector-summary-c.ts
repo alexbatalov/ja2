@@ -1867,7 +1867,7 @@ function CalculateOverrideStatus(): void {
   if (gfTempFile) {
     let ptr: string /* Pointer<UINT8> */;
     szFilename = sprintf("MAPS\\%S", gszTempFilename);
-    if (strlen(szFilename) == 5)
+    if (szFilename.length == 5)
       szFilename += "test.dat";
     ptr = strstr(szFilename, ".");
     if (!ptr)
@@ -2348,7 +2348,7 @@ function ExtractTempFilename(): void {
     gfRenderSummary = true;
     gfOverrideDirty = true;
   }
-  if (!wcslen(str))
+  if (!str.length)
     gszDisplayName = "test.dat";
 }
 

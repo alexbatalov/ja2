@@ -191,7 +191,7 @@ export function WinFontStringPixLength(string2: string /* Pointer<UINT16> */, iF
 
   hdc = GetDC(null);
   SelectObject(hdc, pWinFont.value.hFont);
-  GetTextExtentPoint32(hdc, string, strlen(string), addressof(RectSize));
+  GetTextExtentPoint32(hdc, string, string.length, addressof(RectSize));
   ReleaseDC(null, hdc);
 
   return RectSize.cx;
@@ -213,7 +213,7 @@ export function GetWinFontHeight(string2: string /* Pointer<UINT16> */, iFont: I
 
   hdc = GetDC(null);
   SelectObject(hdc, pWinFont.value.hFont);
-  GetTextExtentPoint32(hdc, string, strlen(string), addressof(RectSize));
+  GetTextExtentPoint32(hdc, string, string.length, addressof(RectSize));
   ReleaseDC(null, hdc);
 
   return RectSize.cy;

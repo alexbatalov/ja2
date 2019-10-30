@@ -222,11 +222,11 @@ function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: Pointer<L
 
     if (DirEntry.ubState == FILE_OK) {
       // Check to see if the file is not longer then it should be
-      if ((strlen(DirEntry.sFileName) + 1) >= FILENAME_SIZE)
-        FastDebugMsg(String("\n*******InitializeLibrary():  Warning!:  '%s' from the library '%s' has name whose size (%d) is bigger then it should be (%s)", DirEntry.sFileName, pLibHeader.value.sLibraryPath, (strlen(DirEntry.sFileName) + 1), FILENAME_SIZE));
+      if ((DirEntry.sFileName.length + 1) >= FILENAME_SIZE)
+        FastDebugMsg(String("\n*******InitializeLibrary():  Warning!:  '%s' from the library '%s' has name whose size (%d) is bigger then it should be (%s)", DirEntry.sFileName, pLibHeader.value.sLibraryPath, (DirEntry.sFileName.length + 1), FILENAME_SIZE));
 
       // allocate memory for the files name
-      pLibHeader.value.pFileHeader[uiCount].pFileName = MemAlloc(strlen(DirEntry.sFileName) + 1);
+      pLibHeader.value.pFileHeader[uiCount].pFileName = MemAlloc(DirEntry.sFileName.length + 1);
 
       // if we couldnt allocate memory
       if (!pLibHeader.value.pFileHeader[uiCount].pFileName) {
@@ -253,8 +253,8 @@ function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: Pointer<L
   }
 
   // if the library has a path
-  if (strlen(LibFileHeader.sPathToLibrary) != 0) {
-    pLibHeader.value.sLibraryPath = MemAlloc(strlen(LibFileHeader.sPathToLibrary) + 1);
+  if (LibFileHeader.sPathToLibrary.length != 0) {
+    pLibHeader.value.sLibraryPath = MemAlloc(LibFileHeader.sPathToLibrary.length + 1);
     pLibHeader.value.sLibraryPath = LibFileHeader.sPathToLibrary;
   } else {
     // else the library name does not contain a path ( most likely either an error or it is the default path )
@@ -363,7 +363,7 @@ function GetLibraryIDFromFileName(pFileName: string /* STR */): INT16 {
     // if the library is not loaded, dont try to access the array
     if (IsLibraryOpened(sLoop1)) {
       // if the library path name is of size zero, ( the library is for the default path )
-      if (strlen(gFileDataBase.pLibraries[sLoop1].sLibraryPath) == 0) {
+      if (gFileDataBase.pLibraries[sLoop1].sLibraryPath.length == 0) {
         // determine if there is a directory in the file name
         if (strchr(pFileName, '\\') == null && strchr(pFileName, '//') == null) {
           // There is no directory in the file name
@@ -374,9 +374,9 @@ function GetLibraryIDFromFileName(pFileName: string /* STR */): INT16 {
       // compare the library name to the file name that is passed in
       else {
         // if the directory paths are the same, to the length of the lib's path
-        if (_strnicmp(gFileDataBase.pLibraries[sLoop1].sLibraryPath, pFileName, strlen(gFileDataBase.pLibraries[sLoop1].sLibraryPath)) == 0) {
+        if (_strnicmp(gFileDataBase.pLibraries[sLoop1].sLibraryPath, pFileName, gFileDataBase.pLibraries[sLoop1].sLibraryPath.length) == 0) {
           // if we've never matched, or this match's path is longer than the previous match (meaning it's more exact)
-          if ((sBestMatch == (-1)) || (strlen(gFileDataBase.pLibraries[sLoop1].sLibraryPath) > strlen(gFileDataBase.pLibraries[sBestMatch].sLibraryPath)))
+          if ((sBestMatch == (-1)) || (gFileDataBase.pLibraries[sLoop1].sLibraryPath.length > gFileDataBase.pLibraries[sBestMatch].sLibraryPath.length))
             sBestMatch = sLoop1;
         }
       }
@@ -448,7 +448,7 @@ function AddSlashToPath(pName: Pointer<string> /* STR */): void {
   // find out if there is a '\' in the file name
 
   uiCounter = 0;
-  for (uiLoop = 0; uiLoop < strlen(pName) && !fDone; uiLoop++) {
+  for (uiLoop = 0; uiLoop < pName.length && !fDone; uiLoop++) {
     if (pName[uiLoop] == '\\') {
       sNewName[uiCounter] = pName[uiLoop];
       uiCounter++;

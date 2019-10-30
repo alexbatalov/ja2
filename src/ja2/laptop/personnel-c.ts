@@ -5011,7 +5011,7 @@ function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // find position in value string, append character at end
-      for (iCounter = 0; iCounter < wcslen(sTransferString); iCounter++)
+      for (iCounter = 0; iCounter < sTransferString.length; iCounter++)
         ;
       sTransferString[iCounter] = (sZero[0] + iValue);
       sTransferString[iCounter + 1] = 0;
@@ -5040,7 +5040,7 @@ function DisplayATMAmount(): void {
 
   if ((sTempString[0] == 48) && (sTempString[1] != 0)) {
     // strip the zero from the beginning
-    for (iCounter = 1; iCounter < wcslen(sTempString); iCounter++) {
+    for (iCounter = 1; iCounter < sTempString.length; iCounter++) {
       sTempString[iCounter - 1] = sTempString[iCounter];
     }
   }
@@ -5351,7 +5351,7 @@ function HandlePersonnelKeyboard(): void {
       if ((fShowAtmPanel) && (fATMFlags != 0)) {
         iValue = (InputEvent.usParam - '0');
 
-        for (iCounter = 0; iCounter < wcslen(sTransferString); iCounter++)
+        for (iCounter = 0; iCounter < sTransferString.length; iCounter++)
           ;
         sTransferString[iCounter] = (sZero[0] + iValue);
         sTransferString[iCounter + 1] = 0;
@@ -5381,7 +5381,7 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
 
   if ((sTempString[0] == 48) && (sTempString[1] != 0)) {
     // strip the zero from the beginning
-    for (iCounter = 1; iCounter < wcslen(sTempString); iCounter++) {
+    for (iCounter = 1; iCounter < sTempString.length; iCounter++) {
       sTempString[iCounter - 1] = sTempString[iCounter];
     }
   }
@@ -5391,7 +5391,7 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
   InsertDollarSignInToString(sTempString);
 
   // string not worth worrying about?
-  if (wcslen(sTempString) < 2) {
+  if (sTempString.length < 2) {
     return;
   }
 

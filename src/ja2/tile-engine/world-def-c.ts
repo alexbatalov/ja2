@@ -3321,7 +3321,7 @@ function SaveMapLights(hfile: HWFILE): void {
         // save the light
         FileWrite(hfile, addressof(LightSprites[cnt]), sizeof(LIGHT_SPRITE), addressof(uiBytesWritten));
 
-        ubStrLen = strlen(pLightNames[LightSprites[cnt].iTemplate]) + 1;
+        ubStrLen = pLightNames[LightSprites[cnt].iTemplate].length + 1;
         FileWrite(hfile, addressof(ubStrLen), 1, addressof(uiBytesWritten));
         FileWrite(hfile, pLightNames[LightSprites[cnt].iTemplate], ubStrLen, addressof(uiBytesWritten));
       }

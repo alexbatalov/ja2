@@ -66,7 +66,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
 
       // allocate memory for the string
       pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
+      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
       if (pWrappedString.value.pNextWrappedString.value.sString == null)
         return null;
 
@@ -92,7 +92,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
 
       // allocate memory for the string
       pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
+      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
 
       // Copy the string into the new struct
       pWrappedString.value.pNextWrappedString.value.sString = DestString;
@@ -180,7 +180,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
 
       // allocate memory for the string
       pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
+      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
       if (pWrappedString.value.pNextWrappedString.value.sString == null)
         return null;
 
@@ -218,10 +218,10 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
       while (pWrappedString.value.pNextWrappedString != null)
         pWrappedString = pWrappedString.value.pNextWrappedString;
 
-      if (wcslen(DestString) != 0) {
+      if (DestString.length != 0) {
         // allocate memory for the string
         pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-        pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
+        pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
         if (pWrappedString.value.pNextWrappedString.value.sString == null)
           return null;
 
@@ -255,7 +255,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
 
           // allocate memory for the string
           pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-          pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
+          pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
           if (pWrappedString.value.pNextWrappedString.value.sString == null)
             return null;
 
@@ -268,7 +268,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
 
             // allocate memory for the string
             pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-            pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(pNullString) + 2) * 2);
+            pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((pNullString.length + 2) * 2);
             pWrappedString.value.pNextWrappedString.value.sString = pNullString;
             pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
           }

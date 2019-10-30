@@ -328,7 +328,7 @@ export function AddMonoString(hStringHandle: Pointer<INT32>, pString: string /* 
   if (pStringSt == null)
     return;
 
-  pLocalString = (MemAlloc(wcslen(pString) * 2 + 2));
+  pLocalString = (MemAlloc(pString.length * 2 + 2));
   if (pLocalString == null)
     return;
 
@@ -375,7 +375,7 @@ export function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString
   if (pStringSt == null)
     return;
 
-  pLocalString = (MemAlloc(wcslen(pString) * 2 + 2));
+  pLocalString = (MemAlloc(pString.length * 2 + 2));
   if (pLocalString == null)
     return;
 
@@ -419,7 +419,7 @@ function AddColorString(hStringHandle: Pointer<INT32>, pString: string /* STR16 
   if (pStringSt == null)
     return;
 
-  pLocalString = (MemAlloc(wcslen(pString) * 2 + 2));
+  pLocalString = (MemAlloc(pString.length * 2 + 2));
   if (pLocalString == null)
     return;
 
@@ -1211,7 +1211,7 @@ function DrawBoxText(uiCounter: UINT32): boolean {
       SetFontBackground(PopUpBoxList[uiCounter].value.Text[uiCount].value.ubBackgroundColor);
 
       // copy string
-      wcsncpy(sString, PopUpBoxList[uiCounter].value.Text[uiCount].value.pString, wcslen(PopUpBoxList[uiCounter].value.Text[uiCount].value.pString) + 1);
+      wcsncpy(sString, PopUpBoxList[uiCounter].value.Text[uiCount].value.pString, PopUpBoxList[uiCounter].value.Text[uiCount].value.pString.length + 1);
 
       // cnetering?
       if (PopUpBoxList[uiCounter].value.uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
@@ -1247,7 +1247,7 @@ function DrawBoxText(uiCounter: UINT32): boolean {
       SetFontBackground(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.ubBackgroundColor);
 
       // copy string
-      wcsncpy(sString, PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.pString, wcslen(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.pString) + 1);
+      wcsncpy(sString, PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.pString, PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.pString.length + 1);
 
       // cnetering?
       if (PopUpBoxList[uiCounter].value.uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {

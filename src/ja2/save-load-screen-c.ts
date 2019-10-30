@@ -1155,14 +1155,14 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
     //
 
     // Check to see if the desc field is bigger then it should be, ie no null char
-    if (wcslen(pSaveGameHeader.value.sSavedGameDesc) >= SIZE_OF_SAVE_GAME_DESC) {
+    if (pSaveGameHeader.value.sSavedGameDesc.length >= SIZE_OF_SAVE_GAME_DESC) {
       memset(pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
       gbSaveGameArray[bEntry] = false;
       return false;
     }
 
     // Check to see if the version # field is bigger then it should be, ie no null char
-    if (strlen(pSaveGameHeader.value.zGameVersionNumber) >= GAME_VERSION_LENGTH) {
+    if (pSaveGameHeader.value.zGameVersionNumber.length >= GAME_VERSION_LENGTH) {
       memset(pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
       gbSaveGameArray[bEntry] = false;
       return false;

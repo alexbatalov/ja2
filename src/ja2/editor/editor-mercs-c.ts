@@ -1081,7 +1081,7 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
     ubPaletteRep = 0xff;
 
   if (pSoldier) {
-    if (!strlen(pSoldier.value.HeadPal))
+    if (!pSoldier.value.HeadPal.length)
       ubPaletteRep = 0xff;
     else
       GetPaletteRepIndexFromID(pSoldier.value.HeadPal, addressof(ubPaletteRep));
@@ -1089,7 +1089,7 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
   ShowEditMercColorSet(ubPaletteRep, 0);
 
   if (pSoldier) {
-    if (!strlen(pSoldier.value.SkinPal))
+    if (!pSoldier.value.SkinPal.length)
       ubPaletteRep = 0xff;
     else
       GetPaletteRepIndexFromID(pSoldier.value.SkinPal, addressof(ubPaletteRep));
@@ -1097,7 +1097,7 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
   ShowEditMercColorSet(ubPaletteRep, 1);
 
   if (pSoldier) {
-    if (!strlen(pSoldier.value.VestPal))
+    if (!pSoldier.value.VestPal.length)
       ubPaletteRep = 0xff;
     else
       GetPaletteRepIndexFromID(pSoldier.value.VestPal, addressof(ubPaletteRep));
@@ -1105,7 +1105,7 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
   ShowEditMercColorSet(ubPaletteRep, 2);
 
   if (pSoldier) {
-    if (!strlen(pSoldier.value.VestPal))
+    if (!pSoldier.value.VestPal.length)
       ubPaletteRep = 0xff;
     else
       GetPaletteRepIndexFromID(pSoldier.value.PantsPal, addressof(ubPaletteRep));

@@ -93,8 +93,8 @@ export function SetProgressBarTitle(ubID: UINT32, pString: string /* Pointer<UIN
     MemFree(pCurr.value.swzTitle);
     pCurr.value.swzTitle = null;
   }
-  if (pString && wcslen(pString)) {
-    pCurr.value.swzTitle = MemAlloc(sizeof(UINT16) * (wcslen(pString) + 1));
+  if (pString && pString.length) {
+    pCurr.value.swzTitle = MemAlloc(sizeof(UINT16) * (pString.length + 1));
     pCurr.value.swzTitle = pString;
   }
   pCurr.value.usTitleFont = usFont;

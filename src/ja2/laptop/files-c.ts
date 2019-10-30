@@ -354,9 +354,9 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
   // first file
   if (pFirstPicFile) {
     if ((pFirstPicFile[0]) != 0) {
-      pFiles.value.pPicFileNameList[0] = MemAlloc(strlen(pFirstPicFile) + 1);
+      pFiles.value.pPicFileNameList[0] = MemAlloc(pFirstPicFile.length + 1);
       pFiles.value.pPicFileNameList[0] = pFirstPicFile;
-      pFiles.value.pPicFileNameList[0][strlen(pFirstPicFile)] = 0;
+      pFiles.value.pPicFileNameList[0][pFirstPicFile.length] = 0;
     }
   }
 
@@ -364,9 +364,9 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
 
   if (pSecondPicFile) {
     if ((pSecondPicFile[0]) != 0) {
-      pFiles.value.pPicFileNameList[1] = MemAlloc(strlen(pSecondPicFile) + 1);
+      pFiles.value.pPicFileNameList[1] = MemAlloc(pSecondPicFile.length + 1);
       pFiles.value.pPicFileNameList[1] = pSecondPicFile;
-      pFiles.value.pPicFileNameList[1][strlen(pSecondPicFile)] = 0;
+      pFiles.value.pPicFileNameList[1][pSecondPicFile.length] = 0;
     }
   }
 
@@ -1005,9 +1005,9 @@ function AddStringToFilesList(pString: string /* STR16 */): void {
   pFileString = MemAlloc(sizeof(FileString));
 
   // alloc string and copy
-  pFileString.value.pString = MemAlloc((wcslen(pString) * 2) + 2);
+  pFileString.value.pString = MemAlloc((pString.length * 2) + 2);
   pFileString.value.pString = pString;
-  pFileString.value.pString[wcslen(pString)] = 0;
+  pFileString.value.pString[pString.length] = 0;
 
   // set Next to NULL
 

@@ -2110,7 +2110,7 @@ export function ShutDownLastQuoteTacticalTextBox(): void {
 }
 
 export function FindDelayForString(sString: string /* STR16 */): UINT32 {
-  return wcslen(sString) * TEXT_DELAY_MODIFIER;
+  return sString.length * TEXT_DELAY_MODIFIER;
 }
 
 export function BeginLoggingForBleedMeToos(fStart: boolean): void {

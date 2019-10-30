@@ -958,11 +958,11 @@ export function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: str
     // AssertMsg( 0, String( "Attempting to set fast help text, \"%S\" to an inactive region.", szText ) );
   }
 
-  if (!szText || !wcslen(szText))
+  if (!szText || !szText.length)
     return; // blank (or clear)
 
   // Allocate memory for the button's FastHelp text string...
-  region.value.FastHelpText = MemAlloc((wcslen(szText) + 1) * sizeof(UINT16));
+  region.value.FastHelpText = MemAlloc((szText.length + 1) * sizeof(UINT16));
   Assert(region.value.FastHelpText);
 
   region.value.FastHelpText = szText;
@@ -1089,7 +1089,7 @@ function DisplayHelpTokenizedString(pStringA: string /* STR16 */, sX: INT16, sY:
   pToken = wcstok(pString, "\n");
 
   while (pToken != null) {
-    iLength = wcslen(pToken);
+    iLength = pToken.length;
     for (i = 0; i < iLength; i++) {
       uiCursorXPos = StringPixLengthArgFastHelp(FONT10ARIAL(), FONT10ARIALBOLD(), i, pToken);
       if (pToken[i] == '|') {

@@ -595,7 +595,7 @@ function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): boolean {
 function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: string /* STR16 */): boolean {
   let pNodeToAdd: Pointer<CRDT_NODE> = null;
   let pTemp: Pointer<CRDT_NODE> = null;
-  let uiSizeOfString: UINT32 = (wcslen(pString) + 2) * 2;
+  let uiSizeOfString: UINT32 = (pString.length + 2) * 2;
   let uiFontToUse: UINT32;
   let uiColorToUse: UINT8;
 
@@ -896,7 +896,7 @@ function GetNextCreditFromTextFile(): boolean {
     //
 
     // if the string is the same size as the codes
-    if (wcslen(zOriginalString) == uiSizeOfCodes) {
+    if (zOriginalString.length == uiSizeOfCodes) {
       // there is no string, just codes
       uiNodeType = Enum2.CRDT_NODE_NONE;
     }

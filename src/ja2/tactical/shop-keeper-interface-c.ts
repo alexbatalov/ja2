@@ -4087,7 +4087,7 @@ function AddNumberToSkiAtm(ubNumber: UINT8): void {
     return;
 
   // make sure we arent going over the numbers max size
-  if (wcslen(gzSkiAtmTransferString) >= 9)
+  if (gzSkiAtmTransferString.length >= 9)
     return;
 
   // if its the first number being added and the number is a zero

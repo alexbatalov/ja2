@@ -1013,7 +1013,7 @@ function InitFlowerOrderTextInputBoxes(): void {
     gbCurrentlySelectedCard = -1;
   }
 
-  if (wcslen(gsSentimentTextField) >= FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 2) {
+  if (gsSentimentTextField.length >= FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 2) {
     gsSentimentTextField[FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 1] = '\0';
   }
 

@@ -83,9 +83,9 @@ function AddString(pString: string /* STR16 */, usColor: UINT16, uiFont: UINT32,
 
 function SetString(pStringSt: ScrollStringStPtr, pString: string /* STR16 */): void {
   // ARM: Why x2 + 4 ???
-  pStringSt.value.pString16 = MemAlloc((wcslen(pString) * 2) + 4);
-  wcsncpy(pStringSt.value.pString16, pString, wcslen(pString));
-  pStringSt.value.pString16[wcslen(pString)] = 0;
+  pStringSt.value.pString16 = MemAlloc((pString.length * 2) + 4);
+  wcsncpy(pStringSt.value.pString16, pString, pString.length);
+  pStringSt.value.pString16[pString.length] = 0;
 }
 
 function SetStringPosition(pStringSt: ScrollStringStPtr, usX: UINT16, usY: UINT16): void {
@@ -891,7 +891,7 @@ export function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): boolean {
   // Loopthrough all the messages
   for (uiCount = 0; uiCount < 256; uiCount++) {
     if (gMapScreenMessageList[uiCount]) {
-      uiSizeOfString = (wcslen(gMapScreenMessageList[uiCount].value.pString16) + 1) * 2;
+      uiSizeOfString = (gMapScreenMessageList[uiCount].value.pString16.length + 1) * 2;
     } else
       uiSizeOfString = 0;
 

@@ -287,7 +287,7 @@ export function LoadFontFile(filename: string /* Pointer<UINT8> */): INT32 {
   let LoadIndex: UINT32;
 
   Assert(filename != null);
-  Assert(strlen(filename));
+  Assert(filename.length);
 
   if ((LoadIndex = FindFreeFont()) == (-1)) {
     DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Out of font slots (%s)", filename));
@@ -366,10 +366,10 @@ export function StringPixLengthArg(usUseFont: INT32, uiCharCount: UINT32, pFontS
   va_end(argptr);
 
   // make sure the character count is legal
-  if (uiCharCount > wcslen(string)) {
-    uiCharCount = wcslen(string);
+  if (uiCharCount > string.length) {
+    uiCharCount = string.length;
   } else {
-    if (uiCharCount < wcslen(string)) {
+    if (uiCharCount < string.length) {
       // less than the full string, so whack off the end of it (it's temporary anyway)
       string[uiCharCount] = '\0';
     }
@@ -400,10 +400,10 @@ export function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, 
   string = pFontString;
 
   // make sure the character count is legal
-  if (uiCharCount > wcslen(string)) {
-    uiCharCount = wcslen(string);
+  if (uiCharCount > string.length) {
+    uiCharCount = string.length;
   } else {
-    if (uiCharCount < wcslen(string)) {
+    if (uiCharCount < string.length) {
       // less than the full string, so whack off the end of it (it's temporary anyway)
       string[uiCharCount] = '\0';
     }

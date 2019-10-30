@@ -1334,7 +1334,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     GetMapscreenMercLocationString(pSoldier, sString);
   }
 
-  if (wcslen(sString) > 0) {
+  if (sString.length > 0) {
     FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN2_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
     DrawString(sString, usX, usY, CHAR_FONT());
   }
@@ -3161,7 +3161,7 @@ function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): vo
 
   GetMapscreenMercDestinationString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
-  if (wcslen(sString) == 0) {
+  if (sString.length == 0) {
     return;
   }
 

@@ -16,7 +16,7 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
 
   // industry
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_INDUSTRY) {
-    if (wcslen(sFacilitiesString) == 0) {
+    if (sFacilitiesString.length == 0) {
       sFacilitiesString = swprintf("%s", sFacilitiesStrings[2]);
     } else {
       sFacilitiesString += ",";
@@ -26,7 +26,7 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
 
   // prison
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_PRISON) {
-    if (wcslen(sFacilitiesString) == 0) {
+    if (sFacilitiesString.length == 0) {
       sFacilitiesString = swprintf("%s", sFacilitiesStrings[3]);
     } else {
       sFacilitiesString += ",";
@@ -36,7 +36,7 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
 
   // airport
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_AIRPORT) {
-    if (wcslen(sFacilitiesString) == 0) {
+    if (sFacilitiesString.length == 0) {
       sFacilitiesString = swprintf("%s", sFacilitiesStrings[5]);
     } else {
       sFacilitiesString += ",";
@@ -46,7 +46,7 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
 
   // gun range
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_GUN_RANGE) {
-    if (wcslen(sFacilitiesString) == 0) {
+    if (sFacilitiesString.length == 0) {
       sFacilitiesString = swprintf("%s", sFacilitiesStrings[6]);
     } else {
       sFacilitiesString += ",";
@@ -54,7 +54,7 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
     }
   }
 
-  sFacilitiesString[wcslen(sFacilitiesString)] = 0;
+  sFacilitiesString[sFacilitiesString.length] = 0;
 
   return;
 }

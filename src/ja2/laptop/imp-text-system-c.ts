@@ -59,7 +59,7 @@ function LoadAndDisplayIMPText(sStartX: INT16, sStartY: INT16, sLineLength: INT1
   LoadEncryptedDataFromFile("BINARYDATA\\IMPText.EDT", sString, ((sIMPTextRecordNumber)*IMP_SEEK_AMOUNT), IMP_SEEK_AMOUNT);
 
   // null put last char
-  sString[wcslen(sString)] = 0;
+  sString[sString.length] = 0;
 
   if (uiFlags == 0) {
     uiFlags = LEFT_JUSTIFIED;

@@ -716,7 +716,7 @@ function FilePrintf(hFile: HWFILE, strFormatted: string /* Pointer<UINT8> */, ..
     vsprintf(strToSend, strFormatted, argptr);
     va_end(argptr);
 
-    fRetVal = FileWrite(hFile, strToSend, strlen(strToSend), null);
+    fRetVal = FileWrite(hFile, strToSend, strToSend.length, null);
   } else {
     // its a library file, cant write to it so return an error
     fRetVal = false;
@@ -1168,8 +1168,8 @@ function GetFilesInDirectory(hStack: HCONTAINER, pcDir: string /* Pointer<CHAR> 
 
         inFind.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_DIRECTORY;
         cDir = pcDir;
-        addressof(cDir[strlen(cDir) - 3]) = pFind.value.cFileName;
-        addressof(cDir[strlen(cDir)]) = "\\*.*\0";
+        addressof(cDir[cDir.length - 3]) = pFind.value.cFileName;
+        addressof(cDir[cDir.length]) = "\\*.*\0";
         hFileIn = FindFirstFile(cDir, addressof(inFind));
         iNumFiles += GetFilesInDirectory(hStack, cDir, hFileIn, addressof(inFind));
         FindClose(hFileIn);
@@ -1177,7 +1177,7 @@ function GetFilesInDirectory(hStack: HCONTAINER, pcDir: string /* Pointer<CHAR> 
     } else {
       iNumFiles++;
       cName = pcDir;
-      addressof(cName[strlen(cName) - 3]) = pFind.value.cFileName;
+      addressof(cName[cName.length - 3]) = pFind.value.cFileName;
       CharLower(cName);
       hStack = Push(hStack, cName);
     }
@@ -1353,7 +1353,7 @@ export function GetExecutableDirectory(pcDirectory: Pointer<string> /* STRING512
   // Now get directory
   pcDirectory = ModuleFilename;
 
-  for (cnt = strlen(pcDirectory) - 1; cnt >= 0; cnt--) {
+  for (cnt = pcDirectory.length - 1; cnt >= 0; cnt--) {
     if (pcDirectory[cnt] == '\\') {
       pcDirectory[cnt] = '\0';
       break;
@@ -1794,7 +1794,7 @@ function AddSubdirectoryToPath(pDirectory: string /* Pointer<CHAR8> */): boolean
     return false;
 
   // Check for zero length string
-  if (!strlen(pDirectory))
+  if (!pDirectory.length)
     return false;
 
   if ((pSystemPath = MemAlloc(_MAX_PATH)) == null)
@@ -1811,7 +1811,7 @@ function AddSubdirectoryToPath(pDirectory: string /* Pointer<CHAR8> */): boolean
 
   // Builds a path to the directory with the SR DLL files.
   _getcwd(pPath, _MAX_PATH);
-  uiPathLen = strlen(pPath);
+  uiPathLen = pPath.length;
   if (uiPathLen)
     uiPathLen--;
   if (pPath[uiPathLen] != '\\')

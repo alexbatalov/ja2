@@ -219,7 +219,7 @@ export function GetCDLocation(): boolean {
     GetPrivateProfileString("Ja2 Settings", "CD", "", zCdLocation, SGPFILENAME_LEN, GAME_INI_FILE);
   }
 
-  uiStrngLength = strlen(zCdLocation);
+  uiStrngLength = zCdLocation.length;
 
   // if the string length is less the 1 character, it is a drive letter
   if (uiStrngLength == 1) {

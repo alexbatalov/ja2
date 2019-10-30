@@ -115,7 +115,7 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: stri
   DestString = sprintf("#%5d. P%d:\n\t%s\n\n", uiLineNumber, ubPriority, TempString);
 
   // open the file and append to it
-  if (!FileWrite(hFile, DestString, strlen(DestString), addressof(uiByteWritten))) {
+  if (!FileWrite(hFile, DestString, DestString.length, addressof(uiByteWritten))) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;

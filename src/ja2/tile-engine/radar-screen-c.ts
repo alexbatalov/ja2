@@ -57,7 +57,7 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
   */
   {
     // Remove extension
-    for (cnt = strlen(zFilename) - 1; cnt >= 0; cnt--) {
+    for (cnt = zFilename.length - 1; cnt >= 0; cnt--) {
       if (zFilename[cnt] == '.') {
         zFilename[cnt] = '\0';
       }

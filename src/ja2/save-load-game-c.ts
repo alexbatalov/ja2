@@ -2259,7 +2259,7 @@ function SaveEmailToSavedGame(hFile: HWFILE): boolean {
   pEmail = pEmailList;
   for (cnt = 0; cnt < uiNumOfEmails; cnt++) {
     // Get the strng length of the subject
-    uiStringLength = (wcslen(pEmail.value.pSubject) + 1) * 2;
+    uiStringLength = (pEmail.value.pSubject.length + 1) * 2;
 
     // write the length of the current emails subject to the saved game file
     FileWrite(hFile, addressof(uiStringLength), sizeof(UINT32), addressof(uiNumBytesWritten));
