@@ -373,18 +373,18 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
             curr.value.pDetailedPlacement.value.sInsertionGridNo = curr.value.pBasicPlacement.value.usStartingGridNo;
           }
 
-          swprintf(curr.value.pDetailedPlacement.value.name, pSoldier.value.name);
+          curr.value.pDetailedPlacement.value.name = pSoldier.value.name;
 
           // Copy patrol points
           curr.value.pDetailedPlacement.value.bPatrolCnt = pSoldier.value.bPatrolCnt;
           memcpy(curr.value.pDetailedPlacement.value.sPatrolGrid, pSoldier.value.usPatrolGrid, sizeof(INT16) * MAXPATROLGRIDS);
 
           // copy colors for soldier based on the body type.
-          sprintf(curr.value.pDetailedPlacement.value.HeadPal, pSoldier.value.HeadPal);
-          sprintf(curr.value.pDetailedPlacement.value.VestPal, pSoldier.value.VestPal);
-          sprintf(curr.value.pDetailedPlacement.value.SkinPal, pSoldier.value.SkinPal);
-          sprintf(curr.value.pDetailedPlacement.value.PantsPal, pSoldier.value.PantsPal);
-          sprintf(curr.value.pDetailedPlacement.value.MiscPal, pSoldier.value.MiscPal);
+          curr.value.pDetailedPlacement.value.HeadPal = pSoldier.value.HeadPal;
+          curr.value.pDetailedPlacement.value.VestPal = pSoldier.value.VestPal;
+          curr.value.pDetailedPlacement.value.SkinPal = pSoldier.value.SkinPal;
+          curr.value.pDetailedPlacement.value.PantsPal = pSoldier.value.PantsPal;
+          curr.value.pDetailedPlacement.value.MiscPal = pSoldier.value.MiscPal;
 
           // copy soldier's inventory
           memcpy(curr.value.pDetailedPlacement.value.Inv, pSoldier.value.inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);
@@ -1173,18 +1173,18 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
               curr.value.pDetailedPlacement.value.sInsertionGridNo = curr.value.pBasicPlacement.value.usStartingGridNo;
             }
 
-            swprintf(curr.value.pDetailedPlacement.value.name, pSoldier.value.name);
+            curr.value.pDetailedPlacement.value.name = pSoldier.value.name;
 
             // Copy patrol points
             curr.value.pDetailedPlacement.value.bPatrolCnt = pSoldier.value.bPatrolCnt;
             memcpy(curr.value.pDetailedPlacement.value.sPatrolGrid, pSoldier.value.usPatrolGrid, sizeof(INT16) * MAXPATROLGRIDS);
 
             // copy colors for soldier based on the body type.
-            sprintf(curr.value.pDetailedPlacement.value.HeadPal, pSoldier.value.HeadPal);
-            sprintf(curr.value.pDetailedPlacement.value.VestPal, pSoldier.value.VestPal);
-            sprintf(curr.value.pDetailedPlacement.value.SkinPal, pSoldier.value.SkinPal);
-            sprintf(curr.value.pDetailedPlacement.value.PantsPal, pSoldier.value.PantsPal);
-            sprintf(curr.value.pDetailedPlacement.value.MiscPal, pSoldier.value.MiscPal);
+            curr.value.pDetailedPlacement.value.HeadPal = pSoldier.value.HeadPal;
+            curr.value.pDetailedPlacement.value.VestPal = pSoldier.value.VestPal;
+            curr.value.pDetailedPlacement.value.SkinPal = pSoldier.value.SkinPal;
+            curr.value.pDetailedPlacement.value.PantsPal = pSoldier.value.PantsPal;
+            curr.value.pDetailedPlacement.value.MiscPal = pSoldier.value.MiscPal;
 
             // copy soldier's inventory
             memcpy(curr.value.pDetailedPlacement.value.Inv, pSoldier.value.inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);

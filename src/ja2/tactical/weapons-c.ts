@@ -743,13 +743,13 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
         // IF we are silenced?
         if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), Enum225.SILENCER) != NO_SLOT) {
           // Pick sound file baed on how many bullets we are going to fire...
-          sprintf(zBurstString, "SOUNDS\\WEAPONS\\SILENCER BURST %d.wav", pSoldier.value.bBulletsLeft);
+          zBurstString = sprintf("SOUNDS\\WEAPONS\\SILENCER BURST %d.wav", pSoldier.value.bBulletsLeft);
 
           // Try playing sound...
           pSoldier.value.iBurstSoundID = PlayJA2SampleFromFile(zBurstString, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
         } else {
           // Pick sound file baed on how many bullets we are going to fire...
-          sprintf(zBurstString, "SOUNDS\\WEAPONS\\%s%d.wav", gzBurstSndStrings[Weapon[usItemNum].ubCalibre], pSoldier.value.bBulletsLeft);
+          zBurstString = sprintf("SOUNDS\\WEAPONS\\%s%d.wav", gzBurstSndStrings[Weapon[usItemNum].ubCalibre], pSoldier.value.bBulletsLeft);
 
           // Try playing sound...
           pSoldier.value.iBurstSoundID = PlayJA2SampleFromFile(zBurstString, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));

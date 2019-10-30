@@ -133,7 +133,7 @@ function CreateStringVideoOverlay(pStringSt: ScrollStringStPtr, usX: UINT16, usY
   VideoOverlayDesc.ubFontFore = pStringSt.value.usColor;
   VideoOverlayDesc.sX = VideoOverlayDesc.sLeft;
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
-  swprintf(VideoOverlayDesc.pzText, pStringSt.value.pString16);
+  VideoOverlayDesc.pzText = pStringSt.value.pString16;
   VideoOverlayDesc.BltCallback = BlitString;
   pStringSt.value.iVideoOverlay = RegisterVideoOverlay((VOVERLAY_DIRTYBYTEXT), addressof(VideoOverlayDesc));
 
@@ -546,7 +546,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: string 
     return;
     usColor = DEBUG_COLOR;
     wcscpy(DestStringA, DestString);
-    swprintf(DestString, "Debug: %s", DestStringA);
+    DestString = swprintf("Debug: %s", DestStringA);
     WriteMessageToFile(DestStringA);
   }
 
@@ -671,7 +671,7 @@ export function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: s
     vswprintf(DestString, pStringA, argptr); // process gprintf string (get output str)
     va_end(argptr);
 
-    swprintf(DestStringA, "DEBUG: %s", DestString);
+    DestStringA = swprintf("DEBUG: %s", DestString);
 
     BeginUIMessage(DestStringA);
     WriteMessageToFile(DestStringA);
@@ -709,7 +709,7 @@ export function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: s
     return;
     usColor = DEBUG_COLOR;
     wcscpy(DestStringA, DestString);
-    swprintf(DestString, "Debug: %s", DestStringA);
+    DestString = swprintf("Debug: %s", DestStringA);
   }
 
   if (ubPriority == MSG_DIALOG) {

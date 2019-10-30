@@ -5530,14 +5530,14 @@ export function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBatt
 
   // OK, build file and play!
   if (pSoldier.value.ubProfile != NO_PROFILE) {
-    sprintf(zFilename, "BATTLESNDS\\%03d_%s.wav", pSoldier.value.ubProfile, gBattleSndsData[ubSoundID].zName);
+    zFilename = sprintf("BATTLESNDS\\%03d_%s.wav", pSoldier.value.ubProfile, gBattleSndsData[ubSoundID].zName);
 
     if (!FileExists(zFilename)) {
       // OK, temp build file...
       if (pSoldier.value.ubBodyType == Enum194.REGFEMALE) {
-        sprintf(zFilename, "BATTLESNDS\\f_%s.wav", gBattleSndsData[ubSoundID].zName);
+        zFilename = sprintf("BATTLESNDS\\f_%s.wav", gBattleSndsData[ubSoundID].zName);
       } else {
-        sprintf(zFilename, "BATTLESNDS\\m_%s.wav", gBattleSndsData[ubSoundID].zName);
+        zFilename = sprintf("BATTLESNDS\\m_%s.wav", gBattleSndsData[ubSoundID].zName);
       }
     }
   } else {
@@ -5548,15 +5548,15 @@ export function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBatt
 
     if (pSoldier.value.ubBodyType == Enum194.HATKIDCIV || pSoldier.value.ubBodyType == Enum194.KIDCIV) {
       if (ubSoundID == Enum259.BATTLE_SOUND_DIE1) {
-        sprintf(zFilename, "BATTLESNDS\\kid%d_dying.wav", pSoldier.value.ubBattleSoundID);
+        zFilename = sprintf("BATTLESNDS\\kid%d_dying.wav", pSoldier.value.ubBattleSoundID);
       } else {
-        sprintf(zFilename, "BATTLESNDS\\kid%d_%s.wav", pSoldier.value.ubBattleSoundID, gBattleSndsData[ubSoundID].zName);
+        zFilename = sprintf("BATTLESNDS\\kid%d_%s.wav", pSoldier.value.ubBattleSoundID, gBattleSndsData[ubSoundID].zName);
       }
     } else {
       if (ubSoundID == Enum259.BATTLE_SOUND_DIE1) {
-        sprintf(zFilename, "BATTLESNDS\\bad%d_die.wav", pSoldier.value.ubBattleSoundID);
+        zFilename = sprintf("BATTLESNDS\\bad%d_die.wav", pSoldier.value.ubBattleSoundID);
       } else {
-        sprintf(zFilename, "BATTLESNDS\\bad%d_%s.wav", pSoldier.value.ubBattleSoundID, gBattleSndsData[ubSoundID].zName);
+        zFilename = sprintf("BATTLESNDS\\bad%d_%s.wav", pSoldier.value.ubBattleSoundID, gBattleSndsData[ubSoundID].zName);
       }
     }
   }

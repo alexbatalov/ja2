@@ -136,14 +136,14 @@ export function GameLoop(): void {
           let uiSpaceOnDrive: UINT32;
           let zSizeNeeded: string /* CHAR16[512] */;
 
-          swprintf(zSizeNeeded, "%d", REQUIRED_FREE_SPACE / BYTESINMEGABYTE);
+          zSizeNeeded = swprintf("%d", REQUIRED_FREE_SPACE / BYTESINMEGABYTE);
           InsertCommasForDollarFigure(zSizeNeeded);
 
           uiSpaceOnDrive = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
-          swprintf(zSpaceOnDrive, "%.2f", uiSpaceOnDrive / BYTESINMEGABYTE);
+          zSpaceOnDrive = swprintf("%.2f", uiSpaceOnDrive / BYTESINMEGABYTE);
 
-          swprintf(zText, pMessageStrings[Enum333.MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive, zSizeNeeded);
+          zText = swprintf(pMessageStrings[Enum333.MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive, zSizeNeeded);
 
           if (guiPreviousOptionScreen == Enum26.MAP_SCREEN)
             DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);

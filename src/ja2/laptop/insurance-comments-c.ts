@@ -102,7 +102,7 @@ export function RenderInsuranceComments(): void {
   usPosX = INS_CMNT_FIRST_BULLET_X - 6;
 
   // Display the first link text
-  swprintf(sText, "%s", pMessageStrings[Enum333.MSG_HOMEPAGE]);
+  sText = swprintf("%s", pMessageStrings[Enum333.MSG_HOMEPAGE]);
   DisplayWrappedString(usPosX, INS_CMNT_LINK_Y + 13, INS_CMNT_LINK_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(usPosX, INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT);

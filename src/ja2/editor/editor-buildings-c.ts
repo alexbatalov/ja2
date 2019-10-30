@@ -614,7 +614,7 @@ export function SetupTextInputForBuildings(): void {
   let str: string /* UINT16[4] */;
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddUserInputField(null); // just so we can use short cut keys while not typing.
-  swprintf(str, "%d", gubMaxRoomNumber);
+  str = swprintf("%d", gubMaxRoomNumber);
   AddTextInputField(410, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
 }
 
@@ -628,7 +628,7 @@ export function ExtractAndUpdateBuildingInfo(): void {
   } else {
     gubCurrRoomNumber = 0;
   }
-  swprintf(str, "%d", gubCurrRoomNumber);
+  str = swprintf("%d", gubCurrRoomNumber);
   SetInputFieldStringWith16BitString(1, str);
   SetActiveField(0);
 }

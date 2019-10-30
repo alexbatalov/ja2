@@ -144,9 +144,9 @@ function CreateIMPMainPageButtons(): void {
 */
 
   if (iCurrentProfileMode == 5) {
-    swprintf(sString, pImpButtonText[5], iCurrentVoices + 1);
+    sString = swprintf(pImpButtonText[5], iCurrentVoices + 1);
   } else {
-    swprintf(sString, pImpButtonText[25]);
+    sString = pImpButtonText[25];
   }
   giIMPMainPageButton[5] = CreateIconAndTextButton(giIMPMainPageButtonImage[5], sString, FONT12ARIAL(), FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 373, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageVoiceCallback);
 

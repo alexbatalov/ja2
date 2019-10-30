@@ -224,7 +224,7 @@ function InitFlowerButtons(): boolean {
   count = gubCurFlowerIndex;
   for (i = 0; i < gubCurNumberOfFlowers; i++) {
     // load the handbullet graphic and add it
-    sprintf(sTemp, "LAPTOP\\Flower_%d.sti", count);
+    sTemp = sprintf("LAPTOP\\Flower_%d.sti", count);
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP(sTemp, VObjectDesc.ImageFile);
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerImages[i])));
@@ -298,7 +298,7 @@ function DisplayFloralDescriptions(): boolean {
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex) + FLOR_GALLERY_TEXT_TITLE_SIZE;
     LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
     swscanf(sTemp, "%hu", addressof(usPrice));
-    swprintf(sTemp, "$%d.00 %s", usPrice, pMessageStrings[Enum333.MSG_USDOLLAR_ABBREVIATION]);
+    sTemp = swprintf("$%d.00 %s", usPrice, pMessageStrings[Enum333.MSG_USDOLLAR_ABBREVIATION]);
     DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_PRICE_FONT(), FLOR_GALLERY_FLOWER_PRICE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     // Display Flower Desc

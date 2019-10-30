@@ -815,7 +815,7 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
     if (gbSaveGameArray[bSaveGameID]) {
       let sText: string /* CHAR16[512] */;
 
-      swprintf(sText, zSaveLoadText[Enum371.SLG_CONFIRM_SAVE], bSaveGameID);
+      sText = swprintf(zSaveLoadText[Enum371.SLG_CONFIRM_SAVE], bSaveGameID);
 
       DoSaveLoadMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sText, Enum26.SAVE_LOAD_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmSavedGameMessageBoxCallBack);
     } else {
@@ -1028,30 +1028,23 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
       let zDifString: string /* CHAR16[256] */;
 
       // Create a string for difficulty level
-      swprintf(zDifString, "%s %s", gzGIOScreenText[Enum375.GIO_EASY_TEXT + SaveGameHeader.sInitialGameOptions.ubDifficultyLevel - 1], zSaveLoadText[Enum371.SLG_DIFF]);
+      zDifString = swprintf("%s %s", gzGIOScreenText[Enum375.GIO_EASY_TEXT + SaveGameHeader.sInitialGameOptions.ubDifficultyLevel - 1], zSaveLoadText[Enum371.SLG_DIFF]);
 
       // make a string containing the extended options
-      swprintf(zMouseHelpTextString, "%20s     %22s     %22s     %22s", zDifString,
-               /*gzGIOScreenText[ GIO_TIMED_TURN_TITLE_TEXT + SaveGameHeader.sInitialGameOptions.fTurnTimeLimit + 1],*/
-
-               SaveGameHeader.sInitialGameOptions.fIronManMode ? gzGIOScreenText[Enum375.GIO_IRON_MAN_TEXT] : gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT],
-
-               SaveGameHeader.sInitialGameOptions.fGunNut ? zSaveLoadText[Enum371.SLG_ADDITIONAL_GUNS] : zSaveLoadText[Enum371.SLG_NORMAL_GUNS],
-
-               SaveGameHeader.sInitialGameOptions.fSciFi ? zSaveLoadText[Enum371.SLG_SCIFI] : zSaveLoadText[Enum371.SLG_REALISTIC]);
+      zMouseHelpTextString = swprintf("%20s     %22s     %22s     %22s", zDifString, SaveGameHeader.sInitialGameOptions.fIronManMode ? gzGIOScreenText[Enum375.GIO_IRON_MAN_TEXT] : gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT], SaveGameHeader.sInitialGameOptions.fGunNut ? zSaveLoadText[Enum371.SLG_ADDITIONAL_GUNS] : zSaveLoadText[Enum371.SLG_NORMAL_GUNS], SaveGameHeader.sInitialGameOptions.fSciFi ? zSaveLoadText[Enum371.SLG_SCIFI] : zSaveLoadText[Enum371.SLG_REALISTIC]);
 
       // The date
       DrawTextToScreen(zMouseHelpTextString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     } else {
       // Create the string for the Data
-      swprintf(zDateString, "%s %d, %02d:%02d", pMessageStrings[Enum333.MSG_DAY], SaveGameHeader.uiDay, SaveGameHeader.ubHour, SaveGameHeader.ubMin);
+      zDateString = swprintf("%s %d, %02d:%02d", pMessageStrings[Enum333.MSG_DAY], SaveGameHeader.uiDay, SaveGameHeader.ubHour, SaveGameHeader.ubMin);
 
       // Create the string for the current location
       if (SaveGameHeader.sSectorX == -1 && SaveGameHeader.sSectorY == -1 || SaveGameHeader.bSectorZ < 0) {
         if ((SaveGameHeader.uiDay * NUM_SEC_IN_DAY + SaveGameHeader.ubHour * NUM_SEC_IN_HOUR + SaveGameHeader.ubMin * NUM_SEC_IN_MIN) <= STARTING_TIME)
-          swprintf(zLocationString, gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          zLocationString = gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION];
         else
-          swprintf(zLocationString, gzLateLocalizedString[14]);
+          zLocationString = gzLateLocalizedString[14];
       } else {
         gfGettingNameFromSaveLoadScreen = true;
 
@@ -1067,14 +1060,14 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
       // if only 1 merc is on the team
       if (SaveGameHeader.ubNumOfMercsOnPlayersTeam == 1) {
         // use "merc"
-        swprintf(zNumMercsString, "%d %s", SaveGameHeader.ubNumOfMercsOnPlayersTeam, MercAccountText[Enum340.MERC_ACCOUNT_MERC]);
+        zNumMercsString = swprintf("%d %s", SaveGameHeader.ubNumOfMercsOnPlayersTeam, MercAccountText[Enum340.MERC_ACCOUNT_MERC]);
       } else {
         // use "mercs"
-        swprintf(zNumMercsString, "%d %s", SaveGameHeader.ubNumOfMercsOnPlayersTeam, pMessageStrings[Enum333.MSG_MERCS]);
+        zNumMercsString = swprintf("%d %s", SaveGameHeader.ubNumOfMercsOnPlayersTeam, pMessageStrings[Enum333.MSG_MERCS]);
       }
 
       // Get the current balance
-      swprintf(zBalanceString, "%d", SaveGameHeader.iCurrentBalance);
+      zBalanceString = swprintf("%d", SaveGameHeader.iCurrentBalance);
       InsertCommasForDollarFigure(zBalanceString);
       InsertDollarSignInToString(zBalanceString);
 
@@ -1646,10 +1639,10 @@ function DisplayOnScreenNumber(fErase: boolean): void {
 
     if (bLoopNum != 10) {
       bNum = bLoopNum;
-      swprintf(zTempString, "%2d", bNum);
+      zTempString = swprintf("%2d", bNum);
     } else {
       bNum = 0;
-      swprintf(zTempString, "%2d", bNum);
+      zTempString = swprintf("%2d", bNum);
     }
 
     if (!fErase)

@@ -160,7 +160,7 @@ export function RenderInsuranceInfo(): void {
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(usPosX, INS_INFO_LINK_TO_CONTRACT_Y, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y);
-  swprintf(sText, "%s", pMessageStrings[Enum333.MSG_HOMEPAGE]);
+  sText = swprintf("%s", pMessageStrings[Enum333.MSG_HOMEPAGE]);
   DisplayWrappedString(usPosX, INS_INFO_LINK_TO_CONTRACT_TEXT_Y + 14, INS_INFO_LINK_TO_CONTRACT_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   usPosX += INS_INFO_LINK_START_OFFSET + INS_INFO_LINK_TO_CONTRACT_WIDTH;
 

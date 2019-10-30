@@ -25,7 +25,7 @@ export function DetermineRGBDistributionSettings(): void {
   // all shade tables will have to be built and saved to disk.  This can be time consuming, adding up to
   // 3-4 seconds to the time of a map load.
   GetExecutableDirectory(ExecDir);
-  sprintf(ShadeTableDir, "%s\\Data\\%s", ExecDir, SHADE_TABLE_DIR);
+  ShadeTableDir = sprintf("%s\\Data\\%s", ExecDir, SHADE_TABLE_DIR);
 
   // Check to make sure we have a ShadeTable directory.  If we don't create one!
   if (!SetFileManCurrentDirectory(ShadeTableDir)) {
@@ -92,7 +92,7 @@ export function DetermineRGBDistributionSettings(): void {
   }
 
   // We're done, so restore the executable directory to JA2\Data.
-  sprintf(DataDir, "%s\\Data", ExecDir);
+  DataDir = sprintf("%s\\Data", ExecDir);
   SetFileManCurrentDirectory(DataDir);
 }
 
@@ -112,7 +112,7 @@ export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
     return false;
   }
   ptr++;
-  sprintf(ptr, "sha");
+  ptr = "sha";
 
   hfile = FileOpen(ShadeFileName, FILE_ACCESS_READ, false);
   if (!hfile) {
@@ -150,7 +150,7 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
     return false;
   }
   ptr++;
-  sprintf(ptr, "sha");
+  ptr = "sha";
 
   hfile = FileOpen(ShadeFileName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
   if (!hfile) {

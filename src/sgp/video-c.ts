@@ -1472,7 +1472,7 @@ export function RefreshScreen(DummyVariable: Pointer<void>): void {
     // Ok now that temp surface has contents of backbuffer, copy temp surface to disk
     //
 
-    sprintf(FileName, "SCREEN%03d.TGA", guiPrintFrameBufferIndex++);
+    FileName = sprintf("SCREEN%03d.TGA", guiPrintFrameBufferIndex++);
     if ((OutputFile = fopen(FileName, "wb")) != null) {
       fprintf(OutputFile, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x80, 0x02, 0xe0, 0x01, 0x10, 0);
 
@@ -2540,7 +2540,7 @@ function RefreshMovieCache(): void {
   SetFileManCurrentDirectory(ExecDir);
 
   for (cnt = 0; cnt < giNumFrames; cnt++) {
-    sprintf(cFilename, "JA%5.5d.TGA", uiPicNum++);
+    cFilename = sprintf("JA%5.5d.TGA", uiPicNum++);
 
     if ((disk = fopen(cFilename, "wb")) == null)
       return;

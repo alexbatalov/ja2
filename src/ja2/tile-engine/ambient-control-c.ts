@@ -168,7 +168,7 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): boolean {
   let cnt: INT32;
 
   // BUILD FILENAME
-  sprintf(zFilename, "AMBIENT\\%d.bad", ubAmbientID);
+  zFilename = sprintf("AMBIENT\\%d.bad", ubAmbientID);
 
   // OPEN, LOAD
   hFile = FileOpen(zFilename, FILE_ACCESS_READ, false);
@@ -187,7 +187,7 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): boolean {
       return false;
     }
 
-    sprintf(zFilename, "AMBIENT\\%s", gAmbData[cnt].zFilename);
+    zFilename = sprintf("AMBIENT\\%s", gAmbData[cnt].zFilename);
     strcpy(gAmbData[cnt].zFilename, zFilename);
   }
 

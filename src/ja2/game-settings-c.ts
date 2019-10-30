@@ -210,7 +210,7 @@ export function GetCDLocation(): boolean {
       pTemp[0] = '\0';
     } else {
       // put in a default location
-      sprintf(zCdLocation, "c");
+      zCdLocation = "c";
     }
 
     // Now create a new file
@@ -223,12 +223,12 @@ export function GetCDLocation(): boolean {
 
   // if the string length is less the 1 character, it is a drive letter
   if (uiStrngLength == 1) {
-    sprintf(gzCdDirectory, "%s:\\%s", zCdLocation, CD_ROOT_DIR);
+    gzCdDirectory = sprintf("%s:\\%s", zCdLocation, CD_ROOT_DIR);
   }
 
   // else it is most likely a network location
   else if (uiStrngLength > 1) {
-    sprintf(gzCdDirectory, "%s\\%s", zCdLocation, CD_ROOT_DIR);
+    gzCdDirectory = sprintf("%s\\%s", zCdLocation, CD_ROOT_DIR);
   } else {
     // no path was entered
     gzCdDirectory[0] = '.';
@@ -356,7 +356,7 @@ export function CheckIfGameCdromIsInCDromDrive(): boolean {
   }
 
   // OK, build filename
-  sprintf(zCdFile, "%s%s", zCdLocation, gCheckFilenames[Random(2)]);
+  zCdFile = sprintf("%s%s", zCdLocation, gCheckFilenames[Random(2)]);
 
   // If the cdrom drive is no longer in the drive
   if (uiLastError == ERROR_NOT_READY || (!FileExists(zCdFile))) {
@@ -364,11 +364,11 @@ export function CheckIfGameCdromIsInCDromDrive(): boolean {
 
     // if a game has been started, add the msg about saving the game to a different entry
     if (gTacticalStatus.fHasAGameBeenStarted) {
-      sprintf(sString, "%S  %S", pMessageStrings[Enum333.MSG_INTEGRITY_WARNING], pMessageStrings[Enum333.MSG_CDROM_SAVE_GAME]);
+      sString = sprintf("%S  %S", pMessageStrings[Enum333.MSG_INTEGRITY_WARNING], pMessageStrings[Enum333.MSG_CDROM_SAVE_GAME]);
 
       SaveGame(SAVE__ERROR_NUM, pMessageStrings[Enum333.MSG_CDROM_SAVE]);
     } else {
-      sprintf(sString, "%S", pMessageStrings[Enum333.MSG_INTEGRITY_WARNING]);
+      sString = sprintf("%S", pMessageStrings[Enum333.MSG_INTEGRITY_WARNING]);
     }
 
     // ATE: These are ness. due to reference counting
@@ -421,7 +421,7 @@ function IsDriveLetterACDromDrive(pDriveLetter: string /* STR */): boolean {
   let uiDriveType: UINT32;
   let zRootName: string /* CHAR8[512] */;
 
-  sprintf(zRootName, "%s:\\", pDriveLetter);
+  zRootName = sprintf("%s:\\", pDriveLetter);
 
   // Get the drive type
   uiDriveType = GetDriveType(zRootName);

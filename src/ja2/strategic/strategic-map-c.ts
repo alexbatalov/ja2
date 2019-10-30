@@ -382,7 +382,7 @@ export function InitializeSAMSites(): void {
 // get short sector name without town name
 export function GetShortSectorString(sMapX: INT16, sMapY: INT16, sString: Pointer<string> /* STR16 */): void {
   // OK, build string id like J11
-  swprintf(sString, "%S%S", pVertStrings[sMapY], pHortStrings[sMapX]);
+  sString = swprintf("%S%S", pVertStrings[sMapY], pHortStrings[sMapX]);
 
   return;
 }
@@ -392,7 +392,7 @@ export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bStri
   let bExtensionString: string /* CHAR8[15] */;
 
   if (bSectorZ != 0) {
-    sprintf(bExtensionString, "_b%d", bSectorZ);
+    bExtensionString = sprintf("_b%d", bSectorZ);
   } else {
     strcpy(bExtensionString, "");
   }
@@ -417,16 +417,16 @@ export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bStri
   }
 
   // This is the string to return, but...
-  sprintf(bString, "%s%s%s.DAT", pVertStrings[sMapY], pHortStrings[sMapX], bExtensionString);
+  bString = sprintf("%s%s%s.DAT", pVertStrings[sMapY], pHortStrings[sMapX], bExtensionString);
 
   // We will test against this string
-  sprintf(bTestString, "MAPS\\%s", bString);
+  bTestString = sprintf("MAPS\\%s", bString);
 
   if (fUsePlaceholder && !FileExists(bTestString)) {
     // Debug str
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Map does not exist for %s, using default.", bTestString));
     // Set to a string we know!
-    sprintf(bString, "H10.DAT", pVertStrings[sMapY], pHortStrings[sMapX]);
+    bString = sprintf("H10.DAT", pVertStrings[sMapY], pHortStrings[sMapX]);
     ScreenMsg(FONT_YELLOW, MSG_DEBUG, "Using PLACEHOLDER map!");
   }
   return;
@@ -706,7 +706,7 @@ export function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): 
 function MapExists(szFilename: string /* Pointer<UINT8> */): boolean {
   let str: string /* UINT8[50] */;
   let fp: HWFILE;
-  sprintf(str, "MAPS\\%s", szFilename);
+  str = sprintf("MAPS\\%s", szFilename);
   fp = FileOpen(str, FILE_ACCESS_READ, false);
   if (!fp)
     return false;
@@ -1304,19 +1304,19 @@ export function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT
         let sGridNo: INT16;
         GetLoadedSectorString(szSector);
         if (gMapInformation.sNorthGridNo != -1) {
-          swprintf(szEntry, "north");
+          szEntry = "north";
           sGridNo = gMapInformation.sNorthGridNo;
         } else if (gMapInformation.sEastGridNo != -1) {
-          swprintf(szEntry, "east");
+          szEntry = "east";
           sGridNo = gMapInformation.sEastGridNo;
         } else if (gMapInformation.sSouthGridNo != -1) {
-          swprintf(szEntry, "south");
+          szEntry = "south";
           sGridNo = gMapInformation.sSouthGridNo;
         } else if (gMapInformation.sWestGridNo != -1) {
-          swprintf(szEntry, "west");
+          szEntry = "west";
           sGridNo = gMapInformation.sWestGridNo;
         } else if (gMapInformation.sCenterGridNo != -1) {
-          swprintf(szEntry, "center");
+          szEntry = "center";
           sGridNo = gMapInformation.sCenterGridNo;
         } else {
           ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s has NO entrypoints -- using precise center of map for %s.", szSector, pSoldier.value.name);
@@ -1387,26 +1387,26 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
     if (pUnderground && (pUnderground.value.fVisited || gfGettingNameFromSaveLoadScreen)) {
       bMineIndex = GetIdOfMineForSector(sSectorX, sSectorY, bSectorZ);
       if (bMineIndex != -1) {
-        swprintf(zString, "%c%d: %s %s", 'A' + sSectorY - 1, sSectorX, pTownNames[GetTownAssociatedWithMine(bMineIndex)], pwMineStrings[0]);
+        zString = swprintf("%c%d: %s %s", 'A' + sSectorY - 1, sSectorX, pTownNames[GetTownAssociatedWithMine(bMineIndex)], pwMineStrings[0]);
       } else
         switch (SECTOR(sSectorX, sSectorY)) {
           case Enum123.SEC_A10:
-            swprintf(zString, "A10: %s", pLandTypeStrings[Enum127.REBEL_HIDEOUT]);
+            zString = swprintf("A10: %s", pLandTypeStrings[Enum127.REBEL_HIDEOUT]);
             break;
           case Enum123.SEC_J9:
-            swprintf(zString, "J9: %s", pLandTypeStrings[Enum127.TIXA_DUNGEON]);
+            zString = swprintf("J9: %s", pLandTypeStrings[Enum127.TIXA_DUNGEON]);
             break;
           case Enum123.SEC_K4:
-            swprintf(zString, "K4: %s", pLandTypeStrings[Enum127.ORTA_BASEMENT]);
+            zString = swprintf("K4: %s", pLandTypeStrings[Enum127.ORTA_BASEMENT]);
             break;
           case Enum123.SEC_O3:
-            swprintf(zString, "O3: %s", pLandTypeStrings[Enum127.TUNNEL]);
+            zString = swprintf("O3: %s", pLandTypeStrings[Enum127.TUNNEL]);
             break;
           case Enum123.SEC_P3:
-            swprintf(zString, "P3: %s", pLandTypeStrings[Enum127.SHELTER]);
+            zString = swprintf("P3: %s", pLandTypeStrings[Enum127.SHELTER]);
             break;
           default:
-            swprintf(zString, "%c%d: %s", 'A' + sSectorY - 1, sSectorX, pLandTypeStrings[Enum127.CREATURE_LAIR]);
+            zString = swprintf("%c%d: %s", 'A' + sSectorY - 1, sSectorX, pLandTypeStrings[Enum127.CREATURE_LAIR]);
             break;
         }
     } else {
@@ -1418,7 +1418,7 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
     ubSectorID = SECTOR(sSectorX, sSectorY);
     pSector = addressof(SectorInfo[ubSectorID]);
     ubLandType = pSector.value.ubTraversability[4];
-    swprintf(zString, "%c%d: ", 'A' + sSectorY - 1, sSectorX);
+    zString = swprintf("%c%d: ", 'A' + sSectorY - 1, sSectorX);
 
     if (bTownNameID == Enum135.BLANK_SECTOR) {
       // OK, build string id like J11
@@ -2787,7 +2787,7 @@ export function UpdateAirspaceControl(): void {
     GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, sMsgSubString2, false);
 
     // now build the string
-    swprintf(sMsgString, pBullseyeStrings[4], sMsgSubString1, sMsgSubString2);
+    sMsgString = swprintf(pBullseyeStrings[4], sMsgSubString1, sMsgSubString2);
 
     // confirm the change with overlay message
     DoScreenIndependantMessageBox(sMsgString, MSG_BOX_FLAG_OK, null);
@@ -3498,13 +3498,13 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
 
 function GetLoadedSectorString(pString: Pointer<string> /* Pointer<UINT16> */): void {
   if (!gfWorldLoaded) {
-    swprintf(pString, "");
+    pString = "";
     return;
   }
   if (gbWorldSectorZ) {
-    swprintf(pString, "%c%d_b%d", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ);
+    pString = swprintf("%c%d_b%d", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ);
   } else if (!gbWorldSectorZ) {
-    swprintf(pString, "%c%d", gWorldSectorY + 'A' - 1, gWorldSectorX);
+    pString = swprintf("%c%d", gWorldSectorY + 'A' - 1, gWorldSectorX);
   }
 }
 

@@ -65,7 +65,7 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
 
     // Grab the Map image
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    sprintf(VObjectDesc.ImageFile, "RADARMAPS\\%s.STI", zFilename);
+    VObjectDesc.ImageFile = sprintf("RADARMAPS\\%s.STI", zFilename);
 
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(gusRadarImage)));
 

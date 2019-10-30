@@ -101,7 +101,7 @@ export function LoadInventoryPoolGraphic(): boolean {
 
   // load the file
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(VObjectDesc.ImageFile, "INTERFACE\\sector_inventory.sti");
+  VObjectDesc.ImageFile = "INTERFACE\\sector_inventory.sti";
 
   // add to V-object index
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapInventoryPoolBackground)));
@@ -598,9 +598,9 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
       // not in sector?
       if ((Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorX != sSelMapX) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorY != sSelMapY) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bSectorZ != iCurrentMapSectorZ) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].fBetweenSectors)) {
         if (gpItemPointer == null) {
-          swprintf(sString, pMapInventoryErrorString[2], Menptr[gCharactersList[bSelectedInfoChar].usSolID].name);
+          sString = swprintf(pMapInventoryErrorString[2], Menptr[gCharactersList[bSelectedInfoChar].usSolID].name);
         } else {
-          swprintf(sString, pMapInventoryErrorString[5], Menptr[gCharactersList[bSelectedInfoChar].usSolID].name);
+          sString = swprintf(pMapInventoryErrorString[5], Menptr[gCharactersList[bSelectedInfoChar].usSolID].name);
         }
         DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
         return;
@@ -1275,7 +1275,7 @@ function DisplayPagesForMapInventoryPool(): void {
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
   // grab current and last pages
-  swprintf(sString, "%d / %d", iCurrentInventoryPoolPage + 1, iLastInventoryPoolPage + 1);
+  sString = swprintf("%d / %d", iCurrentInventoryPoolPage + 1, iLastInventoryPoolPage + 1);
 
   // grab centered coords
   FindFontCenterCoordinates(MAP_INVENTORY_POOL_PAGE_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_PAGE_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT(), addressof(sX), addressof(sY));
@@ -1322,7 +1322,7 @@ function DrawNumberOfIventoryPoolItems(): void {
   iNumberOfItems = GetTotalNumberOfItemsInSectorStash();
 
   // get number of items
-  swprintf(sString, "%d", iNumberOfItems);
+  sString = swprintf("%d", iNumberOfItems);
 
   // set font stuff
   SetFont(COMPFONT());
@@ -1365,7 +1365,7 @@ function DisplayCurrentSector(): void {
   let sX: INT16;
   let sY: INT16;
 
-  swprintf(sString, "%s%s%s", pMapVertIndex[sSelMapY], pMapHortIndex[sSelMapX], pMapDepthIndex[iCurrentMapSectorZ]);
+  sString = swprintf("%s%s%s", pMapVertIndex[sSelMapY], pMapHortIndex[sSelMapX], pMapDepthIndex[iCurrentMapSectorZ]);
 
   // set font stuff
   SetFont(COMPFONT());
@@ -1461,7 +1461,7 @@ function DrawTextOnSectorInventory(): void {
   let sString: string /* CHAR16[64] */;
 
   // parse the string
-  swprintf(sString, zMarksMapScreenText[11]);
+  sString = zMarksMapScreenText[11];
 
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 

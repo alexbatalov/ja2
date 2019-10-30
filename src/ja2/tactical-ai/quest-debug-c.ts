@@ -112,7 +112,7 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: stri
     return;
   }
 
-  sprintf(DestString, "#%5d. P%d:\n\t%s\n\n", uiLineNumber, ubPriority, TempString);
+  DestString = sprintf("#%5d. P%d:\n\t%s\n\n", uiLineNumber, ubPriority, TempString);
 
   // open the file and append to it
   if (!FileWrite(hFile, DestString, strlen(DestString), addressof(uiByteWritten))) {

@@ -2467,9 +2467,9 @@ export function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, 
       pItem = addressof(Item[gWorldItems[pTempItemPool.value.iItemIndex].o.usItem]);
       // Set string
       if (gWorldItems[pTempItemPool.value.iItemIndex].o.ubNumberOfObjects > 1) {
-        swprintf(pStr, "%s (%d)", ShortItemNames[gWorldItems[pTempItemPool.value.iItemIndex].o.usItem], gWorldItems[pTempItemPool.value.iItemIndex].o.ubNumberOfObjects);
+        pStr = swprintf("%s (%d)", ShortItemNames[gWorldItems[pTempItemPool.value.iItemIndex].o.usItem], gWorldItems[pTempItemPool.value.iItemIndex].o.ubNumberOfObjects);
       } else {
-        swprintf(pStr, "%s", ShortItemNames[gWorldItems[pTempItemPool.value.iItemIndex].o.usItem]);
+        pStr = swprintf("%s", ShortItemNames[gWorldItems[pTempItemPool.value.iItemIndex].o.usItem]);
       }
 
       // Get Width
@@ -2529,7 +2529,7 @@ export function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, 
     } else {
       SetFontForeground(FONT_MCOLOR_DKGRAY);
     }
-    swprintf(pStr, TacticalStr[Enum335.ITEMPOOL_POPUP_PREV_STR]);
+    pStr = TacticalStr[Enum335.ITEMPOOL_POPUP_PREV_STR];
     gprintfdirty(sFontX, sY, pStr);
     mprintf(sFontX, sY, pStr);
     sY += GetFontHeight(SMALLFONT1()) - 2;
@@ -2551,9 +2551,9 @@ export function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, 
       // Set string
 
       if (gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects > 1) {
-        swprintf(pStr, "%s (%d)", ShortItemNames[gWorldItems[pItemPool.value.iItemIndex].o.usItem], gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects);
+        pStr = swprintf("%s (%d)", ShortItemNames[gWorldItems[pItemPool.value.iItemIndex].o.usItem], gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects);
       } else {
-        swprintf(pStr, "%s", ShortItemNames[gWorldItems[pItemPool.value.iItemIndex].o.usItem]);
+        pStr = swprintf("%s", ShortItemNames[gWorldItems[pItemPool.value.iItemIndex].o.usItem]);
       }
 
       gprintfdirty(sFontX, sY, pStr);
@@ -2578,7 +2578,7 @@ export function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, 
       } else {
         SetFontForeground(FONT_MCOLOR_DKGRAY);
       }
-      swprintf(pStr, TacticalStr[Enum335.ITEMPOOL_POPUP_MORE_STR]);
+      pStr = TacticalStr[Enum335.ITEMPOOL_POPUP_MORE_STR];
       gprintfdirty(sFontX, sY, pStr);
       mprintf(sFontX, sY, pStr);
     }

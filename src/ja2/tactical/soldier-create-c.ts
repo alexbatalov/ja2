@@ -877,10 +877,10 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCr
   pSoldier.value.ubSoldierClass = pCreateStruct.value.ubSoldierClass;
 
   if (pCreateStruct.value.fVisible) {
-    sprintf(pSoldier.value.HeadPal, pCreateStruct.value.HeadPal);
-    sprintf(pSoldier.value.PantsPal, pCreateStruct.value.PantsPal);
-    sprintf(pSoldier.value.VestPal, pCreateStruct.value.VestPal);
-    sprintf(pSoldier.value.SkinPal, pCreateStruct.value.SkinPal);
+    pSoldier.value.HeadPal = pCreateStruct.value.HeadPal;
+    pSoldier.value.PantsPal = pCreateStruct.value.PantsPal;
+    pSoldier.value.VestPal = pCreateStruct.value.VestPal;
+    pSoldier.value.SkinPal = pCreateStruct.value.SkinPal;
   }
 
   // KM:  March 25, 1999
@@ -937,23 +937,23 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCr
   // Expanded the default names based on team.
   switch (pCreateStruct.value.bTeam) {
     case ENEMY_TEAM:
-      swprintf(pSoldier.value.name, TacticalStr[Enum335.ENEMY_TEAM_MERC_NAME]);
+      pSoldier.value.name = TacticalStr[Enum335.ENEMY_TEAM_MERC_NAME];
       break;
     case MILITIA_TEAM:
-      swprintf(pSoldier.value.name, TacticalStr[Enum335.MILITIA_TEAM_MERC_NAME]);
+      pSoldier.value.name = TacticalStr[Enum335.MILITIA_TEAM_MERC_NAME];
       break;
     case CIV_TEAM:
       if (pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_MINER) {
-        swprintf(pSoldier.value.name, TacticalStr[Enum335.CIV_TEAM_MINER_NAME]);
+        pSoldier.value.name = TacticalStr[Enum335.CIV_TEAM_MINER_NAME];
       } else {
-        swprintf(pSoldier.value.name, TacticalStr[Enum335.CIV_TEAM_MERC_NAME]);
+        pSoldier.value.name = TacticalStr[Enum335.CIV_TEAM_MERC_NAME];
       }
       break;
     case CREATURE_TEAM:
       if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
-        swprintf(pSoldier.value.name, gzLateLocalizedString[36]);
+        pSoldier.value.name = gzLateLocalizedString[36];
       } else {
-        swprintf(pSoldier.value.name, TacticalStr[Enum335.CREATURE_TEAM_MERC_NAME]);
+        pSoldier.value.name = TacticalStr[Enum335.CREATURE_TEAM_MERC_NAME];
         break;
       }
       break;
@@ -1579,10 +1579,10 @@ export function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlace
 
   pp.value.fVisible = spp.value.fVisible;
   if (spp.value.fVisible) {
-    sprintf(pp.value.HeadPal, spp.value.HeadPal);
-    sprintf(pp.value.PantsPal, spp.value.PantsPal);
-    sprintf(pp.value.VestPal, spp.value.VestPal);
-    sprintf(pp.value.SkinPal, spp.value.SkinPal);
+    pp.value.HeadPal = spp.value.HeadPal;
+    pp.value.PantsPal = spp.value.PantsPal;
+    pp.value.VestPal = spp.value.VestPal;
+    pp.value.SkinPal = spp.value.SkinPal;
   }
 
   // This isn't perfect, however, it blindly brings over the items from the static

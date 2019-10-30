@@ -548,7 +548,7 @@ export function RenderBobbyRMailOrder(): void {
   DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_SHIPPING_SPEED], BOBBYR_SHIPPING_SPEED_X, BOBBYR_SHIPPING_SPEED_Y, 0, BOBBYR_ORDER_STATIC_TEXT_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Create a string for the weight ( %s ) ( where %s is the weight string, either kg or lbs )
-  swprintf(sTemp, BobbyROrderFormText[Enum349.BOBBYR_COST], GetWeightUnitString());
+  sTemp = swprintf(BobbyROrderFormText[Enum349.BOBBYR_COST], GetWeightUnitString());
 
   // Output the cost
   DrawTextToScreen(sTemp, BOBBYR_SHIPPING_COST_X, BOBBYR_SHIPPING_SPEED_Y, 0, BOBBYR_ORDER_STATIC_TEXT_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
@@ -573,7 +573,7 @@ export function RenderBobbyRMailOrder(): void {
 
   // Display the minimum weight disclaimer at the bottom of the page
   usHeight = GetFontHeight(BOBBYR_DISCLAIMER_FONT()) + 2;
-  swprintf(sTemp, "%s %2.1f %s.", BobbyROrderFormText[Enum349.BOBBYR_MINIMUM_WEIGHT], GetWeightBasedOnMetricOption(MIN_SHIPPING_WEIGHT) / 10.0, GetWeightUnitString());
+  sTemp = swprintf("%s %2.1f %s.", BobbyROrderFormText[Enum349.BOBBYR_MINIMUM_WEIGHT], GetWeightBasedOnMetricOption(MIN_SHIPPING_WEIGHT) / 10.0, GetWeightUnitString());
   DrawTextToScreen(sTemp, BOBBYR_USED_WARNING_X, (BOBBYR_USED_WARNING_Y + usHeight + 1), 0, BOBBYR_DISCLAIMER_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED | TEXT_SHADOWED);
 
   // Calculate and display the total package weight
@@ -633,7 +633,7 @@ function BtnBobbyRAcceptOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
           ConfirmBobbyRPurchaseMessageBoxCallBack(MSG_BOX_RETURN_YES);
         } else {
           // else pop up a confirmation box
-          swprintf(zTemp, BobbyROrderFormText[Enum349.BOBBYR_CONFIRM_DEST], BobbyROrderLocations[gbSelectedCity].psCityLoc.value);
+          zTemp = swprintf(BobbyROrderFormText[Enum349.BOBBYR_CONFIRM_DEST], BobbyROrderLocations[gbSelectedCity].psCityLoc.value);
           DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, zTemp, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmBobbyRPurchaseMessageBoxCallBack);
         }
 
@@ -764,7 +764,7 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
   DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_QTY], (usGridX + BOBBYR_GRID_FIRST_COLUMN_X), (usGridY + BOBBYR_GRID_FIRST_COLUMN_Y - BOBBYR_GRID_TITLE_OFFSET), BOBBYR_GRID_FIRST_COLUMN_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Create a string for the weight ( %s ) ( where %s is the weight string, either kg or lbs )
-  swprintf(sTemp, BobbyROrderFormText[Enum349.BOBBYR_WEIGHT], GetWeightUnitString());
+  sTemp = swprintf(BobbyROrderFormText[Enum349.BOBBYR_WEIGHT], GetWeightUnitString());
 
   // Output the Weight
   DisplayWrappedString((usGridX + BOBBYR_GRID_SECOND_COLUMN_X), (usGridY + BOBBYR_GRID_SECOND_COLUMN_Y - 30), BOBBYR_GRID_SECOND_COLUMN_WIDTH, 2, BOBBYR_ORDER_STATIC_TEXT_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, sTemp, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
@@ -810,11 +810,11 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
       // Display the qty, order#, item name, unit price and the total
 
       // qty
-      swprintf(sTemp, "%3d", pBobbyRayPurchase[i].ubNumberPurchased);
+      sTemp = swprintf("%3d", pBobbyRayPurchase[i].ubNumberPurchased);
       DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_FIRST_COLUMN_X - 2), usPosY, BOBBYR_GRID_FIRST_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
       // weight
-      swprintf(sTemp, "%3.1f", GetWeightBasedOnMetricOption(Item[pBobbyRayPurchase[i].usItemIndex].ubWeight) / (10.0) * pBobbyRayPurchase[i].ubNumberPurchased);
+      sTemp = swprintf("%3.1f", GetWeightBasedOnMetricOption(Item[pBobbyRayPurchase[i].usItemIndex].ubWeight) / (10.0) * pBobbyRayPurchase[i].ubNumberPurchased);
       DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_SECOND_COLUMN_X - 2), usPosY, BOBBYR_GRID_SECOND_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
       // Display Items Name
@@ -826,7 +826,7 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
 
       if (pBobbyRayPurchase[i].fUsed) {
         LoadEncryptedDataFromFile(BOBBYRDESCFILE, sBack, uiStartLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
-        swprintf(sText, "%s %s", "*", sBack);
+        sText = swprintf("%s %s", "*", sBack);
       } else
         LoadEncryptedDataFromFile(BOBBYRDESCFILE, sText, uiStartLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
 
@@ -841,13 +841,13 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
           usPixLength += StringPixLength(OneChar, BOBBYR_ORDER_DYNAMIC_TEXT_FONT());
         }
         sBack[j] = 0;
-        swprintf(sText, "%s...", sBack);
+        sText = swprintf("%s...", sBack);
       }
 
       DrawTextToScreen(sText, (usGridX + BOBBYR_GRID_THIRD_COLUMN_X + 2), usPosY, BOBBYR_GRID_THIRD_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // unit price
-      swprintf(sTemp, "%d", CalcBobbyRayCost(pBobbyRayPurchase[i].usItemIndex, pBobbyRayPurchase[i].usBobbyItemIndex, pBobbyRayPurchase[i].fUsed));
+      sTemp = swprintf("%d", CalcBobbyRayCost(pBobbyRayPurchase[i].usItemIndex, pBobbyRayPurchase[i].usBobbyItemIndex, pBobbyRayPurchase[i].fUsed));
       InsertCommasForDollarFigure(sTemp);
       InsertDollarSignInToString(sTemp);
 
@@ -855,7 +855,7 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
 
       uiTotal += CalcBobbyRayCost(pBobbyRayPurchase[i].usItemIndex, pBobbyRayPurchase[i].usBobbyItemIndex, pBobbyRayPurchase[i].fUsed) * pBobbyRayPurchase[i].ubNumberPurchased;
 
-      swprintf(sTemp, "%d", uiTotal);
+      sTemp = swprintf("%d", uiTotal);
       InsertCommasForDollarFigure(sTemp);
       InsertDollarSignInToString(sTemp);
 
@@ -924,14 +924,14 @@ function DisplayShippingCosts(fCalledFromOrderPage: boolean, iSubTotal: INT32, u
   // if there is a shipment, display the s&h charge
   if (iSubTotal) {
     // Display the subtotal
-    swprintf(sTemp, "%d", iSubTotal);
+    sTemp = swprintf("%d", iSubTotal);
     InsertCommasForDollarFigure(sTemp);
     InsertDollarSignInToString(sTemp);
 
     DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_FIFTH_COLUMN_X - 2), (usGridY + BOBBYR_SUBTOTAL_Y), BOBBYR_GRID_FIFTH_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
     // Display the shipping and handling charge
-    swprintf(sTemp, "%d", iShippingCost);
+    sTemp = swprintf("%d", iShippingCost);
     InsertCommasForDollarFigure(sTemp);
     InsertDollarSignInToString(sTemp);
 
@@ -939,7 +939,7 @@ function DisplayShippingCosts(fCalledFromOrderPage: boolean, iSubTotal: INT32, u
 
     // Display the grand total
     giGrandTotal = iSubTotal + iShippingCost;
-    swprintf(sTemp, "%d", giGrandTotal);
+    sTemp = swprintf("%d", giGrandTotal);
     InsertCommasForDollarFigure(sTemp);
     InsertDollarSignInToString(sTemp);
 
@@ -1341,7 +1341,7 @@ function DisplayShippingLocationCity(): void {
   wcscpy(sTemp, "$0");
 
   if (gbSelectedCity != -1) {
-    swprintf(sTemp, "%d", (BobbyROrderLocations[gbSelectedCity].usOverNightExpress / GetWeightBasedOnMetricOption(1)));
+    sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].usOverNightExpress / GetWeightBasedOnMetricOption(1)));
     InsertCommasForDollarFigure(sTemp);
     InsertDollarSignInToString(sTemp);
   }
@@ -1350,7 +1350,7 @@ function DisplayShippingLocationCity(): void {
   usPosY += BOBBYR_GRID_ROW_OFFSET;
 
   if (gbSelectedCity != -1) {
-    swprintf(sTemp, "%d", (BobbyROrderLocations[gbSelectedCity].us2DaysService / GetWeightBasedOnMetricOption(1)));
+    sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].us2DaysService / GetWeightBasedOnMetricOption(1)));
     InsertCommasForDollarFigure(sTemp);
     InsertDollarSignInToString(sTemp);
   }
@@ -1359,7 +1359,7 @@ function DisplayShippingLocationCity(): void {
   usPosY += BOBBYR_GRID_ROW_OFFSET;
 
   if (gbSelectedCity != -1) {
-    swprintf(sTemp, "%d", (BobbyROrderLocations[gbSelectedCity].usStandardService / GetWeightBasedOnMetricOption(1)));
+    sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].usStandardService / GetWeightBasedOnMetricOption(1)));
     InsertCommasForDollarFigure(sTemp);
     InsertDollarSignInToString(sTemp);
   }
@@ -1851,7 +1851,7 @@ function DisplayPackageWeight(): void {
 
   // Display the weight
   //	swprintf( zTemp, L"%3.1f %s", fWeight, pMessageStrings[ MSG_KILOGRAM_ABBREVIATION ] );
-  swprintf(zTemp, "%3.1f %s", (GetWeightBasedOnMetricOption(uiTotalWeight) / 10.0), GetWeightUnitString());
+  zTemp = swprintf("%3.1f %s", (GetWeightBasedOnMetricOption(uiTotalWeight) / 10.0), GetWeightUnitString());
   DrawTextToScreen(zTemp, BOBBYR_PACKAXGE_WEIGHT_X + 3, BOBBYR_PACKAXGE_WEIGHT_Y + 4, BOBBYR_PACKAXGE_WEIGHT_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 }
 

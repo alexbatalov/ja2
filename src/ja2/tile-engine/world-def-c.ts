@@ -205,10 +205,10 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
 
   // Adjust Current Dir
   // CHECK IF DEFAULT INI OVERRIDE FILE EXISTS
-  sprintf(INIFile, "%s\\engine.ini", ExeDir);
+  INIFile = sprintf("%s\\engine.ini", ExeDir);
   if (!FileExists(INIFile)) {
     // USE PER TILESET BASIS
-    sprintf(INIFile, "%s\\engine%d.ini", ExeDir, ubTilesetID);
+    INIFile = sprintf("%s\\engine%d.ini", ExeDir, ubTilesetID);
   }
 
   // If no Tileset filenames are given, return error
@@ -310,9 +310,9 @@ function AddTileSurface(cFilename: string /* Pointer<char> */, ubType: UINT32, u
 
   if (!fGetFromRoot) {
     // Adjust for tileset position
-    sprintf(cAdjustedFile, "TILESETS\\%d\\%s", ubTilesetID, cFileBPP);
+    cAdjustedFile = sprintf("TILESETS\\%d\\%s", ubTilesetID, cFileBPP);
   } else {
-    sprintf(cAdjustedFile, "%s", cFileBPP);
+    cAdjustedFile = sprintf("%s", cFileBPP);
   }
 
   TileSurf = LoadTileSurface(cAdjustedFile);
@@ -352,7 +352,7 @@ export function BuildTileShadeTables(): void {
 
   // Set the directory to the shadetable directory
   GetFileManCurrentDirectory(DataDir);
-  sprintf(ShadeTableDir, "%s\\ShadeTables", DataDir);
+  ShadeTableDir = sprintf("%s\\ShadeTables", DataDir);
   if (!SetFileManCurrentDirectory(ShadeTableDir)) {
     AssertMsg(0, "Can't set the directory to Data\\ShadeTable.  Kris' big problem!");
   }
@@ -1302,7 +1302,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   let ubCombine: UINT8;
   let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
 
-  sprintf(aFilename, "MAPS\\%s", puiFilename);
+  aFilename = sprintf("MAPS\\%s", puiFilename);
 
   // Open file
   hfile = FileOpen(aFilename, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
@@ -1358,10 +1358,8 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       pLand = pLand.value.pNext;
     }
     if (LayerCount > 15) {
-      swprintf(gzErrorCatchString,
-               "SAVE ABORTED!  Land count too high (%d) for gridno %d."
-               + "  Need to fix before map can be saved!  There are %d additional warnings.",
-               LayerCount, cnt, uiNumWarningsCaught);
+      gzErrorCatchString = swprintf("SAVE ABORTED!  Land count too high (%d) for gridno %d."
+               + "  Need to fix before map can be saved!  There are %d additional warnings.", LayerCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = true;
       FileClose(hfile);
       return false;
@@ -1369,7 +1367,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     if (LayerCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = true;
-      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Land count warning of %d for gridno %d.", uiNumWarningsCaught, LayerCount, cnt);
+      gzErrorCatchString = swprintf("Warnings %d -- Last warning:  Land count warning of %d for gridno %d.", uiNumWarningsCaught, LayerCount, cnt);
     }
     bCounts[cnt][0] = LayerCount;
 
@@ -1393,10 +1391,8 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       pObject = pObject.value.pNext;
     }
     if (ObjectCount > 15) {
-      swprintf(gzErrorCatchString,
-               "SAVE ABORTED!  Object count too high (%d) for gridno %d."
-               + "  Need to fix before map can be saved!  There are %d additional warnings.",
-               ObjectCount, cnt, uiNumWarningsCaught);
+      gzErrorCatchString = swprintf("SAVE ABORTED!  Object count too high (%d) for gridno %d."
+               + "  Need to fix before map can be saved!  There are %d additional warnings.", ObjectCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = true;
       FileClose(hfile);
       return false;
@@ -1404,7 +1400,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     if (ObjectCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = true;
-      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Object count warning of %d for gridno %d.", uiNumWarningsCaught, ObjectCount, cnt);
+      gzErrorCatchString = swprintf("Warnings %d -- Last warning:  Object count warning of %d for gridno %d.", uiNumWarningsCaught, ObjectCount, cnt);
     }
     bCounts[cnt][1] = ObjectCount;
 
@@ -1419,10 +1415,8 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       pStruct = pStruct.value.pNext;
     }
     if (StructCount > 15) {
-      swprintf(gzErrorCatchString,
-               "SAVE ABORTED!  Struct count too high (%d) for gridno %d."
-               + "  Need to fix before map can be saved!  There are %d additional warnings.",
-               StructCount, cnt, uiNumWarningsCaught);
+      gzErrorCatchString = swprintf("SAVE ABORTED!  Struct count too high (%d) for gridno %d."
+               + "  Need to fix before map can be saved!  There are %d additional warnings.", StructCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = true;
       FileClose(hfile);
       return false;
@@ -1430,7 +1424,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     if (StructCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = true;
-      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Struct count warning of %d for gridno %d.", uiNumWarningsCaught, StructCount, cnt);
+      gzErrorCatchString = swprintf("Warnings %d -- Last warning:  Struct count warning of %d for gridno %d.", uiNumWarningsCaught, StructCount, cnt);
     }
     bCounts[cnt][2] = StructCount;
 
@@ -1449,10 +1443,8 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       pShadow = pShadow.value.pNext;
     }
     if (ShadowCount > 15) {
-      swprintf(gzErrorCatchString,
-               "SAVE ABORTED!  Shadow count too high (%d) for gridno %d."
-               + "  Need to fix before map can be saved!  There are %d additional warnings.",
-               ShadowCount, cnt, uiNumWarningsCaught);
+      gzErrorCatchString = swprintf("SAVE ABORTED!  Shadow count too high (%d) for gridno %d."
+               + "  Need to fix before map can be saved!  There are %d additional warnings.", ShadowCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = true;
       FileClose(hfile);
       return false;
@@ -1460,7 +1452,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     if (ShadowCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = true;
-      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Shadow count warning of %d for gridno %d.", uiNumWarningsCaught, ShadowCount, cnt);
+      gzErrorCatchString = swprintf("Warnings %d -- Last warning:  Shadow count warning of %d for gridno %d.", uiNumWarningsCaught, ShadowCount, cnt);
     }
     bCounts[cnt][3] = ShadowCount;
 
@@ -1475,10 +1467,8 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       pRoof = pRoof.value.pNext;
     }
     if (RoofCount > 15) {
-      swprintf(gzErrorCatchString,
-               "SAVE ABORTED!  Roof count too high (%d) for gridno %d."
-               + "  Need to fix before map can be saved!  There are %d additional warnings.",
-               RoofCount, cnt, uiNumWarningsCaught);
+      gzErrorCatchString = swprintf("SAVE ABORTED!  Roof count too high (%d) for gridno %d."
+               + "  Need to fix before map can be saved!  There are %d additional warnings.", RoofCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = true;
       FileClose(hfile);
       return false;
@@ -1486,7 +1476,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     if (RoofCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = true;
-      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Roof count warning of %d for gridno %d.", uiNumWarningsCaught, RoofCount, cnt);
+      gzErrorCatchString = swprintf("Warnings %d -- Last warning:  Roof count warning of %d for gridno %d.", uiNumWarningsCaught, RoofCount, cnt);
     }
     bCounts[cnt][4] = RoofCount;
 
@@ -1504,10 +1494,8 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       pOnRoof = pOnRoof.value.pNext;
     }
     if (OnRoofCount > 15) {
-      swprintf(gzErrorCatchString,
-               "SAVE ABORTED!  OnRoof count too high (%d) for gridno %d."
-               + "  Need to fix before map can be saved!  There are %d additional warnings.",
-               OnRoofCount, cnt, uiNumWarningsCaught);
+      gzErrorCatchString = swprintf("SAVE ABORTED!  OnRoof count too high (%d) for gridno %d."
+               + "  Need to fix before map can be saved!  There are %d additional warnings.", OnRoofCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = true;
       FileClose(hfile);
       return false;
@@ -1515,7 +1503,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     if (OnRoofCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = true;
-      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  OnRoof count warning of %d for gridno %d.", uiNumWarningsCaught, OnRoofCount, cnt);
+      gzErrorCatchString = swprintf("Warnings %d -- Last warning:  OnRoof count warning of %d for gridno %d.", uiNumWarningsCaught, OnRoofCount, cnt);
     }
     bCounts[cnt][5] = RoofCount;
 
@@ -1688,7 +1676,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
   FileClose(hfile);
 
-  sprintf(gubFilename, puiFilename);
+  gubFilename = puiFilename;
 
   return true;
 }
@@ -1791,17 +1779,17 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   let ubMinorMapVersion: UINT8;
 
   // Make sure the file exists... if not, then return false
-  sprintf(szFilename, pSector);
+  szFilename = pSector;
   if (ubLevel % 4) {
     let str: string /* UINT8[4] */;
-    sprintf(str, "_b%d", ubLevel % 4);
+    str = sprintf("_b%d", ubLevel % 4);
     strcat(szFilename, str);
   }
   if (ubLevel >= 4) {
     strcat(szFilename, "_a");
   }
   strcat(szFilename, ".dat");
-  sprintf(szDirFilename, "MAPS\\%s", szFilename);
+  szDirFilename = sprintf("MAPS\\%s", szFilename);
 
   if (gfMajorUpdate) {
     if (!LoadWorld(szFilename)) // error
@@ -1820,7 +1808,7 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   FileRead(hfile, pBuffer, uiFileSize, addressof(uiBytesRead));
   FileClose(hfile);
 
-  swprintf(str, "Analyzing map %S", szFilename);
+  str = swprintf("Analyzing map %S", szFilename);
   if (!gfUpdatingNow)
     SetRelativeStartAndEndPercentage(0, 0, 100, str);
   else
@@ -2175,9 +2163,9 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
   // Append exension to filename!
   if (gfForceLoad) {
-    sprintf(aFilename, "MAPS\\%s", gzForceLoadFile);
+    aFilename = sprintf("MAPS\\%s", gzForceLoadFile);
   } else {
-    sprintf(aFilename, "MAPS\\%s", puiFilename);
+    aFilename = sprintf("MAPS\\%s", puiFilename);
   }
 
   // RESET FLAGS FOR OUTDOORS/INDOORS
@@ -2612,7 +2600,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
   gfWorldLoaded = true;
 
-  sprintf(gubFilename, puiFilename);
+  gubFilename = puiFilename;
 
   // Remove this rather large chunk of memory from the system now!
   MemFree(pBufferHead);
@@ -2799,7 +2787,7 @@ export function TrashWorld(): void {
 
   // gfBlitBattleSectorLocator = FALSE;
   gfWorldLoaded = false;
-  sprintf(gubFilename, "none");
+  gubFilename = "none";
 }
 
 function TrashMapTile(MapTile: INT16): void {
@@ -2934,7 +2922,7 @@ function SaveMapTileset(iTilesetID: INT32): boolean {
   if (iTilesetID == 0)
     return true;
 
-  sprintf(zTilesetName, "TSET%04d.SET", iTilesetID);
+  zTilesetName = sprintf("TSET%04d.SET", iTilesetID);
 
   // Open file
   hTSet = FileOpen(zTilesetName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
@@ -3278,7 +3266,7 @@ export function ReloadTileset(ubID: UINT8): void {
   LoadWorld(TEMP_FILE_FOR_TILESET_CHANGE);
 
   // Delete file
-  sprintf(aFilename, "MAPS\\%s", TEMP_FILE_FOR_TILESET_CHANGE);
+  aFilename = sprintf("MAPS\\%s", TEMP_FILE_FOR_TILESET_CHANGE);
 
   FileDelete(aFilename);
 }

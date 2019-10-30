@@ -580,7 +580,7 @@ function EnterShopKeeperInterface(): boolean {
       gubArrayOfEmployedMercs[gubNumberMercsInArray] = pSoldier.value.ubProfile;
 
       // Create the string for the face file name
-      sprintf(zTemp, "FACES\\33FACE\\%02d.sti", gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex);
+      zTemp = sprintf("FACES\\33FACE\\%02d.sti", gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex);
 
       // While we are at it, add their small face
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -1009,7 +1009,7 @@ function RenderShopKeeperInterface(): boolean {
   DisplayWrappedString(SKI_PLAYERS_CURRENT_BALANCE_X, SKI_PLAYERS_CURRENT_BALANCE_Y, SKI_PLAYERS_CURRENT_BALANCE_WIDTH, 2, SKI_LABEL_FONT(), SKI_TITLE_COLOR, SkiMessageBoxText[Enum370.SKI_PLAYERS_CURRENT_BALANCE], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the players current balance value
-  swprintf(zMoney, "%d", LaptopSaveInfo.iCurrentBalance);
+  zMoney = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
 
   InsertCommasForDollarFigure(zMoney);
   InsertDollarSignInToString(zMoney);
@@ -1836,7 +1836,7 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
 
       // Display the Current Page number
       uiFontHeight = GetFontHeight(SKI_LABEL_FONT());
-      swprintf(zTemp, "%d/%d", gSelectArmsDealerInfo.ubCurrentPage, gSelectArmsDealerInfo.ubNumberOfPages);
+      zTemp = swprintf("%d/%d", gSelectArmsDealerInfo.ubCurrentPage, gSelectArmsDealerInfo.ubNumberOfPages);
       DrawTextToScreen(zTemp, SKI_PAGE_X, (SKI_PAGE_Y + uiFontHeight + 6), SKI_PAGE_WIDTH, SKI_LABEL_FONT(), SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     }
 
@@ -2028,7 +2028,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
 
   // if the item has a price, display it
   if (uiItemCost != 0) {
-    swprintf(zTemp, "%d", uiItemCost);
+    zTemp = swprintf("%d", uiItemCost);
     InsertCommasForDollarFigure(zTemp);
     InsertDollarSignInToString(zTemp);
     DrawTextToScreen(zTemp, (usPosX + SKI_INV_PRICE_OFFSET_X), (usPosY + SKI_INV_PRICE_OFFSET_Y), SKI_INV_SLOT_WIDTH, SKI_ITEM_DESC_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
@@ -2038,7 +2038,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   //	if( pItemObject->ubNumberOfObjects > 1 || Item[ usItemIndex ].usItemClass == IC_AMMO )
   //	if( pItemObject->ubNumberOfObjects > 1 || Item[ usItemIndex ].ubPerPocket > 1 )
   if ((pItemObject.value.ubNumberOfObjects > 1) || ((pItemObject.value.ubNumberOfObjects == 1) && DealerItemIsSafeToStack(usItemIndex) && (ubItemArea == Enum252.ARMS_DEALER_INVENTORY) && (gpTempDealersInventory[ubSlotNum].uiFlags & ARMS_INV_ITEM_SELECTED))) {
-    swprintf(zTemp, "x%d", pItemObject.value.ubNumberOfObjects);
+    zTemp = swprintf("x%d", pItemObject.value.ubNumberOfObjects);
     DrawTextToScreen(zTemp, (usPosX + SKI_ITEM_NUMBER_TEXT_OFFSET_X), (usPosY + SKI_ITEM_NUMBER_TEXT_OFFSET_Y), SKI_ITEM_NUMBER_TEXT_WIDTH, SKIT_NUMBER_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   }
 
@@ -2057,17 +2057,17 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   // if the item has attachments
   if (ItemHasAttachments(pItemObject)) {
     // Display the '*' in the bottom right corner of the square
-    swprintf(zTemp, "*");
+    zTemp = "*";
     DrawTextToScreen(zTemp, (usPosX + SKI_ATTACHMENT_SYMBOL_X_OFFSET), (usPosY + SKI_ATTACHMENT_SYMBOL_Y_OFFSET), 0, TINYFONT1(), FONT_GREEN, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
   // Display 'JAMMED' if it's jammed
   if (pItemObject.value.bGunAmmoStatus < 0) {
-    swprintf(zTemp, TacticalStr[Enum335.JAMMED_ITEM_STR]);
+    zTemp = TacticalStr[Enum335.JAMMED_ITEM_STR];
     VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1(), addressof(sCenX), addressof(sCenY), zTemp);
     DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1(), FONT_RED, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   } else if (fPrintRepaired) {
-    swprintf(zTemp, SKI_Text[Enum367.SKI_TEXT_REPAIRED]);
+    zTemp = SKI_Text[Enum367.SKI_TEXT_REPAIRED];
     VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1(), addressof(sCenX), addressof(sCenY), zTemp);
     DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1(), FONT_RED, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
@@ -2521,7 +2521,7 @@ function DisplayArmsDealerOfferArea(): void {
     RestoreExternBackgroundRect(SKI_ARMS_DEALER_TOTAL_COST_X, SKI_ARMS_DEALER_TOTAL_COST_Y, SKI_ARMS_DEALER_TOTAL_COST_WIDTH, SKI_ARMS_DEALER_TOTAL_COST_HEIGHT);
 
     // Display the total cost text
-    swprintf(zTemp, "%d", uiTotalCost);
+    zTemp = swprintf("%d", uiTotalCost);
     InsertCommasForDollarFigure(zTemp);
     InsertDollarSignInToString(zTemp);
     DrawTextToScreen(zTemp, SKI_ARMS_DEALER_TOTAL_COST_X, (SKI_ARMS_DEALER_TOTAL_COST_Y + 5), SKI_INV_SLOT_WIDTH, SKI_LABEL_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
@@ -2608,7 +2608,7 @@ function SetSkiFaceRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Poi
   if ((pInv != null) && (pInv.value.ubIdOfMercWhoOwnsTheItem != NO_PROFILE)) {
     BuildItemHelpTextString(zTempText, pInv, ubScreenArea);
     // add who owns it
-    swprintf(zHelpText, "%s%s %s", gMercProfiles[pInv.value.ubIdOfMercWhoOwnsTheItem].zNickname, pMessageStrings[Enum333.MSG_DASH_S], zTempText);
+    zHelpText = swprintf("%s%s %s", gMercProfiles[pInv.value.ubIdOfMercWhoOwnsTheItem].zNickname, pMessageStrings[Enum333.MSG_DASH_S], zTempText);
   } else {
     zHelpText[0] = '\0';
   }
@@ -2760,7 +2760,7 @@ function DisplayPlayersOfferArea(): void {
     RestoreExternBackgroundRect(SKI_PLAYERS_TOTAL_VALUE_X, SKI_PLAYERS_TOTAL_VALUE_Y, SKI_PLAYERS_TOTAL_VALUE_WIDTH, SKI_PLAYERS_TOTAL_VALUE_HEIGHT);
 
     // Display the total cost text
-    swprintf(zTemp, "%d", uiTotalCost);
+    zTemp = swprintf("%d", uiTotalCost);
     InsertCommasForDollarFigure(zTemp);
     InsertDollarSignInToString(zTemp);
     DrawTextToScreen(zTemp, SKI_PLAYERS_TOTAL_VALUE_X, (SKI_PLAYERS_TOTAL_VALUE_Y + 5), SKI_INV_SLOT_WIDTH, SKI_LABEL_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
@@ -3676,7 +3676,7 @@ export function InitShopKeeperSubTitledText(pString: string /* STR16 */): void {
   // Clear the contents of the subtitle text
   memset(gsShopKeeperTalkingText, 0, SKI_SUBTITLE_TEXT_SIZE);
 
-  swprintf(gsShopKeeperTalkingText, "\"%s\"", pString);
+  gsShopKeeperTalkingText = swprintf("\"%s\"", pString);
 
   // Now setup the popup box
   if (gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES]) {
@@ -4026,7 +4026,7 @@ function HandleAtmOK(): void {
         memset(gzSkiAtmTransferString, 0, 32);
       else {
         // Set the amount to transfer
-        swprintf(gzSkiAtmTransferString, "%d", uiFundsOnCurrentMerc);
+        gzSkiAtmTransferString = swprintf("%d", uiFundsOnCurrentMerc);
       }
 
       gubCurrentSkiAtmMode = Enum250.SKI_ATM_ERR_TAKE_MODE;
@@ -4043,7 +4043,7 @@ function HandleAtmOK(): void {
         memset(gzSkiAtmTransferString, 0, 32);
       else {
         // Set the amount to transfer
-        swprintf(gzSkiAtmTransferString, "%d", LaptopSaveInfo.iCurrentBalance);
+        gzSkiAtmTransferString = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
       }
 
       gubCurrentSkiAtmMode = Enum250.SKI_ATM_ERR_GIVE_MODE;
@@ -4094,7 +4094,7 @@ function AddNumberToSkiAtm(ubNumber: UINT8): void {
   if (gzSkiAtmTransferString[0] == '\0' && ubNumber == Enum368.SKI_ATM_0)
     return;
 
-  swprintf(zTemp, "%d", ubNumber);
+  zTemp = swprintf("%d", ubNumber);
 
   // add the number to the current amount
   wcscat(gzSkiAtmTransferString, zTemp);
@@ -4119,7 +4119,7 @@ function DisplaySkiAtmTransferString(): void {
   //
   uiMoney = GetFundsOnMerc(gpSMCurrentMerc);
 
-  swprintf(zSkiAtmTransferString, "%d", uiMoney);
+  zSkiAtmTransferString = swprintf("%d", uiMoney);
 
   InsertCommasForDollarFigure(zSkiAtmTransferString);
   InsertDollarSignInToString(zSkiAtmTransferString);
@@ -4250,11 +4250,11 @@ function HandleCurrentModeText(ubMode: UINT8): void {
       break;
 
     case Enum250.SKI_ATM_DISPLAY_PLAYERS_BALANCE:
-      swprintf(zMoney, "%d", LaptopSaveInfo.iCurrentBalance);
+      zMoney = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
       InsertCommasForDollarFigure(zMoney);
       InsertDollarSignInToString(zMoney);
 
-      swprintf(zTemp, "%s: %s", gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_BALANCE], zMoney);
+      zTemp = swprintf("%s: %s", gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_BALANCE], zMoney);
       break;
   }
 
@@ -6007,7 +6007,7 @@ function BuildRepairTimeString(sString: Pointer<string> /* wchar_t[] */ /* [] */
   // show up to 1.5 hrs in minutes
   if (uiTimeInMinutesToFixItem <= 90) {
     // show minutes
-    swprintf(sString, SKI_Text[Enum367.SKI_TEXT_MINUTES], uiTimeInMinutesToFixItem);
+    sString = swprintf(SKI_Text[Enum367.SKI_TEXT_MINUTES], uiTimeInMinutesToFixItem);
   } else {
     // show hours
 
@@ -6015,7 +6015,7 @@ function BuildRepairTimeString(sString: Pointer<string> /* wchar_t[] */ /* [] */
     usNumberOfHoursToFixItem = ((uiTimeInMinutesToFixItem + 45) / 60);
 
     if (usNumberOfHoursToFixItem > 1) {
-      swprintf(sString, SKI_Text[Enum367.SKI_TEXT_PLURAL_HOURS], usNumberOfHoursToFixItem);
+      sString = swprintf(SKI_Text[Enum367.SKI_TEXT_PLURAL_HOURS], usNumberOfHoursToFixItem);
     } else {
       wcscpy(sString, SKI_Text[Enum367.SKI_TEXT_ONE_HOUR]);
     }
@@ -6057,9 +6057,9 @@ function BuildDoneWhenTimeString(sString: Pointer<string> /* wchar_t[] */ /* [] 
 
   // only show day if it's gonna take overnight
   if (GetWorldDay() != uiDay) {
-    swprintf(sString, "%s %d %02d:%02d", pDayStrings[0], uiDay, uiHour, uiMin);
+    sString = swprintf("%s %d %02d:%02d", pDayStrings[0], uiDay, uiHour, uiMin);
   } else {
-    swprintf(sString, "%02d:%02d", uiHour, uiMin);
+    sString = swprintf("%02d:%02d", uiHour, uiMin);
   }
 }
 
@@ -6073,7 +6073,7 @@ function BuildItemHelpTextString(sString: Pointer<string> /* wchar_t[] */ /* [] 
     // add repair time for items in a repairman's offer area
     if ((ubScreenArea == Enum252.ARMS_DEALER_OFFER_AREA) && (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS)) {
       BuildRepairTimeString(zRepairTime, CalculateObjectItemRepairTime(gbSelectedArmsDealerID, addressof(pInv.value.ItemObject)));
-      swprintf(sString, "%s\n(%s: %s)", zHelpText, gzLateLocalizedString[44], zRepairTime);
+      sString = swprintf("%s\n(%s: %s)", zHelpText, gzLateLocalizedString[44], zRepairTime);
     } else {
       wcscpy(sString, zHelpText);
     }

@@ -335,7 +335,7 @@ function AddIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
 
         break;
     }
-    swprintf(sString, "%d", iCounter + 1);
+    sString = swprintf("%d", iCounter + 1);
     SpecifyButtonUpTextColors(giIMPPersonalityQuizAnswerButton[iCounter], FONT_WHITE, FONT_BLACK);
     SpecifyButtonDownTextColors(giIMPPersonalityQuizAnswerButton[iCounter], FONT_WHITE, FONT_BLACK);
     SpecifyButtonTextOffsets(giIMPPersonalityQuizAnswerButton[iCounter], +23, +12, true);
@@ -1278,7 +1278,7 @@ function PrintQuizQuestionNumber(): void {
   SetFontBackground(FONT_BLACK);
 
   // get current question number into a string
-  swprintf(sString, "%d", giCurrentPersonalityQuizQuestion + 1);
+  sString = swprintf("%d", giCurrentPersonalityQuizQuestion + 1);
 
   // print current question number
   mprintf(LAPTOP_SCREEN_UL_X + 345, LAPTOP_SCREEN_WEB_UL_Y + 370, sString);

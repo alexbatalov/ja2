@@ -838,7 +838,7 @@ export function MSYS_SetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT
   if (index < 0 || index > 3) {
     let str: string /* UINT8[80] */;
       return;
-    sprintf(str, "Attempting MSYS_SetRegionUserData() with out of range index %d.", index);
+    str = sprintf("Attempting MSYS_SetRegionUserData() with out of range index %d.", index);
     AssertMsg(0, str);
   }
   region.value.UserData[index] = userdata;
@@ -853,7 +853,7 @@ export function MSYS_GetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT
   if (index < 0 || index > 3) {
     let str: string /* UINT8[80] */;
       return 0;
-    sprintf(str, "Attempting MSYS_GetRegionUserData() with out of range index %d", index);
+    str = sprintf("Attempting MSYS_GetRegionUserData() with out of range index %d", index);
     AssertMsg(0, str);
   }
   return region.value.UserData[index];

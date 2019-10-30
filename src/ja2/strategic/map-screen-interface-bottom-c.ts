@@ -639,9 +639,9 @@ function DisplayCompressMode(): void {
   // get compress speed
   if (giTimeCompressMode != Enum130.NOT_USING_TIME_COMPRESSION) {
     if (IsTimeBeingCompressed()) {
-      swprintf(sString, "%s", sTimeStrings[giTimeCompressMode]);
+      sString = swprintf("%s", sTimeStrings[giTimeCompressMode]);
     } else {
-      swprintf(sString, "%s", sTimeStrings[0]);
+      sString = swprintf("%s", sTimeStrings[0]);
     }
   }
 
@@ -1007,7 +1007,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   SetFontForeground(MAP_BOTTOM_FONT_COLOR);
   SetFontBackground(FONT_BLACK);
 
-  swprintf(sString, "%s", pMapScreenBottomText[0]);
+  sString = swprintf("%s", pMapScreenBottomText[0]);
 
   // center it
   VarFindFontCenterCoordinates(359, 387 - 14, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
@@ -1015,7 +1015,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
 
-  swprintf(sString, "%s", zMarksMapScreenText[2]);
+  sString = swprintf("%s", zMarksMapScreenText[2]);
 
   // center it
   VarFindFontCenterCoordinates(359, 433 - 14, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
@@ -1042,7 +1042,7 @@ function DisplayCurrentBalanceForMapBottom(): void {
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
-  swprintf(sString, "%d", LaptopSaveInfo.iCurrentBalance);
+  sString = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
 
   // insert
 
@@ -1126,7 +1126,7 @@ function DisplayProjectedDailyMineIncome(): void {
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
-  swprintf(sString, "%d", iRate);
+  sString = swprintf("%d", iRate);
 
   // insert
   InsertCommasForDollarFigure(sString);

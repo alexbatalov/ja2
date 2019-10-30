@@ -282,7 +282,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
       SetFontForeground(FONT_MCOLOR_WHITE);
       SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, false);
 
-      swprintf(pStr, "%S", LockTable[i].ubEditorName);
+      pStr = swprintf("%S", LockTable[i].ubEditorName);
       DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, true, CENTER_JUSTIFIED);
 
       // Calculate the center position of the graphic in a 60 pixel wide area.
@@ -370,30 +370,30 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
 
           if (eInfo.uiItemType != Enum35.TBAR_MODE_ITEM_TRIGGERS) {
             LoadItemInfo(usCounter, pItemName, null);
-            swprintf(pStr, "%s", pItemName);
+            pStr = swprintf("%s", pItemName);
           } else {
             if (i == PRESSURE_ACTION_ID) {
-              swprintf(pStr, "Pressure Action");
+              pStr = "Pressure Action";
             } else if (i < 2) {
               if (usCounter == Enum225.SWITCH)
-                swprintf(pStr, "Panic Trigger1");
+                pStr = "Panic Trigger1";
               else
-                swprintf(pStr, "Panic Action1");
+                pStr = "Panic Action1";
             } else if (i < 4) {
               if (usCounter == Enum225.SWITCH)
-                swprintf(pStr, "Panic Trigger2");
+                pStr = "Panic Trigger2";
               else
-                swprintf(pStr, "Panic Action2");
+                pStr = "Panic Action2";
             } else if (i < 6) {
               if (usCounter == Enum225.SWITCH)
-                swprintf(pStr, "Panic Trigger3");
+                pStr = "Panic Trigger3";
               else
-                swprintf(pStr, "Panic Action3");
+                pStr = "Panic Action3";
             } else {
               if (usCounter == Enum225.SWITCH)
-                swprintf(pStr, "Trigger%d", (i - 4) / 2);
+                pStr = swprintf("Trigger%d", (i - 4) / 2);
               else
-                swprintf(pStr, "Action%d", (i - 4) / 2);
+                pStr = swprintf("Action%d", (i - 4) / 2);
             }
           }
           DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, true, CENTER_JUSTIFIED);

@@ -1873,7 +1873,7 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
           fDidRequester = true;
 
-          swprintf(zStr, TacticalStr[Enum335.ATTACK_OWN_GUY_PROMPT], pTSoldier.value.name);
+          zStr = swprintf(TacticalStr[Enum335.ATTACK_OWN_GUY_PROMPT], pTSoldier.value.name);
 
           DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zStr, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, AttackRequesterCallback, null);
         }

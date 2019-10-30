@@ -264,7 +264,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
 
   // Load Video Object!
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(VObjectDesc.ImageFile, "INTERFACE\\talkbox1.sti");
+  VObjectDesc.ImageFile = "INTERFACE\\talkbox1.sti";
   // Load
   if (AddVideoObject(addressof(VObjectDesc), addressof(gTalkPanel.uiPanelVO)) == false) {
     return 0;
@@ -370,7 +370,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   gFacesData[iFaceIndex].uiFlags |= FACE_INACTIVE_HANDLED_ELSEWHERE;
 
   // Load buttons, create button
-  sprintf(ubString, "INTERFACE\\talkbox2.sti");
+  ubString = "INTERFACE\\talkbox2.sti";
   gTalkPanel.iButtonImages = LoadButtonImage(ubString, -1, 3, -1, 4, -1);
 
   gTalkPanel.uiCancelButton = CreateIconAndTextButton(gTalkPanel.iButtonImages, zDialogActions[Enum211.DIALOG_DONE], MILITARYFONT1(), 33, DEFAULT_SHADOW, 33, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gTalkPanel.sX + TALK_PANEL_BUTTON_X), (gTalkPanel.sY + TALK_PANEL_BUTTON_Y), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), DoneTalkingButtonClickCallback);
@@ -3641,18 +3641,18 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
   switch (gusDialogueMessageBoxType) {
     case Enum213.NPC_ACTION_ASK_ABOUT_ESCORTING_EPC:
       if ((ubProfileID == Enum268.JOHN && gMercProfiles[Enum268.MARY].bMercStatus != MERC_IS_DEAD) || (ubProfileID == Enum268.MARY && gMercProfiles[Enum268.JOHN].bMercStatus != MERC_IS_DEAD)) {
-        swprintf(zTemp, gzLateLocalizedString[59]);
+        zTemp = gzLateLocalizedString[59];
       } else {
-        swprintf(zTemp, TacticalStr[Enum335.ESCORT_PROMPT], gMercProfiles[ubProfileID].zNickname);
+        zTemp = swprintf(TacticalStr[Enum335.ESCORT_PROMPT], gMercProfiles[ubProfileID].zNickname);
       }
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_ASK_ABOUT_PAYING_RPC:
     case Enum213.NPC_ACTION_ASK_ABOUT_PAYING_RPC_WITH_DAILY_SALARY:
     case Enum213.NPC_ACTION_REDUCE_CONRAD_SALARY_CONDITIONS:
-      swprintf(zTemp2, "%d", gMercProfiles[ubProfileID].sSalary);
+      zTemp2 = swprintf("%d", gMercProfiles[ubProfileID].sSalary);
       InsertDollarSignInToString(zTemp2);
-      swprintf(zTemp, TacticalStr[Enum335.HIRE_PROMPT], gMercProfiles[ubProfileID].zNickname, zTemp2);
+      zTemp = swprintf(TacticalStr[Enum335.HIRE_PROMPT], gMercProfiles[ubProfileID].zNickname, zTemp2);
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_DARREN_REQUESTOR:
@@ -3660,16 +3660,16 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.BOXING_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_BUY_LEATHER_KEVLAR_VEST:
-      swprintf(zTemp2, "%d", Item[Enum225.LEATHER_JACKET_W_KEVLAR].usPrice);
+      zTemp2 = swprintf("%d", Item[Enum225.LEATHER_JACKET_W_KEVLAR].usPrice);
       InsertDollarSignInToString(zTemp2);
-      swprintf(zTemp, TacticalStr[Enum335.BUY_VEST_PROMPT], ItemNames[Enum225.LEATHER_JACKET_W_KEVLAR], zTemp2);
+      zTemp = swprintf(TacticalStr[Enum335.BUY_VEST_PROMPT], ItemNames[Enum225.LEATHER_JACKET_W_KEVLAR], zTemp2);
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_PROMPT_PLAYER_TO_LIE:
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.YESNOLIE_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNOLIE, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_MEDICAL_REQUESTOR_2:
-      swprintf(zTemp, TacticalStr[Enum335.FREE_MEDICAL_PROMPT]);
+      zTemp = TacticalStr[Enum335.FREE_MEDICAL_PROMPT];
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_MEDICAL_REQUESTOR:
@@ -3679,25 +3679,25 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
       } else {
         iTemp -= giHospitalRefund;
       }
-      swprintf(zTemp2, "%ld", iTemp);
+      zTemp2 = swprintf("%ld", iTemp);
       InsertDollarSignInToString(zTemp2);
-      swprintf(zTemp, TacticalStr[Enum335.PAY_MONEY_PROMPT], zTemp2);
+      zTemp = swprintf(TacticalStr[Enum335.PAY_MONEY_PROMPT], zTemp2);
 
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_BUY_VEHICLE_REQUESTOR:
-      swprintf(zTemp2, "%ld", 10000);
+      zTemp2 = swprintf("%ld", 10000);
       InsertDollarSignInToString(zTemp2);
-      swprintf(zTemp, TacticalStr[Enum335.PAY_MONEY_PROMPT], zTemp2);
+      zTemp = swprintf(TacticalStr[Enum335.PAY_MONEY_PROMPT], zTemp2);
 
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_TRIGGER_MARRY_DARYL_PROMPT:
-      swprintf(zTemp, TacticalStr[Enum335.MARRY_DARYL_PROMPT]);
+      zTemp = TacticalStr[Enum335.MARRY_DARYL_PROMPT];
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_KROTT_REQUESTOR:
-      swprintf(zTemp, TacticalStr[Enum335.SPARE_KROTT_PROMPT]);
+      zTemp = TacticalStr[Enum335.SPARE_KROTT_PROMPT];
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     default:

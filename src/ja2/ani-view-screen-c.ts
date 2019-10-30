@@ -281,7 +281,7 @@ function BuildListFile(): void {
       ubNumStates = cnt;
       pusStates[cnt] = usState;
     } else {
-      swprintf(zError, "Animation str %S is not known: ", currFilename);
+      zError = swprintf("Animation str %S is not known: ", currFilename);
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zError, Enum26.ANIEDIT_SCREEN, MSG_BOX_FLAG_YESNO, null, null);
       fclose(infoFile);
       return;

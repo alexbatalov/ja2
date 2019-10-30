@@ -35,7 +35,7 @@ function UpdateLightingSprite(pLight: Pointer<LIGHTEFFECT>): void {
   let LightName: string /* CHAR8[20] */;
   // Build light....
 
-  sprintf(LightName, "Light%d", pLight.value.bRadius);
+  LightName = sprintf("Light%d", pLight.value.bRadius);
 
   // Delete old one if one exists...
   if (pLight.value.iLight != (-1)) {

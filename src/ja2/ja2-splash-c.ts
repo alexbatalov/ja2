@@ -18,7 +18,7 @@ export function InitJA2SplashScreen(): void {
   GetExecutableDirectory(CurrentDir);
 
   // Adjust Current Dir
-  sprintf(DataDir, "%s\\Data", CurrentDir);
+  DataDir = sprintf("%s\\Data", CurrentDir);
   if (!SetFileManCurrentDirectory(DataDir)) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not find data directory, shutting down");
     return;

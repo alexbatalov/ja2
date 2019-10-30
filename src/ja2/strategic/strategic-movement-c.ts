@@ -909,7 +909,7 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): boolean {
         let str: string /* UINT16[256] */;
         let pSectorStr: string /* UINT16[128] */;
         GetSectorIDString(pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ, pSectorStr, true);
-        swprintf(str, gpStrategicString[Enum365.STR_DIALOG_ENEMIES_ATTACK_UNCONCIOUSMERCS], pSectorStr);
+        str = swprintf(gpStrategicString[Enum365.STR_DIALOG_ENEMIES_ATTACK_UNCONCIOUSMERCS], pSectorStr);
         DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, TriggerPrebattleInterface);
       }
     }
@@ -1669,9 +1669,7 @@ function PossibleToCoordinateSimultaneousGroupArrivals(pFirstGroup: Pointer<GROU
     // header, sector, singular/plural str, confirmation string.
     // Ex:  Enemies have been detected in sector J9 and another squad is
     //     about to arrive.  Do you wish to coordinate a simultaneous arrival?
-    swprintf(str, pStr,
-             pEnemyType, // Enemy type (Enemies or bloodcats)
-             'A' + gpPendingSimultaneousGroup.value.ubSectorY - 1, gpPendingSimultaneousGroup.value.ubSectorX); // Sector location
+    str = swprintf(pStr, pEnemyType, 'A' + gpPendingSimultaneousGroup.value.ubSectorY - 1, gpPendingSimultaneousGroup.value.ubSectorX); // Sector location
     wcscat(str, "  ");
     wcscat(str, gpStrategicString[Enum365.STR_COORDINATE]);
     // Setup the dialog
@@ -3624,7 +3622,7 @@ export function AddFuelToVehicle(pSoldier: Pointer<SOLDIERTYPE>, pVehicle: Point
 function ReportVehicleOutOfGas(iVehicleID: INT32, ubSectorX: UINT8, ubSectorY: UINT8): void {
   let str: string /* UINT16[255] */;
   // Report that the vehicle that just arrived is out of gas.
-  swprintf(str, gzLateLocalizedString[5], pVehicleStrings[pVehicleList[iVehicleID].ubVehicleType], ubSectorY + 'A' - 1, ubSectorX);
+  str = swprintf(gzLateLocalizedString[5], pVehicleStrings[pVehicleList[iVehicleID].ubVehicleType], ubSectorY + 'A' - 1, ubSectorX);
   DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, null);
 }
 
@@ -3824,7 +3822,7 @@ function NotifyPlayerOfBloodcatBattle(ubSectorX: UINT8, ubSectorY: UINT8): void 
   let zTempString: string /* UINT16[128] */;
   if (gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE) {
     GetSectorIDString(ubSectorX, ubSectorY, 0, zTempString, true);
-    swprintf(str, pMapErrorString[12], zTempString);
+    str = swprintf(pMapErrorString[12], zTempString);
   } else if (gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
     wcscpy(str, pMapErrorString[13]);
   }
@@ -4003,7 +4001,7 @@ function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(pGroup: Pointer<GRO
 
   // build string for squad
   GetSectorIDString(sSectorX, sSectorY, bSectorZ, wSectorName, false);
-  swprintf(sString, pLandMarkInSectorString[0], pGroup.value.pPlayerList.value.pSoldier.value.bAssignment + 1, wSectorName);
+  sString = swprintf(pLandMarkInSectorString[0], pGroup.value.pPlayerList.value.pSoldier.value.bAssignment + 1, wSectorName);
 
   if (GroupAtFinalDestination(pGroup)) {
     // do an OK message box

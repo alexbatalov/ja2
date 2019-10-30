@@ -1188,7 +1188,7 @@ function DrawDate(iCounter: INT32, iDate: INT32, fRead: boolean): void {
     SetFont(FONT10ARIALBOLD());
   }
   // draw date of message being displayed in mail viewer
-  swprintf(sString, "%s %d", pDayStrings[0], iDate / (24 * 60));
+  sString = swprintf("%s %d", pDayStrings[0], iDate / (24 * 60));
   mprintf(DATE_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), sString);
 
   SetFont(MESSAGE_FONT());
@@ -2410,7 +2410,7 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
   mprintf(usX, MESSAGE_DATE_Y + iViewerY, pEmailHeaders[2]);
 
   // the actual date info
-  swprintf(sString, "%d", ((pMail.value.iDate) / (24 * 60)));
+  sString = swprintf("%d", ((pMail.value.iDate) / (24 * 60)));
   mprintf(MESSAGE_HEADER_X + 235, MESSAGE_DATE_Y + iViewerY, sString);
 
   // print subject
@@ -2768,7 +2768,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       if (iCounter == 0) {
         let zTemp: string /* wchar_t[512] */;
 
-        swprintf(zTemp, " %s", gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName);
+        zTemp = swprintf(" %s", gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName);
         wcscat(pString, zTemp);
       }
 
@@ -3827,9 +3827,9 @@ function DisplayWhichPageOfEmailProgramIsDisplayed(): void {
 
   // page number
   if (iLastPage < 0)
-    swprintf(sString, "%d / %d", 1, 1);
+    sString = swprintf("%d / %d", 1, 1);
   else
-    swprintf(sString, "%d / %d", iCurrentPage + 1, iLastPage + 1);
+    sString = swprintf("%d / %d", iCurrentPage + 1, iLastPage + 1);
 
   // print it
   mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
@@ -3888,7 +3888,7 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): boolean {
   giNumberOfPagesToCurrentEmail = (giNumberOfPagesToCurrentEmail);
 
   // parse current page and max number of pages to email
-  swprintf(sString, "%d / %d", (giMessagePage + 1), (giNumberOfPagesToCurrentEmail - 1));
+  sString = swprintf("%d / %d", (giMessagePage + 1), (giNumberOfPagesToCurrentEmail - 1));
 
   SetFont(FONT12ARIAL());
   SetFontForeground(FONT_BLACK);
@@ -4243,7 +4243,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
       } else {
         let sDollarAmount: string /* CHAR16[64] */;
 
-        swprintf(sDollarAmount, "%d", pMail.value.iFirstData);
+        sDollarAmount = swprintf("%d", pMail.value.iFirstData);
 
         InsertCommasForDollarFigure(sDollarAmount);
         InsertDollarSignInToString(sDollarAmount);

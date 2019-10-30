@@ -1781,7 +1781,7 @@ export function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
     LightGenerateElliptical(iLight, ubIntensity, (iRadius * DISTANCE_SCALE), (iRadius * DISTANCE_SCALE));
   }
 
-  sprintf(usName, "LTO%d.LHT", iRadius);
+  usName = sprintf("LTO%d.LHT", iRadius);
   pLightNames[iLight] = MemAlloc(strlen(usName) + 1);
   strcpy(pLightNames[iLight], usName);
 
@@ -1803,7 +1803,7 @@ function LightCreateSquare(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16)
     LightGenerateSquare(iLight, ubIntensity, (iRadius1 * DISTANCE_SCALE), (iRadius2 * DISTANCE_SCALE));
   }
 
-  sprintf(usName, "LTS%d-%d.LHT", iRadius1, iRadius2);
+  usName = sprintf("LTS%d-%d.LHT", iRadius1, iRadius2);
   pLightNames[iLight] = MemAlloc(strlen(usName) + 1);
   strcpy(pLightNames[iLight], usName);
 
@@ -1824,7 +1824,7 @@ function LightCreateElliptical(ubIntensity: UINT8, iRadius1: INT16, iRadius2: IN
   if (iLight != (-1))
     LightGenerateElliptical(iLight, ubIntensity, (iRadius1 * DISTANCE_SCALE), (iRadius2 * DISTANCE_SCALE));
 
-  sprintf(usName, "LTE%d-%d.LHT", iRadius1, iRadius2);
+  usName = sprintf("LTE%d-%d.LHT", iRadius1, iRadius2);
   pLightNames[iLight] = MemAlloc(strlen(usName) + 1);
   strcpy(pLightNames[iLight], usName);
 

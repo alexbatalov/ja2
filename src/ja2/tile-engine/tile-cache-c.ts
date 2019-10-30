@@ -43,7 +43,7 @@ export function InitTileCache(): boolean {
     // Loop through and set filenames
     if (GetFileFirst("TILECACHE\\*.jsd", addressof(FileInfo))) {
       while (GetFileNext(addressof(FileInfo))) {
-        sprintf(gpTileCacheStructInfo[cnt].Filename, "TILECACHE\\%s", FileInfo.zFileName);
+        gpTileCacheStructInfo[cnt].Filename = sprintf("TILECACHE\\%s", FileInfo.zFileName);
 
         // Get root name
         GetRootName(gpTileCacheStructInfo[cnt].zRootName, gpTileCacheStructInfo[cnt].Filename);

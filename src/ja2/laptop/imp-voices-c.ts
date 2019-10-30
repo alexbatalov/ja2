@@ -330,7 +330,7 @@ function RenderVoiceIndex(): void {
   let sY: INT16;
 
   // render the voice index value on the the blank portrait
-  swprintf(sString, "%s %d", pIMPVoicesStrings[0], iCurrentVoices + 1);
+  sString = swprintf("%s %d", pIMPVoicesStrings[0], iCurrentVoices + 1);
 
   FindFontCenterCoordinates(290 + LAPTOP_UL_X, 0, 100, 0, sString, FONT12ARIAL(), addressof(sX), addressof(sY));
 

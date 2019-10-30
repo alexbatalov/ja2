@@ -1544,7 +1544,7 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, 
             break;
         }
 
-        swprintf(pStr, "%d", pObject.value.ubGunShotsLeft);
+        pStr = swprintf("%d", pObject.value.ubGunShotsLeft);
         if (uiBuffer == guiSAVEBUFFER) {
           RestoreExternBackgroundRect(sNewX, sNewY, 20, 15);
         }
@@ -1558,9 +1558,9 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, 
           SetFontForeground(FONT_MCOLOR_RED);
 
           if (sWidth >= (BIG_INV_SLOT_WIDTH - 10)) {
-            swprintf(pStr, TacticalStr[Enum335.JAMMED_ITEM_STR]);
+            pStr = TacticalStr[Enum335.JAMMED_ITEM_STR];
           } else {
-            swprintf(pStr, TacticalStr[Enum335.SHORT_JAMMED_GUN]);
+            pStr = TacticalStr[Enum335.SHORT_JAMMED_GUN];
           }
 
           VarFindFontCenterCoordinates(sX, sY, sWidth, sHeight, ITEM_FONT(), addressof(sNewX), addressof(sNewY), pStr);
@@ -1575,7 +1575,7 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, 
             SetFontForeground(FONT_GRAY4);
 
             sNewY = sY + sHeight - 10;
-            swprintf(pStr, "%d", pObject.value.ubNumberOfObjects);
+            pStr = swprintf("%d", pObject.value.ubNumberOfObjects);
 
             // Get length of string
             uiStringLength = StringPixLength(pStr, ITEM_FONT());
@@ -1599,7 +1599,7 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, 
         }
 
         sNewY = sY;
-        swprintf(pStr, "*");
+        pStr = "*";
 
         // Get length of string
         uiStringLength = StringPixLength(pStr, ITEM_FONT());
@@ -1618,9 +1618,9 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, 
 
         sNewY = sY + 13; // rather arbitrary
         if (pSoldier.value.bWeaponMode == Enum265.WM_BURST) {
-          swprintf(pStr, "*");
+          pStr = "*";
         } else {
-          swprintf(pStr, "+");
+          pStr = "+";
         }
 
         // Get length of string
@@ -1645,9 +1645,9 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, 
     if (pubHighlightCounter.value) {
       // Set string
       if (ubStatusIndex < RENDER_ITEM_ATTACHMENT1) {
-        swprintf(pStr, "%s", ShortItemNames[pObject.value.usItem]);
+        pStr = swprintf("%s", ShortItemNames[pObject.value.usItem]);
       } else {
-        swprintf(pStr, "%s", ShortItemNames[pObject.value.usAttachItem[ubStatusIndex - RENDER_ITEM_ATTACHMENT1]]);
+        pStr = swprintf("%s", ShortItemNames[pObject.value.usAttachItem[ubStatusIndex - RENDER_ITEM_ATTACHMENT1]]);
       }
 
       fLineSplit = WrapString(pStr, pStr2, WORD_WRAP_INV_WIDTH, ITEM_FONT());
@@ -1782,7 +1782,7 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
     // Add button
     //    if( guiCurrentScreen != MAP_SCREEN )
     // if( guiCurrentItemDescriptionScreen != MAP_SCREEN )
-    swprintf(pStr, "%d/%d", gpItemDescObject.value.ubGunShotsLeft, Weapon[gpItemDescObject.value.usItem].ubMagSize);
+    pStr = swprintf("%d/%d", gpItemDescObject.value.ubGunShotsLeft, Weapon[gpItemDescObject.value.usItem].ubMagSize);
     FilenameForBPP("INTERFACE\\infobox.sti", ubString);
     sForeColour = ITEMDESC_AMMO_FORE;
 
@@ -2072,7 +2072,7 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         gpItemPointer = addressof(gItemPointer);
         gpItemPointerSoldier = gpItemDescSoldier;
 
-        swprintf(pStr, "0");
+        pStr = "0";
         SpecifyButtonText(giItemDescAmmoButton, pStr);
 
         // Set mouse
@@ -2100,7 +2100,7 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         // fItemDescDelete = TRUE;
         fInterfacePanelDirty = DIRTYLEVEL2;
 
-        swprintf(pStr, "0");
+        pStr = "0";
         SpecifyButtonText(giItemDescAmmoButton, pStr);
 
         fItemDescDelete = true;
@@ -2371,9 +2371,9 @@ export function RenderItemDescriptionBox(): void {
     if (ITEM_PROS_AND_CONS(gpItemDescObject.value.usItem)) {
       if ((gpItemDescObject.value.usItem == Enum225.ROCKET_RIFLE || gpItemDescObject.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && gpItemDescObject.value.ubImprintID < NO_PROFILE) {
         // add name noting imprint
-        swprintf(pStr, "%s %s (%s)", AmmoCaliber[Weapon[gpItemDescObject.value.usItem].ubCalibre], WeaponType[Weapon[gpItemDescObject.value.usItem].ubWeaponType], gMercProfiles[gpItemDescObject.value.ubImprintID].zNickname);
+        pStr = swprintf("%s %s (%s)", AmmoCaliber[Weapon[gpItemDescObject.value.usItem].ubCalibre], WeaponType[Weapon[gpItemDescObject.value.usItem].ubWeaponType], gMercProfiles[gpItemDescObject.value.ubImprintID].zNickname);
       } else {
-        swprintf(pStr, "%s %s", AmmoCaliber[Weapon[gpItemDescObject.value.usItem].ubCalibre], WeaponType[Weapon[gpItemDescObject.value.usItem].ubWeaponType]);
+        pStr = swprintf("%s %s", AmmoCaliber[Weapon[gpItemDescObject.value.usItem].ubCalibre], WeaponType[Weapon[gpItemDescObject.value.usItem].ubWeaponType]);
       }
 
       FindFontRightCoordinates(MAP_ITEMDESC_CALIBER_X(), MAP_ITEMDESC_CALIBER_Y(), MAP_ITEMDESC_CALIBER_WIDTH, ITEM_STATS_HEIGHT, pStr, ITEMDESC_FONT(), addressof(usX), addressof(usY));
@@ -2440,7 +2440,7 @@ export function RenderItemDescriptionBox(): void {
       SetFontShadow(DEFAULT_SHADOW);
 
       // LABELS
-      swprintf(sTempString, gWeaponStatsDesc[0], GetWeightUnitString());
+      sTempString = swprintf(gWeaponStatsDesc[0], GetWeightUnitString());
       mprintf(gMapWeaponStats[0].sX + gsInvDescX, gMapWeaponStats[0].sY + gsInvDescY, "%s", sTempString);
       // mprintf( gMapWeaponStats[ 2 ].sX + gsInvDescX, gMapWeaponStats[ 2 ].sY + gsInvDescY, L"%s", gMapWeaponStats[ 2 ].zDesc );
       if (Item[gpItemDescObject.value.usItem].usItemClass & (IC_GUN | IC_LAUNCHER)) {
@@ -2463,7 +2463,7 @@ export function RenderItemDescriptionBox(): void {
       SetFontForeground(5);
       // Status
       // This is gross, but to get the % to work out right...
-      swprintf(pStr, "%2d%%", gpItemDescObject.value.bStatus[gubItemDescStatusIndex]);
+      pStr = swprintf("%2d%%", gpItemDescObject.value.bStatus[gubItemDescStatusIndex]);
       FindFontRightCoordinates((gMapWeaponStats[1].sX + gsInvDescX + gMapWeaponStats[1].sValDx + 6), (gMapWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
       wcscat(pStr, "%%");
       mprintf(usX, usY, pStr);
@@ -2475,7 +2475,7 @@ export function RenderItemDescriptionBox(): void {
         SetFontForeground(5);
       }
       // Weight
-      swprintf(pStr, "%1.1f", fWeight);
+      pStr = swprintf("%1.1f", fWeight);
       FindFontRightCoordinates((gMapWeaponStats[0].sX + gsInvDescX + gMapWeaponStats[0].sValDx + 6), (gMapWeaponStats[0].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, pStr);
 
@@ -2487,7 +2487,7 @@ export function RenderItemDescriptionBox(): void {
         }
 
         // Range
-        swprintf(pStr, "%2d", (GunRange(gpItemDescObject)) / 10);
+        pStr = swprintf("%2d", (GunRange(gpItemDescObject)) / 10);
         FindFontRightCoordinates((gMapWeaponStats[3].sX + gsInvDescX + gMapWeaponStats[3].sValDx), (gMapWeaponStats[3].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
       }
@@ -2500,7 +2500,7 @@ export function RenderItemDescriptionBox(): void {
         }
 
         // Damage
-        swprintf(pStr, "%2d", Weapon[gpItemDescObject.value.usItem].ubImpact);
+        pStr = swprintf("%2d", Weapon[gpItemDescObject.value.usItem].ubImpact);
         FindFontRightCoordinates((gMapWeaponStats[4].sX + gsInvDescX + gMapWeaponStats[4].sValDx), (gMapWeaponStats[4].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
       }
@@ -2514,7 +2514,7 @@ export function RenderItemDescriptionBox(): void {
       }
 
       // Ap's
-      swprintf(pStr, "%2d", ubAttackAPs);
+      pStr = swprintf("%2d", ubAttackAPs);
       FindFontRightCoordinates((gMapWeaponStats[5].sX + gsInvDescX + gMapWeaponStats[5].sValDx), (gMapWeaponStats[5].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, pStr);
 
@@ -2525,7 +2525,7 @@ export function RenderItemDescriptionBox(): void {
           SetFontForeground(5);
         }
 
-        swprintf(pStr, "%2d", ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, gpItemDescObject));
+        pStr = swprintf("%2d", ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, gpItemDescObject));
         FindFontRightCoordinates((gMapWeaponStats[6].sX + gsInvDescX + gMapWeaponStats[6].sValDx), (gMapWeaponStats[6].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
       }
@@ -2539,9 +2539,9 @@ export function RenderItemDescriptionBox(): void {
 
       // if the player is taking money from their account
       if (gfAddingMoneyToMercFromPlayersAccount)
-        swprintf(pStr, "%ld", LaptopSaveInfo.iCurrentBalance);
+        pStr = swprintf("%ld", LaptopSaveInfo.iCurrentBalance);
       else
-        swprintf(pStr, "%ld", gRemoveMoney.uiTotalAmount);
+        pStr = swprintf("%ld", gRemoveMoney.uiTotalAmount);
 
       InsertCommasForDollarFigure(pStr);
       InsertDollarSignInToString(pStr);
@@ -2570,7 +2570,7 @@ export function RenderItemDescriptionBox(): void {
       mprintf((gMapMoneyButtonLoc.x + gMoneyButtonOffsets[cnt].x), (gMapMoneyButtonLoc.y + gMoneyButtonOffsets[cnt].y), gzMoneyAmounts[4]);
 
       // The Money Remaining
-      swprintf(pStr, "%ld", gRemoveMoney.uiMoneyRemaining);
+      pStr = swprintf("%ld", gRemoveMoney.uiMoneyRemaining);
       InsertCommasForDollarFigure(pStr);
       InsertDollarSignInToString(pStr);
       uiStringLength = StringPixLength(pStr, ITEMDESC_FONT());
@@ -2579,7 +2579,7 @@ export function RenderItemDescriptionBox(): void {
 
       // The money removing
       SetFontForeground(5);
-      swprintf(pStr, "%ld", gRemoveMoney.uiMoneyRemoving);
+      pStr = swprintf("%ld", gRemoveMoney.uiMoneyRemoving);
       InsertCommasForDollarFigure(pStr);
       InsertDollarSignInToString(pStr);
       uiStringLength = StringPixLength(pStr, ITEMDESC_FONT());
@@ -2593,7 +2593,7 @@ export function RenderItemDescriptionBox(): void {
     } else if (Item[gpItemDescObject.value.usItem].usItemClass == IC_MONEY) {
       SetFontForeground(FONT_FCOLOR_WHITE);
       SetFontShadow(DEFAULT_SHADOW);
-      swprintf(pStr, "%ld", gpItemDescObject.value.uiMoneyAmount);
+      pStr = swprintf("%ld", gpItemDescObject.value.uiMoneyAmount);
       InsertCommasForDollarFigure(pStr);
       InsertDollarSignInToString(pStr);
       uiStringLength = StringPixLength(pStr, ITEMDESC_FONT());
@@ -2611,7 +2611,7 @@ export function RenderItemDescriptionBox(): void {
       } else {
         mprintf(gMapWeaponStats[1].sX + gsInvDescX, gMapWeaponStats[1].sY + gsInvDescY, "%s", gWeaponStatsDesc[1]);
       }
-      swprintf(sTempString, gWeaponStatsDesc[0], GetWeightUnitString());
+      sTempString = swprintf(gWeaponStatsDesc[0], GetWeightUnitString());
       mprintf(gMapWeaponStats[0].sX + gsInvDescX, gMapWeaponStats[0].sY + gsInvDescY, sTempString);
 
       // Values
@@ -2619,14 +2619,14 @@ export function RenderItemDescriptionBox(): void {
 
       if (Item[gpItemDescObject.value.usItem].usItemClass & IC_AMMO) {
         // Ammo
-        swprintf(pStr, "%d/%d", gpItemDescObject.value.ubShotsLeft[0], Magazine[Item[gpItemDescObject.value.usItem].ubClassIndex].ubMagSize);
+        pStr = swprintf("%d/%d", gpItemDescObject.value.ubShotsLeft[0], Magazine[Item[gpItemDescObject.value.usItem].ubClassIndex].ubMagSize);
         uiStringLength = StringPixLength(pStr, ITEMDESC_FONT());
         //			sStrX =  gMapWeaponStats[ 0 ].sX + gsInvDescX + gMapWeaponStats[ 0 ].sValDx + ( uiRightLength - uiStringLength );
         FindFontRightCoordinates((gMapWeaponStats[2].sX + gsInvDescX + gMapWeaponStats[2].sValDx + 6), (gMapWeaponStats[2].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(sStrX), addressof(usY));
         mprintf(sStrX, gMapWeaponStats[2].sY + gsInvDescY, pStr);
       } else {
         // Status
-        swprintf(pStr, "%2d%%", gpItemDescObject.value.bStatus[gubItemDescStatusIndex]);
+        pStr = swprintf("%2d%%", gpItemDescObject.value.bStatus[gubItemDescStatusIndex]);
         uiStringLength = StringPixLength(pStr, ITEMDESC_FONT());
         //			sStrX =  gMapWeaponStats[ 1 ].sX + gsInvDescX + gMapWeaponStats[ 1 ].sValDx + ( uiRightLength - uiStringLength );
         FindFontRightCoordinates((gMapWeaponStats[1].sX + gsInvDescX + gMapWeaponStats[1].sValDx + 6), (gMapWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(sStrX), addressof(usY));
@@ -2635,7 +2635,7 @@ export function RenderItemDescriptionBox(): void {
       }
 
       // Weight
-      swprintf(pStr, "%1.1f", fWeight);
+      pStr = swprintf("%1.1f", fWeight);
       uiStringLength = StringPixLength(pStr, ITEMDESC_FONT());
       //			sStrX =  gMapWeaponStats[ 0 ].sX + gsInvDescX + gMapWeaponStats[ 0 ].sValDx + ( uiRightLength - uiStringLength );
       FindFontRightCoordinates((gMapWeaponStats[0].sX + gsInvDescX + gMapWeaponStats[0].sValDx + 6), (gMapWeaponStats[0].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(sStrX), addressof(usY));
@@ -2645,18 +2645,18 @@ export function RenderItemDescriptionBox(): void {
         SetFontForeground(6);
 
         // build description for keys .. the sector found
-        swprintf(pStr, "%s", sKeyDescriptionStrings[0]);
+        pStr = swprintf("%s", sKeyDescriptionStrings[0]);
         mprintf(gMapWeaponStats[4].sX + gsInvDescX, gMapWeaponStats[4].sY + gsInvDescY, pStr);
-        swprintf(pStr, "%s", sKeyDescriptionStrings[1]);
+        pStr = swprintf("%s", sKeyDescriptionStrings[1]);
         mprintf(gMapWeaponStats[4].sX + gsInvDescX, gMapWeaponStats[4].sY + gsInvDescY + GetFontHeight(BLOCKFONT()) + 2, pStr);
 
         SetFontForeground(5);
         GetShortSectorString(SECTORX(KeyTable[gpItemDescObject.value.ubKeyID].usSectorFound), SECTORY(KeyTable[gpItemDescObject.value.ubKeyID].usSectorFound), sTempString);
-        swprintf(pStr, "%s", sTempString);
+        pStr = swprintf("%s", sTempString);
         FindFontRightCoordinates((gMapWeaponStats[4].sX + gsInvDescX), (gMapWeaponStats[4].sY + gsInvDescY), 110, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
 
-        swprintf(pStr, "%d", KeyTable[gpItemDescObject.value.ubKeyID].usDateFound);
+        pStr = swprintf("%d", KeyTable[gpItemDescObject.value.ubKeyID].usDateFound);
         FindFontRightCoordinates((gMapWeaponStats[4].sX + gsInvDescX), (gMapWeaponStats[4].sY + gsInvDescY + GetFontHeight(BLOCKFONT()) + 2), 110, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
       }
@@ -2754,9 +2754,9 @@ export function RenderItemDescriptionBox(): void {
     if (ITEM_PROS_AND_CONS(gpItemDescObject.value.usItem)) {
       if ((gpItemDescObject.value.usItem == Enum225.ROCKET_RIFLE || gpItemDescObject.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && gpItemDescObject.value.ubImprintID < NO_PROFILE) {
         // add name noting imprint
-        swprintf(pStr, "%s %s (%s)", AmmoCaliber[Weapon[gpItemDescObject.value.usItem].ubCalibre], WeaponType[Weapon[gpItemDescObject.value.usItem].ubWeaponType], gMercProfiles[gpItemDescObject.value.ubImprintID].zNickname);
+        pStr = swprintf("%s %s (%s)", AmmoCaliber[Weapon[gpItemDescObject.value.usItem].ubCalibre], WeaponType[Weapon[gpItemDescObject.value.usItem].ubWeaponType], gMercProfiles[gpItemDescObject.value.ubImprintID].zNickname);
       } else {
-        swprintf(pStr, "%s %s", AmmoCaliber[Weapon[gpItemDescObject.value.usItem].ubCalibre], WeaponType[Weapon[gpItemDescObject.value.usItem].ubWeaponType]);
+        pStr = swprintf("%s %s", AmmoCaliber[Weapon[gpItemDescObject.value.usItem].ubCalibre], WeaponType[Weapon[gpItemDescObject.value.usItem].ubWeaponType]);
       }
 
       FindFontRightCoordinates(ITEMDESC_CALIBER_X(), ITEMDESC_CALIBER_Y(), ITEMDESC_CALIBER_WIDTH, ITEM_STATS_HEIGHT, pStr, ITEMDESC_FONT(), addressof(usX), addressof(usY));
@@ -2808,7 +2808,7 @@ export function RenderItemDescriptionBox(): void {
       SetFontShadow(DEFAULT_SHADOW);
 
       // LABELS
-      swprintf(sTempString, gWeaponStatsDesc[0], GetWeightUnitString());
+      sTempString = swprintf(gWeaponStatsDesc[0], GetWeightUnitString());
       mprintf(gWeaponStats[0].sX + gsInvDescX, gWeaponStats[0].sY + gsInvDescY, sTempString);
       //		mprintf( gWeaponStats[ 1 ].sX + gsInvDescX, gWeaponStats[ 1 ].sY + gsInvDescY, L"%s", gWeaponStatsDesc[ 1 ].zDesc );
       //		mprintf( gWeaponStats[ 2 ].sX + gsInvDescX, gWeaponStats[ 2 ].sY + gsInvDescY, L"%s", gWeaponStats[ 2 ].zDesc );
@@ -2836,13 +2836,13 @@ export function RenderItemDescriptionBox(): void {
       }
 
       // Status
-      swprintf(pStr, "%2d%%", gpItemDescObject.value.bGunStatus);
+      pStr = swprintf("%2d%%", gpItemDescObject.value.bGunStatus);
       FindFontRightCoordinates((gWeaponStats[1].sX + gsInvDescX + gWeaponStats[1].sValDx), (gWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
       wcscat(pStr, "%%");
       mprintf(usX, usY, pStr);
 
       // Wieght
-      swprintf(pStr, "%1.1f", fWeight);
+      pStr = swprintf("%1.1f", fWeight);
       FindFontRightCoordinates((gWeaponStats[0].sX + gsInvDescX + gWeaponStats[0].sValDx), (gWeaponStats[0].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, pStr);
 
@@ -2853,7 +2853,7 @@ export function RenderItemDescriptionBox(): void {
           SetFontForeground(5);
         }
 
-        swprintf(pStr, "%2d", (GunRange(gpItemDescObject)) / 10);
+        pStr = swprintf("%2d", (GunRange(gpItemDescObject)) / 10);
         FindFontRightCoordinates((gWeaponStats[3].sX + gsInvDescX + gWeaponStats[3].sValDx), (gWeaponStats[3].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
       }
@@ -2865,7 +2865,7 @@ export function RenderItemDescriptionBox(): void {
           SetFontForeground(5);
         }
 
-        swprintf(pStr, "%2d", Weapon[gpItemDescObject.value.usItem].ubImpact);
+        pStr = swprintf("%2d", Weapon[gpItemDescObject.value.usItem].ubImpact);
         FindFontRightCoordinates((gWeaponStats[4].sX + gsInvDescX + gWeaponStats[4].sValDx), (gWeaponStats[4].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
       }
@@ -2878,7 +2878,7 @@ export function RenderItemDescriptionBox(): void {
         SetFontForeground(5);
       }
 
-      swprintf(pStr, "%2d", ubAttackAPs);
+      pStr = swprintf("%2d", ubAttackAPs);
       FindFontRightCoordinates((gWeaponStats[5].sX + gsInvDescX + gWeaponStats[5].sValDx), (gWeaponStats[5].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, pStr);
 
@@ -2889,7 +2889,7 @@ export function RenderItemDescriptionBox(): void {
           SetFontForeground(5);
         }
 
-        swprintf(pStr, "%2d", ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, gpItemDescObject));
+        pStr = swprintf("%2d", ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, gpItemDescObject));
         FindFontRightCoordinates((gWeaponStats[6].sX + gsInvDescX + gWeaponStats[6].sValDx), (gWeaponStats[6].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
       }
@@ -2923,7 +2923,7 @@ export function RenderItemDescriptionBox(): void {
 
       // Total Amount
       SetFontForeground(FONT_WHITE);
-      swprintf(pStr, "%d", gRemoveMoney.uiTotalAmount);
+      pStr = swprintf("%d", gRemoveMoney.uiTotalAmount);
       InsertCommasForDollarFigure(pStr);
       InsertDollarSignInToString(pStr);
       FindFontRightCoordinates((ITEMDESC_NAME_X()), (ITEMDESC_NAME_Y()), 295, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
@@ -2948,14 +2948,14 @@ export function RenderItemDescriptionBox(): void {
       SetFontForeground(5);
 
       // Display the total amount of money remaining
-      swprintf(pStr, "%ld", gRemoveMoney.uiMoneyRemaining);
+      pStr = swprintf("%ld", gRemoveMoney.uiMoneyRemaining);
       InsertCommasForDollarFigure(pStr);
       InsertDollarSignInToString(pStr);
       FindFontRightCoordinates((gMoneyStats[1].sX + gsInvDescX + gMoneyStats[1].sValDx), (gMoneyStats[1].sY + gsInvDescY), (ITEM_STATS_WIDTH - 3), ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, pStr);
 
       // Display the total amount of money removing
-      swprintf(pStr, "%ld", gRemoveMoney.uiMoneyRemoving);
+      pStr = swprintf("%ld", gRemoveMoney.uiMoneyRemoving);
       InsertCommasForDollarFigure(pStr);
       InsertDollarSignInToString(pStr);
       FindFontRightCoordinates((gMoneyStats[3].sX + gsInvDescX + gMoneyStats[3].sValDx), (gMoneyStats[3].sY + gsInvDescY), (ITEM_STATS_WIDTH - 3), ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
@@ -2963,7 +2963,7 @@ export function RenderItemDescriptionBox(): void {
     } else if (Item[gpItemDescObject.value.usItem].usItemClass == IC_MONEY) {
       SetFontForeground(FONT_FCOLOR_WHITE);
       SetFontShadow(DEFAULT_SHADOW);
-      swprintf(pStr, "%ld", gpItemDescObject.value.uiMoneyAmount);
+      pStr = swprintf("%ld", gpItemDescObject.value.uiMoneyAmount);
       InsertCommasForDollarFigure(pStr);
       InsertDollarSignInToString(pStr);
 
@@ -2983,7 +2983,7 @@ export function RenderItemDescriptionBox(): void {
       }
 
       // Weight
-      swprintf(sTempString, gWeaponStatsDesc[0], GetWeightUnitString());
+      sTempString = swprintf(gWeaponStatsDesc[0], GetWeightUnitString());
       mprintf(gWeaponStats[0].sX + gsInvDescX, gWeaponStats[0].sY + gsInvDescY, sTempString);
 
       // Values
@@ -2992,12 +2992,12 @@ export function RenderItemDescriptionBox(): void {
       if (Item[gpItemDescObject.value.usItem].usItemClass & IC_AMMO) {
         // Ammo - print amount
         // Status
-        swprintf(pStr, "%d/%d", gpItemDescObject.value.ubShotsLeft[0], Magazine[Item[gpItemDescObject.value.usItem].ubClassIndex].ubMagSize);
+        pStr = swprintf("%d/%d", gpItemDescObject.value.ubShotsLeft[0], Magazine[Item[gpItemDescObject.value.usItem].ubClassIndex].ubMagSize);
         FindFontRightCoordinates((gWeaponStats[2].sX + gsInvDescX + gWeaponStats[2].sValDx), (gWeaponStats[2].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
       } else {
         // Status
-        swprintf(pStr, "%2d%%", gpItemDescObject.value.bStatus[gubItemDescStatusIndex]);
+        pStr = swprintf("%2d%%", gpItemDescObject.value.bStatus[gubItemDescStatusIndex]);
         FindFontRightCoordinates((gWeaponStats[1].sX + gsInvDescX + gWeaponStats[1].sValDx), (gWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         wcscat(pStr, "%%");
         mprintf(usX, usY, pStr);
@@ -3007,24 +3007,24 @@ export function RenderItemDescriptionBox(): void {
         SetFontForeground(6);
 
         // build description for keys .. the sector found
-        swprintf(pStr, "%s", sKeyDescriptionStrings[0]);
+        pStr = swprintf("%s", sKeyDescriptionStrings[0]);
         mprintf(gWeaponStats[4].sX + gsInvDescX, gWeaponStats[4].sY + gsInvDescY, pStr);
-        swprintf(pStr, "%s", sKeyDescriptionStrings[1]);
+        pStr = swprintf("%s", sKeyDescriptionStrings[1]);
         mprintf(gWeaponStats[4].sX + gsInvDescX, gWeaponStats[4].sY + gsInvDescY + GetFontHeight(BLOCKFONT()) + 2, pStr);
 
         SetFontForeground(5);
         GetShortSectorString(SECTORX(KeyTable[gpItemDescObject.value.ubKeyID].usSectorFound), SECTORY(KeyTable[gpItemDescObject.value.ubKeyID].usSectorFound), sTempString);
-        swprintf(pStr, "%s", sTempString);
+        pStr = swprintf("%s", sTempString);
         FindFontRightCoordinates((gWeaponStats[4].sX + gsInvDescX), (gWeaponStats[4].sY + gsInvDescY), 110, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
 
-        swprintf(pStr, "%d", KeyTable[gpItemDescObject.value.ubKeyID].usDateFound);
+        pStr = swprintf("%d", KeyTable[gpItemDescObject.value.ubKeyID].usDateFound);
         FindFontRightCoordinates((gWeaponStats[4].sX + gsInvDescX), (gWeaponStats[4].sY + gsInvDescY + GetFontHeight(BLOCKFONT()) + 2), 110, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
         mprintf(usX, usY, pStr);
       }
 
       // Weight
-      swprintf(pStr, "%1.1f", fWeight);
+      pStr = swprintf("%1.1f", fWeight);
       FindFontRightCoordinates((gWeaponStats[0].sX + gsInvDescX + gWeaponStats[0].sValDx), (gWeaponStats[0].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, pStr, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, pStr);
     }
@@ -4423,33 +4423,33 @@ export function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<U
     // ubGraphic++;
 
     if (ubGraphic < 10) {
-      sprintf(zName, "gun0%d.sti", ubGraphic);
+      zName = sprintf("gun0%d.sti", ubGraphic);
     } else {
-      sprintf(zName, "gun%d.sti", ubGraphic);
+      zName = sprintf("gun%d.sti", ubGraphic);
     }
   } else if (pItem.value.ubGraphicType == 1) {
     if (ubGraphic < 10) {
-      sprintf(zName, "p1item0%d.sti", ubGraphic);
+      zName = sprintf("p1item0%d.sti", ubGraphic);
     } else {
-      sprintf(zName, "p1item%d.sti", ubGraphic);
+      zName = sprintf("p1item%d.sti", ubGraphic);
     }
   } else if (pItem.value.ubGraphicType == 2) {
     if (ubGraphic < 10) {
-      sprintf(zName, "p2item0%d.sti", ubGraphic);
+      zName = sprintf("p2item0%d.sti", ubGraphic);
     } else {
-      sprintf(zName, "p2item%d.sti", ubGraphic);
+      zName = sprintf("p2item%d.sti", ubGraphic);
     }
   } else {
     if (ubGraphic < 10) {
-      sprintf(zName, "p3item0%d.sti", ubGraphic);
+      zName = sprintf("p3item0%d.sti", ubGraphic);
     } else {
-      sprintf(zName, "p3item%d.sti", ubGraphic);
+      zName = sprintf("p3item%d.sti", ubGraphic);
     }
   }
 
   // Load item
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(VObjectDesc.ImageFile, "BIGITEMS\\%s", zName);
+  VObjectDesc.ImageFile = sprintf("BIGITEMS\\%s", zName);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiVo)));
 
   puiVo.value = uiVo;
@@ -4949,9 +4949,9 @@ function SetupPickupPage(bPage: INT8): void {
 
       // Adjust for ammo, other thingys..
       if (Item[pObject.value.usItem].usItemClass & IC_AMMO || Item[pObject.value.usItem].usItemClass & IC_KEY) {
-        swprintf(pStr, "");
+        pStr = "";
       } else {
-        swprintf(pStr, "%d%%", sValue);
+        pStr = swprintf("%d%%", sValue);
       }
 
       SetRegionFastHelpText(addressof(gItemPickupMenu.Regions[cnt - iStart]), pStr);
@@ -5130,7 +5130,7 @@ export function RenderItemPickupMenu(): void {
           sCenX = sX - 4;
           sCenY = sY + 14;
 
-          swprintf(pStr, "%d", pObject.value.ubNumberOfObjects);
+          pStr = swprintf("%d", pObject.value.ubNumberOfObjects);
 
           VarFindFontRightCoordinates(sCenX, sCenY, 42, 1, ITEM_FONT(), addressof(sFontX), addressof(sFontY), pStr);
           mprintf_buffer(pDestBuf, uiDestPitchBYTES, ITEM_FONT(), sFontX, sFontY, pStr);
@@ -5143,7 +5143,7 @@ export function RenderItemPickupMenu(): void {
           SetFontShadow(DEFAULT_SHADOW);
 
           sNewY = sCenY + 2;
-          swprintf(pStr, "*");
+          pStr = "*";
 
           // Get length of string
           uiStringLength = StringPixLength(pStr, ITEM_FONT());
@@ -5180,13 +5180,13 @@ export function RenderItemPickupMenu(): void {
         // If we are money...
         if (Item[pObject.value.usItem].usItemClass == IC_MONEY) {
           let pStr2: string /* INT16[20] */;
-          swprintf(pStr2, "%ld", pObject.value.uiMoneyAmount);
+          pStr2 = swprintf("%ld", pObject.value.uiMoneyAmount);
           InsertCommasForDollarFigure(pStr2);
           InsertDollarSignInToString(pStr2);
 
-          swprintf(pStr, "%s (%ls)", ItemNames[pObject.value.usItem], pStr2);
+          pStr = swprintf("%s (%ls)", ItemNames[pObject.value.usItem], pStr2);
         } else {
-          swprintf(pStr, "%s", ShortItemNames[pObject.value.usItem]);
+          pStr = swprintf("%s", ShortItemNames[pObject.value.usItem]);
         }
         VarFindFontCenterCoordinates(sCenX, sCenY, ITEMPICK_TEXT_WIDTH, 1, ITEMDESC_FONT(), addressof(sFontX), addressof(sFontY), pStr);
         mprintf_buffer(pDestBuf, uiDestPitchBYTES, ITEMDESC_FONT(), sFontX, sFontY, pStr);
@@ -5655,34 +5655,34 @@ export function GetHelpTextForItem(pzStr: Pointer<string> /* Pointer<INT16> */, 
 
   if (pSoldier != null) {
     if (pSoldier.value.uiStatusFlags & SOLDIER_DEAD) {
-      swprintf(pStr, "");
-      swprintf(pzStr, "%s", pStr);
+      pStr = "";
+      pzStr = swprintf("%s", pStr);
       return;
     }
   }
 
   if (usItem == Enum225.MONEY) {
-    swprintf(pStr, "%ld", pObject.value.uiMoneyAmount);
+    pStr = swprintf("%ld", pObject.value.uiMoneyAmount);
     InsertCommasForDollarFigure(pStr);
     InsertDollarSignInToString(pStr);
   } else if (Item[usItem].usItemClass == IC_MONEY) {
     // alternate money like silver or gold
     let pStr2: string /* INT16[20] */;
-    swprintf(pStr2, "%ld", pObject.value.uiMoneyAmount);
+    pStr2 = swprintf("%ld", pObject.value.uiMoneyAmount);
     InsertCommasForDollarFigure(pStr2);
     InsertDollarSignInToString(pStr2);
 
-    swprintf(pStr, "%s (%ls)", ItemNames[usItem], pStr2);
+    pStr = swprintf("%s (%ls)", ItemNames[usItem], pStr2);
   } else if (usItem != NOTHING) {
     if (!gGameOptions.fGunNut && Item[usItem].usItemClass == IC_GUN && usItem != Enum225.ROCKET_LAUNCHER && usItem != Enum225.ROCKET_RIFLE) {
-      swprintf(pStr, "%s (%s)", ItemNames[usItem], AmmoCaliber[Weapon[usItem].ubCalibre]);
+      pStr = swprintf("%s (%s)", ItemNames[usItem], AmmoCaliber[Weapon[usItem].ubCalibre]);
     } else {
-      swprintf(pStr, "%s", ItemNames[usItem]);
+      pStr = swprintf("%s", ItemNames[usItem]);
     }
 
     if ((pObject.value.usItem == Enum225.ROCKET_RIFLE || pObject.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && pObject.value.ubImprintID < NO_PROFILE) {
       let pStr2: string /* INT16[20] */;
-      swprintf(pStr2, " [%s]", gMercProfiles[pObject.value.ubImprintID].zNickname);
+      pStr2 = swprintf(" [%s]", gMercProfiles[pObject.value.ubImprintID].zNickname);
       wcscat(pStr, pStr2);
     }
 
@@ -5705,11 +5705,11 @@ export function GetHelpTextForItem(pzStr: Pointer<string> /* Pointer<INT16> */, 
       wcscat(pStr, pMessageStrings[Enum333.MSG_END_ATTACHMENT_LIST]);
     }
   } else {
-    swprintf(pStr, "");
+    pStr = "";
   }
 
   // Copy over...
-  swprintf(pzStr, "%s", pStr);
+  pzStr = swprintf("%s", pStr);
 }
 
 function GetPrefferedItemSlotGraphicNum(usItem: UINT16): UINT8 {

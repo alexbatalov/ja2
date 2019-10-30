@@ -142,7 +142,7 @@ export function WrapString(pStr: string /* Pointer<INT16> */, pStr2: Pointer<str
       }
       if (!fLineSplit) {
         // We completed the check for a space, but failed, so use the hyphen method.
-        swprintf(pStr2, "-%s", addressof(pStr[uiHyphenLet]));
+        pStr2 = swprintf("-%s", addressof(pStr[uiHyphenLet]));
         pStr[uiHyphenLet] = '/0';
         fLineSplit = true; // hyphen method
         break;
@@ -271,7 +271,7 @@ export function DoJA2FilesExistsOnDrive(zCdLocation: string /* Pointer<CHAR8> */
 
   for (cnt = 0; cnt < 4; cnt++) {
     // OK, build filename
-    sprintf(zCdFile, "%s%s", zCdLocation, gCheckFilenames[cnt]);
+    zCdFile = sprintf("%s%s", zCdLocation, gCheckFilenames[cnt]);
 
     hFile = FileOpen(zCdFile, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
 

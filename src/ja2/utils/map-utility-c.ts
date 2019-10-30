@@ -140,7 +140,7 @@ export function MapUtilScreenHandle(): UINT32 {
     return Enum26.MAPUTILITY_SCREEN;
   }
 
-  sprintf(zFilename, "%s", FListNode.value.FileInfo.zFileName);
+  zFilename = sprintf("%s", FListNode.value.FileInfo.zFileName);
 
   // OK, load maps and do overhead shrinkage of them...
   if (!LoadWorld(zFilename)) {
@@ -280,7 +280,7 @@ export function MapUtilScreenHandle(): UINT32 {
     }
   }
 
-  sprintf(zFilename2, "RADARMAPS\\%s.STI", zFilename);
+  zFilename2 = sprintf("RADARMAPS\\%s.STI", zFilename);
   WriteSTIFile(pDataPtr, pPalette, MINIMAP_X_SIZE, MINIMAP_Y_SIZE, zFilename2, CONVERT_ETRLE_COMPRESS, 0);
 
   UnLockVideoSurface(gi8BitMiniMap);

@@ -102,12 +102,12 @@ function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<
   if (ubCivQuoteID == CIV_QUOTE_HINT) {
     if (gbWorldSectorZ > 0) {
       // sprintf( zFileName, "NPCData\\miners.edt" );
-      sprintf(zFileName, "NPCDATA\\CIV%02d.edt", Enum201.CIV_QUOTE_MINERS_NOT_FOR_PLAYER);
+      zFileName = sprintf("NPCDATA\\CIV%02d.edt", Enum201.CIV_QUOTE_MINERS_NOT_FOR_PLAYER);
     } else {
-      sprintf(zFileName, "NPCData\\%c%d.edt", 'A' + (gWorldSectorY - 1), gWorldSectorX);
+      zFileName = sprintf("NPCData\\%c%d.edt", 'A' + (gWorldSectorY - 1), gWorldSectorX);
     }
   } else {
-    sprintf(zFileName, "NPCDATA\\CIV%02d.edt", ubCivQuoteID);
+    zFileName = sprintf("NPCDATA\\CIV%02d.edt", ubCivQuoteID);
   }
 
   CHECKF(FileExists(zFileName));
@@ -288,7 +288,7 @@ export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, u
     return;
   }
 
-  swprintf(gzCivQuote, "\"%s\"", zQuote);
+  gzCivQuote = swprintf("\"%s\"", zQuote);
 
   if (ubCivQuoteID == CIV_QUOTE_HINT) {
     MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", gzCivQuote);

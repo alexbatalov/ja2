@@ -95,9 +95,9 @@ function LoadSaveScreenEntry(): void {
     GetFileClose(addressof(FileInfo));
   }
 
-  swprintf(zOrigName, "%s Map (*.dat)", iCurrentAction == Enum37.ACTION_SAVE_MAP ? "Save" : "Load");
+  zOrigName = swprintf("%s Map (*.dat)", iCurrentAction == Enum37.ACTION_SAVE_MAP ? "Save" : "Load");
 
-  swprintf(gzFilename, "%S", gubFilename);
+  gzFilename = swprintf("%S", gubFilename);
 
   CreateFileDialog(zOrigName);
 
@@ -145,7 +145,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
         if (!temp)
           wcscpy(gzFilename, "");
         else
-          swprintf(gzFilename, "%S", temp.value.FileInfo.zFileName);
+          gzFilename = swprintf("%S", temp.value.FileInfo.zFileName);
         if (ValidFilename()) {
           SetInputFieldStringWith16BitString(0, gzFilename);
         } else {
@@ -269,14 +269,14 @@ export function LoadSaveScreenHandle(): UINT32 {
       fEnteringLoadSaveScreen = true;
       return Enum26.EDIT_SCREEN;
     case Enum50.DIALOG_DELETE:
-      sprintf(gszCurrFilename, "MAPS\\%S", gzFilename);
+      gszCurrFilename = sprintf("MAPS\\%S", gzFilename);
       if (GetFileFirst(gszCurrFilename, addressof(FileInfo))) {
         let str: string /* UINT16[40] */;
         if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_HIDDEN | FILE_IS_SYSTEM)) {
-          swprintf(str, " Delete READ-ONLY file %s? ", gzFilename);
+          str = swprintf(" Delete READ-ONLY file %s? ", gzFilename);
           gfReadOnly = true;
         } else
-          swprintf(str, " Delete file %s? ", gzFilename);
+          str = swprintf(" Delete file %s? ", gzFilename);
         gfDeleteFile = true;
         CreateMessageBox(str);
       }
@@ -288,7 +288,7 @@ export function LoadSaveScreenHandle(): UINT32 {
         iFDlgState = Enum50.DIALOG_NONE;
         return Enum26.LOADSAVE_SCREEN;
       }
-      sprintf(gszCurrFilename, "MAPS\\%S", gzFilename);
+      gszCurrFilename = sprintf("MAPS\\%S", gzFilename);
       if (FileExists(gszCurrFilename)) {
         gfFileExists = true;
         gfReadOnly = false;
@@ -316,7 +316,7 @@ export function LoadSaveScreenHandle(): UINT32 {
       RemoveFileDialog();
       CreateProgressBar(0, 118, 183, 522, 202);
       DefineProgressBarPanel(0, 65, 79, 94, 100, 155, 540, 235);
-      swprintf(zOrigName, "Loading map:  %s", gzFilename);
+      zOrigName = swprintf("Loading map:  %s", gzFilename);
       SetProgressBarTitle(0, zOrigName, BLOCKFONT2(), FONT_RED, FONT_NEARBLACK);
       gbCurrentFileIOStatus = Enum51.INITIATE_MAP_LOAD;
       return Enum26.LOADSAVE_SCREEN;
@@ -467,7 +467,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
       let iCurrClickTime: INT32;
       iCurrFileShown = x;
       FListNode.value.FileInfo.zFileName[30] = 0;
-      swprintf(gzFilename, "%S", FListNode.value.FileInfo.zFileName);
+      gzFilename = swprintf("%S", FListNode.value.FileInfo.zFileName);
       if (ValidFilename()) {
         SetInputFieldStringWith16BitString(0, gzFilename);
       } else {
@@ -656,7 +656,7 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
     }
     if (curr) {
       SetInputFieldStringWith8BitString(0, curr.value.FileInfo.zFileName);
-      swprintf(gzFilename, "%S", curr.value.FileInfo.zFileName);
+      gzFilename = swprintf("%S", curr.value.FileInfo.zFileName);
     }
   }
 }
@@ -711,7 +711,7 @@ function ProcessFileIO(): UINT32 {
       SetFontForeground(FONT_LTKHAKI);
       SetFontShadow(FONT_DKKHAKI);
       SetFontBackground(0);
-      swprintf(zOrigName, "Saving map:  %s", gzFilename);
+      zOrigName = swprintf("Saving map:  %s", gzFilename);
       usStartX = 320 - StringPixLength(zOrigName, LARGEFONT1()) / 2;
       usStartY = 180 - GetFontHeight(LARGEFONT1()) / 2;
       mprintf(usStartX, usStartY, zOrigName);
@@ -721,7 +721,7 @@ function ProcessFileIO(): UINT32 {
       gbCurrentFileIOStatus = Enum51.SAVING_MAP;
       return Enum26.LOADSAVE_SCREEN;
     case Enum51.SAVING_MAP: // save map
-      sprintf(ubNewFilename, "%S", gzFilename);
+      ubNewFilename = sprintf("%S", gzFilename);
       RaiseWorldLand();
       if (gfShowPits)
         RemoveAllPits();
@@ -763,7 +763,7 @@ function ProcessFileIO(): UINT32 {
       return Enum26.LOADSAVE_SCREEN;
     case Enum51.LOADING_MAP: // load map
       DisableUndo();
-      sprintf(ubNewFilename, "%S", gzFilename);
+      ubNewFilename = sprintf("%S", gzFilename);
 
       RemoveMercsInSector();
 

@@ -1193,7 +1193,7 @@ export function BuildStatChangeString(wString: Pointer<string> /* STR16 */, wNam
     ubStringIndex += 2;
   }
 
-  swprintf(wString, "%s %s %d %s %s", wName, sPreStatBuildString[fIncrease ? 1 : 0], Math.abs(sPtsChanged), sPreStatBuildString[ubStringIndex], sStatGainStrings[ubStat - FIRST_CHANGEABLE_STAT]);
+  wString = swprintf("%s %s %d %s %s", wName, sPreStatBuildString[fIncrease ? 1 : 0], Math.abs(sPtsChanged), sPreStatBuildString[ubStringIndex], sStatGainStrings[ubStat - FIRST_CHANGEABLE_STAT]);
 }
 
 function CalcImportantSectorControl(): UINT8 {

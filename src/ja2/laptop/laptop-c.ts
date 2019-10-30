@@ -3378,7 +3378,7 @@ function DisplayPlayersBalanceToDate(): void {
   SetFontShadow(NO_SHADOW);
 
   // parse straigth number
-  swprintf(sString, "%d", LaptopSaveInfo.iCurrentBalance);
+  sString = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
 
   // put in commas, then dollar sign
   InsertCommasForDollarFigure(sString);
@@ -4258,7 +4258,7 @@ export function PrintBalance(): void {
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
 
-  swprintf(pString, "%d", LaptopSaveInfo.iCurrentBalance);
+  pString = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
   InsertCommasForDollarFigure(pString);
   InsertDollarSignInToString(pString);
 
@@ -4300,7 +4300,7 @@ export function PrintNumberOnTeam(): void {
     }
   }
 
-  swprintf(pString, "%s %d", pPersonnelString[0], iCounter);
+  pString = swprintf("%s %d", pPersonnelString[0], iCounter);
 
   usFontHeight = GetFontHeight(FONT10ARIAL());
   usStrLength = StringPixLength(pString, FONT10ARIAL());
@@ -4475,7 +4475,7 @@ export function RenderWWWProgramTitleBar(): boolean {
   else {
     iIndex = guiCurrentLaptopMode - Enum95.LAPTOP_MODE_WWW - 1;
 
-    swprintf(sString, "%s  -  %s", pWebTitle[0], pWebPagesTitles[iIndex]);
+    sString = swprintf("%s  -  %s", pWebTitle[0], pWebPagesTitles[iIndex]);
     mprintf(140, 33, sString);
   }
 

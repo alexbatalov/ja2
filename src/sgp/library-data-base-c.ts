@@ -165,7 +165,7 @@ function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: Pointer<L
     // if it failed finding the file on the hard drive, and the file can be on the cdrom
     if (fCanBeOnCDrom) {
       // Add the path of the cdrom to the path of the library file
-      sprintf(zTempPath, "%s%s", gzCdDirectory, pLibraryName);
+      zTempPath = sprintf("%s%s", gzCdDirectory, pLibraryName);
 
       // look on the cdrom
       hFile = CreateFile(zTempPath, GENERIC_READ, 0, null, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, null);
@@ -430,9 +430,9 @@ function CompareFileNames(arg1: string[] /* Pointer<CHAR8>[] */, arg2: Pointer<P
 
   TempFileHeader = arg2;
 
-  sprintf(sSearchKey, "%s", arg1);
+  sSearchKey = sprintf("%s", arg1);
 
-  sprintf(sFileNameWithPath, "%s%s", gFileDataBase.pLibraries[gsCurrentLibrary].sLibraryPath, TempFileHeader.value.pFileName);
+  sFileNameWithPath = sprintf("%s%s", gFileDataBase.pLibraries[gsCurrentLibrary].sLibraryPath, TempFileHeader.value.pFileName);
 
   /* Compare all of both strings: */
   return _stricmp(sSearchKey, sFileNameWithPath);
@@ -882,9 +882,9 @@ function CompareDirEntryFileNames(arg1: string[] /* Pointer<CHAR8>[] */, arg2: P
 
   TempDirEntry = arg2;
 
-  sprintf(sSearchKey, "%s", arg1);
+  sSearchKey = sprintf("%s", arg1);
 
-  sprintf(sFileNameWithPath, "%s", TempDirEntry.value.sFileName);
+  sFileNameWithPath = sprintf("%s", TempDirEntry.value.sFileName);
 
   /* Compare all of both strings: */
   return _stricmp(sSearchKey, sFileNameWithPath);

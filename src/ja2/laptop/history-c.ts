@@ -680,7 +680,7 @@ function DrawHistoryRecordsText(): void {
       SetFontForeground(FONT_RED);
     }
     // get and write the date
-    swprintf(sString, "%d", (pCurHistory.value.uiDate / (24 * 60)));
+    sString = swprintf("%d", (pCurHistory.value.uiDate / (24 * 60)));
     FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
     mprintf(usX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
@@ -769,10 +769,10 @@ function DisplayPageNumberAndDateRange(): void {
   SetFontShadow(NO_SHADOW);
 
   if (!pCurrentHistory) {
-    swprintf(sString, "%s  %d / %d", pHistoryHeaders[1], 1, 1);
+    sString = swprintf("%s  %d / %d", pHistoryHeaders[1], 1, 1);
     mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
 
-    swprintf(sString, "%s %d - %d", pHistoryHeaders[2], 1, 1);
+    sString = swprintf("%s %d - %d", pHistoryHeaders[2], 1, 1);
     mprintf(HISTORY_DATE_X, HISTORY_DATE_Y, sString);
 
     // reset shadow
@@ -813,10 +813,10 @@ function DisplayPageNumberAndDateRange(): void {
 
   // get the last page
 
-  swprintf(sString, "%s  %d / %d", pHistoryHeaders[1], iCurrentHistoryPage, iLastPage + 1);
+  sString = swprintf("%s  %d / %d", pHistoryHeaders[1], iCurrentHistoryPage, iLastPage + 1);
   mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
 
-  swprintf(sString, "%s %d - %d", pHistoryHeaders[2], pCurrentHistory.value.uiDate / (24 * 60), uiLastDate / (24 * 60));
+  sString = swprintf("%s %d - %d", pHistoryHeaders[2], pCurrentHistory.value.uiDate / (24 * 60), uiLastDate / (24 * 60));
   mprintf(HISTORY_DATE_X, HISTORY_DATE_Y, sString);
 
   // reset shadow
@@ -830,108 +830,108 @@ function ProcessHistoryTransactionString(pString: Pointer<string> /* STR16 */, p
 
   switch (pHistory.value.ubCode) {
     case Enum83.HISTORY_ENTERED_HISTORY_MODE:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_ENTERED_HISTORY_MODE]);
+      pString = pHistoryStrings[Enum83.HISTORY_ENTERED_HISTORY_MODE];
       break;
 
     case Enum83.HISTORY_HIRED_MERC_FROM_AIM:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_AIM], gMercProfiles[pHistory.value.ubSecondCode].zName);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_AIM], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
 
     case Enum83.HISTORY_MERC_KILLED:
       if (pHistory.value.ubSecondCode != NO_PROFILE)
-        swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_KILLED], gMercProfiles[pHistory.value.ubSecondCode].zName);
+        pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_KILLED], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
 
     case Enum83.HISTORY_HIRED_MERC_FROM_MERC:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_MERC], gMercProfiles[pHistory.value.ubSecondCode].zName);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_MERC], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
 
     case Enum83.HISTORY_SETTLED_ACCOUNTS_AT_MERC:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_SETTLED_ACCOUNTS_AT_MERC]);
+      pString = pHistoryStrings[Enum83.HISTORY_SETTLED_ACCOUNTS_AT_MERC];
       break;
     case Enum83.HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO]);
+      pString = pHistoryStrings[Enum83.HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO];
       break;
     case (Enum83.HISTORY_CHARACTER_GENERATED):
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_CHARACTER_GENERATED]);
+      pString = pHistoryStrings[Enum83.HISTORY_CHARACTER_GENERATED];
       break;
     case (Enum83.HISTORY_PURCHASED_INSURANCE):
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_PURCHASED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_PURCHASED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
     case (Enum83.HISTORY_CANCELLED_INSURANCE):
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_CANCELLED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_CANCELLED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
     case (Enum83.HISTORY_INSURANCE_CLAIM_PAYOUT):
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_INSURANCE_CLAIM_PAYOUT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_INSURANCE_CLAIM_PAYOUT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case Enum83.HISTORY_EXTENDED_CONTRACT_1_DAY:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_DAY], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_DAY], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case Enum83.HISTORY_EXTENDED_CONTRACT_1_WEEK:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case Enum83.HISTORY_EXTENDED_CONTRACT_2_WEEK:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_2_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_2_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case (Enum83.HISTORY_MERC_FIRED):
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_FIRED], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_FIRED], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case (Enum83.HISTORY_MERC_QUIT):
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_QUIT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_QUIT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case (Enum83.HISTORY_QUEST_STARTED):
       GetQuestStartedString(pHistory.value.ubSecondCode, sString);
-      swprintf(pString, sString);
+      pString = sString;
 
       break;
     case (Enum83.HISTORY_QUEST_FINISHED):
       GetQuestEndedString(pHistory.value.ubSecondCode, sString);
-      swprintf(pString, sString);
+      pString = sString;
 
       break;
     case (Enum83.HISTORY_TALKED_TO_MINER):
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_TALKED_TO_MINER], pTownNames[pHistory.value.ubSecondCode]);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_TALKED_TO_MINER], pTownNames[pHistory.value.ubSecondCode]);
       break;
     case (Enum83.HISTORY_LIBERATED_TOWN):
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_LIBERATED_TOWN], pTownNames[pHistory.value.ubSecondCode]);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_LIBERATED_TOWN], pTownNames[pHistory.value.ubSecondCode]);
       break;
     case (Enum83.HISTORY_CHEAT_ENABLED):
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_CHEAT_ENABLED]);
+      pString = pHistoryStrings[Enum83.HISTORY_CHEAT_ENABLED];
       break;
     case Enum83.HISTORY_TALKED_TO_FATHER_WALKER:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_TALKED_TO_FATHER_WALKER]);
+      pString = pHistoryStrings[Enum83.HISTORY_TALKED_TO_FATHER_WALKER];
       break;
     case Enum83.HISTORY_MERC_MARRIED_OFF:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_MARRIED_OFF], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_MARRIED_OFF], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
     case Enum83.HISTORY_MERC_CONTRACT_EXPIRED:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_CONTRACT_EXPIRED], gMercProfiles[pHistory.value.ubSecondCode].zName);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_CONTRACT_EXPIRED], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
     case Enum83.HISTORY_RPC_JOINED_TEAM:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_RPC_JOINED_TEAM], gMercProfiles[pHistory.value.ubSecondCode].zName);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_RPC_JOINED_TEAM], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
     case Enum83.HISTORY_ENRICO_COMPLAINED:
-      swprintf(pString, pHistoryStrings[Enum83.HISTORY_ENRICO_COMPLAINED]);
+      pString = pHistoryStrings[Enum83.HISTORY_ENRICO_COMPLAINED];
       break;
     case Enum83.HISTORY_MINE_RUNNING_OUT:
     case Enum83.HISTORY_MINE_RAN_OUT:
     case Enum83.HISTORY_MINE_SHUTDOWN:
     case Enum83.HISTORY_MINE_REOPENED:
       // all the same format
-      swprintf(pString, pHistoryStrings[pHistory.value.ubCode], pTownNames[pHistory.value.ubSecondCode]);
+      pString = swprintf(pHistoryStrings[pHistory.value.ubCode], pTownNames[pHistory.value.ubSecondCode]);
       break;
     case Enum83.HISTORY_LOST_BOXING:
     case Enum83.HISTORY_WON_BOXING:
     case Enum83.HISTORY_DISQUALIFIED_BOXING:
     case Enum83.HISTORY_NPC_KILLED:
     case Enum83.HISTORY_MERC_KILLED_CHARACTER:
-      swprintf(pString, pHistoryStrings[pHistory.value.ubCode], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[pHistory.value.ubCode], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     // ALL SIMPLE HISTORY LOG MSGS, NO PARAMS
@@ -980,7 +980,7 @@ function ProcessHistoryTransactionString(pString: Pointer<string> /* STR16 */, p
     case Enum83.HISTORY_SLAUGHTEREDBLOODCATS:
     case Enum83.HISTORY_GAVE_CARMEN_HEAD:
     case Enum83.HISTORY_SLAY_MYSTERIOUSLY_LEFT:
-      swprintf(pString, pHistoryStrings[pHistory.value.ubCode]);
+      pString = pHistoryStrings[pHistory.value.ubCode];
       break;
   }
 }

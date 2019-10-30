@@ -636,28 +636,28 @@ function RenderItemDetails(): void {
           SetFontForeground(77);
         switch (i) {
           case 0:
-            swprintf(str, "Panic1");
+            str = "Panic1";
             break;
           case 1:
-            swprintf(str, "Panic2");
+            str = "Panic2";
             break;
           case 2:
-            swprintf(str, "Panic3");
+            str = "Panic3";
             break;
           case 3:
-            swprintf(str, "Norm1");
+            str = "Norm1";
             break;
           case 4:
-            swprintf(str, "Norm2");
+            str = "Norm2";
             break;
           case 5:
-            swprintf(str, "Norm3");
+            str = "Norm3";
             break;
           case 6:
-            swprintf(str, "Norm4");
+            str = "Norm4";
             break;
           case 7:
-            swprintf(str, "Pressure Actions");
+            str = "Pressure Actions";
             break;
         }
         if (i < 7) {
@@ -864,8 +864,8 @@ export function RenderSummaryWindow(): void {
           x = gsSelSectorX - 1, y = gsSelSectorY - 1;
         else
           x = gsSectorX - 1, y = gsSectorY - 1;
-        swprintf(str, "%c%d", y + 'A', x + 1);
-        swprintf(gszFilename, str);
+        str = swprintf("%c%d", y + 'A', x + 1);
+        gszFilename = str;
         giCurrLevel = giCurrentViewLevel;
         switch (giCurrentViewLevel) {
           case ALL_LEVELS_MASK:
@@ -1002,7 +1002,7 @@ export function RenderSummaryWindow(): void {
               wcscat(gszFilename, "_b3_a.dat");
               break;
           }
-          swprintf(gszDisplayName, gszFilename);
+          gszDisplayName = gszFilename;
           EnableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
           if (gpCurrentSectorSummary) {
             if (gpCurrentSectorSummary.value.ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
@@ -1079,7 +1079,7 @@ export function RenderSummaryWindow(): void {
               wcscat(gszFilename, "_b3_a.dat");
               break;
           }
-          swprintf(gszDisplayName, gszFilename);
+          gszDisplayName = gszFilename;
           DisableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
         }
       SPECIALCASE_LABEL:
@@ -1176,7 +1176,7 @@ export function RenderSummaryWindow(): void {
     }
     for (x = 1; x <= 16; x++) {
       let str: string /* UINT16[3] */;
-      swprintf(str, "%d", x);
+      str = swprintf("%d", x);
       mprintf(MAP_LEFT + x * 13 - (13 + StringPixLength(str, SMALLCOMPFONT())) / 2, MAP_TOP - 8, str);
     }
     if (gfRenderGrid) {
@@ -1213,7 +1213,7 @@ export function RenderSummaryWindow(): void {
               // is no ground level, then it'll be shadowed.
               SetFont(SMALLCOMPFONT());
               SetFontForeground(FONT_YELLOW);
-              swprintf(str, "%d", ubNumUndergroundLevels);
+              str = swprintf("%d", ubNumUndergroundLevels);
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
             }
             if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
@@ -1233,7 +1233,7 @@ export function RenderSummaryWindow(): void {
               // is no ground level, then it'll be shadowed.
               SetFont(SMALLCOMPFONT());
               SetFontForeground(FONT_YELLOW);
-              swprintf(str, "%d", ubNumUndergroundLevels);
+              str = swprintf("%d", ubNumUndergroundLevels);
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
             }
             if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK) {
@@ -1387,7 +1387,7 @@ export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, f
     SetFont(FONT10ARIAL());
     SetFontForeground(FONT_LTKHAKI);
     SetFontShadow(FONT_NEARBLACK);
-    swprintf(str, "Analyzing map:  %s...", gszFilename);
+    str = swprintf("Analyzing map:  %s...", gszFilename);
 
     if (gfSummaryWindowActive) {
       mprintf(MAP_LEFT, MAP_BOTTOM + 100, str);
@@ -1399,7 +1399,7 @@ export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, f
       CreateProgressBar(0, 250, 200, 390, 210);
     }
 
-    sprintf(szCoord, "%S", gszFilename);
+    szCoord = sprintf("%S", gszFilename);
     if (gsSectorX > 9)
       szCoord[3] = '\0';
     else
@@ -1605,7 +1605,7 @@ function CreateGlobalSummary(): void {
   gfGlobalSummaryExists = false;
   // Set current directory to JA2\DevInfo which contains all of the summary data
   GetExecutableDirectory(ExecDir);
-  sprintf(Dir, "%s\\DevInfo", ExecDir);
+  Dir = sprintf("%s\\DevInfo", ExecDir);
 
   // Directory doesn't exist, so create it, and continue.
   if (!MakeFileManDirectory(Dir))
@@ -1618,7 +1618,7 @@ function CreateGlobalSummary(): void {
   fprintf(fp, "%s\n%s\n", "This information is used in conjunction with the editor.", "This directory or it's contents shouldn't be included with final release.");
   fclose(fp);
 
-  sprintf(Dir, "%s\\Data", ExecDir);
+  Dir = sprintf("%s\\Data", ExecDir);
   SetFileManCurrentDirectory(Dir);
 
   LoadGlobalSummary();
@@ -1792,7 +1792,7 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     CreateProgressBar(0, MAP_LEFT + 5, MAP_BOTTOM + 110, 573, MAP_BOTTOM + 120);
 
     DefineProgressBarPanel(0, 65, 79, 94, MAP_LEFT, 318, 578, 356);
-    swprintf(str, "Loading map:  %s", gszDisplayName);
+    str = swprintf("Loading map:  %s", gszDisplayName);
     SetProgressBarTitle(0, str, BLOCKFONT2(), FONT_RED, FONT_NEARBLACK);
     SetProgressBarMsgAttributes(0, SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK);
 
@@ -1833,7 +1833,7 @@ function SummarySaveMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     if (gubOverrideStatus == Enum57.INACTIVE || gfOverride == true) {
       if (gubOverrideStatus == Enum57.READONLY) {
         let filename: string /* UINT8[40] */;
-        sprintf(filename, "MAPS\\%S", gszDisplayName);
+        filename = sprintf("MAPS\\%S", gszDisplayName);
         FileClearAttributes(filename);
       }
       if (ExternalSaveMap(gszDisplayName)) {
@@ -1866,17 +1866,17 @@ function CalculateOverrideStatus(): void {
   gfOverride = false;
   if (gfTempFile) {
     let ptr: string /* Pointer<UINT8> */;
-    sprintf(szFilename, "MAPS\\%S", gszTempFilename);
+    szFilename = sprintf("MAPS\\%S", gszTempFilename);
     if (strlen(szFilename) == 5)
       strcat(szFilename, "test.dat");
     ptr = strstr(szFilename, ".");
     if (!ptr)
       strcat(szFilename, ".dat");
     else
-      sprintf(ptr, ".dat");
+      ptr = ".dat";
   } else
-    sprintf(szFilename, "MAPS\\%S", gszFilename);
-  swprintf(gszDisplayName, "%S", addressof(szFilename[5]));
+    szFilename = sprintf("MAPS\\%S", gszFilename);
+  gszDisplayName = swprintf("%S", addressof(szFilename[5]));
   if (GetFileFirst(szFilename, addressof(FileInfo))) {
     if (gfWorldLoaded) {
       if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_SYSTEM))
@@ -1917,8 +1917,8 @@ function LoadGlobalSummary(): void {
   gfGlobalSummaryExists = false;
   // Set current directory to JA2\DevInfo which contains all of the summary data
   GetExecutableDirectory(ExecDir);
-  sprintf(DevInfoDir, "%s\\DevInfo", ExecDir);
-  sprintf(MapsDir, "%s\\Data\\Maps", ExecDir);
+  DevInfoDir = sprintf("%s\\DevInfo", ExecDir);
+  MapsDir = sprintf("%s\\Data\\Maps", ExecDir);
 
   // Check to make sure we have a DevInfo directory.  If we don't create one!
   if (!SetFileManCurrentDirectory(DevInfoDir)) {
@@ -1938,10 +1938,10 @@ function LoadGlobalSummary(): void {
   for (y = 0; y < 16; y++) {
     for (x = 0; x < 16; x++) {
       gbSectorLevels[x][y] = 0;
-      sprintf(szSector, "%c%d", 'A' + y, x + 1);
+      szSector = sprintf("%c%d", 'A' + y, x + 1);
 
       // main ground level
-      sprintf(szFilename, "%c%d.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%c%d.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -1951,11 +1951,11 @@ function LoadGlobalSummary(): void {
         FileClose(hfile);
         LoadSummary(szSector, 0, dMajorVersion);
       } else {
-        sprintf(szFilename, "%s.sum", szSector);
+        szFilename = sprintf("%s.sum", szSector);
         FileDelete(szFilename);
       }
       // main B1 level
-      sprintf(szFilename, "%c%d_b1.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%c%d_b1.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -1965,11 +1965,11 @@ function LoadGlobalSummary(): void {
         FileClose(hfile);
         LoadSummary(szSector, 1, dMajorVersion);
       } else {
-        sprintf(szFilename, "%s_b1.sum", szSector);
+        szFilename = sprintf("%s_b1.sum", szSector);
         FileDelete(szFilename);
       }
       // main B2 level
-      sprintf(szFilename, "%c%d_b2.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%c%d_b2.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -1979,11 +1979,11 @@ function LoadGlobalSummary(): void {
         FileClose(hfile);
         LoadSummary(szSector, 2, dMajorVersion);
       } else {
-        sprintf(szFilename, "%s_b2.sum", szSector);
+        szFilename = sprintf("%s_b2.sum", szSector);
         FileDelete(szFilename);
       }
       // main B3 level
-      sprintf(szFilename, "%c%d_b3.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%c%d_b3.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -1993,11 +1993,11 @@ function LoadGlobalSummary(): void {
         FileClose(hfile);
         LoadSummary(szSector, 3, dMajorVersion);
       } else {
-        sprintf(szFilename, "%s_b3.sum", szSector);
+        szFilename = sprintf("%s_b3.sum", szSector);
         FileDelete(szFilename);
       }
       // alternate ground level
-      sprintf(szFilename, "%c%d_a.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%c%d_a.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -2007,11 +2007,11 @@ function LoadGlobalSummary(): void {
         FileClose(hfile);
         LoadSummary(szSector, 4, dMajorVersion);
       } else {
-        sprintf(szFilename, "%s_a.sum", szSector);
+        szFilename = sprintf("%s_a.sum", szSector);
         FileDelete(szFilename);
       }
       // alternate B1 level
-      sprintf(szFilename, "%c%d_b1_a.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%c%d_b1_a.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -2021,11 +2021,11 @@ function LoadGlobalSummary(): void {
         FileClose(hfile);
         LoadSummary(szSector, 5, dMajorVersion);
       } else {
-        sprintf(szFilename, "%s_b1_a.sum", szSector);
+        szFilename = sprintf("%s_b1_a.sum", szSector);
         FileDelete(szFilename);
       }
       // alternate B2 level
-      sprintf(szFilename, "%c%d_b2_a.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%c%d_b2_a.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -2035,11 +2035,11 @@ function LoadGlobalSummary(): void {
         FileClose(hfile);
         LoadSummary(szSector, 6, dMajorVersion);
       } else {
-        sprintf(szFilename, "%s_b2_a.sum", szSector);
+        szFilename = sprintf("%s_b2_a.sum", szSector);
         FileDelete(szFilename);
       }
       // alternate B3 level
-      sprintf(szFilename, "%c%d_b3_a.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%c%d_b3_a.dat", 'A' + y, x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -2050,14 +2050,14 @@ function LoadGlobalSummary(): void {
         FileClose(hfile);
         LoadSummary(szSector, 7, dMajorVersion);
       } else {
-        sprintf(szFilename, "%s_b3_a.sum", szSector);
+        szFilename = sprintf("%s_b3_a.sum", szSector);
         FileDelete(szFilename);
       }
     }
     OutputDebugString(String("Sector Row %c complete... \n", y + 'A'));
   }
 
-  sprintf(MapsDir, "%s\\Data", ExecDir);
+  MapsDir = sprintf("%s\\Data", ExecDir);
   SetFileManCurrentDirectory(MapsDir);
 
   if (gfMustForceUpdateAllMaps) {
@@ -2074,7 +2074,7 @@ function GenerateSummaryList(): void {
 
   // Set current directory to JA2\DevInfo which contains all of the summary data
   GetExecutableDirectory(ExecDir);
-  sprintf(Dir, "%s\\DevInfo", ExecDir);
+  Dir = sprintf("%s\\DevInfo", ExecDir);
   if (!SetFileManCurrentDirectory(Dir)) {
     // Directory doesn't exist, so create it, and continue.
     if (!MakeFileManDirectory(Dir))
@@ -2089,7 +2089,7 @@ function GenerateSummaryList(): void {
   }
 
   // Set current directory back to data directory!
-  sprintf(Dir, "%s\\Data", ExecDir);
+  Dir = sprintf("%s\\Data", ExecDir);
   SetFileManCurrentDirectory(Dir);
 }
 
@@ -2103,14 +2103,14 @@ export function WriteSectorSummaryUpdate(puiFilename: string /* Pointer<UINT8> *
 
   // Set current directory to JA2\DevInfo which contains all of the summary data
   GetExecutableDirectory(ExecDir);
-  sprintf(Dir, "%s\\DevInfo", ExecDir);
+  Dir = sprintf("%s\\DevInfo", ExecDir);
   if (!SetFileManCurrentDirectory(Dir))
     AssertMsg(0, "JA2\\DevInfo folder not found and should exist!");
 
   ptr = strstr(puiFilename, ".dat");
   if (!ptr)
     AssertMsg(0, "Illegal sector summary filename.");
-  sprintf(ptr, ".sum");
+  ptr = ".sum";
 
   // write the summary information
   fp = fopen(puiFilename, "wb");
@@ -2134,7 +2134,7 @@ export function WriteSectorSummaryUpdate(puiFilename: string /* Pointer<UINT8> *
   gpSectorSummary[x][y][ubLevel] = pSummaryFileInfo;
 
   // Set current directory back to data directory!
-  sprintf(Dir, "%s\\Data", ExecDir);
+  Dir = sprintf("%s\\Data", ExecDir);
   SetFileManCurrentDirectory(Dir);
 }
 
@@ -2166,10 +2166,10 @@ function LoadSummary(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8, dMajo
   let x: INT32;
   let y: INT32;
   let fp: Pointer<FILE>;
-  sprintf(filename, pSector);
+  filename = pSector;
   if (ubLevel % 4) {
     let str: string /* UINT8[4] */;
-    sprintf(str, "_b%d", ubLevel % 4);
+    str = sprintf("_b%d", ubLevel % 4);
     strcat(filename, str);
   }
   if (ubLevel >= 4) {
@@ -2231,9 +2231,9 @@ function ReportError(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8): void
   let temp: string /* UINT16[10] */;
 
   // Make sure the file exists... if not, then return false
-  swprintf(str, "%S", pSector);
+  str = swprintf("%S", pSector);
   if (ubLevel % 4) {
-    swprintf(temp, "_b%d.dat", ubLevel % 4);
+    temp = swprintf("_b%d.dat", ubLevel % 4);
     wcscat(str, temp);
   }
   mprintf(10, yp, "Skipping update for %s.  Probably due to tileset conflicts...", str);
@@ -2261,7 +2261,7 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
 
   for (y = 0; y < 16; y++)
     for (x = 0; x < 16; x++) {
-      sprintf(str, "%c%d", y + 'A', x + 1);
+      str = sprintf("%c%d", y + 'A', x + 1);
       if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][0];
         if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
@@ -2329,7 +2329,7 @@ function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       gpCurrentSectorSummary = null;
     }
 
-    sprintf(str, "%c%d", gsSelSectorY + 'A' - 1, gsSelSectorX);
+    str = sprintf("%c%d", gsSelSectorY + 'A' - 1, gsSelSectorX);
     EvaluateWorld(str, giCurrLevel);
 
     gpSectorSummary[gsSelSectorX][gsSelSectorY][giCurrLevel] = gpCurrentSectorSummary;
@@ -2349,7 +2349,7 @@ function ExtractTempFilename(): void {
     gfOverrideDirty = true;
   }
   if (!wcslen(str))
-    swprintf(gszDisplayName, "test.dat");
+    gszDisplayName = "test.dat";
 }
 
 function ApologizeOverrideAndForceUpdateEverything(): void {
@@ -2369,11 +2369,11 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
   SetFont(HUGEFONT());
   SetFontForeground(FONT_RED);
   SetFontShadow(FONT_NEARBLACK);
-  swprintf(str, "MAJOR VERSION UPDATE");
+  str = "MAJOR VERSION UPDATE";
   mprintf(320 - StringPixLength(str, HUGEFONT()) / 2, 105, str);
   SetFont(FONT10ARIAL());
   SetFontForeground(FONT_YELLOW);
-  swprintf(str, "There are %d maps requiring a major version update.", gusNumberOfMapsToBeForceUpdated);
+  str = swprintf("There are %d maps requiring a major version update.", gusNumberOfMapsToBeForceUpdated);
   mprintf(320 - StringPixLength(str, FONT10ARIAL()) / 2, 130, str);
 
   CreateProgressBar(2, 120, 170, 520, 202);
@@ -2388,7 +2388,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
 
   for (y = 0; y < 16; y++)
     for (x = 0; x < 16; x++) {
-      sprintf(name, "%c%d", y + 'A', x + 1);
+      name = sprintf("%c%d", y + 'A', x + 1);
       if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][0];
         if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
@@ -2506,7 +2506,7 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
     gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][giCurrLevel];
   }
   // Open the original map for the sector
-  sprintf(szFilename, "MAPS\\%S", gszFilename);
+  szFilename = sprintf("MAPS\\%S", gszFilename);
   hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (!hfile) {
     // The file couldn't be found!

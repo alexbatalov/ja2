@@ -395,7 +395,7 @@ function GetRuntimeSettings(): void {
   // Get Executable Directory
   GetExecutableDirectory(ExeDir);
   // Adjust Current Dir
-  sprintf(INIFile, "%s\\sgp.ini", ExeDir);
+  INIFile = sprintf("%s\\sgp.ini", ExeDir);
 
   gbPixelDepth = GetPrivateProfileInt("SGP", "PIXEL_DEPTH", PIXEL_DEPTH, INIFile);
 }

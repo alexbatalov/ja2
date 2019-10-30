@@ -457,7 +457,7 @@ export function UnloadButtonImage(Index: INT32): void {
   let fDone: boolean;
 
   if (Index < 0 || Index >= MAX_BUTTON_PICS) {
-    sprintf(str, "Attempting to UnloadButtonImage with out of range index %d.", Index);
+    str = sprintf("Attempting to UnloadButtonImage with out of range index %d.", Index);
     AssertMsg(0, str);
   }
 
@@ -510,7 +510,7 @@ export function EnableButton(iButtonID: INT32): boolean {
   let OldState: UINT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
-    sprintf(str, "Attempting to EnableButton with out of range buttonID %d.", iButtonID);
+    str = sprintf("Attempting to EnableButton with out of range buttonID %d.", iButtonID);
     AssertMsg(0, str);
   }
 
@@ -541,7 +541,7 @@ export function DisableButton(iButtonID: INT32): boolean {
   let OldState: UINT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
-    sprintf(str, "Attempting to DisableButton with out of range buttonID %d.", iButtonID);
+    str = sprintf("Attempting to DisableButton with out of range buttonID %d.", iButtonID);
     AssertMsg(0, str);
   }
 
@@ -731,7 +731,7 @@ export function LoadGenericButtonIcon(filename: string /* Pointer<UINT8> */): IN
 //
 export function UnloadGenericButtonIcon(GenImg: INT16): boolean {
   if (GenImg < 0 || GenImg >= MAX_BUTTON_ICONS) {
-    sprintf(str, "Attempting to UnloadGenericButtonIcon with out of range index %d.", GenImg);
+    str = sprintf("Attempting to UnloadGenericButtonIcon with out of range index %d.", GenImg);
     AssertMsg(0, str);
   }
 
@@ -754,7 +754,7 @@ export function UnloadGenericButtonIcon(GenImg: INT16): boolean {
 function UnloadGenericButtonImage(GenImg: INT16): boolean {
   let fDeletedSomething: boolean = false;
   if (GenImg < 0 || GenImg >= MAX_GENERIC_PICS) {
-    sprintf(str, "Attempting to UnloadGenericButtonImage with out of range index %d.", GenImg);
+    str = sprintf("Attempting to UnloadGenericButtonImage with out of range index %d.", GenImg);
     AssertMsg(0, str);
   }
 
@@ -1038,7 +1038,7 @@ export function RemoveButton(iButtonID: INT32): void {
   let b: Pointer<GUI_BUTTON>;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
-    sprintf(str, "Attempting to RemoveButton with out of range buttonID %d.", iButtonID);
+    str = sprintf("Attempting to RemoveButton with out of range buttonID %d.", iButtonID);
     AssertMsg(0, str);
   }
 
@@ -1119,7 +1119,7 @@ function ResizeButton(iButtonID: INT32, w: INT16, h: INT16): void {
   let yloc: INT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
-    sprintf(str, "Attempting to resize button with out of range buttonID %d.", iButtonID);
+    str = sprintf("Attempting to resize button with out of range buttonID %d.", iButtonID);
     AssertMsg(0, str);
   }
 
@@ -1132,7 +1132,7 @@ function ResizeButton(iButtonID: INT32, w: INT16, h: INT16): void {
   b = ButtonList[iButtonID];
 
   if (!b) {
-    sprintf(str, "Attempting to resize deleted button with buttonID %d", iButtonID);
+    str = sprintf("Attempting to resize deleted button with buttonID %d", iButtonID);
     AssertMsg(0, str);
   }
 
@@ -1171,14 +1171,14 @@ function SetButtonPosition(iButtonID: INT32, x: INT16, y: INT16): void {
   let h: INT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
-    sprintf(str, "Attempting to set button position with out of range buttonID %d.", iButtonID);
+    str = sprintf("Attempting to set button position with out of range buttonID %d.", iButtonID);
     AssertMsg(0, str);
   }
 
   b = ButtonList[iButtonID];
 
   if (!b) {
-    sprintf(str, "Attempting to set button position with buttonID %d", iButtonID);
+    str = sprintf("Attempting to set button position with buttonID %d", iButtonID);
     AssertMsg(0, str);
   }
 
@@ -1216,12 +1216,12 @@ function SetButtonIcon(iButtonID: INT32, Icon: INT16, IconIndex: INT16): INT32 {
   let b: Pointer<GUI_BUTTON>;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
-    sprintf(str, "Attempting to set button icon with out of range buttonID %d.", iButtonID);
+    str = sprintf("Attempting to set button icon with out of range buttonID %d.", iButtonID);
     AssertMsg(0, str);
     return -1;
   }
   if (Icon < 0 || Icon >= MAX_BUTTON_ICONS) {
-    sprintf(str, "Attempting to set button[%d] icon with out of range icon index %d.", iButtonID, Icon);
+    str = sprintf("Attempting to set button[%d] icon with out of range icon index %d.", iButtonID, Icon);
     AssertMsg(0, str);
     return -1;
   }
@@ -1229,7 +1229,7 @@ function SetButtonIcon(iButtonID: INT32, Icon: INT16, IconIndex: INT16): INT32 {
   b = ButtonList[iButtonID];
 
   if (!b) {
-    sprintf(str, "Attempting to set deleted button icon with buttonID %d", iButtonID);
+    str = sprintf("Attempting to set deleted button icon with buttonID %d", iButtonID);
     AssertMsg(0, str);
     return -1;
   }
@@ -1258,11 +1258,11 @@ export function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, x
   let x: INT32;
 
   if (xloc < 0 || yloc < 0) {
-    sprintf(str, "Attempting to CreateIconButton with invalid position of %d,%d", xloc, yloc);
+    str = sprintf("Attempting to CreateIconButton with invalid position of %d,%d", xloc, yloc);
     AssertMsg(0, str);
   }
   if (GenImg < -1 || GenImg >= MAX_GENERIC_PICS) {
-    sprintf(str, "Attempting to CreateIconButton with out of range iconID %d.", GenImg);
+    str = sprintf("Attempting to CreateIconButton with out of range iconID %d.", GenImg);
     AssertMsg(0, str);
   }
 
@@ -1371,11 +1371,11 @@ export function CreateTextButton(string: string /* Pointer<UINT16> */, uiFont: U
   let x: INT32;
 
   if (xloc < 0 || yloc < 0) {
-    sprintf(str, "Attempting to CreateTextButton with invalid position of %d,%d", xloc, yloc);
+    str = sprintf("Attempting to CreateTextButton with invalid position of %d,%d", xloc, yloc);
     AssertMsg(0, str);
   }
   if (GenImg < -1 || GenImg >= MAX_GENERIC_PICS) {
-    sprintf(str, "Attempting to CreateTextButton with out of range iconID %d.", GenImg);
+    str = sprintf("Attempting to CreateTextButton with out of range iconID %d.", GenImg);
     AssertMsg(0, str);
   }
 
@@ -1495,7 +1495,7 @@ export function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: IN
   let x: INT16;
 
   if (xloc < 0 || yloc < 0 || Width < 0 || Height < 0) {
-    sprintf(str, "Attempting to CreateHotSpot with invalid coordinates: %d,%d, width: %d, and height: %d.", xloc, yloc, Width, Height);
+    str = sprintf("Attempting to CreateHotSpot with invalid coordinates: %d,%d, width: %d, and height: %d.", xloc, yloc, Width, Height);
     AssertMsg(0, str);
   }
 
@@ -1585,11 +1585,11 @@ export function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type:
   let x: INT32;
 
   if (xloc < 0 || yloc < 0) {
-    sprintf(str, "Attempting to QuickCreateButton with invalid position of %d,%d", xloc, yloc);
+    str = sprintf("Attempting to QuickCreateButton with invalid position of %d,%d", xloc, yloc);
     AssertMsg(0, str);
   }
   if (Image < 0 || Image >= MAX_BUTTON_PICS) {
-    sprintf(str, "Attempting to QuickCreateButton with out of range ImageID %d.", Image);
+    str = sprintf("Attempting to QuickCreateButton with out of range ImageID %d.", Image);
     AssertMsg(0, str);
   }
 
@@ -1749,11 +1749,11 @@ export function CreateIconAndTextButton(Image: INT32, string: string /* Pointer<
   let x: INT32;
 
   if (xloc < 0 || yloc < 0) {
-    sprintf(str, "Attempting to CreateIconAndTextButton with invalid position of %d,%d", xloc, yloc);
+    str = sprintf("Attempting to CreateIconAndTextButton with invalid position of %d,%d", xloc, yloc);
     AssertMsg(0, str);
   }
   if (Image < 0 || Image >= MAX_BUTTON_PICS) {
-    sprintf(str, "Attemting to CreateIconAndTextButton with out of range ImageID %d.", Image);
+    str = sprintf("Attemting to CreateIconAndTextButton with out of range ImageID %d.", Image);
     AssertMsg(0, str);
   }
 
@@ -2139,7 +2139,7 @@ function QuickButtonCallbackMMove(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 
   iButtonID = MSYS_GetRegionUserData(reg, 0);
 
-  sprintf(str, "QuickButtonCallbackMMove: Mouse Region #%d (%d,%d to %d,%d) has invalid buttonID %d", reg.value.IDNumber, reg.value.RegionTopLeftX, reg.value.RegionTopLeftY, reg.value.RegionBottomRightX, reg.value.RegionBottomRightY, iButtonID);
+  str = sprintf("QuickButtonCallbackMMove: Mouse Region #%d (%d,%d to %d,%d) has invalid buttonID %d", reg.value.IDNumber, reg.value.RegionTopLeftX, reg.value.RegionTopLeftY, reg.value.RegionBottomRightX, reg.value.RegionBottomRightY, iButtonID);
 
   AssertMsg(iButtonID >= 0, str);
   AssertMsg(iButtonID < MAX_BUTTONS, str);
@@ -2218,7 +2218,7 @@ function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 
   iButtonID = MSYS_GetRegionUserData(reg, 0);
 
-  sprintf(str, "QuickButtonCallbackMButn: Mouse Region #%d (%d,%d to %d,%d) has invalid buttonID %d", reg.value.IDNumber, reg.value.RegionTopLeftX, reg.value.RegionTopLeftY, reg.value.RegionBottomRightX, reg.value.RegionBottomRightY, iButtonID);
+  str = sprintf("QuickButtonCallbackMButn: Mouse Region #%d (%d,%d to %d,%d) has invalid buttonID %d", reg.value.IDNumber, reg.value.RegionTopLeftX, reg.value.RegionTopLeftY, reg.value.RegionBottomRightX, reg.value.RegionBottomRightY, iButtonID);
 
   AssertMsg(iButtonID >= 0, str);
   AssertMsg(iButtonID < MAX_BUTTONS, str);

@@ -225,7 +225,7 @@ export function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
   }
   if (fCowInSector) {
     let str: string /* UINT8[40] */;
-    sprintf(str, "Sounds\\\\cowmoo%d.wav", Random(3) + 1);
+    str = sprintf("Sounds\\\\cowmoo%d.wav", Random(3) + 1);
     PlayJA2SampleFromFile(str, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
   }
   return true;

@@ -287,7 +287,7 @@ export function BeginMeanwhile(ubMeanwhileID: UINT8): boolean {
 function BringupMeanwhileBox(): void {
   let zStr: string /* INT16[256] */;
 
-  swprintf(zStr, "%s.....", pMessageStrings[Enum333.MSG_MEANWHILE]);
+  zStr = swprintf("%s.....", pMessageStrings[Enum333.MSG_MEANWHILE]);
 
   if (gCurrentMeanwhileDef.ubMeanwhileID != Enum160.INTERROGATION && MeanwhileSceneSeen(gCurrentMeanwhileDef.ubMeanwhileID))
   {

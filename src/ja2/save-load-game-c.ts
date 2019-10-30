@@ -263,7 +263,7 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
   let usActualHeight: UINT16;
   let fWePausedIt: boolean = false;
 
-  sprintf(saveDir, "%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY]);
+  saveDir = sprintf("%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY]);
 
   if (ubSaveGameID >= NUM_SAVE_GAMES && ubSaveGameID != SAVE__ERROR_NUM && ubSaveGameID != SAVE__END_TURN_NUM)
     return (false); // ddd
@@ -324,7 +324,7 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
 
   // if we are saving the quick save,
   if (ubSaveGameID == 0) {
-      swprintf(pGameDesc, pMessageStrings[Enum333.MSG_QUICKSAVE_NAME]);
+      pGameDesc = pMessageStrings[Enum333.MSG_QUICKSAVE_NAME];
   }
 
   // If there was no string, add one
@@ -2698,12 +2698,12 @@ function LoadWatchedLocsFromSavedGame(hFile: HWFILE): boolean {
 export function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: Pointer<string> /* STR */): void {
   // if we are creating the QuickSave file
   if (ubSaveGameID == 0) {
-      sprintf(pzNewFileName, "%S\\%S.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_QUICKSAVE_NAME], pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+      pzNewFileName = sprintf("%S\\%S.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_QUICKSAVE_NAME], pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
   }
   //#ifdef JA2BETAVERSION
   else if (ubSaveGameID == SAVE__END_TURN_NUM) {
     // The name of the file
-    sprintf(pzNewFileName, "%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], guiLastSaveGameNum, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+    pzNewFileName = sprintf("%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], guiLastSaveGameNum, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 
     // increment end turn number
     guiLastSaveGameNum++;
@@ -2716,7 +2716,7 @@ export function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFile
   //#endif
 
   else
-    sprintf(pzNewFileName, "%S\\%S%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_SAVE_NAME], ubSaveGameID, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+    pzNewFileName = sprintf("%S\\%S%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_SAVE_NAME], ubSaveGameID, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 }
 
 function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): boolean {
@@ -3581,8 +3581,8 @@ export function GetNumberForAutoSave(fLatestAutoSave: boolean): INT8 {
   fFile2Exist = false;
 
   // The name of the file
-  sprintf(zFileName1, "%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 0, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
-  sprintf(zFileName2, "%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 1, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+  zFileName1 = sprintf("%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 0, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+  zFileName2 = sprintf("%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 1, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 
   if (FileExists(zFileName1)) {
     hFile = FileOpen(zFileName1, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);

@@ -1256,7 +1256,7 @@ export function RemoveFileManDirectory(pcDirectory: string /* STRING512 */, fRec
       if (GetFileAttributes(sFindData.cFileName) == FILE_ATTRIBUTE_DIRECTORY) {
         // only go in if the fRecursive flag is TRUE (like Deltree)
         if (fRecursive) {
-          sprintf(zSubdirectory, "%s\\%s", pcDirectory, sFindData.cFileName);
+          zSubdirectory = sprintf("%s\\%s", pcDirectory, sFindData.cFileName);
 
           if ((strcmp(sFindData.cFileName, ".") != 0) && (strcmp(sFindData.cFileName, "..") != 0)) {
             if (!RemoveFileManDirectory(zSubdirectory, true)) {
@@ -1848,7 +1848,7 @@ export function GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(): UINT32 {
   // get the drive letter from the exec dir
   _splitpath(zExecDir, zDrive, zDir, zFileName, zExt);
 
-  sprintf(zDrive, "%s\\", zDrive);
+  zDrive = sprintf("%s\\", zDrive);
 
   uiFreeSpace = GetFreeSpaceOnHardDrive(zDrive);
 

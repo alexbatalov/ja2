@@ -277,7 +277,7 @@ export function SoundPlayStreamedFile(pFilename: string /* STR */, pParms: Point
       }
 
       // Convert the file handle into a 'name'
-      sprintf(pFileHandlefileName, "\\\\\\\\%d", hRealFileHandle);
+      pFileHandlefileName = sprintf("\\\\\\\\%d", hRealFileHandle);
 
       // Start the sound stream
       uiRetVal = SoundStartStream(pFileHandlefileName, uiChannel, pParms);
@@ -1821,7 +1821,7 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
     return SOUND_ERROR;
 
   if ((pSoundList[uiChannel].hMSS = AIL_allocate_sample_handle(hSoundDriver)) == null) {
-    sprintf(AILString, "Sample Error: %s", AIL_last_error());
+    AILString = sprintf("Sample Error: %s", AIL_last_error());
     FastDebugMsg(AILString);
     return SOUND_ERROR;
   }
@@ -1832,7 +1832,7 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
     AIL_release_sample_handle(pSoundList[uiChannel].hMSS);
     pSoundList[uiChannel].hMSS = null;
 
-    sprintf(AILString, "AIL Set Sample Error: %s", AIL_last_error());
+    AILString = sprintf("AIL Set Sample Error: %s", AIL_last_error());
     DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
     return SOUND_ERROR;
   }
@@ -1928,7 +1928,7 @@ function SoundStartStream(pFilename: string /* STR */, uiChannel: UINT32, pParms
   }
 
   if (pSoundList[uiChannel].hMSSStream == null) {
-    sprintf(AILString, "Stream Error: %s", AIL_last_error());
+    AILString = sprintf("Stream Error: %s", AIL_last_error());
     DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
     return SOUND_ERROR;
   }
@@ -2595,7 +2595,7 @@ function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer
     return SOUND_ERROR;
 
   if ((pSoundList[uiChannel].hM3D = AIL_allocate_3D_sample_handle(gh3DProvider)) == null) {
-    sprintf(AILString, "AIL3D Error: %s", AIL_last_error());
+    AILString = sprintf("AIL3D Error: %s", AIL_last_error());
     DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
     return SOUND_ERROR;
   }
@@ -2604,7 +2604,7 @@ function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer
     AIL_release_3D_sample_handle(pSoundList[uiChannel].hM3D);
     pSoundList[uiChannel].hM3D = null;
 
-    sprintf(AILString, "AIL3D Set Sample Error: %s", AIL_last_error());
+    AILString = sprintf("AIL3D Set Sample Error: %s", AIL_last_error());
     DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
     return SOUND_ERROR;
   }
@@ -2765,7 +2765,7 @@ function Sound3DSetRoomType(uiRoomType: UINT32): void {
   if (gh3DProvider && gfUsingEAX && (guiRoomTypeIndex != uiRoomType)) {
     let cName: string /* CHAR8[128] */;
 
-    sprintf(cName, "EAX_ENVIRONMENT_%s", pEAXRoomTypes[uiRoomType]);
+    cName = sprintf("EAX_ENVIRONMENT_%s", pEAXRoomTypes[uiRoomType]);
 
     AIL_set_3D_provider_preference(gh3DProvider, cName, (addressof(uiRoomType)));
     guiRoomTypeIndex = uiRoomType;

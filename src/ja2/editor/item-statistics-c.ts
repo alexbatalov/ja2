@@ -552,14 +552,14 @@ function SetupGunGUI(): void {
   let str: string /* UINT16[20] */;
   let yp: INT16;
   memset(gfAttachment, 0, Enum46.NUM_ATTACHMENT_BUTTONS);
-  swprintf(str, "%d", gpItem.value.bGunStatus);
+  str = swprintf("%d", gpItem.value.bGunStatus);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem.value.ubGunShotsLeft);
+  str = swprintf("%d", gpItem.value.ubGunShotsLeft);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem.value.bTrap);
+  str = swprintf("%d", gpItem.value.bTrap);
   AddTextInputField(485, 420, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
+    str = swprintf("%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   // Attachments are a dynamic part of guns.  None, some, or all attachments could be available
@@ -665,12 +665,12 @@ function ExtractAndUpdateGunGUI(): void {
 
 function SetupAmmoGUI(): void {
   let str: string /* UINT16[20] */;
-  swprintf(str, "%d", gpItem.value.ubNumberOfObjects);
+  str = swprintf("%d", gpItem.value.ubNumberOfObjects);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem.value.bTrap);
+  str = swprintf("%d", gpItem.value.bTrap);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
+    str = swprintf("%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -705,12 +705,12 @@ function ExtractAndUpdateAmmoGUI(): void {
 
 function SetupArmourGUI(): void {
   let str: string /* UINT16[20] */;
-  swprintf(str, "%d", gpItem.value.bStatus[0]);
+  str = swprintf("%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem.value.bTrap);
+  str = swprintf("%d", gpItem.value.bTrap);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
+    str = swprintf("%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 
@@ -756,12 +756,12 @@ function ExtractAndUpdateArmourGUI(): void {
 
 function SetupEquipGUI(): void {
   let str: string /* UINT16[20] */;
-  swprintf(str, "%d", gpItem.value.bStatus[0]);
+  str = swprintf("%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem.value.bTrap);
+  str = swprintf("%d", gpItem.value.bTrap);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
+    str = swprintf("%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -796,17 +796,17 @@ function ExtractAndUpdateEquipGUI(): void {
 function SetupExplosivesGUI(): void {
   let str: string /* UINT16[20] */;
   let yp: INT16;
-  swprintf(str, "%d", gpItem.value.bStatus[0]);
+  str = swprintf("%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem.value.ubNumberOfObjects);
+  str = swprintf("%d", gpItem.value.ubNumberOfObjects);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
   if (Item[gpItem.value.usItem].ubPerPocket == 1) {
     DisableTextField(2);
   }
-  swprintf(str, "%d", gpItem.value.bTrap);
+  str = swprintf("%d", gpItem.value.bTrap);
   AddTextInputField(485, 420, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
+    str = swprintf("%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   yp = 375;
@@ -865,10 +865,10 @@ function ExtractAndUpdateExplosivesGUI(): void {
 
 function SetupMoneyGUI(): void {
   let str: string /* UINT16[20] */;
-  swprintf(str, "%d", gpItem.value.uiMoneyAmount);
+  str = swprintf("%d", gpItem.value.uiMoneyAmount);
   AddTextInputField(485, 380, 45, 15, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
+    str = swprintf("%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -897,7 +897,7 @@ function RemoveMoneyGUI(): void {
 
 function SetupOwnershipGUI(): void {
   let str: string /* UINT16[20] */;
-  swprintf(str, "%d", gpItem.value.ubOwnerProfile);
+  str = swprintf("%d", gpItem.value.ubOwnerProfile);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem.value.ubOwnerCivGroup], SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), OwnershipGroupButtonCallback);
 }
@@ -935,7 +935,7 @@ function RemoveOwnershipGUI(): void {
 function SetupKeysGUI(): void {
   let str: string /* UINT16[20] */;
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
+    str = swprintf("%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -955,12 +955,12 @@ function RemoveKeysGUI(): void {
 function SetupActionItemsGUI(): void {
   let str: string /* UINT16[4] */;
   let pStr: string /* Pointer<UINT16> */;
-  swprintf(str, "%d", gpItem.value.bStatus[0]);
+  str = swprintf("%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem.value.bTrap);
+  str = swprintf("%d", gpItem.value.bTrap);
   AddTextInputField(485, 385, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
+    str = swprintf("%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   pStr = GetActionItemName(gpItem);
@@ -1011,12 +1011,12 @@ function AlarmTriggerCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 
 function SetupTriggersGUI(): void {
   let str: string /* UINT16[4] */;
-  swprintf(str, "%d", gpItem.value.bTrap);
+  str = swprintf("%d", gpItem.value.bTrap);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem.value.ubTolerance);
+  str = swprintf("%d", gpItem.value.ubTolerance);
   AddTextInputField(485, 385, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
+    str = swprintf("%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
     if (gpItem.value.bFrequency <= PANIC_FREQUENCY && gpItem.value.bFrequency >= PANIC_FREQUENCY_3) {
       giAlarmTriggerButton = CreateCheckBoxButton(485, 405, "EDITOR//smCheckBox.sti", MSYS_PRIORITY_NORMAL, AlarmTriggerCheckboxCallback);

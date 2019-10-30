@@ -736,7 +736,7 @@ export function RenderAIMMembers(): boolean {
   // Display Option Gear Cost text
   DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_OPTIONAL_GEAR], AIM_MEMBER_OPTIONAL_GEAR_X, AIM_MEMBER_OPTIONAL_GEAR_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  swprintf(wTemp, "%d", gMercProfiles[gbCurrentSoldier].usOptionalGearCost);
+  wTemp = swprintf("%d", gMercProfiles[gbCurrentSoldier].usOptionalGearCost);
   InsertCommasForDollarFigure(wTemp);
   InsertDollarSignInToString(wTemp);
   uiPosX = AIM_MEMBER_OPTIONAL_GEAR_X + StringPixLength(CharacterInfo[Enum355.AIM_MEMBER_OPTIONAL_GEAR], AIM_M_FONT_STATIC_TEXT()) + 5;
@@ -783,7 +783,7 @@ export function RenderAIMMembers(): boolean {
 export function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): boolean {
   let sStr: string /* wchar_t[10] */;
 
-  swprintf(sStr, "%d", iNumber);
+  sStr = swprintf("%d", iNumber);
 
   DrawTextToScreen(sStr, usLocX, usLocY, bWidth, ulFont, ubColor, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
@@ -793,7 +793,7 @@ export function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT1
 function DrawMoneyToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): boolean {
   let sStr: string /* wchar_t[10] */;
 
-  swprintf(sStr, "%d", iNumber);
+  sStr = swprintf("%d", iNumber);
   InsertCommasForDollarFigure(sStr);
   InsertDollarSignInToString(sStr);
 
@@ -843,11 +843,11 @@ function UpdateMercInfo(): boolean {
     let sMedicalString: string /* wchar_t[40] */;
 
     // Display the medical cost
-    swprintf(zTemp, "%d", gMercProfiles[gbCurrentSoldier].sMedicalDepositAmount);
+    zTemp = swprintf("%d", gMercProfiles[gbCurrentSoldier].sMedicalDepositAmount);
     InsertCommasForDollarFigure(zTemp);
     InsertDollarSignInToString(zTemp);
 
-    swprintf(sMedicalString, "%s %s", zTemp, CharacterInfo[Enum355.AIM_MEMBER_MEDICAL_DEPOSIT_REQ]);
+    sMedicalString = swprintf("%s %s", zTemp, CharacterInfo[Enum355.AIM_MEMBER_MEDICAL_DEPOSIT_REQ]);
 
     // If the string will be displayed in more then 2 lines, recenter the string
     if ((DisplayWrappedString(0, 0, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_FONT12ARIAL())) > 2) {
@@ -1088,7 +1088,7 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
         let zTempStr: string /* wchar_t[32] */;
         //				UINT16	usWidthOfNumber;
 
-        swprintf(zTempStr, "x%d", gMercProfiles[ubMercID].bInvNumber[i]);
+        zTempStr = swprintf("x%d", gMercProfiles[ubMercID].bInvNumber[i]);
 
         DrawTextToScreen(zTempStr, (PosX - 1), (PosY + 20), AIM_MEMBER_WEAPON_NAME_WIDTH, AIM_M_FONT_DYNAMIC_TEXT(), AIM_M_WEAPON_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
       } else {
@@ -1212,7 +1212,7 @@ function DisplayMercsFace(): boolean {
   BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, PORTRAIT_X, PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // load the Face graphic and add it
-  sprintf(sTemp, "%s%02d.sti", sFaceLoc, gbCurrentSoldier);
+  sTemp = sprintf("%s%02d.sti", sFaceLoc, gbCurrentSoldier);
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFace)));
@@ -1590,10 +1590,10 @@ function DisplayVideoConferencingDisplay(): boolean {
 
   // Title & Name
   if (gubVideoConferencingMode == Enum65.AIM_VIDEO_INIT_MODE) {
-    swprintf(sMercName, "%s", VideoConfercingText[Enum356.AIM_MEMBER_CONNECTING]);
+    sMercName = swprintf("%s", VideoConfercingText[Enum356.AIM_MEMBER_CONNECTING]);
     DrawTextToScreen(sMercName, AIM_MEMBER_VIDEO_NAME_X, AIM_MEMBER_VIDEO_NAME_Y, 0, FONT12ARIAL(), AIM_M_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   } else {
-    swprintf(sMercName, "%s %s", VideoConfercingText[Enum356.AIM_MEMBER_VIDEO_CONF_WITH], gMercProfiles[gbCurrentSoldier].zName);
+    sMercName = swprintf("%s %s", VideoConfercingText[Enum356.AIM_MEMBER_VIDEO_CONF_WITH], gMercProfiles[gbCurrentSoldier].zName);
     DrawTextToScreen(sMercName, AIM_MEMBER_VIDEO_NAME_X, AIM_MEMBER_VIDEO_NAME_Y, 0, FONT12ARIAL(), AIM_M_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
@@ -1730,7 +1730,7 @@ function DisplayMercChargeAmount(): UINT32 {
     }
   }
 
-  swprintf(wDollarTemp, "%d", giContractAmount);
+  wDollarTemp = swprintf("%d", giContractAmount);
   InsertCommasForDollarFigure(wDollarTemp);
   InsertDollarSignInToString(wDollarTemp);
 
@@ -1738,9 +1738,9 @@ function DisplayMercChargeAmount(): UINT32 {
   //	if( FindSoldierByProfileID( gbCurrentSoldier, TRUE ) == NULL )
   {
     if (gMercProfiles[gbCurrentSoldier].bMedicalDeposit)
-      swprintf(wTemp, "%s %s", wDollarTemp, VideoConfercingText[Enum356.AIM_MEMBER_WITH_MEDICAL]);
+      wTemp = swprintf("%s %s", wDollarTemp, VideoConfercingText[Enum356.AIM_MEMBER_WITH_MEDICAL]);
     else
-      swprintf(wTemp, "%s", wDollarTemp);
+      wTemp = swprintf("%s", wDollarTemp);
 
     DrawTextToScreen(wTemp, AIM_CONTRACT_CHARGE_AMOUNNT_X + 1, AIM_CONTRACT_CHARGE_AMOUNNT_Y + 3, 0, AIM_M_VIDEO_CONTRACT_AMOUNT_FONT(), AIM_M_VIDEO_CONTRACT_AMOUNT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
@@ -2095,7 +2095,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): boolean {
 }
 
 export function DisplayTextForMercFaceVideoPopUp(pString: string /* STR16 */): void {
-  swprintf(gsTalkingMercText, "\"%s\"", pString);
+  gsTalkingMercText = swprintf("\"%s\"", pString);
 
   // Set the minimum time for the dialogue text to be present
   usAimMercSpeechDuration = wcslen(gsTalkingMercText) * AIM_TEXT_SPEECH_MODIFIER;
@@ -3459,7 +3459,7 @@ export function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   uiHour = ((LaptopSaveInfo.sLastHiredMerc.uiArrivalTime) - (((LaptopSaveInfo.sLastHiredMerc.uiArrivalTime) / 1440) * 1440)) / 60;
 
   // create the time string
-  swprintf(zTimeString, "%02d:%02d", uiHour, 0);
+  zTimeString = swprintf("%02d:%02d", uiHour, 0);
 
   // get the id string
   GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, zSectorIDString, false);
@@ -3472,7 +3472,7 @@ export function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
 //   // Germans version has a different argument order
 //   swprintf(szLocAndTime, pMessageStrings[MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier->ubProfile].zNickname, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString, zSectorIDString);
 // #else
-  swprintf(szLocAndTime, pMessageStrings[Enum333.MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier.value.ubProfile].zNickname, zSectorIDString, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString);
+  szLocAndTime = swprintf(pMessageStrings[Enum333.MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier.value.ubProfile].zNickname, zSectorIDString, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString);
 // #endif
 
   // display the message box

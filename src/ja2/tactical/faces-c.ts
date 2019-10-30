@@ -167,31 +167,31 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   if (uiInitFlags & FACE_BIGFACE) {
     // The filename is the profile ID!
     if (iFaceFileID < 100) {
-      sprintf(VObjectDesc.ImageFile, "FACES\\b%02d.sti", iFaceFileID);
+      VObjectDesc.ImageFile = sprintf("FACES\\b%02d.sti", iFaceFileID);
     } else {
-      sprintf(VObjectDesc.ImageFile, "FACES\\b%03d.sti", iFaceFileID);
+      VObjectDesc.ImageFile = sprintf("FACES\\b%03d.sti", iFaceFileID);
     }
 
     // ATE: Check for profile - if elliot , use special face :)
     if (usMercProfileID == Enum268.ELLIOT) {
       if (gMercProfiles[Enum268.ELLIOT].bNPCData > 3 && gMercProfiles[Enum268.ELLIOT].bNPCData < 7) {
-        sprintf(VObjectDesc.ImageFile, "FACES\\b%02da.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%02da.sti", iFaceFileID);
       } else if (gMercProfiles[Enum268.ELLIOT].bNPCData > 6 && gMercProfiles[Enum268.ELLIOT].bNPCData < 10) {
-        sprintf(VObjectDesc.ImageFile, "FACES\\b%02db.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%02db.sti", iFaceFileID);
       } else if (gMercProfiles[Enum268.ELLIOT].bNPCData > 9 && gMercProfiles[Enum268.ELLIOT].bNPCData < 13) {
-        sprintf(VObjectDesc.ImageFile, "FACES\\b%02dc.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%02dc.sti", iFaceFileID);
       } else if (gMercProfiles[Enum268.ELLIOT].bNPCData > 12 && gMercProfiles[Enum268.ELLIOT].bNPCData < 16) {
-        sprintf(VObjectDesc.ImageFile, "FACES\\b%02dd.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%02dd.sti", iFaceFileID);
       } else if (gMercProfiles[Enum268.ELLIOT].bNPCData == 17) {
-        sprintf(VObjectDesc.ImageFile, "FACES\\b%02de.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%02de.sti", iFaceFileID);
       }
     }
   } else {
     if (iFaceFileID < 100) {
       // The filename is the profile ID!
-      sprintf(VObjectDesc.ImageFile, "FACES\\%02d.sti", iFaceFileID);
+      VObjectDesc.ImageFile = sprintf("FACES\\%02d.sti", iFaceFileID);
     } else {
-      sprintf(VObjectDesc.ImageFile, "FACES\\%03d.sti", iFaceFileID);
+      VObjectDesc.ImageFile = sprintf("FACES\\%03d.sti", iFaceFileID);
     }
   }
 
@@ -199,7 +199,7 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == false) {
     // If we are a big face, use placeholder...
     if (uiInitFlags & FACE_BIGFACE) {
-      sprintf(VObjectDesc.ImageFile, "FACES\\placeholder.sti");
+      VObjectDesc.ImageFile = "FACES\\placeholder.sti";
 
       if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == false) {
         return -1;
@@ -1010,7 +1010,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: b
       {
         SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, false);
 
-        swprintf(sString, "%d", pSoldier.value.bOppCnt);
+        sString = swprintf("%d", pSoldier.value.bOppCnt);
 
         SetFont(TINYFONT1());
         SetFontForeground(FONT_DKRED);
@@ -1193,9 +1193,9 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: b
         SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, false);
 
         if (fShowMaximum) {
-          swprintf(sString, "%d/%d", sPtsAvailable, usMaximumPts);
+          sString = swprintf("%d/%d", sPtsAvailable, usMaximumPts);
         } else {
-          swprintf(sString, "%d", sPtsAvailable);
+          sString = swprintf("%d", sPtsAvailable);
         }
 
         usTextWidth = StringPixLength(sString, FONT10ARIAL());

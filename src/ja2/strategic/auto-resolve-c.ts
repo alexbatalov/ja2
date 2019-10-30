@@ -1349,11 +1349,11 @@ function RenderAutoResolve(): void {
 
   switch (gubEnemyEncounterCode) {
     case Enum164.ENEMY_ENCOUNTER_CODE:
-      swprintf(str, gpStrategicString[Enum365.STR_AR_ENCOUNTER_HEADER]);
+      str = gpStrategicString[Enum365.STR_AR_ENCOUNTER_HEADER];
       break;
     case Enum164.ENEMY_INVASION_CODE:
     case Enum164.CREATURE_ATTACK_CODE:
-      swprintf(str, gpStrategicString[Enum365.STR_AR_DEFEND_HEADER]);
+      str = gpStrategicString[Enum365.STR_AR_DEFEND_HEADER];
       break;
   }
 
@@ -1373,7 +1373,7 @@ function RenderAutoResolve(): void {
   // Display the remaining forces
   ubGood = (gpAR.value.ubAliveMercs + gpAR.value.ubAliveCivs);
   ubBad = gpAR.value.ubAliveEnemies;
-  swprintf(str, gzLateLocalizedString[17], ubGood, ubBad);
+  str = swprintf(gzLateLocalizedString[17], ubGood, ubBad);
 
   SetFont(FONT14ARIAL());
   if (ubGood * 3 <= ubBad * 2) {
@@ -1468,25 +1468,25 @@ function RenderAutoResolve(): void {
     switch (gpAR.value.ubBattleStatus) {
       case Enum120.BATTLE_VICTORY:
         SetFontForeground(FONT_LTGREEN);
-        swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_VICTORY]);
+        str = gpStrategicString[Enum365.STR_AR_OVER_VICTORY];
         break;
       case Enum120.BATTLE_SURRENDERED:
       case Enum120.BATTLE_CAPTURED:
         if (gpAR.value.ubBattleStatus == Enum120.BATTLE_SURRENDERED) {
-          swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_SURRENDERED]);
+          str = gpStrategicString[Enum365.STR_AR_OVER_SURRENDERED];
         } else {
           DisplayWrappedString((gpAR.value.sCenterStartX + 16), 310, 108, 2, FONT10ARIAL(), FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_CAPTURED], FONT_BLACK, false, LEFT_JUSTIFIED);
-          swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_CAPTURED]);
+          str = gpStrategicString[Enum365.STR_AR_OVER_CAPTURED];
         }
         SetFontForeground(FONT_RED);
         break;
       case Enum120.BATTLE_DEFEAT:
         SetFontForeground(FONT_RED);
-        swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_DEFEAT]);
+        str = gpStrategicString[Enum365.STR_AR_OVER_DEFEAT];
         break;
       case Enum120.BATTLE_RETREAT:
         SetFontForeground(FONT_YELLOW);
-        swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_RETREATED]);
+        str = gpStrategicString[Enum365.STR_AR_OVER_RETREATED];
         break;
     }
     // Render the results of the battle.
@@ -1500,7 +1500,7 @@ function RenderAutoResolve(): void {
 
     // Render the total battle time elapsed.
     SetFont(FONT10ARIAL());
-    swprintf(str, "%s:  %dm %02ds", gpStrategicString[Enum365.STR_AR_TIME_ELAPSED], gpAR.value.uiTotalElapsedBattleTimeInMilliseconds / 60000, (gpAR.value.uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000);
+    str = swprintf("%s:  %dm %02ds", gpStrategicString[Enum365.STR_AR_TIME_ELAPSED], gpAR.value.uiTotalElapsedBattleTimeInMilliseconds / 60000, (gpAR.value.uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000);
     xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL()) / 2;
     yp = 290 + gpAR.value.bVerticalOffset;
     SetFontForeground(FONT_YELLOW);
@@ -1526,7 +1526,7 @@ function CreateAutoResolveInterface(): void {
 
   // Load the general panel image pieces, to be combined to make the dynamically sized window.
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(VObjectDesc.ImageFile, "Interface\\AutoResolve.sti");
+  VObjectDesc.ImageFile = "Interface\\AutoResolve.sti";
   if (!AddVideoObject(addressof(VObjectDesc), addressof(gpAR.value.iPanelImages))) {
     AssertMsg(0, "Failed to load Interface\\AutoResolve.sti");
   }
@@ -1565,7 +1565,7 @@ function CreateAutoResolveInterface(): void {
   gpAR.value.iButtonImage[Enum119.DONELOSE_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 16, -1, 17, -1);
 
   // Load the generic faces for civs and enemies
-  sprintf(VObjectDesc.ImageFile, "Interface\\SmFaces.sti");
+  VObjectDesc.ImageFile = "Interface\\SmFaces.sti";
   if (!AddVideoObject(addressof(VObjectDesc), addressof(gpAR.value.iFaces))) {
     AssertMsg(0, "Failed to load Interface\\SmFaces.sti");
   }
@@ -1575,7 +1575,7 @@ function CreateAutoResolveInterface(): void {
   }
 
   // Add the battle over panels
-  sprintf(VObjectDesc.ImageFile, "Interface\\indent.sti");
+  VObjectDesc.ImageFile = "Interface\\indent.sti";
   if (!AddVideoObject(addressof(VObjectDesc), addressof(gpAR.value.iIndent))) {
     AssertMsg(0, "Failed to load Interface\\indent.sti");
   }
@@ -1585,9 +1585,9 @@ function CreateAutoResolveInterface(): void {
     let VObjectDesc: VOBJECT_DESC;
     // Load the face
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\%02d.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex);
+    VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex);
     if (!AddVideoObject(addressof(VObjectDesc), addressof(gpMercs[i].uiVObjectID))) {
-      sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\speck.sti");
+      VObjectDesc.ImageFile = "Faces\\65Face\\speck.sti";
       if (!AddVideoObject(addressof(VObjectDesc), addressof(gpMercs[i].uiVObjectID))) {
         AssertMsg(0, String("Failed to load %Faces\\65Face\\%02d.sti or it's placeholder, speck.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex));
       }
@@ -1648,7 +1648,7 @@ function CreateAutoResolveInterface(): void {
     gpCivs[i].uiVObjectID = gpAR.value.iFaces;
     gpCivs[i].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
     gpCivs[i].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-    swprintf(gpCivs[i].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_MILITIA_NAME]);
+    gpCivs[i].pSoldier.value.name = gpStrategicString[Enum365.STR_AR_MILITIA_NAME];
   }
   if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
     for (i = 0, index = 0; i < gpAR.value.ubElites; i++, index++) {
@@ -1661,7 +1661,7 @@ function CreateAutoResolveInterface(): void {
       }
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_ELITE_NAME]);
+      gpEnemies[index].pSoldier.value.name = gpStrategicString[Enum365.STR_AR_ELITE_NAME];
     }
     for (i = 0; i < gpAR.value.ubTroops; i++, index++) {
       gpEnemies[index].pSoldier = TacticalCreateArmyTroop();
@@ -1669,7 +1669,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].usIndex = Enum122.TROOP_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_TROOP_NAME]);
+      gpEnemies[index].pSoldier.value.name = gpStrategicString[Enum365.STR_AR_TROOP_NAME];
     }
     for (i = 0; i < gpAR.value.ubAdmins; i++, index++) {
       gpEnemies[index].pSoldier = TacticalCreateAdministrator();
@@ -1677,7 +1677,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].usIndex = Enum122.ADMIN_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_ADMINISTRATOR_NAME]);
+      gpEnemies[index].pSoldier.value.name = gpStrategicString[Enum365.STR_AR_ADMINISTRATOR_NAME];
     }
     AssociateEnemiesWithStrategicGroups();
   } else {
@@ -1687,7 +1687,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].usIndex = Enum122.AF_CREATURE_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_CREATURE_NAME]);
+      gpEnemies[index].pSoldier.value.name = gpStrategicString[Enum365.STR_AR_CREATURE_NAME];
     }
     for (i = 0; i < gpAR.value.ubAMCreatures; i++, index++) {
       gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.AM_MONSTER);
@@ -1695,7 +1695,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].usIndex = Enum122.AM_CREATURE_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_CREATURE_NAME]);
+      gpEnemies[index].pSoldier.value.name = gpStrategicString[Enum365.STR_AR_CREATURE_NAME];
     }
     for (i = 0; i < gpAR.value.ubYFCreatures; i++, index++) {
       gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.YAF_MONSTER);
@@ -1703,7 +1703,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].usIndex = Enum122.YF_CREATURE_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_CREATURE_NAME]);
+      gpEnemies[index].pSoldier.value.name = gpStrategicString[Enum365.STR_AR_CREATURE_NAME];
     }
     for (i = 0; i < gpAR.value.ubYMCreatures; i++, index++) {
       gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.YAM_MONSTER);
@@ -1711,7 +1711,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].usIndex = Enum122.YM_CREATURE_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_CREATURE_NAME]);
+      gpEnemies[index].pSoldier.value.name = gpStrategicString[Enum365.STR_AR_CREATURE_NAME];
     }
   }
 
@@ -2538,7 +2538,7 @@ function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
   // Draw the retreating text, if applicable
   if (pCell.value.uiFlags & CELL_RETREATED && gpAR.value.ubBattleStatus != Enum120.BATTLE_VICTORY) {
     usColor = FONT_LTGREEN;
-    swprintf(str, gpStrategicString[Enum365.STR_AR_MERC_RETREATED]);
+    str = gpStrategicString[Enum365.STR_AR_MERC_RETREATED];
     pStr = str;
   } else if (pCell.value.uiFlags & CELL_RETREATING && gpAR.value.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS) {
     if (pCell.value.pSoldier.value.bLife >= OKLIFE) {
@@ -2547,14 +2547,14 @@ function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
       if (GetJA2Clock() % 900 < 450) {
         // override the health string with the retreating string.
         usColor = FONT_LTRED;
-        swprintf(str, gpStrategicString[Enum365.STR_AR_MERC_RETREATING]);
+        str = gpStrategicString[Enum365.STR_AR_MERC_RETREATING];
         pStr = str;
       }
     }
   } else if (pCell.value.uiFlags & CELL_SHOWRETREATTEXT && gpAR.value.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS) {
     if (pCell.value.pSoldier.value.bLife >= OKLIFE) {
       SetFontForeground(FONT_YELLOW);
-      swprintf(str, gpStrategicString[Enum365.STR_AR_MERC_RETREAT]);
+      str = gpStrategicString[Enum365.STR_AR_MERC_RETREAT];
       xp = pCell.value.xp + 25 - StringPixLength(pStr, SMALLCOMPFONT()) / 2;
       yp = pCell.value.yp + 12;
       mprintf(xp, yp, str);

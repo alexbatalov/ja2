@@ -14,31 +14,31 @@ export function SetupTextInputForMapInfo(): void {
   AddUserInputField(null); // just so we can use short cut keys while not typing.
 
   // light rgb fields
-  swprintf(str, "%d", gEditorLightColor.peRed);
+  str = swprintf("%d", gEditorLightColor.peRed);
   AddTextInputField(10, 394, 25, 18, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gEditorLightColor.peGreen);
+  str = swprintf("%d", gEditorLightColor.peGreen);
   AddTextInputField(10, 414, 25, 18, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gEditorLightColor.peBlue);
+  str = swprintf("%d", gEditorLightColor.peBlue);
   AddTextInputField(10, 434, 25, 18, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
 
-  swprintf(str, "%d", gsLightRadius);
+  str = swprintf("%d", gsLightRadius);
   AddTextInputField(120, 394, 25, 18, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gusLightLevel);
+  str = swprintf("%d", gusLightLevel);
   AddTextInputField(120, 414, 25, 18, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
 
   // Scroll restriction ID
   if (!gMapInformation.ubRestrictedScrollID)
-    swprintf(str, "");
+    str = "";
   else
-    swprintf(str, "%d", gMapInformation.ubRestrictedScrollID);
+    str = swprintf("%d", gMapInformation.ubRestrictedScrollID);
   AddTextInputField(210, 420, 30, 20, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
 
   // exit grid input fields
-  swprintf(str, "%c%d", gExitGrid.ubGotoSectorY + 'A' - 1, gExitGrid.ubGotoSectorX);
+  str = swprintf("%c%d", gExitGrid.ubGotoSectorY + 'A' - 1, gExitGrid.ubGotoSectorX);
   AddTextInputField(338, 363, 30, 18, MSYS_PRIORITY_NORMAL, str, 3, Enum383.INPUTTYPE_EXCLUSIVE_COORDINATE);
-  swprintf(str, "%d", gExitGrid.ubGotoSectorZ);
+  str = swprintf("%d", gExitGrid.ubGotoSectorZ);
   AddTextInputField(338, 383, 30, 18, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gExitGrid.usGridNo);
+  str = swprintf("%d", gExitGrid.usGridNo);
   AddTextInputField(338, 403, 40, 18, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
 }
 
@@ -89,22 +89,22 @@ export function UpdateMapInfoFields(): void {
   let str: string /* UINT16[10] */;
   // Update the text fields to reflect the validated values.
   // light rgb fields
-  swprintf(str, "%d", gEditorLightColor.peRed);
+  str = swprintf("%d", gEditorLightColor.peRed);
   SetInputFieldStringWith16BitString(1, str);
-  swprintf(str, "%d", gEditorLightColor.peGreen);
+  str = swprintf("%d", gEditorLightColor.peGreen);
   SetInputFieldStringWith16BitString(2, str);
-  swprintf(str, "%d", gEditorLightColor.peBlue);
+  str = swprintf("%d", gEditorLightColor.peBlue);
   SetInputFieldStringWith16BitString(3, str);
 
-  swprintf(str, "%d", gsLightRadius);
+  str = swprintf("%d", gsLightRadius);
   SetInputFieldStringWith16BitString(4, str);
-  swprintf(str, "%d", gusLightLevel);
+  str = swprintf("%d", gusLightLevel);
   SetInputFieldStringWith16BitString(5, str);
 
   if (!gMapInformation.ubRestrictedScrollID)
-    swprintf(str, "");
+    str = "";
   else
-    swprintf(str, "%d", gMapInformation.ubRestrictedScrollID);
+    str = swprintf("%d", gMapInformation.ubRestrictedScrollID);
   SetInputFieldStringWith16BitString(6, str);
 
   ApplyNewExitGridValuesToTextFields();
@@ -179,11 +179,11 @@ export function ApplyNewExitGridValuesToTextFields(): boolean {
   // exit grid input fields
   if (iCurrentTaskbar != Enum36.TASK_MAPINFO)
     return false;
-  swprintf(str, "%c%d", gExitGrid.ubGotoSectorY + 'A' - 1, gExitGrid.ubGotoSectorX);
+  str = swprintf("%c%d", gExitGrid.ubGotoSectorY + 'A' - 1, gExitGrid.ubGotoSectorX);
   SetInputFieldStringWith16BitString(7, str);
-  swprintf(str, "%d", gExitGrid.ubGotoSectorZ);
+  str = swprintf("%d", gExitGrid.ubGotoSectorZ);
   SetInputFieldStringWith16BitString(8, str);
-  swprintf(str, "%d", gExitGrid.usGridNo);
+  str = swprintf("%d", gExitGrid.usGridNo);
   SetInputFieldStringWith16BitString(9, str);
   SetActiveField(0);
   return true;

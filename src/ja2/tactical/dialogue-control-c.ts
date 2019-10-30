@@ -717,28 +717,28 @@ export function HandleDialogue(): void {
     if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_SHOPKEEPER) {
       if (QItem.value.uiSpecialEventData < 3) {
         // post a notice if the player wants to withdraw money from thier account to cover the difference?
-        swprintf(zMoney, "%d", QItem.value.uiSpecialEventData2);
+        zMoney = swprintf("%d", QItem.value.uiSpecialEventData2);
         InsertCommasForDollarFigure(zMoney);
         InsertDollarSignInToString(zMoney);
       }
 
       switch (QItem.value.uiSpecialEventData) {
         case (0):
-          swprintf(zText, SkiMessageBoxText[Enum370.SKI_SHORT_FUNDS_TEXT], zMoney);
+          zText = swprintf(SkiMessageBoxText[Enum370.SKI_SHORT_FUNDS_TEXT], zMoney);
 
           // popup a message stating the player doesnt have enough money
           DoSkiMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_OK, ConfirmDontHaveEnoughForTheDealerMessageBoxCallBack);
           break;
         case (1):
           // if the player is trading items
-          swprintf(zText, SkiMessageBoxText[Enum370.SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_DIFFERENCE], zMoney);
+          zText = swprintf(SkiMessageBoxText[Enum370.SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_DIFFERENCE], zMoney);
 
           // ask them if we should deduct money out the players account to cover the difference
           DoSkiMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack);
 
           break;
         case (2):
-          swprintf(zText, SkiMessageBoxText[Enum370.SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_COST], zMoney);
+          zText = swprintf(SkiMessageBoxText[Enum370.SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_COST], zMoney);
 
           // ask them if we should deduct money out the players account to cover the difference
           DoSkiMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack);
@@ -1367,11 +1367,11 @@ function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWav
 // #ifdef RUSSIAN
 //       sprintf(zFileName, "NPC_SPEECH\\g_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
 // #else
-      sprintf(zFileName, "NPC_SPEECH\\d_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+      zFileName = sprintf("NPC_SPEECH\\d_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
 // #endif
     } else {
       // assume EDT files are in EDT directory on HARD DRIVE
-      sprintf(zFileName, "NPCDATA\\d_%03d.EDT", ubCharacterNum);
+      zFileName = sprintf("NPCDATA\\d_%03d.EDT", ubCharacterNum);
     }
   } else if (ubCharacterNum >= FIRST_RPC && (!(gMercProfiles[ubCharacterNum].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) || ProfileCurrentlyTalkingInDialoguePanel(ubCharacterNum) || (gMercProfiles[ubCharacterNum].ubMiscFlags & PROFILE_MISC_FLAG_FORCENPCQUOTE))) {
     ubFileNumID = ubCharacterNum;
@@ -1387,10 +1387,10 @@ function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWav
     }
 
     if (fWavFile) {
-      sprintf(zFileName, "NPC_SPEECH\\%03d_%03d.wav", ubFileNumID, usQuoteNum);
+      zFileName = sprintf("NPC_SPEECH\\%03d_%03d.wav", ubFileNumID, usQuoteNum);
     } else {
       // assume EDT files are in EDT directory on HARD DRIVE
-      sprintf(zFileName, "NPCDATA\\%03d.EDT", ubFileNumID);
+      zFileName = sprintf("NPCDATA\\%03d.EDT", ubFileNumID);
     }
   } else {
     if (fWavFile) {
@@ -1402,11 +1402,11 @@ function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWav
 // #endif
       {
         // build name of wav file (characternum + quotenum)
-        sprintf(zFileName, "SPEECH\\%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+        zFileName = sprintf("SPEECH\\%03d_%03d.wav", ubCharacterNum, usQuoteNum);
       }
     } else {
       // assume EDT files are in EDT directory on HARD DRIVE
-      sprintf(zFileName, "MERCEDT\\%03d.EDT", ubCharacterNum);
+      zFileName = sprintf("MERCEDT\\%03d.EDT", ubCharacterNum);
     }
   }
 
@@ -1435,12 +1435,12 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
     if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, false, addressof(pFilename))) {
       LoadEncryptedDataFromFile(pFilename, zDialogueText, usQuoteNum * iDataSize, iDataSize);
       if (zDialogueText[0] == 0) {
-        swprintf(zDialogueText, "I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
+        zDialogueText = swprintf("I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
 
         return false;
       }
     } else {
-      swprintf(zDialogueText, "I have no text in the file ( %d ) %S", usQuoteNum, pFilename);
+      zDialogueText = swprintf("I have no text in the file ( %d ) %S", usQuoteNum, pFilename);
 
       return false;
     }
@@ -1490,8 +1490,8 @@ function HandleTacticalNPCTextUI(ubCharacterNum: UINT8, zQuoteStr: string /* Poi
   }
 
   // post message to mapscreen message system
-  swprintf(gTalkPanel.zQuoteStr, "\"%s\"", zQuoteStr);
-  swprintf(zText, "%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
+  gTalkPanel.zQuoteStr = swprintf("\"%s\"", zQuoteStr);
+  zText = swprintf("%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
   MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", zText);
 }
 
@@ -1507,8 +1507,8 @@ function DisplayTextForExternalNPC(ubCharacterNum: UINT8, zQuoteStr: string /* S
   }
 
   // post message to mapscreen message system
-  swprintf(gTalkPanel.zQuoteStr, "\"%s\"", zQuoteStr);
-  swprintf(zText, "%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
+  gTalkPanel.zQuoteStr = swprintf("\"%s\"", zQuoteStr);
+  zText = swprintf("%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
   MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", zText);
 
   if (guiCurrentScreen == Enum26.MAP_SCREEN) {
@@ -1530,7 +1530,7 @@ function HandleTacticalTextUI(iFaceIndex: INT32, pSoldier: Pointer<SOLDIERTYPE>,
   // BUild text
   // How do we do this with defines?
   // swprintf( zText, L"\xb4\xa2 %s: \xb5 \"%s\"", gMercProfiles[ ubCharacterNum ].zNickname, zQuoteStr );
-  swprintf(zText, "\"%s\"", zQuoteStr);
+  zText = swprintf("\"%s\"", zQuoteStr);
   sLeft = 110;
 
   // previous version
@@ -1538,7 +1538,7 @@ function HandleTacticalTextUI(iFaceIndex: INT32, pSoldier: Pointer<SOLDIERTYPE>,
 
   ExecuteTacticalTextBox(sLeft, zText);
 
-  swprintf(zText, "%s: \"%s\"", gMercProfiles[pSoldier.value.ubProfile].zNickname, zQuoteStr);
+  zText = swprintf("%s: \"%s\"", gMercProfiles[pSoldier.value.ubProfile].zNickname, zQuoteStr);
   MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", zText);
 }
 

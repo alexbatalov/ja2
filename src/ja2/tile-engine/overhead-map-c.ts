@@ -55,7 +55,7 @@ export function InitNewOverheadDB(ubTilesetID: UINT8): void {
     FilenameForBPP(gTilesets[ubTilesetID].TileSurfaceFilenames[uiLoop], cFileBPP);
 
     // Adjust for tileset position
-    sprintf(cAdjustedFile, "TILESETS\\%d\\T\\%s", ubTilesetID, cFileBPP);
+    cAdjustedFile = sprintf("TILESETS\\%d\\T\\%s", ubTilesetID, cFileBPP);
 
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     strcpy(VObjectDesc.ImageFile, cAdjustedFile);
@@ -65,7 +65,7 @@ export function InitNewOverheadDB(ubTilesetID: UINT8): void {
       // TRY loading from default directory
       FilenameForBPP(gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop], cFileBPP);
       // Adjust for tileset position
-      sprintf(cAdjustedFile, "TILESETS\\0\\T\\%s", cFileBPP);
+      cAdjustedFile = sprintf("TILESETS\\0\\T\\%s", cFileBPP);
 
       // LOAD ONE WE KNOW ABOUT!
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

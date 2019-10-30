@@ -3256,7 +3256,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
     fOutBottom = true;
   }
 
-  sprintf(gDebugStr, "Angles: %d %d %d %d", at1, at2, at3, at4);
+  gDebugStr = sprintf("Angles: %d %d %d %d", at1, at2, at3, at4);
 
   if (!fOutRight && !fOutLeft && !fOutTop && !fOutBottom) {
     fScrollGood = true;
@@ -3346,7 +3346,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
 
   if (fScrollGood) {
     if (!fCheckOnly) {
-      sprintf(gDebugStr, "Center: %d %d ", gsRenderCenterX, gsRenderCenterY);
+      gDebugStr = sprintf("Center: %d %d ", gsRenderCenterX, gsRenderCenterY);
 
       // Makesure it's a multiple of 5
       sMult = sTempRenderCenterX / CELL_X_SIZE;

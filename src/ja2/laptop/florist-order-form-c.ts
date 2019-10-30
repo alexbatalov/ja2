@@ -252,7 +252,7 @@ export function EnterFloristOrderForm(): boolean {
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerOrderCheckBoxButtonImage)));
 
   // load the currently selected flower bouquet
-  sprintf(sTemp, "LAPTOP\\Flower_%d.sti", guiCurrentlySelectedFlower);
+  sTemp = sprintf("LAPTOP\\Flower_%d.sti", guiCurrentlySelectedFlower);
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCurrentlySelectedFlowerImage)));
@@ -739,7 +739,7 @@ function DisplayFlowerDynamicItems(): void {
   */
   // order number
   usPosX = StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_ORDER_NUMBER], FLOWER_ORDEER_SMALL_FONT()) + 5 + FLOWER_ORDER_ORDER_NUM_NAME_X;
-  swprintf(sTemp, "%d", LaptopSaveInfo.uiFlowerOrderNumber);
+  sTemp = swprintf("%d", LaptopSaveInfo.uiFlowerOrderNumber);
   DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_ORDER_NUM_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   guiFlowerPrice = 0;
@@ -772,7 +772,7 @@ function DisplayFlowerDynamicItems(): void {
   else
     guiFlowerPrice += usPrice + FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].ubWhenItGetsThereCost;
 
-  swprintf(sTemp, "$%d.00 %s", guiFlowerPrice, pMessageStrings[Enum333.MSG_USDOLLAR_ABBREVIATION]);
+  sTemp = swprintf("$%d.00 %s", guiFlowerPrice, pMessageStrings[Enum333.MSG_USDOLLAR_ABBREVIATION]);
   DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_BOUQUET_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 }
 

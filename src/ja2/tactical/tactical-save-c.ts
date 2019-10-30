@@ -2378,48 +2378,48 @@ export function GetMapTempFileName(uiType: UINT32, pMapName: Pointer<string> /* 
 
   switch (uiType) {
     case SF_ITEM_TEMP_FILE_EXISTS:
-      sprintf(pMapName, "%s\\i_%s", MAPS_DIR, zTempName);
+      pMapName = sprintf("%s\\i_%s", MAPS_DIR, zTempName);
       break;
 
     case SF_ROTTING_CORPSE_TEMP_FILE_EXISTS:
-      sprintf(pMapName, "%s\\r_%s", MAPS_DIR, zTempName);
+      pMapName = sprintf("%s\\r_%s", MAPS_DIR, zTempName);
       break;
 
     case SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS:
-      sprintf(pMapName, "%s\\m_%s", MAPS_DIR, zTempName);
+      pMapName = sprintf("%s\\m_%s", MAPS_DIR, zTempName);
       break;
 
     case SF_DOOR_TABLE_TEMP_FILES_EXISTS:
-      sprintf(pMapName, "%s\\d_%s", MAPS_DIR, zTempName);
+      pMapName = sprintf("%s\\d_%s", MAPS_DIR, zTempName);
       break;
 
     case SF_REVEALED_STATUS_TEMP_FILE_EXISTS:
-      sprintf(pMapName, "%s\\v_%s", MAPS_DIR, zTempName);
+      pMapName = sprintf("%s\\v_%s", MAPS_DIR, zTempName);
       break;
 
     case SF_DOOR_STATUS_TEMP_FILE_EXISTS:
-      sprintf(pMapName, "%s\\ds_%s", MAPS_DIR, zTempName);
+      pMapName = sprintf("%s\\ds_%s", MAPS_DIR, zTempName);
       break;
 
     case SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS:
-      sprintf(pMapName, "%s\\e_%s", MAPS_DIR, zTempName);
+      pMapName = sprintf("%s\\e_%s", MAPS_DIR, zTempName);
       break;
 
     case SF_CIV_PRESERVED_TEMP_FILE_EXISTS:
       // NB save game version 0 is "saving game"
       if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiSaveGameVersion != 0 && guiSaveGameVersion < 78) {
-        sprintf(pMapName, "%s\\c_%s", MAPS_DIR, zTempName);
+        pMapName = sprintf("%s\\c_%s", MAPS_DIR, zTempName);
       } else {
-        sprintf(pMapName, "%s\\cc_%s", MAPS_DIR, zTempName);
+        pMapName = sprintf("%s\\cc_%s", MAPS_DIR, zTempName);
       }
       break;
 
     case SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS:
-      sprintf(pMapName, "%s\\sm_%s", MAPS_DIR, zTempName);
+      pMapName = sprintf("%s\\sm_%s", MAPS_DIR, zTempName);
       break;
 
     case SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS:
-      sprintf(pMapName, "%s\\l_%s", MAPS_DIR, zTempName);
+      pMapName = sprintf("%s\\l_%s", MAPS_DIR, zTempName);
       break;
 
     default:

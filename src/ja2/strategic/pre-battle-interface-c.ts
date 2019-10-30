@@ -656,32 +656,32 @@ function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
   }
   SetFontShadow(FONT_NEARBLACK);
   if (!gfPersistantPBI) {
-    swprintf(str, gzNonPersistantPBIText[8]);
+    str = gzNonPersistantPBIText[8];
   } else
     switch (gubEnemyEncounterCode) {
       case Enum164.ENEMY_INVASION_CODE:
-        swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMYINVASION_HEADER]);
+        str = gpStrategicString[Enum365.STR_PB_ENEMYINVASION_HEADER];
         break;
       case Enum164.ENEMY_ENCOUNTER_CODE:
-        swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMYENCOUNTER_HEADER]);
+        str = gpStrategicString[Enum365.STR_PB_ENEMYENCOUNTER_HEADER];
         break;
       case Enum164.ENEMY_AMBUSH_CODE:
-        swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMYAMBUSH_HEADER]);
+        str = gpStrategicString[Enum365.STR_PB_ENEMYAMBUSH_HEADER];
         gfBlinkHeader = true;
         break;
       case Enum164.ENTERING_ENEMY_SECTOR_CODE:
-        swprintf(str, gpStrategicString[Enum365.STR_PB_ENTERINGENEMYSECTOR_HEADER]);
+        str = gpStrategicString[Enum365.STR_PB_ENTERINGENEMYSECTOR_HEADER];
         break;
       case Enum164.CREATURE_ATTACK_CODE:
-        swprintf(str, gpStrategicString[Enum365.STR_PB_CREATUREATTACK_HEADER]);
+        str = gpStrategicString[Enum365.STR_PB_CREATUREATTACK_HEADER];
         gfBlinkHeader = true;
         break;
       case Enum164.BLOODCAT_AMBUSH_CODE:
-        swprintf(str, gpStrategicString[Enum365.STR_PB_BLOODCATAMBUSH_HEADER]);
+        str = gpStrategicString[Enum365.STR_PB_BLOODCATAMBUSH_HEADER];
         gfBlinkHeader = true;
         break;
       case Enum164.ENTERING_BLOODCAT_LAIR_CODE:
-        swprintf(str, gpStrategicString[Enum365.STR_PB_ENTERINGBLOODCATLAIR_HEADER]);
+        str = gpStrategicString[Enum365.STR_PB_ENTERINGBLOODCATLAIR_HEADER];
         break;
     }
   width = StringPixLength(str, FONT10ARIALBOLD());
@@ -757,7 +757,7 @@ export function RenderPreBattleInterface(): void {
 
     SetFont(BLOCKFONT());
     SetFontForeground(FONT_BEIGE);
-    swprintf(str, gpStrategicString[Enum365.STR_PB_LOCATION]);
+    str = gpStrategicString[Enum365.STR_PB_LOCATION];
     width = StringPixLength(str, BLOCKFONT());
     if (width > 64) {
       SetFont(BLOCKFONTNARROW());
@@ -767,11 +767,11 @@ export function RenderPreBattleInterface(): void {
 
     SetFont(BLOCKFONT());
     if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
-      swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMIES]);
+      str = gpStrategicString[Enum365.STR_PB_ENEMIES];
     } else if (gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
-      swprintf(str, gpStrategicString[Enum365.STR_PB_BLOODCATS]);
+      str = gpStrategicString[Enum365.STR_PB_BLOODCATS];
     } else {
-      swprintf(str, gpStrategicString[Enum365.STR_PB_CREATURES]);
+      str = gpStrategicString[Enum365.STR_PB_CREATURES];
     }
     width = StringPixLength(str, BLOCKFONT());
     if (width > 52) {
@@ -781,7 +781,7 @@ export function RenderPreBattleInterface(): void {
     mprintf(54 - width, 38, str);
 
     SetFont(BLOCKFONT());
-    swprintf(str, gpStrategicString[Enum365.STR_PB_MERCS]);
+    str = gpStrategicString[Enum365.STR_PB_MERCS];
     width = StringPixLength(str, BLOCKFONT());
     if (width > 52) {
       SetFont(BLOCKFONTNARROW());
@@ -790,7 +790,7 @@ export function RenderPreBattleInterface(): void {
     mprintf(139 - width, 38, str);
 
     SetFont(BLOCKFONT());
-    swprintf(str, gpStrategicString[Enum365.STR_PB_MILITIA]);
+    str = gpStrategicString[Enum365.STR_PB_MILITIA];
     width = StringPixLength(str, BLOCKFONT());
     if (width > 52) {
       SetFont(BLOCKFONTNARROW());
@@ -821,23 +821,23 @@ export function RenderPreBattleInterface(): void {
     SetFont(FONT14ARIAL());
     if (gubEnemyEncounterCode == Enum164.CREATURE_ATTACK_CODE || gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE || WhatPlayerKnowsAboutEnemiesInSector(gubPBSectorX, gubPBSectorY) != Enum159.KNOWS_HOW_MANY) {
       // don't know how many
-      swprintf(str, "?");
+      str = "?";
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = -2;
     } else {
       // know exactly how many
       i = NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
-      swprintf(str, "%d", i);
+      str = swprintf("%d", i);
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = i;
     }
     x = 57 + (27 - StringPixLength(str, FONT14ARIAL())) / 2;
     y = 36;
     mprintf(x, y, str);
     // player
-    swprintf(str, "%d", guiNumInvolved);
+    str = swprintf("%d", guiNumInvolved);
     x = 142 + (27 - StringPixLength(str, FONT14ARIAL())) / 2;
     mprintf(x, y, str);
     // militia
-    swprintf(str, "%d", CountAllMilitiaInSector(gubPBSectorX, gubPBSectorY));
+    str = swprintf("%d", CountAllMilitiaInSector(gubPBSectorX, gubPBSectorY));
     x = 227 + (27 - StringPixLength(str, FONT14ARIAL())) / 2;
     mprintf(x, y, str);
     SetFontShadow(FONT_NEARBLACK);
@@ -870,12 +870,12 @@ export function RenderPreBattleInterface(): void {
           x = 129 + (58 - StringPixLength(str, BLOCKFONT2())) / 2;
           mprintf(x, y, str);
           // HP
-          swprintf(str, "%d%%", ubHPPercent);
+          str = swprintf("%d%%", ubHPPercent);
           x = 189 + (25 - StringPixLength(str, BLOCKFONT2())) / 2;
           wcscat(str, "%");
           mprintf(x, y, str);
           // BP
-          swprintf(str, "%d%%", ubBPPercent);
+          str = swprintf("%d%%", ubBPPercent);
           x = 217 + (25 - StringPixLength(str, BLOCKFONT2())) / 2;
           wcscat(str, "%");
           mprintf(x, y, str);
@@ -1092,31 +1092,31 @@ function GetSoldierConditionInfo(pSoldier: Pointer<SOLDIERTYPE>, szCondition: Po
   // Go from the worst condition to the best.
   if (!pSoldier.value.bLife) {
     // 0 life
-    swprintf(szCondition, pConditionStrings[Enum163.COND_DEAD]);
+    szCondition = pConditionStrings[Enum163.COND_DEAD];
   } else if (pSoldier.value.bLife < OKLIFE && pSoldier.value.bBleeding) {
     // life less than OKLIFE and bleeding
-    swprintf(szCondition, pConditionStrings[Enum163.COND_DYING]);
+    szCondition = pConditionStrings[Enum163.COND_DYING];
   } else if (pSoldier.value.bBreath < OKBREATH && pSoldier.value.bCollapsed) {
     // breath less than OKBREATH
-    swprintf(szCondition, pConditionStrings[Enum163.COND_UNCONCIOUS]);
+    szCondition = pConditionStrings[Enum163.COND_UNCONCIOUS];
   } else if (pSoldier.value.bBleeding > MIN_BLEEDING_THRESHOLD) {
     // bleeding
-    swprintf(szCondition, pConditionStrings[Enum163.COND_BLEEDING]);
+    szCondition = pConditionStrings[Enum163.COND_BLEEDING];
   } else if (pSoldier.value.bLife * 100 < pSoldier.value.bLifeMax * 50) {
     // less than 50% life
-    swprintf(szCondition, pConditionStrings[Enum163.COND_WOUNDED]);
+    szCondition = pConditionStrings[Enum163.COND_WOUNDED];
   } else if (pSoldier.value.bBreath < 50) {
     // breath less than half
-    swprintf(szCondition, pConditionStrings[Enum163.COND_FATIGUED]);
+    szCondition = pConditionStrings[Enum163.COND_FATIGUED];
   } else if (pSoldier.value.bLife * 100 < pSoldier.value.bLifeMax * 67) {
     // less than 67% life
-    swprintf(szCondition, pConditionStrings[Enum163.COND_FAIR]);
+    szCondition = pConditionStrings[Enum163.COND_FAIR];
   } else if (pSoldier.value.bLife * 100 < pSoldier.value.bLifeMax * 86) {
     // less than 86% life
-    swprintf(szCondition, pConditionStrings[Enum163.COND_GOOD]);
+    szCondition = pConditionStrings[Enum163.COND_GOOD];
   } else {
     // 86%+ life
-    swprintf(szCondition, pConditionStrings[Enum163.COND_EXCELLENT]);
+    szCondition = pConditionStrings[Enum163.COND_EXCELLENT];
   }
 }
 

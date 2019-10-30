@@ -521,7 +521,7 @@ function DisplayDestinationOfCurrentDestMerc(): void {
   SetBoxForeground(ghVehicleBox, FONT_LTGREEN);
   SetBoxBackground(ghVehicleBox, FONT_BLACK);
 
-  swprintf(sString, "%s%s", pMapVertIndex[sSector / MAP_WORLD_X], pMapHortIndex[sSector % MAP_WORLD_X]);
+  sString = swprintf("%s%s", pMapVertIndex[sSector / MAP_WORLD_X], pMapHortIndex[sSector % MAP_WORLD_X]);
   FindFontCenterCoordinates(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT()), sString, MAP_SCREEN_FONT(), addressof(sX), addressof(sY));
 
   RestoreExternBackgroundRect(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT()));
@@ -905,7 +905,7 @@ function DrawPay(sCharNumber: INT16): void {
   SetFontBackground(FONT_BLACK);
 
   // parse salary
-  swprintf(sString, "%d", uiSalary);
+  sString = swprintf("%d", uiSalary);
 
   // right justify salary
   FindFontRightCoordinates(CHAR_PAY_X, CHAR_PAY_Y, CHAR_PAY_WID, CHAR_PAY_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
@@ -979,7 +979,7 @@ function DrawCharStats(sCharNum: INT16): void {
   SetFontBackground(FONT_BLACK);
 
   // strength
-  swprintf(sString, "%d", pSoldier.value.bStrength);
+  sString = swprintf("%d", pSoldier.value.bStrength);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeStrengthTime) && (pSoldier.value.uiChangeStrengthTime != 0)) {
     if (pSoldier.value.usValueGoneUp & STRENGTH_INCREASE) {
@@ -996,7 +996,7 @@ function DrawCharStats(sCharNum: INT16): void {
   DrawString(sString, usX, STR_Y, CHAR_FONT());
 
   // dexterity
-  swprintf(sString, "%d", pSoldier.value.bDexterity);
+  sString = swprintf("%d", pSoldier.value.bDexterity);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeDexterityTime) && (pSoldier.value.uiChangeDexterityTime != 0)) {
     if (pSoldier.value.usValueGoneUp & DEX_INCREASE) {
@@ -1013,7 +1013,7 @@ function DrawCharStats(sCharNum: INT16): void {
   DrawString(sString, usX, DEX_Y, CHAR_FONT());
 
   // agility
-  swprintf(sString, "%d", pSoldier.value.bAgility);
+  sString = swprintf("%d", pSoldier.value.bAgility);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeAgilityTime) && (pSoldier.value.uiChangeAgilityTime != 0)) {
     if (pSoldier.value.usValueGoneUp & AGIL_INCREASE) {
@@ -1030,7 +1030,7 @@ function DrawCharStats(sCharNum: INT16): void {
   DrawString(sString, usX, AGL_Y, CHAR_FONT());
 
   // wisdom
-  swprintf(sString, "%d", pSoldier.value.bWisdom);
+  sString = swprintf("%d", pSoldier.value.bWisdom);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeWisdomTime) && (pSoldier.value.uiChangeWisdomTime != 0)) {
     if (pSoldier.value.usValueGoneUp & WIS_INCREASE) {
@@ -1047,7 +1047,7 @@ function DrawCharStats(sCharNum: INT16): void {
   DrawString(sString, usX, WIS_Y, CHAR_FONT());
 
   // leadership
-  swprintf(sString, "%d", pSoldier.value.bLeadership);
+  sString = swprintf("%d", pSoldier.value.bLeadership);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeLeadershipTime) && (pSoldier.value.uiChangeLeadershipTime != 0)) {
     if (pSoldier.value.usValueGoneUp & LDR_INCREASE) {
@@ -1064,7 +1064,7 @@ function DrawCharStats(sCharNum: INT16): void {
   DrawString(sString, usX, LDR_Y, CHAR_FONT());
 
   // experience level
-  swprintf(sString, "%d", pSoldier.value.bExpLevel);
+  sString = swprintf("%d", pSoldier.value.bExpLevel);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeLevelTime) && (pSoldier.value.uiChangeLevelTime != 0)) {
     if (pSoldier.value.usValueGoneUp & LVL_INCREASE) {
@@ -1081,7 +1081,7 @@ function DrawCharStats(sCharNum: INT16): void {
   DrawString(sString, usX, LVL_Y, CHAR_FONT());
 
   // marksmanship
-  swprintf(sString, "%d", pSoldier.value.bMarksmanship);
+  sString = swprintf("%d", pSoldier.value.bMarksmanship);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeMarksmanshipTime) && (pSoldier.value.uiChangeMarksmanshipTime != 0)) {
     if (pSoldier.value.usValueGoneUp & MRK_INCREASE) {
@@ -1098,7 +1098,7 @@ function DrawCharStats(sCharNum: INT16): void {
   DrawString(sString, usX, MRK_Y, CHAR_FONT());
 
   // explosives
-  swprintf(sString, "%d", pSoldier.value.bExplosive);
+  sString = swprintf("%d", pSoldier.value.bExplosive);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeExplosivesTime) && (pSoldier.value.uiChangeExplosivesTime != 0)) {
     if (pSoldier.value.usValueGoneUp & EXP_INCREASE) {
@@ -1115,7 +1115,7 @@ function DrawCharStats(sCharNum: INT16): void {
   DrawString(sString, usX, EXP_Y, CHAR_FONT());
 
   // mechanical
-  swprintf(sString, "%d", pSoldier.value.bMechanical);
+  sString = swprintf("%d", pSoldier.value.bMechanical);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeMechanicalTime) && (pSoldier.value.uiChangeMechanicalTime != 0)) {
     if (pSoldier.value.usValueGoneUp & MECH_INCREASE) {
@@ -1132,7 +1132,7 @@ function DrawCharStats(sCharNum: INT16): void {
   DrawString(sString, usX, MEC_Y, CHAR_FONT());
 
   // medical
-  swprintf(sString, "%d", pSoldier.value.bMedical);
+  sString = swprintf("%d", pSoldier.value.bMedical);
 
   if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + pSoldier.value.uiChangeMedicalTime) && (pSoldier.value.uiChangeMedicalTime != 0)) {
     if (pSoldier.value.usValueGoneUp & MED_INCREASE) {
@@ -1164,7 +1164,7 @@ function DrawCharHealth(sCharNum: INT16): void {
 
   if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
     // find starting X coordinate by centering all 3 substrings together, then print them separately (different colors)!
-    swprintf(sString, "%d/%d", pSoldier.value.bLife, pSoldier.value.bLifeMax);
+    sString = swprintf("%d/%d", pSoldier.value.bLife, pSoldier.value.bLifeMax);
     FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
 
     if (pSoldier.value.bLifeMax > 0) {
@@ -1187,7 +1187,7 @@ function DrawCharHealth(sCharNum: INT16): void {
     }
 
     // current life
-    swprintf(sString, "%d", pSoldier.value.bLife);
+    sString = swprintf("%d", pSoldier.value.bLife);
     DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT());
     usX += StringPixLength(sString, CHAR_FONT());
 
@@ -1208,12 +1208,12 @@ function DrawCharHealth(sCharNum: INT16): void {
     }
 
     // maximum life
-    swprintf(sString, "%d", pSoldier.value.bLifeMax);
+    sString = swprintf("%d", pSoldier.value.bLifeMax);
     DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT());
   } else {
     // POW - health unknown
     SetFontForeground(CHAR_TEXT_FONT_COLOR);
-    swprintf(sString, pPOWStrings[1]);
+    sString = pPOWStrings[1];
     FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
     DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT());
   }
@@ -1355,7 +1355,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
 
   // dead?
   if (pSoldier.value.bLife <= 0) {
-    swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+    sString = swprintf("%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
   }
   // what kind of merc
   else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC || pSoldier.value.ubProfile == Enum268.SLAY) {
@@ -1382,7 +1382,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
         SetFontForeground(FONT_LTGREEN);
       }
 
-      swprintf(sString, "%.1f%s/%d%s", dTimeLeft, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], pSoldier.value.iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
+      sString = swprintf("%.1f%s/%d%s", dTimeLeft, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], pSoldier.value.iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
     } else {
       // less than a day, display hours left in red
       if (iTimeRemaining > 5) {
@@ -1403,14 +1403,14 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
         SetFontForeground(FONT_RED);
       }
 
-      swprintf(sString, "%d%s/%d%s", iTimeRemaining, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], pSoldier.value.iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
+      sString = swprintf("%d%s/%d%s", iTimeRemaining, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], pSoldier.value.iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
     }
   } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
     let iBeenHiredFor: INT32 = (GetWorldTotalMin() / NUM_MIN_IN_DAY) - pSoldier.value.iStartContractTime;
 
-    swprintf(sString, "%d%s/%d%s", gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], iBeenHiredFor, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
+    sString = swprintf("%d%s/%d%s", gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], iBeenHiredFor, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
   } else {
-    swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+    sString = swprintf("%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
   }
 
   // set font stuff
@@ -1436,7 +1436,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     iDailyCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
   }
 
-  swprintf(sString, "%d", iDailyCost);
+  sString = swprintf("%d", iDailyCost);
 
   // insert commas and dollar sign
   InsertCommasForDollarFigure(sString);
@@ -1447,7 +1447,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
 
   // medical deposit
   if (gMercProfiles[Menptr[gCharactersList[sCharNumber].usSolID].ubProfile].sMedicalDepositAmount > 0) {
-    swprintf(sString, "%d", gMercProfiles[Menptr[gCharactersList[sCharNumber].usSolID].ubProfile].sMedicalDepositAmount);
+    sString = swprintf("%d", gMercProfiles[Menptr[gCharactersList[sCharNumber].usSolID].ubProfile].sMedicalDepositAmount);
 
     // insert commas and dollar sign
     InsertCommasForDollarFigure(sString);
@@ -1475,7 +1475,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     }
   } else {
     // POW - morale unknown
-    swprintf(sString, pPOWStrings[1]);
+    sString = pPOWStrings[1];
   }
 
   FindFontCenterCoordinates(CHAR_MORALE_X, CHAR_MORALE_Y, CHAR_MORALE_WID, CHAR_MORALE_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
@@ -2304,7 +2304,7 @@ export function MapScreenHandle(): UINT32 {
       CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMINEICON)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      sprintf(VObjectDesc.ImageFile, "INTERFACE\\hilite.sti");
+      VObjectDesc.ImageFile = "INTERFACE\\hilite.sti";
       AddVideoObject(addressof(VObjectDesc), addressof(guiSectorLocatorGraphicID));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -2321,7 +2321,7 @@ export function MapScreenHandle(): UINT32 {
 
       // Kris:  Added this because I need to blink the icons button.
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      sprintf(VObjectDesc.ImageFile, "INTERFACE\\newemail.sti");
+      VObjectDesc.ImageFile = "INTERFACE\\newemail.sti";
       AddVideoObject(addressof(VObjectDesc), addressof(guiNewMailIcons));
     }
 
@@ -3507,7 +3507,7 @@ function HandleMapUI(): UINT32 {
               GetSectorIDString(sMapX, sMapY, 0, sMsgSubString, false);
 
               // now build the string
-              swprintf(sMsgString, pBullseyeStrings[1], sMsgSubString);
+              sMsgString = swprintf(pBullseyeStrings[1], sMsgSubString);
 
               // confirm the change with overlay message
               MapScreenMessage(FONT_MCOLOR_LTYELLOW, MSG_MAP_UI_POSITION_MIDDLE, sMsgString);
@@ -4500,7 +4500,7 @@ export function EndMapScreen(fDuringFade: boolean): void {
     // Load a tiny graphic of the on screen and draw it to the buffer.
     PlayJA2SampleFromFile("SOUNDS\\Initial Power Up (8-11).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    sprintf(VObjectDesc.ImageFile, "INTERFACE\\LaptopOn.sti");
+    VObjectDesc.ImageFile = "INTERFACE\\LaptopOn.sti";
     if (!AddVideoObject(addressof(VObjectDesc), addressof(uiLaptopOn)))
       AssertMsg(0, "Failed to load data\\Interface\\LaptopOn.sti");
     BltVideoObjectFromIndex(FRAME_BUFFER, uiLaptopOn, 0, 465, 417, VO_BLT_SRCTRANSPARENCY, null);
@@ -5016,17 +5016,17 @@ function BltCharInvPanel(): void {
   mprintf(MAP_CAMMO_PERCENT_X, MAP_CAMMO_PERCENT_Y, "%%");
 
   // display armor value
-  swprintf(sString, "%3d", ArmourPercent(pSoldier));
+  sString = swprintf("%3d", ArmourPercent(pSoldier));
   FindFontRightCoordinates(MAP_ARMOR_X, MAP_ARMOR_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
   mprintf(usX, usY, sString);
 
   // Display weight value
-  swprintf(sString, "%3d", CalculateCarriedWeight(pSoldier));
+  sString = swprintf("%3d", CalculateCarriedWeight(pSoldier));
   FindFontRightCoordinates(MAP_WEIGHT_X, MAP_WEIGHT_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
   mprintf(usX, usY, sString);
 
   // Display camo value
-  swprintf(sString, "%3d", pSoldier.value.bCamo);
+  sString = swprintf("%3d", pSoldier.value.bCamo);
   FindFontRightCoordinates(MAP_CAMMO_X, MAP_CAMMO_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
   mprintf(usX, usY, sString);
 
@@ -7862,12 +7862,12 @@ export function HandlePreloadOfMapGraphics(): boolean {
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMINEICON)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(VObjectDesc.ImageFile, "INTERFACE\\hilite.sti");
+  VObjectDesc.ImageFile = "INTERFACE\\hilite.sti";
   AddVideoObject(addressof(VObjectDesc), addressof(guiSectorLocatorGraphicID));
 
   // Kris:  Added this because I need to blink the icons button.
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(VObjectDesc.ImageFile, "INTERFACE\\newemail.sti");
+  VObjectDesc.ImageFile = "INTERFACE\\newemail.sti";
   AddVideoObject(addressof(VObjectDesc), addressof(guiNewMailIcons));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -8090,7 +8090,7 @@ export function TellPlayerWhyHeCantCompressTime(): void {
       let str: string /* UINT16[256] */;
       let pSectorString: string /* UINT16[128] */;
       GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, pSectorString, true);
-      swprintf(str, gzLateLocalizedString[27], pSectorString);
+      str = swprintf(gzLateLocalizedString[27], pSectorString);
       DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, str, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
     } else {
       // The NEW non-persistant PBI is used instead of a dialog box explaining why we can't compress time.
@@ -8963,7 +8963,7 @@ function ConvertMinTimeToETADayHourMinString(uiTimeInMin: UINT32, sString: Point
   // there ain't enough room to show both the day and ETA: and without ETA it's confused as the current time
   //	swprintf( sString, L"%s %s %d, %02d:%02d", pEtaString[ 0 ], pDayStrings[ 0 ], uiDay, uiHour, uiMin );
   //	swprintf( sString, L"%s %d, %02d:%02d", pDayStrings[ 0 ], uiDay, uiHour, uiMin );
-  swprintf(sString, "%s %02d:%02d", pEtaString[0], uiHour, uiMin);
+  sString = swprintf("%s %02d:%02d", pEtaString[0], uiHour, uiMin);
 }
 
 function GetGroundTravelTimeOfCharacter(bCharNumber: INT8): INT32 {
@@ -9290,7 +9290,7 @@ function HandleMilitiaRedistributionClick(): void {
         }
       } else {
         // can't have militia in this town
-        swprintf(sString, pMapErrorString[31], pTownNames[bTownId]);
+        sString = swprintf(pMapErrorString[31], pTownNames[bTownId]);
         DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
       }
     } else if (IsThisSectorASAMSector(sSelMapX, sSelMapY, 0) && fSamSiteFound[GetSAMIdFromSector(sSelMapX, sSelMapY, 0)]) {
@@ -9421,13 +9421,13 @@ export function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, s
   } else {
     if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
       // POW - location unknown
-      swprintf(sString, "%s", pPOWStrings[1]);
+      sString = swprintf("%s", pPOWStrings[1]);
     } else {
-      swprintf(pTempString, "%s%s%s", pMapVertIndex[pSoldier.value.sSectorY], pMapHortIndex[pSoldier.value.sSectorX], pMapDepthIndex[pSoldier.value.bSectorZ]);
+      pTempString = swprintf("%s%s%s", pMapVertIndex[pSoldier.value.sSectorY], pMapHortIndex[pSoldier.value.sSectorX], pMapDepthIndex[pSoldier.value.bSectorZ]);
 
       if (pSoldier.value.fBetweenSectors) {
         // put brackets around it when he's between sectors!
-        swprintf(sString, "(%s)", pTempString);
+        sString = swprintf("(%s)", pTempString);
       } else {
         wcscpy(sString, pTempString);
       }
@@ -9476,7 +9476,7 @@ export function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>
     }
   }
 
-  swprintf(sString, "%s%s", pMapVertIndex[iSectorY], pMapHortIndex[iSectorX]);
+  sString = swprintf("%s%s", pMapVertIndex[iSectorY], pMapHortIndex[iSectorX]);
 }
 
 export function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer<string> /* wchar_t[] */ /* [] */, pubFontColor: Pointer<UINT8>): void {
@@ -9485,7 +9485,7 @@ export function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, 
   let iHoursRemaining: INT32 = 0;
 
   if ((pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC && pSoldier.value.ubProfile != Enum268.SLAY) || pSoldier.value.bLife == 0) {
-    swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+    sString = swprintf("%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
   } else {
     iMinsRemaining = pSoldier.value.iEndofContractTime - GetWorldTotalMin();
 
@@ -9503,7 +9503,7 @@ export function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, 
 
       pubFontColor.value = FONT_LTGREEN;
 
-      swprintf(sString, "%d%s", iDaysRemaining, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
+      sString = swprintf("%d%s", iDaysRemaining, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
     } else // less than 3 days
     {
       if (iMinsRemaining > 5) {
@@ -9519,7 +9519,7 @@ export function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, 
         pubFontColor.value = FONT_RED;
       }
 
-      swprintf(sString, "%d%s", iHoursRemaining, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION]);
+      sString = swprintf("%d%s", iHoursRemaining, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION]);
     }
   }
 }

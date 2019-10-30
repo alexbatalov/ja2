@@ -588,10 +588,10 @@ export function DisplayItemInfo(uiItemClass: UINT32): boolean {
   }
 
   // Display the subtotal at the bottom of the screen
-  swprintf(sDollarTemp, "%d", CalculateTotalPurchasePrice());
+  sDollarTemp = swprintf("%d", CalculateTotalPurchasePrice());
   InsertCommasForDollarFigure(sDollarTemp);
   InsertDollarSignInToString(sDollarTemp);
-  swprintf(sTemp, "%s %s", BobbyRText[Enum350.BOBBYR_GUNS_SUB_TOTAL], sDollarTemp);
+  sTemp = swprintf("%s %s", BobbyRText[Enum350.BOBBYR_GUNS_SUB_TOTAL], sDollarTemp);
   DrawTextToScreen(sTemp, BOBBYR_ORDER_SUBTOTAL_X, BOBBYR_ORDER_SUBTOTAL_Y, 0, BOBBYR_ORDER_TITLE_FONT(), BOBBYR_ORDER_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED | TEXT_SHADOWED);
 
   // Display the Used item disclaimer
@@ -770,7 +770,7 @@ function DisplayCostAndQty(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_COST], BOBBYR_ITEM_COST_TEXT_X, usPosY, BOBBYR_ITEM_COST_TEXT_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usPosY += usFontHeight + 2;
 
-  swprintf(sTemp, "%d", CalcBobbyRayCost(usIndex, usBobbyIndex, fUsed));
+  sTemp = swprintf("%d", CalcBobbyRayCost(usIndex, usBobbyIndex, fUsed));
   InsertCommasForDollarFigure(sTemp);
   InsertDollarSignInToString(sTemp);
 
@@ -795,7 +795,7 @@ function DisplayCostAndQty(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_WGHT], BOBBYR_ITEM_STOCK_TEXT_X, (usPosY), BOBBYR_ITEM_COST_TEXT_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usPosY += usFontHeight + 2;
 
-  swprintf(sTemp, "%3.2f", GetWeightBasedOnMetricOption(Item[usIndex].ubWeight) / (10.0));
+  sTemp = swprintf("%3.2f", GetWeightBasedOnMetricOption(Item[usIndex].ubWeight) / (10.0));
   DrawTextToScreen(sTemp, BOBBYR_ITEM_STOCK_TEXT_X, (usPosY), BOBBYR_ITEM_COST_TEXT_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   usPosY += usFontHeight + 2;
 
@@ -804,9 +804,9 @@ function DisplayCostAndQty(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16
   usPosY += usFontHeight + 2;
 
   if (fUsed)
-    swprintf(sTemp, "% 4d", LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].ubQtyOnHand);
+    sTemp = swprintf("% 4d", LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].ubQtyOnHand);
   else
-    swprintf(sTemp, "% 4d", LaptopSaveInfo.BobbyRayInventory[usBobbyIndex].ubQtyOnHand);
+    sTemp = swprintf("% 4d", LaptopSaveInfo.BobbyRayInventory[usBobbyIndex].ubQtyOnHand);
 
   DrawTextToScreen(sTemp, BOBBYR_ITEM_STOCK_TEXT_X, usPosY, BOBBYR_ITEM_COST_TEXT_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   usPosY += usFontHeight + 2;
@@ -820,9 +820,9 @@ function DisplayRof(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_ROF], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   if (WeaponROF[usIndex] == -1)
-    swprintf(sTemp, "? %s", pMessageStrings[Enum333.MSG_RPM]);
+    sTemp = swprintf("? %s", pMessageStrings[Enum333.MSG_RPM]);
   else
-    swprintf(sTemp, "%3d/%s", WeaponROF[usIndex], pMessageStrings[Enum333.MSG_MINUTE_ABBREVIATION]);
+    sTemp = swprintf("%3d/%s", WeaponROF[usIndex], pMessageStrings[Enum333.MSG_MINUTE_ABBREVIATION]);
 
   DrawTextToScreen(sTemp, BOBBYR_ITEM_WEIGHT_NUM_X, usPosY, BOBBYR_ITEM_WEIGHT_NUM_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   usPosY += usFontHeight + 2;
@@ -833,7 +833,7 @@ function DisplayDamage(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): U
   let sTemp: string /* wchar_t[20] */;
 
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_DAMAGE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
-  swprintf(sTemp, "%4d", Weapon[usIndex].ubImpact);
+  sTemp = swprintf("%4d", Weapon[usIndex].ubImpact);
   DrawTextToScreen(sTemp, BOBBYR_ITEM_WEIGHT_NUM_X, usPosY, BOBBYR_ITEM_WEIGHT_NUM_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   usPosY += usFontHeight + 2;
   return usPosY;
@@ -843,7 +843,7 @@ function DisplayRange(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UI
   let sTemp: string /* wchar_t[20] */;
 
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_RANGE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
-  swprintf(sTemp, "%3d %s", Weapon[usIndex].usRange, pMessageStrings[Enum333.MSG_METER_ABBREVIATION]);
+  sTemp = swprintf("%3d %s", Weapon[usIndex].usRange, pMessageStrings[Enum333.MSG_METER_ABBREVIATION]);
   DrawTextToScreen(sTemp, BOBBYR_ITEM_WEIGHT_NUM_X, usPosY, BOBBYR_ITEM_WEIGHT_NUM_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   usPosY += usFontHeight + 2;
   return usPosY;
@@ -853,7 +853,7 @@ function DisplayMagazine(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16):
   let sTemp: string /* wchar_t[20] */;
 
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_MAGAZINE], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
-  swprintf(sTemp, "%3d %s", Weapon[usIndex].ubMagSize, pMessageStrings[Enum333.MSG_ROUNDS_ABBREVIATION]);
+  sTemp = swprintf("%3d %s", Weapon[usIndex].ubMagSize, pMessageStrings[Enum333.MSG_ROUNDS_ABBREVIATION]);
   DrawTextToScreen(sTemp, BOBBYR_ITEM_WEIGHT_NUM_X, usPosY, BOBBYR_ITEM_WEIGHT_NUM_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   usPosY += usFontHeight + 2;
   return usPosY;
@@ -865,11 +865,11 @@ function DisplayCaliber(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): 
 
   //	if ammo is begin drawn
   if (Item[usIndex].usItemClass == IC_AMMO) {
-    swprintf(zTemp, "%s", BobbyRayAmmoCaliber[Magazine[Item[usIndex].ubClassIndex].ubCalibre]);
+    zTemp = swprintf("%s", BobbyRayAmmoCaliber[Magazine[Item[usIndex].ubClassIndex].ubCalibre]);
     //		DrawTextToScreen( AmmoCaliber[ Magazine[ Item[ usIndex ].ubClassIndex ].ubCalibre], BOBBYR_ITEM_WEIGHT_NUM_X, (UINT16)usPosY, BOBBYR_ITEM_WEIGHT_NUM_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT, BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
   } else {
     // else a gun is being displayed
-    swprintf(zTemp, "%s", BobbyRayAmmoCaliber[Weapon[Item[usIndex].ubClassIndex].ubCalibre]);
+    zTemp = swprintf("%s", BobbyRayAmmoCaliber[Weapon[Item[usIndex].ubClassIndex].ubCalibre]);
     //		DrawTextToScreen( AmmoCaliber[ Weapon[ Item[ usIndex ].ubClassIndex ].ubCalibre ], BOBBYR_ITEM_WEIGHT_NUM_X, (UINT16)usPosY, BOBBYR_ITEM_WEIGHT_NUM_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT, BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
   }
 
@@ -888,7 +888,7 @@ function DisplayWeight(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): U
   // display the 'weight' string
   DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_WEIGHT], BOBBYR_ITEM_WEIGHT_TEXT_X, usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  swprintf(sTemp, "%3.2f %s", GetWeightBasedOnMetricOption(Item[usIndex].ubWeight) / 10, GetWeightUnitString());
+  sTemp = swprintf("%3.2f %s", GetWeightBasedOnMetricOption(Item[usIndex].ubWeight) / 10, GetWeightUnitString());
   DrawTextToScreen(sTemp, BOBBYR_ITEM_WEIGHT_NUM_X, usPosY, BOBBYR_ITEM_WEIGHT_NUM_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   usPosY += usFontHeight + 2;
   return usPosY;
@@ -918,14 +918,14 @@ function DisplayItemNameAndInfo(usPosY: UINT16, usIndex: UINT16, usBobbyIndex: U
     DrawTextToScreen(BobbyRText[Enum350.BOBBYR_GUNS_QTY_ON_ORDER], BOBBYR_ITEM_QTY_TEXT_X, usPosY, BOBBYR_ITEM_QTY_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
     if (ubPurchaseNumber != BOBBY_RAY_NOT_PURCHASED) {
-      swprintf(sTemp, "% 4d", BobbyRayPurchases[ubPurchaseNumber].ubNumberPurchased);
+      sTemp = swprintf("% 4d", BobbyRayPurchases[ubPurchaseNumber].ubNumberPurchased);
       DrawTextToScreen(sTemp, BOBBYR_ITEMS_BOUGHT_X, usPosY, 0, FONT14ARIAL(), BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     }
   }
 
   // if it's a used item, display how damaged the item is
   if (fUsed) {
-    swprintf(sTemp, "*%3d%%%%", LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].ubItemQuality);
+    sTemp = swprintf("*%3d%%%%", LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].ubItemQuality);
     DrawTextToScreen(sTemp, (BOBBYR_ITEM_NAME_X - 2), (usPosY - BOBBYR_ORDER_NUM_Y_OFFSET), BOBBYR_ORDER_NUM_WIDTH, BOBBYR_ITEM_NAME_TEXT_FONT(), BOBBYR_ITEM_NAME_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
@@ -1082,7 +1082,7 @@ function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbe
       // and only if the user has an item that can use the particular type of ammo
       ubItemCount = CheckPlayersInventoryForGunMatchingGivenAmmoID(pItemNumbers[i]);
       if (ubItemCount != 0) {
-        swprintf(zItemName, "%s %d %s", BobbyRText[Enum350.BOBBYR_GUNS_NUM_GUNS_THAT_USE_AMMO_1], ubItemCount, BobbyRText[Enum350.BOBBYR_GUNS_NUM_GUNS_THAT_USE_AMMO_2]);
+        zItemName = swprintf("%s %d %s", BobbyRText[Enum350.BOBBYR_GUNS_NUM_GUNS_THAT_USE_AMMO_1], ubItemCount, BobbyRText[Enum350.BOBBYR_GUNS_NUM_GUNS_THAT_USE_AMMO_2]);
       } else
         zItemName[0] = '\0';
     } else

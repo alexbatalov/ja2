@@ -2287,19 +2287,19 @@ export function HandleCheckForExitArrowsInput(fAdjustConfirm: boolean): boolean 
         // Use the singular version of the string
         if (gMercProfiles[MercPtrs[gusSelectedSoldier].value.ubProfile].bSex == Enum272.MALE) {
           // male singular
-          swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gbPotentiallyAbandonedEPCSlotID].value.name);
+          str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gbPotentiallyAbandonedEPCSlotID].value.name);
         } else {
           // female singular
-          swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gbPotentiallyAbandonedEPCSlotID].value.name);
+          str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gbPotentiallyAbandonedEPCSlotID].value.name);
         }
       } else {
         // Use the plural version of the string
         if (gMercProfiles[MercPtrs[gusSelectedSoldier].value.ubProfile].bSex == Enum272.MALE) {
           // male plural
-          swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
+          str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
         } else {
           // female plural
-          swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
+          str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
         }
       }
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, str);
@@ -2527,7 +2527,7 @@ function RefreshSoldier(): void {
   }
 
   if (GetMouseMapPos(addressof(usMapPos)))
-    sprintf(gDebugStr, "%d %d %d %d %d %d %d %d", gubWorldMovementCosts[usMapPos][0][0], gubWorldMovementCosts[usMapPos][1][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][2][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][3][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][4][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][5][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][6][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][7][gsInterfaceLevel]);
+    gDebugStr = sprintf("%d %d %d %d %d %d %d %d", gubWorldMovementCosts[usMapPos][0][0], gubWorldMovementCosts[usMapPos][1][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][2][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][3][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][4][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][5][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][6][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][7][gsInterfaceLevel]);
 }
 
 function ChangeSoldiersBodyType(ubBodyType: UINT8, fCreateNewPalette: boolean): void {

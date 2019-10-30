@@ -217,7 +217,7 @@ export function MercDailyUpdate(): void {
             let zMoney: string /* CHAR16[128] */;
 
             // create a string for the salary owed to the npc
-            swprintf(zMoney, "%d", sSalary);
+            zMoney = swprintf("%d", sSalary);
             InsertCommasForDollarFigure(zMoney);
             InsertDollarSignInToString(zMoney);
 

@@ -234,7 +234,7 @@ function CreateAutoBandageString(): boolean {
   }
 
   if (ubDoctors == 1) {
-    swprintf(sAutoBandageString, Message[Enum334.STR_IS_APPLYING_FIRST_AID], MercPtrs[ubDoctor[0]].value.name);
+    sAutoBandageString = swprintf(Message[Enum334.STR_IS_APPLYING_FIRST_AID], MercPtrs[ubDoctor[0]].value.name);
   } else {
     // make a temporary string to hold most of the doctors names joined by commas
     sTemp = MemAlloc(uiDoctorNameStringLength * sizeof(CHAR16));
@@ -253,7 +253,7 @@ function CreateAutoBandageString(): boolean {
         }
       }
     }
-    swprintf(sAutoBandageString, Message[Enum334.STR_ARE_APPLYING_FIRST_AID], sTemp, MercPtrs[ubDoctor[ubDoctors - 1]].value.name);
+    sAutoBandageString = swprintf(Message[Enum334.STR_ARE_APPLYING_FIRST_AID], sTemp, MercPtrs[ubDoctor[ubDoctors - 1]].value.name);
     MemFree(sTemp);
   }
   return true;
@@ -574,7 +574,7 @@ function DisplayAutoBandageUpdatePanel(): void {
         RenderSoldierSmallFaceForAutoBandagePanel(iIndex, sCurrentXPosition, sCurrentYPosition);
 
         // display the mercs name
-        swprintf(sString, "%s", (Menptr[iDoctorList[iCounterA * iNumberDoctorsWide + iCounterB]]).name);
+        sString = swprintf("%s", (Menptr[iDoctorList[iCounterA * iNumberDoctorsWide + iCounterB]]).name);
         FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
         SetFont(TINYFONT1());
         SetFontForeground(FONT_LTRED);
@@ -608,7 +608,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   //	iCurPixelY = sYPosition;
   iCurPixelY = sYPosition + ((iCounterA - 1) * TACT_UPDATE_MERC_FACE_X_HEIGHT);
 
-  swprintf(sString, "%s", zMarksMapScreenText[13]);
+  sString = swprintf("%s", zMarksMapScreenText[13]);
   FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
   // print medic
   mprintf(sX, sYPosition - 7, sString);
@@ -636,7 +636,7 @@ function DisplayAutoBandageUpdatePanel(): void {
         RenderSoldierSmallFaceForAutoBandagePanel(iIndex + iNumberDoctors, sCurrentXPosition, sCurrentYPosition);
 
         // display the mercs name
-        swprintf(sString, "%s", (Menptr[iPatientList[iIndex]]).name);
+        sString = swprintf("%s", (Menptr[iPatientList[iIndex]]).name);
         FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
         SetFont(TINYFONT1());
         SetFontForeground(FONT_LTRED);
@@ -698,7 +698,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
-  swprintf(sString, "%s", zMarksMapScreenText[14]);
+  sString = swprintf("%s", zMarksMapScreenText[14]);
   FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
   // print patient
   mprintf(sX, iCurPixelY + (TACT_UPDATE_MERC_FACE_X_HEIGHT) + 2, sString);
@@ -811,10 +811,10 @@ function AddFacesToAutoBandageBox(): boolean {
     if (iDoctorList[iCounter] != -1) {
       if (gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex < 100) {
         // grab filename of face
-        sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\%02d.sti", gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex);
       } else {
         // grab filename of face
-        sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\%03d.sti", gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex);
       }
 
       // load the face
@@ -828,10 +828,10 @@ function AddFacesToAutoBandageBox(): boolean {
     if (iPatientList[iCounter] != -1) {
       if (gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex < 100) {
         // grab filename of face
-        sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\%02d.sti", gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex);
       } else {
         // grab filename of face
-        sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\%03d.sti", gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex);
       }
 
       // load the face
@@ -841,7 +841,7 @@ function AddFacesToAutoBandageBox(): boolean {
 
   // grab panels
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(VObjectDesc.ImageFile, "Interface\\panels.sti");
+  VObjectDesc.ImageFile = "Interface\\panels.sti";
   if (!AddVideoObject(addressof(VObjectDesc), addressof(giMercPanelImage))) {
     AssertMsg(0, "Failed to load Interface\\panels.sti");
   }

@@ -83,7 +83,7 @@ function CreateWinFont(iHeight: INT32, iWidth: INT32, iEscapement: INT32, iWeigh
   wcscpy(gzFontName, szFontName);
 
   // ATTEMPT TO LOAD THE FONT NOW
-  sprintf(szCharFontName, "%S", szFontName);
+  szCharFontName = sprintf("%S", szFontName);
   if (DoesWinFontExistOnSystem(szFontName, iCharSet)) {
     gLogFont.lfHeight = iHeight;
     gLogFont.lfWidth = 0;
@@ -155,7 +155,7 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
   len = vswprintf(string2, pFontString, argptr); // process gprintf string (get output str)
   va_end(argptr);
 
-  sprintf(string, "%S", string2);
+  string = sprintf("%S", string2);
 
   // Get surface...
   GetVideoSurface(addressof(hVSurface), uiDestBuf);
@@ -187,7 +187,7 @@ export function WinFontStringPixLength(string2: string /* Pointer<UINT16> */, iF
     return 0;
   }
 
-  sprintf(string, "%S", string2);
+  string = sprintf("%S", string2);
 
   hdc = GetDC(null);
   SelectObject(hdc, pWinFont.value.hFont);
@@ -209,7 +209,7 @@ export function GetWinFontHeight(string2: string /* Pointer<UINT16> */, iFont: I
     return 0;
   }
 
-  sprintf(string, "%S", string2);
+  string = sprintf("%S", string2);
 
   hdc = GetDC(null);
   SelectObject(hdc, pWinFont.value.hFont);
@@ -241,7 +241,7 @@ function EnumFontFamProc(lplf: Pointer<LOGFONT>, lptm: Pointer<TEXTMETRIC>, dwTy
 function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTEXTMETRICEX>, FontType: number, lParam: LPARAM): number {
   let szFontName: string /* UINT8[32] */;
 
-  sprintf(szFontName, "%S", gzFontName);
+  szFontName = sprintf("%S", gzFontName);
   if (!strcmp(szFontName, lpelfe.value.elfFullName)) {
     gfEnumSucceed = true;
     memcpy(addressof(gLogFont), addressof(lpelfe.value.elfLogFont), sizeof(LOGFONT));
@@ -258,7 +258,7 @@ function DoesWinFontExistOnSystem(pTypeFaceName: string /* STR16 */, iCharSet: I
 
   gfEnumSucceed = false;
   // Copy into 8-bit!
-  sprintf(string, "%S", pTypeFaceName);
+  string = sprintf("%S", pTypeFaceName);
 
   memset(addressof(LogFont), 0, sizeof(LOGFONT));
   LogFont.lfCharSet = iCharSet;

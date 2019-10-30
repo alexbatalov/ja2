@@ -708,7 +708,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentStrength);
+        sString = swprintf("%d", iCurrentStrength);
         sX += LAPTOP_SCREEN_UL_X;
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         mprintf(sX + 13, sY + 3, sString);
@@ -723,7 +723,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentDexterity);
+        sString = swprintf("%d", iCurrentDexterity);
         sX += LAPTOP_SCREEN_UL_X;
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         mprintf(sX + 13, sY + 3, sString);
@@ -739,7 +739,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentAgility);
+        sString = swprintf("%d", iCurrentAgility);
         sX += LAPTOP_SCREEN_UL_X;
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         mprintf(sX + 13, sY + 3, sString);
@@ -755,7 +755,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentWisdom);
+        sString = swprintf("%d", iCurrentWisdom);
         sX += LAPTOP_SCREEN_UL_X;
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         mprintf(sX + 13, sY + 3, sString);
@@ -769,7 +769,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentLeaderShip);
+        sString = swprintf("%d", iCurrentLeaderShip);
         sX += LAPTOP_SCREEN_UL_X;
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         mprintf(sX + 13, sY + 3, sString);
@@ -784,7 +784,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentHealth);
+        sString = swprintf("%d", iCurrentHealth);
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         sX += LAPTOP_SCREEN_UL_X;
         mprintf(sX + 13, sY + 3, sString);
@@ -804,7 +804,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentMarkmanship);
+        sString = swprintf("%d", iCurrentMarkmanship);
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         sX += LAPTOP_SCREEN_UL_X;
         mprintf(sX + 13, sY + 3, sString);
@@ -825,7 +825,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentMedical);
+        sString = swprintf("%d", iCurrentMedical);
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         sX += LAPTOP_SCREEN_UL_X;
         mprintf(sX + 13, sY + 3, sString);
@@ -846,7 +846,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentMechanical);
+        sString = swprintf("%d", iCurrentMechanical);
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         sX += LAPTOP_SCREEN_UL_X;
         mprintf(sX + 13, sY + 3, sString);
@@ -867,7 +867,7 @@ export function RenderAttributeBoxes(): void {
         MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
-        swprintf(sString, "%d", iCurrentExplosives);
+        sString = swprintf("%d", iCurrentExplosives);
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         sX += LAPTOP_SCREEN_UL_X;
         mprintf(sX + 13, sY + 3, sString);
@@ -1305,7 +1305,7 @@ export function DrawBonusPointsRemaining(): void {
     return;
   }
   // parse amountof bns pts remaining
-  swprintf(sString, "%d", iCurrentBonusPoints);
+  sString = swprintf("%d", iCurrentBonusPoints);
 
   // set font color
   SetFontForeground(FONT_WHITE);

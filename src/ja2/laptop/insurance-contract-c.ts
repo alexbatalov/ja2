@@ -116,7 +116,7 @@ export function GameInitInsuranceContract(): void {
 function EnterLaptopInitInsuranceContract(): void {
   let zTextField: string /* wchar_t[14] */;
 
-  swprintf(zTextField, "%d", 0);
+  zTextField = swprintf("%d", 0);
   SetInputFieldStringWith16BitString(1, zTextField);
   SetInputFieldStringWith16BitString(2, zTextField);
   SetInputFieldStringWith16BitString(3, zTextField);
@@ -244,7 +244,7 @@ export function RenderInsuranceContract(): void {
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y);
-  swprintf(sText, "%s", pMessageStrings[Enum333.MSG_HOMEPAGE]);
+  sText = swprintf("%s", pMessageStrings[Enum333.MSG_HOMEPAGE]);
   DisplayWrappedString(usPosX, INS_CTRCT_BOTTON_LINK_Y + 18, INS_CTRCT_BOTTOM_LINK_RED_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   usPosX += INS_CTRCT_BOTTOM_LINK_RED_BAR_OFFSET;
@@ -406,7 +406,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
 
   // load the mercs face graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(sTemp, "FACES\\%02d.sti", ubMercID);
+  sTemp = sprintf("FACES\\%02d.sti", ubMercID);
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiInsMercFaceImage)));
 
@@ -476,7 +476,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the mercs contract length
-  swprintf(sText, "%d", pSoldier.value.iTotalContractLength);
+  sText = swprintf("%d", pSoldier.value.iTotalContractLength);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   // Display the days remaining for the emplyment contract text
@@ -485,9 +485,9 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
 
   // display the amount of time the merc has left on their Regular contract
   if (IsMercDead(ubMercID))
-    swprintf(sText, "%s", pMessageStrings[Enum333.MSG_LOWERCASE_NA]);
+    sText = swprintf("%s", pMessageStrings[Enum333.MSG_LOWERCASE_NA]);
   else
-    swprintf(sText, "%d", GetTimeRemainingOnSoldiersContract(pSoldier));
+    sText = swprintf("%d", GetTimeRemainingOnSoldiersContract(pSoldier));
 
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
@@ -508,13 +508,13 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
 
   // if the soldier has insurance, disply the length of time the merc has left
   if (IsMercDead(ubMercID))
-    swprintf(sText, "%s", pMessageStrings[Enum333.MSG_LOWERCASE_NA]);
+    sText = swprintf("%s", pMessageStrings[Enum333.MSG_LOWERCASE_NA]);
 
   else if (pSoldier.value.usLifeInsurance != 0)
-    swprintf(sText, "%d", GetTimeRemainingOnSoldiersInsuranceContract(pSoldier));
+    sText = swprintf("%d", GetTimeRemainingOnSoldiersInsuranceContract(pSoldier));
 
   else
-    swprintf(sText, "%d", 0);
+    sText = swprintf("%d", 0);
 
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y + 54, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
@@ -540,13 +540,13 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
     DrawTextToScreen(sText, (usPosX + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_PREMIUM_OWING_OFFSET_Y, INS_CTRCT_ORDER_GRID_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
     // display the amount of refund
-    swprintf(sText, "%d", iCostOfContract);
+    sText = swprintf("%d", iCostOfContract);
     InsertCommasForDollarFigure(sText);
     InsertDollarSignInToString(sText);
   }
 
   if (IsMercDead(ubMercID)) {
-    swprintf(sText, "0");
+    sText = "0";
     InsertDollarSignInToString(sText);
   }
   // display the amount owing
@@ -555,7 +555,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   //
   // Get the insurance contract length for the merc
   //
-  swprintf(sText, "%d", CalculateSoldiersInsuranceContractLength(pSoldier));
+  sText = swprintf("%d", CalculateSoldiersInsuranceContractLength(pSoldier));
 
   // Display the length of time the player can get for the insurance contract
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y + 52 + 2, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);

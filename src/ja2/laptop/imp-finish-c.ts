@@ -115,7 +115,7 @@ function CreateIMPFinishButtons(): void {
 
   SpecifyButtonIcon(giIMPFinishButton[4], guiCHARACTERPORTRAIT, 0, 33, 23, false);
 
-  swprintf(sString, pImpButtonText[5], iCurrentVoices + 1);
+  sString = swprintf(pImpButtonText[5], iCurrentVoices + 1);
 
   // the voice button
   giIMPFinishButtonImage[5] = LoadButtonImage("LAPTOP\\button_8.sti", -1, 0, -1, 1, -1);
@@ -451,7 +451,7 @@ function RenderCharFullName(): void {
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
-  swprintf(sString, pIMPFinishStrings[0], pFullName);
+  sString = swprintf(pIMPFinishStrings[0], pFullName);
 
   FindFontCenterCoordinates(LAPTOP_SCREEN_UL_X, 0, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, 0, sString, FONT14ARIAL(), addressof(sX), addressof(sY));
   mprintf(sX, LAPTOP_SCREEN_WEB_DELTA_Y + 33, sString);

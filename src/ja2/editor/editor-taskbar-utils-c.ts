@@ -99,11 +99,11 @@ function LoadEditorImages(): void {
 
   // Set up the merc inventory panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(VObjectDesc.ImageFile, "EDITOR\\InvPanel.sti");
+  VObjectDesc.ImageFile = "EDITOR\\InvPanel.sti";
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercInventoryPanel)))
     AssertMsg(0, "Failed to load data\\editor\\InvPanel.sti");
   // Set up small omerta map
-  sprintf(VObjectDesc.ImageFile, "EDITOR\\omerta.sti");
+  VObjectDesc.ImageFile = "EDITOR\\omerta.sti";
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOmertaMap)))
     AssertMsg(0, "Failed to load data\\editor\\omerta.sti");
   // Set up the merc directional buttons.
@@ -113,10 +113,10 @@ function LoadEditorImages(): void {
   giEditMercImage[0] = LoadButtonImage("EDITOR\\leftarrow.sti", 0, 1, 2, 3, 4);
   giEditMercImage[1] = LoadButtonImage("EDITOR\\rightarrow.sti", 0, 1, 2, 3, 4);
 
-  sprintf(VObjectDesc.ImageFile, "EDITOR\\Exclamation.sti");
+  VObjectDesc.ImageFile = "EDITOR\\Exclamation.sti";
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiExclamation)))
     AssertMsg(0, "Failed to load data\\editor\\Exclamation.sti");
-  sprintf(VObjectDesc.ImageFile, "EDITOR\\KeyImage.sti");
+  VObjectDesc.ImageFile = "EDITOR\\KeyImage.sti";
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiKeyImage)))
     AssertMsg(0, "Failed to load data\\editor\\KeyImage.sti");
 }
@@ -622,25 +622,25 @@ function RenderMapEntryPointsAndLights(): void {
 function BuildTriggerName(pItem: Pointer<OBJECTTYPE>, szItemName: Pointer<string> /* Pointer<UINT16> */): void {
   if (pItem.value.usItem == Enum225.SWITCH) {
     if (pItem.value.bFrequency == PANIC_FREQUENCY)
-      swprintf(szItemName, "Panic Trigger1");
+      szItemName = "Panic Trigger1";
     else if (pItem.value.bFrequency == PANIC_FREQUENCY_2)
-      swprintf(szItemName, "Panic Trigger2");
+      szItemName = "Panic Trigger2";
     else if (pItem.value.bFrequency == PANIC_FREQUENCY_3)
-      swprintf(szItemName, "Panic Trigger3");
+      szItemName = "Panic Trigger3";
     else
-      swprintf(szItemName, "Trigger%d", pItem.value.bFrequency - 50);
+      szItemName = swprintf("Trigger%d", pItem.value.bFrequency - 50);
   } else {
     // action item
     if (pItem.value.bDetonatorType == Enum224.BOMB_PRESSURE)
-      swprintf(szItemName, "Pressure Action");
+      szItemName = "Pressure Action";
     else if (pItem.value.bFrequency == PANIC_FREQUENCY)
-      swprintf(szItemName, "Panic Action1");
+      szItemName = "Panic Action1";
     else if (pItem.value.bFrequency == PANIC_FREQUENCY_2)
-      swprintf(szItemName, "Panic Action2");
+      szItemName = "Panic Action2";
     else if (pItem.value.bFrequency == PANIC_FREQUENCY_3)
-      swprintf(szItemName, "Panic Action3");
+      szItemName = "Panic Action3";
     else
-      swprintf(szItemName, "Action%d", pItem.value.bFrequency - 50);
+      szItemName = swprintf("Action%d", pItem.value.bFrequency - 50);
   }
 }
 
@@ -656,9 +656,9 @@ function RenderDoorLockInfo(): void {
     if (sScreenY > 390)
       continue;
     if (DoorTable[i].ubLockID != 255)
-      swprintf(str, "%S", LockTable[DoorTable[i].ubLockID].ubEditorName);
+      str = swprintf("%S", LockTable[DoorTable[i].ubLockID].ubEditorName);
     else
-      swprintf(str, "No Lock ID");
+      str = "No Lock ID";
     xp = sScreenX - 10;
     yp = sScreenY - 40;
     DisplayWrappedString(xp, yp, 60, 2, FONT10ARIAL(), FONT_LTKHAKI, str, FONT_BLACK, true, CENTER_JUSTIFIED);
@@ -668,25 +668,25 @@ function RenderDoorLockInfo(): void {
       SetFontShadow(FONT_NEARBLACK);
       switch (DoorTable[i].ubTrapID) {
         case Enum227.EXPLOSION:
-          swprintf(str, "Explosion Trap");
+          str = "Explosion Trap";
           break;
         case Enum227.ELECTRIC:
-          swprintf(str, "Electric Trap");
+          str = "Electric Trap";
           break;
         case Enum227.SIREN:
-          swprintf(str, "Siren Trap");
+          str = "Siren Trap";
           break;
         case Enum227.SILENT_ALARM:
-          swprintf(str, "Silent Alarm");
+          str = "Silent Alarm";
           break;
         case Enum227.SUPER_ELECTRIC:
-          swprintf(str, "Super Electric Trap");
+          str = "Super Electric Trap";
           break;
       }
       xp = sScreenX + 20 - StringPixLength(str, FONT10ARIAL()) / 2;
       yp = sScreenY;
       mprintf(xp, yp, str);
-      swprintf(str, "Trap Level %d", DoorTable[i].ubTrapLevel);
+      str = swprintf("Trap Level %d", DoorTable[i].ubTrapLevel);
       xp = sScreenX + 20 - StringPixLength(str, FONT10ARIAL()) / 2;
       mprintf(xp, yp + 10, str);
     }
@@ -734,7 +734,7 @@ function RenderSelectedItemBlownUp(): void {
   if (gpItem.value.usItem == Enum225.ACTION_ITEM || gpItem.value.usItem == Enum225.SWITCH) {
     BuildTriggerName(gpItem, szItemName);
   } else if (Item[gpItem.value.usItem].usItemClass == IC_KEY) {
-    swprintf(szItemName, "%S", LockTable[gpItem.value.ubKeyID].ubEditorName);
+    szItemName = swprintf("%S", LockTable[gpItem.value.ubKeyID].ubEditorName);
   } else {
     LoadItemInfo(gpItem.value.usItem, szItemName, null);
   }
@@ -787,9 +787,9 @@ function RenderEditorInfo(): void {
 
   // Display the mapindex position
   if (GetMouseMapPos(addressof(iMapIndex)))
-    swprintf(FPSText, "   (%d)   ", iMapIndex);
+    FPSText = swprintf("   (%d)   ", iMapIndex);
   else
-    swprintf(FPSText, "          ");
+    FPSText = "          ";
   mprintfEditor((50 - StringPixLength(FPSText, FONT12POINT1()) / 2), 463, FPSText);
 
   switch (iCurrentTaskbar) {
@@ -801,9 +801,9 @@ function RenderEditorInfo(): void {
       break;
     case Enum36.TASK_TERRAIN:
       if (gusSelectionType == Enum33.LINESELECTION)
-        swprintf(wszSelType[Enum33.LINESELECTION], "Width: %d", gusSelectionWidth);
+        wszSelType[Enum33.LINESELECTION] = swprintf("Width: %d", gusSelectionWidth);
       DrawEditorInfoBox(wszSelType[gusSelectionType], FONT12POINT1(), 220, 430, 60, 30);
-      swprintf(FPSText, "%d%%", gusSelectionDensity);
+      FPSText = swprintf("%d%%", gusSelectionDensity);
       DrawEditorInfoBox(FPSText, FONT12POINT1(), 310, 430, 40, 30);
       break;
     case Enum36.TASK_ITEMS:
@@ -813,7 +813,7 @@ function RenderEditorInfo(): void {
     case Enum36.TASK_BUILDINGS:
       UpdateBuildingsInfo();
       if (gusSelectionType == Enum33.LINESELECTION)
-        swprintf(wszSelType[Enum33.LINESELECTION], "Width: %d", gusSelectionWidth);
+        wszSelType[Enum33.LINESELECTION] = swprintf("Width: %d", gusSelectionWidth);
       DrawEditorInfoBox(wszSelType[gusSelectionType], FONT12POINT1(), 530, 430, 60, 30);
       break;
     case Enum36.TASK_MERCS:
@@ -822,7 +822,7 @@ function RenderEditorInfo(): void {
     case Enum36.TASK_MAPINFO:
       UpdateMapInfo();
       if (gusSelectionType == Enum33.LINESELECTION)
-        swprintf(wszSelType[Enum33.LINESELECTION], "Width: %d", gusSelectionWidth);
+        wszSelType[Enum33.LINESELECTION] = swprintf("Width: %d", gusSelectionWidth);
       DrawEditorInfoBox(wszSelType[gusSelectionType], FONT12POINT1(), 440, 430, 60, 30);
       break;
   }

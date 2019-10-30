@@ -53,7 +53,7 @@ export function LoadCarPortraitValues(): boolean {
   }
   for (iCounter = 0; iCounter < Enum222.NUMBER_CAR_PORTRAITS; iCounter++) {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    sprintf(VObjectDesc.ImageFile, pbCarPortraitFileNames[iCounter]);
+    VObjectDesc.ImageFile = pbCarPortraitFileNames[iCounter];
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(giCarPortraits[iCounter])));
   }
   return true;

@@ -326,7 +326,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   pSoldier = FindSoldierByProfileID(ubMercID, true);
 
   // load the Face graphic and add it
-  sprintf(sTemp, "%s%02d.sti", sFaceLoc, ubMercID);
+  sTemp = sprintf("%s%02d.sti", sFaceLoc, ubMercID);
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercFace)));
@@ -465,7 +465,7 @@ function DisplayMercsStats(ubMercID: UINT8): void {
   DrawTextToScreen(MercInfo[Enum341.MERC_FILES_SALARY], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_NAME_FONT(), MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosX = MERC_STATS_SECOND_COL_X + StringPixLength(MercInfo[Enum341.MERC_FILES_SALARY], MERC_NAME_FONT()) + 1;
-  swprintf(sString, "%d %s", gMercProfiles[ubMercID].sSalary, MercInfo[Enum341.MERC_FILES_PER_DAY]);
+  sString = swprintf("%d %s", gMercProfiles[ubMercID].sSalary, MercInfo[Enum341.MERC_FILES_PER_DAY]);
   DrawTextToScreen(sString, usPosX, usPosY, 95, MERC_NAME_FONT(), MERC_DYNAMIC_STATS_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 }
 

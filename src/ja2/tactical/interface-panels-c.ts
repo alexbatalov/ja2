@@ -1370,61 +1370,61 @@ export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeAgilityTime, (gpSMCurrentMerc.value.usValueGoneUp & AGIL_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bAgility);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bAgility);
       FindFontRightCoordinates(SM_AGI_X, SM_AGI_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeDexterityTime, (gpSMCurrentMerc.value.usValueGoneUp & DEX_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bDexterity);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bDexterity);
       FindFontRightCoordinates(SM_DEX_X, SM_DEX_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeStrengthTime, (gpSMCurrentMerc.value.usValueGoneUp & STRENGTH_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bStrength);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bStrength);
       FindFontRightCoordinates(SM_STR_X, SM_STR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeLeadershipTime, (gpSMCurrentMerc.value.usValueGoneUp & LDR_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bLeadership);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bLeadership);
       FindFontRightCoordinates(SM_CHAR_X, SM_CHAR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeWisdomTime, (gpSMCurrentMerc.value.usValueGoneUp & WIS_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bWisdom);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bWisdom);
       FindFontRightCoordinates(SM_WIS_X, SM_WIS_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeLevelTime, (gpSMCurrentMerc.value.usValueGoneUp & LVL_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bExpLevel);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bExpLevel);
       FindFontRightCoordinates(SM_EXPLVL_X, SM_EXPLVL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeMarksmanshipTime, (gpSMCurrentMerc.value.usValueGoneUp & MRK_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bMarksmanship);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bMarksmanship);
       FindFontRightCoordinates(SM_MRKM_X, SM_MRKM_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeExplosivesTime, (gpSMCurrentMerc.value.usValueGoneUp & EXP_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bExplosive);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bExplosive);
       FindFontRightCoordinates(SM_EXPL_X, SM_EXPL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeMechanicalTime, (gpSMCurrentMerc.value.usValueGoneUp & MECH_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bMechanical);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bMechanical);
       FindFontRightCoordinates(SM_MECH_X, SM_MECH_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeMedicalTime, (gpSMCurrentMerc.value.usValueGoneUp & MED_INCREASE ? true : false));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc.value.bMedical);
+      sString = swprintf("%2d", gpSMCurrentMerc.value.bMedical);
       FindFontRightCoordinates(SM_MED_X, SM_MED_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
@@ -1437,17 +1437,17 @@ export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
       }
 
       // Display armour value!
-      swprintf(sString, "%3d", ArmourPercent(gpSMCurrentMerc));
+      sString = swprintf("%3d", ArmourPercent(gpSMCurrentMerc));
       FindFontRightCoordinates(SM_ARMOR_X, SM_ARMOR_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       // Display wieght value!
-      swprintf(sString, "%3d", CalculateCarriedWeight(gpSMCurrentMerc));
+      sString = swprintf("%3d", CalculateCarriedWeight(gpSMCurrentMerc));
       FindFontRightCoordinates(SM_WEIGHT_X, SM_WEIGHT_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       // Display cammo value!
-      swprintf(sString, "%3d", gpSMCurrentMerc.value.bCamo);
+      sString = swprintf("%3d", gpSMCurrentMerc.value.bCamo);
       FindFontRightCoordinates(SM_CAMMO_X, SM_CAMMO_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
@@ -1479,14 +1479,14 @@ export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
     // UPdate stats!
     if (gpSMCurrentMerc.value.bLife != 0) {
       if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_VEHICLE) {
-        swprintf(pStr, TacticalStr[Enum335.VEHICLE_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax);
+        pStr = swprintf(TacticalStr[Enum335.VEHICLE_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax);
         SetRegionFastHelpText(addressof(gSM_SELMERCBarsRegion), pStr);
       } else if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_ROBOT) {
-        swprintf(pStr, gzLateLocalizedString[16], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax);
+        pStr = swprintf(gzLateLocalizedString[16], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax);
         SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
       } else {
         GetMoraleString(gpSMCurrentMerc, pMoraleStr);
-        swprintf(pStr, TacticalStr[Enum335.MERC_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax, pMoraleStr);
+        pStr = swprintf(TacticalStr[Enum335.MERC_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax, pMoraleStr);
         SetRegionFastHelpText(addressof(gSM_SELMERCBarsRegion), pStr);
       }
     } else {
@@ -2722,7 +2722,7 @@ export function RenderTEAMPanel(fDirty: boolean): void {
           pVehicle = GetSoldierStructureForVehicle(pSoldier.value.iVehicleId);
 
           // OK, for each item, set dirty text if applicable!
-          swprintf(pStr, TacticalStr[Enum335.DRIVER_POPUPTEXT], pVehicle.value.bLife, pVehicle.value.bLifeMax, pVehicle.value.bBreath, pVehicle.value.bBreathMax);
+          pStr = swprintf(TacticalStr[Enum335.DRIVER_POPUPTEXT], pVehicle.value.bLife, pVehicle.value.bLifeMax, pVehicle.value.bBreath, pVehicle.value.bBreathMax);
           SetRegionFastHelpText(addressof(gTEAM_FirstHandInv[cnt]), pStr);
         }
         // Add text for first hand popup
@@ -2814,14 +2814,14 @@ export function RenderTEAMPanel(fDirty: boolean): void {
         if (fDirty == DIRTYLEVEL2) {
           if (pSoldier.value.bLife != 0) {
             if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-              swprintf(pStr, TacticalStr[Enum335.VEHICLE_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax);
+              pStr = swprintf(TacticalStr[Enum335.VEHICLE_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax);
               SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
             } else if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
-              swprintf(pStr, gzLateLocalizedString[16], pSoldier.value.bLife, pSoldier.value.bLifeMax);
+              pStr = swprintf(gzLateLocalizedString[16], pSoldier.value.bLife, pSoldier.value.bLifeMax);
               SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
             } else {
               GetMoraleString(pSoldier, pMoraleStr);
-              swprintf(pStr, TacticalStr[Enum335.MERC_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMoraleStr);
+              pStr = swprintf(TacticalStr[Enum335.MERC_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMoraleStr);
               SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
             }
           } else {
@@ -4273,13 +4273,13 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
         guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
         HandleTacticalUI();
 
-        swprintf(zMoney, "%d", gpItemPointer.value.uiMoneyAmount);
+        zMoney = swprintf("%d", gpItemPointer.value.uiMoneyAmount);
 
         InsertCommasForDollarFigure(zMoney);
         InsertDollarSignInToString(zMoney);
 
         // ask the user if they are sure they want to deposit the money
-        swprintf(zText, gzMoneyWithdrawMessageText[Enum374.CONFIRMATION_TO_DEPOSIT_MONEY_TO_ACCOUNT], zMoney);
+        zText = swprintf(gzMoneyWithdrawMessageText[Enum374.CONFIRMATION_TO_DEPOSIT_MONEY_TO_ACCOUNT], zMoney);
 
         if (guiCurrentScreen == Enum26.SHOPKEEPER_SCREEN) {
           // if we are in the shop keeper interface, free the cursor

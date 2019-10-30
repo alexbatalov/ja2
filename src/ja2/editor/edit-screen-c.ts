@@ -2439,7 +2439,7 @@ export function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: IN
   let iMapIndex: INT32;
   let usTmpIndex: UINT16;
 
-  sprintf(Filename, "L-R%02d.LHT", sRadius);
+  Filename = sprintf("L-R%02d.LHT", sRadius);
 
   // Attempt to create light
   if ((iLightHandle = LightSpriteCreate(Filename, sType)) == (-1)) {
@@ -3137,7 +3137,7 @@ export function ProcessAreaSelection(fWithLeftButton: boolean): void {
         gubMaxRoomNumber++;
         if (iCurrentTaskbar == Enum36.TASK_BUILDINGS && TextInputMode()) {
           let str: string /* UINT16[4] */;
-          swprintf(str, "%d", gubCurrRoomNumber);
+          str = swprintf("%d", gubCurrRoomNumber);
           SetInputFieldStringWith16BitString(1, str);
           SetActiveField(0);
         }
@@ -3399,7 +3399,7 @@ function UpdateLastActionBeforeLeaving(): void {
 
 function ReloadMap(): void {
   let szFilename: string /* UINT16[30] */;
-  swprintf(szFilename, "%S", gubFilename);
+  szFilename = swprintf("%S", gubFilename);
   ExternalLoadMap(szFilename);
 }
 

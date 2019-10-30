@@ -3318,7 +3318,7 @@ function WriteQuantityAndAttachments(pObject: Pointer<OBJECTTYPE>, yp: INT32): v
   fAttachments = false;
   if (pObject.value.usAttachItem[0] || pObject.value.usAttachItem[1] || pObject.value.usAttachItem[2] || pObject.value.usAttachItem[3]) {
     fAttachments = true;
-    swprintf(szAttach, "(");
+    szAttach = "(";
     AppendAttachmentCode(pObject.value.usAttachItem[0], szAttach);
     AppendAttachmentCode(pObject.value.usAttachItem[1], szAttach);
     AppendAttachmentCode(pObject.value.usAttachItem[2], szAttach);
@@ -3332,9 +3332,9 @@ function WriteQuantityAndAttachments(pObject: Pointer<OBJECTTYPE>, yp: INT32): v
       let str: string /* UINT16[50] */;
       let temp: string /* UINT16[5] */;
       let i: UINT8;
-      swprintf(str, "Clips:  %d  (%d", pObject.value.ubNumberOfObjects, pObject.value.bStatus[0]);
+      str = swprintf("Clips:  %d  (%d", pObject.value.ubNumberOfObjects, pObject.value.bStatus[0]);
       for (i = 1; i < pObject.value.ubNumberOfObjects; i++) {
-        swprintf(temp, ", %d", pObject.value.bStatus[0]);
+        temp = swprintf(", %d", pObject.value.bStatus[0]);
         wcscat(str, temp);
       }
       wcscat(str, ")");
@@ -3413,54 +3413,54 @@ export function DebugSoldierPage4(): void {
       let pNode: Pointer<SOLDIERINITNODE>;
       switch (pSoldier.value.bOrders) {
         case Enum241.STATIONARY:
-          swprintf(szOrders, "STATIONARY");
+          szOrders = "STATIONARY";
           break;
         case Enum241.ONGUARD:
-          swprintf(szOrders, "ON GUARD");
+          szOrders = "ON GUARD";
           break;
         case Enum241.ONCALL:
-          swprintf(szOrders, "ON CALL");
+          szOrders = "ON CALL";
           break;
         case Enum241.SEEKENEMY:
-          swprintf(szOrders, "SEEK ENEMY");
+          szOrders = "SEEK ENEMY";
           break;
         case Enum241.CLOSEPATROL:
-          swprintf(szOrders, "CLOSE PATROL");
+          szOrders = "CLOSE PATROL";
           break;
         case Enum241.FARPATROL:
-          swprintf(szOrders, "FAR PATROL");
+          szOrders = "FAR PATROL";
           break;
         case Enum241.POINTPATROL:
-          swprintf(szOrders, "POINT PATROL");
+          szOrders = "POINT PATROL";
           break;
         case Enum241.RNDPTPATROL:
-          swprintf(szOrders, "RND PT PATROL");
+          szOrders = "RND PT PATROL";
           break;
         default:
-          swprintf(szOrders, "UNKNOWN");
+          szOrders = "UNKNOWN";
           break;
       }
       switch (pSoldier.value.bAttitude) {
         case Enum242.DEFENSIVE:
-          swprintf(szAttitude, "DEFENSIVE");
+          szAttitude = "DEFENSIVE";
           break;
         case Enum242.BRAVESOLO:
-          swprintf(szAttitude, "BRAVE SOLO");
+          szAttitude = "BRAVE SOLO";
           break;
         case Enum242.BRAVEAID:
-          swprintf(szAttitude, "BRAVE AID");
+          szAttitude = "BRAVE AID";
           break;
         case Enum242.AGGRESSIVE:
-          swprintf(szAttitude, "AGGRESSIVE");
+          szAttitude = "AGGRESSIVE";
           break;
         case Enum242.CUNNINGSOLO:
-          swprintf(szAttitude, "CUNNING SOLO");
+          szAttitude = "CUNNING SOLO";
           break;
         case Enum242.CUNNINGAID:
-          swprintf(szAttitude, "CUNNING AID");
+          szAttitude = "CUNNING AID";
           break;
         default:
-          swprintf(szAttitude, "UNKNOWN");
+          szAttitude = "UNKNOWN";
           break;
       }
       pNode = gSoldierInitHead;

@@ -5,19 +5,19 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
 
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags == 0) {
     // none
-    swprintf(sFacilitiesString, "%s", sFacilitiesStrings[0]);
+    sFacilitiesString = swprintf("%s", sFacilitiesStrings[0]);
     return;
   }
 
   // hospital
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_HOSPITAL) {
-    swprintf(sFacilitiesString, "%s", sFacilitiesStrings[1]);
+    sFacilitiesString = swprintf("%s", sFacilitiesStrings[1]);
   }
 
   // industry
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_INDUSTRY) {
     if (wcslen(sFacilitiesString) == 0) {
-      swprintf(sFacilitiesString, "%s", sFacilitiesStrings[2]);
+      sFacilitiesString = swprintf("%s", sFacilitiesStrings[2]);
     } else {
       wcscat(sFacilitiesString, ",");
       wcscat(sFacilitiesString, sFacilitiesStrings[2]);
@@ -27,7 +27,7 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
   // prison
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_PRISON) {
     if (wcslen(sFacilitiesString) == 0) {
-      swprintf(sFacilitiesString, "%s", sFacilitiesStrings[3]);
+      sFacilitiesString = swprintf("%s", sFacilitiesStrings[3]);
     } else {
       wcscat(sFacilitiesString, ",");
       wcscat(sFacilitiesString, sFacilitiesStrings[3]);
@@ -37,7 +37,7 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
   // airport
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_AIRPORT) {
     if (wcslen(sFacilitiesString) == 0) {
-      swprintf(sFacilitiesString, "%s", sFacilitiesStrings[5]);
+      sFacilitiesString = swprintf("%s", sFacilitiesStrings[5]);
     } else {
       wcscat(sFacilitiesString, ",");
       wcscat(sFacilitiesString, sFacilitiesStrings[5]);
@@ -47,7 +47,7 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
   // gun range
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_GUN_RANGE) {
     if (wcslen(sFacilitiesString) == 0) {
-      swprintf(sFacilitiesString, "%s", sFacilitiesStrings[6]);
+      sFacilitiesString = swprintf("%s", sFacilitiesStrings[6]);
     } else {
       wcscat(sFacilitiesString, ",");
       wcscat(sFacilitiesString, sFacilitiesStrings[6]);

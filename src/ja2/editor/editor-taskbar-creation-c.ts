@@ -126,7 +126,7 @@ function InitEditorMercsToolbar(): void {
   iEditorButton[Enum32.MERCS_DIRECTION_S] = CreateIconButton(giEditMercDirectionIcons[0], 5, BUTTON_USE_DEFAULT, 360, 425, 30, 30, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), MercsDirectionSetCallback);
   iEditorButton[Enum32.MERCS_DIRECTION_SW] = CreateIconButton(giEditMercDirectionIcons[0], 6, BUTTON_USE_DEFAULT, 360, 395, 30, 30, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK(), MercsDirectionSetCallback);
   for (x = 0; x < 8; x++) {
-    swprintf(TempString, "Set merc to face %s", FaceDirs[x]);
+    TempString = swprintf("Set merc to face %s", FaceDirs[x]);
     SetButtonFastHelpText(iEditorButton[FIRST_MERCS_DIRECTION_BUTTON + x], TempString);
     MSYS_SetBtnUserData(iEditorButton[FIRST_MERCS_DIRECTION_BUTTON + x], 0, x);
   }

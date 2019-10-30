@@ -280,7 +280,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
       } else {
         let zText: string /* CHAR[1024] */;
 
-        sprintf(zText, "LineWrap() Error!  The string ( %S ) has a word ( %S ) that is too long to fit into the required width of %d!  Please fix!!", pString, addressof(TempString[usCurIndex]), usLineWidthPixels);
+        zText = sprintf("LineWrap() Error!  The string ( %S ) has a word ( %S ) that is too long to fit into the required width of %d!  Please fix!!", pString, addressof(TempString[usCurIndex]), usLineWidthPixels);
 
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, zText);
 
@@ -1716,7 +1716,7 @@ export function ReduceStringLength(pString: Pointer<string> /* STR16 */, uiWidth
   }
 
   // combine the temp string and the '...' to form the finished string
-  swprintf(pString, "%s%s", zTemp, zStrDots);
+  pString = swprintf("%s%s", zTemp, zStrDots);
 
   return true;
 }

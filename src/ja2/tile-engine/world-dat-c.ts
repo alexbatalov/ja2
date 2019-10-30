@@ -54,7 +54,7 @@ export function InitEngineTilesets(): void {
     FileRead(hfile, addressof(gTilesets[cnt].ubAmbientID), sizeof(UINT8), addressof(uiNumBytesRead));
 
     // Set into tileset
-    swprintf(gTilesets[cnt].zName, "%S", zName);
+    gTilesets[cnt].zName = swprintf("%S", zName);
 
     // Loop for files
     for (cnt2 = 0; cnt2 < uiNumFiles; cnt2++) {

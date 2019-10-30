@@ -221,10 +221,10 @@ export function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
   if (szInitText) {
     pNode.value.ubStrLen = wcslen(szInitText);
     Assert(pNode.value.ubStrLen <= ubMaxChars);
-    swprintf(pNode.value.szString, szInitText);
+    pNode.value.szString = szInitText;
   } else {
     pNode.value.ubStrLen = 0;
-    swprintf(pNode.value.szString, "");
+    pNode.value.szString = "";
   }
   pNode.value.ubMaxChars = ubMaxChars; // max string length
 
@@ -328,10 +328,10 @@ export function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: st
       if (szNewText) {
         curr.value.ubStrLen = wcslen(szNewText);
         Assert(curr.value.ubStrLen <= curr.value.ubMaxChars);
-        swprintf(curr.value.szString, szNewText);
+        curr.value.szString = szNewText;
       } else if (!curr.value.fUserField) {
         curr.value.ubStrLen = 0;
-        swprintf(curr.value.szString, "");
+        curr.value.szString = "";
       } else {
         AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
       }
@@ -349,10 +349,10 @@ export function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: str
       if (szNewText) {
         curr.value.ubStrLen = strlen(szNewText);
         Assert(curr.value.ubStrLen <= curr.value.ubMaxChars);
-        swprintf(curr.value.szString, "%S", szNewText);
+        curr.value.szString = swprintf("%S", szNewText);
       } else if (!curr.value.fUserField) {
         curr.value.ubStrLen = 0;
-        swprintf(curr.value.szString, "");
+        curr.value.szString = "";
       } else {
         AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
       }
@@ -368,7 +368,7 @@ function Get8BitStringFromField(ubField: UINT8, szString: Pointer<UINT8>): void 
   curr = gpTextInputHead;
   while (curr) {
     if (curr.value.ubID == ubField) {
-      sprintf(szString, "%S", curr.value.szString);
+      szString = sprintf("%S", curr.value.szString);
       return;
     }
     curr = curr.value.next;
@@ -381,7 +381,7 @@ export function Get16BitStringFromField(ubField: UINT8, szString: Pointer<string
   curr = gpTextInputHead;
   while (curr) {
     if (curr.value.ubID == ubField) {
-      swprintf(szString, curr.value.szString);
+      szString = curr.value.szString;
       return;
     }
     curr = curr.value.next;
@@ -426,13 +426,13 @@ export function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumbe
       if (curr.value.fUserField)
         AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
       if (iNumber < 0) // negative number converts to blank string
-        swprintf(curr.value.szString, "");
+        curr.value.szString = "";
       else {
         let iMax: INT32 = Math.pow(10.0, curr.value.ubMaxChars);
         if (iNumber > iMax) // set string to max value based on number of chars.
-          swprintf(curr.value.szString, "%d", iMax - 1);
+          curr.value.szString = swprintf("%d", iMax - 1);
         else // set string to the number given
-          swprintf(curr.value.szString, "%d", iNumber);
+          curr.value.szString = swprintf("%d", iNumber);
       }
       curr.value.ubStrLen = wcslen(curr.value.szString);
       return;

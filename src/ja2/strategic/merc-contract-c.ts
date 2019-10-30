@@ -808,7 +808,7 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, zShortTownIDString);
 
   // Set string for generic button
-  swprintf(gzUserDefinedButton1, "%s", zShortTownIDString);
+  gzUserDefinedButton1 = swprintf("%s", zShortTownIDString);
 
   pLeaveSoldier = pSoldier;
 
@@ -827,9 +827,9 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   // if the character is an RPC
   if (pSoldier.value.ubProfile >= FIRST_RPC && pSoldier.value.ubProfile < FIRST_NPC) {
     if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-      swprintf(sString, pMercHeLeaveString[4], pSoldier.value.name, zShortTownIDString);
+      sString = swprintf(pMercHeLeaveString[4], pSoldier.value.name, zShortTownIDString);
     } else {
-      swprintf(sString, pMercSheLeaveString[4], pSoldier.value.name, zShortTownIDString);
+      sString = swprintf(pMercSheLeaveString[4], pSoldier.value.name, zShortTownIDString);
     }
     fInSector = true;
   }
@@ -838,37 +838,37 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   else if (StrategicMap[(AIRPORT_X + (MAP_WORLD_X * AIRPORT_Y))].fEnemyControlled == false) {
     if ((pSoldier.value.sSectorX == AIRPORT_X) && (pSoldier.value.sSectorY == AIRPORT_Y) && (pSoldier.value.bSectorZ == 0)) {
       if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        swprintf(sString, "%s %s", pSoldier.value.name, pMercHeLeaveString[3]);
+        sString = swprintf("%s %s", pSoldier.value.name, pMercHeLeaveString[3]);
       } else {
-        swprintf(sString, "%s %s", pSoldier.value.name, pMercSheLeaveString[3]);
+        sString = swprintf("%s %s", pSoldier.value.name, pMercSheLeaveString[3]);
       }
       fInSector = true;
     } else {
       // Set string for generic button
-      swprintf(gzUserDefinedButton2, "B13");
+      gzUserDefinedButton2 = "B13";
 
       if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        swprintf(sString, pMercHeLeaveString[0], pSoldier.value.name, zShortTownIDString);
+        sString = swprintf(pMercHeLeaveString[0], pSoldier.value.name, zShortTownIDString);
       } else {
-        swprintf(sString, pMercSheLeaveString[0], pSoldier.value.name, zShortTownIDString);
+        sString = swprintf(pMercSheLeaveString[0], pSoldier.value.name, zShortTownIDString);
       }
     }
   } else {
     if ((pSoldier.value.sSectorX == OMERTA_LEAVE_EQUIP_SECTOR_X) && (pSoldier.value.sSectorY == OMERTA_LEAVE_EQUIP_SECTOR_Y) && (pSoldier.value.bSectorZ == 0)) {
       if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        swprintf(sString, "%s %s", pSoldier.value.name, pMercHeLeaveString[2]);
+        sString = swprintf("%s %s", pSoldier.value.name, pMercHeLeaveString[2]);
       } else {
-        swprintf(sString, "%s %s", pSoldier.value.name, pMercSheLeaveString[2]);
+        sString = swprintf("%s %s", pSoldier.value.name, pMercSheLeaveString[2]);
       }
       fInSector = true;
     } else {
       // Set string for generic button
-      swprintf(gzUserDefinedButton2, "A9");
+      gzUserDefinedButton2 = "A9";
 
       if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        swprintf(sString, pMercHeLeaveString[1], pSoldier.value.name, zShortTownIDString);
+        sString = swprintf(pMercHeLeaveString[1], pSoldier.value.name, zShortTownIDString);
       } else {
-        swprintf(sString, pMercSheLeaveString[1], pSoldier.value.name, zShortTownIDString);
+        sString = swprintf(pMercSheLeaveString[1], pSoldier.value.name, zShortTownIDString);
       }
     }
   }
@@ -1061,13 +1061,13 @@ function HandleNotifyPlayerCanAffordInsurance(pSoldier: Pointer<SOLDIERTYPE>, ub
   let sStringA: string /* CHAR16[32] */;
 
   // parse the cost
-  swprintf(sStringA, "%d", iCost);
+  sStringA = swprintf("%d", iCost);
 
   // insert the commans and dollar sign
   InsertCommasForDollarFigure(sStringA);
   InsertDollarSignInToString(sStringA);
 
-  swprintf(sString, zMarksMapScreenText[10], pSoldier.value.name, sStringA, ubLength);
+  sString = swprintf(zMarksMapScreenText[10], pSoldier.value.name, sStringA, ubLength);
 
   // Set the length to the global variable ( so we know how long the contract is in the callback )
   gubContractLength = ubLength;

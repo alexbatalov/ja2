@@ -60,7 +60,7 @@ export function MainGameScreenInit(): UINT32 {
   VideoOverlayDesc.ubFontFore = FONT_MCOLOR_DKGRAY;
   VideoOverlayDesc.sX = VideoOverlayDesc.sLeft;
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
-  swprintf(VideoOverlayDesc.pzText, "90");
+  VideoOverlayDesc.pzText = "90";
   VideoOverlayDesc.BltCallback = BlitMFont;
   giFPSOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), addressof(VideoOverlayDesc));
 
@@ -69,7 +69,7 @@ export function MainGameScreenInit(): UINT32 {
   VideoOverlayDesc.sTop = 0;
   VideoOverlayDesc.sX = VideoOverlayDesc.sLeft;
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
-  swprintf(VideoOverlayDesc.pzText, "Levelnodes: 100000");
+  VideoOverlayDesc.pzText = "Levelnodes: 100000";
   VideoOverlayDesc.BltCallback = BlitMFont;
   giCounterPeriodOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), addressof(VideoOverlayDesc));
 

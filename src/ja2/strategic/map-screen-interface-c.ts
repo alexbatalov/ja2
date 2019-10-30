@@ -1170,10 +1170,10 @@ export function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
 
   if (pItem) {
     if (guiLeaveListOwnerProfileId[uiSlotIndex] != NO_PROFILE) {
-      swprintf(sString, pLeftEquipmentString[0], gMercProfiles[guiLeaveListOwnerProfileId[uiSlotIndex]].zNickname);
+      sString = swprintf(pLeftEquipmentString[0], gMercProfiles[guiLeaveListOwnerProfileId[uiSlotIndex]].zNickname);
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
     } else {
-      swprintf(sString, "A departing merc has left their equipment in Omerta.");
+      sString = "A departing merc has left their equipment in Omerta.";
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
     }
   }
@@ -1201,10 +1201,10 @@ export function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
 
   if (pItem) {
     if (guiLeaveListOwnerProfileId[uiSlotIndex] != NO_PROFILE) {
-      swprintf(sString, pLeftEquipmentString[1], gMercProfiles[guiLeaveListOwnerProfileId[uiSlotIndex]].zNickname);
+      sString = swprintf(pLeftEquipmentString[1], gMercProfiles[guiLeaveListOwnerProfileId[uiSlotIndex]].zNickname);
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
     } else {
-      swprintf(sString, "A departing merc has left their equipment in Drassen.");
+      sString = "A departing merc has left their equipment in Drassen.";
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
     }
   }
@@ -1542,21 +1542,21 @@ export function UpdateCharRegionHelpText(): void {
       if (pSoldier.value.bLife != 0) {
         if (AM_A_ROBOT(MercPtrs[gCharactersList[bSelectedInfoChar].usSolID])) {
           // robot (condition only)
-          swprintf(sString, "%s: %d/%d", pMapScreenStatusStrings[3], pSoldier.value.bLife, pSoldier.value.bLifeMax);
+          sString = swprintf("%s: %d/%d", pMapScreenStatusStrings[3], pSoldier.value.bLife, pSoldier.value.bLifeMax);
         } else if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].uiStatusFlags & SOLDIER_VEHICLE) {
           // vehicle (condition/fuel)
-          swprintf(sString, "%s: %d/%d, %s: %d/%d", pMapScreenStatusStrings[3], pSoldier.value.bLife, pSoldier.value.bLifeMax, pMapScreenStatusStrings[4], pSoldier.value.bBreath, pSoldier.value.bBreathMax);
+          sString = swprintf("%s: %d/%d, %s: %d/%d", pMapScreenStatusStrings[3], pSoldier.value.bLife, pSoldier.value.bLifeMax, pMapScreenStatusStrings[4], pSoldier.value.bBreath, pSoldier.value.bBreathMax);
         } else {
           // person (health/energy/morale)
           GetMoraleString(pSoldier, pMoraleStr);
-          swprintf(sString, "%s: %d/%d, %s: %d/%d, %s: %s", pMapScreenStatusStrings[0], pSoldier.value.bLife, pSoldier.value.bLifeMax, pMapScreenStatusStrings[1], pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMapScreenStatusStrings[2], pMoraleStr);
+          sString = swprintf("%s: %d/%d, %s: %d/%d, %s: %s", pMapScreenStatusStrings[0], pSoldier.value.bLife, pSoldier.value.bLifeMax, pMapScreenStatusStrings[1], pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMapScreenStatusStrings[2], pMoraleStr);
         }
       } else {
         wcscpy(sString, "");
       }
     } else {
       // POW - stats unknown
-      swprintf(sString, "%s: ??, %s: ??, %s: ??", pMapScreenStatusStrings[0], pMapScreenStatusStrings[1], pMapScreenStatusStrings[2]);
+      sString = swprintf("%s: ??, %s: ??, %s: ??", pMapScreenStatusStrings[0], pMapScreenStatusStrings[1], pMapScreenStatusStrings[2]);
     }
 
     SetRegionFastHelpText(addressof(gMapStatusBarsRegion), sString);
@@ -2765,7 +2765,7 @@ function AddStringsToMoveBox(): void {
 
   // add title
   GetShortSectorString(sSelMapX, sSelMapY, sStringB);
-  swprintf(sString, "%s %s", pMovementMenuStrings[0], sStringB);
+  sString = swprintf("%s %s", pMovementMenuStrings[0], sStringB);
   AddMonoString(addressof(hStringHandle), sString);
 
   // blank line
@@ -2775,9 +2775,9 @@ function AddStringsToMoveBox(): void {
   for (iCount = 0; iCount < giNumberOfSquadsInSectorMoving; iCount++) {
     // add this squad, now add all the grunts in it
     if (fSquadIsMoving[iCount]) {
-      swprintf(sString, "*%s*", pSquadMenuStrings[iSquadMovingList[iCount]]);
+      sString = swprintf("*%s*", pSquadMenuStrings[iSquadMovingList[iCount]]);
     } else {
-      swprintf(sString, "%s", pSquadMenuStrings[iSquadMovingList[iCount]]);
+      sString = swprintf("%s", pSquadMenuStrings[iSquadMovingList[iCount]]);
     }
     AddMonoString(addressof(hStringHandle), sString);
 
@@ -2786,9 +2786,9 @@ function AddStringsToMoveBox(): void {
       if (pSoldierMovingList[iCountB].value.bAssignment == iSquadMovingList[iCount]) {
         // add mercs in squads
         if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == true) {
-          swprintf(sString, "   *%s*", pSoldierMovingList[iCountB].value.name);
+          sString = swprintf("   *%s*", pSoldierMovingList[iCountB].value.name);
         } else {
-          swprintf(sString, "   %s", pSoldierMovingList[iCountB].value.name);
+          sString = swprintf("   %s", pSoldierMovingList[iCountB].value.name);
         }
         AddMonoString(addressof(hStringHandle), sString);
       }
@@ -2799,9 +2799,9 @@ function AddStringsToMoveBox(): void {
   for (iCount = 0; iCount < giNumberOfVehiclesInSectorMoving; iCount++) {
     // add this vehicle
     if (fVehicleIsMoving[iCount]) {
-      swprintf(sString, "*%s*", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
+      sString = swprintf("*%s*", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
     } else {
-      swprintf(sString, "%s", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
+      sString = swprintf("%s", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
     }
     AddMonoString(addressof(hStringHandle), sString);
 
@@ -2810,9 +2810,9 @@ function AddStringsToMoveBox(): void {
       if ((pSoldierMovingList[iCountB].value.bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
         // add mercs in vehicles
         if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == true) {
-          swprintf(sString, "   *%s*", pSoldierMovingList[iCountB].value.name);
+          sString = swprintf("   *%s*", pSoldierMovingList[iCountB].value.name);
         } else {
-          swprintf(sString, "   %s", pSoldierMovingList[iCountB].value.name);
+          sString = swprintf("   %s", pSoldierMovingList[iCountB].value.name);
         }
         AddMonoString(addressof(hStringHandle), sString);
       }
@@ -2828,9 +2828,9 @@ function AddStringsToMoveBox(): void {
       if (fFirstOne) {
         // add OTHER header line
         if (AllOtherSoldiersInListAreSelected()) {
-          swprintf(sString, "*%s*", pMovementMenuStrings[3]);
+          sString = swprintf("*%s*", pMovementMenuStrings[3]);
         } else {
-          swprintf(sString, "%s", pMovementMenuStrings[3]);
+          sString = swprintf("%s", pMovementMenuStrings[3]);
         }
         AddMonoString(addressof(hStringHandle), sString);
 
@@ -2839,9 +2839,9 @@ function AddStringsToMoveBox(): void {
 
       // add OTHER soldiers (not on duty nor in a vehicle)
       if (IsSoldierSelectedForMovement(pSoldierMovingList[iCount]) == true) {
-        swprintf(sString, "  *%s ( %s )*", pSoldierMovingList[iCount].value.name, pAssignmentStrings[pSoldierMovingList[iCount].value.bAssignment]);
+        sString = swprintf("  *%s ( %s )*", pSoldierMovingList[iCount].value.name, pAssignmentStrings[pSoldierMovingList[iCount].value.bAssignment]);
       } else {
-        swprintf(sString, "   %s ( %s )", pSoldierMovingList[iCount].value.name, pAssignmentStrings[pSoldierMovingList[iCount].value.bAssignment]);
+        sString = swprintf("   %s ( %s )", pSoldierMovingList[iCount].value.name, pAssignmentStrings[pSoldierMovingList[iCount].value.bAssignment]);
       }
       AddMonoString(addressof(hStringHandle), sString);
     }
@@ -2852,7 +2852,7 @@ function AddStringsToMoveBox(): void {
 
   if (IsAnythingSelectedForMoving()) {
     // add PLOT MOVE line
-    swprintf(sString, "%s", pMovementMenuStrings[1]);
+    sString = swprintf("%s", pMovementMenuStrings[1]);
     AddMonoString(addressof(hStringHandle), sString);
   } else {
     // blank line
@@ -2860,7 +2860,7 @@ function AddStringsToMoveBox(): void {
   }
 
   // add cancel line
-  swprintf(sString, "%s", pMovementMenuStrings[2]);
+  sString = swprintf("%s", pMovementMenuStrings[2]);
   AddMonoString(addressof(hStringHandle), sString);
 
   return;
@@ -3591,7 +3591,7 @@ export function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // if update
   if (pUpdateSoldierBox[iCounter] == null) {
-    sprintf(VObjectDesc.ImageFile, "Interface\\panels.sti");
+    VObjectDesc.ImageFile = "Interface\\panels.sti";
     if (!AddVideoObject(addressof(VObjectDesc), addressof(giMercPanelImage))) {
       AssertMsg(0, "Failed to load Interface\\panels.sti");
     }
@@ -3606,10 +3606,10 @@ export function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
 
       if (gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex < 100) {
         // grab filename of face
-        sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\%02d.sti", gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex);
       } else {
         // grab filename of face
-        sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\%03d.sti", gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex);
       }
 
       // load the face
@@ -3773,7 +3773,7 @@ export function DisplaySoldierUpdateBox(): void {
       RenderSoldierSmallFaceForUpdatePanel(iCounter, iFaceX, iFaceY);
 
       // display the mercs name
-      swprintf(sString, "%s", pUpdateSoldierBox[iCounter].value.name);
+      sString = swprintf("%s", pUpdateSoldierBox[iCounter].value.name);
       DrawTextToScreen(sString, (iFaceX - 5), (iFaceY + 31), 57, TINYFONT1(), FONT_LTRED, FONT_BLACK, 0, CENTER_JUSTIFIED);
     }
   }
@@ -4371,7 +4371,7 @@ export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT
 
   // check if SAM site here
   if (IsThisSectorASAMSector(sSectorX, sSectorY, bSectorZ)) {
-    swprintf(sStringB, pMapErrorString[15], sString);
+    sStringB = swprintf(pMapErrorString[15], sString);
 
     // put up the message informing the player of the event
     DoScreenIndependantMessageBox(sStringB, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
@@ -4388,13 +4388,13 @@ export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT
       iValue = GetProjectedTotalDailyIncome();
 
       // parse the string
-      swprintf(sStringC, "%d", iValue);
+      sStringC = swprintf("%d", iValue);
 
       // insert
       InsertCommasForDollarFigure(sStringC);
       InsertDollarSignInToString(sStringC);
 
-      swprintf(sStringB, pMapErrorString[16], sString, sStringC);
+      sStringB = swprintf(pMapErrorString[16], sString, sStringC);
 
       // put up the message informing the player of the event
       DoScreenIndependantMessageBox(sStringB, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
@@ -4407,7 +4407,7 @@ export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT
       // San Mona isn't important.
       return true;
     }
-    swprintf(sStringB, pMapErrorString[25], sString);
+    sStringB = swprintf(pMapErrorString[25], sString);
 
     // put up the message informing the player of the event
     DoScreenIndependantMessageBox(sStringB, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
@@ -4425,7 +4425,7 @@ export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT
   GetSectorIDString(sSectorX, sSectorY, bSectorZ, sStringA, true);
 
   // now build the string
-  swprintf(sString, pMapErrorString[17], sStringA);
+  sString = swprintf(pMapErrorString[17], sStringA);
 
   // put up the message box
   DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, null);
@@ -4460,19 +4460,19 @@ export function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: I
     // get sector id value
     GetShortSectorString(sSectorX, sSectorY, sStringA);
 
-    swprintf(sString, pMapErrorString[22], sStringA);
+    sString = swprintf(pMapErrorString[22], sStringA);
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, ReturnCallback);
   } else if (bTownId) {
     // get the name of the sector
     GetSectorIDString(sSectorX, sSectorY, bSectorZ, sStringA, true);
 
-    swprintf(sString, pMapErrorString[23], sStringA);
+    sString = swprintf(pMapErrorString[23], sStringA);
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, ReturnCallback);
   } else {
     // get sector id value
     GetShortSectorString(sSectorX, sSectorY, sStringA);
 
-    swprintf(sString, pMapErrorString[24], sStringA);
+    sString = swprintf(pMapErrorString[24], sStringA);
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
   }
 }
@@ -4530,14 +4530,14 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   {
     // dead?
     if (pSoldier.value.bLife <= 0) {
-      swprintf(gsCustomErrorString, pMapErrorString[35], pSoldier.value.name);
+      gsCustomErrorString = swprintf(pMapErrorString[35], pSoldier.value.name);
       pbErrorNumber.value = -99; // customized error message!
       return false;
     }
 
     // too injured?
     if (pSoldier.value.bLife < OKLIFE) {
-      swprintf(gsCustomErrorString, pMapErrorString[33], pSoldier.value.name);
+      gsCustomErrorString = swprintf(pMapErrorString[33], pSoldier.value.name);
       pbErrorNumber.value = -99; // customized error message!
       return false;
     }
@@ -4606,7 +4606,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   // or already asleep and can't be awakened
   if (PlayerSoldierTooTiredToTravel(pSoldier)) {
     // too tired
-    swprintf(gsCustomErrorString, pMapErrorString[43], pSoldier.value.name);
+    gsCustomErrorString = swprintf(pMapErrorString[43], pSoldier.value.name);
     pbErrorNumber.value = -99; // customized error message!
     return false;
   }
@@ -4625,9 +4625,9 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
     if (((pSoldier.value.bAssignment == Enum117.VEHICLE) && (GetNumberOfNonEPCsInVehicle(pSoldier.value.iVehicleId) == 0)) || ((pSoldier.value.bAssignment < Enum117.ON_DUTY) && (NumberOfNonEPCsInSquad(pSoldier.value.bAssignment) == 0))) {
       // are they male or female
       if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        swprintf(gsCustomErrorString, "%s %s", pSoldier.value.name, pMapErrorString[6]);
+        gsCustomErrorString = swprintf("%s %s", pSoldier.value.name, pMapErrorString[6]);
       } else {
-        swprintf(gsCustomErrorString, "%s %s", pSoldier.value.name, pMapErrorString[7]);
+        gsCustomErrorString = swprintf("%s %s", pSoldier.value.name, pMapErrorString[7]);
       }
 
       pbErrorNumber.value = -99; // customized error message!
@@ -4652,7 +4652,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
 
   if (fProblemExists) {
     // inform user this specific merc cannot be moved out of the sector
-    swprintf(gsCustomErrorString, pMapErrorString[29], pSoldier.value.name);
+    gsCustomErrorString = swprintf(pMapErrorString[29], pSoldier.value.name);
     pbErrorNumber.value = -99; // customized error message!
     return false;
   }

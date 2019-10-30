@@ -367,7 +367,7 @@ export function ProcessMercEditing(): void {
             ubPaletteRep = iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType] - 1;
 
           SET_PALETTEREP_ID(pSoldier.value.HeadPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected.value.pDetailedPlacement.value.HeadPal, pSoldier.value.HeadPal);
+          gpSelected.value.pDetailedPlacement.value.HeadPal = pSoldier.value.HeadPal;
           CreateSoldierPalettes(pSoldier);
           break;
         case 1:
@@ -379,7 +379,7 @@ export function ProcessMercEditing(): void {
             ubPaletteRep = iEditColorStart[ubType];
 
           SET_PALETTEREP_ID(pSoldier.value.HeadPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected.value.pDetailedPlacement.value.HeadPal, pSoldier.value.HeadPal);
+          gpSelected.value.pDetailedPlacement.value.HeadPal = pSoldier.value.HeadPal;
           CreateSoldierPalettes(pSoldier);
           break;
 
@@ -392,7 +392,7 @@ export function ProcessMercEditing(): void {
             ubPaletteRep = iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType] - 1;
 
           SET_PALETTEREP_ID(pSoldier.value.SkinPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected.value.pDetailedPlacement.value.SkinPal, pSoldier.value.SkinPal);
+          gpSelected.value.pDetailedPlacement.value.SkinPal = pSoldier.value.SkinPal;
           CreateSoldierPalettes(pSoldier);
           break;
         case 3:
@@ -404,7 +404,7 @@ export function ProcessMercEditing(): void {
             ubPaletteRep = iEditColorStart[ubType];
 
           SET_PALETTEREP_ID(pSoldier.value.SkinPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected.value.pDetailedPlacement.value.SkinPal, pSoldier.value.SkinPal);
+          gpSelected.value.pDetailedPlacement.value.SkinPal = pSoldier.value.SkinPal;
           CreateSoldierPalettes(pSoldier);
           break;
 
@@ -417,7 +417,7 @@ export function ProcessMercEditing(): void {
             ubPaletteRep = iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType] - 1;
 
           SET_PALETTEREP_ID(pSoldier.value.VestPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected.value.pDetailedPlacement.value.VestPal, pSoldier.value.VestPal);
+          gpSelected.value.pDetailedPlacement.value.VestPal = pSoldier.value.VestPal;
           CreateSoldierPalettes(pSoldier);
           break;
         case 5:
@@ -429,7 +429,7 @@ export function ProcessMercEditing(): void {
             ubPaletteRep = iEditColorStart[ubType];
 
           SET_PALETTEREP_ID(pSoldier.value.VestPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected.value.pDetailedPlacement.value.VestPal, pSoldier.value.VestPal);
+          gpSelected.value.pDetailedPlacement.value.VestPal = pSoldier.value.VestPal;
           CreateSoldierPalettes(pSoldier);
           break;
 
@@ -442,7 +442,7 @@ export function ProcessMercEditing(): void {
             ubPaletteRep = iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType] - 1;
 
           SET_PALETTEREP_ID(pSoldier.value.PantsPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected.value.pDetailedPlacement.value.PantsPal, pSoldier.value.PantsPal);
+          gpSelected.value.pDetailedPlacement.value.PantsPal = pSoldier.value.PantsPal;
           CreateSoldierPalettes(pSoldier);
           break;
         case 7:
@@ -454,7 +454,7 @@ export function ProcessMercEditing(): void {
             ubPaletteRep = iEditColorStart[ubType];
 
           SET_PALETTEREP_ID(pSoldier.value.PantsPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected.value.pDetailedPlacement.value.PantsPal, pSoldier.value.PantsPal);
+          gpSelected.value.pDetailedPlacement.value.PantsPal = pSoldier.value.PantsPal;
           CreateSoldierPalettes(pSoldier);
           break;
       }
@@ -817,7 +817,7 @@ function DisplayEditMercWindow(): void {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 117, iYPos + 111 + (20 * x), iXPos + 116 + 30, iYPos + 111 + (20 * x) + 19, usFillColorLight);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 117, iYPos + 111 + (20 * x), iXPos + 116 + 29, iYPos + 111 + (20 * x) + 18, usFillColorTextBk);
 
-    swprintf(TempString, "%d", iEditStat[x]);
+    TempString = swprintf("%d", iEditStat[x]);
     iXOff = (30 - StringPixLength(TempString, FONT12POINT1())) / 2;
     gprintf(iXPos + 118 + iXOff, iYPos + 114 + (20 * x), "%s", TempString);
   }
@@ -1014,10 +1014,10 @@ export function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: I
     {
       EnableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
       gpSelected.value.pDetailedPlacement.value.fVisible = true;
-      sprintf(gpSelected.value.pDetailedPlacement.value.HeadPal, gpSelected.value.pSoldier.value.HeadPal);
-      sprintf(gpSelected.value.pDetailedPlacement.value.SkinPal, gpSelected.value.pSoldier.value.SkinPal);
-      sprintf(gpSelected.value.pDetailedPlacement.value.VestPal, gpSelected.value.pSoldier.value.VestPal);
-      sprintf(gpSelected.value.pDetailedPlacement.value.PantsPal, gpSelected.value.pSoldier.value.PantsPal);
+      gpSelected.value.pDetailedPlacement.value.HeadPal = gpSelected.value.pSoldier.value.HeadPal;
+      gpSelected.value.pDetailedPlacement.value.SkinPal = gpSelected.value.pSoldier.value.SkinPal;
+      gpSelected.value.pDetailedPlacement.value.VestPal = gpSelected.value.pSoldier.value.VestPal;
+      gpSelected.value.pDetailedPlacement.value.PantsPal = gpSelected.value.pSoldier.value.PantsPal;
     } else // button is unchecked.
     {
       DisableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
@@ -1647,9 +1647,9 @@ function CalcStringForValue(str: Pointer<string> /* Pointer<UINT16> */, iValue: 
   if (iValue < 0) // a blank string is determined by a negative value.
     str[0] = '\0';
   else if (iValue > uiMax) // higher than max attribute value, so convert it to the max.
-    swprintf(str, "%d", uiMax);
+    str = swprintf("%d", uiMax);
   else // this is a valid static value, so convert it to a string.
-    swprintf(str, "%d", iValue);
+    str = swprintf("%d", iValue);
 }
 
 function ExtractAndUpdateMercAttributes(): void {
@@ -2209,88 +2209,88 @@ function DisplayBodyTypeInfo(): void {
   let str: string /* UINT16[20] */;
   switch (gpSelected.value.pBasicPlacement.value.bBodyType) {
     case RANDOM:
-      swprintf(str, "Random");
+      str = "Random";
       break;
     case Enum194.REGMALE:
-      swprintf(str, "Reg Male");
+      str = "Reg Male";
       break;
     case Enum194.BIGMALE:
-      swprintf(str, "Big Male");
+      str = "Big Male";
       break;
     case Enum194.STOCKYMALE:
-      swprintf(str, "Stocky Male");
+      str = "Stocky Male";
       break;
     case Enum194.REGFEMALE:
-      swprintf(str, "Reg Female");
+      str = "Reg Female";
       break;
     case Enum194.TANK_NE:
-      swprintf(str, "NE Tank");
+      str = "NE Tank";
       break;
     case Enum194.TANK_NW:
-      swprintf(str, "NW Tank");
+      str = "NW Tank";
       break;
     case Enum194.FATCIV:
-      swprintf(str, "Fat Civilian");
+      str = "Fat Civilian";
       break;
     case Enum194.MANCIV:
-      swprintf(str, "M Civilian");
+      str = "M Civilian";
       break;
     case Enum194.MINICIV:
-      swprintf(str, "Miniskirt");
+      str = "Miniskirt";
       break;
     case Enum194.DRESSCIV:
-      swprintf(str, "F Civilian");
+      str = "F Civilian";
       break;
     case Enum194.HATKIDCIV:
-      swprintf(str, "Kid w/ Hat");
+      str = "Kid w/ Hat";
       break;
     case Enum194.HUMVEE:
-      swprintf(str, "Humvee");
+      str = "Humvee";
       break;
     case Enum194.ELDORADO:
-      swprintf(str, "Eldorado");
+      str = "Eldorado";
       break;
     case Enum194.ICECREAMTRUCK:
-      swprintf(str, "Icecream Truck");
+      str = "Icecream Truck";
       break;
     case Enum194.JEEP:
-      swprintf(str, "Jeep");
+      str = "Jeep";
       break;
     case Enum194.KIDCIV:
-      swprintf(str, "Kid Civilian");
+      str = "Kid Civilian";
       break;
     case Enum194.COW:
-      swprintf(str, "Domestic Cow");
+      str = "Domestic Cow";
       break;
     case Enum194.CRIPPLECIV:
-      swprintf(str, "Cripple");
+      str = "Cripple";
       break;
     case Enum194.ROBOTNOWEAPON:
-      swprintf(str, "Unarmed Robot");
+      str = "Unarmed Robot";
       break;
     case Enum194.LARVAE_MONSTER:
-      swprintf(str, "Larvae");
+      str = "Larvae";
       break;
     case Enum194.INFANT_MONSTER:
-      swprintf(str, "Infant");
+      str = "Infant";
       break;
     case Enum194.YAF_MONSTER:
-      swprintf(str, "Yng F Monster");
+      str = "Yng F Monster";
       break;
     case Enum194.YAM_MONSTER:
-      swprintf(str, "Yng M Monster");
+      str = "Yng M Monster";
       break;
     case Enum194.ADULTFEMALEMONSTER:
-      swprintf(str, "Adt F Monster");
+      str = "Adt F Monster";
       break;
     case Enum194.AM_MONSTER:
-      swprintf(str, "Adt M Monster");
+      str = "Adt M Monster";
       break;
     case Enum194.QUEENMONSTER:
-      swprintf(str, "Queen Monster");
+      str = "Queen Monster";
       break;
     case Enum194.BLOODCAT:
-      swprintf(str, "Bloodcat");
+      str = "Bloodcat";
       break;
   }
   DrawEditorInfoBox(str, FONT10ARIAL(), 490, 364, 70, 20);
@@ -2400,7 +2400,7 @@ export function UpdateMercsInfo(): void {
       {
         // scope trick
         let tempStr: string /* UINT16[500] */;
-        swprintf(tempStr, "%s%s%s%s%s%d.", "By specifying a profile index, all of the information will be extracted from the profile ", "and override any values that you have edited.  It will also disable the editing features ", "though, you will still be able to view stats, etc.  Pressing ENTER will automatically ", "extract the number you have typed.  A blank field will clear the profile.  The current ", "number of profiles range from 0 to ", NUM_PROFILES);
+        tempStr = swprintf("%s%s%s%s%s%d.", "By specifying a profile index, all of the information will be extracted from the profile ", "and override any values that you have edited.  It will also disable the editing features ", "though, you will still be able to view stats, etc.  Pressing ENTER will automatically ", "extract the number you have typed.  A blank field will clear the profile.  The current ", "number of profiles range from 0 to ", NUM_PROFILES);
         DisplayWrappedString(180, 370, 400, 2, FONT10ARIAL(), 146, tempStr, FONT_BLACK, false, LEFT_JUSTIFIED);
         SetFont(FONT12POINT1());
         if (gpSelected.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
@@ -2459,30 +2459,30 @@ export function UpdateMercsInfo(): void {
         ColorFillVideoSurfaceArea(FRAME_BUFFER, 431, 388, 590, 450, Get16BPPColor(FROMRGB(32, 45, 72)));
         switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
           case Enum171.SCHEDULE_ACTION_LOCKDOOR:
-            swprintf(keyword, "lock");
+            keyword = "lock";
             break;
           case Enum171.SCHEDULE_ACTION_UNLOCKDOOR:
-            swprintf(keyword, "unlock");
+            keyword = "unlock";
             break;
           case Enum171.SCHEDULE_ACTION_OPENDOOR:
-            swprintf(keyword, "open");
+            keyword = "open";
             break;
           case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
-            swprintf(keyword, "close");
+            keyword = "close";
             break;
         }
         switch (gubScheduleInstructions) {
           case Enum40.SCHEDULE_INSTRUCTIONS_DOOR1:
-            swprintf(str, "Click on the gridno adjacent to the door that you wish to %s.", keyword);
+            str = swprintf("Click on the gridno adjacent to the door that you wish to %s.", keyword);
             break;
           case Enum40.SCHEDULE_INSTRUCTIONS_DOOR2:
-            swprintf(str, "Click on the gridno where you wish to move after you %s the door.", keyword);
+            str = swprintf("Click on the gridno where you wish to move after you %s the door.", keyword);
             break;
           case Enum40.SCHEDULE_INSTRUCTIONS_GRIDNO:
-            swprintf(str, "Click on the gridno where you wish to move to.");
+            str = "Click on the gridno where you wish to move to.";
             break;
           case Enum40.SCHEDULE_INSTRUCTIONS_SLEEP:
-            swprintf(str, "Click on the gridno where you wish to sleep at.  Person will automatically return to original position after waking up.");
+            str = "Click on the gridno where you wish to sleep at.  Person will automatically return to original position after waking up.";
           default:
             return;
         }
@@ -2984,7 +2984,7 @@ export function RenderMercStrings(): void {
         sYPos += 10;
 
         SetFontForeground(FONT_GRAY2);
-        swprintf(str, "Slot #%d", pSoldier.value.ubID);
+        str = swprintf("Slot #%d", pSoldier.value.ubID);
         FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
@@ -3006,7 +3006,7 @@ export function RenderMercStrings(): void {
         sYPos += 10;
 
         SetFontForeground(FONT_GRAY2);
-        swprintf(str, "Slot #%d", pSoldier.value.ubID);
+        str = swprintf("Slot #%d", pSoldier.value.ubID);
         FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
@@ -3021,7 +3021,7 @@ export function RenderMercStrings(): void {
             SetFontForeground(FONT_DKRED);
           else
             SetFontForeground(FONT_RED);
-          swprintf(str, "Patrol orders with no waypoints");
+          str = "Patrol orders with no waypoints";
           FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
           if (sY < 352) {
             gprintfdirty(sX, sY, str);
@@ -3034,7 +3034,7 @@ export function RenderMercStrings(): void {
           SetFontForeground(FONT_DKRED);
         else
           SetFontForeground(FONT_RED);
-        swprintf(str, "Waypoints with no patrol orders");
+        str = "Waypoints with no patrol orders";
         FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
@@ -3121,7 +3121,7 @@ export function CancelCurrentScheduleAction(): void {
 export function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
   let str: string /* UINT16[6] */;
   MarkWorldDirty();
-  swprintf(str, "%d", iMapIndex);
+  str = swprintf("%d", iMapIndex);
   if (gfUseScheduleData2) {
     if (gfSingleAction)
       return;
@@ -3332,7 +3332,7 @@ function RenderCurrentSchedule(): void {
       SetFont(TINYFONT1());
       SetFontBackground(FONT_LTKHAKI);
       SetFontForeground(FONT_WHITE);
-      swprintf(str, "%d%c", i / 2 + 1, 'A' + (i % 2));
+      str = swprintf("%d%c", i / 2 + 1, 'A' + (i % 2));
       VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1(), addressof(sX), addressof(sY), str);
       mprintf(sX, sY, str);
     }
@@ -3352,13 +3352,13 @@ function UpdateScheduleInfo(): void {
       // Update the text and buttons
       MSYS_SetBtnUserData(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + i], 0, pSchedule.value.ubAction[i]);
       SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + i], gszScheduleActions[pSchedule.value.ubAction[i]]);
-      swprintf(str, "");
+      str = "";
       if (pSchedule.value.usData1[i] != 0xffff)
-        swprintf(str, "%d", pSchedule.value.usData1[i]);
+        str = swprintf("%d", pSchedule.value.usData1[i]);
       SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_DATA1A + i], str);
-      swprintf(str, "");
+      str = "";
       if (pSchedule.value.usData2[i] != 0xffff)
-        swprintf(str, "%d", pSchedule.value.usData2[i]);
+        str = swprintf("%d", pSchedule.value.usData2[i]);
       SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_DATA1B + i], str);
       if (gubCurrMercMode == Enum42.MERC_SCHEDULEMODE) {
         // Update the text input fields too!

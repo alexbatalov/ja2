@@ -66,7 +66,7 @@ export function EnterAimFacialIndex(): boolean {
       MSYS_AddRegion(addressof(gMercFaceMouseRegions[i]));
       MSYS_SetRegionUserData(addressof(gMercFaceMouseRegions[i]), 0, i);
 
-      sprintf(sTemp, "%s%02d.sti", sFaceLoc, AimMercArray[i]);
+      sTemp = sprintf("%s%02d.sti", sFaceLoc, AimMercArray[i]);
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP(sTemp, VObjectDesc.ImageFile);
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAimFiFace[i])))
@@ -124,9 +124,9 @@ export function RenderAimFacialIndex(): boolean {
 
   // Display the 'A.I.M. Members Sorted Ascending By Price' type string
   if (gubCurrentListMode == AIM_ASCEND)
-    swprintf(sString, AimFiText[Enum360.AIM_FI_AIM_MEMBERS_SORTED_ASCENDING], AimFiText[gubCurrentSortMode]);
+    sString = swprintf(AimFiText[Enum360.AIM_FI_AIM_MEMBERS_SORTED_ASCENDING], AimFiText[gubCurrentSortMode]);
   else
-    swprintf(sString, AimFiText[Enum360.AIM_FI_AIM_MEMBERS_SORTED_DESCENDING], AimFiText[gubCurrentSortMode]);
+    sString = swprintf(AimFiText[Enum360.AIM_FI_AIM_MEMBERS_SORTED_DESCENDING], AimFiText[gubCurrentSortMode]);
 
   DrawTextToScreen(sString, AIM_FI_MEMBER_TEXT_X, AIM_FI_MEMBER_TEXT_Y, AIM_FI_MEMBER_TEXT_WIDTH, AIM_MAINTITLE_FONT(), AIM_MAINTITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 

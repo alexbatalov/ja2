@@ -100,23 +100,23 @@ function LoadQuoteFile(ubNPC: UINT8): Pointer<NPCQuoteInfo> {
 
   if (ubNPC == Enum268.PETER || ubNPC == Enum268.ALBERTO || ubNPC == Enum268.CARLO) {
     // use a copy of Herve's data file instead!
-    sprintf(zFileName, "NPCData\\%03d.npc", Enum268.HERVE);
+    zFileName = sprintf("NPCData\\%03d.npc", Enum268.HERVE);
   } else if (ubNPC < FIRST_RPC || (ubNPC < FIRST_NPC && gMercProfiles[ubNPC].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED)) {
-    sprintf(zFileName, "NPCData\\000.npc", ubNPC);
+    zFileName = sprintf("NPCData\\000.npc", ubNPC);
   } else {
-    sprintf(zFileName, "NPCData\\%03d.npc", ubNPC);
+    zFileName = sprintf("NPCData\\%03d.npc", ubNPC);
   }
 
   // ATE: Put some stuff i here to use a different NPC file if we are in a meanwhile.....
   if (AreInMeanwhile()) {
     // If we are the queen....
     if (ubNPC == Enum268.QUEEN) {
-      sprintf(zFileName, "NPCData\\%03d.npc", gubAlternateNPCFileNumsForQueenMeanwhiles[GetMeanwhileID()]);
+      zFileName = sprintf("NPCData\\%03d.npc", gubAlternateNPCFileNumsForQueenMeanwhiles[GetMeanwhileID()]);
     }
 
     // If we are elliot....
     if (ubNPC == Enum268.ELLIOT) {
-      sprintf(zFileName, "NPCData\\%03d.npc", gubAlternateNPCFileNumsForElliotMeanwhiles[GetMeanwhileID()]);
+      zFileName = sprintf("NPCData\\%03d.npc", gubAlternateNPCFileNumsForElliotMeanwhiles[GetMeanwhileID()]);
     }
   }
 
@@ -263,9 +263,9 @@ function LoadCivQuoteFile(ubIndex: UINT8): Pointer<NPCQuoteInfo> {
   let uiFileSize: UINT32;
 
   if (ubIndex == MINERS_CIV_QUOTE_INDEX) {
-    sprintf(zFileName, "NPCData\\miners.npc");
+    zFileName = "NPCData\\miners.npc";
   } else {
-    sprintf(zFileName, "NPCData\\%c%d.npc", 'A' + (gsCivQuoteSector[ubIndex][1] - 1), gsCivQuoteSector[ubIndex][0]);
+    zFileName = sprintf("NPCData\\%c%d.npc", 'A' + (gsCivQuoteSector[ubIndex][1] - 1), gsCivQuoteSector[ubIndex][0]);
   }
 
   CHECKN(FileExists(zFileName));
@@ -928,7 +928,7 @@ function HandleNPCBeingGivenMoneyByPlayer(ubNPC: UINT8, uiMoneyAmount: UINT32, p
       } else {
         let sTempString: string /* INT16[100] */;
 
-        swprintf(sTempString, "%ld", iCost - uiMoneyAmount - giHospitalTempBalance);
+        sTempString = swprintf("%ld", iCost - uiMoneyAmount - giHospitalTempBalance);
         InsertDollarSignInToString(sTempString);
 
         // not enough cash

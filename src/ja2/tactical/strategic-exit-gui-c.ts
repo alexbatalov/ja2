@@ -395,7 +395,7 @@ function UpdateSectorExitMenu(): void {
     if (gExitDialog.fSelectedMercIsEPC) {
       // EPCs cannot leave the sector alone and must be escorted
       let str: string /* UINT16[256] */;
-      swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_ESCORTED_CHARACTERS_MUST_BE_ESCORTED_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
+      str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_ESCORTED_CHARACTERS_MUST_BE_ESCORTED_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
       SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
       SetRegionFastHelpText(addressof(gExitDialog.SingleRegion), str);
     } else if (gExitDialog.bSingleMoveWillIsolateEPC != -1) {
@@ -406,18 +406,18 @@ function UpdateSectorExitMenu(): void {
       if (!gExitDialog.fSquadHasMultipleEPCs) {
         if (gMercProfiles[MercPtrs[gusSelectedSoldier].value.ubProfile].bSex == Enum272.MALE) {
           // male singular
-          swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gExitDialog.bSingleMoveWillIsolateEPC].value.name);
+          str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gExitDialog.bSingleMoveWillIsolateEPC].value.name);
         } else {
           // female singular
-          swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gExitDialog.bSingleMoveWillIsolateEPC].value.name);
+          str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gExitDialog.bSingleMoveWillIsolateEPC].value.name);
         }
       } else {
         if (gMercProfiles[MercPtrs[gusSelectedSoldier].value.ubProfile].bSex == Enum272.MALE) {
           // male plural
-          swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
+          str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
         } else {
           // female plural
-          swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
+          str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
         }
       }
       SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
@@ -427,7 +427,7 @@ function UpdateSectorExitMenu(): void {
     let str: string /* UINT16[256] */;
     EnableButton(gExitDialog.uiSingleMoveButton);
     MSYS_EnableRegion(addressof(gExitDialog.SingleRegion));
-    swprintf(str, pExitingSectorHelpText[Enum336.EXIT_GUI_SINGLE_TRAVERSAL_WILL_SEPARATE_SQUADS_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
+    str = swprintf(pExitingSectorHelpText[Enum336.EXIT_GUI_SINGLE_TRAVERSAL_WILL_SEPARATE_SQUADS_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
     SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
     SetRegionFastHelpText(addressof(gExitDialog.SingleRegion), str);
   }
@@ -565,7 +565,7 @@ export function RemoveSectorExitMenu(fOk: boolean): void {
     if (fOk && AM_AN_EPC(MercPtrs[gusSelectedSoldier])) {
       // Check if there are more than one in this squad
       if (gExitDialog.ubNumPeopleOnSquad == 0) {
-        swprintf(Str, pMessageStrings[Enum333.MSG_EPC_CANT_TRAVERSE], MercPtrs[gusSelectedSoldier].value.name);
+        Str = swprintf(pMessageStrings[Enum333.MSG_EPC_CANT_TRAVERSE], MercPtrs[gusSelectedSoldier].value.name);
 
         DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Str, Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
         return;
