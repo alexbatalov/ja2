@@ -12,12 +12,16 @@ export function EnterBobbyRMisc(): boolean {
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\miscbackground.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMiscBackground)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMiscBackground))) {
+    return false;
+  }
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\miscgrid.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMiscGrid)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMiscGrid))) {
+    return false;
+  }
 
   InitBobbyBrTitle();
   // Draw menu bar

@@ -433,16 +433,22 @@ function LoadPersonnelGraphics(): boolean {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE))) {
+    return false;
+  }
 
   // the background grpahics
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\personnelwindow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSCREEN)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSCREEN))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\personnel_inventory.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPersonnelInventory)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPersonnelInventory))) {
+    return false;
+  }
 
   return true;
 }
@@ -653,7 +659,9 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: b
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFACE)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFACE))) {
+    return false;
+  }
 
   // Blt face to screen to
   GetVideoObject(addressof(hFaceHandle), guiFACE);
@@ -1555,12 +1563,16 @@ function LoadPersonnelScreenBackgroundGraphics(): boolean {
   // departed bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\departed.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiDEPARTEDTEAM)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDEPARTEDTEAM))) {
+    return false;
+  }
 
   // current bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\CurrentTeam.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCURRENTTEAM)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCURRENTTEAM))) {
+    return false;
+  }
 
   return true;
 }
@@ -1691,7 +1703,9 @@ function DisplayPicturesOfCurrentTeam(): boolean {
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFACE)));
+      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFACE))) {
+        return false;
+      }
 
       // Blt face to screen to
       GetVideoObject(addressof(hFaceHandle), guiFACE);
@@ -3963,7 +3977,9 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, 
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFACE)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFACE))) {
+    return false;
+  }
 
   // Blt face to screen to
   GetVideoObject(addressof(hFaceHandle), guiFACE);
@@ -4306,7 +4322,9 @@ function DisplayHighLightBox(): boolean {
   // bounding
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\PicBorde.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiBox)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(uiBox))) {
+    return false;
+  }
 
   // blit it
   GetVideoObject(addressof(hHandle), uiBox);
@@ -4471,7 +4489,9 @@ function RenderAtmPanel(): boolean {
   if (fShowAtmPanel) {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("LAPTOP\\AtmButtons.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiBox)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiBox))) {
+      return false;
+    }
 
     // blit it
     GetVideoObject(addressof(hHandle), uiBox);
@@ -4499,7 +4519,9 @@ function RenderAtmPanel(): boolean {
     // bounding
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("LAPTOP\\AtmButtons.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiBox)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiBox))) {
+      return false;
+    }
 
     GetVideoObject(addressof(hHandle), uiBox);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, (ATM_UL_X), (ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, null);

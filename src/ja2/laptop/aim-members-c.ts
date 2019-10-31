@@ -452,62 +452,86 @@ export function EnterAIMMembers(): boolean {
   vs_desc.usWidth = AIM_MEMBER_VIDEO_FACE_WIDTH;
   vs_desc.usHeight = AIM_MEMBER_VIDEO_FACE_HEIGHT;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiVideoFaceBackground)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(guiVideoFaceBackground))) {
+    return false;
+  }
 
   // load the stats graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\stats.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiStats)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiStats))) {
+    return false;
+  }
 
   // load the Price graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\price.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPrice)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPrice))) {
+    return false;
+  }
 
   // load the Portait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\portrait.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPortrait)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPortrait))) {
+    return false;
+  }
 
   // load the WeaponBox graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\weaponbox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiWeaponBox)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiWeaponBox))) {
+    return false;
+  }
 
   // load the videoconf Popup graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\VideoConfPopup.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiVideoConfPopup)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiVideoConfPopup))) {
+    return false;
+  }
 
   // load the video conf terminal graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\VideoConfTerminal.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiVideoConfTerminal)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiVideoConfTerminal))) {
+    return false;
+  }
 
   // load the background snow for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BWSnow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBWSnow)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBWSnow))) {
+    return false;
+  }
 
   // load the fuzzy line for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FuzzLine.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFuzzLine)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFuzzLine))) {
+    return false;
+  }
 
   // load the line distortion for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LineInterference.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiStraightLine)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiStraightLine))) {
+    return false;
+  }
 
   // load the translucent snow for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\TransSnow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTransSnow)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTransSnow))) {
+    return false;
+  }
 
   // load the translucent snow for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\VideoContractCharge.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiVideoContractCharge)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiVideoContractCharge))) {
+    return false;
+  }
 
   //** Mouse Regions **
   MSYS_DefineRegion(addressof(gSelectedFaceRegion), PORTRAIT_X, PORTRAIT_Y, PORTRAIT_X + PORTRAIT_WIDTH, PORTRAIT_Y + PORTRAIT_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, SelectFaceMovementRegionCallBack, SelectFaceRegionCallBack);
@@ -1215,7 +1239,9 @@ function DisplayMercsFace(): boolean {
   sTemp = sprintf("%s%02d.sti", sFaceLoc, gbCurrentSoldier);
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFace)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFace))) {
+    return false;
+  }
 
   // Blt face to screen
   GetVideoObject(addressof(hFaceHandle), guiFace);
@@ -1782,7 +1808,9 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
       // load the popup box graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("LAPTOP\\VideoConfPopUp.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPopUpBox)));
+      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPopUpBox))) {
+        return false;
+      }
 
       GetVideoObject(addressof(hPopupBoxHandle), guiPopUpBox);
       BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, null);
@@ -2683,14 +2711,18 @@ function InitDeleteVideoConferencePopUp(): boolean {
       // load the answering machine graphic and add it
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("LAPTOP\\VideoTitleBar.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiVideoBackgroundGraphic)));
+      if (!AddVideoObject(addressof(VObjectDesc), addressof(uiVideoBackgroundGraphic))) {
+        return false;
+      }
 
       // Create a background video surface to blt the face onto
       vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
       vs_desc.usWidth = AIM_MEMBER_VIDEO_TITLE_BAR_WIDTH;
       vs_desc.usHeight = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
       vs_desc.ubBitDepth = 16;
-      CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar)));
+      if (!AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar))) {
+        return false;
+      }
 
       gfAimMemberCanMercSayOpeningQuote = true;
 
@@ -2874,14 +2906,18 @@ function InitDeleteVideoConferencePopUp(): boolean {
     // load the Video conference background graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("LAPTOP\\VideoTitleBar.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiVideoBackgroundGraphic)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiVideoBackgroundGraphic))) {
+      return false;
+    }
 
     // Create a background video surface to blt the face onto
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.usWidth = AIM_MEMBER_VIDEO_TITLE_BAR_WIDTH;
     vs_desc.usHeight = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
     vs_desc.ubBitDepth = 16;
-    CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar)));
+    if (!AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar))) {
+      return false;
+    }
 
     GetVideoObject(addressof(hImageHandle), uiVideoBackgroundGraphic);
     BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);

@@ -227,7 +227,9 @@ function InitFlowerButtons(): boolean {
     sTemp = sprintf("LAPTOP\\Flower_%d.sti", count);
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerImages[i])));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerImages[i]))) {
+      return false;
+    }
     count++;
   }
 

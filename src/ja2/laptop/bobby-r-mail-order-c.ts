@@ -286,42 +286,58 @@ export function EnterBobbyRMailOrder(): boolean {
   // load the Order Grid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyOrderGrid.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyROrderGrid)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyROrderGrid))) {
+    return false;
+  }
 
   // load the Location graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyLocationBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRLocationGraphic)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRLocationGraphic))) {
+    return false;
+  }
 
   // load the delivery speed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyDeliverySpeed.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiDeliverySpeedGraphic)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDeliverySpeedGraphic))) {
+    return false;
+  }
 
   // load the delivery speed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_CONFIRMORDER);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiConfirmGraphic)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiConfirmGraphic))) {
+    return false;
+  }
 
   // load the delivery speed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\TotalSaveArea.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTotalSaveArea)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTotalSaveArea))) {
+    return false;
+  }
 
   // border
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\TactPopUp.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiDropDownBorder)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDropDownBorder))) {
+    return false;
+  }
 
   // Gold Arrow for the scroll area
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\GoldArrows.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiGoldArrowImages)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGoldArrowImages))) {
+    return false;
+  }
 
   // Package Weight Graphic
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\PackageWeight.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPackageWeightImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPackageWeightImage))) {
+    return false;
+  }
 
   InitBobbyRWoodBackground();
 
@@ -1877,7 +1893,9 @@ export function CreateBobbyRayOrderTitle(): boolean {
   // load BobbyRayTitle graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyRayTitle.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRayTitle)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRayTitle))) {
+    return false;
+  }
 
   // the link to home page from the title
   MSYS_DefineRegion(addressof(gSelectedTitleLinkRegion), BOBBYR_BOBBY_RAY_TITLE_X, BOBBYR_BOBBY_RAY_TITLE_Y, (BOBBYR_BOBBY_RAY_TITLE_X + BOBBYR_BOBBY_RAY_TITLE_WIDTH), (BOBBYR_BOBBY_RAY_TITLE_Y + BOBBYR_BOBBY_RAY_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleLinkRegionCallBack);

@@ -1409,7 +1409,9 @@ function UpdateDoorStatusPerceivedValue(sGridNo: INT16): boolean {
   let pDoorStatus: Pointer<DOOR_STATUS> = null;
 
   pDoorStatus = GetDoorStatus(sGridNo);
-  CHECKF(pDoorStatus != null);
+  if (pDoorStatus == null) {
+    return false;
+  }
 
   InternalUpdateDoorsPerceivedValue(pDoorStatus);
 
@@ -1445,7 +1447,9 @@ function SetDoorPerceivedOpenStatus(sGridNo: INT16, fPerceivedOpen: boolean): bo
 
   pDoorStatus = GetDoorStatus(sGridNo);
 
-  CHECKF(pDoorStatus != null);
+  if (pDoorStatus == null) {
+    return false;
+  }
 
   return InternalSetDoorPerceivedOpenStatus(pDoorStatus, fPerceivedOpen);
 }

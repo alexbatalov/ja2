@@ -494,7 +494,9 @@ function LoadCharacterPortraitForMainPage(): boolean {
     // load it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP(pPlayerSelectedFaceFileNames[iPortraitNumber], VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAITFORMAINPAGE)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAITFORMAINPAGE))) {
+      return false;
+    }
 
     // now specify
     SpecifyButtonIcon(giIMPMainPageButton[4], guiCHARACTERPORTRAITFORMAINPAGE, 0, 33, 23, false);

@@ -1949,7 +1949,9 @@ export function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTY
 export function EmptyWeaponMagazine(pWeapon: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): boolean {
   let usReloadSound: UINT16;
 
-  CHECKF(pAmmo != null);
+  if (pAmmo == null) {
+    return false;
+  }
 
   if (pWeapon.value.ubGunShotsLeft > 0) {
     // start by erasing ammo item, just in case...
@@ -2086,7 +2088,9 @@ export function AutoReload(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let bAPCost: INT8;
   let fRet: boolean;
 
-  CHECKF(pSoldier);
+  if (!pSoldier) {
+    return false;
+  }
   pObj = addressof(pSoldier.value.inv[Enum261.HANDPOS]);
 
   if (Item[pObj.value.usItem].usItemClass == IC_GUN || Item[pObj.value.usItem].usItemClass == IC_LAUNCHER) {
@@ -2842,7 +2846,9 @@ export function AutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OB
 }
 
 export function RemoveObjectFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
-  CHECKF(pObj);
+  if (!pObj) {
+    return false;
+  }
   if (pSoldier.value.inv[bPos].ubNumberOfObjects == 0) {
     return false;
   } else {
@@ -2855,7 +2861,9 @@ export function RemoveObjectFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8,
 export function RemoveKeyFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): boolean {
   let ubItem: UINT8 = 0;
 
-  CHECKF(pObj);
+  if (!pObj) {
+    return false;
+  }
 
   if ((pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber == 0) || (pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID == INVALID_KEY_NUMBER)) {
     return false;
@@ -2881,7 +2889,9 @@ export function RemoveKeyFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPositi
 export function RemoveKeysFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, ubNumberOfKeys: UINT8, pObj: Pointer<OBJECTTYPE>): boolean {
   let ubItems: UINT8 = 0;
 
-  CHECKF(pObj);
+  if (!pObj) {
+    return false;
+  }
 
   if ((pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber == 0) || (pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID == INVALID_KEY_NUMBER)) {
     return false;
@@ -3516,7 +3526,9 @@ function RenumberAttachments(pObj: Pointer<OBJECTTYPE>): void {
 export function RemoveAttachment(pObj: Pointer<OBJECTTYPE>, bAttachPos: INT8, pNewObj: Pointer<OBJECTTYPE>): boolean {
   let bGrenade: INT8;
 
-  CHECKF(pObj);
+  if (!pObj) {
+    return false;
+  }
 
   if (bAttachPos < 0 || bAttachPos >= MAX_ATTACHMENTS) {
     return false;
@@ -3916,7 +3928,9 @@ export function IsMedicalKitItem(pObject: Pointer<OBJECTTYPE>): INT8 {
 export function SwapHandItems(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fOk: boolean;
 
-  CHECKV(pSoldier);
+  if (!pSoldier) {
+    return;
+  }
   if (pSoldier.value.inv[Enum261.HANDPOS].usItem == NOTHING || pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem == NOTHING) {
     // whatever is in the second hand can be swapped to the main hand!
     SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS]));
@@ -3938,7 +3952,9 @@ export function SwapHandItems(pSoldier: Pointer<SOLDIERTYPE>): void {
 function SwapOutHandItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fOk: boolean;
 
-  CHECKV(pSoldier);
+  if (!pSoldier) {
+    return;
+  }
 
   // puts away the item in the main hand
   if (pSoldier.value.inv[Enum261.HANDPOS].usItem != NOTHING) {

@@ -111,7 +111,9 @@ export function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
 }
 
 export function RemoveBullet(iBullet: INT32): void {
-  CHECKV(iBullet < NUM_BULLET_SLOTS);
+  if (iBullet >= NUM_BULLET_SLOTS) {
+    return;
+  }
 
   // decrease soldier's bullet count
 
@@ -256,7 +258,9 @@ export function UpdateBullets(): void {
 export function GetBulletPtr(iBullet: INT32): Pointer<BULLET> {
   let pBullet: Pointer<BULLET>;
 
-  CHECKN(iBullet < NUM_BULLET_SLOTS);
+  if (iBullet >= NUM_BULLET_SLOTS) {
+    return null;
+  }
 
   pBullet = addressof(gBullets[iBullet]);
 

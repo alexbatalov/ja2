@@ -95,7 +95,9 @@ export function EnterAimHistory(): boolean {
   // load the Content Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\ContentButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiContentButton)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiContentButton))) {
+    return false;
+  }
 
   gubCurPageNum = giCurrentSubPage;
   RenderAimHistory();
@@ -196,11 +198,15 @@ function InitAimHistoryMenuBar(): boolean {
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BottomButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BottomButton2.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton2)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton2))) {
+    return false;
+  }
 
   guiHistoryMenuButtonImage = LoadButtonImage("LAPTOP\\BottomButtons2.sti", -1, 0, -1, 1, -1);
   usPosX = AIM_HISTORY_MENU_X;

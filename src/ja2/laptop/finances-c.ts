@@ -420,27 +420,37 @@ function LoadFinances(): boolean {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE))) {
+    return false;
+  }
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Financeswindow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTOP)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTOP))) {
+    return false;
+  }
 
   // black divider line - long ( 480 length)
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\divisionline480.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLONGLINE)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLONGLINE))) {
+    return false;
+  }
 
   // the records columns
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\recordcolumns.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLISTCOLUMNS)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLISTCOLUMNS))) {
+    return false;
+  }
 
   // black divider line - long ( 480 length)
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\divisionline.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLINE)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLINE))) {
+    return false;
+  }
 
   return true;
 }

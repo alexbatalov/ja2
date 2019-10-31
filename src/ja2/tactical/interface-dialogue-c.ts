@@ -319,7 +319,9 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   // Create face ( a big face! )....
   iFaceIndex = InitFace(ubCharacterNum, NOBODY, FACE_BIGFACE | FACE_POTENTIAL_KEYWAIT);
 
-  CHECKF(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return false;
+  }
 
   // Set face
   gTalkPanel.iFaceIndex = iFaceIndex;
@@ -363,7 +365,9 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   vs_desc.usWidth = pFace.value.usFaceWidth;
   vs_desc.usHeight = pFace.value.usFaceHeight;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(gTalkPanel.uiSaveBuffer)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(gTalkPanel.uiSaveBuffer))) {
+    return false;
+  }
 
   // Set face to auto
   SetAutoFaceActive(gTalkPanel.uiSaveBuffer, FACE_AUTO_RESTORE_BUFFER, iFaceIndex, 0, 0);
@@ -848,7 +852,9 @@ export function TalkingMenuDialogue(usQuoteNum: UINT16): boolean {
   gTalkPanel.fOnName = false;
   // gTalkPanel.fHandled		= FALSE;
 
-  CHECKF(CharacterDialogue(gTalkPanel.ubCharNum, usQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, false, false) != false);
+  if (CharacterDialogue(gTalkPanel.ubCharNum, usQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, false, false) == false) {
+    return false;
+  }
   return true;
 }
 
@@ -1045,32 +1051,42 @@ function CalculatePopupTextPosition(sWidth: INT16, sHeight: INT16): void {
 }
 
 export function TalkingMenuGiveItem(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): boolean {
-  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GIVE_ITEM, ubNPC, pObject, bInvPos, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
+  if (SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GIVE_ITEM, ubNPC, pObject, bInvPos, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) == false) {
+    return false;
+  }
 
   return true;
 }
 
 export function NPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, ubTargetApproach: UINT8, fShowDialogueMenu: boolean): boolean {
   // CHECKF( SpecialCharacterDialogueEvent( DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI ) != FALSE );
-  CHECKF(SpecialCharacterDialogueEventWithExtraParam(DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, ubTargetApproach, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
+  if (SpecialCharacterDialogueEventWithExtraParam(DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, ubTargetApproach, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) == false) {
+    return false;
+  }
 
   return true;
 }
 
 export function NPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubRecordNum: UINT8): boolean {
-  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GOTO_GRIDNO, ubTargetNPC, usGridNo, ubRecordNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
+  if (SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GOTO_GRIDNO, ubTargetNPC, usGridNo, ubRecordNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) == false) {
+    return false;
+  }
 
   return true;
 }
 
 export function NPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): boolean {
-  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_DO_ACTION, ubTargetNPC, usActionCode, ubQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != false);
+  if (SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_DO_ACTION, ubTargetNPC, usActionCode, ubQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) == false) {
+    return false;
+  }
 
   return true;
 }
 
 export function NPCClosePanel(): boolean {
-  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CLOSE_PANEL, 0, 0, 0, 0, DIALOGUE_NPC_UI) != false);
+  if (SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CLOSE_PANEL, 0, 0, 0, 0, DIALOGUE_NPC_UI) == false) {
+    return false;
+  }
 
   return true;
 }

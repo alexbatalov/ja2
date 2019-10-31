@@ -269,7 +269,9 @@ function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, 
       return false;
   }
 
-  CHECKF(AddEvent(uiEvent, usDelay, pEventData, uiDataSize, ubQueueID));
+  if (!AddEvent(uiEvent, usDelay, pEventData, uiDataSize, ubQueueID)) {
+    return false;
+  }
 
   // successful
   return true;

@@ -210,7 +210,9 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
   // worst-case situation	estimate
   uiSpaceLeft = usWidth * usHeight * 3;
   ppDest.value = MemAlloc(uiSpaceLeft);
-  CHECKF(ppDest.value);
+  if (!ppDest.value) {
+    return false;
+  }
   puiDestLen.value = uiSpaceLeft;
 
   pOutputNext = ppDest.value;
@@ -345,8 +347,9 @@ function ETRLECompressSubImage(pDest: Pointer<UINT8>, uiDestLen: UINT32, p8BPPBu
   let uiOffset: UINT32;
   let pCurrent: Pointer<UINT8>;
 
-  CHECKF(DetermineOffset(addressof(uiOffset), usWidth, usHeight, pSubImage.value.sOffsetX, pSubImage.value.sOffsetY))
-  pCurrent = p8BPPBuffer + uiOffset;
+  if (!DetermineOffset(addressof(uiOffset), usWidth, usHeight, pSubImage.value.sOffsetX, pSubImage.value.sOffsetY)) {
+    return false;
+  }  pCurrent = p8BPPBuffer + uiOffset;
 
   for (usLoop = 0; usLoop < pSubImage.value.usHeight; usLoop++) {
     uiScanLineCompressedSize = ETRLECompress(pDest, uiSpaceLeft, pCurrent, pSubImage.value.usWidth);
@@ -467,8 +470,9 @@ function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPB
   let pCurrent: Pointer<UINT8>;
   let fFound: boolean = true;
 
-  CHECKF(DetermineOffset(addressof(uiOffset), usWidth, usHeight, sCurrX, sCurrY))
-  pCurrent = p8BPPBuffer + uiOffset;
+  if (!DetermineOffset(addressof(uiOffset), usWidth, usHeight, sCurrX, sCurrY)) {
+    return false;
+  }  pCurrent = p8BPPBuffer + uiOffset;
 
   if (pCurrent.value == WI) {
     return GoPastWall(psNewX, psNewY, usWidth, usHeight, pCurrent, sCurrX, sCurrY);

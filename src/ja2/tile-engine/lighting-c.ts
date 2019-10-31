@@ -923,7 +923,9 @@ function LightSetNaturalTile(iX: INT16, iY: INT16, ubShade: UINT8): boolean {
   let pMerc: Pointer<LEVELNODE>;
   let uiIndex: UINT32;
 
-  CHECKF(gpWorldLevelData != null);
+  if (gpWorldLevelData == null) {
+    return false;
+  }
 
   uiIndex = MAPROWCOLTOPOS(iY, iX);
 
@@ -1009,11 +1011,15 @@ function LightResetTile(iX: INT16, iY: INT16): boolean {
   let pMerc: Pointer<LEVELNODE>;
   let uiTile: UINT32;
 
-  CHECKF(gpWorldLevelData != null);
+  if (gpWorldLevelData == null) {
+    return false;
+  }
 
   uiTile = MAPROWCOLTOPOS(iY, iX);
 
-  CHECKF(uiTile != 0xffff);
+  if (uiTile == 0xffff) {
+    return false;
+  }
 
   pLand = gpWorldLevelData[uiTile].pLandHead;
 

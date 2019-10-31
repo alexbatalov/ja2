@@ -73,7 +73,9 @@ function RenderPortrait(sX: INT16, sY: INT16): boolean {
     // load it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP(pPlayerSelectedBigFaceFileNames[iCurrentPortrait], VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
+      return false;
+    }
 
     // show it
     GetVideoObject(addressof(hHandle), uiGraphicHandle);
@@ -85,7 +87,9 @@ function RenderPortrait(sX: INT16, sY: INT16): boolean {
     // load it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP(pPlayerSelectedBigFaceFileNames[iCurrentPortrait + 8], VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
+      return false;
+    }
 
     // show it
     GetVideoObject(addressof(hHandle), uiGraphicHandle);

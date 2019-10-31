@@ -78,7 +78,9 @@ export function LoadMapBorderGraphics(): boolean {
   // will load map border
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\MBS.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorder)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorder))) {
+    return false;
+  }
 
   /* corner was removed along with the Zoom feature
           // will load map border corner

@@ -954,23 +954,33 @@ export function InitializeSMPanel(): boolean {
   // failing the CHECKF after this will cause you to lose your mouse
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\inventory_bottom_panel.STI";
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMPanel)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMPanel))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\inventory_gold_front.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\inv_frn.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects2)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects2))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Bars.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel))) {
+    return false;
+  }
 
   // Clear inv display stuff
   memset(gfSM_HandInvDispText, 0, sizeof(gfSM_HandInvDispText));
@@ -983,7 +993,9 @@ export function InitializeSMPanel(): boolean {
   MSYS_AddRegion(addressof(gViewportRegion));
 
   // Create buttons
-  CHECKF(CreateSMPanelButtons());
+  if (!CreateSMPanelButtons()) {
+    return false;
+  }
 
   // Set viewports
   // Define region for panel
@@ -2558,21 +2570,29 @@ export function InitializeTEAMPanel(): boolean {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\bottom_bar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMPanel)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMPanel))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\gold_front.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMObjects)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMObjects))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Bars.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel))) {
+    return false;
+  }
 
   // Clear inv display stuff
   memset(gfTEAM_HandInvDispText, 0, sizeof(gfTEAM_HandInvDispText));
 
   // Create buttons
-  CHECKF(CreateTEAMPanelButtons());
+  if (!CreateTEAMPanelButtons()) {
+    return false;
+  }
 
   // Set viewports
   // Define region for panel

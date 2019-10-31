@@ -18,7 +18,9 @@ let guiLevelNodes: UINT32 = 0;
 // LEVEL NODE MANIPLULATION FUNCTIONS
 function CreateLevelNode(ppNode: Pointer<Pointer<LEVELNODE>>): boolean {
   ppNode.value = MemAlloc(sizeof(LEVELNODE));
-  CHECKF(ppNode.value != null);
+  if (ppNode.value == null) {
+    return false;
+  }
 
   // Clear all values
   memset(ppNode.value, 0, sizeof(LEVELNODE));
@@ -162,14 +164,18 @@ export function AddObjectToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEV
 
   // If we're at the head, set here
   if (pObject == null) {
-    CHECKF(CreateLevelNode(addressof(pNextObject)) != false);
+    if (CreateLevelNode(addressof(pNextObject)) == false) {
+      return false;
+    }
     pNextObject.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pObjectHead = pNextObject;
   } else {
     while (pObject != null) {
       if (pObject.value.pNext == null) {
-        CHECKF(CreateLevelNode(addressof(pNextObject)) != false);
+        if (CreateLevelNode(addressof(pNextObject)) == false) {
+          return false;
+        }
         pObject.value.pNext = pNextObject;
 
         pNextObject.value.pNext = null;
@@ -194,7 +200,9 @@ export function AddObjectToHead(iMapIndex: UINT32, usIndex: UINT16): boolean {
 
   pObject = gpWorldLevelData[iMapIndex].pObjectHead;
 
-  CHECKF(CreateLevelNode(addressof(pNextObject)) != false);
+  if (CreateLevelNode(addressof(pNextObject)) == false) {
+    return false;
+  }
 
   pNextObject.value.pNext = pObject;
   pNextObject.value.usIndex = usIndex;
@@ -346,14 +354,18 @@ export function AddLandToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVEL
 
   // If we're at the head, set here
   if (pLand == null) {
-    CHECKF(CreateLevelNode(addressof(pNextLand)) != false);
+    if (CreateLevelNode(addressof(pNextLand)) == false) {
+      return false;
+    }
     pNextLand.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pLandHead = pNextLand;
   } else {
     while (pLand != null) {
       if (pLand.value.pNext == null) {
-        CHECKF(CreateLevelNode(addressof(pNextLand)) != false);
+        if (CreateLevelNode(addressof(pNextLand)) == false) {
+          return false;
+        }
         pLand.value.pNext = pNextLand;
 
         pNextLand.value.pNext = null;
@@ -379,7 +391,9 @@ export function AddLandToHead(iMapIndex: UINT32, usIndex: UINT16): boolean {
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
   // Allocate head
-  CHECKF(CreateLevelNode(addressof(pNextLand)) != false);
+  if (CreateLevelNode(addressof(pNextLand)) == false) {
+    return false;
+  }
 
   pNextLand.value.pNext = pLand;
   pNextLand.value.pPrevNode = null;
@@ -703,7 +717,9 @@ export function InsertLandIndexAtLevel(iMapIndex: UINT32, usIndex: UINT16, ubLev
   }
 
   // Allocate memory for new item
-  CHECKF(CreateLevelNode(addressof(pNextLand)) != false);
+  if (CreateLevelNode(addressof(pNextLand)) == false) {
+    return false;
+  }
   pNextLand.value.usIndex = usIndex;
 
   // Move to index before insertion
@@ -845,7 +861,9 @@ export function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddSt
 
   // Do we have an empty list?
   if (pStruct == null) {
-    CHECKF(CreateLevelNode(addressof(pNextStruct)) != false);
+    if (CreateLevelNode(addressof(pNextStruct)) == false) {
+      return false;
+    }
 
     if (fAddStructDBInfo) {
       if (usIndex < Enum312.NUMBEROFTILES) {
@@ -873,7 +891,9 @@ export function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddSt
       pStruct = pStruct.value.pNext;
     }
 
-    CHECKN(CreateLevelNode(addressof(pNextStruct)) != false);
+    if (CreateLevelNode(addressof(pNextStruct)) == false) {
+      return null;
+    }
 
     if (fAddStructDBInfo) {
       if (usIndex < Enum312.NUMBEROFTILES) {
@@ -933,7 +953,9 @@ export function AddStructToHead(iMapIndex: UINT32, usIndex: UINT16): boolean {
 
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
 
-  CHECKF(CreateLevelNode(addressof(pNextStruct)) != false);
+  if (CreateLevelNode(addressof(pNextStruct)) == false) {
+    return false;
+  }
 
   if (usIndex < Enum312.NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != null) {
@@ -998,7 +1020,9 @@ function InsertStructIndex(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UINT8): 
   }
 
   // Allocate memory for new item
-  CHECKF(CreateLevelNode(addressof(pNextStruct)) != false);
+  if (CreateLevelNode(addressof(pNextStruct)) == false) {
+    return false;
+  }
 
   pNextStruct.value.usIndex = usIndex;
 
@@ -1444,14 +1468,18 @@ export function AddShadowToTail(iMapIndex: UINT32, usIndex: UINT16): boolean {
 
   // If we're at the head, set here
   if (pShadow == null) {
-    CHECKF(CreateLevelNode(addressof(pShadow)) != false);
+    if (CreateLevelNode(addressof(pShadow)) == false) {
+      return false;
+    }
     pShadow.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pShadowHead = pShadow;
   } else {
     while (pShadow != null) {
       if (pShadow.value.pNext == null) {
-        CHECKF(CreateLevelNode(addressof(pNextShadow)) != false);
+        if (CreateLevelNode(addressof(pNextShadow)) == false) {
+          return false;
+        }
         pShadow.value.pNext = pNextShadow;
         pNextShadow.value.pNext = null;
         pNextShadow.value.usIndex = usIndex;
@@ -1489,7 +1517,9 @@ export function AddShadowToHead(iMapIndex: UINT32, usIndex: UINT16): boolean {
   pShadow = gpWorldLevelData[iMapIndex].pShadowHead;
 
   // Allocate head
-  CHECKF(CreateLevelNode(addressof(pNextShadow)) != false);
+  if (CreateLevelNode(addressof(pNextShadow)) == false) {
+    return false;
+  }
   pNextShadow.value.pNext = pShadow;
   pNextShadow.value.usIndex = usIndex;
 
@@ -1674,7 +1704,9 @@ export function AddMercToHead(iMapIndex: UINT32, pSoldier: Pointer<SOLDIERTYPE>,
   pMerc = gpWorldLevelData[iMapIndex].pMercHead;
 
   // Allocate head
-  CHECKF(CreateLevelNode(addressof(pNextMerc)) != false);
+  if (CreateLevelNode(addressof(pNextMerc)) == false) {
+    return false;
+  }
   pNextMerc.value.pNext = pMerc;
   pNextMerc.value.pSoldier = pSoldier;
   pNextMerc.value.uiFlags |= LEVELNODE_SOLDIER;
@@ -1891,7 +1923,9 @@ export function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVEL
 
   // If we're at the head, set here
   if (pRoof == null) {
-    CHECKF(CreateLevelNode(addressof(pRoof)) != false);
+    if (CreateLevelNode(addressof(pRoof)) == false) {
+      return false;
+    }
 
     if (usIndex < Enum312.NUMBEROFTILES) {
       if (gTileDatabase[usIndex].pDBStructureRef != null) {
@@ -1910,7 +1944,9 @@ export function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVEL
   } else {
     while (pRoof != null) {
       if (pRoof.value.pNext == null) {
-        CHECKF(CreateLevelNode(addressof(pNextRoof)) != false);
+        if (CreateLevelNode(addressof(pNextRoof)) == false) {
+          return false;
+        }
 
         if (usIndex < Enum312.NUMBEROFTILES) {
           if (gTileDatabase[usIndex].pDBStructureRef != null) {
@@ -1944,7 +1980,9 @@ export function AddRoofToHead(iMapIndex: UINT32, usIndex: UINT16): boolean {
 
   pRoof = gpWorldLevelData[iMapIndex].pRoofHead;
 
-  CHECKF(CreateLevelNode(addressof(pNextRoof)) != false);
+  if (CreateLevelNode(addressof(pNextRoof)) == false) {
+    return false;
+  }
 
   if (usIndex < Enum312.NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != null) {
@@ -2164,7 +2202,9 @@ export function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEV
 
   // If we're at the head, set here
   if (pOnRoof == null) {
-    CHECKF(CreateLevelNode(addressof(pOnRoof)) != false);
+    if (CreateLevelNode(addressof(pOnRoof)) == false) {
+      return false;
+    }
 
     if (usIndex < Enum312.NUMBEROFTILES) {
       if (gTileDatabase[usIndex].pDBStructureRef != null) {
@@ -2184,7 +2224,9 @@ export function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEV
   } else {
     while (pOnRoof != null) {
       if (pOnRoof.value.pNext == null) {
-        CHECKF(CreateLevelNode(addressof(pNextOnRoof)) != false);
+        if (CreateLevelNode(addressof(pNextOnRoof)) == false) {
+          return false;
+        }
 
         if (usIndex < Enum312.NUMBEROFTILES) {
           if (gTileDatabase[usIndex].pDBStructureRef != null) {
@@ -2217,7 +2259,9 @@ export function AddOnRoofToHead(iMapIndex: UINT32, usIndex: UINT16): boolean {
 
   pOnRoof = gpWorldLevelData[iMapIndex].pOnRoofHead;
 
-  CHECKF(CreateLevelNode(addressof(pNextOnRoof)) != false);
+  if (CreateLevelNode(addressof(pNextOnRoof)) == false) {
+    return false;
+  }
   if (usIndex < Enum312.NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != null) {
       if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextOnRoof) == false) {
@@ -2371,14 +2415,18 @@ export function AddTopmostToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LE
 
   // If we're at the head, set here
   if (pTopmost == null) {
-    CHECKN(CreateLevelNode(addressof(pNextTopmost)) != false);
+    if (CreateLevelNode(addressof(pNextTopmost)) == false) {
+      return null;
+    }
     pNextTopmost.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pTopmostHead = pNextTopmost;
   } else {
     while (pTopmost != null) {
       if (pTopmost.value.pNext == null) {
-        CHECKN(CreateLevelNode(addressof(pNextTopmost)) != false);
+        if (CreateLevelNode(addressof(pNextTopmost)) == false) {
+          return null;
+        }
         pTopmost.value.pNext = pNextTopmost;
         pNextTopmost.value.pNext = null;
         pNextTopmost.value.usIndex = usIndex;
@@ -2399,7 +2447,9 @@ export function AddUIElem(iMapIndex: UINT32, usIndex: UINT16, sRelativeX: INT8, 
 
   pTopmost = AddTopmostToTail(iMapIndex, usIndex);
 
-  CHECKF(pTopmost != null);
+  if (pTopmost == null) {
+    return false;
+  }
 
   // Set flags
   pTopmost.value.uiFlags |= LEVELNODE_USERELPOS;
@@ -2425,7 +2475,9 @@ export function AddTopmostToHead(iMapIndex: UINT32, usIndex: UINT16): boolean {
   pTopmost = gpWorldLevelData[iMapIndex].pTopmostHead;
 
   // Allocate head
-  CHECKF(CreateLevelNode(addressof(pNextTopmost)) != false);
+  if (CreateLevelNode(addressof(pNextTopmost)) == false) {
+    return false;
+  }
   pNextTopmost.value.pNext = pTopmost;
   pNextTopmost.value.usIndex = usIndex;
 

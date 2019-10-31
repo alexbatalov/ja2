@@ -352,11 +352,15 @@ function EnterCreditsScreen(): boolean {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Credits.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCreditBackGroundImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCreditBackGroundImage))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Credit Faces.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCreditFaces)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCreditFaces))) {
+    return false;
+  }
 
   // Initialize the root credit node
   InitCreditNode();

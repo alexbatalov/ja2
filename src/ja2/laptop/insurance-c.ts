@@ -78,12 +78,16 @@ export function EnterInsurance(): boolean {
   // load the Insurance title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_INSURANCETITLE);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceTitleImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceTitleImage))) {
+    return false;
+  }
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Bullet.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBulletImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBulletImage))) {
+    return false;
+  }
 
   usPosX = INSURANCE_BOTTOM_LINK_RED_BAR_X;
   for (i = 0; i < 3; i++) {
@@ -188,24 +192,32 @@ export function InitInsuranceDefaults(): boolean {
   // load the Flower Account Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BackGroundTile.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBackGround)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBackGround))) {
+    return false;
+  }
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LeftTile.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceRedBarImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceRedBarImage))) {
+    return false;
+  }
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LargeBar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBigRedLineImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBigRedLineImage))) {
+    return false;
+  }
 
   // if it is not the first page, display the small title
   if (guiCurrentLaptopMode != Enum95.LAPTOP_MODE_INSURANCE) {
     // load the small title for the every page other then the first page
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_SMALLTITLE);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceSmallTitleImage)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceSmallTitleImage))) {
+      return false;
+    }
 
     // create the link to the home page on the small titles
     MSYS_DefineRegion(addressof(gSelectedInsuranceTitleLinkRegion), INSURANCE_SMALL_TITLE_X + 85, INSURANCE_SMALL_TITLE_Y, (INSURANCE_SMALL_TITLE_X + INSURANCE_SMALL_TITLE_WIDTH), (INSURANCE_SMALL_TITLE_Y + INSURANCE_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceTitleLinkRegionCallBack);

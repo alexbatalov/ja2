@@ -67,7 +67,9 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = sprintf("RADARMAPS\\%s.STI", zFilename);
 
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(gusRadarImage)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(gusRadarImage))) {
+      return false;
+    }
 
     fImageLoaded = true;
 
@@ -507,7 +509,9 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
     // load graphics
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("INTERFACE\\squadpanel.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiHandle)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiHandle))) {
+      return false;
+    }
 
     GetVideoObject(addressof(hHandle), uiHandle);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, 538, 0 + gsVIEWPORT_END_Y, VO_BLT_SRCTRANSPARENCY, null);

@@ -263,7 +263,9 @@ export function SetVideoSurfaceTransparency(uiIndex: UINT32, TransColor: COLORVA
   // Get Video Surface
   //
 
-  CHECKF(GetVideoSurface(addressof(hVSurface), uiIndex));
+  if (!GetVideoSurface(addressof(hVSurface), uiIndex)) {
+    return false;
+  }
 
   //
   // Set transparency
@@ -281,13 +283,17 @@ function AddVideoSurfaceRegion(uiIndex: UINT32, pNewRegion: Pointer<VSURFACE_REG
   // Get Video Surface
   //
 
-  CHECKF(GetVideoSurface(addressof(hVSurface), uiIndex));
+  if (!GetVideoSurface(addressof(hVSurface), uiIndex)) {
+    return false;
+  }
 
   //
   // Add Region
   //
 
-  CHECKF(AddVSurfaceRegion(hVSurface, pNewRegion));
+  if (!AddVSurfaceRegion(hVSurface, pNewRegion)) {
+    return false;
+  }
 
   return true;
 }
@@ -303,7 +309,9 @@ function GetVideoSurfaceDescription(uiIndex: UINT32, usWidth: Pointer<UINT16>, u
   // Get Video Surface
   //
 
-  CHECKF(GetVideoSurface(addressof(hVSurface), uiIndex));
+  if (!GetVideoSurface(addressof(hVSurface), uiIndex)) {
+    return false;
+  }
 
   usWidth.value = hVSurface.value.usWidth;
   usHeight.value = hVSurface.value.usHeight;
@@ -356,39 +364,55 @@ function SetPrimaryVideoSurfaces(): boolean {
   // Get Primary surface
   //
   pSurface = GetPrimarySurfaceObject();
-  CHECKF(pSurface != null);
+  if (pSurface == null) {
+    return false;
+  }
 
   ghPrimary = CreateVideoSurfaceFromDDSurface(pSurface);
-  CHECKF(ghPrimary != null);
+  if (ghPrimary == null) {
+    return false;
+  }
 
   //
   // Get Backbuffer surface
   //
 
   pSurface = GetBackBufferObject();
-  CHECKF(pSurface != null);
+  if (pSurface == null) {
+    return false;
+  }
 
   ghBackBuffer = CreateVideoSurfaceFromDDSurface(pSurface);
-  CHECKF(ghBackBuffer != null);
+  if (ghBackBuffer == null) {
+    return false;
+  }
 
   //
   // Get mouse buffer surface
   //
   pSurface = GetMouseBufferObject();
-  CHECKF(pSurface != null);
+  if (pSurface == null) {
+    return false;
+  }
 
   ghMouseBuffer = CreateVideoSurfaceFromDDSurface(pSurface);
-  CHECKF(ghMouseBuffer != null);
+  if (ghMouseBuffer == null) {
+    return false;
+  }
 
   //
   // Get frame buffer surface
   //
 
   pSurface = GetFrameBufferObject();
-  CHECKF(pSurface != null);
+  if (pSurface == null) {
+    return false;
+  }
 
   ghFrameBuffer = CreateVideoSurfaceFromDDSurface(pSurface);
-  CHECKF(ghFrameBuffer != null);
+  if (ghFrameBuffer == null) {
+    return false;
+  }
 
   return true;
 }
@@ -733,7 +757,9 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
       // We're using pixel formats too -- DB/Wiz
 
       //#ifdef JA2
-      CHECKF(GetPrimaryRGBDistributionMasks(addressof(uiRBitMask), addressof(uiGBitMask), addressof(uiBBitMask)));
+      if (!GetPrimaryRGBDistributionMasks(addressof(uiRBitMask), addressof(uiGBitMask), addressof(uiBBitMask))) {
+        return false;
+      }
       PixelFormat.dwRBitMask = uiRBitMask;
       PixelFormat.dwGBitMask = uiGBitMask;
       PixelFormat.dwBBitMask = uiBBitMask;
@@ -803,7 +829,9 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
 
   hVSurface = MemAlloc(sizeof(SGPVSurface));
   memset(hVSurface, 0, sizeof(SGPVSurface));
-  CHECKF(hVSurface != null);
+  if (hVSurface == null) {
+    return false;
+  }
 
   hVSurface.value.usHeight = usHeight;
   hVSurface.value.usWidth = usWidth;
@@ -1024,8 +1052,12 @@ function SetVideoSurfaceDataFromHImage(hVSurface: HVSURFACE, hImage: HIMAGE, usX
   Assert(hImage != null);
 
   // Get Size of hImage and determine if it can fit
-  CHECKF(hImage.value.usWidth >= hVSurface.value.usWidth);
-  CHECKF(hImage.value.usHeight >= hVSurface.value.usHeight);
+  if (hImage.value.usWidth < hVSurface.value.usWidth) {
+    return false;
+  }
+  if (hImage.value.usHeight < hVSurface.value.usHeight) {
+    return false;
+  }
 
   // Check BPP and see if they are the same
   if (hImage.value.ubBitDepth != hVSurface.value.ubBitDepth) {
@@ -1056,7 +1088,9 @@ function SetVideoSurfaceDataFromHImage(hVSurface: HVSURFACE, hImage: HIMAGE, usX
   // Effective width ( in PIXELS ) is Pitch ( in bytes ) converted to pitch ( IN PIXELS )
   usEffectiveWidth = (uiPitch / (hVSurface.value.ubBitDepth / 8));
 
-  CHECKF(pDest != null);
+  if (pDest == null) {
+    return false;
+  }
 
   // Blit Surface
   // If rect is NULL, use entrie image size
@@ -1128,7 +1162,9 @@ function SetVideoSurfaceTransparencyColor(hVSurface: HVSURFACE, TransColor: COLO
 
   // Get surface pointer
   lpDDSurface = hVSurface.value.pSurfaceData;
-  CHECKF(lpDDSurface != null);
+  if (lpDDSurface == null) {
+    return false;
+  }
 
   // Get right pixel format, based on bit depth
 
@@ -1156,7 +1192,9 @@ function SetVideoSurfaceTransparencyColor(hVSurface: HVSURFACE, TransColor: COLO
 }
 
 export function GetVSurfacePaletteEntries(hVSurface: HVSURFACE, pPalette: Pointer<SGPPaletteEntry>): boolean {
-  CHECKF(hVSurface.value.pPalette != null);
+  if (hVSurface.value.pPalette == null) {
+    return false;
+  }
 
   DDGetPaletteEntries(hVSurface.value.pPalette, 0, 0, 256, pPalette);
 
@@ -1207,7 +1245,9 @@ export function DeleteVideoSurface(hVSurface: HVSURFACE): boolean {
   let lpDDSurface: LPDIRECTDRAWSURFACE2;
 
   // Assertions
-  CHECKF(hVSurface != null);
+  if (hVSurface == null) {
+    return false;
+  }
 
   // Release palette
   if (hVSurface.value.pPalette != null) {
@@ -1271,7 +1311,9 @@ function SetClipList(hVSurface: HVSURFACE, RegionData: Pointer<SGPRect>, usNumRe
   Assert(RegionData != null);
 
   // Varifications
-  CHECKF(usNumRegions > 0);
+  if (usNumRegions <= 0) {
+    return false;
+  }
 
   // If Clipper already created, release
   if (hVSurface.value.pClipper != null) {
@@ -1284,7 +1326,9 @@ function SetClipList(hVSurface: HVSURFACE, RegionData: Pointer<SGPRect>, usNumRe
 
   // Allocate region data
   pRgnData = MemAlloc(sizeof(RGNDATAHEADER) + (usNumRegions * sizeof(RECT)));
-  CHECKF(pRgnData);
+  if (!pRgnData) {
+    return false;
+  }
 
   // Setup header
   pRgnData.value.rdh.dwSize = sizeof(RGNDATA);
@@ -1460,8 +1504,12 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
 
   // Check for dest src options
   if (fBltFlags & VS_BLT_DESTREGION) {
-    CHECKF(pBltFx != null);
-    CHECKF(GetVSurfaceRegion(hDestVSurface, pBltFx.value.DestRegion, addressof(aRegion)));
+    if (pBltFx == null) {
+      return false;
+    }
+    if (!GetVSurfaceRegion(hDestVSurface, pBltFx.value.DestRegion, addressof(aRegion))) {
+      return false;
+    }
 
     // Set starting coordinates from destination region
     iDestY = aRegion.RegionCoords.iTop;
@@ -1482,8 +1530,9 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
   do {
     // Get Region from index, if specified
     if (fBltFlags & VS_BLT_SRCREGION) {
-      CHECKF(GetVSurfaceRegion(hSrcVSurface, usIndex, addressof(aRegion)))
-
+      if (!GetVSurfaceRegion(hSrcVSurface, usIndex, addressof(aRegion))) {
+        return false;
+      }
       SrcRect.top = aRegion.RegionCoords.iTop;
       SrcRect.left = aRegion.RegionCoords.iLeft;
       SrcRect.bottom = aRegion.RegionCoords.iBottom;
@@ -1495,7 +1544,9 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
     if (fBltFlags & VS_BLT_SRCSUBRECT) {
       let aSubRect: SGPRect;
 
-      CHECKF(pBltFx != null);
+      if (pBltFx == null) {
+        return false;
+      }
 
       aSubRect = pBltFx.value.SrcRect;
 
@@ -1587,7 +1638,9 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
     }
 // For testing with non-DDraw blitting, uncomment to test -- DB
 
-    CHECKF(BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, fBltFlags, iDestX, iDestY, addressof(SrcRect)));
+    if (!BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, fBltFlags, iDestX, iDestY, addressof(SrcRect))) {
+      return false;
+    }
   } else if (hDestVSurface.value.ubBitDepth == 8 && hSrcVSurface.value.ubBitDepth == 8) {
     if ((pSrcSurface8 = LockVideoSurfaceBuffer(hSrcVSurface, addressof(uiSrcPitch))) == null) {
       DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Failed on lock of 8BPP surface for blitting"));
@@ -1627,7 +1680,9 @@ function UpdateBackupSurface(hVSurface: HVSURFACE): boolean {
   Assert(hVSurface != null);
 
   // Validations
-  CHECKF(hVSurface.value.pSavedSurfaceData != null);
+  if (hVSurface.value.pSavedSurfaceData == null) {
+    return false;
+  }
 
   aRect.top = 0;
   aRect.left = 0;
@@ -1806,7 +1861,9 @@ function FillSurface(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): bool
   let BlitterFX: DDBLTFX;
 
   Assert(hDestVSurface != null);
-  CHECKF(pBltFx != null);
+  if (pBltFx == null) {
+    return false;
+  }
 
   BlitterFX.dwSize = sizeof(DDBLTFX);
   BlitterFX.dwFillColor = pBltFx.value.ColorFill;
@@ -1824,7 +1881,9 @@ function FillSurfaceRect(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): 
   let BlitterFX: DDBLTFX;
 
   Assert(hDestVSurface != null);
-  CHECKF(pBltFx != null);
+  if (pBltFx == null) {
+    return false;
+  }
 
   BlitterFX.dwSize = sizeof(DDBLTFX);
   BlitterFX.dwFillColor = pBltFx.value.ColorFill;
@@ -1845,8 +1904,12 @@ export function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSUR
   // Blit using the correct blitter
   if (fBltFlags & VS_BLT_FAST) {
     // Validations
-    CHECKF(iDestX >= 0);
-    CHECKF(iDestY >= 0);
+    if (iDestX < 0) {
+      return false;
+    }
+    if (iDestY < 0) {
+      return false;
+    }
 
     // Default flags
     uiDDFlags = 0;
@@ -1920,7 +1983,9 @@ function InternalShadowVideoSurfaceRect(uiDestVSurface: UINT32, X1: INT32, Y1: I
   //
   // Get Video Surface
   //
-  CHECKF(GetVideoSurface(addressof(hVSurface), uiDestVSurface));
+  if (!GetVideoSurface(addressof(hVSurface), uiDestVSurface)) {
+    return false;
+  }
 
   if (X1 < 0)
     X1 = 0;

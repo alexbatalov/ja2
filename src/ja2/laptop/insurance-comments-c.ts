@@ -36,7 +36,9 @@ export function EnterInsuranceComments(): boolean {
   // load the Insurance bullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\bullet.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsCmntBulletImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsCmntBulletImage))) {
+    return false;
+  }
 
   usPosX = INS_CMNT_FIRST_BULLET_X - 6;
   for (i = 0; i < 3; i++) {

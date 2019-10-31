@@ -442,7 +442,9 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
       // Copy into merc struct
       memcpy(MercPtrs[Soldier.ubID], addressof(Soldier), sizeof(SOLDIERTYPE));
       // Alrighty then, we are set to create the merc, stuff after here can fail!
-      CHECKF(CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Enum193.STANDING) != false);
+      if (CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Enum193.STANDING) == false) {
+        return false;
+      }
     }
   } else {
     // Copy the data from the existing soldier struct to the new soldier struct
@@ -464,7 +466,9 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
     memcpy(MercPtrs[Soldier.ubID], addressof(Soldier), sizeof(SOLDIERTYPE));
 
     // Alrighty then, we are set to create the merc, stuff after here can fail!
-    CHECKF(CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Menptr[Soldier.ubID].usAnimState) != false);
+    if (CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Menptr[Soldier.ubID].usAnimState) == false) {
+      return false;
+    }
 
     pubID.value = Soldier.ubID;
 

@@ -171,32 +171,44 @@ export function EnterBobbyR(): boolean {
   // load the Bobbyname graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_BOBBYNAME);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyName)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyName))) {
+    return false;
+  }
 
   // load the plaque graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyPlaques.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPlaque)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPlaque))) {
+    return false;
+  }
 
   // load the TopHinge graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyTopHinge.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTopHinge)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTopHinge))) {
+    return false;
+  }
 
   // load the BottomHinge graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyBottomHinge.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBottomHinge)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBottomHinge))) {
+    return false;
+  }
 
   // load the Store Plaque graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_STOREPLAQUE);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiStorePlaque)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiStorePlaque))) {
+    return false;
+  }
 
   // load the Handle graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyHandle.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHandle)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHandle))) {
+    return false;
+  }
 
   InitBobbiesMouseRegion(BOBBIES_NUMBER_SIGNS, usMouseRegionPosArray, gSelectedBobbiesSignMenuRegion);
 
@@ -204,7 +216,9 @@ export function EnterBobbyR(): boolean {
     // load the Handle graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("LAPTOP\\UnderConstruction.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiUnderConstructionImage)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiUnderConstructionImage))) {
+      return false;
+    }
 
     for (i = 0; i < BOBBIES_NUMBER_SIGNS; i++) {
       MSYS_DisableRegion(addressof(gSelectedBobbiesSignMenuRegion[i]));
@@ -331,7 +345,9 @@ export function InitBobbyRWoodBackground(): boolean {
   // load the Wood bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyWood.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiWoodBackground)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiWoodBackground))) {
+    return false;
+  }
 
   return true;
 }

@@ -34,7 +34,9 @@ export function EnterMercsNoAccount(): boolean {
   // load the Account box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\NoAccountBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiNoAccountImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiNoAccountImage))) {
+    return false;
+  }
 
   // Open Accouint button
   guiOpenAccountBoxButtonImage = LoadButtonImage("LAPTOP\\BigButtons.sti", -1, 0, -1, 1, -1);

@@ -70,7 +70,9 @@ export function EnterFlorist(): boolean {
   // load the handbullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\HandBullet.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHandBullet)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHandBullet))) {
+    return false;
+  }
 
   guiGalleryButtonImage = LoadButtonImage("LAPTOP\\FloristButtons.sti", -1, 0, -1, 1, -1);
 
@@ -149,19 +151,25 @@ export function InitFloristDefaults(): boolean {
   // load the Florist background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\leafback.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFloristBackground)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFloristBackground))) {
+    return false;
+  }
 
   // if its the first page
   if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_FLORIST) {
     // load the small title graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_LARGEFLORISTSYMBOL);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLargeTitleSymbol)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLargeTitleSymbol))) {
+      return false;
+    }
   } else {
     // load the leaf back graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_SMALLFLORISTSYMBOL);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSmallTitleSymbol)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSmallTitleSymbol))) {
+      return false;
+    }
 
     // flower title homepage link
     MSYS_DefineRegion(addressof(gSelectedFloristTitleHomeLinkRegion), FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, (FLORIST_SMALL_TITLE_X + FLORIST_SMALL_TITLE_WIDTH), (FLORIST_SMALL_TITLE_Y + FLORIST_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristTitleHomeLinkRegionCallBack);

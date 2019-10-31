@@ -264,32 +264,44 @@ export function EnterMercs(): boolean {
   // load the Account box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AccountBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAccountBox)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAccountBox))) {
+    return false;
+  }
 
   // load the files Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FilesBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFilesBox)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFilesBox))) {
+    return false;
+  }
 
   // load the MercSymbol graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\MERCSymbol.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercSymbol)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercSymbol))) {
+    return false;
+  }
 
   // load the SpecPortrait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SpecPortrait.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSpecPortrait)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSpecPortrait))) {
+    return false;
+  }
 
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Arrow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiArrow)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiArrow))) {
+    return false;
+  }
 
   // load the Merc video conf background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SpeckComWindow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercVideoPopupBackground)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercVideoPopupBackground))) {
+    return false;
+  }
 
   // Account Box button
   guiAccountBoxButtonImage = LoadButtonImage("LAPTOP\\SmallButtons.sti", -1, 0, -1, 1, -1);
@@ -316,7 +328,9 @@ export function EnterMercs(): boolean {
   vs_desc.usWidth = MERC_VIDEO_FACE_WIDTH;
   vs_desc.usHeight = MERC_VIDEO_FACE_HEIGHT;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiMercVideoFaceBackground)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(guiMercVideoFaceBackground))) {
+    return false;
+  }
 
   RenderMercs();
 
@@ -510,7 +524,9 @@ export function InitMercBackGround(): boolean {
   // load the Merc background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\MERCBackGround.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercBackGround)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercBackGround))) {
+    return false;
+  }
 
   return true;
 }

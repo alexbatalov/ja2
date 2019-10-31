@@ -2686,7 +2686,9 @@ function AddFlashItemSlot(pItemPool: Pointer<ITEM_POOL>, Callback: ITEM_POOL_LOC
 export function RemoveFlashItemSlot(pItemPool: Pointer<ITEM_POOL>): boolean {
   let uiCount: UINT32;
 
-  CHECKF(pItemPool != null);
+  if (pItemPool == null) {
+    return false;
+  }
 
   for (uiCount = 0; uiCount < guiNumFlashItemSlots; uiCount++) {
     if (FlashItemSlots[uiCount].fAllocated) {

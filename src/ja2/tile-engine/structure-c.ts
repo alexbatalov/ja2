@@ -172,7 +172,9 @@ export function FreeAllStructureFiles(): void {
 }
 
 export function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): boolean {
-  CHECKF(pStructureFile);
+  if (!pStructureFile) {
+    return false;
+  }
 
   // unlink the file ref
   if (pStructureFile.value.pPrev != null) {
@@ -202,8 +204,12 @@ function LoadStructureData(szFileName: string /* STR */, pFileRef: Pointer<STRUC
   let uiDataSize: UINT32;
   let fOk: boolean;
 
-  CHECKF(szFileName);
-  CHECKF(pFileRef);
+  if (!szFileName) {
+    return false;
+  }
+  if (!pFileRef) {
+    return false;
+  }
   hInput = FileOpen(szFileName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hInput == 0) {
     return false;
@@ -387,16 +393,26 @@ function CreateStructureFromDB(pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTil
   let pTile: Pointer<DB_STRUCTURE_TILE>;
 
   // set pointers to the DBStructure and Tile
-  CHECKN(pDBStructureRef);
-  CHECKN(pDBStructureRef.value.pDBStructure);
+  if (!pDBStructureRef) {
+    return null;
+  }
+  if (!pDBStructureRef.value.pDBStructure) {
+    return null;
+  }
   pDBStructure = pDBStructureRef.value.pDBStructure;
-  CHECKN(pDBStructureRef.value.ppTile);
+  if (!pDBStructureRef.value.ppTile) {
+    return null;
+  }
   pTile = pDBStructureRef.value.ppTile[ubTileNum];
-  CHECKN(pTile);
+  if (!pTile) {
+    return null;
+  }
 
   // allocate memory...
   pStructure = MemAlloc(sizeof(STRUCTURE));
-  CHECKN(pStructure);
+  if (!pStructure) {
+    return null;
+  }
 
   memset(pStructure, 0, sizeof(STRUCTURE));
 
@@ -617,10 +633,18 @@ export function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: IN
   let ubLoop: UINT8;
   let sCubeOffset: INT16;
 
-  CHECKF(pDBStructureRef);
-  CHECKF(pDBStructureRef.value.pDBStructure);
-  CHECKF(pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 0);
-  CHECKF(pDBStructureRef.value.ppTile);
+  if (!pDBStructureRef) {
+    return false;
+  }
+  if (!pDBStructureRef.value.pDBStructure) {
+    return false;
+  }
+  if (pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles <= 0) {
+    return false;
+  }
+  if (!pDBStructureRef.value.ppTile) {
+    return false;
+  }
 
   /*
           if (gpWorldLevelData[sGridNo].sHeight != sBaseTileHeight)
@@ -655,8 +679,12 @@ function AddStructureToTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Point
   // adds a STRUCTURE to a MAP_ELEMENT (adds part of a structure to a location on the map)
   let pStructureTail: Pointer<STRUCTURE>;
 
-  CHECKF(pMapElement);
-  CHECKF(pStructure);
+  if (!pMapElement) {
+    return false;
+  }
+  if (!pStructure) {
+    return false;
+  }
   pStructureTail = pMapElement.value.pStructureTail;
   if (pStructureTail == null) {
     // set the head and tail to the new structure
@@ -686,16 +714,26 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
   let sBaseTileHeight: INT16 = -1;
   let usStructureID: UINT16;
 
-  CHECKF(pDBStructureRef);
-  CHECKF(pLevelNode);
+  if (!pDBStructureRef) {
+    return false;
+  }
+  if (!pLevelNode) {
+    return false;
+  }
 
   pDBStructure = pDBStructureRef.value.pDBStructure;
-  CHECKF(pDBStructure);
+  if (!pDBStructure) {
+    return false;
+  }
 
   ppTile = pDBStructureRef.value.ppTile;
-  CHECKF(ppTile);
+  if (!ppTile) {
+    return false;
+  }
 
-  CHECKF(pDBStructure.value.ubNumberOfTiles > 0);
+  if (pDBStructure.value.ubNumberOfTiles <= 0) {
+    return false;
+  }
 
   // first check to see if the structure will be blocked
   if (!OkayToAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, INVALID_STRUCTURE_ID)) {
@@ -711,7 +749,9 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
 
   // NB we add 1 because the 0th element is in fact the reference count!
   ppStructure = MemAlloc(pDBStructure.value.ubNumberOfTiles * sizeof(STRUCTURE /* Pointer<STRUCTURE> */));
-  CHECKF(ppStructure);
+  if (!ppStructure) {
+    return false;
+  }
   memset(ppStructure, 0, pDBStructure.value.ubNumberOfTiles * sizeof(STRUCTURE /* Pointer<STRUCTURE> */));
 
   for (ubLoop = BASE_TILE; ubLoop < pDBStructure.value.ubNumberOfTiles; ubLoop++) {
@@ -871,10 +911,14 @@ export function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): boolea
   let fRecompileExtraRadius: boolean; // for doors... yuck
   let sCheckGridNo: INT16;
 
-  CHECKF(pStructure);
+  if (!pStructure) {
+    return false;
+  }
 
   pBaseStructure = FindBaseStructure(pStructure);
-  CHECKF(pBaseStructure);
+  if (!pBaseStructure) {
+    return false;
+  }
 
   usStructureID = pBaseStructure.value.usStructureID;
   fMultiStructure = ((pBaseStructure.value.fFlags & STRUCTURE_MULTI) != 0);
@@ -934,7 +978,9 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
     return null;
   }
   pBaseStructure = FindBaseStructure(pStructure);
-  CHECKF(pBaseStructure);
+  if (!pBaseStructure) {
+    return false;
+  }
   if ((pBaseStructure.value.pDBStructureRef.value.pDBStructure).value.bPartnerDelta == NO_PARTNER_STRUCTURE) {
     return null;
   }
@@ -1022,7 +1068,9 @@ export function FindStructure(sGridNo: INT16, fFlags: UINT32): Pointer<STRUCTURE
 export function FindNextStructure(pStructure: Pointer<STRUCTURE>, fFlags: UINT32): Pointer<STRUCTURE> {
   let pCurrent: Pointer<STRUCTURE>;
 
-  CHECKF(pStructure);
+  if (!pStructure) {
+    return false;
+  }
   pCurrent = pStructure.value.pNext;
   while (pCurrent != null) {
     if ((pCurrent.value.fFlags & fFlags) != 0) {
@@ -1049,7 +1097,9 @@ export function FindStructureByID(sGridNo: INT16, usStructureID: UINT16): Pointe
 
 export function FindBaseStructure(pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   // finds the base structure for any structure
-  CHECKF(pStructure);
+  if (!pStructure) {
+    return false;
+  }
   if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
     return pStructure;
   }
@@ -1058,7 +1108,9 @@ export function FindBaseStructure(pStructure: Pointer<STRUCTURE>): Pointer<STRUC
 
 function FindNonBaseStructure(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   // finds a non-base structure in a location
-  CHECKF(pStructure);
+  if (!pStructure) {
+    return false;
+  }
   if (!(pStructure.value.fFlags & STRUCTURE_BASE_TILE)) {
     // error!
     return null;
@@ -1222,11 +1274,21 @@ export function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Poin
   let ubShapeValue: UINT8;
   PROFILE() *pShape;
 
-  CHECKF(pStructure);
-  CHECKF(pubLevel0);
-  CHECKF(pubLevel1);
-  CHECKF(pubLevel2);
-  CHECKF(pubLevel3);
+  if (!pStructure) {
+    return false;
+  }
+  if (!pubLevel0) {
+    return false;
+  }
+  if (!pubLevel1) {
+    return false;
+  }
+  if (!pubLevel2) {
+    return false;
+  }
+  if (!pubLevel3) {
+    return false;
+  }
   pubLevel0.value = 0;
   pubLevel1.value = 0;
   pubLevel2.value = 0;
@@ -1266,7 +1328,9 @@ export function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8,
   let ubArmour: UINT8;
   // LEVELNODE			*pNode;
 
-  CHECKF(pStructure);
+  if (!pStructure) {
+    return false;
+  }
   if (pStructure.value.fFlags & STRUCTURE_PERSON || pStructure.value.fFlags & STRUCTURE_CORPSE) {
     // don't hurt this structure, it's used for hit detection only!
     return false;
@@ -1339,7 +1403,9 @@ export function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8,
 
   // find the base so we can reduce the hit points!
   pBase = FindBaseStructure(pStructure);
-  CHECKF(pBase);
+  if (!pBase) {
+    return false;
+  }
   if (pBase.value.ubHitPoints <= ubDamage) {
     // boom! structure destroyed!
     return true;

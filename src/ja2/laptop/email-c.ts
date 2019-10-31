@@ -289,27 +289,37 @@ export function EnterEmail(): boolean {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiEmailTitle)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiEmailTitle))) {
+    return false;
+  }
 
   // the list background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Mailwindow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiEmailBackground)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiEmailBackground))) {
+    return false;
+  }
 
   // the indication/notification box
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\MailIndicator.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiEmailIndicator)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiEmailIndicator))) {
+    return false;
+  }
 
   // the message background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\emailviewer.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiEmailMessage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiEmailMessage))) {
+    return false;
+  }
 
   // the message background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\maillistdivider.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAILDIVIDER)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAILDIVIDER))) {
+    return false;
+  }
 
   // AddEmail(IMP_EMAIL_PROFILE_RESULTS, IMP_EMAIL_PROFILE_RESULTS_LENGTH, IMP_PROFILE_RESULTS, GetWorldTotalMin( ) );
   // initialize mouse regions

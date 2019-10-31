@@ -721,7 +721,9 @@ export function InitAnimationSystem(): boolean {
   let sFilename: string /* CHAR8[50] */;
   let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 
-  CHECKF(LoadAnimationStateInstructions());
+  if (!LoadAnimationStateInstructions()) {
+    return false;
+  }
 
   InitAnimationSurfacesPerBodytype();
 
@@ -810,7 +812,9 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
   let pAuxData: Pointer<AuxObjectData>;
 
   // Check for valid surface
-  CHECKF(usSurfaceIndex < Enum195.NUMANIMATIONSURFACETYPES);
+  if (usSurfaceIndex >= Enum195.NUMANIMATIONSURFACETYPES) {
+    return false;
+  }
 
   // Check if surface is loaded
   if (gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject != null) {
@@ -931,8 +935,9 @@ export function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT
   if (gAnimSurfaceDatabase[usSurfaceIndex].bUsageCount == 0) {
     AnimDebugMsg(String("Surface Database: Unloading Surface: %d", usSurfaceIndex));
 
-    CHECKF(gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject != null)
-
+    if (gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject == null) {
+      return false;
+    }
     DeleteVideoObject(gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject);
     gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject = null;
   }

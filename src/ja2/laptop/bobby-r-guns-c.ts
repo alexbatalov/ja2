@@ -182,12 +182,16 @@ export function EnterBobbyRGuns(): boolean {
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\gunbackground.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiGunBackground)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGunBackground))) {
+    return false;
+  }
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\gunsgrid.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiGunsGrid)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGunsGrid))) {
+    return false;
+  }
 
   InitBobbyBrTitle();
 
@@ -269,7 +273,9 @@ export function InitBobbyBrTitle(): boolean {
   // load the br title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\br.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBrTitle)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrTitle))) {
+    return false;
+  }
 
   // initialize the link to the homepage by clicking on the title
   MSYS_DefineRegion(addressof(gSelectedTitleImageLinkRegion), BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y, (BOBBYR_BRTITLE_X + BOBBYR_BRTITLE_WIDTH), (BOBBYR_BRTITLE_Y + BOBBYR_BRTITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleImageLinkRegionCallBack);

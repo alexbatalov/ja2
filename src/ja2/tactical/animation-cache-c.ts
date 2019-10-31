@@ -15,11 +15,15 @@ export function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<Anim
   // Allocate entries
   AnimDebugMsg(String("*** Initializing anim cache surface for soldier %d", usSoldierID));
   pAnimCache.value.usCachedSurfaces = MemAlloc(sizeof(UINT16) * guiCacheSize);
-  CHECKF(pAnimCache.value.usCachedSurfaces != null);
+  if (pAnimCache.value.usCachedSurfaces == null) {
+    return false;
+  }
 
   AnimDebugMsg(String("*** Initializing anim cache hit counter for soldier %d", usSoldierID));
   pAnimCache.value.sCacheHits = MemAlloc(sizeof(UINT16) * guiCacheSize);
-  CHECKF(pAnimCache.value.sCacheHits != null);
+  if (pAnimCache.value.sCacheHits == null) {
+    return false;
+  }
 
   // Zero entries
   for (cnt = 0; cnt < guiCacheSize; cnt++) {
@@ -103,7 +107,9 @@ export function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Point
       AnimDebugMsg(String("Anim Cache: Loading Surface %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
 
       // Insert here
-      CHECKF(LoadAnimationSurface(usSoldierID, usSurfaceIndex, usCurrentAnimation) != false);
+      if (LoadAnimationSurface(usSoldierID, usSurfaceIndex, usCurrentAnimation) == false) {
+        return false;
+      }
       pAnimCache.value.sCacheHits[cnt] = 0;
       pAnimCache.value.usCachedSurfaces[cnt] = usSurfaceIndex;
       pAnimCache.value.ubCacheSize++;

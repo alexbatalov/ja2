@@ -1987,7 +1987,9 @@ export function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPositio
 
   for (iCounter = 0; iCounter < iSize; iCounter++) {
     // forgiving way of making sure we don't go too far
-    CHECKF(iCounter < MAX_MAPSCREEN_FAST_HELP);
+    if (iCounter >= MAX_MAPSCREEN_FAST_HELP) {
+      return false;
+    }
 
     // now copy over info
     pFastHelpMapScreenList[iCounter].iX = iXPosition[iCounter];

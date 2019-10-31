@@ -120,10 +120,14 @@ function LoadQuoteFile(ubNPC: UINT8): Pointer<NPCQuoteInfo> {
     }
   }
 
-  CHECKN(FileExists(zFileName));
+  if (!FileExists(zFileName)) {
+    return null;
+  }
 
   hFile = FileOpen(zFileName, FILE_ACCESS_READ, false);
-  CHECKN(hFile);
+  if (!hFile) {
+    return null;
+  }
 
   uiFileSize = sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS;
   pFileData = MemAlloc(uiFileSize);
@@ -268,10 +272,14 @@ function LoadCivQuoteFile(ubIndex: UINT8): Pointer<NPCQuoteInfo> {
     zFileName = sprintf("NPCData\\%c%d.npc", 'A' + (gsCivQuoteSector[ubIndex][1] - 1), gsCivQuoteSector[ubIndex][0]);
   }
 
-  CHECKN(FileExists(zFileName));
+  if (!FileExists(zFileName)) {
+    return null;
+  }
 
   hFile = FileOpen(zFileName, FILE_ACCESS_READ, false);
-  CHECKN(hFile);
+  if (!hFile) {
+    return null;
+  }
 
   uiFileSize = sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS;
   pFileData = MemAlloc(uiFileSize);
@@ -1673,7 +1681,9 @@ export function NPCConsiderInitiatingConv(pNPC: Pointer<SOLDIERTYPE>, pubDesired
   let pDesiredMerc: Pointer<SOLDIERTYPE>;
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>;
 
-  CHECKF(pubDesiredMerc);
+  if (!pubDesiredMerc) {
+    return false;
+  }
   sMyGridNo = pNPC.value.sGridNo;
 
   ubNPC = pNPC.value.ubProfile;

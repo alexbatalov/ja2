@@ -313,7 +313,9 @@ export function InitializeTacticalInterface(): boolean {
   vs_desc.usWidth = 640;
   vs_desc.usHeight = 20;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(gTopMessage.uiSurface)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(gTopMessage.uiSurface))) {
+    return false;
+  }
 
   InitItemInterface();
 

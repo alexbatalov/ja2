@@ -510,7 +510,9 @@ function EnterHelpScreen(): boolean {
   // load the help screen background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\HelpScreen.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHelpScreenBackGround)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHelpScreenBackGround))) {
+    return false;
+  }
 
   // create the text buffer
   CreateHelpScreenTextBuffer();
@@ -1769,7 +1771,9 @@ function CreateHelpScreenTextBuffer(): boolean {
   vs_desc.usWidth = HLP_SCRN__WIDTH_OF_TEXT_BUFFER;
   vs_desc.usHeight = HLP_SCRN__HEIGHT_OF_TEXT_BUFFER();
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiHelpScreenTextBufferSurface)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(guiHelpScreenTextBufferSurface))) {
+    return false;
+  }
 
   return true;
 }

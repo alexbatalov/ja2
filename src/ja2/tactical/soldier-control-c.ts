@@ -893,7 +893,9 @@ export function EVENT_InitNewSoldierAnim(pSoldier: Pointer<SOLDIERTYPE>, usNewSt
   let usItem: UINT16;
   let fTryingToRestart: boolean = false;
 
-  CHECKF(usNewState < Enum193.NUMANIMATIONSTATES);
+  if (usNewState >= Enum193.NUMANIMATIONSTATES) {
+    return false;
+  }
 
   ///////////////////////////////////////////////////////////////////////
   //			DO SOME CHECKS ON OUR NEW ANIMATION!
@@ -3859,7 +3861,9 @@ export function ConvertAniCodeToAniFrame(pSoldier: Pointer<SOLDIERTYPE>, usAniFr
   // get anim surface and determine # of frames
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
-  CHECKF(usAnimSurface != INVALID_ANIMATION_SURFACE);
+  if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
+    return false;
+  }
 
   // COnvert world direction into sprite direction
   ubTempDir = gOneCDirection[pSoldier.value.bDirection];
@@ -4238,12 +4242,16 @@ export function CreateSoldierPalettes(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   pSoldier.value.p8BPPPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
   memset(pSoldier.value.p8BPPPalette, 0, sizeof(SGPPaletteEntry) * 256);
 
-  CHECKF(pSoldier.value.p8BPPPalette != null);
+  if (pSoldier.value.p8BPPPalette == null) {
+    return false;
+  }
 
   // --- TAKE FROM CURRENT ANIMATION HVOBJECT!
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
-  CHECKF(usAnimSurface != INVALID_ANIMATION_SURFACE);
+  if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
+    return false;
+  }
 
   if ((bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(pSoldier, pSoldier.value.ubBodyType, zColFilename)) == -1) {
     // ATE: here we want to use the breath cycle for the palette.....
@@ -4581,11 +4589,17 @@ export function LoadPaletteData(): boolean {
 
     // Malloc
     gpPalRep[cnt].r = MemAlloc(gpPalRep[cnt].ubPaletteSize);
-    CHECKF(gpPalRep[cnt].r != null);
+    if (gpPalRep[cnt].r == null) {
+      return false;
+    }
     gpPalRep[cnt].g = MemAlloc(gpPalRep[cnt].ubPaletteSize);
-    CHECKF(gpPalRep[cnt].g != null);
+    if (gpPalRep[cnt].g == null) {
+      return false;
+    }
     gpPalRep[cnt].b = MemAlloc(gpPalRep[cnt].ubPaletteSize);
-    CHECKF(gpPalRep[cnt].b != null);
+    if (gpPalRep[cnt].b == null) {
+      return false;
+    }
 
     for (cnt2 = 0; cnt2 < gpPalRep[cnt].ubPaletteSize; cnt2++) {
       if (!FileRead(hFile, addressof(gpPalRep[cnt].r[cnt2]), sizeof(UINT8), null)) {
@@ -4610,7 +4624,9 @@ export function SetPaletteReplacement(p8BPPPalette: Pointer<SGPPaletteEntry>, aP
   let ubType: UINT8;
   let ubPalIndex: UINT8;
 
-  CHECKF(GetPaletteRepIndexFromID(aPalRep, addressof(ubPalIndex)));
+  if (!GetPaletteRepIndexFromID(aPalRep, addressof(ubPalIndex))) {
+    return false;
+  }
 
   // Get range type
   ubType = gpPalRep[ubPalIndex].ubType;
@@ -5318,7 +5334,9 @@ export function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBatt
   let fSpeechSound: boolean = false;
 
   // DOUBLECHECK RANGE
-  CHECKF(ubBattleSoundID < Enum259.NUM_MERC_BATTLE_SOUNDS);
+  if (ubBattleSoundID >= Enum259.NUM_MERC_BATTLE_SOUNDS) {
+    return false;
+  }
 
   if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
     // Pick a passenger from vehicle....
@@ -5623,7 +5641,9 @@ export function DoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSoundI
 function PreloadSoldierBattleSounds(pSoldier: Pointer<SOLDIERTYPE>, fRemove: boolean): boolean {
   let cnt: UINT32;
 
-  CHECKF(pSoldier.value.bActive != false);
+  if (pSoldier.value.bActive == false) {
+    return false;
+  }
 
   for (cnt = 0; cnt < Enum259.NUM_MERC_BATTLE_SOUNDS; cnt++) {
     // OK, build file and play!
@@ -6280,7 +6300,9 @@ function HandleAnimationProfile(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UIN
   // Get Surface Index
   usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);
 
-  CHECKV(usAnimSurface != INVALID_ANIMATION_SURFACE);
+  if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
+    return;
+  }
 
   bProfileID = gAnimSurfaceDatabase[usAnimSurface].bProfile;
 
@@ -6357,7 +6379,9 @@ function GetProfileFlagsFromGridno(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: 
   // Get Surface Index
   usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);
 
-  CHECKF(usAnimSurface != INVALID_ANIMATION_SURFACE);
+  if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
+    return false;
+  }
 
   bProfileID = gAnimSurfaceDatabase[usAnimSurface].bProfile;
 

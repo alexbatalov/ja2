@@ -335,7 +335,9 @@ function RenderCharProfileFinishFace(): boolean {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\00.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
+        if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
+          return false;
+        }
 
         // show it
         GetVideoObject(addressof(hHandle), uiGraphicHandle);
@@ -351,7 +353,9 @@ function RenderCharProfileFinishFace(): boolean {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\01.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
+        if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
+          return false;
+        }
 
         // show it
         GetVideoObject(addressof(hHandle), uiGraphicHandle);
@@ -367,7 +371,9 @@ function RenderCharProfileFinishFace(): boolean {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\02.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
+        if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
+          return false;
+        }
 
         // show it
         GetVideoObject(addressof(hHandle), uiGraphicHandle);
@@ -386,7 +392,9 @@ function RenderCharProfileFinishFace(): boolean {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\03.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
+        if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
+          return false;
+        }
 
         // show it
         GetVideoObject(addressof(hHandle), uiGraphicHandle);
@@ -402,7 +410,9 @@ function RenderCharProfileFinishFace(): boolean {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\04.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
+        if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
+          return false;
+        }
 
         // show it
         GetVideoObject(addressof(hHandle), uiGraphicHandle);
@@ -418,7 +428,9 @@ function RenderCharProfileFinishFace(): boolean {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\05.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
+        if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
+          return false;
+        }
 
         // show it
         GetVideoObject(addressof(hHandle), uiGraphicHandle);
@@ -465,7 +477,9 @@ function LoadCharacterPortrait(): boolean {
   // load it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(pPlayerSelectedFaceFileNames[iPortraitNumber], VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAIT)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAIT))) {
+    return false;
+  }
 
   return true;
 }

@@ -6865,11 +6865,15 @@ export function CreateDestroyAssignmentPopUpBoxes(): boolean {
   if ((fShowAssignmentMenu == true) && (fCreated == false)) {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("INTERFACE\\popup.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPOPUPBORDERS)));
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPOPUPBORDERS))) {
+      return false;
+    }
 
     vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.ImageFile = "INTERFACE\\popupbackground.pcx";
-    CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiPOPUPTEX)));
+    if (!AddVideoSurface(addressof(vs_desc), addressof(guiPOPUPTEX))) {
+      return false;
+    }
 
     // these boxes are always created while in mapscreen...
     CreateEPCBox();

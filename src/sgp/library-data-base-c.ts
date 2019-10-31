@@ -31,7 +31,9 @@ export function InitializeFileDatabase(): boolean {
   uiSize = Enum30.NUMBER_OF_LIBRARIES * sizeof(LibraryHeaderStruct);
   if (uiSize) {
     gFileDataBase.pLibraries = MemAlloc(uiSize);
-    CHECKF(gFileDataBase.pLibraries);
+    if (!gFileDataBase.pLibraries) {
+      return false;
+    }
 
     // set all the memrory to 0
     memset(gFileDataBase.pLibraries, 0, uiSize);
@@ -59,7 +61,9 @@ export function InitializeFileDatabase(): boolean {
   // This is needed because the the code wouldnt be able to tell the difference between a 'real' handle and a made up one
   uiSize = INITIAL_NUM_HANDLES * sizeof(RealFileOpenStruct);
   gFileDataBase.RealFiles.pRealFilesOpen = MemAlloc(uiSize);
-  CHECKF(gFileDataBase.RealFiles.pRealFilesOpen);
+  if (!gFileDataBase.RealFiles.pRealFilesOpen) {
+    return false;
+  }
 
   // clear the memory
   memset(gFileDataBase.RealFiles.pRealFilesOpen, 0, uiSize);
@@ -581,7 +585,9 @@ export function CreateRealFileHandle(hFile: HANDLE): HWFILE {
     uiSize = (gFileDataBase.RealFiles.iSizeOfOpenFileArray + NUM_FILES_TO_ADD_AT_A_TIME) * sizeof(RealFileOpenStruct);
 
     gFileDataBase.RealFiles.pRealFilesOpen = MemRealloc(gFileDataBase.RealFiles.pRealFilesOpen, uiSize);
-    CHECKF(gFileDataBase.RealFiles.pRealFilesOpen);
+    if (!gFileDataBase.RealFiles.pRealFilesOpen) {
+      return false;
+    }
 
     // Clear out the new part of the array
     memset(addressof(gFileDataBase.RealFiles.pRealFilesOpen[gFileDataBase.RealFiles.iSizeOfOpenFileArray]), 0, (NUM_FILES_TO_ADD_AT_A_TIME * sizeof(RealFileOpenStruct)));

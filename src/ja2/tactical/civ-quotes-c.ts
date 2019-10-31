@@ -110,7 +110,9 @@ function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<
     zFileName = sprintf("NPCDATA\\CIV%02d.edt", ubCivQuoteID);
   }
 
-  CHECKF(FileExists(zFileName));
+  if (!FileExists(zFileName)) {
+    return false;
+  }
 
   // Get data...
   LoadEncryptedDataFromFile(zFileName, zQuote, ubEntryID * 320, 320);

@@ -1339,7 +1339,9 @@ export function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bAPCost2: INT8 = 0;
   ;
 
-  CHECKF(pSoldier);
+  if (!pSoldier) {
+    return false;
+  }
   pObj = addressof(pSoldier.value.inv[Enum261.HANDPOS]);
 
   if (Item[pObj.value.usItem].usItemClass == IC_GUN || Item[pObj.value.usItem].usItemClass == IC_LAUNCHER) {

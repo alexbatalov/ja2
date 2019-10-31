@@ -95,37 +95,51 @@ export function EnterFuneral(): boolean {
   // load the Closed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_CLOSED);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiClosedSign)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiClosedSign))) {
+    return false;
+  }
 
   // load the Left column graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LeftColumn.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLeftColumn)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLeftColumn))) {
+    return false;
+  }
 
   // load the Link carving graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LinkCarving.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLinkCarving)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLinkCarving))) {
+    return false;
+  }
 
   // load the Marble graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Marble.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMarbleBackground)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMarbleBackground))) {
+    return false;
+  }
 
   // load the McGillicuttys sign graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_MCGILLICUTTYS);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMcGillicuttys)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMcGillicuttys))) {
+    return false;
+  }
 
   // load the Mortuary  graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_MORTUARY);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMortuary)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMortuary))) {
+    return false;
+  }
 
   // load the right column graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\RightColumn.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiRightColumn)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiRightColumn))) {
+    return false;
+  }
 
   usPosX = FUNERAL_LINK_1_X;
   for (i = 0; i < FUNERAL_NUMBER_OF_LINKS; i++) {

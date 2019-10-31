@@ -1279,7 +1279,9 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
   }
 
   // Check face index
-  CHECKF(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return false;
+  }
 
   if (!GetDialogue(ubCharacterNum, usQuoteNum, DIALOGUESIZE, gzQuoteStr, addressof(uiSoundID), zSoundString)) {
     return false;

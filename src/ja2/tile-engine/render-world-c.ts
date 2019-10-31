@@ -5861,8 +5861,12 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPi
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -5979,8 +5983,12 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -6083,8 +6091,12 @@ function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObjec
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   ZPtr = pZBuffer + (1280 * iTempY) + (iTempX * 2);

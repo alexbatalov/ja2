@@ -54,10 +54,14 @@ export function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
 
   Assert(hImage != null);
 
-  CHECKF(FileExists(hImage.value.ImageFile));
+  if (!FileExists(hImage.value.ImageFile)) {
+    return false;
+  }
 
   hFile = FileOpen(hImage.value.ImageFile, FILE_ACCESS_READ, false);
-  CHECKF(hFile);
+  if (!hFile) {
+    return false;
+  }
 
   if (!FileRead(hFile, addressof(uiImgID), sizeof(UINT8), addressof(uiBytesRead)))
     goto("end");

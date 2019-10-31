@@ -61,12 +61,16 @@ export function EnterMercsAccount(): boolean {
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_ORDERGRID);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercOrderGrid)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercOrderGrid))) {
+    return false;
+  }
 
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AccountNumber.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAccountNumberGrid)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAccountNumberGrid))) {
+    return false;
+  }
 
   guiMercAuthorizeButtonImage = LoadButtonImage("LAPTOP\\BigButtons.sti", -1, 0, -1, 1, -1);
 

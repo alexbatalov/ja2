@@ -220,12 +220,24 @@ function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDe
   Assert(hImage.value.p16BPPData != null);
 
   // Validations
-  CHECKF(usX >= 0);
-  CHECKF(usX < usDestWidth);
-  CHECKF(usY >= 0);
-  CHECKF(usY < usDestHeight);
-  CHECKF(srcRect.value.iRight > srcRect.value.iLeft);
-  CHECKF(srcRect.value.iBottom > srcRect.value.iTop);
+  if (usX < 0) {
+    return false;
+  }
+  if (usX >= usDestWidth) {
+    return false;
+  }
+  if (usY < 0) {
+    return false;
+  }
+  if (usY >= usDestHeight) {
+    return false;
+  }
+  if (srcRect.value.iRight <= srcRect.value.iLeft) {
+    return false;
+  }
+  if (srcRect.value.iBottom <= srcRect.value.iTop) {
+    return false;
+  }
 
   // Determine memcopy coordinates
   uiSrcStart = srcRect.value.iTop * hImage.value.usWidth + srcRect.value.iLeft;
@@ -264,12 +276,24 @@ function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, us
   Assert(hImage.value.p16BPPData != null);
 
   // Validations
-  CHECKF(usX >= 0);
-  CHECKF(usX < hImage.value.usWidth);
-  CHECKF(usY >= 0);
-  CHECKF(usY < hImage.value.usHeight);
-  CHECKF(srcRect.value.iRight > srcRect.value.iLeft);
-  CHECKF(srcRect.value.iBottom > srcRect.value.iTop);
+  if (usX < 0) {
+    return false;
+  }
+  if (usX >= hImage.value.usWidth) {
+    return false;
+  }
+  if (usY < 0) {
+    return false;
+  }
+  if (usY >= hImage.value.usHeight) {
+    return false;
+  }
+  if (srcRect.value.iRight <= srcRect.value.iLeft) {
+    return false;
+  }
+  if (srcRect.value.iBottom <= srcRect.value.iTop) {
+    return false;
+  }
 
   // Determine memcopy coordinates
   uiSrcStart = srcRect.value.iTop * hImage.value.usWidth + srcRect.value.iLeft;
@@ -277,8 +301,12 @@ function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, us
   uiNumLines = (srcRect.value.iBottom - srcRect.value.iTop) + 1;
   uiLineSize = (srcRect.value.iRight - srcRect.value.iLeft) + 1;
 
-  CHECKF(usDestWidth >= uiLineSize);
-  CHECKF(usDestHeight >= uiNumLines);
+  if (usDestWidth < uiLineSize) {
+    return false;
+  }
+  if (usDestHeight < uiNumLines) {
+    return false;
+  }
 
   // Copy line by line
   pDest = pDestBuf + uiDestStart;
@@ -323,13 +351,27 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   Assert(hImage != null);
 
   // Validations
-  CHECKF(hImage.value.p16BPPData != null);
-  CHECKF(usX >= 0);
-  CHECKF(usX < usDestWidth);
-  CHECKF(usY >= 0);
-  CHECKF(usY < usDestHeight);
-  CHECKF(srcRect.value.iRight > srcRect.value.iLeft);
-  CHECKF(srcRect.value.iBottom > srcRect.value.iTop);
+  if (hImage.value.p16BPPData == null) {
+    return false;
+  }
+  if (usX < 0) {
+    return false;
+  }
+  if (usX >= usDestWidth) {
+    return false;
+  }
+  if (usY < 0) {
+    return false;
+  }
+  if (usY >= usDestHeight) {
+    return false;
+  }
+  if (srcRect.value.iRight <= srcRect.value.iLeft) {
+    return false;
+  }
+  if (srcRect.value.iBottom <= srcRect.value.iTop) {
+    return false;
+  }
 
   // Determine memcopy coordinates
   uiSrcStart = srcRect.value.iTop * hImage.value.usWidth + srcRect.value.iLeft;
@@ -337,8 +379,12 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   uiNumLines = (srcRect.value.iBottom - srcRect.value.iTop);
   uiLineSize = (srcRect.value.iRight - srcRect.value.iLeft);
 
-  CHECKF(usDestWidth >= uiLineSize);
-  CHECKF(usDestHeight >= uiNumLines);
+  if (usDestWidth < uiLineSize) {
+    return false;
+  }
+  if (usDestHeight < uiNumLines) {
+    return false;
+  }
 
   // Convert to Pixel specification
   pDest = pDestBuf + uiDestStart;
@@ -625,14 +671,18 @@ export function GetETRLEImageData(hImage: HIMAGE, pBuffer: Pointer<ETRLEData>): 
 
   // Create buffer for objects
   pBuffer.value.pETRLEObject = MemAlloc(sizeof(ETRLEObject) * pBuffer.value.usNumberOfObjects);
-  CHECKF(pBuffer.value.pETRLEObject != null);
+  if (pBuffer.value.pETRLEObject == null) {
+    return false;
+  }
 
   // Copy into buffer
   memcpy(pBuffer.value.pETRLEObject, hImage.value.pETRLEObject, sizeof(ETRLEObject) * pBuffer.value.usNumberOfObjects);
 
   // Allocate memory for pixel data
   pBuffer.value.pPixData = MemAlloc(hImage.value.uiSizePixData);
-  CHECKF(pBuffer.value.pPixData != null);
+  if (pBuffer.value.pPixData == null) {
+    return false;
+  }
 
   pBuffer.value.uiSizePixData = hImage.value.uiSizePixData;
 

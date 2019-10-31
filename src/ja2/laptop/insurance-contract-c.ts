@@ -139,12 +139,16 @@ export function EnterInsuranceContract(): boolean {
   // load the Insurance title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\InsOrderGrid.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsOrderGridImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsOrderGridImage))) {
+    return false;
+  }
 
   // load the Insurance bullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\bullet.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsOrderBulletImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsOrderBulletImage))) {
+    return false;
+  }
 
   usPosX = INS_CTRCT_BOTTOM_LINK_RED_BAR_X;
   for (i = 0; i < 2; i++) {
@@ -408,7 +412,9 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sTemp = sprintf("FACES\\%02d.sti", ubMercID);
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiInsMercFaceImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(uiInsMercFaceImage))) {
+    return false;
+  }
 
   // Get the merc's face
   GetVideoObject(addressof(hPixHandle), uiInsMercFaceImage);

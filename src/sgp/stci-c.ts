@@ -11,11 +11,15 @@ export function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): boolean 
 
   TempImage = hImage.value;
 
-  CHECKF(FileExists(TempImage.ImageFile));
+  if (!FileExists(TempImage.ImageFile)) {
+    return false;
+  }
 
   // Open the file and read the header
   hFile = FileOpen(TempImage.ImageFile, FILE_ACCESS_READ, false);
-  CHECKF(hFile);
+  if (!hFile) {
+    return false;
+  }
 
   if (!FileRead(hFile, addressof(Header), STCI_HEADER_SIZE, addressof(uiBytesRead)) || uiBytesRead != STCI_HEADER_SIZE || memcmp(Header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem reading STCI header.");
@@ -295,11 +299,15 @@ function IsSTCIETRLEFile(ImageFile: string /* Pointer<CHAR8> */): boolean {
   let Header: STCIHeader;
   let uiBytesRead: UINT32;
 
-  CHECKF(FileExists(ImageFile));
+  if (!FileExists(ImageFile)) {
+    return false;
+  }
 
   // Open the file and read the header
   hFile = FileOpen(ImageFile, FILE_ACCESS_READ, false);
-  CHECKF(hFile);
+  if (!hFile) {
+    return false;
+  }
 
   if (!FileRead(hFile, addressof(Header), STCI_HEADER_SIZE, addressof(uiBytesRead)) || uiBytesRead != STCI_HEADER_SIZE || memcmp(Header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem reading STCI header.");

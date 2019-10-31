@@ -238,17 +238,23 @@ function LoadHistory(): boolean {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE))) {
+    return false;
+  }
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\historywindow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTOP)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTOP))) {
+    return false;
+  }
 
   // shaded line
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\historylines.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHADELINE)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSHADELINE))) {
+    return false;
+  }
 
   /*
   Not being used???  DF commented out
@@ -260,7 +266,9 @@ function LoadHistory(): boolean {
   // black divider line - long ( 480 length)
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\divisionline480.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLONGLINE)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLONGLINE))) {
+    return false;
+  }
 
   return true;
 }

@@ -341,12 +341,16 @@ function EnterSaveLoadScreen(): boolean {
   // load Main background  graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\LoadScreen.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSlgBackGroundImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSlgBackGroundImage))) {
+    return false;
+  }
 
   // load Load Screen Add ons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_LOADSAVEHEADER);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBackGroundAddOns)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBackGroundAddOns))) {
+    return false;
+  }
 
   guiSlgButtonImage = LoadButtonImage("INTERFACE\\LoadScreenAddOns.sti", -1, 6, -1, 9, -1);
   //	guiSlgButtonImage = UseLoadedButtonImage( guiBackGroundAddOns, -1,9,-1,6,-1 );

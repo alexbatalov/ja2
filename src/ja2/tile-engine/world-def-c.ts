@@ -152,7 +152,9 @@ export function InitializeWorld(): boolean {
   // Initialize world data
 
   gpWorldLevelData = MemAlloc(WORLD_MAX * sizeof(MAP_ELEMENT));
-  CHECKF(gpWorldLevelData);
+  if (!gpWorldLevelData) {
+    return false;
+  }
 
   // Zero world
   memset(gpWorldLevelData, 0, WORLD_MAX * sizeof(MAP_ELEMENT));
@@ -2220,7 +2222,9 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
   LOADDATA(addressof(iTilesetID), pBuffer, sizeof(INT32));
 
-  CHECKF(LoadMapTileset(iTilesetID) != false);
+  if (LoadMapTileset(iTilesetID) == false) {
+    return false;
+  }
 
   // Load soldier size
   LOADDATA(addressof(uiSoldierSize), pBuffer, sizeof(INT32));
@@ -2890,7 +2894,9 @@ export function LoadMapTileset(iTilesetID: INT32): boolean {
   gSurfaceMemUsage = guiMemTotal;
 
   // LOAD SURFACES
-  CHECKF(LoadTileSurfaces(addressof(gTilesets[iTilesetID].TileSurfaceFilenames[0]), iTilesetID) != false);
+  if (LoadTileSurfaces(addressof(gTilesets[iTilesetID].TileSurfaceFilenames[0]), iTilesetID) == false) {
+    return false;
+  }
 
   // SET TERRAIN COSTS
   if (gTilesets[iTilesetID].MovementCostFnc != null) {

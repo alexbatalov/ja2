@@ -175,52 +175,72 @@ export function EnterAIM(): boolean {
   // load the MemberShipcard graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\membercard.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMemberCard)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMemberCard))) {
+    return false;
+  }
 
   // load the Policies graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Policies.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPolicies)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPolicies))) {
+    return false;
+  }
 
   // load the Links graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Links.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLinks)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLinks))) {
+    return false;
+  }
 
   // load the History graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_HISTORY);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHistory)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHistory))) {
+    return false;
+  }
 
   // load the Wanring graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_WARNING);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiWarning)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiWarning))) {
+    return false;
+  }
 
   // load the flower advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\flowerad_16.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerAdvertisement)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerAdvertisement))) {
+    return false;
+  }
 
   // load the your ad advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_YOURAD13);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAdForAdsImages)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAdForAdsImages))) {
+    return false;
+  }
 
   // load the insurance advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_INSURANCEAD10);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceAdImages)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceAdImages))) {
+    return false;
+  }
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_FUNERALAD9);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFuneralAdImages)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFuneralAdImages))) {
+    return false;
+  }
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_BOBBYRAYAD21);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRAdImages)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRAdImages))) {
+    return false;
+  }
 
   //** Mouse Regions **
 
@@ -372,12 +392,16 @@ export function InitAimDefaults(): boolean {
   // load the Rust bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\rustbackground.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiRustBackGround)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiRustBackGround))) {
+    return false;
+  }
 
   // load the Aim Symbol graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_AIMSYMBOL);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAimSymbol)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAimSymbol))) {
+    return false;
+  }
 
   // Mouse region for the Links
   MSYS_DefineRegion(addressof(gSelectedAimLogo), AIM_SYMBOL_X, AIM_SYMBOL_Y, AIM_SYMBOL_X + AIM_SYMBOL_WIDTH, AIM_SYMBOL_Y + AIM_SYMBOL_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAimLogoRegionCallBack);

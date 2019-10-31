@@ -54,7 +54,9 @@ export function EnterAimFacialIndex(): boolean {
   // load the Portait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\MugShotBorder3.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMugShotBorder)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMugShotBorder))) {
+    return false;
+  }
 
   usPosX = AIM_FI_FIRST_MUGSHOT_X;
   usPosY = AIM_FI_FIRST_MUGSHOT_Y;

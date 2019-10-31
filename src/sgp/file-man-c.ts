@@ -29,27 +29,6 @@ namespace ja2 {
 
 const FILENAME_LENGTH = 600;
 
-const CHECKF = (exp) => {
-  if (!(exp)) {
-    return (false);
-  }
-};
-const CHECKV = (exp) => {
-  if (!(exp)) {
-    return;
-  }
-};
-const CHECKN = (exp) => {
-  if (!(exp)) {
-    return (null);
-  }
-};
-const CHECKBI = (exp) => {
-  if (!(exp)) {
-    return (-1);
-  }
-};
-
 const PRINT_DEBUG_INFO = () => FileDebugPrint();
 
 //**************************************************************************
@@ -669,7 +648,9 @@ function FileLoad(strFilename: string /* STR */, pDest: PTR, uiBytesToRead: UINT
     if (puiBytesRead)
       puiBytesRead.value = uiNumBytesRead;
 
-    CHECKF(uiNumBytesRead == uiBytesToRead);
+    if (uiNumBytesRead != uiBytesToRead) {
+      return false;
+    }
   } else
     fRet = false;
 
@@ -1368,8 +1349,12 @@ export function GetFileFirst(pSpec: string /* Pointer<CHAR8> */, pGFStruct: Poin
   let iWhich: INT32 = 0;
   let fFound: boolean;
 
-  CHECKF(pSpec != null);
-  CHECKF(pGFStruct != null);
+  if (pSpec == null) {
+    return false;
+  }
+  if (pGFStruct == null) {
+    return false;
+  }
 
   fFound = false;
   for (x = 0; x < 20 && !fFound; x++) {
@@ -1396,7 +1381,9 @@ export function GetFileFirst(pSpec: string /* Pointer<CHAR8> */, pGFStruct: Poin
 }
 
 export function GetFileNext(pGFStruct: Pointer<GETFILESTRUCT>): boolean {
-  CHECKF(pGFStruct != null);
+  if (pGFStruct == null) {
+    return false;
+  }
 
   if (FindNextFile(hFindInfoHandle[pGFStruct.value.iFindHandle], addressof(Win32FindInfo[pGFStruct.value.iFindHandle]))) {
     W32toSGPFileFind(pGFStruct, addressof(Win32FindInfo[pGFStruct.value.iFindHandle]));

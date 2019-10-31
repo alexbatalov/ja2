@@ -144,7 +144,9 @@ export function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength:
 }
 
 function RemoveObjectSlot(iObject: INT32): boolean {
-  CHECKF(iObject < NUM_OBJECT_SLOTS);
+  if (iObject >= NUM_OBJECT_SLOTS) {
+    return false;
+  }
 
   ObjectSlots[iObject].fAllocated = false;
 

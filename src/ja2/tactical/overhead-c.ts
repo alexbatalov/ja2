@@ -218,7 +218,9 @@ export function AddMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 export function RemoveMercSlot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let uiCount: UINT32;
 
-  CHECKF(pSoldier != null);
+  if (pSoldier == null) {
+    return false;
+  }
 
   for (uiCount = 0; uiCount < guiNumMercSlots; uiCount++) {
     if (MercSlots[uiCount] == pSoldier) {
@@ -275,7 +277,9 @@ export function AddAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 export function RemoveAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let uiCount: UINT32;
 
-  CHECKF(pSoldier != null);
+  if (pSoldier == null) {
+    return false;
+  }
 
   for (uiCount = 0; uiCount < guiNumAwaySlots; uiCount++) {
     if (AwaySlots[uiCount] == pSoldier) {

@@ -338,7 +338,9 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.HeadPal, addressof(ubPaletteRep)));
+    if (!GetPaletteRepIndexFromID(pSoldier.value.HeadPal, addressof(ubPaletteRep))) {
+      return false;
+    }
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -365,7 +367,9 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.VestPal, addressof(ubPaletteRep)));
+    if (!GetPaletteRepIndexFromID(pSoldier.value.VestPal, addressof(ubPaletteRep))) {
+      return false;
+    }
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -392,7 +396,9 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.PantsPal, addressof(ubPaletteRep)));
+    if (!GetPaletteRepIndexFromID(pSoldier.value.PantsPal, addressof(ubPaletteRep))) {
+      return false;
+    }
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -419,7 +425,9 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.SkinPal, addressof(ubPaletteRep)));
+    if (!GetPaletteRepIndexFromID(pSoldier.value.SkinPal, addressof(ubPaletteRep))) {
+      return false;
+    }
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;

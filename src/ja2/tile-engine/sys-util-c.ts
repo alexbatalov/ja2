@@ -25,9 +25,13 @@ export function InitializeGameVideoObjects(): boolean {
   vs_desc.usHeight = usHeight;
   vs_desc.ubBitDepth = ubBitDepth;
 
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiSAVEBUFFER)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(guiSAVEBUFFER))) {
+    return false;
+  }
 
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiEXTRABUFFER)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(guiEXTRABUFFER))) {
+    return false;
+  }
   gfExtraBuffer = true;
 
   guiRENDERBUFFER = FRAME_BUFFER;

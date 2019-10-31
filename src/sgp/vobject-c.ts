@@ -149,7 +149,9 @@ function SetVideoObjectTransparency(uiIndex: UINT32, TransColor: COLORVAL): bool
   let hVObject: HVOBJECT;
 
 // Get video object
-  CHECKF(GetVideoObject(addressof(hVObject), uiIndex));
+  if (!GetVideoObject(addressof(hVObject), uiIndex)) {
+    return false;
+  }
 
   // Set transparency
   SetVideoObjectTransparencyColor(hVObject, TransColor);
@@ -277,7 +279,9 @@ export function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT 
 
   // Allocate memory for video object data and initialize
   hVObject = MemAlloc(sizeof(SGPVObject));
-  CHECKF(hVObject != null);
+  if (hVObject == null) {
+    return false;
+  }
   memset(hVObject, 0, sizeof(SGPVObject));
 
   // default of all members of the vobject is 0
@@ -317,7 +321,9 @@ export function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT 
     hVObject.value.ubBitDepth = hImage.value.ubBitDepth;
 
     // Get TRLE data
-    CHECKF(GetETRLEImageData(hImage, addressof(TempETRLEData)));
+    if (!GetETRLEImageData(hImage, addressof(TempETRLEData))) {
+      return false;
+    }
 
     // Set values
     hVObject.value.usNumberOfObjects = TempETRLEData.usNumberOfObjects;
@@ -365,7 +371,9 @@ function SetVideoObjectPalette(hVObject: HVOBJECT, pSrcPalette: Pointer<SGPPalet
   if (hVObject.value.pPaletteEntry == null) {
     // Create palette
     hVObject.value.pPaletteEntry = MemAlloc(sizeof(SGPPaletteEntry) * 256);
-    CHECKF(hVObject.value.pPaletteEntry != null);
+    if (hVObject.value.pPaletteEntry == null) {
+      return false;
+    }
 
     // Copy src into palette
     memcpy(hVObject.value.pPaletteEntry, pSrcPalette, sizeof(SGPPaletteEntry) * 256);
@@ -405,7 +413,9 @@ export function DeleteVideoObject(hVObject: HVOBJECT): boolean {
   let usLoop: UINT16;
 
   // Assertions
-  CHECKF(hVObject != null);
+  if (hVObject == null) {
+    return false;
+  }
 
   DestroyObjectPaletteTables(hVObject);
 
@@ -742,13 +752,21 @@ export function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, us
   let pETRLEObject: Pointer<ETRLEObject>;
 
   // Do a bunch of checks
-  CHECKF(hVObject != null);
-  CHECKF(usETRLEIndex < hVObject.value.usNumberOfObjects);
+  if (hVObject == null) {
+    return false;
+  }
+  if (usETRLEIndex >= hVObject.value.usNumberOfObjects) {
+    return false;
+  }
 
   pETRLEObject = addressof(hVObject.value.pETRLEObject[usETRLEIndex]);
 
-  CHECKF(usX < pETRLEObject.value.usWidth);
-  CHECKF(usY < pETRLEObject.value.usHeight);
+  if (usX >= pETRLEObject.value.usWidth) {
+    return false;
+  }
+  if (usY >= pETRLEObject.value.usHeight) {
+    return false;
+  }
 
   // Assuming everything's okay, go ahead and look...
   pCurrent = addressof((hVObject.value.pPixData)[pETRLEObject.value.uiDataOffset]);
@@ -793,8 +811,12 @@ export function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, us
 }
 
 export function GetVideoObjectETRLEProperties(hVObject: HVOBJECT, pETRLEObject: Pointer<ETRLEObject>, usIndex: UINT16): boolean {
-  CHECKF(usIndex >= 0);
-  CHECKF(usIndex < hVObject.value.usNumberOfObjects);
+  if (usIndex < 0) {
+    return false;
+  }
+  if (usIndex >= hVObject.value.usNumberOfObjects) {
+    return false;
+  }
 
   memcpy(pETRLEObject, addressof(hVObject.value.pETRLEObject[usIndex]), sizeof(ETRLEObject));
 
@@ -806,9 +828,13 @@ export function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, us
   let ETRLEObject: ETRLEObject;
 
 // Get video object
-  CHECKF(GetVideoObject(addressof(hVObject), uiVideoObject));
+  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+    return false;
+  }
 
-  CHECKF(GetVideoObjectETRLEProperties(hVObject, addressof(ETRLEObject), usIndex));
+  if (!GetVideoObjectETRLEProperties(hVObject, addressof(ETRLEObject), usIndex)) {
+    return false;
+  }
 
   pusWidth.value = ETRLEObject.usWidth;
   pusHeight.value = ETRLEObject.usHeight;
@@ -820,9 +846,13 @@ export function GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject: UINT32, pE
   let hVObject: HVOBJECT;
 
 // Get video object
-  CHECKF(GetVideoObject(addressof(hVObject), uiVideoObject));
+  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+    return false;
+  }
 
-  CHECKF(GetVideoObjectETRLEProperties(hVObject, pETRLEObject, usIndex));
+  if (!GetVideoObjectETRLEProperties(hVObject, pETRLEObject, usIndex)) {
+    return false;
+  }
 
   return true;
 }
@@ -831,7 +861,9 @@ function SetVideoObjectPalette8BPP(uiVideoObject: INT32, pPal8: Pointer<SGPPalet
   let hVObject: HVOBJECT;
 
 // Get video object
-  CHECKF(GetVideoObject(addressof(hVObject), uiVideoObject));
+  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+    return false;
+  }
 
   return SetVideoObjectPalette(hVObject, pPal8);
 }
@@ -840,7 +872,9 @@ function GetVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<Point
   let hVObject: HVOBJECT;
 
 // Get video object
-  CHECKF(GetVideoObject(addressof(hVObject), uiVideoObject));
+  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+    return false;
+  }
 
   ppPal16.value = hVObject.value.p16BPPPalette;
 
@@ -851,7 +885,9 @@ function CopyVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<UINT
   let hVObject: HVOBJECT;
 
 // Get video object
-  CHECKF(GetVideoObject(addressof(hVObject), uiVideoObject));
+  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+    return false;
+  }
 
   memcpy(ppPal16, hVObject.value.p16BPPPalette, 256 * 2);
 
@@ -1012,7 +1048,9 @@ export function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObj
   }
 
 // Get video object
-  CHECKF(GetVideoObject(addressof(hSrcVObject), uiSrcVObject));
+  if (!GetVideoObject(addressof(hSrcVObject), uiSrcVObject)) {
+    return false;
+  }
 
   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, addressof(ClippingRect))) {
     Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, s16BPPColor, fDoOutline, addressof(ClippingRect));
@@ -1061,7 +1099,9 @@ export function BltVideoObjectOutlineShadowFromIndex(uiDestVSurface: UINT32, uiS
   }
 
 // Get video object
-  CHECKF(GetVideoObject(addressof(hSrcVObject), uiSrcVObject));
+  if (!GetVideoObject(addressof(hSrcVObject), uiSrcVObject)) {
+    return false;
+  }
 
   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, addressof(ClippingRect))) {
     Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, addressof(ClippingRect));

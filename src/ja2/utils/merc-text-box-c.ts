@@ -136,12 +136,16 @@ function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8)
   // the background
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.ImageFile = zMercBackgroundPopupFilenames[ubBackgroundIndex];
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(gPopUpTextBox.value.uiMercTextPopUpBackground)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(gPopUpTextBox.value.uiMercTextPopUpBackground))) {
+    return false;
+  }
 
   // border
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(zMercBorderPopupFilenames[ubBorderIndex], VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(gPopUpTextBox.value.uiMercTextPopUpBorder)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(gPopUpTextBox.value.uiMercTextPopUpBorder))) {
+    return false;
+  }
 
   gPopUpTextBox.value.fMercTextPopupInitialized = true;
 
@@ -369,7 +373,9 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
   vs_desc.usWidth = usWidth;
   vs_desc.usHeight = usHeight;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(pPopUpTextBox.value.uiSourceBufferIndex)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(pPopUpTextBox.value.uiSourceBufferIndex))) {
+    return false;
+  }
   pPopUpTextBox.value.fMercTextPopupSurfaceInitialized = true;
 
   pPopUpTextBox.value.sWidth = usWidth;

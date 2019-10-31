@@ -147,32 +147,44 @@ export function EnterAimArchives(): boolean {
   // load the Alumni Frame and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AlumniFrame.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAlumniFrame)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAlumniFrame))) {
+    return false;
+  }
 
   // load the 1st set of faces and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Old_Aim.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiOldAim)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOldAim))) {
+    return false;
+  }
 
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BottomButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPageButtons)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPageButtons))) {
+    return false;
+  }
 
   // load the PopupPic graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\PopupPicFrame.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPopUpPic)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPopUpPic))) {
+    return false;
+  }
 
   // load the AlumniPopUp graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AlumniPopUp.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAlumniPopUp)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAlumniPopUp))) {
+    return false;
+  }
 
   // load the Done Button graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\DoneButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiDoneButton)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDoneButton))) {
+    return false;
+  }
 
   InitAlumniFaceRegions();
 

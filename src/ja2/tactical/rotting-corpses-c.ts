@@ -572,7 +572,9 @@ function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): boolean {
 
   pCorpse.value.p8BPPPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
 
-  CHECKF(pCorpse.value.p8BPPPalette != null);
+  if (pCorpse.value.p8BPPPalette == null) {
+    return false;
+  }
 
   bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(null, pCorpse.value.def.ubBodyType, zColFilename);
 

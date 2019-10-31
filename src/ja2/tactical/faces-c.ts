@@ -302,12 +302,16 @@ export function DeleteFace(iFaceIndex: INT32): void {
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
-  CHECKV(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return;
+  }
 
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
-  CHECKV(pFace.value.fAllocated != false);
+  if (pFace.value.fAllocated == false) {
+    return;
+  }
 
   pFace.value.fCanHandleInactiveNow = true;
 
@@ -387,7 +391,9 @@ export function SetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
-  CHECKV(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return;
+  }
 
   pFace = addressof(gFacesData[iFaceIndex]);
 
@@ -405,7 +411,9 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
   let ubBitDepth: UINT8;
 
   // Check face index
-  CHECKV(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return;
+  }
 
   pFace = addressof(gFacesData[iFaceIndex]);
 
@@ -432,7 +440,9 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
     pFace.value.fAutoRestoreBuffer = true;
 
-    CHECKV(AddVideoSurface(addressof(vs_desc), addressof(pFace.value.uiAutoRestoreBuffer)));
+    if (!AddVideoSurface(addressof(vs_desc), addressof(pFace.value.uiAutoRestoreBuffer))) {
+      return;
+    }
   } else {
     pFace.value.fAutoRestoreBuffer = false;
     pFace.value.uiAutoRestoreBuffer = uiRestoreBuffer;
@@ -449,7 +459,9 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
     pFace.value.fAutoDisplayBuffer = true;
 
-    CHECKV(AddVideoSurface(addressof(vs_desc), addressof(pFace.value.uiAutoDisplayBuffer)));
+    if (!AddVideoSurface(addressof(vs_desc), addressof(pFace.value.uiAutoDisplayBuffer))) {
+      return;
+    }
   } else {
     pFace.value.fAutoDisplayBuffer = false;
     pFace.value.uiAutoDisplayBuffer = uiDisplayBuffer;
@@ -491,7 +503,9 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
 export function SetAutoFaceInActiveFromSoldier(ubSoldierID: UINT8): void {
   // Check for valid soldier
-  CHECKV(ubSoldierID != NOBODY);
+  if (ubSoldierID == NOBODY) {
+    return;
+  }
 
   SetAutoFaceInActive(MercPtrs[ubSoldierID].value.iFaceIndex);
 }
@@ -501,12 +515,16 @@ export function SetAutoFaceInActive(iFaceIndex: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Check face index
-  CHECKV(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return;
+  }
 
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
-  CHECKV(pFace.value.fAllocated != false);
+  if (pFace.value.fAllocated == false) {
+    return;
+  }
 
   // Turn off some flags
   if (pFace.value.uiFlags & FACE_INACTIVE_HANDLED_ELSEWHERE) {
@@ -871,7 +889,9 @@ function SetFaceShade(pSoldier: Pointer<SOLDIERTYPE>, pFace: Pointer<FACETYPE>, 
 
 export function RenderAutoFaceFromSoldier(ubSoldierID: UINT8): boolean {
   // Check for valid soldier
-  CHECKF(ubSoldierID != NOBODY);
+  if (ubSoldierID == NOBODY) {
+    return false;
+  }
 
   return RenderAutoFace(MercPtrs[ubSoldierID].value.iFaceIndex);
 }
@@ -1222,15 +1242,21 @@ export function RenderAutoFace(iFaceIndex: INT32): boolean {
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
-  CHECKF(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return false;
+  }
 
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
-  CHECKF(pFace.value.fAllocated != false);
+  if (pFace.value.fAllocated == false) {
+    return false;
+  }
 
   // Check for disabled guy!
-  CHECKF(pFace.value.fDisabled != true);
+  if (pFace.value.fDisabled == true) {
+    return false;
+  }
 
   // Set shade
   if (pFace.value.ubSoldierID != NOBODY) {
@@ -1260,7 +1286,9 @@ export function RenderAutoFace(iFaceIndex: INT32): boolean {
 
 export function ExternRenderFaceFromSoldier(uiBuffer: UINT32, ubSoldierID: UINT8, sX: INT16, sY: INT16): boolean {
   // Check for valid soldier
-  CHECKF(ubSoldierID != NOBODY);
+  if (ubSoldierID == NOBODY) {
+    return false;
+  }
 
   return ExternRenderFace(uiBuffer, MercPtrs[ubSoldierID].value.iFaceIndex, sX, sY);
 }
@@ -1273,12 +1301,16 @@ function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: IN
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
-  CHECKF(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return false;
+  }
 
   pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
-  CHECKF(pFace.value.fAllocated != false);
+  if (pFace.value.fAllocated == false) {
+    return false;
+  }
 
   // Here, any face can be rendered, even if disabled
 
@@ -1641,7 +1673,9 @@ function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDe
   let pSrcBuf: Pointer<UINT8>;
 
   // Check face index
-  CHECKF(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return false;
+  }
 
   pFace = addressof(gFacesData[iFaceIndex]);
 
@@ -1721,7 +1755,9 @@ export function InternalShutupaYoFace(iFaceIndex: INT32, fForce: boolean): void 
   let pFace: Pointer<FACETYPE>;
 
   // Check face index
-  CHECKV(iFaceIndex != -1);
+  if (iFaceIndex == -1) {
+    return;
+  }
 
   pFace = addressof(gFacesData[iFaceIndex]);
 

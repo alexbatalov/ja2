@@ -46,8 +46,12 @@ const REG_KEY_SIZE = 50;
 //**************************************************************************
 
 export function InitializeRegistryKeys(lpszAppName: string /* STR */, lpszRegistryKey: string /* STR */): boolean {
-  CHECKF(lpszAppName != null);
-  CHECKF(lpszRegistryKey != null);
+  if (lpszAppName == null) {
+    return false;
+  }
+  if (lpszRegistryKey == null) {
+    return false;
+  }
   // CHECKF(gpszRegistryKey == NULL);
   // CHECKF(gpszAppName == NULL);
   // CHECKF(gpszProfileName == NULL);

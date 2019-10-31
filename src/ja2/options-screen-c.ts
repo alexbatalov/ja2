@@ -260,12 +260,16 @@ function EnterOptionsScreen(): boolean {
   // load the options screen background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\OptionScreenBase.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiOptionBackGroundImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOptionBackGroundImage))) {
+    return false;
+  }
 
   // load button, title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_OPTIONHEADER);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiOptionsAddOnImages)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOptionsAddOnImages))) {
+    return false;
+  }
 
   // Save game button
   giOptionsButtonImages = LoadButtonImage("INTERFACE\\OptionScreenAddons.sti", -1, 2, -1, 3, -1);

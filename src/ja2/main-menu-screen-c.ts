@@ -192,13 +192,17 @@ export function InitMainMenu(): boolean {
   // load background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LOADSCREENS\\MainMenuBackGround.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMainMenuBackGroundImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMainMenuBackGroundImage))) {
+    return false;
+  }
 
   // load ja2 logo graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   //	FilenameForBPP("INTERFACE\\Ja2_2.sti", VObjectDesc.ImageFile);
   FilenameForBPP("LOADSCREENS\\Ja2Logo.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiJa2LogoImage)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiJa2LogoImage))) {
+    return false;
+  }
 
   /*
           // Gray out some buttons based on status of game!

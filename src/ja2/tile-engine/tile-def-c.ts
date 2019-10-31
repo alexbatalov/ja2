@@ -304,7 +304,9 @@ export function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): boo
 
   Assert(puiType != null);
 
-  CHECKF(gpWorldLevelData[iMapIndex].pLandHead != null);
+  if (gpWorldLevelData[iMapIndex].pLandHead == null) {
+    return false;
+  }
 
   usIndex = gpWorldLevelData[iMapIndex].pLandHead.value.usIndex;
 
@@ -439,7 +441,9 @@ export function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Point
 export function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusSubIndex: Pointer<UINT16>): boolean {
   // Tile database is zero-based, Type indecies are 1-based!
 
-  CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
+  if (uiCheckType >= Enum313.NUMBEROFTILETYPES) {
+    return false;
+  }
 
   pusSubIndex.value = usIndex - gTileTypeStartIndex[uiCheckType] + 1;
 
@@ -449,7 +453,9 @@ export function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT1
 export function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, pubSubIndex: Pointer<UINT8>): boolean {
   // Tile database is zero-based, Type indecies are 1-based!
 
-  CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
+  if (uiCheckType >= Enum313.NUMBEROFTILETYPES) {
+    return false;
+  }
 
   pubSubIndex.value = (usIndex - gTileTypeStartIndex[uiCheckType] + 1);
 
@@ -459,7 +465,9 @@ export function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: U
 export function GetTileIndexFromTypeSubIndex(uiCheckType: UINT32, usSubIndex: UINT16, pusTileIndex: Pointer<UINT16>): boolean {
   // Tile database is zero-based, Type indecies are 1-based!
 
-  CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
+  if (uiCheckType >= Enum313.NUMBEROFTILETYPES) {
+    return false;
+  }
 
   pusTileIndex.value = usSubIndex + gTileTypeStartIndex[uiCheckType] - 1;
 
@@ -479,7 +487,9 @@ function MoveLandIndexToTop(iMapIndex: UINT32, usIndex: UINT16): boolean {
 export function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): boolean {
   let TileElem: TILE_ELEMENT;
 
-  CHECKF(usIndex != NO_TILE);
+  if (usIndex == NO_TILE) {
+    return false;
+  }
 
   // Get tile element
   TileElem = gTileDatabase[usIndex];
@@ -492,8 +502,12 @@ export function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): boolean 
 export function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): boolean {
   let TileElem: TILE_ELEMENT;
 
-  CHECKF(usIndex != NO_TILE);
-  CHECKF(usIndex < Enum312.NUMBEROFTILES);
+  if (usIndex == NO_TILE) {
+    return false;
+  }
+  if (usIndex >= Enum312.NUMBEROFTILES) {
+    return false;
+  }
 
   // Get tile element
   TileElem = gTileDatabase[usIndex];
@@ -605,7 +619,9 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
 export function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>): boolean {
   let TileElem: TILE_ELEMENT;
 
-  CHECKF(usIndex != NO_TILE);
+  if (usIndex == NO_TILE) {
+    return false;
+  }
 
   // Get tile element
   TileElem = gTileDatabase[usIndex];
@@ -688,11 +704,15 @@ function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
 export function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UINT8): boolean {
   pTileElem.value.pAnimData = MemAlloc(sizeof(TILE_ANIMATION_DATA));
 
-  CHECKF(pTileElem.value.pAnimData != null);
+  if (pTileElem.value.pAnimData == null) {
+    return false;
+  }
 
   pTileElem.value.pAnimData.value.pusFrames = MemAlloc(sizeof(UINT16) * ubNumFrames);
 
-  CHECKF(pTileElem.value.pAnimData.value.pusFrames != null);
+  if (pTileElem.value.pAnimData.value.pusFrames == null) {
+    return false;
+  }
 
   // Set # if frames!
   pTileElem.value.pAnimData.value.ubNumFrames = ubNumFrames;

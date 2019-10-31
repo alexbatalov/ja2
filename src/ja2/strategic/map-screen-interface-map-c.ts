@@ -563,7 +563,9 @@ export function DrawMap(): UINT32 {
   if (!iCurrentMapSectorZ) {
     pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
 
-    CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+    if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+      return false;
+    }
     pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
     // clip blits to mapscreen region
@@ -1041,7 +1043,9 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
   let pOriginalPallette: Pointer<UINT16>;
 
   // get original video surface palette
-  CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+  if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+    return false;
+  }
   // get original video surface palette
   // CHECKF( GetVideoSurface( &hSAMSurface, guiSAMICON ) );
   // get original video surface palette
@@ -1091,7 +1095,9 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
       case (Enum157.MAP_SHADE_LT_GREEN):
         // grab video surface and set palette
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
 
         hSrcVSurface.value.p16BPPPalette = pMapLTGreenPalette;
         // hMineSurface->p16BPPPalette = pMapLTGreenPalette;
@@ -1099,7 +1105,9 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
@@ -1114,14 +1122,18 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
       case (Enum157.MAP_SHADE_DK_GREEN):
         // grab video surface and set palette
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         hSrcVSurface.value.p16BPPPalette = pMapDKGreenPalette;
         // hMineSurface->p16BPPPalette = pMapDKGreenPalette;
         // hSAMSurface->p16BPPPalette = pMapDKGreenPalette;
 
         /// lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
@@ -1136,14 +1148,18 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
       case (Enum157.MAP_SHADE_LT_RED):
         // grab video surface and set palette
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         hSrcVSurface.value.p16BPPPalette = pMapLTRedPalette;
         // hMineSurface->p16BPPPalette = pMapLTRedPalette;
         // hSAMSurface->p16BPPPalette = pMapLTRedPalette;
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
@@ -1158,14 +1174,18 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
       case (Enum157.MAP_SHADE_DK_RED):
         // grab video surface and set palette
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         hSrcVSurface.value.p16BPPPalette = pMapDKRedPalette;
         // hMineSurface->p16BPPPalette = pMapDKRedPalette;
         // hSAMSurface->p16BPPPalette = pMapDKRedPalette;
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
@@ -1180,7 +1200,9 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
     }
 
     // restore original palette
-    CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+    if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+      return false;
+    }
     hSrcVSurface.value.p16BPPPalette = pOriginalPallette;
     // hMineSurface->p16BPPPalette = pOriginalPallette;
     // hSAMSurface->p16BPPPalette = pOriginalPallette;
@@ -1215,7 +1237,9 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   iX = sScreenX - MAP_GRID_X;
 
   // get original video surface palette
-  CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+  if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+    return false;
+  }
   pOriginalPallette = hSrcVSurface.value.p16BPPPalette;
 
   if ((iX > MapScreenRect.iLeft - MAP_GRID_X * 2) && (iX < MapScreenRect.iRight) && (iY > MapScreenRect.iTop - MAP_GRID_Y * 2) && (iY < MapScreenRect.iBottom)) {
@@ -1272,12 +1296,16 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
 
       case (Enum157.MAP_SHADE_LT_GREEN):
         // grab video surface and set palette
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         hSrcVSurface.value.p16BPPPalette = pMapLTGreenPalette;
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         // now blit
@@ -1291,12 +1319,16 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
 
       case (Enum157.MAP_SHADE_DK_GREEN):
         // grab video surface and set palette
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         hSrcVSurface.value.p16BPPPalette = pMapDKGreenPalette;
 
         /// lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         // now blit
@@ -1310,12 +1342,16 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
 
       case (Enum157.MAP_SHADE_LT_RED):
         // grab video surface and set palette
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         hSrcVSurface.value.p16BPPPalette = pMapLTRedPalette;
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         // now blit
@@ -1329,12 +1365,16 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
 
       case (Enum157.MAP_SHADE_DK_RED):
         // grab video surface and set palette
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         hSrcVSurface.value.p16BPPPalette = pMapDKRedPalette;
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+          return false;
+        }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         // now blit
@@ -1349,7 +1389,9 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   }
 
   // restore original palette
-  CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
+  if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+    return false;
+  }
   hSrcVSurface.value.p16BPPPalette = pOriginalPallette;
 
   return true;
@@ -1365,10 +1407,14 @@ export function InitializePalettesForMap(): boolean {
   // load image
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.ImageFile = "INTERFACE\\b_map.pcx";
-  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(uiTempMap)));
+  if (!AddVideoSurface(addressof(vs_desc), addressof(uiTempMap))) {
+    return false;
+  }
 
   // get video surface
-  CHECKF(GetVideoSurface(addressof(hSrcVSurface), uiTempMap));
+  if (!GetVideoSurface(addressof(hSrcVSurface), uiTempMap)) {
+    return false;
+  }
   GetVSurfacePaletteEntries(hSrcVSurface, pPalette);
 
   // set up various palettes
@@ -4252,19 +4298,27 @@ export function LoadMilitiaPopUpBox(): boolean {
   // load the militia pop up box
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Militia.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMilitia)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMilitia))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Militiamaps.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaMaps)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaMaps))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\MilitiamapsectorOutline2.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaSectorHighLight)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaSectorHighLight))) {
+    return false;
+  }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\MilitiamapsectorOutline.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaSectorOutline)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaSectorOutline))) {
+    return false;
+  }
 
   return true;
 }

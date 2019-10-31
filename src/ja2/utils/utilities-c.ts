@@ -73,7 +73,9 @@ export function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: 
   let ubPaletteRep: UINT8;
 
   // Create 16BPP Palette
-  CHECKF(GetPaletteRepIndexFromID(aPalRep, addressof(ubPaletteRep)));
+  if (!GetPaletteRepIndexFromID(aPalRep, addressof(ubPaletteRep))) {
+    return false;
+  }
 
   SetFont(LARGEFONT1());
 

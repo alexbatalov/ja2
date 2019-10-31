@@ -843,8 +843,12 @@ export function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT1
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -1235,8 +1239,12 @@ export function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UIN
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -1694,8 +1702,12 @@ function Blt8BPPDataTo8BPPBuffer(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -1803,8 +1815,12 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -2200,8 +2216,12 @@ function Blt8BPPDataTo8BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestP
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -2327,8 +2347,12 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -3262,8 +3286,12 @@ export function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiD
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -3410,8 +3438,12 @@ export function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPi
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -3636,8 +3668,12 @@ export function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDest
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -3749,8 +3785,12 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -4636,8 +4676,12 @@ export function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestP
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -4747,8 +4791,12 @@ export function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDes
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -5365,8 +5413,12 @@ function Blt8BPPDataTo8BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPit
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -5488,8 +5540,12 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestP
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -6129,8 +6185,12 @@ export function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPi
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
@@ -7108,8 +7168,12 @@ export function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>,
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -7238,8 +7302,12 @@ export function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -7654,8 +7722,12 @@ export function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -8051,8 +8123,12 @@ export function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestP
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -8166,8 +8242,12 @@ export function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDes
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -8279,8 +8359,12 @@ function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestP
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -8395,8 +8479,12 @@ export function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, ui
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -8502,8 +8590,12 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, u
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -8621,8 +8713,12 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>,
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -8742,8 +8838,12 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -10207,8 +10307,12 @@ export function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDest
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -10569,8 +10673,12 @@ export function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDe
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -11690,8 +11798,12 @@ export function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitc
   iTempY = iY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   LeftSkip = pRect.value.iLeft;
   RightSkip = usWidth - pRect.value.iRight;
@@ -11776,8 +11888,12 @@ export function Blt8BPPDataTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBY
   iTempY = iY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = pSrcBuffer;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -11910,8 +12026,12 @@ export function Blt8BPPDataTo16BPPBufferHalf(pBuffer: Pointer<UINT16>, uiDestPit
   iTempY = iY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = pSrcBuffer;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -11999,12 +12119,24 @@ export function Blt8BPPDataTo16BPPBufferHalfRect(pBuffer: Pointer<UINT16>, uiDes
   iTempY = iY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
-  CHECKF(usWidth > 0);
-  CHECKF(usHeight > 0);
-  CHECKF(usHeight <= hSrcVSurface.value.usHeight);
-  CHECKF(usWidth <= hSrcVSurface.value.usWidth);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
+  if (usWidth <= 0) {
+    return false;
+  }
+  if (usHeight <= 0) {
+    return false;
+  }
+  if (usHeight > hSrcVSurface.value.usHeight) {
+    return false;
+  }
+  if (usWidth > hSrcVSurface.value.usWidth) {
+    return false;
+  }
 
   SrcPtr = pSrcBuffer + (uiSrcPitch * pRect.value.iTop) + (pRect.value.iLeft);
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -12100,8 +12232,12 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   MaskPtr = hMaskObject.value.pPixData + uiMOffset + (iMOY * usMWidth) + iMOX;
@@ -12265,8 +12401,12 @@ function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPit
   height = iBottom - iTop + 1;
   LineSkip = (uiDestPitchBYTES - (width * 2));
 
-  CHECKF(width >= 1);
-  CHECKF(height >= 1);
+  if (width < 1) {
+    return false;
+  }
+  if (height < 1) {
+    return false;
+  }
 
   asm(`
     mov esi, Pattern // Pointer to pixel pattern
@@ -12409,8 +12549,12 @@ export function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestP
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -12549,8 +12693,12 @@ export function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, ui
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -12699,8 +12847,12 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -13471,8 +13623,12 @@ export function Blt16BPPBufferShadowRect(pBuffer: Pointer<UINT16>, uiDestPitchBY
   height = area.value.iBottom - area.value.iTop + 1;
   LineSkip = (uiDestPitchBYTES - (width * 2));
 
-  CHECKF(width >= 1);
-  CHECKF(height >= 1);
+  if (width < 1) {
+    return false;
+  }
+  if (height < 1) {
+    return false;
+  }
 
   asm(`
     mov esi, OFFSET ShadeTable
@@ -13538,8 +13694,12 @@ export function Blt16BPPBufferShadowRectAlternateTable(pBuffer: Pointer<UINT16>,
   height = area.value.iBottom - area.value.iTop + 1;
   LineSkip = (uiDestPitchBYTES - (width * 2));
 
-  CHECKF(width >= 1);
-  CHECKF(height >= 1);
+  if (width < 1) {
+    return false;
+  }
+  if (height < 1) {
+    return false;
+  }
 
   asm(`
     mov esi, OFFSET IntensityTable
@@ -13603,8 +13763,12 @@ function Blt8BPPDataTo16BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitc
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -14287,8 +14451,12 @@ export function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDest
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -15186,8 +15354,12 @@ export function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, 
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -15552,8 +15724,12 @@ export function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDes
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -15676,8 +15852,12 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointe
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -15822,8 +16002,12 @@ export function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiD
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -15953,8 +16137,12 @@ export function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiD
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -16315,8 +16503,12 @@ export function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, u
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
@@ -16945,8 +17137,12 @@ export function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDe
   iTempY = iY + pTrav.value.sOffsetY;
 
   // Validations
-  CHECKF(iTempX >= 0);
-  CHECKF(iTempY >= 0);
+  if (iTempX < 0) {
+    return false;
+  }
+  if (iTempY < 0) {
+    return false;
+  }
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);

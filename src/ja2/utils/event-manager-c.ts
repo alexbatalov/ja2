@@ -56,7 +56,9 @@ export function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDa
   // Allocate new event
   pEvent = MemAlloc(uiEventSize + uiDataSize);
 
-  CHECKF(pEvent != null);
+  if (pEvent == null) {
+    return false;
+  }
 
   // Set values
   pEvent.value.TimeStamp = GetJA2Clock();
@@ -91,7 +93,9 @@ export function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, u
 
   if (uiQueueSize > 0) {
     // Get
-    CHECKF(RemfromList(hQueue, ppEvent, uiIndex) != false);
+    if (RemfromList(hQueue, ppEvent, uiIndex) == false) {
+      return false;
+    }
   } else {
     return false;
   }
@@ -113,7 +117,9 @@ export function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQ
 
   if (uiQueueSize > 0) {
     // Get
-    CHECKF(PeekList(hQueue, ppEvent, uiIndex) != false);
+    if (PeekList(hQueue, ppEvent, uiIndex) == false) {
+      return false;
+    }
   } else {
     return false;
   }
@@ -122,7 +128,9 @@ export function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQ
 }
 
 export function FreeEvent(pEvent: Pointer<EVENT>): boolean {
-  CHECKF(pEvent != null);
+  if (pEvent == null) {
+    return false;
+  }
 
   // Delete event
   MemFree(pEvent);

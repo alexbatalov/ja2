@@ -1224,10 +1224,16 @@ export function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTY
 
   // TO ADD: if target is camouflaged and in cover, reduce sight distance by 30%
   // TO ADD: if in tear gas, reduce sight limit to 2 tiles
-  CHECKF(pStartSoldier);
-  CHECKF(pEndSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
+  if (!pEndSoldier) {
+    return false;
+  }
   fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
-  CHECKF(fOk);
+  if (!fOk) {
+    return false;
+  }
 
   if (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_N) {
     // in the bloodcat arena sector, skip sight between army & bloodcats
@@ -1250,7 +1256,9 @@ export function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTY
     fSmell = true;
   } else {
     fOk = CalculateSoldierZPos(pEndSoldier, Enum230.LOS_POS, addressof(dEndZPos));
-    CHECKF(fOk);
+    if (!fOk) {
+      return false;
+    }
     fSmell = false;
   }
 
@@ -1316,7 +1324,9 @@ export function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>,
   let sWindowGridNo: INT16 = NOWHERE;
   let iRet: INT32;
 
-  CHECKF(pStartSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
   dStartZPos = FixedToFloat(((gqStandardWindowTopHeight + gqStandardWindowBottomHeight) / 2));
   if (pStartSoldier.value.bLevel > 0) {
     // on a roof
@@ -1365,10 +1375,14 @@ export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIE
   let pTarget: Pointer<SOLDIERTYPE>;
   let fOk: boolean;
 
-  CHECKF(pStartSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
 
   fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
-  CHECKF(fOk);
+  if (!fOk) {
+    return false;
+  }
 
   if (bCubeLevel > 0) {
     dEndZPos = ((bCubeLevel + bLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
@@ -1410,10 +1424,14 @@ export function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERT
   }
   pEndSoldier = MercPtrs[ubTargetID];
 
-  CHECKF(pStartSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
 
   fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
-  CHECKF(fOk);
+  if (!fOk) {
+    return false;
+  }
 
   switch (ubAimLocation) {
     case AIM_SHOT_HEAD:
@@ -1449,10 +1467,14 @@ export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SO
   let sYPos: INT16;
   let fOk: boolean;
 
-  CHECKF(pStartSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
 
   fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
-  CHECKF(fOk);
+  if (!fOk) {
+    return false;
+  }
 
   // manually calculate destination Z position.
   switch (bStance) {
@@ -2443,8 +2465,12 @@ function SoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>,
   if (pStartSoldier == pEndSoldier) {
     return 0;
   }
-  CHECKF(pStartSoldier);
-  CHECKF(pEndSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
+  if (!pEndSoldier) {
+    return false;
+  }
   fOk = CalculateSoldierZPos(pEndSoldier, Enum230.TARGET_POS, addressof(dEndZPos));
   if (!fOk) {
     return false;
@@ -2465,8 +2491,12 @@ export function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: Pointe
   if (pStartSoldier == pEndSoldier) {
     return 0;
   }
-  CHECKF(pStartSoldier);
-  CHECKF(pEndSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
+  if (!pEndSoldier) {
+    return false;
+  }
   switch (ubAimLocation) {
     case AIM_SHOT_HEAD:
       ubPosType = Enum230.HEAD_TARGET_POS;
@@ -2503,7 +2533,9 @@ export function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDI
   if (pStartSoldier.value.sGridNo == sGridNo) {
     return 0;
   }
-  CHECKF(pStartSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
 
   pEndSoldier = SimpleFindSoldier(sGridNo, bLevel);
   if (pEndSoldier != null) {
@@ -2545,8 +2577,12 @@ export function AISoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLD
   if (pStartSoldier == pEndSoldier) {
     return 0;
   }
-  CHECKF(pStartSoldier);
-  CHECKF(pEndSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
+  if (!pEndSoldier) {
+    return false;
+  }
   fOk = CalculateSoldierZPos(pEndSoldier, Enum230.TARGET_POS, addressof(dEndZPos));
   if (!fOk) {
     return false;
@@ -2576,7 +2612,9 @@ export function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOL
   if (pStartSoldier.value.sGridNo == sGridNo) {
     return 0;
   }
-  CHECKF(pStartSoldier);
+  if (!pStartSoldier) {
+    return false;
+  }
 
   pEndSoldier = SimpleFindSoldier(sGridNo, bLevel);
   if (pEndSoldier != null) {

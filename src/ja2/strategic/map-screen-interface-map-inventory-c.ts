@@ -104,7 +104,9 @@ export function LoadInventoryPoolGraphic(): boolean {
   VObjectDesc.ImageFile = "INTERFACE\\sector_inventory.sti";
 
   // add to V-object index
-  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapInventoryPoolBackground)));
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapInventoryPoolBackground))) {
+    return false;
+  }
 
   return true;
 }
@@ -1104,7 +1106,9 @@ function GetObjFromInventoryStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItem
 }
 
 function RemoveObjectFromStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): boolean {
-  CHECKF(pInventorySlot);
+  if (!pInventorySlot) {
+    return false;
+  }
 
   if (pInventorySlot.value.ubNumberOfObjects == 0) {
     return false;
