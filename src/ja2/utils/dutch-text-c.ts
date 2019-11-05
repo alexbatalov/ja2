@@ -1,5 +1,3 @@
-namespace ja2 {
-
 /*
 
 ******************************************************************************************************
@@ -3639,5 +3637,3 @@ export let gzLateLocalizedString: string[] /* STR16[] */ = [
 
   "Schakelaar geactiveerd.",
 ];
-
-}
