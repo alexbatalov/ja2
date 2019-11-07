@@ -299,6 +299,17 @@ interface INV_ATTACHXY {
   sBarDy: INT16;
 }
 
+export function createInvAttachXYFrom(sX: INT16, sY: INT16, sHeight: INT16, sWidth: INT16, sBarDx: INT16, sBarDy: INT16): INV_ATTACHXY {
+  return {
+    sX,
+    sY,
+    sHeight,
+    sWidth,
+    sBarDx,
+    sBarDy,
+  };
+}
+
 const NUM_INV_HELPTEXT_ENTRIES = 1;
 
 interface INV_HELPTEXT {
@@ -350,17 +361,17 @@ let gMapWeaponStats: INV_DESC_STATS[] /* [] */ = [
 ];
 
 let gItemDescAttachmentsXY: INV_ATTACHXY[] /* [] */ = [
-  [ 129, 12, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 ],
-  [ 163, 12, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 ],
-  [ 129, 39, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 ],
-  [ 163, 39, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 ],
+  createInvAttachXYFrom(129, 12, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1),
+  createInvAttachXYFrom(163, 12, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1),
+  createInvAttachXYFrom(129, 39, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1),
+  createInvAttachXYFrom(163, 39, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1),
 ];
 
 let gMapItemDescAttachmentsXY: INV_ATTACHXY[] /* [] */ = [
-  [ 173, 10, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY ],
-  [ 211, 10, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY ],
-  [ 173, 36, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY ],
-  [ 211, 36, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY ],
+  createInvAttachXYFrom(173, 10, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY),
+  createInvAttachXYFrom(211, 10, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY),
+  createInvAttachXYFrom(173, 36, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY),
+  createInvAttachXYFrom(211, 36, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY),
 ];
 
 let gItemDescProsConsRects: SGPRect[] /* [] */ = [
