@@ -191,4 +191,13 @@ export interface UICursor {
   usAdditionalData: UINT16;
 }
 
+export function createUICursorFrom(uiCursorID: UINT32, uiFlags: UINT32, usFreeCursorName: UINT16, usAdditionalData: UINT16): UICursor {
+  return {
+    uiCursorID,
+    uiFlags,
+    usFreeCursorName,
+    usAdditionalData,
+  };
+}
+
 }
