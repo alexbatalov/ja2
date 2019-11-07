@@ -18,6 +18,13 @@ export interface DEALER_POSSIBLE_INV {
   ubOptimalNumber: UINT8;
 }
 
+export function createDealerPossibleInvFrom(sItemIndex: INT16, ubOptimalNumber: UINT8): DEALER_POSSIBLE_INV {
+  return {
+    sItemIndex,
+    ubOptimalNumber,
+  };
+}
+
 export interface ITEM_SORT_ENTRY {
   uiItemClass: UINT32;
   ubWeaponClass: UINT8;

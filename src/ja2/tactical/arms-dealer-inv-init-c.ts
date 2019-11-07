@@ -40,147 +40,147 @@ let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = [
 
 let gTonyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // Rare guns/ammo that Tony will buy although he won't ever sell them
-  [ Enum225.ROCKET_RIFLE, 0 ],
-  [ Enum225.AUTO_ROCKET_RIFLE, 0 ],
-  [ Enum225.AUTOMAG_III, 0 ],
+  createDealerPossibleInvFrom(Enum225.ROCKET_RIFLE, 0),
+  createDealerPossibleInvFrom(Enum225.AUTO_ROCKET_RIFLE, 0),
+  createDealerPossibleInvFrom(Enum225.AUTOMAG_III, 0),
   //	{ FLAMETHROWER,					0 },
 
   // Weapons
-  [ Enum225.GLOCK_17, 1 ], /* Glock 17        */
-  [ Enum225.GLOCK_18, 1 ], /* Glock 18        */
-  [ Enum225.BERETTA_92F, 1 ], /* Beretta 92F     */
-  [ Enum225.BERETTA_93R, 1 ], /* Beretta 93R     */
-  [ Enum225.SW38, 1 ], /* .38 S&W Special */
-  [ Enum225.BARRACUDA, 1 ], /* .357 Barracuda  */
-  [ Enum225.DESERTEAGLE, 1 ], /* .357 DesertEagle*/
-  [ Enum225.M1911, 1 ], /* .45 M1911			 */
-  [ Enum225.MP5K, 1 ], /* H&K MP5K      	 */
-  [ Enum225.MAC10, 1 ], /* .45 MAC-10	     */
+  createDealerPossibleInvFrom(Enum225.GLOCK_17, 1), /* Glock 17        */
+  createDealerPossibleInvFrom(Enum225.GLOCK_18, 1), /* Glock 18        */
+  createDealerPossibleInvFrom(Enum225.BERETTA_92F, 1), /* Beretta 92F     */
+  createDealerPossibleInvFrom(Enum225.BERETTA_93R, 1), /* Beretta 93R     */
+  createDealerPossibleInvFrom(Enum225.SW38, 1), /* .38 S&W Special */
+  createDealerPossibleInvFrom(Enum225.BARRACUDA, 1), /* .357 Barracuda  */
+  createDealerPossibleInvFrom(Enum225.DESERTEAGLE, 1), /* .357 DesertEagle*/
+  createDealerPossibleInvFrom(Enum225.M1911, 1), /* .45 M1911			 */
+  createDealerPossibleInvFrom(Enum225.MP5K, 1), /* H&K MP5K      	 */
+  createDealerPossibleInvFrom(Enum225.MAC10, 1), /* .45 MAC-10	     */
 
-  [ Enum225.THOMPSON, 1 ], /* Thompson M1A1   */
-  [ Enum225.COMMANDO, 1 ], /* Colt Commando   */
-  [ Enum225.MP53, 1 ], /* H&K MP53		 		 */
-  [ Enum225.AKSU74, 1 ], /* AKSU-74         */
-  [ Enum225.TYPE85, 1 ], /* Type-85         */
-  [ Enum225.SKS, 1 ], /* SKS             */
-  [ Enum225.DRAGUNOV, 1 ], /* Dragunov        */
-  [ Enum225.M24, 1 ], /* M24             */
-  [ Enum225.AUG, 1 ], /* Steyr AUG       */
+  createDealerPossibleInvFrom(Enum225.THOMPSON, 1), /* Thompson M1A1   */
+  createDealerPossibleInvFrom(Enum225.COMMANDO, 1), /* Colt Commando   */
+  createDealerPossibleInvFrom(Enum225.MP53, 1), /* H&K MP53		 		 */
+  createDealerPossibleInvFrom(Enum225.AKSU74, 1), /* AKSU-74         */
+  createDealerPossibleInvFrom(Enum225.TYPE85, 1), /* Type-85         */
+  createDealerPossibleInvFrom(Enum225.SKS, 1), /* SKS             */
+  createDealerPossibleInvFrom(Enum225.DRAGUNOV, 1), /* Dragunov        */
+  createDealerPossibleInvFrom(Enum225.M24, 1), /* M24             */
+  createDealerPossibleInvFrom(Enum225.AUG, 1), /* Steyr AUG       */
 
-  [ Enum225.G41, 1 ], /* H&K G41         */
-  [ Enum225.MINI14, 1 ], /* Ruger Mini-14   */
-  [ Enum225.C7, 1 ], /* C-7             */
-  [ Enum225.FAMAS, 1 ], /* FA-MAS          */
-  [ Enum225.AK74, 1 ], /* AK-74           */
-  [ Enum225.AKM, 1 ], /* AKM             */
-  [ Enum225.M14, 1 ], /* M-14            */
-  [ Enum225.G3A3, 1 ], /* H&K G3A3        */
-  [ Enum225.FNFAL, 1 ], /* FN-FAL          */
+  createDealerPossibleInvFrom(Enum225.G41, 1), /* H&K G41         */
+  createDealerPossibleInvFrom(Enum225.MINI14, 1), /* Ruger Mini-14   */
+  createDealerPossibleInvFrom(Enum225.C7, 1), /* C-7             */
+  createDealerPossibleInvFrom(Enum225.FAMAS, 1), /* FA-MAS          */
+  createDealerPossibleInvFrom(Enum225.AK74, 1), /* AK-74           */
+  createDealerPossibleInvFrom(Enum225.AKM, 1), /* AKM             */
+  createDealerPossibleInvFrom(Enum225.M14, 1), /* M-14            */
+  createDealerPossibleInvFrom(Enum225.G3A3, 1), /* H&K G3A3        */
+  createDealerPossibleInvFrom(Enum225.FNFAL, 1), /* FN-FAL          */
 
-  [ Enum225.MINIMI, 1 ],
-  [ Enum225.RPK74, 1 ],
-  [ Enum225.HK21E, 1 ],
+  createDealerPossibleInvFrom(Enum225.MINIMI, 1),
+  createDealerPossibleInvFrom(Enum225.RPK74, 1),
+  createDealerPossibleInvFrom(Enum225.HK21E, 1),
 
-  [ Enum225.M870, 1 ], /* Remington M870  */
-  [ Enum225.SPAS15, 1 ], /* SPAS-15         */
+  createDealerPossibleInvFrom(Enum225.M870, 1), /* Remington M870  */
+  createDealerPossibleInvFrom(Enum225.SPAS15, 1), /* SPAS-15         */
 
-  [ Enum225.GLAUNCHER, 1 ], /* grenade launcher*/
-  [ Enum225.UNDER_GLAUNCHER, 1 ], /* underslung g.l. */
-  [ Enum225.ROCKET_LAUNCHER, 1 ], /* rocket Launcher */
-  [ Enum225.MORTAR, 1 ],
+  createDealerPossibleInvFrom(Enum225.GLAUNCHER, 1), /* grenade launcher*/
+  createDealerPossibleInvFrom(Enum225.UNDER_GLAUNCHER, 1), /* underslung g.l. */
+  createDealerPossibleInvFrom(Enum225.ROCKET_LAUNCHER, 1), /* rocket Launcher */
+  createDealerPossibleInvFrom(Enum225.MORTAR, 1),
 
   // SAP guns
-  [ Enum225.G11, 1 ],
-  [ Enum225.CAWS, 1 ],
-  [ Enum225.P90, 1 ],
+  createDealerPossibleInvFrom(Enum225.G11, 1),
+  createDealerPossibleInvFrom(Enum225.CAWS, 1),
+  createDealerPossibleInvFrom(Enum225.P90, 1),
 
-  [ Enum225.DART_GUN, 1 ],
+  createDealerPossibleInvFrom(Enum225.DART_GUN, 1),
 
   // Ammo
-  [ Enum225.CLIP9_15, 8 ],
-  [ Enum225.CLIP9_30, 6 ],
-  [ Enum225.CLIP9_15_AP, 3 ], /* CLIP9_15_AP */
-  [ Enum225.CLIP9_30_AP, 3 ], /* CLIP9_30_AP */
-  [ Enum225.CLIP9_15_HP, 3 ], /* CLIP9_15_HP */
-  [ Enum225.CLIP9_30_HP, 3 ], /* CLIP9_30_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP9_15, 8),
+  createDealerPossibleInvFrom(Enum225.CLIP9_30, 6),
+  createDealerPossibleInvFrom(Enum225.CLIP9_15_AP, 3), /* CLIP9_15_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP9_30_AP, 3), /* CLIP9_30_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP9_15_HP, 3), /* CLIP9_15_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP9_30_HP, 3), /* CLIP9_30_HP */
 
-  [ Enum225.CLIP38_6, 10 ], /* CLIP38_6 */
-  [ Enum225.CLIP38_6_AP, 5 ], /* CLIP38_6_AP */
-  [ Enum225.CLIP38_6_HP, 5 ], /* CLIP38_6_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP38_6, 10), /* CLIP38_6 */
+  createDealerPossibleInvFrom(Enum225.CLIP38_6_AP, 5), /* CLIP38_6_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP38_6_HP, 5), /* CLIP38_6_HP */
 
-  [ Enum225.CLIP45_7, 6 ],
+  createDealerPossibleInvFrom(Enum225.CLIP45_7, 6),
   /* CLIP45_7 */ // 70
 
-  [ Enum225.CLIP45_30, 8 ], /* CLIP45_30 */
-  [ Enum225.CLIP45_7_AP, 3 ], /* CLIP45_7_AP */
-  [ Enum225.CLIP45_30_AP, 3 ], /* CLIP45_30_AP */
-  [ Enum225.CLIP45_7_HP, 3 ], /* CLIP45_7_HP */
-  [ Enum225.CLIP45_30_HP, 3 ], /* CLIP45_30_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP45_30, 8), /* CLIP45_30 */
+  createDealerPossibleInvFrom(Enum225.CLIP45_7_AP, 3), /* CLIP45_7_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP45_30_AP, 3), /* CLIP45_30_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP45_7_HP, 3), /* CLIP45_7_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP45_30_HP, 3), /* CLIP45_30_HP */
 
-  [ Enum225.CLIP357_6, 6 ], /* CLIP357_6 */
-  [ Enum225.CLIP357_9, 5 ], /* CLIP357_9 */
-  [ Enum225.CLIP357_6_AP, 3 ], /* CLIP357_6_AP */
-  [ Enum225.CLIP357_9_AP, 3 ], /* CLIP357_9_AP */
-  [ Enum225.CLIP357_6_HP, 3 ],
+  createDealerPossibleInvFrom(Enum225.CLIP357_6, 6), /* CLIP357_6 */
+  createDealerPossibleInvFrom(Enum225.CLIP357_9, 5), /* CLIP357_9 */
+  createDealerPossibleInvFrom(Enum225.CLIP357_6_AP, 3), /* CLIP357_6_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP357_9_AP, 3), /* CLIP357_9_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP357_6_HP, 3),
   /* CLIP357_6_HP */ // 80
-  [ Enum225.CLIP357_9_HP, 3 ], /* CLIP357_9_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP357_9_HP, 3), /* CLIP357_9_HP */
 
-  [ Enum225.CLIP545_30_AP, 6 ], /* CLIP545_30_AP */
-  [ Enum225.CLIP545_30_HP, 3 ], /* CLIP545_30_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP545_30_AP, 6), /* CLIP545_30_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP545_30_HP, 3), /* CLIP545_30_HP */
 
-  [ Enum225.CLIP556_30_AP, 6 ], /* CLIP556_30_AP */
-  [ Enum225.CLIP556_30_HP, 3 ], /* CLIP556_30_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP556_30_AP, 6), /* CLIP556_30_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP556_30_HP, 3), /* CLIP556_30_HP */
 
-  [ Enum225.CLIP762W_10_AP, 6 ], /* CLIP762W_10_AP */
-  [ Enum225.CLIP762W_30_AP, 5 ], /* CLIP762W_30_AP */
-  [ Enum225.CLIP762W_10_HP, 3 ], /* CLIP762W_10_HP */
-  [ Enum225.CLIP762W_30_HP, 3 ], /* CLIP762W_30_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP762W_10_AP, 6), /* CLIP762W_10_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP762W_30_AP, 5), /* CLIP762W_30_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP762W_10_HP, 3), /* CLIP762W_10_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP762W_30_HP, 3), /* CLIP762W_30_HP */
 
-  [ Enum225.CLIP762N_5_AP, 8 ],
+  createDealerPossibleInvFrom(Enum225.CLIP762N_5_AP, 8),
   /* CLIP762N_5_AP */ // 90
-  [ Enum225.CLIP762N_20_AP, 5 ], /* CLIP762N_20_AP */
-  [ Enum225.CLIP762N_5_HP, 3 ], /* CLIP762N_5_HP */
-  [ Enum225.CLIP762N_20_HP, 3 ], /* CLIP762N_20_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP762N_20_AP, 5), /* CLIP762N_20_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP762N_5_HP, 3), /* CLIP762N_5_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP762N_20_HP, 3), /* CLIP762N_20_HP */
 
-  [ Enum225.CLIP47_50_SAP, 5 ], /* CLIP47_50_SAP */
+  createDealerPossibleInvFrom(Enum225.CLIP47_50_SAP, 5), /* CLIP47_50_SAP */
 
-  [ Enum225.CLIP57_50_AP, 6 ], /* CLIP57_50_AP */
-  [ Enum225.CLIP57_50_HP, 3 ], /* CLIP57_50_HP */
+  createDealerPossibleInvFrom(Enum225.CLIP57_50_AP, 6), /* CLIP57_50_AP */
+  createDealerPossibleInvFrom(Enum225.CLIP57_50_HP, 3), /* CLIP57_50_HP */
 
-  [ Enum225.CLIP12G_7, 9 ], /* CLIP12G_7 */
-  [ Enum225.CLIP12G_7_BUCKSHOT, 9 ], /* CLIP12G_7_BUCKSHOT */
+  createDealerPossibleInvFrom(Enum225.CLIP12G_7, 9), /* CLIP12G_7 */
+  createDealerPossibleInvFrom(Enum225.CLIP12G_7_BUCKSHOT, 9), /* CLIP12G_7_BUCKSHOT */
 
-  [ Enum225.CLIPCAWS_10_SAP, 5 ], /* CLIPCAWS_10_SAP */
-  [ Enum225.CLIPCAWS_10_FLECH, 3 ],
+  createDealerPossibleInvFrom(Enum225.CLIPCAWS_10_SAP, 5), /* CLIPCAWS_10_SAP */
+  createDealerPossibleInvFrom(Enum225.CLIPCAWS_10_FLECH, 3),
   /* CLIPCAWS_10_FLECH */ // 100
 
-  [ Enum225.CLIPROCKET_AP, 3 ],
-  [ Enum225.CLIPROCKET_HE, 1 ],
-  [ Enum225.CLIPROCKET_HEAT, 1 ],
+  createDealerPossibleInvFrom(Enum225.CLIPROCKET_AP, 3),
+  createDealerPossibleInvFrom(Enum225.CLIPROCKET_HE, 1),
+  createDealerPossibleInvFrom(Enum225.CLIPROCKET_HEAT, 1),
 
-  [ Enum225.CLIPDART_SLEEP, 5 ],
+  createDealerPossibleInvFrom(Enum225.CLIPDART_SLEEP, 5),
 
   //	{ CLIPFLAME,						5	},
 
   // "launchables" (New! From McCain!) - these are basically ammo
-  [ Enum225.GL_HE_GRENADE, 2 ],
-  [ Enum225.GL_TEARGAS_GRENADE, 2 ],
-  [ Enum225.GL_STUN_GRENADE, 2 ],
-  [ Enum225.GL_SMOKE_GRENADE, 2 ],
-  [ Enum225.MORTAR_SHELL, 1 ],
+  createDealerPossibleInvFrom(Enum225.GL_HE_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.GL_TEARGAS_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.GL_STUN_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.GL_SMOKE_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.MORTAR_SHELL, 1),
 
   // knives
-  [ Enum225.COMBAT_KNIFE, 3 ],
-  [ Enum225.THROWING_KNIFE, 6 ],
-  [ Enum225.BRASS_KNUCKLES, 1 ],
-  [ Enum225.MACHETE, 1 ],
+  createDealerPossibleInvFrom(Enum225.COMBAT_KNIFE, 3),
+  createDealerPossibleInvFrom(Enum225.THROWING_KNIFE, 6),
+  createDealerPossibleInvFrom(Enum225.BRASS_KNUCKLES, 1),
+  createDealerPossibleInvFrom(Enum225.MACHETE, 1),
 
   // attachments
-  [ Enum225.SILENCER, 3 ],
-  [ Enum225.SNIPERSCOPE, 3 ],
-  [ Enum225.LASERSCOPE, 1 ],
-  [ Enum225.BIPOD, 3 ],
-  [ Enum225.DUCKBILL, 2 ],
+  createDealerPossibleInvFrom(Enum225.SILENCER, 3),
+  createDealerPossibleInvFrom(Enum225.SNIPERSCOPE, 3),
+  createDealerPossibleInvFrom(Enum225.LASERSCOPE, 1),
+  createDealerPossibleInvFrom(Enum225.BIPOD, 3),
+  createDealerPossibleInvFrom(Enum225.DUCKBILL, 2),
 
   /*
           // grenades
@@ -192,344 +192,344 @@ let gTonyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
           { SMOKE_GRENADE,				5 },
   */
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Devin		( Explosives )
 //
 let gDevinInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.STUN_GRENADE, 3 ],
-  [ Enum225.TEARGAS_GRENADE, 3 ],
-  [ Enum225.MUSTARD_GRENADE, 2 ],
-  [ Enum225.MINI_GRENADE, 3 ],
-  [ Enum225.HAND_GRENADE, 2 ],
-  [ Enum225.SMOKE_GRENADE, 3 ],
+  createDealerPossibleInvFrom(Enum225.STUN_GRENADE, 3),
+  createDealerPossibleInvFrom(Enum225.TEARGAS_GRENADE, 3),
+  createDealerPossibleInvFrom(Enum225.MUSTARD_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.MINI_GRENADE, 3),
+  createDealerPossibleInvFrom(Enum225.HAND_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.SMOKE_GRENADE, 3),
 
-  [ Enum225.GL_HE_GRENADE, 2 ],
-  [ Enum225.GL_TEARGAS_GRENADE, 2 ],
-  [ Enum225.GL_STUN_GRENADE, 2 ],
-  [ Enum225.GL_SMOKE_GRENADE, 2 ],
-  [ Enum225.MORTAR_SHELL, 1 ],
+  createDealerPossibleInvFrom(Enum225.GL_HE_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.GL_TEARGAS_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.GL_STUN_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.GL_SMOKE_GRENADE, 2),
+  createDealerPossibleInvFrom(Enum225.MORTAR_SHELL, 1),
 
-  [ Enum225.CLIPROCKET_AP, 1 ],
-  [ Enum225.CLIPROCKET_HE, 1 ],
-  [ Enum225.CLIPROCKET_HEAT, 1 ],
+  createDealerPossibleInvFrom(Enum225.CLIPROCKET_AP, 1),
+  createDealerPossibleInvFrom(Enum225.CLIPROCKET_HE, 1),
+  createDealerPossibleInvFrom(Enum225.CLIPROCKET_HEAT, 1),
 
-  [ Enum225.DETONATOR, 10 ],
-  [ Enum225.REMDETONATOR, 5 ],
-  [ Enum225.REMOTEBOMBTRIGGER, 5 ],
+  createDealerPossibleInvFrom(Enum225.DETONATOR, 10),
+  createDealerPossibleInvFrom(Enum225.REMDETONATOR, 5),
+  createDealerPossibleInvFrom(Enum225.REMOTEBOMBTRIGGER, 5),
 
-  [ Enum225.MINE, 6 ],
-  [ Enum225.RDX, 5 ],
-  [ Enum225.TNT, 5 ],
-  [ Enum225.C1, 4 ],
-  [ Enum225.HMX, 3 ],
-  [ Enum225.C4, 2 ],
+  createDealerPossibleInvFrom(Enum225.MINE, 6),
+  createDealerPossibleInvFrom(Enum225.RDX, 5),
+  createDealerPossibleInvFrom(Enum225.TNT, 5),
+  createDealerPossibleInvFrom(Enum225.C1, 4),
+  createDealerPossibleInvFrom(Enum225.HMX, 3),
+  createDealerPossibleInvFrom(Enum225.C4, 2),
 
-  [ Enum225.SHAPED_CHARGE, 5 ],
+  createDealerPossibleInvFrom(Enum225.SHAPED_CHARGE, 5),
 
   //	{	TRIP_FLARE,								2 },
   //	{	TRIP_KLAXON,							2 },
 
-  [ Enum225.GLAUNCHER, 1 ], /* grenade launcher*/
-  [ Enum225.UNDER_GLAUNCHER, 1 ], /* underslung g.l. */
-  [ Enum225.ROCKET_LAUNCHER, 1 ], /* rocket Launcher */
-  [ Enum225.MORTAR, 1 ],
+  createDealerPossibleInvFrom(Enum225.GLAUNCHER, 1), /* grenade launcher*/
+  createDealerPossibleInvFrom(Enum225.UNDER_GLAUNCHER, 1), /* underslung g.l. */
+  createDealerPossibleInvFrom(Enum225.ROCKET_LAUNCHER, 1), /* rocket Launcher */
+  createDealerPossibleInvFrom(Enum225.MORTAR, 1),
 
-  [ Enum225.METALDETECTOR, 2 ],
-  [ Enum225.WIRECUTTERS, 1 ],
-  [ Enum225.DUCT_TAPE, 1 ],
+  createDealerPossibleInvFrom(Enum225.METALDETECTOR, 2),
+  createDealerPossibleInvFrom(Enum225.WIRECUTTERS, 1),
+  createDealerPossibleInvFrom(Enum225.DUCT_TAPE, 1),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Franz	(Expensive pawn shop )
 //
 let gFranzInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.NIGHTGOGGLES, 3 ],
+  createDealerPossibleInvFrom(Enum225.NIGHTGOGGLES, 3),
 
-  [ Enum225.LASERSCOPE, 3 ],
-  [ Enum225.METALDETECTOR, 2 ],
-  [ Enum225.EXTENDEDEAR, 2 ],
+  createDealerPossibleInvFrom(Enum225.LASERSCOPE, 3),
+  createDealerPossibleInvFrom(Enum225.METALDETECTOR, 2),
+  createDealerPossibleInvFrom(Enum225.EXTENDEDEAR, 2),
 
-  [ Enum225.DART_GUN, 1 ],
+  createDealerPossibleInvFrom(Enum225.DART_GUN, 1),
 
-  [ Enum225.KEVLAR_VEST, 1 ],
-  [ Enum225.KEVLAR_LEGGINGS, 1 ],
-  [ Enum225.KEVLAR_HELMET, 1 ],
-  [ Enum225.KEVLAR2_VEST, 1 ],
-  [ Enum225.SPECTRA_VEST, 1 ],
-  [ Enum225.SPECTRA_LEGGINGS, 1 ],
-  [ Enum225.SPECTRA_HELMET, 1 ],
+  createDealerPossibleInvFrom(Enum225.KEVLAR_VEST, 1),
+  createDealerPossibleInvFrom(Enum225.KEVLAR_LEGGINGS, 1),
+  createDealerPossibleInvFrom(Enum225.KEVLAR_HELMET, 1),
+  createDealerPossibleInvFrom(Enum225.KEVLAR2_VEST, 1),
+  createDealerPossibleInvFrom(Enum225.SPECTRA_VEST, 1),
+  createDealerPossibleInvFrom(Enum225.SPECTRA_LEGGINGS, 1),
+  createDealerPossibleInvFrom(Enum225.SPECTRA_HELMET, 1),
 
-  [ Enum225.CERAMIC_PLATES, 1 ],
+  createDealerPossibleInvFrom(Enum225.CERAMIC_PLATES, 1),
 
-  [ Enum225.CAMOUFLAGEKIT, 1 ],
+  createDealerPossibleInvFrom(Enum225.CAMOUFLAGEKIT, 1),
 
-  [ Enum225.VIDEO_CAMERA, 1 ], // for robot quest
+  createDealerPossibleInvFrom(Enum225.VIDEO_CAMERA, 1), // for robot quest
 
-  [ Enum225.LAME_BOY, 1 ],
-  [ Enum225.FUMBLE_PAK, 1 ],
+  createDealerPossibleInvFrom(Enum225.LAME_BOY, 1),
+  createDealerPossibleInvFrom(Enum225.FUMBLE_PAK, 1),
 
-  [ Enum225.GOLDWATCH, 1 ],
-  [ Enum225.GOLFCLUBS, 1 ],
+  createDealerPossibleInvFrom(Enum225.GOLDWATCH, 1),
+  createDealerPossibleInvFrom(Enum225.GOLFCLUBS, 1),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Keith		( Cheap Pawn Shop )
 //
 let gKeithInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.FIRSTAIDKIT, 5 ],
+  createDealerPossibleInvFrom(Enum225.FIRSTAIDKIT, 5),
 
   // WARNING: Keith must not carry any guns, it would conflict with his story/quest
 
-  [ Enum225.COMBAT_KNIFE, 2 ],
-  [ Enum225.THROWING_KNIFE, 3 ],
-  [ Enum225.BRASS_KNUCKLES, 1 ],
-  [ Enum225.MACHETE, 1 ],
+  createDealerPossibleInvFrom(Enum225.COMBAT_KNIFE, 2),
+  createDealerPossibleInvFrom(Enum225.THROWING_KNIFE, 3),
+  createDealerPossibleInvFrom(Enum225.BRASS_KNUCKLES, 1),
+  createDealerPossibleInvFrom(Enum225.MACHETE, 1),
 
-  [ Enum225.SUNGOGGLES, 3 ],
-  [ Enum225.FLAK_JACKET, 2 ],
-  [ Enum225.STEEL_HELMET, 3 ],
-  [ Enum225.LEATHER_JACKET, 1 ],
+  createDealerPossibleInvFrom(Enum225.SUNGOGGLES, 3),
+  createDealerPossibleInvFrom(Enum225.FLAK_JACKET, 2),
+  createDealerPossibleInvFrom(Enum225.STEEL_HELMET, 3),
+  createDealerPossibleInvFrom(Enum225.LEATHER_JACKET, 1),
 
-  [ Enum225.CANTEEN, 5 ],
-  [ Enum225.CROWBAR, 1 ],
-  [ Enum225.JAR, 6 ],
+  createDealerPossibleInvFrom(Enum225.CANTEEN, 5),
+  createDealerPossibleInvFrom(Enum225.CROWBAR, 1),
+  createDealerPossibleInvFrom(Enum225.JAR, 6),
 
-  [ Enum225.TOOLKIT, 1 ],
-  [ Enum225.GASMASK, 1 ],
+  createDealerPossibleInvFrom(Enum225.TOOLKIT, 1),
+  createDealerPossibleInvFrom(Enum225.GASMASK, 1),
 
-  [ Enum225.SILVER_PLATTER, 1 ],
+  createDealerPossibleInvFrom(Enum225.SILVER_PLATTER, 1),
 
-  [ Enum225.WALKMAN, 1 ],
-  [ Enum225.PORTABLETV, 1 ],
+  createDealerPossibleInvFrom(Enum225.WALKMAN, 1),
+  createDealerPossibleInvFrom(Enum225.PORTABLETV, 1),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Sam		( Hardware )
 //
 let gSamInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.FIRSTAIDKIT, 3 ],
+  createDealerPossibleInvFrom(Enum225.FIRSTAIDKIT, 3),
 
-  [ Enum225.LOCKSMITHKIT, 4 ],
-  [ Enum225.TOOLKIT, 3 ],
+  createDealerPossibleInvFrom(Enum225.LOCKSMITHKIT, 4),
+  createDealerPossibleInvFrom(Enum225.TOOLKIT, 3),
 
-  [ Enum225.CANTEEN, 5 ],
+  createDealerPossibleInvFrom(Enum225.CANTEEN, 5),
 
-  [ Enum225.CROWBAR, 3 ],
-  [ Enum225.WIRECUTTERS, 3 ],
+  createDealerPossibleInvFrom(Enum225.CROWBAR, 3),
+  createDealerPossibleInvFrom(Enum225.WIRECUTTERS, 3),
 
-  [ Enum225.DUCKBILL, 3 ],
-  [ Enum225.JAR, 12 ],
-  [ Enum225.BREAK_LIGHT, 12 ], // flares
+  createDealerPossibleInvFrom(Enum225.DUCKBILL, 3),
+  createDealerPossibleInvFrom(Enum225.JAR, 12),
+  createDealerPossibleInvFrom(Enum225.BREAK_LIGHT, 12), // flares
 
-  [ Enum225.METALDETECTOR, 1 ],
+  createDealerPossibleInvFrom(Enum225.METALDETECTOR, 1),
 
-  [ Enum225.VIDEO_CAMERA, 1 ],
+  createDealerPossibleInvFrom(Enum225.VIDEO_CAMERA, 1),
 
-  [ Enum225.QUICK_GLUE, 3 ],
-  [ Enum225.COPPER_WIRE, 5 ],
-  [ Enum225.BATTERIES, 10 ],
+  createDealerPossibleInvFrom(Enum225.QUICK_GLUE, 3),
+  createDealerPossibleInvFrom(Enum225.COPPER_WIRE, 5),
+  createDealerPossibleInvFrom(Enum225.BATTERIES, 10),
 
-  [ Enum225.CLIP9_15, 5 ],
-  [ Enum225.CLIP9_30, 5 ],
-  [ Enum225.CLIP38_6, 5 ],
-  [ Enum225.CLIP45_7, 5 ],
-  [ Enum225.CLIP45_30, 5 ],
-  [ Enum225.CLIP357_6, 5 ],
-  [ Enum225.CLIP357_9, 5 ],
-  [ Enum225.CLIP12G_7, 9 ],
-  [ Enum225.CLIP12G_7_BUCKSHOT, 9 ],
+  createDealerPossibleInvFrom(Enum225.CLIP9_15, 5),
+  createDealerPossibleInvFrom(Enum225.CLIP9_30, 5),
+  createDealerPossibleInvFrom(Enum225.CLIP38_6, 5),
+  createDealerPossibleInvFrom(Enum225.CLIP45_7, 5),
+  createDealerPossibleInvFrom(Enum225.CLIP45_30, 5),
+  createDealerPossibleInvFrom(Enum225.CLIP357_6, 5),
+  createDealerPossibleInvFrom(Enum225.CLIP357_9, 5),
+  createDealerPossibleInvFrom(Enum225.CLIP12G_7, 9),
+  createDealerPossibleInvFrom(Enum225.CLIP12G_7_BUCKSHOT, 9),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Jake			( Junk )
 //
 let gJakeInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.FIRSTAIDKIT, 4 ],
-  [ Enum225.MEDICKIT, 3 ],
+  createDealerPossibleInvFrom(Enum225.FIRSTAIDKIT, 4),
+  createDealerPossibleInvFrom(Enum225.MEDICKIT, 3),
 
-  [ Enum225.SW38, 1 ],
-  [ Enum225.CLIP38_6, 5 ],
+  createDealerPossibleInvFrom(Enum225.SW38, 1),
+  createDealerPossibleInvFrom(Enum225.CLIP38_6, 5),
 
-  [ Enum225.JAR, 3 ],
-  [ Enum225.CANTEEN, 2 ],
-  [ Enum225.BEER, 6 ],
+  createDealerPossibleInvFrom(Enum225.JAR, 3),
+  createDealerPossibleInvFrom(Enum225.CANTEEN, 2),
+  createDealerPossibleInvFrom(Enum225.BEER, 6),
 
-  [ Enum225.CROWBAR, 1 ],
-  [ Enum225.WIRECUTTERS, 1 ],
+  createDealerPossibleInvFrom(Enum225.CROWBAR, 1),
+  createDealerPossibleInvFrom(Enum225.WIRECUTTERS, 1),
 
-  [ Enum225.COMBAT_KNIFE, 1 ],
-  [ Enum225.THROWING_KNIFE, 1 ],
-  [ Enum225.BRASS_KNUCKLES, 1 ],
-  [ Enum225.MACHETE, 1 ],
+  createDealerPossibleInvFrom(Enum225.COMBAT_KNIFE, 1),
+  createDealerPossibleInvFrom(Enum225.THROWING_KNIFE, 1),
+  createDealerPossibleInvFrom(Enum225.BRASS_KNUCKLES, 1),
+  createDealerPossibleInvFrom(Enum225.MACHETE, 1),
 
-  [ Enum225.BREAK_LIGHT, 5 ], // flares
+  createDealerPossibleInvFrom(Enum225.BREAK_LIGHT, 5), // flares
 
-  [ Enum225.BIPOD, 1 ],
+  createDealerPossibleInvFrom(Enum225.BIPOD, 1),
 
-  [ Enum225.TSHIRT, 6 ],
-  [ Enum225.CIGARS, 3 ],
-  [ Enum225.PORNOS, 1 ],
+  createDealerPossibleInvFrom(Enum225.TSHIRT, 6),
+  createDealerPossibleInvFrom(Enum225.CIGARS, 3),
+  createDealerPossibleInvFrom(Enum225.PORNOS, 1),
 
-  [ Enum225.LOCKSMITHKIT, 1 ],
+  createDealerPossibleInvFrom(Enum225.LOCKSMITHKIT, 1),
 
   // "new" items, presumed unsafe for demo
-  [ Enum225.TSHIRT_DEIDRANNA, 2 ],
-  [ Enum225.XRAY_BULB, 1 ],
+  createDealerPossibleInvFrom(Enum225.TSHIRT_DEIDRANNA, 2),
+  createDealerPossibleInvFrom(Enum225.XRAY_BULB, 1),
 
   // additional stuff possible in real game
-  [ Enum225.GLOCK_17, 1 ], /* Glock 17        */
-  [ Enum225.GLOCK_18, 1 ], /* Glock 18        */
-  [ Enum225.BERETTA_92F, 1 ], /* Beretta 92F     */
-  [ Enum225.BERETTA_93R, 1 ], /* Beretta 93R     */
-  [ Enum225.BARRACUDA, 1 ], /* .357 Barracuda  */
-  [ Enum225.DESERTEAGLE, 1 ], /* .357 DesertEagle*/
-  [ Enum225.M1911, 1 ], /* .45 M1911			 */
+  createDealerPossibleInvFrom(Enum225.GLOCK_17, 1), /* Glock 17        */
+  createDealerPossibleInvFrom(Enum225.GLOCK_18, 1), /* Glock 18        */
+  createDealerPossibleInvFrom(Enum225.BERETTA_92F, 1), /* Beretta 92F     */
+  createDealerPossibleInvFrom(Enum225.BERETTA_93R, 1), /* Beretta 93R     */
+  createDealerPossibleInvFrom(Enum225.BARRACUDA, 1), /* .357 Barracuda  */
+  createDealerPossibleInvFrom(Enum225.DESERTEAGLE, 1), /* .357 DesertEagle*/
+  createDealerPossibleInvFrom(Enum225.M1911, 1), /* .45 M1911			 */
 
-  [ Enum225.DISCARDED_LAW, 1 ],
+  createDealerPossibleInvFrom(Enum225.DISCARDED_LAW, 1),
 
-  [ Enum225.STEEL_HELMET, 1 ],
+  createDealerPossibleInvFrom(Enum225.STEEL_HELMET, 1),
 
-  [ Enum225.TOOLKIT, 1 ],
+  createDealerPossibleInvFrom(Enum225.TOOLKIT, 1),
 
-  [ Enum225.WINE, 1 ],
-  [ Enum225.ALCOHOL, 1 ],
+  createDealerPossibleInvFrom(Enum225.WINE, 1),
+  createDealerPossibleInvFrom(Enum225.ALCOHOL, 1),
 
-  [ Enum225.GOLDWATCH, 1 ],
-  [ Enum225.GOLFCLUBS, 1 ],
-  [ Enum225.WALKMAN, 1 ],
-  [ Enum225.PORTABLETV, 1 ],
+  createDealerPossibleInvFrom(Enum225.GOLDWATCH, 1),
+  createDealerPossibleInvFrom(Enum225.GOLFCLUBS, 1),
+  createDealerPossibleInvFrom(Enum225.WALKMAN, 1),
+  createDealerPossibleInvFrom(Enum225.PORTABLETV, 1),
 
   // stuff a real pawn shop wouldn't have, but it does make him a bit more useful
-  [ Enum225.COMPOUND18, 1 ],
-  [ Enum225.CERAMIC_PLATES, 1 ],
+  createDealerPossibleInvFrom(Enum225.COMPOUND18, 1),
+  createDealerPossibleInvFrom(Enum225.CERAMIC_PLATES, 1),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Howard		( Pharmaceuticals )
 //
 let gHowardInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.FIRSTAIDKIT, 10 ],
-  [ Enum225.MEDICKIT, 5 ],
-  [ Enum225.ADRENALINE_BOOSTER, 5 ],
-  [ Enum225.REGEN_BOOSTER, 5 ],
+  createDealerPossibleInvFrom(Enum225.FIRSTAIDKIT, 10),
+  createDealerPossibleInvFrom(Enum225.MEDICKIT, 5),
+  createDealerPossibleInvFrom(Enum225.ADRENALINE_BOOSTER, 5),
+  createDealerPossibleInvFrom(Enum225.REGEN_BOOSTER, 5),
 
-  [ Enum225.ALCOHOL, 3 ],
-  [ Enum225.COMBAT_KNIFE, 2 ],
+  createDealerPossibleInvFrom(Enum225.ALCOHOL, 3),
+  createDealerPossibleInvFrom(Enum225.COMBAT_KNIFE, 2),
 
-  [ Enum225.CLIPDART_SLEEP, 5 ],
+  createDealerPossibleInvFrom(Enum225.CLIPDART_SLEEP, 5),
 
-  [ Enum225.CHEWING_GUM, 3 ],
+  createDealerPossibleInvFrom(Enum225.CHEWING_GUM, 3),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Gabby			( Creature parts and Blood )
 //
 let gGabbyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.JAR, 12 ],
-  [ Enum225.JAR_ELIXIR, 3 ],
+  createDealerPossibleInvFrom(Enum225.JAR, 12),
+  createDealerPossibleInvFrom(Enum225.JAR_ELIXIR, 3),
   // buys these, but can't supply them (player is the only source)
-  [ Enum225.JAR_CREATURE_BLOOD, 0 ],
-  [ Enum225.JAR_QUEEN_CREATURE_BLOOD, 0 ],
-  [ Enum225.BLOODCAT_CLAWS, 0 ],
-  [ Enum225.BLOODCAT_TEETH, 0 ],
-  [ Enum225.BLOODCAT_PELT, 0 ],
-  [ Enum225.CREATURE_PART_CLAWS, 0 ],
-  [ Enum225.CREATURE_PART_FLESH, 0 ],
-  [ Enum225.CREATURE_PART_ORGAN, 0 ],
+  createDealerPossibleInvFrom(Enum225.JAR_CREATURE_BLOOD, 0),
+  createDealerPossibleInvFrom(Enum225.JAR_QUEEN_CREATURE_BLOOD, 0),
+  createDealerPossibleInvFrom(Enum225.BLOODCAT_CLAWS, 0),
+  createDealerPossibleInvFrom(Enum225.BLOODCAT_TEETH, 0),
+  createDealerPossibleInvFrom(Enum225.BLOODCAT_PELT, 0),
+  createDealerPossibleInvFrom(Enum225.CREATURE_PART_CLAWS, 0),
+  createDealerPossibleInvFrom(Enum225.CREATURE_PART_FLESH, 0),
+  createDealerPossibleInvFrom(Enum225.CREATURE_PART_ORGAN, 0),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Frank  ( Alcohol )
 //
 let gFrankInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.BEER, 12 ],
-  [ Enum225.WINE, 6 ],
-  [ Enum225.ALCOHOL, 9 ],
+  createDealerPossibleInvFrom(Enum225.BEER, 12),
+  createDealerPossibleInvFrom(Enum225.WINE, 6),
+  createDealerPossibleInvFrom(Enum225.ALCOHOL, 9),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Elgin  ( Alcohol )
 //
 let gElginInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.BEER, 12 ],
-  [ Enum225.WINE, 6 ],
-  [ Enum225.ALCOHOL, 9 ],
+  createDealerPossibleInvFrom(Enum225.BEER, 12),
+  createDealerPossibleInvFrom(Enum225.WINE, 6),
+  createDealerPossibleInvFrom(Enum225.ALCOHOL, 9),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Manny  ( Alcohol )
 //
 let gMannyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.BEER, 12 ],
-  [ Enum225.WINE, 6 ],
-  [ Enum225.ALCOHOL, 9 ],
+  createDealerPossibleInvFrom(Enum225.BEER, 12),
+  createDealerPossibleInvFrom(Enum225.WINE, 6),
+  createDealerPossibleInvFrom(Enum225.ALCOHOL, 9),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Herve Santos		( Alcohol )
 //
 let gHerveInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.BEER, 12 ],
-  [ Enum225.WINE, 6 ],
-  [ Enum225.ALCOHOL, 9 ],
+  createDealerPossibleInvFrom(Enum225.BEER, 12),
+  createDealerPossibleInvFrom(Enum225.WINE, 6),
+  createDealerPossibleInvFrom(Enum225.ALCOHOL, 9),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Peter Santos ( Alcohol )
 //
 let gPeterInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.BEER, 12 ],
-  [ Enum225.WINE, 6 ],
-  [ Enum225.ALCOHOL, 9 ],
+  createDealerPossibleInvFrom(Enum225.BEER, 12),
+  createDealerPossibleInvFrom(Enum225.WINE, 6),
+  createDealerPossibleInvFrom(Enum225.ALCOHOL, 9),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Alberto Santos		( Alcohol )
 //
 let gAlbertoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.BEER, 12 ],
-  [ Enum225.WINE, 6 ],
-  [ Enum225.ALCOHOL, 9 ],
+  createDealerPossibleInvFrom(Enum225.BEER, 12),
+  createDealerPossibleInvFrom(Enum225.WINE, 6),
+  createDealerPossibleInvFrom(Enum225.ALCOHOL, 9),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
 // Carlo Santos		( Alcohol )
 //
 let gCarloInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ Enum225.BEER, 12 ],
-  [ Enum225.WINE, 6 ],
-  [ Enum225.ALCOHOL, 9 ],
+  createDealerPossibleInvFrom(Enum225.BEER, 12),
+  createDealerPossibleInvFrom(Enum225.WINE, 6),
+  createDealerPossibleInvFrom(Enum225.ALCOHOL, 9),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
@@ -538,15 +538,15 @@ let gCarloInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 
 let gMickyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // ONLY BUYS THIS STUFF, DOESN'T SELL IT
-  [ Enum225.BLOODCAT_CLAWS, 0 ],
-  [ Enum225.BLOODCAT_TEETH, 0 ],
-  [ Enum225.BLOODCAT_PELT, 0 ],
-  [ Enum225.CREATURE_PART_CLAWS, 0 ],
-  [ Enum225.CREATURE_PART_FLESH, 0 ],
-  [ Enum225.CREATURE_PART_ORGAN, 0 ],
-  [ Enum225.JAR_QUEEN_CREATURE_BLOOD, 0 ],
+  createDealerPossibleInvFrom(Enum225.BLOODCAT_CLAWS, 0),
+  createDealerPossibleInvFrom(Enum225.BLOODCAT_TEETH, 0),
+  createDealerPossibleInvFrom(Enum225.BLOODCAT_PELT, 0),
+  createDealerPossibleInvFrom(Enum225.CREATURE_PART_CLAWS, 0),
+  createDealerPossibleInvFrom(Enum225.CREATURE_PART_FLESH, 0),
+  createDealerPossibleInvFrom(Enum225.CREATURE_PART_ORGAN, 0),
+  createDealerPossibleInvFrom(Enum225.JAR_QUEEN_CREATURE_BLOOD, 0),
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
@@ -555,7 +555,7 @@ let gMickyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 let gArnieInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // NO INVENTORY
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
@@ -564,7 +564,7 @@ let gArnieInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 let gPerkoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // NO INVENTORY
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 //
@@ -573,7 +573,7 @@ let gPerkoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 let gFredoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // NO INVENTORY
 
-  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+  createDealerPossibleInvFrom(LAST_DEALER_ITEM, NO_DEALER_ITEM), // Last One
 ];
 
 // prototypes
