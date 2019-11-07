@@ -320,6 +320,16 @@ interface INV_HELPTEXT {
   sString2: string[] /* STR16[NUM_INV_HELPTEXT_ENTRIES] */;
 }
 
+function createInvHelpTextFrom(iXPosition: INT32[], iYPosition: INT32[], iWidth: INT32[], sString1: string[], sString2: string[]): INV_HELPTEXT {
+  return {
+    iXPosition,
+    iYPosition,
+    iWidth,
+    sString1,
+    sString2,
+  };
+}
+
 let gWeaponStats: INV_DESC_STATS[] /* [] */ = [
   createInvDescStatsFrom(202, 25, 83),
   createInvDescStatsFrom(202, 15, 83),
@@ -385,13 +395,13 @@ let gMapItemDescProsConsRects: SGPRect[] /* [] */ = [
   createSGPRectFrom(0, 239, 313, 246),
 ];
 
-let gItemDescHelpText: INV_HELPTEXT = [
+let gItemDescHelpText: INV_HELPTEXT = createInvHelpTextFrom(
   [ 69 ], // x locations
   [ 12 ], // y locations
   [ 170 ], // widths
   [ Message[Enum334.STR_ATTACHMENT_HELP] ],
   [ Message[Enum334.STR_ATTACHMENT_INVALID_HELP] ],
-];
+);
 
 let gfItemDescHelpTextOffset: boolean = false;
 
