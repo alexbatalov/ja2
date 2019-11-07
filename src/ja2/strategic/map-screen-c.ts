@@ -302,12 +302,12 @@ RGBCOLOR GlowColorsC[]={
 */
 
 let gMapSortButtons: SGPPoint[] /* [MAX_SORT_METHODS] */ = [
-  [ 12, 125 ],
-  [ 68, 125 ],
-  [ 124, 125 ],
-  [ 148, 125 ],
-  [ 185, 125 ],
-  [ 223, 125 ],
+  createSGPPointFrom(12, 125),
+  createSGPPointFrom(68, 125),
+  createSGPPointFrom(124, 125),
+  createSGPPointFrom(148, 125),
+  createSGPPointFrom(185, 125),
+  createSGPPointFrom(223, 125),
 ];
 
 // map screen's inventory panel pockets - top right corner coordinates

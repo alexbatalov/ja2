@@ -7,7 +7,7 @@ const BOX_BUTTON_HEIGHT = 20;
 export let fShowTownInfo: boolean = false;
 
 export let ghTownMineBox: INT32 = -1;
-let TownMinePosition: SGPPoint = [ 300, 150 ];
+let TownMinePosition: SGPPoint = createSGPPointFrom(300, 150);
 let TownMineDimensions: SGPRect = createSGPRectFrom(0, 0, 240, 60);
 
 let bCurrentTownMineSectorX: INT8 = 0;

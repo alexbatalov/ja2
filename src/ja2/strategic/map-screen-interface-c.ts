@@ -78,17 +78,17 @@ const ANIMATED_BATTLEICON_FRAME_TIME = 80;
 const MAX_FRAME_COUNT_FOR_ANIMATED_BATTLE_ICON = 12;
 
 let pMapScreenFastHelpLocationList: SGPPoint[] /* [] */ = [
-  [ 25, 200 ],
-  [ 150, 200 ],
-  [ 450, 430 ],
-  [ 400, 200 ],
-  [ 250, 100 ],
-  [ 100, 100 ],
-  [ 100, 100 ],
-  [ 100, 100 ],
-  [ 100, 100 ],
-  [ 150, 200 ],
-  [ 100, 100 ],
+  createSGPPointFrom(25, 200),
+  createSGPPointFrom(150, 200),
+  createSGPPointFrom(450, 430),
+  createSGPPointFrom(400, 200),
+  createSGPPointFrom(250, 100),
+  createSGPPointFrom(100, 100),
+  createSGPPointFrom(100, 100),
+  createSGPPointFrom(100, 100),
+  createSGPPointFrom(100, 100),
+  createSGPPointFrom(150, 200),
+  createSGPPointFrom(100, 100),
 ];
 
 let pMapScreenFastHelpWidthList: INT32[] /* [] */ = [
@@ -141,7 +141,7 @@ export let gCharactersList: MapScreenCharacterSt[] /* [MAX_CHARACTER_COUNT + 1] 
 
 export let gMapStatusBarsRegion: MOUSE_REGION;
 
-let MovePosition: SGPPoint = [ 450, 100 ];
+let MovePosition: SGPPoint = createSGPPointFrom(450, 100);
 
 // which lines are selected? .. for assigning groups of mercs to the same thing
 export let fSelectedListOfMercsForMapScreen: boolean[] /* [MAX_CHARACTER_COUNT] */;
@@ -223,28 +223,28 @@ let fRebuildMoveBox: boolean = false;
 
 // positions for all the pop up boxes
 export let ContractDimensions: SGPRect = createSGPRectFrom(0, 0, 140, 60);
-export let ContractPosition: SGPPoint = [ 120, 50 ];
+export let ContractPosition: SGPPoint = createSGPPointFrom(120, 50);
 export let AttributeDimensions: SGPRect = createSGPRectFrom(0, 0, 100, 95);
-export let AttributePosition: SGPPoint = [ 220, 150 ];
+export let AttributePosition: SGPPoint = createSGPPointFrom(220, 150);
 export let TrainDimensions: SGPRect = createSGPRectFrom(0, 0, 100, 95);
-export let TrainPosition: SGPPoint = [ 160, 150 ];
+export let TrainPosition: SGPPoint = createSGPPointFrom(160, 150);
 export let VehicleDimensions: SGPRect = createSGPRectFrom(0, 0, 80, 60);
-export let VehiclePosition: SGPPoint = [ 160, 150 ];
+export let VehiclePosition: SGPPoint = createSGPPointFrom(160, 150);
 
-export let RepairPosition: SGPPoint = [ 160, 150 ];
+export let RepairPosition: SGPPoint = createSGPPointFrom(160, 150);
 export let RepairDimensions: SGPRect = createSGPRectFrom(0, 0, 80, 80);
 
 export let AssignmentDimensions: SGPRect = createSGPRectFrom(0, 0, 100, 95);
-export let AssignmentPosition: SGPPoint = [ 120, 150 ];
-export let SquadPosition: SGPPoint = [ 160, 150 ];
+export let AssignmentPosition: SGPPoint = createSGPPointFrom(120, 150);
+export let SquadPosition: SGPPoint = createSGPPointFrom(160, 150);
 export let SquadDimensions: SGPRect = createSGPRectFrom(0, 0, 140, 60);
 
-export let OrigContractPosition: SGPPoint = [ 120, 50 ];
-export let OrigAttributePosition: SGPPoint = [ 220, 150 ];
-export let OrigSquadPosition: SGPPoint = [ 160, 150 ];
-export let OrigAssignmentPosition: SGPPoint = [ 120, 150 ];
-export let OrigTrainPosition: SGPPoint = [ 160, 150 ];
-export let OrigVehiclePosition: SGPPoint = [ 160, 150 ];
+export let OrigContractPosition: SGPPoint = createSGPPointFrom(120, 50);
+export let OrigAttributePosition: SGPPoint = createSGPPointFrom(220, 150);
+export let OrigSquadPosition: SGPPoint = createSGPPointFrom(160, 150);
+export let OrigAssignmentPosition: SGPPoint = createSGPPointFrom(120, 150);
+export let OrigTrainPosition: SGPPoint = createSGPPointFrom(160, 150);
+export let OrigVehiclePosition: SGPPoint = createSGPPointFrom(160, 150);
 
 // extern BOOLEAN fMapExitDueToMessageBox;
 

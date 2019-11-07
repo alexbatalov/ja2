@@ -55,6 +55,13 @@ export interface SGPPoint {
   iY: INT32;
 }
 
+export function createSGPPointFrom(iX: INT32, iY: INT32): SGPPoint {
+  return {
+    iX,
+    iY,
+  };
+}
+
 interface SGPRange {
   Min: INT32;
   Max: INT32;
