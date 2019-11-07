@@ -414,25 +414,34 @@ interface AttachmentInfoStruct {
   bAttachmentSkillCheckMod: INT8;
 }
 
+function createAttachmentInfoStructFrom(usItem: UINT16, uiItemClass: UINT32, bAttachmentSkillCheck: INT8, bAttachmentSkillCheckMod: INT8): AttachmentInfoStruct {
+  return {
+    usItem,
+    uiItemClass,
+    bAttachmentSkillCheck,
+    bAttachmentSkillCheckMod,
+  };
+}
+
 // NB hack:  if an item appears in this array with an item class of IC_MISC,
 // it is a slot used for noting the skill check required for a merge or multi-item attachment
 
 let AttachmentInfo: AttachmentInfoStruct[] /* [] */ = [
-  [ Enum225.SILENCER, IC_GUN, Enum255.NO_CHECK, 0 ],
-  [ Enum225.SNIPERSCOPE, IC_GUN, Enum255.NO_CHECK, 0 ],
-  [ Enum225.LASERSCOPE, IC_GUN, Enum255.NO_CHECK, 0 ],
-  [ Enum225.BIPOD, IC_GUN, Enum255.NO_CHECK, 0 ],
-  [ Enum225.UNDER_GLAUNCHER, IC_GUN, Enum255.NO_CHECK, 0 ],
-  [ Enum225.DUCKBILL, IC_GUN, Enum255.NO_CHECK, 0 ],
-  [ Enum225.SPRING_AND_BOLT_UPGRADE, IC_GUN, Enum255.ATTACHING_SPECIAL_ITEM_CHECK, 0 ],
-  [ Enum225.GUN_BARREL_EXTENDER, IC_GUN, Enum255.ATTACHING_SPECIAL_ITEM_CHECK, 0 ],
-  [ Enum225.DETONATOR, IC_BOMB, Enum255.ATTACHING_DETONATOR_CHECK, 0 ],
-  [ Enum225.REMDETONATOR, IC_BOMB, Enum255.ATTACHING_REMOTE_DETONATOR_CHECK, -10 ],
-  [ Enum225.REMDETONATOR, IC_BOMB, Enum255.ATTACHING_REMOTE_DETONATOR_CHECK, -10 ],
-  [ Enum225.XRAY_BULB, IC_NONE, Enum255.ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK, -15 ],
-  [ Enum225.COPPER_WIRE, IC_NONE, Enum255.ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK, +20 ],
-  [ Enum225.CERAMIC_PLATES, IC_ARMOUR, Enum255.NO_CHECK, 0 ],
-  [ 0, 0, 0, 0 ],
+  createAttachmentInfoStructFrom(Enum225.SILENCER, IC_GUN, Enum255.NO_CHECK, 0),
+  createAttachmentInfoStructFrom(Enum225.SNIPERSCOPE, IC_GUN, Enum255.NO_CHECK, 0),
+  createAttachmentInfoStructFrom(Enum225.LASERSCOPE, IC_GUN, Enum255.NO_CHECK, 0),
+  createAttachmentInfoStructFrom(Enum225.BIPOD, IC_GUN, Enum255.NO_CHECK, 0),
+  createAttachmentInfoStructFrom(Enum225.UNDER_GLAUNCHER, IC_GUN, Enum255.NO_CHECK, 0),
+  createAttachmentInfoStructFrom(Enum225.DUCKBILL, IC_GUN, Enum255.NO_CHECK, 0),
+  createAttachmentInfoStructFrom(Enum225.SPRING_AND_BOLT_UPGRADE, IC_GUN, Enum255.ATTACHING_SPECIAL_ITEM_CHECK, 0),
+  createAttachmentInfoStructFrom(Enum225.GUN_BARREL_EXTENDER, IC_GUN, Enum255.ATTACHING_SPECIAL_ITEM_CHECK, 0),
+  createAttachmentInfoStructFrom(Enum225.DETONATOR, IC_BOMB, Enum255.ATTACHING_DETONATOR_CHECK, 0),
+  createAttachmentInfoStructFrom(Enum225.REMDETONATOR, IC_BOMB, Enum255.ATTACHING_REMOTE_DETONATOR_CHECK, -10),
+  createAttachmentInfoStructFrom(Enum225.REMDETONATOR, IC_BOMB, Enum255.ATTACHING_REMOTE_DETONATOR_CHECK, -10),
+  createAttachmentInfoStructFrom(Enum225.XRAY_BULB, IC_NONE, Enum255.ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK, -15),
+  createAttachmentInfoStructFrom(Enum225.COPPER_WIRE, IC_NONE, Enum255.ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK, +20),
+  createAttachmentInfoStructFrom(Enum225.CERAMIC_PLATES, IC_ARMOUR, Enum255.NO_CHECK, 0),
+  createAttachmentInfoStructFrom(0, 0, 0, 0),
 ];
 
 let Attachment: UINT16[][] /* [][2] */ = [
