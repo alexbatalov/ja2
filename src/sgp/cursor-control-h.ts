@@ -37,6 +37,17 @@ export interface CursorFileData {
   hVObject: HVOBJECT;
 }
 
+export function createCursorFileDataFrom(ubFilename: string, fLoaded: boolean, uiIndex: UINT32, ubFlags: UINT8, ubNumberOfFrames: UINT8, hVObject: HVOBJECT): CursorFileData {
+  return {
+    ubFilename,
+    fLoaded,
+    uiIndex,
+    ubFlags,
+    ubNumberOfFrames,
+    hVObject,
+  };
+}
+
 export interface CursorImage {
   uiFileIndex: UINT32;
   uiSubIndex: UINT16;
