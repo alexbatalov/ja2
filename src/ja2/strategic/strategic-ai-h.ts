@@ -51,6 +51,19 @@ export interface ARMY_COMPOSITION {
   bPadding: INT8[] /* [10] */;
 }
 
+export function createArmyCompositionFrom(iReadability: INT32, bPriority: INT8, bElitePercentage: INT8, bTroopPercentage: INT8, bAdminPercentage: INT8, bDesiredPopulation: INT8, bStartPopulation: INT8, bPadding: INT8[]): ARMY_COMPOSITION {
+  return {
+    iReadability,
+    bPriority,
+    bElitePercentage,
+    bTroopPercentage,
+    bAdminPercentage,
+    bDesiredPopulation,
+    bStartPopulation,
+    bPadding,
+  };
+}
+
 // Defines the patrol groups -- movement groups.
 export interface PATROL_GROUP {
   bSize: INT8;
