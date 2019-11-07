@@ -56,6 +56,16 @@ export interface CursorImage {
   usPosY: INT16;
 }
 
+export function createCursorImageFrom(uiFileIndex: UINT32, uiSubIndex: UINT16, uiCurrentFrame: UINT32, usPosX: INT16, usPosY: INT16): CursorImage {
+  return {
+    uiFileIndex,
+    uiSubIndex,
+    uiCurrentFrame,
+    usPosX,
+    usPosY,
+  };
+}
+
 export interface CursorData {
   Composites: CursorImage[] /* [MAX_COMPOSITES] */;
   usNumComposites: UINT16;
@@ -65,6 +75,19 @@ export interface CursorData {
   usWidth: UINT16;
   bFlags: UINT8;
   bFlashIndex: UINT8;
+}
+
+export function createCursorDataFrom(Composites: CursorImage[], usNumComposites: UINT16, sOffsetX: INT16, sOffsetY: INT16, usHeight: UINT16, usWidth: UINT16, bFlags: UINT8, bFlashIndex: UINT8): CursorData {
+  return {
+    Composites,
+    usNumComposites,
+    sOffsetX,
+    sOffsetY,
+    usHeight,
+    usWidth,
+    bFlags,
+    bFlashIndex,
+  };
 }
 
 export type MOUSEBLT_HOOK = () => void;
