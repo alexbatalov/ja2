@@ -282,6 +282,14 @@ interface INV_DESC_STATS {
   sValDx: INT16;
 }
 
+function createInvDescStatsFrom(sX: INT16, sY: INT16, sValDx: INT16): INV_DESC_STATS {
+  return {
+    sX,
+    sY,
+    sValDx,
+  };
+}
+
 interface INV_ATTACHXY {
   sX: INT16;
   sY: INT16;
@@ -302,43 +310,43 @@ interface INV_HELPTEXT {
 }
 
 let gWeaponStats: INV_DESC_STATS[] /* [] */ = [
-  [ 202, 25, 83 ],
-  [ 202, 15, 83 ],
-  [ 202, 15, 83 ],
-  [ 265, 40, 20 ],
-  [ 202, 40, 32 ],
-  [ 202, 50, 32 ],
-  [ 265, 50, 20 ],
-  [ 234, 50, 0 ],
-  [ 290, 50, 0 ],
+  createInvDescStatsFrom(202, 25, 83),
+  createInvDescStatsFrom(202, 15, 83),
+  createInvDescStatsFrom(202, 15, 83),
+  createInvDescStatsFrom(265, 40, 20),
+  createInvDescStatsFrom(202, 40, 32),
+  createInvDescStatsFrom(202, 50, 32),
+  createInvDescStatsFrom(265, 50, 20),
+  createInvDescStatsFrom(234, 50, 0),
+  createInvDescStatsFrom(290, 50, 0),
 ];
 
 // displayed AFTER the mass/weight/"Kg" line
 let gMoneyStats: INV_DESC_STATS[] /* [] */ = [
-  [ 202, 14, 78 ],
-  [ 212, 25, 78 ],
-  [ 202, 40, 78 ],
-  [ 212, 51, 78 ],
+  createInvDescStatsFrom(202, 14, 78),
+  createInvDescStatsFrom(212, 25, 78),
+  createInvDescStatsFrom(202, 40, 78),
+  createInvDescStatsFrom(212, 51, 78),
 ];
 
 // displayed AFTER the mass/weight/"Kg" line
 let gMapMoneyStats: INV_DESC_STATS[] /* [] */ = [
-  [ 51, 97, 45 ],
-  [ 61, 107, 75 ],
-  [ 51, 125, 45 ],
-  [ 61, 135, 70 ],
+  createInvDescStatsFrom(51, 97, 45),
+  createInvDescStatsFrom(61, 107, 75),
+  createInvDescStatsFrom(51, 125, 45),
+  createInvDescStatsFrom(61, 135, 70),
 ];
 
 let gMapWeaponStats: INV_DESC_STATS[] /* [] */ = [
-  [ 72 - 20, 20 + 80 + 8, 80 ],
-  [ 72 - 20, 20 + 80 - 2, 80 ],
-  [ 72 - 20, 20 + 80 - 2, 80 ],
-  [ 72 + 65 - 20, 40 + 80 + 4, 21 ],
-  [ 72 - 20, 40 + 80 + 4, 30 ],
-  [ 72 - 20, 53 + 80 + 2, 30 ],
-  [ 72 + 65 - 20, 53 + 80 + 2, 25 ],
-  [ 86, 53 + 80 + 2, 0 ],
-  [ 145, 53 + 80 + 2, 0 ],
+  createInvDescStatsFrom(72 - 20, 20 + 80 + 8, 80),
+  createInvDescStatsFrom(72 - 20, 20 + 80 - 2, 80),
+  createInvDescStatsFrom(72 - 20, 20 + 80 - 2, 80),
+  createInvDescStatsFrom(72 + 65 - 20, 40 + 80 + 4, 21),
+  createInvDescStatsFrom(72 - 20, 40 + 80 + 4, 30),
+  createInvDescStatsFrom(72 - 20, 53 + 80 + 2, 30),
+  createInvDescStatsFrom(72 + 65 - 20, 53 + 80 + 2, 25),
+  createInvDescStatsFrom(86, 53 + 80 + 2, 0),
+  createInvDescStatsFrom(145, 53 + 80 + 2, 0),
 ];
 
 let gItemDescAttachmentsXY: INV_ATTACHXY[] /* [] */ = [
