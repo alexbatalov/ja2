@@ -76,6 +76,19 @@ export interface PATROL_GROUP {
   bPadding: INT8[] /* [10] */;
 }
 
+export function createPatrolGroupFrom(bSize: INT8, bPriority: INT8, ubSectorID: UINT8[], bFillPermittedAfterDayMod100: INT8, ubGroupID: UINT8, bWeight: INT8, ubPendingGroupID: UINT8, bPadding: INT8[]): PATROL_GROUP {
+  return {
+    bSize,
+    bPriority,
+    ubSectorID,
+    bFillPermittedAfterDayMod100,
+    ubGroupID,
+    bWeight,
+    ubPendingGroupID,
+    bPadding,
+  };
+}
+
 // Defines all stationary defence forces.
 export interface GARRISON_GROUP {
   ubSectorID: UINT8;
