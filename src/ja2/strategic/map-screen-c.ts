@@ -312,30 +312,29 @@ let gMapSortButtons: SGPPoint[] /* [MAX_SORT_METHODS] */ = [
 
 // map screen's inventory panel pockets - top right corner coordinates
 let gMapScreenInvPocketXY: INV_REGION_DESC[] /* [] */ = [
-  [ 204, 116 ], // HELMETPOS
-  [ 204, 145 ], // VESTPOS
-  [ 204, 205 ], // LEGPOS,
-  [ 21, 116 ], // HEAD1POS
-  [ 21, 140 ], // HEAD2POS
-  [ 21, 194 ], // HANDPOS,
-  [ 21, 218 ], // SECONDHANDPOS
-  [ 98, 251 ], // BIGPOCK1
-  [ 98, 275 ], // BIGPOCK2
-  [ 98, 299 ], // BIGPOCK3
-  [ 98, 323 ], // BIGPOCK4
-  [ 22, 251 ], // SMALLPOCK1
-  [ 22, 275 ], // SMALLPOCK2
-  [ 22, 299 ], // SMALLPOCK3
-  [ 22, 323 ], // SMALLPOCK4
-  [ 60, 251 ], // SMALLPOCK5
-  [ 60, 275 ], // SMALLPOCK6
-  [ 60, 299 ], // SMALLPOCK7
-  [ 60, 323 ], // SMALLPOCK8
+  createInvRegionDescFrom(204, 116), // HELMETPOS
+  createInvRegionDescFrom(204, 145), // VESTPOS
+  createInvRegionDescFrom(204, 205), // LEGPOS,
+  createInvRegionDescFrom(21, 116), // HEAD1POS
+  createInvRegionDescFrom(21, 140), // HEAD2POS
+  createInvRegionDescFrom(21, 194), // HANDPOS,
+  createInvRegionDescFrom(21, 218), // SECONDHANDPOS
+  createInvRegionDescFrom(98, 251), // BIGPOCK1
+  createInvRegionDescFrom(98, 275), // BIGPOCK2
+  createInvRegionDescFrom(98, 299), // BIGPOCK3
+  createInvRegionDescFrom(98, 323), // BIGPOCK4
+  createInvRegionDescFrom(22, 251), // SMALLPOCK1
+  createInvRegionDescFrom(22, 275), // SMALLPOCK2
+  createInvRegionDescFrom(22, 299), // SMALLPOCK3
+  createInvRegionDescFrom(22, 323), // SMALLPOCK4
+  createInvRegionDescFrom(60, 251), // SMALLPOCK5
+  createInvRegionDescFrom(60, 275), // SMALLPOCK6
+  createInvRegionDescFrom(60, 299), // SMALLPOCK7
+  createInvRegionDescFrom(60, 323), // SMALLPOCK8
 ];
 
-let gSCamoXY: INV_REGION_DESC = [
-  INV_BODY_X, INV_BODY_Y // X, Y Location of Map screen's Camouflage region
-];
+// X, Y Location of Map screen's Camouflage region
+let gSCamoXY: INV_REGION_DESC = createInvRegionDescFrom(INV_BODY_X, INV_BODY_Y);
 
 // GLOBAL VARIABLES (OURS)
 

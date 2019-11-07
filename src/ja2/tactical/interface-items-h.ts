@@ -29,6 +29,13 @@ export interface INV_REGION_DESC {
   sY: INT16;
 }
 
+export function createInvRegionDescFrom(sX: INT16, sY: INT16): INV_REGION_DESC {
+  return {
+    sX,
+    sY,
+  };
+}
+
 // THIS FUNCTION IS CALLED TO RENDER AN ITEM.
 // uiBuffer - The Dest Video Surface - can only be FRAME_BUFFER or guiSAVEBUFFER
 // pSoldier - used for determining whether burst mode needs display

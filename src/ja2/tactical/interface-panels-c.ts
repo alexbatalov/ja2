@@ -238,30 +238,29 @@ let gfDeductPoints: boolean;
 
 // ARRAY FOR INV PANEL INTERFACE ITEM POSITIONS
 let gSMInvPocketXY: INV_REGION_DESC[] /* [] */ = [
-  [ 344, 347 ], // HELMETPOS
-  [ 344, 376 ], // VESTPOS
-  [ 344, 436 ], // LEGPOS,
-  [ 226, 347 ], // HEAD1POS
-  [ 226, 371 ], // HEAD2POS
-  [ 226, 424 ], // HANDPOS,
-  [ 226, 448 ], // SECONDHANDPOS
-  [ 468, 346 ], // BIGPOCK1
-  [ 468, 370 ], // BIGPOCK2
-  [ 468, 394 ], // BIGPOCK3
-  [ 468, 418 ], // BIGPOCK4
-  [ 396, 346 ], // SMALLPOCK1
-  [ 396, 370 ], // SMALLPOCK2
-  [ 396, 394 ], // SMALLPOCK3
-  [ 396, 418 ], // SMALLPOCK4
-  [ 432, 346 ], // SMALLPOCK5
-  [ 432, 370 ], // SMALLPOCK6
-  [ 432, 394 ], // SMALLPOCK7
-  [ 432, 418 ], // SMALLPOCK8
+  createInvRegionDescFrom(344, 347), // HELMETPOS
+  createInvRegionDescFrom(344, 376), // VESTPOS
+  createInvRegionDescFrom(344, 436), // LEGPOS,
+  createInvRegionDescFrom(226, 347), // HEAD1POS
+  createInvRegionDescFrom(226, 371), // HEAD2POS
+  createInvRegionDescFrom(226, 424), // HANDPOS,
+  createInvRegionDescFrom(226, 448), // SECONDHANDPOS
+  createInvRegionDescFrom(468, 346), // BIGPOCK1
+  createInvRegionDescFrom(468, 370), // BIGPOCK2
+  createInvRegionDescFrom(468, 394), // BIGPOCK3
+  createInvRegionDescFrom(468, 418), // BIGPOCK4
+  createInvRegionDescFrom(396, 346), // SMALLPOCK1
+  createInvRegionDescFrom(396, 370), // SMALLPOCK2
+  createInvRegionDescFrom(396, 394), // SMALLPOCK3
+  createInvRegionDescFrom(396, 418), // SMALLPOCK4
+  createInvRegionDescFrom(432, 346), // SMALLPOCK5
+  createInvRegionDescFrom(432, 370), // SMALLPOCK6
+  createInvRegionDescFrom(432, 394), // SMALLPOCK7
+  createInvRegionDescFrom(432, 418), // SMALLPOCK8
 ];
 
-let gSMCamoXY: INV_REGION_DESC = [
-  SM_BODYINV_X, SM_BODYINV_Y // X, Y Location of cammo region
-];
+// X, Y Location of cammo region
+let gSMCamoXY: INV_REGION_DESC = createInvRegionDescFrom(SM_BODYINV_X, SM_BODYINV_Y);
 
 let sTEAMAPPanelXY: INT16[] /* [] */ = [
   69, (6 + INTERFACE_START_Y),
