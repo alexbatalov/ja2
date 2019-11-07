@@ -3,28 +3,28 @@ namespace ja2 {
 // This table controls the order items appear in inventory at BR's and dealers, and which kinds of items are sold used
 let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = [
   //  item class					weapon class	sold used?
-  [ IC_GUN, Enum282.HANDGUNCLASS, true ],
-  [ IC_GUN, Enum282.SHOTGUNCLASS, true ],
-  [ IC_GUN, Enum282.SMGCLASS, true ],
-  [ IC_GUN, Enum282.RIFLECLASS, true ],
-  [ IC_GUN, Enum282.MGCLASS, false ],
-  [ IC_LAUNCHER, Enum282.NOGUNCLASS, false ],
-  [ IC_AMMO, Enum282.NOGUNCLASS, false ],
-  [ IC_GRENADE, Enum282.NOGUNCLASS, false ],
-  [ IC_BOMB, Enum282.NOGUNCLASS, false ],
-  [ IC_BLADE, Enum282.NOGUNCLASS, false ],
-  [ IC_THROWING_KNIFE, Enum282.NOGUNCLASS, false ],
-  [ IC_PUNCH, Enum282.NOGUNCLASS, false ],
-  [ IC_ARMOUR, Enum282.NOGUNCLASS, true ],
-  [ IC_FACE, Enum282.NOGUNCLASS, true ],
-  [ IC_MEDKIT, Enum282.NOGUNCLASS, false ],
-  [ IC_KIT, Enum282.NOGUNCLASS, false ],
-  [ IC_MISC, Enum282.NOGUNCLASS, true ],
-  [ IC_THROWN, Enum282.NOGUNCLASS, false ],
-  [ IC_KEY, Enum282.NOGUNCLASS, false ],
+  createItemSortEntryFrom(IC_GUN, Enum282.HANDGUNCLASS, true),
+  createItemSortEntryFrom(IC_GUN, Enum282.SHOTGUNCLASS, true),
+  createItemSortEntryFrom(IC_GUN, Enum282.SMGCLASS, true),
+  createItemSortEntryFrom(IC_GUN, Enum282.RIFLECLASS, true),
+  createItemSortEntryFrom(IC_GUN, Enum282.MGCLASS, false),
+  createItemSortEntryFrom(IC_LAUNCHER, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_AMMO, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_GRENADE, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_BOMB, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_BLADE, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_THROWING_KNIFE, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_PUNCH, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_ARMOUR, Enum282.NOGUNCLASS, true),
+  createItemSortEntryFrom(IC_FACE, Enum282.NOGUNCLASS, true),
+  createItemSortEntryFrom(IC_MEDKIT, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_KIT, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_MISC, Enum282.NOGUNCLASS, true),
+  createItemSortEntryFrom(IC_THROWN, Enum282.NOGUNCLASS, false),
+  createItemSortEntryFrom(IC_KEY, Enum282.NOGUNCLASS, false),
 
   // marks end of list
-  [ IC_NONE, Enum282.NOGUNCLASS, false ],
+  createItemSortEntryFrom(IC_NONE, Enum282.NOGUNCLASS, false),
 ];
 
 //

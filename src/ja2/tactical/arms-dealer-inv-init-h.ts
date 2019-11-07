@@ -31,4 +31,12 @@ export interface ITEM_SORT_ENTRY {
   fAllowUsed: boolean;
 }
 
+export function createItemSortEntryFrom(uiItemClass: UINT32, ubWeaponClass: UINT8, fAllowUsed: boolean): ITEM_SORT_ENTRY {
+  return {
+    uiItemClass,
+    ubWeaponClass,
+    fAllowUsed,
+  };
+}
+
 }
