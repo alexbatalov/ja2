@@ -248,6 +248,18 @@ export interface EXPLOSIVETYPE {
   ubAnimationID: UINT8; // Animation enum to use
 }
 
+export function createExplosiveTypeFrom(ubType: UINT8, ubDamage: UINT8, ubStunDamage: UINT8, ubRadius: UINT8, ubVolume: UINT8, ubVolatility: UINT8, ubAnimationID: UINT8): EXPLOSIVETYPE {
+  return {
+    ubType,
+    ubDamage,
+    ubStunDamage,
+    ubRadius,
+    ubVolume,
+    ubVolatility,
+    ubAnimationID,
+  };
+}
+
 // GLOBALS
 
 }

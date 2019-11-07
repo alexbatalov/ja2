@@ -255,38 +255,38 @@ export let Armour: ARMOURTYPE[] /* [] */ = [
 export let Explosive: EXPLOSIVETYPE[] /* [] */ = [
   //	Type							Yield		Yield2		Radius		Volume		Volatility	Animation			Description
   //										-----		-------		------		------		----------	--------- 		------------------
-  [ Enum287.EXPLOSV_STUN, 1, 70, 4, 0, 0, Enum304.STUN_BLAST /* stun grenade       */ ],
-  [ Enum287.EXPLOSV_TEARGAS, 0, 20, 4, 0, 0, Enum304.TARGAS_EXP /* tear gas grenade   */ ],
-  [ Enum287.EXPLOSV_MUSTGAS, 15, 40, 4, 0, 0, Enum304.MUSTARD_EXP /* mustard gas grenade*/ ],
-  [ Enum287.EXPLOSV_NORMAL, 15, 7, 3, 15, 1, Enum304.BLAST_1 /* mini hand grenade  */ ],
-  [ Enum287.EXPLOSV_NORMAL, 25, 10, 4, 25, 1, Enum304.BLAST_1 /* reg hand grenade   */ ],
-  [ Enum287.EXPLOSV_NORMAL, 40, 12, 5, 20, 10, Enum304.BLAST_2 /* RDX                */ ],
-  [ Enum287.EXPLOSV_NORMAL, 50, 15, 5, 50, 2, Enum304.BLAST_2 /* TNT (="explosives")*/ ],
-  [ Enum287.EXPLOSV_NORMAL, 60, 15, 6, 60, 2, Enum304.BLAST_2 /* HMX (=RDX+TNT)     */ ],
-  [ Enum287.EXPLOSV_NORMAL, 55, 15, 6, 55, 0, Enum304.BLAST_2 /* C1  (=RDX+min oil) */ ],
-  [ Enum287.EXPLOSV_NORMAL, 50, 22, 6, 50, 2, Enum304.BLAST_2 /* mortar shell       */ ],
+  createExplosiveTypeFrom(Enum287.EXPLOSV_STUN, 1, 70, 4, 0, 0, Enum304.STUN_BLAST), /* stun grenade       */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_TEARGAS, 0, 20, 4, 0, 0, Enum304.TARGAS_EXP), /* tear gas grenade   */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_MUSTGAS, 15, 40, 4, 0, 0, Enum304.MUSTARD_EXP), /* mustard gas grenade*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 15, 7, 3, 15, 1, Enum304.BLAST_1), /* mini hand grenade  */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 25, 10, 4, 25, 1, Enum304.BLAST_1), /* reg hand grenade   */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 40, 12, 5, 20, 10, Enum304.BLAST_2), /* RDX                */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 50, 15, 5, 50, 2, Enum304.BLAST_2), /* TNT (="explosives")*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 60, 15, 6, 60, 2, Enum304.BLAST_2), /* HMX (=RDX+TNT)     */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 55, 15, 6, 55, 0, Enum304.BLAST_2), /* C1  (=RDX+min oil) */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 50, 22, 6, 50, 2, Enum304.BLAST_2), /* mortar shell       */
 
-  [ Enum287.EXPLOSV_NORMAL, 30, 30, 2, 30, 2, Enum304.BLAST_1 /* mine               */ ],
-  [ Enum287.EXPLOSV_NORMAL, 65, 30, 7, 65, 0, Enum304.BLAST_1 /* C4  ("plastique")  */ ],
-  [ Enum287.EXPLOSV_FLARE, 0, 0, 10, 0, 0, Enum304.BLAST_1 /* trip flare				  */ ],
-  [ Enum287.EXPLOSV_NOISE, 0, 0, 50, 50, 0, Enum304.BLAST_1 /* trip klaxon        */ ],
-  [ Enum287.EXPLOSV_NORMAL, 20, 0, 1, 20, 0, Enum304.BLAST_1 /* shaped charge      */ ],
-  [ Enum287.EXPLOSV_FLARE, 0, 0, 10, 0, 0, Enum304.BLAST_1, /* break light        */ ],
-  [ Enum287.EXPLOSV_NORMAL, 25, 5, 4, 25, 1, Enum304.BLAST_1, /* GL grenade					*/ ],
-  [ Enum287.EXPLOSV_TEARGAS, 0, 20, 3, 0, 0, Enum304.TARGAS_EXP, /* GL tear gas grenade*/ ],
-  [ Enum287.EXPLOSV_STUN, 1, 50, 4, 0, 0, Enum304.STUN_BLAST, /* GL stun grenade		*/ ],
-  [ Enum287.EXPLOSV_SMOKE, 0, 0, 3, 0, 0, Enum304.SMOKE_EXP, /* GL smoke grenade		*/ ],
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 30, 30, 2, 30, 2, Enum304.BLAST_1), /* mine               */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 65, 30, 7, 65, 0, Enum304.BLAST_1), /* C4  ("plastique")  */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_FLARE, 0, 0, 10, 0, 0, Enum304.BLAST_1), /* trip flare				  */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NOISE, 0, 0, 50, 50, 0, Enum304.BLAST_1), /* trip klaxon        */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 20, 0, 1, 20, 0, Enum304.BLAST_1), /* shaped charge      */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_FLARE, 0, 0, 10, 0, 0, Enum304.BLAST_1),  /* break light        */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 25, 5, 4, 25, 1, Enum304.BLAST_1),  /* GL grenade					*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_TEARGAS, 0, 20, 3, 0, 0, Enum304.TARGAS_EXP),  /* GL tear gas grenade*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_STUN, 1, 50, 4, 0, 0, Enum304.STUN_BLAST),  /* GL stun grenade		*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_SMOKE, 0, 0, 3, 0, 0, Enum304.SMOKE_EXP),  /* GL smoke grenade		*/
 
-  [ Enum287.EXPLOSV_SMOKE, 0, 0, 4, 0, 0, Enum304.SMOKE_EXP, /* smoke grenade			*/ ],
-  [ Enum287.EXPLOSV_NORMAL, 60, 20, 6, 60, 2, Enum304.BLAST_2, /* Tank Shell         */ ],
-  [ Enum287.EXPLOSV_NORMAL, 100, 0, 0, 0, 0, Enum304.BLAST_1, /* Fake structure igniter*/ ],
-  [ Enum287.EXPLOSV_NORMAL, 100, 0, 1, 0, 0, Enum304.BLAST_1, /* creature cocktail */ ],
-  [ Enum287.EXPLOSV_NORMAL, 50, 10, 5, 50, 2, Enum304.BLAST_2, /* fake struct explosion*/ ],
-  [ Enum287.EXPLOSV_NORMAL, 50, 10, 5, 50, 2, Enum304.BLAST_3, /* fake vehicle explosion*/ ],
-  [ Enum287.EXPLOSV_TEARGAS, 0, 40, 4, 0, 0, Enum304.TARGAS_EXP /* big tear gas */ ],
-  [ Enum287.EXPLOSV_CREATUREGAS, 5, 0, 1, 0, 0, Enum304.NO_BLAST /* small creature gas*/ ],
-  [ Enum287.EXPLOSV_CREATUREGAS, 8, 0, 3, 0, 0, Enum304.NO_BLAST /* big creature gas*/ ],
-  [ Enum287.EXPLOSV_CREATUREGAS, 0, 0, 0, 0, 0, Enum304.NO_BLAST /* vry sm creature gas*/ ],
+  createExplosiveTypeFrom(Enum287.EXPLOSV_SMOKE, 0, 0, 4, 0, 0, Enum304.SMOKE_EXP),  /* smoke grenade			*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 60, 20, 6, 60, 2, Enum304.BLAST_2),  /* Tank Shell         */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 100, 0, 0, 0, 0, Enum304.BLAST_1),  /* Fake structure igniter*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 100, 0, 1, 0, 0, Enum304.BLAST_1),  /* creature cocktail */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 50, 10, 5, 50, 2, Enum304.BLAST_2),  /* fake struct explosion*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_NORMAL, 50, 10, 5, 50, 2, Enum304.BLAST_3),  /* fake vehicle explosion*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_TEARGAS, 0, 40, 4, 0, 0, Enum304.TARGAS_EXP), /* big tear gas */
+  createExplosiveTypeFrom(Enum287.EXPLOSV_CREATUREGAS, 5, 0, 1, 0, 0, Enum304.NO_BLAST), /* small creature gas*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_CREATUREGAS, 8, 0, 3, 0, 0, Enum304.NO_BLAST), /* big creature gas*/
+  createExplosiveTypeFrom(Enum287.EXPLOSV_CREATUREGAS, 0, 0, 0, 0, 0, Enum304.NO_BLAST), /* vry sm creature gas*/
 ];
 
 let gzBurstSndStrings: string[] /* INT8[][30] */ = [
