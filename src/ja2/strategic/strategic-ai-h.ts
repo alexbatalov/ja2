@@ -98,4 +98,14 @@ export interface GARRISON_GROUP {
   bPadding: INT8[] /* [10] */;
 }
 
+export function createGarrisonGroupFrom(ubSectorID: UINT8, ubComposition: UINT8, bWeight: INT8, ubPendingGroupID: UINT8, bPadding: INT8[]): GARRISON_GROUP {
+  return {
+    ubSectorID,
+    ubComposition,
+    bWeight,
+    ubPendingGroupID,
+    bPadding,
+  };
+}
+
 }
