@@ -124,6 +124,19 @@ export interface ARMS_DEALER_INFO {
   uiFlags: UINT32; // various flags which control the dealer's operations
 }
 
+export function createArmsDealerInfoFrom(dBuyModifier_dRepairSpeed: FLOAT, dSellModifier_dRepairCost: FLOAT, ubShopKeeperID: UINT8, ubTypeOfArmsDealer: UINT8, iInitialCash: INT32, uiFlags: UINT32) {
+  return {
+    dBuyModifier: dBuyModifier_dRepairSpeed,
+    dSellModifier: dSellModifier_dRepairCost,
+    dRepairSpeed: dBuyModifier_dRepairSpeed,
+    dRepairCost: dSellModifier_dRepairCost,
+    ubShopKeeperID,
+    ubTypeOfArmsDealer,
+    iInitialCash,
+    uiFlags,
+  };
+}
+
 // THIS STRUCTURE GETS SAVED/RESTORED/RESET
 export interface ARMS_DEALER_STATUS {
   uiArmsDealersCash: UINT32; // How much money the arms dealer currently has
