@@ -210,46 +210,46 @@ export let Magazine: MAGTYPE[] /* [] */ = [
 export let Armour: ARMOURTYPE[] /* [] */ = [
   //	Class					      Protection	Degradation%			Description
   //  -------------       ----------  ------------      ----------------
-  [ Enum284.ARMOURCLASS_VEST, 10, 25 ], /* Flak jacket     */
-  [ Enum284.ARMOURCLASS_VEST, 13, 20 ], /* Flak jacket w X */
-  [ Enum284.ARMOURCLASS_VEST, 16, 15 ], /* Flak jacket w Y */
-  [ Enum284.ARMOURCLASS_VEST, 15, 20 ], /* Kevlar jacket   */
-  [ Enum284.ARMOURCLASS_VEST, 19, 15 ], /* Kevlar jack w X */
-  [ Enum284.ARMOURCLASS_VEST, 24, 10 ], /* Kevlar jack w Y */
-  [ Enum284.ARMOURCLASS_VEST, 30, 15 ], /* Spectra jacket  */
-  [ Enum284.ARMOURCLASS_VEST, 36, 10 ], /* Spectra jack w X*/
-  [ Enum284.ARMOURCLASS_VEST, 42, 5 ], /* Spectra jack w Y*/
-  [ Enum284.ARMOURCLASS_LEGGINGS, 15, 20 ], /* Kevlar leggings */
-  [ Enum284.ARMOURCLASS_LEGGINGS, 19, 15 ], /* Kevlar legs w X */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 10, 25), /* Flak jacket     */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 13, 20), /* Flak jacket w X */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 16, 15), /* Flak jacket w Y */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 15, 20), /* Kevlar jacket   */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 19, 15), /* Kevlar jack w X */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 24, 10), /* Kevlar jack w Y */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 30, 15), /* Spectra jacket  */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 36, 10), /* Spectra jack w X*/
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 42, 5), /* Spectra jack w Y*/
+  createArmourTypeFrom(Enum284.ARMOURCLASS_LEGGINGS, 15, 20), /* Kevlar leggings */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_LEGGINGS, 19, 15), /* Kevlar legs w X */
 
-  [ Enum284.ARMOURCLASS_LEGGINGS, 24, 10 ], /* Kevlar legs w Y */
-  [ Enum284.ARMOURCLASS_LEGGINGS, 30, 15 ], /* Spectra leggings*/
-  [ Enum284.ARMOURCLASS_LEGGINGS, 36, 10 ], /* Spectra legs w X*/
-  [ Enum284.ARMOURCLASS_LEGGINGS, 42, 5 ], /* Spectra legs w Y*/
-  [ Enum284.ARMOURCLASS_HELMET, 10, 5 ], /* Steel helmet    */
-  [ Enum284.ARMOURCLASS_HELMET, 15, 20 ], /* Kevlar helmet   */
-  [ Enum284.ARMOURCLASS_HELMET, 19, 15 ], /* Kevlar helm w X */
-  [ Enum284.ARMOURCLASS_HELMET, 24, 10 ], /* Kevlar helm w Y */
-  [ Enum284.ARMOURCLASS_HELMET, 30, 15 ], /* Spectra helmet  */
-  [ Enum284.ARMOURCLASS_HELMET, 36, 10 ], /* Spectra helm w X*/
+  createArmourTypeFrom(Enum284.ARMOURCLASS_LEGGINGS, 24, 10), /* Kevlar legs w Y */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_LEGGINGS, 30, 15), /* Spectra leggings*/
+  createArmourTypeFrom(Enum284.ARMOURCLASS_LEGGINGS, 36, 10), /* Spectra legs w X*/
+  createArmourTypeFrom(Enum284.ARMOURCLASS_LEGGINGS, 42, 5), /* Spectra legs w Y*/
+  createArmourTypeFrom(Enum284.ARMOURCLASS_HELMET, 10, 5), /* Steel helmet    */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_HELMET, 15, 20), /* Kevlar helmet   */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_HELMET, 19, 15), /* Kevlar helm w X */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_HELMET, 24, 10), /* Kevlar helm w Y */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_HELMET, 30, 15), /* Spectra helmet  */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_HELMET, 36, 10), /* Spectra helm w X*/
 
-  [ Enum284.ARMOURCLASS_HELMET, 42, 5 ], /* Spectra helm w Y*/
-  [ Enum284.ARMOURCLASS_PLATE, 15, 200 ], /* Ceramic plates  */
-  [ Enum284.ARMOURCLASS_MONST, 3, 0 ], /* Infant creature hide */
-  [ Enum284.ARMOURCLASS_MONST, 5, 0 ], /* Young male creature hide  */
-  [ Enum284.ARMOURCLASS_MONST, 6, 0 ], /* Male creature hide  */
-  [ Enum284.ARMOURCLASS_MONST, 20, 0 ], /* Queen creature hide  */
-  [ Enum284.ARMOURCLASS_VEST, 2, 25 ], /* Leather jacket    */
-  [ Enum284.ARMOURCLASS_VEST, 12, 30 ], /* Leather jacket w kevlar */
-  [ Enum284.ARMOURCLASS_VEST, 16, 25 ], /* Leather jacket w kevlar & compound 18 */
-  [ Enum284.ARMOURCLASS_VEST, 19, 20 ], /* Leather jacket w kevlar & queen blood */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_HELMET, 42, 5), /* Spectra helm w Y*/
+  createArmourTypeFrom(Enum284.ARMOURCLASS_PLATE, 15, 200), /* Ceramic plates  */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_MONST, 3, 0), /* Infant creature hide */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_MONST, 5, 0), /* Young male creature hide  */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_MONST, 6, 0), /* Male creature hide  */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_MONST, 20, 0), /* Queen creature hide  */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 2, 25), /* Leather jacket    */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 12, 30), /* Leather jacket w kevlar */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 16, 25), /* Leather jacket w kevlar & compound 18 */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 19, 20), /* Leather jacket w kevlar & queen blood */
 
-  [ Enum284.ARMOURCLASS_MONST, 7, 0 ], /* Young female creature hide */
-  [ Enum284.ARMOURCLASS_MONST, 8, 0 ], /* Old female creature hide  */
-  [ Enum284.ARMOURCLASS_VEST, 1, 25 ], /* T-shirt */
-  [ Enum284.ARMOURCLASS_VEST, 22, 20 ], /* Kevlar 2 jacket   */
-  [ Enum284.ARMOURCLASS_VEST, 27, 15 ], /* Kevlar 2 jack w X */
-  [ Enum284.ARMOURCLASS_VEST, 32, 10 ], /* Kevlar 2 jack w Y */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_MONST, 7, 0), /* Young female creature hide */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_MONST, 8, 0), /* Old female creature hide  */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 1, 25), /* T-shirt */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 22, 20), /* Kevlar 2 jacket   */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 27, 15), /* Kevlar 2 jack w X */
+  createArmourTypeFrom(Enum284.ARMOURCLASS_VEST, 32, 10), /* Kevlar 2 jack w Y */
 ];
 
 export let Explosive: EXPLOSIVETYPE[] /* [] */ = [

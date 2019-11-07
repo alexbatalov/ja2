@@ -230,6 +230,14 @@ export interface ARMOURTYPE {
   ubDegradePercent: UINT8;
 }
 
+export function createArmourTypeFrom(ubArmourClass: UINT8, ubProtection: UINT8, ubDegradePercent: UINT8): ARMOURTYPE {
+  return {
+    ubArmourClass,
+    ubProtection,
+    ubDegradePercent,
+  };
+}
+
 export interface EXPLOSIVETYPE {
   ubType: UINT8; // type of explosive
   ubDamage: UINT8; // damage value
