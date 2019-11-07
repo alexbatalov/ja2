@@ -15,54 +15,32 @@ let guiMortarsRolledByTeam: UINT32 = 0;
 
 let gRegularArmyGunChoices: ARMY_GUN_CHOICE_TYPE[] /* [ARMY_GUN_LEVELS] */ = [
   // INDEX		CLASS				 #CHOICES
-  [
-   /* 0 - lo pistols			*/ 2, Enum225.SW38, Enum225.DESERTEAGLE, -1, -1, -1 ],
-  [
-   /* 1 - hi pistols			*/ 2, Enum225.GLOCK_17, Enum225.BERETTA_93R, -1, -1, -1 ],
-  [
-   /* 2 - lo SMG/shotgun	*/ 2, Enum225.M870, Enum225.MP5K, -1, -1, -1 ],
-  [
-   /* 3 - lo rifles			*/ 1, Enum225.MINI14, -1, -1, -1, -1 ],
-  [
-   /* 4 - hi SMGs				*/ 2, Enum225.MAC10, Enum225.COMMANDO, -1, -1, -1 ],
-  [
-   /* 5 - med rifles  		*/ 1, Enum225.G41, -1, -1, -1, -1 ],
-  [
-   /* 6 - sniper rifles	*/ 1, Enum225.M24, -1, -1, -1, -1 ],
-  [
-   /* 7 - hi rifles			*/ 2, Enum225.M14, Enum225.C7, -1, -1, -1 ],
-  [
-   /* 8 - best rifle			*/ 1, Enum225.FNFAL, -1, -1, -1, -1 ],
-  [
-   /* 9 - machine guns		*/ 1, Enum225.MINIMI, -1, -1, -1, -1 ],
-  [
-   /* 10- rocket rifle		*/ 2, Enum225.ROCKET_RIFLE, Enum225.MINIMI, -1, -1, -1 ],
+  createArmyGunChoiceTypeFrom(/* 0 - lo pistols			*/ 2, [ Enum225.SW38, Enum225.DESERTEAGLE, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 1 - hi pistols			*/ 2, [ Enum225.GLOCK_17, Enum225.BERETTA_93R, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 2 - lo SMG/shotgun	*/ 2, [ Enum225.M870, Enum225.MP5K, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 3 - lo rifles			*/ 1, [ Enum225.MINI14, -1, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 4 - hi SMGs				*/ 2, [ Enum225.MAC10, Enum225.COMMANDO, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 5 - med rifles  		*/ 1, [ Enum225.G41, -1, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 6 - sniper rifles	*/ 1, [ Enum225.M24, -1, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 7 - hi rifles			*/ 2, [ Enum225.M14, Enum225.C7, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 8 - best rifle			*/ 1, [ Enum225.FNFAL, -1, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 9 - machine guns		*/ 1, [ Enum225.MINIMI, -1, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 10- rocket rifle		*/ 2, [ Enum225.ROCKET_RIFLE, Enum225.MINIMI, -1, -1, -1 ]),
 ];
 
 let gExtendedArmyGunChoices: ARMY_GUN_CHOICE_TYPE[] /* [ARMY_GUN_LEVELS] */ = [
   // INDEX		CLASS				 #CHOICES
-  [
-   /* 0 - lo pistols			*/ 5, Enum225.SW38, Enum225.BARRACUDA, Enum225.DESERTEAGLE, Enum225.GLOCK_17, Enum225.M1911 ],
-  [
-   /* 1 - hi pist/shtgn	*/ 4, Enum225.GLOCK_18, Enum225.BERETTA_93R, Enum225.BERETTA_92F, Enum225.M870, -1 ],
-  [
-   /* 2 - lo SMGs/shtgn	*/ 5, Enum225.TYPE85, Enum225.THOMPSON, Enum225.MP53, Enum225.MP5K, Enum225.SPAS15 ],
-  [
-   /* 3 - lo rifles    	*/ 2, Enum225.MINI14, Enum225.SKS, -1, -1, -1 ],
-  [
-   /* 4 - hi SMGs				*/ 3, Enum225.MAC10, Enum225.AKSU74, Enum225.COMMANDO, -1, -1 ],
-  [
-   /* 5 - med rifles  		*/ 4, Enum225.AKM, Enum225.G3A3, Enum225.G41, Enum225.AK74, -1 ],
-  [
-   /* 6 - sniper rifles	*/ 2, Enum225.DRAGUNOV, Enum225.M24, -1, -1, -1 ],
-  [
-   /* 7 - hi rifles			*/ 4, Enum225.FAMAS, Enum225.M14, Enum225.AUG, Enum225.C7, -1 ],
-  [
-   /* 8 - best rifle			*/ 1, Enum225.FNFAL, -1, -1, -1, -1 ],
-  [
-   /* 9 - machine guns		*/ 3, Enum225.MINIMI, Enum225.RPK74, Enum225.HK21E, -1, -1 ],
-  [
-   /* 10- rocket rifle		*/ 4, Enum225.ROCKET_RIFLE, Enum225.ROCKET_RIFLE, Enum225.RPK74, Enum225.HK21E, -1 ],
+  createArmyGunChoiceTypeFrom(/* 0 - lo pistols			*/ 5, [ Enum225.SW38, Enum225.BARRACUDA, Enum225.DESERTEAGLE, Enum225.GLOCK_17, Enum225.M1911 ]),
+  createArmyGunChoiceTypeFrom(/* 1 - hi pist/shtgn	*/ 4, [ Enum225.GLOCK_18, Enum225.BERETTA_93R, Enum225.BERETTA_92F, Enum225.M870, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 2 - lo SMGs/shtgn	*/ 5, [ Enum225.TYPE85, Enum225.THOMPSON, Enum225.MP53, Enum225.MP5K, Enum225.SPAS15 ]),
+  createArmyGunChoiceTypeFrom(/* 3 - lo rifles    	*/ 2, [ Enum225.MINI14, Enum225.SKS, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 4 - hi SMGs				*/ 3, [ Enum225.MAC10, Enum225.AKSU74, Enum225.COMMANDO, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 5 - med rifles  		*/ 4, [ Enum225.AKM, Enum225.G3A3, Enum225.G41, Enum225.AK74, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 6 - sniper rifles	*/ 2, [ Enum225.DRAGUNOV, Enum225.M24, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 7 - hi rifles			*/ 4, [ Enum225.FAMAS, Enum225.M14, Enum225.AUG, Enum225.C7, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 8 - best rifle			*/ 1, [ Enum225.FNFAL, -1, -1, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 9 - machine guns		*/ 3, [ Enum225.MINIMI, Enum225.RPK74, Enum225.HK21E, -1, -1 ]),
+  createArmyGunChoiceTypeFrom(/* 10- rocket rifle		*/ 4, [ Enum225.ROCKET_RIFLE, Enum225.ROCKET_RIFLE, Enum225.RPK74, Enum225.HK21E, -1 ]),
 ];
 
 export function InitArmyGunTypes(): void {

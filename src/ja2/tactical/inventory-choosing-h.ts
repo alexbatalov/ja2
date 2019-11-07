@@ -7,6 +7,13 @@ export interface ARMY_GUN_CHOICE_TYPE {
   bItemNo: INT8[] /* [5] */; // room for up to 5 choices of gun in each category
 }
 
+export function createArmyGunChoiceTypeFrom(ubChoices: UINT8, bItemNo: INT8[]): ARMY_GUN_CHOICE_TYPE {
+  return {
+    ubChoices,
+    bItemNo,
+  };
+}
+
 export const enum Enum223 {
   // administrator ratings (1-5)
   BAD_ADMINISTRATOR_EQUIPMENT_RATING = 1,
