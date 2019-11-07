@@ -538,4 +538,11 @@ export interface AnimationStructureType {
   pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 }
 
+export function createAnimationStructureTypeFrom(Filename: string, pStructureFileRef: Pointer<STRUCTURE_FILE_REF>): AnimationStructureType {
+  return {
+    Filename,
+    pStructureFileRef,
+  };
+}
+
 }

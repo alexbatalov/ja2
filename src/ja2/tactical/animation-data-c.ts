@@ -436,282 +436,282 @@ export let gAnimSurfaceDatabase: AnimationSurfaceType[] /* [NUMANIMATIONSURFACET
 let gAnimStructureDatabase: AnimationStructureType[][] /* [TOTALBODYTYPES][NUM_STRUCT_IDS] */ = [
   // Normal Male
   [
-    [ "ANIMS\\STRUCTDATA\\M_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALL.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALL.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // Big male
   [
-    [ "ANIMS\\STRUCTDATA\\M_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALL.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALL.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // Stocky male
   [
-    [ "ANIMS\\STRUCTDATA\\M_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALL.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALL.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // Reg Female
   [
-    [ "ANIMS\\STRUCTDATA\\M_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALL.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALL.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // Adult female creature
   [
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // Adult male creature
   [
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // Young Adult female creature
   [
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // Young Adult male creature
   [
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\MN_BREAT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // larvea creature
   [
-    [ "ANIMS\\STRUCTDATA\\L_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\L_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\L_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\L_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\L_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\L_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\L_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\L_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\L_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\L_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // infant creature
   [
-    [ "ANIMS\\STRUCTDATA\\I_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\I_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\I_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\I_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\I_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\I_BREATH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\I_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\I_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\I_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\I_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\I_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\I_BREATH.JSD", null), // default
   ],
 
   // Queen creature
   [
-    [ "ANIMS\\STRUCTDATA\\Q_READY.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\Q_READY.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\Q_READY.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\Q_READY.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\Q_READY.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\Q_READY.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\Q_READY.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\Q_READY.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\Q_READY.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\Q_READY.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // Fat civ
   [
-    [ "ANIMS\\STRUCTDATA\\M_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALL.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALL.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // man civ
   [
-    [ "ANIMS\\STRUCTDATA\\M_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALL.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALL.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // miniskirt civ
   [
-    [ "ANIMS\\STRUCTDATA\\M_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALL.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALL.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // dress civ
   [
-    [ "ANIMS\\STRUCTDATA\\M_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALL.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALL.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // kid civ
   [
-    [ "ANIMS\\STRUCTDATA\\K_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\K_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\K_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\K_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\K_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\K_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
   ],
 
   // hat kid civ
   [
-    [ "ANIMS\\STRUCTDATA\\K_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\K_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\K_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_PRONE.JSD", null ],
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\K_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\K_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\K_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_PRONE.JSD", null),
   ],
 
   // cripple civ
   [
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALL.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALL.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_FALLBACK.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // cow
   [
-    [ "ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CW_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // crow
   [
-    [ "ANIMS\\STRUCTDATA\\CR_STAND.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CR_CROUCH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CR_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CR_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CR_PRONE.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CR_STAND.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CR_CROUCH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CR_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CR_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CR_PRONE.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // CAT
   [
-    [ "ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\CT_BREATH.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // ROBOT1
   [
-    [ "ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\J_R_BRET.JSD", null), // default
   ],
 
   // vech 1
   [
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // tank 1
   [
-    [ "ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK_SHT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // tank 2
   [
-    [ "ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\TNK2_ROT.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // ELDORADO
   [
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // ICECREAMTRUCK
   [
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 
   // JEEP
   [
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\HMMV.JSD", null ],
-    [ "ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null ], // default
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\HMMV.JSD", null),
+    createAnimationStructureTypeFrom("ANIMS\\STRUCTDATA\\M_CROUCH.JSD", null), // default
   ],
 ];
 
