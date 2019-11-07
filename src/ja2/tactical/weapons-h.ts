@@ -216,6 +216,14 @@ export interface MAGTYPE {
   ubAmmoType: UINT8;
 }
 
+export function createMagTypeFrom(ubCalibre: UINT8, ubMagSize: UINT8, ubAmmoType: UINT8): MAGTYPE {
+  return {
+    ubCalibre,
+    ubMagSize,
+    ubAmmoType,
+  };
+}
+
 export interface ARMOURTYPE {
   ubArmourClass: UINT8;
   ubProtection: UINT8;
