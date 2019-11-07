@@ -15,7 +15,7 @@ export const enum Enum44 {
 export const NUM_TERRAIN_TILE_REGIONS = 9;
 export const enum Enum45 {
   BASE_TERRAIN_TILE_REGION_ID,
-  ITEM_REGION_ID = NUM_TERRAIN_TILE_REGIONS,
+  ITEM_REGION_ID = 9 /* NUM_TERRAIN_TILE_REGIONS */,
   MERC_REGION_ID,
 }
 

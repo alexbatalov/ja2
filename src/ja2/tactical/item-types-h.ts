@@ -262,7 +262,7 @@ export const enum Enum225 {
   NONE = 0,
 
   // weapons
-  GLOCK_17 = FIRST_WEAPON,
+  GLOCK_17 = 1 /* FIRST_WEAPON */,
   GLOCK_18,
   BERETTA_92F,
   BERETTA_93R,
@@ -334,9 +334,9 @@ export const enum Enum225 {
   CROWBAR,
   AUTO_ROCKET_RIFLE,
 
-  MAX_WEAPONS = (FIRST_AMMO - 1),
+  MAX_WEAPONS = (71 /* FIRST_AMMO */ - 1),
 
-  CLIP9_15 = FIRST_AMMO,
+  CLIP9_15 = 71 /* FIRST_AMMO */,
   CLIP9_30,
   CLIP9_15_AP,
   CLIP9_30_AP,
@@ -388,7 +388,7 @@ export const enum Enum225 {
   CLIPFLAME,
 
   // explosives
-  STUN_GRENADE = FIRST_EXPLOSIVE,
+  STUN_GRENADE = 131 /* FIRST_EXPLOSIVE */,
   TEARGAS_GRENADE,
   MUSTARD_GRENADE,
   MINI_GRENADE,
@@ -465,7 +465,7 @@ export const enum Enum225 {
   KEVLAR2_VEST_Y,
 
   // kits
-  FIRSTAIDKIT = FIRST_MISC,
+  FIRSTAIDKIT = 201 /* FIRST_MISC */,
   MEDICKIT,
   TOOLKIT,
   LOCKSMITHKIT,
@@ -542,7 +542,7 @@ export const enum Enum225 {
   MONEY_FOR_PLAYERS_ACCOUNT,
   CIGARS,
 
-  KEY_1 = FIRST_KEY,
+  KEY_1 = 271 /* FIRST_KEY */,
   KEY_2,
   KEY_3,
   KEY_4,

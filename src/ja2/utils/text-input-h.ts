@@ -44,7 +44,7 @@ export const INPUTTYPE_EXCLUSIVE_BASEVALUE = 0x1000; // increase this value if n
 // then alphanumerics afterwards.  For further support, chances are you'll want to treat it
 // as an exclusive handler, and you'll have to process it in the filter input function.
 export const enum Enum383 {
-  INPUTTYPE_EXCLUSIVE_DOSFILENAME = INPUTTYPE_EXCLUSIVE_BASEVALUE,
+  INPUTTYPE_EXCLUSIVE_DOSFILENAME = 0x1000 /* INPUTTYPE_EXCLUSIVE_BASEVALUE */,
   INPUTTYPE_EXCLUSIVE_COORDINATE,
   INPUTTYPE_EXCLUSIVE_24HOURCLOCK,
   // INPUTTYPE_EXCLUSIVE_NEWNEWNEW, etc...
