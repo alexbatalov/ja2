@@ -185,6 +185,31 @@ export interface WEAPONTYPE {
   sLocknLoadSound: UINT16;
 }
 
+export function createWeaponTypeFrom(ubWeaponClass: UINT8, ubWeaponType: UINT8, ubCalibre: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubShotsPerBurst: UINT8, ubBurstPenalty: UINT8, ubBulletSpeed: UINT8, ubImpact: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, ubMagSize: UINT8, usRange: UINT16, usReloadDelay: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16, sBurstSound: UINT16, sReloadSound: UINT16, sLocknLoadSound: UINT16): WEAPONTYPE {
+  return {
+    ubWeaponClass,
+    ubWeaponType,
+    ubCalibre,
+    ubReadyTime,
+    ubShotsPer4Turns,
+    ubShotsPerBurst,
+    ubBurstPenalty,
+    ubBulletSpeed,
+    ubImpact,
+    ubDeadliness,
+    bAccuracy,
+    ubMagSize,
+    usRange,
+    usReloadDelay,
+    ubAttackVolume,
+    ubHitVolume,
+    sSound,
+    sBurstSound,
+    sReloadSound,
+    sLocknLoadSound,
+  };
+}
+
 export interface MAGTYPE {
   ubCalibre: UINT8;
   ubMagSize: UINT8;

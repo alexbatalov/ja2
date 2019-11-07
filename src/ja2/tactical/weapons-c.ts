@@ -38,36 +38,36 @@ export let gfReportHitChances: boolean = false;
 
 // TODO: Move strings to extern file
 
-const PISTOL = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { Enum282.HANDGUNCLASS, Enum283.GUN_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_PISTOL, Enum330.S_LNL_PISTOL };
-const M_PISTOL = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { Enum282.HANDGUNCLASS, Enum283.GUN_M_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_PISTOL, Enum330.S_LNL_PISTOL };
-const SMG = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { Enum282.SMGCLASS, Enum283.GUN_SMG, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_SMG, Enum330.S_LNL_SMG };
-const SN_RIFLE = (ammo, update, impact, rt, rof, burstrof, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { Enum282.RIFLECLASS, Enum283.GUN_SN_RIFLE, ammo, rt, rof, burstrof, 0, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_RIFLE, Enum330.S_LNL_RIFLE };
-const RIFLE = (ammo, update, impact, rt, rof, burstrof, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { Enum282.RIFLECLASS, Enum283.GUN_RIFLE, ammo, rt, rof, burstrof, 0, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_RIFLE, Enum330.S_LNL_RIFLE };
-const ASRIFLE = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { Enum282.RIFLECLASS, Enum283.GUN_AS_RIFLE, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_RIFLE, Enum330.S_LNL_RIFLE };
-const SHOTGUN = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { Enum282.SHOTGUNCLASS, Enum283.GUN_SHOTGUN, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_SHOTGUN, Enum330.S_LNL_SHOTGUN };
-const LMG = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { Enum282.MGCLASS, Enum283.GUN_LMG, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_LMG, Enum330.S_LNL_LMG };
-const BLADE = (impact, rof, deadl, range, av, sd) =>
-  { Enum282.KNIFECLASS, Enum283.NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
-const THROWINGBLADE = (impact, rof, deadl, range, av, sd) =>
-  { Enum282.KNIFECLASS, Enum283.NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
-const PUNCHWEAPON = (impact, rof, deadl, av, sd) =>
-  { Enum282.KNIFECLASS, Enum283.NOT_GUN, 0, 0, rof, 0, 0, 0, (impact), deadl, 0, 0, 10, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
-const LAUNCHER = (update, rt, rof, deadl, acc, range, av, hv, sd) =>
-  { Enum282.RIFLECLASS, Enum283.NOT_GUN, Enum285.NOAMMO, rt, rof, 0, 0, update, 1, deadl, acc, 0, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
-const LAW = (update, rt, rof, deadl, acc, range, av, hv, sd) =>
-  { Enum282.RIFLECLASS, Enum283.NOT_GUN, Enum285.NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
-const CANNON = (update, rt, rof, deadl, acc, range, av, hv, sd) =>
-  { Enum282.RIFLECLASS, Enum283.NOT_GUN, Enum285.NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
-const MONSTSPIT = (impact, rof, deadl, clip, range, av, hv, sd) =>
-  { Enum282.MONSTERCLASS, Enum283.NOT_GUN, Enum285.AMMOMONST, AP_READY_KNIFE, rof, 0, 0, 250, (impact), deadl, 0, clip, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+const PISTOL = (ubCalibre: UINT8, ubBulletSpeed: UINT8, ubImpact: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubShotsPerBurst: UINT8, ubBurstPenalty: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, ubMagSize: UINT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16, sBurstSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.HANDGUNCLASS, Enum283.GUN_PISTOL, ubCalibre, ubReadyTime, ubShotsPer4Turns, ubShotsPerBurst, ubBurstPenalty, ubBulletSpeed, ubImpact, ubDeadliness, bAccuracy, ubMagSize, usRange, 200, ubAttackVolume, ubHitVolume, sSound, sBurstSound, Enum330.S_RELOAD_PISTOL, Enum330.S_LNL_PISTOL);
+const M_PISTOL = (ubCalibre: UINT8, ubBulletSpeed: UINT8, ubImpact: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubShotsPerBurst: UINT8, ubBurstPenalty: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, ubMagSize: UINT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16, sBurstSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.HANDGUNCLASS, Enum283.GUN_M_PISTOL, ubCalibre, ubReadyTime, ubShotsPer4Turns, ubShotsPerBurst, ubBurstPenalty, ubBulletSpeed, ubImpact, ubDeadliness, bAccuracy, ubMagSize, usRange, 200, ubAttackVolume, ubHitVolume, sSound, sBurstSound, Enum330.S_RELOAD_PISTOL, Enum330.S_LNL_PISTOL);
+const SMG = (ubCalibre: UINT8, ubBulletSpeed: UINT8, ubImpact: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubShotsPerBurst: UINT8, ubBurstPenalty: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, ubMagSize: UINT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16, sBurstSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.SMGCLASS, Enum283.GUN_SMG, ubCalibre, ubReadyTime, ubShotsPer4Turns, ubShotsPerBurst, ubBurstPenalty, ubBulletSpeed, ubImpact, ubDeadliness, bAccuracy, ubMagSize, usRange, 200, ubAttackVolume, ubHitVolume, sSound, sBurstSound, Enum330.S_RELOAD_SMG, Enum330.S_LNL_SMG);
+const SN_RIFLE = (ubCalibre: UINT8, ubBulletSpeed: UINT8, ubImpact: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubShotsPerBurst: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, ubMagSize: UINT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16, sBurstSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.RIFLECLASS, Enum283.GUN_SN_RIFLE, ubCalibre, ubReadyTime, ubShotsPer4Turns, ubShotsPerBurst, 0, ubBulletSpeed, ubImpact, ubDeadliness, bAccuracy, ubMagSize, usRange, 200, ubAttackVolume, ubHitVolume, sSound, sBurstSound, Enum330.S_RELOAD_RIFLE, Enum330.S_LNL_RIFLE);
+const RIFLE = (ubCalibre: UINT8, ubBulletSpeed: UINT8, ubImpact: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubShotsPerBurst: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, ubMagSize: UINT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16, sBurstSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.RIFLECLASS, Enum283.GUN_RIFLE, ubCalibre, ubReadyTime, ubShotsPer4Turns, ubShotsPerBurst, 0, ubBulletSpeed, ubImpact, ubDeadliness, bAccuracy, ubMagSize, usRange, 200, ubAttackVolume, ubHitVolume, sSound, sBurstSound, Enum330.S_RELOAD_RIFLE, Enum330.S_LNL_RIFLE);
+const ASRIFLE = (ubCalibre: UINT8, ubBulletSpeed: UINT8, ubImpact: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubShotsPerBurst: UINT8, ubBurstPenalty: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, ubMagSize: UINT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16, sBurstSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.RIFLECLASS, Enum283.GUN_AS_RIFLE, ubCalibre, ubReadyTime, ubShotsPer4Turns, ubShotsPerBurst, ubBurstPenalty, ubBulletSpeed, ubImpact, ubDeadliness, bAccuracy, ubMagSize, usRange, 200, ubAttackVolume, ubHitVolume, sSound, sBurstSound, Enum330.S_RELOAD_RIFLE, Enum330.S_LNL_RIFLE);
+const SHOTGUN = (ubCalibre: UINT8, ubBulletSpeed: UINT8, ubImpact: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubShotsPerBurst: UINT8, ubBurstPenalty: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, ubMagSize: UINT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16, sBurstSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.SHOTGUNCLASS, Enum283.GUN_SHOTGUN, ubCalibre, ubReadyTime, ubShotsPer4Turns, ubShotsPerBurst, ubBurstPenalty, ubBulletSpeed, ubImpact, ubDeadliness, bAccuracy, ubMagSize, usRange, 200, ubAttackVolume, ubHitVolume, sSound, sBurstSound, Enum330.S_RELOAD_SHOTGUN, Enum330.S_LNL_SHOTGUN);
+const LMG = (ubCalibre: UINT8, ubBulletSpeed: UINT8, ubImpact: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubShotsPerBurst: UINT8, ubBurstPenalty: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, ubMagSize: UINT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16, sBurstSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.MGCLASS, Enum283.GUN_LMG, ubCalibre, ubReadyTime, ubShotsPer4Turns, ubShotsPerBurst, ubBurstPenalty, ubBulletSpeed, ubImpact, ubDeadliness, bAccuracy, ubMagSize, usRange, 200, ubAttackVolume, ubHitVolume, sSound, sBurstSound, Enum330.S_RELOAD_LMG, Enum330.S_LNL_LMG);
+const BLADE = (ubImpact: UINT8, ubShotsPer4Turns: UINT8, ubDeadliness: UINT8, usRange: UINT16, ubAttackVolume: UINT8, sSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.KNIFECLASS, Enum283.NOT_GUN, 0, AP_READY_KNIFE, ubShotsPer4Turns, 0, 0, 0, ubImpact, ubDeadliness, 0, 0, usRange, 200, ubAttackVolume, 0, sSound, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND);
+const THROWINGBLADE = (ubImpact: UINT8, ubShotsPer4Turns: UINT8, ubDeadliness: UINT8, usRange: UINT16, ubAttackVolume: UINT8, sSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.KNIFECLASS, Enum283.NOT_GUN, 0, AP_READY_KNIFE, ubShotsPer4Turns, 0, 0, 0, ubImpact, ubDeadliness, 0, 0, usRange, 200, ubAttackVolume, 0, sSound, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND);
+const PUNCHWEAPON = (ubImpact: UINT8, ubShotsPer4Turns: UINT8, ubDeadliness: UINT8, ubAttackVolume: UINT8, sSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.KNIFECLASS, Enum283.NOT_GUN, 0, 0, ubShotsPer4Turns, 0, 0, 0, ubImpact, ubDeadliness, 0, 0, 10, 200, ubAttackVolume, 0, sSound, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND);
+const LAUNCHER = (ubBulletSpeed: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.RIFLECLASS, Enum283.NOT_GUN, Enum285.NOAMMO, ubReadyTime, ubShotsPer4Turns, 0, 0, ubBulletSpeed, 1, ubDeadliness, bAccuracy, 0, usRange, 200, ubAttackVolume, ubHitVolume, sSound, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND);
+const LAW = (ubBulletSpeed: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.RIFLECLASS, Enum283.NOT_GUN, Enum285.NOAMMO, ubReadyTime, ubShotsPer4Turns, 0, 0, ubBulletSpeed, 80, ubDeadliness, bAccuracy, 1, usRange, 200, ubAttackVolume, ubHitVolume, sSound, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND);
+const CANNON = (ubBulletSpeed: UINT8, ubReadyTime: UINT8, ubShotsPer4Turns: UINT8, ubDeadliness: UINT8, bAccuracy: INT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.RIFLECLASS, Enum283.NOT_GUN, Enum285.NOAMMO, ubReadyTime, ubShotsPer4Turns, 0, 0, ubBulletSpeed, 80, ubDeadliness, bAccuracy, 1, usRange, 200, ubAttackVolume, ubHitVolume, sSound, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND);
+const MONSTSPIT = (ubImpact: UINT8, ubShotsPer4Turns: UINT8, ubDeadliness: UINT8, ubMagSize: UINT8, usRange: UINT16, ubAttackVolume: UINT8, ubHitVolume: UINT8, sSound: UINT16) =>
+  createWeaponTypeFrom(Enum282.MONSTERCLASS, Enum283.NOT_GUN, Enum285.AMMOMONST, AP_READY_KNIFE, ubShotsPer4Turns, 0, 0, 250, ubImpact, ubDeadliness, 0, ubMagSize, usRange, 200, ubAttackVolume, ubHitVolume, sSound, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND);
 
 // ranges are in world units, calculated by:
 // 100 + real-range-in-metres/10
@@ -80,7 +80,7 @@ const MONSTSPIT = (impact, rof, deadl, clip, range, av, hv, sd) =>
 export let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = [
   //          Description			  Ammo      Bullet	Ready	 4xSng Burst	Burst	Deadl	Accu	Clip	Range Attack Impact		Fire
   //										   Spd  Imp	Time	 ROF	 ROF		penal	iness	racy	Size					Vol   Vol			Sounds
-  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0 ], // nada!  must have min range of 10
+  createWeaponTypeFrom(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0), // nada!  must have min range of 10
   PISTOL(/* Glock 17			*/ Enum285.AMMO9, 24, 21, 0, 14, 0, 0, 8, 0, 15, 120, 60, 5, Enum330.S_GLOCK17, NO_WEAPON_SOUND), // wt 6  // Austria
   M_PISTOL(/* Glock 18		*/ Enum285.AMMO9, 24, 21, 0, 14, 5, 15, 9, 0, 15, 120, 60, 5, Enum330.S_GLOCK18, Enum330.S_BURSTTYPE1), // wt 6  // Austria
   PISTOL(/* Beretta 92F     */ Enum285.AMMO9, 23, 22, 0, 16, 0, 0, 9, 0, 15, 120, 60, 5, Enum330.S_BERETTA92, NO_WEAPON_SOUND), // wt 11 // Italy
@@ -127,10 +127,10 @@ export let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = [
 
   BLADE(/* Combat knife    */ 18, 12, 5, 40, 2, NO_WEAPON_SOUND),
   THROWINGBLADE(/* Throwing knife  */ 15, 12, 4, 150, 2, Enum330.S_THROWKNIFE),
-  [ 0 ], // rock
+  createWeaponTypeFrom(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), // rock
   LAUNCHER(/* grenade launcher*/ 30, 3, 5, 80, 0, 500, 20, 10, Enum330.S_GLAUNCHER),
   LAUNCHER(/* mortar */ 30, 0, 5, 100, 0, 550, 20, 10, Enum330.S_MORTAR_SHOT),
-  [ 0 ], // another rock
+  createWeaponTypeFrom(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), // another rock
   BLADE(/* yng male claws */ 14, 10, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* yng fem claws */ 18, 10, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* old male claws */ 20, 10, 1, 10, 2, NO_WEAPON_SOUND),
