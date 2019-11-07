@@ -250,6 +250,24 @@ export interface INVTYPE {
   fFlags: UINT16;
 }
 
+export function createInvTypeFrom(usItemClass: UINT32, ubClassIndex: UINT8, ubCursor: UINT8, bSoundType: INT8, ubGraphicType: UINT8, ubGraphicNum: UINT8, ubWeight: UINT8, ubPerPocket: UINT8, usPrice: UINT16, ubCoolness: UINT8, bReliability: INT8, bRepairEase: INT8, fFlags: UINT16): INVTYPE {
+  return {
+    usItemClass,
+    ubClassIndex,
+    ubCursor,
+    bSoundType,
+    ubGraphicType,
+    ubGraphicNum,
+    ubWeight,
+    ubPerPocket,
+    usPrice,
+    ubCoolness,
+    bReliability,
+    bRepairEase,
+    fFlags,
+  };
+}
+
 const FIRST_WEAPON = 1;
 export const FIRST_AMMO = 71;
 const FIRST_EXPLOSIVE = 131;
