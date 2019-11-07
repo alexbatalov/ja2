@@ -1,33 +1,33 @@
 namespace ja2 {
 
 export let GameScreens: Screens[] /* [MAX_SCREENS] */ = [
-  [ EditScreenInit, EditScreenHandle, EditScreenShutdown ],
-  [ SavingScreenInitialize, SavingScreenHandle, SavingScreenShutdown ], // Title Screen
-  [ LoadingScreenInitialize, LoadingScreenHandle, LoadingScreenShutdown ], // Title Screen
-  [ ErrorScreenInitialize, ErrorScreenHandle, ErrorScreenShutdown ], // Title Screen
-  [ InitScreenInitialize, InitScreenHandle, InitScreenShutdown ], // Title Screen
-  [ MainGameScreenInit, MainGameScreenHandle, MainGameScreenShutdown ],
-  [ AniEditScreenInit, AniEditScreenHandle, AniEditScreenShutdown ],
-  [ PalEditScreenInit, PalEditScreenHandle, PalEditScreenShutdown ],
-  [ DebugScreenInit, DebugScreenHandle, DebugScreenShutdown ],
-  [ MapScreenInit, MapScreenHandle, MapScreenShutdown ],
-  [ LaptopScreenInit, LaptopScreenHandle, LaptopScreenShutdown ],
-  [ LoadSaveScreenInit, LoadSaveScreenHandle, LoadSaveScreenShutdown ],
-  [ MapUtilScreenInit, MapUtilScreenHandle, MapUtilScreenShutdown ],
-  [ FadeScreenInit, FadeScreenHandle, FadeScreenShutdown ],
-  [ MessageBoxScreenInit, MessageBoxScreenHandle, MessageBoxScreenShutdown ],
-  [ MainMenuScreenInit, MainMenuScreenHandle, MainMenuScreenShutdown ],
-  [ AutoResolveScreenInit, AutoResolveScreenHandle, AutoResolveScreenShutdown ],
-  [ SaveLoadScreenInit, SaveLoadScreenHandle, SaveLoadScreenShutdown ],
-  [ OptionsScreenInit, OptionsScreenHandle, OptionsScreenShutdown ],
-  [ ShopKeeperScreenInit, ShopKeeperScreenHandle, ShopKeeperScreenShutdown ],
-  [ SexScreenInit, SexScreenHandle, SexScreenShutdown ],
-  [ GameInitOptionsScreenInit, GameInitOptionsScreenHandle, GameInitOptionsScreenShutdown ],
-  [ DemoExitScreenInit, DemoExitScreenHandle, DemoExitScreenShutdown ],
-  [ IntroScreenInit, IntroScreenHandle, IntroScreenShutdown ],
-  [ CreditScreenInit, CreditScreenHandle, CreditScreenShutdown ],
+  createScreensFrom(EditScreenInit, EditScreenHandle, EditScreenShutdown),
+  createScreensFrom(SavingScreenInitialize, SavingScreenHandle, SavingScreenShutdown), // Title Screen
+  createScreensFrom(LoadingScreenInitialize, LoadingScreenHandle, LoadingScreenShutdown), // Title Screen
+  createScreensFrom(ErrorScreenInitialize, ErrorScreenHandle, ErrorScreenShutdown), // Title Screen
+  createScreensFrom(InitScreenInitialize, InitScreenHandle, InitScreenShutdown), // Title Screen
+  createScreensFrom(MainGameScreenInit, MainGameScreenHandle, MainGameScreenShutdown),
+  createScreensFrom(AniEditScreenInit, AniEditScreenHandle, AniEditScreenShutdown),
+  createScreensFrom(PalEditScreenInit, PalEditScreenHandle, PalEditScreenShutdown),
+  createScreensFrom(DebugScreenInit, DebugScreenHandle, DebugScreenShutdown),
+  createScreensFrom(MapScreenInit, MapScreenHandle, MapScreenShutdown),
+  createScreensFrom(LaptopScreenInit, LaptopScreenHandle, LaptopScreenShutdown),
+  createScreensFrom(LoadSaveScreenInit, LoadSaveScreenHandle, LoadSaveScreenShutdown),
+  createScreensFrom(MapUtilScreenInit, MapUtilScreenHandle, MapUtilScreenShutdown),
+  createScreensFrom(FadeScreenInit, FadeScreenHandle, FadeScreenShutdown),
+  createScreensFrom(MessageBoxScreenInit, MessageBoxScreenHandle, MessageBoxScreenShutdown),
+  createScreensFrom(MainMenuScreenInit, MainMenuScreenHandle, MainMenuScreenShutdown),
+  createScreensFrom(AutoResolveScreenInit, AutoResolveScreenHandle, AutoResolveScreenShutdown),
+  createScreensFrom(SaveLoadScreenInit, SaveLoadScreenHandle, SaveLoadScreenShutdown),
+  createScreensFrom(OptionsScreenInit, OptionsScreenHandle, OptionsScreenShutdown),
+  createScreensFrom(ShopKeeperScreenInit, ShopKeeperScreenHandle, ShopKeeperScreenShutdown),
+  createScreensFrom(SexScreenInit, SexScreenHandle, SexScreenShutdown),
+  createScreensFrom(GameInitOptionsScreenInit, GameInitOptionsScreenHandle, GameInitOptionsScreenShutdown),
+  createScreensFrom(DemoExitScreenInit, DemoExitScreenHandle, DemoExitScreenShutdown),
+  createScreensFrom(IntroScreenInit, IntroScreenHandle, IntroScreenShutdown),
+  createScreensFrom(CreditScreenInit, CreditScreenHandle, CreditScreenShutdown),
 
-  [ QuestDebugScreenInit, QuestDebugScreenHandle, QuestDebugScreenShutdown ],
+  createScreensFrom(QuestDebugScreenInit, QuestDebugScreenHandle, QuestDebugScreenShutdown),
 ];
 
 }

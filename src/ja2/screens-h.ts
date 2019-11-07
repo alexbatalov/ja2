@@ -10,6 +10,14 @@ export interface Screens {
   ShutdownScreen: () => UINT32;
 }
 
+export function createScreensFrom(InitializeScreen: () => UINT32, HandleScreen: () => UINT32, ShutdownScreen: () => UINT32): Screens {
+  return {
+    InitializeScreen,
+    HandleScreen,
+    ShutdownScreen,
+  };
+}
+
 // These defines are used as flags for each screen state. The only legal transition of states is
 // SCR_INACTIVE -> SCR_INITIALIZING -> SCR_ACTIVE -> SCR_SHUTTING_DOWN -> SCR_INACTIVE ... Anything else
 // will cause the system to yak.
