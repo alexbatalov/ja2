@@ -86,6 +86,19 @@ export interface ANIMCONTROLTYPE {
   bProfile: INT8;
 }
 
+export function createAnimationControlTypeFrom(zAnimStr: string, sAP: INT16, sSpeed: INT16, dMovementChange: FLOAT, uiFlags: UINT32, ubHeight: UINT8, ubEndHeight: UINT8, bProfile: INT8): ANIMCONTROLTYPE {
+  return {
+    zAnimStr,
+    sAP,
+    sSpeed,
+    dMovementChange,
+    uiFlags,
+    ubHeight,
+    ubEndHeight,
+    bProfile,
+  };
+}
+
 export interface ANI_SPEED_DEF {
   sSpeed: INT16;
   dMovementChange: FLOAT;
