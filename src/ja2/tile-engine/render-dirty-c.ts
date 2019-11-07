@@ -13,7 +13,7 @@ let guiNumVideoOverlays: UINT32 = 0;
 // BACKGROUND_SAVE	gTopmostSaves[BACKGROUND_BUFFERS];
 // UINT32 guiNumTopmostSaves=0;
 
-export let gDirtyClipRect: SGPRect = [ 0, 0, 640, 480 ];
+export let gDirtyClipRect: SGPRect = createSGPRectFrom(0, 0, 640, 480);
 
 let gfViewportDirty: boolean = false;
 

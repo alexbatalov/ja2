@@ -486,7 +486,7 @@ export let guiScrollDirection: INT32;
 // Rendering flags (full, partial, etc.)
 export let gRenderFlags: UINT32 = 0;
 
-let gClippingRect: SGPRect = [ 0, 0, 640, 360 ];
+let gClippingRect: SGPRect = createSGPRectFrom(0, 0, 640, 360);
 export let gOldClipRect: SGPRect;
 export let gsRenderCenterX: INT16;
 export let gsRenderCenterY: INT16;

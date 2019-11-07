@@ -872,7 +872,7 @@ function DoneFadeInForExitGameInitOptionScreen(): void {
 }
 
 function DoGioMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
-  let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
+  let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 639, 479);
 
   // reset exit mode
   //	gfExitGioDueToMessageBox = TRUE;

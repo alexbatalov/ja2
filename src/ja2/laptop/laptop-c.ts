@@ -331,7 +331,7 @@ let fHardDriveLightOn: boolean = false;
 let fFlickerHD: boolean = false;
 
 // the screens limiting rect
-let LaptopScreenRect: SGPRect = [ LAPTOP_UL_X, LAPTOP_UL_Y - 5, LAPTOP_SCREEN_LR_X + 2, LAPTOP_SCREEN_LR_Y + 5 + 19 ];
+let LaptopScreenRect: SGPRect = createSGPRectFrom(LAPTOP_UL_X, LAPTOP_UL_Y - 5, LAPTOP_SCREEN_LR_X + 2, LAPTOP_SCREEN_LR_Y + 5 + 19);
 
 // the sub pages vistsed or not status within the web browser
 let gfWWWaitSubSitesVisitedFlags: boolean[] /* [LAPTOP_MODE_SIRTECH - LAPTOP_MODE_WWW] */;
@@ -3572,7 +3572,7 @@ export function LapTopScreenCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 }
 
 export function DoLapTopMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
-  let pCenteringRect: SGPRect = [ LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y ];
+  let pCenteringRect: SGPRect = createSGPRectFrom(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y);
 
   // reset exit mode
   fExitDueToMessageBox = true;
@@ -3596,7 +3596,7 @@ export function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: string
 }
 
 export function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
-  let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
+  let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, INV_INTERFACE_START_Y);
   // reset exit mode
   fExitDueToMessageBox = true;
 

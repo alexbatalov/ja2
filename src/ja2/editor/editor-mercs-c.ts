@@ -2499,15 +2499,15 @@ export function UpdateMercsInfo(): void {
 // in Editor Taskbar Utils.h.  Here are the internal functions...
 
 let mercRects: SGPRect[] /* [9] */ = [
-  [ 75, 0, 104, 19 ], // head
-  [ 75, 22, 104, 41 ], // body
-  [ 76, 73, 105, 92 ], // legs
-  [ 26, 43, 78, 62 ], // left hand
-  [ 104, 42, 156, 61 ], // right hand
-  [ 180, 6, 232, 25 ], // pack 1
-  [ 180, 29, 232, 48 ], // pack 2
-  [ 180, 52, 232, 71 ], // pack 3
-  [ 180, 75, 232, 94 ], // pack 4
+  createSGPRectFrom(75, 0, 104, 19), // head
+  createSGPRectFrom(75, 22, 104, 41), // body
+  createSGPRectFrom(76, 73, 105, 92), // legs
+  createSGPRectFrom(26, 43, 78, 62), // left hand
+  createSGPRectFrom(104, 42, 156, 61), // right hand
+  createSGPRectFrom(180, 6, 232, 25), // pack 1
+  createSGPRectFrom(180, 29, 232, 48), // pack 2
+  createSGPRectFrom(180, 52, 232, 71), // pack 3
+  createSGPRectFrom(180, 75, 232, 94), // pack 4
 ];
 
 function PointInRect(pRect: Pointer<SGPRect>, x: INT32, y: INT32): boolean {

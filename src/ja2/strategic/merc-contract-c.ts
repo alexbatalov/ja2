@@ -801,7 +801,7 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   let zShortTownIDString: string /* CHAR16[50] */;
 
   // use YES/NO Pop up box, settup for particular screen
-  let pCenteringRect: SGPRect = [ 0, 0, 640, 480 ];
+  let pCenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, 480);
 
   // GetSectorIDString( pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ, zTownIDString, TRUE );
 

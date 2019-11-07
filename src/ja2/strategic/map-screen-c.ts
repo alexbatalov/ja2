@@ -8607,7 +8607,7 @@ function CheckForAndRenderNewMailOverlay(): void {
         if (!(ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].value.uiFlags & BUTTON_ENABLED)) {
           let uiDestPitchBYTES: UINT32;
           let pDestBuf: Pointer<UINT8>;
-          let area: SGPRect = [ 463, 417, 477, 425 ];
+          let area: SGPRect = createSGPRectFrom(463, 417, 477, 425);
 
           pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
           Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, addressof(area));

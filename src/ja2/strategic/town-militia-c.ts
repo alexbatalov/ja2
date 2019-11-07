@@ -376,7 +376,7 @@ function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY:
 
 export function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sString: string /* CHAR16[128] */;
-  let pCenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
+  let pCenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, INV_INTERFACE_START_Y);
   let iNumberOfSectors: INT32 = 0;
 
   pMilitiaTrainerSoldier = pSoldier;

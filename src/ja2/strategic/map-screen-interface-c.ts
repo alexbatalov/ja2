@@ -222,22 +222,22 @@ export let fShowRemoveMenu: boolean = false;
 let fRebuildMoveBox: boolean = false;
 
 // positions for all the pop up boxes
-export let ContractDimensions: SGPRect = [ 0, 0, 140, 60 ];
+export let ContractDimensions: SGPRect = createSGPRectFrom(0, 0, 140, 60);
 export let ContractPosition: SGPPoint = [ 120, 50 ];
-export let AttributeDimensions: SGPRect = [ 0, 0, 100, 95 ];
+export let AttributeDimensions: SGPRect = createSGPRectFrom(0, 0, 100, 95);
 export let AttributePosition: SGPPoint = [ 220, 150 ];
-export let TrainDimensions: SGPRect = [ 0, 0, 100, 95 ];
+export let TrainDimensions: SGPRect = createSGPRectFrom(0, 0, 100, 95);
 export let TrainPosition: SGPPoint = [ 160, 150 ];
-export let VehicleDimensions: SGPRect = [ 0, 0, 80, 60 ];
+export let VehicleDimensions: SGPRect = createSGPRectFrom(0, 0, 80, 60);
 export let VehiclePosition: SGPPoint = [ 160, 150 ];
 
 export let RepairPosition: SGPPoint = [ 160, 150 ];
-export let RepairDimensions: SGPRect = [ 0, 0, 80, 80 ];
+export let RepairDimensions: SGPRect = createSGPRectFrom(0, 0, 80, 80);
 
-export let AssignmentDimensions: SGPRect = [ 0, 0, 100, 95 ];
+export let AssignmentDimensions: SGPRect = createSGPRectFrom(0, 0, 100, 95);
 export let AssignmentPosition: SGPPoint = [ 120, 150 ];
 export let SquadPosition: SGPPoint = [ 160, 150 ];
-export let SquadDimensions: SGPRect = [ 0, 0, 140, 60 ];
+export let SquadDimensions: SGPRect = createSGPRectFrom(0, 0, 140, 60);
 
 export let OrigContractPosition: SGPPoint = [ 120, 50 ];
 export let OrigAttributePosition: SGPPoint = [ 220, 150 ];
@@ -865,7 +865,7 @@ export function DoMapMessageBoxWithRect(ubStyle: UINT8, zString: string /* Point
 }
 
 export function DoMapMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): INT32 {
-  let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
+  let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, INV_INTERFACE_START_Y);
 
   // reset the highlighted line
   giHighLine = -1;

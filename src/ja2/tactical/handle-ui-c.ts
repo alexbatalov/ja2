@@ -168,7 +168,7 @@ export let gUITargetShotWaiting: boolean = false;
 let gsUITargetShotGridNo: UINT16 = NOWHERE;
 export let gUIUseReverse: boolean = false;
 
-export let gRubberBandRect: SGPRect = [ 0, 0, 0, 0 ];
+export let gRubberBandRect: SGPRect = createSGPRectFrom(0, 0, 0, 0);
 export let gRubberBandActive: boolean = false;
 export let gfIgnoreOnSelectedGuy: boolean = false;
 let gfViewPortAdjustedForSouth: boolean = false;

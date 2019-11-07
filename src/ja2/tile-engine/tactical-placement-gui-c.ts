@@ -30,7 +30,7 @@ export let giMercPanelImage: INT32 = 0;
 let giPlacements: INT32 = 0;
 export let gfTacticalPlacementGUIDirty: boolean = false;
 export let gfValidLocationsChanged: boolean = false;
-let gTPClipRect: SGPRect = [ 0, 0, 0, 0 ];
+let gTPClipRect: SGPRect = createSGPRectFrom(0, 0, 0, 0);
 let gfValidCursor: boolean = false;
 let gfEveryonePlaced: boolean = false;
 
@@ -722,7 +722,7 @@ export function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_RE
 
           if (fInvalidArea) {
             // Report error due to invalid placement.
-            let CenterRect: SGPRect = [ 220, 120, 420, 200 ];
+            let CenterRect: SGPRect = createSGPRectFrom(220, 120, 420, 200);
             DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gpStrategicString[Enum365.STR_TP_INACCESSIBLE_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, addressof(CenterRect));
           } else {
             // Placement successful, so select the next unplaced unit (single or group).
@@ -733,7 +733,7 @@ export function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_RE
     } else {
       // not a valid cursor location...
       if (gbCursorMercID != -1) {
-        let CenterRect: SGPRect = [ 220, 120, 420, 200 ];
+        let CenterRect: SGPRect = createSGPRectFrom(220, 120, 420, 200);
         DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gpStrategicString[Enum365.STR_TP_INVALID_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, addressof(CenterRect));
       }
     }

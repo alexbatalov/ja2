@@ -2813,7 +2813,7 @@ function EnableQDSButtons(): void {
 }
 
 function DoQDSMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
-  let pCenteringRect: SGPRect = [ 0, 0, 639, 479 ];
+  let pCenteringRect: SGPRect = createSGPRectFrom(0, 0, 639, 479);
 
   // reset exit mode
   gfExitQdsDueToMessageBox = true;

@@ -357,13 +357,13 @@ let gMapItemDescAttachmentsXY: INV_ATTACHXY[] /* [] */ = [
 
 let gItemDescProsConsRects: SGPRect[] /* [] */ = [
   // NB the left value is calculated based on the width of the 'pros' and 'cons' labels
-  [ 0, 111, 313, 118 ],
-  [ 0, 119, 313, 126 ],
+  createSGPRectFrom(0, 111, 313, 118),
+  createSGPRectFrom(0, 119, 313, 126),
 ];
 
 let gMapItemDescProsConsRects: SGPRect[] /* [] */ = [
-  [ 0, 231, 313, 238 ],
-  [ 0, 239, 313, 246 ],
+  createSGPRectFrom(0, 231, 313, 238),
+  createSGPRectFrom(0, 239, 313, 246),
 ];
 
 let gItemDescHelpText: INV_HELPTEXT = [

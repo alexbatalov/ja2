@@ -41,6 +41,15 @@ export interface SGPRect {
   iBottom: INT32;
 }
 
+export function createSGPRectFrom(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32): SGPRect {
+  return {
+    iLeft,
+    iTop,
+    iRight,
+    iBottom,
+  };
+}
+
 export interface SGPPoint {
   iX: INT32;
   iY: INT32;

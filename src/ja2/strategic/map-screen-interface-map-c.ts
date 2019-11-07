@@ -373,12 +373,12 @@ let gpSamSectorY: INT16[] /* [] */ = [
 ];
 
 // map region
-export let MapScreenRect: SGPRect = [ (MAP_VIEW_START_X + MAP_GRID_X - 2), (MAP_VIEW_START_Y + MAP_GRID_Y - 1), MAP_VIEW_START_X + MAP_VIEW_WIDTH - 1 + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 10 + MAP_GRID_Y ];
+export let MapScreenRect: SGPRect = createSGPRectFrom((MAP_VIEW_START_X + MAP_GRID_X - 2), (MAP_VIEW_START_Y + MAP_GRID_Y - 1), MAP_VIEW_START_X + MAP_VIEW_WIDTH - 1 + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 10 + MAP_GRID_Y);
 
 export let gOldClipRect: SGPRect;
 
 // screen region
-let FullScreenRect: SGPRect = [ 0, 0, 640, 480 ];
+let FullScreenRect: SGPRect = createSGPRectFrom(0, 0, 640, 480);
 
 // temp helicopter path
 export let pTempHelicopterPath: PathStPtr = null;
@@ -3252,7 +3252,7 @@ export function RestoreBackgroundForMapGrid(sMapX: INT16, sMapY: INT16): void {
 
 export function ClipBlitsToMapViewRegion(): void {
   // the standard mapscreen rectangle doesn't work for clipping while zoomed...
-  let ZoomedMapScreenClipRect: SGPRect = [ MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + MAP_GRID_Y - 10 ];
+  let ZoomedMapScreenClipRect: SGPRect = createSGPRectFrom(MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + MAP_GRID_Y - 10);
   let pRectToUse: Pointer<SGPRect>;
 
   if (fZoomFlag)

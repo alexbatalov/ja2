@@ -2101,7 +2101,7 @@ function TempFileLoadErrorMessageReturnCallback(ubRetVal: UINT8): void {
 // think it succeeded the load.  This sets up the dialog for the game exit, after the hacker
 // message appears.
 export function InitExitGameDialogBecauseFileHackDetected(): void {
-  let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
+  let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 639, 479);
 
   // do message box and return
   giErrorMessageBox = DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pAntiHackerString[Enum332.ANTIHACKERSTR_EXITGAME], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, TempFileLoadErrorMessageReturnCallback, addressof(CenteringRect));

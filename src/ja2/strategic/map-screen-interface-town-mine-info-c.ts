@@ -8,7 +8,7 @@ export let fShowTownInfo: boolean = false;
 
 export let ghTownMineBox: INT32 = -1;
 let TownMinePosition: SGPPoint = [ 300, 150 ];
-let TownMineDimensions: SGPRect = [ 0, 0, 240, 60 ];
+let TownMineDimensions: SGPRect = createSGPRectFrom(0, 0, 240, 60);
 
 let bCurrentTownMineSectorX: INT8 = 0;
 let bCurrentTownMineSectorY: INT8 = 0;
