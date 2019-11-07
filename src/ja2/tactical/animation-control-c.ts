@@ -12,6 +12,13 @@ interface ANIMSUBTYPE {
   usAnimationSurfaces: UINT16[] /* [4] */;
 }
 
+function createAnimationSubTypeFrom(usAnimState: UINT16, usAnimationSurfaces: UINT16[]): ANIMSUBTYPE {
+  return {
+    usAnimState,
+    usAnimationSurfaces,
+  };
+}
+
 // Block for anim file
 export let gusAnimInst: UINT16[][] /* [MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM] */;
 
@@ -1007,22 +1014,14 @@ let gubAnimSurfaceItemSubIndex: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATE
 export let gubAnimSurfaceCorpseID: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
 
 let gRifleInjuredSub: ANIMSUBTYPE[] /* [] */ = [
-  Enum193.WALKING,
-  Enum195.RGMHURTWALKINGR,
-  Enum195.BGMHURTWALKINGR,
-  Enum195.RGMHURTWALKINGR,
-  Enum195.RGFHURTWALKINGR,
+  createAnimationSubTypeFrom(Enum193.WALKING, [ Enum195.RGMHURTWALKINGR, Enum195.BGMHURTWALKINGR, Enum195.RGMHURTWALKINGR, Enum195.RGFHURTWALKINGR ]),
 ];
 
 let gNothingInjuredSub: ANIMSUBTYPE[] /* [] */ = [
-  Enum193.WALKING,
-  Enum195.RGMHURTWALKINGN,
-  Enum195.BGMHURTWALKINGN,
-  Enum195.RGMHURTWALKINGN,
-  Enum195.RGFHURTWALKINGN,
+  createAnimationSubTypeFrom(Enum193.WALKING, [ Enum195.RGMHURTWALKINGN, Enum195.BGMHURTWALKINGN, Enum195.RGMHURTWALKINGN, Enum195.RGFHURTWALKINGN ]),
 ];
 
-let gDoubleHandledSub: ANIMSUBTYPE = [ Enum193.STANDING, Enum195.RGMDBLBREATH, Enum195.BGMDBLBREATH, Enum195.RGMDBLBREATH, Enum195.RGFDBLBREATH ];
+let gDoubleHandledSub: ANIMSUBTYPE = createAnimationSubTypeFrom(Enum193.STANDING, [ Enum195.RGMDBLBREATH, Enum195.BGMDBLBREATH, Enum195.RGMDBLBREATH, Enum195.RGFDBLBREATH ]);
 
 export function InitAnimationSurfacesPerBodytype(): void {
   let cnt1: INT32;
