@@ -23,6 +23,18 @@ export interface INV_REGIONS {
   sY: INT16; // starts at 0, gets set via InitInvSlotInterface()
 }
 
+export function createInvRegionsFrom(fBigPocket: boolean, sBarDx: INT16, sBarDy: INT16, sWidth: INT16, sHeight: INT16, sX: INT16, sY: INT16): INV_REGIONS {
+  return {
+    fBigPocket,
+    sBarDx,
+    sBarDy,
+    sWidth,
+    sHeight,
+    sX,
+    sY,
+  };
+}
+
 // USED TO SETUP REGION POSITIONS, ETC
 export interface INV_REGION_DESC {
   sX: INT16;
