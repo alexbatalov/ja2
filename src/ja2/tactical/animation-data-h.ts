@@ -518,6 +518,21 @@ export interface AnimationSurfaceType {
   bProfile: INT8;
 }
 
+export function createAnimationSurfaceTypeFrom(ubName: UINT16, Filename: string, bStructDataType: CHAR8, ubFlags: UINT8, uiNumDirections: UINT32, uiNumFramesPerDir: UINT32, hVideoObject: HVOBJECT, Unused: Pointer<void>, bUsageCount: INT8, bProfile: INT8): AnimationSurfaceType {
+  return {
+    ubName,
+    Filename,
+    bStructDataType,
+    ubFlags,
+    uiNumDirections,
+    uiNumFramesPerDir,
+    hVideoObject,
+    Unused,
+    bUsageCount,
+    bProfile,
+  };
+}
+
 export interface AnimationStructureType {
   Filename: string /* CHAR8[50] */;
   pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
