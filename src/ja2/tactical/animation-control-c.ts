@@ -894,35 +894,35 @@ export let gAnimControl: ANIMCONTROLTYPE[] /* [NUMANIMATIONSTATES] */ = [
 ];
 
 export let gubAnimWalkSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
-  [ -5, 1.6 ], // REGMALE
-  [ -10, 1.6 ], // BIGMALE
-  [ -5, 1.6 ], // STOCKYMALE
-  [ -15, 1.6 ], // REGFEMALE
-  [ 0, 1.6 ], // ADULTMONSTER
-  [ 0, 1.6 ], // ADULTMONSTER
-  [ 0, 1.6 ], // ADULTMONSTER
-  [ 0, 1.6 ], // ADULTMONSTER
-  [ 0, 1.6 ], // ADULTMONSTER
-  [ 0, 2.2 ], // INFANT
-  [ 0, 1.6 ], // QUEEN MONSTER
-  [ 40, 1.3 ], // FATCIV
-  [ 10, 1.3 ], // MANCIV
-  [ -10, 1.3 ], // MINICIV
-  [ -10, 1.3 ], // DRESSCIV
-  [ -20, 1.6 ], // HAT KID
-  [ -20, 1.6 ], // NOHAT KID
-  [ -20, 1.6 ], // CRIPPLE
-  [ 60, 0.9 ], // COW
-  [ 20, 1.6 ], // CROW
-  [ 0, 1.2 ], // BLOOD CAT
-  [ 20, 1.1 ], // ROBOT1
-  [ -10, 4.0 ], // HUMVEE
+  createAnimationSpeedDefinitionFrom(-5, 1.6), // REGMALE
+  createAnimationSpeedDefinitionFrom(-10, 1.6), // BIGMALE
+  createAnimationSpeedDefinitionFrom(-5, 1.6), // STOCKYMALE
+  createAnimationSpeedDefinitionFrom(-15, 1.6), // REGFEMALE
+  createAnimationSpeedDefinitionFrom(0, 1.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 1.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 1.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 1.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 1.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 2.2), // INFANT
+  createAnimationSpeedDefinitionFrom(0, 1.6), // QUEEN MONSTER
+  createAnimationSpeedDefinitionFrom(40, 1.3), // FATCIV
+  createAnimationSpeedDefinitionFrom(10, 1.3), // MANCIV
+  createAnimationSpeedDefinitionFrom(-10, 1.3), // MINICIV
+  createAnimationSpeedDefinitionFrom(-10, 1.3), // DRESSCIV
+  createAnimationSpeedDefinitionFrom(-20, 1.6), // HAT KID
+  createAnimationSpeedDefinitionFrom(-20, 1.6), // NOHAT KID
+  createAnimationSpeedDefinitionFrom(-20, 1.6), // CRIPPLE
+  createAnimationSpeedDefinitionFrom(60, 0.9), // COW
+  createAnimationSpeedDefinitionFrom(20, 1.6), // CROW
+  createAnimationSpeedDefinitionFrom(0, 1.2), // BLOOD CAT
+  createAnimationSpeedDefinitionFrom(20, 1.1), // ROBOT1
+  createAnimationSpeedDefinitionFrom(-10, 4.0), // HUMVEE
 
-  [ -10, 4.0 ], // TANK_NW
-  [ -10, 4.0 ], // TANK_NE
-  [ -10, 4.0 ], // ELDORADO
-  [ -10, 4.0 ], // ICECREAMTRUCK
-  [ -10, 4.0 ], // JEEP
+  createAnimationSpeedDefinitionFrom(-10, 4.0), // TANK_NW
+  createAnimationSpeedDefinitionFrom(-10, 4.0), // TANK_NE
+  createAnimationSpeedDefinitionFrom(-10, 4.0), // ELDORADO
+  createAnimationSpeedDefinitionFrom(-10, 4.0), // ICECREAMTRUCK
+  createAnimationSpeedDefinitionFrom(-10, 4.0), // JEEP
 ];
 
 export let gubMaxActionPoints: UINT8[] /* [TOTALBODYTYPES] */ = [
@@ -957,41 +957,41 @@ export let gubMaxActionPoints: UINT8[] /* [TOTALBODYTYPES] */ = [
 ];
 
 export let gubAnimRunSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
-  [ 0, 2.6 ], // REGMALE
-  [ 5, 2.6 ], // BIGMALE
-  [ 0, 2.6 ], // STOCKYMALE
-  [ -10, 2.6 ], // REGFEMALE
-  [ 0, 2.6 ], // ADULTMONSTER
-  [ 0, 2.6 ], // ADULTMONSTER
-  [ 0, 2.6 ], // ADULTMONSTER
-  [ 0, 2.6 ], // ADULTMONSTER
-  [ 0, 2.6 ], // ADULTMONSTER
-  [ 0, 2.6 ], // ADULTMONSTER
-  [ 0, 2.8 ], // INFANT
-  [ 10, 2.3 ], // FATCIV
-  [ -10, 2.3 ], // MANCIV
-  [ -20, 2.3 ], // MINICIV
-  [ -30, 2.3 ], // DRESSCIV
-  [ -40, 2.6 ], // HAT KID
-  [ -40, 2.6 ], // NOHAT KID
-  [ -20, 2.3 ], // CRIPPLE
-  [ 30, 2.0 ], // COW
+  createAnimationSpeedDefinitionFrom(0, 2.6), // REGMALE
+  createAnimationSpeedDefinitionFrom(5, 2.6), // BIGMALE
+  createAnimationSpeedDefinitionFrom(0, 2.6), // STOCKYMALE
+  createAnimationSpeedDefinitionFrom(-10, 2.6), // REGFEMALE
+  createAnimationSpeedDefinitionFrom(0, 2.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 2.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 2.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 2.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 2.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 2.6), // ADULTMONSTER
+  createAnimationSpeedDefinitionFrom(0, 2.8), // INFANT
+  createAnimationSpeedDefinitionFrom(10, 2.3), // FATCIV
+  createAnimationSpeedDefinitionFrom(-10, 2.3), // MANCIV
+  createAnimationSpeedDefinitionFrom(-20, 2.3), // MINICIV
+  createAnimationSpeedDefinitionFrom(-30, 2.3), // DRESSCIV
+  createAnimationSpeedDefinitionFrom(-40, 2.6), // HAT KID
+  createAnimationSpeedDefinitionFrom(-40, 2.6), // NOHAT KID
+  createAnimationSpeedDefinitionFrom(-20, 2.3), // CRIPPLE
+  createAnimationSpeedDefinitionFrom(30, 2.0), // COW
 ];
 
 // Really only the first mercs are using any of these values....
 export let gubAnimSwatSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
-  [ 0, 2.2 ], // REGMALE
-  [ 20, 2.2 ], // BIGMALE
-  [ 0, 2.2 ], // STOCKYMALE
-  [ -10, 2.2 ], // REGFEMALE
+  createAnimationSpeedDefinitionFrom(0, 2.2), // REGMALE
+  createAnimationSpeedDefinitionFrom(20, 2.2), // BIGMALE
+  createAnimationSpeedDefinitionFrom(0, 2.2), // STOCKYMALE
+  createAnimationSpeedDefinitionFrom(-10, 2.2), // REGFEMALE
 ];
 
 // Really only the first mercs are using any of these values....
 let gubAnimCrawlingSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
-  [ 0, 0.8 ], // REGMALE
-  [ 20, 0.8 ], // BIGMALE
-  [ 0, 0.8 ], // STOCKYMALE
-  [ -10, 0.8 ], // REGFEMALE
+  createAnimationSpeedDefinitionFrom(0, 0.8), // REGMALE
+  createAnimationSpeedDefinitionFrom(20, 0.8), // BIGMALE
+  createAnimationSpeedDefinitionFrom(0, 0.8), // STOCKYMALE
+  createAnimationSpeedDefinitionFrom(-10, 0.8), // REGFEMALE
 ];
 
 let gusNothingBreath: UINT16[] /* [] */ = [

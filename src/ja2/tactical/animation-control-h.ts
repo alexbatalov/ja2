@@ -104,6 +104,13 @@ export interface ANI_SPEED_DEF {
   dMovementChange: FLOAT;
 }
 
+export function createAnimationSpeedDefinitionFrom(sSpeed: INT16, dMovementChange: FLOAT): ANI_SPEED_DEF {
+  return {
+    sSpeed,
+    dMovementChange,
+  };
+}
+
 export interface RANDOM_ANI_DEF {
   ubHandRestriction: UINT8;
   sAnimID: INT16;
