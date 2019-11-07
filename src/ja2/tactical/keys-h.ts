@@ -7,6 +7,15 @@ export interface KEY {
   usDateFound: UINT16; // when the key was found
 }
 
+export function createKeyFrom(usItem: UINT16, fFlags: UINT8, usSectorFound: UINT16, usDateFound: UINT16): KEY {
+  return {
+    usItem,
+    fFlags,
+    usSectorFound,
+    usDateFound,
+  };
+}
+
 const KEY_USED = 0x01;
 
 export const LOCK_UNOPENABLE = 255;
