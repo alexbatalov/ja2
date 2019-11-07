@@ -16,39 +16,48 @@ interface RPC_SMALL_FACE_VALUES {
   bMouthY: INT8;
 }
 
+function createRPCSmallFaceValuesFrom(bEyesX: INT8, bEyesY: INT8, bMouthX: INT8, bMouthY: INT8): RPC_SMALL_FACE_VALUES {
+  return {
+    bEyesX,
+    bEyesY,
+    bMouthX,
+    bMouthY,
+  };
+}
+
 let gRPCSmallFaceValues: RPC_SMALL_FACE_VALUES[] /* [] */ = [
-  [ 9, 8, 8, 24 ], // MIGUEL		( 57 )
-  [ 8, 8, 7, 24 ], // CARLOS		( 58 )
-  [ 10, 8, 8, 26 ], // IRA			( 59 )
-  [ 7, 8, 7, 26 ], // DIMITRI	( 60 )
-  [ 6, 7, 7, 23 ], // DEVIN		( 61 )
-  [ 0, 0, 0, 0 ], // THE RAT	( 62 )
-  [ 8, 7, 8, 23 ], //					( 63 )
-  [ 8, 8, 8, 22 ], // SLAY			( 64 )
-  [ 0, 0, 0, 0 ], //					( 65 )
-  [ 9, 4, 7, 22 ], // DYNAMO		( 66 )
-  [ 8, 8, 8, 25 ], // SHANK		( 67 )
-  [ 4, 6, 5, 22 ], // IGGY			( 68 )
-  [ 8, 9, 7, 25 ], // VINCE		( 69 )
-  [ 4, 7, 5, 25 ], // CONRAD		( 70 )
-  [ 9, 7, 8, 22 ], // CARL			( 71 )
-  [ 9, 7, 9, 25 ], // MADDOG		( 72 )
-  [ 0, 0, 0, 0 ], //					( 73 )
-  [ 0, 0, 0, 0 ], //					( 74 )
+  createRPCSmallFaceValuesFrom(9, 8, 8, 24), // MIGUEL		( 57 )
+  createRPCSmallFaceValuesFrom(8, 8, 7, 24), // CARLOS		( 58 )
+  createRPCSmallFaceValuesFrom(10, 8, 8, 26), // IRA			( 59 )
+  createRPCSmallFaceValuesFrom(7, 8, 7, 26), // DIMITRI	( 60 )
+  createRPCSmallFaceValuesFrom(6, 7, 7, 23), // DEVIN		( 61 )
+  createRPCSmallFaceValuesFrom(0, 0, 0, 0), // THE RAT	( 62 )
+  createRPCSmallFaceValuesFrom(8, 7, 8, 23), //					( 63 )
+  createRPCSmallFaceValuesFrom(8, 8, 8, 22), // SLAY			( 64 )
+  createRPCSmallFaceValuesFrom(0, 0, 0, 0), //					( 65 )
+  createRPCSmallFaceValuesFrom(9, 4, 7, 22), // DYNAMO		( 66 )
+  createRPCSmallFaceValuesFrom(8, 8, 8, 25), // SHANK		( 67 )
+  createRPCSmallFaceValuesFrom(4, 6, 5, 22), // IGGY			( 68 )
+  createRPCSmallFaceValuesFrom(8, 9, 7, 25), // VINCE		( 69 )
+  createRPCSmallFaceValuesFrom(4, 7, 5, 25), // CONRAD		( 70 )
+  createRPCSmallFaceValuesFrom(9, 7, 8, 22), // CARL			( 71 )
+  createRPCSmallFaceValuesFrom(9, 7, 9, 25), // MADDOG		( 72 )
+  createRPCSmallFaceValuesFrom(0, 0, 0, 0), //					( 73 )
+  createRPCSmallFaceValuesFrom(0, 0, 0, 0), //					( 74 )
 
-  [ 9, 3, 8, 23 ], // MARIA		( 88 )
+  createRPCSmallFaceValuesFrom(9, 3, 8, 23), // MARIA		( 88 )
 
-  [ 9, 3, 8, 25 ], // JOEY			( 90 )
+  createRPCSmallFaceValuesFrom(9, 3, 8, 25), // JOEY			( 90 )
 
-  [ 11, 7, 9, 24 ], // SKYRIDER	( 97 )
-  [ 9, 5, 7, 23 ], // Miner	( 106 )
+  createRPCSmallFaceValuesFrom(11, 7, 9, 24), // SKYRIDER	( 97 )
+  createRPCSmallFaceValuesFrom(9, 5, 7, 23), // Miner	( 106 )
 
-  [ 6, 4, 6, 24 ], // JOHN					( 118 )
-  [ 12, 4, 10, 24 ], //					( 119 )
-  [ 8, 6, 8, 23 ], // Miner	( 148 )
-  [ 6, 5, 6, 23 ], // Miner	( 156 )
-  [ 13, 7, 11, 24 ], // Miner	( 157 )
-  [ 9, 7, 8, 22 ], // Miner	( 158 )
+  createRPCSmallFaceValuesFrom(6, 4, 6, 24), // JOHN					( 118 )
+  createRPCSmallFaceValuesFrom(12, 4, 10, 24), //					( 119 )
+  createRPCSmallFaceValuesFrom(8, 6, 8, 23), // Miner	( 148 )
+  createRPCSmallFaceValuesFrom(6, 5, 6, 23), // Miner	( 156 )
+  createRPCSmallFaceValuesFrom(13, 7, 11, 24), // Miner	( 157 )
+  createRPCSmallFaceValuesFrom(9, 7, 8, 22), // Miner	( 158 )
 ];
 
 let gubRPCSmallFaceProfileNum: UINT8[] /* [] */ = [
