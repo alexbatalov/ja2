@@ -51,4 +51,11 @@ export interface MoraleEvent {
   bChange: INT8;
 }
 
+export function createMoraleEventFrom(ubType: UINT8, bChange: INT8): MoraleEvent {
+  return {
+    ubType,
+    bChange,
+  };
+}
+
 }
