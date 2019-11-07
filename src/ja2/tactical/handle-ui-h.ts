@@ -64,6 +64,18 @@ export interface UI_EVENT {
   uiParams: UINT32[] /* [3] */;
 }
 
+export function createUIEventFrom(uiFlags: UINT32, ChangeToUIMode: UI_MODE, HandleEvent: UI_HANDLEFNC, fFirstTime: boolean, fDoneMenu: boolean, uiMenuPreviousMode: UINT32, uiParams: UINT32[]): UI_EVENT {
+  return {
+    uiFlags,
+    ChangeToUIMode,
+    HandleEvent,
+    fFirstTime,
+    fDoneMenu,
+    uiMenuPreviousMode,
+    uiParams,
+  };
+}
+
 // EVENT ENUMERATION
 export const enum Enum207 {
   I_DO_NOTHING,
