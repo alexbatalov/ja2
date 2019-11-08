@@ -509,24 +509,39 @@ interface RenderFXType {
   fObscured: boolean;
 }
 
+function createRenderFXTypeFrom(fDynamic: boolean, fZWrite: boolean, fZBlitter: boolean, fShadowBlitter: boolean, fLinkedListDirection: boolean, fMerc: boolean, fCheckForRedundency: boolean, fMultiZBlitter: boolean, fConvertTo16: boolean, fObscured: boolean): RenderFXType {
+  return {
+    fDynamic,
+    fZWrite,
+    fZBlitter,
+    fShadowBlitter,
+    fLinkedListDirection,
+    fMerc,
+    fCheckForRedundency,
+    fMultiZBlitter,
+    fConvertTo16,
+    fObscured,
+  };
+}
+
 let RenderFX: RenderFXType[] /* [] */ = [
-  [ false, false, false, false, false, false, true, false, false, false ], // STATIC LAND
-  [ false, true, true, false, true, false, true, false, false, false ], // STATIC OBJECTS
-  [ false, true, true, true, true, false, false, false, false, false ], // STATIC SHADOWS
-  [ false, true, true, false, true, false, false, false, false, true ], // STATIC STRUCTS
-  [ false, true, true, false, true, false, false, false, false, false ], // STATIC ROOF
-  [ false, true, true, false, true, false, false, false, false, true ], // STATIC ONROOF
-  [ false, true, true, false, true, false, false, false, false, false ], // STATIC TOPMOST
-  [ true, false, true, false, false, false, true, false, false, false ], // DYNAMIC LAND
-  [ true, false, true, false, true, false, true, false, false, false ], // DYNAMIC OBJECT
-  [ true, false, false, true, true, false, false, false, false, false ], // DYNAMIC SHADOW
-  [ true, false, true, false, true, true, false, false, false, false ], // DYNAMIC STRUCT MERCS
-  [ true, false, true, false, true, true, false, false, false, false ], // DYNAMIC MERCS
-  [ true, false, true, false, true, false, false, false, false, false ], // DYNAMIC STRUCT
-  [ true, false, true, false, true, false, false, false, false, false ], // DYNAMIC ROOF
-  [ true, false, true, false, true, true, false, false, false, false ], // DYNAMIC HIGHMERCS
-  [ true, false, true, false, true, false, false, false, false, false ], // DYNAMIC ONROOF
-  [ true, false, true, false, true, false, false, false, false, false ], // DYNAMIC TOPMOST
+  createRenderFXTypeFrom(false, false, false, false, false, false, true, false, false, false), // STATIC LAND
+  createRenderFXTypeFrom(false, true, true, false, true, false, true, false, false, false), // STATIC OBJECTS
+  createRenderFXTypeFrom(false, true, true, true, true, false, false, false, false, false), // STATIC SHADOWS
+  createRenderFXTypeFrom(false, true, true, false, true, false, false, false, false, true), // STATIC STRUCTS
+  createRenderFXTypeFrom(false, true, true, false, true, false, false, false, false, false), // STATIC ROOF
+  createRenderFXTypeFrom(false, true, true, false, true, false, false, false, false, true), // STATIC ONROOF
+  createRenderFXTypeFrom(false, true, true, false, true, false, false, false, false, false), // STATIC TOPMOST
+  createRenderFXTypeFrom(true, false, true, false, false, false, true, false, false, false), // DYNAMIC LAND
+  createRenderFXTypeFrom(true, false, true, false, true, false, true, false, false, false), // DYNAMIC OBJECT
+  createRenderFXTypeFrom(true, false, false, true, true, false, false, false, false, false), // DYNAMIC SHADOW
+  createRenderFXTypeFrom(true, false, true, false, true, true, false, false, false, false), // DYNAMIC STRUCT MERCS
+  createRenderFXTypeFrom(true, false, true, false, true, true, false, false, false, false), // DYNAMIC MERCS
+  createRenderFXTypeFrom(true, false, true, false, true, false, false, false, false, false), // DYNAMIC STRUCT
+  createRenderFXTypeFrom(true, false, true, false, true, false, false, false, false, false), // DYNAMIC ROOF
+  createRenderFXTypeFrom(true, false, true, false, true, true, false, false, false, false), // DYNAMIC HIGHMERCS
+  createRenderFXTypeFrom(true, false, true, false, true, false, false, false, false, false), // DYNAMIC ONROOF
+  createRenderFXTypeFrom(true, false, true, false, true, false, false, false, false, false), // DYNAMIC TOPMOST
 ];
 
 let RenderFXStartIndex: UINT8[] /* [] */ = [
