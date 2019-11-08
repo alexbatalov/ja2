@@ -27,6 +27,14 @@ export interface LibraryInitHeader {
   fInitOnStart: boolean; // Flag specifying if the library is to Initialized at the begining of the game
 }
 
+export function createLibraryInitHeaderFrom(sLibraryName: string, fOnCDrom: boolean, fInitOnStart: boolean): LibraryInitHeader {
+  return {
+    sLibraryName,
+    fOnCDrom,
+    fInitOnStart,
+  };
+}
+
 const REAL_LIBRARY_FILE = "RealFiles.slf";
 
 export interface RealFileOpenStruct {
