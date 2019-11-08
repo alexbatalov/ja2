@@ -10,6 +10,15 @@ export interface EXITGRID {
   ubGotoSectorZ: UINT8;
 }
 
+export function createExitGrid(): EXITGRID {
+  return {
+    usGridNo: 0,
+    ubGotoSectorX: 0,
+    ubGotoSectorY: 0,
+    ubGotoSectorZ: 0,
+  };
+}
+
 export function createExitGridFrom(usGridNo: UINT16, ubGotoSectorX: UINT8, ubGotoSectorY: UINT8, ubGotoSectorZ: UINT8): EXITGRID {
   return {
     usGridNo,

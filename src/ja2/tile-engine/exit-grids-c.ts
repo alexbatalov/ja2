@@ -109,7 +109,7 @@ export function RemoveExitGridFromWorld(iMapIndex: INT32): void {
 }
 
 export function SaveExitGrids(fp: HWFILE, usNumExitGrids: UINT16): void {
-  let exitGrid: EXITGRID;
+  let exitGrid: EXITGRID = createExitGrid();
   let usNumSaved: UINT16 = 0;
   let x: UINT16;
   let uiBytesWritten: UINT32;
@@ -126,7 +126,7 @@ export function SaveExitGrids(fp: HWFILE, usNumExitGrids: UINT16): void {
 }
 
 export function LoadExitGrids(hBuffer: Pointer<Pointer<INT8>>): void {
-  let exitGrid: EXITGRID;
+  let exitGrid: EXITGRID = createExitGrid();
   let x: UINT16;
   let usNumSaved: UINT16;
   let usMapIndex: UINT16;
@@ -195,7 +195,7 @@ export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIER
   let soldier: SOLDIERTYPE;
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
   let ubGotoSectorX: UINT8;
   let ubGotoSectorY: UINT8;
   let ubGotoSectorZ: UINT8;
@@ -302,7 +302,7 @@ export function FindClosestExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: 
   let sLowestGridNo: INT16 = 0;
   let leftmost: INT32;
   let fFound: boolean = false;
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
 
   sTop = ubRadius;
   sBottom = -ubRadius;

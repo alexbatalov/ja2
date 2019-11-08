@@ -905,7 +905,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let fSetCursor: boolean = false;
   let uiCursorFlags: UINT32;
   let pIntNode: Pointer<LEVELNODE>;
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
   let sIntTileGridNo: INT16;
   let fContinue: boolean = true;
   let pItemPool: Pointer<ITEM_POOL>;

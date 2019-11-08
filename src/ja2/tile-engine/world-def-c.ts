@@ -2072,7 +2072,7 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   }
 
   if (uiFlags & MAP_EXITGRIDS_SAVED) {
-    let exitGrid: EXITGRID;
+    let exitGrid: EXITGRID = createExitGrid();
     let loop: INT32;
     let usMapIndex: UINT16;
     let fExitGridFound: boolean;

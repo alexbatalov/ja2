@@ -1400,7 +1400,7 @@ export function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQu
   let sAdjustedGridNo: INT16;
   let bItemIn: INT8;
   let ubDesiredMercDir: UINT8;
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
   let iRandom: INT32 = 0;
   let ubMineIndex: UINT8;
 

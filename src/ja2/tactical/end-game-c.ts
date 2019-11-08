@@ -14,7 +14,7 @@ let gbLevel: INT8;
 // This function checks if our statue exists in the current sector at given gridno
 export function DoesO3SectorStatueExistHere(sGridNo: INT16): boolean {
   let cnt: INT32;
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
 
   // First check current sector......
   if (gWorldSectorX == 3 && gWorldSectorY == MAP_ROW_O && gbWorldSectorZ == 0) {
@@ -34,7 +34,7 @@ export function DoesO3SectorStatueExistHere(sGridNo: INT16): boolean {
 
 // This function changes the graphic of the statue and adds the exit grid...
 export function ChangeO3SectorStatue(fFromExplosion: boolean): void {
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
   let usTileIndex: UINT16;
   let sX: INT16;
   let sY: INT16;

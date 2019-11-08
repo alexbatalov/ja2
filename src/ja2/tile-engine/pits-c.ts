@@ -6,7 +6,7 @@ export let gfShowPits: boolean = false;
 export let gfLoadPitsWithoutArming: boolean = false;
 
 export function Add3X3Pit(iMapIndex: INT32): void {
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(true);
   AddObjectToTail(iMapIndex + 159, Enum312.REGWATERTEXTURE1);
@@ -42,7 +42,7 @@ export function Add3X3Pit(iMapIndex: INT32): void {
 }
 
 export function Add5X5Pit(iMapIndex: INT32): void {
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(true);
   AddObjectToTail(iMapIndex + 318, Enum312.REGWATERTEXTURE10);
@@ -206,7 +206,7 @@ export function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT
 
 export function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubID];
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
   let sPitGridNo: INT16;
   // OK, get exit grid...
 

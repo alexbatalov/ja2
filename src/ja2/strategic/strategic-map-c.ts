@@ -1517,7 +1517,7 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
 
 function SetInsertionDataFromAdjacentMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirection: UINT8, sAdditionalData: INT16): UINT8 {
   let ubDirection: UINT8;
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
 
   // Set insertion code
   switch (ubTacticalDirection) {
@@ -1629,7 +1629,7 @@ export function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: U
   let pGroup: Pointer<GROUP>;
   let uiTraverseTime: UINT32 = 0;
   let ubDirection: UINT8;
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
   let bPrevAssignment: INT8;
   let ubPrevGroupID: UINT8;
 

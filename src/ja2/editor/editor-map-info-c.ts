@@ -191,7 +191,7 @@ export function ApplyNewExitGridValuesToTextFields(): boolean {
 
 let usCurrentExitGridNo: UINT16 = 0;
 export function LocateNextExitGrid(): void {
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
   let i: UINT16;
   for (i = usCurrentExitGridNo + 1; i < WORLD_MAX; i++) {
     if (GetExitGrid(i, addressof(ExitGrid))) {

@@ -195,7 +195,7 @@ export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
         break;
 
       case Enum307.SLM_EXIT_GRIDS: {
-        let ExitGrid: EXITGRID;
+        let ExitGrid: EXITGRID = createExitGrid();
         gfLoadingExitGrids = true;
         ExitGrid.usGridNo = pMap.value.usSubImageIndex;
         ExitGrid.ubGotoSectorX = pMap.value.usImageType;

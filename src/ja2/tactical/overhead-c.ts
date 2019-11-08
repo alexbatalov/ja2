@@ -3500,7 +3500,7 @@ export function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT1
   let ubWallOrientation: UINT8;
   let fCheckGivenGridNo: boolean = true;
   let ubTestDirection: UINT8;
-  let ExitGrid: EXITGRID;
+  let ExitGrid: EXITGRID = createExitGrid();
 
   // Set default direction
   if (pubDirection) {
