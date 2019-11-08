@@ -72,4 +72,12 @@ export interface Selections {
   sCount: INT16;
 }
 
+export function createSelectionsFrom(uiObject: UINT32, usIndex: UINT16, sCount: INT16): Selections {
+  return {
+    uiObject,
+    usIndex,
+    sCount,
+  };
+}
+
 }

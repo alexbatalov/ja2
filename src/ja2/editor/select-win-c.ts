@@ -84,23 +84,23 @@ let Room: DisplaySpec[] /* [ROOM_NUMELEMENTS] */;
 // These are all of the different selection lists.  Changing the max_selections will
 // change the number of selections values you can have at a time.  This is Bret's gay code,
 // though I've cleaned it up a lot.
-export let SelOStructs: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTFULLSTRUCT, 0, 1 ] ]; // Default selections
-export let SelOStructs1: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FOURTHOSTRUCT, 0, 1 ] ]; // Default selections
-export let SelOStructs2: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.THIRDOSTRUCT, 0, 1 ] ]; // Default selections
-export let SelBanks: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTCLIFF, 0, 1 ] ];
-export let SelRoads: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTROAD, 0, 1 ] ];
-export let SelDebris: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.DEBRISROCKS, 0, 1 ] ];
-export let SelSingleWall: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALL, 0, 1 ] ];
-export let SelSingleDoor: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTDOOR, 0, 1 ] ];
-export let SelSingleWindow: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALL, 44, 1 ] ];
-export let SelSingleRoof: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTROOF, 0, 1 ] ];
-export let SelSingleNewRoof: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTROOF, 0, 1 ] ];
-export let SelSingleBrokenWall: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTDECORATIONS, 0, 1 ] ];
-export let SelSingleDecor: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTISTRUCT, 0, 1 ] ];
-export let SelSingleDecal: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALLDECAL, 0, 1 ] ];
-export let SelSingleFloor: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTFLOOR, 0, 1 ] ];
-export let SelSingleToilet: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIFTHISTRUCT, 0, 1 ] ];
-export let SelRoom: Selections[] /* [MAX_SELECTIONS] */ = [ [ Enum313.FIRSTWALL, 0, 1 ] ];
+export let SelOStructs: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTFULLSTRUCT, 0, 1) ]; // Default selections
+export let SelOStructs1: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FOURTHOSTRUCT, 0, 1) ]; // Default selections
+export let SelOStructs2: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.THIRDOSTRUCT, 0, 1) ]; // Default selections
+export let SelBanks: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTCLIFF, 0, 1) ];
+export let SelRoads: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTROAD, 0, 1) ];
+export let SelDebris: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.DEBRISROCKS, 0, 1) ];
+export let SelSingleWall: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTWALL, 0, 1) ];
+export let SelSingleDoor: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTDOOR, 0, 1) ];
+export let SelSingleWindow: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTWALL, 44, 1) ];
+export let SelSingleRoof: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTROOF, 0, 1) ];
+export let SelSingleNewRoof: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTROOF, 0, 1) ];
+export let SelSingleBrokenWall: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTDECORATIONS, 0, 1) ];
+export let SelSingleDecor: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTISTRUCT, 0, 1) ];
+export let SelSingleDecal: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTWALLDECAL, 0, 1) ];
+export let SelSingleFloor: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTFLOOR, 0, 1) ];
+export let SelSingleToilet: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIFTHISTRUCT, 0, 1) ];
+export let SelRoom: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom(Enum313.FIRSTWALL, 0, 1) ];
 
 // Number of objects currently in the selection list
 export let iNumOStructsSelected: INT32 = 1;
