@@ -27,18 +27,26 @@ interface RGBCOLOR {
   ubBlue: UINT8;
 }
 
+function createRGBColorFrom(ubRed: UINT8, ubGreen: UINT8, ubBlue: UINT8): RGBCOLOR {
+  return {
+    ubRed,
+    ubGreen,
+    ubBlue,
+  };
+}
+
 let GlowColors: RGBCOLOR[] /* [] */ = [
-  [ 0, 0, 0 ],
-  [ 25, 0, 0 ],
-  [ 50, 0, 0 ],
-  [ 75, 0, 0 ],
-  [ 100, 0, 0 ],
-  [ 125, 0, 0 ],
-  [ 150, 0, 0 ],
-  [ 175, 0, 0 ],
-  [ 200, 0, 0 ],
-  [ 225, 0, 0 ],
-  [ 250, 0, 0 ],
+  createRGBColorFrom(0, 0, 0),
+  createRGBColorFrom(25, 0, 0),
+  createRGBColorFrom(50, 0, 0),
+  createRGBColorFrom(75, 0, 0),
+  createRGBColorFrom(100, 0, 0),
+  createRGBColorFrom(125, 0, 0),
+  createRGBColorFrom(150, 0, 0),
+  createRGBColorFrom(175, 0, 0),
+  createRGBColorFrom(200, 0, 0),
+  createRGBColorFrom(225, 0, 0),
+  createRGBColorFrom(250, 0, 0),
 ];
 
 // laptop programs
