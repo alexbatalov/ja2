@@ -439,7 +439,7 @@ function EnterSaveLoadScreen(): boolean {
     if (gGameSettings.bLastSavedGameSlot != -1) {
       // if the slot is valid
       if (gbSaveGameArray[gGameSettings.bLastSavedGameSlot]) {
-        let SaveGameHeader: SAVED_GAME_HEADER;
+        let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
 
         memset(addressof(SaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
 
@@ -875,7 +875,7 @@ function DoSaveLoadMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> 
 export function InitSaveGameArray(): boolean {
   let cnt: INT8;
   let zSaveGameName: string /* CHAR8[512] */;
-  let SaveGameHeader: SAVED_GAME_HEADER;
+  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
 
   for (cnt = 0; cnt < NUM_SAVE_GAMES; cnt++) {
     CreateSavedGameFileNameFromNumber(cnt, zSaveGameName);
@@ -914,7 +914,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
   let zLocationString: string /* CHAR16[128] */;
   let zNumMercsString: string /* CHAR16[128] */;
   let zBalanceString: string /* CHAR16[128] */;
-  let SaveGameHeader: SAVED_GAME_HEADER;
+  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
   let hPixHandle: HVOBJECT;
   let usPosX: UINT16 = SLG_FIRST_SAVED_SPOT_X;
   let uiFont: UINT32 = SAVE_LOAD_TITLE_FONT();
@@ -1412,7 +1412,7 @@ function SelectedSaveRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reas
 function InitSaveLoadScreenTextInputBoxes(): void {
   let uiStartLoc: UINT32 = 0;
   let usPosY: UINT16;
-  let SaveGameHeader: SAVED_GAME_HEADER;
+  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
 
   if (gbSelectedSaveLocation == -1)
     return;
@@ -1553,7 +1553,7 @@ function SetSelection(ubNewSelection: UINT8): void {
 function CompareSaveGameVersion(bSaveGameID: INT8): UINT8 {
   let ubRetVal: UINT8 = Enum25.SLS_HEADER_OK;
 
-  let SaveGameHeader: SAVED_GAME_HEADER;
+  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
 
   // Get the heade for the saved game
   LoadSavedGameHeader(bSaveGameID, addressof(SaveGameHeader));

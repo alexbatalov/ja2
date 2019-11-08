@@ -366,7 +366,7 @@ export let guiScreenToGotoAfterLoadingSavedGame: UINT32 = 0;
 export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR16 */): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let hFile: HWFILE = 0;
-  let SaveGameHeader: SAVED_GAME_HEADER;
+  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
   let zSaveGameName: string /* CHAR8[512] */;
   let uiSizeOfGeneralInfo: UINT32 = sizeof(GENERAL_SAVE_INFO);
   let saveDir: string /* UINT8[100] */;
@@ -861,7 +861,7 @@ export let guiBrokenSaveGameVersion: UINT32 = 0;
 
 export function LoadSavedGame(ubSavedGameID: UINT8): boolean {
   let hFile: HWFILE;
-  let SaveGameHeader: SAVED_GAME_HEADER;
+  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
   let uiNumBytesRead: UINT32 = 0;
 
   let sLoadSectorX: INT16;

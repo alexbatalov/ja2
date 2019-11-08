@@ -43,4 +43,28 @@ export interface SAVED_GAME_HEADER {
   ubFiller: UINT8[] /* [110] */;
 }
 
+export function createSaveGameHeader(): SAVED_GAME_HEADER {
+  return {
+    uiSavedGameVersion: 0,
+    zGameVersionNumber: "",
+    sSavedGameDesc: "",
+    uiFlags: 0,
+    uiDay: 0,
+    ubHour: 0,
+    ubMin: 0,
+    sSectorX: 0,
+    sSectorY: 0,
+    bSectorZ: 0,
+    ubNumOfMercsOnPlayersTeam: 0,
+    iCurrentBalance: 0,
+    uiCurrentScreen: 0,
+    fAlternateSector: false,
+    fWorldLoaded: false,
+    ubLoadScreenID: 0,
+    sInitialGameOptions: createGameOptions(),
+    uiRandom: 0,
+    ubFiller: createArray(110, 0),
+  };
+}
+
 }
