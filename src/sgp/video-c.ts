@@ -56,7 +56,7 @@ interface MouseCursorBackground {
 /* static */ let gusScreenHeight: UINT16;
 /* static */ let gubScreenPixelDepth: UINT8;
 
-/* static */ let gScrollRegion: RECT;
+/* static */ let gScrollRegion: RECT = createRect();
 
 const MAX_NUM_FRAMES = 25;
 
@@ -810,11 +810,11 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
   let usHeight: UINT16;
   let ubBitDepth: UINT8;
   let ReturnCode: HRESULT;
-  /* static */ let Region: RECT;
+  /* static */ let Region: RECT = createRect();
   /* static */ let usMouseXPos: UINT16;
   /* static */ let usMouseYPos: UINT16;
-  /* static */ let StripRegions: RECT[] /* [2] */;
-  /* static */ let MouseRegion: RECT;
+  /* static */ let StripRegions: RECT[] /* [2] */ = createArrayFrom(2, createRect);
+  /* static */ let MouseRegion: RECT = createRect();
   let usNumStrips: UINT16 = 0;
   let cnt: INT32;
   let sShiftX: INT16;
@@ -1221,7 +1221,7 @@ export function RefreshScreen(DummyVariable: Pointer<void>): void {
   let usScreenHeight: UINT16;
   /* static */ let fShowMouse: boolean;
   let ReturnCode: HRESULT;
-  /* static */ let Region: RECT;
+  /* static */ let Region: RECT = createRect();
   /* static */ let MousePos: POINT;
   /* static */ let fFirstTime: boolean = true;
   let uiTime: UINT32;

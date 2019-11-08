@@ -8,7 +8,7 @@ namespace ja2 {
 
 export let gfKeyState: boolean[] /* [256] */; // TRUE = Pressed, FALSE = Not Pressed
 let fCursorWasClipped: boolean = false;
-let gCursorClipRect: RECT;
+let gCursorClipRect: RECT = createRect();
 
 // The gsKeyTranslationTables basically translates scan codes to our own key value table. Please note that the table is 2 bytes
 // wide per entry. This will be used since we will use 2 byte characters for translation purposes.

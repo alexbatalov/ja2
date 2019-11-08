@@ -140,7 +140,7 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
   let hVSurface: HVSURFACE;
   let pDDSurface: LPDIRECTDRAWSURFACE2;
   let hdc: HDC;
-  let rc: RECT;
+  let rc: RECT = createRect();
   let pWinFont: Pointer<HWINFONT>;
   let len: number;
   let RectSize: SIZE;

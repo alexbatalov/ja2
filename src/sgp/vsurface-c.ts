@@ -960,7 +960,7 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
 function RestoreVideoSurface(hVSurface: HVSURFACE): boolean {
   let lpDDSurface: LPDIRECTDRAWSURFACE2;
   let lpBackupDDSurface: LPDIRECTDRAWSURFACE2;
-  let aRect: RECT;
+  let aRect: RECT = createRect();
 
   Assert(hVSurface != null);
 
@@ -1300,7 +1300,7 @@ export function DeleteVideoSurface(hVSurface: HVSURFACE): boolean {
 function SetClipList(hVSurface: HVSURFACE, RegionData: Pointer<SGPRect>, usNumRegions: UINT16): boolean {
   RGNDATA *pRgnData;
   let cnt: UINT16;
-  let aRect: RECT;
+  let aRect: RECT = createRect();
   let lpDD2Object: LPDIRECTDRAW2;
 
   // Get Direct Draw Object
@@ -1482,8 +1482,8 @@ function AddVSurfaceRegionAtIndex(hVSurface: HVSURFACE, usIndex: UINT16, pNewReg
 
 export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, usIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: INT32, pBltFx: Pointer<blt_vs_fx>): boolean {
   let aRegion: VSURFACE_REGION;
-  let SrcRect: RECT;
-  let DestRect: RECT;
+  let SrcRect: RECT = createRect();
+  let DestRect: RECT = createRect();
   let pSrcSurface8: Pointer<UINT8>;
   let pDestSurface8: Pointer<UINT8>;
   let pDestSurface16: Pointer<UINT16>;
@@ -1674,7 +1674,7 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
 
 // Blt to backup buffer
 function UpdateBackupSurface(hVSurface: HVSURFACE): boolean {
-  let aRect: RECT;
+  let aRect: RECT = createRect();
 
   // Assertions
   Assert(hVSurface != null);
@@ -1899,7 +1899,7 @@ function FillSurfaceRect(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): 
 
 export function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, fBltFlags: UINT32, iDestX: INT32, iDestY: INT32, SrcRect: Pointer<RECT>): boolean {
   let uiDDFlags: UINT32;
-  let DestRect: RECT;
+  let DestRect: RECT = createRect();
 
   // Blit using the correct blitter
   if (fBltFlags & VS_BLT_FAST) {
