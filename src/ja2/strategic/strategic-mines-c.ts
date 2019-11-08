@@ -21,12 +21,12 @@ export let gMineStatus: MINE_STATUS_TYPE[] /* [MAX_NUMBER_OF_MINES] */;
 
 // this table holds mine values that never change and don't need to be saved
 export let gMineLocation: MINE_LOCATION_TYPE[] /* [MAX_NUMBER_OF_MINES] */ = [
-  [ 4, 4, Enum135.SAN_MONA ],
-  [ 13, 4, Enum135.DRASSEN ],
-  [ 14, 9, Enum135.ALMA ],
-  [ 8, 8, Enum135.CAMBRIA ],
-  [ 2, 2, Enum135.CHITZENA ],
-  [ 3, 8, Enum135.GRUMM ],
+  createMineLocationTypeFrom(4, 4, Enum135.SAN_MONA),
+  createMineLocationTypeFrom(13, 4, Enum135.DRASSEN),
+  createMineLocationTypeFrom(14, 9, Enum135.ALMA),
+  createMineLocationTypeFrom(8, 8, Enum135.CAMBRIA),
+  createMineLocationTypeFrom(2, 2, Enum135.CHITZENA),
+  createMineLocationTypeFrom(3, 8, Enum135.GRUMM),
 ];
 
 // the are not being randomized at all at this time

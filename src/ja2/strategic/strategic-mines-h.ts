@@ -56,6 +56,14 @@ export interface MINE_LOCATION_TYPE {
   bAssociatedTown: INT8; // associated town of this mine
 }
 
+export function createMineLocationTypeFrom(sSectorX: INT16, sSectorY: INT16, bAssociatedTown: INT8): MINE_LOCATION_TYPE {
+  return {
+    sSectorX,
+    sSectorY,
+    bAssociatedTown,
+  };
+}
+
 export interface MINE_STATUS_TYPE {
   ubMineType: UINT8; // type of mine (silver or gold)
   filler1: BYTE[] /* [3] */;
