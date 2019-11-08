@@ -1109,7 +1109,7 @@ export function EndCaptureSequence(): void {
 
       // OK! - Schedule Meanwhile now!
       {
-        let MeanwhileDef: MEANWHILE_DEFINITION;
+        let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
 
         MeanwhileDef.sSectorX = 7;
         MeanwhileDef.sSectorY = 14;

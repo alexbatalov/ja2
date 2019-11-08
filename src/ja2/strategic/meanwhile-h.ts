@@ -30,4 +30,15 @@ export interface MEANWHILE_DEFINITION {
   ubNPCNumber: UINT8;
 }
 
+export function createMeanwhileDefinition(): MEANWHILE_DEFINITION {
+  return {
+    sSectorX: 0,
+    sSectorY: 0,
+    usTriggerEvent: 0,
+
+    ubMeanwhileID: 0,
+    ubNPCNumber: 0,
+  };
+}
+
 }

@@ -52,8 +52,8 @@ interface NPC_SAVE_INFO {
 }
 
 // BEGIN SERALIZATION
-export let gCurrentMeanwhileDef: MEANWHILE_DEFINITION;
-export let gMeanwhileDef: MEANWHILE_DEFINITION[] /* [NUM_MEANWHILES] */;
+export let gCurrentMeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
+export let gMeanwhileDef: MEANWHILE_DEFINITION[] /* [NUM_MEANWHILES] */ = createArrayFrom(Enum160.NUM_MEANWHILES, createMeanwhileDefinition);
 export let gfMeanwhileTryingToStart: boolean = false;
 export let gfInMeanwhile: boolean = false;
 // END SERIALIZATION
@@ -760,7 +760,7 @@ export function GetMeanwhileID(): UINT8 {
 
 export function HandleCreatureRelease(): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
@@ -778,7 +778,7 @@ export function HandleCreatureRelease(): void {
 export function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
   // post event for meanwhile whithin the next 6 hours if it still will be daylight, otherwise the next morning
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let ubId: UINT8 = 0;
   let fHandled: boolean = false;
 
@@ -827,7 +827,7 @@ export function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): vo
 
 export function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
 
   // make sure scene hasn't been used before
   if (GetMeanWhileFlag(Enum160.LOST_TOWN)) {
@@ -849,7 +849,7 @@ export function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
 
 export function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let ubId: UINT8 = 0;
   let fHandled: boolean = false;
 
@@ -897,7 +897,7 @@ export function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void 
 
 export function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
@@ -927,7 +927,7 @@ export function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
 
 export function HandleOutskirtsOfMedunaMeanwhileScene(): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
@@ -950,7 +950,7 @@ export function HandleOutskirtsOfMedunaMeanwhileScene(): void {
 
 export function HandleKillChopperMeanwhileScene(): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
@@ -973,7 +973,7 @@ export function HandleKillChopperMeanwhileScene(): void {
 
 export function HandleScientistAWOLMeanwhileScene(): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
@@ -996,7 +996,7 @@ export function HandleScientistAWOLMeanwhileScene(): void {
 
 function HandleInterrogationMeanwhileScene(): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
@@ -1019,7 +1019,7 @@ function HandleInterrogationMeanwhileScene(): void {
 
 function HandleFirstBattleVictory(): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let ubId: UINT8 = 0;
 
   if (GetMeanWhileFlag(Enum160.END_OF_PLAYERS_FIRST_BATTLE)) {
@@ -1043,7 +1043,7 @@ function HandleFirstBattleVictory(): void {
 
 function HandleDelayedFirstBattleVictory(): void {
   let uiTime: UINT32 = 0;
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let ubId: UINT8 = 0;
 
   if (GetMeanWhileFlag(Enum160.END_OF_PLAYERS_FIRST_BATTLE)) {

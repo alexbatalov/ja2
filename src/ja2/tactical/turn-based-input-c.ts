@@ -3249,7 +3249,7 @@ function HandleSelectMercSlot(ubPanelSlot: UINT8, bCode: INT8): void {
 }
 
 function TestMeanWhile(iID: INT32): void {
-  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let MeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
