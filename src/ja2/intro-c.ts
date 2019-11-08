@@ -175,7 +175,7 @@ function HandleIntroScreen(): void {
 
 function GetIntroScreenUserInput(): void {
   let Event: InputAtom;
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
 
   GetCursorPos(addressof(MousePos));
 

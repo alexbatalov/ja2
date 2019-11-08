@@ -1222,7 +1222,7 @@ export function RefreshScreen(DummyVariable: Pointer<void>): void {
   /* static */ let fShowMouse: boolean;
   let ReturnCode: HRESULT;
   /* static */ let Region: RECT = createRect();
-  /* static */ let MousePos: POINT;
+  /* static */ let MousePos: POINT = createPoint();
   /* static */ let fFirstTime: boolean = true;
   let uiTime: UINT32;
 

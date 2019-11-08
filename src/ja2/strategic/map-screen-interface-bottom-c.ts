@@ -705,7 +705,7 @@ function DeleteMapScreenBottomMessageScrollRegion(): void {
 }
 
 function MapScreenMessageScrollBarCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
   let ubMouseYOffset: UINT8;
   let ubDesiredSliderOffset: UINT8;
   let ubDesiredMessageIndex: UINT8;

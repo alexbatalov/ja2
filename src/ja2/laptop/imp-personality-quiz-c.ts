@@ -1300,7 +1300,7 @@ function CheckStateOfTheConfirmButton(): void {
 
 function HandleIMPQuizKeyBoard(): void {
   let InputEvent: InputAtom;
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
   let fSkipFrame: boolean = false;
 
   GetCursorPos(addressof(MousePos));

@@ -4639,7 +4639,7 @@ function FindPositionOfPersInvSlider(): void {
 function HandleSliderBarClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   let iValue: INT32 = 0;
   let iNumberOfItems: INT32 = 0;
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
   let sSizeOfEachSubRegion: INT16 = 0;
   let sYPositionOnBar: INT16 = 0;
   let iCurrentItemValue: INT16 = 0;
@@ -5364,7 +5364,7 @@ function HandlePersonnelKeyboard(): void {
   let sZero: string /* CHAR16[2] */ = "0";
 
   let InputEvent: InputAtom;
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
 
   GetCursorPos(addressof(MousePos));
 

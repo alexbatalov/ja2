@@ -86,7 +86,7 @@ export function ShutdownGame(): void {
 
 export function GameLoop(): void {
   let InputEvent: InputAtom;
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
   let uiOldScreen: UINT32 = guiCurrentScreen;
 
   GetCursorPos(addressof(MousePos));

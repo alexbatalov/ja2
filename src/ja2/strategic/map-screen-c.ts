@@ -3390,7 +3390,7 @@ function HandleMapUI(): UINT32 {
   let ubCount: UINT8 = 0;
   let pNode: PathStPtr = null;
   let fVehicle: boolean = false;
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
   let uiNewScreen: UINT32 = Enum26.MAP_SCREEN;
   let fWasAlreadySelected: boolean;
 
@@ -3681,7 +3681,7 @@ function HandleMapUI(): UINT32 {
 
 function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   let InputEvent: InputAtom;
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
   let bSquadNumber: INT8;
   let ubGroupId: UINT8 = 0;
   let fCtrl: boolean;
@@ -4587,7 +4587,7 @@ export function EndMapScreen(fDuringFade: boolean): void {
 }
 
 export function GetMouseMapXY(psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<INT16>): boolean {
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
 
   if (IsMapScreenHelpTextUp()) {
     // don't show highlight while global help text is up
@@ -6373,7 +6373,7 @@ function GetIndexForThisSoldier(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 }
 
 function IsCursorWithInRegion(sLeft: INT16, sRight: INT16, sTop: INT16, sBottom: INT16): boolean {
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
 
   // get cursor position
   GetCursorPos(addressof(MousePos));

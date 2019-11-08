@@ -55,6 +55,13 @@ export interface POINT {
   y: number;
 }
 
+export function createPoint(): POINT {
+  return {
+    x: 0,
+    y: 0,
+  };
+}
+
 export function createPointFrom(x: number, y: number): POINT {
   return {
     x,

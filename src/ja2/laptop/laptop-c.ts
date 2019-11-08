@@ -401,7 +401,7 @@ function HandleLapTopCursorUpDate(): void {
 }
 function GetLaptopKeyboardInput(): void {
   let InputEvent: InputAtom;
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
 
   GetCursorPos(addressof(MousePos));
 
@@ -2545,7 +2545,7 @@ function PersonnelRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 }
 
 function CheckIfMouseLeaveScreen(): void {
-  let MousePos: POINT;
+  let MousePos: POINT = createPoint();
   GetCursorPos(addressof(MousePos));
   if ((MousePos.x > LAPTOP_SCREEN_LR_X) || (MousePos.x < LAPTOP_UL_X) || (MousePos.y < LAPTOP_UL_Y) || (MousePos.y > LAPTOP_SCREEN_LR_Y)) {
     guiCurrentLapTopCursor = Enum97.LAPTOP_PANEL_CURSOR;
