@@ -2354,7 +2354,7 @@ function SaveEmailToSavedGame(hFile: HWFILE): boolean {
   let uiStringLength: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
 
-  let SavedEmail: SavedEmailStruct;
+  let SavedEmail: SavedEmailStruct = createSavedEmailStruct();
 
   // loop through all the email to find out the total number
   while (pEmail) {
@@ -2423,7 +2423,7 @@ function LoadEmailFromSavedGame(hFile: HWFILE): boolean {
   let pTempEmail: EmailPtr = null;
   let pData: Pointer<UINT8> = null;
   let cnt: UINT32;
-  let SavedEmail: SavedEmailStruct;
+  let SavedEmail: SavedEmailStruct = createSavedEmailStruct();
   let uiNumBytesRead: UINT32 = 0;
 
   // Delete the existing list of emails

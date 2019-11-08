@@ -180,6 +180,26 @@ export interface SavedEmailStruct {
   fNew: boolean;
 }
 
+export function createSavedEmailStruct(): SavedEmailStruct {
+  return {
+    usOffset: 0,
+    usLength: 0,
+    ubSender: 0,
+    iDate: 0,
+    iId: 0,
+    iFirstData: 0,
+    uiSecondData: 0,
+
+    iThirdData: 0,
+    iFourthData: 0,
+    uiFifthData: 0,
+    uiSixData: 0,
+
+    fRead: false,
+    fNew: false,
+  };
+}
+
 export interface Page {
   iIds: INT32[] /* [MAX_MESSAGES_PAGE] */;
   iPageId: INT32;
