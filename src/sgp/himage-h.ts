@@ -37,6 +37,15 @@ export interface SGPPaletteEntry {
   peFlags: UINT8;
 }
 
+export function createSGPPaletteEntryFrom(peRed: UINT8, peGreen: UINT8, peBlue: UINT8, peFlags: UINT8): SGPPaletteEntry {
+  return {
+    peRed,
+    peGreen,
+    peBlue,
+    peFlags,
+  };
+}
+
 export const AUX_FULL_TILE = 0x01;
 export const AUX_ANIMATED_TILE = 0x02;
 const AUX_DYNAMIC_TILE = 0x04;

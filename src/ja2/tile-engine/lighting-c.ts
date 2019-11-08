@@ -50,14 +50,14 @@ let gubNumLightColors: UINT8 = 1;
 
 // Externed in Rotting Corpses.c
 export let gpLightColors: SGPPaletteEntry[] /* [3] */ = [
-  [ 0, 0, 0, 0 ],
-  [ 0, 0, 255, 0 ],
-  [ 0, 0, 0, 0 ],
+  createSGPPaletteEntryFrom(0, 0, 0, 0),
+  createSGPPaletteEntryFrom(0, 0, 255, 0),
+  createSGPPaletteEntryFrom(0, 0, 0, 0),
 ];
 
 let gpOrigLights: SGPPaletteEntry[] /* [2] */ = [
-  [ 0, 0, 0, 0 ],
-  [ 0, 0, 255, 0 ],
+  createSGPPaletteEntryFrom(0, 0, 0, 0),
+  createSGPPaletteEntryFrom(0, 0, 255, 0),
 ];
 
 /*
