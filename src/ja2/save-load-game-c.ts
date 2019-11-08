@@ -1972,7 +1972,7 @@ function LoadSoldierStructure(hFile: HWFILE): boolean {
   let ubActive: UINT8 = 1;
   let uiPercentage: UINT32;
 
-  let CreateStruct: SOLDIERCREATE_STRUCT;
+  let CreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
 
   // Loop through all the soldier and delete them all
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {

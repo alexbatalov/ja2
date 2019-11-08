@@ -639,7 +639,7 @@ export function FindSoldierByProfileID(ubProfileID: UINT8, fPlayerMercsOnly: boo
 export function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Pointer<SOLDIERTYPE> {
   let ubID: UINT8;
   let pNewSoldier: Pointer<SOLDIERTYPE> = null;
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let cnt: UINT32;
   let sOldGridNo: INT16;
 

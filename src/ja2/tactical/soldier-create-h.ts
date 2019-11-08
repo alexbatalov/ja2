@@ -121,6 +121,60 @@ export interface SOLDIERCREATE_STRUCT {
   bPadding: INT8[] /* [115] */;
 }
 
+export function createSoldierCreateStruct(): SOLDIERCREATE_STRUCT {
+  return {
+    fStatic: false,
+    ubProfile: 0,
+    fPlayerMerc: false,
+    fPlayerPlan: false,
+    fCopyProfileItemsOver: false,
+    sSectorX: 0,
+    sSectorY: 0,
+    bDirection: 0,
+    sInsertionGridNo: 0,
+    bTeam: 0,
+    bBodyType: 0,
+    bAttitude: 0,
+    bOrders: 0,
+    bLifeMax: 0,
+    bLife: 0,
+    bAgility: 0,
+    bDexterity: 0,
+    bExpLevel: 0,
+    bMarksmanship: 0,
+    bMedical: 0,
+    bMechanical: 0,
+    bExplosive: 0,
+    bLeadership: 0,
+    bStrength: 0,
+    bWisdom: 0,
+    bMorale: 0,
+    bAIMorale: 0,
+    Inv: createArrayFrom(NUM_INV_SLOTS, createObjectType),
+    HeadPal: "",
+    PantsPal: "",
+    VestPal: "",
+    SkinPal: "",
+    MiscPal: "",
+    sPatrolGrid: createArray(MAXPATROLGRIDS, 0),
+    bPatrolCnt: 0,
+    fVisible: false,
+    name: "",
+    ubSoldierClass: 0,
+    fOnRoof: false,
+    bSectorZ: 0,
+    pExistingSoldier: null,
+    fUseExistingSoldier: false,
+    ubCivilianGroup: 0,
+    fKillSlotIfOwnerDies: false,
+    ubScheduleID: 0,
+    fUseGivenVehicle: false,
+    bUseGivenVehicleID: 0,
+    fHasKeys: false,
+    bPadding: createArray(115, 0),
+  };
+}
+
 // These following functions are currently used exclusively by the editor.
 // Now, this will be useful for the strategic AI.
 // Definitions:

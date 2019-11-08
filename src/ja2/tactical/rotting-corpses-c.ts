@@ -805,7 +805,7 @@ export function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 
 }
 
 function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let bBodyType: INT8 = Enum194.CROW;
   let iNewIndex: UINT8;
   let sGridNo: INT16;

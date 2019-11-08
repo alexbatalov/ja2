@@ -38,7 +38,7 @@ function RemoveCivilianTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8
 // OLD SAVE METHOD:  This is the old way of loading the enemies and civilians
 export function LoadEnemySoldiersFromTempFile(): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
-  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let i: INT32;
   let slots: INT32 = 0;
   let uiNumBytesRead: UINT32;
@@ -554,7 +554,7 @@ FAIL_SAVE:
 
 export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
-  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let i: INT32;
   let slots: INT32 = 0;
   let uiNumBytesRead: UINT32;
@@ -857,7 +857,7 @@ FAIL_LOAD:
 export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
   let curr: Pointer<SOLDIERINITNODE>;
   let temp: Pointer<SOLDIERINITNODE>;
-  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let i: INT32;
   let slots: INT32 = 0;
   let uiNumBytesRead: UINT32;
@@ -1335,7 +1335,7 @@ FAIL_SAVE:
 
 function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(pubNumElites: Pointer<UINT8>, pubNumRegulars: Pointer<UINT8>, pubNumAdmins: Pointer<UINT8>, pubNumCreatures: Pointer<UINT8>): boolean {
   //	SOLDIERINITNODE *curr;
-  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let i: INT32;
   let slots: INT32 = 0;
   let uiNumBytesRead: UINT32;

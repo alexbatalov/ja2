@@ -165,7 +165,7 @@ export function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
   let i: UINT32;
   let ubNumIndividuals: UINT8;
   let tempBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
-  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let pNode: Pointer<SOLDIERINITNODE>;
   let fCowInSector: boolean = false;
 
@@ -409,7 +409,7 @@ function SortSoldierInitList(): void {
 
 export function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): boolean {
   let ubProfile: UINT8;
-  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let pSoldier: Pointer<SOLDIERTYPE>;
   let ubID: UINT8;
   // First check if this guy has a profile and if so check his location such that it matches!
@@ -1650,7 +1650,7 @@ export function AddProfilesUsingProfileInsertionData(): void {
     pSoldier = FindSoldierByProfileID(i, false);
     if (!pSoldier) {
       // Create a new soldier, as this one doesn't exist
-      let MercCreateStruct: SOLDIERCREATE_STRUCT;
+      let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
       let ubID: UINT8;
 
       // Set up the create struct so that we can properly create the profile soldier.

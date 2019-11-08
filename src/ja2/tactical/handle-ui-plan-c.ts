@@ -25,7 +25,7 @@ export function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
   let sAPCost: INT16 = 0;
   let bDirection: INT8;
   let iLoop: INT32;
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubNewIndex: UINT8;
 
   // Depeding on stance and direction facing, add guy!

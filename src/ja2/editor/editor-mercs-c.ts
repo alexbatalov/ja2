@@ -109,7 +109,7 @@ export let gbCurrSelect: INT8 = -1;
 
 // internal merc variables
 let gTempBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
-let gTempDetailedPlacement: SOLDIERCREATE_STRUCT;
+let gTempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
 
 export let gsSelectedMercID: INT16;
 export let gsSelectedMercGridNo: INT16;
@@ -301,7 +301,7 @@ let gbCurrCreature: INT8 = Enum194.BLOODCAT;
 
 let gfSaveBuffer: boolean = false;
 export let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
-export let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
+export let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
 
 export function GameInitEditorMercsInfo(): void {
   let i: INT32;
@@ -3386,7 +3386,7 @@ function UpdateScheduleInfo(): void {
 }
 
 export let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
-export let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
+export let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
 
 export function CopyMercPlacement(iMapIndex: INT32): void {
   if (gsSelectedMercID == -1) {
@@ -3403,7 +3403,7 @@ export function CopyMercPlacement(iMapIndex: INT32): void {
 
 export function PasteMercPlacement(iMapIndex: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let i: INT32;
 
   if (!gfSaveBuffer) {

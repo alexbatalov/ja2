@@ -2584,7 +2584,7 @@ function GetUnusedMercProfileID(): UINT8 {
 }
 
 function CreateTempPlayerMerc(): void {
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   /* static */ let iSoldierCount: INT32 = 0;
   let ubID: UINT8;
 

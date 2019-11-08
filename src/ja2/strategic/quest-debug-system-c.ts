@@ -2312,7 +2312,7 @@ function DestroyQuestDebugTextInputBoxes(): void {
 }
 
 function AddNPCToGridNo(iGridNo: INT32): void {
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let sSectorX: INT16;
   let sSectorY: INT16;
   let ubID: UINT8;

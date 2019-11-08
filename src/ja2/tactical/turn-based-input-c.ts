@@ -2710,7 +2710,7 @@ function JumpFence(): void {
 function CreateNextCivType(): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let usMapPos: UINT16;
   /* static */ let bBodyType: INT8 = Enum194.FATCIV;
   // Get Grid Corrdinates of mouse
@@ -2761,7 +2761,7 @@ function ToggleCliffDebug(): void {
 function CreateCow(): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let usMapPos: UINT16;
   // Get Grid Corrdinates of mouse
   if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY)) && GetMouseMapPos(addressof(usMapPos))) {
@@ -2790,7 +2790,7 @@ function CreateCow(): void {
 function CreatePlayerControlledCow(): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let usMapPos: UINT16;
   // Get Grid Corrdinates of mouse
   if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY)) && GetMouseMapPos(addressof(usMapPos))) {
@@ -2864,7 +2864,7 @@ function CreatePlayerControlledMonster(): void {
   let sWorldY: INT16;
   let usMapPos: UINT16;
   if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY)) && GetMouseMapPos(addressof(usMapPos))) {
-    let MercCreateStruct: SOLDIERCREATE_STRUCT;
+    let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
     let iNewIndex: INT8;
 
     memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));

@@ -14,7 +14,7 @@ export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   let ubCount: UINT8 = 0;
   let ubCurrentSoldier: UINT8 = pHireMerc.value.ubProfileID;
   let pMerc: Pointer<MERCPROFILESTRUCT>;
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let fReturn: boolean = false;
   pMerc = addressof(gMercProfiles[ubCurrentSoldier]);
 

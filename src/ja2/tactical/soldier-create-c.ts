@@ -1761,7 +1761,7 @@ export function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTY
 }
 
 export function ForceSoldierProfileID(pSoldier: Pointer<SOLDIERTYPE>, ubProfileID: UINT8): void {
-  let CreateStruct: SOLDIERCREATE_STRUCT;
+  let CreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
 
   memset(addressof(CreateStruct), 0, sizeof(CreateStruct));
   CreateStruct.ubProfile = ubProfileID;
@@ -1826,7 +1826,7 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
 // USED BY STRATEGIC AI and AUTORESOLVE
 export function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
-  let pp: SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1856,7 +1856,7 @@ export function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
 // USED BY STRATEGIC AI and AUTORESOLVE
 export function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
-  let pp: SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1886,7 +1886,7 @@ export function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
 // USED BY STRATEGIC AI and AUTORESOLVE
 export function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
-  let pp: SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1924,7 +1924,7 @@ export function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
 
 export function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
-  let pp: SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
 
   memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
@@ -1943,7 +1943,7 @@ export function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYP
 
 export function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
   let bp: BASIC_SOLDIERCREATE_STRUCT;
-  let pp: SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
 
   if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN && !gfPersistantPBI) {
@@ -2056,7 +2056,7 @@ export function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass
 // This function shouldn't be called outside of tactical
 export function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
   // Create guy # X
-  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sSectorX: INT16;
