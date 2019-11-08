@@ -95,4 +95,12 @@ export interface HEAD_MINER_TYPE {
   ubExternalFace: UINT8;
 }
 
+export function createHeadMinerTypeFrom(usProfileId: UINT16, bQuoteNum: INT8[], ubExternalFace: UINT8): HEAD_MINER_TYPE {
+  return {
+    usProfileId,
+    bQuoteNum,
+    ubExternalFace,
+  };
+}
+
 }

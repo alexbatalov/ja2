@@ -51,11 +51,11 @@ let guiMinimumMineProduction: UINT32[] /* [] */ = [
 
 let gHeadMinerData: HEAD_MINER_TYPE[] /* [NUM_HEAD_MINERS] */ = [
   //	Profile #		running out		creatures!		all dead!		creatures again!		external face graphic
-  [ Enum268.FRED, 17, 18, 27, 26, Enum203.MINER_FRED_EXTERNAL_FACE ],
-  [ Enum268.MATT, -1, 18, 32, 31, Enum203.MINER_MATT_EXTERNAL_FACE ],
-  [ Enum268.OSWALD, 14, 15, 24, 23, Enum203.MINER_OSWALD_EXTERNAL_FACE ],
-  [ Enum268.CALVIN, 14, 15, 24, 23, Enum203.MINER_CALVIN_EXTERNAL_FACE ],
-  [ Enum268.CARL, 14, 15, 24, 23, Enum203.MINER_CARL_EXTERNAL_FACE ],
+  createHeadMinerTypeFrom(Enum268.FRED, [ 17, 18, 27, 26 ], Enum203.MINER_FRED_EXTERNAL_FACE),
+  createHeadMinerTypeFrom(Enum268.MATT, [ -1, 18, 32, 31 ], Enum203.MINER_MATT_EXTERNAL_FACE),
+  createHeadMinerTypeFrom(Enum268.OSWALD, [ 14, 15, 24, 23 ], Enum203.MINER_OSWALD_EXTERNAL_FACE),
+  createHeadMinerTypeFrom(Enum268.CALVIN, [ 14, 15, 24, 23 ], Enum203.MINER_CALVIN_EXTERNAL_FACE),
+  createHeadMinerTypeFrom(Enum268.CARL, [ 14, 15, 24, 23 ], Enum203.MINER_CARL_EXTERNAL_FACE),
 ];
 
 /* gradual monster infestation concept was ditched, now simply IN PRODUCTION or SHUT DOWN
