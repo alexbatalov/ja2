@@ -102,7 +102,7 @@ function FindFreeButtonSlot(): INT32 {
 //	Load images for use with QuickButtons.
 //
 export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
-  let vo_desc: VOBJECT_DESC;
+  let vo_desc: VOBJECT_DESC = createVObjectDesc();
   let UseSlot: UINT32;
   let pTrav: Pointer<ETRLEObject>;
   let MaxHeight: UINT32;
@@ -566,7 +566,7 @@ export function DisableButton(iButtonID: INT32): boolean {
 //	InitButtonSystem.
 //
 function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32, DefaultBPP: INT32): boolean {
-  let vo_desc: VOBJECT_DESC;
+  let vo_desc: VOBJECT_DESC = createVObjectDesc();
   let Pix: UINT8;
   let x: number;
 
@@ -701,7 +701,7 @@ function FindFreeIconSlot(): INT16 {
 //
 export function LoadGenericButtonIcon(filename: string /* Pointer<UINT8> */): INT16 {
   let ImgSlot: INT16;
-  let vo_desc: VOBJECT_DESC;
+  let vo_desc: VOBJECT_DESC = createVObjectDesc();
 
   AssertMsg(filename != BUTTON_NO_FILENAME, "Attempting to LoadGenericButtonIcon() with null filename.");
 
@@ -812,7 +812,7 @@ function UnloadGenericButtonImage(GenImg: INT16): boolean {
 //
 function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormName: string /* Pointer<UINT8> */, OffHiliteName: string /* Pointer<UINT8> */, OnNormName: string /* Pointer<UINT8> */, OnHiliteName: string /* Pointer<UINT8> */, BkGrndName: string /* Pointer<UINT8> */, Index: INT16, OffsetX: INT16, OffsetY: INT16): INT16 {
   let ImgSlot: INT16;
-  let vo_desc: VOBJECT_DESC;
+  let vo_desc: VOBJECT_DESC = createVObjectDesc();
   let Pix: UINT8;
 
   // if the images for Off-Normal and On-Normal don't exist, abort call

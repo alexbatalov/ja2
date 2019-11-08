@@ -61,7 +61,7 @@ export function GameInitFlorist(): void {
 }
 
 export function EnterFlorist(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   SetBookMark(Enum98.FLORIST_BOOKMARK);
 
@@ -146,7 +146,7 @@ export function RenderFlorist(): void {
 }
 
 export function InitFloristDefaults(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load the Florist background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

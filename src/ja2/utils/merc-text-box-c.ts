@@ -93,7 +93,7 @@ export function ResetOverrideMercPopupBox(): boolean {
 
 export function InitMercPopupBox(): boolean {
   let iCounter: INT32 = 0;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // init the pop up box list
   for (iCounter = 0; iCounter < MAX_NUMBER_OF_POPUP_BOXES; iCounter++) {
@@ -129,7 +129,7 @@ function ShutDownPopUpBoxes(): boolean {
 // Tactical Popup
 function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8): boolean {
   let vs_desc: VSURFACE_DESC;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // this function will load the graphics associated with the background and border index values
 

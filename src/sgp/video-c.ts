@@ -2245,7 +2245,7 @@ function HideMouseCursor(): boolean {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function LoadCursorFile(pFilename: string /* PTR */): boolean {
-  let VideoObjectDescription: VOBJECT_DESC;
+  let VideoObjectDescription: VOBJECT_DESC = createVObjectDesc();
 
   //
   // Make sure the old cursor store is destroyed

@@ -281,7 +281,7 @@ export function GameInitEmail(): void {
 }
 
 export function EnterEmail(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   // load graphics
 
   iCurrentPage = LaptopSaveInfo.iCurrentEmailPage;

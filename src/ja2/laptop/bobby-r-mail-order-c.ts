@@ -283,7 +283,7 @@ export function GameInitBobbyRMailOrder(): void {
 }
 
 export function EnterBobbyRMailOrder(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: UINT16;
 
   gfReDrawBobbyOrder = false;
@@ -1897,7 +1897,7 @@ function BtnBobbyRGotoShipmentPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT
 }
 
 export function CreateBobbyRayOrderTitle(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load BobbyRayTitle graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

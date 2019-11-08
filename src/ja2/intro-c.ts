@@ -340,7 +340,7 @@ export function SetIntroType(bIntroType: INT8): void {
 
 function DisplaySirtechSplashScreen(): void {
   let hPixHandle: HVOBJECT;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiLogoID: UINT32;
 
   let uiDestPitchBYTES: UINT32;

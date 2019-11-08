@@ -267,7 +267,7 @@ export function GameInitMercs(): void {
 }
 
 export function EnterMercs(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let vs_desc: VSURFACE_DESC;
 
   SetBookMark(Enum98.MERC_BOOKMARK);
@@ -535,7 +535,7 @@ export function RenderMercs(): void {
 }
 
 export function InitMercBackGround(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load the Merc background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

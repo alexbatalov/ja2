@@ -46,7 +46,7 @@ let pbCarPortraitFileNames: string[] /* STR[] */ = [
 // load int he portraits for the car faces that will be use in mapscreen
 export function LoadCarPortraitValues(): boolean {
   let iCounter: INT32 = 0;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   if (giCarPortraits[0] != -1) {
     return false;

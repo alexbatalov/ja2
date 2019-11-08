@@ -533,7 +533,7 @@ export function LaptopScreenShutdown(): UINT32 {
 function EnterLaptop(): INT32 {
   // Create, load, initialize data -- just entered the laptop.
 
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let iCounter: INT32 = 0;
 
   /* static */ let fEnteredFromGameStartup: boolean = true;
@@ -2627,7 +2627,7 @@ function RemoveBookMark(iBookId: INT32): boolean {
 }
 
 function LoadBookmark(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // grab download bars too
 
@@ -3060,7 +3060,7 @@ function LoadLoadPending(): boolean {
   // function will load the load pending graphics
   // reuse bookmark
   // load graph window and bar
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\graphwindow.sti", VObjectDesc.ImageFile);
@@ -4489,7 +4489,7 @@ export function RenderWWWProgramTitleBar(): boolean {
   // will render the title bar for the www program
   let uiTITLEFORWWW: UINT32;
   let hHandle: HVOBJECT;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let iIndex: INT32 = 0;
   let sString: string /* CHAR16[256] */;
 

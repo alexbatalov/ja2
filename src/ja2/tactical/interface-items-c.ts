@@ -639,7 +639,7 @@ function GenerateConsString(zItemCons: Pointer<string> /* Pointer<UINT16> */, pO
 
 export function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCamoRegion: Pointer<INV_REGION_DESC>, INVMoveCallback: MOUSE_CALLBACK, INVClickCallback: MOUSE_CALLBACK, INVMoveCammoCallback: MOUSE_CALLBACK, INVClickCammoCallback: MOUSE_CALLBACK, fSetHighestPrioity: boolean): boolean {
   let cnt: INT32;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // Load all four body type images
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -1793,7 +1793,7 @@ export function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosi
 }
 
 export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let ubString: string /* UINT8[48] */;
   let cnt: INT32;
   let pStr: string /* INT16[10] */;
@@ -4052,7 +4052,7 @@ export function InKeyRingPopup(): boolean {
 }
 
 export function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let sX: INT16;
   let sY: INT16;
   let sCenX: INT16;
@@ -4256,7 +4256,7 @@ function DeleteItemStackPopup(): void {
 }
 
 export function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let aRect: SGPRect;
   let pTrav: Pointer<ETRLEObject>;
   let hVObject: HVOBJECT;
@@ -4480,7 +4480,7 @@ export function GetTileGraphicForItem(pItem: Pointer<INVTYPE>): UINT16 {
 export function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<UINT32>): boolean {
   let zName: string /* CHAR8[100] */;
   let uiVo: UINT32;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let ubGraphic: UINT8;
 
   // CHECK SUBCLASS
@@ -4775,7 +4775,7 @@ export function SetItemPickupMenuDirty(fDirtyLevel: boolean): void {
 }
 
 export function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pItemPool: Pointer<ITEM_POOL>, sScreenX: INT16, sScreenY: INT16, bZLevel: INT8): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let ubString: string /* UINT8[48] */;
   let pTempItemPool: Pointer<ITEM_POOL>;
   let cnt: INT32;

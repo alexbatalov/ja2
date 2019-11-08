@@ -88,7 +88,7 @@ export function GameInitFuneral(): void {
 }
 
 export function EnterFuneral(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usPosX: UINT16;
   let i: UINT16;
 

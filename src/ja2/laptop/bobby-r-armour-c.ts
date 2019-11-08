@@ -7,7 +7,7 @@ export function GameInitBobbyRArmour(): void {
 }
 
 export function EnterBobbyRArmour(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

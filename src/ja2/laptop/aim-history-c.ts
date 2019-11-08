@@ -86,7 +86,7 @@ export function EnterInitAimHistory(): void {
 }
 
 export function EnterAimHistory(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   gfExitingAimHistory = false;
   InitAimDefaults();
@@ -191,7 +191,7 @@ export function RenderAimHistory(): void {
 }
 
 function InitAimHistoryMenuBar(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: UINT16;
   let usPosX: UINT16;
 

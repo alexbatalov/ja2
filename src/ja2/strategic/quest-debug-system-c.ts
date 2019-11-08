@@ -633,7 +633,7 @@ function EnterQuestDebugSystem(): boolean {
   //	UINT16	zItemDesc[ SIZE_ITEM_INFO ];
 
   let usFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_DYNAMIC_TEXT()) + 2;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   if (gfExitQdsDueToMessageBox) {
     gfRedrawQuestDebugSystem = true;

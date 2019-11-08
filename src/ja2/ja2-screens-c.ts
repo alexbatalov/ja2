@@ -575,7 +575,7 @@ const SMILY_END_DELAY = 1000;
 
 export function SexScreenHandle(): UINT32 {
   /* static */ let ubCurrentScreen: UINT8 = 0;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   /* static */ let guiSMILY: UINT32;
   /* static */ let bCurFrame: INT8 = 0;
   /* static */ let uiTimeOfLastUpdate: UINT32 = 0;

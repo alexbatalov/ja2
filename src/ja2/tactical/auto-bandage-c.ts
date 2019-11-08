@@ -799,7 +799,7 @@ function DestroyTerminateAutoBandageButton(): void {
 function AddFacesToAutoBandageBox(): boolean {
   let iCounter: INT32 = 0;
   let iNumberOfDoctors: INT32 = 0;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // reset
   memset(addressof(giAutoBandagesSoldierFaces), -1, 2 * MAX_CHARACTER_COUNT);

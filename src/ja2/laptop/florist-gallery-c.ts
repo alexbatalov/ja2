@@ -211,7 +211,7 @@ function InitFlowerButtons(): boolean {
   let count: UINT16;
   let usPosY: UINT16;
   let sTemp: string /* char[40] */;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   if ((FLOR_GALLERY_NUMBER_FLORAL_IMAGES - gubCurFlowerIndex) >= 3)
     gubCurNumberOfFlowers = 3;

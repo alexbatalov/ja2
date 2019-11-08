@@ -92,7 +92,7 @@ function LoadCursorData(uiCursorIndex: UINT32): boolean {
       //
       // The file containing the video object hasn't been loaded yet. Let's load it now
       //
-      let VideoObjectDescription: VOBJECT_DESC;
+      let VideoObjectDescription: VOBJECT_DESC = createVObjectDesc();
       // FIRST LOAD AS AN HIMAGE SO WE CAN GET AUX DATA!
       let hImage: HIMAGE;
       let pAuxData: Pointer<AuxObjectData>;

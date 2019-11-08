@@ -38,7 +38,7 @@ let gsOveritemPoolGridNo: INT16;
 
 export function InitNewOverheadDB(ubTilesetID: UINT8): void {
   let uiLoop: UINT32;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hVObject: HVOBJECT;
   let cFileBPP: string /* CHAR8[128] */;
   let cAdjustedFile: string /* CHAR8[128] */;
@@ -406,7 +406,7 @@ export function InOverheadMap(): boolean {
 }
 
 export function GoIntoOverheadMap(): void {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hVObject: HVOBJECT;
 
   gfInOverheadMap = true;

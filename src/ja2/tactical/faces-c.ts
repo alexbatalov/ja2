@@ -153,7 +153,7 @@ export function InitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlags
 
 function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlags: UINT32, iFaceFileID: INT32, uiBlinkFrequency: UINT32, uiExpressionFrequency: UINT32): INT32 {
   let pFace: Pointer<FACETYPE>;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiVideoObject: UINT32;
   let iFaceIndex: INT32;
   let ETRLEObject: ETRLEObject;

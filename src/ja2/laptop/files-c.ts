@@ -256,7 +256,7 @@ function DrawFilesTitleText(): void {
 }
 
 function LoadFiles(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   // load files video objects into memory
 
   // title bar
@@ -652,7 +652,7 @@ function DisplayFormattedText(): boolean {
   let hHandle: HVOBJECT;
   let uiFirstTempPicture: UINT32;
   let uiSecondTempPicture: UINT32;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usFreeSpace: INT16 = 0;
   /* static */ let iOldMessageCode: INT32 = 0;
 
@@ -845,7 +845,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
 
   let uiPicture: UINT32;
   let hHandle: HVOBJECT;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   ClearFileStringList();
 
@@ -1342,7 +1342,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
   let iOffset: INT32 = 0;
   let uiPicture: UINT32;
   let hHandle: HVOBJECT;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let sTemp: string /* CHAR[128] */;
 
   iOffset = ubFileOffsets[iFileNumber];

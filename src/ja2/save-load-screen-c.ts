@@ -302,7 +302,7 @@ function SetSaveLoadExitScreen(uiScreen: UINT32): void {
 
 function EnterSaveLoadScreen(): boolean {
   let i: INT8;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usPosX: UINT16 = SLG_FIRST_SAVED_SPOT_X;
   let usPosY: UINT16 = SLG_FIRST_SAVED_SPOT_Y;
 

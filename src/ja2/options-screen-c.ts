@@ -226,7 +226,7 @@ export function OptionsScreenShutdown(): UINT32 {
 }
 
 function EnterOptionsScreen(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usPosY: UINT16;
   let cnt: UINT8;
   let usTextWidth: UINT16;

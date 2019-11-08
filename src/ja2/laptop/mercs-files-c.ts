@@ -97,7 +97,7 @@ function GameInitMercsFiles(): void {
 }
 
 export function EnterMercsFiles(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   InitMercBackGround();
 
@@ -319,7 +319,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   let sFaceLoc: string /* STR */ = "FACES\\BIGFACES\\";
   let sTemp: string /* char[100] */;
   let pMerc: Pointer<MERCPROFILESTRUCT>;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // Portrait Frame

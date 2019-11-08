@@ -164,7 +164,7 @@ export function GameInitAIM(): void {
 }
 
 export function EnterAIM(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   gubWarningTimer = 0;
   gubCurrentAdvertisment = Enum62.AIM_AD_WARNING_BOX;
@@ -387,7 +387,7 @@ function SelectLinksRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 }
 
 export function InitAimDefaults(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load the Rust bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

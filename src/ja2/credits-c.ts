@@ -351,7 +351,7 @@ export function CreditScreenShutdown(): UINT32 {
 // eee
 function EnterCreditsScreen(): boolean {
   let uiCnt: UINT32;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   /*
 
           VSURFACE_DESC		vs_desc;

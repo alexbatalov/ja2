@@ -223,7 +223,7 @@ export function GameInitOptionsScreenShutdown(): UINT32 {
 }
 
 function EnterGIOScreen(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let cnt: UINT16;
   let usPosY: UINT16;
 

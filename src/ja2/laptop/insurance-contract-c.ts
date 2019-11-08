@@ -123,7 +123,7 @@ function EnterLaptopInitInsuranceContract(): void {
 }
 
 export function EnterInsuranceContract(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usPosX: UINT16;
   let i: UINT16;
 
@@ -363,7 +363,7 @@ function BtnInsContractNextButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT3
 }
 
 function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hPixHandle: HVOBJECT;
   let usPosX: UINT16;
   let usPosY: UINT16;

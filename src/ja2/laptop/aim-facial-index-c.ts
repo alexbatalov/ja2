@@ -42,7 +42,7 @@ export function GameInitAimFacialIndex(): void {
 }
 
 export function EnterAimFacialIndex(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: UINT8;
   let usPosX: UINT16;
   let usPosY: UINT16;

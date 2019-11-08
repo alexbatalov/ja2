@@ -4293,7 +4293,7 @@ function DropAPersonInASector(ubType: UINT8, sX: INT16, sY: INT16): boolean {
 }
 
 export function LoadMilitiaPopUpBox(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load the militia pop up box
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

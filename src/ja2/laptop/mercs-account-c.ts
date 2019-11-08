@@ -54,7 +54,7 @@ function GameInitMercsAccount(): void {
 }
 
 export function EnterMercsAccount(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   InitMercBackGround();
 

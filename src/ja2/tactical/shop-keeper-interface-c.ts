@@ -521,7 +521,7 @@ export function ShopKeeperScreenShutdown(): UINT32 {
 //
 
 function EnterShopKeeperInterface(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let ubCnt: UINT8;
   let zTemp: string /* CHAR8[32] */;
   let vs_desc: VSURFACE_DESC;

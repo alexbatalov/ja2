@@ -67,7 +67,7 @@ export function GameInitInsurance(): void {
 }
 
 export function EnterInsurance(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usPosX: UINT16;
   let i: UINT16;
 
@@ -187,7 +187,7 @@ export function RenderInsurance(): void {
 }
 
 export function InitInsuranceDefaults(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load the Flower Account Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

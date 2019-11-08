@@ -149,7 +149,7 @@ export function GameInitBobbyR(): void {
 }
 
 export function EnterBobbyR(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: UINT8;
 
   // an array of mouse regions for the bobbies signs.  Top Left corner, bottom right corner
@@ -340,7 +340,7 @@ export function RenderBobbyR(): void {
 }
 
 export function InitBobbyRWoodBackground(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load the Wood bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

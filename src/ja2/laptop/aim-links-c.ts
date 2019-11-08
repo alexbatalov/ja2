@@ -46,7 +46,7 @@ export function GameInitAimLinks(): void {
 }
 
 export function EnterAimLinks(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usPosY: UINT16;
   let i: INT16;
 

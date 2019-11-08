@@ -822,7 +822,7 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
     AnimDebugMsg(String("Surface Database: Hit %d", usSurfaceIndex));
   } else {
     // Load into memory
-    let VObjectDesc: VOBJECT_DESC;
+    let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
     let hVObject: HVOBJECT;
     let hImage: HIMAGE;
     let sFilename: string /* CHAR8[48] */;

@@ -245,7 +245,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   let pFace: Pointer<FACETYPE>;
   let usWidth: UINT16;
   let usHeight: UINT16;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let sCenterYVal: INT16;
   let sCenterXVal: INT16;
   let ubString: string /* UINT8[48] */;

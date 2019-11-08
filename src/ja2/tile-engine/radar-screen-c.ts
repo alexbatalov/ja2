@@ -37,7 +37,7 @@ export function InitRadarScreen(): boolean {
 }
 
 export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let zFilename: string /* CHAR8[260] */;
   let cnt: INT32;
   let hVObject: HVOBJECT;
@@ -500,7 +500,7 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
   // will check the state of renderradarscreen flag and decide if we need to create mouse regions for
   /* static */ let fCreated: boolean = false;
   let sCounter: INT16 = 0;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hHandle: HVOBJECT;
   let uiHandle: UINT32;
 

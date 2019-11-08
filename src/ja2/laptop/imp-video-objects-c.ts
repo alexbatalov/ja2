@@ -46,7 +46,7 @@ const CHAR_PROFILE_BACKGROUND_TILE_WIDTH = 125;
 const CHAR_PROFILE_BACKGROUND_TILE_HEIGHT = 100;
 
 export function LoadProfileBackGround(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // this procedure will load in the graphics for the generic background
 
@@ -96,7 +96,7 @@ export function RenderProfileBackGround(): void {
 
 export function LoadIMPSymbol(): boolean {
   // this procedure will load the IMP main symbol into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_IMPSYMBOL);
@@ -128,7 +128,7 @@ export function RenderIMPSymbol(sX: INT16, sY: INT16): void {
 
 export function LoadBeginIndent(): boolean {
   // this procedure will load the indent main symbol into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BeginScreenIndent.sti", VObjectDesc.ImageFile);
@@ -161,7 +161,7 @@ export function RenderBeginIndent(sX: INT16, sY: INT16): void {
 
 export function LoadActivationIndent(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\ActivationIndent.sti", VObjectDesc.ImageFile);
@@ -193,7 +193,7 @@ export function RenderActivationIndent(sX: INT16, sY: INT16): void {
 
 export function LoadFrontPageIndent(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FrontPageIndent.sti", VObjectDesc.ImageFile);
@@ -225,7 +225,7 @@ export function RenderFrontPageIndent(sX: INT16, sY: INT16): void {
 
 export function LoadAnalyse(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Analyze.sti", VObjectDesc.ImageFile);
@@ -257,7 +257,7 @@ function RenderAnalyse(sX: INT16, sY: INT16, bImageNumber: INT8): void {
 
 export function LoadAttributeGraph(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Attributegraph.sti", VObjectDesc.ImageFile);
@@ -289,7 +289,7 @@ function RenderAttributeGraph(sX: INT16, sY: INT16): void {
 
 export function LoadAttributeGraphBar(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AttributegraphBar.sti", VObjectDesc.ImageFile);
@@ -321,7 +321,7 @@ function RenderAttributeBarGraph(sX: INT16, sY: INT16): void {
 
 export function LoadFullNameIndent(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FullNameIndent.sti", VObjectDesc.ImageFile);
@@ -353,7 +353,7 @@ function RenderFullNameIndent(sX: INT16, sY: INT16): void {
 
 export function LoadNickNameIndent(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\NickName.sti", VObjectDesc.ImageFile);
@@ -385,7 +385,7 @@ export function RenderNickNameIndent(sX: INT16, sY: INT16): void {
 
 export function LoadNameIndent(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\NameIndent.sti", VObjectDesc.ImageFile);
@@ -417,7 +417,7 @@ export function RenderNameIndent(sX: INT16, sY: INT16): void {
 
 export function LoadGenderIndent(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\GenderIndent.sti", VObjectDesc.ImageFile);
@@ -449,7 +449,7 @@ export function RenderGenderIndent(sX: INT16, sY: INT16): void {
 
 function LoadSmallFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SmallFrame.sti", VObjectDesc.ImageFile);
@@ -481,7 +481,7 @@ function RenderSmallFrame(sX: INT16, sY: INT16): void {
 
 export function LoadSmallSilhouette(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SmallSilhouette.sti", VObjectDesc.ImageFile);
@@ -513,7 +513,7 @@ function RenderSmallSilhouette(sX: INT16, sY: INT16): void {
 
 export function LoadLargeSilhouette(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\largesilhouette.sti", VObjectDesc.ImageFile);
@@ -545,7 +545,7 @@ export function RenderLargeSilhouette(sX: INT16, sY: INT16): void {
 
 export function LoadAttributeFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributeframe.sti", VObjectDesc.ImageFile);
@@ -621,7 +621,7 @@ export function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32
 
 export function LoadSliderBar(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributeslider.sti", VObjectDesc.ImageFile);
@@ -653,7 +653,7 @@ export function RenderSliderBar(sX: INT16, sY: INT16): void {
 
 export function LoadButton2Image(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\button_2.sti", VObjectDesc.ImageFile);
@@ -685,7 +685,7 @@ export function RenderButton2Image(sX: INT16, sY: INT16): void {
 
 export function LoadButton4Image(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\button_4.sti", VObjectDesc.ImageFile);
@@ -717,7 +717,7 @@ export function RenderButton4Image(sX: INT16, sY: INT16): void {
 
 export function LoadButton1Image(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\button_1.sti", VObjectDesc.ImageFile);
@@ -749,7 +749,7 @@ function RenderButton1Image(sX: INT16, sY: INT16): void {
 
 export function LoadPortraitFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Voice_PortraitFrame.sti", VObjectDesc.ImageFile);
@@ -781,7 +781,7 @@ export function RenderPortraitFrame(sX: INT16, sY: INT16): void {
 
 export function LoadMainIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\mainprofilepageindent.sti", VObjectDesc.ImageFile);
@@ -813,7 +813,7 @@ export function RenderMainIndentFrame(sX: INT16, sY: INT16): void {
 
 export function LoadQtnLongIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\longindent.sti", VObjectDesc.ImageFile);
@@ -845,7 +845,7 @@ export function RenderQtnLongIndentFrame(sX: INT16, sY: INT16): void {
 
 export function LoadQtnShortIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindent.sti", VObjectDesc.ImageFile);
@@ -877,7 +877,7 @@ export function RenderQtnShortIndentFrame(sX: INT16, sY: INT16): void {
 
 export function LoadQtnLongIndentHighFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\longindenthigh.sti", VObjectDesc.ImageFile);
@@ -909,7 +909,7 @@ export function RenderQtnLongIndentHighFrame(sX: INT16, sY: INT16): void {
 
 export function LoadQtnShortIndentHighFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindenthigh.sti", VObjectDesc.ImageFile);
@@ -941,7 +941,7 @@ export function RenderQtnShortIndentHighFrame(sX: INT16, sY: INT16): void {
 
 export function LoadQtnIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\questionindent.sti", VObjectDesc.ImageFile);
@@ -973,7 +973,7 @@ export function RenderQtnIndentFrame(sX: INT16, sY: INT16): void {
 
 export function LoadAttrib1IndentFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributescreenindent_1.sti", VObjectDesc.ImageFile);
@@ -1005,7 +1005,7 @@ export function RenderAttrib1IndentFrame(sX: INT16, sY: INT16): void {
 
 export function LoadAttrib2IndentFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributescreenindent_2.sti", VObjectDesc.ImageFile);
@@ -1037,7 +1037,7 @@ export function RenderAttrib2IndentFrame(sX: INT16, sY: INT16): void {
 
 export function LoadAvgMercIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\anaveragemercindent.sti", VObjectDesc.ImageFile);
@@ -1069,7 +1069,7 @@ export function RenderAvgMercIndentFrame(sX: INT16, sY: INT16): void {
 
 export function LoadAboutUsIndentFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\aboutusindent.sti", VObjectDesc.ImageFile);
@@ -1101,7 +1101,7 @@ export function RenderAboutUsIndentFrame(sX: INT16, sY: INT16): void {
 
 export function LoadQtnShort2IndentFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindent2.sti", VObjectDesc.ImageFile);
@@ -1133,7 +1133,7 @@ export function RenderQtnShort2IndentFrame(sX: INT16, sY: INT16): void {
 
 export function LoadQtnShort2IndentHighFrame(): boolean {
   // this procedure will load the activation indent into memory
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindent2High.sti", VObjectDesc.ImageFile);

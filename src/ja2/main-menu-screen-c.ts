@@ -177,7 +177,7 @@ function HandleMainMenuScreen(): void {
 }
 
 export function InitMainMenu(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   //	gfDoHelpScreen = 0;
 

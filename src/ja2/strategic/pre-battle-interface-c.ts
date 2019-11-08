@@ -99,7 +99,7 @@ let giHilitedInvolved: INT32;
 let giHilitedUninvolved: INT32;
 
 export function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: boolean): void {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: INT32;
   let ubGroupID: UINT8 = 0;
   let ubNumStationaryEnemies: UINT8 = 0;

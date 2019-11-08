@@ -437,7 +437,7 @@ export function HelpScreenHandler(): void {
 }
 
 function EnterHelpScreen(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usPosX: UINT16;
   let usPosY: UINT16; //, usWidth, usHeight;
   //	INT32	iStartLoc;

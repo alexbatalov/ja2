@@ -1512,7 +1512,7 @@ function RenderAutoResolve(): void {
 }
 
 function CreateAutoResolveInterface(): void {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: INT32;
   let index: INT32;
   let hVObject: HVOBJECT;
@@ -1582,7 +1582,7 @@ function CreateAutoResolveInterface(): void {
 
   // add all the faces now
   for (i = 0; i < gpAR.value.ubMercs; i++) {
-    let VObjectDesc: VOBJECT_DESC;
+    let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
     // Load the face
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex);
@@ -2187,7 +2187,7 @@ function MercCellMouseClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): 
 // Determine how many players, militia, and enemies that are going at it, and use these values
 // to figure out how many rows and columns we can use.  The will effect the size of the panel.
 function CalculateAutoResolveInfo(): void {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let pGroup: Pointer<GROUP>;
   let pPlayer: Pointer<PLAYERGROUP>;
   Assert(gpAR.value.ubSectorX >= 1 && gpAR.value.ubSectorX <= 16);

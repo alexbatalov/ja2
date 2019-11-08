@@ -175,7 +175,7 @@ function EnterInitBobbyRGuns(): void {
 }
 
 export function EnterBobbyRGuns(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   gfBigImageMouseRegionCreated = false;
 
@@ -268,7 +268,7 @@ export function DisplayBobbyRBrTitle(): boolean {
 }
 
 export function InitBobbyBrTitle(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load the br title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

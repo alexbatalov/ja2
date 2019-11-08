@@ -130,7 +130,7 @@ export function EnterInitAimArchives(): void {
 }
 
 export function EnterAimArchives(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usPosX: UINT16;
   let i: UINT16;
 

@@ -71,7 +71,7 @@ function GameInitBobbyRShipments(): void {
 }
 
 export function EnterBobbyRShipments(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   InitBobbyRWoodBackground();
 

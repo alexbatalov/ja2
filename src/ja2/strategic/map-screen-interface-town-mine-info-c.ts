@@ -593,7 +593,7 @@ function AddInventoryButtonForMapPopUpBox(): void {
   let sY: INT16;
   let pDimensions: SGPRect;
   let pPosition: SGPPoint;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiObject: UINT32;
   let pTrav: Pointer<ETRLEObject>;
   let sWidthA: INT16 = 0;
@@ -699,7 +699,7 @@ function MapTownMineExitButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32):
 // get the min width of the town mine info pop up box
 function MinWidthOfTownMineInfoBox(): void {
   let hHandle: HVOBJECT;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let sWidthA: INT16 = 0;
   let sWidthB: INT16 = 0;
   let sTotalBoxWidth: INT16 = 0;

@@ -131,7 +131,7 @@ export function GameInitAimSort(): void {
 }
 
 export function EnterAimSort(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let ubCurNumber: UINT8 = 0;
   let ubWidth: UINT16;
   let i: UINT8;

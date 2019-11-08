@@ -2046,7 +2046,7 @@ function DisplayCharacterList(): void {
 
 // THIS IS STUFF THAT RUNS *ONCE* DURING APPLICATION EXECUTION, AT INITIAL STARTUP
 export function MapScreenInit(): UINT32 {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   SetUpBadSectorsList();
 
@@ -2099,7 +2099,7 @@ export function MapScreenHandle(): UINT32 {
   let uiHours: UINT32 = 0;
   let uiDays: UINT32 = 0;
   let vs_desc: VSURFACE_DESC;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   //	static BOOLEAN fSecondFrame = FALSE;
   let iCounter: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -4561,7 +4561,7 @@ export function EndMapScreen(fDuringFade: boolean): void {
   UpdatePausedStatesDueToTimeCompression();
 
   if (!gfDontStartTransitionFromLaptop) {
-    let VObjectDesc: VOBJECT_DESC;
+    let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
     let uiLaptopOn: UINT32;
 
     // Load a tiny graphic of the on screen and draw it to the buffer.
@@ -7789,7 +7789,7 @@ function AnyMercsLeavingRealSoon(): boolean {
 export function HandlePreloadOfMapGraphics(): boolean {
   // check amt of memory, if above required amt...use it
   let vs_desc: VSURFACE_DESC;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   fPreLoadedMapGraphics = true;
 

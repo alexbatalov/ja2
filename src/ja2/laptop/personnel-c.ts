@@ -426,7 +426,7 @@ export function HandlePersonnel(): void {
 
 function LoadPersonnelGraphics(): boolean {
   // load graphics needed for personnel screen
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load graphics
 
@@ -626,7 +626,7 @@ function RenderPersonnelStats(iId: INT32, iSlot: INT32): void {
 function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: boolean, fOther: boolean): boolean {
   let sTemp: string /* char[100] */;
   let hFaceHandle: HVOBJECT;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let iCounter: INT32 = 7;
 
   // draw face to soldier iId in slot iSlot
@@ -1558,7 +1558,7 @@ function RenderPersonnelScreenBackground(): void {
 
 function LoadPersonnelScreenBackgroundGraphics(): boolean {
   // will load the graphics for the personeel screen background
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // departed bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -1668,7 +1668,7 @@ function DisplayPicturesOfCurrentTeam(): boolean {
   let iTotalOnTeam: INT32 = 0;
   let sTemp: string /* char[100] */;
   let hFaceHandle: HVOBJECT;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let pSoldier: Pointer<SOLDIERTYPE>;
   let iId: INT32 = 0;
   let iCnt: INT32 = 0;
@@ -3963,7 +3963,7 @@ function GetIdOfPastMercInSlot(iSlot: INT32): INT32 {
 function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, fFired: boolean, fOther: boolean): boolean {
   let sTemp: string /* char[100] */;
   let hFaceHandle: HVOBJECT;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   if ((50 < iId) && (57 > iId)) {
     sTemp = sprintf("%s%03d.sti", SMALL_FACES_DIR, gMercProfiles[iId].ubFaceIndex);
@@ -4307,7 +4307,7 @@ function DisplayPersonnelTextOnTitleBar(): void {
 
 function DisplayHighLightBox(): boolean {
   // will display highlight box around selected merc
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiBox: UINT32 = 0;
   let hHandle: HVOBJECT;
 
@@ -4481,7 +4481,7 @@ function GetIdOfThisSlot(iSlot: INT32): INT32 {
 }
 
 function RenderAtmPanel(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiBox: UINT32 = 0;
   let hHandle: HVOBJECT;
 

@@ -381,7 +381,7 @@ export function RenderTopmostTacticalInterface(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let cnt: UINT32;
   /* static */ let uiBogTarget: UINT32 = 0;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let sX: INT16;
   let sY: INT16;
   let sOffsetX: INT16;

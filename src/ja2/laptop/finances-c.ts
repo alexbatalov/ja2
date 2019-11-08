@@ -414,7 +414,7 @@ export function RenderFinances(): void {
 }
 
 function LoadFinances(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   // load Finance video objects into memory
 
   // title bar

@@ -158,7 +158,7 @@ export let gsCurInterfacePanel: INT16 = Enum215.TEAM_PANEL;
 
 export function InitializeTacticalInterface(): boolean {
   let vs_desc: VSURFACE_DESC;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // Load button Interfaces
   iIconImages[Enum208.WALK_IMAGES] = LoadButtonImage("INTERFACE\\newicons3.sti", -1, 3, 4, 5, -1);
@@ -2302,7 +2302,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: string /* 
   let uiBAR: UINT32;
   let uiPLAYERBAR: UINT32;
   let uiINTBAR: UINT32;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let sX: INT16;
   let sY: INT16;
   let cnt2: INT32;

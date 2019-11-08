@@ -225,7 +225,7 @@ function GameInitFloristOrderForm(): void {
 }
 
 export function EnterFloristOrderForm(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: UINT8;
   let sTemp: string /* char[40] */;
   let usPosX: UINT16;

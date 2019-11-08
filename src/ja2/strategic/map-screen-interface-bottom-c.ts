@@ -102,7 +102,7 @@ let gTimeCompressionMask: MOUSE_REGION[] /* [3] */;
 
 export function HandleLoadOfMapBottomGraphics(): void {
   // will load the graphics needed for the mapscreen interface bottom
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // will create buttons for interface bottom
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -683,7 +683,7 @@ function RemoveCompressModePause(): void {
 
 function LoadMessageSliderBar(): void {
   // this function will load the message slider bar
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\map_screen_bottom_arrows.sti", VObjectDesc.ImageFile);

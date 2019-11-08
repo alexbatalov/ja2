@@ -323,7 +323,7 @@ function BtnIMPFinishVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
 function RenderCharProfileFinishFace(): boolean {
   // render the portrait of the current picture
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hHandle: HVOBJECT;
   let uiGraphicHandle: UINT32;
 
@@ -472,7 +472,7 @@ function RenderCharFullName(): void {
 
 function LoadCharacterPortrait(): boolean {
   // this function will load the character's portrait, to be used on portrait button
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

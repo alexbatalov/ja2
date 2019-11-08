@@ -232,7 +232,7 @@ export function RenderHistory(): void {
 }
 
 function LoadHistory(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   // load History video objects into memory
 
   // title bar

@@ -49,7 +49,7 @@ let gfSouth: boolean;
 let gfWest: boolean;
 
 export function InitTacticalPlacementGUI(): void {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: INT32;
   let xp: INT32;
   let yp: INT32;

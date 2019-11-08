@@ -76,7 +76,7 @@ let guiSliderBoxImage: UINT32 = 0;
 ///////////////////////////////////////////////////
 
 export function InitSlider(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load Slider Box Graphic graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

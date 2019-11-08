@@ -444,7 +444,7 @@ export function EnterInitAimMembers(): void {
 }
 
 export function EnterAIMMembers(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let vs_desc: VSURFACE_DESC;
 
   // Create a background video surface to blt the face onto
@@ -1225,7 +1225,7 @@ function DisplayMercsFace(): boolean {
   let hPortraitHandle: HVOBJECT;
   let sFaceLoc: string /* STR */ = "FACES\\BIGFACES\\";
   let sTemp: string /* char[100] */;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // See if the merc is currently hired
@@ -1775,7 +1775,7 @@ function DisplayMercChargeAmount(): UINT32 {
 }
 
 function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */, sString2: string /* STR16 */, usPosX: UINT16, usPosY: UINT16, ubData: UINT8): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hPopupBoxHandle: HVOBJECT;
   /* static */ let usPopUpBoxPosX: UINT16;
   /* static */ let usPopUpBoxPosY: UINT16;
@@ -2633,7 +2633,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
   let i: UINT8;
   let usPosX: UINT16;
   let usPosY: UINT16;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let vs_desc: VSURFACE_DESC;
 
   // remove the face help text

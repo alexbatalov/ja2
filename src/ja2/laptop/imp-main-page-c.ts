@@ -488,7 +488,7 @@ function IMPMainPageNotSelectableBtnCallback(pRegion: Pointer<MOUSE_REGION>, iRe
 
 function LoadCharacterPortraitForMainPage(): boolean {
   // this function will load the character's portrait, to be used on portrait button
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   if (iCurrentProfileMode >= 4) {
     // load it

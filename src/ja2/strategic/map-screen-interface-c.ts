@@ -3578,7 +3578,7 @@ export function ShowUpdateBox(): void {
 
 export function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iCounter: INT32 = 0;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // going to load face
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

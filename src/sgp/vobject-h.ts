@@ -107,6 +107,15 @@ export interface VOBJECT_DESC {
   ubBitDepth: UINT8; // BPP, ignored if given from file
 }
 
+export function createVObjectDesc(): VOBJECT_DESC {
+  return {
+    fCreateFlags: 0,
+    ImageFile: "",
+    hImage: null,
+    ubBitDepth: 0,
+  };
+}
+
 // **********************************************************************************
 //
 // Video Object Manager Functions

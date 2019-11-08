@@ -97,7 +97,7 @@ let gfCheckForCursorOverMapSectorInventoryItem: boolean = false;
 
 // load the background panel graphics for inventory
 export function LoadInventoryPoolGraphic(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // load the file
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

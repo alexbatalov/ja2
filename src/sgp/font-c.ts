@@ -283,7 +283,7 @@ function FindFreeFont(): INT32 {
 //  Otherwise the font number is returned.
 //*****************************************************************************
 export function LoadFontFile(filename: string /* Pointer<UINT8> */): INT32 {
-  let vo_desc: VOBJECT_DESC;
+  let vo_desc: VOBJECT_DESC = createVObjectDesc();
   let LoadIndex: UINT32;
 
   Assert(filename != null);

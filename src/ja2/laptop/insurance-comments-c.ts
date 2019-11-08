@@ -27,7 +27,7 @@ function GameInitInsuranceComments(): void {
 }
 
 export function EnterInsuranceComments(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: UINT8;
   let usPosX: UINT16;
 

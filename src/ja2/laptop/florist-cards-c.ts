@@ -39,7 +39,7 @@ export function EnterFloristCards(): boolean {
   let j: UINT16;
   let usPosX: UINT16;
   let usPosY: UINT16;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let ubCount: UINT8;
 
   InitFloristDefaults();

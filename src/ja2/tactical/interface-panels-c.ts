@@ -948,7 +948,7 @@ export function GetSMPanelCurrentMerc(): UINT16 {
 }
 
 export function InitializeSMPanel(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // failing the CHECKF after this will cause you to lose your mouse
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -2552,7 +2552,7 @@ function BtnPositionShowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 // TEAM PANEL!!!!!!!!!!!!!!
 export function InitializeTEAMPanel(): boolean {
   let vs_desc: VSURFACE_DESC;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let cnt: UINT32;
   let posIndex: UINT32;
   /* static */ let fFirstTime: boolean = true;

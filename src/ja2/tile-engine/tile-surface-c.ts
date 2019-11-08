@@ -7,7 +7,7 @@ export let gbSameAsDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
 export function LoadTileSurface(cFilename: string /* Pointer<char> */): Pointer<TILE_IMAGERY> {
   // Add tile surface
   let pTileSurf: PTILE_IMAGERY = null;
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hVObject: HVOBJECT;
   let hImage: HIMAGE;
   let cStructureFilename: string /* SGPFILENAME */;

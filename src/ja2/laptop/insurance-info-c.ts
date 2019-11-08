@@ -63,7 +63,7 @@ export function EnterInitInsuranceInfo(): void {
 }
 
 export function EnterInsuranceInfo(): boolean {
-  let VObjectDesc: VOBJECT_DESC;
+  let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usPosX: UINT16;
 
   InitInsuranceDefaults();
