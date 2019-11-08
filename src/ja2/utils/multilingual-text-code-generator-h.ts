@@ -1,6 +1,6 @@
 namespace ja2 {
 
 // macro function out
-const ProcessIfMultilingualCmdLineArgDetected = (a) => 0;
+const ProcessIfMultilingualCmdLineArgDetected = (a: string) => 0;
 
 }

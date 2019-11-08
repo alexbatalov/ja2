@@ -97,8 +97,8 @@ export interface LIGHT_SPRITE {
 // High-Level Sprite Interface
 
 // macros
-const LightSpriteGetType = (x) => (LightSprites[x].uiLightType);
-export const LightSpriteGetTypeName = (x) => (pLightNames[LightSprites[x].iTemplate]);
+const LightSpriteGetType = (x: number) => (LightSprites[x].uiLightType);
+export const LightSpriteGetTypeName = (x: number) => (pLightNames[LightSprites[x].iTemplate]);
 export const LightGetAmbient = () => (ubAmbientLightLevel);
 
 }

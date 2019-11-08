@@ -51,14 +51,14 @@ export const GetJA2Clock = () => guiBaseJA2Clock;
 // MACROS
 //																CHeck if new counter < 0														 | set to 0 |										 Decrement
 
-export const UPDATECOUNTER = (c) => ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) : (giTimerCounters[c] -= BASETIMESLICE);
-export const RESETCOUNTER = (c) => (giTimerCounters[c] = giTimerIntervals[c]);
-export const COUNTERDONE = (c) => (giTimerCounters[c] == 0) ? true : false;
+export const UPDATECOUNTER = (c: number) => ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) : (giTimerCounters[c] -= BASETIMESLICE);
+export const RESETCOUNTER = (c: number) => (giTimerCounters[c] = giTimerIntervals[c]);
+export const COUNTERDONE = (c: number) => (giTimerCounters[c] == 0) ? true : false;
 
 export const UPDATETIMECOUNTER = (c) => ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE);
 export const RESETTIMECOUNTER = (c, d) => (c = d);
 
-export const TIMECOUNTERDONE = (c, d) => (c == 0) ? true : false;
+export const TIMECOUNTERDONE = (c: number, d: number) => (c == 0) ? true : false;
 
 export const SYNCTIMECOUNTER = () => {};
 export const ZEROTIMECOUNTER = (c) => (c = 0);

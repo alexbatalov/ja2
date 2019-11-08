@@ -130,7 +130,7 @@ export interface GUI_BUTTON {
 
 export const MAX_BUTTONS = 400;
 
-const GetButtonPtr = (x) => (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonList[x] : null);
+const GetButtonPtr = (x: number) => (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonList[x] : null);
 
 // Struct definition for the QuickButton pictures.
 export interface BUTTON_PICS {

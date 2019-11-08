@@ -10,6 +10,6 @@ namespace ja2 {
 //	Written by Bret Rowdon. Jan 30 '97
 //=================================================================================================
 
-export const MouseSystemHook = (t, x, y, l, r) => MSYS_SGP_Mouse_Handler_Hook(t, x, y, l, r);
+export const MouseSystemHook = (t: UINT16, x: UINT16, y: UINT16, l: boolean, r: boolean) => MSYS_SGP_Mouse_Handler_Hook(t, x, y, l, r);
 
 }

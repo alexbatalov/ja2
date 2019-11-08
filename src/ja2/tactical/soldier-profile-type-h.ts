@@ -138,8 +138,8 @@ export const enum Enum274 {
   DEVOLVE,
 }
 
-export const BUDDY_MERC = (prof, bud) => ((prof).value.bBuddy[0] == (bud) || (prof).value.bBuddy[1] == (bud) || (prof).value.bBuddy[2] == (bud));
-export const HATED_MERC = (prof, hat) => ((prof).value.bHated[0] == (hat) || (prof).value.bHated[1] == (hat) || (prof).value.bHated[2] == (hat));
+export const BUDDY_MERC = (prof: Pointer<MERCPROFILESTRUCT>, bud: number) => ((prof).value.bBuddy[0] == (bud) || (prof).value.bBuddy[1] == (bud) || (prof).value.bBuddy[2] == (bud));
+export const HATED_MERC = (prof: Pointer<MERCPROFILESTRUCT>, hat: number) => ((prof).value.bHated[0] == (hat) || (prof).value.bHated[1] == (hat) || (prof).value.bHated[2] == (hat));
 
 export const BUDDY_OPINION = +25;
 export const HATED_OPINION = -25;

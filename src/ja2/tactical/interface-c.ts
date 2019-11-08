@@ -2784,7 +2784,7 @@ interface AIMCUBE_UI_DATA {
 /* static */ let gfInAimCubeUI: boolean = false;
 /* static */ let gCubeUIData: AIMCUBE_UI_DATA;
 
-const GET_CUBES_HEIGHT_FROM_UIHEIGHT = (h) => (32 + (h * 64));
+const GET_CUBES_HEIGHT_FROM_UIHEIGHT = (h: number) => (32 + (h * 64));
 
 function CalculateAimCubeUIPhysics(): void {
   let ubHeight: UINT8;

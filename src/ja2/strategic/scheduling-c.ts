@@ -3,7 +3,7 @@ namespace ja2 {
 const FOURPM = 960;
 
 // waketime is the # of minutes in the day minus the sleep time
-const WAKETIME = (x) => (NUM_SEC_IN_DAY / NUM_SEC_IN_MIN - x);
+const WAKETIME = (x: number) => (NUM_SEC_IN_DAY / NUM_SEC_IN_MIN - x);
 
 //#define DISABLESCHEDULES
 

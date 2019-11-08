@@ -74,7 +74,7 @@ const enum Enum248 {
 }
 
 const EASYWATERCOST = TRAVELCOST_FLAT / 2;
-const ISWATER = (t) => (((t) == TRAVELCOST_KNEEDEEP) || ((t) == TRAVELCOST_DEEPWATER));
+const ISWATER = (t: number) => (((t) == TRAVELCOST_KNEEDEEP) || ((t) == TRAVELCOST_DEEPWATER));
 const NOPASS = (TRAVELCOST_BLOCKED);
 //#define VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
 //#define ISVEIN(v) ((v==TRAVELCOST_VEINMID) || (v==TRAVELCOST_VEINEND))
@@ -108,13 +108,13 @@ const ESTIMATE = () => ESTIMATEC();
 const MAXCOST = (9990);
 //#define MAXCOST (255)
 //#define TOTALCOST( pCurrPtr ) (pCurrPtr->usCostSoFar + pCurrPtr->usCostToGo)
-const TOTALCOST = (ptr) => (ptr.value.usTotalCost);
-const XLOC = (a) => (a % MAPWIDTH);
-const YLOC = (a) => (a / MAPWIDTH);
+const TOTALCOST = (ptr: Pointer<path_t>) => (ptr.value.usTotalCost);
+const XLOC = (a: number) => (a % MAPWIDTH);
+const YLOC = (a: number) => (a / MAPWIDTH);
 //#define LEGDISTANCE(a,b) ( abs( XLOC(b)-XLOC(a) ) + abs( YLOC(b)-YLOC(a) ) )
-const LEGDISTANCE = (x1, y1, x2, y2) => (Math.abs(x2 - x1) + Math.abs(y2 - y1));
+const LEGDISTANCE = (x1: number, y1: number, x2: number, y2: number) => (Math.abs(x2 - x1) + Math.abs(y2 - y1));
 //#define FARTHER(ndx,NDX) ( LEGDISTANCE( ndx->sLocation,sDestination) > LEGDISTANCE(NDX->sLocation,sDestination) )
-const FARTHER = (ndx, NDX) => (ndx.value.ubLegDistance > NDX.value.ubLegDistance);
+const FARTHER = (ndx: Pointer<path_t>, NDX: Pointer<path_t>) => (ndx.value.ubLegDistance > NDX.value.ubLegDistance);
 
 const SETLOC = (str, loc) => {
   (str).iLocation = loc;

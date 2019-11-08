@@ -294,7 +294,7 @@ void BtnIMPConfirmNo( GUI_BUTTON *btn,INT32 reason )
 }
 */
 
-const PROFILE_HAS_SKILL_TRAIT = (p, t) => ((p.value.bSkillTrait == t) || (p.value.bSkillTrait2 == t));
+const PROFILE_HAS_SKILL_TRAIT = (p: Pointer<MERCPROFILESTRUCT>, t: number) => ((p.value.bSkillTrait == t) || (p.value.bSkillTrait2 == t));
 
 function GiveItemsToPC(ubProfileId: UINT8): void {
   let pProfile: Pointer<MERCPROFILESTRUCT>;

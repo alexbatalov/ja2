@@ -52,7 +52,7 @@ export interface SixteenBPPObjectInfo {
 
 // This definition mimics what is found in WINDOWS.H ( for Direct Draw compatiblity )
 // From RGB to COLORVAL
-export const FROMRGB = (r, g, b) => ((((r) | ((g) << 8)) | (((b)) << 16)));
+export const FROMRGB = (r: number, g: number, b: number) => ((((r) | ((g) << 8)) | (((b)) << 16)));
 
 // Video object creation flags
 // Used in the VOBJECT_DESC structure to describe creation flags
@@ -123,7 +123,7 @@ export function createVObjectDesc(): VOBJECT_DESC {
 // **********************************************************************************
 
 // Creates and adds a video object to list
-export const AddVideoObject = (a, b) => AddStandardVideoObject(a, b);
+export const AddVideoObject = (a: Pointer<VOBJECT_DESC>, b: Pointer<UINT32>) => AddStandardVideoObject(a, b);
 
 // **********************************************************************************
 //

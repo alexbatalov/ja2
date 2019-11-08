@@ -15,7 +15,7 @@ let gusLOSEndSoldier: UINT16 = NOBODY;
 /* static */ let gqStandardWindowBottomHeight: FIXEDPT = INT32_TO_FIXEDPT(WINDOW_BOTTOM_HEIGHT_UNITS);
 /* static */ let gqStandardWindowTopHeight: FIXEDPT = INT32_TO_FIXEDPT(WINDOW_TOP_HEIGHT_UNITS);
 
-const FIXEDPT_MULTIPLY = (a, b) => ((a / 256) * (b / 256));
+const FIXEDPT_MULTIPLY = (a: number, b: number) => ((a / 256) * (b / 256));
 
 function FPMult32(uiA: UINT32, uiB: UINT32): UINT32 {
   let uiResult: UINT32;
@@ -194,7 +194,7 @@ function Distance2D(dDeltaX: FLOAT, dDeltaY: FLOAT): FLOAT {
 
 //#define DEBUGLOS
 
-const DebugLOS = (a) => {};
+const DebugLOS = (a: string) => {};
 
 const enum Enum228 {
   LOC_OTHER,

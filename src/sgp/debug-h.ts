@@ -27,8 +27,8 @@ const PROFILE_REPORT = () => {
   _RPT3(_CRT_WARN, "*** PROFILE REPORT: %d executions took %dms, average of %.2fms per iteration.\n", guiExecutions, guiProfileTime, guiProfileTime / guiExecutions);
 };
 
-export const Assert = (a) => {};
-export const AssertMsg = (a, b) => {};
+export const Assert = (a: any) => {};
+export const AssertMsg = (a: any, b: string) => {};
 
 //*******************************************************************************************
 
@@ -41,18 +41,18 @@ export const ShutdownDebugManager = () => DbgShutdown();
 //*******************************************************************************************
 const DebugBreakpoint = () => {};
 
-export const RegisterDebugTopic = (a, b) => {};
-export const UnRegisterDebugTopic = (a, b) => {};
+export const RegisterDebugTopic = (a: number, b: string) => {};
+export const UnRegisterDebugTopic = (a: number, b: string) => {};
 export const ClearAllDebugTopics = () => {};
 
-export const FastDebugMsg = (a) => {};
-export const ErrorMsg = (a) => {};
+export const FastDebugMsg = (a: string) => {};
+export const ErrorMsg = (a: string) => {};
 
-const DbgTopicRegistration = (a, b, c) => {};
-export const DbgMessage = (a, b, c) => {};
+const DbgTopicRegistration = (a: number, b: number, c: string) => {};
+export const DbgMessage = (a: number, b: number, c: string) => {};
 
-export const RegisterJA2DebugTopic = (a, b) => {};
-export const DebugMsg = (a, b, c) => {};
+export const RegisterJA2DebugTopic = (a: number, b: string) => {};
+export const DebugMsg = (a: number, b: number, c: string) => {};
 
 //*******************************************************************************************
 

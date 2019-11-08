@@ -101,8 +101,8 @@ export let gbMercSlotTypes: INT8[] /* [9] */ = [
   Enum261.BIGPOCK4POS,
 ];
 // returns the usItem index of specified slot in the currently selected merc.
-const GetSelectedMercSlotItemIndex = (x) => (gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]].usItem);
-const GetSelectedMercSlot = (x) => (addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]]));
+const GetSelectedMercSlotItemIndex = (x: number) => (gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]].usItem);
+const GetSelectedMercSlot = (x: number) => (addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]]));
 // values indicating which merc inventory slot is hilited and which slot is selected.
 let gbCurrHilite: INT8 = -1;
 export let gbCurrSelect: INT8 = -1;

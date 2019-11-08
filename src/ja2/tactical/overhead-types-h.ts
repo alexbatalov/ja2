@@ -309,6 +309,6 @@ export interface PaletteReplacementType {
 // This will set an animation ID
 export const SET_PALETTEREP_ID = (a, b) => (a = b);
 // strcmp returns 0 if true!
-export const COMPARE_PALETTEREP_ID = (a, b) => (strcmp(a, b) ? false : true);
+export const COMPARE_PALETTEREP_ID = (a: PaletteRepID, b: PaletteRepID) => (strcmp(a, b) ? false : true);
 
 }

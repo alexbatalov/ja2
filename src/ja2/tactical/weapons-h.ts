@@ -115,27 +115,27 @@ export const enum Enum287 {
   EXPLOSV_CREATUREGAS,
 }
 
-export const AMMO_DAMAGE_ADJUSTMENT_BUCKSHOT = (x) => (x / 4);
+export const AMMO_DAMAGE_ADJUSTMENT_BUCKSHOT = (x: number) => (x / 4);
 export const NUM_BUCKSHOT_PELLETS = 9;
 
 // hollow point bullets do lots of damage to people
-export const AMMO_DAMAGE_ADJUSTMENT_HP = (x) => ((x * 17) / 10);
+export const AMMO_DAMAGE_ADJUSTMENT_HP = (x: number) => ((x * 17) / 10);
 // but they SUCK at penetrating armour
-export const AMMO_ARMOUR_ADJUSTMENT_HP = (x) => ((x * 3) / 2);
+export const AMMO_ARMOUR_ADJUSTMENT_HP = (x: number) => ((x * 3) / 2);
 // armour piercing bullets are good at penetrating armour
-export const AMMO_ARMOUR_ADJUSTMENT_AP = (x) => ((x * 3) / 4);
+export const AMMO_ARMOUR_ADJUSTMENT_AP = (x: number) => ((x * 3) / 4);
 // "super" AP bullets are great at penetrating armour
-export const AMMO_ARMOUR_ADJUSTMENT_SAP = (x) => (x / 2);
+export const AMMO_ARMOUR_ADJUSTMENT_SAP = (x: number) => (x / 2);
 
 // high explosive damage value (PRIOR to armour subtraction)
-export const AMMO_DAMAGE_ADJUSTMENT_HE = (x) => ((x * 4) / 3);
+export const AMMO_DAMAGE_ADJUSTMENT_HE = (x: number) => ((x * 4) / 3);
 
 // but they SUCK at penetrating armour
-export const AMMO_STRUCTURE_ADJUSTMENT_HP = (x) => (x * 2);
+export const AMMO_STRUCTURE_ADJUSTMENT_HP = (x: number) => (x * 2);
 // armour piercing bullets are good at penetrating structure
-export const AMMO_STRUCTURE_ADJUSTMENT_AP = (x) => ((x * 3) / 4);
+export const AMMO_STRUCTURE_ADJUSTMENT_AP = (x: number) => ((x * 3) / 4);
 // "super" AP bullets are great at penetrating structures
-export const AMMO_STRUCTURE_ADJUSTMENT_SAP = (x) => (x / 2);
+export const AMMO_STRUCTURE_ADJUSTMENT_SAP = (x: number) => (x / 2);
 
 // one quarter of punching damage is "real" rather than breath damage
 export const PUNCH_REAL_DAMAGE_PORTION = 4;

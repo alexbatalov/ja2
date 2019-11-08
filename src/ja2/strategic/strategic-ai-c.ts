@@ -335,7 +335,7 @@ let gOrigGarrisonGroup: GARRISON_GROUP[] /* [] */ = [
   // 57
 ];
 
-const SAIReportError = (a) => {}; // define it out
+const SAIReportError = (a: string) => {}; // define it out
 
 const enum Enum172 {
   DIRECT,

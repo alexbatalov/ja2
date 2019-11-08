@@ -59,15 +59,15 @@ const SMELL_STRENGTH_MAX = 63;
 const BLOOD_STRENGTH_MAX = 7;
 const BLOOD_DELAY_MAX = 3;
 
-const SMELL_TYPE_BITS = (s) => (s & 0x03);
+const SMELL_TYPE_BITS = (s: number) => (s & 0x03);
 
-const BLOOD_ROOF_TYPE = (s) => (s & 0x02);
-const BLOOD_FLOOR_TYPE = (s) => (s & 0x01);
+const BLOOD_ROOF_TYPE = (s: number) => (s & 0x02);
+const BLOOD_FLOOR_TYPE = (s: number) => (s & 0x01);
 
-const BLOOD_ROOF_STRENGTH = (b) => (b & 0xE0);
-const BLOOD_FLOOR_STRENGTH = (b) => ((b & 0x1C) >> 2);
-const BLOOD_DELAY_TIME = (b) => (b & 0x03);
-const NO_BLOOD_STRENGTH = (b) => ((b & 0xFC) == 0);
+const BLOOD_ROOF_STRENGTH = (b: number) => (b & 0xE0);
+const BLOOD_FLOOR_STRENGTH = (b: number) => ((b & 0x1C) >> 2);
+const BLOOD_DELAY_TIME = (b: number) => (b & 0x03);
+const NO_BLOOD_STRENGTH = (b: number) => ((b & 0xFC) == 0);
 
 const DECAY_SMELL_STRENGTH = (s) => {
   let ubStrength: UINT8 = SMELL_STRENGTH((s));

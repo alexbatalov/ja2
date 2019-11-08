@@ -519,10 +519,10 @@ export const OMERTA_LEAVE_EQUIP_SECTOR_Z = 0;
 export const OMERTA_LEAVE_EQUIP_GRIDNO = 4868;
 
 // NB brothel rooms 88-90 removed because they are the antechamber
-export const IN_BROTHEL = (room) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && (room) >= 91 && (room) <= 119);
-export const IN_BROTHEL_GUARD_ROOM = (room) => (room == 110);
+export const IN_BROTHEL = (room: number) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && (room) >= 91 && (room) <= 119);
+export const IN_BROTHEL_GUARD_ROOM = (room: number) => (room == 110);
 
-export const IN_KINGPIN_HOUSE = (room) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && (room) >= 30 && (room) <= 39);
+export const IN_KINGPIN_HOUSE = (room: number) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && (room) >= 30 && (room) <= 39);
 
 export const LOYALTY_LOW_THRESHOLD = 30;
 export const LOYALTY_OK_THRESHOLD = 50;

@@ -103,11 +103,11 @@ const ESTIMATE = () => ESTIMATE1();
 const REMAININGCOST = (ndx) => ((locY = pathQB[ndx].location / MAP_WIDTH), (locX = pathQB[ndx].location % MAP_WIDTH), (dy = Math.abs(iDestY - locY)), (dx = Math.abs(iDestX - locX)), ESTIMATE());
 
 const MAXCOST = (99900);
-const TOTALCOST = (ndx) => (pathQB[ndx].costSoFar + pathQB[ndx].costToGo);
-const XLOC = (a) => (a % MAP_WIDTH);
-const YLOC = (a) => (a / MAP_WIDTH);
-const LEGDISTANCE = (a, b) => (Math.abs(XLOC(b) - XLOC(a)) + Math.abs(YLOC(b) - YLOC(a)));
-const FARTHER = (ndx, NDX) => (LEGDISTANCE(pathQB[ndx].location, sDestination) > LEGDISTANCE(pathQB[NDX].location, sDestination));
+const TOTALCOST = (ndx: number) => (pathQB[ndx].costSoFar + pathQB[ndx].costToGo);
+const XLOC = (a: number) => (a % MAP_WIDTH);
+const YLOC = (a: number) => (a / MAP_WIDTH);
+const LEGDISTANCE = (a: number, b: number) => (Math.abs(XLOC(b) - XLOC(a)) + Math.abs(YLOC(b) - YLOC(a)));
+const FARTHER = (ndx: number, NDX: number) => (LEGDISTANCE(pathQB[ndx].location, sDestination) > LEGDISTANCE(pathQB[NDX].location, sDestination));
 
 const FLAT_STRATEGIC_TRAVEL_TIME = 60;
 

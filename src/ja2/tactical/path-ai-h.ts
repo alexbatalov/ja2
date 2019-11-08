@@ -58,8 +58,8 @@ export const TRAVELCOST_PAVEDROAD = 9;
 export const TRAVELCOST_FLATFLOOR = 10;
 
 export const TRAVELCOST_BLOCKED = (TRAVELCOST_OFF_MAP);
-export const IS_TRAVELCOST_DOOR = (x) => (x >= TRAVELCOST_DOOR_CLOSED_HERE && x <= TRAVELCOST_DOOR_OPEN_NW_W);
-const IS_TRAVELCOST_CLOSED_DOOR = (x) => (x >= TRAVELCOST_DOOR_CLOSED_HERE && x << TRAVELCOST_DOOR_CLOSED_W);
+export const IS_TRAVELCOST_DOOR = (x: number) => (x >= TRAVELCOST_DOOR_CLOSED_HERE && x <= TRAVELCOST_DOOR_OPEN_NW_W);
+const IS_TRAVELCOST_CLOSED_DOOR = (x: number) => (x >= TRAVELCOST_DOOR_CLOSED_HERE && x << TRAVELCOST_DOOR_CLOSED_W);
 
 // ------------------------------------------
 // PLOT PATH defines

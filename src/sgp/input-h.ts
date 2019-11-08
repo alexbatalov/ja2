@@ -45,8 +45,8 @@ export function createInputAtom(): InputAtom {
 }
 
 // Mouse pos extracting macros from InputAtom
-const GETYPOS = (a) => HIWORD(((a).value.uiParam));
-const GETXPOS = (a) => LOWORD(((a).value.uiParam));
+const GETYPOS = (a: Pointer<InputAtom>) => HIWORD(((a).value.uiParam));
+const GETXPOS = (a: Pointer<InputAtom>) => LOWORD(((a).value.uiParam));
 
 export interface StringInput {
   pString: string /* Pointer<UINT16> */;
@@ -62,22 +62,22 @@ export interface StringInput {
   pNextString: Pointer<StringInput>;
 }
 
-export const _KeyDown = (a) => gfKeyState[(a)];
+export const _KeyDown = (a: number) => gfKeyState[(a)];
 export const _LeftButtonDown = () => gfLeftButtonState;
 export const _RightButtonDown = () => gfRightButtonState;
 const _MouseXPos = () => gusMouseXPos;
 const _MouseYPos = () => gusMouseYPos;
 
 // NOTE: this may not be the absolute most-latest current mouse co-ordinates, use GetCursorPos for that
-const _gusMouseInside = (x1, y1, x2, y2) => ((gusMouseXPos >= x1) && (gusMouseXPos <= x2) && (gusMouseYPos >= y1) && (gusMouseYPos <= y2));
+const _gusMouseInside = (x1: number, y1: number, x2: number, y2: number) => ((gusMouseXPos >= x1) && (gusMouseXPos <= x2) && (gusMouseYPos >= y1) && (gusMouseYPos <= y2));
 
-const _EvType = (a) => ((a)).value.usEvent;
-const _EvTimeStamp = (a) => ((a)).value.uiTimeStamp;
-const _EvKey = (a) => ((a)).value.usParam;
-export const _EvMouseX = (a) => (((a)).value.uiParam & 0x0000ffff);
-export const _EvMouseY = (a) => ((((a)).value.uiParam & 0xffff0000) >> 16);
-const _EvShiftDown = (a) => (((a)).value.usKeyState & SHIFT_DOWN);
-const _EvCtrlDown = (a) => (((a)).value.usKeyState & CTRL_DOWN);
-const _EvAltDown = (a) => (((a)).value.usKeyState & ALT_DOWN);
+const _EvType = (a: Pointer<InputAtom>) => ((a)).value.usEvent;
+const _EvTimeStamp = (a: Pointer<InputAtom>) => ((a)).value.uiTimeStamp;
+const _EvKey = (a: Pointer<InputAtom>) => ((a)).value.usParam;
+export const _EvMouseX = (a: Pointer<InputAtom>) => (((a)).value.uiParam & 0x0000ffff);
+export const _EvMouseY = (a: Pointer<InputAtom>) => ((((a)).value.uiParam & 0xffff0000) >> 16);
+const _EvShiftDown = (a: Pointer<InputAtom>) => (((a)).value.usKeyState & SHIFT_DOWN);
+const _EvCtrlDown = (a: Pointer<InputAtom>) => (((a)).value.usKeyState & CTRL_DOWN);
+const _EvAltDown = (a: Pointer<InputAtom>) => (((a)).value.usKeyState & ALT_DOWN);
 
 }

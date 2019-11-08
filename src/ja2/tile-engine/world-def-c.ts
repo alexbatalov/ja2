@@ -1,7 +1,7 @@
 namespace ja2 {
 
-const SET_MOVEMENTCOST = (a, b, c, d) => ((gubWorldMovementCosts[a][b][c] < d) ? (gubWorldMovementCosts[a][b][c] = d) : 0);
-const FORCE_SET_MOVEMENTCOST = (a, b, c, d) => (gubWorldMovementCosts[a][b][c] = d);
+const SET_MOVEMENTCOST = (a: number, b: number, c: number, d: number) => ((gubWorldMovementCosts[a][b][c] < d) ? (gubWorldMovementCosts[a][b][c] = d) : 0);
+const FORCE_SET_MOVEMENTCOST = (a: number, b: number, c: number, d: number) => (gubWorldMovementCosts[a][b][c] = d);
 const SET_CURRMOVEMENTCOST = (a, b) => SET_MOVEMENTCOST(usGridNo, a, 0, b);
 
 const TEMP_FILE_FOR_TILESET_CHANGE = "jatileS34.dat";

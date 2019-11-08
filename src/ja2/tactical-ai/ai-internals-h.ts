@@ -5,7 +5,7 @@ namespace ja2 {
 export const MAX_TOSS_SEARCH_DIST = 1; // must throw within this of opponent
 const NPC_TOSS_SAFETY_MARGIN = 4; // all friends must be this far away
 
-export const ACTING_ON_SCHEDULE = (p) => ((p).value.fAIFlags & AI_CHECK_SCHEDULE);
+export const ACTING_ON_SCHEDULE = (p: Pointer<SOLDIERTYPE>) => ((p).value.fAIFlags & AI_CHECK_SCHEDULE);
 
 // the AI should try to have this many APs before climbing a roof, if possible
 const AI_AP_CLIMBROOF = 15;

@@ -19,8 +19,8 @@ const LASERSCOPE_BONUS = 20;
 const MANDATORY_WEAPON_DELAY = 1200;
 const NO_WEAPON_SOUND = 0;
 
-const HEAD_DAMAGE_ADJUSTMENT = (x) => ((x * 3) / 2);
-const LEGS_DAMAGE_ADJUSTMENT = (x) => (x / 2);
+const HEAD_DAMAGE_ADJUSTMENT = (x: number) => ((x * 3) / 2);
+const LEGS_DAMAGE_ADJUSTMENT = (x: number) => (x / 2);
 
 const CRITICAL_HIT_THRESHOLD = 30;
 
@@ -29,7 +29,7 @@ const HTH_MODE_STAB = 2;
 const HTH_MODE_STEAL = 3;
 
 // JA2 GOLD: for weapons and attachments, give penalties only for status values below 85
-const WEAPON_STATUS_MOD = (x) => ((x) >= 85 ? 100 : (((x) * 100) / 85));
+const WEAPON_STATUS_MOD = (x: number) => ((x) >= 85 ? 100 : (((x) * 100) / 85));
 
 export let gfNextShotKills: boolean = false;
 export let gfReportHitChances: boolean = false;

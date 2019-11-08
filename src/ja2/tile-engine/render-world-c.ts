@@ -62,7 +62,7 @@ const SCROLL_INTERTIA_STEP1 = 6;
 const SCROLL_INTERTIA_STEP2 = 8;
 
 //#define SHORT_ROUND( x ) ( (INT16)( ( x * 1000 ) / 1000 ) )
-const SHORT_ROUND = (x) => (x);
+const SHORT_ROUND = (x: number) => (x);
 
 const NUM_ITEM_CYCLE_COLORS = 60;
 
@@ -454,7 +454,7 @@ export let gsCY: INT16;
 export let gdScaleX: DOUBLE;
 export let gdScaleY: DOUBLE;
 
-const FASTMAPROWCOLTOPOS = (r, c) => ((r) * WORLD_COLS + (c));
+const FASTMAPROWCOLTOPOS = (r: number, c: number) => ((r) * WORLD_COLS + (c));
 
 export let gfScrollInertia: boolean = false;
 

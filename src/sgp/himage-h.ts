@@ -131,9 +131,9 @@ export interface image_type {
 
 export type HIMAGE = Pointer<image_type>;
 
-export const SGPGetRValue = (rgb) => ((rgb));
-export const SGPGetBValue = (rgb) => (((rgb) >> 16));
-export const SGPGetGValue = (rgb) => ((((rgb)) >> 8));
+export const SGPGetRValue = (rgb: number) => ((rgb));
+export const SGPGetBValue = (rgb: number) => (((rgb) >> 16));
+export const SGPGetGValue = (rgb: number) => ((((rgb)) >> 8));
 
 // *****************************************************************************
 //

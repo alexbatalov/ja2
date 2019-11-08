@@ -273,7 +273,7 @@ export const IF_STANDARD_ARMOUR = ITEM_DAMAGEABLE | ITEM_REPAIRABLE | ITEM_SHOW_
 export const IF_STANDARD_KIT = ITEM_DAMAGEABLE | ITEM_SHOW_STATUS | ITEM_SINKS;
 export const IF_STANDARD_CLIP = ITEM_SINKS | ITEM_METAL;
 
-export const EXPLOSIVE_GUN = (x) => (x == Enum225.ROCKET_LAUNCHER || x == Enum225.TANK_CANNON);
+export const EXPLOSIVE_GUN = (x: number) => (x == Enum225.ROCKET_LAUNCHER || x == Enum225.TANK_CANNON);
 
 export interface INVTYPE {
   usItemClass: UINT32;

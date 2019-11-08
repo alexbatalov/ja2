@@ -8,7 +8,7 @@ const NORMAL_MAP_SCREEN_X = 1580;
 const NORMAL_MAP_SCREEN_BY = 2400;
 const NORMAL_MAP_SCREEN_TY = 860;
 
-const FASTMAPROWCOLTOPOS = (r, c) => ((r) * WORLD_COLS + (c));
+const FASTMAPROWCOLTOPOS = (r: number, c: number) => ((r) * WORLD_COLS + (c));
 
 interface SMALL_TILE_SURF {
   vo: HVOBJECT;

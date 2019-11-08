@@ -10,7 +10,7 @@ const HOURS_BETWEEN_STRATEGIC_DECAY = 3;
 const PHOBIC_LIMIT = -20;
 
 // macros
-const SOLDIER_IN_SECTOR = (pSoldier, sX, sY, bZ) => (!pSoldier.value.fBetweenSectors && (pSoldier.value.sSectorX == sX) && (pSoldier.value.sSectorY == sY) && (pSoldier.value.bSectorZ == bZ));
+const SOLDIER_IN_SECTOR = (pSoldier: Pointer<SOLDIERTYPE>, sX: number, sY: number, bZ: number) => (!pSoldier.value.fBetweenSectors && (pSoldier.value.sSectorX == sX) && (pSoldier.value.sSectorY == sY) && (pSoldier.value.bSectorZ == bZ));
 
 let gbMoraleEvent: MoraleEvent[] /* [NUM_MORALE_EVENTS] */ = [
   // TACTICAL = Short Term Effect, STRATEGIC = Long Term Effect

@@ -6,8 +6,8 @@ namespace ja2 {
 export const USE_WINFONTS = () => (false);
 
 export const GET_WINFONT = () => (giCurWinFont);
-export const SET_USE_WINFONTS = (fSet) => (gfUseWinFonts = fSet);
-export const SET_WINFONT = (fFont) => (giCurWinFont = fFont);
+export const SET_USE_WINFONTS = (fSet: boolean) => (gfUseWinFonts = fSet);
+export const SET_WINFONT = (fFont: number) => (giCurWinFont = fFont);
 
 // INT32						gpMilitaryFont1;
 // HVOBJECT				gvoMilitaryFont1;

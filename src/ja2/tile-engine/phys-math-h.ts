@@ -16,7 +16,7 @@ interface matrix_3x3 {
 }
 
 // DEFINES
-const RADIANS_FROM = (d) => ((d * Math.PI) / 180);
-const DEGREES_FROM = (r) => ((r * 180) / Math.PI);
+const RADIANS_FROM = (d: number) => ((d * Math.PI) / 180);
+const DEGREES_FROM = (r: number) => ((r * 180) / Math.PI);
 
 }

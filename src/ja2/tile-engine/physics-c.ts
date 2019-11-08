@@ -11,11 +11,11 @@ const INDOORS_START_ANGLE = (Math.PI / 30);
 const GLAUNCHER_START_ANGLE = (Math.PI / 8);
 const GLAUNCHER_HIGHER_LEVEL_START_ANGLE = (Math.PI / 6);
 
-const GET_THROW_HEIGHT = (l) => ((l * 256));
-const GET_SOLDIER_THROW_HEIGHT = (l) => ((l * 256) + STANDING_HEIGHT);
+const GET_THROW_HEIGHT = (l: number) => ((l * 256));
+const GET_SOLDIER_THROW_HEIGHT = (l: number) => ((l * 256) + STANDING_HEIGHT);
 
-const GET_OBJECT_LEVEL = (z) => (((z + 10) / HEIGHT_UNITS));
-const OBJECT_DETONATE_ON_IMPACT = (o) => ((o.value.Obj.usItem == Enum225.MORTAR_SHELL)); // && ( o->ubActionCode == THROW_ARM_ITEM || pObject->fTestObject ) )
+const GET_OBJECT_LEVEL = (z: number) => (((z + 10) / HEIGHT_UNITS));
+const OBJECT_DETONATE_ON_IMPACT = (o: Pointer<REAL_OBJECT>) => ((o.value.Obj.usItem == Enum225.MORTAR_SHELL)); // && ( o->ubActionCode == THROW_ARM_ITEM || pObject->fTestObject ) )
 
 const MAX_INTEGRATIONS = 8;
 
@@ -38,9 +38,9 @@ const EPSILONV = 0.5;
 const EPSILONP = () => 0.01;
 const EPSILONPZ = 3;
 
-const CALCULATE_OBJECT_MASS = (m) => ((m * 2));
-const SCALE_VERT_VAL_TO_HORZ = (f) => ((f / HEIGHT_UNITS) * CELL_X_SIZE);
-const SCALE_HORZ_VAL_TO_VERT = (f) => ((f / CELL_X_SIZE) * HEIGHT_UNITS);
+const CALCULATE_OBJECT_MASS = (m: number) => ((m * 2));
+const SCALE_VERT_VAL_TO_HORZ = (f: number) => ((f / HEIGHT_UNITS) * CELL_X_SIZE);
+const SCALE_HORZ_VAL_TO_VERT = (f: number) => ((f / CELL_X_SIZE) * HEIGHT_UNITS);
 
 /// OBJECT POOL FUNCTIONS
 function GetFreeObjectSlot(): INT32 {

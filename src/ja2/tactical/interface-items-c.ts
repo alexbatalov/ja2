@@ -81,7 +81,7 @@ const ITEMDESC_ITEM_STATUS_Y = () => (60 + gsInvDescY);
 const DOTDOTDOT = "...";
 const COMMA_AND_SPACE = ", ";
 
-const ITEM_PROS_AND_CONS = (usItem) => ((Item[usItem].usItemClass & IC_GUN));
+const ITEM_PROS_AND_CONS = (usItem: number) => ((Item[usItem].usItemClass & IC_GUN));
 
 const MAP_ITEMDESC_DESC_START_X = () => (23 + gsInvDescX);
 const MAP_ITEMDESC_DESC_START_Y = () => (170 + gsInvDescY);

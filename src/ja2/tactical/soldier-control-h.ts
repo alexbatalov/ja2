@@ -82,8 +82,8 @@ export const SOLDIER_LOOK_NEXT_TURNSOLDIER = 0x80000000;
 #define	SOLDIER_TRAIT_MARTIALARTS		0x0800
 #define	SOLDIER_TRAIT_KNIFING				0x1000
 */
-export const HAS_SKILL_TRAIT = (s, t) => (s.value.ubSkillTrait1 == t || s.value.ubSkillTrait2 == t);
-export const NUM_SKILL_TRAITS = (s, t) => ((s.value.ubSkillTrait1 == t) ? ((s.value.ubSkillTrait2 == t) ? 2 : 1) : ((s.value.ubSkillTrait2 == t) ? 1 : 0));
+export const HAS_SKILL_TRAIT = (s: Pointer<SOLDIERTYPE>, t: number) => (s.value.ubSkillTrait1 == t || s.value.ubSkillTrait2 == t);
+export const NUM_SKILL_TRAITS = (s: Pointer<SOLDIERTYPE>, t: number) => ((s.value.ubSkillTrait1 == t) ? ((s.value.ubSkillTrait2 == t) ? 2 : 1) : ((s.value.ubSkillTrait2 == t) ? 1 : 0));
 
 export const SOLDIER_QUOTE_SAID_IN_SHIT = 0x0001;
 export const SOLDIER_QUOTE_SAID_LOW_BREATH = 0x0002;
@@ -128,7 +128,7 @@ const BLOODTIME = 5;
 const FOOTPRINTTIME = 2;
 export const MIN_BLEEDING_THRESHOLD = 12; // you're OK while <4 Yellow life bars
 
-const BANDAGED = (s) => (s.value.bLifeMax - s.value.bLife - s.value.bBleeding);
+const BANDAGED = (s: Pointer<SOLDIERTYPE>) => (s.value.bLifeMax - s.value.bLife - s.value.bBleeding);
 
 // amount of time a stats is to be displayed differently, due to change
 export const CHANGE_STAT_RECENTLY_DURATION = 60000;
@@ -257,13 +257,13 @@ export const enum Enum262 {
   SOLDIER_CLASS_MINER,
 }
 
-export const SOLDIER_CLASS_ENEMY = (bSoldierClass) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_ADMINISTRATOR) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ARMY));
-export const SOLDIER_CLASS_MILITIA = (bSoldierClass) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_GREEN_MILITIA) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ELITE_MILITIA));
+export const SOLDIER_CLASS_ENEMY = (bSoldierClass: number) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_ADMINISTRATOR) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ARMY));
+export const SOLDIER_CLASS_MILITIA = (bSoldierClass: number) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_GREEN_MILITIA) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ELITE_MILITIA));
 
 // This macro should be used whenever we want to see if someone is neutral
 // IF WE ARE CONSIDERING ATTACKING THEM.  Creatures & bloodcats will attack neutrals
 // but they can't attack empty vehicles!!
-export const CONSIDERED_NEUTRAL = (me, them) => ((them.value.bNeutral) && (me.value.bTeam != CREATURE_TEAM || (them.value.uiStatusFlags & SOLDIER_VEHICLE)));
+export const CONSIDERED_NEUTRAL = (me: Pointer<SOLDIERTYPE>, them: Pointer<SOLDIERTYPE>) => ((them.value.bNeutral) && (me.value.bTeam != CREATURE_TEAM || (them.value.uiStatusFlags & SOLDIER_VEHICLE)));
 
 export interface KEY_ON_RING {
   ubKeyID: UINT8;
