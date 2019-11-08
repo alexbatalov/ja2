@@ -43,6 +43,20 @@ export interface TacticalTeamType {
   bHuman: INT8;
 }
 
+export function createTacticalTeamType(): TacticalTeamType {
+  return {
+    bFirstID: 0,
+    bLastID: 0,
+    RadarColor: 0,
+    bSide: 0,
+    bMenInSector: 0,
+    ubLastMercToRadio: 0,
+    bTeamActive: 0,
+    bAwareOfOpposition: 0,
+    bHuman: 0,
+  };
+}
+
 // for use with TacticalStatusType.ubEnemyIntention
 const enum Enum239 {
   INTENTION_SCOUTING,
@@ -168,7 +182,112 @@ export interface TacticalStatusType {
   uiCreatureTenseQuoteLastUpdate: UINT32;
 }
 
+export function createTacticalStatusType(): TacticalStatusType {
+  return {
+    uiFlags: 0,
+    Team: createArrayFrom(MAXTEAMS, createTacticalTeamType),
+    ubCurrentTeam: 0,
+    sSlideTarget: 0,
+    sSlideReason: 0,
+    uiTimeSinceMercAIStart: 0,
+    fPanicFlags: 0,
+    sPanicTriggerGridnoUnused: 0,
+    sHandGrid: 0,
+    ubSpottersCalledForBy: 0,
+    ubTheChosenOne: 0,
+    uiTimeOfLastInput: 0,
+    uiTimeSinceDemoOn: 0,
+    uiCountdownToRestart: 0,
+    fGoingToEnterDemo: false,
+    fNOTDOLASTDEMO: false,
+    fMultiplayer: false,
+    fCivGroupHostile: createArray(Enum246.NUM_CIV_GROUPS, false),
+    ubLastBattleSectorX: 0,
+    ubLastBattleSectorY: 0,
+    fLastBattleWon: false,
+    bOriginalSizeOfEnemyForce: 0,
+    bPanicTriggerIsAlarmUnused: 0,
+    fVirginSector: false,
+    fEnemyInSector: false,
+    fInterruptOccurred: false,
+    bRealtimeSpeed: 0,
+    ubEnemyIntention: 0,
+    ubEnemyIntendedRetreatDirection: 0,
+    ubEnemySightingOnTheirTurnEnemyID: 0,
+    ubEnemySightingOnTheirTurnPlayerID: 0,
+    fEnemySightingOnTheirTurn: false,
+    fAutoBandageMode: false,
+    ubAttackBusyCount: 0,
+    bNumEnemiesFoughtInBattleUnused: 0,
+    ubEngagedInConvFromActionMercID: 0,
+    usTactialTurnLimitCounter: 0,
+    fInTopMessage: false,
+    ubTopMessageType: 0,
+    zTopMessageString: '',
+    usTactialTurnLimitMax: 0,
+    uiTactialTurnLimitClock: 0,
+    fTactialTurnLimitStartedBeep: false,
+    bBoxingState: 0,
+    bConsNumTurnsNotSeen: 0,
+    ubArmyGuysKilled: 0,
+
+    sPanicTriggerGridNo: createArray(NUM_PANIC_TRIGGERS, 0),
+    bPanicTriggerIsAlarm: createArray(NUM_PANIC_TRIGGERS, 0),
+    ubPanicTolerance: createArray(NUM_PANIC_TRIGGERS, 0),
+    fAtLeastOneGuyOnMultiSelect: false,
+    fSaidCreatureFlavourQuote: false,
+    fHaveSeenCreature: false,
+    fKilledEnemyOnAttack: false,
+    ubEnemyKilledOnAttack: 0,
+    bEnemyKilledOnAttackLevel: 0,
+    ubEnemyKilledOnAttackLocation: 0,
+    fItemsSeenOnAttack: false,
+    ubItemsSeenOnAttackSoldier: false,
+    fBeenInCombatOnce: false,
+    fSaidCreatureSmellQuote: false,
+    usItemsSeenOnAttackGridNo: 0,
+    fLockItemLocators: false,
+    ubLastQuoteSaid: 0,
+    ubLastQuoteProfileNUm: 0,
+    fCantGetThrough: false,
+    sCantGetThroughGridNo: 0,
+    sCantGetThroughSoldierGridNo: 0,
+    ubCantGetThroughID: 0,
+    fDidGameJustStart: false,
+    fStatChangeCheatOn: false,
+    ubLastRequesterTargetID: 0,
+    fGoodToAllowCrows: false,
+    ubNumCrowsPossible: 0,
+    uiTimeCounterForGiveItemSrc: 0,
+    fUnLockUIAfterHiddenInterrupt: false,
+    bNumFoughtInBattle: createArray(MAXTEAMS, 0),
+    uiDecayBloodLastUpdate: 0,
+    uiTimeSinceLastInTactical: 0,
+    fHasAGameBeenStarted: false,
+    bConsNumTurnsWeHaventSeenButEnemyDoes: 0,
+    fSomeoneHit: false,
+    ubPaddingSmall: 0,
+    uiTimeSinceLastOpplistDecay: 0,
+    bMercArrivingQuoteBeingUsed: 0,
+    ubEnemyKilledOnAttackKiller: 0,
+    fCountingDownForGuideDescription: false,
+    bGuideDescriptionCountDown: 0,
+    ubGuideDescriptionToUse: 0,
+    bGuideDescriptionSectorX: 0,
+    bGuideDescriptionSectorY: 0,
+    fEnemyFlags: 0,
+    fAutoBandagePending: false,
+    fHasEnteredCombatModeSinceEntering: false,
+    fDontAddNewCrows: false,
+    ubMorePadding: 0,
+    sCreatureTenseQuoteDelay: 0,
+    uiCreatureTenseQuoteLastUpdate: 0,
+  };
+}
+
 export const REASON_NORMAL_ATTACK = 1;
 export const REASON_EXPLOSION = 2;
+
+export let gTacticalStatus: TacticalStatusType = createTacticalStatusType();
 
 }
