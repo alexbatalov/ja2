@@ -1965,7 +1965,7 @@ function SaveSoldierStructure(hFile: HWFILE): boolean {
 function LoadSoldierStructure(hFile: HWFILE): boolean {
   let cnt: UINT16;
   let uiNumBytesRead: UINT32 = 0;
-  let SavedSoldierInfo: SOLDIERTYPE;
+  let SavedSoldierInfo: SOLDIERTYPE = createSoldierType();
   let uiSaveSize: UINT32 = sizeof(SOLDIERTYPE);
   let ubId: UINT8;
   let ubOne: UINT8 = 1;

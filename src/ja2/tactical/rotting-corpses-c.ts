@@ -1215,7 +1215,7 @@ export function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE
   let sLowestGridNo: INT16 = 0;
   let leftmost: INT32;
   let fFound: boolean = false;
-  let soldier: SOLDIERTYPE;
+  let soldier: SOLDIERTYPE = createSoldierType();
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
   let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;

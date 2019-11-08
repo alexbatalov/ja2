@@ -9,4 +9,12 @@ export interface AnimationSurfaceCacheType {
   ubCacheSize: UINT8;
 }
 
+export function createAnimationSurfaceCacheType(): AnimationSurfaceCacheType {
+  return {
+    usCachedSurfaces: null,
+    sCacheHits: null,
+    ubCacheSize: 0,
+  };
+}
+
 }

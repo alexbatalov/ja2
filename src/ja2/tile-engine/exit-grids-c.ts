@@ -192,7 +192,7 @@ export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIER
   let sLowestGridNo: INT16 = 0;
   let leftmost: INT32;
   let fFound: boolean = false;
-  let soldier: SOLDIERTYPE;
+  let soldier: SOLDIERTYPE = createSoldierType();
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
   let ExitGrid: EXITGRID = createExitGrid();

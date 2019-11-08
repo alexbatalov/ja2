@@ -48,7 +48,7 @@ let ubLevelMoveLink: INT8[] /* [10] */ = [
 ];
 
 // Soldier List used for all soldier overhead interaction
-export let Menptr: SOLDIERTYPE[] /* [TOTAL_SOLDIERS] */;
+export let Menptr: SOLDIERTYPE[] /* [TOTAL_SOLDIERS] */ = createArrayFrom(TOTAL_SOLDIERS, createSoldierType);
 export let MercPtrs: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;
 
 export let MercSlots: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;

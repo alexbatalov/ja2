@@ -1549,7 +1549,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
 }
 
 export function GlobalReachableTest(sStartGridNo: INT16): void {
-  let s: SOLDIERTYPE;
+  let s: SOLDIERTYPE = createSoldierType();
   let iCurrentGridNo: INT32 = 0;
 
   memset(addressof(s), 0, sizeof(SOLDIERTYPE));
@@ -1568,7 +1568,7 @@ export function GlobalReachableTest(sStartGridNo: INT16): void {
 }
 
 export function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
-  let s: SOLDIERTYPE;
+  let s: SOLDIERTYPE = createSoldierType();
   let iCurrentGridNo: INT32 = 0;
   let iX: INT32;
   let iY: INT32;
@@ -1604,7 +1604,7 @@ export function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
 }
 
 export function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): void {
-  let s: SOLDIERTYPE;
+  let s: SOLDIERTYPE = createSoldierType();
   let iCurrentGridNo: INT32 = 0;
 
   memset(addressof(s), 0, sizeof(SOLDIERTYPE));
@@ -1627,7 +1627,7 @@ export function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: IN
 }
 
 export function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
-  let s: SOLDIERTYPE;
+  let s: SOLDIERTYPE = createSoldierType();
 
   memset(addressof(s), 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;

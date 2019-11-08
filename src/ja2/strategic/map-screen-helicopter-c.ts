@@ -88,7 +88,7 @@ export let gfSkyriderSaidCongratsOnTakingSAM: boolean = false;
 export let gubPlayerProgressSkyriderLastCommentedOn: UINT8 = 0;
 
 // skyrider placeholder
-let SoldierSkyRider: SOLDIERTYPE;
+let SoldierSkyRider: SOLDIERTYPE = createSoldierType();
 
 let pSkyRider: Pointer<SOLDIERTYPE>;
 

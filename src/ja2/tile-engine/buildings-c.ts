@@ -36,7 +36,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   let sWallGridNo: INT16;
   let bDesiredOrientation: INT8;
   let bSkipSpots: INT8 = 0;
-  let FakeSoldier: SOLDIERTYPE;
+  let FakeSoldier: SOLDIERTYPE = createSoldierType();
   let pBuilding: Pointer<BUILDING>;
   let ubBuildingID: UINT8 = 0;
 

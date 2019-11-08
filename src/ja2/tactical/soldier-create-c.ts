@@ -65,7 +65,7 @@ export function RandomizeNewSoldierStats(pCreateStruct: Pointer<SOLDIERCREATE_ST
 }
 
 export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pubID: Pointer<UINT8>): Pointer<SOLDIERTYPE> {
-  let Soldier: SOLDIERTYPE;
+  let Soldier: SOLDIERTYPE = createSoldierType();
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let fGuyAvail: boolean = false;

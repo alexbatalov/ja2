@@ -3970,7 +3970,7 @@ export function FindNearestAvailableGridNoForItem(sSweetGridNo: INT16, ubRadius:
   let sLowestGridNo: INT16 = 0;
   let leftmost: INT32;
   let fFound: boolean = false;
-  let soldier: SOLDIERTYPE;
+  let soldier: SOLDIERTYPE = createSoldierType();
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
   let fSetDirection: boolean = false;

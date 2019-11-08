@@ -33,7 +33,7 @@ export function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGr
   let sLowestGridNo: INT16 = -1;
   let leftmost: INT32;
   let fFound: boolean = false;
-  let soldier: SOLDIERTYPE;
+  let soldier: SOLDIERTYPE = createSoldierType();
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
 
@@ -126,7 +126,7 @@ export function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTY
   let sLowestGridNo: INT16 = -1;
   let leftmost: INT32;
   let fFound: boolean = false;
-  let soldier: SOLDIERTYPE;
+  let soldier: SOLDIERTYPE = createSoldierType();
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
 
@@ -217,7 +217,7 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERT
   let sLowestGridNo: INT16 = -1;
   let leftmost: INT32;
   let fFound: boolean = false;
-  let soldier: SOLDIERTYPE;
+  let soldier: SOLDIERTYPE = createSoldierType();
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
   let ubBestDirection: UINT8 = 0;
@@ -355,7 +355,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
   let sLowestGridNo: INT16 = -1;
   let leftmost: INT32;
   let fFound: boolean = false;
-  let soldier: SOLDIERTYPE;
+  let soldier: SOLDIERTYPE = createSoldierType();
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
   let ubBestDirection: UINT8 = 0;
@@ -505,7 +505,7 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Point
   let ubSaveNPCDistLimit: UINT8;
   let ubBestDirection: UINT8 = 0;
   let sSweetGridNo: INT16;
-  let soldier: SOLDIERTYPE;
+  let soldier: SOLDIERTYPE = createSoldierType();
 
   sSweetGridNo = pSrcSoldier.value.sGridNo;
 
@@ -771,7 +771,7 @@ export function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sS
   let leftmost: INT32;
   let fFound: boolean = false;
   let cnt: UINT32 = 0;
-  let soldier: SOLDIERTYPE;
+  let soldier: SOLDIERTYPE = createSoldierType();
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
   let ubBestDirection: UINT8 = 0;

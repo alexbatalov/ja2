@@ -95,7 +95,7 @@ export function TrashMapEdgepoints(): void {
 function ValidateEdgepoints(): void {
   let i: INT32;
   let usValidEdgepoints: UINT16;
-  let Soldier: SOLDIERTYPE;
+  let Soldier: SOLDIERTYPE = createSoldierType();
 
   memset(addressof(Soldier), 0, sizeof(SOLDIERTYPE));
   Soldier.bTeam = 1;
@@ -352,7 +352,7 @@ function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
 }
 
 function ClassifyEdgepoints(): void {
-  let Soldier: SOLDIERTYPE;
+  let Soldier: SOLDIERTYPE = createSoldierType();
   let sGridNo: INT16 = -1;
 
   memset(addressof(Soldier), 0, sizeof(SOLDIERTYPE));
@@ -1373,7 +1373,7 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
 }
 
 export function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
-  let Soldier: SOLDIERTYPE;
+  let Soldier: SOLDIERTYPE = createSoldierType();
   let iLoop: INT32;
   let psEdgepointArray1: Pointer<INT16>;
   let psEdgepointArray2: Pointer<INT16>;
