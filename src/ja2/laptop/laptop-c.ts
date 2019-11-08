@@ -1419,9 +1419,9 @@ export function LaptopScreenHandle(): UINT32 {
 
   if (gfStartMapScreenToLaptopTransition) {
     // Everything is set up to start the transition animation.
-    let SrcRect1: SGPRect;
-    let SrcRect2: SGPRect;
-    let DstRect: SGPRect;
+    let SrcRect1: SGPRect = createSGPRect();
+    let SrcRect2: SGPRect = createSGPRect();
+    let DstRect: SGPRect = createSGPRect();
     let iPercentage: INT32;
     let iScalePercentage: INT32;
     let iFactor: INT32;
@@ -1997,9 +1997,9 @@ export function LeaveLapTopScreen(): boolean {
     SetPendingNewScreen(guiExitScreen);
 
     if (!gfDontStartTransitionFromLaptop) {
-      let SrcRect1: SGPRect;
-      let SrcRect2: SGPRect;
-      let DstRect: SGPRect;
+      let SrcRect1: SGPRect = createSGPRect();
+      let SrcRect2: SGPRect = createSGPRect();
+      let DstRect: SGPRect = createSGPRect();
       let iPercentage: INT32;
       let iScalePercentage: INT32;
       let iFactor: INT32;
@@ -3676,9 +3676,9 @@ function DisplayTitleBarMaximizeGraphic(fForward: boolean, fInit: boolean, usTop
   let sPosBottomY: INT16;
   let sWidth: INT16;
   let sHeight: INT16;
-  let SrcRect: SGPRect;
-  let DestRect: SGPRect;
-  /* static */ let LastRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
+  let DestRect: SGPRect = createSGPRect();
+  /* static */ let LastRect: SGPRect = createSGPRect();
   let dTemp: FLOAT;
 
   if (fInit) {
@@ -4251,7 +4251,7 @@ function DrawDeskTopBackground(): boolean {
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT16>;
   let pSrcBuf: Pointer<UINT8>;
-  let clip: SGPRect;
+  let clip: SGPRect = createSGPRect();
 
   // set clipping region
   clip.iLeft = 0;

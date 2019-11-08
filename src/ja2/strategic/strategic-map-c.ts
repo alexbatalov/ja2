@@ -203,8 +203,8 @@ function UndergroundTacticalTraversalTime(bExitDirection: INT8): UINT32 {
 }
 
 export function BeginLoadScreen(): void {
-  let SrcRect: SGPRect;
-  let DstRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
+  let DstRect: SGPRect = createSGPRect();
   let uiStartTime: UINT32;
   let uiCurrTime: UINT32;
   let iPercentage: INT32;

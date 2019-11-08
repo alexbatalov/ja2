@@ -135,8 +135,8 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
   let uiSrcPitchBYTES: UINT32;
   let uiDestPitchBYTES: UINT32;
   let item: Pointer<INVTYPE>;
-  let SaveRect: SGPRect;
-  let NewRect: SGPRect;
+  let SaveRect: SGPRect = createSGPRect();
+  let NewRect: SGPRect = createSGPRect();
   let hVObject: HVOBJECT;
   let uiVideoObjectIndex: UINT32;
   let usUselessWidth: UINT16;

@@ -60,7 +60,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
   let uiTraverseTimeInMinutes: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
   let usTextBoxWidth: UINT16;
   let usTextBoxHeight: UINT16;
   let usMapPos: UINT16 = 0;

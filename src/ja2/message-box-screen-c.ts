@@ -13,13 +13,13 @@ type MSGBOX_CALLBACK = (bExitValue: UINT8) => void;
 
 // old mouse x and y positions
 let pOldMousePosition: SGPPoint;
-let MessageBoxRestrictedCursorRegion: SGPRect;
+let MessageBoxRestrictedCursorRegion: SGPRect = createSGPRect();
 
 // if the cursor was locked to a region
 let fCursorLockedToArea: boolean = false;
 export let gfInMsgBox: boolean = false;
 
-let gOldCursorLimitRectangle: SGPRect;
+let gOldCursorLimitRectangle: SGPRect = createSGPRect();
 
 export let gMsgBox: MESSAGE_BOX_STRUCT;
 let gfNewMessageBox: boolean = false;
@@ -35,7 +35,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let usTextBoxWidth: UINT16;
   let usTextBoxHeight: UINT16;
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;

@@ -375,7 +375,7 @@ let gpSamSectorY: INT16[] /* [] */ = [
 // map region
 export let MapScreenRect: SGPRect = createSGPRectFrom((MAP_VIEW_START_X + MAP_GRID_X - 2), (MAP_VIEW_START_Y + MAP_GRID_Y - 1), MAP_VIEW_START_X + MAP_VIEW_WIDTH - 1 + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 10 + MAP_GRID_Y);
 
-export let gOldClipRect: SGPRect;
+export let gOldClipRect: SGPRect = createSGPRect();
 
 // screen region
 let FullScreenRect: SGPRect = createSGPRectFrom(0, 0, 640, 480);
@@ -555,7 +555,7 @@ export function DrawMap(): UINT32 {
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT16>;
   let pSrcBuf: Pointer<UINT8>;
-  let clip: SGPRect;
+  let clip: SGPRect = createSGPRect();
   let cnt: INT16;
   let cnt2: INT16;
   let iCounter: INT32 = 0;
@@ -1039,7 +1039,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT16>;
   let pSrcBuf: Pointer<UINT8>;
-  let clip: SGPRect;
+  let clip: SGPRect = createSGPRect();
   let pOriginalPallette: Pointer<UINT16>;
 
   // get original video surface palette
@@ -1222,7 +1222,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   let pDestBuf: Pointer<UINT16>;
   // UINT8 *pDestBuf2;
   let pSrcBuf: Pointer<UINT8>;
-  let clip: SGPRect;
+  let clip: SGPRect = createSGPRect();
   let pOriginalPallette: Pointer<UINT16>;
 
   // get sX and sY

@@ -3876,7 +3876,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let sScreenX: INT16;
   let sScreenY: INT16;
   let iTemp: INT32;
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
   let fAtLeastOne: boolean = false;
 
   guiNewUICursor = Enum210.NO_UICURSOR;

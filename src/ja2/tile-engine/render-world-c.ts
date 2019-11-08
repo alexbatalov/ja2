@@ -487,12 +487,12 @@ export let guiScrollDirection: INT32;
 export let gRenderFlags: UINT32 = 0;
 
 let gClippingRect: SGPRect = createSGPRectFrom(0, 0, 640, 360);
-export let gOldClipRect: SGPRect;
+export let gOldClipRect: SGPRect = createSGPRect();
 export let gsRenderCenterX: INT16;
 export let gsRenderCenterY: INT16;
 export let gsRenderWorldOffsetX: INT16 = -1;
 export let gsRenderWorldOffsetY: INT16 = -1;
-export let gSelectRegion: SGPRect;
+export let gSelectRegion: SGPRect = createSGPRect();
 let fSelectMode: UINT32 = NO_SELECT;
 export let gSelectAnchor: SGPPoint;
 

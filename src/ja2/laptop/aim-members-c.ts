@@ -2053,8 +2053,8 @@ function InitVideoFaceTalking(ubMercID: UINT8, usQuoteNum: UINT16): boolean {
 function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): boolean {
   /* static */ let fWasTheMercTalking: boolean = false;
   let fIsTheMercTalking: boolean;
-  let SrcRect: SGPRect;
-  let DestRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
+  let DestRect: SGPRect = createSGPRect();
 
   // Test
   SrcRect.iLeft = 0;
@@ -3286,9 +3286,9 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
   let usPosBottomY: UINT16;
   let usWidth: UINT16;
   let usHeight: UINT16;
-  let SrcRect: SGPRect;
-  let DestRect: SGPRect;
-  /* static */ let LastRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
+  let DestRect: SGPRect = createSGPRect();
+  /* static */ let LastRect: SGPRect = createSGPRect();
   let usTemp: FLOAT;
 
   if (fForward) {

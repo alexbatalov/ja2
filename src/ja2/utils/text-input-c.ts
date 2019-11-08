@@ -1139,7 +1139,7 @@ function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
   if (!pNode.value.fEnabled && pColors.value.fUseDisabledAutoShade) {
     let pDestBuf: Pointer<UINT8>;
     let uiDestPitchBYTES: UINT32;
-    let ClipRect: SGPRect;
+    let ClipRect: SGPRect = createSGPRect();
     ClipRect.iLeft = pNode.value.region.RegionTopLeftX;
     ClipRect.iRight = pNode.value.region.RegionBottomRightX;
     ClipRect.iTop = pNode.value.region.RegionTopLeftY;

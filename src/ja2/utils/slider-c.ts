@@ -252,8 +252,8 @@ function RenderSelectedSliderBar(pSlider: Pointer<SLIDER>): void {
 
 function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
   let hPixHandle: HVOBJECT;
-  let SrcRect: SGPRect;
-  let DestRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
+  let DestRect: SGPRect = createSGPRect();
 
   if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
     // fill out the settings for the current dest and source rects

@@ -607,7 +607,7 @@ function BltVideoObjectToBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT
 function PixelateVideoObjectRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X2: INT32, Y2: INT32): boolean {
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
-  let area: SGPRect;
+  let area: SGPRect = createSGPRect();
   let uiPattern: UINT8[][] /* [8][8] */ = [
     [ 0, 1, 0, 1, 0, 1, 0, 1 ],
     [ 1, 0, 1, 0, 1, 0, 1, 0 ],

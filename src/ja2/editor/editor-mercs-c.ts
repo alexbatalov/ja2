@@ -2600,8 +2600,8 @@ function AddNewItemToSelectedMercsInventory(fCreate: boolean): void {
   let hVObject: HVOBJECT;
   let pObject: Pointer<ETRLEObject>;
   let item: Pointer<INVTYPE>;
-  let SrcRect: SGPRect;
-  let DstRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
+  let DstRect: SGPRect = createSGPRect();
   let iSrcWidth: INT32;
   let iSrcHeight: INT32;
   let iDstWidth: INT32;

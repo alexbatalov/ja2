@@ -267,7 +267,7 @@ export function SetAutoBandageComplete(): void {
 }
 
 export function AutoBandage(fStart: boolean): void {
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
   let ubLoop: UINT8;
   let cnt: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;

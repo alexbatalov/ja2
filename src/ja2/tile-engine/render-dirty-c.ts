@@ -25,7 +25,7 @@ export function ShutdownBaseDirtyRectQueue(): void {
 }
 
 export function AddBaseDirtyRect(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32): void {
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
 
   if (iLeft < 0) {
     iLeft = 0;

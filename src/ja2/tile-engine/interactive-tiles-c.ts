@@ -360,7 +360,7 @@ export function CompileInteractiveTiles(): void {
 }
 
 export function LogMouseOverInteractiveTile(sGridNo: INT16): void {
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
   let sXMapPos: INT16;
   let sYMapPos: INT16;
   let sScreenX: INT16;

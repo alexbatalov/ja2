@@ -1284,8 +1284,8 @@ function DwnClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 //	Displays the objects in the display list to the selection window.
 //
 function DrawSelections(): void {
-  let ClipRect: SGPRect;
-  let NewRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
+  let NewRect: SGPRect = createSGPRect();
 
   NewRect.iLeft = SelWinStartPoint.iX;
   NewRect.iTop = SelWinStartPoint.iY;

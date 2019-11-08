@@ -1802,7 +1802,7 @@ function RenderCurrentHelpScreenTextToBuffer(): void {
 function RenderTextBufferToScreen(): void {
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
-  let SrcRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
 
   GetVideoSurface(addressof(hDestVSurface), guiRENDERBUFFER);
   GetVideoSurface(addressof(hSrcVSurface), guiHelpScreenTextBufferSurface);

@@ -1193,7 +1193,7 @@ function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
 //
 
 export function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, usY2: UINT16): void {
-  let TempRect: SGPRect;
+  let TempRect: SGPRect = createSGPRect();
 
   TempRect.iLeft = usX1;
   TempRect.iTop = usY1;

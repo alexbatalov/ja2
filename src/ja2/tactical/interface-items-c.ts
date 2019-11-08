@@ -4057,7 +4057,7 @@ export function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: U
   let sY: INT16;
   let sCenX: INT16;
   let sCenY: INT16;
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
   let ubLimit: UINT8;
   let pTrav: Pointer<ETRLEObject>;
   let hVObject: HVOBJECT;
@@ -4257,7 +4257,7 @@ function DeleteItemStackPopup(): void {
 
 export function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
   let pTrav: Pointer<ETRLEObject>;
   let hVObject: HVOBJECT;
   let cnt: INT32;

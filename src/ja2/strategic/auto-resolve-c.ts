@@ -361,8 +361,8 @@ const ORIG_RIGHT = 92;
 const ORIG_BOTTOM = 84;
 
 function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
-  let SrcRect: SGPRect;
-  let DstRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
+  let DstRect: SGPRect = createSGPRect();
   let uiStartTime: UINT32;
   let uiCurrTime: UINT32;
   let iPercentage: INT32;
@@ -513,7 +513,7 @@ export function AutoResolveScreenHandle(): UINT32 {
   if (gpAR.value.fEnteringAutoResolve) {
     let pDestBuf: Pointer<UINT8>;
     let uiDestPitchBYTES: UINT32;
-    let ClipRect: SGPRect;
+    let ClipRect: SGPRect = createSGPRect();
     gpAR.value.fEnteringAutoResolve = false;
     // Take the framebuffer, shade it, and save it to the SAVEBUFFER.
     ClipRect.iLeft = 0;
@@ -797,7 +797,7 @@ function RenderSoldierCell(pCell: Pointer<SOLDIERCELL>): void {
     // Merc is unconcious (and not taking damage), so darken his portrait.
     let pDestBuf: Pointer<UINT8>;
     let uiDestPitchBYTES: UINT32;
-    let ClipRect: SGPRect;
+    let ClipRect: SGPRect = createSGPRect();
     ClipRect.iLeft = pCell.value.xp + 3 + x;
     ClipRect.iTop = pCell.value.yp + 3;
     ClipRect.iRight = pCell.value.xp + 33 + x;
@@ -862,8 +862,8 @@ function BuildInterfaceBuffer(): void {
   let usUselessWidth: UINT16;
   let usUselessHeight: UINT16;
   let ubBitDepth: UINT8;
-  let ClipRect: SGPRect;
-  let DestRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
+  let DestRect: SGPRect = createSGPRect();
   let x: INT32;
   let y: INT32;
 
@@ -936,7 +936,7 @@ function BuildInterfaceBuffer(): void {
 }
 
 function ExpandWindow(): void {
-  let OldRect: SGPRect;
+  let OldRect: SGPRect = createSGPRect();
   let uiDestPitchBYTES: UINT32;
   let uiCurrentTime: UINT32;
   let uiTimeRange: UINT32;

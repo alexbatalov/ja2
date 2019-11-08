@@ -7,7 +7,7 @@ let iMsgBoxCancelImg: INT32;
 let iMsgBoxBgrnd: INT32;
 let iMsgBoxOk: INT32;
 let iMsgBoxCancel: INT32;
-let MsgBoxRect: SGPRect;
+let MsgBoxRect: SGPRect = createSGPRect();
 
 export let gfMessageBoxResult: boolean = false;
 export let gubMessageBoxStatus: UINT8 = Enum52.MESSAGEBOX_NONE;

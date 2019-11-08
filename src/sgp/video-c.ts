@@ -131,15 +131,15 @@ let guiRefreshThreadState: UINT32; // THREAD_ON, THREAD_OFF, THREAD_SUSPENDED
 //
 
 void (gpFrameBufferRefreshOverride.value);
-let gListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
+let gListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */ = createArrayFrom(MAX_DIRTY_REGIONS, createSGPRect);
 let guiDirtyRegionCount: UINT32;
 let gfForceFullScreenRefresh: boolean;
 
-let gDirtyRegionsEx: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
+let gDirtyRegionsEx: SGPRect[] /* [MAX_DIRTY_REGIONS] */ = createArrayFrom(MAX_DIRTY_REGIONS, createSGPRect);
 let gDirtyRegionsFlagsEx: UINT32[] /* [MAX_DIRTY_REGIONS] */;
 let guiDirtyRegionExCount: UINT32;
 
-let gBACKUPListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
+let gBACKUPListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */ = createArrayFrom(MAX_DIRTY_REGIONS, createSGPRect);
 let gBACKUPuiDirtyRegionCount: UINT32;
 let gBACKUPfForceFullScreenRefresh: boolean;
 

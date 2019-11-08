@@ -483,8 +483,8 @@ export function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistant
 }
 
 function DoTransitionFromMapscreenToPreBattleInterface(): void {
-  let DstRect: SGPRect;
-  let PBIRect: SGPRect;
+  let DstRect: SGPRect = createSGPRect();
+  let PBIRect: SGPRect = createSGPRect();
   let uiStartTime: UINT32;
   let uiCurrTime: UINT32;
   let iPercentage: INT32;

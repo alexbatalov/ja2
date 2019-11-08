@@ -1081,7 +1081,7 @@ function DrawBox(uiCounter: UINT32): boolean {
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT16>;
   let pSrcBuf: Pointer<UINT8>;
-  let clip: SGPRect;
+  let clip: SGPRect = createSGPRect();
   let usTopX: UINT16;
   let usTopY: UINT16;
   let usWidth: UINT16;

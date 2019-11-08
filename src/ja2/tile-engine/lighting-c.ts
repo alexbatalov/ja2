@@ -2506,7 +2506,7 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
 
 ***************************************************************************************/
 function LightCalcRect(iLight: INT32): boolean {
-  let MaxRect: SGPRect;
+  let MaxRect: SGPRect = createSGPRect();
   let sXValue: INT16;
   let sYValue: INT16;
   let sDummy: INT16;

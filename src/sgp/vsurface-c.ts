@@ -478,7 +478,7 @@ export function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, u
 export function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, Color16BPP: UINT16): boolean {
   let BltFx: blt_vs_fx;
   let hDestVSurface: HVSURFACE;
-  let Clip: SGPRect;
+  let Clip: SGPRect = createSGPRect();
 
   if (!GetVideoSurface(addressof(hDestVSurface), uiDestVSurface)) {
     return false;
@@ -548,8 +548,8 @@ export function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
   let xo: INT16;
   let yo: INT16;
   let pTrav: Pointer<ETRLEObject>;
-  let NewClip: SGPRect;
-  let OldClip: SGPRect;
+  let NewClip: SGPRect = createSGPRect();
+  let OldClip: SGPRect = createSGPRect();
 
   pTrav = addressof(BkgrndImg.value.pETRLEObject[Index]);
   ph = (pTrav.value.usHeight + pTrav.value.sOffsetY);
@@ -657,7 +657,7 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
   let lpDDS2: LPDIRECTDRAWSURFACE2;
   let hVSurface: HVSURFACE;
   let hImage: HIMAGE;
-  let tempRect: SGPRect;
+  let tempRect: SGPRect = createSGPRect();
   let usHeight: UINT16;
   let usWidth: UINT16;
   let ubBitDepth: UINT8;
@@ -1045,7 +1045,7 @@ function SetVideoSurfaceDataFromHImage(hVSurface: HVSURFACE, hImage: HIMAGE, usX
   let fBufferBPP: UINT32 = 0;
   let uiPitch: UINT32;
   let usEffectiveWidth: UINT16;
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
 
   // Assertions
   Assert(hVSurface != null);
@@ -1542,7 +1542,7 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
 
     // Use SUBRECT if specified
     if (fBltFlags & VS_BLT_SRCSUBRECT) {
-      let aSubRect: SGPRect;
+      let aSubRect: SGPRect = createSGPRect();
 
       if (pBltFx == null) {
         return false;
@@ -1974,7 +1974,7 @@ export function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSUR
 function InternalShadowVideoSurfaceRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X2: INT32, Y2: INT32, fLowPercentShadeTable: boolean): boolean {
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
-  let area: SGPRect;
+  let area: SGPRect = createSGPRect();
   let hVSurface: HVSURFACE;
 
   // CLIP IT!

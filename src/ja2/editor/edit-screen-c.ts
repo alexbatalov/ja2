@@ -613,8 +613,8 @@ function DrawTempMouseCursorObject(): boolean {
 
 // Displays the current drawing object in the small, lower left window of the editor's toolbar.
 export function ShowCurrentDrawingMode(): void {
-  let ClipRect: SGPRect;
-  let NewRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
+  let NewRect: SGPRect = createSGPRect();
   let iShowMode: INT32;
   let usUseIndex: UINT16;
   let usObjIndex: UINT16;
@@ -2322,8 +2322,8 @@ function GetMasterList(): void {
 //	(usually a 16 bit image)
 //
 function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
-  let ClipRect: SGPRect;
-  let WinRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
+  let WinRect: SGPRect = createSGPRect();
   let iStartX: INT32;
   let iStartY: INT32;
   let iPicHeight: INT32;
@@ -2379,8 +2379,8 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
 //	8 bit image (.STI) files
 //
 function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
-  let ClipRect: SGPRect;
-  let NewRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
+  let NewRect: SGPRect = createSGPRect();
   let iStartX: INT32;
   let iStartY: INT32;
   let iPicHeight: INT32;

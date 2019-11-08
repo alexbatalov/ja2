@@ -796,7 +796,7 @@ function RenderItemDetails(): void {
 export function RenderSummaryWindow(): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
-  let ClipRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
   let i: INT32;
   let x: INT32;
   let y: INT32;

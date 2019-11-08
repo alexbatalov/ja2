@@ -111,7 +111,7 @@ function GetSoldierFindFlags(ubID: UINT16): UINT32 {
 export function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>, uiFlags: UINT32): boolean {
   let cnt: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
   let fSoldierFound: boolean = false;
   let sXMapPos: INT16;
   let sYMapPos: INT16;
@@ -688,7 +688,7 @@ export function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT
 }
 
 export function IsPointInSoldierBoundingBox(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): boolean {
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
 
   // Get Rect contained in the soldier
   GetSoldierScreenRect(pSoldier, addressof(aRect));
@@ -701,7 +701,7 @@ export function IsPointInSoldierBoundingBox(pSoldier: Pointer<SOLDIERTYPE>, sX: 
 }
 
 export function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Pointer<UINT16>, sX: INT16, sY: INT16): boolean {
-  let aRect: SGPRect;
+  let aRect: SGPRect = createSGPRect();
   let sRelX: INT16;
   let sRelY: INT16;
   let dRelPer: FLOAT;

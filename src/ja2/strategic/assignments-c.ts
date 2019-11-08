@@ -3531,7 +3531,7 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   /* static */ let fShowRemoveMenu: boolean = false;
 
   // will create/destroy mouse regions for the map screen assignment main menu
@@ -3643,7 +3643,7 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
   let pPosition: SGPPoint;
   let pPoint: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (fShowVehicleMenu) {
@@ -3988,7 +3988,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
   let iBoxYPosition: INT32 = 0;
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   let pSoldier: Pointer<SOLDIERTYPE> = null;
   let iVehicleIndex: INT32 = 0;
 
@@ -4710,7 +4710,7 @@ function CreateDestroyMouseRegions(): void {
   let iBoxYPosition: INT32 = 0;
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
 
   // will create/destroy mouse regions for the map screen assignment main menu
 
@@ -4783,7 +4783,7 @@ export function CreateDestroyMouseRegionsForContractMenu(): void {
   let iBoxYPosition: INT32 = 0;
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   /* static */ let fShowRemoveMenu: boolean = false;
 
   // will create/destroy mouse regions for the map screen Contract main menu
@@ -4897,7 +4897,7 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
   let iBoxYPosition: INT32 = 0;
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
 
   // will create/destroy mouse regions for the map screen assignment main menu
 
@@ -4982,7 +4982,7 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
   let iBoxYPosition: INT32 = 0;
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
 
   // will create/destroy mouse regions for the map screen attribute  menu
 
@@ -5066,7 +5066,7 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
   let iBoxYPosition: INT32 = 0;
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
 
   // will create/destroy mouse regions for the map screen attribute  menu
   if (((fShowAssignmentMenu == true) || (fShowContractMenu == true)) && (fCreated == false)) {
@@ -5159,7 +5159,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: boolean): void {
   let iBoxYPosition: INT32 = 0;
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
 
   // will create/destroy mouse regions for the map screen attribute  menu
 
@@ -6268,7 +6268,7 @@ function RestorePopUpBoxes(): void {
 function CreateSquadBox(): void {
   // will create a pop up box for squad selection
   let pPoint: SGPPoint;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   let hStringHandle: UINT32;
   let uiCounter: UINT32;
   let sString: string /* CHAR16[64] */;
@@ -6346,7 +6346,7 @@ function CreateSquadBox(): void {
 function CreateEPCBox(): void {
   // will create a pop up box for squad selection
   let pPoint: SGPPoint;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   let hStringHandle: UINT32;
   let iCount: INT32;
 
@@ -6927,7 +6927,7 @@ export function DetermineBoxPositions(): void {
   // depending on how many boxes there are, reposition as needed
   let pPoint: SGPPoint;
   let pNewPoint: SGPPoint;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if ((fShowAssignmentMenu == false) || (ghAssignmentBox == -1)) {
@@ -7053,9 +7053,9 @@ function RepositionMouseRegions(): void {
 }
 
 function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
-  let pDimensions: SGPRect;
-  let pDimensions2: SGPRect;
-  let pDimensions3: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
+  let pDimensions2: SGPRect = createSGPRect();
+  let pDimensions3: SGPRect = createSGPRect();
   let pPoint: SGPPoint;
   let sLongest: INT16;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -7195,7 +7195,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
 function PositionCursorForTacticalAssignmentBox(): void {
   // position cursor over y of on duty in tactical assignments
   let pPosition: SGPPoint;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   let iFontHeight: INT32;
 
   // get x.y position of box

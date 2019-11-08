@@ -2680,7 +2680,7 @@ export function SetUpMovingListsForSector(sSectorX: INT16, sSectorY: INT16, sSec
 
 function CreatePopUpBoxForMovementBox(): void {
   let Position: SGPPoint;
-  let Dimensions: SGPRect;
+  let Dimensions: SGPRect = createSGPRect();
 
   // create the pop up box and mouse regions for movement list
 
@@ -2875,7 +2875,7 @@ function BuildMouseRegionsForMoveBox(): void {
   let iCountB: INT32 = 0;
   let pPosition: SGPPoint;
   let iBoxWidth: INT32 = 0;
-  let Dimensions: SGPRect;
+  let Dimensions: SGPRect = createSGPRect();
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;

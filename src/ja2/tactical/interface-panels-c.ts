@@ -1556,7 +1556,7 @@ export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
   if (gfSMDisableForItems && (pfDirty.value) != DIRTYLEVEL0) {
     let pDestBuf: Pointer<UINT8>;
     let uiDestPitchBYTES: UINT32;
-    let ClipRect: SGPRect;
+    let ClipRect: SGPRect = createSGPRect();
 
     ClipRect.iLeft = 87;
     ClipRect.iRight = 536;

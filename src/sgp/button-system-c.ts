@@ -2588,7 +2588,7 @@ function DrawQuickButton(b: Pointer<GUI_BUTTON>): void {
 function DrawHatchOnButton(b: Pointer<GUI_BUTTON>): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
-  let ClipRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
   ClipRect.iLeft = b.value.Area.RegionTopLeftX;
   ClipRect.iRight = b.value.Area.RegionBottomRightX - 1;
   ClipRect.iTop = b.value.Area.RegionTopLeftY;
@@ -2601,7 +2601,7 @@ function DrawHatchOnButton(b: Pointer<GUI_BUTTON>): void {
 function DrawShadeOnButton(b: Pointer<GUI_BUTTON>): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
-  let ClipRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
   ClipRect.iLeft = b.value.Area.RegionTopLeftX;
   ClipRect.iRight = b.value.Area.RegionBottomRightX - 1;
   ClipRect.iTop = b.value.Area.RegionTopLeftY;
@@ -2722,8 +2722,8 @@ function DrawIconOnButton(b: Pointer<GUI_BUTTON>): void {
   let IconY: INT32;
   let IconW: INT32;
   let IconH: INT32;
-  let NewClip: SGPRect;
-  let OldClip: SGPRect;
+  let NewClip: SGPRect = createSGPRect();
+  let OldClip: SGPRect = createSGPRect();
   let pTrav: Pointer<ETRLEObject>;
   let hvObject: HVOBJECT;
 
@@ -2827,8 +2827,8 @@ function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
   let height: INT32;
   let TextX: INT32;
   let TextY: INT32;
-  let NewClip: SGPRect;
-  let OldClip: SGPRect;
+  let NewClip: SGPRect = createSGPRect();
+  let OldClip: SGPRect = createSGPRect();
   let sForeColor: INT16;
 
   // If this button actually has a string to print
@@ -3011,7 +3011,7 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
   let BPic: HVOBJECT;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
-  let ClipRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
   let pTrav: Pointer<ETRLEObject>;
 
   // Select the graphics to use depending on the current state of the button

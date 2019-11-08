@@ -907,8 +907,8 @@ function StartSpeckTalking(usQuoteNum: UINT16): boolean {
 function HandleSpeckTalking(fReset: boolean): boolean {
   /* static */ let fWasTheMercTalking: boolean = false;
   let fIsTheMercTalking: boolean;
-  let SrcRect: SGPRect;
-  let DestRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
+  let DestRect: SGPRect = createSGPRect();
 
   if (fReset) {
     fWasTheMercTalking = false;

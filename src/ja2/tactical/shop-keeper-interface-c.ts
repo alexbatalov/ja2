@@ -982,7 +982,7 @@ function RenderShopKeeperInterface(): boolean {
   let zMoney: string /* CHAR16[128] */;
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
-  let SrcRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
 
   if (InItemDescriptionBox() && pShopKeeperItemDescObject != null) {
     return true;
@@ -1071,7 +1071,7 @@ function RenderShopKeeperInterface(): boolean {
 function RestoreTacticalBackGround(): void {
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
-  let SrcRect: SGPRect;
+  let SrcRect: SGPRect = createSGPRect();
 
   // Restore the background before blitting the text back on
   //	RestoreExternBackgroundRect( SKI_TACTICAL_BACKGROUND_START_X, SKI_TACTICAL_BACKGROUND_START_Y, SKI_TACTICAL_BACKGROUND_START_WIDTH, SKI_TACTICAL_BACKGROUND_START_HEIGHT );
@@ -2305,7 +2305,7 @@ function RepairIsDone(usItemIndex: UINT16, ubElement: UINT8): boolean {
 export function DrawHatchOnInventory(uiSurface: UINT32, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
-  let ClipRect: SGPRect;
+  let ClipRect: SGPRect = createSGPRect();
   /* static */ let Pattern: UINT8[][] /* [8][8] */ = [
     [ 1, 0, 1, 0, 1, 0, 1, 0 ],
     [ 0, 1, 0, 1, 0, 1, 0, 1 ],
@@ -3116,7 +3116,7 @@ function MovePlayerOfferedItemsOfValueToArmsDealersInventory(): void {
 }
 
 export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirst: boolean): void {
-  let Rect: SGPRect;
+  let Rect: SGPRect = createSGPRect();
   let TempObject: OBJECTTYPE = createObjectType();
 
   /*
@@ -3283,7 +3283,7 @@ export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDea
 }
 
 export function RestrictSkiMouseCursor(): void {
-  let Rect: SGPRect;
+  let Rect: SGPRect = createSGPRect();
 
   Rect.iLeft = 0; // SKI_ITEM_MOVEMENT_AREA_X;
   Rect.iTop = SKI_ITEM_MOVEMENT_AREA_Y;

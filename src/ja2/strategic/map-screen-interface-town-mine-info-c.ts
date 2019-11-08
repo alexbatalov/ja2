@@ -39,7 +39,7 @@ export function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
 export function CreateDestroyTownInfoBox(): void {
   // create destroy pop up box for town/mine info
   /* static */ let fCreated: boolean = false;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   let pPosition: SGPPoint;
   let sButtonX: INT16 = 0;
   let sButtonY: INT16 = 0;
@@ -537,7 +537,7 @@ function AddItemsInSectorToBox(): void {
 
 function PositionTownMineInfoBox(): void {
   // position town mine info box
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   let pPosition: SGPPoint;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
@@ -591,7 +591,7 @@ function PositionTownMineInfoBox(): void {
 function AddInventoryButtonForMapPopUpBox(): void {
   let sX: INT16;
   let sY: INT16;
-  let pDimensions: SGPRect;
+  let pDimensions: SGPRect = createSGPRect();
   let pPosition: SGPPoint;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiObject: UINT32;
