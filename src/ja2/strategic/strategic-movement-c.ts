@@ -1066,7 +1066,7 @@ function AwardExperienceForTravelling(pGroup: Pointer<GROUP>): void {
 }
 
 function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
-  let Corpse: ROTTING_CORPSE_DEFINITION;
+  let Corpse: ROTTING_CORPSE_DEFINITION = createRottingCorpseDefinition();
   let sXPos: INT16;
   let sYPos: INT16;
 

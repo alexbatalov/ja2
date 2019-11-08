@@ -618,7 +618,7 @@ function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): boolean {
 }
 
 export function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: boolean, fCheckForLOS: boolean): boolean {
-  let Corpse: ROTTING_CORPSE_DEFINITION;
+  let Corpse: ROTTING_CORPSE_DEFINITION = createRottingCorpseDefinition();
   let ubType: UINT8;
   let cnt: INT32;
   let usItemFlags: UINT16 = 0; // WORLD_ITEM_DONTRENDER;
@@ -1354,7 +1354,7 @@ export function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING
 export function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   let Object: OBJECTTYPE = createObjectType();
   let pCorpse: Pointer<ROTTING_CORPSE>;
-  let CorpseDef: ROTTING_CORPSE_DEFINITION;
+  let CorpseDef: ROTTING_CORPSE_DEFINITION = createRottingCorpseDefinition();
   let usHeadIndex: UINT16 = Enum225.HEAD_1;
 
   pCorpse = GetCorpseAtGridNo(sGridNo, bLevel);

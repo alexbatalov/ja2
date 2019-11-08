@@ -103,6 +103,31 @@ export interface ROTTING_CORPSE_DEFINITION {
   ubFiller: UINT8[] /* [12] */;
 }
 
+export function createRottingCorpseDefinition(): ROTTING_CORPSE_DEFINITION {
+  return {
+    ubType: 0,
+    ubBodyType: 0,
+    sGridNo: 0,
+    dXPos: 0,
+    dYPos: 0,
+    sHeightAdjustment: 0,
+    HeadPal: "",
+    PantsPal: "",
+    VestPal: "",
+    SkinPal: "",
+    bDirection: 0,
+    uiTimeOfDeath: 0,
+    usFlags: 0,
+    bLevel: 0,
+    bVisible: 0,
+    bNumServicingCrows: 0,
+    ubProfile: 0,
+    fHeadTaken: false,
+    ubAIWarningValue: 0,
+    ubFiller: createArray(12, 0),
+  };
+}
+
 export interface ROTTING_CORPSE {
   def: ROTTING_CORPSE_DEFINITION;
   fActivated: boolean;

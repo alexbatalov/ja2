@@ -1177,7 +1177,7 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
   let zMapName: string /* CHAR8[128] */;
   let uiNumberOfCorpses: UINT32 = 0;
   let cnt: UINT32;
-  let def: ROTTING_CORPSE_DEFINITION;
+  let def: ROTTING_CORPSE_DEFINITION = createRottingCorpseDefinition();
   let fDontAddCorpse: boolean = false;
   let bTownId: INT8;
 
@@ -1944,7 +1944,7 @@ export function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ
   let bCount: UINT8 = 0;
   let uiFlagsForWorldItems: UINT16 = 0;
   let usFlagsForRottingCorpse: UINT16 = 0;
-  let Corpse: ROTTING_CORPSE_DEFINITION;
+  let Corpse: ROTTING_CORPSE_DEFINITION = createRottingCorpseDefinition();
   let sXPos: INT16;
   let sYPos: INT16;
   let uiDeathAnim: UINT32;
