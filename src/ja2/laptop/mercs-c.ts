@@ -96,11 +96,19 @@ interface CONTITION_FOR_MERC_AVAILABLE {
   ubMercArrayID: UINT8;
 }
 
+function createConditionForMercAvailableFrom(usMoneyPaid: UINT16, usDay: UINT16, ubMercArrayID: UINT8): CONTITION_FOR_MERC_AVAILABLE {
+  return {
+    usMoneyPaid,
+    usDay,
+    ubMercArrayID,
+  };
+}
+
 let gConditionsForMercAvailability: CONTITION_FOR_MERC_AVAILABLE[] /* [NUM_MERC_ARRIVALS] */ = [
-  [ 5000, 8, 6 ], // BUBBA
-  [ 10000, 15, 7 ], // Larry
-  [ 15000, 20, 9 ], // Numb
-  [ 20000, 25, 10 ], // Cougar
+  createConditionForMercAvailableFrom(5000, 8, 6), // BUBBA
+  createConditionForMercAvailableFrom(10000, 15, 7), // Larry
+  createConditionForMercAvailableFrom(15000, 20, 9), // Numb
+  createConditionForMercAvailableFrom(20000, 25, 10), // Cougar
 ];
 
 const enum Enum101 {
