@@ -108,4 +108,12 @@ export function createArray<T>(arrayLength: number, value: T): T[] {
   return arr;
 }
 
+export function createArrayFrom<T>(arrayLength: number, valueFn: (index: number) => T): T[] {
+  const arr = new Array(arrayLength);
+  for (let i = 0; i < arrayLength; i++) {
+    arr[i] = valueFn(i);
+  }
+  return arr;
+}
+
 }
