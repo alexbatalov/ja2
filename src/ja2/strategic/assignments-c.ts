@@ -41,11 +41,18 @@ interface REPAIR_PASS_SLOTS_TYPE {
   bSlot: INT8[] /* [12] */; // list of slots to be repaired in this pass
 }
 
+function createRepairPassSlotsTypeFrom(ubChoices: UINT8, bSlot: INT8[]): REPAIR_PASS_SLOTS_TYPE {
+  return {
+    ubChoices,
+    bSlot,
+  };
+}
+
 let gRepairPassSlotList: REPAIR_PASS_SLOTS_TYPE[] /* [NUM_REPAIR_PASS_TYPES] */ = [
   // pass					# choices												slots repaired in this pass
-  [ /* hands and armor */ 5, [ Enum261.HANDPOS, Enum261.SECONDHANDPOS, Enum261.VESTPOS, Enum261.HELMETPOS, Enum261.LEGPOS, -1, -1, -1, -1, -1, -1, -1 ] ],
-  [ /* headgear */ 2, [ Enum261.HEAD1POS, Enum261.HEAD2POS, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ] ],
-  [ /* pockets */ 12, [ Enum261.BIGPOCK1POS, Enum261.BIGPOCK2POS, Enum261.BIGPOCK3POS, Enum261.BIGPOCK4POS, Enum261.SMALLPOCK1POS, Enum261.SMALLPOCK2POS, Enum261.SMALLPOCK3POS, Enum261.SMALLPOCK4POS, Enum261.SMALLPOCK5POS, Enum261.SMALLPOCK6POS, Enum261.SMALLPOCK7POS, Enum261.SMALLPOCK8POS ] ],
+  createRepairPassSlotsTypeFrom(/* hands and armor */ 5, [ Enum261.HANDPOS, Enum261.SECONDHANDPOS, Enum261.VESTPOS, Enum261.HELMETPOS, Enum261.LEGPOS, -1, -1, -1, -1, -1, -1, -1 ]),
+  createRepairPassSlotsTypeFrom(/* headgear */ 2, [ Enum261.HEAD1POS, Enum261.HEAD2POS, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ]),
+  createRepairPassSlotsTypeFrom(/* pockets */ 12, [ Enum261.BIGPOCK1POS, Enum261.BIGPOCK2POS, Enum261.BIGPOCK3POS, Enum261.BIGPOCK4POS, Enum261.SMALLPOCK1POS, Enum261.SMALLPOCK2POS, Enum261.SMALLPOCK3POS, Enum261.SMALLPOCK4POS, Enum261.SMALLPOCK5POS, Enum261.SMALLPOCK6POS, Enum261.SMALLPOCK7POS, Enum261.SMALLPOCK8POS ]),
 ];
 
 // PopUp Box Handles
