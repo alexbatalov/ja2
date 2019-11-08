@@ -88,24 +88,35 @@ interface BATTLESNDS_STRUCT {
   fStopDialogue: boolean;
 }
 
+function createBattleSoundStructFrom(zName: string, ubRandomVal: UINT8, fPreload: boolean, fBadGuy: boolean, fDontAllowTwoInRow: boolean, fStopDialogue: boolean): BATTLESNDS_STRUCT {
+  return {
+    zName,
+    ubRandomVal,
+    fPreload,
+    fBadGuy,
+    fDontAllowTwoInRow,
+    fStopDialogue,
+  };
+}
+
 let gBattleSndsData: BATTLESNDS_STRUCT[] /* [] */ = [
-  [ "ok1", 2, 1, 1, 1, 2 ],
-  [ "ok2", 0, 1, 1, 1, 2 ],
-  [ "cool", 0, 1, 0, 1, 0 ],
-  [ "curse", 0, 1, 1, 1, 0 ],
-  [ "hit1", 2, 1, 1, 1, 1 ],
-  [ "hit2", 0, 1, 1, 1, 1 ],
-  [ "laugh", 0, 1, 1, 1, 0 ],
-  [ "attn", 0, 1, 0, 1, 0 ],
-  [ "dying", 0, 1, 1, 1, 1 ],
-  [ "humm", 0, 0, 0, 1, 1 ],
-  [ "noth", 0, 0, 0, 1, 1 ],
-  [ "gotit", 0, 0, 0, 1, 1 ],
-  [ "lmok1", 2, 1, 0, 1, 2 ],
-  [ "lmok2", 0, 1, 0, 1, 2 ],
-  [ "lmattn", 0, 1, 0, 1, 0 ],
-  [ "locked", 0, 0, 0, 1, 0 ],
-  [ "enem", 0, 1, 1, 1, 0 ],
+  createBattleSoundStructFrom("ok1", 2, 1, 1, 1, 2),
+  createBattleSoundStructFrom("ok2", 0, 1, 1, 1, 2),
+  createBattleSoundStructFrom("cool", 0, 1, 0, 1, 0),
+  createBattleSoundStructFrom("curse", 0, 1, 1, 1, 0),
+  createBattleSoundStructFrom("hit1", 2, 1, 1, 1, 1),
+  createBattleSoundStructFrom("hit2", 0, 1, 1, 1, 1),
+  createBattleSoundStructFrom("laugh", 0, 1, 1, 1, 0),
+  createBattleSoundStructFrom("attn", 0, 1, 0, 1, 0),
+  createBattleSoundStructFrom("dying", 0, 1, 1, 1, 1),
+  createBattleSoundStructFrom("humm", 0, 0, 0, 1, 1),
+  createBattleSoundStructFrom("noth", 0, 0, 0, 1, 1),
+  createBattleSoundStructFrom("gotit", 0, 0, 0, 1, 1),
+  createBattleSoundStructFrom("lmok1", 2, 1, 0, 1, 2),
+  createBattleSoundStructFrom("lmok2", 0, 1, 0, 1, 2),
+  createBattleSoundStructFrom("lmattn", 0, 1, 0, 1, 0),
+  createBattleSoundStructFrom("locked", 0, 0, 0, 1, 0),
+  createBattleSoundStructFrom("enem", 0, 1, 1, 1, 0),
 ];
 
 export let bHealthStrRanges: UINT8[] /* [] */ = [
