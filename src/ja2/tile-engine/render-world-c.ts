@@ -494,7 +494,7 @@ export let gsRenderWorldOffsetX: INT16 = -1;
 export let gsRenderWorldOffsetY: INT16 = -1;
 export let gSelectRegion: SGPRect = createSGPRect();
 let fSelectMode: UINT32 = NO_SELECT;
-export let gSelectAnchor: SGPPoint;
+export let gSelectAnchor: SGPPoint = createSGPPoint();
 
 interface RenderFXType {
   fDynamic: boolean;

@@ -16,9 +16,9 @@ let iOkWin: INT32;
 export let fAllDone: boolean = false;
 let fButtonsPresent: boolean = false;
 
-let SelWinSpacing: SGPPoint;
-let SelWinStartPoint: SGPPoint;
-let SelWinEndPoint: SGPPoint;
+let SelWinSpacing: SGPPoint = createSGPPoint();
+let SelWinStartPoint: SGPPoint = createSGPPoint();
+let SelWinEndPoint: SGPPoint = createSGPPoint();
 
 // These definitions help define the start and end of the various wall indices.
 // This needs to be maintained if the walls change.

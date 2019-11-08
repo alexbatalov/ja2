@@ -99,6 +99,13 @@ export interface SGPPoint {
   iY: INT32;
 }
 
+export function createSGPPoint(): SGPPoint {
+  return {
+    iX: 0,
+    iY: 0,
+  };
+}
+
 export function createSGPPointFrom(iX: INT32, iY: INT32): SGPPoint {
   return {
     iX,

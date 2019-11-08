@@ -3529,7 +3529,7 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect = createSGPRect();
   /* static */ let fShowRemoveMenu: boolean = false;
@@ -3640,8 +3640,8 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
-  let pPosition: SGPPoint;
-  let pPoint: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
+  let pPoint: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect = createSGPRect();
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -3986,7 +3986,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect = createSGPRect();
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -4708,7 +4708,7 @@ function CreateDestroyMouseRegions(): void {
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect = createSGPRect();
 
@@ -4781,7 +4781,7 @@ export function CreateDestroyMouseRegionsForContractMenu(): void {
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect = createSGPRect();
   /* static */ let fShowRemoveMenu: boolean = false;
@@ -4895,7 +4895,7 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect = createSGPRect();
 
@@ -4980,7 +4980,7 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect = createSGPRect();
 
@@ -5064,7 +5064,7 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect = createSGPRect();
 
@@ -5157,7 +5157,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: boolean): void {
   let iFontHeight: INT32 = 0;
   let iBoxXPosition: INT32 = 0;
   let iBoxYPosition: INT32 = 0;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let pDimensions: SGPRect = createSGPRect();
 
@@ -6267,7 +6267,7 @@ function RestorePopUpBoxes(): void {
 
 function CreateSquadBox(): void {
   // will create a pop up box for squad selection
-  let pPoint: SGPPoint;
+  let pPoint: SGPPoint = createSGPPoint();
   let pDimensions: SGPRect = createSGPRect();
   let hStringHandle: UINT32;
   let uiCounter: UINT32;
@@ -6345,7 +6345,7 @@ function CreateSquadBox(): void {
 
 function CreateEPCBox(): void {
   // will create a pop up box for squad selection
-  let pPoint: SGPPoint;
+  let pPoint: SGPPoint = createSGPPoint();
   let pDimensions: SGPRect = createSGPRect();
   let hStringHandle: UINT32;
   let iCount: INT32;
@@ -6925,8 +6925,8 @@ export function CreateDestroyAssignmentPopUpBoxes(): boolean {
 
 export function DetermineBoxPositions(): void {
   // depending on how many boxes there are, reposition as needed
-  let pPoint: SGPPoint;
-  let pNewPoint: SGPPoint;
+  let pPoint: SGPPoint = createSGPPoint();
+  let pNewPoint: SGPPoint = createSGPPoint();
   let pDimensions: SGPRect = createSGPRect();
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -7056,7 +7056,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
   let pDimensions: SGPRect = createSGPRect();
   let pDimensions2: SGPRect = createSGPRect();
   let pDimensions3: SGPRect = createSGPRect();
-  let pPoint: SGPPoint;
+  let pPoint: SGPPoint = createSGPPoint();
   let sLongest: INT16;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -7194,7 +7194,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
 
 function PositionCursorForTacticalAssignmentBox(): void {
   // position cursor over y of on duty in tactical assignments
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let pDimensions: SGPRect = createSGPRect();
   let iFontHeight: INT32;
 

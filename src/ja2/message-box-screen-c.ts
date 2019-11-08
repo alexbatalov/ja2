@@ -12,7 +12,7 @@ const MSGBOX_SMALL_BUTTON_X_SEP = 8;
 type MSGBOX_CALLBACK = (bExitValue: UINT8) => void;
 
 // old mouse x and y positions
-let pOldMousePosition: SGPPoint;
+let pOldMousePosition: SGPPoint = createSGPPoint();
 let MessageBoxRestrictedCursorRegion: SGPRect = createSGPRect();
 
 // if the cursor was locked to a region
@@ -530,7 +530,7 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
   let pSrcBuf: Pointer<UINT8>;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
 
   // Delete popup!
   RemoveMercPopupBoxFromIndex(gMsgBox.iBoxId);

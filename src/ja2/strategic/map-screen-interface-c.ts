@@ -1625,7 +1625,7 @@ export function HandleMAPUILoseCursorFromOtherScreen(): void {
 
 export function UpdateMapScreenAssignmentPositions(): void {
   // set the position of the pop up boxes
-  let pPoint: SGPPoint;
+  let pPoint: SGPPoint = createSGPPoint();
 
   if (guiCurrentScreen != Enum26.MAP_SCREEN) {
     return;
@@ -2679,7 +2679,7 @@ export function SetUpMovingListsForSector(sSectorX: INT16, sSectorY: INT16, sSec
 }
 
 function CreatePopUpBoxForMovementBox(): void {
-  let Position: SGPPoint;
+  let Position: SGPPoint = createSGPPoint();
   let Dimensions: SGPRect = createSGPRect();
 
   // create the pop up box and mouse regions for movement list
@@ -2873,7 +2873,7 @@ function BuildMouseRegionsForMoveBox(): void {
   let iTotalNumberOfLines: INT32 = 0;
   let iCount: INT32 = 0;
   let iCountB: INT32 = 0;
-  let pPosition: SGPPoint;
+  let pPosition: SGPPoint = createSGPPoint();
   let iBoxWidth: INT32 = 0;
   let Dimensions: SGPRect = createSGPRect();
   let iFontHeight: INT32 = 0;
