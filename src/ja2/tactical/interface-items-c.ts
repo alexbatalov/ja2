@@ -206,15 +206,22 @@ interface MoneyLoc {
   y: UINT16;
 }
 
-let gMoneyButtonLoc: MoneyLoc = [ 343, 351 ];
+function createMoneyLocFrom(x: UINT16, y: UINT16): MoneyLoc {
+  return {
+    x,
+    y,
+  };
+}
+
+let gMoneyButtonLoc: MoneyLoc = createMoneyLocFrom(343, 351);
 let gMoneyButtonOffsets: MoneyLoc[] /* [] */ = [
-  [ 0, 0 ],
-  [ 34, 0 ],
-  [ 0, 32 ],
-  [ 34, 32 ],
-  [ 8, 22 ],
+  createMoneyLocFrom(0, 0),
+  createMoneyLocFrom(34, 0),
+  createMoneyLocFrom(0, 32),
+  createMoneyLocFrom(34, 32),
+  createMoneyLocFrom(8, 22),
 ];
-let gMapMoneyButtonLoc: MoneyLoc = [ 174, 115 ];
+let gMapMoneyButtonLoc: MoneyLoc = createMoneyLocFrom(174, 115);
 
 // number of keys on keyring, temp for now
 const NUMBER_KEYS_ON_KEYRING = 28;
