@@ -91,6 +91,12 @@ export interface DOORTRAP {
   fFlags: UINT8; // stops action?  recurring trap?
 }
 
+export function createDoorTrapFrom(fFlags: UINT8): DOORTRAP {
+  return {
+    fFlags,
+  };
+}
+
 // The status of the door, either open or closed
 export const DOOR_OPEN = 0x01;
 export const DOOR_PERCEIVED_OPEN = 0x02;

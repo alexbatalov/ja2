@@ -75,13 +75,13 @@ LOCK LockTable[NUM_LOCKS] =
 */
 
 export let DoorTrapTable: DOORTRAP[] /* [NUM_DOOR_TRAPS] */ = [
-  [ 0 ], // nothing
-  [ DOOR_TRAP_STOPS_ACTION ], // explosion
-  [ DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING ], // electric
-  [ DOOR_TRAP_RECURRING ], // siren
-  [ DOOR_TRAP_RECURRING | DOOR_TRAP_SILENT ], // silent alarm
-  [ DOOR_TRAP_RECURRING ], // brothel siren
-  [ DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING ], // super electric
+  createDoorTrapFrom(0), // nothing
+  createDoorTrapFrom(DOOR_TRAP_STOPS_ACTION), // explosion
+  createDoorTrapFrom(DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING), // electric
+  createDoorTrapFrom(DOOR_TRAP_RECURRING), // siren
+  createDoorTrapFrom(DOOR_TRAP_RECURRING | DOOR_TRAP_SILENT), // silent alarm
+  createDoorTrapFrom(DOOR_TRAP_RECURRING), // brothel siren
+  createDoorTrapFrom(DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING), // super electric
 ];
 
 // Dynamic array of Doors.  For general game purposes, the doors that are locked and/or trapped
