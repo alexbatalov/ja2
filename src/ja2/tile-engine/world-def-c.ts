@@ -1941,7 +1941,7 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
 
   if (uiFlags & MAP_FULLSOLDIER_SAVED) {
     let pTeam: Pointer<TEAMSUMMARY> = null;
-    let basic: BASIC_SOLDIERCREATE_STRUCT;
+    let basic: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
     let priority: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
     RenderProgressBar(0, 94);
     // RenderProgressBar( 1, 94 );

@@ -42,6 +42,28 @@ export interface BASIC_SOLDIERCREATE_STRUCT {
   PADDINGSLOTS: INT8[] /* [14] */;
 } // 50 bytes
 
+export function createBasicSoldierCreateStruct(): BASIC_SOLDIERCREATE_STRUCT {
+  return {
+    fDetailedPlacement: false,
+    usStartingGridNo: 0,
+    bTeam: 0,
+    bRelativeAttributeLevel: 0,
+    bRelativeEquipmentLevel: 0,
+    bDirection: 0,
+    bOrders: 0,
+    bAttitude: 0,
+    bBodyType: 0,
+    sPatrolGrid: createArray(MAXPATROLGRIDS, 0),
+    bPatrolCnt: 0,
+    fOnRoof: false,
+    ubSoldierClass: 0,
+    ubCivilianGroup: 0,
+    fPriorityExistance: false,
+    fHasKeys: false,
+    PADDINGSLOTS: createArray(14, 0),
+  };
+}
+
 export interface SOLDIERCREATE_STRUCT {
   // Bulletproofing so static detailed placements aren't used to tactically create soldiers.
   // Used by editor for validation purposes.

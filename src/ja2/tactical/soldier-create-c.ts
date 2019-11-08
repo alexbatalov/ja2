@@ -1825,7 +1825,7 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
 
 // USED BY STRATEGIC AI and AUTORESOLVE
 export function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
-  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1855,7 +1855,7 @@ export function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
 
 // USED BY STRATEGIC AI and AUTORESOLVE
 export function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
-  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1885,7 +1885,7 @@ export function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
 
 // USED BY STRATEGIC AI and AUTORESOLVE
 export function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
-  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1923,7 +1923,7 @@ export function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
 }
 
 export function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
-  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
 
@@ -1942,7 +1942,7 @@ export function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYP
 }
 
 export function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
-  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
 

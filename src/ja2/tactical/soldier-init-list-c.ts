@@ -164,7 +164,7 @@ export function SaveSoldiersToMap(fp: HWFILE): boolean {
 export function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
   let i: UINT32;
   let ubNumIndividuals: UINT8;
-  let tempBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
+  let tempBasicPlacement: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let pNode: Pointer<SOLDIERINITNODE>;
   let fCowInSector: boolean = false;

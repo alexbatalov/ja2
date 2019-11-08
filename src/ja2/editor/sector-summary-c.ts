@@ -2472,7 +2472,7 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
   let uiNumBytesRead: UINT32;
   let uiNumItems: UINT32;
   let szFilename: string /* UINT8[40] */;
-  let basic: BASIC_SOLDIERCREATE_STRUCT;
+  let basic: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let priority: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let i: INT32;
   let j: INT32;
