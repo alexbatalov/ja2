@@ -155,13 +155,19 @@ interface HELP_SCREEN_BTN_TEXT_RECORD {
   iButtonTextNum: INT32[] /* [HELP_SCREEN_NUM_BTNS] */;
 }
 
+function createHelpScreenBtnTextRecordFrom(iButtonTextNum: INT32[]): HELP_SCREEN_BTN_TEXT_RECORD {
+  return {
+    iButtonTextNum,
+  };
+}
+
 // An array of record nums for the text on the help buttons
 let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_NUMBER_OF_HELP_SCREENS] */ = [
   // new screen:
 
   // Laptop button record nums
   //	HELP_SCREEN_LAPTOP,
-  [
+  createHelpScreenBtnTextRecordFrom([
     Enum18.HLP_TXT_LAPTOP_BUTTON_1,
     Enum18.HLP_TXT_LAPTOP_BUTTON_2,
     Enum18.HLP_TXT_LAPTOP_BUTTON_3,
@@ -170,10 +176,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     Enum18.HLP_TXT_LAPTOP_BUTTON_6,
     Enum18.HLP_TXT_LAPTOP_BUTTON_7,
     Enum18.HLP_TXT_LAPTOP_BUTTON_8,
-  ],
+  ]),
 
   //	HELP_SCREEN_MAPSCREEN,
-  [
+  createHelpScreenBtnTextRecordFrom([
     Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_1,
     Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_2,
     Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_3,
@@ -182,10 +188,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_6,
     Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_7,
     Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_8,
-  ],
+  ]),
 
   //	HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED,
-  [
+  createHelpScreenBtnTextRecordFrom([
     -1,
     -1,
     -1,
@@ -194,10 +200,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  ],
+  ]),
 
   //	HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO,
-  [
+  createHelpScreenBtnTextRecordFrom([
     -1,
     -1,
     -1,
@@ -206,10 +212,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  ],
+  ]),
 
   //	HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY,
-  [
+  createHelpScreenBtnTextRecordFrom([
     -1,
     -1,
     -1,
@@ -218,10 +224,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  ],
+  ]),
 
   //	HELP_SCREEN_TACTICAL,
-  [
+  createHelpScreenBtnTextRecordFrom([
     Enum18.HLP_TXT_TACTICAL_BUTTON_1,
     Enum18.HLP_TXT_TACTICAL_BUTTON_2,
     Enum18.HLP_TXT_TACTICAL_BUTTON_3,
@@ -230,10 +236,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     Enum18.HLP_TXT_TACTICAL_BUTTON_6,
     -1,
     -1,
-  ],
+  ]),
 
   //	HELP_SCREEN_OPTIONS,
-  [
+  createHelpScreenBtnTextRecordFrom([
     -1,
     -1,
     -1,
@@ -242,10 +248,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  ],
+  ]),
 
   //	HELP_SCREEN_LOAD_GAME,
-  [
+  createHelpScreenBtnTextRecordFrom([
     -1,
     -1,
     -1,
@@ -254,7 +260,7 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  ],
+  ]),
 ];
 
 let gfHelpScreenEntry: boolean = true;
