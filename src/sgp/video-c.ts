@@ -130,7 +130,7 @@ let guiRefreshThreadState: UINT32; // THREAD_ON, THREAD_OFF, THREAD_SUSPENDED
 // Dirty rectangle management variables
 //
 
-void (gpFrameBufferRefreshOverride.value);
+let gpFrameBufferRefreshOverride: () => void;
 let gListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */ = createArrayFrom(MAX_DIRTY_REGIONS, createSGPRect);
 let guiDirtyRegionCount: UINT32;
 let gfForceFullScreenRefresh: boolean;
