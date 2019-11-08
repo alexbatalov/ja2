@@ -132,6 +132,47 @@ export interface OBJECTTYPE {
   fUsed: UINT8; // flags for whether the item is used or not
 }
 
+export function createObjectType(): OBJECTTYPE {
+  return {
+    usItem: 0,
+    ubNumberOfObjects: 0,
+    bGunStatus: 0,
+    ubGunAmmoType: 0,
+    ubGunShotsLeft: 0,
+    usGunAmmoItem: 0,
+    bGunAmmoStatus: 0,
+    ubGunUnused: createArray(MAX_OBJECTS_PER_SLOT - 6, 0),
+    ubShotsLeft: createArray(MAX_OBJECTS_PER_SLOT, 0),
+    bStatus: createArray(MAX_OBJECTS_PER_SLOT, 0),
+    bMoneyStatus: 0,
+    uiMoneyAmount: 0,
+    ubMoneyUnused: createArray(MAX_OBJECTS_PER_SLOT - 5, 0),
+    bBombStatus: 0,
+    bDetonatorType: 0,
+    usBombItem: 0,
+    bDelay: 0,
+    bFrequency: 0,
+    ubBombOwner: 0,
+    bActionValue: 0,
+    ubTolerance: 0,
+    ubLocationID: 0,
+    bKeyStatus: createArray(6, 0),
+    ubKeyID: 0,
+    ubKeyUnused: createArray(1, 0),
+    ubOwnerProfile: 0,
+    ubOwnerCivGroup: 0,
+    ubOwnershipUnused: createArray(6, 0),
+    usAttachItem: createArray(MAX_ATTACHMENTS, 0),
+    bAttachStatus: createArray(MAX_ATTACHMENTS, 0),
+    fFlags: 0,
+    ubMission: 0,
+    bTrap: 0,
+    ubImprintID: 0,
+    ubWeight: 0,
+    fUsed: 0,
+  };
+}
+
 /*
 interface INVTYPE {
   ubCursor: UINT8;

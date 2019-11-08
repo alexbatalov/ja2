@@ -627,7 +627,7 @@ export function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMer
   let pObj: Pointer<OBJECTTYPE>;
   let ubNumGoo: UINT8;
   let sNewGridNo: INT16;
-  let ItemObject: OBJECTTYPE;
+  let ItemObject: OBJECTTYPE = createObjectType();
 
   if (pSoldier.value.sGridNo == NOWHERE) {
     return false;
@@ -1352,7 +1352,7 @@ export function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING
 }
 
 export function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let CorpseDef: ROTTING_CORPSE_DEFINITION;
   let usHeadIndex: UINT16 = Enum225.HEAD_1;
@@ -1420,7 +1420,7 @@ export function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
 export function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let bObjSlot: INT8;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   // OK, get corpse
   pCorpse = addressof(gRottingCorpse[pSoldier.value.uiPendingActionData4]);

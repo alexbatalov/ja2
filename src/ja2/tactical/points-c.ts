@@ -1033,7 +1033,7 @@ export function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
 
   if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
     let bAttachSlot: INT8;
-    let GrenadeLauncher: OBJECTTYPE;
+    let GrenadeLauncher: OBJECTTYPE = createObjectType();
 
     // look for an attached grenade launcher
     bAttachSlot = FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER);

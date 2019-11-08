@@ -265,7 +265,7 @@ let gpTempDealersInventory: Pointer<INVENTORY_IN_SLOT> = null;
 let ArmsDealerOfferArea: INVENTORY_IN_SLOT[] /* [SKI_NUM_TRADING_INV_SLOTS] */;
 let PlayersOfferArea: INVENTORY_IN_SLOT[] /* [SKI_NUM_TRADING_INV_SLOTS] */;
 
-let gSubObject: OBJECTTYPE[] /* [MAX_SUBOBJECTS_PER_OBJECT] */;
+let gSubObject: OBJECTTYPE[] /* [MAX_SUBOBJECTS_PER_OBJECT] */ = createArrayFrom(MAX_SUBOBJECTS_PER_OBJECT(), createObjectType);
 
 export let gfHavePurchasedItemsFromTony: boolean = false;
 
@@ -3117,7 +3117,7 @@ function MovePlayerOfferedItemsOfValueToArmsDealersInventory(): void {
 
 export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirst: boolean): void {
   let Rect: SGPRect;
-  let TempObject: OBJECTTYPE;
+  let TempObject: OBJECTTYPE = createObjectType();
 
   /*
           // If we are already moving an item
@@ -5396,7 +5396,7 @@ function AddObjectForEvaluation(pObject: Pointer<OBJECTTYPE>, ubOwnerProfileId: 
 // The Shopkeeper interface *MUST* use this intermediary function instead of calling AutoPlaceObject() directly!
 // This is because the OBJECTTYPEs used within Shopkeeper may contain an illegal ubNumberOfObjects
 function ShopkeeperAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, fNewItem: boolean): boolean {
-  let CopyOfObject: OBJECTTYPE;
+  let CopyOfObject: OBJECTTYPE = createObjectType();
   let ubObjectsLeftToPlace: UINT8;
 
   // the entire pObj will get memset to 0 by RemoveObjs() if all the items are successfully placed,
@@ -5426,7 +5426,7 @@ function ShopkeeperAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObject: Poin
 // The Shopkeeper interface *MUST* use this intermediary function instead of calling AddItemToPool() directly!
 // This is because the OBJECTTYPEs used within Shopkeeper may contain an illegal ubNumberOfObjects
 function ShopkeeperAddItemToPool(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8): void {
-  let CopyOfObject: OBJECTTYPE;
+  let CopyOfObject: OBJECTTYPE = createObjectType();
   let ubObjectsLeftToPlace: UINT8;
 
   // the entire pObj will get memset to 0 by RemoveObjs() if all the items are successfully placed,
@@ -5474,7 +5474,7 @@ function IfMercOwnedRemoveItemFromMercInv(pInv: Pointer<INVENTORY_IN_SLOT>): voi
 function IfMercOwnedRemoveItemFromMercInv2(ubOwnerProfileId: UINT8, bOwnerSlotId: INT8): void {
   let sSoldierID: INT16;
   let fSuccess: boolean;
-  let ObjectToRemove: OBJECTTYPE;
+  let ObjectToRemove: OBJECTTYPE = createObjectType();
 
   // if this item was in a previous location, and that location is on a merc's inventory
   if ((bOwnerSlotId != -1) && (ubOwnerProfileId != NO_PROFILE)) {

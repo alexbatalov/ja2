@@ -1061,7 +1061,7 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let i: INT32;
     let usAttachment: UINT16;
-    let temp: OBJECTTYPE;
+    let temp: OBJECTTYPE = createObjectType();
     for (i = 0; i < Enum46.NUM_ATTACHMENT_BUTTONS; i++) {
       // Loop through and find the button that was just modified
       switch (i) {
@@ -1108,7 +1108,7 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    let temp: OBJECTTYPE;
+    let temp: OBJECTTYPE = createObjectType();
     gfCeramicPlates ^= true;
     if (gfCeramicPlates) {
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
@@ -1126,7 +1126,7 @@ function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    let temp: OBJECTTYPE;
+    let temp: OBJECTTYPE = createObjectType();
     if (!gfDetonator) {
       gfDetonator = true;
       btn.value.uiFlags |= BUTTON_CLICKED_ON;

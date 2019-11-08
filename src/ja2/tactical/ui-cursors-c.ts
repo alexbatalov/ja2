@@ -976,7 +976,7 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
   /* static */ let fBadCTGH: boolean = false;
   let fArmed: boolean = false;
   let bLevel: INT8;
-  let TempObject: OBJECTTYPE;
+  let TempObject: OBJECTTYPE = createObjectType();
   let bSlot: INT8;
   let pObj: Pointer<OBJECTTYPE>;
   let bAttachPos: INT8;

@@ -5135,7 +5135,7 @@ export function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 export function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
   let iCurrentPocket: INT32 = 0;
   let iAmountLeftToTake: INT32 = iCurrentBalance;
-  let ObjectToRemove: OBJECTTYPE;
+  let ObjectToRemove: OBJECTTYPE = createObjectType();
 
   // move this amount of money from the grunt to the bank
   // error check
@@ -5172,7 +5172,7 @@ export function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCur
 }
 
 export function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
-  let pMoneyObject: OBJECTTYPE;
+  let pMoneyObject: OBJECTTYPE = createObjectType();
 
   // move this amount of money from the grunt to the bank
   // error check

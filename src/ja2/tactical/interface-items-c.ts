@@ -154,7 +154,7 @@ let gInvRegions: MOUSE_REGION[] /* [NUM_INV_SLOTS] */;
 export let gInvDesc: MOUSE_REGION;
 
 export let gpItemPointer: Pointer<OBJECTTYPE> = null;
-export let gItemPointer: OBJECTTYPE;
+export let gItemPointer: OBJECTTYPE = createObjectType();
 export let gfItemPointerDifferentThanDefault: boolean = false;
 export let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
 export let gbItemPointerSrcSlot: INT8;
@@ -2290,7 +2290,7 @@ function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     fRightDown = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP && fRightDown) {
-    /* static */ let Object2: OBJECTTYPE;
+    /* static */ let Object2: OBJECTTYPE = createObjectType();
 
     fRightDown = false;
 
@@ -3272,7 +3272,7 @@ export function InternalBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, pObject
 
 export function BeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
   let fOk: boolean;
-  let pObject: OBJECTTYPE;
+  let pObject: OBJECTTYPE = createObjectType();
 
   memset(addressof(pObject), 0, sizeof(OBJECTTYPE));
 
@@ -3663,7 +3663,7 @@ export function HandleItemPointerClick(usMapPos: UINT16): boolean {
   let uiThrowActionData: UINT32 = 0;
   let sEndZ: INT16 = 0;
   let fGiveItem: boolean = false;
-  let TempObject: OBJECTTYPE;
+  let TempObject: OBJECTTYPE = createObjectType();
   let sGridNo: INT16;
   let sDist: INT16;
   let sDistVisible: INT16;
@@ -4353,7 +4353,7 @@ export function RenderKeyRingPopup(fFullRender: boolean): void {
   let usWidth: UINT32;
   let hVObject: HVOBJECT;
   let cnt: UINT32;
-  let pObject: OBJECTTYPE;
+  let pObject: OBJECTTYPE = createObjectType();
   let sKeyRingItemWidth: INT16 = 0;
   let sOffSetY: INT16 = 0;
   let sOffSetX: INT16 = 0;

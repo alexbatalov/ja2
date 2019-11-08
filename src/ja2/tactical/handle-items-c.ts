@@ -1175,7 +1175,7 @@ function HandleAutoPlaceFail(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, 
 export function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8, pfSelectionList: Pointer<boolean>): void {
   let pItemPool: Pointer<ITEM_POOL>;
   let pItemPoolToDelete: Pointer<ITEM_POOL> = null;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let cnt: INT32 = 0;
   let fPickup: boolean;
   let fFailedAutoPlace: boolean = false;
@@ -2920,7 +2920,7 @@ export function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: 
 export function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pTSoldier: Pointer<SOLDIERTYPE>;
   let bInvPos: INT8;
-  let TempObject: OBJECTTYPE;
+  let TempObject: OBJECTTYPE = createObjectType();
   let ubProfile: UINT8;
 
   let sGridNo: INT16;
@@ -3397,7 +3397,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
 
   if (ubExitValue == MSG_BOX_RETURN_YES) {
     let iCheckResult: INT32;
-    let Object: OBJECTTYPE;
+    let Object: OBJECTTYPE = createObjectType();
 
     iCheckResult = SkillCheck(gpBoobyTrapSoldier, Enum255.DISARM_TRAP_CHECK, 0);
 
@@ -3483,7 +3483,7 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
 
   if (ubExitValue == MSG_BOX_RETURN_YES) {
     let iCheckResult: INT32;
-    let Object: OBJECTTYPE;
+    let Object: OBJECTTYPE = createObjectType();
 
     iCheckResult = SkillCheck(gpBoobyTrapSoldier, Enum255.DISARM_TRAP_CHECK, 0);
 

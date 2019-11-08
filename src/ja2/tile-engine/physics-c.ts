@@ -1592,7 +1592,7 @@ function CalculateForceFromRange(sRange: INT16, dDegrees: FLOAT): FLOAT {
   let dMagForce: FLOAT;
   let sSrcGridNo: INT16;
   let sDestGridNo: INT16;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let sFinalGridNo: INT16;
 
   // OK, use a fake gridno, find the new gridno based on range, use height of merc, end height of ground,

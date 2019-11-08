@@ -2076,7 +2076,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
 
         case 'y':
           if (fAlt) {
-            let Object: OBJECTTYPE;
+            let Object: OBJECTTYPE = createObjectType();
             let pSoldier: Pointer<SOLDIERTYPE>;
 
             if (CHEATER_CHEAT_LEVEL()) {
@@ -2384,7 +2384,7 @@ export function HandleCheckForExitArrowsInput(fAdjustConfirm: boolean): boolean 
 // Simple function implementations called by keyboard input
 
 function CreateRandomItem(): void {
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let usMapPos: UINT16;
   if (GetMouseMapPos(addressof(usMapPos))) {
     CreateItem((Random(35) + 1), 100, addressof(Object));
@@ -2395,7 +2395,7 @@ function CreateRandomItem(): void {
 function MakeSelectedSoldierTired(): void {
   // Key to make guy get tired!
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let usMapPos: UINT16;
   if (GetMouseMapPos(addressof(usMapPos))) {
     CreateItem(Enum225.TNT, 100, addressof(Object));
@@ -2825,7 +2825,7 @@ function GrenadeTest1(): void {
   let sX: INT16;
   let sY: INT16;
   if (GetMouseXY(addressof(sX), addressof(sY))) {
-    let Object: OBJECTTYPE;
+    let Object: OBJECTTYPE = createObjectType();
     Object.usItem = Enum225.MUSTARD_GRENADE;
     Object.bStatus[0] = 100;
     Object.ubNumberOfObjects = 1;
@@ -2838,7 +2838,7 @@ function GrenadeTest2(): void {
   let sX: INT16;
   let sY: INT16;
   if (GetMouseXY(addressof(sX), addressof(sY))) {
-    let Object: OBJECTTYPE;
+    let Object: OBJECTTYPE = createObjectType();
     Object.usItem = Enum225.HAND_GRENADE;
     Object.bStatus[0] = 100;
     Object.ubNumberOfObjects = 1;
@@ -2851,7 +2851,7 @@ function GrenadeTest3(): void {
   let sX: INT16;
   let sY: INT16;
   if (GetMouseXY(addressof(sX), addressof(sY))) {
-    let Object: OBJECTTYPE;
+    let Object: OBJECTTYPE = createObjectType();
     Object.usItem = Enum225.HAND_GRENADE;
     Object.bStatus[0] = 100;
     Object.ubNumberOfObjects = 1;

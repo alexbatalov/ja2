@@ -479,7 +479,7 @@ export function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSold
 
 function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bWeaponClass: INT8, bAmmoClips: INT8, bAttachClass: INT8, fAttachment: boolean): void {
   let pItem: Pointer<INVTYPE>;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let i: UINT16;
   let usRandom: UINT16;
   let usNumMatches: UINT16 = 0;
@@ -629,7 +629,7 @@ function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
 }
 
 function ChooseGrenadesForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bGrenades: INT8, bGrenadeClass: INT8, fGrenadeLauncher: boolean): void {
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let sNumPoints: INT16;
   let usItem: UINT16;
   let ubBaseQuality: UINT8;
@@ -858,7 +858,7 @@ function ChooseArmourForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
   let usRandom: UINT16;
   let usNumMatches: UINT16;
   let bOrigVestClass: INT8 = bVestClass;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   // Choose helmet
   if (bHelmetClass) {
@@ -999,7 +999,7 @@ function ChooseSpecialWeaponsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_ST
   let usRandom: UINT16;
   let usNumMatches: UINT16 = 0;
   let usKnifeIndex: UINT16 = 0;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   // Choose knife
   while (bKnifeClass && !usNumMatches) {
@@ -1129,7 +1129,7 @@ function ChooseKitsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bKi
   let pItem: Pointer<INVTYPE>;
   let usRandom: UINT16;
   let usNumMatches: UINT16 = 0;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let usKitItem: UINT16 = 0;
 
   // we want these mostly to be first aid and medical kits, and for those kit class doesn't matter, they're always useful
@@ -1177,7 +1177,7 @@ function ChooseMiscGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>,
   let pItem: Pointer<INVTYPE>;
   let usRandom: UINT16;
   let usNumMatches: UINT16 = 0;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   // not all of these are IC_MISC, some are IC_PUNCH (not covered anywhere else)
   let iMiscItemsList: INT32[] /* [] */ = [
@@ -1242,7 +1242,7 @@ function ChooseBombsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bB
   let pItem: Pointer<INVTYPE>;
   let usRandom: UINT16;
   let usNumMatches: UINT16 = 0;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   // count how many are eligible
   for (i = 0; i < Enum225.MAXITEMS; i++) {
@@ -1272,7 +1272,7 @@ function ChooseBombsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bB
 }
 
 function ChooseLocationSpecificGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   // If this is Tixa and the player doesn't control Tixa then give all enemies gas masks,
   // but somewhere on their person, not in their face positions
@@ -1731,7 +1731,7 @@ export function ReplaceExtendedGuns(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierC
   let uiLoop2: UINT32;
   let uiAttachDestIndex: UINT32;
   let bWeaponClass: INT8;
-  let OldObj: OBJECTTYPE;
+  let OldObj: OBJECTTYPE = createObjectType();
   let usItem: UINT16;
   let usNewGun: UINT16;
   let usAmmo: UINT16;
@@ -1814,7 +1814,7 @@ function SelectStandardArmyGun(uiGunLevel: UINT8): UINT16 {
 }
 
 function EquipTank(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   // tanks get special equipment, and they drop nothing (MGs are hard-mounted & non-removable)
 

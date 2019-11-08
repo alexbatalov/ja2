@@ -372,7 +372,7 @@ export function MakeRemainingTerroristsTougher(): void {
   let ubLoop: UINT8;
   let usNewItem: UINT16;
   let usOldItem: UINT16;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let ubRemainingDifficulty: UINT8;
 
   for (ubLoop = 0; ubLoop < NUM_TERRORISTS; ubLoop++) {
@@ -488,7 +488,7 @@ export function MakeRemainingAssassinsTougher(): void {
   let ubLoop: UINT8;
   let usNewItem: UINT16;
   let usOldItem: UINT16;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let ubRemainingDifficulty: UINT8;
 
   for (ubLoop = 0; ubLoop < NUM_ASSASSINS; ubLoop++) {

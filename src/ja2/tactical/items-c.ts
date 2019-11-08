@@ -1582,7 +1582,7 @@ export function CopyObj(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJ
 }
 
 export function SwapObjs(pObj1: Pointer<OBJECTTYPE>, pObj2: Pointer<OBJECTTYPE>): void {
-  let Temp: OBJECTTYPE;
+  let Temp: OBJECTTYPE = createObjectType();
 
   memcpy(addressof(Temp), pObj1, sizeof(OBJECTTYPE));
   memcpy(pObj1, pObj2, sizeof(OBJECTTYPE));
@@ -1788,7 +1788,7 @@ const RELOAD_TOPOFF = 3;
 const RELOAD_AUTOPLACE_OLD = 4;
 
 export function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): boolean {
-  let OldAmmo: OBJECTTYPE;
+  let OldAmmo: OBJECTTYPE = createObjectType();
   let ubBulletsToMove: UINT8;
   let bAPs: INT8;
   let usReloadSound: UINT16;
@@ -2973,7 +2973,7 @@ export function AddKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: 
 export function SwapKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
   // swap keys in keyring slot and keys in pocket
   let ubNumberNotAdded: UINT8 = 0;
-  let TempObj: OBJECTTYPE;
+  let TempObj: OBJECTTYPE = createObjectType();
 
   // create temp object to hold keys currently in key ring slot
   CreateKeyObject(addressof(TempObj), pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber, pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID);
@@ -3642,7 +3642,7 @@ export function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<O
       } else {
         if (pSoldier.value.ubProfile == Enum268.MADLAB) {
           // remove attachments and drop them
-          let Attachment: OBJECTTYPE;
+          let Attachment: OBJECTTYPE = createObjectType();
 
           for (bLoop2 = MAX_ATTACHMENTS - 1; bLoop2 >= 0; bLoop2--) {
             // remove also checks for existence attachment
@@ -3695,7 +3695,7 @@ export function RemoveObjectFromSoldierProfile(ubProfile: UINT8, usItem: UINT16)
 
 export function SetMoneyInSoldierProfile(ubProfile: UINT8, uiMoney: UINT32): void {
   // INT8						bSlot;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   // SOLDIERTYPE *		pSoldier;
   let fRet: boolean;
 

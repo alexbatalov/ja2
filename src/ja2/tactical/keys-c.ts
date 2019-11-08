@@ -1730,7 +1730,7 @@ function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
 export function DropKeysInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bVisible: INT8, fAddToDropList: boolean, iDropListSlot: INT32, fUseUnLoaded: boolean): void {
   let ubLoop: UINT8;
   let ubItem: UINT8;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   if (!(pSoldier.value.pKeyRing)) {
     // no key ring!

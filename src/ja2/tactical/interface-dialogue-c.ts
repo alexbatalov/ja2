@@ -1937,7 +1937,7 @@ export function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQu
         // add a money item with $10000 to the tile in front of Kyle
         // and then have him pick it up
         {
-          let Object: OBJECTTYPE;
+          let Object: OBJECTTYPE = createObjectType();
           let sGridNo: INT16 = 14952;
           let iWorldItem: INT32;
 
@@ -3907,7 +3907,7 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
         // create key for Daryl to give to player
         pSoldier = FindSoldierByProfileID(Enum268.DARYL, false);
         if (pSoldier) {
-          let Key: OBJECTTYPE;
+          let Key: OBJECTTYPE = createObjectType();
 
           CreateKeyObject(addressof(Key), 1, 38);
           AutoPlaceObject(pSoldier, addressof(Key), false);

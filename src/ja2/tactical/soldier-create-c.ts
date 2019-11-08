@@ -2096,7 +2096,7 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
   let cnt: UINT32;
   let cnt2: UINT32;
   let pProfile: Pointer<MERCPROFILESTRUCT>;
-  let Obj: OBJECTTYPE;
+  let Obj: OBJECTTYPE = createObjectType();
   let uiMoneyLeft: UINT32;
   let uiMoneyLimitInSlot: UINT32;
   let bSlot: INT8;

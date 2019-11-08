@@ -1492,7 +1492,7 @@ export function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): boolean {
   let ubHowManyMaxAtATime: UINT8;
   let ubLeftToDrop: UINT8;
   let ubNowDropping: UINT8;
-  let TempObject: OBJECTTYPE;
+  let TempObject: OBJECTTYPE = createObjectType();
   let pSpecialItem: Pointer<DEALER_SPECIAL_ITEM>;
   let SpclItemInfo: SPECIAL_ITEM_INFO;
 

@@ -1943,7 +1943,7 @@ function BtnQuestDebugGiveItemToNPCButtonCallback(btn: Pointer<GUI_BUTTON>, reas
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let pSoldier: Pointer<SOLDIERTYPE>;
-    let Object: OBJECTTYPE;
+    let Object: OBJECTTYPE = createObjectType();
 
     CreateItem(gItemListBox.sCurSelectedItem, 100, addressof(Object));
 
@@ -2343,7 +2343,7 @@ function AddNPCToGridNo(iGridNo: INT32): void {
 }
 
 function AddItemToGridNo(iGridNo: INT32): void {
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   gsQdsEnteringGridNo = iGridNo;
 
@@ -2360,7 +2360,7 @@ function AddItemToGridNo(iGridNo: INT32): void {
 }
 
 function AddKeyToGridNo(iKeyID: INT32): void {
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   if (iKeyID < NUM_KEYS) {
     CreateKeyObject(addressof(Object), 1, iKeyID);
@@ -2884,7 +2884,7 @@ function IsMercInTheSector(usMercID: UINT16): INT16 {
 function RefreshAllNPCInventory(): void {
   let usCnt: UINT16;
   let usItemCnt: UINT16;
-  let TempObject: OBJECTTYPE;
+  let TempObject: OBJECTTYPE = createObjectType();
   let usItem: UINT16;
 
   for (usCnt = 0; usCnt < TOTAL_SOLDIERS; usCnt++) {

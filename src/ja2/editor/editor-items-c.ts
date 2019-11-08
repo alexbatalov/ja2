@@ -663,7 +663,7 @@ function TriggerAtGridNo(sGridNo: INT16): boolean {
 }
 
 export function AddSelectedItemToWorld(sGridNo: INT16): void {
-  let tempObject: OBJECTTYPE;
+  let tempObject: OBJECTTYPE = createObjectType();
   let pObject: Pointer<OBJECTTYPE>;
   let pItem: Pointer<INVTYPE>;
   let pItemPool: Pointer<ITEM_POOL>;

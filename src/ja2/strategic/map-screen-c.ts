@@ -481,7 +481,7 @@ let gTeamListLocationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
 let gTeamListDestinationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
 let gTeamListContractRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
 
-export let gItemPointer: OBJECTTYPE;
+export let gItemPointer: OBJECTTYPE = createObjectType();
 export let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
 
 let gpCharacterPreviousMercPath: PathStPtr[] /* [MAX_CHARACTER_COUNT] */;

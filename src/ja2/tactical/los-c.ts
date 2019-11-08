@@ -1569,7 +1569,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
   let fStopped: boolean = true;
   let bSlot: INT8;
   let bHeadSlot: INT8 = NO_SLOT;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let pTarget: Pointer<SOLDIERTYPE>;
   let sNewGridNo: INT16;
   let fCanSpewBlood: boolean = false;
@@ -3475,7 +3475,7 @@ export function MoveBullet(iBullet: INT32): void {
                       iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, addressof(fHitStructure));
                       if (iRemainingImpact <= 0) {
                         // check angle of knife and place on ground appropriately
-                        let Object: OBJECTTYPE;
+                        let Object: OBJECTTYPE = createObjectType();
                         let iKnifeGridNo: INT32;
 
                         CreateItem(Enum225.THROWING_KNIFE, pBullet.value.ubItemStatus, addressof(Object));

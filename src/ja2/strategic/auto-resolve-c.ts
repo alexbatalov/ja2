@@ -3075,7 +3075,7 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
     }
   } else {
     let pItem: Pointer<OBJECTTYPE>;
-    let tempItem: OBJECTTYPE;
+    let tempItem: OBJECTTYPE = createObjectType();
     PlayAutoResolveSample((Enum330.BULLET_IMPACT_1 + PreRandom(3)), RATE_11025, 50, 1, MIDDLEPAN);
     if (!pTarget.value.pSoldier.value.bLife) {
       // Soldier already dead (can't kill him again!)

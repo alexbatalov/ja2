@@ -1417,7 +1417,7 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): bool
   let uiDiceRoll: UINT32;
   let sAPCost: INT16 = 0;
   let bAttachPos: INT8;
-  let Launchable: OBJECTTYPE;
+  let Launchable: OBJECTTYPE = createObjectType();
   let pObj: Pointer<OBJECTTYPE>;
   let usItemNum: UINT16;
   let iID: INT32;
@@ -1728,7 +1728,7 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
 
       // When it hits the ground, leave on map...
       if (Item[usWeaponIndex].usItemClass == IC_THROWING_KNIFE) {
-        let Object: OBJECTTYPE;
+        let Object: OBJECTTYPE = createObjectType();
 
         // OK, have we hit ground?
         if (usStructureID == INVALID_STRUCTURE_ID) {
@@ -2188,7 +2188,7 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
 
       if (pInHand.value.bAttachStatus[bAttachPos] - Random(35) - Random(35) < USABLE) {
         // barrel extender falls off!
-        let Temp: OBJECTTYPE;
+        let Temp: OBJECTTYPE = createObjectType();
 
         // since barrel extenders are not removable we cannot call RemoveAttachment here
         // and must create the item by hand

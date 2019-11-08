@@ -13,7 +13,7 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   let i: UINT8;
   let j: UINT8;
   let usItem: UINT16;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let usMapPos: UINT16;
   let usStandardMapPos: UINT16;
   let usNumberOfItems: UINT16;
@@ -297,7 +297,7 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
   let fOk: boolean;
   let pTemp: Pointer<WORLDITEM>;
   let ubLoop: UINT8;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
 
   if (uiReason == NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS + Enum213.NPC_ACTION_RETURN_STOLEN_SHIPMENT_ITEMS) {
     if (gMercProfiles[Enum268.PABLO].bMercStatus == MERC_IS_DEAD) {
@@ -855,7 +855,7 @@ export function CheckForMissingHospitalSupplies(): void {
 
 function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   let fSectorLoaded: boolean = false;
-  let Object: OBJECTTYPE;
+  let Object: OBJECTTYPE = createObjectType();
   let uiCount: UINT32 = 0;
   let pObject: Pointer<OBJECTTYPE> = null;
   let usNumberOfItems: UINT16 = 0;

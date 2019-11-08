@@ -53,7 +53,7 @@ export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
 // OK, CHECK FOR FIRST GUY, GIVE HIM SPECIAL ITEM!
     if (iNewIndex == 0) {
       // OK, give this item to our merc!
-      let Object: OBJECTTYPE;
+      let Object: OBJECTTYPE = createObjectType();
 
       // make an objecttype
       memset(addressof(Object), 0, sizeof(OBJECTTYPE));
