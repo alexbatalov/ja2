@@ -2789,7 +2789,7 @@ export function DebugSoldierPage2(): void {
   let usSoldierIndex: UINT16;
   let uiMercFlags: UINT32;
   let usMapPos: UINT16;
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
   let pNode: Pointer<LEVELNODE>;
   let ubLine: UINT8;
 

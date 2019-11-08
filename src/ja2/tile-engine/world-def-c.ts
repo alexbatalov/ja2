@@ -477,7 +477,7 @@ function CompileWorldTerrainIDs(): void {
 
 function CompileTileMovementCosts(usGridNo: UINT16): void {
   let ubTerrainID: UINT8;
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
   let pLand: Pointer<LEVELNODE>;
 
   let pStructure: Pointer<STRUCTURE>;

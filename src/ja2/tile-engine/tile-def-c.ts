@@ -3,7 +3,7 @@ namespace ja2 {
 //#include "editscreen.h"
 
 // GLobals
-export let gTileDatabase: TILE_ELEMENT[] /* [NUMBEROFTILES] */;
+export let gTileDatabase: TILE_ELEMENT[] /* [NUMBEROFTILES] */ = createArrayFrom(Enum312.NUMBEROFTILES, createTileElement);
 export let gTileDatabaseSize: UINT16;
 export let gusNumAnimatedTiles: UINT16 = 0;
 export let gusAnimatedTiles: UINT16[] /* [MAX_ANIMATED_TILES] */;
@@ -147,7 +147,7 @@ export function CreateTileDatabase(): void {
   let ubLoop: UINT8;
   let NumRegions: UINT32;
   let TileSurf: PTILE_IMAGERY;
-  let TileElement: TILE_ELEMENT;
+  let TileElement: TILE_ELEMENT = createTileElement();
 
   // Loop through all surfaces and tiles and build database
   for (cnt1 = 0; cnt1 < Enum313.NUMBEROFTILETYPES; cnt1++) {
@@ -485,7 +485,7 @@ function MoveLandIndexToTop(iMapIndex: UINT32, usIndex: UINT16): boolean {
 
 // Database access functions
 export function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): boolean {
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
 
   if (usIndex == NO_TILE) {
     return false;
@@ -500,7 +500,7 @@ export function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): boolean 
 }
 
 export function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): boolean {
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
 
   if (usIndex == NO_TILE) {
     return false;
@@ -580,7 +580,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
   let fTileType: UINT32 = 0;
   let level: UINT8 = 0;
   let ubSrcTypeLevel: UINT8;
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
@@ -617,7 +617,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
 }
 
 export function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>): boolean {
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
 
   if (usIndex == NO_TILE) {
     return false;

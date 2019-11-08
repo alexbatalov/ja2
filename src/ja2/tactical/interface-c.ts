@@ -830,7 +830,7 @@ function HandleUpDownArrowBackgrounds(): void {
 }
 
 export function RenderArrows(): void {
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
 
   if (guiShowUPDownArrows & ARROWS_HIDE_UP && guiShowUPDownArrows & ARROWS_HIDE_DOWN) {
     return;
@@ -1134,7 +1134,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   let sX: INT16;
   let sY: INT16;
   let iBack: INT32;
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
   let pStr: string /* Pointer<UINT16> */;
   let NameStr: string /* UINT16[50] */;
   let usGraphicToUse: UINT16 = Enum312.THIRDPOINTERS1;

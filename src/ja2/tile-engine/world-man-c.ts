@@ -386,7 +386,7 @@ export function AddLandToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVEL
 export function AddLandToHead(iMapIndex: UINT32, usIndex: UINT16): boolean {
   let pLand: Pointer<LEVELNODE> = null;
   let pNextLand: Pointer<LEVELNODE> = null;
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
@@ -471,7 +471,7 @@ function RemoveLandEx(iMapIndex: UINT32, usIndex: UINT16): boolean {
 function AdjustForFullTile(iMapIndex: UINT32): boolean {
   let pLand: Pointer<LEVELNODE> = null;
   let pOldLand: Pointer<LEVELNODE> = null;
-  let TileElem: TILE_ELEMENT;
+  let TileElem: TILE_ELEMENT = createTileElement();
   //	UINT32 iType;
   //	UINT16 iNewIndex;
 

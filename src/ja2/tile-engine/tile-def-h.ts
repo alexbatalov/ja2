@@ -108,6 +108,27 @@ export interface TILE_ELEMENT {
   bReserved: BYTE[] /* [3] */;
 }
 
+export function createTileElement(): TILE_ELEMENT {
+  return {
+    fType: 0,
+    hTileSurface: null,
+    pDBStructureRef: null,
+    uiFlags: 0,
+    pTileLocData: null,
+    usRegionIndex: 0,
+    sBuddyNum: 0,
+    ubTerrainID: 0,
+    ubNumberOfTiles: 0,
+    bZOffsetX: 0,
+    bZOffsetY: 0,
+    sOffsetHeight: 0,
+    usWallOrientation: 0,
+    ubFullTile: 0,
+    pAnimData: null,
+    bReserved: createArray(3, 0),
+  };
+}
+
 type PTILE_ELEMENT = Pointer<TILE_ELEMENT>;
 
 interface land_undo_struct {
