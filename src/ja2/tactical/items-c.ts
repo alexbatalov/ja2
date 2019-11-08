@@ -789,13 +789,21 @@ interface ComboMergeInfoStruct {
   usResult: UINT16;
 }
 
+function createComboMergeInfoStructFrom(usItem: UINT16, usAttachment: UINT16[], usResult: UINT16): ComboMergeInfoStruct {
+  return {
+    usItem,
+    usAttachment,
+    usResult,
+  };
+}
+
 let AttachmentComboMerge: ComboMergeInfoStruct[] /* [] */ = [
   // base item							attach 1								attach 2						 result
-  [ Enum225.ALUMINUM_ROD, [ Enum225.SPRING, NOTHING ], Enum225.SPRING_AND_BOLT_UPGRADE ],
-  [ Enum225.STEEL_ROD, [ Enum225.QUICK_GLUE, Enum225.DUCT_TAPE ], Enum225.GUN_BARREL_EXTENDER ],
-  [ Enum225.FUMBLE_PAK, [ Enum225.XRAY_BULB, Enum225.CHEWING_GUM ], Enum225.FLASH_DEVICE ],
-  [ Enum225.LAME_BOY, [ Enum225.COPPER_WIRE, NOTHING ], Enum225.DISPLAY_UNIT ],
-  [ NOTHING, [ NOTHING, NOTHING ], NOTHING ],
+  createComboMergeInfoStructFrom(Enum225.ALUMINUM_ROD, [ Enum225.SPRING, NOTHING ], Enum225.SPRING_AND_BOLT_UPGRADE),
+  createComboMergeInfoStructFrom(Enum225.STEEL_ROD, [ Enum225.QUICK_GLUE, Enum225.DUCT_TAPE ], Enum225.GUN_BARREL_EXTENDER),
+  createComboMergeInfoStructFrom(Enum225.FUMBLE_PAK, [ Enum225.XRAY_BULB, Enum225.CHEWING_GUM ], Enum225.FLASH_DEVICE),
+  createComboMergeInfoStructFrom(Enum225.LAME_BOY, [ Enum225.COPPER_WIRE, NOTHING ], Enum225.DISPLAY_UNIT),
+  createComboMergeInfoStructFrom(NOTHING, [ NOTHING, NOTHING ], NOTHING),
 ];
 
 let ReplacementGuns: UINT16[][] /* [][2] */ = [
