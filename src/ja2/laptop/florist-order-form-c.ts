@@ -120,26 +120,34 @@ interface FlowerOrderLocationStruct {
   ubWhenItGetsThereCost: UINT8;
 }
 
+function createFlowerOrderLocationStructFrom(psCityLoc: string, ubNextDayDeliveryCost: UINT8, ubWhenItGetsThereCost: UINT8): FlowerOrderLocationStruct {
+  return {
+    psCityLoc,
+    ubNextDayDeliveryCost,
+    ubWhenItGetsThereCost,
+  };
+}
+
 const FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS = 17;
 
 let FlowerOrderLocations: FlowerOrderLocationStruct[] /* [FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS] */ = [
-  [ addressof(pDeliveryLocationStrings[0]), 20, 15 ],
-  [ addressof(pDeliveryLocationStrings[1]), 95, 70 ],
-  [ addressof(pDeliveryLocationStrings[2]), 100, 75 ],
-  [ addressof(pDeliveryLocationStrings[3]), 50, 35 ],
-  [ addressof(pDeliveryLocationStrings[4]), 70, 50 ],
-  [ addressof(pDeliveryLocationStrings[5]), 45, 35 ],
-  [ addressof(pDeliveryLocationStrings[6]), 30, 25 ],
-  [ addressof(pDeliveryLocationStrings[7]), 100, 75 ],
-  [ addressof(pDeliveryLocationStrings[8]), 100, 75 ],
-  [ addressof(pDeliveryLocationStrings[9]), 30, 25 ],
-  [ addressof(pDeliveryLocationStrings[10]), 95, 70 ],
-  [ addressof(pDeliveryLocationStrings[11]), 30, 25 ],
-  [ addressof(pDeliveryLocationStrings[12]), 40, 30 ],
-  [ addressof(pDeliveryLocationStrings[13]), 45, 35 ],
-  [ addressof(pDeliveryLocationStrings[14]), 95, 70 ],
-  [ addressof(pDeliveryLocationStrings[15]), 50, 40 ],
-  [ addressof(pDeliveryLocationStrings[16]), 40, 30 ],
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[0], 20, 15),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[1], 95, 70),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[2], 100, 75),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[3], 50, 35),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[4], 70, 50),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[5], 45, 35),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[6], 30, 25),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[7], 100, 75),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[8], 100, 75),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[9], 30, 25),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[10], 95, 70),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[11], 30, 25),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[12], 40, 30),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[13], 45, 35),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[14], 95, 70),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[15], 50, 40),
+  createFlowerOrderLocationStructFrom(pDeliveryLocationStrings[16], 40, 30),
 ];
 
 let guiDeliveryLocation: UINT32;
