@@ -217,6 +217,121 @@ interface GENERAL_SAVE_INFO {
   ubFiller: UINT8[] /* [550] */; // This structure should be 1024 bytes
 }
 
+function createGeneralSaveInfo(): GENERAL_SAVE_INFO {
+  return {
+    uiCurrentScreen: 0,
+    uiCurrentUniqueSoldierId: 0,
+    ubMusicMode: 0,
+    fHavePurchasedItemsFromTony: false,
+    usSelectedSoldier: 0,
+    sRenderCenterX: 0,
+    sRenderCenterY: 0,
+    fAtLeastOneMercWasHired: false,
+    fShowItemsFlag: false,
+    fShowTownFlag: false,
+    fShowTeamFlag: false,
+    fShowMineFlag: false,
+    fShowAircraftFlag: false,
+    fHelicopterAvailable: false,
+    iHelicopterVehicleId: 0,
+    UNUSEDiTotalHeliDistanceSinceRefuel: 0,
+    iTotalAccumulatedCostByPlayer: 0,
+    fSkyRiderAvailable: false,
+    UNUSEDfSkyriderMonologue: false,
+    UNUSED: createArrayFrom(2, () => createArray(2, 0)),
+    fHelicopterIsAirBorne: false,
+    fHeliReturnStraightToBase: false,
+    fHoveringHelicopter: false,
+    uiStartHoverTime: 0,
+    uiHelicopterSkyriderTalkState: 0,
+    fShowEstoniRefuelHighLight: false,
+    fShowOtherSAMHighLight: false,
+    fShowDrassenSAMHighLight: false,
+    uiEnvWeather: 0,
+    ubDefaultButton: 0,
+    fSkyriderEmptyHelpGiven: false,
+    fEnterMapDueToContract: false,
+    ubHelicopterHitsTaken: 0,
+    ubQuitType: 0,
+    fSkyriderSaidCongratsOnTakingSAM: false,
+    sContractRehireSoldierID: 0,
+    GameOptions: createGameOptions(),
+    uiSeedNumber: 0,
+    uiBaseJA2Clock: 0,
+    sCurInterfacePanel: 0,
+    ubSMCurrentMercID: 0,
+    fFirstTimeInMapScreen: false,
+    fDisableDueToBattleRoster: false,
+    fDisableMapInterfaceDueToBattle: false,
+    sBoxerGridNo: createArray(NUM_BOXERS, 0),
+    ubBoxerID: createArray(NUM_BOXERS, 0),
+    fBoxerFought: createArray(NUM_BOXERS, false),
+    fHelicopterDestroyed: false,
+    fShowMapScreenHelpText: false,
+    iSortStateForMapScreenList: 0,
+    fFoundTixa: false,
+    uiTimeOfLastSkyriderMonologue: 0,
+    fShowCambriaHospitalHighLight: false,
+    fSkyRiderSetUp: false,
+    fRefuelingSiteAvailable: createArray(Enum137.NUMBER_OF_REFUEL_SITES, false),
+    gCurrentMeanwhileDef: createMeanwhileDefinition(),
+    ubPlayerProgressSkyriderLastCommentedOn: false,
+    gfMeanwhileTryingToStart: false,
+    gfInMeanwhile: false,
+    sDeadMercs: createArrayFrom(Enum275.NUMBER_OF_SQUADS, () => createArray(NUMBER_OF_SOLDIERS_PER_SQUAD, 0)),
+    gbPublicNoiseLevel: createArray(MAXTEAMS, 0),
+    gubScreenCount: 0,
+    usOldMeanWhileFlags: 0,
+    iPortraitNumber: 0,
+    sWorldSectorLocationOfFirstBattle: 0,
+    fUnReadMailFlag: false,
+    fNewMailFlag: false,
+    fOldUnReadFlag: false,
+    fOldNewMailFlag: false,
+    fShowMilitia: false,
+    fNewFilesInFileViewer: false,
+    fLastBoxingMatchWonByPlayer: false,
+    uiUNUSED: 0,
+    fSamSiteFound: createArray(NUMBER_OF_SAMS, false),
+    ubNumTerrorists: 0,
+    ubCambriaMedicalObjects: 0,
+    fDisableTacticalPanelButtons: false,
+    sSelMapX: 0,
+    sSelMapY: 0,
+    iCurrentMapSectorZ: 0,
+    usHasPlayerSeenHelpScreenInCurrentScreen: 0,
+    fHideHelpInAllScreens: false,
+    ubBoxingMatchesWon: 0,
+    ubBoxersRests: 0,
+    fBoxersResting: false,
+    ubDesertTemperature: 0,
+    ubGlobalTemperature: 0,
+    sMercArriveSectorX: 0,
+    sMercArriveSectorY: 0,
+    fCreatureMeanwhileScenePlayed: false,
+    ubPlayerNum: 0,
+    fPersistantPBI: false,
+    ubEnemyEncounterCode: 0,
+    ubExplicitEnemyEncounterCode: false,
+    fBlitBattleSectorLocator: false,
+    ubPBSectorX: 0,
+    ubPBSectorY: 0,
+    ubPBSectorZ: 0,
+    fCantRetreatInPBI: false,
+    fExplosionQueueActive: false,
+    ubUnused: createArray(1, 0),
+    uiMeanWhileFlags: 0,
+    bSelectedInfoChar: 0,
+    bHospitalPriceModifier: 0,
+    bUnused2: createArray(2, 0),
+    iHospitalTempBalance: 0,
+    iHospitalRefund: 0,
+    fPlayerTeamSawJoey: 0,
+    fMikeShouldSayHi: 0,
+    ubFiller: createArray(550, 0),
+  };
+}
+
 export let guiSaveGameVersion: UINT32 = 0;
 
 /////////////////////////////////////////////////////
@@ -2826,7 +2941,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): boolean {
 function SaveGeneralInfo(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
 
-  let sGeneralInfo: GENERAL_SAVE_INFO;
+  let sGeneralInfo: GENERAL_SAVE_INFO = createGeneralSaveInfo();
   memset(addressof(sGeneralInfo), 0, sizeof(GENERAL_SAVE_INFO));
 
   sGeneralInfo.ubMusicMode = gubMusicMode;
@@ -3034,7 +3149,7 @@ function SaveGeneralInfo(hFile: HWFILE): boolean {
 function LoadGeneralInfo(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
 
-  let sGeneralInfo: GENERAL_SAVE_INFO;
+  let sGeneralInfo: GENERAL_SAVE_INFO = createGeneralSaveInfo();
   memset(addressof(sGeneralInfo), 0, sizeof(GENERAL_SAVE_INFO));
 
   // Load the current music mode
