@@ -241,7 +241,7 @@ function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): boolean {
 export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): boolean {
   let iFaceIndex: INT32;
   let cnt: INT32;
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let pFace: Pointer<FACETYPE>;
   let usWidth: UINT16;
   let usHeight: UINT16;

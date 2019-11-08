@@ -445,7 +445,7 @@ export function EnterInitAimMembers(): void {
 
 export function EnterAIMMembers(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
 
   // Create a background video surface to blt the face onto
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
@@ -2634,7 +2634,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
   let usPosX: UINT16;
   let usPosY: UINT16;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
 
   // remove the face help text
   gfAimMemberDisplayFaceHelpText = false;

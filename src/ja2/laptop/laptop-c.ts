@@ -3639,7 +3639,7 @@ export function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UIN
 }
 
 function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: string /* STR16 */, uiIconGraphic: UINT32, usIconGraphicIndex: UINT16): boolean {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let hImageHandle: HVOBJECT;
 
   Assert(uiBackgroundGraphic);
@@ -4277,7 +4277,7 @@ function DrawDeskTopBackground(): boolean {
 
 function LoadDesktopBackground(): boolean {
   // load desktop background
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   GetMLGFilename(vs_desc.ImageFile, Enum326.MLG_DESKTOP);

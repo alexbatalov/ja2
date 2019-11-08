@@ -128,7 +128,7 @@ function ShutDownPopUpBoxes(): boolean {
 
 // Tactical Popup
 function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8): boolean {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // this function will load the graphics associated with the background and border index values
@@ -265,7 +265,7 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
   let hImageHandle: HVOBJECT;
   let usPosY: UINT16;
   let usPosX: UINT16;
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let usStringPixLength: UINT16;
   let DestRect: SGPRect;
   let hSrcVSurface: HVSURFACE;

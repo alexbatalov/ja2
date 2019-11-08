@@ -32,7 +32,7 @@ export let gzUserDefinedButton1: string /* CHAR16[128] */;
 export let gzUserDefinedButton2: string /* CHAR16[128] */;
 
 export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let usTextBoxWidth: UINT16;
   let usTextBoxHeight: UINT16;
   let aRect: SGPRect;

@@ -173,7 +173,7 @@ export function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8
 // sets up the loadscreen with specified ID, and draws it to the FRAME_BUFFER,
 // and refreshing the screen with it.
 export function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let hVSurface: HVSURFACE;
   let uiLoadScreen: UINT32;
 

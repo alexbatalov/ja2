@@ -6866,7 +6866,7 @@ export function CreateMercRemoveAssignBox(): void {
 
 export function CreateDestroyAssignmentPopUpBoxes(): boolean {
   /* static */ let fCreated: boolean = false;
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   if ((fShowAssignmentMenu == true) && (fCreated == false)) {

@@ -175,7 +175,7 @@ export function InitScreenInitialize(): UINT32 {
 }
 
 export function InitScreenHandle(): UINT32 {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   /* static */ let hVSurface: HVSURFACE;
   /* static */ let ubCurrentScreen: UINT8 = 255;
 

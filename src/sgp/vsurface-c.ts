@@ -2128,7 +2128,7 @@ export function ShadowVideoSurfaceImage(uiDestVSurface: UINT32, hImageHandle: HV
 function MakeVSurfaceFromVObject(uiVObject: UINT32, usSubIndex: UINT16, puiVSurface: Pointer<UINT32>): boolean {
   let hSrcVObject: HVOBJECT;
   let uiVSurface: UINT32;
-  let hDesc: VSURFACE_DESC;
+  let hDesc: VSURFACE_DESC = createVSurfaceDesc();
 
   if (GetVideoObject(addressof(hSrcVObject), uiVObject)) {
     // ATE: Memset

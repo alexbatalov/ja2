@@ -135,7 +135,7 @@ function DeleteEditorImages(): void {
 
 function CreateEditorBuffers(): void {
   let i: INT32;
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let usUselessWidth: UINT16;
   let usUselessHeight: UINT16;
   let ubBitDepth: UINT8;

@@ -414,7 +414,7 @@ export function SetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT
 function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, iFaceIndex: INT32, usFaceX: UINT16, usFaceY: UINT16, usEyesX: UINT16, usEyesY: UINT16, usMouthX: UINT16, usMouthY: UINT16): void {
   let usMercProfileID: UINT16;
   let pFace: Pointer<FACETYPE>;
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let usWidth: UINT16;
   let usHeight: UINT16;
   let ubBitDepth: UINT8;

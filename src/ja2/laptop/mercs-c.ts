@@ -268,7 +268,7 @@ export function GameInitMercs(): void {
 
 export function EnterMercs(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
 
   SetBookMark(Enum98.MERC_BOOKMARK);
 

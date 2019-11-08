@@ -524,7 +524,7 @@ function EnterShopKeeperInterface(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let ubCnt: UINT8;
   let zTemp: string /* CHAR8[32] */;
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // make sure current merc is close enough and eligible to talk to the shopkeeper.

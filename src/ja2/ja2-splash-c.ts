@@ -9,7 +9,7 @@ export function InitJA2SplashScreen(): void {
   let CurrentDir: string /* STRING512 */;
   let DataDir: string /* STRING512 */;
   let hVSurface: HVSURFACE;
-  let VSurfaceDesc: VSURFACE_DESC;
+  let VSurfaceDesc: VSURFACE_DESC = createVSurfaceDesc();
   let i: INT32 = 0;
 
   InitializeJA2Clock();

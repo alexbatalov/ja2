@@ -157,7 +157,7 @@ let gsCurrentSoldierGridNo: INT16 = 0;
 export let gsCurInterfacePanel: INT16 = Enum215.TEAM_PANEL;
 
 export function InitializeTacticalInterface(): boolean {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // Load button Interfaces

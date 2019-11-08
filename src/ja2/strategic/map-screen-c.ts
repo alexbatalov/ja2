@@ -2098,7 +2098,7 @@ export function MapScreenHandle(): UINT32 {
   let uiMins: UINT32 = 0;
   let uiHours: UINT32 = 0;
   let uiDays: UINT32 = 0;
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   //	static BOOLEAN fSecondFrame = FALSE;
   let iCounter: INT32 = 0;
@@ -7788,7 +7788,7 @@ function AnyMercsLeavingRealSoon(): boolean {
 
 export function HandlePreloadOfMapGraphics(): boolean {
   // check amt of memory, if above required amt...use it
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   fPreLoadedMapGraphics = true;

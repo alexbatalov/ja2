@@ -2551,7 +2551,7 @@ function BtnPositionShowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 // TEAM PANEL!!!!!!!!!!!!!!
 export function InitializeTEAMPanel(): boolean {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let cnt: UINT32;
   let posIndex: UINT32;

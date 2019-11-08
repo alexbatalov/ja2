@@ -684,7 +684,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: string /* STR16
 
   // if the node can have something to display, Create a surface for it
   if (pNodeToAdd.value.uiType == Enum2.CRDT_NODE_DEFAULT) {
-    let vs_desc: VSURFACE_DESC;
+    let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
 
     // Create a background video surface to blt the face onto
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;

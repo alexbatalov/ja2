@@ -129,7 +129,7 @@ export function EntryInitEditorItemsInfo(): void {
 }
 
 export function InitEditorItemsInfo(uiItemType: UINT32): void {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let pDestBuf: Pointer<UINT8>;
   let pSrcBuf: Pointer<UINT8>;
   let uiSrcPitchBYTES: UINT32;

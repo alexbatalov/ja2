@@ -36,7 +36,7 @@ export function MapUtilScreenHandle(): UINT32 {
   /* static */ let FileList: Pointer<FDLG_LIST> = null;
   let zFilename: string /* INT8[260] */;
   let zFilename2: string /* INT8[260] */;
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let usWidth: UINT16;
   let usHeight: UINT16;
   let ubBitDepth: UINT8;

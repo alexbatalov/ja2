@@ -13,7 +13,7 @@ export function InitializeSystemVideoObjects(): boolean {
 }
 
 export function InitializeGameVideoObjects(): boolean {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let usWidth: UINT16;
   let usHeight: UINT16;
   let ubBitDepth: UINT8;

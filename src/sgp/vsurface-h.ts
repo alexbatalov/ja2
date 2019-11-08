@@ -106,6 +106,16 @@ export interface VSURFACE_DESC {
   ubBitDepth: UINT8; // BPP, ignored if given from file
 }
 
+export function createVSurfaceDesc(): VSURFACE_DESC {
+  return {
+    fCreateFlags: 0,
+    ImageFile: "",
+    usWidth: 0,
+    usHeight: 0,
+    ubBitDepth: 0,
+  };
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Video Surface Manager Functions

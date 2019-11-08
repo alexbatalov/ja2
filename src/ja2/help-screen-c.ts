@@ -1770,7 +1770,7 @@ export function HelpScreenDetermineWhichMapScreenHelpToShow(): INT8 {
 }
 
 function CreateHelpScreenTextBuffer(): boolean {
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
 
   // Create a background video surface to blt the face onto
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;

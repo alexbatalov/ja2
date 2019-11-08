@@ -1401,7 +1401,7 @@ export function InitializePalettesForMap(): boolean {
   // init palettes
   let hSrcVSurface: HVSURFACE;
   let pPalette: SGPPaletteEntry[] /* [256] */;
-  let vs_desc: VSURFACE_DESC;
+  let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let uiTempMap: UINT32;
 
   // load image
