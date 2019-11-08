@@ -2094,7 +2094,7 @@ function DetermineArmsDealersSellingInventory(): boolean {
   let ubElement: UINT8;
   let pSpecialItem: Pointer<DEALER_SPECIAL_ITEM>;
   let fAddSpecialItem: boolean;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("DEF: DetermineArmsDealer"));
 
@@ -3068,7 +3068,7 @@ function MoveAllArmsDealersItemsInOfferAreaToPlayersOfferArea(): void {
 function RemoveItemFromDealersInventory(pInvSlot: Pointer<INVENTORY_IN_SLOT>, ubSlot: UINT8): boolean {
   let sInvSlot: INT16;
   let sItemID: INT16;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   sInvSlot = ubSlot;
   //	sInvSlot = ( gSelectArmsDealerInfo.ubCurrentPage - 1 ) * SKI_NUM_ARMS_DEALERS_INV_SLOTS + ubSlot;

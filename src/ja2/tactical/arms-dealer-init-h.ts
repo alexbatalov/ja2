@@ -164,6 +164,16 @@ export interface SPECIAL_ITEM_INFO {
   ubPadding: UINT8[] /* [2] */; // filler
 }
 
+export function createSpecialItemInfo(): SPECIAL_ITEM_INFO {
+  return {
+    usAttachment: createArray(MAX_ATTACHMENTS, 0),
+    bItemCondition: 0,
+    ubImprintID: 0,
+    bAttachmentStatus: createArray(MAX_ATTACHMENTS, 0),
+    ubPadding: createArray(2, 0),
+  };
+}
+
 export interface DEALER_SPECIAL_ITEM {
   Info: SPECIAL_ITEM_INFO;
 

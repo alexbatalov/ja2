@@ -218,7 +218,7 @@ function SimulateArmsDealerCustomer(): void {
   let usItemIndex: UINT16;
   let ubItemsSold: UINT8 = 0;
   let ubElement: UINT8;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   // loop through all the arms dealers
   for (ubArmsDealer = 0; ubArmsDealer < Enum197.NUM_ARMS_DEALERS; ubArmsDealer++) {
@@ -343,7 +343,7 @@ function DailyCheckOnItemQuantities(): void {
 function ConvertCreatureBloodToElixir(): void {
   let ubBloodAvailable: UINT8;
   let ubAmountToConvert: UINT8;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   ubBloodAvailable = gArmsDealersInventory[Enum197.ARMS_DEALER_GABBY][Enum225.JAR_CREATURE_BLOOD].ubTotalItems;
   if (ubBloodAvailable) {
@@ -396,7 +396,7 @@ function AdjustCertainDealersInventory(): boolean {
 function LimitArmsDealersInventory(ubArmsDealer: UINT8, uiDealerItemType: UINT32, ubMaxNumberOfItemType: UINT8): void {
   let usItemIndex: UINT16 = 0;
   let uiItemsToRemove: UINT32 = 0;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   let usAvailableItem: UINT16[] /* [MAXITEMS] */ = [ NOTHING ];
   let ubNumberOfAvailableItem: UINT8[] /* [MAXITEMS] */ = [ 0 ];
@@ -1013,7 +1013,7 @@ function ArmsDealerGetsFreshStock(ubArmsDealer: UINT8, usItemIndex: UINT16, ubNu
   let ubCnt: UINT8;
   let ubItemCondition: UINT8;
   let ubPerfectOnes: UINT8 = 0;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   // create item info describing a perfect item
   SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
@@ -1174,7 +1174,7 @@ function CountSpecificItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8, usIt
 
 export function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>): void {
   let ubCnt: UINT8;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   SetSpecialItemInfoFromObject(addressof(SpclItemInfo), pObject);
 
@@ -1247,7 +1247,7 @@ export function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Poi
 function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, ubShotsLeft: UINT8): void {
   let ubMagCapacity: UINT8;
   let pubStrayAmmo: Pointer<UINT8>;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   // Ammo only, please!!!
   if (Item[usItemIndex].usItemClass != IC_AMMO) {
@@ -1422,7 +1422,7 @@ function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemInde
   let ubSkippedAlready: UINT8;
   let fFoundIt: boolean;
   let ubElement: UINT8;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   // not permitted for repair dealers - would take extra code to subtract items under repair from ubTotalItems!!!
   Assert(!DoesDealerDoRepairs(ubArmsDealer));
@@ -1494,7 +1494,7 @@ export function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): boolean {
   let ubNowDropping: UINT8;
   let TempObject: OBJECTTYPE = createObjectType();
   let pSpecialItem: Pointer<DEALER_SPECIAL_ITEM>;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   // Get Dealer ID from from merc Id
   bArmsDealer = GetArmsDealerIDFromMercID(ubMercID);
@@ -1625,7 +1625,7 @@ export function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: P
 
 export function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>, ubOwnerProfileId: UINT8): void {
   //	UINT8 ubCnt;
-  let SpclItemInfo: SPECIAL_ITEM_INFO;
+  let SpclItemInfo: SPECIAL_ITEM_INFO = createSpecialItemInfo();
 
   Assert(DoesDealerDoRepairs(ubArmsDealer));
 
