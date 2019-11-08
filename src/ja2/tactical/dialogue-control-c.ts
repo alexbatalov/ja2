@@ -90,8 +90,8 @@ let giTextBoxOverlay: INT32 = -1;
 export let gfFacePanelActive: boolean = false;
 let guiScreenIDUsedWhenUICreated: UINT32;
 let gzQuoteStr: string /* INT16[QUOTE_MESSAGE_SIZE] */;
-let gTextBoxMouseRegion: MOUSE_REGION;
-let gFacePopupMouseRegion: MOUSE_REGION;
+let gTextBoxMouseRegion: MOUSE_REGION = createMouseRegion();
+let gFacePopupMouseRegion: MOUSE_REGION = createMouseRegion();
 let gfUseAlternateDialogueFile: boolean = false;
 
 // set the top position value for merc dialogue pop up boxes

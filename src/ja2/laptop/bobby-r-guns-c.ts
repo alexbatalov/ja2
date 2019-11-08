@@ -147,7 +147,7 @@ let guiBobbyRNextPage: UINT32;
 let guiBobbyRNextPageImage: INT32;
 
 // Big Image Mouse region
-let gSelectedBigImageRegion: MOUSE_REGION[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */;
+let gSelectedBigImageRegion: MOUSE_REGION[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */ = createArrayFrom(BOBBYR_NUM_WEAPONS_ON_PAGE, createMouseRegion);
 
 let guiBobbyROrderForm: UINT32;
 let guiBobbyROrderFormImage: INT32;
@@ -156,7 +156,7 @@ export let guiBobbyRHome: UINT32;
 export let guiBobbyRHomeImage: INT32;
 
 // Link from the title
-let gSelectedTitleImageLinkRegion: MOUSE_REGION;
+let gSelectedTitleImageLinkRegion: MOUSE_REGION = createMouseRegion();
 
 let guiTempCurrentMode: UINT32;
 

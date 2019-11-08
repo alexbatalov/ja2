@@ -143,7 +143,7 @@ let gubBobbyRPages: UINT8[] /* [] */ = [
 ];
 
 // Bobby's Sign menu mouse regions
-let gSelectedBobbiesSignMenuRegion: MOUSE_REGION[] /* [BOBBIES_NUMBER_SIGNS] */;
+let gSelectedBobbiesSignMenuRegion: MOUSE_REGION[] /* [BOBBIES_NUMBER_SIGNS] */ = createArrayFrom(BOBBIES_NUMBER_SIGNS, createMouseRegion);
 
 export function GameInitBobbyR(): void {
 }

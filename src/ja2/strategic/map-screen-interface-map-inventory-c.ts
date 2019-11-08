@@ -75,8 +75,8 @@ export let sObjectSourceGridNo: INT16 = 0;
 let uiNumberOfUnSeenItems: UINT32 = 0;
 
 // the inventory slots
-let MapInventoryPoolSlots: MOUSE_REGION[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
-let MapInventoryPoolMask: MOUSE_REGION;
+let MapInventoryPoolSlots: MOUSE_REGION[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */ = createArrayFrom(MAP_INVENTORY_POOL_SLOT_COUNT, createMouseRegion);
+let MapInventoryPoolMask: MOUSE_REGION = createMouseRegion();
 export let fMapInventoryItemCompatable: boolean[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
 let fChangedInventorySlots: boolean = false;
 

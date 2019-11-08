@@ -21,7 +21,7 @@ const INS_CMNT_LINK_OFFSET_X = 166;
 let guiInsCmntBulletImage: UINT32;
 
 // link to the varios pages
-let gSelectedInsuranceCommentLinkRegion: MOUSE_REGION[] /* [3] */;
+let gSelectedInsuranceCommentLinkRegion: MOUSE_REGION[] /* [3] */ = createArrayFrom(3, createMouseRegion);
 
 function GameInitInsuranceComments(): void {
 }

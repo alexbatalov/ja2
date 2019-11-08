@@ -51,9 +51,9 @@ let guiInsNextButtonImage: INT32;
 let guiInsNextBackButton: UINT32;
 
 // link to the varios pages
-let gSelectedInsuranceInfoLinkRegion: MOUSE_REGION;
+let gSelectedInsuranceInfoLinkRegion: MOUSE_REGION = createMouseRegion();
 
-let gSelectedInsuranceInfoHomeLinkRegion: MOUSE_REGION;
+let gSelectedInsuranceInfoHomeLinkRegion: MOUSE_REGION = createMouseRegion();
 
 function GameInitInsuranceInfo(): void {
 }

@@ -55,7 +55,7 @@ export let guiGalleryButtonImage: INT32;
 export let guiGalleryButton: UINT32;
 
 // link to the flower home page by clicking on the flower title
-let gSelectedFloristTitleHomeLinkRegion: MOUSE_REGION;
+let gSelectedFloristTitleHomeLinkRegion: MOUSE_REGION = createMouseRegion();
 
 export function GameInitFlorist(): void {
 }

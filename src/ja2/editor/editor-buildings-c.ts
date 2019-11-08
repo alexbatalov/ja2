@@ -425,7 +425,7 @@ const enum Enum34 {
   NUM_DOOR_BUTTONS,
 }
 let iDoorButton: INT32[] /* [NUM_DOOR_BUTTONS] */;
-let DoorRegion: MOUSE_REGION;
+let DoorRegion: MOUSE_REGION = createMouseRegion();
 
 export function InitDoorEditing(iMapIndex: INT32): void {
   let pDoor: Pointer<DOOR>;

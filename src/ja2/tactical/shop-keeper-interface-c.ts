@@ -383,31 +383,31 @@ let guiItemCrossOut: UINT32;
 let gfDisplayNoRoomMsg: boolean = false;
 
 // Blanket the entire screen
-let gSKI_EntireScreenMouseRegions: MOUSE_REGION;
+let gSKI_EntireScreenMouseRegions: MOUSE_REGION = createMouseRegion();
 
-let gDealersInventoryMouseRegions: MOUSE_REGION[] /* [SKI_NUM_ARMS_DEALERS_INV_SLOTS] */;
-let gRepairmanInventorySmallFaceMouseRegions: MOUSE_REGION[] /* [SKI_NUM_ARMS_DEALERS_INV_SLOTS] */;
+let gDealersInventoryMouseRegions: MOUSE_REGION[] /* [SKI_NUM_ARMS_DEALERS_INV_SLOTS] */ = createArrayFrom(SKI_NUM_ARMS_DEALERS_INV_SLOTS, createMouseRegion);
+let gRepairmanInventorySmallFaceMouseRegions: MOUSE_REGION[] /* [SKI_NUM_ARMS_DEALERS_INV_SLOTS] */ = createArrayFrom(SKI_NUM_ARMS_DEALERS_INV_SLOTS, createMouseRegion);
 
-let gDealersOfferSlotsMouseRegions: MOUSE_REGION[] /* [SKI_NUM_TRADING_INV_SLOTS] */;
+let gDealersOfferSlotsMouseRegions: MOUSE_REGION[] /* [SKI_NUM_TRADING_INV_SLOTS] */ = createArrayFrom(SKI_NUM_TRADING_INV_SLOTS, createMouseRegion);
 
-let gPlayersOfferSlotsMouseRegions: MOUSE_REGION[] /* [SKI_NUM_TRADING_INV_SLOTS] */;
+let gPlayersOfferSlotsMouseRegions: MOUSE_REGION[] /* [SKI_NUM_TRADING_INV_SLOTS] */ = createArrayFrom(SKI_NUM_TRADING_INV_SLOTS, createMouseRegion);
 
-let gDealersOfferSlotsSmallFaceMouseRegions: MOUSE_REGION[] /* [SKI_NUM_TRADING_INV_SLOTS] */;
-let gPlayersOfferSlotsSmallFaceMouseRegions: MOUSE_REGION[] /* [SKI_NUM_TRADING_INV_SLOTS] */;
+let gDealersOfferSlotsSmallFaceMouseRegions: MOUSE_REGION[] /* [SKI_NUM_TRADING_INV_SLOTS] */ = createArrayFrom(SKI_NUM_TRADING_INV_SLOTS, createMouseRegion);
+let gPlayersOfferSlotsSmallFaceMouseRegions: MOUSE_REGION[] /* [SKI_NUM_TRADING_INV_SLOTS] */ = createArrayFrom(SKI_NUM_TRADING_INV_SLOTS, createMouseRegion);
 
-let gSkiInventoryMovementAreaMouseRegions: MOUSE_REGION;
+let gSkiInventoryMovementAreaMouseRegions: MOUSE_REGION = createMouseRegion();
 // void SelectSkiInventoryMovementAreaRegionCallBack(MOUSE_REGION * pRegion, INT32 iReason );
 
 // Mouse region for the subtitles region when the merc is talking
-let gShopKeeperSubTitleMouseRegion: MOUSE_REGION;
+let gShopKeeperSubTitleMouseRegion: MOUSE_REGION = createMouseRegion();
 
 // ATM:
 // MOUSE_REGION		gShopKeeperCoverTacticalButtonMouseRegion;
 
-let gArmsDealersFaceMouseRegions: MOUSE_REGION;
+let gArmsDealersFaceMouseRegions: MOUSE_REGION = createMouseRegion();
 
 // Region to allow the user to drop items to the ground
-let gArmsDealersDropItemToGroundMouseRegions: MOUSE_REGION;
+let gArmsDealersDropItemToGroundMouseRegions: MOUSE_REGION = createMouseRegion();
 
 ////////////////////////////////////////////
 //

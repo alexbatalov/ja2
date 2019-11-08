@@ -249,7 +249,7 @@ STR16	gzCreditNameFunny[]=
 
 // Global Variables
 
-let gCrdtMouseRegions: MOUSE_REGION[] /* [NUM_PEOPLE_IN_CREDITS] */;
+let gCrdtMouseRegions: MOUSE_REGION[] /* [NUM_PEOPLE_IN_CREDITS] */ = createArrayFrom(Enum382.NUM_PEOPLE_IN_CREDITS, createMouseRegion);
 
 let guiCreditBackGroundImage: UINT32;
 let guiCreditFaces: UINT32;

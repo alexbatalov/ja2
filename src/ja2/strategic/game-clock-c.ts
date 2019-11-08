@@ -16,8 +16,8 @@ export let guiTimeCurrentSectorWasLastLoaded: UINT32 = 0;
 let gfJustFinishedAPause: boolean = false;
 
 // clock mouse region
-let gClockMouseRegion: MOUSE_REGION;
-let gClockScreenMaskMouseRegion: MOUSE_REGION;
+let gClockMouseRegion: MOUSE_REGION = createMouseRegion();
+let gClockScreenMaskMouseRegion: MOUSE_REGION = createMouseRegion();
 
 const SECONDS_PER_COMPRESSION = 1; // 1/2 minute passes every 1 second of real time
 const SECONDS_PER_COMPRESSION_IN_RTCOMBAT = 10;

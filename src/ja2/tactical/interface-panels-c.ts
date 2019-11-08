@@ -365,17 +365,17 @@ let guiTEAMPanel: UINT32;
 let guiTEAMObjects: UINT32;
 
 // Globals for various mouse regions
-let gSM_SELMERCPanelRegion: MOUSE_REGION;
-let gSM_SELMERCBarsRegion: MOUSE_REGION;
-export let gSM_SELMERCMoneyRegion: MOUSE_REGION;
-let gSM_SELMERCEnemyIndicatorRegion: MOUSE_REGION;
-let gTEAM_PanelRegion: MOUSE_REGION;
-let gTEAM_FaceRegions: MOUSE_REGION[] /* [6] */;
-let gTEAM_BarsRegions: MOUSE_REGION[] /* [6] */;
-let gTEAM_LeftBarsRegions: MOUSE_REGION[] /* [6] */;
-let gTEAM_FirstHandInv: MOUSE_REGION[] /* [6] */;
-let gTEAM_SecondHandInv: MOUSE_REGION[] /* [6] */;
-let gTEAM_EnemyIndicator: MOUSE_REGION[] /* [6] */;
+let gSM_SELMERCPanelRegion: MOUSE_REGION = createMouseRegion();
+let gSM_SELMERCBarsRegion: MOUSE_REGION = createMouseRegion();
+export let gSM_SELMERCMoneyRegion: MOUSE_REGION = createMouseRegion();
+let gSM_SELMERCEnemyIndicatorRegion: MOUSE_REGION = createMouseRegion();
+let gTEAM_PanelRegion: MOUSE_REGION = createMouseRegion();
+let gTEAM_FaceRegions: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMouseRegion);
+let gTEAM_BarsRegions: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMouseRegion);
+let gTEAM_LeftBarsRegions: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMouseRegion);
+let gTEAM_FirstHandInv: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMouseRegion);
+let gTEAM_SecondHandInv: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMouseRegion);
+let gTEAM_EnemyIndicator: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMouseRegion);
 
 let gfTEAM_HandInvDispText: boolean[][] /* [6][NUM_INV_SLOTS] */;
 let gfSM_HandInvDispText: boolean[] /* [NUM_INV_SLOTS] */;

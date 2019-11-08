@@ -24,7 +24,7 @@ let uiOldMouseCursor: UINT32;
 export let gubPreferredInitialSelectedGuy: UINT8 = NOBODY;
 
 let gfTacticalIsModal: boolean = false;
-let gTacticalDisableRegion: MOUSE_REGION;
+let gTacticalDisableRegion: MOUSE_REGION = createMouseRegion();
 let gfTacticalDisableRegionActive: boolean = false;
 let gbTacticalDisableMode: INT8 = false;
 export let gModalDoneCallback: MODAL_HOOK;

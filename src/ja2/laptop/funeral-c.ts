@@ -79,10 +79,10 @@ let guiMortuary: UINT32;
 let guiRightColumn: UINT32;
 
 // Clicking on Funeral link
-let gSelectedFuneralLinkRegion: MOUSE_REGION[] /* [FUNERAL_NUMBER_OF_LINKS] */;
+let gSelectedFuneralLinkRegion: MOUSE_REGION[] /* [FUNERAL_NUMBER_OF_LINKS] */ = createArrayFrom(FUNERAL_NUMBER_OF_LINKS, createMouseRegion);
 
 // Clicking on rip sign to make it disappear
-let gSelectedRipSignRegion: MOUSE_REGION;
+let gSelectedRipSignRegion: MOUSE_REGION = createMouseRegion();
 
 export function GameInitFuneral(): void {
 }

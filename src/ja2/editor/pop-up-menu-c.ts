@@ -12,7 +12,7 @@ namespace ja2 {
 
 let gPopup: CurrentPopupMenuInformation;
 
-let popupRegion: MOUSE_REGION;
+let popupRegion: MOUSE_REGION = createMouseRegion();
 
 let gusEntryHeight: UINT16;
 let fWaitingForLButtonRelease: boolean = false;

@@ -141,10 +141,10 @@ let giDoneBtnImage: INT32;
 let guiOptionsToggles: UINT32[] /* [NUM_GAME_OPTIONS] */;
 
 // Mouse regions for the name of the option
-let gSelectedOptionTextRegion: MOUSE_REGION[] /* [NUM_GAME_OPTIONS] */;
+let gSelectedOptionTextRegion: MOUSE_REGION[] /* [NUM_GAME_OPTIONS] */ = createArrayFrom(Enum8.NUM_GAME_OPTIONS, createMouseRegion);
 
 // Mouse regions for the area around the toggle boxs
-let gSelectedToggleBoxAreaRegion: MOUSE_REGION;
+let gSelectedToggleBoxAreaRegion: MOUSE_REGION = createMouseRegion();
 
 /////////////////////////////////
 //

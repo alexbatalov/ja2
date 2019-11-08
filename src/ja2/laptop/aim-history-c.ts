@@ -48,7 +48,7 @@ let gubAimHistoryMenuButtonDown: UINT8 = 255;
 let gfExitingAimHistory: boolean;
 let AimHistorySubPagesVisitedFlag: boolean[] /* [NUM_AIM_HISTORY_PAGES] */;
 
-let gSelectedHistoryTocMenuRegion: MOUSE_REGION[] /* [NUM_AIM_HISTORY_PAGES] */;
+let gSelectedHistoryTocMenuRegion: MOUSE_REGION[] /* [NUM_AIM_HISTORY_PAGES] */ = createArrayFrom(NUM_AIM_HISTORY_PAGES, createMouseRegion);
 
 let guiHistoryMenuButton: UINT32[] /* [AIM_HISTORY_MENU_BUTTON_AMOUNT] */;
 let guiHistoryMenuButtonImage: INT32;

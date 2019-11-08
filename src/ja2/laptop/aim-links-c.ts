@@ -40,7 +40,7 @@ let gubLinkPages: UINT8[] /* [] */ = [
 ];
 
 // Clicking on guys Face
-let gSelectedLinkRegion: MOUSE_REGION[] /* [AIM_LINK_NUM_LINKS] */;
+let gSelectedLinkRegion: MOUSE_REGION[] /* [AIM_LINK_NUM_LINKS] */ = createArrayFrom(AIM_LINK_NUM_LINKS, createMouseRegion);
 
 export function GameInitAimLinks(): void {
 }

@@ -50,7 +50,7 @@ SOLDIERTYPE* InvolvedSoldier( INT32 index );
 SOLDIERTYPE* UninvolvedSoldier( INT32 index );
 */
 
-let PBInterfaceBlanket: MOUSE_REGION;
+let PBInterfaceBlanket: MOUSE_REGION = createMouseRegion();
 export let gfPreBattleInterfaceActive: boolean = false;
 let iPBButton: UINT32[] /* [3] */;
 let iPBButtonImage: UINT32[] /* [3] */;

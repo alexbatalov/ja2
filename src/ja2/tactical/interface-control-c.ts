@@ -13,7 +13,7 @@ let gsUICurIntTileOldShade: UINT8;
 
 export let gfRerenderInterfaceFromHelpText: boolean = false;
 
-let gLockPanelOverlayRegion: MOUSE_REGION;
+let gLockPanelOverlayRegion: MOUSE_REGION = createMouseRegion();
 
 export let gfPausedTacticalRenderInterfaceFlags: boolean = false;
 export let gfPausedTacticalRenderFlags: boolean = false;

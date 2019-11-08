@@ -250,28 +250,28 @@ let guiBobbyRGotoShipmentPage: UINT32;
 let giBobbyRGotoShipmentPageImage: INT32;
 
 // mouse region for the shipping speed selection area
-let gSelectedShippingSpeedRegion: MOUSE_REGION[] /* [3] */;
+let gSelectedShippingSpeedRegion: MOUSE_REGION[] /* [3] */ = createArrayFrom(3, createMouseRegion);
 
 // mouse region for the confirm area
-let gSelectedConfirmOrderRegion: MOUSE_REGION;
+let gSelectedConfirmOrderRegion: MOUSE_REGION = createMouseRegion();
 
 // mouse region for the drop down city location area
-let gSelectedDropDownRegion: MOUSE_REGION[] /* [BOBBYR_ORDER_NUM_SHIPPING_CITIES] */;
+let gSelectedDropDownRegion: MOUSE_REGION[] /* [BOBBYR_ORDER_NUM_SHIPPING_CITIES] */ = createArrayFrom(BOBBYR_ORDER_NUM_SHIPPING_CITIES, createMouseRegion);
 
 // mouse region for scroll area for the drop down city location area
-let gSelectedScrollAreaDropDownRegion: MOUSE_REGION[] /* [BOBBYR_ORDER_NUM_SHIPPING_CITIES] */;
+let gSelectedScrollAreaDropDownRegion: MOUSE_REGION[] /* [BOBBYR_ORDER_NUM_SHIPPING_CITIES] */ = createArrayFrom(BOBBYR_ORDER_NUM_SHIPPING_CITIES, createMouseRegion);
 
 // mouse region to activate the shipping location drop down
-let gSelectedActivateCityDroDownRegion: MOUSE_REGION;
+let gSelectedActivateCityDroDownRegion: MOUSE_REGION = createMouseRegion();
 
 // mouse region to close the drop down menu
-let gSelectedCloseDropDownRegion: MOUSE_REGION;
+let gSelectedCloseDropDownRegion: MOUSE_REGION = createMouseRegion();
 
 // mouse region to click on the title to go to the home page
-let gSelectedTitleLinkRegion: MOUSE_REGION;
+let gSelectedTitleLinkRegion: MOUSE_REGION = createMouseRegion();
 
 // mouse region to click on the up or down arrow on the scroll area
-let gSelectedUpDownArrowOnScrollAreaRegion: MOUSE_REGION[] /* [2] */;
+let gSelectedUpDownArrowOnScrollAreaRegion: MOUSE_REGION[] /* [2] */ = createArrayFrom(2, createMouseRegion);
 
 // ppp
 

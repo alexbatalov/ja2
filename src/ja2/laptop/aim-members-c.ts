@@ -398,10 +398,10 @@ let giXToCloseVideoConfButton: INT32;
 
 // Mouse Regions
 // Clicking on guys Face
-let gSelectedFaceRegion: MOUSE_REGION;
+let gSelectedFaceRegion: MOUSE_REGION = createMouseRegion();
 
 // Clicking To shut merc up
-let gSelectedShutUpMercRegion: MOUSE_REGION;
+let gSelectedShutUpMercRegion: MOUSE_REGION = createMouseRegion();
 
 //*******************************************
 //

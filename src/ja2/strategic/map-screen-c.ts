@@ -466,20 +466,20 @@ let guiNewMailIcons: UINT32;
 export let guiLEVELMARKER: UINT32; // the white rectangle highlighting the current level on the map border
 
 // misc mouse regions
-let gCharInfoFaceRegion: MOUSE_REGION;
-export let gCharInfoHandRegion: MOUSE_REGION;
-export let gMPanelRegion: MOUSE_REGION;
-let gMapViewRegion: MOUSE_REGION;
-let gMapScreenMaskRegion: MOUSE_REGION;
-let gTrashCanRegion: MOUSE_REGION;
+let gCharInfoFaceRegion: MOUSE_REGION = createMouseRegion();
+export let gCharInfoHandRegion: MOUSE_REGION = createMouseRegion();
+export let gMPanelRegion: MOUSE_REGION = createMouseRegion();
+let gMapViewRegion: MOUSE_REGION = createMouseRegion();
+let gMapScreenMaskRegion: MOUSE_REGION = createMouseRegion();
+let gTrashCanRegion: MOUSE_REGION = createMouseRegion();
 
 // mouse regions for team info panel
-let gTeamListNameRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
-let gTeamListAssignmentRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
-let gTeamListSleepRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
-let gTeamListLocationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
-let gTeamListDestinationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
-let gTeamListContractRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
+let gTeamListNameRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */ = createArrayFrom(MAX_CHARACTER_COUNT, createMouseRegion);
+let gTeamListAssignmentRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */ = createArrayFrom(MAX_CHARACTER_COUNT, createMouseRegion);
+let gTeamListSleepRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */ = createArrayFrom(MAX_CHARACTER_COUNT, createMouseRegion);
+let gTeamListLocationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */ = createArrayFrom(MAX_CHARACTER_COUNT, createMouseRegion);
+let gTeamListDestinationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */ = createArrayFrom(MAX_CHARACTER_COUNT, createMouseRegion);
+let gTeamListContractRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */ = createArrayFrom(MAX_CHARACTER_COUNT, createMouseRegion);
 
 export let gItemPointer: OBJECTTYPE = createObjectType();
 export let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;

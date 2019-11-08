@@ -26,7 +26,7 @@ let guiCardBackground: UINT32;
 export let gbCurrentlySelectedCard: INT8;
 
 // link to the card gallery
-let gSelectedFloristCardsRegion: MOUSE_REGION[] /* [9] */;
+let gSelectedFloristCardsRegion: MOUSE_REGION[] /* [9] */ = createArrayFrom(9, createMouseRegion);
 
 let guiFlowerCardsButtonImage: INT32;
 let guiFlowerCardsBackButton: UINT32;

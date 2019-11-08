@@ -20,7 +20,7 @@ let fVoiceCVisited: boolean = false;
 let fReDrawVoicesScreenFlag: boolean = false;
 
 // the portrait region, for player to click on and re-hear voice
-let gVoicePortraitRegion: MOUSE_REGION;
+let gVoicePortraitRegion: MOUSE_REGION = createMouseRegion();
 
 export function EnterIMPVoices(): void {
   fVoiceAVisited = false;

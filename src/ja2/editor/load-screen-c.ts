@@ -41,7 +41,7 @@ let FileInfo: GETFILESTRUCT;
 let fEnteringLoadSaveScreen: boolean = true;
 let gfPassedSaveCheck: boolean = false;
 
-let BlanketRegion: MOUSE_REGION;
+let BlanketRegion: MOUSE_REGION = createMouseRegion();
 
 let gszCurrFilename: string /* CHAR8[80] */;
 

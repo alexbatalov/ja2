@@ -398,7 +398,7 @@ let gfDropDamagedItems: boolean = false;
 //
 // Mouse Regions
 //
-let gQuestDebugSysScreenRegions: MOUSE_REGION;
+let gQuestDebugSysScreenRegions: MOUSE_REGION = createMouseRegion();
 // void QuestDebugSysScreenRegionCallBack(MOUSE_REGION * pRegion, INT32 iReason );
 
 let guiQuestDebugExitButton: UINT32;
@@ -434,14 +434,14 @@ let guiQuestDebugAddNpcToTeamToggle: UINT32;
 // checkbox for weather have rpc say the sector description
 let guiQuestDebugRPCSaySectorDescToggle: UINT32;
 
-let gSelectedNpcListRegion: MOUSE_REGION[] /* [QUEST_DBS_MAX_DISPLAYED_ENTRIES] */;
+let gSelectedNpcListRegion: MOUSE_REGION[] /* [QUEST_DBS_MAX_DISPLAYED_ENTRIES] */ = createArrayFrom(QUEST_DBS_MAX_DISPLAYED_ENTRIES, createMouseRegion);
 
-let gScrollAreaRegion: MOUSE_REGION[] /* [QUEST_DBS_NUM_INCREMENTS_IN_SCROLL_BAR] */;
+let gScrollAreaRegion: MOUSE_REGION[] /* [QUEST_DBS_NUM_INCREMENTS_IN_SCROLL_BAR] */ = createArrayFrom(QUEST_DBS_NUM_INCREMENTS_IN_SCROLL_BAR, createMouseRegion);
 
-let gScrollArrowsRegion: MOUSE_REGION[] /* [2] */;
+let gScrollArrowsRegion: MOUSE_REGION[] /* [2] */ = createArrayFrom(2, createMouseRegion);
 
 // Text entry Disable the screen
-let gQuestTextEntryDebugDisableScreenRegion: MOUSE_REGION;
+let gQuestTextEntryDebugDisableScreenRegion: MOUSE_REGION = createMouseRegion();
 
 // Ok button on the text entry form
 let guiQuestDebugTextEntryOkBtn: UINT32;
@@ -450,10 +450,10 @@ let guiQuestDebugTextEntryOkBtn: UINT32;
 let guiQuestDebugNPCInventOkBtn: UINT32;
 
 // Mouse regions for the Quests
-let gQuestListRegion: MOUSE_REGION[] /* [QUEST_DBS_NUM_DISPLAYED_QUESTS] */;
+let gQuestListRegion: MOUSE_REGION[] /* [QUEST_DBS_NUM_DISPLAYED_QUESTS] */ = createArrayFrom(QUEST_DBS_NUM_DISPLAYED_QUESTS, createMouseRegion);
 
 // Mouse regions for the Facts
-let gFactListRegion: MOUSE_REGION[] /* [QUEST_DBS_NUM_DISPLAYED_FACTS] */;
+let gFactListRegion: MOUSE_REGION[] /* [QUEST_DBS_NUM_DISPLAYED_FACTS] */ = createArrayFrom(QUEST_DBS_NUM_DISPLAYED_FACTS, createMouseRegion);
 
 let guiQDPgUpButtonButton: UINT32;
 

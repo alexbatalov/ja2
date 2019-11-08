@@ -238,7 +238,7 @@ let gfTemporaryDisablingOfLoadPendingFlag: boolean = false;
 // GLOBAL FOR WHICH SCREEN TO EXIT TO FOR LAPTOP
 export let guiExitScreen: UINT32 = Enum26.MAP_SCREEN;
 
-let gLaptopRegion: MOUSE_REGION;
+let gLaptopRegion: MOUSE_REGION = createMouseRegion();
 // Laptop screen graphic handle
 let guiLAPTOP: UINT32;
 let fNewWWWDisplay: boolean = true;
@@ -347,18 +347,18 @@ let gfWWWaitSubSitesVisitedFlags: boolean[] /* [LAPTOP_MODE_SIRTECH - LAPTOP_MOD
 // INT32 iBookMarkList[MAX_BOOKMARKS];
 
 // mouse regions
-let gEmailRegion: MOUSE_REGION;
-let gWWWRegion: MOUSE_REGION;
-let gFinancialRegion: MOUSE_REGION;
-let gPersonnelRegion: MOUSE_REGION;
-let gHistoryRegion: MOUSE_REGION;
-let gFilesRegion: MOUSE_REGION;
-let gLapTopScreenRegion: MOUSE_REGION;
-let gBookmarkMouseRegions: MOUSE_REGION[] /* [MAX_BOOKMARKS] */;
-export let pScreenMask: MOUSE_REGION;
-let gLapTopProgramMinIcon: MOUSE_REGION;
-let gNewMailIconRegion: MOUSE_REGION;
-let gNewFileIconRegion: MOUSE_REGION;
+let gEmailRegion: MOUSE_REGION = createMouseRegion();
+let gWWWRegion: MOUSE_REGION = createMouseRegion();
+let gFinancialRegion: MOUSE_REGION = createMouseRegion();
+let gPersonnelRegion: MOUSE_REGION = createMouseRegion();
+let gHistoryRegion: MOUSE_REGION = createMouseRegion();
+let gFilesRegion: MOUSE_REGION = createMouseRegion();
+let gLapTopScreenRegion: MOUSE_REGION = createMouseRegion();
+let gBookmarkMouseRegions: MOUSE_REGION[] /* [MAX_BOOKMARKS] */ = createArrayFrom(MAX_BOOKMARKS, createMouseRegion);
+export let pScreenMask: MOUSE_REGION = createMouseRegion();
+let gLapTopProgramMinIcon: MOUSE_REGION = createMouseRegion();
+let gNewMailIconRegion: MOUSE_REGION = createMouseRegion();
+let gNewFileIconRegion: MOUSE_REGION = createMouseRegion();
 
 // highlighted mouse region
 let giHighLightRegion: INT32 = Enum92.NO_REGION;

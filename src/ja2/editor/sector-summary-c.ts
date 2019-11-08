@@ -56,7 +56,7 @@ let gfGlobalSummaryLoaded: boolean = false;
 let gpSectorSummary: Pointer<SUMMARYFILE>[][][] /* [16][16][8] */;
 let gpCurrentSectorSummary: Pointer<SUMMARYFILE>;
 
-let MapRegion: MOUSE_REGION;
+let MapRegion: MOUSE_REGION = createMouseRegion();
 
 // Set if there is an existing global summary.  The first time this is run on your computer, it
 // will not exist, and will have to be generated before this will be set.

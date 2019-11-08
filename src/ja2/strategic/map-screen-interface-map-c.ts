@@ -405,8 +405,8 @@ export let bSelectedContractChar: INT8 = -1;
 export let fTempPathAlreadyDrawn: boolean = false;
 
 // the regions for the mapscreen militia box
-let gMapScreenMilitiaBoxRegions: MOUSE_REGION[] /* [9] */;
-let gMapScreenMilitiaRegion: MOUSE_REGION;
+let gMapScreenMilitiaBoxRegions: MOUSE_REGION[] /* [9] */ = createArrayFrom(9, createMouseRegion);
+let gMapScreenMilitiaRegion: MOUSE_REGION = createMouseRegion();
 
 // the mine icon
 export let guiMINEICON: UINT32;

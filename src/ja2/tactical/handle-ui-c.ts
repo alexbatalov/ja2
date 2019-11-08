@@ -152,10 +152,10 @@ export let gfUIIntTileLocation: boolean;
 export let gzIntTileLocation2: string /* INT16[20] */;
 export let gfUIIntTileLocation2: boolean;
 
-export let gDisableRegion: MOUSE_REGION;
+export let gDisableRegion: MOUSE_REGION = createMouseRegion();
 export let gfDisableRegionActive: boolean = false;
 
-export let gUserTurnRegion: MOUSE_REGION;
+export let gUserTurnRegion: MOUSE_REGION = createMouseRegion();
 export let gfUserTurnRegionActive: boolean = false;
 
 // For use with mouse button query routines

@@ -52,7 +52,7 @@ let uiFullNameCursorPosition: UINT32 = 196 + LAPTOP_SCREEN_UL_X;
 let fNewCharInString: boolean = false;
 
 // mouse regions
-let gIMPBeginScreenMouseRegions: MOUSE_REGION[] /* [4] */;
+let gIMPBeginScreenMouseRegions: MOUSE_REGION[] /* [4] */ = createArrayFrom(4, createMouseRegion);
 
 export function EnterIMPBeginScreen(): void {
   // reset all variables

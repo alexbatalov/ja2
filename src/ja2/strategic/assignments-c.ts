@@ -73,19 +73,19 @@ let gsAssignmentBoxesX: INT16;
 let gsAssignmentBoxesY: INT16;
 
 // assignment menu mouse regions
-let gAssignmentMenuRegion: MOUSE_REGION[] /* [MAX_ASSIGN_STRING_COUNT] */;
-let gTrainingMenuRegion: MOUSE_REGION[] /* [MAX_TRAIN_STRING_COUNT] */;
-let gAttributeMenuRegion: MOUSE_REGION[] /* [MAX_ATTRIBUTE_STRING_COUNT] */;
-let gSquadMenuRegion: MOUSE_REGION[] /* [MAX_SQUAD_MENU_STRING_COUNT] */;
-let gContractMenuRegion: MOUSE_REGION[] /* [MAX_CONTRACT_MENU_STRING_COUNT] */;
-let gRemoveMercAssignRegion: MOUSE_REGION[] /* [MAX_REMOVE_MERC_COUNT] */;
-let gEpcMenuRegion: MOUSE_REGION[] /* [MAX_EPC_MENU_STRING_COUNT] */;
-let gRepairMenuRegion: MOUSE_REGION[] /* [20] */;
+let gAssignmentMenuRegion: MOUSE_REGION[] /* [MAX_ASSIGN_STRING_COUNT] */ = createArrayFrom(Enum148.MAX_ASSIGN_STRING_COUNT, createMouseRegion);
+let gTrainingMenuRegion: MOUSE_REGION[] /* [MAX_TRAIN_STRING_COUNT] */ = createArrayFrom(Enum149.MAX_TRAIN_STRING_COUNT, createMouseRegion);
+let gAttributeMenuRegion: MOUSE_REGION[] /* [MAX_ATTRIBUTE_STRING_COUNT] */ = createArrayFrom(Enum146.MAX_ATTRIBUTE_STRING_COUNT, createMouseRegion);
+let gSquadMenuRegion: MOUSE_REGION[] /* [MAX_SQUAD_MENU_STRING_COUNT] */ = createArrayFrom(Enum151.MAX_SQUAD_MENU_STRING_COUNT, createMouseRegion);
+let gContractMenuRegion: MOUSE_REGION[] /* [MAX_CONTRACT_MENU_STRING_COUNT] */ = createArrayFrom(Enum152.MAX_CONTRACT_MENU_STRING_COUNT, createMouseRegion);
+let gRemoveMercAssignRegion: MOUSE_REGION[] /* [MAX_REMOVE_MERC_COUNT] */ = createArrayFrom(Enum150.MAX_REMOVE_MERC_COUNT, createMouseRegion);
+let gEpcMenuRegion: MOUSE_REGION[] /* [MAX_EPC_MENU_STRING_COUNT] */ = createArrayFrom(Enum147.MAX_EPC_MENU_STRING_COUNT, createMouseRegion);
+let gRepairMenuRegion: MOUSE_REGION[] /* [20] */ = createArrayFrom(20, createMouseRegion);
 
 // mouse region for vehicle menu
-let gVehicleMenuRegion: MOUSE_REGION[] /* [20] */;
+let gVehicleMenuRegion: MOUSE_REGION[] /* [20] */ = createArrayFrom(20, createMouseRegion);
 
-let gAssignmentScreenMaskRegion: MOUSE_REGION;
+let gAssignmentScreenMaskRegion: MOUSE_REGION = createMouseRegion();
 
 export let fShownAssignmentMenu: boolean = false;
 let fShowVehicleMenu: boolean = false;

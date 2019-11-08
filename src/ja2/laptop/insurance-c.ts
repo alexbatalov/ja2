@@ -58,10 +58,10 @@ let guiInsuranceBigRedLineImage: UINT32;
 let guiInsuranceBulletImage: UINT32;
 
 // link to the varios pages
-let gSelectedInsuranceLinkRegion: MOUSE_REGION[] /* [3] */;
+let gSelectedInsuranceLinkRegion: MOUSE_REGION[] /* [3] */ = createArrayFrom(3, createMouseRegion);
 
 // link to the home page by clicking on the small title
-let gSelectedInsuranceTitleLinkRegion: MOUSE_REGION;
+let gSelectedInsuranceTitleLinkRegion: MOUSE_REGION = createMouseRegion();
 
 export function GameInitInsurance(): void {
 }

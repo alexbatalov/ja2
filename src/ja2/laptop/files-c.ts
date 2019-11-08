@@ -109,7 +109,7 @@ const enum Enum76 {
   NEXT_FILES_PAGE_BUTTON,
 }
 // mouse regions
-let pFilesRegions: MOUSE_REGION[] /* [MAX_FILES_PAGE] */;
+let pFilesRegions: MOUSE_REGION[] /* [MAX_FILES_PAGE] */ = createArrayFrom(MAX_FILES_PAGE, createMouseRegion);
 
 function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: string /* STR8 */, pSecondPicFile: string /* STR8 */): UINT32 {
   // adds Files item to player's log(Files List), returns unique id number of it

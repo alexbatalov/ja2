@@ -200,22 +200,22 @@ let guiFlowerOrderClearButton: UINT32;
 let guiFlowerOrderGalleryButton: UINT32;
 
 // Clicking on OrderCheckBox
-let gSelectedFloristCheckBoxRegion: MOUSE_REGION[] /* [6] */;
+let gSelectedFloristCheckBoxRegion: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMouseRegion);
 
 // link to the card gallery
-let gSelectedFloristCardGalleryLinkRegion: MOUSE_REGION;
+let gSelectedFloristCardGalleryLinkRegion: MOUSE_REGION = createMouseRegion();
 
 // link to the flower gallery by clicking on the flower
-let gSelectedFloristGalleryLinkRegion: MOUSE_REGION;
+let gSelectedFloristGalleryLinkRegion: MOUSE_REGION = createMouseRegion();
 
 // the drop down for the city
-let gSelectedFloristDropDownRegion: MOUSE_REGION;
+let gSelectedFloristDropDownRegion: MOUSE_REGION = createMouseRegion();
 
 // to disable the drop down window
-let gSelectedFloristDisableDropDownRegion: MOUSE_REGION;
+let gSelectedFloristDisableDropDownRegion: MOUSE_REGION = createMouseRegion();
 
 // mouse region for the drop down city location area
-let gSelectedFlowerDropDownRegion: MOUSE_REGION[] /* [FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS] */;
+let gSelectedFlowerDropDownRegion: MOUSE_REGION[] /* [FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS] */ = createArrayFrom(FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS, createMouseRegion);
 
 // to select typing in the personal sentiment box
 // MOUSE_REGION    gSelectedFloristPersonalSentimentBoxRegion;

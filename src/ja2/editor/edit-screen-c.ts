@@ -109,7 +109,7 @@ export let gusEditorTaskbarLoColor: UINT16;
 
 export let gfGotoGridNoUI: boolean = false;
 let guiGotoGridNoUIButtonID: INT32;
-let GotoGridNoUIRegion: MOUSE_REGION;
+let GotoGridNoUIRegion: MOUSE_REGION = createMouseRegion();
 
 //----------------------------------------------------------------------------------------------
 //	EditScreenInit

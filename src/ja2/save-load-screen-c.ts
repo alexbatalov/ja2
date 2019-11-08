@@ -157,9 +157,9 @@ let guiSlgSaveLoadBtn: UINT32;
 let guiSaveLoadImage: INT32;
 
 // Mouse regions for the currently selected save game
-let gSelectedSaveRegion: MOUSE_REGION[] /* [NUM_SAVE_GAMES] */;
+let gSelectedSaveRegion: MOUSE_REGION[] /* [NUM_SAVE_GAMES] */ = createArrayFrom(NUM_SAVE_GAMES, createMouseRegion);
 
-let gSLSEntireScreenRegion: MOUSE_REGION;
+let gSLSEntireScreenRegion: MOUSE_REGION = createMouseRegion();
 
 //////////////////////////////////////////////////////
 //

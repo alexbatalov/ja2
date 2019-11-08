@@ -92,30 +92,30 @@ let gubOldListMode: UINT8;
 
 // Mouse stuff
 // Clicking on To Mugshot
-let gSelectedToMugShotRegion: MOUSE_REGION;
+let gSelectedToMugShotRegion: MOUSE_REGION = createMouseRegion();
 
 // Clicking on ToStats
-let gSelectedToStatsRegion: MOUSE_REGION;
+let gSelectedToStatsRegion: MOUSE_REGION = createMouseRegion();
 
 // Clicking on ToStats
-let gSelectedToArchiveRegion: MOUSE_REGION;
+let gSelectedToArchiveRegion: MOUSE_REGION = createMouseRegion();
 
 // Clicking on Price Check Box
-let gSelectedPriceBoxRegion: MOUSE_REGION;
+let gSelectedPriceBoxRegion: MOUSE_REGION = createMouseRegion();
 // Clicking on Explosive Check Box
-let gSelectedExpBoxRegion: MOUSE_REGION;
+let gSelectedExpBoxRegion: MOUSE_REGION = createMouseRegion();
 // Clicking on Markmanship Check Box
-let gSelectedMarkBoxRegion: MOUSE_REGION;
+let gSelectedMarkBoxRegion: MOUSE_REGION = createMouseRegion();
 // Clicking on Medical Check box
-let gSelectedMedicalBoxRegion: MOUSE_REGION;
+let gSelectedMedicalBoxRegion: MOUSE_REGION = createMouseRegion();
 // Clicking on Explosive Check Box
-let gSelectedExplosiveBoxRegion: MOUSE_REGION;
+let gSelectedExplosiveBoxRegion: MOUSE_REGION = createMouseRegion();
 // Clicking on Mechanical Check Box
-let gSelectedMechanicalBoxRegion: MOUSE_REGION;
+let gSelectedMechanicalBoxRegion: MOUSE_REGION = createMouseRegion();
 // Clicking on Ascending Check Box
-let gSelectedAscendBoxRegion: MOUSE_REGION;
+let gSelectedAscendBoxRegion: MOUSE_REGION = createMouseRegion();
 // Clicking on Descending Check Box
-let gSelectedDescendBoxRegion: MOUSE_REGION;
+let gSelectedDescendBoxRegion: MOUSE_REGION = createMouseRegion();
 
 let guiSortByBox: UINT32;
 let guiToAlumni: UINT32;

@@ -55,7 +55,7 @@ let guiBobbyRShipmentBackImage: INT32;
 let guiBobbyRShipmentHome: UINT32;
 let giBobbyRShipmentHomeImage: INT32;
 
-let gSelectedPreviousShipmentsRegion: MOUSE_REGION[] /* [BOBBYR_SHIPMENT_NUM_PREVIOUS_SHIPMENTS] */;
+let gSelectedPreviousShipmentsRegion: MOUSE_REGION[] /* [BOBBYR_SHIPMENT_NUM_PREVIOUS_SHIPMENTS] */ = createArrayFrom(BOBBYR_SHIPMENT_NUM_PREVIOUS_SHIPMENTS, createMouseRegion);
 
 //
 // Function Prototypes

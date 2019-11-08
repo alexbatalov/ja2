@@ -91,7 +91,7 @@ export let gsCurrentInsuranceMercIndex: INT16;
 let gsMaxPlayersOnTeam: INT16;
 
 // link to the varios pages
-let gSelectedInsuranceContractLinkRegion: MOUSE_REGION[] /* [2] */;
+let gSelectedInsuranceContractLinkRegion: MOUSE_REGION[] /* [2] */ = createArrayFrom(2, createMouseRegion);
 
 let guiInsContractPrevButtonImage: INT32;
 let guiInsContractPrevBackButton: UINT32;

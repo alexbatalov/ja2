@@ -122,7 +122,7 @@ const enum Enum68 {
 }
 
 // Toc menu mouse regions
-let gSelectedPolicyTocMenuRegion: MOUSE_REGION[] /* [NUM_AIM_POLICY_TOC_BUTTONS] */;
+let gSelectedPolicyTocMenuRegion: MOUSE_REGION[] /* [NUM_AIM_POLICY_TOC_BUTTONS] */ = createArrayFrom(NUM_AIM_POLICY_TOC_BUTTONS, createMouseRegion);
 
 let guiPoliciesAgreeButton: UINT32[] /* [2] */;
 let guiPoliciesButtonImage: INT32;

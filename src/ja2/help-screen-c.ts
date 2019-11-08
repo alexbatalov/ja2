@@ -280,14 +280,14 @@ let gubRenderHelpScreenTwiceInaRow: UINT8 = 0;
 // mmm
 
 // region to mask the background
-let gHelpScreenFullScreenMask: MOUSE_REGION;
+let gHelpScreenFullScreenMask: MOUSE_REGION = createMouseRegion();
 // void SelectHelpTextFullScreenMaskCallBack(MOUSE_REGION * pRegion, INT32 iReason );
 
 // region to mask the background
-let gHelpScreenScrollArea: MOUSE_REGION;
+let gHelpScreenScrollArea: MOUSE_REGION = createMouseRegion();
 
 // region to mask the background
-let gHelpScreenScrollAreaArrows: MOUSE_REGION;
+let gHelpScreenScrollAreaArrows: MOUSE_REGION = createMouseRegion();
 
 // checkbox to toggle show help again toggle
 let gHelpScreenDontShowHelpAgainToggle: UINT32;

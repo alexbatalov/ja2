@@ -53,9 +53,9 @@ let iUpdateBoxWaitingList: INT32[] /* [MAX_CHARACTER_COUNT] */;
 let pFastHelpMapScreenList: FASTHELPREGION[] /* [MAX_MAPSCREEN_FAST_HELP] */;
 
 // the move menu region
-let gMoveMenuRegion: MOUSE_REGION[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
+let gMoveMenuRegion: MOUSE_REGION[] /* [MAX_POPUP_BOX_STRING_COUNT] */ = createArrayFrom(MAX_POPUP_BOX_STRING_COUNT, createMouseRegion);
 
-let gMapScreenHelpTextMask: MOUSE_REGION;
+let gMapScreenHelpTextMask: MOUSE_REGION = createMouseRegion();
 
 export let fShowMapScreenHelpText: boolean = false;
 let fScreenMaskForMoveCreated: boolean = false;
@@ -131,7 +131,7 @@ let fSquadIsMoving: INT32[] /* [NUMBER_OF_SQUADS] */;
 let iVehicleMovingList: INT32[] /* [NUMBER_OF_SQUADS] */;
 let fVehicleIsMoving: INT32[] /* [NUMBER_OF_SQUADS] */;
 
-let gMoveBoxScreenMask: MOUSE_REGION;
+let gMoveBoxScreenMask: MOUSE_REGION = createMouseRegion();
 
 // has the inventory pool been selected to be on or off?
 let fMapInventoryPoolInited: boolean = false;
@@ -139,7 +139,7 @@ export let fShowMapScreenMovementList: boolean = false;
 
 export let gCharactersList: MapScreenCharacterSt[] /* [MAX_CHARACTER_COUNT + 1] */;
 
-export let gMapStatusBarsRegion: MOUSE_REGION;
+export let gMapStatusBarsRegion: MOUSE_REGION = createMouseRegion();
 
 let MovePosition: SGPPoint = createSGPPointFrom(450, 100);
 
@@ -161,11 +161,11 @@ let iOldContractTimes: INT32[] /* [MAX_CHARACTER_COUNT] */;
 export let giBoxY: INT32 = 0;
 
 // screen mask for inventory pop up
-let gInventoryScreenMask: MOUSE_REGION;
+let gInventoryScreenMask: MOUSE_REGION = createMouseRegion();
 
-let gContractIconRegion: MOUSE_REGION;
-let gInsuranceIconRegion: MOUSE_REGION;
-let gDepositIconRegion: MOUSE_REGION;
+let gContractIconRegion: MOUSE_REGION = createMouseRegion();
+let gInsuranceIconRegion: MOUSE_REGION = createMouseRegion();
+let gDepositIconRegion: MOUSE_REGION = createMouseRegion();
 
 // general line..current and old
 export let giHighLine: INT32 = -1;

@@ -7,7 +7,7 @@ const MAP_BORDER_CORNER_X = 584;
 const MAP_BORDER_CORNER_Y = 279;
 
 // mouse levels
-let LevelMouseRegions: MOUSE_REGION[] /* [4] */;
+let LevelMouseRegions: MOUSE_REGION[] /* [4] */ = createArrayFrom(4, createMouseRegion);
 
 // graphics
 let guiMapBorder: UINT32;

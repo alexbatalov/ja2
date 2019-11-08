@@ -67,8 +67,8 @@ let giIMPAttributeSelectionSliderButton: UINT32[] /* [20] */;
 let giIMPAttributeSelectionSliderButtonImage: UINT32[] /* [20] */;
 
 // mouse regions
-let pSliderRegions: MOUSE_REGION[] /* [10] */;
-let pSliderBarRegions: MOUSE_REGION[] /* [10] */;
+let pSliderRegions: MOUSE_REGION[] /* [10] */ = createArrayFrom(10, createMouseRegion);
+let pSliderBarRegions: MOUSE_REGION[] /* [10] */ = createArrayFrom(10, createMouseRegion);
 
 // The currently "anchored scroll bar"
 let gpCurrentScrollBox: Pointer<MOUSE_REGION> = null;

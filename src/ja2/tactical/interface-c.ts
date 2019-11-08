@@ -36,7 +36,7 @@ interface TOP_MESSAGE {
 let gTopMessage: TOP_MESSAGE;
 export let gfTopMessageDirty: boolean = false;
 
-let gMenuOverlayRegion: MOUSE_REGION;
+let gMenuOverlayRegion: MOUSE_REGION = createMouseRegion();
 
 export let gusOldSelectedSoldier: UINT16 = NO_SOLDIER;
 
@@ -139,8 +139,8 @@ export let guiBURSTACCUM: UINT32;
 let guiITEMPOINTERHATCHES: UINT32;
 
 // UI Globals
-export let gViewportRegion: MOUSE_REGION;
-export let gRadarRegion: MOUSE_REGION;
+export let gViewportRegion: MOUSE_REGION = createMouseRegion();
+export let gRadarRegion: MOUSE_REGION = createMouseRegion();
 
 let gsUpArrowX: UINT16;
 let gsUpArrowY: UINT16;

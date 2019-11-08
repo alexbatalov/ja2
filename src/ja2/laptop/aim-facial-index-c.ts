@@ -33,10 +33,10 @@ const AIM_FI_AWAY_TEXT_OFFSET_WIDTH = 48;
 // Mouse Regions
 
 // Face regions
-let gMercFaceMouseRegions: MOUSE_REGION[] /* [MAX_NUMBER_MERCS] */;
+let gMercFaceMouseRegions: MOUSE_REGION[] /* [MAX_NUMBER_MERCS] */ = createArrayFrom(MAX_NUMBER_MERCS, createMouseRegion);
 
 // Screen region, used to right click to go back to previous page
-let gScreenMouseRegions: MOUSE_REGION;
+let gScreenMouseRegions: MOUSE_REGION = createMouseRegion();
 
 export function GameInitAimFacialIndex(): void {
 }

@@ -174,9 +174,9 @@ let fSortSubjectUpwards: boolean = false;
 let gfPageButtonsWereCreated: boolean = false;
 
 // mouse regions
-let pEmailRegions: MOUSE_REGION[] /* [MAX_MESSAGES_PAGE] */;
-export let pScreenMask: MOUSE_REGION;
-let pDeleteScreenMask: MOUSE_REGION;
+let pEmailRegions: MOUSE_REGION[] /* [MAX_MESSAGES_PAGE] */ = createArrayFrom(MAX_MESSAGES_PAGE, createMouseRegion);
+export let pScreenMask: MOUSE_REGION = createMouseRegion();
+let pDeleteScreenMask: MOUSE_REGION = createMouseRegion();
 
 // the email info struct to speed up email
 let pEmailPageInfo: EmailPageInfoStruct[] /* [MAX_NUMBER_EMAIL_PAGES] */;
@@ -196,8 +196,8 @@ let giMailPageButtons: INT32[] /* [2] */;
 let giMailPageButtonsImage: INT32[] /* [2] */;
 
 // mouse regions
-let pEmailMoveRegions: MOUSE_REGION[] /* [NEXT_BUTTON + 1] */;
-let pSortMailRegions: MOUSE_REGION[] /* [3] */;
+let pEmailMoveRegions: MOUSE_REGION[] /* [NEXT_BUTTON + 1] */ = createArrayFrom(Enum72.NEXT_BUTTON + 1, createMouseRegion);
+let pSortMailRegions: MOUSE_REGION[] /* [3] */ = createArrayFrom(3, createMouseRegion);
 
 // the message record list, for the currently displayed message
 let pMessageRecordList: RecordPtr = null;

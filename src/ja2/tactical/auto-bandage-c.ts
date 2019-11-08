@@ -20,7 +20,7 @@ export let gfAutoBandageFailed: boolean;
 let iEndAutoBandageButton: INT32[] /* [2] */;
 let iEndAutoBandageButtonImage: INT32[] /* [2] */;
 
-let gAutoBandageRegion: MOUSE_REGION;
+let gAutoBandageRegion: MOUSE_REGION = createMouseRegion();
 
 // the lists of the doctor and patient
 let iDoctorList: INT32[] /* [MAX_CHARACTER_COUNT] */;

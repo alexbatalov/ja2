@@ -149,9 +149,9 @@ const enum Enum217 {
 }
 
 // AN ARRAY OF MOUSE REGIONS, ONE FOR EACH OBJECT POSITION ON BUDDY
-let gInvRegions: MOUSE_REGION[] /* [NUM_INV_SLOTS] */;
+let gInvRegions: MOUSE_REGION[] /* [NUM_INV_SLOTS] */ = createArrayFrom(Enum261.NUM_INV_SLOTS, createMouseRegion);
 
-export let gInvDesc: MOUSE_REGION;
+export let gInvDesc: MOUSE_REGION = createMouseRegion();
 
 export let gpItemPointer: Pointer<OBJECTTYPE> = null;
 export let gItemPointer: OBJECTTYPE = createObjectType();
@@ -190,8 +190,8 @@ let giItemDescAmmoButton: INT32;
 let gfItemAmmoDown: boolean = false;
 let gpItemDescSoldier: Pointer<SOLDIERTYPE>;
 let fItemDescDelete: boolean = false;
-export let gItemDescAttachmentRegions: MOUSE_REGION[] /* [4] */;
-let gProsAndConsRegions: MOUSE_REGION[] /* [2] */;
+export let gItemDescAttachmentRegions: MOUSE_REGION[] /* [4] */ = createArrayFrom(4, createMouseRegion);
+let gProsAndConsRegions: MOUSE_REGION[] /* [2] */ = createArrayFrom(2, createMouseRegion);
 
 let guiMoneyButtonBtn: UINT32[] /* [MAX_ATTACHMENTS] */;
 let guiMoneyButtonImage: INT32;
@@ -236,11 +236,11 @@ let gsItemPopupWidth: INT16;
 let gsItemPopupHeight: INT16;
 let gsItemPopupX: INT16;
 let gsItemPopupY: INT16;
-let gItemPopupRegions: MOUSE_REGION[] /* [8] */;
-let gKeyRingRegions: MOUSE_REGION[] /* [NUMBER_KEYS_ON_KEYRING] */;
+let gItemPopupRegions: MOUSE_REGION[] /* [8] */ = createArrayFrom(8, createMouseRegion);
+let gKeyRingRegions: MOUSE_REGION[] /* [NUMBER_KEYS_ON_KEYRING] */ = createArrayFrom(NUMBER_KEYS_ON_KEYRING, createMouseRegion);
 export let gfInKeyRingPopup: boolean = false;
 let gubNumItemPopups: UINT8 = 0;
-let gItemPopupRegion: MOUSE_REGION;
+let gItemPopupRegion: MOUSE_REGION = createMouseRegion();
 let gsItemPopupInvX: INT16;
 let gsItemPopupInvY: INT16;
 let gsItemPopupInvWidth: INT16;
@@ -442,9 +442,9 @@ interface REMOVE_MONEY {
 }
 let gRemoveMoney: REMOVE_MONEY;
 
-let gSMInvRegion: MOUSE_REGION[] /* [NUM_INV_SLOTS] */;
-let gKeyRingPanel: MOUSE_REGION;
-let gSMInvCamoRegion: MOUSE_REGION;
+let gSMInvRegion: MOUSE_REGION[] /* [NUM_INV_SLOTS] */ = createArrayFrom(Enum261.NUM_INV_SLOTS, createMouseRegion);
+let gKeyRingPanel: MOUSE_REGION = createMouseRegion();
+let gSMInvCamoRegion: MOUSE_REGION = createMouseRegion();
 let gbCompatibleAmmo: INT8[] /* [NUM_INV_SLOTS] */;
 export let gbInvalidPlacementSlot: INT8[] /* [NUM_INV_SLOTS] */;
 export let us16BPPItemCyclePlacedItemColors: UINT16[] /* [20] */;

@@ -220,7 +220,7 @@ let guiXToCloseMercVideoButton: UINT32;
 let guiXToCloseMercVideoButtonImage: INT32;
 
 // Mouse region for the subtitles region when the merc is talking
-let gMercSiteSubTitleMouseRegion: MOUSE_REGION;
+let gMercSiteSubTitleMouseRegion: MOUSE_REGION = createMouseRegion();
 
 //*******************************
 //

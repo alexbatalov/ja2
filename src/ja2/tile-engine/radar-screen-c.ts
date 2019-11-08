@@ -18,7 +18,7 @@ let sSelectedSquadLine: INT16 = -1;
 
 export let gfRadarCurrentGuyFlash: boolean = false;
 
-let gRadarRegionSquadList: MOUSE_REGION[] /* [NUMBER_OF_SQUADS] */;
+let gRadarRegionSquadList: MOUSE_REGION[] /* [NUMBER_OF_SQUADS] */ = createArrayFrom(Enum275.NUMBER_OF_SQUADS, createMouseRegion);
 
 export function InitRadarScreen(): boolean {
   // Add region for radar

@@ -11,10 +11,10 @@ export let guiExclamation: UINT32;
 export let guiKeyImage: UINT32;
 
 // editor Mouseregion storage vars
-let TerrainTileButtonRegion: MOUSE_REGION[] /* [NUM_TERRAIN_TILE_REGIONS] */;
-let ItemsRegion: MOUSE_REGION;
-let MercRegion: MOUSE_REGION;
-let EditorRegion: MOUSE_REGION;
+let TerrainTileButtonRegion: MOUSE_REGION[] /* [NUM_TERRAIN_TILE_REGIONS] */ = createArrayFrom(NUM_TERRAIN_TILE_REGIONS, createMouseRegion);
+let ItemsRegion: MOUSE_REGION = createMouseRegion();
+let MercRegion: MOUSE_REGION = createMouseRegion();
+let EditorRegion: MOUSE_REGION = createMouseRegion();
 
 export function EnableEditorRegion(bRegionID: INT8): void {
   switch (bRegionID) {

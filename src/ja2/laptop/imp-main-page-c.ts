@@ -7,7 +7,7 @@ let giIMPMainPageButton: INT32[] /* [6] */;
 let giIMPMainPageButtonImage: INT32[] /* [6] */;
 
 // mouse regions for not entablable warning
-let pIMPMainPageMouseRegions: MOUSE_REGION[] /* [4] */;
+let pIMPMainPageMouseRegions: MOUSE_REGION[] /* [4] */ = createArrayFrom(4, createMouseRegion);
 
 let guiCHARACTERPORTRAITFORMAINPAGE: UINT32;
 

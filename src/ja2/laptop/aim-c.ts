@@ -133,25 +133,25 @@ let gubCurrentAdvertisment: UINT8;
 let gfInitAdArea: boolean;
 
 // MemberCard
-let gSelectedMemberCardRegion: MOUSE_REGION;
+let gSelectedMemberCardRegion: MOUSE_REGION = createMouseRegion();
 
 // Policies
-let gSelectedPoliciesRegion: MOUSE_REGION;
+let gSelectedPoliciesRegion: MOUSE_REGION = createMouseRegion();
 
 // History
-let gSelectedHistoryRegion: MOUSE_REGION;
+let gSelectedHistoryRegion: MOUSE_REGION = createMouseRegion();
 
 // Links
-let gSelectedLinksRegion: MOUSE_REGION;
+let gSelectedLinksRegion: MOUSE_REGION = createMouseRegion();
 
 let guiBottomButtons: UINT32[] /* [NUM_AIM_SCREENS] */;
 let guiBottomButtonImage: INT32;
 
 // Banner Area
-let gSelectedBannerRegion: MOUSE_REGION;
+let gSelectedBannerRegion: MOUSE_REGION = createMouseRegion();
 
 // Aim logo click
-let gSelectedAimLogo: MOUSE_REGION;
+let gSelectedAimLogo: MOUSE_REGION = createMouseRegion();
 
 let fFirstTimeIn: boolean = true;
 

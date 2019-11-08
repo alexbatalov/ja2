@@ -87,10 +87,10 @@ let guiMapBottomExitButtonsImage: UINT32[] /* [3] */;
 let guiMapBottomTimeButtonsImage: UINT32[] /* [2] */;
 
 // mouse regions
-let gMapMessageScrollBarRegion: MOUSE_REGION;
-let gMapPauseRegion: MOUSE_REGION;
+let gMapMessageScrollBarRegion: MOUSE_REGION = createMouseRegion();
+let gMapPauseRegion: MOUSE_REGION = createMouseRegion();
 
-let gTimeCompressionMask: MOUSE_REGION[] /* [3] */;
+let gTimeCompressionMask: MOUSE_REGION[] /* [3] */ = createArrayFrom(3, createMouseRegion);
 
 // EXTERNS
 

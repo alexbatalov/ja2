@@ -290,11 +290,11 @@ let fOneFrameDelayInPersonnel: boolean = false;
 let fCreatePersonnelPortraitMouseRegions: boolean = false;
 
 // mouse regions
-let gPortraitMouseRegions: MOUSE_REGION[] /* [20] */;
+let gPortraitMouseRegions: MOUSE_REGION[] /* [20] */ = createArrayFrom(20, createMouseRegion);
 
-let gTogglePastCurrentTeam: MOUSE_REGION[] /* [2] */;
+let gTogglePastCurrentTeam: MOUSE_REGION[] /* [2] */ = createArrayFrom(2, createMouseRegion);
 
-let gMouseScrollPersonnelINV: MOUSE_REGION;
+let gMouseScrollPersonnelINV: MOUSE_REGION = createMouseRegion();
 
 let iCurPortraitId: INT32 = 0;
 

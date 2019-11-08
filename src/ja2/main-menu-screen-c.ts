@@ -29,7 +29,7 @@ let gusMainMenuButtonWidths: UINT16[] /* [NUM_MENU_ITEMS] */;
 let guiMainMenuBackGroundImage: UINT32;
 let guiJa2LogoImage: UINT32;
 
-let gBackRegion: MOUSE_REGION;
+let gBackRegion: MOUSE_REGION = createMouseRegion();
 let gbHandledMainMenu: INT8 = 0;
 let fInitialRender: boolean = false;
 // BOOLEAN						gfDoHelpScreen = 0;

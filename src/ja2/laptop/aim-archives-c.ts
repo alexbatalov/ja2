@@ -110,10 +110,10 @@ let AimArchivesSubPagesVisitedFlag: boolean[] /* [3] */ = [
 // Mouse Regions
 
 // Face regions
-let gMercAlumniFaceMouseRegions: MOUSE_REGION[] /* [MAX_NUMBER_OLD_MERCS_ON_PAGE] */;
+let gMercAlumniFaceMouseRegions: MOUSE_REGION[] /* [MAX_NUMBER_OLD_MERCS_ON_PAGE] */ = createArrayFrom(MAX_NUMBER_OLD_MERCS_ON_PAGE, createMouseRegion);
 
 // Done region
-let gDoneRegion: MOUSE_REGION;
+let gDoneRegion: MOUSE_REGION = createMouseRegion();
 
 let guiAlumniPageButton: UINT32[] /* [3] */;
 let guiAlumniPageButtonImage: INT32;

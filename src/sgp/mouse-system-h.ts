@@ -55,6 +55,33 @@ export interface MOUSE_REGION {
   prev: Pointer<MOUSE_REGION>;
 }
 
+export function createMouseRegion(): MOUSE_REGION {
+  return {
+    IDNumber: 0,
+    PriorityLevel: 0,
+    uiFlags: 0,
+    RegionTopLeftX: 0,
+    RegionTopLeftY: 0,
+    RegionBottomRightX: 0,
+    RegionBottomRightY: 0,
+    MouseXPos: 0,
+    MouseYPos: 0,
+    RelativeXPos: 0,
+    RelativeYPos: 0,
+    ButtonState: 0,
+    Cursor: 0,
+    MovementCallback: null,
+    ButtonCallback: null,
+    UserData: createArray(4, 0),
+    FastHelpTimer: 0,
+    FastHelpText: "",
+    FastHelpRect: 0,
+    HelpDoneCallback: null,
+    next: null,
+    prev: null,
+  };
+}
+
 // *****************************************************************************
 //
 //				Defines
