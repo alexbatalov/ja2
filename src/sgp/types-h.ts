@@ -34,6 +34,13 @@ const NULL_HANDLE = 65535;
 
 const ST_EPSILON = 0.00001; // define a sir-tech epsilon value
 
+export interface RECT {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
 export interface SGPRect {
   iLeft: INT32;
   iTop: INT32;
