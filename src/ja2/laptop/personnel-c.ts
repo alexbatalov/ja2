@@ -199,11 +199,11 @@ let iNumberPadButtons: INT32[] /* [10] */;
 let iNumberPadButtonsImages: INT32[] /* [10] */;
 
 let pAtmSideButtonPts: POINT[] /* [] */ = [
-  [ 533, 155 ],
-  [ 558, 110 ],
-  [ 558, 125 ],
-  [ 558, 140 ],
-  [ 558, 155 ],
+  createPointFrom(533, 155),
+  createPointFrom(558, 110),
+  createPointFrom(558, 125),
+  createPointFrom(558, 140),
+  createPointFrom(558, 155),
 ];
 
 const PrsnlOffSetX = (-15); //-20
@@ -211,32 +211,32 @@ const Prsnl_DATA_OffSetX = (36);
 const PrsnlOffSetY = 10;
 
 let pPersonnelScreenPoints: POINT[] /* [] */ = [
-  [ 422 + PrsnlOffSetX, 205 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 215 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 225 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 235 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 245 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 255 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 315 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 270 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 280 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 290 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 300 + PrsnlOffSetY ], // 10
-  [ 422 + PrsnlOffSetX, 395 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 385 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 415 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 425 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 445 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 380 + PrsnlOffSetY ], // for contract price
-  [ 422 + PrsnlOffSetX, 435 + PrsnlOffSetY ],
-  [ 140, 33 ], // Personnel Header
-  [ 422 + PrsnlOffSetX, 330 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 340 + PrsnlOffSetY ], // 20
-  [ 422 + PrsnlOffSetX, 355 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 365 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 375 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 385 + PrsnlOffSetY ],
-  [ 422 + PrsnlOffSetX, 395 + PrsnlOffSetY ],
+  createPointFrom(422 + PrsnlOffSetX, 205 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 215 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 225 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 235 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 245 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 255 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 315 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 270 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 280 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 290 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 300 + PrsnlOffSetY), // 10
+  createPointFrom(422 + PrsnlOffSetX, 395 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 385 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 415 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 425 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 445 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 380 + PrsnlOffSetY), // for contract price
+  createPointFrom(422 + PrsnlOffSetX, 435 + PrsnlOffSetY),
+  createPointFrom(140, 33), // Personnel Header
+  createPointFrom(422 + PrsnlOffSetX, 330 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 340 + PrsnlOffSetY), // 20
+  createPointFrom(422 + PrsnlOffSetX, 355 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 365 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 375 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 385 + PrsnlOffSetY),
+  createPointFrom(422 + PrsnlOffSetX, 395 + PrsnlOffSetY),
 ];
 
 let guiSCREEN: UINT32;

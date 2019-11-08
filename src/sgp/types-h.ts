@@ -41,6 +41,18 @@ export interface RECT {
   bottom: number;
 }
 
+export interface POINT {
+  x: number;
+  y: number;
+}
+
+export function createPointFrom(x: number, y: number): POINT {
+  return {
+    x,
+    y,
+  };
+}
+
 export interface SGPRect {
   iLeft: INT32;
   iTop: INT32;

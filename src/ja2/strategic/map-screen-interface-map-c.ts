@@ -344,19 +344,19 @@ let sBaseSectorList: INT16[] /* [] */ = [
 // position of town names on the map
 // these are no longer PIXELS, but 10 * the X,Y position in SECTORS (fractions possible) to the X-CENTER of the town
 let pTownPoints: POINT[] /* [] */ = [
-  [ 0, 0 ],
-  [ 90, 10 ], // Omerta
-  [ 125, 40 ], // Drassen
-  [ 130, 90 ], // Alma
-  [ 15, 80 ], // Grumm
-  [ 85, 100 ], // Tixa
-  [ 95, 70 ], // Cambria
-  [ 45, 40 ], // San Mona
-  [ 55, 90 ], // Estoni
-  [ 35, 110 ], // Orta
-  [ 110, 120 ], // Balime
-  [ 45, 150 ], // Meduna
-  [ 15, 20 ], // Chitzena
+  createPointFrom(0, 0),
+  createPointFrom(90, 10), // Omerta
+  createPointFrom(125, 40), // Drassen
+  createPointFrom(130, 90), // Alma
+  createPointFrom(15, 80), // Grumm
+  createPointFrom(85, 100), // Tixa
+  createPointFrom(95, 70), // Cambria
+  createPointFrom(45, 40), // San Mona
+  createPointFrom(55, 90), // Estoni
+  createPointFrom(35, 110), // Orta
+  createPointFrom(110, 120), // Balime
+  createPointFrom(45, 150), // Meduna
+  createPointFrom(15, 20), // Chitzena
 ];
 
 let gpSamSectorX: INT16[] /* [] */ = [
