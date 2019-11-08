@@ -1521,7 +1521,7 @@ function BtnAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
 }
 
 function AimMemberHireMerc(): INT8 {
-  let HireMercStruct: MERC_HIRE_STRUCT;
+  let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
   let ubCurrentSoldier: UINT8 = AimMercArray[gbCurrentIndex];
   let bReturnCode: INT8;
   let sSoldierID: INT16 = 0;

@@ -671,7 +671,7 @@ function UIHandleNewMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   /* static */ let ubTemp: UINT8 = 3;
   let usMapPos: INT16;
   /* static */ let iSoldierCount: INT32 = 0;
-  let HireMercStruct: MERC_HIRE_STRUCT;
+  let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
   let bReturnCode: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 

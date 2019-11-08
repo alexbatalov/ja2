@@ -478,7 +478,7 @@ function DisplayMercsStats(ubMercID: UINT8): void {
 }
 
 function MercFilesHireMerc(ubMercID: UINT8): boolean {
-  let HireMercStruct: MERC_HIRE_STRUCT;
+  let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
   let bReturnCode: INT8;
 
   memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));

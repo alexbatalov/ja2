@@ -28,4 +28,19 @@ export interface MERC_HIRE_STRUCT {
   fUseLandingZoneForArrival: boolean;
 }
 
+export function createMercHireStruct(): MERC_HIRE_STRUCT {
+  return {
+    ubProfileID: 0,
+    sSectorX: 0,
+    sSectorY: 0,
+    bSectorZ: 0,
+    iTotalContractLength: 0,
+    fCopyProfileItemsOver: false,
+    uiTimeTillMercArrives: 0,
+    ubInsertionCode: 0,
+    usInsertionData: 0,
+    fUseLandingZoneForArrival: false,
+  };
+}
+
 }

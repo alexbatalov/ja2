@@ -918,7 +918,7 @@ function Print8CharacterOnlyString(): void {
 }
 
 function CheckCharacterInputForEgg(): boolean {
-  let HireMercStruct: MERC_HIRE_STRUCT;
+  let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
 
   return false;
   if ((wcscmp(pFullNameString, "Test Female") == 0) && (wcscmp(pNickNameString, "Test") == 0)) {

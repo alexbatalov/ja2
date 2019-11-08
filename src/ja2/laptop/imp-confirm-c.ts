@@ -139,7 +139,7 @@ function DestroyConfirmButtons(): void {
 }
 
 function AddCharacterToPlayersTeam(): boolean {
-  let HireMercStruct: MERC_HIRE_STRUCT;
+  let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
 
   // last minute chage to make sure merc with right facehas not only the right body but body specific skills...
   // ie..small mercs have martial arts..but big guys and women don't don't

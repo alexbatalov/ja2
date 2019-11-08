@@ -541,7 +541,7 @@ function QuickSetupOfMercProfileItems(uiCount: UINT32, ubProfileIndex: UINT8): v
 }
 
 function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): boolean {
-  let HireMercStruct: MERC_HIRE_STRUCT;
+  let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
 
   memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
 
