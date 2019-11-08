@@ -130,23 +130,39 @@ interface CDRT_FACE {
   uiEyesClosedTime: UINT32;
 }
 
+function createCreditsFaceFrom(sX: INT16, sY: INT16, sWidth: INT16, sHeight: INT16, sEyeX: INT16, sEyeY: INT16, sMouthX: INT16, sMouthY: INT16, sBlinkFreq: INT16, uiLastBlinkTime: UINT32, uiEyesClosedTime: UINT32): CDRT_FACE {
+  return {
+    sX,
+    sY,
+    sWidth,
+    sHeight,
+    sEyeX,
+    sEyeY,
+    sMouthX,
+    sMouthY,
+    sBlinkFreq,
+    uiLastBlinkTime,
+    uiEyesClosedTime,
+  };
+}
+
 let gCreditFaces: CDRT_FACE[] /* [] */ = [
   //  x		y				w		h
-  [ 298, 137, 37, 49, 310, 157, 304, 170, 2500, 0, 0 ], // Camfield
-  [ 348, 137, 43, 47, 354, 153, 354, 153, 3700, 0, 0 ], // Shawn
-  [ 407, 132, 30, 50, 408, 151, 410, 164, 3000, 0, 0 ], // Kris
-  [ 443, 131, 30, 50, 447, 151, 446, 161, 4000, 0, 0 ], // Ian
-  [ 487, 136, 43, 50, 493, 155, 493, 155, 3500, 0, 0 ], // Linda
-  [ 529, 145, 43, 50, 536, 164, 536, 164, 4000, 0, 0 ], // Eric
-  [ 581, 132, 43, 48, 584, 150, 583, 161, 3500, 0, 0 ], // Lynn
-  [ 278, 211, 36, 51, 283, 232, 283, 241, 3700, 0, 0 ], // Norm
-  [ 319, 210, 34, 49, 323, 227, 320, 339, 4000, 0, 0 ], // George
-  [ 358, 211, 38, 49, 364, 226, 361, 239, 3600, 0, 0 ], // Andrew Stacey
-  [ 396, 200, 42, 50, 406, 220, 403, 230, 4600, 0, 0 ], // Scott
-  [ 444, 202, 43, 51, 452, 220, 452, 231, 2800, 0, 0 ], // Emmons
-  [ 493, 188, 36, 51, 501, 207, 499, 217, 4500, 0, 0 ], // Dave
-  [ 531, 199, 47, 56, 541, 221, 540, 232, 4000, 0, 0 ], // Alex
-  [ 585, 196, 39, 49, 593, 218, 593, 228, 3500, 0, 0 ], // Joey
+  createCreditsFaceFrom(298, 137, 37, 49, 310, 157, 304, 170, 2500, 0, 0), // Camfield
+  createCreditsFaceFrom(348, 137, 43, 47, 354, 153, 354, 153, 3700, 0, 0), // Shawn
+  createCreditsFaceFrom(407, 132, 30, 50, 408, 151, 410, 164, 3000, 0, 0), // Kris
+  createCreditsFaceFrom(443, 131, 30, 50, 447, 151, 446, 161, 4000, 0, 0), // Ian
+  createCreditsFaceFrom(487, 136, 43, 50, 493, 155, 493, 155, 3500, 0, 0), // Linda
+  createCreditsFaceFrom(529, 145, 43, 50, 536, 164, 536, 164, 4000, 0, 0), // Eric
+  createCreditsFaceFrom(581, 132, 43, 48, 584, 150, 583, 161, 3500, 0, 0), // Lynn
+  createCreditsFaceFrom(278, 211, 36, 51, 283, 232, 283, 241, 3700, 0, 0), // Norm
+  createCreditsFaceFrom(319, 210, 34, 49, 323, 227, 320, 339, 4000, 0, 0), // George
+  createCreditsFaceFrom(358, 211, 38, 49, 364, 226, 361, 239, 3600, 0, 0), // Andrew Stacey
+  createCreditsFaceFrom(396, 200, 42, 50, 406, 220, 403, 230, 4600, 0, 0), // Scott
+  createCreditsFaceFrom(444, 202, 43, 51, 452, 220, 452, 231, 2800, 0, 0), // Emmons
+  createCreditsFaceFrom(493, 188, 36, 51, 501, 207, 499, 217, 4500, 0, 0), // Dave
+  createCreditsFaceFrom(531, 199, 47, 56, 541, 221, 540, 232, 4000, 0, 0), // Alex
+  createCreditsFaceFrom(585, 196, 39, 49, 593, 218, 593, 228, 3500, 0, 0), // Joey
 ];
 
 /*
