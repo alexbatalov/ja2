@@ -3,7 +3,7 @@ namespace ja2 {
 export let gfLoadingExitGrids: boolean = false;
 
 // used by editor.
-export let gExitGrid: EXITGRID = [ 0, 1, 1, 0 ];
+export let gExitGrid: EXITGRID = createExitGridFrom(0, 1, 1, 0);
 
 export let gfOverrideInsertionWithExitGrid: boolean = false;
 
