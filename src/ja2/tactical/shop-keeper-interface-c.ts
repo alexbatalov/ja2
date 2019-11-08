@@ -7,18 +7,26 @@ interface SKIRGBCOLOR {
   ubBlue: UINT8;
 }
 
+function createShopKeeperInterfaceRGBColorFrom(ubRed: UINT8, ubGreen: UINT8, ubBlue: UINT8): SKIRGBCOLOR {
+  return {
+    ubRed,
+    ubGreen,
+    ubBlue,
+  };
+}
+
 let SkiGlowColorsA: SKIRGBCOLOR[] /* [] */ = [
-  [ 0, 0, 0 ],
-  [ 25, 0, 0 ],
-  [ 50, 0, 0 ],
-  [ 75, 0, 0 ],
-  [ 100, 0, 0 ],
-  [ 125, 0, 0 ],
-  [ 150, 0, 0 ],
-  [ 175, 0, 0 ],
-  [ 200, 0, 0 ],
-  [ 225, 0, 0 ],
-  [ 250, 0, 0 ],
+  createShopKeeperInterfaceRGBColorFrom(0, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(25, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(50, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(75, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(100, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(125, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(150, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(175, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(200, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(225, 0, 0),
+  createShopKeeperInterfaceRGBColorFrom(250, 0, 0),
 ];
 
 ////////////////////////////////////////////
