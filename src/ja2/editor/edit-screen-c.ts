@@ -162,7 +162,7 @@ export function EditScreenShutdown(): UINT32 {
 function EditModeInit(): boolean {
   let x: UINT32;
   let i: INT32;
-  let LColors: SGPPaletteEntry[] /* [2] */;
+  let LColors: SGPPaletteEntry[] /* [2] */ = createArrayFrom(2, createSGPPaletteEntry);
 
   OutputDebugString("Entering editor mode...\n");
 

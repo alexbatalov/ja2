@@ -1725,7 +1725,7 @@ function CreateVideoSurfaceFromDDSurface(lpDDSurface: LPDIRECTDRAWSURFACE2): HVS
   let hVSurface: HVSURFACE;
   let DDSurfaceDesc: DDSURFACEDESC;
   let pDDPalette: LPDIRECTDRAWPALETTE;
-  let SGPPalette: SGPPaletteEntry[] /* [256] */;
+  let SGPPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
   let ReturnCode: HRESULT;
 
   // Allocate Video Surface struct

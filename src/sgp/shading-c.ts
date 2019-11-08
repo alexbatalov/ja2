@@ -1,6 +1,6 @@
 namespace ja2 {
 
-let Shaded8BPPPalettes: SGPPaletteEntry[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
+let Shaded8BPPPalettes: SGPPaletteEntry[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => createArrayFrom(256, createSGPPaletteEntry));
 export let ubColorTables: UINT8[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
 
 let IntensityTable: UINT16[] /* [65536] */;
@@ -223,7 +223,7 @@ export function SetShadeTablePercent(uiShadePercent: FLOAT): void {
 }
 
 function Init8BitTables(): void {
-  let Pal: SGPPaletteEntry[] /* [256] */;
+  let Pal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
   let uiCount: UINT32;
 
   // calculate a grey-scale table for the default palette

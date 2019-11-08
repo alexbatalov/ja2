@@ -979,7 +979,7 @@ export function PrepareCreaturesForBattle(): boolean {
   let pSector: Pointer<UNDERGROUND_SECTORINFO>;
   let i: INT32;
   let iRandom: INT32;
-  let LColors: SGPPaletteEntry[] /* [3] */;
+  let LColors: SGPPaletteEntry[] /* [3] */ = createArrayFrom(3, createSGPPaletteEntry);
   let ubNumColors: UINT8;
   let fQueen: boolean;
   let ubLarvaePercentage: UINT8;

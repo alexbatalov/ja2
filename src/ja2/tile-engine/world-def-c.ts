@@ -3279,7 +3279,7 @@ export function ReloadTileset(ubID: UINT8): void {
 
 function SaveMapLights(hfile: HWFILE): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let LColors: SGPPaletteEntry[] /* [3] */;
+  let LColors: SGPPaletteEntry[] /* [3] */ = createArrayFrom(3, createSGPPaletteEntry);
   let ubNumColors: UINT8;
   let fSoldierLight: boolean;
   let usNumLights: UINT16 = 0;
@@ -3336,7 +3336,7 @@ function SaveMapLights(hfile: HWFILE): void {
 }
 
 function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
-  let LColors: SGPPaletteEntry[] /* [3] */;
+  let LColors: SGPPaletteEntry[] /* [3] */ = createArrayFrom(3, createSGPPaletteEntry);
   let ubNumColors: UINT8;
   let usNumLights: UINT16;
   let cnt: INT32;

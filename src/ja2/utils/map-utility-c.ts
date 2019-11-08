@@ -83,7 +83,7 @@ export function MapUtilScreenHandle(): UINT32 {
   let iWindowX: INT32;
   let iWindowY: INT32;
   let iCount: INT32;
-  let pPalette: SGPPaletteEntry[] /* [256] */;
+  let pPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 
   sDest16BPPColor = -1;
   bAvR = bAvG = bAvB = 0;

@@ -108,7 +108,7 @@ let gFatalErrorString: string /* char[512] */;
 
 // 8-bit palette stuff
 
-export let gSgpPalette: SGPPaletteEntry[] /* [256] */;
+export let gSgpPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 let gpDirectDrawPalette: LPDIRECTDRAWPALETTE;
 
 //

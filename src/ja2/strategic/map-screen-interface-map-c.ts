@@ -1400,7 +1400,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
 export function InitializePalettesForMap(): boolean {
   // init palettes
   let hSrcVSurface: HVSURFACE;
-  let pPalette: SGPPaletteEntry[] /* [256] */;
+  let pPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let uiTempMap: UINT32;
 

@@ -159,7 +159,7 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   let ETRLEObject: ETRLEObject;
   let hVObject: HVOBJECT;
   let uiCount: UINT32;
-  let Pal: SGPPaletteEntry[] /* [256] */;
+  let Pal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 
   if ((iFaceIndex = GetFreeFace()) == (-1))
     return -1;

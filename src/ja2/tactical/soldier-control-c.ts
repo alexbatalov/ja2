@@ -4239,7 +4239,7 @@ export function CreateSoldierPalettes(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   let iWhich: INT32;
   let cnt: INT32;
   let bBodyTypePalette: INT8;
-  let Temp8BPPPalette: SGPPaletteEntry[] /* [256] */;
+  let Temp8BPPPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 
   // NT32 uiCount;
   // PPaletteEntry Pal[256];

@@ -17,7 +17,7 @@ const MAX_FONTS = 25;
 //
 //*******************************************************
 
-export let gSgpPalette: SGPPaletteEntry[] /* [256] */;
+export let gSgpPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 
 interface FontManager {
   usDefaultPixelDepth: UINT16;

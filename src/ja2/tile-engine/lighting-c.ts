@@ -205,7 +205,7 @@ export function InitLightingSystem(): boolean {
 
 // THIS MUST BE CALLED ONCE ALL SURFACE VIDEO OBJECTS HAVE BEEN LOADED!
 export function SetDefaultWorldLightingColors(): boolean {
-  let pPal: SGPPaletteEntry[] /* [2] */;
+  let pPal: SGPPaletteEntry[] /* [2] */ = createArrayFrom(2, createSGPPaletteEntry);
 
   pPal[0].peRed = 0;
   pPal[0].peGreen = 0;
@@ -3053,7 +3053,7 @@ function CreateSoldierShadedPalette(pSoldier: Pointer<SOLDIERTYPE>, uiBase: UINT
 
 export function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: boolean): UINT16 {
   let uiCount: UINT32;
-  let LightPal: SGPPaletteEntry[] /* [256] */;
+  let LightPal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
   let fLoaded: boolean = false;
 
   Assert(pObj != null);
@@ -3113,7 +3113,7 @@ export function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fFo
 }
 
 export function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiType: UINT32): UINT16 {
-  let LightPal: SGPPaletteEntry[] /* [256] */;
+  let LightPal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
   let uiCount: UINT32;
 
   // create the basic shade table

@@ -2,7 +2,7 @@ namespace ja2 {
 
 export let gbDefaultLightType: INT8 = Enum39.PRIMETIME_LIGHT;
 
-export let gEditorLightColor: SGPPaletteEntry;
+export let gEditorLightColor: SGPPaletteEntry = createSGPPaletteEntry();
 
 export let gfEditorForceShadeTableRebuild: boolean = false;
 

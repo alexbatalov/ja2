@@ -568,7 +568,7 @@ function RemoveCorpse(iCorpseID: INT32): void {
 function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): boolean {
   let zColFilename: string /* CHAR8[100] */;
   let bBodyTypePalette: INT8;
-  let Temp8BPPPalette: SGPPaletteEntry[] /* [256] */;
+  let Temp8BPPPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 
   pCorpse.value.p8BPPPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
 
@@ -1091,7 +1091,7 @@ export function RebuildAllCorpseShadeTables(): void {
 }
 
 function CreateCorpsePaletteTables(pCorpse: Pointer<ROTTING_CORPSE>): UINT16 {
-  let LightPal: SGPPaletteEntry[] /* [256] */;
+  let LightPal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
   let uiCount: UINT32;
 
   // create the basic shade table
