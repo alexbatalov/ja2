@@ -22,4 +22,10 @@ export interface STEADY_STATE_AMBIENCE {
   zSoundNames: string[] /* CHAR8[NUM_SOUNDS_PER_TIMEFRAME][SOUND_NAME_SIZE] */;
 }
 
+export function createSteadyStateAmbienceFrom(zSoundNames: string[]): STEADY_STATE_AMBIENCE {
+  return {
+    zSoundNames,
+  };
+}
+
 }
