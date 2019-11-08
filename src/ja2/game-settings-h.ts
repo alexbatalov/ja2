@@ -89,4 +89,16 @@ export interface GAME_OPTIONS {
   ubFiller: UINT8[] /* [7] */;
 }
 
+export function createGameOptions(): GAME_OPTIONS {
+  return {
+    fGunNut: false,
+    fSciFi: false,
+    ubDifficultyLevel: 0,
+    fTurnTimeLimit: false,
+    fIronManMode: false,
+
+    ubFiller: createArray(7, 0),
+  }
+}
+
 }

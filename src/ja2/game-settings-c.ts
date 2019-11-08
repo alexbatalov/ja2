@@ -7,7 +7,7 @@ const GAME_INI_FILE = "..\\Ja2.ini";
 const CD_ROOT_DIR = "DATA\\";
 
 export let gGameSettings: GAME_SETTINGS;
-export let gGameOptions: GAME_OPTIONS;
+export let gGameOptions: GAME_OPTIONS = createGameOptions();
 
 // Change this number when we want any who gets the new build to reset the options
 const GAME_SETTING_CURRENT_VERSION = 522;
