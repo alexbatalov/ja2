@@ -1558,7 +1558,7 @@ function ExecuteTacticalTextBoxForLastQuote(sLeftPosition: INT16, pString: strin
 }
 
 function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: string /* STR16 */): void {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   // check if mouse region created, if so, do not recreate
   if (fTextBoxMouseRegionCreated == true) {
@@ -1595,7 +1595,7 @@ function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: string /* STR16 *
 
 function HandleExternNPCSpeechFace(iIndex: INT32): void {
   let iFaceIndex: INT32;
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let iFaceOverlay: INT32;
 
   // grab face index
@@ -1650,7 +1650,7 @@ function HandleExternNPCSpeechFace(iIndex: INT32): void {
 }
 
 function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let iFaceOverlay: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let fDoExternPanel: boolean = false;

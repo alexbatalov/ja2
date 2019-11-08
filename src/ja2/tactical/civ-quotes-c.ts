@@ -276,7 +276,7 @@ function QuoteOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 }
 
 export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryID: UINT8, sX: INT16, sY: INT16): void {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let zQuote: string /* INT16[320] */;
 
   // OK, do we have another on?

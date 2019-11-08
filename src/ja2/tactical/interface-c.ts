@@ -1402,7 +1402,7 @@ function RenderOverlayMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
 function BeginOverlayMessage(uiFont: UINT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
   let argptr: va_list;
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let SlideString: string /* wchar_t[512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
@@ -2120,7 +2120,7 @@ function RenderUIMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
 export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
   let argptr: va_list;
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let MsgString: string /* wchar_t[512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
@@ -2184,7 +2184,7 @@ export function BeginUIMessage(pFontString: string /* Pointer<UINT16> */, ...arg
 
 export function BeginMapUIMessage(ubPosition: UINT8, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
   let argptr: va_list;
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let MsgString: string /* wchar_t[512] */;
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));

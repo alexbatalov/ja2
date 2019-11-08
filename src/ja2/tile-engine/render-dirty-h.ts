@@ -78,6 +78,24 @@ export interface VIDEO_OVERLAY_DESC {
   BltCallback: OVERLAY_CALLBACK;
 }
 
+export function createVideoOverlayDesc(): VIDEO_OVERLAY_DESC {
+  return {
+    uiFlags: 0,
+    fDisabled: false,
+    sLeft: 0,
+    sTop: 0,
+    sRight: 0,
+    sBottom: 0,
+    uiFontID: 0,
+    sX: 0,
+    sY: 0,
+    ubFontBack: 0,
+    ubFontFore: 0,
+    pzText: "",
+    BltCallback: null,
+  };
+}
+
 // FUNCTIONS
 ////////////
 

@@ -31,7 +31,7 @@ export function DisplayFrameRate(): void {
   /* static */ let uiFPS: UINT32 = 0;
   /* static */ let uiFrameCount: UINT32 = 0;
   let usMapPos: UINT16;
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   // Increment frame count
   uiFrameCount++;

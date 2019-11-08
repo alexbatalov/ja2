@@ -1107,7 +1107,7 @@ export function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, us
 }
 
 export function EnableVideoOverlay(fEnable: boolean, iOverlayIndex: INT32): void {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 

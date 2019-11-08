@@ -123,7 +123,7 @@ function SetStringPrev(pStringSt: ScrollStringStPtr, pPrev: ScrollStringStPtr): 
 }
 
 function CreateStringVideoOverlay(pStringSt: ScrollStringStPtr, usX: UINT16, usY: UINT16): boolean {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   // SET VIDEO OVERLAY
   VideoOverlayDesc.sLeft = usX;
@@ -155,7 +155,7 @@ function RemoveStringVideoOverlay(pStringSt: ScrollStringStPtr): void {
 }
 
 function SetStringVideoOverlayPosition(pStringSt: ScrollStringStPtr, usX: UINT16, usY: UINT16): void {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
@@ -192,7 +192,7 @@ function BlitString(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 }
 
 function EnableStringVideoOverlay(pStringSt: ScrollStringStPtr, fEnable: boolean): void {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
@@ -357,7 +357,7 @@ export function HideMessagesDuringNPCDialogue(): void {
   // will stop the scroll of messages in tactical and hide them during an NPC's dialogue
   let cnt: INT32;
 
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
@@ -378,7 +378,7 @@ export function HideMessagesDuringNPCDialogue(): void {
 }
 
 export function UnHideMessagesDuringNPCDialogue(): void {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let cnt: INT32 = 0;
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));

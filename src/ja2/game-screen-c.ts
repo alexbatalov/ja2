@@ -42,7 +42,7 @@ let guiTacticalLeaveScreenID: UINT32;
 let guiTacticalLeaveScreen: boolean = false;
 
 export function MainGameScreenInit(): UINT32 {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   gpZBuffer = InitZBuffer(1280, 480);
   InitializeBackgroundRects();
@@ -597,7 +597,7 @@ export function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
 }
 
 export function DisableFPSOverlay(fEnable: boolean): void {
-  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
