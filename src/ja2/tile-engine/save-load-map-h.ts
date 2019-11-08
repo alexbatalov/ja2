@@ -50,4 +50,14 @@ export interface MODIFY_MAP {
   ubExtra: UINT8; // Misc. variable used to strore arbritary values
 }
 
+export function createModifyMap(): MODIFY_MAP {
+  return {
+    usGridNo: 0,
+    usImageType: 0,
+    usSubImageIndex: 0,
+    ubType: 0,
+    ubExtra: 0,
+  };
+}
+
 }

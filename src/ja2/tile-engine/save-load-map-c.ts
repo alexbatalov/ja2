@@ -247,7 +247,7 @@ export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
 }
 
 export function AddStructToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
   let uiType: UINT32;
   let usSubIndex: UINT16;
 
@@ -277,7 +277,7 @@ function AddStructFromMapTempFileToMap(uiMapIndex: UINT32, usIndex: UINT16): voi
 }
 
 export function AddObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
   let uiType: UINT32;
   let usSubIndex: UINT16;
 
@@ -307,7 +307,7 @@ function AddObjectFromMapTempFileToMap(uiMapIndex: UINT32, usIndex: UINT16): voi
 }
 
 export function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
   let uiType: UINT32;
   let usSubIndex: UINT16;
 
@@ -333,7 +333,7 @@ export function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16
 }
 
 export function RemoveStructFromMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
   let uiType: UINT32;
   let usSubIndex: UINT16;
 
@@ -363,7 +363,7 @@ function RemoveSavedStructFromMap(uiMapIndex: UINT32, usIndex: UINT16): void {
 }
 
 export function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
   let cnt: UINT16;
   let pStructure: Pointer<STRUCTURE>;
 
@@ -624,7 +624,7 @@ function DamageStructsFromMapTempFile(pMap: Pointer<MODIFY_MAP>): void {
 //////////////
 
 export function AddStructToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
   let uiType: UINT32;
   let usSubIndex: UINT16;
 
@@ -647,7 +647,7 @@ export function AddStructToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT
 }
 
 function AddObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
   let uiType: UINT32;
   let usSubIndex: UINT16;
 
@@ -670,7 +670,7 @@ function AddObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSe
 }
 
 export function RemoveStructFromUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
   let uiType: UINT32;
   let usSubIndex: UINT16;
 
@@ -693,7 +693,7 @@ export function RemoveStructFromUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex:
 }
 
 function AddRemoveObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
   let uiType: UINT32;
   let usSubIndex: UINT16;
 
@@ -716,7 +716,7 @@ function AddRemoveObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT1
 }
 
 export function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
 
   if (!gfApplyChangesToTempFile) {
     ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, "Called AddExitGridToMapTempFile() without calling ApplyMapChangesToMapTempFile()");
@@ -821,7 +821,7 @@ export function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, s
 }
 
 function AddOpenableStructStatusToMapTempFile(uiMapIndex: UINT32, fOpened: boolean): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
@@ -834,7 +834,7 @@ function AddOpenableStructStatusToMapTempFile(uiMapIndex: UINT32, fOpened: boole
 }
 
 export function AddWindowHitToMapTempFile(uiMapIndex: UINT32): void {
-  let Map: MODIFY_MAP;
+  let Map: MODIFY_MAP = createModifyMap();
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
