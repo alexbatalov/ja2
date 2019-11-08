@@ -7,24 +7,33 @@ interface BobbyROrderLocationStruct {
   usStandardService: UINT16;
 }
 
+function createBobbyROrderLocationStructFrom(psCityLoc: string, usOverNightExpress: UINT16, us2DaysService: UINT16, usStandardService: UINT16): BobbyROrderLocationStruct {
+  return {
+    psCityLoc,
+    usOverNightExpress,
+    us2DaysService,
+    usStandardService,
+  };
+}
+
 let BobbyROrderLocations: BobbyROrderLocationStruct[] /* [] */ = [
-  [ addressof(pDeliveryLocationStrings[0]), 20, 15, 10 ],
-  [ addressof(pDeliveryLocationStrings[1]), 295, 150, 85 ],
-  [ addressof(pDeliveryLocationStrings[2]), 200, 100, 50 ], // the only one that really matters
-  [ addressof(pDeliveryLocationStrings[3]), 100, 55, 30 ],
-  [ addressof(pDeliveryLocationStrings[4]), 95, 65, 40 ],
-  [ addressof(pDeliveryLocationStrings[5]), 55, 40, 25 ],
-  [ addressof(pDeliveryLocationStrings[6]), 35, 25, 15 ],
-  [ addressof(pDeliveryLocationStrings[7]), 200, 100, 50 ],
-  [ addressof(pDeliveryLocationStrings[8]), 190, 90, 45 ],
-  [ addressof(pDeliveryLocationStrings[9]), 35, 25, 15 ],
-  [ addressof(pDeliveryLocationStrings[10]), 100, 55, 30 ],
-  [ addressof(pDeliveryLocationStrings[11]), 35, 25, 15 ],
-  [ addressof(pDeliveryLocationStrings[12]), 45, 30, 20 ],
-  [ addressof(pDeliveryLocationStrings[13]), 55, 40, 25 ],
-  [ addressof(pDeliveryLocationStrings[14]), 100, 55, 30 ],
-  [ addressof(pDeliveryLocationStrings[15]), 100, 55, 30 ],
-  [ addressof(pDeliveryLocationStrings[16]), 45, 30, 20 ],
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[0], 20, 15, 10),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[1], 295, 150, 85),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[2], 200, 100, 50), // the only one that really matters
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[3], 100, 55, 30),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[4], 95, 65, 40),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[5], 55, 40, 25),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[6], 35, 25, 15),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[7], 200, 100, 50),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[8], 190, 90, 45),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[9], 35, 25, 15),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[10], 100, 55, 30),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[11], 35, 25, 15),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[12], 45, 30, 20),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[13], 55, 40, 25),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[14], 100, 55, 30),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[15], 100, 55, 30),
+  createBobbyROrderLocationStructFrom(pDeliveryLocationStrings[16], 45, 30, 20),
 ];
 
 // drop down menu
