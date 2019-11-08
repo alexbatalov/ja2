@@ -729,7 +729,7 @@ function HandleModalTactical(): void {
 
 export function InitHelicopterEntranceByMercs(): void {
   if (DidGameJustStart()) {
-    let AirRaidDef: AIR_RAID_DEFINITION;
+    let AirRaidDef: AIR_RAID_DEFINITION = createAirRaidDefinition();
 
     // Update clock ahead from STARTING_TIME to make mercs arrive!
     WarpGameTime(FIRST_ARRIVAL_DELAY, Enum131.WARPTIME_PROCESS_EVENTS_NORMALLY);

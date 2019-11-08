@@ -35,7 +35,7 @@ let gfHaveTBBatton: boolean = false;
 let gsNotLocatedYet: INT16 = false;
 export let giNumFrames: INT32;
 
-let gAirRaidDef: AIR_RAID_DEFINITION;
+let gAirRaidDef: AIR_RAID_DEFINITION = createAirRaidDefinition();
 
 interface AIR_RAID_SAVE_STRUCT {
   fInAirRaid: boolean;

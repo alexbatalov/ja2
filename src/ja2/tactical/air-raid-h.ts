@@ -13,6 +13,18 @@ export interface AIR_RAID_DEFINITION {
   ubFiller: UINT8[] /* [8] */;
 }
 
+export function createAirRaidDefinition(): AIR_RAID_DEFINITION {
+  return {
+    sSectorX: 0,
+    sSectorY: 0,
+    sSectorZ: 0,
+    bIntensity: 0,
+    uiFlags: 0,
+    ubNumMinsFromCurrentTime: 0,
+    ubFiller: createArray(8, 0),
+  };
+}
+
 export const enum Enum192 {
   AIR_RAID_TRYING_TO_START,
   AIR_RAID_START,
