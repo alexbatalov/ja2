@@ -99,6 +99,13 @@ interface AIR_RAID_POS {
   bY: INT8;
 }
 
+function createAirRaidPosFrom(bX: INT8, bY: INT8): AIR_RAID_POS {
+  return {
+    bX,
+    bY,
+  };
+}
+
 let ubPerpDirections: AIR_RAID_DIR[] /* [] */ = [
   createAirRaidDirFrom(2, 6),
   createAirRaidDirFrom(3, 7),
@@ -111,14 +118,14 @@ let ubPerpDirections: AIR_RAID_DIR[] /* [] */ = [
 ];
 
 let ubXYTragetInvFromDirection: AIR_RAID_POS[] /* [] */ = [
-  [ 0, -1 ],
-  [ 1, -1 ],
-  [ 1, 0 ],
-  [ 1, 1 ],
-  [ 0, 1 ],
-  [ -1, 1 ],
-  [ -1, 0 ],
-  [ -1, -1 ],
+  createAirRaidPosFrom(0, -1),
+  createAirRaidPosFrom(1, -1),
+  createAirRaidPosFrom(1, 0),
+  createAirRaidPosFrom(1, 1),
+  createAirRaidPosFrom(0, 1),
+  createAirRaidPosFrom(-1, 1),
+  createAirRaidPosFrom(-1, 0),
+  createAirRaidPosFrom(-1, -1),
 ];
 
 function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
