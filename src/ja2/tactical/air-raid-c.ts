@@ -87,20 +87,27 @@ interface AIR_RAID_DIR {
   bDir2: INT8;
 }
 
+function createAirRaidDirFrom(bDir1: INT8, bDir2: INT8): AIR_RAID_DIR {
+  return {
+    bDir1,
+    bDir2,
+  };
+}
+
 interface AIR_RAID_POS {
   bX: INT8;
   bY: INT8;
 }
 
 let ubPerpDirections: AIR_RAID_DIR[] /* [] */ = [
-  [ 2, 6 ],
-  [ 3, 7 ],
-  [ 0, 4 ],
-  [ 1, 5 ],
-  [ 2, 6 ],
-  [ 3, 7 ],
-  [ 0, 4 ],
-  [ 1, 5 ],
+  createAirRaidDirFrom(2, 6),
+  createAirRaidDirFrom(3, 7),
+  createAirRaidDirFrom(0, 4),
+  createAirRaidDirFrom(1, 5),
+  createAirRaidDirFrom(2, 6),
+  createAirRaidDirFrom(3, 7),
+  createAirRaidDirFrom(0, 4),
+  createAirRaidDirFrom(1, 5),
 ];
 
 let ubXYTragetInvFromDirection: AIR_RAID_POS[] /* [] */ = [
