@@ -110,6 +110,20 @@ export interface ATTACKTYPE {
   bWeaponIn: INT8; // the inv slot of the weapon in question
 }
 
+export function createAttackType(): ATTACKTYPE {
+  return {
+    ubPossible: 0,
+    ubOpponent: 0,
+    ubAimTime: 0,
+    ubChanceToReallyHit: 0,
+    iAttackValue: 0,
+    sTarget: 0,
+    bTargetLevel: 0,
+    ubAPCost: 0,
+    bWeaponIn: 0,
+  };
+}
+
 export const enum Enum293 {
   SEARCH_GENERAL_ITEMS,
   SEARCH_AMMO,

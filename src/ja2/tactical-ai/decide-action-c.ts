@@ -1356,7 +1356,7 @@ export function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK:
   let bHidePts: INT8 = 0;
   let bWatchPts: INT8 = 0;
   let bHighestWatchLoc: INT8;
-  let BestThrow: ATTACKTYPE;
+  let BestThrow: ATTACKTYPE = createAttackType();
   let fClimb: boolean;
   let fCivilian: boolean = (PTR_CIVILIAN() && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || (pSoldier.value.bNeutral && gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] == CIV_GROUP_NEUTRAL) || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
 
@@ -2269,10 +2269,10 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bWeaponIn: INT8;
   let fTryPunching: boolean = false;
 
-  let BestShot: ATTACKTYPE;
-  let BestThrow: ATTACKTYPE;
-  let BestStab: ATTACKTYPE;
-  let BestAttack: ATTACKTYPE;
+  let BestShot: ATTACKTYPE = createAttackType();
+  let BestThrow: ATTACKTYPE = createAttackType();
+  let BestStab: ATTACKTYPE = createAttackType();
+  let BestAttack: ATTACKTYPE = createAttackType();
   let fCivilian: boolean = (PTR_CIVILIAN() && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || pSoldier.value.bNeutral || (pSoldier.value.ubBodyType >= Enum194.FATCIV && pSoldier.value.ubBodyType <= Enum194.CRIPPLECIV)));
   let ubBestStance: UINT8;
   let ubStanceCost: UINT8;

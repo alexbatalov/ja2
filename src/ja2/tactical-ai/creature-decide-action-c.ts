@@ -773,10 +773,10 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bSpitIn: INT8;
   let bWeaponIn: INT8;
   let uiChance: UINT32;
-  let BestShot: ATTACKTYPE;
-  let BestStab: ATTACKTYPE;
-  let BestAttack: ATTACKTYPE;
-  let CurrStab: ATTACKTYPE;
+  let BestShot: ATTACKTYPE = createAttackType();
+  let BestStab: ATTACKTYPE = createAttackType();
+  let BestAttack: ATTACKTYPE = createAttackType();
+  let CurrStab: ATTACKTYPE = createAttackType();
   let fRunAway: boolean = false;
   let fChangeLevel: boolean;
 
