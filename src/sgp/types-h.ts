@@ -100,4 +100,12 @@ type MATRIX4 = VECTOR4[] /* [4] */; // 4x4 matrix
 export type ANGLE = VECTOR3; // angle return array
 type COLOR = VECTOR4; // rgba color array
 
+export function createArray<T>(arrayLength: number, value: T): T[] {
+  const arr = new Array(arrayLength);
+  for (let i = 0; i < arrayLength; i++) {
+    arr[i] = value;
+  }
+  return arr;
+}
+
 }
