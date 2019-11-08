@@ -522,7 +522,7 @@ function RenderGIOScreen(): boolean {
 }
 
 function GetGIOScreenUserInput(): void {
-  let Event: InputAtom;
+  let Event: InputAtom = createInputAtom();
   //	POINT  MousePos;
 
   //	GetCursorPos(&MousePos);

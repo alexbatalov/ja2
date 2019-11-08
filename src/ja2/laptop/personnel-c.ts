@@ -5363,7 +5363,7 @@ function HandlePersonnelKeyboard(): void {
   let iValue: INT32 = 0;
   let sZero: string /* CHAR16[2] */ = "0";
 
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
   GetCursorPos(addressof(MousePos));

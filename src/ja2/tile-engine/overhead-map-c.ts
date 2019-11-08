@@ -458,7 +458,7 @@ export function GoIntoOverheadMap(): void {
 }
 
 function HandleOverheadUI(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let sMousePos: INT16 = 0;
   let ubID: UINT8;
 

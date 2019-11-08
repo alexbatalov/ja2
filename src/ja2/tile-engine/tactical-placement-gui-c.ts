@@ -373,7 +373,7 @@ function EnsureDoneButtonStatus(): void {
 }
 
 export function TacticalPlacementHandle(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
 
   EnsureDoneButtonStatus();
 

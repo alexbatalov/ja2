@@ -280,7 +280,7 @@ function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 }
 
 function GetPlayerKeyBoardInputForIMPBeginScreen(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
   // get the current curosr position, might just need it.

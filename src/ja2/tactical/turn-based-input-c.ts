@@ -928,7 +928,7 @@ export function GetPolledKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
 }
 
 export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let fKeyTaken: boolean = false;
   let MousePos: POINT = createPoint();
   // SOLDIERTYPE				*pSoldier;

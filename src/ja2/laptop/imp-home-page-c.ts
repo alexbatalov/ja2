@@ -181,7 +181,7 @@ function DisplayActivationStringCursor(): void {
 }
 
 function GetPlayerKeyBoardInputForIMPHomePage(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
   GetCursorPos(addressof(MousePos));

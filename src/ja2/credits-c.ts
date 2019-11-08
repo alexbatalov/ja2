@@ -518,7 +518,7 @@ function RenderCreditScreen(): boolean {
 }
 
 function GetCreditScreenUserInput(): void {
-  let Event: InputAtom;
+  let Event: InputAtom = createInputAtom();
 
   while (DequeueEvent(addressof(Event))) {
     if (Event.usEvent == KEY_DOWN) {

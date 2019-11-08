@@ -1299,7 +1299,7 @@ function CheckStateOfTheConfirmButton(): void {
 }
 
 function HandleIMPQuizKeyBoard(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
   let fSkipFrame: boolean = false;
 

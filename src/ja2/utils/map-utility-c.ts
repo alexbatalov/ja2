@@ -28,7 +28,7 @@ export function MapUtilScreenInit(): UINT32 {
 export function MapUtilScreenHandle(): UINT32 {
   /* static */ let fNewMap: INT16 = true;
   /* static */ let sFileNum: INT16 = 0;
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let FileInfo: GETFILESTRUCT;
   /* static */ let FListNode: Pointer<FDLG_LIST>;
   /* static */ let sFiles: INT16 = 0;

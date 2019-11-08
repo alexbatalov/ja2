@@ -3680,7 +3680,7 @@ function HandleMapUI(): UINT32 {
 }
 
 function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
   let bSquadNumber: INT8;
   let ubGroupId: UINT8 = 0;

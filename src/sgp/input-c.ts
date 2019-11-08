@@ -38,7 +38,7 @@ export let gusMouseYPos: UINT16; // y position of the mouse on screen
 
 // The queue structures are used to track input events using queued events
 
-let gEventQueue: InputAtom[] /* [256] */;
+let gEventQueue: InputAtom[] /* [256] */ = createArrayFrom(256, createInputAtom);
 let gusQueueCount: UINT16;
 let gusHeadIndex: UINT16;
 let gusTailIndex: UINT16;
@@ -1261,7 +1261,7 @@ function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32,
 }
 
 export function DequeueAllKeyBoardEvents(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let KeyMessage: MSG;
 
   // dequeue all the events waiting in the windows queue

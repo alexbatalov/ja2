@@ -34,6 +34,16 @@ export interface InputAtom {
   uiParam: UINT32;
 }
 
+export function createInputAtom(): InputAtom {
+  return {
+    uiTimeStamp: 0,
+    usKeyState: 0,
+    usEvent: 0,
+    usParam: 0,
+    uiParam: 0,
+  };
+}
+
 // Mouse pos extracting macros from InputAtom
 const GETYPOS = (a) => HIWORD(((a).value.uiParam));
 const GETXPOS = (a) => LOWORD(((a).value.uiParam));

@@ -38,7 +38,7 @@ export function AniEditScreenShutdown(): UINT32 {
 }
 
 export function AniEditScreenHandle(): UINT32 {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   /* static */ let fFirstTime: boolean = true;
   /* static */ let usOldState: UINT16;
   /* static */ let fToggle: boolean = false;

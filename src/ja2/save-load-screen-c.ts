@@ -621,7 +621,7 @@ function HandleSaveLoadScreen(): void {
 }
 
 function GetSaveLoadScreenUserInput(): void {
-  let Event: InputAtom;
+  let Event: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
   let bActiveTextField: INT8;
   /* static */ let fWasCtrlHeldDownLastFrame: boolean = false;

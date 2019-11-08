@@ -451,7 +451,7 @@ function UpdateSectorExitMenu(): void {
 }
 
 export function RenderSectorExitMenu(): void {
-  let Event: InputAtom;
+  let Event: InputAtom = createInputAtom();
 
   RestoreBackgroundRects();
   // ATE: Reset mouse Y

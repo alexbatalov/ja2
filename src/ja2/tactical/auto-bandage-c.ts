@@ -146,7 +146,7 @@ export function ShouldBeginAutoBandage(): void {
 }
 
 export function HandleAutoBandage(): boolean {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
 
   if (gTacticalStatus.fAutoBandageMode) {
     if (gfBeginningAutoBandage) {

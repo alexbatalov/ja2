@@ -671,7 +671,7 @@ export function MessageBoxScreenInit(): UINT32 {
 }
 
 export function MessageBoxScreenHandle(): UINT32 {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
 
   if (gfNewMessageBox) {
     // If in game screen....

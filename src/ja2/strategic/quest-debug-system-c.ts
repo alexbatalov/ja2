@@ -936,7 +936,7 @@ function DisplayCurrentGridNo(): void {
 }
 
 function GetUserInput(): void {
-  let Event: InputAtom;
+  let Event: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
   let ubPanelMercShouldUse: UINT8 = WhichPanelShouldTalkingMercUse(giSelectedMercCurrentQuote);
 

@@ -85,7 +85,7 @@ export function ShutdownGame(): void {
 // This function exits constantly and reenters constantly
 
 export function GameLoop(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
   let uiOldScreen: UINT32 = guiCurrentScreen;
 

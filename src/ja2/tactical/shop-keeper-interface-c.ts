@@ -1092,7 +1092,7 @@ function RestoreTacticalBackGround(): void {
 }
 
 function GetShopKeeperInterfaceUserInput(): void {
-  let Event: InputAtom;
+  let Event: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
   GetCursorPos(addressof(MousePos));

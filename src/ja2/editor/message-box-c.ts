@@ -49,7 +49,7 @@ export function CreateMessageBox(wzString: string /* Pointer<UINT16> */): void {
 }
 
 export function MessageBoxHandled(): boolean {
-  let DummyEvent: InputAtom;
+  let DummyEvent: InputAtom = createInputAtom();
 
   while (DequeueEvent(addressof(DummyEvent))) {
     if (DummyEvent.usEvent == KEY_DOWN) {

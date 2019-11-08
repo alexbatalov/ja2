@@ -85,7 +85,7 @@ export let iCurrentTaskbar: INT32;
 
 let iCurBankMapIndex: UINT16;
 
-let EditorInputEvent: InputAtom;
+let EditorInputEvent: InputAtom = createInputAtom();
 let fBeenWarned: boolean = false;
 let fEditModeFirstTime: boolean = true;
 let fFirstTimeInEditModeInit: boolean = true;
@@ -2138,7 +2138,7 @@ function ProcessEditscreenMessageBoxResponse(): UINT32 {
 //	Displays a help screen and waits for the user to wisk it away.
 //
 function WaitForHelpScreenResponse(): UINT32 {
-  let DummyEvent: InputAtom;
+  let DummyEvent: InputAtom = createInputAtom();
   let fLeaveScreen: boolean;
 
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 50, 50, 590, 310, Get16BPPColor(FROMRGB(136, 138, 135)));
@@ -2247,7 +2247,7 @@ function WaitForHelpScreenResponse(): UINT32 {
 //	Handles all keyboard input and display for a selection window.
 //
 function WaitForSelectionWindowResponse(): UINT32 {
-  let DummyEvent: InputAtom;
+  let DummyEvent: InputAtom = createInputAtom();
 
   while (DequeueEvent(addressof(DummyEvent)) == true) {
     if (DummyEvent.usEvent == KEY_DOWN) {

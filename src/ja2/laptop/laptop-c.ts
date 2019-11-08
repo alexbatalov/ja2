@@ -400,7 +400,7 @@ function HandleLapTopCursorUpDate(): void {
   guiPreviousLapTopCursor = guiCurrentLapTopCursor;
 }
 function GetLaptopKeyboardInput(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
   GetCursorPos(addressof(MousePos));

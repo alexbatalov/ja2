@@ -299,7 +299,7 @@ function MenuButtonMoveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function HandleMainMenuInput(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
 
   // Check for esc
   while (DequeueEvent(addressof(InputEvent)) == true) {
@@ -332,7 +332,7 @@ function HandleMainMenuInput(): void {
 }
 
 function HandleHelpScreenInput(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
 
   // Check for key
   while (DequeueEvent(addressof(InputEvent)) == true) {

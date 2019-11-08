@@ -2445,7 +2445,7 @@ function CalculateRowsAndColumns(): void {
 }
 
 function HandleAutoResolveInput(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   let fResetAutoResolve: boolean = false;
   while (DequeueEvent(addressof(InputEvent))) {
     if (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT) {

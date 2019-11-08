@@ -284,7 +284,7 @@ function GetPopupIndexFromMousePosition(): UINT8 {
 }
 
 function PopupMenuHandle(): void {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
 
   if (gPopup.ubActiveType == POPUP_ACTIVETYPE_NOT_YET_DETERMINED) {
     // Attempt to determine if the menu will be persistant or not.

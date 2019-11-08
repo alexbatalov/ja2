@@ -576,7 +576,7 @@ function RenderOptionsScreen(): void {
 }
 
 function GetOptionsScreenUserInput(): void {
-  let Event: InputAtom;
+  let Event: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
   GetCursorPos(addressof(MousePos));

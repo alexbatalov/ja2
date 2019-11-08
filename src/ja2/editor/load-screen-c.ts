@@ -201,7 +201,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
 export function LoadSaveScreenHandle(): UINT32 {
   let FListNode: Pointer<FDLG_LIST>;
   let x: INT32;
-  let DialogEvent: InputAtom;
+  let DialogEvent: InputAtom = createInputAtom();
 
   if (fEnteringLoadSaveScreen) {
     LoadSaveScreenEntry();

@@ -806,7 +806,7 @@ function CreateHelpScreenButtons(): void {
 }
 
 function GetHelpScreenUserInput(): void {
-  let Event: InputAtom;
+  let Event: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
   GetCursorPos(addressof(MousePos));

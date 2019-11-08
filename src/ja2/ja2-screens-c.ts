@@ -121,7 +121,7 @@ export function ErrorScreenInitialize(): UINT32 {
 }
 
 export function ErrorScreenHandle(): UINT32 {
-  let InputEvent: InputAtom;
+  let InputEvent: InputAtom = createInputAtom();
   /* static */ let fFirstTime: boolean = false;
 
   // For quick setting of new video stuff / to be changed
