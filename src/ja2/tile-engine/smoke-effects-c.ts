@@ -186,7 +186,7 @@ export function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubO
 // Add smoke to gridno
 // ( Replacement algorithm uses distance away )
 export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16, bLevel: INT8): void {
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let pAniTile: Pointer<ANITILE>;
   let pSmoke: Pointer<SMOKEEFFECT>;
   let fDissipating: boolean = false;

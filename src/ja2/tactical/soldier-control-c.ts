@@ -222,7 +222,7 @@ export function HandleCrowShadowVisibility(pSoldier: Pointer<SOLDIERTYPE>): void
 }
 
 function HandleCrowShadowNewGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
   memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
 

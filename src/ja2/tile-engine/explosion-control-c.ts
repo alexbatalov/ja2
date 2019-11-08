@@ -209,7 +209,7 @@ function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE
   let bLevel: INT8;
   let uiSoundID: UINT32;
 
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
   // Assign param values
   uiFlags = pExplosion.value.Params.uiFlags;

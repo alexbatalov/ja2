@@ -564,7 +564,7 @@ export function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Point
   if (iResult >= -20) {
     // Do explosive graphic....
     {
-      let AniParams: ANITILE_PARAMS;
+      let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
       let sGridNo: INT16;
       let sX: INT16;
       let sY: INT16;

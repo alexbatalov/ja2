@@ -402,7 +402,7 @@ export function HandleHeliDrop(): void {
   // INT16 sWorldX, sWorldY;
   let iVol: INT32;
   let cnt: INT32;
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
   if (gfHandleHeli) {
     if (gCurrentUIMode != Enum206.LOCKUI_MODE) {

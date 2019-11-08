@@ -708,7 +708,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
   let pNode: Pointer<LEVELNODE>;
   let cnt: INT32;
   let fOpenedGraphic: boolean = false;
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let fDoAnimation: boolean = true;
   let pBaseStructure: Pointer<STRUCTURE>;
   let uiSoundID: UINT32;

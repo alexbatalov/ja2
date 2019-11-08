@@ -366,7 +366,7 @@ export function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITI
 export function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32 {
   let iIndex: INT32;
   let pCorpse: Pointer<ROTTING_CORPSE>;
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let ubLevelID: UINT8;
   let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;
   let zFilename: string /* INT8[150] */;
@@ -1150,7 +1150,7 @@ export function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
   let pBaseStructure: Pointer<STRUCTURE>;
   let pCorpse: Pointer<ROTTING_CORPSE> = null;
   let sBaseGridNo: INT16;
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
   pStructure = FindStructureByID(sGridNo, usStructureID);
 

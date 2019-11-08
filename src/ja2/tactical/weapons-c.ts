@@ -1506,7 +1506,7 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): bool
 }
 
 function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT16, sYPos: INT16, sZPos: INT16, fSoundOnly: boolean, fFreeupAttacker: boolean, iBullet: INT32): boolean {
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let ubAmmoType: UINT8;
   let usItem: UINT16;
 
@@ -1616,7 +1616,7 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
   let fDoMissForGun: boolean = false;
   let pNode: Pointer<ANITILE>;
   let sGridNo: INT16;
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let usMissTileIndex: UINT16;
   let usMissTileType: UINT16;
   let pStructure: Pointer<STRUCTURE> = null;
@@ -1855,7 +1855,7 @@ export function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSout
   let sShatterGridNo: INT16;
   let usTileIndex: UINT16;
   let pNode: Pointer<ANITILE>;
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
   // ATE: Make large force always for now ( feel thing )
   fLargeForce = true;

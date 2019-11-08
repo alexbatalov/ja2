@@ -94,6 +94,34 @@ export interface ANITILE_PARAMS {
   uiUserData3: UINT32;
 }
 
+export function createAnimatedTileParams(): ANITILE_PARAMS {
+  return {
+    uiFlags: 0,
+    ubLevelID: 0,
+    sStartFrame: 0,
+    sDelay: 0,
+    usTileType: 0,
+    usTileIndex: 0,
+    sX: 0,
+    sY: 0,
+    sZ: 0,
+    sGridNo: 0,
+
+    pGivenLevelNode: null,
+    zCachedFile: "",
+
+    ubOwner: 0,
+    ubKeyFrame1: 0,
+    uiKeyFrame1Code: 0,
+    ubKeyFrame2: 0,
+    uiKeyFrame2Code: 0,
+
+    uiUserData: 0,
+    ubUserData2: 0,
+    uiUserData3: 0,
+  };
+}
+
 export const enum Enum311 {
   ANI_KEYFRAME_NO_CODE,
   ANI_KEYFRAME_BEGIN_TRANSLUCENCY,

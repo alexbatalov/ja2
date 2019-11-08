@@ -695,7 +695,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
       pObject.value.fHaveHitGround = true;
     } else if (iCollisionCode == Enum229.COLLISION_WATER) {
-      let AniParams: ANITILE_PARAMS;
+      let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
       let pNode: Pointer<ANITILE>;
 
       // Continue going...
@@ -903,7 +903,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): boolean {
       // Add smoke trails...
       if (pObject.value.Obj.usItem == Enum225.MORTAR_SHELL && pObject.value.uiNumTilesMoved > 2 && pObject.value.ubActionCode == Enum258.THROW_ARM_ITEM) {
         if (sNewGridNo != pObject.value.sGridNo) {
-          let AniParams: ANITILE_PARAMS;
+          let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
           AniParams.sGridNo = sNewGridNo;
           AniParams.ubLevelID = ANI_STRUCT_LEVEL;

@@ -62,7 +62,7 @@ export function CreateBullet(ubFirerID: UINT8, fFake: boolean, usFlags: UINT16):
 
 export function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
   let pBullet: Pointer<BULLET>;
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let dX: FLOAT;
   let dY: FLOAT;
   let ubDirection: UINT8;
@@ -268,7 +268,7 @@ export function GetBulletPtr(iBullet: INT32): Pointer<BULLET> {
 }
 
 export function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXEDPT, qCurrZ: FIXEDPT): void {
-  let AniParams: ANITILE_PARAMS;
+  let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
   // If we are a small missle, don't show
   if (pBullet.value.usFlags & (BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
