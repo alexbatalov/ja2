@@ -79,6 +79,47 @@ interface AIR_RAID_SAVE_STRUCT {
   ubFiller: UINT8[] /* [32] */;
 }
 
+function createAirRaidSaveStruct(): AIR_RAID_SAVE_STRUCT {
+  return {
+    fInAirRaid: false,
+    fAirRaidScheduled: false,
+    ubAirRaidMode: 0,
+    uiSoundSample: 0,
+    uiRaidLastUpdate: 0,
+    fFadingRaidIn: false,
+    fQuoteSaid: false,
+    bNumDives: 0,
+    bMaxDives: 0,
+    fFadingRaidOut: false,
+    sDiveX: 0,
+    sDiveY: 0,
+    sDiveTargetLocation: 0,
+    ubDiveDirection: 0,
+    sNumGridNosMoved: 0,
+    iNumTurnsSinceLastDive: 0,
+    iNumTurnsSinceDiveStarted: 0,
+    iNumGridNosMovedThisTurn: 0,
+    fAirRaidHasHadTurn: false,
+    ubBeginTeamTurn: 0,
+    fHaveTBBatton: false,
+    AirRaidDef: createAirRaidDefinition(),
+    sRaidSoldierID: 0,
+    sNotLocatedYet: 0,
+    iNumFrames: 0,
+    bLevel: 0,
+    bTeam: 0,
+    bSide: 0,
+    ubAttackerID: 0,
+    usAttackingWeapon: 0,
+    dXPos: 0,
+    dYPos: 0,
+    sX: 0,
+    sY: 0,
+    sGridNo: 0,
+    ubFiller: createArray(32, 0),
+  };
+}
+
 // END SERIALIZATION
 let gpRaidSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1006,7 +1047,7 @@ export function HandleAirRaidEndTurn(ubTeam: UINT8): boolean {
 
 export function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
-  let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT;
+  let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT = createAirRaidSaveStruct();
 
   // Put all the globals into the save struct
   sAirRaidSaveStruct.fInAirRaid = gfInAirRaid;
@@ -1063,7 +1104,7 @@ export function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): boolean {
 }
 
 export function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): boolean {
-  let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT;
+  let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT = createAirRaidSaveStruct();
   let uiNumBytesRead: UINT32;
 
   // Load the number of REAL_OBJECTs in the array
