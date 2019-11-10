@@ -156,7 +156,7 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiVideoObject: UINT32;
   let iFaceIndex: INT32;
-  let ETRLEObject: ETRLEObject;
+  let ETRLEObject: ETRLEObject = createETRLEObject();
   let hVObject: HVOBJECT;
   let uiCount: UINT32;
   let Pal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);

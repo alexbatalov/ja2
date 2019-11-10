@@ -88,6 +88,17 @@ export interface ETRLEObject {
   usWidth: UINT16;
 }
 
+export function createETRLEObject(): ETRLEObject {
+  return {
+    uiDataOffset: 0,
+    uiDataLength: 0,
+    sOffsetX: 0,
+    sOffsetY: 0,
+    usHeight: 0,
+    usWidth: 0,
+  };
+}
+
 export interface ETRLEData {
   pPixData: PTR;
   uiSizePixData: UINT32;

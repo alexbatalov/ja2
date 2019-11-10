@@ -825,7 +825,7 @@ export function GetVideoObjectETRLEProperties(hVObject: HVOBJECT, pETRLEObject: 
 
 export function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, usIndex: UINT16, pusWidth: Pointer<UINT16>, pusHeight: Pointer<UINT16>): boolean {
   let hVObject: HVOBJECT;
-  let ETRLEObject: ETRLEObject;
+  let ETRLEObject: ETRLEObject = createETRLEObject();
 
 // Get video object
   if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {

@@ -2157,7 +2157,7 @@ function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubI
   let ReturnValue: boolean;
   let pTmpPointer: PTR;
   let uiPitch: UINT32;
-  let pETRLEPointer: ETRLEObject;
+  let pETRLEPointer: ETRLEObject = createETRLEObject();
 
   //
   // Erase cursor background
@@ -2281,7 +2281,7 @@ export function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT1
   let ReturnValue: boolean;
   let pTmpPointer: PTR;
   let uiPitch: UINT32;
-  let pETRLEPointer: ETRLEObject;
+  let pETRLEPointer: ETRLEObject = createETRLEObject();
 
   //
   // Make sure we have a cursor store
