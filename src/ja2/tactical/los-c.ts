@@ -1556,7 +1556,7 @@ INT32 BulletImpactReducedByRange( INT32 iImpact, INT32 iDistanceTravelled, INT32
 function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>, fIntended: boolean): boolean {
   let iImpact: INT32;
   let iDamage: INT32;
-  let SWeaponHit: EV_S_WEAPONHIT;
+  let SWeaponHit: EV_S_WEAPONHIT = createEvSWeaponHit();
   let sRange: INT16;
   let pFirer: Pointer<SOLDIERTYPE> = pBullet.value.pFirer;
   let dZPosRelToMerc: FLOAT;

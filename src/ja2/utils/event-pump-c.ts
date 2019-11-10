@@ -130,7 +130,7 @@ let SSetDirection: EV_S_SETDIRECTION;
 let SSetDesiredDirection: EV_S_SETDESIREDDIRECTION;
 let SBeginFireWeapon: EV_S_BEGINFIREWEAPON;
 let SFireWeapon: EV_S_FIREWEAPON;
-let SWeaponHit: EV_S_WEAPONHIT;
+let SWeaponHit: EV_S_WEAPONHIT = createEvSWeaponHit();
 let SStructureHit: EV_S_STRUCTUREHIT;
 let SWindowHit: EV_S_WINDOWHIT;
 let SMiss: EV_S_MISS;

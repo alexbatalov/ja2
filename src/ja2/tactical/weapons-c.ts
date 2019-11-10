@@ -1021,7 +1021,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
   let sXMapPos: INT16;
   let sYMapPos: INT16;
   let sAPCost: INT16;
-  let SWeaponHit: EV_S_WEAPONHIT;
+  let SWeaponHit: EV_S_WEAPONHIT = createEvSWeaponHit();
   let iImpact: INT32;
   let iImpactForCrits: INT32;
   let fGonnaHit: boolean = false;
@@ -1170,7 +1170,7 @@ export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
   let sXMapPos: INT16;
   let sYMapPos: INT16;
   let sAPCost: INT16;
-  let SWeaponHit: EV_S_WEAPONHIT;
+  let SWeaponHit: EV_S_WEAPONHIT = createEvSWeaponHit();
   let iImpact: INT32;
   let usOldItem: UINT16;
   let ubExpGain: UINT8;

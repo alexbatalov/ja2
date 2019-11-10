@@ -135,6 +135,25 @@ export interface EV_S_WEAPONHIT {
   ubLocation: UINT8;
 }
 
+export function createEvSWeaponHit(): EV_S_WEAPONHIT {
+  return {
+    usSoldierID: 0,
+    uiUniqueId: 0,
+    usWeaponIndex: 0,
+    sDamage: 0,
+    sBreathLoss: 0,
+    usDirection: 0,
+    sXPos: 0,
+    sYPos: 0,
+    sZPos: 0,
+    sRange: 0,
+    ubAttackerID: 0,
+    fHit: 0,
+    ubSpecial: 0,
+    ubLocation: 0,
+  };
+}
+
 export interface EV_S_STRUCTUREHIT {
   sXPos: INT16;
   sYPos: INT16;
