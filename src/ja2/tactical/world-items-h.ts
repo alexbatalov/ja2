@@ -26,6 +26,21 @@ export interface WORLDITEM {
   ubNonExistChance: UINT8;
 }
 
+export function createWorldItem(): WORLDITEM {
+  return {
+    fExists: false,
+    sGridNo: 0,
+    ubLevel: 0,
+    o: createObjectType(),
+    usFlags: 0,
+    bRenderZHeightAboveLevel: 0,
+
+    bVisible: 0,
+
+    ubNonExistChance: 0,
+  };
+}
+
 export interface WORLDBOMB {
   fExists: boolean;
   iItemIndex: INT32;

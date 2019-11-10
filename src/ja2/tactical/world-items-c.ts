@@ -287,7 +287,7 @@ export function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
 
   let i: UINT32;
   let uiLevelItems: UINT32 = 0;
-  let dummyItem: WORLDITEM;
+  let dummyItem: WORLDITEM = createWorldItem();
   let iItemIndex: INT32;
   let uiNumWorldItems: UINT32;
 
@@ -473,7 +473,7 @@ function DeleteWorldItemsBelongingToQueenIfThere(): void {
 // Refresh item pools
 export function RefreshWorldItemsIntoItemPools(pItemList: Pointer<WORLDITEM>, iNumberOfItems: INT32): void {
   let i: INT32;
-  let dummyItem: WORLDITEM;
+  let dummyItem: WORLDITEM = createWorldItem();
 
   for (i = 0; i < iNumberOfItems; i++) {
     if (pItemList[i].fExists) {

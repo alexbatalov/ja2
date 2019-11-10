@@ -1131,7 +1131,7 @@ export function EndCaptureSequence(): void {
 
 export function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let i: INT32;
-  let WorldItem: WORLDITEM;
+  let WorldItem: WORLDITEM = createWorldItem();
   let fMadeCorpse: boolean;
   let iNumEnemiesInSector: INT32;
 

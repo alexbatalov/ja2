@@ -2243,7 +2243,7 @@ export function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: U
 export function MoveItemPools(sStartPos: INT16, sEndPos: INT16): boolean {
   // note, only works between locations on the ground
   let pItemPool: Pointer<ITEM_POOL>;
-  let TempWorldItem: WORLDITEM;
+  let TempWorldItem: WORLDITEM = createWorldItem();
 
   // While there is an existing pool
   while (GetItemPool(sStartPos, addressof(pItemPool), 0)) {
