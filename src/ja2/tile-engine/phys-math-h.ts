@@ -11,6 +11,14 @@ export interface vector_3 {
   z: FLOAT;
 }
 
+export function createVector3(): vector_3 {
+  return {
+    x: 0,
+    y: 0,
+    z: 0,
+  };
+}
+
 interface matrix_3x3 {
   aElements: FLOAT[][] /* [3][3] */;
 }

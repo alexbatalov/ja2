@@ -236,7 +236,7 @@ function SimulateObject(pObject: Pointer<REAL_OBJECT>, deltaT: FLOAT): void {
 }
 
 function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): boolean {
-  let vTemp: vector_3;
+  let vTemp: vector_3 = createVector3();
 
   // Calculate forces
   pObject.value.Force = VSetEqual(addressof(pObject.value.InitialForce));
@@ -358,7 +358,7 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: FLOAT): boo
 }
 
 function PhysicsIntegrate(pObject: Pointer<REAL_OBJECT>, DeltaTime: FLOAT): boolean {
-  let vTemp: vector_3;
+  let vTemp: vector_3 = createVector3();
 
   // Save old position
   pObject.value.OldPosition = VSetEqual(addressof(pObject.value.Position));
@@ -486,7 +486,7 @@ function PhysicsDeleteObject(pObject: Pointer<REAL_OBJECT>): void {
 }
 
 function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: Pointer<INT32>): boolean {
-  let vTemp: vector_3;
+  let vTemp: vector_3 = createVector3();
   let dDeltaX: FLOAT;
   let dDeltaY: FLOAT;
   let dDeltaZ: FLOAT;
@@ -800,7 +800,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
       dElasity = 1.1;
     } else {
-      let vIncident: vector_3;
+      let vIncident: vector_3 = createVector3();
 
       if (CheckForCatcher(pObject, usStructureID)) {
         return false;
@@ -859,7 +859,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 function PhysicsResolveCollision(pObject: Pointer<REAL_OBJECT>, pVelocity: Pointer<vector_3>, pNormal: Pointer<vector_3>, CoefficientOfRestitution: FLOAT): void {
   let ImpulseNumerator: FLOAT;
   let Impulse: FLOAT;
-  let vTemp: vector_3;
+  let vTemp: vector_3 = createVector3();
 
   ImpulseNumerator = -1 * CoefficientOfRestitution * VDotProduct(pVelocity, pNormal);
 
@@ -1018,9 +1018,9 @@ function ObjectHitWindow(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth
 }
 
 function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ: INT16, dzDegrees: FLOAT, pItem: Pointer<OBJECTTYPE>, psGridNo: Pointer<INT16>, pdMagForce: Pointer<FLOAT>): vector_3 {
-  let vDirNormal: vector_3;
-  let vPosition: vector_3;
-  let vForce: vector_3;
+  let vDirNormal: vector_3 = createVector3();
+  let vPosition: vector_3 = createVector3();
+  let vForce: vector_3 = createVector3();
   let sDestX: INT16;
   let sDestY: INT16;
   let sSrcX: INT16;
@@ -1104,9 +1104,9 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
 }
 
 function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ: INT16, dForce: FLOAT, dzDegrees: FLOAT, pItem: Pointer<OBJECTTYPE>): INT16 {
-  let vDirNormal: vector_3;
-  let vPosition: vector_3;
-  let vForce: vector_3;
+  let vDirNormal: vector_3 = createVector3();
+  let vPosition: vector_3 = createVector3();
+  let vForce: vector_3 = createVector3();
   let sDestX: INT16;
   let sDestY: INT16;
   let sSrcX: INT16;
@@ -1148,9 +1148,9 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
 }
 
 function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ: INT16, dForce: FLOAT, pItem: Pointer<OBJECTTYPE>, psGridNo: Pointer<INT16>): FLOAT {
-  let vDirNormal: vector_3;
-  let vPosition: vector_3;
-  let vForce: vector_3;
+  let vDirNormal: vector_3 = createVector3();
+  let vPosition: vector_3 = createVector3();
+  let vForce: vector_3 = createVector3();
   let sDestX: INT16;
   let sDestY: INT16;
   let sSrcX: INT16;
@@ -1244,9 +1244,9 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
 }
 
 function FindTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ: INT16, dForce: FLOAT, dzDegrees: FLOAT, pItem: Pointer<OBJECTTYPE>, psGridNo: Pointer<INT16>): void {
-  let vDirNormal: vector_3;
-  let vPosition: vector_3;
-  let vForce: vector_3;
+  let vDirNormal: vector_3 = createVector3();
+  let vPosition: vector_3 = createVector3();
+  let vForce: vector_3 = createVector3();
   let sDestX: INT16;
   let sDestY: INT16;
   let sSrcX: INT16;
@@ -1540,9 +1540,9 @@ export function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERT
   let sDestY: INT16;
   let sSrcX: INT16;
   let sSrcY: INT16;
-  let vForce: vector_3;
-  let vPosition: vector_3;
-  let vDirNormal: vector_3;
+  let vForce: vector_3 = createVector3();
+  let vPosition: vector_3 = createVector3();
+  let vDirNormal: vector_3 = createVector3();
 
   // Ge7t basic launch params...
   CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, addressof(dForce), addressof(dDegrees), psFinalGridNo, fArmed);
@@ -1632,8 +1632,8 @@ export function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>
   let sDestY: INT16;
   let sSrcX: INT16;
   let sSrcY: INT16;
-  let vForce: vector_3;
-  let vDirNormal: vector_3;
+  let vForce: vector_3 = createVector3();
+  let vDirNormal: vector_3 = createVector3();
   let sFinalGridNo: INT16;
   let fArmed: boolean = false;
   let usLauncher: UINT16;

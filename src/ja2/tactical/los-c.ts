@@ -3975,12 +3975,12 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
   let bNumNormals: INT8 = 0;
   let fParimeter: boolean;
 
-  let vZ: vector_3;
-  let vTemp2: vector_3;
-  let vNormal: vector_3;
-  let vAveNormal: vector_3;
-  let vTemp: vector_3;
-  let vIncident: vector_3;
+  let vZ: vector_3 = createVector3();
+  let vTemp2: vector_3 = createVector3();
+  let vNormal: vector_3 = createVector3();
+  let vAveNormal: vector_3 = createVector3();
+  let vTemp: vector_3 = createVector3();
+  let vIncident: vector_3 = createVector3();
 
   vZ.x = 0;
   vZ.y = 0;

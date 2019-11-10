@@ -1,7 +1,7 @@
 namespace ja2 {
 
 export function VSetEqual(a: Pointer<vector_3>): vector_3 {
-  let c: vector_3;
+  let c: vector_3 = createVector3();
 
   //	c.x = a->x;
   //	c.y = a->y;
@@ -12,7 +12,7 @@ export function VSetEqual(a: Pointer<vector_3>): vector_3 {
 }
 
 export function VSubtract(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
-  let c: vector_3;
+  let c: vector_3 = createVector3();
 
   c.x = a.value.x - b.value.x;
   c.y = a.value.y - b.value.y;
@@ -22,7 +22,7 @@ export function VSubtract(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 
 }
 
 export function VAdd(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
-  let c: vector_3;
+  let c: vector_3 = createVector3();
 
   c.x = a.value.x + b.value.x;
   c.y = a.value.y + b.value.y;
@@ -32,7 +32,7 @@ export function VAdd(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
 }
 
 export function VMultScalar(a: Pointer<vector_3>, b: FLOAT): vector_3 {
-  let c: vector_3;
+  let c: vector_3 = createVector3();
 
   c.x = a.value.x * b;
   c.y = a.value.y * b;
@@ -42,7 +42,7 @@ export function VMultScalar(a: Pointer<vector_3>, b: FLOAT): vector_3 {
 }
 
 export function VDivScalar(a: Pointer<vector_3>, b: FLOAT): vector_3 {
-  let c: vector_3;
+  let c: vector_3 = createVector3();
 
   c.x = a.value.x / b;
   c.y = a.value.y / b;
@@ -60,7 +60,7 @@ function VPerpDotProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): FLOAT {
 }
 
 export function VCrossProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
-  let c: vector_3;
+  let c: vector_3 = createVector3();
 
   c.x = (a.value.y * b.value.z) - (a.value.z * b.value.y);
   c.y = (a.value.x * b.value.z) - (a.value.z * b.value.x);
@@ -70,7 +70,7 @@ export function VCrossProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): vecto
 }
 
 function VGetPerpendicular(a: Pointer<vector_3>): vector_3 {
-  let c: vector_3;
+  let c: vector_3 = createVector3();
 
   c.x = -a.value.y;
   c.y = a.value.x;
@@ -84,7 +84,7 @@ export function VGetLength(a: Pointer<vector_3>): FLOAT {
 }
 
 export function VGetNormal(a: Pointer<vector_3>): vector_3 {
-  let c: vector_3;
+  let c: vector_3 = createVector3();
   let OneOverLength: FLOAT;
   let Length: FLOAT;
 

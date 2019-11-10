@@ -34,9 +34,9 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
   let bBest: INT32;
   let dLowestDist: FLOAT;
   let dCubeDist: FLOAT;
-  let vTableVal: vector_3;
-  let vSrcVal: vector_3;
-  let vDiffVal: vector_3;
+  let vTableVal: vector_3 = createVector3();
+  let vSrcVal: vector_3 = createVector3();
+  let vDiffVal: vector_3 = createVector3();
   let pData: Pointer<UINT8>;
   let pRGBData: Pointer<RGBValues>;
 
