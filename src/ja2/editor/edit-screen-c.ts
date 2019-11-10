@@ -2331,7 +2331,7 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
   let hvSurface: HVSURFACE;
   let iWinWidth: INT32;
   let iWinHeight: INT32;
-  let vSfx: blt_vs_fx;
+  let vSfx: blt_vs_fx = createBltVsFx();
 
   WinRect.iLeft = (iWindow == 0) ? (336) : (488);
   WinRect.iTop = 211;

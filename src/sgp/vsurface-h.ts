@@ -41,6 +41,15 @@ export interface blt_vs_fx {
   DestRegion: UINT16; // Given a DEST region for dest positions within the VO
 }
 
+export function createBltVsFx(): blt_vs_fx {
+  return {
+    ColorFill: 0,
+    SrcRect: createSGPRect(),
+    FillRect: createSGPRect(),
+    DestRegion: 0,
+  };
+}
+
 //
 // Video Surface Flags
 // Used to describe the memory usage of a video Surface

@@ -2471,7 +2471,7 @@ function CheckForAndHandleEndPlayerTimeLimit(): void {
 
 export function HandleTopMessages(): void {
   // UINT32		uiTime;
-  let BltFx: blt_vs_fx;
+  let BltFx: blt_vs_fx = createBltVsFx();
 
   // OK, is out current count > 0 ?
   if (gTacticalStatus.fInTopMessage) {

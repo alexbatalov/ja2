@@ -476,7 +476,7 @@ export function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, u
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, Color16BPP: UINT16): boolean {
-  let BltFx: blt_vs_fx;
+  let BltFx: blt_vs_fx = createBltVsFx();
   let hDestVSurface: HVSURFACE;
   let Clip: SGPRect = createSGPRect();
 

@@ -476,7 +476,7 @@ function FadeInBackBufferSquare(): void {
   let iY2: INT32;
   let sFadeXMove: INT16;
   let sFadeYMove: INT16;
-  let BltFx: blt_vs_fx;
+  let BltFx: blt_vs_fx = createBltVsFx();
 
   sFadeXMove = SQUARE_STEP;
   sFadeYMove = (sFadeXMove * .75);
