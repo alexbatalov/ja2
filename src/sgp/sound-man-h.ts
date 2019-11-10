@@ -117,6 +117,19 @@ export interface SOUNDPARMS {
   pCallbackData: Pointer<void>;
 }
 
+export function createSoundParams(): SOUNDPARMS {
+  return {
+    uiSpeed: 0,
+    uiPitchBend: 0,
+    uiVolume: 0,
+    uiPan: 0,
+    uiLoop: 0,
+    uiPriority: 0,
+    EOSCallback: null,
+    pCallbackData: null,
+  };
+}
+
 // Structure definition for 3D sound parameters being passed down to
 //		the sample playing function
 export interface SOUND3DPARMS {

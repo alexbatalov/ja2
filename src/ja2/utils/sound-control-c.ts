@@ -383,7 +383,7 @@ let AmbientVols: UINT8[] /* [NUM_AMBIENTS] */ = [
   25, // night bird 2
 ];
 
-let gDelayedSoundParms: SOUNDPARMS;
+let gDelayedSoundParms: SOUNDPARMS = createSoundParams();
 let guiDelayedSoundNum: UINT32;
 
 export function InitJA2Sound(): boolean {
@@ -412,7 +412,7 @@ export function ShutdownJA2Sound(): boolean {
 }
 
 export function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
-  let spParms: SOUNDPARMS;
+  let spParms: SOUNDPARMS = createSoundParams();
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
@@ -426,7 +426,7 @@ export function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, u
 }
 
 export function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
-  let spParms: SOUNDPARMS;
+  let spParms: SOUNDPARMS = createSoundParams();
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
@@ -442,7 +442,7 @@ export function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: 
 export function PlayJA2SampleFromFile(szFileName: string /* STR8 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
-  let spParms: SOUNDPARMS;
+  let spParms: SOUNDPARMS = createSoundParams();
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
@@ -458,7 +458,7 @@ export function PlayJA2SampleFromFile(szFileName: string /* STR8 */, usRate: UIN
 export function PlayJA2StreamingSampleFromFile(szFileName: string /* STR8 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
-  let spParms: SOUNDPARMS;
+  let spParms: SOUNDPARMS = createSoundParams();
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
@@ -473,7 +473,7 @@ export function PlayJA2StreamingSampleFromFile(szFileName: string /* STR8 */, us
 }
 
 export function PlayJA2Ambient(usNum: UINT32, ubVolume: UINT32, ubLoops: UINT32): UINT32 {
-  let spParms: SOUNDPARMS;
+  let spParms: SOUNDPARMS = createSoundParams();
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 

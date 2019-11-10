@@ -988,7 +988,7 @@ function SoundRandomShouldPlay(uiSample: UINT32): boolean {
 function SoundStartRandom(uiSample: UINT32): UINT32 {
   let uiChannel: UINT32;
   let uiSoundID: UINT32;
-  let spParms: SOUNDPARMS;
+  let spParms: SOUNDPARMS = createSoundParams();
 
   if ((uiChannel = SoundGetFreeChannel()) != SOUND_ERROR) {
     memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));

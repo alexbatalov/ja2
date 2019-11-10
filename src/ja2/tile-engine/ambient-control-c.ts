@@ -242,7 +242,7 @@ export function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
 }
 
 function StartSteadyStateAmbient(ubVolume: UINT32, ubLoops: UINT32): UINT32 {
-  let spParms: SOUNDPARMS;
+  let spParms: SOUNDPARMS = createSoundParams();
 
   memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 

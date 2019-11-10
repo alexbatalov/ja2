@@ -448,7 +448,7 @@ export function DoNinjaAttack(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   if (pSoldier.value.ubProfile == 33) {
     let uiSoundID: UINT32;
-    let spParms: SOUNDPARMS;
+    let spParms: SOUNDPARMS = createSoundParams();
     let iFaceIndex: INT32;
 
     // Play sound!
@@ -5336,7 +5336,7 @@ export function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8,
 
 export function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSoundID: UINT8, bSpecialCode: INT8): boolean {
   let zFilename: string /* SGPFILENAME */;
-  let spParms: SOUNDPARMS;
+  let spParms: SOUNDPARMS = createSoundParams();
   let ubSoundID: UINT8;
   let uiSoundID: UINT32;
   let iFaceIndex: UINT32;

@@ -70,7 +70,7 @@ function NoEnemiesInSight(): boolean {
 //
 //********************************************************************************
 export function MusicPlay(uiNum: UINT32): boolean {
-  let spParms: SOUNDPARMS;
+  let spParms: SOUNDPARMS = createSoundParams();
 
   if (fMusicPlaying)
     MusicStop();
