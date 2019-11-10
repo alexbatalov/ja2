@@ -79,6 +79,14 @@ export interface VSURFACE_REGION {
   ubHitMask: UINT8; // Byte flags for hit detection
 }
 
+export function createVSurfaceRegion(): VSURFACE_REGION {
+  return {
+    RegionCoords: createSGPRect(),
+    Origin: createSGPPoint(),
+    ubHitMask: 0,
+  };
+}
+
 //
 // This structure is a video Surface. Contains a HLIST of regions
 //

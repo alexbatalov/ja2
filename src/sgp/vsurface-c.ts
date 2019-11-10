@@ -1401,7 +1401,7 @@ function AddVSurfaceRegions(hVSurface: HVSURFACE, ppNewRegions: Pointer<Pointer<
 }
 
 function RemoveVSurfaceRegion(hVSurface: HVSURFACE, usIndex: UINT16): boolean {
-  let aRegion: VSURFACE_REGION;
+  let aRegion: VSURFACE_REGION = createVSurfaceRegion();
 
   Assert(hVSurface != null);
 
@@ -1446,7 +1446,7 @@ function GetVSurfaceRect(hVSurface: HVSURFACE, pRect: Pointer<RECT>): boolean {
 }
 
 function ReplaceVSurfaceRegion(hVSurface: HVSURFACE, usIndex: UINT16, aRegion: Pointer<VSURFACE_REGION>): boolean {
-  let OldRegion: VSURFACE_REGION;
+  let OldRegion: VSURFACE_REGION = createVSurfaceRegion();
 
   Assert(hVSurface != null);
 
@@ -1481,7 +1481,7 @@ function AddVSurfaceRegionAtIndex(hVSurface: HVSURFACE, usIndex: UINT16, pNewReg
 // Will drop down into user-defined blitter if 8->16 BPP blitting is being done
 
 export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, usIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: INT32, pBltFx: Pointer<blt_vs_fx>): boolean {
-  let aRegion: VSURFACE_REGION;
+  let aRegion: VSURFACE_REGION = createVSurfaceRegion();
   let SrcRect: RECT = createRect();
   let DestRect: RECT = createRect();
   let pSrcSurface8: Pointer<UINT8>;
