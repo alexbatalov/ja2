@@ -46,7 +46,7 @@ let iMaxSkipListLevel: INT32 = MAX_SKIPLIST_LEVEL;
 let iMaxTrailTree: INT32 = MAX_TRAIL_TREE;
 let iMaxPathQ: INT32 = MAX_PATHQ;
 
-const TRAILCELLTYPE = UINT16;
+type TRAILCELLTYPE = UINT16;
 
 // OLD PATHAI STUFF
 /////////////////////////////////////////////////

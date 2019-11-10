@@ -42,7 +42,7 @@ const MAP_LENGTH = MAP_WIDTH *MAP_WIDTH;
 //#define NOPASS (TRAVELCOST_OBSTACLE)
 //#define VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
 //#define ISVEIN(v) ((v==TRAVELCOST_VEINMID) || (v==TRAVELCOST_VEINEND))
-const TRAILCELLTYPE = UINT32;
+type TRAILCELLTYPE = UINT32;
 
 /* static */ let pathQB: path_t[] /* [MAXpathQ] */;
 /* static */ let totAPCostB: UINT16[] /* [MAXpathQ] */;
