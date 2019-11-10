@@ -2098,8 +2098,8 @@ function CalculateTravelTimeOfGroup(pGroup: Pointer<GROUP>): INT32 {
   let iDelta: INT32;
   let uiEtaTime: UINT32 = 0;
   let pNode: Pointer<WAYPOINT> = null;
-  let pCurrent: WAYPOINT;
-  let pDest: WAYPOINT;
+  let pCurrent: WAYPOINT = createWaypoint();
+  let pDest: WAYPOINT = createWaypoint();
   let ubCurrentSector: INT8 = 0;
 
   // check if valid group

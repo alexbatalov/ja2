@@ -1541,8 +1541,8 @@ function DisplayCharacterInfo(): void {
 
 export function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
   let iTravelTime: INT32 = 0;
-  let pCurrent: WAYPOINT;
-  let pNext: WAYPOINT;
+  let pCurrent: WAYPOINT = createWaypoint();
+  let pNext: WAYPOINT = createWaypoint();
   let pGroup: Pointer<GROUP>;
   let ubGroupId: UINT8 = 0;
   let fSkipFirstNode: boolean = false;

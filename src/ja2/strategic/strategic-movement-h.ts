@@ -37,6 +37,14 @@ export interface WAYPOINT {
   next: Pointer<WAYPOINT>; // next waypoint in list
 }
 
+export function createWaypoint(): WAYPOINT {
+  return {
+    x: 0,
+    y: 0,
+    next: null,
+  };
+}
+
 const PG_INDIVIDUAL_MERGED = 0x01;
 
 export interface PLAYERGROUP {
