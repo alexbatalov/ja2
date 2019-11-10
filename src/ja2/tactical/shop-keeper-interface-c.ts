@@ -242,7 +242,7 @@ export let gbSelectedArmsDealerID: INT8 = -1; // Contains the enum value for the
 export let giShopKeepDialogueEventinProgress: INT32 = -1;
 
 // OBJECTTYPE				gpSkiItemPointer;
-export let gMoveingItem: INVENTORY_IN_SLOT;
+export let gMoveingItem: INVENTORY_IN_SLOT = createInventoryInSlot();
 
 export let gpHighLightedItemObject: Pointer<OBJECTTYPE> = null;
 
@@ -262,8 +262,8 @@ let gSelectArmsDealerInfo: SELECTED_ARMS_DEALERS_STATS;
 // This pointer is used to store the inventory the arms dealer has for sale
 let gpTempDealersInventory: Pointer<INVENTORY_IN_SLOT> = null;
 
-let ArmsDealerOfferArea: INVENTORY_IN_SLOT[] /* [SKI_NUM_TRADING_INV_SLOTS] */;
-let PlayersOfferArea: INVENTORY_IN_SLOT[] /* [SKI_NUM_TRADING_INV_SLOTS] */;
+let ArmsDealerOfferArea: INVENTORY_IN_SLOT[] /* [SKI_NUM_TRADING_INV_SLOTS] */ = createArrayFrom(SKI_NUM_TRADING_INV_SLOTS, createInventoryInSlot);
+let PlayersOfferArea: INVENTORY_IN_SLOT[] /* [SKI_NUM_TRADING_INV_SLOTS] */ = createArrayFrom(SKI_NUM_TRADING_INV_SLOTS, createInventoryInSlot);
 
 let gSubObject: OBJECTTYPE[] /* [MAX_SUBOBJECTS_PER_OBJECT] */ = createArrayFrom(MAX_SUBOBJECTS_PER_OBJECT(), createObjectType);
 
@@ -1581,7 +1581,7 @@ function SelectDealersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
           }
         } else {
           // swap what is in the cursor with what is in the player offer slot
-          let TempSlot: INVENTORY_IN_SLOT;
+          let TempSlot: INVENTORY_IN_SLOT = createInventoryInSlot();
 
           // if the slot is overloaded (holds more objects than we have room for valid statuses of)
           if (ArmsDealerOfferArea[ubSelectedInvSlot].ItemObject.ubNumberOfObjects > MAX_OBJECTS_PER_SLOT) {
@@ -1662,7 +1662,7 @@ function SelectPlayersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
       // if there is something already there
       if (PlayersOfferArea[ubSelectedInvSlot].fActive) {
         // swap what is in the cursor with what is in the player offer slot
-        let TempSlot: INVENTORY_IN_SLOT;
+        let TempSlot: INVENTORY_IN_SLOT = createInventoryInSlot();
 
         // if the slot is overloaded (holds more objects than we have room for valid statuses of)
         if (PlayersOfferArea[ubSelectedInvSlot].ItemObject.ubNumberOfObjects > MAX_OBJECTS_PER_SLOT) {
@@ -2239,7 +2239,7 @@ function StoreObjectsInNextFreeDealerInvSlot(usItemIndex: UINT16, pSpclItemInfo:
 }
 
 function RepairIsDone(usItemIndex: UINT16, ubElement: UINT8): boolean {
-  let RepairItem: INVENTORY_IN_SLOT;
+  let RepairItem: INVENTORY_IN_SLOT = createInventoryInSlot();
   let bSlotNum: INT8;
   let ubCnt: UINT8;
 
@@ -5369,7 +5369,7 @@ function CountSubObjectsInObject(pComplexObject: Pointer<OBJECTTYPE>, pubTotalSu
 }
 
 function AddObjectForEvaluation(pObject: Pointer<OBJECTTYPE>, ubOwnerProfileId: UINT8, bOwnerSlotId: INT8, fFirstOne: boolean): boolean {
-  let InvSlot: INVENTORY_IN_SLOT;
+  let InvSlot: INVENTORY_IN_SLOT = createInventoryInSlot();
   let bAddedToSlotID: INT8;
 
   // Make a new inv slot out of the subobject
@@ -5719,7 +5719,7 @@ function ReturnItemToPlayerSomehow(pInvSlot: Pointer<INVENTORY_IN_SLOT>, pDropSo
 }
 
 function GivePlayerSomeChange(uiAmount: UINT32): void {
-  let MoneyInvSlot: INVENTORY_IN_SLOT;
+  let MoneyInvSlot: INVENTORY_IN_SLOT = createInventoryInSlot();
 
   memset(addressof(MoneyInvSlot), 0, sizeof(MoneyInvSlot));
 

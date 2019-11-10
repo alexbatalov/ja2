@@ -5645,7 +5645,7 @@ function RemoveMoney(): void {
   if (gRemoveMoney.uiMoneyRemoving != 0) {
     // if we are in the shop keeper interface
     if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
-      let InvSlot: INVENTORY_IN_SLOT;
+      let InvSlot: INVENTORY_IN_SLOT = createInventoryInSlot();
 
       memset(addressof(InvSlot), 0, sizeof(INVENTORY_IN_SLOT));
 

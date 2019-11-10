@@ -36,6 +36,22 @@ export interface INVENTORY_IN_SLOT {
                               // occupies.  -1 Means the item is "perfect" and has no associated special item.
 }
 
+export function createInventoryInSlot(): INVENTORY_IN_SLOT {
+  return {
+    fActive: false,
+    sItemIndex: 0,
+    uiFlags: 0,
+    ItemObject: createObjectType(),
+    ubLocationOfObject: 0,
+    bSlotIdInOtherLocation: 0,
+
+    ubIdOfMercWhoOwnsTheItem: 0,
+    uiItemPrice: 0,
+
+    sSpecialItemElement: 0,
+  };
+}
+
 // extern	BOOLEAN		gfRedrawSkiScreen;
 
 export const enum Enum253 {

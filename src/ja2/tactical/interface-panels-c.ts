@@ -4005,7 +4005,7 @@ export function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iRea
 
     // if we are in the shop keeper interface
     if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
-      let InvSlot: INVENTORY_IN_SLOT;
+      let InvSlot: INVENTORY_IN_SLOT = createInventoryInSlot();
 
       if (gMoveingItem.sItemIndex == 0) {
         // Delete the contents of the item cursor
