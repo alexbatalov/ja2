@@ -53,11 +53,19 @@ interface SplitUINT32 {
   /* } */
 }
 
+function createSplitUint32(): SplitUINT32 {
+  return {
+    usLower: 0,
+    usHigher: 0,
+    uiValue: 0,
+  };
+}
+
 function ConvertRGBDistribution555To565(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
   let pPixel: Pointer<UINT16>;
   let uiLoop: UINT32;
 
-  let Pixel: SplitUINT32;
+  let Pixel: SplitUINT32 = createSplitUint32();
 
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {

@@ -24,6 +24,14 @@ interface SplitUINT32 {
   /* } */
 }
 
+function createSplitUint32(): SplitUINT32 {
+  return {
+    usLower: 0,
+    usHigher: 0,
+    uiValue: 0,
+  };
+}
+
 export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT16): HIMAGE {
   let hImage: HIMAGE = null;
   let Extension: string /* SGPFILENAME */;
@@ -696,7 +704,7 @@ export function ConvertRGBDistribution565To555(p16BPPData: Pointer<UINT16>, uiNu
   let pPixel: Pointer<UINT16>;
   let uiLoop: UINT32;
 
-  let Pixel: SplitUINT32;
+  let Pixel: SplitUINT32 = createSplitUint32();
 
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
@@ -721,7 +729,7 @@ export function ConvertRGBDistribution565To655(p16BPPData: Pointer<UINT16>, uiNu
   let pPixel: Pointer<UINT16>;
   let uiLoop: UINT32;
 
-  let Pixel: SplitUINT32;
+  let Pixel: SplitUINT32 = createSplitUint32();
 
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
@@ -746,7 +754,7 @@ export function ConvertRGBDistribution565To556(p16BPPData: Pointer<UINT16>, uiNu
   let pPixel: Pointer<UINT16>;
   let uiLoop: UINT32;
 
-  let Pixel: SplitUINT32;
+  let Pixel: SplitUINT32 = createSplitUint32();
 
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
