@@ -43,7 +43,7 @@ let zMercBackgroundPopupFilenames: string[] /* STR8[] */ = [
 ];
 
 // the pop up box structure
-let gBasicPopUpTextBox: MercPopUpBox;
+let gBasicPopUpTextBox: MercPopUpBox = createMercPopUpBox();
 
 // the current pop up box
 let gPopUpTextBox: Pointer<MercPopUpBox> = null;

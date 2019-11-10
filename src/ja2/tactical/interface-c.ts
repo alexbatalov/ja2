@@ -44,12 +44,12 @@ export let gusOldSelectedSoldier: UINT16 = NO_SOLDIER;
 let giPopupSlideMessageOverlay: INT32 = -1;
 let gusOverlayPopupBoxWidth: UINT16;
 let gusOverlayPopupBoxHeight: UINT16;
-let gpOverrideMercBox: MercPopUpBox;
+let gpOverrideMercBox: MercPopUpBox = createMercPopUpBox();
 
 export let giUIMessageOverlay: INT32 = -1;
 let gusUIMessageWidth: UINT16;
 let gusUIMessageHeight: UINT16;
-let gpUIMessageOverrideMercBox: MercPopUpBox;
+let gpUIMessageOverrideMercBox: MercPopUpBox = createMercPopUpBox();
 export let guiUIMessageTime: UINT32 = 0;
 let iOverlayMessageBox: INT32 = -1;
 let iUIMessageBox: INT32 = -1;

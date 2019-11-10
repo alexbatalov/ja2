@@ -18,6 +18,21 @@ export interface MercPopUpBox {
   uiFlags: UINT32;
 }
 
+export function createMercPopUpBox(): MercPopUpBox {
+  return {
+    uiSourceBufferIndex: 0,
+    sWidth: 0,
+    sHeight: 0,
+    ubBackgroundIndex: 0,
+    ubBorderIndex: 0,
+    uiMercTextPopUpBackground: 0,
+    uiMercTextPopUpBorder: 0,
+    fMercTextPopupInitialized: false,
+    fMercTextPopupSurfaceInitialized: false,
+    uiFlags: 0,
+  };
+}
+
 // background enumeration
 export const enum Enum324 {
   BASIC_MERC_POPUP_BACKGROUND = 0,
