@@ -70,7 +70,7 @@ const enum Enum40 {
 export let gfSingleAction: boolean = false;
 export let gfUseScheduleData2: boolean = false;
 export let gubCurrentScheduleActionIndex: UINT8 = 0;
-export let gCurrSchedule: SCHEDULENODE;
+export let gCurrSchedule: SCHEDULENODE = createScheduleNode();
 let gubScheduleInstructions: UINT8 = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
 
 // array which keeps track of which item is in which slot.  This is dependant on the selected merc, so

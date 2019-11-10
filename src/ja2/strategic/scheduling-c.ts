@@ -264,7 +264,7 @@ export function PrepareSchedulesForEditorExit(): void {
 
 export function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
   let pSchedule: Pointer<SCHEDULENODE> = null;
-  let temp: SCHEDULENODE;
+  let temp: SCHEDULENODE = createScheduleNode();
   let ubNum: UINT8;
 
   // delete all the schedules we might have loaded (though we shouldn't have any loaded!!)
@@ -299,7 +299,7 @@ export function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
 
 export function LoadSchedulesFromSave(hFile: HWFILE): boolean {
   let pSchedule: Pointer<SCHEDULENODE> = null;
-  let temp: SCHEDULENODE;
+  let temp: SCHEDULENODE = createScheduleNode();
   let ubNum: UINT8;
   let ubRealNum: UINT32;
 

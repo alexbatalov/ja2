@@ -46,4 +46,17 @@ export interface SCHEDULENODE {
   usFlags: UINT16;
 }
 
+export function createScheduleNode(): SCHEDULENODE {
+  return {
+    next: null,
+    usTime: createArray(MAX_SCHEDULE_ACTIONS, 0),
+    usData1: createArray(MAX_SCHEDULE_ACTIONS, 0),
+    usData2: createArray(MAX_SCHEDULE_ACTIONS, 0),
+    ubAction: createArray(MAX_SCHEDULE_ACTIONS, 0),
+    ubScheduleID: 0,
+    ubSoldierID: 0,
+    usFlags: 0,
+  };
+}
+
 }
