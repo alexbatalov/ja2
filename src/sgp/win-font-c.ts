@@ -143,7 +143,7 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
   let rc: RECT = createRect();
   let pWinFont: Pointer<HWINFONT>;
   let len: number;
-  let RectSize: SIZE;
+  let RectSize: SIZE = createSize();
 
   pWinFont = GetWinFont(iFont);
 
@@ -178,7 +178,7 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
 export function WinFontStringPixLength(string2: string /* Pointer<UINT16> */, iFont: INT32): INT16 {
   let pWinFont: Pointer<HWINFONT>;
   let hdc: HDC;
-  let RectSize: SIZE;
+  let RectSize: SIZE = createSize();
   let string: string /* char[512] */;
 
   pWinFont = GetWinFont(iFont);
@@ -200,7 +200,7 @@ export function WinFontStringPixLength(string2: string /* Pointer<UINT16> */, iF
 export function GetWinFontHeight(string2: string /* Pointer<UINT16> */, iFont: INT32): INT16 {
   let pWinFont: Pointer<HWINFONT>;
   let hdc: HDC;
-  let RectSize: SIZE;
+  let RectSize: SIZE = createSize();
   let string: string /* char[512] */;
 
   pWinFont = GetWinFont(iFont);

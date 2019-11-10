@@ -69,6 +69,18 @@ export function createPointFrom(x: number, y: number): POINT {
   };
 }
 
+export interface SIZE {
+  cx: number;
+  cy: number;
+}
+
+export function createSize(): SIZE {
+  return {
+    cx: 0,
+    cy: 0,
+  };
+}
+
 export interface SGPRect {
   iLeft: INT32;
   iTop: INT32;
