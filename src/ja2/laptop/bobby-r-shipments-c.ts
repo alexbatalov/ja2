@@ -263,9 +263,9 @@ function CreatePreviousShipmentsMouseRegions(): void {
   let uiNumItems: UINT32 = CountNumberOfBobbyPurchasesThatAreInTransit();
 
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
-    MSYS_DefineRegion(addressof(gSelectedPreviousShipmentsRegion[uiCnt]), BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, (BOBBYR_SHIPMENT_ORDER_NUM_X + usWidth), (usPosY + usHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectPreviousShipmentsRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedPreviousShipmentsRegion[uiCnt]));
-    MSYS_SetRegionUserData(addressof(gSelectedPreviousShipmentsRegion[uiCnt]), 0, uiCnt);
+    MSYS_DefineRegion(gSelectedPreviousShipmentsRegion[uiCnt], BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, (BOBBYR_SHIPMENT_ORDER_NUM_X + usWidth), (usPosY + usHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectPreviousShipmentsRegionCallBack);
+    MSYS_AddRegion(gSelectedPreviousShipmentsRegion[uiCnt]);
+    MSYS_SetRegionUserData(gSelectedPreviousShipmentsRegion[uiCnt], 0, uiCnt);
 
     usPosY += BOBBYR_SHIPMENT_GAP_BTN_LINES;
   }
@@ -276,11 +276,11 @@ function RemovePreviousShipmentsMouseRegions(): void {
   let uiNumItems: UINT32 = CountNumberOfBobbyPurchasesThatAreInTransit();
 
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
-    MSYS_RemoveRegion(addressof(gSelectedPreviousShipmentsRegion[uiCnt]));
+    MSYS_RemoveRegion(gSelectedPreviousShipmentsRegion[uiCnt]);
   }
 }
 
-function SelectPreviousShipmentsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectPreviousShipmentsRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let iSlotID: INT32 = MSYS_GetRegionUserData(pRegion, 0);

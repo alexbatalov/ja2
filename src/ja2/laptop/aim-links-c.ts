@@ -76,9 +76,9 @@ export function EnterAimLinks(): boolean {
 
   usPosY = AIM_LINK_BOBBY_LINK_Y;
   for (i = 0; i < AIM_LINK_NUM_LINKS; i++) {
-    MSYS_DefineRegion(addressof(gSelectedLinkRegion[i]), AIM_LINK_BOBBY_LINK_X, usPosY, AIM_LINK_BOBBY_LINK_X + AIM_LINK_LINK_WIDTH, (usPosY + AIM_LINK_LINK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinkRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedLinkRegion[i]));
-    MSYS_SetRegionUserData(addressof(gSelectedLinkRegion[i]), 0, gubLinkPages[i]);
+    MSYS_DefineRegion(gSelectedLinkRegion[i], AIM_LINK_BOBBY_LINK_X, usPosY, AIM_LINK_BOBBY_LINK_X + AIM_LINK_LINK_WIDTH, (usPosY + AIM_LINK_LINK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinkRegionCallBack);
+    MSYS_AddRegion(gSelectedLinkRegion[i]);
+    MSYS_SetRegionUserData(gSelectedLinkRegion[i], 0, gubLinkPages[i]);
     usPosY += AIM_LINK_LINK_OFFSET_Y;
   }
 
@@ -96,7 +96,7 @@ export function ExitAimLinks(): void {
   DeleteVideoObjectFromIndex(guiInsuranceLink);
 
   for (i = 0; i < AIM_LINK_NUM_LINKS; i++)
-    MSYS_RemoveRegion(addressof(gSelectedLinkRegion[i]));
+    MSYS_RemoveRegion(gSelectedLinkRegion[i]);
 
   ExitAimMenuBar();
 }
@@ -129,7 +129,7 @@ export function RenderAimLinks(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function SelectLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {

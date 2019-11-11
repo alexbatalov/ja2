@@ -63,10 +63,10 @@ export function EnterAimFacialIndex(): boolean {
   i = 0;
   for (y = 0; y < AIM_FI_NUM_MUHSHOTS_Y; y++) {
     for (x = 0; x < AIM_FI_NUM_MUHSHOTS_X; x++) {
-      MSYS_DefineRegion(addressof(gMercFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_FI_PORTRAIT_WIDTH), (usPosY + AIM_FI_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, SelectMercFaceMoveRegionCallBack, SelectMercFaceRegionCallBack);
+      MSYS_DefineRegion(gMercFaceMouseRegions[i], usPosX, usPosY, (usPosX + AIM_FI_PORTRAIT_WIDTH), (usPosY + AIM_FI_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, SelectMercFaceMoveRegionCallBack, SelectMercFaceRegionCallBack);
       // Add region
-      MSYS_AddRegion(addressof(gMercFaceMouseRegions[i]));
-      MSYS_SetRegionUserData(addressof(gMercFaceMouseRegions[i]), 0, i);
+      MSYS_AddRegion(gMercFaceMouseRegions[i]);
+      MSYS_SetRegionUserData(gMercFaceMouseRegions[i], 0, i);
 
       sTemp = sprintf("%s%02d.sti", sFaceLoc, AimMercArray[i]);
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -81,9 +81,9 @@ export function EnterAimFacialIndex(): boolean {
     usPosY += AIM_FI_PORTRAIT_HEIGHT + AIM_FI_MUGSHOT_GAP_Y;
   }
 
-  MSYS_DefineRegion(addressof(gScreenMouseRegions), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectScreenRegionCallBack);
+  MSYS_DefineRegion(gScreenMouseRegions, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectScreenRegionCallBack);
   // Add region
-  MSYS_AddRegion(addressof(gScreenMouseRegions));
+  MSYS_AddRegion(gScreenMouseRegions);
 
   InitAimMenuBar();
   InitAimDefaults();
@@ -102,11 +102,11 @@ export function ExitAimFacialIndex(): void {
 
   for (i = 0; i < MAX_NUMBER_MERCS; i++) {
     DeleteVideoObjectFromIndex(guiAimFiFace[i]);
-    MSYS_RemoveRegion(addressof(gMercFaceMouseRegions[i]));
+    MSYS_RemoveRegion(gMercFaceMouseRegions[i]);
   }
   ExitAimMenuBar();
 
-  MSYS_RemoveRegion(addressof(gScreenMouseRegions));
+  MSYS_RemoveRegion(gScreenMouseRegions);
 }
 
 export function HandleAimFacialIndex(): void {
@@ -166,7 +166,7 @@ export function RenderAimFacialIndex(): boolean {
   return true;
 }
 
-function SelectMercFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectMercFaceRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_MEMBERS;
@@ -176,14 +176,14 @@ function SelectMercFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   }
 }
 
-function SelectScreenRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectScreenRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES;
   }
 }
 
-function SelectMercFaceMoveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function SelectMercFaceMoveRegionCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   let ubMercNum: UINT8;
   let usPosX: UINT16;
   let usPosY: UINT16;
@@ -209,13 +209,13 @@ function SelectMercFaceMoveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, reason
   //	fReDrawNewMailFlag = TRUE;
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    pRegion.uiFlags &= (~BUTTON_CLICKED_ON);
     DrawMercsFaceToScreen(ubMercNum, usPosX, usPosY, 1);
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.uiFlags |= BUTTON_CLICKED_ON;
     DrawMercsFaceToScreen(ubMercNum, usPosX, usPosY, 0);
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 }
 

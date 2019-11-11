@@ -221,7 +221,7 @@ export function EnterBobbyR(): boolean {
     }
 
     for (i = 0; i < BOBBIES_NUMBER_SIGNS; i++) {
-      MSYS_DisableRegion(addressof(gSelectedBobbiesSignMenuRegion[i]));
+      MSYS_DisableRegion(gSelectedBobbiesSignMenuRegion[i]);
     }
 
     LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction = Enum99.BOBBYR_BEEN_TO_SITE_ONCE;
@@ -380,15 +380,15 @@ export function DrawBobbyRWoodBackground(): boolean {
   return true;
 }
 
-function InitBobbiesMouseRegion(ubNumerRegions: UINT8, usMouseRegionPosArray: Pointer<UINT16>, MouseRegion: Pointer<MOUSE_REGION>): boolean {
+function InitBobbiesMouseRegion(ubNumerRegions: UINT8, usMouseRegionPosArray: UINT16[], MouseRegion: MOUSE_REGION[]): boolean {
   let i: UINT8;
   let ubCount: UINT8 = 0;
 
   for (i = 0; i < ubNumerRegions; i++) {
     // Mouse region for the toc buttons
-    MSYS_DefineRegion(addressof(MouseRegion[i]), usMouseRegionPosArray[ubCount], usMouseRegionPosArray[ubCount + 1], usMouseRegionPosArray[ubCount + 2], usMouseRegionPosArray[ubCount + 3], MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectBobbiesSignMenuRegionCallBack);
-    MSYS_AddRegion(addressof(MouseRegion[i]));
-    MSYS_SetRegionUserData(addressof(MouseRegion[i]), 0, gubBobbyRPages[i]);
+    MSYS_DefineRegion(MouseRegion[i], usMouseRegionPosArray[ubCount], usMouseRegionPosArray[ubCount + 1], usMouseRegionPosArray[ubCount + 2], usMouseRegionPosArray[ubCount + 3], MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectBobbiesSignMenuRegionCallBack);
+    MSYS_AddRegion(MouseRegion[i]);
+    MSYS_SetRegionUserData(MouseRegion[i], 0, gubBobbyRPages[i]);
 
     ubCount += 4;
   }
@@ -396,16 +396,16 @@ function InitBobbiesMouseRegion(ubNumerRegions: UINT8, usMouseRegionPosArray: Po
   return true;
 }
 
-function RemoveBobbiesMouseRegion(ubNumberRegions: UINT8, Mouse_Region: Pointer<MOUSE_REGION>): boolean {
+function RemoveBobbiesMouseRegion(ubNumberRegions: UINT8, Mouse_Region: MOUSE_REGION[]): boolean {
   let i: UINT8;
 
   for (i = 0; i < ubNumberRegions; i++)
-    MSYS_RemoveRegion(addressof(Mouse_Region[i]));
+    MSYS_RemoveRegion(Mouse_Region[i]);
 
   return true;
 }
 
-function SelectBobbiesSignMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectBobbiesSignMenuRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubNewPage: UINT8 = MSYS_GetRegionUserData(pRegion, 0);

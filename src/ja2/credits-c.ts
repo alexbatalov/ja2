@@ -405,12 +405,12 @@ function EnterCreditsScreen(): boolean {
 
   for (uiCnt = 0; uiCnt < Enum382.NUM_PEOPLE_IN_CREDITS; uiCnt++) {
     // Make a mouse region
-    MSYS_DefineRegion(addressof(gCrdtMouseRegions[uiCnt]), gCreditFaces[uiCnt].sX, gCreditFaces[uiCnt].sY, (gCreditFaces[uiCnt].sX + gCreditFaces[uiCnt].sWidth), (gCreditFaces[uiCnt].sY + gCreditFaces[uiCnt].sHeight), MSYS_PRIORITY_NORMAL, Enum317.CURSOR_WWW, SelectCreditFaceMovementRegionCallBack, SelectCreditFaceRegionCallBack);
+    MSYS_DefineRegion(gCrdtMouseRegions[uiCnt], gCreditFaces[uiCnt].sX, gCreditFaces[uiCnt].sY, (gCreditFaces[uiCnt].sX + gCreditFaces[uiCnt].sWidth), (gCreditFaces[uiCnt].sY + gCreditFaces[uiCnt].sHeight), MSYS_PRIORITY_NORMAL, Enum317.CURSOR_WWW, SelectCreditFaceMovementRegionCallBack, SelectCreditFaceRegionCallBack);
 
     // Add region
-    MSYS_AddRegion(addressof(gCrdtMouseRegions[uiCnt]));
+    MSYS_AddRegion(gCrdtMouseRegions[uiCnt]);
 
-    MSYS_SetRegionUserData(addressof(gCrdtMouseRegions[uiCnt]), 0, uiCnt);
+    MSYS_SetRegionUserData(gCrdtMouseRegions[uiCnt], 0, uiCnt);
   }
 
   // Test Node
@@ -448,7 +448,7 @@ function ExitCreditScreen(): boolean {
   ShutDownCreditList();
 
   for (uiCnt = 0; uiCnt < Enum382.NUM_PEOPLE_IN_CREDITS; uiCnt++) {
-    MSYS_RemoveRegion(addressof(gCrdtMouseRegions[uiCnt]));
+    MSYS_RemoveRegion(gCrdtMouseRegions[uiCnt]);
   }
 
   /*
@@ -1119,14 +1119,14 @@ function HandleCreditFlags(uiFlags: UINT32): void {
   }
 }
 
-function SelectCreditFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectCreditFaceRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
 
-function SelectCreditFaceMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectCreditFaceMovementRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     giCurrentlySelectedFace = -1;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {

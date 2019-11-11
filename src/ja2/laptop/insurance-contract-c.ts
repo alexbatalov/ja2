@@ -152,9 +152,9 @@ export function EnterInsuranceContract(): boolean {
 
   usPosX = INS_CTRCT_BOTTOM_LINK_RED_BAR_X;
   for (i = 0; i < 2; i++) {
-    MSYS_DefineRegion(addressof(gSelectedInsuranceContractLinkRegion[i]), usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y - 37, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceContractRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedInsuranceContractLinkRegion[i]));
-    MSYS_SetRegionUserData(addressof(gSelectedInsuranceContractLinkRegion[i]), 0, i);
+    MSYS_DefineRegion(gSelectedInsuranceContractLinkRegion[i], usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y - 37, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceContractRegionCallBack);
+    MSYS_AddRegion(gSelectedInsuranceContractLinkRegion[i]);
+    MSYS_SetRegionUserData(gSelectedInsuranceContractLinkRegion[i], 0, i);
 
     usPosX += INS_CTRCT_BOTTOM_LINK_RED_BAR_OFFSET;
   }
@@ -188,7 +188,7 @@ export function ExitInsuranceContract(): void {
   DeleteVideoObjectFromIndex(guiInsOrderBulletImage);
 
   for (i = 0; i < 2; i++)
-    MSYS_RemoveRegion(addressof(gSelectedInsuranceContractLinkRegion[i]));
+    MSYS_RemoveRegion(gSelectedInsuranceContractLinkRegion[i]);
 
   // the previous button
   UnloadButtonImage(guiInsContractPrevButtonImage);
@@ -722,7 +722,7 @@ INT32 CalculateInsuranceCost( SOLDIERTYPE *pSoldier, BOOLEAN fHaveInsurance )
 }
 */
 
-function SelectInsuranceContractRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectInsuranceContractRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let uiInsuranceLink: UINT32 = MSYS_GetRegionUserData(pRegion, 0);

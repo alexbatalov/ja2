@@ -1346,8 +1346,8 @@ export function DisplayTextForSpeckVideoPopUp(pString: string /* STR16 */): void
 
   // check to make sure the region is not already initialized
   if (!(gMercSiteSubTitleMouseRegion.uiFlags & MSYS_REGION_EXISTS)) {
-    MSYS_DefineRegion(addressof(gMercSiteSubTitleMouseRegion), gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, (gusSpeckDialogueX + gusSpeckDialogueActualWidth), (MERC_TEXT_BOX_POS_Y + usActualHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, MercSiteSubTitleRegionCallBack);
-    MSYS_AddRegion(addressof(gMercSiteSubTitleMouseRegion));
+    MSYS_DefineRegion(gMercSiteSubTitleMouseRegion, gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, (gusSpeckDialogueX + gusSpeckDialogueActualWidth), (MERC_TEXT_BOX_POS_Y + usActualHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, MercSiteSubTitleRegionCallBack);
+    MSYS_AddRegion(gMercSiteSubTitleMouseRegion);
   }
 }
 
@@ -1673,7 +1673,7 @@ function CountNumberOfMercMercsWhoAreDead(): UINT8 {
 }
 
 // Mouse Call back for the pop up text box
-function MercSiteSubTitleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MercSiteSubTitleRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP || iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     StopSpeckFromTalking();
@@ -1685,7 +1685,7 @@ function RemoveSpeckPopupTextBox(): void {
     return;
 
   if (gMercSiteSubTitleMouseRegion.uiFlags & MSYS_REGION_EXISTS)
-    MSYS_RemoveRegion(addressof(gMercSiteSubTitleMouseRegion));
+    MSYS_RemoveRegion(gMercSiteSubTitleMouseRegion);
 
   if (RemoveMercPopupBoxFromIndex(iMercPopUpBox)) {
     iMercPopUpBox = -1;

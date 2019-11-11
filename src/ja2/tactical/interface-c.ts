@@ -502,9 +502,9 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
 
   // Create mouse region over all area to facilitate clicking to end
-  MSYS_DefineRegion(addressof(gMenuOverlayRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MovementMenuBackregionCallback);
+  MSYS_DefineRegion(gMenuOverlayRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MovementMenuBackregionCallback);
   // Add region
-  MSYS_AddRegion(addressof(gMenuOverlayRegion));
+  MSYS_AddRegion(gMenuOverlayRegion);
 
   // OK, CHECK FOR BOUNDARIES!
   if ((giMenuAnchorX + BUTTON_PANEL_WIDTH) > 640) {
@@ -742,7 +742,7 @@ export function PopDownMovementMenu(): void {
     fInterfacePanelDirty = DIRTYLEVEL2;
 
     // UnLockTacticalInterface( );
-    MSYS_RemoveRegion(addressof(gMenuOverlayRegion));
+    MSYS_RemoveRegion(gMenuOverlayRegion);
   }
 
   gfInMovementMenu = false;
@@ -1591,11 +1591,11 @@ export function ClearInterface(): void {
   // Erase Interface cursors
   HideUICursor();
 
-  MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
+  MSYS_ChangeRegionCursor(gViewportRegion, VIDEO_NO_CURSOR);
 
   // Hide lock UI cursors...
-  MSYS_ChangeRegionCursor(addressof(gDisableRegion), VIDEO_NO_CURSOR);
-  MSYS_ChangeRegionCursor(addressof(gUserTurnRegion), VIDEO_NO_CURSOR);
+  MSYS_ChangeRegionCursor(gDisableRegion, VIDEO_NO_CURSOR);
+  MSYS_ChangeRegionCursor(gUserTurnRegion, VIDEO_NO_CURSOR);
 
   // Remove special thing for south arrow...
   if (gsGlobalCursorYOffset == (480 - gsVIEWPORT_WINDOW_END_Y)) {
@@ -1611,8 +1611,8 @@ export function RestoreInterface(): void {
   gfUIRefreshArrows = true;
 
   // SHow lock UI cursors...
-  MSYS_ChangeRegionCursor(addressof(gDisableRegion), Enum317.CURSOR_WAIT);
-  MSYS_ChangeRegionCursor(addressof(gUserTurnRegion), Enum317.CURSOR_WAIT);
+  MSYS_ChangeRegionCursor(gDisableRegion, Enum317.CURSOR_WAIT);
+  MSYS_ChangeRegionCursor(gUserTurnRegion, Enum317.CURSOR_WAIT);
 }
 
 function BlitPopupText(pBlitter: Pointer<VIDEO_OVERLAY>): void {
@@ -1724,9 +1724,9 @@ function PopupDoorOpenMenu(fClosingDoor: boolean): void {
   iMenuAnchorY = gOpenDoorMenu.sY + 8;
 
   // Create mouse region over all area to facilitate clicking to end
-  MSYS_DefineRegion(addressof(gMenuOverlayRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, DoorMenuBackregionCallback);
+  MSYS_DefineRegion(gMenuOverlayRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, DoorMenuBackregionCallback);
   // Add region
-  MSYS_AddRegion(addressof(gMenuOverlayRegion));
+  MSYS_AddRegion(gMenuOverlayRegion);
 
   iActionIcons[Enum209.USE_KEYRING_ICON] = QuickCreateButton(iIconImages[Enum208.USE_KEYRING_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), BtnDoorMenuCallback);
   if (iActionIcons[Enum209.USE_KEYRING_ICON] == -1) {
@@ -1935,7 +1935,7 @@ export function PopDownOpenDoorMenu(): void {
     fInterfacePanelDirty = DIRTYLEVEL2;
 
     // UnLockTacticalInterface( );
-    MSYS_RemoveRegion(addressof(gMenuOverlayRegion));
+    MSYS_RemoveRegion(gMenuOverlayRegion);
   }
 
   gfInOpenDoorMenu = false;
@@ -2733,13 +2733,13 @@ export function InitPlayerUIBar(fInterrupt: boolean): void {
   }
 }
 
-function MovementMenuBackregionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MovementMenuBackregionCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     CancelMovementMenu();
   }
 }
 
-function DoorMenuBackregionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function DoorMenuBackregionCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     CancelOpenDoorMenu();
   }

@@ -543,9 +543,9 @@ function SetUIMouseCursor(): void {
         gfUIShowExitSouth = false;
 
         // Define region for viewport
-        MSYS_RemoveRegion(addressof(gViewportRegion));
+        MSYS_RemoveRegion(gViewportRegion);
 
-        MSYS_DefineRegion(addressof(gViewportRegion), 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+        MSYS_DefineRegion(gViewportRegion, 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
         // Adjust where we blit our cursor!
         gsGlobalCursorYOffset = 0;
@@ -555,8 +555,8 @@ function SetUIMouseCursor(): void {
         } else {
           // Adjust viewport to edge of screen!
           // Define region for viewport
-          MSYS_RemoveRegion(addressof(gViewportRegion));
-          MSYS_DefineRegion(addressof(gViewportRegion), 0, 0, gsVIEWPORT_END_X, 480, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+          MSYS_RemoveRegion(gViewportRegion);
+          MSYS_DefineRegion(gViewportRegion, 0, 0, gsVIEWPORT_END_X, 480, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
           gsGlobalCursorYOffset = (480 - gsVIEWPORT_WINDOW_END_Y);
           SetCurrentCursorFromDatabase(gUICursors[guiNewUICursor].usFreeCursorName);
@@ -567,9 +567,9 @@ function SetUIMouseCursor(): void {
     } else {
       if (gfViewPortAdjustedForSouth) {
         // Define region for viewport
-        MSYS_RemoveRegion(addressof(gViewportRegion));
+        MSYS_RemoveRegion(gViewportRegion);
 
-        MSYS_DefineRegion(addressof(gViewportRegion), 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+        MSYS_DefineRegion(gViewportRegion, 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
         // Adjust where we blit our cursor!
         gsGlobalCursorYOffset = 0;
@@ -3597,9 +3597,9 @@ function UIHandleLUIBeginLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     RemoveTacticalCursor();
     // SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
 
-    MSYS_DefineRegion(addressof(gDisableRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_WAIT, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(gDisableRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_WAIT, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
     // Add region
-    MSYS_AddRegion(addressof(gDisableRegion));
+    MSYS_AddRegion(gDisableRegion);
 
     // guiPendingOverrideEvent = LOCKUI_MODE;
 
@@ -3616,7 +3616,7 @@ export function UIHandleLUIEndLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     gfDisableRegionActive = false;
 
     // Add region
-    MSYS_RemoveRegion(addressof(gDisableRegion));
+    MSYS_RemoveRegion(gDisableRegion);
     RefreshMouseRegions();
 
     // SetCurrentCursorFromDatabase( guiCurrentUICursor );
@@ -3647,7 +3647,7 @@ export function CheckForDisabledRegionRemove(): void {
     gfDisableRegionActive = false;
 
     // Remove region
-    MSYS_RemoveRegion(addressof(gDisableRegion));
+    MSYS_RemoveRegion(gDisableRegion);
 
     UnLockPauseState();
     UnPauseGame();
@@ -3659,7 +3659,7 @@ export function CheckForDisabledRegionRemove(): void {
     gfUIInterfaceSetBusy = false;
 
     // Remove region
-    MSYS_RemoveRegion(addressof(gUserTurnRegion));
+    MSYS_RemoveRegion(gUserTurnRegion);
 
     UnLockPauseState();
     UnPauseGame();
@@ -4030,9 +4030,9 @@ function UIHandleLABeginLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     // guiNewUICursor = NO_UICURSOR;
     // SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
 
-    MSYS_DefineRegion(addressof(gUserTurnRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_WAIT, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(gUserTurnRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_WAIT, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
     // Add region
-    MSYS_AddRegion(addressof(gUserTurnRegion));
+    MSYS_AddRegion(gUserTurnRegion);
 
     // guiPendingOverrideEvent = LOCKOURTURN_UI_MODE;
 
@@ -4053,7 +4053,7 @@ function UIHandleLAEndLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     gfUIInterfaceSetBusy = false;
 
     // Add region
-    MSYS_RemoveRegion(addressof(gUserTurnRegion));
+    MSYS_RemoveRegion(gUserTurnRegion);
     RefreshMouseRegions();
     // SetCurrentCursorFromDatabase( guiCurrentUICursor );
 

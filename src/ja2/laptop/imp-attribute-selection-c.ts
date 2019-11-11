@@ -71,7 +71,7 @@ let pSliderRegions: MOUSE_REGION[] /* [10] */ = createArrayFrom(10, createMouseR
 let pSliderBarRegions: MOUSE_REGION[] /* [10] */ = createArrayFrom(10, createMouseRegion);
 
 // The currently "anchored scroll bar"
-let gpCurrentScrollBox: Pointer<MOUSE_REGION> = null;
+let gpCurrentScrollBox: MOUSE_REGION | null = null;
 let giCurrentlySelectedStat: INT32 = -1;
 
 // has any of the sliding bars moved?...for re-rendering puposes
@@ -705,7 +705,7 @@ export function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentStrength);
@@ -720,7 +720,7 @@ export function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentDexterity);
@@ -736,7 +736,7 @@ export function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentAgility);
@@ -752,7 +752,7 @@ export function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentWisdom);
@@ -766,7 +766,7 @@ export function RenderAttributeBoxes(): void {
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentLeaderShip);
@@ -781,7 +781,7 @@ export function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentHealth);
@@ -801,7 +801,7 @@ export function RenderAttributeBoxes(): void {
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentMarkmanship);
@@ -822,7 +822,7 @@ export function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentMedical);
@@ -843,7 +843,7 @@ export function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentMechanical);
@@ -864,7 +864,7 @@ export function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         sString = swprintf("%d", iCurrentExplosives);
@@ -984,12 +984,12 @@ function CreateSlideRegionMouseRegions(): void {
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
-    MSYS_DefineRegion(addressof(pSliderRegions[iCounter]), (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X + BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SliderRegionButtonCallback);
+    MSYS_DefineRegion(pSliderRegions[iCounter], (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X + BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SliderRegionButtonCallback);
 
     // define user data
-    MSYS_SetRegionUserData(addressof(pSliderRegions[iCounter]), 0, iCounter);
+    MSYS_SetRegionUserData(pSliderRegions[iCounter], 0, iCounter);
     // now add it
-    MSYS_AddRegion(addressof(pSliderRegions[iCounter]));
+    MSYS_AddRegion(pSliderRegions[iCounter]);
   }
 
   return;
@@ -1005,12 +1005,12 @@ function CreateSliderBarMouseRegions(): void {
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
-    MSYS_DefineRegion(addressof(pSliderBarRegions[iCounter]), (sX), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (sX + SLIDER_BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SliderBarRegionButtonCallback);
+    MSYS_DefineRegion(pSliderBarRegions[iCounter], (sX), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (sX + SLIDER_BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SliderBarRegionButtonCallback);
 
     // define user data
-    MSYS_SetRegionUserData(addressof(pSliderBarRegions[iCounter]), 0, iCounter);
+    MSYS_SetRegionUserData(pSliderBarRegions[iCounter], 0, iCounter);
     // now add it
-    MSYS_AddRegion(addressof(pSliderBarRegions[iCounter]));
+    MSYS_AddRegion(pSliderBarRegions[iCounter]);
   }
 
   return;
@@ -1022,7 +1022,7 @@ function DestroySlideRegionMouseRegions(): void {
 
   // delete the regions
   for (iCounter = 0; iCounter < 10; iCounter++) {
-    MSYS_RemoveRegion(addressof(pSliderRegions[iCounter]));
+    MSYS_RemoveRegion(pSliderRegions[iCounter]);
   }
 
   return;
@@ -1034,13 +1034,13 @@ function DestroySlideBarMouseRegions(): void {
 
   // delete the regions
   for (iCounter = 0; iCounter < 10; iCounter++) {
-    MSYS_RemoveRegion(addressof(pSliderBarRegions[iCounter]));
+    MSYS_RemoveRegion(pSliderBarRegions[iCounter]);
   }
 
   return;
 }
 
-function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iCurrentAttributeValue: INT32 = 0;
   let iNewAttributeValue: INT32 = 0;
   let iAttributeDelta: INT32 = 0;
@@ -1082,7 +1082,7 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
     gpCurrentScrollBox = pRegion;
 
     // get new attribute value x
-    sNewX = pRegion.value.MouseXPos;
+    sNewX = pRegion.MouseXPos;
 
     // sOldX has been reset, set to sNewX
     if (sOldX == -1) {
@@ -1128,8 +1128,8 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 
     // get mouse XY
 
-    sX = pRegion.value.MouseXPos;
-    sY = pRegion.value.MouseYPos;
+    sX = pRegion.MouseXPos;
+    sY = pRegion.MouseYPos;
 
     // which region are we in?
 
@@ -1175,8 +1175,8 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // get mouse positions
-    sX = pRegion.value.MouseXPos;
-    sY = pRegion.value.MouseYPos;
+    sX = pRegion.MouseXPos;
+    sY = pRegion.MouseYPos;
 
     // get attribute
     iAttribute = MSYS_GetRegionUserData(pRegion, 0);
@@ -1203,10 +1203,10 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   }
 }
 
-function SliderBarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SliderBarRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fSlideIsActive = true;
-    SliderRegionButtonCallback(addressof(pSliderRegions[MSYS_GetRegionUserData(pRegion, 0)]), MSYS_CALLBACK_REASON_LBUTTON_REPEAT);
+    SliderRegionButtonCallback(pSliderRegions[MSYS_GetRegionUserData(pRegion, 0)], MSYS_CALLBACK_REASON_LBUTTON_REPEAT);
   }
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fSlideIsActive = false;

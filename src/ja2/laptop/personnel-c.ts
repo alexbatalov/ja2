@@ -1646,16 +1646,16 @@ function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
   if ((fCreated == false) && (fCreatePersonnelPortraitMouseRegions == true)) {
     // create regions
     for (sCounter = 0; sCounter < PERSONNEL_PORTRAIT_NUMBER; sCounter++) {
-      MSYS_DefineRegion(addressof(gPortraitMouseRegions[sCounter]), (SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), ((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
-      MSYS_SetRegionUserData(addressof(gPortraitMouseRegions[sCounter]), 0, sCounter);
-      MSYS_AddRegion(addressof(gPortraitMouseRegions[sCounter]));
+      MSYS_DefineRegion(gPortraitMouseRegions[sCounter], (SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), ((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
+      MSYS_SetRegionUserData(gPortraitMouseRegions[sCounter], 0, sCounter);
+      MSYS_AddRegion(gPortraitMouseRegions[sCounter]);
     }
 
     fCreated = true;
   } else if ((fCreated == true) && (fCreatePersonnelPortraitMouseRegions == false)) {
     // destroy regions
     for (sCounter = 0; sCounter < PERSONNEL_PORTRAIT_NUMBER; sCounter++) {
-      MSYS_RemoveRegion(addressof(gPortraitMouseRegions[sCounter]));
+      MSYS_RemoveRegion(gPortraitMouseRegions[sCounter]);
     }
 
     fCreated = false;
@@ -1732,7 +1732,7 @@ function DisplayPicturesOfCurrentTeam(): boolean {
   return true;
 }
 
-function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function PersonnelPortraitCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iPortraitId: INT32 = 0;
   let iOldPortraitId: INT32;
 
@@ -2136,7 +2136,7 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
     SetButtonCursor(giPersonnelInventoryButtons[0], Enum317.CURSOR_LAPTOP_SCREEN);
     SetButtonCursor(giPersonnelInventoryButtons[1], Enum317.CURSOR_LAPTOP_SCREEN);
 
-    MSYS_DefineRegion(addressof(gMouseScrollPersonnelINV), X_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION, X_OF_PERSONNEL_SCROLL_REGION + X_SIZE_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION + Y_SIZE_OF_PERSONNEL_SCROLL_REGION, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, HandleSliderBarClickCallback);
+    MSYS_DefineRegion(gMouseScrollPersonnelINV, X_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION, X_OF_PERSONNEL_SCROLL_REGION + X_SIZE_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION + Y_SIZE_OF_PERSONNEL_SCROLL_REGION, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, HandleSliderBarClickCallback);
 
     fCreated = true;
   }
@@ -2148,7 +2148,7 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
     RemoveButton(giPersonnelInventoryButtons[1]);
     UnloadButtonImage(giPersonnelInventoryButtonsImages[1]);
 
-    MSYS_RemoveRegion(addressof(gMouseScrollPersonnelINV));
+    MSYS_RemoveRegion(gMouseScrollPersonnelINV);
 
     fCreated = false;
   }
@@ -3684,27 +3684,27 @@ function CreateDestroyCurrentDepartedMouseRegions(): void {
 
   if ((fCreateRegionsForPastCurrentToggle == true) && (fCreated == false)) {
     // not created, create
-    MSYS_DefineRegion(addressof(gTogglePastCurrentTeam[0]), PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_CUR_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_CUR_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelCurrentTeamCallback);
+    MSYS_DefineRegion(gTogglePastCurrentTeam[0], PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_CUR_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_CUR_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelCurrentTeamCallback);
 
-    MSYS_AddRegion(addressof(gTogglePastCurrentTeam[0]));
+    MSYS_AddRegion(gTogglePastCurrentTeam[0]);
 
-    MSYS_DefineRegion(addressof(gTogglePastCurrentTeam[1]), PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_DEPART_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_DEPART_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelDepartedTeamCallback);
+    MSYS_DefineRegion(gTogglePastCurrentTeam[1], PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_DEPART_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_DEPART_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelDepartedTeamCallback);
 
-    MSYS_AddRegion(addressof(gTogglePastCurrentTeam[1]));
+    MSYS_AddRegion(gTogglePastCurrentTeam[1]);
 
     fCreated = true;
   } else if ((fCreateRegionsForPastCurrentToggle == false) && (fCreated == true)) {
     // created, get rid of
 
-    MSYS_RemoveRegion(addressof(gTogglePastCurrentTeam[0]));
-    MSYS_RemoveRegion(addressof(gTogglePastCurrentTeam[1]));
+    MSYS_RemoveRegion(gTogglePastCurrentTeam[0]);
+    MSYS_RemoveRegion(gTogglePastCurrentTeam[1]);
     fCreated = false;
   }
 
   return;
 }
 
-function PersonnelCurrentTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function PersonnelCurrentTeamCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fCurrentTeamMode = true;
 
@@ -3724,7 +3724,7 @@ function PersonnelCurrentTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
   }
 }
 
-function PersonnelDepartedTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function PersonnelDepartedTeamCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fCurrentTeamMode = false;
 
@@ -4636,7 +4636,7 @@ function FindPositionOfPersInvSlider(): void {
   guiSliderPosition = uiCurrentInventoryIndex * sSizeOfEachSubRegion;
 }
 
-function HandleSliderBarClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function HandleSliderBarClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
   let iNumberOfItems: INT32 = 0;
   let MousePos: POINT = createPoint();

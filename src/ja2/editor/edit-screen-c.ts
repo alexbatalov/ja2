@@ -204,7 +204,7 @@ function EditModeInit(): boolean {
 
   // Remove the radar from the interface.
   RemoveCurrentTacticalPanelButtons();
-  MSYS_DisableRegion(addressof(gRadarRegion));
+  MSYS_DisableRegion(gRadarRegion);
 
   CreateEditorTaskbar();
 
@@ -367,7 +367,7 @@ function EditModeShutdown(): boolean {
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
 
-  MSYS_EnableRegion(addressof(gRadarRegion));
+  MSYS_EnableRegion(gRadarRegion);
   CreateCurrentTacticalPanelButtons();
 
   // Make sure to turn off demo mode!
@@ -3368,7 +3368,7 @@ function CreateGotoGridNoUI(): void {
   SpecifyButtonTextOffsets(guiGotoGridNoUIButtonID, 5, 5, false);
   DisableButton(guiGotoGridNoUIButtonID);
   // Create a blanket region so nobody can use
-  MSYS_DefineRegion(addressof(GotoGridNoUIRegion), 0, 0, 640, 480, MSYS_PRIORITY_NORMAL + 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(GotoGridNoUIRegion, 0, 0, 640, 480, MSYS_PRIORITY_NORMAL + 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Init a text input field.
   InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddTextInputField(300, 180, 40, 18, MSYS_PRIORITY_HIGH, "", 6, INPUTTYPE_NUMERICSTRICT);
@@ -3382,7 +3382,7 @@ function RemoveGotoGridNoUI(): void {
   RemoveButton(guiGotoGridNoUIButtonID);
   iMapIndex = GetNumericStrictValueFromField(0);
   KillTextInputMode();
-  MSYS_RemoveRegion(addressof(GotoGridNoUIRegion));
+  MSYS_RemoveRegion(GotoGridNoUIRegion);
   if (iMapIndex != -1) {
     // Warp the screen to the location of this gridno.
     CenterScreenAtMapIndex(iMapIndex);

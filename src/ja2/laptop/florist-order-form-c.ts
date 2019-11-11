@@ -302,54 +302,54 @@ export function EnterFloristOrderForm(): boolean {
   //	The check box mouse regions
   //
   i = 0;
-  MSYS_DefineRegion(addressof(gSelectedFloristCheckBoxRegion[i]), FLOWER_ORDER_CHECK_BOX_0_X, FLOWER_ORDER_CHECK_BOX_0_Y, (FLOWER_ORDER_CHECK_BOX_0_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_0_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristCheckBoxRegion[i]));
-  MSYS_SetRegionUserData(addressof(gSelectedFloristCheckBoxRegion[i]), 0, i);
+  MSYS_DefineRegion(gSelectedFloristCheckBoxRegion[i], FLOWER_ORDER_CHECK_BOX_0_X, FLOWER_ORDER_CHECK_BOX_0_Y, (FLOWER_ORDER_CHECK_BOX_0_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_0_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristCheckBoxRegion[i]);
+  MSYS_SetRegionUserData(gSelectedFloristCheckBoxRegion[i], 0, i);
   i++;
 
-  MSYS_DefineRegion(addressof(gSelectedFloristCheckBoxRegion[i]), FLOWER_ORDER_CHECK_BOX_1_X, FLOWER_ORDER_CHECK_BOX_1_Y, (FLOWER_ORDER_CHECK_BOX_1_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_1_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristCheckBoxRegion[i]));
-  MSYS_SetRegionUserData(addressof(gSelectedFloristCheckBoxRegion[i]), 0, i);
+  MSYS_DefineRegion(gSelectedFloristCheckBoxRegion[i], FLOWER_ORDER_CHECK_BOX_1_X, FLOWER_ORDER_CHECK_BOX_1_Y, (FLOWER_ORDER_CHECK_BOX_1_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_1_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristCheckBoxRegion[i]);
+  MSYS_SetRegionUserData(gSelectedFloristCheckBoxRegion[i], 0, i);
   i++;
 
-  MSYS_DefineRegion(addressof(gSelectedFloristCheckBoxRegion[i]), FLOWER_ORDER_CHECK_BOX_2_X, FLOWER_ORDER_CHECK_BOX_2_Y, (FLOWER_ORDER_CHECK_BOX_2_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_2_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristCheckBoxRegion[i]));
-  MSYS_SetRegionUserData(addressof(gSelectedFloristCheckBoxRegion[i]), 0, i);
+  MSYS_DefineRegion(gSelectedFloristCheckBoxRegion[i], FLOWER_ORDER_CHECK_BOX_2_X, FLOWER_ORDER_CHECK_BOX_2_Y, (FLOWER_ORDER_CHECK_BOX_2_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_2_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristCheckBoxRegion[i]);
+  MSYS_SetRegionUserData(gSelectedFloristCheckBoxRegion[i], 0, i);
   i++;
 
-  MSYS_DefineRegion(addressof(gSelectedFloristCheckBoxRegion[i]), FLOWER_ORDER_CHECK_BOX_3_X, FLOWER_ORDER_CHECK_BOX_3_Y, (FLOWER_ORDER_CHECK_BOX_3_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_3_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristCheckBoxRegion[i]));
-  MSYS_SetRegionUserData(addressof(gSelectedFloristCheckBoxRegion[i]), 0, i);
+  MSYS_DefineRegion(gSelectedFloristCheckBoxRegion[i], FLOWER_ORDER_CHECK_BOX_3_X, FLOWER_ORDER_CHECK_BOX_3_Y, (FLOWER_ORDER_CHECK_BOX_3_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_3_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristCheckBoxRegion[i]);
+  MSYS_SetRegionUserData(gSelectedFloristCheckBoxRegion[i], 0, i);
   i++;
 
-  MSYS_DefineRegion(addressof(gSelectedFloristCheckBoxRegion[i]), FLOWER_ORDER_CHECK_BOX_4_X, FLOWER_ORDER_CHECK_BOX_4_Y, (FLOWER_ORDER_CHECK_BOX_4_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_4_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristCheckBoxRegion[i]));
-  MSYS_SetRegionUserData(addressof(gSelectedFloristCheckBoxRegion[i]), 0, i);
+  MSYS_DefineRegion(gSelectedFloristCheckBoxRegion[i], FLOWER_ORDER_CHECK_BOX_4_X, FLOWER_ORDER_CHECK_BOX_4_Y, (FLOWER_ORDER_CHECK_BOX_4_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_4_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristCheckBoxRegion[i]);
+  MSYS_SetRegionUserData(gSelectedFloristCheckBoxRegion[i], 0, i);
   i++;
 
-  MSYS_DefineRegion(addressof(gSelectedFloristCheckBoxRegion[i]), FLOWER_ORDER_CHECK_BOX_5_X, FLOWER_ORDER_CHECK_BOX_5_Y, (FLOWER_ORDER_CHECK_BOX_5_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_5_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristCheckBoxRegion[i]));
-  MSYS_SetRegionUserData(addressof(gSelectedFloristCheckBoxRegion[i]), 0, i);
+  MSYS_DefineRegion(gSelectedFloristCheckBoxRegion[i], FLOWER_ORDER_CHECK_BOX_5_X, FLOWER_ORDER_CHECK_BOX_5_Y, (FLOWER_ORDER_CHECK_BOX_5_X + FLOWER_ORDER_CHECK_WIDTH), (FLOWER_ORDER_CHECK_BOX_5_Y + FLOWER_ORDER_CHECK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFlorsitCheckBoxRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristCheckBoxRegion[i]);
+  MSYS_SetRegionUserData(gSelectedFloristCheckBoxRegion[i], 0, i);
   i++;
 
   usPosX = StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_SELECT_FROM_OURS], FLOWER_ORDEER_SMALL_FONT()) + 2 + FLOWER_ORDER_LINK_TO_CARD_GALLERY_X;
   usWidth = StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_STANDARDIZED_CARDS], FLOWER_ORDEER_SMALL_FONT());
   usHeight = GetFontHeight(FLOWER_ORDEER_SMALL_FONT());
-  MSYS_DefineRegion(addressof(gSelectedFloristCardGalleryLinkRegion), usPosX, FLOWER_ORDER_LINK_TO_CARD_GALLERY_Y, (usPosX + usWidth), (FLOWER_ORDER_LINK_TO_CARD_GALLERY_Y + usHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardGalleryLinkRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristCardGalleryLinkRegion));
+  MSYS_DefineRegion(gSelectedFloristCardGalleryLinkRegion, usPosX, FLOWER_ORDER_LINK_TO_CARD_GALLERY_Y, (usPosX + usWidth), (FLOWER_ORDER_LINK_TO_CARD_GALLERY_Y + usHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardGalleryLinkRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristCardGalleryLinkRegion);
 
   // flower link
-  MSYS_DefineRegion(addressof(gSelectedFloristGalleryLinkRegion), FLOWER_ORDER_FLOWER_BOX_X, FLOWER_ORDER_FLOWER_BOX_Y, (FLOWER_ORDER_FLOWER_BOX_X + FLOWER_ORDER_FLOWER_BOX_WIDTH), (FLOWER_ORDER_FLOWER_BOX_Y + FLOWER_ORDER_FLOWER_BOX_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristGalleryLinkRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristGalleryLinkRegion));
+  MSYS_DefineRegion(gSelectedFloristGalleryLinkRegion, FLOWER_ORDER_FLOWER_BOX_X, FLOWER_ORDER_FLOWER_BOX_Y, (FLOWER_ORDER_FLOWER_BOX_X + FLOWER_ORDER_FLOWER_BOX_WIDTH), (FLOWER_ORDER_FLOWER_BOX_Y + FLOWER_ORDER_FLOWER_BOX_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristGalleryLinkRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristGalleryLinkRegion);
 
   // drop down city location
-  MSYS_DefineRegion(addressof(gSelectedFloristDropDownRegion), FLOWER_ORDER_DELIVERY_LOCATION_X, FLOWER_ORDER_DELIVERY_LOCATION_Y, (FLOWER_ORDER_DELIVERY_LOCATION_X + FLOWER_ORDER_DELIVERY_LOCATION_WIDTH), (FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristDropDownRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristDropDownRegion));
+  MSYS_DefineRegion(gSelectedFloristDropDownRegion, FLOWER_ORDER_DELIVERY_LOCATION_X, FLOWER_ORDER_DELIVERY_LOCATION_Y, (FLOWER_ORDER_DELIVERY_LOCATION_X + FLOWER_ORDER_DELIVERY_LOCATION_WIDTH), (FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristDropDownRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristDropDownRegion);
 
   // to disable the drop down city location
-  MSYS_DefineRegion(addressof(gSelectedFloristDisableDropDownRegion), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectFloristDisableDropDownRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFloristDisableDropDownRegion));
-  MSYS_DisableRegion(addressof(gSelectedFloristDisableDropDownRegion));
+  MSYS_DefineRegion(gSelectedFloristDisableDropDownRegion, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectFloristDisableDropDownRegionCallBack);
+  MSYS_AddRegion(gSelectedFloristDisableDropDownRegion);
+  MSYS_DisableRegion(gSelectedFloristDisableDropDownRegion);
 
   // to select typing in the personal sentiment box
   //	MSYS_DefineRegion( &gSelectedFloristPersonalSentimentBoxRegion, FLOWER_ORDER_SENTIMENT_BOX_X, FLOWER_ORDER_SENTIMENT_BOX_Y, (UINT16)(FLOWER_ORDER_SENTIMENT_BOX_X + FLOWER_ORDER_SENTIMENT_BOX_WIDTH), (UINT16)(FLOWER_ORDER_SENTIMENT_BOX_Y + FLOWER_ORDER_SENTIMENT_BOX_HEIGHT), MSYS_PRIORITY_HIGH,
@@ -388,22 +388,22 @@ export function ExitFloristOrderForm(): void {
   DeleteVideoObjectFromIndex(guiDropDownBorder);
 
   for (i = 0; i < 6; i++)
-    MSYS_RemoveRegion(addressof(gSelectedFloristCheckBoxRegion[i]));
+    MSYS_RemoveRegion(gSelectedFloristCheckBoxRegion[i]);
 
   // card gallery link
-  MSYS_RemoveRegion(addressof(gSelectedFloristCardGalleryLinkRegion));
+  MSYS_RemoveRegion(gSelectedFloristCardGalleryLinkRegion);
 
   // flower link
-  MSYS_RemoveRegion(addressof(gSelectedFloristGalleryLinkRegion));
+  MSYS_RemoveRegion(gSelectedFloristGalleryLinkRegion);
 
   // flower link
-  MSYS_RemoveRegion(addressof(gSelectedFloristDropDownRegion));
+  MSYS_RemoveRegion(gSelectedFloristDropDownRegion);
 
   // to select typing in the personal sentiment box
   //	MSYS_RemoveRegion( &gSelectedFloristPersonalSentimentBoxRegion);
 
   // disable the drop down window
-  MSYS_RemoveRegion(addressof(gSelectedFloristDisableDropDownRegion));
+  MSYS_RemoveRegion(gSelectedFloristDisableDropDownRegion);
 
   UnloadButtonImage(guiFlowerOrderButtonImage);
 
@@ -624,7 +624,7 @@ function BtnFlowerOrderGalleryButtonCallback(btn: Pointer<GUI_BUTTON>, reason: I
   }
 }
 
-function SelectFlorsitCheckBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFlorsitCheckBoxRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let uiUserData: UINT32;
@@ -729,7 +729,7 @@ function DisplayFloristCheckBox(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function SelectFloristCardGalleryLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFloristCardGalleryLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST_CARD_GALLERY;
@@ -798,7 +798,7 @@ function DisplayFlowerDynamicItems(): void {
   DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_BOUQUET_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 }
 
-function SelectFloristGalleryLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFloristGalleryLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST_FLOWER_GALLERY;
@@ -806,21 +806,21 @@ function SelectFloristGalleryLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
   }
 }
 
-function SelectFloristDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFloristDropDownRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubFlowerDestDropDownMode = Enum81.FLOWER_ORDER_DROP_DOWN_CREATE;
   }
 }
 
-function SelectFloristDisableDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFloristDisableDropDownRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubFlowerDestDropDownMode = Enum81.FLOWER_ORDER_DROP_DOWN_DESTROY;
   }
 }
 
-function SelectFlowerDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFlowerDropDownRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentlySelectedFlowerLocation = MSYS_GetRegionUserData(pRegion, 0);
@@ -829,17 +829,17 @@ function SelectFlowerDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iRea
   }
 }
 
-function SelectFlowerDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function SelectFlowerDropDownMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    pRegion.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.uiFlags |= BUTTON_CLICKED_ON;
 
     gubCurrentlySelectedFlowerLocation = MSYS_GetRegionUserData(pRegion, 0);
     FlowerOrderDrawSelectedCity(gubCurrentlySelectedFlowerLocation);
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 }
 
@@ -882,9 +882,9 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
       usPosX = FLOWER_ORDER_DROP_DOWN_CITY_START_X;
       usPosY = FLOWER_ORDER_DROP_DOWN_CITY_START_Y;
       for (i = 0; i < FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS; i++) {
-        MSYS_DefineRegion(addressof(gSelectedFlowerDropDownRegion[i]), usPosX, (usPosY + 4), (usPosX + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 3, Enum317.CURSOR_WWW, SelectFlowerDropDownMovementCallBack, SelectFlowerDropDownRegionCallBack);
-        MSYS_AddRegion(addressof(gSelectedFlowerDropDownRegion[i]));
-        MSYS_SetRegionUserData(addressof(gSelectedFlowerDropDownRegion[i]), 0, i);
+        MSYS_DefineRegion(gSelectedFlowerDropDownRegion[i], usPosX, (usPosY + 4), (usPosX + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 3, Enum317.CURSOR_WWW, SelectFlowerDropDownMovementCallBack, SelectFlowerDropDownRegionCallBack);
+        MSYS_AddRegion(gSelectedFlowerDropDownRegion[i]);
+        MSYS_SetRegionUserData(gSelectedFlowerDropDownRegion[i], 0, i);
 
         usPosY += usFontHeight + 2;
       }
@@ -892,7 +892,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
       usHeight = usPosY - usTemp + 10;
 
       gubFlowerDestDropDownMode = Enum81.FLOWER_ORDER_DROP_DOWN_DISPLAY;
-      MSYS_EnableRegion(addressof(gSelectedFloristDisableDropDownRegion));
+      MSYS_EnableRegion(gSelectedFloristDisableDropDownRegion);
 
       // disable the text entry fields
       //			DisableAllTextFields();
@@ -909,14 +909,14 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
         break;
 
       for (i = 0; i < FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS; i++)
-        MSYS_RemoveRegion(addressof(gSelectedFlowerDropDownRegion[i]));
+        MSYS_RemoveRegion(gSelectedFlowerDropDownRegion[i]);
 
       // display the name on the title bar
       ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X + 3, FLOWER_ORDER_DELIVERY_LOCATION_Y + 3, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
       DrawTextToScreen((FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, FLOWER_ORDER_DROP_DOWN_CITY_START_Y + 3, 0, FLOWER_ORDEER_DROP_DOWN_FONT(), FLOWER_ORDEER_DROP_DOWN_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // enable the drop down region
-      MSYS_DisableRegion(addressof(gSelectedFloristDisableDropDownRegion));
+      MSYS_DisableRegion(gSelectedFloristDisableDropDownRegion);
 
       fPausedReDrawScreenFlag = true;
       fMouseRegionsCreated = false;

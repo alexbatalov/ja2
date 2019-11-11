@@ -485,11 +485,11 @@ export function BtnQuitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 // ITEMS
-export function MouseMovedInItemsRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function MouseMovedInItemsRegion(reg: MOUSE_REGION, reason: INT32): void {
   HandleItemsPanel(gusMouseXPos, gusMouseYPos, Enum44.GUI_MOVE_EVENT);
 }
 
-export function MouseClickedInItemsRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function MouseClickedInItemsRegion(reg: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     HandleItemsPanel(gusMouseXPos, gusMouseYPos, Enum44.GUI_LCLICK_EVENT);
   else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP)
@@ -971,15 +971,15 @@ export function MercsSetRelativeAttributesCallback(btn: Pointer<GUI_BUTTON>, rea
     SetMercRelativeAttributes(MSYS_GetBtnUserData(btn, 0));
 }
 
-export function MouseMovedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  HandleMercInventoryPanel(reg.value.RelativeXPos, reg.value.RelativeYPos, Enum44.GUI_MOVE_EVENT);
+export function MouseMovedInMercRegion(reg: MOUSE_REGION, reason: INT32): void {
+  HandleMercInventoryPanel(reg.RelativeXPos, reg.RelativeYPos, Enum44.GUI_MOVE_EVENT);
 }
 
-export function MouseClickedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function MouseClickedInMercRegion(reg: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    HandleMercInventoryPanel(reg.value.RelativeXPos, reg.value.RelativeYPos, Enum44.GUI_LCLICK_EVENT);
+    HandleMercInventoryPanel(reg.RelativeXPos, reg.RelativeYPos, Enum44.GUI_LCLICK_EVENT);
   else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP)
-    HandleMercInventoryPanel(reg.value.RelativeXPos, reg.value.RelativeYPos, Enum44.GUI_RCLICK_EVENT);
+    HandleMercInventoryPanel(reg.RelativeXPos, reg.RelativeYPos, Enum44.GUI_RCLICK_EVENT);
 }
 
 // VARIOUS

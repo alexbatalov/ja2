@@ -1052,16 +1052,16 @@ export function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sM
 
 function CreateScreenMaskForInventoryPoolPopUp(): void {
   //  a screen mask for the inventory pop up
-  MSYS_DefineRegion(addressof(gInventoryScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InventoryScreenMaskBtnCallback);
+  MSYS_DefineRegion(gInventoryScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InventoryScreenMaskBtnCallback);
 }
 
 function RemoveScreenMaskForInventoryPoolPopUp(): void {
   // remove screen mask
-  MSYS_RemoveRegion(addressof(gInventoryScreenMask));
+  MSYS_RemoveRegion(gInventoryScreenMask);
 }
 
 // invnetory screen mask btn callback
-function InventoryScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function InventoryScreenMaskBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // inventory screen mask btn callback
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fMapInventoryPoolInited = false;
@@ -1516,14 +1516,14 @@ INT32 GetNumberOfCharactersOnPlayersTeam( void )
 
 export function CreateMapStatusBarsRegion(): void {
   // create the status region over the bSelectedCharacter info region, to get quick rundown of merc's status
-  MSYS_DefineRegion(addressof(gMapStatusBarsRegion), BAR_INFO_X - 3, BAR_INFO_Y - 42, (BAR_INFO_X + 17), (BAR_INFO_Y), MSYS_PRIORITY_HIGH + 5, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(gMapStatusBarsRegion, BAR_INFO_X - 3, BAR_INFO_Y - 42, (BAR_INFO_X + 17), (BAR_INFO_Y), MSYS_PRIORITY_HIGH + 5, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   return;
 }
 
 export function RemoveMapStatusBarsRegion(): void {
   // remove the bSelectedInfoCharacter helath, breath and morale bars info region
-  MSYS_RemoveRegion(addressof(gMapStatusBarsRegion));
+  MSYS_RemoveRegion(gMapStatusBarsRegion);
 
   return;
 }
@@ -1559,7 +1559,7 @@ export function UpdateCharRegionHelpText(): void {
       sString = swprintf("%s: ??, %s: ??, %s: ??", pMapScreenStatusStrings[0], pMapScreenStatusStrings[1], pMapScreenStatusStrings[2]);
     }
 
-    SetRegionFastHelpText(addressof(gMapStatusBarsRegion), sString);
+    SetRegionFastHelpText(gMapStatusBarsRegion, sString);
 
     // update CONTRACT button help text
     if (CanExtendContractForCharSlot(bSelectedInfoChar)) {
@@ -1573,19 +1573,19 @@ export function UpdateCharRegionHelpText(): void {
     if (CanToggleSelectedCharInventory()) {
       // inventory
       if (fShowInventoryFlag) {
-        SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[2]);
+        SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[2]);
       } else {
-        SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
+        SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
       }
     } else // can't toggle it, don't show any inventory help text
     {
-      SetRegionFastHelpText(addressof(gCharInfoHandRegion), "");
+      SetRegionFastHelpText(gCharInfoHandRegion, "");
     }
   } else {
     // invalid soldier
-    SetRegionFastHelpText(addressof(gMapStatusBarsRegion), "");
+    SetRegionFastHelpText(gMapStatusBarsRegion, "");
     SetButtonFastHelpText(giMapContractButton, "");
-    SetRegionFastHelpText(addressof(gCharInfoHandRegion), "");
+    SetRegionFastHelpText(gCharInfoHandRegion, "");
     DisableButton(giMapContractButton);
   }
 }
@@ -2193,20 +2193,20 @@ function SetUpShutDownMapScreenHelpTextScreenMask(): void {
   // create or destroy the screen mask as needed
   if (((fShowMapScreenHelpText == true) || (fInterfaceFastHelpTextActive == true)) && (fCreated == false)) {
     if (gTacticalStatus.fDidGameJustStart) {
-      MSYS_DefineRegion(addressof(gMapScreenHelpTextMask), (pMapScreenFastHelpLocationList[9].iX), (pMapScreenFastHelpLocationList[9].iY), (pMapScreenFastHelpLocationList[9].iX + pMapScreenFastHelpWidthList[9]), (pMapScreenFastHelpLocationList[9].iY + iHeightOfInitFastHelpText), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
+      MSYS_DefineRegion(gMapScreenHelpTextMask, (pMapScreenFastHelpLocationList[9].iX), (pMapScreenFastHelpLocationList[9].iY), (pMapScreenFastHelpLocationList[9].iX + pMapScreenFastHelpWidthList[9]), (pMapScreenFastHelpLocationList[9].iY + iHeightOfInitFastHelpText), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
     } else {
-      MSYS_DefineRegion(addressof(gMapScreenHelpTextMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
+      MSYS_DefineRegion(gMapScreenHelpTextMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
     }
 
     fCreated = true;
   } else if ((fShowMapScreenHelpText == false) && (fInterfaceFastHelpTextActive == false) && (fCreated == true)) {
-    MSYS_RemoveRegion(addressof(gMapScreenHelpTextMask));
+    MSYS_RemoveRegion(gMapScreenHelpTextMask);
 
     fCreated = false;
   }
 }
 
-function MapScreenHelpTextScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MapScreenHelpTextScreenMaskBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // stop showing
     ShutDownUserDefineHelpTextRegions();
@@ -2900,11 +2900,11 @@ function BuildMouseRegionsForMoveBox(): void {
   SetCurrentBox(ghMoveBox);
 
   // box heading
-  MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   iCounter++;
 
   // blank line
-  MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   iCounter++;
 
   // calc total number of "moving" lines in the box
@@ -2916,22 +2916,22 @@ function BuildMouseRegionsForMoveBox(): void {
   while (iCounter < iTotalNumberOfLines) {
     // define regions for squad lines
     for (iCount = 0; iCount < giNumberOfSquadsInSectorMoving; iCount++) {
-      MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+      MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.SQUAD_REGION);
-      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCount);
+      MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 0, iCounter);
+      MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 1, Enum145.SQUAD_REGION);
+      MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 2, iCount);
       iCounter++;
 
       for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
         if (pSoldierMovingList[iCountB].value.bAssignment == iSquadMovingList[iCount]) {
-          MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+          MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.SOLDIER_REGION);
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCountB);
+          MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 0, iCounter);
+          MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 1, Enum145.SOLDIER_REGION);
+          MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 2, iCountB);
           iCounter++;
         }
       }
@@ -2939,22 +2939,22 @@ function BuildMouseRegionsForMoveBox(): void {
 
     for (iCount = 0; iCount < giNumberOfVehiclesInSectorMoving; iCount++) {
       // define regions for vehicle lines
-      MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+      MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.VEHICLE_REGION);
-      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCount);
+      MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 0, iCounter);
+      MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 1, Enum145.VEHICLE_REGION);
+      MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 2, iCount);
       iCounter++;
 
       for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
         if ((pSoldierMovingList[iCountB].value.bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
-          MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+          MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.SOLDIER_REGION);
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCountB);
+          MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 0, iCounter);
+          MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 1, Enum145.SOLDIER_REGION);
+          MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 2, iCountB);
           iCounter++;
         }
       }
@@ -2966,54 +2966,54 @@ function BuildMouseRegionsForMoveBox(): void {
       if ((pSoldierMovingList[iCount].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCount].value.bAssignment != Enum117.VEHICLE)) {
         // this line gets place only once...
         if (!fDefinedOtherRegion) {
-          MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+          MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.OTHER_REGION);
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
+          MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 0, iCounter);
+          MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 1, Enum145.OTHER_REGION);
+          MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 2, 0);
           iCounter++;
 
           fDefinedOtherRegion = true;
         }
 
-        MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+        MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
         // set user defines
-        MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-        MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.SOLDIER_REGION);
-        MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCount);
+        MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 0, iCounter);
+        MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 1, Enum145.SOLDIER_REGION);
+        MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 2, iCount);
         iCounter++;
       }
     }
   }
 
   // blank line
-  MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   iCounter++;
 
   if (IsAnythingSelectedForMoving()) {
     // DONE line
-    MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+    MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
     // set user defines
-    MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-    MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.DONE_REGION);
-    MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
+    MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 0, iCounter);
+    MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 1, Enum145.DONE_REGION);
+    MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 2, 0);
     iCounter++;
   } else {
     // blank line
-    MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
     iCounter++;
   }
 
   // CANCEL line
-  MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+  MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
   // set user defines
-  MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-  MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.CANCEL_REGION);
-  MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
+  MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 0, iCounter);
+  MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 1, Enum145.CANCEL_REGION);
+  MSYS_SetRegionUserData(gMoveMenuRegion[iCounter], 2, 0);
   iCounter++;
 }
 
@@ -3023,13 +3023,13 @@ function ClearMouseRegionsForMoveBox(): void {
   // run through list of mouse regions
   for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghMoveBox); iCounter++) {
     // remove this region
-    MSYS_RemoveRegion(addressof(gMoveMenuRegion[iCounter]));
+    MSYS_RemoveRegion(gMoveMenuRegion[iCounter]);
   }
 
   return;
 }
 
-function MoveMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MoveMenuMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for move box line regions
   let iValue: INT32 = -1;
 
@@ -3044,7 +3044,7 @@ function MoveMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
   }
 }
 
-function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MoveMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for move box line regions
   let iMoveBoxLine: INT32 = -1;
   let iRegionType: INT32 = -1;
@@ -3468,7 +3468,7 @@ export function ReBuildMoveBox(): void {
 export function CreateScreenMaskForMoveBox(): void {
   if (fScreenMaskForMoveCreated == false) {
     // set up the screen mask
-    MSYS_DefineRegion(addressof(gMoveBoxScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MoveScreenMaskBtnCallback);
+    MSYS_DefineRegion(gMoveBoxScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MoveScreenMaskBtnCallback);
 
     fScreenMaskForMoveCreated = true;
   }
@@ -3477,12 +3477,12 @@ export function CreateScreenMaskForMoveBox(): void {
 export function RemoveScreenMaskForMoveBox(): void {
   if (fScreenMaskForMoveCreated == true) {
     // remove the screen mask
-    MSYS_RemoveRegion(addressof(gMoveBoxScreenMask));
+    MSYS_RemoveRegion(gMoveBoxScreenMask);
     fScreenMaskForMoveCreated = false;
   }
 }
 
-function MoveScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MoveScreenMaskBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for move box screen mask region
   if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     fShowMapScreenMovementList = false;
@@ -4177,29 +4177,29 @@ export function InitTimersForMoveMenuMouseRegions(): void {
 
 export function UpdateHelpTextForMapScreenMercIcons(): void {
   if ((bSelectedInfoChar == -1) || (gCharactersList[bSelectedInfoChar].fValid == false)) {
-    SetRegionFastHelpText(addressof(gContractIconRegion), "");
-    SetRegionFastHelpText(addressof(gInsuranceIconRegion), "");
-    SetRegionFastHelpText(addressof(gDepositIconRegion), "");
+    SetRegionFastHelpText(gContractIconRegion, "");
+    SetRegionFastHelpText(gInsuranceIconRegion, "");
+    SetRegionFastHelpText(gDepositIconRegion, "");
   } else {
     // if merc is an AIM merc
     if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
-      SetRegionFastHelpText(addressof(gContractIconRegion), zMarksMapScreenText[22]);
+      SetRegionFastHelpText(gContractIconRegion, zMarksMapScreenText[22]);
     } else {
-      SetRegionFastHelpText(addressof(gContractIconRegion), "");
+      SetRegionFastHelpText(gContractIconRegion, "");
     }
 
     // if merc has life insurance
     if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].usLifeInsurance > 0) {
-      SetRegionFastHelpText(addressof(gInsuranceIconRegion), zMarksMapScreenText[3]);
+      SetRegionFastHelpText(gInsuranceIconRegion, zMarksMapScreenText[3]);
     } else {
-      SetRegionFastHelpText(addressof(gInsuranceIconRegion), "");
+      SetRegionFastHelpText(gInsuranceIconRegion, "");
     }
 
     // if merc has a medical deposit
     if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].usMedicalDeposit > 0) {
-      SetRegionFastHelpText(addressof(gDepositIconRegion), zMarksMapScreenText[12]);
+      SetRegionFastHelpText(gDepositIconRegion, zMarksMapScreenText[12]);
     } else {
-      SetRegionFastHelpText(addressof(gDepositIconRegion), "");
+      SetRegionFastHelpText(gDepositIconRegion, "");
     }
   }
 }
@@ -4208,17 +4208,17 @@ export function CreateDestroyInsuranceMouseRegionForMercs(fCreate: boolean): voi
   /* static */ let fCreated: boolean = false;
 
   if ((fCreated == false) && (fCreate == true)) {
-    MSYS_DefineRegion(addressof(gContractIconRegion), CHAR_ICON_X, CHAR_ICON_CONTRACT_Y, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(gContractIconRegion, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-    MSYS_DefineRegion(addressof(gInsuranceIconRegion), CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(gInsuranceIconRegion, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-    MSYS_DefineRegion(addressof(gDepositIconRegion), CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING), CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING) + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(gDepositIconRegion, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING), CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING) + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
     fCreated = true;
   } else if ((fCreated == true) && (fCreate == false)) {
-    MSYS_RemoveRegion(addressof(gContractIconRegion));
-    MSYS_RemoveRegion(addressof(gInsuranceIconRegion));
-    MSYS_RemoveRegion(addressof(gDepositIconRegion));
+    MSYS_RemoveRegion(gContractIconRegion);
+    MSYS_RemoveRegion(gInsuranceIconRegion);
+    MSYS_RemoveRegion(gDepositIconRegion);
     fCreated = false;
   }
 }

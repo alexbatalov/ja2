@@ -244,9 +244,9 @@ function InitializeMouseRegions(): void {
 
   // init mouseregions
   for (iCounter = 0; iCounter < MAX_MESSAGES_PAGE; iCounter++) {
-    MSYS_DefineRegion(addressof(pEmailRegions[iCounter]), MIDDLE_X, ((MIDDLE_Y + iCounter * MIDDLE_WIDTH)), MIDDLE_X + LINE_WIDTH, (MIDDLE_Y + iCounter * MIDDLE_WIDTH + MIDDLE_WIDTH), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, EmailMvtCallBack, EmailBtnCallBack);
-    MSYS_AddRegion(addressof(pEmailRegions[iCounter]));
-    MSYS_SetRegionUserData(addressof(pEmailRegions[iCounter]), 0, iCounter);
+    MSYS_DefineRegion(pEmailRegions[iCounter], MIDDLE_X, ((MIDDLE_Y + iCounter * MIDDLE_WIDTH)), MIDDLE_X + LINE_WIDTH, (MIDDLE_Y + iCounter * MIDDLE_WIDTH + MIDDLE_WIDTH), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, EmailMvtCallBack, EmailBtnCallBack);
+    MSYS_AddRegion(pEmailRegions[iCounter]);
+    MSYS_SetRegionUserData(pEmailRegions[iCounter], 0, iCounter);
   }
 
   // SetUpSortRegions();
@@ -259,7 +259,7 @@ function DeleteEmailMouseRegions(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAX_MESSAGES_PAGE; iCounter++) {
-    MSYS_RemoveRegion(addressof(pEmailRegions[iCounter]));
+    MSYS_RemoveRegion(pEmailRegions[iCounter]);
   }
   // DeleteSortRegions();
   CreateDestroyNextPreviousRegions();
@@ -1292,7 +1292,7 @@ export function LookForUnread(): void {
   return;
 }
 
-function EmailBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function EmailBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iCount: INT32;
   let pPage: PagePtr = pPageList;
   let iId: INT32 = 0;
@@ -1360,7 +1360,7 @@ function EmailBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
     }
   }
 }
-function EmailMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function EmailMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -1731,8 +1731,8 @@ export function CreateDestroyNewMailButton(): void {
     SetButtonCursor(giNewMailButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // set up screen mask region
-    MSYS_DefineRegion(addressof(pScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
-    MSYS_AddRegion(addressof(pScreenMask));
+    MSYS_DefineRegion(pScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
+    MSYS_AddRegion(pScreenMask);
     MarkAButtonDirty(giNewMailButton[0]);
     fReDrawScreenFlag = true;
   } else if ((!fNewMailFlag) && (fOldNewMailFlag)) {
@@ -1744,7 +1744,7 @@ export function CreateDestroyNewMailButton(): void {
     UnloadButtonImage(giNewMailButtonImage[0]);
 
     // remove screen mask
-    MSYS_RemoveRegion(addressof(pScreenMask));
+    MSYS_RemoveRegion(pScreenMask);
 
     // re draw screen
     fReDraw = true;
@@ -2092,8 +2092,8 @@ export function CreateDestroyDeleteNoticeMailButton(): void {
     SetButtonCursor(giDeleteMailButton[1], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // set up screen mask to prevent other actions while delete mail box is destroyed
-    MSYS_DefineRegion(addressof(pDeleteScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
-    MSYS_AddRegion(addressof(pDeleteScreenMask));
+    MSYS_DefineRegion(pDeleteScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
+    MSYS_AddRegion(pDeleteScreenMask);
 
     // force update
     fReDrawScreenFlag = true;
@@ -2106,7 +2106,7 @@ export function CreateDestroyDeleteNoticeMailButton(): void {
     UnloadButtonImage(giDeleteMailButtonImage[1]);
 
     // the region
-    MSYS_RemoveRegion(addressof(pDeleteScreenMask));
+    MSYS_RemoveRegion(pDeleteScreenMask);
 
     // force refresh
     fReDrawScreenFlag = true;

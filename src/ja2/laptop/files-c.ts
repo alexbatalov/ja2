@@ -579,9 +579,9 @@ function InitializeFilesMouseRegions(): void {
   let iCounter: INT32 = 0;
   // init mouseregions
   for (iCounter = 0; iCounter < MAX_FILES_PAGE; iCounter++) {
-    MSYS_DefineRegion(addressof(pFilesRegions[iCounter]), FILES_LIST_X, (FILES_LIST_Y + iCounter * (BLOCK_HEIGHT + 2)), FILES_LIST_X + FILES_LIST_WIDTH, (FILES_LIST_Y + (iCounter + 1) * (BLOCK_HEIGHT + 2)), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FilesBtnCallBack);
-    MSYS_AddRegion(addressof(pFilesRegions[iCounter]));
-    MSYS_SetRegionUserData(addressof(pFilesRegions[iCounter]), 0, iCounter);
+    MSYS_DefineRegion(pFilesRegions[iCounter], FILES_LIST_X, (FILES_LIST_Y + iCounter * (BLOCK_HEIGHT + 2)), FILES_LIST_X + FILES_LIST_WIDTH, (FILES_LIST_Y + (iCounter + 1) * (BLOCK_HEIGHT + 2)), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FilesBtnCallBack);
+    MSYS_AddRegion(pFilesRegions[iCounter]);
+    MSYS_SetRegionUserData(pFilesRegions[iCounter], 0, iCounter);
   }
 
   return;
@@ -590,11 +590,11 @@ function InitializeFilesMouseRegions(): void {
 function RemoveFilesMouseRegions(): void {
   let iCounter: INT32 = 0;
   for (iCounter = 0; iCounter < MAX_FILES_PAGE; iCounter++) {
-    MSYS_RemoveRegion(addressof(pFilesRegions[iCounter]));
+    MSYS_RemoveRegion(pFilesRegions[iCounter]);
   }
 }
 
-function FilesBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function FilesBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iFileId: INT32 = -1;
   let iCounter: INT32 = 0;
   let pFilesList: FilesUnitPtr = pFilesListHead;

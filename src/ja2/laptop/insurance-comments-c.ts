@@ -42,9 +42,9 @@ export function EnterInsuranceComments(): boolean {
 
   usPosX = INS_CMNT_FIRST_BULLET_X - 6;
   for (i = 0; i < 3; i++) {
-    MSYS_DefineRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]), usPosX, INS_CMNT_LINK_Y - 1, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT + 1, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceCommentLinkRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]));
-    MSYS_SetRegionUserData(addressof(gSelectedInsuranceCommentLinkRegion[i]), 0, i);
+    MSYS_DefineRegion(gSelectedInsuranceCommentLinkRegion[i], usPosX, INS_CMNT_LINK_Y - 1, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT + 1, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceCommentLinkRegionCallBack);
+    MSYS_AddRegion(gSelectedInsuranceCommentLinkRegion[i]);
+    MSYS_SetRegionUserData(gSelectedInsuranceCommentLinkRegion[i], 0, i);
 
     usPosX += INS_CMNT_LINK_OFFSET_X;
   }
@@ -60,7 +60,7 @@ export function ExitInsuranceComments(): void {
   DeleteVideoObjectFromIndex(guiInsCmntBulletImage);
 
   for (i = 0; i < 3; i++)
-    MSYS_RemoveRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]));
+    MSYS_RemoveRegion(gSelectedInsuranceCommentLinkRegion[i]);
 }
 
 export function HandleInsuranceComments(): void {
@@ -129,7 +129,7 @@ export function RenderInsuranceComments(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function SelectInsuranceCommentLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectInsuranceCommentLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let uiInsuranceLink: UINT32 = MSYS_GetRegionUserData(pRegion, 0);

@@ -173,7 +173,7 @@ export function InitTacticalPlacementGUI(): void {
     }
     xp = 91 + (i / 2) * 54;
     yp = (i % 2) ? 412 : 361;
-    MSYS_DefineRegion(addressof(gMercPlacement[i].region), xp, yp, (xp + 54), (yp + 62), MSYS_PRIORITY_HIGH, 0, MercMoveCallback, MercClickCallback);
+    MSYS_DefineRegion(gMercPlacement[i].region, xp, yp, (xp + 54), (yp + 62), MSYS_PRIORITY_HIGH, 0, MercMoveCallback, MercClickCallback);
   }
 
   PlaceMercs();
@@ -479,7 +479,7 @@ function KillTacticalPlacementGUI(): void {
   // Delete faces and regions
   for (i = 0; i < giPlacements; i++) {
     DeleteVideoObjectFromIndex(gMercPlacement[i].uiVObjectID);
-    MSYS_RemoveRegion(addressof(gMercPlacement[i].region));
+    MSYS_RemoveRegion(gMercPlacement[i].region);
   }
 
   if (gsCurInterfacePanel < 0 || gsCurInterfacePanel >= Enum215.NUM_UI_PANELS)
@@ -490,7 +490,7 @@ function KillTacticalPlacementGUI(): void {
   // Leave the overhead map.
   KillOverheadMap();
   // Recreate the tactical panel.
-  MSYS_EnableRegion(addressof(gRadarRegion));
+  MSYS_EnableRegion(gRadarRegion);
   SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
   // Initialize the rest of the map (AI, enemies, civs, etc.)
 
@@ -587,11 +587,11 @@ function ClearPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function MercMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  if (reg.value.uiFlags & MSYS_MOUSE_IN_AREA) {
+function MercMoveCallback(reg: MOUSE_REGION, reason: INT32): void {
+  if (reg.uiFlags & MSYS_MOUSE_IN_AREA) {
     let i: INT8;
     for (i = 0; i < giPlacements; i++) {
-      if (addressof(gMercPlacement[i].region == reg)) {
+      if (gMercPlacement[i].region == reg) {
         if (gbHilightedMercID != i) {
           gbHilightedMercID = i;
           if (gubDefaultButton == Enum310.GROUP_BUTTON)
@@ -605,11 +605,11 @@ function MercMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   }
 }
 
-function MercClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function MercClickCallback(reg: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     let i: INT8;
     for (i = 0; i < giPlacements; i++) {
-      if (addressof(gMercPlacement[i].region == reg)) {
+      if (gMercPlacement[i].region == reg) {
         if (gbSelectedMercID != i) {
           gbSelectedMercID = i;
           gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
@@ -665,7 +665,7 @@ function SelectNextUnplacedUnit(): void {
   }
 }
 
-export function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+export function HandleTacticalPlacementClicksInOverheadMap(reg: MOUSE_REGION, reason: INT32): void {
   let i: INT32;
   let sGridNo: INT16;
   let fInvalidArea: boolean = false;

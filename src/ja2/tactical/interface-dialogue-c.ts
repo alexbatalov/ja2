@@ -334,26 +334,26 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   sY = gTalkPanel.sY + TALK_PANEL_REGION_STARTY;
 
   // Define main region
-  MSYS_DefineRegion(addressof(gTalkPanel.ScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(gTalkPanel.ScreenRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(addressof(gTalkPanel.ScreenRegion));
+  MSYS_AddRegion(gTalkPanel.ScreenRegion);
 
   // Define main region
-  MSYS_DefineRegion(addressof(gTalkPanel.BackRegion), (gTalkPanel.sX), (gTalkPanel.sY), (gTalkPanel.sX + gTalkPanel.usWidth), (gTalkPanel.sY + gTalkPanel.usHeight), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, TalkPanelBaseRegionClickCallback);
+  MSYS_DefineRegion(gTalkPanel.BackRegion, (gTalkPanel.sX), (gTalkPanel.sY), (gTalkPanel.sX + gTalkPanel.usWidth), (gTalkPanel.sY + gTalkPanel.usHeight), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, TalkPanelBaseRegionClickCallback);
   // Add region
-  MSYS_AddRegion(addressof(gTalkPanel.BackRegion));
+  MSYS_AddRegion(gTalkPanel.BackRegion);
 
   // Define name region
-  MSYS_DefineRegion(addressof(gTalkPanel.NameRegion), (gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), (gTalkPanel.sX + TALK_PANEL_NAME_WIDTH + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_HEIGHT + TALK_PANEL_NAME_Y), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, TalkPanelNameRegionMoveCallback, TalkPanelNameRegionClickCallback);
+  MSYS_DefineRegion(gTalkPanel.NameRegion, (gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), (gTalkPanel.sX + TALK_PANEL_NAME_WIDTH + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_HEIGHT + TALK_PANEL_NAME_Y), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, TalkPanelNameRegionMoveCallback, TalkPanelNameRegionClickCallback);
   // Add region
-  MSYS_AddRegion(addressof(gTalkPanel.NameRegion));
+  MSYS_AddRegion(gTalkPanel.NameRegion);
 
   for (cnt = 0; cnt < 6; cnt++) {
     // Build a mouse region here that is over any others.....
-    MSYS_DefineRegion(addressof(gTalkPanel.Regions[cnt]), (sX), (sY), (sX + TALK_PANEL_REGION_WIDTH), (sY + TALK_PANEL_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, TalkPanelMoveCallback, TalkPanelClickCallback);
+    MSYS_DefineRegion(gTalkPanel.Regions[cnt], (sX), (sY), (sX + TALK_PANEL_REGION_WIDTH), (sY + TALK_PANEL_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, TalkPanelMoveCallback, TalkPanelClickCallback);
     // Add region
-    MSYS_AddRegion(addressof(gTalkPanel.Regions[cnt]));
-    MSYS_SetRegionUserData(addressof(gTalkPanel.Regions[cnt]), 0, cnt);
+    MSYS_AddRegion(gTalkPanel.Regions[cnt]);
+    MSYS_SetRegionUserData(gTalkPanel.Regions[cnt], 0, cnt);
 
     sY += TALK_PANEL_REGION_SPACEY;
   }
@@ -418,22 +418,22 @@ export function DeleteTalkingMenu(): void {
   ShutupaYoFace(gTalkPanel.iFaceIndex);
 
   // Delete screen region
-  MSYS_RemoveRegion(addressof(gTalkPanel.ScreenRegion));
+  MSYS_RemoveRegion(gTalkPanel.ScreenRegion);
 
   // Delete main region
-  MSYS_RemoveRegion(addressof(gTalkPanel.BackRegion));
+  MSYS_RemoveRegion(gTalkPanel.BackRegion);
 
   // Delete name region
-  MSYS_RemoveRegion(addressof(gTalkPanel.NameRegion));
+  MSYS_RemoveRegion(gTalkPanel.NameRegion);
 
   // Delete mouse regions
   for (cnt = 0; cnt < 6; cnt++) {
-    MSYS_RemoveRegion(addressof(gTalkPanel.Regions[cnt]));
+    MSYS_RemoveRegion(gTalkPanel.Regions[cnt]);
   }
 
   if (gTalkPanel.fTextRegionOn) {
     // Remove
-    MSYS_RemoveRegion(addressof(gTalkPanel.TextRegion));
+    MSYS_RemoveRegion(gTalkPanel.TextRegion);
     gTalkPanel.fTextRegionOn = false;
   }
 
@@ -570,7 +570,7 @@ export function RenderTalkingMenu(): void {
 
       // Disable mouse regions....
       for (cnt = 0; cnt < 6; cnt++) {
-        MSYS_DisableRegion(addressof(gTalkPanel.Regions[cnt]));
+        MSYS_DisableRegion(gTalkPanel.Regions[cnt]);
       }
 
       DisableButton(gTalkPanel.uiCancelButton);
@@ -579,7 +579,7 @@ export function RenderTalkingMenu(): void {
     } else {
       // Enable mouse regions....
       for (cnt = 0; cnt < 6; cnt++) {
-        MSYS_EnableRegion(addressof(gTalkPanel.Regions[cnt]));
+        MSYS_EnableRegion(gTalkPanel.Regions[cnt]);
       }
 
       // Restore selection....
@@ -610,13 +610,13 @@ export function RenderTalkingMenu(): void {
       // Define main region
       if (gTalkPanel.fTextRegionOn) {
         // Remove
-        MSYS_RemoveRegion(addressof(gTalkPanel.TextRegion));
+        MSYS_RemoveRegion(gTalkPanel.TextRegion);
         gTalkPanel.fTextRegionOn = false;
       }
 
-      MSYS_DefineRegion(addressof(gTalkPanel.TextRegion), gTalkPanel.sPopupX, gTalkPanel.sPopupY, (gTalkPanel.sPopupX + usTextBoxWidth), (gTalkPanel.sPopupY + usTextBoxHeight), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, TextRegionClickCallback);
+      MSYS_DefineRegion(gTalkPanel.TextRegion, gTalkPanel.sPopupX, gTalkPanel.sPopupY, (gTalkPanel.sPopupX + usTextBoxWidth), (gTalkPanel.sPopupY + usTextBoxHeight), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, TextRegionClickCallback);
       // Add region
-      MSYS_AddRegion(addressof(gTalkPanel.TextRegion));
+      MSYS_AddRegion(gTalkPanel.TextRegion);
 
       // Set to true
       gTalkPanel.fTextRegionOn = true;
@@ -707,7 +707,7 @@ export function RenderTalkingMenu(): void {
   gTalkPanel.fDirtyLevel = 0;
 }
 
-function TalkPanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TalkPanelMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let uiItemPos: UINT32;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
@@ -722,7 +722,7 @@ function TalkPanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   }
 }
 
-function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TalkPanelClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let uiItemPos: UINT32;
   let fDoConverse: boolean = true;
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
@@ -784,7 +784,7 @@ function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   }
 }
 
-function TalkPanelBaseRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TalkPanelBaseRegionClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -804,7 +804,7 @@ function TalkPanelBaseRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReaso
   }
 }
 
-function TalkPanelNameRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TalkPanelNameRegionClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Donot do this if we are talking already
     if (!gFacesData[gTalkPanel.iFaceIndex].fTalking) {
@@ -815,7 +815,7 @@ function TalkPanelNameRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReaso
   }
 }
 
-function TalkPanelNameRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TalkPanelNameRegionMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // Donot do this if we are talking already
   if (gFacesData[gTalkPanel.iFaceIndex].fTalking) {
     return;
@@ -4063,7 +4063,7 @@ function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: boolean): boolean {
   return true;
 }
 
-function TextRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TextRegionClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {

@@ -269,8 +269,8 @@ export function CreateSummaryWindow(): void {
   for (i = 1; i < Enum58.NUM_SUMMARY_BUTTONS; i++)
     HideButton(iSummaryButton[i]);
 
-  MSYS_DefineRegion(addressof(MapRegion), MAP_LEFT, MAP_TOP, MAP_RIGHT, MAP_BOTTOM, MSYS_PRIORITY_HIGH, 0, MapMoveCallback, MapClickCallback);
-  MSYS_DisableRegion(addressof(MapRegion));
+  MSYS_DefineRegion(MapRegion, MAP_LEFT, MAP_TOP, MAP_RIGHT, MAP_BOTTOM, MSYS_PRIORITY_HIGH, 0, MapMoveCallback, MapClickCallback);
+  MSYS_DisableRegion(MapRegion);
 
   // if( gfItemDetailsMode )
   //	{
@@ -315,7 +315,7 @@ function ReleaseSummaryWindow(): void {
     HideButton(iSummaryButton[Enum58.SUMMARY_REAL]);
     HideButton(iSummaryButton[Enum58.SUMMARY_SCIFI]);
     HideButton(iSummaryButton[Enum58.SUMMARY_ENEMY]);
-    MSYS_EnableRegion(addressof(MapRegion));
+    MSYS_EnableRegion(MapRegion);
     gfPersistantSummary = true;
     gfOverrideDirty = true;
     gfRenderSummary = true;
@@ -332,7 +332,7 @@ export function DestroySummaryWindow(): void {
     RemoveButton(iSummaryButton[i]);
   }
 
-  MSYS_RemoveRegion(addressof(MapRegion));
+  MSYS_RemoveRegion(MapRegion);
 
   gfSummaryWindowActive = false;
   gfPersistantSummary = false;
@@ -1628,7 +1628,7 @@ function CreateGlobalSummary(): void {
   OutputDebugString("GlobalSummary Information generated successfully.\n");
 }
 
-function MapMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function MapMoveCallback(reg: MOUSE_REGION, reason: INT32): void {
   /* static */ let gsPrevX: INT16 = 0;
   /* static */ let gsPrevY: INT16 = 0;
   // calc current sector highlighted.
@@ -1638,8 +1638,8 @@ function MapMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
     gfRenderMap = true;
     return;
   }
-  gsHiSectorX = Math.min((reg.value.RelativeXPos / 13) + 1, 16);
-  gsHiSectorY = Math.min((reg.value.RelativeYPos / 13) + 1, 16);
+  gsHiSectorX = Math.min((reg.RelativeXPos / 13) + 1, 16);
+  gsHiSectorY = Math.min((reg.RelativeYPos / 13) + 1, 16);
   if (gsPrevX != gsHiSectorX || gsPrevY != gsHiSectorY) {
     gsPrevX = gsHiSectorX;
     gsPrevY = gsHiSectorY;
@@ -1647,7 +1647,7 @@ function MapMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   }
 }
 
-function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function MapClickCallback(reg: MOUSE_REGION, reason: INT32): void {
   /* static */ let sLastX: INT16 = -1;
   /* static */ let sLastY: INT16 = -1;
   /* static */ let iLastClickTime: INT32 = 0;
@@ -1657,8 +1657,8 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
       gsSelSectorX = 0;
       SelectNextField();
     }
-    gsSelSectorX = Math.min((reg.value.RelativeXPos / 13) + 1, 16);
-    gsSelSectorY = Math.min((reg.value.RelativeYPos / 13) + 1, 16);
+    gsSelSectorX = Math.min((reg.RelativeXPos / 13) + 1, 16);
+    gsSelSectorY = Math.min((reg.RelativeYPos / 13) + 1, 16);
     if (gsSelSectorX != sLastX || gsSelSectorY != sLastY) {
       // clicked in a new sector
       gfOverrideDirty = true;

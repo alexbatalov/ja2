@@ -791,22 +791,22 @@ function CreateIMPBeginScreenMouseRegions(): void {
     return;
 
   // full name region
-  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[0]), LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 135, LAPTOP_SCREEN_UL_X + 196 + FULL_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 135 + 24, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFullNameRegionCallBack);
+  MSYS_DefineRegion(gIMPBeginScreenMouseRegions[0], LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 135, LAPTOP_SCREEN_UL_X + 196 + FULL_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 135 + 24, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFullNameRegionCallBack);
 
   // nick name region
-  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[1]), LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 195, LAPTOP_SCREEN_UL_X + 196 + NICK_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 195 + 24, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectNickNameRegionCallBack);
+  MSYS_DefineRegion(gIMPBeginScreenMouseRegions[1], LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 195, LAPTOP_SCREEN_UL_X + 196 + NICK_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 195 + 24, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectNickNameRegionCallBack);
 
   // IMP_MALE gender area
-  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[2]), MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MvtOnMaleRegionCallBack, SelectMaleRegionCallBack);
+  MSYS_DefineRegion(gIMPBeginScreenMouseRegions[2], MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MvtOnMaleRegionCallBack, SelectMaleRegionCallBack);
 
   // IMP_FEMALE gender region
-  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[3]), FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MvtOnFemaleRegionCallBack, SelectFemaleRegionCallBack);
+  MSYS_DefineRegion(gIMPBeginScreenMouseRegions[3], FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MvtOnFemaleRegionCallBack, SelectFemaleRegionCallBack);
 
   // add regions
-  MSYS_AddRegion(addressof(gIMPBeginScreenMouseRegions[0]));
-  MSYS_AddRegion(addressof(gIMPBeginScreenMouseRegions[1]));
-  MSYS_AddRegion(addressof(gIMPBeginScreenMouseRegions[2]));
-  MSYS_AddRegion(addressof(gIMPBeginScreenMouseRegions[3]));
+  MSYS_AddRegion(gIMPBeginScreenMouseRegions[0]);
+  MSYS_AddRegion(gIMPBeginScreenMouseRegions[1]);
+  MSYS_AddRegion(gIMPBeginScreenMouseRegions[2]);
+  MSYS_AddRegion(gIMPBeginScreenMouseRegions[3]);
 
   return;
 }
@@ -819,15 +819,15 @@ function DestroyIMPBeginScreenMouseRegions(): void {
     return;
 
   // remove regions
-  MSYS_RemoveRegion(addressof(gIMPBeginScreenMouseRegions[0]));
-  MSYS_RemoveRegion(addressof(gIMPBeginScreenMouseRegions[1]));
-  MSYS_RemoveRegion(addressof(gIMPBeginScreenMouseRegions[2]));
-  MSYS_RemoveRegion(addressof(gIMPBeginScreenMouseRegions[3]));
+  MSYS_RemoveRegion(gIMPBeginScreenMouseRegions[0]);
+  MSYS_RemoveRegion(gIMPBeginScreenMouseRegions[1]);
+  MSYS_RemoveRegion(gIMPBeginScreenMouseRegions[2]);
+  MSYS_RemoveRegion(gIMPBeginScreenMouseRegions[3]);
 
   return;
 }
 
-function SelectFullNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFullNameRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set current mode to full name type in mode
@@ -837,7 +837,7 @@ function SelectFullNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   }
 }
 
-function SelectNickNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectNickNameRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
@@ -847,7 +847,7 @@ function SelectNickNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   }
 }
 
-function SelectMaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectMaleRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
@@ -857,7 +857,7 @@ function SelectMaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   }
 }
 
-function SelectFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFemaleRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
@@ -867,7 +867,7 @@ function SelectFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   }
 }
 
-function MvtOnFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MvtOnFemaleRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     // fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
@@ -876,7 +876,7 @@ function MvtOnFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 }
 
-function MvtOnMaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MvtOnMaleRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     // fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {

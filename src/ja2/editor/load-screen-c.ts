@@ -332,7 +332,7 @@ function CreateFileDialog(zTitle: string /* Pointer<UINT16> */): void {
 
   DisableEditorTaskbar();
 
-  MSYS_DefineRegion(addressof(BlanketRegion), 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_END_Y, MSYS_PRIORITY_HIGH - 5, 0, 0, 0);
+  MSYS_DefineRegion(BlanketRegion, 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_END_Y, MSYS_PRIORITY_HIGH - 5, 0, null, null);
 
   // Okay and cancel buttons
   iFileDlgButtons[0] = CreateTextButton("Okay", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 354, 225, 50, 30, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), FDlgOkCallback);
@@ -398,7 +398,7 @@ function FileDialogModeCallback(ubID: UINT8, fEntering: boolean): void {
 function RemoveFileDialog(): void {
   let x: INT32;
 
-  MSYS_RemoveRegion(addressof(BlanketRegion));
+  MSYS_RemoveRegion(BlanketRegion);
 
   for (x = 0; x < 6; x++) {
     RemoveButton(iFileDlgButtons[x]);

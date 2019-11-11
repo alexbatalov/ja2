@@ -23,7 +23,7 @@ const enum Enum119 {
 
 interface SOLDIERCELL {
   pSoldier: Pointer<SOLDIERTYPE>;
-  pRegion: Pointer<MOUSE_REGION>; // only used for player mercs.
+  pRegion: MOUSE_REGION | null; // only used for player mercs.
   uiVObjectID: UINT32;
   usIndex: UINT16;
   uiFlags: UINT32;
@@ -1520,7 +1520,7 @@ function CreateAutoResolveInterface(): void {
   let ubRegMilitia: UINT8;
   let ubEliteMilitia: UINT8;
   // Setup new autoresolve blanket interface.
-  MSYS_DefineRegion(addressof(gpAR.value.AutoResolveRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(gpAR.value.AutoResolveRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   gpAR.value.fRenderAutoResolve = true;
   gpAR.value.fExitAutoResolve = false;
 
@@ -1767,7 +1767,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: boolean): void {
 
   // VtResumeSampling();
 
-  MSYS_RemoveRegion(addressof(gpAR.value.AutoResolveRegion));
+  MSYS_RemoveRegion(gpAR.value.AutoResolveRegion);
   DeleteVideoObjectFromIndex(gpAR.value.iPanelImages);
   DeleteVideoObjectFromIndex(gpAR.value.iFaces);
   DeleteVideoObjectFromIndex(gpAR.value.iIndent);
@@ -2098,7 +2098,7 @@ function DoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function MercCellMouseMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function MercCellMouseMoveCallback(reg: MOUSE_REGION, reason: INT32): void {
   // Find the merc with the same region.
   let i: INT32;
   let pCell: Pointer<SOLDIERCELL> = null;
@@ -2115,7 +2115,7 @@ function MercCellMouseMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): v
     pCell.value.uiFlags |= CELL_DIRTY;
     return;
   }
-  if (reg.value.uiFlags & MSYS_MOUSE_IN_AREA) {
+  if (reg.uiFlags & MSYS_MOUSE_IN_AREA) {
     if (!(pCell.value.uiFlags & CELL_SHOWRETREATTEXT))
       pCell.value.uiFlags |= CELL_SHOWRETREATTEXT | CELL_DIRTY;
   } else {
@@ -2126,7 +2126,7 @@ function MercCellMouseMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): v
   }
 }
 
-function MercCellMouseClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function MercCellMouseClickCallback(reg: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Find the merc with the same region.
     let i: INT32;

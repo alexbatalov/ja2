@@ -21,11 +21,11 @@ const MSYS_DOUBLECLICK_DELAY = 400;
 //
 // Records and stores the last place the user clicked.  These values are compared to the current
 // click to determine if a double click event has been detected.
-let gpRegionLastLButtonDown: Pointer<MOUSE_REGION> = null;
-let gpRegionLastLButtonUp: Pointer<MOUSE_REGION> = null;
+let gpRegionLastLButtonDown: MOUSE_REGION | null = null;
+let gpRegionLastLButtonUp: MOUSE_REGION | null = null;
 let guiRegionLastLButtonDownTime: UINT32 = 0;
 
-let MSYS_ScanForID: INT32 = false;
+let MSYS_ScanForID: boolean = false;
 let MSYS_CurrentID: INT32 = MSYS_ID_SYSTEM;
 
 let MSYS_CurrentMX: INT16 = 0;
@@ -37,15 +37,15 @@ let MSYS_SystemInitialized: boolean = false;
 let MSYS_UseMouseHandlerHook: boolean = false;
 
 let MSYS_Mouse_Grabbed: boolean = false;
-let MSYS_GrabRegion: Pointer<MOUSE_REGION> = null;
+let MSYS_GrabRegion: MOUSE_REGION | null = null;
 
 let gusClickedIDNumber: UINT16;
 let gfClickedModeOn: boolean = false;
 
-let MSYS_RegList: Pointer<MOUSE_REGION> = null;
+let MSYS_RegList: MOUSE_REGION | null = null;
 
-export let MSYS_PrevRegion: Pointer<MOUSE_REGION> = null;
-let MSYS_CurrRegion: Pointer<MOUSE_REGION> = null;
+export let MSYS_PrevRegion: MOUSE_REGION | null = null;
+let MSYS_CurrRegion: MOUSE_REGION | null = null;
 
 // When set, the fast help text will be instantaneous, if consecutive regions with help text are
 // hilighted.  It is set, whenever the timer for the first help button expires, and the mode is
@@ -59,7 +59,7 @@ let gfShowFastHelp: boolean = true;
 // NOTE:  This doesn't really need to be here, however, it is a good indication that
 // when an error appears here, that you need to go below to the init code and initialize the
 // values there as well.  That's the only reason why I left this here.
-let MSYS_SystemBaseRegion: MOUSE_REGION = [ MSYS_ID_SYSTEM, MSYS_PRIORITY_SYSTEM, BASE_REGION_FLAGS, -32767, -32767, 32767, 32767, 0, 0, 0, 0, 0, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK, [ 0, 0, 0, 0 ], 0, 0, -1, MSYS_NO_CALLBACK, null, null ];
+let MSYS_SystemBaseRegion: MOUSE_REGION = createMouseRegionFrom(MSYS_ID_SYSTEM, MSYS_PRIORITY_SYSTEM, BASE_REGION_FLAGS, -32767, -32767, 32767, 32767, 0, 0, 0, 0, 0, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK, [ 0, 0, 0, 0 ], 0, "", -1, MSYS_NO_CALLBACK, null, null);
 
 let gfRefreshUpdate: boolean = false;
 
@@ -117,14 +117,14 @@ export function MSYS_Init(): INT32 {
   MSYS_SystemBaseRegion.ButtonCallback = MSYS_NO_CALLBACK;
 
   MSYS_SystemBaseRegion.FastHelpTimer = 0;
-  MSYS_SystemBaseRegion.FastHelpText = 0;
+  MSYS_SystemBaseRegion.FastHelpText = "";
   MSYS_SystemBaseRegion.FastHelpRect = -1;
 
   MSYS_SystemBaseRegion.next = null;
   MSYS_SystemBaseRegion.prev = null;
 
   // Add the base region to the list
-  MSYS_AddRegionToList(addressof(MSYS_SystemBaseRegion));
+  MSYS_AddRegionToList(MSYS_SystemBaseRegion);
 
   MSYS_UseMouseHandlerHook = true;
 
@@ -246,9 +246,9 @@ export function MSYS_SGP_Mouse_Handler_Hook(Type: UINT16, Xcoord: UINT16, Ycoord
 function MSYS_GetNewID(): INT32 {
   let retID: INT32;
   let Current: INT32;
-  let found: INT32;
-  let done: INT32;
-  let node: Pointer<MOUSE_REGION>;
+  let found: boolean;
+  let done: boolean;
+  let node: MOUSE_REGION | null;
 
   retID = MSYS_CurrentID;
   MSYS_CurrentID++;
@@ -262,7 +262,7 @@ function MSYS_GetNewID(): INT32 {
       found = false;
       node = MSYS_RegList;
       while (node != null && !found) {
-        if (node.value.IDNumber == Current)
+        if (node.IDNumber == Current)
           found = true;
       }
 
@@ -287,10 +287,10 @@ function MSYS_GetNewID(): INT32 {
 //
 function MSYS_TrashRegList(): void {
   while (MSYS_RegList) {
-    if (MSYS_RegList.value.uiFlags & MSYS_REGION_EXISTS) {
+    if (MSYS_RegList.uiFlags & MSYS_REGION_EXISTS) {
       MSYS_RemoveRegion(MSYS_RegList);
     } else {
-      MSYS_RegList = MSYS_RegList.value.next;
+      MSYS_RegList = MSYS_RegList.next;
     }
   }
 }
@@ -301,22 +301,22 @@ function MSYS_TrashRegList(): void {
 //	Add a region struct to the current list. The list is sorted by priority levels. If two entries
 //	have the same priority level, then the latest to enter the list gets the higher priority.
 //
-function MSYS_AddRegionToList(region: Pointer<MOUSE_REGION>): void {
-  let curr: Pointer<MOUSE_REGION>;
-  let done: INT32;
+function MSYS_AddRegionToList(region: MOUSE_REGION): void {
+  let curr: MOUSE_REGION;
+  let done: boolean;
 
   // If region seems to already be in list, delete it so we can
   // re-insert the region.
-  if (region.value.next || region.value.prev) {
+  if (region.next || region.prev) {
     // if it wasn't actually there, then call does nothing!
     MSYS_DeleteRegionFromList(region);
   }
 
   // Set an ID number!
-  region.value.IDNumber = MSYS_GetNewID();
+  region.IDNumber = MSYS_GetNewID();
 
-  region.value.next = null;
-  region.value.prev = null;
+  region.next = null;
+  region.prev = null;
 
   if (!MSYS_RegList) {
     // Null list, so add it straight up.
@@ -325,28 +325,28 @@ function MSYS_AddRegionToList(region: Pointer<MOUSE_REGION>): void {
     // Walk down list until we find place to insert (or at end of list)
     curr = MSYS_RegList;
     done = false;
-    while ((curr.value.next != null) && !done) {
-      if (curr.value.PriorityLevel <= region.value.PriorityLevel)
+    while ((curr.next != null) && !done) {
+      if (curr.PriorityLevel <= region.PriorityLevel)
         done = true;
       else
-        curr = curr.value.next;
+        curr = curr.next;
     }
 
-    if (curr.value.PriorityLevel > region.value.PriorityLevel) {
+    if (curr.PriorityLevel > region.PriorityLevel) {
       // Add after curr node
-      region.value.next = curr.value.next;
-      curr.value.next = region;
-      region.value.prev = curr;
-      if (region.value.next != null)
-        region.value.next.value.prev = region;
+      region.next = curr.next;
+      curr.next = region;
+      region.prev = curr;
+      if (region.next != null)
+        region.next.prev = region;
     } else {
       // Add before curr node
-      region.value.next = curr;
-      region.value.prev = curr.value.prev;
+      region.next = curr;
+      region.prev = curr.prev;
 
-      curr.value.prev = region;
-      if (region.value.prev != null)
-        region.value.prev.value.next = region;
+      curr.prev = region;
+      if (region.prev != null)
+        region.prev.next = region;
 
       if (MSYS_RegList == curr) // Make sure if adding at start, to adjust the list pointer
         MSYS_RegList = region;
@@ -359,16 +359,16 @@ function MSYS_AddRegionToList(region: Pointer<MOUSE_REGION>): void {
 //
 //	Scan region list for presence of a node with the same region ID number
 //
-function MSYS_RegionInList(region: Pointer<MOUSE_REGION>): INT32 {
-  let Current: Pointer<MOUSE_REGION>;
-  let found: INT32;
+function MSYS_RegionInList(region: MOUSE_REGION): boolean {
+  let Current: MOUSE_REGION | null;
+  let found: boolean;
 
   found = false;
   Current = MSYS_RegList;
   while (Current && !found) {
-    if (Current.value.IDNumber == region.value.IDNumber)
+    if (Current.IDNumber == region.IDNumber)
       found = true;
-    Current = Current.value.next;
+    Current = Current.next;
   }
   return found;
 }
@@ -378,7 +378,7 @@ function MSYS_RegionInList(region: Pointer<MOUSE_REGION>): INT32 {
 //
 //	Removes a region from the current list.
 //
-function MSYS_DeleteRegionFromList(region: Pointer<MOUSE_REGION>): void {
+function MSYS_DeleteRegionFromList(region: MOUSE_REGION): void {
   // If no list present, there's nothin' to do.
   if (!MSYS_RegList)
     return;
@@ -390,17 +390,17 @@ function MSYS_DeleteRegionFromList(region: Pointer<MOUSE_REGION>): void {
   // Remove a node from the list
   if (MSYS_RegList == region) {
     // First node on list, adjust main pointer.
-    MSYS_RegList = region.value.next;
+    MSYS_RegList = region.next;
     if (MSYS_RegList != null)
-      MSYS_RegList.value.prev = null;
-    region.value.next = region.value.prev = null;
+      MSYS_RegList.prev = null;
+    region.next = region.prev = null;
   } else {
-    if (region.value.prev)
-      region.value.prev.value.next = region.value.next;
+    if (region.prev)
+      region.prev.next = region.next;
     // If not last node in list, adjust following node's ->prev entry.
-    if (region.value.next)
-      region.value.next.value.prev = region.value.prev;
-    region.value.prev = region.value.next = null;
+    if (region.next)
+      region.next.prev = region.prev;
+    region.prev = region.next = null;
   }
 
   // Did we delete a grabbed region?
@@ -412,7 +412,7 @@ function MSYS_DeleteRegionFromList(region: Pointer<MOUSE_REGION>): void {
   }
 
   // Is only the system background region remaining?
-  if (MSYS_RegList == addressof(MSYS_SystemBaseRegion)) {
+  if (MSYS_RegList == MSYS_SystemBaseRegion) {
     // Yup, so let's reset the ID values!
     MSYS_CurrentID = MSYS_ID_BASE;
     MSYS_ScanForID = false;
@@ -430,9 +430,9 @@ function MSYS_DeleteRegionFromList(region: Pointer<MOUSE_REGION>): void {
 //	the callback functions
 //
 function MSYS_UpdateMouseRegion(): void {
-  let found: INT32;
+  let found: boolean;
   let ButtonReason: UINT32;
-  let pTempRegion: Pointer<MOUSE_REGION>;
+  let pTempRegion: MOUSE_REGION | null;
   let fFound: boolean = false;
   found = false;
 
@@ -445,95 +445,96 @@ function MSYS_UpdateMouseRegion(): void {
     MSYS_CurrRegion = MSYS_RegList;
 
   while (!found && MSYS_CurrRegion) {
-    if (MSYS_CurrRegion.value.uiFlags & (MSYS_REGION_ENABLED | MSYS_ALLOW_DISABLED_FASTHELP) && (MSYS_CurrRegion.value.RegionTopLeftX <= MSYS_CurrentMX) && // Check boundaries
-        (MSYS_CurrRegion.value.RegionTopLeftY <= MSYS_CurrentMY) && (MSYS_CurrRegion.value.RegionBottomRightX >= MSYS_CurrentMX) && (MSYS_CurrRegion.value.RegionBottomRightY >= MSYS_CurrentMY)) {
+    if (MSYS_CurrRegion.uiFlags & (MSYS_REGION_ENABLED | MSYS_ALLOW_DISABLED_FASTHELP) && (MSYS_CurrRegion.RegionTopLeftX <= MSYS_CurrentMX) && // Check boundaries
+        (MSYS_CurrRegion.RegionTopLeftY <= MSYS_CurrentMY) && (MSYS_CurrRegion.RegionBottomRightX >= MSYS_CurrentMX) && (MSYS_CurrRegion.RegionBottomRightY >= MSYS_CurrentMY)) {
       // We got the right region. We don't need to check for priorities 'cause
       // the whole list is sorted the right way!
       found = true;
     } else
-      MSYS_CurrRegion = MSYS_CurrRegion.value.next;
+      MSYS_CurrRegion = MSYS_CurrRegion.next;
   }
 
   if (MSYS_PrevRegion) {
-    MSYS_PrevRegion.value.uiFlags &= (~MSYS_MOUSE_IN_AREA);
+    MSYS_PrevRegion.uiFlags &= (~MSYS_MOUSE_IN_AREA);
 
     if (MSYS_PrevRegion != MSYS_CurrRegion) {
       // Remove the help text for the previous region if one is currently being displayed.
-      if (MSYS_PrevRegion.value.FastHelpText) {
+      if (MSYS_PrevRegion.FastHelpText) {
         // ExecuteMouseHelpEndCallBack( MSYS_PrevRegion );
 
-        if (MSYS_PrevRegion.value.uiFlags & MSYS_GOT_BACKGROUND)
-          FreeBackgroundRectPending(MSYS_PrevRegion.value.FastHelpRect);
-        MSYS_PrevRegion.value.uiFlags &= (~MSYS_GOT_BACKGROUND);
-        MSYS_PrevRegion.value.uiFlags &= (~MSYS_FASTHELP_RESET);
+        if (MSYS_PrevRegion.uiFlags & MSYS_GOT_BACKGROUND)
+          FreeBackgroundRectPending(MSYS_PrevRegion.FastHelpRect);
+        MSYS_PrevRegion.uiFlags &= (~MSYS_GOT_BACKGROUND);
+        MSYS_PrevRegion.uiFlags &= (~MSYS_FASTHELP_RESET);
 
         // if( region->uiFlags & MSYS_REGION_ENABLED )
         //	region->uiFlags |= BUTTON_DIRTY;
       }
 
-      MSYS_CurrRegion.value.FastHelpTimer = gsFastHelpDelay;
+      (<MOUSE_REGION>MSYS_CurrRegion).FastHelpTimer = gsFastHelpDelay;
 
       // Force a callbacks to happen on previous region to indicate that
       // the mouse has left the old region
-      if (MSYS_PrevRegion.value.uiFlags & MSYS_MOVE_CALLBACK && MSYS_PrevRegion.value.uiFlags & MSYS_REGION_ENABLED)
-        ((MSYS_PrevRegion.value.MovementCallback).value)(MSYS_PrevRegion, MSYS_CALLBACK_REASON_LOST_MOUSE);
+      if (MSYS_PrevRegion.uiFlags & MSYS_MOVE_CALLBACK && MSYS_PrevRegion.uiFlags & MSYS_REGION_ENABLED)
+        (<MOUSE_CALLBACK>MSYS_PrevRegion.MovementCallback)(MSYS_PrevRegion, MSYS_CALLBACK_REASON_LOST_MOUSE);
     }
   }
 
   // If a region was found in the list, update it's data
   if (found) {
+    MSYS_CurrRegion = <MOUSE_REGION>MSYS_CurrRegion;
     if (MSYS_CurrRegion != MSYS_PrevRegion) {
       // Kris -- October 27, 1997
       // Implemented gain mouse region
-      if (MSYS_CurrRegion.value.uiFlags & MSYS_MOVE_CALLBACK) {
-        if (MSYS_CurrRegion.value.FastHelpText && !(MSYS_CurrRegion.value.uiFlags & MSYS_FASTHELP_RESET)) {
+      if (MSYS_CurrRegion.uiFlags & MSYS_MOVE_CALLBACK) {
+        if (MSYS_CurrRegion.FastHelpText && !(MSYS_CurrRegion.uiFlags & MSYS_FASTHELP_RESET)) {
           // ExecuteMouseHelpEndCallBack( MSYS_CurrRegion );
-          MSYS_CurrRegion.value.FastHelpTimer = gsFastHelpDelay;
-          if (MSYS_CurrRegion.value.uiFlags & MSYS_GOT_BACKGROUND)
-            FreeBackgroundRectPending(MSYS_CurrRegion.value.FastHelpRect);
-          MSYS_CurrRegion.value.uiFlags &= (~MSYS_GOT_BACKGROUND);
-          MSYS_CurrRegion.value.uiFlags |= MSYS_FASTHELP_RESET;
+          MSYS_CurrRegion.FastHelpTimer = gsFastHelpDelay;
+          if (MSYS_CurrRegion.uiFlags & MSYS_GOT_BACKGROUND)
+            FreeBackgroundRectPending(MSYS_CurrRegion.FastHelpRect);
+          MSYS_CurrRegion.uiFlags &= (~MSYS_GOT_BACKGROUND);
+          MSYS_CurrRegion.uiFlags |= MSYS_FASTHELP_RESET;
 
           // if( b->uiFlags & BUTTON_ENABLED )
           //	b->uiFlags |= BUTTON_DIRTY;
         }
-        if (MSYS_CurrRegion.value.uiFlags & MSYS_REGION_ENABLED) {
-          ((MSYS_CurrRegion.value.MovementCallback).value)(MSYS_CurrRegion, MSYS_CALLBACK_REASON_GAIN_MOUSE);
+        if (MSYS_CurrRegion.uiFlags & MSYS_REGION_ENABLED) {
+          (<MOUSE_CALLBACK>MSYS_CurrRegion.MovementCallback)(MSYS_CurrRegion, MSYS_CALLBACK_REASON_GAIN_MOUSE);
         }
       }
 
       // if the cursor is set and is not set to no cursor
-      if (MSYS_CurrRegion.value.uiFlags & MSYS_REGION_ENABLED && MSYS_CurrRegion.value.uiFlags & MSYS_SET_CURSOR && MSYS_CurrRegion.value.Cursor != MSYS_NO_CURSOR) {
-        MSYS_SetCurrentCursor(MSYS_CurrRegion.value.Cursor);
+      if (MSYS_CurrRegion.uiFlags & MSYS_REGION_ENABLED && MSYS_CurrRegion.uiFlags & MSYS_SET_CURSOR && MSYS_CurrRegion.Cursor != MSYS_NO_CURSOR) {
+        MSYS_SetCurrentCursor(MSYS_CurrRegion.Cursor);
       } else {
         // Addition Oct 10/1997 Carter, patch for mouse cursor
         // start at region and find another region encompassing
-        pTempRegion = MSYS_CurrRegion.value.next;
+        pTempRegion = MSYS_CurrRegion.next;
         while ((pTempRegion != null) && (!fFound)) {
-          if ((pTempRegion.value.uiFlags & MSYS_REGION_ENABLED) && (pTempRegion.value.RegionTopLeftX <= MSYS_CurrentMX) && (pTempRegion.value.RegionTopLeftY <= MSYS_CurrentMY) && (pTempRegion.value.RegionBottomRightX >= MSYS_CurrentMX) && (pTempRegion.value.RegionBottomRightY >= MSYS_CurrentMY) && (pTempRegion.value.uiFlags & MSYS_SET_CURSOR)) {
+          if ((pTempRegion.uiFlags & MSYS_REGION_ENABLED) && (pTempRegion.RegionTopLeftX <= MSYS_CurrentMX) && (pTempRegion.RegionTopLeftY <= MSYS_CurrentMY) && (pTempRegion.RegionBottomRightX >= MSYS_CurrentMX) && (pTempRegion.RegionBottomRightY >= MSYS_CurrentMY) && (pTempRegion.uiFlags & MSYS_SET_CURSOR)) {
             fFound = true;
-            if (pTempRegion.value.Cursor != MSYS_NO_CURSOR) {
-              MSYS_SetCurrentCursor(pTempRegion.value.Cursor);
+            if (pTempRegion.Cursor != MSYS_NO_CURSOR) {
+              MSYS_SetCurrentCursor(pTempRegion.Cursor);
             }
           }
-          pTempRegion = pTempRegion.value.next;
+          pTempRegion = pTempRegion.next;
         }
       }
     }
 
     // OK, if we do not have a button down, any button is game!
-    if (!gfClickedModeOn || (gfClickedModeOn && gusClickedIDNumber == MSYS_CurrRegion.value.IDNumber)) {
-      MSYS_CurrRegion.value.uiFlags |= MSYS_MOUSE_IN_AREA;
+    if (!gfClickedModeOn || (gfClickedModeOn && gusClickedIDNumber == MSYS_CurrRegion.IDNumber)) {
+      MSYS_CurrRegion.uiFlags |= MSYS_MOUSE_IN_AREA;
 
-      MSYS_CurrRegion.value.MouseXPos = MSYS_CurrentMX;
-      MSYS_CurrRegion.value.MouseYPos = MSYS_CurrentMY;
-      MSYS_CurrRegion.value.RelativeXPos = MSYS_CurrentMX - MSYS_CurrRegion.value.RegionTopLeftX;
-      MSYS_CurrRegion.value.RelativeYPos = MSYS_CurrentMY - MSYS_CurrRegion.value.RegionTopLeftY;
+      MSYS_CurrRegion.MouseXPos = MSYS_CurrentMX;
+      MSYS_CurrRegion.MouseYPos = MSYS_CurrentMY;
+      MSYS_CurrRegion.RelativeXPos = MSYS_CurrentMX - MSYS_CurrRegion.RegionTopLeftX;
+      MSYS_CurrRegion.RelativeYPos = MSYS_CurrentMY - MSYS_CurrRegion.RegionTopLeftY;
 
-      MSYS_CurrRegion.value.ButtonState = MSYS_CurrentButtons;
+      MSYS_CurrRegion.ButtonState = MSYS_CurrentButtons;
 
-      if (MSYS_CurrRegion.value.uiFlags & MSYS_REGION_ENABLED && MSYS_CurrRegion.value.uiFlags & MSYS_MOVE_CALLBACK && MSYS_Action & MSYS_DO_MOVE) {
-        ((MSYS_CurrRegion.value.MovementCallback).value)(MSYS_CurrRegion, MSYS_CALLBACK_REASON_MOVE);
+      if (MSYS_CurrRegion.uiFlags & MSYS_REGION_ENABLED && MSYS_CurrRegion.uiFlags & MSYS_MOVE_CALLBACK && MSYS_Action & MSYS_DO_MOVE) {
+        (<MOUSE_CALLBACK>MSYS_CurrRegion.MovementCallback)(MSYS_CurrRegion, MSYS_CALLBACK_REASON_MOVE);
       }
 
       // ExecuteMouseHelpEndCallBack( MSYS_CurrRegion );
@@ -541,14 +542,14 @@ function MSYS_UpdateMouseRegion(): void {
 
       MSYS_Action &= (~MSYS_DO_MOVE);
 
-      if ((MSYS_CurrRegion.value.uiFlags & MSYS_BUTTON_CALLBACK) && (MSYS_Action & MSYS_DO_BUTTONS)) {
-        if (MSYS_CurrRegion.value.uiFlags & MSYS_REGION_ENABLED) {
+      if ((MSYS_CurrRegion.uiFlags & MSYS_BUTTON_CALLBACK) && (MSYS_Action & MSYS_DO_BUTTONS)) {
+        if (MSYS_CurrRegion.uiFlags & MSYS_REGION_ENABLED) {
           ButtonReason = MSYS_CALLBACK_REASON_NONE;
           if (MSYS_Action & MSYS_DO_LBUTTON_DWN) {
             ButtonReason |= MSYS_CALLBACK_REASON_LBUTTON_DWN;
             gfClickedModeOn = true;
             // Set global ID
-            gusClickedIDNumber = MSYS_CurrRegion.value.IDNumber;
+            gusClickedIDNumber = MSYS_CurrRegion.IDNumber;
           }
 
           if (MSYS_Action & MSYS_DO_LBUTTON_UP) {
@@ -560,7 +561,7 @@ function MSYS_UpdateMouseRegion(): void {
             ButtonReason |= MSYS_CALLBACK_REASON_RBUTTON_DWN;
             gfClickedModeOn = true;
             // Set global ID
-            gusClickedIDNumber = MSYS_CurrRegion.value.IDNumber;
+            gusClickedIDNumber = MSYS_CurrRegion.IDNumber;
           }
 
           if (MSYS_Action & MSYS_DO_RBUTTON_UP) {
@@ -578,16 +579,16 @@ function MSYS_UpdateMouseRegion(): void {
           }
 
           if (ButtonReason != MSYS_CALLBACK_REASON_NONE) {
-            if (MSYS_CurrRegion.value.uiFlags & MSYS_FASTHELP) {
+            if (MSYS_CurrRegion.uiFlags & MSYS_FASTHELP) {
               // Button was clicked so remove any FastHelp text
-              MSYS_CurrRegion.value.uiFlags &= (~MSYS_FASTHELP);
-              if (MSYS_CurrRegion.value.uiFlags & MSYS_GOT_BACKGROUND)
-                FreeBackgroundRectPending(MSYS_CurrRegion.value.FastHelpRect);
-              MSYS_CurrRegion.value.uiFlags &= (~MSYS_GOT_BACKGROUND);
+              MSYS_CurrRegion.uiFlags &= (~MSYS_FASTHELP);
+              if (MSYS_CurrRegion.uiFlags & MSYS_GOT_BACKGROUND)
+                FreeBackgroundRectPending(MSYS_CurrRegion.FastHelpRect);
+              MSYS_CurrRegion.uiFlags &= (~MSYS_GOT_BACKGROUND);
 
               // ExecuteMouseHelpEndCallBack( MSYS_CurrRegion );
-              MSYS_CurrRegion.value.FastHelpTimer = gsFastHelpDelay;
-              MSYS_CurrRegion.value.uiFlags &= (~MSYS_FASTHELP_RESET);
+              MSYS_CurrRegion.FastHelpTimer = gsFastHelpDelay;
+              MSYS_CurrRegion.uiFlags &= (~MSYS_FASTHELP_RESET);
 
               // if( b->uiFlags & BUTTON_ENABLED )
               //	b->uiFlags |= BUTTON_DIRTY;
@@ -622,13 +623,13 @@ function MSYS_UpdateMouseRegion(): void {
               }
             }
 
-            ((MSYS_CurrRegion.value.ButtonCallback).value)(MSYS_CurrRegion, ButtonReason);
+            (<MOUSE_CALLBACK>MSYS_CurrRegion.ButtonCallback)(MSYS_CurrRegion, ButtonReason);
           }
         }
       }
 
       MSYS_Action &= (~MSYS_DO_BUTTONS);
-    } else if (MSYS_CurrRegion.value.uiFlags & MSYS_REGION_ENABLED) {
+    } else if (MSYS_CurrRegion.uiFlags & MSYS_REGION_ENABLED) {
       // OK here, if we have release a button, UNSET LOCK wherever you are....
       // Just don't give this button the message....
       if (MSYS_Action & MSYS_DO_RBUTTON_UP) {
@@ -639,14 +640,14 @@ function MSYS_UpdateMouseRegion(): void {
       }
 
       // OK, you still want move messages however....
-      MSYS_CurrRegion.value.uiFlags |= MSYS_MOUSE_IN_AREA;
-      MSYS_CurrRegion.value.MouseXPos = MSYS_CurrentMX;
-      MSYS_CurrRegion.value.MouseYPos = MSYS_CurrentMY;
-      MSYS_CurrRegion.value.RelativeXPos = MSYS_CurrentMX - MSYS_CurrRegion.value.RegionTopLeftX;
-      MSYS_CurrRegion.value.RelativeYPos = MSYS_CurrentMY - MSYS_CurrRegion.value.RegionTopLeftY;
+      MSYS_CurrRegion.uiFlags |= MSYS_MOUSE_IN_AREA;
+      MSYS_CurrRegion.MouseXPos = MSYS_CurrentMX;
+      MSYS_CurrRegion.MouseYPos = MSYS_CurrentMY;
+      MSYS_CurrRegion.RelativeXPos = MSYS_CurrentMX - MSYS_CurrRegion.RegionTopLeftX;
+      MSYS_CurrRegion.RelativeYPos = MSYS_CurrentMY - MSYS_CurrRegion.RegionTopLeftY;
 
-      if ((MSYS_CurrRegion.value.uiFlags & MSYS_MOVE_CALLBACK) && (MSYS_Action & MSYS_DO_MOVE)) {
-        ((MSYS_CurrRegion.value.MovementCallback).value)(MSYS_CurrRegion, MSYS_CALLBACK_REASON_MOVE);
+      if ((MSYS_CurrRegion.uiFlags & MSYS_MOVE_CALLBACK) && (MSYS_Action & MSYS_DO_MOVE)) {
+        (<MOUSE_CALLBACK>MSYS_CurrRegion.MovementCallback)(MSYS_CurrRegion, MSYS_CALLBACK_REASON_MOVE);
       }
 
       MSYS_Action &= (~MSYS_DO_MOVE);
@@ -661,8 +662,8 @@ function MSYS_UpdateMouseRegion(): void {
 //
 //	Inits a MOUSE_REGION structure for use with the mouse system
 //
-export function MSYS_DefineRegion(region: Pointer<MOUSE_REGION>, tlx: UINT16, tly: UINT16, brx: UINT16, bry: UINT16, priority: INT8, crsr: UINT16, movecallback: MOUSE_CALLBACK, buttoncallback: MOUSE_CALLBACK): void {
-  region.value.IDNumber = MSYS_ID_BASE;
+export function MSYS_DefineRegion(region: MOUSE_REGION, tlx: UINT16, tly: UINT16, brx: UINT16, bry: UINT16, priority: INT8, crsr: UINT16, movecallback: MOUSE_CALLBACK | null, buttoncallback: MOUSE_CALLBACK | null): void {
+  region.IDNumber = MSYS_ID_BASE;
 
   if (priority == MSYS_PRIORITY_AUTO)
     priority = MSYS_PRIORITY_BASE;
@@ -671,44 +672,44 @@ export function MSYS_DefineRegion(region: Pointer<MOUSE_REGION>, tlx: UINT16, tl
   else if (priority >= MSYS_PRIORITY_HIGHEST)
     priority = MSYS_PRIORITY_HIGHEST;
 
-  region.value.PriorityLevel = priority;
+  region.PriorityLevel = priority;
 
-  region.value.uiFlags = MSYS_NO_FLAGS;
+  region.uiFlags = MSYS_NO_FLAGS;
 
-  region.value.MovementCallback = movecallback;
+  region.MovementCallback = movecallback;
   if (movecallback != MSYS_NO_CALLBACK)
-    region.value.uiFlags |= MSYS_MOVE_CALLBACK;
+    region.uiFlags |= MSYS_MOVE_CALLBACK;
 
-  region.value.ButtonCallback = buttoncallback;
+  region.ButtonCallback = buttoncallback;
   if (buttoncallback != MSYS_NO_CALLBACK)
-    region.value.uiFlags |= MSYS_BUTTON_CALLBACK;
+    region.uiFlags |= MSYS_BUTTON_CALLBACK;
 
-  region.value.Cursor = crsr;
+  region.Cursor = crsr;
   if (crsr != MSYS_NO_CURSOR)
-    region.value.uiFlags |= MSYS_SET_CURSOR;
+    region.uiFlags |= MSYS_SET_CURSOR;
 
-  region.value.RegionTopLeftX = tlx;
-  region.value.RegionTopLeftY = tly;
-  region.value.RegionBottomRightX = brx;
-  region.value.RegionBottomRightY = bry;
+  region.RegionTopLeftX = tlx;
+  region.RegionTopLeftY = tly;
+  region.RegionBottomRightX = brx;
+  region.RegionBottomRightY = bry;
 
-  region.value.MouseXPos = 0;
-  region.value.MouseYPos = 0;
-  region.value.RelativeXPos = 0;
-  region.value.RelativeYPos = 0;
-  region.value.ButtonState = 0;
+  region.MouseXPos = 0;
+  region.MouseYPos = 0;
+  region.RelativeXPos = 0;
+  region.RelativeYPos = 0;
+  region.ButtonState = 0;
 
   // Init fasthelp
-  region.value.FastHelpText = null;
-  region.value.FastHelpTimer = 0;
+  region.FastHelpText = "";
+  region.FastHelpTimer = 0;
 
-  region.value.next = null;
-  region.value.prev = null;
-  region.value.HelpDoneCallback = null;
+  region.next = null;
+  region.prev = null;
+  region.HelpDoneCallback = null;
 
   // Add region to system list
   MSYS_AddRegionToList(region);
-  region.value.uiFlags |= MSYS_REGION_ENABLED | MSYS_REGION_EXISTS;
+  region.uiFlags |= MSYS_REGION_ENABLED | MSYS_REGION_EXISTS;
 
   // Dirty our update flag
   gfRefreshUpdate = true;
@@ -717,14 +718,14 @@ export function MSYS_DefineRegion(region: Pointer<MOUSE_REGION>, tlx: UINT16, tl
 //=================================================================================================
 //	MSYS_ChangeRegionCursor
 //
-export function MSYS_ChangeRegionCursor(region: Pointer<MOUSE_REGION>, crsr: UINT16): void {
-  region.value.uiFlags &= (~MSYS_SET_CURSOR);
-  region.value.Cursor = crsr;
+export function MSYS_ChangeRegionCursor(region: MOUSE_REGION, crsr: UINT16): void {
+  region.uiFlags &= (~MSYS_SET_CURSOR);
+  region.Cursor = crsr;
   if (crsr != MSYS_NO_CURSOR) {
-    region.value.uiFlags |= MSYS_SET_CURSOR;
+    region.uiFlags |= MSYS_SET_CURSOR;
 
     // If we are not in the region, donot update!
-    if (!(region.value.uiFlags & MSYS_MOUSE_IN_AREA)) {
+    if (!(region.uiFlags & MSYS_MOUSE_IN_AREA)) {
       return;
     }
 
@@ -739,7 +740,7 @@ export function MSYS_ChangeRegionCursor(region: Pointer<MOUSE_REGION>, crsr: UIN
 //	Adds a defined mouse region to the system list. Once inserted, it enables the region then
 //	calls the callback functions, if any, for initialization.
 //
-export function MSYS_AddRegion(region: Pointer<MOUSE_REGION>): INT32 {
+export function MSYS_AddRegion(region: MOUSE_REGION): INT32 {
   return 1;
 }
 
@@ -749,22 +750,19 @@ export function MSYS_AddRegion(region: Pointer<MOUSE_REGION>): INT32 {
 //	Removes a region from the list, disables it, then calls the callback functions for
 //	de-initialization.
 //
-export function MSYS_RemoveRegion(region: Pointer<MOUSE_REGION>): void {
+export function MSYS_RemoveRegion(region: MOUSE_REGION): void {
   if (!region) {
       return;
     AssertMsg(0, "Attempting to remove a NULL region.");
   }
 
-  if (region.value.uiFlags & MSYS_HAS_BACKRECT) {
-    FreeBackgroundRectPending(region.value.FastHelpRect);
-    region.value.uiFlags &= (~MSYS_HAS_BACKRECT);
+  if (region.uiFlags & MSYS_HAS_BACKRECT) {
+    FreeBackgroundRectPending(region.FastHelpRect);
+    region.uiFlags &= (~MSYS_HAS_BACKRECT);
   }
 
   // Get rid of the FastHelp text (if applicable)
-  if (region.value.FastHelpText) {
-    MemFree(region.value.FastHelpText);
-  }
-  region.value.FastHelpText = null;
+  region.FastHelpText = "";
 
   MSYS_DeleteRegionFromList(region);
 
@@ -781,13 +779,13 @@ export function MSYS_RemoveRegion(region: Pointer<MOUSE_REGION>): void {
   // Check if this is a locked region, and unlock if so
   if (gfClickedModeOn) {
     // Set global ID
-    if (gusClickedIDNumber == region.value.IDNumber) {
+    if (gusClickedIDNumber == region.IDNumber) {
       gfClickedModeOn = false;
     }
   }
 
   // clear all internal values (including the region exists flag)
-  memset(region, 0, sizeof(MOUSE_REGION));
+  resetMouseRegion(region);
 }
 
 //=================================================================================================
@@ -795,8 +793,8 @@ export function MSYS_RemoveRegion(region: Pointer<MOUSE_REGION>): void {
 //
 //	Enables a mouse region.
 //
-export function MSYS_EnableRegion(region: Pointer<MOUSE_REGION>): void {
-  region.value.uiFlags |= MSYS_REGION_ENABLED;
+export function MSYS_EnableRegion(region: MOUSE_REGION): void {
+  region.uiFlags |= MSYS_REGION_ENABLED;
 }
 
 //=================================================================================================
@@ -804,8 +802,8 @@ export function MSYS_EnableRegion(region: Pointer<MOUSE_REGION>): void {
 //
 //	Disables a mouse region without removing it from the system list.
 //
-export function MSYS_DisableRegion(region: Pointer<MOUSE_REGION>): void {
-  region.value.uiFlags &= (~MSYS_REGION_ENABLED);
+export function MSYS_DisableRegion(region: MOUSE_REGION): void {
+  region.uiFlags &= (~MSYS_REGION_ENABLED);
 }
 
 //=================================================================================================
@@ -822,11 +820,11 @@ export function MSYS_SetCurrentCursor(Cursor: UINT16): void {
 //
 //	Set the priority of a mouse region
 //
-function MSYS_ChangeRegionPriority(region: Pointer<MOUSE_REGION>, priority: INT8): void {
+function MSYS_ChangeRegionPriority(region: MOUSE_REGION, priority: INT8): void {
   if (priority == MSYS_PRIORITY_AUTO)
     priority = MSYS_PRIORITY_NORMAL;
 
-  region.value.PriorityLevel = priority;
+  region.PriorityLevel = priority;
 }
 
 //=================================================================================================
@@ -834,14 +832,14 @@ function MSYS_ChangeRegionPriority(region: Pointer<MOUSE_REGION>, priority: INT8
 //
 //	Sets one of the four user data entries in a mouse region
 //
-export function MSYS_SetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT32, userdata: INT32): void {
+export function MSYS_SetRegionUserData(region: MOUSE_REGION, index: INT32, userdata: INT32): void {
   if (index < 0 || index > 3) {
     let str: string /* UINT8[80] */;
       return;
     str = sprintf("Attempting MSYS_SetRegionUserData() with out of range index %d.", index);
     AssertMsg(0, str);
   }
-  region.value.UserData[index] = userdata;
+  region.UserData[index] = userdata;
 }
 
 //=================================================================================================
@@ -849,14 +847,14 @@ export function MSYS_SetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT
 //
 //	Retrieves one of the four user data entries in a mouse region
 //
-export function MSYS_GetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT32): INT32 {
+export function MSYS_GetRegionUserData(region: MOUSE_REGION, index: INT32): INT32 {
   if (index < 0 || index > 3) {
     let str: string /* UINT8[80] */;
       return 0;
     str = sprintf("Attempting MSYS_GetRegionUserData() with out of range index %d", index);
     AssertMsg(0, str);
   }
-  return region.value.UserData[index];
+  return region.UserData[index];
 }
 
 //=================================================================================================
@@ -865,7 +863,7 @@ export function MSYS_GetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT
 //	Assigns all mouse activity to a region, effectively blocking any other region from having
 //	control.
 //
-function MSYS_GrabMouse(region: Pointer<MOUSE_REGION>): INT32 {
+function MSYS_GrabMouse(region: MOUSE_REGION): INT32 {
   if (!MSYS_RegionInList(region))
     return MSYS_REGION_NOT_IN_LIST;
 
@@ -882,7 +880,7 @@ function MSYS_GrabMouse(region: Pointer<MOUSE_REGION>): INT32 {
 //
 //	Releases a previously grabbed mouse region
 //
-function MSYS_ReleaseMouse(region: Pointer<MOUSE_REGION>): void {
+function MSYS_ReleaseMouse(region: MOUSE_REGION): void {
   if (MSYS_GrabRegion != region)
     return;
 
@@ -900,20 +898,20 @@ function MSYS_ReleaseMouse(region: Pointer<MOUSE_REGION>): void {
 
 */
 
-export function MSYS_MoveMouseRegionTo(region: Pointer<MOUSE_REGION>, sX: INT16, sY: INT16): void {
+export function MSYS_MoveMouseRegionTo(region: MOUSE_REGION, sX: INT16, sY: INT16): void {
   let sWidth: INT16;
   let sHeight: INT16;
 
-  sWidth = region.value.RegionBottomRightX - region.value.RegionTopLeftX;
-  sHeight = region.value.RegionBottomRightY - region.value.RegionTopLeftY;
+  sWidth = region.RegionBottomRightX - region.RegionTopLeftX;
+  sHeight = region.RegionBottomRightY - region.RegionTopLeftY;
 
   // move top left
-  region.value.RegionTopLeftX = sX;
-  region.value.RegionTopLeftY = sY;
+  region.RegionTopLeftX = sX;
+  region.RegionTopLeftY = sY;
 
   // now move bottom right based on topleft + width or height
-  region.value.RegionBottomRightX = sX + sWidth;
-  region.value.RegionBottomRightY = sY + sHeight;
+  region.RegionBottomRightX = sX + sWidth;
+  region.RegionBottomRightY = sY + sHeight;
 
   return;
 }
@@ -925,14 +923,14 @@ export function MSYS_MoveMouseRegionTo(region: Pointer<MOUSE_REGION>, sX: INT16,
 
 */
 
-function MSYS_MoveMouseRegionBy(region: Pointer<MOUSE_REGION>, sDeltaX: INT16, sDeltaY: INT16): void {
+function MSYS_MoveMouseRegionBy(region: MOUSE_REGION, sDeltaX: INT16, sDeltaY: INT16): void {
   // move top left
-  region.value.RegionTopLeftX = region.value.RegionTopLeftX + sDeltaX;
-  region.value.RegionTopLeftY = region.value.RegionTopLeftY + sDeltaY;
+  region.RegionTopLeftX = region.RegionTopLeftX + sDeltaX;
+  region.RegionTopLeftY = region.RegionTopLeftY + sDeltaY;
 
   // now move bottom right
-  region.value.RegionBottomRightX = region.value.RegionBottomRightX + sDeltaX;
-  region.value.RegionBottomRightY = region.value.RegionBottomRightY + sDeltaY;
+  region.RegionBottomRightX = region.RegionBottomRightX + sDeltaX;
+  region.RegionBottomRightY = region.RegionBottomRightY + sDeltaY;
 
   return;
 }
@@ -945,15 +943,12 @@ export function RefreshMouseRegions(): void {
   MSYS_UpdateMouseRegion();
 }
 
-export function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: string /* Pointer<UINT16> */): void {
+export function SetRegionFastHelpText(region: MOUSE_REGION, szText: string /* Pointer<UINT16> */): void {
   Assert(region);
 
-  if (region.value.FastHelpText)
-    MemFree(region.value.FastHelpText);
-
-  region.value.FastHelpText = null;
+  region.FastHelpText = "";
   //	region->FastHelpTimer = 0;
-  if (!(region.value.uiFlags & MSYS_REGION_EXISTS)) {
+  if (!(region.uiFlags & MSYS_REGION_EXISTS)) {
     return;
     // AssertMsg( 0, String( "Attempting to set fast help text, \"%S\" to an inactive region.", szText ) );
   }
@@ -961,38 +956,33 @@ export function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: str
   if (!szText || !szText.length)
     return; // blank (or clear)
 
-  // Allocate memory for the button's FastHelp text string...
-  region.value.FastHelpText = MemAlloc((szText.length + 1) * sizeof(UINT16));
-  Assert(region.value.FastHelpText);
-
-  region.value.FastHelpText = szText;
+  region.FastHelpText = szText;
 
   // ATE: We could be replacing already existing, active text
   // so let's remove the region so it be rebuilt...
 
   if (guiCurrentScreen != Enum26.MAP_SCREEN) {
-    if (region.value.uiFlags & MSYS_GOT_BACKGROUND)
-      FreeBackgroundRectPending(region.value.FastHelpRect);
+    if (region.uiFlags & MSYS_GOT_BACKGROUND)
+      FreeBackgroundRectPending(region.FastHelpRect);
 
-    region.value.uiFlags &= (~MSYS_GOT_BACKGROUND);
-    region.value.uiFlags &= (~MSYS_FASTHELP_RESET);
+    region.uiFlags &= (~MSYS_GOT_BACKGROUND);
+    region.uiFlags &= (~MSYS_FASTHELP_RESET);
   }
 
   // region->FastHelpTimer = gsFastHelpDelay;
 }
 
 function GetNumberOfLinesInHeight(pStringA: string /* STR16 */): INT16 {
-  let pToken: string /* STR16 */;
   let sCounter: INT16 = 0;
   let pString: string /* CHAR16[512] */;
 
   pString = pStringA;
 
   // tokenize
-  pToken = wcstok(pString, "\n");
+  let pos = pString.indexOf("\n");
 
-  while (pToken != null) {
-    pToken = wcstok(null, "\n");
+  while (pos !== -1) {
+    pos = pString.indexOf("\n", pos);
     sCounter++;
   }
 
@@ -1003,7 +993,7 @@ function GetNumberOfLinesInHeight(pStringA: string /* STR16 */): INT16 {
 //	DisplayFastHelp
 //
 //
-function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
+function DisplayFastHelp(region: MOUSE_REGION): void {
   let usFillColor: UINT16;
   let iX: INT32;
   let iY: INT32;
@@ -1011,13 +1001,13 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
   let iH: INT32;
   let iNumberOfLines: INT32 = 1;
 
-  if (region.value.uiFlags & MSYS_FASTHELP) {
+  if (region.uiFlags & MSYS_FASTHELP) {
     usFillColor = Get16BPPColor(FROMRGB(250, 240, 188));
 
-    iW = GetWidthOfString(region.value.FastHelpText) + 10;
-    iH = (GetNumberOfLinesInHeight(region.value.FastHelpText) * (GetFontHeight(FONT10ARIAL()) + 1) + 8);
+    iW = GetWidthOfString(region.FastHelpText) + 10;
+    iH = (GetNumberOfLinesInHeight(region.FastHelpText) * (GetFontHeight(FONT10ARIAL()) + 1) + 8);
 
-    iX = region.value.RegionTopLeftX + 10;
+    iX = region.RegionTopLeftX + 10;
 
     if (iX < 0)
       iX = 0;
@@ -1025,17 +1015,17 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
     if ((iX + iW) >= SCREEN_WIDTH)
       iX = (SCREEN_WIDTH - iW - 4);
 
-    iY = region.value.RegionTopLeftY - (iH * 3 / 4);
+    iY = region.RegionTopLeftY - (iH * 3 / 4);
     if (iY < 0)
       iY = 0;
 
     if ((iY + iH) >= SCREEN_HEIGHT)
       iY = (SCREEN_HEIGHT - iH - 15);
 
-    if (!(region.value.uiFlags & MSYS_GOT_BACKGROUND)) {
-      region.value.FastHelpRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, iX, iY, (iX + iW), (iY + iH));
-      region.value.uiFlags |= MSYS_GOT_BACKGROUND;
-      region.value.uiFlags |= MSYS_HAS_BACKRECT;
+    if (!(region.uiFlags & MSYS_GOT_BACKGROUND)) {
+      region.FastHelpRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, iX, iY, (iX + iW), (iY + iH));
+      region.uiFlags |= MSYS_GOT_BACKGROUND;
+      region.uiFlags |= MSYS_HAS_BACKRECT;
     } else {
       let pDestBuf: Pointer<UINT8>;
       let uiDestPitchBYTES: UINT32;
@@ -1049,7 +1039,7 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
 
       SetFont(FONT10ARIAL());
       SetFontShadow(FONT_NEARBLACK);
-      DisplayHelpTokenizedString(region.value.FastHelpText, (iX + 5), (iY + 5));
+      DisplayHelpTokenizedString(region.FastHelpText, (iX + 5), (iY + 5));
       InvalidateRegion(iX, iY, (iX + iW), (iY + iH));
     }
   }
@@ -1062,14 +1052,15 @@ function GetWidthOfString(pStringA: string /* STR16 */): INT16 {
   pString = pStringA;
 
   // tokenize
-  pToken = wcstok(pString, "\n");
+  let pos = pString.indexOf("\n");
 
-  while (pToken != null) {
+  while (pos !== -1) {
+    pToken = pString.substring(pos);
     if (sWidth < StringPixLength(pToken, FONT10ARIAL())) {
       sWidth = StringPixLength(pToken, FONT10ARIAL());
     }
 
-    pToken = wcstok(null, "\n");
+    pos = pString.indexOf("\n", pos);
   }
 
   return sWidth;
@@ -1086,9 +1077,10 @@ function DisplayHelpTokenizedString(pStringA: string /* STR16 */, sX: INT16, sY:
   pString = pStringA;
 
   // tokenize
-  pToken = wcstok(pString, "\n");
+  let pos = pString.indexOf("\n");
 
-  while (pToken != null) {
+  while (pos !== -1) {
+    pToken = pString.substring(pos);
     iLength = pToken.length;
     for (i = 0; i < iLength; i++) {
       uiCursorXPos = StringPixLengthArgFastHelp(FONT10ARIAL(), FONT10ARIALBOLD(), i, pToken);
@@ -1102,13 +1094,13 @@ function DisplayHelpTokenizedString(pStringA: string /* STR16 */, sX: INT16, sY:
       }
       mprintf(sX + uiCursorXPos, sY + iCounter * (GetFontHeight(FONT10ARIAL()) + 1), "%c", pToken[i]);
     }
-    pToken = wcstok(null, "\n");
+    pos = pString.indexOf("\n", pos);
     iCounter++;
   }
 }
 
+/* static */ let RenderFastHelp_iLastClock: INT32 = 0;
 export function RenderFastHelp(): void {
-  /* static */ let iLastClock: INT32;
   let iTimeDifferential: INT32;
   let iCurrentClock: INT32;
 
@@ -1116,31 +1108,31 @@ export function RenderFastHelp(): void {
     return;
 
   iCurrentClock = GetClock();
-  iTimeDifferential = iCurrentClock - iLastClock;
+  iTimeDifferential = iCurrentClock - RenderFastHelp_iLastClock;
   if (iTimeDifferential < 0)
     iTimeDifferential += 0x7fffffff;
-  iLastClock = iCurrentClock;
+  RenderFastHelp_iLastClock = iCurrentClock;
 
-  if (MSYS_CurrRegion && MSYS_CurrRegion.value.FastHelpText) {
-    if (!MSYS_CurrRegion.value.FastHelpTimer) {
-      if (MSYS_CurrRegion.value.uiFlags & (MSYS_ALLOW_DISABLED_FASTHELP | MSYS_REGION_ENABLED)) {
-        if (MSYS_CurrRegion.value.uiFlags & MSYS_MOUSE_IN_AREA)
-          MSYS_CurrRegion.value.uiFlags |= MSYS_FASTHELP;
+  if (MSYS_CurrRegion && MSYS_CurrRegion.FastHelpText) {
+    if (!MSYS_CurrRegion.FastHelpTimer) {
+      if (MSYS_CurrRegion.uiFlags & (MSYS_ALLOW_DISABLED_FASTHELP | MSYS_REGION_ENABLED)) {
+        if (MSYS_CurrRegion.uiFlags & MSYS_MOUSE_IN_AREA)
+          MSYS_CurrRegion.uiFlags |= MSYS_FASTHELP;
         else {
-          MSYS_CurrRegion.value.uiFlags &= (~(MSYS_FASTHELP | MSYS_FASTHELP_RESET));
+          MSYS_CurrRegion.uiFlags &= (~(MSYS_FASTHELP | MSYS_FASTHELP_RESET));
         }
         // Do I really need this?
         // MSYS_CurrRegion->uiFlags |= REGION_DIRTY;
         DisplayFastHelp(MSYS_CurrRegion);
       }
     } else {
-      if (MSYS_CurrRegion.value.uiFlags & (MSYS_ALLOW_DISABLED_FASTHELP | MSYS_REGION_ENABLED)) {
-        if (MSYS_CurrRegion.value.uiFlags & MSYS_MOUSE_IN_AREA && !MSYS_CurrRegion.value.ButtonState) // & (MSYS_LEFT_BUTTON|MSYS_RIGHT_BUTTON)) )
+      if (MSYS_CurrRegion.uiFlags & (MSYS_ALLOW_DISABLED_FASTHELP | MSYS_REGION_ENABLED)) {
+        if (MSYS_CurrRegion.uiFlags & MSYS_MOUSE_IN_AREA && !MSYS_CurrRegion.ButtonState) // & (MSYS_LEFT_BUTTON|MSYS_RIGHT_BUTTON)) )
         {
-          MSYS_CurrRegion.value.FastHelpTimer -= Math.max(iTimeDifferential, 0);
+          MSYS_CurrRegion.FastHelpTimer -= Math.max(iTimeDifferential, 0);
 
-          if (MSYS_CurrRegion.value.FastHelpTimer < 0) {
-            MSYS_CurrRegion.value.FastHelpTimer = 0;
+          if (MSYS_CurrRegion.FastHelpTimer < 0) {
+            MSYS_CurrRegion.FastHelpTimer = 0;
           }
         }
       }
@@ -1148,45 +1140,45 @@ export function RenderFastHelp(): void {
   }
 }
 
-function SetRegionSavedRect(region: Pointer<MOUSE_REGION>): boolean {
+function SetRegionSavedRect(region: MOUSE_REGION): boolean {
   return false;
 }
 
-function FreeRegionSavedRect(region: Pointer<MOUSE_REGION>): void {
+function FreeRegionSavedRect(region: MOUSE_REGION): void {
 }
 
-export function MSYS_AllowDisabledRegionFastHelp(region: Pointer<MOUSE_REGION>, fAllow: boolean): void {
+export function MSYS_AllowDisabledRegionFastHelp(region: MOUSE_REGION, fAllow: boolean): void {
   if (fAllow) {
-    region.value.uiFlags |= MSYS_ALLOW_DISABLED_FASTHELP;
+    region.uiFlags |= MSYS_ALLOW_DISABLED_FASTHELP;
   } else {
-    region.value.uiFlags &= ~MSYS_ALLOW_DISABLED_FASTHELP;
+    region.uiFlags &= ~MSYS_ALLOW_DISABLED_FASTHELP;
   }
 }
 
 // new stuff to allow mouse callbacks when help text finishes displaying
 
-export function SetRegionHelpEndCallback(region: Pointer<MOUSE_REGION>, CallbackFxn: MOUSE_HELPTEXT_DONE_CALLBACK): void {
+export function SetRegionHelpEndCallback(region: MOUSE_REGION, CallbackFxn: MOUSE_HELPTEXT_DONE_CALLBACK): void {
   // make sure region is non null
   if (region == null) {
     return;
   }
 
   // now set the region help text
-  region.value.HelpDoneCallback = CallbackFxn;
+  region.HelpDoneCallback = CallbackFxn;
 
   return;
 }
 
-function ExecuteMouseHelpEndCallBack(region: Pointer<MOUSE_REGION>): void {
+function ExecuteMouseHelpEndCallBack(region: MOUSE_REGION): void {
   if (region == null) {
     return;
   }
 
-  if (region.value.FastHelpTimer) {
+  if (region.FastHelpTimer) {
     return;
   }
   // check if callback is non null
-  if (region.value.HelpDoneCallback == null) {
+  if (region.HelpDoneCallback == null) {
     return;
   }
 

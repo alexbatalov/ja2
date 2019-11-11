@@ -647,8 +647,8 @@ function EnterShopKeeperInterface(): boolean {
   SetButtonFastHelpText(guiSKI_DoneButton, SkiMessageBoxText[Enum370.SKI_DONE_BUTTON_HELP_TEXT]);
 
   // Blanket the entire screen
-  MSYS_DefineRegion(addressof(gSKI_EntireScreenMouseRegions), 0, 0, 639, 339, MSYS_PRIORITY_HIGH - 2, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-  MSYS_AddRegion(addressof(gSKI_EntireScreenMouseRegions));
+  MSYS_DefineRegion(gSKI_EntireScreenMouseRegions, 0, 0, 639, 339, MSYS_PRIORITY_HIGH - 2, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_AddRegion(gSKI_EntireScreenMouseRegions);
 
   /*
   //ATM:
@@ -662,15 +662,15 @@ function EnterShopKeeperInterface(): boolean {
   CreateSkiInventorySlotMouseRegions();
 
   // Create the mouse region to limit the movement of the item cursos
-  MSYS_DefineRegion(addressof(gSkiInventoryMovementAreaMouseRegions), SKI_ITEM_MOVEMENT_AREA_X, SKI_ITEM_MOVEMENT_AREA_Y, (SKI_ITEM_MOVEMENT_AREA_X + SKI_ITEM_MOVEMENT_AREA_WIDTH), (SKI_ITEM_MOVEMENT_AREA_Y + SKI_ITEM_MOVEMENT_AREA_HEIGHT), MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK); // SelectSkiInventoryMovementAreaRegionCallBack
-  MSYS_AddRegion(addressof(gSkiInventoryMovementAreaMouseRegions));
+  MSYS_DefineRegion(gSkiInventoryMovementAreaMouseRegions, SKI_ITEM_MOVEMENT_AREA_X, SKI_ITEM_MOVEMENT_AREA_Y, (SKI_ITEM_MOVEMENT_AREA_X + SKI_ITEM_MOVEMENT_AREA_WIDTH), (SKI_ITEM_MOVEMENT_AREA_Y + SKI_ITEM_MOVEMENT_AREA_HEIGHT), MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK); // SelectSkiInventoryMovementAreaRegionCallBack
+  MSYS_AddRegion(gSkiInventoryMovementAreaMouseRegions);
 
   // Disable the region that limits the movement of the cursor with the item
-  MSYS_DisableRegion(addressof(gSkiInventoryMovementAreaMouseRegions));
+  MSYS_DisableRegion(gSkiInventoryMovementAreaMouseRegions);
 
   // Create the mouse region for the shopkeeper's face
-  MSYS_DefineRegion(addressof(gArmsDealersFaceMouseRegions), SKI_FACE_X, SKI_FACE_Y, (SKI_FACE_X + SKI_FACE_WIDTH), (SKI_FACE_Y + SKI_FACE_HEIGHT), MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectArmsDealersFaceRegionCallBack);
-  MSYS_AddRegion(addressof(gArmsDealersFaceMouseRegions));
+  MSYS_DefineRegion(gArmsDealersFaceMouseRegions, SKI_FACE_X, SKI_FACE_Y, (SKI_FACE_X + SKI_FACE_WIDTH), (SKI_FACE_Y + SKI_FACE_HEIGHT), MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectArmsDealersFaceRegionCallBack);
+  MSYS_AddRegion(gArmsDealersFaceMouseRegions);
 
   // Create the atm button
   // ATM:
@@ -713,7 +713,7 @@ function EnterShopKeeperInterface(): boolean {
   gfDisplayNoRoomMsg = false;
 
   // Disable the map radar region
-  MSYS_DisableRegion(addressof(gRadarRegion));
+  MSYS_DisableRegion(gRadarRegion);
 
   gfDoEvaluationAfterOpening = false;
 
@@ -757,9 +757,9 @@ function EnterShopKeeperInterface(): boolean {
   pShopKeeperItemDescObject = null;
 
   // Region to allow the user to drop items to the ground
-  MSYS_DefineRegion(addressof(gArmsDealersDropItemToGroundMouseRegions), SKI_DROP_ITEM_TO_GROUND_START_X, SKI_DROP_ITEM_TO_GROUND_START_Y, 639, 339, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectArmsDealersDropItemToGroundMovementRegionCallBack, SelectArmsDealersDropItemToGroundRegionCallBack);
+  MSYS_DefineRegion(gArmsDealersDropItemToGroundMouseRegions, SKI_DROP_ITEM_TO_GROUND_START_X, SKI_DROP_ITEM_TO_GROUND_START_Y, 639, 339, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectArmsDealersDropItemToGroundMovementRegionCallBack, SelectArmsDealersDropItemToGroundRegionCallBack);
   //						 CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectArmsDealersDropItemToGroundRegionCallBack );
-  MSYS_AddRegion(addressof(gArmsDealersDropItemToGroundMouseRegions));
+  MSYS_AddRegion(gArmsDealersDropItemToGroundMouseRegions);
 
   gfSkiDisplayDropItemToGroundText = false;
 
@@ -835,22 +835,22 @@ function ExitShopKeeperInterface(): boolean {
   RemoveButton(guiSKI_TransactionButton);
   RemoveButton(guiSKI_DoneButton);
 
-  MSYS_RemoveRegion(addressof(gSKI_EntireScreenMouseRegions));
+  MSYS_RemoveRegion(gSKI_EntireScreenMouseRegions);
 
-  MSYS_RemoveRegion(addressof(gSkiInventoryMovementAreaMouseRegions));
+  MSYS_RemoveRegion(gSkiInventoryMovementAreaMouseRegions);
 
   // ATM:
   //	MSYS_RemoveRegion( &gShopKeeperCoverTacticalButtonMouseRegion );
 
   // Remove the region for the face
-  MSYS_RemoveRegion(addressof(gArmsDealersFaceMouseRegions));
+  MSYS_RemoveRegion(gArmsDealersFaceMouseRegions);
 
   // Remove the Atm buttons
   // ATM:
   //	RemoveSkiAtmButtons();
 
   // Region to allow the user to drop items to the ground
-  MSYS_RemoveRegion(addressof(gArmsDealersDropItemToGroundMouseRegions));
+  MSYS_RemoveRegion(gArmsDealersDropItemToGroundMouseRegions);
 
   // Destroy the mouse regions for the inventory slots
   DestroySkiInventorySlotMouseRegions();
@@ -871,7 +871,7 @@ function ExitShopKeeperInterface(): boolean {
   DeleteFace(giShopKeeperFaceIndex);
 
   // Enable the map region
-  MSYS_EnableRegion(addressof(gRadarRegion));
+  MSYS_EnableRegion(gRadarRegion);
 
   gfSMDisableForItems = false;
 
@@ -1249,18 +1249,18 @@ function CreateSkiInventorySlotMouseRegions(): void {
     usPosX = SKI_ARMS_DEALERS_INV_START_X;
 
     for (x = 0; x < SKI_NUM_ARMS_DEALERS_INV_COLS; x++) {
-      MSYS_DefineRegion(addressof(gDealersInventoryMouseRegions[ubCnt]), usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectDealersInventoryMovementRegionCallBack, SelectDealersInventoryRegionCallBack);
-      MSYS_AddRegion(addressof(gDealersInventoryMouseRegions[ubCnt]));
-      MSYS_SetRegionUserData(addressof(gDealersInventoryMouseRegions[ubCnt]), 0, ubCnt);
-      MSYS_SetRegionUserData(addressof(gDealersInventoryMouseRegions[ubCnt]), 1, Enum252.ARMS_DEALER_INVENTORY);
+      MSYS_DefineRegion(gDealersInventoryMouseRegions[ubCnt], usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectDealersInventoryMovementRegionCallBack, SelectDealersInventoryRegionCallBack);
+      MSYS_AddRegion(gDealersInventoryMouseRegions[ubCnt]);
+      MSYS_SetRegionUserData(gDealersInventoryMouseRegions[ubCnt], 0, ubCnt);
+      MSYS_SetRegionUserData(gDealersInventoryMouseRegions[ubCnt], 1, Enum252.ARMS_DEALER_INVENTORY);
 
       // if the dealer repairs
       if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
         // Small Faces
-        MSYS_DefineRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]), (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_NORMAL, null, null);
-        MSYS_AddRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]));
-        MSYS_SetRegionUserData(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]), 0, ubCnt);
-        MSYS_SetRegionUserData(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]), 1, Enum252.ARMS_DEALER_INVENTORY);
+        MSYS_DefineRegion(gRepairmanInventorySmallFaceMouseRegions[ubCnt], (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_NORMAL, null, null);
+        MSYS_AddRegion(gRepairmanInventorySmallFaceMouseRegions[ubCnt]);
+        MSYS_SetRegionUserData(gRepairmanInventorySmallFaceMouseRegions[ubCnt], 0, ubCnt);
+        MSYS_SetRegionUserData(gRepairmanInventorySmallFaceMouseRegions[ubCnt], 1, Enum252.ARMS_DEALER_INVENTORY);
       }
 
       usPosX += SKI_INV_OFFSET_X;
@@ -1276,17 +1276,17 @@ function CreateSkiInventorySlotMouseRegions(): void {
     usPosX = SKI_ARMS_DEALERS_TRADING_INV_X;
 
     for (x = 0; x < SKI_NUM_TRADING_INV_COLS; x++) {
-      MSYS_DefineRegion(addressof(gDealersOfferSlotsMouseRegions[ubCnt]), usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectDealersOfferSlotsMovementRegionCallBack, SelectDealersOfferSlotsRegionCallBack);
-      MSYS_AddRegion(addressof(gDealersOfferSlotsMouseRegions[ubCnt]));
-      MSYS_SetRegionUserData(addressof(gDealersOfferSlotsMouseRegions[ubCnt]), 0, ubCnt);
+      MSYS_DefineRegion(gDealersOfferSlotsMouseRegions[ubCnt], usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectDealersOfferSlotsMovementRegionCallBack, SelectDealersOfferSlotsRegionCallBack);
+      MSYS_AddRegion(gDealersOfferSlotsMouseRegions[ubCnt]);
+      MSYS_SetRegionUserData(gDealersOfferSlotsMouseRegions[ubCnt], 0, ubCnt);
 
       // if the dealer repairs
       if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
         // Small Faces
-        MSYS_DefineRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_NORMAL, SelectDealersOfferSlotsMovementRegionCallBack, SelectDealersOfferSlotsRegionCallBack);
-        MSYS_AddRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]));
-        MSYS_SetRegionUserData(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), 0, ubCnt);
-        MSYS_SetRegionUserData(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), 1, Enum252.ARMS_DEALER_OFFER_AREA);
+        MSYS_DefineRegion(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt], (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_NORMAL, SelectDealersOfferSlotsMovementRegionCallBack, SelectDealersOfferSlotsRegionCallBack);
+        MSYS_AddRegion(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]);
+        MSYS_SetRegionUserData(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt], 0, ubCnt);
+        MSYS_SetRegionUserData(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt], 1, Enum252.ARMS_DEALER_OFFER_AREA);
       }
 
       usPosX += SKI_INV_OFFSET_X;
@@ -1303,9 +1303,9 @@ function CreateSkiInventorySlotMouseRegions(): void {
 
     for (x = 0; x < SKI_NUM_TRADING_INV_COLS; x++) {
       // Trading Slots
-      MSYS_DefineRegion(addressof(gPlayersOfferSlotsMouseRegions[ubCnt]), usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectPlayersOfferSlotsMovementRegionCallBack, SelectPlayersOfferSlotsRegionCallBack);
-      MSYS_AddRegion(addressof(gPlayersOfferSlotsMouseRegions[ubCnt]));
-      MSYS_SetRegionUserData(addressof(gPlayersOfferSlotsMouseRegions[ubCnt]), 0, ubCnt);
+      MSYS_DefineRegion(gPlayersOfferSlotsMouseRegions[ubCnt], usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectPlayersOfferSlotsMovementRegionCallBack, SelectPlayersOfferSlotsRegionCallBack);
+      MSYS_AddRegion(gPlayersOfferSlotsMouseRegions[ubCnt]);
+      MSYS_SetRegionUserData(gPlayersOfferSlotsMouseRegions[ubCnt], 0, ubCnt);
       /*
                               //if the dealer repairs
                               if( ArmsDealerInfo[ gbSelectedArmsDealerID ].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS )
@@ -1314,10 +1314,10 @@ function CreateSkiInventorySlotMouseRegions(): void {
                               }
       */
       // Small Faces
-      MSYS_DefineRegion(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_NORMAL, SelectPlayersOfferSlotsMovementRegionCallBack, SelectPlayersOfferSlotsRegionCallBack);
-      MSYS_AddRegion(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]));
-      MSYS_SetRegionUserData(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), 0, ubCnt);
-      MSYS_SetRegionUserData(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), 1, Enum252.PLAYERS_OFFER_AREA);
+      MSYS_DefineRegion(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt], (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_NORMAL, SelectPlayersOfferSlotsMovementRegionCallBack, SelectPlayersOfferSlotsRegionCallBack);
+      MSYS_AddRegion(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]);
+      MSYS_SetRegionUserData(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt], 0, ubCnt);
+      MSYS_SetRegionUserData(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt], 1, Enum252.PLAYERS_OFFER_AREA);
 
       usPosX += SKI_INV_OFFSET_X;
       ubCnt++;
@@ -1330,30 +1330,30 @@ function DestroySkiInventorySlotMouseRegions(): void {
   let i: UINT8;
 
   for (i = 0; i < SKI_NUM_ARMS_DEALERS_INV_SLOTS; i++) {
-    MSYS_RemoveRegion(addressof(gDealersInventoryMouseRegions[i]));
+    MSYS_RemoveRegion(gDealersInventoryMouseRegions[i]);
 
     // if the dealer repairs
     if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-      MSYS_RemoveRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[i]));
+      MSYS_RemoveRegion(gRepairmanInventorySmallFaceMouseRegions[i]);
     }
   }
 
   for (i = 0; i < SKI_NUM_TRADING_INV_SLOTS; i++) {
-    MSYS_RemoveRegion(addressof(gDealersOfferSlotsMouseRegions[i]));
+    MSYS_RemoveRegion(gDealersOfferSlotsMouseRegions[i]);
 
     // if the dealer repairs
     if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-      MSYS_RemoveRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[i]));
+      MSYS_RemoveRegion(gDealersOfferSlotsSmallFaceMouseRegions[i]);
     }
 
-    MSYS_RemoveRegion(addressof(gPlayersOfferSlotsMouseRegions[i]));
+    MSYS_RemoveRegion(gPlayersOfferSlotsMouseRegions[i]);
 
-    MSYS_RemoveRegion(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[i]));
+    MSYS_RemoveRegion(gPlayersOfferSlotsSmallFaceMouseRegions[i]);
   }
 }
 
 // Mouse Call back for the Arms traders inventory slot
-function SelectDealersInventoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectDealersInventoryRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubSelectedInvSlot: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
@@ -1466,7 +1466,7 @@ function SelectDealersInventoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iR
   }
 }
 
-function SelectDealersInventoryMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectDealersInventoryMovementRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let ubSelectedInvSlot: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
   ubSelectedInvSlot += gSelectArmsDealerInfo.ubFirstItemIndexOnPage;
 
@@ -1496,7 +1496,7 @@ function SelectDealersInventoryMovementRegionCallBack(pRegion: Pointer<MOUSE_REG
   }
 }
 
-function SelectDealersOfferSlotsMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectDealersOfferSlotsMovementRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let ubSelectedInvSlot: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
@@ -1518,7 +1518,7 @@ function SelectDealersOfferSlotsMovementRegionCallBack(pRegion: Pointer<MOUSE_RE
   }
 }
 
-function SelectPlayersOfferSlotsMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectPlayersOfferSlotsMovementRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let ubSelectedInvSlot: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
@@ -1541,7 +1541,7 @@ function SelectPlayersOfferSlotsMovementRegionCallBack(pRegion: Pointer<MOUSE_RE
 }
 
 // Mouse Call back for the dealer's OFFER slot
-function SelectDealersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectDealersOfferSlotsRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let ubSelectedInvSlot: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
@@ -1640,7 +1640,7 @@ function SelectDealersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
 }
 
 // Mouse Call back for the Players OFFER slot
-function SelectPlayersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectPlayersOfferSlotsRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let ubSelectedInvSlot: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
   let bAddedToSlotID: INT8 = -1;
 
@@ -1733,7 +1733,7 @@ function SelectPlayersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
   }
 }
 
-function SelectSkiInventoryMovementAreaRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectSkiInventoryMovementAreaRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
   }
@@ -1877,11 +1877,11 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
         DisplayInvSlot(usCnt, gpTempDealersInventory[usCnt].sItemIndex, usPosX, usPosY, addressof(gpTempDealersInventory[usCnt].ItemObject), fDisplayHatchOnItem, Enum252.ARMS_DEALER_INVENTORY);
 
         if (gubSkiDirtyLevel == Enum253.SKI_DIRTY_LEVEL2) {
-          SetSkiRegionHelpText(addressof(gpTempDealersInventory[usCnt]), addressof(gDealersInventoryMouseRegions[sItemCount]), Enum252.ARMS_DEALER_INVENTORY);
+          SetSkiRegionHelpText(addressof(gpTempDealersInventory[usCnt]), gDealersInventoryMouseRegions[sItemCount], Enum252.ARMS_DEALER_INVENTORY);
 
           // if the dealer repairs
           if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-            SetSkiFaceRegionHelpText(addressof(gpTempDealersInventory[usCnt]), addressof(gRepairmanInventorySmallFaceMouseRegions[sItemCount]), Enum252.ARMS_DEALER_INVENTORY);
+            SetSkiFaceRegionHelpText(addressof(gpTempDealersInventory[usCnt]), gRepairmanInventorySmallFaceMouseRegions[sItemCount], Enum252.ARMS_DEALER_INVENTORY);
           }
         }
 
@@ -2557,8 +2557,8 @@ function AddItemToArmsDealerOfferArea(pInvSlot: Pointer<INVENTORY_IN_SLOT>, bSlo
       ArmsDealerOfferArea[bCnt].ubIdOfMercWhoOwnsTheItem = pInvSlot.value.ubIdOfMercWhoOwnsTheItem;
       ArmsDealerOfferArea[bCnt].fActive = true;
 
-      SetSkiRegionHelpText(addressof(ArmsDealerOfferArea[bCnt]), addressof(gDealersOfferSlotsMouseRegions[bCnt]), Enum252.ARMS_DEALER_OFFER_AREA);
-      SetSkiFaceRegionHelpText(addressof(ArmsDealerOfferArea[bCnt]), addressof(gDealersOfferSlotsSmallFaceMouseRegions[bCnt]), Enum252.ARMS_DEALER_OFFER_AREA);
+      SetSkiRegionHelpText(addressof(ArmsDealerOfferArea[bCnt]), gDealersOfferSlotsMouseRegions[bCnt], Enum252.ARMS_DEALER_OFFER_AREA);
+      SetSkiFaceRegionHelpText(addressof(ArmsDealerOfferArea[bCnt]), gDealersOfferSlotsSmallFaceMouseRegions[bCnt], Enum252.ARMS_DEALER_OFFER_AREA);
 
       gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       return bCnt;
@@ -2595,7 +2595,7 @@ function RemoveItemFromArmsDealerOfferArea(bSlotId: INT8, fKeepItem: boolean): b
   return false;
 }
 
-function SetSkiRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Pointer<MOUSE_REGION>, ubScreenArea: UINT8): void {
+function SetSkiRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: MOUSE_REGION, ubScreenArea: UINT8): void {
   let zHelpText: string /* CHAR16[512] */;
 
   Assert(pRegion);
@@ -2606,7 +2606,7 @@ function SetSkiRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Pointer
   SetRegionHelpEndCallback(pRegion, SkiHelpTextDoneCallBack);
 }
 
-function SetSkiFaceRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Pointer<MOUSE_REGION>, ubScreenArea: UINT8): void {
+function SetSkiFaceRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: MOUSE_REGION, ubScreenArea: UINT8): void {
   let zTempText: string /* CHAR16[512] */;
   let zHelpText: string /* CHAR16[512] */;
 
@@ -2653,8 +2653,8 @@ function AddItemToPlayersOfferArea(ubProfileID: UINT8, pInvSlot: Pointer<INVENTO
 
       IfMercOwnedCopyItemToMercInv(addressof(PlayersOfferArea[bCnt]));
 
-      SetSkiRegionHelpText(addressof(PlayersOfferArea[bCnt]), addressof(gPlayersOfferSlotsMouseRegions[bCnt]), Enum252.PLAYERS_OFFER_AREA);
-      SetSkiFaceRegionHelpText(addressof(PlayersOfferArea[bCnt]), addressof(gPlayersOfferSlotsSmallFaceMouseRegions[bCnt]), Enum252.PLAYERS_OFFER_AREA);
+      SetSkiRegionHelpText(addressof(PlayersOfferArea[bCnt]), gPlayersOfferSlotsMouseRegions[bCnt], Enum252.PLAYERS_OFFER_AREA);
+      SetSkiFaceRegionHelpText(addressof(PlayersOfferArea[bCnt]), gPlayersOfferSlotsSmallFaceMouseRegions[bCnt], Enum252.PLAYERS_OFFER_AREA);
 
       // if the item we are adding is money
       if (Item[PlayersOfferArea[bCnt].sItemIndex].usItemClass == IC_MONEY) {
@@ -3266,7 +3266,7 @@ export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDea
     SetSkiCursor(EXTERN_CURSOR);
 
     // Enable the region that limits the movement of the cursor with the item
-    MSYS_EnableRegion(addressof(gSkiInventoryMovementAreaMouseRegions));
+    MSYS_EnableRegion(gSkiInventoryMovementAreaMouseRegions);
 
     RestrictMouseCursor(addressof(Rect));
 
@@ -3311,36 +3311,36 @@ export function SetSkiCursor(usCursor: UINT16): void {
     gusExternVoSubIndex = Item[gMoveingItem.sItemIndex].ubGraphicNum;
     SetCurrentCursorFromDatabase(EXTERN_CURSOR);
 
-    MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), usCursor);
+    MSYS_ChangeRegionCursor(gSMPanelRegion, usCursor);
 
-    MSYS_ChangeRegionCursor(addressof(gSKI_EntireScreenMouseRegions), usCursor);
+    MSYS_ChangeRegionCursor(gSKI_EntireScreenMouseRegions, usCursor);
 
-    MSYS_ChangeRegionCursor(addressof(gArmsDealersDropItemToGroundMouseRegions), usCursor);
+    MSYS_ChangeRegionCursor(gArmsDealersDropItemToGroundMouseRegions, usCursor);
 
     MSYS_SetCurrentCursor(usCursor);
 
     // if the item desc window is up
     if (gInvDesc.uiFlags & MSYS_REGION_EXISTS)
-      MSYS_ChangeRegionCursor(addressof(gInvDesc), usCursor);
+      MSYS_ChangeRegionCursor(gInvDesc, usCursor);
 
     for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
       if (gItemDescAttachmentRegions[ubCnt].uiFlags & MSYS_REGION_EXISTS)
-        MSYS_ChangeRegionCursor(addressof(gItemDescAttachmentRegions[ubCnt]), usCursor);
+        MSYS_ChangeRegionCursor(gItemDescAttachmentRegions[ubCnt], usCursor);
     }
 
     for (ubCnt = 0; ubCnt < SKI_NUM_TRADING_INV_SLOTS; ubCnt++) {
-      MSYS_ChangeRegionCursor(addressof(gPlayersOfferSlotsMouseRegions[ubCnt]), usCursor);
-      MSYS_ChangeRegionCursor(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), usCursor);
+      MSYS_ChangeRegionCursor(gPlayersOfferSlotsMouseRegions[ubCnt], usCursor);
+      MSYS_ChangeRegionCursor(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt], usCursor);
 
-      MSYS_ChangeRegionCursor(addressof(gDealersOfferSlotsMouseRegions[ubCnt]), usCursor);
+      MSYS_ChangeRegionCursor(gDealersOfferSlotsMouseRegions[ubCnt], usCursor);
 
       // if the dealer repairs
       if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-        MSYS_ChangeRegionCursor(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), usCursor);
+        MSYS_ChangeRegionCursor(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt], usCursor);
       }
     }
 
-    MSYS_ChangeRegionCursor(addressof(gSkiInventoryMovementAreaMouseRegions), usCursor);
+    MSYS_ChangeRegionCursor(gSkiInventoryMovementAreaMouseRegions, usCursor);
   }
 
   // else we are restoring the old cursor
@@ -3361,34 +3361,34 @@ export function SetSkiCursor(usCursor: UINT16): void {
       ReevaluateItemHatches(gpSMCurrentMerc, true);
     }
 
-    MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), usCursor);
+    MSYS_ChangeRegionCursor(gSMPanelRegion, usCursor);
 
-    MSYS_ChangeRegionCursor(addressof(gSKI_EntireScreenMouseRegions), usCursor);
+    MSYS_ChangeRegionCursor(gSKI_EntireScreenMouseRegions, usCursor);
 
-    MSYS_ChangeRegionCursor(addressof(gArmsDealersDropItemToGroundMouseRegions), usCursor);
+    MSYS_ChangeRegionCursor(gArmsDealersDropItemToGroundMouseRegions, usCursor);
 
     for (ubCnt = 0; ubCnt < SKI_NUM_TRADING_INV_SLOTS; ubCnt++) {
-      MSYS_ChangeRegionCursor(addressof(gPlayersOfferSlotsMouseRegions[ubCnt]), usCursor);
-      MSYS_ChangeRegionCursor(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), usCursor);
+      MSYS_ChangeRegionCursor(gPlayersOfferSlotsMouseRegions[ubCnt], usCursor);
+      MSYS_ChangeRegionCursor(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt], usCursor);
 
-      MSYS_ChangeRegionCursor(addressof(gDealersOfferSlotsMouseRegions[ubCnt]), usCursor);
+      MSYS_ChangeRegionCursor(gDealersOfferSlotsMouseRegions[ubCnt], usCursor);
 
       // if the dealer repairs
       if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-        MSYS_ChangeRegionCursor(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), usCursor);
+        MSYS_ChangeRegionCursor(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt], usCursor);
       }
     }
 
     // if the item desc window is up
     if (gInvDesc.uiFlags & MSYS_REGION_EXISTS)
-      MSYS_ChangeRegionCursor(addressof(gInvDesc), usCursor);
+      MSYS_ChangeRegionCursor(gInvDesc, usCursor);
 
     for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
       if (gItemDescAttachmentRegions[ubCnt].uiFlags & MSYS_REGION_EXISTS)
-        MSYS_ChangeRegionCursor(addressof(gItemDescAttachmentRegions[ubCnt]), usCursor);
+        MSYS_ChangeRegionCursor(gItemDescAttachmentRegions[ubCnt], usCursor);
     }
 
-    MSYS_ChangeRegionCursor(addressof(gSkiInventoryMovementAreaMouseRegions), usCursor);
+    MSYS_ChangeRegionCursor(gSkiInventoryMovementAreaMouseRegions, usCursor);
 
     MSYS_SetCurrentCursor(usCursor);
 
@@ -3400,7 +3400,7 @@ export function SetSkiCursor(usCursor: UINT16): void {
     EnableAllDealersOfferSlots();
 
     // Disable the region that limits the movement of the cursor with the item
-    MSYS_DisableRegion(addressof(gSkiInventoryMovementAreaMouseRegions));
+    MSYS_DisableRegion(gSkiInventoryMovementAreaMouseRegions);
   }
 
   SetCurrentCursorFromDatabase(usCursor);
@@ -3427,8 +3427,8 @@ function AddInventoryToSkiLocation(pInv: Pointer<INVENTORY_IN_SLOT>, ubSpotLocat
         memcpy(addressof(ArmsDealerOfferArea[ubSpotLocation]), pInv, sizeof(INVENTORY_IN_SLOT));
         IfMercOwnedCopyItemToMercInv(pInv);
 
-        SetSkiRegionHelpText(addressof(ArmsDealerOfferArea[ubSpotLocation]), addressof(gDealersOfferSlotsMouseRegions[ubSpotLocation]), Enum252.ARMS_DEALER_OFFER_AREA);
-        SetSkiFaceRegionHelpText(addressof(ArmsDealerOfferArea[ubSpotLocation]), addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubSpotLocation]), Enum252.ARMS_DEALER_OFFER_AREA);
+        SetSkiRegionHelpText(addressof(ArmsDealerOfferArea[ubSpotLocation]), gDealersOfferSlotsMouseRegions[ubSpotLocation], Enum252.ARMS_DEALER_OFFER_AREA);
+        SetSkiFaceRegionHelpText(addressof(ArmsDealerOfferArea[ubSpotLocation]), gDealersOfferSlotsSmallFaceMouseRegions[ubSpotLocation], Enum252.ARMS_DEALER_OFFER_AREA);
 
         bSlotAddedTo = ubSpotLocation;
       } else {
@@ -3451,8 +3451,8 @@ function AddInventoryToSkiLocation(pInv: Pointer<INVENTORY_IN_SLOT>, ubSpotLocat
           PlayersOfferArea[ubSpotLocation].uiItemPrice = PlayersOfferArea[ubSpotLocation].ItemObject.uiMoneyAmount;
         }
 
-        SetSkiRegionHelpText(addressof(PlayersOfferArea[ubSpotLocation]), addressof(gPlayersOfferSlotsMouseRegions[ubSpotLocation]), Enum252.PLAYERS_OFFER_AREA);
-        SetSkiFaceRegionHelpText(addressof(PlayersOfferArea[ubSpotLocation]), addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubSpotLocation]), Enum252.PLAYERS_OFFER_AREA);
+        SetSkiRegionHelpText(addressof(PlayersOfferArea[ubSpotLocation]), gPlayersOfferSlotsMouseRegions[ubSpotLocation], Enum252.PLAYERS_OFFER_AREA);
+        SetSkiFaceRegionHelpText(addressof(PlayersOfferArea[ubSpotLocation]), gPlayersOfferSlotsSmallFaceMouseRegions[ubSpotLocation], Enum252.PLAYERS_OFFER_AREA);
 
         bSlotAddedTo = ubSpotLocation;
       }
@@ -3704,8 +3704,8 @@ export function InitShopKeeperSubTitledText(pString: string /* STR16 */): void {
 
     // check to make sure the region is not already initialized
     if (!(gShopKeeperSubTitleMouseRegion.uiFlags & MSYS_REGION_EXISTS)) {
-      MSYS_DefineRegion(addressof(gShopKeeperSubTitleMouseRegion), gusPositionOfSubTitlesX, SKI_POSITION_SUBTITLES_Y, (gusPositionOfSubTitlesX + usActualWidth), (SKI_POSITION_SUBTITLES_Y + usActualHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, ShopKeeperSubTitleRegionCallBack);
-      MSYS_AddRegion(addressof(gShopKeeperSubTitleMouseRegion));
+      MSYS_DefineRegion(gShopKeeperSubTitleMouseRegion, gusPositionOfSubTitlesX, SKI_POSITION_SUBTITLES_Y, (gusPositionOfSubTitlesX + usActualWidth), (SKI_POSITION_SUBTITLES_Y + usActualHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, ShopKeeperSubTitleRegionCallBack);
+      MSYS_AddRegion(gShopKeeperSubTitleMouseRegion);
     }
 
     // redraw the screen
@@ -3723,7 +3723,7 @@ function RemoveShopKeeperSubTitledText(): void {
 
     // Get rid of the subtitles region
     if (gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES])
-      MSYS_RemoveRegion(addressof(gShopKeeperSubTitleMouseRegion));
+      MSYS_RemoveRegion(gShopKeeperSubTitleMouseRegion);
   }
 }
 
@@ -3754,7 +3754,7 @@ function AreThereItemsInThePlayersOfferArea(): boolean {
 }
 
 // Mouse Call back for the Arms traders inventory slot
-function ShopKeeperSubTitleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ShopKeeperSubTitleRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP || iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     ShutUpShopKeeper();
@@ -3762,7 +3762,7 @@ function ShopKeeperSubTitleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
 }
 
 // Mouse Call back for the Arms delaers face
-function SelectArmsDealersFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectArmsDealersFaceRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP || iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     ShutUpShopKeeper();
@@ -4559,11 +4559,11 @@ function ClearArmsDealerOfferSlot(ubSlotToClear: INT32): void {
   memset(addressof(ArmsDealerOfferArea[ubSlotToClear]), 0, sizeof(INVENTORY_IN_SLOT));
 
   // Remove the mouse help text from the region
-  SetRegionFastHelpText(addressof(gDealersOfferSlotsMouseRegions[ubSlotToClear]), "");
+  SetRegionFastHelpText(gDealersOfferSlotsMouseRegions[ubSlotToClear], "");
 
   // if the dealer repairs
   if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-    SetRegionFastHelpText(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubSlotToClear]), "");
+    SetRegionFastHelpText(gDealersOfferSlotsSmallFaceMouseRegions[ubSlotToClear], "");
   }
 }
 
@@ -4572,8 +4572,8 @@ function ClearPlayersOfferSlot(ubSlotToClear: INT32): void {
   memset(addressof(PlayersOfferArea[ubSlotToClear]), 0, sizeof(INVENTORY_IN_SLOT));
 
   // Clear the text for the item
-  SetRegionFastHelpText(addressof(gPlayersOfferSlotsMouseRegions[ubSlotToClear]), "");
-  SetRegionFastHelpText(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubSlotToClear]), "");
+  SetRegionFastHelpText(gPlayersOfferSlotsMouseRegions[ubSlotToClear], "");
+  SetRegionFastHelpText(gPlayersOfferSlotsSmallFaceMouseRegions[ubSlotToClear], "");
 
   // if the player offer area is clear, reset flags for transaction
   CheckAndHandleClearingOfPlayerOfferArea();
@@ -5058,12 +5058,12 @@ export function StartSKIDescriptionBox(): void {
   DisableAllDealersOfferSlots();
 
   for (iCnt = 0; iCnt < SKI_NUM_TRADING_INV_SLOTS; iCnt++) {
-    MSYS_DisableRegion(addressof(gPlayersOfferSlotsMouseRegions[iCnt]));
-    MSYS_DisableRegion(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[iCnt]));
+    MSYS_DisableRegion(gPlayersOfferSlotsMouseRegions[iCnt]);
+    MSYS_DisableRegion(gPlayersOfferSlotsSmallFaceMouseRegions[iCnt]);
   }
 
   if (gShopKeeperSubTitleMouseRegion.uiFlags & MSYS_REGION_EXISTS) {
-    MSYS_DisableRegion(addressof(gShopKeeperSubTitleMouseRegion));
+    MSYS_DisableRegion(gShopKeeperSubTitleMouseRegion);
   }
 
   //	MSYS_DisableRegion( &gShopKeeperCoverTacticalButtonMouseRegion );
@@ -5107,12 +5107,12 @@ export function DeleteShopKeeperItemDescBox(): void {
   EnableAllDealersOfferSlots();
 
   for (iCnt = 0; iCnt < SKI_NUM_TRADING_INV_SLOTS; iCnt++) {
-    MSYS_EnableRegion(addressof(gPlayersOfferSlotsMouseRegions[iCnt]));
-    MSYS_EnableRegion(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[iCnt]));
+    MSYS_EnableRegion(gPlayersOfferSlotsMouseRegions[iCnt]);
+    MSYS_EnableRegion(gPlayersOfferSlotsSmallFaceMouseRegions[iCnt]);
   }
 
   if (gShopKeeperSubTitleMouseRegion.uiFlags & MSYS_REGION_EXISTS) {
-    MSYS_EnableRegion(addressof(gShopKeeperSubTitleMouseRegion));
+    MSYS_EnableRegion(gShopKeeperSubTitleMouseRegion);
   }
 
   //	MSYS_EnableRegion( &gShopKeeperCoverTacticalButtonMouseRegion );
@@ -5890,7 +5890,7 @@ function DelayRepairsInProgressBy(uiMinutesDelayed: UINT32): void {
 }
 
 // Mouse Call back for the Arms delaers face
-function SelectArmsDealersDropItemToGroundRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectArmsDealersDropItemToGroundRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let pDropSoldier: Pointer<SOLDIERTYPE>;
@@ -5916,7 +5916,7 @@ function SelectArmsDealersDropItemToGroundRegionCallBack(pRegion: Pointer<MOUSE_
   }
 }
 
-function SelectArmsDealersDropItemToGroundMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectArmsDealersDropItemToGroundMovementRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gfSkiDisplayDropItemToGroundText = false;
     gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
@@ -6094,11 +6094,11 @@ function DisableAllDealersInventorySlots(): void {
   let iCnt: INT32;
 
   for (iCnt = 0; iCnt < SKI_NUM_ARMS_DEALERS_INV_SLOTS; iCnt++) {
-    MSYS_DisableRegion(addressof(gDealersInventoryMouseRegions[iCnt]));
+    MSYS_DisableRegion(gDealersInventoryMouseRegions[iCnt]);
 
     // if the dealer repairs
     if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-      MSYS_DisableRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[iCnt]));
+      MSYS_DisableRegion(gRepairmanInventorySmallFaceMouseRegions[iCnt]);
     }
   }
 }
@@ -6107,11 +6107,11 @@ function EnableAllDealersInventorySlots(): void {
   let iCnt: INT32;
 
   for (iCnt = 0; iCnt < SKI_NUM_ARMS_DEALERS_INV_SLOTS; iCnt++) {
-    MSYS_EnableRegion(addressof(gDealersInventoryMouseRegions[iCnt]));
+    MSYS_EnableRegion(gDealersInventoryMouseRegions[iCnt]);
 
     // if the dealer repairs
     if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-      MSYS_EnableRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[iCnt]));
+      MSYS_EnableRegion(gRepairmanInventorySmallFaceMouseRegions[iCnt]);
     }
   }
 }
@@ -6120,11 +6120,11 @@ function DisableAllDealersOfferSlots(): void {
   let iCnt: INT32;
 
   for (iCnt = 0; iCnt < SKI_NUM_TRADING_INV_SLOTS; iCnt++) {
-    MSYS_DisableRegion(addressof(gDealersOfferSlotsMouseRegions[iCnt]));
+    MSYS_DisableRegion(gDealersOfferSlotsMouseRegions[iCnt]);
 
     // if the dealer repairs
     if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-      MSYS_DisableRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[iCnt]));
+      MSYS_DisableRegion(gDealersOfferSlotsSmallFaceMouseRegions[iCnt]);
     }
   }
 }
@@ -6133,11 +6133,11 @@ function EnableAllDealersOfferSlots(): void {
   let iCnt: INT32;
 
   for (iCnt = 0; iCnt < SKI_NUM_TRADING_INV_SLOTS; iCnt++) {
-    MSYS_EnableRegion(addressof(gDealersOfferSlotsMouseRegions[iCnt]));
+    MSYS_EnableRegion(gDealersOfferSlotsMouseRegions[iCnt]);
 
     // if the dealer repairs
     if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
-      MSYS_EnableRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[iCnt]));
+      MSYS_EnableRegion(gDealersOfferSlotsSmallFaceMouseRegions[iCnt]);
     }
   }
 }

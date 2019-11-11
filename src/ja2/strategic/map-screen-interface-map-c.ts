@@ -4405,9 +4405,9 @@ export function CreateDestroyMilitiaPopUPRegions(): void {
 
   if (fShowMilitia && sSelectedMilitiaTown && !gfMilitiaPopupCreated) {
     for (iCounter = 0; iCounter < 9; iCounter++) {
-      MSYS_DefineRegion(addressof(gMapScreenMilitiaBoxRegions[iCounter]), (MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + (iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT), (MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + (((iCounter) % MILITIA_BOX_ROWS) + 1) * MILITIA_BOX_BOX_WIDTH), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (((iCounter) / MILITIA_BOX_ROWS) + 1) * MILITIA_BOX_BOX_HEIGHT), MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CURSOR, MilitiaRegionMoveCallback, MilitiaRegionClickCallback);
+      MSYS_DefineRegion(gMapScreenMilitiaBoxRegions[iCounter], (MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + (iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT), (MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + (((iCounter) % MILITIA_BOX_ROWS) + 1) * MILITIA_BOX_BOX_WIDTH), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (((iCounter) / MILITIA_BOX_ROWS) + 1) * MILITIA_BOX_BOX_HEIGHT), MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CURSOR, MilitiaRegionMoveCallback, MilitiaRegionClickCallback);
 
-      MSYS_SetRegionUserData(addressof(gMapScreenMilitiaBoxRegions[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(gMapScreenMilitiaBoxRegions[iCounter], 0, iCounter);
     }
 
     // create militia panel buttons
@@ -4417,7 +4417,7 @@ export function CreateDestroyMilitiaPopUPRegions(): void {
   } else if (gfMilitiaPopupCreated && (!fShowMilitia || !sSelectedMilitiaTown)) {
     for (iCounter = 0; iCounter < 9; iCounter++) {
       // remove region
-      MSYS_RemoveRegion(addressof(gMapScreenMilitiaBoxRegions[iCounter]));
+      MSYS_RemoveRegion(gMapScreenMilitiaBoxRegions[iCounter]);
     }
 
     // handle the shutdown of the panel...there maybe people on the cursor, distribute them evenly over all the sectors
@@ -4565,7 +4565,7 @@ function ShowHighLightedSectorOnMilitiaMap(): void {
   return;
 }
 
-function MilitiaRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MilitiaRegionClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
@@ -4587,7 +4587,7 @@ function MilitiaRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   }
 }
 
-function MilitiaRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MilitiaRegionMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
@@ -5352,7 +5352,7 @@ function HandleLowerLevelMapBlit(): void {
   return;
 }
 
-function MilitiaBoxMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MilitiaBoxMaskBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment screen mask region
   if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     sSectorMilitiaMapSector = -1;

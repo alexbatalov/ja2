@@ -149,8 +149,8 @@ export function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistant
     }
 
     // reset the help text for mouse regions
-    SetRegionFastHelpText(addressof(gCharInfoHandRegion), "");
-    SetRegionFastHelpText(addressof(gMapStatusBarsRegion), "");
+    SetRegionFastHelpText(gCharInfoHandRegion, "");
+    SetRegionFastHelpText(gMapStatusBarsRegion, "");
 
     gfDisplayPotentialRetreatPaths = false;
 
@@ -211,7 +211,7 @@ export function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistant
   }
 
   // Define the blanket region to cover all of the other regions used underneath the panel.
-  MSYS_DefineRegion(addressof(PBInterfaceBlanket), 0, 0, 261, 359, MSYS_PRIORITY_HIGHEST - 5, 0, 0, 0);
+  MSYS_DefineRegion(PBInterfaceBlanket, 0, 0, 261, 359, MSYS_PRIORITY_HIGHEST - 5, 0, null, null);
 
   // Create the panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -593,7 +593,7 @@ export function KillPreBattleInterface(): void {
     return;
 
   fDisableMapInterfaceDueToBattle = false;
-  MSYS_RemoveRegion(addressof(PBInterfaceBlanket));
+  MSYS_RemoveRegion(PBInterfaceBlanket);
 
   // The panel
   DeleteVideoObjectFromIndex(uiInterfaceImages);

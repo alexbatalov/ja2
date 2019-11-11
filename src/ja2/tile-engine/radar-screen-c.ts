@@ -22,13 +22,13 @@ let gRadarRegionSquadList: MOUSE_REGION[] /* [NUMBER_OF_SQUADS] */ = createArray
 
 export function InitRadarScreen(): boolean {
   // Add region for radar
-  MSYS_DefineRegion(addressof(gRadarRegion), RADAR_WINDOW_X, RADAR_WINDOW_TM_Y, RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, RADAR_WINDOW_TM_Y + RADAR_WINDOW_HEIGHT, MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
+  MSYS_DefineRegion(gRadarRegion, RADAR_WINDOW_X, RADAR_WINDOW_TM_Y, RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, RADAR_WINDOW_TM_Y + RADAR_WINDOW_HEIGHT, MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
 
   // Add region
-  MSYS_AddRegion(addressof(gRadarRegion));
+  MSYS_AddRegion(gRadarRegion);
 
   // disable the radar map
-  MSYS_DisableRegion(addressof(gRadarRegion));
+  MSYS_DisableRegion(gRadarRegion);
 
   gsRadarX = RADAR_WINDOW_X;
   gsRadarY = RADAR_WINDOW_TM_Y;
@@ -101,7 +101,7 @@ export function MoveRadarScreen(): void {
   }
 
   // Remove old region
-  MSYS_RemoveRegion(addressof(gRadarRegion));
+  MSYS_RemoveRegion(gRadarRegion);
 
   // Add new one
 
@@ -113,13 +113,13 @@ export function MoveRadarScreen(): void {
   }
 
   // Add region for radar
-  MSYS_DefineRegion(addressof(gRadarRegion), RADAR_WINDOW_X, (gsRadarY), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, (gsRadarY + RADAR_WINDOW_HEIGHT), MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
+  MSYS_DefineRegion(gRadarRegion, RADAR_WINDOW_X, (gsRadarY), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, (gsRadarY + RADAR_WINDOW_HEIGHT), MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
 
   // Add region
-  MSYS_AddRegion(addressof(gRadarRegion));
+  MSYS_AddRegion(gRadarRegion);
 }
 
-function RadarRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function RadarRegionMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let sRadarX: INT16;
   let sRadarY: INT16;
 
@@ -129,10 +129,10 @@ function RadarRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   }
 
   if (iReason == MSYS_CALLBACK_REASON_MOVE) {
-    if (pRegion.value.ButtonState & MSYS_LEFT_BUTTON) {
+    if (pRegion.ButtonState & MSYS_LEFT_BUTTON) {
       // Use relative coordinates to set center of viewport
-      sRadarX = pRegion.value.RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
-      sRadarY = pRegion.value.RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
+      sRadarX = pRegion.RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
+      sRadarY = pRegion.RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
 
       AdjustWorldCenterFromRadarCoords(sRadarX, sRadarY);
 
@@ -141,7 +141,7 @@ function RadarRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   }
 }
 
-function RadarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function RadarRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let sRadarX: INT16;
   let sRadarY: INT16;
 
@@ -153,8 +153,8 @@ function RadarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!InOverheadMap()) {
       // Use relative coordinates to set center of viewport
-      sRadarX = pRegion.value.RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
-      sRadarY = pRegion.value.RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
+      sRadarX = pRegion.RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
+      sRadarY = pRegion.RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
 
       AdjustWorldCenterFromRadarCoords(sRadarX, sRadarY);
     } else {
@@ -522,14 +522,14 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
       // run through list of squads and place appropriatly
       if (sCounter < Enum275.NUMBER_OF_SQUADS / 2) {
         // left half of list
-        MSYS_DefineRegion(addressof(gRadarRegionSquadList[sCounter]), RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y() + (sCounter * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (Enum275.NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2 - 1, (SQUAD_WINDOW_TM_Y() + ((sCounter + 1) * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (Enum275.NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(gRadarRegionSquadList[sCounter], RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y() + (sCounter * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (Enum275.NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2 - 1, (SQUAD_WINDOW_TM_Y() + ((sCounter + 1) * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (Enum275.NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       } else {
         // right half of list
-        MSYS_DefineRegion(addressof(gRadarRegionSquadList[sCounter]), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y() + ((sCounter - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (SQUAD_WINDOW_TM_Y() + (((sCounter + 1) - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(gRadarRegionSquadList[sCounter], RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y() + ((sCounter - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (SQUAD_WINDOW_TM_Y() + (((sCounter + 1) - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       }
 
       // set user data
-      MSYS_SetRegionUserData(addressof(gRadarRegionSquadList[sCounter]), 0, sCounter);
+      MSYS_SetRegionUserData(gRadarRegionSquadList[sCounter], 0, sCounter);
     }
 
     DeleteVideoObjectFromIndex(uiHandle);
@@ -543,7 +543,7 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
     // destroy regions
 
     for (sCounter = 0; sCounter < Enum275.NUMBER_OF_SQUADS; sCounter++) {
-      MSYS_RemoveRegion(addressof(gRadarRegionSquadList[sCounter]));
+      MSYS_RemoveRegion(gRadarRegionSquadList[sCounter]);
     }
 
     // set fact regions are destroyed
@@ -617,7 +617,7 @@ function RenderSquadList(): void {
   }
 }
 
-function TacticalSquadListMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TacticalSquadListMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = -1;
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
@@ -634,7 +634,7 @@ function TacticalSquadListMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
   return;
 }
 
-function TacticalSquadListBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TacticalSquadListBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for team list info region
   let iValue: INT32 = 0;
 

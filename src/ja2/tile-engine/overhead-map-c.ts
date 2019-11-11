@@ -411,13 +411,13 @@ export function GoIntoOverheadMap(): void {
 
   gfInOverheadMap = true;
 
-  MSYS_DefineRegion(addressof(OverheadBackgroundRegion), 0, 0, 640, 360, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(OverheadBackgroundRegion, 0, 0, 640, 360, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(addressof(OverheadBackgroundRegion));
+  MSYS_AddRegion(OverheadBackgroundRegion);
 
-  MSYS_DefineRegion(addressof(OverheadRegion), 0, 0, gsVIEWPORT_END_X, 320, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MoveOverheadRegionCallback, ClickOverheadRegionCallback);
+  MSYS_DefineRegion(OverheadRegion, 0, 0, gsVIEWPORT_END_X, 320, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MoveOverheadRegionCallback, ClickOverheadRegionCallback);
   // Add region
-  MSYS_AddRegion(addressof(OverheadRegion));
+  MSYS_AddRegion(OverheadRegion);
 
   // LOAD CLOSE ANIM
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -498,8 +498,8 @@ export function KillOverheadMap(): void {
   SetRenderFlags(RENDER_FLAG_FULL);
   RenderWorld();
 
-  MSYS_RemoveRegion(addressof(OverheadRegion));
-  MSYS_RemoveRegion(addressof(OverheadBackgroundRegion));
+  MSYS_RemoveRegion(OverheadRegion);
+  MSYS_RemoveRegion(OverheadBackgroundRegion);
 
   DeleteVideoObjectFromIndex(uiOVERMAP);
   DeleteVideoObjectFromIndex(uiPERSONS);
@@ -1223,11 +1223,11 @@ void RenderOverheadOverlays( INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 s
 }
 */
 
-function MoveInOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function MoveInOverheadRegionCallback(reg: MOUSE_REGION, reason: INT32): void {
   // Calculate the cursor...
 }
 
-function ClickOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function ClickOverheadRegionCallback(reg: MOUSE_REGION, reason: INT32): void {
   let uiCellX: UINT32;
   let uiCellY: UINT32;
   let sWorldScreenX: INT16;
@@ -1238,13 +1238,13 @@ function ClickOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32):
     return;
   }
 
-  if (!(reg.value.uiFlags & BUTTON_ENABLED))
+  if (!(reg.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    reg.value.uiFlags |= BUTTON_CLICKED_ON;
+    reg.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    reg.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    reg.uiFlags &= (~BUTTON_CLICKED_ON);
     sWorldScreenX = (gusMouseXPos - gsStartRestrictedX) * 5;
     sWorldScreenY = (gusMouseYPos - gsStartRestrictedY) * 5;
 
@@ -1259,7 +1259,7 @@ function ClickOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32):
   }
 }
 
-function MoveOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function MoveOverheadRegionCallback(reg: MOUSE_REGION, reason: INT32): void {
 }
 
 function GetOverheadScreenXYFromGridNo(sGridNo: INT16, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {

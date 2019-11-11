@@ -239,7 +239,7 @@ function ExitAimHistoryMenuBar(): boolean {
   return true;
 }
 
-function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectHistoryMenuButtonsRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let rValue: UINT8;
   /* static */ let fOnPage: boolean = true;
 
@@ -352,9 +352,9 @@ function InitTocMenu(): boolean {
     // if the mouse regions havent been inited, init them
     if (!gfInToc) {
       // Mouse region for the history toc buttons
-      MSYS_DefineRegion(addressof(gSelectedHistoryTocMenuRegion[i]), AIM_HISTORY_TOC_X, usPosY, (AIM_HISTORY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryTocMenuRegionCallBack);
-      MSYS_AddRegion(addressof(gSelectedHistoryTocMenuRegion[i]));
-      MSYS_SetRegionUserData(addressof(gSelectedHistoryTocMenuRegion[i]), 0, i + 1);
+      MSYS_DefineRegion(gSelectedHistoryTocMenuRegion[i], AIM_HISTORY_TOC_X, usPosY, (AIM_HISTORY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryTocMenuRegionCallBack);
+      MSYS_AddRegion(gSelectedHistoryTocMenuRegion[i]);
+      MSYS_SetRegionUserData(gSelectedHistoryTocMenuRegion[i], 0, i + 1);
     }
 
     BltVideoObject(FRAME_BUFFER, hContentButtonHandle, 0, AIM_HISTORY_TOC_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
@@ -372,13 +372,13 @@ function ExitTocMenu(): boolean {
   if (gfInToc) {
     gfInToc = false;
     for (i = 0; i < NUM_AIM_HISTORY_PAGES; i++)
-      MSYS_RemoveRegion(addressof(gSelectedHistoryTocMenuRegion[i]));
+      MSYS_RemoveRegion(gSelectedHistoryTocMenuRegion[i]);
   }
 
   return true;
 }
 
-function SelectHistoryTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectHistoryTocMenuRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (gfInToc) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
     } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {

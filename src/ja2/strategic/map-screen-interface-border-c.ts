@@ -966,12 +966,12 @@ export function CreateMouseRegionsForLevelMarkers(): void {
   let sString: string /* CHAR16[64] */;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
-    MSYS_DefineRegion(addressof(LevelMouseRegions[sCounter]), MAP_LEVEL_MARKER_X, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * sCounter)), MAP_LEVEL_MARKER_X + MAP_LEVEL_MARKER_WIDTH, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * (sCounter + 1))), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, LevelMarkerBtnCallback);
+    MSYS_DefineRegion(LevelMouseRegions[sCounter], MAP_LEVEL_MARKER_X, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * sCounter)), MAP_LEVEL_MARKER_X + MAP_LEVEL_MARKER_WIDTH, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * (sCounter + 1))), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, LevelMarkerBtnCallback);
 
-    MSYS_SetRegionUserData(addressof(LevelMouseRegions[sCounter]), 0, sCounter);
+    MSYS_SetRegionUserData(LevelMouseRegions[sCounter], 0, sCounter);
 
     sString = swprintf("%s %d", zMarksMapScreenText[0], sCounter + 1);
-    SetRegionFastHelpText(addressof(LevelMouseRegions[sCounter]), sString);
+    SetRegionFastHelpText(LevelMouseRegions[sCounter], sString);
   }
 }
 
@@ -979,11 +979,11 @@ export function DeleteMouseRegionsForLevelMarkers(): void {
   let sCounter: INT16 = 0;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
-    MSYS_RemoveRegion(addressof(LevelMouseRegions[sCounter]));
+    MSYS_RemoveRegion(LevelMouseRegions[sCounter]);
   }
 }
 
-function LevelMarkerBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function LevelMarkerBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment screen mask region
   let iCounter: INT32 = 0;
 

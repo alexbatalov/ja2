@@ -172,8 +172,8 @@ export function InitFloristDefaults(): boolean {
     }
 
     // flower title homepage link
-    MSYS_DefineRegion(addressof(gSelectedFloristTitleHomeLinkRegion), FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, (FLORIST_SMALL_TITLE_X + FLORIST_SMALL_TITLE_WIDTH), (FLORIST_SMALL_TITLE_Y + FLORIST_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristTitleHomeLinkRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedFloristTitleHomeLinkRegion));
+    MSYS_DefineRegion(gSelectedFloristTitleHomeLinkRegion, FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, (FLORIST_SMALL_TITLE_X + FLORIST_SMALL_TITLE_WIDTH), (FLORIST_SMALL_TITLE_Y + FLORIST_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristTitleHomeLinkRegionCallBack);
+    MSYS_AddRegion(gSelectedFloristTitleHomeLinkRegion);
   }
 
   return true;
@@ -207,7 +207,7 @@ export function RemoveFloristDefaults(): void {
     // delete the little title
     DeleteVideoObjectFromIndex(guiSmallTitleSymbol);
 
-    MSYS_RemoveRegion(addressof(gSelectedFloristTitleHomeLinkRegion));
+    MSYS_RemoveRegion(gSelectedFloristTitleHomeLinkRegion);
   }
 }
 
@@ -231,7 +231,7 @@ function BtnGalleryButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   }
 }
 
-function SelectFloristTitleHomeLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFloristTitleHomeLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST;

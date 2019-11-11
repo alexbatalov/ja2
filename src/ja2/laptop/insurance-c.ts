@@ -91,9 +91,9 @@ export function EnterInsurance(): boolean {
 
   usPosX = INSURANCE_BOTTOM_LINK_RED_BAR_X;
   for (i = 0; i < 3; i++) {
-    MSYS_DefineRegion(addressof(gSelectedInsuranceLinkRegion[i]), usPosX, INSURANCE_BOTTOM_LINK_RED_BAR_Y - 37, (usPosX + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH), INSURANCE_BOTTOM_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedInsuranceLinkRegion[i]));
-    MSYS_SetRegionUserData(addressof(gSelectedInsuranceLinkRegion[i]), 0, i);
+    MSYS_DefineRegion(gSelectedInsuranceLinkRegion[i], usPosX, INSURANCE_BOTTOM_LINK_RED_BAR_Y - 37, (usPosX + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH), INSURANCE_BOTTOM_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceRegionCallBack);
+    MSYS_AddRegion(gSelectedInsuranceLinkRegion[i]);
+    MSYS_SetRegionUserData(gSelectedInsuranceLinkRegion[i], 0, i);
 
     usPosX += INSURANCE_BOTTOM_LINK_RED_BAR_OFFSET;
   }
@@ -115,7 +115,7 @@ export function ExitInsurance(): void {
   DeleteVideoObjectFromIndex(guiInsuranceBulletImage);
 
   for (i = 0; i < 3; i++)
-    MSYS_RemoveRegion(addressof(gSelectedInsuranceLinkRegion[i]));
+    MSYS_RemoveRegion(gSelectedInsuranceLinkRegion[i]);
 }
 
 export function HandleInsurance(): void {
@@ -220,8 +220,8 @@ export function InitInsuranceDefaults(): boolean {
     }
 
     // create the link to the home page on the small titles
-    MSYS_DefineRegion(addressof(gSelectedInsuranceTitleLinkRegion), INSURANCE_SMALL_TITLE_X + 85, INSURANCE_SMALL_TITLE_Y, (INSURANCE_SMALL_TITLE_X + INSURANCE_SMALL_TITLE_WIDTH), (INSURANCE_SMALL_TITLE_Y + INSURANCE_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceTitleLinkRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedInsuranceTitleLinkRegion));
+    MSYS_DefineRegion(gSelectedInsuranceTitleLinkRegion, INSURANCE_SMALL_TITLE_X + 85, INSURANCE_SMALL_TITLE_Y, (INSURANCE_SMALL_TITLE_X + INSURANCE_SMALL_TITLE_WIDTH), (INSURANCE_SMALL_TITLE_Y + INSURANCE_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceTitleLinkRegionCallBack);
+    MSYS_AddRegion(gSelectedInsuranceTitleLinkRegion);
   }
 
   return true;
@@ -279,7 +279,7 @@ export function RemoveInsuranceDefaults(): void {
   // if it is not the first page, display the small title
   if (guiPreviousLaptopMode != Enum95.LAPTOP_MODE_INSURANCE) {
     DeleteVideoObjectFromIndex(guiInsuranceSmallTitleImage);
-    MSYS_RemoveRegion(addressof(gSelectedInsuranceTitleLinkRegion));
+    MSYS_RemoveRegion(gSelectedInsuranceTitleLinkRegion);
   }
 }
 
@@ -315,7 +315,7 @@ export function GetInsuranceText(ubNumber: UINT8, pString: Pointer<string> /* ST
   }
 }
 
-function SelectInsuranceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectInsuranceRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let uiInsuranceLink: UINT32 = MSYS_GetRegionUserData(pRegion, 0);
@@ -330,7 +330,7 @@ function SelectInsuranceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
   }
 }
 
-function SelectInsuranceTitleLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectInsuranceTitleLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE;

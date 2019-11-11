@@ -391,25 +391,25 @@ export function EnterBobbyRMailOrder(): boolean {
   SetButtonCursor(guiBobbyRGotoShipmentPage, Enum317.CURSOR_LAPTOP_SCREEN);
 
   for (i = 0; i < 3; i++) {
-    MSYS_DefineRegion(addressof(gSelectedShippingSpeedRegion[i]), gShippingSpeedAreas[i * 2], gShippingSpeedAreas[i * 2 + 1], (gShippingSpeedAreas[i * 2] + SHIPPING_SPEED_LIGHT_WIDTH), (gShippingSpeedAreas[i * 2 + 1] + SHIPPING_SPEED_LIGHT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectShippingSpeedRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedShippingSpeedRegion[i]));
-    MSYS_SetRegionUserData(addressof(gSelectedShippingSpeedRegion[i]), 0, i);
+    MSYS_DefineRegion(gSelectedShippingSpeedRegion[i], gShippingSpeedAreas[i * 2], gShippingSpeedAreas[i * 2 + 1], (gShippingSpeedAreas[i * 2] + SHIPPING_SPEED_LIGHT_WIDTH), (gShippingSpeedAreas[i * 2 + 1] + SHIPPING_SPEED_LIGHT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectShippingSpeedRegionCallBack);
+    MSYS_AddRegion(gSelectedShippingSpeedRegion[i]);
+    MSYS_SetRegionUserData(gSelectedShippingSpeedRegion[i], 0, i);
   }
 
   // confirmorder mouse region, occupies the entrie screen and is present only when the confirm order graphic
   // s on screen.  When user clicks anywhere the graphic disappears
-  MSYS_DefineRegion(addressof(gSelectedConfirmOrderRegion), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectConfirmOrderRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedConfirmOrderRegion));
-  MSYS_DisableRegion(addressof(gSelectedConfirmOrderRegion));
+  MSYS_DefineRegion(gSelectedConfirmOrderRegion, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectConfirmOrderRegionCallBack);
+  MSYS_AddRegion(gSelectedConfirmOrderRegion);
+  MSYS_DisableRegion(gSelectedConfirmOrderRegion);
 
   // click on the shipping location to activate the drop down menu
-  MSYS_DefineRegion(addressof(gSelectedActivateCityDroDownRegion), BOBBYR_SHIPPING_LOC_AREA_L_X, BOBBYR_SHIPPING_LOC_AREA_T_Y, BOBBYR_SHIPPING_LOC_AREA_R_X, BOBBYR_SHIPPING_LOC_AREA_B_Y, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectActivateCityDroDownRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedActivateCityDroDownRegion));
+  MSYS_DefineRegion(gSelectedActivateCityDroDownRegion, BOBBYR_SHIPPING_LOC_AREA_L_X, BOBBYR_SHIPPING_LOC_AREA_T_Y, BOBBYR_SHIPPING_LOC_AREA_R_X, BOBBYR_SHIPPING_LOC_AREA_B_Y, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectActivateCityDroDownRegionCallBack);
+  MSYS_AddRegion(gSelectedActivateCityDroDownRegion);
 
   // click anywhere on the screen to close the window( only when the drop down window is active)
-  MSYS_DefineRegion(addressof(gSelectedCloseDropDownRegion), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectCloseDroDownRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedCloseDropDownRegion));
-  MSYS_DisableRegion(addressof(gSelectedCloseDropDownRegion));
+  MSYS_DefineRegion(gSelectedCloseDropDownRegion, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectCloseDroDownRegionCallBack);
+  MSYS_AddRegion(gSelectedCloseDropDownRegion);
+  MSYS_DisableRegion(gSelectedCloseDropDownRegion);
 
   CreateBobbyRayOrderTitle();
 
@@ -459,12 +459,12 @@ export function ExitBobbyRMailOrder(): void {
   DeleteBobbyRWoodBackground();
 
   for (i = 0; i < 3; i++) {
-    MSYS_RemoveRegion(addressof(gSelectedShippingSpeedRegion[i]));
+    MSYS_RemoveRegion(gSelectedShippingSpeedRegion[i]);
   }
 
-  MSYS_RemoveRegion(addressof(gSelectedConfirmOrderRegion));
-  MSYS_RemoveRegion(addressof(gSelectedActivateCityDroDownRegion));
-  MSYS_RemoveRegion(addressof(gSelectedCloseDropDownRegion));
+  MSYS_RemoveRegion(gSelectedConfirmOrderRegion);
+  MSYS_RemoveRegion(gSelectedActivateCityDroDownRegion);
+  MSYS_RemoveRegion(gSelectedCloseDropDownRegion);
 
   // if the drop down box is active, destroy it
   gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
@@ -494,7 +494,7 @@ export function HandleBobbyRMailOrder(): void {
   if (gfDestroyConfirmGrphiArea) {
     gfDestroyConfirmGrphiArea = false;
     gfReDrawBobbyOrder = true;
-    MSYS_DisableRegion(addressof(gSelectedConfirmOrderRegion));
+    MSYS_DisableRegion(gSelectedConfirmOrderRegion);
     gfCanAcceptOrder = true;
   }
 
@@ -1006,7 +1006,7 @@ function BtnBobbyRHomeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function SelectShippingSpeedRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectShippingSpeedRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubSelectedLight = MSYS_GetRegionUserData(pRegion, 0);
@@ -1035,7 +1035,7 @@ function DrawShippingSpeedLights(ubSelected: UINT8): boolean {
   return true;
 }
 
-function SelectConfirmOrderRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectConfirmOrderRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Remove the items for Boby Rqys Inventory
@@ -1087,9 +1087,9 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       usPosX = BOBBYR_CITY_START_LOCATION_X;
       usPosY = BOBBYR_CITY_START_LOCATION_Y;
       for (i = 0; i < BOBBYR_NUM_DISPLAYED_CITIES; i++) {
-        MSYS_DefineRegion(addressof(gSelectedDropDownRegion[i]), usPosX, (usPosY + 4), (usPosX + BOBBYR_DROP_DOWN_WIDTH - 6), (usPosY + usFontHeight + 7), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, SelectDropDownMovementCallBack, SelectDropDownRegionCallBack);
-        MSYS_AddRegion(addressof(gSelectedDropDownRegion[i]));
-        MSYS_SetRegionUserData(addressof(gSelectedDropDownRegion[i]), 0, i);
+        MSYS_DefineRegion(gSelectedDropDownRegion[i], usPosX, (usPosY + 4), (usPosX + BOBBYR_DROP_DOWN_WIDTH - 6), (usPosY + usFontHeight + 7), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, SelectDropDownMovementCallBack, SelectDropDownRegionCallBack);
+        MSYS_AddRegion(gSelectedDropDownRegion[i]);
+        MSYS_SetRegionUserData(gSelectedDropDownRegion[i], 0, i);
 
         usPosY += usFontHeight + 2;
       }
@@ -1101,9 +1101,9 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       usPosX = BOBBYR_SCROLL_UP_ARROW_X;
       usPosY = BOBBYR_SCROLL_UP_ARROW_Y;
       for (i = 0; i < 2; i++) {
-        MSYS_DefineRegion(addressof(gSelectedUpDownArrowOnScrollAreaRegion[i]), usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (usPosY + BOBBYR_SCROLL_ARROW_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectUpDownArrowOnScrollAreaRegionCallBack);
-        MSYS_AddRegion(addressof(gSelectedUpDownArrowOnScrollAreaRegion[i]));
-        MSYS_SetRegionUserData(addressof(gSelectedUpDownArrowOnScrollAreaRegion[i]), 0, i);
+        MSYS_DefineRegion(gSelectedUpDownArrowOnScrollAreaRegion[i], usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (usPosY + BOBBYR_SCROLL_ARROW_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectUpDownArrowOnScrollAreaRegionCallBack);
+        MSYS_AddRegion(gSelectedUpDownArrowOnScrollAreaRegion[i]);
+        MSYS_SetRegionUserData(gSelectedUpDownArrowOnScrollAreaRegion[i], 0, i);
         usPosX = BOBBYR_SCROLL_DOWN_ARROW_X;
         usPosY = BOBBYR_SCROLL_DOWN_ARROW_Y;
       }
@@ -1113,17 +1113,17 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       usPosY = BOBBYR_SCROLL_UP_ARROW_Y + BOBBYR_SCROLL_ARROW_HEIGHT;
       usHeight = BOBBYR_SCROLL_AREA_HEIGHT_MINUS_ARROWS / BOBBYR_ORDER_NUM_SHIPPING_CITIES;
       for (i = 0; i < BOBBYR_ORDER_NUM_SHIPPING_CITIES - 1; i++) {
-        MSYS_DefineRegion(addressof(gSelectedScrollAreaDropDownRegion[i]), usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (usPosY + usHeight), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack, SelectScrollAreaDropDownRegionCallBack);
-        MSYS_AddRegion(addressof(gSelectedScrollAreaDropDownRegion[i]));
-        MSYS_SetRegionUserData(addressof(gSelectedScrollAreaDropDownRegion[i]), 0, i);
+        MSYS_DefineRegion(gSelectedScrollAreaDropDownRegion[i], usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (usPosY + usHeight), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack, SelectScrollAreaDropDownRegionCallBack);
+        MSYS_AddRegion(gSelectedScrollAreaDropDownRegion[i]);
+        MSYS_SetRegionUserData(gSelectedScrollAreaDropDownRegion[i], 0, i);
         usPosY += usHeight;
       }
       // put the last one down to cover the remaining area
-      MSYS_DefineRegion(addressof(gSelectedScrollAreaDropDownRegion[i]), usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), BOBBYR_SCROLL_DOWN_ARROW_Y, MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack, SelectScrollAreaDropDownRegionCallBack);
-      MSYS_AddRegion(addressof(gSelectedScrollAreaDropDownRegion[i]));
-      MSYS_SetRegionUserData(addressof(gSelectedScrollAreaDropDownRegion[i]), 0, i);
+      MSYS_DefineRegion(gSelectedScrollAreaDropDownRegion[i], usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), BOBBYR_SCROLL_DOWN_ARROW_Y, MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack, SelectScrollAreaDropDownRegionCallBack);
+      MSYS_AddRegion(gSelectedScrollAreaDropDownRegion[i]);
+      MSYS_SetRegionUserData(gSelectedScrollAreaDropDownRegion[i], 0, i);
 
-      MSYS_EnableRegion(addressof(gSelectedCloseDropDownRegion));
+      MSYS_EnableRegion(gSelectedCloseDropDownRegion);
 
       // disable the clear order and accept order buttons, (their rendering interferes with the drop down graphics)
       DisableButton(guiBobbyRClearOrder);
@@ -1143,15 +1143,15 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
         break;
 
       for (i = 0; i < BOBBYR_NUM_DISPLAYED_CITIES; i++)
-        MSYS_RemoveRegion(addressof(gSelectedDropDownRegion[i]));
+        MSYS_RemoveRegion(gSelectedDropDownRegion[i]);
 
       // destroy the scroll bars arrow regions
       for (i = 0; i < 2; i++)
-        MSYS_RemoveRegion(addressof(gSelectedUpDownArrowOnScrollAreaRegion[i]));
+        MSYS_RemoveRegion(gSelectedUpDownArrowOnScrollAreaRegion[i]);
 
       // destroy the scroll bars regions
       for (i = 0; i < BOBBYR_ORDER_NUM_SHIPPING_CITIES; i++)
-        MSYS_RemoveRegion(addressof(gSelectedScrollAreaDropDownRegion[i]));
+        MSYS_RemoveRegion(gSelectedScrollAreaDropDownRegion[i]);
 
       // display the name on the title bar
       ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_SHIPPING_LOC_AREA_L_X, BOBBYR_SHIPPING_LOC_AREA_T_Y, BOBBYR_SHIPPING_LOC_AREA_L_X + 175, BOBBYR_SHIPPING_LOC_AREA_T_Y + BOBBYR_DROP_DOWN_HEIGHT, Get16BPPColor(FROMRGB(0, 0, 0)));
@@ -1162,7 +1162,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
         DrawTextToScreen((BobbyROrderLocations[gbSelectedCity].psCityLoc).value, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // disable the r\close regiuon
-      MSYS_DisableRegion(addressof(gSelectedCloseDropDownRegion));
+      MSYS_DisableRegion(gSelectedCloseDropDownRegion);
 
       // enable the clear order and accept order buttons, (because their rendering interferes with the drop down graphics)
       EnableButton(guiBobbyRClearOrder);
@@ -1267,7 +1267,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
   return true;
 }
 
-function SelectDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectDropDownRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubSelected: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
@@ -1279,25 +1279,25 @@ function SelectDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   }
 }
 
-function SelectActivateCityDroDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectActivateCityDroDownRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubDropDownAction = Enum69.BR_DROP_DOWN_CREATE;
   }
 }
 
-function SelectDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function SelectDropDownMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    pRegion.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.uiFlags |= BUTTON_CLICKED_ON;
 
     gbSelectedCity = MSYS_GetRegionUserData(pRegion, 0) + gubCityAtTopOfList;
 
     gubDropDownAction = Enum69.BR_DROP_DOWN_DISPLAY;
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 }
 
@@ -1392,7 +1392,7 @@ function DisplayShippingLocationCity(): void {
   DrawTextToScreen(sTemp, BOBBYR_SHIPPING_SPEED_NUMBER_X, usPosY, BOBBYR_SHIPPING_SPEED_NUMBER_WIDTH, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 }
 
-function SelectCloseDroDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectCloseDroDownRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
@@ -1440,14 +1440,14 @@ function IsAnythingPurchasedFromBobbyRayPage(): boolean {
   return fReturnType;
 }
 
-function SelectTitleLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectTitleLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R;
   }
 }
 
-function SelectScrollAreaDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectScrollAreaDropDownRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubCityNum: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
@@ -1468,7 +1468,7 @@ function SelectScrollAreaDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
     let ubCityNum: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
-    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.uiFlags |= BUTTON_CLICKED_ON;
 
     if (ubCityNum < gbSelectedCity) {
       gbSelectedCity--;
@@ -1484,19 +1484,19 @@ function SelectScrollAreaDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
 
     gubDropDownAction = Enum69.BR_DROP_DOWN_DISPLAY;
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 }
 
-function SelectScrollAreaDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function SelectScrollAreaDropDownMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    pRegion.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     if (gfLeftButtonState) {
       let ubCityNum: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
-      pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
+      pRegion.uiFlags |= BUTTON_CLICKED_ON;
 
       if (ubCityNum < gbSelectedCity) {
         gbSelectedCity = ubCityNum;
@@ -1512,12 +1512,12 @@ function SelectScrollAreaDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>
 
       gubDropDownAction = Enum69.BR_DROP_DOWN_DISPLAY;
 
-      InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+      InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
     }
   }
 }
 
-function SelectUpDownArrowOnScrollAreaRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectUpDownArrowOnScrollAreaRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP || iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
     let ubUpArrow: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
@@ -1762,7 +1762,7 @@ function PurchaseBobbyOrder(): void {
   // Get rid of the city drop dowm, if it is being displayed
   gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
 
-  MSYS_EnableRegion(addressof(gSelectedConfirmOrderRegion));
+  MSYS_EnableRegion(gSelectedConfirmOrderRegion);
   gfRemoveItemsFromStock = true;
 
   gbSelectedCity = -1;
@@ -1907,14 +1907,14 @@ export function CreateBobbyRayOrderTitle(): boolean {
   }
 
   // the link to home page from the title
-  MSYS_DefineRegion(addressof(gSelectedTitleLinkRegion), BOBBYR_BOBBY_RAY_TITLE_X, BOBBYR_BOBBY_RAY_TITLE_Y, (BOBBYR_BOBBY_RAY_TITLE_X + BOBBYR_BOBBY_RAY_TITLE_WIDTH), (BOBBYR_BOBBY_RAY_TITLE_Y + BOBBYR_BOBBY_RAY_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleLinkRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedTitleLinkRegion));
+  MSYS_DefineRegion(gSelectedTitleLinkRegion, BOBBYR_BOBBY_RAY_TITLE_X, BOBBYR_BOBBY_RAY_TITLE_Y, (BOBBYR_BOBBY_RAY_TITLE_X + BOBBYR_BOBBY_RAY_TITLE_WIDTH), (BOBBYR_BOBBY_RAY_TITLE_Y + BOBBYR_BOBBY_RAY_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleLinkRegionCallBack);
+  MSYS_AddRegion(gSelectedTitleLinkRegion);
 
   return true;
 }
 
 export function DestroyBobbyROrderTitle(): void {
-  MSYS_RemoveRegion(addressof(gSelectedTitleLinkRegion));
+  MSYS_RemoveRegion(gSelectedTitleLinkRegion);
   DeleteVideoObjectFromIndex(guiBobbyRayTitle);
 }
 

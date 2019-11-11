@@ -324,17 +324,17 @@ function EnterOptionsScreen(): boolean {
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
       // Create mouse regions for the option toggle text
-      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
-      MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
-      MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
+      MSYS_DefineRegion(gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_AddRegion(gSelectedOptionTextRegion[cnt]);
+      MSYS_SetRegionUserData(gSelectedOptionTextRegion[cnt], 0, cnt);
     } else {
       // Create mouse regions for the option toggle text
-      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
-      MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
-      MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
+      MSYS_DefineRegion(gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_AddRegion(gSelectedOptionTextRegion[cnt]);
+      MSYS_SetRegionUserData(gSelectedOptionTextRegion[cnt], 0, cnt);
     }
 
-    SetRegionFastHelpText(addressof(gSelectedOptionTextRegion[cnt]), zOptionsScreenHelpText[cnt]);
+    SetRegionFastHelpText(gSelectedOptionTextRegion[cnt], zOptionsScreenHelpText[cnt]);
     SetButtonFastHelpText(guiOptionsToggles[cnt], zOptionsScreenHelpText[cnt]);
 
     usPosY += OPT_GAP_BETWEEN_TOGGLE_BOXES;
@@ -359,24 +359,24 @@ function EnterOptionsScreen(): boolean {
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
-      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
-      MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
-      MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
+      MSYS_DefineRegion(gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_AddRegion(gSelectedOptionTextRegion[cnt]);
+      MSYS_SetRegionUserData(gSelectedOptionTextRegion[cnt], 0, cnt);
     } else {
-      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
-      MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
-      MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
+      MSYS_DefineRegion(gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_AddRegion(gSelectedOptionTextRegion[cnt]);
+      MSYS_SetRegionUserData(gSelectedOptionTextRegion[cnt], 0, cnt);
     }
 
-    SetRegionFastHelpText(addressof(gSelectedOptionTextRegion[cnt]), zOptionsScreenHelpText[cnt]);
+    SetRegionFastHelpText(gSelectedOptionTextRegion[cnt], zOptionsScreenHelpText[cnt]);
     SetButtonFastHelpText(guiOptionsToggles[cnt], zOptionsScreenHelpText[cnt]);
 
     usPosY += OPT_GAP_BETWEEN_TOGGLE_BOXES;
   }
 
   // Create a mouse region so when the user leaves a togglebox text region we can detect it then unselect the region
-  MSYS_DefineRegion(addressof(gSelectedToggleBoxAreaRegion), 0, 0, 640, 480, MSYS_PRIORITY_NORMAL, Enum317.CURSOR_NORMAL, SelectedToggleBoxAreaRegionMovementCallBack, MSYS_NO_CALLBACK);
-  MSYS_AddRegion(addressof(gSelectedToggleBoxAreaRegion));
+  MSYS_DefineRegion(gSelectedToggleBoxAreaRegion, 0, 0, 640, 480, MSYS_PRIORITY_NORMAL, Enum317.CURSOR_NORMAL, SelectedToggleBoxAreaRegionMovementCallBack, MSYS_NO_CALLBACK);
+  MSYS_AddRegion(gSelectedToggleBoxAreaRegion);
 
   // Render the scene before adding the slider boxes
   RenderOptionsScreen();
@@ -466,7 +466,7 @@ function ExitOptionsScreen(): void {
 
     RemoveButton(guiOptionsToggles[cnt]);
 
-    MSYS_RemoveRegion(addressof(gSelectedOptionTextRegion[cnt]));
+    MSYS_RemoveRegion(gSelectedOptionTextRegion[cnt]);
   }
 
   // REmove the slider bars
@@ -474,7 +474,7 @@ function ExitOptionsScreen(): void {
   RemoveSliderBar(guiSpeechSliderID);
   RemoveSliderBar(guiMusicSliderID);
 
-  MSYS_RemoveRegion(addressof(gSelectedToggleBoxAreaRegion));
+  MSYS_RemoveRegion(gSelectedToggleBoxAreaRegion);
 
   ShutDownSlider();
 
@@ -896,13 +896,13 @@ function HandleSliderBarMovementSounds(): void {
     uiLastSpeechTime = GetJA2Clock();
 }
 
-function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectedOptionTextRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let ubButton: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     HandleOptionToggle(ubButton, (!gGameSettings.fOptions[ubButton]), false, true);
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 
   else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) // iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT ||
@@ -915,7 +915,7 @@ function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
   }
 }
 
-function SelectedOptionTextRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function SelectedOptionTextRegionMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   let bButton: INT8 = MSYS_GetRegionUserData(pRegion, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -923,11 +923,11 @@ function SelectedOptionTextRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>
 
     gbHighLightedOptionText = -1;
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     gbHighLightedOptionText = bButton;
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 }
 
@@ -1009,7 +1009,7 @@ function HandleHighLightedText(fHighLight: boolean): void {
   }
 }
 
-function SelectedToggleBoxAreaRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function SelectedToggleBoxAreaRegionMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     let ubCnt: UINT8;
@@ -1021,7 +1021,7 @@ function SelectedToggleBoxAreaRegionMovementCallBack(pRegion: Pointer<MOUSE_REGI
 
     gbHighLightedOptionText = -1;
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 }
 

@@ -294,7 +294,7 @@ export function HandleDialogueUIAdjustments(): void {
             giTextBoxOverlay = -1;
 
             if (fTextBoxMouseRegionCreated) {
-              MSYS_RemoveRegion(addressof(gTextBoxMouseRegion));
+              MSYS_RemoveRegion(gTextBoxMouseRegion);
               fTextBoxMouseRegionCreated = false;
             }
 
@@ -403,7 +403,7 @@ export function HandleDialogue(): void {
 
           if (fExternFaceBoxRegionCreated) {
             fExternFaceBoxRegionCreated = false;
-            MSYS_RemoveRegion(addressof(gFacePopupMouseRegion));
+            MSYS_RemoveRegion(gFacePopupMouseRegion);
           }
 
           // Set face inactive....
@@ -1586,9 +1586,9 @@ function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: string /* STR16 *
   gsTopPosition = 20;
 
   // Define main region
-  MSYS_DefineRegion(addressof(gTextBoxMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, TextOverlayClickCallback);
+  MSYS_DefineRegion(gTextBoxMouseRegion, VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, TextOverlayClickCallback);
   // Add region
-  MSYS_AddRegion(addressof(gTextBoxMouseRegion));
+  MSYS_AddRegion(gTextBoxMouseRegion);
 
   fTextBoxMouseRegionCreated = true;
 }
@@ -1639,9 +1639,9 @@ function HandleExternNPCSpeechFace(iIndex: INT32): void {
     fExternFaceBoxRegionCreated = true;
 
     // Define main region
-    MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
+    MSYS_DefineRegion(gFacePopupMouseRegion, VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
     // Add region
-    MSYS_AddRegion(addressof(gFacePopupMouseRegion));
+    MSYS_AddRegion(gFacePopupMouseRegion);
   }
 
   gfFacePanelActive = true;
@@ -1705,9 +1705,9 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
       fExternFaceBoxRegionCreated = true;
 
       // Define main region
-      MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
+      MSYS_DefineRegion(gFacePopupMouseRegion, VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
       // Add region
-      MSYS_AddRegion(addressof(gFacePopupMouseRegion));
+      MSYS_AddRegion(gFacePopupMouseRegion);
     }
 
     gfFacePanelActive = true;
@@ -1743,7 +1743,7 @@ export function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
 
           if (fExternFaceBoxRegionCreated) {
             fExternFaceBoxRegionCreated = false;
-            MSYS_RemoveRegion(addressof(gFacePopupMouseRegion));
+            MSYS_RemoveRegion(gFacePopupMouseRegion);
           }
         }
         break;
@@ -1756,7 +1756,7 @@ export function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
 
         if (fExternFaceBoxRegionCreated) {
           fExternFaceBoxRegionCreated = false;
-          MSYS_RemoveRegion(addressof(gFacePopupMouseRegion));
+          MSYS_RemoveRegion(gFacePopupMouseRegion);
         }
 
         break;
@@ -1777,7 +1777,7 @@ export function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
 
             // reset box id
             iDialogueBox = -1;
-            MSYS_RemoveRegion(addressof(gTextBoxMouseRegion));
+            MSYS_RemoveRegion(gTextBoxMouseRegion);
             fTextBoxMouseRegionCreated = false;
           }
         }
@@ -1788,7 +1788,7 @@ export function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
 
         // Remove region
         if (gTalkPanel.fTextRegionOn) {
-          MSYS_RemoveRegion(addressof(gTalkPanel.TextRegion));
+          MSYS_RemoveRegion(gTalkPanel.TextRegion);
           gTalkPanel.fTextRegionOn = false;
         }
 
@@ -2059,7 +2059,7 @@ export function SayQuote58FromNearbyMercInSector(sGridNo: INT16, bDistance: INT8
   }
 }
 
-function TextOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TextOverlayClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -2081,7 +2081,7 @@ function TextOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   }
 }
 
-function FaceOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function FaceOverlayClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -2103,7 +2103,7 @@ export function ShutDownLastQuoteTacticalTextBox(): void {
     giTextBoxOverlay = -1;
 
     if (fTextBoxMouseRegionCreated) {
-      MSYS_RemoveRegion(addressof(gTextBoxMouseRegion));
+      MSYS_RemoveRegion(gTextBoxMouseRegion);
       fTextBoxMouseRegionCreated = false;
     }
 

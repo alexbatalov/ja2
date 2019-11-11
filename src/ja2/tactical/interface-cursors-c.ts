@@ -204,7 +204,7 @@ export function DrawUICursor(): boolean {
 
   // OK, WE OVERRIDE HERE CURSOR DRAWING FOR THINGS LIKE
   if (gpItemPointer != null) {
-    MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
+    MSYS_ChangeRegionCursor(gViewportRegion, VIDEO_NO_CURSOR);
 
     // Check if we are in the viewport region...
     if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
@@ -219,7 +219,7 @@ export function DrawUICursor(): boolean {
     gusCurMousePos = usMapPos;
 
     if (guiCurUICursor == Enum210.NO_UICURSOR) {
-      MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
+      MSYS_ChangeRegionCursor(gViewportRegion, VIDEO_NO_CURSOR);
       return true;
     }
 
@@ -301,7 +301,7 @@ export function DrawUICursor(): boolean {
     // If snapping - remove from main viewport
     if (gUICursors[guiCurUICursor].uiFlags & UICURSOR_SNAPPING) {
       // Hide mouse region cursor
-      MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
+      MSYS_ChangeRegionCursor(gViewportRegion, VIDEO_NO_CURSOR);
 
       // Set Snapping Cursor
       DrawSnappingCursor();
@@ -346,10 +346,10 @@ export function DrawUICursor(): boolean {
       fHideCursor = false;
 
       if (!fHideCursor) {
-        MSYS_ChangeRegionCursor(addressof(gViewportRegion), gUICursors[guiCurUICursor].usFreeCursorName);
+        MSYS_ChangeRegionCursor(gViewportRegion, gUICursors[guiCurUICursor].usFreeCursorName);
       } else {
         // Hide
-        MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
+        MSYS_ChangeRegionCursor(gViewportRegion, VIDEO_NO_CURSOR);
       }
     }
 

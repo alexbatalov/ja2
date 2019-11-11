@@ -24,7 +24,7 @@ namespace ja2 {
 //
 // *****************************************************************************
 
-export type MOUSE_CALLBACK = (a: Pointer<MOUSE_REGION>, b: INT32) => void; // Define MOUSE_CALLBACK type as pointer to void
+export type MOUSE_CALLBACK = (mouseRegion: MOUSE_REGION, reason: INT32) => void; // Define MOUSE_CALLBACK type as pointer to void
 export type MOUSE_HELPTEXT_DONE_CALLBACK = () => void; // the help is done callback
 
 export interface MOUSE_REGION {
@@ -41,18 +41,18 @@ export interface MOUSE_REGION {
   RelativeYPos: INT16;
   ButtonState: UINT16; // Current state of the mouse buttons
   Cursor: UINT16; // Cursor to use when mouse in this region (see flags)
-  MovementCallback: MOUSE_CALLBACK; // Pointer to callback function if movement occured in this region
-  ButtonCallback: MOUSE_CALLBACK; // Pointer to callback function if button action occured in this region
+  MovementCallback: MOUSE_CALLBACK | null; // Pointer to callback function if movement occured in this region
+  ButtonCallback: MOUSE_CALLBACK | null; // Pointer to callback function if button action occured in this region
   UserData: INT32[] /* [4] */; // User Data, can be set to anything!
 
   // Fast help vars.
   FastHelpTimer: INT16; // Countdown timer for FastHelp text
   FastHelpText: string /* Pointer<UINT16> */; // Text string for the FastHelp (describes buttons if left there a while)
   FastHelpRect: INT32;
-  HelpDoneCallback: MOUSE_HELPTEXT_DONE_CALLBACK;
+  HelpDoneCallback: MOUSE_HELPTEXT_DONE_CALLBACK | null;
 
-  next: Pointer<MOUSE_REGION>; // List maintenance, do NOT touch these entries
-  prev: Pointer<MOUSE_REGION>;
+  next: MOUSE_REGION | null; // List maintenance, do NOT touch these entries
+  prev: MOUSE_REGION | null;
 }
 
 export function createMouseRegion(): MOUSE_REGION {
@@ -80,6 +80,58 @@ export function createMouseRegion(): MOUSE_REGION {
     next: null,
     prev: null,
   };
+}
+
+export function createMouseRegionFrom(IDNumber: UINT16, PriorityLevel: INT8, uiFlags: UINT32, RegionTopLeftX: INT16, RegionTopLeftY: INT16, RegionBottomRightX: INT16, RegionBottomRightY: INT16, MouseXPos: INT16, MouseYPos: INT16, RelativeXPos: INT16, RelativeYPos: INT16, ButtonState: UINT16, Cursor: UINT16, MovementCallback: MOUSE_CALLBACK | null, ButtonCallback: MOUSE_CALLBACK | null, UserData: INT32[] /* [4] */, FastHelpTimer: INT16, FastHelpText: string /* Pointer<UINT16> */, FastHelpRect: INT32, HelpDoneCallback: MOUSE_HELPTEXT_DONE_CALLBACK | null, next: MOUSE_REGION | null, prev: MOUSE_REGION | null): MOUSE_REGION {
+  return {
+    IDNumber,
+    PriorityLevel,
+    uiFlags,
+    RegionTopLeftX,
+    RegionTopLeftY,
+    RegionBottomRightX,
+    RegionBottomRightY,
+    MouseXPos,
+    MouseYPos,
+    RelativeXPos,
+    RelativeYPos,
+    ButtonState,
+    Cursor,
+    MovementCallback,
+    ButtonCallback,
+    UserData,
+    FastHelpTimer,
+    FastHelpText,
+    FastHelpRect,
+    HelpDoneCallback,
+    next,
+    prev,
+  };
+}
+
+export function resetMouseRegion(mouseRegion: MOUSE_REGION) {
+  mouseRegion.IDNumber = 0;
+  mouseRegion.PriorityLevel = 0;
+  mouseRegion.uiFlags = 0;
+  mouseRegion.RegionTopLeftX = 0;
+  mouseRegion.RegionTopLeftY = 0;
+  mouseRegion.RegionBottomRightX = 0;
+  mouseRegion.RegionBottomRightY = 0;
+  mouseRegion.MouseXPos = 0;
+  mouseRegion.MouseYPos = 0;
+  mouseRegion.RelativeXPos = 0;
+  mouseRegion.RelativeYPos = 0;
+  mouseRegion.ButtonState = 0;
+  mouseRegion.Cursor = 0;
+  mouseRegion.MovementCallback = null;
+  mouseRegion.ButtonCallback = null;
+  mouseRegion.UserData.fill(0);
+  mouseRegion.FastHelpTimer = 0;
+  mouseRegion.FastHelpText = "";
+  mouseRegion.FastHelpRect = 0;
+  mouseRegion.HelpDoneCallback = null;
+  mouseRegion.next = null;
+  mouseRegion.prev = null;
 }
 
 // *****************************************************************************

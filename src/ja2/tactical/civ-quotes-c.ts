@@ -167,7 +167,7 @@ function ShutDownQuoteBox(fForce: boolean): void {
     RemoveVideoOverlay(gCivQuoteData.iVideoOverlay);
 
     // Remove mouse region...
-    MSYS_RemoveRegion(addressof(gCivQuoteData.MouseRegion));
+    MSYS_RemoveRegion(gCivQuoteData.MouseRegion);
 
     RemoveMercPopupBoxFromIndex(gCivQuoteData.iDialogueBox);
     gCivQuoteData.iDialogueBox = -1;
@@ -260,7 +260,7 @@ function RenderCivQuoteBoxOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   }
 }
 
-function QuoteOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function QuoteOverlayClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -342,9 +342,9 @@ export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, u
   gCivQuoteData.iVideoOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
 
   // Define main region
-  MSYS_DefineRegion(addressof(gCivQuoteData.MouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, QuoteOverlayClickCallback);
+  MSYS_DefineRegion(gCivQuoteData.MouseRegion, VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, QuoteOverlayClickCallback);
   // Add region
-  MSYS_AddRegion(addressof(gCivQuoteData.MouseRegion));
+  MSYS_AddRegion(gCivQuoteData.MouseRegion);
 
   gCivQuoteData.bActive = true;
 

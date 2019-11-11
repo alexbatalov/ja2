@@ -2465,16 +2465,16 @@ export function MapScreenHandle(): UINT32 {
     LoadCharacters();
 
     // set up regions
-    MSYS_DefineRegion(addressof(gMapViewRegion), MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 1 + 8, MSYS_PRIORITY_HIGH - 3, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-    MSYS_DefineRegion(addressof(gCharInfoHandRegion), ((4)), ((81)), ((62)), ((103)), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, ItemRegionMvtCallback, ItemRegionBtnCallback);
-    MSYS_DefineRegion(addressof(gCharInfoFaceRegion), PLAYER_INFO_FACE_START_X, PLAYER_INFO_FACE_START_Y, PLAYER_INFO_FACE_END_X, PLAYER_INFO_FACE_END_Y, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FaceRegionBtnCallback);
+    MSYS_DefineRegion(gMapViewRegion, MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 1 + 8, MSYS_PRIORITY_HIGH - 3, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(gCharInfoHandRegion, ((4)), ((81)), ((62)), ((103)), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, ItemRegionMvtCallback, ItemRegionBtnCallback);
+    MSYS_DefineRegion(gCharInfoFaceRegion, PLAYER_INFO_FACE_START_X, PLAYER_INFO_FACE_START_Y, PLAYER_INFO_FACE_END_X, PLAYER_INFO_FACE_END_Y, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FaceRegionBtnCallback);
 
-    MSYS_DefineRegion(addressof(gMPanelRegion), INV_REGION_X, INV_REGION_Y, INV_REGION_X + INV_REGION_WIDTH, INV_REGION_Y + INV_REGION_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InvmaskRegionBtnCallBack);
+    MSYS_DefineRegion(gMPanelRegion, INV_REGION_X, INV_REGION_Y, INV_REGION_X + INV_REGION_WIDTH, INV_REGION_Y + INV_REGION_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InvmaskRegionBtnCallBack);
     // screen mask for animated cursors
-    MSYS_DefineRegion(addressof(gMapScreenMaskRegion), 0, 0, 640, 480, MSYS_PRIORITY_LOW, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MapScreenMarkRegionBtnCallback);
+    MSYS_DefineRegion(gMapScreenMaskRegion, 0, 0, 640, 480, MSYS_PRIORITY_LOW, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MapScreenMarkRegionBtnCallback);
 
     // set help text for item glow region
-    SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
+    SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
 
     // init the timer menus
     InitTimersForMoveMenuMouseRegions();
@@ -2501,14 +2501,14 @@ export function MapScreenHandle(): UINT32 {
     CreateMapStatusBarsRegion();
 
     // Add region
-    MSYS_AddRegion(addressof(gMapViewRegion));
-    MSYS_AddRegion(addressof(gCharInfoFaceRegion));
-    MSYS_AddRegion(addressof(gMPanelRegion));
+    MSYS_AddRegion(gMapViewRegion);
+    MSYS_AddRegion(gCharInfoFaceRegion);
+    MSYS_AddRegion(gMPanelRegion);
 
     if (!gfFadeOutDone && !gfFadeIn) {
       MSYS_SetCurrentCursor(SCREEN_CURSOR);
     }
-    MSYS_DisableRegion(addressof(gMPanelRegion));
+    MSYS_DisableRegion(gMPanelRegion);
 
     // create contract box
     CreateContractBox(null);
@@ -2870,7 +2870,7 @@ export function MapScreenHandle(): UINT32 {
     } else {
       fShowInventoryFlag = false;
       // set help text for item glow region
-      SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
+      SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
     }
 
     fTeamPanelDirty = true;
@@ -4373,11 +4373,11 @@ export function EndMapScreen(fDuringFade: boolean): void {
 
   DestroyMouseRegionsForTeamList();
 
-  MSYS_RemoveRegion(addressof(gMapViewRegion));
-  MSYS_RemoveRegion(addressof(gCharInfoFaceRegion));
-  MSYS_RemoveRegion(addressof(gCharInfoHandRegion));
-  MSYS_RemoveRegion(addressof(gMPanelRegion));
-  MSYS_RemoveRegion(addressof(gMapScreenMaskRegion));
+  MSYS_RemoveRegion(gMapViewRegion);
+  MSYS_RemoveRegion(gCharInfoFaceRegion);
+  MSYS_RemoveRegion(gCharInfoHandRegion);
+  MSYS_RemoveRegion(gMPanelRegion);
+  MSYS_RemoveRegion(gMapScreenMaskRegion);
   fInMapMode = false;
 
   // remove team panel sort button
@@ -4990,10 +4990,10 @@ export function CreateDestroyMapInvButton(): void {
     fTeamPanelDirty = true;
 
     InitInvSlotInterface(gMapScreenInvPocketXY, addressof(gSCamoXY), MAPInvMoveCallback, MAPInvClickCallback, MAPInvMoveCamoCallback, MAPInvClickCamoCallback, false);
-    MSYS_EnableRegion(addressof(gMPanelRegion));
+    MSYS_EnableRegion(gMPanelRegion);
 
     // switch hand region help text to "Exit Inventory"
-    SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[2]);
+    SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[2]);
 
     // reset inventory item help text
     memset(gubMAP_HandInvDispText, 0, sizeof(gubMAP_HandInvDispText));
@@ -5007,10 +5007,10 @@ export function CreateDestroyMapInvButton(): void {
     // RemoveButton( giMapInvButton );
     // UnloadButtonImage( giMapInvButtonImage );
     fTeamPanelDirty = true;
-    MSYS_DisableRegion(addressof(gMPanelRegion));
+    MSYS_DisableRegion(gMPanelRegion);
 
     // switch hand region help text to "Enter Inventory"
-    SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
+    SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
 
     // force immediate reblit of item in HANDPOS now that it's not blitted while in inventory mode
     fCharacterInfoPanelDirty = true;
@@ -5126,14 +5126,14 @@ function HandleCursorOverRifleAmmo(): void {
   }
 }
 
-function MAPInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MAPInvClickCamoCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
 }
 
-function MAPInvMoveCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MAPInvMoveCamoCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
 }
 
 // this is Map Screen's version of SMInvMoveCallback()
-function MAPInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MAPInvMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiHandPos: UINT32;
 
@@ -5186,7 +5186,7 @@ export function MAPInternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, 
 }
 
 // this is Map Screen's version of SMInvClickCallback()
-function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MAPInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let uiHandPos: UINT32;
   let usOldItemIndex: UINT16;
@@ -5304,7 +5304,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
           guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
           gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-          MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
+          MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
           MSYS_SetCurrentCursor(EXTERN_CURSOR);
           fMapInventoryItem = true;
           fTeamPanelDirty = true;
@@ -5377,7 +5377,7 @@ export function InternalMAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>): voi
   guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
   gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-  MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
+  MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
   MSYS_SetCurrentCursor(EXTERN_CURSOR);
   fMapInventoryItem = true;
   fTeamPanelDirty = true;
@@ -5420,7 +5420,7 @@ function MAPBeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, uiKeySlot: U
   guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
   gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-  MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
+  MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
   MSYS_SetCurrentCursor(EXTERN_CURSOR);
   fMapInventoryItem = true;
   fTeamPanelDirty = true;
@@ -5429,7 +5429,7 @@ function MAPBeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, uiKeySlot: U
 export function MAPEndItemPointer(): void {
   if (gpItemPointer != null) {
     gpItemPointer = null;
-    MSYS_ChangeRegionCursor(addressof(gMPanelRegion), Enum317.CURSOR_NORMAL);
+    MSYS_ChangeRegionCursor(gMPanelRegion, Enum317.CURSOR_NORMAL);
     MSYS_SetCurrentCursor(Enum317.CURSOR_NORMAL);
     fMapInventoryItem = false;
     fTeamPanelDirty = true;
@@ -5690,37 +5690,37 @@ function CreateMouseRegionsForTeamList(): void {
     }
 
     // name region
-    MSYS_DefineRegion(addressof(gTeamListNameRegion[sCounter]), NAME_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), NAME_X + NAME_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
+    MSYS_DefineRegion(gTeamListNameRegion[sCounter], NAME_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), NAME_X + NAME_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
 
     // assignment region
-    MSYS_DefineRegion(addressof(gTeamListAssignmentRegion[sCounter]), ASSIGN_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), ASSIGN_X + ASSIGN_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListAssignmentRegionMvtCallBack, TeamListAssignmentRegionBtnCallBack);
+    MSYS_DefineRegion(gTeamListAssignmentRegion[sCounter], ASSIGN_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), ASSIGN_X + ASSIGN_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListAssignmentRegionMvtCallBack, TeamListAssignmentRegionBtnCallBack);
 
     // location region (same function as name regions, so uses the same callbacks)
-    MSYS_DefineRegion(addressof(gTeamListLocationRegion[sCounter]), LOC_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), LOC_X + LOC_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
+    MSYS_DefineRegion(gTeamListLocationRegion[sCounter], LOC_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), LOC_X + LOC_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
 
     // destination region
-    MSYS_DefineRegion(addressof(gTeamListDestinationRegion[sCounter]), DEST_ETA_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), DEST_ETA_X + DEST_ETA_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListDestinationRegionMvtCallBack, TeamListDestinationRegionBtnCallBack);
+    MSYS_DefineRegion(gTeamListDestinationRegion[sCounter], DEST_ETA_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), DEST_ETA_X + DEST_ETA_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListDestinationRegionMvtCallBack, TeamListDestinationRegionBtnCallBack);
 
     // contract region
-    MSYS_DefineRegion(addressof(gTeamListContractRegion[sCounter]), TIME_REMAINING_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), TIME_REMAINING_X + TIME_REMAINING_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListContractRegionMvtCallBack, TeamListContractRegionBtnCallBack);
+    MSYS_DefineRegion(gTeamListContractRegion[sCounter], TIME_REMAINING_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), TIME_REMAINING_X + TIME_REMAINING_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListContractRegionMvtCallBack, TeamListContractRegionBtnCallBack);
 
     // contract region
-    MSYS_DefineRegion(addressof(gTeamListSleepRegion[sCounter]), SLEEP_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), SLEEP_X + SLEEP_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListSleepRegionMvtCallBack, TeamListSleepRegionBtnCallBack);
+    MSYS_DefineRegion(gTeamListSleepRegion[sCounter], SLEEP_X, (Y_START + (sCounter) * (Y_SIZE() + 2) + sYAdd), SLEEP_X + SLEEP_WIDTH, (145 + (sCounter + 1) * (Y_SIZE() + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListSleepRegionMvtCallBack, TeamListSleepRegionBtnCallBack);
 
-    MSYS_SetRegionUserData(addressof(gTeamListNameRegion[sCounter]), 0, sCounter);
-    MSYS_SetRegionUserData(addressof(gTeamListAssignmentRegion[sCounter]), 0, sCounter);
-    MSYS_SetRegionUserData(addressof(gTeamListSleepRegion[sCounter]), 0, sCounter);
-    MSYS_SetRegionUserData(addressof(gTeamListLocationRegion[sCounter]), 0, sCounter);
-    MSYS_SetRegionUserData(addressof(gTeamListDestinationRegion[sCounter]), 0, sCounter);
-    MSYS_SetRegionUserData(addressof(gTeamListContractRegion[sCounter]), 0, sCounter);
+    MSYS_SetRegionUserData(gTeamListNameRegion[sCounter], 0, sCounter);
+    MSYS_SetRegionUserData(gTeamListAssignmentRegion[sCounter], 0, sCounter);
+    MSYS_SetRegionUserData(gTeamListSleepRegion[sCounter], 0, sCounter);
+    MSYS_SetRegionUserData(gTeamListLocationRegion[sCounter], 0, sCounter);
+    MSYS_SetRegionUserData(gTeamListDestinationRegion[sCounter], 0, sCounter);
+    MSYS_SetRegionUserData(gTeamListContractRegion[sCounter], 0, sCounter);
 
     // set up help boxes
-    SetRegionFastHelpText(addressof(gTeamListNameRegion[sCounter]), pMapScreenMouseRegionHelpText[0]);
-    SetRegionFastHelpText(addressof(gTeamListAssignmentRegion[sCounter]), pMapScreenMouseRegionHelpText[1]);
-    SetRegionFastHelpText(addressof(gTeamListSleepRegion[sCounter]), pMapScreenMouseRegionHelpText[5]);
-    SetRegionFastHelpText(addressof(gTeamListLocationRegion[sCounter]), pMapScreenMouseRegionHelpText[0]);
-    SetRegionFastHelpText(addressof(gTeamListDestinationRegion[sCounter]), pMapScreenMouseRegionHelpText[2]);
-    SetRegionFastHelpText(addressof(gTeamListContractRegion[sCounter]), pMapScreenMouseRegionHelpText[3]);
+    SetRegionFastHelpText(gTeamListNameRegion[sCounter], pMapScreenMouseRegionHelpText[0]);
+    SetRegionFastHelpText(gTeamListAssignmentRegion[sCounter], pMapScreenMouseRegionHelpText[1]);
+    SetRegionFastHelpText(gTeamListSleepRegion[sCounter], pMapScreenMouseRegionHelpText[5]);
+    SetRegionFastHelpText(gTeamListLocationRegion[sCounter], pMapScreenMouseRegionHelpText[0]);
+    SetRegionFastHelpText(gTeamListDestinationRegion[sCounter], pMapScreenMouseRegionHelpText[2]);
+    SetRegionFastHelpText(gTeamListContractRegion[sCounter], pMapScreenMouseRegionHelpText[3]);
   }
 
   return;
@@ -5731,17 +5731,17 @@ function DestroyMouseRegionsForTeamList(): void {
   let sCounter: INT32 = 0;
 
   for (sCounter = 0; sCounter < MAX_CHARACTER_COUNT; sCounter++) {
-    MSYS_RemoveRegion(addressof(gTeamListNameRegion[sCounter]));
-    MSYS_RemoveRegion(addressof(gTeamListAssignmentRegion[sCounter]));
-    MSYS_RemoveRegion(addressof(gTeamListSleepRegion[sCounter]));
-    MSYS_RemoveRegion(addressof(gTeamListDestinationRegion[sCounter]));
-    MSYS_RemoveRegion(addressof(gTeamListLocationRegion[sCounter]));
-    MSYS_RemoveRegion(addressof(gTeamListContractRegion[sCounter]));
+    MSYS_RemoveRegion(gTeamListNameRegion[sCounter]);
+    MSYS_RemoveRegion(gTeamListAssignmentRegion[sCounter]);
+    MSYS_RemoveRegion(gTeamListSleepRegion[sCounter]);
+    MSYS_RemoveRegion(gTeamListDestinationRegion[sCounter]);
+    MSYS_RemoveRegion(gTeamListLocationRegion[sCounter]);
+    MSYS_RemoveRegion(gTeamListContractRegion[sCounter]);
   }
 }
 
 // mask for mapscreen region
-function MapScreenMarkRegionBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MapScreenMarkRegionBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // reset selected characters
     ResetAllSelectedCharacterModes();
@@ -5796,7 +5796,7 @@ function ContractButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListInfoRegionBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -5898,7 +5898,7 @@ function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
   }
 }
 
-function TeamListInfoRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListInfoRegionMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
@@ -5918,7 +5918,7 @@ function TeamListInfoRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
   }
 }
 
-function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListAssignmentRegionBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -6001,7 +6001,7 @@ function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
   }
 }
 
-function TeamListAssignmentRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListAssignmentRegionMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
@@ -6041,7 +6041,7 @@ function TeamListAssignmentRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
   }
 }
 
-function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListDestinationRegionBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive || fShowMapInventoryPool) {
@@ -6143,7 +6143,7 @@ function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iR
   }
 }
 
-function TeamListDestinationRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListDestinationRegionMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = -1;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
@@ -6178,7 +6178,7 @@ function TeamListDestinationRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iR
   }
 }
 
-function TeamListSleepRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListSleepRegionBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
@@ -6242,7 +6242,7 @@ function TeamListSleepRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
   }
 }
 
-function TeamListSleepRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListSleepRegionMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = -1;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
@@ -6279,7 +6279,7 @@ function TeamListSleepRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
   }
 }
 
-function TeamListContractRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListContractRegionBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = 0;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
@@ -6312,7 +6312,7 @@ function TeamListContractRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
   }
 }
 
-function TeamListContractRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TeamListContractRegionMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iValue: INT32 = -1;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
@@ -6670,7 +6670,7 @@ function CheckIfPlottingForCharacterWhileAirCraft(): void {
   }
 }
 
-function ContractRegionBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ContractRegionBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // btn callback handler for contract region
@@ -6720,7 +6720,7 @@ function ContractRegionBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 }
 
-function ContractRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ContractRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for contract region
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     if (fGlowContractRegion == true) {
@@ -6846,7 +6846,7 @@ export function ReBuildCharactersList(): void {
   // exit inventory mode
   fShowInventoryFlag = false;
   // switch hand region help text to "Enter Inventory"
-  SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
+  SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
 }
 
 function HandleChangeOfInfoChar(): void {
@@ -6900,53 +6900,53 @@ function EnableDisableTeamListRegionsAndHelpText(): void {
   for (bCharNum = 0; bCharNum < MAX_CHARACTER_COUNT; bCharNum++) {
     if (gCharactersList[bCharNum].fValid == false) {
       // disable regions in all team list columns
-      MSYS_DisableRegion(addressof(gTeamListNameRegion[bCharNum]));
-      MSYS_DisableRegion(addressof(gTeamListAssignmentRegion[bCharNum]));
-      MSYS_DisableRegion(addressof(gTeamListLocationRegion[bCharNum]));
-      MSYS_DisableRegion(addressof(gTeamListSleepRegion[bCharNum]));
-      MSYS_DisableRegion(addressof(gTeamListDestinationRegion[bCharNum]));
-      MSYS_DisableRegion(addressof(gTeamListContractRegion[bCharNum]));
+      MSYS_DisableRegion(gTeamListNameRegion[bCharNum]);
+      MSYS_DisableRegion(gTeamListAssignmentRegion[bCharNum]);
+      MSYS_DisableRegion(gTeamListLocationRegion[bCharNum]);
+      MSYS_DisableRegion(gTeamListSleepRegion[bCharNum]);
+      MSYS_DisableRegion(gTeamListDestinationRegion[bCharNum]);
+      MSYS_DisableRegion(gTeamListContractRegion[bCharNum]);
     } else {
       // always enable Name and Location regions
-      MSYS_EnableRegion(addressof(gTeamListNameRegion[bCharNum]));
-      MSYS_EnableRegion(addressof(gTeamListLocationRegion[bCharNum]));
+      MSYS_EnableRegion(gTeamListNameRegion[bCharNum]);
+      MSYS_EnableRegion(gTeamListLocationRegion[bCharNum]);
 
       // valid character.  If it's a vehicle, however
       if (Menptr[gCharactersList[bCharNum].usSolID].uiStatusFlags & SOLDIER_VEHICLE) {
         // Can't change assignment for vehicles
-        MSYS_DisableRegion(addressof(gTeamListAssignmentRegion[bCharNum]));
+        MSYS_DisableRegion(gTeamListAssignmentRegion[bCharNum]);
       } else {
-        MSYS_EnableRegion(addressof(gTeamListAssignmentRegion[bCharNum]));
+        MSYS_EnableRegion(gTeamListAssignmentRegion[bCharNum]);
 
         // POW or dead ?
         if ((Menptr[gCharactersList[bCharNum].usSolID].bAssignment == Enum117.ASSIGNMENT_POW) || (Menptr[gCharactersList[bCharNum].usSolID].bLife == 0)) {
           // "Remove Merc"
-          SetRegionFastHelpText(addressof(gTeamListAssignmentRegion[bCharNum]), pRemoveMercStrings[0]);
+          SetRegionFastHelpText(gTeamListAssignmentRegion[bCharNum], pRemoveMercStrings[0]);
 
-          SetRegionFastHelpText(addressof(gTeamListDestinationRegion[bCharNum]), "");
+          SetRegionFastHelpText(gTeamListDestinationRegion[bCharNum], "");
         } else {
           // "Assign Merc"
-          SetRegionFastHelpText(addressof(gTeamListAssignmentRegion[bCharNum]), pMapScreenMouseRegionHelpText[1]);
+          SetRegionFastHelpText(gTeamListAssignmentRegion[bCharNum], pMapScreenMouseRegionHelpText[1]);
           // "Plot Travel Route"
-          SetRegionFastHelpText(addressof(gTeamListDestinationRegion[bCharNum]), pMapScreenMouseRegionHelpText[2]);
+          SetRegionFastHelpText(gTeamListDestinationRegion[bCharNum], pMapScreenMouseRegionHelpText[2]);
         }
       }
 
       if (CanExtendContractForCharSlot(bCharNum)) {
-        MSYS_EnableRegion(addressof(gTeamListContractRegion[bCharNum]));
+        MSYS_EnableRegion(gTeamListContractRegion[bCharNum]);
       } else {
-        MSYS_DisableRegion(addressof(gTeamListContractRegion[bCharNum]));
+        MSYS_DisableRegion(gTeamListContractRegion[bCharNum]);
       }
 
       if (CanChangeSleepStatusForCharSlot(bCharNum)) {
-        MSYS_EnableRegion(addressof(gTeamListSleepRegion[bCharNum]));
+        MSYS_EnableRegion(gTeamListSleepRegion[bCharNum]);
       } else {
-        MSYS_DisableRegion(addressof(gTeamListSleepRegion[bCharNum]));
+        MSYS_DisableRegion(gTeamListSleepRegion[bCharNum]);
       }
 
       // destination region is always enabled for all valid character slots.
       // if the character can't move at this time, then the region handler must be able to tell the player why not
-      MSYS_EnableRegion(addressof(gTeamListDestinationRegion[bCharNum]));
+      MSYS_EnableRegion(gTeamListDestinationRegion[bCharNum]);
     }
   }
 }
@@ -7260,7 +7260,7 @@ function UpdateCursorIfInLastSector(): void {
   return;
 }
 
-function FaceRegionBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function FaceRegionBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // error checking, make sure someone is there
   if (bSelectedInfoChar == -1) {
     return;
@@ -7288,7 +7288,7 @@ function FaceRegionBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   }
 }
 
-function FaceRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function FaceRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (bSelectedInfoChar == -1) {
     fShowFaceHightLight = false;
     return;
@@ -7304,14 +7304,14 @@ function FaceRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   }
 }
 
-function ItemRegionBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemRegionBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // left AND right button are handled the same way
   if (iReason & (MSYS_CALLBACK_REASON_RBUTTON_UP | MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     RequestToggleMercInventoryPanel();
   }
 }
 
-function ItemRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (!CanToggleSelectedCharInventory()) {
     fShowItemHighLight = false;
     return;
@@ -7401,14 +7401,14 @@ function TrashItemMessageBoxCallBack(bExitValue: UINT8): void {
     DestroyTheItemInCursor();
 
     // reset cursor
-    MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), Enum317.CURSOR_NORMAL);
+    MSYS_ChangeRegionCursor(gSMPanelRegion, Enum317.CURSOR_NORMAL);
     SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
     HandleButtonStatesWhileMapInventoryActive();
   }
 }
 
-function TrashCanBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TrashCanBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
@@ -7428,7 +7428,7 @@ function TrashCanBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
   }
 }
 
-function TrashCanMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TrashCanMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     if (gMPanelRegion.Cursor == EXTERN_CURSOR) {
       fShowTrashCanHighLight = true;
@@ -7608,14 +7608,14 @@ function CreateDestroyTrashCanRegion(): void {
     fCreated = true;
 
     // trash can
-    MSYS_DefineRegion(addressof(gTrashCanRegion), TRASH_CAN_X, TRASH_CAN_Y, TRASH_CAN_X + TRASH_CAN_WIDTH, TRASH_CAN_Y + TRASH_CAN_HEIGHT, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, TrashCanMoveCallback, TrashCanBtnCallback);
+    MSYS_DefineRegion(gTrashCanRegion, TRASH_CAN_X, TRASH_CAN_Y, TRASH_CAN_X + TRASH_CAN_WIDTH, TRASH_CAN_Y + TRASH_CAN_HEIGHT, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, TrashCanMoveCallback, TrashCanBtnCallback);
 
     // done inventory button define
     giMapInvButtonDoneImage = LoadButtonImage("INTERFACE\\done_button2.sti", -1, 0, -1, 1, -1);
     giMapInvDoneButton = QuickCreateButton(giMapInvButtonDoneImage, INV_BTN_X, INV_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DoneInventoryMapBtnCallback);
 
     SetButtonFastHelpText(giMapInvDoneButton, pMiscMapScreenMouseRegionHelpText[2]);
-    SetRegionFastHelpText(addressof(gTrashCanRegion), pMiscMapScreenMouseRegionHelpText[1]);
+    SetRegionFastHelpText(gTrashCanRegion, pMiscMapScreenMouseRegionHelpText[1]);
 
     InitMapKeyRingInterface(KeyRingItemPanelButtonCallback);
     /*
@@ -7637,7 +7637,7 @@ function CreateDestroyTrashCanRegion(): void {
   } else if ((fShowInventoryFlag == false) && (fCreated == true)) {
     // trash can region
     fCreated = false;
-    MSYS_RemoveRegion(addressof(gTrashCanRegion));
+    MSYS_RemoveRegion(gTrashCanRegion);
 
     // map inv done button
     RemoveButton(giMapInvDoneButton);
@@ -7654,7 +7654,7 @@ function CreateDestroyTrashCanRegion(): void {
   }
 }
 
-function InvmaskRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function InvmaskRegionBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   // CJC, December 15 1998: do NOTHING for clicks here
 }
 
@@ -8696,7 +8696,7 @@ function CheckForInventoryModeCancellation(): void {
       // get out of inventory mode if it's on!  (could have just bled below OKLIFE)
       if (fShowInventoryFlag) {
         fShowInventoryFlag = false;
-        SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
+        SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
         fTeamPanelDirty = true;
       }
 
@@ -8833,7 +8833,7 @@ export function CanChangeSleepStatusForSoldier(pSoldier: Pointer<SOLDIERTYPE>): 
 
 function ChangeMapScreenMaskCursor(usCursor: UINT16): void {
   MSYS_SetCurrentCursor(usCursor);
-  MSYS_ChangeRegionCursor(addressof(gMapScreenMaskRegion), usCursor);
+  MSYS_ChangeRegionCursor(gMapScreenMaskRegion, usCursor);
 
   if (usCursor == Enum317.CURSOR_CHECKMARK)
     fCheckCursorWasSet = true;
@@ -9872,9 +9872,9 @@ function RequestToggleMercInventoryPanel(): void {
 
     // set help text for item glow region
     if (fShowInventoryFlag) {
-      SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[2]);
+      SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[2]);
     } else {
-      SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
+      SetRegionFastHelpText(gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
     }
   }
 

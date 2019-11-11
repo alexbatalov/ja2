@@ -698,9 +698,9 @@ export function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCam
   }
 
   // Add cammo region
-  MSYS_DefineRegion(addressof(gSMInvCamoRegion), pCamoRegion.value.sX, pCamoRegion.value.sY, (pCamoRegion.value.sX + CAMO_REGION_WIDTH), (pCamoRegion.value.sY + CAMO_REGION_HEIGHT), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, INVMoveCammoCallback, INVClickCammoCallback);
+  MSYS_DefineRegion(gSMInvCamoRegion, pCamoRegion.value.sX, pCamoRegion.value.sY, (pCamoRegion.value.sX + CAMO_REGION_WIDTH), (pCamoRegion.value.sY + CAMO_REGION_HEIGHT), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, INVMoveCammoCallback, INVClickCammoCallback);
   // Add region
-  MSYS_AddRegion(addressof(gSMInvCamoRegion));
+  MSYS_AddRegion(gSMInvCamoRegion);
 
   // Add regions for inventory slots
   for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
@@ -708,10 +708,10 @@ export function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCam
     gSMInvData[cnt].sX = pRegionDesc[cnt].sX;
     gSMInvData[cnt].sY = pRegionDesc[cnt].sY;
 
-    MSYS_DefineRegion(addressof(gSMInvRegion[cnt]), gSMInvData[cnt].sX, gSMInvData[cnt].sY, (gSMInvData[cnt].sX + gSMInvData[cnt].sWidth), (gSMInvData[cnt].sY + gSMInvData[cnt].sHeight), (fSetHighestPrioity ? MSYS_PRIORITY_HIGHEST : MSYS_PRIORITY_HIGH), MSYS_NO_CURSOR, INVMoveCallback, INVClickCallback);
+    MSYS_DefineRegion(gSMInvRegion[cnt], gSMInvData[cnt].sX, gSMInvData[cnt].sY, (gSMInvData[cnt].sX + gSMInvData[cnt].sWidth), (gSMInvData[cnt].sY + gSMInvData[cnt].sHeight), (fSetHighestPrioity ? MSYS_PRIORITY_HIGHEST : MSYS_PRIORITY_HIGH), MSYS_NO_CURSOR, INVMoveCallback, INVClickCallback);
     // Add region
-    MSYS_AddRegion(addressof(gSMInvRegion[cnt]));
-    MSYS_SetRegionUserData(addressof(gSMInvRegion[cnt]), 0, cnt);
+    MSYS_AddRegion(gSMInvRegion[cnt]);
+    MSYS_SetRegionUserData(gSMInvRegion[cnt], 0, cnt);
   }
 
   memset(gbCompatibleAmmo, 0, sizeof(gbCompatibleAmmo));
@@ -720,27 +720,27 @@ export function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCam
 }
 
 export function InitKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
-  MSYS_DefineRegion(addressof(gKeyRingPanel), KEYRING_X, KEYRING_Y, KEYRING_X + KEYRING_WIDTH, KEYRING_X + KEYRING_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingClickCallback);
+  MSYS_DefineRegion(gKeyRingPanel, KEYRING_X, KEYRING_Y, KEYRING_X + KEYRING_WIDTH, KEYRING_X + KEYRING_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingClickCallback);
 
-  SetRegionFastHelpText(addressof(gKeyRingPanel), TacticalStr[Enum335.KEYRING_HELP_TEXT]);
+  SetRegionFastHelpText(gKeyRingPanel, TacticalStr[Enum335.KEYRING_HELP_TEXT]);
 }
 
 export function InitMapKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
-  MSYS_DefineRegion(addressof(gKeyRingPanel), MAP_KEYRING_X, MAP_KEYRING_Y, MAP_KEYRING_X + KEYRING_WIDTH, MAP_KEYRING_Y + KEYRING_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingClickCallback);
+  MSYS_DefineRegion(gKeyRingPanel, MAP_KEYRING_X, MAP_KEYRING_Y, MAP_KEYRING_X + KEYRING_WIDTH, MAP_KEYRING_Y + KEYRING_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingClickCallback);
 
-  SetRegionFastHelpText(addressof(gKeyRingPanel), TacticalStr[Enum335.KEYRING_HELP_TEXT]);
+  SetRegionFastHelpText(gKeyRingPanel, TacticalStr[Enum335.KEYRING_HELP_TEXT]);
 }
 
 function EnableKeyRing(fEnable: boolean): void {
   if (fEnable) {
-    MSYS_EnableRegion(addressof(gKeyRingPanel));
+    MSYS_EnableRegion(gKeyRingPanel);
   } else {
-    MSYS_DisableRegion(addressof(gKeyRingPanel));
+    MSYS_DisableRegion(gKeyRingPanel);
   }
 }
 
 export function ShutdownKeyRingInterface(): void {
-  MSYS_RemoveRegion(addressof(gKeyRingPanel));
+  MSYS_RemoveRegion(gKeyRingPanel);
   return;
 }
 
@@ -749,21 +749,21 @@ export function DisableInvRegions(fDisable: boolean): void {
 
   for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
     if (fDisable) {
-      MSYS_DisableRegion(addressof(gSMInvRegion[cnt]));
+      MSYS_DisableRegion(gSMInvRegion[cnt]);
     } else {
-      MSYS_EnableRegion(addressof(gSMInvRegion[cnt]));
+      MSYS_EnableRegion(gSMInvRegion[cnt]);
     }
   }
 
   if (fDisable) {
-    MSYS_DisableRegion(addressof(gSMInvCamoRegion));
+    MSYS_DisableRegion(gSMInvCamoRegion);
 
-    MSYS_DisableRegion(addressof(gSM_SELMERCMoneyRegion));
+    MSYS_DisableRegion(gSM_SELMERCMoneyRegion);
     EnableKeyRing(false);
   } else {
-    MSYS_EnableRegion(addressof(gSMInvCamoRegion));
+    MSYS_EnableRegion(gSMInvCamoRegion);
 
-    MSYS_EnableRegion(addressof(gSM_SELMERCMoneyRegion));
+    MSYS_EnableRegion(gSM_SELMERCMoneyRegion);
     EnableKeyRing(true);
   }
 }
@@ -787,11 +787,11 @@ export function ShutdownInvSlotInterface(): void {
   // Add regions for inventory slots
   for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
     // Remove region
-    MSYS_RemoveRegion(addressof(gSMInvRegion[cnt]));
+    MSYS_RemoveRegion(gSMInvRegion[cnt]);
   }
 
   // Remove cammo
-  MSYS_RemoveRegion(addressof(gSMInvCamoRegion));
+  MSYS_RemoveRegion(gSMInvCamoRegion);
 }
 
 export function RenderInvBodyPanel(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): void {
@@ -811,7 +811,7 @@ export function HandleRenderInvSlots(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel
       if (fDirtyLevel == DIRTYLEVEL2) {
         GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[cnt]), pSoldier);
 
-        SetRegionFastHelpText(addressof(gSMInvRegion[cnt]), pStr);
+        SetRegionFastHelpText(gSMInvRegion[cnt], pStr);
       }
 
       INVRenderINVPanelItem(pSoldier, cnt, fDirtyLevel);
@@ -1818,8 +1818,8 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
   if (guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) {
     // return( FALSE );
 
-    MSYS_DefineRegion(addressof(gInvDesc), gsInvDescX, gsInvDescY, (gsInvDescX + MAP_ITEMDESC_WIDTH), (gsInvDescY + MAP_ITEMDESC_HEIGHT), MSYS_PRIORITY_HIGHEST - 2, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, ItemDescCallback);
-    MSYS_AddRegion(addressof(gInvDesc));
+    MSYS_DefineRegion(gInvDesc, gsInvDescX, gsInvDescY, (gsInvDescX + MAP_ITEMDESC_WIDTH), (gsInvDescY + MAP_ITEMDESC_HEIGHT), MSYS_PRIORITY_HIGHEST - 2, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, ItemDescCallback);
+    MSYS_AddRegion(gInvDesc);
 
     giMapInvDescButtonImage = LoadButtonImage("INTERFACE\\itemdescdonebutton.sti", -1, 0, -1, 1, -1);
 
@@ -1828,8 +1828,8 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
 
     fShowDescriptionFlag = true;
   } else {
-    MSYS_DefineRegion(addressof(gInvDesc), gsInvDescX, gsInvDescY, (gsInvDescX + ITEMDESC_WIDTH), (gsInvDescY + ITEMDESC_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
-    MSYS_AddRegion(addressof(gInvDesc));
+    MSYS_DefineRegion(gInvDesc, gsInvDescX, gsInvDescY, (gsInvDescX + ITEMDESC_WIDTH), (gsInvDescY + ITEMDESC_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
+    MSYS_AddRegion(gInvDesc);
   }
   // Add region
   if ((Item[pObject.value.usItem].usItemClass & IC_GUN) && pObject.value.usItem != Enum225.ROCKET_LAUNCHER) {
@@ -1888,9 +1888,9 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
       sProsConsIndent = Math.max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
       for (cnt = 0; cnt < 2; cnt++) {
         // Add region for pros/cons help text
-        MSYS_DefineRegion(addressof(gProsAndConsRegions[cnt]), (ITEMDESC_PROS_START_X() + sProsConsIndent), (gsInvDescY + gMapItemDescProsConsRects[cnt].iTop), (gsInvDescX + gMapItemDescProsConsRects[cnt].iRight), (gsInvDescY + gMapItemDescProsConsRects[cnt].iBottom), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
+        MSYS_DefineRegion(gProsAndConsRegions[cnt], (ITEMDESC_PROS_START_X() + sProsConsIndent), (gsInvDescY + gMapItemDescProsConsRects[cnt].iTop), (gsInvDescX + gMapItemDescProsConsRects[cnt].iRight), (gsInvDescY + gMapItemDescProsConsRects[cnt].iBottom), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
 
-        MSYS_AddRegion(addressof(gProsAndConsRegions[cnt]));
+        MSYS_AddRegion(gProsAndConsRegions[cnt]);
 
         if (cnt == 0) {
           gzFullItemPros = gzProsLabel;
@@ -1898,24 +1898,24 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
           // use temp variable to prevent an initial comma from being displayed
           GenerateProsString(gzFullItemTemp, gpItemDescObject, 1000);
           gzFullItemPros += gzFullItemTemp;
-          SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemPros);
+          SetRegionFastHelpText(gProsAndConsRegions[cnt], gzFullItemPros);
         } else {
           gzFullItemCons = gzConsLabel;
           gzFullItemCons += " ";
           // use temp variable to prevent an initial comma from being displayed
           GenerateConsString(gzFullItemTemp, gpItemDescObject, 1000);
           gzFullItemCons += gzFullItemTemp;
-          SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemCons);
+          SetRegionFastHelpText(gProsAndConsRegions[cnt], gzFullItemCons);
         }
-        SetRegionHelpEndCallback(addressof(gProsAndConsRegions[cnt]), HelpTextDoneCallback);
+        SetRegionHelpEndCallback(gProsAndConsRegions[cnt], HelpTextDoneCallback);
       }
     } else {
       sProsConsIndent = Math.max(StringPixLength(gzProsLabel, ITEMDESC_FONT()), StringPixLength(gzConsLabel, ITEMDESC_FONT())) + 10;
       for (cnt = 0; cnt < 2; cnt++) {
         // Add region for pros/cons help text
-        MSYS_DefineRegion(addressof(gProsAndConsRegions[cnt]), (ITEMDESC_PROS_START_X() + sProsConsIndent), (gsInvDescY + gItemDescProsConsRects[cnt].iTop), (gsInvDescX + gItemDescProsConsRects[cnt].iRight), (gsInvDescY + gItemDescProsConsRects[cnt].iBottom), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
+        MSYS_DefineRegion(gProsAndConsRegions[cnt], (ITEMDESC_PROS_START_X() + sProsConsIndent), (gsInvDescY + gItemDescProsConsRects[cnt].iTop), (gsInvDescX + gItemDescProsConsRects[cnt].iRight), (gsInvDescY + gItemDescProsConsRects[cnt].iBottom), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescCallback);
 
-        MSYS_AddRegion(addressof(gProsAndConsRegions[cnt]));
+        MSYS_AddRegion(gProsAndConsRegions[cnt]);
 
         if (cnt == 0) {
           gzFullItemPros = gzProsLabel;
@@ -1923,16 +1923,16 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
           // use temp variable to prevent an initial comma from being displayed
           GenerateProsString(gzFullItemTemp, gpItemDescObject, 1000);
           gzFullItemPros += gzFullItemTemp;
-          SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemPros);
+          SetRegionFastHelpText(gProsAndConsRegions[cnt], gzFullItemPros);
         } else {
           gzFullItemCons = gzConsLabel;
           gzFullItemCons += " ";
           // use temp variable to prevent an initial comma from being displayed
           GenerateConsString(gzFullItemTemp, gpItemDescObject, 1000);
           gzFullItemCons += gzFullItemTemp;
-          SetRegionFastHelpText(addressof(gProsAndConsRegions[cnt]), gzFullItemCons);
+          SetRegionFastHelpText(gProsAndConsRegions[cnt], gzFullItemCons);
         }
-        SetRegionHelpEndCallback(addressof(gProsAndConsRegions[cnt]), HelpTextDoneCallback);
+        SetRegionHelpEndCallback(gProsAndConsRegions[cnt], HelpTextDoneCallback);
       }
     }
   }
@@ -1961,19 +1961,19 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
       // Build a mouse region here that is over any others.....
       //			if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN )
       if (guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN)
-        MSYS_DefineRegion(addressof(gItemDescAttachmentRegions[cnt]), (gsInvDescX + gMapItemDescAttachmentsXY[cnt].sX), (gsInvDescY + gMapItemDescAttachmentsXY[cnt].sY), (gsInvDescX + gMapItemDescAttachmentsXY[cnt].sX + gMapItemDescAttachmentsXY[cnt].sWidth), (gsInvDescY + gMapItemDescAttachmentsXY[cnt].sY + gMapItemDescAttachmentsXY[cnt].sHeight), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescAttachmentsCallback);
+        MSYS_DefineRegion(gItemDescAttachmentRegions[cnt], (gsInvDescX + gMapItemDescAttachmentsXY[cnt].sX), (gsInvDescY + gMapItemDescAttachmentsXY[cnt].sY), (gsInvDescX + gMapItemDescAttachmentsXY[cnt].sX + gMapItemDescAttachmentsXY[cnt].sWidth), (gsInvDescY + gMapItemDescAttachmentsXY[cnt].sY + gMapItemDescAttachmentsXY[cnt].sHeight), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescAttachmentsCallback);
       else
-        MSYS_DefineRegion(addressof(gItemDescAttachmentRegions[cnt]), (gsInvDescX + gItemDescAttachmentsXY[cnt].sX), (gsInvDescY + gItemDescAttachmentsXY[cnt].sY), (gsInvDescX + gItemDescAttachmentsXY[cnt].sX + gItemDescAttachmentsXY[cnt].sBarDx + gItemDescAttachmentsXY[cnt].sWidth), (gsInvDescY + gItemDescAttachmentsXY[cnt].sY + gItemDescAttachmentsXY[cnt].sHeight), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescAttachmentsCallback);
+        MSYS_DefineRegion(gItemDescAttachmentRegions[cnt], (gsInvDescX + gItemDescAttachmentsXY[cnt].sX), (gsInvDescY + gItemDescAttachmentsXY[cnt].sY), (gsInvDescX + gItemDescAttachmentsXY[cnt].sX + gItemDescAttachmentsXY[cnt].sBarDx + gItemDescAttachmentsXY[cnt].sWidth), (gsInvDescY + gItemDescAttachmentsXY[cnt].sY + gItemDescAttachmentsXY[cnt].sHeight), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemDescAttachmentsCallback);
       // Add region
-      MSYS_AddRegion(addressof(gItemDescAttachmentRegions[cnt]));
-      MSYS_SetRegionUserData(addressof(gItemDescAttachmentRegions[cnt]), 0, cnt);
+      MSYS_AddRegion(gItemDescAttachmentRegions[cnt]);
+      MSYS_SetRegionUserData(gItemDescAttachmentRegions[cnt], 0, cnt);
 
       if (gpItemDescObject.value.usAttachItem[cnt] != NOTHING) {
-        SetRegionFastHelpText(addressof(gItemDescAttachmentRegions[cnt]), ItemNames[gpItemDescObject.value.usAttachItem[cnt]]);
-        SetRegionHelpEndCallback(addressof(gItemDescAttachmentRegions[cnt]), HelpTextDoneCallback);
+        SetRegionFastHelpText(gItemDescAttachmentRegions[cnt], ItemNames[gpItemDescObject.value.usAttachItem[cnt]]);
+        SetRegionHelpEndCallback(gItemDescAttachmentRegions[cnt], HelpTextDoneCallback);
       } else {
-        SetRegionFastHelpText(addressof(gItemDescAttachmentRegions[cnt]), Message[Enum334.STR_ATTACHMENTS]);
-        SetRegionHelpEndCallback(addressof(gItemDescAttachmentRegions[cnt]), HelpTextDoneCallback);
+        SetRegionFastHelpText(gItemDescAttachmentRegions[cnt], Message[Enum334.STR_ATTACHMENTS]);
+        SetRegionHelpEndCallback(gItemDescAttachmentRegions[cnt], HelpTextDoneCallback);
       }
     }
   } else {
@@ -2143,7 +2143,7 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
         gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-        MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
+        MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
         MSYS_SetCurrentCursor(EXTERN_CURSOR);
         fMapInventoryItem = true;
         fTeamPanelDirty = true;
@@ -2186,7 +2186,7 @@ function DoAttachment(): void {
         gpItemPointer = null;
         EnableSMPanelButtons(true, true);
 
-        MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), Enum317.CURSOR_NORMAL);
+        MSYS_ChangeRegionCursor(gSMPanelRegion, Enum317.CURSOR_NORMAL);
         SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
         // if we are currently in the shopkeeper interface
@@ -2221,7 +2221,7 @@ function PermanantAttachmentMessageBoxCallBack(ubExitValue: UINT8): void {
   // else do nothing
 }
 
-function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemDescAttachmentsCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let uiItemPos: UINT32;
   /* static */ let fRightDown: boolean = false;
 
@@ -2265,7 +2265,7 @@ function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
             guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
             gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-            MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
+            MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
             MSYS_SetCurrentCursor(EXTERN_CURSOR);
             fMapInventoryItem = true;
             fTeamPanelDirty = true;
@@ -2773,11 +2773,11 @@ export function RenderItemDescriptionBox(): void {
         sCenY = sCenY + gItemDescAttachmentsXY[cnt].sBarDy;
         DrawItemUIBarEx(gpItemDescObject, (DRAW_ITEM_STATUS_ATTACHMENT1 + cnt), sCenX, sCenY, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
 
-        SetRegionFastHelpText(addressof(gItemDescAttachmentRegions[cnt]), ItemNames[gpItemDescObject.value.usAttachItem[cnt]]);
-        SetRegionHelpEndCallback(addressof(gItemDescAttachmentRegions[cnt]), HelpTextDoneCallback);
+        SetRegionFastHelpText(gItemDescAttachmentRegions[cnt], ItemNames[gpItemDescObject.value.usAttachItem[cnt]]);
+        SetRegionHelpEndCallback(gItemDescAttachmentRegions[cnt], HelpTextDoneCallback);
       } else {
-        SetRegionFastHelpText(addressof(gItemDescAttachmentRegions[cnt]), Message[Enum334.STR_ATTACHMENTS]);
-        SetRegionHelpEndCallback(addressof(gItemDescAttachmentRegions[cnt]), HelpTextDoneCallback);
+        SetRegionFastHelpText(gItemDescAttachmentRegions[cnt], Message[Enum334.STR_ATTACHMENTS]);
+        SetRegionHelpEndCallback(gItemDescAttachmentRegions[cnt], HelpTextDoneCallback);
       }
       if (fHatchOutAttachments) {
         // UINT32 uiWhichBuffer = ( guiCurrentItemDescriptionScreen == MAP_SCREEN ) ? guiSAVEBUFFER : guiRENDERBUFFER;
@@ -3184,11 +3184,11 @@ export function DeleteItemDescriptionBox(): void {
   }
 
   // Remove region
-  MSYS_RemoveRegion(addressof(gInvDesc));
+  MSYS_RemoveRegion(gInvDesc);
 
   if (gpItemDescObject.value.usItem != Enum225.MONEY) {
     for (cnt = 0; cnt < MAX_ATTACHMENTS; cnt++) {
-      MSYS_RemoveRegion(addressof(gItemDescAttachmentRegions[cnt]));
+      MSYS_RemoveRegion(gItemDescAttachmentRegions[cnt]);
     }
   } else {
     UnloadButtonImage(guiMoneyButtonImage);
@@ -3199,8 +3199,8 @@ export function DeleteItemDescriptionBox(): void {
   }
 
   if (ITEM_PROS_AND_CONS(gpItemDescObject.value.usItem)) {
-    MSYS_RemoveRegion(addressof(gProsAndConsRegions[0]));
-    MSYS_RemoveRegion(addressof(gProsAndConsRegions[1]));
+    MSYS_RemoveRegion(gProsAndConsRegions[0]);
+    MSYS_RemoveRegion(gProsAndConsRegions[1]);
   }
 
   if (((Item[gpItemDescObject.value.usItem].usItemClass & IC_GUN) && gpItemDescObject.value.usItem != Enum225.ROCKET_LAUNCHER)) {
@@ -3318,7 +3318,7 @@ export function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRin
       gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
       fMapInventoryItem = true;
-      MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
+      MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
       MSYS_SetCurrentCursor(EXTERN_CURSOR);
     }
   } else {
@@ -3332,7 +3332,7 @@ export function EndItemPointer(): void {
   if (gpItemPointer != null) {
     gpItemPointer = null;
     gbItemPointerSrcSlot = NO_SLOT;
-    MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), Enum317.CURSOR_NORMAL);
+    MSYS_ChangeRegionCursor(gSMPanelRegion, Enum317.CURSOR_NORMAL);
     MSYS_SetCurrentCursor(Enum317.CURSOR_NORMAL);
 
     if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
@@ -3357,7 +3357,7 @@ export function DrawItemFreeCursor(): void {
   guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
   gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-  MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), EXTERN_CURSOR);
+  MSYS_ChangeRegionCursor(gSMPanelRegion, EXTERN_CURSOR);
   MSYS_SetCurrentCursor(EXTERN_CURSOR);
 }
 
@@ -3637,7 +3637,7 @@ export function DrawItemTileCursor(): void {
       uiOldCursorId = uiCursorId;
     }
 
-    MSYS_ChangeRegionCursor(addressof(gViewportRegion), uiCursorId);
+    MSYS_ChangeRegionCursor(gViewportRegion, uiCursorId);
   }
 }
 
@@ -4133,21 +4133,21 @@ export function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: U
 
   for (cnt = 0; cnt < gubNumItemPopups; cnt++) {
     // Build a mouse region here that is over any others.....
-    MSYS_DefineRegion(addressof(gItemPopupRegions[cnt]), (sCenX + (cnt * usPopupWidth)), sCenY, (sCenX + ((cnt + 1) * usPopupWidth)), (sCenY + gsItemPopupHeight), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemPopupRegionCallback);
+    MSYS_DefineRegion(gItemPopupRegions[cnt], (sCenX + (cnt * usPopupWidth)), sCenY, (sCenX + ((cnt + 1) * usPopupWidth)), (sCenY + gsItemPopupHeight), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemPopupRegionCallback);
     // Add region
-    MSYS_AddRegion(addressof(gItemPopupRegions[cnt]));
-    MSYS_SetRegionUserData(addressof(gItemPopupRegions[cnt]), 0, cnt);
+    MSYS_AddRegion(gItemPopupRegions[cnt]);
+    MSYS_SetRegionUserData(gItemPopupRegions[cnt], 0, cnt);
 
     // OK, for each item, set dirty text if applicable!
-    SetRegionFastHelpText(addressof(gItemPopupRegions[cnt]), ItemNames[pSoldier.value.inv[ubPosition].usItem]);
-    SetRegionHelpEndCallback(addressof(gItemPopupRegions[cnt]), HelpTextDoneCallback);
+    SetRegionFastHelpText(gItemPopupRegions[cnt], ItemNames[pSoldier.value.inv[ubPosition].usItem]);
+    SetRegionHelpEndCallback(gItemPopupRegions[cnt], HelpTextDoneCallback);
     gfItemPopupRegionCallbackEndFix = false;
   }
 
   // Build a mouse region here that is over any others.....
-  MSYS_DefineRegion(addressof(gItemPopupRegion), gsItemPopupInvX, gsItemPopupInvY, (gsItemPopupInvX + gsItemPopupInvWidth), (gsItemPopupInvY + gsItemPopupInvHeight), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemPopupFullRegionCallback);
+  MSYS_DefineRegion(gItemPopupRegion, gsItemPopupInvX, gsItemPopupInvY, (gsItemPopupInvX + gsItemPopupInvWidth), (gsItemPopupInvY + gsItemPopupInvHeight), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemPopupFullRegionCallback);
   // Add region
-  MSYS_AddRegion(addressof(gItemPopupRegion));
+  MSYS_AddRegion(gItemPopupRegion);
 
   // Disable all faces
   SetAllAutoFacesInactive();
@@ -4235,12 +4235,12 @@ function DeleteItemStackPopup(): void {
   // Remove
   DeleteVideoObjectFromIndex(guiItemPopupBoxes);
 
-  MSYS_RemoveRegion(addressof(gItemPopupRegion));
+  MSYS_RemoveRegion(gItemPopupRegion);
 
   gfInItemStackPopup = false;
 
   for (cnt = 0; cnt < gubNumItemPopups; cnt++) {
-    MSYS_RemoveRegion(addressof(gItemPopupRegions[cnt]));
+    MSYS_RemoveRegion(gItemPopupRegions[cnt]);
   }
 
   fInterfacePanelDirty = DIRTYLEVEL2;
@@ -4304,23 +4304,23 @@ export function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, s
 
   for (cnt = 0; cnt < NUMBER_KEYS_ON_KEYRING; cnt++) {
     // Build a mouse region here that is over any others.....
-    MSYS_DefineRegion(addressof(gKeyRingRegions[cnt]),
+    MSYS_DefineRegion(gKeyRingRegions[cnt],
                       (gsKeyRingPopupInvX + (cnt % sKeyRingItemWidth * usPopupWidth) + sOffSetX), // top left
                       (sInvY + sOffSetY + (cnt / sKeyRingItemWidth * usPopupHeight)), // top right
                       (gsKeyRingPopupInvX + ((cnt % sKeyRingItemWidth) + 1) * usPopupWidth + sOffSetX), // bottom left
                       (sInvY + ((cnt / sKeyRingItemWidth + 1) * usPopupHeight) + sOffSetY), // bottom right
                       MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingSlotInvClickCallback);
     // Add region
-    MSYS_AddRegion(addressof(gKeyRingRegions[cnt]));
-    MSYS_SetRegionUserData(addressof(gKeyRingRegions[cnt]), 0, cnt);
+    MSYS_AddRegion(gKeyRingRegions[cnt]);
+    MSYS_SetRegionUserData(gKeyRingRegions[cnt], 0, cnt);
     // gfItemPopupRegionCallbackEndFix = FALSE;
   }
 
   // Build a mouse region here that is over any others.....
-  MSYS_DefineRegion(addressof(gItemPopupRegion), sInvX, sInvY, (sInvX + sInvWidth), (sInvY + sInvHeight), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemPopupFullRegionCallback);
+  MSYS_DefineRegion(gItemPopupRegion, sInvX, sInvY, (sInvX + sInvWidth), (sInvY + sInvHeight), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, ItemPopupFullRegionCallback);
 
   // Add region
-  MSYS_AddRegion(addressof(gItemPopupRegion));
+  MSYS_AddRegion(gItemPopupRegion);
 
   // Disable all faces
   SetAllAutoFacesInactive();
@@ -4428,12 +4428,12 @@ export function DeleteKeyRingPopup(): void {
   // Remove
   DeleteVideoObjectFromIndex(guiItemPopupBoxes);
 
-  MSYS_RemoveRegion(addressof(gItemPopupRegion));
+  MSYS_RemoveRegion(gItemPopupRegion);
 
   gfInKeyRingPopup = false;
 
   for (cnt = 0; cnt < NUMBER_KEYS_ON_KEYRING; cnt++) {
-    MSYS_RemoveRegion(addressof(gKeyRingRegions[cnt]));
+    MSYS_RemoveRegion(gKeyRingRegions[cnt]);
   }
 
   fInterfacePanelDirty = DIRTYLEVEL2;
@@ -4527,10 +4527,10 @@ export function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<U
   return true;
 }
 
-function ItemDescMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemDescMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
 }
 
-function ItemDescCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemDescCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let fRightDown: boolean = false;
   /* static */ let fLeftDown: boolean = false;
 
@@ -4583,7 +4583,7 @@ function ItemDescDoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   }
 }
 
-function ItemPopupRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemPopupRegionCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let uiItemPos: UINT32;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
@@ -4601,7 +4601,7 @@ function ItemPopupRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
           MAPEndItemPointer();
         } else {
           gpItemPointer = null;
-          MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), Enum317.CURSOR_NORMAL);
+          MSYS_ChangeRegionCursor(gSMPanelRegion, Enum317.CURSOR_NORMAL);
           SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
           if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
@@ -4674,7 +4674,7 @@ function ItemPopupRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   }
 }
 
-function ItemPopupFullRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemPopupFullRegionCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let uiItemPos: UINT32;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
@@ -4898,14 +4898,14 @@ export function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo
   gItemPickupMenu.iOKButtonImages = UseLoadedButtonImage(gItemPickupMenu.iUpButtonImages, -1, 4, -1, 9, -1);
 
   // Build a mouse region here that is over any others.....
-  MSYS_DefineRegion(addressof(gItemPickupMenu.BackRegion), (532), (367), (640), (480), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(gItemPickupMenu.BackRegion, (532), (367), (640), (480), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(addressof(gItemPickupMenu.BackRegion));
+  MSYS_AddRegion(gItemPickupMenu.BackRegion);
 
   // Build a mouse region here that is over any others.....
-  MSYS_DefineRegion(addressof(gItemPickupMenu.BackRegions), (gItemPickupMenu.sX), (gItemPickupMenu.sY), (gItemPickupMenu.sX + gItemPickupMenu.sWidth), (gItemPickupMenu.sY + gItemPickupMenu.sHeight), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(gItemPickupMenu.BackRegions, (gItemPickupMenu.sX), (gItemPickupMenu.sY), (gItemPickupMenu.sX + gItemPickupMenu.sWidth), (gItemPickupMenu.sY + gItemPickupMenu.sHeight), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(addressof(gItemPickupMenu.BackRegions));
+  MSYS_AddRegion(gItemPickupMenu.BackRegions);
 
   // Create buttons
   if (gItemPickupMenu.bNumSlotsPerPage == NUM_PICKUP_SLOTS && gItemPickupMenu.ubTotalItems > NUM_PICKUP_SLOTS) {
@@ -4935,10 +4935,10 @@ export function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo
 
   for (cnt = 0; cnt < gItemPickupMenu.bNumSlotsPerPage; cnt++) {
     // Build a mouse region here that is over any others.....
-    MSYS_DefineRegion(addressof(gItemPickupMenu.Regions[cnt]), (sCenX), (sCenY + 1), (sCenX + gItemPickupMenu.sWidth), (sCenY + ITEMPICK_GRAPHIC_YSPACE), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, ItemPickMenuMouseMoveCallback, ItemPickMenuMouseClickCallback);
+    MSYS_DefineRegion(gItemPickupMenu.Regions[cnt], (sCenX), (sCenY + 1), (sCenX + gItemPickupMenu.sWidth), (sCenY + ITEMPICK_GRAPHIC_YSPACE), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, ItemPickMenuMouseMoveCallback, ItemPickMenuMouseClickCallback);
     // Add region
-    MSYS_AddRegion(addressof(gItemPickupMenu.Regions[cnt]));
-    MSYS_SetRegionUserData(addressof(gItemPickupMenu.Regions[cnt]), 0, cnt);
+    MSYS_AddRegion(gItemPickupMenu.Regions[cnt]);
+    MSYS_SetRegionUserData(gItemPickupMenu.Regions[cnt], 0, cnt);
 
     sCenY += ITEMPICK_GRAPHIC_YSPACE;
   }
@@ -5003,7 +5003,7 @@ function SetupPickupPage(bPage: INT8): void {
   // ATE: Patch fix here for crash :(
   // Clear help text!
   for (cnt = 0; cnt < NUM_PICKUP_SLOTS; cnt++) {
-    SetRegionFastHelpText(addressof(gItemPickupMenu.Regions[cnt]), "");
+    SetRegionFastHelpText(gItemPickupMenu.Regions[cnt], "");
   }
 
   for (cnt = 0; cnt < iEnd;) {
@@ -5026,7 +5026,7 @@ function SetupPickupPage(bPage: INT8): void {
         pStr = swprintf("%d%%", sValue);
       }
 
-      SetRegionFastHelpText(addressof(gItemPickupMenu.Regions[cnt - iStart]), pStr);
+      SetRegionFastHelpText(gItemPickupMenu.Regions[cnt - iStart], pStr);
     }
 
     cnt++;
@@ -5312,12 +5312,12 @@ export function RemoveItemPickupMenu(): void {
     UnloadButtonImage(gItemPickupMenu.iCancelButtonImages);
     UnloadButtonImage(gItemPickupMenu.iOKButtonImages);
 
-    MSYS_RemoveRegion(addressof(gItemPickupMenu.BackRegions));
-    MSYS_RemoveRegion(addressof(gItemPickupMenu.BackRegion));
+    MSYS_RemoveRegion(gItemPickupMenu.BackRegions);
+    MSYS_RemoveRegion(gItemPickupMenu.BackRegion);
 
     // Remove regions
     for (cnt = 0; cnt < gItemPickupMenu.bNumSlotsPerPage; cnt++) {
-      MSYS_RemoveRegion(addressof(gItemPickupMenu.Regions[cnt]));
+      MSYS_RemoveRegion(gItemPickupMenu.Regions[cnt]);
     }
 
     // Remove register rect
@@ -5434,7 +5434,7 @@ function ItemPickupCancel(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function ItemPickMenuMouseMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemPickMenuMouseMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let uiItemPos: UINT32;
   let pTempItemPool: Pointer<ITEM_POOL>;
   let bPos: INT32;
@@ -5478,14 +5478,14 @@ function ItemPickMenuMouseMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: 
   }
 }
 
-function ItemPickupBackgroundClick(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemPickupBackgroundClick(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // OK, goto team panel....
     ToggleTacticalPanels();
   }
 }
 
-function ItemPickMenuMouseClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ItemPickMenuMouseClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let uiItemPos: INT32;
   let cnt: UINT8;
   let fEnable: boolean = false;
@@ -5703,7 +5703,7 @@ function RemoveMoney(): void {
         guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
         gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-        MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
+        MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
         MSYS_SetCurrentCursor(EXTERN_CURSOR);
         fMapInventoryItem = true;
         fTeamPanelDirty = true;

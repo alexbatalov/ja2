@@ -134,9 +134,9 @@ export function EnterTacticalScreen(): void {
   }
 
   if (!gfTacticalPlacementGUIActive) {
-    MSYS_EnableRegion(addressof(gRadarRegion));
+    MSYS_EnableRegion(gRadarRegion);
   }
-  MSYS_EnableRegion(addressof(gViewportRegion));
+  MSYS_EnableRegion(gViewportRegion);
 
   // set default squad on sector entry
   // ATE: moved these 2 call after initalizing the interface!
@@ -222,7 +222,7 @@ export function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
   ShutdownCurrentPanel();
 
   // disable the radar map
-  MSYS_DisableRegion(addressof(gRadarRegion));
+  MSYS_DisableRegion(gRadarRegion);
   // MSYS_DisableRegion( &gViewportRegion );
 
   // We are leaving... turn off pedning autobadage...
@@ -670,9 +670,9 @@ export function EnterModalTactical(bMode: INT8): void {
     if (!gfTacticalDisableRegionActive) {
       gfTacticalDisableRegionActive = true;
 
-      MSYS_DefineRegion(addressof(gTacticalDisableRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+      MSYS_DefineRegion(gTacticalDisableRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
       // Add region
-      MSYS_AddRegion(addressof(gTacticalDisableRegion));
+      MSYS_AddRegion(gTacticalDisableRegion);
     }
   }
 
@@ -681,7 +681,7 @@ export function EnterModalTactical(bMode: INT8): void {
 
 export function EndModalTactical(): void {
   if (gfTacticalDisableRegionActive) {
-    MSYS_RemoveRegion(addressof(gTacticalDisableRegion));
+    MSYS_RemoveRegion(gTacticalDisableRegion);
 
     gfTacticalDisableRegionActive = false;
   }

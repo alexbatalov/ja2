@@ -145,16 +145,16 @@ export function EnterFuneral(): boolean {
   for (i = 0; i < FUNERAL_NUMBER_OF_LINKS; i++) {
     // Mouse region for the bottom links
 
-    MSYS_DefineRegion(addressof(gSelectedFuneralLinkRegion[i]), usPosX, FUNERAL_LINK_1_Y, (usPosX + FUNERAL_LINK_1_WIDTH), (FUNERAL_LINK_1_Y + FUNERAL_LINK_1_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFuneralLinkRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedFuneralLinkRegion[i]));
-    MSYS_SetRegionUserData(addressof(gSelectedFuneralLinkRegion[i]), 0, i);
+    MSYS_DefineRegion(gSelectedFuneralLinkRegion[i], usPosX, FUNERAL_LINK_1_Y, (usPosX + FUNERAL_LINK_1_WIDTH), (FUNERAL_LINK_1_Y + FUNERAL_LINK_1_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFuneralLinkRegionCallBack);
+    MSYS_AddRegion(gSelectedFuneralLinkRegion[i]);
+    MSYS_SetRegionUserData(gSelectedFuneralLinkRegion[i], 0, i);
 
     usPosX += FUNERAL_LINK_OFFSET_X;
   }
 
-  MSYS_DefineRegion(addressof(gSelectedRipSignRegion), FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, (FUNERAL_CLOSED_RIP_SIGN_X + FUNERAL_CLOSED_WIDTH), (FUNERAL_CLOSED_RIP_SIGN_Y + FUNERAL_CLOSED_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectRipSignRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedRipSignRegion));
-  MSYS_DisableRegion(addressof(gSelectedRipSignRegion));
+  MSYS_DefineRegion(gSelectedRipSignRegion, FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, (FUNERAL_CLOSED_RIP_SIGN_X + FUNERAL_CLOSED_WIDTH), (FUNERAL_CLOSED_RIP_SIGN_Y + FUNERAL_CLOSED_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectRipSignRegionCallBack);
+  MSYS_AddRegion(gSelectedRipSignRegion);
+  MSYS_DisableRegion(gSelectedRipSignRegion);
 
   SetBookMark(Enum98.FUNERAL_BOOKMARK);
 
@@ -173,10 +173,10 @@ export function ExitFuneral(): void {
   DeleteVideoObjectFromIndex(guiRightColumn);
 
   for (i = 0; i < FUNERAL_NUMBER_OF_LINKS; i++) {
-    MSYS_RemoveRegion(addressof(gSelectedFuneralLinkRegion[i]));
+    MSYS_RemoveRegion(gSelectedFuneralLinkRegion[i]);
   }
 
-  MSYS_RemoveRegion(addressof(gSelectedRipSignRegion));
+  MSYS_RemoveRegion(gSelectedRipSignRegion);
 }
 
 export function HandleFuneral(): void {
@@ -267,10 +267,10 @@ function DisplayFuneralRipTombStone(): void {
   InvalidateRegion(FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, FUNERAL_CLOSED_RIP_SIGN_X + FUNERAL_CLOSED_WIDTH + 5, FUNERAL_CLOSED_RIP_SIGN_Y + FUNERAL_CLOSED_HEIGHT + 5);
 
   // enable the region to make the sign disappear
-  MSYS_EnableRegion(addressof(gSelectedRipSignRegion));
+  MSYS_EnableRegion(gSelectedRipSignRegion);
 }
 
-function SelectFuneralLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFuneralLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let uiUserData: UINT32;
@@ -287,10 +287,10 @@ function SelectFuneralLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason
   }
 }
 
-function SelectRipSignRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectRipSignRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    MSYS_DisableRegion(addressof(gSelectedRipSignRegion));
+    MSYS_DisableRegion(gSelectedRipSignRegion);
     fPausedReDrawScreenFlag = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }

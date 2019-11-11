@@ -295,21 +295,21 @@ export function PlayVoice(): UINT32 {
 
 function CreateIMPVoiceMouseRegions(): void {
   // will create mouse regions needed for the IMP voices page
-  MSYS_DefineRegion(addressof(gVoicePortraitRegion), LAPTOP_SCREEN_UL_X + 200, LAPTOP_SCREEN_WEB_UL_Y + 176, LAPTOP_SCREEN_UL_X + 200 + 100, LAPTOP_SCREEN_WEB_UL_Y + 176 + 100, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, IMPPortraitRegionButtonCallback);
+  MSYS_DefineRegion(gVoicePortraitRegion, LAPTOP_SCREEN_UL_X + 200, LAPTOP_SCREEN_WEB_UL_Y + 176, LAPTOP_SCREEN_UL_X + 200 + 100, LAPTOP_SCREEN_WEB_UL_Y + 176 + 100, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, IMPPortraitRegionButtonCallback);
 
-  MSYS_AddRegion(addressof(gVoicePortraitRegion));
+  MSYS_AddRegion(gVoicePortraitRegion);
 
   return;
 }
 
 function DestroyIMPVoiceMouseRegions(): void {
   // will destroy already created mouse reiogns for IMP voices page
-  MSYS_RemoveRegion(addressof(gVoicePortraitRegion));
+  MSYS_RemoveRegion(gVoicePortraitRegion);
 
   return;
 }
 
-function IMPPortraitRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function IMPPortraitRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // callback handler for imp portrait region button events
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {

@@ -534,17 +534,17 @@ export function EnterAIMMembers(): boolean {
   }
 
   //** Mouse Regions **
-  MSYS_DefineRegion(addressof(gSelectedFaceRegion), PORTRAIT_X, PORTRAIT_Y, PORTRAIT_X + PORTRAIT_WIDTH, PORTRAIT_Y + PORTRAIT_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, SelectFaceMovementRegionCallBack, SelectFaceRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedFaceRegion));
+  MSYS_DefineRegion(gSelectedFaceRegion, PORTRAIT_X, PORTRAIT_Y, PORTRAIT_X + PORTRAIT_WIDTH, PORTRAIT_Y + PORTRAIT_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, SelectFaceMovementRegionCallBack, SelectFaceRegionCallBack);
+  MSYS_AddRegion(gSelectedFaceRegion);
 
   // Set the fast help for the mouse region
   //	SetRegionFastHelpText( &gSelectedFaceRegion, AimMemberText[ AIM_MEMBER_CLICK_INSTRUCTIONS ] );
 
   // if user clicks in the area, the merc will shut up!
-  MSYS_DefineRegion(addressof(gSelectedShutUpMercRegion), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectShutUpMercRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedShutUpMercRegion));
+  MSYS_DefineRegion(gSelectedShutUpMercRegion, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectShutUpMercRegionCallBack);
+  MSYS_AddRegion(gSelectedShutUpMercRegion);
   // have it disbled at first
-  MSYS_DisableRegion(addressof(gSelectedShutUpMercRegion));
+  MSYS_DisableRegion(gSelectedShutUpMercRegion);
 
   // Button Regions
   giXToCloseVideoConfButtonImage = LoadButtonImage("LAPTOP\\x_button.sti", -1, 0, -1, 1, -1);
@@ -622,8 +622,8 @@ export function ExitAIMMembers(): void {
   RemoveButton(giContactButton);
   RemoveButton(giNextButton);
 
-  MSYS_RemoveRegion(addressof(gSelectedFaceRegion));
-  MSYS_RemoveRegion(addressof(gSelectedShutUpMercRegion));
+  MSYS_RemoveRegion(gSelectedFaceRegion);
+  MSYS_RemoveRegion(gSelectedShutUpMercRegion);
 
   ExitAimMenuBar();
 
@@ -827,7 +827,7 @@ function DrawMoneyToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY:
   return true;
 }
 
-function SelectFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFaceRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX;
@@ -840,7 +840,7 @@ function SelectFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   }
 }
 
-function SelectFaceMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFaceMovementRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gfAimMemberDisplayFaceHelpText = false;
     gfRedrawScreen = true;
@@ -2042,7 +2042,7 @@ function InitVideoFaceTalking(ubMercID: UINT8, usQuoteNum: UINT16): boolean {
   }
 
   // Enables it so if a player clicks, he will shutup the merc
-  MSYS_EnableRegion(addressof(gSelectedShutUpMercRegion));
+  MSYS_EnableRegion(gSelectedShutUpMercRegion);
 
   gfIsShutUpMouseRegionActive = true;
   gfMercIsTalking = true;
@@ -2134,7 +2134,7 @@ export function DisplayTextForMercFaceVideoPopUp(pString: string /* STR16 */): v
   gfRedrawScreen = true;
 }
 
-function SelectShutUpMercRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectShutUpMercRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let fInCallBack: boolean = true;
 
   if (fInCallBack) {
@@ -2602,7 +2602,7 @@ function HandleMercAttitude(): void {
 
 function StopMercTalking(): void {
   if (gfIsShutUpMouseRegionActive) {
-    MSYS_DisableRegion(addressof(gSelectedShutUpMercRegion));
+    MSYS_DisableRegion(gSelectedShutUpMercRegion);
 
     ShutupaYoFace(giMercFaceIndex);
     gfMercIsTalking = false;
@@ -2657,7 +2657,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
       SpecifyDisabledButtonStyle(giXToCloseVideoConfButton, Enum29.DISABLED_STYLE_NONE);
       fXRegionActive = true;
 
-      MSYS_DisableRegion(addressof(gSelectedFaceRegion));
+      MSYS_DisableRegion(gSelectedFaceRegion);
     }
   }
 
@@ -2684,10 +2684,10 @@ function InitDeleteVideoConferencePopUp(): boolean {
       fXRegionActive = false;
     }
 
-    MSYS_DisableRegion(addressof(gSelectedShutUpMercRegion));
+    MSYS_DisableRegion(gSelectedShutUpMercRegion);
 
     // Enable the ability to click on the BIG face to go to different screen
-    MSYS_EnableRegion(addressof(gSelectedFaceRegion));
+    MSYS_EnableRegion(gSelectedFaceRegion);
 
     //		EnableDisableCurrentVideoConferenceButtons(FALSE);
     if (gubVideoConferencingPreviousMode == Enum65.AIM_VIDEO_HIRE_MERC_MODE) {
@@ -3430,7 +3430,7 @@ function WaitForMercToFinishTalkingOrUserToClick(): void {
   // if the region is not active
   if (!gfIsShutUpMouseRegionActive) {
     // Enables it so if a player clicks, he will shutup the merc
-    MSYS_EnableRegion(addressof(gSelectedShutUpMercRegion));
+    MSYS_EnableRegion(gSelectedShutUpMercRegion);
     gfIsShutUpMouseRegionActive = true;
   }
 

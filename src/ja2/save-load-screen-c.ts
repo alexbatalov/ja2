@@ -387,15 +387,15 @@ function EnterSaveLoadScreen(): boolean {
   usPosX = SLG_FIRST_SAVED_SPOT_X;
   usPosY = SLG_FIRST_SAVED_SPOT_Y;
   for (i = 0; i < NUM_SAVE_GAMES; i++) {
-    MSYS_DefineRegion(addressof(gSelectedSaveRegion[i]), usPosX, usPosY, (usPosX + SLG_SAVELOCATION_WIDTH), (usPosY + SLG_SAVELOCATION_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedSaveRegionMovementCallBack, SelectedSaveRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedSaveRegion[i]));
-    MSYS_SetRegionUserData(addressof(gSelectedSaveRegion[i]), 0, i);
+    MSYS_DefineRegion(gSelectedSaveRegion[i], usPosX, usPosY, (usPosX + SLG_SAVELOCATION_WIDTH), (usPosY + SLG_SAVELOCATION_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedSaveRegionMovementCallBack, SelectedSaveRegionCallBack);
+    MSYS_AddRegion(gSelectedSaveRegion[i]);
+    MSYS_SetRegionUserData(gSelectedSaveRegion[i], 0, i);
 
     // if we are to Load a game
     if (!gfSaveGame) {
       // We cannot load a game that hasnt been saved
       if (!gbSaveGameArray[i])
-        MSYS_DisableRegion(addressof(gSelectedSaveRegion[i]));
+        MSYS_DisableRegion(gSelectedSaveRegion[i]);
     }
 
     usPosY += SLG_GAP_BETWEEN_LOCATIONS;
@@ -410,8 +410,8 @@ function EnterSaveLoadScreen(): boolean {
   */
 
   // Create the screen mask to enable ability to righ click to cancel the sace game
-  MSYS_DefineRegion(addressof(gSLSEntireScreenRegion), 0, 0, 639, 479, MSYS_PRIORITY_HIGH - 10, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectedSLSEntireRegionCallBack);
-  MSYS_AddRegion(addressof(gSLSEntireScreenRegion));
+  MSYS_DefineRegion(gSLSEntireScreenRegion, 0, 0, 639, 479, MSYS_PRIORITY_HIGH - 10, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectedSLSEntireRegionCallBack);
+  MSYS_AddRegion(gSLSEntireScreenRegion);
 
   // Reset the regions
   //	for( i=0; i<NUM_SAVE_GAMES; i++)
@@ -543,7 +543,7 @@ function ExitSaveLoadScreen(): void {
   }
 
   for (i = 0; i < NUM_SAVE_GAMES; i++) {
-    MSYS_RemoveRegion(addressof(gSelectedSaveRegion[i]));
+    MSYS_RemoveRegion(gSelectedSaveRegion[i]);
   }
 
   DeleteVideoObjectFromIndex(guiSlgBackGroundImage);
@@ -552,7 +552,7 @@ function ExitSaveLoadScreen(): void {
   // Destroy the text fields ( if created )
   DestroySaveLoadTextInputBoxes();
 
-  MSYS_RemoveRegion(addressof(gSLSEntireScreenRegion));
+  MSYS_RemoveRegion(gSLSEntireScreenRegion);
 
   gfSaveLoadScreenEntry = true;
   gfSaveLoadScreenExit = false;
@@ -1246,7 +1246,7 @@ void BtnSlgLoadCallback(GUI_BUTTON *btn,INT32 reason)
 }
 */
 
-function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectedSaveRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let bActiveTextField: INT8;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
@@ -1380,19 +1380,19 @@ function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   }
 }
 
-function SelectedSaveRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function SelectedSaveRegionMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     let bTemp: INT8;
-    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    pRegion.uiFlags &= (~BUTTON_CLICKED_ON);
 
     bTemp = gbHighLightedLocation;
     gbHighLightedLocation = -1;
     //		DisplaySaveGameList();
     DisplaySaveGameEntry(bTemp);
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.uiFlags |= BUTTON_CLICKED_ON;
 
     // If we are saving and this is the quick save slot, leave
     if (gfSaveGame && MSYS_GetRegionUserData(pRegion, 0) != 0) {
@@ -1405,7 +1405,7 @@ function SelectedSaveRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reas
     DisplaySaveGameEntry(gbLastHighLightedLocation);
     DisplaySaveGameEntry(gbHighLightedLocation); //, usPosY );
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 }
 
@@ -1479,7 +1479,7 @@ function SetSelection(ubNewSelection: UINT8): void {
     gbSaveGameSelectedLocation[gbSelectedSaveLocation] = SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER;
 
     // reset the slots help text
-    SetRegionFastHelpText(addressof(gSelectedSaveRegion[gbSelectedSaveLocation]), "\0");
+    SetRegionFastHelpText(gSelectedSaveRegion[gbSelectedSaveLocation], "\0");
   }
 
   gfRedrawSaveLoadScreen = true;
@@ -1731,7 +1731,7 @@ function DoneFadeInForSaveLoadScreen(): void {
   }
 }
 
-function SelectedSLSEntireRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectedSLSEntireRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     DisableSelectedSlot();

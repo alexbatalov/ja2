@@ -27,13 +27,13 @@ export function EnableEditorRegion(bRegionID: INT8): void {
     case 6:
     case 7:
     case 8:
-      MSYS_EnableRegion(addressof(TerrainTileButtonRegion[bRegionID]));
+      MSYS_EnableRegion(TerrainTileButtonRegion[bRegionID]);
       break;
     case Enum45.ITEM_REGION_ID:
-      MSYS_EnableRegion(addressof(ItemsRegion));
+      MSYS_EnableRegion(ItemsRegion);
       break;
     case Enum45.MERC_REGION_ID:
-      MSYS_EnableRegion(addressof(MercRegion));
+      MSYS_EnableRegion(MercRegion);
       break;
   }
 }
@@ -48,25 +48,25 @@ export function DisableEditorRegion(bRegionID: INT8): void {
     case 5:
     case 6:
     case 7:
-      MSYS_DisableRegion(addressof(TerrainTileButtonRegion[bRegionID]));
+      MSYS_DisableRegion(TerrainTileButtonRegion[bRegionID]);
       break;
     case Enum45.ITEM_REGION_ID:
-      MSYS_DisableRegion(addressof(ItemsRegion));
+      MSYS_DisableRegion(ItemsRegion);
       break;
     case Enum45.MERC_REGION_ID:
-      MSYS_DisableRegion(addressof(MercRegion));
+      MSYS_DisableRegion(MercRegion);
       break;
   }
 }
 
 function RemoveEditorRegions(): void {
   let x: INT32;
-  MSYS_RemoveRegion(addressof(EditorRegion));
+  MSYS_RemoveRegion(EditorRegion);
   for (x = Enum45.BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
-    MSYS_RemoveRegion(addressof(TerrainTileButtonRegion[x]));
+    MSYS_RemoveRegion(TerrainTileButtonRegion[x]);
   }
-  MSYS_RemoveRegion(addressof(ItemsRegion));
-  MSYS_RemoveRegion(addressof(MercRegion));
+  MSYS_RemoveRegion(ItemsRegion);
+  MSYS_RemoveRegion(MercRegion);
 }
 
 function InitEditorRegions(): void {
@@ -75,23 +75,23 @@ function InitEditorRegions(): void {
   // By doing this, all of the buttons underneath are blanketed and can't be used anymore.
   // Any new buttons will cover this up as well.  Think of it as a barrier between the editor buttons,
   // and the game's interface panel buttons and regions.
-  MSYS_DefineRegion(addressof(EditorRegion), 0, 360, 640, 480, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(EditorRegion, 0, 360, 640, 480, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   // Create the regions for the terrain tile selections
   for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
-    MSYS_DefineRegion(addressof(TerrainTileButtonRegion[x]), (261 + x * 42), 369, (303 + x * 42), 391, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, TerrainTileButtonRegionCallback);
-    MSYS_SetRegionUserData(addressof(TerrainTileButtonRegion[x]), 0, x);
-    MSYS_DisableRegion(addressof(TerrainTileButtonRegion[x]));
+    MSYS_DefineRegion(TerrainTileButtonRegion[x], (261 + x * 42), 369, (303 + x * 42), 391, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, TerrainTileButtonRegionCallback);
+    MSYS_SetRegionUserData(TerrainTileButtonRegion[x], 0, x);
+    MSYS_DisableRegion(TerrainTileButtonRegion[x]);
   }
   gfShowTerrainTileButtons = false;
 
   // Create the region for the items selection window.
-  MSYS_DefineRegion(addressof(ItemsRegion), 100, 360, 540, 440, MSYS_PRIORITY_NORMAL, 0, MouseMovedInItemsRegion, MouseClickedInItemsRegion);
-  MSYS_DisableRegion(addressof(ItemsRegion));
+  MSYS_DefineRegion(ItemsRegion, 100, 360, 540, 440, MSYS_PRIORITY_NORMAL, 0, MouseMovedInItemsRegion, MouseClickedInItemsRegion);
+  MSYS_DisableRegion(ItemsRegion);
 
   // Create the region for the merc inventory panel.
-  MSYS_DefineRegion(addressof(MercRegion), 175, 361, 450, 460, MSYS_PRIORITY_NORMAL, 0, MouseMovedInMercRegion, MouseClickedInMercRegion);
-  MSYS_DisableRegion(addressof(MercRegion));
+  MSYS_DefineRegion(MercRegion, 175, 361, 450, 460, MSYS_PRIORITY_NORMAL, 0, MouseMovedInMercRegion, MouseClickedInMercRegion);
+  MSYS_DisableRegion(MercRegion);
 }
 
 function LoadEditorImages(): void {

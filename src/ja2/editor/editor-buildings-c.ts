@@ -434,7 +434,7 @@ export function InitDoorEditing(iMapIndex: INT32): void {
   gfEditingDoor = true;
   iDoorMapIndex = iMapIndex;
   DisableEditorTaskbar();
-  MSYS_DefineRegion(addressof(DoorRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 2, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(DoorRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 2, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   iDoorButton[Enum34.DOOR_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 200, 130, 240, 100, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iDoorButton[Enum34.DOOR_BACKGROUND]);
   SpecifyDisabledButtonStyle(iDoorButton[Enum34.DOOR_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
@@ -558,7 +558,7 @@ export function RenderDoorEditingWindow(): void {
 export function KillDoorEditing(): void {
   let i: INT32;
   EnableEditorTaskbar();
-  MSYS_RemoveRegion(addressof(DoorRegion));
+  MSYS_RemoveRegion(DoorRegion);
   for (i = 0; i < Enum34.NUM_DOOR_BUTTONS; i++)
     RemoveButton(iDoorButton[i]);
   gfEditingDoor = false;

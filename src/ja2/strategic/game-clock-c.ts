@@ -781,14 +781,14 @@ export function LoadGameClock(hFile: HWFILE): boolean {
 export function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
   if (fClockMouseRegionCreated == false) {
     // create a mouse region for pausing of game clock
-    MSYS_DefineRegion(addressof(gClockMouseRegion), (sX), (sY), (sX + CLOCK_REGION_WIDTH), (sY + CLOCK_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, PauseOfClockBtnCallback);
+    MSYS_DefineRegion(gClockMouseRegion, (sX), (sY), (sX + CLOCK_REGION_WIDTH), (sY + CLOCK_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, PauseOfClockBtnCallback);
 
     fClockMouseRegionCreated = true;
 
     if (gfGamePaused == false) {
-      SetRegionFastHelpText(addressof(gClockMouseRegion), pPausedGameText[2]);
+      SetRegionFastHelpText(gClockMouseRegion, pPausedGameText[2]);
     } else {
-      SetRegionFastHelpText(addressof(gClockMouseRegion), pPausedGameText[1]);
+      SetRegionFastHelpText(gClockMouseRegion, pPausedGameText[1]);
     }
   }
 }
@@ -796,12 +796,12 @@ export function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
 export function RemoveMouseRegionForPauseOfClock(): void {
   // remove pause region
   if (fClockMouseRegionCreated == true) {
-    MSYS_RemoveRegion(addressof(gClockMouseRegion));
+    MSYS_RemoveRegion(gClockMouseRegion);
     fClockMouseRegionCreated = false;
   }
 }
 
-function PauseOfClockBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function PauseOfClockBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     HandlePlayerPauseUnPauseOfGame();
   }
@@ -846,7 +846,7 @@ function CreateDestroyScreenMaskForPauseGame(): void {
 
   if (((fClockMouseRegionCreated == false) || (gfGamePaused == false) || (gfPauseDueToPlayerGamePause == false)) && (fCreated == true)) {
     fCreated = false;
-    MSYS_RemoveRegion(addressof(gClockScreenMaskMouseRegion));
+    MSYS_RemoveRegion(gClockScreenMaskMouseRegion);
     RemoveMercPopupBoxFromIndex(iPausedPopUpBox);
     iPausedPopUpBox = -1;
     SetRenderFlags(RENDER_FLAG_FULL);
@@ -858,7 +858,7 @@ function CreateDestroyScreenMaskForPauseGame(): void {
     SetRenderFlags(RENDER_FLAG_FULL);
   } else if ((gfPauseDueToPlayerGamePause == true) && (fCreated == false)) {
     // create a mouse region for pausing of game clock
-    MSYS_DefineRegion(addressof(gClockScreenMaskMouseRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, 0, MSYS_NO_CALLBACK, ScreenMaskForGamePauseBtnCallBack);
+    MSYS_DefineRegion(gClockScreenMaskMouseRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, 0, MSYS_NO_CALLBACK, ScreenMaskForGamePauseBtnCallBack);
     fCreated = true;
 
     // get region x and y values
@@ -869,7 +869,7 @@ function CreateDestroyScreenMaskForPauseGame(): void {
     RemoveMouseRegionForPauseOfClock();
     CreateMouseRegionForPauseOfClock(sX, sY);
 
-    SetRegionFastHelpText(addressof(gClockMouseRegion), pPausedGameText[1]);
+    SetRegionFastHelpText(gClockMouseRegion, pPausedGameText[1]);
 
     fMapScreenBottomDirty = true;
 
@@ -880,7 +880,7 @@ function CreateDestroyScreenMaskForPauseGame(): void {
   }
 }
 
-function ScreenMaskForGamePauseBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ScreenMaskForGamePauseBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // unpause the game
     HandlePlayerPauseUnPauseOfGame();

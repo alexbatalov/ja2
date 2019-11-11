@@ -544,7 +544,7 @@ function EnterLaptop(): INT32 {
 
   // if the radar map mouse region is still active, disable it.
   if (gRadarRegion.uiFlags & MSYS_REGION_ENABLED) {
-    MSYS_DisableRegion(addressof(gRadarRegion));
+    MSYS_DisableRegion(gRadarRegion);
     /*
                     #ifdef JA2BETAVERSION
                             DoLapTopMessageBox( MSG_BOX_LAPTOP_DEFAULT, L"Mapscreen's radar region is still active, please tell Dave how you entered Laptop.", LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL );
@@ -2144,14 +2144,14 @@ function CreateLapTopMouseRegions(): boolean {
   // define regions
 
   // the entire laptop display region
-  MSYS_DefineRegion(addressof(gLapTopScreenRegion), (LaptopScreenRect.iLeft), (LaptopScreenRect.iTop), (LaptopScreenRect.iRight), (LaptopScreenRect.iBottom), MSYS_PRIORITY_NORMAL + 1, Enum317.CURSOR_LAPTOP_SCREEN, ScreenRegionMvtCallback, LapTopScreenCallBack);
+  MSYS_DefineRegion(gLapTopScreenRegion, (LaptopScreenRect.iLeft), (LaptopScreenRect.iTop), (LaptopScreenRect.iRight), (LaptopScreenRect.iBottom), MSYS_PRIORITY_NORMAL + 1, Enum317.CURSOR_LAPTOP_SCREEN, ScreenRegionMvtCallback, LapTopScreenCallBack);
 
   // MSYS_AddRegion(&gLapTopScreenRegion);
   return true;
 }
 
 function DeleteLapTopMouseRegions(): boolean {
-  MSYS_RemoveRegion(addressof(gLapTopScreenRegion));
+  MSYS_RemoveRegion(gLapTopScreenRegion);
 
   return true;
 }
@@ -2441,7 +2441,7 @@ function AnimateButton(uiIconID: UINT32, usX: UINT16, usY: UINT16): void {
   return;
 }
 
-function WWWRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function WWWRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let iBaseTime: INT32 = 0;
   /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
@@ -2457,7 +2457,7 @@ function WWWRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   }
 }
 
-function EmailRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function EmailRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let iBaseTime: INT32 = 0;
   /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
@@ -2478,7 +2478,7 @@ function EmailRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   }
 }
 
-function FinancialRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function FinancialRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let iBaseTime: INT32 = 0;
   /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
@@ -2494,7 +2494,7 @@ function FinancialRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   }
 }
 
-function HistoryRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function HistoryRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let iBaseTime: INT32 = 0;
   /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
@@ -2511,7 +2511,7 @@ function HistoryRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   }
 }
 
-function FilesRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function FilesRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let iBaseTime: INT32 = 0;
   /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
@@ -2527,7 +2527,7 @@ function FilesRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   }
 }
 
-function PersonnelRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function PersonnelRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /* static */ let iBaseTime: INT32 = 0;
   /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
@@ -2551,7 +2551,7 @@ function CheckIfMouseLeaveScreen(): void {
     guiCurrentLapTopCursor = Enum97.LAPTOP_PANEL_CURSOR;
   }
 }
-function ScreenRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ScreenRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2840,34 +2840,34 @@ function CreateBookMarkMouseRegions(): void {
   let iCounter: INT32 = 0;
   // creates regions based on number of entries
   while (LaptopSaveInfo.iBookMarkList[iCounter] != -1) {
-    MSYS_DefineRegion(addressof(gBookmarkMouseRegions[iCounter]), BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, Enum317.CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
+    MSYS_DefineRegion(gBookmarkMouseRegions[iCounter], BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, Enum317.CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
     // MSYS_AddRegion(&gBookmarkMouseRegions[iCounter]);
-    MSYS_SetRegionUserData(addressof(gBookmarkMouseRegions[iCounter]), 0, iCounter);
-    MSYS_SetRegionUserData(addressof(gBookmarkMouseRegions[iCounter]), 1, 0);
+    MSYS_SetRegionUserData(gBookmarkMouseRegions[iCounter], 0, iCounter);
+    MSYS_SetRegionUserData(gBookmarkMouseRegions[iCounter], 1, 0);
 
     // Create the regions help text
-    CreateBookMarkHelpText(addressof(gBookmarkMouseRegions[iCounter]), LaptopSaveInfo.iBookMarkList[iCounter]);
+    CreateBookMarkHelpText(gBookmarkMouseRegions[iCounter], LaptopSaveInfo.iBookMarkList[iCounter]);
 
     iCounter++;
   }
   // now add one more
   // for the cancel button
-  MSYS_DefineRegion(addressof(gBookmarkMouseRegions[iCounter]), BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, Enum317.CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
+  MSYS_DefineRegion(gBookmarkMouseRegions[iCounter], BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, Enum317.CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
   // MSYS_AddRegion(&gBookmarkMouseRegions[iCounter]);
-  MSYS_SetRegionUserData(addressof(gBookmarkMouseRegions[iCounter]), 0, iCounter);
-  MSYS_SetRegionUserData(addressof(gBookmarkMouseRegions[iCounter]), 1, Enum98.CANCEL_STRING);
+  MSYS_SetRegionUserData(gBookmarkMouseRegions[iCounter], 0, iCounter);
+  MSYS_SetRegionUserData(gBookmarkMouseRegions[iCounter], 1, Enum98.CANCEL_STRING);
 }
 
 function DeleteBookmarkRegions(): void {
   let iCounter: INT32 = 0;
   // deletes bookmark regions
   while (LaptopSaveInfo.iBookMarkList[iCounter] != -1) {
-    MSYS_RemoveRegion(addressof(gBookmarkMouseRegions[iCounter]));
+    MSYS_RemoveRegion(gBookmarkMouseRegions[iCounter]);
     iCounter++;
   }
 
   // now one for the cancel
-  MSYS_RemoveRegion(addressof(gBookmarkMouseRegions[iCounter]));
+  MSYS_RemoveRegion(gBookmarkMouseRegions[iCounter]);
 }
 
 function CreateDestoryBookMarkRegions(): void {
@@ -2885,7 +2885,7 @@ function CreateDestoryBookMarkRegions(): void {
   }
 }
 
-function BookmarkCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function BookmarkCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iCount: INT32;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
@@ -3047,7 +3047,7 @@ export function GoToWebPage(iPageId: INT32): void {
   return;
 }
 
-function BookmarkMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function BookmarkMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason == MSYS_CALLBACK_REASON_MOVE) {
     iHighLightBookLine = MSYS_GetRegionUserData(pRegion, 0);
   }
@@ -3263,10 +3263,10 @@ function CreateDestroyErrorButton(): void {
     SetButtonCursor(giErrorButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // define the screen mask
-    MSYS_DefineRegion(addressof(pScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
+    MSYS_DefineRegion(pScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
 
     // add region
-    MSYS_AddRegion(addressof(pScreenMask));
+    MSYS_AddRegion(pScreenMask);
   } else if ((!fErrorFlag) && (fOldErrorFlag)) {
     // done dsiplaying, get rid of button and screen mask
     fOldErrorFlag = false;
@@ -3274,7 +3274,7 @@ function CreateDestroyErrorButton(): void {
     RemoveButton(giErrorButton[0]);
     UnloadButtonImage(giErrorButtonImage[0]);
 
-    MSYS_RemoveRegion(addressof(pScreenMask));
+    MSYS_RemoveRegion(pScreenMask);
 
     // re draw screen
     fReDrawScreenFlag = true;
@@ -3562,7 +3562,7 @@ function HandleLeftButtonUpEvent(): void {
   }
 }
 
-export function LapTopScreenCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+export function LapTopScreenCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -4550,7 +4550,7 @@ function HandleDefaultWebpageForLaptop(): void {
 function CreateMinimizeRegionsForLaptopProgramIcons(): void {
   // will create the minizing region to lie over the icon for this particular laptop program
 
-  MSYS_DefineRegion(addressof(gLapTopProgramMinIcon), LAPTOP_PROGRAM_ICON_X, LAPTOP_PROGRAM_ICON_Y, LAPTOP_PROGRAM_ICON_X + LAPTOP_PROGRAM_ICON_WIDTH, LAPTOP_PROGRAM_ICON_Y + LAPTOP_PROGRAM_ICON_HEIGHT, MSYS_PRIORITY_NORMAL + 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LaptopProgramIconMinimizeCallback);
+  MSYS_DefineRegion(gLapTopProgramMinIcon, LAPTOP_PROGRAM_ICON_X, LAPTOP_PROGRAM_ICON_Y, LAPTOP_PROGRAM_ICON_X + LAPTOP_PROGRAM_ICON_WIDTH, LAPTOP_PROGRAM_ICON_Y + LAPTOP_PROGRAM_ICON_HEIGHT, MSYS_PRIORITY_NORMAL + 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LaptopProgramIconMinimizeCallback);
 
   return;
 }
@@ -4559,12 +4559,12 @@ function DestroyMinimizeRegionsForLaptopProgramIcons(): void {
   // will destroy the minizmize regions to be placed over the laptop icons that will be
   // displayed on the top of the laptop program bar
 
-  MSYS_RemoveRegion(addressof(gLapTopProgramMinIcon));
+  MSYS_RemoveRegion(gLapTopProgramMinIcon);
 
   return;
 }
 
-function LaptopProgramIconMinimizeCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function LaptopProgramIconMinimizeCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // callback handler for the minize region that is attatched to the laptop program icon
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     switch (guiCurrentLaptopMode) {
@@ -4659,19 +4659,19 @@ function CreateDestroyMouseRegionForNewMailIcon(): void {
 
   if (fCreated == false) {
     fCreated = true;
-    MSYS_DefineRegion(addressof(gNewMailIconRegion), LAPTOP__NEW_EMAIL_ICON_X, LAPTOP__NEW_EMAIL_ICON_Y + 5, LAPTOP__NEW_EMAIL_ICON_X + 16, LAPTOP__NEW_EMAIL_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewEmailIconCallback);
+    MSYS_DefineRegion(gNewMailIconRegion, LAPTOP__NEW_EMAIL_ICON_X, LAPTOP__NEW_EMAIL_ICON_Y + 5, LAPTOP__NEW_EMAIL_ICON_X + 16, LAPTOP__NEW_EMAIL_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewEmailIconCallback);
     CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, (fUnReadMailFlag == 0));
 
-    MSYS_DefineRegion(addressof(gNewFileIconRegion), LAPTOP__NEW_FILE_ICON_X, LAPTOP__NEW_FILE_ICON_Y + 5, LAPTOP__NEW_FILE_ICON_X + 16, LAPTOP__NEW_FILE_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewFileIconCallback);
+    MSYS_DefineRegion(gNewFileIconRegion, LAPTOP__NEW_FILE_ICON_X, LAPTOP__NEW_FILE_ICON_Y + 5, LAPTOP__NEW_FILE_ICON_X + 16, LAPTOP__NEW_FILE_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewFileIconCallback);
     CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (fNewFilesInFileViewer == 0));
   } else {
     fCreated = false;
-    MSYS_RemoveRegion(addressof(gNewMailIconRegion));
-    MSYS_RemoveRegion(addressof(gNewFileIconRegion));
+    MSYS_RemoveRegion(gNewMailIconRegion);
+    MSYS_RemoveRegion(gNewFileIconRegion);
   }
 }
 
-function NewEmailIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function NewEmailIconCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fUnReadMailFlag) {
       fOpenMostRecentUnReadFlag = true;
@@ -4680,7 +4680,7 @@ function NewEmailIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   }
 }
 
-function NewFileIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function NewFileIconCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fNewFilesInFileViewer) {
       fEnteredFileViewerFromNewFileIcon = true;
@@ -5097,20 +5097,20 @@ function InternetRainDelayMessageBoxCallBack(bExitValue: UINT8): void {
   giRainDelayInternetSite = -2;
 }
 
-function CreateBookMarkHelpText(pRegion: Pointer<MOUSE_REGION>, uiBookMarkID: UINT32): void {
+function CreateBookMarkHelpText(pRegion: MOUSE_REGION, uiBookMarkID: UINT32): void {
   SetRegionFastHelpText(pRegion, gzLaptopHelpText[Enum376.BOOKMARK_TEXT_ASSOCIATION_OF_INTERNATION_MERCENARIES + uiBookMarkID]);
 }
 
 export function CreateFileAndNewEmailIconFastHelpText(uiHelpTextID: UINT32, fClearHelpText: boolean): void {
-  let pRegion: Pointer<MOUSE_REGION>;
+  let pRegion: MOUSE_REGION;
 
   switch (uiHelpTextID) {
     case Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL:
-      pRegion = addressof(gNewMailIconRegion);
+      pRegion = gNewMailIconRegion;
       break;
 
     case Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE:
-      pRegion = addressof(gNewFileIconRegion);
+      pRegion = gNewFileIconRegion;
       break;
 
     default:

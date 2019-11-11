@@ -245,27 +245,27 @@ export function EnterAIM(): boolean {
   //** Mouse Regions **
 
   // Mouse region for the MebershipCard
-  MSYS_DefineRegion(addressof(gSelectedMemberCardRegion), MEMBERCARD_X, MEMBERCARD_Y, (MEMBERCARD_X + LINK_SIZE_X), (MEMBERCARD_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectMemberCardRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedMemberCardRegion));
+  MSYS_DefineRegion(gSelectedMemberCardRegion, MEMBERCARD_X, MEMBERCARD_Y, (MEMBERCARD_X + LINK_SIZE_X), (MEMBERCARD_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectMemberCardRegionCallBack);
+  MSYS_AddRegion(gSelectedMemberCardRegion);
 
   // Mouse region for the Policies
-  MSYS_DefineRegion(addressof(gSelectedPoliciesRegion), POLICIES_X, POLICIES_Y, (POLICIES_X + LINK_SIZE_X), (POLICIES_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectPoliciesRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedPoliciesRegion));
+  MSYS_DefineRegion(gSelectedPoliciesRegion, POLICIES_X, POLICIES_Y, (POLICIES_X + LINK_SIZE_X), (POLICIES_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectPoliciesRegionCallBack);
+  MSYS_AddRegion(gSelectedPoliciesRegion);
 
   // Mouse region for the History
-  MSYS_DefineRegion(addressof(gSelectedHistoryRegion), HISTORY_X, HISTORY_Y, (HISTORY_X + LINK_SIZE_X), (HISTORY_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedHistoryRegion));
+  MSYS_DefineRegion(gSelectedHistoryRegion, HISTORY_X, HISTORY_Y, (HISTORY_X + LINK_SIZE_X), (HISTORY_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryRegionCallBack);
+  MSYS_AddRegion(gSelectedHistoryRegion);
 
   // Mouse region for the Links
-  MSYS_DefineRegion(addressof(gSelectedLinksRegion), LINKS_X, LINKS_Y, (LINKS_X + LINK_SIZE_X), (LINKS_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinksRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedLinksRegion));
+  MSYS_DefineRegion(gSelectedLinksRegion, LINKS_X, LINKS_Y, (LINKS_X + LINK_SIZE_X), (LINKS_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinksRegionCallBack);
+  MSYS_AddRegion(gSelectedLinksRegion);
 
   // Mouse region for the Links
-  MSYS_DefineRegion(addressof(gSelectedBannerRegion), AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectBannerRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedBannerRegion));
+  MSYS_DefineRegion(gSelectedBannerRegion, AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectBannerRegionCallBack);
+  MSYS_AddRegion(gSelectedBannerRegion);
 
   // disable the region because only certain banners will be 'clickable'
-  MSYS_DisableRegion(addressof(gSelectedBannerRegion));
+  MSYS_DisableRegion(gSelectedBannerRegion);
 
   gubAimMenuButtonDown = 255;
 
@@ -294,11 +294,11 @@ export function ExitAIM(): void {
   DeleteVideoObjectFromIndex(guiBobbyRAdImages);
 
   // Remove Mouse Regions
-  MSYS_RemoveRegion(addressof(gSelectedMemberCardRegion));
-  MSYS_RemoveRegion(addressof(gSelectedPoliciesRegion));
-  MSYS_RemoveRegion(addressof(gSelectedLinksRegion));
-  MSYS_RemoveRegion(addressof(gSelectedHistoryRegion));
-  MSYS_RemoveRegion(addressof(gSelectedBannerRegion));
+  MSYS_RemoveRegion(gSelectedMemberCardRegion);
+  MSYS_RemoveRegion(gSelectedPoliciesRegion);
+  MSYS_RemoveRegion(gSelectedLinksRegion);
+  MSYS_RemoveRegion(gSelectedHistoryRegion);
+  MSYS_RemoveRegion(gSelectedBannerRegion);
 }
 
 export function HandleAIM(): void {
@@ -353,7 +353,7 @@ export function RenderAIM(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function SelectMemberCardRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectMemberCardRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (!fFirstTimeIn)
@@ -362,7 +362,7 @@ function SelectMemberCardRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
   }
 }
 
-function SelectPoliciesRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectPoliciesRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_POLICIES;
@@ -370,7 +370,7 @@ function SelectPoliciesRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   }
 }
 
-function SelectHistoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectHistoryRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_HISTORY;
@@ -378,7 +378,7 @@ function SelectHistoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
   }
 }
 
-function SelectLinksRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectLinksRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_LINKS;
@@ -404,8 +404,8 @@ export function InitAimDefaults(): boolean {
   }
 
   // Mouse region for the Links
-  MSYS_DefineRegion(addressof(gSelectedAimLogo), AIM_SYMBOL_X, AIM_SYMBOL_Y, AIM_SYMBOL_X + AIM_SYMBOL_WIDTH, AIM_SYMBOL_Y + AIM_SYMBOL_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAimLogoRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedAimLogo));
+  MSYS_DefineRegion(gSelectedAimLogo, AIM_SYMBOL_X, AIM_SYMBOL_Y, AIM_SYMBOL_X + AIM_SYMBOL_WIDTH, AIM_SYMBOL_Y + AIM_SYMBOL_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAimLogoRegionCallBack);
+  MSYS_AddRegion(gSelectedAimLogo);
 
   return true;
 }
@@ -413,7 +413,7 @@ export function InitAimDefaults(): boolean {
 export function RemoveAimDefaults(): boolean {
   DeleteVideoObjectFromIndex(guiRustBackGround);
   DeleteVideoObjectFromIndex(guiAimSymbol);
-  MSYS_RemoveRegion(addressof(gSelectedAimLogo));
+  MSYS_RemoveRegion(gSelectedAimLogo);
 
   return true;
 }
@@ -446,7 +446,7 @@ export function DrawAimDefaults(): boolean {
   return true;
 }
 
-function SelectAimLogoRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectAimLogoRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM;
@@ -626,7 +626,7 @@ function HandleAdAndWarningArea(fInit: boolean, fRedraw: boolean): void {
 
   switch (gubCurrentAdvertisment) {
     case Enum62.AIM_AD_WARNING_BOX:
-      MSYS_DisableRegion(addressof(gSelectedBannerRegion));
+      MSYS_DisableRegion(gSelectedBannerRegion);
       ubPreviousAdvertisment = DrawWarningBox(fInit, fRedraw);
       break;
 
@@ -636,22 +636,22 @@ function HandleAdAndWarningArea(fInit: boolean, fRedraw: boolean): void {
 
     case Enum62.AIM_AD_FOR_ADS:
       // disable the region because only certain banners will be 'clickable'
-      MSYS_DisableRegion(addressof(gSelectedBannerRegion));
+      MSYS_DisableRegion(gSelectedBannerRegion);
       ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FOR_ADS_DELAY, AIM_AD_FOR_ADS__NUM_SUBIMAGES, guiAdForAdsImages);
       break;
 
     case Enum62.AIM_AD_INSURANCE_AD:
-      MSYS_EnableRegion(addressof(gSelectedBannerRegion));
+      MSYS_EnableRegion(gSelectedBannerRegion);
       ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_INSURANCE_AD_DELAY, AIM_AD_INSURANCE_AD__NUM_SUBIMAGES, guiInsuranceAdImages);
       break;
 
     case Enum62.AIM_AD_FUNERAL_ADS:
-      MSYS_EnableRegion(addressof(gSelectedBannerRegion));
+      MSYS_EnableRegion(gSelectedBannerRegion);
       ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FUNERAL_AD_DELAY, AIM_AD_FUNERAL_AD__NUM_SUBIMAGES, guiFuneralAdImages);
       break;
 
     case Enum62.AIM_AD_BOBBY_RAY_AD:
-      MSYS_EnableRegion(addressof(gSelectedBannerRegion));
+      MSYS_EnableRegion(gSelectedBannerRegion);
       //			ubPreviousAdvertisment = DisplayAd( fInit, fRedraw, AIM_AD_BOBBYR_AD_DELAY, AIM_AD_BOBBYR_AD__NUM_SUBIMAGES, guiBobbyRAdImages );
       ubPreviousAdvertisment = DisplayBobbyRAd(fInit, fRedraw);
       break;
@@ -668,7 +668,7 @@ function DisplayFlowerAd(fInit: boolean, fRedraw: boolean): boolean {
     uiLastTime = 0;
     ubSubImage = 0;
     ubCount = 0;
-    MSYS_EnableRegion(addressof(gSelectedBannerRegion));
+    MSYS_EnableRegion(gSelectedBannerRegion);
   }
 
   if (((uiCurTime - uiLastTime) > AIM_FLOWER_AD_DELAY) || fRedraw) {
@@ -754,7 +754,7 @@ function DrawWarningBox(fInit: boolean, fRedraw: boolean): boolean {
   }
 }
 
-function SelectBannerRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectBannerRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentAdvertisment == Enum62.AIM_AD_FLOWER_SHOP)

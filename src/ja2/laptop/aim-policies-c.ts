@@ -434,9 +434,9 @@ function InitAimPolicyTocMenu(): boolean {
   usPosY = AIM_POLICY_TOC_Y;
   for (i = 0; i < NUM_AIM_POLICY_TOC_BUTTONS; i++) {
     // Mouse region for the toc buttons
-    MSYS_DefineRegion(addressof(gSelectedPolicyTocMenuRegion[i]), AIM_POLICY_TOC_X, usPosY, (AIM_POLICY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectPolicyTocMenuRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedPolicyTocMenuRegion[i]));
-    MSYS_SetRegionUserData(addressof(gSelectedPolicyTocMenuRegion[i]), 0, i + 2);
+    MSYS_DefineRegion(gSelectedPolicyTocMenuRegion[i], AIM_POLICY_TOC_X, usPosY, (AIM_POLICY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectPolicyTocMenuRegionCallBack);
+    MSYS_AddRegion(gSelectedPolicyTocMenuRegion[i]);
+    MSYS_SetRegionUserData(gSelectedPolicyTocMenuRegion[i], 0, i + 2);
 
     usPosY += AIM_POLICY_TOC_GAP_Y;
   }
@@ -450,12 +450,12 @@ function ExitAimPolicyTocMenu(): boolean {
 
   gfInPolicyToc = false;
   for (i = 0; i < NUM_AIM_POLICY_TOC_BUTTONS; i++)
-    MSYS_RemoveRegion(addressof(gSelectedPolicyTocMenuRegion[i]));
+    MSYS_RemoveRegion(gSelectedPolicyTocMenuRegion[i]);
 
   return true;
 }
 
-function SelectPolicyTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectPolicyTocMenuRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (gfInPolicyToc) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
     } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {

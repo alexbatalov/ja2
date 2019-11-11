@@ -1069,7 +1069,7 @@ export function RemoveButton(iButtonID: INT32): void {
   }
 
   // ...kill it!!!
-  MSYS_RemoveRegion(addressof(b.value.Area));
+  MSYS_RemoveRegion(b.value.Area);
 
   if (b.value.uiFlags & BUTTON_SAVEBACKGROUND) {
     FreeBackgroundRectPending(b.value.BackRect);
@@ -1344,10 +1344,10 @@ export function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, x
     b.value.MoveCallback = BUTTON_NO_CALLBACK;
 
   // Define a mouse region for this button
-  MSYS_DefineRegion(addressof(b.value.Area), xloc, yloc, (xloc + w), (yloc + h), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + w), (yloc + h), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the mouse region to this button (for callback purposes)
-  MSYS_SetRegionUserData(addressof(b.value.Area), 0, ButtonNum);
+  MSYS_SetRegionUserData(b.value.Area, 0, ButtonNum);
 
   // Set this button's flags
   b.value.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_GENERIC);
@@ -1463,10 +1463,10 @@ export function CreateTextButton(string: string /* Pointer<UINT16> */, uiFont: U
     b.value.MoveCallback = BUTTON_NO_CALLBACK;
 
   // Define a MOUSE_REGION for this button
-  MSYS_DefineRegion(addressof(b.value.Area), xloc, yloc, (xloc + w), (yloc + h), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + w), (yloc + h), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the MOUSE_REGION to this button
-  MSYS_SetRegionUserData(addressof(b.value.Area), 0, ButtonNum);
+  MSYS_SetRegionUserData(b.value.Area, 0, ButtonNum);
 
   // Set the flags for this button
   b.value.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_GENERIC);
@@ -1540,10 +1540,10 @@ export function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: IN
     b.value.MoveCallback = BUTTON_NO_CALLBACK;
 
   // define a MOUSE_REGION for this hotspot
-  MSYS_DefineRegion(addressof(b.value.Area), xloc, yloc, (xloc + Width), (yloc + Height), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + Width), (yloc + Height), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the MOUSE_REGION to this hotspot
-  MSYS_SetRegionUserData(addressof(b.value.Area), 0, ButtonNum);
+  MSYS_SetRegionUserData(b.value.Area, 0, ButtonNum);
 
   // Set the flags entry for this hotspot
   b.value.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_HOT_SPOT);
@@ -1679,10 +1679,10 @@ export function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type:
 
   memset(addressof(b.value.Area), 0, sizeof(MOUSE_REGION));
   // Define a MOUSE_REGION for this QuickButton
-  MSYS_DefineRegion(addressof(b.value.Area), xloc, yloc, (xloc + ButtonPictures[Image].MaxWidth), (yloc + ButtonPictures[Image].MaxHeight), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + ButtonPictures[Image].MaxWidth), (yloc + ButtonPictures[Image].MaxHeight), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the MOUSE_REGION with this QuickButton
-  MSYS_SetRegionUserData(addressof(b.value.Area), 0, ButtonNum);
+  MSYS_SetRegionUserData(b.value.Area, 0, ButtonNum);
 
   // Set the flags for this button
   b.value.uiFlags |= BUTTON_ENABLED | BType | BUTTON_QUICK;
@@ -1833,10 +1833,10 @@ export function CreateIconAndTextButton(Image: INT32, string: string /* Pointer<
     b.value.MoveCallback = BUTTON_NO_CALLBACK;
 
   // Define a MOUSE_REGION for this QuickButton
-  MSYS_DefineRegion(addressof(b.value.Area), xloc, yloc, (xloc + ButtonPictures[Image].MaxWidth), (yloc + ButtonPictures[Image].MaxHeight), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + ButtonPictures[Image].MaxWidth), (yloc + ButtonPictures[Image].MaxHeight), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the MOUSE_REGION with this QuickButton
-  MSYS_SetRegionUserData(addressof(b.value.Area), 0, iButtonID);
+  MSYS_SetRegionUserData(b.value.Area, 0, iButtonID);
 
   // Set the flags for this button
   b.value.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_QUICK);
@@ -2112,7 +2112,7 @@ export function SetButtonFastHelpText(iButton: INT32, Text: string /* Pointer<UI
     return;
   b = ButtonList[iButton];
   AssertMsg(b, "Called SetButtonFastHelpText() with a non-existant button.");
-  SetRegionFastHelpText(addressof(b.value.Area), Text);
+  SetRegionFastHelpText(b.value.Area, Text);
 }
 
 export function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEXT_DONE_CALLBACK): void {
@@ -2122,7 +2122,7 @@ export function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEX
   b = ButtonList[iButton];
   AssertMsg(b, "Called SetBtnHelpEndCallback() with a non-existant button.");
 
-  SetRegionHelpEndCallback(addressof(b.value.Area), CallbackFxn);
+  SetRegionHelpEndCallback(b.value.Area, CallbackFxn);
 }
 
 //=============================================================================
@@ -2131,7 +2131,7 @@ export function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEX
 //	Dispatches all button callbacks for mouse movement. This function gets
 //	called by the Mouse System. *DO NOT CALL DIRECTLY*
 //
-function QuickButtonCallbackMMove(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function QuickButtonCallbackMMove(reg: MOUSE_REGION, reason: INT32): void {
   let b: Pointer<GUI_BUTTON>;
   let iButtonID: INT32;
 
@@ -2139,7 +2139,7 @@ function QuickButtonCallbackMMove(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 
   iButtonID = MSYS_GetRegionUserData(reg, 0);
 
-  str = sprintf("QuickButtonCallbackMMove: Mouse Region #%d (%d,%d to %d,%d) has invalid buttonID %d", reg.value.IDNumber, reg.value.RegionTopLeftX, reg.value.RegionTopLeftY, reg.value.RegionBottomRightX, reg.value.RegionBottomRightY, iButtonID);
+  str = sprintf("QuickButtonCallbackMMove: Mouse Region #%d (%d,%d to %d,%d) has invalid buttonID %d", reg.IDNumber, reg.RegionTopLeftX, reg.RegionTopLeftY, reg.RegionBottomRightX, reg.RegionBottomRightY, iButtonID);
 
   AssertMsg(iButtonID >= 0, str);
   AssertMsg(iButtonID < MAX_BUTTONS, str);
@@ -2207,7 +2207,7 @@ function QuickButtonCallbackMMove(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 //	Dispatches all button callbacks for button presses. This function is
 //	called by the Mouse System. *DO NOT CALL DIRECTLY*
 //
-function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function QuickButtonCallbackMButn(reg: MOUSE_REGION, reason: INT32): void {
   let b: Pointer<GUI_BUTTON>;
   let iButtonID: INT32;
   let MouseBtnDown: boolean;
@@ -2218,7 +2218,7 @@ function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 
   iButtonID = MSYS_GetRegionUserData(reg, 0);
 
-  str = sprintf("QuickButtonCallbackMButn: Mouse Region #%d (%d,%d to %d,%d) has invalid buttonID %d", reg.value.IDNumber, reg.value.RegionTopLeftX, reg.value.RegionTopLeftY, reg.value.RegionBottomRightX, reg.value.RegionBottomRightY, iButtonID);
+  str = sprintf("QuickButtonCallbackMButn: Mouse Region #%d (%d,%d to %d,%d) has invalid buttonID %d", reg.IDNumber, reg.RegionTopLeftX, reg.RegionTopLeftY, reg.RegionBottomRightX, reg.RegionBottomRightY, iButtonID);
 
   AssertMsg(iButtonID >= 0, str);
   AssertMsg(iButtonID < MAX_BUTTONS, str);

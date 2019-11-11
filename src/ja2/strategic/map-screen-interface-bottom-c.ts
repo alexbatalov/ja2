@@ -395,7 +395,7 @@ function DrawNameOfLoadedSector(): void {
   mprintf(sFontX, sFontY, "%s", sString);
 }
 
-function CompressModeClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function CompressModeClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & (MSYS_CALLBACK_REASON_RBUTTON_UP | MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     if (CommonTimeCompressionChecks() == true)
       return;
@@ -624,9 +624,9 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
   }
 
   if (ubNumMessages <= MAX_MESSAGES_ON_MAP_BOTTOM) {
-    MSYS_DisableRegion(addressof(gMapMessageScrollBarRegion));
+    MSYS_DisableRegion(gMapMessageScrollBarRegion);
   } else {
-    MSYS_EnableRegion(addressof(gMapMessageScrollBarRegion));
+    MSYS_EnableRegion(gMapMessageScrollBarRegion);
   }
 }
 
@@ -672,13 +672,13 @@ function DisplayCompressMode(): void {
 }
 
 function CreateCompressModePause(): void {
-  MSYS_DefineRegion(addressof(gMapPauseRegion), 487, 456, 522, 467, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressModeClickCallback);
+  MSYS_DefineRegion(gMapPauseRegion, 487, 456, 522, 467, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressModeClickCallback);
 
-  SetRegionFastHelpText(addressof(gMapPauseRegion), pMapScreenBottomFastHelp[7]);
+  SetRegionFastHelpText(gMapPauseRegion, pMapScreenBottomFastHelp[7]);
 }
 
 function RemoveCompressModePause(): void {
-  MSYS_RemoveRegion(addressof(gMapPauseRegion));
+  MSYS_RemoveRegion(gMapPauseRegion);
 }
 
 function LoadMessageSliderBar(): void {
@@ -697,14 +697,14 @@ function DeleteMessageSliderBar(): void {
 }
 
 function CreateMapScreenBottomMessageScrollBarRegion(): void {
-  MSYS_DefineRegion(addressof(gMapMessageScrollBarRegion), MESSAGE_SCROLL_AREA_START_X, MESSAGE_SCROLL_AREA_START_Y, MESSAGE_SCROLL_AREA_END_X, MESSAGE_SCROLL_AREA_END_Y, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenMessageScrollBarCallBack);
+  MSYS_DefineRegion(gMapMessageScrollBarRegion, MESSAGE_SCROLL_AREA_START_X, MESSAGE_SCROLL_AREA_START_Y, MESSAGE_SCROLL_AREA_END_X, MESSAGE_SCROLL_AREA_END_Y, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenMessageScrollBarCallBack);
 }
 
 function DeleteMapScreenBottomMessageScrollRegion(): void {
-  MSYS_RemoveRegion(addressof(gMapMessageScrollBarRegion));
+  MSYS_RemoveRegion(gMapMessageScrollBarRegion);
 }
 
-function MapScreenMessageScrollBarCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MapScreenMessageScrollBarCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let MousePos: POINT = createPoint();
   let ubMouseYOffset: UINT8;
   let ubDesiredSliderOffset: UINT8;
@@ -1075,25 +1075,25 @@ export function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
   // check if disabled and not created, create
   if ((fDisabled) && (fCreated == false)) {
     // mask over compress more button
-    MSYS_DefineRegion(addressof(gTimeCompressionMask[0]), 528, 456, 528 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
+    MSYS_DefineRegion(gTimeCompressionMask[0], 528, 456, 528 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
     // mask over compress less button
-    MSYS_DefineRegion(addressof(gTimeCompressionMask[1]), 466, 456, 466 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
+    MSYS_DefineRegion(gTimeCompressionMask[1], 466, 456, 466 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
     // mask over pause game button
-    MSYS_DefineRegion(addressof(gTimeCompressionMask[2]), 487, 456, 522, 467, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
+    MSYS_DefineRegion(gTimeCompressionMask[2], 487, 456, 522, 467, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
     fCreated = true;
   } else if ((fDisabled == false) && (fCreated)) {
     // created and no longer need to disable
-    MSYS_RemoveRegion(addressof(gTimeCompressionMask[0]));
-    MSYS_RemoveRegion(addressof(gTimeCompressionMask[1]));
-    MSYS_RemoveRegion(addressof(gTimeCompressionMask[2]));
+    MSYS_RemoveRegion(gTimeCompressionMask[0]);
+    MSYS_RemoveRegion(gTimeCompressionMask[1]);
+    MSYS_RemoveRegion(gTimeCompressionMask[2]);
     fCreated = false;
   }
 }
 
-function CompressMaskClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function CompressMaskClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     TellPlayerWhyHeCantCompressTime();
   }

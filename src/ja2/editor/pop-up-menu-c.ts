@@ -73,7 +73,7 @@ export function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirectio
   gusEntryHeight = GetFontHeight(gPopup.usFont);
 
   button = ButtonList[iButtonID];
-  MSYS_DisableRegion(addressof(gBottomPanalRegion));
+  MSYS_DisableRegion(gBottomPanalRegion);
 
   switch (ubDirection) {
     case DIR_UPRIGHT:
@@ -117,7 +117,7 @@ export function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirectio
   gusEntryHeight = GetFontHeight(gPopup.usFont);
 
   button = ButtonList[iButtonID];
-  MSYS_DisableRegion(addressof(gBottomPanalRegion));
+  MSYS_DisableRegion(gBottomPanalRegion);
 
   gPopup.ubPopupMenuID = ubPopupMenuID;
   gPopup.ubSelectedIndex = 0;
@@ -189,7 +189,7 @@ export function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirectio
       gPopup.usBottom = usY + usMenuHeight + 1;
       break;
   }
-  MSYS_DefineRegion(addressof(popupRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(popupRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   RenderPopupMenu();
 }
@@ -328,7 +328,7 @@ function PopupMenuHandle(): void {
       ProcessPopupMenuSelection();
     }
     gPopup.fActive = false;
-    MSYS_RemoveRegion(addressof(popupRegion));
+    MSYS_RemoveRegion(popupRegion);
     gfRenderWorld = true;
     gfRenderTaskbar = true;
     return;
@@ -359,14 +359,14 @@ function PopupMenuHandle(): void {
             break;
           case ESC:
             gPopup.fActive = false;
-            MSYS_RemoveRegion(addressof(popupRegion));
+            MSYS_RemoveRegion(popupRegion);
             gfRenderWorld = true;
             gfRenderTaskbar = true;
             break;
           case ENTER:
             ProcessPopupMenuSelection();
             gPopup.fActive = false;
-            MSYS_RemoveRegion(addressof(popupRegion));
+            MSYS_RemoveRegion(popupRegion);
             gfRenderWorld = true;
             gfRenderTaskbar = true;
             break;

@@ -355,7 +355,7 @@ export function ClearMainMenu(): void {
   InvalidateScreen();
 }
 
-function SelectMainMenuBackGroundRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectMainMenuBackGroundRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     //		if( gfDoHelpScreen )
@@ -391,16 +391,16 @@ function CreateDestroyBackGroundMouseMask(fCreate: boolean): void {
       return;
 
     // Make a mouse region
-    MSYS_DefineRegion(addressof(gBackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectMainMenuBackGroundRegionCallBack);
+    MSYS_DefineRegion(gBackRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectMainMenuBackGroundRegionCallBack);
     // Add region
-    MSYS_AddRegion(addressof(gBackRegion));
+    MSYS_AddRegion(gBackRegion);
 
     fRegionCreated = true;
   } else {
     if (!fRegionCreated)
       return;
 
-    MSYS_RemoveRegion(addressof(gBackRegion));
+    MSYS_RemoveRegion(gBackRegion);
     fRegionCreated = false;
   }
 }

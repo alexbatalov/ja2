@@ -284,7 +284,7 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
     if (pInventoryPoolList[iCounter + iFirstSlotOnPage].o.ubNumberOfObjects > 0) {
       GetHelpTextForItem(pStr, addressof(pInventoryPoolList[iCounter + iFirstSlotOnPage].o), null);
-      SetRegionFastHelpText(addressof(MapInventoryPoolSlots[iCounter]), pStr);
+      SetRegionFastHelpText(MapInventoryPoolSlots[iCounter], pStr);
 
       /*
       // set text for current item
@@ -300,7 +300,7 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
       */
     } else {
       // OK, for each item, set dirty text if applicable!
-      SetRegionFastHelpText(addressof(MapInventoryPoolSlots[iCounter]), "");
+      SetRegionFastHelpText(MapInventoryPoolSlots[iCounter], "");
     }
   }
 
@@ -478,7 +478,7 @@ function SaveSeenAndUnseenItems(): void {
 }
 
 // the screen mask bttn callaback...to disable the inventory and lock out the map itself
-function MapInvenPoolScreenMaskCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MapInvenPoolScreenMaskCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if ((iReason & MSYS_CALLBACK_REASON_RBUTTON_UP)) {
     fShowMapInventoryPool = false;
   }
@@ -497,7 +497,7 @@ function CreateMapInventoryPoolSlots(): void {
   let sBRX: INT16 = 0;
   let sBRY: INT16 = 0;
 
-  MSYS_DefineRegion(addressof(MapInventoryPoolMask), MAP_INVENTORY_POOL_SLOT_START_X, 0, 640, 360, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapInvenPoolScreenMaskCallback);
+  MSYS_DefineRegion(MapInventoryPoolMask, MAP_INVENTORY_POOL_SLOT_START_X, 0, 640, 360, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapInvenPoolScreenMaskCallback);
 
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
     sX = (iCounter / MAP_INV_SLOT_COLS);
@@ -515,9 +515,9 @@ function CreateMapInventoryPoolSlots(): void {
     sBRX = (MAP_INVENTORY_POOL_SLOT_START_X + (sXA * MAP_INVEN_SPACE_BTWN_SLOTS));
     sBRY = (MAP_INVENTORY_POOL_SLOT_START_Y + (sYA * MAP_INVEN_SLOT_HEIGHT)) - 1;
 
-    MSYS_DefineRegion(addressof(MapInventoryPoolSlots[iCounter]), sULX, sULY, sBRX, sBRY, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MapInvenPoolSlotsMove, MapInvenPoolSlots);
+    MSYS_DefineRegion(MapInventoryPoolSlots[iCounter], sULX, sULY, sBRX, sBRY, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MapInvenPoolSlotsMove, MapInvenPoolSlots);
 
-    MSYS_SetRegionUserData(addressof(MapInventoryPoolSlots[iCounter]), 0, iCounter);
+    MSYS_SetRegionUserData(MapInventoryPoolSlots[iCounter], 0, iCounter);
   }
 }
 
@@ -525,14 +525,14 @@ function DestroyMapInventoryPoolSlots(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
-    MSYS_RemoveRegion(addressof(MapInventoryPoolSlots[iCounter]));
+    MSYS_RemoveRegion(MapInventoryPoolSlots[iCounter]);
   }
 
   // remove map inventory mask
-  MSYS_RemoveRegion(addressof(MapInventoryPoolMask));
+  MSYS_RemoveRegion(MapInventoryPoolMask);
 }
 
-function MapInvenPoolSlotsMove(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MapInvenPoolSlotsMove(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iCounter: INT32 = 0;
 
   iCounter = MSYS_GetRegionUserData(pRegion, 0);
@@ -551,7 +551,7 @@ function MapInvenPoolSlotsMove(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   }
 }
 
-function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MapInvenPoolSlots(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment screen mask region
   let iCounter: INT32 = 0;
   let usOldItemIndex: UINT16;
@@ -683,7 +683,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
           gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
           fMapInventoryItem = true;
-          MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
+          MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
           SetCurrentCursorFromDatabase(EXTERN_CURSOR);
         }
 
@@ -1069,7 +1069,7 @@ function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
     gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
     fMapInventoryItem = true;
-    MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
+    MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
     SetCurrentCursorFromDatabase(EXTERN_CURSOR);
 
     if (fShowInventoryFlag && bSelectedInfoChar >= 0) {

@@ -166,8 +166,8 @@ export function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPo
       pNewSlider.value.ubSliderWidth = STEEL_SLIDER_WIDTH;
       pNewSlider.value.ubSliderHeight = STEEL_SLIDER_HEIGHT;
 
-      MSYS_DefineRegion(addressof(pNewSlider.value.ScrollAreaMouseRegion), (usPosX - pNewSlider.value.usWidth / 2), usPosY, (usPosX + pNewSlider.value.usWidth / 2), (pNewSlider.value.usPosY + pNewSlider.value.usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
-      MSYS_SetRegionUserData(addressof(pNewSlider.value.ScrollAreaMouseRegion), 1, pNewSlider.value.uiSliderID);
+      MSYS_DefineRegion(pNewSlider.value.ScrollAreaMouseRegion, (usPosX - pNewSlider.value.usWidth / 2), usPosY, (usPosX + pNewSlider.value.usWidth / 2), (pNewSlider.value.usPosY + pNewSlider.value.usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
+      MSYS_SetRegionUserData(pNewSlider.value.ScrollAreaMouseRegion, 1, pNewSlider.value.uiSliderID);
       break;
 
     case Enum329.SLIDER_DEFAULT_STYLE:
@@ -177,8 +177,8 @@ export function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPo
       pNewSlider.value.usWidth = usWidth;
       pNewSlider.value.usHeight = DEFUALT_SLIDER_SIZE;
 
-      MSYS_DefineRegion(addressof(pNewSlider.value.ScrollAreaMouseRegion), usPosX, (usPosY - DEFUALT_SLIDER_SIZE), (pNewSlider.value.usPosX + pNewSlider.value.usWidth), (usPosY + DEFUALT_SLIDER_SIZE), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
-      MSYS_SetRegionUserData(addressof(pNewSlider.value.ScrollAreaMouseRegion), 1, pNewSlider.value.uiSliderID);
+      MSYS_DefineRegion(pNewSlider.value.ScrollAreaMouseRegion, usPosX, (usPosY - DEFUALT_SLIDER_SIZE), (pNewSlider.value.usPosX + pNewSlider.value.usWidth), (usPosY + DEFUALT_SLIDER_SIZE), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
+      MSYS_SetRegionUserData(pNewSlider.value.ScrollAreaMouseRegion, 1, pNewSlider.value.uiSliderID);
       break;
   }
 
@@ -350,7 +350,7 @@ export function RemoveSliderBar(uiSliderID: UINT32): void {
   if (pTemp.value.pPrev)
     pTemp.value.pPrev.value.pNext = pTemp.value.pNext;
 
-  MSYS_RemoveRegion(addressof(pNodeToRemove.value.ScrollAreaMouseRegion));
+  MSYS_RemoveRegion(pNodeToRemove.value.ScrollAreaMouseRegion);
 
   // if its the last node
   if (pNodeToRemove == pSliderHead)
@@ -361,7 +361,7 @@ export function RemoveSliderBar(uiSliderID: UINT32): void {
   pNodeToRemove = null;
 }
 
-function SelectedSliderMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function SelectedSliderMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   let uiSelectedSlider: UINT32;
   let pSlider: Pointer<SLIDER> = null;
 
@@ -370,7 +370,7 @@ function SelectedSliderMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: 
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    pRegion.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (gfLeftButtonState) {
       uiSelectedSlider = MSYS_GetRegionUserData(pRegion, 1);
@@ -384,13 +384,13 @@ function SelectedSliderMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: 
       }
 
       if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
-        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeYPos);
+        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
       } else {
-        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeXPos);
+        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
       }
     }
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.uiFlags |= BUTTON_CLICKED_ON;
 
     if (gfLeftButtonState) {
       uiSelectedSlider = MSYS_GetRegionUserData(pRegion, 1);
@@ -402,15 +402,15 @@ function SelectedSliderMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: 
       //			gpCurrentSlider = pSlider;
 
       if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
-        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeYPos);
+        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
       } else {
-        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeXPos);
+        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
       }
     }
   }
 
   else if (reason & MSYS_CALLBACK_REASON_MOVE) {
-    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.uiFlags |= BUTTON_CLICKED_ON;
 
     if (gfLeftButtonState) {
       uiSelectedSlider = MSYS_GetRegionUserData(pRegion, 1);
@@ -422,15 +422,15 @@ function SelectedSliderMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: 
       //			gpCurrentSlider = pSlider;
 
       if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
-        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeYPos);
+        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
       } else {
-        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeXPos);
+        CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
       }
     }
   }
 }
 
-function SelectedSliderButtonCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectedSliderButtonCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let uiSelectedSlider: UINT32;
   let pSlider: Pointer<SLIDER> = null;
 
@@ -454,9 +454,9 @@ function SelectedSliderButtonCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
     */
 
     if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
-      CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeYPos);
+      CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
     } else {
-      CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeXPos);
+      CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
     }
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
     uiSelectedSlider = MSYS_GetRegionUserData(pRegion, 1);
@@ -473,9 +473,9 @@ function SelectedSliderButtonCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
     */
 
     if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
-      CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeYPos);
+      CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
     } else {
-      CalculateNewSliderIncrement(uiSelectedSlider, pRegion.value.RelativeXPos);
+      CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
     }
   }
 

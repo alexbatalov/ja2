@@ -90,12 +90,12 @@ export function EnterInsuranceInfo(): boolean {
   usPosX = INS_INFO_LINK_START_X;
   // link to go to the contract page
   // link to go to the home page
-  MSYS_DefineRegion(addressof(gSelectedInsuranceInfoHomeLinkRegion), usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceInfoHomeLinkRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedInsuranceInfoHomeLinkRegion));
+  MSYS_DefineRegion(gSelectedInsuranceInfoHomeLinkRegion, usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceInfoHomeLinkRegionCallBack);
+  MSYS_AddRegion(gSelectedInsuranceInfoHomeLinkRegion);
 
   usPosX += INS_INFO_LINK_START_OFFSET + INS_INFO_LINK_TO_CONTRACT_WIDTH;
-  MSYS_DefineRegion(addressof(gSelectedInsuranceInfoLinkRegion), usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceLinkRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedInsuranceInfoLinkRegion));
+  MSYS_DefineRegion(gSelectedInsuranceInfoLinkRegion, usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceLinkRegionCallBack);
+  MSYS_AddRegion(gSelectedInsuranceInfoLinkRegion);
 
   gubCurrentInsInfoSubPage = Enum89.INS_INFO_INFO_TOC;
 
@@ -113,8 +113,8 @@ export function ExitInsuranceInfo(): void {
   UnloadButtonImage(guiInsNextButtonImage);
   RemoveButton(guiInsNextBackButton);
 
-  MSYS_RemoveRegion(addressof(gSelectedInsuranceInfoLinkRegion));
-  MSYS_RemoveRegion(addressof(gSelectedInsuranceInfoHomeLinkRegion));
+  MSYS_RemoveRegion(gSelectedInsuranceInfoLinkRegion);
+  MSYS_RemoveRegion(gSelectedInsuranceInfoHomeLinkRegion);
 
   DeleteVideoObjectFromIndex(guiBulletImage);
 }
@@ -227,7 +227,7 @@ function BtnInsNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   }
 }
 
-function SelectInsuranceLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectInsuranceLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE_CONTRACT;
@@ -235,7 +235,7 @@ function SelectInsuranceLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
   }
 }
 
-function SelectInsuranceInfoHomeLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectInsuranceInfoHomeLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE;

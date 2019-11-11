@@ -158,7 +158,7 @@ export function KillTextInputMode(): void {
     if (curr.value.szString) {
       MemFree(curr.value.szString);
       curr.value.szString = null;
-      MSYS_RemoveRegion(addressof(curr.value.region));
+      MSYS_RemoveRegion(curr.value.region);
     }
     MemFree(curr);
     curr = gpTextInputHead;
@@ -238,8 +238,8 @@ export function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
   pNode.value.fUserField = false;
   pNode.value.fEnabled = true;
   // Setup the region.
-  MSYS_DefineRegion(addressof(pNode.value.region), sLeft, sTop, (sLeft + sWidth), (sTop + sHeight), bPriority, gusTextInputCursor, MouseMovedInTextRegionCallback, MouseClickedInTextRegionCallback);
-  MSYS_SetRegionUserData(addressof(pNode.value.region), 0, pNode.value.ubID);
+  MSYS_DefineRegion(pNode.value.region, sLeft, sTop, (sLeft + sWidth), (sTop + sHeight), bPriority, gusTextInputCursor, MouseMovedInTextRegionCallback, MouseClickedInTextRegionCallback);
+  MSYS_SetRegionUserData(pNode.value.region, 0, pNode.value.ubID);
 }
 
 // This allows you to insert special processing functions and modes that can't be determined here.  An example
@@ -295,7 +295,7 @@ function RemoveTextInputField(ubField: UINT8): void {
       if (curr.value.szString) {
         MemFree(curr.value.szString);
         curr.value.szString = null;
-        MSYS_RemoveRegion(addressof(curr.value.region));
+        MSYS_RemoveRegion(curr.value.region);
       }
       MemFree(curr);
       curr = null;
@@ -920,7 +920,7 @@ function RemoveChar(ubArrayIndex: UINT8): void {
 }
 
 // Internally used to continue highlighting text
-function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function MouseMovedInTextRegionCallback(reg: MOUSE_REGION, reason: INT32): void {
   let curr: Pointer<TEXTINPUTNODE>;
   if (gfLeftButtonState) {
     if (reason & MSYS_CALLBACK_REASON_MOVE || reason & MSYS_CALLBACK_REASON_LOST_MOUSE || reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
@@ -942,11 +942,11 @@ function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT3
         }
       }
       if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-        if (gusMouseYPos < reg.value.RegionTopLeftY) {
+        if (gusMouseYPos < reg.RegionTopLeftY) {
           gubEndHilite = 0;
           gfHiliteMode = true;
           return;
-        } else if (gusMouseYPos > reg.value.RegionBottomRightY) {
+        } else if (gusMouseYPos > reg.RegionBottomRightY) {
           gubEndHilite = gpActive.value.ubStrLen;
           gfHiliteMode = true;
           return;
@@ -954,7 +954,7 @@ function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT3
       }
 
       // Calculate the cursor position.
-      iClickX = gusMouseXPos - reg.value.RegionTopLeftX;
+      iClickX = gusMouseXPos - reg.RegionTopLeftX;
       iCurrCharPos = 0;
       gubCursorPos = 0;
       iNextCharPos = StringPixLengthArg(pColors.value.usFont, 1, gpActive.value.szString) / 2;
@@ -971,7 +971,7 @@ function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT3
 }
 
 // Internally used to calculate where to place the cursor.
-function MouseClickedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
+function MouseClickedInTextRegionCallback(reg: MOUSE_REGION, reason: INT32): void {
   let curr: Pointer<TEXTINPUTNODE>;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     let iClickX: INT32;
@@ -994,7 +994,7 @@ function MouseClickedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: IN
     // Signifies that we are typing text now.
     gfEditingText = true;
     // Calculate the cursor position.
-    iClickX = gusMouseXPos - reg.value.RegionTopLeftX;
+    iClickX = gusMouseXPos - reg.RegionTopLeftX;
     iCurrCharPos = 0;
     gubCursorPos = 0;
     iNextCharPos = StringPixLengthArg(pColors.value.usFont, 1, gpActive.value.szString) / 2;
@@ -1184,7 +1184,7 @@ function EnableTextField(ubID: UINT8): void {
       if (!curr.value.fEnabled) {
         if (!gpActive)
           gpActive = curr;
-        MSYS_EnableRegion(addressof(curr.value.region));
+        MSYS_EnableRegion(curr.value.region);
         curr.value.fEnabled = true;
       } else
         return;
@@ -1201,7 +1201,7 @@ export function DisableTextField(ubID: UINT8): void {
       if (gpActive == curr)
         SelectNextField();
       if (curr.value.fEnabled) {
-        MSYS_DisableRegion(addressof(curr.value.region));
+        MSYS_DisableRegion(curr.value.region);
         curr.value.fEnabled = false;
       } else
         return;
@@ -1218,7 +1218,7 @@ export function EnableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
       if (gpActive == curr)
         SelectNextField();
       if (!curr.value.fEnabled) {
-        MSYS_EnableRegion(addressof(curr.value.region));
+        MSYS_EnableRegion(curr.value.region);
         curr.value.fEnabled = true;
       }
     }
@@ -1234,7 +1234,7 @@ export function DisableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
       if (gpActive == curr)
         SelectNextField();
       if (curr.value.fEnabled) {
-        MSYS_DisableRegion(addressof(curr.value.region));
+        MSYS_DisableRegion(curr.value.region);
         curr.value.fEnabled = false;
       }
     }
@@ -1247,7 +1247,7 @@ export function EnableAllTextFields(): void {
   curr = gpTextInputHead;
   while (curr) {
     if (!curr.value.fEnabled) {
-      MSYS_EnableRegion(addressof(curr.value.region));
+      MSYS_EnableRegion(curr.value.region);
       curr.value.fEnabled = true;
     }
     curr = curr.value.next;
@@ -1261,7 +1261,7 @@ export function DisableAllTextFields(): void {
   curr = gpTextInputHead;
   while (curr) {
     if (curr.value.fEnabled) {
-      MSYS_DisableRegion(addressof(curr.value.region));
+      MSYS_DisableRegion(curr.value.region);
       curr.value.fEnabled = false;
     }
     curr = curr.value.next;

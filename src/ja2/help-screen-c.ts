@@ -458,8 +458,8 @@ function EnterHelpScreen(): boolean {
   SetSizeAndPropertiesOfHelpScreen();
 
   // Create a mouse region 'mask' the entrire screen
-  MSYS_DefineRegion(addressof(gHelpScreenFullScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-  MSYS_AddRegion(addressof(gHelpScreenFullScreenMask));
+  MSYS_DefineRegion(gHelpScreenFullScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_AddRegion(gHelpScreenFullScreenMask);
 
   // Create the exit button
   if (gHelpScreen.bNumberOfButtons != 0)
@@ -632,7 +632,7 @@ function ExitHelpScreen(): void {
   gHelpScreen.uiFlags &= ~HELP_SCREEN_ACTIVE;
 
   // remove the mouse region that blankets
-  MSYS_RemoveRegion(addressof(gHelpScreenFullScreenMask));
+  MSYS_RemoveRegion(gHelpScreenFullScreenMask);
 
   // checkbox to toggle show help again toggle
   //	MSYS_RemoveRegion( &HelpScreenDontShowHelpAgainToggleTextRegion );
@@ -1945,8 +1945,8 @@ function CreateScrollAreaButtons(): void {
   CalculateHeightAndPositionForHelpScreenScrollBox(addressof(iHeight), addressof(iPosY));
 
   // Create a mouse region 'mask' the entrire screen
-  MSYS_DefineRegion(addressof(gHelpScreenScrollArea), usPosX, iPosY, (usPosX + usWidth), (iPosY + HLP_SCRN__HEIGHT_OF_SCROLL_AREA), MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, SelectHelpScrollAreaMovementCallBack, SelectHelpScrollAreaCallBack);
-  MSYS_AddRegion(addressof(gHelpScreenScrollArea));
+  MSYS_DefineRegion(gHelpScreenScrollArea, usPosX, iPosY, (usPosX + usWidth), (iPosY + HLP_SCRN__HEIGHT_OF_SCROLL_AREA), MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, SelectHelpScrollAreaMovementCallBack, SelectHelpScrollAreaCallBack);
+  MSYS_AddRegion(gHelpScreenScrollArea);
 
   guiHelpScreenScrollArrowImage[0] = LoadButtonImage("INTERFACE\\HelpScreen.sti", 14, 10, 11, 12, 13);
   guiHelpScreenScrollArrowImage[1] = UseLoadedButtonImage(guiHelpScreenScrollArrowImage[0], 19, 15, 16, 17, 18);
@@ -1974,7 +1974,7 @@ function CreateScrollAreaButtons(): void {
 function DeleteScrollArrowButtons(): void {
   let i: INT8;
   // remove the mouse region that blankets
-  MSYS_RemoveRegion(addressof(gHelpScreenScrollArea));
+  MSYS_RemoveRegion(gHelpScreenScrollArea);
 
   for (i = 0; i < 2; i++) {
     RemoveButton(giHelpScreenScrollArrows[i]);
@@ -2014,25 +2014,25 @@ function CalculateHeightAndPositionForHelpScreenScrollBox(piHeightOfScrollBox: P
     piTopOfScrollBox.value = iTopPosScrollBox;
 }
 
-function SelectHelpScrollAreaCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectHelpScrollAreaCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfScrollBoxIsScrolling = false;
     gHelpScreen.iLastMouseClickY = -1;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     gfScrollBoxIsScrolling = true;
-    HelpScreenMouseMoveScrollBox(pRegion.value.MouseYPos);
+    HelpScreenMouseMoveScrollBox(pRegion.MouseYPos);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
 
-function SelectHelpScrollAreaMovementCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectHelpScrollAreaMovementCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     //		InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
   } else if (iReason & MSYS_CALLBACK_REASON_MOVE) {
     if (gfLeftButtonState) {
-      HelpScreenMouseMoveScrollBox(pRegion.value.MouseYPos);
+      HelpScreenMouseMoveScrollBox(pRegion.MouseYPos);
     }
   }
 }

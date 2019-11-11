@@ -56,9 +56,9 @@ export function EnterFloristCards(): boolean {
   for (j = 0; j < 3; j++) {
     usPosX = FLORIST_CARD_FIRST_POS_X;
     for (i = 0; i < 3; i++) {
-      MSYS_DefineRegion(addressof(gSelectedFloristCardsRegion[ubCount]), usPosX, usPosY, (usPosX + FLORIST_CARD_CARD_WIDTH), (usPosY + FLORIST_CARD_CARD_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardsRegionCallBack);
-      MSYS_AddRegion(addressof(gSelectedFloristCardsRegion[ubCount]));
-      MSYS_SetRegionUserData(addressof(gSelectedFloristCardsRegion[ubCount]), 0, ubCount);
+      MSYS_DefineRegion(gSelectedFloristCardsRegion[ubCount], usPosX, usPosY, (usPosX + FLORIST_CARD_CARD_WIDTH), (usPosY + FLORIST_CARD_CARD_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardsRegionCallBack);
+      MSYS_AddRegion(gSelectedFloristCardsRegion[ubCount]);
+      MSYS_SetRegionUserData(gSelectedFloristCardsRegion[ubCount], 0, ubCount);
       ubCount++;
       usPosX += FLORIST_CARD_FIRST_OFFSET_X;
     }
@@ -85,7 +85,7 @@ export function ExitFloristCards(): void {
 
   // card gallery
   for (i = 0; i < 9; i++)
-    MSYS_RemoveRegion(addressof(gSelectedFloristCardsRegion[i]));
+    MSYS_RemoveRegion(gSelectedFloristCardsRegion[i]);
 
   UnloadButtonImage(guiFlowerCardsButtonImage);
   RemoveButton(guiFlowerCardsBackButton);
@@ -140,7 +140,7 @@ export function RenderFloristCards(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function SelectFloristCardsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectFloristCardsRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gbCurrentlySelectedCard = MSYS_GetRegionUserData(pRegion, 0);

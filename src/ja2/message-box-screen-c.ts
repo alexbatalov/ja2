@@ -215,7 +215,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   UnLockVideoSurface(FRAME_BUFFER);
 
   // Create top-level mouse region
-  MSYS_DefineRegion(addressof(gMsgBox.BackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, usCursor, MSYS_NO_CALLBACK, MsgBoxClickCallback);
+  MSYS_DefineRegion(gMsgBox.BackRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, usCursor, MSYS_NO_CALLBACK, MsgBoxClickCallback);
 
   if (gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] == false) {
     if (usFlags & MSG_BOX_FLAG_OK) {
@@ -226,7 +226,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   }
 
   // Add region
-  MSYS_AddRegion(addressof(gMsgBox.BackRegion));
+  MSYS_AddRegion(gMsgBox.BackRegion);
 
   // findout if cursor locked, if so, store old params and store, restore when done
   if (IsCursorRestricted()) {
@@ -426,7 +426,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   return iId;
 }
 
-function MsgBoxClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function MsgBoxClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   /// if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP)
   //{
   //	gMsgBox.bHandled = MSG_BOX_RETURN_NO;
@@ -639,7 +639,7 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   }
 
   // Remove region
-  MSYS_RemoveRegion(addressof(gMsgBox.BackRegion));
+  MSYS_RemoveRegion(gMsgBox.BackRegion);
 
   // Remove save buffer!
   DeleteVideoSurfaceFromIndex(gMsgBox.uiSaveBuffer);

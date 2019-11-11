@@ -278,8 +278,8 @@ export function InitBobbyBrTitle(): boolean {
   }
 
   // initialize the link to the homepage by clicking on the title
-  MSYS_DefineRegion(addressof(gSelectedTitleImageLinkRegion), BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y, (BOBBYR_BRTITLE_X + BOBBYR_BRTITLE_WIDTH), (BOBBYR_BRTITLE_Y + BOBBYR_BRTITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleImageLinkRegionCallBack);
-  MSYS_AddRegion(addressof(gSelectedTitleImageLinkRegion));
+  MSYS_DefineRegion(gSelectedTitleImageLinkRegion, BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y, (BOBBYR_BRTITLE_X + BOBBYR_BRTITLE_WIDTH), (BOBBYR_BRTITLE_Y + BOBBYR_BRTITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleImageLinkRegionCallBack);
+  MSYS_AddRegion(gSelectedTitleImageLinkRegion);
 
   gusOldItemNumOnTopOfPage = 65535;
 
@@ -289,14 +289,14 @@ export function InitBobbyBrTitle(): boolean {
 export function DeleteBobbyBrTitle(): boolean {
   DeleteVideoObjectFromIndex(guiBrTitle);
 
-  MSYS_RemoveRegion(addressof(gSelectedTitleImageLinkRegion));
+  MSYS_RemoveRegion(gSelectedTitleImageLinkRegion);
 
   DeleteMouseRegionForBigImage();
 
   return true;
 }
 
-function SelectTitleImageLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectTitleImageLinkRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R;
@@ -1079,9 +1079,9 @@ function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbe
 
   for (i = 0; i < ubCount; i++) {
     // Mouse region for the Big Item Image
-    MSYS_DefineRegion(addressof(gSelectedBigImageRegion[i]), BOBBYR_GRID_PIC_X, usPosY, (BOBBYR_GRID_PIC_X + BOBBYR_GRID_PIC_WIDTH), (usPosY + BOBBYR_GRID_PIC_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectBigImageRegionCallBack);
-    MSYS_AddRegion(addressof(gSelectedBigImageRegion[i]));
-    MSYS_SetRegionUserData(addressof(gSelectedBigImageRegion[i]), 0, i);
+    MSYS_DefineRegion(gSelectedBigImageRegion[i], BOBBYR_GRID_PIC_X, usPosY, (BOBBYR_GRID_PIC_X + BOBBYR_GRID_PIC_WIDTH), (usPosY + BOBBYR_GRID_PIC_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectBigImageRegionCallBack);
+    MSYS_AddRegion(gSelectedBigImageRegion[i]);
+    MSYS_SetRegionUserData(gSelectedBigImageRegion[i], 0, i);
 
     // specify the help text only if the items is ammo
     if (Item[pItemNumbers[i]].usItemClass == IC_AMMO) {
@@ -1094,8 +1094,8 @@ function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbe
     } else
       zItemName[0] = '\0';
 
-    SetRegionFastHelpText(addressof(gSelectedBigImageRegion[i]), zItemName);
-    SetRegionHelpEndCallback(addressof(gSelectedBigImageRegion[i]), BobbyrRGunsHelpTextDoneCallBack);
+    SetRegionFastHelpText(gSelectedBigImageRegion[i], zItemName);
+    SetRegionHelpEndCallback(gSelectedBigImageRegion[i], BobbyrRGunsHelpTextDoneCallBack);
 
     usPosY += BOBBYR_GRID_OFFSET;
   }
@@ -1111,14 +1111,14 @@ export function DeleteMouseRegionForBigImage(): void {
     return;
 
   for (i = 0; i < gubNumItemsOnScreen; i++)
-    MSYS_RemoveRegion(addressof(gSelectedBigImageRegion[i]));
+    MSYS_RemoveRegion(gSelectedBigImageRegion[i]);
 
   gfBigImageMouseRegionCreated = false;
   gusOldItemNumOnTopOfPage = 65535;
   gubNumItemsOnScreen = 0;
 }
 
-function SelectBigImageRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectBigImageRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let usItemNum: UINT16 = MSYS_GetRegionUserData(pRegion, 0);

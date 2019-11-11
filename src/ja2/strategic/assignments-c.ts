@@ -3605,9 +3605,9 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
     // define regions
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
       // add mouse region for each line of text..and set user data
-      MSYS_DefineRegion(addressof(gAssignmentMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, AssignmentMenuMvtCallBack, AssignmentMenuBtnCallback);
+      MSYS_DefineRegion(gAssignmentMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, AssignmentMenuMvtCallBack, AssignmentMenuBtnCallback);
 
-      MSYS_SetRegionUserData(addressof(gAssignmentMenuRegion[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(gAssignmentMenuRegion[iCounter], 0, iCounter);
     }
 
     // created
@@ -3621,7 +3621,7 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
   } else if ((fShowAssignmentMenu == false) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
-      MSYS_RemoveRegion(addressof(gAssignmentMenuRegion[iCounter]));
+      MSYS_RemoveRegion(gAssignmentMenuRegion[iCounter]);
     }
 
     fShownAssignmentMenu = false;
@@ -3685,11 +3685,11 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
       if (pVehicleList[iVehicleId].fValid == true) {
         if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleId)) {
           // add mouse region for each accessible vehicle
-          MSYS_DefineRegion(addressof(gVehicleMenuRegion[uiMenuLine]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
+          MSYS_DefineRegion(gVehicleMenuRegion[uiMenuLine], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
 
-          MSYS_SetRegionUserData(addressof(gVehicleMenuRegion[uiMenuLine]), 0, uiMenuLine);
+          MSYS_SetRegionUserData(gVehicleMenuRegion[uiMenuLine], 0, uiMenuLine);
           // store vehicle ID in the SECOND user data
-          MSYS_SetRegionUserData(addressof(gVehicleMenuRegion[uiMenuLine]), 1, iVehicleId);
+          MSYS_SetRegionUserData(gVehicleMenuRegion[uiMenuLine], 1, iVehicleId);
 
           uiMenuLine++;
         }
@@ -3697,8 +3697,8 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
     }
 
     // cancel line
-    MSYS_DefineRegion(addressof(gVehicleMenuRegion[uiMenuLine]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
-    MSYS_SetRegionUserData(addressof(gVehicleMenuRegion[uiMenuLine]), 0, Enum115.VEHICLE_MENU_CANCEL);
+    MSYS_DefineRegion(gVehicleMenuRegion[uiMenuLine], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
+    MSYS_SetRegionUserData(gVehicleMenuRegion[uiMenuLine], 0, Enum115.VEHICLE_MENU_CANCEL);
 
     // created
     fCreated = true;
@@ -3717,7 +3717,7 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
 
     // remove these regions
     for (uiMenuLine = 0; uiMenuLine < GetNumberOfLinesOfTextInBox(ghVehicleBox); uiMenuLine++) {
-      MSYS_RemoveRegion(addressof(gVehicleMenuRegion[uiMenuLine]));
+      MSYS_RemoveRegion(gVehicleMenuRegion[uiMenuLine]);
     }
 
     fShowVehicleMenu = false;
@@ -3766,7 +3766,7 @@ function HandleShadingOfLinesForVehicleMenu(): void {
   }
 }
 
-function VehicleMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function VehicleMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment region
   let iValue: INT32 = -1;
   let iVehicleID: INT32;
@@ -3809,7 +3809,7 @@ function VehicleMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   }
 }
 
-function VehicleMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function VehicleMenuMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for assignment region
   let iValue: INT32 = -1;
 
@@ -4031,11 +4031,11 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
             // other vehicles *in the sector* are listed, but later shaded dark if they're not repairable
             if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleIndex)) {
               // add mouse region for each line of text..and set user data
-              MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
+              MSYS_DefineRegion(gRepairMenuRegion[iCount], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
-              MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
+              MSYS_SetRegionUserData(gRepairMenuRegion[iCount], 0, iCount);
               // 2nd user data is the vehicle index, which can easily be different from the region index!
-              MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, iVehicleIndex);
+              MSYS_SetRegionUserData(gRepairMenuRegion[iCount], 1, iVehicleIndex);
               iCount++;
             }
           }
@@ -4057,25 +4057,25 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
 
     // robot
     if (IsRobotInThisSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ)) {
-      MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
+      MSYS_DefineRegion(gRepairMenuRegion[iCount], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
-      MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
-      MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, Enum114.REPAIR_MENU_ROBOT);
+      MSYS_SetRegionUserData(gRepairMenuRegion[iCount], 0, iCount);
+      MSYS_SetRegionUserData(gRepairMenuRegion[iCount], 1, Enum114.REPAIR_MENU_ROBOT);
       iCount++;
     }
 
     // items
-    MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
+    MSYS_DefineRegion(gRepairMenuRegion[iCount], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
-    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
-    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, Enum114.REPAIR_MENU_ITEMS);
+    MSYS_SetRegionUserData(gRepairMenuRegion[iCount], 0, iCount);
+    MSYS_SetRegionUserData(gRepairMenuRegion[iCount], 1, Enum114.REPAIR_MENU_ITEMS);
     iCount++;
 
     // cancel
-    MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
+    MSYS_DefineRegion(gRepairMenuRegion[iCount], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
-    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
-    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, Enum114.REPAIR_MENU_CANCEL);
+    MSYS_SetRegionUserData(gRepairMenuRegion[iCount], 0, iCount);
+    MSYS_SetRegionUserData(gRepairMenuRegion[iCount], 1, Enum114.REPAIR_MENU_CANCEL);
 
     PauseGame();
 
@@ -4088,7 +4088,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
 
     // remove these regions
     for (uiCounter = 0; uiCounter < GetNumberOfLinesOfTextInBox(ghRepairBox); uiCounter++) {
-      MSYS_RemoveRegion(addressof(gRepairMenuRegion[uiCounter]));
+      MSYS_RemoveRegion(gRepairMenuRegion[uiCounter]);
     }
 
     fShowRepairMenu = false;
@@ -4106,7 +4106,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
   return;
 }
 
-function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function RepairMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment region
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -4230,7 +4230,7 @@ function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   }
 }
 
-function RepairMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function RepairMenuMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for assignment region
   let iValue: INT32 = -1;
 
@@ -4625,17 +4625,17 @@ export function CreateDestroyScreenMaskForAssignmentAndContractMenus(): void {
 
   // not created, create
   if ((fCreated == false) && ((fShowAssignmentMenu == true) || (fShowContractMenu == true) || (fShowTownInfo == true))) {
-    MSYS_DefineRegion(addressof(gAssignmentScreenMaskRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, AssignmentScreenMaskBtnCallback);
+    MSYS_DefineRegion(gAssignmentScreenMaskRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, AssignmentScreenMaskBtnCallback);
 
     // created
     fCreated = true;
 
     if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
-      MSYS_ChangeRegionCursor(addressof(gAssignmentScreenMaskRegion), 0);
+      MSYS_ChangeRegionCursor(gAssignmentScreenMaskRegion, 0);
     }
   } else if ((fCreated == true) && (fShowAssignmentMenu == false) && (fShowContractMenu == false) && (fShowTownInfo == false)) {
     // created, get rid of it
-    MSYS_RemoveRegion(addressof(gAssignmentScreenMaskRegion));
+    MSYS_RemoveRegion(gAssignmentScreenMaskRegion);
 
     // not created
     fCreated = false;
@@ -4644,7 +4644,7 @@ export function CreateDestroyScreenMaskForAssignmentAndContractMenus(): void {
   return;
 }
 
-function AssignmentScreenMaskBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function AssignmentScreenMaskBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment screen mask region
 
   if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) || (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP)) {
@@ -4743,10 +4743,10 @@ function CreateDestroyMouseRegions(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(addressof(gAssignmentMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, AssignmentMenuMvtCallBack, AssignmentMenuBtnCallback);
+      MSYS_DefineRegion(gAssignmentMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, AssignmentMenuMvtCallBack, AssignmentMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(addressof(gAssignmentMenuRegion[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(gAssignmentMenuRegion[iCounter], 0, iCounter);
     }
 
     // created
@@ -4765,7 +4765,7 @@ function CreateDestroyMouseRegions(): void {
   } else if ((fShowAssignmentMenu == false) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
-      MSYS_RemoveRegion(addressof(gAssignmentMenuRegion[iCounter]));
+      MSYS_RemoveRegion(gAssignmentMenuRegion[iCounter]);
     }
 
     RestorePopUpBoxes();
@@ -4846,10 +4846,10 @@ export function CreateDestroyMouseRegionsForContractMenu(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghContractBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(addressof(gContractMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghContractBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghContractBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, ContractMenuMvtCallback, ContractMenuBtnCallback);
+      MSYS_DefineRegion(gContractMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghContractBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghContractBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, ContractMenuMvtCallback, ContractMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(addressof(gContractMenuRegion[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(gContractMenuRegion[iCounter], 0, iCounter);
     }
 
     // created
@@ -4863,7 +4863,7 @@ export function CreateDestroyMouseRegionsForContractMenu(): void {
   } else if ((fShowContractMenu == false) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghContractBox); iCounter++) {
-      MSYS_RemoveRegion(addressof(gContractMenuRegion[iCounter]));
+      MSYS_RemoveRegion(gContractMenuRegion[iCounter]);
     }
 
     fShownContractMenu = false;
@@ -4933,10 +4933,10 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghTrainingBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(addressof(gTrainingMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghTrainingBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghTrainingBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CURSOR, TrainingMenuMvtCallBack, TrainingMenuBtnCallback);
+      MSYS_DefineRegion(gTrainingMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghTrainingBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghTrainingBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CURSOR, TrainingMenuMvtCallBack, TrainingMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(addressof(gTrainingMenuRegion[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(gTrainingMenuRegion[iCounter], 0, iCounter);
     }
 
     // created
@@ -4947,7 +4947,7 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
   } else if (((fShowAssignmentMenu == false) || (fShowTrainingMenu == false)) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghTrainingBox); iCounter++) {
-      MSYS_RemoveRegion(addressof(gTrainingMenuRegion[iCounter]));
+      MSYS_RemoveRegion(gTrainingMenuRegion[iCounter]);
     }
 
     // stop showing training menu
@@ -5016,10 +5016,10 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAttributeBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(addressof(gAttributeMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, AttributeMenuMvtCallBack, AttributesMenuBtnCallback);
+      MSYS_DefineRegion(gAttributeMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, AttributeMenuMvtCallBack, AttributesMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(addressof(gAttributeMenuRegion[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(gAttributeMenuRegion[iCounter], 0, iCounter);
     }
 
     // created
@@ -5030,7 +5030,7 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
   } else if (((fShowAssignmentMenu == false) || (fShowTrainingMenu == false) || (fShowAttributeMenu == false)) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAttributeBox); iCounter++) {
-      MSYS_RemoveRegion(addressof(gAttributeMenuRegion[iCounter]));
+      MSYS_RemoveRegion(gAttributeMenuRegion[iCounter]);
     }
 
     // stop showing training menu
@@ -5108,10 +5108,10 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghRemoveMercAssignBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(addressof(gRemoveMercAssignRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, RemoveMercMenuMvtCallBack, RemoveMercMenuBtnCallback);
+      MSYS_DefineRegion(gRemoveMercAssignRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, RemoveMercMenuMvtCallBack, RemoveMercMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(addressof(gRemoveMercAssignRegion[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(gRemoveMercAssignRegion[iCounter], 0, iCounter);
     }
 
     // created
@@ -5122,7 +5122,7 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
   } else if ((fShowAssignmentMenu == false) && (fCreated == true) && (fShowContractMenu == false)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghRemoveMercAssignBox); iCounter++) {
-      MSYS_RemoveRegion(addressof(gRemoveMercAssignRegion[iCounter]));
+      MSYS_RemoveRegion(gRemoveMercAssignRegion[iCounter]);
     }
 
     fShownContractMenu = false;
@@ -5191,15 +5191,15 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: boolean): void {
     // define regions
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghSquadBox) - 1; iCounter++) {
       // add mouse region for each line of text..and set user data
-      MSYS_DefineRegion(addressof(gSquadMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, SquadMenuMvtCallBack, SquadMenuBtnCallback);
+      MSYS_DefineRegion(gSquadMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, SquadMenuMvtCallBack, SquadMenuBtnCallback);
 
-      MSYS_SetRegionUserData(addressof(gSquadMenuRegion[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(gSquadMenuRegion[iCounter], 0, iCounter);
     }
 
     // now create cancel region
-    MSYS_DefineRegion(addressof(gSquadMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, SquadMenuMvtCallBack, SquadMenuBtnCallback);
+    MSYS_DefineRegion(gSquadMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, SquadMenuMvtCallBack, SquadMenuBtnCallback);
 
-    MSYS_SetRegionUserData(addressof(gSquadMenuRegion[iCounter]), 0, Enum151.SQUAD_MENU_CANCEL);
+    MSYS_SetRegionUserData(gSquadMenuRegion[iCounter], 0, Enum151.SQUAD_MENU_CANCEL);
 
     // created
     fCreated = true;
@@ -5215,7 +5215,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: boolean): void {
   } else if (((fShowAssignmentMenu == false) || (fShowSquadMenu == false)) && (fCreated == true)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghSquadBox); iCounter++) {
-      MSYS_RemoveRegion(addressof(gSquadMenuRegion[iCounter]));
+      MSYS_RemoveRegion(gSquadMenuRegion[iCounter]);
     }
 
     fShowSquadMenu = false;
@@ -5243,7 +5243,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: boolean): void {
   }
 }
 
-function AssignmentMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function AssignmentMenuMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for assignment region
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -5278,7 +5278,7 @@ function AssignmentMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 }
 
-function RemoveMercMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function RemoveMercMenuMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for assignment region
   let iValue: INT32 = -1;
 
@@ -5298,7 +5298,7 @@ function RemoveMercMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 }
 
-function ContractMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ContractMenuMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for Contract region
   let iValue: INT32 = -1;
 
@@ -5319,7 +5319,7 @@ function ContractMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   }
 }
 
-function SquadMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SquadMenuMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for assignment region
   let iValue: INT32 = -1;
 
@@ -5346,7 +5346,7 @@ function SquadMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   }
 }
 
-function RemoveMercMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function RemoveMercMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for contract region
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -5472,7 +5472,7 @@ function MercDismissConfirmCallBack(bExitValue: UINT8): void {
   }
 }
 
-function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ContractMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for contract region
   let iValue: INT32 = -1;
   let fOkToClose: boolean = false;
@@ -5573,7 +5573,7 @@ function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   return;
 }
 
-function TrainingMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TrainingMenuMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for assignment region
   let iValue: INT32 = -1;
 
@@ -5597,7 +5597,7 @@ function TrainingMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   }
 }
 
-function AttributeMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function AttributeMenuMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   // mvt callback handler for assignment region
   let iValue: INT32 = -1;
 
@@ -5615,7 +5615,7 @@ function AttributeMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   }
 }
 
-function SquadMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SquadMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment region
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -5754,7 +5754,7 @@ function SquadMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   return;
 }
 
-function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function TrainingMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment region
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -5918,7 +5918,7 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   }
 }
 
-function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function AttributesMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment region
   let iValue: INT32 = -1;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
@@ -5976,7 +5976,7 @@ function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   }
 };
 
-function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function AssignmentMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // btn callback handler for assignment region
   let iValue: INT32 = -1;
   let sString: string /* CHAR16[128] */;

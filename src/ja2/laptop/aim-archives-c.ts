@@ -341,7 +341,7 @@ export function RenderAimArchives(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function SelectAlumniFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectAlumniFaceRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfDrawPopUpBox = true;
@@ -511,10 +511,10 @@ function InitAlumniFaceRegions(): void {
   i = 0;
   for (y = 0; y < usNumRows; y++) {
     for (x = 0; x < AIM_ALUMNI_NUM_FACE_COLS; x++) {
-      MSYS_DefineRegion(addressof(gMercAlumniFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
+      MSYS_DefineRegion(gMercAlumniFaceMouseRegions[i], usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
       // Add region
-      MSYS_AddRegion(addressof(gMercAlumniFaceMouseRegions[i]));
-      MSYS_SetRegionUserData(addressof(gMercAlumniFaceMouseRegions[i]), 0, i + (20 * gubPageNum));
+      MSYS_AddRegion(gMercAlumniFaceMouseRegions[i]);
+      MSYS_SetRegionUserData(gMercAlumniFaceMouseRegions[i], 0, i + (20 * gubPageNum));
 
       usPosX += AIM_ALUMNI_GRID_OFFSET_X;
       i++;
@@ -525,10 +525,10 @@ function InitAlumniFaceRegions(): void {
 
   // the 3rd page now has an additional row with 1 merc on it, so add a new row
   if (gubPageNum == 2) {
-    MSYS_DefineRegion(addressof(gMercAlumniFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
+    MSYS_DefineRegion(gMercAlumniFaceMouseRegions[i], usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
     // Add region
-    MSYS_AddRegion(addressof(gMercAlumniFaceMouseRegions[i]));
-    MSYS_SetRegionUserData(addressof(gMercAlumniFaceMouseRegions[i]), 0, i + (20 * gubPageNum));
+    MSYS_AddRegion(gMercAlumniFaceMouseRegions[i]);
+    MSYS_SetRegionUserData(gMercAlumniFaceMouseRegions[i], 0, i + (20 * gubPageNum));
   }
 
   gfFaceMouseRegionsActive = true;
@@ -556,7 +556,7 @@ function RemoveAimAlumniFaceRegion(): void {
   }
 
   for (i = 0; i < usNumber; i++) {
-    MSYS_RemoveRegion(addressof(gMercAlumniFaceMouseRegions[i]));
+    MSYS_RemoveRegion(gMercAlumniFaceMouseRegions[i]);
   }
   gfFaceMouseRegionsActive = false;
 }
@@ -566,20 +566,20 @@ function CreateDestroyDoneMouseRegion(usPosY: UINT16): void {
 
   if ((!DoneRegionCreated) && (usPosY != 0)) {
     usPosY -= AIM_ALUMNI_DONE_HEIGHT;
-    MSYS_DefineRegion(addressof(gDoneRegion), AIM_ALUMNI_DONE_X - 2, usPosY, (AIM_ALUMNI_DONE_X - 2 + AIM_ALUMNI_DONE_WIDTH), (usPosY + AIM_ALUMNI_DONE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniDoneRegionCallBack);
+    MSYS_DefineRegion(gDoneRegion, AIM_ALUMNI_DONE_X - 2, usPosY, (AIM_ALUMNI_DONE_X - 2 + AIM_ALUMNI_DONE_WIDTH), (usPosY + AIM_ALUMNI_DONE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniDoneRegionCallBack);
     // Add region
-    MSYS_AddRegion(addressof(gDoneRegion));
+    MSYS_AddRegion(gDoneRegion);
     DoneRegionCreated = true;
   }
 
   if (DoneRegionCreated && usPosY == 0) {
-    MSYS_RemoveRegion(addressof(gDoneRegion));
+    MSYS_RemoveRegion(gDoneRegion);
     DoneRegionCreated = false;
     //		gfDestroyDoneRegion = FALSE;
   }
 }
 
-function SelectAlumniDoneRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectAlumniDoneRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfDestroyPopUpBox = true;

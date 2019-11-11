@@ -643,9 +643,9 @@ function EnterQuestDebugSystem(): boolean {
 
   QuestDebug_ExitTactical();
 
-  MSYS_DefineRegion(addressof(gQuestDebugSysScreenRegions), 0, 0, 640, 480, MSYS_PRIORITY_HIGH, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(gQuestDebugSysScreenRegions, 0, 0, 640, 480, MSYS_PRIORITY_HIGH, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(addressof(gQuestDebugSysScreenRegions));
+  MSYS_AddRegion(gQuestDebugSysScreenRegions);
 
   guiQuestDebugExitButton = CreateTextButton(QuestDebugText[Enum167.QUEST_DBS_EXIT_QUEST_DEBUG], QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, 535, 450, 100, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 10, BUTTON_NO_CALLBACK, BtnQuestDebugExitButtonCallback);
 
@@ -704,10 +704,10 @@ function EnterQuestDebugSystem(): boolean {
   usPosX = QUEST_DBS_FIRST_COL_NUMBER_X;
   usPosY = QUEST_DBS_FIRST_COL_NUMBER_Y + QUEST_DBS_LIST_TEXT_OFFSET;
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_QUESTS; i++) {
-    MSYS_DefineRegion(addressof(gQuestListRegion[i]), usPosX, usPosY, (usPosX + QUEST_DBS_FIRST_SECTION_WIDTH), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, ScrollQuestListRegionCallBack); // CURSOR_LAPTOP_SCREEN
+    MSYS_DefineRegion(gQuestListRegion[i], usPosX, usPosY, (usPosX + QUEST_DBS_FIRST_SECTION_WIDTH), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, ScrollQuestListRegionCallBack); // CURSOR_LAPTOP_SCREEN
     // Add region
-    MSYS_AddRegion(addressof(gQuestListRegion[i]));
-    MSYS_SetRegionUserData(addressof(gQuestListRegion[i]), 0, i);
+    MSYS_AddRegion(gQuestListRegion[i]);
+    MSYS_SetRegionUserData(gQuestListRegion[i], 0, i);
 
     usPosY += usFontHeight;
   }
@@ -716,10 +716,10 @@ function EnterQuestDebugSystem(): boolean {
   usPosX = QUEST_DBS_SECOND_COL_NUMBER_X;
   usPosY = QUEST_DBS_SECOND_COL_NUMBER_Y + QUEST_DBS_LIST_TEXT_OFFSET + QUEST_DBS_FACT_LIST_OFFSET;
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_FACTS; i++) {
-    MSYS_DefineRegion(addressof(gFactListRegion[i]), usPosX, usPosY, (usPosX + QUEST_DBS_SECOND_SECTION_WIDTH), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, ScrollFactListRegionCallBack); // CURSOR_LAPTOP_SCREEN
+    MSYS_DefineRegion(gFactListRegion[i], usPosX, usPosY, (usPosX + QUEST_DBS_SECOND_SECTION_WIDTH), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, ScrollFactListRegionCallBack); // CURSOR_LAPTOP_SCREEN
     // Add region
-    MSYS_AddRegion(addressof(gFactListRegion[i]));
-    MSYS_SetRegionUserData(addressof(gFactListRegion[i]), 0, i);
+    MSYS_AddRegion(gFactListRegion[i]);
+    MSYS_SetRegionUserData(gFactListRegion[i], 0, i);
 
     usPosY += usFontHeight;
   }
@@ -790,7 +790,7 @@ function ExitQuestDebugSystem(): void {
   if (gfExitQdsDueToMessageBox) {
     return;
   }
-  MSYS_RemoveRegion(addressof(gQuestDebugSysScreenRegions));
+  MSYS_RemoveRegion(gQuestDebugSysScreenRegions);
   QuestDebug_EnterTactical();
 
   RemoveButton(guiQuestDebugExitButton);
@@ -823,11 +823,11 @@ function ExitQuestDebugSystem(): void {
 
   // Remove the quest list mouse regions
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_QUESTS; i++)
-    MSYS_RemoveRegion(addressof(gQuestListRegion[i]));
+    MSYS_RemoveRegion(gQuestListRegion[i]);
 
   // Remove the fact list mouse regions
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_FACTS; i++)
-    MSYS_RemoveRegion(addressof(gFactListRegion[i]));
+    MSYS_RemoveRegion(gFactListRegion[i]);
 
   // Create the clock mouse region
   CreateMouseRegionForPauseOfClock(CLOCK_REGION_START_X, CLOCK_REGION_START_Y);
@@ -1352,9 +1352,9 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): boolean {
 
       // create the scroll regions
       for (i = 0; i < gpActiveListBox.value.usNumDisplayedItems; i++) {
-        MSYS_DefineRegion(addressof(gSelectedNpcListRegion[i]), usPosX, (usPosY), (usPosX + gpActiveListBox.value.usScrollWidth), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 20, Enum317.CURSOR_WWW, SelectNpcListMovementCallBack, SelectNpcListRegionCallBack);
-        MSYS_AddRegion(addressof(gSelectedNpcListRegion[i]));
-        MSYS_SetRegionUserData(addressof(gSelectedNpcListRegion[i]), 0, i);
+        MSYS_DefineRegion(gSelectedNpcListRegion[i], usPosX, (usPosY), (usPosX + gpActiveListBox.value.usScrollWidth), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 20, Enum317.CURSOR_WWW, SelectNpcListMovementCallBack, SelectNpcListRegionCallBack);
+        MSYS_AddRegion(gSelectedNpcListRegion[i]);
+        MSYS_SetRegionUserData(gSelectedNpcListRegion[i], 0, i);
 
         usPosY += usFontHeight;
       }
@@ -1369,30 +1369,30 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): boolean {
       usPosY = gpActiveListBox.value.usScrollPosY + gpActiveListBox.value.usScrollArrowHeight + 2;
 
       for (i = 0; i < QUEST_DBS_NUM_INCREMENTS_IN_SCROLL_BAR; i++) {
-        MSYS_DefineRegion(addressof(gScrollAreaRegion[i]), usPosX, usPosY, (usPosX + gpActiveListBox.value.usScrollBarWidth), (usPosY + gpActiveListBox.value.usScrollBarHeight), MSYS_PRIORITY_HIGH + 20, Enum317.CURSOR_WWW, ScrollAreaMovementCallBack, ScrollAreaRegionCallBack);
-        MSYS_AddRegion(addressof(gScrollAreaRegion[i]));
-        MSYS_SetRegionUserData(addressof(gScrollAreaRegion[i]), 0, i);
+        MSYS_DefineRegion(gScrollAreaRegion[i], usPosX, usPosY, (usPosX + gpActiveListBox.value.usScrollBarWidth), (usPosY + gpActiveListBox.value.usScrollBarHeight), MSYS_PRIORITY_HIGH + 20, Enum317.CURSOR_WWW, ScrollAreaMovementCallBack, ScrollAreaRegionCallBack);
+        MSYS_AddRegion(gScrollAreaRegion[i]);
+        MSYS_SetRegionUserData(gScrollAreaRegion[i], 0, i);
       }
 
       // Top Scroll arrow
       usPosX = gpActiveListBox.value.usScrollPosX + gpActiveListBox.value.usScrollWidth;
       usPosY = gpActiveListBox.value.usScrollPosY + 2;
 
-      MSYS_DefineRegion(addressof(gScrollArrowsRegion[0]), usPosX, (usPosY), (usPosX + gpActiveListBox.value.usScrollBarWidth), (usPosY + gpActiveListBox.value.usScrollArrowHeight), MSYS_PRIORITY_HIGH + 20, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, ScrollArrowsRegionCallBack);
-      MSYS_AddRegion(addressof(gScrollArrowsRegion[0]));
-      MSYS_SetRegionUserData(addressof(gScrollArrowsRegion[0]), 0, 0);
+      MSYS_DefineRegion(gScrollArrowsRegion[0], usPosX, (usPosY), (usPosX + gpActiveListBox.value.usScrollBarWidth), (usPosY + gpActiveListBox.value.usScrollArrowHeight), MSYS_PRIORITY_HIGH + 20, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, ScrollArrowsRegionCallBack);
+      MSYS_AddRegion(gScrollArrowsRegion[0]);
+      MSYS_SetRegionUserData(gScrollArrowsRegion[0], 0, 0);
 
       // Bottom Scroll arrow
       usPosY = gpActiveListBox.value.usScrollPosY + gpActiveListBox.value.usScrollHeight - gpActiveListBox.value.usScrollArrowHeight - 2;
 
-      MSYS_DefineRegion(addressof(gScrollArrowsRegion[1]), usPosX, usPosY, (usPosX + gpActiveListBox.value.usScrollBarWidth), (usPosY + gpActiveListBox.value.usScrollArrowHeight), MSYS_PRIORITY_HIGH + 20, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, ScrollArrowsRegionCallBack);
-      MSYS_AddRegion(addressof(gScrollArrowsRegion[1]));
-      MSYS_SetRegionUserData(addressof(gScrollArrowsRegion[1]), 0, 1);
+      MSYS_DefineRegion(gScrollArrowsRegion[1], usPosX, usPosY, (usPosX + gpActiveListBox.value.usScrollBarWidth), (usPosY + gpActiveListBox.value.usScrollArrowHeight), MSYS_PRIORITY_HIGH + 20, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, ScrollArrowsRegionCallBack);
+      MSYS_AddRegion(gScrollArrowsRegion[1]);
+      MSYS_SetRegionUserData(gScrollArrowsRegion[1], 0, 1);
 
       // create a mask to block out the screen
       if (!gfBackgroundMaskEnabled) {
-        MSYS_DefineRegion(addressof(gQuestTextEntryDebugDisableScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 15, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
-        MSYS_AddRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
+        MSYS_DefineRegion(gQuestTextEntryDebugDisableScreenRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 15, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
+        MSYS_AddRegion(gQuestTextEntryDebugDisableScreenRegion);
         gfBackgroundMaskEnabled = true;
       }
 
@@ -1410,21 +1410,21 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): boolean {
       if (fMouseRegionsCreated) {
         // delete the mouse regions for the words
         for (i = 0; i < gpActiveListBox.value.usNumDisplayedItems; i++)
-          MSYS_RemoveRegion(addressof(gSelectedNpcListRegion[i]));
+          MSYS_RemoveRegion(gSelectedNpcListRegion[i]);
 
         fMouseRegionsCreated = false;
 
         // scroll arrows
         for (i = 0; i < 2; i++)
-          MSYS_RemoveRegion(addressof(gScrollArrowsRegion[i]));
+          MSYS_RemoveRegion(gScrollArrowsRegion[i]);
 
         for (i = 0; i < QUEST_DBS_NUM_INCREMENTS_IN_SCROLL_BAR; i++) {
-          MSYS_RemoveRegion(addressof(gScrollAreaRegion[i]));
+          MSYS_RemoveRegion(gScrollAreaRegion[i]);
         }
 
         // remove the mask of the entire screen
         if (gfBackgroundMaskEnabled) {
-          MSYS_RemoveRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
+          MSYS_RemoveRegion(gQuestTextEntryDebugDisableScreenRegion);
           gfBackgroundMaskEnabled = false;
         }
 
@@ -1631,7 +1631,7 @@ function DisplaySelectedItem(): void {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-function SelectNpcListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function SelectNpcListRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubSelected: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
@@ -1645,14 +1645,14 @@ function SelectNpcListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
   }
 }
 
-function SelectNpcListMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function SelectNpcListMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    pRegion.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     let sSelected: INT16 = MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
 
-    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.uiFlags |= BUTTON_CLICKED_ON;
 
     gpActiveListBox.value.sCurSelectedItem = sSelected + gpActiveListBox.value.usItemDisplayedOnTopOfList;
 
@@ -1666,11 +1666,11 @@ function SelectNpcListMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: I
 
     DisplaySelectedListBox();
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_MOVE) {
     let sSelected: INT16 = MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
 
-    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    pRegion.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (gpActiveListBox.value.sCurSelectedItem != (sSelected + gpActiveListBox.value.usItemDisplayedOnTopOfList)) {
       gpActiveListBox.value.sCurSelectedItem = sSelected + gpActiveListBox.value.usItemDisplayedOnTopOfList;
@@ -1678,7 +1678,7 @@ function SelectNpcListMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: I
       DisplaySelectedListBox();
     }
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 }
 
@@ -1734,7 +1734,7 @@ function DrawQdsScrollRectangle(): void // INT16 sSelectedEntry, UINT16 usStartP
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-function ScrollArrowsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ScrollArrowsRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) || (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT)) {
     let ubSelected: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
@@ -1765,7 +1765,7 @@ function ScrollArrowsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   }
 }
 
-function ScrollAreaRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ScrollAreaRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     CalcPositionOfNewScrollBoxLocation();
@@ -1778,23 +1778,23 @@ function ScrollAreaRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   }
 }
 
-function ScrollAreaMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
+function ScrollAreaMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    pRegion.uiFlags &= (~BUTTON_CLICKED_ON);
 
     //		CalcPositionOfNewScrollBoxLocation();
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     //		CalcPositionOfNewScrollBoxLocation();
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_MOVE) {
     if (gfLeftButtonState) {
       CalcPositionOfNewScrollBoxLocation();
     }
 
-    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
+    InvalidateRegion(pRegion.RegionTopLeftX, pRegion.RegionTopLeftY, pRegion.RegionBottomRightX, pRegion.RegionBottomRightY);
   }
 }
 
@@ -2138,8 +2138,8 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: string /* ST
 
       // create a mask to block out the screen
       if (!gfBackgroundMaskEnabled) {
-        MSYS_DefineRegion(addressof(gQuestTextEntryDebugDisableScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 40, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
-        MSYS_AddRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
+        MSYS_DefineRegion(gQuestTextEntryDebugDisableScreenRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 40, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
+        MSYS_AddRegion(gQuestTextEntryDebugDisableScreenRegion);
         gfBackgroundMaskEnabled = true;
       }
 
@@ -2166,7 +2166,7 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: string /* ST
 
       // Remove the mouse region that disables the screen
       if (gfBackgroundMaskEnabled) {
-        MSYS_RemoveRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
+        MSYS_RemoveRegion(gQuestTextEntryDebugDisableScreenRegion);
         gfBackgroundMaskEnabled = false;
       }
 
@@ -2211,7 +2211,7 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: string /* ST
   return true;
 }
 
-function QuestDebugTextEntryDisableScreenRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function QuestDebugTextEntryDisableScreenRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gpActiveListBox.value.ubCurScrollBoxAction = Enum166.QD_DROP_DOWN_DESTROY;
@@ -2247,7 +2247,7 @@ function TextEntryBox(pString: string /* STR16 */, TextEntryCallBack: TEXT_ENTRY
   gubTextEntryAction = Enum166.QD_DROP_DOWN_DISPLAY;
 }
 
-function ScrollQuestListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ScrollQuestListRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let String: string /* wchar_t[512] */;
@@ -2262,7 +2262,7 @@ function ScrollQuestListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
   }
 }
 
-function ScrollFactListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
+function ScrollFactListRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let String: string /* wchar_t[512] */;
@@ -2421,8 +2421,8 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
 
       // create a mask to block out the screen
       if (!gfBackgroundMaskEnabled) {
-        MSYS_DefineRegion(addressof(gQuestTextEntryDebugDisableScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 40, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
-        MSYS_AddRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
+        MSYS_DefineRegion(gQuestTextEntryDebugDisableScreenRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 40, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
+        MSYS_AddRegion(gQuestTextEntryDebugDisableScreenRegion);
         gfBackgroundMaskEnabled = true;
       }
 
@@ -2436,7 +2436,7 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
       RemoveButton(guiQuestDebugNPCInventOkBtn);
 
       if (gfBackgroundMaskEnabled)
-        MSYS_RemoveRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
+        MSYS_RemoveRegion(gQuestTextEntryDebugDisableScreenRegion);
       gfBackgroundMaskEnabled = false;
 
       gfRedrawQuestDebugSystem = true;
@@ -2933,8 +2933,8 @@ function StartMercTalkingFromQuoteNum(iQuoteToStartTalkingFrom: INT32): void {
 
   // create a mask to block out the screen
   if (!gfBackgroundMaskEnabled) {
-    MSYS_DefineRegion(addressof(gQuestTextEntryDebugDisableScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
-    MSYS_AddRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
+    MSYS_DefineRegion(gQuestTextEntryDebugDisableScreenRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH + 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, QuestDebugTextEntryDisableScreenRegionCallBack);
+    MSYS_AddRegion(gQuestTextEntryDebugDisableScreenRegion);
     gfBackgroundMaskEnabled = true;
   }
 
@@ -2949,7 +2949,7 @@ function EndMercTalking(): void {
 
   // remove the mask of the entire screen
   if (gfBackgroundMaskEnabled) {
-    MSYS_RemoveRegion(addressof(gQuestTextEntryDebugDisableScreenRegion));
+    MSYS_RemoveRegion(gQuestTextEntryDebugDisableScreenRegion);
     gfBackgroundMaskEnabled = false;
   }
 
@@ -3135,7 +3135,7 @@ function DisableFactMouseRegions(): void {
   let i: UINT32;
 
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_FACTS; i++) {
-    MSYS_DisableRegion(addressof(gFactListRegion[i]));
+    MSYS_DisableRegion(gFactListRegion[i]);
   }
 }
 
@@ -3143,7 +3143,7 @@ function EnableFactMouseRegions(): void {
   let i: UINT32;
 
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_FACTS; i++) {
-    MSYS_EnableRegion(addressof(gFactListRegion[i]));
+    MSYS_EnableRegion(gFactListRegion[i]);
   }
 }
 

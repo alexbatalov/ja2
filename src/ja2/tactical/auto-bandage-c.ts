@@ -313,7 +313,7 @@ export function AutoBandage(fStart: boolean): void {
     gsY = ((((aRect.iBottom - aRect.iTop) - gusTextBoxHeight) / 2) + aRect.iTop);
 
     // build a mask
-    MSYS_DefineRegion(addressof(gAutoBandageRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(gAutoBandageRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
     gfBeginningAutoBandage = true;
   } else {
@@ -368,7 +368,7 @@ export function AutoBandage(fStart: boolean): void {
     ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "End auto bandage.");
 
     // build a mask
-    MSYS_RemoveRegion(addressof(gAutoBandageRegion));
+    MSYS_RemoveRegion(gAutoBandageRegion);
 
     // clear faces for auto bandage
     RemoveFacesForAutoBandage();

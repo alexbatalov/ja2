@@ -717,9 +717,9 @@ function LockTacticalInterface(): void {
   // 1) create a mouse region over the entrie interface panel
   // 2) set flag for use in tactical to indicate we are locked
   if (!(guiTacticalInterfaceFlags & INTERFACE_LOCKEDLEVEL1)) {
-    MSYS_DefineRegion(addressof(gLockPanelOverlayRegion), 0, gsVIEWPORT_WINDOW_END_Y, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(gLockPanelOverlayRegion, 0, gsVIEWPORT_WINDOW_END_Y, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
     // Add region
-    MSYS_AddRegion(addressof(gLockPanelOverlayRegion));
+    MSYS_AddRegion(gLockPanelOverlayRegion);
 
     guiTacticalInterfaceFlags |= INTERFACE_LOCKEDLEVEL1;
   }
@@ -728,7 +728,7 @@ function LockTacticalInterface(): void {
 function UnLockTacticalInterface(): void {
   if ((guiTacticalInterfaceFlags & INTERFACE_LOCKEDLEVEL1)) {
     // Remove region
-    MSYS_RemoveRegion(addressof(gLockPanelOverlayRegion));
+    MSYS_RemoveRegion(gLockPanelOverlayRegion);
 
     guiTacticalInterfaceFlags &= (~INTERFACE_LOCKEDLEVEL1);
   }
