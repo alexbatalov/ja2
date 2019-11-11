@@ -159,14 +159,14 @@ export function InitFloristDefaults(): boolean {
   if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_FLORIST) {
     // load the small title graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_LARGEFLORISTSYMBOL);
+    VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_LARGEFLORISTSYMBOL);
     if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLargeTitleSymbol))) {
       return false;
     }
   } else {
     // load the leaf back graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_SMALLFLORISTSYMBOL);
+    VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_SMALLFLORISTSYMBOL);
     if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSmallTitleSymbol))) {
       return false;
     }

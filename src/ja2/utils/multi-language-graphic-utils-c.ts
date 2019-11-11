@@ -1,108 +1,75 @@
 namespace ja2 {
 
-export function GetMLGFilename(filename: Pointer<string> /* SGPFILENAME */, usMLGGraphicID: UINT16): boolean {
+export function GetMLGFilename(usMLGGraphicID: UINT16): string {
 // FIXME: Language-specific code
 // #if defined(ENGLISH) || defined(FRENCH)
   switch (usMLGGraphicID) {
     case Enum326.MLG_AIMSYMBOL:
-      filename = "LAPTOP\\AimSymbol.sti";
-      return true;
+      return "LAPTOP\\AimSymbol.sti";
     case Enum326.MLG_BOBBYNAME:
-      filename = "LAPTOP\\BobbyName.sti";
-      return true;
+      return "LAPTOP\\BobbyName.sti";
     case Enum326.MLG_BOBBYRAYAD21:
-      filename = "LAPTOP\\BobbyRayAd_21.sti";
-      return true;
+      return "LAPTOP\\BobbyRayAd_21.sti";
     case Enum326.MLG_BOBBYRAYLINK:
-      filename = "LAPTOP\\BobbyRayLink.sti";
-      return true;
+      return "LAPTOP\\BobbyRayLink.sti";
     case Enum326.MLG_CLOSED:
-      filename = "LAPTOP\\Closed.sti";
-      return true;
+      return "LAPTOP\\Closed.sti";
     case Enum326.MLG_CONFIRMORDER:
-      filename = "LAPTOP\\ConfirmOrder.sti";
-      return true;
+      return "LAPTOP\\ConfirmOrder.sti";
     case Enum326.MLG_DESKTOP:
-      filename = "LAPTOP\\desktop.pcx";
-      return true;
+      return "LAPTOP\\desktop.pcx";
     case Enum326.MLG_FUNERALAD9:
-      filename = "LAPTOP\\FuneralAd_9.sti";
-      return true;
+      return "LAPTOP\\FuneralAd_9.sti";
     case Enum326.MLG_GOLDPIECEBUTTONS:
-      filename = "INTERFACE\\goldpiecebuttons.sti";
-      return true;
+      return "INTERFACE\\goldpiecebuttons.sti";
     case Enum326.MLG_HISTORY:
-      filename = "LAPTOP\\history.sti";
-      return true;
+      return "LAPTOP\\history.sti";
     case Enum326.MLG_INSURANCEAD10:
-      filename = "LAPTOP\\insurancead_10.sti";
-      return true;
+      return "LAPTOP\\insurancead_10.sti";
     case Enum326.MLG_INSURANCELINK:
-      filename = "LAPTOP\\insurancelink.sti";
-      return true;
+      return "LAPTOP\\insurancelink.sti";
     case Enum326.MLG_INSURANCETITLE:
-      filename = "LAPTOP\\largetitle.sti";
-      return true;
+      return "LAPTOP\\largetitle.sti";
     case Enum326.MLG_LARGEFLORISTSYMBOL:
-      filename = "LAPTOP\\LargeSymbol.sti";
-      return true;
+      return "LAPTOP\\LargeSymbol.sti";
     case Enum326.MLG_SMALLFLORISTSYMBOL:
-      filename = "LAPTOP\\SmallSymbol.sti";
-      return true;
+      return "LAPTOP\\SmallSymbol.sti";
     case Enum326.MLG_MCGILLICUTTYS:
-      filename = "LAPTOP\\McGillicuttys.sti";
-      return true;
+      return "LAPTOP\\McGillicuttys.sti";
     case Enum326.MLG_MORTUARY:
-      filename = "LAPTOP\\Mortuary.sti";
-      return true;
+      return "LAPTOP\\Mortuary.sti";
     case Enum326.MLG_MORTUARYLINK:
-      filename = "LAPTOP\\MortuaryLink.sti";
-      return true;
+      return "LAPTOP\\MortuaryLink.sti";
     case Enum326.MLG_ORDERGRID:
-      filename = "LAPTOP\\OrderGrid.sti";
-      return true;
+      return "LAPTOP\\OrderGrid.sti";
     case Enum326.MLG_PREBATTLEPANEL:
-      filename = "INTERFACE\\PreBattlePanel.sti";
-      return true;
+      return "INTERFACE\\PreBattlePanel.sti";
     case Enum326.MLG_SMALLTITLE:
-      filename = "LAPTOP\\SmallTitle.sti";
-      return true;
+      return "LAPTOP\\SmallTitle.sti";
     case Enum326.MLG_STATSBOX:
-      filename = "LAPTOP\\StatsBox.sti";
-      return true;
+      return "LAPTOP\\StatsBox.sti";
     case Enum326.MLG_STOREPLAQUE:
-      filename = "LAPTOP\\BobbyStorePlaque.sti";
-      return true;
+      return "LAPTOP\\BobbyStorePlaque.sti";
     case Enum326.MLG_TITLETEXT:
-      filename = "LOADSCREENS\\titletext.sti";
-      return true;
+      return "LOADSCREENS\\titletext.sti";
     case Enum326.MLG_TOALUMNI:
-      filename = "LAPTOP\\ToAlumni.sti";
-      return true;
+      return "LAPTOP\\ToAlumni.sti";
     case Enum326.MLG_TOMUGSHOTS:
-      filename = "LAPTOP\\ToMugShots.sti";
-      return true;
+      return "LAPTOP\\ToMugShots.sti";
     case Enum326.MLG_TOSTATS:
-      filename = "LAPTOP\\ToStats.sti";
-      return true;
+      return "LAPTOP\\ToStats.sti";
     case Enum326.MLG_WARNING:
-      filename = "LAPTOP\\Warning.sti";
-      return true;
+      return "LAPTOP\\Warning.sti";
     case Enum326.MLG_YOURAD13:
-      filename = "LAPTOP\\YourAd_13.sti";
-      return true;
+      return "LAPTOP\\YourAd_13.sti";
     case Enum326.MLG_OPTIONHEADER:
-      filename = "INTERFACE\\optionscreenaddons.sti";
-      return true;
+      return "INTERFACE\\optionscreenaddons.sti";
     case Enum326.MLG_LOADSAVEHEADER:
-      filename = "INTERFACE\\loadscreenaddons.sti";
-      return true;
+      return "INTERFACE\\loadscreenaddons.sti";
     case Enum326.MLG_SPLASH:
-      filename = "INTERFACE\\splash.sti";
-      return true;
+      return "INTERFACE\\splash.sti";
     case Enum326.MLG_IMPSYMBOL:
-      filename = "LAPTOP\\IMPSymbol.sti";
-      return true;
+      return "LAPTOP\\IMPSymbol.sti";
   }
 
 // #elif defined(GERMAN)
@@ -343,7 +310,7 @@ export function GetMLGFilename(filename: Pointer<string> /* SGPFILENAME */, usML
 //   }
 // #endif
 
-  return false;
+  throw new Error('Should be unreachable');
 }
 
 }

@@ -99,7 +99,7 @@ export function LoadIMPSymbol(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_IMPSYMBOL);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_IMPSYMBOL);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiIMPSYMBOL))) {
     return false;
   }

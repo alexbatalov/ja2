@@ -77,7 +77,7 @@ export function EnterInsurance(): boolean {
 
   // load the Insurance title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_INSURANCETITLE);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_INSURANCETITLE);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceTitleImage))) {
     return false;
   }
@@ -214,7 +214,7 @@ export function InitInsuranceDefaults(): boolean {
   if (guiCurrentLaptopMode != Enum95.LAPTOP_MODE_INSURANCE) {
     // load the small title for the every page other then the first page
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_SMALLTITLE);
+    VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_SMALLTITLE);
     if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceSmallTitleImage))) {
       return false;
     }

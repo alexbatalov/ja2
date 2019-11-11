@@ -421,7 +421,7 @@ function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
     gfLoadGameUponEntry = false;
 
     // Load button images
-    GetMLGFilename(filename, Enum326.MLG_TITLETEXT);
+    filename = GetMLGFilename(Enum326.MLG_TITLETEXT);
 
     iMenuImages[Enum23.NEW_GAME] = LoadButtonImage(filename, 0, 0, 1, 2, -1);
     sSlot = 0;

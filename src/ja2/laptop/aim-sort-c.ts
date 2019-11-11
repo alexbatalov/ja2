@@ -152,21 +152,21 @@ export function EnterAimSort(): boolean {
 
   // load the ToAlumni graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_TOALUMNI);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_TOALUMNI);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiToAlumni))) {
     return false;
   }
 
   // load the ToMugShots graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_TOMUGSHOTS);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_TOMUGSHOTS);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiToMugShots))) {
     return false;
   }
 
   // load the ToStats graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_TOSTATS);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_TOSTATS);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiToStats))) {
     return false;
   }

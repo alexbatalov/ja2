@@ -103,7 +103,7 @@ export function EnterMercsFiles(): boolean {
 
   // load the stats box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_STATSBOX);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_STATSBOX);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiStatsBox))) {
     return false;
   }

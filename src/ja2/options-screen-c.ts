@@ -266,7 +266,7 @@ function EnterOptionsScreen(): boolean {
 
   // load button, title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_OPTIONHEADER);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_OPTIONHEADER);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOptionsAddOnImages))) {
     return false;
   }

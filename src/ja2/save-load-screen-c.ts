@@ -347,7 +347,7 @@ function EnterSaveLoadScreen(): boolean {
 
   // load Load Screen Add ons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_LOADSAVEHEADER);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_LOADSAVEHEADER);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBackGroundAddOns))) {
     return false;
   }

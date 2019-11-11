@@ -315,7 +315,7 @@ export function EnterBobbyRMailOrder(): boolean {
 
   // load the delivery speed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_CONFIRMORDER);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_CONFIRMORDER);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiConfirmGraphic))) {
     return false;
   }

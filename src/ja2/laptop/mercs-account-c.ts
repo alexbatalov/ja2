@@ -60,7 +60,7 @@ export function EnterMercsAccount(): boolean {
 
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_ORDERGRID);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_ORDERGRID);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercOrderGrid))) {
     return false;
   }

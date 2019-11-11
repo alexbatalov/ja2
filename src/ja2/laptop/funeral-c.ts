@@ -94,7 +94,7 @@ export function EnterFuneral(): boolean {
 
   // load the Closed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_CLOSED);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_CLOSED);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiClosedSign))) {
     return false;
   }
@@ -122,14 +122,14 @@ export function EnterFuneral(): boolean {
 
   // load the McGillicuttys sign graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_MCGILLICUTTYS);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_MCGILLICUTTYS);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMcGillicuttys))) {
     return false;
   }
 
   // load the Mortuary  graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_MORTUARY);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_MORTUARY);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMortuary))) {
     return false;
   }

@@ -215,7 +215,7 @@ export function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistant
 
   // Create the panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_PREBATTLEPANEL);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_PREBATTLEPANEL);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(uiInterfaceImages)))
     AssertMsg(0, "Failed to load interface\\PreBattlePanel.sti");
 

@@ -8270,7 +8270,7 @@ function AddTeamPanelSortButtonsForMapScreen(): void {
     4,
   ]; // sleep image is out or order (last)
 
-  GetMLGFilename(filename, Enum326.MLG_GOLDPIECEBUTTONS);
+  filename = GetMLGFilename(Enum326.MLG_GOLDPIECEBUTTONS);
 
   for (iCounter = 0; iCounter < MAX_SORT_METHODS; iCounter++) {
     giMapSortButtonImage[iCounter] = LoadButtonImage(filename, -1, iImageIndex[iCounter], -1, iImageIndex[iCounter] + 6, -1);

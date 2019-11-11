@@ -4280,7 +4280,7 @@ function LoadDesktopBackground(): boolean {
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
-  GetMLGFilename(vs_desc.ImageFile, Enum326.MLG_DESKTOP);
+  vs_desc.ImageFile = GetMLGFilename(Enum326.MLG_DESKTOP);
   if (!AddVideoSurface(addressof(vs_desc), addressof(guiDESKTOP))) {
     return false;
   }

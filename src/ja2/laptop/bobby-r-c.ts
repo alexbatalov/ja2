@@ -170,7 +170,7 @@ export function EnterBobbyR(): boolean {
 
   // load the Bobbyname graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_BOBBYNAME);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_BOBBYNAME);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyName))) {
     return false;
   }
@@ -198,7 +198,7 @@ export function EnterBobbyR(): boolean {
 
   // load the Store Plaque graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_STOREPLAQUE);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_STOREPLAQUE);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiStorePlaque))) {
     return false;
   }

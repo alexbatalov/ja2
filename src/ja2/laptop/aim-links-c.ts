@@ -55,21 +55,21 @@ export function EnterAimLinks(): boolean {
 
   // load the Bobby link graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_BOBBYRAYLINK);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_BOBBYRAYLINK);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyLink))) {
     return false;
   }
 
   // load the Funeral graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_MORTUARYLINK);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_MORTUARYLINK);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFuneralLink))) {
     return false;
   }
 
   // load the Insurance graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_INSURANCELINK);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_INSURANCELINK);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceLink))) {
     return false;
   }

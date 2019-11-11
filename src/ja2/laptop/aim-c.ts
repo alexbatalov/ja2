@@ -195,14 +195,14 @@ export function EnterAIM(): boolean {
 
   // load the History graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_HISTORY);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_HISTORY);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHistory))) {
     return false;
   }
 
   // load the Wanring graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_WARNING);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_WARNING);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiWarning))) {
     return false;
   }
@@ -216,28 +216,28 @@ export function EnterAIM(): boolean {
 
   // load the your ad advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_YOURAD13);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_YOURAD13);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAdForAdsImages))) {
     return false;
   }
 
   // load the insurance advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_INSURANCEAD10);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_INSURANCEAD10);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceAdImages))) {
     return false;
   }
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_FUNERALAD9);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_FUNERALAD9);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFuneralAdImages))) {
     return false;
   }
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_BOBBYRAYAD21);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_BOBBYRAYAD21);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRAdImages))) {
     return false;
   }
@@ -398,7 +398,7 @@ export function InitAimDefaults(): boolean {
 
   // load the Aim Symbol graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_AIMSYMBOL);
+  VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_AIMSYMBOL);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAimSymbol))) {
     return false;
   }
