@@ -12,7 +12,7 @@ export interface HistoryUnit {
   sSectorY: INT16; // sector Y this took place in
   bSectorZ: INT8;
   ubColor: UINT8;
-  Next: Pointer<HistoryUnit>; // next unit in the list
+  Next: HistoryUnit | null /* Pointer<HistoryUnit> */; // next unit in the list
 }
 
 export const enum Enum83 {

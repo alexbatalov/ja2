@@ -4,7 +4,7 @@ export let gubLastLoadingScreenID: UINT8 = Enum22.LOADINGSCREEN_NOTHING;
 
 // returns the UINT8 ID for the specified sector.
 export function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT8 {
-  let pSector: Pointer<SECTORINFO>;
+  let pSector: SECTORINFO;
   let ubSectorID: UINT8;
   let fNight: boolean = false;
 
@@ -79,8 +79,8 @@ export function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8
             return Enum22.LOADINGSCREEN_NIGHTMINE;
           return Enum22.LOADINGSCREEN_DAYMINE;
       }
-      pSector = addressof(SectorInfo[ubSectorID]);
-      switch (pSector.value.ubTraversability[4]) {
+      pSector = SectorInfo[ubSectorID];
+      switch (pSector.ubTraversability[4]) {
         case Enum127.TOWN:
           if (fNight) {
             if (Random(2)) {

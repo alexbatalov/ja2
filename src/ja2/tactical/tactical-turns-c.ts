@@ -4,7 +4,7 @@ export function HandleRPCDescription(): void {
   let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
   let cnt2: INT32;
   let fSAMSite: boolean = false;
 
@@ -47,11 +47,11 @@ export function HandleRPCDescription(): void {
     cnt2 = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
     // run through list
-    for (pTeamSoldier = MercPtrs[cnt2]; cnt2 <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt2++, pTeamSoldier++) {
+    for (pTeamSoldier = MercPtrs[cnt2]; cnt2 <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt2++, pTeamSoldier = MercPtrs[cnt2]) {
       // Add guy if he's a candidate...
       if (RPC_RECRUITED(pTeamSoldier)) {
-        if (pTeamSoldier.value.bLife >= OKLIFE && pTeamSoldier.value.bActive && pTeamSoldier.value.sSectorX == gTacticalStatus.bGuideDescriptionSectorX && pTeamSoldier.value.sSectorY == gTacticalStatus.bGuideDescriptionSectorY && pTeamSoldier.value.bSectorZ == gbWorldSectorZ && !pTeamSoldier.value.fBetweenSectors) {
-          if (pTeamSoldier.value.ubProfile == Enum268.IRA || pTeamSoldier.value.ubProfile == Enum268.MIGUEL || pTeamSoldier.value.ubProfile == Enum268.CARLOS || pTeamSoldier.value.ubProfile == Enum268.DIMITRI) {
+        if (pTeamSoldier.bLife >= OKLIFE && pTeamSoldier.bActive && pTeamSoldier.sSectorX == gTacticalStatus.bGuideDescriptionSectorX && pTeamSoldier.sSectorY == gTacticalStatus.bGuideDescriptionSectorY && pTeamSoldier.bSectorZ == gbWorldSectorZ && !pTeamSoldier.fBetweenSectors) {
+          if (pTeamSoldier.ubProfile == Enum268.IRA || pTeamSoldier.ubProfile == Enum268.MIGUEL || pTeamSoldier.ubProfile == Enum268.CARLOS || pTeamSoldier.ubProfile == Enum268.DIMITRI) {
             ubMercsInSector[ubNumMercs] = cnt2;
             ubNumMercs++;
           }
@@ -70,7 +70,7 @@ export function HandleRPCDescription(): void {
 
 export function HandleTacticalEndTurn(): void {
   let cnt: UINT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let uiTime: UINT32;
   /* static */ let uiTimeSinceLastStrategicUpdate: UINT32 = 0;
 
@@ -137,8 +137,8 @@ export function HandleTacticalEndTurn(): void {
     BeginLoggingForBleedMeToos(true);
 
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-      if (pSoldier.value.bActive && pSoldier.value.bLife > 0 && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !(AM_A_ROBOT(pSoldier))) {
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if (pSoldier.bActive && pSoldier.bLife > 0 && !(pSoldier.uiStatusFlags & SOLDIER_VEHICLE) && !(AM_A_ROBOT(pSoldier))) {
         // Handle everything from getting breath back, to bleeding, etc
         EVENT_BeginMercTurn(pSoldier, true, 0);
 
@@ -146,7 +146,7 @@ export function HandleTacticalEndTurn(): void {
         HandlePlayerServices(pSoldier);
 
         // if time is up, turn off xray
-        if (pSoldier.value.uiXRayActivatedTime && uiTime > pSoldier.value.uiXRayActivatedTime + XRAY_TIME) {
+        if (pSoldier.uiXRayActivatedTime && uiTime > pSoldier.uiXRayActivatedTime + XRAY_TIME) {
           TurnOffXRayEffects(pSoldier);
         }
 
@@ -167,7 +167,7 @@ export function HandleTacticalEndTurn(): void {
       pSoldier = MercSlots[cnt];
 
       if (pSoldier != null) {
-        if (pSoldier.value.bTeam != gbPlayerNum) {
+        if (pSoldier.bTeam != gbPlayerNum) {
           // Handle everything from getting breath back, to bleeding, etc
           EVENT_BeginMercTurn(pSoldier, true, 0);
 

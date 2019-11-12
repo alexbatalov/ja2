@@ -9,8 +9,8 @@ export interface ScrollStringSt {
   fBeginningOfNewString: boolean;
   uiTimeOfLastUpdate: UINT32;
   uiPadding: UINT32[] /* [5] */;
-  pNext: Pointer<ScrollStringSt>;
-  pPrev: Pointer<ScrollStringSt>;
+  pNext: ScrollStringSt | null /* Pointer<ScrollStringSt> */;
+  pPrev: ScrollStringSt | null /* Pointer<ScrollStringSt> */;
 }
 
 export const MSG_INTERFACE = 0;

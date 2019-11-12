@@ -1,9 +1,5 @@
 namespace ja2 {
 
-// Kris:  November 10, 1997
-// Please don't change this value from 10.  It will invalidate all of the maps and soldiers.
-export const MAXPATROLGRIDS = 10; // *** THIS IS A DUPLICATION - MUST BE MOVED !
-
 // TEMP VALUES FOR NAMES
 const MAXCIVLASTNAMES = 30;
 

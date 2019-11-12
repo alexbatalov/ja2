@@ -4,15 +4,15 @@ const MAX_CACHE_SIZE = 20;
 export const MIN_CACHE_SIZE = 2;
 
 export interface AnimationSurfaceCacheType {
-  usCachedSurfaces: Pointer<UINT16>;
-  sCacheHits: Pointer<INT16>;
+  usCachedSurfaces: UINT16[] /* Pointer<UINT16> */;
+  sCacheHits: UINT16[] /* Pointer<INT16> */;
   ubCacheSize: UINT8;
 }
 
 export function createAnimationSurfaceCacheType(): AnimationSurfaceCacheType {
   return {
-    usCachedSurfaces: null,
-    sCacheHits: null,
+    usCachedSurfaces: <UINT16[]><unknown>null,
+    sCacheHits: <UINT16[]><unknown>null,
     ubCacheSize: 0,
   };
 }

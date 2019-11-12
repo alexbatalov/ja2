@@ -5,7 +5,7 @@ namespace ja2 {
 export const MAX_TOSS_SEARCH_DIST = 1; // must throw within this of opponent
 const NPC_TOSS_SAFETY_MARGIN = 4; // all friends must be this far away
 
-export const ACTING_ON_SCHEDULE = (p: Pointer<SOLDIERTYPE>) => ((p).value.fAIFlags & AI_CHECK_SCHEDULE);
+export const ACTING_ON_SCHEDULE = (p: SOLDIERTYPE) => ((p).fAIFlags & AI_CHECK_SCHEDULE);
 
 // the AI should try to have this many APs before climbing a roof, if possible
 const AI_AP_CLIMBROOF = 15;
@@ -33,16 +33,6 @@ export const enum Enum292 {
   URGENCY_HIGH,
   NUM_URGENCY_STATES,
 }
-
-export const NOWATER = 0;
-export const WATEROK = 1;
-
-export const IGNORE_PATH = 0;
-export const ENSURE_PATH = 1;
-export const ENSURE_PATH_COST = 2;
-
-export const DONTFORCE = 0;
-export const FORCE = 1;
 
 export const MAX_ROAMING_RANGE = WORLD_COLS;
 

@@ -63,7 +63,7 @@ export interface DisplayList {
   iHeight: INT16;
   uiObjIndx: UINT32;
   fChosen: boolean;
-  pNext: Pointer<DisplayList>;
+  pNext: DisplayList | null /* Pointer<DisplayList> */;
 }
 
 export interface Selections {

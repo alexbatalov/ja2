@@ -512,17 +512,17 @@ export let WeaponROF: INT16[] /* [MAX_WEAPONS] */ = [
 ];
 
 // SetupStoreInventory sets up the initial quantity on hand for all of Bobby Ray's inventory items
-export function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: boolean): void {
+export function SetupStoreInventory(pInventoryArray: STORE_INVENTORY[], fUsed: boolean): void {
   let i: UINT16;
   let usItemIndex: UINT16;
   let ubNumBought: UINT8;
 
   // loop through all items BR can stock to init a starting quantity on hand
-  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[fUsed]; i++) {
+  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[Number(fUsed)]; i++) {
     usItemIndex = pInventoryArray[i].usItemIndex;
     Assert(usItemIndex < Enum225.MAXITEMS);
 
-    ubNumBought = DetermineInitialInvItems(-1, usItemIndex, StoreInventory[usItemIndex][fUsed], fUsed);
+    ubNumBought = DetermineInitialInvItems(-1, usItemIndex, StoreInventory[usItemIndex][Number(fUsed)], fUsed);
     if (ubNumBought > 0) {
       // If doing used items
       if (fUsed) {
@@ -545,7 +545,7 @@ export function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, f
 function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT8): boolean {
   let i: UINT16;
 
-  let pInventoryArray: Pointer<STORE_INVENTORY>;
+  let pInventoryArray: STORE_INVENTORY[] | null;
 
   pInventoryArray = GetPtrToStoreInventory(ubDealerID);
   if (pInventoryArray == null)
@@ -572,7 +572,7 @@ function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 
-function GetPtrToStoreInventory(ubDealerID: UINT8): Pointer<STORE_INVENTORY> {
+function GetPtrToStoreInventory(ubDealerID: UINT8): STORE_INVENTORY[] | null {
   if (ubDealerID >= Enum112.BOBBY_RAY_LISTS)
     return null;
 

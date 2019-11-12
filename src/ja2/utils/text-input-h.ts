@@ -30,7 +30,6 @@ export const INPUTTYPE_SPECIAL = 0x0008; //  !@#$%^&*()_+`|\[]{};':"<>,./? (spac
 export const INPUTTYPE_UPPERCASE = 0x0010; // converts all lowercase to uppercase
 export const INPUTTYPE_LOWERCASE = 0x0020; // converts all uppercase to lowercase
 export const INPUTTYPE_FIRSTPOSMINUS = 0x0002; // allows '-' at beginning of field only
-const INPUTTYPE_NUMERIC = (INPUTTYPE_NUMERIC | INPUTTYPE_FIRSTPOSMINUS);
 const INPUTTYPE_SPECIALCHARS = (INPUTTYPE_SPECIAL | INPUTTYPE_SPACES);
 const INPUTTYPE_ALPHANUMERIC = (INPUTTYPE_ALPHA | INPUTTYPE_NUMERICSTRICT);
 export const INPUTTYPE_ASCII = (INPUTTYPE_ALPHANUMERIC | INPUTTYPE_SPECIALCHARS);

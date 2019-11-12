@@ -23,7 +23,7 @@ export function InitializeProfilesForTownReputation(): void {
 
   // initialize the town opinion values in each recruitable merc's profile structure
   for (uiProfileId = 0; uiProfileId < FIRST_NPC; uiProfileId++) {
-    memset(addressof(gMercProfiles[uiProfileId].bMercTownReputation), INITIAL_TOWN_REPUTATION, sizeof(gMercProfiles[uiProfileId].bMercTownReputation));
+    gMercProfiles[uiProfileId].bMercTownReputation.fill(INITIAL_TOWN_REPUTATION);
   }
 }
 
@@ -47,7 +47,7 @@ function GetTownOpinionOfMerc(ubProfileId: UINT8, ubTownId: UINT8): UINT8 {
   return gMercProfiles[ubProfileId].bMercTownReputation[ubTownId];
 }
 
-function GetTownOpinionOfMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId: UINT8): UINT8 {
+function GetTownOpinionOfMercForSoldier(pSoldier: SOLDIERTYPE, ubTownId: UINT8): UINT8 {
   // error check
   if (pSoldier == null) {
     return 0;
@@ -56,7 +56,7 @@ function GetTownOpinionOfMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId
   Assert(ubTownId < Enum135.NUM_TOWNS);
 
   // pass on to
-  return GetTownOpinionOfMerc(pSoldier.value.ubProfile, ubTownId);
+  return GetTownOpinionOfMerc(pSoldier.ubProfile, ubTownId);
 }
 
 function UpdateTownOpinionOfThisMerc(ubProfileId: UINT8, ubTownId: UINT8, bAmount: INT8): void {
@@ -76,7 +76,7 @@ function UpdateTownOpinionOfThisMerc(ubProfileId: UINT8, ubTownId: UINT8, bAmoun
   }
 }
 
-function UpdateTownOpinionOfThisMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId: UINT8, bAmount: INT8): void {
+function UpdateTownOpinionOfThisMercForSoldier(pSoldier: SOLDIERTYPE, ubTownId: UINT8, bAmount: INT8): void {
   // error check
   if (pSoldier == null) {
     return;
@@ -85,7 +85,7 @@ function UpdateTownOpinionOfThisMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, u
   Assert(ubTownId < Enum135.NUM_TOWNS);
 
   // pass this on to the profile based function
-  UpdateTownOpinionOfThisMerc(pSoldier.value.ubProfile, ubTownId, bAmount);
+  UpdateTownOpinionOfThisMerc(pSoldier.ubProfile, ubTownId, bAmount);
 }
 
 export function HandleSpreadOfAllTownsOpinion(): void {

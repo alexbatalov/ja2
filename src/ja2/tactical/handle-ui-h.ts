@@ -52,7 +52,9 @@ export const enum Enum206 {
   JUMPOVER_MODE,
 }
 
-type UI_HANDLEFNC = (a: Pointer<UI_EVENT>) => UINT32;
+export type UI_MODE = Enum206;
+
+type UI_HANDLEFNC = (a: UI_EVENT) => UINT32;
 
 export interface UI_EVENT {
   uiFlags: UINT32;
@@ -163,6 +165,6 @@ export const enum Enum207 {
   NUM_UI_EVENTS,
 }
 
-export type UIKEYBOARD_HOOK = (pInputEvent: Pointer<InputAtom>) => boolean;
+export type UIKEYBOARD_HOOK = (pInputEvent: InputAtom) => boolean;
 
 }

@@ -10,12 +10,12 @@ export interface FilesUnit {
   fRead: boolean;
   pPicFileNameList: string[] /* STR8[2] */;
 
-  Next: Pointer<FilesUnit>; // next unit in the list
+  Next: FilesUnit | null /* Pointer<FilesUnit> */; // next unit in the list
 }
 
 export interface FileString {
   pString: string /* STR16 */;
-  Next: Pointer<FileString>;
+  Next: FileString | null /* Pointer<FileString> */;
 }
 
 export type FileStringPtr = Pointer<FileString>;
@@ -43,7 +43,7 @@ export interface FileRecordWidth {
   iRecordWidth: INT32;
   iRecordHeightAdjustment: INT32;
   ubFlags: UINT8;
-  Next: Pointer<FileRecordWidth>;
+  Next: FileRecordWidth | null /* Pointer<FileRecordWidth> */;
 }
 
 export type FileRecordWidthPtr = Pointer<FileRecordWidth>;

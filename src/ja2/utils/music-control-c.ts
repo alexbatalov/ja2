@@ -42,7 +42,7 @@ export let gfForceMusicToTense: boolean = false;
 let gfDontRestartSong: boolean = false;
 
 function NoEnemiesInSight(): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
 
   // Loop through our guys
@@ -50,9 +50,9 @@ function NoEnemiesInSight(): boolean {
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
   // look for all mercs on the same team,
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE) {
-      if (pSoldier.value.bOppCnt != 0) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bLife >= OKLIFE) {
+      if (pSoldier.bOppCnt != 0) {
         return false;
       }
     }

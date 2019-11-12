@@ -60,7 +60,7 @@ export function HandleStrategicTurn(): void {
 
 export function HandleStrategicTurnImplicationsOfExitingCombatMode(): void {
   SyncStrategicTurnTimes();
-  HandleTacticalEndTurn(GetWorldTotalSeconds());
+  HandleTacticalEndTurn();
 }
 
 }

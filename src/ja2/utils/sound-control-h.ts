@@ -382,7 +382,7 @@ export const enum Enum331 {
   NUM_AMBIENTS,
 }
 
-export type SOUND_STOP_CALLBACK = (pData: Pointer<void>) => void;
+export type SOUND_STOP_CALLBACK = (pData: any /* Pointer<void> */) => void;
 
 export const POSITION_SOUND_FROM_SOLDIER = 0x00000001;
 

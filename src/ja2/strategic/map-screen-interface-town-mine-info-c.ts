@@ -241,8 +241,7 @@ function AddTextToTownBox(): void {
   // main facilities
   wString = swprintf("%s:", pwTownInfoStrings[8]);
   AddMonoString(addressof(hStringHandle), wString);
-  wString = "";
-  GetSectorFacilitiesFlags(bCurrentTownMineSectorX, bCurrentTownMineSectorY, wString);
+  wString = GetSectorFacilitiesFlags(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
   AddSecondColumnMonoString(addressof(hStringHandle), wString);
 
   // the concept of control is only meaningful in sectors where militia can be trained

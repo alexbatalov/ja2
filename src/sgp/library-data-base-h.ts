@@ -19,8 +19,6 @@ export const DB_EXTRACT_FILE_ID = (exp: number) => (exp & 0x3FFFFF);
 export const DB_ADD_LIBRARY_ID = (exp: number) => (exp << DB_BITS_FOR_FILE_ID);
 const DB_ADD_FILE_ID = (exp: number) => (exp & 0xC00000);
 
-export type HWFILE = UINT32;
-
 export interface LibraryInitHeader {
   sLibraryName: string /* CHAR8[FILENAME_SIZE] */; // The name of the library file on the disk
   fOnCDrom: boolean; // A flag specifying if its a cdrom library ( not implemented yet )

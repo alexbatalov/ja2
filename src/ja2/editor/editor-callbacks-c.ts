@@ -299,7 +299,7 @@ export function BuildingEraseRoomNumCallback(btn: GUI_BUTTON, reason: INT32): vo
 
 export function BuildingToggleRoofViewCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (fBuildingShowRoofs ^= 1) {
+    if ((fBuildingShowRoofs = !fBuildingShowRoofs)) {
       ClickEditorButton(Enum32.BUILDING_TOGGLE_ROOF_VIEW);
     } else {
       UnclickEditorButton(Enum32.BUILDING_TOGGLE_ROOF_VIEW);
@@ -312,7 +312,7 @@ export function BuildingToggleRoofViewCallback(btn: GUI_BUTTON, reason: INT32): 
 
 export function BuildingToggleWallViewCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (fBuildingShowWalls ^= 1) {
+    if ((fBuildingShowWalls = !fBuildingShowWalls)) {
       ClickEditorButton(Enum32.BUILDING_TOGGLE_WALL_VIEW);
     } else {
       UnclickEditorButton(Enum32.BUILDING_TOGGLE_WALL_VIEW);
@@ -325,7 +325,7 @@ export function BuildingToggleWallViewCallback(btn: GUI_BUTTON, reason: INT32): 
 
 export function BuildingToggleInfoViewCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (fBuildingShowRoomInfo ^= 1) {
+    if ((fBuildingShowRoomInfo = !fBuildingShowRoomInfo)) {
       ClickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
     } else {
       UnclickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
@@ -387,6 +387,8 @@ export function MapInfoEntryPointsCallback(btn: GUI_BUTTON, reason: INT32): void
             case Enum32.MAPINFO_ISOLATED_POINT:
               sGridNo = gMapInformation.sIsolatedGridNo;
               break;
+            default:
+              throw new Error('Should be unreachable');
           }
           if (sGridNo != -1) {
             CenterScreenAtMapIndex(sGridNo);

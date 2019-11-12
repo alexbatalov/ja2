@@ -680,9 +680,6 @@ export function RenderAttributeBoxes(): void {
   let sTempX: INT16 = 0;
   let sString: string /* CHAR16[3] */;
 
-  // set last char to null
-  sString[2] = 0;
-
   // font stuff
   SetFont(FONT10ARIAL());
   SetFontShadow(NO_SHADOW);

@@ -533,7 +533,7 @@ export function CreateSoldierCommon(ubBodyType: UINT8, pSoldier: Pointer<SOLDIER
       pSoldier.value.pKeyRing = null;
     }
     // Create frame cache
-    if (InitAnimationCache(usSoldierID, addressof(pSoldier.value.AnimCache)) == false) {
+    if (InitAnimationCache(usSoldierID, pSoldier.value.AnimCache) == false) {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Soldier: Failed animation cache creation"));
       break;
     }

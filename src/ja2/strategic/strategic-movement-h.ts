@@ -34,7 +34,7 @@ export const enum Enum186 {
 export interface WAYPOINT {
   x: UINT8; // sector x position of waypoint
   y: UINT8; // sector y position of waypoint
-  next: Pointer<WAYPOINT>; // next waypoint in list
+  next: WAYPOINT | null /* Pointer<WAYPOINT> */; // next waypoint in list
 }
 
 export function createWaypoint(): WAYPOINT {
@@ -52,7 +52,7 @@ export interface PLAYERGROUP {
   ubID: UINT8; // index in the Menptr array
   pSoldier: Pointer<SOLDIERTYPE>; // direct access to the soldier pointer
   bFlags: UINT8; // flags referring to individual player soldiers
-  next: Pointer<PLAYERGROUP>; // next player in list
+  next: PLAYERGROUP | null /* Pointer<PLAYERGROUP> */; // next player in list
 }
 
 export interface ENEMYGROUP {
@@ -127,7 +127,7 @@ export interface GROUP {
   pPlayerList: Pointer<PLAYERGROUP>; // list of players in the group
   pEnemyGroup: Pointer<ENEMYGROUP>; // a structure containing general enemy info
   /* } */
-  next: Pointer<GROUP>; // next group
+  next: GROUP | null /* Pointer<GROUP> */; // next group
 }
 
 }

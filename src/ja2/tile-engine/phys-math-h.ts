@@ -1,8 +1,5 @@
 namespace ja2 {
 
-const REAL_MAX = FLT_MAX;
-const REAL_MIN = FLT_MIN;
-
 const Epsilon2 = 0.00001;
 
 export interface vector_3 {

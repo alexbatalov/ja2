@@ -30,7 +30,7 @@ export function InitializeGame(): boolean {
   if (!InitializeFonts()) {
     // Send debug message and quit
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "COULD NOT INUT FONT SYSTEM...");
-    return Enum26.ERROR_SCREEN;
+    return false;
   }
 
   // Deletes all the Temp files in the Maps\Temp directory
@@ -232,7 +232,7 @@ export function HandleShortCutExitState(): void {
   }
 
   if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN) {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMessageStrings[Enum333.MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, addressof(pCenteringRect));
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMessageStrings[Enum333.MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, pCenteringRect);
     return;
   }
 
@@ -255,7 +255,7 @@ export function HandleShortCutExitState(): void {
     }
 
     // set up for all otherscreens
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMessageStrings[Enum333.MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, addressof(pCenteringRect));
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMessageStrings[Enum333.MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, pCenteringRect);
   }
 }
 

@@ -11,7 +11,7 @@ const NUM_FACE_SLOTS = 50;
 export interface AUDIO_GAP {
   uiStart: UINT32;
   uiEnd: UINT32;
-  pNext: Pointer<AUDIO_GAP>;
+  pNext: AUDIO_GAP | null /* Pointer<AUDIO_GAP> */;
 }
 
 export const FACE_AUTO_DISPLAY_BUFFER = 0xFFFFF000;

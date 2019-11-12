@@ -167,4 +167,11 @@ export function createArrayFrom<T>(arrayLength: number, valueFn: (index: number)
   return arr;
 }
 
+export function copyArray<T>(destination: T[], source: T[]) {
+  const arrayLength = source.length;
+  for (let i = 0; i < arrayLength; i++) {
+    destination[i] = source[i];
+  }
+}
+
 }

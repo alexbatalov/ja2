@@ -1,12 +1,7 @@
 namespace ja2 {
 
 export function LiveMessage(strMessage: string /* Pointer<CHAR8> */): void {
-  let OutFile: Pointer<FILE>;
-
-  if ((OutFile = fopen("Log.txt", "a+t")) != null) {
-    fprintf(OutFile, "%s\n", strMessage);
-    fclose(OutFile);
-  }
+  console.log(strMessage);
 }
 
 }

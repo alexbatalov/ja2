@@ -36,7 +36,7 @@ export const SCHEDULE_FLAGS_ACTIVE_ALL = 0x00F0;
 export const MAX_SCHEDULE_ACTIONS = 4;
 
 export interface SCHEDULENODE {
-  next: Pointer<SCHEDULENODE>;
+  next: SCHEDULENODE | null /* Pointer<SCHEDULENODE> */;
   usTime: UINT16[] /* [MAX_SCHEDULE_ACTIONS] */; // converted to minutes 12:30PM would be 12*60 + 30 = 750
   usData1: UINT16[] /* [MAX_SCHEDULE_ACTIONS] */; // typically the gridno, but depends on the action
   usData2: UINT16[] /* [MAX_SCHEDULE_ACTIONS] */; // secondary information, not used by most actions

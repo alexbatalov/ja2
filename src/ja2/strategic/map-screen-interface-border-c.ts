@@ -581,7 +581,7 @@ export function ToggleShowMilitiaMode(): void {
 
     // check if player has any militia
     if (DoesPlayerHaveAnyMilitia() == false) {
-      let pwString: string /* STR16 */ = null;
+      let pwString: string /* STR16 */;
 
       // no - so put up a message explaining how it works
 

@@ -280,15 +280,15 @@ let gFullBaseTileValues: UINT8[] /* [] */ = [
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Third Texture
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Forth Texture
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Fifth Texture
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0,
 
@@ -682,7 +682,7 @@ export let gTileTypeLogicalHeight: UINT8[] /* [NUMBEROFTILETYPES] */ = [
   10, // Second water
 ];
 
-export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileElement: Pointer<TILE_ELEMENT>, fUseRaisedObjectType: boolean): void {
+export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileElement: TILE_ELEMENT, fUseRaisedObjectType: boolean): void {
   let ubLoop: UINT8;
   let sIndexDiff: INT16;
   let cnt: UINT32;
@@ -692,10 +692,10 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
   while (gReverseShadowBuddys[cnt] != -1) {
     // IF WE ARE A SHADOW TYPE
     if (usType == gReverseShadowBuddys[cnt]) {
-      TileElement.value.sBuddyNum = gReverseShadowBuddys[cnt + 2] + (uiDatabaseElem - gReverseShadowBuddys[cnt + 1]);
+      TileElement.sBuddyNum = gReverseShadowBuddys[cnt + 2] + (uiDatabaseElem - gReverseShadowBuddys[cnt + 1]);
 
       // Check flags and made the same, take from buddy's
-      TileElement.value.uiFlags |= gTileDatabase[TileElement.value.sBuddyNum].uiFlags;
+      TileElement.uiFlags |= gTileDatabase[TileElement.sBuddyNum].uiFlags;
     }
 
     cnt += 3;
@@ -706,9 +706,9 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
   while (gForwardShadowBuddys[cnt] != -1) {
     // IF WE ARE A SHADOW TYPE
     if (usType == gForwardShadowBuddys[cnt]) {
-      TileElement.value.sBuddyNum = gForwardShadowBuddys[cnt + 2] + (uiDatabaseElem - gForwardShadowBuddys[cnt + 1]);
+      TileElement.sBuddyNum = gForwardShadowBuddys[cnt + 2] + (uiDatabaseElem - gForwardShadowBuddys[cnt + 1]);
       // Set flag indicating such
-      TileElement.value.uiFlags |= HAS_SHADOW_BUDDY;
+      TileElement.uiFlags |= HAS_SHADOW_BUDDY;
     }
     cnt += 3;
   };
@@ -723,9 +723,9 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
 
-        TileElement.value.pAnimData.value.bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
-          TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+        TileElement.pAnimData.value.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
+          TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
         }
       }
       cnt++;
@@ -738,9 +738,9 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
 
-        TileElement.value.pAnimData.value.bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
-          TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+        TileElement.pAnimData.value.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
+          TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
         }
       }
       cnt++;
@@ -754,9 +754,9 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
 
-        TileElement.value.pAnimData.value.bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
-          TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
+        TileElement.pAnimData.value.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
+          TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
         }
       }
       cnt++;
@@ -769,9 +769,9 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
 
-        TileElement.value.pAnimData.value.bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
-          TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
+        TileElement.pAnimData.value.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
+          TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
         }
       }
       cnt++;
@@ -782,28 +782,28 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
     // Allocate Animated tile data
     AllocateAnimTileData(TileElement, 5);
 
-    TileElement.value.pAnimData.value.bCurrentFrame = 0;
-    for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
-      TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+    TileElement.pAnimData.value.bCurrentFrame = 0;
+    for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
+      TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
     }
   }
 
   if (uiDatabaseElem >= Enum312.FIRSTMISS1 && uiDatabaseElem <= Enum312.FIRSTMISS5) {
-    TileElement.value.uiFlags |= DYNAMIC_TILE;
+    TileElement.uiFlags |= DYNAMIC_TILE;
   }
 
   if (uiDatabaseElem == Enum312.WINDOWSHATTER1 || uiDatabaseElem == Enum312.WINDOWSHATTER6 || uiDatabaseElem == Enum312.WINDOWSHATTER11 || uiDatabaseElem == Enum312.WINDOWSHATTER16) {
     // Allocate Animated tile data
     AllocateAnimTileData(TileElement, 5);
 
-    TileElement.value.pAnimData.value.bCurrentFrame = 0;
-    for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
-      TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+    TileElement.pAnimData.value.bCurrentFrame = 0;
+    for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
+      TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
     }
   }
 
   if (uiDatabaseElem >= Enum312.WINDOWSHATTER1 && uiDatabaseElem <= Enum312.WINDOWSHATTER20) {
-    TileElement.value.uiFlags |= DYNAMIC_TILE;
+    TileElement.uiFlags |= DYNAMIC_TILE;
   }
 
   //	if ( usType == FIRSTEXPLOSION )
@@ -812,16 +812,16 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
   //	}
 
   if (usType == Enum313.BODYEXPLOSION) {
-    TileElement.value.uiFlags |= DYNAMIC_TILE;
+    TileElement.uiFlags |= DYNAMIC_TILE;
   }
 
   if (usType == Enum313.FIRSTROAD) {
-    TileElement.value.uiFlags |= ROAD_TILE;
+    TileElement.uiFlags |= ROAD_TILE;
   }
 
   // SET FLAGS FOR OBJECTS PEICES WHICH USE PROPER Z
   if (fUseRaisedObjectType) {
-    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   // OFFSET SLANTED ROOFS TO HEIGHT OF WALLS
@@ -836,25 +836,25 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
 
     // Every second set as dynamic
     if (((sIndexDiff) % 3) == 1) {
-      TileElement.value.uiFlags |= DYNAMIC_TILE;
+      TileElement.uiFlags |= DYNAMIC_TILE;
     }
 
     // Set every first as full tile
     if (((sIndexDiff) % 3) == 0) {
-      TileElement.value.uiFlags |= FULL3D_TILE;
+      TileElement.uiFlags |= FULL3D_TILE;
     }
   }
 
   // Ignore height for cliffs ie: if we rasie the land, do not offset the cliff
   if (uiDatabaseElem >= Enum312.FIRSTCLIFFHANG1 && uiDatabaseElem <= Enum312.FIRSTCLIFFSHADOW17) {
     if (usType == Enum313.FIRSTCLIFFHANG) {
-      TileElement.value.uiFlags |= CLIFFHANG_TILE;
+      TileElement.uiFlags |= CLIFFHANG_TILE;
     }
-    TileElement.value.uiFlags |= IGNORE_WORLD_HEIGHT;
+    TileElement.uiFlags |= IGNORE_WORLD_HEIGHT;
   }
 
   if (uiDatabaseElem >= Enum312.FIRSTWALL1 && uiDatabaseElem <= Enum312.FOURTHWALL65) {
-    TileElement.value.uiFlags |= WALL_TILE;
+    TileElement.uiFlags |= WALL_TILE;
   }
 
   // Set a-frames heigher!
@@ -862,36 +862,36 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
     // Set these ones higher ( for roof pieces )
     if (uiDatabaseElem >= (gTileTypeStartIndex[usType] + WALL_AFRAME_START) && uiDatabaseElem <= (gTileTypeStartIndex[usType] + WALL_AFRAME_END)) {
       // TileElement->sOffsetHeight = WALL_HEIGHT;
-      TileElement.value.uiFlags |= AFRAME_TILE;
+      TileElement.uiFlags |= AFRAME_TILE;
     }
   }
 
   // Set UI Elements to be dynamic
   if (uiDatabaseElem >= Enum312.FOOTPRINTS1 && uiDatabaseElem <= Enum312.THIRDPOINTERS2) {
-    TileElement.value.uiFlags |= DYNAMIC_TILE;
-    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.uiFlags |= DYNAMIC_TILE;
+    TileElement.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   // Set UI Elements to use object z level
   if (usType >= Enum313.FOOTPRINTS && usType <= LASTUIELEM) {
-    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   // Set UI Elements to use object z level
   if (usType >= Enum313.HUMANBLOOD && usType <= Enum313.CREATUREBLOOD) {
-    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   // Set UI Elements to use object z level
   if (usType >= Enum313.GUNS && usType <= Enum313.P2ITEMS) {
-    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
   if (usType == Enum313.P3ITEMS) {
-    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   if (usType >= Enum313.FIRSTEXPLDEBRIS && usType <= Enum313.SECONDEXPLDEBRIS) {
-    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   if (uiDatabaseElem >= Enum312.FIRSTDOOR1 && uiDatabaseElem <= Enum312.FOURTHDOORSH20) {
@@ -900,11 +900,11 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
 
   // Set UI Elements to be dynamic
   if (uiDatabaseElem == Enum312.MOCKFLOOR1) {
-    TileElement.value.uiFlags |= DYNAMIC_TILE;
+    TileElement.uiFlags |= DYNAMIC_TILE;
   }
 
   if (usType == Enum313.BULLETTILE) {
-    TileElement.value.uiFlags |= DYNAMIC_TILE;
+    TileElement.uiFlags |= DYNAMIC_TILE;
   }
 
   if (usType == Enum313.WIREFRAMES) {
@@ -913,12 +913,12 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
 
   // Set full tile flag for floors
   if (uiDatabaseElem >= Enum312.FIRSTFLOOR1 && uiDatabaseElem <= Enum312.FOURTHFLOOR8) {
-    TileElement.value.ubFullTile = 1;
+    TileElement.ubFullTile = 1;
   }
 
   if (uiDatabaseElem >= Enum312.FIRSTTEXTURE1 && uiDatabaseElem <= Enum312.DEEPWATERTEXTURE10) {
     // Set tile 'fullness' attribute
-    TileElement.value.ubFullTile = gFullBaseTileValues[uiDatabaseElem];
+    TileElement.ubFullTile = gFullBaseTileValues[uiDatabaseElem];
   }
 
   if (usType >= Enum313.FIRSTONROOF && usType <= Enum313.SECONDONROOF) {
@@ -927,11 +927,11 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
   }
 
   if (uiDatabaseElem >= Enum312.REGWATERTEXTURE18 && uiDatabaseElem <= Enum312.REGWATERTEXTURE50 || uiDatabaseElem == Enum313.REGWATERTEXTURE || uiDatabaseElem == Enum312.REGWATERTEXTURE12 || uiDatabaseElem == Enum312.REGWATERTEXTURE14 || uiDatabaseElem == Enum312.REGWATERTEXTURE16) {
-    TileElement.value.ubTerrainID = Enum315.FLAT_GROUND;
+    TileElement.ubTerrainID = Enum315.FLAT_GROUND;
   }
 
   if ((usType >= Enum313.FIRSTROOF && usType <= Enum313.SECONDSLANTROOF) || usType == Enum313.FIRSTHIGHROOF || usType == Enum313.SECONDHIGHROOF) {
-    TileElement.value.uiFlags |= ROOF_TILE;
+    TileElement.uiFlags |= ROOF_TILE;
   }
 }
 

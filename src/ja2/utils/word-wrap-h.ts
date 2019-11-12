@@ -24,7 +24,7 @@ export const NEWLINE_CHAR = 177;
 
 export interface WRAPPED_STRING {
   sString: string /* STR16 */;
-  pNextWrappedString: Pointer<WRAPPED_STRING>;
+  pNextWrappedString: WRAPPED_STRING | null /* Pointer<WRAPPED_STRING> */;
 }
 
 }

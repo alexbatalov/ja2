@@ -286,7 +286,7 @@ export function SetFontShade(uiFontID: UINT32, bColorID: INT8): boolean {
   return true;
 }
 
-function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
+function CreateFontPaletteTables(pObj: HVOBJECT): boolean {
   let count: UINT32;
   let Pal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 

@@ -1,7 +1,7 @@
 namespace ja2 {
 
 export interface BUILDINGLAYOUTNODE {
-  next: Pointer<BUILDINGLAYOUTNODE>;
+  next: BUILDINGLAYOUTNODE | null /* Pointer<BUILDINGLAYOUTNODE> */;
   sGridNo: INT16;
 }
 

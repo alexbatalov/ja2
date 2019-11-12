@@ -1,35 +1,35 @@
 namespace ja2 {
 
-function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): boolean {
-  let pNewEvent: Pointer<STRATEGICEVENT>;
+function DelayEventIfBattleInProgress(pEvent: STRATEGICEVENT): boolean {
+  let pNewEvent: STRATEGICEVENT;
   if (gTacticalStatus.fEnemyInSector) {
-    pNewEvent = AddAdvancedStrategicEvent(pEvent.value.ubEventType, pEvent.value.ubCallbackID, pEvent.value.uiTimeStamp + 180 + Random(121), pEvent.value.uiParam);
+    pNewEvent = AddAdvancedStrategicEvent(pEvent.ubEventType, pEvent.ubCallbackID, pEvent.uiTimeStamp + 180 + Random(121), pEvent.uiParam);
     Assert(pNewEvent);
-    pNewEvent.value.uiTimeOffset = pEvent.value.uiTimeOffset;
+    pNewEvent.uiTimeOffset = pEvent.uiTimeOffset;
     return true;
   }
   return false;
 }
 
-export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean {
+export function ExecuteStrategicEvent(pEvent: STRATEGICEVENT): boolean {
   let fOrigPreventFlag: boolean;
 
   fOrigPreventFlag = gfPreventDeletionOfAnyEvent;
   gfPreventDeletionOfAnyEvent = true;
   // No events can be posted before this time when gfProcessingGameEvents is set, otherwise,
   // we have a chance of running into an infinite loop.
-  guiTimeStampOfCurrentlyExecutingEvent = pEvent.value.uiTimeStamp;
+  guiTimeStampOfCurrentlyExecutingEvent = pEvent.uiTimeStamp;
 
-  if (pEvent.value.ubFlags & SEF_DELETION_PENDING) {
+  if (pEvent.ubFlags & SEF_DELETION_PENDING) {
     gfPreventDeletionOfAnyEvent = fOrigPreventFlag;
     return false;
   }
 
   // Look at the ID of event and do stuff according to that!
-  switch (pEvent.value.ubCallbackID) {
+  switch (pEvent.ubCallbackID) {
     case Enum132.EVENT_CHANGELIGHTVAL:
       // Change light to value
-      gubEnvLightValue = pEvent.value.uiParam;
+      gubEnvLightValue = pEvent.uiParam;
       if (!gfBasement && !gfCaves)
         gfDoLighting = true;
       break;
@@ -37,20 +37,20 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       CheckForQuests(GetWorldDay());
       break;
     case Enum132.EVENT_AMBIENT:
-      if (pEvent.value.ubEventType == Enum133.ENDRANGED_EVENT) {
-        if (pEvent.value.uiParam != NO_SAMPLE) {
-          SoundRemoveSampleFlags(pEvent.value.uiParam, SAMPLE_RANDOM);
+      if (pEvent.ubEventType == Enum133.ENDRANGED_EVENT) {
+        if (pEvent.uiParam != NO_SAMPLE) {
+          SoundRemoveSampleFlags(pEvent.uiParam, SAMPLE_RANDOM);
         }
       } else {
-        pEvent.value.uiParam = SetupNewAmbientSound(pEvent.value.uiParam);
+        pEvent.uiParam = SetupNewAmbientSound(pEvent.uiParam);
       }
       break;
     case Enum132.EVENT_AIM_RESET_MERC_ANNOYANCE:
-      ResetMercAnnoyanceAtPlayer(pEvent.value.uiParam);
+      ResetMercAnnoyanceAtPlayer(pEvent.uiParam);
       break;
     // The players purchase from Bobby Ray has arrived
     case Enum132.EVENT_BOBBYRAY_PURCHASE:
-      BobbyRayPurchaseEventCallback(pEvent.value.uiParam);
+      BobbyRayPurchaseEventCallback(pEvent.uiParam);
       break;
     // Gets called once a day ( at BOBBYRAY_UPDATE_TIME).  To simulate the items being bought and sold at bobby rays
     case Enum132.EVENT_DAILY_UPDATE_BOBBY_RAY_INVENTORY:
@@ -60,7 +60,7 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       break;
     // Add items to BobbyR's new/used inventory
     case Enum132.EVENT_UPDATE_BOBBY_RAY_INVENTORY:
-      AddFreshBobbyRayInventory(pEvent.value.uiParam);
+      AddFreshBobbyRayInventory(pEvent.uiParam);
       break;
     // Called once a day to update the number of days that a hired merc from M.E.R.C. has been on contract.
     // Also if the player hasn't paid for a while Specks will start sending e-mails to the player
@@ -76,7 +76,7 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
     // If a merc gets hired and they dont show up immediately, the merc gets added to the queue and shows up
     // uiTimeTillMercArrives  minutes later
     case Enum132.EVENT_DELAYED_HIRING_OF_MERC:
-      MercArrivesCallback(pEvent.value.uiParam);
+      MercArrivesCallback(pEvent.uiParam);
       break;
     // handles the life insurance contract for a merc from AIM.
     case Enum132.EVENT_HANDLE_INSURED_MERCS:
@@ -84,7 +84,7 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       break;
     // handles when a merc is killed an there is a life insurance payout
     case Enum132.EVENT_PAY_LIFE_INSURANCE_FOR_DEAD_MERC:
-      InsuranceContractPayLifeInsuranceForDeadMerc(pEvent.value.uiParam);
+      InsuranceContractPayLifeInsuranceForDeadMerc(pEvent.uiParam);
       break;
     // gets called every day at midnight.
     case Enum132.EVENT_MERC_DAILY_UPDATE:
@@ -102,25 +102,25 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       break;
     // When a merc is supposed to leave
     case Enum132.EVENT_MERC_CONTRACT_OVER:
-      MercsContractIsFinished(pEvent.value.uiParam);
+      MercsContractIsFinished(pEvent.uiParam);
       break;
     case Enum132.EVENT_ADDSOLDIER_TO_UPDATE_BOX:
       // if the grunt is currently active, add to update box
-      if (Menptr[pEvent.value.uiParam].bActive) {
-        AddSoldierToWaitingListQueue(addressof(Menptr[pEvent.value.uiParam]));
+      if (Menptr[pEvent.uiParam].bActive) {
+        AddSoldierToWaitingListQueue(Menptr[pEvent.uiParam]);
       }
       break;
     case Enum132.EVENT_SET_MENU_REASON:
-      AddReasonToWaitingListQueue(pEvent.value.uiParam);
+      AddReasonToWaitingListQueue(pEvent.uiParam);
       break;
     // Whenever any group (player or enemy) arrives in a new sector during movement.
     case Enum132.EVENT_GROUP_ARRIVAL:
       // ValidateGameEvents();
-      GroupArrivedAtSector(pEvent.value.uiParam, true, false);
+      GroupArrivedAtSector(pEvent.uiParam, true, false);
       // ValidateGameEvents();
       break;
     case Enum132.EVENT_MERC_COMPLAIN_EQUIPMENT:
-      MercComplainAboutEquipment(pEvent.value.uiParam);
+      MercComplainAboutEquipment(pEvent.uiParam);
       break;
     case Enum132.EVENT_HOURLY_UPDATE:
       HandleHourlyUpdate();
@@ -142,7 +142,7 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       HandleSpreadOfAllTownsOpinion();
       break;
     case Enum132.EVENT_SET_BY_NPC_SYSTEM:
-      HandleNPCSystemEvent(pEvent.value.uiParam);
+      HandleNPCSystemEvent(pEvent.uiParam);
       break;
     case Enum132.EVENT_SECOND_AIRPORT_ATTENDANT_ARRIVED:
       AddSecondAirportAttendant();
@@ -154,10 +154,10 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       HandleHeliHoverTooLong();
       break;
     case Enum132.EVENT_MERC_LEAVE_EQUIP_IN_DRASSEN:
-      HandleEquipmentLeftInDrassen(pEvent.value.uiParam);
+      HandleEquipmentLeftInDrassen(pEvent.uiParam);
       break;
     case Enum132.EVENT_MERC_LEAVE_EQUIP_IN_OMERTA:
-      HandleEquipmentLeftInOmerta(pEvent.value.uiParam);
+      HandleEquipmentLeftInOmerta(pEvent.uiParam);
       break;
     case Enum132.EVENT_BANDAGE_BLEEDING_MERCS:
       BandageBleedingDyingPatientsBeingTreated();
@@ -169,7 +169,7 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       HandleGroupAboutToArrive();
       break;
     case Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE:
-      ProcessTacticalSchedule(pEvent.value.uiParam);
+      ProcessTacticalSchedule(pEvent.uiParam);
       break;
     case Enum132.EVENT_BEGINRAINSTORM:
       // EnvBeginRainStorm( (UINT8)pEvent->uiParam );
@@ -192,14 +192,14 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       break;
 
     case Enum132.EVENT_MAKE_CIV_GROUP_HOSTILE_ON_NEXT_SECTOR_ENTRANCE:
-      MakeCivGroupHostileOnNextSectorEntrance(pEvent.value.uiParam);
+      MakeCivGroupHostileOnNextSectorEntrance(pEvent.uiParam);
       break;
     case Enum132.EVENT_BEGIN_AIR_RAID:
       BeginAirRaid();
       break;
     case Enum132.EVENT_MEANWHILE:
       if (!DelayEventIfBattleInProgress(pEvent)) {
-        BeginMeanwhile(pEvent.value.uiParam);
+        BeginMeanwhile(pEvent.uiParam);
         InterruptTime();
       }
       break;
@@ -215,13 +215,13 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       CreatureNightPlanning();
       break;
     case Enum132.EVENT_CREATURE_ATTACK:
-      CreatureAttackTown(pEvent.value.uiParam, false);
+      CreatureAttackTown(pEvent.uiParam, false);
       break;
     case Enum132.EVENT_EVALUATE_QUEEN_SITUATION:
       EvaluateQueenSituation();
       break;
     case Enum132.EVENT_CHECK_ENEMY_CONTROLLED_SECTOR:
-      CheckEnemyControlledSector(pEvent.value.uiParam);
+      CheckEnemyControlledSector(pEvent.uiParam);
       break;
     case Enum132.EVENT_TURN_ON_NIGHT_LIGHTS:
       TurnOnNightLights();
@@ -242,13 +242,13 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       HandleEnricoEmail();
       break;
     case Enum132.EVENT_INSURANCE_INVESTIGATION_STARTED:
-      StartInsuranceInvestigation(pEvent.value.uiParam);
+      StartInsuranceInvestigation(pEvent.uiParam);
       break;
     case Enum132.EVENT_INSURANCE_INVESTIGATION_OVER:
-      EndInsuranceInvestigation(pEvent.value.uiParam);
+      EndInsuranceInvestigation(pEvent.uiParam);
       break;
     case Enum132.EVENT_TEMPERATURE_UPDATE:
-      UpdateTemperature(pEvent.value.uiParam);
+      UpdateTemperature(pEvent.uiParam);
       break;
     case Enum132.EVENT_KEITH_GOING_OUT_OF_BUSINESS:
       // make sure killbillies are still alive, if so, set fact 274 true
@@ -261,20 +261,20 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       GetMercSiteBackOnline();
       break;
     case Enum132.EVENT_INVESTIGATE_SECTOR:
-      InvestigateSector(pEvent.value.uiParam);
+      InvestigateSector(pEvent.uiParam);
       break;
     case Enum132.EVENT_CHECK_IF_MINE_CLEARED:
       // If so, the head miner will say so, and the mine's shutdown will be ended.
       HourlyMinesUpdate(); // not-so hourly, in this case!
       break;
     case Enum132.EVENT_REMOVE_ASSASSIN:
-      RemoveAssassin(pEvent.value.uiParam);
+      RemoveAssassin(pEvent.uiParam);
       break;
     case Enum132.EVENT_BEGIN_CONTRACT_RENEWAL_SEQUENCE:
       BeginContractRenewalSequence();
       break;
     case Enum132.EVENT_RPC_WHINE_ABOUT_PAY:
-      RPCWhineAboutNoPay(pEvent.value.uiParam);
+      RPCWhineAboutNoPay(pEvent.uiParam);
       break;
 
     case Enum132.EVENT_HAVENT_MADE_IMP_CHARACTER_EMAIL:
@@ -286,7 +286,7 @@ export function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): boolean 
       break;
 
     case Enum132.EVENT_MERC_MERC_WENT_UP_LEVEL_EMAIL_DELAY:
-      MERCMercWentUpALevelSendEmail(pEvent.value.uiParam);
+      MERCMercWentUpALevelSendEmail(pEvent.uiParam);
       break;
 
     case Enum132.EVENT_MERC_SITE_NEW_MERC_AVAILABLE:

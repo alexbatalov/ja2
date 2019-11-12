@@ -25,7 +25,6 @@ export const LANDHEAD = 0;
 export const MAXDIR = 8;
 
 // Defines for shade levels
-export const DEFAULT_SHADE_LEVEL = 4;
 export const MIN_SHADE_LEVEL = 4;
 export const MAX_SHADE_LEVEL = 15;
 

@@ -10,7 +10,7 @@ export interface FinanceUnit {
   uiDate: UINT32; // time in the world in global time
   iAmount: INT32; // the amount of the transaction
   iBalanceToDate: INT32;
-  Next: Pointer<FinanceUnit>; // next unit in the list
+  Next: FinanceUnit | null /* Pointer<FinanceUnit> */; // next unit in the list
 }
 
 export const enum Enum80 {

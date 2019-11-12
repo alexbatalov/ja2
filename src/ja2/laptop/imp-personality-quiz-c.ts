@@ -33,13 +33,13 @@ const INDENT_OFFSET = 55;
 const MAX_NUMBER_OF_IMP_QUESTIONS = 16;
 
 // answer list
-let iQuizAnswerList: INT32[] /* [MAX_NUMBER_OF_IMP_QUESTIONS] */;
+let iQuizAnswerList: INT32[] /* [MAX_NUMBER_OF_IMP_QUESTIONS] */ = createArray(MAX_NUMBER_OF_IMP_QUESTIONS, 0);
 // current number of buttons being shown
 let iNumberOfPersonaButtons: INT32 = 0;
 
 export function EnterIMPPersonalityQuiz(): void {
   // void answers out the quiz
-  memset(addressof(iQuizAnswerList), -1, sizeof(INT32) * MAX_NUMBER_OF_IMP_QUESTIONS);
+  iQuizAnswerList.fill(-1);
 
   // if we are entering for first time, reset
   if (giCurrentPersonalityQuizQuestion == MAX_NUMBER_OF_IMP_QUESTIONS) {

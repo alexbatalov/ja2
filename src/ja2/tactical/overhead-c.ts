@@ -2163,7 +2163,7 @@ function ResetAllAnimationCache(): boolean {
   // Loop through all mercs and make go
   for (pSoldier = Menptr, cnt = 0; cnt < TOTAL_SOLDIERS; pSoldier++, cnt++) {
     if (pSoldier != null) {
-      InitAnimationCache(cnt, addressof(pSoldier.value.AnimCache));
+      InitAnimationCache(cnt, pSoldier.value.AnimCache);
     }
   }
 

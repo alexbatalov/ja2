@@ -148,7 +148,7 @@ export function createEvSWeaponHit(): EV_S_WEAPONHIT {
     sZPos: 0,
     sRange: 0,
     ubAttackerID: 0,
-    fHit: 0,
+    fHit: false,
     ubSpecial: 0,
     ubLocation: 0,
   };

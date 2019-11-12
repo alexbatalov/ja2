@@ -242,13 +242,13 @@ export function BuildDayLightLevels(): void {
   }
 
   // Set up the scheduling for turning lights on and off based on the various types.
-  uiHour = NIGHT_TIME_LIGHT_START_HOUR == 24 ? 0 : NIGHT_TIME_LIGHT_START_HOUR;
+  uiHour = <number>NIGHT_TIME_LIGHT_START_HOUR == 24 ? 0 : NIGHT_TIME_LIGHT_START_HOUR;
   AddEveryDayStrategicEvent(Enum132.EVENT_TURN_ON_NIGHT_LIGHTS, uiHour * 60, 0);
-  uiHour = NIGHT_TIME_LIGHT_END_HOUR == 24 ? 0 : NIGHT_TIME_LIGHT_END_HOUR;
+  uiHour = <number>NIGHT_TIME_LIGHT_END_HOUR == 24 ? 0 : NIGHT_TIME_LIGHT_END_HOUR;
   AddEveryDayStrategicEvent(Enum132.EVENT_TURN_OFF_NIGHT_LIGHTS, uiHour * 60, 0);
-  uiHour = PRIME_TIME_LIGHT_START_HOUR == 24 ? 0 : PRIME_TIME_LIGHT_START_HOUR;
+  uiHour = <number>PRIME_TIME_LIGHT_START_HOUR == 24 ? 0 : PRIME_TIME_LIGHT_START_HOUR;
   AddEveryDayStrategicEvent(Enum132.EVENT_TURN_ON_PRIME_LIGHTS, uiHour * 60, 0);
-  uiHour = PRIME_TIME_LIGHT_END_HOUR == 24 ? 0 : PRIME_TIME_LIGHT_END_HOUR;
+  uiHour = <number>PRIME_TIME_LIGHT_END_HOUR == 24 ? 0 : PRIME_TIME_LIGHT_END_HOUR;
   AddEveryDayStrategicEvent(Enum132.EVENT_TURN_OFF_PRIME_LIGHTS, uiHour * 60, 0);
 }
 

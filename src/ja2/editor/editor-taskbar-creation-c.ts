@@ -1,7 +1,7 @@
 namespace ja2 {
 
 function InitEditorItemStatsButtons(): void {
-  iEditorButton[Enum32.ITEMSTATS_PANEL] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 480, 361, 160, 99, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  iEditorButton[Enum32.ITEMSTATS_PANEL] = CreateTextButton("", 0, 0, 0, BUTTON_USE_DEFAULT, 480, 361, 160, 99, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iEditorButton[Enum32.ITEMSTATS_PANEL], Enum29.DISABLED_STYLE_NONE);
   DisableButton(iEditorButton[Enum32.ITEMSTATS_PANEL]);
   iEditorButton[Enum32.ITEMSTATS_HIDDEN_BTN] = CreateCheckBoxButton(485, 365, "EDITOR//SmCheckbox.sti", MSYS_PRIORITY_NORMAL, ItemStatsToggleHideCallback);
@@ -322,7 +322,7 @@ function InitEditorMapInfoToolbar(): void {
   iEditorButton[Enum32.MAPINFO_ADD_LIGHT1_SOURCE] = CreateEasyToggleButton(10, 362, "EDITOR//light.sti", BtnDrawLightsCallback);
   SetButtonFastHelpText(iEditorButton[Enum32.MAPINFO_ADD_LIGHT1_SOURCE], "Add ambient light source");
 
-  iEditorButton[Enum32.MAPINFO_LIGHT_PANEL] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 45, 362, 60, 50, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  iEditorButton[Enum32.MAPINFO_LIGHT_PANEL] = CreateTextButton("", 0, 0, 0, BUTTON_USE_DEFAULT, 45, 362, 60, 50, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iEditorButton[Enum32.MAPINFO_LIGHT_PANEL], Enum29.DISABLED_STYLE_NONE);
   DisableButton(iEditorButton[Enum32.MAPINFO_LIGHT_PANEL]);
   iEditorButton[Enum32.MAPINFO_PRIMETIME_LIGHT] = CreateCheckBoxButton(48, 365, "EDITOR//radiobutton.sti", MSYS_PRIORITY_NORMAL, MapInfoPrimeTimeRadioCallback);
@@ -333,7 +333,7 @@ function InitEditorMapInfoToolbar(): void {
   iEditorButton[Enum32.MAPINFO_TOGGLE_FAKE_LIGHTS] = CreateEasyToggleButton(120, 362, "EDITOR//fakelight.sti", BtnFakeLightCallback);
   SetButtonFastHelpText(iEditorButton[Enum32.MAPINFO_TOGGLE_FAKE_LIGHTS], "Toggle fake ambient lights.");
 
-  iEditorButton[Enum32.MAPINFO_RADIO_PANEL] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 207, 362, 70, 50, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  iEditorButton[Enum32.MAPINFO_RADIO_PANEL] = CreateTextButton("", 0, 0, 0, BUTTON_USE_DEFAULT, 207, 362, 70, 50, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iEditorButton[Enum32.MAPINFO_RADIO_PANEL], Enum29.DISABLED_STYLE_NONE);
   DisableButton(iEditorButton[Enum32.MAPINFO_RADIO_PANEL]);
   iEditorButton[Enum32.MAPINFO_RADIO_NORMAL] = CreateCheckBoxButton(210, 365, "EDITOR//radiobutton.sti", MSYS_PRIORITY_NORMAL, MapInfoNormalRadioCallback);

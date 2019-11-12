@@ -4,7 +4,7 @@ export const SEF_PREVENT_DELETION = 0x01;
 export const SEF_DELETION_PENDING = 0x02;
 
 export interface STRATEGICEVENT {
-  next: Pointer<STRATEGICEVENT>;
+  next: STRATEGICEVENT | null /* Pointer<STRATEGICEVENT> */;
   uiTimeStamp: UINT32;
   uiParam: UINT32;
   uiTimeOffset: UINT32;

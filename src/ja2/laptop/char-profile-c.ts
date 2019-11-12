@@ -409,8 +409,8 @@ export function ResetCharacterStats(): void {
   iAttitude = 0;
 
   // names
-  memset(addressof(pFullName), 0, sizeof(pFullName));
-  memset(addressof(pNickName), 0, sizeof(pNickName));
+  pFullName = "";
+  pNickName = "";
 }
 
 function LoadImpGraphics(): void {

@@ -12,8 +12,6 @@ export const MAPWIDTH = (WORLD_COLS);
 const MAPHEIGHT = (WORLD_ROWS);
 export const MAPLENGTH = (MAPHEIGHT * MAPWIDTH);
 
-const ADJUST_Y_FOR_HEIGHT = (pos, y) => (y -= gpWorldLevelData[pos].sHeight);
-
 // Macros
 
 //                                                |Check for map bounds------------------------------------------|   |Invalid-|   |Valid-------------------|

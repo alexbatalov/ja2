@@ -20,8 +20,8 @@ export const ANIM_DATA_FLAG_NOFRAMES = 0x01;
 // RGM = Regular Male
 // (RG) = Body desc ( Regular - RG, Short Stocky ( SS ), etc
 // (M) = Sex, Male, female
-export const IS_MERC_BODY_TYPE = (p: Pointer<SOLDIERTYPE>) => ((p.value.ubBodyType <= Enum194.REGFEMALE) ? (true) : (false));
-export const IS_CIV_BODY_TYPE = (p: Pointer<SOLDIERTYPE>) => ((p.value.ubBodyType >= Enum194.FATCIV) && (p.value.ubBodyType <= Enum194.CRIPPLECIV));
+export const IS_MERC_BODY_TYPE = (p: SOLDIERTYPE) => ((p.ubBodyType <= Enum194.REGFEMALE) ? (true) : (false));
+export const IS_CIV_BODY_TYPE = (p: SOLDIERTYPE) => ((p.ubBodyType >= Enum194.FATCIV) && (p.ubBodyType <= Enum194.CRIPPLECIV));
 
 const NUMSOLDIERBODYTYPES = 4;
 

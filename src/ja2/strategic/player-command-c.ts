@@ -1,12 +1,13 @@
 namespace ja2 {
 
-export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString: Pointer<string> /* STR16 */): void {
+export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16): string {
+  let sFacilitiesString: string = "";
   // will build a string stating current facilities present in sector
 
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags == 0) {
     // none
     sFacilitiesString = swprintf("%s", sFacilitiesStrings[0]);
-    return;
+    return sFacilitiesString;
   }
 
   // hospital
@@ -54,9 +55,7 @@ export function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilities
     }
   }
 
-  sFacilitiesString[sFacilitiesString.length] = 0;
-
-  return;
+  return sFacilitiesString;
 }
 
 // ALL changes of control to player must be funneled through here!

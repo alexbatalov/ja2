@@ -488,7 +488,7 @@ export interface UNDERGROUND_SECTORINFO {
                         // around.  This value is used for determining how often items would "vanish" from
                         // a sector.
   uiTimeCurrentSectorWasLastLoaded: UINT32; // Specifies the last time the player was in the sector
-  next: Pointer<UNDERGROUND_SECTORINFO>;
+  next: UNDERGROUND_SECTORINFO | null /* Pointer<UNDERGROUND_SECTORINFO> */;
   ubAdjacentSectors: UINT8; // mask containing which sectors are adjacent
   ubCreatureHabitat: UINT8; // determines how creatures live in this sector (see creature spreading.c)
 

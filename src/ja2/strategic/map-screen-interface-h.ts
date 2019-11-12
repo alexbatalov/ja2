@@ -181,7 +181,7 @@ export const FIRST_VEHICLE = 18;
 
 export interface MERC_LEAVE_ITEM {
   o: OBJECTTYPE;
-  pNext: Pointer<MERC_LEAVE_ITEM>;
+  pNext: MERC_LEAVE_ITEM | null /* Pointer<MERC_LEAVE_ITEM> */;
 }
 
 // The character data structure

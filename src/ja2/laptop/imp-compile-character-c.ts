@@ -4,14 +4,14 @@ namespace ja2 {
 
 const HOW_MANY_ROLLS_FOR_SAME_SKILL_CHECK = 20;
 
-let AttitudeList: INT32[] /* [ATTITUDE_LIST_SIZE] */;
+let AttitudeList: INT32[] /* [ATTITUDE_LIST_SIZE] */ = createArray(ATTITUDE_LIST_SIZE, 0);
 let iLastElementInAttitudeList: INT32 = 0;
 
-let SkillsList: INT32[] /* [ATTITUDE_LIST_SIZE] */;
-let BackupSkillsList: INT32[] /* [ATTITUDE_LIST_SIZE] */;
+let SkillsList: INT32[] /* [ATTITUDE_LIST_SIZE] */ = createArray(ATTITUDE_LIST_SIZE, 0);
+let BackupSkillsList: INT32[] /* [ATTITUDE_LIST_SIZE] */ = createArray(ATTITUDE_LIST_SIZE, 0);
 let iLastElementInSkillsList: INT32 = 0;
 
-let PersonalityList: INT32[] /* [ATTITUDE_LIST_SIZE] */;
+let PersonalityList: INT32[] /* [ATTITUDE_LIST_SIZE] */ = createArray(ATTITUDE_LIST_SIZE, 0);
 let iLastElementInPersonalityList: INT32 = 0;
 
 // positions of the face x and y for eyes and mouth for the 10 portraits
@@ -259,7 +259,7 @@ function RemoveSkillFromSkillsList(iIndex: INT32): void {
 
   // remove a skill from the index given and shorten the list
   if (iIndex < iLastElementInSkillsList) {
-    memset(BackupSkillsList, 0, ATTITUDE_LIST_SIZE * sizeof(INT32));
+    BackupSkillsList.fill(0);
 
     // use the backup array to create a version of the array without
     // this index
@@ -270,7 +270,7 @@ function RemoveSkillFromSkillsList(iIndex: INT32): void {
       BackupSkillsList[iLoop - 1] = SkillsList[iLoop];
     }
     // now copy this over to the skills list
-    memcpy(SkillsList, BackupSkillsList, ATTITUDE_LIST_SIZE * sizeof(INT32));
+    copyArray(SkillsList, BackupSkillsList);
 
     // reduce recorded size by 1
     iLastElementInSkillsList--;
@@ -292,12 +292,12 @@ function FindSkillInSkillsList(iSkill: INT32): INT32 {
 function ValidateSkillsList(): void {
   let iIndex: INT32;
   let iValue: INT32;
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let pProfile: MERCPROFILESTRUCT;
 
   // remove from the generated traits list any traits that don't match
   // the character's skills
-  pProfile = addressof(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId]);
-  if (pProfile.value.bMechanical == 0) {
+  pProfile = gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId];
+  if (pProfile.bMechanical == 0) {
     // without mechanical, electronics is useless
     iIndex = FindSkillInSkillsList(Enum269.ELECTRONICS);
     while (iIndex != -1) {
@@ -307,9 +307,9 @@ function ValidateSkillsList(): void {
   }
 
   // special check for lockpicking
-  iValue = pProfile.value.bMechanical;
-  iValue = (iValue * pProfile.value.bWisdom) / 100;
-  iValue = (iValue * pProfile.value.bDexterity) / 100;
+  iValue = pProfile.bMechanical;
+  iValue = (iValue * pProfile.bWisdom) / 100;
+  iValue = (iValue * pProfile.bDexterity) / 100;
   if (iValue + gbSkillTraitBonus[Enum269.LOCKPICKING] < 50) {
     // not good enough for lockpicking!
 
@@ -321,7 +321,7 @@ function ValidateSkillsList(): void {
     }
   }
 
-  if (pProfile.value.bMarksmanship == 0) {
+  if (pProfile.bMarksmanship == 0) {
     // without marksmanship, the following traits are useless:
     // auto weapons, heavy weapons
     iIndex = FindSkillInSkillsList(Enum269.AUTO_WEAPS);

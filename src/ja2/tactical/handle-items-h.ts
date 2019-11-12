@@ -34,13 +34,13 @@ const ITEM_LOCATOR_DELAY = 0x01;
 export const ITEM_LOCATOR_LOCKED = 0x02;
 
 // MACRO FOR DEFINING OF ITEM IS VISIBLE
-export const ITEMPOOL_VISIBLE = (pItemPool: Pointer<ITEM_POOL>) => ((pItemPool.value.bVisible >= 1) || (gTacticalStatus.uiFlags & SHOW_ALL_ITEMS));
+export const ITEMPOOL_VISIBLE = (pItemPool: ITEM_POOL) => ((pItemPool.bVisible >= 1) || (gTacticalStatus.uiFlags & SHOW_ALL_ITEMS));
 
 export type ITEM_POOL_LOCATOR_HOOK = () => void;
 
 export interface ITEM_POOL {
-  pNext: Pointer<ITEM_POOL>;
-  pPrev: Pointer<ITEM_POOL>;
+  pNext: ITEM_POOL | null /* Pointer<ITEM_POOL> */;
+  pPrev: ITEM_POOL | null /* Pointer<ITEM_POOL> */;
 
   iItemIndex: INT32;
   bVisible: INT8;
