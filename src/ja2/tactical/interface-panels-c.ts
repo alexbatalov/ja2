@@ -958,25 +958,25 @@ export function InitializeSMPanel(): boolean {
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inventory_gold_front.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_gold_front.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inv_frn.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inv_frn.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects2))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\Bars.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Bars.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel))) {
     return false;
   }
@@ -1054,7 +1054,7 @@ export function CreateSMPanelButtons(): boolean {
   gfUIStanceDifferent = true;
   gfAllDisabled = false;
 
-  FilenameForBPP("INTERFACE\\inventory_buttons.sti", ubString);
+  ubString = FilenameForBPP("INTERFACE\\inventory_buttons.sti");
   // Load button Graphics
   iSMPanelImages[Enum218.STANCEUP_IMAGES] = LoadButtonImage(ubString, -1, 0, -1, 10, -1);
 
@@ -1074,11 +1074,11 @@ export function CreateSMPanelButtons(): boolean {
   iBurstButtonImages[Enum265.WM_BURST] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 17, -1, -1, -1);
   iBurstButtonImages[Enum265.WM_ATTACHED] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 26, -1, -1, -1);
 
-  FilenameForBPP("INTERFACE\\invadd-ons.sti", ubString);
+  ubString = FilenameForBPP("INTERFACE\\invadd-ons.sti");
   // Load button Graphics
   iSMPanelImages[Enum218.STANCE_IMAGES] = LoadButtonImage(ubString, 0, 0, -1, 2, -1);
 
-  FilenameForBPP("INTERFACE\\inventory_buttons_2.sti", ubString);
+  ubString = FilenameForBPP("INTERFACE\\inventory_buttons_2.sti");
   // Load button Graphics
   iSMPanelImages[Enum218.DONE_IMAGES] = LoadButtonImage(ubString, -1, 1, -1, 3, -1);
   iSMPanelImages[Enum218.MAPSCREEN_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.DONE_IMAGES], -1, 0, -1, 2, -1);
@@ -2568,19 +2568,19 @@ export function InitializeTEAMPanel(): boolean {
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\bottom_bar.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\bottom_bar.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMPanel))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\gold_front.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\gold_front.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMObjects))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\Bars.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Bars.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel))) {
     return false;
   }
@@ -2916,7 +2916,7 @@ export function RenderTEAMPanel(fDirty: boolean): void {
 export function CreateTEAMPanelButtons(): boolean {
   let ubString: string /* UINT8[48] */;
 
-  FilenameForBPP("INTERFACE\\bottom_bar_buttons.sti", ubString);
+  ubString = FilenameForBPP("INTERFACE\\bottom_bar_buttons.sti");
 
   // Load button Graphics
   iTEAMPanelImages[Enum219.ENDTURN_IMAGES] = LoadButtonImage(ubString, -1, 0, -1, 3, -1);

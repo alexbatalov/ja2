@@ -602,7 +602,7 @@ function AddInventoryButtonForMapPopUpBox(): void {
 
   // load the button
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\mapinvbtns.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapinvbtns.sti");
   AddVideoObject(addressof(VObjectDesc), addressof(uiObject));
 
   // Calculate smily face positions...
@@ -706,7 +706,7 @@ function MinWidthOfTownMineInfoBox(): void {
   let pTrav: Pointer<ETRLEObject>;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\mapinvbtns.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapinvbtns.sti");
   AddVideoObject(addressof(VObjectDesc), addressof(uiObject));
 
   // Calculate smily face positions...

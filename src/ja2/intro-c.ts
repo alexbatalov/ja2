@@ -356,7 +356,7 @@ function DisplaySirtechSplashScreen(): void {
 
   memset(addressof(VObjectDesc), 0, sizeof(VOBJECT_DESC));
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\SirtechSplash.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\SirtechSplash.sti");
 
   //	FilenameForBPP("INTERFACE\\TShold.sti", VObjectDesc.ImageFile);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(uiLogoID))) {

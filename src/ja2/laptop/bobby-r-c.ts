@@ -177,21 +177,21 @@ export function EnterBobbyR(): boolean {
 
   // load the plaque graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BobbyPlaques.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyPlaques.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPlaque))) {
     return false;
   }
 
   // load the TopHinge graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BobbyTopHinge.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyTopHinge.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTopHinge))) {
     return false;
   }
 
   // load the BottomHinge graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BobbyBottomHinge.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyBottomHinge.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBottomHinge))) {
     return false;
   }
@@ -205,7 +205,7 @@ export function EnterBobbyR(): boolean {
 
   // load the Handle graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BobbyHandle.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyHandle.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHandle))) {
     return false;
   }
@@ -215,7 +215,7 @@ export function EnterBobbyR(): boolean {
   if (!LaptopSaveInfo.fBobbyRSiteCanBeAccessed) {
     // load the Handle graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    FilenameForBPP("LAPTOP\\UnderConstruction.sti", VObjectDesc.ImageFile);
+    VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\UnderConstruction.sti");
     if (!AddVideoObject(addressof(VObjectDesc), addressof(guiUnderConstructionImage))) {
       return false;
     }
@@ -344,7 +344,7 @@ export function InitBobbyRWoodBackground(): boolean {
 
   // load the Wood bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BobbyWood.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyWood.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiWoodBackground))) {
     return false;
   }

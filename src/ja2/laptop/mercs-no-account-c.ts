@@ -33,7 +33,7 @@ export function EnterMercsNoAccount(): boolean {
 
   // load the Account box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\NoAccountBox.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\NoAccountBox.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiNoAccountImage))) {
     return false;
   }

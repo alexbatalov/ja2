@@ -103,13 +103,13 @@ export function InitMercPopupBox(): boolean {
 
   // LOAD STOP ICON...
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\msgboxicons.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\msgboxicons.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBoxIcons)))
     AssertMsg(0, "Missing INTERFACE\\msgboxicons.sti");
 
   // LOAD SKULL ICON...
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\msgboxiconskull.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\msgboxiconskull.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSkullIcons)))
     AssertMsg(0, "Missing INTERFACE\\msgboxiconskull.sti");
 
@@ -142,7 +142,7 @@ function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8)
 
   // border
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP(zMercBorderPopupFilenames[ubBorderIndex], VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP(zMercBorderPopupFilenames[ubBorderIndex]);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(gPopUpTextBox.value.uiMercTextPopUpBorder))) {
     return false;
   }

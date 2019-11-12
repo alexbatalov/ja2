@@ -643,56 +643,56 @@ export function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCam
 
   // Load all four body type images
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inventory_figure_large_male.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_figure_large_male.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[1][0]))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inventory_figure_large_male_H.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_figure_large_male_H.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[1][1]))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inventory_normal_male.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_normal_male.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[0][0]))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inventory_normal_male_H.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_normal_male_H.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[0][1]))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inventory_normal_male.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_normal_male.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[2][0]))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inventory_normal_male.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_normal_male.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[2][1]))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inventory_figure_female.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_figure_female.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[3][0]))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\inventory_figure_female_H.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_figure_female_H.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[3][1]))) {
     return false;
   }
 
   // add gold key graphic
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\gold_key_button.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\gold_key_button.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGoldKeyVO))) {
     return false;
   }
@@ -1837,7 +1837,7 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
     //    if( guiCurrentScreen != MAP_SCREEN )
     // if( guiCurrentItemDescriptionScreen != MAP_SCREEN )
     pStr = swprintf("%d/%d", gpItemDescObject.value.ubGunShotsLeft, Weapon[gpItemDescObject.value.usItem].ubMagSize);
-    FilenameForBPP("INTERFACE\\infobox.sti", ubString);
+    ubString = FilenameForBPP("INTERFACE\\infobox.sti");
     sForeColour = ITEMDESC_AMMO_FORE;
 
     switch (pObject.value.ubGunAmmoType) {
@@ -4831,7 +4831,7 @@ export function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\itembox.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\itembox.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(gItemPickupMenu.uiPanelVo))) {
     return false;
   }
@@ -4890,7 +4890,7 @@ export function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo
   gItemPickupMenu.fAllSelected = false;
 
   // Load images for buttons
-  FilenameForBPP("INTERFACE\\itembox.sti", ubString);
+  ubString = FilenameForBPP("INTERFACE\\itembox.sti");
   gItemPickupMenu.iUpButtonImages = LoadButtonImage(ubString, -1, 5, -1, 10, -1);
   gItemPickupMenu.iDownButtonImages = UseLoadedButtonImage(gItemPickupMenu.iUpButtonImages, -1, 7, -1, 12, -1);
   gItemPickupMenu.iAllButtonImages = UseLoadedButtonImage(gItemPickupMenu.iUpButtonImages, -1, 6, -1, 11, -1);

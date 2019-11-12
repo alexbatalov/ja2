@@ -508,7 +508,7 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
     // create regions
     // load graphics
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    FilenameForBPP("INTERFACE\\squadpanel.sti", VObjectDesc.ImageFile);
+    VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\squadpanel.sti");
     if (!AddVideoObject(addressof(VObjectDesc), addressof(uiHandle))) {
       return false;
     }

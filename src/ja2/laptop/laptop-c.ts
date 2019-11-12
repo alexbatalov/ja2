@@ -605,42 +605,42 @@ function EnterLaptop(): INT32 {
 
   // load the laptop graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\laptop3.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\laptop3.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLAPTOP))) {
     return false;
   }
 
   // background for panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\taskbar.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\taskbar.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLaptopBACKGROUND))) {
     return false;
   }
 
   // background for panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\programtitlebar.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTITLEBARLAPTOP))) {
     return false;
   }
 
   // lights for power and HD
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\lights.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\lights.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLIGHTS))) {
     return false;
   }
 
   // icons for title bars
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\ICONS.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\ICONS.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTITLEBARICONS))) {
     return false;
   }
 
   // load, blt and delete graphics
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\NewMailWarning.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\NewMailWarning.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiEmailWarning))) {
     return false;
   }
@@ -2632,48 +2632,48 @@ function LoadBookmark(): boolean {
   // grab download bars too
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\downloadtop.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\downloadtop.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDOWNLOADTOP))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\downloadmid.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\downloadmid.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDOWNLOADMID))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\downloadbot.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\downloadbot.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDOWNLOADBOT))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\bookmarktop.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\bookmarktop.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBOOKTOP))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\bookmarkmiddle.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\bookmarkmiddle.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBOOKMID))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\webpages.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\webpages.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBOOKMARK))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\hilite.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\hilite.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBOOKHIGH))) {
     return false;
   }
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Bookmarkbottom.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Bookmarkbottom.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBOOKBOT))) {
     return false;
   }
@@ -3063,12 +3063,12 @@ function LoadLoadPending(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\graphwindow.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\graphwindow.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGRAPHWINDOW))) {
     return false;
   }
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\graphsegment.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\graphsegment.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGRAPHBAR))) {
     return false;
   }
@@ -4495,7 +4495,7 @@ export function RenderWWWProgramTitleBar(): boolean {
 
   // title bar - load
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\programtitlebar.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(uiTITLEFORWWW))) {
     return false;
   }

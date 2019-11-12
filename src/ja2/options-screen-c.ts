@@ -259,7 +259,7 @@ function EnterOptionsScreen(): boolean {
 
   // load the options screen background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\OptionScreenBase.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\OptionScreenBase.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOptionBackGroundImage))) {
     return false;
   }

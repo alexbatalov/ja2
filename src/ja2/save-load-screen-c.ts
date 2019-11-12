@@ -340,7 +340,7 @@ function EnterSaveLoadScreen(): boolean {
 
   // load Main background  graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\LoadScreen.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\LoadScreen.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSlgBackGroundImage))) {
     return false;
   }

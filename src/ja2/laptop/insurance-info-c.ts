@@ -70,7 +70,7 @@ export function EnterInsuranceInfo(): boolean {
 
   // load the Insurance bullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\bullet.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\bullet.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBulletImage))) {
     return false;
   }

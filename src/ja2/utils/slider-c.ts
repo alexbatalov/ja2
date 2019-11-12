@@ -80,7 +80,7 @@ export function InitSlider(): boolean {
 
   // load Slider Box Graphic graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\SliderBox.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\SliderBox.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSliderBoxImage))) {
     return false;
   }

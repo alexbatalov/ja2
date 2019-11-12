@@ -308,7 +308,7 @@ function AddTileSurface(cFilename: string /* Pointer<char> */, ubType: UINT32, u
   gbSameAsDefaultSurfaceUsed[ubType] = false;
 
   // Adjust for BPP
-  FilenameForBPP(cFilename, cFileBPP);
+  cFileBPP = FilenameForBPP(cFilename);
 
   if (!fGetFromRoot) {
     // Adjust for tileset position

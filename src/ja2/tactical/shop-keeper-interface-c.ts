@@ -557,14 +557,14 @@ function EnterShopKeeperInterface(): boolean {
 
   // load the Main trade screen backgroiund image
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("InterFace\\TradeScreen.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("InterFace\\TradeScreen.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMainTradeScreenImage))) {
     return false;
   }
 
   // load the Main trade screen background image
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("InterFace\\itemcrossout.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("InterFace\\itemcrossout.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiItemCrossOut))) {
     return false;
   }
@@ -592,7 +592,7 @@ function EnterShopKeeperInterface(): boolean {
 
       // While we are at it, add their small face
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP(zTemp, VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP(zTemp);
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSmallSoldiersFace[gubNumberMercsInArray]))) {
         return false;
       }

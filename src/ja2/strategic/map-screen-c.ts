@@ -2063,13 +2063,13 @@ export function MapScreenInit(): boolean {
   InitLeaveList();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\group_confirm.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\group_confirm.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiUpdatePanel))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\group_confirm_tactical.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\group_confirm_tactical.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiUpdatePanelTactical))) {
     return false;
   }
@@ -2202,7 +2202,7 @@ export function MapScreenHandle(): UINT32 {
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\SAM.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\SAM.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSAMICON))) {
         return false;
       }
@@ -2211,25 +2211,25 @@ export function MapScreenHandle(): UINT32 {
       // FilenameForBPP("INTERFACE\\s_map.sti", VObjectDesc.ImageFile);
       // CHECKF( AddVideoObject( &VObjectDesc, &guiMAP ) );
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\mapcursr.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapcursr.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\Mine_1.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_1.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel1))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\Mine_2.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_2.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel2))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\Mine_3.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_3.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel3))) {
         return false;
       }
@@ -2242,13 +2242,13 @@ export function MapScreenHandle(): UINT32 {
       // CHECKF(AddVideoObject(&VObjectDesc, &guiMAPBORDER));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\sleepicon.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\sleepicon.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSleepIcon))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\charinfo.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\charinfo.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARINFO))) {
         return false;
       }
@@ -2256,7 +2256,7 @@ export function MapScreenHandle(): UINT32 {
       CHECKF(AddVideoSurface( &vs_desc, &guiCHARLIST ));*/
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\newgoldpiece3.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\newgoldpiece3.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARLIST))) {
         return false;
       }
@@ -2270,98 +2270,98 @@ export function MapScreenHandle(): UINT32 {
       // CHECKF(AddVideoObject(&VObjectDesc, &guiPOPUPBORDERS));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\boxes.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\boxes.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARICONS))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\incross.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\incross.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCROSS))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\mapinv.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapinv.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPINV))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\map_inv_2nd_gun_cover.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_inv_2nd_gun_cover.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapInvSecondHandBlockout))) {
         return false;
       }
 
       // the upper left corner piece icons
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\top_left_corner_icons.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\top_left_corner_icons.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiULICONS))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\map_item.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_item.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiORTAICON))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\prison.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\prison.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTIXAICON))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\merc_between_sector_icons.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\merc_between_sector_icons.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONS))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\merc_mvt_green_arrows.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\merc_mvt_green_arrows.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONSCLOSE))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\GreenArr.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\GreenArr.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLEVELMARKER))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\Helicop.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Helicop.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHelicopterIcon))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\eta_pop_up.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\eta_pop_up.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderEtaPopUp))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\pos2.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\pos2.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderHeliSectors))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\selectedchararrow.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\selectedchararrow.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSelectedCharArrow))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\mine.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mine.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMINEICON))) {
         return false;
       }
@@ -2371,7 +2371,7 @@ export function MapScreenHandle(): UINT32 {
       AddVideoObject(addressof(VObjectDesc), addressof(guiSectorLocatorGraphicID));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP("INTERFACE\\BullsEye.sti", VObjectDesc.ImageFile);
+      VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\BullsEye.sti");
       if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBULLSEYE))) {
         return false;
       }
@@ -2413,7 +2413,7 @@ export function MapScreenHandle(): UINT32 {
     }
 
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    FilenameForBPP("INTERFACE\\Bars.sti", VObjectDesc.ImageFile);
+    VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Bars.sti");
     if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel))) {
       return false;
     }
@@ -7802,13 +7802,13 @@ export function HandlePreloadOfMapGraphics(): boolean {
   // CHECKF(AddVideoSurface(&vs_desc, &guiPOPUPTEX));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\mapcursr.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapcursr.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\SAM.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\SAM.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSAMICON))) {
     return false;
   }
@@ -7817,13 +7817,13 @@ export function HandlePreloadOfMapGraphics(): boolean {
   // FilenameForBPP("INTERFACE\\s_map.sti", VObjectDesc.ImageFile);
   // CHECKF( AddVideoObject( &VObjectDesc, &guiMAP ) );
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\mapcursr.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapcursr.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\sleepicon.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\sleepicon.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSleepIcon))) {
     return false;
   }
@@ -7837,7 +7837,7 @@ export function HandlePreloadOfMapGraphics(): boolean {
   // CHECKF(AddVideoObject(&VObjectDesc, &guiMAPBORDER));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\charinfo.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\charinfo.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARINFO))) {
     return false;
   }
@@ -7845,7 +7845,7 @@ export function HandlePreloadOfMapGraphics(): boolean {
   CHECKF(AddVideoSurface( &vs_desc, &guiCHARLIST ));*/
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\newgoldpiece3.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\newgoldpiece3.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARLIST))) {
     return false;
   }
@@ -7860,56 +7860,56 @@ export function HandlePreloadOfMapGraphics(): boolean {
 
   // the sublevels
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\Mine_1.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_1.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel1))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\Mine_2.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_2.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel2))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\Mine_3.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_3.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel3))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\boxes.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\boxes.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARICONS))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\incross.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\incross.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCROSS))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\mapinv.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapinv.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPINV))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\map_inv_2nd_gun_cover.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_inv_2nd_gun_cover.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapInvSecondHandBlockout))) {
     return false;
   }
 
   // the upper left corner piece icons
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\top_left_corner_icons.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\top_left_corner_icons.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiULICONS))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\prison.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\prison.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTIXAICON))) {
     return false;
   }
@@ -7917,67 +7917,67 @@ export function HandlePreloadOfMapGraphics(): boolean {
   HandleLoadOfMapBottomGraphics();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\map_item.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_item.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiORTAICON))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\mapcursr.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapcursr.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\merc_between_sector_icons.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\merc_between_sector_icons.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONS))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\merc_mvt_green_arrows.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\merc_mvt_green_arrows.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONSCLOSE))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\GreenArr.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\GreenArr.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLEVELMARKER))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\Helicop.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Helicop.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHelicopterIcon))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\eta_pop_up.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\eta_pop_up.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderEtaPopUp))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\pos2.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\pos2.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderHeliSectors))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\selectedchararrow.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\selectedchararrow.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSelectedCharArrow))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\mine.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mine.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMINEICON))) {
     return false;
   }
@@ -7992,7 +7992,7 @@ export function HandlePreloadOfMapGraphics(): boolean {
   AddVideoObject(addressof(VObjectDesc), addressof(guiNewMailIcons));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\BullsEye.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\BullsEye.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBULLSEYE))) {
     return false;
   }

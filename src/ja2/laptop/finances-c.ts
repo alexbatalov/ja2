@@ -419,35 +419,35 @@ function LoadFinances(): boolean {
 
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\programtitlebar.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE))) {
     return false;
   }
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Financeswindow.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Financeswindow.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTOP))) {
     return false;
   }
 
   // black divider line - long ( 480 length)
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\divisionline480.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\divisionline480.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLONGLINE))) {
     return false;
   }
 
   // the records columns
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\recordcolumns.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\recordcolumns.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLISTCOLUMNS))) {
     return false;
   }
 
   // black divider line - long ( 480 length)
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\divisionline.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\divisionline.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLINE))) {
     return false;
   }

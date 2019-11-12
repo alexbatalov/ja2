@@ -51,7 +51,7 @@ export function LoadProfileBackGround(): boolean {
   // this procedure will load in the graphics for the generic background
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\MetalBackGround.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\MetalBackGround.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBACKGROUND))) {
     return false;
   }
@@ -131,7 +131,7 @@ export function LoadBeginIndent(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BeginScreenIndent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BeginScreenIndent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBEGININDENT))) {
     return false;
   }
@@ -164,7 +164,7 @@ export function LoadActivationIndent(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\ActivationIndent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\ActivationIndent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiACTIVATIONINDENT))) {
     return false;
   }
@@ -196,7 +196,7 @@ export function LoadFrontPageIndent(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\FrontPageIndent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\FrontPageIndent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFRONTPAGEINDENT))) {
     return false;
   }
@@ -228,7 +228,7 @@ export function LoadAnalyse(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Analyze.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Analyze.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiANALYSE))) {
     return false;
   }
@@ -260,7 +260,7 @@ export function LoadAttributeGraph(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Attributegraph.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Attributegraph.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiATTRIBUTEGRAPH))) {
     return false;
   }
@@ -292,7 +292,7 @@ export function LoadAttributeGraphBar(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\AttributegraphBar.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\AttributegraphBar.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiATTRIBUTEGRAPHBAR))) {
     return false;
   }
@@ -324,7 +324,7 @@ export function LoadFullNameIndent(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\FullNameIndent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\FullNameIndent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFULLNAMEINDENT))) {
     return false;
   }
@@ -356,7 +356,7 @@ export function LoadNickNameIndent(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\NickName.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\NickName.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiNICKNAMEINDENT))) {
     return false;
   }
@@ -388,7 +388,7 @@ export function LoadNameIndent(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\NameIndent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\NameIndent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiNAMEINDENT))) {
     return false;
   }
@@ -420,7 +420,7 @@ export function LoadGenderIndent(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\GenderIndent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\GenderIndent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGENDERINDENT))) {
     return false;
   }
@@ -452,7 +452,7 @@ function LoadSmallFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\SmallFrame.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\SmallFrame.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMALLFRAME))) {
     return false;
   }
@@ -484,7 +484,7 @@ export function LoadSmallSilhouette(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\SmallSilhouette.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\SmallSilhouette.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMALLSILHOUETTE))) {
     return false;
   }
@@ -516,7 +516,7 @@ export function LoadLargeSilhouette(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\largesilhouette.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\largesilhouette.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLARGESILHOUETTE))) {
     return false;
   }
@@ -548,7 +548,7 @@ export function LoadAttributeFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\attributeframe.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\attributeframe.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiATTRIBUTEFRAME))) {
     return false;
   }
@@ -624,7 +624,7 @@ export function LoadSliderBar(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\attributeslider.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\attributeslider.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSLIDERBAR))) {
     return false;
   }
@@ -656,7 +656,7 @@ export function LoadButton2Image(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\button_2.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\button_2.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTON2IMAGE))) {
     return false;
   }
@@ -688,7 +688,7 @@ export function LoadButton4Image(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\button_4.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\button_4.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTON4IMAGE))) {
     return false;
   }
@@ -720,7 +720,7 @@ export function LoadButton1Image(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\button_1.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\button_1.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTON1IMAGE))) {
     return false;
   }
@@ -752,7 +752,7 @@ export function LoadPortraitFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Voice_PortraitFrame.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Voice_PortraitFrame.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPORTRAITFRAME))) {
     return false;
   }
@@ -784,7 +784,7 @@ export function LoadMainIndentFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\mainprofilepageindent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\mainprofilepageindent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAININDENT))) {
     return false;
   }
@@ -816,7 +816,7 @@ export function LoadQtnLongIndentFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\longindent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\longindent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLONGINDENT))) {
     return false;
   }
@@ -848,7 +848,7 @@ export function LoadQtnShortIndentFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\shortindent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\shortindent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSHORTINDENT))) {
     return false;
   }
@@ -880,7 +880,7 @@ export function LoadQtnLongIndentHighFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\longindenthigh.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\longindenthigh.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLONGHINDENT))) {
     return false;
   }
@@ -912,7 +912,7 @@ export function LoadQtnShortIndentHighFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\shortindenthigh.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\shortindenthigh.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSHORTHINDENT))) {
     return false;
   }
@@ -944,7 +944,7 @@ export function LoadQtnIndentFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\questionindent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\questionindent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiQINDENT))) {
     return false;
   }
@@ -976,7 +976,7 @@ export function LoadAttrib1IndentFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\attributescreenindent_1.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\attributescreenindent_1.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiA1INDENT))) {
     return false;
   }
@@ -1008,7 +1008,7 @@ export function LoadAttrib2IndentFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\attributescreenindent_2.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\attributescreenindent_2.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiA2INDENT))) {
     return false;
   }
@@ -1040,7 +1040,7 @@ export function LoadAvgMercIndentFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\anaveragemercindent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\anaveragemercindent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAVGMERCINDENT))) {
     return false;
   }
@@ -1072,7 +1072,7 @@ export function LoadAboutUsIndentFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\aboutusindent.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\aboutusindent.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiABOUTUSINDENT))) {
     return false;
   }
@@ -1104,7 +1104,7 @@ export function LoadQtnShort2IndentFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\shortindent2.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\shortindent2.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSHORT2INDENT))) {
     return false;
   }
@@ -1136,7 +1136,7 @@ export function LoadQtnShort2IndentHighFrame(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\shortindent2High.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\shortindent2High.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSHORT2HINDENT))) {
     return false;
   }

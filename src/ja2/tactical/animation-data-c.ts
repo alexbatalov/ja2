@@ -833,7 +833,7 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
     gSystemDebugStr = "Cache Load";
 
     // Create video object
-    FilenameForBPP(gAnimSurfaceDatabase[usSurfaceIndex].Filename, sFilename);
+    sFilename = FilenameForBPP(gAnimSurfaceDatabase[usSurfaceIndex].Filename);
     hImage = CreateImage(/*gAnimSurfaceDatabase[ usSurfaceIndex ].Filename*/ sFilename, IMAGE_ALLDATA);
 
     if (hImage == null) {

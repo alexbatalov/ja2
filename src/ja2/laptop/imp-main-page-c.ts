@@ -493,7 +493,7 @@ function LoadCharacterPortraitForMainPage(): boolean {
   if (iCurrentProfileMode >= 4) {
     // load it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    FilenameForBPP(pPlayerSelectedFaceFileNames[iPortraitNumber], VObjectDesc.ImageFile);
+    VObjectDesc.ImageFile = FilenameForBPP(pPlayerSelectedFaceFileNames[iPortraitNumber]);
     if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAITFORMAINPAGE))) {
       return false;
     }

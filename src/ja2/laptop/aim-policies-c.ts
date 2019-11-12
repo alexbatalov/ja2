@@ -170,20 +170,20 @@ export function EnterAimPolicies(): boolean {
 
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BottomButton.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BottomButton.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BottomButton2.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BottomButton2.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton2))) {
     return false;
   }
 
   // load the Content Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\ContentButton.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\ContentButton.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiContentButton))) {
     return false;
   }

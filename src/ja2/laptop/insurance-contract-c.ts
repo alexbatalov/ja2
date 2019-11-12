@@ -138,14 +138,14 @@ export function EnterInsuranceContract(): boolean {
 
   // load the Insurance title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\InsOrderGrid.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\InsOrderGrid.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsOrderGridImage))) {
     return false;
   }
 
   // load the Insurance bullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\bullet.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\bullet.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsOrderBulletImage))) {
     return false;
   }
@@ -411,7 +411,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   // load the mercs face graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sTemp = sprintf("FACES\\%02d.sti", ubMercID);
-  FilenameForBPP(sTemp, VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP(sTemp);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(uiInsMercFaceImage))) {
     return false;
   }

@@ -145,7 +145,7 @@ export function EnterAimSort(): boolean {
 
   // load the SortBy box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\SortBy.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\SortBy.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSortByBox))) {
     return false;
   }
@@ -173,7 +173,7 @@ export function EnterAimSort(): boolean {
 
   // load the SelectLight graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\SelectLight.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\SelectLight.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSelectLight))) {
     return false;
   }

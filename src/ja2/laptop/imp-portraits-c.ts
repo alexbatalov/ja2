@@ -72,7 +72,7 @@ function RenderPortrait(sX: INT16, sY: INT16): boolean {
   if (fCharacterIsMale) {
     // load it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    FilenameForBPP(pPlayerSelectedBigFaceFileNames[iCurrentPortrait], VObjectDesc.ImageFile);
+    VObjectDesc.ImageFile = FilenameForBPP(pPlayerSelectedBigFaceFileNames[iCurrentPortrait]);
     if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
       return false;
     }
@@ -86,7 +86,7 @@ function RenderPortrait(sX: INT16, sY: INT16): boolean {
   } else {
     // load it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    FilenameForBPP(pPlayerSelectedBigFaceFileNames[iCurrentPortrait + 8], VObjectDesc.ImageFile);
+    VObjectDesc.ImageFile = FilenameForBPP(pPlayerSelectedBigFaceFileNames[iCurrentPortrait + 8]);
     if (!AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle))) {
       return false;
     }

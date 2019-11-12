@@ -11,14 +11,14 @@ export function EnterBobbyRUsed(): boolean {
 
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\usedbackground.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\usedbackground.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiUsedBackground))) {
     return false;
   }
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\usedgrid.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\usedgrid.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiUsedGrid))) {
     return false;
   }

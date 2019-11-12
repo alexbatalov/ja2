@@ -67,7 +67,7 @@ export function EnterMercsAccount(): boolean {
 
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\AccountNumber.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\AccountNumber.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAccountNumberGrid))) {
     return false;
   }

@@ -288,35 +288,35 @@ export function EnterEmail(): boolean {
 
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\programtitlebar.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiEmailTitle))) {
     return false;
   }
 
   // the list background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Mailwindow.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Mailwindow.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiEmailBackground))) {
     return false;
   }
 
   // the indication/notification box
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\MailIndicator.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\MailIndicator.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiEmailIndicator))) {
     return false;
   }
 
   // the message background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\emailviewer.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\emailviewer.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiEmailMessage))) {
     return false;
   }
 
   // the message background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\maillistdivider.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\maillistdivider.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAILDIVIDER))) {
     return false;
   }

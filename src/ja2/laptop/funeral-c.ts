@@ -101,21 +101,21 @@ export function EnterFuneral(): boolean {
 
   // load the Left column graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\LeftColumn.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\LeftColumn.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLeftColumn))) {
     return false;
   }
 
   // load the Link carving graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\LinkCarving.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\LinkCarving.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLinkCarving))) {
     return false;
   }
 
   // load the Marble graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Marble.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Marble.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMarbleBackground))) {
     return false;
   }
@@ -136,7 +136,7 @@ export function EnterFuneral(): boolean {
 
   // load the right column graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\RightColumn.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\RightColumn.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiRightColumn))) {
     return false;
   }

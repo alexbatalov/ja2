@@ -294,21 +294,21 @@ export function EnterBobbyRMailOrder(): boolean {
 
   // load the Order Grid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BobbyOrderGrid.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyOrderGrid.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyROrderGrid))) {
     return false;
   }
 
   // load the Location graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BobbyLocationBox.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyLocationBox.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRLocationGraphic))) {
     return false;
   }
 
   // load the delivery speed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BobbyDeliverySpeed.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyDeliverySpeed.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDeliverySpeedGraphic))) {
     return false;
   }
@@ -322,28 +322,28 @@ export function EnterBobbyRMailOrder(): boolean {
 
   // load the delivery speed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\TotalSaveArea.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\TotalSaveArea.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTotalSaveArea))) {
     return false;
   }
 
   // border
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\TactPopUp.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\TactPopUp.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDropDownBorder))) {
     return false;
   }
 
   // Gold Arrow for the scroll area
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\GoldArrows.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\GoldArrows.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGoldArrowImages))) {
     return false;
   }
 
   // Package Weight Graphic
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\PackageWeight.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\PackageWeight.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPackageWeightImage))) {
     return false;
   }
@@ -1901,7 +1901,7 @@ export function CreateBobbyRayOrderTitle(): boolean {
 
   // load BobbyRayTitle graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BobbyRayTitle.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyRayTitle.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRayTitle))) {
     return false;
   }

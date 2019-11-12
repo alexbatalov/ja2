@@ -367,13 +367,13 @@ function EnterCreditsScreen(): boolean {
   */
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\Credits.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Credits.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCreditBackGroundImage))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\Credit Faces.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Credit Faces.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCreditFaces))) {
     return false;
   }

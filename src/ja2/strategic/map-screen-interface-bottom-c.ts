@@ -106,7 +106,7 @@ export function HandleLoadOfMapBottomGraphics(): void {
 
   // will create buttons for interface bottom
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\map_screen_bottom.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_screen_bottom.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPBOTTOMPANEL)))
     return;
 
@@ -686,7 +686,7 @@ function LoadMessageSliderBar(): void {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\map_screen_bottom_arrows.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_screen_bottom_arrows.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSliderBar)))
     return;
 }

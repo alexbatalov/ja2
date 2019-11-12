@@ -226,7 +226,7 @@ function InitFlowerButtons(): boolean {
     // load the handbullet graphic and add it
     sTemp = sprintf("LAPTOP\\Flower_%d.sti", count);
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    FilenameForBPP(sTemp, VObjectDesc.ImageFile);
+    VObjectDesc.ImageFile = FilenameForBPP(sTemp);
     if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerImages[i]))) {
       return false;
     }

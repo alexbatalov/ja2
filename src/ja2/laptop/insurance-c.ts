@@ -84,7 +84,7 @@ export function EnterInsurance(): boolean {
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Bullet.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Bullet.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBulletImage))) {
     return false;
   }
@@ -191,21 +191,21 @@ export function InitInsuranceDefaults(): boolean {
 
   // load the Flower Account Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BackGroundTile.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BackGroundTile.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBackGround))) {
     return false;
   }
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\LeftTile.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\LeftTile.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceRedBarImage))) {
     return false;
   }
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\LargeBar.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\LargeBar.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBigRedLineImage))) {
     return false;
   }

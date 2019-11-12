@@ -174,21 +174,21 @@ export function EnterAIM(): boolean {
 
   // load the MemberShipcard graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\membercard.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\membercard.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMemberCard))) {
     return false;
   }
 
   // load the Policies graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Policies.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Policies.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPolicies))) {
     return false;
   }
 
   // load the Links graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\Links.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Links.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLinks))) {
     return false;
   }
@@ -209,7 +209,7 @@ export function EnterAIM(): boolean {
 
   // load the flower advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\flowerad_16.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\flowerad_16.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerAdvertisement))) {
     return false;
   }
@@ -391,7 +391,7 @@ export function InitAimDefaults(): boolean {
 
   // load the Rust bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\rustbackground.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\rustbackground.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiRustBackGround))) {
     return false;
   }

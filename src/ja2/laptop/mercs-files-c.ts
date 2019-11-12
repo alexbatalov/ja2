@@ -110,14 +110,14 @@ export function EnterMercsFiles(): boolean {
 
   // load the Portrait box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\PortraitBox.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\PortraitBox.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPortraitBox))) {
     return false;
   }
 
   // load the bio box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("LAPTOP\\BioBox.sti", VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BioBox.sti");
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBioBox))) {
     return false;
   }
@@ -334,7 +334,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   // load the Face graphic and add it
   sTemp = sprintf("%s%02d.sti", sFaceLoc, ubMercID);
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP(sTemp, VObjectDesc.ImageFile);
+  VObjectDesc.ImageFile = FilenameForBPP(sTemp);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercFace))) {
     return false;
   }
