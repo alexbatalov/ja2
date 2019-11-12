@@ -38,7 +38,7 @@ export function InitializeGame(): boolean {
 
   // Initialize Game Screens.
   for (uiIndex = 0; uiIndex < Enum26.MAX_SCREENS; uiIndex++) {
-    if (((GameScreens[uiIndex].InitializeScreen).value)() == false) {
+    if (GameScreens[uiIndex].InitializeScreen() == false) {
       // Failed to initialize one of the screens.
       return false;
     }
@@ -186,7 +186,7 @@ export function GameLoop(): void {
     guiPendingScreen = NO_PENDING_SCREEN;
   }
 
-  uiOldScreen = ((GameScreens[guiCurrentScreen].HandleScreen).value)();
+  uiOldScreen = GameScreens[guiCurrentScreen].HandleScreen();
 
   // if the screen has chnaged
   if (uiOldScreen != guiCurrentScreen) {
@@ -203,7 +203,7 @@ export function GameLoop(): void {
 
 function SetCurrentScreen(uiNewScreen: UINT32): void {
   guiCurrentScreen = uiNewScreen;
-  ((GameScreens[guiCurrentScreen].HandleScreen).value)();
+  GameScreens[guiCurrentScreen].HandleScreen();
 }
 
 export function SetPendingNewScreen(uiNewScreen: UINT32): void {

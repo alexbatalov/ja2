@@ -96,7 +96,7 @@ export function ShutdownJA2(): void {
 
   // Shutdown Screens
   for (uiIndex = 0; uiIndex < Enum26.MAX_SCREENS; uiIndex++) {
-    ((GameScreens[uiIndex].ShutdownScreen).value)();
+    GameScreens[uiIndex].ShutdownScreen();
   }
 
   // Shutdown animation system

@@ -160,7 +160,7 @@ let gSelectedToggleBoxAreaRegion: MOUSE_REGION = createMouseRegion();
 //
 /////////////////////////////////
 
-export function OptionsScreenInit(): UINT32 {
+export function OptionsScreenInit(): boolean {
   // Set so next time we come in, we can set up
   gfOptionsScreenEntry = true;
 
@@ -221,7 +221,7 @@ export function OptionsScreenHandle(): UINT32 {
   return guiOptionsScreen;
 }
 
-export function OptionsScreenShutdown(): UINT32 {
+export function OptionsScreenShutdown(): boolean {
   return true;
 }
 

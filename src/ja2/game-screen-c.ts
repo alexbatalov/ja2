@@ -41,7 +41,7 @@ const RESTART_DELAY = 6000;
 let guiTacticalLeaveScreenID: UINT32;
 let guiTacticalLeaveScreen: boolean = false;
 
-export function MainGameScreenInit(): UINT32 {
+export function MainGameScreenInit(): boolean {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   gpZBuffer = InitZBuffer(1280, 480);
@@ -83,7 +83,7 @@ export function MainGameScreenInit(): UINT32 {
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
 // It will also be responsible to making sure that all Gaming Engine tasks exit properly
 
-export function MainGameScreenShutdown(): UINT32 {
+export function MainGameScreenShutdown(): boolean {
   ShutdownZBuffer(gpZBuffer);
   ShutdownBackgroundRects();
 

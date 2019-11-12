@@ -21,7 +21,7 @@ interface RGBValues {
   b: INT8;
 }
 
-export function MapUtilScreenInit(): UINT32 {
+export function MapUtilScreenInit(): boolean {
   return true;
 }
 
@@ -308,7 +308,7 @@ export function MapUtilScreenHandle(): UINT32 {
   return Enum26.MAPUTILITY_SCREEN;
 }
 
-export function MapUtilScreenShutdown(): UINT32 {
+export function MapUtilScreenShutdown(): boolean {
   return true;
 }
 

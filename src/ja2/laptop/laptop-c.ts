@@ -435,7 +435,7 @@ function GetLaptopKeyboardInput(): void {
 }
 
 // This is called only once at game initialization.
-export function LaptopScreenInit(): UINT32 {
+export function LaptopScreenInit(): boolean {
   // Memset the whole structure, to make sure of no 'JUNK'
   memset(addressof(LaptopSaveInfo), 0, sizeof(LaptopSaveInfoStruct));
 
@@ -492,7 +492,7 @@ export function LaptopScreenInit(): UINT32 {
 
   // No longer inits the laptop screens, now InitLaptopAndLaptopScreens() does
 
-  return 1;
+  return true;
 }
 
 export function InitLaptopAndLaptopScreens(): boolean {
@@ -520,7 +520,7 @@ export function DrawLapTopText(): UINT32 {
 }
 
 // This is only called once at game shutdown.
-export function LaptopScreenShutdown(): UINT32 {
+export function LaptopScreenShutdown(): boolean {
   InsuranceContractEndGameShutDown();
   BobbyRayMailOrderEndGameShutDown();
   ShutDownEmailList();

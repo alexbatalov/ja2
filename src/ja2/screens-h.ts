@@ -5,12 +5,12 @@ namespace ja2 {
 // a shutdown function which is called when the screen is getting ready to make another screen active.
 
 export interface Screens {
-  InitializeScreen: () => UINT32;
+  InitializeScreen: () => boolean;
   HandleScreen: () => UINT32;
-  ShutdownScreen: () => UINT32;
+  ShutdownScreen: () => boolean;
 }
 
-export function createScreensFrom(InitializeScreen: () => UINT32, HandleScreen: () => UINT32, ShutdownScreen: () => UINT32): Screens {
+export function createScreensFrom(InitializeScreen: () => boolean, HandleScreen: () => UINT32, ShutdownScreen: () => boolean): Screens {
   return {
     InitializeScreen,
     HandleScreen,

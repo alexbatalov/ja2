@@ -163,8 +163,8 @@ let guiGameSaveToggles: UINT32[] /* [NUM_SAVE_OPTIONS] */;
 
 // ppp
 
-export function GameInitOptionsScreenInit(): UINT32 {
-  return 1;
+export function GameInitOptionsScreenInit(): boolean {
+  return true;
 }
 
 export function GameInitOptionsScreenHandle(): UINT32 {
@@ -218,8 +218,8 @@ export function GameInitOptionsScreenHandle(): UINT32 {
   return gubGIOExitScreen;
 }
 
-export function GameInitOptionsScreenShutdown(): UINT32 {
-  return 1;
+export function GameInitOptionsScreenShutdown(): boolean {
+  return true;
 }
 
 function EnterGIOScreen(): boolean {

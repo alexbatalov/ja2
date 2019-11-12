@@ -54,13 +54,13 @@ const enum Enum51 {
 }
 let gbCurrentFileIOStatus: INT8; // 1 init saving message, 2 save, 3 init loading message, 4 load, 0 none
 
-export function LoadSaveScreenInit(): UINT32 {
+export function LoadSaveScreenInit(): boolean {
   gfUpdateSummaryInfo = true;
   fEnteringLoadSaveScreen = true;
   return true;
 }
 
-export function LoadSaveScreenShutdown(): UINT32 {
+export function LoadSaveScreenShutdown(): boolean {
   return true;
 }
 

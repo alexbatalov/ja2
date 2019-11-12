@@ -26,14 +26,14 @@ function CycleAnimations(): void {
   EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, true);
 }
 
-export function AniEditScreenInit(): UINT32 {
+export function AniEditScreenInit(): boolean {
   return true;
 }
 
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
 // It will also be responsible to making sure that all Gaming Engine tasks exit properly
 
-export function AniEditScreenShutdown(): UINT32 {
+export function AniEditScreenShutdown(): boolean {
   return true;
 }
 

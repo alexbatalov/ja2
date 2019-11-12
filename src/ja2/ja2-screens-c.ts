@@ -96,27 +96,27 @@ export function DisplayFrameRate(): void {
 }
 
 // USELESS!!!!!!!!!!!!!!!!!!
-export function SavingScreenInitialize(): UINT32 {
+export function SavingScreenInitialize(): boolean {
   return true;
 }
 export function SavingScreenHandle(): UINT32 {
   return Enum26.SAVING_SCREEN;
 }
-export function SavingScreenShutdown(): UINT32 {
+export function SavingScreenShutdown(): boolean {
   return true;
 }
 
-export function LoadingScreenInitialize(): UINT32 {
+export function LoadingScreenInitialize(): boolean {
   return true;
 }
 export function LoadingScreenHandle(): UINT32 {
   return Enum26.LOADING_SCREEN;
 }
-export function LoadingScreenShutdown(): UINT32 {
+export function LoadingScreenShutdown(): boolean {
   return true;
 }
 
-export function ErrorScreenInitialize(): UINT32 {
+export function ErrorScreenInitialize(): boolean {
   return true;
 }
 
@@ -166,11 +166,11 @@ export function ErrorScreenHandle(): UINT32 {
   return Enum26.ERROR_SCREEN;
 }
 
-export function ErrorScreenShutdown(): UINT32 {
+export function ErrorScreenShutdown(): boolean {
   return true;
 }
 
-export function InitScreenInitialize(): UINT32 {
+export function InitScreenInitialize(): boolean {
   return true;
 }
 
@@ -264,11 +264,11 @@ export function InitScreenHandle(): UINT32 {
   return Enum26.INIT_SCREEN;
 }
 
-export function InitScreenShutdown(): UINT32 {
+export function InitScreenShutdown(): boolean {
   return true;
 }
 
-export function PalEditScreenInit(): UINT32 {
+export function PalEditScreenInit(): boolean {
   return true;
 }
 
@@ -292,13 +292,13 @@ export function PalEditScreenHandle(): UINT32 {
 
     guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, 50, 10, 600, 400);
   } else {
-    ((GameScreens[Enum26.GAME_SCREEN].HandleScreen).value)();
+    GameScreens[Enum26.GAME_SCREEN].HandleScreen();
   }
 
   return Enum26.PALEDIT_SCREEN;
 }
 
-export function PalEditScreenShutdown(): UINT32 {
+export function PalEditScreenShutdown(): boolean {
   return true;
 }
 
@@ -452,7 +452,7 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
   return false;
 }
 
-export function DebugScreenInit(): UINT32 {
+export function DebugScreenInit(): boolean {
   return true;
 }
 
@@ -495,13 +495,13 @@ export function DebugScreenHandle(): UINT32 {
     SetRenderHook(DebugRenderHook);
     SetUIKeyboardHook(DebugKeyboardHook);
   } else {
-    ((GameScreens[Enum26.GAME_SCREEN].HandleScreen).value)();
+    GameScreens[Enum26.GAME_SCREEN].HandleScreen();
   }
 
   return Enum26.DEBUG_SCREEN;
 }
 
-export function DebugScreenShutdown(): UINT32 {
+export function DebugScreenShutdown(): boolean {
   return true;
 }
 
@@ -566,7 +566,7 @@ function DefaultDebugPage4(): void {
   gprintf(0, 0, "DEBUG PAGE FOUR");
 }
 
-export function SexScreenInit(): UINT32 {
+export function SexScreenInit(): boolean {
   return true;
 }
 
@@ -663,11 +663,11 @@ export function SexScreenHandle(): UINT32 {
   return Enum26.SEX_SCREEN;
 }
 
-export function SexScreenShutdown(): UINT32 {
+export function SexScreenShutdown(): boolean {
   return true;
 }
 
-export function DemoExitScreenInit(): UINT32 {
+export function DemoExitScreenInit(): boolean {
   return true;
 }
 
@@ -716,7 +716,7 @@ export function DemoExitScreenHandle(): UINT32 {
   return Enum26.DEMO_EXIT_SCREEN;
 }
 
-export function DemoExitScreenShutdown(): UINT32 {
+export function DemoExitScreenShutdown(): boolean {
   return true;
 }
 

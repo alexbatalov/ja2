@@ -666,7 +666,7 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   return gMsgBox.uiExitScreen;
 }
 
-export function MessageBoxScreenInit(): UINT32 {
+export function MessageBoxScreenInit(): boolean {
   return true;
 }
 
@@ -851,7 +851,7 @@ export function MessageBoxScreenHandle(): UINT32 {
   return Enum26.MSG_BOX_SCREEN;
 }
 
-export function MessageBoxScreenShutdown(): UINT32 {
+export function MessageBoxScreenShutdown(): boolean {
   return false;
 }
 

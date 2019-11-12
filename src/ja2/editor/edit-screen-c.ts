@@ -116,7 +116,7 @@ let GotoGridNoUIRegion: MOUSE_REGION = createMouseRegion();
 //
 //	This function is called once at SGP (and game) startup
 //
-export function EditScreenInit(): UINT32 {
+export function EditScreenInit(): boolean {
   gfFakeLights = false;
 
   eInfo.fGameInit = true;
@@ -147,7 +147,7 @@ export function EditScreenInit(): UINT32 {
 //
 //	This function is called once at shutdown of the game
 //
-export function EditScreenShutdown(): UINT32 {
+export function EditScreenShutdown(): boolean {
   GameShutdownEditorMercsInfo();
   RemoveAllFromUndoList();
   KillClipboard();

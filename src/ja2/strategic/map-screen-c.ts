@@ -2045,7 +2045,7 @@ function DisplayCharacterList(): void {
 }
 
 // THIS IS STUFF THAT RUNS *ONCE* DURING APPLICATION EXECUTION, AT INITIAL STARTUP
-export function MapScreenInit(): UINT32 {
+export function MapScreenInit(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   SetUpBadSectorsList();
@@ -2077,7 +2077,7 @@ export function MapScreenInit(): UINT32 {
   return true;
 }
 
-export function MapScreenShutdown(): UINT32 {
+export function MapScreenShutdown(): boolean {
   // free up alloced mapscreen messages
   FreeGlobalMessageList();
 

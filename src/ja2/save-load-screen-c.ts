@@ -175,7 +175,7 @@ let gSLSEntireScreenRegion: MOUSE_REGION = createMouseRegion();
 //
 //////////////////////////////////////////////////////
 
-export function SaveLoadScreenInit(): UINT32 {
+export function SaveLoadScreenInit(): boolean {
   // Set so next time we come in, we can set up
   gfSaveLoadScreenEntry = true;
 
@@ -271,7 +271,7 @@ export function SaveLoadScreenHandle(): UINT32 {
   return guiSaveLoadExitScreen;
 }
 
-export function SaveLoadScreenShutdown(): UINT32 {
+export function SaveLoadScreenShutdown(): boolean {
   return true;
 }
 

@@ -494,11 +494,11 @@ export function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
   }
 }
 
-export function AutoResolveScreenInit(): UINT32 {
+export function AutoResolveScreenInit(): boolean {
   return true;
 }
 
-export function AutoResolveScreenShutdown(): UINT32 {
+export function AutoResolveScreenShutdown(): boolean {
   gpBattleGroup = null;
   return true;
 }

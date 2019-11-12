@@ -64,15 +64,15 @@ let gbIntroScreenMode: INT8 = -1;
 
 // ppp
 
-export function IntroScreenInit(): UINT32 {
+export function IntroScreenInit(): boolean {
   // Set so next time we come in, we can set up
   gfIntroScreenEntry = true;
 
-  return 1;
+  return true;
 }
 
-export function IntroScreenShutdown(): UINT32 {
-  return 1;
+export function IntroScreenShutdown(): boolean {
+  return true;
 }
 
 export function IntroScreenHandle(): UINT32 {

@@ -202,7 +202,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
   SetPendingNewScreen(Enum26.FADE_SCREEN);
 }
 
-export function FadeScreenInit(): UINT32 {
+export function FadeScreenInit(): boolean {
   return true;
 }
 
@@ -263,7 +263,7 @@ export function FadeScreenHandle(): UINT32 {
   return Enum26.FADE_SCREEN;
 }
 
-export function FadeScreenShutdown(): UINT32 {
+export function FadeScreenShutdown(): boolean {
   return false;
 }
 

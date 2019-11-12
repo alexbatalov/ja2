@@ -4579,7 +4579,7 @@ export function HandleTacticalUILoseCursorFromOtherScreen(): void {
 
   ErasePath(true);
 
-  ((GameScreens[Enum26.GAME_SCREEN].HandleScreen).value)();
+  GameScreens[Enum26.GAME_SCREEN].HandleScreen();
 
   gfTacticalForceNoCursor = false;
 

@@ -424,7 +424,7 @@ let gArmsDealersDropItemToGroundMouseRegions: MOUSE_REGION = createMouseRegion()
 // screen handler functions
 //
 
-export function ShopKeeperScreenInit(): UINT32 {
+export function ShopKeeperScreenInit(): boolean {
   // Set so next time we come in, we can set up
   gfSKIScreenEntry = true;
 
@@ -510,7 +510,7 @@ export function ShopKeeperScreenHandle(): UINT32 {
   return Enum26.SHOPKEEPER_SCREEN;
 }
 
-export function ShopKeeperScreenShutdown(): UINT32 {
+export function ShopKeeperScreenShutdown(): boolean {
   ShutDownArmsDealers();
 
   return true;

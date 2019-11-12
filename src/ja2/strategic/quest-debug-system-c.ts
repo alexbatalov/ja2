@@ -473,7 +473,7 @@ let guiQDPgDownButtonButton: UINT32;
 //
 //*******************************
 
-export function QuestDebugScreenInit(): UINT32 {
+export function QuestDebugScreenInit(): boolean {
   let usListBoxFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT()) + 2;
 
   // Set so next time we come in, we can set up
@@ -618,7 +618,7 @@ export function QuestDebugScreenHandle(): UINT32 {
   return Enum26.QUEST_DEBUG_SCREEN;
 }
 
-export function QuestDebugScreenShutdown(): UINT32 {
+export function QuestDebugScreenShutdown(): boolean {
   return true;
 }
 
