@@ -109,7 +109,7 @@ export function RenderFloristCards(): void {
 
   DrawTextToScreen(sFloristCards[Enum348.FLORIST_CARDS_CLICK_SELECTION], FLORIST_CARD_TITLE_SENTENCE_X, FLORIST_CARD_TITLE_SENTENCE_Y, FLORIST_CARD_TITLE_SENTENCE_WIDTH, FONT10ARIAL(), FLORIST_CARDS_SENTENCE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
-  GetVideoObject(addressof(hPixHandle), guiCardBackground);
+  hPixHandle = GetVideoObject(guiCardBackground);
   usPosY = FLORIST_CARD_FIRST_POS_Y;
   ubCount = 0;
   for (j = 0; j < 3; j++) {

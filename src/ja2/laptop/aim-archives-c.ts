@@ -267,8 +267,8 @@ export function RenderAimArchives(): void {
   DrawTextToScreen(AimAlumniText[Enum361.AIM_ALUMNI_ALUMNI], AIM_ALUMNI_TITLE_X, AIM_ALUMNI_TITLE_Y, AIM_ALUMNI_TITLE_WIDTH, AIM_ALUMNI_TITLE_FONT(), AIM_ALUMNI_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Draw the mug shot border and face
-  GetVideoObject(addressof(hFrameHandle), guiAlumniFrame);
-  GetVideoObject(addressof(hFaceHandle), guiOldAim);
+  hFrameHandle = GetVideoObject(guiAlumniFrame);
+  hFaceHandle = GetVideoObject(guiOldAim);
 
   switch (gubPageNum) {
     case 0:
@@ -430,10 +430,10 @@ function DisplayAlumniOldMercPopUp(): void {
   let uiStartLoc: UINT32;
   let usStringPixLength: UINT16;
 
-  GetVideoObject(addressof(hAlumniPopUpHandle), guiAlumniPopUp);
-  GetVideoObject(addressof(hDoneHandle), guiDoneButton);
-  GetVideoObject(addressof(hFacePaneHandle), guiPopUpPic);
-  GetVideoObject(addressof(hFaceHandle), guiOldAim);
+  hAlumniPopUpHandle = GetVideoObject(guiAlumniPopUp);
+  hDoneHandle = GetVideoObject(guiDoneButton);
+  hFacePaneHandle = GetVideoObject(guiPopUpPic);
+  hFaceHandle = GetVideoObject(guiOldAim);
 
   ubFontHeight = GetFontHeight(AIM_ALUMNI_POPUP_FONT());
 

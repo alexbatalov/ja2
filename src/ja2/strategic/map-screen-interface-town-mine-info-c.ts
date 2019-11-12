@@ -606,7 +606,7 @@ function AddInventoryButtonForMapPopUpBox(): void {
   uiObject = AddVideoObject(VObjectDesc);
 
   // Calculate smily face positions...
-  GetVideoObject(addressof(hHandle), uiObject);
+  hHandle = GetVideoObject(uiObject);
   pTrav = addressof(hHandle.value.pETRLEObject[0]);
 
   sWidthA = pTrav.value.usWidth;
@@ -710,7 +710,7 @@ function MinWidthOfTownMineInfoBox(): void {
   uiObject = AddVideoObject(VObjectDesc);
 
   // Calculate smily face positions...
-  GetVideoObject(addressof(hHandle), uiObject);
+  hHandle = GetVideoObject(uiObject);
   pTrav = addressof(hHandle.value.pETRLEObject[0]);
 
   sWidthA = pTrav.value.usWidth;

@@ -488,11 +488,11 @@ function RenderMainMenu(): void {
   let hPixHandle: HVOBJECT;
 
   // Get and display the background image
-  GetVideoObject(addressof(hPixHandle), guiMainMenuBackGroundImage);
+  hPixHandle = GetVideoObject(guiMainMenuBackGroundImage);
   BltVideoObject(guiSAVEBUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
-  GetVideoObject(addressof(hPixHandle), guiJa2LogoImage);
+  hPixHandle = GetVideoObject(guiJa2LogoImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, null);
   BltVideoObject(guiSAVEBUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, null);
 

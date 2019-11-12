@@ -432,7 +432,7 @@ export function GoIntoOverheadMap(): void {
     AssertMsg(0, "Missing INTERFACE\\PERSONS.sti");
 
   // Add shades to persons....
-  GetVideoObject(addressof(hVObject), uiPERSONS);
+  hVObject = GetVideoObject(uiPERSONS);
   hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 256, 256, 256, false);
   hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 310, 310, 310, false);
   hVObject.value.pShades[2] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 0, 0, 0, false);
@@ -560,7 +560,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
   // Get video object for persons...
   if (!fFromMapUtility) {
-    GetVideoObject(addressof(hVObject), uiPERSONS);
+    hVObject = GetVideoObject(uiPERSONS);
   }
 
   if (gfOverheadMapDirty) {
@@ -901,7 +901,7 @@ function RenderOverheadOverlays(): void {
   let ubPassengers: UINT8 = 0;
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-  GetVideoObject(addressof(hVObject), uiPERSONS);
+  hVObject = GetVideoObject(uiPERSONS);
 
   // SOLDIER OVERLAY
   if (gfTacticalPlacementGUIActive) {

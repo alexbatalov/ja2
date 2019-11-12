@@ -738,7 +738,7 @@ export function RenderPreBattleInterface(): void {
     }
 
     gfRenderPBInterface = false;
-    GetVideoObject(addressof(hVObject), uiInterfaceImages);
+    hVObject = GetVideoObject(uiInterfaceImages);
     // main panel
     BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.MAINPANEL, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
     // main title

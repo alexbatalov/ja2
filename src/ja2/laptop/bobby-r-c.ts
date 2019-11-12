@@ -265,27 +265,27 @@ export function RenderBobbyR(): void {
   DrawBobbyRWoodBackground();
 
   // Bobby's Name
-  GetVideoObject(addressof(hPixHandle), guiBobbyName);
+  hPixHandle = GetVideoObject(guiBobbyName);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBY_RAYS_NAME_X, BOBBY_RAYS_NAME_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Plaque
-  GetVideoObject(addressof(hPixHandle), guiPlaque);
+  hPixHandle = GetVideoObject(guiPlaque);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYS_PLAQUES_X, BOBBYS_PLAQUES_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Top Hinge
-  GetVideoObject(addressof(hPixHandle), guiTopHinge);
+  hPixHandle = GetVideoObject(guiTopHinge);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBIES_TOPHINGE_X, BOBBIES_TOPHINGE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Bottom Hinge
-  GetVideoObject(addressof(hPixHandle), guiBottomHinge);
+  hPixHandle = GetVideoObject(guiBottomHinge);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBIES_BOTTOMHINGE_X, BOBBIES_BOTTOMHINGE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // StorePlaque
-  GetVideoObject(addressof(hStorePlaqueHandle), guiStorePlaque);
+  hStorePlaqueHandle = GetVideoObject(guiStorePlaque);
   BltVideoObject(FRAME_BUFFER, hStorePlaqueHandle, 0, BOBBIES_STORE_PLAQUE_X, BOBBIES_STORE_PLAQUE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Handle
-  GetVideoObject(addressof(hPixHandle), guiHandle);
+  hPixHandle = GetVideoObject(guiHandle);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBIES_HANDLE_X, BOBBIES_HANDLE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   /*
@@ -365,7 +365,7 @@ export function DrawBobbyRWoodBackground(): boolean {
   let uiPosY: UINT16;
 
   // Blt the Wood background
-  GetVideoObject(addressof(hWoodBackGroundHandle), guiWoodBackground);
+  hWoodBackGroundHandle = GetVideoObject(guiWoodBackground);
 
   uiPosY = BOBBY_WOOD_BACKGROUND_Y;
   for (y = 0; y < 4; y++) {
@@ -457,7 +457,7 @@ function HandleBobbyRUnderConstructionAni(fReset: boolean): void {
 
   if (((uiCurTime - uiLastTime) > BOBBYR_UNDERCONSTRUCTION_ANI_DELAY) || (fReDrawScreenFlag)) {
     // The undercontsruction graphic
-    GetVideoObject(addressof(hPixHandle), guiUnderConstructionImage);
+    hPixHandle = GetVideoObject(guiUnderConstructionImage);
     BltVideoObject(FRAME_BUFFER, hPixHandle, usCount, BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     BltVideoObject(FRAME_BUFFER, hPixHandle, usCount, BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION1_Y, VO_BLT_SRCTRANSPARENCY, null);

@@ -470,11 +470,11 @@ export function RenderPersonnel(): void {
   // render main background
 
   // blit title
-  GetVideoObject(addressof(hHandle), guiTITLE);
+  hHandle = GetVideoObject(guiTITLE);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y - 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // blit screen
-  GetVideoObject(addressof(hHandle), guiSCREEN);
+  hHandle = GetVideoObject(guiSCREEN);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y + 22, VO_BLT_SRCTRANSPARENCY, null);
 
   // render pictures of mercs on scnree
@@ -664,7 +664,7 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: b
   }
 
   // Blt face to screen to
-  GetVideoObject(addressof(hFaceHandle), guiFACE);
+  hFaceHandle = GetVideoObject(guiFACE);
 
   if (fCurrentTeamMode == true) {
     if (MercPtrs[iId].value.bLife <= 0) {
@@ -1545,10 +1545,10 @@ function RenderPersonnelScreenBackground(): void {
   // this fucntion will render the background for the personnel screen
   if (fCurrentTeamMode == true) {
     // blit title
-    GetVideoObject(addressof(hHandle), guiCURRENTTEAM);
+    hHandle = GetVideoObject(guiCURRENTTEAM);
   } else {
     // blit title
-    GetVideoObject(addressof(hHandle), guiDEPARTEDTEAM);
+    hHandle = GetVideoObject(guiDEPARTEDTEAM);
   }
 
   BltVideoObject(FRAME_BUFFER, hHandle, 0, DEPARTED_X, DEPARTED_Y, VO_BLT_SRCTRANSPARENCY, null);
@@ -1708,7 +1708,7 @@ function DisplayPicturesOfCurrentTeam(): boolean {
       }
 
       // Blt face to screen to
-      GetVideoObject(addressof(hFaceHandle), guiFACE);
+      hFaceHandle = GetVideoObject(guiFACE);
 
       if (Menptr[iId + iCnt].bLife <= 0) {
         hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
@@ -1877,7 +1877,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   let cnt: INT32 = 0;
   let iTotalAmmo: INT32 = 0;
 
-  GetVideoObject(addressof(hHandle), guiPersonnelInventory);
+  hHandle = GetVideoObject(guiPersonnelInventory);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, (397), (200), VO_BLT_SRCTRANSPARENCY, null);
 
   if (fCurrentTeamMode == false) {
@@ -1910,7 +1910,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         sIndex = (pSoldier.value.inv[ubCounter].usItem);
         pItem = addressof(Item[sIndex]);
 
-        GetVideoObject(addressof(hHandle), GetInterfaceGraphicForItem(pItem));
+        hHandle = GetVideoObject(GetInterfaceGraphicForItem(pItem));
         pTrav = addressof(hHandle.value.pETRLEObject[pItem.value.ubGraphicNum]);
 
         usHeight = pTrav.value.usHeight;
@@ -3982,7 +3982,7 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, 
   }
 
   // Blt face to screen to
-  GetVideoObject(addressof(hFaceHandle), guiFACE);
+  hFaceHandle = GetVideoObject(guiFACE);
 
   if (fDead) {
     hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
@@ -4327,7 +4327,7 @@ function DisplayHighLightBox(): boolean {
   }
 
   // blit it
-  GetVideoObject(addressof(hHandle), uiBox);
+  hHandle = GetVideoObject(uiBox);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, (SMALL_PORTRAIT_START_X + (iCurrentPersonSelectedId % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH - 2), (SMALL_PORTRAIT_START_Y + (iCurrentPersonSelectedId / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT - 3), VO_BLT_SRCTRANSPARENCY, null);
 
   // deleteit
@@ -4494,7 +4494,7 @@ function RenderAtmPanel(): boolean {
     }
 
     // blit it
-    GetVideoObject(addressof(hHandle), uiBox);
+    hHandle = GetVideoObject(uiBox);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, (ATM_UL_X), (ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, null);
 
     DeleteVideoObjectFromIndex(uiBox);
@@ -4523,11 +4523,11 @@ function RenderAtmPanel(): boolean {
       return false;
     }
 
-    GetVideoObject(addressof(hHandle), uiBox);
+    hHandle = GetVideoObject(uiBox);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, (ATM_UL_X), (ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, null);
 
     // blit it
-    GetVideoObject(addressof(hHandle), uiBox);
+    hHandle = GetVideoObject(uiBox);
     BltVideoObject(FRAME_BUFFER, hHandle, 1, (ATM_UL_X + 1), (ATM_UL_Y + 18), VO_BLT_SRCTRANSPARENCY, null);
 
     DeleteVideoObjectFromIndex(uiBox);
@@ -4694,7 +4694,7 @@ function RenderSliderBarForPersonnelInventory(): void {
   let hHandle: HVOBJECT;
 
   // render slider bar for personnel
-  GetVideoObject(addressof(hHandle), guiPersonnelInventory);
+  hHandle = GetVideoObject(guiPersonnelInventory);
   BltVideoObject(FRAME_BUFFER, hHandle, 5, (X_OF_PERSONNEL_SCROLL_REGION), (guiSliderPosition + Y_OF_PERSONNEL_SCROLL_REGION), VO_BLT_SRCTRANSPARENCY, null);
 }
 

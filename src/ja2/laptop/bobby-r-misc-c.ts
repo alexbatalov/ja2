@@ -57,7 +57,7 @@ export function RenderBobbyRMisc(): void {
   DisplayBobbyRBrTitle();
 
   // GunForm
-  GetVideoObject(addressof(hPixHandle), guiMiscGrid);
+  hPixHandle = GetVideoObject(guiMiscGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   DisplayItemInfo(IC_BOBBY_MISC);

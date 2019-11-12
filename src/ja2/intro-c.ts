@@ -364,7 +364,7 @@ function DisplaySirtechSplashScreen(): void {
     return;
   }
 
-  GetVideoObject(addressof(hPixHandle), uiLogoID);
+  hPixHandle = GetVideoObject(uiLogoID);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
   DeleteVideoObjectFromIndex(uiLogoID);
 

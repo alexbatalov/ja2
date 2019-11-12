@@ -339,7 +339,7 @@ function InitTocMenu(): boolean {
 
   let hContentButtonHandle: HVOBJECT;
 
-  GetVideoObject(addressof(hContentButtonHandle), guiContentButton);
+  hContentButtonHandle = GetVideoObject(guiContentButton);
 
   usHeight = GetFontHeight(AIM_HISTORY_TOC_TEXT_FONT());
   usPosY = AIM_HISTORY_CONTENTBUTTON_Y;

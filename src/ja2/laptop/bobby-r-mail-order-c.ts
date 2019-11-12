@@ -482,7 +482,7 @@ export function HandleBobbyRMailOrder(): void {
     let hPixHandle: HVOBJECT;
 
     // Bobbyray title
-    GetVideoObject(addressof(hPixHandle), guiConfirmGraphic);
+    hPixHandle = GetVideoObject(guiConfirmGraphic);
     BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, guiConfirmGraphic, 0, BOBBYR_CONFIRM_ORDER_X + 3, BOBBYR_CONFIRM_ORDER_Y + 3);
 
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_CONFIRM_ORDER_X, BOBBYR_CONFIRM_ORDER_Y, VO_BLT_SRCTRANSPARENCY, null);
@@ -519,19 +519,19 @@ export function RenderBobbyRMailOrder(): void {
   DrawBobbyROrderTitle();
 
   // Order Grid
-  GetVideoObject(addressof(hPixHandle), guiBobbyROrderGrid);
+  hPixHandle = GetVideoObject(guiBobbyROrderGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_ORDERGRID_X, BOBBYR_ORDERGRID_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Location graphic
-  GetVideoObject(addressof(hPixHandle), guiBobbyRLocationGraphic);
+  hPixHandle = GetVideoObject(guiBobbyRLocationGraphic);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_LOCATION_BOX_X, BOBBYR_LOCATION_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // DeliverySpeedGraphic
-  GetVideoObject(addressof(hPixHandle), guiDeliverySpeedGraphic);
+  hPixHandle = GetVideoObject(guiDeliverySpeedGraphic);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_DELIVERYSPEED_X, BOBBYR_DELIVERYSPEED_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Package Weight
-  GetVideoObject(addressof(hPixHandle), guiPackageWeightImage);
+  hPixHandle = GetVideoObject(guiPackageWeightImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_PACKAXGE_WEIGHT_X, BOBBYR_PACKAXGE_WEIGHT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   //
@@ -942,7 +942,7 @@ function DisplayShippingCosts(fCalledFromOrderPage: boolean, iSubTotal: INT32, u
   // erase the old area
   // bli the total Saved area onto the grid
   if (fCalledFromOrderPage) {
-    GetVideoObject(addressof(hPixHandle), guiTotalSaveArea);
+    hPixHandle = GetVideoObject(guiTotalSaveArea);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_TOTAL_SAVED_AREA_X, BOBBYR_TOTAL_SAVED_AREA_Y, VO_BLT_SRCTRANSPARENCY, null);
   }
 
@@ -1194,7 +1194,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       //
       usHeight = BOBBYR_SCROLL_AREA_HEIGHT;
 
-      GetVideoObject(addressof(hImageHandle), guiDropDownBorder);
+      hImageHandle = GetVideoObject(guiDropDownBorder);
 
       usPosX = usPosY = 0;
       // blit top & bottom row of images
@@ -1250,7 +1250,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       BltVideoObject(FRAME_BUFFER, hImageHandle, 4, BOBBYR_DROP_DOWN_WIDTH - 4 + BOBBYR_CITY_START_LOCATION_X, BOBBYR_CITY_START_LOCATION_Y + 2, VO_BLT_SRCTRANSPARENCY, null);
 
       // get and display the up and down arrows
-      GetVideoObject(addressof(hArrowHandle), guiGoldArrowImages);
+      hArrowHandle = GetVideoObject(guiGoldArrowImages);
       // top arrow
       BltVideoObject(FRAME_BUFFER, hArrowHandle, 1, BOBBYR_SCROLL_UP_ARROW_X, BOBBYR_SCROLL_UP_ARROW_Y, VO_BLT_SRCTRANSPARENCY, null);
 
@@ -1922,7 +1922,7 @@ export function DrawBobbyROrderTitle(): void {
   let hPixHandle: HVOBJECT;
 
   // Bobbyray title
-  GetVideoObject(addressof(hPixHandle), guiBobbyRayTitle);
+  hPixHandle = GetVideoObject(guiBobbyRayTitle);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_BOBBY_RAY_TITLE_X, BOBBYR_BOBBY_RAY_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
 }
 

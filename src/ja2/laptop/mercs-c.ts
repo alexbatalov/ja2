@@ -488,19 +488,19 @@ export function RenderMercs(): void {
   DrawMecBackGround();
 
   // Title
-  GetVideoObject(addressof(hPixHandle), guiMercSymbol);
+  hPixHandle = GetVideoObject(guiMercSymbol);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_TITLE_X, MERC_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Speck Portrait
-  GetVideoObject(addressof(hPixHandle), guiSpecPortrait);
+  hPixHandle = GetVideoObject(guiSpecPortrait);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_PORTRAIT_X, MERC_PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Account Box
-  GetVideoObject(addressof(hPixHandle), guiAccountBox);
+  hPixHandle = GetVideoObject(guiAccountBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_ACCOUNT_BOX_X, MERC_ACCOUNT_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Files Box
-  GetVideoObject(addressof(hPixHandle), guiFilesBox);
+  hPixHandle = GetVideoObject(guiFilesBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILE_BOX_X, MERC_FILE_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Text on the Speck Portrait
@@ -1943,7 +1943,7 @@ export function GetMercSiteBackOnline(): void {
 function DrawMercVideoBackGround(): void {
   let hPixHandle: HVOBJECT;
 
-  GetVideoObject(addressof(hPixHandle), guiMercVideoPopupBackground);
+  hPixHandle = GetVideoObject(guiMercVideoPopupBackground);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_VIDEO_BACKGROUND_X, MERC_VIDEO_BACKGROUND_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // put the title on the window

@@ -155,7 +155,7 @@ export function RenderMapScreenInterfaceBottom(): void {
   // render whole panel
   if (fMapScreenBottomDirty == true) {
     // get and blt panel
-    GetVideoObject(addressof(hHandle), guiMAPBOTTOMPANEL);
+    hHandle = GetVideoObject(guiMAPBOTTOMPANEL);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BOTTOM_X, MAP_BOTTOM_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     if (GetSectorFlagStatus(sSelMapX, sSelMapY, iCurrentMapSectorZ, SF_ALREADY_VISITED) == true) {
@@ -766,7 +766,7 @@ function DisplayScrollBarSlider(): void {
     // calculate where slider should be positioned
     ubSliderOffset = (SLIDER_BAR_RANGE * gubFirstMapscreenMessageIndex) / (ubNumMessages - MAX_MESSAGES_ON_MAP_BOTTOM);
 
-    GetVideoObject(addressof(hHandle), guiSliderBar);
+    hHandle = GetVideoObject(guiSliderBar);
     BltVideoObject(FRAME_BUFFER, hHandle, 8, MESSAGE_SCROLL_AREA_START_X + 2, MESSAGE_SCROLL_AREA_START_Y + ubSliderOffset, VO_BLT_SRCTRANSPARENCY, null);
   }
 }

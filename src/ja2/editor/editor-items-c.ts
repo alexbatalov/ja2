@@ -273,7 +273,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
     for (i = 0; i < eInfo.sNumItems; i++) {
       item = addressof(Item[KeyTable[0].usItem + LockTable[i].usKeyItem]);
       uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-      GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
+      hVObject = GetVideoObject(uiVideoObjectIndex);
 
       // Store these item pointers for later when rendering selected items.
       eInfo.pusItemIndex[i] = KeyTable[0].usItem + LockTable[i].usKeyItem;
@@ -359,7 +359,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
           }
         if (fTypeMatch) {
           uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-          GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
+          hVObject = GetVideoObject(uiVideoObjectIndex);
 
           // Store these item pointers for later when rendering selected items.
           eInfo.pusItemIndex[i] = usCounter;
@@ -481,7 +481,7 @@ export function RenderEditorItemsInfo(): void {
     if (eInfo.pusItemIndex) {
       item = addressof(Item[eInfo.pusItemIndex[eInfo.sHilitedItemIndex]]);
       uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-      GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
+      hVObject = GetVideoObject(uiVideoObjectIndex);
       x = (eInfo.sHilitedItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sHilitedItemIndex % 2) * 40;
       sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
@@ -497,7 +497,7 @@ export function RenderEditorItemsInfo(): void {
     if (eInfo.pusItemIndex) {
       item = addressof(Item[eInfo.pusItemIndex[eInfo.sSelItemIndex]]);
       uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-      GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
+      hVObject = GetVideoObject(uiVideoObjectIndex);
       x = (eInfo.sSelItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sSelItemIndex % 2) * 40;
       sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;

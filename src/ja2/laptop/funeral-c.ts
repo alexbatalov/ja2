@@ -191,23 +191,23 @@ export function RenderFuneral(): void {
   WebPageTileBackground(4, 4, FUNERAL_MARBLE_WIDTH, FUNERAL_MARBLE_HEIGHT, guiMarbleBackground);
 
   // LeftColumn
-  GetVideoObject(addressof(hPixHandle), guiLeftColumn);
+  hPixHandle = GetVideoObject(guiLeftColumn);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_LEFT_COLUMN_X, FUNERAL_LEFT_COLUMN_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Mcgillicuttys
-  GetVideoObject(addressof(hPixHandle), guiMcGillicuttys);
+  hPixHandle = GetVideoObject(guiMcGillicuttys);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_MCGILICUTTYS_SIGN_X, FUNERAL_MCGILICUTTYS_SIGN_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Mortuary
-  GetVideoObject(addressof(hPixHandle), guiMortuary);
+  hPixHandle = GetVideoObject(guiMortuary);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_MORTUARY_SIGN_X, FUNERAL_MORTUARY_SIGN_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // right column
-  GetVideoObject(addressof(hPixHandle), guiRightColumn);
+  hPixHandle = GetVideoObject(guiRightColumn);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_RIGHT_COLUMN_X, FUNERAL_RIGHT_COLUMN_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // LinkCarving
-  GetVideoObject(addressof(hPixHandle), guiLinkCarving);
+  hPixHandle = GetVideoObject(guiLinkCarving);
 
   usPosX = FUNERAL_LINK_1_X;
   for (i = 0; i < FUNERAL_NUMBER_OF_LINKS; i++) {
@@ -250,7 +250,7 @@ function DisplayFuneralRipTombStone(): void {
   let hPixHandle: HVOBJECT;
 
   // rip tombstone
-  GetVideoObject(addressof(hPixHandle), guiClosedSign);
+  hPixHandle = GetVideoObject(guiClosedSign);
   BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, guiClosedSign, 0, FUNERAL_CLOSED_RIP_SIGN_X + 5, FUNERAL_CLOSED_RIP_SIGN_Y + 5);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, VO_BLT_SRCTRANSPARENCY, null);
 

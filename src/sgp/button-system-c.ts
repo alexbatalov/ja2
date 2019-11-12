@@ -2769,7 +2769,7 @@ function DrawIconOnButton(b: GUI_BUTTON): void {
     if (b.uiFlags & BUTTON_GENERIC)
       pTrav = GenericButtonIcons[b.iIconID].value.pETRLEObject[b.usIconIndex];
     else {
-      GetVideoObject(addressof(hvObject), b.iIconID);
+      hvObject = GetVideoObject(b.iIconID);
       pTrav = hvObject.value.pETRLEObject[b.usIconIndex];
     }
     IconH = (pTrav.usHeight + pTrav.sOffsetY);

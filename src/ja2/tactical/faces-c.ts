@@ -245,7 +245,7 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   pFace.value.uiFlags = uiInitFlags;
 
   // Set palette
-  if (GetVideoObject(addressof(hVObject), uiVideoObject)) {
+  if ((hVObject = GetVideoObject(uiVideoObject))) {
     // Build a grayscale palette! ( for testing different looks )
     for (uiCount = 0; uiCount < 256; uiCount++) {
       Pal[uiCount].peRed = 255;
@@ -914,7 +914,7 @@ function GetXYForIconPlacement(pFace: Pointer<FACETYPE>, ubIndex: UINT16, sFaceX
   let hVObject: HVOBJECT;
 
   // Get height, width of icon...
-  GetVideoObject(addressof(hVObject), guiPORTRAITICONS);
+  hVObject = GetVideoObject(guiPORTRAITICONS);
   pTrav = addressof(hVObject.value.pETRLEObject[ubIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
@@ -935,7 +935,7 @@ function GetXYForRightIconPlacement(pFace: Pointer<FACETYPE>, ubIndex: UINT16, s
   let hVObject: HVOBJECT;
 
   // Get height, width of icon...
-  GetVideoObject(addressof(hVObject), guiPORTRAITICONS);
+  hVObject = GetVideoObject(guiPORTRAITICONS);
   pTrav = addressof(hVObject.value.pETRLEObject[ubIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;

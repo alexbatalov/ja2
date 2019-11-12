@@ -199,7 +199,7 @@ function BtnBobbyRShipmentHomeCallback(btn: GUI_BUTTON, reason: INT32): void {
 function DisplayShipmentGrid(): void {
   let hPixHandle: HVOBJECT;
 
-  GetVideoObject(addressof(hPixHandle), guiBobbyRShipmentGrid);
+  hPixHandle = GetVideoObject(guiBobbyRShipmentGrid);
 
   // Shipment Order Grid
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_SHIPMENT_DELIVERY_GRID_X, BOBBYR_SHIPMENT_DELIVERY_GRID_Y, VO_BLT_SRCTRANSPARENCY, null);

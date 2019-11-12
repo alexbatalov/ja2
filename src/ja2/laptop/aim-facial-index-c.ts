@@ -227,16 +227,16 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
   pSoldier = FindSoldierByProfileID(AimMercArray[ubMercID], true);
 
   // Blt the portrait background
-  GetVideoObject(addressof(hMugShotBorderHandle), guiMugShotBorder);
+  hMugShotBorderHandle = GetVideoObject(guiMugShotBorder);
   BltVideoObject(FRAME_BUFFER, hMugShotBorderHandle, ubImage, usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
   // Blt face to screen
-  GetVideoObject(addressof(hFaceHandle), guiAimFiFace[ubMercID]);
+  hFaceHandle = GetVideoObject(guiAimFiFace[ubMercID]);
   BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, VO_BLT_SRCTRANSPARENCY, null);
 
   if (IsMercDead(AimMercArray[ubMercID])) {
     // get the face object
-    GetVideoObject(addressof(hFaceHandle), guiAimFiFace[ubMercID]);
+    hFaceHandle = GetVideoObject(guiAimFiFace[ubMercID]);
 
     // if the merc is dead
     // shade the face red, (to signif that he is dead)

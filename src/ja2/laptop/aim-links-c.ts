@@ -110,14 +110,14 @@ export function RenderAimLinks(): void {
   DrawAimDefaults();
   DisableAimButton();
 
-  GetVideoObject(addressof(hPixHandle), guiBobbyLink);
+  hPixHandle = GetVideoObject(guiBobbyLink);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, AIM_LINK_BOBBY_LINK_X, AIM_LINK_BOBBY_LINK_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-  GetVideoObject(addressof(hPixHandle), guiFuneralLink);
+  hPixHandle = GetVideoObject(guiFuneralLink);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, AIM_LINK_FUNERAL_LINK_X, AIM_LINK_FUNERAL_LINK_Y, VO_BLT_SRCTRANSPARENCY, null);
   //	DrawTextToScreen(AimLinkText[AIM_LINK_FUNERAL], AIM_LINK_BOBBY_LINK_X, AIM_LINK_LINK_TEXT_2_Y, AIM_LINK_LINK_WIDTH, AIM_LINK_FONT, AIM_LINK_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
-  GetVideoObject(addressof(hPixHandle), guiInsuranceLink);
+  hPixHandle = GetVideoObject(guiInsuranceLink);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, AIM_LINK_INSURANCE_LINK_X, AIM_LINK_INSURANCE_LINK_Y, VO_BLT_SRCTRANSPARENCY, null);
   //	DrawTextToScreen(AimLinkText[AIM_LINK_LISTENING], AIM_LINK_BOBBY_LINK_X, AIM_LINK_LINK_TEXT_3_Y, AIM_LINK_LINK_WIDTH, AIM_LINK_FONT, AIM_LINK_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 

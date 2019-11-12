@@ -340,7 +340,7 @@ function RenderCharProfileFinishFace(): boolean {
         }
 
         // show it
-        GetVideoObject(addressof(hHandle), uiGraphicHandle);
+        hHandle = GetVideoObject(uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -358,7 +358,7 @@ function RenderCharProfileFinishFace(): boolean {
         }
 
         // show it
-        GetVideoObject(addressof(hHandle), uiGraphicHandle);
+        hHandle = GetVideoObject(uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -376,7 +376,7 @@ function RenderCharProfileFinishFace(): boolean {
         }
 
         // show it
-        GetVideoObject(addressof(hHandle), uiGraphicHandle);
+        hHandle = GetVideoObject(uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -397,7 +397,7 @@ function RenderCharProfileFinishFace(): boolean {
         }
 
         // show it
-        GetVideoObject(addressof(hHandle), uiGraphicHandle);
+        hHandle = GetVideoObject(uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -415,7 +415,7 @@ function RenderCharProfileFinishFace(): boolean {
         }
 
         // show it
-        GetVideoObject(addressof(hHandle), uiGraphicHandle);
+        hHandle = GetVideoObject(uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -433,7 +433,7 @@ function RenderCharProfileFinishFace(): boolean {
         }
 
         // show it
-        GetVideoObject(addressof(hHandle), uiGraphicHandle);
+        hHandle = GetVideoObject(uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, null);
 
         // and kick it's sorry ..umm never mind, outta here

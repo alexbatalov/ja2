@@ -111,7 +111,7 @@ export function RenderAccumulatedBurstLocations(): void {
   }
 
   // Loop through each location...
-  GetVideoObject(addressof(hVObject), guiBURSTACCUM);
+  hVObject = GetVideoObject(guiBURSTACCUM);
 
   // If on screen, render
 

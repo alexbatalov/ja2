@@ -74,7 +74,7 @@ export function RenderProfileBackGround(): void {
   // this procedure will render the generic backgound to the screen
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiBACKGROUND);
+  hHandle = GetVideoObject(guiBACKGROUND);
 
   // render each row 5 times wide, 5 tiles high
   for (iCounter = 0; iCounter < 4; iCounter++) {
@@ -118,7 +118,7 @@ export function RenderIMPSymbol(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiIMPSYMBOL);
+  hHandle = GetVideoObject(guiIMPSYMBOL);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -151,7 +151,7 @@ export function RenderBeginIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiBEGININDENT);
+  hHandle = GetVideoObject(guiBEGININDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -183,7 +183,7 @@ export function RenderActivationIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiACTIVATIONINDENT);
+  hHandle = GetVideoObject(guiACTIVATIONINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -215,7 +215,7 @@ export function RenderFrontPageIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiFRONTPAGEINDENT);
+  hHandle = GetVideoObject(guiFRONTPAGEINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -247,7 +247,7 @@ function RenderAnalyse(sX: INT16, sY: INT16, bImageNumber: INT8): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiANALYSE);
+  hHandle = GetVideoObject(guiANALYSE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, bImageNumber, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -279,7 +279,7 @@ function RenderAttributeGraph(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiATTRIBUTEGRAPH);
+  hHandle = GetVideoObject(guiATTRIBUTEGRAPH);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -311,7 +311,7 @@ function RenderAttributeBarGraph(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiATTRIBUTEGRAPHBAR);
+  hHandle = GetVideoObject(guiATTRIBUTEGRAPHBAR);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -343,7 +343,7 @@ function RenderFullNameIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiFULLNAMEINDENT);
+  hHandle = GetVideoObject(guiFULLNAMEINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -375,7 +375,7 @@ export function RenderNickNameIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiNICKNAMEINDENT);
+  hHandle = GetVideoObject(guiNICKNAMEINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -407,7 +407,7 @@ export function RenderNameIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiNAMEINDENT);
+  hHandle = GetVideoObject(guiNAMEINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -439,7 +439,7 @@ export function RenderGenderIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiGENDERINDENT);
+  hHandle = GetVideoObject(guiGENDERINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -471,7 +471,7 @@ function RenderSmallFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiSMALLFRAME);
+  hHandle = GetVideoObject(guiSMALLFRAME);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -503,7 +503,7 @@ function RenderSmallSilhouette(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiSMALLSILHOUETTE);
+  hHandle = GetVideoObject(guiSMALLSILHOUETTE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -535,7 +535,7 @@ export function RenderLargeSilhouette(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiLARGESILHOUETTE);
+  hHandle = GetVideoObject(guiLARGESILHOUETTE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -569,7 +569,7 @@ export function RenderAttributeFrame(sX: INT16, sY: INT16): void {
   let sCurrentY: INT16 = 0;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiATTRIBUTEFRAME);
+  hHandle = GetVideoObject(guiATTRIBUTEFRAME);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -601,7 +601,7 @@ export function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32
   sCurrentY = (10 + (iIndex * 20));
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiATTRIBUTEFRAME);
+  hHandle = GetVideoObject(guiATTRIBUTEFRAME);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 2, LAPTOP_SCREEN_UL_X + sX + 134, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, null);
@@ -643,7 +643,7 @@ export function RenderSliderBar(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiSLIDERBAR);
+  hHandle = GetVideoObject(guiSLIDERBAR);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -675,7 +675,7 @@ export function RenderButton2Image(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiBUTTON2IMAGE);
+  hHandle = GetVideoObject(guiBUTTON2IMAGE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -707,7 +707,7 @@ export function RenderButton4Image(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiBUTTON4IMAGE);
+  hHandle = GetVideoObject(guiBUTTON4IMAGE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -739,7 +739,7 @@ function RenderButton1Image(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiBUTTON1IMAGE);
+  hHandle = GetVideoObject(guiBUTTON1IMAGE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -771,7 +771,7 @@ export function RenderPortraitFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiPORTRAITFRAME);
+  hHandle = GetVideoObject(guiPORTRAITFRAME);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -803,7 +803,7 @@ export function RenderMainIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiMAININDENT);
+  hHandle = GetVideoObject(guiMAININDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -835,7 +835,7 @@ export function RenderQtnLongIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiLONGINDENT);
+  hHandle = GetVideoObject(guiLONGINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -867,7 +867,7 @@ export function RenderQtnShortIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiSHORTINDENT);
+  hHandle = GetVideoObject(guiSHORTINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -899,7 +899,7 @@ export function RenderQtnLongIndentHighFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiLONGHINDENT);
+  hHandle = GetVideoObject(guiLONGHINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -931,7 +931,7 @@ export function RenderQtnShortIndentHighFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiSHORTHINDENT);
+  hHandle = GetVideoObject(guiSHORTHINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -963,7 +963,7 @@ export function RenderQtnIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiQINDENT);
+  hHandle = GetVideoObject(guiQINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -995,7 +995,7 @@ export function RenderAttrib1IndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiA1INDENT);
+  hHandle = GetVideoObject(guiA1INDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -1027,7 +1027,7 @@ export function RenderAttrib2IndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiA2INDENT);
+  hHandle = GetVideoObject(guiA2INDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -1059,7 +1059,7 @@ export function RenderAvgMercIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiAVGMERCINDENT);
+  hHandle = GetVideoObject(guiAVGMERCINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -1091,7 +1091,7 @@ export function RenderAboutUsIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiABOUTUSINDENT);
+  hHandle = GetVideoObject(guiABOUTUSINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -1123,7 +1123,7 @@ export function RenderQtnShort2IndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiSHORT2INDENT);
+  hHandle = GetVideoObject(guiSHORT2INDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -1155,7 +1155,7 @@ export function RenderQtnShort2IndentHighFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(addressof(hHandle), guiSHORT2HINDENT);
+  hHandle = GetVideoObject(guiSHORT2HINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);

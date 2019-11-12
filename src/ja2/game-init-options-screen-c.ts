@@ -445,7 +445,7 @@ function RenderGIOScreen(): boolean {
   let usPosY: UINT16;
 
   // Get the main background screen graphic and blt it
-  GetVideoObject(addressof(hPixHandle), guiGIOMainBackGroundImage);
+  hPixHandle = GetVideoObject(guiGIOMainBackGroundImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
   // Shade the background

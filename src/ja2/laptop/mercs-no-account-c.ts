@@ -73,7 +73,7 @@ export function RenderMercsNoAccount(): void {
   DrawMecBackGround();
 
   // Title
-  GetVideoObject(addressof(hPixHandle), guiNoAccountImage);
+  hPixHandle = GetVideoObject(guiNoAccountImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_NO_ACCOUNT_IMAGE_X, MERC_NO_ACCOUNT_IMAGE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the sentence

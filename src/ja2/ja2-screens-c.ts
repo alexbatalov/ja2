@@ -646,7 +646,7 @@ export function SexScreenHandle(): UINT32 {
   }
 
   // Calculate smily face positions...
-  GetVideoObject(addressof(hVObject), guiSMILY);
+  hVObject = GetVideoObject(guiSMILY);
   pTrav = addressof(hVObject.value.pETRLEObject[0]);
 
   sX = ((640 - pTrav.value.usWidth) / 2);

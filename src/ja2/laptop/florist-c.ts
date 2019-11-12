@@ -116,7 +116,7 @@ export function RenderFlorist(): void {
   let usPosY: UINT16;
   let ubTextCounter: UINT8;
 
-  GetVideoObject(addressof(hPixHandle), guiHandBullet);
+  hPixHandle = GetVideoObject(guiHandBullet);
 
   DisplayFloristDefaults();
 
@@ -187,11 +187,11 @@ export function DisplayFloristDefaults(): void {
   // if its the first page
   if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_FLORIST) {
     gfHomePageActive = true;
-    GetVideoObject(addressof(hPixHandle), guiLargeTitleSymbol);
+    hPixHandle = GetVideoObject(guiLargeTitleSymbol);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLORIST_BIG_TITLE_X, FLORIST_BIG_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
   } else {
     gfHomePageActive = false;
-    GetVideoObject(addressof(hPixHandle), guiSmallTitleSymbol);
+    hPixHandle = GetVideoObject(guiSmallTitleSymbol);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
   }
 }

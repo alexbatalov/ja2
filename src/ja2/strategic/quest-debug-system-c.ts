@@ -1485,7 +1485,7 @@ function DisplaySelectedListBox(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, usPosX, usPosY - 1, usPosX + gpActiveListBox.value.usScrollBarWidth, usPosY + gpActiveListBox.value.usScrollHeight, Get16BPPColor(FROMRGB(192, 192, 192)));
 
   // get and display the up and down arrows
-  GetVideoObject(addressof(hImageHandle), guiQdScrollArrowImage);
+  hImageHandle = GetVideoObject(guiQdScrollArrowImage);
   // top arrow
   BltVideoObject(FRAME_BUFFER, hImageHandle, 0, usPosX - 5, usPosY - 1, VO_BLT_SRCTRANSPARENCY, null);
 

@@ -987,7 +987,7 @@ export function HandleDisplayOfSelectedMercArrows(): void {
     sYPosition += 6;
   }
 
-  GetVideoObject(addressof(hHandle), guiSelectedCharArrow);
+  hHandle = GetVideoObject(guiSelectedCharArrow);
   BltVideoObject(guiSAVEBUFFER, hHandle, 0, SELECTED_CHAR_ARROW_X, sYPosition, VO_BLT_SRCTRANSPARENCY, null);
 
   // now run through the selected list of guys, an arrow for each
@@ -1000,7 +1000,7 @@ export function HandleDisplayOfSelectedMercArrows(): void {
           sYPosition += 6;
         }
 
-        GetVideoObject(addressof(hHandle), guiSelectedCharArrow);
+        hHandle = GetVideoObject(guiSelectedCharArrow);
         BltVideoObject(guiSAVEBUFFER, hHandle, 0, SELECTED_CHAR_ARROW_X, sYPosition, VO_BLT_SRCTRANSPARENCY, null);
       }
     }
@@ -3725,7 +3725,7 @@ export function DisplaySoldierUpdateBox(): void {
   // Have the bottom of the box ALWAYS a set distance from the bottom of the map ( so user doesnt have to move mouse far )
   iY = 280 - iUpdatePanelHeight;
 
-  GetVideoObject(addressof(hBackGroundHandle), guiUpdatePanelTactical);
+  hBackGroundHandle = GetVideoObject(guiUpdatePanelTactical);
 
   // Display the 2 TOP corner pieces
   BltVideoObject(guiSAVEBUFFER, hBackGroundHandle, 0, iX - 4, iY - 4, VO_BLT_SRCTRANSPARENCY, null);
@@ -5043,7 +5043,7 @@ export function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, 
     return;
   }
 
-  GetVideoObject(addressof(hHandle), guiSectorLocatorGraphicID);
+  hHandle = GetVideoObject(guiSectorLocatorGraphicID);
 
   switch (ubLocatorID) {
     // grab zoomed out icon

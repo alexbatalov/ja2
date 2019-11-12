@@ -512,11 +512,11 @@ function RenderOptionsScreen(): void {
   let usWidth: UINT16 = 0;
 
   // Get and display the background image
-  GetVideoObject(addressof(hPixHandle), guiOptionBackGroundImage);
+  hPixHandle = GetVideoObject(guiOptionBackGroundImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
   // Get and display the titla image
-  GetVideoObject(addressof(hPixHandle), guiOptionsAddOnImages);
+  hPixHandle = GetVideoObject(guiOptionsAddOnImages);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 1, 0, 434, VO_BLT_SRCTRANSPARENCY, null);
 

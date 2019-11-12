@@ -677,7 +677,7 @@ function DrawHelpScreenBackGround(): boolean {
   let usPosX: UINT16;
 
   // Get and display the background image
-  GetVideoObject(addressof(hPixHandle), guiHelpScreenBackGround);
+  hPixHandle = GetVideoObject(guiHelpScreenBackGround);
 
   usPosX = gHelpScreen.usScreenLocX;
 

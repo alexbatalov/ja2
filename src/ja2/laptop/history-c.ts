@@ -289,13 +289,13 @@ function RenderHistoryBackGround(): void {
   let iCounter: INT32 = 0;
 
   // get title bar object
-  GetVideoObject(addressof(hHandle), guiTITLE);
+  hHandle = GetVideoObject(guiTITLE);
 
   // blt title bar to screen
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // get and blt the top part of the screen, video object and blt to screen
-  GetVideoObject(addressof(hHandle), guiTOP);
+  hHandle = GetVideoObject(guiTOP);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, null);
 
   // display background for history list
@@ -644,14 +644,14 @@ function DisplayHistoryListBackground(): void {
   let iCounter: INT32 = 0;
 
   // get shaded line object
-  GetVideoObject(addressof(hHandle), guiSHADELINE);
+  hHandle = GetVideoObject(guiSHADELINE);
   for (iCounter = 0; iCounter < 11; iCounter++) {
     // blt title bar to screen
     BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 15, (TOP_DIVLINE_Y + BOX_HEIGHT * 2 * iCounter), VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // the long hortizontal line int he records list display region
-  GetVideoObject(addressof(hHandle), guiLONGLINE);
+  hHandle = GetVideoObject(guiLONGLINE);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 9, (TOP_DIVLINE_Y), VO_BLT_SRCTRANSPARENCY, null);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 9, (TOP_DIVLINE_Y + BOX_HEIGHT * 2 * 11), VO_BLT_SRCTRANSPARENCY, null);
 

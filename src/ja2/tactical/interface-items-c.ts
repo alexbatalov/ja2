@@ -1542,7 +1542,7 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, 
 
   if (fDirtyLevel == DIRTYLEVEL2) {
     // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
-    GetVideoObject(addressof(hVObject), GetInterfaceGraphicForItem(pItem));
+    hVObject = GetVideoObject(GetInterfaceGraphicForItem(pItem));
     pTrav = addressof(hVObject.value.pETRLEObject[pItem.value.ubGraphicNum]);
     usHeight = pTrav.value.usHeight;
     usWidth = pTrav.value.usWidth;
@@ -2340,7 +2340,7 @@ export function RenderItemDescriptionBox(): void {
 
   if ((guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) && (gfInItemDescBox)) {
     // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
-    GetVideoObject(addressof(hVObject), guiItemGraphic);
+    hVObject = GetVideoObject(guiItemGraphic);
     pTrav = addressof(hVObject.value.pETRLEObject[0]);
     usHeight = pTrav.value.usHeight;
     usWidth = pTrav.value.usWidth;
@@ -2729,7 +2729,7 @@ export function RenderItemDescriptionBox(): void {
     SetFontShadow(DEFAULT_SHADOW);
   } else if (gfInItemDescBox) {
     // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
-    GetVideoObject(addressof(hVObject), guiItemGraphic);
+    hVObject = GetVideoObject(guiItemGraphic);
     pTrav = addressof(hVObject.value.pETRLEObject[0]);
     usHeight = pTrav.value.usHeight;
     usWidth = pTrav.value.usWidth;
@@ -4097,7 +4097,7 @@ export function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: U
   }
 
   // Get size
-  GetVideoObject(addressof(hVObject), guiItemPopupBoxes);
+  hVObject = GetVideoObject(guiItemPopupBoxes);
   pTrav = addressof(hVObject.value.pETRLEObject[0]);
   usPopupWidth = pTrav.value.usWidth;
 
@@ -4201,7 +4201,7 @@ export function RenderItemStackPopup(fFullRender: boolean): void {
     }
   }
   // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
-  GetVideoObject(addressof(hVObject), guiItemPopupBoxes);
+  hVObject = GetVideoObject(guiItemPopupBoxes);
   pTrav = addressof(hVObject.value.pETRLEObject[0]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
@@ -4294,7 +4294,7 @@ export function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, s
   }
 
   // Get size
-  GetVideoObject(addressof(hVObject), guiItemPopupBoxes);
+  hVObject = GetVideoObject(guiItemPopupBoxes);
   pTrav = addressof(hVObject.value.pETRLEObject[0]);
   usPopupWidth = pTrav.value.usWidth;
   usPopupHeight = pTrav.value.usHeight;
@@ -4381,7 +4381,7 @@ export function RenderKeyRingPopup(fFullRender: boolean): void {
   pObject.bStatus[0] = 100;
 
   // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
-  GetVideoObject(addressof(hVObject), guiItemPopupBoxes);
+  hVObject = GetVideoObject(guiItemPopupBoxes);
   pTrav = addressof(hVObject.value.pETRLEObject[0]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;

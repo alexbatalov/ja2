@@ -418,7 +418,7 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
     UnLockVideoSurface(pPopUpTextBox.value.uiSourceBufferIndex);
   }
 
-  GetVideoObject(addressof(hImageHandle), pPopUpTextBox.value.uiMercTextPopUpBorder);
+  hImageHandle = GetVideoObject(pPopUpTextBox.value.uiMercTextPopUpBorder);
 
   usPosX = usPosY = 0;
   // blit top row of images

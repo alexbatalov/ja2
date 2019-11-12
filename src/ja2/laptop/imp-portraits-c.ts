@@ -78,7 +78,7 @@ function RenderPortrait(sX: INT16, sY: INT16): boolean {
     }
 
     // show it
-    GetVideoObject(addressof(hHandle), uiGraphicHandle);
+    hHandle = GetVideoObject(uiGraphicHandle);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
     // and kick it's sorry ..umm never mind, outta here
@@ -92,7 +92,7 @@ function RenderPortrait(sX: INT16, sY: INT16): boolean {
     }
 
     // show it
-    GetVideoObject(addressof(hHandle), uiGraphicHandle);
+    hHandle = GetVideoObject(uiGraphicHandle);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, null);
 
     // and kick it's sorry ..umm never mind, outta here

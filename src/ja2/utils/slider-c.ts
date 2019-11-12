@@ -305,14 +305,14 @@ function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
 
   if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
     // display the slider box
-    GetVideoObject(addressof(hPixHandle), guiSliderBoxImage);
+    hPixHandle = GetVideoObject(guiSliderBoxImage);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, pSlider.value.LastRect.iLeft, pSlider.value.LastRect.iTop, VO_BLT_SRCTRANSPARENCY, null);
 
     // invalidate the area
     InvalidateRegion(pSlider.value.LastRect.iLeft, pSlider.value.LastRect.iTop, pSlider.value.LastRect.iRight, pSlider.value.LastRect.iBottom);
   } else {
     // display the slider box
-    GetVideoObject(addressof(hPixHandle), guiSliderBoxImage);
+    hPixHandle = GetVideoObject(guiSliderBoxImage);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, pSlider.value.usCurrentSliderBoxPosition, pSlider.value.usPosY - DEFUALT_SLIDER_SIZE, VO_BLT_SRCTRANSPARENCY, null);
 
     // invalidate the area

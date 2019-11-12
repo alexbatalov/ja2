@@ -727,15 +727,15 @@ export function RenderAIMMembers(): boolean {
   DrawAimDefaults();
 
   // Stats
-  GetVideoObject(addressof(hStatsHandle), guiStats);
+  hStatsHandle = GetVideoObject(guiStats);
   BltVideoObject(FRAME_BUFFER, hStatsHandle, 0, STATS_X, STATS_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Price
-  GetVideoObject(addressof(hPriceHandle), guiPrice);
+  hPriceHandle = GetVideoObject(guiPrice);
   BltVideoObject(FRAME_BUFFER, hPriceHandle, 0, PRICE_X, PRICE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // WeaponBox
-  GetVideoObject(addressof(hWeaponBoxHandle), guiWeaponBox);
+  hWeaponBoxHandle = GetVideoObject(guiWeaponBox);
 
   uiPosX = WEAPONBOX_X;
   for (x = 0; x < WEAPONBOX_NUMBER; x++) {
@@ -1093,7 +1093,7 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
       ubItemCount++;
 
       pItem = addressof(Item[usItem]);
-      GetVideoObject(addressof(hVObject), GetInterfaceGraphicForItem(pItem));
+      hVObject = GetVideoObject(GetInterfaceGraphicForItem(pItem));
       pTrav = addressof(hVObject.value.pETRLEObject[pItem.value.ubGraphicNum]);
 
       usHeight = pTrav.value.usHeight;
@@ -1232,7 +1232,7 @@ function DisplayMercsFace(): boolean {
   pSoldier = FindSoldierByProfileID(gbCurrentSoldier, true);
 
   // Portrait Frame
-  GetVideoObject(addressof(hPortraitHandle), guiPortrait);
+  hPortraitHandle = GetVideoObject(guiPortrait);
   BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, PORTRAIT_X, PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // load the Face graphic and add it
@@ -1244,7 +1244,7 @@ function DisplayMercsFace(): boolean {
   }
 
   // Blt face to screen
-  GetVideoObject(addressof(hFaceHandle), guiFace);
+  hFaceHandle = GetVideoObject(guiFace);
   BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, FACE_X, FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // if the merc is dead
@@ -1253,7 +1253,7 @@ function DisplayMercsFace(): boolean {
     hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // get the face object
-    GetVideoObject(addressof(hFaceHandle), guiFace);
+    hFaceHandle = GetVideoObject(guiFace);
 
     // set the red pallete to the face
     SetObjectHandleShade(guiFace, 0);
@@ -1663,7 +1663,7 @@ function DisplayMercsVideoFace(): boolean {
   let sFaceLoc: string /* STR */ = "FACES\\";
 
   // Get and Blt Terminal Frame
-  GetVideoObject(addressof(hTerminalHandle), guiVideoConfTerminal);
+  hTerminalHandle = GetVideoObject(guiVideoConfTerminal);
   ShadowVideoSurfaceImage(FRAME_BUFFER, hTerminalHandle, AIM_MEMBER_VIDEO_CONF_TERMINAL_X, AIM_MEMBER_VIDEO_CONF_TERMINAL_Y);
   BltVideoObject(FRAME_BUFFER, hTerminalHandle, 0, AIM_MEMBER_VIDEO_CONF_TERMINAL_X, AIM_MEMBER_VIDEO_CONF_TERMINAL_Y, VO_BLT_SRCTRANSPARENCY, null);
 
@@ -1727,7 +1727,7 @@ function DisplayMercChargeAmount(): UINT32 {
     return 0;
 
   // Display the 'black hole'for the contract charge  in the video conference terminal
-  GetVideoObject(addressof(hImageHandle), guiVideoContractCharge);
+  hImageHandle = GetVideoObject(guiVideoContractCharge);
   BltVideoObject(FRAME_BUFFER, hImageHandle, 0, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_X, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   if (FindSoldierByProfileID(gbCurrentSoldier, true) == null) {
@@ -1812,7 +1812,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
         return false;
       }
 
-      GetVideoObject(addressof(hPopupBoxHandle), guiPopUpBox);
+      hPopupBoxHandle = GetVideoObject(guiPopUpBox);
       BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
       // Create the popup boxes button
@@ -1845,7 +1845,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
         return false;
 
       // load and display the popup box graphic
-      GetVideoObject(addressof(hPopupBoxHandle), guiPopUpBox);
+      hPopupBoxHandle = GetVideoObject(guiPopUpBox);
       BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPopUpBoxPosX, usPopUpBoxPosY, VO_BLT_SRCTRANSPARENCY, null);
 
       SetFontShadow(AIM_M_VIDEO_NAME_SHADOWCOLOR);
@@ -2303,7 +2303,7 @@ function DisplaySnowBackground(): boolean {
     guiLastHandleMercTime = uiCurrentTime;
   }
   // Get the snow background, and blit it
-  GetVideoObject(addressof(hSnowHandle), guiBWSnow);
+  hSnowHandle = GetVideoObject(guiBWSnow);
   BltVideoObject(FRAME_BUFFER, hSnowHandle, ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   InvalidateRegion(AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH, AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT);
@@ -2475,7 +2475,7 @@ function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxI
     bCount = ubMaxImages - 1;
 
   // Get the snow background, and blit it
-  GetVideoObject(addressof(hFuzzLineHandle), uiImageIdentifier);
+  hFuzzLineHandle = GetVideoObject(uiImageIdentifier);
   BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, bCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   if (bForward) {
@@ -2514,7 +2514,7 @@ function DisplayDistortionLine(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxIm
     ubCount = ubMaxImages - 1;
 
   // Get the snow background, and blit it
-  GetVideoObject(addressof(hFuzzLineHandle), uiImageIdentifier);
+  hFuzzLineHandle = GetVideoObject(uiImageIdentifier);
   BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   if (ubCount == ubMaxImages - 1) {
@@ -2726,7 +2726,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
 
       gfAimMemberCanMercSayOpeningQuote = true;
 
-      GetVideoObject(addressof(hImageHandle), uiVideoBackgroundGraphic);
+      hImageHandle = GetVideoObject(uiVideoBackgroundGraphic);
       BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
       DeleteVideoObjectFromIndex(uiVideoBackgroundGraphic);
@@ -2919,7 +2919,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
       return false;
     }
 
-    GetVideoObject(addressof(hImageHandle), uiVideoBackgroundGraphic);
+    hImageHandle = GetVideoObject(uiVideoBackgroundGraphic);
     BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
 
     DeleteVideoObjectFromIndex(uiVideoBackgroundGraphic);

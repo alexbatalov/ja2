@@ -490,11 +490,11 @@ export function RenderEmail(): void {
   let iCounter: INT32 = 0;
 
   // get and blt the email list background
-  GetVideoObject(addressof(hHandle), guiEmailBackground);
+  hHandle = GetVideoObject(guiEmailBackground);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, EMAIL_LIST_WINDOW_Y + LAPTOP_SCREEN_UL_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // get and blt the email title bar
-  GetVideoObject(addressof(hHandle), guiEmailTitle);
+  hHandle = GetVideoObject(guiEmailTitle);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y - 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // show text on titlebar
@@ -516,7 +516,7 @@ export function RenderEmail(): void {
   DisplayEmailHeaders();
 
   // display border
-  GetVideoObject(addressof(hHandle), guiLaptopBACKGROUND);
+  hHandle = GetVideoObject(guiLaptopBACKGROUND);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, null);
 
   ReDisplayBoxes();
@@ -1117,7 +1117,7 @@ function DrawLetterIcon(iCounter: INT32, fRead: boolean): void {
   // will draw the icon for letter in mail list depending if the mail has been read or not
 
   // grab video object
-  GetVideoObject(addressof(hHandle), guiEmailIndicator);
+  hHandle = GetVideoObject(guiEmailIndicator);
 
   // is it read or not?
   if (fRead)
@@ -1466,7 +1466,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
 
   // blt in top line of message as a blank graphic
   // get a handle to the bitmap of EMAIL VIEWER Background
-  GetVideoObject(addressof(hHandle), guiEmailMessage);
+  hHandle = GetVideoObject(guiEmailMessage);
 
   // place the graphic on the frame buffer
   BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, VIEWER_MESSAGE_BODY_START_Y + iViewerPositionY, VO_BLT_SRCTRANSPARENCY, null);
@@ -1476,13 +1476,13 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   SetFontShadow(NO_SHADOW);
 
   // get a handle to the bitmap of EMAIL VIEWER
-  GetVideoObject(addressof(hHandle), guiEmailMessage);
+  hHandle = GetVideoObject(guiEmailMessage);
 
   // place the graphic on the frame buffer
   BltVideoObject(FRAME_BUFFER, hHandle, 0, VIEWER_X, VIEWER_Y + iViewerPositionY, VO_BLT_SRCTRANSPARENCY, null);
 
   // the icon for the title of this box
-  GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
+  hHandle = GetVideoObject(guiTITLEBARICONS);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, VIEWER_X + 5, VIEWER_Y + iViewerPositionY + 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // display header text
@@ -1495,14 +1495,14 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   // now blit the text background based on height
   for (iCounter = 2; iCounter < ((iTotalHeight) / (GetFontHeight(MESSAGE_FONT()))); iCounter++) {
     // get a handle to the bitmap of EMAIL VIEWER Background
-    GetVideoObject(addressof(hHandle), guiEmailMessage);
+    hHandle = GetVideoObject(guiEmailMessage);
 
     // place the graphic on the frame buffer
     BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCYnullLL);
   }
 
   // now the bottom piece to the message viewer
-  GetVideoObject(addressof(hHandle), guiEmailMessage);
+  hHandle = GetVideoObject(guiEmailMessage);
 
   if (giNumberOfPagesToCurrentEmail <= 2) {
     // place the graphic on the frame buffer
@@ -1778,11 +1778,11 @@ export function DisplayNewMailBox(): boolean {
   // if( ( fNewMailFlag ) && ( fOldNewMailFlag ) )
   //	return ( FALSE );
 
-  GetVideoObject(addressof(hHandle), guiEmailWarning);
+  hHandle = GetVideoObject(guiEmailWarning);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X, EMAIL_WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // the icon for the title of this box
-  GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
+  hHandle = GetVideoObject(guiTITLEBARICONS);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X + 5, EMAIL_WARNING_Y + 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // font stuff
@@ -2131,7 +2131,7 @@ function DisplayDeleteNotice(pMail: EmailPtr): boolean {
 
   // load graphics
 
-  GetVideoObject(addressof(hHandle), guiEmailWarning);
+  hHandle = GetVideoObject(guiEmailWarning);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X, EMAIL_WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // font stuff
@@ -2141,7 +2141,7 @@ function DisplayDeleteNotice(pMail: EmailPtr): boolean {
   SetFontShadow(DEFAULT_SHADOW);
 
   // the icon for the title of this box
-  GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
+  hHandle = GetVideoObject(guiTITLEBARICONS);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X + 5, EMAIL_WARNING_Y + 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // title
@@ -2456,7 +2456,7 @@ function DrawLineDividers(): void {
   let hHandle: HVOBJECT;
 
   for (iCounter = 1; iCounter < 19; iCounter++) {
-    GetVideoObject(addressof(hHandle), guiMAILDIVIDER);
+    hHandle = GetVideoObject(guiMAILDIVIDER);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, INDIC_X - 10, (MIDDLE_Y + iCounter * MIDDLE_WIDTH - 1), VO_BLT_SRCTRANSPARENCY, null);
   }
 

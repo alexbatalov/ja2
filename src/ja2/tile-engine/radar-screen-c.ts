@@ -73,7 +73,7 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
 
     fImageLoaded = true;
 
-    if (GetVideoObject(addressof(hVObject), gusRadarImage)) {
+    if ((hVObject = GetVideoObject(gusRadarImage))) {
       // ATE: Add a shade table!
       hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
       hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, false);
@@ -513,7 +513,7 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
       return false;
     }
 
-    GetVideoObject(addressof(hHandle), uiHandle);
+    hHandle = GetVideoObject(uiHandle);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, 538, 0 + gsVIEWPORT_END_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     RestoreExternBackgroundRect(538, gsVIEWPORT_END_Y, (640 - 538), (480 - gsVIEWPORT_END_Y));

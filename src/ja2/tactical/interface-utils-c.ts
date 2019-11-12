@@ -180,7 +180,7 @@ export function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
   dStart = sYPos;
 
   // brown guy
-  GetVideoObject(addressof(hHandle), guiBrownBackgroundForTeamPanel);
+  hHandle = GetVideoObject(guiBrownBackgroundForTeamPanel);
 
   // DO MAX BREATH
   if (guiCurrentScreen != Enum26.MAP_SCREEN) {

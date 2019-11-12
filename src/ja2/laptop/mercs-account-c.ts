@@ -117,11 +117,11 @@ export function RenderMercsAccount(): void {
   DrawMecBackGround();
 
   // Account Number Grid
-  GetVideoObject(addressof(hPixHandle), guiMercOrderGrid);
+  hPixHandle = GetVideoObject(guiMercOrderGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_AC_ORDER_GRID_X, MERC_AC_ORDER_GRID_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Merc Order Grid
-  GetVideoObject(addressof(hPixHandle), guiAccountNumberGrid);
+  hPixHandle = GetVideoObject(guiAccountNumberGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_AC_ACCOUNT_NUMBER_X, MERC_AC_ACCOUNT_NUMBER_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display Players account number

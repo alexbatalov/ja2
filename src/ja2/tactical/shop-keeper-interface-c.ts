@@ -995,7 +995,7 @@ function RenderShopKeeperInterface(): boolean {
   //	RenderRadarScreen( );
 
   // Get the main background screen graphic and blt it
-  GetVideoObject(addressof(hPixHandle), guiMainTradeScreenImage);
+  hPixHandle = GetVideoObject(guiMainTradeScreenImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, SKI_MAIN_BACKGROUND_X, SKI_MAIN_BACKGROUND_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the Title
@@ -1953,7 +1953,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
 
   // Display the item graphic, and price
   pItem = addressof(Item[usItemIndex]);
-  GetVideoObject(addressof(hVObject), GetInterfaceGraphicForItem(pItem));
+  hVObject = GetVideoObject(GetInterfaceGraphicForItem(pItem));
   pTrav = addressof(hVObject.value.pETRLEObject[pItem.value.ubGraphicNum]);
 
   usHeight = pTrav.value.usHeight;
@@ -2057,7 +2057,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
     // if still in player's employ
     if (iFaceSlot != -1) {
       // Get and blit the face
-      GetVideoObject(addressof(hPixHandle), guiSmallSoldiersFace[iFaceSlot]);
+      hPixHandle = GetVideoObject(guiSmallSoldiersFace[iFaceSlot]);
       BltVideoObject(FRAME_BUFFER, hPixHandle, 0, (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), VO_BLT_SRCTRANSPARENCY, null); // SKI_SMALL_FACE_OFFSET_Y
     }
   }
@@ -4884,7 +4884,7 @@ function CrossOutUnwantedItems(): void {
   let sBoxHeight: INT16 = 0;
 
   // load the "cross out" graphic
-  GetVideoObject(addressof(hHandle), guiItemCrossOut);
+  hHandle = GetVideoObject(guiItemCrossOut);
 
   // get the box height and width
   sBoxWidth = SKI_INV_SLOT_WIDTH;

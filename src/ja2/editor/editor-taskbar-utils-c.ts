@@ -715,7 +715,7 @@ function RenderSelectedItemBlownUp(): void {
 
   // Display the enlarged item graphic
   uiVideoObjectIndex = GetInterfaceGraphicForItem(addressof(Item[gpItem.value.usItem]));
-  GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
+  hVObject = GetVideoObject(uiVideoObjectIndex);
 
   sWidth = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].usWidth;
   sOffsetX = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].sOffsetX;

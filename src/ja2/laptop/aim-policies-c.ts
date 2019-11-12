@@ -403,7 +403,7 @@ function DrawAimPolicyMenu(): boolean {
     Enum68.POLICY_MEDICAL,
   ];
 
-  GetVideoObject(addressof(hContentButtonHandle), guiContentButton);
+  hContentButtonHandle = GetVideoObject(guiContentButton);
 
   usHeight = GetFontHeight(AIM_POLICY_TOC_FONT());
   usPosY = AIM_POLICY_TOC_Y;

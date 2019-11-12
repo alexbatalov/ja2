@@ -496,7 +496,7 @@ function HandleCreditScreen(): void {
 function RenderCreditScreen(): boolean {
   let hPixHandle: HVOBJECT;
 
-  GetVideoObject(addressof(hPixHandle), guiCreditBackGroundImage);
+  hPixHandle = GetVideoObject(guiCreditBackGroundImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
   /*
           HVSURFACE hVSurface;
@@ -1147,7 +1147,7 @@ function HandleCreditEyeBlinking(): void {
   let hPixHandle: HVOBJECT;
   let ubCnt: UINT8;
 
-  GetVideoObject(addressof(hPixHandle), guiCreditFaces);
+  hPixHandle = GetVideoObject(guiCreditFaces);
 
   for (ubCnt = 0; ubCnt < Enum382.NUM_PEOPLE_IN_CREDITS; ubCnt++) {
     if ((GetJA2Clock() - gCreditFaces[ubCnt].uiLastBlinkTime) > gCreditFaces[ubCnt].sBlinkFreq) {

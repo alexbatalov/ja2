@@ -237,7 +237,7 @@ export function RenderBobbyRGuns(): void {
   DisplayBobbyRBrTitle();
 
   // GunForm
-  GetVideoObject(addressof(hPixHandle), guiGunsGrid);
+  hPixHandle = GetVideoObject(guiGunsGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   //	DeleteMouseRegionForBigImage();
@@ -252,7 +252,7 @@ export function DisplayBobbyRBrTitle(): boolean {
   let hPixHandle: HVOBJECT;
 
   // BR title
-  GetVideoObject(addressof(hPixHandle), guiBrTitle);
+  hPixHandle = GetVideoObject(guiBrTitle);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // To Order Text
@@ -708,7 +708,7 @@ function DisplayBigItemImage(usIndex: UINT16, PosY: UINT16): boolean {
   pItem = addressof(Item[usIndex]);
   LoadTileGraphicForItem(pItem, addressof(uiImage));
 
-  GetVideoObject(addressof(hPixHandle), uiImage);
+  hPixHandle = GetVideoObject(uiImage);
   pTrav = addressof(hPixHandle.value.pETRLEObject[0]);
 
   // center picture in frame

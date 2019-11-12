@@ -131,7 +131,7 @@ function LoadCursorData(uiCursorIndex: UINT32): boolean {
         DestroyImage(hImage);
 
         // Save hVObject....
-        GetVideoObject(addressof(gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject), gpCursorFileDatabase[pCurImage.value.uiFileIndex].uiIndex);
+        gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject = GetVideoObject(gpCursorFileDatabase[pCurImage.value.uiFileIndex].uiIndex);
       }
 
       gpCursorFileDatabase[pCurImage.value.uiFileIndex].fLoaded = true;
@@ -289,11 +289,11 @@ export function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): boolean {
 
         if (uiCursorIndex == EXTERN2_CURSOR) {
           // Get ETRLE values
-          GetVideoObject(addressof(hVObject), guiExtern2Vo);
+          hVObject = GetVideoObject(guiExtern2Vo);
           pTrav = addressof(hVObject.value.pETRLEObject[gusExtern2VoSubIndex]);
         } else {
           // Get ETRLE values
-          GetVideoObject(addressof(hVObject), guiExternVo);
+          hVObject = GetVideoObject(guiExternVo);
           pTrav = addressof(hVObject.value.pETRLEObject[gusExternVoSubIndex]);
         }
 
@@ -310,7 +310,7 @@ export function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): boolean {
           BltVideoObjectOutlineFromIndex(MOUSE_BUFFER, guiExtern2Vo, gusExtern2VoSubIndex, 0, 0, 0, false);
 
           // Get ETRLE values
-          GetVideoObject(addressof(hVObjectTemp), guiExternVo);
+          hVObjectTemp = GetVideoObject(guiExternVo);
           pTravTemp = addressof(hVObjectTemp.value.pETRLEObject[gusExternVoSubIndex]);
 
           sSubX = (pTrav.value.usWidth - pTravTemp.value.usWidth - pTravTemp.value.sOffsetX) / 2;

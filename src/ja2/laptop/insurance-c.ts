@@ -130,7 +130,7 @@ export function RenderInsurance(): void {
   SetFontShadow(INS_FONT_SHADOW);
 
   // Get and display the insurance title
-  GetVideoObject(addressof(hPixHandle), guiInsuranceTitleImage);
+  hPixHandle = GetVideoObject(guiInsuranceTitleImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_BIG_TITLE_X, INSURANCE_BIG_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the title slogan
@@ -142,7 +142,7 @@ export function RenderInsurance(): void {
   DrawTextToScreen(sText, INSURANCE_SUBTITLE_X, INSURANCE_SUBTITLE_Y, 0, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the bulleted text 1
-  GetVideoObject(addressof(hPixHandle), guiInsuranceBulletImage);
+  hPixHandle = GetVideoObject(guiInsuranceBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_SUBTITLE_X, INSURANCE_BULLET_TEXT_1_Y, VO_BLT_SRCTRANSPARENCY, null);
   GetInsuranceText(Enum90.INS_MLTI_EMPLOY_HIGH_RISK, sText);
   DrawTextToScreen(sText, INSURANCE_SUBTITLE_X + INSURANCE_BULLET_TEXT_OFFSET_X, INSURANCE_BULLET_TEXT_1_Y, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
@@ -236,7 +236,7 @@ export function DisplayInsuranceDefaults(): void {
 
   usPosY = INSURANCE_RED_BAR_Y;
 
-  GetVideoObject(addressof(hPixHandle), guiInsuranceRedBarImage);
+  hPixHandle = GetVideoObject(guiInsuranceRedBarImage);
   for (i = 0; i < 4; i++) {
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_RED_BAR_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
     usPosY += INSURANCE_BACKGROUND_HEIGHT;
@@ -248,7 +248,7 @@ export function DisplayInsuranceDefaults(): void {
       usPosY = INSURANCE_TOP_RED_BAR_Y;
 
       // display the top red bar
-      GetVideoObject(addressof(hPixHandle), guiInsuranceBigRedLineImage);
+      hPixHandle = GetVideoObject(guiInsuranceBigRedLineImage);
       BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_TOP_RED_BAR_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
       break;
@@ -260,13 +260,13 @@ export function DisplayInsuranceDefaults(): void {
   }
 
   // display the Bottom red bar
-  GetVideoObject(addressof(hPixHandle), guiInsuranceBigRedLineImage);
+  hPixHandle = GetVideoObject(guiInsuranceBigRedLineImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_TOP_RED_BAR_X, INSURANCE_BOTTOM_RED_BAR_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // if it is not the first page, display the small title
   if (guiCurrentLaptopMode != Enum95.LAPTOP_MODE_INSURANCE) {
     // display the small title bar
-    GetVideoObject(addressof(hPixHandle), guiInsuranceSmallTitleImage);
+    hPixHandle = GetVideoObject(guiInsuranceSmallTitleImage);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_SMALL_TITLE_X, INSURANCE_SMALL_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
   }
 }

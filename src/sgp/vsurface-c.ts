@@ -2130,7 +2130,7 @@ function MakeVSurfaceFromVObject(uiVObject: UINT32, usSubIndex: UINT16, puiVSurf
   let uiVSurface: UINT32;
   let hDesc: VSURFACE_DESC = createVSurfaceDesc();
 
-  if (GetVideoObject(addressof(hSrcVObject), uiVObject)) {
+  if ((hSrcVObject = GetVideoObject(uiVObject))) {
     // ATE: Memset
     memset(addressof(hDesc), 0, sizeof(VSURFACE_DESC));
     hDesc.fCreateFlags = VSURFACE_CREATE_DEFAULT;

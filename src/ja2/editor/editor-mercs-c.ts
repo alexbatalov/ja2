@@ -2686,7 +2686,7 @@ function AddNewItemToSelectedMercsInventory(fCreate: boolean): void {
   // now draw the fullsize item into the temp buffer
   item = addressof(Item[gusMercsNewItemIndex]);
   uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-  GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
+  hVObject = GetVideoObject(uiVideoObjectIndex);
   BltVideoObjectOutlineFromIndex(uiSrcID, uiVideoObjectIndex, item.value.ubGraphicNum, 0, 0, 0, false);
 
   // crop the source image

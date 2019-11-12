@@ -60,7 +60,7 @@ export function RenderBobbyRAmmo(): void {
   DisplayBobbyRBrTitle();
 
   // GunForm
-  GetVideoObject(addressof(hPixHandle), guiAmmoGrid);
+  hPixHandle = GetVideoObject(guiAmmoGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   DisplayItemInfo(IC_AMMO);

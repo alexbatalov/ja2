@@ -1137,7 +1137,7 @@ function DrawBox(uiCounter: UINT32): boolean {
   Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, usTopX, usTopY, addressof(clip));
   UnLockVideoSurface(PopUpBoxList[uiCounter].value.iBackGroundSurface);
   UnLockVideoSurface(PopUpBoxList[uiCounter].value.uiBuffer);
-  GetVideoObject(addressof(hBoxHandle), PopUpBoxList[uiCounter].value.iBorderObjectIndex);
+  hBoxHandle = GetVideoObject(PopUpBoxList[uiCounter].value.iBorderObjectIndex);
 
   // blit in 4 corners (they're 2x2 pixels)
   BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, TOP_LEFT_CORNER, usTopX, usTopY, VO_BLT_SRCTRANSPARENCY, null);

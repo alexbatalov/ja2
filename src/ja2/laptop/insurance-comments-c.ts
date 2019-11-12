@@ -150,7 +150,7 @@ function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT1
   let sNumPixels: UINT16 = 0;
 
   // Get and display the insurance bullet
-  GetVideoObject(addressof(hPixHandle), guiInsCmntBulletImage);
+  hPixHandle = GetVideoObject(guiInsCmntBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CMNT_FIRST_BULLET_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the commenters comment

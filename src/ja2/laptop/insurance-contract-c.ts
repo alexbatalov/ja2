@@ -263,7 +263,7 @@ export function RenderInsuranceContract(): void {
   DrawTextToScreen(sText, LAPTOP_SCREEN_UL_X, INS_CTRCT_TITLE_Y, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Get and display the insurance bullet
-  GetVideoObject(addressof(hPixHandle), guiInsOrderBulletImage);
+  hPixHandle = GetVideoObject(guiInsOrderBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the first instruction sentence
@@ -271,7 +271,7 @@ export function RenderInsuranceContract(): void {
   DisplayWrappedString(INS_CTRCT_FIRST_BULLET_TEXT_X + INSURANCE_BULLET_TEXT_OFFSET_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, INS_CTRCT_INTSRUCTION_TEXT_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Get and display the insurance bullet
-  GetVideoObject(addressof(hPixHandle), guiInsOrderBulletImage);
+  hPixHandle = GetVideoObject(guiInsOrderBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_SECOND_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the second instruction sentence
@@ -405,7 +405,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   }
 
   // Get and display the insurance order grid #1
-  GetVideoObject(addressof(hPixHandle), guiInsOrderGridImage);
+  hPixHandle = GetVideoObject(guiInsOrderGridImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, usPosX, INS_CTRCT_ORDER_GRID1_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // load the mercs face graphic and add it
@@ -417,7 +417,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   }
 
   // Get the merc's face
-  GetVideoObject(addressof(hPixHandle), uiInsMercFaceImage);
+  hPixHandle = GetVideoObject(uiInsMercFaceImage);
 
   // if the merc is dead, shade the face red
   if (IsMercDead(ubMercID)) {

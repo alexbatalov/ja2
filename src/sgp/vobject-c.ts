@@ -150,7 +150,7 @@ function SetVideoObjectTransparency(uiIndex: UINT32, TransColor: COLORVAL): bool
   let hVObject: HVOBJECT;
 
 // Get video object
-  if (!GetVideoObject(addressof(hVObject), uiIndex)) {
+  if (!(hVObject = GetVideoObject(uiIndex))) {
     return false;
   }
 
@@ -160,18 +160,17 @@ function SetVideoObjectTransparency(uiIndex: UINT32, TransColor: COLORVAL): bool
   return true;
 }
 
-export function GetVideoObject(hVObject: Pointer<HVOBJECT>, uiIndex: UINT32): boolean {
+export function GetVideoObject(uiIndex: UINT32): HVOBJECT {
   let curr: Pointer<VOBJECT_NODE>;
 
   curr = gpVObjectHead;
   while (curr) {
     if (curr.value.uiIndex == uiIndex) {
-      hVObject.value = curr.value.hVObject;
-      return true;
+      return curr.value.hVObject;
     }
     curr = curr.value.next;
   }
-  return false;
+  return <HVOBJECT><unknown>null;
 }
 
 export function BltVideoObjectFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_fx>): boolean {
@@ -187,7 +186,7 @@ export function BltVideoObjectFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UI
   }
 
 // Get video object
-  if (!GetVideoObject(addressof(hSrcVObject), uiSrcVObject)) {
+  if (!(hSrcVObject = GetVideoObject(uiSrcVObject))) {
     UnLockVideoSurface(uiDestVSurface);
     return false;
   }
@@ -706,7 +705,7 @@ export function SetObjectShade(pObj: HVOBJECT, uiShade: UINT32): UINT16 {
 export function SetObjectHandleShade(uiHandle: UINT32, uiShade: UINT32): UINT16 {
   let hObj: HVOBJECT;
 
-  if (!GetVideoObject(addressof(hObj), uiHandle)) {
+  if (!(hObj = GetVideoObject(uiHandle))) {
     DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, String("Invalid object handle for setting shade level"));
     return false;
   }
@@ -829,7 +828,7 @@ export function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, us
   let ETRLEObject: ETRLEObject = createETRLEObject();
 
 // Get video object
-  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+  if (!(hVObject = GetVideoObject(uiVideoObject))) {
     return false;
   }
 
@@ -847,7 +846,7 @@ export function GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject: UINT32, pE
   let hVObject: HVOBJECT;
 
 // Get video object
-  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+  if (!(hVObject = GetVideoObject(uiVideoObject))) {
     return false;
   }
 
@@ -862,7 +861,7 @@ function SetVideoObjectPalette8BPP(uiVideoObject: INT32, pPal8: Pointer<SGPPalet
   let hVObject: HVOBJECT;
 
 // Get video object
-  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+  if (!(hVObject = GetVideoObject(uiVideoObject))) {
     return false;
   }
 
@@ -873,7 +872,7 @@ function GetVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<Point
   let hVObject: HVOBJECT;
 
 // Get video object
-  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+  if (!(hVObject = GetVideoObject(uiVideoObject))) {
     return false;
   }
 
@@ -886,7 +885,7 @@ function CopyVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<UINT
   let hVObject: HVOBJECT;
 
 // Get video object
-  if (!GetVideoObject(addressof(hVObject), uiVideoObject)) {
+  if (!(hVObject = GetVideoObject(uiVideoObject))) {
     return false;
   }
 
@@ -1049,7 +1048,7 @@ export function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObj
   }
 
 // Get video object
-  if (!GetVideoObject(addressof(hSrcVObject), uiSrcVObject)) {
+  if (!(hSrcVObject = GetVideoObject(uiSrcVObject))) {
     return false;
   }
 
@@ -1100,7 +1099,7 @@ export function BltVideoObjectOutlineShadowFromIndex(uiDestVSurface: UINT32, uiS
   }
 
 // Get video object
-  if (!GetVideoObject(addressof(hSrcVObject), uiSrcVObject)) {
+  if (!(hSrcVObject = GetVideoObject(uiSrcVObject))) {
     return false;
   }
 

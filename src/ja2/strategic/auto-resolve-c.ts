@@ -1569,7 +1569,7 @@ function CreateAutoResolveInterface(): void {
   if (!(gpAR.value.iFaces = AddVideoObject(VObjectDesc))) {
     AssertMsg(0, "Failed to load Interface\\SmFaces.sti");
   }
-  if (GetVideoObject(addressof(hVObject), gpAR.value.iFaces)) {
+  if ((hVObject = GetVideoObject(gpAR.value.iFaces))) {
     hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
     hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, true);
   }
@@ -1592,7 +1592,7 @@ function CreateAutoResolveInterface(): void {
         AssertMsg(0, String("Failed to load %Faces\\65Face\\%02d.sti or it's placeholder, speck.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex));
       }
     }
-    if (GetVideoObject(addressof(hVObject), gpMercs[i].uiVObjectID)) {
+    if ((hVObject = GetVideoObject(gpMercs[i].uiVObjectID))) {
       hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
       hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, true);
     }

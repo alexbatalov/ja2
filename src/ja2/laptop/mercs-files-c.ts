@@ -173,15 +173,15 @@ export function RenderMercsFiles(): void {
   DrawMecBackGround();
 
   // Portrait Box
-  GetVideoObject(addressof(hPixHandle), guiPortraitBox);
+  hPixHandle = GetVideoObject(guiPortraitBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_PORTRAIT_BOX_X, MERC_FILES_PORTRAIT_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Stats Box
-  GetVideoObject(addressof(hPixHandle), guiStatsBox);
+  hPixHandle = GetVideoObject(guiStatsBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_STATS_BOX_X, MERC_FILES_STATS_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // bio box
-  GetVideoObject(addressof(hPixHandle), guiBioBox);
+  hPixHandle = GetVideoObject(guiBioBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_BIO_BOX_X + 1, MERC_FILES_BIO_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the mercs face
@@ -323,7 +323,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   // Portrait Frame
-  GetVideoObject(addressof(hPortraitHandle), guiPortraitBox);
+  hPortraitHandle = GetVideoObject(guiPortraitBox);
   BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, MERC_FILES_PORTRAIT_BOX_X, MERC_FILES_PORTRAIT_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   pMerc = addressof(gMercProfiles[ubMercID]);
@@ -340,7 +340,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   }
 
   // Blt face to screen
-  GetVideoObject(addressof(hFaceHandle), guiMercFace);
+  hFaceHandle = GetVideoObject(guiMercFace);
   BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, MERC_FACE_X, MERC_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // if the merc is dead, shadow the face red and put text over top saying the merc is dead
@@ -349,7 +349,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
     hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // get the face object
-    GetVideoObject(addressof(hFaceHandle), guiMercFace);
+    hFaceHandle = GetVideoObject(guiMercFace);
 
     // set the red pallete to the face
     SetObjectHandleShade(guiMercFace, 0);

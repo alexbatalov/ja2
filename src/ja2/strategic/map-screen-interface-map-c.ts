@@ -851,7 +851,7 @@ function ShowOnDutyTeam(sMapX: INT16, sMapY: INT16): INT32 {
   let hIconHandle: HVOBJECT;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-  GetVideoObject(addressof(hIconHandle), guiCHARICONS);
+  hIconHandle = GetVideoObject(guiCHARICONS);
 
   // run through list
   while (gCharactersList[ubCounter].fValid) {
@@ -873,7 +873,7 @@ function ShowAssignedTeam(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
   let hIconHandle: HVOBJECT;
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
-  GetVideoObject(addressof(hIconHandle), guiCHARICONS);
+  hIconHandle = GetVideoObject(guiCHARICONS);
   ubCounter = 0;
 
   // run through list
@@ -903,7 +903,7 @@ function ShowVehicles(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
   let hIconHandle: HVOBJECT;
   let pVehicleSoldier: Pointer<SOLDIERTYPE>;
 
-  GetVideoObject(addressof(hIconHandle), guiCHARICONS);
+  hIconHandle = GetVideoObject(guiCHARICONS);
   ubCounter = 0;
 
   ubIconPosition = iCount;
@@ -940,7 +940,7 @@ function ShowEnemiesInSector(sSectorX: INT16, sSectorY: INT16, sNumberOfEnemies:
   let ubEnemy: UINT8 = 0;
 
   // get the video object
-  GetVideoObject(addressof(hIconHandle), guiCHARICONS);
+  hIconHandle = GetVideoObject(guiCHARICONS);
 
   for (ubEnemy = 0; ubEnemy < sNumberOfEnemies; ubEnemy++) {
     DrawMapBoxIcon(hIconHandle, SMALL_RED_BOX, sSectorX, sSectorY, ubIconPosition);
@@ -958,7 +958,7 @@ function ShowUncertainNumberEnemiesInSector(sSectorX: INT16, sSectorY: INT16): v
   sYPosition = sSectorY;
 
   // get the video object
-  GetVideoObject(addressof(hIconHandle), guiCHARICONS);
+  hIconHandle = GetVideoObject(guiCHARICONS);
 
   // check if we are zoomed in...need to offset in case for scrolling purposes
   if (!fZoomFlag) {
@@ -1863,7 +1863,7 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
   else
     pPastNode = null;
 
-  GetVideoObject(addressof(hMapHandle), guiMAPCURSORS);
+  hMapHandle = GetVideoObject(guiMAPCURSORS);
   // go through characters list and display arrows for path
   while (pNode) {
     fUTurnFlag = false;
@@ -2556,7 +2556,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   }
 
   // Grab Video Objects
-  GetVideoObject(addressof(hMapHandle), guiMAPCURSORS);
+  hMapHandle = GetVideoObject(guiMAPCURSORS);
 
   // Handle drawing of arrow
   pNode = pCurrentNode;
@@ -3456,10 +3456,10 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
         // about to enter
         if (!fAboutToEnter) {
           // draw blue arrows
-          GetVideoObject(addressof(hIconHandle), guiCHARBETWEENSECTORICONS);
+          hIconHandle = GetVideoObject(guiCHARBETWEENSECTORICONS);
         } else {
           // draw yellow arrows
-          GetVideoObject(addressof(hIconHandle), guiCHARBETWEENSECTORICONSCLOSE);
+          hIconHandle = GetVideoObject(guiCHARBETWEENSECTORICONSCLOSE);
         }
 
         // zoomed in or not?
@@ -3555,7 +3555,7 @@ export function DisplayDistancesForHelicopter(): void {
   sOldYPosition = sYPosition;
 
   // blit in background
-  GetVideoObject(addressof(hHandle), guiMapBorderHeliSectors);
+  hHandle = GetVideoObject(guiMapBorderHeliSectors);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, MAP_HELICOPTER_ETA_POPUP_X, sYPosition, VO_BLT_SRCTRANSPARENCY, null);
 
   //	sTotalCanTravel = ( INT16 )GetTotalDistanceHelicopterCanTravel( );
@@ -3756,7 +3756,7 @@ export function DisplayPositionOfHelicopter(): void {
       // clip blits to mapscreen region
       ClipBlitsToMapViewRegion();
 
-      GetVideoObject(addressof(hHandle), guiHelicopterIcon);
+      hHandle = GetVideoObject(guiHelicopterIcon);
       BltVideoObject(FRAME_BUFFER, hHandle, HELI_ICON, x, y, VO_BLT_SRCTRANSPARENCY, null);
 
       // now get number of people and blit that too
@@ -3817,7 +3817,7 @@ function DisplayDestinationOfHelicopter(): void {
     // clip blits to mapscreen region
     ClipBlitsToMapViewRegion();
 
-    GetVideoObject(addressof(hHandle), guiHelicopterIcon);
+    hHandle = GetVideoObject(guiHelicopterIcon);
     BltVideoObject(FRAME_BUFFER, hHandle, HELI_SHADOW_ICON, x, y, VO_BLT_SRCTRANSPARENCY, null);
     InvalidateRegion(x, y, x + HELI_SHADOW_ICON_WIDTH, y + HELI_SHADOW_ICON_HEIGHT);
 
@@ -3898,7 +3898,7 @@ function BlitMineIcon(sMapX: INT16, sMapY: INT16): void {
   let sScreenX: INT16;
   let sScreenY: INT16;
 
-  GetVideoObject(addressof(hHandle), guiMINEICON);
+  hHandle = GetVideoObject(guiMINEICON);
 
   pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_WIDTH + 1, MAP_VIEW_HEIGHT - 9);
@@ -4355,11 +4355,11 @@ export function DrawMilitiaPopUpBox(): boolean {
   CheckAndUpdateStatesOfSelectedMilitiaSectorButtons();
 
   // get the properties of the militia object
-  GetVideoObject(addressof(hVObject), guiMilitia);
+  hVObject = GetVideoObject(guiMilitia);
 
   BltVideoObject(FRAME_BUFFER, hVObject, 0, MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-  GetVideoObject(addressof(hVObject), guiMilitiaMaps);
+  hVObject = GetVideoObject(guiMilitiaMaps);
   BltVideoObject(FRAME_BUFFER, hVObject, (sSelectedMilitiaTown - 1), MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X, MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // set font color for labels and "total militia" counts
@@ -4380,7 +4380,7 @@ export function DrawMilitiaPopUpBox(): boolean {
   // draw the highlight last
   ShowHighLightedSectorOnMilitiaMap();
 
-  GetVideoObject(addressof(hVObject), guiMilitia);
+  hVObject = GetVideoObject(guiMilitia);
   pTrav = addressof(hVObject.value.pETRLEObject[0]);
 
   InvalidateRegion(MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y, MAP_MILITIA_BOX_POS_X + pTrav.value.usWidth, MAP_MILITIA_BOX_POS_Y + pTrav.value.usHeight);
@@ -4452,7 +4452,7 @@ function RenderIconsPerSectorForSelectedTown(): void {
   sBaseSectorValue = GetBaseSectorForCurrentTown();
 
   // get militia video object
-  GetVideoObject(addressof(hVObject), guiMilitia);
+  hVObject = GetVideoObject(guiMilitia);
 
   // render icons for map
   for (iCounter = 0; iCounter < 9; iCounter++) {
@@ -4545,7 +4545,7 @@ function ShowHighLightedSectorOnMilitiaMap(): void {
     sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
 
     // get the object
-    GetVideoObject(addressof(hVObject), guiMilitiaSectorHighLight);
+    hVObject = GetVideoObject(guiMilitiaSectorHighLight);
 
     // blt the object
     BltVideoObject(FRAME_BUFFER, hVObject, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -4556,7 +4556,7 @@ function ShowHighLightedSectorOnMilitiaMap(): void {
     sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((sSectorMilitiaMapSectorOutline / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
 
     // get the object
-    GetVideoObject(addressof(hVObject), guiMilitiaSectorOutline);
+    hVObject = GetVideoObject(guiMilitiaSectorOutline);
 
     // blt the object
     BltVideoObject(FRAME_BUFFER, hVObject, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
@@ -4638,7 +4638,7 @@ export function CreateDestroyMilitiaSectorButtons(): void {
       SpecifyButtonUpTextColors(giMapMilitiaButton[iCounter], gsMilitiaSectorButtonColors[iCounter], FONT_BLACK);
       SpecifyButtonDownTextColors(giMapMilitiaButton[iCounter], gsMilitiaSectorButtonColors[iCounter], FONT_BLACK);
 
-      GetVideoObject(addressof(hVObject), guiMilitia);
+      hVObject = GetVideoObject(guiMilitia);
       pTrav = addressof(hVObject.value.pETRLEObject[0]);
 
       SetButtonFastHelpText(giMapMilitiaButton[iCounter], pMilitiaButtonsHelpText[iCounter]);
@@ -4769,7 +4769,7 @@ function DisplayUnallocatedMilitia(): void {
   iTotalNumberOfTroops = iNumberOfGreens + iNumberOfRegulars + iNumberOfElites;
 
   // get militia video object
-  GetVideoObject(addressof(hVObject), guiMilitia);
+  hVObject = GetVideoObject(guiMilitia);
 
   // now display
   for (iCurrentTroopIcon = 0; iCurrentTroopIcon < iTotalNumberOfTroops; iCurrentTroopIcon++) {
@@ -5159,7 +5159,7 @@ function DrawTownMilitiaForcesOnMap(): void {
   let sSectorY: INT16 = 0;
 
   // get militia video object
-  GetVideoObject(addressof(hVObject), guiMilitia);
+  hVObject = GetVideoObject(guiMilitia);
 
   // clip blits to mapscreen region
   ClipBlitsToMapViewRegion();
@@ -5333,13 +5333,13 @@ function HandleLowerLevelMapBlit(): void {
   // blits the sub level maps
   switch (iCurrentMapSectorZ) {
     case (1):
-      GetVideoObject(addressof(hHandle), guiSubLevel1);
+      hHandle = GetVideoObject(guiSubLevel1);
       break;
     case (2):
-      GetVideoObject(addressof(hHandle), guiSubLevel2);
+      hHandle = GetVideoObject(guiSubLevel2);
       break;
     case (3):
-      GetVideoObject(addressof(hHandle), guiSubLevel3);
+      hHandle = GetVideoObject(guiSubLevel3);
       break;
   }
 
@@ -5584,7 +5584,7 @@ function ShowSAMSitesOnStrategicMap(): void {
     }
 
     // draw SAM site icon
-    GetVideoObject(addressof(hHandle), guiSAMICON);
+    hHandle = GetVideoObject(guiSAMICON);
     BltVideoObject(guiSAVEBUFFER, hHandle, ubVidObjIndex, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 
     if (fShowAircraftFlag) {
@@ -5845,7 +5845,7 @@ function DrawOrta(): void {
   }
 
   // draw Orta in its sector
-  GetVideoObject(addressof(hHandle), guiORTAICON);
+  hHandle = GetVideoObject(guiORTAICON);
   BltVideoObject(guiSAVEBUFFER, hHandle, ubVidObjIndex, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 }
 
@@ -5873,7 +5873,7 @@ function DrawTixa(): void {
   }
 
   // draw Tixa in its sector
-  GetVideoObject(addressof(hHandle), guiTIXAICON);
+  hHandle = GetVideoObject(guiTIXAICON);
   BltVideoObject(guiSAVEBUFFER, hHandle, ubVidObjIndex, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 }
 
@@ -5886,7 +5886,7 @@ function DrawBullseye(): void {
   sY -= 2;
 
   // draw the bullseye in that sector
-  GetVideoObject(addressof(hHandle), guiBULLSEYE);
+  hHandle = GetVideoObject(guiBULLSEYE);
   BltVideoObject(guiSAVEBUFFER, hHandle, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 }
 

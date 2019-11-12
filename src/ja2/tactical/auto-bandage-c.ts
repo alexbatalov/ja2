@@ -553,7 +553,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   sYPosition = (INV_INTERFACE_START_Y - iTotalPixelsHigh) / 2;
 
   // now blit down the background
-  GetVideoObject(addressof(hBackGroundHandle), guiUpdatePanelTactical);
+  hBackGroundHandle = GetVideoObject(guiUpdatePanelTactical);
 
   // first the doctors on top
   for (iCounterA = 0; iCounterA < iNumberDoctorsHigh; iCounterA++) {
@@ -883,7 +883,7 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
   let hHandle: HVOBJECT;
 
   // grab the video object
-  GetVideoObject(addressof(hHandle), giAutoBandagesSoldierFaces[iIndex]);
+  hHandle = GetVideoObject(giAutoBandagesSoldierFaces[iIndex]);
 
   // fill the background for the info bars black
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, sCurrentYPosition + 2, sCurrentXPosition + 44, sCurrentYPosition + 30, 0);

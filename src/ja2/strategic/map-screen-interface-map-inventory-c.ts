@@ -127,7 +127,7 @@ export function BlitInventoryPoolGraphic(): void {
   let hHandle: HVOBJECT;
 
   // blit inventory pool graphic to the screen
-  GetVideoObject(addressof(hHandle), guiMapInventoryPoolBackground);
+  hHandle = GetVideoObject(guiMapInventoryPoolBackground);
   BltVideoObject(guiSAVEBUFFER, hHandle, 0, INVEN_POOL_X, INVEN_POOL_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // resize list
@@ -191,7 +191,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
     return false;
   }
 
-  GetVideoObject(addressof(hHandle), GetInterfaceGraphicForItem(addressof(Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem])));
+  hHandle = GetVideoObject(GetInterfaceGraphicForItem(addressof(Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem])));
 
   pTrav = addressof(hHandle.value.pETRLEObject[Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem].ubGraphicNum]);
   usHeight = pTrav.value.usHeight;

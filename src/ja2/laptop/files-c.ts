@@ -219,7 +219,7 @@ export function RenderFiles(): void {
   BlitTitleBarIcons();
 
   // display border
-  GetVideoObject(addressof(hHandle), guiLaptopBACKGROUND);
+  hHandle = GetVideoObject(guiLaptopBACKGROUND);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, null);
 }
 
@@ -229,13 +229,13 @@ function RenderFilesBackGround(): void {
   let iCounter: INT32 = 0;
 
   // get title bar object
-  GetVideoObject(addressof(hHandle), guiTITLE);
+  hHandle = GetVideoObject(guiTITLE);
 
   // blt title bar to screen
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // get and blt the top part of the screen, video object and blt to screen
-  GetVideoObject(addressof(hHandle), guiTOP);
+  hHandle = GetVideoObject(guiTOP);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, null);
 
   return;
@@ -546,7 +546,7 @@ function DisplayFilesList(): void {
   {
     if (iCounter == iHighLightFileLine) {
       // render highlight
-      GetVideoObject(addressof(hHandle), guiHIGHLIGHT);
+      hHandle = GetVideoObject(guiHIGHLIGHT);
       BltVideoObject(FRAME_BUFFER, hHandle, 0, FILES_SENDER_TEXT_X - 5, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 4, VO_BLT_SRCTRANSPARENCY, null);
     }
     mprintf(FILES_SENDER_TEXT_X, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 2, pFilesSenderList[pFilesList.value.ubCode]);
@@ -673,7 +673,7 @@ function DisplayFormattedText(): boolean {
 
   // clear the file string structure list
   // get file background object
-  GetVideoObject(addressof(hHandle), guiFileBack);
+  hHandle = GetVideoObject(guiFileBack);
 
   // blt background to screen
   BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X, FILE_VIEWER_Y - 4, VO_BLT_SRCTRANSPARENCY, null);
@@ -730,7 +730,7 @@ function DisplayFormattedText(): boolean {
       GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0, addressof(usFirstWidth), addressof(usFirstHeight));
 
       // get file background object
-      GetVideoObject(addressof(hHandle), uiFirstTempPicture);
+      hHandle = GetVideoObject(uiFirstTempPicture);
 
       // blt background to screen
       BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + 4 + (FILE_VIEWER_WIDTH - usFirstWidth) / 2, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, null);
@@ -778,13 +778,13 @@ function DisplayFormattedText(): boolean {
 
       usFreeSpace /= 3;
       // get file background object
-      GetVideoObject(addressof(hHandle), uiFirstTempPicture);
+      hHandle = GetVideoObject(uiFirstTempPicture);
 
       // blt background to screen
       BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + usFreeSpace, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, null);
 
       // get file background object
-      GetVideoObject(addressof(hHandle), uiSecondTempPicture);
+      hHandle = GetVideoObject(uiSecondTempPicture);
 
       // get position for second picture
       usFreeSpace *= 2;
@@ -976,7 +976,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
     }
 
     // get title bar object
-    GetVideoObject(addressof(hHandle), uiPicture);
+    hHandle = GetVideoObject(uiPicture);
 
     // blt title bar to screen
     BltVideoObject(FRAME_BUFFER, hHandle, 0, 300, 270, VO_BLT_SRCTRANSPARENCY, null);
@@ -991,7 +991,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
     }
 
     // get title bar object
-    GetVideoObject(addressof(hHandle), uiPicture);
+    hHandle = GetVideoObject(uiPicture);
 
     // blt title bar to screen
     BltVideoObject(FRAME_BUFFER, hHandle, 0, 260, 225, VO_BLT_SRCTRANSPARENCY, null);
@@ -1006,7 +1006,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
     }
 
     // get title bar object
-    GetVideoObject(addressof(hHandle), uiPicture);
+    hHandle = GetVideoObject(uiPicture);
 
     // blt title bar to screen
     BltVideoObject(FRAME_BUFFER, hHandle, 0, 260, 85, VO_BLT_SRCTRANSPARENCY, null);
@@ -1440,7 +1440,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
       }
 
       // Blt face to screen to
-      GetVideoObject(addressof(hHandle), uiPicture);
+      hHandle = GetVideoObject(uiPicture);
 
       // def: 3/24/99
       //				BltVideoObject(FRAME_BUFFER, hHandle, 0,( INT16 ) (  FILE_VIEWER_X +  30 ), ( INT16 ) ( iYPositionOnPage + 5), VO_BLT_SRCTRANSPARENCY,NULL);
@@ -1455,7 +1455,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
       }
 
       // Blt face to screen to
-      GetVideoObject(addressof(hHandle), uiPicture);
+      hHandle = GetVideoObject(uiPicture);
 
       BltVideoObject(FRAME_BUFFER, hHandle, 0, (FILE_VIEWER_X + 25), (iYPositionOnPage + 16), VO_BLT_SRCTRANSPARENCY, null);
 

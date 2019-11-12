@@ -872,7 +872,7 @@ function RenderHandPosItem(): void {
 function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
   let hHandle: HVOBJECT;
 
-  GetVideoObject(addressof(hHandle), guiULICONS);
+  hHandle = GetVideoObject(guiULICONS);
 
   // if merc is an AIM merc
   if (Menptr[gCharactersList[bCharNumber].usSolID].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
@@ -5033,7 +5033,7 @@ function BltCharInvPanel(): void {
   GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
 
   pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-  GetVideoObject(addressof(hCharListHandle), guiMAPINV);
+  hCharListHandle = GetVideoObject(guiMAPINV);
   Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hCharListHandle, PLAYER_INFO_X, PLAYER_INFO_Y, 0);
   UnLockVideoSurface(guiSAVEBUFFER);
 
@@ -6543,7 +6543,7 @@ function RenderTeamRegionBackground(): void {
 
   // show inventory or the team list?
   if (fShowInventoryFlag == false) {
-    GetVideoObject(addressof(hHandle), guiCHARLIST);
+    hHandle = GetVideoObject(guiCHARLIST);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, PLAYER_INFO_X, PLAYER_INFO_Y, VO_BLT_SRCTRANSPARENCY, null);
   } else {
     BltCharInvPanel();
@@ -6588,7 +6588,7 @@ function RenderCharacterInfoBackground(): void {
   }
 
   // the upleft hand corner character info panel
-  GetVideoObject(addressof(hHandle), guiCHARINFO);
+  hHandle = GetVideoObject(guiCHARINFO);
   BltVideoObject(guiSAVEBUFFER, hHandle, 0, TOWN_INFO_X, TOWN_INFO_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   UpdateHelpTextForMapScreenMercIcons();
@@ -8586,7 +8586,7 @@ function DisplayIconsForMercsAsleep(): void {
     return;
   }
 
-  GetVideoObject(addressof(hHandle), guiSleepIcon);
+  hHandle = GetVideoObject(guiSleepIcon);
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == true) {
