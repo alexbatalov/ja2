@@ -235,7 +235,7 @@ function EnterGIOScreen(): boolean {
   // load the Main trade screen backgroiund image
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("InterFace\\OptionsScreenBackGround.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGIOMainBackGroundImage))) {
+  if (!(guiGIOMainBackGroundImage = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

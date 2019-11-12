@@ -104,7 +104,7 @@ export function LoadInventoryPoolGraphic(): boolean {
   VObjectDesc.ImageFile = "INTERFACE\\sector_inventory.sti";
 
   // add to V-object index
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapInventoryPoolBackground))) {
+  if (!(guiMapInventoryPoolBackground = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

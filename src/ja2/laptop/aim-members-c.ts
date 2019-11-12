@@ -459,77 +459,77 @@ export function EnterAIMMembers(): boolean {
   // load the stats graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\stats.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiStats))) {
+  if (!(guiStats = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Price graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\price.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPrice))) {
+  if (!(guiPrice = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Portait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\portrait.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPortrait))) {
+  if (!(guiPortrait = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the WeaponBox graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\weaponbox.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiWeaponBox))) {
+  if (!(guiWeaponBox = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the videoconf Popup graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\VideoConfPopup.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiVideoConfPopup))) {
+  if (!(guiVideoConfPopup = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the video conf terminal graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\VideoConfTerminal.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiVideoConfTerminal))) {
+  if (!(guiVideoConfTerminal = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the background snow for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BWSnow.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBWSnow))) {
+  if (!(guiBWSnow = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the fuzzy line for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\FuzzLine.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFuzzLine))) {
+  if (!(guiFuzzLine = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the line distortion for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\LineInterference.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiStraightLine))) {
+  if (!(guiStraightLine = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the translucent snow for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\TransSnow.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTransSnow))) {
+  if (!(guiTransSnow = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the translucent snow for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\VideoContractCharge.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiVideoContractCharge))) {
+  if (!(guiVideoContractCharge = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -1239,7 +1239,7 @@ function DisplayMercsFace(): boolean {
   sTemp = sprintf("%s%02d.sti", sFaceLoc, gbCurrentSoldier);
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP(sTemp);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFace))) {
+  if (!(guiFace = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -1808,7 +1808,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
       // load the popup box graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\VideoConfPopUp.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPopUpBox))) {
+      if (!(guiPopUpBox = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
@@ -2711,7 +2711,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
       // load the answering machine graphic and add it
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\VideoTitleBar.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(uiVideoBackgroundGraphic))) {
+      if (!(uiVideoBackgroundGraphic = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
@@ -2906,7 +2906,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
     // load the Video conference background graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\VideoTitleBar.sti");
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiVideoBackgroundGraphic))) {
+    if (!(uiVideoBackgroundGraphic = AddVideoObject(VObjectDesc))) {
       return false;
     }
 

@@ -262,28 +262,28 @@ function LoadFiles(): boolean {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\programtitlebar.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE))) {
+  if (!(guiTITLE = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\fileviewer.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTOP))) {
+  if (!(guiTOP = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // the highlight
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\highlight.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHIGHLIGHT))) {
+  if (!(guiHIGHLIGHT = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\fileviewerwhite.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFileBack))) {
+  if (!(guiFileBack = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -723,7 +723,7 @@ function DisplayFormattedText(): boolean {
       // load graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP(pFilesList.value.pPicFileNameList[0]);
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(uiFirstTempPicture))) {
+      if (!(uiFirstTempPicture = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
@@ -759,14 +759,14 @@ function DisplayFormattedText(): boolean {
       // load first graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP(pFilesList.value.pPicFileNameList[0]);
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(uiFirstTempPicture))) {
+      if (!(uiFirstTempPicture = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       // load second graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP(pFilesList.value.pPicFileNameList[1]);
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(uiSecondTempPicture))) {
+      if (!(uiSecondTempPicture = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
@@ -971,7 +971,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
     // title bar
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\ArucoFilesMap.sti");
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiPicture))) {
+    if (!(uiPicture = AddVideoObject(VObjectDesc))) {
       return false;
     }
 
@@ -986,7 +986,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
     // kid pic
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Enrico_Y.sti");
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiPicture))) {
+    if (!(uiPicture = AddVideoObject(VObjectDesc))) {
       return false;
     }
 
@@ -1001,7 +1001,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
     // wedding pic
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Enrico_W.sti");
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiPicture))) {
+    if (!(uiPicture = AddVideoObject(VObjectDesc))) {
       return false;
     }
 
@@ -1435,7 +1435,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP(sTemp);
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(uiPicture))) {
+      if (!(uiPicture = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
@@ -1450,7 +1450,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\InterceptBorder.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(uiPicture))) {
+      if (!(uiPicture = AddVideoObject(VObjectDesc))) {
         return false;
       }
 

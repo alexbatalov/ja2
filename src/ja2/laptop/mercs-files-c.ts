@@ -104,21 +104,21 @@ export function EnterMercsFiles(): boolean {
   // load the stats box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_STATSBOX);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiStatsBox))) {
+  if (!(guiStatsBox = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Portrait box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\PortraitBox.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPortraitBox))) {
+  if (!(guiPortraitBox = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the bio box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BioBox.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBioBox))) {
+  if (!(guiBioBox = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -335,7 +335,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   sTemp = sprintf("%s%02d.sti", sFaceLoc, ubMercID);
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP(sTemp);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercFace))) {
+  if (!(guiMercFace = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

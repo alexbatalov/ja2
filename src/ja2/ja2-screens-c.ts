@@ -595,7 +595,7 @@ export function SexScreenHandle(): UINT32 {
     // Load face....
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\luckysmile.sti");
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMILY)))
+    if (!(guiSMILY = AddVideoObject(VObjectDesc)))
       AssertMsg(0, "Missing INTERFACE\\luckysmile.sti");
 
     // Init screen

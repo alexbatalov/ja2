@@ -61,14 +61,14 @@ export function EnterMercsAccount(): boolean {
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_ORDERGRID);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercOrderGrid))) {
+  if (!(guiMercOrderGrid = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\AccountNumber.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAccountNumberGrid))) {
+  if (!(guiAccountNumberGrid = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

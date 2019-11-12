@@ -280,42 +280,42 @@ export function EnterMercs(): boolean {
   // load the Account box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\AccountBox.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAccountBox))) {
+  if (!(guiAccountBox = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the files Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\FilesBox.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFilesBox))) {
+  if (!(guiFilesBox = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the MercSymbol graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\MERCSymbol.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercSymbol))) {
+  if (!(guiMercSymbol = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the SpecPortrait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\SpecPortrait.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSpecPortrait))) {
+  if (!(guiSpecPortrait = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Arrow.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiArrow))) {
+  if (!(guiArrow = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Merc video conf background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\SpeckComWindow.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercVideoPopupBackground))) {
+  if (!(guiMercVideoPopupBackground = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -540,7 +540,7 @@ export function InitMercBackGround(): boolean {
   // load the Merc background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\MERCBackGround.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercBackGround))) {
+  if (!(guiMercBackGround = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

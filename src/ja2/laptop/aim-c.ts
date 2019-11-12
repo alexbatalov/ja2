@@ -175,70 +175,70 @@ export function EnterAIM(): boolean {
   // load the MemberShipcard graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\membercard.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMemberCard))) {
+  if (!(guiMemberCard = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Policies graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Policies.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPolicies))) {
+  if (!(guiPolicies = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Links graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Links.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLinks))) {
+  if (!(guiLinks = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the History graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_HISTORY);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHistory))) {
+  if (!(guiHistory = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Wanring graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_WARNING);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiWarning))) {
+  if (!(guiWarning = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the flower advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\flowerad_16.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerAdvertisement))) {
+  if (!(guiFlowerAdvertisement = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the your ad advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_YOURAD13);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAdForAdsImages))) {
+  if (!(guiAdForAdsImages = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the insurance advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_INSURANCEAD10);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceAdImages))) {
+  if (!(guiInsuranceAdImages = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_FUNERALAD9);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFuneralAdImages))) {
+  if (!(guiFuneralAdImages = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_BOBBYRAYAD21);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRAdImages))) {
+  if (!(guiBobbyRAdImages = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -392,14 +392,14 @@ export function InitAimDefaults(): boolean {
   // load the Rust bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\rustbackground.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiRustBackGround))) {
+  if (!(guiRustBackGround = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Aim Symbol graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_AIMSYMBOL);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAimSymbol))) {
+  if (!(guiAimSymbol = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

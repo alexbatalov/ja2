@@ -78,14 +78,14 @@ export function EnterInsurance(): boolean {
   // load the Insurance title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_INSURANCETITLE);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceTitleImage))) {
+  if (!(guiInsuranceTitleImage = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Bullet.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBulletImage))) {
+  if (!(guiInsuranceBulletImage = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -192,21 +192,21 @@ export function InitInsuranceDefaults(): boolean {
   // load the Flower Account Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BackGroundTile.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBackGround))) {
+  if (!(guiInsuranceBackGround = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\LeftTile.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceRedBarImage))) {
+  if (!(guiInsuranceRedBarImage = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\LargeBar.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBigRedLineImage))) {
+  if (!(guiInsuranceBigRedLineImage = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -215,7 +215,7 @@ export function InitInsuranceDefaults(): boolean {
     // load the small title for the every page other then the first page
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_SMALLTITLE);
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceSmallTitleImage))) {
+    if (!(guiInsuranceSmallTitleImage = AddVideoObject(VObjectDesc))) {
       return false;
     }
 

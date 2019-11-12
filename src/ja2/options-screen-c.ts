@@ -260,14 +260,14 @@ function EnterOptionsScreen(): boolean {
   // load the options screen background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\OptionScreenBase.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOptionBackGroundImage))) {
+  if (!(guiOptionBackGroundImage = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load button, title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_OPTIONHEADER);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOptionsAddOnImages))) {
+  if (!(guiOptionsAddOnImages = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

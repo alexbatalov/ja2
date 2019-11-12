@@ -818,7 +818,7 @@ function AddFacesToAutoBandageBox(): boolean {
       }
 
       // load the face
-      AddVideoObject(addressof(VObjectDesc), addressof(giAutoBandagesSoldierFaces[iCounter]));
+      giAutoBandagesSoldierFaces[iCounter] = AddVideoObject(VObjectDesc);
       iNumberOfDoctors++;
     }
   }
@@ -835,14 +835,14 @@ function AddFacesToAutoBandageBox(): boolean {
       }
 
       // load the face
-      AddVideoObject(addressof(VObjectDesc), addressof(giAutoBandagesSoldierFaces[iCounter + iNumberOfDoctors]));
+      giAutoBandagesSoldierFaces[iCounter + iNumberOfDoctors] = AddVideoObject(VObjectDesc);
     }
   }
 
   // grab panels
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "Interface\\panels.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(giMercPanelImage))) {
+  if (!(giMercPanelImage = AddVideoObject(VObjectDesc))) {
     AssertMsg(0, "Failed to load Interface\\panels.sti");
   }
 

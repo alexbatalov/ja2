@@ -644,56 +644,56 @@ export function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCam
   // Load all four body type images
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_figure_large_male.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[1][0]))) {
+  if (!(guiBodyInvVO[1][0] = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_figure_large_male_H.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[1][1]))) {
+  if (!(guiBodyInvVO[1][1] = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_normal_male.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[0][0]))) {
+  if (!(guiBodyInvVO[0][0] = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_normal_male_H.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[0][1]))) {
+  if (!(guiBodyInvVO[0][1] = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_normal_male.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[2][0]))) {
+  if (!(guiBodyInvVO[2][0] = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_normal_male.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[2][1]))) {
+  if (!(guiBodyInvVO[2][1] = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_figure_female.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[3][0]))) {
+  if (!(guiBodyInvVO[3][0] = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_figure_female_H.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBodyInvVO[3][1]))) {
+  if (!(guiBodyInvVO[3][1] = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // add gold key graphic
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\gold_key_button.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGoldKeyVO))) {
+  if (!(guiGoldKeyVO = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -1940,19 +1940,19 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
   // Load graphic
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\infobox.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiItemDescBox))) {
+  if (!(guiItemDescBox = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\iteminfoc.STI";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapItemDescBox))) {
+  if (!(guiMapItemDescBox = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\bullet.STI";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBullet))) {
+  if (!(guiBullet = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -1985,7 +1985,7 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
     // Load graphic
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = "INTERFACE\\info_bil.sti";
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMoneyGraphicsForDescBox))) {
+    if (!(guiMoneyGraphicsForDescBox = AddVideoObject(VObjectDesc))) {
       return false;
     }
 
@@ -4092,7 +4092,7 @@ export function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: U
   // Load graphics
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\extra_inventory.STI";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiItemPopupBoxes))) {
+  if (!(guiItemPopupBoxes = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -4289,7 +4289,7 @@ export function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, s
   // Load graphics
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\extra_inventory.STI";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiItemPopupBoxes))) {
+  if (!(guiItemPopupBoxes = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -4518,7 +4518,7 @@ export function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<U
   // Load item
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = sprintf("BIGITEMS\\%s", zName);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(uiVo))) {
+  if (!(uiVo = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -4832,7 +4832,7 @@ export function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\itembox.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(gItemPickupMenu.uiPanelVo))) {
+  if (!(gItemPickupMenu.uiPanelVo = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

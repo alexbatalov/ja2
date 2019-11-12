@@ -205,12 +205,12 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   }
 
   // Load
-  if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == false) {
+  if (!(uiVideoObject = AddVideoObject(VObjectDesc))) {
     // If we are a big face, use placeholder...
     if (uiInitFlags & FACE_BIGFACE) {
       VObjectDesc.ImageFile = "FACES\\placeholder.sti";
 
-      if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == false) {
+      if (!(uiVideoObject = AddVideoObject(VObjectDesc))) {
         return -1;
       }
     } else {

@@ -123,7 +123,7 @@ export function createVObjectDesc(): VOBJECT_DESC {
 // **********************************************************************************
 
 // Creates and adds a video object to list
-export const AddVideoObject = (a: Pointer<VOBJECT_DESC>, b: Pointer<UINT32>) => AddStandardVideoObject(a, b);
+export const AddVideoObject = (a: VOBJECT_DESC) => AddStandardVideoObject(a);
 
 // **********************************************************************************
 //

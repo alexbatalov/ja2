@@ -953,31 +953,31 @@ export function InitializeSMPanel(): boolean {
   // failing the CHECKF after this will cause you to lose your mouse
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\inventory_bottom_panel.STI";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMPanel))) {
+  if (!(guiSMPanel = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inventory_gold_front.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects))) {
+  if (!(guiSMObjects = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\inv_frn.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects2))) {
+  if (!(guiSMObjects2 = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO))) {
+  if (!(guiSecItemHiddenVO = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Bars.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel))) {
+  if (!(guiBrownBackgroundForTeamPanel = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -2569,19 +2569,19 @@ export function InitializeTEAMPanel(): boolean {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\bottom_bar.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMPanel))) {
+  if (!(guiTEAMPanel = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\gold_front.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMObjects))) {
+  if (!(guiTEAMObjects = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Bars.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel))) {
+  if (!(guiBrownBackgroundForTeamPanel = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

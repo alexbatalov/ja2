@@ -494,7 +494,7 @@ function LoadCharacterPortraitForMainPage(): boolean {
     // load it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP(pPlayerSelectedFaceFileNames[iPortraitNumber]);
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAITFORMAINPAGE))) {
+    if (!(guiCHARACTERPORTRAITFORMAINPAGE = AddVideoObject(VObjectDesc))) {
       return false;
     }
 

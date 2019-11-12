@@ -171,42 +171,42 @@ export function EnterBobbyR(): boolean {
   // load the Bobbyname graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_BOBBYNAME);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyName))) {
+  if (!(guiBobbyName = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the plaque graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyPlaques.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPlaque))) {
+  if (!(guiPlaque = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the TopHinge graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyTopHinge.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTopHinge))) {
+  if (!(guiTopHinge = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the BottomHinge graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyBottomHinge.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBottomHinge))) {
+  if (!(guiBottomHinge = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Store Plaque graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_STOREPLAQUE);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiStorePlaque))) {
+  if (!(guiStorePlaque = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Handle graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyHandle.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHandle))) {
+  if (!(guiHandle = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -216,7 +216,7 @@ export function EnterBobbyR(): boolean {
     // load the Handle graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\UnderConstruction.sti");
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiUnderConstructionImage))) {
+    if (!(guiUnderConstructionImage = AddVideoObject(VObjectDesc))) {
       return false;
     }
 
@@ -345,7 +345,7 @@ export function InitBobbyRWoodBackground(): boolean {
   // load the Wood bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyWood.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiWoodBackground))) {
+  if (!(guiWoodBackground = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

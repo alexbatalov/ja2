@@ -12,14 +12,14 @@ export function EnterBobbyRAmmo(): boolean {
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\ammobackground.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAmmoBackground))) {
+  if (!(guiAmmoBackground = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\ammogrid.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAmmoGrid))) {
+  if (!(guiAmmoGrid = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

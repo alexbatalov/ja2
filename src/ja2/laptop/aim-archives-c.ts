@@ -147,42 +147,42 @@ export function EnterAimArchives(): boolean {
   // load the Alumni Frame and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\AlumniFrame.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAlumniFrame))) {
+  if (!(guiAlumniFrame = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the 1st set of faces and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Old_Aim.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOldAim))) {
+  if (!(guiOldAim = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BottomButton.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPageButtons))) {
+  if (!(guiPageButtons = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the PopupPic graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\PopupPicFrame.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPopUpPic))) {
+  if (!(guiPopUpPic = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the AlumniPopUp graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\AlumniPopUp.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAlumniPopUp))) {
+  if (!(guiAlumniPopUp = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Done Button graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\DoneButton.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDoneButton))) {
+  if (!(guiDoneButton = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

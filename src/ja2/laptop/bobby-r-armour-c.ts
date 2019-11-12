@@ -12,14 +12,14 @@ export function EnterBobbyRArmour(): boolean {
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Armourbackground.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiArmourBackground))) {
+  if (!(guiArmourBackground = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Armourgrid.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiArmourGrid))) {
+  if (!(guiArmourGrid = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

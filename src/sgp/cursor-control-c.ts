@@ -112,7 +112,7 @@ function LoadCursorData(uiCursorIndex: UINT32): boolean {
         VideoObjectDescription.fCreateFlags = VOBJECT_CREATE_FROMHIMAGE;
         VideoObjectDescription.hImage = hImage;
 
-        if (!AddVideoObject(addressof(VideoObjectDescription), addressof(gpCursorFileDatabase[pCurImage.value.uiFileIndex].uiIndex))) {
+        if (!(gpCursorFileDatabase[pCurImage.value.uiFileIndex].uiIndex = AddVideoObject(VideoObjectDescription))) {
           return false;
         }
 

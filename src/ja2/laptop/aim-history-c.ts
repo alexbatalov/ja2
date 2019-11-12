@@ -95,7 +95,7 @@ export function EnterAimHistory(): boolean {
   // load the Content Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\ContentButton.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiContentButton))) {
+  if (!(guiContentButton = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -198,13 +198,13 @@ function InitAimHistoryMenuBar(): boolean {
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BottomButton.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton))) {
+  if (!(guiBottomButton = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BottomButton2.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton2))) {
+  if (!(guiBottomButton2 = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

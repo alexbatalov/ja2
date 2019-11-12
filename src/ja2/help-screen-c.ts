@@ -516,7 +516,7 @@ function EnterHelpScreen(): boolean {
   // load the help screen background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\HelpScreen.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHelpScreenBackGround))) {
+  if (!(guiHelpScreenBackGround = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

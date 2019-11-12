@@ -3594,7 +3594,7 @@ export function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if update
   if (pUpdateSoldierBox[iCounter] == null) {
     VObjectDesc.ImageFile = "Interface\\panels.sti";
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(giMercPanelImage))) {
+    if (!(giMercPanelImage = AddVideoObject(VObjectDesc))) {
       AssertMsg(0, "Failed to load Interface\\panels.sti");
     }
   }
@@ -3615,7 +3615,7 @@ export function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
 
       // load the face
-      AddVideoObject(addressof(VObjectDesc), addressof(giUpdateSoldierFaces[iCounter]));
+      giUpdateSoldierFaces[iCounter] = AddVideoObject(VObjectDesc);
 
       return;
     }

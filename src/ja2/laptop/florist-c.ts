@@ -70,7 +70,7 @@ export function EnterFlorist(): boolean {
   // load the handbullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\HandBullet.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHandBullet))) {
+  if (!(guiHandBullet = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -151,7 +151,7 @@ export function InitFloristDefaults(): boolean {
   // load the Florist background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\leafback.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiFloristBackground))) {
+  if (!(guiFloristBackground = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -160,14 +160,14 @@ export function InitFloristDefaults(): boolean {
     // load the small title graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_LARGEFLORISTSYMBOL);
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLargeTitleSymbol))) {
+    if (!(guiLargeTitleSymbol = AddVideoObject(VObjectDesc))) {
       return false;
     }
   } else {
     // load the leaf back graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_SMALLFLORISTSYMBOL);
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSmallTitleSymbol))) {
+    if (!(guiSmallTitleSymbol = AddVideoObject(VObjectDesc))) {
       return false;
     }
 

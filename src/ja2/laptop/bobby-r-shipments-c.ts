@@ -78,7 +78,7 @@ export function EnterBobbyRShipments(): boolean {
   // load the Order Grid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\BobbyRay_OnOrder.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRShipmentGrid))) {
+  if (!(guiBobbyRShipmentGrid = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

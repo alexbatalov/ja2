@@ -182,14 +182,14 @@ export function EnterBobbyRGuns(): boolean {
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\gunbackground.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGunBackground))) {
+  if (!(guiGunBackground = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\gunsgrid.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGunsGrid))) {
+  if (!(guiGunsGrid = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -273,7 +273,7 @@ export function InitBobbyBrTitle(): boolean {
   // load the br title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\br.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrTitle))) {
+  if (!(guiBrTitle = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

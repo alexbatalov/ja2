@@ -727,13 +727,13 @@ function EnterQuestDebugSystem(): boolean {
   // load Scroll Horizontal Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Qd_ScrollArrows.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiQdScrollArrowImage))) {
+  if (!(guiQdScrollArrowImage = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Bars.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel))) {
+  if (!(guiBrownBackgroundForTeamPanel = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

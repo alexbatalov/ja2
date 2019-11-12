@@ -1527,7 +1527,7 @@ function CreateAutoResolveInterface(): void {
   // Load the general panel image pieces, to be combined to make the dynamically sized window.
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "Interface\\AutoResolve.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(gpAR.value.iPanelImages))) {
+  if (!(gpAR.value.iPanelImages = AddVideoObject(VObjectDesc))) {
     AssertMsg(0, "Failed to load Interface\\AutoResolve.sti");
   }
 
@@ -1566,7 +1566,7 @@ function CreateAutoResolveInterface(): void {
 
   // Load the generic faces for civs and enemies
   VObjectDesc.ImageFile = "Interface\\SmFaces.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(gpAR.value.iFaces))) {
+  if (!(gpAR.value.iFaces = AddVideoObject(VObjectDesc))) {
     AssertMsg(0, "Failed to load Interface\\SmFaces.sti");
   }
   if (GetVideoObject(addressof(hVObject), gpAR.value.iFaces)) {
@@ -1576,7 +1576,7 @@ function CreateAutoResolveInterface(): void {
 
   // Add the battle over panels
   VObjectDesc.ImageFile = "Interface\\indent.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(gpAR.value.iIndent))) {
+  if (!(gpAR.value.iIndent = AddVideoObject(VObjectDesc))) {
     AssertMsg(0, "Failed to load Interface\\indent.sti");
   }
 
@@ -1586,9 +1586,9 @@ function CreateAutoResolveInterface(): void {
     // Load the face
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex);
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(gpMercs[i].uiVObjectID))) {
+    if (!(gpMercs[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
       VObjectDesc.ImageFile = "Faces\\65Face\\speck.sti";
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(gpMercs[i].uiVObjectID))) {
+      if (!(gpMercs[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
         AssertMsg(0, String("Failed to load %Faces\\65Face\\%02d.sti or it's placeholder, speck.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex));
       }
     }

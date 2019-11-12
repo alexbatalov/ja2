@@ -2064,13 +2064,13 @@ export function MapScreenInit(): boolean {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\group_confirm.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiUpdatePanel))) {
+  if (!(guiUpdatePanel = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\group_confirm_tactical.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiUpdatePanelTactical))) {
+  if (!(guiUpdatePanelTactical = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -2203,7 +2203,7 @@ export function MapScreenHandle(): UINT32 {
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\SAM.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSAMICON))) {
+      if (!(guiSAMICON = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
@@ -2212,25 +2212,25 @@ export function MapScreenHandle(): UINT32 {
       // CHECKF( AddVideoObject( &VObjectDesc, &guiMAP ) );
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapcursr.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS))) {
+      if (!(guiMAPCURSORS = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_1.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel1))) {
+      if (!(guiSubLevel1 = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_2.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel2))) {
+      if (!(guiSubLevel2 = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_3.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel3))) {
+      if (!(guiSubLevel3 = AddVideoObject(VObjectDesc))) {
         return false;
       }
       // VObjectDesc.fCreateFlags=VOBJECT_CREATE_FROMFILE;
@@ -2243,13 +2243,13 @@ export function MapScreenHandle(): UINT32 {
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\sleepicon.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSleepIcon))) {
+      if (!(guiSleepIcon = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\charinfo.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARINFO))) {
+      if (!(guiCHARINFO = AddVideoObject(VObjectDesc))) {
         return false;
       }
       /*strcpy(vs_desc.ImageFile, "INTERFACE\\playlist3.pcx");
@@ -2257,7 +2257,7 @@ export function MapScreenHandle(): UINT32 {
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\newgoldpiece3.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARLIST))) {
+      if (!(guiCHARLIST = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
@@ -2271,108 +2271,108 @@ export function MapScreenHandle(): UINT32 {
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\boxes.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARICONS))) {
+      if (!(guiCHARICONS = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\incross.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCROSS))) {
+      if (!(guiCROSS = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapinv.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPINV))) {
+      if (!(guiMAPINV = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_inv_2nd_gun_cover.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapInvSecondHandBlockout))) {
+      if (!(guiMapInvSecondHandBlockout = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       // the upper left corner piece icons
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\top_left_corner_icons.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiULICONS))) {
+      if (!(guiULICONS = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_item.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiORTAICON))) {
+      if (!(guiORTAICON = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\prison.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTIXAICON))) {
+      if (!(guiTIXAICON = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\merc_between_sector_icons.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONS))) {
+      if (!(guiCHARBETWEENSECTORICONS = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\merc_mvt_green_arrows.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONSCLOSE))) {
+      if (!(guiCHARBETWEENSECTORICONSCLOSE = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\GreenArr.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLEVELMARKER))) {
+      if (!(guiLEVELMARKER = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Helicop.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHelicopterIcon))) {
+      if (!(guiHelicopterIcon = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\eta_pop_up.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderEtaPopUp))) {
+      if (!(guiMapBorderEtaPopUp = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\pos2.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderHeliSectors))) {
+      if (!(guiMapBorderHeliSectors = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO))) {
+      if (!(guiSecItemHiddenVO = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\selectedchararrow.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSelectedCharArrow))) {
+      if (!(guiSelectedCharArrow = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mine.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMINEICON))) {
+      if (!(guiMINEICON = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = "INTERFACE\\hilite.sti";
-      AddVideoObject(addressof(VObjectDesc), addressof(guiSectorLocatorGraphicID));
+      guiSectorLocatorGraphicID = AddVideoObject(VObjectDesc);
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\BullsEye.sti");
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBULLSEYE))) {
+      if (!(guiBULLSEYE = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
@@ -2387,7 +2387,7 @@ export function MapScreenHandle(): UINT32 {
       // Kris:  Added this because I need to blink the icons button.
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = "INTERFACE\\newemail.sti";
-      AddVideoObject(addressof(VObjectDesc), addressof(guiNewMailIcons));
+      guiNewMailIcons = AddVideoObject(VObjectDesc);
     }
 
     // create buttons
@@ -2414,7 +2414,7 @@ export function MapScreenHandle(): UINT32 {
 
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Bars.sti");
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel))) {
+    if (!(guiBrownBackgroundForTeamPanel = AddVideoObject(VObjectDesc))) {
       return false;
     }
 
@@ -4568,7 +4568,7 @@ export function EndMapScreen(fDuringFade: boolean): void {
     PlayJA2SampleFromFile("SOUNDS\\Initial Power Up (8-11).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = "INTERFACE\\LaptopOn.sti";
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiLaptopOn)))
+    if (!(uiLaptopOn = AddVideoObject(VObjectDesc)))
       AssertMsg(0, "Failed to load data\\Interface\\LaptopOn.sti");
     BltVideoObjectFromIndex(FRAME_BUFFER, uiLaptopOn, 0, 465, 417, VO_BLT_SRCTRANSPARENCY, null);
     InvalidateRegion(465, 417, 480, 427);
@@ -7803,13 +7803,13 @@ export function HandlePreloadOfMapGraphics(): boolean {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapcursr.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS))) {
+  if (!(guiMAPCURSORS = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\SAM.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSAMICON))) {
+  if (!(guiSAMICON = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -7818,13 +7818,13 @@ export function HandlePreloadOfMapGraphics(): boolean {
   // CHECKF( AddVideoObject( &VObjectDesc, &guiMAP ) );
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapcursr.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS))) {
+  if (!(guiMAPCURSORS = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\sleepicon.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSleepIcon))) {
+  if (!(guiSleepIcon = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -7838,7 +7838,7 @@ export function HandlePreloadOfMapGraphics(): boolean {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\charinfo.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARINFO))) {
+  if (!(guiCHARINFO = AddVideoObject(VObjectDesc))) {
     return false;
   }
   /*strcpy(vs_desc.ImageFile, "INTERFACE\\playlist3.pcx");
@@ -7846,7 +7846,7 @@ export function HandlePreloadOfMapGraphics(): boolean {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\newgoldpiece3.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARLIST))) {
+  if (!(guiCHARLIST = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -7861,56 +7861,56 @@ export function HandlePreloadOfMapGraphics(): boolean {
   // the sublevels
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_1.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel1))) {
+  if (!(guiSubLevel1 = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_2.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel2))) {
+  if (!(guiSubLevel2 = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Mine_3.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel3))) {
+  if (!(guiSubLevel3 = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\boxes.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARICONS))) {
+  if (!(guiCHARICONS = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\incross.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCROSS))) {
+  if (!(guiCROSS = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapinv.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPINV))) {
+  if (!(guiMAPINV = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_inv_2nd_gun_cover.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapInvSecondHandBlockout))) {
+  if (!(guiMapInvSecondHandBlockout = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // the upper left corner piece icons
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\top_left_corner_icons.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiULICONS))) {
+  if (!(guiULICONS = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\prison.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTIXAICON))) {
+  if (!(guiTIXAICON = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -7918,82 +7918,82 @@ export function HandlePreloadOfMapGraphics(): boolean {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\map_item.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiORTAICON))) {
+  if (!(guiORTAICON = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapcursr.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS))) {
+  if (!(guiMAPCURSORS = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\merc_between_sector_icons.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONS))) {
+  if (!(guiCHARBETWEENSECTORICONS = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\merc_mvt_green_arrows.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONSCLOSE))) {
+  if (!(guiCHARBETWEENSECTORICONSCLOSE = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\GreenArr.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLEVELMARKER))) {
+  if (!(guiLEVELMARKER = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Helicop.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHelicopterIcon))) {
+  if (!(guiHelicopterIcon = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\eta_pop_up.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderEtaPopUp))) {
+  if (!(guiMapBorderEtaPopUp = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\pos2.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderHeliSectors))) {
+  if (!(guiMapBorderHeliSectors = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO))) {
+  if (!(guiSecItemHiddenVO = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\selectedchararrow.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSelectedCharArrow))) {
+  if (!(guiSelectedCharArrow = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mine.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMINEICON))) {
+  if (!(guiMINEICON = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\hilite.sti";
-  AddVideoObject(addressof(VObjectDesc), addressof(guiSectorLocatorGraphicID));
+  guiSectorLocatorGraphicID = AddVideoObject(VObjectDesc);
 
   // Kris:  Added this because I need to blink the icons button.
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\newemail.sti";
-  AddVideoObject(addressof(VObjectDesc), addressof(guiNewMailIcons));
+  guiNewMailIcons = AddVideoObject(VObjectDesc);
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\BullsEye.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBULLSEYE))) {
+  if (!(guiBULLSEYE = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

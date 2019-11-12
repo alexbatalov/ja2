@@ -146,35 +146,35 @@ export function EnterAimSort(): boolean {
   // load the SortBy box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\SortBy.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSortByBox))) {
+  if (!(guiSortByBox = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the ToAlumni graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_TOALUMNI);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiToAlumni))) {
+  if (!(guiToAlumni = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the ToMugShots graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_TOMUGSHOTS);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiToMugShots))) {
+  if (!(guiToMugShots = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the ToStats graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_TOSTATS);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiToStats))) {
+  if (!(guiToStats = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the SelectLight graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\SelectLight.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSelectLight))) {
+  if (!(guiSelectLight = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

@@ -54,7 +54,7 @@ export function EnterAimFacialIndex(): boolean {
   // load the Portait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\MugShotBorder3.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMugShotBorder))) {
+  if (!(guiMugShotBorder = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -71,7 +71,7 @@ export function EnterAimFacialIndex(): boolean {
       sTemp = sprintf("%s%02d.sti", sFaceLoc, AimMercArray[i]);
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP(sTemp);
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAimFiFace[i])))
+      if (!(guiAimFiFace[i] = AddVideoObject(VObjectDesc)))
         return false;
 
       usPosX += AIM_FI_PORTRAIT_WIDTH + AIM_FI_MUGSHOT_GAP_X;

@@ -238,21 +238,21 @@ function LoadHistory(): boolean {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\programtitlebar.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE))) {
+  if (!(guiTITLE = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\historywindow.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiTOP))) {
+  if (!(guiTOP = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // shaded line
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\historylines.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSHADELINE))) {
+  if (!(guiSHADELINE = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
@@ -266,7 +266,7 @@ function LoadHistory(): boolean {
   // black divider line - long ( 480 length)
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\divisionline480.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLONGLINE))) {
+  if (!(guiLONGLINE = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

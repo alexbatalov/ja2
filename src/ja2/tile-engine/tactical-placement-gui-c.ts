@@ -66,11 +66,11 @@ export function InitTacticalPlacementGUI(): void {
   // Load the images
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "Interface\\OverheadInterface.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(giOverheadPanelImage))) {
+  if (!(giOverheadPanelImage = AddVideoObject(VObjectDesc))) {
     AssertMsg(0, "Failed to load Interface\\OverheadInterface.sti");
   }
   VObjectDesc.ImageFile = "Interface\\panels.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(giMercPanelImage))) {
+  if (!(giMercPanelImage = AddVideoObject(VObjectDesc))) {
     AssertMsg(0, "Failed to load Interface\\panels.sti");
   }
 
@@ -165,9 +165,9 @@ export function InitTacticalPlacementGUI(): void {
         VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", ubFaceIndex);
     }
 
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(gMercPlacement[i].uiVObjectID))) {
+    if (!(gMercPlacement[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
       VObjectDesc.ImageFile = "Faces\\65Face\\speck.sti";
-      if (!AddVideoObject(addressof(VObjectDesc), addressof(gMercPlacement[i].uiVObjectID))) {
+      if (!(gMercPlacement[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
         AssertMsg(0, String("Failed to load %Faces\\65Face\\%03d.sti or it's placeholder, speck.sti", gMercProfiles[gMercPlacement[i].pSoldier.value.ubProfile].ubFaceIndex));
       }
     }

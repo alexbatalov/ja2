@@ -6872,7 +6872,7 @@ export function CreateDestroyAssignmentPopUpBoxes(): boolean {
   if ((fShowAssignmentMenu == true) && (fCreated == false)) {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\popup.sti");
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPOPUPBORDERS))) {
+    if (!(guiPOPUPBORDERS = AddVideoObject(VObjectDesc))) {
       return false;
     }
 

@@ -78,7 +78,7 @@ export function LoadMapBorderGraphics(): boolean {
   // will load map border
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\MBS.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorder))) {
+  if (!(guiMapBorder = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

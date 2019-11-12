@@ -95,49 +95,49 @@ export function EnterFuneral(): boolean {
   // load the Closed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_CLOSED);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiClosedSign))) {
+  if (!(guiClosedSign = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Left column graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\LeftColumn.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLeftColumn))) {
+  if (!(guiLeftColumn = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Link carving graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\LinkCarving.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiLinkCarving))) {
+  if (!(guiLinkCarving = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Marble graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\Marble.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMarbleBackground))) {
+  if (!(guiMarbleBackground = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the McGillicuttys sign graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_MCGILLICUTTYS);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMcGillicuttys))) {
+  if (!(guiMcGillicuttys = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the Mortuary  graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = GetMLGFilename(Enum326.MLG_MORTUARY);
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMortuary))) {
+  if (!(guiMortuary = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   // load the right column graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\RightColumn.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiRightColumn))) {
+  if (!(guiRightColumn = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

@@ -47,7 +47,7 @@ export function EnterFloristCards(): boolean {
   // load the Flower Account Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("LAPTOP\\CardBlank.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCardBackground))) {
+  if (!(guiCardBackground = AddVideoObject(VObjectDesc))) {
     return false;
   }
 

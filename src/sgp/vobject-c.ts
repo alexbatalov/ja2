@@ -100,11 +100,12 @@ function CountVideoObjectNodes(): UINT32 {
   return i;
 }
 
-export function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiIndex: Pointer<UINT32>): boolean {
+export function AddStandardVideoObject(pVObjectDesc: VOBJECT_DESC): UINT32 {
+  let puiIndex: UINT32;
+
   let hVObject: HVOBJECT;
 
   // Assertions
-  Assert(puiIndex);
   Assert(pVObjectDesc);
 
   // Create video object
@@ -112,7 +113,7 @@ export function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiI
 
   if (!hVObject) {
     // Video Object will set error condition.
-    return false;
+    return 0;
   }
 
   // Set transparency to default
@@ -136,13 +137,13 @@ export function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiI
   // Set the hVObject into the node.
   gpVObjectTail.value.hVObject = hVObject;
   gpVObjectTail.value.uiIndex = guiVObjectIndex += 2;
-  puiIndex.value = gpVObjectTail.value.uiIndex;
+  puiIndex = gpVObjectTail.value.uiIndex;
   Assert(guiVObjectIndex < 0xfffffff0); // unlikely that we will ever use 2 billion vobjects!
   // We would have to create about 70 vobjects per second for 1 year straight to achieve this...
   guiVObjectSize++;
   guiVObjectTotalAdded++;
 
-  return true;
+  return puiIndex;
 }
 
 function SetVideoObjectTransparency(uiIndex: UINT32, TransColor: COLORVAL): boolean {

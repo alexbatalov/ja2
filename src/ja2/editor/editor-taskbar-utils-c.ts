@@ -100,11 +100,11 @@ function LoadEditorImages(): void {
   // Set up the merc inventory panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "EDITOR\\InvPanel.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercInventoryPanel)))
+  if (!(guiMercInventoryPanel = AddVideoObject(VObjectDesc)))
     AssertMsg(0, "Failed to load data\\editor\\InvPanel.sti");
   // Set up small omerta map
   VObjectDesc.ImageFile = "EDITOR\\omerta.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOmertaMap)))
+  if (!(guiOmertaMap = AddVideoObject(VObjectDesc)))
     AssertMsg(0, "Failed to load data\\editor\\omerta.sti");
   // Set up the merc directional buttons.
   giEditMercDirectionIcons[0] = LoadGenericButtonIcon("EDITOR//arrowsoff.sti");
@@ -114,10 +114,10 @@ function LoadEditorImages(): void {
   giEditMercImage[1] = LoadButtonImage("EDITOR\\rightarrow.sti", 0, 1, 2, 3, 4);
 
   VObjectDesc.ImageFile = "EDITOR\\Exclamation.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiExclamation)))
+  if (!(guiExclamation = AddVideoObject(VObjectDesc)))
     AssertMsg(0, "Failed to load data\\editor\\Exclamation.sti");
   VObjectDesc.ImageFile = "EDITOR\\KeyImage.sti";
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiKeyImage)))
+  if (!(guiKeyImage = AddVideoObject(VObjectDesc)))
     AssertMsg(0, "Failed to load data\\editor\\KeyImage.sti");
 }
 

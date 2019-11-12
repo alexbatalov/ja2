@@ -266,7 +266,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = "INTERFACE\\talkbox1.sti";
   // Load
-  if (AddVideoObject(addressof(VObjectDesc), addressof(gTalkPanel.uiPanelVO)) == false) {
+  if (!(gTalkPanel.uiPanelVO = AddVideoObject(VObjectDesc))) {
     return 0;
   }
 

@@ -446,7 +446,7 @@ export function RenderTopmostTacticalInterface(): void {
             // Loadup cursor!
             VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
             VObjectDesc.ImageFile = FilenameForBPP("CURSORS\\targblak.sti");
-            AddVideoObject(addressof(VObjectDesc), addressof(uiBogTarget));
+            uiBogTarget = AddVideoObject(VObjectDesc);
           }
 
           if (GridNoOnScreen(MAPROWCOLTOPOS((MercPtrs[cnt].value.sPlannedTargetY / CELL_Y_SIZE), (MercPtrs[cnt].value.sPlannedTargetX / CELL_X_SIZE)))) {

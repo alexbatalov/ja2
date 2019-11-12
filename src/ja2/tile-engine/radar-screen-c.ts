@@ -67,7 +67,7 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = sprintf("RADARMAPS\\%s.STI", zFilename);
 
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(gusRadarImage))) {
+    if (!(gusRadarImage = AddVideoObject(VObjectDesc))) {
       return false;
     }
 
@@ -509,7 +509,7 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
     // load graphics
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\squadpanel.sti");
-    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiHandle))) {
+    if (!(uiHandle = AddVideoObject(VObjectDesc))) {
       return false;
     }
 

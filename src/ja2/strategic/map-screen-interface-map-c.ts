@@ -4298,25 +4298,25 @@ export function LoadMilitiaPopUpBox(): boolean {
   // load the militia pop up box
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Militia.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMilitia))) {
+  if (!(guiMilitia = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\Militiamaps.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaMaps))) {
+  if (!(guiMilitiaMaps = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\MilitiamapsectorOutline2.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaSectorHighLight))) {
+  if (!(guiMilitiaSectorHighLight = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\MilitiamapsectorOutline.sti");
-  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMilitiaSectorOutline))) {
+  if (!(guiMilitiaSectorOutline = AddVideoObject(VObjectDesc))) {
     return false;
   }
 
